@@ -15,8 +15,10 @@ class ThisTestIsALieTest {
         assertEquals(2, 1 + 1);
     }
 
+    /*
     @Test
     void testLie() {
         assertEquals(42, 1 + 1);
     }
+    */
 }
