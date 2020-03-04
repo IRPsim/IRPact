@@ -16,6 +16,10 @@ repositories {
     }
 }
 
+test {
+    useJUnitPlatform()
+}
+
 //==================================================
 //dependencies
 //==================================================
@@ -27,18 +31,17 @@ ext.joptsimpleVersion = '5.0.4'
 ext.jadexDistVersion = '4.0.170'
 
 dependencies {
-    //junit 5
-    testCompile "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
-    testRuntime "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
-    testRuntime "org.junit.vintage:junit-vintage-engine:$junitJupiterVersion"
-    testRuntime "org.junit.platform:junit-platform-launcher:$junitPlatformVersion"
-    testCompileOnly('org.apiguardian:apiguardian-api:1.0.0')
+    testCompileOnly "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
+    runtimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
+    runtimeOnly "org.junit.vintage:junit-vintage-engine:$junitJupiterVersion"
+    runtimeOnly "org.junit.platform:junit-platform-launcher:$junitPlatformVersion"
+    testCompileOnly "org.apiguardian:apiguardian-api:1.0.0"
 
     implementation "org.activecomponents.jadex:jadex-distribution-standard:$jadexDistVersion"
 
-    compile "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
-    compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
-    compile "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+    implementation "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
 
-    compile "net.sf.jopt-simple:jopt-simple:$joptsimpleVersion"
+    implementation "net.sf.jopt-simple:jopt-simple:$joptsimpleVersion"
 }
