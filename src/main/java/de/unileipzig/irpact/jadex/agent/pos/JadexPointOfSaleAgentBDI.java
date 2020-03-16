@@ -3,21 +3,21 @@ package de.unileipzig.irpact.jadex.agent.pos;
 import de.unileipzig.irpact.core.agent.pos.*;
 import de.unileipzig.irpact.core.currency.NullPrice;
 import de.unileipzig.irpact.core.currency.Price;
-import de.unileipzig.irpact.core.product.availability.NullProductAvailability;
-import de.unileipzig.irpact.core.product.availability.ProductAvailabilityChangeEvent;
 import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.core.product.availability.NullProductAvailability;
 import de.unileipzig.irpact.core.product.availability.ProductAvailability;
+import de.unileipzig.irpact.core.product.availability.ProductAvailabilityChangeEvent;
 import de.unileipzig.irpact.core.product.availability.ProductSoldOutEvent;
 import de.unileipzig.irpact.core.product.price.ProductPriceChangeEvent;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.jadex.agent.JadexAgentBase;
 import de.unileipzig.irpact.jadex.agent.JadexAgentService;
-import de.unileipzig.irpact.jadex.agent.company.CompanyAgentService;
+import de.unileipzig.irpact.jadex.agent.pos.goals.ProductAvailabilityChangeGoal;
+import de.unileipzig.irpact.jadex.agent.pos.goals.ProductPriceChangeGoal;
+import de.unileipzig.irpact.jadex.agent.pos.goals.ProductSoldOutGoal;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.start.StartSimulation;
 import jadex.bdiv3.BDIAgentFactory;
-import jadex.bdiv3.annotation.Goal;
-import jadex.bdiv3.annotation.GoalParameter;
 import jadex.bdiv3.annotation.Plan;
 import jadex.bdiv3.annotation.Trigger;
 import jadex.bdiv3.features.IBDIAgentFeature;
@@ -45,7 +45,7 @@ import java.util.Map;
  */
 @Service
 @ProvidedServices({
-        @ProvidedService(type = CompanyAgentService.class),
+        @ProvidedService(type = PointOfSaleAgentService.class),
         @ProvidedService(type = JadexAgentService.class)
 })
 @Agent(type = BDIAgentFactory.TYPE)
@@ -57,7 +57,7 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
 
     //general
     private static final Logger logger = LoggerFactory.getLogger(JadexPointOfSaleAgentBDI.class);
-    private final JadexPointOfSaleAgentIdentifier IDENTIFIER = new JadexPointOfSaleAgentIdentifier();
+    private JadexPointOfSaleAgentIdentifier identifier;
 
     //Jadex parameter
     @Agent
@@ -180,7 +180,7 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
 
     @Override
     public PointOfSaleAgentIdentifier getIdentifier() {
-        return IDENTIFIER;
+        return identifier;
     }
 
     //=========================
@@ -208,6 +208,7 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     @Override
     protected void onInit() {
         initArgs(resultsFeature.getArguments());
+        identifier = new JadexPointOfSaleAgentIdentifier();
         logger.trace("[{}] onInit", getName());
     }
 
@@ -255,21 +256,10 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     //announce new products goal
     //=========================
 
-    @SuppressWarnings("InnerClassMayBeStatic")
-    @Goal
-    public class ProductAvailabilityChangeGoal {
-
-        @GoalParameter
-        protected ProductAvailabilityChangeEvent event;
-
-        public ProductAvailabilityChangeGoal(ProductAvailabilityChangeEvent event) {
-            this.event = event;
-        }
-    }
-
     @SuppressWarnings("unused")
     @Plan(trigger = @Trigger(goals = ProductAvailabilityChangeGoal.class))
-    protected void handleProductAvailabilityChange(ProductAvailabilityChangeEvent event) {
+    protected void handleProductAvailabilityChange(ProductAvailabilityChangeGoal goal) {
+        ProductAvailabilityChangeEvent event = goal.getEvent();
         getProductAvailabilityChangeScheme().handle(
                 this,
                 event.getProduct(),
@@ -282,21 +272,10 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     //announce new product price
     //=========================
 
-    @SuppressWarnings("InnerClassMayBeStatic")
-    @Goal
-    public class ProductPriceChangeGoal {
-
-        @GoalParameter
-        protected ProductPriceChangeEvent event;
-
-        public ProductPriceChangeGoal(ProductPriceChangeEvent event) {
-            this.event = event;
-        }
-    }
-
     @SuppressWarnings("unused")
     @Plan(trigger = @Trigger(goals = ProductPriceChangeGoal.class))
-    protected void handleProductPriceChange(ProductPriceChangeEvent event) {
+    protected void handleProductPriceChange(ProductPriceChangeGoal goal) {
+        ProductPriceChangeEvent event = goal.getEvent();
         getProductPriceChangeScheme().handle(
                 this,
                 event.getProduct(),
@@ -309,21 +288,10 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     //announce product sold out
     //=========================
 
-    @SuppressWarnings("InnerClassMayBeStatic")
-    @Goal
-    public class ProductSoldOutGoal {
-
-        @GoalParameter
-        protected ProductSoldOutEvent event;
-
-        public ProductSoldOutGoal(ProductSoldOutEvent event) {
-            this.event = event;
-        }
-    }
-
     @SuppressWarnings("unused")
     @Plan(trigger = @Trigger(goals = ProductSoldOutGoal.class))
-    protected void handleProductSoldOut(ProductSoldOutEvent event) {
+    protected void handleProductSoldOut(ProductSoldOutGoal goal) {
+        ProductSoldOutEvent event = goal.getEvent();
         getProductSoldOutScheme().handle(
                 this,
                 event.getProduct(),

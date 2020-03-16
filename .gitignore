@@ -9,3 +9,6 @@
 /settings_*
 /*.settings.xml
 /platform_auto.conf
+
+#IRPact
+/log/

@@ -9,7 +9,6 @@ import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.jadex.agent.JadexAgentBase;
 import de.unileipzig.irpact.jadex.agent.JadexAgentService;
-import de.unileipzig.irpact.jadex.agent.company.CompanyAgentService;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.start.StartSimulation;
 import jadex.bdiv3.BDIAgentFactory;
@@ -43,7 +42,7 @@ import java.util.Set;
  */
 @Service
 @ProvidedServices({
-        @ProvidedService(type = CompanyAgentService.class),
+        @ProvidedService(type = ConsumerAgentService.class),
         @ProvidedService(type = JadexAgentService.class)
 })
 @Agent(type = BDIAgentFactory.TYPE)

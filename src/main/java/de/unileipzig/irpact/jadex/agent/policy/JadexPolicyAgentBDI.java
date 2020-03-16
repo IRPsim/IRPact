@@ -6,7 +6,6 @@ import de.unileipzig.irpact.core.agent.policy.PolicyAgentIdentifier;
 import de.unileipzig.irpact.core.agent.policy.TaxesScheme;
 import de.unileipzig.irpact.jadex.agent.JadexAgentBase;
 import de.unileipzig.irpact.jadex.agent.JadexAgentService;
-import de.unileipzig.irpact.jadex.agent.company.CompanyAgentService;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.start.StartSimulation;
 import jadex.bdiv3.BDIAgentFactory;
@@ -35,7 +34,7 @@ import java.util.Map;
  */
 @Service
 @ProvidedServices({
-        @ProvidedService(type = CompanyAgentService.class),
+        @ProvidedService(type = PolicyAgentService.class),
         @ProvidedService(type = JadexAgentService.class)
 })
 @Agent(type = BDIAgentFactory.TYPE)
