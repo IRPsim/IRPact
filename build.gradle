@@ -5,7 +5,8 @@ plugins {
 group 'de.unileipzig.irpact'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.11
+//sourceCompatibility = 1.11
+sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -24,11 +25,15 @@ test {
 //dependencies
 //==================================================
 
-ext.junitJupiterVersion = '5.4.2'
-ext.junitPlatformVersion = '1.4.2'
-ext.jacksonVersion = '2.10.2'
-ext.joptsimpleVersion = '5.0.4'
-ext.jadexDistVersion = '4.0.170'
+ext {
+    junitJupiterVersion = '5.4.2'
+    junitPlatformVersion = '1.4.2'
+    jacksonVersion = '2.10.2'
+    joptsimpleVersion = '5.0.4'
+    jadexDistVersion = '4.0.171'
+    sl4jVersion = '1.7.30'
+    logbackVersion = '1.2.3'
+}
 
 dependencies {
     testCompileOnly "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
@@ -37,11 +42,18 @@ dependencies {
     runtimeOnly "org.junit.platform:junit-platform-launcher:$junitPlatformVersion"
     testCompileOnly "org.apiguardian:apiguardian-api:1.0.0"
 
-    implementation "org.activecomponents.jadex:jadex-distribution-standard:$jadexDistVersion"
+    //implementation "org.activecomponents.jadex:jadex-distribution-standard:$jadexDistVersion"
+    implementation "org.activecomponents.jadex:jadex-distribution-minimal:$jadexDistVersion"
+    implementation "org.activecomponents.jadex:jadex-kernel-bdiv3:$jadexDistVersion"
 
     implementation "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
     implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     implementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
 
     implementation "net.sf.jopt-simple:jopt-simple:$joptsimpleVersion"
+
+    implementation "org.slf4j:slf4j-api:$sl4jVersion"
+
+    implementation "ch.qos.logback:logback-classic:$logbackVersion"
+    implementation "ch.qos.logback:logback-core:$logbackVersion"
 }

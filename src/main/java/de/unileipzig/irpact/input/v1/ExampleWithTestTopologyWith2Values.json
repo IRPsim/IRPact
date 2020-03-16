@@ -1,0 +1,7 @@
+{
+  "topology" : "TestTopologyWith2Values",
+  "topologyParameters" : {
+    "value0" : 1.0,
+    "value1" : 2.0
+  }
+}

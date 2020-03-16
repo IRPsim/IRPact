@@ -1,0 +1,87 @@
+{
+  "agentConfiguration" : {
+    "consumerAgentGroups" : [
+      {
+        "name" : "Name der Gruppe",
+        "informationAuthority" : 1.0,
+        "consumerAgentGroupAttributes" : [
+          {
+            "name" : "Name des Attributes",
+            "distribution" : {
+              "name" : "Name der genutzten Verteilungsfunktion",
+              "parameters" : {
+                "#comment" : "Parameter entsprechend der genutzten Funktion"
+              }
+            }
+          },
+          "..."
+        ],
+        "needDevelopmentScheme" : {
+          "name" : "Name des genutzten Schemas",
+          "parameters" : {
+            "#comment" : "Parameter entsprechend des genutzten Schemas"
+          }
+        },
+        "needExpirationScheme" : {
+          "name" : "Name des genutzten Schemas",
+          "parameters" : {
+            "#comment" : "Parameter entsprechend des genutzten Schemas"
+          }
+        },
+        "needSatisfyScheme" : {
+          "name" : "Name des genutzten Schemas",
+          "parameters" : {
+            "#comment" : "Parameter entsprechend des genutzten Schemas"
+          }
+        }
+      },
+      "..."
+    ]
+  },
+  "productConfiguration" : {
+    "productGroups" :[
+      {
+        "name" : "Name der Gruppe",
+        "productGroupAttributes" : [
+          {
+            "name" : "Name des Attributes",
+            "distribution" : {
+              "name" : "Name der genutzten Verteilungsfunktion",
+              "parameters" : {
+                "#comment" : "Parameter entsprechend der genutzten Funktion"
+              }
+            }
+          },
+          "..."
+        ],
+        "needsSatisfied" : [
+          "#comment: Liste von Strings"
+        ]
+      },
+      "..."
+    ]
+  },
+  "socialNetworkConfiguration": {
+    "topology" : {
+      "name" : "Name der genutzten Topologie",
+      "parameters" : {
+        "#comment" : "Parameter entsprechend der genutzten Topologie"
+      }
+    },
+    "edgeWeightManipulationScheme" : {
+      "name" : "Name des genutzten Schemas",
+      "parameters" : {
+        "#comment" : "Parameter entsprechend des genutzten Schemas"
+      }
+    },
+    "topologyManipulationScheme" : {
+      "name" : "Name des genutzten Schemas",
+      "parameters" : {
+        "#comment" : "Parameter entsprechend des genutzten Schemas"
+      }
+    }
+  },
+  "spatialModelConfiguration" : {
+    "#comment" : "Grundleges Prinzip muss noch ausgearbeitet werden, wird aber aehnlich dem SocialNetwork werden"
+  }
+}

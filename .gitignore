@@ -8,3 +8,4 @@
 #Verzeichnis "settings_PCNAME" und Datei "PCNAME.settings.xml" werden von Jadex erstellt
 /settings_*
 /*.settings.xml
+/platform_auto.conf
