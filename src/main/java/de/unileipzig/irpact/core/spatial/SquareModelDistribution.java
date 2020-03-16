@@ -28,10 +28,19 @@ public class SquareModelDistribution extends DistributionBase implements Spatial
         super(name);
         this.model = Check.requireNonNull(model, "model");
         this.rnd = newRandom(seed);
+        this.seed = seed;
     }
 
     public long getSeed() {
         return seed;
+    }
+
+    Random getRandom() {
+        return rnd;
+    }
+
+    SquareModel getModel() {
+        return model;
     }
 
     @Override

@@ -3,6 +3,7 @@ package de.unileipzig.irpact.core.spatial;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -65,5 +66,27 @@ public class Point2D implements SpatialInformation {
     @Override
     public <T extends SpatialInformation> List<T> getKNearest(Collection<? extends T> list, int k) {
         return streamKNearest(list, k).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null) return false;
+        if(obj == this) return true;
+        if(obj instanceof Point2D) {
+            Point2D other = (Point2D) obj;
+            return x == other.x
+                    && y == other.y;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
+
+    @Override
+    public String toString() {
+        return "Point2D[" + x + "," + y + "]";
     }
 }
