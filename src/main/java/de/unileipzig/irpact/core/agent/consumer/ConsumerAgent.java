@@ -26,4 +26,6 @@ public interface ConsumerAgent extends SpatialInformationAgent, GroupEntity<Cons
     Set<Product> getKnownProducts();
 
     Set<ProductGroup> getKnownProductGroups();
+
+    void addNeed(Need need);
 }

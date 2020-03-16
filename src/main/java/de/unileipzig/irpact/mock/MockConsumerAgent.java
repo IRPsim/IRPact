@@ -102,4 +102,9 @@ public class MockConsumerAgent implements ConsumerAgent {
         }
         return env;
     }
+
+    @Override
+    public void addNeed(Need need) {
+        throw new UnsupportedOperationException();
+    }
 }

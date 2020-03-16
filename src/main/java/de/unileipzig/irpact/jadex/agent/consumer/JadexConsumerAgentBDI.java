@@ -54,7 +54,7 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
 
     //general
     private static final Logger logger = LoggerFactory.getLogger(JadexConsumerAgentBDI.class);
-    private final JadexConsumerAgentIdentifier IDENTIFIER = new JadexConsumerAgentIdentifier();
+    private JadexConsumerAgentIdentifier identifier;
 
     //Jadex parameter
     @Agent
@@ -139,7 +139,12 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
 
     @Override
     public ConsumerAgentIdentifier getIdentifier() {
-        return IDENTIFIER;
+        return identifier;
+    }
+
+    @Override
+    public void addNeed(Need need) {
+        needs.add(need);
     }
 
     //=========================
@@ -167,6 +172,7 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     @Override
     protected void onInit() {
         initArgs(resultsFeature.getArguments());
+        identifier = new JadexConsumerAgentIdentifier();
         logger.trace("[{}] onInit", getName());
     }
 
@@ -215,6 +221,7 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     //=========================
     //gucke InternalGoalAgent3BDI
 
+    //umbennen, sobald mehr infos bereit stehen - updateNeedGoal oder sowas
     @Belief
     protected int handleNeedRecurTrigger = 0;
 
@@ -237,7 +244,7 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
             succeeded = true;
         }
 
-        @GoalRecurCondition(beliefs = "handleNeedRecurTrigger")
+        @GoalTargetCondition(beliefs = "handleNeedRecurTrigger")
         public boolean checkTarget() {
             return succeeded;
         }
@@ -258,6 +265,9 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
         } else {
             Product potentialProduct = getGroup().getAdoptionDecisionScheme()
                     .decide(getEnvironment(), this, potentialProducts);
+            if(potentialProduct == null) {
+                throw new PlanFailureException();
+            }
             AdoptedProductInfo adoptedProduct = new AdoptedProductInfo(need, potentialProduct);
             adoptedProducts.add(adoptedProduct);
             goal.setSucceeded(); //hmmm

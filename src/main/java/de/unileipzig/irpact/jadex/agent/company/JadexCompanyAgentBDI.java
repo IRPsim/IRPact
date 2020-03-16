@@ -49,7 +49,7 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
 
     //general
     private static final Logger logger = LoggerFactory.getLogger(JadexCompanyAgentBDI.class);
-    private final JadexCompanyAgentIdentifier IDENTIFIER = new JadexCompanyAgentIdentifier();
+    private JadexCompanyAgentIdentifier identifier;
 
     //Jadex parameter
     @Agent
@@ -103,7 +103,7 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
 
     @Override
     public CompanyAgentIdentifier getIdentifier() {
-        return IDENTIFIER;
+        return identifier;
     }
 
     //=========================
@@ -131,6 +131,7 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
     @Override
     protected void onInit() {
         initArgs(resultsFeature.getArguments());
+        identifier = new JadexCompanyAgentIdentifier();
         logger.trace("[{}] onInit", getName());
     }
 

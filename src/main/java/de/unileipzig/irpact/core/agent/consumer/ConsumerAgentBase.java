@@ -61,4 +61,9 @@ public class ConsumerAgentBase extends SpatialInformationAgentBase implements Co
     public ConsumerAgentIdentifier getIdentifier() {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public void addNeed(Need need) {
+        throw new UnsupportedOperationException();
+    }
 }
