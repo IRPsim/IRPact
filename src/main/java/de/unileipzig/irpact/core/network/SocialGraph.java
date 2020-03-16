@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.commons.Check;
+import de.unileipzig.irpact.commons.annotation.ToImpl;
 import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
 import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
 import de.unileipzig.irpact.commons.graph.DirectedGraph;
@@ -8,6 +9,7 @@ import de.unileipzig.irpact.commons.graph.SimpleEdge;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.network.exception.NodeWithSameAgentException;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.core.spatial.SpatialModel;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -77,13 +79,17 @@ public class SocialGraph extends DirectedGraph<SocialGraph.Node, SocialGraph.Edg
         super.setEdge(source, target, edge);
     }
 
+    @ToImpl("SpatialModel in Env einbinden")
     private static Comparator<Node> distanceTo(Node node) {
         final SpatialInformation info = node.getAgent().getSpatialInformation();
         return (node1, node2) ->  {
+            SpatialModel model = node1.getAgent()
+                    .getEnvironment()
+                    .getSpatialModel();
             SpatialInformation info1 = node1.getAgent().getSpatialInformation();
             SpatialInformation info2 = node2.getAgent().getSpatialInformation();
-            double distance1 = info.distance(info1);
-            double distance2 = info.distance(info2);
+            double distance1 = model.distance(info, info1);
+            double distance2 = model.distance(info, info2);
             return Double.compare(distance1, distance2);
         };
     }

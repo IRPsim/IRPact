@@ -4,8 +4,11 @@ import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
 import de.unileipzig.irpact.commons.exception.EdgeNodesMismatchException;
 import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
 import de.unileipzig.irpact.core.network.exception.NodeWithSameAgentException;
-import de.unileipzig.irpact.core.spatial.Point2D;
+import de.unileipzig.irpact.core.spatial.Metric;
+import de.unileipzig.irpact.core.spatial.dim2.Point2D;
+import de.unileipzig.irpact.core.spatial.dim2.SquareModel;
 import de.unileipzig.irpact.mock.MockConsumerAgent;
+import de.unileipzig.irpact.mock.MockSimulationEnvironment;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -88,8 +91,10 @@ class SocialGraphTest {
 
     @Test
     void testAgent() {
-        MockConsumerAgent a0 = new MockConsumerAgent("a0", new Point2D(0, 0));
-        MockConsumerAgent a100 = new MockConsumerAgent("a0", new Point2D(100, 100));
+        MockSimulationEnvironment env = new MockSimulationEnvironment();
+        env.setSpatialModel(new SquareModel("unit", Metric.EUCLIDEAN, 0, 0, 1, 1));
+        MockConsumerAgent a0 = new MockConsumerAgent("a0", env, new Point2D(0, 0));
+        MockConsumerAgent a100 = new MockConsumerAgent("a0", env, new Point2D(100, 100));
 
         SocialGraph graph = new SocialGraph();
         SocialGraph.Node n0 = graph.addAgent(a0);
@@ -105,15 +110,17 @@ class SocialGraphTest {
 
     @Test
     void testGetKNearest() {
-        MockConsumerAgent a0 = new MockConsumerAgent("a0", new Point2D(0, 0));
-        MockConsumerAgent a100 = new MockConsumerAgent("a0", new Point2D(100, 100));
+        MockSimulationEnvironment env = new MockSimulationEnvironment();
+        env.setSpatialModel(new SquareModel("unit", Metric.EUCLIDEAN, 0, 0, 1, 1));
+        MockConsumerAgent a0 = new MockConsumerAgent("a0", env, new Point2D(0, 0));
+        MockConsumerAgent a100 = new MockConsumerAgent("a0", env, new Point2D(100, 100));
 
         SocialGraph graph = new SocialGraph();
         graph.addAgent(a0);
         graph.addAgent(a100);
 
         for(int i = 1; i < 10; i++) {
-            graph.addAgent(new MockConsumerAgent("a" + i, new Point2D(i, i)));
+            graph.addAgent(new MockConsumerAgent("a" + i, env, new Point2D(i, i)));
         }
 
         List<SocialGraph.Node> n0nearest3 = graph.getKNearest(graph.findNode(a0), 3);

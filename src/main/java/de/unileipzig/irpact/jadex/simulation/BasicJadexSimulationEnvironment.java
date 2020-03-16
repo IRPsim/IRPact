@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.jadex.simulation;
 
 import de.unileipzig.irpact.core.simulation.SimulationEnvironmentBase;
-import de.unileipzig.irpact.core.simulation.Timestamp;
 import de.unileipzig.irpact.jadex.agent.JadexAgent;
 import de.unileipzig.irpact.jadex.message.JadexMessageSystem;
 import jadex.bridge.IComponentIdentifier;
@@ -134,15 +133,5 @@ public class BasicJadexSimulationEnvironment extends SimulationEnvironmentBase i
     @Override
     public long getSystemTime() {
         return System.currentTimeMillis();
-    }
-
-    @Override
-    public Timestamp getTimestamp() {
-        return new Timestamp(
-                mode,
-                getSystemTime(),
-                getSimulationTime(),
-                getTick()
-        );
     }
 }

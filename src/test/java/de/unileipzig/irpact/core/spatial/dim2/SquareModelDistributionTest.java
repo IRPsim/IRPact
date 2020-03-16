@@ -1,11 +1,13 @@
-package de.unileipzig.irpact.core.spatial;
+package de.unileipzig.irpact.core.spatial.dim2;
 
 import de.unileipzig.irpact.commons.distribution.Distribution;
+import de.unileipzig.irpact.core.spatial.Metric;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author Daniel Abitz
@@ -14,7 +16,7 @@ class SquareModelDistributionTest {
 
     @Test
     void testCreationWithoutSeed() {
-        SquareModel model = new SquareModel("unit", 0, 0, 1, 1);
+        SquareModel model = new SquareModel("unit", Metric.EUCLIDEAN,  0, 0, 1, 1);
         Random rnd = new Random(123);
         SquareModelDistribution dist = new SquareModelDistribution("dist", model, rnd);
         assertEquals("dist", dist.getName());
@@ -25,7 +27,7 @@ class SquareModelDistributionTest {
 
     @Test
     void testCreationWithSeed() {
-        SquareModel model = new SquareModel("unit", 0, 0, 1, 1);
+        SquareModel model = new SquareModel("unit", Metric.EUCLIDEAN, 0, 0, 1, 1);
         SquareModelDistribution dist = new SquareModelDistribution("dist", model, 42);
         assertEquals("dist", dist.getName());
         assertEquals(42, dist.getSeed());
@@ -40,7 +42,7 @@ class SquareModelDistributionTest {
 
     @Test
     void testPointCreation() {
-        SquareModel model = new SquareModel("unit", 0, 0, 1, 1);
+        SquareModel model = new SquareModel("unit", Metric.EUCLIDEAN, 0, 0, 1, 1);
         SquareModelDistribution dist = new SquareModelDistribution("dist", model, 42);
         Point2D p = dist.drawValue();
         assertNotNull(p);

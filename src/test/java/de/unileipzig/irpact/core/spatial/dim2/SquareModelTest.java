@@ -1,5 +1,6 @@
-package de.unileipzig.irpact.core.spatial;
+package de.unileipzig.irpact.core.spatial.dim2;
 
+import de.unileipzig.irpact.core.spatial.Metric;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -12,25 +13,37 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * @author Daniel Abitz
  */
-class Point2DTest {
+class SquareModelTest {
 
     @Test
     void testCreation() {
-        Point2D p = new Point2D(1, 2);
-        assertEquals(1, p.getX());
-        assertEquals(2, p.getY());
+        SquareModel model = new SquareModel("test", Metric.EUCLIDEAN, 0, 1, 2, 3);
+        assertEquals("test", model.getName());
+        assertSame(Metric.EUCLIDEAN, model.getMetric());
+        assertEquals(0, model.getX0());
+        assertEquals(1, model.getY0());
+        assertEquals(2, model.getX1());
+        assertEquals(3, model.getY1());
     }
 
     @Test
-    void testDistance() {
+    void testErrorCreation() {
+        assertThrows(IllegalArgumentException.class, () -> new SquareModel("test", Metric.EUCLIDEAN, 0, 1, -1, 1));
+        assertThrows(IllegalArgumentException.class, () -> new SquareModel("test", Metric.EUCLIDEAN, 0, 1, 1, -11));
+    }
+
+    @Test
+    void testEuclideanDistance() {
+        SquareModel model = new SquareModel("test", Metric.EUCLIDEAN, 0, 0, 1, 1);
         Point2D p0 = new Point2D(2, 3);
         Point2D p1 = new Point2D(5, 7);
-        assertEquals(5, p0.distance(p1));
-        assertEquals(5, p1.distance(p0));
+        assertEquals(5, model.distance(p0, p1));
+        assertEquals(5, model.distance(p1, p0));
     }
 
     @Test
-    void testGetKNearest() {
+    void testGetKNearestEuclidean() {
+        SquareModel model = new SquareModel("test", Metric.EUCLIDEAN, 0, 0, 1, 1);
         Point2D p0 = new Point2D(0, 0);
         Point2D p100 = new Point2D(100, 100);
         List<Point2D> pList = new ArrayList<>();
@@ -39,14 +52,14 @@ class Point2DTest {
         }
         Collections.shuffle(pList, new Random(123));
 
-        List<Point2D> p0nearest4 = p0.getKNearest(pList, 4);
+        List<Point2D> p0nearest4 = model.getKNearest(p0, pList, 4);
         assertEquals(4, p0nearest4.size());
         assertEquals(new Point2D(1, 1), p0nearest4.get(0));
         assertEquals(new Point2D(2, 2), p0nearest4.get(1));
         assertEquals(new Point2D(3, 3), p0nearest4.get(2));
         assertEquals(new Point2D(4, 4), p0nearest4.get(3));
 
-        List<Point2D> p100nearest5 = p100.getKNearest(pList, 5);
+        List<Point2D> p100nearest5 = model.getKNearest(p100, pList, 5);
         assertEquals(new Point2D(9, 9), p100nearest5.get(0));
         assertEquals(new Point2D(8, 8), p100nearest5.get(1));
         assertEquals(new Point2D(7, 7), p100nearest5.get(2));

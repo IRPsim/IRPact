@@ -1,4 +1,6 @@
-package de.unileipzig.irpact.core.spatial;
+package de.unileipzig.irpact.core.spatial.dim2;
+
+import de.unileipzig.irpact.core.spatial.SpatialDistribution;
 
 /**
  * @author Daniel Abitz

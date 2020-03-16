@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.commons.concurrent.ResettableTimer;
 import de.unileipzig.irpact.core.network.AgentNetwork;
+import de.unileipzig.irpact.core.spatial.SpatialModel;
 import org.slf4j.Logger;
 
 import java.util.*;
@@ -19,6 +20,7 @@ public abstract class SimulationEnvironmentBase implements SimulationEnvironment
     protected Map<Class<?>, Set<SimulationEntity>> entityTypeMap = new HashMap<>();
     //para
     protected Timestamp.Mode mode = Timestamp.Mode.SYSTEM;
+    protected SpatialModel spatialModel;
     protected AgentNetwork agentNetwork;
     protected EconomicSpace economicSpace;
     protected ResettableTimer aktivityTimer;
@@ -30,6 +32,10 @@ public abstract class SimulationEnvironmentBase implements SimulationEnvironment
     //=========================
     //new
     //=========================
+
+    public void setSpatialModel(SpatialModel spatialModel) {
+        this.spatialModel = spatialModel;
+    }
 
     public void setEconomicSpace(EconomicSpace economicSpace) {
         this.economicSpace = economicSpace;
@@ -59,6 +65,16 @@ public abstract class SimulationEnvironmentBase implements SimulationEnvironment
     @Override
     public Identifier getIdentifier(String entitiyName) {
         return identifierMap.get(entitiyName);
+    }
+
+    @Override
+    public Timestamp getTimestamp() {
+        return new Timestamp(
+                mode,
+                getSystemTime(),
+                getSimulationTime(),
+                getTick()
+        );
     }
 
     @SuppressWarnings("unchecked")
@@ -143,6 +159,11 @@ public abstract class SimulationEnvironmentBase implements SimulationEnvironment
             }
         }
         return result;
+    }
+
+    @Override
+    public SpatialModel getSpatialModel() {
+        return spatialModel;
     }
 
     @Override

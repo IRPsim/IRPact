@@ -19,14 +19,16 @@ import java.util.Set;
 public class MockConsumerAgent implements ConsumerAgent {
 
     private String name;
+    private SimulationEnvironment env;
     private SpatialInformation spatialInformation;
 
     public MockConsumerAgent(String name) {
         this.name = name;
     }
 
-    public MockConsumerAgent(String name, SpatialInformation spatialInformation) {
+    public MockConsumerAgent(String name, SimulationEnvironment env, SpatialInformation spatialInformation) {
         this(name);
+        this.env = env;
         this.spatialInformation = spatialInformation;
     }
 
@@ -95,6 +97,9 @@ public class MockConsumerAgent implements ConsumerAgent {
 
     @Override
     public SimulationEnvironment getEnvironment() {
-        throw new UnsupportedOperationException();
+        if(env == null) {
+            throw new UnsupportedOperationException();
+        }
+        return env;
     }
 }
