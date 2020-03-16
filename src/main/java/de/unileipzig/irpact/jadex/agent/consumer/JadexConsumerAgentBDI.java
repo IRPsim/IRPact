@@ -213,29 +213,44 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     //=========================
     //handle product need goal
     //=========================
+    //gucke InternalGoalAgent3BDI
 
     @Belief
     protected int handleNeedRecurTrigger = 0;
 
-    @Goal(recur = true)
+    @Goal(recur = true, retry = false)
     public class HandleNeedGoal {
 
-        @GoalParameter
         protected Need need;
+        protected boolean succeeded = false;
 
         @GoalCreationCondition(factadded = "needs")
         public HandleNeedGoal(Need need) {
             this.need = need;
         }
 
+        public Need getNeed() {
+            return need;
+        }
+
+        public void setSucceeded() {
+            succeeded = true;
+        }
+
+        @GoalRecurCondition(beliefs = "handleNeedRecurTrigger")
+        public boolean checkTarget() {
+            return succeeded;
+        }
+
         @GoalRecurCondition(beliefs = "handleNeedRecurTrigger")
         public boolean checkRecur() {
-            return true;
+            return !succeeded;
         }
     }
 
     @Plan(trigger = @Trigger(goals = HandleNeedGoal.class))
-    protected void handleProductNeed(Need need) {
+    protected void handleProductNeed(HandleNeedGoal goal) {
+        Need need = goal.getNeed();
         Collection<? extends Product> potentialProducts = getGroup().getFindingScheme()
                 .searchPotentialProducts(getEnvironment(), this, need);
         if(potentialProducts.isEmpty()) {
@@ -245,6 +260,7 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
                     .decide(getEnvironment(), this, potentialProducts);
             AdoptedProductInfo adoptedProduct = new AdoptedProductInfo(need, potentialProduct);
             adoptedProducts.add(adoptedProduct);
+            goal.setSucceeded(); //hmmm
             bdiFeature.dispatchTopLevelGoal(new NeedSatisfyGoal(need));
         }
     }
@@ -288,17 +304,21 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     @Goal
     public class NeedSatisfyGoal {
 
-        @GoalParameter
         protected Need satisfiedNeed;
 
         @GoalCreationCondition(factremoved = "needs")
         public NeedSatisfyGoal(Need satisfiedNeed) {
             this.satisfiedNeed = satisfiedNeed;
         }
+
+        public Need getNeed() {
+            return satisfiedNeed;
+        }
     }
 
     @Plan(trigger = @Trigger(goals = NeedSatisfyGoal.class))
-    protected void handleNeedSatisfy(Need satisfiedNeed) {
+    protected void handleNeedSatisfy(NeedSatisfyGoal goal) {
+        Need satisfiedNeed = goal.getNeed();
         getGroup().getNeedSatisfyScheme()
                 .handle(this, satisfiedNeed);
     }

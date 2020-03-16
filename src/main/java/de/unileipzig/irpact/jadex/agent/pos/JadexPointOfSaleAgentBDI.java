@@ -12,12 +12,10 @@ import de.unileipzig.irpact.core.product.price.ProductPriceChangeEvent;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.jadex.agent.JadexAgentBase;
 import de.unileipzig.irpact.jadex.agent.JadexAgentService;
-import de.unileipzig.irpact.jadex.agent.pos.goals.ProductAvailabilityChangeGoal;
-import de.unileipzig.irpact.jadex.agent.pos.goals.ProductPriceChangeGoal;
-import de.unileipzig.irpact.jadex.agent.pos.goals.ProductSoldOutGoal;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.start.StartSimulation;
 import jadex.bdiv3.BDIAgentFactory;
+import jadex.bdiv3.annotation.Goal;
 import jadex.bdiv3.annotation.Plan;
 import jadex.bdiv3.annotation.Trigger;
 import jadex.bdiv3.features.IBDIAgentFeature;
@@ -256,7 +254,20 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     //announce new products goal
     //=========================
 
-    @SuppressWarnings("unused")
+    @Goal
+    public class ProductAvailabilityChangeGoal {
+
+        protected ProductAvailabilityChangeEvent event;
+
+        public ProductAvailabilityChangeGoal(ProductAvailabilityChangeEvent event) {
+            this.event = event;
+        }
+
+        public ProductAvailabilityChangeEvent getEvent() {
+            return event;
+        }
+    }
+
     @Plan(trigger = @Trigger(goals = ProductAvailabilityChangeGoal.class))
     protected void handleProductAvailabilityChange(ProductAvailabilityChangeGoal goal) {
         ProductAvailabilityChangeEvent event = goal.getEvent();
@@ -272,7 +283,20 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     //announce new product price
     //=========================
 
-    @SuppressWarnings("unused")
+    @Goal
+    public class ProductPriceChangeGoal {
+
+        protected ProductPriceChangeEvent event;
+
+        public ProductPriceChangeGoal(ProductPriceChangeEvent event) {
+            this.event = event;
+        }
+
+        public ProductPriceChangeEvent getEvent() {
+            return event;
+        }
+    }
+
     @Plan(trigger = @Trigger(goals = ProductPriceChangeGoal.class))
     protected void handleProductPriceChange(ProductPriceChangeGoal goal) {
         ProductPriceChangeEvent event = goal.getEvent();
@@ -288,7 +312,20 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     //announce product sold out
     //=========================
 
-    @SuppressWarnings("unused")
+    @Goal
+    public class ProductSoldOutGoal {
+
+        protected ProductSoldOutEvent event;
+
+        public ProductSoldOutGoal(ProductSoldOutEvent event) {
+            this.event = event;
+        }
+
+        public ProductSoldOutEvent getEvent() {
+            return event;
+        }
+    }
+
     @Plan(trigger = @Trigger(goals = ProductSoldOutGoal.class))
     protected void handleProductSoldOut(ProductSoldOutGoal goal) {
         ProductSoldOutEvent event = goal.getEvent();
