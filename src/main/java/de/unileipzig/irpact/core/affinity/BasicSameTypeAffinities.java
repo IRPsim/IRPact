@@ -6,11 +6,11 @@ import java.util.NoSuchElementException;
 /**
  * @author Daniel Abitz
  */
-public class BasicUnaryAffinityMapping<A> implements UnaryAffinityMapping<A> {
+public class BasicSameTypeAffinities<A> implements SameTypeAffinities<A> {
 
     private Map<A, Map<A, Double>> mapping;
 
-    public BasicUnaryAffinityMapping(Map<A, Map<A, Double>> mapping) {
+    public BasicSameTypeAffinities(Map<A, Map<A, Double>> mapping) {
         this.mapping = mapping;
     }
 

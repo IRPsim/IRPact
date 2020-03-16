@@ -30,7 +30,7 @@ public class BasicConsumerAgentGroup extends AbstractGroup<ConsumerAgent> implem
     protected NeedDevelopmentScheme needDevelopmentScheme;
     protected NeedExpirationScheme needExpirationScheme;
     protected NeedSatisfyScheme needSatisfyScheme;
-    @ToImpl
+    @ToImpl("richtig implementieren via distribution -> agent bekommt drawValue")
     protected double informationAuthority = 1.0;
 
     public BasicConsumerAgentGroup(

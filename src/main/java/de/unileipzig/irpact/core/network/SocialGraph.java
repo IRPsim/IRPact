@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.commons.Check;
-import de.unileipzig.irpact.commons.annotation.ToImpl;
 import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
 import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
 import de.unileipzig.irpact.commons.graph.DirectedGraph;
@@ -79,7 +78,6 @@ public class SocialGraph extends DirectedGraph<SocialGraph.Node, SocialGraph.Edg
         super.setEdge(source, target, edge);
     }
 
-    @ToImpl("SpatialModel in Env einbinden")
     private static Comparator<Node> distanceTo(Node node) {
         final SpatialInformation info = node.getAgent().getSpatialInformation();
         return (node1, node2) ->  {
