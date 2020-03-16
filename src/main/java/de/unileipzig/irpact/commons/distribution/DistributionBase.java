@@ -7,6 +7,8 @@ import java.util.Random;
  */
 public abstract class DistributionBase implements Distribution {
 
+    public static final long NO_SEED = -1L;
+
     protected String name;
 
     public DistributionBase(String name) {

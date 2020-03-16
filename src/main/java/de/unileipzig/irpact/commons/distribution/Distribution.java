@@ -5,7 +5,5 @@ package de.unileipzig.irpact.commons.distribution;
  */
 public interface Distribution {
 
-    long NO_SEED = -1L;
-
     String getName();
 }

@@ -20,7 +20,7 @@ class SquareModelDistributionTest {
         Random rnd = new Random(123);
         SquareModelDistribution dist = new SquareModelDistribution("dist", model, rnd);
         assertEquals("dist", dist.getName());
-        assertEquals(Distribution.NO_SEED, dist.getSeed());
+        assertEquals(SquareModelDistribution.NO_SEED, dist.getSeed());
         assertEquals(rnd, dist.getRandom());
         assertEquals(model, dist.getModel());
     }

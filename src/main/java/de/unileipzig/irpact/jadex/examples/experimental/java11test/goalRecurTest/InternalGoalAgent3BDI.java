@@ -51,6 +51,12 @@ public class InternalGoalAgent3BDI {
             return IFuture.DONE;
         });
 
+        execFeature.waitForDelay(9000, ia -> {
+            needs.remove("a");
+            needs.add("a");
+            return IFuture.DONE;
+        });
+
         needs.add("a");
         needs.add("b");
         needs.add("c");
