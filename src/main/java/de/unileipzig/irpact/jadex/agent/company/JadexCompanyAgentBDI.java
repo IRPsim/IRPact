@@ -1,15 +1,15 @@
-package de.unileipzig.irpact.jadex.agent.policy;
+package de.unileipzig.irpact.jadex.agent.company;
 
-import de.unileipzig.irpact.core.agent.policy.PolicyAgent;
-import de.unileipzig.irpact.core.agent.policy.PolicyAgentBase;
-import de.unileipzig.irpact.core.agent.policy.PolicyAgentIdentifier;
-import de.unileipzig.irpact.core.agent.policy.TaxesScheme;
+import de.unileipzig.irpact.core.agent.company.CompanyAgent;
+import de.unileipzig.irpact.core.agent.company.CompanyAgentBase;
+import de.unileipzig.irpact.core.agent.company.CompanyAgentIdentifier;
+import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.jadex.agent.JadexAgentBase;
 import de.unileipzig.irpact.jadex.agent.JadexAgentService;
-import de.unileipzig.irpact.jadex.agent.company.CompanyAgentService;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.start.StartSimulation;
 import jadex.bdiv3.BDIAgentFactory;
+import jadex.bdiv3.annotation.Belief;
 import jadex.bdiv3.features.IBDIAgentFeature;
 import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IArgumentsResultsFeature;
@@ -28,7 +28,9 @@ import jadex.micro.annotation.ProvidedServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Daniel Abitz
@@ -39,15 +41,15 @@ import java.util.Map;
         @ProvidedService(type = JadexAgentService.class)
 })
 @Agent(type = BDIAgentFactory.TYPE)
-public class JadexPolicyAgent extends JadexAgentBase
-        implements PolicyAgent, PolicyAgentService, JadexAgentService {
+public class JadexCompanyAgentBDI extends JadexAgentBase
+        implements CompanyAgent, CompanyAgentService, JadexAgentService {
 
     //Argument names
     public static final String AGENT_BASE = StartSimulation.AGENT_BASE;
 
     //general
-    private static final Logger logger = LoggerFactory.getLogger(JadexPolicyAgent.class);
-    private final JadexPolicyAgentIdentifier IDENTIFIER = new JadexPolicyAgentIdentifier();
+    private static final Logger logger = LoggerFactory.getLogger(JadexCompanyAgentBDI.class);
+    private final JadexCompanyAgentIdentifier IDENTIFIER = new JadexCompanyAgentIdentifier();
 
     //Jadex parameter
     @Agent
@@ -62,20 +64,21 @@ public class JadexPolicyAgent extends JadexAgentBase
     protected IRequiredServicesFeature reqFeature;
 
     //ConsumerAgent parameter
-    protected PolicyAgentBase agentBase;
+    protected CompanyAgentBase agentBase;
 
     //Beliefs
-
+    @Belief
+    protected Set<Product> productPortfolio = new HashSet<>();
 
     //=========================
     //Constructer
     //=========================
 
-    public JadexPolicyAgent() {
+    public JadexCompanyAgentBDI() {
     }
 
     //=========================
-    //ConsumerAgent
+    //CompanyAgent
     //=========================
 
     @Override
@@ -89,18 +92,18 @@ public class JadexPolicyAgent extends JadexAgentBase
     }
 
     @Override
+    public Set<Product> getProductPortfolio() {
+        return productPortfolio;
+    }
+
+    @Override
     public JadexSimulationEnvironment getEnvironment() {
         return (JadexSimulationEnvironment) agentBase.getEnvironment();
     }
 
     @Override
-    public PolicyAgentIdentifier getIdentifier() {
+    public CompanyAgentIdentifier getIdentifier() {
         return IDENTIFIER;
-    }
-
-    @Override
-    public TaxesScheme getTaxesScheme() {
-        return agentBase.getTaxesScheme();
     }
 
     //=========================
@@ -135,6 +138,7 @@ public class JadexPolicyAgent extends JadexAgentBase
     @Override
     protected void onStart() {
         logger.trace("[{}] onStart", getName());
+
     }
 
     @OnEnd
@@ -148,12 +152,12 @@ public class JadexPolicyAgent extends JadexAgentBase
     //=========================
 
     @Override
-    public JadexPolicyAgent getPolicyAgentSyn() {
+    public JadexCompanyAgentBDI getCompanyAgentSyn() {
         return this;
     }
 
     @Override
-    public IFuture<JadexPolicyAgent> getPolicyAgentAsyn() {
+    public IFuture<JadexCompanyAgentBDI> getCompanyAgentAsyn() {
         return new Future<>(this);
     }
 
@@ -162,12 +166,12 @@ public class JadexPolicyAgent extends JadexAgentBase
     //=========================
 
     @Override
-    public JadexPolicyAgent getAgentSyn() {
-        return getPolicyAgentSyn();
+    public JadexCompanyAgentBDI getAgentSyn() {
+        return getCompanyAgentSyn();
     }
 
     @Override
-    public IFuture<JadexPolicyAgent> getAgentAsyn() {
-        return getPolicyAgentAsyn();
+    public IFuture<JadexCompanyAgentBDI> getAgentAsyn() {
+        return getCompanyAgentAsyn();
     }
 }

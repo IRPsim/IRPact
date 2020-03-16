@@ -57,7 +57,7 @@ public final class StartSimulation {
     private static CreationInfo createConsumerAgentInfo(ConsumerAgentBase agentBase) {
         CreationInfo info = new CreationInfo();
         info.setName(agentBase.getName());
-        info.setFilename("de.unileipzig.irpact.jadex.agent.consumer.JadexConsumerAgent.class");
+        info.setFilename("de.unileipzig.irpact.jadex.agent.consumer.JadexConsumerAgentBDI.class");
         info.addArgument(AGENT_BASE, agentBase);
         return info;
     }
@@ -65,7 +65,7 @@ public final class StartSimulation {
     private static CreationInfo createCompanyAgentInfo(CompanyAgentBase agentBase) {
         CreationInfo info = new CreationInfo();
         info.setName(agentBase.getName());
-        info.setFilename("de.unileipzig.irpact.jadex.agent.company.JadexCompanyAgent.class");
+        info.setFilename("de.unileipzig.irpact.jadex.agent.company.JadexCompanyAgentBDI.class");
         info.addArgument(AGENT_BASE, agentBase);
         return info;
     }
@@ -73,7 +73,7 @@ public final class StartSimulation {
     private static CreationInfo createPointOfSaleAgentInfo(PointOfSaleAgentBase agentBase) {
         CreationInfo info = new CreationInfo();
         info.setName(agentBase.getName());
-        info.setFilename("de.unileipzig.irpact.jadex.agent.pos.JadexPointOfSaleAgent.class");
+        info.setFilename("de.unileipzig.irpact.jadex.agent.pos.JadexPointOfSaleAgentBDI.class");
         info.addArgument(AGENT_BASE, agentBase);
         return info;
     }
@@ -81,7 +81,7 @@ public final class StartSimulation {
     private static CreationInfo createPolicyAgentInfo(PolicyAgentBase agentBase) {
         CreationInfo info = new CreationInfo();
         info.setName(agentBase.getName());
-        info.setFilename("de.unileipzig.irpact.jadex.agent.policy.JadexPolicyAgent.class");
+        info.setFilename("de.unileipzig.irpact.jadex.agent.policy.JadexPolicyAgentBDI.class");
         info.addArgument(AGENT_BASE, agentBase);
         return info;
     }

@@ -49,14 +49,14 @@ import java.util.Map;
         @ProvidedService(type = JadexAgentService.class)
 })
 @Agent(type = BDIAgentFactory.TYPE)
-public class JadexPointOfSaleAgent extends JadexAgentBase
+public class JadexPointOfSaleAgentBDI extends JadexAgentBase
         implements PointOfSaleAgent, PointOfSaleAgentService, JadexAgentService {
 
     //Argument names
     public static final String AGENT_BASE = StartSimulation.AGENT_BASE;
 
     //general
-    private static final Logger logger = LoggerFactory.getLogger(JadexPointOfSaleAgent.class);
+    private static final Logger logger = LoggerFactory.getLogger(JadexPointOfSaleAgentBDI.class);
     private final JadexPointOfSaleAgentIdentifier IDENTIFIER = new JadexPointOfSaleAgentIdentifier();
 
     //Jadex parameter
@@ -80,7 +80,7 @@ public class JadexPointOfSaleAgent extends JadexAgentBase
     //Constructer
     //=========================
 
-    public JadexPointOfSaleAgent() {
+    public JadexPointOfSaleAgentBDI() {
     }
 
     //=========================
@@ -228,12 +228,12 @@ public class JadexPointOfSaleAgent extends JadexAgentBase
     //=========================
 
     @Override
-    public JadexPointOfSaleAgent getPointOfSaleAgentSyn() {
+    public JadexPointOfSaleAgentBDI getPointOfSaleAgentSyn() {
         return this;
     }
 
     @Override
-    public IFuture<JadexPointOfSaleAgent> getPointOfSaleAgentAsyn() {
+    public IFuture<JadexPointOfSaleAgentBDI> getPointOfSaleAgentAsyn() {
         return new Future<>(this);
     }
 
@@ -242,12 +242,12 @@ public class JadexPointOfSaleAgent extends JadexAgentBase
     //=========================
 
     @Override
-    public JadexPointOfSaleAgent getAgentSyn() {
+    public JadexPointOfSaleAgentBDI getAgentSyn() {
         return getPointOfSaleAgentSyn();
     }
 
     @Override
-    public IFuture<JadexPointOfSaleAgent> getAgentAsyn() {
+    public IFuture<JadexPointOfSaleAgentBDI> getAgentAsyn() {
         return getPointOfSaleAgentAsyn();
     }
 

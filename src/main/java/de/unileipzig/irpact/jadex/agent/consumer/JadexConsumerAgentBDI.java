@@ -47,14 +47,14 @@ import java.util.Set;
         @ProvidedService(type = JadexAgentService.class)
 })
 @Agent(type = BDIAgentFactory.TYPE)
-public class JadexConsumerAgent extends JadexAgentBase
+public class JadexConsumerAgentBDI extends JadexAgentBase
         implements ConsumerAgent, ConsumerAgentService, JadexAgentService {
 
     //Argument names
     public static final String AGENT_BASE = StartSimulation.AGENT_BASE;
 
     //general
-    private static final Logger logger = LoggerFactory.getLogger(JadexConsumerAgent.class);
+    private static final Logger logger = LoggerFactory.getLogger(JadexConsumerAgentBDI.class);
     private final JadexConsumerAgentIdentifier IDENTIFIER = new JadexConsumerAgentIdentifier();
 
     //Jadex parameter
@@ -86,7 +86,7 @@ public class JadexConsumerAgent extends JadexAgentBase
     //Constructer
     //=========================
 
-    public JadexConsumerAgent() {
+    public JadexConsumerAgentBDI() {
     }
 
     //=========================
@@ -188,12 +188,12 @@ public class JadexConsumerAgent extends JadexAgentBase
     //=========================
 
     @Override
-    public JadexConsumerAgent getConsumerAgentSyn() {
+    public JadexConsumerAgentBDI getConsumerAgentSyn() {
         return this;
     }
 
     @Override
-    public IFuture<JadexConsumerAgent> getConsumerAgentAsyn() {
+    public IFuture<JadexConsumerAgentBDI> getConsumerAgentAsyn() {
         return new Future<>(this);
     }
 
@@ -202,12 +202,12 @@ public class JadexConsumerAgent extends JadexAgentBase
     //=========================
 
     @Override
-    public JadexConsumerAgent getAgentSyn() {
+    public JadexConsumerAgentBDI getAgentSyn() {
         return getConsumerAgentSyn();
     }
 
     @Override
-    public IFuture<JadexConsumerAgent> getAgentAsyn() {
+    public IFuture<JadexConsumerAgentBDI> getAgentAsyn() {
         return getConsumerAgentAsyn();
     }
 
@@ -256,7 +256,7 @@ public class JadexConsumerAgent extends JadexAgentBase
             handleNeedRecurTrigger = handleNeedRecurTrigger + 1;
         } else {
             agent.scheduleStep(cs -> {
-                fireHandleProductNeedRecur(JadexConsumerAgent.this);
+                fireHandleProductNeedRecur(JadexConsumerAgentBDI.this);
                 return IFuture.DONE;
             });
         }
