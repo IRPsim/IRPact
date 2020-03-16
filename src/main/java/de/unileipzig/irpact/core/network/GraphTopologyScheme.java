@@ -7,5 +7,5 @@ import de.unileipzig.irpact.core.Scheme;
  */
 public interface GraphTopologyScheme extends Scheme {
 
-    void initalize(AgentGraph graph);
+    void initalize(SocialGraph graph);
 }

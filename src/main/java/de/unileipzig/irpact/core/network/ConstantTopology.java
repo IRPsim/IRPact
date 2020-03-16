@@ -13,6 +13,6 @@ public class ConstantTopology implements TopologyManipulationScheme {
     public static final ConstantTopology INSTANCE = new ConstantTopology();
 
     @Override
-    public void apply(SimulationEnvironment environment, AgentGraph graph) {
+    public void apply(SimulationEnvironment environment, SocialGraph graph) {
     }
 }

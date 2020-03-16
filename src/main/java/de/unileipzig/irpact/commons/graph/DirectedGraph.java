@@ -3,7 +3,6 @@ package de.unileipzig.irpact.commons.graph;
 import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
 import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
 import de.unileipzig.irpact.commons.exception.EdgeNodesMismatchException;
-import de.unileipzig.irpact.core.network.AgentGraph;
 
 import java.util.HashMap;
 import java.util.Map;

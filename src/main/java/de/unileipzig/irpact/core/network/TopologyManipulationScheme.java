@@ -10,6 +10,6 @@ public interface TopologyManipulationScheme extends Scheme {
 
     void apply(
             SimulationEnvironment environment,
-            AgentGraph graph
+            SocialGraph graph
     );
 }

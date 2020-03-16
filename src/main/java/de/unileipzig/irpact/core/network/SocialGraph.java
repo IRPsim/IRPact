@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.commons.Check;
 import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
+import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
 import de.unileipzig.irpact.commons.graph.DirectedGraph;
 import de.unileipzig.irpact.commons.graph.SimpleEdge;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
@@ -15,11 +16,15 @@ import java.util.stream.Stream;
 /**
  * @author Daniel Abitz
  */
-public class AgentGraph extends DirectedGraph<AgentGraph.Node, AgentGraph.Edge> {
+public class SocialGraph extends DirectedGraph<SocialGraph.Node, SocialGraph.Edge> {
 
-    protected Map<ConsumerAgent, AgentGraph.Node> agentToNodeMap = new HashMap<>();
+    protected Map<ConsumerAgent, SocialGraph.Node> agentToNodeMap = new HashMap<>();
 
-    public AgentGraph() {
+    public SocialGraph() {
+    }
+
+    public boolean hasAgent(ConsumerAgent agent) {
+        return agentToNodeMap.containsKey(agent);
     }
 
     public Node findNode(ConsumerAgent agent) throws NoSuchElementException {
@@ -30,7 +35,16 @@ public class AgentGraph extends DirectedGraph<AgentGraph.Node, AgentGraph.Edge> 
         return node;
     }
 
-    protected void checkNodeAndAdd(Node node) {
+    public Node addAgent(ConsumerAgent agent) throws NodeWithSameAgentException {
+        if(agentToNodeMap.containsKey(agent)) {
+            throw new NodeWithSameAgentException(agent.getName());
+        }
+        Node node = new Node(agent);
+        addNode(node);
+        return node;
+    }
+
+    protected void checkNodeAndAdd(Node node) throws NodeWithSameAgentException {
         ConsumerAgent agent = node.getAgent();
         Node nodeInMap = agentToNodeMap.get(agent);
         if(nodeInMap == null) {
@@ -39,6 +53,12 @@ public class AgentGraph extends DirectedGraph<AgentGraph.Node, AgentGraph.Edge> 
         else if(node != nodeInMap) {
             throw new NodeWithSameAgentException(agent.getName());
         }
+    }
+
+    @Override
+    public void addNode(Node node) throws NodeWithSameAgentException, NodeAlreadyExistsException {
+        checkNodeAndAdd(node);
+        super.addNode(node);
     }
 
     @Override
@@ -76,7 +96,7 @@ public class AgentGraph extends DirectedGraph<AgentGraph.Node, AgentGraph.Edge> 
                 .limit(k);
     }
 
-    public List<? extends Node> getKNearest(Node node, int k) {
+    public List<Node> getKNearest(Node node, int k) {
         return streamKNearest(node, k).collect(Collectors.toList());
     }
 

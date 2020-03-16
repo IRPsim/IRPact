@@ -19,9 +19,15 @@ import java.util.Set;
 public class MockConsumerAgent implements ConsumerAgent {
 
     private String name;
+    private SpatialInformation spatialInformation;
 
     public MockConsumerAgent(String name) {
         this.name = name;
+    }
+
+    public MockConsumerAgent(String name, SpatialInformation spatialInformation) {
+        this(name);
+        this.spatialInformation = spatialInformation;
     }
 
     @Override
@@ -76,7 +82,10 @@ public class MockConsumerAgent implements ConsumerAgent {
 
     @Override
     public SpatialInformation getSpatialInformation() {
-        throw new UnsupportedOperationException();
+        if(spatialInformation == null) {
+            throw new UnsupportedOperationException();
+        }
+        return spatialInformation;
     }
 
     @Override

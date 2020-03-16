@@ -9,7 +9,7 @@ public class EgoistTopology implements GraphTopologyScheme {
     public static final EgoistTopology INSTANCE = new EgoistTopology();
 
     @Override
-    public void initalize(AgentGraph graph) {
+    public void initalize(SocialGraph graph) {
 
     }
 }

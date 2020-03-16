@@ -13,8 +13,8 @@ public class UnchangingEdgeWeight implements EdgeWeightManipulationScheme {
     @Override
     public double getEdgeWeight(
             SimulationEnvironment environment,
-            AgentGraph.Node source,
-            AgentGraph.Node target,
+            SocialGraph.Node source,
+            SocialGraph.Node target,
             EdgeType edgeType) {
         return environment.getAgentNetwork()
                 .getGraph()

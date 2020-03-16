@@ -10,8 +10,8 @@ public interface EdgeWeightManipulationScheme extends Scheme {
 
     double getEdgeWeight(
             SimulationEnvironment environment,
-            AgentGraph.Node source,
-            AgentGraph.Node target,
+            SocialGraph.Node source,
+            SocialGraph.Node target,
             EdgeType edgeType
     );
 }
