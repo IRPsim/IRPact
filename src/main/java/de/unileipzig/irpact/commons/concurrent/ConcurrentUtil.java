@@ -1,9 +1,8 @@
 package de.unileipzig.irpact.commons.concurrent;
 
-import de.unileipzig.irpact.commons.annotation.Experimental;
 import de.unileipzig.irpact.commons.exception.UncheckedInterruptedException;
 
-import java.util.concurrent.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Daniel Abitz
@@ -50,24 +49,5 @@ public final class ConcurrentUtil {
         } catch (InterruptedException e) {
             throw new UncheckedInterruptedException(e);
         }
-    }
-
-    @Experimental
-    public static ExecutorService newCachedThreadPool(ThreadFactory factory) {
-        return Executors.newCachedThreadPool(factory);
-    }
-
-    @Experimental
-    public static ExecutorService newCachedThreadPool(int cores, int maximumPool, ThreadFactory factory) {
-        ThreadPoolExecutor tpe = new ThreadPoolExecutor(
-                cores,
-                maximumPool,
-                60, TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>(),
-                factory
-        );
-        tpe.allowCoreThreadTimeOut(true);
-        return tpe;
-
     }
 }

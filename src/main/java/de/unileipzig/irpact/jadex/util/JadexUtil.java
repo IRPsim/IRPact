@@ -18,4 +18,5 @@ public final class JadexUtil {
     public static <T> ServiceQuery<T> searchPlatform(Class<T> serviceType) {
         return new ServiceQuery<>(serviceType, ServiceScope.PLATFORM);
     }
+
 }
