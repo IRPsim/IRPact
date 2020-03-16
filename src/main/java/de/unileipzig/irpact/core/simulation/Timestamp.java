@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.simulation;
 
-import jdk.nashorn.internal.ir.annotations.Reference;
+
+import jadex.bridge.service.annotation.Reference;
 
 @Reference
 public final class Timestamp implements Comparable<Timestamp> {
