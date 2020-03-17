@@ -1,29 +1,28 @@
-package de.unileipzig.irpact.jadex.agent.simulation;
+package de.unileipzig.irpact.jadex.simulation;
 
+import de.unileipzig.irpact.commons.annotation.ToDo;
 import de.unileipzig.irpact.core.simulation.BasicSimulationCache;
+import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.simulation.SimulationEntity;
 import jadex.bridge.IExternalAccess;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Daniel Abitz
  */
+@ToDo("testen, ob rwlock benoetigt wird")
 public class BasicJadexSimulationCache extends BasicSimulationCache implements JadexSimulationCache {
 
-    /*
-    private Map<String, IExternalAccess> accessMap = new HashMap<>();
-    private Map<String, IComponentIdentifier> componentIdentifierMap = new HashMap<>();
-    private Map<String, JadexAgent> agentMap = new HashMap<>();
-    private Map<Class<?>, Set<JadexAgent>> agentTypeMap = new HashMap<>();
-     */
     protected Map<String, IExternalAccess> accessMap;
 
     public BasicJadexSimulationCache(
             Map<String, SimulationEntity> entitiyMap,
+            Map<EntityType, Set<SimulationEntity>> partitionedEntitiyMap,
             Map<String, IExternalAccess> accessMap) {
-        super(entitiyMap);
+        super(entitiyMap, partitionedEntitiyMap);
         this.accessMap = accessMap;
     }
 
@@ -60,11 +59,20 @@ public class BasicJadexSimulationCache extends BasicSimulationCache implements J
 
     @Override
     public boolean register(String name, IExternalAccess access, SimulationEntity entity) {
-        if(accessMap.containsKey(name) || entitiyMap.containsKey(name)) {
+        if(entitiyMap.containsKey(name) || accessMap.containsKey(name)) {
             return false;
         }
-        accessMap.put(name, access);
         entitiyMap.put(name, entity);
+        accessMap.put(name, access);
         return true;
+    }
+
+    @Override
+    public boolean unregister(String name) {
+        if(super.unregister(name)) {
+            accessMap.remove(name);
+            return true;
+        }
+        return false;
     }
 }

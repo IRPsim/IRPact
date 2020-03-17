@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.commons.concurrent.ResettableTimer;
+import de.unileipzig.irpact.core.message.MessageSystem;
 import de.unileipzig.irpact.core.network.AgentNetwork;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import org.slf4j.Logger;
@@ -11,11 +12,12 @@ import org.slf4j.Logger;
 public abstract class SimulationEnvironmentBase implements SimulationEnvironment {
 
     //para
-    protected Timestamp.Mode mode = Timestamp.Mode.SYSTEM;
     protected SpatialModel spatialModel;
     protected AgentNetwork agentNetwork;
     protected EconomicSpace economicSpace;
+    protected MessageSystem messageSystem;
     protected SimulationCache cache;
+    protected TimeModule timeModule;
     protected ResettableTimer aktivityTimer;
     protected Logger logger;
 
@@ -51,21 +53,6 @@ public abstract class SimulationEnvironmentBase implements SimulationEnvironment
     //=========================
 
     @Override
-    public void setTimeMode(Timestamp.Mode mode) {
-        this.mode = mode;
-    }
-
-    @Override
-    public Timestamp getTimestamp() {
-        return new Timestamp(
-                mode,
-                getSystemTime(),
-                getSimulationTime(),
-                getTick()
-        );
-    }
-
-    @Override
     public SpatialModel getSpatialModel() {
         return spatialModel;
     }
@@ -81,8 +68,18 @@ public abstract class SimulationEnvironmentBase implements SimulationEnvironment
     }
 
     @Override
+    public MessageSystem getMessageSystem() {
+        return messageSystem;
+    }
+
+    @Override
     public SimulationCache getCache() {
         return cache;
+    }
+
+    @Override
+    public TimeModule getTimeModule() {
+        return timeModule;
     }
 
     @Override

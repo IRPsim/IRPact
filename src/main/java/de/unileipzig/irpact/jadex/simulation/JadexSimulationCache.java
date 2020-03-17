@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.jadex.agent.simulation;
+package de.unileipzig.irpact.jadex.simulation;
 
 import de.unileipzig.irpact.core.simulation.SimulationCache;
 import de.unileipzig.irpact.core.simulation.SimulationEntity;

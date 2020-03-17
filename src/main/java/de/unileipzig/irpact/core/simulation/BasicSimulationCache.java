@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.simulation;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Daniel Abitz
@@ -9,10 +10,40 @@ import java.util.Map;
 public class BasicSimulationCache implements SimulationCache {
 
     protected Map<String, SimulationEntity> entitiyMap;
+    protected Map<EntityType, Set<SimulationEntity>> partitionedEntitiyMap;
 
     public BasicSimulationCache(
-            Map<String, SimulationEntity> entitiyMap) {
+            Map<String, SimulationEntity> entitiyMap,
+            Map<EntityType, Set<SimulationEntity>> partitionedEntitiyMap) {
         this.entitiyMap = entitiyMap;
+        this.partitionedEntitiyMap = partitionedEntitiyMap;
+    }
+
+    //=========================
+    //extra
+    //=========================
+
+    public boolean isPartition(EntityType type) {
+        return partitionedEntitiyMap.containsKey(type);
+    }
+
+    public boolean registerType(SimulationEntity entity) {
+        boolean changed = false;
+        for(EntityType type: partitionedEntitiyMap.keySet()) {
+            if(entity.is(type)) {
+                partitionedEntitiyMap.get(type).add(entity);
+                changed = true;
+            }
+        }
+        return changed;
+    }
+
+    public boolean unregisterType(SimulationEntity entity) {
+        boolean changed = false;
+        for(Set<SimulationEntity> set: partitionedEntitiyMap.values()) {
+            changed = set.remove(entity);
+        }
+        return changed;
     }
 
     //=========================
@@ -22,6 +53,11 @@ public class BasicSimulationCache implements SimulationCache {
     @Override
     public Collection<? extends SimulationEntity> getEntities() {
         return entitiyMap.values();
+    }
+
+    @Override
+    public Collection<? extends SimulationEntity> getPartitionedEntities(EntityType type) {
+        return partitionedEntitiyMap.get(type);
     }
 
     @SuppressWarnings("unchecked")
@@ -47,6 +83,15 @@ public class BasicSimulationCache implements SimulationCache {
         return true;
     }
 
+    @Override
+    public boolean unregister(String name) {
+        SimulationEntity entity = entitiyMap.remove(name);
+        if(entity == null) {
+            return false;
+        }
+        unregisterType(entity);
+        return true;
+    }
 
     /*
     @SuppressWarnings("unchecked")

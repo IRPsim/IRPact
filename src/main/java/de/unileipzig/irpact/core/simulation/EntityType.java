@@ -4,6 +4,7 @@ package de.unileipzig.irpact.core.simulation;
  * @author Daniel Abitz
  */
 public enum EntityType {
+    OTHER, //speziell, wird als null genutzt oder bei map-teilmengen
     //agenten
     AGENT,
     SPATIAL_AGENT,

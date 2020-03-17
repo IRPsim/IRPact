@@ -21,27 +21,9 @@ public interface SimulationEnvironment {
 
     SimulationCache getCache();
 
+    TimeModule getTimeModule();
+
     Logger getLogger();
-
-    //=========================
-    //time
-    //=========================
-
-    void setTimeMode(Timestamp.Mode mode);
-
-    long getSimulationStarttime();
-
-    default long getSimulationTimeSinceStart() {
-        return getSimulationTime() - getSimulationStarttime();
-    }
-
-    long getSimulationTime();
-
-    double getTick();
-
-    long getSystemTime();
-
-    Timestamp getTimestamp();
 
     //=========================
     //util

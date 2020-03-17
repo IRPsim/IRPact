@@ -14,6 +14,8 @@ public interface SimulationCache {
 
     Collection<? extends SimulationEntity> getEntities();
 
+    Collection<? extends SimulationEntity> getPartitionedEntities(EntityType type);
+
     <T extends SimulationEntity> T getEntity(String entitiyName);
 
     //=========================
@@ -34,29 +36,5 @@ public interface SimulationCache {
 
     boolean register(String name, SimulationEntity entity);
 
-    /*
-    <T extends SimulationEntity> void forEach(
-            EntityType entitiyType,
-            Class<T> entitiyClass,
-            Consumer<T> consumer
-    );
-
-    <T extends SimulationEntity> void forEach(
-            EntityType entitiyType,
-            Class<T> entitiyClass,
-            Predicate<T> filter,
-            Consumer<T> consumer
-    );
-
-    <T extends SimulationEntity> Collection<T> select(
-            EntityType entitiyType,
-            Class<T> entitiyClass
-    );
-
-    <T extends SimulationEntity> Collection<T> select(
-            EntityType entitiyType,
-            Class<T> entitiyClass,
-            Predicate<T> filter
-    );
-    */
+    boolean unregister(String name);
 }

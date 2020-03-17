@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.jadex.simulation;
 
 import de.unileipzig.irpact.core.simulation.SimulationEnvironmentBase;
-import de.unileipzig.irpact.jadex.agent.simulation.JadexSimulationCache;
 import de.unileipzig.irpact.jadex.message.JadexMessageSystem;
 import jadex.bridge.IExternalAccess;
 import jadex.bridge.service.types.clock.IClockService;
@@ -13,7 +12,6 @@ import jadex.bridge.service.types.simulation.ISimulationService;
 public class BasicJadexSimulationEnvironment extends SimulationEnvironmentBase implements JadexSimulationEnvironment {
 
     //Jadex
-    private JadexMessageSystem msgSystem = new JadexMessageSystem(this, JadexMessageSystem.Mode.BASIC);
     private IExternalAccess platform;
     private IClockService clockService;
     private ISimulationService simulationService;
@@ -41,6 +39,22 @@ public class BasicJadexSimulationEnvironment extends SimulationEnvironmentBase i
         this.cache = cache;
     }
 
+    public void setMessageSystem(JadexMessageSystem messageSystem) {
+        this.messageSystem = messageSystem;
+    }
+
+    public void setTimeModule(JadexTimeModule timeModule) {
+        this.timeModule = timeModule;
+    }
+
+    public IClockService getClockService() {
+        return clockService;
+    }
+
+    public ISimulationService getSimulationService() {
+        return simulationService;
+    }
+
     //=========================
     //stuff
     //=========================
@@ -52,7 +66,7 @@ public class BasicJadexSimulationEnvironment extends SimulationEnvironmentBase i
 
     @Override
     public JadexMessageSystem getMessageSystem() {
-        return msgSystem;
+        return (JadexMessageSystem) messageSystem;
     }
 
     @Override
@@ -61,22 +75,7 @@ public class BasicJadexSimulationEnvironment extends SimulationEnvironmentBase i
     }
 
     @Override
-    public long getSimulationStarttime() {
-        return clockService.getStarttime();
-    }
-
-    @Override
-    public long getSimulationTime() {
-        return clockService.getTime();
-    }
-
-    @Override
-    public double getTick() {
-        return clockService.getTick();
-    }
-
-    @Override
-    public long getSystemTime() {
-        return System.currentTimeMillis();
+    public JadexTimeModule getTimeModule() {
+        return (JadexTimeModule) timeModule;
     }
 }
