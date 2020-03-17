@@ -23,10 +23,7 @@ import de.unileipzig.irpact.jadex.agent.consumer.JadexUseKnownProducts;
 import de.unileipzig.irpact.jadex.config.JadexConfiguration;
 import de.unileipzig.irpact.jadex.config.JadexConfigurationBuilder;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author Daniel Abitz
@@ -71,6 +68,8 @@ public final class BaumHaus2ConsumerType {
                 "baum",
                 new HashSet<>(),
                 cb.getConsumerAgentGroupAttributes(Arrays.asList("baum", "baumidiot")),
+                new HashMap<>(),
+                1.0,
                 DummyPoint2DDistribution.INSTANCE,
                 JadexUseKnownProducts.INSTANCE,
                 TakeFirstProductAdoptionDecision.INSTANCE,
@@ -83,6 +82,8 @@ public final class BaumHaus2ConsumerType {
                 "haus",
                 new HashSet<>(),
                 cb.getConsumerAgentGroupAttributes(Arrays.asList("haus", "hausidiot")),
+                new HashMap<>(),
+                1.0,
                 DummyPoint2DDistribution.INSTANCE,
                 JadexUseKnownProducts.INSTANCE,
                 TakeFirstProductAdoptionDecision.INSTANCE,

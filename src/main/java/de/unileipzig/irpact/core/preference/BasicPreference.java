@@ -3,7 +3,7 @@ package de.unileipzig.irpact.core.preference;
 /**
  * @author Daniel Abitz
  */
-public class BasicPreference implements Preference {
+public final class BasicPreference implements Preference {
 
     private Value value;
     private double strength;

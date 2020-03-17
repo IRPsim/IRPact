@@ -5,5 +5,5 @@ package de.unileipzig.irpact.core.preference;
  */
 public interface Value {
 
-    String getName();
+    String print();
 }

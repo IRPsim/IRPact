@@ -1,11 +1,9 @@
 package de.unileipzig.irpact.jadex.examples.deprecated.old.gui;
 
-import de.unileipzig.irpact.commons.annotation.ToDo;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
 import jadex.bridge.IExternalAccess;
 
-@ToDo("hmm")
 public class Starter {
 
     public static void main(String[] args) {

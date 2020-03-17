@@ -18,6 +18,7 @@ import de.unileipzig.irpact.jadex.agent.consumer.JadexUseKnownProducts;
 import de.unileipzig.irpact.jadex.config.JadexConfiguration;
 import de.unileipzig.irpact.jadex.config.JadexConfigurationBuilder;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -48,6 +49,8 @@ public final class AllAgentsAnd2Groups {
                 "consumer_baum",
                 new HashSet<>(),
                 new HashSet<>(),
+                new HashMap<>(),
+                1.0,
                 DummyPoint2DDistribution.INSTANCE,
                 JadexUseKnownProducts.INSTANCE,
                 TakeFirstProductAdoptionDecision.INSTANCE,
@@ -65,6 +68,8 @@ public final class AllAgentsAnd2Groups {
                 "consumer_haus",
                 new HashSet<>(),
                 new HashSet<>(),
+                new HashMap<>(),
+                1.0,
                 DummyPoint2DDistribution.INSTANCE,
                 JadexUseKnownProducts.INSTANCE,
                 TakeFirstProductAdoptionDecision.INSTANCE,

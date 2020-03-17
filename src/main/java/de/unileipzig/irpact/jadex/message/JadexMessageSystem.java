@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.jadex.message;
 
-import de.unileipzig.irpact.commons.annotation.ToDo;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.message.BasicMessageSystem;
 import de.unileipzig.irpact.core.message.MessageContent;
@@ -13,7 +12,6 @@ import jadex.commons.future.IFuture;
 /**
  * @author Daniel Abitz
  */
-@ToDo("boilerplate code reduzieren (falls sinnvoll)")
 public class JadexMessageSystem extends BasicMessageSystem {
 
     public enum Mode {

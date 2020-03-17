@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinitiesMapping;
+import de.unileipzig.irpact.core.preference.ValueConfiguration;
+import de.unileipzig.irpact.core.product.ProductGroupAttribute;
 
 /**
  * @author Daniel Abitz
@@ -8,6 +10,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinitiesMapp
 public class BasicSimulationConfig implements SimulationConfig {
 
     protected ConsumerAgentGroupAffinitiesMapping affinitiesMapping;
+    protected ValueConfiguration<ProductGroupAttribute> productValues;
 
     public BasicSimulationConfig() {
     }
@@ -16,8 +19,17 @@ public class BasicSimulationConfig implements SimulationConfig {
         this.affinitiesMapping = affinitiesMapping;
     }
 
+    public void setProductValues(ValueConfiguration<ProductGroupAttribute> productValues) {
+        this.productValues = productValues;
+    }
+
     @Override
     public ConsumerAgentGroupAffinitiesMapping getAffinitiesMapping() {
         return affinitiesMapping;
+    }
+
+    @Override
+    public ValueConfiguration<ProductGroupAttribute> getProductValues() {
+        return productValues;
     }
 }

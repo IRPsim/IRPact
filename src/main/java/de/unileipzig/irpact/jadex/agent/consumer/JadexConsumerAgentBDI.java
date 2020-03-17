@@ -3,6 +3,7 @@ package de.unileipzig.irpact.jadex.agent.consumer;
 import de.unileipzig.irpact.commons.annotation.Idea;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.need.Need;
+import de.unileipzig.irpact.core.preference.Preference;
 import de.unileipzig.irpact.core.product.AdoptedProductInfo;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
@@ -150,6 +151,11 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     @Override
     public Set<ProductGroup> getKnownProductGroups() {
         return knownProductGroups;
+    }
+
+    @Override
+    public Set<Preference> getPreferences() {
+        return agentBase.getPreferences();
     }
 
     @Override

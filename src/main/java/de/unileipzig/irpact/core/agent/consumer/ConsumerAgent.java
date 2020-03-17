@@ -3,6 +3,7 @@ package de.unileipzig.irpact.core.agent.consumer;
 import de.unileipzig.irpact.core.GroupEntity;
 import de.unileipzig.irpact.core.agent.SpatialInformationAgent;
 import de.unileipzig.irpact.core.need.Need;
+import de.unileipzig.irpact.core.preference.Preference;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
 
@@ -23,6 +24,8 @@ public interface ConsumerAgent extends SpatialInformationAgent, GroupEntity<Cons
     Set<Product> getKnownProducts();
 
     Set<ProductGroup> getKnownProductGroups();
+
+    Set<Preference> getPreferences();
 
     void addNeed(Need need);
 }

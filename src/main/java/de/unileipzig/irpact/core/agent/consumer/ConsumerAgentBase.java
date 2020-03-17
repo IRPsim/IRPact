@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.Check;
 import de.unileipzig.irpact.commons.annotation.ToDo;
 import de.unileipzig.irpact.core.agent.SpatialInformationAgentBase;
 import de.unileipzig.irpact.core.need.Need;
+import de.unileipzig.irpact.core.preference.Preference;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.simulation.EntityType;
@@ -20,17 +21,25 @@ public class ConsumerAgentBase extends SpatialInformationAgentBase implements Co
     protected ConsumerAgentGroup group;
     @ToDo("koennen die sich aendern?")
     protected Set<ConsumerAgentAttribute> attributes;
+    @ToDo("koennen die sich aendern?")
+    protected Set<Preference> preferences;
 
     public ConsumerAgentBase(
             SimulationEnvironment environment,
             String name,
-            double informationAuthority,
             SpatialInformation spatialInformation,
             ConsumerAgentGroup group,
-            Set<ConsumerAgentAttribute> attributes) {
-        super(environment, name, informationAuthority, spatialInformation);
+            Set<ConsumerAgentAttribute> attributes,
+            Set<Preference> preferences) {
+        super(environment, name, group.getInformationAuthority(), spatialInformation);
         this.group = Check.requireNonNull(group, "group");
         this.attributes = Check.requireNonNull(attributes, "attributes");
+        this.preferences = Check.requireNonNull(preferences, "preferences");
+    }
+
+    @Override
+    public double getInformationAuthority() {
+        return group.getInformationAuthority();
     }
 
     @Override
@@ -56,6 +65,11 @@ public class ConsumerAgentBase extends SpatialInformationAgentBase implements Co
     @Override
     public Set<ProductGroup> getKnownProductGroups() {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Set<Preference> getPreferences() {
+        return preferences;
     }
 
     @Override

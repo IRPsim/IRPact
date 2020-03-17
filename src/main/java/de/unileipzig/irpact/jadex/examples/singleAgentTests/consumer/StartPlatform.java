@@ -25,10 +25,7 @@ import jadex.bridge.service.types.cms.CreationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class StartPlatform {
 
@@ -46,6 +43,8 @@ public class StartPlatform {
                 "TestGroup",
                 agents,
                 new HashSet<>(),
+                new HashMap<>(),
+                1.0,
                 new SquareModelDistribution(
                         "TestSquareModelDistribution",
                         new SquareModel("TestSquareModel", Metric.EUCLIDEAN, 0, 0, 1, 1),
@@ -83,9 +82,9 @@ public class StartPlatform {
         ConsumerAgentBase agentBase = new ConsumerAgentBase(
                 env,
                 "TestConsumer",
-                1.0,
                 new Point2D(0, 0),
                 group,
+                new HashSet<>(),
                 new HashSet<>()
         );
         agents.add(agentBase);

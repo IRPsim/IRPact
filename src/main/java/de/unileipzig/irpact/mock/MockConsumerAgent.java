@@ -4,6 +4,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.need.Need;
+import de.unileipzig.irpact.core.preference.Preference;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.simulation.EntityType;
@@ -43,6 +44,11 @@ public class MockConsumerAgent implements ConsumerAgent {
 
     @Override
     public Set<ProductGroup> getKnownProductGroups() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Set<Preference> getPreferences() {
         throw new UnsupportedOperationException();
     }
 

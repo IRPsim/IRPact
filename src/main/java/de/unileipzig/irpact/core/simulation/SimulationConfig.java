@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinitiesMapping;
+import de.unileipzig.irpact.core.preference.ValueConfiguration;
+import de.unileipzig.irpact.core.product.ProductGroupAttribute;
 
 /**
  * @author Daniel Abitz
@@ -8,4 +10,6 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinitiesMapp
 public interface SimulationConfig {
 
     ConsumerAgentGroupAffinitiesMapping getAffinitiesMapping();
+
+    ValueConfiguration<ProductGroupAttribute> getProductValues();
 }
