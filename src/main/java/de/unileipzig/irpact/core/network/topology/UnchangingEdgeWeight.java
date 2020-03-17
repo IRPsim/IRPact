@@ -1,6 +1,8 @@
-package de.unileipzig.irpact.core.network;
+package de.unileipzig.irpact.core.network.topology;
 
 import de.unileipzig.irpact.commons.annotation.ToDo;
+import de.unileipzig.irpact.core.network.EdgeType;
+import de.unileipzig.irpact.core.network.SocialNetwork;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
 /**
@@ -15,12 +17,12 @@ public class UnchangingEdgeWeight implements EdgeWeightManipulationScheme {
     @Override
     public double getEdgeWeight(
             SimulationEnvironment environment,
-            SocialGraph.Node source,
-            SocialGraph.Node target,
+            SocialNetwork.Node source,
+            SocialNetwork.Node target,
             EdgeType edgeType) {
         return environment.getAgentNetwork()
                 .getGraph()
-                .getEdge(source, target)
-                .getWeight(edgeType);
+                .getEdge(source, target, edgeType)
+                .getWeight();
     }
 }

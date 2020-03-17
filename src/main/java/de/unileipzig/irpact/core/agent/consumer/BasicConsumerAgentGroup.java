@@ -112,9 +112,7 @@ public class BasicConsumerAgentGroup extends AbstractGroup<ConsumerAgent> implem
     protected Set<ConsumerAgentAttribute> deriveAttributes() {
         Set<ConsumerAgentAttribute> attributes = new HashSet<>();
         for(ConsumerAgentGroupAttribute groupAttribute: getAttributes()) {
-            double attributeValue = groupAttribute.getDistribution().drawValue();
-            BasicConsumerAgentAttribute attribute = new BasicConsumerAgentAttribute(groupAttribute, attributeValue);
-            attributes.add(attribute);
+            attributes.add(groupAttribute.derive());
         }
         return attributes;
     }

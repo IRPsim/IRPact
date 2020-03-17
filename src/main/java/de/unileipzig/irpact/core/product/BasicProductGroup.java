@@ -69,9 +69,7 @@ public class BasicProductGroup extends AbstractGroup<Product> implements Product
     protected Set<ProductAttribute> deriveAttributes() {
         Set<ProductAttribute> attributes = new HashSet<>();
         for(ProductGroupAttribute groupAttribute: getAttributes()) {
-            double attributeValue = groupAttribute.getDistribution().drawValue();
-            BasicProductAttribute attribute = new BasicProductAttribute(groupAttribute, attributeValue);
-            attributes.add(attribute);
+            attributes.add(groupAttribute.derive());
         }
         return attributes;
     }

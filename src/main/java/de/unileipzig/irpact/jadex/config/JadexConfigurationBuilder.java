@@ -3,6 +3,9 @@ package de.unileipzig.irpact.jadex.config;
 import de.unileipzig.irpact.core.config.AbstractConfigurationBuilder;
 import de.unileipzig.irpact.core.config.LogConfig;
 import de.unileipzig.irpact.core.network.*;
+import de.unileipzig.irpact.core.network.topology.ConstantTopology;
+import de.unileipzig.irpact.core.network.topology.EgoistTopology;
+import de.unileipzig.irpact.core.network.topology.UnchangingEdgeWeight;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
@@ -19,7 +22,7 @@ public class JadexConfigurationBuilder extends AbstractConfigurationBuilder<Jade
     public JadexConfigurationBuilder initMinimal() {
         BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
         BasicAgentNetwork network = new BasicAgentNetwork(
-                new SocialGraph(),
+                new SocialNetwork(),
                 new BasicGraphConfiguration(
                         EgoistTopology.INSTANCE,
                         ConstantTopology.INSTANCE,

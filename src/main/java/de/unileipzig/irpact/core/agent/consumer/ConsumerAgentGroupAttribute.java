@@ -6,4 +6,8 @@ import de.unileipzig.irpact.core.attribute.UnivariateAttribute;
  * @author Daniel Abitz
  */
 public interface ConsumerAgentGroupAttribute extends UnivariateAttribute {
+
+    ConsumerAgentAttribute derive();
+
+    ConsumerAgentAttribute derive(double fixedValue);
 }

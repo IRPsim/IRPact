@@ -5,7 +5,7 @@ package de.unileipzig.irpact.core.network;
  */
 public interface AgentNetwork {
 
-    SocialGraph getGraph();
+    SocialNetwork getGraph();
 
     GraphConfiguration getGraphConfiguration();
 }

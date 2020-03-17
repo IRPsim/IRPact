@@ -17,6 +17,8 @@ import java.util.stream.Stream;
 /**
  * @author Daniel Abitz
  */
+//ersetzt durch SocialNetwork aka SocialMultiGraph
+@Deprecated
 public class SocialGraph extends DirectedGraph<SocialGraph.Node, SocialGraph.Edge> {
 
     protected Map<ConsumerAgent, SocialGraph.Node> agentToNodeMap = new HashMap<>();
