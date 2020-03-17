@@ -84,7 +84,7 @@ public class ConsumerAgentBDI implements JadexAgent {
         name = (String) args.get("name");
         logger = (Logger) args.get("logger");
         env = (JadexSimulationEnvironment) args.get("env");
-        env.registerInternal(name, internal.getId(), this);
+        env.getCache().register(name, internal.getExternalAccess(), this);
     }
 
     @OnInit

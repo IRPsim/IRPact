@@ -5,6 +5,7 @@ import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bdiv3.features.IBDIAgentFeature;
 import jadex.bridge.IComponentIdentifier;
+import jadex.bridge.IExternalAccess;
 import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IArgumentsResultsFeature;
 import jadex.bridge.component.IExecutionFeature;
@@ -69,7 +70,7 @@ public class SimuAgentBDI implements JadexAgent, ExtAccess {
         name = (String) args.get("name");
         logger = (Logger) args.get("logger");
         env = (JadexSimulationEnvironment) args.get("env");
-        env.registerInternal(name, agent.getId(), this);
+        env.getCache().register(name, agent.getExternalAccess(), this);
     }
 
     @OnInit
@@ -119,8 +120,9 @@ public class SimuAgentBDI implements JadexAgent, ExtAccess {
     public void doIt() {
         logger.debug("WO BIN ICH @Starter: {}", Thread.currentThread().getName());
         logger.debug("HAAAAAAAAAAAAAAAAAAAALO");
-        IComponentIdentifier[] to = env.getComponentIdentifiers()
+        IComponentIdentifier[] to = env.getCache().getAccesses()
                 .stream()
+                .map(IExternalAccess::getId)
                 .filter(id -> id != agent.getId())
                 .toArray(IComponentIdentifier[]::new);
         msgFeature.sendMessage(AgentState.RESUME, to);

@@ -48,8 +48,10 @@ public class JadexMessageSystem extends BasicMessageSystem {
     }
 
     public IFuture<Void> sendJadex(Agent from, MessageContent content, Agent to) {
-        IExternalAccess fromExternal = env().getExternalAccess(from.getName());
-        IComponentIdentifier toCompentIdentifier = env().getComponentIdentifier(to.getName());
+        IExternalAccess fromExternal = env().getCache()
+                .getAccess(from.getName());
+        IComponentIdentifier toCompentIdentifier = env().getCache()
+                .getIdentifier(to.getName());
         return fromExternal.scheduleStep(fromInternal -> {
             IMessageFeature msgFeature = fromInternal.getFeature(IMessageFeature.class);
             return msgFeature.sendMessage(content, toCompentIdentifier);
@@ -57,10 +59,12 @@ public class JadexMessageSystem extends BasicMessageSystem {
     }
 
     public IFuture<Void> sendJadex(Agent from, MessageContent content, Agent... to) {
-        IExternalAccess fromExternal = env().getExternalAccess(from.getName());
+        IExternalAccess fromExternal = env().getCache()
+                .getAccess(from.getName());
         IComponentIdentifier[] toCompentIdentifiers = new IComponentIdentifier[to.length];
         for(int i = 0; i < to.length; i++) {
-            toCompentIdentifiers[i] = env().getComponentIdentifier(to[i].getName());
+            toCompentIdentifiers[i] = env().getCache()
+                    .getIdentifier(to[i].getName());
         }
         return fromExternal.scheduleStep(fromInternal -> {
             IMessageFeature msgFeature = fromInternal.getFeature(IMessageFeature.class);

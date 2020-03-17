@@ -1,25 +1,17 @@
 package de.unileipzig.irpact.jadex.simulation;
 
 import de.unileipzig.irpact.core.simulation.SimulationEnvironmentBase;
-import de.unileipzig.irpact.jadex.agent.JadexAgent;
+import de.unileipzig.irpact.jadex.agent.simulation.JadexSimulationCache;
 import de.unileipzig.irpact.jadex.message.JadexMessageSystem;
-import jadex.bridge.IComponentIdentifier;
 import jadex.bridge.IExternalAccess;
 import jadex.bridge.service.types.clock.IClockService;
 import jadex.bridge.service.types.simulation.ISimulationService;
-
-import java.util.*;
 
 /**
  * @author Daniel Abitz
  */
 public class BasicJadexSimulationEnvironment extends SimulationEnvironmentBase implements JadexSimulationEnvironment {
 
-    //cache
-    private Map<String, IExternalAccess> accessMap = new HashMap<>();
-    private Map<String, IComponentIdentifier> componentIdentifierMap = new HashMap<>();
-    private Map<String, JadexAgent> agentMap = new HashMap<>();
-    private Map<Class<?>, Set<JadexAgent>> agentTypeMap = new HashMap<>();
     //Jadex
     private JadexMessageSystem msgSystem = new JadexMessageSystem(this, JadexMessageSystem.Mode.BASIC);
     private IExternalAccess platform;
@@ -45,60 +37,8 @@ public class BasicJadexSimulationEnvironment extends SimulationEnvironmentBase i
         this.simulationService = simulationService;
     }
 
-    //=========================
-    //experimental
-    //=========================
-
-    @Override
-    public synchronized void register(String name, IExternalAccess access) {
-        if(accessMap.containsKey(name)) {
-            throw new IllegalArgumentException("IExternalAccess already exists: " + name);
-        }
-        accessMap.put(name, access);
-    }
-
-    @Override
-    public synchronized void registerInternal(String name, IComponentIdentifier identifier, JadexAgent agent) {
-        if(componentIdentifierMap.containsKey(name)) {
-            throw new IllegalArgumentException("IComponentIdentifier already exists: " + name);
-        }
-        if(agentMap.containsKey(name)) {
-            throw new IllegalArgumentException("JadexAgent already exists: " + name);
-        }
-        componentIdentifierMap.put(name, identifier);
-        agentMap.put(name, agent);
-        Set<JadexAgent> agents = agentTypeMap.computeIfAbsent(agent.getClass(), _type -> new HashSet<>());
-        agents.add(agent);
-    }
-
-    @Override
-    public IExternalAccess getExternalAccess(String agentName) {
-        return accessMap.get(agentName);
-    }
-
-    @Override
-    public IComponentIdentifier getComponentIdentifier(String name) {
-        return componentIdentifierMap.get(name);
-    }
-
-    @Override
-    public JadexAgent getAgent(String name) {
-        return agentMap.get(name);
-    }
-
-    @Override
-    public Set<JadexAgent> getAgents(Class<?> type) {
-        return agentTypeMap.get(type);
-    }
-
-    @Override
-    public Collection<IExternalAccess> getAccesses() {
-        return accessMap.values();
-    }
-
-    @Override
-    public Collection<IComponentIdentifier> getComponentIdentifiers() {
-        return componentIdentifierMap.values();
+    public void setCache(JadexSimulationCache cache) {
+        this.cache = cache;
     }
 
     //=========================
@@ -113,6 +53,11 @@ public class BasicJadexSimulationEnvironment extends SimulationEnvironmentBase i
     @Override
     public JadexMessageSystem getMessageSystem() {
         return msgSystem;
+    }
+
+    @Override
+    public JadexSimulationCache getCache() {
+        return (JadexSimulationCache) cache;
     }
 
     @Override

@@ -1,18 +1,18 @@
 package de.unileipzig.irpact.core.simulation;
 
-import de.unileipzig.irpact.commons.annotation.ToImpl;
-
+import java.util.Collection;
 import java.util.NoSuchElementException;
 
 /**
  * @author Daniel Abitz
  */
-@ToImpl("statt identifier ein auf enum basierndes type system einbauen")
 public interface SimulationCache {
 
     //=========================
     //get
     //=========================
+
+    Collection<? extends SimulationEntity> getEntities();
 
     <T extends SimulationEntity> T getEntity(String entitiyName);
 
@@ -32,28 +32,30 @@ public interface SimulationCache {
     //util
     //=========================
 
+    boolean register(String name, SimulationEntity entity);
+
     /*
     <T extends SimulationEntity> void forEach(
-            Class<? extends Identifier> idType,
-            Class<T> entitiyType,
+            EntityType entitiyType,
+            Class<T> entitiyClass,
             Consumer<T> consumer
     );
 
     <T extends SimulationEntity> void forEach(
-            Class<? extends Identifier> idType,
-            Class<T> entitiyType,
+            EntityType entitiyType,
+            Class<T> entitiyClass,
             Predicate<T> filter,
             Consumer<T> consumer
     );
 
     <T extends SimulationEntity> Collection<T> select(
-            Class<? extends Identifier> idType,
-            Class<T> entitiyType
+            EntityType entitiyType,
+            Class<T> entitiyClass
     );
 
     <T extends SimulationEntity> Collection<T> select(
-            Class<? extends Identifier> idType,
-            Class<T> entitiyType,
+            EntityType entitiyType,
+            Class<T> entitiyClass,
             Predicate<T> filter
     );
     */

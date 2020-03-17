@@ -19,6 +19,8 @@ public interface SimulationEnvironment {
 
     EconomicSpace getEconomicSpace();
 
+    SimulationCache getCache();
+
     Logger getLogger();
 
     //=========================
@@ -40,40 +42,6 @@ public interface SimulationEnvironment {
     long getSystemTime();
 
     Timestamp getTimestamp();
-
-    //=========================
-    //cache
-    //=========================
-
-    //Identifier getIdentifier(String entitiyName);
-
-    //<T extends SimulationEntity> T getEntity(Identifier identifier);
-
-    //String getName(Identifier identifier);
-
-    //void register(Identifier identifier, String name, SimulationEntity entity);
-
-    /*
-    <T extends SimulationEntity> void forEach(
-            Class<? extends Identifier> idType,
-            Class<T> entitiyType,
-            Consumer<T> consumer);
-
-    <T extends SimulationEntity> void forEach(
-            Class<? extends Identifier> idType,
-            Class<T> entitiyType,
-            Predicate<T> filter,
-            Consumer<T> consumer);
-
-    <T extends SimulationEntity> Collection<T> select(
-            Class<? extends Identifier> idType,
-            Class<T> entitiyType);
-
-    <T extends SimulationEntity> Collection<T> select(
-            Class<? extends Identifier> idType,
-            Class<T> entitiyType,
-            Predicate<T> filter);
-    */
 
     //=========================
     //util
