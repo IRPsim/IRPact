@@ -13,9 +13,6 @@ import java.util.Map;
  */
 public interface PointOfSaleAgent extends SpatialInformationAgent {
 
-    @Override
-    PointOfSaleAgentIdentifier getIdentifier();
-
     Map<Product, ProductAvailability> getProductAvailability();
 
     Map<Product, Price> getProductPrices();

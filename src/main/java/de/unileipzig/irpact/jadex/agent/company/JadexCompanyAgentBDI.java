@@ -2,7 +2,6 @@ package de.unileipzig.irpact.jadex.agent.company;
 
 import de.unileipzig.irpact.core.agent.company.CompanyAgent;
 import de.unileipzig.irpact.core.agent.company.CompanyAgentBase;
-import de.unileipzig.irpact.core.agent.company.CompanyAgentIdentifier;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.jadex.agent.JadexAgentBase;
 import de.unileipzig.irpact.jadex.agent.JadexAgentService;
@@ -49,7 +48,6 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
 
     //general
     private static final Logger logger = LoggerFactory.getLogger(JadexCompanyAgentBDI.class);
-    private JadexCompanyAgentIdentifier identifier;
 
     //Jadex parameter
     @Agent
@@ -101,11 +99,6 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
         return (JadexSimulationEnvironment) agentBase.getEnvironment();
     }
 
-    @Override
-    public CompanyAgentIdentifier getIdentifier() {
-        return identifier;
-    }
-
     //=========================
     //JadexAgentBase
     //=========================
@@ -131,7 +124,6 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
     @Override
     protected void onInit() {
         initArgs(resultsFeature.getArguments());
-        identifier = new JadexCompanyAgentIdentifier();
         logger.trace("[{}] onInit", getName());
     }
 

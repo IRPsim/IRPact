@@ -72,7 +72,6 @@ public class StartPlatform {
         );
         return new BasicProduct(
                 pg,
-                new ProductIdentifier(),
                 "TestProduct",
                 new HashSet<>()
         );

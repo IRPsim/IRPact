@@ -3,8 +3,8 @@ package de.unileipzig.irpact.core.message;
 import de.unileipzig.irpact.core.agent.Agent;
 
 /**
- * @implNote Dem Nachrichtensystem von Jadex angelehnt.
  * @author Daniel Abitz
+ * @implNote Dem Nachrichtensystem von Jadex angelehnt.
  */
 public interface MessageReceiver {
 

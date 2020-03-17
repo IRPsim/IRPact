@@ -38,11 +38,6 @@ public class PointOfSaleAgentBase extends SpatialInformationAgentBase implements
     }
 
     @Override
-    public PointOfSaleAgentIdentifier getIdentifier() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public Map<Product, ProductAvailability> getProductAvailability() {
         return productAvailability;
     }

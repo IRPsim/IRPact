@@ -54,7 +54,6 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
 
     //general
     private static final Logger logger = LoggerFactory.getLogger(JadexConsumerAgentBDI.class);
-    private JadexConsumerAgentIdentifier identifier;
 
     //Jadex parameter
     @Agent
@@ -138,11 +137,6 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     }
 
     @Override
-    public ConsumerAgentIdentifier getIdentifier() {
-        return identifier;
-    }
-
-    @Override
     public void addNeed(Need need) {
         needs.add(need);
     }
@@ -172,7 +166,6 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     @Override
     protected void onInit() {
         initArgs(resultsFeature.getArguments());
-        identifier = new JadexConsumerAgentIdentifier();
         logger.trace("[{}] onInit", getName());
     }
 

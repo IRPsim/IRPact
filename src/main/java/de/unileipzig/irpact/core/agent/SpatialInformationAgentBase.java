@@ -31,9 +31,4 @@ public abstract class SpatialInformationAgentBase extends AgentBase implements S
     public SpatialInformation getSpatialInformation() {
         return spatialInformation;
     }
-
-    @Override
-    public AgentIdentifier getIdentifier() {
-        throw new UnsupportedOperationException();
-    }
 }

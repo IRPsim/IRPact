@@ -14,9 +14,6 @@ import java.util.Set;
 public interface ConsumerAgent extends SpatialInformationAgent, GroupEntity<ConsumerAgent> {
 
     @Override
-    ConsumerAgentIdentifier getIdentifier();
-
-    @Override
     ConsumerAgentGroup getGroup();
 
     Set<ConsumerAgentAttribute> getAttributes();

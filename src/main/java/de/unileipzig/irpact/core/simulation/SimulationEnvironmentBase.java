@@ -6,8 +6,6 @@ import de.unileipzig.irpact.core.spatial.SpatialModel;
 import org.slf4j.Logger;
 
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 /**
  * @author Daniel Abitz
@@ -15,8 +13,8 @@ import java.util.function.Predicate;
 public abstract class SimulationEnvironmentBase implements SimulationEnvironment {
 
     //cache
-    protected Map<String, Identifier> identifierMap = new HashMap<>();
-    protected Map<Identifier, SimulationEntity> entityMap = new HashMap<>();
+    //protected Map<String, Identifier> identifierMap = new HashMap<>();
+    //protected Map<Identifier, SimulationEntity> entityMap = new HashMap<>();
     protected Map<Class<?>, Set<SimulationEntity>> entityTypeMap = new HashMap<>();
     //para
     protected Timestamp.Mode mode = Timestamp.Mode.SYSTEM;
@@ -62,10 +60,12 @@ public abstract class SimulationEnvironmentBase implements SimulationEnvironment
         this.mode = mode;
     }
 
+    /*
     @Override
     public Identifier getIdentifier(String entitiyName) {
         return identifierMap.get(entitiyName);
     }
+    */
 
     @Override
     public Timestamp getTimestamp() {
@@ -77,6 +77,7 @@ public abstract class SimulationEnvironmentBase implements SimulationEnvironment
         );
     }
 
+    /*
     @SuppressWarnings("unchecked")
     @Override
     public <T extends SimulationEntity> T getEntity(Identifier identifier) {
@@ -160,6 +161,7 @@ public abstract class SimulationEnvironmentBase implements SimulationEnvironment
         }
         return result;
     }
+    */
 
     @Override
     public SpatialModel getSpatialModel() {

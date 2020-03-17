@@ -11,7 +11,4 @@ public abstract class AgentBase extends SimulationEntityBase implements Agent {
     public AgentBase(SimulationEnvironment environment, String name) {
         super(environment, name);
     }
-
-    @Override
-    public abstract AgentIdentifier getIdentifier();
 }

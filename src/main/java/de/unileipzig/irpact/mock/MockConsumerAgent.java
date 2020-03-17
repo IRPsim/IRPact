@@ -3,11 +3,9 @@ package de.unileipzig.irpact.mock;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentIdentifier;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
-import de.unileipzig.irpact.core.simulation.Identifier;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
@@ -44,26 +42,6 @@ public class MockConsumerAgent implements ConsumerAgent {
 
     @Override
     public Set<ProductGroup> getKnownProductGroups() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public ConsumerAgentIdentifier getIdentifier() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean is(Identifier identifier) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean isType(Identifier identifier) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean isType(Class<? extends Identifier> type) {
         throw new UnsupportedOperationException();
     }
 

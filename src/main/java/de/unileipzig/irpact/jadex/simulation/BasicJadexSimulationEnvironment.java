@@ -116,7 +116,7 @@ public class BasicJadexSimulationEnvironment extends SimulationEnvironmentBase i
     }
 
     @Override
-    public long getStarttime() {
+    public long getSimulationStarttime() {
         return clockService.getStarttime();
     }
 

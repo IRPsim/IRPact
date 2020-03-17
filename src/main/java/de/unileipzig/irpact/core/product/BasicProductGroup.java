@@ -3,7 +3,6 @@ package de.unileipzig.irpact.core.product;
 import de.unileipzig.irpact.commons.Check;
 import de.unileipzig.irpact.core.AbstractGroup;
 import de.unileipzig.irpact.core.need.Need;
-import de.unileipzig.irpact.core.simulation.Identifier;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
 import java.util.HashSet;
@@ -14,7 +13,6 @@ import java.util.Set;
  */
 public class BasicProductGroup extends AbstractGroup<Product> implements ProductGroup {
 
-    protected final ProductIdentifier IDENTIFIER = new ProductIdentifier();
     protected Set<ProductGroupAttribute> attributes;
     protected Set<Need> needsSatisfied;
 
@@ -48,11 +46,6 @@ public class BasicProductGroup extends AbstractGroup<Product> implements Product
         return entities.add(entitiy);
     }
 
-    @Override
-    public Identifier getIdentifier() {
-        return IDENTIFIER;
-    }
-
     protected int productId = 0;
     protected synchronized String deriveName() {
         String name = getName() + "#" + productId;
@@ -73,6 +66,6 @@ public class BasicProductGroup extends AbstractGroup<Product> implements Product
     public Product deriveProduct() {
         String derivedName = deriveName();
         Set<ProductAttribute> derivedAttributes = deriveAttributes();
-        return new BasicProduct(this, IDENTIFIER, derivedName, derivedAttributes);
+        return new BasicProduct(this, derivedName, derivedAttributes);
     }
 }

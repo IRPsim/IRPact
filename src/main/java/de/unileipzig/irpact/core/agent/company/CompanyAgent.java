@@ -10,8 +10,5 @@ import java.util.Set;
  */
 public interface CompanyAgent extends InformationAgent {
 
-    @Override
-    CompanyAgentIdentifier getIdentifier();
-
     Set<Product> getProductPortfolio();
 }

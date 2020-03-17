@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.jadex.agent.simulation;
 
-import de.unileipzig.irpact.core.agent.AgentIdentifier;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.start.StartSimulation;
 import jadex.bridge.IExternalAccess;
@@ -38,7 +37,6 @@ public class JadexSimulationControlAgent extends JadexPlatformControlAgent imple
     public static final String ENVIRONMENT = StartSimulation.ENVIRONMENT;
 
     private static final Logger logger = LoggerFactory.getLogger(JadexSimulationControlAgent.class);
-    private final JadexSimulationControlAgentIdentifier IDENTIFIER = new JadexSimulationControlAgentIdentifier();
 
     //Jadex parameter
     @Agent
@@ -109,11 +107,6 @@ public class JadexSimulationControlAgent extends JadexPlatformControlAgent imple
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public AgentIdentifier getIdentifier() {
-        return IDENTIFIER;
     }
 
     @Override

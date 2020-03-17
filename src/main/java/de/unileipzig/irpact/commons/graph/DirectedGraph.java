@@ -12,13 +12,22 @@ import java.util.Map;
  */
 public class DirectedGraph<N extends Node, E extends Edge<N>> implements Graph<N, E> {
 
-    protected Map<N, Map<N, E>> graphData = new HashMap<>();
+    protected Map<N, Map<N, E>> graphData;
 
     public DirectedGraph() {
+        this(new HashMap<>());
+    }
+
+    public DirectedGraph(Map<N, Map<N, E>> graphData) {
+        this.graphData = graphData;
+    }
+
+    protected Map<N, E> createNewSubMap(N node) {
+        return new HashMap<>();
     }
 
     protected Map<N, E> getLinkedVertices(N source) {
-        return graphData.computeIfAbsent(source, _source -> new HashMap<>());
+        return graphData.computeIfAbsent(source, this::createNewSubMap);
     }
 
     protected boolean addIfNotExists(N node) {

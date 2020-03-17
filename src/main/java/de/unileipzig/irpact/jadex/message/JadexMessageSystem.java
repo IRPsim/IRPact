@@ -2,7 +2,6 @@ package de.unileipzig.irpact.jadex.message;
 
 import de.unileipzig.irpact.commons.annotation.ToDo;
 import de.unileipzig.irpact.core.agent.Agent;
-import de.unileipzig.irpact.core.agent.AgentIdentifier;
 import de.unileipzig.irpact.core.message.BasicMessageSystem;
 import de.unileipzig.irpact.core.message.MessageContent;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
@@ -36,59 +35,6 @@ public class JadexMessageSystem extends BasicMessageSystem {
     @Override
     protected JadexSimulationEnvironment env() {
         return (JadexSimulationEnvironment) super.env();
-    }
-
-    public void sendBasic(AgentIdentifier from, MessageContent content, AgentIdentifier to) {
-        super.send(from, content, to);
-    }
-
-    public void sendBasic(AgentIdentifier from, MessageContent content, AgentIdentifier... to) {
-        for(AgentIdentifier toIdentifier: to) {
-            sendBasic(from, content, toIdentifier);
-        }
-    }
-
-    public IFuture<Void> sendJadex(AgentIdentifier from, MessageContent content, AgentIdentifier to) {
-        String fromName = env().getName(from);
-        IExternalAccess fromExternal = env().getExternalAccess(fromName);
-        String toName = env().getName(to);
-        IComponentIdentifier toCompentIdentifier = env().getComponentIdentifier(toName);
-        return fromExternal.scheduleStep(fromInternal -> {
-            IMessageFeature msgFeature = fromInternal.getFeature(IMessageFeature.class);
-            return msgFeature.sendMessage(content, toCompentIdentifier);
-        });
-    }
-
-    public IFuture<Void> sendJadex(AgentIdentifier from, MessageContent content, AgentIdentifier... to) {
-        String fromName = env().getName(from);
-        IExternalAccess fromExternal = env().getExternalAccess(fromName);
-        IComponentIdentifier[] toCompentIdentifiers = new IComponentIdentifier[to.length];
-        for(int i = 0; i < to.length; i++) {
-            String toName = env().getName(to[i]);
-            toCompentIdentifiers[i] = env().getComponentIdentifier(toName);
-        }
-        return fromExternal.scheduleStep(fromInternal -> {
-            IMessageFeature msgFeature = fromInternal.getFeature(IMessageFeature.class);
-            return msgFeature.sendMessage(content, toCompentIdentifiers);
-        });
-    }
-
-    @Override
-    public void send(AgentIdentifier from, MessageContent content, AgentIdentifier to) {
-        if(mode == Mode.BASIC) {
-            sendBasic(from, content, to);
-        } else {
-            sendJadex(from, content, to).get();
-        }
-    }
-
-    @Override
-    public void send(AgentIdentifier from, MessageContent content, AgentIdentifier... to) {
-        if(mode == Mode.BASIC) {
-            sendBasic(from, content, to);
-        } else {
-            sendJadex(from, content, to).get();
-        }
     }
 
     public void sendBasic(Agent from, MessageContent content, Agent to) {

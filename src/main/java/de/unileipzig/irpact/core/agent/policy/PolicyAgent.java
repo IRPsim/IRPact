@@ -7,8 +7,5 @@ import de.unileipzig.irpact.core.agent.InformationAgent;
  */
 public interface PolicyAgent extends InformationAgent {
 
-    @Override
-    PolicyAgentIdentifier getIdentifier();
-
     TaxesScheme getTaxesScheme();
 }

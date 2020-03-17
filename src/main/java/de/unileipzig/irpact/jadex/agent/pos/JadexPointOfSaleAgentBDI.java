@@ -55,7 +55,6 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
 
     //general
     private static final Logger logger = LoggerFactory.getLogger(JadexPointOfSaleAgentBDI.class);
-    private JadexPointOfSaleAgentIdentifier identifier;
 
     //Jadex parameter
     @Agent
@@ -176,11 +175,6 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
         return agentBase.getProductAvailabilityChangeScheme();
     }
 
-    @Override
-    public PointOfSaleAgentIdentifier getIdentifier() {
-        return identifier;
-    }
-
     //=========================
     //JadexAgentBase
     //=========================
@@ -206,7 +200,6 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     @Override
     protected void onInit() {
         initArgs(resultsFeature.getArguments());
-        identifier = new JadexPointOfSaleAgentIdentifier();
         logger.trace("[{}] onInit", getName());
     }
 

@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.jadex.agent.simulation;
 
-import de.unileipzig.irpact.core.agent.AgentIdentifier;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
 import jadex.bridge.IExternalAccess;
@@ -35,7 +34,6 @@ public class JadexKillPlatformAgent extends JadexPlatformControlAgent {
     public static final String PLATFORM_TO_KILL = "platformToKill";
 
     private static final Logger logger = LoggerFactory.getLogger(JadexKillPlatformAgent.class);
-    private final JadexKillPlatformAgentIdentifier IDENTIFIER = new JadexKillPlatformAgentIdentifier();
 
     //Jadex parameter
     @Agent
@@ -107,11 +105,6 @@ public class JadexKillPlatformAgent extends JadexPlatformControlAgent {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public AgentIdentifier getIdentifier() {
-        return IDENTIFIER;
     }
 
     @Override

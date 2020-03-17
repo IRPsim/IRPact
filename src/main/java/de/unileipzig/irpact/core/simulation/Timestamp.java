@@ -1,9 +1,8 @@
 package de.unileipzig.irpact.core.simulation;
 
-
-import jadex.bridge.service.annotation.Reference;
-
-@Reference
+/**
+ * @author Daniel Abitz
+ */
 public final class Timestamp implements Comparable<Timestamp> {
 
     public enum Mode {

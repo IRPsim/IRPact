@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.jadex.examples.deprecated.simulation;
 
-import de.unileipzig.irpact.core.agent.AgentIdentifier;
 import de.unileipzig.irpact.jadex.agent.JadexAgent;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
@@ -117,10 +116,5 @@ public class SimuAgentBDI implements JadexAgent {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public AgentIdentifier getIdentifier() {
-        return null;
     }
 }

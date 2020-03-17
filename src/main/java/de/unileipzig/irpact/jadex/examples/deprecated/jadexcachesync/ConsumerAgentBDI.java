@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.jadex.examples.deprecated.jadexcachesync;
 
-import de.unileipzig.irpact.core.agent.AgentIdentifier;
 import de.unileipzig.irpact.jadex.agent.JadexAgent;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import jadex.bdiv3.BDIAgentFactory;
@@ -170,10 +169,5 @@ public class ConsumerAgentBDI implements JadexAgent {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public AgentIdentifier getIdentifier() {
-        return null;
     }
 }

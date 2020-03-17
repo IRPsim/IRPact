@@ -9,8 +9,8 @@ import de.unileipzig.irpact.core.simulation.SimulationEntity;
  */
 public interface Agent extends SimulationEntity, MessageReceiver {
 
-    @Override
-    AgentIdentifier getIdentifier();
+    //@Override
+    //AgentIdentifier getIdentifier();
 
     @Override
     default boolean isHandling(Agent sender, MessageContent content) {

@@ -10,17 +10,14 @@ import java.util.Set;
 public class BasicProduct implements Product {
 
     private ProductGroup group;
-    private ProductIdentifier identifier;
     private String name;
     private Set<ProductAttribute> attributes;
 
     public BasicProduct(
             ProductGroup group,
-            ProductIdentifier identifier,
             String name,
             Set<ProductAttribute> attributes) {
         this.group = Check.requireNonNull(group, "group");
-        this.identifier = Check.requireNonNull(identifier, "identifier");
         this.name = Check.requireNonNull(name, "name");
         this.attributes = Check.requireNonNull(attributes, "attributes");
     }
@@ -28,11 +25,6 @@ public class BasicProduct implements Product {
     @Override
     public ProductGroup getGroup() {
         return group;
-    }
-
-    @Override
-    public ProductIdentifier getIdentifier() {
-        return identifier;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.core.simulation;
 
+import java.util.Collection;
+
 /**
  * @author Daniel Abitz
  */
@@ -7,19 +9,27 @@ public interface SimulationEntity {
 
     SimulationEnvironment getEnvironment();
 
-    Identifier getIdentifier();
-
     String getName();
 
-    default boolean is(Identifier identifier) {
-        return getIdentifier().is(identifier);
+    default boolean is(EntityType type) {
+        return false;
     }
 
-    default boolean isType(Identifier identifier) {
-        return getIdentifier().isType(identifier);
+    default boolean isAll(Collection<? extends EntityType> types) {
+        for(EntityType type: types) {
+            if(!is(type)) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    default boolean isType(Class<? extends Identifier> type) {
-        return getIdentifier().isType(type);
+    default boolean isOnce(Collection<? extends EntityType> types) {
+        for(EntityType type: types) {
+            if(is(type)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -7,8 +7,6 @@ import de.unileipzig.irpact.core.AbstractGroup;
 import de.unileipzig.irpact.core.need.NeedDevelopmentScheme;
 import de.unileipzig.irpact.core.need.NeedExpirationScheme;
 import de.unileipzig.irpact.core.need.NeedSatisfyScheme;
-import de.unileipzig.irpact.core.simulation.GenericIdentifier;
-import de.unileipzig.irpact.core.simulation.Identifier;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialDistribution;
 
@@ -22,7 +20,6 @@ import java.util.Set;
 @ToDo("Preference + Value anschauen")
 public class BasicConsumerAgentGroup extends AbstractGroup<ConsumerAgent> implements ConsumerAgentGroup {
 
-    private final GenericIdentifier IDENTIFIER = new GenericIdentifier();
     protected Set<ConsumerAgentGroupAttribute> attributes;
     protected SpatialDistribution spatialDistribution;
     protected ProductFindingScheme findingScheme;
@@ -65,11 +62,6 @@ public class BasicConsumerAgentGroup extends AbstractGroup<ConsumerAgent> implem
             return false;
         }
         return entities.add(entitiy);
-    }
-
-    @Override
-    public Identifier getIdentifier() {
-        return IDENTIFIER;
     }
 
     @Override

@@ -21,11 +21,6 @@ public class PolicyAgentBase extends InformationAgentBase implements PolicyAgent
     }
 
     @Override
-    public PolicyAgentIdentifier getIdentifier() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public TaxesScheme getTaxesScheme() {
         return taxesScheme;
     }

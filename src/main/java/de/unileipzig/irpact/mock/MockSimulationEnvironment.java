@@ -14,7 +14,7 @@ public class MockSimulationEnvironment extends SimulationEnvironmentBase {
     }
 
     @Override
-    public long getStarttime() {
+    public long getSimulationStarttime() {
         throw new UnsupportedOperationException();
     }
 

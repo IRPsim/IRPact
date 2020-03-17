@@ -6,10 +6,6 @@ import de.unileipzig.irpact.core.network.AgentNetwork;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import org.slf4j.Logger;
 
-import java.util.Collection;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-
 /**
  * @author Daniel Abitz
  */
@@ -31,10 +27,10 @@ public interface SimulationEnvironment {
 
     void setTimeMode(Timestamp.Mode mode);
 
-    long getStarttime();
+    long getSimulationStarttime();
 
     default long getSimulationTimeSinceStart() {
-        return getSimulationTime() - getStarttime();
+        return getSimulationTime() - getSimulationStarttime();
     }
 
     long getSimulationTime();
@@ -49,14 +45,15 @@ public interface SimulationEnvironment {
     //cache
     //=========================
 
-    Identifier getIdentifier(String entitiyName);
+    //Identifier getIdentifier(String entitiyName);
 
-    <T extends SimulationEntity> T getEntity(Identifier identifier);
+    //<T extends SimulationEntity> T getEntity(Identifier identifier);
 
-    String getName(Identifier identifier);
+    //String getName(Identifier identifier);
 
-    void register(Identifier identifier, String name, SimulationEntity entity);
+    //void register(Identifier identifier, String name, SimulationEntity entity);
 
+    /*
     <T extends SimulationEntity> void forEach(
             Class<? extends Identifier> idType,
             Class<T> entitiyType,
@@ -76,6 +73,7 @@ public interface SimulationEnvironment {
             Class<? extends Identifier> idType,
             Class<T> entitiyType,
             Predicate<T> filter);
+    */
 
     //=========================
     //util

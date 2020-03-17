@@ -22,9 +22,4 @@ public class CompanyAgentBase extends InformationAgentBase implements CompanyAge
     public Set<Product> getProductPortfolio() {
         throw new UnsupportedOperationException();
     }
-
-    @Override
-    public CompanyAgentIdentifier getIdentifier() {
-        throw new UnsupportedOperationException();
-    }
 }

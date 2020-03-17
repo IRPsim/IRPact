@@ -12,8 +12,6 @@ public interface Product extends GroupEntity<Product> {
 
     ProductGroup getGroup();
 
-    ProductIdentifier getIdentifier();
-
     String getName();
 
     Set<ProductAttribute> getAttributes();

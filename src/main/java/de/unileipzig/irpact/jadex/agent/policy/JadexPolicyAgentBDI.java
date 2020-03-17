@@ -2,7 +2,6 @@ package de.unileipzig.irpact.jadex.agent.policy;
 
 import de.unileipzig.irpact.core.agent.policy.PolicyAgent;
 import de.unileipzig.irpact.core.agent.policy.PolicyAgentBase;
-import de.unileipzig.irpact.core.agent.policy.PolicyAgentIdentifier;
 import de.unileipzig.irpact.core.agent.policy.TaxesScheme;
 import de.unileipzig.irpact.jadex.agent.JadexAgentBase;
 import de.unileipzig.irpact.jadex.agent.JadexAgentService;
@@ -46,7 +45,6 @@ public class JadexPolicyAgentBDI extends JadexAgentBase
 
     //general
     private static final Logger logger = LoggerFactory.getLogger(JadexPolicyAgentBDI.class);
-    private JadexPolicyAgentIdentifier identifier;
 
     //Jadex parameter
     @Agent
@@ -93,11 +91,6 @@ public class JadexPolicyAgentBDI extends JadexAgentBase
     }
 
     @Override
-    public PolicyAgentIdentifier getIdentifier() {
-        return identifier;
-    }
-
-    @Override
     public TaxesScheme getTaxesScheme() {
         return agentBase.getTaxesScheme();
     }
@@ -127,7 +120,6 @@ public class JadexPolicyAgentBDI extends JadexAgentBase
     @Override
     protected void onInit() {
         initArgs(resultsFeature.getArguments());
-        identifier = new JadexPolicyAgentIdentifier();
         logger.trace("[{}] onInit", getName());
     }
 
