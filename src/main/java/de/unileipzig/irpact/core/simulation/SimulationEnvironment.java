@@ -23,6 +23,8 @@ public interface SimulationEnvironment {
 
     TimeModule getTimeModule();
 
+    SimulationConfig getConfig();
+
     Logger getLogger();
 
     //=========================

@@ -19,6 +19,7 @@ public abstract class SimulationEnvironmentBase implements SimulationEnvironment
     protected SimulationCache cache;
     protected TimeModule timeModule;
     protected ResettableTimer aktivityTimer;
+    protected SimulationConfig simulationConfig;
     protected Logger logger;
 
     public SimulationEnvironmentBase() {
@@ -80,6 +81,11 @@ public abstract class SimulationEnvironmentBase implements SimulationEnvironment
     @Override
     public TimeModule getTimeModule() {
         return timeModule;
+    }
+
+    @Override
+    public SimulationConfig getConfig() {
+        return simulationConfig;
     }
 
     @Override

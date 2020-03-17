@@ -16,4 +16,7 @@ public interface JadexSimulationEnvironment extends SimulationEnvironment {
 
     @Override
     JadexSimulationCache getCache();
+
+    @Override
+    JadexSimulationConfig getConfig();
 }

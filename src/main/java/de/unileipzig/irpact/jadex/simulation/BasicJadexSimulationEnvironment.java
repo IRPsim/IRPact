@@ -47,6 +47,10 @@ public class BasicJadexSimulationEnvironment extends SimulationEnvironmentBase i
         this.timeModule = timeModule;
     }
 
+    public void setConfig(JadexSimulationConfig simulationConfig) {
+        this.simulationConfig = simulationConfig;
+    }
+
     public IClockService getClockService() {
         return clockService;
     }
@@ -77,5 +81,10 @@ public class BasicJadexSimulationEnvironment extends SimulationEnvironmentBase i
     @Override
     public JadexTimeModule getTimeModule() {
         return (JadexTimeModule) timeModule;
+    }
+
+    @Override
+    public JadexSimulationConfig getConfig() {
+        return (JadexSimulationConfig) super.getConfig();
     }
 }
