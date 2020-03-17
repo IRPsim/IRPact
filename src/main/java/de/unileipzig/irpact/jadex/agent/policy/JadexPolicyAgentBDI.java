@@ -3,6 +3,7 @@ package de.unileipzig.irpact.jadex.agent.policy;
 import de.unileipzig.irpact.core.agent.policy.PolicyAgent;
 import de.unileipzig.irpact.core.agent.policy.PolicyAgentBase;
 import de.unileipzig.irpact.core.agent.policy.TaxesScheme;
+import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.jadex.agent.JadexAgentBase;
 import de.unileipzig.irpact.jadex.agent.JadexAgentService;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
@@ -88,6 +89,19 @@ public class JadexPolicyAgentBDI extends JadexAgentBase
     @Override
     public JadexSimulationEnvironment getEnvironment() {
         return (JadexSimulationEnvironment) agentBase.getEnvironment();
+    }
+
+    @Override
+    public boolean is(EntityType type) {
+        switch (type) {
+            case AGENT:
+            case INFORMATION_AGENT:
+            case POLICY_AGENT:
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     @Override

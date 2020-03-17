@@ -11,9 +11,7 @@ public interface SimulationEntity {
 
     String getName();
 
-    default boolean is(EntityType type) {
-        return false;
-    }
+    boolean is(EntityType type);
 
     default boolean isAll(Collection<? extends EntityType> types) {
         for(EntityType type: types) {
@@ -24,7 +22,7 @@ public interface SimulationEntity {
         return true;
     }
 
-    default boolean isOnce(Collection<? extends EntityType> types) {
+    default boolean isOne(Collection<? extends EntityType> types) {
         for(EntityType type: types) {
             if(is(type)) {
                 return true;

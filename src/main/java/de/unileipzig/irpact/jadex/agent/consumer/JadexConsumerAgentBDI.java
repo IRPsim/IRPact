@@ -6,6 +6,7 @@ import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.product.AdoptedProductInfo;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
+import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.jadex.agent.JadexAgentBase;
 import de.unileipzig.irpact.jadex.agent.JadexAgentService;
@@ -114,6 +115,21 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     @Override
     public JadexSimulationEnvironment getEnvironment() {
         return (JadexSimulationEnvironment) agentBase.getEnvironment();
+    }
+
+    @Override
+    public boolean is(EntityType type) {
+        switch (type) {
+            case AGENT:
+            case INFORMATION_AGENT:
+            case SPATIAL_AGENT:
+            case SPATIAL_INFORMATION_AGENT:
+            case CONSUMER_AGENT:
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     @Override

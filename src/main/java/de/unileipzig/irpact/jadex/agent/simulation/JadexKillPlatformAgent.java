@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.agent.simulation;
 
+import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
 import jadex.bridge.IExternalAccess;
@@ -67,6 +68,18 @@ public class JadexKillPlatformAgent extends JadexPlatformControlAgent {
     @Override
     public JadexSimulationEnvironment getEnvironment() {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean is(EntityType type) {
+        switch (type) {
+            case AGENT:
+            case SIMULATION_AGENT:
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     @Override

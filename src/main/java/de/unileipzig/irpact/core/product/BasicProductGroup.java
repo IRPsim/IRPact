@@ -3,6 +3,7 @@ package de.unileipzig.irpact.core.product;
 import de.unileipzig.irpact.commons.Check;
 import de.unileipzig.irpact.core.AbstractGroup;
 import de.unileipzig.irpact.core.need.Need;
+import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
 import java.util.HashSet;
@@ -26,6 +27,18 @@ public class BasicProductGroup extends AbstractGroup<Product> implements Product
         this.name = Check.requireNonNull(name, "name");
         this.attributes = Check.requireNonNull(attributes, "attributes");
         this.needsSatisfied = Check.requireNonNull(needsSatisfied, "needsSatisfied");
+    }
+
+    @SuppressWarnings("SwitchStatementWithTooFewBranches")
+    @Override
+    public boolean is(EntityType type) {
+        switch (type) {
+            case PRODUCT_GROUP:
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     @Override
@@ -66,6 +79,6 @@ public class BasicProductGroup extends AbstractGroup<Product> implements Product
     public Product deriveProduct() {
         String derivedName = deriveName();
         Set<ProductAttribute> derivedAttributes = deriveAttributes();
-        return new BasicProduct(this, derivedName, derivedAttributes);
+        return new BasicProduct(getEnvironment(), derivedName, this, derivedAttributes);
     }
 }

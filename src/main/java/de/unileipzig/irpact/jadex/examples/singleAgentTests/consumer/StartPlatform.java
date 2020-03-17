@@ -101,8 +101,9 @@ public class StartPlatform {
                 new HashSet<>()
         );
         return new BasicProduct(
-                pg,
+                env,
                 "TestProduct",
+                pg,
                 new HashSet<>()
         );
     }

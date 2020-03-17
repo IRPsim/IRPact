@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.examples.deprecated.jadexcachesync;
 
+import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.jadex.agent.JadexAgent;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import jadex.bdiv3.BDIAgentFactory;
@@ -126,5 +127,10 @@ public class SimuAgentBDI implements JadexAgent, ExtAccess {
                 .filter(id -> id != agent.getId())
                 .toArray(IComponentIdentifier[]::new);
         msgFeature.sendMessage(AgentState.RESUME, to);
+    }
+
+    @Override
+    public boolean is(EntityType type) {
+        throw new UnsupportedOperationException();
     }
 }

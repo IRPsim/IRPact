@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.agent.simulation;
 
+import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.start.StartSimulation;
 import jadex.bridge.IExternalAccess;
@@ -70,6 +71,18 @@ public class JadexSimulationControlAgent extends JadexPlatformControlAgent imple
     @Override
     public JadexSimulationEnvironment getEnvironment() {
         return environment;
+    }
+
+    @Override
+    public boolean is(EntityType type) {
+        switch (type) {
+            case AGENT:
+            case SIMULATION_AGENT:
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     //=========================

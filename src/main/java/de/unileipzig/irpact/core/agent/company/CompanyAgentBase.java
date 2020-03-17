@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.agent.company;
 
 import de.unileipzig.irpact.core.agent.InformationAgentBase;
 import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
 import java.util.Set;
@@ -20,6 +21,11 @@ public class CompanyAgentBase extends InformationAgentBase implements CompanyAge
 
     @Override
     public Set<Product> getProductPortfolio() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean is(EntityType type) {
         throw new UnsupportedOperationException();
     }
 }

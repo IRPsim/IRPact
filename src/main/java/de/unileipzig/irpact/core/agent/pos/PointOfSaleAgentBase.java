@@ -5,6 +5,7 @@ import de.unileipzig.irpact.core.agent.SpatialInformationAgentBase;
 import de.unileipzig.irpact.core.currency.Price;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.availability.ProductAvailability;
+import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
@@ -83,6 +84,11 @@ public class PointOfSaleAgentBase extends SpatialInformationAgentBase implements
 
     @Override
     public void updateAvailability(Product product, ProductAvailability newAvailability) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean is(EntityType type) {
         throw new UnsupportedOperationException();
     }
 }

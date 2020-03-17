@@ -5,17 +5,11 @@ import de.unileipzig.irpact.core.network.AgentNetwork;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import org.slf4j.Logger;
 
-import java.util.*;
-
 /**
  * @author Daniel Abitz
  */
 public abstract class SimulationEnvironmentBase implements SimulationEnvironment {
 
-    //cache
-    //protected Map<String, Identifier> identifierMap = new HashMap<>();
-    //protected Map<Identifier, SimulationEntity> entityMap = new HashMap<>();
-    protected Map<Class<?>, Set<SimulationEntity>> entityTypeMap = new HashMap<>();
     //para
     protected Timestamp.Mode mode = Timestamp.Mode.SYSTEM;
     protected SpatialModel spatialModel;

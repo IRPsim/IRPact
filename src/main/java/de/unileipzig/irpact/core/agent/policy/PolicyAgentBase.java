@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.agent.policy;
 
 import de.unileipzig.irpact.commons.Check;
 import de.unileipzig.irpact.core.agent.InformationAgentBase;
+import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
 /**
@@ -23,5 +24,10 @@ public class PolicyAgentBase extends InformationAgentBase implements PolicyAgent
     @Override
     public TaxesScheme getTaxesScheme() {
         return taxesScheme;
+    }
+
+    @Override
+    public boolean is(EntityType type) {
+        throw new UnsupportedOperationException();
     }
 }

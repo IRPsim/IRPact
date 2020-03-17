@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.AbstractGroup;
 import de.unileipzig.irpact.core.need.NeedDevelopmentScheme;
 import de.unileipzig.irpact.core.need.NeedExpirationScheme;
 import de.unileipzig.irpact.core.need.NeedSatisfyScheme;
+import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialDistribution;
 
@@ -52,6 +53,18 @@ public class BasicConsumerAgentGroup extends AbstractGroup<ConsumerAgent> implem
     }
 
     @Override
+    public boolean is(EntityType type) {
+        switch (type) {
+            case AGENT_GROUP:
+            case CONSUMER_AGENT_GROUP:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    @Override
     public Set<ConsumerAgentGroupAttribute> getAttributes() {
         return attributes;
     }
@@ -88,7 +101,6 @@ public class BasicConsumerAgentGroup extends AbstractGroup<ConsumerAgent> implem
     public NeedSatisfyScheme getNeedSatisfyScheme() {
         return needSatisfyScheme;
     }
-
 
     protected int productId = 0;
     protected synchronized String deriveName() {

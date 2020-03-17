@@ -6,6 +6,7 @@ import de.unileipzig.irpact.core.agent.SpatialInformationAgentBase;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
+import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
@@ -59,6 +60,11 @@ public class ConsumerAgentBase extends SpatialInformationAgentBase implements Co
 
     @Override
     public void addNeed(Need need) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean is(EntityType type) {
         throw new UnsupportedOperationException();
     }
 }

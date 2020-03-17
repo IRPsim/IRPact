@@ -3,6 +3,7 @@ package de.unileipzig.irpact.jadex.agent.company;
 import de.unileipzig.irpact.core.agent.company.CompanyAgent;
 import de.unileipzig.irpact.core.agent.company.CompanyAgentBase;
 import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.jadex.agent.JadexAgentBase;
 import de.unileipzig.irpact.jadex.agent.JadexAgentService;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
@@ -97,6 +98,19 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
     @Override
     public JadexSimulationEnvironment getEnvironment() {
         return (JadexSimulationEnvironment) agentBase.getEnvironment();
+    }
+
+    @Override
+    public boolean is(EntityType type) {
+        switch (type) {
+            case AGENT:
+            case INFORMATION_AGENT:
+            case COMPANY_AGENT:
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     //=========================
