@@ -19,7 +19,6 @@ public class Configuration {
     protected LogConfig logConfig;
     //core
     protected SimulationEnvironment environment;
-    protected GraphConfiguration configuration;
     protected Set<ConsumerAgentGroup> consumerAgentGroups;
     protected Set<CompanyAgent> companyAgents;
     protected Set<PointOfSaleAgent> pointOfSaleAgents;
@@ -29,7 +28,6 @@ public class Configuration {
     public Configuration(
             LogConfig logConfig,
             SimulationEnvironment environment,
-            GraphConfiguration configuration,
             Set<ConsumerAgentGroup> consumerAgentGroups,
             Set<CompanyAgent> companyAgents,
             Set<PointOfSaleAgent> pointOfSaleAgents,
@@ -37,7 +35,6 @@ public class Configuration {
             Set<ProductGroup> productGroups) {
         this.logConfig = logConfig;
         this.environment = environment;
-        this.configuration = configuration;
         this.consumerAgentGroups = consumerAgentGroups;
         this.companyAgents = companyAgents;
         this.pointOfSaleAgents = pointOfSaleAgents;
@@ -47,10 +44,6 @@ public class Configuration {
 
     public SimulationEnvironment getEnvironment() {
         return environment;
-    }
-
-    public GraphConfiguration getConfiguration() {
-        return configuration;
     }
 
     public Set<ConsumerAgentGroup> getConsumerAgentGroups() {

@@ -19,7 +19,6 @@ public class JadexConfiguration extends Configuration {
     public JadexConfiguration(
             JadexLogConfig logConfig,
             JadexSimulationEnvironment environment,
-            GraphConfiguration configuration,
             Set<ConsumerAgentGroup> consumerAgentGroups,
             Set<CompanyAgent> companyAgents,
             Set<PointOfSaleAgent> pointOfSaleAgents,
@@ -27,7 +26,7 @@ public class JadexConfiguration extends Configuration {
             Set<ProductGroup> productGroups) {
         super(
                 logConfig,
-                environment, configuration,
+                environment,
                 consumerAgentGroups,
                 companyAgents,
                 pointOfSaleAgents,

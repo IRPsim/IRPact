@@ -7,7 +7,6 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.agent.policy.PolicyAgent;
 import de.unileipzig.irpact.core.agent.pos.PointOfSaleAgent;
 import de.unileipzig.irpact.core.need.Need;
-import de.unileipzig.irpact.core.network.GraphConfiguration;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.ProductGroupAttribute;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
 public abstract class AbstractConfigurationBuilder<T extends AbstractConfigurationBuilder<T>> {
 
     protected SimulationEnvironment environment;
-    protected GraphConfiguration configuration;
     protected LogConfig logConfig;
     protected Map<String, Need> needs = new HashMap<>();
     protected Map<String, ProductGroupAttribute> pgAttributes = new HashMap<>();
@@ -59,7 +57,6 @@ public abstract class AbstractConfigurationBuilder<T extends AbstractConfigurati
 
     public T validate() {
         Check.requireNonNull(environment, "environment");
-        Check.requireNonNull(configuration, "configuration");
         return getThis();
     }
 
@@ -80,11 +77,6 @@ public abstract class AbstractConfigurationBuilder<T extends AbstractConfigurati
 
     public T setEnvironment(SimulationEnvironment environment) {
         this.environment = environment;
-        return getThis();
-    }
-
-    public T setGraphConfiguration(GraphConfiguration configuration) {
-        this.configuration = configuration;
         return getThis();
     }
 

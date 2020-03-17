@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+//set belief
 @Agent(type = BDIAgentFactory.TYPE)
 public class InternalGoalAgent2BDI {
 

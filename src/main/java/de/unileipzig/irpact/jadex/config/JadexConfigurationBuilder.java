@@ -2,10 +2,7 @@ package de.unileipzig.irpact.jadex.config;
 
 import de.unileipzig.irpact.core.config.AbstractConfigurationBuilder;
 import de.unileipzig.irpact.core.config.LogConfig;
-import de.unileipzig.irpact.core.network.BasicGraphConfiguration;
-import de.unileipzig.irpact.core.network.UnchangingEdgeWeight;
-import de.unileipzig.irpact.core.network.ConstantTopology;
-import de.unileipzig.irpact.core.network.EgoistTopology;
+import de.unileipzig.irpact.core.network.*;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
@@ -20,13 +17,18 @@ public class JadexConfigurationBuilder extends AbstractConfigurationBuilder<Jade
 
     @Override
     public JadexConfigurationBuilder initMinimal() {
-        return setLogConfig(new JadexLogConfig())
-                .setEnvironment(new BasicJadexSimulationEnvironment())
-                .setGraphConfiguration(new BasicGraphConfiguration(
+        BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
+        BasicAgentNetwork network = new BasicAgentNetwork(
+                new SocialGraph(),
+                new BasicGraphConfiguration(
                         EgoistTopology.INSTANCE,
                         ConstantTopology.INSTANCE,
                         UnchangingEdgeWeight.INSTANCE
-                ));
+                )
+        );
+        env.setAgentNetwork(network);
+        return setLogConfig(new JadexLogConfig())
+                .setEnvironment(env);
     }
 
     @Override
@@ -75,7 +77,6 @@ public class JadexConfigurationBuilder extends AbstractConfigurationBuilder<Jade
         return new JadexConfiguration(
                 getLogConfig(),
                 getEnvironment(),
-                configuration,
                 consumerAgentGroups,
                 companyAgents,
                 pointOfSaleAgents,

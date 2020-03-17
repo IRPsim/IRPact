@@ -3,8 +3,6 @@ package de.unileipzig.irpact.core.spatial.dim2;
 import de.unileipzig.irpact.core.spatial.Metric;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
-import java.util.Objects;
-
 /**
  * @author Daniel Abitz
  */
@@ -33,9 +31,14 @@ public final class Point2D implements SpatialInformation {
     }
 
     private static double euclideanDistance(Point2D p0, Point2D p1) {
+        double dist2 = euclideanDistance2(p0, p1);
+        return Math.sqrt(dist2);
+    }
+
+    private static double euclideanDistance2(Point2D p0, Point2D p1) {
         double x2 = (p0.x - p1.x) * (p0.x - p1.x);
         double y2 = (p0.y - p1.y) * (p0.y - p1.y);
-        return Math.sqrt(x2 + y2);
+        return x2 + y2;
     }
 
     private static double maximumDistance(Point2D p0, Point2D p1) {
@@ -50,6 +53,8 @@ public final class Point2D implements SpatialInformation {
                 return manhattenDistance(p0, p1);
             case EUCLIDEAN:
                 return euclideanDistance(p0, p1);
+            case EUCLIDEAN2:
+                return euclideanDistance2(p0, p1);
             case MAXIMUM:
                 return maximumDistance(p0, p1);
             default:
@@ -71,7 +76,8 @@ public final class Point2D implements SpatialInformation {
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y);
+        //micro optimierung, Objects.hash([]) umgehen und direkt implementieren
+        return 31 * (31 + Double.hashCode(x)) + Double.hashCode(y);
     }
 
     @Override

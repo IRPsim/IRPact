@@ -6,5 +6,6 @@ package de.unileipzig.irpact.core.spatial;
 public enum Metric {
     MANHATTEN,
     EUCLIDEAN,
+    EUCLIDEAN2,
     MAXIMUM
 }
