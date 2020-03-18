@@ -1,14 +1,24 @@
-package de.unileipzig.irpact.jadex.config;
+package de.unileipzig.irpact.io.config;
 
-import de.unileipzig.irpact.core.config.AbstractConfigurationBuilder;
-import de.unileipzig.irpact.core.config.LogConfig;
+import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinitiesMapping;
+import de.unileipzig.irpact.core.agent.policy.NoTaxes;
 import de.unileipzig.irpact.core.network.*;
 import de.unileipzig.irpact.core.network.topology.ConstantTopology;
 import de.unileipzig.irpact.core.network.topology.EgoistTopology;
 import de.unileipzig.irpact.core.network.topology.UnchangingEdgeWeight;
+import de.unileipzig.irpact.core.preference.ValueConfiguration;
+import de.unileipzig.irpact.core.simulation.BasicEconomicSpace;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.core.spatial.Metric;
+import de.unileipzig.irpact.core.spatial.dim2.SquareModel;
+import de.unileipzig.irpact.jadex.message.JadexMessageSystem;
+import de.unileipzig.irpact.jadex.simulation.BasicJadexEventManager;
+import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationConfiguration;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
+
+import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * @author Daniel Abitz
@@ -21,15 +31,28 @@ public class JadexConfigurationBuilder extends AbstractConfigurationBuilder<Jade
     @Override
     public JadexConfigurationBuilder initMinimal() {
         BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
-        BasicAgentNetwork network = new BasicAgentNetwork(
+        env.setEventManager(new BasicJadexEventManager());
+        env.setAgentNetwork(new BasicAgentNetwork(
                 new SocialNetwork(),
                 new BasicGraphConfiguration(
                         EgoistTopology.INSTANCE,
                         ConstantTopology.INSTANCE,
                         UnchangingEdgeWeight.INSTANCE
                 )
-        );
-        env.setAgentNetwork(network);
+        ));
+        env.setMessageSystem(new JadexMessageSystem(env, JadexMessageSystem.Mode.BASIC));
+        env.setSpatialModel(new SquareModel("Square", Metric.EUCLIDEAN, 0, 0, 1, 1));
+        env.setEconomicSpace(new BasicEconomicSpace(
+                NoTaxes.INSTANCE
+        ));
+        env.setConfig(new BasicJadexSimulationConfiguration(
+                new BasicConsumerAgentGroupAffinitiesMapping(new HashMap<>()),
+                new ValueConfiguration<>(new HashMap<>(), new HashSet<>()),
+                new HashMap<>(),
+                new HashMap<>(),
+                new HashMap<>(),
+                new HashMap<>()
+        ));
         return setLogConfig(new JadexLogConfig())
                 .setEnvironment(env);
     }
@@ -83,8 +106,7 @@ public class JadexConfigurationBuilder extends AbstractConfigurationBuilder<Jade
                 consumerAgentGroups,
                 companyAgents,
                 pointOfSaleAgents,
-                policyAgents,
-                productGroups
+                policyAgents
         );
     }
 }

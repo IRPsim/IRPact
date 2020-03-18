@@ -1,12 +1,9 @@
-package de.unileipzig.irpact.jadex.config;
+package de.unileipzig.irpact.io.config;
 
 import de.unileipzig.irpact.core.agent.company.CompanyAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.policy.PolicyAgent;
 import de.unileipzig.irpact.core.agent.pos.PointOfSaleAgent;
-import de.unileipzig.irpact.core.network.GraphConfiguration;
-import de.unileipzig.irpact.core.product.ProductGroup;
-import de.unileipzig.irpact.core.config.Configuration;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 
 import java.util.Set;
@@ -22,16 +19,14 @@ public class JadexConfiguration extends Configuration {
             Set<ConsumerAgentGroup> consumerAgentGroups,
             Set<CompanyAgent> companyAgents,
             Set<PointOfSaleAgent> pointOfSaleAgents,
-            Set<PolicyAgent> policyAgents,
-            Set<ProductGroup> productGroups) {
+            Set<PolicyAgent> policyAgents) {
         super(
                 logConfig,
                 environment,
                 consumerAgentGroups,
                 companyAgents,
                 pointOfSaleAgents,
-                policyAgents,
-                productGroups
+                policyAgents
         );
     }
 

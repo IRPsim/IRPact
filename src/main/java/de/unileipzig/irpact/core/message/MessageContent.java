@@ -6,4 +6,8 @@ package de.unileipzig.irpact.core.message;
 public interface MessageContent {
 
     void process();
+
+    boolean isSerializable();
+
+    String serializeToString();
 }

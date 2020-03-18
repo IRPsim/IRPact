@@ -1,6 +1,4 @@
-package de.unileipzig.irpact.jadex.config;
-
-import de.unileipzig.irpact.core.config.LogConfig;
+package de.unileipzig.irpact.io.config;
 
 /**
  * @author Daniel Abitz

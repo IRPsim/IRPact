@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.examples.deprecated.simulation;
 
+import de.unileipzig.irpact.core.message.MessageContent;
 import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.jadex.agent.JadexAgent;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
@@ -53,7 +54,7 @@ public class ConsumerAgentBDI implements JadexAgent {
         name = (String) args.get("name");
         logger = (Logger) args.get("logger");
         env = (JadexSimulationEnvironment) args.get("env");
-        env.getCache().register(name, agent.getExternalAccess(), this);
+        env.getConfiguration().register(agent.getExternalAccess(), this);
     }
 
     @OnInit
@@ -111,6 +112,16 @@ public class ConsumerAgentBDI implements JadexAgent {
 
     @Override
     public boolean is(EntityType type) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isHandling(de.unileipzig.irpact.core.agent.Agent sender, MessageContent content) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void handleMessage(de.unileipzig.irpact.core.agent.Agent sender, MessageContent content) {
         throw new UnsupportedOperationException();
     }
 }

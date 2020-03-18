@@ -1,5 +1,7 @@
-package de.unileipzig.irpact.jadex.examples.deprecated.tests.configs;
+package de.unileipzig.irpact.jadex.examples.sendCustomMessage;
 
+import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
+import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.company.CompanyAgentBase;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.TakeFirstProductAdoptionDecision;
@@ -9,14 +11,21 @@ import de.unileipzig.irpact.core.agent.pos.IgnoreProductAvailabilityChange;
 import de.unileipzig.irpact.core.agent.pos.IgnoreProductPriceChange;
 import de.unileipzig.irpact.core.agent.pos.IgnoreProductSoldOut;
 import de.unileipzig.irpact.core.agent.pos.PointOfSaleAgentBase;
+import de.unileipzig.irpact.core.message.BasicMessage;
+import de.unileipzig.irpact.core.message.BasicMessageEvent;
+import de.unileipzig.irpact.core.message.MessageContent;
+import de.unileipzig.irpact.core.message.MessageEvent;
 import de.unileipzig.irpact.core.need.IgnoreNeedSatisfy;
 import de.unileipzig.irpact.core.need.NoNeedDevelopment;
 import de.unileipzig.irpact.core.need.NoNeedExpiration;
 import de.unileipzig.irpact.core.product.BasicProductGroup;
 import de.unileipzig.irpact.core.spatial.dim2.DummyPoint2DDistribution;
-import de.unileipzig.irpact.jadex.agent.consumer.JadexUseKnownProducts;
 import de.unileipzig.irpact.io.config.JadexConfiguration;
 import de.unileipzig.irpact.io.config.JadexConfigurationBuilder;
+import de.unileipzig.irpact.jadex.agent.consumer.JadexUseKnownProducts;
+import de.unileipzig.irpact.jadex.message.JadexMessageSystem;
+import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
+import de.unileipzig.irpact.jadex.start.StartSimulation;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,9 +33,9 @@ import java.util.HashSet;
 /**
  * @author Daniel Abitz
  */
-public final class AllAgentsAnd2Groups {
+public class Main {
 
-    public static JadexConfigurationBuilder builder() {
+    private static JadexConfigurationBuilder builder() {
         JadexConfigurationBuilder cb = new JadexConfigurationBuilder()
                 .initMinimal();
 
@@ -109,7 +118,77 @@ public final class AllAgentsAnd2Groups {
         return cb;
     }
 
-    public static JadexConfiguration get() {
-        return builder().validate().build();
+    public static void main(String[] args) {
+        JadexConfiguration configuration = builder().validate()
+                .build();
+        StartSimulation.start(configuration);
+
+        BasicJadexSimulationEnvironment env = (BasicJadexSimulationEnvironment) configuration.getEnvironment();
+        Agent a0 = env.getConfiguration().findEntity("policy_trump");
+        Agent a1 = env.getConfiguration().findEntity("consumer_baum#2");
+
+        ConcurrentUtil.sleepSilently(2000);
+        env.getMessageSystem().send(a0, new MessageContent() {
+            @Override
+            public void process() {
+                System.out.println("Hello World!");
+            }
+
+            @Override
+            public boolean isSerializable() {
+                return true;
+            }
+
+            @Override
+            public String serializeToString() {
+                return "System.out.println(\"Hello World!\")";
+            }
+        }, a1);
+
+        ConcurrentUtil.sleepSilently(2000);
+        env.getMessageSystem().setMode(JadexMessageSystem.Mode.JADEX);
+        env.getMessageSystem().send(a0, new MessageContent() {
+            @Override
+            public void process() {
+                System.out.println("Hello JadexWorld!");
+            }
+
+            @Override
+            public boolean isSerializable() {
+                return true;
+            }
+
+            @Override
+            public String serializeToString() {
+                return "System.out.println(\"Hello JadexWorld!\")";
+            }
+        }, a1);
+
+        ConcurrentUtil.sleepSilently(2000);
+        env.getMessageSystem().setMode(JadexMessageSystem.Mode.BASIC);
+        MessageEvent msgEvent = new BasicMessageEvent(
+                env.getMessageSystem(),
+                new BasicMessage(
+                        a0,
+                        a1,
+                        new MessageContent() {
+                            @Override
+                            public void process() {
+                                System.out.println("HELLO EVENT");
+                            }
+
+                            @Override
+                            public boolean isSerializable() {
+                                return false;
+                            }
+
+                            @Override
+                            public String serializeToString() {
+                                throw new UnsupportedOperationException();
+                            }
+                        }
+                )
+        );
+        env.getEventManager().schedule(msgEvent);
     }
 }

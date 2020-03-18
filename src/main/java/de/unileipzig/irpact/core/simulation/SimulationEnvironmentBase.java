@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.simulation;
 
-import de.unileipzig.irpact.commons.concurrent.ResettableTimer;
+import de.unileipzig.irpact.commons.Check;
 import de.unileipzig.irpact.core.message.MessageSystem;
 import de.unileipzig.irpact.core.network.AgentNetwork;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
@@ -16,10 +16,9 @@ public abstract class SimulationEnvironmentBase implements SimulationEnvironment
     protected AgentNetwork agentNetwork;
     protected EconomicSpace economicSpace;
     protected MessageSystem messageSystem;
-    protected SimulationCache cache;
     protected TimeModule timeModule;
-    protected ResettableTimer aktivityTimer;
-    protected SimulationConfig simulationConfig;
+    protected SimulationConfiguration simulationConfiguration;
+    protected EventManager eventManager;
     protected Logger logger;
 
     public SimulationEnvironmentBase() {
@@ -39,10 +38,6 @@ public abstract class SimulationEnvironmentBase implements SimulationEnvironment
 
     public void setAgentNetwork(AgentNetwork agentNetwork) {
         this.agentNetwork = agentNetwork;
-    }
-
-    public void setTimer(ResettableTimer aktivityTimer) {
-        this.aktivityTimer = aktivityTimer;
     }
 
     public void setLogger(Logger logger) {
@@ -74,18 +69,18 @@ public abstract class SimulationEnvironmentBase implements SimulationEnvironment
     }
 
     @Override
-    public SimulationCache getCache() {
-        return cache;
-    }
-
-    @Override
     public TimeModule getTimeModule() {
         return timeModule;
     }
 
     @Override
-    public SimulationConfig getConfig() {
-        return simulationConfig;
+    public SimulationConfiguration getConfiguration() {
+        return simulationConfiguration;
+    }
+
+    @Override
+    public EventManager getEventManager() {
+        return eventManager;
     }
 
     @Override
@@ -93,10 +88,18 @@ public abstract class SimulationEnvironmentBase implements SimulationEnvironment
         return logger;
     }
 
+    //=========================
+    //util
+    //=========================
+
     @Override
-    public void poke() {
-        if(aktivityTimer != null) {
-            aktivityTimer.reset();
-        }
+    public void validate() {
+        Check.requireNonNull(spatialModel, "spatialModel");
+        Check.requireNonNull(agentNetwork, "agentNetwork");
+        Check.requireNonNull(economicSpace, "economicSpace");
+        Check.requireNonNull(messageSystem, "messageSystem");
+        Check.requireNonNull(timeModule, "timeModule");
+        Check.requireNonNull(simulationConfiguration, "simulationConfig");
+        Check.requireNonNull(logger, "logger");
     }
 }

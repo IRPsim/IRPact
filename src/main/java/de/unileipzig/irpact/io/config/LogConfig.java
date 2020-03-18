@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.config;
+package de.unileipzig.irpact.io.config;
 
 /**
  * @author Daniel Abitz

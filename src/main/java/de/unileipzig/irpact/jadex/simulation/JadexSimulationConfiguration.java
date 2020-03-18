@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.simulation;
 
-import de.unileipzig.irpact.core.simulation.SimulationCache;
+import de.unileipzig.irpact.core.simulation.SimulationConfiguration;
 import de.unileipzig.irpact.core.simulation.SimulationEntity;
 import jadex.bridge.IComponentIdentifier;
 import jadex.bridge.IExternalAccess;
@@ -11,11 +11,13 @@ import java.util.NoSuchElementException;
 /**
  * @author Daniel Abitz
  */
-public interface JadexSimulationCache extends SimulationCache {
+public interface JadexSimulationConfiguration extends SimulationConfiguration {
 
     //=========================
-    //get
+    //Entities
     //=========================
+
+    boolean hasAccess(IExternalAccess access);
 
     Collection<? extends IExternalAccess> getAccesses();
 
@@ -28,9 +30,9 @@ public interface JadexSimulationCache extends SimulationCache {
                 : access.getId();
     }
 
-    //=========================
-    //find
-    //=========================
+    default <T extends SimulationEntity> T getEntity(IComponentIdentifier identifier) {
+        return getEntity(identifier.getLocalName());
+    }
 
     default IExternalAccess findAccess(String name) throws NoSuchElementException {
         IExternalAccess access = getAccess(name);
@@ -48,11 +50,19 @@ public interface JadexSimulationCache extends SimulationCache {
         return identifier;
     }
 
+    default <T extends SimulationEntity> T findEntity(IComponentIdentifier identifier) throws NoSuchElementException {
+        T entity = getEntity(identifier);
+        if(entity == null) {
+            throw new NoSuchElementException(identifier.getLocalName());
+        }
+        return entity;
+    }
+
     //=========================
     //util
     //=========================
 
-    boolean register(String name, IExternalAccess access);
+    boolean register(IExternalAccess access);
 
-    boolean register(String name, IExternalAccess access, SimulationEntity entity);
+    boolean register(IExternalAccess access, SimulationEntity entity);
 }

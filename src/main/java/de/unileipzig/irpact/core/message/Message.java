@@ -5,9 +5,11 @@ import de.unileipzig.irpact.core.agent.Agent;
 /**
  * @author Daniel Abitz
  */
-public interface SenderReceiverMessage extends MessageContent {
+public interface Message {
 
     Agent getSender();
 
     Agent getReceiver();
+
+    MessageContent getContent();
 }

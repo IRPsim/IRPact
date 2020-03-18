@@ -10,9 +10,11 @@ import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.start.StartSimulation;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bdiv3.features.IBDIAgentFeature;
+import jadex.bridge.IComponentIdentifier;
 import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IArgumentsResultsFeature;
 import jadex.bridge.component.IExecutionFeature;
+import jadex.bridge.component.IMessageFeature;
 import jadex.bridge.service.annotation.OnEnd;
 import jadex.bridge.service.annotation.OnInit;
 import jadex.bridge.service.annotation.OnStart;
@@ -58,6 +60,8 @@ public class JadexPolicyAgentBDI extends JadexAgentBase
     protected IExecutionFeature execFeature;
     @AgentFeature
     protected IRequiredServicesFeature reqFeature;
+    @AgentFeature
+    protected IMessageFeature msgFeature;
 
     //ConsumerAgent parameter
     protected PolicyAgentBase agentBase;
@@ -114,6 +118,21 @@ public class JadexPolicyAgentBDI extends JadexAgentBase
     //=========================
 
     @Override
+    protected Logger logger() {
+        return logger;
+    }
+
+    @Override
+    protected IComponentIdentifier getCompnentIdentifier() {
+        return agent.getId();
+    }
+
+    @Override
+    protected IMessageFeature getMessageFeature() {
+        return msgFeature;
+    }
+
+    @Override
     protected void initArgs(Map<String, Object> args) {
         try {
             agentBase = get(args, AGENT_BASE);
@@ -134,6 +153,8 @@ public class JadexPolicyAgentBDI extends JadexAgentBase
     @Override
     protected void onInit() {
         initArgs(resultsFeature.getArguments());
+        getEnvironment().getConfiguration() .register(agent.getExternalAccess(), this);
+        initMessageHandler();
         logger.trace("[{}] onInit", getName());
     }
 

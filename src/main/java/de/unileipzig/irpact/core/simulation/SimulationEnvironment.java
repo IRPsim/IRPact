@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.simulation;
 
-import de.unileipzig.irpact.commons.annotation.Experimental;
 import de.unileipzig.irpact.core.message.MessageSystem;
 import de.unileipzig.irpact.core.network.AgentNetwork;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
@@ -19,11 +18,11 @@ public interface SimulationEnvironment {
 
     EconomicSpace getEconomicSpace();
 
-    SimulationCache getCache();
-
     TimeModule getTimeModule();
 
-    SimulationConfig getConfig();
+    SimulationConfiguration getConfiguration();
+
+    EventManager getEventManager();
 
     Logger getLogger();
 
@@ -31,6 +30,5 @@ public interface SimulationEnvironment {
     //util
     //=========================
 
-    @Experimental
-    void poke();
+    void validate();
 }

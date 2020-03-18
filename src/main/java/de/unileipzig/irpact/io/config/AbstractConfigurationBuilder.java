@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.config;
+package de.unileipzig.irpact.io.config;
 
 import de.unileipzig.irpact.commons.Check;
 import de.unileipzig.irpact.core.agent.company.CompanyAgent;
@@ -9,7 +9,9 @@ import de.unileipzig.irpact.core.agent.pos.PointOfSaleAgent;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.ProductGroupAttribute;
+import de.unileipzig.irpact.core.simulation.BasicSimulationConfiguration;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.core.spatial.SpatialModel;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,17 +21,17 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractConfigurationBuilder<T extends AbstractConfigurationBuilder<T>> {
 
-    protected SimulationEnvironment environment;
-    protected LogConfig logConfig;
+    //helper
     protected Map<String, Need> needs = new HashMap<>();
     protected Map<String, ProductGroupAttribute> pgAttributes = new HashMap<>();
     protected Map<String, ConsumerAgentGroupAttribute> cagAttributes = new HashMap<>();
-
+    //config
+    protected LogConfig logConfig;
+    protected SimulationEnvironment environment;
     protected Set<ConsumerAgentGroup> consumerAgentGroups = new HashSet<>();
     protected Set<CompanyAgent> companyAgents = new HashSet<>();
     protected Set<PointOfSaleAgent> pointOfSaleAgents = new HashSet<>();
     protected Set<PolicyAgent> policyAgents = new HashSet<>();
-    protected Set<ProductGroup> productGroups = new HashSet<>();
 
     public AbstractConfigurationBuilder() {
     }
@@ -39,23 +41,34 @@ public abstract class AbstractConfigurationBuilder<T extends AbstractConfigurati
     //=========================
 
     public T reset() {
-        needs.clear();
-        pgAttributes.clear();
-        cagAttributes.clear();
-        consumerAgentGroups.clear();
-        companyAgents.clear();
-        pointOfSaleAgents.clear();
-        policyAgents.clear();
-        productGroups.clear();
+        //helper
+        needs = new HashMap<>();
+        pgAttributes = new HashMap<>();
+        cagAttributes = new HashMap<>();
+        //config
+        logConfig = null;
+        environment = null;
+        consumerAgentGroups = new HashSet<>();
+        companyAgents = new HashSet<>();
+        pointOfSaleAgents = new HashSet<>();
+        policyAgents = new HashSet<>();
         return getThis();
     }
 
     public T validateDeep() {
         validate();
+        Check.requireNonNull(environment.getSpatialModel(), "spatialModel");
+        Check.requireNonNull(environment.getAgentNetwork(), "agentNetwork");
+        Check.requireNonNull(environment.getEconomicSpace(), "economicSpace");
+        Check.requireNonNull(environment.getMessageSystem(), "messageSystem");
+        //Check.requireNonNull(timeModule, "timeModule");
+        Check.requireNonNull(environment.getConfiguration(), "simulationConfig");
+        //Check.requireNonNull(logger, "logger");
         return getThis();
     }
 
     public T validate() {
+        Check.requireNonNull(logConfig, "logConfig");
         Check.requireNonNull(environment, "environment");
         return getThis();
     }
@@ -115,8 +128,11 @@ public abstract class AbstractConfigurationBuilder<T extends AbstractConfigurati
         return getThis();
     }
 
-    public T addProductGroup(ProductGroup pg) {
-        productGroups.add(pg);
+    public T addProductGroup(ProductGroup group) {
+        BasicSimulationConfiguration config = (BasicSimulationConfiguration) environment.getConfiguration();
+        if(!config.add(group)) {
+            throw new IllegalStateException("already exists: " + group.getName());
+        }
         return getThis();
     }
 
@@ -126,6 +142,15 @@ public abstract class AbstractConfigurationBuilder<T extends AbstractConfigurati
 
     public SimulationEnvironment getEnvironment() {
         return environment;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <R extends SpatialModel> R getSpatialModel() {
+        SpatialModel model = environment.getSpatialModel();
+        if(model == null) {
+            throw new NoSuchElementException();
+        }
+        return (R) model;
     }
 
     public LogConfig getLogConfig() {

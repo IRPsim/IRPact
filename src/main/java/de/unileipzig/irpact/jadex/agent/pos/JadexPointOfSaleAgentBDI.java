@@ -6,9 +6,9 @@ import de.unileipzig.irpact.core.currency.Price;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.availability.NullProductAvailability;
 import de.unileipzig.irpact.core.product.availability.ProductAvailability;
-import de.unileipzig.irpact.core.product.availability.ProductAvailabilityChangeEvent;
-import de.unileipzig.irpact.core.product.availability.ProductSoldOutEvent;
-import de.unileipzig.irpact.core.product.price.ProductPriceChangeEvent;
+import de.unileipzig.irpact.core.product.availability.ProductAvailabilityChange;
+import de.unileipzig.irpact.core.product.availability.ProductSoldOut;
+import de.unileipzig.irpact.core.product.price.ProductPriceChange;
 import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.jadex.agent.JadexAgentBase;
@@ -20,9 +20,11 @@ import jadex.bdiv3.annotation.Goal;
 import jadex.bdiv3.annotation.Plan;
 import jadex.bdiv3.annotation.Trigger;
 import jadex.bdiv3.features.IBDIAgentFeature;
+import jadex.bridge.IComponentIdentifier;
 import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IArgumentsResultsFeature;
 import jadex.bridge.component.IExecutionFeature;
+import jadex.bridge.component.IMessageFeature;
 import jadex.bridge.service.annotation.OnEnd;
 import jadex.bridge.service.annotation.OnInit;
 import jadex.bridge.service.annotation.OnStart;
@@ -68,6 +70,8 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     protected IExecutionFeature execFeature;
     @AgentFeature
     protected IRequiredServicesFeature reqFeature;
+    @AgentFeature
+    protected IMessageFeature msgFeature;
 
     //ConsumerAgent parameter
     protected PointOfSaleAgentBase agentBase;
@@ -149,7 +153,7 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     @Override
     public void updatePrice(Product product, Price newPrice) {
         Price oldPrice = getProductPrices().put(product, newPrice);
-        ProductPriceChangeEvent event = new ProductPriceChangeEvent(
+        ProductPriceChange event = new ProductPriceChange(
                 product,
                 NullPrice.check(oldPrice),
                 newPrice
@@ -166,7 +170,7 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
         if(availability.isAvailable()) {
             availability.decrement();
             if(!availability.isAvailable()) {
-                ProductSoldOutEvent event = new ProductSoldOutEvent(product, availability);
+                ProductSoldOut event = new ProductSoldOut(product, availability);
                 bdiFeature.dispatchTopLevelGoal(new ProductSoldOutGoal(event));
             }
             return true;
@@ -178,7 +182,7 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     @Override
     public void updateAvailability(Product product, ProductAvailability newAvailability) {
         ProductAvailability oldAvailability = getProductAvailability().put(product, newAvailability);
-        ProductAvailabilityChangeEvent event = new ProductAvailabilityChangeEvent(
+        ProductAvailabilityChange event = new ProductAvailabilityChange(
                 product,
                 NullProductAvailability.check(oldAvailability),
                 newAvailability
@@ -194,6 +198,21 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     //=========================
     //JadexAgentBase
     //=========================
+
+    @Override
+    protected Logger logger() {
+        return logger;
+    }
+
+    @Override
+    protected IComponentIdentifier getCompnentIdentifier() {
+        return agent.getId();
+    }
+
+    @Override
+    protected IMessageFeature getMessageFeature() {
+        return msgFeature;
+    }
 
     @Override
     protected void initArgs(Map<String, Object> args) {
@@ -216,6 +235,8 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     @Override
     protected void onInit() {
         initArgs(resultsFeature.getArguments());
+        getEnvironment().getConfiguration() .register(agent.getExternalAccess(), this);
+        initMessageHandler();
         logger.trace("[{}] onInit", getName());
     }
 
@@ -266,20 +287,20 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     @Goal
     public class ProductAvailabilityChangeGoal {
 
-        protected ProductAvailabilityChangeEvent event;
+        protected ProductAvailabilityChange event;
 
-        public ProductAvailabilityChangeGoal(ProductAvailabilityChangeEvent event) {
+        public ProductAvailabilityChangeGoal(ProductAvailabilityChange event) {
             this.event = event;
         }
 
-        public ProductAvailabilityChangeEvent getEvent() {
+        public ProductAvailabilityChange getEvent() {
             return event;
         }
     }
 
     @Plan(trigger = @Trigger(goals = ProductAvailabilityChangeGoal.class))
     protected void handleProductAvailabilityChange(ProductAvailabilityChangeGoal goal) {
-        ProductAvailabilityChangeEvent event = goal.getEvent();
+        ProductAvailabilityChange event = goal.getEvent();
         getProductAvailabilityChangeScheme().handle(
                 this,
                 event.getProduct(),
@@ -295,20 +316,20 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     @Goal
     public class ProductPriceChangeGoal {
 
-        protected ProductPriceChangeEvent event;
+        protected ProductPriceChange event;
 
-        public ProductPriceChangeGoal(ProductPriceChangeEvent event) {
+        public ProductPriceChangeGoal(ProductPriceChange event) {
             this.event = event;
         }
 
-        public ProductPriceChangeEvent getEvent() {
+        public ProductPriceChange getEvent() {
             return event;
         }
     }
 
     @Plan(trigger = @Trigger(goals = ProductPriceChangeGoal.class))
     protected void handleProductPriceChange(ProductPriceChangeGoal goal) {
-        ProductPriceChangeEvent event = goal.getEvent();
+        ProductPriceChange event = goal.getEvent();
         getProductPriceChangeScheme().handle(
                 this,
                 event.getProduct(),
@@ -324,20 +345,20 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     @Goal
     public class ProductSoldOutGoal {
 
-        protected ProductSoldOutEvent event;
+        protected ProductSoldOut event;
 
-        public ProductSoldOutGoal(ProductSoldOutEvent event) {
+        public ProductSoldOutGoal(ProductSoldOut event) {
             this.event = event;
         }
 
-        public ProductSoldOutEvent getEvent() {
+        public ProductSoldOut getEvent() {
             return event;
         }
     }
 
     @Plan(trigger = @Trigger(goals = ProductSoldOutGoal.class))
     protected void handleProductSoldOut(ProductSoldOutGoal goal) {
-        ProductSoldOutEvent event = goal.getEvent();
+        ProductSoldOut event = goal.getEvent();
         getProductSoldOutScheme().handle(
                 this,
                 event.getProduct(),

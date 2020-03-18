@@ -1,19 +1,18 @@
 package de.unileipzig.irpact.core.product.availability;
 
 import de.unileipzig.irpact.commons.Check;
-import de.unileipzig.irpact.core.Event;
 import de.unileipzig.irpact.core.product.Product;
 
 /**
  * @author Daniel Abitz
  */
-public final class ProductAvailabilityChangeEvent implements Event {
+public final class ProductAvailabilityChange {
 
     private Product product;
     private ProductAvailability oldAvailability;
     private ProductAvailability newAvailability;
 
-    public ProductAvailabilityChangeEvent(
+    public ProductAvailabilityChange(
             Product product,
             ProductAvailability oldAvailability,
             ProductAvailability newAvailability) {

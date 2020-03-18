@@ -1,8 +1,10 @@
 package de.unileipzig.irpact.mock;
 
+import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.message.MessageContent;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.preference.Preference;
 import de.unileipzig.irpact.core.product.Product;
@@ -102,6 +104,16 @@ public class MockConsumerAgent implements ConsumerAgent {
 
     @Override
     public boolean is(EntityType type) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isHandling(Agent sender, MessageContent content) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void handleMessage(Agent sender, MessageContent content) {
         throw new UnsupportedOperationException();
     }
 }

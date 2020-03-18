@@ -1,20 +1,19 @@
 package de.unileipzig.irpact.core.product.price;
 
 import de.unileipzig.irpact.commons.Check;
-import de.unileipzig.irpact.core.Event;
 import de.unileipzig.irpact.core.currency.Price;
 import de.unileipzig.irpact.core.product.Product;
 
 /**
  * @author Daniel Abitz
  */
-public final class ProductPriceChangeEvent implements Event {
+public final class ProductPriceChange {
 
     private Product product;
     private Price oldPrice;
     private Price newPrice;
 
-    public ProductPriceChangeEvent(
+    public ProductPriceChange(
             Product product,
             Price oldPrice,
             Price newPrice) {

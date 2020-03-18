@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.jadex.simulation;
 
+import de.unileipzig.irpact.commons.annotation.Experimental;
+import de.unileipzig.irpact.core.simulation.EventManager;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.jadex.message.JadexMessageSystem;
 import jadex.bridge.IExternalAccess;
@@ -15,8 +17,15 @@ public interface JadexSimulationEnvironment extends SimulationEnvironment {
     JadexMessageSystem getMessageSystem();
 
     @Override
-    JadexSimulationCache getCache();
+    JadexSimulationConfiguration getConfiguration();
 
     @Override
-    JadexSimulationConfig getConfig();
+    JadexEventManager getEventManager();
+
+    //=========================
+    //util
+    //=========================
+
+    @Experimental
+    void poke();
 }

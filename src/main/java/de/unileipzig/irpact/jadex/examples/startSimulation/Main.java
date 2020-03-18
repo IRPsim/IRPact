@@ -1,10 +1,7 @@
-package de.unileipzig.irpact.jadex.examples.deprecated.tests.configs;
+package de.unileipzig.irpact.jadex.examples.startSimulation;
 
-import de.unileipzig.irpact.commons.distribution.BooleanDistribution;
-import de.unileipzig.irpact.commons.distribution.ConstantDistribution;
-import de.unileipzig.irpact.commons.distribution.RandomDistribution;
+import de.unileipzig.irpact.core.agent.company.CompanyAgentBase;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroup;
-import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.TakeFirstProductAdoptionDecision;
 import de.unileipzig.irpact.core.agent.policy.NoTaxes;
 import de.unileipzig.irpact.core.agent.policy.PolicyAgentBase;
@@ -12,62 +9,47 @@ import de.unileipzig.irpact.core.agent.pos.IgnoreProductAvailabilityChange;
 import de.unileipzig.irpact.core.agent.pos.IgnoreProductPriceChange;
 import de.unileipzig.irpact.core.agent.pos.IgnoreProductSoldOut;
 import de.unileipzig.irpact.core.agent.pos.PointOfSaleAgentBase;
-import de.unileipzig.irpact.core.need.BasicNeed;
 import de.unileipzig.irpact.core.need.IgnoreNeedSatisfy;
 import de.unileipzig.irpact.core.need.NoNeedDevelopment;
 import de.unileipzig.irpact.core.need.NoNeedExpiration;
 import de.unileipzig.irpact.core.product.BasicProductGroup;
-import de.unileipzig.irpact.core.product.BasicProductGroupAttribute;
 import de.unileipzig.irpact.core.spatial.dim2.DummyPoint2DDistribution;
-import de.unileipzig.irpact.jadex.agent.consumer.JadexUseKnownProducts;
 import de.unileipzig.irpact.io.config.JadexConfiguration;
 import de.unileipzig.irpact.io.config.JadexConfigurationBuilder;
+import de.unileipzig.irpact.jadex.agent.consumer.JadexUseKnownProducts;
+import de.unileipzig.irpact.jadex.start.StartSimulation;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * @author Daniel Abitz
  */
-public final class BaumHaus2ConsumerType {
+public class Main {
 
-    public static JadexConfiguration get() {
+    private static JadexConfigurationBuilder builder() {
         JadexConfigurationBuilder cb = new JadexConfigurationBuilder()
-                .initMinimal()
-                //haus
-                .addNeed("haus", new BasicNeed("haus"))
-                .addProductGroupAttribute("etagen", new BasicProductGroupAttribute("etagen", new ConstantDistribution("cd0", 2)))
-                .addProductGroupAttribute("garten", new BasicProductGroupAttribute("garten", new ConstantDistribution("cd1", 0)))
-                //baum
-                .addNeed("baum", new BasicNeed("baum"))
-                .addProductGroupAttribute("hoehe", new BasicProductGroupAttribute("hoehe", new RandomDistribution("rd0", new Random(42), 5, 10)))
-                //group 1
-                .addConsumerAgentGroupAttribute("baum", new BasicConsumerAgentGroupAttribute("baum", new BooleanDistribution("bd0", new Random(1337), 0.5)))
-                .addConsumerAgentGroupAttribute("baumidiot", new BasicConsumerAgentGroupAttribute("idiot", new RandomDistribution("rd1", new Random(42), 0, 1)))
-                //group 2
-                .addConsumerAgentGroupAttribute("haus", new BasicConsumerAgentGroupAttribute("haus", new BooleanDistribution("bd1", new Random(7331), 0.5)))
-                .addConsumerAgentGroupAttribute("hausidiot", new BasicConsumerAgentGroupAttribute("idiot", new RandomDistribution("rd2", new Random(24), 0, 1)))
-                ;
+                .initMinimal();
 
         cb.addProductGroup(new BasicProductGroup(
                 cb.getEnvironment(),
                 new HashSet<>(),
                 "haus",
-                cb.getProductGroupAttributes(Arrays.asList("etagen", "garten")),
-                cb.getNeeds(Collections.singletonList("haus"))
+                new HashSet<>(),
+                new HashSet<>()
         ));
         cb.addProductGroup(new BasicProductGroup(
                 cb.getEnvironment(),
                 new HashSet<>(),
                 "baum",
-                cb.getProductGroupAttributes(Collections.singletonList("hoehe")),
-                cb.getNeeds(Collections.singletonList("baum"))
-        ));
-
-        cb.addConsumerAgentGroup(new BasicConsumerAgentGroup(
-                cb.getEnvironment(),
-                "baum",
                 new HashSet<>(),
-                cb.getConsumerAgentGroupAttributes(Arrays.asList("baum", "baumidiot")),
+                new HashSet<>()
+        ));
+        BasicConsumerAgentGroup cag0 = new BasicConsumerAgentGroup(
+                cb.getEnvironment(),
+                "consumer_baum",
+                new HashSet<>(),
+                new HashSet<>(),
                 new HashMap<>(),
                 new HashMap<>(),
                 1.0,
@@ -77,12 +59,17 @@ public final class BaumHaus2ConsumerType {
                 NoNeedDevelopment.INSTANCE,
                 NoNeedExpiration.INSTANCE,
                 IgnoreNeedSatisfy.INSTANCE
-        ));
-        cb.addConsumerAgentGroup(new BasicConsumerAgentGroup(
+        );
+        cag0.addEntity(cag0.deriveAgent());
+        cag0.addEntity(cag0.deriveAgent());
+        cag0.addEntity(cag0.deriveAgent());
+        cb.addConsumerAgentGroup(cag0);
+
+        BasicConsumerAgentGroup cag1 = new BasicConsumerAgentGroup(
                 cb.getEnvironment(),
-                "haus",
+                "consumer_haus",
                 new HashSet<>(),
-                cb.getConsumerAgentGroupAttributes(Arrays.asList("haus", "hausidiot")),
+                new HashSet<>(),
                 new HashMap<>(),
                 new HashMap<>(),
                 1.0,
@@ -92,11 +79,14 @@ public final class BaumHaus2ConsumerType {
                 NoNeedDevelopment.INSTANCE,
                 NoNeedExpiration.INSTANCE,
                 IgnoreNeedSatisfy.INSTANCE
-        ));
+        );
+        cag1.addEntity(cag1.deriveAgent());
+        cag1.addEntity(cag1.deriveAgent());
+        cb.addConsumerAgentGroup(cag1);
 
         cb.addPointOfSaleAgent(new PointOfSaleAgentBase(
                 cb.getEnvironment(),
-                "testpos",
+                "pos_test",
                 1.0,
                 DummyPoint2DDistribution.INSTANCE.drawValue(),
                 IgnoreProductAvailabilityChange.INSTANCE,
@@ -106,10 +96,23 @@ public final class BaumHaus2ConsumerType {
 
         cb.addPolicyAgent(new PolicyAgentBase(
                 cb.getEnvironment(),
-                "trump",
+                "policy_trump",
                 Double.MAX_VALUE,
                 NoTaxes.INSTANCE
         ));
-        return cb.validate().build();
+
+        cb.addCompanyAgent(new CompanyAgentBase(
+                cb.getEnvironment(),
+                "company_test",
+                42
+        ));
+
+        return cb;
+    }
+
+    public static void main(String[] args) {
+        JadexConfiguration configuration = builder().validate()
+                .build();
+        StartSimulation.start(configuration);
     }
 }

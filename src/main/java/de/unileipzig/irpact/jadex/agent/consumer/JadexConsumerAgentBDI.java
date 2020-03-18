@@ -19,14 +19,15 @@ import jadex.bdiv3.BDIAgentFactory;
 import jadex.bdiv3.annotation.*;
 import jadex.bdiv3.features.IBDIAgentFeature;
 import jadex.bdiv3.runtime.impl.PlanFailureException;
+import jadex.bridge.IComponentIdentifier;
 import jadex.bridge.IInternalAccess;
-import jadex.bridge.component.IArgumentsResultsFeature;
-import jadex.bridge.component.IExecutionFeature;
+import jadex.bridge.component.*;
 import jadex.bridge.service.annotation.OnEnd;
 import jadex.bridge.service.annotation.OnInit;
 import jadex.bridge.service.annotation.OnStart;
 import jadex.bridge.service.annotation.Service;
 import jadex.bridge.service.component.IRequiredServicesFeature;
+import jadex.bridge.service.types.security.ISecurityInfo;
 import jadex.commons.future.Future;
 import jadex.commons.future.IFuture;
 import jadex.micro.annotation.Agent;
@@ -70,6 +71,8 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     protected IExecutionFeature execFeature;
     @AgentFeature
     protected IRequiredServicesFeature reqFeature;
+    @AgentFeature
+    protected IMessageFeature msgFeature;
 
     //ConsumerAgent parameter
     protected ConsumerAgentBase agentBase;
@@ -175,6 +178,21 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     //=========================
 
     @Override
+    protected Logger logger() {
+        return logger;
+    }
+
+    @Override
+    protected IComponentIdentifier getCompnentIdentifier() {
+        return agent.getId();
+    }
+
+    @Override
+    protected IMessageFeature getMessageFeature() {
+        return msgFeature;
+    }
+
+    @Override
     protected void initArgs(Map<String, Object> args) {
         try {
             agentBase = get(args, AGENT_BASE);
@@ -195,6 +213,8 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     @Override
     protected void onInit() {
         initArgs(resultsFeature.getArguments());
+        getEnvironment().getConfiguration() .register(agent.getExternalAccess(), this);
+        initMessageHandler();
         logger.trace("[{}] onInit", getName());
     }
 

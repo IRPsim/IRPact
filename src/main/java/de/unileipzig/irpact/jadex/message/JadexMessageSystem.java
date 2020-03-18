@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.message;
 
+import de.unileipzig.irpact.commons.annotation.ToDo;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.message.BasicMessageSystem;
 import de.unileipzig.irpact.core.message.MessageContent;
@@ -12,6 +13,7 @@ import jadex.commons.future.IFuture;
 /**
  * @author Daniel Abitz
  */
+@ToDo("msg wird in applications\\micro\\src\\main\\java\\jadex\\micro\\examples\\ping genutzt")
 public class JadexMessageSystem extends BasicMessageSystem {
 
     public enum Mode {
@@ -46,27 +48,47 @@ public class JadexMessageSystem extends BasicMessageSystem {
     }
 
     public IFuture<Void> sendJadex(Agent from, MessageContent content, Agent to) {
-        IExternalAccess fromExternal = env().getCache()
-                .getAccess(from.getName());
-        IComponentIdentifier toCompentIdentifier = env().getCache()
-                .getIdentifier(to.getName());
+        if(!content.isSerializable()) {
+            throw new IllegalArgumentException("not printable");
+        }
+        IExternalAccess fromExternal = env().getConfiguration()
+                .findAccess(from.getName());
+        IComponentIdentifier toCompentIdentifier = env().getConfiguration()
+                .findIdentifier(to.getName());
         return fromExternal.scheduleStep(fromInternal -> {
             IMessageFeature msgFeature = fromInternal.getFeature(IMessageFeature.class);
-            return msgFeature.sendMessage(content, toCompentIdentifier);
+            /*
+            Map<String, Object> msg = new HashMap<>();
+            msg.put(SFipa.CONTENT, "content");
+            msg.put(SFipa.PERFORMATIVE, SFipa.INFORM);
+            msg.put(SFipa.CONVERSATION_ID, SUtil.createUniqueId(from.getName()));
+            msg.put(SFipa.RECEIVERS, new IComponentIdentifier[]{toCompentIdentifier});
+            */
+            return msgFeature.sendMessage(content.serializeToString(), toCompentIdentifier);
         });
     }
 
     public IFuture<Void> sendJadex(Agent from, MessageContent content, Agent... to) {
-        IExternalAccess fromExternal = env().getCache()
+        if(!content.isSerializable()) {
+            throw new IllegalArgumentException("not printable");
+        }
+        IExternalAccess fromExternal = env().getConfiguration()
                 .getAccess(from.getName());
         IComponentIdentifier[] toCompentIdentifiers = new IComponentIdentifier[to.length];
         for(int i = 0; i < to.length; i++) {
-            toCompentIdentifiers[i] = env().getCache()
+            toCompentIdentifiers[i] = env().getConfiguration()
                     .getIdentifier(to[i].getName());
         }
         return fromExternal.scheduleStep(fromInternal -> {
             IMessageFeature msgFeature = fromInternal.getFeature(IMessageFeature.class);
-            return msgFeature.sendMessage(content, toCompentIdentifiers);
+            /*
+            Map<String, Object> msg = new HashMap<>();
+            msg.put(SFipa.CONTENT, content);
+            msg.put(SFipa.PERFORMATIVE, SFipa.INFORM);
+            msg.put(SFipa.CONVERSATION_ID, SUtil.createUniqueId(from.getName()));
+            msg.put(SFipa.RECEIVERS, toCompentIdentifiers);
+            */
+            return msgFeature.sendMessage(content.serializeToString(), toCompentIdentifiers);
         });
     }
 

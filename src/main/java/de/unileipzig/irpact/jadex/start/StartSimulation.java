@@ -2,9 +2,6 @@ package de.unileipzig.irpact.jadex.start;
 
 import de.unileipzig.irpact.commons.LogUtil;
 import de.unileipzig.irpact.commons.TimeUtil;
-import de.unileipzig.irpact.commons.annotation.Idea;
-import de.unileipzig.irpact.commons.annotation.ToDo;
-import de.unileipzig.irpact.commons.annotation.ToImpl;
 import de.unileipzig.irpact.core.agent.company.CompanyAgent;
 import de.unileipzig.irpact.core.agent.company.CompanyAgentBase;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
@@ -15,32 +12,34 @@ import de.unileipzig.irpact.core.agent.policy.PolicyAgentBase;
 import de.unileipzig.irpact.core.agent.pos.PointOfSaleAgent;
 import de.unileipzig.irpact.core.agent.pos.PointOfSaleAgentBase;
 import de.unileipzig.irpact.jadex.agent.simulation.JadexSimulationControlAgent;
-import de.unileipzig.irpact.jadex.config.JadexConfiguration;
-import de.unileipzig.irpact.jadex.config.JadexLogConfig;
+import de.unileipzig.irpact.io.config.JadexConfiguration;
+import de.unileipzig.irpact.io.config.JadexLogConfig;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
+import de.unileipzig.irpact.jadex.simulation.JadexTimeModule;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
 import jadex.base.Starter;
 import jadex.bridge.IExternalAccess;
 import jadex.bridge.service.search.ServiceQuery;
-import jadex.bridge.service.types.clock.IClock;
 import jadex.bridge.service.types.clock.IClockService;
 import jadex.bridge.service.types.cms.CreationInfo;
 import jadex.bridge.service.types.simulation.ISimulationService;
-import jadex.bridge.service.types.threadpool.IThreadPoolService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Daniel Abitz
  */
-@ToDo("sinnvolle aber einfache schemes bauen zum testen")
 public final class StartSimulation {
 
+    private static final AtomicBoolean RUNNING = new AtomicBoolean(false);
     //core
     private static final String IRPACT_LOGGER = "IRPact";
     private static final String CONSOLE_APPENDER = "CONSOLE";
@@ -96,8 +95,7 @@ public final class StartSimulation {
         return info;
     }
 
-    private static void init(JadexConfiguration config, BasicJadexSimulationEnvironment jenv) {
-        JadexLogConfig logConfig = config.getLogConfig();
+    private static void initLogging(JadexLogConfig logConfig, BasicJadexSimulationEnvironment jenv) {
         String logFileName = logConfig.getLogFileName();
         if(logFileName == null || logFileName.isEmpty()) {
             LocalDateTime ldt = LocalDateTime.now();
@@ -139,8 +137,12 @@ public final class StartSimulation {
     }
 
     public static void start(JadexConfiguration configuration) {
+        if(!RUNNING.compareAndSet(false, true)) {
+            throw new IllegalStateException("running");
+        }
+
         BasicJadexSimulationEnvironment jenv = (BasicJadexSimulationEnvironment) configuration.getEnvironment();
-        init(configuration, jenv);
+        initLogging(configuration.getLogConfig(), jenv);
 
         jenv.getLogger().info("Starting Platform...");
 
@@ -152,48 +154,63 @@ public final class StartSimulation {
 
         IExternalAccess platform = Starter.createPlatform(config)
                 .get();
-        jenv.setPlatform(platform);
 
-        IClockService clockService = platform.searchService(new ServiceQuery<>(IClockService.class))
-                .get();
-        jenv.setClockService(clockService);
+        try {
+            jenv.setPlatform(platform);
 
-        ISimulationService simulationService = platform.searchService(new ServiceQuery<>(ISimulationService.class))
-                .get();
-        jenv.setSimulationService(simulationService);
-
-        simulationService.pause();
-        clockService.setClock(IClock.TYPE_CONTINUOUS, platform.searchService(new ServiceQuery<>(IThreadPoolService.class)).get());
-        simulationService.start();
-
-        @Idea("noch speichern?")
-        IExternalAccess simulationAgent = platform.createComponent(createSimulationControlAgent(jenv))
-                .get();
-
-        for(PolicyAgent policyAgent: configuration.getPolicyAgents()) {
-            IExternalAccess access = platform.createComponent(createPolicyAgentInfo((PolicyAgentBase) policyAgent))
+            IClockService clockService = platform.searchService(new ServiceQuery<>(IClockService.class))
                     .get();
-        }
-        for(PointOfSaleAgent pointOfSaleAgent: configuration.getPointOfSaleAgents()) {
-            IExternalAccess access = platform.createComponent(createPointOfSaleAgentInfo((PointOfSaleAgentBase) pointOfSaleAgent))
+            jenv.setClockService(clockService);
+
+            ISimulationService simulationService = platform.searchService(new ServiceQuery<>(ISimulationService.class))
                     .get();
-        }
-        for(CompanyAgent companyAgent: configuration.getCompanyAgents()) {
-            IExternalAccess access = platform.createComponent(createCompanyAgentInfo((CompanyAgentBase) companyAgent))
+            jenv.setSimulationService(simulationService);
+
+            jenv.setTimeModule(new JadexTimeModule(clockService));
+
+            jenv.validateAll();
+            jenv.prepare();
+            //=====
+            IExternalAccess simulationAgent = platform.createComponent(createSimulationControlAgent(jenv))
                     .get();
-        }
-        for(ConsumerAgentGroup consumerAgentGroup: configuration.getConsumerAgentGroups()) {
-            for(ConsumerAgent consumerAgent: consumerAgentGroup.getEntities()) {
-                IExternalAccess access = platform.createComponent(createConsumerAgentInfo((ConsumerAgentBase) consumerAgent))
+            jenv.setSimulationAgent(simulationAgent);
+
+            Set<IExternalAccess> accessSet = new HashSet<>();
+            //jeden agent einzeln starten, da batch zu overflow fuehrt ab ca 1k agenten
+            for(PolicyAgent policyAgent: configuration.getPolicyAgents()) {
+                System.out.println("create: " + policyAgent.getName());
+                IExternalAccess access = platform.createComponent(createPolicyAgentInfo((PolicyAgentBase) policyAgent))
                         .get();
+                accessSet.add(access);
             }
+            for(PointOfSaleAgent pointOfSaleAgent: configuration.getPointOfSaleAgents()) {
+                IExternalAccess access = platform.createComponent(createPointOfSaleAgentInfo((PointOfSaleAgentBase) pointOfSaleAgent))
+                        .get();
+                accessSet.add(access);
+            }
+            for(CompanyAgent companyAgent: configuration.getCompanyAgents()) {
+                IExternalAccess access = platform.createComponent(createCompanyAgentInfo((CompanyAgentBase) companyAgent))
+                        .get();
+                accessSet.add(access);
+            }
+            for(ConsumerAgentGroup consumerAgentGroup: configuration.getConsumerAgentGroups()) {
+                for(ConsumerAgent consumerAgent: consumerAgentGroup.getEntities()) {
+                    IExternalAccess access = platform.createComponent(createConsumerAgentInfo((ConsumerAgentBase) consumerAgent))
+                            .get();
+                    accessSet.add(access);
+                }
+            }
+            //=====
+            jenv.waitForSimulation(accessSet);
+            accessSet.clear();
+            jenv.initialize();
+            jenv.start();
+        } catch (Throwable t) {
+            platform.killComponent();
+            throw t;
         }
     }
 
     private StartSimulation() {
-    }
-
-    @ToImpl
-    public static void main(String[] args) {
     }
 }

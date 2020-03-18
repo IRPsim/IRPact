@@ -22,10 +22,23 @@ public final class LogUtil {
     }
 
     public static void setLevel(Logger logger, Level level) {
-        setLevel(logger, level.toInt());
+        setLevel(logger, slj4LevelToLogbackLevel(level));
     }
 
-    public static void setLevel(Logger logger, int level) {
-        setLevel(logger, ch.qos.logback.classic.Level.toLevel(level));
+    private static ch.qos.logback.classic.Level slj4LevelToLogbackLevel(Level level) {
+        switch (level) {
+            case ERROR:
+                return ch.qos.logback.classic.Level.ERROR;
+            case WARN:
+                return ch.qos.logback.classic.Level.WARN;
+            case INFO:
+                return ch.qos.logback.classic.Level.INFO;
+            case DEBUG:
+                return ch.qos.logback.classic.Level.DEBUG;
+            case TRACE:
+                return ch.qos.logback.classic.Level.TRACE;
+            default:
+                return ch.qos.logback.classic.Level.OFF;
+        }
     }
 }

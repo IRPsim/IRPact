@@ -1,11 +1,14 @@
 package de.unileipzig.irpact.jadex.agent.simulation;
 
+import de.unileipzig.irpact.core.message.MessageContent;
 import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
+import jadex.bridge.IComponentIdentifier;
 import jadex.bridge.IExternalAccess;
 import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IArgumentsResultsFeature;
+import jadex.bridge.component.IMessageFeature;
 import jadex.bridge.service.annotation.OnEnd;
 import jadex.bridge.service.annotation.OnInit;
 import jadex.bridge.service.annotation.OnStart;
@@ -85,6 +88,26 @@ public class JadexKillPlatformAgent extends JadexPlatformControlAgent {
     @Override
     public Logger logger() {
         return logger;
+    }
+
+    @Override
+    protected IComponentIdentifier getCompnentIdentifier() {
+        return agent.getId();
+    }
+
+    @Override
+    protected IMessageFeature getMessageFeature() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isHandling(de.unileipzig.irpact.core.agent.Agent sender, MessageContent content) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void handleMessage(de.unileipzig.irpact.core.agent.Agent sender, MessageContent content) {
+        throw new UnsupportedOperationException();
     }
 
     //=========================

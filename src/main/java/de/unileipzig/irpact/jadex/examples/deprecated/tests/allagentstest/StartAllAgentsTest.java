@@ -1,9 +1,9 @@
 package de.unileipzig.irpact.jadex.examples.deprecated.tests.allagentstest;
 
 import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
-import de.unileipzig.irpact.jadex.config.JadexConfiguration;
-import de.unileipzig.irpact.jadex.config.JadexConfigurationBuilder;
-import de.unileipzig.irpact.jadex.config.JadexLogConfig;
+import de.unileipzig.irpact.io.config.JadexConfiguration;
+import de.unileipzig.irpact.io.config.JadexConfigurationBuilder;
+import de.unileipzig.irpact.io.config.JadexLogConfig;
 import de.unileipzig.irpact.jadex.examples.deprecated.tests.configs.AllAgentsAnd2Groups;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.start.StartSimulation;

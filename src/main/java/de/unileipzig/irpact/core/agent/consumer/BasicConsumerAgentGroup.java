@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
 import de.unileipzig.irpact.commons.Check;
-import de.unileipzig.irpact.commons.annotation.ToImpl;
 import de.unileipzig.irpact.commons.distribution.UnivariateDistribution;
 import de.unileipzig.irpact.core.AbstractGroup;
 import de.unileipzig.irpact.core.need.NeedDevelopmentScheme;
@@ -27,7 +26,6 @@ import java.util.Set;
 /**
  * @author Daniel Abitz
  */
-@ToImpl("perception")
 public class BasicConsumerAgentGroup extends AbstractGroup<ConsumerAgent> implements ConsumerAgentGroup {
 
     protected Set<ConsumerAgentGroupAttribute> attributes;

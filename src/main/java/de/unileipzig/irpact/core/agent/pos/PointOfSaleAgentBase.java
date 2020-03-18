@@ -1,8 +1,10 @@
 package de.unileipzig.irpact.core.agent.pos;
 
 import de.unileipzig.irpact.commons.Check;
+import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.SpatialInformationAgentBase;
 import de.unileipzig.irpact.core.currency.Price;
+import de.unileipzig.irpact.core.message.MessageContent;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.availability.ProductAvailability;
 import de.unileipzig.irpact.core.simulation.EntityType;
@@ -89,6 +91,16 @@ public class PointOfSaleAgentBase extends SpatialInformationAgentBase implements
 
     @Override
     public boolean is(EntityType type) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isHandling(Agent sender, MessageContent content) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void handleMessage(Agent sender, MessageContent content) {
         throw new UnsupportedOperationException();
     }
 }
