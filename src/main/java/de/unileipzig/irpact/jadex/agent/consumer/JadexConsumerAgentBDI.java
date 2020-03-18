@@ -6,7 +6,9 @@ import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.preference.Preference;
 import de.unileipzig.irpact.core.product.AdoptedProductInfo;
 import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.core.product.ProductAttribute;
 import de.unileipzig.irpact.core.product.ProductGroup;
+import de.unileipzig.irpact.core.product.perception.ProductAttributePerceptionScheme;
 import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.jadex.agent.JadexAgentBase;
@@ -161,6 +163,11 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     @Override
     public void addNeed(Need need) {
         needs.add(need);
+    }
+
+    @Override
+    public ProductAttributePerceptionScheme getScheme(ProductAttribute attribute) {
+        return agentBase.getScheme(attribute);
     }
 
     //=========================

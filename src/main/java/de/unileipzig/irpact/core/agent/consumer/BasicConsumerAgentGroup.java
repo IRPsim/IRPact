@@ -10,10 +10,16 @@ import de.unileipzig.irpact.core.need.NeedSatisfyScheme;
 import de.unileipzig.irpact.core.preference.BasicPreference;
 import de.unileipzig.irpact.core.preference.Preference;
 import de.unileipzig.irpact.core.preference.Value;
+import de.unileipzig.irpact.core.product.ProductGroupAttribute;
+import de.unileipzig.irpact.core.product.perception.BasicProductAttributePerceptionSchemeManager;
+import de.unileipzig.irpact.core.product.perception.ProductAttributPerceptionSchemeConfiguration;
+import de.unileipzig.irpact.core.product.perception.ProductAttributePerceptionScheme;
+import de.unileipzig.irpact.core.product.perception.ProductAttributePerceptionSchemeManager;
 import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialDistribution;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -26,6 +32,7 @@ public class BasicConsumerAgentGroup extends AbstractGroup<ConsumerAgent> implem
 
     protected Set<ConsumerAgentGroupAttribute> attributes;
     protected Map<Value, UnivariateDistribution> valuePreferences;
+    protected Map<ProductGroupAttribute, ProductAttributPerceptionSchemeConfiguration> perceptionConfigurations;
     protected SpatialDistribution spatialDistribution;
     protected ProductFindingScheme findingScheme;
     protected ProductAdoptionDecisionScheme adoptionDecisionScheme;
@@ -40,6 +47,7 @@ public class BasicConsumerAgentGroup extends AbstractGroup<ConsumerAgent> implem
             Set<ConsumerAgent> agents,
             Set<ConsumerAgentGroupAttribute> attributes,
             Map<Value, UnivariateDistribution> valuePreferences,
+            Map<ProductGroupAttribute, ProductAttributPerceptionSchemeConfiguration> perceptionConfigurations,
             double informationAuthority,
             SpatialDistribution spatialDistribution,
             ProductFindingScheme findingScheme,
@@ -51,6 +59,7 @@ public class BasicConsumerAgentGroup extends AbstractGroup<ConsumerAgent> implem
         this.informationAuthority = informationAuthority;
         this.attributes = Check.requireNonNull(attributes, "attributes");
         this.valuePreferences = Check.requireNonNull(valuePreferences, "valuePreferences");
+        this.perceptionConfigurations = Check.requireNonNull(perceptionConfigurations, "perceptionConfigurations");
         this.spatialDistribution = Check.requireNonNull(spatialDistribution, "spatialDistribution");
         this.findingScheme = Check.requireNonNull(findingScheme, "findingScheme");
         this.adoptionDecisionScheme = Check.requireNonNull(adoptionDecisionScheme, "adoptionDecisionScheme");
@@ -145,6 +154,17 @@ public class BasicConsumerAgentGroup extends AbstractGroup<ConsumerAgent> implem
         return preferences;
     }
 
+    protected ProductAttributePerceptionSchemeManager derivePerception() {
+        Map<ProductGroupAttribute, ProductAttributePerceptionScheme> map = new HashMap<>();
+        for(Map.Entry<ProductGroupAttribute, ProductAttributPerceptionSchemeConfiguration> entry: perceptionConfigurations.entrySet()) {
+            ProductGroupAttribute groupAttribute = entry.getKey();
+            ProductAttributPerceptionSchemeConfiguration config = entry.getValue();
+            ProductAttributePerceptionScheme scheme = config.newScheme();
+            map.put(groupAttribute, scheme);
+        }
+        return new BasicProductAttributePerceptionSchemeManager(map);
+    }
+
     public ConsumerAgent deriveAgent() {
         String derivedName = deriveName();
         return new ConsumerAgentBase(
@@ -153,7 +173,8 @@ public class BasicConsumerAgentGroup extends AbstractGroup<ConsumerAgent> implem
                 spatialDistribution.drawValue(),
                 this,
                 deriveAttributes(),
-                derivePreferences()
+                derivePreferences(),
+                derivePerception()
         );
     }
 }

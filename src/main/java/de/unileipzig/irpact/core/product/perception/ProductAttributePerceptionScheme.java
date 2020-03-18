@@ -1,11 +1,11 @@
 package de.unileipzig.irpact.core.product.perception;
 
-import de.unileipzig.irpact.core.Scheme;
+import de.unileipzig.irpact.core.perception.PerceptionScheme;
 
 /**
  * @author Daniel Abitz
  */
-public interface ProductAttributePerceptionScheme extends Scheme {
+public interface ProductAttributePerceptionScheme extends PerceptionScheme {
 
-    double getPerception();
+    double calculateCurrentPerception();
 }

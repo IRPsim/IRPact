@@ -11,6 +11,7 @@ import java.util.Set;
 /**
  * @author Daniel Abitz
  */
+@Deprecated
 public class MeanProductPerception implements ProductPerceptionScheme {
 
     public static final String NAME = MeanProductPerception.class.getSimpleName();
@@ -34,7 +35,7 @@ public class MeanProductPerception implements ProductPerceptionScheme {
             if(scheme == null) {
                 throw new MissingProductAttributePerceptionSchemeException(product.getName());
             }
-            sum += scheme.getPerception();
+            sum += scheme.calculateCurrentPerception();
         }
         return sum / attributes.size();
     }

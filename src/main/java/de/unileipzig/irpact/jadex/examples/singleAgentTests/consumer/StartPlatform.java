@@ -8,6 +8,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentBase;
 import de.unileipzig.irpact.core.need.BasicNeed;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.product.*;
+import de.unileipzig.irpact.core.product.perception.BasicProductAttributePerceptionSchemeManager;
 import de.unileipzig.irpact.core.spatial.Metric;
 import de.unileipzig.irpact.core.spatial.dim2.Point2D;
 import de.unileipzig.irpact.core.spatial.dim2.SquareModel;
@@ -43,6 +44,7 @@ public class StartPlatform {
                 "TestGroup",
                 agents,
                 new HashSet<>(),
+                new HashMap<>(),
                 new HashMap<>(),
                 1.0,
                 new SquareModelDistribution(
@@ -85,7 +87,8 @@ public class StartPlatform {
                 new Point2D(0, 0),
                 group,
                 new HashSet<>(),
-                new HashSet<>()
+                new HashSet<>(),
+                new BasicProductAttributePerceptionSchemeManager(new HashMap<>())
         );
         agents.add(agentBase);
         return agentBase;

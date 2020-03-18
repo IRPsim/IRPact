@@ -17,7 +17,7 @@ public class TrueValueProductAttributePerception implements ProductAttributePerc
     }
 
     @Override
-    public double getPerception() {
+    public double calculateCurrentPerception() {
         return attribute.getValue();
     }
 }

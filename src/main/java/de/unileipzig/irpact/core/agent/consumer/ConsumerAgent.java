@@ -5,7 +5,9 @@ import de.unileipzig.irpact.core.agent.SpatialInformationAgent;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.preference.Preference;
 import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.core.product.ProductAttribute;
 import de.unileipzig.irpact.core.product.ProductGroup;
+import de.unileipzig.irpact.core.product.perception.ProductAttributePerceptionScheme;
 
 import java.util.Set;
 
@@ -28,4 +30,6 @@ public interface ConsumerAgent extends SpatialInformationAgent, GroupEntity<Cons
     Set<Preference> getPreferences();
 
     void addNeed(Need need);
+
+    ProductAttributePerceptionScheme getScheme(ProductAttribute attribute);
 }

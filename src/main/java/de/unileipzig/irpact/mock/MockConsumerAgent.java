@@ -6,7 +6,9 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.preference.Preference;
 import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.core.product.ProductAttribute;
 import de.unileipzig.irpact.core.product.ProductGroup;
+import de.unileipzig.irpact.core.product.perception.ProductAttributePerceptionScheme;
 import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
@@ -90,6 +92,11 @@ public class MockConsumerAgent implements ConsumerAgent {
 
     @Override
     public void addNeed(Need need) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ProductAttributePerceptionScheme getScheme(ProductAttribute attribute) {
         throw new UnsupportedOperationException();
     }
 
