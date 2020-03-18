@@ -42,7 +42,7 @@ public class JadexTimeModule implements TimeModule {
     }
 
     @Override
-    public Timestamp getTimestamp() {
+    public Timestamp createTimestamp() {
         return new Timestamp(
                 mode,
                 getSystemTime(),

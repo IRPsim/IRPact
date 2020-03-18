@@ -7,9 +7,9 @@ import de.unileipzig.irpact.core.agent.Agent;
  */
 public interface Message {
 
-    Agent getSender();
+    void process(Agent sender, Agent receiver);
 
-    Agent getReceiver();
+    boolean isSerializable();
 
-    MessageContent getContent();
+    String serializeToString();
 }

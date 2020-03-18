@@ -3,7 +3,7 @@ package de.unileipzig.irpact.core.agent.policy;
 import de.unileipzig.irpact.commons.Check;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.InformationAgentBase;
-import de.unileipzig.irpact.core.message.MessageContent;
+import de.unileipzig.irpact.core.message.Message;
 import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
@@ -34,12 +34,12 @@ public class PolicyAgentBase extends InformationAgentBase implements PolicyAgent
     }
 
     @Override
-    public boolean isHandling(Agent sender, MessageContent content) {
+    public boolean isHandling(Agent sender, Message content) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void handleMessage(Agent sender, MessageContent content) {
+    public void handleMessage(Agent sender, Message content) {
         throw new UnsupportedOperationException();
     }
 }

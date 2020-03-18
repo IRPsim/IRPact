@@ -2,8 +2,7 @@ package de.unileipzig.irpact.jadex.agent;
 
 import de.unileipzig.irpact.commons.annotation.ToDo;
 import de.unileipzig.irpact.commons.exception.MissingArgumentException;
-import de.unileipzig.irpact.core.message.MessageContent;
-import de.unileipzig.irpact.jadex.agent.consumer.JadexConsumerAgentBDI;
+import de.unileipzig.irpact.core.message.Message;
 import jadex.bridge.IComponentIdentifier;
 import jadex.bridge.component.IMessageFeature;
 import jadex.bridge.component.IMessageHandler;
@@ -79,11 +78,11 @@ public abstract class JadexAgentBase implements JadexAgent {
                 }
 
                 @Override
-                public void handleMessage(ISecurityInfo secinfos, IMsgHeader header, Object msg) {
+                public void handleMessage(ISecurityInfo secinfos, IMsgHeader header, Object msgObj) {
                     IComponentIdentifier sender = header.getSender();
                     de.unileipzig.irpact.core.agent.Agent senderAgent = getEnvironment().getConfiguration()
                             .getEntity(sender);
-                    MessageContent content = (MessageContent) msg;
+                    Message content = (Message) msgObj;
                     logger().trace("[{}] handle JadexMessage from '{}'", getName(), sender.getName());
                     JadexAgentBase.this.handleMessage(senderAgent, content);
                 }
@@ -93,14 +92,14 @@ public abstract class JadexAgentBase implements JadexAgent {
     }
 
     @Override
-    public boolean isHandling(de.unileipzig.irpact.core.agent.Agent sender, MessageContent content) {
+    public boolean isHandling(de.unileipzig.irpact.core.agent.Agent sender, Message content) {
         return true;
     }
 
     @Override
-    public void handleMessage(de.unileipzig.irpact.core.agent.Agent sender, MessageContent content) {
+    public void handleMessage(de.unileipzig.irpact.core.agent.Agent sender, Message content) {
         logger().trace("[{}] handle Message from '{}'", getName(), sender.getName());
-        content.process();
+        content.process(sender, this);
     }
 
     //=========================

@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.agent.company;
 
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.InformationAgentBase;
-import de.unileipzig.irpact.core.message.MessageContent;
+import de.unileipzig.irpact.core.message.Message;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -32,12 +32,12 @@ public class CompanyAgentBase extends InformationAgentBase implements CompanyAge
     }
 
     @Override
-    public boolean isHandling(Agent sender, MessageContent content) {
+    public boolean isHandling(Agent sender, Message content) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void handleMessage(Agent sender, MessageContent content) {
+    public void handleMessage(Agent sender, Message content) {
         throw new UnsupportedOperationException();
     }
 }

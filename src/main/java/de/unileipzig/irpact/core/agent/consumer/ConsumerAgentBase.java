@@ -4,12 +4,11 @@ import de.unileipzig.irpact.commons.Check;
 import de.unileipzig.irpact.commons.annotation.ToDo;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.SpatialInformationAgentBase;
-import de.unileipzig.irpact.core.message.MessageContent;
+import de.unileipzig.irpact.core.message.Message;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.preference.Preference;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductAttribute;
-import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.perception.ProductAttributePerceptionScheme;
 import de.unileipzig.irpact.core.product.perception.ProductAttributePerceptionSchemeManager;
 import de.unileipzig.irpact.core.simulation.EntityType;
@@ -71,11 +70,6 @@ public class ConsumerAgentBase extends SpatialInformationAgentBase implements Co
     }
 
     @Override
-    public Set<ProductGroup> getKnownProductGroups() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public Set<Preference> getPreferences() {
         return preferences;
     }
@@ -96,12 +90,12 @@ public class ConsumerAgentBase extends SpatialInformationAgentBase implements Co
     }
 
     @Override
-    public boolean isHandling(Agent sender, MessageContent content) {
+    public boolean isHandling(Agent sender, Message content) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void handleMessage(Agent sender, MessageContent content) {
+    public void handleMessage(Agent sender, Message content) {
         throw new UnsupportedOperationException();
     }
 }

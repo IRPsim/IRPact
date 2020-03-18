@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.agent.Agent;
  */
 public interface MessageSystem {
 
-    void send(Agent from, MessageContent content, Agent to);
+    void send(Agent from, Message msg, Agent to);
 
-    void send(Agent from, MessageContent content, Agent... to);
+    void send(Agent from, Message msg, Agent... to);
 }

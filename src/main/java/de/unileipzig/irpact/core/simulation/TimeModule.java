@@ -19,5 +19,5 @@ public interface TimeModule {
 
     long getSystemTime();
 
-    Timestamp getTimestamp();
+    Timestamp createTimestamp();
 }

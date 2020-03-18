@@ -4,12 +4,11 @@ import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.message.MessageContent;
+import de.unileipzig.irpact.core.message.Message;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.preference.Preference;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductAttribute;
-import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.perception.ProductAttributePerceptionScheme;
 import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -43,11 +42,6 @@ public class MockConsumerAgent implements ConsumerAgent {
 
     @Override
     public Set<Product> getKnownProducts() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Set<ProductGroup> getKnownProductGroups() {
         throw new UnsupportedOperationException();
     }
 
@@ -108,12 +102,12 @@ public class MockConsumerAgent implements ConsumerAgent {
     }
 
     @Override
-    public boolean isHandling(Agent sender, MessageContent content) {
+    public boolean isHandling(Agent sender, Message content) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void handleMessage(Agent sender, MessageContent content) {
+    public void handleMessage(Agent sender, Message content) {
         throw new UnsupportedOperationException();
     }
 }

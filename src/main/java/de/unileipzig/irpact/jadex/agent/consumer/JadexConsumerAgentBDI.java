@@ -1,13 +1,13 @@
 package de.unileipzig.irpact.jadex.agent.consumer;
 
 import de.unileipzig.irpact.commons.annotation.Idea;
+import de.unileipzig.irpact.commons.annotation.ToDo;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.preference.Preference;
 import de.unileipzig.irpact.core.product.AdoptedProductInfo;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductAttribute;
-import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.perception.ProductAttributePerceptionScheme;
 import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
@@ -27,7 +27,6 @@ import jadex.bridge.service.annotation.OnInit;
 import jadex.bridge.service.annotation.OnStart;
 import jadex.bridge.service.annotation.Service;
 import jadex.bridge.service.component.IRequiredServicesFeature;
-import jadex.bridge.service.types.security.ISecurityInfo;
 import jadex.commons.future.Future;
 import jadex.commons.future.IFuture;
 import jadex.micro.annotation.Agent;
@@ -82,8 +81,6 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     protected Set<Need> needs = new HashSet<>();
     @Belief
     protected Set<Product> knownProducts = new HashSet<>();
-    @Belief
-    protected Set<ProductGroup> knownProductGroups = new HashSet<>();
     @Belief
     protected Set<AdoptedProductInfo> adoptedProducts = new HashSet<>();
 
@@ -151,11 +148,6 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     @Override
     public Set<Product> getKnownProducts() {
         return knownProducts;
-    }
-
-    @Override
-    public Set<ProductGroup> getKnownProductGroups() {
-        return knownProductGroups;
     }
 
     @Override
@@ -310,7 +302,11 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
             if(potentialProduct == null) {
                 throw new PlanFailureException();
             }
-            AdoptedProductInfo adoptedProduct = new AdoptedProductInfo(need, potentialProduct);
+            AdoptedProductInfo adoptedProduct = new AdoptedProductInfo(
+                    getEnvironment().getTimeModule().createTimestamp(),
+                    need,
+                    potentialProduct
+            );
             adoptedProducts.add(adoptedProduct);
             goal.setSucceeded(); //hmmm
             bdiFeature.dispatchTopLevelGoal(new NeedSatisfyGoal(need));
@@ -333,6 +329,7 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     //handle new need
     //=========================
 
+    @ToDo
     public void developNewNeeds() {
         Collection<? extends Need> newNeeds = getGroup().getNeedDevelopmentScheme()
                 .developNeeds(this);
@@ -343,6 +340,7 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     //handle need expiration
     //=========================
 
+    @ToDo
     public void expireNeeds() {
         Collection<? extends Need> expiredNeeds = getGroup().getNeedExpirationScheme()
                 .expiredNeeds(this);

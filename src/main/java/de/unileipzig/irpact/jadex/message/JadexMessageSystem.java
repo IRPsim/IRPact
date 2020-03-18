@@ -1,9 +1,8 @@
 package de.unileipzig.irpact.jadex.message;
 
-import de.unileipzig.irpact.commons.annotation.ToDo;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.message.BasicMessageSystem;
-import de.unileipzig.irpact.core.message.MessageContent;
+import de.unileipzig.irpact.core.message.Message;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import jadex.bridge.IComponentIdentifier;
 import jadex.bridge.IExternalAccess;
@@ -13,7 +12,6 @@ import jadex.commons.future.IFuture;
 /**
  * @author Daniel Abitz
  */
-@ToDo("msg wird in applications\\micro\\src\\main\\java\\jadex\\micro\\examples\\ping genutzt")
 public class JadexMessageSystem extends BasicMessageSystem {
 
     public enum Mode {
@@ -37,17 +35,17 @@ public class JadexMessageSystem extends BasicMessageSystem {
         return (JadexSimulationEnvironment) super.env();
     }
 
-    public void sendBasic(Agent from, MessageContent content, Agent to) {
+    public void sendBasic(Agent from, Message content, Agent to) {
         super.send(from, content, to);
     }
 
-    public void sendBasic(Agent from, MessageContent content, Agent... to) {
+    public void sendBasic(Agent from, Message content, Agent... to) {
         for(Agent toAgent: to) {
             sendBasic(from, content, toAgent);
         }
     }
 
-    public IFuture<Void> sendJadex(Agent from, MessageContent content, Agent to) {
+    public IFuture<Void> sendJadex(Agent from, Message content, Agent to) {
         if(!content.isSerializable()) {
             throw new IllegalArgumentException("not printable");
         }
@@ -68,7 +66,7 @@ public class JadexMessageSystem extends BasicMessageSystem {
         });
     }
 
-    public IFuture<Void> sendJadex(Agent from, MessageContent content, Agent... to) {
+    public IFuture<Void> sendJadex(Agent from, Message content, Agent... to) {
         if(!content.isSerializable()) {
             throw new IllegalArgumentException("not printable");
         }
@@ -93,7 +91,7 @@ public class JadexMessageSystem extends BasicMessageSystem {
     }
 
     @Override
-    public void send(Agent from, MessageContent content, Agent to) {
+    public void send(Agent from, Message content, Agent to) {
         if(mode == Mode.BASIC) {
             sendBasic(from, content, to);
         } else {
@@ -102,7 +100,7 @@ public class JadexMessageSystem extends BasicMessageSystem {
     }
 
     @Override
-    public void send(Agent from, MessageContent content, Agent... to) {
+    public void send(Agent from, Message content, Agent... to) {
         if(mode == Mode.BASIC) {
             sendBasic(from, content, to);
         } else {

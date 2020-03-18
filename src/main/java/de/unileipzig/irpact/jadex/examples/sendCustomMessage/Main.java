@@ -11,9 +11,8 @@ import de.unileipzig.irpact.core.agent.pos.IgnoreProductAvailabilityChange;
 import de.unileipzig.irpact.core.agent.pos.IgnoreProductPriceChange;
 import de.unileipzig.irpact.core.agent.pos.IgnoreProductSoldOut;
 import de.unileipzig.irpact.core.agent.pos.PointOfSaleAgentBase;
-import de.unileipzig.irpact.core.message.BasicMessage;
 import de.unileipzig.irpact.core.message.BasicMessageEvent;
-import de.unileipzig.irpact.core.message.MessageContent;
+import de.unileipzig.irpact.core.message.Message;
 import de.unileipzig.irpact.core.message.MessageEvent;
 import de.unileipzig.irpact.core.need.IgnoreNeedSatisfy;
 import de.unileipzig.irpact.core.need.NoNeedDevelopment;
@@ -128,10 +127,10 @@ public class Main {
         Agent a1 = env.getConfiguration().findEntity("consumer_baum#2");
 
         ConcurrentUtil.sleepSilently(2000);
-        env.getMessageSystem().send(a0, new MessageContent() {
+        env.getMessageSystem().send(a0, new Message() {
             @Override
-            public void process() {
-                System.out.println("Hello World!");
+            public void process(Agent sender, Agent receiver) {
+                System.out.println("Hello World! -> " + sender.getName() + " | " + receiver.getName());
             }
 
             @Override
@@ -147,9 +146,9 @@ public class Main {
 
         ConcurrentUtil.sleepSilently(2000);
         env.getMessageSystem().setMode(JadexMessageSystem.Mode.JADEX);
-        env.getMessageSystem().send(a0, new MessageContent() {
+        env.getMessageSystem().send(a0, new Message() {
             @Override
-            public void process() {
+            public void process(Agent sender, Agent receiver) {
                 System.out.println("Hello JadexWorld!");
             }
 
@@ -168,26 +167,24 @@ public class Main {
         env.getMessageSystem().setMode(JadexMessageSystem.Mode.BASIC);
         MessageEvent msgEvent = new BasicMessageEvent(
                 env.getMessageSystem(),
-                new BasicMessage(
-                        a0,
-                        a1,
-                        new MessageContent() {
-                            @Override
-                            public void process() {
-                                System.out.println("HELLO EVENT");
-                            }
+                a1,
+                a1, //self!
+                new Message() {
+                    @Override
+                    public void process(Agent sender, Agent receiver) {
+                        System.out.println("HELLO EVENT -> " + sender.getName() + " | " + receiver.getName());
+                    }
 
-                            @Override
-                            public boolean isSerializable() {
-                                return false;
-                            }
+                    @Override
+                    public boolean isSerializable() {
+                        return false;
+                    }
 
-                            @Override
-                            public String serializeToString() {
-                                throw new UnsupportedOperationException();
-                            }
-                        }
-                )
+                    @Override
+                    public String serializeToString() {
+                        throw new UnsupportedOperationException();
+                    }
+                }
         );
         env.getEventManager().schedule(msgEvent);
     }

@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.examples.deprecated.simulation;
 
-import de.unileipzig.irpact.core.message.MessageContent;
+import de.unileipzig.irpact.core.message.Message;
 import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.jadex.agent.JadexAgent;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
@@ -116,12 +116,12 @@ public class ConsumerAgentBDI implements JadexAgent {
     }
 
     @Override
-    public boolean isHandling(de.unileipzig.irpact.core.agent.Agent sender, MessageContent content) {
+    public boolean isHandling(de.unileipzig.irpact.core.agent.Agent sender, Message content) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void handleMessage(de.unileipzig.irpact.core.agent.Agent sender, MessageContent content) {
+    public void handleMessage(de.unileipzig.irpact.core.agent.Agent sender, Message content) {
         throw new UnsupportedOperationException();
     }
 }
