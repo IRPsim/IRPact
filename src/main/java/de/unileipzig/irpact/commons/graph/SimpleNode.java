@@ -15,4 +15,9 @@ public class SimpleNode implements Node {
     public String getLabel() {
         return label;
     }
+
+    @Override
+    public String toString() {
+        return label;
+    }
 }

@@ -31,4 +31,9 @@ public class SimpleEdge<N extends Node> implements Edge<N> {
     public String getLabel() {
         return label;
     }
+
+    @Override
+    public String toString() {
+        return label;
+    }
 }

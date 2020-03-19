@@ -2,7 +2,6 @@ package de.unileipzig.irpact.commons.graph;
 
 import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
 import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
-import de.unileipzig.irpact.commons.exception.EdgeNodesMismatchException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,20 +21,16 @@ public class DirectedGraph<N extends Node, E extends Edge<N>> implements Graph<N
         this.graphData = graphData;
     }
 
-    protected Map<N, E> createNewSubMap(N node) {
+    protected Map<N, E> createSubMap() {
         return new HashMap<>();
     }
 
-    protected Map<N, E> getLinkedVertices(N source) {
-        return graphData.computeIfAbsent(source, this::createNewSubMap);
-    }
-
     protected boolean addIfNotExists(N node) {
-        if(!hasNode(node)) {
-            graphData.put(node, new HashMap<>());
-            return true;
+        if(hasNode(node)) {
+            return false;
         }
-        return false;
+        graphData.put(node, createSubMap());
+        return true;
     }
 
     protected boolean scan(N node) {
@@ -52,7 +47,15 @@ public class DirectedGraph<N extends Node, E extends Edge<N>> implements Graph<N
 
     @Override
     public boolean hasNode(N node) {
-        return graphData.containsKey(node);
+        if(graphData.containsKey(node)) {
+            return true;
+        }
+        for(Map<N, E> subData: graphData.values()) {
+            if(subData.containsKey(node)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -62,61 +65,40 @@ public class DirectedGraph<N extends Node, E extends Edge<N>> implements Graph<N
 
     @Override
     public boolean hasEdge(N source, N target) {
-        return getLinkedVertices(source).containsKey(target);
+        Map<N, E> sub = graphData.get(source);
+        if(sub == null) {
+            return false;
+        }
+        return sub.containsKey(target);
     }
 
     @Override
     public E getEdge(N source, N target) {
-        Map<N, E> linked = getLinkedVertices(source);
-        return linked.get(target);
+        Map<N, E> sub = graphData.get(source);
+        if(sub == null) {
+            return null;
+        }
+        return sub.get(target);
     }
 
     @Override
     public void addNode(N node) throws NodeAlreadyExistsException {
-        if(hasNode(node)) {
-            throw new NodeAlreadyExistsException(node.getLabel());
+        if(!addIfNotExists(node)) {
+            throw new NodeAlreadyExistsException();
         }
-        graphData.put(node, new HashMap<>());
-    }
-
-    protected void validateEdgeNodes(N source, N target, E edge) {
-        if(source != edge.getSource()) {
-            throw new EdgeNodesMismatchException("source");
-        }
-        if(target != edge.getTarget()) {
-            throw new EdgeNodesMismatchException("target");
-        }
-    }
-
-    protected void addEdge(N source, N target, E edge) throws EdgeAlreadyExistsException {
-        validateEdgeNodes(source, target, edge);
-        Map<N, E> linked = getLinkedVertices(source);
-        if(linked.containsKey(target)) {
-            throw new EdgeAlreadyExistsException();
-        }
-        linked.put(target, edge);
-        addIfNotExists(target);
     }
 
     @Override
     public void addEdge(E edge) throws EdgeAlreadyExistsException {
         N source = edge.getSource();
         N target = edge.getTarget();
-        addEdge(source, target, edge);
-    }
-
-    protected void setEdge(N source, N target, E edge) {
-        validateEdgeNodes(source, target, edge);
-        Map<N, E> linked = getLinkedVertices(source);
-        linked.put(target, edge);
+        addIfNotExists(source);
         addIfNotExists(target);
-    }
-
-    @Override
-    public void setEdge(E edge) {
-        N source = edge.getSource();
-        N target = edge.getTarget();
-        setEdge(source, target, edge);
+        Map<N, E> sub = graphData.get(source);
+        if(sub.containsKey(target)) {
+            throw new EdgeAlreadyExistsException();
+        }
+        sub.put(target, edge);
     }
 
     @Override
@@ -133,8 +115,11 @@ public class DirectedGraph<N extends Node, E extends Edge<N>> implements Graph<N
 
     @Override
     public boolean removeEdge(N source, N target) {
-        Map<N, E> linked = getLinkedVertices(source);
-        return linked.remove(target) != null;
+        Map<N, E> sub = graphData.get(source);
+        if(sub == null) {
+            return false;
+        }
+        return sub.remove(target) != null;
     }
 
     @Override
@@ -152,5 +137,24 @@ public class DirectedGraph<N extends Node, E extends Edge<N>> implements Graph<N
     @Override
     public boolean isUndirected() {
         return false;
+    }
+
+    @Override
+    public int getOutdegree(N node) {
+        Map<N, E> out = graphData.get(node);
+        return out == null
+                ? 0
+                : out.size();
+    }
+
+    @Override
+    public int getIndegree(N node) {
+        int count = 0;
+        for(Map<N, E> in: graphData.values()) {
+            if(in.containsKey(node)) {
+                count++;
+            }
+        }
+        return count;
     }
 }

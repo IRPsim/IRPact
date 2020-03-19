@@ -6,7 +6,7 @@ import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
 /**
  * @author Daniel Abitz
  */
-public interface MultiGraph<N extends Node, E extends Edge<N>, T> {
+public interface MultiGraph<N extends Node, E extends Edge<N>, T> extends GraphBase<N, E> {
 
     boolean hasNode(N node);
 
@@ -25,8 +25,4 @@ public interface MultiGraph<N extends Node, E extends Edge<N>, T> {
     boolean removeEdge(N source, N target, T type);
 
     boolean removeEdge(E edge, T type);
-
-    boolean isDirected();
-
-    boolean isUndirected();
 }

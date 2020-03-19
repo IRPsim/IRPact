@@ -6,7 +6,7 @@ import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
 /**
  * @author Daniel Abitz
  */
-public interface Graph<N extends Node, E extends Edge<N>> {
+public interface Graph<N extends Node, E extends Edge<N>> extends GraphBase<N, E> {
 
     boolean hasNode(N node);
 
@@ -20,15 +20,9 @@ public interface Graph<N extends Node, E extends Edge<N>> {
 
     void addEdge(E edge) throws EdgeAlreadyExistsException;
 
-    void setEdge(E edge);
-
     boolean removeNode(N node);
 
     boolean removeEdge(N source, N target);
 
     boolean removeEdge(E edge);
-
-    boolean isDirected();
-
-    boolean isUndirected();
 }

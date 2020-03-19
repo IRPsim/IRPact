@@ -120,7 +120,7 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
         if(edgeData == null) {
             return false;
         }
-        return edgeData.remove(type) != null;
+        return edgeData.remove(type) != null; //empty edgeData bleibt erstmal erhalten
     }
 
     @Override
@@ -138,5 +138,24 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
     @Override
     public boolean isUndirected() {
         return false;
+    }
+
+    @Override
+    public int getOutdegree(N node) {
+        Map<N, Map<T, E>> out = graphData.get(node);
+        return out == null
+                ? 0
+                : out.size();
+    }
+
+    @Override
+    public int getIndegree(N node) {
+        int count = 0;
+        for(Map<N, Map<T, E>> in: graphData.values()) {
+            if(in.containsKey(node)) {
+                count++;
+            }
+        }
+        return count;
     }
 }

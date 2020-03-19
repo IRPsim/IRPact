@@ -61,12 +61,13 @@ public class SocialNetwork extends DirectedMultiGraph<SocialNetwork.Node, Social
         return node;
     }
 
-    public void addAgent(ConsumerAgent agent) throws NodeWithSameAgentException {
+    public Node addAgent(ConsumerAgent agent) throws NodeWithSameAgentException {
         if(agentToNodeMap.containsKey(agent)) {
             throw new NodeWithSameAgentException(agent.getName());
         }
         Node node = new Node(agent);
         addNode(node);
+        return node;
     }
 
     /**

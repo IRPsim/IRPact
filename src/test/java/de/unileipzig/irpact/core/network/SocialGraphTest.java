@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
-import de.unileipzig.irpact.commons.exception.EdgeNodesMismatchException;
 import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
 import de.unileipzig.irpact.core.network.exception.NodeWithSameAgentException;
 import de.unileipzig.irpact.core.spatial.Metric;
@@ -68,25 +67,6 @@ class SocialGraphTest {
         graph.addEdge(e0);
         assertThrows(NodeWithSameAgentException.class, () -> graph.addEdge(e1));
         assertThrows(EdgeAlreadyExistsException.class, () -> graph.addEdge(e0));
-    }
-
-    @Test
-    void testWrongEdgeNodes() {
-        SocialGraph graph = new SocialGraph();
-
-        MockConsumerAgent a0 = new MockConsumerAgent("a0");
-        MockConsumerAgent a1 = new MockConsumerAgent("a1");
-        MockConsumerAgent a2 = new MockConsumerAgent("a2");
-
-        SocialGraph.Node n0 = new SocialGraph.Node(a0);
-        SocialGraph.Node n1 = new SocialGraph.Node(a1);
-        SocialGraph.Node n2 = new SocialGraph.Node(a2);
-        SocialGraph.Edge e0 = new SocialGraph.Edge(n0, n1, "e0");
-
-        assertThrows(EdgeNodesMismatchException.class, () -> graph.addEdge(n0, n2, e0));
-        assertThrows(EdgeNodesMismatchException.class, () -> graph.addEdge(n2, n1, e0));
-        assertThrows(EdgeNodesMismatchException.class, () -> graph.addEdge(n1, n0, e0));
-        assertDoesNotThrow(() -> graph.addEdge(n0, n1, e0));
     }
 
     @Test

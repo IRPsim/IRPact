@@ -1,8 +1,6 @@
 package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.commons.Check;
-import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
-import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
 import de.unileipzig.irpact.commons.graph.DirectedGraph;
 import de.unileipzig.irpact.commons.graph.SimpleEdge;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
@@ -26,12 +24,29 @@ public class SocialGraph extends DirectedGraph<SocialGraph.Node, SocialGraph.Edg
     public SocialGraph() {
     }
 
+    @Override
+    protected boolean addIfNotExists(Node node) {
+        Node current = agentToNodeMap.get(node.getAgent());
+        if(current != null && current != node) {
+            throw new NodeWithSameAgentException();
+        }
+        if(super.addIfNotExists(node)) {
+            agentToNodeMap.put(node.getAgent(), node);
+            return true;
+        }
+        return false;
+    }
+
     public boolean hasAgent(ConsumerAgent agent) {
         return agentToNodeMap.containsKey(agent);
     }
 
+    public Node getNode(ConsumerAgent agent) {
+        return agentToNodeMap.get(agent);
+    }
+
     public Node findNode(ConsumerAgent agent) throws NoSuchElementException {
-        Node node = agentToNodeMap.get(agent);
+        Node node = getNode(agent);
         if(node == null) {
             throw new NoSuchElementException(agent.getName());
         }
@@ -45,39 +60,6 @@ public class SocialGraph extends DirectedGraph<SocialGraph.Node, SocialGraph.Edg
         Node node = new Node(agent);
         addNode(node);
         return node;
-    }
-
-    protected void checkNodeAndAdd(Node node) throws NodeWithSameAgentException {
-        ConsumerAgent agent = node.getAgent();
-        Node nodeInMap = agentToNodeMap.get(agent);
-        if(nodeInMap == null) {
-            agentToNodeMap.put(agent, node);
-        }
-        else if(node != nodeInMap) {
-            throw new NodeWithSameAgentException(agent.getName());
-        }
-    }
-
-    @Override
-    public void addNode(Node node) throws NodeWithSameAgentException, NodeAlreadyExistsException {
-        checkNodeAndAdd(node);
-        super.addNode(node);
-    }
-
-    @Override
-    protected void addEdge(Node source, Node target, Edge edge) throws EdgeAlreadyExistsException {
-        validateEdgeNodes(source, target, edge);
-        checkNodeAndAdd(source);
-        checkNodeAndAdd(target);
-        super.addEdge(source, target, edge);
-    }
-
-    @Override
-    protected void setEdge(Node source, Node target, Edge edge) {
-        validateEdgeNodes(source, target, edge);
-        checkNodeAndAdd(source);
-        checkNodeAndAdd(target);
-        super.setEdge(source, target, edge);
     }
 
     private static Comparator<Node> distanceTo(Node node) {
