@@ -2,7 +2,6 @@ package de.unileipzig.irpact.experimental;
 
 import de.unileipzig.irpact.commons.graph.SimpleEdge;
 import de.unileipzig.irpact.commons.graph.SimpleNode;
-import de.unileipzig.irpact.commons.graph.structure.SimpleDirectedMultiGraphStructure;
 
 import java.util.*;
 
@@ -11,6 +10,7 @@ import java.util.*;
  */
 public class LaticeGraph {
 
+    /*
     private static int index(int current, int delta, int len) {
         int pos = current + delta;
         if(pos < 0) {
@@ -69,8 +69,10 @@ public class LaticeGraph {
             }
         }
     }
+    */
 
     public static void main(String[] args) {
+        /*
         SimpleDirectedMultiGraphStructure<SimpleNode, SimpleEdge<SimpleNode>, String> gs = new SimpleDirectedMultiGraphStructure<>(
                 LinkedHashMap::new,
                 LinkedHashMap::new,
@@ -84,5 +86,6 @@ public class LaticeGraph {
         random(gs, 5, "x", new Random(42));
         Collection<? extends SimpleEdge<SimpleNode>> edges = gs.getEdges("x");
         edges.forEach(System.out::println);
+        */
     }
 }

@@ -5,18 +5,18 @@ package de.unileipzig.irpact.core.network;
  */
 public class BasicAgentNetwork implements AgentNetwork {
 
-    private SocialNetwork graph;
+    private SocialGraph graph;
     private GraphConfiguration graphConfiguration;
 
     public BasicAgentNetwork(
-            SocialNetwork graph,
+            SocialGraph graph,
             GraphConfiguration graphConfiguration) {
         this.graph = graph;
         this.graphConfiguration = graphConfiguration;
     }
 
     @Override
-    public SocialNetwork getGraph() {
+    public SocialGraph getGraph() {
         return graph;
     }
 

@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.network.topology;
 
-import de.unileipzig.irpact.core.network.SocialNetwork;
+import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
 /**
@@ -12,6 +12,6 @@ public class ConstantTopology implements TopologyManipulationScheme {
     public static final ConstantTopology INSTANCE = new ConstantTopology();
 
     @Override
-    public void apply(SimulationEnvironment environment, SocialNetwork graph) {
+    public void apply(SimulationEnvironment environment, SocialGraph graph) {
     }
 }

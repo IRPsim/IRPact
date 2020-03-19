@@ -138,23 +138,4 @@ public class DirectedGraph<N extends Node, E extends Edge<N>> implements Graph<N
     public boolean isUndirected() {
         return false;
     }
-
-    @Override
-    public int getOutdegree(N node) {
-        Map<N, E> out = graphData.get(node);
-        return out == null
-                ? 0
-                : out.size();
-    }
-
-    @Override
-    public int getIndegree(N node) {
-        int count = 0;
-        for(Map<N, E> in: graphData.values()) {
-            if(in.containsKey(node)) {
-                count++;
-            }
-        }
-        return count;
-    }
 }

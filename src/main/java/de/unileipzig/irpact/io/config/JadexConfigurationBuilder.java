@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.io.config;
 
+import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinitiesMapping;
 import de.unileipzig.irpact.core.agent.policy.NoTaxes;
 import de.unileipzig.irpact.core.network.*;
@@ -33,7 +34,10 @@ public class JadexConfigurationBuilder extends AbstractConfigurationBuilder<Jade
         BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
         env.setEventManager(new BasicJadexEventManager());
         env.setAgentNetwork(new BasicAgentNetwork(
-                new SocialNetwork(),
+                new BasicSocialGraph(
+                        new DirectedMultiGraph<>(new HashMap<>()),
+                        new HashMap<>()
+                ),
                 new BasicGraphConfiguration(
                         EgoistTopology.INSTANCE,
                         ConstantTopology.INSTANCE,

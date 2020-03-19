@@ -1,66 +1,56 @@
-package de.unileipzig.irpact.commons.graph.structure;
+package de.unileipzig.irpact.commons.graph;
 
-import de.unileipzig.irpact.commons.annotation.ToDo;
 import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
 import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
-import de.unileipzig.irpact.commons.graph.Edge;
-import de.unileipzig.irpact.commons.graph.Node;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Supplier;
+import java.util.*;
 
 /**
  * @author Daniel Abitz
  */
-@ToDo("vllt auf emptyCollection statt null ausweichen oder weitere methode (find) nutzen")
-public class FastDirectedMultiGraphStructure<N extends Node, E extends Edge<N>, T>
-        implements DirectedMultiGraphDataStructure<N, E, T> {
+public class FastDirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements MultiGraph<N, E, T> {
 
-    protected Supplier<? extends Set<N>> nodeSetSupplier;
-    protected Supplier<? extends Set<E>> edgeSetSupplier;
-    protected Supplier<? extends Map<T, Set<N>>> typeSubNodeMapSupplier;
-    protected Supplier<? extends Map<T, Set<E>>> typeSubEdgeMapSupplier;
-    protected Supplier<? extends Map<N, Map<T, E>>> typeNodeEdgeSupplier;
-    protected Supplier<? extends Map<T, E>> typeEdgeSupplier;
     protected Set<N> nodes;
-    protected Map<T, Set<E>> typeEdges;
-    protected Map<N, Map<T, Set<E>>> typeOutEdges;
-    protected Map<N, Map<T, Set<E>>> typeInEdges;
-    protected Map<N, Map<N, Map<T, E>>> typeNodeNodeEdge;
+    protected Map<T, Set<E>> edges;
+    protected Map<N, Map<T, Set<E>>> outEdges;
+    protected Map<N, Map<T, Set<E>>> inEdges;
+    protected Map<N, Map<N, Map<T, E>>> nodeEdgeMapping;
 
-    public FastDirectedMultiGraphStructure(
-            Supplier<? extends Set<N>> nodeSetSupplier,
-            Supplier<? extends Set<E>> edgeSetSupplier,
-            Supplier<? extends Map<T, Set<N>>> typeSubNodeMapSupplier,
-            Supplier<? extends Map<T, Set<E>>> typeSubEdgeMapSupplier,
-            Supplier<? extends Map<N, Map<T, E>>> typeNodeEdgeSupplier,
-            Supplier<? extends Map<T, E>> typeEdgeSupplier,
+    public FastDirectedMultiGraph(
             Set<N> nodes,
-            Map<T, Set<E>> typeEdges,
-            Map<N, Map<T, Set<E>>> typeOutEdges,
-            Map<N, Map<T, Set<E>>> typeInEdges,
-            Map<N, Map<N, Map<T, E>>> typeNodeNodeEdge) {
-        this.nodeSetSupplier = nodeSetSupplier;
-        this.edgeSetSupplier = edgeSetSupplier;
-        this.typeSubNodeMapSupplier = typeSubNodeMapSupplier;
-        this.typeSubEdgeMapSupplier = typeSubEdgeMapSupplier;
-        this.typeNodeEdgeSupplier = typeNodeEdgeSupplier;
-        this.typeEdgeSupplier = typeEdgeSupplier;
+            Map<T, Set<E>> edges,
+            Map<N, Map<T, Set<E>>> outEdges,
+            Map<N, Map<T, Set<E>>> inEdges,
+            Map<N, Map<N, Map<T, E>>> nodeEdgeMapping) {
         this.nodes = nodes;
-        this.typeEdges = typeEdges;
-        this.typeOutEdges = typeOutEdges;
-        this.typeInEdges = typeInEdges;
-        this.typeNodeNodeEdge = typeNodeNodeEdge;
+        this.edges = edges;
+        this.outEdges = outEdges;
+        this.inEdges = inEdges;
+        this.nodeEdgeMapping = nodeEdgeMapping;
+    }
+    
+    protected Set<E> createEdgeSet() {
+        return new HashSet<>();
+    }
+    
+    protected Map<T, Set<E>> createTypeEdgeMap() {
+        return new HashMap<>();
+    }
+    
+    protected Map<N, Map<T, E>> createNodeEdgeMap() {
+        return new HashMap<>();
+    }
+    
+    protected Map<T, E> createEdgeMap() {
+        return new HashMap<>();
     }
 
     protected boolean scanNode(N node) {
         if(nodes.contains(node)) return true;
-        if(typeOutEdges.containsKey(node)) return true;
-        if(typeInEdges.containsKey(node)) return true;
-        if(typeNodeNodeEdge.containsKey(node)) return true;
-        for(Map<N, Map<T, E>> map: typeNodeNodeEdge.values()) {
+        if(outEdges.containsKey(node)) return true;
+        if(inEdges.containsKey(node)) return true;
+        if(nodeEdgeMapping.containsKey(node)) return true;
+        for(Map<N, Map<T, E>> map: nodeEdgeMapping.values()) {
             if(map.containsKey(node)) {
                 return true;
             }
@@ -69,26 +59,26 @@ public class FastDirectedMultiGraphStructure<N extends Node, E extends Edge<N>, 
     }
 
     protected boolean scanEdge(E edge) {
-        for(Set<E> set: typeEdges.values()) {
+        for(Set<E> set: edges.values()) {
             if(set.contains(edge)) {
                 return true;
             }
         }
-        for(Map<T, Set<E>> map: typeOutEdges.values()) {
+        for(Map<T, Set<E>> map: outEdges.values()) {
             for(Set<E> set: map.values()) {
                 if(set.contains(edge)) {
                     return true;
                 }
             }
         }
-        for(Map<T, Set<E>> map: typeInEdges.values()) {
+        for(Map<T, Set<E>> map: inEdges.values()) {
             for(Set<E> set: map.values()) {
                 if(set.contains(edge)) {
                     return true;
                 }
             }
         }
-        for(Map<N, Map<T, E>> map: typeNodeNodeEdge.values()) {
+        for(Map<N, Map<T, E>> map: nodeEdgeMapping.values()) {
             for(Map<T, E> map1: map.values()) {
                 if(map1.containsValue(edge)) {
                     return true;
@@ -99,23 +89,23 @@ public class FastDirectedMultiGraphStructure<N extends Node, E extends Edge<N>, 
     }
 
     protected boolean scanEdge(E edge, T type) {
-        Set<E> set = typeEdges.get(type);
+        Set<E> set = edges.get(type);
         if(set != null && set.contains(edge)) {
             return true;
         }
-        for(Map<T, Set<E>> map: typeOutEdges.values()) {
+        for(Map<T, Set<E>> map: outEdges.values()) {
             Set<E> set1 = map.get(type);
             if(set1 != null && set1.contains(edge)) {
                 return true;
             }
         }
-        for(Map<T, Set<E>> map: typeInEdges.values()) {
+        for(Map<T, Set<E>> map: inEdges.values()) {
             Set<E> set1 = map.get(type);
             if(set1 != null && set1.contains(edge)) {
                 return true;
             }
         }
-        for(Map<N, Map<T, E>> map: typeNodeNodeEdge.values()) {
+        for(Map<N, Map<T, E>> map: nodeEdgeMapping.values()) {
             for(Map<T, E> map1: map.values()) {
                 E e = map1.get(type);
                 return e == edge;
@@ -131,7 +121,7 @@ public class FastDirectedMultiGraphStructure<N extends Node, E extends Edge<N>, 
 
     @Override
     public Collection<? extends E> getEdges(T type) {
-        return typeEdges.get(type);
+        return edges.get(type);
     }
 
     @Override
@@ -147,7 +137,7 @@ public class FastDirectedMultiGraphStructure<N extends Node, E extends Edge<N>, 
 
     @Override
     public int getIndegree(N node, T type) {
-        Map<T, Set<E>> map = typeInEdges.get(node);
+        Map<T, Set<E>> map = inEdges.get(node);
         if(map == null) {
             return -1;
         }
@@ -159,7 +149,7 @@ public class FastDirectedMultiGraphStructure<N extends Node, E extends Edge<N>, 
 
     @Override
     public int getOutdegree(N node, T type) {
-        Map<T, Set<E>> map = typeOutEdges.get(node);
+        Map<T, Set<E>> map = outEdges.get(node);
         if(map == null) {
             return -1;
         }
@@ -171,7 +161,7 @@ public class FastDirectedMultiGraphStructure<N extends Node, E extends Edge<N>, 
 
     @Override
     public Collection<? extends E> getOutEdges(N node, T type) {
-        Map<T, Set<E>> map = typeOutEdges.get(node);
+        Map<T, Set<E>> map = outEdges.get(node);
         if(map == null) {
             return null;
         }
@@ -180,7 +170,7 @@ public class FastDirectedMultiGraphStructure<N extends Node, E extends Edge<N>, 
 
     @Override
     public Collection<? extends E> getInEdges(N node, T type) {
-        Map<T, Set<E>> map = typeInEdges.get(node);
+        Map<T, Set<E>> map = inEdges.get(node);
         if(map == null) {
             return null;
         }
@@ -199,7 +189,7 @@ public class FastDirectedMultiGraphStructure<N extends Node, E extends Edge<N>, 
 
     @Override
     public boolean hasEdge(E edge, T type) {
-        Set<E> edges = typeEdges.get(type);
+        Set<E> edges = this.edges.get(type);
         return edges != null && edges.contains(edge);
     }
 
@@ -216,9 +206,9 @@ public class FastDirectedMultiGraphStructure<N extends Node, E extends Edge<N>, 
 
     protected void addEdgeTo(N node, E edge, T type, boolean out) {
         Map<T, Set<E>> edgeMap = out
-                ? typeOutEdges.computeIfAbsent(node, _node -> typeSubEdgeMapSupplier.get())
-                : typeInEdges.computeIfAbsent(node, _node -> typeSubEdgeMapSupplier.get());
-        Set<E> edges = edgeMap.computeIfAbsent(type, _type -> edgeSetSupplier.get());
+                ? outEdges.computeIfAbsent(node, _node -> createTypeEdgeMap())
+                : inEdges.computeIfAbsent(node, _node -> createTypeEdgeMap());
+        Set<E> edges = edgeMap.computeIfAbsent(type, _type -> createEdgeSet());
         edges.add(edge);
     }
 
@@ -233,10 +223,10 @@ public class FastDirectedMultiGraphStructure<N extends Node, E extends Edge<N>, 
         addIfNotExists(target);
         addEdgeTo(source, edge, type, true);
         addEdgeTo(target, edge, type, false);
-        Set<E> edges = typeEdges.computeIfAbsent(type, _type -> edgeSetSupplier.get());
+        Set<E> edges = this.edges.computeIfAbsent(type, _type -> createEdgeSet());
         edges.add(edge);
-        Map<N, Map<T, E>> map = typeNodeNodeEdge.computeIfAbsent(source, _source -> typeNodeEdgeSupplier.get());
-        Map<T, E> map1 = map.computeIfAbsent(target, _target -> typeEdgeSupplier.get());
+        Map<N, Map<T, E>> map = nodeEdgeMapping.computeIfAbsent(source, _source -> createNodeEdgeMap());
+        Map<T, E> map1 = map.computeIfAbsent(target, _target -> createEdgeMap());
         map1.put(type, edge);
     }
 
@@ -245,7 +235,7 @@ public class FastDirectedMultiGraphStructure<N extends Node, E extends Edge<N>, 
             return;
         }
         for(Map.Entry<T, Set<E>> edgesEntry: edges.entrySet()) {
-            Set<E> thisEdges = typeEdges.get(edgesEntry.getKey());
+            Set<E> thisEdges = this.edges.get(edgesEntry.getKey());
             if(thisEdges != null) {
                 thisEdges.removeAll(edgesEntry.getValue());
             }
@@ -255,10 +245,10 @@ public class FastDirectedMultiGraphStructure<N extends Node, E extends Edge<N>, 
     @Override
     public boolean removeNode(N node) {
         if(nodes.remove(node)) {
-            removeAllEdges(typeOutEdges.remove(node));
-            removeAllEdges(typeInEdges.remove(node));
-            typeNodeNodeEdge.remove(node);
-            for(Map<N, Map<T, E>> map: typeNodeNodeEdge.values()) {
+            removeAllEdges(outEdges.remove(node));
+            removeAllEdges(inEdges.remove(node));
+            nodeEdgeMapping.remove(node);
+            for(Map<N, Map<T, E>> map: nodeEdgeMapping.values()) {
                 map.remove(node);
             }
             return true;
@@ -277,12 +267,21 @@ public class FastDirectedMultiGraphStructure<N extends Node, E extends Edge<N>, 
     }
 
     @Override
+    public boolean removeEdge(N source, N target, T type) {
+        E edge = getEdge(source, target, type);
+        if(edge == null) {
+            return false;
+        }
+        return removeEdge(edge, type);
+    }
+
+    @Override
     public boolean removeEdge(E edge, T type) {
-        Set<E> edges = typeEdges.get(type);
+        Set<E> edges = this.edges.get(type);
         if(edges != null && edges.remove(edge)) {
-            removeEdge(typeOutEdges, edge.getSource(), edge, type);
-            removeEdge(typeInEdges, edge.getTarget(), edge, type);
-            Map<N, Map<T, E>> map = typeNodeNodeEdge.get(edge.getSource());
+            removeEdge(outEdges, edge.getSource(), edge, type);
+            removeEdge(inEdges, edge.getTarget(), edge, type);
+            Map<N, Map<T, E>> map = nodeEdgeMapping.get(edge.getSource());
             if(map != null) {
                 Map<T, E> map1 = map.get(edge.getTarget());
                 if(map1 != null) {
@@ -296,7 +295,7 @@ public class FastDirectedMultiGraphStructure<N extends Node, E extends Edge<N>, 
 
     @Override
     public E getEdge(N source, N target, T type) {
-        Map<N, Map<T, E>> map = typeNodeNodeEdge.get(source);
+        Map<N, Map<T, E>> map = nodeEdgeMapping.get(source);
         if(map == null) {
             return null;
         }
@@ -305,5 +304,15 @@ public class FastDirectedMultiGraphStructure<N extends Node, E extends Edge<N>, 
             return null;
         }
         return map1.get(type);
+    }
+
+    @Override
+    public boolean isDirected() {
+        return true;
+    }
+
+    @Override
+    public boolean isUndirected() {
+        return false;
     }
 }

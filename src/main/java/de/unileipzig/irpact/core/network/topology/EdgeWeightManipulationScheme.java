@@ -3,7 +3,7 @@ package de.unileipzig.irpact.core.network.topology;
 import de.unileipzig.irpact.commons.annotation.ToDo;
 import de.unileipzig.irpact.core.Scheme;
 import de.unileipzig.irpact.core.network.EdgeType;
-import de.unileipzig.irpact.core.network.SocialNetwork;
+import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
 /**
@@ -14,8 +14,8 @@ public interface EdgeWeightManipulationScheme extends Scheme {
 
     double getEdgeWeight(
             SimulationEnvironment environment,
-            SocialNetwork.Node source,
-            SocialNetwork.Node target,
+            SocialGraph.Node source,
+            SocialGraph.Node target,
             EdgeType edgeType
     );
 
