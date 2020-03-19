@@ -7,7 +7,6 @@ import de.unileipzig.irpact.commons.graph.Edge;
 import de.unileipzig.irpact.commons.graph.Node;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -21,14 +20,17 @@ public class SimpleDirectedMultiGraphStructure<N extends Node, E extends Edge<N>
 
     protected Supplier<? extends Map<N, Map<T, E>>> typeNodeEdgeSupplier;
     protected Supplier<? extends Map<T, E>> typeEdgeSupplier;
+    protected Supplier<? extends Set<E>> edgeSetSupplier;
     protected Map<N, Map<N, Map<T, E>>> typeNodeNodeEdge;
 
     public SimpleDirectedMultiGraphStructure(
             Supplier<? extends Map<N, Map<T, E>>> typeNodeEdgeSupplier,
             Supplier<? extends Map<T, E>> typeEdgeSupplier,
+            Supplier<? extends Set<E>> edgeSetSupplier,
             Map<N, Map<N, Map<T, E>>> typeNodeNodeEdge) {
         this.typeNodeEdgeSupplier = typeNodeEdgeSupplier;
         this.typeEdgeSupplier = typeEdgeSupplier;
+        this.edgeSetSupplier = edgeSetSupplier;
         this.typeNodeNodeEdge = typeNodeNodeEdge;
     }
 
@@ -72,7 +74,7 @@ public class SimpleDirectedMultiGraphStructure<N extends Node, E extends Edge<N>
 
     @Override
     public Collection<? extends E> getEdges(T type) {
-        Set<E> edges = new HashSet<>();
+        Set<E> edges = edgeSetSupplier.get();
         for(Map<N, Map<T, E>> map: typeNodeNodeEdge.values()) {
             for(Map<T, E> map1: map.values()) {
                 E edge = map1.get(type);
@@ -133,7 +135,7 @@ public class SimpleDirectedMultiGraphStructure<N extends Node, E extends Edge<N>
         if(!hasNode(node)) {
             return null;
         }
-        Set<E> edges = new HashSet<>();
+        Set<E> edges = edgeSetSupplier.get();
         for(Map<N, Map<T, E>> map: typeNodeNodeEdge.values()) {
             Map<T, E> map1 = map.get(node);
             if(map1 != null) {
@@ -152,7 +154,7 @@ public class SimpleDirectedMultiGraphStructure<N extends Node, E extends Edge<N>
         if(map == null) {
             return null;
         }
-        Set<E> edges = new HashSet<>();
+        Set<E> edges = edgeSetSupplier.get();
         for(Map<T, E> map1: map.values()) {
             E e = map1.get(type);
             if(e != null) {
@@ -165,6 +167,11 @@ public class SimpleDirectedMultiGraphStructure<N extends Node, E extends Edge<N>
     @Override
     public boolean hasNode(N node) {
         return typeNodeNodeEdge.containsKey(node);
+    }
+
+    @Override
+    public boolean hasEdge(N source, N target, T type) {
+        return getEdge(source, target, type) != null;
     }
 
     @Override

@@ -19,6 +19,8 @@ public interface DirectedMultiGraphDataStructure<N extends Node, E extends Edge<
 
     boolean hasNode(N node);
 
+    boolean hasEdge(N source, N target, T type);
+
     boolean hasEdge(E edge, T type);
 
     void addNode(N node) throws NodeAlreadyExistsException;

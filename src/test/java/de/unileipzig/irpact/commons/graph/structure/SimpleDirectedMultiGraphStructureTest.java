@@ -8,6 +8,7 @@ import de.unileipzig.irpact.commons.graph.SimpleNode;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,6 +21,7 @@ class SimpleDirectedMultiGraphStructureTest {
         return new SimpleDirectedMultiGraphStructure<>(
                 HashMap::new,
                 HashMap::new,
+                HashSet::new,
                 new HashMap<>()
         );
     }

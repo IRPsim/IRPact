@@ -193,6 +193,11 @@ public class FastDirectedMultiGraphStructure<N extends Node, E extends Edge<N>, 
     }
 
     @Override
+    public boolean hasEdge(N source, N target, T type) {
+        return getEdge(source, target, type) != null;
+    }
+
+    @Override
     public boolean hasEdge(E edge, T type) {
         Set<E> edges = typeEdges.get(type);
         return edges != null && edges.contains(edge);
