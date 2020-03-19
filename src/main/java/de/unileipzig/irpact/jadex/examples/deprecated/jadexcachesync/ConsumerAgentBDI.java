@@ -179,12 +179,12 @@ public class ConsumerAgentBDI implements JadexAgent {
     }
 
     @Override
-    public boolean isHandling(de.unileipzig.irpact.core.agent.Agent sender, Message content) {
+    public boolean isHandling(de.unileipzig.irpact.core.agent.Agent sender, Message msg) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void handleMessage(de.unileipzig.irpact.core.agent.Agent sender, Message content) {
+    public void handleMessage(de.unileipzig.irpact.core.agent.Agent sender, Message msg) {
         throw new UnsupportedOperationException();
     }
 }

@@ -95,12 +95,12 @@ public class PointOfSaleAgentBase extends SpatialInformationAgentBase implements
     }
 
     @Override
-    public boolean isHandling(Agent sender, Message content) {
+    public boolean isHandling(Agent sender, Message msg) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void handleMessage(Agent sender, Message content) {
+    public void handleMessage(Agent sender, Message msg) {
         throw new UnsupportedOperationException();
     }
 }

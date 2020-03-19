@@ -7,5 +7,7 @@ import de.unileipzig.irpact.core.perception.PerceptionScheme;
  */
 public interface ProductAttributePerceptionScheme extends PerceptionScheme {
 
-    double calculateCurrentPerception();
+    double calculateCurrentValue();
+
+    void modifyValue(double perceptionValue, double informationWeight);
 }

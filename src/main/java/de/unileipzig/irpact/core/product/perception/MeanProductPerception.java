@@ -35,7 +35,7 @@ public class MeanProductPerception implements ProductPerceptionScheme {
             if(scheme == null) {
                 throw new MissingProductAttributePerceptionSchemeException(product.getName());
             }
-            sum += scheme.calculateCurrentPerception();
+            sum += scheme.calculateCurrentValue();
         }
         return sum / attributes.size();
     }

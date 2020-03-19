@@ -75,11 +75,6 @@ public class ConsumerAgentBase extends SpatialInformationAgentBase implements Co
     }
 
     @Override
-    public void addNeed(Need need) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public boolean is(EntityType type) {
         throw new UnsupportedOperationException();
     }
@@ -90,12 +85,36 @@ public class ConsumerAgentBase extends SpatialInformationAgentBase implements Co
     }
 
     @Override
-    public boolean isHandling(Agent sender, Message content) {
+    public boolean isHandling(Agent sender, Message msg) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void handleMessage(Agent sender, Message content) {
+    public void handleMessage(Agent sender, Message msg) {
+        throw new UnsupportedOperationException();
+    }
+
+    //=========================
+    //...
+    //=========================
+
+    @Override
+    public void addNeed(Need need) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isAwareOf(Product product) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void makeAwareOf(Product product) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void updateProductAttributePerception(ProductAttribute attribute, double perceptionValue, double informationWeight) {
         throw new UnsupportedOperationException();
     }
 }

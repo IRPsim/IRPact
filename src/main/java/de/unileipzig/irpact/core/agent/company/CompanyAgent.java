@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.agent.company;
 
 import de.unileipzig.irpact.core.agent.InformationAgent;
+import de.unileipzig.irpact.core.agent.company.advertisement.AdvertisementScheme;
 import de.unileipzig.irpact.core.product.Product;
 
 import java.util.Set;
@@ -11,4 +12,6 @@ import java.util.Set;
 public interface CompanyAgent extends InformationAgent {
 
     Set<Product> getProductPortfolio();
+
+    AdvertisementScheme getAdvertisementScheme();
 }

@@ -8,7 +8,7 @@ import de.unileipzig.irpact.core.agent.Agent;
  */
 public interface MessageReceiver {
 
-    boolean isHandling(Agent sender, Message content);
+    boolean isHandling(Agent sender, Message msg);
 
-    void handleMessage(Agent sender, Message content);
+    void handleMessage(Agent sender, Message msg);
 }

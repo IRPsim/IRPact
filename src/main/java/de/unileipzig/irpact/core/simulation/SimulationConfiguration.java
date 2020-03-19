@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.simulation;
 
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinitiesMapping;
 import de.unileipzig.irpact.core.preference.ValueConfiguration;
 import de.unileipzig.irpact.core.product.ProductGroup;
@@ -36,6 +37,11 @@ public interface SimulationConfiguration {
     Collection<? extends SimulationEntity> getEntities();
 
     Collection<? extends SimulationEntity> getPartitionedEntities(EntityType type);
+
+    @SuppressWarnings("unchecked")
+    default Collection<? extends ConsumerAgent> getConsumerAgents() {
+        return (Collection<? extends ConsumerAgent>) getPartitionedEntities(EntityType.CONSUMER_AGENT);
+    }
 
     <T extends SimulationEntity> T getEntity(String entitiyName);
 

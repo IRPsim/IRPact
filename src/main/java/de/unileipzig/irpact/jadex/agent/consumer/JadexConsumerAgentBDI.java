@@ -156,13 +156,29 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     }
 
     @Override
+    public ProductAttributePerceptionScheme getScheme(ProductAttribute attribute) {
+        return agentBase.getScheme(attribute);
+    }
+
+    @Override
     public void addNeed(Need need) {
         needs.add(need);
     }
 
     @Override
-    public ProductAttributePerceptionScheme getScheme(ProductAttribute attribute) {
-        return agentBase.getScheme(attribute);
+    public boolean isAwareOf(Product product) {
+        return knownProducts.contains(product);
+    }
+
+    @Override
+    public void makeAwareOf(Product product) {
+        knownProducts.add(product);
+    }
+
+    @Override
+    public void updateProductAttributePerception(ProductAttribute attribute, double perceptionValue, double informationWeight) {
+        ProductAttributePerceptionScheme scheme = getScheme(attribute);
+        scheme.modifyValue(perceptionValue, informationWeight);
     }
 
     //=========================

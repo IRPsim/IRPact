@@ -3,6 +3,7 @@ package de.unileipzig.irpact.jadex.examples.sendCustomMessage;
 import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.company.CompanyAgentBase;
+import de.unileipzig.irpact.core.agent.company.advertisement.NoAdvertisement;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.TakeFirstProductAdoptionDecision;
 import de.unileipzig.irpact.core.agent.policy.NoTaxes;
@@ -11,9 +12,9 @@ import de.unileipzig.irpact.core.agent.pos.IgnoreProductAvailabilityChange;
 import de.unileipzig.irpact.core.agent.pos.IgnoreProductPriceChange;
 import de.unileipzig.irpact.core.agent.pos.IgnoreProductSoldOut;
 import de.unileipzig.irpact.core.agent.pos.PointOfSaleAgentBase;
-import de.unileipzig.irpact.core.message.BasicMessageEvent;
 import de.unileipzig.irpact.core.message.Message;
-import de.unileipzig.irpact.core.message.MessageEvent;
+import de.unileipzig.irpact.core.message.communication.BasicCommunicationEvent;
+import de.unileipzig.irpact.core.message.communication.CommunicationEvent;
 import de.unileipzig.irpact.core.need.IgnoreNeedSatisfy;
 import de.unileipzig.irpact.core.need.NoNeedDevelopment;
 import de.unileipzig.irpact.core.need.NoNeedExpiration;
@@ -111,7 +112,8 @@ public class Main {
         cb.addCompanyAgent(new CompanyAgentBase(
                 cb.getEnvironment(),
                 "company_test",
-                42
+                42,
+                NoAdvertisement.INSTANCE
         ));
 
         return cb;
@@ -165,7 +167,7 @@ public class Main {
 
         ConcurrentUtil.sleepSilently(2000);
         env.getMessageSystem().setMode(JadexMessageSystem.Mode.BASIC);
-        MessageEvent msgEvent = new BasicMessageEvent(
+        CommunicationEvent comEvent = new BasicCommunicationEvent(
                 env.getMessageSystem(),
                 a1,
                 a1, //self!
@@ -186,6 +188,6 @@ public class Main {
                     }
                 }
         );
-        env.getEventManager().schedule(msgEvent);
+        env.getEventManager().schedule(comEvent);
     }
 }

@@ -2,6 +2,7 @@ package de.unileipzig.irpact.jadex.agent.company;
 
 import de.unileipzig.irpact.core.agent.company.CompanyAgent;
 import de.unileipzig.irpact.core.agent.company.CompanyAgentBase;
+import de.unileipzig.irpact.core.agent.company.advertisement.AdvertisementScheme;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.jadex.agent.JadexAgentBase;
@@ -97,6 +98,11 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
     @Override
     public Set<Product> getProductPortfolio() {
         return productPortfolio;
+    }
+
+    @Override
+    public AdvertisementScheme getAdvertisementScheme() {
+        return agentBase.getAdvertisementScheme();
     }
 
     @Override

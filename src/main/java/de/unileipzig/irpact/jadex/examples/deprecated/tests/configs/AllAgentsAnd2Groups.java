@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.jadex.examples.deprecated.tests.configs;
 
 import de.unileipzig.irpact.core.agent.company.CompanyAgentBase;
+import de.unileipzig.irpact.core.agent.company.advertisement.NoAdvertisement;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.TakeFirstProductAdoptionDecision;
 import de.unileipzig.irpact.core.agent.policy.NoTaxes;
@@ -103,7 +104,8 @@ public final class AllAgentsAnd2Groups {
         cb.addCompanyAgent(new CompanyAgentBase(
                 cb.getEnvironment(),
                 "company_test",
-                42
+                42,
+                NoAdvertisement.INSTANCE
         ));
 
         return cb;

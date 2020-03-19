@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.jadex.examples.startSimulation;
 
 import de.unileipzig.irpact.core.agent.company.CompanyAgentBase;
+import de.unileipzig.irpact.core.agent.company.advertisement.NoAdvertisement;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.TakeFirstProductAdoptionDecision;
 import de.unileipzig.irpact.core.agent.policy.NoTaxes;
@@ -104,7 +105,8 @@ public class Main {
         cb.addCompanyAgent(new CompanyAgentBase(
                 cb.getEnvironment(),
                 "company_test",
-                42
+                42,
+                NoAdvertisement.INSTANCE
         ));
 
         return cb;

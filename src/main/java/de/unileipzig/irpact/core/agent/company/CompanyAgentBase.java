@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.agent.company;
 
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.InformationAgentBase;
+import de.unileipzig.irpact.core.agent.company.advertisement.AdvertisementScheme;
 import de.unileipzig.irpact.core.message.Message;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.EntityType;
@@ -14,11 +15,15 @@ import java.util.Set;
  */
 public class CompanyAgentBase extends InformationAgentBase implements CompanyAgent {
 
+    protected AdvertisementScheme advertisementScheme;
+
     public CompanyAgentBase(
             SimulationEnvironment environment,
             String name,
-            double informationAuthority) {
+            double informationAuthority,
+            AdvertisementScheme advertisementScheme) {
         super(environment, name, informationAuthority);
+        this.advertisementScheme = advertisementScheme;
     }
 
     @Override
@@ -27,17 +32,22 @@ public class CompanyAgentBase extends InformationAgentBase implements CompanyAge
     }
 
     @Override
+    public AdvertisementScheme getAdvertisementScheme() {
+        return advertisementScheme;
+    }
+
+    @Override
     public boolean is(EntityType type) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean isHandling(Agent sender, Message content) {
+    public boolean isHandling(Agent sender, Message msg) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void handleMessage(Agent sender, Message content) {
+    public void handleMessage(Agent sender, Message msg) {
         throw new UnsupportedOperationException();
     }
 }

@@ -27,7 +27,17 @@ public interface ConsumerAgent extends SpatialInformationAgent, GroupEntity<Cons
 
     Set<Preference> getPreferences();
 
+    ProductAttributePerceptionScheme getScheme(ProductAttribute attribute);
+
+    //=========================
+    //...
+    //=========================
+
     void addNeed(Need need);
 
-    ProductAttributePerceptionScheme getScheme(ProductAttribute attribute);
+    boolean isAwareOf(Product product);
+
+    void makeAwareOf(Product product);
+
+    void updateProductAttributePerception(ProductAttribute attribute, double perceptionValue, double informationWeight);
 }

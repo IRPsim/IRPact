@@ -1,20 +1,23 @@
-package de.unileipzig.irpact.core.message;
+package de.unileipzig.irpact.core.message.communication;
 
 import de.unileipzig.irpact.commons.Check;
 import de.unileipzig.irpact.core.agent.Agent;
+import de.unileipzig.irpact.core.message.Message;
+import de.unileipzig.irpact.core.message.MessageSystem;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicMessageEvent implements MessageEvent {
+public class BasicCommunicationEvent implements CommunicationEvent {
 
     protected MessageSystem messageSystem;
     protected Agent sender;
     protected Agent receiver;
     protected Agent[] receivers;
+    protected Iterable<? extends Agent> iterableReceivers;
     protected Message message;
 
-    public BasicMessageEvent(
+    public BasicCommunicationEvent(
             MessageSystem messageSystem,
             Agent sender,
             Agent receiver,
@@ -25,7 +28,7 @@ public class BasicMessageEvent implements MessageEvent {
         this.message = Check.requireNonNull(message, "message");
     }
 
-    public BasicMessageEvent(
+    public BasicCommunicationEvent(
             MessageSystem messageSystem,
             Agent sender,
             Agent[] receivers,
@@ -36,15 +39,34 @@ public class BasicMessageEvent implements MessageEvent {
         this.message = Check.requireNonNull(message, "message");
     }
 
+    public BasicCommunicationEvent(
+            MessageSystem messageSystem,
+            Agent sender,
+            Iterable<? extends Agent> iterableReceivers,
+            Message message) {
+        this.messageSystem = Check.requireNonNull(messageSystem, "messageSystem");
+        this.sender = Check.requireNonNull(sender, "sender");
+        this.iterableReceivers = Check.requireNonNull(iterableReceivers, "iterableReceivers");
+        this.message = Check.requireNonNull(message, "message");
+    }
+
     @Override
     public void process() {
-        if(receiver == null) {
+        if(receivers != null) {
             messageSystem.send(
                     sender,
                     message,
                     receivers
             );
-        } else {
+        }
+        else if(iterableReceivers != null) {
+            messageSystem.send(
+                    sender,
+                    message,
+                    iterableReceivers
+            );
+        }
+        else {
             messageSystem.send(
                     sender,
                     message,

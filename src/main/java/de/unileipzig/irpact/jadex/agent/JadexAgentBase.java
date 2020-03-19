@@ -92,14 +92,14 @@ public abstract class JadexAgentBase implements JadexAgent {
     }
 
     @Override
-    public boolean isHandling(de.unileipzig.irpact.core.agent.Agent sender, Message content) {
+    public boolean isHandling(de.unileipzig.irpact.core.agent.Agent sender, Message msg) {
         return true;
     }
 
     @Override
-    public void handleMessage(de.unileipzig.irpact.core.agent.Agent sender, Message content) {
+    public void handleMessage(de.unileipzig.irpact.core.agent.Agent sender, Message msg) {
         logger().trace("[{}] handle Message from '{}'", getName(), sender.getName());
-        content.process(sender, this);
+        msg.process(sender, this);
     }
 
     //=========================

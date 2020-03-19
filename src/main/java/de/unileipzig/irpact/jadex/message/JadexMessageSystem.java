@@ -9,6 +9,8 @@ import jadex.bridge.IExternalAccess;
 import jadex.bridge.component.IMessageFeature;
 import jadex.commons.future.IFuture;
 
+import java.util.Collection;
+
 /**
  * @author Daniel Abitz
  */
@@ -91,20 +93,38 @@ public class JadexMessageSystem extends BasicMessageSystem {
     }
 
     @Override
-    public void send(Agent from, Message content, Agent to) {
+    public void send(Agent from, Message msg, Agent to) {
         if(mode == Mode.BASIC) {
-            sendBasic(from, content, to);
+            sendBasic(from, msg, to);
         } else {
-            sendJadex(from, content, to).get();
+            sendJadex(from, msg, to).get();
         }
     }
 
     @Override
-    public void send(Agent from, Message content, Agent... to) {
+    public void send(Agent from, Message msg, Agent... to) {
         if(mode == Mode.BASIC) {
-            sendBasic(from, content, to);
+            sendBasic(from, msg, to);
         } else {
-            sendJadex(from, content, to).get();
+            sendJadex(from, msg, to).get();
+        }
+    }
+
+    @Override
+    public void send(Agent from, Message msg, Iterable<? extends Agent> to) {
+        if(mode == Mode.JADEX && to instanceof Collection) {
+            @SuppressWarnings("unchecked")
+            Collection<? extends Agent> coll = (Collection<? extends Agent>) to;
+            Agent[] toArray = coll.toArray(new Agent[0]);
+            sendJadex(from, msg, toArray);
+        } else {
+            for(Agent toAgent: to) {
+                if(mode == Mode.BASIC) {
+                    sendBasic(from, msg, toAgent);
+                } else {
+                    sendJadex(from, msg, toAgent).get();
+                }
+            }
         }
     }
 }

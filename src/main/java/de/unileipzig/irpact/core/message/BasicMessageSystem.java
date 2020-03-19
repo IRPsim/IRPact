@@ -20,16 +20,23 @@ public class BasicMessageSystem implements MessageSystem {
     }
 
     @Override
-    public void send(Agent from, Message content, Agent to) {
-        if(to.isHandling(from, content)) {
-            to.handleMessage(from, content);
+    public void send(Agent from, Message msg, Agent to) {
+        if(to.isHandling(from, msg)) {
+            to.handleMessage(from, msg);
         }
     }
 
     @Override
-    public void send(Agent from, Message content, Agent... to) {
+    public void send(Agent from, Message msg, Agent... to) {
         for(Agent target: to) {
-            send(from, content, target);
+            send(from, msg, target);
+        }
+    }
+
+    @Override
+    public void send(Agent from, Message msg, Iterable<? extends Agent> to) {
+        for(Agent target: to) {
+            send(from, msg, target);
         }
     }
 }

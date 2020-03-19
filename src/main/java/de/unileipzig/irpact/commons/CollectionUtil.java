@@ -24,6 +24,22 @@ public final class CollectionUtil {
         return ifEmpty;
     }
 
+    public static <T> T get(Collection<T> coll, int index) {
+        int i = 0;
+        for(T t: coll) {
+            if(i == index) {
+                return t;
+            }
+            i++;
+        }
+        throw new IndexOutOfBoundsException();
+    }
+
+    public static <T> T get(Collection<T> coll, Random rnd) {
+        int index = rnd.nextInt(coll.size());
+        return get(coll, index);
+    }
+
     @SuppressWarnings("unchecked")
     public static <T> Set<T> hashSetOf(T... values) {
         Set<T> set = new HashSet<>();
