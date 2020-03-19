@@ -92,6 +92,21 @@ public class MockConsumerAgent implements ConsumerAgent {
     }
 
     @Override
+    public boolean isAwareOf(Product product) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void makeAwareOf(Product product) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void updateProductAttributePerception(ProductAttribute attribute, double perceptionValue, double informationWeight) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public ProductAttributePerceptionScheme getScheme(ProductAttribute attribute) {
         throw new UnsupportedOperationException();
     }
