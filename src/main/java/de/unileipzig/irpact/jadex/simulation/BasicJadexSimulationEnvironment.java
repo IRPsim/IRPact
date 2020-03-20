@@ -8,6 +8,7 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironmentBase;
 import de.unileipzig.irpact.jadex.message.JadexMessageSystem;
 import jadex.bridge.IComponentIdentifier;
 import jadex.bridge.IExternalAccess;
+import jadex.bridge.component.IExternalExecutionFeature;
 import jadex.bridge.service.search.ServiceQuery;
 import jadex.bridge.service.types.clock.IClock;
 import jadex.bridge.service.types.clock.IClockService;
@@ -23,6 +24,7 @@ public class BasicJadexSimulationEnvironment extends SimulationEnvironmentBase i
 
     //Jadex
     private IExternalAccess platform;
+    private IExternalExecutionFeature platformExec;
     private IClockService clockService;
     private ISimulationService simulationService;
     private IExternalAccess simulationAgent;
@@ -38,6 +40,7 @@ public class BasicJadexSimulationEnvironment extends SimulationEnvironmentBase i
 
     public void setPlatform(IExternalAccess platform) {
         this.platform = platform;
+        this.platformExec = platform.getExternalFeature(IExternalExecutionFeature.class);
     }
 
     public void setSimulationAgent(IExternalAccess simulationAgent) {
@@ -128,6 +131,11 @@ public class BasicJadexSimulationEnvironment extends SimulationEnvironmentBase i
     @Override
     public IExternalAccess getPlatform() {
         return platform;
+    }
+
+    @Override
+    public IExternalExecutionFeature getPlatformExec() {
+        return platformExec;
     }
 
     @Override

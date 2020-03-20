@@ -9,7 +9,7 @@ import jadex.bridge.service.types.clock.IClockService;
  */
 public class JadexTimeModule implements TimeModule {
 
-    private Timestamp.Mode mode = Timestamp.Mode.SYSTEM;
+    private Mode mode = Mode.SYSTEM;
     private IClockService clockService;
 
     public JadexTimeModule(IClockService clockService) {
@@ -17,7 +17,7 @@ public class JadexTimeModule implements TimeModule {
     }
 
     @Override
-    public void setTimeMode(Timestamp.Mode mode) {
+    public void setTimeMode(Mode mode) {
         this.mode = mode;
     }
 

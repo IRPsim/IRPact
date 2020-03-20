@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.jadex.util;
 
 import jadex.bridge.IComponentStep;
-import jadex.bridge.component.IExecutionFeature;
 import jadex.bridge.component.IExternalExecutionFeature;
 import jadex.bridge.service.ServiceScope;
 import jadex.bridge.service.search.ServiceQuery;
@@ -24,7 +23,7 @@ public final class JadexUtil {
     }
 
     public static IFuture<Void> waitForTick(
-            IExecutionFeature exec,
+            IExternalExecutionFeature exec,
             int count) {
         if(count < 2) {
             return exec.waitForTick();

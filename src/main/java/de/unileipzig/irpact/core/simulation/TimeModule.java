@@ -5,7 +5,13 @@ package de.unileipzig.irpact.core.simulation;
  */
 public interface TimeModule {
 
-    void setTimeMode(Timestamp.Mode mode);
+    enum Mode {
+        SYSTEM,
+        SIMULATION,
+        TICK
+    }
+
+    void setTimeMode(Mode mode);
 
     long getSimulationStarttime();
 

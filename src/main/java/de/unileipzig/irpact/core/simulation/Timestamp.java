@@ -7,19 +7,13 @@ import de.unileipzig.irpact.commons.Util;
  */
 public final class Timestamp implements Comparable<Timestamp> {
 
-    public enum Mode {
-        SYSTEM,
-        SIMULATION,
-        TICK
-    }
-
-    private final Mode mode;
+    private final TimeModule.Mode mode;
     private final long systemTime;
     private final long simulationTime;
     private final double tick;
 
     public Timestamp(
-            Mode mode,
+            TimeModule.Mode mode,
             long systemTime,
             long simulationTime,
             double tick) {
@@ -27,6 +21,10 @@ public final class Timestamp implements Comparable<Timestamp> {
         this.systemTime = systemTime;
         this.simulationTime = simulationTime;
         this.tick = tick;
+    }
+
+    public TimeModule.Mode getMode() {
+        return mode;
     }
 
     public long getSystemTime() {

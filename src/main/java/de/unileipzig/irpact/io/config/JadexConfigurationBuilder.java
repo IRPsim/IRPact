@@ -32,7 +32,7 @@ public class JadexConfigurationBuilder extends AbstractConfigurationBuilder<Jade
     @Override
     public JadexConfigurationBuilder initMinimal() {
         BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
-        env.setEventManager(new BasicJadexEventManager());
+        env.setEventManager(new BasicJadexEventManager(env));
         env.setAgentNetwork(new BasicAgentNetwork(
                 new BasicSocialGraph(
                         new DirectedMultiGraph<>(new HashMap<>()),

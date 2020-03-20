@@ -5,6 +5,7 @@ import de.unileipzig.irpact.core.simulation.EventManager;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.jadex.message.JadexMessageSystem;
 import jadex.bridge.IExternalAccess;
+import jadex.bridge.component.IExternalExecutionFeature;
 
 /**
  * @author Daniel Abitz
@@ -12,6 +13,8 @@ import jadex.bridge.IExternalAccess;
 public interface JadexSimulationEnvironment extends SimulationEnvironment {
 
     IExternalAccess getPlatform();
+
+    IExternalExecutionFeature getPlatformExec();
 
     @Override
     JadexMessageSystem getMessageSystem();

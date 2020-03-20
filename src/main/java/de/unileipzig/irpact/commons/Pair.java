@@ -7,8 +7,8 @@ import java.util.Objects;
  */
 public final class Pair<A, B> {
 
-    private A first;
-    private B second;
+    private final A first;
+    private final B second;
 
     public Pair(A first, B second) {
         this.first = first;
@@ -25,6 +25,11 @@ public final class Pair<A, B> {
 
     public B second() {
         return second;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + first + ", " + second + ")";
     }
 
     @Override

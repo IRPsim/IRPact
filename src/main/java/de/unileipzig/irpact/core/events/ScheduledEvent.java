@@ -1,10 +1,11 @@
 package de.unileipzig.irpact.core.events;
 
-import de.unileipzig.irpact.commons.annotation.Experimental;
+import de.unileipzig.irpact.core.simulation.Timestamp;
 
 /**
  * @author Daniel Abitz
  */
-@Experimental
-public interface ScheduledEvent {
+public interface ScheduledEvent extends Event {
+
+    Timestamp getSchedulePoint();
 }
