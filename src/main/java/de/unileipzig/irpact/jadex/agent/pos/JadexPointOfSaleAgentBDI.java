@@ -126,6 +126,11 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     }
 
     @Override
+    public NewProductScheme getNewProductScheme() {
+        return agentBase.getNewProductScheme();
+    }
+
+    @Override
     public Map<Product, ProductAvailability> getProductAvailability() {
         return agentBase.getProductAvailability();
     }
@@ -138,6 +143,19 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     @Override
     public ProductSoldOutScheme getProductSoldOutScheme() {
         return agentBase.getProductSoldOutScheme();
+    }
+
+    @Override
+    public boolean sellsProduct(Product product) {
+        return agentBase.getProductAvailability()
+                .containsKey(product);
+    }
+
+    @Override
+    public void makeAvailable(Product product, ProductAvailability availability, Price price) {
+        agentBase.getProductAvailability().put(product, availability);
+        agentBase.getProductPrices().put(product, price);
+        bdiFeature.dispatchTopLevelGoal(new NewProductGoal(product));
     }
 
     @Override
@@ -235,7 +253,7 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     @Override
     protected void onInit() {
         initArgs(resultsFeature.getArguments());
-        getEnvironment().getConfiguration() .register(agent.getExternalAccess(), this);
+        getEnvironment().getConfiguration().register(agent.getExternalAccess(), this);
         initMessageHandler();
         logger.trace("[{}] onInit", getName());
     }
@@ -282,6 +300,33 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
 
     //=========================
     //announce new products goal
+    //=========================
+
+    @Goal
+    public class NewProductGoal {
+
+        protected Product product;
+
+        public NewProductGoal(Product product) {
+            this.product = product;
+        }
+
+        public Product getProduct() {
+            return product;
+        }
+    }
+
+    @Plan(trigger = @Trigger(goals = NewProductGoal.class))
+    protected void handleNewProduct(NewProductGoal goal) {
+        Product newProduct = goal.getProduct();
+        getNewProductScheme().handle(
+                this,
+                newProduct
+        );
+    }
+
+    //=========================
+    //announce new products availability goal
     //=========================
 
     @Goal

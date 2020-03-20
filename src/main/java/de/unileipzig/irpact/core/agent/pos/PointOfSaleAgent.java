@@ -17,11 +17,21 @@ public interface PointOfSaleAgent extends SpatialInformationAgent {
 
     Map<Product, Price> getProductPrices();
 
+    NewProductScheme getNewProductScheme();
+
     ProductAvailabilityChangeScheme getProductAvailabilityChangeScheme();
 
     ProductPriceChangeScheme getProductPriceChangeScheme();
 
     ProductSoldOutScheme getProductSoldOutScheme();
+
+    //=========================
+    //...
+    //=========================
+
+    boolean sellsProduct(Product product);
+
+    void makeAvailable(Product product, ProductAvailability availability, Price price);
 
     Price requestPrice(Product product);
 

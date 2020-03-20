@@ -88,7 +88,8 @@ public class StartPlatform {
                 group,
                 new HashSet<>(),
                 new HashSet<>(),
-                new BasicProductAttributePerceptionSchemeManager(new HashMap<>())
+                new BasicProductAttributePerceptionSchemeManager(new HashMap<>()),
+                new HashSet<>()
         );
         agents.add(agentBase);
         return agentBase;

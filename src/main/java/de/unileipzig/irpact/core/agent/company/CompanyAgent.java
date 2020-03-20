@@ -14,4 +14,12 @@ public interface CompanyAgent extends InformationAgent {
     Set<Product> getProductPortfolio();
 
     AdvertisementScheme getAdvertisementScheme();
+
+    ProductIntroductionScheme getProductIntroductionScheme();
+
+    //=========================
+    //...
+    //=========================
+
+    void addProductToPortfolio(Product product);
 }

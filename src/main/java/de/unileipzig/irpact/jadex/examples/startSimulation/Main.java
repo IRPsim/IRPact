@@ -1,15 +1,13 @@
 package de.unileipzig.irpact.jadex.examples.startSimulation;
 
 import de.unileipzig.irpact.core.agent.company.CompanyAgentBase;
+import de.unileipzig.irpact.core.agent.company.IgnoreProductIntroduction;
 import de.unileipzig.irpact.core.agent.company.advertisement.NoAdvertisement;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.TakeFirstProductAdoptionDecision;
 import de.unileipzig.irpact.core.agent.policy.NoTaxes;
 import de.unileipzig.irpact.core.agent.policy.PolicyAgentBase;
-import de.unileipzig.irpact.core.agent.pos.IgnoreProductAvailabilityChange;
-import de.unileipzig.irpact.core.agent.pos.IgnoreProductPriceChange;
-import de.unileipzig.irpact.core.agent.pos.IgnoreProductSoldOut;
-import de.unileipzig.irpact.core.agent.pos.PointOfSaleAgentBase;
+import de.unileipzig.irpact.core.agent.pos.*;
 import de.unileipzig.irpact.core.need.IgnoreNeedSatisfy;
 import de.unileipzig.irpact.core.need.NoNeedDevelopment;
 import de.unileipzig.irpact.core.need.NoNeedExpiration;
@@ -90,6 +88,7 @@ public class Main {
                 "pos_test",
                 1.0,
                 DummyPoint2DDistribution.INSTANCE.drawValue(),
+                IgnoreNewProduct.INSTANCE,
                 IgnoreProductAvailabilityChange.INSTANCE,
                 IgnoreProductSoldOut.INSTANCE,
                 IgnoreProductPriceChange.INSTANCE
@@ -106,7 +105,9 @@ public class Main {
                 cb.getEnvironment(),
                 "company_test",
                 42,
-                NoAdvertisement.INSTANCE
+                NoAdvertisement.INSTANCE,
+                IgnoreProductIntroduction.INSTANCE,
+                new HashSet<>()
         ));
 
         return cb;

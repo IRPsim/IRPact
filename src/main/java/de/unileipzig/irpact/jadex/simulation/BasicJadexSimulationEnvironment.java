@@ -4,7 +4,6 @@ import de.unileipzig.irpact.commons.Check;
 import de.unileipzig.irpact.commons.annotation.ToImpl;
 import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
 import de.unileipzig.irpact.commons.concurrent.ResettableTimer;
-import de.unileipzig.irpact.core.simulation.EventManager;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironmentBase;
 import de.unileipzig.irpact.jadex.message.JadexMessageSystem;
 import jadex.bridge.IComponentIdentifier;
@@ -92,6 +91,7 @@ public class BasicJadexSimulationEnvironment extends SimulationEnvironmentBase i
     public void prepare() {
         simulationService.pause();
         clockService.setClock(IClock.TYPE_CONTINUOUS, platform.searchService(new ServiceQuery<>(IThreadPoolService.class)).get());
+        simulationService.pause();
     }
 
     public void waitForSimulation(Set<IExternalAccess> accessSet) {

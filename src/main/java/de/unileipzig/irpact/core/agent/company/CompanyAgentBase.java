@@ -16,14 +16,20 @@ import java.util.Set;
 public class CompanyAgentBase extends InformationAgentBase implements CompanyAgent {
 
     protected AdvertisementScheme advertisementScheme;
+    protected ProductIntroductionScheme productIntroductionScheme;
+    protected Set<Product> initialProducts;
 
     public CompanyAgentBase(
             SimulationEnvironment environment,
             String name,
             double informationAuthority,
-            AdvertisementScheme advertisementScheme) {
+            AdvertisementScheme advertisementScheme,
+            ProductIntroductionScheme productIntroductionScheme,
+            Set<Product> initialProducts) {
         super(environment, name, informationAuthority);
         this.advertisementScheme = advertisementScheme;
+        this.productIntroductionScheme = productIntroductionScheme;
+        this.initialProducts = initialProducts;
     }
 
     @Override
@@ -34,6 +40,11 @@ public class CompanyAgentBase extends InformationAgentBase implements CompanyAge
     @Override
     public AdvertisementScheme getAdvertisementScheme() {
         return advertisementScheme;
+    }
+
+    @Override
+    public ProductIntroductionScheme getProductIntroductionScheme() {
+        return productIntroductionScheme;
     }
 
     @Override
@@ -49,5 +60,14 @@ public class CompanyAgentBase extends InformationAgentBase implements CompanyAge
     @Override
     public void handleMessage(Agent sender, Message msg) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void addProductToPortfolio(Product product) {
+        throw new UnsupportedOperationException();
+    }
+
+    public Set<Product> getInitialProducts() {
+        return initialProducts;
     }
 }

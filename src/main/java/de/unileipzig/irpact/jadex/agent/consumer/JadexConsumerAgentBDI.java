@@ -221,7 +221,7 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     @Override
     protected void onInit() {
         initArgs(resultsFeature.getArguments());
-        getEnvironment().getConfiguration() .register(agent.getExternalAccess(), this);
+        getEnvironment().getConfiguration().register(agent.getExternalAccess(), this);
         initMessageHandler();
         logger.trace("[{}] onInit", getName());
     }
@@ -230,6 +230,12 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     @Override
     protected void onStart() {
         logger.trace("[{}] onStart", getName());
+        execFeature.waitForTick(ia -> {
+            for(Need initialNeed: agentBase.getInitialNeeds()) {
+                addNeed(initialNeed);
+            }
+            return IFuture.DONE;
+        });
     }
 
     @OnEnd

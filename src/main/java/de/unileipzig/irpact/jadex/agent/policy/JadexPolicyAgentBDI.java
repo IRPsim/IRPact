@@ -153,7 +153,7 @@ public class JadexPolicyAgentBDI extends JadexAgentBase
     @Override
     protected void onInit() {
         initArgs(resultsFeature.getArguments());
-        getEnvironment().getConfiguration() .register(agent.getExternalAccess(), this);
+        getEnvironment().getConfiguration().register(agent.getExternalAccess(), this);
         initMessageHandler();
         logger.trace("[{}] onInit", getName());
     }

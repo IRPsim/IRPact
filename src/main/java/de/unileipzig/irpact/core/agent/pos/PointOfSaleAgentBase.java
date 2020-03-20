@@ -22,6 +22,7 @@ public class PointOfSaleAgentBase extends SpatialInformationAgentBase implements
 
     protected Map<Product, ProductAvailability> productAvailability = new HashMap<>();
     protected Map<Product, Price> productPrices = new HashMap<>();
+    protected NewProductScheme newProductScheme;
     protected ProductAvailabilityChangeScheme productAvailabilityChangeScheme;
     protected ProductSoldOutScheme productSoldOutScheme;
     protected ProductPriceChangeScheme productPriceChangeScheme;
@@ -31,10 +32,12 @@ public class PointOfSaleAgentBase extends SpatialInformationAgentBase implements
             String name,
             double informationAuthority,
             SpatialInformation spatialInformation,
+            NewProductScheme newProductScheme,
             ProductAvailabilityChangeScheme productAvailabilityChangeScheme,
             ProductSoldOutScheme productSoldOutScheme,
             ProductPriceChangeScheme productPriceChangeScheme) {
         super(environment, name, informationAuthority, spatialInformation);
+        this.newProductScheme = Check.requireNonNull(newProductScheme, "newProductScheme");
         this.productAvailabilityChangeScheme = Check.requireNonNull(productAvailabilityChangeScheme, "productAvailabilityChangeScheme");
         this.productSoldOutScheme = Check.requireNonNull(productSoldOutScheme, "productSoldOutScheme");
         this.productPriceChangeScheme = Check.requireNonNull(productPriceChangeScheme, "productPriceChangeScheme");
@@ -48,6 +51,11 @@ public class PointOfSaleAgentBase extends SpatialInformationAgentBase implements
     @Override
     public Map<Product, Price> getProductPrices() {
         return productPrices;
+    }
+
+    @Override
+    public NewProductScheme getNewProductScheme() {
+        return newProductScheme;
     }
 
     @Override
@@ -72,6 +80,16 @@ public class PointOfSaleAgentBase extends SpatialInformationAgentBase implements
             throw new NoSuchElementException("Product not found: " + product.getName());
         }
         return price;
+    }
+
+    @Override
+    public boolean sellsProduct(Product product) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void makeAvailable(Product product, ProductAvailability availability, Price price) {
+        throw new UnsupportedOperationException();
     }
 
     @Override

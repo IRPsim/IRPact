@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.simulation;
 
-import de.unileipzig.irpact.core.Event;
+import de.unileipzig.irpact.core.events.Event;
 
 /**
  * @author Daniel Abitz

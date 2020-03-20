@@ -8,10 +8,7 @@ import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute
 import de.unileipzig.irpact.core.agent.consumer.TakeFirstProductAdoptionDecision;
 import de.unileipzig.irpact.core.agent.policy.NoTaxes;
 import de.unileipzig.irpact.core.agent.policy.PolicyAgentBase;
-import de.unileipzig.irpact.core.agent.pos.IgnoreProductAvailabilityChange;
-import de.unileipzig.irpact.core.agent.pos.IgnoreProductPriceChange;
-import de.unileipzig.irpact.core.agent.pos.IgnoreProductSoldOut;
-import de.unileipzig.irpact.core.agent.pos.PointOfSaleAgentBase;
+import de.unileipzig.irpact.core.agent.pos.*;
 import de.unileipzig.irpact.core.need.BasicNeed;
 import de.unileipzig.irpact.core.need.IgnoreNeedSatisfy;
 import de.unileipzig.irpact.core.need.NoNeedDevelopment;
@@ -99,6 +96,7 @@ public final class BaumHaus2ConsumerType {
                 "testpos",
                 1.0,
                 DummyPoint2DDistribution.INSTANCE.drawValue(),
+                IgnoreNewProduct.INSTANCE,
                 IgnoreProductAvailabilityChange.INSTANCE,
                 IgnoreProductSoldOut.INSTANCE,
                 IgnoreProductPriceChange.INSTANCE

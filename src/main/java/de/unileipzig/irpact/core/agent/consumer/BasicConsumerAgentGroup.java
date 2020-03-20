@@ -172,7 +172,8 @@ public class BasicConsumerAgentGroup extends AbstractGroup<ConsumerAgent> implem
                 this,
                 deriveAttributes(),
                 derivePreferences(),
-                derivePerception()
+                derivePerception(),
+                new HashSet<>()
         );
     }
 }

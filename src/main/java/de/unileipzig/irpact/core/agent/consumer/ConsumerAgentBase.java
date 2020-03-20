@@ -28,6 +28,7 @@ public class ConsumerAgentBase extends SpatialInformationAgentBase implements Co
     @ToDo("koennen die sich aendern?")
     protected Set<Preference> preferences;
     protected ProductAttributePerceptionSchemeManager perceptionSchemeManager;
+    protected Set<Need> initialNeeds;
 
     public ConsumerAgentBase(
             SimulationEnvironment environment,
@@ -36,13 +37,26 @@ public class ConsumerAgentBase extends SpatialInformationAgentBase implements Co
             ConsumerAgentGroup group,
             Set<ConsumerAgentAttribute> attributes,
             Set<Preference> preferences,
-            ProductAttributePerceptionSchemeManager perceptionSchemeManager) {
+            ProductAttributePerceptionSchemeManager perceptionSchemeManager,
+            Set<Need> initialNeeds) {
         super(environment, name, group.getInformationAuthority(), spatialInformation);
         this.group = Check.requireNonNull(group, "group");
         this.attributes = Check.requireNonNull(attributes, "attributes");
         this.preferences = Check.requireNonNull(preferences, "preferences");
         this.perceptionSchemeManager = Check.requireNonNull(perceptionSchemeManager, "perceptionSchemeManager");
     }
+
+    //=========================
+    //...
+    //=========================
+
+    public Set<Need> getInitialNeeds() {
+        return initialNeeds;
+    }
+
+    //=========================
+    //...
+    //=========================
 
     @Override
     public double getInformationAuthority() {

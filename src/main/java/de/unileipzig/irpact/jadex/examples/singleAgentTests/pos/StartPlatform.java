@@ -2,14 +2,17 @@ package de.unileipzig.irpact.jadex.examples.singleAgentTests.pos;
 
 import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
+import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinitiesMapping;
 import de.unileipzig.irpact.core.agent.pos.PointOfSaleAgentBase;
 import de.unileipzig.irpact.core.currency.FinalPrice;
+import de.unileipzig.irpact.core.preference.ValueConfiguration;
 import de.unileipzig.irpact.core.product.*;
 import de.unileipzig.irpact.core.product.availability.FiniteProductAvailability;
 import de.unileipzig.irpact.core.product.availability.InfiniteProductAvailability;
 import de.unileipzig.irpact.core.product.availability.NoProductAvailability;
 import de.unileipzig.irpact.core.spatial.dim2.Point2D;
 import de.unileipzig.irpact.jadex.agent.pos.PointOfSaleAgentService;
+import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationConfiguration;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.start.StartSimulation;
 import jadex.base.IPlatformConfiguration;
@@ -23,12 +26,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class StartPlatform {
 
-    private static BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
+    private static BasicJadexSimulationEnvironment env = getEnv();
     private static Logger logger = LoggerFactory.getLogger(StartPlatform.class);
+
+    private static BasicJadexSimulationEnvironment getEnv() {
+        BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
+        env.setConfig(new BasicJadexSimulationConfiguration(
+                new BasicConsumerAgentGroupAffinitiesMapping(new HashMap<>()),
+                new ValueConfiguration<>(new HashMap<>(), new HashSet<>()),
+                new HashMap<>(),
+                new HashMap<>(),
+                new HashMap<>(),
+                new HashMap<>()
+        ));
+        return env;
+    }
 
     private static PointOfSaleAgentBase getAgentBase() {
         return new PointOfSaleAgentBase(
@@ -36,6 +53,12 @@ public class StartPlatform {
                 "TestPOS",
                 1.0,
                 new Point2D(0, 0),
+                (agent, newProduct) -> {
+                    logger.debug("[NewProductScheme] Agent '{}' Product '{}'",
+                            agent.getName(),
+                            newProduct.getName()
+                    );
+                },
                 (agent, product, oldAvailability, newAvailability) -> {
                     logger.debug("[ProductAvailabilityChangeScheme] Agent '{}' Product '{}' old '{}', new '{}'",
                             agent.getName(),
@@ -88,7 +111,7 @@ public class StartPlatform {
                 .get();
 
         CreationInfo ci = new CreationInfo();
-        ci.setName("Agent");
+        ci.setName("TestPOS");
         ci.setFilename("de.unileipzig.irpact.jadex.agent.pos.JadexPointOfSaleAgentBDI.class");
         ci.addArgument(StartSimulation.AGENT_BASE, getAgentBase());
 
@@ -100,6 +123,10 @@ public class StartPlatform {
 
         Product testProduct = getTestProduct();
         PointOfSaleAgentService posas = CollectionUtil.getFirst(coll);
+
+        ConcurrentUtil.sleepSilently(2000);
+        posas.getPointOfSaleAgentSyn()
+                .makeAvailable(testProduct, NoProductAvailability.INSTANCE, new FinalPrice(1337));
 
         ConcurrentUtil.sleepSilently(2000);
         posas.getPointOfSaleAgentSyn()

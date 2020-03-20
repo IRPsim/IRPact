@@ -2,6 +2,7 @@ package de.unileipzig.irpact.jadex.agent.company;
 
 import de.unileipzig.irpact.core.agent.company.CompanyAgent;
 import de.unileipzig.irpact.core.agent.company.CompanyAgentBase;
+import de.unileipzig.irpact.core.agent.company.ProductIntroductionScheme;
 import de.unileipzig.irpact.core.agent.company.advertisement.AdvertisementScheme;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.EntityType;
@@ -10,7 +11,7 @@ import de.unileipzig.irpact.jadex.agent.JadexAgentService;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.start.StartSimulation;
 import jadex.bdiv3.BDIAgentFactory;
-import jadex.bdiv3.annotation.Belief;
+import jadex.bdiv3.annotation.*;
 import jadex.bdiv3.features.IBDIAgentFeature;
 import jadex.bridge.IComponentIdentifier;
 import jadex.bridge.IInternalAccess;
@@ -106,6 +107,11 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
     }
 
     @Override
+    public ProductIntroductionScheme getProductIntroductionScheme() {
+        return agentBase.getProductIntroductionScheme();
+    }
+
+    @Override
     public JadexSimulationEnvironment getEnvironment() {
         return (JadexSimulationEnvironment) agentBase.getEnvironment();
     }
@@ -121,6 +127,11 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
             default:
                 return false;
         }
+    }
+
+    @Override
+    public void addProductToPortfolio(Product product) {
+        productPortfolio.add(product);
     }
 
     //=========================
@@ -163,7 +174,7 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
     @Override
     protected void onInit() {
         initArgs(resultsFeature.getArguments());
-        getEnvironment().getConfiguration() .register(agent.getExternalAccess(), this);
+        getEnvironment().getConfiguration().register(agent.getExternalAccess(), this);
         initMessageHandler();
         logger.trace("[{}] onInit", getName());
     }
@@ -172,7 +183,12 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
     @Override
     protected void onStart() {
         logger.trace("[{}] onStart", getName());
-
+        execFeature.waitForTick(ia -> {
+            for(Product product: agentBase.getInitialProducts()) {
+                addProductToPortfolio(product);
+            }
+            return IFuture.DONE;
+        });
     }
 
     @OnEnd
@@ -207,5 +223,32 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
     @Override
     public IFuture<JadexCompanyAgentBDI> getAgentAsyn() {
         return getCompanyAgentAsyn();
+    }
+
+    //=========================
+    //NewProduct
+    //=========================
+
+    @Goal
+    public class NewProductGoal {
+
+        protected Product product;
+
+        @GoalCreationCondition(beliefs = "productPortfolio")
+        public NewProductGoal(Product product) {
+            this.product = product;
+        }
+
+        public Product getProduct() {
+            return product;
+        }
+    }
+
+    @Plan(trigger = @Trigger(goals = NewProductGoal.class))
+    protected void handleNewProduct(NewProductGoal goal) {
+        getProductIntroductionScheme().handle(
+                this,
+                goal.getProduct()
+        );
     }
 }

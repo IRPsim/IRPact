@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core;
+package de.unileipzig.irpact.core.events;
 
 /**
  * @author Daniel Abitz
