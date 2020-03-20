@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.message;
 
+import de.unileipzig.irpact.commons.annotation.Experimental;
 import de.unileipzig.irpact.core.agent.Agent;
 
 /**
@@ -9,7 +10,13 @@ public interface Message {
 
     void process(Agent sender, Agent receiver);
 
-    boolean isSerializable();
+    @Experimental
+    default boolean isSerializable() {
+        return false;
+    }
 
-    String serializeToString();
+    @Experimental
+    default String serializeToString() {
+        throw new UnsupportedOperationException();
+    }
 }

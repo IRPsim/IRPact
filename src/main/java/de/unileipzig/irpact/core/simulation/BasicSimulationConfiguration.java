@@ -3,12 +3,14 @@ package de.unileipzig.irpact.core.simulation;
 import de.unileipzig.irpact.commons.Check;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinitiesMapping;
 import de.unileipzig.irpact.core.preference.ValueConfiguration;
+import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.ProductGroupAttribute;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -20,18 +22,21 @@ public class BasicSimulationConfiguration implements SimulationConfiguration {
     protected Map<String, ProductGroup> productGroups;
     protected Map<String, SimulationEntity> entitiyMap;
     protected Map<EntityType, Set<SimulationEntity>> partitionedEntitiyMap;
+    protected Set<Product> historicalProducts;
 
     public BasicSimulationConfiguration(
             ConsumerAgentGroupAffinitiesMapping affinitiesMapping,
             ValueConfiguration<ProductGroupAttribute> productValues,
             Map<String, ProductGroup> productGroups,
             Map<String, SimulationEntity> entitiyMap,
-            Map<EntityType, Set<SimulationEntity>> partitionedEntitiyMap) {
+            Map<EntityType, Set<SimulationEntity>> partitionedEntitiyMap,
+            Set<Product> historicalProducts) {
         this.affinitiesMapping = Check.requireNonNull(affinitiesMapping, "affinitiesMapping");
         this.productValues = Check.requireNonNull(productValues, "productValues");
         this.productGroups = Check.requireNonNull(productGroups, "productGroups");
         this.entitiyMap = Check.requireNonNull(entitiyMap, "entitiyMap");
         this.partitionedEntitiyMap = Check.requireNonNull(partitionedEntitiyMap, "partitionedEntitiyMap");
+        this.historicalProducts = Check.requireNonNull(historicalProducts, "historicalProducts");
     }
 
     //=========================
@@ -70,6 +75,16 @@ public class BasicSimulationConfiguration implements SimulationConfiguration {
         return productGroups.get(name);
     }
 
+    @Override
+    public Collection<? extends Product> getHistroicalProducts() {
+        return historicalProducts;
+    }
+
+    @Override
+    public boolean addHistoricalProduct(Product product) {
+        return historicalProducts.add(product);
+    }
+
     //=========================
     //Entities
     //=========================
@@ -88,6 +103,17 @@ public class BasicSimulationConfiguration implements SimulationConfiguration {
     @Override
     public <T extends SimulationEntity> T getEntity(String entitiyName) {
         return (T) entitiyMap.get(entitiyName);
+    }
+
+    @Override
+    public Stream<SimulationEntity> streamEntities() {
+        return entitiyMap.values().stream();
+    }
+
+    @Override
+    public Stream<SimulationEntity> streamPartitionedEntities(EntityType type) {
+        return partitionedEntitiyMap.get(type)
+                .stream();
     }
 
     //=========================

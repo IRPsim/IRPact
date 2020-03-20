@@ -50,4 +50,24 @@ public class JadexTimeModule implements TimeModule {
                 getTick()
         );
     }
+
+    @Override
+    public Timestamp createTimestamp(double delta) {
+        return new Timestamp(
+                mode,
+                getSystemTime() + (long) delta,
+                getSimulationTime() + (long) delta,
+                getTick() + delta
+        );
+    }
+
+    @Override
+    public Timestamp createTimestamp(long delta) {
+        return new Timestamp(
+                mode,
+                getSystemTime() + delta,
+                getSimulationTime() + delta,
+                getTick() + delta
+        );
+    }
 }

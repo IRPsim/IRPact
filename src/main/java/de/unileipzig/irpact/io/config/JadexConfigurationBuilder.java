@@ -55,6 +55,7 @@ public class JadexConfigurationBuilder extends AbstractConfigurationBuilder<Jade
                 new HashMap<>(),
                 new HashMap<>(),
                 new HashMap<>(),
+                new HashSet<>(),
                 new HashMap<>()
         ));
         return setLogConfig(new JadexLogConfig())

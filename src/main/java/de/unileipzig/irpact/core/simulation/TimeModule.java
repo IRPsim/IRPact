@@ -20,4 +20,8 @@ public interface TimeModule {
     long getSystemTime();
 
     Timestamp createTimestamp();
+
+    Timestamp createTimestamp(double delta);
+
+    Timestamp createTimestamp(long delta);
 }

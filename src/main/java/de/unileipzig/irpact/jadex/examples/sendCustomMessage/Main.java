@@ -180,12 +180,12 @@ public class Main {
 
                     @Override
                     public boolean isSerializable() {
-                        return false;
+                        return true;
                     }
 
                     @Override
                     public String serializeToString() {
-                        throw new UnsupportedOperationException();
+                        return " System.out.println(\"HELLO EVENT -> \" + sender.getName() + \" | \" + receiver.getName());";
                     }
                 }
         );

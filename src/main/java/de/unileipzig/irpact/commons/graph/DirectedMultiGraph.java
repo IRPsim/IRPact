@@ -4,28 +4,31 @@ import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
 import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * @author Daniel Abitz
  */
 public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements MultiGraph<N, E, T> {
 
+    protected Supplier<? extends Map<N, Map<T, E>>> subMapSupplier;
+    protected Supplier<? extends Map<T, E>> edgeMapSupplier;
+    protected Supplier<? extends Set<E>> edgeSetSupplier;
     protected Map<N, Map<N, Map<T, E>>> graphData;
 
     public DirectedMultiGraph(Map<N, Map<N, Map<T, E>>> graphData) {
+        this(HashMap::new, HashMap::new, HashSet::new, graphData);
+    }
+
+    public DirectedMultiGraph(
+            Supplier<? extends Map<N, Map<T, E>>> subMapSupplier,
+            Supplier<? extends Map<T, E>> edgeMapSupplier,
+            Supplier<? extends Set<E>> edgeSetSupplier,
+            Map<N, Map<N, Map<T, E>>> graphData) {
+        this.subMapSupplier = subMapSupplier;
+        this.edgeMapSupplier = edgeMapSupplier;
+        this.edgeSetSupplier = edgeSetSupplier;
         this.graphData = graphData;
-    }
-
-    protected Map<N, Map<T, E>> createSubMap() {
-        return new HashMap<>();
-    }
-
-    protected Map<T, E> createEdgeMap() {
-        return new HashMap<>();
-    }
-
-    protected Set<E> createEdgeSet() {
-        return new HashSet<>();
     }
 
     protected boolean scanNode(N node) {
@@ -68,7 +71,7 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
 
     @Override
     public Collection<? extends E> getEdges(T type) {
-        Set<E> edges = createEdgeSet();
+        Set<E> edges = edgeSetSupplier.get();
         for(Map<N, Map<T, E>> map: graphData.values()) {
             for(Map<T, E> map1: map.values()) {
                 E edge = map1.get(type);
@@ -85,7 +88,7 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
         if(!hasNode(node)) {
             return null;
         }
-        Set<E> edges = createEdgeSet();
+        Set<E> edges = edgeSetSupplier.get();
         for(Map<N, Map<T, E>> map: graphData.values()) {
             Map<T, E> map1 = map.get(node);
             if(map1 != null) {
@@ -104,7 +107,7 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
         if(map == null) {
             return null;
         }
-        Set<E> edges = createEdgeSet();
+        Set<E> edges = edgeSetSupplier.get();
         for(Map<T, E> map1: map.values()) {
             E e = map1.get(type);
             if(e != null) {
@@ -206,7 +209,7 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
         if(hasNode(node)) {
             return false;
         }
-        graphData.put(node, createSubMap());
+        graphData.put(node, subMapSupplier.get());
         return true;
     }
 
@@ -224,7 +227,7 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
         addIfNotExists(source);
         addIfNotExists(target);
         Map<N, Map<T, E>> subData = graphData.get(source);
-        Map<T, E> edgeData = subData.computeIfAbsent(target, _target -> createEdgeMap());
+        Map<T, E> edgeData = subData.computeIfAbsent(target, _target -> edgeMapSupplier.get());
         //if(edgeData.containsKey(type) || edgeData.containsValue(edge)) {
         if(edgeData.containsKey(type)) { //siehe to_do im interface
             throw new EdgeAlreadyExistsException();

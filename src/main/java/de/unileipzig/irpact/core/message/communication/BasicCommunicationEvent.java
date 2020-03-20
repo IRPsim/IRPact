@@ -5,6 +5,8 @@ import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.message.Message;
 import de.unileipzig.irpact.core.message.MessageSystem;
 
+import java.util.Collection;
+
 /**
  * @author Daniel Abitz
  */
@@ -14,7 +16,7 @@ public class BasicCommunicationEvent implements CommunicationEvent {
     protected Agent sender;
     protected Agent receiver;
     protected Agent[] receivers;
-    protected Iterable<? extends Agent> iterableReceivers;
+    protected Collection<? extends Agent> iterableReceivers;
     protected Message message;
 
     public BasicCommunicationEvent(
@@ -42,7 +44,7 @@ public class BasicCommunicationEvent implements CommunicationEvent {
     public BasicCommunicationEvent(
             MessageSystem messageSystem,
             Agent sender,
-            Iterable<? extends Agent> iterableReceivers,
+            Collection<? extends Agent> iterableReceivers,
             Message message) {
         this.messageSystem = Check.requireNonNull(messageSystem, "messageSystem");
         this.sender = Check.requireNonNull(sender, "sender");

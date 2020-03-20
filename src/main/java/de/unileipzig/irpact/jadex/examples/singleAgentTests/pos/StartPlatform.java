@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinitiesMapping;
 import de.unileipzig.irpact.core.agent.pos.PointOfSaleAgentBase;
-import de.unileipzig.irpact.core.currency.FinalPrice;
+import de.unileipzig.irpact.core.currency.ImmutablePrice;
 import de.unileipzig.irpact.core.preference.ValueConfiguration;
 import de.unileipzig.irpact.core.product.*;
 import de.unileipzig.irpact.core.product.availability.FiniteProductAvailability;
@@ -42,6 +42,7 @@ public class StartPlatform {
                 new HashMap<>(),
                 new HashMap<>(),
                 new HashMap<>(),
+                new HashSet<>(),
                 new HashMap<>()
         ));
         return env;
@@ -126,7 +127,7 @@ public class StartPlatform {
 
         ConcurrentUtil.sleepSilently(2000);
         posas.getPointOfSaleAgentSyn()
-                .makeAvailable(testProduct, NoProductAvailability.INSTANCE, new FinalPrice(1337));
+                .makeAvailable(testProduct, NoProductAvailability.INSTANCE, new ImmutablePrice(1337));
 
         ConcurrentUtil.sleepSilently(2000);
         posas.getPointOfSaleAgentSyn()
@@ -164,7 +165,7 @@ public class StartPlatform {
         //price
         ConcurrentUtil.sleepSilently(2000);
         posas.getPointOfSaleAgentSyn()
-                .updatePrice(testProduct, new FinalPrice(42));
+                .updatePrice(testProduct, new ImmutablePrice(42));
 
         ConcurrentUtil.start(5000, platform::killComponent);
     }

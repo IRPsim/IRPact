@@ -4,6 +4,8 @@ import de.unileipzig.irpact.commons.Check;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
+import java.util.Collection;
+
 /**
  * @author Daniel Abitz
  */
@@ -34,7 +36,7 @@ public class BasicMessageSystem implements MessageSystem {
     }
 
     @Override
-    public void send(Agent from, Message msg, Iterable<? extends Agent> to) {
+    public void send(Agent from, Message msg, Collection<? extends Agent> to) {
         for(Agent target: to) {
             send(from, msg, target);
         }

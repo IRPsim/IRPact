@@ -3,11 +3,11 @@ package de.unileipzig.irpact.core.currency;
 /**
  * @author Daniel Abitz
  */
-public final class FinalPrice implements Price {
+public final class ImmutablePrice implements Price {
 
     private final double value;
 
-    public FinalPrice(double value) {
+    public ImmutablePrice(double value) {
         this.value = value;
     }
 

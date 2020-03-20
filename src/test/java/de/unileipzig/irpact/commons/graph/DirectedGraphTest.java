@@ -2,6 +2,8 @@ package de.unileipzig.irpact.commons.graph;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -11,7 +13,7 @@ class DirectedGraphTest {
 
     @Test
     void testType() {
-        DirectedGraph<Node, Edge<Node>> dg = new DirectedGraph<>();
+        DirectedGraph<Node, Edge<Node>> dg = new DirectedGraph<>(new HashMap<>());
         assertTrue(dg.isDirected());
         assertFalse(dg.isUndirected());
     }
@@ -28,7 +30,7 @@ class DirectedGraphTest {
         SimpleEdge<SimpleNode> e10 = new SimpleEdge<>(n1, n0, "0-1");
         SimpleEdge<SimpleNode> e20 = new SimpleEdge<>(n2, n0, "0-2");
         SimpleEdge<SimpleNode> e30 = new SimpleEdge<>(n3, n0, "0-3");
-        DirectedGraph<SimpleNode, SimpleEdge<SimpleNode>> graph = new DirectedGraph<>();
+        DirectedGraph<SimpleNode, SimpleEdge<SimpleNode>> graph = new DirectedGraph<>(new HashMap<>());
         graph.addEdge(e01);
         graph.addEdge(e02);
         graph.addEdge(e03);

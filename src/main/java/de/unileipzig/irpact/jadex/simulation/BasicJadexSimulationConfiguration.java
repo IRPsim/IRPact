@@ -3,6 +3,7 @@ package de.unileipzig.irpact.jadex.simulation;
 import de.unileipzig.irpact.commons.annotation.ToDo;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinitiesMapping;
 import de.unileipzig.irpact.core.preference.ValueConfiguration;
+import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.ProductGroupAttribute;
 import de.unileipzig.irpact.core.simulation.BasicSimulationConfiguration;
@@ -30,8 +31,9 @@ public class BasicJadexSimulationConfiguration extends BasicSimulationConfigurat
             Map<String, ProductGroup> productGroups,
             Map<String, SimulationEntity> entitiyMap,
             Map<EntityType, Set<SimulationEntity>> partitionedEntitiyMap,
+            Set<Product> historicalProducts,
             Map<String, IExternalAccess> accessMap) {
-        super(affinitiesMapping, productValues, productGroups, entitiyMap, partitionedEntitiyMap);
+        super(affinitiesMapping, productValues, productGroups, entitiyMap, partitionedEntitiyMap, historicalProducts);
         this.accessMap = accessMap;
     }
 

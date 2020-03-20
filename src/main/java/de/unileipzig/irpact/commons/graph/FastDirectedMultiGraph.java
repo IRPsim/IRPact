@@ -4,12 +4,17 @@ import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
 import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * @author Daniel Abitz
  */
 public class FastDirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements MultiGraph<N, E, T> {
 
+    protected Supplier<? extends Set<E>> edgeSetSupplier;
+    protected Supplier<? extends Map<T, Set<E>>> typeEdgeMapSupplier;
+    protected Supplier<? extends Map<N, Map<T, E>>> nodeEdgeMapSupplier;
+    protected Supplier<? extends Map<T, E>> edgeMapSupplier;
     protected Set<N> nodes;
     protected Map<T, Set<E>> edges;
     protected Map<N, Map<T, Set<E>>> outEdges;
@@ -22,27 +27,28 @@ public class FastDirectedMultiGraph<N extends Node, E extends Edge<N>, T> implem
             Map<N, Map<T, Set<E>>> outEdges,
             Map<N, Map<T, Set<E>>> inEdges,
             Map<N, Map<N, Map<T, E>>> nodeEdgeMapping) {
+        this(HashSet::new, HashMap::new, HashMap::new, HashMap::new, nodes, edges, outEdges, inEdges, nodeEdgeMapping);
+    }
+
+    public FastDirectedMultiGraph(
+            Supplier<? extends Set<E>> edgeSetSupplier,
+            Supplier<? extends Map<T, Set<E>>> typeEdgeMapSupplier,
+            Supplier<? extends Map<N, Map<T, E>>> nodeEdgeMapSupplier,
+            Supplier<? extends Map<T, E>> edgeMapSupplier,
+            Set<N> nodes,
+            Map<T, Set<E>> edges,
+            Map<N, Map<T, Set<E>>> outEdges,
+            Map<N, Map<T, Set<E>>> inEdges,
+            Map<N, Map<N, Map<T, E>>> nodeEdgeMapping) {
+        this.edgeSetSupplier = edgeSetSupplier;
+        this.typeEdgeMapSupplier = typeEdgeMapSupplier;
+        this.nodeEdgeMapSupplier = nodeEdgeMapSupplier;
+        this.edgeMapSupplier = edgeMapSupplier;
         this.nodes = nodes;
         this.edges = edges;
         this.outEdges = outEdges;
         this.inEdges = inEdges;
         this.nodeEdgeMapping = nodeEdgeMapping;
-    }
-    
-    protected Set<E> createEdgeSet() {
-        return new HashSet<>();
-    }
-    
-    protected Map<T, Set<E>> createTypeEdgeMap() {
-        return new HashMap<>();
-    }
-    
-    protected Map<N, Map<T, E>> createNodeEdgeMap() {
-        return new HashMap<>();
-    }
-    
-    protected Map<T, E> createEdgeMap() {
-        return new HashMap<>();
     }
 
     protected boolean scanNode(N node) {
@@ -206,9 +212,9 @@ public class FastDirectedMultiGraph<N extends Node, E extends Edge<N>, T> implem
 
     protected void addEdgeTo(N node, E edge, T type, boolean out) {
         Map<T, Set<E>> edgeMap = out
-                ? outEdges.computeIfAbsent(node, _node -> createTypeEdgeMap())
-                : inEdges.computeIfAbsent(node, _node -> createTypeEdgeMap());
-        Set<E> edges = edgeMap.computeIfAbsent(type, _type -> createEdgeSet());
+                ? outEdges.computeIfAbsent(node, _node -> typeEdgeMapSupplier.get())
+                : inEdges.computeIfAbsent(node, _node -> typeEdgeMapSupplier.get());
+        Set<E> edges = edgeMap.computeIfAbsent(type, _type -> edgeSetSupplier.get());
         edges.add(edge);
     }
 
@@ -223,10 +229,10 @@ public class FastDirectedMultiGraph<N extends Node, E extends Edge<N>, T> implem
         addIfNotExists(target);
         addEdgeTo(source, edge, type, true);
         addEdgeTo(target, edge, type, false);
-        Set<E> edges = this.edges.computeIfAbsent(type, _type -> createEdgeSet());
+        Set<E> edges = this.edges.computeIfAbsent(type, _type -> edgeSetSupplier.get());
         edges.add(edge);
-        Map<N, Map<T, E>> map = nodeEdgeMapping.computeIfAbsent(source, _source -> createNodeEdgeMap());
-        Map<T, E> map1 = map.computeIfAbsent(target, _target -> createEdgeMap());
+        Map<N, Map<T, E>> map = nodeEdgeMapping.computeIfAbsent(source, _source -> nodeEdgeMapSupplier.get());
+        Map<T, E> map1 = map.computeIfAbsent(target, _target -> edgeMapSupplier.get());
         map1.put(type, edge);
     }
 

@@ -38,14 +38,4 @@ public class CompanyConsumerPerceptionManipulationMessage implements Message {
                 sendingCompany.getInformationAuthority()
         );
     }
-
-    @Override
-    public boolean isSerializable() {
-        return false;
-    }
-
-    @Override
-    public String serializeToString() {
-        throw new UnsupportedOperationException();
-    }
 }

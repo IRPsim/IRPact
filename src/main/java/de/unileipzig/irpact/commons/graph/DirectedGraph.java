@@ -13,10 +13,6 @@ public class DirectedGraph<N extends Node, E extends Edge<N>> implements Graph<N
 
     protected Map<N, Map<N, E>> graphData;
 
-    public DirectedGraph() {
-        this(new HashMap<>());
-    }
-
     public DirectedGraph(Map<N, Map<N, E>> graphData) {
         this.graphData = graphData;
     }

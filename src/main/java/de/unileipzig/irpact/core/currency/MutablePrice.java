@@ -3,11 +3,11 @@ package de.unileipzig.irpact.core.currency;
 /**
  * @author Daniel Abitz
  */
-public class DynamicPrice implements Price {
+public class MutablePrice implements Price {
 
     private double value;
 
-    public DynamicPrice(double value) {
+    public MutablePrice(double value) {
         this.value = value;
     }
 
@@ -15,8 +15,8 @@ public class DynamicPrice implements Price {
         this.value = value;
     }
 
-    public Price getCurrentPrice() {
-        return new FinalPrice(value);
+    public final ImmutablePrice fixCurrentPrice() {
+        return new ImmutablePrice(value);
     }
 
     @Override

@@ -111,19 +111,13 @@ public class JadexMessageSystem extends BasicMessageSystem {
     }
 
     @Override
-    public void send(Agent from, Message msg, Iterable<? extends Agent> to) {
-        if(mode == Mode.JADEX && to instanceof Collection) {
-            @SuppressWarnings("unchecked")
-            Collection<? extends Agent> coll = (Collection<? extends Agent>) to;
-            Agent[] toArray = coll.toArray(new Agent[0]);
+    public void send(Agent from, Message msg, Collection<? extends Agent> to) {
+        if(mode == Mode.JADEX) {
+            Agent[] toArray = to.toArray(new Agent[0]);
             sendJadex(from, msg, toArray);
         } else {
             for(Agent toAgent: to) {
-                if(mode == Mode.BASIC) {
-                    sendBasic(from, msg, toAgent);
-                } else {
-                    sendJadex(from, msg, toAgent).get();
-                }
+                sendBasic(from, msg, toAgent);
             }
         }
     }

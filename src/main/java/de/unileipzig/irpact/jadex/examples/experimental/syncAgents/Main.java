@@ -75,6 +75,16 @@ public class Main {
         //clockService.start();
         simulationService.start();
 
+        ConcurrentUtil.sleepSilently(1000);
+        System.out.println("tick0 " + clockService.getTick());
+        ConcurrentUtil.sleepSilently(1000);
+        System.out.println("tick1 " + clockService.getTick());
+        clockService.setDelta(10);
+        ConcurrentUtil.sleepSilently(1000);
+        System.out.println("tick2 " + clockService.getTick());
+
+        System.out.println("Delta: " + clockService.getDelta());
+        System.out.println("Dilation: " + clockService.getDilation());
         ConcurrentUtil.start(5000, platform::killComponent);
     }
 }

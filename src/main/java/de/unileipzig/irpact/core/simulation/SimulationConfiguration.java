@@ -4,11 +4,13 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinitiesMapping;
 import de.unileipzig.irpact.core.agent.pos.PointOfSaleAgent;
 import de.unileipzig.irpact.core.preference.ValueConfiguration;
+import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.ProductGroupAttribute;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -30,6 +32,10 @@ public interface SimulationConfiguration {
     Collection<? extends ProductGroup> getProductGroups();
 
     ProductGroup getProductGroup(String name);
+
+    Collection<? extends Product> getHistroicalProducts();
+
+    boolean addHistoricalProduct(Product product);
 
     //=========================
     //Entities
@@ -58,6 +64,10 @@ public interface SimulationConfiguration {
         }
         return entity;
     }
+
+    Stream<SimulationEntity> streamEntities();
+
+    Stream<SimulationEntity> streamPartitionedEntities(EntityType type);
 
     //=========================
     //util

@@ -5,7 +5,7 @@ import de.unileipzig.irpact.commons.annotation.ToDo;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.preference.Preference;
-import de.unileipzig.irpact.core.product.AdoptedProductInfo;
+import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductAttribute;
 import de.unileipzig.irpact.core.product.perception.ProductAttributePerceptionScheme;
@@ -82,7 +82,7 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     @Belief
     protected Set<Product> knownProducts = new HashSet<>();
     @Belief
-    protected Set<AdoptedProductInfo> adoptedProducts = new HashSet<>();
+    protected Set<AdoptedProduct> adoptedProducts = new HashSet<>();
 
     //=========================
     //Constructer
@@ -148,6 +148,11 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     @Override
     public Set<Product> getKnownProducts() {
         return knownProducts;
+    }
+
+    @Override
+    public Set<AdoptedProduct> getAdoptedProducts() {
+        return adoptedProducts;
     }
 
     @Override
@@ -324,7 +329,7 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
             if(potentialProduct == null) {
                 throw new PlanFailureException();
             }
-            AdoptedProductInfo adoptedProduct = new AdoptedProductInfo(
+            AdoptedProduct adoptedProduct = new AdoptedProduct(
                     getEnvironment().getTimeModule().createTimestamp(),
                     need,
                     potentialProduct
