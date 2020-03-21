@@ -3,10 +3,9 @@ package de.unileipzig.irpact.core.simulation;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinitiesMapping;
 import de.unileipzig.irpact.core.agent.pos.PointOfSaleAgent;
-import de.unileipzig.irpact.core.preference.ValueConfiguration;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
-import de.unileipzig.irpact.core.product.ProductGroupAttribute;
+import de.unileipzig.irpact.core.product.preference.ProductGroupAttributValueConfiguration;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
@@ -23,7 +22,7 @@ public interface SimulationConfiguration {
 
     ConsumerAgentGroupAffinitiesMapping getAffinitiesMapping();
 
-    ValueConfiguration<ProductGroupAttribute> getProductValues();
+    ProductGroupAttributValueConfiguration getProductValues();
 
     //=========================
     //Products

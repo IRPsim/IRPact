@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.core.preference;
 
-import de.unileipzig.irpact.commons.annotation.ToDo;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,32 +9,31 @@ import java.util.function.Predicate;
 /**
  * @author Daniel Abitz
  */
-@ToDo("ueberlegen, ob es besser ist, die values in die productgruppen zu packen")
-public class ValueConfiguration<T> {
+public class ValueConfiguration<T, M extends ValueMapping<T>> {
 
     private Map<String, Value> values;
-    private Set<ValuedObject<T>> valuedObjects;
+    private Set<M> valueMappings;
 
     public ValueConfiguration(
             Map<String, Value> values,
-            Set<ValuedObject<T>> valuedObjects) {
+            Set<M> valueMappings) {
         this.values = values;
-        this.valuedObjects = valuedObjects;
+        this.valueMappings = valueMappings;
     }
 
-    public boolean hasValue(String valueString) {
-        return values.containsKey(valueString);
+    public boolean hasValue(String key) {
+        return values.containsKey(key);
     }
 
-    public Value getValue(String valueString) {
-        return values.get(valueString);
+    public Value getValue(String key) {
+        return values.get(key);
     }
 
-    public boolean add(Value value) {
-        if(hasValue(value.print())) {
+    public boolean add(String key, Value value) {
+        if(hasValue(key)) {
             return false;
         }
-        values.put(value.print(), value);
+        values.put(key, value);
         return true;
     }
 
@@ -44,13 +41,13 @@ public class ValueConfiguration<T> {
         return values.values();
     }
 
-    public Collection<? extends ValuedObject<T>> getValuedObjects() {
-        return valuedObjects;
+    public Collection<? extends M> getValueMappings() {
+        return valueMappings;
     }
 
-    public Set<? extends ValuedObject<T>> getCorresponingValuedObjects(Value value, Predicate<? super ValuedObject<T>> filter) {
-        Set<ValuedObject<T>> set = new HashSet<>();
-        for(ValuedObject<T> mapping: valuedObjects) {
+    public Set<? extends M> getCorresponingMappings(Value value, Predicate<? super M> filter) {
+        Set<M> set = new HashSet<>();
+        for(M mapping: valueMappings) {
             Value mappingValue = mapping.getValue();
             if(value.equals(mappingValue)) {
                 if(filter != null && filter.test(mapping)) {
@@ -61,13 +58,13 @@ public class ValueConfiguration<T> {
         return set;
     }
 
-    public Set<? extends ValuedObject<T>> getCorresponingValuedObjects(Preference preference, Predicate<? super ValuedObject<T>> filter) {
-        return getCorresponingValuedObjects(preference.getValue(), filter);
+    public Set<? extends M> getCorresponingMappings(Preference preference, Predicate<? super M> filter) {
+        return getCorresponingMappings(preference.getValue(), filter);
     }
 
-    public Set<T> getCorresponingObjects(Value value, Predicate<? super ValuedObject<T>> filter) {
+    public Set<T> getCorresponingObjects(Value value, Predicate<? super M> filter) {
         Set<T> set = new HashSet<>();
-        for(ValuedObject<T> mapping: valuedObjects) {
+        for(M mapping: valueMappings) {
             Value mappingValue = mapping.getValue();
             if(value.equals(mappingValue)) {
                 if(filter != null && filter.test(mapping)) {
@@ -78,7 +75,7 @@ public class ValueConfiguration<T> {
         return set;
     }
 
-    public Set<T> getCorresponingObjects(Preference preference, Predicate<? super ValuedObject<T>> filter) {
+    public Set<T> getCorresponingObjects(Preference preference, Predicate<? super M> filter) {
         return getCorresponingObjects(preference.getValue(), filter);
     }
 }

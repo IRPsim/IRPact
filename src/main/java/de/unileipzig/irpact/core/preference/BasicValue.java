@@ -14,7 +14,7 @@ public final class BasicValue implements Value {
     }
 
     @Override
-    public String print() {
+    public String toString() {
         return value;
     }
 

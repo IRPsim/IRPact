@@ -2,10 +2,9 @@ package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.commons.Check;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinitiesMapping;
-import de.unileipzig.irpact.core.preference.ValueConfiguration;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
-import de.unileipzig.irpact.core.product.ProductGroupAttribute;
+import de.unileipzig.irpact.core.product.preference.ProductGroupAttributValueConfiguration;
 
 import java.util.Collection;
 import java.util.Map;
@@ -18,7 +17,7 @@ import java.util.stream.Stream;
 public class BasicSimulationConfiguration implements SimulationConfiguration {
 
     protected ConsumerAgentGroupAffinitiesMapping affinitiesMapping;
-    protected ValueConfiguration<ProductGroupAttribute> productValues;
+    protected ProductGroupAttributValueConfiguration productValues;
     protected Map<String, ProductGroup> productGroups;
     protected Map<String, SimulationEntity> entitiyMap;
     protected Map<EntityType, Set<SimulationEntity>> partitionedEntitiyMap;
@@ -26,7 +25,7 @@ public class BasicSimulationConfiguration implements SimulationConfiguration {
 
     public BasicSimulationConfiguration(
             ConsumerAgentGroupAffinitiesMapping affinitiesMapping,
-            ValueConfiguration<ProductGroupAttribute> productValues,
+            ProductGroupAttributValueConfiguration productValues,
             Map<String, ProductGroup> productGroups,
             Map<String, SimulationEntity> entitiyMap,
             Map<EntityType, Set<SimulationEntity>> partitionedEntitiyMap,
@@ -49,7 +48,7 @@ public class BasicSimulationConfiguration implements SimulationConfiguration {
     }
 
     @Override
-    public ValueConfiguration<ProductGroupAttribute> getProductValues() {
+    public ProductGroupAttributValueConfiguration getProductValues() {
         return productValues;
     }
 

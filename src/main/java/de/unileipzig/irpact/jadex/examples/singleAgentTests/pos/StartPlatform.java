@@ -5,11 +5,11 @@ import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinitiesMapping;
 import de.unileipzig.irpact.core.agent.pos.PointOfSaleAgentBase;
 import de.unileipzig.irpact.core.currency.ImmutablePrice;
-import de.unileipzig.irpact.core.preference.ValueConfiguration;
 import de.unileipzig.irpact.core.product.*;
 import de.unileipzig.irpact.core.product.availability.FiniteProductAvailability;
 import de.unileipzig.irpact.core.product.availability.InfiniteProductAvailability;
 import de.unileipzig.irpact.core.product.availability.NoProductAvailability;
+import de.unileipzig.irpact.core.product.preference.ProductGroupAttributValueConfiguration;
 import de.unileipzig.irpact.core.spatial.dim2.Point2D;
 import de.unileipzig.irpact.jadex.agent.pos.PointOfSaleAgentService;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationConfiguration;
@@ -38,7 +38,7 @@ public class StartPlatform {
         BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
         env.setConfig(new BasicJadexSimulationConfiguration(
                 new BasicConsumerAgentGroupAffinitiesMapping(new HashMap<>()),
-                new ValueConfiguration<>(new HashMap<>(), new HashSet<>()),
+                new ProductGroupAttributValueConfiguration(new HashMap<>(), new HashSet<>()),
                 new HashMap<>(),
                 new HashMap<>(),
                 new HashMap<>(),

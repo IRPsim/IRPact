@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.network.*;
 import de.unileipzig.irpact.core.network.topology.ConstantTopology;
 import de.unileipzig.irpact.core.network.topology.EgoistTopology;
 import de.unileipzig.irpact.core.network.topology.UnchangingEdgeWeight;
-import de.unileipzig.irpact.core.preference.ValueConfiguration;
+import de.unileipzig.irpact.core.product.preference.ProductGroupAttributValueConfiguration;
 import de.unileipzig.irpact.core.simulation.BasicEconomicSpace;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.Metric;
@@ -51,7 +51,7 @@ public class JadexConfigurationBuilder extends AbstractConfigurationBuilder<Jade
         ));
         env.setConfig(new BasicJadexSimulationConfiguration(
                 new BasicConsumerAgentGroupAffinitiesMapping(new HashMap<>()),
-                new ValueConfiguration<>(new HashMap<>(), new HashSet<>()),
+                new ProductGroupAttributValueConfiguration(new HashMap<>(), new HashSet<>()),
                 new HashMap<>(),
                 new HashMap<>(),
                 new HashMap<>(),

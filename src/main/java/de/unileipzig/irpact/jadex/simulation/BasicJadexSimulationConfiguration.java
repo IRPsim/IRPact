@@ -2,10 +2,9 @@ package de.unileipzig.irpact.jadex.simulation;
 
 import de.unileipzig.irpact.commons.annotation.ToDo;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinitiesMapping;
-import de.unileipzig.irpact.core.preference.ValueConfiguration;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
-import de.unileipzig.irpact.core.product.ProductGroupAttribute;
+import de.unileipzig.irpact.core.product.preference.ProductGroupAttributValueConfiguration;
 import de.unileipzig.irpact.core.simulation.BasicSimulationConfiguration;
 import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.simulation.SimulationEntity;
@@ -27,7 +26,7 @@ public class BasicJadexSimulationConfiguration extends BasicSimulationConfigurat
 
     public BasicJadexSimulationConfiguration(
             ConsumerAgentGroupAffinitiesMapping affinitiesMapping,
-            ValueConfiguration<ProductGroupAttribute> productValues,
+            ProductGroupAttributValueConfiguration productValues,
             Map<String, ProductGroup> productGroups,
             Map<String, SimulationEntity> entitiyMap,
             Map<EntityType, Set<SimulationEntity>> partitionedEntitiyMap,

@@ -5,16 +5,16 @@ import java.util.Objects;
 /**
  * @author Daniel Abitz
  */
-public class ValuedObject<T> {
+public class ValueMapping<T> {
 
     private T object;
     private Value value;
-    private double mappingStrength;
+    private double strength;
 
-    public ValuedObject(T object, Value value, double mappingStrength) {
+    public ValueMapping(T object, Value value, double strength) {
         this.object = object;
         this.value = value;
-        this.mappingStrength = mappingStrength;
+        this.strength = strength;
     }
 
     public T getObject() {
@@ -25,22 +25,22 @@ public class ValuedObject<T> {
         return value;
     }
 
-    public double getMappingStrength() {
-        return mappingStrength;
+    public double getStrength() {
+        return strength;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(object, value, mappingStrength);
+        return Objects.hash(object, value, strength);
     }
 
     @Override
     public boolean equals(Object obj) {
         if(obj == null) return false;
         if(obj == this) return true;
-        if(obj instanceof ValuedObject) {
-            ValuedObject<?> other = (ValuedObject<?>) obj;
-            return mappingStrength == other.mappingStrength
+        if(obj instanceof ValueMapping) {
+            ValueMapping<?> other = (ValueMapping<?>) obj;
+            return strength == other.strength
                     && Objects.equals(value, other.value)
                     && Objects.equals(object, other.object);
         }
