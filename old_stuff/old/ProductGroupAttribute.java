@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.input;
+package de.unileipzig.irpact.input.old;
 
 import java.util.List;
 

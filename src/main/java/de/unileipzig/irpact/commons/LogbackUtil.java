@@ -6,9 +6,9 @@ import org.slf4j.event.Level;
 /**
  * @author Daniel Abitz
  */
-public final class LogUtil {
+public final class LogbackUtil {
 
-    private LogUtil() {
+    private LogbackUtil() {
     }
 
     public static boolean disableAppender(Logger logger, String appenderName) {

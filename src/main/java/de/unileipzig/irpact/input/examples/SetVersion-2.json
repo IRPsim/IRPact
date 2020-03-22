@@ -1,0 +1,121 @@
+{
+  "sets" : {
+    "consumerAgentGroups" : {
+      "Grupp0" : {
+        "informationAuthority" : 1.0
+      },
+      "Gruppe1" : {
+        "informationAuthority" : 0.4
+      }
+    },
+    "consumerAgentGroupAttributes" : {
+      "Attribut0" : { },
+      "Attribut1" : { },
+      "Attribut2" : { },
+      "Attribut3" : { }
+    },
+    "BooleanDistribution" : {
+      "Funktion0" : {
+        "seed" : 123,
+        "threshold" : 0.5
+      },
+      "Funktion3" : {
+        "seed" : 1234,
+        "threshold" : 0.3
+      },
+      "Funktion4" : {
+        "seed" : 4321,
+        "threshold" : 0.7
+      }
+    },
+    "consumerAgentGroups$consumerAgentGroupAttributes$distribution" : {
+      "Attribut0" : {
+        "Funktion0" : 1
+      },
+      "Attribut1" : {
+        "Funktion1" : 1
+      },
+      "Attribut2" : {
+        "Funktion3" : 1
+      },
+      "Attribut3" : {
+        "Funktion4" : 1
+      }
+    },
+    "consumerAgentGroups$consumerAgentGroupAttributes" : {
+      "Grupp0" : {
+        "Attribut0" : 1,
+        "Attribut1" : 1
+      },
+      "Gruppe1" : {
+        "Attribut2" : 1,
+        "Attribut3" : 1
+      }
+    },
+    "ConstantDistribution" : {
+      "Funktion1" : {
+        "value" : 42
+      },
+      "Funktion5" : {
+        "value" : 12345
+      }
+    },
+    "valuePreferences" : {
+      "Value0" : { },
+      "Value1" : { }
+    },
+    "RandomBoundedDistribution" : {
+      "Funktion2" : {
+        "seed" : -1,
+        "lowerBound" : 0.5,
+        "upperBound" : 1.0
+      }
+    },
+    "consumerAgentGroups$valuePreferences$distribution" : {
+      "Value0" : {
+        "Funktion2" : 1
+      },
+      "Value1" : {
+        "Funktion5" : 1
+      }
+    },
+    "consumerAgentGroups$valuePreferences" : {
+      "Grupp0" : {
+        "Value0" : 1
+      },
+      "Gruppe1" : {
+        "Value1" : 1
+      }
+    },
+    "SchemaWithoutParameters" : {
+      "Schema0" : { },
+      "Schema3" : { }
+    },
+    "consumerAgentGroups$productFindingScheme" : {
+      "Grupp0" : {
+        "Schema0" : 1
+      },
+      "Gruppe1" : {
+        "Schema2" : 1
+      }
+    },
+    "SchemaWith2Parameters" : {
+      "Schema1" : {
+        "value0" : 123,
+        "value1" : 0
+      },
+      "Schema2" : {
+        "value0" : 444,
+        "value1" : 555
+      }
+    },
+    "consumerAgentGroups$productAdoptionDecisionScheme" : {
+      "Grupp0" : {
+        "Schema1" : 1
+      },
+      "Gruppe1" : {
+        "Schema3" : 1
+      }
+    }
+  }
+}

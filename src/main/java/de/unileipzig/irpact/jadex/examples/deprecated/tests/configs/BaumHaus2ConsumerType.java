@@ -2,7 +2,7 @@ package de.unileipzig.irpact.jadex.examples.deprecated.tests.configs;
 
 import de.unileipzig.irpact.commons.distribution.BooleanDistribution;
 import de.unileipzig.irpact.commons.distribution.ConstantDistribution;
-import de.unileipzig.irpact.commons.distribution.RandomDistribution;
+import de.unileipzig.irpact.commons.distribution.RandomBoundedDistribution;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.TakeFirstProductAdoptionDecision;
@@ -36,13 +36,13 @@ public final class BaumHaus2ConsumerType {
                 .addProductGroupAttribute("garten", new BasicProductGroupAttribute("garten", new ConstantDistribution("cd1", 0)))
                 //baum
                 .addNeed("baum", new BasicNeed("baum"))
-                .addProductGroupAttribute("hoehe", new BasicProductGroupAttribute("hoehe", new RandomDistribution("rd0", new Random(42), 5, 10)))
+                .addProductGroupAttribute("hoehe", new BasicProductGroupAttribute("hoehe", new RandomBoundedDistribution("rd0", new Random(42), 5, 10)))
                 //group 1
                 .addConsumerAgentGroupAttribute("baum", new BasicConsumerAgentGroupAttribute("baum", new BooleanDistribution("bd0", new Random(1337), 0.5)))
-                .addConsumerAgentGroupAttribute("baumidiot", new BasicConsumerAgentGroupAttribute("idiot", new RandomDistribution("rd1", new Random(42), 0, 1)))
+                .addConsumerAgentGroupAttribute("baumidiot", new BasicConsumerAgentGroupAttribute("idiot", new RandomBoundedDistribution("rd1", new Random(42), 0, 1)))
                 //group 2
                 .addConsumerAgentGroupAttribute("haus", new BasicConsumerAgentGroupAttribute("haus", new BooleanDistribution("bd1", new Random(7331), 0.5)))
-                .addConsumerAgentGroupAttribute("hausidiot", new BasicConsumerAgentGroupAttribute("idiot", new RandomDistribution("rd2", new Random(24), 0, 1)))
+                .addConsumerAgentGroupAttribute("hausidiot", new BasicConsumerAgentGroupAttribute("idiot", new RandomBoundedDistribution("rd2", new Random(24), 0, 1)))
                 ;
 
         cb.addProductGroup(new BasicProductGroup(

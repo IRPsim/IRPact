@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.start;
 
-import de.unileipzig.irpact.commons.LogUtil;
+import de.unileipzig.irpact.commons.LogbackUtil;
 import de.unileipzig.irpact.commons.TimeUtil;
 import de.unileipzig.irpact.core.agent.company.CompanyAgent;
 import de.unileipzig.irpact.core.agent.company.CompanyAgentBase;
@@ -110,29 +110,29 @@ public final class StartSimulation {
         jenv.setLogger(irpactLogger);
 
         if(!logConfig.isUseConsole()) {
-            LogUtil.disableAppender(irpactLogger, CONSOLE_APPENDER);
-            LogUtil.disableAppender(agentRoot, CONSOLE_APPENDER);
+            LogbackUtil.disableAppender(irpactLogger, CONSOLE_APPENDER);
+            LogbackUtil.disableAppender(agentRoot, CONSOLE_APPENDER);
         }
 
         if(!logConfig.isUseFile()) {
-            LogUtil.disableAppender(irpactLogger, FILE_APPENDER);
-            LogUtil.disableAppender(irpactLogger, FILE_ERROR_APPENDER);
-            LogUtil.disableAppender(agentRoot, FILE_AGENT_APPENDER);
-            LogUtil.disableAppender(agentRoot, FILE_ERROR_APPENDER);
+            LogbackUtil.disableAppender(irpactLogger, FILE_APPENDER);
+            LogbackUtil.disableAppender(irpactLogger, FILE_ERROR_APPENDER);
+            LogbackUtil.disableAppender(agentRoot, FILE_AGENT_APPENDER);
+            LogbackUtil.disableAppender(agentRoot, FILE_ERROR_APPENDER);
         }
 
         if(logConfig.isLevelTrace()) {
-            LogUtil.setLevel(irpactLogger, Level.TRACE);
+            LogbackUtil.setLevel(irpactLogger, Level.TRACE);
         }
         else if(logConfig.isLevelDebug()) {
-            LogUtil.setLevel(irpactLogger, Level.DEBUG);
+            LogbackUtil.setLevel(irpactLogger, Level.DEBUG);
         }
 
         if(logConfig.isAgentLevelTrace()) {
-            LogUtil.setLevel(agentRoot, Level.TRACE);
+            LogbackUtil.setLevel(agentRoot, Level.TRACE);
         }
         else if(logConfig.isAgentLevelDebug()) {
-            LogUtil.setLevel(agentRoot, Level.DEBUG);
+            LogbackUtil.setLevel(agentRoot, Level.DEBUG);
         }
     }
 

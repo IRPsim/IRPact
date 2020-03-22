@@ -17,7 +17,7 @@ public class Histogram {
     public Histogram() {
     }
 
-    private static void isSorted(double[] data) {
+    static void isSorted(double[] data) {
         for(int i = 0; i < data.length - 1; i++) {
             double d0 = data[i];
             double d1 = data[i + 1];

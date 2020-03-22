@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.input.v1;
+package de.unileipzig.irpact.input.old.v1;
 
 /**
  * @author Daniel Abitz

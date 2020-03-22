@@ -83,8 +83,8 @@ public final class Json {
         if(distribution instanceof ConstantDistribution) {
             return toNode((ConstantDistribution) distribution);
         }
-        if(distribution instanceof RandomDistribution) {
-            return toNode((RandomDistribution) distribution);
+        if(distribution instanceof RandomBoundedDistribution) {
+            return toNode((RandomBoundedDistribution) distribution);
         }
         throw new IllegalStateException("unknown Distribution");
     }
@@ -141,9 +141,9 @@ public final class Json {
         return new ConstantDistribution(name, value);
     }
 
-    public static ObjectNode toNode(RandomDistribution randomDistribution) {
+    public static ObjectNode toNode(RandomBoundedDistribution randomDistribution) {
         ObjectNode node = MAPPER.createObjectNode();
-        node.put("type", RandomDistribution.NAME);
+        node.put("type", RandomBoundedDistribution.NAME);
         node.put("name", randomDistribution.getName());
         node.put("seed", randomDistribution.getSeed());
         node.put("lowerBound", randomDistribution.getLowerBound());
@@ -151,16 +151,16 @@ public final class Json {
         return node;
     }
 
-    public static RandomDistribution toRandomDistribution(ObjectNode node) {
+    public static RandomBoundedDistribution toRandomDistribution(ObjectNode node) {
         String type = node.get("type").textValue();
-        if(!RandomDistribution.NAME.equals(type)) {
+        if(!RandomBoundedDistribution.NAME.equals(type)) {
             throw new IllegalArgumentException();
         }
         String name = node.get("name").textValue();
         long seed = node.get("seed").longValue();
         double lowerBound = node.get("lowerBound").doubleValue();
         double upperBound = node.get("upperBound").doubleValue();
-        return new RandomDistribution(name, seed, lowerBound, upperBound);
+        return new RandomBoundedDistribution(name, seed, lowerBound, upperBound);
     }
 
     //=========================

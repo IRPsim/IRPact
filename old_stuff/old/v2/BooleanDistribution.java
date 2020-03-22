@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.input.v2;
+package de.unileipzig.irpact.input.old.v2;
 
 class BooleanDistribution {
 

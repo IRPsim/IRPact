@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.input.v2.data;
+package de.unileipzig.irpact.input.old.v2.data;
 
 public class ProductGroupAttribute {
 

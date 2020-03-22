@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.simulation;
 
-import de.unileipzig.irpact.commons.Util;
+import java.util.Objects;
 
 /**
  * @author Daniel Abitz
@@ -57,11 +57,11 @@ public final class Timestamp implements Comparable<Timestamp> {
     public int hashCode() {
         switch (mode) {
             case SYSTEM:
-                return Util.hash(mode, systemTime);
+                return Objects.hash(mode, systemTime);
             case SIMULATION:
-                return Util.hash(mode, simulationTime);
+                return Objects.hash(mode, simulationTime);
             case TICK:
-                return Util.hash(mode, tick);
+                return Objects.hash(mode, tick);
             default:
                 throw new IllegalStateException("impossible switch case");
         }

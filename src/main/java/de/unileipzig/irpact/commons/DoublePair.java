@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -32,7 +34,7 @@ public final class DoublePair {
 
     @Override
     public int hashCode() {
-        return Util.hash(first, second);
+        return Objects.hash(first, second);
     }
 
     @Override

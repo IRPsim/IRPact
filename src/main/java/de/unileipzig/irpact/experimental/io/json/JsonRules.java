@@ -5,7 +5,7 @@ import de.unileipzig.irpact.commons.annotation.Experimental;
 import de.unileipzig.irpact.commons.annotation.ToDo;
 import de.unileipzig.irpact.commons.distribution.BooleanDistribution;
 import de.unileipzig.irpact.commons.distribution.ConstantDistribution;
-import de.unileipzig.irpact.commons.distribution.RandomDistribution;
+import de.unileipzig.irpact.commons.distribution.RandomBoundedDistribution;
 import de.unileipzig.irpact.commons.distribution.UnivariateDistribution;
 import de.unileipzig.irpact.core.need.BasicNeed;
 import de.unileipzig.irpact.core.need.Need;
@@ -54,7 +54,7 @@ public class JsonRules {
         );
 
         deserializationRules.put(
-                RandomDistribution.NAME,
+                RandomBoundedDistribution.NAME,
                 (jp, ctxt) -> {
                     jp.nextValue();
                     String name = jp.getValueAsString();
@@ -62,13 +62,13 @@ public class JsonRules {
                     double lowerBound = jp.getValueAsDouble();
                     jp.nextValue();
                     double upperBound = jp.getValueAsDouble();
-                    return new RandomDistribution(name, new Random(), lowerBound, upperBound);
+                    return new RandomBoundedDistribution(name, new Random(), lowerBound, upperBound);
                 }
         );
         serializationRules.put(
-                RandomDistribution.NAME,
+                RandomBoundedDistribution.NAME,
                 (value, jg, provider) -> {
-                    RandomDistribution dist = (RandomDistribution) value;
+                    RandomBoundedDistribution dist = (RandomBoundedDistribution) value;
                     jg.writeStringField(Constants.NAME, dist.getName());
                     jg.writeNumberField(Constants.LOWER_BOUND, dist.getLowerBound());
                     jg.writeNumberField(Constants.UPPER_BOUND, dist.getUpperBound());

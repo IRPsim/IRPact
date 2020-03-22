@@ -34,7 +34,7 @@ public final class Pair<A, B> {
 
     @Override
     public int hashCode() {
-        return Util.hash(first, second);
+        return Objects.hash(first, second);
     }
 
     @Override

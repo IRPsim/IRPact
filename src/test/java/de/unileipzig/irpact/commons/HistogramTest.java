@@ -12,6 +12,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class HistogramTest {
 
     @Test
+    void testIsSorted() {
+        assertDoesNotThrow(() -> Histogram.isSorted(new double[]{-3, -2, -1, 0, 1, 2, 3}));
+    }
+
+    @Test
+    void testIsSortedError() {
+        assertThrows(IllegalStateException.class, () -> Histogram.isSorted(new double[]{-3, -2, -1, 0, 1, 2, -3}));
+    }
+
+    @Test
     void testUpdate() {
         Histogram h = new Histogram();
         h.setBins(new double[] {-3.5, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, 3.5});
