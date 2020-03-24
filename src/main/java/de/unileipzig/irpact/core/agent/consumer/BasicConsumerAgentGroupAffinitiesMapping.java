@@ -3,6 +3,7 @@ package de.unileipzig.irpact.core.agent.consumer;
 import de.unileipzig.irpact.core.affinity.Affinities;
 import de.unileipzig.irpact.core.affinity.BasicAffinitiesMapping;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -11,6 +12,10 @@ import java.util.Map;
 public class BasicConsumerAgentGroupAffinitiesMapping
         extends BasicAffinitiesMapping<ConsumerAgentGroup, ConsumerAgentGroup>
         implements ConsumerAgentGroupAffinitiesMapping {
+
+    public BasicConsumerAgentGroupAffinitiesMapping() {
+        this(new HashMap<>());
+    }
 
     public BasicConsumerAgentGroupAffinitiesMapping(Map<ConsumerAgentGroup, Affinities<ConsumerAgentGroup>> consumerAgentGroupAffinitiesMap) {
         super(consumerAgentGroupAffinitiesMap);

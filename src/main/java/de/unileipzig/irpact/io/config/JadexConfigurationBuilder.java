@@ -3,7 +3,9 @@ package de.unileipzig.irpact.io.config;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinitiesMapping;
 import de.unileipzig.irpact.core.agent.policy.NoTaxes;
-import de.unileipzig.irpact.core.network.*;
+import de.unileipzig.irpact.core.network.BasicAgentNetwork;
+import de.unileipzig.irpact.core.network.BasicGraphConfiguration;
+import de.unileipzig.irpact.core.network.BasicSocialGraph;
 import de.unileipzig.irpact.core.network.topology.ConstantTopology;
 import de.unileipzig.irpact.core.network.topology.EgoistTopology;
 import de.unileipzig.irpact.core.network.topology.UnchangingEdgeWeight;
@@ -28,6 +30,21 @@ public class JadexConfigurationBuilder extends AbstractConfigurationBuilder<Jade
 
     public JadexConfigurationBuilder() {
     }
+
+    /*
+    private static Map<EdgeType, AgentGraph> getGraphs() {
+        Map<EdgeType, AgentGraph> map = new EnumMap<>(EdgeType.class);
+        for(EdgeType type: EdgeType.values()) {
+            AgentGraph graph = new BasicAgentGraph(
+                    type,
+                    new DirectedGraph<>(new HashMap<>()),
+                    new HashMap<>()
+            );
+            map.put(graph.getType(), graph);
+        }
+        return map;
+    }
+    */
 
     @Override
     public JadexConfigurationBuilder initMinimal() {

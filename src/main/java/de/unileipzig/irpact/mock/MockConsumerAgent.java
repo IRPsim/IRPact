@@ -25,6 +25,7 @@ public class MockConsumerAgent implements ConsumerAgent {
     private String name;
     private SimulationEnvironment env;
     private SpatialInformation spatialInformation;
+    private ConsumerAgentGroup group;
 
     public MockConsumerAgent(String name) {
         this.name = name;
@@ -34,6 +35,10 @@ public class MockConsumerAgent implements ConsumerAgent {
         this(name);
         this.env = env;
         this.spatialInformation = spatialInformation;
+    }
+
+    public void setGroup(ConsumerAgentGroup group) {
+        this.group = group;
     }
 
     @Override
@@ -58,7 +63,10 @@ public class MockConsumerAgent implements ConsumerAgent {
 
     @Override
     public ConsumerAgentGroup getGroup() {
-        throw new UnsupportedOperationException();
+        if(group == null) {
+            throw new UnsupportedOperationException();
+        }
+        return group;
     }
 
     @Override

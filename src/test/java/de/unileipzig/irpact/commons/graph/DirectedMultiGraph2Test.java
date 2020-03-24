@@ -6,25 +6,23 @@ import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * @author Daniel Abitz
- */
-class DirectedMultiGraphTest {
+class DirectedMultiGraph2Test {
 
     @Test
     void testType() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         assertTrue(dmg.isDirected());
         assertFalse(dmg.isUndirected());
     }
 
     @Test
     void testAddNode() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode n0 = new SimpleNode("x");
         assertFalse(dmg.hasNode(n0));
         dmg.addNode(n0);
@@ -36,7 +34,7 @@ class DirectedMultiGraphTest {
     //ueberlegen, ob selbe edge instanz mehrmals hinzugefuegt werden darf siehe todo
     @Test
     void testAddEdge() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode n0 = new SimpleNode("x");
         SimpleNode n1 = new SimpleNode("y");
         SimpleEdge<SimpleNode> e = new SimpleEdge<>(n0, n1, "z");
@@ -54,7 +52,7 @@ class DirectedMultiGraphTest {
 
     @Test
     void testGetEdge() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode n0 = new SimpleNode("x");
         SimpleNode n1 = new SimpleNode("y");
         SimpleEdge<SimpleNode> e = new SimpleEdge<>(n0, n1, "z");
@@ -66,7 +64,7 @@ class DirectedMultiGraphTest {
 
     @Test
     void testRemoveNode() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode n = new SimpleNode("x");
         assertFalse(dmg.removeNode(n));
         dmg.addNode(n);
@@ -77,7 +75,7 @@ class DirectedMultiGraphTest {
 
     @Test
     void testRemoveInterNode() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode n0 = new SimpleNode("x");
         SimpleNode n1 = new SimpleNode("y");
         SimpleEdge<SimpleNode> e = new SimpleEdge<>(n0, n1, "z");
@@ -93,7 +91,7 @@ class DirectedMultiGraphTest {
 
     @Test
     void testRemoveEdge() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode n0 = new SimpleNode("x");
         SimpleNode n1 = new SimpleNode("y");
         SimpleEdge<SimpleNode> e1 = new SimpleEdge<>(n0, n1, "z1");
@@ -109,7 +107,7 @@ class DirectedMultiGraphTest {
 
     @Test
     void testAddNode2() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode n0 = new SimpleNode("0");
         SimpleNode n1 = new SimpleNode("1");
         dmg.addNode(n0);
@@ -119,7 +117,7 @@ class DirectedMultiGraphTest {
 
     @Test
     void testAddEdge2() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode n0 = new SimpleNode("0");
         SimpleNode n1 = new SimpleNode("1");
         SimpleEdge<SimpleNode> e01 = new SimpleEdge<>(n0, n1, "e");
@@ -130,7 +128,7 @@ class DirectedMultiGraphTest {
 
     @Test
     void testHasNode() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode n0 = new SimpleNode("0");
         SimpleNode n1 = new SimpleNode("1");
         assertFalse(dmg.hasNode(n0));
@@ -142,7 +140,7 @@ class DirectedMultiGraphTest {
 
     @Test
     void testHasEdge() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode n0 = new SimpleNode("0");
         SimpleNode n1 = new SimpleNode("1");
         SimpleEdge<SimpleNode> e01 = new SimpleEdge<>(n0, n1, "e");
@@ -155,7 +153,7 @@ class DirectedMultiGraphTest {
 
     @Test
     void testRemoveNode2() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode n0 = new SimpleNode("0");
         assertFalse(dmg.removeNode(n0));
         dmg.addNode(n0);
@@ -167,7 +165,7 @@ class DirectedMultiGraphTest {
 
     @Test
     void testRemoveEdge2() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode s0 = new SimpleNode("s0");
         SimpleNode t0 = new SimpleNode("t0");
         SimpleNode t1 = new SimpleNode("t1");
@@ -191,7 +189,7 @@ class DirectedMultiGraphTest {
 
     @Test
     void testRemoveEdgeWithSameEdgeInstance() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode s0 = new SimpleNode("s0");
         SimpleNode t0 = new SimpleNode("t0");
         SimpleEdge<SimpleNode> s0_t0 = new SimpleEdge<>(s0, t0, "x");
@@ -225,7 +223,7 @@ class DirectedMultiGraphTest {
 
     @Test
     void testRemoveNodeComplex() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode s0 = new SimpleNode("s0");
         SimpleNode s1 = new SimpleNode("s1");
         SimpleNode t0 = new SimpleNode("t1");
@@ -248,7 +246,7 @@ class DirectedMultiGraphTest {
 
     @Test
     void testDegree() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode s0 = new SimpleNode("s0");
         SimpleNode s1 = new SimpleNode("s1");
         SimpleNode t0 = new SimpleNode("t0");
@@ -274,7 +272,7 @@ class DirectedMultiGraphTest {
     @SuppressWarnings("unchecked")
     @Test
     void testInEdges() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode s0 = new SimpleNode("s0");
         SimpleNode s1 = new SimpleNode("s1");
         SimpleNode t0 = new SimpleNode("t0");
@@ -302,7 +300,7 @@ class DirectedMultiGraphTest {
     @SuppressWarnings("unchecked")
     @Test
     void testOutEdges() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode s0 = new SimpleNode("s0");
         SimpleNode s1 = new SimpleNode("s1");
         SimpleNode t0 = new SimpleNode("t0");
@@ -329,7 +327,7 @@ class DirectedMultiGraphTest {
 
     @Test
     void testGetNodes() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode s0 = new SimpleNode("s0");
         SimpleNode s1 = new SimpleNode("s1");
         SimpleNode t0 = new SimpleNode("t0");
@@ -351,7 +349,7 @@ class DirectedMultiGraphTest {
 
     @Test
     void testGetEdge2() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode a = new SimpleNode("a");
         SimpleNode b = new SimpleNode("b");
         SimpleEdge<SimpleNode> ab = new SimpleEdge<>(a, b, "ab");
@@ -368,7 +366,7 @@ class DirectedMultiGraphTest {
 
     @Test
     void testGetSourceNodes() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode s0 = new SimpleNode("s0");
         SimpleNode s1 = new SimpleNode("s1");
         SimpleNode t0 = new SimpleNode("t0");
@@ -392,7 +390,7 @@ class DirectedMultiGraphTest {
 
     @Test
     void testStreamSourceNodes() {
-        DirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph<>(new HashMap<>());
+        DirectedMultiGraph2<SimpleNode, SimpleEdge<SimpleNode>, String> dmg = new DirectedMultiGraph2<>(new HashSet<>(), new HashMap<>());
         SimpleNode s0 = new SimpleNode("s0");
         SimpleNode s1 = new SimpleNode("s1");
         SimpleNode t0 = new SimpleNode("t0");

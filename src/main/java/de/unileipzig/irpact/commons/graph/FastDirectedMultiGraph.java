@@ -5,12 +5,14 @@ import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
 
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
  */
 public class FastDirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements MultiGraph<N, E, T> {
 
+    protected Supplier<? extends Set<N>> nodeSetSupplier;
     protected Supplier<? extends Set<E>> edgeSetSupplier;
     protected Supplier<? extends Map<T, Set<E>>> typeEdgeMapSupplier;
     protected Supplier<? extends Map<N, Map<T, E>>> nodeEdgeMapSupplier;
@@ -27,10 +29,22 @@ public class FastDirectedMultiGraph<N extends Node, E extends Edge<N>, T> implem
             Map<N, Map<T, Set<E>>> outEdges,
             Map<N, Map<T, Set<E>>> inEdges,
             Map<N, Map<N, Map<T, E>>> nodeEdgeMapping) {
-        this(HashSet::new, HashMap::new, HashMap::new, HashMap::new, nodes, edges, outEdges, inEdges, nodeEdgeMapping);
+        this(
+                HashSet::new,
+                HashSet::new,
+                HashMap::new,
+                HashMap::new,
+                HashMap::new,
+                nodes,
+                edges,
+                outEdges,
+                inEdges,
+                nodeEdgeMapping
+        );
     }
 
     public FastDirectedMultiGraph(
+            Supplier<? extends Set<N>> nodeSetSupplier,
             Supplier<? extends Set<E>> edgeSetSupplier,
             Supplier<? extends Map<T, Set<E>>> typeEdgeMapSupplier,
             Supplier<? extends Map<N, Map<T, E>>> nodeEdgeMapSupplier,
@@ -40,6 +54,7 @@ public class FastDirectedMultiGraph<N extends Node, E extends Edge<N>, T> implem
             Map<N, Map<T, Set<E>>> outEdges,
             Map<N, Map<T, Set<E>>> inEdges,
             Map<N, Map<N, Map<T, E>>> nodeEdgeMapping) {
+        this.nodeSetSupplier = nodeSetSupplier;
         this.edgeSetSupplier = edgeSetSupplier;
         this.typeEdgeMapSupplier = typeEdgeMapSupplier;
         this.nodeEdgeMapSupplier = nodeEdgeMapSupplier;
@@ -121,13 +136,61 @@ public class FastDirectedMultiGraph<N extends Node, E extends Edge<N>, T> implem
     }
 
     @Override
-    public Collection<? extends N> getNodes() {
+    public Set<N> getNodes() {
         return nodes;
     }
 
     @Override
-    public Collection<? extends E> getEdges(T type) {
+    public Set<E> getEdges(T type) {
         return edges.get(type);
+    }
+
+    @Override
+    public Set<N> getSourceNodes(N targetNode, T type) {
+        Map<T, Set<E>> typedEdges = inEdges.get(targetNode);
+        if(typedEdges == null) {
+            return null;
+        }
+        Set<E> edges = typedEdges.get(type);
+        if(edges == null) {
+            return null;
+        }
+        Set<N> nodes = nodeSetSupplier.get();
+        for(E edge: edges) {
+            nodes.add(edge.getSource());
+        }
+        return nodes;
+    }
+
+    @Override
+    public Stream<N> streamSourceNodes(N targetNode, T type) {
+        Map<T, Set<E>> typedEdges = inEdges.get(targetNode);
+        if(typedEdges == null) {
+            return Stream.empty();
+        }
+        Set<E> edges = typedEdges.get(type);
+        if(edges == null) {
+            return Stream.empty();
+        }
+        return edges.stream()
+                .map(Edge::getSource);
+    }
+
+    @Override
+    public Set<N> getTargetNodes(N sourceNode, T type) {
+        Map<T, Set<E>> typedEdges = outEdges.get(sourceNode);
+        if(typedEdges == null) {
+            return null;
+        }
+        Set<E> edges = typedEdges.get(type);
+        if(edges == null) {
+            return null;
+        }
+        Set<N> nodes = nodeSetSupplier.get();
+        for(E edge: edges) {
+            nodes.add(edge.getTarget());
+        }
+        return nodes;
     }
 
     @Override
@@ -166,7 +229,7 @@ public class FastDirectedMultiGraph<N extends Node, E extends Edge<N>, T> implem
     }
 
     @Override
-    public Collection<? extends E> getOutEdges(N node, T type) {
+    public Set<E> getOutEdges(N node, T type) {
         Map<T, Set<E>> map = outEdges.get(node);
         if(map == null) {
             return null;
@@ -175,7 +238,7 @@ public class FastDirectedMultiGraph<N extends Node, E extends Edge<N>, T> implem
     }
 
     @Override
-    public Collection<? extends E> getInEdges(N node, T type) {
+    public Set<E> getInEdges(N node, T type) {
         Map<T, Set<E>> map = inEdges.get(node);
         if(map == null) {
             return null;

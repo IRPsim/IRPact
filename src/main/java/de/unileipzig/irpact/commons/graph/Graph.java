@@ -3,10 +3,31 @@ package de.unileipzig.irpact.commons.graph;
 import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
 import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
 
+import java.util.Set;
+import java.util.stream.Stream;
+
 /**
  * @author Daniel Abitz
  */
 public interface Graph<N extends Node, E extends Edge<N>> extends GraphBase<N, E> {
+
+    Set<E> getEdges();
+
+    Set<N> getSourceNodes(N targetNode);
+
+    Stream<N> streamSourceNodes(N targetNode);
+
+    Set<N> getTargetNodes(N sourceNode);
+
+    Set<E> getOutEdges(N node);
+
+    Set<E> getInEdges(N node);
+
+    int getDegree(N node);
+
+    int getIndegree(N node);
+
+    int getOutdegree(N node);
 
     boolean hasNode(N node);
 

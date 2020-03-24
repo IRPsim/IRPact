@@ -11,6 +11,10 @@ public interface AffinitiesMapping<S, T> {
 
     Affinities<T> get(S source);
 
+    void put(S from, Affinities<T> affinities);
+
+    void put(S from, T to, double value);
+
     default boolean hasValue(S source, T target) {
         Affinities<T> affinities = get(source);
         if(affinities == null) {

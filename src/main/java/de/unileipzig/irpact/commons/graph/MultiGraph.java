@@ -5,19 +5,25 @@ import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
 import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
 
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
  */
 public interface MultiGraph<N extends Node, E extends Edge<N>, T> extends GraphBase<N, E> {
 
-    Collection<? extends N> getNodes();
+    Set<E> getEdges(T type);
 
-    Collection<? extends E> getEdges(T type);
+    Set<N> getSourceNodes(N targetNode, T type);
 
-    Collection<? extends E> getOutEdges(N node, T type);
+    Stream<N> streamSourceNodes(N targetNode, T type);
 
-    Collection<? extends E> getInEdges(N node, T type);
+    Set<N> getTargetNodes(N sourceNode, T type);
+
+    Set<E> getOutEdges(N node, T type);
+
+    Set<E> getInEdges(N node, T type);
 
     int getDegree(N node, T type);
 

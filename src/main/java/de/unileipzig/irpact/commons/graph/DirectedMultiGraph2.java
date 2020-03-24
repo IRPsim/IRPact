@@ -10,50 +10,61 @@ import java.util.stream.Stream;
 /**
  * @author Daniel Abitz
  */
-public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements MultiGraph<N, E, T> {
+public class DirectedMultiGraph2<N extends Node, E extends Edge<N>, T> implements MultiGraph<N, E, T> {
 
-    protected Supplier<? extends Map<N, Map<T, E>>> subMapSupplier;
-    protected Supplier<? extends Map<T, E>> edgeMapSupplier;
+    protected Supplier<? extends Map<N, Map<N, E>>> subMapSupplier;
+    protected Supplier<? extends Map<N, E>> edgeMapSupplier;
     protected Supplier<? extends Set<N>> nodeSetSupplier;
     protected Supplier<? extends Set<E>> edgeSetSupplier;
-    protected Map<N, Map<N, Map<T, E>>> graphData;
+    protected Set<N> nodeData;
+    protected Map<T, Map<N, Map<N, E>>> edgeData;
 
-    public DirectedMultiGraph(Map<N, Map<N, Map<T, E>>> graphData) {
+    public DirectedMultiGraph2(
+            Set<N> nodeData,
+            Map<T, Map<N, Map<N, E>>> edgeData) {
         this(
                 HashMap::new,
                 HashMap::new,
                 HashSet::new,
                 HashSet::new,
-                graphData
+                nodeData,
+                edgeData
         );
     }
 
-    public DirectedMultiGraph(
-            Supplier<? extends Map<N, Map<T, E>>> subMapSupplier,
-            Supplier<? extends Map<T, E>> edgeMapSupplier,
+    public DirectedMultiGraph2(
+            Supplier<? extends Map<N, Map<N, E>>> subMapSupplier,
+            Supplier<? extends Map<N, E>> edgeMapSupplier,
             Supplier<? extends Set<N>> nodeSetSupplier,
             Supplier<? extends Set<E>> edgeSetSupplier,
-            Map<N, Map<N, Map<T, E>>> graphData) {
+            Set<N> nodeData,
+            Map<T, Map<N, Map<N, E>>> edgeData) {
         this.subMapSupplier = subMapSupplier;
         this.edgeMapSupplier = edgeMapSupplier;
         this.nodeSetSupplier = nodeSetSupplier;
         this.edgeSetSupplier = edgeSetSupplier;
-        this.graphData = graphData;
+        this.nodeData = nodeData;
+        this.edgeData = edgeData;
     }
 
     protected boolean scanNode(N node) {
-        if(graphData.containsKey(node)) return true;
-        for(Map<N, Map<T, E>> map: graphData.values()) {
+        if(nodeData.contains(node)) return true;
+        for(Map<N, Map<N, E>> map: edgeData.values()) {
             if(map.containsKey(node)) {
                 return true;
+            }
+            for(Map<N, E> map1: map.values()) {
+                if(map1.containsKey(node)) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
     protected boolean scanEdge(E edge) {
-        for(Map<N, Map<T, E>> map: graphData.values()) {
-            for(Map<T, E> map1: map.values()) {
+        for(Map<N, Map<N, E>> map: edgeData.values()) {
+            for(Map<N, E> map1: map.values()) {
                 if(map1.containsValue(edge)) {
                     return true;
                 }
@@ -63,12 +74,10 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
     }
 
     protected boolean scanEdge(E edge, T type) {
-        for(Map<N, Map<T, E>> map: graphData.values()) {
-            for(Map<T, E> map1: map.values()) {
-                E e = map1.get(type);
-                if(e != null && e == edge) {
-                    return true;
-                }
+        Map<N, Map<N, E>> map = edgeData.get(type);
+        for(Map<N, E> map1: map.values()) {
+            if(map1.containsValue(edge)) {
+                return true;
             }
         }
         return false;
@@ -76,19 +85,15 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
 
     @Override
     public Set<N> getNodes() {
-        return graphData.keySet();
+        return nodeData;
     }
 
     @Override
     public Set<E> getEdges(T type) {
         Set<E> edges = edgeSetSupplier.get();
-        for(Map<N, Map<T, E>> map: graphData.values()) {
-            for(Map<T, E> map1: map.values()) {
-                E edge = map1.get(type);
-                if(edge != null) {
-                    edges.add(edge);
-                }
-            }
+        Map<N, Map<N, E>> map = edgeData.get(type);
+        for(Map<N, E> map1: map.values()) {
+            edges.addAll(map1.values());
         }
         return edges;
     }
@@ -99,10 +104,10 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
             return null;
         }
         Set<N> nodes = nodeSetSupplier.get();
-        for(Map<N, Map<T, E>> map: graphData.values()) {
-            Map<T, E> map1 = map.get(targetNode);
-            if(map1 != null) {
-                E e = map1.get(type);
+        Map<N, Map<N, E>> map = edgeData.get(type);
+        if(map != null) {
+            for(Map<N, E> map1: map.values()) {
+                E e = map1.get(targetNode);
                 if(e != null) {
                     nodes.add(e.getSource());
                 }
@@ -113,27 +118,29 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
 
     @Override
     public Stream<N> streamSourceNodes(N targetNode, T type) {
-        return graphData.values()
+        Map<N, Map<N, E>> map = edgeData.get(type);
+        if(map == null) {
+            return Stream.empty();
+        }
+        return map.values()
                 .stream()
-                .filter(_map -> _map.get(targetNode) != null)
-                .map(_map -> _map.get(targetNode))
-                .filter(_map -> _map.get(type) != null)
-                .map(_map -> _map.get(type).getSource());
+                .flatMap(_map -> _map.values().stream())
+                .filter(_edge -> _edge.getTarget() == targetNode)
+                .map(Edge::getSource);
     }
 
     @Override
     public Set<N> getTargetNodes(N sourceNode, T type) {
-        Map<N, Map<T, E>> map = graphData.get(sourceNode);
+        Map<N, Map<N, E>> map = edgeData.get(type);
         if(map == null) {
             return null;
         }
-        Set<N> nodes = nodeSetSupplier.get();
-        for(Map<T, E> map1: map.values()) {
-            E e = map1.get(type);
-            if(e != null) {
-                nodes.add(e.getTarget());
-            }
+        Map<N, E> map1 = map.get(sourceNode);
+        if(map1 == null) {
+            return null;
         }
+        Set<N> nodes = nodeSetSupplier.get();
+        nodes.addAll(map1.keySet());
         return nodes;
     }
 
@@ -143,13 +150,14 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
             return null;
         }
         Set<E> edges = edgeSetSupplier.get();
-        for(Map<N, Map<T, E>> map: graphData.values()) {
-            Map<T, E> map1 = map.get(node);
-            if(map1 != null) {
-                E e = map1.get(type);
-                if(e != null) {
-                    edges.add(e);
-                }
+        Map<N, Map<N, E>> map = edgeData.get(type);
+        if(map == null) {
+            return null;
+        }
+        for(Map<N, E> map1: map.values()) {
+            E e = map1.get(node);
+            if(e != null) {
+                edges.add(e);
             }
         }
         return edges;
@@ -157,17 +165,16 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
 
     @Override
     public Set<E> getOutEdges(N node, T type) {
-        Map<N, Map<T, E>> map = graphData.get(node);
+        Map<N, Map<N, E>> map = edgeData.get(type);
         if(map == null) {
             return null;
         }
         Set<E> edges = edgeSetSupplier.get();
-        for(Map<T, E> map1: map.values()) {
-            E e = map1.get(type);
-            if(e != null) {
-                edges.add(e);
-            }
+        Map<N, E> map1 = map.get(node);
+        if(map1 == null) {
+            return null;
         }
+        edges.addAll(map1.values());
         return edges;
     }
 
@@ -188,27 +195,13 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
             return -1;
         }
         int count = 0;
-        for(Map<N, Map<T, E>> map: graphData.values()) {
-            Map<T, E> map1 = map.get(node);
-            if(map1 != null) {
-                E e = map1.get(type);
-                if(e != null) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
-    @Override
-    public int getOutdegree(N node, T type) {
-        Map<N, Map<T, E>> map = graphData.get(node);
+        Map<N, Map<N, E>> map = edgeData.get(type);
         if(map == null) {
             return -1;
         }
-        int count = 0;
-        for(Map<T, E> map1: map.values()) {
-            if(map1.containsKey(type)) {
+        for(Map<N, E> map1: map.values()) {
+            E e = map1.get(node);
+            if(e != null) {
                 count++;
             }
         }
@@ -216,16 +209,21 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
     }
 
     @Override
+    public int getOutdegree(N node, T type) {
+        Map<N, Map<N, E>> map = edgeData.get(type);
+        if(map == null) {
+            return -1;
+        }
+        Map<N, E> map1 = map.get(node);
+        if(map1 == null) {
+            return -1;
+        }
+        return map1.size();
+    }
+
+    @Override
     public boolean hasNode(N node) {
-        if(graphData.containsKey(node)) {
-            return true;
-        }
-        for(Map<N, Map<T, E>> subData: graphData.values()) {
-            if(subData.containsKey(node)) {
-                return true;
-            }
-        }
-        return false;
+        return nodeData.contains(node);
     }
 
     @Override
@@ -235,35 +233,35 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
 
     @Override
     public boolean hasEdge(N source, N target, T type) {
-        Map<N, Map<T, E>> subData = graphData.get(source);
+        Map<N, Map<N, E>> subData = edgeData.get(type);
         if(subData == null) {
             return false;
         }
-        Map<T, E> edgeData = subData.get(target);
+        Map<N, E> edgeData = subData.get(source);
         if(edgeData == null) {
             return false;
         }
-        return edgeData.containsKey(type);
+        return edgeData.containsKey(target);
     }
 
     @Override
     public E getEdge(N source, N target, T type) {
-        Map<N, Map<T, E>> subData = graphData.get(source);
+        Map<N, Map<N, E>> subData = edgeData.get(type);
         if(subData == null) {
             return null;
         }
-        Map<T, E> edgeData = subData.get(target);
+        Map<N, E> edgeData = subData.get(source);
         if(edgeData == null) {
             return null;
         }
-        return edgeData.get(type);
+        return edgeData.get(target);
     }
 
     protected boolean addIfNotExists(N node) {
         if(hasNode(node)) {
             return false;
         }
-        graphData.put(node, subMapSupplier.get());
+        nodeData.add(node);
         return true;
     }
 
@@ -280,19 +278,22 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
         N target = edge.getTarget();
         addIfNotExists(source);
         addIfNotExists(target);
-        Map<N, Map<T, E>> subData = graphData.get(source);
-        Map<T, E> edgeData = subData.computeIfAbsent(target, _target -> edgeMapSupplier.get());
+        Map<N, Map<N, E>> subData = edgeData.computeIfAbsent(type, _type -> subMapSupplier.get());
+        Map<N, E> edgeData = subData.computeIfAbsent(source, _source -> edgeMapSupplier.get());
         //if(edgeData.containsKey(type) || edgeData.containsValue(edge)) {
-        if(edgeData.containsKey(type)) { //siehe to_do im interface
+        if(edgeData.containsKey(target)) { //siehe to_do im interface
             throw new EdgeAlreadyExistsException();
         }
-        edgeData.put(type, edge);
+        edgeData.put(target, edge);
     }
 
     @Override
     public boolean removeNode(N node) {
-        if(graphData.remove(node) != null) {
-            for(Map<N, Map<T, E>> subData: graphData.values()) {
+        if(nodeData.remove(node)) {
+            for(Map<N, Map<N, E>> subData: edgeData.values()) {
+                for(Map<N, E> edgeData: subData.values()) {
+                    edgeData.remove(node);
+                }
                 subData.remove(node);
             }
             return true;
@@ -303,15 +304,15 @@ public class DirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements
 
     @Override
     public boolean removeEdge(N source, N target, T type) {
-        Map<N, Map<T, E>> subData = graphData.get(source);
+        Map<N, Map<N, E>> subData = edgeData.get(type);
         if(subData == null) {
             return false;
         }
-        Map<T, E> edgeData = subData.get(target);
+        Map<N, E> edgeData = subData.get(source);
         if(edgeData == null) {
             return false;
         }
-        return edgeData.remove(type) != null; //empty edgeData bleibt erstmal erhalten
+        return edgeData.remove(target) != null; //empty edgeData bleibt erstmal erhalten
     }
 
     @Override

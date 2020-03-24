@@ -2,16 +2,13 @@ package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
 import de.unileipzig.irpact.commons.graph.MultiGraph;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.agent.Agent;
+import de.unileipzig.irpact.core.agent.SpatialAgent;
 import de.unileipzig.irpact.core.network.exception.NodeWithSameAgentException;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
@@ -20,35 +17,32 @@ import java.util.stream.Stream;
 public class BasicSocialGraph implements SocialGraph {
 
     private MultiGraph<BasicNode, BasicEdge, EdgeType> graph;
-    private Map<ConsumerAgent, BasicNode> agentNodeMapping;
+    private Map<Agent, BasicNode> agentNodeMapping;
 
     public BasicSocialGraph(
             MultiGraph<BasicNode, BasicEdge, EdgeType> graph,
-            Map<ConsumerAgent, BasicNode> agentNodeMapping) {
+            Map<Agent, BasicNode> agentNodeMapping) {
         this.graph = graph;
         this.agentNodeMapping = agentNodeMapping;
     }
 
-    protected BasicNode addIfNotExists(ConsumerAgent agent) {
-        BasicNode node = agentNodeMapping.get(agent);
-        if(node != null) {
-            return node;
-        }
-        return addAgent(agent);
-    }
-
     @Override
-    public boolean hasAgent(ConsumerAgent agent) {
+    public boolean hasAgent(Agent agent) {
         return agentNodeMapping.containsKey(agent);
     }
 
     @Override
-    public BasicNode getNode(ConsumerAgent agent) {
+    public boolean hasNode(Node node) {
+        return graph.hasNode((BasicNode) node);
+    }
+
+    @Override
+    public BasicNode getNode(Agent agent) {
         return agentNodeMapping.get(agent);
     }
 
     @Override
-    public BasicNode findNode(ConsumerAgent agent) throws NoSuchElementException {
+    public BasicNode findNode(Agent agent) throws NoSuchElementException {
         BasicNode node = getNode(agent);
         if(node == null) {
             throw new NoSuchElementException();
@@ -57,7 +51,7 @@ public class BasicSocialGraph implements SocialGraph {
     }
 
     @Override
-    public BasicNode addAgent(ConsumerAgent agent) throws NodeWithSameAgentException {
+    public BasicNode addAgent(Agent agent) throws NodeWithSameAgentException {
         if(hasAgent(agent)) {
             throw new NodeWithSameAgentException();
         }
@@ -65,13 +59,6 @@ public class BasicSocialGraph implements SocialGraph {
         agentNodeMapping.put(agent, node);
         graph.addNode(node);
         return node;
-    }
-
-    @Override
-    public BasicEdge addEdge(ConsumerAgent source, ConsumerAgent target, EdgeType type) {
-        BasicNode sourceNode = addIfNotExists(source);
-        BasicNode targetNode = addIfNotExists(target);
-        return addEdge(sourceNode, targetNode, type);
     }
 
     @Override
@@ -87,25 +74,8 @@ public class BasicSocialGraph implements SocialGraph {
     }
 
     @Override
-    public BasicEdge getEdge(ConsumerAgent source, ConsumerAgent target, EdgeType type) {
-        BasicNode sourceNode = getNode(source);
-        if(sourceNode == null) {
-            return null;
-        }
-        BasicNode targetNode = getNode(target);
-        if(targetNode == null) {
-            return null;
-        }
-        return getEdge(sourceNode, targetNode, type);
-    }
-
-    @Override
-    public BasicEdge findEdge(ConsumerAgent source, ConsumerAgent target, EdgeType type) throws NoSuchElementException {
-        BasicEdge edge = getEdge(source, target, type);
-        if(edge == null) {
-            throw new NoSuchElementException();
-        }
-        return edge;
+    public boolean removeEdge(Edge edge, EdgeType type) {
+        return graph.removeEdge((BasicEdge) edge, type);
     }
 
     @Override
@@ -126,14 +96,58 @@ public class BasicSocialGraph implements SocialGraph {
         return edge;
     }
 
-    private static Comparator<SocialGraph.Node> distanceTo(SocialGraph.Node node) {
-        final SpatialInformation info = node.getAgent().getSpatialInformation();
+    @Override
+    public Set<? extends Node> getNodes() {
+        return graph.getNodes();
+    }
+
+    @Override
+    public Stream<? extends Node> streamNodes() {
+        return graph.getNodes().stream();
+    }
+
+    @Override
+    public Set<? extends Node> getSourceNodes(Node targetNode, EdgeType type) {
+        return graph.getSourceNodes((BasicNode) targetNode, type);
+    }
+
+    @Override
+    public Stream<? extends Node> streamSourceNodes(Node targetNode, EdgeType type) {
+        return graph.streamSourceNodes((BasicNode) targetNode, type);
+    }
+
+    @Override
+    public Set<? extends Node> getTargetNodes(Node sourceNode, EdgeType type) {
+        return graph.getTargetNodes((BasicNode) sourceNode, type);
+    }
+
+    @Override
+    public Set<? extends Edge> getEdges(EdgeType type) {
+        return graph.getEdges(type);
+    }
+
+    @Override
+    public Set<? extends Edge> getOutEdges(Node node, EdgeType type) {
+        return graph.getOutEdges((BasicNode) node, type);
+    }
+
+    @Override
+    public Set<? extends Edge> getInEdges(Node node, EdgeType type) {
+        return graph.getInEdges((BasicNode) node, type);
+    }
+
+    //=========================
+    //Util
+    //=========================
+
+    private static Comparator<SocialGraph.Node> distanceTo(Node node) {
+        final SpatialInformation info = node.getAgent(SpatialAgent.class).getSpatialInformation();
         return (node1, node2) ->  {
             SpatialModel model = node1.getAgent()
                     .getEnvironment()
                     .getSpatialModel();
-            SpatialInformation info1 = node1.getAgent().getSpatialInformation();
-            SpatialInformation info2 = node2.getAgent().getSpatialInformation();
+            SpatialInformation info1 = node1.getAgent(SpatialAgent.class).getSpatialInformation();
+            SpatialInformation info2 = node2.getAgent(SpatialAgent.class).getSpatialInformation();
             double distance1 = model.distance(info, info1);
             double distance2 = model.distance(info, info2);
             return Double.compare(distance1, distance2);
@@ -141,27 +155,35 @@ public class BasicSocialGraph implements SocialGraph {
     }
 
     @Override
-    public Stream<? extends SocialGraph.Node> streamKNearest(SocialGraph.Node node, int k) {
+    public Stream<? extends SocialGraph.Node> streamKNearest(Node node, int k) {
         return graph.getNodes()
                 .stream()
-                .filter(_node -> _node != node)
+                .filter(_node -> _node != node && _node.isAgent(SpatialAgent.class))
                 .sorted(distanceTo(node))
                 .limit(k);
     }
 
     @Override
-    public List<SocialGraph.Node> getKNearest(SocialGraph.Node node, int k) {
-        return streamKNearest(node, k).collect(Collectors.toList());
+    public Stream<? extends Node> streamKNearestNeighbours(Node node, int k, EdgeType type) {
+        return graph.getTargetNodes((BasicNode) node, type)
+                .stream()
+                .filter(_node -> _node != node && _node.isAgent(SpatialAgent.class))
+                .sorted(distanceTo(node))
+                .limit(k);
     }
+
+    //=========================
+    //Nodes + Edges
+    //=========================
 
     /**
      * @author Daniel Abitz
      */
     public static class BasicNode implements SocialGraph.Node, de.unileipzig.irpact.commons.graph.Node {
 
-        private ConsumerAgent agent;
+        private Agent agent;
 
-        public BasicNode(ConsumerAgent agent) {
+        public BasicNode(Agent agent) {
             this.agent = agent;
         }
 
@@ -171,8 +193,13 @@ public class BasicSocialGraph implements SocialGraph {
         }
 
         @Override
-        public ConsumerAgent getAgent() {
+        public Agent getAgent() {
             return agent;
+        }
+
+        @Override
+        public String toString() {
+            return getLabel();
         }
     }
 
@@ -214,6 +241,11 @@ public class BasicSocialGraph implements SocialGraph {
         @Override
         public void setWeight(double weight) {
             this.weight = weight;
+        }
+
+        @Override
+        public String toString() {
+            return "(" + getLabel() + ", " + getWeight() + ")";
         }
     }
 }

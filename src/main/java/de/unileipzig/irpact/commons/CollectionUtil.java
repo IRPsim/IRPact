@@ -46,4 +46,29 @@ public final class CollectionUtil {
         Collections.addAll(set, values);
         return set;
     }
+
+    public static <T> T getRandom(List<T> list, Random rnd) {
+        return getRandom(list, 0, list.size(), rnd);
+    }
+
+    public static <T> T getRandom(List<T> list, int from, int to, Random rnd) {
+        int index = rnd.nextInt(to - from) + from;
+        return list.get(index);
+    }
+
+    public static <T> T getRandom(Collection<T> list, Random rnd) {
+        return getRandom(list, 0, list.size(), rnd);
+    }
+
+    public static <T> T getRandom(Collection<T> list, int from, int to, Random rnd) {
+        int index = rnd.nextInt(to - from) + from;
+        int i = 0;
+        for(T item: list) {
+            if(i == index) {
+                return item;
+            }
+            i++;
+        }
+        throw new IndexOutOfBoundsException();
+    }
 }

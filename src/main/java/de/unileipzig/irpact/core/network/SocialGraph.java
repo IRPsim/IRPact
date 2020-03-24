@@ -1,11 +1,13 @@
 package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.network.exception.NodeWithSameAgentException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -13,37 +15,63 @@ import java.util.stream.Stream;
  */
 public interface SocialGraph {
 
-    boolean hasAgent(ConsumerAgent agent);
+    boolean hasAgent(Agent agent);
 
-    Node addAgent(ConsumerAgent agent) throws NodeWithSameAgentException;
+    Node addAgent(Agent agent) throws NodeWithSameAgentException;
 
-    Node getNode(ConsumerAgent agent);
+    Node getNode(Agent agent);
 
-    Node findNode(ConsumerAgent agent) throws NoSuchElementException;
+    Node findNode(Agent agent) throws NoSuchElementException;
 
-    Edge addEdge(ConsumerAgent source, ConsumerAgent target, EdgeType type);
+    Set<? extends Node> getNodes();
+
+    Stream<? extends Node> streamNodes();
+
+    Set<? extends Node> getSourceNodes(Node targetNode, EdgeType type);
+
+    Stream<? extends Node> streamSourceNodes(Node targetNode, EdgeType type);
+
+    Set<? extends Node> getTargetNodes(Node sourceNode, EdgeType type);
+
+    Set<? extends Edge> getEdges(EdgeType type);
+
+    Set<? extends Edge> getOutEdges(Node node, EdgeType type);
+
+    Set<? extends Edge> getInEdges(Node node, EdgeType type);
+
+    boolean hasNode(Node node);
 
     Edge addEdge(Node source, Node target, EdgeType type) throws EdgeAlreadyExistsException;
 
-    Edge getEdge(ConsumerAgent source, ConsumerAgent target, EdgeType type);
-
-    Edge findEdge(ConsumerAgent source, ConsumerAgent target, EdgeType type) throws NoSuchElementException;
+    boolean removeEdge(Edge edge, EdgeType type);
 
     Edge getEdge(Node source, Node target, EdgeType type);
 
     Edge findEdge(Node source, Node target, EdgeType type) throws NoSuchElementException;
 
-    default boolean hasEdge(ConsumerAgent source, ConsumerAgent target, EdgeType type) {
-        return getEdge(source, target, type) != null;
-    }
-
     default boolean hasEdge(Node source, Node target, EdgeType type) {
         return getEdge(source, target, type) != null;
     }
 
-    Stream<? extends Node> streamKNearest(SocialGraph.Node node, int k);
+    //=========================
+    //Util
+    //=========================
 
-    List<Node> getKNearest(SocialGraph.Node node, int k);
+    Stream<? extends Node> streamKNearest(Node node, int k);
+
+    default List<Node> getKNearest(Node node, int k) {
+        return streamKNearest(node, k).collect(Collectors.toList());
+    }
+
+    Stream<? extends Node> streamKNearestNeighbours(Node node, int k, EdgeType type);
+
+    default List<Node> getKNearestNeighbours(Node node, int k, EdgeType type) {
+        return streamKNearestNeighbours(node, k, type).collect(Collectors.toList());
+    }
+
+    //=========================
+    //Nodes + Edges
+    //=========================
 
     /**
      * @author Daniel Abitz
@@ -52,7 +80,15 @@ public interface SocialGraph {
 
         String getLabel();
 
-        ConsumerAgent getAgent();
+        Agent getAgent();
+
+        default <T extends Agent> T getAgent(Class<T> type) {
+            return type.cast(getAgent());
+        }
+
+        default <T extends Agent> boolean isAgent(Class<T> type) {
+            return type.isInstance(getAgent());
+        }
     }
 
     /**

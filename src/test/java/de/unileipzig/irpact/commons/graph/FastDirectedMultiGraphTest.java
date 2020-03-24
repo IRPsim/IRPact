@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -282,5 +283,79 @@ class FastDirectedMultiGraphTest {
 
         assertTrue(fdmg.removeEdge(ab, "x"));
         assertNull(fdmg.getEdge(a, b, "x"));
+    }
+
+    @Test
+    void testGetSourceNodes() {
+        FastDirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> fdmg = newGraph();
+        SimpleNode s0 = new SimpleNode("s0");
+        SimpleNode s1 = new SimpleNode("s1");
+        SimpleNode t0 = new SimpleNode("t0");
+        SimpleNode t1 = new SimpleNode("t1");
+        SimpleEdge<SimpleNode> s0_t0 = new SimpleEdge<>(s0, t0, "s0t0");
+        SimpleEdge<SimpleNode> s1_t0 = new SimpleEdge<>(s1, t0, "s1t0");
+        SimpleEdge<SimpleNode> s1_t1 = new SimpleEdge<>(s1, t1, "s1t1");
+        SimpleEdge<SimpleNode> t1_s1 = new SimpleEdge<>(t1, s1, "t1s1");
+        SimpleEdge<SimpleNode> t1_t0 = new SimpleEdge<>(t1, t0, "t1t0");
+        fdmg.addEdge(s0_t0, "x");
+        fdmg.addEdge(s1_t0, "x");
+        fdmg.addEdge(s1_t1, "x");
+        fdmg.addEdge(t1_s1, "x");
+        fdmg.addEdge(t1_t0, "y");
+
+        assertEquals(
+                CollectionUtil.hashSetOf(s0, s1),
+                fdmg.getSourceNodes(t0, "x")
+        );
+    }
+
+    @Test
+    void testStreamSourceNodes() {
+        FastDirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> fdmg = newGraph();
+        SimpleNode s0 = new SimpleNode("s0");
+        SimpleNode s1 = new SimpleNode("s1");
+        SimpleNode t0 = new SimpleNode("t0");
+        SimpleNode t1 = new SimpleNode("t1");
+        SimpleEdge<SimpleNode> s0_t0 = new SimpleEdge<>(s0, t0, "s0t0");
+        SimpleEdge<SimpleNode> s1_t0 = new SimpleEdge<>(s1, t0, "s1t0");
+        SimpleEdge<SimpleNode> s1_t1 = new SimpleEdge<>(s1, t1, "s1t1");
+        SimpleEdge<SimpleNode> t1_s1 = new SimpleEdge<>(t1, s1, "t1s1");
+        SimpleEdge<SimpleNode> t1_t0 = new SimpleEdge<>(t1, t0, "t1t0");
+        fdmg.addEdge(s0_t0, "x");
+        fdmg.addEdge(s1_t0, "x");
+        fdmg.addEdge(s1_t1, "x");
+        fdmg.addEdge(t1_s1, "x");
+        fdmg.addEdge(t1_t0, "y");
+
+        assertEquals(
+                CollectionUtil.hashSetOf(s0, s1),
+                fdmg.streamSourceNodes(t0, "x").collect(Collectors.toSet())
+        );
+    }
+
+    @Test
+    void testGetTargetNodes() {
+        FastDirectedMultiGraph<SimpleNode, SimpleEdge<SimpleNode>, String> fdmg = newGraph();
+        SimpleNode s0 = new SimpleNode("s0");
+        SimpleNode s1 = new SimpleNode("s1");
+        SimpleNode t0 = new SimpleNode("t0");
+        SimpleNode t1 = new SimpleNode("t1");
+        SimpleEdge<SimpleNode> s0_t0 = new SimpleEdge<>(s0, t0, "s0t0");
+        SimpleEdge<SimpleNode> s1_t0 = new SimpleEdge<>(s1, t0, "s1t0");
+        SimpleEdge<SimpleNode> s1_t1 = new SimpleEdge<>(s1, t1, "s1t1");
+        SimpleEdge<SimpleNode> t1_s1 = new SimpleEdge<>(t1, s1, "t1s1");
+        SimpleEdge<SimpleNode> t1_t0 = new SimpleEdge<>(t1, t0, "t1t0");
+        SimpleEdge<SimpleNode> s1_s0 = new SimpleEdge<>(s1, s0, "s1s0");
+        fdmg.addEdge(s0_t0, "x");
+        fdmg.addEdge(s1_t0, "x");
+        fdmg.addEdge(s1_t1, "x");
+        fdmg.addEdge(t1_s1, "x");
+        fdmg.addEdge(t1_t0, "y");
+        fdmg.addEdge(s1_s0, "y");
+
+        assertEquals(
+                CollectionUtil.hashSetOf(t0, t1),
+                fdmg.getTargetNodes(s1, "x")
+        );
     }
 }

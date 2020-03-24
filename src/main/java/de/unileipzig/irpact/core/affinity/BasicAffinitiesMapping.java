@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.core.affinity;
 
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+
 import java.util.Map;
 
 /**
@@ -21,5 +23,16 @@ public class BasicAffinitiesMapping<S, T> implements AffinitiesMapping<S, T> {
     @Override
     public Affinities<T> get(S source) {
         return affinitiesMap.get(source);
+    }
+
+    @Override
+    public void put(S from, Affinities<T> affinities) {
+        affinitiesMap.put(from, affinities);
+    }
+
+    @Override
+    public void put(S from, T to, double value) {
+        Affinities<T> affinities = affinitiesMap.get(from);
+        affinities.setValue(to, value);
     }
 }
