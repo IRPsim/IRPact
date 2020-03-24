@@ -41,4 +41,26 @@ class ConsumerAgentGroup {
     ///hidden:
     ///processing:
     ValuePreference[] valuePreferences;
+
+
+    ///description: Schema für die Suche und das Finden von Produkten
+    ///type: ValuePreference
+    ///identifier:
+    ///unit:
+    ///domain: [SchemaWithoutParameter|SchemaWith2Parameters]
+    ///validation:
+    ///hidden:
+    ///processing:
+    Schema productFindingScheme;
+
+
+    ///description: Schema, welches die Entscheidungen beim Adoptionsprozess beschreibt
+    ///type: ValuePreference
+    ///identifier:
+    ///unit:
+    ///domain: [SchemaWithoutParameter|SchemaWith2Parameters]
+    ///validation:
+    ///hidden:
+    ///processing:
+    Schema productAdoptionDecisionScheme;
 }
