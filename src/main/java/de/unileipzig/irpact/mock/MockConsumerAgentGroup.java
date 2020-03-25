@@ -18,7 +18,13 @@ import java.util.Set;
  */
 public class MockConsumerAgentGroup implements ConsumerAgentGroup {
 
+    private String name;
+
     public MockConsumerAgentGroup() {
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -78,11 +84,21 @@ public class MockConsumerAgentGroup implements ConsumerAgentGroup {
 
     @Override
     public String getName() {
-        throw new UnsupportedOperationException();
+        if(name == null) {
+            throw new UnsupportedOperationException();
+        }
+        return name;
     }
 
     @Override
     public boolean is(EntityType type) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String toString() {
+        return name == null
+                ? super.toString()
+                : name;
     }
 }

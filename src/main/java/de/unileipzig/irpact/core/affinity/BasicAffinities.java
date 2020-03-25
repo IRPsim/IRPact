@@ -58,7 +58,7 @@ public class BasicAffinities<T> implements Affinities<T> {
         for(Map.Entry<T, Double> entry: values.entrySet()) {
             temp += entry.getValue();
             draw = entry.getKey();
-            if(temp < rndDraw) {
+            if(rndDraw < temp) {
                 return draw;
             }
         }
