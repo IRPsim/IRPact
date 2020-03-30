@@ -1,0 +1,48 @@
+{
+  "Deeper1" : [
+    {
+      "$name" : "XXXXXX",
+      "xxx" : 456
+    }
+  ],
+  "ConsumerAgentGroup" : [
+    {
+      "$name" : "group0",
+      "informationAuthority" : 1.0,
+      "ConsumerAgentGroupAttribute" : [
+        {
+          "$name" : "attr1",
+          "value0" : 1.0,
+          "value1" : 2.0,
+          "Deeper0" : [
+            {
+              "$name" : "deeper0_0",
+              "Deeper1" : [
+                {
+                  "$name" : "deeper0_1",
+                  "value0" : 123
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$name" : "attr2",
+          "value0" : 3.0,
+          "value1" : 4.0
+        }
+      ]
+    },
+    {
+      "$name" : "group1",
+      "informationAuthority" : 1.0,
+      "ConsumerAgentGroupAttribute" : [
+        {
+          "$name" : "attr3",
+          "value0" : 5.0,
+          "value1" : 6.0
+        }
+      ]
+    }
+  ]
+}

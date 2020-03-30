@@ -1,0 +1,58 @@
+{
+  "sets" : {
+    "set_Deeper1" : {
+      "XXXXXX" : {
+        "par_Deeper1_xxx" : 456
+      },
+      "deeper0_1" : {
+        "par_Deeper1_value0" : 123
+      }
+    },
+    "set_ConsumerAgentGroup" : {
+      "group0" : {
+        "par_ConsumerAgentGroup_informationAuthority" : 1.0
+      },
+      "group1" : {
+        "par_ConsumerAgentGroup_informationAuthority" : 1.0
+      }
+    },
+    "set_ConsumerAgentGroupAttribute" : {
+      "attr1" : {
+        "par_ConsumerAgentGroupAttribute_value0" : 1.0,
+        "par_ConsumerAgentGroupAttribute_value1" : 2.0
+      },
+      "attr2" : {
+        "par_ConsumerAgentGroupAttribute_value0" : 3.0,
+        "par_ConsumerAgentGroupAttribute_value1" : 4.0
+      },
+      "attr3" : {
+        "par_ConsumerAgentGroupAttribute_value0" : 5.0,
+        "par_ConsumerAgentGroupAttribute_value1" : 6.0
+      }
+    },
+    "set_Deeper0" : {
+      "deeper0_0" : { }
+    }
+  },
+  "tables" : {
+    "par_ConsumerAgentGroup_ConsumerAgentGroupAttribute_Deeper0_Deeper1" : {
+      "deeper0_0" : {
+        "deeper0_1" : 1.0
+      }
+    },
+    "par_ConsumerAgentGroup_ConsumerAgentGroupAttribute_Deeper0" : {
+      "attr1" : {
+        "deeper0_0" : 1.0
+      }
+    },
+    "par_ConsumerAgentGroup_ConsumerAgentGroupAttribute" : {
+      "group0" : {
+        "attr1" : 1.0,
+        "attr2" : 1.0
+      },
+      "group1" : {
+        "attr3" : 1.0
+      }
+    }
+  }
+}

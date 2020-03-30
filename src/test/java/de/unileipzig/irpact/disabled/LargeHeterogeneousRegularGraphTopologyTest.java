@@ -11,6 +11,7 @@ import de.unileipzig.irpact.core.network.topology.HeterogeneousRegularGraphTopol
 import de.unileipzig.irpact.core.network.topology.HeterogeneousSmallWorldTopology;
 import de.unileipzig.irpact.mock.MockConsumerAgent;
 import de.unileipzig.irpact.mock.MockConsumerAgentGroup;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import java.util.Random;
 /**
  * @author Daniel Abitz
  */
+@Disabled
 class LargeHeterogeneousRegularGraphTopologyTest {
 
     @Test
