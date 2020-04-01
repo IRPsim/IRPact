@@ -58,3 +58,46 @@ dependencies {
     implementation "ch.qos.logback:logback-classic:$logbackVersion"
     implementation "ch.qos.logback:logback-core:$logbackVersion"
 }
+
+//==================================================
+//jar
+//==================================================
+
+// Invalid signature file digest for Manifest main attributes -> fatjar geht (erstmal?) nicht (Problem bleibt mit shadow bestehen)
+/*
+task buildDemoFatJar(type: Jar) {
+    manifest {
+        attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
+    }
+    archivesBaseName = 'Demo'
+    from {
+        configurations.runtimeClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    } with jar
+}
+*/
+
+task buildDemoJarWithClasspath(type: Jar) {
+    from sourceSets.main.output
+    manifest {
+        attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
+        attributes 'Class-Path': configurations.runtimeClasspath.files.collect { "dependencies/$it.name" }.join(' ')
+    }
+    archivesBaseName = 'Demo'
+}
+
+/*
+task buildDemoJarWithoutClasspath(type: Jar) {
+    from sourceSets.main.output
+    manifest {
+        attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
+    }
+    archivesBaseName = 'Demo2'
+}
+*/
+
+task copyDependencies(type: Copy) {
+    into "$buildDir/dependencies"
+    from configurations.runtimeClasspath
+}
