@@ -1,6 +1,6 @@
 #Demo
 
-Die Demo ist im demo-Verzeichnis zu finden. Sie kann auf zwei Arten gestartet werden.
+Die Demo ist im demo-Verzeichnis zu finden. Sie kann auf drei Arten gestartet werden.
 
 Testdateien für Eingaben sind in "src/main/resources/irpact/examples/input" zu finden (input.json und input2.json).
 Entsprechende Ausgaben, zum Vergleichen, befinden sich in "src/main/resources/irpact/examples/output".
@@ -48,3 +48,8 @@ java -jar Demo-1.0-SNAPSHOT.jar -i src/main/resources/irpact/examples/output/inp
 ###Hilfe
 
 java -jar Demo-1.0-SNAPSHOT.jar -?
+
+##Variante 3 (uberjar, fatjar)
+
+Neben der normalen jar mit externen dependencies, kann auch die Fatjar- (Ueberjar-) Variante verwendet werden.
+Befehlssyntax is äquivalent zu Variante 2.

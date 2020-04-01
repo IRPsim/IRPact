@@ -64,19 +64,19 @@ dependencies {
 //==================================================
 
 // Invalid signature file digest for Manifest main attributes -> fatjar geht (erstmal?) nicht (Problem bleibt mit shadow bestehen)
-/*
+// einfach die key files entfernen...
 task buildDemoFatJar(type: Jar) {
     manifest {
         attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
     }
-    archivesBaseName = 'Demo'
+    archivesBaseName = 'FatDemo'
     from {
         configurations.runtimeClasspath.collect {
             it.isDirectory() ? it : zipTree(it)
         }
     } with jar
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
 }
-*/
 
 task buildDemoJarWithClasspath(type: Jar) {
     from sourceSets.main.output
