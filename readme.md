@@ -11,17 +11,17 @@ Zum Starten kann folgender Befehl genutzt werden:
 
 Windows:
 
-java -cp Demo-1.0-SNAPSHOT.jar;dependencies/\* de.unileipzig.irpact.start.Start -i \<Pfad zum Inputfile\> -o \<Pfad zum Outputfile\>
+java -cp IRPact-demo-1.0-SNAPSHOT.jar;dependencies/\* de.unileipzig.irpact.start.Start -i \<Pfad zum Inputfile\> -o \<Pfad zum Outputfile\>
 
 Nicht-Windows:
 
-java -cp Demo-1.0-SNAPSHOT.jar:dependencies/\* de.unileipzig.irpact.start.Start -i \<Pfad zum Inputfile\> -o \<Pfad zum Outputfile\>
+java -cp IRPact-demo-1.0-SNAPSHOT.jar:dependencies/\* de.unileipzig.irpact.start.Start -i \<Pfad zum Inputfile\> -o \<Pfad zum Outputfile\>
 
 ###Beispiel
 
 Mittels
 
-java -cp Demo-1.0-SNAPSHOT.jar:dependencies/\* de.unileipzig.irpact.start.Start -i src/main/resources/irpact/examples/output/input.json -o testoutput.json
+java -cp IRPact-demo-1.0-SNAPSHOT.jar:dependencies/\* de.unileipzig.irpact.start.Start -i src/main/resources/irpact/examples/output/input.json -o testoutput.json
 
 wird die Demo gestartet und das Ergebnis in die testoutput.json geschrieben. (Absoluten Pfad bei der Eingabedatei beachten.)
 
@@ -29,7 +29,7 @@ wird die Demo gestartet und das Ergebnis in die testoutput.json geschrieben. (Ab
 
 Der Befehl
 
-java -cp Demo-1.0-SNAPSHOT.jar:dependencies/\* de.unileipzig.irpact.start.Start -?
+java -cp IRPact-demo-1.0-SNAPSHOT.jar:dependencies/\* de.unileipzig.irpact.start.Start -?
 
 gibt eine Liste möglicher Parameter aus. 
 
@@ -37,19 +37,19 @@ gibt eine Liste möglicher Parameter aus.
 
 ###Programmstart
 
-java -jar Demo-1.0-SNAPSHOT.jar -i \<Pfad zum Inputfile\> -o \<Pfad zum Outputfile\>
+java -jar IRPact-demo-1.0-SNAPSHOT.jar -i \<Pfad zum Inputfile\> -o \<Pfad zum Outputfile\>
 
 ###Beispiel
 
-java -jar Demo-1.0-SNAPSHOT.jar -i src/main/resources/irpact/examples/output/input.json -o testoutput.json
+java -jar IRPact-demo-1.0-SNAPSHOT.jar -i src/main/resources/irpact/examples/output/input.json -o testoutput.json
 
 (Absoluten Pfad bei der Eingabedatei beachten.)
 
 ###Hilfe
 
-java -jar Demo-1.0-SNAPSHOT.jar -?
+java -jar IRPact-demo-1.0-SNAPSHOT.jar -?
 
 ##Variante 3 (uberjar, fatjar)
 
-Neben der normalen jar mit externen dependencies, kann auch die Fatjar- (Ueberjar-) Variante verwendet werden.
-Befehlssyntax is äquivalent zu Variante 2.
+Neben der normalen jar mit externen dependencies, kann auch die Fatjar- (Uberjar-) Variante verwendet werden.
+Befehlssyntax is äquivalent zu Variante 2, es muss nur **IRPact-demo-1.0-SNAPSHOT-fat.jar** genutzt werden.

@@ -66,10 +66,11 @@ dependencies {
 // Invalid signature file digest for Manifest main attributes -> fatjar geht (erstmal?) nicht (Problem bleibt mit shadow bestehen)
 // einfach die key files entfernen...
 task buildDemoFatJar(type: Jar) {
+    archiveAppendix.set('demo')
+    archiveClassifier.set('fat')
     manifest {
         attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
     }
-    archivesBaseName = 'FatDemo'
     from {
         configurations.runtimeClasspath.collect {
             it.isDirectory() ? it : zipTree(it)
@@ -79,12 +80,12 @@ task buildDemoFatJar(type: Jar) {
 }
 
 task buildDemoJarWithClasspath(type: Jar) {
+    archiveAppendix.set('demo')
     from sourceSets.main.output
     manifest {
         attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
         attributes 'Class-Path': configurations.runtimeClasspath.files.collect { "dependencies/$it.name" }.join(' ')
     }
-    archivesBaseName = 'Demo'
 }
 
 /*
@@ -100,4 +101,9 @@ task buildDemoJarWithoutClasspath(type: Jar) {
 task copyDependencies(type: Copy) {
     into "$buildDir/dependencies"
     from configurations.runtimeClasspath
+}
+
+artifacts {
+    archives buildDemoFatJar
+    archives buildDemoJarWithClasspath
 }
