@@ -9,7 +9,7 @@ import de.unileipzig.irpact.core.need.BasicNeed;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.product.*;
 import de.unileipzig.irpact.core.product.perception.BasicProductAttributePerceptionSchemeManager;
-import de.unileipzig.irpact.core.spatial.Metric;
+import de.unileipzig.irpact.core.spatial.dim2.CartesianMetric;
 import de.unileipzig.irpact.core.spatial.dim2.Point2D;
 import de.unileipzig.irpact.core.spatial.dim2.SquareModel;
 import de.unileipzig.irpact.core.spatial.dim2.SquareModelDistribution;
@@ -49,7 +49,7 @@ public class StartPlatform {
                 1.0,
                 new SquareModelDistribution(
                         "TestSquareModelDistribution",
-                        new SquareModel("TestSquareModel", Metric.EUCLIDEAN, 0, 0, 1, 1),
+                        new SquareModel("TestSquareModel", CartesianMetric.EUCLIDEAN, 0, 0, 1, 1),
                         42),
                 (environment, agent, need) -> {
                     logger.debug("[ProductFindingScheme] Agent '{}' Need '{}'",

@@ -3,7 +3,7 @@ package de.unileipzig.irpact.core.network;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.core.agent.SpatialAgent;
 import de.unileipzig.irpact.core.network.exception.NodeWithSameAgentException;
-import de.unileipzig.irpact.core.spatial.Metric;
+import de.unileipzig.irpact.core.spatial.dim2.CartesianMetric;
 import de.unileipzig.irpact.core.spatial.dim2.Point2D;
 import de.unileipzig.irpact.core.spatial.dim2.SquareModel;
 import de.unileipzig.irpact.mock.MockConsumerAgent;
@@ -73,7 +73,7 @@ class BasicSocialGraphTest {
     @Test
     void testGetKNearest() {
         MockSimulationEnvironment env = new MockSimulationEnvironment();
-        env.setSpatialModel(new SquareModel("unit", Metric.EUCLIDEAN, 0, 0, 1, 1));
+        env.setSpatialModel(new SquareModel("unit", CartesianMetric.EUCLIDEAN, 0, 0, 1, 1));
         MockConsumerAgent a0 = new MockConsumerAgent("a0", env, new Point2D(0, 0));
         MockConsumerAgent a100 = new MockConsumerAgent("a0", env, new Point2D(100, 100));
 
@@ -100,7 +100,7 @@ class BasicSocialGraphTest {
     @Test
     void testGetKNearestNeighbours() {
         MockSimulationEnvironment env = new MockSimulationEnvironment();
-        env.setSpatialModel(new SquareModel("unit", Metric.EUCLIDEAN, 0, 0, 1, 1));
+        env.setSpatialModel(new SquareModel("unit", CartesianMetric.EUCLIDEAN, 0, 0, 1, 1));
         MockConsumerAgent a0 = new MockConsumerAgent("a0", env, new Point2D(0, 0));
         MockConsumerAgent a100 = new MockConsumerAgent("a0", env, new Point2D(100, 100));
 

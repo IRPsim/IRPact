@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.spatial.dim2;
 
-import de.unileipzig.irpact.core.spatial.Metric;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -17,9 +16,9 @@ class SquareModelTest {
 
     @Test
     void testCreation() {
-        SquareModel model = new SquareModel("test", Metric.EUCLIDEAN, 0, 1, 2, 3);
+        SquareModel model = new SquareModel("test", CartesianMetric.EUCLIDEAN, 0, 1, 2, 3);
         assertEquals("test", model.getName());
-        assertSame(Metric.EUCLIDEAN, model.getMetric());
+        assertSame(CartesianMetric.EUCLIDEAN, model.getMetric());
         assertEquals(0, model.getX0());
         assertEquals(1, model.getY0());
         assertEquals(2, model.getX1());
@@ -28,13 +27,13 @@ class SquareModelTest {
 
     @Test
     void testErrorCreation() {
-        assertThrows(IllegalArgumentException.class, () -> new SquareModel("test", Metric.EUCLIDEAN, 0, 1, -1, 1));
-        assertThrows(IllegalArgumentException.class, () -> new SquareModel("test", Metric.EUCLIDEAN, 0, 1, 1, -11));
+        assertThrows(IllegalArgumentException.class, () -> new SquareModel("test", CartesianMetric.EUCLIDEAN, 0, 1, -1, 1));
+        assertThrows(IllegalArgumentException.class, () -> new SquareModel("test", CartesianMetric.EUCLIDEAN, 0, 1, 1, -11));
     }
 
     @Test
     void testEuclideanDistance() {
-        SquareModel model = new SquareModel("test", Metric.EUCLIDEAN, 0, 0, 1, 1);
+        SquareModel model = new SquareModel("test", CartesianMetric.EUCLIDEAN, 0, 0, 1, 1);
         Point2D p0 = new Point2D(2, 3);
         Point2D p1 = new Point2D(5, 7);
         assertEquals(5, model.distance(p0, p1));
@@ -43,7 +42,7 @@ class SquareModelTest {
 
     @Test
     void testGetKNearestEuclidean() {
-        SquareModel model = new SquareModel("test", Metric.EUCLIDEAN, 0, 0, 1, 1);
+        SquareModel model = new SquareModel("test", CartesianMetric.EUCLIDEAN, 0, 0, 1, 1);
         Point2D p0 = new Point2D(0, 0);
         Point2D p100 = new Point2D(100, 100);
         List<Point2D> pList = new ArrayList<>();

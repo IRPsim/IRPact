@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.spatial.dim2;
 
-import de.unileipzig.irpact.core.spatial.Metric;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
 /**
@@ -47,7 +46,7 @@ public final class Point2D implements SpatialInformation {
         return Math.max(mx, my);
     }
 
-    public static double distance(Metric metric, Point2D p0, Point2D p1) {
+    public static double distance(CartesianMetric metric, Point2D p0, Point2D p1) {
         switch (metric) {
             case MANHATTEN:
                 return manhattenDistance(p0, p1);

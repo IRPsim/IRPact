@@ -12,7 +12,7 @@ import de.unileipzig.irpact.core.network.topology.UnchangingEdgeWeight;
 import de.unileipzig.irpact.core.product.preference.ProductGroupAttributValueConfiguration;
 import de.unileipzig.irpact.core.simulation.BasicEconomicSpace;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.core.spatial.Metric;
+import de.unileipzig.irpact.core.spatial.dim2.CartesianMetric;
 import de.unileipzig.irpact.core.spatial.dim2.SquareModel;
 import de.unileipzig.irpact.jadex.message.JadexMessageSystem;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexEventManager;
@@ -62,7 +62,7 @@ public class JadexConfigurationBuilder extends AbstractConfigurationBuilder<Jade
                 )
         ));
         env.setMessageSystem(new JadexMessageSystem(env, JadexMessageSystem.Mode.BASIC));
-        env.setSpatialModel(new SquareModel("Square", Metric.EUCLIDEAN, 0, 0, 1, 1));
+        env.setSpatialModel(new SquareModel("Square", CartesianMetric.EUCLIDEAN, 0, 0, 1, 1));
         env.setEconomicSpace(new BasicEconomicSpace(
                 NoTaxes.INSTANCE
         ));

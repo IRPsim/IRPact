@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.core.spatial.dim2;
 
-import de.unileipzig.irpact.core.spatial.Metric;
-
 /**
  * @author Daniel Abitz
  */
@@ -16,7 +14,7 @@ public class SquareModel extends Point2DModel {
     private double x1;
     private double y1;
 
-    public SquareModel(String name, Metric metric, double x0, double y0, double x1, double y1) {
+    public SquareModel(String name, CartesianMetric metric, double x0, double y0, double x1, double y1) {
         super(name, metric);
         if(x1 < x0) throw new IllegalArgumentException("x1 < x0: " + x1 + " < " + x0);
         if(y1 < y0) throw new IllegalArgumentException("y1 < y0: " + y1 + " < " + y0);
