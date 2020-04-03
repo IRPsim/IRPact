@@ -11,6 +11,7 @@ import de.unileipzig.irpact.input.def.ConsumerAgentGroup;
 import de.unileipzig.irpact.input.def.ConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.input.def.Root;
 import de.unileipzig.irpact.io.*;
+import de.unileipzig.irpact.start.Demo;
 import de.unileipzig.irpact.start.Start;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Map;
 
 /**
  * @author Daniel Abitz
@@ -45,22 +45,36 @@ class TreeSetTest {
         System.out.println(Arrays.toString(x.split("_")));
     }
 
-    private static final Path testInterface = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\java\\de\\unileipzig\\irpact\\input\\v2", "ConsumerAgentGroup.java");
-
     @Test
     void testParseInterface() throws IOException {
+        Path testInterface = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\java\\de\\unileipzig\\irpact\\input\\def", "ConsumerAgentGroup.java");
+        /*
+        Input i1;
         try(BufferedReader reader = Files.newBufferedReader(testInterface, StandardCharsets.UTF_8)) {
-            Input input = Input.parse(reader);
-            System.out.println(input.getType());
-            System.out.println(input.getName());
-            System.out.println(input.getInterfaceList());
-            System.out.println(input.getFields());
+            i1 = Input.parse(reader);
+            System.out.println(i1.getType());
+            System.out.println(i1.getName());
+            System.out.println(i1.getParamMap());
+            System.out.println(i1.getInterfaceList());
+            System.out.println(i1.getFields());
         }
+        */
+        Input i2;
+        try(BufferedReader reader = Files.newBufferedReader(testInterface, StandardCharsets.UTF_8)) {
+            i2 = InputParser.parse(reader);
+            System.out.println(i2.getType());
+            System.out.println(i2.getName());
+            System.out.println(i2.getParamMap());
+            System.out.println(i2.getInterfaceList());
+            System.out.println(i2.getFields());
+        }
+        //System.out.println(i1.equals(i2));
+        //System.out.println(i2.equals(i1));
     }
 
     @Test
     void testParseAll() throws IOException {
-        InputMap map = InputMap.parseDir(dir);
+        InputMapping map = InputMapping.parseDir(dir);
         map.getInputMap().values()
                 .forEach(input -> {
                     System.out.println(input.getParamMap());
@@ -78,15 +92,15 @@ class TreeSetTest {
                     );
                     System.out.println("===");
                 });
-        Map<String, MappedInput> mi = map.createMappedInput();
-        mi.values().forEach(input -> {
+        InputMapping.Result mi = map.getResult();
+        mi.forEach(input -> {
             System.out.println(input.getParam());
             System.out.println(input.getName());
             System.out.println(input.getDeps());
             System.out.println("===");
         });
-        mi.values().forEach(input -> {
-            System.out.println(input.print());
+        mi.forEach(input -> {
+            System.out.println(input.printGAMS());
         });
     }
 
@@ -109,7 +123,25 @@ class TreeSetTest {
 
     @Test
     void as4d() throws IOException {
-        Path p = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\java\\de\\unileipzig\\irpact\\input\\examples", "input-tree.json");
+        Path p = TestPaths.resInput.resolve("input-tree.json");
+        ObjectNode root = parse(p);
+        ObjectNode setRoot = mapper.createObjectNode();
+        TreeToSet.handle(root, setRoot);
+        System.out.println(print(setRoot));
+    }
+
+    @Test
+    void as4d22() throws IOException {
+        Path p = TestPaths.resInput.resolve("input2-tree.json");
+        ObjectNode root = parse(p);
+        ObjectNode setRoot = mapper.createObjectNode();
+        TreeToSet.handle(root, setRoot);
+        System.out.println(print(setRoot));
+    }
+
+    @Test
+    void as4d33() throws IOException {
+        Path p = TestPaths.resInput.resolve("input3-tree.json");
         ObjectNode root = parse(p);
         ObjectNode setRoot = mapper.createObjectNode();
         TreeToSet.handle(root, setRoot);
@@ -127,13 +159,26 @@ class TreeSetTest {
 
     @Test
     void testSetToTree() throws IOException {
-        Path p = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\java\\de\\unileipzig\\irpact\\input\\examples", "input.json");
+        Path p = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\irpact\\examples\\input", "input.json");
         ObjectNode setRoot = parse(p);
         ObjectNode treeRoot = mapper.createObjectNode();
         SetToTree.handle(mapper.getNodeFactory(), setRoot, treeRoot);
         System.out.println(print(treeRoot));
         //===
-        Path p2 = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\java\\de\\unileipzig\\irpact\\input\\examples", "input-tree.json");
+        Path p2 = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\irpact\\examples\\input", "input-tree.json");
+        ObjectNode tree2 = parse(p2);
+        System.out.println(tree2.equals(treeRoot));
+    }
+
+    @Test
+    void testSetToTreeScalar() throws IOException {
+        Path p = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\irpact\\examples\\input", "input3.json");
+        ObjectNode setRoot = parse(p);
+        ObjectNode treeRoot = mapper.createObjectNode();
+        SetToTree.handle(mapper.getNodeFactory(), setRoot, treeRoot);
+        System.out.println(print(treeRoot));
+        //===
+        Path p2 = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\irpact\\examples\\input", "input3-tree.json");
         ObjectNode tree2 = parse(p2);
         System.out.println(tree2.equals(treeRoot));
     }
@@ -145,23 +190,23 @@ class TreeSetTest {
         Root r = new Root();
         r.consumerAgentGroups = new ConsumerAgentGroup[2];
         r.consumerAgentGroups[0] = new ConsumerAgentGroup();
-        r.consumerAgentGroups[0].$name = "group0";
+        r.consumerAgentGroups[0]._name = "group0";
         r.consumerAgentGroups[0].informationAuthority = 1;
         r.consumerAgentGroups[0].consumerAgentGroupAttributes = new ConsumerAgentGroupAttribute[2];
         r.consumerAgentGroups[0].consumerAgentGroupAttributes[0] = new ConsumerAgentGroupAttribute();
-        r.consumerAgentGroups[0].consumerAgentGroupAttributes[0].$name = "attr1";
+        r.consumerAgentGroups[0].consumerAgentGroupAttributes[0]._name = "attr1";
         r.consumerAgentGroups[0].consumerAgentGroupAttributes[0].value0 = 1;
         r.consumerAgentGroups[0].consumerAgentGroupAttributes[0].value1 = 2;
         r.consumerAgentGroups[0].consumerAgentGroupAttributes[1] = new ConsumerAgentGroupAttribute();
-        r.consumerAgentGroups[0].consumerAgentGroupAttributes[1].$name = "attr2";
+        r.consumerAgentGroups[0].consumerAgentGroupAttributes[1]._name = "attr2";
         r.consumerAgentGroups[0].consumerAgentGroupAttributes[1].value0 = 3;
         r.consumerAgentGroups[0].consumerAgentGroupAttributes[1].value1 = 4;
         r.consumerAgentGroups[1] = new ConsumerAgentGroup();
-        r.consumerAgentGroups[1].$name = "group1";
+        r.consumerAgentGroups[1]._name = "group1";
         r.consumerAgentGroups[1].informationAuthority = 2;
         r.consumerAgentGroups[1].consumerAgentGroupAttributes = new ConsumerAgentGroupAttribute[1];
         r.consumerAgentGroups[1].consumerAgentGroupAttributes[0] = new ConsumerAgentGroupAttribute();
-        r.consumerAgentGroups[1].consumerAgentGroupAttributes[0].$name = "attr3";
+        r.consumerAgentGroups[1].consumerAgentGroupAttributes[0]._name = "attr3";
         r.consumerAgentGroups[1].consumerAgentGroupAttributes[0].value0 = 5;
         r.consumerAgentGroups[1].consumerAgentGroupAttributes[0].value1 = 6;
 
@@ -201,7 +246,7 @@ class TreeSetTest {
     @Test
     void testDemo1() throws IOException {
         String[] args = {
-                "--i", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\java\\de\\unileipzig\\irpact\\input\\examples", "input.json").toString(),
+                "--i", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\irpact\\examples\\input", "input.json").toString(),
                 "--o", testFilesDir.resolve("output.json").toString()
         };
         Start.main(args);
@@ -210,9 +255,30 @@ class TreeSetTest {
     @Test
     void testDemo2() throws IOException {
         String[] args = {
-                "--i", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\java\\de\\unileipzig\\irpact\\input\\examples", "input2.json").toString(),
+                "--i", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\irpact\\examples\\input", "input2.json").toString(),
                 "--o", testFilesDir.resolve("output2.json").toString()
         };
         Start.main(args);
+    }
+
+    @Test
+    void testDemo1Real() throws IOException {
+        Path p = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\irpact\\examples\\input", "input.json");
+        double m = Demo.calcMagicOutput(p);
+        System.out.println(m);
+    }
+
+    @Test
+    void testDemo2Real() throws IOException {
+        Path p = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\irpact\\examples\\input", "input2.json");
+        double m = Demo.calcMagicOutput(p);
+        System.out.println(m);
+    }
+
+    @Test
+    void testDemo3Real() throws IOException {
+        Path p = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\irpact\\examples\\input", "input3.json");
+        double m = Demo.calcMagicOutput(p);
+        System.out.println(m);
     }
 }

@@ -2,6 +2,7 @@ package de.unileipzig.irpact.input.def;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.unileipzig.irpact.io.Constants;
 
 /// description: Gruppe von Konsumentenattributen
 /// type: String
@@ -14,7 +15,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 public class ConsumerAgentGroupAttribute {
 
     /// identifer:
-    public String $name;
+    public String _name;
 
     /// description: Testwert 1
     /// type: float
@@ -39,14 +40,14 @@ public class ConsumerAgentGroupAttribute {
     // end_of_definition
 
     public void readFrom(JsonNode node) {
-        $name = node.get("$name").textValue();
+        _name = node.get(Constants.NAME).textValue();
         value0 = node.get("value0").doubleValue();
         value1 = node.get("value1").doubleValue();
     }
 
     public void writeTo(JsonNode node) {
         ObjectNode objNode = (ObjectNode) node;
-        objNode.put("$name", $name);
+        objNode.put(Constants.NAME, _name);
         objNode.put("value0", value0);
         objNode.put("value1", value1);
     }

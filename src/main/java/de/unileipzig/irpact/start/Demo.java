@@ -57,7 +57,23 @@ public class Demo {
         for(ConsumerAgentGroup group: r.consumerAgentGroups) {
             sum += calcMagicOutout(group);
         }
+        if(r.global != null) {
+            sum *= r.global.multiplier;
+        }
         return sum;
+    }
+
+    public static double calcMagicOutput(Path inputPath) throws IOException {
+        ObjectNode inputSetNode;
+        try(InputStream in = Files.newInputStream(inputPath)) {
+            inputSetNode = (ObjectNode) mapper.readTree(in);
+        }
+        ObjectNode inputTreeNode = mapper.createObjectNode();
+        SetToTree.handle(mapper.getNodeFactory(), inputSetNode, inputTreeNode);
+
+        Root r = new Root();
+        r.readFrom(inputTreeNode);
+        return calcMagicOutput(r);
     }
 
     public static void handle(String[] args) throws IOException {
@@ -81,16 +97,7 @@ public class Demo {
             throw new IllegalArgumentException("Missing output file.");
         }
 
-        ObjectNode inputSetNode;
-        try(InputStream in = Files.newInputStream(inputPath)) {
-            inputSetNode = (ObjectNode) mapper.readTree(in);
-        }
-        ObjectNode inputTreeNode = mapper.createObjectNode();
-        SetToTree.handle(mapper.getNodeFactory(), inputSetNode, inputTreeNode);
-
-        Root r = new Root();
-        r.readFrom(inputTreeNode);
-        double magicOutput = calcMagicOutput(r);
+        double magicOutput = calcMagicOutput(inputPath);
 
         ObjectNode outNode = mapper.createObjectNode();
         ObjectNode scaNode = outNode.putObject(Constants.SCALARS);

@@ -3,6 +3,7 @@ package de.unileipzig.irpact.input.def;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.unileipzig.irpact.io.Constants;
 
 /// description: Gruppe von Konsumenten
 /// type: String
@@ -15,7 +16,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 public class ConsumerAgentGroup {
 
     /// identifer:
-    public String $name;
+    public String _name;
 
     /// description: Informationskompetenz
     /// type: float
@@ -40,7 +41,7 @@ public class ConsumerAgentGroup {
     // end_of_definition
 
     public void readFrom(JsonNode node) {
-        $name = node.get("$name").textValue();
+        _name = node.get(Constants.NAME).textValue();
         informationAuthority = node.get("informationAuthority").doubleValue();
         JsonNode attrNode = node.get("ConsumerAgentGroupAttribute");
         consumerAgentGroupAttributes = new ConsumerAgentGroupAttribute[attrNode.size()];
@@ -54,7 +55,7 @@ public class ConsumerAgentGroup {
 
     public void writeTo(JsonNode node) {
         ObjectNode objNode = (ObjectNode) node;
-        objNode.put("$name", $name);
+        objNode.put(Constants.NAME, _name);
         objNode.put("informationAuthority", informationAuthority);
         ArrayNode attrNode = objNode.putArray("ConsumerAgentGroupAttribute");
         for(ConsumerAgentGroupAttribute attr: consumerAgentGroupAttributes) {

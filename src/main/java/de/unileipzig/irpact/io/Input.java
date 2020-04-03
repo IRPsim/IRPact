@@ -1,21 +1,29 @@
 package de.unileipzig.irpact.io;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.*;
 
 /**
+ * Beschreibt eine Definitionsklasse.
+ *
  * @author Daniel Abitz
  */
-public class Input {
+public final class Input {
 
-    private Map<String, String> paramMap = new LinkedHashMap<>();
+    private Map<String, String> paramMap;
     private String type;
     private String name;
-    private List<String> interfaceList = new ArrayList<>();
-    private List<InputField> fields = new ArrayList<>();
+    private boolean global;
+    private List<String> interfaceList;
+    private List<InputField> fields;
 
     public Input() {
+        this(new LinkedHashMap<>(), new ArrayList<>(), new ArrayList<>());
+    }
+
+    public Input(Map<String, String> paramMap, List<String> interfaceList, List<InputField> fields) {
+        this.paramMap = paramMap;
+        this.interfaceList = interfaceList;
+        this.fields = fields;
     }
 
     public void putParam(String key, String value) {
@@ -30,6 +38,11 @@ public class Input {
         this.type = type;
     }
 
+    /**
+     * Gibt den Typ zurueck. Dabei ist nur {@code class} oder {@code interface} moeglich.
+     *
+     * @return {@code class} oder {@code interface}
+     */
     public String getType() {
         return type;
     }
@@ -38,8 +51,25 @@ public class Input {
         this.name = name;
     }
 
+    /**
+     * Gibt den Namen der Klassse bzw. des Interfaces zurueck.
+     *
+     * @return entsprechende Name
+     */
     public String getName() {
         return name;
+    }
+
+    public void setGlobal(boolean global) {
+        this.global = global;
+    }
+
+    public boolean isGlobal() {
+        return global;
+    }
+
+    public void addInterfaces(String... arr) {
+        Collections.addAll(interfaceList, arr);
     }
 
     public void addInterfaces(Collection<? extends String> coll) {
@@ -62,131 +92,78 @@ public class Input {
         return fields;
     }
 
-    //=========================
-    //Parsing
-    //=========================
-
-    private static final String PUBLIC = "public";
-
-    private static String getName(String line) {
-        int index = line.indexOf(' ');
-        int index2 = line.indexOf(' ', index + 1);
-        return line.substring(index + 1, index2);
+    public List<MappedInput> toMappedInput() {
+        List<MappedInput> list = new ArrayList<>();
+        toMappedInput(list);
+        return list;
     }
 
-    private static String[] getInterface(String line) {
-        int index = line.indexOf(Constants.IMPLEMENTS) + Constants.IMPLEMENTS.length() + 1;
-        int lineLen = line.length();
-        String interfaceString = line.substring(index, lineLen - 2);
-        String[] interfaces = interfaceString.split(",");
-        for(int i = 0; i < interfaces.length; i++) {
-            interfaces[i] = interfaces[i].trim();
+    public void toMappedInput(Collection<MappedInput> coll) {
+        if(!isGlobal()) {
+            MappedInput set = new MappedInput();
+            set.setPrefix(Constants.PREFIX_SET);
+            set.setName(Constants.SET + getName());
+            set.putParams(getParamMap());
+            coll.add(set);
         }
-        return interfaces;
-    }
-
-    private static void parseField(BufferedReader reader, String line, Input input) throws IOException {
-        InputField inputField = new InputField();
-        while(!line.isEmpty() && !"}".equals(line)) {
-            if(line.startsWith(Constants.COMMENT)) {
-                continue;
-            }
-            if(line.startsWith(Constants.PARAM)) {
-                int index = line.indexOf(':');
-                String key = line.substring(3, index).trim();
-                String value = index == line.length() - 1
-                        ? ""
-                        : line.substring(index + 2).trim();
-                inputField.putParam(key, value);
+        for(InputField field: getFields()) {
+            if(field.isGlobal()) {
+                MappedInput par = new MappedInput();
+                par.setPrefix(Constants.PREFIX_SCALAR);
+                par.setName(Constants.SCA + field.getName());
+                par.putParams(field.getParamMap());
+                coll.add(par);
+            } else if(field.isArray()) {
+                MappedInput par = new MappedInput();
+                par.setPrefix(Constants.PREFIX_PARAMETER);
+                par.setName(Constants.PAR + getName() + Constants.DELIMITER + field.getType());
+                par.addDep(Constants.SET + getName());
+                par.addDep(Constants.SET + field.getType());
+                par.putParams(field.getParamMap());
+                par.putParam(Constants.TYPE, Constants.BOOLEAN);
+                coll.add(par);
             } else {
-                int index = line.lastIndexOf(' ');
-                String type = line.substring(0, index).trim();
-                String name = line.substring(index + 1, line.length() - 1).trim();
-                if(type.endsWith("[]")) {
-                    inputField.setArray(true);
-                    inputField.setType(type.substring(0, type.length() - 2));
-                } else {
-                    inputField.setArray(false);
-                    inputField.setType(type);
-                }
-                inputField.setName(name);
+                MappedInput par = new MappedInput();
+                par.setPrefix(Constants.PREFIX_PARAMETER);
+                par.setName(Constants.PAR + getName() + Constants.DELIMITER + field.getName());
+                par.addDep(Constants.SET + getName());
+                par.putParams(field.getParamMap());
+                coll.add(par);
             }
-            line = reader.readLine();
-            line = line.trim();
-            if(line.startsWith(PUBLIC)) {
-                line = line.substring(PUBLIC.length()).trim();
-            }
-        }
-        if(!inputField.getName().endsWith(Constants.NAME)) {
-            input.addField(inputField);
         }
     }
 
-    private static void parseClass(BufferedReader reader, String line, Input input) throws IOException {
-        String type = null;
-        String name = null;
-        List<String> interfaces = new ArrayList<>();
-        while(!line.isEmpty()) {
-            if(line.startsWith(Constants.COMMENT)) {
-                continue;
-            }
-            if(line.startsWith(Constants.PARAM)) {
-                int index = line.indexOf(':');
-                String key = line.substring(3, index).trim();
-                String value = index == line.length() - 1
-                        ? ""
-                        : line.substring(index + 2).trim();
-                input.putParam(key, value);
-            } else {
-                if(line.startsWith(Constants.CLASS)) {
-                    type = Constants.CLASS;
-                    name = getName(line);
-                }
-                if(line.startsWith(Constants.INTERFACE)) {
-                    type = Constants.INTERFACE;
-                    name = getName(line);
-                }
-                if(line.contains(Constants.IMPLEMENTS)) {
-                    String[] interfaceNamesArray = getInterface(line);
-                    Collections.addAll(interfaces, interfaceNamesArray);
-                }
-                break;
-            }
-            line = reader.readLine();
-            line = line.trim();
-            if(line.startsWith(PUBLIC)) {
-                line = line.substring(PUBLIC.length()).trim();
-            }
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null) return false;
+        if(obj == this) return true;
+        if(obj instanceof Input) {
+            Input other = (Input) obj;
+            return Objects.equals(paramMap, other.paramMap)
+                    && Objects.equals(type, other.type)
+                    && Objects.equals(name, other.name)
+                    && global == other.global
+                    && Objects.equals(interfaceList, other.interfaceList)
+                    && Objects.equals(fields, other.fields);
         }
-        input.setType(type);
-        input.setName(name);
-        input.addInterfaces(interfaces);
+        return false;
     }
 
-    public static Input parse(BufferedReader reader) throws IOException {
-        boolean classParsed = false;
-        Input input = new Input();
-        String line;
-        while((line = reader.readLine()) != null) {
-            line = line.trim();
-            if(line.startsWith(Constants.COMMENT)) {
-                continue;
-            }
-            if(line.startsWith(Constants.END_OF_DEFINITION)) {
-                break;
-            }
-            if(line.startsWith(PUBLIC)) {
-                line = line.substring(PUBLIC.length()).trim();
-            }
-            if(line.startsWith(Constants.PARAM)) {
-                if(classParsed) {
-                    parseField(reader, line, input);
-                } else {
-                    parseClass(reader, line, input);
-                    classParsed = true;
-                }
-            }
-        }
-        return input;
+    @Override
+    public int hashCode() {
+        return Objects.hash(paramMap, type, name, global, interfaceList, fields);
+    }
+
+
+    @Override
+    public String toString() {
+        return "Input{" +
+                "paramMap=" + paramMap +
+                ", type='" + type + '\'' +
+                ", name='" + name + '\'' +
+                ", global=" + global +
+                ", interfaceList=" + interfaceList +
+                ", fields=" + fields +
+                '}';
     }
 }

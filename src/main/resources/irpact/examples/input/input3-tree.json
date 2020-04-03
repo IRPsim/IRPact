@@ -1,4 +1,7 @@
 {
+  "_Global" : {
+    "multiplier" : 22.0
+  },
   "ConsumerAgentGroup" : [
     {
       "_name" : "group1",
