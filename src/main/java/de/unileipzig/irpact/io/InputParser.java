@@ -226,7 +226,9 @@ public class InputParser {
                 }
                 parseField(field);
                 field.setGlobal(input.isGlobal());
-                input.addField(field);
+                if(field.isNotName()) {
+                    input.addField(field);
+                }
                 field = new InputField();
             }
             else {

@@ -57,3 +57,13 @@ PARAMETER par_ConsumerAgentGroupAttribute_value0(set_ConsumerAgentGroupAttribute
 * - hidden:
 * - processing:
 PARAMETER par_ConsumerAgentGroupAttribute_value1(set_ConsumerAgentGroupAttribute)
+
+* - description: Multiplier
+* - type: float
+* - identifier: Multiplier
+* - unit:
+* - domain:
+* - validation:
+* - hidden:
+* - processing:
+SCALAR sca_multiplier

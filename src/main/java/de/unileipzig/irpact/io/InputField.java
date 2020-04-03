@@ -75,6 +75,10 @@ public final class InputField {
         return global;
     }
 
+    boolean isNotName() {
+        return !Constants.NAME.equals(name);
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(paramMap, type, name, array, global);

@@ -99,9 +99,12 @@ class TreeSetTest {
             System.out.println(input.getDeps());
             System.out.println("===");
         });
+        System.out.println(mi.printGAMS());
+        /*
         mi.forEach(input -> {
             System.out.println(input.printGAMS());
         });
+        */
     }
 
     private static ObjectMapper mapper = new ObjectMapper();
