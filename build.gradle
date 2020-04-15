@@ -94,15 +94,24 @@ task buildDemoJarWithClasspath(type: Jar) {
     }
 }
 
-/*
+task buildDemoJarWithClasspathSameDir(type: Jar) {
+    archiveAppendix.set('demo')
+    archiveClassifier.set('v2')
+    from sourceSets.main.output
+    manifest {
+        attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
+        attributes 'Class-Path': configurations.runtimeClasspath.files.collect { "$it.name" }.join(' ')
+    }
+}
+
 task buildDemoJarWithoutClasspath(type: Jar) {
+    archiveAppendix.set('demo')
+    archiveClassifier.set('nocp')
     from sourceSets.main.output
     manifest {
         attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
     }
-    archivesBaseName = 'Demo2'
 }
-*/
 
 task copyDependencies(type: Copy) {
     into "$buildDir/dependencies"
@@ -112,4 +121,6 @@ task copyDependencies(type: Copy) {
 artifacts {
     archives buildDemoFatJar
     archives buildDemoJarWithClasspath
+    archives buildDemoJarWithClasspathSameDir
+    archives buildDemoJarWithoutClasspath
 }
