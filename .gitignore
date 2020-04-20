@@ -17,3 +17,11 @@
 /todo.txt
 /old_stuff/
 /testfiles/
+
+#Eclipse
+.classpath
+.project
+.readme.md.swp
+.settings/
+bin/
+
