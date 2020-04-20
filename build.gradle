@@ -12,7 +12,7 @@ sourceCompatibility = 1.8
 repositories {
     //geotools als erstes, sonst werden libs nicht gefunden...
     maven { url "http://download.osgeo.org/webdav/geotools" }
-    maven { url "http://repo.boundlessgeo.com/main" }
+    maven { url "https://repo.osgeo.org/repository/release/" }
     maven { url "http://download.java.net/maven/2" }
 
     maven { url "https://nexus.actoron.com/content/repositories/oss-nightlies" }
