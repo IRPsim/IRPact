@@ -1,0 +1,162 @@
+[{:label "Bilanzierung" 
+  :sections [{:label "Übersicht"
+              :tags [["IuO" "Sector" "Orga"] ["IuO" "Sector" "Cust"]]}
+             {:label "Kundenseite"
+              :sections [{:label "Gesamtübersicht"
+                          :tags [["IuO" "Sector" "Cust"] ["IuO" "Sector" "Cust" "ind"]]}
+                         {:set "set_side_cust"
+                          :label "Einzelübersicht"
+                          :tags [["E" "fromEGrid" "toEL"]["IuO" "ESector" "CustSide"] ["IuO" "WSector" "CustSide"] ["IuO" "GSector" "CustSide"] ["IuO" "CSector" "CustSide"]["IuO" "RSector" "CustSide"]]}]}
+			{:label "Unternehmensseite"
+              :sections [{:label "Gesamtübersicht"
+                          :tags [["IuO" "Sector" "Orga"] ["IuO" "ESector" "Orga"] ["IuO" "WSector" "Orga"] ["IuO" "GSector" "Orga"]["IuO" "CSector" "Orga"]["IuO" "RSector" "Orga"]]}
+                         {:set "set_side_orga"
+                          :label "Einzelübersicht"
+                          :tags [["IuO" "ESector" "OrgaSide"] ["IuO" "WSector" "OrgaSide"] ["IuO" "GSector" "OrgaSide"] ["IuO" "CSector" "OrgaSide"]["IuO" "RSector" "OrgaSide"]]}]}]}
+						  					  
+ {:label "Systemdynamik" 
+  :sections [{:set "set_pss"
+			  :label "Energieflüsse"
+              :tags [["E" "fromPss" "toPss"]["W" "fromPss" "toPss"] ["G" "fromPss" "toPss"] ["C" "fromPss" "toPss"]["PR" "fromPss" "toPss"]["NR" "fromPss" "toPss"]["RF" "fromPss" "toPss"]["L" "fromPss" "toPss"]["HC" "fromPss" "toPss"]["T" "fromPss" "toPss"]["O" "fromPss" "toPss"]["B" "fromPss" "toPss"]]}
+			 {:set "set_power"
+			  :label "Leistungsmessungen"
+              :tags [["PowerMeasurement"]]}]}
+			  
+ {:label "Systemkomponenten" 
+  :sections [{:label "Stromlastgänge"
+			  :sections [{:set "set_load_DS_E"
+						  :label "Deckungsgrad"
+						  :tags [["E" "ELoad" "gridcov"] ["E" "ELoad" "pvcov"] ["E" "ELoad" "escov"] ["E" "ELoad" "Sonnentankcov"] ["E" "ELoad" "NaScov"] ["E" "ELoad" "PVdirectcov"]]}]} 
+						  
+						 {:label "Wärmelastgänge"
+						  :sections [{:set "set_load_DS_W"
+						  :label "Deckungsgrad"
+						  :tags [["W" "DS" "load" "cov"]]}]}
+  
+			 {:label "Stromspeicher"
+			  :sections [{:set "set_tech_DES_ES"
+						  :label "Speicherfüllstand"
+						  :tags [["SOC" "DES" "ES"]]}
+						 {:set "set_tech_DES_ES"
+						  :label "Speicherverluste"
+						  :tags [["E" "DES" "ES" "losses"]]}
+			  			 {:set "set_tech_DES_ES"
+						  :label "Speicherzyklen"
+						  :tags [["N" "DES" "ES" "cycles"]]}
+						 {:set "set_tech_DES_ES"
+						  :label "Regelenergieangebot"
+						  :tags [["E" "DES" "ES" "resneg"]["E" "DES" "ES" "respos"]]}
+						 {:set "set_tech_DES_ES"
+						  :label "Speichernutzung"
+						  :tags [["P" "DES" "ES" "chargeuse_percent"]["P" "DES" "ES" "dischargeuse_percent"]]}
+						 {:set "set_tech_DES_ES"
+						  :label "Bilanzierung"
+						  :tags [["O" "DES" "PSS" "Total"]["O" "DES" "PSS" "Cap"]["O" "DES" "PSS" "OuM"] ["O" "DES" "PSS" "Ins"]["I" "DES" "ES" "resneg"]["I" "DES" "ES" "respos"]]}]}
+						  
+			 {:label "Wärmespeicher"
+			  :sections [{:set "set_tech_DES_TS"
+						  :label "Speicherfüllstand"
+						  :tags [["SOC" "DES" "TS"]]}
+						 {:set "set_tech_DES_TS"
+						  :label "Speicherverluste"
+						  :tags [["E" "DES" "TS" "losses"]]}
+			  			 {:set "set_tech_DES_TS"
+						  :label "Speichernutzung"
+						  :tags [["Q" "DES" "TS" "chargeuse_percent"]["Q" "DES" "TS" "dischargeuse_percent"]]}
+						 {:set "set_tech_DES_TS"
+						  :label "Bilanzierung"
+						  :tags [["O" "DES" "PSS" "Total"]["O" "DES" "PSS" "Cap"]["O" "DES" "PSS" "OuM"] ["O" "DES" "PSS" "Ins"]]}]}
+						  
+			 {:label "Kältespeicher"
+			  :sections [{:set "set_tech_DES_CS"
+						  :label "Speicherfüllstand"
+						  :tags [["SOC" "DES" "CS"]]}
+						 {:set "set_tech_DES_CS"
+						  :label "Speicherverluste"
+						  :tags [["E" "DES" "CS" "losses"]]}
+			  			 {:set "set_tech_DES_CS"
+						  :label "Speichernutzung"
+						  :tags [["Q" "DES" "CS" "chargeuse_percent"]["Q" "DES" "CS" "dischargeuse_percent"]]}
+						 {:set "set_tech_DES_CS"
+						  :label "Bilanzierung"
+						  :tags [["O" "DES" "PSS" "Total"]["O" "DES" "PSS" "Cap"]["O" "DES" "PSS" "OuM"] ["O" "DES" "PSS" "Ins"]]}]}
+						  								  
+			 {:label "PV-Anlage"
+			  :sections [{:set "set_tech_DES_PV"
+						  :label "Abregelung"
+						  :tags [["E" "DES" "PV" "down"]]}
+			  			 {:set "set_tech_DES_PV"
+						  :label "Erzeugungsanteile"
+						  :tags [["E" "DES" "PV" "ratio_selfvstotal"] ["E" "DES" "PV" "ratio_sonnentankvstotal"] ["E" "DES" "PV" "ratio_netzspeichervstotal"] ["E" "DES" "PV" "ratio_directvstotal"] ["E" "DES" "PV" "ratio_othervstotal"]]}
+						 {:set "set_tech_DES_PV"
+						  :label "Bilanzierung"
+						  :tags [["O" "DES" "PSS" "Total"]["O" "DES" "PSS" "Cap"]["O" "DES" "PSS" "OuM"] ["O" "DES" "PSS" "Ins"] ["I" "DES" "PSS" "Comp"]]}]}
+						  
+			 {:label "Wärmepumpe"
+			  :sections [{:set "set_tech_DES_HP"
+						  :label "Deckungsgrad"
+						  :tags [["E" "HP" "gridcov"] ["E" "HP" "pvcov"] ["E" "HP" "escov"]["E" "HP" "PVdirectcov"]]}
+						 {:set "set_tech_DES_HP"
+						  :label "Bilanzierung"
+						  :tags [["O" "DES" "PSS" "Total"]["O" "DES" "PSS" "Cap"]["O" "DES" "PSS" "OuM"] ["O" "DES" "PSS" "Ins"]]}
+						 {:set "set_tech_DES_HP"
+						  :label "Regelenergieangebot"
+						  :tags [["E" "DES" "HP" "resneg"]["E" "DES" "HP" "respos"]["I" "DES" "HP" "resneg"]["I" "DES" "ES" "respos"]]}]}
+						  
+			 {:label "Gaskessel"
+			  :sections [{:set "set_tech_DES_NGB"
+						  :label "Bilanzierung"
+						  :tags [["O" "DES" "PSS" "Total"]["O" "DES" "PSS" "Cap"]["O" "DES" "PSS" "OuM"] ["O" "DES" "PSS" "Ins"]]}]}
+						  
+			 {:label "Durchlauferhitzer"
+			  :sections [{:set "set_tech_DES_EB"
+						  :label "Deckungsgrad"
+						  :tags [["E" "EB" "gridcov"] ["E" "EB" "pvcov"] ["E" "EB" "escov"]]}
+						 {:set "set_tech_DES_EB"
+						  :label "Bilanzierung"
+						  :tags [["O" "DES" "PSS" "Total"]["O" "DES" "PSS" "Cap"]["O" "DES" "PSS" "OuM"] ["O" "DES" "PSS" "Ins"]]}]}
+
+			 {:label "Kraft-Wärme-Kopplungsanlagen"
+			  :sections [{:set "set_tech_DES_CHP"
+						  :label "Bilanzierung"
+						  :tags [["O" "DES" "PSS" "Total"]["O" "DES" "PSS" "Cap"]["O" "DES" "PSS" "OuM"] ["O" "DES" "PSS" "Ins"]]}]}
+
+			 {:label "Solarthermie-Anlage"
+			  :sections [{:set "set_tech_DES_ST"
+						  :label "Bilanzierung"
+						  :tags [["O" "DES" "PSS" "Total"]["O" "DES" "PSS" "Cap"]["O" "DES" "PSS" "OuM"] ["O" "DES" "PSS" "Ins"]]}]}
+			 
+			 {:label "Kompressionskältemaschine"
+			  :sections [{:set "set_tech_DES_CR"
+						  :label "Bilanzierung"
+						  :tags [["O" "DES" "PSS" "Total"]["O" "DES" "PSS" "Cap"]["O" "DES" "PSS" "OuM"] ["O" "DES" "PSS" "Ins"]]}]}
+
+			 {:label "Absorptionskältemaschine"
+			  :sections [{:set "set_tech_DES_SC"
+						  :label "Bilanzierung"
+						  :tags [["O" "DES" "PSS" "Total"]["O" "DES" "PSS" "Cap"]["O" "DES" "PSS" "OuM"] ["O" "DES" "PSS" "Ins"]]}]}						  
+						  
+						  
+						  ]}
+						  					  
+
+						  
+ {:label "Markt"                              
+              :sections [{:label "Strommarkt"
+                                      :tags [["IuO" "TS" "trading" "spot_energy"] ["IuO" "TS" "trading" "spot_power"]]}
+						 {:label "Gasmarkt"
+                                      :tags [["IuO" "TS" "trading" "gas_energy"] ["IuO" "TS" "trading" "gas_power"]]}]}
+			  
+ {:label "Optimierungsdetails"                              
+              :sections [{:set "set_side_cust"
+						  :label "Marginalkosten Kundenmodell"
+                                      :icon "fa fa-cog"
+                                      :tags [["Marginals" "customermodel"]]}
+						 {:set "set_side_cust"
+						  :label "Marginalkosten Organisationsmodell"
+                                      :icon "fa fa-cog"
+                                      :tags [["Marginals" "organizationmodel"]]}
+                         {:label "Optimierungsstatus"
+									  :icon "fa fa-cog"
+									  :tags [["Modelstat" "customermodel"] ["Solvestat" "customermodel"] ["Modelstat" "organizationmodel"] ["Solvestat" "organizationmodel"]]}]}
+]

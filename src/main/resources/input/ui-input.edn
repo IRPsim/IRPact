@@ -1,0 +1,9 @@
+[
+  {
+    :set ""
+    :label "NumberOfAgents"
+    :description "Anzahl der Agenten"
+    :icon "fa fa-users"
+    :tags [["Anzahl der Agenten"]]
+  }
+]

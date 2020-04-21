@@ -1,0 +1,37 @@
+{
+  "sets" : {
+    "set_ConsumerAgentGroup" : {
+      "group1" : {
+        "par_ConsumerAgentGroup_informationAuthority" : 1.0
+      },
+      "group2" : {
+        "par_ConsumerAgentGroup_informationAuthority" : 2.0
+      }
+    },
+    "set_ConsumerAgentGroupAttribute" : {
+      "attr1" : {
+        "par_ConsumerAgentGroupAttribute_value0" : 1.0,
+        "par_ConsumerAgentGroupAttribute_value1" : 2.0
+      },
+      "attr2" : {
+        "par_ConsumerAgentGroupAttribute_value0" : 3.0,
+        "par_ConsumerAgentGroupAttribute_value1" : 4.0
+      },
+      "attr3" : {
+        "par_ConsumerAgentGroupAttribute_value0" : 5.0,
+        "par_ConsumerAgentGroupAttribute_value1" : 6.0
+      }
+    }
+  },
+  "tables" : {
+    "par_ConsumerAgentGroup_ConsumerAgentGroupAttribute" : {
+      "group1" : {
+        "attr1" : 1.0,
+        "attr2" : 1.0
+      },
+      "group2" : {
+        "attr3" : 1.0
+      }
+    }
+  }
+}
