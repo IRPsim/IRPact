@@ -1,9 +1,28 @@
 [
   {
-    :set ""
-    :label "NumberOfAgents"
-    :description "Anzahl der Agenten"
-    :icon "fa fa-users"
-    :tags [["Anzahl der Agenten"]]
+    :label "Allgemeines" 
+    :icon "fa fa-power-off" 
+    :description "TODO ..."
+    :tags [["multiplier"]]
+  } 
+  {
+    :label "Konsumergruppen" 
+    :set "set_ConsumerAgentGroup" 
+    :icon "fa fa-users" 
+    :description "TODO sinnvolle Beschreibung für Prosumer einfügen." 
+    :tags [["ConsumerAgentGroup" "informationAuthority"]]
+  } 
+  {
+    :label "Konsumergruppenattribute" 
+    :set "set_ConsumerAgentGroupAttribute" 
+    :icon "fa fa-cogs" 
+    :description "TODO sinnvolle Beschreibung für Attribute einfügen." 
+    :tags [["ConsumerAgentGroupAttribute" "value0"] ["ConsumerAgentGroupAttribute" "value1"]]
+  } 
+  {
+    :label "Attributzugehörigkeit"
+    :icon "glyphicon glyphicon-transfer" 
+    :description "TODO sinnvolle Beschreibung für Attributzugehörigkeiten einfügen."
+    :tags [["ConsumerAgentGroup" "ConsumerAgentGroupAttribute"]]
   }
 ]
