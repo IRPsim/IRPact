@@ -10,6 +10,7 @@
     :set "set_Product"
     :icon "fa fa-map-marker"
     :description "angebotene Produkte"
+    :tags []
   } 
   {
     :label "Agentengruppen"
