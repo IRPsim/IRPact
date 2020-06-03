@@ -1,6 +1,8 @@
 [
   {
-    :label "Results" 
+    :label "Results"
+    :icon "fa fa-map-marker"
+    :description "Adaptionen je Gruppe und Produkt"
     :tags [["AgentGroup" "Product" "adaptions"]]
   }
 ]

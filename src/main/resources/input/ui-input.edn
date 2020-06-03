@@ -1,16 +1,20 @@
 [
   {
-    :label "Allgemeine Einstellungen" 
+    :label "Allgemeine Einstellungen"
+    :icon "fa fa-map-marker"
     :description "Für allgemeine Einstellungen" 
     :tags [["seed"]]
   } 
   {
-    :label "Produkte" 
-    :description "angebotene Produkte" 
+    :label "Produkte"
     :set "set_Product"
+    :icon "fa fa-map-marker"
+    :description "angebotene Produkte" 
   } 
   {
-    :label "Agentengruppen" 
+    :label "Agentengruppen"
+    :icon "fa fa-map-marker"
+    :set "set_AgentGroup"
     :description "Agentengruppen in der Simulation" 
     :tags [["AgentGroup" "numberOfAgents"] ["AgentGroup" "adaptionRate"]]
   }

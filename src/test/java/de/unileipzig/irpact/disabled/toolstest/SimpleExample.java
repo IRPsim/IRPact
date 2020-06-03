@@ -120,4 +120,52 @@ class SimpleExample {
 
         System.out.println(root);
     }
+
+    @Test
+    void buildSmallDemo2_OneYear() throws IOException {
+        GlobalScalars scalars = new GlobalScalars(123);
+        AgentGroup[] groups = {
+                new AgentGroup(
+                        "gx10x5",
+                        10,
+                        0.5
+                ),
+                new AgentGroup(
+                        "gx100x01",
+                        100,
+                        0.01
+                ),
+                new AgentGroup(
+                        "gx50x75",
+                        50,
+                        0.75
+                )
+        };
+        Product[] products = {
+                new Product("Auto"),
+                new Product("Haus")
+        };
+        GlobalRoot root = new GlobalRoot(scalars, groups, products);
+
+        DefinitionCollection dcoll = AnnotationParser.parse(GlobalRoot.CLASSES);
+        DefinitionMapper dmap = new DefinitionMapper(dcoll);
+        Converter converter = new Converter(dmap);
+
+        ObjectNode temp = new ObjectMapper().createObjectNode();
+        converter.toGamsJsonYear(root, temp);
+        GlobalRoot root2 = converter.fromGamsJsonYear(temp);
+
+        System.out.println("equals?: " + root.toString().endsWith(root2.toString()));
+        root2.getAgentGroups()[1].adaptionRate = 0.3;
+
+        MappedGamsJson<GlobalRoot> mappedGams = new MappedGamsJson<>();
+        mappedGams.add(2015, root);
+        mappedGams.add(2016, root2);
+        converter.toGamsJson(mappedGams);
+
+        Path out = TestFiles.toolsdemo.resolve("test1.json");
+        JsonUtil.writeJson(mappedGams.getGamsJson().getRoot(), out, JsonUtil.defaultPrinter);
+
+        System.out.println(root);
+    }
 }
