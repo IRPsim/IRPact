@@ -8,7 +8,7 @@ import de.unileipzig.irptools.defstructure.annotation.*;
 @Definition(
         edn = @Edn(
                 label = "Allgemeine Einstellungen",
-                description = "F\u00fcr allgemeine Einstellungen"
+                description = "allgemeine Einstellungen"
         ),
         global = true
 )
@@ -16,10 +16,9 @@ public class GlobalScalars {
 
     @FieldDefinition(
             gams = @GamsParameter(
+                    description = "Skalar mit zwei Tags.",
+                    identifier = "Zufallswert",
                     unit = "[x]"
-            ),
-            edn = @EdnParameter(
-                    description = "Skalar mit zwei Tags."
             )
     )
     public long seed_two;

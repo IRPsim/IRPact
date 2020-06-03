@@ -8,9 +8,9 @@ import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.AgentGroup;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.GlobalRoot;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.GlobalScalars;
-import de.unileipzig.irpact.start.hardcodeddemo.HardCodedAgentDemo;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.Product;
 import de.unileipzig.irptools.defstructure.*;
+import de.unileipzig.irptools.gamsjson.GamsJson;
 import de.unileipzig.irptools.gamsjson.MappedGamsJson;
 import de.unileipzig.irptools.uiedn.Sections;
 import de.unileipzig.irptools.uiedn.io.EdnPrinter;
@@ -36,10 +36,19 @@ class SimpleExample {
     }
 
     @Test
-    void startMyDemo() throws IOException {
+    void startMyDemoWithScenario() throws IOException {
         String[] args = {
                 "-i", TestFiles.scenarios.resolve("default.json").toString(),
                 "-o", TestFiles.toolsdemo.resolve("default-out.json").toString()
+        };
+        Start.main(args);
+    }
+
+    @Test
+    void startMyDemoWithData() throws IOException {
+        String[] args = {
+                "-i", TestFiles.toolsdemo.resolve("test123.json").toString(),
+                "-o", TestFiles.toolsdemo.resolve("test12-out.json").toString()
         };
         Start.main(args);
     }
@@ -118,7 +127,7 @@ class SimpleExample {
         System.out.println("equals?: " + root.toString().endsWith(root2.toString()));
         root2.getAgentGroups()[1].adaptionRate = 0.3;
 
-        MappedGamsJson<GlobalRoot> mappedGams = new MappedGamsJson<>();
+        MappedGamsJson<GlobalRoot> mappedGams = new MappedGamsJson<>(GamsJson.Type.SCENARIO);
         mappedGams.add(2015, root);
         mappedGams.add(2016, root2);
         converter.toGamsJson(mappedGams);
@@ -159,7 +168,7 @@ class SimpleExample {
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
-        MappedGamsJson<GlobalRoot> mappedGams = new MappedGamsJson<>();
+        MappedGamsJson<GlobalRoot> mappedGams = new MappedGamsJson<>(GamsJson.Type.INPUT);
         mappedGams.getGamsJson().getDescription().setBusinessModelDescription("Testszenario");
         mappedGams.add(2015, root);
         converter.toGamsJson(mappedGams);

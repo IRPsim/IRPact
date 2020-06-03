@@ -10,6 +10,7 @@ import de.unileipzig.irptools.defstructure.Converter;
 import de.unileipzig.irptools.defstructure.DefinitionCollection;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
 import de.unileipzig.irptools.gamsjson.Delta;
+import de.unileipzig.irptools.gamsjson.GamsJson;
 import de.unileipzig.irptools.gamsjson.MappedGamsJson;
 import de.unileipzig.irptools.util.Table;
 import de.unileipzig.irptools.util.Util;
@@ -102,7 +103,12 @@ public class HardCodedAgentDemo implements Callable<Integer> {
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
-        MappedGamsJson<GlobalRoot> mappedRoot = converter.fromGamsJson(inputNode);
+        GamsJson.Type jsonType = GamsJson.Type.detectType(inputNode);
+        if(jsonType == GamsJson.Type.UNKNOWN) {
+            throw new IllegalArgumentException("unknown json file: " + inputPath.toString());
+        }
+
+        MappedGamsJson<GlobalRoot> mappedRoot = converter.fromGamsJson(jsonType, inputNode);
         //System.out.println(mappedRoot);
 
         //=====
@@ -193,7 +199,7 @@ public class HardCodedAgentDemo implements Callable<Integer> {
         platform.waitForTermination()
                 .get();
 
-        MappedGamsJson<de.unileipzig.irpact.start.hardcodeddemo.def.out.GlobalRoot> mappedOut = new MappedGamsJson<>();
+        MappedGamsJson<de.unileipzig.irpact.start.hardcodeddemo.def.out.GlobalRoot> mappedOut = new MappedGamsJson<>(GamsJson.Type.SCENARIO);
 
         int[] years = mappedRoot.getMappedEntries()
                 .stream()
