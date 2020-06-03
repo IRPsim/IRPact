@@ -1,10 +1,3 @@
-* - description: seed
-* - type: Integer
-* - identifier: seed
-* - unit: [x]
-* - hidden: 0
-SCALAR sca_seed
-
 * - description: seed_two
 * - type: Integer
 * - identifier: seed_two

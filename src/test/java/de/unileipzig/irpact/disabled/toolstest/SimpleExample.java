@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.JsonUtil;
 import de.unileipzig.irpact.disabled.TestFiles;
+import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.AgentGroup;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.GlobalRoot;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.GlobalScalars;
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -28,12 +30,18 @@ import java.nio.file.Path;
 class SimpleExample {
 
     @Test
+    void asd() {
+        System.out.println(TestFiles.scenarios.toAbsolutePath());
+        System.out.println(Files.exists(TestFiles.scenarios));
+    }
+
+    @Test
     void startMyDemo() throws IOException {
         String[] args = {
-                "-i", TestFiles.toolsdemo.resolve("test1.json").toString(),
-                "-o", TestFiles.toolsdemo.resolve("test1-out.json").toString()
+                "-i", TestFiles.scenarios.resolve("default.json").toString(),
+                "-o", TestFiles.toolsdemo.resolve("default-out.json").toString()
         };
-        HardCodedAgentDemo.main(args);
+        Start.main(args);
     }
 
     @Test

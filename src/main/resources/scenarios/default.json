@@ -12,7 +12,7 @@
       "interpolated" : false
     },
     "scalars" : {
-      "sca_seed" : 123
+      "sca_seed_two" : 123
     },
     "sets" : {
       "set_AgentGroup" : {
@@ -30,8 +30,12 @@
         }
       },
       "set_Product" : {
-        "Auto" : { },
-        "Haus" : { }
+        "Auto" : {
+          "par_Product_irrelevant" : 0.0
+        },
+        "Haus" : {
+          "par_Product_irrelevant" : 0.0
+        }
       }
     },
     "timeseries" : { },
@@ -50,7 +54,7 @@
       "interpolated" : false
     },
     "scalars" : {
-      "sca_seed" : 123
+      "sca_seed_two" : 123
     },
     "sets" : {
       "set_AgentGroup" : {
@@ -68,8 +72,12 @@
         }
       },
       "set_Product" : {
-        "Auto" : { },
-        "Haus" : { }
+        "Auto" : {
+          "par_Product_irrelevant" : 0.0
+        },
+        "Haus" : {
+          "par_Product_irrelevant" : 0.0
+        }
       }
     },
     "timeseries" : { },

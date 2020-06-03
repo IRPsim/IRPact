@@ -3,7 +3,7 @@
     :label "Allgemeine Einstellungen"
     :icon "fa fa-map-marker"
     :description "Für allgemeine Einstellungen"
-    :tags [["seed"] ["seed" "two"]]
+    :tags [["seed" "two"]]
   } 
   {
     :label "Produkte"

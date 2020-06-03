@@ -19,16 +19,6 @@ public class GlobalScalars {
                     unit = "[x]"
             ),
             edn = @EdnParameter(
-                    description = "Seed für Zufallszahlen."
-            )
-    )
-    public long seed;
-
-    @FieldDefinition(
-            gams = @GamsParameter(
-                    unit = "[x]"
-            ),
-            edn = @EdnParameter(
                     description = "Skalar mit zwei Tags."
             )
     )
@@ -38,17 +28,16 @@ public class GlobalScalars {
     }
 
     public GlobalScalars(long seed) {
-        this.seed = seed;
+        this.seed_two = seed;
     }
 
     public long getSeed() {
-        return seed;
+        return seed_two;
     }
 
     @Override
     public String toString() {
         return "GlobalScalars{" +
-                "seed=" + seed +
                 ", seed_two=" + seed_two +
                 '}';
     }
