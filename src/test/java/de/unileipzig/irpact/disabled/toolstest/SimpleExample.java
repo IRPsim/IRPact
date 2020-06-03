@@ -151,19 +151,12 @@ class SimpleExample {
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
-        ObjectNode temp = new ObjectMapper().createObjectNode();
-        converter.toGamsJsonYear(root, temp);
-        GlobalRoot root2 = converter.fromGamsJsonYear(temp);
-
-        System.out.println("equals?: " + root.toString().endsWith(root2.toString()));
-        root2.getAgentGroups()[1].adaptionRate = 0.3;
-
         MappedGamsJson<GlobalRoot> mappedGams = new MappedGamsJson<>();
+        mappedGams.getGamsJson().getDescription().setBusinessModelDescription("Testszenario");
         mappedGams.add(2015, root);
-        mappedGams.add(2016, root2);
         converter.toGamsJson(mappedGams);
 
-        Path out = TestFiles.toolsdemo.resolve("test1.json");
+        Path out = TestFiles.toolsdemo.resolve("test2.json");
         JsonUtil.writeJson(mappedGams.getGamsJson().getRoot(), out, JsonUtil.defaultPrinter);
 
         System.out.println(root);
