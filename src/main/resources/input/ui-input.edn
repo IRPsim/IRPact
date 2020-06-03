@@ -2,7 +2,7 @@
   {
     :label "Allgemeine Einstellungen"
     :icon "fa fa-map-marker"
-    :description "Für allgemeine Einstellungen"
+    :description "allgemeine Einstellungen"
     :tags [["seed" "two"]]
   } 
   {
