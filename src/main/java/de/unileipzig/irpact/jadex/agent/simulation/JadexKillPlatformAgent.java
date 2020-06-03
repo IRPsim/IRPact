@@ -55,7 +55,7 @@ public class JadexKillPlatformAgent extends JadexPlatformControlAgent {
     }
 
     @Override
-    protected void initArgs(Map<String, Object> args) {
+    protected void initArgsThis(Map<String, Object> args) {
         try {
             name = get(args, NAME);
             platformToKill = get(args, PLATFORM_TO_KILL);
@@ -117,7 +117,7 @@ public class JadexKillPlatformAgent extends JadexPlatformControlAgent {
     @OnInit
     @Override
     protected void onInit() {
-        initArgs(resultsFeature.getArguments());
+        initArgsThis(resultsFeature.getArguments());
         logger.debug("[{}] onInit", name);
     }
 

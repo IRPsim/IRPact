@@ -40,11 +40,18 @@ public final class CollectionUtil {
         return get(coll, index);
     }
 
-    @SuppressWarnings("unchecked")
+    @SafeVarargs
     public static <T> Set<T> hashSetOf(T... values) {
         Set<T> set = new HashSet<>();
         Collections.addAll(set, values);
         return set;
+    }
+
+    @SafeVarargs
+    public static <T> List<T> arrayListOf(T... values) {
+        List<T> list = new ArrayList<>();
+        Collections.addAll(list, values);
+        return list;
     }
 
     public static <T> T getRandom(List<T> list, Random rnd) {

@@ -8,6 +8,9 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
  */
 public abstract class AgentBase extends SimulationEntityBase implements Agent {
 
+    public AgentBase() {
+    }
+
     public AgentBase(SimulationEnvironment environment, String name) {
         super(environment, name);
     }

@@ -1,8 +1,6 @@
 [
   {
-    :label "Ergebnis" 
-    :icon "fa fa-power-off" 
-    :description "Ergebnis..." 
-    :tags [["magic" "output"]]
+    :label "Results" 
+    :tags [["AgentGroup" "Product" "adaptions"]]
   }
 ]

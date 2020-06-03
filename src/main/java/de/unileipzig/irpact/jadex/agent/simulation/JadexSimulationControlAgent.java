@@ -58,7 +58,7 @@ public class JadexSimulationControlAgent extends JadexPlatformControlAgent imple
     }
 
     @Override
-    protected void initArgs(Map<String, Object> args) {
+    protected void initArgsThis(Map<String, Object> args) {
         try {
             name = get(args, NAME);
             environment = get(args, ENVIRONMENT);
@@ -115,7 +115,7 @@ public class JadexSimulationControlAgent extends JadexPlatformControlAgent imple
     @OnInit
     @Override
     protected void onInit() {
-        initArgs(resultsFeature.getArguments());
+        initArgsThis(resultsFeature.getArguments());
         logger.debug("[{}] onInit", name);
     }
 

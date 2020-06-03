@@ -19,6 +19,9 @@ public class CompanyAgentBase extends InformationAgentBase implements CompanyAge
     protected ProductIntroductionScheme productIntroductionScheme;
     protected Set<Product> initialProducts;
 
+    public CompanyAgentBase() {
+    }
+
     public CompanyAgentBase(
             SimulationEnvironment environment,
             String name,

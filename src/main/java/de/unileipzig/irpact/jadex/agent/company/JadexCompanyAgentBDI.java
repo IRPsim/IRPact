@@ -1,15 +1,14 @@
 package de.unileipzig.irpact.jadex.agent.company;
 
 import de.unileipzig.irpact.core.agent.company.CompanyAgent;
-import de.unileipzig.irpact.core.agent.company.CompanyAgentBase;
+import de.unileipzig.irpact.core.agent.company.CompanyAgentData;
 import de.unileipzig.irpact.core.agent.company.ProductIntroductionScheme;
 import de.unileipzig.irpact.core.agent.company.advertisement.AdvertisementScheme;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.EntityType;
+import de.unileipzig.irpact.jadex.agent.Identifier;
 import de.unileipzig.irpact.jadex.agent.JadexAgentBase;
 import de.unileipzig.irpact.jadex.agent.JadexAgentService;
-import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
-import de.unileipzig.irpact.jadex.start.StartSimulation;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bdiv3.annotation.*;
 import jadex.bdiv3.features.IBDIAgentFeature;
@@ -48,9 +47,6 @@ import java.util.Set;
 public class JadexCompanyAgentBDI extends JadexAgentBase
         implements CompanyAgent, CompanyAgentService, JadexAgentService {
 
-    //Argument names
-    public static final String AGENT_BASE = StartSimulation.AGENT_BASE;
-
     //general
     private static final Logger logger = LoggerFactory.getLogger(JadexCompanyAgentBDI.class);
 
@@ -68,8 +64,8 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
     @AgentFeature
     protected IMessageFeature msgFeature;
 
-    //ConsumerAgent parameter
-    protected CompanyAgentBase agentBase;
+    //non-Beliefs
+    protected CompanyAgentData data;
 
     //Beliefs
     @Belief
@@ -88,12 +84,7 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
 
     @Override
     public double getInformationAuthority() {
-        return agentBase.getInformationAuthority();
-    }
-
-    @Override
-    public String getName() {
-        return agentBase.getName();
+        return data.getInformationAuthority();
     }
 
     @Override
@@ -103,17 +94,12 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
 
     @Override
     public AdvertisementScheme getAdvertisementScheme() {
-        return agentBase.getAdvertisementScheme();
+        return data.getAdvertisementScheme();
     }
 
     @Override
     public ProductIntroductionScheme getProductIntroductionScheme() {
-        return agentBase.getProductIntroductionScheme();
-    }
-
-    @Override
-    public JadexSimulationEnvironment getEnvironment() {
-        return (JadexSimulationEnvironment) agentBase.getEnvironment();
+        return data.getProductIntroductionScheme();
     }
 
     @Override
@@ -154,16 +140,10 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
     }
 
     @Override
-    protected void initArgs(Map<String, Object> args) {
-        try {
-            agentBase = get(args, AGENT_BASE);
-        } catch (Throwable t) {
-            String _name = agentBase == null
-                    ? getClass().getSimpleName()
-                    : getName();
-            logger.error("[" + _name + "] initArgs error", t);
-            throw t;
-        }
+    protected void initArgsThis(Map<String, Object> args) {
+        name = get(args, Identifier.NAME);
+        environment = get(args, Identifier.ENVIRONMENT);
+        data = get(args, Identifier.DATA);
     }
 
     //=========================
@@ -184,7 +164,7 @@ public class JadexCompanyAgentBDI extends JadexAgentBase
     protected void onStart() {
         logger.trace("[{}] onStart", getName());
         execFeature.waitForTick(ia -> {
-            for(Product product: agentBase.getInitialProducts()) {
+            for(Product product: data.getInitialProducts()) {
                 addProductToPortfolio(product);
             }
             return IFuture.DONE;

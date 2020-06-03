@@ -164,10 +164,15 @@ public class BasicConsumerAgentGroup extends AbstractGroup<ConsumerAgent> implem
     }
 
     public ConsumerAgent deriveAgent() {
-        String derivedName = deriveName();
         return new ConsumerAgentBase(
                 getEnvironment(),
-                derivedName,
+                deriveAgentData()
+        );
+    }
+
+    public ConsumerAgentData deriveAgentData() {
+        return new ConsumerAgentData(
+                deriveName(),
                 spatialDistribution.drawValue(),
                 this,
                 deriveAttributes(),

@@ -1,9 +1,3 @@
-* - description: Voll tolle Zahl.
-* - type: float
-* - identifier: Voll tolle Zahl
-* - unit:
-* - domain:
-* - validation:
-* - hidden:
-* - processing:
-SCALAR sca_magic_output
+* - type: Float
+* - identifier: adaptions
+PARAMETER par_table_AgentGroup_Product_adaptions(set_AgentGroup,set_Product)

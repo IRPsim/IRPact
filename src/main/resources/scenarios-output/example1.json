@@ -1,0 +1,108 @@
+{
+  "backendversion" : "fce9b077d795844c56f6b1a831ba265ea8e13dfc",
+  "data" : {
+    "years" : [ {
+      "config" : {
+        "simulationlength" : 35040,
+        "savelength" : 96,
+        "optimizationlength" : 192,
+        "resolution" : 35040,
+        "timestep" : 0.25,
+        "modeldefinition" : 3,
+        "year" : 2015,
+        "prognoseszenario" : null,
+        "interpolated" : false
+      },
+      "scalars" : { },
+      "sets" : {
+        "set_AgentGroup" : {
+          "gx10x5" : {
+            "par_AgentGroup_numberOfAgents" : 10,
+            "par_AgentGroup_adaptionRate" : 0.5
+          },
+          "gx100x01" : {
+            "par_AgentGroup_numberOfAgents" : 100,
+            "par_AgentGroup_adaptionRate" : 0.01
+          },
+          "gx50x75" : {
+            "par_AgentGroup_numberOfAgents" : 50,
+            "par_AgentGroup_adaptionRate" : 0.75
+          }
+        },
+        "set_Product" : {
+          "Auto" : { },
+          "Haus" : { }
+        }
+      },
+      "timeseries" : { },
+      "tables" : {
+        "par_table_AgentGroup_Product_adaptions" : {
+          "gx10x5" : {
+            "Auto" : 5.0,
+            "Haus" : 6.0
+          },
+          "gx100x01" : {
+            "Auto" : 3.0,
+            "Haus" : 2.0
+          },
+          "gx50x75" : {
+            "Auto" : 36.0,
+            "Haus" : 39.0
+          }
+        }
+      },
+      "postprocessing" : { }
+    }, {
+      "config" : {
+        "simulationlength" : 35040,
+        "savelength" : 96,
+        "optimizationlength" : 192,
+        "resolution" : 35040,
+        "timestep" : 0.25,
+        "modeldefinition" : 3,
+        "year" : 2016,
+        "prognoseszenario" : null,
+        "interpolated" : false
+      },
+      "scalars" : { },
+      "sets" : {
+        "set_AgentGroup" : {
+          "gx10x5" : {
+            "par_AgentGroup_numberOfAgents" : 10,
+            "par_AgentGroup_adaptionRate" : 0.5
+          },
+          "gx100x01" : {
+            "par_AgentGroup_numberOfAgents" : 100,
+            "par_AgentGroup_adaptionRate" : 0.3
+          },
+          "gx50x75" : {
+            "par_AgentGroup_numberOfAgents" : 50,
+            "par_AgentGroup_adaptionRate" : 0.75
+          }
+        },
+        "set_Product" : {
+          "Auto" : { },
+          "Haus" : { }
+        }
+      },
+      "timeseries" : { },
+      "tables" : {
+        "par_table_AgentGroup_Product_adaptions" : {
+          "gx10x5" : {
+            "Haus" : 3.0,
+            "Auto" : 2.0
+          },
+          "gx100x01" : {
+            "Auto" : 28.0,
+            "Haus" : 22.0
+          },
+          "gx50x75" : {
+            "Auto" : 11.0,
+            "Haus" : 10.0
+          }
+        }
+      },
+      "postprocessing" : { }
+    } ]
+  }
+}

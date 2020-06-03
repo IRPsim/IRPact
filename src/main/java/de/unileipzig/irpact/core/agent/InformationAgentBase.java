@@ -9,6 +9,9 @@ public abstract class InformationAgentBase extends AgentBase implements Informat
 
     protected double informationAuthority;
 
+    public InformationAgentBase() {
+    }
+
     public InformationAgentBase(SimulationEnvironment environment, String name, double informationAuthority) {
         super(environment, name);
         this.informationAuthority = informationAuthority;

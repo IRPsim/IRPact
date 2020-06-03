@@ -1,13 +1,12 @@
 package de.unileipzig.irpact.jadex.agent.policy;
 
 import de.unileipzig.irpact.core.agent.policy.PolicyAgent;
-import de.unileipzig.irpact.core.agent.policy.PolicyAgentBase;
+import de.unileipzig.irpact.core.agent.policy.PolicyAgentData;
 import de.unileipzig.irpact.core.agent.policy.TaxesScheme;
 import de.unileipzig.irpact.core.simulation.EntityType;
+import de.unileipzig.irpact.jadex.agent.Identifier;
 import de.unileipzig.irpact.jadex.agent.JadexAgentBase;
 import de.unileipzig.irpact.jadex.agent.JadexAgentService;
-import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
-import de.unileipzig.irpact.jadex.start.StartSimulation;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bdiv3.features.IBDIAgentFeature;
 import jadex.bridge.IComponentIdentifier;
@@ -43,9 +42,6 @@ import java.util.Map;
 public class JadexPolicyAgentBDI extends JadexAgentBase
         implements PolicyAgent, PolicyAgentService, JadexAgentService {
 
-    //Argument names
-    public static final String AGENT_BASE = StartSimulation.AGENT_BASE;
-
     //general
     private static final Logger logger = LoggerFactory.getLogger(JadexPolicyAgentBDI.class);
 
@@ -63,8 +59,8 @@ public class JadexPolicyAgentBDI extends JadexAgentBase
     @AgentFeature
     protected IMessageFeature msgFeature;
 
-    //ConsumerAgent parameter
-    protected PolicyAgentBase agentBase;
+    //non-Beliefs
+    protected PolicyAgentData data;
 
     //Beliefs
 
@@ -82,17 +78,7 @@ public class JadexPolicyAgentBDI extends JadexAgentBase
 
     @Override
     public double getInformationAuthority() {
-        return agentBase.getInformationAuthority();
-    }
-
-    @Override
-    public String getName() {
-        return agentBase.getName();
-    }
-
-    @Override
-    public JadexSimulationEnvironment getEnvironment() {
-        return (JadexSimulationEnvironment) agentBase.getEnvironment();
+        return data.getInformationAuthority();
     }
 
     @Override
@@ -110,7 +96,7 @@ public class JadexPolicyAgentBDI extends JadexAgentBase
 
     @Override
     public TaxesScheme getTaxesScheme() {
-        return agentBase.getTaxesScheme();
+        return data.getTaxesScheme();
     }
 
     //=========================
@@ -133,16 +119,10 @@ public class JadexPolicyAgentBDI extends JadexAgentBase
     }
 
     @Override
-    protected void initArgs(Map<String, Object> args) {
-        try {
-            agentBase = get(args, AGENT_BASE);
-        } catch (Throwable t) {
-            String _name = agentBase == null
-                    ? getClass().getSimpleName()
-                    : getName();
-            logger.error("[" + _name + "] initArgs error", t);
-            throw t;
-        }
+    protected void initArgsThis(Map<String, Object> args) {
+        name = get(args, Identifier.NAME);
+        environment = get(args, Identifier.ENVIRONMENT);
+        data = get(args, Identifier.DATA);
     }
 
     //=========================

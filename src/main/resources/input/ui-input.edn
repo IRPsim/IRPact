@@ -1,28 +1,17 @@
 [
   {
-    :label "Allgemeines" 
-    :icon "fa fa-power-off" 
-    :description "TODO ..."
-    :tags [["multiplier"]]
+    :label "Allgemeine Einstellungen" 
+    :description "Für allgemeine Einstellungen" 
+    :tags [["seed"]]
   } 
   {
-    :label "Konsumergruppen" 
-    :set "set_ConsumerAgentGroup" 
-    :icon "fa fa-users" 
-    :description "TODO sinnvolle Beschreibung für Prosumer einfügen." 
-    :tags [["ConsumerAgentGroup" "informationAuthority"]]
+    :label "Produkte" 
+    :description "angebotene Produkte" 
+    :set "set_Product"
   } 
   {
-    :label "Konsumergruppenattribute" 
-    :set "set_ConsumerAgentGroupAttribute" 
-    :icon "fa fa-cogs" 
-    :description "TODO sinnvolle Beschreibung für Attribute einfügen." 
-    :tags [["ConsumerAgentGroupAttribute" "value0"] ["ConsumerAgentGroupAttribute" "value1"]]
-  } 
-  {
-    :label "Attributzugehörigkeit"
-    :icon "glyphicon glyphicon-transfer" 
-    :description "TODO sinnvolle Beschreibung für Attributzugehörigkeiten einfügen."
-    :tags [["ConsumerAgentGroup" "ConsumerAgentGroupAttribute"]]
+    :label "Agentengruppen" 
+    :description "Agentengruppen in der Simulation" 
+    :tags [["AgentGroup" "numberOfAgents"] ["AgentGroup" "adaptionRate"]]
   }
 ]

@@ -3,6 +3,7 @@ package de.unileipzig.irpact.jadex.agent;
 import de.unileipzig.irpact.commons.annotation.ToDo;
 import de.unileipzig.irpact.commons.exception.MissingArgumentException;
 import de.unileipzig.irpact.core.message.Message;
+import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import jadex.bridge.IComponentIdentifier;
 import jadex.bridge.component.IMessageFeature;
 import jadex.bridge.component.IMessageHandler;
@@ -17,7 +18,11 @@ import java.util.Map;
  */
 public abstract class JadexAgentBase implements JadexAgent {
 
+    //Jadex parameter
     protected IMessageHandler messageHandler;
+    //non-Beliefs
+    protected String name;
+    protected JadexSimulationEnvironment environment;
 
     public JadexAgentBase() {
     }
@@ -45,7 +50,22 @@ public abstract class JadexAgentBase implements JadexAgent {
 
     protected abstract IMessageFeature getMessageFeature();
 
-    protected abstract void initArgs(Map<String, Object> args);
+    protected abstract void initArgsThis(Map<String, Object> args);
+
+    protected void initArgs(Map<String, Object> args) {
+        try {
+            initArgsThis(args);
+        } catch (Throwable t) {
+            String thisName = name == null
+                    ? getClass().getSimpleName()
+                    : name;
+            Logger logger = logger();
+            if(logger != null) {
+                logger().error("[" + thisName + "] initArgs error", t);
+            }
+            throw t;
+        }
+    }
 
     @ToDo("hmmm")
     protected void initMessageHandler() {
@@ -100,6 +120,16 @@ public abstract class JadexAgentBase implements JadexAgent {
     public void handleMessage(de.unileipzig.irpact.core.agent.Agent sender, Message msg) {
         logger().trace("[{}] handle Message from '{}'", getName(), sender.getName());
         msg.process(sender, this);
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public JadexSimulationEnvironment getEnvironment() {
+        return environment;
     }
 
     //=========================

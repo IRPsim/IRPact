@@ -11,10 +11,9 @@ import de.unileipzig.irpact.core.product.availability.ProductSoldOut;
 import de.unileipzig.irpact.core.product.price.ProductPriceChange;
 import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.jadex.agent.Identifier;
 import de.unileipzig.irpact.jadex.agent.JadexAgentBase;
 import de.unileipzig.irpact.jadex.agent.JadexAgentService;
-import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
-import de.unileipzig.irpact.jadex.start.StartSimulation;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bdiv3.annotation.Goal;
 import jadex.bdiv3.annotation.Plan;
@@ -40,6 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * @author Daniel Abitz
@@ -52,9 +52,6 @@ import java.util.Map;
 @Agent(type = BDIAgentFactory.TYPE)
 public class JadexPointOfSaleAgentBDI extends JadexAgentBase
         implements PointOfSaleAgent, PointOfSaleAgentService, JadexAgentService {
-
-    //Argument names
-    public static final String AGENT_BASE = StartSimulation.AGENT_BASE;
 
     //general
     private static final Logger logger = LoggerFactory.getLogger(JadexPointOfSaleAgentBDI.class);
@@ -73,8 +70,8 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     @AgentFeature
     protected IMessageFeature msgFeature;
 
-    //ConsumerAgent parameter
-    protected PointOfSaleAgentBase agentBase;
+    //non-Beliefs
+    protected PointOfSaleAgentData data;
 
     //Beliefs
 
@@ -92,22 +89,12 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
 
     @Override
     public double getInformationAuthority() {
-        return agentBase.getInformationAuthority();
+        return data.getInformationAuthority();
     }
 
     @Override
     public SpatialInformation getSpatialInformation() {
-        return agentBase.getSpatialInformation();
-    }
-
-    @Override
-    public String getName() {
-        return agentBase.getName();
-    }
-
-    @Override
-    public JadexSimulationEnvironment getEnvironment() {
-        return (JadexSimulationEnvironment) agentBase.getEnvironment();
+        return data.getSpatialInformation();
     }
 
     @Override
@@ -127,45 +114,48 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
 
     @Override
     public NewProductScheme getNewProductScheme() {
-        return agentBase.getNewProductScheme();
+        return data.getNewProductScheme();
     }
 
     @Override
     public Map<Product, ProductAvailability> getProductAvailability() {
-        return agentBase.getProductAvailability();
+        return data.getProductAvailability();
     }
 
     @Override
     public Map<Product, Price> getProductPrices() {
-        return agentBase.getProductPrices();
+        return data.getProductPrices();
     }
 
     @Override
     public ProductSoldOutScheme getProductSoldOutScheme() {
-        return agentBase.getProductSoldOutScheme();
+        return data.getProductSoldOutScheme();
     }
 
     @Override
     public boolean sellsProduct(Product product) {
-        return agentBase.getProductAvailability()
-                .containsKey(product);
+        return getProductAvailability().containsKey(product);
     }
 
     @Override
     public void makeAvailable(Product product, ProductAvailability availability, Price price) {
-        agentBase.getProductAvailability().put(product, availability);
-        agentBase.getProductPrices().put(product, price);
+        getProductAvailability().put(product, availability);
+        getProductPrices().put(product, price);
         bdiFeature.dispatchTopLevelGoal(new NewProductGoal(product));
     }
 
     @Override
     public Price requestPrice(Product product) {
-        return agentBase.requestPrice(product);
+        Price price = data.getProductPrices().get(product);
+        if(price == null) {
+            throw new NoSuchElementException("Product not found: " + product.getName());
+        }
+        return price;
     }
 
     @Override
     public ProductPriceChangeScheme getProductPriceChangeScheme() {
-        return agentBase.getProductPriceChangeScheme();
+        return data.getProductPriceChangeScheme();
     }
 
     @Override
@@ -210,7 +200,7 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
 
     @Override
     public ProductAvailabilityChangeScheme getProductAvailabilityChangeScheme() {
-        return agentBase.getProductAvailabilityChangeScheme();
+        return data.getProductAvailabilityChangeScheme();
     }
 
     //=========================
@@ -233,16 +223,10 @@ public class JadexPointOfSaleAgentBDI extends JadexAgentBase
     }
 
     @Override
-    protected void initArgs(Map<String, Object> args) {
-        try {
-            agentBase = get(args, AGENT_BASE);
-        } catch (Throwable t) {
-            String _name = agentBase == null
-                    ? getClass().getSimpleName()
-                    : getName();
-            logger.error("[" + _name + "] initArgs error", t);
-            throw t;
-        }
+    protected void initArgsThis(Map<String, Object> args) {
+        name = get(args, Identifier.NAME);
+        environment = get(args, Identifier.ENVIRONMENT);
+        data = get(args, Identifier.DATA);
     }
 
     //=========================

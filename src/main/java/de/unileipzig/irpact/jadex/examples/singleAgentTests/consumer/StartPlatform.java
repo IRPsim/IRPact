@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentBase;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentData;
 import de.unileipzig.irpact.core.need.BasicNeed;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.product.*;
@@ -83,13 +84,15 @@ public class StartPlatform {
         );
         ConsumerAgentBase agentBase = new ConsumerAgentBase(
                 env,
-                "TestConsumer",
-                new Point2D(0, 0),
-                group,
-                new HashSet<>(),
-                new HashSet<>(),
-                new BasicProductAttributePerceptionSchemeManager(new HashMap<>()),
-                new HashSet<>()
+                new ConsumerAgentData(
+                        "TestConsumer",
+                        new Point2D(0, 0),
+                        group,
+                        new HashSet<>(),
+                        new HashSet<>(),
+                        new BasicProductAttributePerceptionSchemeManager(new HashMap<>()),
+                        new HashSet<>()
+                )
         );
         agents.add(agentBase);
         return agentBase;

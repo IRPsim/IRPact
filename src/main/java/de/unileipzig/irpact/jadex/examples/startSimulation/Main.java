@@ -13,8 +13,8 @@ import de.unileipzig.irpact.core.need.NoNeedDevelopment;
 import de.unileipzig.irpact.core.need.NoNeedExpiration;
 import de.unileipzig.irpact.core.product.BasicProductGroup;
 import de.unileipzig.irpact.core.spatial.dim2.DummyPoint2DDistribution;
-import de.unileipzig.irpact.io.config.JadexConfiguration;
-import de.unileipzig.irpact.io.config.JadexConfigurationBuilder;
+import de.unileipzig.irpact.OLD.io.config.JadexConfiguration;
+import de.unileipzig.irpact.OLD.io.config.JadexConfigurationBuilder;
 import de.unileipzig.irpact.jadex.agent.consumer.JadexUseKnownProducts;
 import de.unileipzig.irpact.jadex.start.StartSimulation;
 

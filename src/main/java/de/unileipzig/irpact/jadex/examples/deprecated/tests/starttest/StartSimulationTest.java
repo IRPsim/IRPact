@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.jadex.examples.deprecated.tests.starttest;
 
 import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
-import de.unileipzig.irpact.io.config.JadexConfiguration;
-import de.unileipzig.irpact.io.config.JadexConfigurationBuilder;
+import de.unileipzig.irpact.OLD.io.config.JadexConfiguration;
+import de.unileipzig.irpact.OLD.io.config.JadexConfigurationBuilder;
 import de.unileipzig.irpact.jadex.start.StartSimulation;
 
 public class StartSimulationTest {

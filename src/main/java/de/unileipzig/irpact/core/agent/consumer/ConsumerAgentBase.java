@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
-import de.unileipzig.irpact.commons.Check;
-import de.unileipzig.irpact.commons.annotation.ToDo;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.SpatialInformationAgentBase;
 import de.unileipzig.irpact.core.message.Message;
@@ -11,10 +9,8 @@ import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductAttribute;
 import de.unileipzig.irpact.core.product.perception.ProductAttributePerceptionScheme;
-import de.unileipzig.irpact.core.product.perception.ProductAttributePerceptionSchemeManager;
 import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
 import java.util.Set;
 
@@ -23,36 +19,13 @@ import java.util.Set;
  */
 public class ConsumerAgentBase extends SpatialInformationAgentBase implements ConsumerAgent {
 
-    protected ConsumerAgentGroup group;
-    @ToDo("koennen die sich aendern?")
-    protected Set<ConsumerAgentAttribute> attributes;
-    @ToDo("koennen die sich aendern?")
-    protected Set<Preference> preferences;
-    protected ProductAttributePerceptionSchemeManager perceptionSchemeManager;
-    protected Set<Need> initialNeeds;
+    protected ConsumerAgentData data;
 
     public ConsumerAgentBase(
             SimulationEnvironment environment,
-            String name,
-            SpatialInformation spatialInformation,
-            ConsumerAgentGroup group,
-            Set<ConsumerAgentAttribute> attributes,
-            Set<Preference> preferences,
-            ProductAttributePerceptionSchemeManager perceptionSchemeManager,
-            Set<Need> initialNeeds) {
-        super(environment, name, group.getInformationAuthority(), spatialInformation);
-        this.group = Check.requireNonNull(group, "group");
-        this.attributes = Check.requireNonNull(attributes, "attributes");
-        this.preferences = Check.requireNonNull(preferences, "preferences");
-        this.perceptionSchemeManager = Check.requireNonNull(perceptionSchemeManager, "perceptionSchemeManager");
-    }
-
-    //=========================
-    //...
-    //=========================
-
-    public Set<Need> getInitialNeeds() {
-        return initialNeeds;
+            ConsumerAgentData data) {
+        super(environment, data.getName(), data.getInformationAuthority(), data.getSpatialInformation());
+        this.data = data;
     }
 
     //=========================
@@ -61,17 +34,17 @@ public class ConsumerAgentBase extends SpatialInformationAgentBase implements Co
 
     @Override
     public double getInformationAuthority() {
-        return group.getInformationAuthority();
+        return data.getInformationAuthority();
     }
 
     @Override
     public ConsumerAgentGroup getGroup() {
-        return group;
+        return data.getGroup();
     }
 
     @Override
     public Set<ConsumerAgentAttribute> getAttributes() {
-        return attributes;
+        return data.getAttributes();
     }
 
     @Override
@@ -91,7 +64,7 @@ public class ConsumerAgentBase extends SpatialInformationAgentBase implements Co
 
     @Override
     public Set<Preference> getPreferences() {
-        return preferences;
+        return data.getPreferences();
     }
 
     @Override
@@ -101,7 +74,7 @@ public class ConsumerAgentBase extends SpatialInformationAgentBase implements Co
 
     @Override
     public ProductAttributePerceptionScheme getScheme(ProductAttribute attribute) {
-        return perceptionSchemeManager.getScheme(attribute);
+        return data.getPerceptionSchemeManager().getScheme(attribute);
     }
 
     @Override

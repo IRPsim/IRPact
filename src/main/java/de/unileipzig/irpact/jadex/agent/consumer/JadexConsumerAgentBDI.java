@@ -2,7 +2,10 @@ package de.unileipzig.irpact.jadex.agent.consumer;
 
 import de.unileipzig.irpact.commons.annotation.Idea;
 import de.unileipzig.irpact.commons.annotation.ToDo;
-import de.unileipzig.irpact.core.agent.consumer.*;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentData;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.preference.Preference;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
@@ -11,17 +14,18 @@ import de.unileipzig.irpact.core.product.ProductAttribute;
 import de.unileipzig.irpact.core.product.perception.ProductAttributePerceptionScheme;
 import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.jadex.agent.Identifier;
 import de.unileipzig.irpact.jadex.agent.JadexAgentBase;
 import de.unileipzig.irpact.jadex.agent.JadexAgentService;
-import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
-import de.unileipzig.irpact.jadex.start.StartSimulation;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bdiv3.annotation.*;
 import jadex.bdiv3.features.IBDIAgentFeature;
 import jadex.bdiv3.runtime.impl.PlanFailureException;
 import jadex.bridge.IComponentIdentifier;
 import jadex.bridge.IInternalAccess;
-import jadex.bridge.component.*;
+import jadex.bridge.component.IArgumentsResultsFeature;
+import jadex.bridge.component.IExecutionFeature;
+import jadex.bridge.component.IMessageFeature;
 import jadex.bridge.service.annotation.OnEnd;
 import jadex.bridge.service.annotation.OnInit;
 import jadex.bridge.service.annotation.OnStart;
@@ -53,9 +57,6 @@ import java.util.Set;
 public class JadexConsumerAgentBDI extends JadexAgentBase
         implements ConsumerAgent, ConsumerAgentService, JadexAgentService {
 
-    //Argument names
-    public static final String AGENT_BASE = StartSimulation.AGENT_BASE;
-
     //general
     private static final Logger logger = LoggerFactory.getLogger(JadexConsumerAgentBDI.class);
 
@@ -74,7 +75,7 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     protected IMessageFeature msgFeature;
 
     //ConsumerAgent parameter
-    protected ConsumerAgentBase agentBase;
+    protected ConsumerAgentData data;
 
     //Beliefs
     @Belief
@@ -97,27 +98,17 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
 
     @Override
     public ConsumerAgentGroup getGroup() {
-        return agentBase.getGroup();
+        return data.getGroup();
     }
 
     @Override
     public double getInformationAuthority() {
-        return agentBase.getInformationAuthority();
+        return data.getInformationAuthority();
     }
 
     @Override
     public SpatialInformation getSpatialInformation() {
-        return agentBase.getSpatialInformation();
-    }
-
-    @Override
-    public String getName() {
-        return agentBase.getName();
-    }
-
-    @Override
-    public JadexSimulationEnvironment getEnvironment() {
-        return (JadexSimulationEnvironment) agentBase.getEnvironment();
+        return data.getSpatialInformation();
     }
 
     @Override
@@ -137,7 +128,7 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
 
     @Override
     public Set<ConsumerAgentAttribute> getAttributes() {
-        return agentBase.getAttributes();
+        return data.getAttributes();
     }
 
     @Override
@@ -157,12 +148,12 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
 
     @Override
     public Set<Preference> getPreferences() {
-        return agentBase.getPreferences();
+        return data.getPreferences();
     }
 
     @Override
     public ProductAttributePerceptionScheme getScheme(ProductAttribute attribute) {
-        return agentBase.getScheme(attribute);
+        return data.getPerceptionSchemeManager().getScheme(attribute);
     }
 
     @Override
@@ -206,16 +197,10 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     }
 
     @Override
-    protected void initArgs(Map<String, Object> args) {
-        try {
-            agentBase = get(args, AGENT_BASE);
-        } catch (Throwable t) {
-            String _name = agentBase == null
-                    ? getClass().getSimpleName()
-                    : getName();
-            logger.error("[" + _name + "] initArgs error", t);
-            throw t;
-        }
+    protected void initArgsThis(Map<String, Object> args) {
+        name = get(args, Identifier.NAME);
+        environment = get(args, Identifier.ENVIRONMENT);
+        data = get(args, Identifier.DATA);
     }
 
     //=========================
@@ -236,7 +221,7 @@ public class JadexConsumerAgentBDI extends JadexAgentBase
     protected void onStart() {
         logger.trace("[{}] onStart", getName());
         execFeature.waitForTick(ia -> {
-            for(Need initialNeed: agentBase.getInitialNeeds()) {
+            for(Need initialNeed: data.getInitialNeeds()) {
                 addNeed(initialNeed);
             }
             return IFuture.DONE;

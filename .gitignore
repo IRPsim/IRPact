@@ -11,11 +11,9 @@
 /platform_auto.conf
 
 #IRPact
-/log/
+/irpact.log
 
 #Daniel :)
-/todo.txt
-/old_stuff/
 /testfiles/
 
 #Eclipse
