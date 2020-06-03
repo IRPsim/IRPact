@@ -1,8 +1,16 @@
 * - description: seed
 * - type: Integer
 * - identifier: seed
+* - unit: [x]
 * - hidden: 0
 SCALAR sca_seed
+
+* - description: seed_two
+* - type: Integer
+* - identifier: seed_two
+* - unit: [x]
+* - hidden: 0
+SCALAR sca_seed_two
 
 * - description: AgentGroup
 * - type: String
@@ -31,3 +39,9 @@ PARAMETER par_AgentGroup_adaptionRate(set_AgentGroup)
 * - identifier: Product
 * - hidden: 0
 SET set_Product(*)
+
+* - description: irrelevant
+* - type: Float
+* - identifier: irrelevant
+* - hidden: 0
+PARAMETER par_Product_irrelevant(set_Product)

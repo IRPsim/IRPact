@@ -2,6 +2,8 @@ package de.unileipzig.irpact.start.hardcodeddemo.def.in;
 
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
+import de.unileipzig.irptools.defstructure.annotation.EdnParameter;
+import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 
 @Definition(
         edn = @Edn(
@@ -12,6 +14,13 @@ import de.unileipzig.irptools.defstructure.annotation.Edn;
 public class Product {
 
     public String _name;
+
+    @FieldDefinition(
+            edn = @EdnParameter(
+                    description = "Dieser Wert wird ignoriert."
+            )
+    )
+    public double irrelevant;
 
     public Product() {
     }
@@ -28,6 +37,7 @@ public class Product {
     public String toString() {
         return "Product{" +
                 "_name='" + _name + '\'' +
+                ", irrelevant=" + irrelevant +
                 '}';
     }
 }
