@@ -19,6 +19,7 @@ import jadex.base.Starter;
 import jadex.bridge.IExternalAccess;
 import jadex.bridge.service.types.cms.CreationInfo;
 import jadex.commons.future.DefaultResultListener;
+import jadex.commons.future.IFuture;
 import picocli.CommandLine;
 
 import java.io.IOException;
@@ -86,6 +87,8 @@ public class HardCodedAgentDemo implements Callable<Integer> {
    private List<IExternalAccess> agents = new ArrayList<>();
    private List<AgentGroup> groups = new ArrayList<>();
 
+   private IExternalAccess platform;
+   
    private void run() throws IOException {
       System.out.println("Start run");
       MappedGamsJson<GlobalRoot> mappedRoot = readInputData();
@@ -99,7 +102,7 @@ public class HardCodedAgentDemo implements Callable<Integer> {
             .mapToInt(AgentGroup::getNumberOfAgents)
             .sum();
 
-      IExternalAccess platform = createPlatform();
+      platform = createPlatform();
 
       CreationInfo masterInfo = new CreationInfo();
       masterInfo.setName("MASTER");
@@ -113,7 +116,7 @@ public class HardCodedAgentDemo implements Callable<Integer> {
 
       Product[] products = root0.getProducts();
 
-      Map<AgentGroup, List<AdaptedProducts>> out = createAgentGroups(mappedRoot, root0, platform, random, products);
+      Map<AgentGroup, List<AdaptedProducts>> out = createAgentGroups(mappedRoot, root0, random, products);
 
       // MasterAgentBdi !
       platform.waitForTermination()
@@ -194,7 +197,7 @@ public class HardCodedAgentDemo implements Callable<Integer> {
       return mappedRoot;
    }
 
-   private Map<AgentGroup, List<AdaptedProducts>> createAgentGroups(MappedGamsJson<GlobalRoot> mappedRoot, GlobalRoot root0, IExternalAccess platform, Random random,
+   private Map<AgentGroup, List<AdaptedProducts>> createAgentGroups(MappedGamsJson<GlobalRoot> mappedRoot, GlobalRoot root0, Random random,
          Product[] products) {
       Map<AgentGroup, List<AdaptedProducts>> out = new LinkedHashMap<>();
       for (int i = 0; i < root0.getAgentGroups().length; i++) {
@@ -218,24 +221,15 @@ public class HardCodedAgentDemo implements Callable<Integer> {
                years,
                adaotionRates,
                new Random(random.nextLong()));
-         createAgents(platform, products, out, group, agentGroup);
+         createAgents(products, out, group, agentGroup);
       }
       return out;
    }
 
-   private void createAgents(IExternalAccess platform, Product[] products, Map<AgentGroup, List<AdaptedProducts>> out, AgentGroup group, AdaptionAgentGroup agentGroup) {
+   private void createAgents(Product[] products, Map<AgentGroup, List<AdaptedProducts>> out, AgentGroup group, AdaptionAgentGroup agentGroup) {
       for (int j = 0; j < group.getNumberOfAgents(); j++) { // j wird nicht genutzt
          System.out.println("Creating agent: " + j);
-         AdaptionAgentData data = agentGroup.deriveData();
-         data.setProducts(products);
-         // AGENT ERSTELLEN
-         CreationInfo cInfo = new CreationInfo();
-         cInfo.setName(data.getName());
-         cInfo.setFilename("de.unileipzig.irpact.start.hardcodeddemo.AdaptionAgentBDI.class");
-         cInfo.addArgument("data", data);
-
-         IExternalAccess agent = platform.createComponent(cInfo)
-               .get();
+         IExternalAccess agent = createAgent( products, agentGroup);
          /*
           * agent.getResultsAsync().addResultListener(new DefaultResultListener<Map<String, Object>>() {
           * 
@@ -258,6 +252,22 @@ public class HardCodedAgentDemo implements Callable<Integer> {
          });
          */
       }
+   }
+
+   private IExternalAccess createAgent(Product[] products, AdaptionAgentGroup agentGroup) {
+      AdaptionAgentData data = agentGroup.deriveData();
+      data.setProducts(products);
+      // AGENT ERSTELLEN
+      CreationInfo cInfo = new CreationInfo();
+      cInfo.setName(data.getName());
+      cInfo.setFilename("de.unileipzig.irpact.start.hardcodeddemo.AdaptionAgentBDI.class");
+      cInfo.addArgument("data", data);
+
+      System.out.println("Creating component");
+      IFuture<IExternalAccess> createComponentFuture = platform.createComponent(cInfo);
+      System.out.println("Started creation");
+      IExternalAccess agent = createComponentFuture.get();
+      return agent;
    }
 
    public static void main(String[] args) throws IOException {
