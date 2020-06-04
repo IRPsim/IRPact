@@ -56,18 +56,31 @@ public class MasterAgentBDI {
     }
 
     private final Object lock = new Object();
-    private int count = 0;
-    private int modifyCount(int delta) {
+    private int createCount = 0;
+    private int modifyCreateCount(int delta) {
         synchronized (lock) {
-            count += delta;
-            return count;
+            createCount += delta;
+            return createCount;
+        }
+    }
+
+    private final Object killLock = new Object();
+    private int killCount = 0;
+    private int modifyKillCount(int delta) {
+        synchronized (killLock) {
+            killCount += delta;
+            return killCount;
         }
     }
 
     protected void runCycle() {
         execFeature.waitForDelay(1000, _internalAccess -> {
-            int currentCount = count;
-            if(currentCount == 0 && ((System.currentTimeMillis() - lastAccess) > 1000)) {
+            int currentKillCount = killCount;
+            int currentCreateCount = createCount;
+
+            System.out.println(currentCreateCount + " " + currentKillCount + " " + killCount);
+
+            if(currentKillCount == totalNumberOfAgents && ((System.currentTimeMillis() - lastAccess) > 1000)) {
                 IComponentIdentifier platformId = _internalAccess.getId().getRoot();
                 IExternalAccess platform = _internalAccess.getExternalAccess(platformId);
                 platform.killComponent();
@@ -84,9 +97,13 @@ public class MasterAgentBDI {
         return description.getModelName().endsWith("AdaptionAgentBDI");
     }
 
+    private int totalNumberOfAgents;
+
     @OnInit
     protected void onInit() {
         System.out.println("[MASTER] onInit");
+        totalNumberOfAgents = (int) resultsFeature.getArguments().get("totalNumberOfAgents");
+
         SComponentManagementService.listenToAll(agent)
                 .addResultListener(new IIntermediateResultListener<CMSStatusEvent>() {
                     @Override
@@ -94,10 +111,10 @@ public class MasterAgentBDI {
                         if(isValidAgent(result.getComponentDescription())) {
                             int c = 0;
                             if("CMSCreatedEvent".equals(result.getType())) {
-                                c = modifyCount(1);
+                                c = modifyCreateCount(1);
                             }
                             if("CMSTerminatedEvent".equals(result.getType())) {
-                                c = modifyCount(-1);
+                                c = modifyKillCount(1);
                             }
                             if(HardCodedAgentDemo.debug) System.out.println("[MASTER] count:" + c);
                         }

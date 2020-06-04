@@ -110,6 +110,13 @@ public class HardCodedAgentDemo implements Callable<Integer> {
 
         //=====
 
+        GlobalRoot root0 = mappedRoot.getMappedEntries()
+                .get(0)
+                .getData();
+        int totalNumberOfAgents = Arrays.stream(root0.getAgentGroups())
+                .mapToInt(AgentGroup::getNumberOfAgents)
+                .sum();
+
         IPlatformConfiguration config = PlatformConfigurationHandler.getMinimal();
         config.setValue("kernel_component", true);
         config.setValue("kernel_bdi", true);
@@ -121,12 +128,9 @@ public class HardCodedAgentDemo implements Callable<Integer> {
         CreationInfo masterInfo = new CreationInfo();
         masterInfo.setName("MASTER");
         masterInfo.setFilename("de.unileipzig.irpact.start.hardcodeddemo.MasterAgentBDI.class");
+        masterInfo.addArgument("totalNumberOfAgents", totalNumberOfAgents);
         IExternalAccess masterAgent = platform.createComponent(masterInfo)
                 .get();
-
-        GlobalRoot root0 = mappedRoot.getMappedEntries()
-                .get(0)
-                .getData();
 
         long seed = root0.getScalars().getSeed();
         Random random = new Random(seed);

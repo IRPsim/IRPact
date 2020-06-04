@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.start.hardcodeddemo;
 
+import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.Product;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bdiv3.features.IBDIAgentFeature;
