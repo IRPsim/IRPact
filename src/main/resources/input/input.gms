@@ -29,6 +29,6 @@ PARAMETER par_AgentGroup_adaptionRate(set_AgentGroup)
 SET set_Product(*)
 
 * - description: Name des Produktes
-* - type: String
+* - type: Integer
 * - identifier: Produktname
 PARAMETER par_Product_name(set_Product)

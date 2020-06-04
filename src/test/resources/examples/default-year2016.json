@@ -30,10 +30,10 @@
     },
     "set_Product" : {
       "Auto" : {
-        "par_Product_name" : "Auto"
+        "par_Product_name" : 0
       },
       "Haus" : {
-        "par_Product_name" : "Haus"
+        "par_Product_name" : 0
       }
     }
   },

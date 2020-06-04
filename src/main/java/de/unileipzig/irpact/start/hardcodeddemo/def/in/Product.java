@@ -26,18 +26,18 @@ public class Product {
                     identifier = "Produktname"
             )
     )
-    public String name;
+    public int name;
 
     public Product() {
     }
 
     public Product(String name) {
         this._name = name;
-        this.name = name;
+
     }
 
     public String getName() {
-        return name;
+        return _name;
     }
 
     @Override
