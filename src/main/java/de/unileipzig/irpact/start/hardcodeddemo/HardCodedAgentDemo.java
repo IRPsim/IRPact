@@ -18,7 +18,9 @@ import jadex.base.PlatformConfigurationHandler;
 import jadex.base.Starter;
 import jadex.bridge.IExternalAccess;
 import jadex.bridge.service.types.cms.CreationInfo;
+import jadex.commons.TimeoutException;
 import jadex.commons.future.DefaultResultListener;
+import jadex.commons.future.Future;
 import jadex.commons.future.IFuture;
 import picocli.CommandLine;
 
@@ -88,7 +90,7 @@ public class HardCodedAgentDemo implements Callable<Integer> {
    private List<AgentGroup> groups = new ArrayList<>();
 
    private IExternalAccess platform;
-   
+
    private void run() throws IOException {
       System.out.println("Start run");
       MappedGamsJson<GlobalRoot> mappedRoot = readInputData();
@@ -122,10 +124,10 @@ public class HardCodedAgentDemo implements Callable<Integer> {
       platform.waitForTermination()
             .get();
 
-      for(int i = 0; i < agents.size(); i++) {
+      for (int i = 0; i < agents.size(); i++) {
          Map<String, Object> result = agents.get(i)
-                 .getResultsAsync()
-                 .get();
+               .getResultsAsync()
+               .get();
          AdaptedProducts adaptedProducts = (AdaptedProducts) result.get("adapted");
          // putResult(out, group.getName(), data.getName(), adaptedProducts);
          putResult(out, groups.get(i), adaptedProducts);
@@ -229,7 +231,7 @@ public class HardCodedAgentDemo implements Callable<Integer> {
    private void createAgents(Product[] products, Map<AgentGroup, List<AdaptedProducts>> out, AgentGroup group, AdaptionAgentGroup agentGroup) {
       for (int j = 0; j < group.getNumberOfAgents(); j++) { // j wird nicht genutzt
          System.out.println("Creating agent: " + j);
-         IExternalAccess agent = createAgent( products, agentGroup);
+         IExternalAccess agent = createAgent(products, agentGroup);
          /*
           * agent.getResultsAsync().addResultListener(new DefaultResultListener<Map<String, Object>>() {
           * 
@@ -237,20 +239,16 @@ public class HardCodedAgentDemo implements Callable<Integer> {
           * null) { System.out.println("NULL @ " + data.getName() + " -> " + result); } else { putResult(out, group.getName(), data.getName(), adaptedProducts);
           * agent.killComponent(); } } });
           */
-         
+
          System.out.println("Waiting for termination");
          groups.add(group);
          agents.add(agent);
          /*
-         agent.waitForTermination().addResultListener(new DefaultResultListener<Map<String, Object>>() {
-            @Override
-            public void resultAvailable(Map<String, Object> result) {
-               AdaptedProducts adaptedProducts = (AdaptedProducts) result.get("adapted");
-               // putResult(out, group.getName(), data.getName(), adaptedProducts);
-               putResult(out, group, adaptedProducts);
-            }
-         });
-         */
+          * agent.waitForTermination().addResultListener(new DefaultResultListener<Map<String, Object>>() {
+          * 
+          * @Override public void resultAvailable(Map<String, Object> result) { AdaptedProducts adaptedProducts = (AdaptedProducts) result.get("adapted"); // putResult(out,
+          * group.getName(), data.getName(), adaptedProducts); putResult(out, group, adaptedProducts); } });
+          */
       }
    }
 
@@ -264,10 +262,16 @@ public class HardCodedAgentDemo implements Callable<Integer> {
       cInfo.addArgument("data", data);
 
       System.out.println("Creating component");
-      IFuture<IExternalAccess> createComponentFuture = platform.createComponent(cInfo);
+      System.out.println(platform.toString());
+      Future<IExternalAccess> createComponentFuture = (Future<IExternalAccess>) platform.createComponent(cInfo);
       System.out.println("Started creation");
-      IExternalAccess agent = createComponentFuture.get();
-      return agent;
+      try {
+         IExternalAccess agent = createComponentFuture.get(1000);
+         return agent;
+      } catch (TimeoutException e) {
+         e.printStackTrace();
+         return null;
+      }
    }
 
    public static void main(String[] args) throws IOException {
