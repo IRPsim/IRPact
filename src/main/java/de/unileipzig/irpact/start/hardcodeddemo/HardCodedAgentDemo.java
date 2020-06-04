@@ -83,23 +83,12 @@ public class HardCodedAgentDemo implements Callable<Integer> {
       list.add(adaptedProducts);
    }
 
+   private List<IExternalAccess> agents = new ArrayList<>();
+   private List<AgentGroup> groups = new ArrayList<>();
+
    private void run() throws IOException {
       System.out.println("Start run");
-      Path inputPath = Paths.get(inputFile);
-      ObjectNode inputNode = Util.readJson(inputPath);
-      // System.out.println(JsonUtil.writeJson(inputNode, JsonUtil.defaultPrinter));
-
-      DefinitionCollection dcoll = AnnotationParser.parse(GlobalRoot.CLASSES);
-      DefinitionMapper dmap = new DefinitionMapper(dcoll);
-      Converter converter = new Converter(dmap);
-
-      GamsJson.Type jsonType = GamsJson.Type.detectType(inputNode);
-      if (jsonType == GamsJson.Type.UNKNOWN) {
-         throw new IllegalArgumentException("unknown json file: " + inputPath.toString());
-      }
-
-      MappedGamsJson<GlobalRoot> mappedRoot = converter.fromGamsJson(jsonType, inputNode);
-      // System.out.println(mappedRoot);
+      MappedGamsJson<GlobalRoot> mappedRoot = readInputData();
 
       // =====
 
@@ -110,15 +99,7 @@ public class HardCodedAgentDemo implements Callable<Integer> {
             .mapToInt(AgentGroup::getNumberOfAgents)
             .sum();
 
-      System.out.println("Get config");
-
-      IPlatformConfiguration config = PlatformConfigurationHandler.getMinimal();
-      config.setValue("kernel_component", true);
-      config.setValue("kernel_bdi", true);
-      config.setDefaultTimeout(-1L);
-
-      IExternalAccess platform = Starter.createPlatform(config)
-            .get();
+      IExternalAccess platform = createPlatform();
 
       CreationInfo masterInfo = new CreationInfo();
       masterInfo.setName("MASTER");
@@ -132,82 +113,25 @@ public class HardCodedAgentDemo implements Callable<Integer> {
 
       Product[] products = root0.getProducts();
 
-      //NEU
-      List<IExternalAccess> agents = new ArrayList<>();
-      List<AgentGroup> groups = new ArrayList<>();
-
-      Map<AgentGroup, List<AdaptedProducts>> out = new LinkedHashMap<>();
-      for (int i = 0; i < root0.getAgentGroups().length; i++) {
-         System.out.println("Creating agentGroup: " + i);
-         AgentGroup group = root0.getAgentGroups()[i];
-         final int _i = i;
-         Map<Integer, Double> adaptionRateMap = Delta.collectYearEntryData(
-               mappedRoot,
-               _gr -> _gr.getAgentGroups()[_i].adaptionRate);
-         int[] years = adaptionRateMap.keySet()
-               .stream()
-               .mapToInt(_x -> _x)
-               .toArray();
-         double[] adaotionRates = adaptionRateMap.values()
-               .stream()
-               .mapToDouble(_x -> _x)
-               .toArray();
-
-         AdaptionAgentGroup agentGroup = new AdaptionAgentGroup(
-               group.getName(),
-               years,
-               adaotionRates,
-               new Random(random.nextLong()));
-         for (int j = 0; j < group.getNumberOfAgents(); j++) { // j wird nicht genutzt
-            System.out.println("Creating agent: " + j);
-            AdaptionAgentData data = agentGroup.deriveData();
-            data.setProducts(products);
-            // AGENT ERSTELLEN
-            CreationInfo cInfo = new CreationInfo();
-            cInfo.setName(data.getName());
-            cInfo.setFilename("de.unileipzig.irpact.start.hardcodeddemo.AdaptionAgentBDI.class");
-            cInfo.addArgument("data", data);
-
-            IExternalAccess agent = platform.createComponent(cInfo)
-                  .get();
-            /*
-             * agent.getResultsAsync().addResultListener(new DefaultResultListener<Map<String, Object>>() {
-             * 
-             * @Override public void resultAvailable(Map<String, Object> result) { AdaptedProducts adaptedProducts = (AdaptedProducts) result.get("adapted"); if(adaptedProducts ==
-             * null) { System.out.println("NULL @ " + data.getName() + " -> " + result); } else { putResult(out, group.getName(), data.getName(), adaptedProducts);
-             * agent.killComponent(); } } });
-             */
-            
-            System.out.println("Waiting for termination");
-            /*
-            agent.waitForTermination().addResultListener(new DefaultResultListener<Map<String, Object>>() {
-               @Override
-               public void resultAvailable(Map<String, Object> result) {
-                  AdaptedProducts adaptedProducts = (AdaptedProducts) result.get("adapted");
-                  // putResult(out, group.getName(), data.getName(), adaptedProducts);
-                  putResult(out, group, adaptedProducts);
-               }
-            });
-            */
-             //NEU
-             agents.add(agent);
-             groups.add(group);
-         }
-      }
+      Map<AgentGroup, List<AdaptedProducts>> out = createAgentGroups(mappedRoot, root0, platform, random, products);
 
       // MasterAgentBdi !
       platform.waitForTermination()
             .get();
 
-       //NEU
       for(int i = 0; i < agents.size(); i++) {
-          Map<String, Object> result = agents.get(i)
-                  .getResultsAsync()
-                  .get();
-          AdaptedProducts adaptedProducts = (AdaptedProducts) result.get("adapted");
-          putResult(out, groups.get(i), adaptedProducts);
+         Map<String, Object> result = agents.get(i)
+                 .getResultsAsync()
+                 .get();
+         AdaptedProducts adaptedProducts = (AdaptedProducts) result.get("adapted");
+         // putResult(out, group.getName(), data.getName(), adaptedProducts);
+         putResult(out, groups.get(i), adaptedProducts);
       }
 
+      writeOutput(mappedRoot, out);
+   }
+
+   private void writeOutput(MappedGamsJson<GlobalRoot> mappedRoot, Map<AgentGroup, List<AdaptedProducts>> out) throws IOException {
       MappedGamsJson<de.unileipzig.irpact.start.hardcodeddemo.def.out.GlobalRoot> mappedOut = new MappedGamsJson<>(GamsJson.Type.SCENARIO);
 
       int[] years = mappedRoot.getMappedEntries()
@@ -236,6 +160,104 @@ public class HardCodedAgentDemo implements Callable<Integer> {
 
       Path outputPath = Paths.get(outputFile);
       Util.writeJson(mappedOut.getGamsJson().getRoot(), outputPath, Util.defaultPrinter);
+   }
+
+   private IExternalAccess createPlatform() {
+      System.out.println("Get config");
+
+      IPlatformConfiguration config = PlatformConfigurationHandler.getMinimal();
+      config.setValue("kernel_component", true);
+      config.setValue("kernel_bdi", true);
+      config.setDefaultTimeout(-1L);
+
+      IExternalAccess platform = Starter.createPlatform(config)
+            .get();
+      return platform;
+   }
+
+   private MappedGamsJson<GlobalRoot> readInputData() throws IOException {
+      Path inputPath = Paths.get(inputFile);
+      ObjectNode inputNode = Util.readJson(inputPath);
+      // System.out.println(JsonUtil.writeJson(inputNode, JsonUtil.defaultPrinter));
+
+      DefinitionCollection dcoll = AnnotationParser.parse(GlobalRoot.CLASSES);
+      DefinitionMapper dmap = new DefinitionMapper(dcoll);
+      Converter converter = new Converter(dmap);
+
+      GamsJson.Type jsonType = GamsJson.Type.detectType(inputNode);
+      if (jsonType == GamsJson.Type.UNKNOWN) {
+         throw new IllegalArgumentException("unknown json file: " + inputPath.toString());
+      }
+
+      MappedGamsJson<GlobalRoot> mappedRoot = converter.fromGamsJson(jsonType, inputNode);
+      // System.out.println(mappedRoot);
+      return mappedRoot;
+   }
+
+   private Map<AgentGroup, List<AdaptedProducts>> createAgentGroups(MappedGamsJson<GlobalRoot> mappedRoot, GlobalRoot root0, IExternalAccess platform, Random random,
+         Product[] products) {
+      Map<AgentGroup, List<AdaptedProducts>> out = new LinkedHashMap<>();
+      for (int i = 0; i < root0.getAgentGroups().length; i++) {
+         System.out.println("Creating agentGroup: " + i);
+         AgentGroup group = root0.getAgentGroups()[i];
+         final int _i = i;
+         Map<Integer, Double> adaptionRateMap = Delta.collectYearEntryData(
+               mappedRoot,
+               _gr -> _gr.getAgentGroups()[_i].adaptionRate);
+         int[] years = adaptionRateMap.keySet()
+               .stream()
+               .mapToInt(_x -> _x)
+               .toArray();
+         double[] adaotionRates = adaptionRateMap.values()
+               .stream()
+               .mapToDouble(_x -> _x)
+               .toArray();
+
+         AdaptionAgentGroup agentGroup = new AdaptionAgentGroup(
+               group.getName(),
+               years,
+               adaotionRates,
+               new Random(random.nextLong()));
+         createAgents(platform, products, out, group, agentGroup);
+      }
+      return out;
+   }
+
+   private void createAgents(IExternalAccess platform, Product[] products, Map<AgentGroup, List<AdaptedProducts>> out, AgentGroup group, AdaptionAgentGroup agentGroup) {
+      for (int j = 0; j < group.getNumberOfAgents(); j++) { // j wird nicht genutzt
+         System.out.println("Creating agent: " + j);
+         AdaptionAgentData data = agentGroup.deriveData();
+         data.setProducts(products);
+         // AGENT ERSTELLEN
+         CreationInfo cInfo = new CreationInfo();
+         cInfo.setName(data.getName());
+         cInfo.setFilename("de.unileipzig.irpact.start.hardcodeddemo.AdaptionAgentBDI.class");
+         cInfo.addArgument("data", data);
+
+         IExternalAccess agent = platform.createComponent(cInfo)
+               .get();
+         /*
+          * agent.getResultsAsync().addResultListener(new DefaultResultListener<Map<String, Object>>() {
+          * 
+          * @Override public void resultAvailable(Map<String, Object> result) { AdaptedProducts adaptedProducts = (AdaptedProducts) result.get("adapted"); if(adaptedProducts ==
+          * null) { System.out.println("NULL @ " + data.getName() + " -> " + result); } else { putResult(out, group.getName(), data.getName(), adaptedProducts);
+          * agent.killComponent(); } } });
+          */
+         
+         System.out.println("Waiting for termination");
+         groups.add(group);
+         agents.add(agent);
+         /*
+         agent.waitForTermination().addResultListener(new DefaultResultListener<Map<String, Object>>() {
+            @Override
+            public void resultAvailable(Map<String, Object> result) {
+               AdaptedProducts adaptedProducts = (AdaptedProducts) result.get("adapted");
+               // putResult(out, group.getName(), data.getName(), adaptedProducts);
+               putResult(out, group, adaptedProducts);
+            }
+         });
+         */
+      }
    }
 
    public static void main(String[] args) throws IOException {
