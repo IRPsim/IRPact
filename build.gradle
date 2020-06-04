@@ -79,7 +79,7 @@ dependencies {
 
 // Invalid signature file digest for Manifest main attributes -> fatjar geht (erstmal?) nicht (Problem bleibt mit shadow bestehen)
 // einfach die key files entfernen...
-task buildDemoFatJar(type: Jar) {
+task buildUberJar(type: Jar) {
     archiveAppendix.set('demo')
     archiveClassifier.set('fat')
     manifest {
@@ -94,7 +94,7 @@ task buildDemoFatJar(type: Jar) {
 }
 
 artifacts {
-    archives buildDemoFatJar
+    archives buildUberJar
 }
 
 /*
