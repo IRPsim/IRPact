@@ -78,7 +78,7 @@ public class MasterAgentBDI {
             int currentKillCount = killCount;
             int currentCreateCount = createCount;
 
-            System.out.println(currentCreateCount + " " + currentKillCount + " " + killCount);
+            System.out.println(currentCreateCount + " " + currentKillCount + " " + totalNumberOfAgents);
 
             if(currentKillCount == totalNumberOfAgents && ((System.currentTimeMillis() - lastAccess) > 1000)) {
                 IComponentIdentifier platformId = _internalAccess.getId().getRoot();
