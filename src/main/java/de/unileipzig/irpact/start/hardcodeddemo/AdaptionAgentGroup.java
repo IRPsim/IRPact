@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.start.hardcodeddemo;
 
+import de.unileipzig.irpact.start.hardcodeddemo.def.in.AgentGroup;
+
 import java.util.Random;
 
 /**
@@ -9,15 +11,15 @@ import java.util.Random;
 public class AdaptionAgentGroup {
 
     private String name;
-    private int[] years;
-    private double[] adaptionRate;
+    private AgentGroup group;
+    private int year;
     private Random random;
 
-    public AdaptionAgentGroup(String name, int[] years, double[] adaptionRate, Random random) {
+    public AdaptionAgentGroup(String name, int year, Random random, AgentGroup group) {
         this.name = name;
-        this.years = years;
-        this.adaptionRate = adaptionRate;
+        this.year = year;
         this.random = random;
+        this.group = group;
     }
 
     protected int productId = 0;
@@ -29,10 +31,18 @@ public class AdaptionAgentGroup {
 
     public AdaptionAgentData deriveData() {
         AdaptionAgentData data = new AdaptionAgentData();
-        data.setYears(years);
-        data.setAdaptionRate(adaptionRate);
+        data.setYear(year);
+        data.setAdaptionRate(group.getAdaptionRate());
         data.setName(deriveName());
         data.setRandom(new Random(random.nextLong()));
         return data;
+    }
+
+    public AgentGroup getGroup() {
+        return group;
+    }
+
+    public int getNumberOfAgents() {
+        return group.getNumberOfAgents();
     }
 }

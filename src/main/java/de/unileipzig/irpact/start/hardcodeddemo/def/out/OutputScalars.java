@@ -14,7 +14,7 @@ import de.unileipzig.irptools.util.Table;
         ),
         global = true
 )
-public class GlobalScalars {
+public class OutputScalars {
 
     @FieldDefinition(
             gams = @GamsParameter(
@@ -30,10 +30,10 @@ public class GlobalScalars {
     @TableInfo(first = AgentGroup.class, second = Product.class, value = double.class)
     public Table<AgentGroup, Product, Double> adaptions;
 
-    public GlobalScalars() {
+    public OutputScalars() {
     }
 
-    public GlobalScalars(Table<AgentGroup, Product, Double> adaptions) {
+    public OutputScalars(Table<AgentGroup, Product, Double> adaptions) {
         this.adaptions = adaptions;
     }
 

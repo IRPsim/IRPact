@@ -16,7 +16,7 @@ import de.unileipzig.irptools.defstructure.annotation.GamsParameter;
         ),
         global = true
 )
-public class GlobalScalars {
+public class InputScalars {
 
     @FieldDefinition(
             gams = @GamsParameter(
@@ -27,10 +27,10 @@ public class GlobalScalars {
     )
     public long seed;
 
-    public GlobalScalars() {
+    public InputScalars() {
     }
 
-    public GlobalScalars(long seed) {
+    public InputScalars(long seed) {
         this.seed = seed;
     }
 

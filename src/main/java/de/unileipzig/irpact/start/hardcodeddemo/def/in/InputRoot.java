@@ -14,17 +14,17 @@ import java.util.List;
 @Definition(
         root = true
 )
-public class GlobalRoot {
+public class InputRoot {
 
     public static final List<AnnotationParser.Input> CLASSES = Util.listOf(
-            AnnotationParser.Input.newInstance(Type.INPUT, GlobalRoot.class),
-            AnnotationParser.Input.newInstance(Type.INPUT, GlobalScalars.class),
+            AnnotationParser.Input.newInstance(Type.INPUT, InputRoot.class),
+            AnnotationParser.Input.newInstance(Type.INPUT, InputScalars.class),
             AnnotationParser.Input.newInstance(Type.INPUT, AgentGroup.class),
             AnnotationParser.Input.newInstance(Type.INPUT, Product.class)
     );
 
     @FieldDefinition
-    public GlobalScalars scalars;
+    public InputScalars scalars;
 
     @FieldDefinition
     public AgentGroup[] agentGroups;
@@ -32,16 +32,16 @@ public class GlobalRoot {
     @FieldDefinition
     public Product[] products;
 
-    public GlobalRoot() {
+    public InputRoot() {
     }
 
-    public GlobalRoot(GlobalScalars scalars, AgentGroup[] agentGroups, Product[] products) {
+    public InputRoot(InputScalars scalars, AgentGroup[] agentGroups, Product[] products) {
         this.scalars = scalars;
         this.agentGroups = agentGroups;
         this.products = products;
     }
 
-    public GlobalScalars getScalars() {
+    public InputScalars getScalars() {
         return scalars;
     }
 

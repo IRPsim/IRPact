@@ -6,9 +6,10 @@ import de.unileipzig.irpact.commons.JsonUtil;
 import de.unileipzig.irpact.disabled.TestFiles;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.AgentGroup;
-import de.unileipzig.irpact.start.hardcodeddemo.def.in.GlobalRoot;
-import de.unileipzig.irpact.start.hardcodeddemo.def.in.GlobalScalars;
+import de.unileipzig.irpact.start.hardcodeddemo.def.in.InputRoot;
+import de.unileipzig.irpact.start.hardcodeddemo.def.in.InputScalars;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.Product;
+import de.unileipzig.irpact.start.hardcodeddemo.def.out.OutputRoot;
 import de.unileipzig.irptools.defstructure.*;
 import de.unileipzig.irptools.gamsjson.GamsJson;
 import de.unileipzig.irptools.gamsjson.MappedGamsJson;
@@ -39,7 +40,7 @@ class SimpleExample {
     void startMyDemoWithScenario() throws IOException {
         String[] args = {
                 "-i", TestFiles.scenarios.resolve("default.json").toString(),
-                "-o", TestFiles.toolsdemo.resolve("default-out.json").toString()
+                "-o", TestFiles.toolsdemo.resolve("default-out5.json").toString()
         };
         Start.main(args);
     }
@@ -71,7 +72,7 @@ class SimpleExample {
 
     @Test
     void handleInput() throws IOException {
-        DefinitionCollection dcoll = AnnotationParser.parse(GlobalRoot.CLASSES);
+        DefinitionCollection dcoll = AnnotationParser.parse(InputRoot.CLASSES);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
 
         Path gamsOut = TestFiles.toolsdemo.resolve("input.gms");
@@ -88,7 +89,7 @@ class SimpleExample {
 
     @Test
     void handleOutput() throws IOException {
-        DefinitionCollection dcoll = AnnotationParser.parse(de.unileipzig.irpact.start.hardcodeddemo.def.out.GlobalRoot.CLASSES);
+        DefinitionCollection dcoll = AnnotationParser.parse(OutputRoot.CLASSES);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
 
         Path gamsOut = TestFiles.toolsdemo.resolve("output.gms");
@@ -101,7 +102,7 @@ class SimpleExample {
 
     @Test
     void buildSmallDemo1() throws IOException {
-        GlobalScalars scalars = new GlobalScalars(123);
+        InputScalars scalars = new InputScalars(123);
         AgentGroup[] groups = {
                 new AgentGroup(
                         "gx10x5",
@@ -123,20 +124,20 @@ class SimpleExample {
                 new Product("Auto"),
                 new Product("Haus")
         };
-        GlobalRoot root = new GlobalRoot(scalars, groups, products);
+        InputRoot root = new InputRoot(scalars, groups, products);
 
-        DefinitionCollection dcoll = AnnotationParser.parse(GlobalRoot.CLASSES);
+        DefinitionCollection dcoll = AnnotationParser.parse(InputRoot.CLASSES);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
         ObjectNode temp = new ObjectMapper().createObjectNode();
         converter.toGamsJsonYear(root, temp);
-        GlobalRoot root2 = converter.fromGamsJsonYear(temp);
+        InputRoot root2 = converter.fromGamsJsonYear(temp);
 
         System.out.println("equals?: " + root.toString().endsWith(root2.toString()));
         root2.getAgentGroups()[1].adaptionRate = 0.3;
 
-        MappedGamsJson<GlobalRoot> mappedGams = new MappedGamsJson<>(GamsJson.Type.SCENARIO);
+        MappedGamsJson<InputRoot> mappedGams = new MappedGamsJson<>(GamsJson.Type.SCENARIO);
         mappedGams.add(2015, root);
         mappedGams.add(2016, root2);
         converter.toGamsJson(mappedGams);
@@ -155,7 +156,7 @@ class SimpleExample {
 
     @Test
     void buildSmallDemo2_OneYear() throws IOException {
-        GlobalScalars scalars = new GlobalScalars(123);
+        InputScalars scalars = new InputScalars(123);
         AgentGroup[] groups = {
                 new AgentGroup(
                         "gx10x5",
@@ -177,13 +178,13 @@ class SimpleExample {
                 new Product("Auto"),
                 new Product("Haus")
         };
-        GlobalRoot root = new GlobalRoot(scalars, groups, products);
+        InputRoot root = new InputRoot(scalars, groups, products);
 
-        DefinitionCollection dcoll = AnnotationParser.parse(GlobalRoot.CLASSES);
+        DefinitionCollection dcoll = AnnotationParser.parse(InputRoot.CLASSES);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
-        MappedGamsJson<GlobalRoot> mappedGams = new MappedGamsJson<>(GamsJson.Type.INPUT);
+        MappedGamsJson<InputRoot> mappedGams = new MappedGamsJson<>(GamsJson.Type.INPUT);
         mappedGams.getGamsJson().getDescription().setBusinessModelDescription("Testszenario");
         mappedGams.add(2015, root);
         converter.toGamsJson(mappedGams);

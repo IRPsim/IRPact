@@ -28,19 +28,19 @@ public class AdaptionAgentData {
         return name;
     }
 
-    protected int[] years;
-    public int[] getYears() {
-        return years;
+    protected int year;
+    public int getYear() {
+        return year;
     }
-    public void setYears(int[] years) {
-        this.years = years;
+    public void setYear(int year) {
+        this.year = year;
     }
 
-    protected double[] adaptionRate;
-    public double[] getAdaptionRate() {
+    protected double adaptionRate;
+    public double getAdaptionRate() {
         return adaptionRate;
     }
-    public void setAdaptionRate(double[] adaptionRate) {
+    public void setAdaptionRate(double adaptionRate) {
         this.adaptionRate = adaptionRate;
     }
 
