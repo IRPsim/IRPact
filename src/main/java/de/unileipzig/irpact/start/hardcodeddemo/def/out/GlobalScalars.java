@@ -2,23 +2,29 @@ package de.unileipzig.irpact.start.hardcodeddemo.def.out;
 
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.AgentGroup;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.Product;
-import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.EdnParameter;
-import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
-import de.unileipzig.irptools.defstructure.annotation.TableInfo;
+import de.unileipzig.irptools.defstructure.annotation.*;
 import de.unileipzig.irptools.util.Table;
 
 /**
  * @author Daniel Abitz
  */
 @Definition(
+        gams = @Gams(
+                hidden = "1"
+        ),
         global = true
 )
 public class GlobalScalars {
 
     @FieldDefinition(
+            gams = @GamsParameter(
+                    identifier = "Produktadaptionen",
+                    description = "Anzahl der Adaptionen der Gruppe je Produkt im Jahr"
+            ),
             edn = @EdnParameter(
-                    path = "Results"
+                    label = "Ergebnis - Produktadaptionen",
+                    description = "Gibt die Anzahl der Adaptionen f\u00fcr die Agentengruppe in diesem Jahr an.",
+                    icon = "fa fa-map-marker"
             )
     )
     @TableInfo(first = AgentGroup.class, second = Product.class, value = double.class)

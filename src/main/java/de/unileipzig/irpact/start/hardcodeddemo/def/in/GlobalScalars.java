@@ -1,6 +1,9 @@
 package de.unileipzig.irpact.start.hardcodeddemo.def.in;
 
-import de.unileipzig.irptools.defstructure.annotation.*;
+import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.Edn;
+import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.defstructure.annotation.GamsParameter;
 
 /**
  * @author Daniel Abitz
@@ -8,7 +11,8 @@ import de.unileipzig.irptools.defstructure.annotation.*;
 @Definition(
         edn = @Edn(
                 label = "Allgemeine Einstellungen",
-                description = "allgemeine Einstellungen"
+                icon = "fa fa-map-marker",
+                description = "Allgemeine Einstellungen f\u00fcr die Simulation."
         ),
         global = true
 )
@@ -16,28 +20,28 @@ public class GlobalScalars {
 
     @FieldDefinition(
             gams = @GamsParameter(
-                    description = "Skalar mit zwei Tags.",
+                    description = "Seed f\u00fcr den Zufallsgenerator",
                     identifier = "Zufallswert",
                     unit = "[x]"
             )
     )
-    public long seed_two;
+    public long seed;
 
     public GlobalScalars() {
     }
 
     public GlobalScalars(long seed) {
-        this.seed_two = seed;
+        this.seed = seed;
     }
 
     public long getSeed() {
-        return seed_two;
+        return seed;
     }
 
     @Override
     public String toString() {
         return "GlobalScalars{" +
-                ", seed_two=" + seed_two +
+                ", seed=" + seed +
                 '}';
     }
 }

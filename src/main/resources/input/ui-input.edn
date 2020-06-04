@@ -2,21 +2,21 @@
   {
     :label "Allgemeine Einstellungen"
     :icon "fa fa-map-marker"
-    :description "allgemeine Einstellungen"
-    :tags [["seed" "two"]]
-  } 
+    :description "Allgemeine Einstellungen für die Simulation."
+    :tags [["global" "seed"]]
+    }
+  {
+    :label "Agentengruppen"
+    :set "set_AgentGroup"
+    :icon "fa fa-map-marker"
+    :description "Agentengruppen in der Simulation"
+    :tags [["AgentGroup" "numberOfAgents"] ["AgentGroup" "adaptionRate"]]
+    }
   {
     :label "Produkte"
     :set "set_Product"
     :icon "fa fa-map-marker"
     :description "angebotene Produkte"
-    :tags [["Product" "irrelevant"]]
-  } 
-  {
-    :label "Agentengruppen"
-    :icon "fa fa-map-marker"
-    :set "set_AgentGroup"
-    :description "Agentengruppen in der Simulation" 
-    :tags [["AgentGroup" "numberOfAgents"] ["AgentGroup" "adaptionRate"]]
+    :tags [["Product" "name"]]
   }
 ]

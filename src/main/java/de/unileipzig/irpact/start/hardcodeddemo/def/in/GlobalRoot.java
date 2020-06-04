@@ -1,9 +1,10 @@
 package de.unileipzig.irpact.start.hardcodeddemo.def.in;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irptools.defstructure.AnnotationParser;
+import de.unileipzig.irptools.defstructure.Type;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.Util;
 
 import java.util.List;
 
@@ -15,11 +16,11 @@ import java.util.List;
 )
 public class GlobalRoot {
 
-    public static final List<Class<?>> CLASSES = CollectionUtil.arrayListOf(
-            GlobalRoot.class,
-            GlobalScalars.class,
-            AgentGroup.class,
-            Product.class
+    public static final List<AnnotationParser.Input> CLASSES = Util.listOf(
+            AnnotationParser.Input.newInstance(Type.INPUT, GlobalRoot.class),
+            AnnotationParser.Input.newInstance(Type.INPUT, GlobalScalars.class),
+            AnnotationParser.Input.newInstance(Type.INPUT, AgentGroup.class),
+            AnnotationParser.Input.newInstance(Type.INPUT, Product.class)
     );
 
     @FieldDefinition

@@ -8,8 +8,9 @@ import de.unileipzig.irptools.defstructure.annotation.*;
 @Definition(
         edn = @Edn(
                 label = "Agentengruppen",
-                icon = "",
-                description = "Agentengruppen in der Simulation"
+                icon = "fa fa-map-marker",
+                description = "Agentengruppen in der Simulation",
+                useOwnSet = "1"
         )
 )
 public class AgentGroup {
@@ -18,22 +19,22 @@ public class AgentGroup {
 
     @FieldDefinition(
             gams = @GamsParameter(
+                    identifier = "Agentenanzahl",
+                    description = "Anzahl der Agenten in der Gruppe",
                     domain = "[1,]",
                     defaultValue = "10"
-            ),
-            edn = @EdnParameter(
-                    description = "Anzahl der Agenten in der Gruppe"
             )
     )
     public int numberOfAgents;
 
     @FieldDefinition(
             gams = @GamsParameter(
+                    identifier = "Adaptionsrate",
+                    description = "Adaptionsrate für die Agenten dieser Gruppe",
                     domain = "[0,1]",
                     defaultValue = "0.5"
             ),
             edn = @EdnParameter(
-                    description = "Adaptionsrate für die Agenten dieser Gruppe",
                     delta = "1"
             )
     )

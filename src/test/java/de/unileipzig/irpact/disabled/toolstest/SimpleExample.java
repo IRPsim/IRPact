@@ -54,6 +54,15 @@ class SimpleExample {
     }
 
     @Test
+    void startMyDemoWithSingleYear() throws IOException {
+        String[] args = {
+                "-i", TestFiles.toolsdemo.resolve("year2015.json").toString(),
+                "-o", TestFiles.toolsdemo.resolve("year2015-out.json").toString()
+        };
+        Start.main(args);
+    }
+
+    @Test
     void runInit() throws IOException {
         handleInput();
         handleOutput();
@@ -66,13 +75,13 @@ class SimpleExample {
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
 
         Path gamsOut = TestFiles.toolsdemo.resolve("input.gms");
-        Printer.writeGams(dmap.getGamsCollection(), gamsOut, StandardCharsets.UTF_8);
+        GamsPrinter.write(dmap.getGamsCollection(), gamsOut, StandardCharsets.UTF_8);
 
-        Sections sections = dmap.toEdn();
+        Sections sections = dmap.toEdn(Type.INPUT);
         Path sectionsOut = TestFiles.toolsdemo.resolve("ui-input.edn");
         EdnPrinter.writeTo(sections, PrinterFormat.MY_DEFAULT, sectionsOut, StandardCharsets.UTF_8);
 
-        Sections deltaSections = dmap.toDeltaEdn();
+        Sections deltaSections = dmap.toDeltaEdn(Type.INPUT);
         Path deltaSectionsOut = TestFiles.toolsdemo.resolve("ui-input-delta.edn");
         EdnPrinter.writeTo(deltaSections, PrinterFormat.MY_DEFAULT, deltaSectionsOut, StandardCharsets.UTF_8);
     }
@@ -83,9 +92,9 @@ class SimpleExample {
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
 
         Path gamsOut = TestFiles.toolsdemo.resolve("output.gms");
-        Printer.writeGams(dmap.getGamsCollection(), gamsOut, StandardCharsets.UTF_8);
+        GamsPrinter.write(Type.OUTPUT, dmap.getGamsCollection(), gamsOut, StandardCharsets.UTF_8);
 
-        Sections sections = dmap.toEdn();
+        Sections sections = dmap.toEdn(Type.OUTPUT);
         Path sectionsOut = TestFiles.toolsdemo.resolve("ui-output.edn");
         EdnPrinter.writeTo(sections, PrinterFormat.MY_DEFAULT, sectionsOut, StandardCharsets.UTF_8);
     }
@@ -134,6 +143,12 @@ class SimpleExample {
 
         Path out = TestFiles.toolsdemo.resolve("test1.json");
         JsonUtil.writeJson(mappedGams.getGamsJson().getRoot(), out, JsonUtil.defaultPrinter);
+
+        Path out1 = TestFiles.toolsdemo.resolve("year2015.json");
+        JsonUtil.writeJson(mappedGams.getEntries().get(0).getYearEntry().getRoot(), out1, JsonUtil.defaultPrinter);
+
+        Path out2 = TestFiles.toolsdemo.resolve("year2016.json");
+        JsonUtil.writeJson(mappedGams.getEntries().get(1).getYearEntry().getRoot(), out2, JsonUtil.defaultPrinter);
 
         System.out.println(root);
     }

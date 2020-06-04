@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.start.hardcodeddemo;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.AgentGroup;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.GlobalRoot;
@@ -38,8 +37,6 @@ import java.util.concurrent.Callable;
 public class HardCodedAgentDemo implements Callable<Integer> {
 
     public static boolean debug = false;
-    private static final ObjectMapper mapper = new ObjectMapper();
-    private static final Object lock = new Object();
 
     @CommandLine.Option(
             names = {"-i", "--input"},
