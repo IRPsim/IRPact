@@ -132,6 +132,10 @@ public class HardCodedAgentDemo implements Callable<Integer> {
 
       Product[] products = root0.getProducts();
 
+      //NEU
+      List<IExternalAccess> agents = new ArrayList<>();
+      List<AgentGroup> groups = new ArrayList<>();
+
       Map<AgentGroup, List<AdaptedProducts>> out = new LinkedHashMap<>();
       for (int i = 0; i < root0.getAgentGroups().length; i++) {
          System.out.println("Creating agentGroup: " + i);
@@ -175,6 +179,7 @@ public class HardCodedAgentDemo implements Callable<Integer> {
              */
             
             System.out.println("Waiting for termination");
+            /*
             agent.waitForTermination().addResultListener(new DefaultResultListener<Map<String, Object>>() {
                @Override
                public void resultAvailable(Map<String, Object> result) {
@@ -183,12 +188,25 @@ public class HardCodedAgentDemo implements Callable<Integer> {
                   putResult(out, group, adaptedProducts);
                }
             });
+            */
+             //NEU
+             agents.add(agent);
+             groups.add(group);
          }
       }
 
       // MasterAgentBdi !
       platform.waitForTermination()
             .get();
+
+       //NEU
+      for(int i = 0; i < agents.size(); i++) {
+          Map<String, Object> result = agents.get(i)
+                  .getResultsAsync()
+                  .get();
+          AdaptedProducts adaptedProducts = (AdaptedProducts) result.get("adapted");
+          putResult(out, groups.get(i), adaptedProducts);
+      }
 
       MappedGamsJson<de.unileipzig.irpact.start.hardcodeddemo.def.out.GlobalRoot> mappedOut = new MappedGamsJson<>(GamsJson.Type.SCENARIO);
 
