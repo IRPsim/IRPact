@@ -12,12 +12,16 @@ import jadex.bridge.service.annotation.OnStart;
 import jadex.commons.future.IFuture;
 import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.AgentFeature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Daniel Abitz
  */
 @Agent(type = BDIAgentFactory.TYPE)
 public class MasterAgentBDI {
+
+    private static final Logger logger = LoggerFactory.getLogger(MasterAgentBDI.class);
 
     @Agent
     protected IInternalAccess agent;
@@ -55,9 +59,9 @@ public class MasterAgentBDI {
     protected void runCycle() {
         execFeature.waitForDelay(1000, _internalAccess -> {
             int currentKillCount = killCount;
-            System.out.println("[MASTER] " + createCount + " " + currentKillCount + " " + totalNumberOfAgents);
+            logger.debug("[MASTER] {} {} {}", createCount, currentKillCount, totalNumberOfAgents);
             if(currentKillCount == totalNumberOfAgents && ((System.currentTimeMillis() - lastAccess) > 1000)) {
-                System.out.println("[MASTER] kill platform");
+                logger.debug("[MASTER] kill platform");
                 IComponentIdentifier platformId = _internalAccess.getId().getRoot();
                 IExternalAccess platform = _internalAccess.getExternalAccess(platformId);
                 platform.killComponent();
@@ -71,17 +75,17 @@ public class MasterAgentBDI {
     @OnInit
     protected void onInit() {
         totalNumberOfAgents = (int) resultsFeature.getArguments().get("totalNumberOfAgents");
-        System.out.println("[MASTER] onInit");
+        logger.debug("[MASTER] onInit");
     }
 
     @OnStart
     protected void onStart() {
-        System.out.println("[MASTER] onStart");
+        logger.debug("[MASTER] onStart");
         runCycle();
     }
 
     @OnEnd
     protected void onEnd() {
-        System.out.println("[MASTER] onEnd");
+        logger.debug("[MASTER] onEnd");
     }
 }

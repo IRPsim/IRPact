@@ -10,6 +10,8 @@ import jadex.bridge.service.annotation.OnInit;
 import jadex.bridge.service.annotation.OnStart;
 import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.AgentFeature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Random;
 
@@ -18,6 +20,8 @@ import java.util.Random;
  */
 @Agent(type = BDIAgentFactory.TYPE)
 public class AdaptionAgentBDI {
+
+    private static final Logger logger = LoggerFactory.getLogger(MasterAgentBDI.class);
 
     @Agent
     protected IInternalAccess agent;
@@ -35,13 +39,13 @@ public class AdaptionAgentBDI {
     @OnInit
     protected void onInit() {
         data = (AdaptionAgentData) resultsFeature.getArguments().get("data");
-        System.out.println("[" + data.getName() + "] onInit");
+        logger.debug("[{}] onInit", data.getName());
         MasterAgentBDI.incCreated();
     }
 
     @OnStart
     protected void onStart() {
-        System.out.println("[" + data.getName() + "] onStart");
+        logger.debug("[{}] onStart", data.getName());
         Random random = data.getRandom();
         AdaptedProducts adaptedProducts = new AdaptedProducts();
         int year = data.getYear();
@@ -59,6 +63,6 @@ public class AdaptionAgentBDI {
 
     @OnEnd
     protected void onEnd() {
-        System.out.println("[" + data.getName() + "] onEnd");
+        logger.debug("[{}] onEnd", data.getName());
     }
 }
