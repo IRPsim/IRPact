@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.disabled;
+package de.unileipzig.irpact.experimental;
 
 import de.unileipzig.irpact.commons.CounterMap;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
@@ -8,7 +8,6 @@ import de.unileipzig.irpact.core.network.EdgeType;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.FastHeterogeneousRegularGraphTopology;
 import de.unileipzig.irpact.core.network.topology.HeterogeneousRegularGraphTopology;
-import de.unileipzig.irpact.core.network.topology.HeterogeneousSmallWorldTopology;
 import de.unileipzig.irpact.mock.MockConsumerAgent;
 import de.unileipzig.irpact.mock.MockConsumerAgentGroup;
 import org.junit.jupiter.api.Disabled;

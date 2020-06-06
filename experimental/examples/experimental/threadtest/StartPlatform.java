@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.jadex.examples.experimental.threadtest;
 
 import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
-import de.unileipzig.irpact.jadex.util.IRPactThreadPool;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
 import jadex.base.Starter;

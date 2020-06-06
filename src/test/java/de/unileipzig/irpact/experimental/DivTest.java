@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.disabled;
+package de.unileipzig.irpact.experimental;
 
 import de.unileipzig.irpact.commons.distribution.ConstantDistribution;
 import org.junit.jupiter.api.Disabled;

@@ -11,7 +11,6 @@ import jadex.bridge.service.types.clock.IClock;
 import jadex.bridge.service.types.clock.IClockService;
 import jadex.bridge.service.types.cms.CreationInfo;
 import jadex.bridge.service.types.simulation.ISimulationService;
-import jadex.bridge.service.types.threadpool.IThreadPoolService;
 
 import java.util.Collection;
 

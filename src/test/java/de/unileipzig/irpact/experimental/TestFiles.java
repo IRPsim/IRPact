@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.disabled;
+package de.unileipzig.irpact.experimental;
 
 import org.junit.jupiter.api.Disabled;
 
