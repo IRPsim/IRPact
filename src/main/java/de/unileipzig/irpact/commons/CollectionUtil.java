@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons;
 
+import de.unileipzig.irpact.experimental.annotation.ToDevelop;
+
 import java.util.*;
 
 /**
@@ -8,6 +10,29 @@ import java.util.*;
 public final class CollectionUtil {
 
     private CollectionUtil() {
+    }
+
+    @ToDevelop
+    public static <T> List<T> toList(Iterator<? extends T> iter) {
+        List<T> list = new ArrayList<>();
+        addAll(list, iter);
+        return list;
+    }
+
+    @ToDevelop
+    public static <T> Set<T> toSet(Iterator<? extends T> iter) {
+        Set<T> list = new HashSet<>();
+        addAll(list, iter);
+        return list;
+    }
+
+    @ToDevelop
+    public static <T> boolean addAll(Collection<? super T> coll, Iterator<? extends T> iter) {
+        boolean changed = false;
+        while(iter.hasNext()) {
+            changed |= coll.add(iter.next());
+        }
+        return changed;
     }
 
     public static <T> T getFirst(Collection<T> coll) {
