@@ -11,7 +11,6 @@ sourceCompatibility = 1.8
 
 repositories {
     //geotools als erstes, sonst werden libs nicht gefunden...
-    maven { url "http://download.osgeo.org/webdav/geotools" }
     maven { url "https://repo.osgeo.org/repository/release/" }
     maven { url "http://download.java.net/maven/2" }
 
@@ -33,12 +32,11 @@ ext {
     junitJupiterVersion = '5.4.2'
     junitPlatformVersion = '1.4.2'
     jacksonVersion = '2.10.2'
-    joptsimpleVersion = '5.0.4' //entfernen
     picocliVersion = '4.2.0'
     jadexDistVersion = '4.0.187' //'4.0.171'
     sl4jVersion = '1.7.30'
     logbackVersion = '1.2.3'
-    geotoolsVersion = '23-RC'
+    geotoolsVersion = '23.2'
     ednjavaVersion = '0.6.0'
 }
 
@@ -57,10 +55,7 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     implementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
 
-    implementation "net.sf.jopt-simple:jopt-simple:$joptsimpleVersion" //entfernen
     implementation "info.picocli:picocli:$picocliVersion"
-
-    implementation "org.slf4j:slf4j-api:$sl4jVersion"
 
     implementation "ch.qos.logback:logback-classic:$logbackVersion"
     implementation "ch.qos.logback:logback-core:$logbackVersion"

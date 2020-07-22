@@ -7,8 +7,10 @@ import de.unileipzig.irptools.defstructure.AnnotationParser;
 import de.unileipzig.irptools.defstructure.Converter;
 import de.unileipzig.irptools.defstructure.DefinitionCollection;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
-import de.unileipzig.irptools.gamsjson.GamsJson;
-import de.unileipzig.irptools.gamsjson.MappedGamsJson;
+import de.unileipzig.irptools.io.input.InputData;
+import de.unileipzig.irptools.io.input.InputFile;
+import de.unileipzig.irptools.io.scenario.ScenarioData;
+import de.unileipzig.irptools.io.scenario.ScenarioFile;
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
@@ -40,10 +42,11 @@ class DefaultLoadingTest {
         DefinitionMapper dmap = assertDoesNotThrow(() -> new DefinitionMapper(dcoll));
         Converter converter = new Converter(dmap);
 
-        MappedGamsJson<InputRoot> mappedGams = converter.fromGamsJson(GamsJson.Type.SCENARIO, root);
-        assertEquals(2, mappedGams.getEntries().size());
-        assertEquals(2015, mappedGams.getEntries().get(0).getYearEntry().getYear());
-        assertEquals(2016, mappedGams.getEntries().get(1).getYearEntry().getYear());
+        ScenarioFile sfile = new ScenarioFile(root);
+        ScenarioData<InputRoot> sdata = sfile.deserialize(converter);
+        assertEquals(2, sdata.getList().size());
+        assertEquals(2015, sdata.get(0).getYear());
+        assertEquals(2016, sdata.get(1).getYear());
     }
 
     @Test
@@ -62,8 +65,8 @@ class DefaultLoadingTest {
         DefinitionMapper dmap = assertDoesNotThrow(() -> new DefinitionMapper(dcoll));
         Converter converter = new Converter(dmap);
 
-        MappedGamsJson<InputRoot> mappedGams = converter.fromGamsJson(GamsJson.Type.INPUT, root);
-        assertEquals(1, mappedGams.getEntries().size());
-        assertEquals(2016, mappedGams.getEntries().get(0).getYearEntry().getYear());
+        InputFile ifile = new InputFile(root);
+        InputData<InputRoot> idata = ifile.deserialize(converter);
+        assertEquals(2016, idata.getConfig().getYear());
     }
 }
