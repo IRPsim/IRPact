@@ -11,10 +11,10 @@ import de.unileipzig.irptools.defstructure.AnnotationParser;
 import de.unileipzig.irptools.defstructure.Converter;
 import de.unileipzig.irptools.defstructure.DefinitionCollection;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
-import de.unileipzig.irptools.io.input.InputData;
-import de.unileipzig.irptools.io.input.InputFile;
+import de.unileipzig.irptools.gamsjson.*;
 import de.unileipzig.irptools.util.Pair;
 import de.unileipzig.irptools.util.Table;
+import de.unileipzig.irptools.util.Util;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
 import jadex.base.Starter;
@@ -23,6 +23,7 @@ import jadex.bridge.service.types.cms.CreationInfo;
 import picocli.CommandLine;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.Callable;
@@ -34,7 +35,8 @@ import java.util.concurrent.Callable;
         name = "HardCodedAgentDemo",
         description = "Starts HardCodedAgentDemo."
 )
-public class HardCodedAgentDemo implements Callable<Integer> {
+public class HardCodedAgentDemo2 implements Callable<Integer> {
+
 
     @CommandLine.Option(
             names = { "-i", "--input" },
@@ -49,9 +51,9 @@ public class HardCodedAgentDemo implements Callable<Integer> {
     private String outputFile;
 
     private IExternalAccess platform;
-    private InputData<InputRoot> input;
+    private MappedGamsJson<InputRoot> input;
 
-    public HardCodedAgentDemo() {
+    public HardCodedAgentDemo2() {
     }
 
     public void run() throws IOException {
@@ -70,17 +72,25 @@ public class HardCodedAgentDemo implements Callable<Integer> {
     }
 
     private void parseInput() throws IOException {
-        InputFile ifile = InputFile.parse(Paths.get(inputFile));
+        Path inputPath = Paths.get(inputFile);
+        ObjectNode root = Util.readJson(inputPath);
 
         DefinitionCollection dcoll = AnnotationParser.parse(InputRoot.CLASSES);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
-        input = ifile.deserialize(converter);
+        GamsJson.Type jsonType = GamsJson.Type.detectType(root);
+        if (jsonType != GamsJson.Type.INPUT) {
+            throw new IllegalArgumentException("unknown json file: " + inputPath.toString());
+        }
+
+        input = converter.fromGamsJson(GamsJson.Type.INPUT, root);
     }
 
     private InputRoot getPrimaryData() {
-        return input.getData();
+        return input.getEntries()
+                .get(0)
+                .getData();
     }
 
     private int getTotalNumberOfAgents() {
@@ -90,7 +100,10 @@ public class HardCodedAgentDemo implements Callable<Integer> {
     }
 
     private int getYear() {
-        return input.getConfig().getYear();
+        return input.getEntries()
+                .get(0)
+                .getYearEntry()
+                .getYear();
     }
 
     private void startPlatform() {
@@ -183,10 +196,8 @@ public class HardCodedAgentDemo implements Callable<Integer> {
         return out;
     }
 
-    /*
-    //wird fuer output nicht benoetigt (?)
     private void applyInputConfig(ObjectNode outNode) {
-        ObjectNode inNode = input.getConfig().root()
+        ObjectNode inNode = input.getEntries()
                 .get(0)
                 .getYearEntry()
                 .getRoot();
@@ -194,7 +205,6 @@ public class HardCodedAgentDemo implements Callable<Integer> {
             outNode.set("config", inNode.get("config"));
         }
     }
-    */
 
     private void createOutput(Map<AgentGroup, List<AdaptedProducts>> results) throws IOException {
         Table<AgentGroup, Product, Double> adaptions = createOutputTableForYear(results, getYear());
@@ -207,15 +217,22 @@ public class HardCodedAgentDemo implements Callable<Integer> {
         outScalars.adaptions = adaptions;
 
         ObjectNode outNode = JsonUtil.mapper.createObjectNode();
-        //applyInputConfig(outNode);
+        applyInputConfig(outNode);
+
+        GamsJson gamsJson = new GamsJson(GamsJson.Type.INPUT, outNode);
+        YearEntry yearEntry = new YearEntry(outNode);
+        MappedYearEntry<OutputRoot> mappedYearEntry = new MappedYearEntry<>(outRoot, yearEntry);
+        MappedGamsJson<OutputRoot> outJson = new MappedGamsJson<>(gamsJson, Collections.singletonList(mappedYearEntry));
+
 
         DefinitionCollection dcoll = AnnotationParser.parse(OutputRoot.CLASSES);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
-        InputData<OutputRoot> outData = new InputData<>(outRoot);
-        InputFile outFile = outData.serialize(converter);
-        outFile.store(Paths.get(outputFile));
+        converter.toGamsJson(outJson);
+
+        Path outputPath = Paths.get(outputFile);
+        Util.writeJson(outJson.getGamsJson().getRoot(), outputPath, Util.defaultPrinter);
     }
 
     @Override
@@ -230,7 +247,7 @@ public class HardCodedAgentDemo implements Callable<Integer> {
     }
 
     public static void main(String[] args) throws IOException {
-        HardCodedAgentDemo demo = new HardCodedAgentDemo();
+        HardCodedAgentDemo2 demo = new HardCodedAgentDemo2();
         CommandLine cmdLine = new CommandLine(demo);
         int exitCode = cmdLine.execute(args);
         if(exitCode == CommandLine.ExitCode.OK) {
