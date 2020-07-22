@@ -58,7 +58,7 @@ class SimpleExample {
     void startMyDemoWithSingleYear() throws IOException {
         String[] args = {
                 "-i", TestFiles.toolsdemo.resolve("year2015.json").toString(),
-                "-o", TestFiles.toolsdemo.resolve("year2015-out2.json").toString()
+                "-o", TestFiles.toolsdemo.resolve("year2015-out3.json").toString()
         };
         Start.main(args);
     }
