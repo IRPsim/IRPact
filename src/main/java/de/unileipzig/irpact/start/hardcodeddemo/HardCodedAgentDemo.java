@@ -7,14 +7,19 @@ import de.unileipzig.irpact.start.hardcodeddemo.def.in.InputRoot;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.Product;
 import de.unileipzig.irpact.start.hardcodeddemo.def.out.OutputRoot;
 import de.unileipzig.irpact.start.hardcodeddemo.def.out.OutputScalars;
+import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.AnnotationParser;
 import de.unileipzig.irptools.defstructure.Converter;
 import de.unileipzig.irptools.defstructure.DefinitionCollection;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
+import de.unileipzig.irptools.io.basic.DataEntry;
 import de.unileipzig.irptools.io.input.InputData;
 import de.unileipzig.irptools.io.input.InputFile;
+import de.unileipzig.irptools.io.scenario.ScenarioData;
+import de.unileipzig.irptools.io.scenario.ScenarioFile;
 import de.unileipzig.irptools.util.Pair;
 import de.unileipzig.irptools.util.Table;
+import de.unileipzig.irptools.util.Util;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
 import jadex.base.Starter;
@@ -49,7 +54,7 @@ public class HardCodedAgentDemo implements Callable<Integer> {
     private String outputFile;
 
     private IExternalAccess platform;
-    private InputData<InputRoot> input;
+    private DataEntry<InputRoot> inputEntry;
 
     public HardCodedAgentDemo() {
     }
@@ -70,17 +75,25 @@ public class HardCodedAgentDemo implements Callable<Integer> {
     }
 
     private void parseInput() throws IOException {
-        InputFile ifile = InputFile.parse(Paths.get(inputFile));
+        ObjectNode rootNode = Util.readJson(Paths.get(inputFile));
 
         DefinitionCollection dcoll = AnnotationParser.parse(InputRoot.CLASSES);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
-        input = ifile.deserialize(converter);
+        if(rootNode.has(Constants.YEARS)) {
+            ScenarioFile sfile = new ScenarioFile(rootNode);
+            ScenarioData<InputRoot> sdata = sfile.deserialize(converter);
+            inputEntry = sdata.get(0); //DIRTYFIX: ignoriere erstmal alle andere
+        } else {
+            InputFile ifile = new InputFile(rootNode);
+            InputData<InputRoot> idata = ifile.deserialize(converter);
+            inputEntry = idata.get();
+        }
     }
 
     private InputRoot getPrimaryData() {
-        return input.getData();
+        return inputEntry.getData();
     }
 
     private int getTotalNumberOfAgents() {
@@ -90,7 +103,7 @@ public class HardCodedAgentDemo implements Callable<Integer> {
     }
 
     private int getYear() {
-        return input.getConfig().getYear();
+        return inputEntry.getConfig().getYear();
     }
 
     private void startPlatform() {
