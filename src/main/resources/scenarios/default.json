@@ -41,47 +41,5 @@
     "timeseries" : { },
     "tables" : { },
     "postprocessing" : { }
-  }, {
-    "config" : {
-      "simulationlength" : 35040,
-      "savelength" : 96,
-      "optimizationlength" : 192,
-      "resolution" : 35040,
-      "timestep" : 0.25,
-      "modeldefinition" : 3,
-      "year" : 2016,
-      "prognoseszenario" : null,
-      "interpolated" : false
-    },
-    "scalars" : {
-      "sca_global_seed" : 123
-    },
-    "sets" : {
-      "set_AgentGroup" : {
-        "gx10x5" : {
-          "par_AgentGroup_numberOfAgents" : 10,
-          "par_AgentGroup_adaptionRate" : 0.5
-        },
-        "gx100x01" : {
-          "par_AgentGroup_numberOfAgents" : 100,
-          "par_AgentGroup_adaptionRate" : 0.3
-        },
-        "gx50x75" : {
-          "par_AgentGroup_numberOfAgents" : 50,
-          "par_AgentGroup_adaptionRate" : 0.75
-        }
-      },
-      "set_Product" : {
-        "Auto" : {
-          "par_Product_name" : 0
-        },
-        "Haus" : {
-          "par_Product_name" : 0
-        }
-      }
-    },
-    "timeseries" : { },
-    "tables" : { },
-    "postprocessing" : { }
   } ]
 }

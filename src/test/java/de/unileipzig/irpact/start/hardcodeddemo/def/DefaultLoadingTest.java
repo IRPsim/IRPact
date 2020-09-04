@@ -44,9 +44,8 @@ class DefaultLoadingTest {
 
         ScenarioFile sfile = new ScenarioFile(root);
         ScenarioData<InputRoot> sdata = sfile.deserialize(converter);
-        assertEquals(2, sdata.getList().size());
+        assertEquals(1, sdata.getList().size());
         assertEquals(2015, sdata.get(0).getYear());
-        assertEquals(2016, sdata.get(1).getYear());
     }
 
     @Test
