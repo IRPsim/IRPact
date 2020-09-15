@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.experimental;
 
 import org.geotools.data.*;
+import org.geotools.data.shapefile.dbf.DbaseFileHeader;
+import org.geotools.data.shapefile.dbf.DbaseFileReader;
 import org.geotools.referencing.CRS;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -11,7 +13,12 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 
 import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 
 /**
  * @author Daniel Abitz
@@ -104,6 +111,63 @@ class GeoStuff {
             }
             System.out.println("close feature reader");
             System.out.println("read in " + count + " features");
+        }
+    }
+
+    @Test
+    void testGisStuff() throws IOException {
+        Path p = Paths.get("E:\\Temp\\SUSIC_GIS\\QGIS", "buildings_osm_repaired.shp");
+
+        FileDataStore store = FileDataStoreFinder.getDataStore(p.toFile());
+        String[] names = store.getTypeNames();
+        System.out.println("typenames: " + names.length);
+        System.out.println("typename[0]: " + names[0]);
+
+        SimpleFeatureType type = store.getSchema("buildings_osm_repaired");
+        System.out.println("featureType  name: " + type.getName());
+        System.out.println("featureType count: " + type.getAttributeCount());
+
+        for(AttributeDescriptor descriptor : type.getAttributeDescriptors()) {
+            System.out.print("  " + descriptor.getName());
+            System.out.print(" (" + descriptor.getMinOccurs() + "," + descriptor.getMaxOccurs() + ",");
+            System.out.print((descriptor.isNillable() ? "nillable" : "manditory") + ")");
+            System.out.print(" type: " + descriptor.getType().getName());
+            System.out.println(" binding: " + descriptor.getType().getBinding().getSimpleName());
+        }
+    }
+
+    @Test
+    void testGisStuffDbf() throws IOException {
+        //Path p = Paths.get("E:\\Temp\\SUSIC_GIS\\QGIS", "LoD2_fixed.dbf");
+        Path p = Paths.get("E:\\Temp\\SUSIC_GIS\\QGIS", "Buildings_merged.dbf");
+
+        try(DbaseFileReader reader = new DbaseFileReader(FileChannel.open(p), false, StandardCharsets.ISO_8859_1)) {
+            DbaseFileHeader header = reader.getHeader();
+            for(int i = 0; i < header.getNumFields(); i++) {
+                System.out.println(header.getFieldName(i));
+            }
+            while(reader.hasNext()) {
+                Object[] fields = reader.readEntry();
+                System.out.println(Arrays.toString(fields));
+                break;
+            }
+        }
+    }
+
+    @Test
+    void testOrtsTeile() throws IOException {
+        //Path p = Paths.get("E:\\Temp\\SUSIC_GIS\\QGIS", "LoD2_fixed.dbf");
+        Path p = Paths.get("E:\\Temp\\SUSIC_GIS\\QGIS\\Ortsteile_Stadt_Leipzig", "Ortsteile_Stadt_Leipzig.dbf");
+
+        try(DbaseFileReader reader = new DbaseFileReader(FileChannel.open(p), false, StandardCharsets.ISO_8859_1)) {
+            DbaseFileHeader header = reader.getHeader();
+            for(int i = 0; i < header.getNumFields(); i++) {
+                System.out.println(header.getFieldName(i));
+            }
+            while(reader.hasNext()) {
+                Object[] fields = reader.readEntry();
+                System.out.println(Arrays.toString(fields));
+            }
         }
     }
 }

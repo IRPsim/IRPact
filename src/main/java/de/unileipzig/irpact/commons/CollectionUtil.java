@@ -67,6 +67,20 @@ public final class CollectionUtil {
         return set;
     }
 
+    @SuppressWarnings("unchecked")
+    public static <K, V> Map<K, V> hashMapOf(Object... values) {
+        if(values.length % 2 != 0) {
+            throw new IllegalArgumentException();
+        }
+        Map<K, V> map = new HashMap<>();
+        for(int i = 0; i < values.length; i += 2) {
+            K key = (K) values[i];
+            V value = (V) values[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+
     @SafeVarargs
     public static <T> List<T> arrayListOf(T... values) {
         List<T> list = new ArrayList<>();

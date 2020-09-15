@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.network.topology;
 
-import de.unileipzig.irpact.commons.annotation.ToDo;
+import de.unileipzig.irpact.dev.ToDo;
 import de.unileipzig.irpact.core.network.EdgeType;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;

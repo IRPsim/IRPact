@@ -47,6 +47,26 @@ class ContinuousConverterTest {
     }
 
     @Test
+    void testToTimeWithStart() {
+        int year = 2015;
+        ContinuousConverter converter = new ContinuousConverter(year);
+        converter.setStart(12345678L);
+
+        assertEquals(
+                LocalDate.of(2015, 1, 1).atStartOfDay(ZoneId.systemDefault()),
+                converter.toTime(12345678L + TimeUnit.DAYS.toMillis(0))
+        );
+        assertEquals(
+                LocalDate.of(2015, 1, 2).atStartOfDay(ZoneId.systemDefault()),
+                converter.toTime(12345678L + TimeUnit.DAYS.toMillis(1))
+        );
+        assertEquals(
+                LocalDate.of(2015, 2, 1).atStartOfDay(ZoneId.systemDefault()),
+                converter.toTime(12345678L + TimeUnit.DAYS.toMillis(31))
+        );
+    }
+
+    @Test
     void testFromTime() {
         int year = 2015;
         ContinuousConverter converter = new ContinuousConverter(year);

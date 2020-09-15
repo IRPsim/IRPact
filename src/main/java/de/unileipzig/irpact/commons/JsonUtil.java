@@ -45,6 +45,10 @@ public final class JsonUtil {
         }
     }
 
+    public static String writeJson(JsonNode node) {
+        return writeJson(node, defaultPrinter);
+    }
+
     public static void writeJson(JsonNode node, Path path, PrettyPrinter printer) throws IOException {
         try(BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8);
             JsonGenerator gen = mapper.getFactory().createGenerator(writer)) {

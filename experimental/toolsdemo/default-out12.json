@@ -1,0 +1,8 @@
+{
+  "config" : { },
+  "scalars" : { },
+  "sets" : { },
+  "timeseries" : { },
+  "tables" : { },
+  "postprocessing" : { }
+}

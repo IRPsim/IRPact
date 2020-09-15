@@ -15,7 +15,7 @@ public class RandomBoundedDistribution extends UnivariateDistributionBase implem
     private long seed;
     private double lowerBound;
     private double upperBound;
-    private double temp;
+    private double boundDiff;
 
     public RandomBoundedDistribution(String name, Random rnd) {
         this(name, rnd, 0.0, 1.0);
@@ -26,7 +26,7 @@ public class RandomBoundedDistribution extends UnivariateDistributionBase implem
         this.rnd = Check.requireNonNull(rnd, "rnd");
         this.lowerBound = Check.checkFirstSmallerEquals(lowerBound, upperBound, "lowerBound > upperBound: " + lowerBound + " > " + upperBound);
         this.upperBound = Check.checkFirstLargerEquals(upperBound, lowerBound, "upperBound < lowerBound: " + upperBound + " < " + lowerBound); //check ueberfluessing, aber egal
-        temp = upperBound - lowerBound;
+        boundDiff = upperBound - lowerBound;
         seed = NO_SEED;
     }
 
@@ -36,7 +36,7 @@ public class RandomBoundedDistribution extends UnivariateDistributionBase implem
         this.rnd = newRandom(seed);
         this.lowerBound = Check.checkFirstSmallerEquals(lowerBound, upperBound, "lowerBound > upperBound: " + lowerBound + " > " + upperBound);
         this.upperBound = Check.checkFirstLargerEquals(upperBound, lowerBound, "upperBound < lowerBound: " + upperBound + " < " + lowerBound); //check ueberfluessing, aber egal
-        temp = upperBound - lowerBound;
+        boundDiff = upperBound - lowerBound;
     }
 
     @Override
@@ -55,6 +55,6 @@ public class RandomBoundedDistribution extends UnivariateDistributionBase implem
 
     @Override
     public double drawValue() {
-        return temp * rnd.nextDouble() + lowerBound;
+        return boundDiff * rnd.nextDouble() + lowerBound;
     }
 }

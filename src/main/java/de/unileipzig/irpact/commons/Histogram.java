@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons;
 
-import de.unileipzig.irpact.commons.annotation.Experimental;
+import de.unileipzig.irpact.dev.Experimental;
 
 import java.util.ArrayList;
 import java.util.List;

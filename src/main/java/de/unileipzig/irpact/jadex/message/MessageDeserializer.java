@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.message;
 
-import de.unileipzig.irpact.commons.annotation.ToDo;
+import de.unileipzig.irpact.dev.ToDo;
 import de.unileipzig.irpact.core.message.Message;
 
 /**

@@ -60,6 +60,20 @@ public final class TickConverter {
     }
 
     /**
+     * Wandelt den diskreten Zeitpunkt (tick) in einen Zeitstempel in MS um.
+     *
+     * @param tick Eingabetick
+     * @return Zeitstempel in Millisekunden
+     * @since 0.0
+     */
+    public long tickToTimestamp(double tick) {
+        validate();
+        double delta = tick - startTick;
+        long deltaMs = (long) (delta * timePerTickInMs);
+        return startTimeMs + deltaMs;
+    }
+
+    /**
      * Wandlet das Datum in den entsprechenden Tick um.
      *
      * @param time Eingabedatum
@@ -83,6 +97,10 @@ public final class TickConverter {
         validate();
         double delta = (timestampMs - startTimeMs) / (double) timePerTickInMs;
         return delta + startTick;
+    }
+
+    public double delayToTick(long delay) {
+        return delay / (double) timePerTickInMs;
     }
 
     /**

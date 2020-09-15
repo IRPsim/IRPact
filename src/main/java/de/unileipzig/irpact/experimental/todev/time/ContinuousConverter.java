@@ -30,6 +30,10 @@ public final class ContinuousConverter {
         this.zoneId = zoneId;
     }
 
+    public long getSimulationstartTimeMs() {
+        return simulationstartTimeMs;
+    }
+
     public void setStart(long startTimeMs) {
         this.simulationstartTimeMs = startTimeMs;
         startTime = LocalDate.of(startYear, 1, 1)
