@@ -3,7 +3,7 @@
     :label "Allgemeine Einstellungen" 
     :icon "fa fa-map-marker" 
     :description "Allgemeine Einstellungen für die Simulation." 
-    :tags [["global" "seed"]]
+    :tags [["global" "seed"] ["global" "baum"]]
   } 
   {
     :label "Agentengruppen" 

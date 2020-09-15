@@ -27,15 +27,25 @@ public class InputScalars {
     )
     public long seed;
 
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    description = "Baumwert f\u00fcr den Zufallsgenerator",
+                    identifier = "Baumwert",
+                    unit = "[x]"
+            )
+    )
+    public long baum;
+
     public InputScalars() {
     }
 
-    public InputScalars(long seed) {
+    public InputScalars(long seed, long baum) {
         this.seed = seed;
+        this.baum = baum;
     }
 
     public static InputScalars x() {
-        return new InputScalars(123);
+        return new InputScalars(123, 321);
     }
 
     public long getSeed() {

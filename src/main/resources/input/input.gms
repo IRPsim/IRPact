@@ -4,6 +4,12 @@
 * - unit: [x]
 SCALAR sca_global_seed
 
+* - description: Baumwert für den Zufallsgenerator
+* - type: Integer
+* - identifier: Baumwert
+* - unit: [x]
+SCALAR sca_global_baum
+
 * - description: AgentGroup
 * - type: String
 * - identifier: AgentGroup
