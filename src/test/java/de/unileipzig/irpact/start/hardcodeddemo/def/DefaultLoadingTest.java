@@ -9,6 +9,7 @@ import de.unileipzig.irptools.defstructure.DefinitionCollection;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
 import de.unileipzig.irptools.io.scenario.ScenarioData;
 import de.unileipzig.irptools.io.scenario.ScenarioFile;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
@@ -24,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class DefaultLoadingTest {
 
+    @Disabled("UI-TEST")
     @Test
     void testLoadDefault() throws URISyntaxException {
         String fileName = "scenarios/default.json";
