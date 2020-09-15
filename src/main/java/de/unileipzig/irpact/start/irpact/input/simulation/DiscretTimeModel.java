@@ -3,6 +3,7 @@ package de.unileipzig.irpact.start.irpact.input.simulation;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.defstructure.annotation.GamsParameter;
 
 import java.util.Objects;
 
@@ -21,7 +22,11 @@ public class DiscretTimeModel implements TimeModel {
     @FieldDefinition
     public int msPerTick;
 
-    @FieldDefinition
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    identifier = "delayDiscretTimeModel"
+            )
+    )
     public long delay;
 
     public DiscretTimeModel() {

@@ -26,6 +26,9 @@ public class FixedProduct {
     public String _name;
 
     @FieldDefinition(
+            gams = @GamsParameter(
+                    identifier = "groupFixedProduct"
+            ),
             edn = @EdnParameter(
                     path = "Link/FixedProduct-ProductGroup"
             )

@@ -1,10 +1,7 @@
 package de.unileipzig.irpact.start.irpact.input.agent;
 
 import de.unileipzig.irpact.start.irpact.input.need.Need;
-import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.Edn;
-import de.unileipzig.irptools.defstructure.annotation.EdnParameter;
-import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.defstructure.annotation.*;
 
 import java.util.*;
 
@@ -26,10 +23,17 @@ public class AgentGroup {
     @FieldDefinition
     public double adoptionRate;
 
-    @FieldDefinition
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    identifier = "seedAgentGroup"
+            )
+    )
     public long seed;
 
     @FieldDefinition(
+            gams = @GamsParameter(
+                    identifier = "needsAgentGroup"
+            ),
             edn = @EdnParameter(
                     path = "Link/AgentGroup-Need"
             )

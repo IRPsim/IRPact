@@ -13,14 +13,14 @@ PARAMETER par_AgentGroup_numberOfAgents(set_AgentGroup)
 * - identifier: adoptionRate
 PARAMETER par_AgentGroup_adoptionRate(set_AgentGroup)
 
-* - description: seed
+* - description: seedAgentGroup
 * - type: Integer
-* - identifier: seed
+* - identifier: seedAgentGroup
 PARAMETER par_AgentGroup_seed(set_AgentGroup)
 
-* - description: needs
+* - description: needsAgentGroup
 * - type: Boolean
-* - identifier: needs
+* - identifier: needsAgentGroup
 PARAMETER par_link_AgentGroup_Need_needs(set_AgentGroup,set_Need)
 
 * - description: RandomBoundedDistribution
@@ -28,9 +28,9 @@ PARAMETER par_link_AgentGroup_Need_needs(set_AgentGroup,set_Need)
 * - identifier: RandomBoundedDistribution
 SET set_RandomBoundedDistribution(set_UnivariateDistribution)
 
-* - description: seed
+* - description: seedRandomBoundedDistribution
 * - type: Integer
-* - identifier: seed
+* - identifier: seedRandomBoundedDistribution
 PARAMETER par_RandomBoundedDistribution_seed(set_RandomBoundedDistribution)
 
 * - description: lowerBound
@@ -48,9 +48,9 @@ PARAMETER par_RandomBoundedDistribution_upperBound(set_RandomBoundedDistribution
 * - identifier: RandomDistribution
 SET set_RandomDistribution(set_UnivariateDistribution)
 
-* - description: seed
+* - description: seedRandomDistribution
 * - type: Integer
-* - identifier: seed
+* - identifier: seedRandomDistribution
 PARAMETER par_RandomDistribution_seed(set_RandomDistribution)
 
 * - description: UnivariateDistribution
@@ -68,9 +68,9 @@ SET set_Need(*)
 * - identifier: FixedProduct
 SET set_FixedProduct(*)
 
-* - description: group
+* - description: groupFixedProduct
 * - type: Boolean
-* - identifier: group
+* - identifier: groupFixedProduct
 PARAMETER par_link_FixedProduct_ProductGroup_group(set_FixedProduct,set_ProductGroup)
 
 * - description: specifiedAttributes
@@ -83,9 +83,9 @@ PARAMETER par_map_FixedProduct_ProductGroupAttribute_specifiedAttributes(set_Fix
 * - identifier: ProductGroup
 SET set_ProductGroup(*)
 
-* - description: attributes
+* - description: attributesProductGroup
 * - type: Boolean
-* - identifier: attributes
+* - identifier: attributesProductGroup
 PARAMETER par_link_ProductGroup_ProductGroupAttribute_attributes(set_ProductGroup,set_ProductGroupAttribute)
 
 * - description: needsSatisfied
@@ -98,9 +98,9 @@ PARAMETER par_link_ProductGroup_Need_needsSatisfied(set_ProductGroup,set_Need)
 * - identifier: ProductGroupAttribute
 SET set_ProductGroupAttribute(*)
 
-* - description: distribution
+* - description: distributionProductGroupAttribute
 * - type: Boolean
-* - identifier: distribution
+* - identifier: distributionProductGroupAttribute
 PARAMETER par_link_ProductGroupAttribute_UnivariateDistribution_distribution(set_ProductGroupAttribute,set_UnivariateDistribution)
 
 * - description: AdaptionRate
@@ -108,14 +108,14 @@ PARAMETER par_link_ProductGroupAttribute_UnivariateDistribution_distribution(set
 * - identifier: AdaptionRate
 SET set_AdaptionRate(*)
 
-* - description: group
+* - description: groupAdaptionRate
 * - type: Boolean
-* - identifier: group
+* - identifier: groupAdaptionRate
 PARAMETER par_out_link_AdaptionRate_AgentGroup_group(set_AdaptionRate,set_AgentGroup)
 
-* - description: need
+* - description: needAdaptionRate
 * - type: Boolean
-* - identifier: need
+* - identifier: needAdaptionRate
 PARAMETER par_out_link_AdaptionRate_Need_need(set_AdaptionRate,set_Need)
 
 * - description: rate

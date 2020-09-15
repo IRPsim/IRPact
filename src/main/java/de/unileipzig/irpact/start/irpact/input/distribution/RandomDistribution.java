@@ -3,6 +3,7 @@ package de.unileipzig.irpact.start.irpact.input.distribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.defstructure.annotation.GamsParameter;
 
 import java.util.Objects;
 
@@ -19,7 +20,11 @@ public class RandomDistribution implements UnivariateDistribution {
 
     public String _name;
 
-    @FieldDefinition
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    identifier = "seedRandomDistribution"
+            )
+    )
     public long seed;
 
     public RandomDistribution() {

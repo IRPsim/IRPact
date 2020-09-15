@@ -5,10 +5,7 @@ import de.unileipzig.irpact.core.product.BasicProductGroup;
 import de.unileipzig.irpact.core.product.BasicProductGroupAttribute;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.start.irpact.input.need.Need;
-import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.Edn;
-import de.unileipzig.irptools.defstructure.annotation.EdnParameter;
-import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.defstructure.annotation.*;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -28,6 +25,9 @@ public class ProductGroup {
     public String _name;
 
     @FieldDefinition(
+            gams = @GamsParameter(
+                    identifier = "attributesProductGroup"
+            ),
             edn = @EdnParameter(
                     path = "Link/ProductGroup-ProductGroupAttribute"
             )
