@@ -1,8 +1,7 @@
 package de.unileipzig.irpact.core.network.topology;
 
 import de.unileipzig.irpact.commons.CollectionUtil;
-import de.unileipzig.irpact.commons.annotation.ToDo;
-import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
+import de.unileipzig.irpact.dev.ToDo;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinitiesMapping;

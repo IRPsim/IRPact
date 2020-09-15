@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.need;
 
 import de.unileipzig.irpact.commons.Check;
-import de.unileipzig.irpact.commons.annotation.Idea;
+import de.unileipzig.irpact.dev.Idea;
 
 import java.util.Objects;
 

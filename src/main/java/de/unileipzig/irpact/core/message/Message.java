@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.message;
 
-import de.unileipzig.irpact.commons.annotation.Experimental;
+import de.unileipzig.irpact.dev.Experimental;
 import de.unileipzig.irpact.core.agent.Agent;
 
 /**

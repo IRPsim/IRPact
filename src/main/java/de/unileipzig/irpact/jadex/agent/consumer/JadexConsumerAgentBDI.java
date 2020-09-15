@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.jadex.agent.consumer;
 
-import de.unileipzig.irpact.commons.annotation.Idea;
-import de.unileipzig.irpact.commons.annotation.ToDo;
+import de.unileipzig.irpact.dev.Idea;
+import de.unileipzig.irpact.dev.ToDo;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentData;

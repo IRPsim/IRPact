@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.jadex.simulation;
 
 import de.unileipzig.irpact.commons.Check;
-import de.unileipzig.irpact.commons.annotation.ToImpl;
+import de.unileipzig.irpact.dev.ToImpl;
 import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
 import de.unileipzig.irpact.commons.concurrent.ResettableTimer;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironmentBase;

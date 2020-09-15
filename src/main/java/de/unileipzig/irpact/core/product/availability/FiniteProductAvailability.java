@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.product.availability;
 
-import de.unileipzig.irpact.commons.annotation.ToDo;
+import de.unileipzig.irpact.dev.ToDo;
 
 /**
  * @author Daniel Abitz
