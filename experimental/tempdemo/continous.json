@@ -10,13 +10,19 @@
     "sets" : {
       "set_AgentGroup" : {
         "Group-PV" : {
-          "par_AgentGroup_numberOfAgents" : 50
+          "par_AgentGroup_numberOfAgents" : 50,
+          "par_AgentGroup_adoptionRate" : 0.01,
+          "par_AgentGroup_seed" : 1
         },
         "Group-PC" : {
-          "par_AgentGroup_numberOfAgents" : 50
+          "par_AgentGroup_numberOfAgents" : 50,
+          "par_AgentGroup_adoptionRate" : 0.01,
+          "par_AgentGroup_seed" : 2
         },
         "Group-PVPC" : {
-          "par_AgentGroup_numberOfAgents" : 100
+          "par_AgentGroup_numberOfAgents" : 100,
+          "par_AgentGroup_adoptionRate" : 0.005,
+          "par_AgentGroup_seed" : 3
         }
       },
       "set_Need" : {
@@ -24,8 +30,9 @@
         "needPC" : { }
       },
       "set_ContinousTimeModel" : {
-        "Time" : {
-          "par_ContinousTimeModel_acceleration" : 2678400
+        "ContTime" : {
+          "par_ContinousTimeModel_acceleration" : 2678400,
+          "par_ContinousTimeModel_delay" : 604800000
         }
       },
       "set_ProductGroup" : {

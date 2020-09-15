@@ -123,6 +123,8 @@ public class TConsumerAgentBDI {
             if(needSet.size() > 0 && timerService.isValid2().get()) {
                 handleNeedRecurTrigger++;
                 waitDelay();
+            } else {
+                finished();
             }
             return IFuture.DONE;
         });
@@ -140,9 +142,20 @@ public class TConsumerAgentBDI {
             if(needSet.size() > 0 && timerService.isValid2().get()) {
                 handleNeedRecurTrigger++;
                 waitTick();
+            } else {
+                finished();
             }
             return IFuture.DONE;
         });
+    }
+
+    private AgentGroupWrapper wrapper;
+    private void finished() {
+        log("finished");
+        if(wrapper == null) {
+            wrapper = new AgentGroupWrapper(data.getGroup());
+        }
+        timerService.finished(wrapper);
     }
 
     //=========================

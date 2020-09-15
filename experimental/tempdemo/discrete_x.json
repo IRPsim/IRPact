@@ -11,17 +11,17 @@
       "set_AgentGroup" : {
         "Group-PV" : {
           "par_AgentGroup_numberOfAgents" : 1,
-          "par_AgentGroup_adoptionRate" : 0.05,
+          "par_AgentGroup_adoptionRate" : 0.01,
           "par_AgentGroup_seed" : 1
         },
         "Group-PC" : {
           "par_AgentGroup_numberOfAgents" : 1,
-          "par_AgentGroup_adoptionRate" : 0.05,
+          "par_AgentGroup_adoptionRate" : 0.01,
           "par_AgentGroup_seed" : 2
         },
         "Group-PVPC" : {
           "par_AgentGroup_numberOfAgents" : 1,
-          "par_AgentGroup_adoptionRate" : 0.1,
+          "par_AgentGroup_adoptionRate" : 0.005,
           "par_AgentGroup_seed" : 3
         }
       },

@@ -22,6 +22,8 @@ import de.unileipzig.irptools.defstructure.AnnotationParser;
 import de.unileipzig.irptools.defstructure.Converter;
 import de.unileipzig.irptools.defstructure.DefinitionCollection;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
+import de.unileipzig.irptools.io.input.InputData;
+import de.unileipzig.irptools.io.input.InputFile;
 import de.unileipzig.irptools.io.scenario.ScenarioData;
 import de.unileipzig.irptools.io.scenario.ScenarioFile;
 import jadex.base.IPlatformConfiguration;
@@ -158,7 +160,7 @@ public class IRPactStarter {
 
     private void startTimerAgent() {
         logger.debug("start TimerAgent");
-        TTimerAgentData agentData = new TTimerAgentData("TimerAgent", continuousConverter, tickConverter);
+        TTimerAgentData agentData = new TTimerAgentData("TimerAgent", data.agentGroups, continuousConverter, tickConverter);
         CreationInfo info = new CreationInfo();
         info.setName(agentData.getName());
         info.setFilename("de.unileipzig.irpact.temp.jadex.TTimerAgentBDI.class");
@@ -198,7 +200,7 @@ public class IRPactStarter {
     }
 
     @SuppressWarnings("unchecked")
-    private void collectResults() {
+    private void collectResults() throws IOException {
         logger.debug("collect Results");
         List<SatisfiedNeed> resultList = new ArrayList<>();
         for(IExternalAccess agent: agents) {
@@ -206,7 +208,14 @@ public class IRPactStarter {
             resultList.addAll(satisfiedNeedSet);
         }
         IRPactOutputData outputData = mapToOutput(resultList);
-        
+
+        DefinitionCollection dcoll = AnnotationParser.parse(IRPactOutputData.LIST);
+        DefinitionMapper dmap = new DefinitionMapper(dcoll);
+        Converter converter = new Converter(dmap);
+
+        InputData<IRPactOutputData> outData = new InputData<>(outputData);
+        InputFile outFile = outData.serialize(converter);
+        outFile.store(outputPath);
     }
 
     private Map<AgentGroup, List<SatisfiedNeed>> mapToGroups(List<SatisfiedNeed> input) {
@@ -231,6 +240,33 @@ public class IRPactStarter {
             counter.put(need, current + 1);
         }
         return map;
+    }
+
+    private List<AdaptionRate> collectAdoptionRates(List<SatisfiedNeed> input) {
+        List<AdaptionRate> adaptionRates = new ArrayList<>();
+        for(AgentGroup group: data.agentGroups) {
+            for(Need need: group.getNeeds()) {
+                double rate = calcAdoptionRate(group, need, input);
+                AdaptionRate adaptionRate = new AdaptionRate(
+                        group._name + "-" + need._name,
+                        group,
+                        need,
+                        rate
+                );
+                adaptionRates.add(adaptionRate);
+            }
+        }
+        return adaptionRates;
+    }
+
+    private double calcAdoptionRate(AgentGroup group, Need need, List<SatisfiedNeed> input) {
+        int count = 0;
+        for(SatisfiedNeed satisfiedNeed: input) {
+            if(satisfiedNeed.getGroup() == group && satisfiedNeed.getNeed() == need) {
+                count++;
+            }
+        }
+        return (double) count / (double) group.numberOfAgents;
     }
 
     private Set<Need> getNeeds(List<SatisfiedNeed> input) {
@@ -265,33 +301,12 @@ public class IRPactStarter {
         return needSet;
     }
 
-    private List<AdaptionRate> getAdaptionRates(List<SatisfiedNeed> input) {
-        List<AdaptionRate> adaptionRates = new ArrayList<>();
-        Map<AgentGroup, Map<Need, Integer>> adaptionCount = mapAdoptionCount(input);
-        for(Map.Entry<AgentGroup, Map<Need, Integer>> entry: adaptionCount.entrySet()) {
-            AgentGroup group = entry.getKey();
-            for(Map.Entry<Need, Integer> countEntry: entry.getValue().entrySet()) {
-                Need need = countEntry.getKey();
-                int count = countEntry.getValue();
-                double rate = (double) count / (double) group.numberOfAgents;
-                AdaptionRate adaptionRate = new AdaptionRate(
-                        group._name + "-" + need._name,
-                        group,
-                        need,
-                        rate
-                );
-                adaptionRates.add(adaptionRate);
-            }
-        }
-        return adaptionRates;
-    }
-
     private IRPactOutputData mapToOutput(List<SatisfiedNeed> input) {
         Set<AgentGroup> agentGroups = getAgentGroups(input);
         Set<ProductGroup> productGroups = getProductGroups(input);
         Set<FixedProduct> fixedProducts = getFixedProducts(input);
         Set<Need> needs = getNeeds(input);
-        List<AdaptionRate> adaptionRates = getAdaptionRates(input);
+        List<AdaptionRate> adaptionRates = collectAdoptionRates(input);
         return new IRPactOutputData(
                 agentGroups.toArray(new AgentGroup[0]),
                 productGroups.toArray(new ProductGroup[0]),

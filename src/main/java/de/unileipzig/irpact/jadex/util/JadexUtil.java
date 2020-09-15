@@ -9,6 +9,7 @@ import jadex.bridge.service.types.clock.IClock;
 import jadex.bridge.service.types.clock.IClockService;
 import jadex.bridge.service.types.simulation.ISimulationService;
 import jadex.commons.future.IFuture;
+import org.slf4j.Logger;
 
 import java.io.PrintStream;
 import java.util.Objects;
@@ -17,6 +18,12 @@ import java.util.Objects;
  * @author Daniel Abitz
  */
 public final class JadexUtil {
+
+    private static PrintStream systemOut;
+
+    static {
+        systemOut = System.out;
+    }
 
     private JadexUtil() {
     }
@@ -33,10 +40,24 @@ public final class JadexUtil {
         System.setOut(ignoreStream);
     }
 
+    public static void redirectTerminateMessageTo() {
+        redirectTerminateMessageTo(null);
+    }
+
+    public static void redirectTerminateMessageTo(Logger logger) {
+        oldOutStream = System.out;
+        JadexRedirectPrintStream redirectStream = new JadexRedirectPrintStream(oldOutStream, logger);
+        System.setOut(redirectStream);
+    }
+
     public static void printTerminateMessage() {
         if(oldOutStream != null) {
-            System.setOut(oldOutStream);
-            oldOutStream = null;
+            System.setOut(systemOut);
+            try {
+                oldOutStream.close();
+            } finally {
+                oldOutStream = null;
+            }
         }
     }
 

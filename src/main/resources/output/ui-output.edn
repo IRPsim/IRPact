@@ -1,8 +1,14 @@
 [
   {
-    :label "Ergebnis - Produktadaptionen"
-    :icon "fa fa-map-marker"
-    :description "Gibt die Anzahl der Adaptionen für die Agentengruppe in diesem Jahr an."
-    :tags [["AgentGroup" "Product" "adaptions"]]
+    :label "AdaptionRate" 
+    :tags [["AdaptionRate" "rate"]]
+  } 
+  {
+    :label "group" 
+    :tags [["out" "link" "AdaptionRate" "AgentGroup" "group"]]
+  } 
+  {
+    :label "need" 
+    :tags [["out" "link" "AdaptionRate" "Need" "need"]]
   }
 ]

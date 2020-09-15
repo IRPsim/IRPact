@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.temp.jadex;
 
 import de.unileipzig.irpact.jadex.util.JadexUtil;
+import de.unileipzig.irpact.start.irpact.input.agent.AgentGroup;
 import de.unileipzig.irpact.temp.TTimerAgentData;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bridge.IComponentIdentifier;
@@ -24,6 +25,8 @@ import org.slf4j.LoggerFactory;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -49,6 +52,8 @@ public class TTimerAgentBDI implements TimerService {
     protected TTimerAgentData data;
     protected long realStart;
     protected ZonedDateTime simuStart;
+    protected Map<AgentGroup, Integer> counterMap = new HashMap<>();
+    protected boolean canBeKilled = false;
 
     private String getName() {
         return data.getName();
@@ -71,7 +76,23 @@ public class TTimerAgentBDI implements TimerService {
         log(msg);
     }
 
+    private void tryKillPlatform() {
+        if(canBeKilled && allFinished()) {
+            execFeature.waitForDelay(0, ia -> {
+                killPlatform(ia);
+                return IFuture.DONE;
+            });
+        }
+    }
+
+    private void tryKillPlatform(IInternalAccess ia) {
+        if(canBeKilled && allFinished()) {
+            killPlatform(ia);
+        }
+    }
+
     private void killPlatform(IInternalAccess ia) {
+        log("KILL IT");
         IComponentIdentifier platformId = ia.getId().getRoot();
         IExternalAccess platform = ia.getExternalAccess(platformId);
         platform.killComponent();
@@ -85,8 +106,8 @@ public class TTimerAgentBDI implements TimerService {
         endTime = startTime + delay;
         data.getContinuousConverter().setStart(startTime);
         execFeature.waitForDelay(delay, ia -> {
-            log("KILL IT");
-            killPlatform(ia);
+            canBeKilled = true;
+            tryKillPlatform(ia);
             return IFuture.DONE;
         });
 
@@ -107,8 +128,8 @@ public class TTimerAgentBDI implements TimerService {
             if(isValid2().get()) {
                 waitForKillTick0();
             } else {
-                log("KILL IT");
-                killPlatform(ia);
+                canBeKilled = true;
+                tryKillPlatform(ia);
             }
             return IFuture.DONE;
         });
@@ -129,6 +150,24 @@ public class TTimerAgentBDI implements TimerService {
         }
     }
 
+    @Override
+    public synchronized IFuture<Void> finished(AgentGroupWrapper wrapper) {
+        int current = counterMap.get(wrapper.getGroup());
+        counterMap.put(wrapper.getGroup(), current + 1);
+        tryKillPlatform();
+        return IFuture.DONE;
+    }
+
+    private boolean allFinished() {
+        for(AgentGroup group: data.getGroups()) {
+            int count = counterMap.get(group);
+            if(count != group.numberOfAgents) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     //=========================
     //lifecycle
     //=========================
@@ -137,6 +176,9 @@ public class TTimerAgentBDI implements TimerService {
     protected void onInit() {
         data = (TTimerAgentData) resultsFeature.getArguments().get("data");
         clock = JadexUtil.getClockService(agent);
+        for(AgentGroup group: data.getGroups()) {
+            counterMap.put(group, 0);
+        }
         if(data.getContinuousConverter() == null) {
             waitForKillTick();
         } else {

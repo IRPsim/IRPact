@@ -10,31 +10,28 @@ import java.io.PrintStream;
  *
  * @author Daniel Abitz
  */
+@SuppressWarnings("FieldMayBeFinal")
 public class JadexRedirectPrintStream extends PrintStream {
 
     private static final Logger logger = LoggerFactory.getLogger(JadexRedirectPrintStream.class);
 
-    private final Logger customLogger;
-    private final boolean err;
+    private Logger customLogger;
 
-    public JadexRedirectPrintStream(PrintStream ps, boolean err) {
-        this(ps, err, logger);
+    public JadexRedirectPrintStream(PrintStream ps) {
+        this(ps, null);
     }
 
-    public JadexRedirectPrintStream(PrintStream ps, boolean err, Logger logger) {
+    public JadexRedirectPrintStream(PrintStream ps, Logger logger) {
         super(ps);
-        this.err = err;
-        this.customLogger = logger;
+        this.customLogger = logger == null
+                ? JadexRedirectPrintStream.logger
+                : logger;
     }
 
     @Override
     public void println(String str) {
         if(str != null && str.startsWith("terminated event for")) {
-            if(err) {
-                customLogger.error(str);
-            } else {
-                customLogger.trace(str);
-            }
+            customLogger.trace(str);
         } else {
             super.println(str);
         }

@@ -18,7 +18,7 @@ import java.util.Set;
  */
 @Definition(
         edn = @Edn(
-                label = "Product/FixedProduct"
+                path = "Product/FixedProduct"
         )
 )
 public class FixedProduct {

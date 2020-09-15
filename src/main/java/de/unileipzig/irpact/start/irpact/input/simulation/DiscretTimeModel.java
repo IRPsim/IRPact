@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 @Definition(
         edn = @Edn(
-                label = "Simulation/DiscretTimeModel"
+                path = "Simulation/DiscretTimeModel"
         )
 )
 public class DiscretTimeModel implements TimeModel {

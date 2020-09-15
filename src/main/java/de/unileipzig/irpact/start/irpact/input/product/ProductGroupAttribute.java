@@ -4,6 +4,7 @@ import de.unileipzig.irpact.core.product.BasicProductGroupAttribute;
 import de.unileipzig.irpact.start.irpact.input.distribution.UnivariateDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
+import de.unileipzig.irptools.defstructure.annotation.EdnParameter;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 
 import java.util.Objects;
@@ -13,14 +14,18 @@ import java.util.Objects;
  */
 @Definition(
         edn = @Edn(
-                label = "Product/ProductGroupAttribute"
+                path = "Product/ProductGroupAttribute"
         )
 )
 public class ProductGroupAttribute {
 
     public String _name;
 
-    @FieldDefinition
+    @FieldDefinition(
+            edn = @EdnParameter(
+                    path = "Link/ProductGroupAttribute-UnivariateDistribution"
+            )
+    )
     public UnivariateDistribution distribution;
 
     public ProductGroupAttribute() {

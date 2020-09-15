@@ -2,7 +2,6 @@ package de.unileipzig.irpact.start.irpact;
 
 import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.start.irpact.input.IRPactInputData;
-import de.unileipzig.irpact.start.irpact.input.ScalarData;
 import de.unileipzig.irpact.start.irpact.input.agent.AgentGroup;
 import de.unileipzig.irpact.start.irpact.input.distribution.RandomBoundedDistribution;
 import de.unileipzig.irpact.start.irpact.input.need.Need;
@@ -25,9 +24,9 @@ public class DefaultScenarioFactory {
         Need needPV = new Need("needPV");
         Need needPC = new Need("needPC");
 
-        AgentGroup aGrpPV = new AgentGroup("Group-PV", 50, 0.05, 1, new Need[]{needPV});
-        AgentGroup aGrpPC = new AgentGroup("Group-PC", 50, 0.05, 2, new Need[]{needPC});
-        AgentGroup aGrpPVPC = new AgentGroup("Group-PVPC", 100, 0.1, 3, new Need[]{needPV, needPC});
+        AgentGroup aGrpPV = new AgentGroup("Group-PV", 50, 0.01, 1, new Need[]{needPV});
+        AgentGroup aGrpPC = new AgentGroup("Group-PC", 50, 0.01, 2, new Need[]{needPC});
+        AgentGroup aGrpPVPC = new AgentGroup("Group-PVPC", 100, 0.005, 3, new Need[]{needPV, needPC});
 
         RandomBoundedDistribution distPV = new RandomBoundedDistribution("DistPV", 42, 100, 200);
         ProductGroupAttribute pgAttrPricePV = new ProductGroupAttribute("PricePV", distPV);
@@ -60,7 +59,6 @@ public class DefaultScenarioFactory {
         ContinousTimeModel ctm = new ContinousTimeModel("ContTime", acceleration, delay);
 
         return new IRPactInputData(
-                new ScalarData(10),
                 new AgentGroup[]{aGrpPV, aGrpPC, aGrpPVPC},
                 new TimeModel[]{ctm},
                 new ProductGroup[]{gPV, gPC},

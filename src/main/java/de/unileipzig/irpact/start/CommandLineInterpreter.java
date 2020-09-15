@@ -50,6 +50,12 @@ public final class CommandLineInterpreter implements Callable<Integer> {
     private boolean irptools;
 
     @CommandLine.Option(
+            names = {"--createAllDefaults"},
+            description = "Creates input.gms, ui-input.edn, ui-input-delta.edn, output.gms and ui-output.edn."
+    )
+    private boolean createAllDefaults;
+
+    @CommandLine.Option(
             names = { "--inputgms" },
             description = "Path to input.gms"
     )
@@ -102,7 +108,11 @@ public final class CommandLineInterpreter implements Callable<Integer> {
     }
 
     public boolean startIRPact() {
-        return irptools;
+        return !irptools;
+    }
+
+    public boolean createAllDefaults() {
+        return createAllDefaults;
     }
 
     public boolean isOk() {

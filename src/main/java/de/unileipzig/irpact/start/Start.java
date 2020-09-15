@@ -1,13 +1,12 @@
 package de.unileipzig.irpact.start;
 
-import de.unileipzig.irpact.jadex.util.JadexRedirectPrintStream;
-import de.unileipzig.irpact.start.hardcodeddemo.HardCodedAgentDemo;
+import de.unileipzig.irpact.start.irptools.IRPtoolsStarter;
+import de.unileipzig.irpact.temp.jadex.IRPactStarter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.PrintStream;
-import java.nio.file.Path;
+import java.util.Arrays;
 
 /**
  * Starts IRPact.
@@ -18,23 +17,19 @@ public class Start {
 
     private static final Logger logger = LoggerFactory.getLogger(Start.class);
 
-    private static void redirectSystem() {
-        PrintStream out = System.out;
-        PrintStream err = System.err;
-        System.setOut(new JadexRedirectPrintStream(out, false));
-        System.setErr(new JadexRedirectPrintStream(err, true));
+    private static void startIRPact(CommandLineInterpreter cli) throws IOException {
+        IRPactStarter starter = new IRPactStarter(cli.getInputPath(), cli.getOutputPath());
+        starter.start();
     }
 
-    private static void startIRPact(CommandLineInterpreter cli) {
-
-    }
-
-    private static void startIRPtools(CommandLineInterpreter cli) {
-
+    private static void startIRPtools(CommandLineInterpreter cli) throws Exception {
+        IRPtoolsStarter starter = new IRPtoolsStarter(cli);
+        starter.start();
     }
 
     public static void main(String[] args) {
         try {
+            logger.trace("args: {}", Arrays.toString(args));
             CommandLineInterpreter cli = new CommandLineInterpreter(args);
             if(cli.isOk()) {
                 if(cli.startIRPact()) {

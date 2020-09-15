@@ -20,7 +20,7 @@ import java.util.Set;
  */
 @Definition(
         edn = @Edn(
-                label = "Product/ProductGroup"
+                path = "Product/ProductGroup"
         )
 )
 public class ProductGroup {
@@ -29,14 +29,14 @@ public class ProductGroup {
 
     @FieldDefinition(
             edn = @EdnParameter(
-                    path = "Links/ProductGroup-ProductGroupAttribute"
+                    path = "Link/ProductGroup-ProductGroupAttribute"
             )
     )
     public ProductGroupAttribute[] attributes;
 
     @FieldDefinition(
             edn = @EdnParameter(
-                    path = "Links/ProductGroup-Need"
+                    path = "Link/ProductGroup-Need"
             )
     )
     public Need[] needsSatisfied;

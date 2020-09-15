@@ -27,6 +27,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class TestCreateDefaultScenario {
 
     //=========================
+    //all
+    //=========================
+
+    @Test
+    void createAll() {
+        createContinous();
+        createDiscrete();
+        createContinousForTest();
+        createDiscreteForTest();
+    }
+
+    @Test
+    void createFilesAll() throws IOException {
+        createContinousFile();
+        createDiscreteFile();
+        createContinousFileForTest();
+        createDiscreteFileForTest();
+    }
+
+    //=========================
     //Continous
     //=========================
 
@@ -191,7 +211,6 @@ class TestCreateDefaultScenario {
         IRPactStarter starter = new IRPactStarter(inputPath, outputPath);
         starter.start();
     }
-
 
     //=========================
     //Test-Discrete

@@ -1,87 +1,118 @@
 {
+  "description" : { },
   "years" : [ {
     "config" : {
-      "simulationlength" : 35040,
-      "savelength" : 96,
-      "optimizationlength" : 192,
-      "resolution" : 35040,
-      "timestep" : 0.25,
-      "modeldefinition" : 3,
-      "year" : 2015,
-      "prognoseszenario" : null,
-      "interpolated" : false
+      "year" : 2015
     },
-    "scalars" : {
-      "sca_global_seed" : 123
-    },
+    "scalars" : { },
     "sets" : {
       "set_AgentGroup" : {
-        "gx10x5" : {
-          "par_AgentGroup_numberOfAgents" : 10,
-          "par_AgentGroup_adaptionRate" : 0.5
-        },
-        "gx100x01" : {
-          "par_AgentGroup_numberOfAgents" : 100,
-          "par_AgentGroup_adaptionRate" : 0.01
-        },
-        "gx50x75" : {
+        "Group-PV" : {
           "par_AgentGroup_numberOfAgents" : 50,
-          "par_AgentGroup_adaptionRate" : 0.75
+          "par_AgentGroup_adoptionRate" : 0.01,
+          "par_AgentGroup_seed" : 1
+        },
+        "Group-PC" : {
+          "par_AgentGroup_numberOfAgents" : 50,
+          "par_AgentGroup_adoptionRate" : 0.01,
+          "par_AgentGroup_seed" : 2
+        },
+        "Group-PVPC" : {
+          "par_AgentGroup_numberOfAgents" : 100,
+          "par_AgentGroup_adoptionRate" : 0.005,
+          "par_AgentGroup_seed" : 3
         }
       },
-      "set_Product" : {
-        "Auto" : {
-          "par_Product_name" : 0
-        },
-        "Haus" : {
-          "par_Product_name" : 0
+      "set_Need" : {
+        "needPV" : { },
+        "needPC" : { }
+      },
+      "set_ContinousTimeModel" : {
+        "ContTime" : {
+          "par_ContinousTimeModel_acceleration" : 2678400,
+          "par_ContinousTimeModel_delay" : 604800000
         }
+      },
+      "set_ProductGroup" : {
+        "PV" : { },
+        "PC" : { }
+      },
+      "set_ProductGroupAttribute" : {
+        "PricePV" : { },
+        "PricePC" : { }
+      },
+      "set_RandomBoundedDistribution" : {
+        "DistPV" : {
+          "par_RandomBoundedDistribution_seed" : 42,
+          "par_RandomBoundedDistribution_lowerBound" : 100.0,
+          "par_RandomBoundedDistribution_upperBound" : 200.0
+        },
+        "DistPC" : {
+          "par_RandomBoundedDistribution_seed" : 1337,
+          "par_RandomBoundedDistribution_lowerBound" : 500.0,
+          "par_RandomBoundedDistribution_upperBound" : 1000.0
+        }
+      },
+      "set_FixedProduct" : {
+        "FixedPV" : { },
+        "FixedPC" : { }
       }
     },
     "timeseries" : { },
-    "tables" : { },
-    "postprocessing" : { }
-  }, {
-    "config" : {
-      "simulationlength" : 35040,
-      "savelength" : 96,
-      "optimizationlength" : 192,
-      "resolution" : 35040,
-      "timestep" : 0.25,
-      "modeldefinition" : 3,
-      "year" : 2016,
-      "prognoseszenario" : null,
-      "interpolated" : false
-    },
-    "scalars" : {
-      "sca_global_seed" : 123
-    },
-    "sets" : {
-      "set_AgentGroup" : {
-        "gx10x5" : {
-          "par_AgentGroup_numberOfAgents" : 10,
-          "par_AgentGroup_adaptionRate" : 0.5
+    "tables" : {
+      "par_link_AgentGroup_Need_needs" : {
+        "Group-PV" : {
+          "needPV" : 1.0
         },
-        "gx100x01" : {
-          "par_AgentGroup_numberOfAgents" : 100,
-          "par_AgentGroup_adaptionRate" : 0.3
+        "Group-PC" : {
+          "needPC" : 1.0
         },
-        "gx50x75" : {
-          "par_AgentGroup_numberOfAgents" : 50,
-          "par_AgentGroup_adaptionRate" : 0.75
+        "Group-PVPC" : {
+          "needPV" : 1.0,
+          "needPC" : 1.0
         }
       },
-      "set_Product" : {
-        "Auto" : {
-          "par_Product_name" : 0
+      "par_link_ProductGroupAttribute_UnivariateDistribution_distribution" : {
+        "PricePV" : {
+          "DistPV" : 1.0
         },
-        "Haus" : {
-          "par_Product_name" : 0
+        "PricePC" : {
+          "DistPC" : 1.0
+        }
+      },
+      "par_link_ProductGroup_ProductGroupAttribute_attributes" : {
+        "PV" : {
+          "PricePV" : 1.0
+        },
+        "PC" : {
+          "PricePC" : 1.0
+        }
+      },
+      "par_link_ProductGroup_Need_needsSatisfied" : {
+        "PV" : {
+          "needPV" : 1.0
+        },
+        "PC" : {
+          "needPC" : 1.0
+        }
+      },
+      "par_link_FixedProduct_ProductGroup_group" : {
+        "FixedPV" : {
+          "PV" : 1.0
+        },
+        "FixedPC" : {
+          "PC" : 1.0
+        }
+      },
+      "par_map_FixedProduct_ProductGroupAttribute_specifiedAttributes" : {
+        "FixedPV" : {
+          "PricePV" : 150.0
+        },
+        "FixedPC" : {
+          "PricePC" : 750.0
         }
       }
     },
-    "timeseries" : { },
-    "tables" : { },
     "postprocessing" : { }
   } ]
 }

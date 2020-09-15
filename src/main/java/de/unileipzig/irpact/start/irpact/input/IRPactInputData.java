@@ -39,12 +39,12 @@ public class IRPactInputData {
             ParserInput.newInstance(GamsType.INPUT, ContinousTimeModel.class),
             ParserInput.newInstance(GamsType.INPUT, DiscretTimeModel.class),
             ParserInput.newInstance(GamsType.INPUT, TimeModel.class),
-            ParserInput.newInstance(GamsType.INPUT, ScalarData.class),
+//            ParserInput.newInstance(GamsType.INPUT, ScalarData.class),
             ParserInput.newInstance(GamsType.INPUT, IRPactInputData.class)
     );
 
-    @FieldDefinition
-    public ScalarData scalarData;
+//    @FieldDefinition
+//    public ScalarData scalarData;
 
     @FieldDefinition
     public AgentGroup[] agentGroups;
@@ -62,12 +62,10 @@ public class IRPactInputData {
     }
 
     public IRPactInputData(
-            ScalarData scalarData,
             AgentGroup[] agentGroups,
             TimeModel[] timeModels,
             ProductGroup[] productGroups,
             FixedProduct[] fixedProducts) {
-        this.scalarData = scalarData;
         this.agentGroups = agentGroups;
         this.timeModels = timeModels;
         this.productGroups = productGroups;
@@ -102,8 +100,7 @@ public class IRPactInputData {
     @Override
     public String toString() {
         return "IRPactInputData{" +
-                "scalarData=" + scalarData +
-                ", agentGroups=" + Arrays.toString(agentGroups) +
+                "agentGroups=" + Arrays.toString(agentGroups) +
                 ", timeModels=" + Arrays.toString(timeModels) +
                 ", productGroups=" + Arrays.toString(productGroups) +
                 ", fixedProducts=" + Arrays.toString(fixedProducts) +
@@ -115,8 +112,7 @@ public class IRPactInputData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         IRPactInputData inputData = (IRPactInputData) o;
-        return Objects.equals(scalarData, inputData.scalarData) &&
-                Arrays.equals(agentGroups, inputData.agentGroups) &&
+        return Arrays.equals(agentGroups, inputData.agentGroups) &&
                 Arrays.equals(timeModels, inputData.timeModels) &&
                 Arrays.equals(productGroups, inputData.productGroups) &&
                 Arrays.equals(fixedProducts, inputData.fixedProducts);
@@ -124,7 +120,7 @@ public class IRPactInputData {
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(scalarData);
+        int result = 1;
         result = 31 * result + Arrays.hashCode(agentGroups);
         result = 31 * result + Arrays.hashCode(timeModels);
         result = 31 * result + Arrays.hashCode(productGroups);

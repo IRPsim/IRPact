@@ -1,0 +1,9 @@
+[
+  {
+    :label "Agentengruppen"
+    :set "set_AgentGroup"
+    :icon "fa fa-map-marker"
+    :description "Agentengruppen in der Simulation"
+    :tags [["AgentGroup" "adaptionRate"]]
+  }
+]
