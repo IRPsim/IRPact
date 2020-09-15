@@ -24,9 +24,9 @@ public class DefaultScenarioFactory {
         Need needPV = new Need("needPV");
         Need needPC = new Need("needPC");
 
-        AgentGroup aGrpPV = new AgentGroup("Group-PV", 50, 0.01, 111, new Need[]{needPV});
-        AgentGroup aGrpPC = new AgentGroup("Group-PC", 50, 0.01, 222, new Need[]{needPC});
-        AgentGroup aGrpPVPC = new AgentGroup("Group-PVPC", 100, 0.005, 333, new Need[]{needPV, needPC});
+        AgentGroup aGrpPV = new AgentGroup("Group-PV", 50, 0.01, 1, new Need[]{needPV});
+        AgentGroup aGrpPC = new AgentGroup("Group-PC", 50, 0.01, 2, new Need[]{needPC});
+        AgentGroup aGrpPVPC = new AgentGroup("Group-PVPC", 100, 0.005, 3, new Need[]{needPV, needPC});
 
         RandomBoundedDistribution distPV = new RandomBoundedDistribution("DistPV", 42, 100, 200);
         ProductGroupAttribute pgAttrPricePV = new ProductGroupAttribute("PricePV", distPV);
