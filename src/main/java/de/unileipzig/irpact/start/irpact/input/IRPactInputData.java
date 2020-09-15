@@ -27,7 +27,7 @@ import java.util.*;
 )
 public class IRPactInputData {
 
-    public static final List<ParserInput> INPUT_LIST = CollectionUtil.arrayListOf(
+    public static final List<ParserInput> LIST = CollectionUtil.arrayListOf(
             ParserInput.newInstance(GamsType.INPUT, AgentGroup.class),
             ParserInput.newInstance(GamsType.INPUT, RandomBoundedDistribution.class),
             ParserInput.newInstance(GamsType.INPUT, RandomDistribution.class),

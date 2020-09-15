@@ -32,7 +32,7 @@ class TestCreateDefaultScenario {
 
     @Test
     void createContinous() {
-        DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.INPUT_LIST);
+        DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.LIST);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
@@ -61,7 +61,7 @@ class TestCreateDefaultScenario {
 
     @Test
     void createContinousFile() throws IOException {
-        DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.INPUT_LIST);
+        DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.LIST);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
@@ -87,7 +87,7 @@ class TestCreateDefaultScenario {
 
     @Test
     void createDiscrete() {
-        DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.INPUT_LIST);
+        DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.LIST);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
@@ -116,7 +116,7 @@ class TestCreateDefaultScenario {
 
     @Test
     void createDiscreteFile() throws IOException {
-        DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.INPUT_LIST);
+        DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.LIST);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
@@ -144,7 +144,7 @@ class TestCreateDefaultScenario {
 
     @Test
     void createContinousForTest() {
-        DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.INPUT_LIST);
+        DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.LIST);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
@@ -172,7 +172,7 @@ class TestCreateDefaultScenario {
 
     @Test
     void createContinousFileForTest() throws IOException {
-        DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.INPUT_LIST);
+        DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.LIST);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
@@ -201,7 +201,7 @@ class TestCreateDefaultScenario {
 
     @Test
     void createDiscreteForTest() {
-        DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.INPUT_LIST);
+        DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.LIST);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
@@ -229,7 +229,7 @@ class TestCreateDefaultScenario {
 
     @Test
     void createDiscreteFileForTest() throws IOException {
-        DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.INPUT_LIST);
+        DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.LIST);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
