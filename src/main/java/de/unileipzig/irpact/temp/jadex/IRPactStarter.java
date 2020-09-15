@@ -68,18 +68,42 @@ public class IRPactStarter {
         this.outputPath = outputPath;
     }
 
-    private void parseInputData() throws IOException {
-        logger.debug("parse InputData");
-        ScenarioFile scenarioFile = ScenarioFile.parse(inputPath);
+    private boolean tryParseScenario() {
+        try {
+            ScenarioFile scenarioFile = ScenarioFile.parse(inputPath);
+
+            DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.LIST);
+            DefinitionMapper dmap = new DefinitionMapper(dcoll);
+            Converter converter = new Converter(dmap);
+
+            ScenarioData<IRPactInputData> scenarioData = scenarioFile.deserialize(converter);
+
+            data = scenarioData.get(0).getData();
+            year = scenarioData.get(0).getYear();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private void tryParseInput() throws IOException {
+        InputFile inputFile = InputFile.parse(inputPath);
 
         DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.LIST);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
-        ScenarioData<IRPactInputData> scenarioData = scenarioFile.deserialize(converter);
+        InputData<IRPactInputData> inputData = inputFile.deserialize(converter);
 
-        data = scenarioData.get(0).getData();
-        year = scenarioData.get(0).getYear();
+        data = inputData.getData();
+        year = inputData.getConfig().getYear();
+    }
+
+    private void parseInputData() throws IOException {
+        logger.debug("parse InputData");
+        if(!tryParseScenario()) {
+            tryParseInput();
+        }
     }
 
     private void startPlatform() {

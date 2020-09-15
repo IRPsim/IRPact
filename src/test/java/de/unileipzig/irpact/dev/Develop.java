@@ -4,6 +4,8 @@ import de.unileipzig.irpact.start.Start;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Paths;
+
 /**
  * @author Daniel Abitz
  */
@@ -15,6 +17,15 @@ class Develop {
         String[] args = {
                 "--tools",
                 "--createAllDefaults"
+        };
+        Start.main(args);
+    }
+
+    @Test
+    void runMyTest() {
+        String[] args = {
+                "-i", Paths.get("/home/daniel/Stuff/Projects", "neue.json").toString(),
+                "-o", Paths.get("/home/daniel/Stuff/Projects", "neue.out.json").toString()
         };
         Start.main(args);
     }
