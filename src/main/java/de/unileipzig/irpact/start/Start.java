@@ -29,6 +29,10 @@ public class Start {
     }
 
     public static void main(String[] args) {
+        if(true) {
+            throw new RuntimeException("UI-TEST");
+        }
+
         try {
             JadexUtil.redirectTerminateMessage();
             logger.trace("args: {}", Arrays.toString(args));

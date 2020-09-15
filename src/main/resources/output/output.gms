@@ -3,122 +3,31 @@
 * - identifier: AgentGroup
 SET set_AgentGroup(*)
 
-* - description: numberOfAgents
+* - description: Anzahl der Agenten in der Gruppe
 * - type: Integer
-* - identifier: numberOfAgents
+* - identifier: Agentenanzahl
+* - domain: [1,]
+* - default: 10
 PARAMETER par_AgentGroup_numberOfAgents(set_AgentGroup)
 
-* - description: adoptionRate
+* - description: Adaptionsrate für die Agenten dieser Gruppe
 * - type: Float
-* - identifier: adoptionRate
-PARAMETER par_AgentGroup_adoptionRate(set_AgentGroup)
+* - identifier: Adaptionsrate
+* - domain: [0,1]
+* - default: 0.5
+PARAMETER par_AgentGroup_adaptionRate(set_AgentGroup)
 
-* - description: seedAgentGroup
+* - description: Product
+* - type: String
+* - identifier: Product
+SET set_Product(*)
+
+* - description: Name des Produktes
 * - type: Integer
-* - identifier: seedAgentGroup
-PARAMETER par_AgentGroup_seed(set_AgentGroup)
+* - identifier: Produktname
+PARAMETER par_Product_name(set_Product)
 
-* - description: needsAgentGroup
-* - type: Boolean
-* - identifier: needsAgentGroup
-PARAMETER par_link_AgentGroup_Need_needs(set_AgentGroup,set_Need)
-
-* - description: RandomBoundedDistribution
-* - type: String
-* - identifier: RandomBoundedDistribution
-SET set_RandomBoundedDistribution(set_UnivariateDistribution)
-
-* - description: seedRandomBoundedDistribution
-* - type: Integer
-* - identifier: seedRandomBoundedDistribution
-PARAMETER par_RandomBoundedDistribution_seed(set_RandomBoundedDistribution)
-
-* - description: lowerBound
+* - description: Anzahl der Adaptionen der Gruppe je Produkt im Jahr
 * - type: Float
-* - identifier: lowerBound
-PARAMETER par_RandomBoundedDistribution_lowerBound(set_RandomBoundedDistribution)
-
-* - description: upperBound
-* - type: Float
-* - identifier: upperBound
-PARAMETER par_RandomBoundedDistribution_upperBound(set_RandomBoundedDistribution)
-
-* - description: RandomDistribution
-* - type: String
-* - identifier: RandomDistribution
-SET set_RandomDistribution(set_UnivariateDistribution)
-
-* - description: seedRandomDistribution
-* - type: Integer
-* - identifier: seedRandomDistribution
-PARAMETER par_RandomDistribution_seed(set_RandomDistribution)
-
-* - description: UnivariateDistribution
-* - type: String
-* - identifier: UnivariateDistribution
-SET set_UnivariateDistribution(*)
-
-* - description: Need
-* - type: String
-* - identifier: Need
-SET set_Need(*)
-
-* - description: FixedProduct
-* - type: String
-* - identifier: FixedProduct
-SET set_FixedProduct(*)
-
-* - description: groupFixedProduct
-* - type: Boolean
-* - identifier: groupFixedProduct
-PARAMETER par_link_FixedProduct_ProductGroup_group(set_FixedProduct,set_ProductGroup)
-
-* - description: specifiedAttributes
-* - type: Float
-* - identifier: specifiedAttributes
-PARAMETER par_map_FixedProduct_ProductGroupAttribute_specifiedAttributes(set_FixedProduct,set_ProductGroupAttribute)
-
-* - description: ProductGroup
-* - type: String
-* - identifier: ProductGroup
-SET set_ProductGroup(*)
-
-* - description: attributesProductGroup
-* - type: Boolean
-* - identifier: attributesProductGroup
-PARAMETER par_link_ProductGroup_ProductGroupAttribute_attributes(set_ProductGroup,set_ProductGroupAttribute)
-
-* - description: needsSatisfied
-* - type: Boolean
-* - identifier: needsSatisfied
-PARAMETER par_link_ProductGroup_Need_needsSatisfied(set_ProductGroup,set_Need)
-
-* - description: ProductGroupAttribute
-* - type: String
-* - identifier: ProductGroupAttribute
-SET set_ProductGroupAttribute(*)
-
-* - description: distributionProductGroupAttribute
-* - type: Boolean
-* - identifier: distributionProductGroupAttribute
-PARAMETER par_link_ProductGroupAttribute_UnivariateDistribution_distribution(set_ProductGroupAttribute,set_UnivariateDistribution)
-
-* - description: AdaptionRate
-* - type: String
-* - identifier: AdaptionRate
-SET set_AdaptionRate(*)
-
-* - description: groupAdaptionRate
-* - type: Boolean
-* - identifier: groupAdaptionRate
-PARAMETER par_out_link_AdaptionRate_AgentGroup_group(set_AdaptionRate,set_AgentGroup)
-
-* - description: needAdaptionRate
-* - type: Boolean
-* - identifier: needAdaptionRate
-PARAMETER par_out_link_AdaptionRate_Need_need(set_AdaptionRate,set_Need)
-
-* - description: rate
-* - type: Float
-* - identifier: rate
-PARAMETER par_out_AdaptionRate_rate(set_AdaptionRate)
+* - identifier: Produktadaptionen
+PARAMETER par_out_table_AgentGroup_Product_adaptions(set_AgentGroup,set_Product)

@@ -1,74 +1,22 @@
 [
   {
-    :label "AgentGroup" 
-    :tags [["AgentGroup" "numberOfAgents"] ["AgentGroup" "adoptionRate"] ["AgentGroup" "seed"]]
+    :label "Agentengruppen" 
+    :set "set_AgentGroup" 
+    :icon "fa fa-map-marker" 
+    :description "Agentengruppen in der Simulation" 
+    :tags [["AgentGroup" "numberOfAgents"] ["AgentGroup" "adaptionRate"]]
   } 
   {
-    :label "Distribution" 
-    :sections [
-      {
-        :label "RandomBoundedDistribution" 
-        :tags [["RandomBoundedDistribution" "seed"] ["RandomBoundedDistribution" "lowerBound"] ["RandomBoundedDistribution" "upperBound"]]
-      } 
-      {
-        :label "RandomDistribution" 
-        :tags [["RandomDistribution" "seed"]]
-      }
-    ]
+    :label "Produkte" 
+    :set "set_Product" 
+    :icon "fa fa-map-marker" 
+    :description "angebotene Produkte" 
+    :tags [["Product" "name"]]
   } 
   {
-    :label "Product" 
-    :sections [
-      {
-        :label "FixedProduct"
-      } 
-      {
-        :label "ProductGroup"
-      } 
-      {
-        :label "ProductGroupAttribute"
-      }
-    ]
-  } 
-  {
-    :label "AdaptionRate" 
-    :tags [["out" "AdaptionRate" "rate"]]
-  } 
-  {
-    :label "Link" 
-    :sections [
-      {
-        :label "AgentGroup-Need" 
-        :tags [["link" "AgentGroup" "Need" "needs"]]
-      } 
-      {
-        :label "FixedProduct-ProductGroup" 
-        :tags [["link" "FixedProduct" "ProductGroup" "group"]]
-      } 
-      {
-        :label "FixedProduct-ProductGroupAttribute" 
-        :tags [["map" "FixedProduct" "ProductGroupAttribute" "specifiedAttributes"]]
-      } 
-      {
-        :label "ProductGroup-ProductGroupAttribute" 
-        :tags [["link" "ProductGroup" "ProductGroupAttribute" "attributes"]]
-      } 
-      {
-        :label "ProductGroup-Need" 
-        :tags [["link" "ProductGroup" "Need" "needsSatisfied"]]
-      } 
-      {
-        :label "ProductGroupAttribute-UnivariateDistribution" 
-        :tags [["link" "ProductGroupAttribute" "UnivariateDistribution" "distribution"]]
-      } 
-      {
-        :label "AdaptionRate-AgentGroup" 
-        :tags [["out" "link" "AdaptionRate" "AgentGroup" "group"]]
-      } 
-      {
-        :label "AdaptionRate-Need" 
-        :tags [["out" "link" "AdaptionRate" "Need" "need"]]
-      }
-    ]
+    :label "Ergebnis - Produktadaptionen" 
+    :icon "fa fa-map-marker" 
+    :description "Gibt die Anzahl der Adaptionen für die Agentengruppe in diesem Jahr an." 
+    :tags [["out" "table" "AgentGroup" "Product" "adaptions"]]
   }
 ]

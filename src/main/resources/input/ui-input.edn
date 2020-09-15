@@ -1,75 +1,22 @@
 [
   {
-    :label "AgentGroup" 
-    :tags [["AgentGroup" "numberOfAgents"] ["AgentGroup" "adoptionRate"] ["AgentGroup" "seed"]]
+    :label "Allgemeine Einstellungen" 
+    :icon "fa fa-map-marker" 
+    :description "Allgemeine Einstellungen für die Simulation." 
+    :tags [["global" "seed"]]
   } 
   {
-    :label "Distribution" 
-    :sections [
-      {
-        :label "RandomBoundedDistribution" 
-        :tags [["RandomBoundedDistribution" "seed"] ["RandomBoundedDistribution" "lowerBound"] ["RandomBoundedDistribution" "upperBound"]]
-      } 
-      {
-        :label "RandomDistribution" 
-        :tags [["RandomDistribution" "seed"]]
-      }
-    ]
+    :label "Agentengruppen" 
+    :set "set_AgentGroup" 
+    :icon "fa fa-map-marker" 
+    :description "Agentengruppen in der Simulation" 
+    :tags [["AgentGroup" "numberOfAgents"] ["AgentGroup" "adaptionRate"]]
   } 
   {
-    :label "Product" 
-    :sections [
-      {
-        :label "FixedProduct"
-      } 
-      {
-        :label "ProductGroup"
-      } 
-      {
-        :label "ProductGroupAttribute"
-      }
-    ]
-  } 
-  {
-    :label "Simulation" 
-    :sections [
-      {
-        :label "ContinousTimeModel" 
-        :tags [["ContinousTimeModel" "acceleration"] ["ContinousTimeModel" "delay"]]
-      } 
-      {
-        :label "DiscretTimeModel" 
-        :tags [["DiscretTimeModel" "msPerTick"] ["DiscretTimeModel" "delay"]]
-      }
-    ]
-  } 
-  {
-    :label "Link" 
-    :sections [
-      {
-        :label "AgentGroup-Need" 
-        :tags [["link" "AgentGroup" "Need" "needs"]]
-      } 
-      {
-        :label "FixedProduct-ProductGroup" 
-        :tags [["link" "FixedProduct" "ProductGroup" "group"]]
-      } 
-      {
-        :label "FixedProduct-ProductGroupAttribute" 
-        :tags [["map" "FixedProduct" "ProductGroupAttribute" "specifiedAttributes"]]
-      } 
-      {
-        :label "ProductGroup-ProductGroupAttribute" 
-        :tags [["link" "ProductGroup" "ProductGroupAttribute" "attributes"]]
-      } 
-      {
-        :label "ProductGroup-Need" 
-        :tags [["link" "ProductGroup" "Need" "needsSatisfied"]]
-      } 
-      {
-        :label "ProductGroupAttribute-UnivariateDistribution" 
-        :tags [["link" "ProductGroupAttribute" "UnivariateDistribution" "distribution"]]
-      }
-    ]
+    :label "Produkte" 
+    :set "set_Product" 
+    :icon "fa fa-map-marker" 
+    :description "angebotene Produkte" 
+    :tags [["Product" "name"]]
   }
 ]
