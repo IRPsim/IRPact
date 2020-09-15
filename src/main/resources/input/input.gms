@@ -1,10 +1,10 @@
-* - description: Seed für den Zufallsgenerator
+* - description: Seed fuer den Zufallsgenerator
 * - type: Integer
 * - identifier: Zufallswert
 * - unit: [x]
 SCALAR sca_global_seed
 
-* - description: Baumwert für den Zufallsgenerator
+* - description: Baumwert fuer den Zufallsgenerator
 * - type: Integer
 * - identifier: Baumwert
 * - unit: [x]

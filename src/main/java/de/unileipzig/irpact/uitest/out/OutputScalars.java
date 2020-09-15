@@ -23,7 +23,7 @@ public class OutputScalars {
             ),
             edn = @EdnParameter(
                     label = "Ergebnis - Produktadaptionen",
-                    description = "Gibt die Anzahl der Adaptionen f\u00fcr die Agentengruppe in diesem Jahr an.",
+                    description = "Gibt die Anzahl der Adaptionen fuer die Agentengruppe in diesem Jahr an.",
                     icon = "fa fa-map-marker"
             )
     )
