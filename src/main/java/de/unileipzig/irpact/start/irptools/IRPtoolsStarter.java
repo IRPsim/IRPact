@@ -112,9 +112,9 @@ public class IRPtoolsStarter {
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         GamsCollection gcoll = dmap.getGamsCollection();
 
-        GamsPrinter.write(GamsType.OUTPUT, gcoll, outputgmsPath, StandardCharsets.UTF_8);
+        GamsPrinter.write(GamsType.INPUT_OUTPUT, gcoll, outputgmsPath, StandardCharsets.UTF_8);
 
-        Sections uiinput = dmap.toEdn(GamsType.OUTPUT);
+        Sections uiinput = dmap.toEdn(GamsType.INPUT_OUTPUT);
         EdnPrinter.writeTo(uiinput, PrinterFormat.MY_DEFAULT, uioutputPath, StandardCharsets.UTF_8);
     }
 }

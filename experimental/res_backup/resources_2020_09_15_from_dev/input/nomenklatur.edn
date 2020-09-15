@@ -1,0 +1,14 @@
+{
+  :type {
+    "multiplier" "multiplier" 
+    "ConsumerAgentGroup" "ConsumerAgentGroup" 
+    "informationAuthority" "informationAuthority" 
+    "ConsumerAgentGroupAttribute" "ConsumerAgentGroupAttribute" 
+    "value0" "value0" 
+    "value1" "value1"
+  } 
+  :module {
+  } 
+  :reference {
+  }
+}

@@ -1,14 +1,74 @@
 [
   {
+    :label "AgentGroup" 
+    :tags [["AgentGroup" "numberOfAgents"] ["AgentGroup" "adoptionRate"] ["AgentGroup" "seed"]]
+  } 
+  {
+    :label "Distribution" 
+    :sections [
+      {
+        :label "RandomBoundedDistribution" 
+        :tags [["RandomBoundedDistribution" "seed"] ["RandomBoundedDistribution" "lowerBound"] ["RandomBoundedDistribution" "upperBound"]]
+      } 
+      {
+        :label "RandomDistribution" 
+        :tags [["RandomDistribution" "seed"]]
+      }
+    ]
+  } 
+  {
+    :label "Product" 
+    :sections [
+      {
+        :label "FixedProduct"
+      } 
+      {
+        :label "ProductGroup"
+      } 
+      {
+        :label "ProductGroupAttribute"
+      }
+    ]
+  } 
+  {
     :label "AdaptionRate" 
-    :tags [["AdaptionRate" "rate"]]
+    :tags [["out" "AdaptionRate" "rate"]]
   } 
   {
-    :label "group" 
-    :tags [["out" "link" "AdaptionRate" "AgentGroup" "group"]]
-  } 
-  {
-    :label "need" 
-    :tags [["out" "link" "AdaptionRate" "Need" "need"]]
+    :label "Link" 
+    :sections [
+      {
+        :label "AgentGroup-Need" 
+        :tags [["link" "AgentGroup" "Need" "needs"]]
+      } 
+      {
+        :label "FixedProduct-ProductGroup" 
+        :tags [["link" "FixedProduct" "ProductGroup" "group"]]
+      } 
+      {
+        :label "FixedProduct-ProductGroupAttribute" 
+        :tags [["map" "FixedProduct" "ProductGroupAttribute" "specifiedAttributes"]]
+      } 
+      {
+        :label "ProductGroup-ProductGroupAttribute" 
+        :tags [["link" "ProductGroup" "ProductGroupAttribute" "attributes"]]
+      } 
+      {
+        :label "ProductGroup-Need" 
+        :tags [["link" "ProductGroup" "Need" "needsSatisfied"]]
+      } 
+      {
+        :label "ProductGroupAttribute-UnivariateDistribution" 
+        :tags [["link" "ProductGroupAttribute" "UnivariateDistribution" "distribution"]]
+      } 
+      {
+        :label "AdaptionRate-AgentGroup" 
+        :tags [["out" "link" "AdaptionRate" "AgentGroup" "group"]]
+      } 
+      {
+        :label "AdaptionRate-Need" 
+        :tags [["out" "link" "AdaptionRate" "Need" "need"]]
+      }
+    ]
   }
 ]

@@ -40,7 +40,7 @@ public final class JadexUtil {
         System.setOut(ignoreStream);
     }
 
-    public static void redirectTerminateMessageTo() {
+    public static void redirectTerminateMessage() {
         redirectTerminateMessageTo(null);
     }
 

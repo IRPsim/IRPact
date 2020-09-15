@@ -26,14 +26,14 @@ import java.util.List;
 public class IRPactOutputData {
 
     public static final List<ParserInput> LIST = CollectionUtil.arrayListOf(
-            ParserInput.newInstance(GamsType.INPUT, AgentGroup.class),
-            ParserInput.newInstance(GamsType.INPUT, RandomBoundedDistribution.class),
-            ParserInput.newInstance(GamsType.INPUT, RandomDistribution.class),
-            ParserInput.newInstance(GamsType.INPUT, UnivariateDistribution.class),
-            ParserInput.newInstance(GamsType.INPUT, Need.class),
-            ParserInput.newInstance(GamsType.INPUT, FixedProduct.class),
-            ParserInput.newInstance(GamsType.INPUT, ProductGroup.class),
-            ParserInput.newInstance(GamsType.INPUT, ProductGroupAttribute.class),
+            ParserInput.newInstance(GamsType.INPUT_OUTPUT, AgentGroup.class),
+            ParserInput.newInstance(GamsType.INPUT_OUTPUT, RandomBoundedDistribution.class),
+            ParserInput.newInstance(GamsType.INPUT_OUTPUT, RandomDistribution.class),
+            ParserInput.newInstance(GamsType.INPUT_OUTPUT, UnivariateDistribution.class),
+            ParserInput.newInstance(GamsType.INPUT_OUTPUT, Need.class),
+            ParserInput.newInstance(GamsType.INPUT_OUTPUT, FixedProduct.class),
+            ParserInput.newInstance(GamsType.INPUT_OUTPUT, ProductGroup.class),
+            ParserInput.newInstance(GamsType.INPUT_OUTPUT, ProductGroupAttribute.class),
 
             ParserInput.newInstance(GamsType.OUTPUT, AdaptionRate.class),
             ParserInput.newInstance(GamsType.OUTPUT, IRPactOutputData.class)

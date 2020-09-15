@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.start;
 
+import de.unileipzig.irpact.jadex.util.JadexUtil;
 import de.unileipzig.irpact.start.irptools.IRPtoolsStarter;
 import de.unileipzig.irpact.temp.jadex.IRPactStarter;
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ public class Start {
 
     public static void main(String[] args) {
         try {
+            JadexUtil.redirectTerminateMessage();
             logger.trace("args: {}", Arrays.toString(args));
             CommandLineInterpreter cli = new CommandLineInterpreter(args);
             if(cli.isOk()) {

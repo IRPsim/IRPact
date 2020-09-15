@@ -3,6 +3,8 @@ package de.unileipzig.irpact.start.irpact.output;
 import de.unileipzig.irpact.start.irpact.input.agent.AgentGroup;
 import de.unileipzig.irpact.start.irpact.input.need.Need;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.Edn;
+import de.unileipzig.irptools.defstructure.annotation.EdnParameter;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 
 import java.util.Objects;
@@ -10,15 +12,27 @@ import java.util.Objects;
 /**
  * @author Daniel Abitz
  */
-@Definition
+@Definition(
+        edn = @Edn(
+                label = "AdaptionRate"
+        )
+)
 public class AdaptionRate {
 
     public String _name;
 
-    @FieldDefinition
+    @FieldDefinition(
+            edn = @EdnParameter(
+                    path = "Link/AdaptionRate-AgentGroup"
+            )
+    )
     public AgentGroup group;
 
-    @FieldDefinition
+    @FieldDefinition(
+            edn = @EdnParameter(
+                    path = "Link/AdaptionRate-Need"
+            )
+    )
     public Need need;
 
     @FieldDefinition
