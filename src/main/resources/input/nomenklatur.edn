@@ -9,8 +9,8 @@
             "numberOfAgents" "numberOfAgents"
             "adaptionRate" "adaptionRate"
             "name" "name"
+            "baum" "baum"
   }
   :reference {
-             "baum" "baum"
   }
 }

@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.uitest.v1;
+package de.unileipzig.irpact.uitest.in1;
 
 import de.unileipzig.irptools.defstructure.annotation.*;
 

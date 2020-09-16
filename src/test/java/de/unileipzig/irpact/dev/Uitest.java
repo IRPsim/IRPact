@@ -1,8 +1,10 @@
 package de.unileipzig.irpact.dev;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.unileipzig.irpact.commons.JsonUtil;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.uitest.out.OutputRoot;
-import de.unileipzig.irpact.uitest.v1.InputRoot;
+import de.unileipzig.irpact.uitest.in1.InputRoot;
 import de.unileipzig.irptools.defstructure.*;
 import de.unileipzig.irptools.io.scenario.ScenarioData;
 import de.unileipzig.irptools.io.scenario.ScenarioFile;
@@ -14,7 +16,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -48,8 +49,13 @@ class Uitest {
     }
 
     @Test
-    void out() throws IOException {
+    void out1() throws IOException {
         doOut(OutputRoot.CLASSES);
+    }
+
+    @Test
+    void out2() throws IOException {
+        doOut(de.unileipzig.irpact.uitest.out2.OutputRoot.CLASSES);
     }
 
     @Test
@@ -86,5 +92,14 @@ class Uitest {
     @Test
     void v1() throws IOException {
         doIn(InputRoot.CLASSES, InputRoot.x());
+    }
+
+    @Test
+    void rewriteJson() throws IOException {
+        Path in = Paths.get("E:\\Temp", "zzz.json");
+        Path out = in.resolveSibling("zzz.pretty.json");
+
+        ObjectNode root = JsonUtil.readJson(in);
+        JsonUtil.writeJson(root, out, JsonUtil.defaultPrinter);
     }
 }

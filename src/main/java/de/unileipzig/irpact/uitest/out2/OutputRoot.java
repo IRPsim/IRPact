@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.uitest.out;
+package de.unileipzig.irpact.uitest.out2;
 
 import de.unileipzig.irpact.uitest.in1.AgentGroup;
 import de.unileipzig.irpact.uitest.in1.Product;
@@ -20,8 +20,8 @@ import java.util.List;
 public class OutputRoot {
 
     public static final List<ParserInput> CLASSES = Util.listOf(
-            ParserInput.newInstance(GamsType.INPUT, AgentGroup.class),
-            ParserInput.newInstance(GamsType.INPUT, Product.class),
+            ParserInput.newInstance(GamsType.IGNORE, AgentGroup.class),
+            ParserInput.newInstance(GamsType.IGNORE, Product.class),
             ParserInput.newInstance(GamsType.OUTPUT, OutputRoot.class),
             ParserInput.newInstance(GamsType.OUTPUT, OutputScalars.class)
     );

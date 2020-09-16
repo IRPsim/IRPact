@@ -1,15 +1,11 @@
 {
   :type {
-          "AgentGroup" "AgentGroup"
-          "Product" "Product"
           "table" "table"
           }
   :module {
-            "numberOfAgents" "numberOfAgents"
-            "adaptionRate" "adaptionRate"
-            "name" "name"
+            "AgentGroup" "AgentGroup"
             }
   :reference {
-               "adaptions" "adaptions"
+               "Product" "Product"
                }
   }

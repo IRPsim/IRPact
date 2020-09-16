@@ -1,22 +1,9 @@
 [
   {
-    :label "Agentengruppen" 
-    :set "set_AgentGroup" 
-    :icon "fa fa-map-marker" 
-    :description "Agentengruppen in der Simulation" 
-    :tags [["AgentGroup" "numberOfAgents"] ["AgentGroup" "adaptionRate"]]
-  } 
-  {
-    :label "Produkte" 
-    :set "set_Product" 
-    :icon "fa fa-map-marker" 
-    :description "angebotene Produkte" 
-    :tags [["Product" "name"]]
-  } 
-  {
     :label "Ergebnis - Produktadaptionen" 
     :icon "fa fa-map-marker" 
-    :description "Gibt die Anzahl der Adaptionen fuer die Agentengruppe in diesem Jahr an." 
-    :tags [["out" "table" "AgentGroup" "Product" "adaptions"]]
+    :description "Gibt die Anzahl der Adaptionen fuer die Agentengruppe in diesem Jahr an."
+    :set "set_AgentGroup"
+    :tags [["table"]]
   }
 ]

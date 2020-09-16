@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.uitest.out;
+package de.unileipzig.irpact.uitest.out2;
 
 import de.unileipzig.irpact.uitest.in1.AgentGroup;
 import de.unileipzig.irpact.uitest.in1.Product;
