@@ -1,11 +1,8 @@
 {
   :type {
-          "table" "table"
-          }
+  } 
   :module {
-            "AgentGroup" "AgentGroup"
-            }
+  } 
   :reference {
-               "Product" "Product"
-               }
   }
+}

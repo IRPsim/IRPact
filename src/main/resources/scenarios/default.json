@@ -1,5 +1,5 @@
 {
-  "description" : { },
+  "gams-description" : { },
   "years" : [ {
     "config" : {
       "simulationlength" : 35040,
@@ -32,15 +32,57 @@
       },
       "set_Product" : {
         "Auto" : {
-          "par_Product_name" : 0
+          "par_Product_placeholder" : 0
         },
         "Haus" : {
-          "par_Product_name" : 0
+          "par_Product_placeholder" : 0
+        }
+      },
+      "set_Distribution1" : {
+        "dist1" : {
+          "par_Distribution1_value" : 1.0
+        },
+        "dist3" : {
+          "par_Distribution1_value" : 4.0
+        },
+        "dist5" : {
+          "par_Distribution1_value" : 7.0
+        }
+      },
+      "set_Distribution2" : {
+        "dist2" : {
+          "par_Distribution2_value1" : 2.0,
+          "par_Distribution2_value2" : 3.0
+        },
+        "dist4" : {
+          "par_Distribution2_value1" : 5.0,
+          "par_Distribution2_value2" : 6.0
+        }
+      },
+      "set_Complex" : {
+        "comp" : {
+          "par_Complex_structEntry_x" : 11.0,
+          "par_Complex_structEntry_y" : 22.0,
+          "par_Complex_structEntry_z" : 33.0,
+          "par_Complex_structEntry_deeperStruct_a" : 44.0,
+          "par_Complex_structEntry_deeperStruct_b" : 55.0,
+          "par_Complex_structEntry_deeperStruct_c" : 66.0
         }
       }
     },
     "timeseries" : { },
-    "tables" : { },
+    "tables" : {
+      "par_link_Complex_Distribution_distributionv1" : {
+        "comp" : {
+          "dist4" : 1.0
+        }
+      },
+      "par_link_Complex_Distribution_distributionv2" : {
+        "comp" : {
+          "dist5" : 1.0
+        }
+      }
+    },
     "postprocessing" : { }
   } ]
 }

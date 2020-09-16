@@ -1,15 +1,8 @@
 {
   :type {
-          "global" "global"
-          "AgentGroup" "AgentGroup"
-          "Product" "Product"
-  }
+  } 
   :module {
-            "seed" "seed"
-            "numberOfAgents" "numberOfAgents"
-            "adaptionRate" "adaptionRate"
-            "name" "name"
-  }
+  } 
   :reference {
   }
 }
