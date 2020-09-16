@@ -12,7 +12,7 @@ import de.unileipzig.irptools.defstructure.annotation.GamsParameter;
         edn = @Edn(
                 label = "Allgemeine Einstellungen",
                 icon = "fa fa-map-marker",
-                description = "Allgemeine Einstellungen fuer die Simulation."
+                description = "Allgemeine Einstellungen für die Simulation."
         ),
         global = true
 )
@@ -20,7 +20,7 @@ public class InputScalars {
 
     @FieldDefinition(
             gams = @GamsParameter(
-                    description = "Seed fuer den Zufallsgenerator",
+                    description = "Seed für den Zufallsgenerator",
                     identifier = "Zufallswert",
                     unit = "[x]"
             )
@@ -29,7 +29,7 @@ public class InputScalars {
 
     @FieldDefinition(
             gams = @GamsParameter(
-                    description = "Baumwert fuer den Zufallsgenerator",
+                    description = "Baumwert für den Zufallsgenerator",
                     identifier = "Baumwert",
                     unit = "[x]"
             )

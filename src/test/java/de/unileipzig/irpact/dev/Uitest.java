@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,6 +23,8 @@ import java.util.List;
  */
 @Disabled
 class Uitest {
+
+    private static final Charset c = Charset.forName("windows-1252");
 
     private static final Path dir = Paths.get("").toAbsolutePath().resolve("src").resolve("main").resolve("resources");
     private static final Path inputgmsPath = dir.resolve("input/input.gms");
@@ -36,10 +39,10 @@ class Uitest {
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         GamsCollection gcoll = dmap.getGamsCollection();
 
-        GamsPrinter.write(GamsType.INPUT_OUTPUT, gcoll, outputgmsPath, StandardCharsets.UTF_8);
+        GamsPrinter.write(GamsType.INPUT_OUTPUT, gcoll, outputgmsPath, c);
 
         Sections uiinput = dmap.toEdn(GamsType.INPUT_OUTPUT);
-        EdnPrinter.writeTo(uiinput, PrinterFormat.MY_DEFAULT, uioutputPath, StandardCharsets.UTF_8);
+        EdnPrinter.writeTo(uiinput, PrinterFormat.MY_DEFAULT, uioutputPath, c);
     }
 
     @Test
@@ -53,13 +56,13 @@ class Uitest {
         GamsCollection gcoll = dmap.getGamsCollection();
         Converter converter = new Converter(dmap);
 
-        GamsPrinter.write(GamsType.INPUT, gcoll, inputgmsPath, StandardCharsets.UTF_8);
+        GamsPrinter.write(GamsType.INPUT, gcoll, inputgmsPath, c);
 
         Sections uiinput = dmap.toEdn(GamsType.INPUT);
-        EdnPrinter.writeTo(uiinput, PrinterFormat.MY_DEFAULT, uiinputPath, StandardCharsets.UTF_8);
+        EdnPrinter.writeTo(uiinput, PrinterFormat.MY_DEFAULT, uiinputPath, c);
 
         Sections uiinputdelta = dmap.toDeltaEdn(GamsType.INPUT);
-        EdnPrinter.writeTo(uiinputdelta, PrinterFormat.MY_DEFAULT, uiinputdeltaPath, StandardCharsets.UTF_8);
+        EdnPrinter.writeTo(uiinputdelta, PrinterFormat.MY_DEFAULT, uiinputdeltaPath, c);
 
         if(defaultData != null) {
             ScenarioData<Object> scenarioData = new ScenarioData<>();
