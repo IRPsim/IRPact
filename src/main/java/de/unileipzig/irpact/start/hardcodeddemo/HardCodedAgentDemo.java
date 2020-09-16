@@ -59,6 +59,10 @@ public class HardCodedAgentDemo implements Callable<Integer> {
     public HardCodedAgentDemo() {
     }
 
+    public String getOutputFile() {
+        return outputFile;
+    }
+
     public void run() throws IOException {
         parseInput();
         startPlatform();

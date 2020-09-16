@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.uitest.out;
 
-import de.unileipzig.irpact.start.hardcodeddemo.def.in.AgentGroup;
-import de.unileipzig.irpact.start.hardcodeddemo.def.in.Product;
+import de.unileipzig.irpact.uitest.v1.AgentGroup;
+import de.unileipzig.irpact.uitest.v1.Product;
 import de.unileipzig.irptools.defstructure.annotation.*;
 import de.unileipzig.irptools.util.Table;
 

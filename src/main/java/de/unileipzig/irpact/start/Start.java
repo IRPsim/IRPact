@@ -3,6 +3,13 @@ package de.unileipzig.irpact.start;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
 import de.unileipzig.irpact.start.irptools.IRPtoolsStarter;
 import de.unileipzig.irpact.temp.jadex.IRPactStarter;
+import de.unileipzig.irpact.uitest.out.OutputRoot;
+import de.unileipzig.irptools.defstructure.AnnotationParser;
+import de.unileipzig.irptools.defstructure.Converter;
+import de.unileipzig.irptools.defstructure.DefinitionCollection;
+import de.unileipzig.irptools.defstructure.DefinitionMapper;
+import de.unileipzig.irptools.io.input.InputData;
+import de.unileipzig.irptools.io.input.InputFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,9 +35,11 @@ public class Start {
         starter.start();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         if(true) {
-            throw new RuntimeException("UI-TEST");
+            System.out.println("UI-TEST");
+            UITest.main(args);
+            return;
         }
 
         try {

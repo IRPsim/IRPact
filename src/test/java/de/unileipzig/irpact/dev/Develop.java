@@ -4,6 +4,7 @@ import de.unileipzig.irpact.start.Start;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
@@ -14,7 +15,7 @@ import java.nio.file.Paths;
 class Develop {
 
     @Test
-    void doGams() {
+    void doGams() throws IOException {
         String[] args = {
                 "--tools",
                 "--createAllDefaults"
@@ -23,7 +24,7 @@ class Develop {
     }
 
     @Test
-    void runMyTest() {
+    void runMyTest() throws IOException {
         String[] args = {
                 "-i", Paths.get("/home/daniel/Stuff/Projects", "neue.json").toString(),
                 "-o", Paths.get("/home/daniel/Stuff/Projects", "neue.out.json").toString()
