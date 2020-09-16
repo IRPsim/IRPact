@@ -1,9 +1,9 @@
 [
   {
-    :label "Allgemeine Einstellungen" 
+    :label "Allgemeine Einstellungen TEST"
     :icon "fa fa-map-marker" 
     :description "Allgemeine Einstellungen für die Simulation." 
-    :tags [["global" "seed"] ["global" "baum"]]
+    :tags [["global" "seed"]]
   } 
   {
     :label "Agentengruppen" 

@@ -13,8 +13,7 @@
       "interpolated" : false
     },
     "scalars" : {
-      "sca_global_seed" : 123,
-      "sca_global_baum" : 321
+      "sca_global_seed" : 123
     },
     "sets" : {
       "set_AgentGroup" : {

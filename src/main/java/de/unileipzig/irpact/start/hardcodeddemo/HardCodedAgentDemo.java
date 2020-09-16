@@ -216,23 +216,44 @@ public class HardCodedAgentDemo implements Callable<Integer> {
     private void createOutput(Map<AgentGroup, List<AdaptedProducts>> results) throws IOException {
         Table<AgentGroup, Product, Double> adaptions = createOutputTableForYear(results, getYear());
 
-        OutputRoot outRoot = new OutputRoot();
-        OutputScalars outScalars = new OutputScalars();
-        outRoot.scalars = outScalars;
-        outRoot.agentGroups = getPrimaryData().getAgentGroups();
-        outRoot.products = getPrimaryData().getProducts();
-        outScalars.adaptions = adaptions;
+        ObjectNode root = buildOutput(adaptions);
+        JsonUtil.writeJson(root, Paths.get(outputFile), JsonUtil.defaultPrinter);
 
-        ObjectNode outNode = JsonUtil.mapper.createObjectNode();
-        //applyInputConfig(outNode);
+//        OutputRoot outRoot = new OutputRoot();
+//        OutputScalars outScalars = new OutputScalars();
+//        outRoot.scalars = outScalars;
+//        outRoot.agentGroups = getPrimaryData().getAgentGroups();
+//        outRoot.products = getPrimaryData().getProducts();
+//        outScalars.adaptions = adaptions;
+//
+//        ObjectNode outNode = JsonUtil.mapper.createObjectNode();
+//        //applyInputConfig(outNode);
+//
+//        DefinitionCollection dcoll = AnnotationParser.parse(OutputRoot.CLASSES);
+//        DefinitionMapper dmap = new DefinitionMapper(dcoll);
+//        Converter converter = new Converter(dmap);
+//
+//        InputData<OutputRoot> outData = new InputData<>(outRoot);
+//        InputFile outFile = outData.serialize(converter);
+//        outFile.store(Paths.get(outputFile));
+    }
 
-        DefinitionCollection dcoll = AnnotationParser.parse(OutputRoot.CLASSES);
-        DefinitionMapper dmap = new DefinitionMapper(dcoll);
-        Converter converter = new Converter(dmap);
-
-        InputData<OutputRoot> outData = new InputData<>(outRoot);
-        InputFile outFile = outData.serialize(converter);
-        outFile.store(Paths.get(outputFile));
+    private ObjectNode buildOutput(Table<AgentGroup, Product, Double> adaptions) {
+        ObjectNode root = JsonUtil.mapper.createObjectNode();
+        root.putObject("config");
+        root.putObject("scalars");
+        root.putObject("sets");
+        root.putObject("timeseries");
+        ObjectNode tables = root.putObject("tables");
+        ObjectNode par_out_table_AgentGroup_Product_adaptions = tables.putObject("par_out_table_AgentGroup_Product_adaptions");
+        for(AgentGroup group: adaptions.getMap().keySet()) {
+            ObjectNode groupNode = par_out_table_AgentGroup_Product_adaptions.putObject(group.getName());
+            for(Product product: adaptions.getSubMap(group).keySet()) {
+                groupNode.put(product.getName(), adaptions.get(group, product));
+            }
+        }
+        root.putObject("postprocessing");
+        return root;
     }
 
     @Override

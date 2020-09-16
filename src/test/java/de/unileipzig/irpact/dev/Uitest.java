@@ -35,7 +35,7 @@ class Uitest {
     private static final Path outputgmsPath = dir.resolve("output/output.gms");
     private static final Path uioutputPath = dir.resolve("output/ui-output.edn");
     private static final Path defaultscenarioPath = dir.resolve("scenarios/default.json");
-    private static final Path defaultscenarioPathOut = dir.resolve("scenarios/default.out.json");
+    private static final Path defaultscenarioPathOut = dir.resolve("scenarios/default.out2.json");
 
     private static void doOut(List<ParserInput> list) throws IOException {
         DefinitionCollection dcoll = AnnotationParser.parse(list);
@@ -62,6 +62,14 @@ class Uitest {
     void runIt() throws IOException {
         Start.main(new String[]{
                 "-i", "xxx",
+                "-o", defaultscenarioPathOut.toString()
+        });
+    }
+
+    @Test
+    void runIt2() throws IOException {
+        Start.main(new String[]{
+                "-i", defaultscenarioPath.toString(),
                 "-o", defaultscenarioPathOut.toString()
         });
     }

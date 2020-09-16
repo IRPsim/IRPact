@@ -24,18 +24,19 @@ public class UITest {
         CommandLine cmdLine = new CommandLine(demo);
         int exitCode = cmdLine.execute(args);
         if(exitCode == CommandLine.ExitCode.OK) {
-            String outFileStr = demo.getOutputFile();
-            Path outPath = Paths.get(outFileStr);
-
-            OutputRoot root = OutputRoot.x();
-
-            DefinitionCollection dcoll = AnnotationParser.parse(OutputRoot.CLASSES);
-            DefinitionMapper dmap = new DefinitionMapper(dcoll);
-            Converter converter = new Converter(dmap);
-
-            InputData<OutputRoot> outData = new InputData<>(root);
-            InputFile outFile = outData.serialize(converter);
-            outFile.store(outPath);
+            demo.run();
+//            String outFileStr = demo.getOutputFile();
+//            Path outPath = Paths.get(outFileStr);
+//
+//            OutputRoot root = OutputRoot.x();
+//
+//            DefinitionCollection dcoll = AnnotationParser.parse(OutputRoot.CLASSES);
+//            DefinitionMapper dmap = new DefinitionMapper(dcoll);
+//            Converter converter = new Converter(dmap);
+//
+//            InputData<OutputRoot> outData = new InputData<>(root);
+//            InputFile outFile = outData.serialize(converter);
+//            outFile.store(outPath);
         } else {
             System.exit(exitCode);
         }
