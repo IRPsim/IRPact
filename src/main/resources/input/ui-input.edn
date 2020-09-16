@@ -1,6 +1,6 @@
 [
   {
-    :label "Allgemeine Einstellungen" 
+    :label "Allgemeine Einstellungen TEST"
     :icon "fa fa-map-marker" 
     :description "Allgemeine Einstellungen für die Simulation." 
     :tags [["global" "seed"]]
@@ -17,41 +17,6 @@
     :set "set_Product" 
     :icon "fa fa-map-marker" 
     :description "angebotene Produkte" 
-    :tags [["Product" "placeholder"]]
-  } 
-  {
-    :label "Distribution" 
-    :sections [
-      {
-        :label "Distribution1" 
-        :set "set_Distribution1" 
-        :tags [["Distribution1" "value"]]
-      } 
-      {
-        :label "Distribution2" 
-        :set "set_Distribution2" 
-        :tags [["Distribution2" "value1"] ["Distribution2" "value2"]]
-      }
-    ]
-  } 
-  {
-    :label "Complex" 
-    :set "set_Complex" 
-    :tags [["Complex" "structEntry" "x"] ["Complex" "structEntry" "y"] ["Complex" "structEntry" "z"] ["Complex" "structEntry" "deeperStruct" "a"] ["Complex" "structEntry" "deeperStruct" "b"] ["Complex" "structEntry" "deeperStruct" "c"]]
-  } 
-  {
-    :label "Link" 
-    :sections [
-      {
-        :label "Complex-Distribution-1" 
-        :set "set_Complex" 
-        :tags [["link" "Complex" "Distribution" "distributionv1"]]
-      } 
-      {
-        :label "Complex-Distribution-2" 
-        :set "set_Complex" 
-        :tags [["link" "Complex" "Distribution" "distributionv2"]]
-      }
-    ]
+    :tags [["Product" "name"]]
   }
 ]

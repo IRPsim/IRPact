@@ -37,10 +37,8 @@ public class Start {
 
     public static void main(String[] args) throws IOException {
         if(true) {
-            System.out.println("UI-TEST");
-            throw new RuntimeException("TEST VERSION");
-//            UITest.main(args);
-//            return;
+            UITest.main(args);
+            return;
         }
 
         try {
