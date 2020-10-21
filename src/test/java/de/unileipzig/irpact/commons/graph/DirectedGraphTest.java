@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.graph;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.v2.commons.CollectionUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

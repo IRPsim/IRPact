@@ -79,7 +79,6 @@ public class FastHeterogeneousRegularGraphTopology implements GraphTopologySchem
                 i++;
             }
         }
-
     }
 
     @Override

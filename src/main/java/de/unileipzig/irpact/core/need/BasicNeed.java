@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.need;
 
-import de.unileipzig.irpact.commons.Check;
+import de.unileipzig.irpact.v2.commons.Check;
 import de.unileipzig.irpact.dev.Idea;
 
 import java.util.Objects;

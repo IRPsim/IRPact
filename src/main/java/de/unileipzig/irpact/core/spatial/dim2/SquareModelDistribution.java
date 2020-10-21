@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.spatial.dim2;
 
-import de.unileipzig.irpact.commons.Check;
-import de.unileipzig.irpact.commons.MathUtil;
+import de.unileipzig.irpact.v2.commons.Check;
+import de.unileipzig.irpact.v2.commons.MathUtil;
 import de.unileipzig.irpact.commons.distribution.DistributionBase;
 import de.unileipzig.irpact.core.spatial.SpatialDistribution;
 

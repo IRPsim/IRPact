@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
-import de.unileipzig.irpact.commons.Check;
+import de.unileipzig.irpact.v2.commons.Check;
 import de.unileipzig.irpact.commons.distribution.UnivariateDistribution;
 import de.unileipzig.irpact.core.AbstractGroup;
 import de.unileipzig.irpact.core.need.NeedDevelopmentScheme;

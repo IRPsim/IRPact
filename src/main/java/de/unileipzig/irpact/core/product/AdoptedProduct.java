@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.commons.Check;
+import de.unileipzig.irpact.v2.commons.Check;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.simulation.Timestamp;
 

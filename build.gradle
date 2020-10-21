@@ -57,6 +57,7 @@ dependencies {
 
     implementation "info.picocli:picocli:$picocliVersion"
 
+    implementation "org.slf4j:slf4j-api:$sl4jVersion"
     implementation "ch.qos.logback:logback-classic:$logbackVersion"
     implementation "ch.qos.logback:logback-core:$logbackVersion"
 

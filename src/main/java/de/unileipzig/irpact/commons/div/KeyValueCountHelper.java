@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.commons.div;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
-import de.unileipzig.irpact.commons.Pair;
+import de.unileipzig.irpact.v2.commons.CollectionUtil;
+import de.unileipzig.irpact.v2.commons.Pair;
 
 import java.util.*;
 import java.util.function.Supplier;

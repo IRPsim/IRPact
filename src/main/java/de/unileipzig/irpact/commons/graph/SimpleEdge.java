@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.graph;
 
-import de.unileipzig.irpact.commons.Check;
+import de.unileipzig.irpact.v2.commons.Check;
 
 /**
  * @author Daniel Abitz

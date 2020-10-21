@@ -1,0 +1,2 @@
+- TimeModel -> gucken wie in dev gemacht - entsprechend anpassen
+- Test Reference mit Interface -> Interface: Data getData -> InterfaceImpl (@Reference)

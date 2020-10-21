@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.agent.pos;
 
-import de.unileipzig.irpact.commons.Check;
+import de.unileipzig.irpact.v2.commons.Check;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.SpatialInformationAgentBase;
 import de.unileipzig.irpact.core.currency.Price;

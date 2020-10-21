@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental.todev.graph;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.v2.commons.CollectionUtil;
 import de.unileipzig.irpact.experimental.annotation.ToDevelop;
 import de.unileipzig.irpact.experimental.todev.Data;
 import org.junit.jupiter.api.Test;

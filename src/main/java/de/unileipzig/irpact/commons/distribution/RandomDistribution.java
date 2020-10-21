@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.distribution;
 
-import de.unileipzig.irpact.commons.Check;
+import de.unileipzig.irpact.v2.commons.Check;
 
 import java.util.Random;
 

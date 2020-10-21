@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.product.price;
 
-import de.unileipzig.irpact.commons.Check;
+import de.unileipzig.irpact.v2.commons.Check;
 import de.unileipzig.irpact.core.currency.Price;
 import de.unileipzig.irpact.core.product.Product;
 
