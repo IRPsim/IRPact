@@ -2,5 +2,6 @@
   "id" : 3,
   "name" : "IRPact",
   "description" : "Agentensimulation für Diffusionsprozesse",
-  "type" : "Java"
+  "type" : "Java",
+  "submodels" : []
 }
