@@ -6,7 +6,6 @@ import de.unileipzig.irpact.start.optact.OptActMain;
 import de.unileipzig.irpact.temp.jadex.IRPactStarter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import picocli.CommandLine;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -37,14 +36,7 @@ public class Start {
 //            return;
 //        }
         if(true) {
-            OptActMain optact = new OptActMain();
-            CommandLine cmdLine = new CommandLine(optact);
-            int exitCode = cmdLine.execute(args);
-            if(exitCode == CommandLine.ExitCode.OK) {
-                optact.run();
-            } else {
-                System.exit(exitCode);
-            }
+            OptActMain.main(args);
             return;
         }
 

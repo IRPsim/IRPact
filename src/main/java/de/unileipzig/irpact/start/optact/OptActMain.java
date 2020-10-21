@@ -128,4 +128,15 @@ public class OptActMain implements Callable<Integer> {
         outputPath = Paths.get(outputFile);
         return CommandLine.ExitCode.OK;
     }
+
+    public static void main(String[] args) throws IOException {
+        OptActMain optact = new OptActMain();
+        CommandLine cmdLine = new CommandLine(optact);
+        int exitCode = cmdLine.execute(args);
+        if(exitCode == CommandLine.ExitCode.OK) {
+            optact.run();
+        } else {
+            System.exit(exitCode);
+        }
+    }
 }
