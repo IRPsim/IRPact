@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.start.hardcodeddemo.def;
+package de.unileipzig.irpact.dev.hardcodeddemo;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.JsonUtil;

@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.start.optact;
+package de.unileipzig.irpact.dev.optact;
 
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irptools.Constants;
