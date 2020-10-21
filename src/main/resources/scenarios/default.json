@@ -2,40 +2,35 @@
   "description" : { },
   "years" : [ {
     "config" : {
-      "simulationlength" : 35040,
       "savelength" : 96,
       "optimizationlength" : 192,
-      "resolution" : 35040,
+      "resolution" : 8760,
       "timestep" : 0.25,
       "modeldefinition" : 3,
       "year" : 2015,
       "prognoseszenario" : null,
-      "interpolated" : false
+      "interpolated" : false,
+      "simulationlength" : 8760
     },
     "scalars" : {
-      "sca_global_seed" : 123
+      "sca_Tax_PS_vat" : 2.0
     },
     "sets" : {
-      "set_AgentGroup" : {
-        "gx10x5" : {
-          "par_AgentGroup_numberOfAgents" : 10,
-          "par_AgentGroup_adaptionRate" : 0.5
-        },
-        "gx100x01" : {
-          "par_AgentGroup_numberOfAgents" : 100,
-          "par_AgentGroup_adaptionRate" : 0.01
-        },
-        "gx50x75" : {
-          "par_AgentGroup_numberOfAgents" : 50,
-          "par_AgentGroup_adaptionRate" : 0.75
-        }
+      "set_ii" : { },
+      "set_side" : {
+        "Gruppe1" : { },
+        "Gruppe2" : { }
       },
-      "set_Product" : {
-        "Auto" : {
-          "par_Product_name" : 0
+      "set_side_cust" : {
+        "Gruppe1" : {
+          "par_S_DS" : 10,
+          "par_kg_modifier" : 5,
+          "par_IuO_ESector_CustSide" : "405387"
         },
-        "Haus" : {
-          "par_Product_name" : 0
+        "Gruppe2" : {
+          "par_S_DS" : 20,
+          "par_kg_modifier" : 10,
+          "par_IuO_ESector_CustSide" : "0"
         }
       }
     },

@@ -1,34 +1,38 @@
-* - description: Seed für den Zufallsgenerator
-* - type: Integer
-* - identifier: Zufallswert
-* - unit: [x]
-SCALAR sca_global_seed
-
-* - description: AgentGroup
-* - type: String
-* - identifier: AgentGroup
-SET set_AgentGroup(*)
-
-* - description: Anzahl der Agenten in der Gruppe
-* - type: Integer
-* - identifier: Agentenanzahl
-* - domain: [1,]
-* - default: 10
-PARAMETER par_AgentGroup_numberOfAgents(set_AgentGroup)
-
-* - description: Adaptionsrate für die Agenten dieser Gruppe
 * - type: Float
-* - identifier: Adaptionsrate
-* - domain: [0,1]
-* - default: 0.5
-PARAMETER par_AgentGroup_adaptionRate(set_AgentGroup)
+* - description: Mehrwertsteuer
+* - identifier: MWST
+SCALAR sca_Tax_PS_vat
 
-* - description: Product
 * - type: String
-* - identifier: Product
-SET set_Product(*)
+* - description: Marktteilnehmer
+* - identifier: MT
+SET set_side(*)
 
-* - description: Name des Produktes
+* - type: String
+* - description: Kundengruppe in IRPact
+* - identifier: KG
+SET set_side_cust(set_side)
+
 * - type: Integer
-* - identifier: Produktname
-PARAMETER par_Product_name(set_Product)
+* - default: 10
+* - description: Anzahl der Kunden
+* - identifier: KGA
+PARAMETER par_S_DS(set_side_cust)
+
+* - type: Integer
+* - default: 5
+* - description: Erhöht die Anzahl der Kunden in der Gruppe um den gewünschten Wert.
+* - identifier: KGAM
+PARAMETER par_kg_modifier(set_side_cust)
+
+* - type: TimeSeries
+* - description: Simulationshorizont
+* - identifier: SH
+* - hidden: 1
+SET set_ii(*)
+
+* - type: Float
+* - unit: [EUR]
+* - description: Stromsparte je Kundengruppe
+* - identifier: SK
+PARAMETER par_IuO_ESector_CustSide(set_ii,set_side)

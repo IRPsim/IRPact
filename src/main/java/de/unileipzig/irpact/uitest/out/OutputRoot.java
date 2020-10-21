@@ -2,8 +2,8 @@ package de.unileipzig.irpact.uitest.out;
 
 import de.unileipzig.irpact.uitest.in1.AgentGroup;
 import de.unileipzig.irpact.uitest.in1.Product;
-import de.unileipzig.irptools.defstructure.GamsType;
 import de.unileipzig.irptools.defstructure.ParserInput;
+import de.unileipzig.irptools.defstructure.Type;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.Table;
@@ -19,11 +19,11 @@ import java.util.List;
 )
 public class OutputRoot {
 
-    public static final List<ParserInput> CLASSES = Util.listOf(
-            ParserInput.newInstance(GamsType.INPUT, AgentGroup.class),
-            ParserInput.newInstance(GamsType.INPUT, Product.class),
-            ParserInput.newInstance(GamsType.OUTPUT, OutputRoot.class),
-            ParserInput.newInstance(GamsType.OUTPUT, OutputScalars.class)
+    public static final List<ParserInput> CLASSES = Util.arrayListOf(
+            ParserInput.newInstance(Type.REFERENCE, AgentGroup.class),
+            ParserInput.newInstance(Type.REFERENCE, Product.class),
+            ParserInput.newInstance(Type.OUTPUT, OutputRoot.class),
+            ParserInput.newInstance(Type.OUTPUT, OutputScalars.class)
     );
 
     @FieldDefinition

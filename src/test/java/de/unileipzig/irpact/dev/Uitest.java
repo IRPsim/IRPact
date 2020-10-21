@@ -6,8 +6,8 @@ import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.uitest.out.OutputRoot;
 import de.unileipzig.irpact.uitest.in1.InputRoot;
 import de.unileipzig.irptools.defstructure.*;
-import de.unileipzig.irptools.io.scenario.ScenarioData;
-import de.unileipzig.irptools.io.scenario.ScenarioFile;
+import de.unileipzig.irptools.io.perennial.PerennialData;
+import de.unileipzig.irptools.io.perennial.PerennialFile;
 import de.unileipzig.irptools.uiedn.Sections;
 import de.unileipzig.irptools.uiedn.io.EdnPrinter;
 import de.unileipzig.irptools.uiedn.io.PrinterFormat;
@@ -43,9 +43,9 @@ class Uitest {
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         GamsCollection gcoll = dmap.getGamsCollection();
 
-        GamsPrinter.write(GamsType.INPUT_OUTPUT, gcoll, outputgmsPath, c);
+        GamsPrinter.write(Type.OUTPUT, gcoll, outputgmsPath, c);
 
-        Sections uiinput = dmap.toEdn(GamsType.INPUT_OUTPUT);
+        Sections uiinput = dmap.toEdn(Type.OUTPUT);
         EdnPrinter.writeTo(uiinput, PrinterFormat.MY_DEFAULT, uioutputPath, c);
     }
 
@@ -89,19 +89,20 @@ class Uitest {
         GamsCollection gcoll = dmap.getGamsCollection();
         Converter converter = new Converter(dmap);
 
-        GamsPrinter.write(GamsType.INPUT, gcoll, inputgmsPath, c);
+        GamsPrinter.write(Type.INPUT, gcoll, inputgmsPath, c);
 
-        Sections uiinput = dmap.toEdn(GamsType.INPUT);
+        Sections uiinput = dmap.toEdn(Type.INPUT);
         EdnPrinter.writeTo(uiinput, PrinterFormat.MY_DEFAULT, uiinputPath, c);
 
-        Sections uiinputdelta = dmap.toDeltaEdn(GamsType.INPUT);
+        Sections uiinputdelta = dmap.toDeltaEdn(Type.INPUT);
         EdnPrinter.writeTo(uiinputdelta, PrinterFormat.MY_DEFAULT, uiinputdeltaPath, c);
 
         if(defaultData != null) {
-            ScenarioData<Object> scenarioData = new ScenarioData<>();
+            PerennialData<Object> scenarioData = new PerennialData<>();
             scenarioData.add(2015, defaultData);
-            scenarioData.getList().get(0).getConfig().init(2015);
-            ScenarioFile scenarioFile = scenarioData.serialize(converter);
+            scenarioData.getList().get(0).getConfig().init();
+            scenarioData.getList().get(0).getConfig().setYear(2015);
+            PerennialFile scenarioFile = scenarioData.serialize(converter);
             scenarioFile.store(defaultscenarioPath);
         }
     }

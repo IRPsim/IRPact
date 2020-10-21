@@ -12,8 +12,8 @@ import de.unileipzig.irpact.start.irpact.input.product.ProductGroupAttribute;
 import de.unileipzig.irpact.start.irpact.input.simulation.ContinousTimeModel;
 import de.unileipzig.irpact.start.irpact.input.simulation.DiscretTimeModel;
 import de.unileipzig.irpact.start.irpact.input.simulation.TimeModel;
-import de.unileipzig.irptools.defstructure.GamsType;
 import de.unileipzig.irptools.defstructure.ParserInput;
+import de.unileipzig.irptools.defstructure.Type;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 
@@ -28,19 +28,19 @@ import java.util.*;
 public class IRPactInputData {
 
     public static final List<ParserInput> LIST = CollectionUtil.arrayListOf(
-            ParserInput.newInstance(GamsType.INPUT, AgentGroup.class),
-            ParserInput.newInstance(GamsType.INPUT, RandomBoundedDistribution.class),
-            ParserInput.newInstance(GamsType.INPUT, RandomDistribution.class),
-            ParserInput.newInstance(GamsType.INPUT, UnivariateDistribution.class),
-            ParserInput.newInstance(GamsType.INPUT, Need.class),
-            ParserInput.newInstance(GamsType.INPUT, FixedProduct.class),
-            ParserInput.newInstance(GamsType.INPUT, ProductGroup.class),
-            ParserInput.newInstance(GamsType.INPUT, ProductGroupAttribute.class),
-            ParserInput.newInstance(GamsType.INPUT, ContinousTimeModel.class),
-            ParserInput.newInstance(GamsType.INPUT, DiscretTimeModel.class),
-            ParserInput.newInstance(GamsType.INPUT, TimeModel.class),
+            ParserInput.newInstance(Type.INPUT, AgentGroup.class),
+            ParserInput.newInstance(Type.INPUT, RandomBoundedDistribution.class),
+            ParserInput.newInstance(Type.INPUT, RandomDistribution.class),
+            ParserInput.newInstance(Type.INPUT, UnivariateDistribution.class),
+            ParserInput.newInstance(Type.INPUT, Need.class),
+            ParserInput.newInstance(Type.INPUT, FixedProduct.class),
+            ParserInput.newInstance(Type.INPUT, ProductGroup.class),
+            ParserInput.newInstance(Type.INPUT, ProductGroupAttribute.class),
+            ParserInput.newInstance(Type.INPUT, ContinousTimeModel.class),
+            ParserInput.newInstance(Type.INPUT, DiscretTimeModel.class),
+            ParserInput.newInstance(Type.INPUT, TimeModel.class),
 //            ParserInput.newInstance(GamsType.INPUT, ScalarData.class),
-            ParserInput.newInstance(GamsType.INPUT, IRPactInputData.class)
+            ParserInput.newInstance(Type.INPUT, IRPactInputData.class)
     );
 
 //    @FieldDefinition

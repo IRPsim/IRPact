@@ -22,10 +22,10 @@ import de.unileipzig.irptools.defstructure.AnnotationParser;
 import de.unileipzig.irptools.defstructure.Converter;
 import de.unileipzig.irptools.defstructure.DefinitionCollection;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
-import de.unileipzig.irptools.io.input.InputData;
-import de.unileipzig.irptools.io.input.InputFile;
-import de.unileipzig.irptools.io.scenario.ScenarioData;
-import de.unileipzig.irptools.io.scenario.ScenarioFile;
+import de.unileipzig.irptools.io.annual.AnnualData;
+import de.unileipzig.irptools.io.annual.AnnualFile;
+import de.unileipzig.irptools.io.perennial.PerennialData;
+import de.unileipzig.irptools.io.perennial.PerennialFile;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
 import jadex.base.Starter;
@@ -38,6 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -70,16 +71,16 @@ public class IRPactStarter {
 
     private boolean tryParseScenario() {
         try {
-            ScenarioFile scenarioFile = ScenarioFile.parse(inputPath);
+            PerennialFile scenarioFile = PerennialFile.parse(inputPath);
 
             DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.LIST);
             DefinitionMapper dmap = new DefinitionMapper(dcoll);
             Converter converter = new Converter(dmap);
 
-            ScenarioData<IRPactInputData> scenarioData = scenarioFile.deserialize(converter);
+            PerennialData<IRPactInputData> scenarioData = scenarioFile.deserialize(converter);
 
             data = scenarioData.get(0).getData();
-            year = scenarioData.get(0).getYear();
+            year = scenarioData.get(0).getConfig().getYear();
             return true;
         } catch (Exception e) {
             return false;
@@ -87,13 +88,13 @@ public class IRPactStarter {
     }
 
     private void tryParseInput() throws IOException {
-        InputFile inputFile = InputFile.parse(inputPath);
+        AnnualFile inputFile = AnnualFile.parse(inputPath, StandardCharsets.UTF_8);
 
         DefinitionCollection dcoll = AnnotationParser.parse(IRPactInputData.LIST);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
-        InputData<IRPactInputData> inputData = inputFile.deserialize(converter);
+        AnnualData<IRPactInputData> inputData = inputFile.deserialize(converter);
 
         data = inputData.getData();
         year = inputData.getConfig().getYear();
@@ -237,8 +238,8 @@ public class IRPactStarter {
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         Converter converter = new Converter(dmap);
 
-        InputData<IRPactOutputData> outData = new InputData<>(outputData);
-        InputFile outFile = outData.serialize(converter);
+        AnnualData<IRPactOutputData> outData = new AnnualData<>(outputData);
+        AnnualFile outFile = outData.serialize(converter);
         outFile.store(outputPath);
     }
 

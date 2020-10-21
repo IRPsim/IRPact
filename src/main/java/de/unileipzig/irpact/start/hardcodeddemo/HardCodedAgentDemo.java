@@ -5,18 +5,16 @@ import de.unileipzig.irpact.commons.JsonUtil;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.AgentGroup;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.InputRoot;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.Product;
-import de.unileipzig.irpact.start.hardcodeddemo.def.out.OutputRoot;
-import de.unileipzig.irpact.start.hardcodeddemo.def.out.OutputScalars;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.AnnotationParser;
 import de.unileipzig.irptools.defstructure.Converter;
 import de.unileipzig.irptools.defstructure.DefinitionCollection;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
-import de.unileipzig.irptools.io.basic.DataEntry;
-import de.unileipzig.irptools.io.input.InputData;
-import de.unileipzig.irptools.io.input.InputFile;
-import de.unileipzig.irptools.io.scenario.ScenarioData;
-import de.unileipzig.irptools.io.scenario.ScenarioFile;
+import de.unileipzig.irptools.io.annual.AnnualData;
+import de.unileipzig.irptools.io.annual.AnnualFile;
+import de.unileipzig.irptools.io.base.AnnualEntry;
+import de.unileipzig.irptools.io.perennial.PerennialData;
+import de.unileipzig.irptools.io.perennial.PerennialFile;
 import de.unileipzig.irptools.util.Pair;
 import de.unileipzig.irptools.util.Table;
 import de.unileipzig.irptools.util.Util;
@@ -54,7 +52,7 @@ public class HardCodedAgentDemo implements Callable<Integer> {
     private String outputFile;
 
     private IExternalAccess platform;
-    private DataEntry<InputRoot> inputEntry;
+    private AnnualEntry<InputRoot> inputEntry;
 
     public HardCodedAgentDemo() {
     }
@@ -86,12 +84,12 @@ public class HardCodedAgentDemo implements Callable<Integer> {
         Converter converter = new Converter(dmap);
 
         if(rootNode.has(Constants.YEARS)) {
-            ScenarioFile sfile = new ScenarioFile(rootNode);
-            ScenarioData<InputRoot> sdata = sfile.deserialize(converter);
+            PerennialFile pfile = new PerennialFile(rootNode);
+            PerennialData<InputRoot> sdata = pfile.deserialize(converter);
             inputEntry = sdata.get(0); //DIRTYFIX: ignoriere erstmal alle andere
         } else {
-            InputFile ifile = new InputFile(rootNode);
-            InputData<InputRoot> idata = ifile.deserialize(converter);
+            AnnualFile afile = new AnnualFile(rootNode);
+            AnnualData<InputRoot> idata = afile.deserialize(converter);
             inputEntry = idata.get();
         }
     }

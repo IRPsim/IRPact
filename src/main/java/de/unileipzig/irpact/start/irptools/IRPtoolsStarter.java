@@ -5,8 +5,8 @@ import de.unileipzig.irpact.start.irpact.DefaultScenarioFactory;
 import de.unileipzig.irpact.start.irpact.input.IRPactInputData;
 import de.unileipzig.irpact.start.irpact.output.IRPactOutputData;
 import de.unileipzig.irptools.defstructure.*;
-import de.unileipzig.irptools.io.scenario.ScenarioData;
-import de.unileipzig.irptools.io.scenario.ScenarioFile;
+import de.unileipzig.irptools.io.perennial.PerennialData;
+import de.unileipzig.irptools.io.perennial.PerennialFile;
 import de.unileipzig.irptools.uiedn.Sections;
 import de.unileipzig.irptools.uiedn.io.EdnPrinter;
 import de.unileipzig.irptools.uiedn.io.PrinterFormat;
@@ -23,6 +23,7 @@ import java.nio.file.Paths;
  *
  * @author Daniel Abitz
  */
+//TODO nach IRPtools weiterleiten
 @SuppressWarnings("FieldMayBeFinal")
 public class IRPtoolsStarter {
 
@@ -31,6 +32,9 @@ public class IRPtoolsStarter {
     private CommandLineInterpreter cli;
 
     public IRPtoolsStarter(CommandLineInterpreter cli) {
+        if(true) {
+            throw new IllegalStateException("todo ansehen");
+        }
         this.cli = cli;
     }
 
@@ -90,18 +94,18 @@ public class IRPtoolsStarter {
         GamsCollection gcoll = dmap.getGamsCollection();
         Converter converter = new Converter(dmap);
 
-        GamsPrinter.write(GamsType.INPUT, gcoll, inputgmsPath, StandardCharsets.UTF_8);
+        GamsPrinter.write(Type.INPUT, gcoll, inputgmsPath, StandardCharsets.UTF_8);
 
-        Sections uiinput = dmap.toEdn(GamsType.INPUT);
+        Sections uiinput = dmap.toEdn(Type.INPUT);
         EdnPrinter.writeTo(uiinput, PrinterFormat.MY_DEFAULT, uiinputPath, StandardCharsets.UTF_8);
 
-        Sections uiinputdelta = dmap.toDeltaEdn(GamsType.INPUT);
+        Sections uiinputdelta = dmap.toDeltaEdn(Type.INPUT);
         EdnPrinter.writeTo(uiinputdelta, PrinterFormat.MY_DEFAULT, uiinputdeltaPath, StandardCharsets.UTF_8);
 
         IRPactInputData data = DefaultScenarioFactory.createContinousInputData();
-        ScenarioData<IRPactInputData> scenarioData = new ScenarioData<>();
+        PerennialData<IRPactInputData> scenarioData = new PerennialData<>();
         scenarioData.add(2015, data);
-        ScenarioFile scenarioFile = scenarioData.serialize(converter);
+        PerennialFile scenarioFile = scenarioData.serialize(converter);
         scenarioFile.store(defaultscenarioPath);
     }
 
@@ -112,9 +116,9 @@ public class IRPtoolsStarter {
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         GamsCollection gcoll = dmap.getGamsCollection();
 
-        GamsPrinter.write(GamsType.INPUT_OUTPUT, gcoll, outputgmsPath, StandardCharsets.UTF_8);
+        GamsPrinter.write(Type.OUTPUT, gcoll, outputgmsPath, StandardCharsets.UTF_8);
 
-        Sections uiinput = dmap.toEdn(GamsType.INPUT_OUTPUT);
+        Sections uiinput = dmap.toEdn(Type.OUTPUT);
         EdnPrinter.writeTo(uiinput, PrinterFormat.MY_DEFAULT, uioutputPath, StandardCharsets.UTF_8);
     }
 }

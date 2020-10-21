@@ -2,16 +2,11 @@ package de.unileipzig.irpact.start;
 
 import de.unileipzig.irpact.jadex.util.JadexUtil;
 import de.unileipzig.irpact.start.irptools.IRPtoolsStarter;
+import de.unileipzig.irpact.start.optact.OptActMain;
 import de.unileipzig.irpact.temp.jadex.IRPactStarter;
-import de.unileipzig.irpact.uitest.out.OutputRoot;
-import de.unileipzig.irptools.defstructure.AnnotationParser;
-import de.unileipzig.irptools.defstructure.Converter;
-import de.unileipzig.irptools.defstructure.DefinitionCollection;
-import de.unileipzig.irptools.defstructure.DefinitionMapper;
-import de.unileipzig.irptools.io.input.InputData;
-import de.unileipzig.irptools.io.input.InputFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import picocli.CommandLine;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -35,9 +30,21 @@ public class Start {
         starter.start();
     }
 
+    @SuppressWarnings("ConstantConditions")
     public static void main(String[] args) throws IOException {
+//        if(true) {
+//            UITest.main(args);
+//            return;
+//        }
         if(true) {
-            UITest.main(args);
+            OptActMain optact = new OptActMain();
+            CommandLine cmdLine = new CommandLine(optact);
+            int exitCode = cmdLine.execute(args);
+            if(exitCode == CommandLine.ExitCode.OK) {
+                optact.run();
+            } else {
+                System.exit(exitCode);
+            }
             return;
         }
 

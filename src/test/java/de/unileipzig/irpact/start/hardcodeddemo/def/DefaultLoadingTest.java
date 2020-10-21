@@ -7,8 +7,8 @@ import de.unileipzig.irptools.defstructure.AnnotationParser;
 import de.unileipzig.irptools.defstructure.Converter;
 import de.unileipzig.irptools.defstructure.DefinitionCollection;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
-import de.unileipzig.irptools.io.scenario.ScenarioData;
-import de.unileipzig.irptools.io.scenario.ScenarioFile;
+import de.unileipzig.irptools.io.perennial.PerennialData;
+import de.unileipzig.irptools.io.perennial.PerennialFile;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -42,10 +42,10 @@ class DefaultLoadingTest {
         DefinitionMapper dmap = assertDoesNotThrow(() -> new DefinitionMapper(dcoll));
         Converter converter = new Converter(dmap);
 
-        ScenarioFile sfile = new ScenarioFile(root);
-        ScenarioData<IRPactInputData> sdata = sfile.deserialize(converter);
+        PerennialFile sfile = new PerennialFile(root);
+        PerennialData<IRPactInputData> sdata = sfile.deserialize(converter);
         assertEquals(1, sdata.getList().size());
-        assertEquals(2015, sdata.get(0).getYear());
+        assertEquals(2015, sdata.get(0).getConfig().getYear());
         assertEquals(3, sdata.get(0).getData().agentGroups.length);
     }
 }
