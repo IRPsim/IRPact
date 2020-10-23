@@ -75,8 +75,7 @@ dependencies {
 // Invalid signature file digest for Manifest main attributes -> fatjar geht (erstmal?) nicht (Problem bleibt mit shadow bestehen)
 // einfach die key files entfernen...
 task buildUberJar(type: Jar) {
-    archiveAppendix.set('demo')
-    archiveClassifier.set('fat')
+    archiveClassifier.set('uber')
     manifest {
         attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
     }

@@ -1,0 +1,41 @@
+{
+  "description" : { },
+  "years" : [ {
+    "config" : {
+      "savelength" : 96,
+      "optimizationlength" : 192,
+      "resolution" : 8760,
+      "timestep" : 0.25,
+      "modeldefinition" : 3,
+      "year" : 2015,
+      "prognoseszenario" : null,
+      "interpolated" : false,
+      "simulationlength" : 8760
+    },
+    "scalars" : {
+      "sca_Tax_PS_vat" : 2.0
+    },
+    "sets" : {
+      "set_ii" : { },
+      "set_side" : {
+        "Gruppe1" : { },
+        "Gruppe2" : { }
+      },
+      "set_side_cust" : {
+        "Gruppe1" : {
+          "par_S_DS" : 10,
+          "par_kg_modifier" : 5,
+          "par_IuO_ESector_CustSide" : "405387"
+        },
+        "Gruppe2" : {
+          "par_S_DS" : 20,
+          "par_kg_modifier" : 10,
+          "par_IuO_ESector_CustSide" : "0"
+        }
+      }
+    },
+    "timeseries" : { },
+    "tables" : { },
+    "postprocessing" : { }
+  } ]
+}
