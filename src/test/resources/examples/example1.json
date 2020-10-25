@@ -2,40 +2,99 @@
   "description" : { },
   "years" : [ {
     "config" : {
+      "simulationlength" : 35040,
       "savelength" : 96,
       "optimizationlength" : 192,
-      "resolution" : 8760,
+      "resolution" : 35040,
       "timestep" : 0.25,
       "modeldefinition" : 3,
       "year" : 2015,
       "prognoseszenario" : null,
-      "interpolated" : false,
-      "simulationlength" : 8760
+      "interpolated" : false
     },
     "scalars" : {
-      "sca_Tax_PS_vat" : 2.0
+      "sca_Tax_PS_vat" : 0.19,
+      "sca_X_MS_CH_country" : 0,
+      "sca_X_MS_DE_country" : 1
     },
     "sets" : {
       "set_ii" : { },
+      "set_load_DS" : {
+        "load_E1" : { }
+      },
+      "set_load_DS_E" : {
+        "load_E1" : {
+          "par_L_DS_E" : "0"
+        }
+      },
+      "set_load_DSLOA" : {
+        "load_E1" : { }
+      },
+      "set_pss" : {
+        "load_E1" : { },
+        "tech_ES1" : { }
+      },
+      "set_sector" : {
+        "E" : { }
+      },
       "set_side" : {
-        "Gruppe1" : { },
-        "Gruppe2" : { }
+        "grp1" : { },
+        "grp2" : { },
+        "NS" : { },
+        "PS" : { },
+        "SMS" : { }
       },
       "set_side_cust" : {
-        "Gruppe1" : {
+        "grp1" : {
           "par_S_DS" : 10,
           "par_kg_modifier" : 5,
-          "par_IuO_ESector_CustSide" : "405387"
+          "par_IuO_ESector_CustSide" : "0"
         },
-        "Gruppe2" : {
+        "grp2" : {
           "par_S_DS" : 20,
           "par_kg_modifier" : 10,
           "par_IuO_ESector_CustSide" : "0"
         }
+      },
+      "set_side_fares" : {
+        "NS" : { },
+        "PS" : { },
+        "SMS" : { }
+      },
+      "set_tech_DEGEN" : { },
+      "set_tech_DES" : { },
+      "set_tech_DES_ES" : {
+        "tech_ES1" : {
+          "par_Inc_PS_ES" : 0.5
+        }
+      },
+      "set_tech_DESTO" : { }
+    },
+    "timeseries" : {
+      "par_C_MS_E" : "0"
+    },
+    "tables" : {
+      "par_F_E_EGrid_energy" : {
+        "NS" : {
+          "load_E1" : "0",
+          "tech_ES1" : "0"
+        },
+        "PS" : {
+          "load_E1" : "0",
+          "tech_ES1" : "0"
+        },
+        "SMS" : {
+          "load_E1" : "0",
+          "tech_ES1" : "0"
+        }
+      },
+      "par_SOH_pss_sector" : {
+        "E" : {
+          "load_E1" : 0.0,
+          "tech_ES1" : 0.0
+        }
       }
     },
-    "timeseries" : { },
-    "tables" : { },
     "postprocessing" : { }
   } ]
 }
