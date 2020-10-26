@@ -32,7 +32,8 @@
       },
       "set_pss" : {
         "load_E1" : { },
-        "tech_ES1" : { }
+        "tech_ES1" : { },
+        "tech_PV1" : { }
       },
       "set_sector" : {
         "E" : { }
@@ -61,14 +62,26 @@
         "PS" : { },
         "SMS" : { }
       },
-      "set_tech_DEGEN" : { },
-      "set_tech_DES" : { },
+      "set_tech_DEGEN" : {
+        "tech_PV1" : { }
+      },
+      "set_tech_DES" : {
+        "tech_ES1" : { },
+        "tech_PV1" : { }
+      },
       "set_tech_DES_ES" : {
         "tech_ES1" : {
           "par_Inc_PS_ES" : 0.5
         }
       },
-      "set_tech_DESTO" : { }
+      "set_tech_DES_PV" : {
+        "tech_PV1" : {
+          "par_A_DES_PV" : 25.0
+        }
+      },
+      "set_tech_DESTO" : {
+        "tech_ES1" : { }
+      }
     },
     "timeseries" : {
       "par_C_MS_E" : "0"
@@ -77,21 +90,25 @@
       "par_F_E_EGrid_energy" : {
         "NS" : {
           "load_E1" : "0",
-          "tech_ES1" : "0"
+          "tech_ES1" : "0",
+          "tech_PV1" : "0"
         },
         "PS" : {
           "load_E1" : "0",
-          "tech_ES1" : "0"
+          "tech_ES1" : "0",
+          "tech_PV1" : "0"
         },
         "SMS" : {
           "load_E1" : "0",
-          "tech_ES1" : "0"
+          "tech_ES1" : "0",
+          "tech_PV1" : "0"
         }
       },
       "par_SOH_pss_sector" : {
         "E" : {
           "load_E1" : 0.0,
-          "tech_ES1" : 0.0
+          "tech_ES1" : 0.0,
+          "tech_PV1" : 0.0
         }
       }
     },
