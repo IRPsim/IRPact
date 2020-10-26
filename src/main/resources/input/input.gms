@@ -79,6 +79,7 @@ SET set_pss(*)
 SET set_sector(*)
 
 * - description: Marktteilnehmer
+* - hidden: 1
 * - identifier: MT
 * - type: String
 SET set_side(*)
