@@ -44,6 +44,11 @@
         :label "Stromspeicher" 
         :set "set_tech_DES_ES" 
         :tags [["Inc" "PS" "ES"]]
+      } 
+      {
+        :label "PV" 
+        :set "set_tech_DES_PV" 
+        :tags [["A" "DES" "PV"]]
       }
     ]
   }

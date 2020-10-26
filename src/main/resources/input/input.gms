@@ -127,7 +127,7 @@ SET set_tech_DES(set_pss)
 * - description: Stromspeicher
 * - identifier: Stromspeicher
 * - type: String
-SET set_tech_DES_ES(set_pss)
+SET set_tech_DES_ES(set_tech_DESTO)
 
 * - domain: [0,)
 * - description: Bitte tragen Sie hier die spezifische Förderung der öffentlichen Hand für Stromspeicher ein
@@ -136,8 +136,20 @@ SET set_tech_DES_ES(set_pss)
 * - type: Float
 PARAMETER par_Inc_PS_ES(set_tech_DES_ES)
 
+* - description: PV-Anlage
+* - identifier: PV-Anlage
+* - type: String
+SET set_tech_DES_PV(set_tech_DEGEN)
+
+* - domain: [0,)
+* - description: Bitte geben Sie hier die gesamte Modulfläche der PV-Anlage an
+* - identifier: Modulfläche PV-Anlage
+* - unit: [m2]
+* - type: Float
+PARAMETER par_A_DES_PV(set_tech_DES_PV)
+
 * - description: Speichertechnologie
 * - hidden: 1
 * - identifier: Speichertechnologie
 * - type: String
-SET set_tech_DESTO(set_pss)
+SET set_tech_DESTO(set_tech_DES)

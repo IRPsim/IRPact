@@ -36,6 +36,7 @@ public class InRoot implements RootClass, DefaultScenarioFactory {
             ParserInput.newInstance(Type.INPUT, TechDEGEN.class),
             ParserInput.newInstance(Type.INPUT, TechDES.class),
             ParserInput.newInstance(Type.INPUT, TechDESES.class),
+            ParserInput.newInstance(Type.INPUT, TechDESPV.class),
             ParserInput.newInstance(Type.INPUT, TechDESTO.class)
     );
 
@@ -56,6 +57,9 @@ public class InRoot implements RootClass, DefaultScenarioFactory {
 
     @FieldDefinition
     public TechDESES[] deses;
+
+    @FieldDefinition
+    public TechDESPV[] despv;
 
     public InRoot() {
     }
@@ -79,6 +83,9 @@ public class InRoot implements RootClass, DefaultScenarioFactory {
         TechDESES techES1 = new TechDESES("tech_ES1");
         techES1.foerderung = 0.5;
 
+        TechDESPV techPV1 = new TechDESPV("tech_PV1");
+        techPV1.a = 25.0;
+
         SideCustom grp1 = new SideCustom("grp1", 10, 5, new DoubleTimeSeries("0"));
         SideCustom grp2 = new SideCustom("grp2", 20, 10, new DoubleTimeSeries("0"));
 
@@ -101,6 +108,7 @@ public class InRoot implements RootClass, DefaultScenarioFactory {
         root.fares = new SideFares[] {SMS, NS, PS};
         root.dse = new LoadDSE[] {loadE1};
         root.deses = new TechDESES[]{techES1};
+        root.despv = new TechDESPV[]{techPV1};
 
         return root;
     }

@@ -15,7 +15,7 @@ import de.unileipzig.irptools.defstructure.annotation.*;
                 path = "Sets/Stromspeicher"
         )
 )
-public class TechDESES extends Pss {
+public class TechDESES extends TechDESTO {
 
         @FieldDefinition(
                 name = "Inc_PS_ES",

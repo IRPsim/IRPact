@@ -15,5 +15,5 @@ import de.unileipzig.irptools.defstructure.annotation.Gams;
                 hidden = Constants.TRUE1
         )
 )
-public class TechDESTO extends Pss {
+public class TechDESTO extends TechDES {
 }
