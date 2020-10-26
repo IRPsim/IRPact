@@ -1,15 +1,50 @@
 [
   {
-    :label "Einstellungen" 
-    :icon "fa fa-institution" 
-    :description "Allgemeine Einstellungen" 
-    :tags [["Tax" "PS" "vat"]]
+    :label "Skalare und einfache Zeitreihen" 
+    :sections [
+      {
+        :label "Scalar" 
+        :tags [["Tax" "PS" "vat"] ["X" "MS" "DE" "country"] ["X" "MS" "CH" "country"]]
+      } 
+      {
+        :label "TimeSeries" 
+        :tags [["C" "MS" "E"]]
+      }
+    ]
   } 
   {
-    :label "Agenten" 
-    :set "set_side_cust" 
-    :icon "fa fa-thermometer-half" 
-    :description "Agentengruppen in der Simulation" 
-    :tags [["S" "DS"] ["kg" "modifier"] ["IuO" "ESector" "CustSide"]]
+    :label "Link" 
+    :sections [
+      {
+        :label "Table" 
+        :set "set_tech_DES_ES" 
+        :tags [["SOH" "pss" "sector"]]
+      } 
+      {
+        :label "TableWithTimeSeries" 
+        :set "set_load_DS_E" 
+        :tags [["F" "E" "EGrid" "energy"]]
+      }
+    ]
+  } 
+  {
+    :label "Sets" 
+    :sections [
+      {
+        :label "Strom-Verbrauchertechnologie" 
+        :set "set_load_DS_E" 
+        :tags [["L" "DS" "E"]]
+      } 
+      {
+        :label "Kundengruppen" 
+        :set "set_side_cust" 
+        :tags [["S" "DS"] ["kg" "modifier"] ["IuO" "ESector" "CustSide"]]
+      } 
+      {
+        :label "Stromspeicher" 
+        :set "set_tech_DES_ES" 
+        :tags [["Inc" "PS" "ES"]]
+      }
+    ]
   }
 ]

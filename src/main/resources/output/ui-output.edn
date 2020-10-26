@@ -1,9 +1,12 @@
 [
   {
-    :label "Agenten" 
-    :set "set_side_cust" 
-    :icon "fa fa-thermometer-half" 
-    :description "Agentengruppen in der Simulation" 
-    :tags [["IuOSonnentankNetzversorgung" "Summe"] ["S" "DS"]]
+    :label "Sets" 
+    :sections [
+      {
+        :label "Kundengruppen" 
+        :set "set_side_cust" 
+        :tags [["S" "DS"] ["IuOSonnentankNetzversorgung" "Summe"]]
+      }
+    ]
   }
 ]
