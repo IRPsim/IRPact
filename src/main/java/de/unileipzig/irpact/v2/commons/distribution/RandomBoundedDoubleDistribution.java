@@ -5,15 +5,15 @@ import java.util.Random;
 /**
  * @author Daniel Abitz
  */
-public class RandomBoundedDistribution extends AbstractBoundedUnivariateDistribution implements BoundedUnivariateDistribution {
+public class RandomBoundedDoubleDistribution extends AbstractBoundedUnivariateDoubleDistribution implements BoundedUnivariateDoubleDistribution {
 
     protected long seed;
     protected Random rnd;
 
-    public RandomBoundedDistribution() {
+    public RandomBoundedDoubleDistribution() {
     }
 
-    public RandomBoundedDistribution(String name, double lowerBound, double upperBound, long seed) {
+    public RandomBoundedDoubleDistribution(String name, double lowerBound, double upperBound, long seed) {
         setName(name);
         setLowerBound(lowerBound);
         setUpperBound(upperBound);
@@ -42,7 +42,7 @@ public class RandomBoundedDistribution extends AbstractBoundedUnivariateDistribu
     }
 
     @Override
-    public double drawValue() {
+    public double drawDoubleValue() {
         return rnd.nextDouble() * (upperBound - lowerBound) + lowerBound;
     }
 }

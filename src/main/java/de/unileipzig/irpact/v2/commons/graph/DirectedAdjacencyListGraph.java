@@ -3,6 +3,7 @@ package de.unileipzig.irpact.v2.commons.graph;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * @param <V>
@@ -68,9 +69,19 @@ public class DirectedAdjacencyListGraph<V, E> implements DirectedGraph<V, E> {
     }
 
     @Override
+    public Stream<V> streamVertexes() {
+        return adjacencyMap.keySet().stream();
+    }
+
+    @Override
     public Set<V> getNeighbours(V vertex) {
         Map<V, E> map0 = adjacencyMap.get(vertex);
         return map0 == null ? Collections.emptySet() : map0.keySet();
+    }
+
+    @Override
+    public Stream<V> streamNeighbours(V source) {
+        return getNeighbours(source).stream();
     }
 
     @Override

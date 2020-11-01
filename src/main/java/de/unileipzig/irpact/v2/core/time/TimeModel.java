@@ -12,5 +12,15 @@ public interface TimeModel {
 
     Timestamp now();
 
-    //addTick? addTime?
+    Timestamp plusMillis(long millis);
+
+    Timestamp plusMillis(Timestamp ts, long millis);
+
+    Timestamp plusDays(Timestamp ts, long days);
+
+    Timestamp plusYears(Timestamp ts, long years);
+
+    boolean isValid(long delayInMs);
+
+    boolean isValid(Timestamp ts);
 }

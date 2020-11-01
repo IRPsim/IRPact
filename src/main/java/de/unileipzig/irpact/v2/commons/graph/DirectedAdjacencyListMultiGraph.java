@@ -3,6 +3,7 @@ package de.unileipzig.irpact.v2.commons.graph;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * @param <V>
@@ -72,9 +73,19 @@ public class DirectedAdjacencyListMultiGraph<V, E, T> implements DirectedMultiGr
     }
 
     @Override
+    public Stream<V> streamVertexes() {
+        return adjacencyMap.keySet().stream();
+    }
+
+    @Override
     public Set<V> getNeighbours(V vertex) {
         Map<V, Map<T, E>> map0 = adjacencyMap.get(vertex);
         return map0 == null ? Collections.emptySet() : map0.keySet();
+    }
+
+    @Override
+    public Stream<V> streamNeighbours(V source) {
+        return getNeighbours(source).stream();
     }
 
     @Override
@@ -118,6 +129,19 @@ public class DirectedAdjacencyListMultiGraph<V, E, T> implements DirectedMultiGr
     }
 
     @Override
+    public Set<V> getTargets(V from, T type) {
+        Set<V> targets = new LinkedHashSet<>();
+        Map<V, Map<T, E>> map0 = adjacencyMap.get(from);
+        if(map0 == null) return targets;
+        for(Map.Entry<V, Map<T, E>> map1Entry: map0.entrySet()) {
+            if(map1Entry.getValue().containsKey(type)) {
+                targets.add(map1Entry.getKey());
+            }
+        }
+        return targets;
+    }
+
+    @Override
     public boolean addEdge(V from, V to, T type, E edge) {
         if(hasEdge(from, to, type)) {
             return false;
@@ -155,6 +179,19 @@ public class DirectedAdjacencyListMultiGraph<V, E, T> implements DirectedMultiGr
     }
 
     @Override
+    public Set<E> removeAllEdges(T type) {
+        Set<E> removed = new LinkedHashSet<>();
+        for(Map<V, Map<T, E>> map0: adjacencyMap.values()) {
+            for(Map<T, E> map1: map0.values()) {
+                if(map1.containsKey(type)) {
+                    removed.add(map1.remove(type));
+                }
+            }
+        }
+        return removed;
+    }
+
+    @Override
     public E getEdge(V from, V to, T type) {
         Map<V, Map<T, E>> map0 = adjacencyMap.get(from);
         if(map0 == null) return null;
@@ -169,5 +206,35 @@ public class DirectedAdjacencyListMultiGraph<V, E, T> implements DirectedMultiGr
         if(map0 == null) return Collections.emptyMap();
         Map<T, E> map1 = map0.get(to);
         return map1 == null ? Collections.emptyMap() : map1;
+    }
+
+    @Override
+    public Set<E> getEdges(T type) {
+        Set<E> edges = new HashSet<>();
+        for(Map<V, Map<T, E>> map0: adjacencyMap.values()) {
+            for(Map<T, E> map1: map0.values()) {
+                if(map1.containsKey(type)) {
+                    edges.add(map1.get(type));
+                }
+            }
+        }
+        return edges;
+    }
+
+    public Stream<E> streamEdges() {
+        return adjacencyMap.values()
+                .stream()
+                .flatMap(m -> m.values().stream())
+                .flatMap(m -> m.entrySet().stream())
+                .map(Map.Entry::getValue);
+    }
+
+    public Stream<E> streamEdges(T type) {
+        return adjacencyMap.values()
+                .stream()
+                .flatMap(m -> m.values().stream())
+                .flatMap(m -> m.entrySet().stream())
+                .filter(e -> e.getKey() == type)
+                .map(Map.Entry::getValue);
     }
 }

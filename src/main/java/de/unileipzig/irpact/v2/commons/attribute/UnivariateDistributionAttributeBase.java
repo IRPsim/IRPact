@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.v2.commons.attribute;
 
-import de.unileipzig.irpact.v2.commons.distribution.UnivariateDistribution;
+import de.unileipzig.irpact.v2.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.v2.commons.NameableBase;
 
 /**
@@ -8,19 +8,19 @@ import de.unileipzig.irpact.v2.commons.NameableBase;
  */
 public class UnivariateDistributionAttributeBase extends NameableBase implements UnivariateDistributionAttribute {
 
-    protected UnivariateDistribution distribution;
+    protected UnivariateDoubleDistribution distribution;
 
-    public void setDistribution(UnivariateDistribution distribution) {
+    public void setDistribution(UnivariateDoubleDistribution distribution) {
         this.distribution = distribution;
     }
 
     @Override
-    public UnivariateDistribution getDistribution() {
+    public UnivariateDoubleDistribution getDistribution() {
         return distribution;
     }
 
     @Override
     public double drawValue() {
-        return distribution.drawValue();
+        return distribution.drawDoubleValue();
     }
 }

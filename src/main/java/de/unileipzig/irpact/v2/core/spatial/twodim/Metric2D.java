@@ -12,6 +12,7 @@ public enum Metric2D implements Metric {
     EUCLIDEAN(0) {
         @Override
         public double distance(Point2D from, Point2D to) {
+            if(from == to) return 0.0;
             double d2 = EUCLIDEAN2.distance(from, to);
             return Math.sqrt(d2);
         }
@@ -19,6 +20,7 @@ public enum Metric2D implements Metric {
     MANHATTEN(1) {
         @Override
         public double distance(Point2D from, Point2D to) {
+            if(from == to) return 0.0;
             double mx = Math.abs(from.getX() - to.getX());
             double my = Math.abs(from.getY() - to.getY());
             return mx + my;
@@ -27,6 +29,7 @@ public enum Metric2D implements Metric {
     MAXIMUM(2) {
         @Override
         public double distance(Point2D from, Point2D to) {
+            if(from == to) return 0.0;
             double mx = Math.abs(from.getX() - to.getX());
             double my = Math.abs(from.getY() - to.getY());
             return Math.max(mx, my);
@@ -35,6 +38,7 @@ public enum Metric2D implements Metric {
     EUCLIDEAN2(3) {
         @Override
         public double distance(Point2D from, Point2D to) {
+            if(from == to) return 0.0;
             double x2 = (from.getX() - to.getX()) * (from.getX() - to.getX());
             double y2 = (from.getY() - to.getY()) * (from.getY() - to.getY());
             return x2 + y2;
@@ -43,6 +47,7 @@ public enum Metric2D implements Metric {
     HAVERSINE_M(4) {
         @Override
         public double distance(Point2D from, Point2D to) {
+            if(from == to) return 0.0;
             return GeoMath.haversineDistance(
                     from.getX(), from.getY(),
                     to.getX(), to.getY(),
@@ -53,6 +58,7 @@ public enum Metric2D implements Metric {
     HAVERSINE_KM(5) {
         @Override
         public double distance(Point2D from, Point2D to) {
+            if(from == to) return 0.0;
             return GeoMath.haversineDistance(
                     from.getX(), from.getY(),
                     to.getX(), to.getY(),
@@ -91,6 +97,7 @@ public enum Metric2D implements Metric {
 
     @Override
     public double distance(SpatialInformation from, SpatialInformation to) {
+        if(from == to) return 0.0;
         Point2D f = Metric2D.cast(from);
         Point2D t = Metric2D.cast(to);
         return distance(f, t);

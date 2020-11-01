@@ -11,16 +11,25 @@ import java.nio.file.Paths;
 @Disabled
 public class TestFiles {
 
-    public static final Path root = Paths.get("");
-    public static final Path testfiles = root.resolve("testfiles");
+    //wurzelverzeichnis, hinweis: funktioniert in intellij
+    public static final Path root = Paths.get("").toAbsolutePath();
+
+    //testfiles
     public static final Path experimental = root.resolve("experimental");
-    public static final Path gis = experimental.resolve("gis");
     public static final Path demo1 = experimental.resolve("demo1");
     public static final Path toolsdemo = experimental.resolve("toolsdemo");
-    public static final Path scenarios = root.resolve(Paths.get("src", "main", "resources", "scenarios"));
 
-    public static Path resolveGis(String first, String... more) {
-        Path r = Paths.get(first, more);
-        return gis.resolve(r);
+    //private testfiles - allgemein grosse dateien und backups
+    public static final Path exppriv = root.resolve("exppriv");
+    public static final Path gis = exppriv.resolve("gis");
+
+    public static final Path resources = root.resolve(Paths.get("src", "main", "resources"));
+    public static final Path scenarios = resources.resolve("scenarios");
+
+    public static final Path testResources = root.resolve(Paths.get("src", "test", "resources"));
+
+    public static Path resolve(Path path, String first, String... more) {
+        Path other = Paths.get(first, more);
+        return path.resolve(other);
     }
 }

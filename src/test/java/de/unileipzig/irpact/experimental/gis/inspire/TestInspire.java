@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class TestInspire {
 
-    public static final Path inspire2 = TestFiles.resolveGis("inspire2");
+    public static final Path inspire2 = TestFiles.resolve(TestFiles.gis, "inspire2");
 
     public static final Path adressen = inspire2.resolve("Adressen");
     public static final Path adressenDbf = adressen.resolve("Adressen.dbf");

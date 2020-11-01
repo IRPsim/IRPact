@@ -2,6 +2,8 @@ package de.unileipzig.irpact.v2.core.spatial.twodim;
 
 import de.unileipzig.irpact.v2.commons.Util;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -50,7 +52,7 @@ public class BasicPoint2D implements Point2D {
 
     @Override
     public int hashCode() {
-        return Util.hash(x, y);
+        return Objects.hash(x, y);
     }
 
     @Override

@@ -46,9 +46,13 @@ public class BasicAffinityMapping<S, T> implements AffinityMapping<S, T> {
         return affinities.getValue(target);
     }
 
+    protected Affinities<T> newAffinitiesInstance() {
+        return new BasicAffinities<>();
+    }
+
     @Override
     public void put(S source, T target, double value) {
-        Affinities<T> affinities = mapping.computeIfAbsent(source, _source -> new BasicAffinities<>());
+        Affinities<T> affinities = mapping.computeIfAbsent(source, _source -> newAffinitiesInstance());
         affinities.setValue(target, value);
     }
 

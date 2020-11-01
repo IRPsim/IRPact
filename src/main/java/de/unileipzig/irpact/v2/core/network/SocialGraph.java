@@ -2,6 +2,8 @@ package de.unileipzig.irpact.v2.core.network;
 
 import de.unileipzig.irpact.v2.core.agent.Agent;
 
+import java.util.Set;
+
 /**
  * @author Daniel Abitz
  */
@@ -24,6 +26,14 @@ public interface SocialGraph {
      */
     interface Edge {
 
+        void setSource(Node node);
+
+        Node getSource();
+
+        void setTarget(Node node);
+
+        Node getTarget();
+
         void setWeight(double value);
 
         double getWeight();
@@ -33,7 +43,31 @@ public interface SocialGraph {
      * @author Daniel Abitz
      */
     enum Type {
-        COMMUNICATION
+        COMMUNICATION(0),
+        UNKNOWN(-1);
+
+        private final int ID;
+
+        Type(int id) {
+            ID = id;
+        }
+
+        public static Type get(int id) {
+            for(Type t: values()) {
+                if(id == t.ID) {
+                    return t;
+                }
+            }
+            return UNKNOWN;
+        }
+
+        public int id() {
+            return ID;
+        }
+
+        public boolean isValid() {
+            return this != UNKNOWN;
+        }
     }
 
     boolean addAgent(Agent agent);
@@ -44,9 +78,19 @@ public interface SocialGraph {
 
     boolean hasNode(Node node);
 
+    Set<? extends Node> getNodes();
+
+    Set<? extends Node> getTargets(Node from, Type type);
+
     boolean addEdge(Node from, Node to, Type type);
 
     Edge getEdge(Node from, Node to, Type type);
 
+    Set<? extends Edge> getEdges(Type type);
+
     boolean hasEdge(Node from, Node to, Type type);
+
+    boolean removeEdge(Edge edge);
+
+    Set<? extends Edge> removeAllEdges(Type type);
 }

@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.v2.commons.attribute;
 
-import de.unileipzig.irpact.v2.commons.distribution.UnivariateDistribution;
+import de.unileipzig.irpact.v2.commons.distribution.UnivariateDoubleDistribution;
 
 /**
  * @author Daniel Abitz
@@ -8,7 +8,7 @@ import de.unileipzig.irpact.v2.commons.distribution.UnivariateDistribution;
 public interface UnivariateDistributionAttribute extends DistributionAttribute {
 
     @Override
-    UnivariateDistribution getDistribution();
+    UnivariateDoubleDistribution getDistribution();
 
     double drawValue();
 }

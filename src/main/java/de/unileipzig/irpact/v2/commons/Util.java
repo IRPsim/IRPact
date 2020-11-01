@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.v2.commons;
 
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * @author Daniel Abitz
@@ -16,7 +17,11 @@ public final class Util {
                 : obj.getClass().toString();
     }
 
-    public static int hash(double x0, double x1) {
-        return Objects.hash(x0, x1);
+    public static int nextInt(Random rnd, int lower, int upper) {
+        return rnd.nextInt(upper - lower) + lower;
+    }
+
+    public static double nextDouble(Random rnd, double lower, double upper) {
+        return rnd.nextDouble() * (upper - lower) + lower;
     }
 }

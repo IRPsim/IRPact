@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.v2.commons.graph;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @param <V>
@@ -10,6 +11,8 @@ import java.util.Map;
  */
 public interface MultiGraph<V, E, T> extends Graph<V, E> {
 
+    Set<V> getTargets(V from, T type);
+
     boolean addEdge(V from, V to, T type, E edge);
 
     E setEdge(V from, V to, T type, E edge);
@@ -18,7 +21,11 @@ public interface MultiGraph<V, E, T> extends Graph<V, E> {
 
     boolean removeEdge(V from, V to, T type);
 
+    Set<E> removeAllEdges(T type);
+
     E getEdge(V from, V to, T type);
 
     Map<T, E> getEdges(V from, V to);
+
+    Set<E> getEdges(T type);
 }

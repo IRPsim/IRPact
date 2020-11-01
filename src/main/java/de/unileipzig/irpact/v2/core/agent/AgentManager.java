@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.v2.core.agent;
 
 import de.unileipzig.irpact.v2.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.v2.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
 
 import java.util.Set;
 
@@ -10,4 +11,6 @@ import java.util.Set;
 public interface AgentManager {
 
     Set<ConsumerAgentGroup> getConsumerAgentGroups();
+
+    ConsumerAgentGroupAffinityMapping getConsumerAgentGroupAffinityMapping();
 }

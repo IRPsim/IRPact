@@ -5,11 +5,11 @@ import de.unileipzig.irpact.v2.commons.NameableBase;
 /**
  * @author Daniel Abitz
  */
-public class ConstantUnivariateDistribution extends NameableBase implements UnivariateDistribution {
+public class ConstantUnivariateDoubleDistribution extends NameableBase implements UnivariateDoubleDistribution {
 
     protected double value;
 
-    public ConstantUnivariateDistribution() {
+    public ConstantUnivariateDoubleDistribution() {
     }
 
     public void setValue(double value) {
@@ -17,7 +17,7 @@ public class ConstantUnivariateDistribution extends NameableBase implements Univ
     }
 
     @Override
-    public double drawValue() {
+    public double drawDoubleValue() {
         return value;
     }
 }

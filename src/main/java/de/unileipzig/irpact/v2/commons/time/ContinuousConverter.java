@@ -12,17 +12,24 @@ import java.time.temporal.ChronoUnit;
  */
 public final class ContinuousConverter {
 
-    private final int startYear;
-    private final ZoneId zoneId;
+    private int startYear;
+    private ZoneId zoneId;
     private long simulationstartTimeMs;
     private ZonedDateTime startTime;
     private long startTimeInMs;
+
+    public ContinuousConverter() {
+    }
 
     public ContinuousConverter(int startYear) {
         this(startYear, ZoneId.systemDefault());
     }
 
     public ContinuousConverter(int startYear, ZoneId zoneId) {
+        init(startYear, zoneId);
+    }
+
+    public void init(int startYear, ZoneId zoneId) {
         this.startYear = startYear;
         this.zoneId = zoneId;
     }
@@ -51,6 +58,10 @@ public final class ContinuousConverter {
 
     public long fromTime(ZonedDateTime time) {
         validate();
-        return time.toInstant().toEpochMilli() - startTimeInMs;
+        return time.toInstant().toEpochMilli() - startTimeInMs + simulationstartTimeMs;
+    }
+
+    public ZonedDateTime getStartTime() {
+        return startTime;
     }
 }

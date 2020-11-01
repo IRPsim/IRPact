@@ -3,7 +3,7 @@ package de.unileipzig.irpact.v2.commons.distribution;
 /**
  * @author Daniel Abitz
  */
-public interface BoundedUnivariateDistribution extends UnivariateDistribution {
+public interface BoundedUnivariateDoubleDistribution extends UnivariateDoubleDistribution {
 
     double getLowerBound();
 

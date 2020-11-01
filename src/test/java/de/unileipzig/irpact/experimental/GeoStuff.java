@@ -37,7 +37,7 @@ class GeoStuff {
     //https://docs.geotools.org/latest/userguide/tutorial/datastore/read.html
     @Test
     void asd() throws IOException {
-        Path source = TestPaths.tesResources
+        Path source = TestFiles.gis //GEHT NIMMER
                 .resolve("geo")
                 .resolve("cities")
                 .resolve("ne_50m_populated_places.shp");
@@ -80,7 +80,7 @@ class GeoStuff {
 
     @Test
     void dresdenBuildings() throws IOException {
-        Path source = TestPaths.tesResources
+        Path source = TestFiles.gis //GEHT NIMMER
                 .resolve("geo")
                 .resolve("dresden")
                 .resolve("gis_osm_buildings_a_07_1.shp");

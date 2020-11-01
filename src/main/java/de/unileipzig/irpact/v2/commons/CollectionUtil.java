@@ -37,6 +37,13 @@ public final class CollectionUtil {
         return set;
     }
 
+    @SafeVarargs
+    public static <T> Set<T> linkedHashSetOf(T... values) {
+        Set<T> set = new HashSet<>();
+        Collections.addAll(set, values);
+        return set;
+    }
+
     @SuppressWarnings("unchecked")
     public static <K, V> Map<K, V> hashMapOf(Object... values) {
         if(values.length % 2 != 0) {
@@ -69,6 +76,31 @@ public final class CollectionUtil {
         throw new IndexOutOfBoundsException("index: " + i + ", size: " + coll.size());
     }
 
+    public static <T> T remove(Collection<T> coll, int index) {
+        if(coll instanceof List) {
+            List<T> list = (List<T>) coll;
+            return list.remove(index);
+        }
+        if(index < 0 || index >= coll.size()) {
+            throw new IndexOutOfBoundsException("index: " + index + ", size: " + coll.size());
+        }
+        Ref<Integer> counter = new Ref<>(0);
+        Ref<T> value = new Ref<>();
+        coll.removeIf(t -> {
+            int current = counter.get();
+            if(current == -1) return false;
+            counter.set(current + 1);
+            if(current == index) {
+                counter.set(-1);
+                value.set(t);
+                return true;
+            } else {
+                return false;
+            }
+        });
+        return value.get();
+    }
+
     public static <T> T getFirst(Collection<T> coll) {
         return get(coll, 0);
     }
@@ -78,7 +110,7 @@ public final class CollectionUtil {
     }
 
     public static <T> T getRandom(List<T> list, int from, int to, Random rnd) {
-        int index = rnd.nextInt(to - from) + from;
+        int index = Util.nextInt(rnd, from, to);
         return list.get(index);
     }
 
@@ -87,7 +119,16 @@ public final class CollectionUtil {
     }
 
     public static <T> T getRandom(Collection<T> coll, int from, int to, Random rnd) {
-        int index = rnd.nextInt(to - from) + from;
+        int index = Util.nextInt(rnd, from, to);
         return get(coll, index);
+    }
+
+    public static <T> T removeRandom(Collection<T> coll, Random rnd) {
+        return removeRandom(coll, 0, coll.size(), rnd);
+    }
+
+    public static <T> T removeRandom(Collection<T> coll, int from, int to, Random rnd) {
+        int index = Util.nextInt(rnd, from, to);
+        return remove(coll, index);
     }
 }

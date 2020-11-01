@@ -7,6 +7,7 @@ import de.unileipzig.irpact.v2.core.agent.Agent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -60,9 +61,31 @@ public class BasicSocialGraph implements SocialGraph {
      */
     private static class BasicEdge implements Edge {
 
+        private Node source;
+        private Node target;
         private double weight;
 
         public BasicEdge() {
+        }
+
+        @Override
+        public void setSource(Node source) {
+            this.source = source;
+        }
+
+        @Override
+        public Node getSource() {
+            return source;
+        }
+
+        @Override
+        public void setTarget(Node target) {
+            this.target = target;
+        }
+
+        @Override
+        public Node getTarget() {
+            return target;
         }
 
         @Override
@@ -120,11 +143,23 @@ public class BasicSocialGraph implements SocialGraph {
     }
 
     @Override
+    public Set<? extends Node> getNodes() {
+        return GRAPH.vertexSet();
+    }
+
+    @Override
+    public Set<? extends Node> getTargets(Node from, Type type) {
+        return GRAPH.getTargets(from, type);
+    }
+
+    @Override
     public boolean addEdge(Node from, Node to, Type type) {
         if(GRAPH.hasEdge(from, to, type)) {
             return false;
         } else {
             Edge edge = EDGE_SUPPLIER.get();
+            edge.setSource(from);
+            edge.setTarget(to);
             return GRAPH.addEdge(from, to, type, edge);
         }
     }
@@ -135,7 +170,22 @@ public class BasicSocialGraph implements SocialGraph {
     }
 
     @Override
+    public Set<? extends Edge> getEdges(Type type) {
+        return GRAPH.getEdges(type);
+    }
+
+    @Override
     public boolean hasEdge(Node from, Node to, Type type) {
         return GRAPH.hasEdge(from, to, type);
+    }
+
+    @Override
+    public boolean removeEdge(Edge edge) {
+        return GRAPH.removeEdge(edge);
+    }
+
+    @Override
+    public Set<? extends Edge> removeAllEdges(Type type) {
+        return GRAPH.removeAllEdges(type);
     }
 }

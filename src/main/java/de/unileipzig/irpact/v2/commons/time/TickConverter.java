@@ -12,18 +12,25 @@ import java.time.temporal.ChronoUnit;
  */
 public final class TickConverter {
 
-    private final int startYear;
-    private final long timePerTickInMs;
-    private final ZoneId zoneId;
+    private int startYear;
+    private long timePerTickInMs;
+    private ZoneId zoneId;
     private double startTick;
     private ZonedDateTime startTime;
     private long startTimeMs;
+
+    public TickConverter() {
+    }
 
     public TickConverter(int startYear, long timePerTickInMs) {
         this(startYear, timePerTickInMs, ZoneId.systemDefault());
     }
 
     public TickConverter(int startYear, long timePerTickInMs, ZoneId zoneId) {
+        init(startYear, timePerTickInMs, zoneId);
+    }
+
+    public void init(int startYear, long timePerTickInMs, ZoneId zoneId) {
         this.startYear = startYear;
         this.timePerTickInMs = timePerTickInMs;
         this.zoneId = zoneId;
@@ -40,6 +47,10 @@ public final class TickConverter {
         if(startTime == null) {
             throw new IllegalStateException("not started");
         }
+    }
+
+    public ZonedDateTime getStartTime() {
+        return startTime;
     }
 
     /**

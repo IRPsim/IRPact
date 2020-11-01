@@ -5,12 +5,12 @@ import java.time.ZonedDateTime;
 /**
  * @author Daniel Abitz
  */
-public final class TickTimestamp implements Timestamp {
+public final class DiscreteTimestamp implements Timestamp {
 
     private final double TICK;
     private final ZonedDateTime ZDT;
 
-    public TickTimestamp(double tick, ZonedDateTime zdt) {
+    public DiscreteTimestamp(double tick, ZonedDateTime zdt) {
         TICK = tick;
         ZDT = zdt;
     }

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.v2.commons.graph;
 
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * @param <V>
@@ -19,7 +20,11 @@ public interface Graph<V, E> {
 
     Set<V> vertexSet();
 
+    Stream<V> streamVertexes();
+
     Set<V> getNeighbours(V vertex);
+
+    Stream<V> streamNeighbours(V source);
 
     boolean hasEdge(E edge);
 

@@ -5,7 +5,7 @@ import de.unileipzig.irpact.v2.commons.NameableBase;
 /**
  * @author Daniel Abitz
  */
-public abstract class AbstractBoundedUnivariateDistribution extends NameableBase implements BoundedUnivariateDistribution {
+public abstract class AbstractBoundedUnivariateDoubleDistribution extends NameableBase implements BoundedUnivariateDoubleDistribution {
 
     protected double lowerBound;
     protected double upperBound;
