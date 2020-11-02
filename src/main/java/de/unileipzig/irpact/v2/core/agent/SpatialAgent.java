@@ -5,7 +5,7 @@ import de.unileipzig.irpact.v2.core.spatial.SpatialInformation;
 /**
  * @author Daniel Abitz
  */
-public interface SpatialAgent {
+public interface SpatialAgent extends Agent {
 
     SpatialInformation getSpatialInformation();
 }

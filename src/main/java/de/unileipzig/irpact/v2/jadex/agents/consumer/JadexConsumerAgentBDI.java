@@ -10,6 +10,7 @@ import de.unileipzig.irpact.v2.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.v2.jadex.agents.AbstractJadexAgentBDI;
 import de.unileipzig.irpact.v2.jadex.agents.simulation.SimulationService;
 import de.unileipzig.irpact.v2.jadex.simulation.JadexSimulationEnvironment;
+import de.unileipzig.irpact.v2.jadex.util.AgentUtil;
 import de.unileipzig.irpact.v2.jadex.util.JadexUtil2;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.micro.annotation.Agent;
@@ -37,6 +38,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     protected Set<ConsumerAgentAttribute> attributes = new HashSet<>();
     protected double informationAuthority;
     protected Awareness<Product> productAwareness;
+    protected Set<Product> adoptedProducts = new HashSet<>();
 
     public JadexConsumerAgentBDI() {
     }
@@ -116,6 +118,16 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
+    public ConsumerAgentAttribute getAttribute(String name) {
+        for(ConsumerAgentAttribute attribute: attributes) {
+            if(Objects.equals(attribute.getName(), name)) {
+                return attribute;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public Awareness<Product> getProductAwareness() {
         return productAwareness;
     }
@@ -138,5 +150,37 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     public SpatialInformation getSpatialInformation() {
         return getData().getSpatialInformation();
+    }
+
+    @Override
+    public Set<Product> getAdoptedProducts() {
+        return adoptedProducts;
+    }
+
+    //=========================
+    //
+    //=========================
+
+    protected void handleCommunication(ConsumerAgent sender, Product product) {
+        if(AgentUtil.isAdopter(sender, product)) {
+            getProductAwareness().update(product, 3.0);
+        }
+        else if(AgentUtil.isInterested(sender, product)) {
+            getProductAwareness().update(product, 2.0);
+        }
+        else if(AgentUtil.isAwareOf(sender, product)) {
+            getProductAwareness().update(product, 1.0);
+        }
+    }
+
+    protected void feasibilityTest(Product product) {
+        if(AgentUtil.isHouseOwner(this) || AgentUtil.isConstructing(this)) {
+            if(productAwareness.isInterested(product)) {
+                decisionMaking(product);
+            }
+        }
+    }
+
+    protected void decisionMaking(Product product) {
     }
 }

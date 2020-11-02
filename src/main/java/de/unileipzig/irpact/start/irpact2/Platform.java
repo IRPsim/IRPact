@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
 import de.unileipzig.irpact.v2.commons.time.TimeMode;
 import de.unileipzig.irpact.v2.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.v2.develop.ToDo;
 import de.unileipzig.irpact.v2.io.input.IRoot;
 import de.unileipzig.irpact.v2.jadex.JadexConstants;
 import de.unileipzig.irpact.v2.jadex.agents.consumer.JadexConsumerAgentInitializationData;
@@ -160,6 +161,7 @@ public class Platform {
         createConsumerAgents();
     }
 
+    @ToDo("sleepkill entfernen")
     public void run() throws InterruptedException {
         createPlatform();
         setupTimeModel();

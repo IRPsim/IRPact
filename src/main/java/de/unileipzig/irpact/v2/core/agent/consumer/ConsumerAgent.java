@@ -16,5 +16,9 @@ public interface ConsumerAgent extends SpatialInformationAgent, Initializable<Co
 
     Set<ConsumerAgentAttribute> getAttributes();
 
+    ConsumerAgentAttribute getAttribute(String name);
+
     Awareness<Product> getProductAwareness();
+
+    Set<Product> getAdoptedProducts();
 }

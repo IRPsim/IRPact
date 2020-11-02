@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -150,6 +151,11 @@ public class BasicSocialGraph implements SocialGraph {
     @Override
     public Set<? extends Node> getTargets(Node from, Type type) {
         return GRAPH.getTargets(from, type);
+    }
+
+    @Override
+    public Stream<? extends Node> streamTargets(Node source) {
+        return GRAPH.streamNeighbours(source);
     }
 
     @Override

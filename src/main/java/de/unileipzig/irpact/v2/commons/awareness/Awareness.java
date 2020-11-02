@@ -9,6 +9,8 @@ public interface Awareness<T> {
 
     Awareness<T> fullCopy();
 
+    boolean isInterested(T item);
+
     boolean isAwareOf(T item);
 
     void update(T item, double influence);

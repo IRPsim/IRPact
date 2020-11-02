@@ -42,9 +42,15 @@ public class ThresholdAwareness<T> implements Awareness<T> {
     }
 
     @Override
-    public boolean isAwareOf(T item) {
+    public boolean isInterested(T item) {
         Double v = items.get(item);
         return v != null && v >= threshold;
+    }
+
+    @Override
+    public boolean isAwareOf(T item) {
+        Double v = items.get(item);
+        return v != null && v > 0.0;
     }
 
     @Override

@@ -3,6 +3,7 @@ package de.unileipzig.irpact.v2.core.network;
 import de.unileipzig.irpact.v2.core.agent.Agent;
 
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -81,6 +82,8 @@ public interface SocialGraph {
     Set<? extends Node> getNodes();
 
     Set<? extends Node> getTargets(Node from, Type type);
+
+    Stream<? extends Node> streamTargets(Node source);
 
     boolean addEdge(Node from, Node to, Type type);
 
