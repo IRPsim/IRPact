@@ -12,7 +12,8 @@ import de.unileipzig.irptools.defstructure.annotation.*;
                 identifier = "PV-Anlage"
         ),
         edn = @Edn(
-                path = "Sets/PV"
+                path = "Sets/PV",
+                description = {"", "Hier sind PV"}
         )
 )
 public class TechDESPV extends TechDEGEN {

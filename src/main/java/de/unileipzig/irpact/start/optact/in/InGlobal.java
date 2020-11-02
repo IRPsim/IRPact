@@ -9,7 +9,11 @@ import de.unileipzig.irptools.util.Table;
  * @author Daniel Abitz
  */
 @Definition(
-        global = true
+        global = true,
+        edn = @Edn(
+                path = {"Skalare und einfache Zeitreihen"},
+                description = "Hier sind die skalaren Werte und einfache Zeitreihen"
+        )
 )
 public class InGlobal {
 
@@ -20,7 +24,8 @@ public class InGlobal {
                     identifier = "MWST"
             ),
             edn = @EdnParameter(
-                    path = "Skalare und einfache Zeitreihen/Scalar"
+                    path = "Skalare und einfache Zeitreihen/Scalar",
+                    description = {"", "Hier stehen skalare Werte"}
             )
     )
     public double mwst;
@@ -66,7 +71,8 @@ public class InGlobal {
                     unit = "[EUR / MWh]"
             ),
             edn = @EdnParameter(
-                    path = "Skalare und einfache Zeitreihen/TimeSeries"
+                    path = "Skalare und einfache Zeitreihen/TimeSeries",
+                    description = {"", "Hier stehen einfache Zeitreihen"}
             )
     )
     public DoubleTimeSeries marktpreis;
@@ -79,8 +85,8 @@ public class InGlobal {
                     domain = "[0, 1]"
             ),
             edn = @EdnParameter(
-                    //path = "Komponenten/Speichertechnologien/Hoheitssystematik/Sektorenschlüssel",
                     path = "Link/Table",
+                    description = {"Hier stehen Tables-Einträge.", "Hier stehen primitive Tables-Einträge"},
                     set = "set_tech_DES_ES"
             )
     )
@@ -99,6 +105,7 @@ public class InGlobal {
             edn = @EdnParameter(
                     //path = "Komponenten/Verbrauchertechnologien/Endkundentarife",
                     path = "Link/TableWithTimeSeries",
+                    description = {"Hier stehen Tables-Einträge.", "Hier stehen Zeitreihen als Tables-Einträge"},
                     delta = Constants.TRUE1,
                     set = "set_load_DS_E"
             )

@@ -13,7 +13,8 @@ import de.unileipzig.irptools.util.DoubleTimeSeries;
                 identifier = "Strom-Verbrauchertechnologie"
         ),
         edn = @Edn(
-                path = "Sets/Strom-Verbrauchertechnologie"
+                path = "Sets/Strom-Verbrauchertechnologie",
+                description = {"", "Hier sind Strom-Verbrauchertechnologie"}
         )
 )
 public class LoadDSE extends LoadDSLOA {

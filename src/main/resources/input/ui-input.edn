@@ -1,53 +1,64 @@
 [
   {
     :label "Skalare und einfache Zeitreihen" 
+    :description "Hier sind die skalaren Werte und einfache Zeitreihen" 
     :sections [
       {
         :label "Scalar" 
+        :description "Hier stehen skalare Werte" 
         :tags [["Tax" "PS" "vat"] ["X" "MS" "DE" "country"] ["X" "MS" "CH" "country"]]
       } 
       {
         :label "TimeSeries" 
+        :description "Hier stehen einfache Zeitreihen" 
         :tags [["C" "MS" "E"]]
       }
     ]
   } 
   {
     :label "Link" 
+    :description "Hier stehen Tables-Einträge." 
     :sections [
       {
         :label "Table" 
         :set "set_tech_DES_ES" 
+        :description "Hier stehen primitive Tables-Einträge" 
         :tags [["SOH" "pss" "sector"]]
       } 
       {
         :label "TableWithTimeSeries" 
         :set "set_load_DS_E" 
+        :description "Hier stehen Zeitreihen als Tables-Einträge" 
         :tags [["F" "E" "EGrid" "energy"]]
       }
     ]
   } 
   {
     :label "Sets" 
+    :description "Hier sind Sets." 
     :sections [
       {
         :label "Strom-Verbrauchertechnologie" 
         :set "set_load_DS_E" 
+        :description "Hier sind Strom-Verbrauchertechnologie" 
         :tags [["L" "DS" "E"]]
       } 
       {
         :label "Kundengruppen" 
         :set "set_side_cust" 
+        :description "Hier sind Kundengruppen." 
         :tags [["S" "DS"] ["kg" "modifier"] ["IuO" "ESector" "CustSide"]]
       } 
       {
         :label "Stromspeicher" 
         :set "set_tech_DES_ES" 
+        :description "Hier sind Stromspeicher" 
         :tags [["Inc" "PS" "ES"]]
       } 
       {
         :label "PV" 
         :set "set_tech_DES_PV" 
+        :description "Hier sind PV" 
         :tags [["A" "DES" "PV"]]
       }
     ]

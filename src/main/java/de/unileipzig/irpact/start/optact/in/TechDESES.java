@@ -12,7 +12,8 @@ import de.unileipzig.irptools.defstructure.annotation.*;
                 identifier = "Stromspeicher"
         ),
         edn = @Edn(
-                path = "Sets/Stromspeicher"
+                path = "Sets/Stromspeicher",
+                description = {"", "Hier sind Stromspeicher"}
         )
 )
 public class TechDESES extends TechDESTO {
