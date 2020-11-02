@@ -151,4 +151,8 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         data.setProductAwareness(deriveAwareness());
         return data;
     }
+
+    //=========================
+    //
+    //=========================
 }
