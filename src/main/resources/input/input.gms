@@ -10,6 +10,7 @@ SET set_ii(*)
 SCALAR sca_Tax_PS_vat
 
 * - default: 1
+* - domain: [0|1]
 * - description: Wahl Deutschland
 * - identifier: Wahl Deutschland
 * - rule: IF (sca_X_MS_DE_country == 1, sca_X_MS_CH_country = 0)
@@ -17,6 +18,8 @@ SCALAR sca_Tax_PS_vat
 * - type: Boolean
 SCALAR sca_X_MS_DE_country
 
+* - default: 0
+* - domain: [0|1]
 * - description: Wahl Schweiz
 * - identifier: Wahl Schweiz
 * - rule: IF (sca_X_MS_CH_country == 1, sca_X_MS_DE_country = 0)
@@ -36,6 +39,7 @@ PARAMETER par_C_MS_E(set_ii)
 * - type: Float
 PARAMETER par_SOH_pss_sector(set_sector,set_pss)
 
+* - default: 0
 * - description: Bitte geben Sie hier die an die verschiedenen Akteure (Netz-, Politik- und Vertriebsseite) zu zahlenden Arbeitstarife für den Strom-Netzbezug an
 * - identifier: Strom-Arbeitstarife Netzbezug
 * - unit: [EUR / MWh]
@@ -130,6 +134,7 @@ SET set_tech_DES(set_pss)
 * - type: String
 SET set_tech_DES_ES(set_tech_DESTO)
 
+* - default: 0
 * - domain: [0,)
 * - description: Bitte tragen Sie hier die spezifische Förderung der öffentlichen Hand für Stromspeicher ein
 * - identifier: Förderung für Stromspeicher durch Politik
@@ -142,6 +147,7 @@ PARAMETER par_Inc_PS_ES(set_tech_DES_ES)
 * - type: String
 SET set_tech_DES_PV(set_tech_DEGEN)
 
+* - default: 0
 * - domain: [0,)
 * - description: Bitte geben Sie hier die gesamte Modulfläche der PV-Anlage an
 * - identifier: Modulfläche PV-Anlage

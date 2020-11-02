@@ -31,6 +31,7 @@ public class InGlobal {
                     description = "Wahl Deutschland",
                     identifier = "Wahl Deutschland",
                     defaultValue = "1",
+                    domain = "[0|1]",
                     rule = {"IF (sca_X_MS_DE_country == 1, sca_X_MS_CH_country = 0)",
                             "IF (sca_X_MS_DE_country == 0, sca_X_MS_CH_country = 1)"}
             ),
@@ -46,6 +47,7 @@ public class InGlobal {
                     description = "Wahl Schweiz",
                     identifier = "Wahl Schweiz",
                     defaultValue = "0",
+                    domain = "[0|1]",
                     rule = {"IF (sca_X_MS_CH_country == 1, sca_X_MS_DE_country = 0)",
                             "IF (sca_X_MS_CH_country == 0, sca_X_MS_DE_country = 1)"}
             ),
