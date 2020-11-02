@@ -20,18 +20,24 @@
     "sets" : {
       "set_ii" : { },
       "set_load_DS" : {
-        "load_E1" : { }
+        "load_E1" : { },
+        "load_E2" : { }
       },
       "set_load_DS_E" : {
         "load_E1" : {
           "par_L_DS_E" : "0"
+        },
+        "load_E2" : {
+          "par_L_DS_E" : "0"
         }
       },
       "set_load_DSLOA" : {
-        "load_E1" : { }
+        "load_E1" : { },
+        "load_E2" : { }
       },
       "set_pss" : {
         "load_E1" : { },
+        "load_E2" : { },
         "tech_ES1" : { },
         "tech_PV1" : { }
       },
@@ -90,16 +96,19 @@
       "par_F_E_EGrid_energy" : {
         "NS" : {
           "load_E1" : "0",
+          "load_E2" : "0",
           "tech_ES1" : "0",
           "tech_PV1" : "0"
         },
         "PS" : {
           "load_E1" : "0",
+          "load_E2" : "0",
           "tech_ES1" : "0",
           "tech_PV1" : "0"
         },
         "SMS" : {
           "load_E1" : "0",
+          "load_E2" : "0",
           "tech_ES1" : "0",
           "tech_PV1" : "0"
         }
@@ -107,6 +116,7 @@
       "par_SOH_pss_sector" : {
         "E" : {
           "load_E1" : 0.0,
+          "load_E2" : 0.0,
           "tech_ES1" : 0.0,
           "tech_PV1" : 0.0
         }
