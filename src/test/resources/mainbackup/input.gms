@@ -1,4 +1,4 @@
-* - description: Seed fÃ¼r den Zufallsgenerator
+* - description: Seed für den Zufallsgenerator
 * - type: Integer
 * - identifier: Zufallswert
 * - unit: [x]
@@ -16,7 +16,7 @@ SET set_AgentGroup(*)
 * - default: 10
 PARAMETER par_AgentGroup_numberOfAgents(set_AgentGroup)
 
-* - description: Adaptionsrate fÃ¼r die Agenten dieser Gruppe
+* - description: Adaptionsrate für die Agenten dieser Gruppe
 * - type: Float
 * - identifier: Adaptionsrate
 * - domain: [0,1]

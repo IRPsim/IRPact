@@ -5,18 +5,16 @@ import de.unileipzig.irpact.commons.JsonUtil;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.AgentGroup;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.InputRoot;
 import de.unileipzig.irpact.start.hardcodeddemo.def.in.Product;
-import de.unileipzig.irpact.start.hardcodeddemo.def.out.OutputRoot;
-import de.unileipzig.irpact.start.hardcodeddemo.def.out.OutputScalars;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.AnnotationParser;
 import de.unileipzig.irptools.defstructure.Converter;
 import de.unileipzig.irptools.defstructure.DefinitionCollection;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
-import de.unileipzig.irptools.io.basic.DataEntry;
-import de.unileipzig.irptools.io.input.InputData;
-import de.unileipzig.irptools.io.input.InputFile;
-import de.unileipzig.irptools.io.scenario.ScenarioData;
-import de.unileipzig.irptools.io.scenario.ScenarioFile;
+import de.unileipzig.irptools.io.annual.AnnualData;
+import de.unileipzig.irptools.io.annual.AnnualFile;
+import de.unileipzig.irptools.io.base.AnnualEntry;
+import de.unileipzig.irptools.io.perennial.PerennialData;
+import de.unileipzig.irptools.io.perennial.PerennialFile;
 import de.unileipzig.irptools.util.Pair;
 import de.unileipzig.irptools.util.Table;
 import de.unileipzig.irptools.util.Util;
@@ -54,9 +52,13 @@ public class HardCodedAgentDemo implements Callable<Integer> {
     private String outputFile;
 
     private IExternalAccess platform;
-    private DataEntry<InputRoot> inputEntry;
+    private AnnualEntry<InputRoot> inputEntry;
 
     public HardCodedAgentDemo() {
+    }
+
+    public String getOutputFile() {
+        return outputFile;
     }
 
     public void run() throws IOException {
@@ -82,12 +84,12 @@ public class HardCodedAgentDemo implements Callable<Integer> {
         Converter converter = new Converter(dmap);
 
         if(rootNode.has(Constants.YEARS)) {
-            ScenarioFile sfile = new ScenarioFile(rootNode);
-            ScenarioData<InputRoot> sdata = sfile.deserialize(converter);
+            PerennialFile pfile = new PerennialFile(rootNode);
+            PerennialData<InputRoot> sdata = pfile.deserialize(converter);
             inputEntry = sdata.get(0); //DIRTYFIX: ignoriere erstmal alle andere
         } else {
-            InputFile ifile = new InputFile(rootNode);
-            InputData<InputRoot> idata = ifile.deserialize(converter);
+            AnnualFile afile = new AnnualFile(rootNode);
+            AnnualData<InputRoot> idata = afile.deserialize(converter);
             inputEntry = idata.get();
         }
     }
@@ -212,23 +214,44 @@ public class HardCodedAgentDemo implements Callable<Integer> {
     private void createOutput(Map<AgentGroup, List<AdaptedProducts>> results) throws IOException {
         Table<AgentGroup, Product, Double> adaptions = createOutputTableForYear(results, getYear());
 
-        OutputRoot outRoot = new OutputRoot();
-        OutputScalars outScalars = new OutputScalars();
-        outRoot.scalars = outScalars;
-        outRoot.agentGroups = getPrimaryData().getAgentGroups();
-        outRoot.products = getPrimaryData().getProducts();
-        outScalars.adaptions = adaptions;
+        ObjectNode root = buildOutput(adaptions);
+        JsonUtil.writeJson(root, Paths.get(outputFile), JsonUtil.defaultPrinter);
 
-        ObjectNode outNode = JsonUtil.mapper.createObjectNode();
-        //applyInputConfig(outNode);
+//        OutputRoot outRoot = new OutputRoot();
+//        OutputScalars outScalars = new OutputScalars();
+//        outRoot.scalars = outScalars;
+//        outRoot.agentGroups = getPrimaryData().getAgentGroups();
+//        outRoot.products = getPrimaryData().getProducts();
+//        outScalars.adaptions = adaptions;
+//
+//        ObjectNode outNode = JsonUtil.mapper.createObjectNode();
+//        //applyInputConfig(outNode);
+//
+//        DefinitionCollection dcoll = AnnotationParser.parse(OutputRoot.CLASSES);
+//        DefinitionMapper dmap = new DefinitionMapper(dcoll);
+//        Converter converter = new Converter(dmap);
+//
+//        InputData<OutputRoot> outData = new InputData<>(outRoot);
+//        InputFile outFile = outData.serialize(converter);
+//        outFile.store(Paths.get(outputFile));
+    }
 
-        DefinitionCollection dcoll = AnnotationParser.parse(OutputRoot.CLASSES);
-        DefinitionMapper dmap = new DefinitionMapper(dcoll);
-        Converter converter = new Converter(dmap);
-
-        InputData<OutputRoot> outData = new InputData<>(outRoot);
-        InputFile outFile = outData.serialize(converter);
-        outFile.store(Paths.get(outputFile));
+    private ObjectNode buildOutput(Table<AgentGroup, Product, Double> adaptions) {
+        ObjectNode root = JsonUtil.mapper.createObjectNode();
+        root.putObject("config");
+        root.putObject("scalars");
+        root.putObject("sets");
+        root.putObject("timeseries");
+        ObjectNode tables = root.putObject("tables");
+        ObjectNode par_out_table_AgentGroup_Product_adaptions = tables.putObject("par_out_table_AgentGroup_Product_adaptions");
+        for(AgentGroup group: adaptions.getMap().keySet()) {
+            ObjectNode groupNode = par_out_table_AgentGroup_Product_adaptions.putObject(group.getName());
+            for(Product product: adaptions.getSubMap(group).keySet()) {
+                groupNode.put(product.getName(), adaptions.get(group, product));
+            }
+        }
+        root.putObject("postprocessing");
+        return root;
     }
 
     @Override

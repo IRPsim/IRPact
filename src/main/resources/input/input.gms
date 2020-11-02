@@ -1,139 +1,156 @@
-* - description: AgentGroup
-* - type: String
-* - identifier: AgentGroup
-SET set_AgentGroup(*)
+* - description: Simulationshorizont
+* - hidden: 1
+* - identifier: SH
+* - type: TimeSeries
+SET set_ii(*)
 
-* - description: numberOfAgents
-* - type: Integer
-* - identifier: numberOfAgents
-PARAMETER par_AgentGroup_numberOfAgents(set_AgentGroup)
-
-* - description: adoptionRate
+* - description: Mehrwertsteuer
+* - identifier: MWST
 * - type: Float
-* - identifier: adoptionRate
-PARAMETER par_AgentGroup_adoptionRate(set_AgentGroup)
+SCALAR sca_Tax_PS_vat
 
-* - description: seed
-* - type: Integer
-* - identifier: seed
-PARAMETER par_AgentGroup_seed(set_AgentGroup)
-
-* - description: needs
+* - default: 1
+* - description: Wahl Deutschland
+* - identifier: Wahl Deutschland
+* - rule: IF (sca_X_MS_DE_country == 1, sca_X_MS_CH_country = 0)
+* - rule: IF (sca_X_MS_DE_country == 0, sca_X_MS_CH_country = 1)
 * - type: Boolean
-* - identifier: needs
-PARAMETER par_link_AgentGroup_Need_needs(set_AgentGroup,set_Need)
+SCALAR sca_X_MS_DE_country
 
-* - description: RandomBoundedDistribution
-* - type: String
-* - identifier: RandomBoundedDistribution
-SET set_RandomBoundedDistribution(set_UnivariateDistribution)
+* - description: Wahl Schweiz
+* - identifier: Wahl Schweiz
+* - rule: IF (sca_X_MS_CH_country == 1, sca_X_MS_DE_country = 0)
+* - rule: IF (sca_X_MS_CH_country == 0, sca_X_MS_DE_country = 1)
+* - type: Boolean
+SCALAR sca_X_MS_CH_country
 
-* - description: seed
-* - type: Integer
-* - identifier: seed
-PARAMETER par_RandomBoundedDistribution_seed(set_RandomBoundedDistribution)
-
-* - description: lowerBound
+* - description: Marktpreis Strom
+* - identifier: Marktpreis Strom
+* - unit: [EUR / MWh]
 * - type: Float
-* - identifier: lowerBound
-PARAMETER par_RandomBoundedDistribution_lowerBound(set_RandomBoundedDistribution)
+PARAMETER par_C_MS_E(set_ii)
 
-* - description: upperBound
+* - domain: [0, 1]
+* - description: Bitte geben Sie hier an, wie die Technologiekosten welchem Sektor (Strom, Wärme, Reserve etc.) (anteilig) zugeordnet werden sollen.
+* - identifier: Sektorzuweisung der Technologiekosten
 * - type: Float
-* - identifier: upperBound
-PARAMETER par_RandomBoundedDistribution_upperBound(set_RandomBoundedDistribution)
+PARAMETER par_SOH_pss_sector(set_sector,set_pss)
 
-* - description: RandomDistribution
-* - type: String
-* - identifier: RandomDistribution
-SET set_RandomDistribution(set_UnivariateDistribution)
-
-* - description: seed
-* - type: Integer
-* - identifier: seed
-PARAMETER par_RandomDistribution_seed(set_RandomDistribution)
-
-* - description: UnivariateDistribution
-* - type: String
-* - identifier: UnivariateDistribution
-SET set_UnivariateDistribution(*)
-
-* - description: Need
-* - type: String
-* - identifier: Need
-SET set_Need(*)
-
-* - description: FixedProduct
-* - type: String
-* - identifier: FixedProduct
-SET set_FixedProduct(*)
-
-* - description: group
-* - type: Boolean
-* - identifier: group
-PARAMETER par_link_FixedProduct_ProductGroup_group(set_FixedProduct,set_ProductGroup)
-
-* - description: specifiedAttributes
+* - description: Bitte geben Sie hier die an die verschiedenen Akteure (Netz-, Politik- und Vertriebsseite) zu zahlenden Arbeitstarife für den Strom-Netzbezug an
+* - identifier: Strom-Arbeitstarife Netzbezug
+* - unit: [EUR / MWh]
 * - type: Float
-* - identifier: specifiedAttributes
-PARAMETER par_map_FixedProduct_ProductGroupAttribute_specifiedAttributes(set_FixedProduct,set_ProductGroupAttribute)
+PARAMETER par_F_E_EGrid_energy(set_ii,set_side_fares,set_pss)
 
-* - description: ProductGroup
+* - description: Lastgang
+* - hidden: 1
+* - identifier: Lastgang
 * - type: String
-* - identifier: ProductGroup
-SET set_ProductGroup(*)
+SET set_load_DS(set_pss)
 
-* - description: attributes
-* - type: Boolean
-* - identifier: attributes
-PARAMETER par_link_ProductGroup_ProductGroupAttribute_attributes(set_ProductGroup,set_ProductGroupAttribute)
-
-* - description: needsSatisfied
-* - type: Boolean
-* - identifier: needsSatisfied
-PARAMETER par_link_ProductGroup_Need_needsSatisfied(set_ProductGroup,set_Need)
-
-* - description: ProductGroupAttribute
+* - description: Strom-Verbrauchertechnologie
+* - identifier: Strom-Verbrauchertechnologie
 * - type: String
-* - identifier: ProductGroupAttribute
-SET set_ProductGroupAttribute(*)
+SET set_load_DS_E(set_load_DSLOA)
 
-* - description: distribution
-* - type: Boolean
-* - identifier: distribution
-PARAMETER par_link_ProductGroupAttribute_UnivariateDistribution_distribution(set_ProductGroupAttribute,set_UnivariateDistribution)
+* - domain: [0,)
+* - description: Bitte geben Sie hier ein gewünschtes elektrische Lastprofil ein
+* - identifier: Elektrisches Lastprofil
+* - unit: [MWh]
+* - type: Float
+PARAMETER par_L_DS_E(set_ii,set_load_DS_E)
 
-* - description: ContinousTimeModel
+* - description: Verbrauchertechnologie
+* - hidden: 1
+* - identifier: Verbrauchertechnologie
 * - type: String
-* - identifier: ContinousTimeModel
-SET set_ContinousTimeModel(set_TimeModel)
+SET set_load_DSLOA(set_load_DS)
 
-* - description: acceleration
+* - description: Prosumstorer
+* - hidden: 1
+* - identifier: Prosumstorer
+* - type: String
+SET set_pss(*)
+
+* - description: Energiesektor
+* - hidden: 1
+* - identifier: Energiesektor
+* - type: String
+SET set_sector(*)
+
+* - description: Marktteilnehmer
+* - hidden: 1
+* - identifier: MT
+* - type: String
+SET set_side(*)
+
+* - description: Kundengruppe in IRPact
+* - identifier: KG
+* - type: String
+SET set_side_cust(set_side)
+
+* - default: 10
+* - description: Anzahl der Kunden
+* - identifier: KGA
 * - type: Integer
-* - identifier: acceleration
-PARAMETER par_ContinousTimeModel_acceleration(set_ContinousTimeModel)
+PARAMETER par_S_DS(set_side_cust)
 
-* - description: delay
+* - default: 5
+* - description: Erhöht die Anzahl der Kunden in der Gruppe um den gewünschten Wert.
+* - identifier: KGAM
 * - type: Integer
-* - identifier: delay
-PARAMETER par_ContinousTimeModel_delay(set_ContinousTimeModel)
+PARAMETER par_kg_modifier(set_side_cust)
 
-* - description: DiscretTimeModel
+* - description: Stromsparte je Kundengruppe
+* - identifier: SK
+* - unit: [EUR]
+* - type: Float
+PARAMETER par_IuO_ESector_CustSide(set_ii,set_side_cust)
+
+* - description: Tarifteilnehmer
+* - hidden: 1
+* - identifier: Tarifteilnehmer
 * - type: String
-* - identifier: DiscretTimeModel
-SET set_DiscretTimeModel(set_TimeModel)
+SET set_side_fares(set_side)
 
-* - description: msPerTick
-* - type: Integer
-* - identifier: msPerTick
-PARAMETER par_DiscretTimeModel_msPerTick(set_DiscretTimeModel)
-
-* - description: delay
-* - type: Integer
-* - identifier: delay
-PARAMETER par_DiscretTimeModel_delay(set_DiscretTimeModel)
-
-* - description: TimeModel
+* - description: Erzeugertechnologie
+* - hidden: 1
+* - identifier: Erzeugertechnologie
 * - type: String
-* - identifier: TimeModel
-SET set_TimeModel(*)
+SET set_tech_DEGEN(set_tech_DES)
+
+* - description: Dezentrale Energietechnologie
+* - hidden: 1
+* - identifier: Dezentrale Energietechnologie
+* - type: String
+SET set_tech_DES(set_pss)
+
+* - description: Stromspeicher
+* - identifier: Stromspeicher
+* - type: String
+SET set_tech_DES_ES(set_tech_DESTO)
+
+* - domain: [0,)
+* - description: Bitte tragen Sie hier die spezifische Förderung der öffentlichen Hand für Stromspeicher ein
+* - identifier: Förderung für Stromspeicher durch Politik
+* - unit: [EUR / MWh]
+* - type: Float
+PARAMETER par_Inc_PS_ES(set_tech_DES_ES)
+
+* - description: PV-Anlage
+* - identifier: PV-Anlage
+* - type: String
+SET set_tech_DES_PV(set_tech_DEGEN)
+
+* - domain: [0,)
+* - description: Bitte geben Sie hier die gesamte Modulfläche der PV-Anlage an
+* - identifier: Modulfläche PV-Anlage
+* - unit: [m2]
+* - type: Float
+PARAMETER par_A_DES_PV(set_tech_DES_PV)
+
+* - description: Speichertechnologie
+* - hidden: 1
+* - identifier: Speichertechnologie
+* - type: String
+SET set_tech_DESTO(set_tech_DES)

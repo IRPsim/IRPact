@@ -9,8 +9,8 @@ import de.unileipzig.irpact.start.irpact.input.need.Need;
 import de.unileipzig.irpact.start.irpact.input.product.FixedProduct;
 import de.unileipzig.irpact.start.irpact.input.product.ProductGroup;
 import de.unileipzig.irpact.start.irpact.input.product.ProductGroupAttribute;
-import de.unileipzig.irptools.defstructure.GamsType;
 import de.unileipzig.irptools.defstructure.ParserInput;
+import de.unileipzig.irptools.defstructure.Type;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 
@@ -26,17 +26,17 @@ import java.util.List;
 public class IRPactOutputData {
 
     public static final List<ParserInput> LIST = CollectionUtil.arrayListOf(
-            ParserInput.newInstance(GamsType.INPUT_OUTPUT, AgentGroup.class),
-            ParserInput.newInstance(GamsType.INPUT_OUTPUT, RandomBoundedDistribution.class),
-            ParserInput.newInstance(GamsType.INPUT_OUTPUT, RandomDistribution.class),
-            ParserInput.newInstance(GamsType.INPUT_OUTPUT, UnivariateDistribution.class),
-            ParserInput.newInstance(GamsType.INPUT_OUTPUT, Need.class),
-            ParserInput.newInstance(GamsType.INPUT_OUTPUT, FixedProduct.class),
-            ParserInput.newInstance(GamsType.INPUT_OUTPUT, ProductGroup.class),
-            ParserInput.newInstance(GamsType.INPUT_OUTPUT, ProductGroupAttribute.class),
+            ParserInput.newInstance(Type.REFERENCE, AgentGroup.class),
+            ParserInput.newInstance(Type.REFERENCE, RandomBoundedDistribution.class),
+            ParserInput.newInstance(Type.REFERENCE, RandomDistribution.class),
+            ParserInput.newInstance(Type.REFERENCE, UnivariateDistribution.class),
+            ParserInput.newInstance(Type.REFERENCE, Need.class),
+            ParserInput.newInstance(Type.REFERENCE, FixedProduct.class),
+            ParserInput.newInstance(Type.REFERENCE, ProductGroup.class),
+            ParserInput.newInstance(Type.REFERENCE, ProductGroupAttribute.class),
 
-            ParserInput.newInstance(GamsType.OUTPUT, AdaptionRate.class),
-            ParserInput.newInstance(GamsType.OUTPUT, IRPactOutputData.class)
+            ParserInput.newInstance(Type.OUTPUT, AdaptionRate.class),
+            ParserInput.newInstance(Type.OUTPUT, IRPactOutputData.class)
     );
 
     @FieldDefinition

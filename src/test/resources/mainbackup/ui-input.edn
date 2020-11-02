@@ -1,8 +1,8 @@
 [
   {
-    :label "Allgemeine Einstellungen" 
+    :label "Allgemeine Einstellungen TEST"
     :icon "fa fa-map-marker" 
-    :description "Allgemeine Einstellungen fÃ¼r die Simulation." 
+    :description "Allgemeine Einstellungen für die Simulation." 
     :tags [["global" "seed"]]
   } 
   {

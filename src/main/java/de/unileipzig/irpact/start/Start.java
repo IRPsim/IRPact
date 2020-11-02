@@ -2,6 +2,7 @@ package de.unileipzig.irpact.start;
 
 import de.unileipzig.irpact.jadex.util.JadexUtil;
 import de.unileipzig.irpact.start.irptools.IRPtoolsStarter;
+import de.unileipzig.irpact.start.optact.OptActMain;
 import de.unileipzig.irpact.temp.jadex.IRPactStarter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,17 @@ public class Start {
         starter.start();
     }
 
-    public static void main(String[] args) {
+    @SuppressWarnings("ConstantConditions")
+    public static void main(String[] args) throws IOException {
+//        if(true) {
+//            UITest.main(args);
+//            return;
+//        }
+        if(true) {
+            OptActMain.main(args);
+            return;
+        }
+
         try {
             JadexUtil.redirectTerminateMessage();
             logger.trace("args: {}", Arrays.toString(args));
