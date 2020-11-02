@@ -18,19 +18,21 @@ public class RandomPoint2DDistribution extends NameableBase implements SpatialDi
     protected double lowerY;
     protected double upperY;
     protected Set<Point2D> used;
+    protected long seed;
     protected Random rnd;
 
-    public RandomPoint2DDistribution(double lowerX, double upperX, double lowerY, double upperY, Random rnd) {
-        this(lowerX, upperX, lowerY, upperY, new HashSet<>(), rnd);
+    public RandomPoint2DDistribution(double lowerX, double upperX, double lowerY, double upperY, long seed) {
+        this(lowerX, upperX, lowerY, upperY, new HashSet<>(), seed);
     }
 
-    public RandomPoint2DDistribution(double lowerX, double upperX, double lowerY, double upperY, Set<Point2D> used, Random rnd) {
+    public RandomPoint2DDistribution(double lowerX, double upperX, double lowerY, double upperY, Set<Point2D> used, long seed) {
         this.lowerX = lowerX;
         this.upperX = upperX;
         this.lowerY = lowerY;
         this.upperY = upperY;
         this.used = used;
-        this.rnd = rnd;
+        this.seed = seed;
+        rnd = new Random(seed);
     }
 
     public void setLowerX(double lowerX) {

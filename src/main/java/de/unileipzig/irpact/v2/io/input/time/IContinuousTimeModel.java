@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.v2.io.input.time;
 
 import de.unileipzig.irpact.v2.ForTests;
+import de.unileipzig.irpact.v2.jadex.time.ContinuousTimeModel;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -11,7 +12,7 @@ import de.unileipzig.irptools.defstructure.annotation.GamsParameter;
  */
 @Definition(
         edn = @Edn(
-                path = "TimeModel/Continuous"
+                path = {"TimeModel/Continuous"}
         )
 )
 public class IContinuousTimeModel implements ITimeModel {
@@ -31,12 +32,20 @@ public class IContinuousTimeModel implements ITimeModel {
             )
     )
     @ForTests
-    public long delay;
+    public long contDelay;
 
     public IContinuousTimeModel() {
     }
 
     public String getName() {
         return _name;
+    }
+
+    @Override
+    public ContinuousTimeModel createInstance() {
+        ContinuousTimeModel model = new ContinuousTimeModel();
+        model.setStoredDilation(dilation);
+        model.setStoredDelay(contDelay);
+        return model;
     }
 }

@@ -11,6 +11,7 @@ public class BasicProduct extends SimulationEntityBase implements Product {
 
     protected ProductGroup group;
     protected Set<ProductAttribute> attributes;
+    protected boolean fixed = false;
 
     public BasicProduct() {
     }
@@ -30,6 +31,10 @@ public class BasicProduct extends SimulationEntityBase implements Product {
         return group;
     }
 
+    public boolean addAttribute(ProductAttribute attribute) {
+        return attributes.add(attribute);
+    }
+
     public void setAttributes(Set<ProductAttribute> attributes) {
         this.attributes = attributes;
     }
@@ -37,5 +42,14 @@ public class BasicProduct extends SimulationEntityBase implements Product {
     @Override
     public Set<ProductAttribute> getAttributes() {
         return attributes;
+    }
+
+    public void setFixed(boolean fixed) {
+        this.fixed = fixed;
+    }
+
+    @Override
+    public boolean isFixed() {
+        return fixed;
     }
 }

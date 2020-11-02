@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.v2.io.input.distribution;
 
+import de.unileipzig.irpact.v2.commons.distribution.ConstantUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -9,15 +10,15 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = "Distribution/ConstantUnivariateDistribution"
+                path = {"Distribution/ConstantUnivariateDistribution"}
         )
 )
-public class IConstantUnivariateDistribution implements IUnivariateDistribution {
+public class IConstantUnivariateDistribution implements IUnivariateDoubleDistribution {
 
     public String _name;
 
     @FieldDefinition
-    public double value;
+    public double constDistValue;
 
     public IConstantUnivariateDistribution() {
     }
@@ -26,7 +27,12 @@ public class IConstantUnivariateDistribution implements IUnivariateDistribution 
         return _name;
     }
 
-    public double getValue() {
-        return value;
+    public double getConstDistValue() {
+        return constDistValue;
+    }
+
+    @Override
+    public ConstantUnivariateDoubleDistribution createInstance() {
+        return new ConstantUnivariateDoubleDistribution(getName(), getConstDistValue());
     }
 }

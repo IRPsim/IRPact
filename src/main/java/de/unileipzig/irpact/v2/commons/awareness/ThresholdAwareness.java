@@ -1,9 +1,7 @@
 package de.unileipzig.irpact.v2.commons.awareness;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Daniel Abitz
@@ -30,6 +28,20 @@ public class ThresholdAwareness<T> implements Awareness<T> {
     }
 
     @Override
+    public ThresholdAwareness<T> emptyCopy() {
+        ThresholdAwareness<T> copy = new ThresholdAwareness<>();
+        copy.setThreshold(getThreshold());
+        return copy;
+    }
+
+    @Override
+    public ThresholdAwareness<T> fullCopy() {
+        ThresholdAwareness<T> copy = emptyCopy();
+        copy.items.putAll(items);
+        return copy;
+    }
+
+    @Override
     public boolean isAwareOf(T item) {
         Double v = items.get(item);
         return v != null && v >= threshold;
@@ -39,6 +51,11 @@ public class ThresholdAwareness<T> implements Awareness<T> {
     public void update(T item, double influence) {
         double current = items.computeIfAbsent(item, _item -> 0.0);
         items.put(item, Math.max(current + influence, 0.0));
+    }
+
+    @Override
+    public void makeAware(T item) {
+        items.put(item, threshold);
     }
 
     @Override

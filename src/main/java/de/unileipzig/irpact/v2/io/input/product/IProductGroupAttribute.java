@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.v2.io.input.product;
 
-import de.unileipzig.irpact.v2.io.input.distribution.IUnivariateDistribution;
+import de.unileipzig.irpact.v2.io.input.distribution.IUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.EdnParameter;
@@ -11,7 +11,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = "Products/Attributes"
+                path = {"Products/GroupAttributes"}
         )
 )
 public class IProductGroupAttribute {
@@ -20,19 +20,24 @@ public class IProductGroupAttribute {
 
     @FieldDefinition(
             edn = @EdnParameter(
-                    path = "Products/Attribute-Distribution-Mapping"
+                    path = {"Products/Attribute-Distribution-Mapping"}
             )
     )
-    public IUnivariateDistribution distribution;
+    public IUnivariateDoubleDistribution pgAttrDistribution;
 
     public IProductGroupAttribute() {
+    }
+
+    public IProductGroupAttribute(String name, IUnivariateDoubleDistribution pgAttrDistribution) {
+        this._name = name;
+        this.pgAttrDistribution = pgAttrDistribution;
     }
 
     public String getName() {
         return _name;
     }
 
-    public IUnivariateDistribution getDistribution() {
-        return distribution;
+    public IUnivariateDoubleDistribution getPgAttrDistribution() {
+        return pgAttrDistribution;
     }
 }

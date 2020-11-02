@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.v2.io.input.distribution;
 
+import de.unileipzig.irpact.v2.commons.distribution.RandomBoundedDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -9,38 +10,50 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = "Distribution/RandomBoundedDistribution"
+                path = {"Distribution/RandomBoundedDistribution"}
         )
 )
-public class IRandomBoundedDistribution {
+public class IRandomBoundedDistribution implements IUnivariateDoubleDistribution {
 
     public String _name;
 
     @FieldDefinition
-    public double lowerBound;
+    public double rndDistLowerBound;
 
     @FieldDefinition
-    public double upperBound;
+    public double rndDistUpperBound;
 
     @FieldDefinition
-    public long seed;
+    public long rndDistSeed;
 
     public IRandomBoundedDistribution() {
+    }
+
+    public IRandomBoundedDistribution(String name, double rndDistLowerBound, double rndDistUpperBound, long rndDistSeed) {
+        this._name = name;
+        this.rndDistLowerBound = rndDistLowerBound;
+        this.rndDistUpperBound = rndDistUpperBound;
+        this.rndDistSeed = rndDistSeed;
     }
 
     public String geName() {
         return _name;
     }
 
-    public double getLowerBound() {
-        return lowerBound;
+    public double getRndDistLowerBound() {
+        return rndDistLowerBound;
     }
 
-    public double getUpperBound() {
-        return upperBound;
+    public double getRndDistUpperBound() {
+        return rndDistUpperBound;
     }
 
-    public long getSeed() {
-        return seed;
+    public long getRndDistSeed() {
+        return rndDistSeed;
+    }
+
+    @Override
+    public RandomBoundedDoubleDistribution createInstance() {
+        return new RandomBoundedDoubleDistribution(geName(), getRndDistLowerBound(), getRndDistUpperBound(), getRndDistSeed());
     }
 }

@@ -10,7 +10,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = "Products/Groups"
+                path = {"Products/Groups"}
         )
 )
 public class IProductGroup {
@@ -19,10 +19,10 @@ public class IProductGroup {
 
     @FieldDefinition(
             edn = @EdnParameter(
-                    path = "Products/Group-Attribute-Mapping"
+                    path = {"Products/Group-Attribute-Mapping"}
             )
     )
-    public IProductGroupAttribute[] attributes;
+    public IProductGroupAttribute[] pgAttributes;
 
     public IProductGroup() {
     }
@@ -31,7 +31,7 @@ public class IProductGroup {
         return _name;
     }
 
-    public IProductGroupAttribute[] getAttributes() {
-        return attributes;
+    public IProductGroupAttribute[] getPgAttributes() {
+        return pgAttributes;
     }
 }

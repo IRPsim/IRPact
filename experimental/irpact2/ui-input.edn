@@ -1,0 +1,152 @@
+[
+  {
+    :label "Agents" 
+    :sections [
+      {
+        :label "Consumer" 
+        :sections [
+          {
+            :label "Groups" 
+            :set "set_IConsumerAgentGroup" 
+            :tags [["IConsumerAgentGroup" "informationAuthority"]] 
+            :sections [
+              {
+                :label "Affinity" 
+                :set "set_IBasicAffinityMapping" 
+                :tags [["link" "IBasicAffinityMapping" "IBasicAffinitiesEntry" "entries"]] 
+                :sections [
+                  {
+                    :label "Entry" 
+                    :set "set_IBasicAffinitiesEntry" 
+                    :tags [["link" "IBasicAffinitiesEntry" "IConsumerAgentGroup" "from"] ["link" "IBasicAffinitiesEntry" "IConsumerAgentGroup" "to"] ["IBasicAffinitiesEntry" "value"]]
+                  }
+                ]
+              }
+            ]
+          } 
+          {
+            :label "Group-Attribute-Mapping" 
+            :set "set_IConsumerAgentGroup" 
+            :tags [["link" "IConsumerAgentGroup" "IConsumerAgentGroupAttribute" "attributes"]]
+          } 
+          {
+            :label "Attribute-Distribution-Mapping" 
+            :set "set_IConsumerAgentGroupAttribute" 
+            :tags [["link" "IConsumerAgentGroupAttribute" "IUnivariateDoubleDistribution" "distribution"]]
+          }
+        ]
+      }
+    ]
+  } 
+  {
+    :label "Products" 
+    :sections [
+      {
+        :label "FixedProduct-Awareness" 
+        :set "set_IFixedProductAwareness" 
+        :tags [["link" "IFixedProductAwareness" "IConsumerAgentGroup" "agentGroup"] ["link" "IFixedProductAwareness" "IFixedProduct" "fixedProduct"] ["link" "IFixedProductAwareness" "IUnivariateDoubleDistribution" "distribution"]]
+      } 
+      {
+        :label "FixedProduct" 
+        :set "set_IFixedProduct" 
+        :tags [["link" "IFixedProduct" "IProductGroup" "group"] ["link" "IFixedProduct" "IFixedProductAttribute" "attributes"]]
+      } 
+      {
+        :label "FixedAttributes" 
+        :set "set_IFixedProductAttribute" 
+        :tags [["link" "IFixedProductAttribute" "IProductGroupAttribute" "groupAttribute"] ["IFixedProductAttribute" "value"]]
+      } 
+      {
+        :label "Group-Attribute-Mapping" 
+        :set "set_IProductGroup" 
+        :tags [["link" "IProductGroup" "IProductGroupAttribute" "attributes"]]
+      } 
+      {
+        :label "Attribute-Distribution-Mapping" 
+        :set "set_IProductGroupAttribute" 
+        :tags [["link" "IProductGroupAttribute" "IUnivariateDoubleDistribution" "distribution"]]
+      }
+    ]
+  } 
+  {
+    :label "Distribution" 
+    :sections [
+      {
+        :label "BooleanDistribution" 
+        :set "set_IBooleanDistribution" 
+        :tags [["IBooleanDistribution" "seed"]]
+      } 
+      {
+        :label "ConstantUnivariateDistribution" 
+        :set "set_IConstantUnivariateDistribution" 
+        :tags [["IConstantUnivariateDistribution" "value"]]
+      } 
+      {
+        :label "FiniteMassPointsDiscreteDistribution" 
+        :set "set_IFiniteMassPointsDiscreteDistribution" 
+        :tags [["IFiniteMassPointsDiscreteDistribution" "seed"] ["link" "IFiniteMassPointsDiscreteDistribution" "IMassPoint" "massPoints"]]
+      } 
+      {
+        :label "Util" 
+        :sections [
+          {
+            :label "MassPoints" 
+            :set "set_IMassPoint" 
+            :tags [["IMassPoint" "value"] ["IMassPoint" "weight"]]
+          }
+        ]
+      } 
+      {
+        :label "RandomBoundedDistribution" 
+        :set "set_IRandomBoundedDistribution" 
+        :tags [["IRandomBoundedDistribution" "lowerBound"] ["IRandomBoundedDistribution" "upperBound"] ["IRandomBoundedDistribution" "seed"]]
+      }
+    ]
+  } 
+  {
+    :label "Network" 
+    :sections [
+      {
+        :label "HeterogeneousSmallWorld" 
+        :set "set_IFastHeterogeneousSmallWorldTopology" 
+        :tags [["IFastHeterogeneousSmallWorldTopology" "edgeType"] ["IFastHeterogeneousSmallWorldTopology" "isSelfReferential"] ["IFastHeterogeneousSmallWorldTopology" "initialWeight"] ["IFastHeterogeneousSmallWorldTopology" "seed"] ["link" "IFastHeterogeneousSmallWorldTopology" "IFastHeterogeneousSmallWorldTopologyEntry" "entries"]] 
+        :sections [
+          {
+            :label "Entry" 
+            :set "set_IFastHeterogeneousSmallWorldTopologyEntry" 
+            :tags [["link" "IFastHeterogeneousSmallWorldTopologyEntry" "IConsumerAgentGroup" "group"] ["IFastHeterogeneousSmallWorldTopologyEntry" "beta"] ["IFastHeterogeneousSmallWorldTopologyEntry" "z"]]
+          }
+        ]
+      }
+    ]
+  } 
+  {
+    :label "SpatialModel" 
+    :sections [
+      {
+        :label "Space2D" 
+        :set "set_ISpace2D" 
+        :tags [["ISpace2D" "metricID"]]
+      }
+    ]
+  } 
+  {
+    :label "TimeModel" 
+    :sections [
+      {
+        :label "Continuous" 
+        :set "set_IContinuousTimeModel" 
+        :tags [["IContinuousTimeModel" "dilation"] ["IContinuousTimeModel" "delay"]]
+      } 
+      {
+        :label "Discrete" 
+        :set "set_IDiscreteTimeModel" 
+        :tags [["IDiscreteTimeModel" "delta"] ["IDiscreteTimeModel" "timePerTickInMs"] ["IDiscreteTimeModel" "delay"]]
+      }
+    ]
+  } 
+  {
+    :label "Allgemeine Einstellungen" 
+    :tags [["global" "debugLevel"]]
+  }
+]

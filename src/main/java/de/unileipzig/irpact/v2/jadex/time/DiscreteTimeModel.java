@@ -14,8 +14,35 @@ import java.time.ZonedDateTime;
 public class DiscreteTimeModel extends AbstractJadexTimeModel {
 
     protected final TickConverter converter = new TickConverter();
+    protected long storedDelta;
+    protected long storedTimePerTickInMs;
+    protected long storedDelay;
 
     public DiscreteTimeModel() {
+    }
+
+    public void setStoredDelta(long storedDelta) {
+        this.storedDelta = storedDelta;
+    }
+
+    public long getStoredDelta() {
+        return storedDelta;
+    }
+
+    public void setStoredTimePerTickInMs(long storedTimePerTickInMs) {
+        this.storedTimePerTickInMs = storedTimePerTickInMs;
+    }
+
+    public long getStoredTimePerTickInMs() {
+        return storedTimePerTickInMs;
+    }
+
+    public void setStoredDelay(long storedDelay) {
+        this.storedDelay = storedDelay;
+    }
+
+    public long getStoredDelay() {
+        return storedDelay;
     }
 
     public void setStartYear(int startYear, long timePerTickInMs) {

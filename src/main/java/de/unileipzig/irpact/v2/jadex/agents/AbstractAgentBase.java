@@ -15,6 +15,7 @@ import java.util.Map;
 public abstract class AbstractAgentBase {
 
     protected InitializationData data;
+    protected String name;
 
     public AbstractAgentBase() {
     }
@@ -27,8 +28,8 @@ public abstract class AbstractAgentBase {
         return data;
     }
 
-    protected String getName() {
-        return data == null ? null : data.getName();
+    public String getName() {
+        return name;
     }
 
     protected abstract Logger log();

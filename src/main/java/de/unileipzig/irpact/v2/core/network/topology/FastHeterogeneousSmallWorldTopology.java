@@ -22,8 +22,8 @@ public class FastHeterogeneousSmallWorldTopology extends FastHeterogeneousRegula
             Map<ConsumerAgentGroup, Integer> consumerGroupZMapping,
             boolean isSelfReferential,
             double initialWeight,
-            Random rnd) {
-        super(edgeType, consumerGroupZMapping, isSelfReferential, initialWeight, rnd);
+            long seed) {
+        super(edgeType, consumerGroupZMapping, isSelfReferential, initialWeight, seed);
         this.consumerGroupBetaMapping = consumerGroupBetaMapping;
     }
 

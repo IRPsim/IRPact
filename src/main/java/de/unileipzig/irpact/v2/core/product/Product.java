@@ -12,4 +12,6 @@ public interface Product extends SimulationEntity {
     ProductGroup getGroup();
 
     Set<ProductAttribute> getAttributes();
+
+    boolean isFixed();
 }

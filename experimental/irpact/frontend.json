@@ -1,0 +1,1299 @@
+{
+  "definitions" : {
+    "scalars" : {
+      "sca_global_debugLevel" : {
+        "tags" : [ "input", "debugLevel", "global" ],
+        "data-type" : "integer",
+        "index" : 61,
+        "default" : 0,
+        "name" : "sca_global_debugLevel",
+        "type-details" : {
+          "module-raw" : "debugLevel",
+          "type" : "global",
+          "module" : "debugLevel",
+          "type-raw" : "global"
+        },
+        "type" : "scalar",
+        "identifier" : "debugLevel"
+      }
+    },
+    "sets" : {
+      "set_IMassPoint" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 23,
+        "default" : [ ],
+        "name" : "set_IMassPoint",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IMassPoint",
+        "supersets" : [ ],
+        "attributes" : [ {
+          "tags" : [ "input", "mpValue", "IMassPoint" ],
+          "data-type" : "float",
+          "index" : 24,
+          "default" : 0.0,
+          "name" : "par_IMassPoint_mpValue",
+          "type-details" : {
+            "module-raw" : "mpValue",
+            "type" : "IMassPoint",
+            "module" : "mpValue",
+            "type-raw" : "IMassPoint"
+          },
+          "type" : "parameter",
+          "identifier" : "mpValue",
+          "dependencies" : [ "set_IMassPoint" ]
+        }, {
+          "tags" : [ "input", "mpWeight", "IMassPoint" ],
+          "data-type" : "float",
+          "index" : 25,
+          "default" : 0.0,
+          "name" : "par_IMassPoint_mpWeight",
+          "type-details" : {
+            "module-raw" : "mpWeight",
+            "type" : "IMassPoint",
+            "module" : "mpWeight",
+            "type-raw" : "IMassPoint"
+          },
+          "type" : "parameter",
+          "identifier" : "mpWeight",
+          "dependencies" : [ "set_IMassPoint" ]
+        } ],
+        "dependencies" : [ ]
+      },
+      "set_IConsumerAgentGroupAttribute" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 10,
+        "default" : [ ],
+        "name" : "set_IConsumerAgentGroupAttribute",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IConsumerAgentGroupAttribute",
+        "supersets" : [ ],
+        "attributes" : [ ],
+        "dependencies" : [ ]
+      },
+      "set_IFastHeterogeneousSmallWorldTopologyEntry" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 37,
+        "default" : [ ],
+        "name" : "set_IFastHeterogeneousSmallWorldTopologyEntry",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IFastHeterogeneousSmallWorldTopologyEntry",
+        "supersets" : [ ],
+        "attributes" : [ {
+          "tags" : [ "input", "beta", "IFastHeterogeneousSmallWorldTopologyEntry" ],
+          "data-type" : "float",
+          "index" : 39,
+          "default" : 0.0,
+          "name" : "par_IFastHeterogeneousSmallWorldTopologyEntry_beta",
+          "type-details" : {
+            "module-raw" : "beta",
+            "type" : "IFastHeterogeneousSmallWorldTopologyEntry",
+            "module" : "beta",
+            "type-raw" : "IFastHeterogeneousSmallWorldTopologyEntry"
+          },
+          "type" : "parameter",
+          "identifier" : "beta",
+          "dependencies" : [ "set_IFastHeterogeneousSmallWorldTopologyEntry" ]
+        }, {
+          "tags" : [ "input", "z", "IFastHeterogeneousSmallWorldTopologyEntry" ],
+          "data-type" : "integer",
+          "index" : 40,
+          "default" : 0,
+          "name" : "par_IFastHeterogeneousSmallWorldTopologyEntry_z",
+          "type-details" : {
+            "module-raw" : "z",
+            "type" : "IFastHeterogeneousSmallWorldTopologyEntry",
+            "module" : "z",
+            "type-raw" : "IFastHeterogeneousSmallWorldTopologyEntry"
+          },
+          "type" : "parameter",
+          "identifier" : "z",
+          "dependencies" : [ "set_IFastHeterogeneousSmallWorldTopologyEntry" ]
+        } ],
+        "dependencies" : [ ]
+      },
+      "set_IDiscreteTimeModel" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 56,
+        "default" : [ ],
+        "name" : "set_IDiscreteTimeModel",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IDiscreteTimeModel",
+        "supersets" : [ "set_ITimeModel" ],
+        "attributes" : [ {
+          "tags" : [ "input", "delta", "IDiscreteTimeModel" ],
+          "data-type" : "integer",
+          "index" : 57,
+          "default" : 1,
+          "name" : "par_IDiscreteTimeModel_delta",
+          "type-details" : {
+            "module-raw" : "delta",
+            "type" : "IDiscreteTimeModel",
+            "module" : "delta",
+            "type-raw" : "IDiscreteTimeModel"
+          },
+          "type" : "parameter",
+          "identifier" : "delta",
+          "dependencies" : [ "set_IDiscreteTimeModel" ]
+        }, {
+          "tags" : [ "input", "timePerTickInMs", "IDiscreteTimeModel" ],
+          "data-type" : "integer",
+          "index" : 58,
+          "default" : 900000,
+          "name" : "par_IDiscreteTimeModel_timePerTickInMs",
+          "type-details" : {
+            "module-raw" : "timePerTickInMs",
+            "type" : "IDiscreteTimeModel",
+            "module" : "timePerTickInMs",
+            "type-raw" : "IDiscreteTimeModel"
+          },
+          "type" : "parameter",
+          "identifier" : "timePerTickInMs",
+          "dependencies" : [ "set_IDiscreteTimeModel" ]
+        }, {
+          "tags" : [ "input", "discDelay", "IDiscreteTimeModel" ],
+          "data-type" : "integer",
+          "index" : 59,
+          "default" : 86400000,
+          "name" : "par_IDiscreteTimeModel_discDelay",
+          "type-details" : {
+            "module-raw" : "discDelay",
+            "type" : "IDiscreteTimeModel",
+            "module" : "discDelay",
+            "type-raw" : "IDiscreteTimeModel"
+          },
+          "type" : "parameter",
+          "identifier" : "discDelay",
+          "dependencies" : [ "set_IDiscreteTimeModel" ]
+        } ],
+        "dependencies" : [ "set_ITimeModel" ]
+      },
+      "set_IFixedProductAttribute" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 44,
+        "default" : [ ],
+        "name" : "set_IFixedProductAttribute",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IFixedProductAttribute",
+        "supersets" : [ ],
+        "attributes" : [ {
+          "tags" : [ "input", "fpaValue", "IFixedProductAttribute" ],
+          "data-type" : "float",
+          "index" : 46,
+          "default" : 0.0,
+          "name" : "par_IFixedProductAttribute_fpaValue",
+          "type-details" : {
+            "module-raw" : "fpaValue",
+            "type" : "IFixedProductAttribute",
+            "module" : "fpaValue",
+            "type-raw" : "IFixedProductAttribute"
+          },
+          "type" : "parameter",
+          "identifier" : "fpaValue",
+          "dependencies" : [ "set_IFixedProductAttribute" ]
+        } ],
+        "dependencies" : [ ]
+      },
+      "set_IBooleanDistribution" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 16,
+        "default" : [ ],
+        "name" : "set_IBooleanDistribution",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IBooleanDistribution",
+        "supersets" : [ "set_IUnivariateDoubleDistribution" ],
+        "attributes" : [ {
+          "tags" : [ "input", "boolDistSeed", "IBooleanDistribution" ],
+          "data-type" : "integer",
+          "index" : 17,
+          "default" : 0,
+          "name" : "par_IBooleanDistribution_boolDistSeed",
+          "type-details" : {
+            "module-raw" : "boolDistSeed",
+            "type" : "IBooleanDistribution",
+            "module" : "boolDistSeed",
+            "type-raw" : "IBooleanDistribution"
+          },
+          "type" : "parameter",
+          "identifier" : "boolDistSeed",
+          "dependencies" : [ "set_IBooleanDistribution" ]
+        } ],
+        "dependencies" : [ "set_IUnivariateDoubleDistribution" ]
+      },
+      "set_IProductGroupAttribute" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 49,
+        "default" : [ ],
+        "name" : "set_IProductGroupAttribute",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IProductGroupAttribute",
+        "supersets" : [ ],
+        "attributes" : [ ],
+        "dependencies" : [ ]
+      },
+      "set_IFixedProduct" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 41,
+        "default" : [ ],
+        "name" : "set_IFixedProduct",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IFixedProduct",
+        "supersets" : [ ],
+        "attributes" : [ ],
+        "dependencies" : [ ]
+      },
+      "set_IFiniteMassPointsDiscreteDistribution" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 20,
+        "default" : [ ],
+        "name" : "set_IFiniteMassPointsDiscreteDistribution",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IFiniteMassPointsDiscreteDistribution",
+        "supersets" : [ "set_IUnivariateDoubleDistribution" ],
+        "attributes" : [ {
+          "tags" : [ "input", "fmpSeed", "IFiniteMassPointsDiscreteDistribution" ],
+          "data-type" : "integer",
+          "index" : 21,
+          "default" : 0,
+          "name" : "par_IFiniteMassPointsDiscreteDistribution_fmpSeed",
+          "type-details" : {
+            "module-raw" : "fmpSeed",
+            "type" : "IFiniteMassPointsDiscreteDistribution",
+            "module" : "fmpSeed",
+            "type-raw" : "IFiniteMassPointsDiscreteDistribution"
+          },
+          "type" : "parameter",
+          "identifier" : "fmpSeed",
+          "dependencies" : [ "set_IFiniteMassPointsDiscreteDistribution" ]
+        } ],
+        "dependencies" : [ "set_IUnivariateDoubleDistribution" ]
+      },
+      "set_IBasicAffinitiesEntry" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 0,
+        "default" : [ ],
+        "name" : "set_IBasicAffinitiesEntry",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IBasicAffinitiesEntry",
+        "supersets" : [ ],
+        "attributes" : [ {
+          "tags" : [ "input", "affinityValue", "IBasicAffinitiesEntry" ],
+          "data-type" : "float",
+          "index" : 3,
+          "default" : 0.0,
+          "name" : "par_IBasicAffinitiesEntry_affinityValue",
+          "type-details" : {
+            "module-raw" : "affinityValue",
+            "type" : "IBasicAffinitiesEntry",
+            "module" : "affinityValue",
+            "type-raw" : "IBasicAffinitiesEntry"
+          },
+          "type" : "parameter",
+          "identifier" : "affinityValue",
+          "dependencies" : [ "set_IBasicAffinitiesEntry" ]
+        } ],
+        "dependencies" : [ ]
+      },
+      "set_IUnivariateDoubleDistribution" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 30,
+        "default" : [ ],
+        "name" : "set_IUnivariateDoubleDistribution",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ "set_IBooleanDistribution", "set_IFiniteMassPointsDiscreteDistribution", "set_IRandomBoundedDistribution", "set_IConstantUnivariateDistribution" ],
+        "hidden" : true,
+        "identifier" : "IUnivariateDoubleDistribution",
+        "supersets" : [ ],
+        "attributes" : [ ],
+        "dependencies" : [ ]
+      },
+      "set_ITimeModel" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 60,
+        "default" : [ ],
+        "name" : "set_ITimeModel",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ "set_IDiscreteTimeModel", "set_IContinuousTimeModel" ],
+        "hidden" : true,
+        "identifier" : "ITimeModel",
+        "supersets" : [ ],
+        "attributes" : [ ],
+        "dependencies" : [ ]
+      },
+      "set_IFixedProductAwareness" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 12,
+        "default" : [ ],
+        "name" : "set_IFixedProductAwareness",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IFixedProductAwareness",
+        "supersets" : [ ],
+        "attributes" : [ ],
+        "dependencies" : [ ]
+      },
+      "set_IBasicAffinityMapping" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 4,
+        "default" : [ ],
+        "name" : "set_IBasicAffinityMapping",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IBasicAffinityMapping",
+        "supersets" : [ ],
+        "attributes" : [ ],
+        "dependencies" : [ ]
+      },
+      "set_IProductGroup" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 47,
+        "default" : [ ],
+        "name" : "set_IProductGroup",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IProductGroup",
+        "supersets" : [ ],
+        "attributes" : [ ],
+        "dependencies" : [ ]
+      },
+      "set_OConsumerAgentGroup" : {
+        "tags" : [ "output", "output" ],
+        "data-type" : "string",
+        "index" : 0,
+        "default" : [ ],
+        "name" : "set_OConsumerAgentGroup",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "OConsumerAgentGroup",
+        "supersets" : [ ],
+        "attributes" : [ {
+          "tags" : [ "output", "adaptionRate", "OConsumerAgentGroup" ],
+          "data-type" : "float",
+          "index" : 1,
+          "default" : 0.0,
+          "name" : "par_out_OConsumerAgentGroup_adaptionRate",
+          "type-details" : {
+            "module-raw" : "adaptionRate",
+            "type" : "OConsumerAgentGroup",
+            "module" : "adaptionRate",
+            "type-raw" : "OConsumerAgentGroup"
+          },
+          "type" : "parameter",
+          "identifier" : "adaptionRate",
+          "dependencies" : [ "set_OConsumerAgentGroup" ]
+        } ],
+        "dependencies" : [ ]
+      },
+      "set_IRandomBoundedDistribution" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 26,
+        "default" : [ ],
+        "name" : "set_IRandomBoundedDistribution",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IRandomBoundedDistribution",
+        "supersets" : [ "set_IUnivariateDoubleDistribution" ],
+        "attributes" : [ {
+          "tags" : [ "input", "rndDistLowerBound", "IRandomBoundedDistribution" ],
+          "data-type" : "float",
+          "index" : 27,
+          "default" : 0.0,
+          "name" : "par_IRandomBoundedDistribution_rndDistLowerBound",
+          "type-details" : {
+            "module-raw" : "rndDistLowerBound",
+            "type" : "IRandomBoundedDistribution",
+            "module" : "rndDistLowerBound",
+            "type-raw" : "IRandomBoundedDistribution"
+          },
+          "type" : "parameter",
+          "identifier" : "rndDistLowerBound",
+          "dependencies" : [ "set_IRandomBoundedDistribution" ]
+        }, {
+          "tags" : [ "input", "rndDistUpperBound", "IRandomBoundedDistribution" ],
+          "data-type" : "float",
+          "index" : 28,
+          "default" : 0.0,
+          "name" : "par_IRandomBoundedDistribution_rndDistUpperBound",
+          "type-details" : {
+            "module-raw" : "rndDistUpperBound",
+            "type" : "IRandomBoundedDistribution",
+            "module" : "rndDistUpperBound",
+            "type-raw" : "IRandomBoundedDistribution"
+          },
+          "type" : "parameter",
+          "identifier" : "rndDistUpperBound",
+          "dependencies" : [ "set_IRandomBoundedDistribution" ]
+        }, {
+          "tags" : [ "input", "rndDistSeed", "IRandomBoundedDistribution" ],
+          "data-type" : "integer",
+          "index" : 29,
+          "default" : 0,
+          "name" : "par_IRandomBoundedDistribution_rndDistSeed",
+          "type-details" : {
+            "module-raw" : "rndDistSeed",
+            "type" : "IRandomBoundedDistribution",
+            "module" : "rndDistSeed",
+            "type-raw" : "IRandomBoundedDistribution"
+          },
+          "type" : "parameter",
+          "identifier" : "rndDistSeed",
+          "dependencies" : [ "set_IRandomBoundedDistribution" ]
+        } ],
+        "dependencies" : [ "set_IUnivariateDoubleDistribution" ]
+      },
+      "set_IConstantUnivariateDistribution" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 18,
+        "default" : [ ],
+        "name" : "set_IConstantUnivariateDistribution",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IConstantUnivariateDistribution",
+        "supersets" : [ "set_IUnivariateDoubleDistribution" ],
+        "attributes" : [ {
+          "tags" : [ "input", "constDistValue", "IConstantUnivariateDistribution" ],
+          "data-type" : "float",
+          "index" : 19,
+          "default" : 0.0,
+          "name" : "par_IConstantUnivariateDistribution_constDistValue",
+          "type-details" : {
+            "module-raw" : "constDistValue",
+            "type" : "IConstantUnivariateDistribution",
+            "module" : "constDistValue",
+            "type-raw" : "IConstantUnivariateDistribution"
+          },
+          "type" : "parameter",
+          "identifier" : "constDistValue",
+          "dependencies" : [ "set_IConstantUnivariateDistribution" ]
+        } ],
+        "dependencies" : [ "set_IUnivariateDoubleDistribution" ]
+      },
+      "set_IFastHeterogeneousSmallWorldTopology" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 31,
+        "default" : [ ],
+        "name" : "set_IFastHeterogeneousSmallWorldTopology",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IFastHeterogeneousSmallWorldTopology",
+        "supersets" : [ ],
+        "attributes" : [ {
+          "tags" : [ "input", "edgeType", "IFastHeterogeneousSmallWorldTopology" ],
+          "data-type" : "integer",
+          "index" : 32,
+          "default" : 0,
+          "name" : "par_IFastHeterogeneousSmallWorldTopology_edgeType",
+          "type-details" : {
+            "module-raw" : "edgeType",
+            "type" : "IFastHeterogeneousSmallWorldTopology",
+            "module" : "edgeType",
+            "type-raw" : "IFastHeterogeneousSmallWorldTopology"
+          },
+          "type" : "parameter",
+          "identifier" : "edgeType",
+          "dependencies" : [ "set_IFastHeterogeneousSmallWorldTopology" ]
+        }, {
+          "tags" : [ "input", "isSelfReferential", "IFastHeterogeneousSmallWorldTopology" ],
+          "data-type" : "boolean",
+          "index" : 33,
+          "default" : 0,
+          "name" : "par_IFastHeterogeneousSmallWorldTopology_isSelfReferential",
+          "type-details" : {
+            "module-raw" : "isSelfReferential",
+            "type" : "IFastHeterogeneousSmallWorldTopology",
+            "module" : "isSelfReferential",
+            "type-raw" : "IFastHeterogeneousSmallWorldTopology"
+          },
+          "type" : "parameter",
+          "identifier" : "isSelfReferential",
+          "dependencies" : [ "set_IFastHeterogeneousSmallWorldTopology" ]
+        }, {
+          "tags" : [ "input", "initialWeight", "IFastHeterogeneousSmallWorldTopology" ],
+          "data-type" : "float",
+          "index" : 34,
+          "default" : 0.0,
+          "name" : "par_IFastHeterogeneousSmallWorldTopology_initialWeight",
+          "type-details" : {
+            "module-raw" : "initialWeight",
+            "type" : "IFastHeterogeneousSmallWorldTopology",
+            "module" : "initialWeight",
+            "type-raw" : "IFastHeterogeneousSmallWorldTopology"
+          },
+          "type" : "parameter",
+          "identifier" : "initialWeight",
+          "dependencies" : [ "set_IFastHeterogeneousSmallWorldTopology" ]
+        }, {
+          "tags" : [ "input", "topoSeed", "IFastHeterogeneousSmallWorldTopology" ],
+          "data-type" : "integer",
+          "index" : 35,
+          "default" : 0,
+          "name" : "par_IFastHeterogeneousSmallWorldTopology_topoSeed",
+          "type-details" : {
+            "module-raw" : "topoSeed",
+            "type" : "IFastHeterogeneousSmallWorldTopology",
+            "module" : "topoSeed",
+            "type-raw" : "IFastHeterogeneousSmallWorldTopology"
+          },
+          "type" : "parameter",
+          "identifier" : "topoSeed",
+          "dependencies" : [ "set_IFastHeterogeneousSmallWorldTopology" ]
+        } ],
+        "dependencies" : [ ]
+      },
+      "set_IConsumerAgentGroup" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 6,
+        "default" : [ ],
+        "name" : "set_IConsumerAgentGroup",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IConsumerAgentGroup",
+        "supersets" : [ ],
+        "attributes" : [ {
+          "tags" : [ "input", "informationAuthority", "IConsumerAgentGroup" ],
+          "data-type" : "float",
+          "index" : 8,
+          "default" : 0.0,
+          "name" : "par_IConsumerAgentGroup_informationAuthority",
+          "type-details" : {
+            "module-raw" : "informationAuthority",
+            "type" : "IConsumerAgentGroup",
+            "module" : "informationAuthority",
+            "type-raw" : "IConsumerAgentGroup"
+          },
+          "type" : "parameter",
+          "identifier" : "informationAuthority",
+          "dependencies" : [ "set_IConsumerAgentGroup" ]
+        }, {
+          "tags" : [ "input", "numberOfAgents", "IConsumerAgentGroup" ],
+          "data-type" : "integer",
+          "index" : 9,
+          "default" : 0,
+          "name" : "par_IConsumerAgentGroup_numberOfAgents",
+          "type-details" : {
+            "module-raw" : "numberOfAgents",
+            "type" : "IConsumerAgentGroup",
+            "module" : "numberOfAgents",
+            "type-raw" : "IConsumerAgentGroup"
+          },
+          "type" : "parameter",
+          "identifier" : "numberOfAgents",
+          "dependencies" : [ "set_IConsumerAgentGroup" ]
+        } ],
+        "dependencies" : [ ]
+      },
+      "set_ISpace2D" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 51,
+        "default" : [ ],
+        "name" : "set_ISpace2D",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "ISpace2D",
+        "supersets" : [ ],
+        "attributes" : [ {
+          "tags" : [ "input", "metricID", "ISpace2D" ],
+          "data-type" : "integer",
+          "index" : 52,
+          "default" : 0,
+          "name" : "par_ISpace2D_metricID",
+          "type-details" : {
+            "module-raw" : "metricID",
+            "type" : "ISpace2D",
+            "module" : "metricID",
+            "type-raw" : "ISpace2D"
+          },
+          "type" : "parameter",
+          "identifier" : "metricID",
+          "dependencies" : [ "set_ISpace2D" ]
+        } ],
+        "dependencies" : [ ]
+      },
+      "set_IContinuousTimeModel" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 53,
+        "default" : [ ],
+        "name" : "set_IContinuousTimeModel",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IContinuousTimeModel",
+        "supersets" : [ "set_ITimeModel" ],
+        "attributes" : [ {
+          "tags" : [ "input", "dilation", "IContinuousTimeModel" ],
+          "data-type" : "float",
+          "index" : 54,
+          "default" : 86400.0,
+          "name" : "par_IContinuousTimeModel_dilation",
+          "type-details" : {
+            "module-raw" : "dilation",
+            "type" : "IContinuousTimeModel",
+            "module" : "dilation",
+            "type-raw" : "IContinuousTimeModel"
+          },
+          "type" : "parameter",
+          "identifier" : "dilation",
+          "dependencies" : [ "set_IContinuousTimeModel" ]
+        }, {
+          "tags" : [ "input", "contDelay", "IContinuousTimeModel" ],
+          "data-type" : "integer",
+          "index" : 55,
+          "default" : 86400000,
+          "name" : "par_IContinuousTimeModel_contDelay",
+          "type-details" : {
+            "module-raw" : "contDelay",
+            "type" : "IContinuousTimeModel",
+            "module" : "contDelay",
+            "type-raw" : "IContinuousTimeModel"
+          },
+          "type" : "parameter",
+          "identifier" : "contDelay",
+          "dependencies" : [ "set_IContinuousTimeModel" ]
+        } ],
+        "dependencies" : [ "set_ITimeModel" ]
+      }
+    },
+    "tables" : {
+      "par_link_IFiniteMassPointsDiscreteDistribution_IMassPoint_massPoints" : {
+        "tags" : [ "input", "IFiniteMassPointsDiscreteDistribution", "link", "IMassPoint", "massPoints" ],
+        "data-type" : "boolean",
+        "index" : 22,
+        "default" : 0,
+        "name" : "par_link_IFiniteMassPointsDiscreteDistribution_IMassPoint_massPoints",
+        "type-details" : {
+          "module-raw" : "IFiniteMassPointsDiscreteDistribution",
+          "type" : "link",
+          "module" : "IFiniteMassPointsDiscreteDistribution",
+          "reference" : "IMassPoint",
+          "reference-raw" : "IMassPoint",
+          "type-raw" : "link",
+          "description-raw" : [ "massPoints" ]
+        },
+        "type" : "parameter",
+        "identifier" : "massPoints",
+        "dependencies" : [ "set_IFiniteMassPointsDiscreteDistribution", "set_IMassPoint" ]
+      },
+      "par_link_IConsumerAgentGroupAttribute_IUnivariateDoubleDistribution_cagAttrDistribution" : {
+        "tags" : [ "input", "IConsumerAgentGroupAttribute", "link", "IUnivariateDoubleDistribution", "cagAttrDistribution" ],
+        "data-type" : "boolean",
+        "index" : 11,
+        "default" : 0,
+        "name" : "par_link_IConsumerAgentGroupAttribute_IUnivariateDoubleDistribution_cagAttrDistribution",
+        "type-details" : {
+          "module-raw" : "IConsumerAgentGroupAttribute",
+          "type" : "link",
+          "module" : "IConsumerAgentGroupAttribute",
+          "reference" : "IUnivariateDoubleDistribution",
+          "reference-raw" : "IUnivariateDoubleDistribution",
+          "type-raw" : "link",
+          "description-raw" : [ "cagAttrDistribution" ]
+        },
+        "type" : "parameter",
+        "identifier" : "cagAttrDistribution",
+        "dependencies" : [ "set_IConsumerAgentGroupAttribute", "set_IUnivariateDoubleDistribution" ]
+      },
+      "par_link_IFastHeterogeneousSmallWorldTopology_IFastHeterogeneousSmallWorldTopologyEntry_topoEntries" : {
+        "tags" : [ "input", "IFastHeterogeneousSmallWorldTopology", "link", "IFastHeterogeneousSmallWorldTopologyEntry", "topoEntries" ],
+        "data-type" : "boolean",
+        "index" : 36,
+        "default" : 0,
+        "name" : "par_link_IFastHeterogeneousSmallWorldTopology_IFastHeterogeneousSmallWorldTopologyEntry_topoEntries",
+        "type-details" : {
+          "module-raw" : "IFastHeterogeneousSmallWorldTopology",
+          "type" : "link",
+          "module" : "IFastHeterogeneousSmallWorldTopology",
+          "reference" : "IFastHeterogeneousSmallWorldTopologyEntry",
+          "reference-raw" : "IFastHeterogeneousSmallWorldTopologyEntry",
+          "type-raw" : "link",
+          "description-raw" : [ "topoEntries" ]
+        },
+        "type" : "parameter",
+        "identifier" : "topoEntries",
+        "dependencies" : [ "set_IFastHeterogeneousSmallWorldTopology", "set_IFastHeterogeneousSmallWorldTopologyEntry" ]
+      },
+      "par_link_IFixedProductAttribute_IProductGroupAttribute_fpaGroupAttribute" : {
+        "tags" : [ "input", "IFixedProductAttribute", "link", "IProductGroupAttribute", "fpaGroupAttribute" ],
+        "data-type" : "boolean",
+        "index" : 45,
+        "default" : 0,
+        "name" : "par_link_IFixedProductAttribute_IProductGroupAttribute_fpaGroupAttribute",
+        "type-details" : {
+          "module-raw" : "IFixedProductAttribute",
+          "type" : "link",
+          "module" : "IFixedProductAttribute",
+          "reference" : "IProductGroupAttribute",
+          "reference-raw" : "IProductGroupAttribute",
+          "type-raw" : "link",
+          "description-raw" : [ "fpaGroupAttribute" ]
+        },
+        "type" : "parameter",
+        "identifier" : "fpaGroupAttribute",
+        "dependencies" : [ "set_IFixedProductAttribute", "set_IProductGroupAttribute" ]
+      },
+      "par_link_IFixedProductAwareness_IConsumerAgentGroup_awarenessAgentGroup" : {
+        "tags" : [ "input", "IFixedProductAwareness", "link", "IConsumerAgentGroup", "awarenessAgentGroup" ],
+        "data-type" : "boolean",
+        "index" : 13,
+        "default" : 0,
+        "name" : "par_link_IFixedProductAwareness_IConsumerAgentGroup_awarenessAgentGroup",
+        "type-details" : {
+          "module-raw" : "IFixedProductAwareness",
+          "type" : "link",
+          "module" : "IFixedProductAwareness",
+          "reference" : "IConsumerAgentGroup",
+          "reference-raw" : "IConsumerAgentGroup",
+          "type-raw" : "link",
+          "description-raw" : [ "awarenessAgentGroup" ]
+        },
+        "type" : "parameter",
+        "identifier" : "awarenessAgentGroup",
+        "dependencies" : [ "set_IFixedProductAwareness", "set_IConsumerAgentGroup" ]
+      },
+      "par_link_IFixedProductAwareness_IUnivariateDoubleDistribution_awarenessDistribution" : {
+        "tags" : [ "input", "IFixedProductAwareness", "link", "IUnivariateDoubleDistribution", "awarenessDistribution" ],
+        "data-type" : "boolean",
+        "index" : 15,
+        "default" : 0,
+        "name" : "par_link_IFixedProductAwareness_IUnivariateDoubleDistribution_awarenessDistribution",
+        "type-details" : {
+          "module-raw" : "IFixedProductAwareness",
+          "type" : "link",
+          "module" : "IFixedProductAwareness",
+          "reference" : "IUnivariateDoubleDistribution",
+          "reference-raw" : "IUnivariateDoubleDistribution",
+          "type-raw" : "link",
+          "description-raw" : [ "awarenessDistribution" ]
+        },
+        "type" : "parameter",
+        "identifier" : "awarenessDistribution",
+        "dependencies" : [ "set_IFixedProductAwareness", "set_IUnivariateDoubleDistribution" ]
+      },
+      "par_link_IFixedProduct_IFixedProductAttribute_fpAttributes" : {
+        "tags" : [ "input", "IFixedProduct", "link", "IFixedProductAttribute", "fpAttributes" ],
+        "data-type" : "boolean",
+        "index" : 43,
+        "default" : 0,
+        "name" : "par_link_IFixedProduct_IFixedProductAttribute_fpAttributes",
+        "type-details" : {
+          "module-raw" : "IFixedProduct",
+          "type" : "link",
+          "module" : "IFixedProduct",
+          "reference" : "IFixedProductAttribute",
+          "reference-raw" : "IFixedProductAttribute",
+          "type-raw" : "link",
+          "description-raw" : [ "fpAttributes" ]
+        },
+        "type" : "parameter",
+        "identifier" : "fpAttributes",
+        "dependencies" : [ "set_IFixedProduct", "set_IFixedProductAttribute" ]
+      },
+      "par_link_IFixedProductAwareness_IFixedProduct_awarenessFixedProduct" : {
+        "tags" : [ "input", "IFixedProductAwareness", "link", "IFixedProduct", "awarenessFixedProduct" ],
+        "data-type" : "boolean",
+        "index" : 14,
+        "default" : 0,
+        "name" : "par_link_IFixedProductAwareness_IFixedProduct_awarenessFixedProduct",
+        "type-details" : {
+          "module-raw" : "IFixedProductAwareness",
+          "type" : "link",
+          "module" : "IFixedProductAwareness",
+          "reference" : "IFixedProduct",
+          "reference-raw" : "IFixedProduct",
+          "type-raw" : "link",
+          "description-raw" : [ "awarenessFixedProduct" ]
+        },
+        "type" : "parameter",
+        "identifier" : "awarenessFixedProduct",
+        "dependencies" : [ "set_IFixedProductAwareness", "set_IFixedProduct" ]
+      },
+      "par_link_IFastHeterogeneousSmallWorldTopologyEntry_IConsumerAgentGroup_topoGroup" : {
+        "tags" : [ "input", "IFastHeterogeneousSmallWorldTopologyEntry", "link", "IConsumerAgentGroup", "topoGroup" ],
+        "data-type" : "boolean",
+        "index" : 38,
+        "default" : 0,
+        "name" : "par_link_IFastHeterogeneousSmallWorldTopologyEntry_IConsumerAgentGroup_topoGroup",
+        "type-details" : {
+          "module-raw" : "IFastHeterogeneousSmallWorldTopologyEntry",
+          "type" : "link",
+          "module" : "IFastHeterogeneousSmallWorldTopologyEntry",
+          "reference" : "IConsumerAgentGroup",
+          "reference-raw" : "IConsumerAgentGroup",
+          "type-raw" : "link",
+          "description-raw" : [ "topoGroup" ]
+        },
+        "type" : "parameter",
+        "identifier" : "topoGroup",
+        "dependencies" : [ "set_IFastHeterogeneousSmallWorldTopologyEntry", "set_IConsumerAgentGroup" ]
+      },
+      "par_link_IBasicAffinitiesEntry_IConsumerAgentGroup_to" : {
+        "tags" : [ "input", "IBasicAffinitiesEntry", "link", "IConsumerAgentGroup", "to" ],
+        "data-type" : "boolean",
+        "index" : 2,
+        "default" : 0,
+        "name" : "par_link_IBasicAffinitiesEntry_IConsumerAgentGroup_to",
+        "type-details" : {
+          "module-raw" : "IBasicAffinitiesEntry",
+          "type" : "link",
+          "module" : "IBasicAffinitiesEntry",
+          "reference" : "IConsumerAgentGroup",
+          "reference-raw" : "IConsumerAgentGroup",
+          "type-raw" : "link",
+          "description-raw" : [ "to" ]
+        },
+        "type" : "parameter",
+        "identifier" : "to",
+        "dependencies" : [ "set_IBasicAffinitiesEntry", "set_IConsumerAgentGroup" ]
+      },
+      "par_link_IBasicAffinityMapping_IBasicAffinitiesEntry_affinityEntries" : {
+        "tags" : [ "input", "IBasicAffinityMapping", "link", "IBasicAffinitiesEntry", "affinityEntries" ],
+        "data-type" : "boolean",
+        "index" : 5,
+        "default" : 0,
+        "name" : "par_link_IBasicAffinityMapping_IBasicAffinitiesEntry_affinityEntries",
+        "type-details" : {
+          "module-raw" : "IBasicAffinityMapping",
+          "type" : "link",
+          "module" : "IBasicAffinityMapping",
+          "reference" : "IBasicAffinitiesEntry",
+          "reference-raw" : "IBasicAffinitiesEntry",
+          "type-raw" : "link",
+          "description-raw" : [ "affinityEntries" ]
+        },
+        "type" : "parameter",
+        "identifier" : "affinityEntries",
+        "dependencies" : [ "set_IBasicAffinityMapping", "set_IBasicAffinitiesEntry" ]
+      },
+      "par_link_IProductGroupAttribute_IUnivariateDoubleDistribution_pgAttrDistribution" : {
+        "tags" : [ "input", "IProductGroupAttribute", "link", "IUnivariateDoubleDistribution", "pgAttrDistribution" ],
+        "data-type" : "boolean",
+        "index" : 50,
+        "default" : 0,
+        "name" : "par_link_IProductGroupAttribute_IUnivariateDoubleDistribution_pgAttrDistribution",
+        "type-details" : {
+          "module-raw" : "IProductGroupAttribute",
+          "type" : "link",
+          "module" : "IProductGroupAttribute",
+          "reference" : "IUnivariateDoubleDistribution",
+          "reference-raw" : "IUnivariateDoubleDistribution",
+          "type-raw" : "link",
+          "description-raw" : [ "pgAttrDistribution" ]
+        },
+        "type" : "parameter",
+        "identifier" : "pgAttrDistribution",
+        "dependencies" : [ "set_IProductGroupAttribute", "set_IUnivariateDoubleDistribution" ]
+      },
+      "par_link_IProductGroup_IProductGroupAttribute_pgAttributes" : {
+        "tags" : [ "input", "IProductGroup", "link", "IProductGroupAttribute", "pgAttributes" ],
+        "data-type" : "boolean",
+        "index" : 48,
+        "default" : 0,
+        "name" : "par_link_IProductGroup_IProductGroupAttribute_pgAttributes",
+        "type-details" : {
+          "module-raw" : "IProductGroup",
+          "type" : "link",
+          "module" : "IProductGroup",
+          "reference" : "IProductGroupAttribute",
+          "reference-raw" : "IProductGroupAttribute",
+          "type-raw" : "link",
+          "description-raw" : [ "pgAttributes" ]
+        },
+        "type" : "parameter",
+        "identifier" : "pgAttributes",
+        "dependencies" : [ "set_IProductGroup", "set_IProductGroupAttribute" ]
+      },
+      "par_link_IFixedProduct_IProductGroup_fpGroup" : {
+        "tags" : [ "input", "IFixedProduct", "link", "IProductGroup", "fpGroup" ],
+        "data-type" : "boolean",
+        "index" : 42,
+        "default" : 0,
+        "name" : "par_link_IFixedProduct_IProductGroup_fpGroup",
+        "type-details" : {
+          "module-raw" : "IFixedProduct",
+          "type" : "link",
+          "module" : "IFixedProduct",
+          "reference" : "IProductGroup",
+          "reference-raw" : "IProductGroup",
+          "type-raw" : "link",
+          "description-raw" : [ "fpGroup" ]
+        },
+        "type" : "parameter",
+        "identifier" : "fpGroup",
+        "dependencies" : [ "set_IFixedProduct", "set_IProductGroup" ]
+      },
+      "par_link_IConsumerAgentGroup_IConsumerAgentGroupAttribute_cagAttributes" : {
+        "tags" : [ "input", "IConsumerAgentGroup", "link", "IConsumerAgentGroupAttribute", "cagAttributes" ],
+        "data-type" : "boolean",
+        "index" : 7,
+        "default" : 0,
+        "name" : "par_link_IConsumerAgentGroup_IConsumerAgentGroupAttribute_cagAttributes",
+        "type-details" : {
+          "module-raw" : "IConsumerAgentGroup",
+          "type" : "link",
+          "module" : "IConsumerAgentGroup",
+          "reference" : "IConsumerAgentGroupAttribute",
+          "reference-raw" : "IConsumerAgentGroupAttribute",
+          "type-raw" : "link",
+          "description-raw" : [ "cagAttributes" ]
+        },
+        "type" : "parameter",
+        "identifier" : "cagAttributes",
+        "dependencies" : [ "set_IConsumerAgentGroup", "set_IConsumerAgentGroupAttribute" ]
+      },
+      "par_link_IBasicAffinitiesEntry_IConsumerAgentGroup_from" : {
+        "tags" : [ "input", "IBasicAffinitiesEntry", "link", "IConsumerAgentGroup", "from" ],
+        "data-type" : "boolean",
+        "index" : 1,
+        "default" : 0,
+        "name" : "par_link_IBasicAffinitiesEntry_IConsumerAgentGroup_from",
+        "type-details" : {
+          "module-raw" : "IBasicAffinitiesEntry",
+          "type" : "link",
+          "module" : "IBasicAffinitiesEntry",
+          "reference" : "IConsumerAgentGroup",
+          "reference-raw" : "IConsumerAgentGroup",
+          "type-raw" : "link",
+          "description-raw" : [ "from" ]
+        },
+        "type" : "parameter",
+        "identifier" : "from",
+        "dependencies" : [ "set_IBasicAffinitiesEntry", "set_IConsumerAgentGroup" ]
+      }
+    },
+    "timeseries" : { }
+  },
+  "specifications" : {
+    "input" : [ {
+      "label" : "Agents",
+      "description" : "Keine Beschreibung",
+      "contents" : [ ],
+      "children" : [ {
+        "label" : "Consumer",
+        "description" : "Keine Beschreibung",
+        "contents" : [ ],
+        "children" : [ {
+          "label" : "Groups",
+          "description" : "Keine Beschreibung",
+          "set" : "set_IConsumerAgentGroup",
+          "contents" : [ {
+            "name" : "par_IConsumerAgentGroup_informationAuthority",
+            "type" : "attributes"
+          }, {
+            "name" : "par_IConsumerAgentGroup_numberOfAgents",
+            "type" : "attributes"
+          } ],
+          "children" : [ {
+            "label" : "Affinity",
+            "description" : "Keine Beschreibung",
+            "set" : "set_IBasicAffinityMapping",
+            "contents" : [ {
+              "name" : "par_link_IBasicAffinityMapping_IBasicAffinitiesEntry_affinityEntries",
+              "type" : "tables"
+            } ],
+            "children" : [ {
+              "label" : "Entry",
+              "description" : "Keine Beschreibung",
+              "set" : "set_IBasicAffinitiesEntry",
+              "contents" : [ {
+                "name" : "par_link_IBasicAffinitiesEntry_IConsumerAgentGroup_from",
+                "type" : "tables"
+              }, {
+                "name" : "par_link_IBasicAffinitiesEntry_IConsumerAgentGroup_to",
+                "type" : "tables"
+              }, {
+                "name" : "par_IBasicAffinitiesEntry_affinityValue",
+                "type" : "attributes"
+              } ]
+            } ]
+          } ]
+        }, {
+          "label" : "Group-Attribute-Mapping",
+          "description" : "Keine Beschreibung",
+          "set" : "set_IConsumerAgentGroup",
+          "contents" : [ {
+            "name" : "par_link_IConsumerAgentGroup_IConsumerAgentGroupAttribute_cagAttributes",
+            "type" : "tables"
+          } ]
+        }, {
+          "label" : "Attribute-Distribution-Mapping",
+          "description" : "Keine Beschreibung",
+          "set" : "set_IConsumerAgentGroupAttribute",
+          "contents" : [ {
+            "name" : "par_link_IConsumerAgentGroupAttribute_IUnivariateDoubleDistribution_cagAttrDistribution",
+            "type" : "tables"
+          } ]
+        } ]
+      } ]
+    }, {
+      "label" : "Products",
+      "description" : "Keine Beschreibung",
+      "contents" : [ ],
+      "children" : [ {
+        "label" : "FixedProduct-Awareness",
+        "description" : "Keine Beschreibung",
+        "set" : "set_IFixedProductAwareness",
+        "contents" : [ {
+          "name" : "par_link_IFixedProductAwareness_IConsumerAgentGroup_awarenessAgentGroup",
+          "type" : "tables"
+        }, {
+          "name" : "par_link_IFixedProductAwareness_IFixedProduct_awarenessFixedProduct",
+          "type" : "tables"
+        }, {
+          "name" : "par_link_IFixedProductAwareness_IUnivariateDoubleDistribution_awarenessDistribution",
+          "type" : "tables"
+        } ]
+      }, {
+        "label" : "FixedProduct",
+        "description" : "Keine Beschreibung",
+        "set" : "set_IFixedProduct",
+        "contents" : [ {
+          "name" : "par_link_IFixedProduct_IProductGroup_fpGroup",
+          "type" : "tables"
+        }, {
+          "name" : "par_link_IFixedProduct_IFixedProductAttribute_fpAttributes",
+          "type" : "tables"
+        } ]
+      }, {
+        "label" : "FixedAttributes",
+        "description" : "Keine Beschreibung",
+        "set" : "set_IFixedProductAttribute",
+        "contents" : [ {
+          "name" : "par_link_IFixedProductAttribute_IProductGroupAttribute_fpaGroupAttribute",
+          "type" : "tables"
+        }, {
+          "name" : "par_IFixedProductAttribute_fpaValue",
+          "type" : "attributes"
+        } ]
+      }, {
+        "label" : "Group-Attribute-Mapping",
+        "description" : "Keine Beschreibung",
+        "set" : "set_IProductGroup",
+        "contents" : [ {
+          "name" : "par_link_IProductGroup_IProductGroupAttribute_pgAttributes",
+          "type" : "tables"
+        } ]
+      }, {
+        "label" : "Attribute-Distribution-Mapping",
+        "description" : "Keine Beschreibung",
+        "set" : "set_IProductGroupAttribute",
+        "contents" : [ {
+          "name" : "par_link_IProductGroupAttribute_IUnivariateDoubleDistribution_pgAttrDistribution",
+          "type" : "tables"
+        } ]
+      } ]
+    }, {
+      "label" : "Distribution",
+      "description" : "Keine Beschreibung",
+      "contents" : [ ],
+      "children" : [ {
+        "label" : "BooleanDistribution",
+        "description" : "Keine Beschreibung",
+        "set" : "set_IBooleanDistribution",
+        "contents" : [ {
+          "name" : "par_IBooleanDistribution_boolDistSeed",
+          "type" : "attributes"
+        } ]
+      }, {
+        "label" : "ConstantUnivariateDistribution",
+        "description" : "Keine Beschreibung",
+        "set" : "set_IConstantUnivariateDistribution",
+        "contents" : [ {
+          "name" : "par_IConstantUnivariateDistribution_constDistValue",
+          "type" : "attributes"
+        } ]
+      }, {
+        "label" : "FiniteMassPointsDiscreteDistribution",
+        "description" : "Keine Beschreibung",
+        "set" : "set_IFiniteMassPointsDiscreteDistribution",
+        "contents" : [ {
+          "name" : "par_IFiniteMassPointsDiscreteDistribution_fmpSeed",
+          "type" : "attributes"
+        }, {
+          "name" : "par_link_IFiniteMassPointsDiscreteDistribution_IMassPoint_massPoints",
+          "type" : "tables"
+        } ]
+      }, {
+        "label" : "Util",
+        "description" : "Keine Beschreibung",
+        "contents" : [ ],
+        "children" : [ {
+          "label" : "MassPoints",
+          "description" : "Keine Beschreibung",
+          "set" : "set_IMassPoint",
+          "contents" : [ {
+            "name" : "par_IMassPoint_mpValue",
+            "type" : "attributes"
+          }, {
+            "name" : "par_IMassPoint_mpWeight",
+            "type" : "attributes"
+          } ]
+        } ]
+      }, {
+        "label" : "RandomBoundedDistribution",
+        "description" : "Keine Beschreibung",
+        "set" : "set_IRandomBoundedDistribution",
+        "contents" : [ {
+          "name" : "par_IRandomBoundedDistribution_rndDistLowerBound",
+          "type" : "attributes"
+        }, {
+          "name" : "par_IRandomBoundedDistribution_rndDistUpperBound",
+          "type" : "attributes"
+        }, {
+          "name" : "par_IRandomBoundedDistribution_rndDistSeed",
+          "type" : "attributes"
+        } ]
+      } ]
+    }, {
+      "label" : "Network",
+      "description" : "Keine Beschreibung",
+      "contents" : [ ],
+      "children" : [ {
+        "label" : "HeterogeneousSmallWorld",
+        "description" : "Keine Beschreibung",
+        "set" : "set_IFastHeterogeneousSmallWorldTopology",
+        "contents" : [ {
+          "name" : "par_IFastHeterogeneousSmallWorldTopology_edgeType",
+          "type" : "attributes"
+        }, {
+          "name" : "par_IFastHeterogeneousSmallWorldTopology_isSelfReferential",
+          "type" : "attributes"
+        }, {
+          "name" : "par_IFastHeterogeneousSmallWorldTopology_initialWeight",
+          "type" : "attributes"
+        }, {
+          "name" : "par_IFastHeterogeneousSmallWorldTopology_topoSeed",
+          "type" : "attributes"
+        }, {
+          "name" : "par_link_IFastHeterogeneousSmallWorldTopology_IFastHeterogeneousSmallWorldTopologyEntry_topoEntries",
+          "type" : "tables"
+        } ],
+        "children" : [ {
+          "label" : "Entry",
+          "description" : "Keine Beschreibung",
+          "set" : "set_IFastHeterogeneousSmallWorldTopologyEntry",
+          "contents" : [ {
+            "name" : "par_link_IFastHeterogeneousSmallWorldTopologyEntry_IConsumerAgentGroup_topoGroup",
+            "type" : "tables"
+          }, {
+            "name" : "par_IFastHeterogeneousSmallWorldTopologyEntry_beta",
+            "type" : "attributes"
+          }, {
+            "name" : "par_IFastHeterogeneousSmallWorldTopologyEntry_z",
+            "type" : "attributes"
+          } ]
+        } ]
+      } ]
+    }, {
+      "label" : "SpatialModel",
+      "description" : "Keine Beschreibung",
+      "contents" : [ ],
+      "children" : [ {
+        "label" : "Space2D",
+        "description" : "Keine Beschreibung",
+        "set" : "set_ISpace2D",
+        "contents" : [ {
+          "name" : "par_ISpace2D_metricID",
+          "type" : "attributes"
+        } ]
+      } ]
+    }, {
+      "label" : "TimeModel",
+      "description" : "Keine Beschreibung",
+      "contents" : [ ],
+      "children" : [ {
+        "label" : "Continuous",
+        "description" : "Keine Beschreibung",
+        "set" : "set_IContinuousTimeModel",
+        "contents" : [ {
+          "name" : "par_IContinuousTimeModel_dilation",
+          "type" : "attributes"
+        }, {
+          "name" : "par_IContinuousTimeModel_contDelay",
+          "type" : "attributes"
+        } ]
+      }, {
+        "label" : "Discrete",
+        "description" : "Keine Beschreibung",
+        "set" : "set_IDiscreteTimeModel",
+        "contents" : [ {
+          "name" : "par_IDiscreteTimeModel_delta",
+          "type" : "attributes"
+        }, {
+          "name" : "par_IDiscreteTimeModel_timePerTickInMs",
+          "type" : "attributes"
+        }, {
+          "name" : "par_IDiscreteTimeModel_discDelay",
+          "type" : "attributes"
+        } ]
+      } ]
+    }, {
+      "label" : "Allgemeine Einstellungen",
+      "description" : "Keine Beschreibung",
+      "contents" : [ {
+        "name" : "sca_global_debugLevel",
+        "type" : "scalars"
+      } ]
+    } ],
+    "delta" : [ ],
+    "output" : [ {
+      "label" : "Output",
+      "description" : "Keine Beschreibung",
+      "set" : "set_OConsumerAgentGroup",
+      "contents" : [ {
+        "name" : "par_out_OConsumerAgentGroup_adaptionRate",
+        "type" : "attributes"
+      } ]
+    } ]
+  },
+  "icons" : { }
+}

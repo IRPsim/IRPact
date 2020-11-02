@@ -76,7 +76,7 @@ public enum Metric2D implements Metric {
 
     public static Metric2D get(int id) {
         for(Metric2D m: values()) {
-            if(id == m.getId()) {
+            if(id == m.id()) {
                 return m;
             }
         }
@@ -89,7 +89,7 @@ public enum Metric2D implements Metric {
         ID = id;
     }
 
-    public int getId() {
+    public int id() {
         return ID;
     }
 

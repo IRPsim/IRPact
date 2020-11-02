@@ -10,7 +10,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = "Agents/Consumer/Groups"
+                path = {"Agents/Consumer/Groups"}
         )
 )
 public class IConsumerAgentGroup {
@@ -19,10 +19,16 @@ public class IConsumerAgentGroup {
 
     @FieldDefinition(
             edn = @EdnParameter(
-                    path = "Agents/Consumer/Group-Attribute-Mapping"
+                    path = {"Agents/Consumer/Group-Attribute-Mapping"}
             )
     )
-    public IConsumerAgentGroupAttribute[] attributes;
+    public IConsumerAgentGroupAttribute[] cagAttributes;
+
+    @FieldDefinition
+    public double informationAuthority;
+
+    @FieldDefinition
+    public int numberOfAgents;
 
     public IConsumerAgentGroup() {
     }
@@ -31,7 +37,15 @@ public class IConsumerAgentGroup {
         return _name;
     }
 
-    public IConsumerAgentGroupAttribute[] getAttributes() {
-        return attributes;
+    public double getInformationAuthority() {
+        return informationAuthority;
+    }
+
+    public IConsumerAgentGroupAttribute[] getCagAttributes() {
+        return cagAttributes;
+    }
+
+    public int getNumberOfAgents() {
+        return numberOfAgents;
     }
 }

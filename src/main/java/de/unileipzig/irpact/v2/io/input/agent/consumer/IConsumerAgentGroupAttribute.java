@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.v2.io.input.agent.consumer;
 
-import de.unileipzig.irpact.v2.io.input.distribution.IUnivariateDistribution;
+import de.unileipzig.irpact.v2.io.input.distribution.IUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.EdnParameter;
@@ -11,7 +11,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = "Agents/Consumer/Attributes"
+                path = {"Agents/Consumer/Attributes"}
         )
 )
 public class IConsumerAgentGroupAttribute {
@@ -20,19 +20,24 @@ public class IConsumerAgentGroupAttribute {
 
     @FieldDefinition(
             edn = @EdnParameter(
-                    path = "Agents/Consumer/Attribute-Distribution-Mapping"
+                    path = {"Agents/Consumer/Attribute-Distribution-Mapping"}
             )
     )
-    public IUnivariateDistribution distribution;
+    public IUnivariateDoubleDistribution cagAttrDistribution;
 
     public IConsumerAgentGroupAttribute() {
+    }
+
+    public IConsumerAgentGroupAttribute(String name, IUnivariateDoubleDistribution cagAttrDistribution) {
+        this._name = name;
+        this.cagAttrDistribution = cagAttrDistribution;
     }
 
     public String getName() {
         return _name;
     }
 
-    public IUnivariateDistribution getDistribution() {
-        return distribution;
+    public IUnivariateDoubleDistribution getCagAttrDistribution() {
+        return cagAttrDistribution;
     }
 }

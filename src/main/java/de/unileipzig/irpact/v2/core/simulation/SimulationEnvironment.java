@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.v2.core.simulation;
 
 import de.unileipzig.irpact.v2.core.agent.AgentManager;
+import de.unileipzig.irpact.v2.core.misc.DebugLevel;
 import de.unileipzig.irpact.v2.core.network.SocialNetwork;
 import de.unileipzig.irpact.v2.core.product.ProductManager;
 import de.unileipzig.irpact.v2.core.spatial.SpatialModel;
@@ -11,6 +12,10 @@ import de.unileipzig.irpact.v2.core.time.TimeModel;
  */
 public interface SimulationEnvironment {
 
+    //=========================
+    //main components
+    //=========================
+
     AgentManager getAgents();
 
     SocialNetwork getNetwork();
@@ -20,4 +25,12 @@ public interface SimulationEnvironment {
     SpatialModel getSpatialModel();
 
     TimeModel getTimeModel();
+
+    SimulationControl getSimulationControl();
+
+    //=========================
+    //stuff
+    //=========================
+
+    DebugLevel getDebugLevel();
 }

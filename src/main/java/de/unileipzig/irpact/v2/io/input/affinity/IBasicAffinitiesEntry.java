@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.v2.io.input.affinity;
 
-import de.unileipzig.irpact.v2.def.ToDo;
+import de.unileipzig.irpact.v2.io.input.agent.consumer.IConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -10,24 +10,29 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = "Agents/Consumer/Groups/Affinity/Entry"
+                path = {"Agents", "Consumer", "Groups", "Affinity", "Entry"}
         )
 )
 public class IBasicAffinitiesEntry {
 
     public String _name;
 
-    @ToDo("mit ConsumerAgentGroup ersetzen")
     @FieldDefinition
-    public String fromGroup;
-
-    @ToDo("mit ConsumerAgentGroup ersetzen")
-    @FieldDefinition
-    public String toGroup;
+    public IConsumerAgentGroup from;
 
     @FieldDefinition
-    public double value;
+    public IConsumerAgentGroup to;
+
+    @FieldDefinition
+    public double affinityValue;
 
     public IBasicAffinitiesEntry() {
+    }
+
+    public IBasicAffinitiesEntry(String name, IConsumerAgentGroup from, IConsumerAgentGroup to, double affinityValue) {
+        this._name = name;
+        this.from = from;
+        this.to = to;
+        this.affinityValue = affinityValue;
     }
 }

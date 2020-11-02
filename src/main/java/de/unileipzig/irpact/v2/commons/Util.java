@@ -1,12 +1,13 @@
 package de.unileipzig.irpact.v2.commons;
 
-import java.util.Objects;
 import java.util.Random;
 
 /**
  * @author Daniel Abitz
  */
 public final class Util {
+
+    public static final Random RND = new Random();
 
     private Util() {
     }

@@ -12,6 +12,11 @@ public class ConstantUnivariateDoubleDistribution extends NameableBase implement
     public ConstantUnivariateDoubleDistribution() {
     }
 
+    public ConstantUnivariateDoubleDistribution(String name, double value) {
+        setName(name);
+        setValue(value);
+    }
+
     public void setValue(double value) {
         this.value = value;
     }

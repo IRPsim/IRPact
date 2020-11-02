@@ -15,9 +15,26 @@ import java.time.ZonedDateTime;
 public class ContinuousTimeModel extends AbstractJadexTimeModel {
 
     protected final ContinuousConverter converter = new ContinuousConverter();
-
+    protected double storedDilation;
+    protected long storedDelay;
 
     public ContinuousTimeModel() {
+    }
+
+    public void setStoredDilation(double storedDilation) {
+        this.storedDilation = storedDilation;
+    }
+
+    public double getStoredDilation() {
+        return storedDilation;
+    }
+
+    public void setStoredDelay(long storedDelay) {
+        this.storedDelay = storedDelay;
+    }
+
+    public long getStoredDelay() {
+        return storedDelay;
     }
 
     public void setStartYear(int year) {

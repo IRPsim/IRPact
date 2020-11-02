@@ -7,6 +7,8 @@ import de.unileipzig.irpact.v2.commons.attribute.AbstractUnivariateDistributionA
  */
 public class BasicProductGroupAttribute extends AbstractUnivariateDistributionAttributeGroup<ProductAttribute> implements ProductGroupAttribute {
 
+    protected int id = 0;
+
     public BasicProductGroupAttribute() {
     }
 
@@ -16,8 +18,18 @@ public class BasicProductGroupAttribute extends AbstractUnivariateDistributionAt
         return derive(value);
     }
 
+    protected synchronized int nextId() {
+        int next = id;
+        id++;
+        return next;
+    }
+
     @Override
     public BasicProductAttribute derive(double value) {
-        return new BasicProductAttribute(getName(), this, value);
+        return new BasicProductAttribute(
+                getName() + "_" + nextId(),
+                this,
+                value
+        );
     }
 }

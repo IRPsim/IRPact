@@ -1,0 +1,777 @@
+{
+  "description" : { },
+  "years" : [ {
+    "config" : {
+      "simulationlength" : 35040,
+      "savelength" : 96,
+      "optimizationlength" : 192,
+      "resolution" : 35040,
+      "timestep" : 0.25,
+      "modeldefinition" : 3,
+      "year" : 2015,
+      "prognoseszenario" : null,
+      "interpolated" : false
+    },
+    "scalars" : { },
+    "sets" : {
+      "set_IBasicAffinitiesEntry" : {
+        "TestGroup1-TestGroup1" : {
+          "par_IBasicAffinitiesEntry_affinityValue" : 0.7
+        },
+        "TestGroup1-TestGroup2" : {
+          "par_IBasicAffinitiesEntry_affinityValue" : 0.3
+        },
+        "TestGroup2-TestGroup1" : {
+          "par_IBasicAffinitiesEntry_affinityValue" : 0.1
+        },
+        "TestGroup2-TestGroup2" : {
+          "par_IBasicAffinitiesEntry_affinityValue" : 0.9
+        }
+      },
+      "set_IBasicAffinityMapping" : {
+        "MyAffinity" : { }
+      },
+      "set_IBooleanDistribution" : {
+        "houseShare_dist_1" : {
+          "par_IBooleanDistribution_boolDistSeed" : 5
+        },
+        "houseShare_dist_2" : {
+          "par_IBooleanDistribution_boolDistSeed" : 10
+        },
+        "ownershipStatus_dist_1" : {
+          "par_IBooleanDistribution_boolDistSeed" : 6
+        },
+        "ownershipStatus_dist_2" : {
+          "par_IBooleanDistribution_boolDistSeed" : 12
+        }
+      },
+      "set_IConstantUnivariateDistribution" : { },
+      "set_IConsumerAgentGroup" : {
+        "TestGroup1" : {
+          "par_IConsumerAgentGroup_informationAuthority" : 1.0,
+          "par_IConsumerAgentGroup_numberOfAgents" : 0
+        },
+        "TestGroup2" : {
+          "par_IConsumerAgentGroup_informationAuthority" : 0.5,
+          "par_IConsumerAgentGroup_numberOfAgents" : 0
+        }
+      },
+      "set_IConsumerAgentGroupAttribute" : {
+        "constructionRate_1" : { },
+        "constructionRate_2" : { },
+        "dependentJudgment_1" : { },
+        "dependentJudgment_2" : { },
+        "environmentalConcern_1" : { },
+        "environmentalConcern_2" : { },
+        "houseShare_1" : { },
+        "houseShare_2" : { },
+        "noveltySeeking_1" : { },
+        "noveltySeeking_2" : { },
+        "ownershipStatus_1" : { },
+        "ownershipStatus_2" : { },
+        "purchasePower_1" : { },
+        "purchasePower_2" : { },
+        "renovationRate_1" : { },
+        "renovationRate_2" : { }
+      },
+      "set_IContinuousTimeModel" : { },
+      "set_IDiscreteTimeModel" : {
+        "DiscreteTime" : {
+          "par_IDiscreteTimeModel_delta" : 1,
+          "par_IDiscreteTimeModel_timePerTickInMs" : 900000,
+          "par_IDiscreteTimeModel_discDelay" : 86400000
+        }
+      },
+      "set_IFastHeterogeneousSmallWorldTopology" : {
+        "MyWorld" : {
+          "par_IFastHeterogeneousSmallWorldTopology_edgeType" : 0,
+          "par_IFastHeterogeneousSmallWorldTopology_isSelfReferential" : 0,
+          "par_IFastHeterogeneousSmallWorldTopology_initialWeight" : 1.0,
+          "par_IFastHeterogeneousSmallWorldTopology_topoSeed" : 312
+        }
+      },
+      "set_IFastHeterogeneousSmallWorldTopologyEntry" : {
+        "TestGroup1-Topology" : {
+          "par_IFastHeterogeneousSmallWorldTopologyEntry_beta" : 0.01,
+          "par_IFastHeterogeneousSmallWorldTopologyEntry_z" : 10
+        },
+        "TestGroup2-Topology" : {
+          "par_IFastHeterogeneousSmallWorldTopologyEntry_beta" : 0.02,
+          "par_IFastHeterogeneousSmallWorldTopologyEntry_z" : 5
+        }
+      },
+      "set_IFiniteMassPointsDiscreteDistribution" : { },
+      "set_IFixedProduct" : {
+        "PV-Testproduct" : { }
+      },
+      "set_IFixedProductAttribute" : {
+        "investment cost/unit development_1" : {
+          "par_IFixedProductAttribute_fpaValue" : 1234.0
+        }
+      },
+      "set_IFixedProductAwareness" : {
+        "Awareness1" : { },
+        "Awareness2" : { }
+      },
+      "set_IMassPoint" : { },
+      "set_IProductGroup" : {
+        "PV" : { }
+      },
+      "set_IProductGroupAttribute" : {
+        "investment cost/unit development" : { }
+      },
+      "set_IRandomBoundedDistribution" : {
+        "Awareness1_dist" : {
+          "par_IRandomBoundedDistribution_rndDistLowerBound" : 0.0,
+          "par_IRandomBoundedDistribution_rndDistUpperBound" : 10.0,
+          "par_IRandomBoundedDistribution_rndDistSeed" : 1
+        },
+        "Awareness2_dist" : {
+          "par_IRandomBoundedDistribution_rndDistLowerBound" : 0.0,
+          "par_IRandomBoundedDistribution_rndDistUpperBound" : 10.0,
+          "par_IRandomBoundedDistribution_rndDistSeed" : 2
+        },
+        "constructionRate_dist_1" : {
+          "par_IRandomBoundedDistribution_rndDistLowerBound" : 0.0,
+          "par_IRandomBoundedDistribution_rndDistUpperBound" : 1000.0,
+          "par_IRandomBoundedDistribution_rndDistSeed" : 7
+        },
+        "constructionRate_dist_2" : {
+          "par_IRandomBoundedDistribution_rndDistLowerBound" : 0.0,
+          "par_IRandomBoundedDistribution_rndDistUpperBound" : 1000.0,
+          "par_IRandomBoundedDistribution_rndDistSeed" : 14
+        },
+        "dependentJudgment_dist_1" : {
+          "par_IRandomBoundedDistribution_rndDistLowerBound" : 0.0,
+          "par_IRandomBoundedDistribution_rndDistUpperBound" : 1000.0,
+          "par_IRandomBoundedDistribution_rndDistSeed" : 3
+        },
+        "dependentJudgment_dist_2" : {
+          "par_IRandomBoundedDistribution_rndDistLowerBound" : 0.0,
+          "par_IRandomBoundedDistribution_rndDistUpperBound" : 1000.0,
+          "par_IRandomBoundedDistribution_rndDistSeed" : 6
+        },
+        "E1_dist" : {
+          "par_IRandomBoundedDistribution_rndDistLowerBound" : 0.0,
+          "par_IRandomBoundedDistribution_rndDistUpperBound" : 1000.0,
+          "par_IRandomBoundedDistribution_rndDistSeed" : 1
+        },
+        "environmentalConcern_dist_1" : {
+          "par_IRandomBoundedDistribution_rndDistLowerBound" : 0.0,
+          "par_IRandomBoundedDistribution_rndDistUpperBound" : 1000.0,
+          "par_IRandomBoundedDistribution_rndDistSeed" : 4
+        },
+        "environmentalConcern_dist_2" : {
+          "par_IRandomBoundedDistribution_rndDistLowerBound" : 0.0,
+          "par_IRandomBoundedDistribution_rndDistUpperBound" : 1000.0,
+          "par_IRandomBoundedDistribution_rndDistSeed" : 8
+        },
+        "noveltySeeking_dist_1" : {
+          "par_IRandomBoundedDistribution_rndDistLowerBound" : 0.0,
+          "par_IRandomBoundedDistribution_rndDistUpperBound" : 1000.0,
+          "par_IRandomBoundedDistribution_rndDistSeed" : 2
+        },
+        "noveltySeeking_dist_2" : {
+          "par_IRandomBoundedDistribution_rndDistLowerBound" : 0.0,
+          "par_IRandomBoundedDistribution_rndDistUpperBound" : 1000.0,
+          "par_IRandomBoundedDistribution_rndDistSeed" : 4
+        },
+        "purchasePower_dist_1" : {
+          "par_IRandomBoundedDistribution_rndDistLowerBound" : 0.0,
+          "par_IRandomBoundedDistribution_rndDistUpperBound" : 1000.0,
+          "par_IRandomBoundedDistribution_rndDistSeed" : 1
+        },
+        "purchasePower_dist_2" : {
+          "par_IRandomBoundedDistribution_rndDistLowerBound" : 0.0,
+          "par_IRandomBoundedDistribution_rndDistUpperBound" : 1000.0,
+          "par_IRandomBoundedDistribution_rndDistSeed" : 2
+        },
+        "renovationRate_dist_1" : {
+          "par_IRandomBoundedDistribution_rndDistLowerBound" : 0.0,
+          "par_IRandomBoundedDistribution_rndDistUpperBound" : 1000.0,
+          "par_IRandomBoundedDistribution_rndDistSeed" : 8
+        },
+        "renovationRate_dist_2" : {
+          "par_IRandomBoundedDistribution_rndDistLowerBound" : 0.0,
+          "par_IRandomBoundedDistribution_rndDistUpperBound" : 1000.0,
+          "par_IRandomBoundedDistribution_rndDistSeed" : 16
+        }
+      },
+      "set_ISpace2D" : {
+        "MySpace2D" : {
+          "par_ISpace2D_metricID" : 0
+        }
+      },
+      "set_ITimeModel" : {
+        "DiscreteTime" : { }
+      },
+      "set_IUnivariateDoubleDistribution" : {
+        "Awareness1_dist" : { },
+        "Awareness2_dist" : { },
+        "constructionRate_dist_1" : { },
+        "constructionRate_dist_2" : { },
+        "dependentJudgment_dist_1" : { },
+        "dependentJudgment_dist_2" : { },
+        "E1_dist" : { },
+        "environmentalConcern_dist_1" : { },
+        "environmentalConcern_dist_2" : { },
+        "houseShare_dist_1" : { },
+        "houseShare_dist_2" : { },
+        "noveltySeeking_dist_1" : { },
+        "noveltySeeking_dist_2" : { },
+        "ownershipStatus_dist_1" : { },
+        "ownershipStatus_dist_2" : { },
+        "purchasePower_dist_1" : { },
+        "purchasePower_dist_2" : { },
+        "renovationRate_dist_1" : { },
+        "renovationRate_dist_2" : { }
+      }
+    },
+    "timeseries" : { },
+    "tables" : {
+      "par_link_IBasicAffinitiesEntry_IConsumerAgentGroup_from" : {
+        "TestGroup1-TestGroup1" : {
+          "TestGroup1" : 1.0,
+          "TestGroup2" : 0.0
+        },
+        "TestGroup1-TestGroup2" : {
+          "TestGroup1" : 1.0,
+          "TestGroup2" : 0.0
+        },
+        "TestGroup2-TestGroup1" : {
+          "TestGroup1" : 0.0,
+          "TestGroup2" : 1.0
+        },
+        "TestGroup2-TestGroup2" : {
+          "TestGroup1" : 0.0,
+          "TestGroup2" : 1.0
+        }
+      },
+      "par_link_IBasicAffinitiesEntry_IConsumerAgentGroup_to" : {
+        "TestGroup1-TestGroup1" : {
+          "TestGroup1" : 1.0,
+          "TestGroup2" : 0.0
+        },
+        "TestGroup1-TestGroup2" : {
+          "TestGroup1" : 0.0,
+          "TestGroup2" : 1.0
+        },
+        "TestGroup2-TestGroup1" : {
+          "TestGroup1" : 1.0,
+          "TestGroup2" : 0.0
+        },
+        "TestGroup2-TestGroup2" : {
+          "TestGroup1" : 0.0,
+          "TestGroup2" : 1.0
+        }
+      },
+      "par_link_IBasicAffinityMapping_IBasicAffinitiesEntry_affinityEntries" : {
+        "MyAffinity" : {
+          "TestGroup1-TestGroup1" : 1.0,
+          "TestGroup1-TestGroup2" : 1.0,
+          "TestGroup2-TestGroup1" : 1.0,
+          "TestGroup2-TestGroup2" : 1.0
+        }
+      },
+      "par_link_IConsumerAgentGroup_IConsumerAgentGroupAttribute_cagAttributes" : {
+        "TestGroup1" : {
+          "constructionRate_1" : 1.0,
+          "constructionRate_2" : 0.0,
+          "dependentJudgment_1" : 1.0,
+          "dependentJudgment_2" : 0.0,
+          "environmentalConcern_1" : 1.0,
+          "environmentalConcern_2" : 0.0,
+          "houseShare_1" : 1.0,
+          "houseShare_2" : 0.0,
+          "noveltySeeking_1" : 1.0,
+          "noveltySeeking_2" : 0.0,
+          "ownershipStatus_1" : 1.0,
+          "ownershipStatus_2" : 0.0,
+          "purchasePower_1" : 1.0,
+          "purchasePower_2" : 0.0,
+          "renovationRate_1" : 1.0,
+          "renovationRate_2" : 0.0
+        },
+        "TestGroup2" : {
+          "constructionRate_1" : 0.0,
+          "constructionRate_2" : 1.0,
+          "dependentJudgment_1" : 0.0,
+          "dependentJudgment_2" : 1.0,
+          "environmentalConcern_1" : 0.0,
+          "environmentalConcern_2" : 1.0,
+          "houseShare_1" : 0.0,
+          "houseShare_2" : 1.0,
+          "noveltySeeking_1" : 0.0,
+          "noveltySeeking_2" : 1.0,
+          "ownershipStatus_1" : 0.0,
+          "ownershipStatus_2" : 1.0,
+          "purchasePower_1" : 0.0,
+          "purchasePower_2" : 1.0,
+          "renovationRate_1" : 0.0,
+          "renovationRate_2" : 1.0
+        }
+      },
+      "par_link_IConsumerAgentGroupAttribute_IUnivariateDoubleDistribution_cagAttrDistribution" : {
+        "constructionRate_1" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 1.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 0.0
+        },
+        "constructionRate_2" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 1.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 0.0
+        },
+        "dependentJudgment_1" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 1.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 0.0
+        },
+        "dependentJudgment_2" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 1.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 0.0
+        },
+        "environmentalConcern_1" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 1.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 0.0
+        },
+        "environmentalConcern_2" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 1.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 0.0
+        },
+        "houseShare_1" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 1.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 0.0
+        },
+        "houseShare_2" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 1.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 0.0
+        },
+        "noveltySeeking_1" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 1.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 0.0
+        },
+        "noveltySeeking_2" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 1.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 0.0
+        },
+        "ownershipStatus_1" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 1.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 0.0
+        },
+        "ownershipStatus_2" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 1.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 0.0
+        },
+        "purchasePower_1" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 1.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 0.0
+        },
+        "purchasePower_2" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 1.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 0.0
+        },
+        "renovationRate_1" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 1.0,
+          "renovationRate_dist_2" : 0.0
+        },
+        "renovationRate_2" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 1.0
+        }
+      },
+      "par_link_IFastHeterogeneousSmallWorldTopology_IFastHeterogeneousSmallWorldTopologyEntry_topoEntries" : {
+        "MyWorld" : {
+          "TestGroup1-Topology" : 1.0,
+          "TestGroup2-Topology" : 1.0
+        }
+      },
+      "par_link_IFastHeterogeneousSmallWorldTopologyEntry_IConsumerAgentGroup_topoGroup" : {
+        "TestGroup1-Topology" : {
+          "TestGroup1" : 1.0,
+          "TestGroup2" : 0.0
+        },
+        "TestGroup2-Topology" : {
+          "TestGroup1" : 0.0,
+          "TestGroup2" : 1.0
+        }
+      },
+      "par_link_IFiniteMassPointsDiscreteDistribution_IMassPoint_massPoints" : { },
+      "par_link_IFixedProduct_IFixedProductAttribute_fpAttributes" : {
+        "PV-Testproduct" : {
+          "investment cost/unit development_1" : 1.0
+        }
+      },
+      "par_link_IFixedProduct_IProductGroup_fpGroup" : {
+        "PV-Testproduct" : {
+          "PV" : 1.0
+        }
+      },
+      "par_link_IFixedProductAttribute_IProductGroupAttribute_fpaGroupAttribute" : {
+        "investment cost/unit development_1" : {
+          "investment cost/unit development" : 1.0
+        }
+      },
+      "par_link_IFixedProductAwareness_IConsumerAgentGroup_awarenessAgentGroup" : {
+        "Awareness1" : {
+          "TestGroup1" : 1.0,
+          "TestGroup2" : 0.0
+        },
+        "Awareness2" : {
+          "TestGroup1" : 1.0,
+          "TestGroup2" : 0.0
+        }
+      },
+      "par_link_IFixedProductAwareness_IFixedProduct_awarenessFixedProduct" : {
+        "Awareness1" : {
+          "PV-Testproduct" : 1.0
+        },
+        "Awareness2" : {
+          "PV-Testproduct" : 1.0
+        }
+      },
+      "par_link_IFixedProductAwareness_IUnivariateDoubleDistribution_awarenessDistribution" : {
+        "Awareness1" : {
+          "Awareness1_dist" : 1.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 0.0
+        },
+        "Awareness2" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 1.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 0.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 0.0
+        }
+      },
+      "par_link_IProductGroup_IProductGroupAttribute_pgAttributes" : {
+        "PV" : {
+          "investment cost/unit development" : 1.0
+        }
+      },
+      "par_link_IProductGroupAttribute_IUnivariateDoubleDistribution_pgAttrDistribution" : {
+        "investment cost/unit development" : {
+          "Awareness1_dist" : 0.0,
+          "Awareness2_dist" : 0.0,
+          "constructionRate_dist_1" : 0.0,
+          "constructionRate_dist_2" : 0.0,
+          "dependentJudgment_dist_1" : 0.0,
+          "dependentJudgment_dist_2" : 0.0,
+          "E1_dist" : 1.0,
+          "environmentalConcern_dist_1" : 0.0,
+          "environmentalConcern_dist_2" : 0.0,
+          "houseShare_dist_1" : 0.0,
+          "houseShare_dist_2" : 0.0,
+          "noveltySeeking_dist_1" : 0.0,
+          "noveltySeeking_dist_2" : 0.0,
+          "ownershipStatus_dist_1" : 0.0,
+          "ownershipStatus_dist_2" : 0.0,
+          "purchasePower_dist_1" : 0.0,
+          "purchasePower_dist_2" : 0.0,
+          "renovationRate_dist_1" : 0.0,
+          "renovationRate_dist_2" : 0.0
+        }
+      }
+    },
+    "postprocessing" : { }
+  } ]
+}

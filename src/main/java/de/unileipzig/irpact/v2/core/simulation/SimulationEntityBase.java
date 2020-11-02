@@ -16,6 +16,10 @@ public class SimulationEntityBase extends NameableBase implements SimulationEnti
         this.environment = environment;
     }
 
+    public void setEnvironment(SimulationEnvironment environment) {
+        this.environment = environment;
+    }
+
     @Override
     public SimulationEnvironment getEnvironment() {
         return environment;

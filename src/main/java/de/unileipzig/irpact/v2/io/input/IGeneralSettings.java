@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.v2.io.input;
 
+import de.unileipzig.irpact.v2.core.misc.DebugLevel;
 import de.unileipzig.irptools.defstructure.annotation.*;
 
 /**
@@ -8,20 +9,19 @@ import de.unileipzig.irptools.defstructure.annotation.*;
 @Definition(
         global = true,
         edn = @Edn(
-                path = "Allgemeine Einstellungen"
+                path = {"Allgemeine Einstellungen"}
         )
 )
 public class IGeneralSettings {
 
     @FieldDefinition(
             gams = @GamsParameter(
-                    defaultValue = DebugL
+                    defaultValue = DebugLevel.DEFAULT_ID
             )
     )
     public int debugLevel;
 
     public IGeneralSettings() {
-
     }
 
     public int getDebugLevel() {

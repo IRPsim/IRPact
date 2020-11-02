@@ -18,6 +18,7 @@ public class FastHeterogeneousRegularGraphTopology implements GraphTopologySchem
     protected Map<ConsumerAgentGroup, Integer> consumerGroupZMapping;
     protected boolean isSelfReferential;
     protected double initialWeight;
+    protected long seed;
     protected Random rnd;
 
     public FastHeterogeneousRegularGraphTopology(
@@ -25,12 +26,13 @@ public class FastHeterogeneousRegularGraphTopology implements GraphTopologySchem
             Map<ConsumerAgentGroup, Integer> consumerGroupZMapping,
             boolean isSelfReferential,
             double initialWeight,
-            Random rnd) {
+            long seed) {
         this.edgeType = edgeType;
         this.consumerGroupZMapping = consumerGroupZMapping;
         this.isSelfReferential = isSelfReferential;
         this.initialWeight = initialWeight;
-        this.rnd = rnd;
+        this.seed = seed;
+        rnd = new Random(seed);
     }
 
     @Override
