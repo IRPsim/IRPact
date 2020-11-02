@@ -103,7 +103,6 @@ public class InGlobal {
                     defaultValue = "0"
             ),
             edn = @EdnParameter(
-                    //path = "Komponenten/Verbrauchertechnologien/Endkundentarife",
                     path = "Link/TableWithTimeSeries",
                     description = {"Hier stehen Tables-Einträge.", "Hier stehen Zeitreihen als Tables-Einträge"},
                     delta = Constants.TRUE1,

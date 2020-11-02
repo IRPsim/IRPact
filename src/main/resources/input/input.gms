@@ -76,6 +76,7 @@ SET set_load_DSLOA(set_load_DS)
 * - type: String
 SET set_pss(*)
 
+* - default: E
 * - description: Energiesektor
 * - hidden: 1
 * - identifier: Energiesektor
@@ -111,6 +112,7 @@ PARAMETER par_kg_modifier(set_side_cust)
 * - type: Float
 PARAMETER par_IuO_ESector_CustSide(set_ii,set_side_cust)
 
+* - default: SMS, NS, PS
 * - description: Tarifteilnehmer
 * - hidden: 1
 * - identifier: Tarifteilnehmer

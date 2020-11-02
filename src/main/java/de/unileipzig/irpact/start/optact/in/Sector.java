@@ -12,7 +12,8 @@ import de.unileipzig.irptools.defstructure.annotation.Gams;
         gams = @Gams(
                 description = "Energiesektor",
                 identifier = "Energiesektor",
-                hidden = Constants.TRUE1
+                hidden = Constants.TRUE1,
+                defaultValue = "E"
         )
 )
 public class Sector {
