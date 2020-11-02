@@ -12,8 +12,14 @@
       "prognoseszenario" : null,
       "interpolated" : false
     },
-    "scalars" : { },
+    "scalars" : {
+      "sca_global_debugLevel" : 2
+    },
     "sets" : {
+      "set_IAwareness" : {
+        "TestGroup1_awa_1" : { },
+        "TestGroup2_awa_2" : { }
+      },
       "set_IBasicAffinitiesEntry" : {
         "TestGroup1-TestGroup1" : {
           "par_IBasicAffinitiesEntry_affinityValue" : 0.7
@@ -49,11 +55,11 @@
       "set_IConsumerAgentGroup" : {
         "TestGroup1" : {
           "par_IConsumerAgentGroup_informationAuthority" : 1.0,
-          "par_IConsumerAgentGroup_numberOfAgents" : 0
+          "par_IConsumerAgentGroup_numberOfAgents" : 10
         },
         "TestGroup2" : {
           "par_IConsumerAgentGroup_informationAuthority" : 0.5,
-          "par_IConsumerAgentGroup_numberOfAgents" : 0
+          "par_IConsumerAgentGroup_numberOfAgents" : 5
         }
       },
       "set_IConsumerAgentGroupAttribute" : {
@@ -197,9 +203,18 @@
           "par_IRandomBoundedDistribution_rndDistSeed" : 16
         }
       },
+      "set_ISimpleAwareness" : { },
       "set_ISpace2D" : {
         "MySpace2D" : {
           "par_ISpace2D_metricID" : 0
+        }
+      },
+      "set_IThresholdAwareness" : {
+        "TestGroup1_awa_1" : {
+          "par_IThresholdAwareness_awarenessThreshold" : 10.0
+        },
+        "TestGroup2_awa_2" : {
+          "par_IThresholdAwareness_awarenessThreshold" : 10.0
         }
       },
       "set_ITimeModel" : {
@@ -271,6 +286,16 @@
           "TestGroup1-TestGroup2" : 1.0,
           "TestGroup2-TestGroup1" : 1.0,
           "TestGroup2-TestGroup2" : 1.0
+        }
+      },
+      "par_link_IConsumerAgentGroup_IAwareness_productAwareness" : {
+        "TestGroup1" : {
+          "TestGroup1_awa_1" : 1.0,
+          "TestGroup2_awa_2" : 0.0
+        },
+        "TestGroup2" : {
+          "TestGroup1_awa_1" : 0.0,
+          "TestGroup2_awa_2" : 1.0
         }
       },
       "par_link_IConsumerAgentGroup_IConsumerAgentGroupAttribute_cagAttributes" : {
@@ -687,8 +712,8 @@
           "TestGroup2" : 0.0
         },
         "Awareness2" : {
-          "TestGroup1" : 1.0,
-          "TestGroup2" : 0.0
+          "TestGroup1" : 0.0,
+          "TestGroup2" : 1.0
         }
       },
       "par_link_IFixedProductAwareness_IFixedProduct_awarenessFixedProduct" : {

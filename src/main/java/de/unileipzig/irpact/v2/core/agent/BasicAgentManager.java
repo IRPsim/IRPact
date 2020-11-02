@@ -21,6 +21,7 @@ public class BasicAgentManager implements AgentManager {
 
     public BasicAgentManager(Set<ConsumerAgentGroup> consumerAgentGroups, Map<ConsumerAgentGroup, Integer> agentCount) {
         this.consumerAgentGroups = consumerAgentGroups;
+        this.agentCount = agentCount;
     }
 
     @Override
@@ -64,5 +65,13 @@ public class BasicAgentManager implements AgentManager {
     @Override
     public int getNumberOfAgents(ConsumerAgentGroup group) {
         return agentCount.getOrDefault(group, 0);
+    }
+
+    @Override
+    public int sumNumberOfConsumerAgents() {
+        return agentCount.values()
+                .stream()
+                .mapToInt(v -> v)
+                .sum();
     }
 }

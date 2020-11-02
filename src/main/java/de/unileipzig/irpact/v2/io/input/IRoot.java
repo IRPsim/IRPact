@@ -1,12 +1,15 @@
 package de.unileipzig.irpact.v2.io.input;
 
 import de.unileipzig.irpact.v2.commons.CollectionUtil;
-import de.unileipzig.irpact.v2.def.ToDo;
+import de.unileipzig.irpact.v2.develop.ToDo;
 import de.unileipzig.irpact.v2.io.input.affinity.IBasicAffinitiesEntry;
 import de.unileipzig.irpact.v2.io.input.affinity.IBasicAffinityMapping;
 import de.unileipzig.irpact.v2.io.input.agent.consumer.IConsumerAgentGroup;
 import de.unileipzig.irpact.v2.io.input.agent.consumer.IConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.v2.io.input.awareness.IAwareness;
 import de.unileipzig.irpact.v2.io.input.awareness.IFixedProductAwareness;
+import de.unileipzig.irpact.v2.io.input.awareness.ISimpleAwareness;
+import de.unileipzig.irpact.v2.io.input.awareness.IThresholdAwareness;
 import de.unileipzig.irpact.v2.io.input.distribution.*;
 import de.unileipzig.irpact.v2.io.input.network.IFastHeterogeneousSmallWorldTopology;
 import de.unileipzig.irpact.v2.io.input.network.IFastHeterogeneousSmallWorldTopologyEntry;
@@ -43,7 +46,10 @@ public class IRoot implements RootClass {
             ParserInput.newInstance(Type.INPUT, IConsumerAgentGroup.class),
             ParserInput.newInstance(Type.INPUT, IConsumerAgentGroupAttribute.class),
             //awareness
+            ParserInput.newInstance(Type.INPUT, IAwareness.class),
             ParserInput.newInstance(Type.INPUT, IFixedProductAwareness.class),
+            ParserInput.newInstance(Type.INPUT, ISimpleAwareness.class),
+            ParserInput.newInstance(Type.INPUT, IThresholdAwareness.class),
             //distribution
             ParserInput.newInstance(Type.INPUT, IBooleanDistribution.class),
             ParserInput.newInstance(Type.INPUT, IConstantUnivariateDistribution.class),
@@ -98,6 +104,9 @@ public class IRoot implements RootClass {
     @ToDo("interface einfuegen")
     @FieldDefinition
     public IFastHeterogeneousSmallWorldTopology[] topology;
+
+    @FieldDefinition
+    public IGeneralSettings generalSettings;
 
     public IRoot() {
     }

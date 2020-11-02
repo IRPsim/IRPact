@@ -4,7 +4,7 @@
       "sca_global_debugLevel" : {
         "tags" : [ "input", "debugLevel", "global" ],
         "data-type" : "integer",
-        "index" : 61,
+        "index" : 67,
         "default" : 0,
         "name" : "sca_global_debugLevel",
         "type-details" : {
@@ -21,7 +21,7 @@
       "set_IMassPoint" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 23,
+        "index" : 29,
         "default" : [ ],
         "name" : "set_IMassPoint",
         "type-details" : { },
@@ -32,7 +32,7 @@
         "attributes" : [ {
           "tags" : [ "input", "mpValue", "IMassPoint" ],
           "data-type" : "float",
-          "index" : 24,
+          "index" : 30,
           "default" : 0.0,
           "name" : "par_IMassPoint_mpValue",
           "type-details" : {
@@ -47,7 +47,7 @@
         }, {
           "tags" : [ "input", "mpWeight", "IMassPoint" ],
           "data-type" : "float",
-          "index" : 25,
+          "index" : 31,
           "default" : 0.0,
           "name" : "par_IMassPoint_mpWeight",
           "type-details" : {
@@ -62,10 +62,39 @@
         } ],
         "dependencies" : [ ]
       },
+      "set_IThresholdAwareness" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 20,
+        "default" : [ ],
+        "name" : "set_IThresholdAwareness",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "IThresholdAwareness",
+        "supersets" : [ "set_IAwareness" ],
+        "attributes" : [ {
+          "tags" : [ "input", "awarenessThreshold", "IThresholdAwareness" ],
+          "data-type" : "float",
+          "index" : 21,
+          "default" : 0.0,
+          "name" : "par_IThresholdAwareness_awarenessThreshold",
+          "type-details" : {
+            "module-raw" : "awarenessThreshold",
+            "type" : "IThresholdAwareness",
+            "module" : "awarenessThreshold",
+            "type-raw" : "IThresholdAwareness"
+          },
+          "type" : "parameter",
+          "identifier" : "awarenessThreshold",
+          "dependencies" : [ "set_IThresholdAwareness" ]
+        } ],
+        "dependencies" : [ "set_IAwareness" ]
+      },
       "set_IConsumerAgentGroupAttribute" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 10,
+        "index" : 11,
         "default" : [ ],
         "name" : "set_IConsumerAgentGroupAttribute",
         "type-details" : { },
@@ -79,7 +108,7 @@
       "set_IFastHeterogeneousSmallWorldTopologyEntry" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 37,
+        "index" : 43,
         "default" : [ ],
         "name" : "set_IFastHeterogeneousSmallWorldTopologyEntry",
         "type-details" : { },
@@ -90,7 +119,7 @@
         "attributes" : [ {
           "tags" : [ "input", "beta", "IFastHeterogeneousSmallWorldTopologyEntry" ],
           "data-type" : "float",
-          "index" : 39,
+          "index" : 45,
           "default" : 0.0,
           "name" : "par_IFastHeterogeneousSmallWorldTopologyEntry_beta",
           "type-details" : {
@@ -105,7 +134,7 @@
         }, {
           "tags" : [ "input", "z", "IFastHeterogeneousSmallWorldTopologyEntry" ],
           "data-type" : "integer",
-          "index" : 40,
+          "index" : 46,
           "default" : 0,
           "name" : "par_IFastHeterogeneousSmallWorldTopologyEntry_z",
           "type-details" : {
@@ -123,7 +152,7 @@
       "set_IDiscreteTimeModel" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 56,
+        "index" : 62,
         "default" : [ ],
         "name" : "set_IDiscreteTimeModel",
         "type-details" : { },
@@ -134,7 +163,7 @@
         "attributes" : [ {
           "tags" : [ "input", "delta", "IDiscreteTimeModel" ],
           "data-type" : "integer",
-          "index" : 57,
+          "index" : 63,
           "default" : 1,
           "name" : "par_IDiscreteTimeModel_delta",
           "type-details" : {
@@ -149,7 +178,7 @@
         }, {
           "tags" : [ "input", "timePerTickInMs", "IDiscreteTimeModel" ],
           "data-type" : "integer",
-          "index" : 58,
+          "index" : 64,
           "default" : 900000,
           "name" : "par_IDiscreteTimeModel_timePerTickInMs",
           "type-details" : {
@@ -164,7 +193,7 @@
         }, {
           "tags" : [ "input", "discDelay", "IDiscreteTimeModel" ],
           "data-type" : "integer",
-          "index" : 59,
+          "index" : 65,
           "default" : 86400000,
           "name" : "par_IDiscreteTimeModel_discDelay",
           "type-details" : {
@@ -179,10 +208,39 @@
         } ],
         "dependencies" : [ "set_ITimeModel" ]
       },
+      "set_ISimpleAwareness" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 18,
+        "default" : [ ],
+        "name" : "set_ISimpleAwareness",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ ],
+        "identifier" : "ISimpleAwareness",
+        "supersets" : [ "set_IAwareness" ],
+        "attributes" : [ {
+          "tags" : [ "input", "placeholder", "ISimpleAwareness" ],
+          "data-type" : "integer",
+          "index" : 19,
+          "default" : 0,
+          "name" : "par_ISimpleAwareness_placeholder",
+          "type-details" : {
+            "module-raw" : "placeholder",
+            "type" : "ISimpleAwareness",
+            "module" : "placeholder",
+            "type-raw" : "ISimpleAwareness"
+          },
+          "type" : "parameter",
+          "identifier" : "placeholder",
+          "dependencies" : [ "set_ISimpleAwareness" ]
+        } ],
+        "dependencies" : [ "set_IAwareness" ]
+      },
       "set_IFixedProductAttribute" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 44,
+        "index" : 50,
         "default" : [ ],
         "name" : "set_IFixedProductAttribute",
         "type-details" : { },
@@ -193,7 +251,7 @@
         "attributes" : [ {
           "tags" : [ "input", "fpaValue", "IFixedProductAttribute" ],
           "data-type" : "float",
-          "index" : 46,
+          "index" : 52,
           "default" : 0.0,
           "name" : "par_IFixedProductAttribute_fpaValue",
           "type-details" : {
@@ -211,7 +269,7 @@
       "set_IBooleanDistribution" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 16,
+        "index" : 22,
         "default" : [ ],
         "name" : "set_IBooleanDistribution",
         "type-details" : { },
@@ -222,7 +280,7 @@
         "attributes" : [ {
           "tags" : [ "input", "boolDistSeed", "IBooleanDistribution" ],
           "data-type" : "integer",
-          "index" : 17,
+          "index" : 23,
           "default" : 0,
           "name" : "par_IBooleanDistribution_boolDistSeed",
           "type-details" : {
@@ -240,7 +298,7 @@
       "set_IProductGroupAttribute" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 49,
+        "index" : 55,
         "default" : [ ],
         "name" : "set_IProductGroupAttribute",
         "type-details" : { },
@@ -254,7 +312,7 @@
       "set_IFixedProduct" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 41,
+        "index" : 47,
         "default" : [ ],
         "name" : "set_IFixedProduct",
         "type-details" : { },
@@ -268,7 +326,7 @@
       "set_IFiniteMassPointsDiscreteDistribution" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 20,
+        "index" : 26,
         "default" : [ ],
         "name" : "set_IFiniteMassPointsDiscreteDistribution",
         "type-details" : { },
@@ -279,7 +337,7 @@
         "attributes" : [ {
           "tags" : [ "input", "fmpSeed", "IFiniteMassPointsDiscreteDistribution" ],
           "data-type" : "integer",
-          "index" : 21,
+          "index" : 27,
           "default" : 0,
           "name" : "par_IFiniteMassPointsDiscreteDistribution_fmpSeed",
           "type-details" : {
@@ -326,7 +384,7 @@
       "set_IUnivariateDoubleDistribution" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 30,
+        "index" : 36,
         "default" : [ ],
         "name" : "set_IUnivariateDoubleDistribution",
         "type-details" : { },
@@ -338,10 +396,25 @@
         "attributes" : [ ],
         "dependencies" : [ ]
       },
+      "set_IAwareness" : {
+        "tags" : [ "input" ],
+        "data-type" : "string",
+        "index" : 13,
+        "default" : [ ],
+        "name" : "set_IAwareness",
+        "type-details" : { },
+        "type" : "set",
+        "subsets" : [ "set_IThresholdAwareness", "set_ISimpleAwareness" ],
+        "hidden" : true,
+        "identifier" : "IAwareness",
+        "supersets" : [ ],
+        "attributes" : [ ],
+        "dependencies" : [ ]
+      },
       "set_ITimeModel" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 60,
+        "index" : 66,
         "default" : [ ],
         "name" : "set_ITimeModel",
         "type-details" : { },
@@ -356,7 +429,7 @@
       "set_IFixedProductAwareness" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 12,
+        "index" : 14,
         "default" : [ ],
         "name" : "set_IFixedProductAwareness",
         "type-details" : { },
@@ -384,7 +457,7 @@
       "set_IProductGroup" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 47,
+        "index" : 53,
         "default" : [ ],
         "name" : "set_IProductGroup",
         "type-details" : { },
@@ -427,7 +500,7 @@
       "set_IRandomBoundedDistribution" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 26,
+        "index" : 32,
         "default" : [ ],
         "name" : "set_IRandomBoundedDistribution",
         "type-details" : { },
@@ -438,7 +511,7 @@
         "attributes" : [ {
           "tags" : [ "input", "rndDistLowerBound", "IRandomBoundedDistribution" ],
           "data-type" : "float",
-          "index" : 27,
+          "index" : 33,
           "default" : 0.0,
           "name" : "par_IRandomBoundedDistribution_rndDistLowerBound",
           "type-details" : {
@@ -453,7 +526,7 @@
         }, {
           "tags" : [ "input", "rndDistUpperBound", "IRandomBoundedDistribution" ],
           "data-type" : "float",
-          "index" : 28,
+          "index" : 34,
           "default" : 0.0,
           "name" : "par_IRandomBoundedDistribution_rndDistUpperBound",
           "type-details" : {
@@ -468,7 +541,7 @@
         }, {
           "tags" : [ "input", "rndDistSeed", "IRandomBoundedDistribution" ],
           "data-type" : "integer",
-          "index" : 29,
+          "index" : 35,
           "default" : 0,
           "name" : "par_IRandomBoundedDistribution_rndDistSeed",
           "type-details" : {
@@ -486,7 +559,7 @@
       "set_IConstantUnivariateDistribution" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 18,
+        "index" : 24,
         "default" : [ ],
         "name" : "set_IConstantUnivariateDistribution",
         "type-details" : { },
@@ -497,7 +570,7 @@
         "attributes" : [ {
           "tags" : [ "input", "constDistValue", "IConstantUnivariateDistribution" ],
           "data-type" : "float",
-          "index" : 19,
+          "index" : 25,
           "default" : 0.0,
           "name" : "par_IConstantUnivariateDistribution_constDistValue",
           "type-details" : {
@@ -515,7 +588,7 @@
       "set_IFastHeterogeneousSmallWorldTopology" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 31,
+        "index" : 37,
         "default" : [ ],
         "name" : "set_IFastHeterogeneousSmallWorldTopology",
         "type-details" : { },
@@ -526,7 +599,7 @@
         "attributes" : [ {
           "tags" : [ "input", "edgeType", "IFastHeterogeneousSmallWorldTopology" ],
           "data-type" : "integer",
-          "index" : 32,
+          "index" : 38,
           "default" : 0,
           "name" : "par_IFastHeterogeneousSmallWorldTopology_edgeType",
           "type-details" : {
@@ -541,7 +614,7 @@
         }, {
           "tags" : [ "input", "isSelfReferential", "IFastHeterogeneousSmallWorldTopology" ],
           "data-type" : "boolean",
-          "index" : 33,
+          "index" : 39,
           "default" : 0,
           "name" : "par_IFastHeterogeneousSmallWorldTopology_isSelfReferential",
           "type-details" : {
@@ -556,7 +629,7 @@
         }, {
           "tags" : [ "input", "initialWeight", "IFastHeterogeneousSmallWorldTopology" ],
           "data-type" : "float",
-          "index" : 34,
+          "index" : 40,
           "default" : 0.0,
           "name" : "par_IFastHeterogeneousSmallWorldTopology_initialWeight",
           "type-details" : {
@@ -571,7 +644,7 @@
         }, {
           "tags" : [ "input", "topoSeed", "IFastHeterogeneousSmallWorldTopology" ],
           "data-type" : "integer",
-          "index" : 35,
+          "index" : 41,
           "default" : 0,
           "name" : "par_IFastHeterogeneousSmallWorldTopology_topoSeed",
           "type-details" : {
@@ -600,7 +673,7 @@
         "attributes" : [ {
           "tags" : [ "input", "informationAuthority", "IConsumerAgentGroup" ],
           "data-type" : "float",
-          "index" : 8,
+          "index" : 9,
           "default" : 0.0,
           "name" : "par_IConsumerAgentGroup_informationAuthority",
           "type-details" : {
@@ -615,7 +688,7 @@
         }, {
           "tags" : [ "input", "numberOfAgents", "IConsumerAgentGroup" ],
           "data-type" : "integer",
-          "index" : 9,
+          "index" : 10,
           "default" : 0,
           "name" : "par_IConsumerAgentGroup_numberOfAgents",
           "type-details" : {
@@ -633,7 +706,7 @@
       "set_ISpace2D" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 51,
+        "index" : 57,
         "default" : [ ],
         "name" : "set_ISpace2D",
         "type-details" : { },
@@ -644,7 +717,7 @@
         "attributes" : [ {
           "tags" : [ "input", "metricID", "ISpace2D" ],
           "data-type" : "integer",
-          "index" : 52,
+          "index" : 58,
           "default" : 0,
           "name" : "par_ISpace2D_metricID",
           "type-details" : {
@@ -662,7 +735,7 @@
       "set_IContinuousTimeModel" : {
         "tags" : [ "input" ],
         "data-type" : "string",
-        "index" : 53,
+        "index" : 59,
         "default" : [ ],
         "name" : "set_IContinuousTimeModel",
         "type-details" : { },
@@ -673,7 +746,7 @@
         "attributes" : [ {
           "tags" : [ "input", "dilation", "IContinuousTimeModel" ],
           "data-type" : "float",
-          "index" : 54,
+          "index" : 60,
           "default" : 86400.0,
           "name" : "par_IContinuousTimeModel_dilation",
           "type-details" : {
@@ -688,7 +761,7 @@
         }, {
           "tags" : [ "input", "contDelay", "IContinuousTimeModel" ],
           "data-type" : "integer",
-          "index" : 55,
+          "index" : 61,
           "default" : 86400000,
           "name" : "par_IContinuousTimeModel_contDelay",
           "type-details" : {
@@ -705,10 +778,29 @@
       }
     },
     "tables" : {
+      "par_link_IConsumerAgentGroup_IAwareness_productAwareness" : {
+        "tags" : [ "input", "IConsumerAgentGroup", "link", "IAwareness", "productAwareness" ],
+        "data-type" : "boolean",
+        "index" : 8,
+        "default" : 0,
+        "name" : "par_link_IConsumerAgentGroup_IAwareness_productAwareness",
+        "type-details" : {
+          "module-raw" : "IConsumerAgentGroup",
+          "type" : "link",
+          "module" : "IConsumerAgentGroup",
+          "reference" : "IAwareness",
+          "reference-raw" : "IAwareness",
+          "type-raw" : "link",
+          "description-raw" : [ "productAwareness" ]
+        },
+        "type" : "parameter",
+        "identifier" : "productAwareness",
+        "dependencies" : [ "set_IConsumerAgentGroup", "set_IAwareness" ]
+      },
       "par_link_IFiniteMassPointsDiscreteDistribution_IMassPoint_massPoints" : {
         "tags" : [ "input", "IFiniteMassPointsDiscreteDistribution", "link", "IMassPoint", "massPoints" ],
         "data-type" : "boolean",
-        "index" : 22,
+        "index" : 28,
         "default" : 0,
         "name" : "par_link_IFiniteMassPointsDiscreteDistribution_IMassPoint_massPoints",
         "type-details" : {
@@ -727,7 +819,7 @@
       "par_link_IConsumerAgentGroupAttribute_IUnivariateDoubleDistribution_cagAttrDistribution" : {
         "tags" : [ "input", "IConsumerAgentGroupAttribute", "link", "IUnivariateDoubleDistribution", "cagAttrDistribution" ],
         "data-type" : "boolean",
-        "index" : 11,
+        "index" : 12,
         "default" : 0,
         "name" : "par_link_IConsumerAgentGroupAttribute_IUnivariateDoubleDistribution_cagAttrDistribution",
         "type-details" : {
@@ -746,7 +838,7 @@
       "par_link_IFastHeterogeneousSmallWorldTopology_IFastHeterogeneousSmallWorldTopologyEntry_topoEntries" : {
         "tags" : [ "input", "IFastHeterogeneousSmallWorldTopology", "link", "IFastHeterogeneousSmallWorldTopologyEntry", "topoEntries" ],
         "data-type" : "boolean",
-        "index" : 36,
+        "index" : 42,
         "default" : 0,
         "name" : "par_link_IFastHeterogeneousSmallWorldTopology_IFastHeterogeneousSmallWorldTopologyEntry_topoEntries",
         "type-details" : {
@@ -765,7 +857,7 @@
       "par_link_IFixedProductAttribute_IProductGroupAttribute_fpaGroupAttribute" : {
         "tags" : [ "input", "IFixedProductAttribute", "link", "IProductGroupAttribute", "fpaGroupAttribute" ],
         "data-type" : "boolean",
-        "index" : 45,
+        "index" : 51,
         "default" : 0,
         "name" : "par_link_IFixedProductAttribute_IProductGroupAttribute_fpaGroupAttribute",
         "type-details" : {
@@ -784,7 +876,7 @@
       "par_link_IFixedProductAwareness_IConsumerAgentGroup_awarenessAgentGroup" : {
         "tags" : [ "input", "IFixedProductAwareness", "link", "IConsumerAgentGroup", "awarenessAgentGroup" ],
         "data-type" : "boolean",
-        "index" : 13,
+        "index" : 15,
         "default" : 0,
         "name" : "par_link_IFixedProductAwareness_IConsumerAgentGroup_awarenessAgentGroup",
         "type-details" : {
@@ -803,7 +895,7 @@
       "par_link_IFixedProductAwareness_IUnivariateDoubleDistribution_awarenessDistribution" : {
         "tags" : [ "input", "IFixedProductAwareness", "link", "IUnivariateDoubleDistribution", "awarenessDistribution" ],
         "data-type" : "boolean",
-        "index" : 15,
+        "index" : 17,
         "default" : 0,
         "name" : "par_link_IFixedProductAwareness_IUnivariateDoubleDistribution_awarenessDistribution",
         "type-details" : {
@@ -822,7 +914,7 @@
       "par_link_IFixedProduct_IFixedProductAttribute_fpAttributes" : {
         "tags" : [ "input", "IFixedProduct", "link", "IFixedProductAttribute", "fpAttributes" ],
         "data-type" : "boolean",
-        "index" : 43,
+        "index" : 49,
         "default" : 0,
         "name" : "par_link_IFixedProduct_IFixedProductAttribute_fpAttributes",
         "type-details" : {
@@ -841,7 +933,7 @@
       "par_link_IFixedProductAwareness_IFixedProduct_awarenessFixedProduct" : {
         "tags" : [ "input", "IFixedProductAwareness", "link", "IFixedProduct", "awarenessFixedProduct" ],
         "data-type" : "boolean",
-        "index" : 14,
+        "index" : 16,
         "default" : 0,
         "name" : "par_link_IFixedProductAwareness_IFixedProduct_awarenessFixedProduct",
         "type-details" : {
@@ -860,7 +952,7 @@
       "par_link_IFastHeterogeneousSmallWorldTopologyEntry_IConsumerAgentGroup_topoGroup" : {
         "tags" : [ "input", "IFastHeterogeneousSmallWorldTopologyEntry", "link", "IConsumerAgentGroup", "topoGroup" ],
         "data-type" : "boolean",
-        "index" : 38,
+        "index" : 44,
         "default" : 0,
         "name" : "par_link_IFastHeterogeneousSmallWorldTopologyEntry_IConsumerAgentGroup_topoGroup",
         "type-details" : {
@@ -917,7 +1009,7 @@
       "par_link_IProductGroupAttribute_IUnivariateDoubleDistribution_pgAttrDistribution" : {
         "tags" : [ "input", "IProductGroupAttribute", "link", "IUnivariateDoubleDistribution", "pgAttrDistribution" ],
         "data-type" : "boolean",
-        "index" : 50,
+        "index" : 56,
         "default" : 0,
         "name" : "par_link_IProductGroupAttribute_IUnivariateDoubleDistribution_pgAttrDistribution",
         "type-details" : {
@@ -936,7 +1028,7 @@
       "par_link_IProductGroup_IProductGroupAttribute_pgAttributes" : {
         "tags" : [ "input", "IProductGroup", "link", "IProductGroupAttribute", "pgAttributes" ],
         "data-type" : "boolean",
-        "index" : 48,
+        "index" : 54,
         "default" : 0,
         "name" : "par_link_IProductGroup_IProductGroupAttribute_pgAttributes",
         "type-details" : {
@@ -955,7 +1047,7 @@
       "par_link_IFixedProduct_IProductGroup_fpGroup" : {
         "tags" : [ "input", "IFixedProduct", "link", "IProductGroup", "fpGroup" ],
         "data-type" : "boolean",
-        "index" : 42,
+        "index" : 48,
         "default" : 0,
         "name" : "par_link_IFixedProduct_IProductGroup_fpGroup",
         "type-details" : {
@@ -1026,6 +1118,9 @@
           "description" : "Keine Beschreibung",
           "set" : "set_IConsumerAgentGroup",
           "contents" : [ {
+            "name" : "par_link_IConsumerAgentGroup_IAwareness_productAwareness",
+            "type" : "tables"
+          }, {
             "name" : "par_IConsumerAgentGroup_informationAuthority",
             "type" : "attributes"
           }, {
@@ -1071,6 +1166,19 @@
           "contents" : [ {
             "name" : "par_link_IConsumerAgentGroupAttribute_IUnivariateDoubleDistribution_cagAttrDistribution",
             "type" : "tables"
+          } ]
+        }, {
+          "label" : "Awareness",
+          "description" : "Keine Beschreibung",
+          "contents" : [ ],
+          "children" : [ {
+            "label" : "Simple",
+            "description" : "Keine Beschreibung",
+            "set" : "set_IThresholdAwareness",
+            "contents" : [ {
+              "name" : "par_IThresholdAwareness_awarenessThreshold",
+              "type" : "attributes"
+            } ]
           } ]
         } ]
       } ]

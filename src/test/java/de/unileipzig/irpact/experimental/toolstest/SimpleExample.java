@@ -1,27 +1,7 @@
 package de.unileipzig.irpact.experimental.toolstest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.commons.JsonUtil;
-import de.unileipzig.irpact.experimental.TestFiles;
-import de.unileipzig.irpact.start.Start;
-import de.unileipzig.irpact.start.hardcodeddemo.def.in.AgentGroup;
-import de.unileipzig.irpact.start.hardcodeddemo.def.in.InputRoot;
-import de.unileipzig.irpact.start.hardcodeddemo.def.in.InputScalars;
-import de.unileipzig.irpact.start.hardcodeddemo.def.in.Product;
-import de.unileipzig.irpact.start.hardcodeddemo.def.out.OutputRoot;
-import de.unileipzig.irpact.v2.def.ToDo;
-import de.unileipzig.irptools.defstructure.*;
-import de.unileipzig.irptools.uiedn.Sections;
-import de.unileipzig.irptools.uiedn.io.EdnPrinter;
-import de.unileipzig.irptools.uiedn.io.PrinterFormat;
+import de.unileipzig.irpact.v2.develop.ToDo;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 /**
  * @author Daniel Abitz

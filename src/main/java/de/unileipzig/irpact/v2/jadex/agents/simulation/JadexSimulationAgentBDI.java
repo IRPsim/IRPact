@@ -1,8 +1,11 @@
 package de.unileipzig.irpact.v2.jadex.agents.simulation;
 
 import de.unileipzig.irpact.v2.jadex.agents.AbstractJadexAgentBDI;
+import de.unileipzig.irpact.v2.jadex.simulation.JadexSimulationEnvironment;
+import jadex.bdiv3.BDIAgentFactory;
 import jadex.bridge.service.ServiceScope;
 import jadex.bridge.service.annotation.Service;
+import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.ProvidedService;
 import jadex.micro.annotation.ProvidedServices;
 import org.slf4j.Logger;
@@ -11,6 +14,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Daniel Abitz
  */
+@Agent(type = BDIAgentFactory.TYPE)
 @Service
 @ProvidedServices({
         @ProvidedService(type = SimulationService.class, scope = ServiceScope.NETWORK)
@@ -40,13 +44,17 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
 
     @Override
     protected void onStart() {
-        initData();
         log().trace("[{}] init", getName());
+        getEnvironment().getSimulationControl().reportAgentCreation();
     }
 
     @Override
     protected void onEnd() {
-        initData();
         log().trace("[{}] init", getName());
+    }
+
+    @Override
+    public JadexSimulationEnvironment getEnvironment() {
+        return getData().getEnvironment();
     }
 }

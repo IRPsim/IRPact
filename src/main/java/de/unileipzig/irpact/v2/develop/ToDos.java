@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.v2.def;
+package de.unileipzig.irpact.v2.develop;
 
 /**
  * @author Daniel Abitz

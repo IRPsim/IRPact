@@ -1,7 +1,10 @@
 package de.unileipzig.irpact.v2.jadex.agents;
 
 import de.unileipzig.irpact.v2.core.misc.InitializationData;
+import de.unileipzig.irpact.v2.core.time.TimeModel;
 import de.unileipzig.irpact.v2.jadex.JadexConstants;
+import de.unileipzig.irpact.v2.jadex.simulation.JadexSimulationEnvironment;
+import de.unileipzig.irpact.v2.jadex.time.JadexTimeModel;
 import jadex.bridge.service.annotation.OnEnd;
 import jadex.bridge.service.annotation.OnInit;
 import jadex.bridge.service.annotation.OnStart;
@@ -15,7 +18,6 @@ import java.util.Map;
 public abstract class AbstractAgentBase {
 
     protected InitializationData data;
-    protected String name;
 
     public AbstractAgentBase() {
     }
@@ -29,10 +31,16 @@ public abstract class AbstractAgentBase {
     }
 
     public String getName() {
-        return name;
+        return data.getName();
     }
 
     protected abstract Logger log();
+
+    public abstract JadexSimulationEnvironment getEnvironment();
+
+    protected JadexTimeModel getTimeModel() {
+        return getEnvironment().getTimeModel();
+    }
 
     @OnInit
     protected abstract void onInit();

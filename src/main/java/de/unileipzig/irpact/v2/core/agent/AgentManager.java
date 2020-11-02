@@ -28,4 +28,6 @@ public interface AgentManager {
     void setNumberOfAgents(ConsumerAgentGroup group, int count);
 
     int getNumberOfAgents(ConsumerAgentGroup group);
+
+    int sumNumberOfConsumerAgents();
 }

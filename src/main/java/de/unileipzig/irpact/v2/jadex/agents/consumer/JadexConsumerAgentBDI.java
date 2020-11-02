@@ -6,9 +6,15 @@ import de.unileipzig.irpact.v2.core.agent.consumer.ConsumerAgentAttribute;
 import de.unileipzig.irpact.v2.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.v2.core.agent.consumer.ConsumerAgentInitializationData;
 import de.unileipzig.irpact.v2.core.product.Product;
-import de.unileipzig.irpact.v2.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.v2.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.v2.jadex.agents.AbstractJadexAgentBDI;
+import de.unileipzig.irpact.v2.jadex.agents.simulation.SimulationService;
+import de.unileipzig.irpact.v2.jadex.simulation.JadexSimulationEnvironment;
+import de.unileipzig.irpact.v2.jadex.util.JadexUtil2;
+import jadex.bdiv3.BDIAgentFactory;
+import jadex.micro.annotation.Agent;
+import jadex.micro.annotation.RequiredService;
+import jadex.micro.annotation.RequiredServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,10 +25,15 @@ import java.util.Set;
 /**
  * @author Daniel Abitz
  */
+@Agent(type = BDIAgentFactory.TYPE)
+@RequiredServices(
+        @RequiredService(type = SimulationService.class)
+)
 public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements ConsumerAgent {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(JadexConsumerAgentBDI.class);
 
+    protected SimulationService simulationService;
     protected Set<ConsumerAgentAttribute> attributes = new HashSet<>();
     protected double informationAuthority;
     protected Awareness<Product> productAwareness;
@@ -46,6 +57,21 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         init(getData());
     }
 
+    protected void searchSimulationService() {
+        JadexUtil2.searchPlatformServices(reqFeature, SimulationService.class, result -> {
+            if(simulationService == null) {
+                log().trace("[{}] SimulationService found", getName());
+                simulationService = result;
+                setupAgent();
+            }
+        });
+    }
+
+    protected void setupAgent() {
+        //HIER KOMMEN AUFGABEN HIN
+        simulationService.getEnvironment().getSimulationControl().reportAgentCreation();
+    }
+
     //=========================
     //livecycle
     //=========================
@@ -53,6 +79,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     protected void onInit() {
         initData();
+        searchSimulationService();
         log().trace("[{}] init", getName());
     }
 
@@ -99,7 +126,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public SimulationEnvironment getEnvironment() {
+    public JadexSimulationEnvironment getEnvironment() {
         return getData().getEnvironment();
     }
 

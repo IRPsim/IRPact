@@ -6,7 +6,6 @@ import de.unileipzig.irpact.v2.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.v2.core.agent.consumer.ConsumerAgentInitializationData;
 import de.unileipzig.irpact.v2.core.product.Product;
 import de.unileipzig.irpact.v2.core.spatial.SpatialInformation;
-import de.unileipzig.irpact.v2.def.ToDo;
 import de.unileipzig.irpact.v2.jadex.simulation.JadexSimulationEnvironment;
 import jadex.bridge.service.annotation.Reference;
 

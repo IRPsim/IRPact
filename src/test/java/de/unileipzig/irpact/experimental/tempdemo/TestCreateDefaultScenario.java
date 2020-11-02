@@ -1,21 +1,7 @@
 package de.unileipzig.irpact.experimental.tempdemo;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.commons.JsonUtil;
-import de.unileipzig.irpact.experimental.TestFiles;
-import de.unileipzig.irpact.start.irpact.DefaultScenarioFactory;
-import de.unileipzig.irpact.start.irpact.input.IRPactInputData;
-import de.unileipzig.irpact.temp.jadex.IRPactStarter;
-import de.unileipzig.irpact.v2.def.ToDo;
-import de.unileipzig.irptools.defstructure.AnnotationParser;
-import de.unileipzig.irptools.defstructure.Converter;
-import de.unileipzig.irptools.defstructure.DefinitionCollection;
-import de.unileipzig.irptools.defstructure.DefinitionMapper;
+import de.unileipzig.irpact.v2.develop.ToDo;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

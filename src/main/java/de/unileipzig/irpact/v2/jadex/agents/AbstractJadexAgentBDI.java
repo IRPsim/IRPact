@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.v2.jadex.agents;
 
-import jadex.bdiv3.BDIAgentFactory;
 import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IArgumentsResultsFeature;
 import jadex.bridge.component.IExecutionFeature;
@@ -11,7 +10,6 @@ import jadex.micro.annotation.AgentFeature;
 /**
  * @author Daniel Abitz
  */
-@Agent(type = BDIAgentFactory.TYPE)
 public abstract class AbstractJadexAgentBDI extends AbstractAgentBase {
 
     @Agent

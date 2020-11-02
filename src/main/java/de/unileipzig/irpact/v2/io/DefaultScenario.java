@@ -1,14 +1,17 @@
 package de.unileipzig.irpact.v2.io;
 
+import de.unileipzig.irpact.v2.core.misc.DebugLevel;
 import de.unileipzig.irpact.v2.core.misc.StandardNames;
 import de.unileipzig.irpact.v2.core.network.SocialGraph;
 import de.unileipzig.irpact.v2.core.spatial.twodim.Metric2D;
+import de.unileipzig.irpact.v2.io.input.IGeneralSettings;
 import de.unileipzig.irpact.v2.io.input.IRoot;
 import de.unileipzig.irpact.v2.io.input.affinity.IBasicAffinitiesEntry;
 import de.unileipzig.irpact.v2.io.input.affinity.IBasicAffinityMapping;
 import de.unileipzig.irpact.v2.io.input.agent.consumer.IConsumerAgentGroup;
 import de.unileipzig.irpact.v2.io.input.agent.consumer.IConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.v2.io.input.awareness.IFixedProductAwareness;
+import de.unileipzig.irpact.v2.io.input.awareness.IThresholdAwareness;
 import de.unileipzig.irpact.v2.io.input.distribution.IBooleanDistribution;
 import de.unileipzig.irpact.v2.io.input.distribution.IRandomBoundedDistribution;
 import de.unileipzig.irpact.v2.io.input.network.IFastHeterogeneousSmallWorldTopology;
@@ -46,9 +49,11 @@ public class DefaultScenario implements DefaultScenarioFactory {
         );
     }
 
-    protected IConsumerAgentGroup createGroup(int id, String name, double informationAuthority) {
+    protected IConsumerAgentGroup createGroup(int id, String name, int numberOfAgents, double informationAuthority) {
         IConsumerAgentGroup grp = new IConsumerAgentGroup();
         grp._name = name;
+        grp.numberOfAgents = numberOfAgents;
+        grp.productAwareness = new IThresholdAwareness(name + "_awa_" + id, 10.0);
         grp.informationAuthority = informationAuthority;
         grp.cagAttributes = new IConsumerAgentGroupAttribute[]{
                 createAttribute(id, StandardNames.PURCHASE_POWER, id),
@@ -65,8 +70,8 @@ public class DefaultScenario implements DefaultScenarioFactory {
 
     @Override
     public IRoot createDefaultScenario() {
-        IConsumerAgentGroup grp1 = createGroup(1, "TestGroup1", 1.0);
-        IConsumerAgentGroup grp2 = createGroup(2, "TestGroup2", 0.5);
+        IConsumerAgentGroup grp1 = createGroup(1, "TestGroup1", 10, 1.0);
+        IConsumerAgentGroup grp2 = createGroup(2, "TestGroup2", 5, 0.5);
 
         IBasicAffinityMapping affinityMapping = new IBasicAffinityMapping();
         affinityMapping._name = "MyAffinity";
@@ -94,7 +99,7 @@ public class DefaultScenario implements DefaultScenarioFactory {
         };
         IFixedProductAwareness[] awareness = {
                 new IFixedProductAwareness("Awareness1", grp1, testPv, new IRandomBoundedDistribution("Awareness1_dist", 0, 10, 1)),
-                new IFixedProductAwareness("Awareness2", grp1, testPv, new IRandomBoundedDistribution("Awareness2_dist", 0, 10, 2))
+                new IFixedProductAwareness("Awareness2", grp2, testPv, new IRandomBoundedDistribution("Awareness2_dist", 0, 10, 2))
         };
 
         ISpace2D space2D = new ISpace2D("MySpace2D", Metric2D.EUCLIDEAN.id());
@@ -112,6 +117,9 @@ public class DefaultScenario implements DefaultScenarioFactory {
                 new IFastHeterogeneousSmallWorldTopologyEntry("TestGroup2-Topology", grp2, 0.02, 5)
         };
 
+        IGeneralSettings generalSettings = new IGeneralSettings();
+        generalSettings.debugLevel = DebugLevel.TRACE.id();
+
         IRoot root = new IRoot();
         root.consumerAgentGroups = new IConsumerAgentGroup[]{grp1, grp2};
         root.affinityMapping = new IBasicAffinityMapping[]{affinityMapping};
@@ -121,6 +129,7 @@ public class DefaultScenario implements DefaultScenarioFactory {
         root.spatialModel = new ISpace2D[]{space2D};
         root.timeModel = new ITimeModel[]{timeModel};
         root.topology = new IFastHeterogeneousSmallWorldTopology[]{topology};
+        root.generalSettings = generalSettings;
         return root;
     }
 }

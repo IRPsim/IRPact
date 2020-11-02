@@ -5,17 +5,17 @@ import de.unileipzig.irpact.v2.commons.distribution.UnivariateDoubleDistribution
 import de.unileipzig.irpact.v2.core.agent.consumer.BasicConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.v2.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.v2.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
+import de.unileipzig.irpact.v2.core.misc.DebugLevel;
 import de.unileipzig.irpact.v2.core.network.BasicGraphConfiguration;
 import de.unileipzig.irpact.v2.core.network.BasicSocialNetwork;
 import de.unileipzig.irpact.v2.core.network.SocialGraph;
 import de.unileipzig.irpact.v2.core.network.topology.FastHeterogeneousSmallWorldTopology;
 import de.unileipzig.irpact.v2.core.product.*;
-import de.unileipzig.irpact.v2.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.v2.core.spatial.Metric;
 import de.unileipzig.irpact.v2.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.v2.core.spatial.twodim.RandomPoint2DDistribution;
 import de.unileipzig.irpact.v2.core.spatial.twodim.Space2D;
-import de.unileipzig.irpact.v2.def.ToDo;
+import de.unileipzig.irpact.v2.develop.ToDo;
 import de.unileipzig.irpact.v2.io.input.IRoot;
 import de.unileipzig.irpact.v2.io.input.affinity.IBasicAffinitiesEntry;
 import de.unileipzig.irpact.v2.io.input.affinity.IBasicAffinityMapping;
@@ -32,6 +32,7 @@ import de.unileipzig.irpact.v2.io.input.spatial.ISpace2D;
 import de.unileipzig.irpact.v2.io.input.time.ITimeModel;
 import de.unileipzig.irpact.v2.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.v2.jadex.simulation.BasicJadexSimulationEnvironment;
+import de.unileipzig.irpact.v2.jadex.simulation.JadexSimulationEnvironment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +42,8 @@ import java.util.Map;
  */
 @ToDo("selbe inputinstance -> selbe instance hier machen - keine neue erstellen (cachen)")
 public class JadexInputConverter implements InputConverter {
+
+    public static JadexInputConverter INSTANCE = new JadexInputConverter();
 
     public JadexInputConverter() {
     }
@@ -52,6 +55,7 @@ public class JadexInputConverter implements InputConverter {
             jgrp.setInformationAuthority(grp.getInformationAuthority());
             jgrp.setName(grp.getName());
             jgrp.setSpatialDistribution(new RandomPoint2DDistribution(0, 1, 0, 1, Util.RND.nextLong()));
+            jgrp.setProductAwareness(grp.getProductAwareness().createInstance());
             for(IConsumerAgentGroupAttribute attr: grp.getCagAttributes()) {
                 BasicConsumerAgentGroupAttribute battr = new BasicConsumerAgentGroupAttribute();
                 battr.setName(attr.getName());
@@ -159,14 +163,20 @@ public class JadexInputConverter implements InputConverter {
         env.setSocialNetwork(network);
     }
 
+    protected void initGlobal(BasicJadexSimulationEnvironment environment, IRoot input) {
+        DebugLevel debugLevel = DebugLevel.get(input.generalSettings.getDebugLevel());
+        environment.setDebugLevel(debugLevel);
+    }
+
     @Override
-    public SimulationEnvironment build(IRoot input) {
+    public JadexSimulationEnvironment build(IRoot input) {
         BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
         initConsumerAgentGroups(env, input);
         initProducts(env, input);
         initSpatialModel(env, input);
         initTimeModel(env, input);
         initNetwork(env, input);
+        initGlobal(env, input);
         return env;
     }
 }

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.v2.core.agent.consumer;
 
+import de.unileipzig.irpact.v2.commons.awareness.Awareness;
 import de.unileipzig.irpact.v2.commons.awareness.AwarenessDistributionMapping;
 import de.unileipzig.irpact.v2.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.v2.core.agent.AgentGroup;
@@ -18,6 +19,8 @@ public interface ConsumerAgentGroup extends AgentGroup<ConsumerAgent> {
     Set<ConsumerAgentGroupAttribute> getAttributes();
 
     SpatialDistribution getSpatialDistribution();
+
+    Awareness<Product> getProductAwareness();
 
     AwarenessDistributionMapping<Product, UnivariateDoubleDistribution> getFixedProductAwarenessMapping();
 

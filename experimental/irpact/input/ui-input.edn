@@ -8,7 +8,7 @@
           {
             :label "Groups" 
             :set "set_IConsumerAgentGroup" 
-            :tags [["IConsumerAgentGroup" "informationAuthority"] ["IConsumerAgentGroup" "numberOfAgents"]] 
+            :tags [["link" "IConsumerAgentGroup" "IAwareness" "productAwareness"] ["IConsumerAgentGroup" "informationAuthority"] ["IConsumerAgentGroup" "numberOfAgents"]] 
             :sections [
               {
                 :label "Affinity" 
@@ -33,6 +33,16 @@
             :label "Attribute-Distribution-Mapping" 
             :set "set_IConsumerAgentGroupAttribute" 
             :tags [["link" "IConsumerAgentGroupAttribute" "IUnivariateDoubleDistribution" "cagAttrDistribution"]]
+          } 
+          {
+            :label "Awareness" 
+            :sections [
+              {
+                :label "Simple" 
+                :set "set_IThresholdAwareness" 
+                :tags [["ISimpleAwareness" "placeholder"] ["IThresholdAwareness" "awarenessThreshold"]]
+              }
+            ]
           }
         ]
       }

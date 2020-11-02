@@ -94,6 +94,7 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         this.productAwareness = productAwareness;
     }
 
+    @Override
     public Awareness<Product> getProductAwareness() {
         return productAwareness;
     }

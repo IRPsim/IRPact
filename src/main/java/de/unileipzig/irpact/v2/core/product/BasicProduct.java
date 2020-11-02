@@ -2,6 +2,8 @@ package de.unileipzig.irpact.v2.core.product;
 
 import de.unileipzig.irpact.v2.core.simulation.SimulationEntityBase;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -14,6 +16,11 @@ public class BasicProduct extends SimulationEntityBase implements Product {
     protected boolean fixed = false;
 
     public BasicProduct() {
+        this(new LinkedHashSet<>());
+    }
+
+    public BasicProduct(Set<ProductAttribute> attributes) {
+        this.attributes = attributes;
     }
 
     public BasicProduct(String name, ProductGroup group, Set<ProductAttribute> attributes) {

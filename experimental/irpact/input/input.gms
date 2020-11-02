@@ -30,6 +30,10 @@ SET set_IConsumerAgentGroup(*)
 * - type: Boolean
 PARAMETER par_link_IConsumerAgentGroup_IConsumerAgentGroupAttribute_cagAttributes(set_IConsumerAgentGroup,set_IConsumerAgentGroupAttribute)
 
+* - identifier: productAwareness
+* - type: Boolean
+PARAMETER par_link_IConsumerAgentGroup_IAwareness_productAwareness(set_IConsumerAgentGroup,set_IAwareness)
+
 * - identifier: informationAuthority
 * - type: Float
 PARAMETER par_IConsumerAgentGroup_informationAuthority(set_IConsumerAgentGroup)
@@ -46,6 +50,11 @@ SET set_IConsumerAgentGroupAttribute(*)
 * - type: Boolean
 PARAMETER par_link_IConsumerAgentGroupAttribute_IUnivariateDoubleDistribution_cagAttrDistribution(set_IConsumerAgentGroupAttribute,set_IUnivariateDoubleDistribution)
 
+* - identifier: IAwareness
+* - hidden: 1
+* - type: String
+SET set_IAwareness(*)
+
 * - identifier: IFixedProductAwareness
 * - type: String
 SET set_IFixedProductAwareness(*)
@@ -61,6 +70,22 @@ PARAMETER par_link_IFixedProductAwareness_IFixedProduct_awarenessFixedProduct(se
 * - identifier: awarenessDistribution
 * - type: Boolean
 PARAMETER par_link_IFixedProductAwareness_IUnivariateDoubleDistribution_awarenessDistribution(set_IFixedProductAwareness,set_IUnivariateDoubleDistribution)
+
+* - identifier: ISimpleAwareness
+* - type: String
+SET set_ISimpleAwareness(set_IAwareness)
+
+* - identifier: placeholder
+* - type: Integer
+PARAMETER par_ISimpleAwareness_placeholder(set_ISimpleAwareness)
+
+* - identifier: IThresholdAwareness
+* - type: String
+SET set_IThresholdAwareness(set_IAwareness)
+
+* - identifier: awarenessThreshold
+* - type: Float
+PARAMETER par_IThresholdAwareness_awarenessThreshold(set_IThresholdAwareness)
 
 * - identifier: IBooleanDistribution
 * - type: String

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.v2.io.input.agent.consumer;
 
+import de.unileipzig.irpact.v2.io.input.awareness.IAwareness;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.EdnParameter;
@@ -25,6 +26,9 @@ public class IConsumerAgentGroup {
     public IConsumerAgentGroupAttribute[] cagAttributes;
 
     @FieldDefinition
+    public IAwareness productAwareness;
+
+    @FieldDefinition
     public double informationAuthority;
 
     @FieldDefinition
@@ -47,5 +51,9 @@ public class IConsumerAgentGroup {
 
     public int getNumberOfAgents() {
         return numberOfAgents;
+    }
+
+    public IAwareness getProductAwareness() {
+        return productAwareness;
     }
 }

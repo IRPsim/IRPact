@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.experimental.irpact;
 
 import de.unileipzig.irpact.experimental.TestFiles;
+import de.unileipzig.irpact.start.irpact2.IRPact;
 import de.unileipzig.irpact.v2.io.DefaultScenario;
 import de.unileipzig.irpact.v2.io.input.IRoot;
 import de.unileipzig.irpact.v2.io.output.ORoot;
@@ -66,5 +67,16 @@ public class RealTest {
                 "--frontendOutputFile", outRoot.resolve("frontend.json").toString()
         };
         IRPtools.start(args);
+    }
+
+    @Test
+    void testRun() throws IOException, InterruptedException {
+        Path input = TestFiles.irpact.resolve("scenarios").resolve("default.json");
+        Path output = TestFiles.irpact.resolve("out").resolve("default.out.json");
+        String[] args = {
+                "-i", input.toString(),
+                "-o", output.toString()
+        };
+        IRPact.main(args);
     }
 }
