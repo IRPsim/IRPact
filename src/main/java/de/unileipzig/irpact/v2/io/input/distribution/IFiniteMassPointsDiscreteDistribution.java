@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  */
 @Definition(
         edn = @Edn(
-                path = {"Distribution/FiniteMassPointsDiscreteDistribution"}
+                label = {"Distribution/FiniteMassPointsDiscreteDistribution"}
         )
 )
 public class IFiniteMassPointsDiscreteDistribution implements IUnivariateDoubleDistribution {

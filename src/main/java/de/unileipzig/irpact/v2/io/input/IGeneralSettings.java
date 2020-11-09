@@ -9,7 +9,7 @@ import de.unileipzig.irptools.defstructure.annotation.*;
 @Definition(
         global = true,
         edn = @Edn(
-                path = {"Allgemeine Einstellungen"}
+                label = {"Allgemeine Einstellungen"}
         )
 )
 public class IGeneralSettings {

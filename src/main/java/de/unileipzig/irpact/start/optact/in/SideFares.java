@@ -16,7 +16,7 @@ import de.unileipzig.irptools.defstructure.annotation.Gams;
                 hidden = Constants.TRUE1
         ),
         edn = @Edn(
-                path = "Sets/Tarifteilnehmer"
+                label = "Sets/Tarifteilnehmer"
         )
 )
 public class SideFares extends Side {

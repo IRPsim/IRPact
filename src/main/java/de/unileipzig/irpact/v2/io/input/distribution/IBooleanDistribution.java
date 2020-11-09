@@ -10,7 +10,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = {"Distribution/BooleanDistribution"}
+                label = {"Distribution/BooleanDistribution"}
         )
 )
 public class IBooleanDistribution implements IUnivariateDoubleDistribution {

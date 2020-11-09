@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 @Definition(
         edn = @Edn(
-                path = "Simulation/ContinousTimeModel"
+                label = "Simulation/ContinousTimeModel"
         )
 )
 public class ContinousTimeModel implements TimeModel {

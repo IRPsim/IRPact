@@ -12,7 +12,7 @@ import de.unileipzig.irptools.defstructure.annotation.GamsParameter;
  */
 @Definition(
         edn = @Edn(
-                path = {"TimeModel/Discrete"}
+                label = {"TimeModel/Discrete"}
         )
 )
 public class IDiscreteTimeModel implements ITimeModel {

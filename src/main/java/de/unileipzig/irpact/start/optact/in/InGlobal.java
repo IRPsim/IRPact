@@ -20,7 +20,7 @@ public class InGlobal {
                     identifier = "MWST"
             ),
             edn = @EdnParameter(
-                    path = "Skalare und einfache Zeitreihen/Scalar"
+                    label = "Skalare und einfache Zeitreihen/Scalar"
             )
     )
     public double mwst;
@@ -35,7 +35,7 @@ public class InGlobal {
                             "IF (sca_X_MS_DE_country == 0, sca_X_MS_CH_country = 1)"}
             ),
             edn = @EdnParameter(
-                    path = "Skalare und einfache Zeitreihen/Scalar"
+                    label = "Skalare und einfache Zeitreihen/Scalar"
             )
     )
     public boolean de;
@@ -50,7 +50,7 @@ public class InGlobal {
                             "IF (sca_X_MS_CH_country == 0, sca_X_MS_DE_country = 1)"}
             ),
             edn = @EdnParameter(
-                    path = "Skalare und einfache Zeitreihen/Scalar"
+                    label = "Skalare und einfache Zeitreihen/Scalar"
             )
     )
     public boolean ch;
@@ -64,7 +64,7 @@ public class InGlobal {
                     unit = "[EUR / MWh]"
             ),
             edn = @EdnParameter(
-                    path = "Skalare und einfache Zeitreihen/TimeSeries"
+                    label = "Skalare und einfache Zeitreihen/TimeSeries"
             )
     )
     public DoubleTimeSeries marktpreis;
@@ -78,7 +78,7 @@ public class InGlobal {
             ),
             edn = @EdnParameter(
                     //path = "Komponenten/Speichertechnologien/Hoheitssystematik/Sektorenschlüssel",
-                    path = "Link/Table",
+                    label = "Link/Table",
                     set = "set_tech_DES_ES"
             )
     )
@@ -96,7 +96,7 @@ public class InGlobal {
             ),
             edn = @EdnParameter(
                     //path = "Komponenten/Verbrauchertechnologien/Endkundentarife",
-                    path = "Link/TableWithTimeSeries",
+                    label = "Link/TableWithTimeSeries",
                     delta = Constants.TRUE1,
                     set = "set_load_DS_E"
             )

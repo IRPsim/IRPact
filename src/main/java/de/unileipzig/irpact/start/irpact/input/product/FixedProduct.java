@@ -18,7 +18,7 @@ import java.util.Set;
  */
 @Definition(
         edn = @Edn(
-                path = "Product/FixedProduct"
+                label = "Product/FixedProduct"
         )
 )
 public class FixedProduct {
@@ -30,14 +30,14 @@ public class FixedProduct {
                     identifier = "groupFixedProduct"
             ),
             edn = @EdnParameter(
-                    path = "Link/FixedProduct-ProductGroup"
+                    label = "Link/FixedProduct-ProductGroup"
             )
     )
     public ProductGroup group;
 
     @FieldDefinition(
             edn = @EdnParameter(
-                    path = "Link/FixedProduct-ProductGroupAttribute"
+                    label = "Link/FixedProduct-ProductGroupAttribute"
             )
     )
     @MapInfo(key = ProductGroupAttribute.class, value = double.class)

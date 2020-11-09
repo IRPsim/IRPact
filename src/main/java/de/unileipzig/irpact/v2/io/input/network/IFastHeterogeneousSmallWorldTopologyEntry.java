@@ -10,7 +10,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = {"Network/HeterogeneousSmallWorld/Entry"}
+                label = {"Network/HeterogeneousSmallWorld/Entry"}
         )
 )
 public class IFastHeterogeneousSmallWorldTopologyEntry {

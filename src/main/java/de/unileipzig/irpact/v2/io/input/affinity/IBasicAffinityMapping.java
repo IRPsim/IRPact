@@ -9,7 +9,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = {"Agents", "Consumer", "Groups", "Affinity"}
+                label = {"Agents", "Consumer", "Groups", "Affinity"}
         )
 )
 public class IBasicAffinityMapping {

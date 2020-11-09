@@ -10,7 +10,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = {"SpatialModel/Space2D"}
+                label = {"SpatialModel/Space2D"}
         )
 )
 @ToDo("verallgemeinern")

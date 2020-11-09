@@ -10,7 +10,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = {"Distribution/RandomBoundedDistribution"}
+                label = {"Distribution/RandomBoundedDistribution"}
         )
 )
 public class IRandomBoundedDistribution implements IUnivariateDoubleDistribution {

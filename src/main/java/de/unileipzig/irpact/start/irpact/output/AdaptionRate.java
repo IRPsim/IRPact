@@ -23,7 +23,7 @@ public class AdaptionRate {
                     identifier = "groupAdaptionRate"
             ),
             edn = @EdnParameter(
-                    path = "Link/AdaptionRate-AgentGroup"
+                    label = "Link/AdaptionRate-AgentGroup"
             )
     )
     public AgentGroup group;
@@ -33,7 +33,7 @@ public class AdaptionRate {
                     identifier = "needAdaptionRate"
             ),
             edn = @EdnParameter(
-                    path = "Link/AdaptionRate-Need"
+                    label = "Link/AdaptionRate-Need"
             )
     )
     public Need need;

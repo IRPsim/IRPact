@@ -12,8 +12,7 @@ import java.util.Objects;
  */
 @Definition(
         edn = @Edn(
-                label = "RandomBoundedDistribution",
-                path = "Distribution/RandomBoundedDistribution"
+                label = "Distribution/RandomBoundedDistribution"
         )
 )
 public class RandomBoundedDistribution implements UnivariateDistribution {

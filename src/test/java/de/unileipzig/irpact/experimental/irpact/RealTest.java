@@ -35,8 +35,8 @@ public class RealTest {
         Converter converter = new Converter(dmap);
 
         GamsPrinter.write(Type.INPUT, gcoll, input, StandardCharsets.UTF_8);
-        EdnPrinter.writeTo(dmap.toEdn2(Type.INPUT), PrinterFormat.MY_DEFAULT, edn, StandardCharsets.UTF_8);
-        EdnPrinter.writeTo(dmap.toDeltaEdn2(Type.INPUT), PrinterFormat.MY_DEFAULT, ednDelta, StandardCharsets.UTF_8);
+        EdnPrinter.writeTo(dmap.toEdn(Type.INPUT), PrinterFormat.MY_DEFAULT, edn, StandardCharsets.UTF_8);
+        EdnPrinter.writeTo(dmap.toDeltaEdn(Type.INPUT), PrinterFormat.MY_DEFAULT, ednDelta, StandardCharsets.UTF_8);
     }
 
     @Test

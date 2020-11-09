@@ -11,7 +11,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = {"Agents/Consumer/Awareness/Simple"}
+                label = {"Agents/Consumer/Awareness/Simple"}
         )
 )
 public class IThresholdAwareness implements IAwareness {

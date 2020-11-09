@@ -11,7 +11,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = {"Products/GroupAttributes"}
+                label = {"Products/GroupAttributes"}
         )
 )
 public class IProductGroupAttribute {
@@ -20,7 +20,7 @@ public class IProductGroupAttribute {
 
     @FieldDefinition(
             edn = @EdnParameter(
-                    path = {"Products/Attribute-Distribution-Mapping"}
+                    label = {"Products/Attribute-Distribution-Mapping"}
             )
     )
     public IUnivariateDoubleDistribution pgAttrDistribution;

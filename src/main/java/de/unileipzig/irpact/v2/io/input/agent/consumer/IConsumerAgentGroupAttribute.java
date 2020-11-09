@@ -11,7 +11,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = {"Agents/Consumer/Attributes"}
+                label = {"Agents/Consumer/Attributes"}
         )
 )
 public class IConsumerAgentGroupAttribute {
@@ -20,7 +20,7 @@ public class IConsumerAgentGroupAttribute {
 
     @FieldDefinition(
             edn = @EdnParameter(
-                    path = {"Agents/Consumer/Attribute-Distribution-Mapping"}
+                    label = {"Agents/Consumer/Attribute-Distribution-Mapping"}
             )
     )
     public IUnivariateDoubleDistribution cagAttrDistribution;

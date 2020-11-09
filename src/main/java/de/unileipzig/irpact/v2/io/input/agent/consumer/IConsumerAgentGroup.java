@@ -11,7 +11,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = {"Agents/Consumer/Groups"}
+                label = {"Agents/Consumer/Groups"}
         )
 )
 public class IConsumerAgentGroup {
@@ -20,7 +20,7 @@ public class IConsumerAgentGroup {
 
     @FieldDefinition(
             edn = @EdnParameter(
-                    path = {"Agents/Consumer/Group-Attribute-Mapping"}
+                    label = {"Agents/Consumer/Group-Attribute-Mapping"}
             )
     )
     public IConsumerAgentGroupAttribute[] cagAttributes;

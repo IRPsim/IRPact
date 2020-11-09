@@ -31,6 +31,11 @@ public class SimpleAwareness<T> implements Awareness<T> {
     }
 
     @Override
+    public boolean isInterested(T item) {
+        return items.contains(item);
+    }
+
+    @Override
     public boolean isAwareOf(T item) {
         return items.contains(item);
     }

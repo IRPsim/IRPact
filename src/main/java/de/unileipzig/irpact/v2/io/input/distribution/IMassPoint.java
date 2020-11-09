@@ -9,7 +9,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = {"Distribution/Util/MassPoints"}
+                label = {"Distribution/Util/MassPoints"}
         )
 )
 public class IMassPoint {

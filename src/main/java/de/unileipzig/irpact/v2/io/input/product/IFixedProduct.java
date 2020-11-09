@@ -9,7 +9,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = {"Products/FixedProduct"}
+                label = {"Products/FixedProduct"}
         )
 )
 public class IFixedProduct {

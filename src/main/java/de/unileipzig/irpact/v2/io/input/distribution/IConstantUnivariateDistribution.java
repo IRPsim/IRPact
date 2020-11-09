@@ -10,7 +10,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
  */
 @Definition(
         edn = @Edn(
-                path = {"Distribution/ConstantUnivariateDistribution"}
+                label = {"Distribution/ConstantUnivariateDistribution"}
         )
 )
 public class IConstantUnivariateDistribution implements IUnivariateDoubleDistribution {

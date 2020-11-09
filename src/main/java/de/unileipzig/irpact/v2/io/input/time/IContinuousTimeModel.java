@@ -12,7 +12,7 @@ import de.unileipzig.irptools.defstructure.annotation.GamsParameter;
  */
 @Definition(
         edn = @Edn(
-                path = {"TimeModel/Continuous"}
+                label = {"TimeModel/Continuous"}
         )
 )
 public class IContinuousTimeModel implements ITimeModel {
