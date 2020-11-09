@@ -3,6 +3,7 @@ package de.unileipzig.irpact.v2.commons.graph;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -154,5 +155,13 @@ public class DirectedAdjacencyListGraph<V, E> implements DirectedGraph<V, E> {
         Map<V, E> map0 = adjacencyMap.get(from);
         if(map0 == null) return null;
         return map0.get(to);
+    }
+
+    @Override
+    public Set<E> getEdges() {
+        return adjacencyMap.values()
+                .stream()
+                .flatMap(entry -> entry.values().stream())
+                .collect(Collectors.toSet());
     }
 }

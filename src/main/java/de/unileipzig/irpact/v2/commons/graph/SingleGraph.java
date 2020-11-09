@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.v2.commons.graph;
 
+import java.util.Set;
+
 /**
  * @param <V>
  * @param <E>
@@ -16,4 +18,6 @@ public interface SingleGraph<V, E> extends Graph<V, E> {
     boolean removeEdge(V from, V to);
 
     E getEdge(V from, V to);
+
+    Set<E> getEdges();
 }

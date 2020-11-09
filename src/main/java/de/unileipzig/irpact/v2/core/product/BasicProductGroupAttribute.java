@@ -1,11 +1,11 @@
 package de.unileipzig.irpact.v2.core.product;
 
-import de.unileipzig.irpact.v2.commons.attribute.AbstractUnivariateDistributionAttributeGroup;
+import de.unileipzig.irpact.v2.commons.distattr.AbstractDerivableUnivariateDoubleDistributionAttribute;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicProductGroupAttribute extends AbstractUnivariateDistributionAttributeGroup<ProductAttribute> implements ProductGroupAttribute {
+public class BasicProductGroupAttribute extends AbstractDerivableUnivariateDoubleDistributionAttribute<ProductAttribute> implements ProductGroupAttribute {
 
     protected int id = 0;
 
@@ -14,7 +14,7 @@ public class BasicProductGroupAttribute extends AbstractUnivariateDistributionAt
 
     @Override
     public BasicProductAttribute derive() {
-        double value = drawValue();
+        double value = drawDoubleValue();
         return derive(value);
     }
 

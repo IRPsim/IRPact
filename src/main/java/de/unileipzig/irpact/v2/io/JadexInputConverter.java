@@ -104,7 +104,7 @@ public class JadexInputConverter implements InputConverter {
             for(IFixedProductAttribute attr: product.getFpAttributes()) {
                 BasicProductAttribute battr = new BasicProductAttribute();
                 battr.setName(attr.getName());
-                battr.setValue(attr.getFpaValue());
+                battr.setDoubleValue(attr.getFpaValue());
                 battr.setGroup(pg.getAttribute(attr.getFpaGroupAttribute().getName()));
                 fp.addAttribute(battr);
             }

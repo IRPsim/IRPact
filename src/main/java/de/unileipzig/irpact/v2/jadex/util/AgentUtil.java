@@ -35,10 +35,10 @@ public final class AgentUtil {
     }
 
     public static boolean isTrue(DoubleAttribute attribute) {
-        return attribute.getValue() == 1.0;
+        return attribute.getDoubleValue() == 1.0;
     }
 
     public static boolean isFalse(DoubleAttribute attribute) {
-        return attribute.getValue() != 1.0;
+        return attribute.getDoubleValue() != 1.0;
     }
 }

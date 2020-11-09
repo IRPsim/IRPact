@@ -13,6 +13,6 @@ public class BasicConsumerAgentAttribute extends DoubleAttributeGroupEntityBase<
     public BasicConsumerAgentAttribute(String name, ConsumerAgentGroupAttribute groupAttribute, double value) {
         setName(name);
         setGroup(groupAttribute);
-        setValue(value);
+        setDoubleValue(value);
     }
 }

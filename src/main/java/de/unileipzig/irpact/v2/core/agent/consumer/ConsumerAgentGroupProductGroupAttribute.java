@@ -5,5 +5,5 @@ import de.unileipzig.irpact.v2.commons.attribute.DerivableUnivariateDistribution
 /**
  * @author Daniel Abitz
  */
-public interface ConsumerAgentGroupAttribute extends DerivableUnivariateDistributionAttribute<ConsumerAgentAttribute> {
+public interface ConsumerAgentGroupProductGroupAttribute extends DerivableUnivariateDistributionAttribute<ConsumerAgentAttribute> {
 }

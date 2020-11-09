@@ -13,6 +13,6 @@ public class BasicProductAttribute extends DoubleAttributeGroupEntityBase<Produc
     public BasicProductAttribute(String name, ProductGroupAttribute groupAttribute, double value) {
         setName(name);
         setGroup(groupAttribute);
-        setValue(value);
+        setDoubleValue(value);
     }
 }

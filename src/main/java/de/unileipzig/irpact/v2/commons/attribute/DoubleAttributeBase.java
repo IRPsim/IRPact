@@ -9,12 +9,16 @@ public class DoubleAttributeBase extends NameableBase implements DoubleAttribute
 
     protected double value;
 
-    public void setValue(double value) {
+    public void setValue(Number value) {
+        setDoubleValue(value.doubleValue());
+    }
+
+    public void setDoubleValue(double value) {
         this.value = value;
     }
 
     @Override
-    public double getValue() {
+    public double getDoubleValue() {
         return value;
     }
 }
