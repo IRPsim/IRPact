@@ -13,7 +13,7 @@ import de.unileipzig.irptools.util.DoubleTimeSeries;
                 identifier = "Strom-Verbrauchertechnologie"
         ),
         edn = @Edn(
-                path = "Sets/Strom-Verbrauchertechnologie",
+                label = "Sets/Strom-Verbrauchertechnologie",
                 description = {"", "Hier sind Strom-Verbrauchertechnologie"}
         )
 )

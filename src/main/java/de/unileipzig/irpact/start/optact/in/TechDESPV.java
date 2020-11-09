@@ -12,7 +12,7 @@ import de.unileipzig.irptools.defstructure.annotation.*;
                 identifier = "PV-Anlage"
         ),
         edn = @Edn(
-                path = "Sets/PV",
+                label = "Sets/PV",
                 description = {"", "Hier sind PV"}
         )
 )

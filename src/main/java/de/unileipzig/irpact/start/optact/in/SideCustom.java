@@ -13,7 +13,7 @@ import de.unileipzig.irptools.util.DoubleTimeSeries;
                 identifier = "KG"
         ),
         edn = @Edn(
-                path = "Sets/Kundengruppen",
+                label = "Sets/Kundengruppen",
                 description = {"Hier sind Sets.", "Hier sind Kundengruppen."}
         )
 )

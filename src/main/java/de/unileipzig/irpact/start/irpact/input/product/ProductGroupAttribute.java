@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 @Definition(
         edn = @Edn(
-                path = "Product/ProductGroupAttribute"
+                label = "Product/ProductGroupAttribute"
         )
 )
 public class ProductGroupAttribute {
@@ -23,7 +23,7 @@ public class ProductGroupAttribute {
                     identifier = "distributionProductGroupAttribute"
             ),
             edn = @EdnParameter(
-                    path = "Link/ProductGroupAttribute-UnivariateDistribution"
+                    label = "Link/ProductGroupAttribute-UnivariateDistribution"
             )
     )
     public UnivariateDistribution distribution;

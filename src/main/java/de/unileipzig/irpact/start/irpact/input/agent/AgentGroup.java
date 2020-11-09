@@ -35,7 +35,7 @@ public class AgentGroup {
                     identifier = "needsAgentGroup"
             ),
             edn = @EdnParameter(
-                    path = "Link/AgentGroup-Need"
+                    label = "Link/AgentGroup-Need"
             )
     )
     public Need[] needs;
