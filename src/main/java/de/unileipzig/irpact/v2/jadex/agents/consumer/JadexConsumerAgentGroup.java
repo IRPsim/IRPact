@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.v2.jadex.agents.consumer;
 
-import de.unileipzig.irpact.v2.commons.attribute.DerivableAttribute;
+import de.unileipzig.irpact.v2.commons.Derivable;
 import de.unileipzig.irpact.v2.commons.awareness.Awareness;
 import de.unileipzig.irpact.v2.commons.awareness.AwarenessDistributionMapping;
 import de.unileipzig.irpact.v2.commons.awareness.BasicAwarenessDistributionMapping;
@@ -116,7 +116,7 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
 
     protected Set<ConsumerAgentAttribute> deriveAttributes() {
         return attributes.stream()
-                .map(DerivableAttribute::derive)
+                .map(Derivable::derive)
                 .collect(Collectors.toSet());
     }
 
