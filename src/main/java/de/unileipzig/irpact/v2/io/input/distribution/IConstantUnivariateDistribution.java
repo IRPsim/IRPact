@@ -23,6 +23,11 @@ public class IConstantUnivariateDistribution implements IUnivariateDoubleDistrib
     public IConstantUnivariateDistribution() {
     }
 
+    public IConstantUnivariateDistribution(String name, double constDistValue) {
+        this._name = name;
+        this.constDistValue = constDistValue;
+    }
+
     public String getName() {
         return _name;
     }

@@ -27,6 +27,11 @@ public class IProductGroup {
     public IProductGroup() {
     }
 
+    public IProductGroup(String name, IProductGroupAttribute[] pgAttributes) {
+        this._name = name;
+        this.pgAttributes = pgAttributes;
+    }
+
     public String getName() {
         return _name;
     }

@@ -6,7 +6,6 @@ plugins {
 group 'de.unileipzig.irpact'
 version '1.0-SNAPSHOT'
 
-//sourceCompatibility = 1.11
 sourceCompatibility = 1.8
 
 repositories {
@@ -88,8 +87,16 @@ task buildUberJar(type: Jar) {
     exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
 }
 
+task buildStandardJar(type: Jar) {
+    from sourceSets.main.output
+    manifest {
+        attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
+    }
+}
+
 artifacts {
     archives buildUberJar
+    archives buildStandardJar
 }
 
 /*

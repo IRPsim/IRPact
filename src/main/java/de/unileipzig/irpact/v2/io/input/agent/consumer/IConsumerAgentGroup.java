@@ -37,6 +37,10 @@ public class IConsumerAgentGroup {
     public IConsumerAgentGroup() {
     }
 
+    public IConsumerAgentGroup(String name) {
+        this._name = name;
+    }
+
     public String getName() {
         return _name;
     }

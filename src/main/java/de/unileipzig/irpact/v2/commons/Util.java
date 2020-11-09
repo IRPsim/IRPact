@@ -7,9 +7,14 @@ import java.util.Random;
  */
 public final class Util {
 
+    public static final long USE_RANDOM_SEED = 0L;
     public static final Random RND = new Random();
 
     private Util() {
+    }
+
+    public static long getRandomSeedIf0(long seed) {
+        return seed == USE_RANDOM_SEED ? RND.nextLong() : seed;
     }
 
     public static String printClass(Object obj) {

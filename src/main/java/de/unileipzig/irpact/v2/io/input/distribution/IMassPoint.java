@@ -25,6 +25,12 @@ public class IMassPoint {
     public IMassPoint() {
     }
 
+    public IMassPoint(String name, double mpValue, double mpWeight) {
+        this._name = name;
+        this.mpValue = mpValue;
+        this.mpWeight = mpWeight;
+    }
+
     public String getName() {
         return _name;
     }

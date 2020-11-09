@@ -74,6 +74,9 @@ public class FiniteMassPointsDiscreteDistribution extends AbstractBoundedUnivari
         if(massPoints.isEmpty()) {
             throw new IllegalStateException("empty");
         }
+        if(massPoints.size() == 1) {
+            return massPoints.get(0).first();
+        }
         final double rndValue = rnd.nextDouble();
         double temp = 0.0;
         double lastValue = 0.0;

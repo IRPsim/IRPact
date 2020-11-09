@@ -31,6 +31,16 @@ public class IFiniteMassPointsDiscreteDistribution implements IUnivariateDoubleD
     public IFiniteMassPointsDiscreteDistribution() {
     }
 
+    public IFiniteMassPointsDiscreteDistribution(String name, long fmpSeed, IMassPoint massPoint) {
+        this(name, fmpSeed, new IMassPoint[]{massPoint});
+    }
+
+    public IFiniteMassPointsDiscreteDistribution(String name, long fmpSeed, IMassPoint[] massPoints) {
+        this._name = name;
+        this.fmpSeed = fmpSeed;
+        this.massPoints = massPoints;
+    }
+
     public String getName() {
         return _name;
     }

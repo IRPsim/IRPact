@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 @Disabled
 public class TestFiles {
 
-    //wurzelverzeichnis, hinweis: funktioniert in intellij
+    //wurzelverzeichnis
     public static final Path root = Paths.get("").toAbsolutePath();
 
     //testfiles
@@ -26,7 +26,16 @@ public class TestFiles {
     public static final Path gis = exppriv.resolve("gis");
 
     public static final Path resources = root.resolve(Paths.get("src", "main", "resources"));
+    public static final Path input = resources.resolve("input");
+    public static final Path output = resources.resolve("output");
     public static final Path scenarios = resources.resolve("scenarios");
+
+    public static final Path inputGms = input.resolve("input.gms");
+    public static final Path uiInputEdn = input.resolve("ui-input.edn");
+    public static final Path uiInputDeltaEdn = input.resolve("ui-input-delta.edn");
+    public static final Path outputGms = output.resolve("output.gms");
+    public static final Path uiOutputEdn = output.resolve("ui-output.edn");
+    public static final Path defaultJson = scenarios.resolve("default.json");
 
     public static final Path testResources = root.resolve(Paths.get("src", "test", "resources"));
 
@@ -34,6 +43,7 @@ public class TestFiles {
     public static final Path java = Paths.get("C:\\MyProgs\\Java\\jdk-11.0.2\\bin", "java.exe");
     public static final Path cljlibs = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPtools\\cljlibs");
     public static final Path frontendGeneratorJar = cljlibs.resolve("frontend-generator.jar");
+    public static final Path backendGeneratorJar = cljlibs.resolve("backend-generator.jar");
 
     public static Path resolve(Path path, String first, String... more) {
         Path other = Paths.get(first, more);
