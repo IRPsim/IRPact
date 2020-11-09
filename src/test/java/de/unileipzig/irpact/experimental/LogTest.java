@@ -2,6 +2,7 @@ package de.unileipzig.irpact.experimental;
 
 import ch.qos.logback.classic.Level;
 import de.unileipzig.irpact.v2.commons.log.Logback;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Daniel Abitz
  */
+@Disabled
 class LogTest {
 
     @Test

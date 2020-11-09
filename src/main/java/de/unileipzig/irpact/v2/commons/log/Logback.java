@@ -59,7 +59,13 @@ public final class Logback {
         }
     }
 
+    private static boolean setupSystemOutAndErrCalled = false;
     public static void setupSystemOutAndErr() {
+        if(setupSystemOutAndErrCalled) {
+            return;
+        } else {
+            setupSystemOutAndErrCalled = true;
+        }
         Logger root = getRootLogger();
         root.setLevel(Level.ALL);
         root.setAdditive(true);

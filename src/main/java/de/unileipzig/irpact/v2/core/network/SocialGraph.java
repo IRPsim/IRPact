@@ -83,7 +83,7 @@ public interface SocialGraph {
 
     Set<? extends Node> getTargets(Node from, Type type);
 
-    Stream<? extends Node> streamTargets(Node source);
+    Stream<? extends Node> streamTargets(Node source, Type type);
 
     boolean addEdge(Node from, Node to, Type type);
 

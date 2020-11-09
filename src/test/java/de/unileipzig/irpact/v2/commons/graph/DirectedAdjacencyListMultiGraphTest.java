@@ -203,7 +203,7 @@ class DirectedAdjacencyListMultiGraphTest {
         g.addEdge("a", "b2", "y", "y_a_b2");
         g.addEdge("c", "b1", "x", "x_c_b1");
 
-        Set<String> set = g.streamVertexes()
+        Set<String> set = g.streamVertices()
                 .filter(v -> g.hasEdge(v, "b1", "x"))
                 .collect(Collectors.toSet());
 
@@ -223,7 +223,7 @@ class DirectedAdjacencyListMultiGraphTest {
         g.addEdge("a", "b2", "y", "y_a_b2");
         g.addEdge("c", "b1", "x", "x_c_b1");
 
-        Set<String> set = g.streamNeighbours("a")
+        Set<String> set = g.streamTargets("a", "x")
                 .filter(t -> g.hasEdge("a", t, "x"))
                 .collect(Collectors.toSet());
 

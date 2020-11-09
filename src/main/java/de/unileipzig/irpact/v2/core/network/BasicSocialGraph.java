@@ -145,7 +145,7 @@ public class BasicSocialGraph implements SocialGraph {
 
     @Override
     public Set<? extends Node> getNodes() {
-        return GRAPH.vertexSet();
+        return GRAPH.getVertices();
     }
 
     @Override
@@ -154,8 +154,8 @@ public class BasicSocialGraph implements SocialGraph {
     }
 
     @Override
-    public Stream<? extends Node> streamTargets(Node source) {
-        return GRAPH.streamNeighbours(source);
+    public Stream<? extends Node> streamTargets(Node source, Type type) {
+        return GRAPH.streamTargets(source, type);
     }
 
     @Override

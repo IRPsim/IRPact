@@ -65,24 +65,19 @@ public class DirectedAdjacencyListGraph<V, E> implements DirectedGraph<V, E> {
     }
 
     @Override
-    public Set<V> vertexSet() {
+    public Set<V> getVertices() {
         return adjacencyMap.keySet();
     }
 
     @Override
-    public Stream<V> streamVertexes() {
+    public Stream<V> streamVertices() {
         return adjacencyMap.keySet().stream();
     }
 
     @Override
-    public Set<V> getNeighbours(V vertex) {
-        Map<V, E> map0 = adjacencyMap.get(vertex);
+    public Set<V> getTargets(V from) {
+        Map<V, E> map0 = adjacencyMap.get(from);
         return map0 == null ? Collections.emptySet() : map0.keySet();
-    }
-
-    @Override
-    public Stream<V> streamNeighbours(V source) {
-        return getNeighbours(source).stream();
     }
 
     @Override

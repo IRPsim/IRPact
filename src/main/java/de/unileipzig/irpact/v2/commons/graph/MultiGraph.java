@@ -2,6 +2,7 @@ package de.unileipzig.irpact.v2.commons.graph;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * @param <V>
@@ -12,6 +13,10 @@ import java.util.Set;
 public interface MultiGraph<V, E, T> extends Graph<V, E> {
 
     Set<V> getTargets(V from, T type);
+
+    Stream<V> streamTargets(V from, T type);
+
+    Set<V> getAllTargets(V from);
 
     boolean addEdge(V from, V to, T type, E edge);
 

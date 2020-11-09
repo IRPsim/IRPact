@@ -18,13 +18,9 @@ public interface Graph<V, E> {
 
     int vertexCount();
 
-    Set<V> vertexSet();
+    Set<V> getVertices();
 
-    Stream<V> streamVertexes();
-
-    Set<V> getNeighbours(V vertex);
-
-    Stream<V> streamNeighbours(V source);
+    Stream<V> streamVertices();
 
     boolean hasEdge(E edge);
 

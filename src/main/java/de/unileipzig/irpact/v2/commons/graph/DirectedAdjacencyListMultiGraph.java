@@ -68,24 +68,13 @@ public class DirectedAdjacencyListMultiGraph<V, E, T> implements DirectedMultiGr
     }
 
     @Override
-    public Set<V> vertexSet() {
+    public Set<V> getVertices() {
         return adjacencyMap.keySet();
     }
 
     @Override
-    public Stream<V> streamVertexes() {
+    public Stream<V> streamVertices() {
         return adjacencyMap.keySet().stream();
-    }
-
-    @Override
-    public Set<V> getNeighbours(V vertex) {
-        Map<V, Map<T, E>> map0 = adjacencyMap.get(vertex);
-        return map0 == null ? Collections.emptySet() : map0.keySet();
-    }
-
-    @Override
-    public Stream<V> streamNeighbours(V source) {
-        return getNeighbours(source).stream();
     }
 
     @Override
@@ -139,6 +128,17 @@ public class DirectedAdjacencyListMultiGraph<V, E, T> implements DirectedMultiGr
             }
         }
         return targets;
+    }
+
+    @Override
+    public Stream<V> streamTargets(V from, T type) {
+        return getTargets(from, type).stream();
+    }
+
+    @Override
+    public Set<V> getAllTargets(V vertex) {
+        Map<V, Map<T, E>> map0 = adjacencyMap.get(vertex);
+        return map0 == null ? Collections.emptySet() : map0.keySet();
     }
 
     @Override
@@ -210,7 +210,7 @@ public class DirectedAdjacencyListMultiGraph<V, E, T> implements DirectedMultiGr
 
     @Override
     public Set<E> getEdges(T type) {
-        Set<E> edges = new HashSet<>();
+        Set<E> edges = new LinkedHashSet<>();
         for(Map<V, Map<T, E>> map0: adjacencyMap.values()) {
             for(Map<T, E> map1: map0.values()) {
                 if(map1.containsKey(type)) {

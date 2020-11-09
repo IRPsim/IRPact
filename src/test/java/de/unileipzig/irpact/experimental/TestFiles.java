@@ -41,7 +41,8 @@ public class TestFiles {
 
     //div
     public static final Path java = Paths.get("C:\\MyProgs\\Java\\jdk-11.0.2\\bin", "java.exe");
-    public static final Path cljlibs = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPtools\\cljlibs");
+    public static final Path IRPTools = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPtools");
+    public static final Path cljlibs = IRPTools.resolve("cljlibs");
     public static final Path frontendGeneratorJar = cljlibs.resolve("frontend-generator.jar");
     public static final Path backendGeneratorJar = cljlibs.resolve("backend-generator.jar");
 

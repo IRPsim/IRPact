@@ -9,6 +9,8 @@ import java.util.Set;
  */
 public interface SingleGraph<V, E> extends Graph<V, E> {
 
+    Set<V> getTargets(V from);
+
     boolean addEdge(V from, V to, E edge);
 
     E setEdge(V from, V to, E edge);
