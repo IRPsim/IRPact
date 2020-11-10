@@ -64,6 +64,10 @@ dependencies {
 
     implementation "us.bpsm:edn-java:$ednjavaVersion"
 
+    //some tests
+    implementation "commons-codec:commons-codec:1.15"
+    implementation "org.mariuszgromada.math:MathParser.org-mXparser:4.4.2"
+
     //custom
     implementation files('customlibs/IRPtools-1.0-SNAPSHOT.jar')
 }

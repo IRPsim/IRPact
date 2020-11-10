@@ -47,6 +47,36 @@ public abstract class AbstractMultiGraphTopology<V, E, T> implements GraphTopolo
         this.initialWeight = initialWeight;
     }
 
+    protected int getOutDegree(Graph<V, E> graph, V vertex) {
+        if(graph instanceof SingleGraph) {
+            SingleGraph<V, E> sGraph = (SingleGraph<V, E>) graph;
+            return sGraph.outDegree(vertex);
+        } else {
+            MultiGraph<V, E, T> mGraph = (MultiGraph<V, E, T>) graph;
+            return mGraph.outDegree(vertex, edgeType);
+        }
+    }
+
+    protected int getInDegree(Graph<V, E> graph, V vertex) {
+        if(graph instanceof SingleGraph) {
+            SingleGraph<V, E> sGraph = (SingleGraph<V, E>) graph;
+            return sGraph.inDegree(vertex);
+        } else {
+            MultiGraph<V, E, T> mGraph = (MultiGraph<V, E, T>) graph;
+            return mGraph.inDegree(vertex, edgeType);
+        }
+    }
+
+    protected int getDegree(Graph<V, E> graph, V vertex) {
+        if(graph instanceof SingleGraph) {
+            SingleGraph<V, E> sGraph = (SingleGraph<V, E>) graph;
+            return sGraph.degree(vertex);
+        } else {
+            MultiGraph<V, E, T> mGraph = (MultiGraph<V, E, T>) graph;
+            return mGraph.degree(vertex, edgeType);
+        }
+    }
+
     protected boolean setInitialWeight(E edge) {
         if(initialWeightConsumer == null) {
             return false;

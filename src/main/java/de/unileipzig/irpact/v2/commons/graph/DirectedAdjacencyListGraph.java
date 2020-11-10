@@ -65,6 +65,22 @@ public class DirectedAdjacencyListGraph<V, E> implements DirectedGraph<V, E> {
     }
 
     @Override
+    public int inDegree(V vertex) {
+        return (int) streamEdgesTo(vertex).count();
+    }
+
+    @Override
+    public int outDegree(V vertex) {
+        Map<V, E> map0 = adjacencyMap.get(vertex);
+        return map0 == null ? 0 : map0.size();
+    }
+
+    @Override
+    public int degree(V vertex) {
+        return inDegree(vertex) + outDegree(vertex);
+    }
+
+    @Override
     public Set<V> getVertices() {
         return adjacencyMap.keySet();
     }
@@ -158,5 +174,21 @@ public class DirectedAdjacencyListGraph<V, E> implements DirectedGraph<V, E> {
                 .stream()
                 .flatMap(entry -> entry.values().stream())
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Stream<E> streamEdgesFrom(V from) {
+        Map<V, E> map0 = adjacencyMap.get(from);
+        return map0 == null
+                ? Stream.empty()
+                : map0.values().stream();
+    }
+
+    @Override
+    public Stream<E> streamEdgesTo(V to) {
+        return adjacencyMap.values()
+                .stream()
+                .filter(map -> map.containsKey(to))
+                .map(map -> map.get(to));
     }
 }

@@ -12,6 +12,12 @@ import java.util.stream.Stream;
  */
 public interface MultiGraph<V, E, T> extends Graph<V, E> {
 
+    int inDegree(V vertex, T type);
+
+    int outDegree(V vertex, T type);
+
+    int degree(V vertex, T type);
+
     Set<V> getTargets(V from, T type);
 
     Stream<V> streamTargets(V from, T type);
@@ -33,4 +39,8 @@ public interface MultiGraph<V, E, T> extends Graph<V, E> {
     Map<T, E> getEdges(V from, V to);
 
     Set<E> getEdges(T type);
+
+    Stream<E> streamEdgesFrom(V from, T type);
+
+    Stream<E> streamEdgesTo(V to, T type);
 }

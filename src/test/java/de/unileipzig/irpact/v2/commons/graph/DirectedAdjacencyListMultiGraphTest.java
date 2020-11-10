@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.v2.commons.graph;
 
 import de.unileipzig.irpact.v2.commons.CollectionUtil;
+import de.unileipzig.irptools.util.Util;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -230,6 +231,66 @@ class DirectedAdjacencyListMultiGraphTest {
         assertEquals(
                 CollectionUtil.hashSetOf("b0", "b1"),
                 set
+        );
+    }
+
+    @Test
+    void testDegrees() {
+        DirectedAdjacencyListMultiGraph<String, String, String> g = new DirectedAdjacencyListMultiGraph<>();
+        g.addEdge("a", "x", "1", "a_x_1");
+        g.addEdge("b", "x", "1", "b_x_1");
+        g.addEdge("c", "x", "1", "c_x_1");
+        g.addEdge("d", "x", "1", "d_x_1");
+        g.addEdge("e", "x", "1", "e_x_1");
+
+        g.addEdge("a", "x", "2", "a_x_1");
+        g.addEdge("b", "x", "2", "b_x_1");
+        g.addEdge("c", "x", "2", "c_x_1");
+
+        g.addEdge("x", "a", "1", "x_a_1");
+        g.addEdge("x", "b", "1", "x_b_1");
+        g.addEdge("x", "c", "1", "x_c_1");
+
+        g.addEdge("x", "a", "2", "x_b_1");
+        g.addEdge("x", "b", "2", "x_b_2");
+
+        assertEquals(5, g.inDegree("x", "1"));
+        assertEquals(3, g.inDegree("x", "2"));
+        assertEquals(3, g.outDegree("x", "1"));
+        assertEquals(2, g.outDegree("x", "2"));
+
+        assertEquals(2, g.degree("a", "1"));
+        assertEquals(1, g.degree("d", "1"));
+    }
+
+    @Test
+    void testInOutStream() {
+        DirectedAdjacencyListMultiGraph<String, String, String> g = new DirectedAdjacencyListMultiGraph<>();
+        g.addEdge("a", "x", "1", "a_x_1");
+        g.addEdge("b", "x", "1", "b_x_1");
+        g.addEdge("c", "x", "1", "c_x_1");
+        g.addEdge("d", "x", "1", "d_x_1");
+        g.addEdge("e", "x", "1", "e_x_1");
+
+        g.addEdge("a", "x", "2", "a_x_1");
+        g.addEdge("b", "x", "2", "b_x_1");
+        g.addEdge("c", "x", "2", "c_x_1");
+
+        g.addEdge("x", "a", "1", "x_a_1");
+        g.addEdge("x", "b", "1", "x_b_1");
+        g.addEdge("x", "c", "1", "x_c_1");
+
+        g.addEdge("x", "a", "2", "x_b_1");
+        g.addEdge("x", "b", "2", "x_b_2");
+
+        assertEquals(
+                Util.arrayListOf("a_x_1", "b_x_1", "c_x_1", "d_x_1", "e_x_1"),
+                g.streamEdgesTo("x", "1").collect(Collectors.toList())
+        );
+
+        assertEquals(
+                Util.arrayListOf("x_a_1", "x_b_1", "x_c_1"),
+                g.streamEdgesFrom("x", "1").collect(Collectors.toList())
         );
     }
 }

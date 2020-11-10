@@ -40,14 +40,9 @@ public class TestFiles {
     public static final Path testResources = root.resolve(Paths.get("src", "test", "resources"));
 
     //div
-    public static final Path java = Paths.get("C:\\MyProgs\\Java\\jdk-11.0.2\\bin", "java.exe");
+    public static final Path java11 = Paths.get("C:\\MyProgs\\Java\\jdk-11.0.2\\bin", "java.exe");
     public static final Path IRPTools = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPtools");
     public static final Path cljlibs = IRPTools.resolve("cljlibs");
     public static final Path frontendGeneratorJar = cljlibs.resolve("frontend-generator.jar");
     public static final Path backendGeneratorJar = cljlibs.resolve("backend-generator.jar");
-
-    public static Path resolve(Path path, String first, String... more) {
-        Path other = Paths.get(first, more);
-        return path.resolve(other);
-    }
 }

@@ -68,6 +68,24 @@ public class DirectedAdjacencyListMultiGraph<V, E, T> implements DirectedMultiGr
     }
 
     @Override
+    public int inDegree(V vertex, T type) {
+        return (int) streamEdgesTo(vertex, type).count();
+    }
+
+    @Override
+    public int outDegree(V vertex, T type) {
+        Map<V, Map<T, E>> map0 = adjacencyMap.get(vertex);
+        return map0 == null
+                ? 0
+                : (int) streamEdgesFrom(vertex, type).count();
+    }
+
+    @Override
+    public int degree(V vertex, T type) {
+        return inDegree(vertex, type) + outDegree(vertex, type);
+    }
+
+    @Override
     public Set<V> getVertices() {
         return adjacencyMap.keySet();
     }
@@ -219,6 +237,25 @@ public class DirectedAdjacencyListMultiGraph<V, E, T> implements DirectedMultiGr
             }
         }
         return edges;
+    }
+
+    @Override
+    public Stream<E> streamEdgesFrom(V from, T type) {
+        Map<V, Map<T, E>> map0 = adjacencyMap.get(from);
+        return map0.values()
+                .stream()
+                .filter(map -> map.containsKey(type))
+                .map(map -> map.get(type));
+    }
+
+    @Override
+    public Stream<E> streamEdgesTo(V to, T type) {
+        return adjacencyMap.values()
+                .stream()
+                .filter(map -> map.containsKey(to))
+                .map(map -> map.get(to))
+                .filter(map -> map.containsKey(type))
+                .map(map -> map.get(type));
     }
 
     public Stream<E> streamEdges() {

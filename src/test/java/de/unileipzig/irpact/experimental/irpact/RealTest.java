@@ -61,7 +61,7 @@ public class RealTest {
                 "--validate",
                 "--skipReference",
                 "--dummyNomenklatur",
-                "--pathToJava", TestFiles.java.toString(),
+                "--pathToJava", TestFiles.java11.toString(),
                 "--pathToJar", TestFiles.frontendGeneratorJar.toString(),
                 "--pathToResourceDir", outRoot.toString(),
                 "--frontendOutputFile", outRoot.resolve("frontend.json").toString()

@@ -35,7 +35,7 @@ class TestUI {
                 "--validate",
                 "--skipReference",
                 "--dummyNomenklatur",
-                "--pathToJava", TestFiles.java.toString(),
+                "--pathToJava", TestFiles.java11.toString(),
                 "--pathToResourceDir", dir.toString(),
                 "--pathToJar", TestFiles.frontendGeneratorJar.toString(),
                 "--frontendOutputFile", dir.resolve("frontend.json").toString(),

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.v2.commons.graph;
 
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * @param <V>
@@ -8,6 +9,12 @@ import java.util.Set;
  * @author Daniel Abitz
  */
 public interface SingleGraph<V, E> extends Graph<V, E> {
+
+    int inDegree(V vertex);
+
+    int outDegree(V vertex);
+
+    int degree(V vertex);
 
     Set<V> getTargets(V from);
 
@@ -22,4 +29,8 @@ public interface SingleGraph<V, E> extends Graph<V, E> {
     E getEdge(V from, V to);
 
     Set<E> getEdges();
+
+    Stream<E> streamEdgesFrom(V from);
+
+    Stream<E> streamEdgesTo(V to);
 }
