@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.v2.commons.graph;
 
 import de.unileipzig.irpact.v2.commons.CollectionUtil;
-import de.unileipzig.irptools.util.Util;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -284,13 +283,13 @@ class DirectedAdjacencyListMultiGraphTest {
         g.addEdge("x", "b", "2", "x_b_2");
 
         assertEquals(
-                Util.arrayListOf("a_x_1", "b_x_1", "c_x_1", "d_x_1", "e_x_1"),
-                g.streamEdgesTo("x", "1").collect(Collectors.toList())
+                CollectionUtil.hashSetOf("a_x_1", "b_x_1", "c_x_1", "d_x_1", "e_x_1"),
+                g.streamEdgesTo("x", "1").collect(Collectors.toSet())
         );
 
         assertEquals(
-                Util.arrayListOf("x_a_1", "x_b_1", "x_c_1"),
-                g.streamEdgesFrom("x", "1").collect(Collectors.toList())
+                CollectionUtil.hashSetOf("x_a_1", "x_b_1", "x_c_1"),
+                g.streamEdgesFrom("x", "1").collect(Collectors.toSet())
         );
     }
 }
