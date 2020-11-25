@@ -8,7 +8,7 @@ java -cp \<Classpath\> de.unileipzig.irpact.start.Start -i \<input file\> -o \<o
 
 ##### Initial social network visualization:
 
-java -cp \<Classpath\> de.unileipzig.irpact.start.Start --image \<image output file\> --noSimulation
+java -cp \<Classpath\> de.unileipzig.irpact.start.Start -i \<input file\> --image \<image output file\> --noSimulation
 
 ##### Simulation and network image visualization
 
