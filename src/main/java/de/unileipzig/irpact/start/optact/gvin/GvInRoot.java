@@ -1,6 +1,9 @@
 package de.unileipzig.irpact.start.optact.gvin;
 
+import de.unileipzig.irpact.start.optact.OptActMain;
+import de.unileipzig.irpact.start.optact.OptActRes;
 import de.unileipzig.irpact.start.optact.in.*;
+import de.unileipzig.irpact.v2.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.v2.io.input2.network.IFreeMultiGraphTopology;
 import de.unileipzig.irpact.v2.io.input2.network.IGraphTopology;
 import de.unileipzig.irpact.v2.io.input2.network.IWattsStrogatzModel;
@@ -10,17 +13,22 @@ import de.unileipzig.irptools.defstructure.RootClass;
 import de.unileipzig.irptools.defstructure.Type;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.graphviz.LayoutAlgorithm;
+import de.unileipzig.irptools.graphviz.OutputFormat;
 import de.unileipzig.irptools.graphviz.def.*;
 import de.unileipzig.irptools.util.DoubleTimeSeries;
 import de.unileipzig.irptools.util.Table;
 import de.unileipzig.irptools.util.Util;
 
+import java.awt.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * @author Daniel Abitz
  */
+@SuppressWarnings("SameParameterValue")
 @Definition(
         root = true
 )
@@ -94,7 +102,104 @@ public class GvInRoot implements RootClass, DefaultScenarioFactory {
     }
 
     @Override
+    public OptActRes getResources() {
+        return new OptActRes();
+    }
+
+    @Override
     public GvInRoot createDefaultScenario() {
+        GvInRoot root = new GvInRoot();
+        initOptAct(root);
+        initGV(root);
+        return root;
+    }
+
+    public GraphvizColor getColor(String agentName) {
+        for(AgentGroup grp: agentGroups) {
+            if(agentName.startsWith(grp._name)) {
+                return grp.agentColor;
+            }
+        }
+        return null;
+    }
+
+    public OutputFormat getOutputFormat() {
+        for(GraphvizOutputFormat f: outputFormats) {
+            if(f.useFormat) {
+                return f.toOutputFormat();
+            }
+        }
+        return null;
+    }
+
+    public LayoutAlgorithm getLayoutAlgorithm() {
+        for(GraphvizLayoutAlgorithm a: layoutAlgorithms) {
+            if(a.useLayout) {
+                return a.toLayoutAlgorithm();
+            }
+        }
+        return null;
+    }
+
+    public <N, E> GraphTopology<N, E> getTopology() {
+        for(IGraphTopology topology: topologies) {
+            if(topology.use()) {
+                return topology.createInstance();
+            }
+        }
+        return null;
+    }
+
+    private static IWattsStrogatzModel createWattsStrogatzModel(String name, int k, double beta, long seed, boolean use) {
+        IWattsStrogatzModel model = new IWattsStrogatzModel();
+        model._name = name;
+        model.wsmSelfReferential = false;
+        model.wsmBeta = beta;
+        model.wsmK = k;
+        model.wsmSeed = seed;
+        model.wsmUseThis = use;
+        return model;
+    }
+
+    private static IFreeMultiGraphTopology createFreeMultiGraphTopology(String name, int edgeCount, long seed, boolean use) {
+        IFreeMultiGraphTopology model = new IFreeMultiGraphTopology();
+        model._name = name;
+        model.ftEdgeCount = edgeCount;
+        model.ftSelfReferential = false;
+        model.ftSeed = seed;
+        model.ftUseThis = use;
+        return model;
+    }
+
+    private void initGV(GvInRoot root) {
+        GraphvizColor gc1 = GraphvizColor.RED;
+        GraphvizColor gc2 = GraphvizColor.GREEN;
+        GraphvizColor gc3 = new GraphvizColor("BLUE", Color.BLUE);
+        GraphvizColor gc4 = GraphvizColor.PINK;
+        root.colors = new GraphvizColor[]{gc1, gc2, gc3, gc4};
+
+        AgentGroup ag1 = new AgentGroup("Gruppe1", 10, gc1);
+        AgentGroup ag2 = new AgentGroup("Gruppe2", 15, gc2);
+        AgentGroup ag3 = new AgentGroup("Gruppe3", 20, gc3);
+        AgentGroup ag4 = new AgentGroup("Gruppe4", 25, gc4);
+        root.agentGroups = new AgentGroup[]{ag1, ag2, ag3, ag4};
+
+        GraphvizLayoutAlgorithm.DOT.useLayout = false;
+        GraphvizLayoutAlgorithm.CIRCO.useLayout = true;
+        root.layoutAlgorithms = GraphvizLayoutAlgorithm.DEFAULTS;
+        GraphvizOutputFormat.PNG.useFormat = true;
+        root.outputFormats = new GraphvizOutputFormat[] { GraphvizOutputFormat.PNG };
+        root.topologies = new IGraphTopology[] {
+                createWattsStrogatzModel("WSM1", 4, 0.0, 42, true),
+                createFreeMultiGraphTopology("FREE1", 3, 24, false)
+        };
+
+        root.graphvizGlobal = new GraphvizGlobal();
+        root.graphvizGlobal.fixedNeatoPosition = false;
+        root.graphvizGlobal.scaleFactor = 0.0;
+    }
+
+    private void initOptAct(GvInRoot root) {
         SideFares SMS = new SideFares("SMS");
         SideFares NS = new SideFares("NS");
         SideFares PS = new SideFares("PS");
@@ -132,7 +237,6 @@ public class GvInRoot implements RootClass, DefaultScenarioFactory {
         global.zuweisung.put(E, loadE1, 0.0);
         global.zuweisung.put(E, loadE2, 0.0);
 
-        GvInRoot root = new GvInRoot();
         root.global = global;
         root.sectors = new Sector[] {E};
         root.customs = new SideCustom[] {grp1, grp2};
@@ -140,7 +244,5 @@ public class GvInRoot implements RootClass, DefaultScenarioFactory {
         root.dse = new LoadDSE[] {loadE1, loadE2};
         root.deses = new TechDESES[]{techES1};
         root.despv = new TechDESPV[]{techPV1};
-
-        return root;
     }
 }

@@ -9,5 +9,7 @@ import de.unileipzig.irptools.defstructure.annotation.Definition;
 @Definition
 public interface IGraphTopology {
 
+    boolean use();
+
     <V, E> GraphTopology<V, E> createInstance();
 }

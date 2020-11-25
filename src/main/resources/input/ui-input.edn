@@ -62,5 +62,58 @@
         :tags [["A" "DES" "PV"]]
       }
     ]
+  } 
+  {
+    :label "Graphviz" 
+    :description "Graphviz Einstellungen" 
+    :sections [
+      {
+        :label "Colors" 
+        :set "set_GraphvizColor" 
+        :description "Farben, welche von Graphviz bei der Grapherstellung genutzt werden sollen." 
+        :tags [["GraphvizColor" "rgba"]]
+      } 
+      {
+        :label "LayoutAlgorithm" 
+        :set "set_GraphvizLayoutAlgorithm" 
+        :description "LayoutAlgorithm Einstellungen. Über den Namen kann ein eigenes Layout definiert werden (muss von Graphviz unterstützt werden). Wichtig: Falls ein eigenes Layout genutzt wird, muss id auf -1 gesetzt werden." 
+        :tags [["GraphvizLayoutAlgorithm" "layoutId"] ["GraphvizLayoutAlgorithm" "useLayout"]]
+      } 
+      {
+        :label "OutputFormat" 
+        :set "set_GraphvizOutputFormat" 
+        :description "OutputFormat Einstellungen. Über den Namen kann ein eigenes Format definiert werden. Der Syntax dafür ist format[:renderer[:formatter]] (z.B. png:cairo:gd erzeugt ein png mit dem Caitro Renderer und der GD Library als Formatter). Wichtig: Falls ein eigenes Format genutzt wird, muss id auf -1 gesetzt werden." 
+        :tags [["GraphvizOutputFormat" "formatId"] ["GraphvizOutputFormat" "useFormat"]]
+      } 
+      {
+        :label "Allgemeine Einstellungen" 
+        :description "Allgemeine Einstellungen für Graphviz." 
+        :tags [["GraphvizGlobal" "fixedNeatoPosition"] ["GraphvizGlobal" "scaleFactor"]]
+      } 
+      {
+        :label "Agentengruppe" 
+        :set "set_AgentGroup" 
+        :description "Agentengruppe, welche im Graphen dargestellt werden sollen." 
+        :tags [["AgentGroup" "numberOfAgents"] ["link" "AgentGroup" "GraphvizColor" "agentColor"]]
+      } 
+      {
+        :label "Topologie" 
+        :description "unterst�tzte Topologien" 
+        :sections [
+          {
+            :label "WattsStrogatzModel" 
+            :set "set_IWattsStrogatzModel" 
+            :description "Watts Strogatz Model" 
+            :tags [["IWattsStrogatzModel" "wsmK"] ["IWattsStrogatzModel" "wsmBeta"] ["IWattsStrogatzModel" "wsmSelfReferential"] ["IWattsStrogatzModel" "wsmSeed"] ["IWattsStrogatzModel" "wsmUseThis"]]
+          } 
+          {
+            :label "FreeTopology" 
+            :set "set_IFreeMultiGraphTopology" 
+            :description "Freie Topologie" 
+            :tags [["IFreeMultiGraphTopology" "ftEdgeCount"] ["IFreeMultiGraphTopology" "ftSelfReferential"] ["IFreeMultiGraphTopology" "ftSeed"] ["IFreeMultiGraphTopology" "ftUseThis"]]
+          }
+        ]
+      }
+    ]
   }
 ]

@@ -35,5 +35,11 @@ public class AgentGroup {
 
     public AgentGroup() {
     }
+
+    public AgentGroup(String name, int numberOfAgents, GraphvizColor agentColor) {
+        this._name = name;
+        this.numberOfAgents = numberOfAgents;
+        this.agentColor = agentColor;
+    }
 }
 

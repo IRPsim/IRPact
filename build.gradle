@@ -64,6 +64,8 @@ dependencies {
 
     implementation "us.bpsm:edn-java:$ednjavaVersion"
 
+    implementation 'guru.nidi:graphviz-java:0.17.1'
+
     //custom
     implementation files('customlibs/IRPtools-1.0-SNAPSHOT.jar')
 }

@@ -3,8 +3,6 @@ package de.unileipzig.irpact.start;
 import de.unileipzig.irpact.start.optact.OptActMain;
 import de.unileipzig.irpact.v2.commons.log.Logback;
 
-import java.io.IOException;
-
 /**
  * Starts IRPact.
  *
@@ -55,7 +53,7 @@ public class Start {
 //        }
 //    }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Logback.setupSystemOutAndErr();
         OptActMain.main(args);
     }

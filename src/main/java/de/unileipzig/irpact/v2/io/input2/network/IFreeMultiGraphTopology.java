@@ -45,7 +45,19 @@ public class IFreeMultiGraphTopology implements IGraphTopology {
     )
     public long ftSeed;
 
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    description = "Soll diese Topology verwendet werden? Hinweis: es wird nur die erste gültige genutzt! Der Rest wird ignoriert!"
+            )
+    )
+    public boolean ftUseThis;
+
     public IFreeMultiGraphTopology() {
+    }
+
+    @Override
+    public boolean use() {
+        return ftUseThis;
     }
 
     @Override

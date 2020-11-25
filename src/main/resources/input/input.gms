@@ -162,3 +162,124 @@ PARAMETER par_A_DES_PV(set_tech_DES_PV)
 * - identifier: Speichertechnologie
 * - type: String
 SET set_tech_DESTO(set_tech_DES)
+
+* - identifier: GraphvizColor
+* - type: String
+SET set_GraphvizColor(*)
+
+* - description: RGBA Code der Farbe im Dezimalsystem.
+* - identifier: rgba
+* - type: Integer
+PARAMETER par_GraphvizColor_rgba(set_GraphvizColor)
+
+* - identifier: GraphvizLayoutAlgorithm
+* - type: String
+SET set_GraphvizLayoutAlgorithm(*)
+
+* - default: -1
+* - description: -1: eigenes Layout, 0: DOT, 1: NEATO, 2: FDP, 3: SFDP, 4: TWOPI, 5: CIRCO
+* - identifier: layoutId
+* - type: Integer
+PARAMETER par_GraphvizLayoutAlgorithm_layoutId(set_GraphvizLayoutAlgorithm)
+
+* - description: Verwendet dieses Layout.
+* - identifier: useLayout
+* - type: Boolean
+PARAMETER par_GraphvizLayoutAlgorithm_useLayout(set_GraphvizLayoutAlgorithm)
+
+* - identifier: GraphvizOutputFormat
+* - type: String
+SET set_GraphvizOutputFormat(*)
+
+* - default: -1
+* - description: -1: eigenes Format, 0: PNG, 1: SVG
+* - identifier: formatId
+* - type: Integer
+PARAMETER par_GraphvizOutputFormat_formatId(set_GraphvizOutputFormat)
+
+* - description: Verwendet dieses Ausgabeformat.
+* - identifier: useFormat
+* - type: Boolean
+PARAMETER par_GraphvizOutputFormat_useFormat(set_GraphvizOutputFormat)
+
+* - description: Fixiert die Positionen fÃ¼r das neato-Layout (-n).
+* - identifier: fixedNeatoPosition
+* - type: Boolean
+SCALAR sca_GraphvizGlobal_fixedNeatoPosition
+
+* - description: Legt den Skalierungsfaktor fest (-s). Der Wert 0 deaktiviert ihn.
+* - identifier: scaleFactor
+* - type: Float
+SCALAR sca_GraphvizGlobal_scaleFactor
+
+* - identifier: AgentGroup
+* - type: String
+SET set_AgentGroup(*)
+
+* - description: Anzahl der Agenten
+* - identifier: numberOfAgents
+* - type: Integer
+PARAMETER par_AgentGroup_numberOfAgents(set_AgentGroup)
+
+* - description: Farbe, welche diese Gruppe im Graphen haben soll. Wichtig: es wird nur der erste Wert verwendet! Falls keine Farbe gewählt wird, ist die Farbe schwarz.
+* - identifier: agentColor
+* - type: Boolean
+PARAMETER par_link_AgentGroup_GraphvizColor_agentColor(set_AgentGroup,set_GraphvizColor)
+
+* - identifier: IGraphTopology
+* - hidden: 1
+* - type: String
+SET set_IGraphTopology(*)
+
+* - identifier: IWattsStrogatzModel
+* - type: String
+SET set_IWattsStrogatzModel(set_IGraphTopology)
+
+* - description: k
+* - identifier: wsmK
+* - type: Integer
+PARAMETER par_IWattsStrogatzModel_wsmK(set_IWattsStrogatzModel)
+
+* - description: beta
+* - identifier: wsmBeta
+* - type: Float
+PARAMETER par_IWattsStrogatzModel_wsmBeta(set_IWattsStrogatzModel)
+
+* - description: Ist Selbstreferenzierung erlaubt?
+* - identifier: wsmSelfReferential
+* - type: Boolean
+PARAMETER par_IWattsStrogatzModel_wsmSelfReferential(set_IWattsStrogatzModel)
+
+* - description: Seed für den Zufallsgenerator.
+* - identifier: wsmSeed
+* - type: Integer
+PARAMETER par_IWattsStrogatzModel_wsmSeed(set_IWattsStrogatzModel)
+
+* - description: Soll diese Topology verwendet werden? Hinweis: es wird nur die erste gültige genutzt! Der Rest wird ignoriert!
+* - identifier: wsmUseThis
+* - type: Boolean
+PARAMETER par_IWattsStrogatzModel_wsmUseThis(set_IWattsStrogatzModel)
+
+* - identifier: IFreeMultiGraphTopology
+* - type: String
+SET set_IFreeMultiGraphTopology(set_IGraphTopology)
+
+* - description: Anzahl Kanten je Knoten
+* - identifier: ftEdgeCount
+* - type: Integer
+PARAMETER par_IFreeMultiGraphTopology_ftEdgeCount(set_IFreeMultiGraphTopology)
+
+* - description: Ist Selbstreferenzierung erlaubt?
+* - identifier: ftSelfReferential
+* - type: Boolean
+PARAMETER par_IFreeMultiGraphTopology_ftSelfReferential(set_IFreeMultiGraphTopology)
+
+* - description: Seed für den Zufallsgenerator.
+* - identifier: ftSeed
+* - type: Integer
+PARAMETER par_IFreeMultiGraphTopology_ftSeed(set_IFreeMultiGraphTopology)
+
+* - description: Soll diese Topology verwendet werden? Hinweis: es wird nur die erste gültige genutzt! Der Rest wird ignoriert!
+* - identifier: ftUseThis
+* - type: Boolean
+PARAMETER par_IFreeMultiGraphTopology_ftUseThis(set_IFreeMultiGraphTopology)
