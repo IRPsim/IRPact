@@ -38,14 +38,26 @@ class OptActMainTest {
     }
 
     @Test
-    void runImage() {
+    void runImageNoSimu() {
         Path dir = Paths.get("src", "main", "resources", "scenarios");
         Path outDir = Paths.get("exppriv");
         String[] args = {
                 "-i", dir.resolve(Constants.DEFAULT_JSON).toString(),
-                "-o", outDir.resolve("default.out.image.json").toString(),
+                "-o", outDir.resolve("default.out.nosimu.json").toString(),
                 "--image", outDir.resolve("testimage.png").toString(),
                 "--noSimulation"
+        };
+        Start.main(args);
+    }
+
+    @Test
+    void runImageWithSimu() {
+        Path dir = Paths.get("src", "main", "resources", "scenarios");
+        Path outDir = Paths.get("exppriv");
+        String[] args = {
+                "-i", dir.resolve(Constants.DEFAULT_JSON).toString(),
+                "-o", outDir.resolve("default.out.simu.json").toString(),
+                "--image", outDir.resolve("testimage.png").toString()
         };
         Start.main(args);
     }

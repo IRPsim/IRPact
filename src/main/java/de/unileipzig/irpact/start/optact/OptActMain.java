@@ -141,7 +141,8 @@ public class OptActMain implements Callable<Integer> {
         try {
             if(imagePath != null) {
                 runImageDemo(inputEntry);
-            } else {
+            }
+            if(!noSimulation) {
                 runOptActDemo(inputEntry);
             }
             logger.trace("IRPact finished");
