@@ -11,6 +11,8 @@ import de.unileipzig.irptools.defstructure.DefinitionMapper;
 import de.unileipzig.irptools.io.base.AnnualEntry;
 import de.unileipzig.irptools.io.perennial.PerennialData;
 import de.unileipzig.irptools.io.perennial.PerennialFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
 import java.io.FileNotFoundException;
@@ -26,6 +28,8 @@ import java.util.concurrent.Callable;
  */
 public class OptActMain implements Callable<Integer> {
 
+    private static final Logger logger = LoggerFactory.getLogger(OptActMain.class);
+
     @CommandLine.Option(
             names = { "-i", "--input" },
             description = "path to input file"
@@ -38,8 +42,21 @@ public class OptActMain implements Callable<Integer> {
     )
     private String outputFile;
 
+    @CommandLine.Option(
+            names = { "--image" },
+            description = "path to image file"
+    )
+    private String imageFile;
+
+    @CommandLine.Option(
+            names = { "--noSimulation" },
+            description = "disable simulation"
+    )
+    private boolean noSimulation;
+
     private Path inputPath;
     private Path outputPath;
+    private Path imagePath;
 
     public OptActMain() {
     }
@@ -141,14 +158,23 @@ public class OptActMain implements Callable<Integer> {
     }
 
     public void run() throws IOException {
-        if(inputPath == null) {
-            throw new NullPointerException("input path");
+        if(imagePath != null) {
+            runImageDemo();
+        } else {
+            runOptActDemo();
         }
-        if(outputPath == null) {
-            throw new NullPointerException("output path");
-        }
-        if(Files.notExists(inputPath)) {
-            throw new FileNotFoundException(inputPath.toString());
+    }
+
+    private void runImageDemo() {
+        logger.trace("run image demo");
+
+    }
+
+    private void runOptActDemo() throws IOException {
+        logger.trace("run optact demo");
+        if(noSimulation) {
+            logger.warn("no simulation");
+            return;
         }
 
         PerennialData<InRoot> inputData = loadInput(createInputConverter());
@@ -157,38 +183,42 @@ public class OptActMain implements Callable<Integer> {
         PerennialData<OutRoot> outData = createOutputData(inputEntry, outRoot);
         PerennialFile outFile = outData.serialize(createOutputConverter());
         outFile.store(outputPath);
-
-
-//        PerennialFile inFile = PerennialFile.parse(inputPath);
-//        Year in2015 = inFile.getYears().get(0);
-//        List<String> groups = listAgentGroups(in2015);
-//
-//        PerennialFile outFile = new PerennialFile();
-//        Year out2015 = outFile.getYears().newYear();
-//        out2015.getConfig().copyFrom(inFile.getYears().get(0).getConfig());
-//
-//
-//        out2015.getSets().put("set_ii");
-//        for(String grp: groups) {
-//            out2015.getSets().put("set_side", grp);
-//
-//            double sunSum = calc_par_out_IuOSonnentankNetzversorgung_Summe(in2015, grp);
-//            out2015.getSets().put("set_side_cust", grp, "par_out_IuOSonnentankNetzversorgung_Summe", sunSum);
-//            int newSize = calc_par_out_S_DS(in2015, grp);
-//            out2015.getSets().put("set_side_cust", grp, "par_out_S_DS", newSize);
-//        }
     }
 
     @Override
     public Integer call() {
-        if (inputFile == null) {
-            throw new NullPointerException("input file missing");
-        }
-        if (outputFile == null) {
-            throw new NullPointerException("output file missing");
+        if(inputFile == null) {
+            logger.error("input file missing");
+            System.exit(CommandLine.ExitCode.USAGE);
         }
         inputPath = Paths.get(inputFile);
-        outputPath = Paths.get(outputFile);
+        logger.debug("input file: {}", inputFile);
+        if(Files.notExists(inputPath)) {
+            logger.error("input file not found: {}", inputPath);
+            System.exit(CommandLine.ExitCode.SOFTWARE);
+        }
+
+        if(outputFile == null) {
+            if(!noSimulation) {
+                logger.error("output file missing");
+                System.exit(CommandLine.ExitCode.USAGE);
+            }
+        } else {
+            outputPath = Paths.get(outputFile);
+            logger.debug("output file: {}", outputPath);
+        }
+
+        if(imageFile != null) {
+            imagePath = Paths.get(imageFile);
+            logger.debug("image file: {}", imagePath);
+        }
+
+        if(noSimulation) {
+            logger.debug("simulation disabled");
+        } else {
+            logger.debug("simulation enabled");
+        }
+
         return CommandLine.ExitCode.OK;
     }
 

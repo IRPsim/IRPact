@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons;
 
+import de.unileipzig.irpact.v2.commons.Pair;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

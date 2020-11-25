@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.network.topology;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.v2.commons.CollectionUtil;
 import de.unileipzig.irpact.dev.ToDo;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;

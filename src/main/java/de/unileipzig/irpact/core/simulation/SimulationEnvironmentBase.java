@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.simulation;
 
-import de.unileipzig.irpact.commons.Check;
+import de.unileipzig.irpact.v2.commons.Check;
 import de.unileipzig.irpact.core.message.MessageSystem;
 import de.unileipzig.irpact.core.network.AgentNetwork;
 import de.unileipzig.irpact.core.spatial.SpatialModel;

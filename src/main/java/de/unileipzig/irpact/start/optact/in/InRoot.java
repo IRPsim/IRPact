@@ -21,10 +21,9 @@ import java.util.List;
 )
 public class InRoot implements RootClass, DefaultScenarioFactory {
 
-    public static final List<ParserInput> CLASSES = Util.arrayListOf(
+    public static final List<ParserInput> CLASSES_WITHOUT_ROOT = Util.arrayListOf(
             ParserInput.newInstance(Type.INPUT, Ii.class),
             ParserInput.newInstance(Type.INPUT, InGlobal.class),
-            ParserInput.newInstance(Type.INPUT, InRoot.class),
             ParserInput.newInstance(Type.INPUT, LoadDS.class),
             ParserInput.newInstance(Type.INPUT, LoadDSE.class),
             ParserInput.newInstance(Type.INPUT, LoadDSLOA.class),
@@ -38,6 +37,11 @@ public class InRoot implements RootClass, DefaultScenarioFactory {
             ParserInput.newInstance(Type.INPUT, TechDESES.class),
             ParserInput.newInstance(Type.INPUT, TechDESPV.class),
             ParserInput.newInstance(Type.INPUT, TechDESTO.class)
+    );
+
+    public static final List<ParserInput> CLASSES = Util.mergedArrayListOf(
+            Util.arrayListOf(ParserInput.newInstance(Type.INPUT, InRoot.class)),
+            CLASSES_WITHOUT_ROOT
     );
 
     @FieldDefinition()

@@ -18,10 +18,29 @@ class OptActMainTest {
     @Test
     void runIt() throws IOException {
         Path dir = Paths.get("src", "main", "resources", "scenarios");
+        Path outDir = Paths.get("exppriv");
         String[] args = {
                 "-i", dir.resolve(Constants.DEFAULT_JSON).toString(),
-                "-o", dir.resolve("default.out.json").toString()
+                "-o", outDir.resolve("default.out.json").toString()
         };
         Start.main(args);
+    }
+
+    @Test
+    void runImage() throws IOException {
+        Path dir = Paths.get("src", "main", "resources", "scenarios");
+        Path outDir = Paths.get("exppriv");
+        String[] args = {
+                "-i", dir.resolve(Constants.DEFAULT_JSON).toString(),
+                "-o", outDir.resolve("default.out.json").toString(),
+                "--image", outDir.resolve("testimage.png").toString(),
+                "--noSimulation"
+        };
+        Start.main(args);
+    }
+
+    @Test
+    void createFiles() {
+
     }
 }

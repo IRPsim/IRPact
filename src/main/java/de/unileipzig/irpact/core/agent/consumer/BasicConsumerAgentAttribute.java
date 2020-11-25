@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
-import de.unileipzig.irpact.commons.Check;
-import de.unileipzig.irpact.core.attribute.Attribute;
+import de.unileipzig.irpact.v2.commons.Check;
 
 /**
  * @author Daniel Abitz
