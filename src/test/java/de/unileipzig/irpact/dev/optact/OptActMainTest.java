@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.dev.optact;
 
 import de.unileipzig.irpact.start.Start;
+import de.unileipzig.irpact.start.optact.OptActRes;
 import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irpact.start.optact.out.OutRoot;
 import de.unileipzig.irpact.v2.commons.log.Logback;
@@ -60,6 +61,12 @@ class OptActMainTest {
                 "--image", outDir.resolve("testimage.png").toString()
         };
         Start.main(args);
+    }
+
+    @Test
+    void printStuff() {
+        OptActRes res = new OptActRes();
+        res.entries().forEach(p -> System.out.println(p.getKey() + ": " + p.getValue()));
     }
 
     @Test

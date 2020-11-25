@@ -202,7 +202,7 @@ PARAMETER par_GraphvizOutputFormat_formatId(set_GraphvizOutputFormat)
 * - type: Boolean
 PARAMETER par_GraphvizOutputFormat_useFormat(set_GraphvizOutputFormat)
 
-* - description: Fixiert die Positionen fÃ¼r das neato-Layout (-n).
+* - description: Fixiert die Positionen für das neato-Layout (-n).
 * - identifier: fixedNeatoPosition
 * - type: Boolean
 SCALAR sca_GraphvizGlobal_fixedNeatoPosition

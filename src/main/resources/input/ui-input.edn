@@ -76,18 +76,18 @@
       {
         :label "LayoutAlgorithm" 
         :set "set_GraphvizLayoutAlgorithm" 
-        :description "LayoutAlgorithm Einstellungen. Ãœber den Namen kann ein eigenes Layout definiert werden (muss von Graphviz unterstÃ¼tzt werden). Wichtig: Falls ein eigenes Layout genutzt wird, muss id auf -1 gesetzt werden." 
+        :description "LayoutAlgorithm Einstellungen. Über den Namen kann ein eigenes Layout definiert werden (muss von Graphviz unterstützt werden). Wichtig: Falls ein eigenes Layout genutzt wird, muss id auf -1 gesetzt werden." 
         :tags [["GraphvizLayoutAlgorithm" "layoutId"] ["GraphvizLayoutAlgorithm" "useLayout"]]
       } 
       {
         :label "OutputFormat" 
         :set "set_GraphvizOutputFormat" 
-        :description "OutputFormat Einstellungen. Ãœber den Namen kann ein eigenes Format definiert werden. Der Syntax dafÃ¼r ist format[:renderer[:formatter]] (z.B. png:cairo:gd erzeugt ein png mit dem Caitro Renderer und der GD Library als Formatter). Wichtig: Falls ein eigenes Format genutzt wird, muss id auf -1 gesetzt werden." 
+        :description "OutputFormat Einstellungen. Über den Namen kann ein eigenes Format definiert werden. Der Syntax dafür ist format[:renderer[:formatter]] (z.B. png:cairo:gd erzeugt ein png mit dem Caitro Renderer und der GD Library als Formatter). Wichtig: Falls ein eigenes Format genutzt wird, muss id auf -1 gesetzt werden." 
         :tags [["GraphvizOutputFormat" "formatId"] ["GraphvizOutputFormat" "useFormat"]]
       } 
       {
         :label "Allgemeine Einstellungen" 
-        :description "Allgemeine Einstellungen fÃ¼r Graphviz." 
+        :description "Allgemeine Einstellungen für Graphviz." 
         :tags [["GraphvizGlobal" "fixedNeatoPosition"] ["GraphvizGlobal" "scaleFactor"]]
       } 
       {
