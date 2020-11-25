@@ -161,7 +161,7 @@ public class DirectedAdjacencyListMultiGraph<V, E, T> implements DirectedMultiGr
 
     @Override
     public boolean addEdge(V from, V to, T type, E edge) {
-        if(hasEdge(from, to, type)) {
+        if(hasEdge(from, to, type) || hasEdge(edge)) {
             return false;
         } else {
             setEdge(from, to, type, edge);

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.v2.commons;
 
 import java.util.*;
+import java.util.function.ToDoubleFunction;
 
 /**
  * @author Daniel Abitz
@@ -66,6 +67,9 @@ public final class CollectionUtil {
     }
 
     public static <T> T get(Collection<T> coll, int index) {
+        if(coll instanceof List) {
+            return ((List<T>) coll).get(index);
+        }
         int i = 0;
         for(T t: coll) {
             if(i == index) {
@@ -130,5 +134,64 @@ public final class CollectionUtil {
     public static <T> T removeRandom(Collection<T> coll, int from, int to, Random rnd) {
         int index = Util.nextInt(rnd, from, to);
         return remove(coll, index);
+    }
+
+    public static <T> T getWeightedRandom(
+            Collection<? extends T> coll,
+            ToDoubleFunction<? super T> weightFunction,
+            Random rnd) {
+        double sum = coll.stream()
+                .mapToDouble(weightFunction)
+                .sum();
+        return getWeightedRandom(coll, weightFunction, sum, rnd);
+    }
+
+    public static <T> T getWeightedRandom(
+            Collection<? extends T> coll,
+            ToDoubleFunction<? super T> weightFunction,
+            double sum,
+            Random rnd) {
+        final double rndDraw = rnd.nextDouble() * sum;
+        double temp = 0.0;
+        T result = null;
+        for(T value: coll) {
+            temp += weightFunction.applyAsDouble(value);
+            result = value;
+            if(rndDraw < temp) {
+                return result;
+            }
+        }
+        return result;
+    }
+
+    public static <T> int getWeightedRandomIndex(
+            Collection<? extends T> coll,
+            ValueIntToDoubleFunction<? super T> weightFunction,
+            Random rnd) {
+        double sum = 0.0;
+        int i = 0;
+        for(T value: coll) {
+            sum += weightFunction.applyAsDouble(value, i);
+            i++;
+        }
+        return getWeightedRandomIndex(coll, weightFunction, sum, rnd);
+    }
+
+    public static <T> int getWeightedRandomIndex(
+            Collection<? extends T> coll,
+            ValueIntToDoubleFunction<? super T> weightFunction,
+            double sum,
+            Random rnd) {
+        final double rndDraw = rnd.nextDouble() * sum;
+        double temp = 0.0;
+        int i = 0;
+        for(T value: coll) {
+            temp += weightFunction.applyAsDouble(value, i);
+            if(rndDraw < temp) {
+                return i;
+            }
+            i++;
+        }
+        return -1;
     }
 }

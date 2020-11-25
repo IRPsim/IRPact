@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.experimental;
 
 import de.unileipzig.irpact.commons.distribution.ConstantDistribution;
+import de.unileipzig.irpact.experimental.eval3.DynExponential;
+import de.unileipzig.irpact.experimental.eval3.DynLinear;
 import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irpact.v2.commons.graph.DirectedAdjacencyListMultiGraph;
 import de.unileipzig.irpact.v2.commons.graph.MultiGraph;
@@ -83,5 +85,45 @@ class DivTest {
         top.initalizeEdges(g);
 
         System.out.println("edges: " + g.getEdges("x").size());
+    }
+
+    @Test
+    void testIt() {
+        DynLinear b1 = new DynLinear();
+        b1.setXMax(20);
+        b1.setM(-1);
+        b1.init(2.0, 0.7);
+        b1.setX1(5.0);
+        double b1_y1 = b1.calculateY1();
+
+        DynExponential b2 = new DynExponential();
+        b2.setXMax(20);
+        b2.init(5.0, b1_y1);
+        b2.setLambda(-4);
+        b2.setX1(20.0);
+
+        System.out.println("b1_y1 " + b1_y1);
+        System.out.println(b1.calculate(2));
+        System.out.println(b2.calculate(5));
+    }
+
+    @Test
+    void testIt2() {
+        DynExponential b1 = new DynExponential();
+        b1.setXMax(20);
+        b1.init(2.0, 0.7);
+        b1.setLambda(-4);
+        b1.setX1(5);
+        double b1_y1 = b1.calculateY1();
+
+        DynLinear b2 = new DynLinear();
+        b2.setXMax(20);
+        b2.setM(-1);
+        b2.init(5.0, b1_y1);
+        b2.setX1(20);
+
+        System.out.println("b1_y1 " + b1_y1);
+        System.out.println(b1.calculate(2));
+        System.out.println(b2.calculate(5));
     }
 }

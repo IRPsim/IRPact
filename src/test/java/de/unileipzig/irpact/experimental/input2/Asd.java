@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.experimental.input2;
 
-import de.unileipzig.irpact.v2.pg.eval.Custom;
-import de.unileipzig.irpact.v2.pg.eval.Par2;
+import de.unileipzig.irpact.experimental.eval.Custom;
 import de.unileipzig.irpact.v2.io.input2.InputResource;
 import de.unileipzig.irpact.v2.io.input2.agent.consumer.IConsumerAgentGroup;
 import de.unileipzig.irpact.v2.io.input2.network.IFreeMultiGraphTopology;
@@ -66,15 +65,5 @@ class Asd {
         System.out.println(new Expression(ff, new Argument("x = 1")).calculate());
         System.out.println(new Expression(ff, new Argument("x = 2")).calculate());
         System.out.println(new Expression(ff, new Argument("x = 3")).calculate());
-    }
-
-    @Test
-    void lol3() {
-        Par2 p2 = new Par2();
-        Custom c = new Custom();
-        c.setStr("x * 2/3 + (4*5 - x)");
-
-        System.out.println(p2.calculate(10));
-        System.out.println(c.calculate(10));
     }
 }

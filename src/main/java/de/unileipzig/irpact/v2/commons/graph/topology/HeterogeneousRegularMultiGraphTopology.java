@@ -57,6 +57,7 @@ public class HeterogeneousRegularMultiGraphTopology<V, E, T, VG> extends Abstrac
         for(NodeHelper<V> grpHelper: grpNodes.values()) {
             grpHelper.init(rnd);
         }
+        int x = 0;
         for(V sourceNode: graph.getVertices()) {
             VG sourceGrp = getGroupFunction.apply(sourceNode);
             int i = 0;
@@ -66,6 +67,7 @@ public class HeterogeneousRegularMultiGraphTopology<V, E, T, VG> extends Abstrac
                 NodeHelper<V> targetHelper = grpNodes.get(targetGrp);
                 V peek = targetHelper.peek();
                 if(!isSelfReferential && peek == sourceNode) {
+                    targetHelper.discard();
                     continue;
                 }
                 if(hasEdge(graph, sourceNode, peek)) {

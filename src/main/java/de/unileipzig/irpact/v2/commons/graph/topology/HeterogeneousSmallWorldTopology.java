@@ -15,11 +15,23 @@ import java.util.function.Function;
  */
 public class HeterogeneousSmallWorldTopology<V, E, T, VG> extends HeterogeneousRegularMultiGraphTopology<V, E, T, VG> {
 
-    protected Function<? super E, ? extends V> getSourceFunction;
-    protected Function<? super E, ? extends V> getTargetFunction;
+    protected Function<? super E, ? extends V> sourceFunction;
+    protected Function<? super E, ? extends V> targetFunction;
     protected Map<VG, Double> grpBetaMapping;
 
     public HeterogeneousSmallWorldTopology() {
+    }
+
+    public void setSourceFunction(Function<? super E, ? extends V> sourceFunction) {
+        this.sourceFunction = sourceFunction;
+    }
+
+    public void setTargetFunction(Function<? super E, ? extends V> targetFunction) {
+        this.targetFunction = targetFunction;
+    }
+
+    public void setGrpBetaMapping(Map<VG, Double> grpBetaMapping) {
+        this.grpBetaMapping = grpBetaMapping;
     }
 
     protected Map<VG, Set<V>> groupNodes(Graph<V, E> graph) {
@@ -38,11 +50,11 @@ public class HeterogeneousSmallWorldTopology<V, E, T, VG> extends HeterogeneousR
         Map<VG, Set<V>> grpedNodes = groupNodes(graph);
         Set<E> edgesCopy = new LinkedHashSet<>(getEdges(graph));
         for(E edge: edgesCopy) {
-            V sourceNode = getSourceFunction.apply(edge);
+            V sourceNode = sourceFunction.apply(edge);
             VG sourceGrp = getGroupFunction.apply(sourceNode);
             final double beta = grpBetaMapping.get(sourceGrp);
             if(rnd.nextDouble() < beta) {
-                V targetNode = getTargetFunction.apply(edge);
+                V targetNode = targetFunction.apply(edge);
                 VG targetGrp = getGroupFunction.apply(targetNode);
                 while(true) {
                     Set<? extends V> sourceTargets = getTargets(graph, sourceNode);

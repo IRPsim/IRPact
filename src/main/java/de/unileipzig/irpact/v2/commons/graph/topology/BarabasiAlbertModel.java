@@ -103,6 +103,7 @@ public class BarabasiAlbertModel<V, E, T> extends AbstractMultiGraphTopology<V, 
                             if(rnd.nextDouble() < b2) {
                                 addEdge(graph, vh, vi);
                                 logger.trace("add edge {}->{}", h, i);
+                                E += 1;
                                 noConnection = false;
                             }
                         }
