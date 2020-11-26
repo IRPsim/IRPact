@@ -1,7 +1,0 @@
-[
-  {
-    :label "Output" 
-    :set "set_OConsumerAgentGroup" 
-    :tags [["OConsumerAgentGroup" "adaptionRate"]]
-  }
-]
