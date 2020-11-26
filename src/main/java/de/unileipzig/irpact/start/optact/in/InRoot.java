@@ -21,10 +21,9 @@ import java.util.List;
 )
 public class InRoot implements RootClass, DefaultScenarioFactory {
 
-    public static final List<ParserInput> CLASSES = Util.arrayListOf(
+    public static final List<ParserInput> CLASSES_WITHOUT_ROOT = Util.arrayListOf(
             ParserInput.newInstance(Type.INPUT, Ii.class),
             ParserInput.newInstance(Type.INPUT, InGlobal.class),
-            ParserInput.newInstance(Type.INPUT, InRoot.class),
             ParserInput.newInstance(Type.INPUT, LoadDS.class),
             ParserInput.newInstance(Type.INPUT, LoadDSE.class),
             ParserInput.newInstance(Type.INPUT, LoadDSLOA.class),
@@ -38,6 +37,11 @@ public class InRoot implements RootClass, DefaultScenarioFactory {
             ParserInput.newInstance(Type.INPUT, TechDESES.class),
             ParserInput.newInstance(Type.INPUT, TechDESPV.class),
             ParserInput.newInstance(Type.INPUT, TechDESTO.class)
+    );
+
+    public static final List<ParserInput> CLASSES = Util.mergedArrayListOf(
+            Util.arrayListOf(ParserInput.newInstance(Type.INPUT, InRoot.class)),
+            CLASSES_WITHOUT_ROOT
     );
 
     @FieldDefinition()
@@ -78,6 +82,9 @@ public class InRoot implements RootClass, DefaultScenarioFactory {
         LoadDSE loadE1 = new LoadDSE("load_E1");
         loadE1.ldse = new DoubleTimeSeries("0");
 
+        LoadDSE loadE2 = new LoadDSE("load_E2");
+        loadE2.ldse = new DoubleTimeSeries("0");
+
         Sector E = new Sector("E");
 
         TechDESES techES1 = new TechDESES("tech_ES1");
@@ -97,16 +104,20 @@ public class InRoot implements RootClass, DefaultScenarioFactory {
         global.energy.put(SMS, loadE1, new DoubleTimeSeries("0"));
         global.energy.put(NS, loadE1, new DoubleTimeSeries("0"));
         global.energy.put(PS, loadE1, new DoubleTimeSeries("0"));
+        global.energy.put(SMS, loadE2, new DoubleTimeSeries("0"));
+        global.energy.put(NS, loadE2, new DoubleTimeSeries("0"));
+        global.energy.put(PS, loadE2, new DoubleTimeSeries("0"));
         global.marktpreis = new DoubleTimeSeries("0");
         global.zuweisung = Table.newLinked();
         global.zuweisung.put(E, loadE1, 0.0);
+        global.zuweisung.put(E, loadE2, 0.0);
 
         InRoot root = new InRoot();
         root.global = global;
         root.sectors = new Sector[] {E};
         root.customs = new SideCustom[] {grp1, grp2};
         root.fares = new SideFares[] {SMS, NS, PS};
-        root.dse = new LoadDSE[] {loadE1};
+        root.dse = new LoadDSE[] {loadE1, loadE2};
         root.deses = new TechDESES[]{techES1};
         root.despv = new TechDESPV[]{techPV1};
 

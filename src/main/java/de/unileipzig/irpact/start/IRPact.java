@@ -41,6 +41,5 @@ public class IRPact {
     //=========================
 
     public static void main(String[] args) {
-
     }
 }

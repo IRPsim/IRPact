@@ -13,25 +13,114 @@
       "interpolated" : false
     },
     "scalars" : {
+      "sca_GraphvizGlobal_fixedNeatoPosition" : 0,
+      "sca_GraphvizGlobal_scaleFactor" : 0.0,
       "sca_Tax_PS_vat" : 0.19,
       "sca_X_MS_CH_country" : 0,
       "sca_X_MS_DE_country" : 1
     },
     "sets" : {
+      "set_AgentGroup" : {
+        "Gruppe1" : {
+          "par_AgentGroup_numberOfAgents" : 10
+        },
+        "Gruppe2" : {
+          "par_AgentGroup_numberOfAgents" : 15
+        },
+        "Gruppe3" : {
+          "par_AgentGroup_numberOfAgents" : 20
+        },
+        "Gruppe4" : {
+          "par_AgentGroup_numberOfAgents" : 25
+        }
+      },
+      "set_GraphvizColor" : {
+        "BLUE" : {
+          "par_GraphvizColor_rgba" : 4278190335
+        },
+        "GREEN" : {
+          "par_GraphvizColor_rgba" : 4278255360
+        },
+        "PINK" : {
+          "par_GraphvizColor_rgba" : 4294946735
+        },
+        "RED" : {
+          "par_GraphvizColor_rgba" : 4294901760
+        }
+      },
+      "set_GraphvizLayoutAlgorithm" : {
+        "circo" : {
+          "par_GraphvizLayoutAlgorithm_layoutId" : 5,
+          "par_GraphvizLayoutAlgorithm_useLayout" : 1
+        },
+        "dot" : {
+          "par_GraphvizLayoutAlgorithm_layoutId" : 0,
+          "par_GraphvizLayoutAlgorithm_useLayout" : 0
+        },
+        "fdp" : {
+          "par_GraphvizLayoutAlgorithm_layoutId" : 2,
+          "par_GraphvizLayoutAlgorithm_useLayout" : 0
+        },
+        "neato" : {
+          "par_GraphvizLayoutAlgorithm_layoutId" : 1,
+          "par_GraphvizLayoutAlgorithm_useLayout" : 0
+        },
+        "sfdp" : {
+          "par_GraphvizLayoutAlgorithm_layoutId" : 3,
+          "par_GraphvizLayoutAlgorithm_useLayout" : 0
+        },
+        "twopi" : {
+          "par_GraphvizLayoutAlgorithm_layoutId" : 4,
+          "par_GraphvizLayoutAlgorithm_useLayout" : 0
+        }
+      },
+      "set_GraphvizOutputFormat" : {
+        "png" : {
+          "par_GraphvizOutputFormat_formatId" : 0,
+          "par_GraphvizOutputFormat_useFormat" : 1
+        }
+      },
+      "set_IFreeMultiGraphTopology" : {
+        "FREE1" : {
+          "par_IFreeMultiGraphTopology_ftEdgeCount" : 3,
+          "par_IFreeMultiGraphTopology_ftSelfReferential" : 0,
+          "par_IFreeMultiGraphTopology_ftSeed" : 24,
+          "par_IFreeMultiGraphTopology_ftUseThis" : 0
+        }
+      },
+      "set_IGraphTopology" : {
+        "FREE1" : { },
+        "WSM1" : { }
+      },
       "set_ii" : { },
+      "set_IWattsStrogatzModel" : {
+        "WSM1" : {
+          "par_IWattsStrogatzModel_wsmK" : 4,
+          "par_IWattsStrogatzModel_wsmBeta" : 0.0,
+          "par_IWattsStrogatzModel_wsmSelfReferential" : 0,
+          "par_IWattsStrogatzModel_wsmSeed" : 42,
+          "par_IWattsStrogatzModel_wsmUseThis" : 1
+        }
+      },
       "set_load_DS" : {
-        "load_E1" : { }
+        "load_E1" : { },
+        "load_E2" : { }
       },
       "set_load_DS_E" : {
         "load_E1" : {
           "par_L_DS_E" : "0"
+        },
+        "load_E2" : {
+          "par_L_DS_E" : "0"
         }
       },
       "set_load_DSLOA" : {
-        "load_E1" : { }
+        "load_E1" : { },
+        "load_E2" : { }
       },
       "set_pss" : {
         "load_E1" : { },
+        "load_E2" : { },
         "tech_ES1" : { },
         "tech_PV1" : { }
       },
@@ -90,23 +179,53 @@
       "par_F_E_EGrid_energy" : {
         "NS" : {
           "load_E1" : "0",
+          "load_E2" : "0",
           "tech_ES1" : "0",
           "tech_PV1" : "0"
         },
         "PS" : {
           "load_E1" : "0",
+          "load_E2" : "0",
           "tech_ES1" : "0",
           "tech_PV1" : "0"
         },
         "SMS" : {
           "load_E1" : "0",
+          "load_E2" : "0",
           "tech_ES1" : "0",
           "tech_PV1" : "0"
+        }
+      },
+      "par_link_AgentGroup_GraphvizColor_agentColor" : {
+        "Gruppe1" : {
+          "BLUE" : 0.0,
+          "GREEN" : 0.0,
+          "PINK" : 0.0,
+          "RED" : 1.0
+        },
+        "Gruppe2" : {
+          "BLUE" : 0.0,
+          "GREEN" : 1.0,
+          "PINK" : 0.0,
+          "RED" : 0.0
+        },
+        "Gruppe3" : {
+          "BLUE" : 1.0,
+          "GREEN" : 0.0,
+          "PINK" : 0.0,
+          "RED" : 0.0
+        },
+        "Gruppe4" : {
+          "BLUE" : 0.0,
+          "GREEN" : 0.0,
+          "PINK" : 1.0,
+          "RED" : 0.0
         }
       },
       "par_SOH_pss_sector" : {
         "E" : {
           "load_E1" : 0.0,
+          "load_E2" : 0.0,
           "tech_ES1" : 0.0,
           "tech_PV1" : 0.0
         }

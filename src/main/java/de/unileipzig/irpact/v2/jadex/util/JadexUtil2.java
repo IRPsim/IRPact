@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.v2.jadex.util;
 
-import de.unileipzig.irpact.temp.jadex.TimerService;
 import jadex.bridge.service.ServiceScope;
 import jadex.bridge.service.component.IRequiredServicesFeature;
 import jadex.bridge.service.search.ServiceQuery;

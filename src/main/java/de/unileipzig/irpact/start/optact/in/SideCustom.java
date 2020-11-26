@@ -13,7 +13,8 @@ import de.unileipzig.irptools.util.DoubleTimeSeries;
                 identifier = "KG"
         ),
         edn = @Edn(
-                label = "Sets/Kundengruppen"
+                label = "Sets/Kundengruppen",
+                description = {"Hier sind Sets.", "Hier sind Kundengruppen."}
         )
 )
 public class SideCustom extends Side {

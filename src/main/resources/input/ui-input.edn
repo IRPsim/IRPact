@@ -1,54 +1,118 @@
 [
   {
     :label "Skalare und einfache Zeitreihen" 
+    :description "Hier sind die skalaren Werte und einfache Zeitreihen" 
     :sections [
       {
         :label "Scalar" 
+        :description "Hier stehen skalare Werte" 
         :tags [["Tax" "PS" "vat"] ["X" "MS" "DE" "country"] ["X" "MS" "CH" "country"]]
       } 
       {
         :label "TimeSeries" 
+        :description "Hier stehen einfache Zeitreihen" 
         :tags [["C" "MS" "E"]]
       }
     ]
   } 
   {
     :label "Link" 
+    :description "Hier stehen Tables-Einträge." 
     :sections [
       {
         :label "Table" 
         :set "set_tech_DES_ES" 
+        :description "Hier stehen primitive Tables-Einträge" 
         :tags [["SOH" "pss" "sector"]]
       } 
       {
         :label "TableWithTimeSeries" 
         :set "set_load_DS_E" 
+        :description "Hier stehen Zeitreihen als Tables-Einträge" 
         :tags [["F" "E" "EGrid" "energy"]]
       }
     ]
   } 
   {
     :label "Sets" 
+    :description "Hier sind Sets." 
     :sections [
       {
         :label "Strom-Verbrauchertechnologie" 
         :set "set_load_DS_E" 
+        :description "Hier sind Strom-Verbrauchertechnologie" 
         :tags [["L" "DS" "E"]]
       } 
       {
         :label "Kundengruppen" 
         :set "set_side_cust" 
+        :description "Hier sind Kundengruppen." 
         :tags [["S" "DS"] ["kg" "modifier"] ["IuO" "ESector" "CustSide"]]
       } 
       {
         :label "Stromspeicher" 
         :set "set_tech_DES_ES" 
+        :description "Hier sind Stromspeicher" 
         :tags [["Inc" "PS" "ES"]]
       } 
       {
         :label "PV" 
         :set "set_tech_DES_PV" 
+        :description "Hier sind PV" 
         :tags [["A" "DES" "PV"]]
+      }
+    ]
+  } 
+  {
+    :label "Graphviz" 
+    :description "Graphviz Einstellungen" 
+    :sections [
+      {
+        :label "Farben" 
+        :set "set_GraphvizColor" 
+        :description "Farben, welche von Graphviz bei der Grapherstellung genutzt werden sollen." 
+        :tags [["GraphvizColor" "rgba"]]
+      } 
+      {
+        :label "Layout-Algorithmen" 
+        :set "set_GraphvizLayoutAlgorithm" 
+        :description "LayoutAlgorithm Einstellungen. Über den Namen kann ein eigenes Layout definiert werden (muss von Graphviz unterstützt werden). Wichtig: Falls ein eigenes Layout genutzt wird, muss id auf -1 gesetzt werden." 
+        :tags [["GraphvizLayoutAlgorithm" "layoutId"] ["GraphvizLayoutAlgorithm" "useLayout"]]
+      } 
+      {
+        :label "Ausgabeformate" 
+        :set "set_GraphvizOutputFormat" 
+        :description "OutputFormat Einstellungen. Über den Namen kann ein eigenes Format definiert werden. Der Syntax dafür ist format[:renderer[:formatter]] (z.B. png:cairo:gd erzeugt ein png mit dem Caitro Renderer und der GD Library als Formatter). Wichtig: Falls ein eigenes Format genutzt wird, muss id auf -1 gesetzt werden." 
+        :tags [["GraphvizOutputFormat" "formatId"] ["GraphvizOutputFormat" "useFormat"]]
+      } 
+      {
+        :label "Allgemeine Einstellungen" 
+        :description "Allgemeine Einstellungen für Graphviz." 
+        :tags [["GraphvizGlobal" "fixedNeatoPosition"] ["GraphvizGlobal" "scaleFactor"]]
+      } 
+      {
+        :label "Agentengruppen" 
+        :set "set_AgentGroup" 
+        :description "Agentengruppe, welche im Graphen dargestellt werden sollen." 
+        :tags [["AgentGroup" "numberOfAgents"] ["link" "AgentGroup" "GraphvizColor" "agentColor"]]
+      } 
+      {
+        :label "Topologie" 
+        :description "unterstützte Topologien" 
+        :sections [
+          {
+            :label "Watts-Strogatz-Model" 
+            :set "set_IWattsStrogatzModel" 
+            :description "Watts-Strogatz-Model" 
+            :tags [["IWattsStrogatzModel" "wsmK"] ["IWattsStrogatzModel" "wsmBeta"] ["IWattsStrogatzModel" "wsmSelfReferential"] ["IWattsStrogatzModel" "wsmSeed"] ["IWattsStrogatzModel" "wsmUseThis"]]
+          } 
+          {
+            :label "Freie Topologie" 
+            :set "set_IFreeMultiGraphTopology" 
+            :description "Freie Topologie" 
+            :tags [["IFreeMultiGraphTopology" "ftEdgeCount"] ["IFreeMultiGraphTopology" "ftSelfReferential"] ["IFreeMultiGraphTopology" "ftSeed"] ["IFreeMultiGraphTopology" "ftUseThis"]]
+          }
+        ]
       }
     ]
   }

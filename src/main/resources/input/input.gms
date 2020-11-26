@@ -10,6 +10,7 @@ SET set_ii(*)
 SCALAR sca_Tax_PS_vat
 
 * - default: 1
+* - domain: [0|1]
 * - description: Wahl Deutschland
 * - identifier: Wahl Deutschland
 * - rule: IF (sca_X_MS_DE_country == 1, sca_X_MS_CH_country = 0)
@@ -17,6 +18,8 @@ SCALAR sca_Tax_PS_vat
 * - type: Boolean
 SCALAR sca_X_MS_DE_country
 
+* - default: 0
+* - domain: [0|1]
 * - description: Wahl Schweiz
 * - identifier: Wahl Schweiz
 * - rule: IF (sca_X_MS_CH_country == 1, sca_X_MS_DE_country = 0)
@@ -36,6 +39,7 @@ PARAMETER par_C_MS_E(set_ii)
 * - type: Float
 PARAMETER par_SOH_pss_sector(set_sector,set_pss)
 
+* - default: 0
 * - description: Bitte geben Sie hier die an die verschiedenen Akteure (Netz-, Politik- und Vertriebsseite) zu zahlenden Arbeitstarife für den Strom-Netzbezug an
 * - identifier: Strom-Arbeitstarife Netzbezug
 * - unit: [EUR / MWh]
@@ -72,6 +76,7 @@ SET set_load_DSLOA(set_load_DS)
 * - type: String
 SET set_pss(*)
 
+* - default: E
 * - description: Energiesektor
 * - hidden: 1
 * - identifier: Energiesektor
@@ -107,6 +112,7 @@ PARAMETER par_kg_modifier(set_side_cust)
 * - type: Float
 PARAMETER par_IuO_ESector_CustSide(set_ii,set_side_cust)
 
+* - default: SMS, NS, PS
 * - description: Tarifteilnehmer
 * - hidden: 1
 * - identifier: Tarifteilnehmer
@@ -130,6 +136,7 @@ SET set_tech_DES(set_pss)
 * - type: String
 SET set_tech_DES_ES(set_tech_DESTO)
 
+* - default: 0
 * - domain: [0,)
 * - description: Bitte tragen Sie hier die spezifische Förderung der öffentlichen Hand für Stromspeicher ein
 * - identifier: Förderung für Stromspeicher durch Politik
@@ -142,6 +149,7 @@ PARAMETER par_Inc_PS_ES(set_tech_DES_ES)
 * - type: String
 SET set_tech_DES_PV(set_tech_DEGEN)
 
+* - default: 0
 * - domain: [0,)
 * - description: Bitte geben Sie hier die gesamte Modulfläche der PV-Anlage an
 * - identifier: Modulfläche PV-Anlage
@@ -154,3 +162,124 @@ PARAMETER par_A_DES_PV(set_tech_DES_PV)
 * - identifier: Speichertechnologie
 * - type: String
 SET set_tech_DESTO(set_tech_DES)
+
+* - identifier: GraphvizColor
+* - type: String
+SET set_GraphvizColor(*)
+
+* - description: RGBA Code der Farbe im Dezimalsystem.
+* - identifier: RGBA-Wert
+* - type: Integer
+PARAMETER par_GraphvizColor_rgba(set_GraphvizColor)
+
+* - identifier: GraphvizLayoutAlgorithm
+* - type: String
+SET set_GraphvizLayoutAlgorithm(*)
+
+* - default: -1
+* - description: -1: eigenes Layout, 0: DOT, 1: NEATO, 2: FDP, 3: SFDP, 4: TWOPI, 5: CIRCO
+* - identifier: Layout-ID
+* - type: Integer
+PARAMETER par_GraphvizLayoutAlgorithm_layoutId(set_GraphvizLayoutAlgorithm)
+
+* - description: Verwendet dieses Layout.
+* - identifier: Layout nutzen?
+* - type: Boolean
+PARAMETER par_GraphvizLayoutAlgorithm_useLayout(set_GraphvizLayoutAlgorithm)
+
+* - identifier: GraphvizOutputFormat
+* - type: String
+SET set_GraphvizOutputFormat(*)
+
+* - default: -1
+* - description: -1: eigenes Format, 0: PNG, 1: SVG
+* - identifier: Format-ID
+* - type: Integer
+PARAMETER par_GraphvizOutputFormat_formatId(set_GraphvizOutputFormat)
+
+* - description: Verwendet dieses Ausgabeformat.
+* - identifier: Format nutzen?
+* - type: Boolean
+PARAMETER par_GraphvizOutputFormat_useFormat(set_GraphvizOutputFormat)
+
+* - description: Fixiert die Positionen für das neato-Layout (-n).
+* - identifier: Knotenpositionen fixieren?
+* - type: Boolean
+SCALAR sca_GraphvizGlobal_fixedNeatoPosition
+
+* - description: Legt den Skalierungsfaktor fest (-s). Der Wert 0 deaktiviert ihn.
+* - identifier: Skalierungsfaktor
+* - type: Float
+SCALAR sca_GraphvizGlobal_scaleFactor
+
+* - identifier: AgentGroup
+* - type: String
+SET set_AgentGroup(*)
+
+* - description: Anzahl der Agenten
+* - identifier: Anzahl der Agenten
+* - type: Integer
+PARAMETER par_AgentGroup_numberOfAgents(set_AgentGroup)
+
+* - description: Farbe, welche diese Gruppe im Graphen haben soll. Wichtig: es wird nur der erste Wert verwendet! Falls keine Farbe gewählt wird, ist die Farbe schwarz.
+* - identifier: zu nutzende Farbe
+* - type: Boolean
+PARAMETER par_link_AgentGroup_GraphvizColor_agentColor(set_AgentGroup,set_GraphvizColor)
+
+* - identifier: IGraphTopology
+* - hidden: 1
+* - type: String
+SET set_IGraphTopology(*)
+
+* - identifier: IWattsStrogatzModel
+* - type: String
+SET set_IWattsStrogatzModel(set_IGraphTopology)
+
+* - description: Knotengrad k
+* - identifier: Knotengrad
+* - type: Integer
+PARAMETER par_IWattsStrogatzModel_wsmK(set_IWattsStrogatzModel)
+
+* - description: Wahrscheinlichkeit, dass eine Kante umgelegt wird.
+* - identifier: Rewire Wahrscheinlichkeit
+* - type: Float
+PARAMETER par_IWattsStrogatzModel_wsmBeta(set_IWattsStrogatzModel)
+
+* - description: On Knoten Kanten zu sich selber erzeugen dürfen.
+* - identifier: Selbstreferenzierung erlaubt?
+* - type: Boolean
+PARAMETER par_IWattsStrogatzModel_wsmSelfReferential(set_IWattsStrogatzModel)
+
+* - description: Seed für den Zufallsgenerator.
+* - identifier: Seed
+* - type: Integer
+PARAMETER par_IWattsStrogatzModel_wsmSeed(set_IWattsStrogatzModel)
+
+* - description: Soll diese Topology verwendet werden? Hinweis: es wird nur die erste gültige genutzt! Der Rest wird ignoriert!
+* - identifier: Diese Topologie nutzen?
+* - type: Boolean
+PARAMETER par_IWattsStrogatzModel_wsmUseThis(set_IWattsStrogatzModel)
+
+* - identifier: IFreeMultiGraphTopology
+* - type: String
+SET set_IFreeMultiGraphTopology(set_IGraphTopology)
+
+* - description: Knotengrad k
+* - identifier: Knotengrad
+* - type: Integer
+PARAMETER par_IFreeMultiGraphTopology_ftEdgeCount(set_IFreeMultiGraphTopology)
+
+* - description: On Knoten Kanten zu sich selber erzeugen dürfen.
+* - identifier: Selbstreferenzierung erlaubt?
+* - type: Boolean
+PARAMETER par_IFreeMultiGraphTopology_ftSelfReferential(set_IFreeMultiGraphTopology)
+
+* - description: Seed für den Zufallsgenerator.
+* - identifier: Seed
+* - type: Integer
+PARAMETER par_IFreeMultiGraphTopology_ftSeed(set_IFreeMultiGraphTopology)
+
+* - description: Soll diese Topology verwendet werden? Hinweis: es wird nur die erste gültige genutzt! Der Rest wird ignoriert!
+* - identifier: Diese Topologie nutzen?
+* - type: Boolean
+PARAMETER par_IFreeMultiGraphTopology_ftUseThis(set_IFreeMultiGraphTopology)

@@ -8,10 +8,10 @@ import de.unileipzig.irpact.v2.develop.ToDo;
 @ToDo("neue io-file und daten typen einbauen")
 class DefaultLoadingTest {
 //
-//    @Disabled("default.json wurde geaendert")
+//    @Disabled("example1.json wurde geaendert")
 //    @Test
 //    void testLoadDefaultOLD() throws URISyntaxException {
-//        String fileName = "scenarios/default.json";
+//        String fileName = "scenarios/example1.json";
 //        URL url = DefaultLoadingTest.class.getClassLoader().getResource(fileName);
 //        assertNotNull(url, "not found: '" + fileName + "'");
 //
@@ -34,7 +34,7 @@ class DefaultLoadingTest {
 //
 //    @Test
 //    void testLoadDefault() throws URISyntaxException {
-//        String fileName = "scenarios/default.json";
+//        String fileName = "scenarios/example1.json";
 //        URL url = DefaultLoadingTest.class.getClassLoader().getResource(fileName);
 //        assertNotNull(url, "not found: '" + fileName + "'");
 //
@@ -55,7 +55,7 @@ class DefaultLoadingTest {
 //        assertEquals(3, sdata.get(0).getData().agentGroups.length);
 //    }
 //
-//    @Disabled("default.json wurde geaendert")
+//    @Disabled("example1.json wurde geaendert")
 //    @Test
 //    void testLoadInputOLD() throws URISyntaxException {
 //        String fileName = "examples/default-year2016.json";

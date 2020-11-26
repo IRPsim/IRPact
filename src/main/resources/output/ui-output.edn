@@ -1,10 +1,12 @@
 [
   {
     :label "Sets" 
+    :description "Hier sind Sets." 
     :sections [
       {
         :label "Kundengruppen" 
         :set "set_side_cust" 
+        :description "Hier sind Kundengruppen." 
         :tags [["S" "DS"] ["IuOSonnentankNetzversorgung" "Summe"]]
       }
     ]

@@ -53,7 +53,19 @@ public class IWattsStrogatzModel implements IGraphTopology {
     )
     public long wsmSeed;
 
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    description = "Soll diese Topology verwendet werden? Hinweis: es wird nur die erste gültige genutzt! Der Rest wird ignoriert!"
+            )
+    )
+    public boolean wsmUseThis;
+
     public IWattsStrogatzModel() {
+    }
+
+    @Override
+    public boolean use() {
+        return wsmUseThis;
     }
 
     @Override

@@ -6,6 +6,7 @@ plugins {
 group 'de.unileipzig.irpact'
 version '1.0-SNAPSHOT'
 
+//sourceCompatibility = 1.11
 sourceCompatibility = 1.8
 
 repositories {
@@ -56,7 +57,6 @@ dependencies {
 
     implementation "info.picocli:picocli:$picocliVersion"
 
-    implementation "org.slf4j:slf4j-api:$sl4jVersion"
     implementation "ch.qos.logback:logback-classic:$logbackVersion"
     implementation "ch.qos.logback:logback-core:$logbackVersion"
 
@@ -64,8 +64,10 @@ dependencies {
 
     implementation "us.bpsm:edn-java:$ednjavaVersion"
 
-    //some tests
+    implementation 'guru.nidi:graphviz-java:0.17.1'
+
     implementation "commons-codec:commons-codec:1.15"
+
     implementation "org.mariuszgromada.math:MathParser.org-mXparser:4.4.2"
 
     //custom
@@ -76,8 +78,6 @@ dependencies {
 //jar
 //==================================================
 
-// Invalid signature file digest for Manifest main attributes -> fatjar geht (erstmal?) nicht (Problem bleibt mit shadow bestehen)
-// einfach die key files entfernen...
 task buildUberJar(type: Jar) {
     archiveClassifier.set('uber')
     manifest {

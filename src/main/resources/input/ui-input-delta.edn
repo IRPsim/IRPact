@@ -1,10 +1,12 @@
 [
   {
     :label "Link" 
+    :description "Hier stehen Tables-Einträge." 
     :sections [
       {
         :label "TableWithTimeSeries" 
         :set "set_load_DS_E" 
+        :description "Hier stehen Zeitreihen als Tables-Einträge" 
         :tags [["F" "E" "EGrid" "energy"]]
       }
     ]

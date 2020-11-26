@@ -9,7 +9,11 @@ import de.unileipzig.irptools.util.Table;
  * @author Daniel Abitz
  */
 @Definition(
-        global = true
+        global = true,
+        edn = @Edn(
+                label = {"Skalare und einfache Zeitreihen"},
+                description = "Hier sind die skalaren Werte und einfache Zeitreihen"
+        )
 )
 public class InGlobal {
 
@@ -20,7 +24,8 @@ public class InGlobal {
                     identifier = "MWST"
             ),
             edn = @EdnParameter(
-                    label = "Skalare und einfache Zeitreihen/Scalar"
+                    label = "Skalare und einfache Zeitreihen/Scalar",
+                    description = {"", "Hier stehen skalare Werte"}
             )
     )
     public double mwst;
@@ -31,6 +36,7 @@ public class InGlobal {
                     description = "Wahl Deutschland",
                     identifier = "Wahl Deutschland",
                     defaultValue = "1",
+                    domain = "[0|1]",
                     rule = {"IF (sca_X_MS_DE_country == 1, sca_X_MS_CH_country = 0)",
                             "IF (sca_X_MS_DE_country == 0, sca_X_MS_CH_country = 1)"}
             ),
@@ -46,6 +52,7 @@ public class InGlobal {
                     description = "Wahl Schweiz",
                     identifier = "Wahl Schweiz",
                     defaultValue = "0",
+                    domain = "[0|1]",
                     rule = {"IF (sca_X_MS_CH_country == 1, sca_X_MS_DE_country = 0)",
                             "IF (sca_X_MS_CH_country == 0, sca_X_MS_DE_country = 1)"}
             ),
@@ -64,7 +71,8 @@ public class InGlobal {
                     unit = "[EUR / MWh]"
             ),
             edn = @EdnParameter(
-                    label = "Skalare und einfache Zeitreihen/TimeSeries"
+                    label = "Skalare und einfache Zeitreihen/TimeSeries",
+                    description = {"", "Hier stehen einfache Zeitreihen"}
             )
     )
     public DoubleTimeSeries marktpreis;
@@ -77,8 +85,8 @@ public class InGlobal {
                     domain = "[0, 1]"
             ),
             edn = @EdnParameter(
-                    //path = "Komponenten/Speichertechnologien/Hoheitssystematik/Sektorenschlüssel",
                     label = "Link/Table",
+                    description = {"Hier stehen Tables-Einträge.", "Hier stehen primitive Tables-Einträge"},
                     set = "set_tech_DES_ES"
             )
     )
@@ -95,8 +103,8 @@ public class InGlobal {
                     defaultValue = "0"
             ),
             edn = @EdnParameter(
-                    //path = "Komponenten/Verbrauchertechnologien/Endkundentarife",
                     label = "Link/TableWithTimeSeries",
+                    description = {"Hier stehen Tables-Einträge.", "Hier stehen Zeitreihen als Tables-Einträge"},
                     delta = Constants.TRUE1,
                     set = "set_load_DS_E"
             )
