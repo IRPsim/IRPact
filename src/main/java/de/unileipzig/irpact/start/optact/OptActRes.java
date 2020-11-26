@@ -1,15 +1,18 @@
 package de.unileipzig.irpact.start.optact;
 
+import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
+import de.unileipzig.irpact.v2.io.input2.network.IFreeMultiGraphTopology;
+import de.unileipzig.irpact.v2.io.input2.network.IWattsStrogatzModel;
 import de.unileipzig.irptools.graphviz.def.GraphvizResource;
-import de.unileipzig.irptools.util.SimpleResource;
+import de.unileipzig.irptools.util.MultiAnnotationResource;
+import de.unileipzig.irptools.util.Util;
 
-import static de.unileipzig.irpact.v2.io.input2.InputResource.*;
-import static de.unileipzig.irptools.graphviz.def.GraphvizResource.*;
+import static de.unileipzig.irptools.Constants.*;
 
 /**
  * @author Daniel Abitz
  */
-public class OptActRes extends SimpleResource {
+public class OptActRes extends MultiAnnotationResource {
 
     private static final String GRAPHVIZ = "Graphviz";
     private static final String GRAPHVIZ_DESC = "Graphviz Einstellungen";
@@ -27,22 +30,46 @@ public class OptActRes extends SimpleResource {
 
     private void initTopo() {
         //gams
-        checkedPut(IWATTSSTROGATZMODEL_WSMK, "k");
-        checkedPut(IWATTSSTROGATZMODEL_WSMBETA, "beta");
-        checkedPut(IWATTSSTROGATZMODEL_WSMSELFREFERENTIAL, "Ist Selbstreferenzierung erlaubt?");
-        checkedPut(IWATTSSTROGATZMODEL_WSMSEED, "Seed für den Zufallsgenerator.");
+        checkedPutKeyValue(toKey(AgentGroup.class, "numberOfAgents", GAMS_IDENTIFIER), "Anzahl der Agenten");
+        checkedPutKeyValue(toKey(AgentGroup.class, "numberOfAgents", GAMS_DESCRIPTION), "Anzahl der Agenten");
+        checkedPutKeyValue(toKey(AgentGroup.class, "agentColor", GAMS_IDENTIFIER), "zu nutzende Farbe");
+        checkedPutKeyValue(toKey(AgentGroup.class, "agentColor", GAMS_DESCRIPTION), "Farbe, welche diese Gruppe im Graphen haben soll. Wichtig: es wird nur der erste Wert verwendet! Falls keine Farbe gewählt wird, ist die Farbe schwarz.");
 
-        checkedPut(IFREEMULTIGRAPHTOPOLOGY_FTEDGECOUNT, "Anzahl Kanten je Knoten");
-        checkedPut(IFREEMULTIGRAPHTOPOLOGY_FTSELFREFERENTIAL, "Ist Selbstreferenzierung erlaubt?");
-        checkedPut(IFREEMULTIGRAPHTOPOLOGY_FTSEED, "Seed für den Zufallsgenerator.");
+        checkedPutKeyValue(toKey(IWattsStrogatzModel.class, "wsmK", GAMS_IDENTIFIER), "Knotengrad");
+        checkedPutKeyValue(toKey(IWattsStrogatzModel.class, "wsmK", GAMS_DESCRIPTION), "Knotengrad k");
+        checkedPutKeyValue(toKey(IWattsStrogatzModel.class, "wsmBeta", GAMS_IDENTIFIER), "Rewire Wahrscheinlichkeit");
+        checkedPutKeyValue(toKey(IWattsStrogatzModel.class, "wsmBeta", GAMS_DESCRIPTION), "Wahrscheinlichkeit, dass eine Kante umgelegt wird.");
+        checkedPutKeyValue(toKey(IWattsStrogatzModel.class, "wsmSelfReferential", GAMS_IDENTIFIER), "Selbstreferenzierung erlaubt?");
+        checkedPutKeyValue(toKey(IWattsStrogatzModel.class, "wsmSelfReferential", GAMS_DESCRIPTION), "On Knoten Kanten zu sich selber erzeugen dürfen.");
+        checkedPutKeyValue(toKey(IWattsStrogatzModel.class, "wsmSeed", GAMS_IDENTIFIER), "Seed");
+        checkedPutKeyValue(toKey(IWattsStrogatzModel.class, "wsmSeed", GAMS_DESCRIPTION), "Seed für den Zufallsgenerator.");
+
+        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "wsmK", GAMS_IDENTIFIER), "Knotengrad");
+        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "wsmK", GAMS_DESCRIPTION), "Knotengrad k");
+        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "wsmSelfReferential", GAMS_IDENTIFIER), "Selbstreferenzierung erlaubt?");
+        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "wsmSelfReferential", GAMS_DESCRIPTION), "On Knoten Kanten zu sich selber erzeugen dürfen.");
+        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "wsmSeed", GAMS_IDENTIFIER), "Seed");
+        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "wsmSeed", GAMS_DESCRIPTION), "Seed für den Zufallsgenerator.");
 
         //edn
-        checkedPut(IWATTSSTROGATZMODEL_LABEL, GRAPHVIZ, TOPO, "WattsStrogatzModel");
-        checkedPut(IWATTSSTROGATZMODEL_PRIORITIES, "0", "0", "0");
-        checkedPut(IWATTSSTROGATZMODEL_DESCRIPTION, GRAPHVIZ_DESC, TOPO_DESC, "Watts Strogatz Model");
 
-        checkedPut(IFREEMULTIGRAPHTOPOLOGY_LABEL, GRAPHVIZ, TOPO, "FreeTopology");
-        checkedPut(IFREEMULTIGRAPHTOPOLOGY_PRIORITIES, "0", "0", "0");
-        checkedPut(IFREEMULTIGRAPHTOPOLOGY_DESCRIPTION, GRAPHVIZ_DESC, TOPO_DESC, "Freie Topologie");
+        checkedPutEdn(
+                AgentGroup.class,
+                Util.arrayListOf(GRAPHVIZ, "Agentengruppen"),
+                Util.arrayListOf("0", "0"),
+                Util.arrayListOf(GRAPHVIZ_DESC, "Agentengruppe, welche im Graphen dargestellt werden sollen.")
+        );
+        checkedPutEdn(
+                IWattsStrogatzModel.class,
+                Util.arrayListOf(GRAPHVIZ, TOPO, "Watts-Strogatz-Model"),
+                Util.arrayListOf("0", "0", "0"),
+                Util.arrayListOf(GRAPHVIZ_DESC, TOPO_DESC, "Watts-Strogatz-Model")
+        );
+        checkedPutEdn(
+                IFreeMultiGraphTopology.class,
+                Util.arrayListOf(GRAPHVIZ, TOPO, "Freie Topologie"),
+                Util.arrayListOf("0", "0", "0"),
+                Util.arrayListOf(GRAPHVIZ_DESC, TOPO_DESC, "Freie Topologie")
+        );
     }
 }

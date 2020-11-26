@@ -1,11 +1,11 @@
 package de.unileipzig.irpact.v2.io.input2;
 
-import de.unileipzig.irptools.util.SimpleResource;
+import de.unileipzig.irptools.util.MultiAnnotationResource;
 
 /**
  * @author Daniel Abitz
  */
-public class InputResource extends SimpleResource {
+public class InputResource extends MultiAnnotationResource {
 
     public static final String ICONSUMERAGENTGROUP_LABEL = "IConsumerAgentGroup_label";
     public static final String ICONSUMERAGENTGROUP_PRIORITIES = "IConsumerAgentGroup_priorities";
@@ -46,33 +46,33 @@ public class InputResource extends SimpleResource {
     }
 
     public InputResource initGams() {
-        checkedPut(ICONSUMERAGENTGROUP_CONSUMERAGENTINFORMATIONAUTHORITY, "Todo");
-        checkedPut(ICONSUMERAGENTGROUP_NUMBEROFCONSUMERAGENTS, "Todo");
-
-        checkedPut(IWATTSSTROGATZMODEL_WSMK, "Todo");
-        checkedPut(IWATTSSTROGATZMODEL_WSMBETA, "Todo");
-        checkedPut(IWATTSSTROGATZMODEL_WSMSELFREFERENTIAL, "Todo");
-        checkedPut(IWATTSSTROGATZMODEL_WSMSEED, "Todo");
-
-        checkedPut(IFREEMULTIGRAPHTOPOLOGY_FTEDGECOUNT, "Todo");
-        checkedPut(IFREEMULTIGRAPHTOPOLOGY_FTSELFREFERENTIAL, "Todo");
-        checkedPut(IFREEMULTIGRAPHTOPOLOGY_FTSEED, "Todo");
+//        checkedPut(ICONSUMERAGENTGROUP_CONSUMERAGENTINFORMATIONAUTHORITY, "Todo");
+//        checkedPut(ICONSUMERAGENTGROUP_NUMBEROFCONSUMERAGENTS, "Todo");
+//
+//        checkedPut(IWATTSSTROGATZMODEL_WSMK, "Todo");
+//        checkedPut(IWATTSSTROGATZMODEL_WSMBETA, "Todo");
+//        checkedPut(IWATTSSTROGATZMODEL_WSMSELFREFERENTIAL, "Todo");
+//        checkedPut(IWATTSSTROGATZMODEL_WSMSEED, "Todo");
+//
+//        checkedPut(IFREEMULTIGRAPHTOPOLOGY_FTEDGECOUNT, "Todo");
+//        checkedPut(IFREEMULTIGRAPHTOPOLOGY_FTSELFREFERENTIAL, "Todo");
+//        checkedPut(IFREEMULTIGRAPHTOPOLOGY_FTSEED, "Todo");
 
         return this;
     }
 
     public InputResource initEdn() {
-        checkedPut(ICONSUMERAGENTGROUP_LABEL, "Todo");
-        checkedPut(ICONSUMERAGENTGROUP_PRIORITIES, "Todo");
-        checkedPut(ICONSUMERAGENTGROUP_DESCRIPTION, "Todo");
-
-        checkedPut(IWATTSSTROGATZMODEL_LABEL, "Todo");
-        checkedPut(IWATTSSTROGATZMODEL_PRIORITIES, "Todo");
-        checkedPut(IWATTSSTROGATZMODEL_DESCRIPTION, "Todo");
-
-        checkedPut(IFREEMULTIGRAPHTOPOLOGY_LABEL, "Todo");
-        checkedPut(IFREEMULTIGRAPHTOPOLOGY_PRIORITIES, "Todo");
-        checkedPut(IFREEMULTIGRAPHTOPOLOGY_DESCRIPTION, "Todo");
+//        checkedPut(ICONSUMERAGENTGROUP_LABEL, "Todo");
+//        checkedPut(ICONSUMERAGENTGROUP_PRIORITIES, "Todo");
+//        checkedPut(ICONSUMERAGENTGROUP_DESCRIPTION, "Todo");
+//
+//        checkedPut(IWATTSSTROGATZMODEL_LABEL, "Todo");
+//        checkedPut(IWATTSSTROGATZMODEL_PRIORITIES, "Todo");
+//        checkedPut(IWATTSSTROGATZMODEL_DESCRIPTION, "Todo");
+//
+//        checkedPut(IFREEMULTIGRAPHTOPOLOGY_LABEL, "Todo");
+//        checkedPut(IFREEMULTIGRAPHTOPOLOGY_PRIORITIES, "Todo");
+//        checkedPut(IFREEMULTIGRAPHTOPOLOGY_DESCRIPTION, "Todo");
 
         return this;
     }

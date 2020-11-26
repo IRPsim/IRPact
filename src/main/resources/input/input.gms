@@ -168,7 +168,7 @@ SET set_tech_DESTO(set_tech_DES)
 SET set_GraphvizColor(*)
 
 * - description: RGBA Code der Farbe im Dezimalsystem.
-* - identifier: rgba
+* - identifier: RGBA-Wert
 * - type: Integer
 PARAMETER par_GraphvizColor_rgba(set_GraphvizColor)
 
@@ -178,12 +178,12 @@ SET set_GraphvizLayoutAlgorithm(*)
 
 * - default: -1
 * - description: -1: eigenes Layout, 0: DOT, 1: NEATO, 2: FDP, 3: SFDP, 4: TWOPI, 5: CIRCO
-* - identifier: layoutId
+* - identifier: Layout-ID
 * - type: Integer
 PARAMETER par_GraphvizLayoutAlgorithm_layoutId(set_GraphvizLayoutAlgorithm)
 
 * - description: Verwendet dieses Layout.
-* - identifier: useLayout
+* - identifier: Layout nutzen?
 * - type: Boolean
 PARAMETER par_GraphvizLayoutAlgorithm_useLayout(set_GraphvizLayoutAlgorithm)
 
@@ -193,22 +193,22 @@ SET set_GraphvizOutputFormat(*)
 
 * - default: -1
 * - description: -1: eigenes Format, 0: PNG, 1: SVG
-* - identifier: formatId
+* - identifier: Format-ID
 * - type: Integer
 PARAMETER par_GraphvizOutputFormat_formatId(set_GraphvizOutputFormat)
 
 * - description: Verwendet dieses Ausgabeformat.
-* - identifier: useFormat
+* - identifier: Format nutzen?
 * - type: Boolean
 PARAMETER par_GraphvizOutputFormat_useFormat(set_GraphvizOutputFormat)
 
 * - description: Fixiert die Positionen für das neato-Layout (-n).
-* - identifier: fixedNeatoPosition
+* - identifier: Knotenpositionen fixieren?
 * - type: Boolean
 SCALAR sca_GraphvizGlobal_fixedNeatoPosition
 
 * - description: Legt den Skalierungsfaktor fest (-s). Der Wert 0 deaktiviert ihn.
-* - identifier: scaleFactor
+* - identifier: Skalierungsfaktor
 * - type: Float
 SCALAR sca_GraphvizGlobal_scaleFactor
 
@@ -217,12 +217,12 @@ SCALAR sca_GraphvizGlobal_scaleFactor
 SET set_AgentGroup(*)
 
 * - description: Anzahl der Agenten
-* - identifier: numberOfAgents
+* - identifier: Anzahl der Agenten
 * - type: Integer
 PARAMETER par_AgentGroup_numberOfAgents(set_AgentGroup)
 
 * - description: Farbe, welche diese Gruppe im Graphen haben soll. Wichtig: es wird nur der erste Wert verwendet! Falls keine Farbe gewählt wird, ist die Farbe schwarz.
-* - identifier: agentColor
+* - identifier: zu nutzende Farbe
 * - type: Boolean
 PARAMETER par_link_AgentGroup_GraphvizColor_agentColor(set_AgentGroup,set_GraphvizColor)
 
@@ -235,23 +235,23 @@ SET set_IGraphTopology(*)
 * - type: String
 SET set_IWattsStrogatzModel(set_IGraphTopology)
 
-* - description: k
-* - identifier: wsmK
+* - description: Knotengrad k
+* - identifier: Knotengrad
 * - type: Integer
 PARAMETER par_IWattsStrogatzModel_wsmK(set_IWattsStrogatzModel)
 
-* - description: beta
-* - identifier: wsmBeta
+* - description: Wahrscheinlichkeit, dass eine Kante umgelegt wird.
+* - identifier: Rewire Wahrscheinlichkeit
 * - type: Float
 PARAMETER par_IWattsStrogatzModel_wsmBeta(set_IWattsStrogatzModel)
 
-* - description: Ist Selbstreferenzierung erlaubt?
-* - identifier: wsmSelfReferential
+* - description: On Knoten Kanten zu sich selber erzeugen dürfen.
+* - identifier: Selbstreferenzierung erlaubt?
 * - type: Boolean
 PARAMETER par_IWattsStrogatzModel_wsmSelfReferential(set_IWattsStrogatzModel)
 
 * - description: Seed für den Zufallsgenerator.
-* - identifier: wsmSeed
+* - identifier: Seed
 * - type: Integer
 PARAMETER par_IWattsStrogatzModel_wsmSeed(set_IWattsStrogatzModel)
 
@@ -264,17 +264,17 @@ PARAMETER par_IWattsStrogatzModel_wsmUseThis(set_IWattsStrogatzModel)
 * - type: String
 SET set_IFreeMultiGraphTopology(set_IGraphTopology)
 
-* - description: Anzahl Kanten je Knoten
+* - description: IFreeMultiGraphTopology_ftEdgeCount
 * - identifier: ftEdgeCount
 * - type: Integer
 PARAMETER par_IFreeMultiGraphTopology_ftEdgeCount(set_IFreeMultiGraphTopology)
 
-* - description: Ist Selbstreferenzierung erlaubt?
+* - description: IFreeMultiGraphTopology_ftSelfReferential
 * - identifier: ftSelfReferential
 * - type: Boolean
 PARAMETER par_IFreeMultiGraphTopology_ftSelfReferential(set_IFreeMultiGraphTopology)
 
-* - description: Seed für den Zufallsgenerator.
+* - description: IFreeMultiGraphTopology_ftSeed
 * - identifier: ftSeed
 * - type: Integer
 PARAMETER par_IFreeMultiGraphTopology_ftSeed(set_IFreeMultiGraphTopology)
