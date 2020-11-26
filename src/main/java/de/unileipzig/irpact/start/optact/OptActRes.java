@@ -43,13 +43,17 @@ public class OptActRes extends MultiAnnotationResource {
         checkedPutKeyValue(toKey(IWattsStrogatzModel.class, "wsmSelfReferential", GAMS_DESCRIPTION), "On Knoten Kanten zu sich selber erzeugen dürfen.");
         checkedPutKeyValue(toKey(IWattsStrogatzModel.class, "wsmSeed", GAMS_IDENTIFIER), "Seed");
         checkedPutKeyValue(toKey(IWattsStrogatzModel.class, "wsmSeed", GAMS_DESCRIPTION), "Seed für den Zufallsgenerator.");
+        checkedPutKeyValue(toKey(IWattsStrogatzModel.class, "wsmUseThis", GAMS_IDENTIFIER), "Diese Topologie nutzen?");
+        checkedPutKeyValue(toKey(IWattsStrogatzModel.class, "wsmUseThis", GAMS_DESCRIPTION), "Soll diese Topology verwendet werden? Hinweis: es wird nur die erste gültige genutzt! Der Rest wird ignoriert!");
 
-        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "wsmK", GAMS_IDENTIFIER), "Knotengrad");
-        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "wsmK", GAMS_DESCRIPTION), "Knotengrad k");
-        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "wsmSelfReferential", GAMS_IDENTIFIER), "Selbstreferenzierung erlaubt?");
-        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "wsmSelfReferential", GAMS_DESCRIPTION), "On Knoten Kanten zu sich selber erzeugen dürfen.");
-        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "wsmSeed", GAMS_IDENTIFIER), "Seed");
-        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "wsmSeed", GAMS_DESCRIPTION), "Seed für den Zufallsgenerator.");
+        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "ftEdgeCount", GAMS_IDENTIFIER), "Knotengrad");
+        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "ftEdgeCount", GAMS_DESCRIPTION), "Knotengrad k");
+        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "ftSelfReferential", GAMS_IDENTIFIER), "Selbstreferenzierung erlaubt?");
+        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "ftSelfReferential", GAMS_DESCRIPTION), "On Knoten Kanten zu sich selber erzeugen dürfen.");
+        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "ftSeed", GAMS_IDENTIFIER), "Seed");
+        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "ftSeed", GAMS_DESCRIPTION), "Seed für den Zufallsgenerator.");
+        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "ftUseThis", GAMS_IDENTIFIER), "Diese Topologie nutzen?");
+        checkedPutKeyValue(toKey(IFreeMultiGraphTopology.class, "ftUseThis", GAMS_DESCRIPTION), "Soll diese Topology verwendet werden? Hinweis: es wird nur die erste gültige genutzt! Der Rest wird ignoriert!");
 
         //edn
 

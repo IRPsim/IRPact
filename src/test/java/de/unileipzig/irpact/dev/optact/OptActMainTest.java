@@ -86,7 +86,7 @@ class OptActMainTest {
                 "--defaultScenarioClass", GvInRoot.class.getName(),
                 "--outDir", dir.toString(),
                 "--charset", Util.windows1252().name(),
-                "--validate",
+                //"--validate",
                 "--skipReference",
                 "--dummyNomenklatur",
                 "--pathToJava", java11.toString(),

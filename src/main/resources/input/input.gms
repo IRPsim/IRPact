@@ -256,7 +256,7 @@ PARAMETER par_IWattsStrogatzModel_wsmSelfReferential(set_IWattsStrogatzModel)
 PARAMETER par_IWattsStrogatzModel_wsmSeed(set_IWattsStrogatzModel)
 
 * - description: Soll diese Topology verwendet werden? Hinweis: es wird nur die erste gültige genutzt! Der Rest wird ignoriert!
-* - identifier: wsmUseThis
+* - identifier: Diese Topologie nutzen?
 * - type: Boolean
 PARAMETER par_IWattsStrogatzModel_wsmUseThis(set_IWattsStrogatzModel)
 
@@ -264,22 +264,22 @@ PARAMETER par_IWattsStrogatzModel_wsmUseThis(set_IWattsStrogatzModel)
 * - type: String
 SET set_IFreeMultiGraphTopology(set_IGraphTopology)
 
-* - description: IFreeMultiGraphTopology_ftEdgeCount
-* - identifier: ftEdgeCount
+* - description: Knotengrad k
+* - identifier: Knotengrad
 * - type: Integer
 PARAMETER par_IFreeMultiGraphTopology_ftEdgeCount(set_IFreeMultiGraphTopology)
 
-* - description: IFreeMultiGraphTopology_ftSelfReferential
-* - identifier: ftSelfReferential
+* - description: On Knoten Kanten zu sich selber erzeugen dürfen.
+* - identifier: Selbstreferenzierung erlaubt?
 * - type: Boolean
 PARAMETER par_IFreeMultiGraphTopology_ftSelfReferential(set_IFreeMultiGraphTopology)
 
-* - description: IFreeMultiGraphTopology_ftSeed
-* - identifier: ftSeed
+* - description: Seed für den Zufallsgenerator.
+* - identifier: Seed
 * - type: Integer
 PARAMETER par_IFreeMultiGraphTopology_ftSeed(set_IFreeMultiGraphTopology)
 
 * - description: Soll diese Topology verwendet werden? Hinweis: es wird nur die erste gültige genutzt! Der Rest wird ignoriert!
-* - identifier: ftUseThis
+* - identifier: Diese Topologie nutzen?
 * - type: Boolean
 PARAMETER par_IFreeMultiGraphTopology_ftUseThis(set_IFreeMultiGraphTopology)
