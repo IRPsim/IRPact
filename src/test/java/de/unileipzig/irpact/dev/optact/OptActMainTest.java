@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.dev.optact;
 
+import de.unileipzig.irpact.experimental.TestFiles;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.start.optact.OptActRes;
 import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
@@ -42,7 +43,7 @@ class OptActMainTest {
     @Test
     void runImageNoSimu() {
         Path dir = Paths.get("src", "main", "resources", "scenarios");
-        Path outDir = Paths.get("exppriv");
+        Path outDir = TestFiles.fasttests;
         String[] args = {
                 "-i", dir.resolve(Constants.DEFAULT_JSON).toString(),
                 "-o", outDir.resolve("default.out.nosimu.json").toString(),
@@ -55,11 +56,11 @@ class OptActMainTest {
     @Test
     void runImageWithSimu() {
         Path dir = Paths.get("src", "main", "resources", "scenarios");
-        Path outDir = Paths.get("exppriv");
+        Path outDir = TestFiles.fasttests;
         String[] args = {
                 "-i", dir.resolve(Constants.DEFAULT_JSON).toString(),
-                "-o", outDir.resolve("default.out.simu.json").toString(),
-                "--image", outDir.resolve("testimage.png").toString()
+                "-o", outDir.resolve("default.out.simuX.json").toString(),
+                "--image", outDir.resolve("testimageX.png").toString()
         };
         Start.main(args);
     }

@@ -15,8 +15,9 @@ public class Demo1 {
 
     @Test
     void runDemo1() throws IOException {
-        Path in1 = TestFiles.demo1.resolve("input_wrong.json");
-        Path out1 = TestFiles.demo1.resolve("output_wrong.json");
+        Path demo1 = TestFiles.testfiles.resolve("demo1");
+        Path in1 = demo1.resolve("input_wrong.json");
+        Path out1 = demo1.resolve("output_wrong.json");
 
         Start.main(new String[] {
                 "--i", in1.toString(),
@@ -25,8 +26,8 @@ public class Demo1 {
 
         //===
 
-        Path in2 = TestFiles.demo1.resolve("input.json");
-        Path out2 = TestFiles.demo1.resolve("output.json");
+        Path in2 = demo1.resolve("input.json");
+        Path out2 = demo1.resolve("output.json");
 
         Start.main(new String[] {
                 "--i", in2.toString(),

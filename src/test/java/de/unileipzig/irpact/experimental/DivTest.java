@@ -1,9 +1,7 @@
 package de.unileipzig.irpact.experimental;
 
-import de.unileipzig.irpact.commons.distribution.ConstantDistribution;
 import de.unileipzig.irpact.experimental.eval3.DynExponential;
 import de.unileipzig.irpact.experimental.eval3.DynLinear;
-import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irpact.v2.commons.graph.DirectedAdjacencyListMultiGraph;
 import de.unileipzig.irpact.v2.commons.graph.MultiGraph;
 import de.unileipzig.irpact.v2.commons.graph.topology.FreeMultiGraphTopology;
@@ -25,11 +23,6 @@ class DivTest {
     @Test
     void testStuff() {
         fail("disabled?");
-    }
-
-    @Test
-    void name() {
-        System.out.println(ConstantDistribution.NAME);
     }
 
     private int calc(int i, int j, int n, int k) {

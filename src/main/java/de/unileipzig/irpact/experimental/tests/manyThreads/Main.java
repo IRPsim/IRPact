@@ -1,8 +1,7 @@
 package de.unileipzig.irpact.experimental.tests.manyThreads;
 
-import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
-import de.unileipzig.irpact.experimental.ExperimentalIgnorePrintStream;
-import de.unileipzig.irpact.experimental.ExperimentalUtil;
+import de.unileipzig.irpact.v2.commons.concurrent.ConcurrentUtil;
+import de.unileipzig.irpact.v2.jadex.util.JadexUtil2;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
 import jadex.base.Starter;
@@ -42,10 +41,7 @@ public class Main {
         System.out.println("[" + LocalTime.now() + "] [main] " + msg);
     }
 
-    @SuppressWarnings("unchecked")
     public static void main(String[] args) {
-        ExperimentalIgnorePrintStream.redirectSystemOut();
-
         IPlatformConfiguration config = PlatformConfigurationHandler.getMinimal();
         config.setValue("kernel_component", true);
         config.setValue("kernel_bdi", true);
@@ -54,7 +50,7 @@ public class Main {
         IExternalAccess platform = Starter.createPlatform(config)
                 .get();
 
-        ISimulationService simulationService = ExperimentalUtil.getSimulationService(platform);
+        ISimulationService simulationService = JadexUtil2.getSimulationService(platform);
         simulationService.pause().get();
 
         log("start agents...");

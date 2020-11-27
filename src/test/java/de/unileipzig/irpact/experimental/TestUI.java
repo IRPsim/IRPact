@@ -25,7 +25,7 @@ class TestUI {
     @Test
     void runStart() throws Exception {
         Logback.setupSystemOutAndErr();
-        Path dir = TestFiles.exppriv.resolve("optact").resolve("test2");
+        Path dir = TestFiles.testfiles.resolve("optact").resolve("test2");
         String[] args = {
                 "--inputRootClass", InRoot.class.getName(),
                 "--outputRootClass", OutRoot.class.getName(),
@@ -59,11 +59,11 @@ class TestUI {
 
     @Test
     void testFiles() throws IOException {
-        Path dir2 = TestFiles.exppriv.resolve("optact").resolve("test1");
+        Path dir2 = TestFiles.testfiles.resolve("optact").resolve("test1");
         Path dir2input = dir2.resolve("input");
         Path dir2output = dir2.resolve("output");
         Path dir2scenarios = dir2.resolve("scenarios");
-        Path dir4 = TestFiles.exppriv.resolve("optact").resolve("test2");
+        Path dir4 = TestFiles.testfiles.resolve("optact").resolve("test2");
         Path dir4input = dir4.resolve("input");
         Path dir4output = dir4.resolve("output");
         Path dir4scenarios = dir4.resolve("scenarios");

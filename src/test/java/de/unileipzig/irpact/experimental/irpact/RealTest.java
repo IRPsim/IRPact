@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.experimental.irpact;
 
 import de.unileipzig.irpact.experimental.TestFiles;
-import de.unileipzig.irpact.start.irpact2.IRPact;
+import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.v2.io.DefaultScenario;
 import de.unileipzig.irpact.v2.io.input.IRoot;
 import de.unileipzig.irpact.v2.io.output.ORoot;
@@ -25,9 +25,9 @@ public class RealTest {
 
     @Test
     void createInput() throws IOException {
-        Path input = TestFiles.irpact2.resolve("input.gms");
-        Path edn = TestFiles.irpact2.resolve("ui-input.edn");
-        Path ednDelta = TestFiles.irpact2.resolve("ui-input-delta.edn");
+        Path input = TestFiles.testfiles.resolve("irpact2").resolve("input.gms");
+        Path edn = TestFiles.testfiles.resolve("irpact2").resolve("ui-input.edn");
+        Path ednDelta = TestFiles.testfiles.resolve("irpact2").resolve("ui-input-delta.edn");
 
         DefinitionCollection dcoll = AnnotationParser.parse(IRoot.CLASSES);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
@@ -51,7 +51,7 @@ public class RealTest {
 
     @Test
     void buildAll() throws Exception {
-        Path outRoot = TestFiles.irpact;
+        Path outRoot = TestFiles.testfiles.resolve("irpact");
         String[] args = {
                 "--inputRootClass", IRoot.class.getName(),
                 "--outputRootClass", ORoot.class.getName(),
@@ -71,12 +71,12 @@ public class RealTest {
 
     @Test
     void testRun() throws IOException, InterruptedException {
-        Path input = TestFiles.irpact.resolve("scenarios").resolve("default.json");
-        Path output = TestFiles.irpact.resolve("out").resolve("default.out.json");
+        Path input = TestFiles.testfiles.resolve("irpact").resolve("scenarios").resolve("default.json");
+        Path output = TestFiles.testfiles.resolve("irpact").resolve("out").resolve("default.out.json");
         String[] args = {
                 "-i", input.toString(),
                 "-o", output.toString()
         };
-        IRPact.main(args);
+        Start.main(args);
     }
 }

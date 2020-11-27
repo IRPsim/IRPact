@@ -1,11 +1,10 @@
 package de.unileipzig.irpact.experimental.tests.timeModelWithController;
 
-import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
-import de.unileipzig.irpact.jadex.util.JadexUtil;
 import de.unileipzig.irpact.v2.jadex.simulation.BasicJadexSimulationControl;
 import de.unileipzig.irpact.v2.jadex.simulation.JadexSimulationControl;
 import de.unileipzig.irpact.v2.jadex.time.DiscreteTimeModel;
 import de.unileipzig.irpact.v2.jadex.time.JadexTimeModel;
+import de.unileipzig.irpact.v2.jadex.util.JadexUtil2;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
 import jadex.base.Starter;
@@ -16,7 +15,6 @@ import jadex.bridge.service.types.cms.CreationInfo;
 import jadex.bridge.service.types.simulation.ISimulationService;
 
 import java.time.LocalTime;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * @author Daniel Abitz
@@ -58,8 +56,8 @@ public class MainDiscrete {
         IExternalAccess platform = Starter.createPlatform(config)
                 .get();
 
-        IClockService clock = JadexUtil.getClockService(platform);
-        ISimulationService simulationService = JadexUtil.getSimulationService(platform);
+        IClockService clock = JadexUtil2.getClockService(platform);
+        ISimulationService simulationService = JadexUtil2.getSimulationService(platform);
 
         log("change clock");
         simulationService.pause().get();

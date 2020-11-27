@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental;
 
-import de.unileipzig.irpact.experimental.todev.time.TickConverter;
+import de.unileipzig.irpact.v2.commons.time.TickConverter;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

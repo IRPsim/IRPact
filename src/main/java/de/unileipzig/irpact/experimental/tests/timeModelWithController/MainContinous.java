@@ -1,10 +1,10 @@
 package de.unileipzig.irpact.experimental.tests.timeModelWithController;
 
-import de.unileipzig.irpact.jadex.util.JadexUtil;
 import de.unileipzig.irpact.v2.jadex.simulation.BasicJadexSimulationControl;
 import de.unileipzig.irpact.v2.jadex.simulation.JadexSimulationControl;
 import de.unileipzig.irpact.v2.jadex.time.ContinuousTimeModel;
 import de.unileipzig.irpact.v2.jadex.time.JadexTimeModel;
+import de.unileipzig.irpact.v2.jadex.util.JadexUtil2;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
 import jadex.base.Starter;
@@ -56,8 +56,8 @@ public class MainContinous {
         IExternalAccess platform = Starter.createPlatform(config)
                 .get();
 
-        IClockService clock = JadexUtil.getClockService(platform);
-        ISimulationService simulationService = JadexUtil.getSimulationService(platform);
+        IClockService clock = JadexUtil2.getClockService(platform);
+        ISimulationService simulationService = JadexUtil2.getSimulationService(platform);
 
         log("change clock");
         simulationService.pause().get();
