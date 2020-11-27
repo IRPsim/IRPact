@@ -1,9 +1,9 @@
 package de.unileipzig.irpact.experimental.tests.timeModel;
 
-import de.unileipzig.irpact.v2.commons.concurrent.ConcurrentUtil;
-import de.unileipzig.irpact.v2.jadex.time.ContinuousTimeModel;
-import de.unileipzig.irpact.v2.jadex.time.JadexTimeModel;
-import de.unileipzig.irpact.v2.jadex.util.JadexUtil2;
+import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
+import de.unileipzig.irpact.jadex.time.ContinuousTimeModel;
+import de.unileipzig.irpact.jadex.time.JadexTimeModel;
+import de.unileipzig.irpact.jadex.util.JadexUtil2;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
 import jadex.base.Starter;

@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.experimental.tests.timeModelWithController;
 
-import de.unileipzig.irpact.v2.jadex.time.JadexTimeModel;
-import de.unileipzig.irpact.v2.jadex.time.JadexTimestamp;
-import de.unileipzig.irpact.v2.jadex.util.JadexUtil2;
+import de.unileipzig.irpact.jadex.time.JadexTimeModel;
+import de.unileipzig.irpact.jadex.time.JadexTimestamp;
+import de.unileipzig.irpact.jadex.util.JadexUtil2;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IArgumentsResultsFeature;

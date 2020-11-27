@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.start;
 
 import de.unileipzig.irpact.start.optact.OptActMain;
-import de.unileipzig.irpact.v2.commons.log.Logback;
+import de.unileipzig.irpact.commons.log.Logback;
 
 /**
  * Starts IRPact.

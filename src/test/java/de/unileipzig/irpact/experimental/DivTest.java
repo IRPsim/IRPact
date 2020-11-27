@@ -2,11 +2,11 @@ package de.unileipzig.irpact.experimental;
 
 import de.unileipzig.irpact.experimental.eval3.DynExponential;
 import de.unileipzig.irpact.experimental.eval3.DynLinear;
-import de.unileipzig.irpact.v2.commons.graph.DirectedAdjacencyListMultiGraph;
-import de.unileipzig.irpact.v2.commons.graph.MultiGraph;
-import de.unileipzig.irpact.v2.commons.graph.topology.FreeMultiGraphTopology;
-import de.unileipzig.irpact.v2.commons.graph.topology.WattsStrogatzModel;
-import de.unileipzig.irpact.v2.commons.log.Logback;
+import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
+import de.unileipzig.irpact.commons.graph.MultiGraph;
+import de.unileipzig.irpact.commons.graph.topology.FreeMultiGraphTopology;
+import de.unileipzig.irpact.commons.graph.topology.WattsStrogatzModel;
+import de.unileipzig.irpact.commons.log.Logback;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

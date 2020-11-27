@@ -1,13 +1,13 @@
 package de.unileipzig.irpact.experimental.graphfun;
 
 import de.unileipzig.irpact.start.IRPact;
-import de.unileipzig.irpact.v2.commons.CollectionUtil;
-import de.unileipzig.irpact.v2.commons.graph.DirectedAdjacencyListMultiGraph;
-import de.unileipzig.irpact.v2.commons.graph.FastDirectedMultiGraph;
-import de.unileipzig.irpact.v2.commons.graph.topology.BarabasiAlbertModel;
-import de.unileipzig.irpact.v2.commons.graph.topology.FastBarabasiAlbertModel;
-import de.unileipzig.irpact.v2.commons.graph.topology.HeterogeneousSmallWorldTopology;
-import de.unileipzig.irpact.v2.commons.graph.topology.WattsStrogatzModel;
+import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
+import de.unileipzig.irpact.commons.graph.FastDirectedMultiGraph;
+import de.unileipzig.irpact.commons.graph.topology.BarabasiAlbertModel;
+import de.unileipzig.irpact.commons.graph.topology.FastBarabasiAlbertModel;
+import de.unileipzig.irpact.commons.graph.topology.HeterogeneousSmallWorldTopology;
+import de.unileipzig.irpact.commons.graph.topology.WattsStrogatzModel;
 import de.unileipzig.irptools.util.DataCounter;
 import de.unileipzig.irptools.util.Pair;
 import org.junit.jupiter.api.Disabled;

@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental.tests.reference;
 
-import de.unileipzig.irpact.v2.commons.concurrent.ConcurrentUtil;
+import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
 import jadex.base.Starter;

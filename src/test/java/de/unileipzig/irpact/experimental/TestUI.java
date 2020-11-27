@@ -2,7 +2,7 @@ package de.unileipzig.irpact.experimental;
 
 import de.unileipzig.irpact.start.optact.in.InRoot;
 import de.unileipzig.irpact.start.optact.out.OutRoot;
-import de.unileipzig.irpact.v2.commons.log.Logback;
+import de.unileipzig.irpact.commons.log.Logback;
 import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.Util;
 import org.junit.jupiter.api.Assertions;

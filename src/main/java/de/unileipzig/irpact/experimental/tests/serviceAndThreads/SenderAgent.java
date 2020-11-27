@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental.tests.serviceAndThreads;
 
-import de.unileipzig.irpact.v2.jadex.util.JadexUtil2;
+import de.unileipzig.irpact.jadex.util.JadexUtil2;
 import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IArgumentsResultsFeature;
 import jadex.bridge.component.IExecutionFeature;

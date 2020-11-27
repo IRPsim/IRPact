@@ -2,18 +2,15 @@ package de.unileipzig.irpact.dev.optact;
 
 import de.unileipzig.irpact.experimental.TestFiles;
 import de.unileipzig.irpact.start.Start;
-import de.unileipzig.irpact.start.optact.OptActRes;
 import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irpact.start.optact.out.OutRoot;
-import de.unileipzig.irpact.v2.commons.log.Logback;
+import de.unileipzig.irpact.commons.log.Logback;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.start.IRPtools;
-import de.unileipzig.irptools.util.Clj;
 import de.unileipzig.irptools.util.Util;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 

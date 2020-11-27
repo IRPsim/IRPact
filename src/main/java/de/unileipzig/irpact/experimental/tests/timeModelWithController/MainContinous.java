@@ -1,10 +1,10 @@
 package de.unileipzig.irpact.experimental.tests.timeModelWithController;
 
-import de.unileipzig.irpact.v2.jadex.simulation.BasicJadexSimulationControl;
-import de.unileipzig.irpact.v2.jadex.simulation.JadexSimulationControl;
-import de.unileipzig.irpact.v2.jadex.time.ContinuousTimeModel;
-import de.unileipzig.irpact.v2.jadex.time.JadexTimeModel;
-import de.unileipzig.irpact.v2.jadex.util.JadexUtil2;
+import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationControl;
+import de.unileipzig.irpact.jadex.simulation.JadexSimulationControl;
+import de.unileipzig.irpact.jadex.time.ContinuousTimeModel;
+import de.unileipzig.irpact.jadex.time.JadexTimeModel;
+import de.unileipzig.irpact.jadex.util.JadexUtil2;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
 import jadex.base.Starter;
