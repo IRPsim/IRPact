@@ -1,11 +1,9 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.core.attribute.Attribute;
+import de.unileipzig.irpact.commons.attribute.DoubleAttributeGroupEntity;
 
 /**
  * @author Daniel Abitz
  */
-public interface ProductAttribute extends Attribute {
-
-    ProductGroupAttribute getGroup();
+public interface ProductAttribute extends DoubleAttributeGroupEntity<ProductGroupAttribute> {
 }

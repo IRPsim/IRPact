@@ -1,37 +1,18 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
-import de.unileipzig.irpact.v2.commons.Check;
+import de.unileipzig.irpact.commons.attribute.DoubleAttributeGroupEntityBase;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicConsumerAgentAttribute implements ConsumerAgentAttribute {
+public class BasicConsumerAgentAttribute extends DoubleAttributeGroupEntityBase<ConsumerAgentGroupAttribute> implements ConsumerAgentAttribute {
 
-    private ConsumerAgentGroupAttribute groupAttribute;
-    private double value;
-
-    public BasicConsumerAgentAttribute(ConsumerAgentGroupAttribute groupAttribute, double value) {
-        this.groupAttribute = Check.requireNonNull(groupAttribute, "groupAttribute");
-        this.value = value;
+    public BasicConsumerAgentAttribute() {
     }
 
-    @Override
-    public ConsumerAgentGroupAttribute getGroup() {
-        return groupAttribute;
-    }
-
-    @Override
-    public BasicConsumerAgentAttribute copy() {
-        return new BasicConsumerAgentAttribute(groupAttribute, value);
-    }
-
-    @Override
-    public double getValue() {
-        return value;
-    }
-
-    @Override
-    public String getName() {
-        return getGroup().getName();
+    public BasicConsumerAgentAttribute(String name, ConsumerAgentGroupAttribute groupAttribute, double value) {
+        setName(name);
+        setGroup(groupAttribute);
+        setDoubleValue(value);
     }
 }

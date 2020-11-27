@@ -1,26 +1,23 @@
 package de.unileipzig.irpact.core.simulation;
 
-import de.unileipzig.irpact.v2.commons.Check;
+import de.unileipzig.irpact.commons.NameableBase;
 
 /**
  * @author Daniel Abitz
  */
-public abstract class SimulationEntityBase implements SimulationEntity {
+public class SimulationEntityBase extends NameableBase implements SimulationEntity {
 
     protected SimulationEnvironment environment;
-    protected String name;
 
     public SimulationEntityBase() {
     }
 
-    public SimulationEntityBase(SimulationEnvironment environment, String name) {
-        this.environment = Check.requireNonNull(environment, "environment");
-        this.name = Check.requireNonNull(name, "name");
+    public SimulationEntityBase(SimulationEnvironment environment) {
+        this.environment = environment;
     }
 
-    @Override
-    public String getName() {
-        return name;
+    public void setEnvironment(SimulationEnvironment environment) {
+        this.environment = environment;
     }
 
     @Override

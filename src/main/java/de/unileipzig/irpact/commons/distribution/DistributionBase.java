@@ -1,28 +1,9 @@
 package de.unileipzig.irpact.commons.distribution;
 
-import java.util.Random;
+import de.unileipzig.irpact.commons.Nameable;
 
 /**
  * @author Daniel Abitz
  */
-public abstract class DistributionBase implements Distribution {
-
-    public static final long NO_SEED = -1L;
-
-    protected String name;
-
-    public DistributionBase(String name) {
-        this.name = name;
-    }
-
-    protected static Random newRandom(long seed) {
-        return seed == NO_SEED
-                ? new Random()
-                : new Random(seed);
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
+public interface DistributionBase extends Nameable {
 }

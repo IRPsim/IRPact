@@ -1,18 +1,15 @@
 package de.unileipzig.irpact.dev.optact;
 
 import de.unileipzig.irpact.start.Start;
-import de.unileipzig.irpact.start.optact.OptActRes;
 import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irpact.start.optact.out.OutRoot;
-import de.unileipzig.irpact.v2.commons.log.Logback;
+import de.unileipzig.irpact.commons.log.Logback;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.start.IRPtools;
-import de.unileipzig.irptools.util.Clj;
 import de.unileipzig.irptools.util.Util;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -31,7 +28,7 @@ class OptActMainTest {
     @Test
     void runIt() {
         Path dir = Paths.get("src", "main", "resources", "scenarios");
-        Path outDir = Paths.get("exppriv");
+        Path outDir = Paths.get("testfiles", "fasttests");
         String[] args = {
                 "-i", dir.resolve(Constants.DEFAULT_JSON).toString(),
                 "-o", outDir.resolve("default.out.noimage.json").toString()
@@ -42,7 +39,7 @@ class OptActMainTest {
     @Test
     void runImageNoSimu() {
         Path dir = Paths.get("src", "main", "resources", "scenarios");
-        Path outDir = Paths.get("exppriv");
+        Path outDir = Paths.get("testfiles", "fasttests");
         String[] args = {
                 "-i", dir.resolve(Constants.DEFAULT_JSON).toString(),
                 "-o", outDir.resolve("default.out.nosimu.json").toString(),
@@ -55,11 +52,11 @@ class OptActMainTest {
     @Test
     void runImageWithSimu() {
         Path dir = Paths.get("src", "main", "resources", "scenarios");
-        Path outDir = Paths.get("exppriv");
+        Path outDir = Paths.get("testfiles", "fasttests");
         String[] args = {
                 "-i", dir.resolve(Constants.DEFAULT_JSON).toString(),
-                "-o", outDir.resolve("default.out.simu.json").toString(),
-                "--image", outDir.resolve("testimage.png").toString()
+                "-o", outDir.resolve("default.out.simuX.json").toString(),
+                "--image", outDir.resolve("testimageX.png").toString()
         };
         Start.main(args);
     }
@@ -67,7 +64,7 @@ class OptActMainTest {
     @Test
     void runDoNothing() {
         Path dir = Paths.get("src", "main", "resources", "scenarios");
-        Path outDir = Paths.get("exppriv");
+        Path outDir = Paths.get("testfiles", "fasttests");
         String[] args = {
                 "-i", dir.resolve(Constants.DEFAULT_JSON).toString(),
                 "-o", outDir.resolve("default.out.nope.json").toString(),

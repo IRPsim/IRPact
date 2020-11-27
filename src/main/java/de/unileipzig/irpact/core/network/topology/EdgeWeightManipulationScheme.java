@@ -1,38 +1,13 @@
 package de.unileipzig.irpact.core.network.topology;
 
-import de.unileipzig.irpact.dev.ToDo;
-import de.unileipzig.irpact.core.Scheme;
-import de.unileipzig.irpact.core.network.EdgeType;
+import de.unileipzig.irpact.core.misc.Scheme;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
 /**
  * @author Daniel Abitz
  */
-@ToDo("gefaellt mir noch nicht")
 public interface EdgeWeightManipulationScheme extends Scheme {
 
-    double getEdgeWeight(
-            SimulationEnvironment environment,
-            SocialGraph.Node source,
-            SocialGraph.Node target,
-            EdgeType edgeType
-    );
-
-    /*
-    void updateWeight(
-            SimulationEnvironment environment,
-            SocialGraph graph,
-            SocialGraph.Node source,
-            SocialGraph.Node target,
-            EdgeType type
-    );
-
-    void updateWeight(
-            SimulationEnvironment environment,
-            SocialGraph graph,
-            SocialGraph.Edge edge,
-            EdgeType type
-    );
-    */
+    double weighEdge(SimulationEnvironment environment, SocialGraph.Node from, SocialGraph.Node to, SocialGraph.Type type);
 }

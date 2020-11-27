@@ -1,49 +1,30 @@
 package de.unileipzig.irpact.commons.graph;
 
-import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
-import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
-
 import java.util.Set;
 import java.util.stream.Stream;
 
 /**
+ * @param <V>
+ * @param <E>
  * @author Daniel Abitz
  */
-public interface Graph<N extends Node, E extends Edge<N>> extends GraphBase<N, E> {
+public interface Graph<V, E> {
 
-    Set<E> getEdges();
+    boolean addVertex(V vertex);
 
-    Set<N> getSourceNodes(N targetNode);
+    boolean hasVertex(V vertex);
 
-    Stream<N> streamSourceNodes(N targetNode);
+    boolean removeVertex(V vertex);
 
-    Set<N> getTargetNodes(N sourceNode);
+    int vertexCount();
 
-    Set<E> getOutEdges(N node);
+    Set<V> getVertices();
 
-    Set<E> getInEdges(N node);
-
-    int getDegree(N node);
-
-    int getIndegree(N node);
-
-    int getOutdegree(N node);
-
-    boolean hasNode(N node);
+    Stream<V> streamVertices();
 
     boolean hasEdge(E edge);
 
-    boolean hasEdge(N source, N target);
-
-    E getEdge(N source, N target);
-
-    void addNode(N node) throws NodeAlreadyExistsException;
-
-    void addEdge(E edge) throws EdgeAlreadyExistsException;
-
-    boolean removeNode(N node);
-
-    boolean removeEdge(N source, N target);
-
     boolean removeEdge(E edge);
+
+    int edgeCount();
 }

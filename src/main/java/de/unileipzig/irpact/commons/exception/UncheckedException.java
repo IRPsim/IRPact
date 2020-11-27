@@ -5,11 +5,11 @@ package de.unileipzig.irpact.commons.exception;
  */
 public class UncheckedException extends RuntimeException {
 
-    public UncheckedException(Exception e) {
-        super(e);
+    public UncheckedException(Throwable t) {
+        super(t);
     }
 
-    public UncheckedException(String msg, Exception e) {
-        super(msg, e);
+    public UncheckedException(String msg, Throwable t) {
+        super(msg, t);
     }
 }

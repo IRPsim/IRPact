@@ -1,37 +1,18 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.v2.commons.Check;
+import de.unileipzig.irpact.commons.attribute.DoubleAttributeGroupEntityBase;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicProductAttribute implements ProductAttribute {
+public class BasicProductAttribute extends DoubleAttributeGroupEntityBase<ProductGroupAttribute> implements ProductAttribute {
 
-    private ProductGroupAttribute groupAttribute;
-    private double value;
-
-    public BasicProductAttribute(ProductGroupAttribute groupAttribute, double value) {
-        this.groupAttribute = Check.requireNonNull(groupAttribute, "groupAttribute");
-        this.value = value;
+    public BasicProductAttribute() {
     }
 
-    @Override
-    public ProductGroupAttribute getGroup() {
-        return groupAttribute;
-    }
-
-    @Override
-    public BasicProductAttribute copy() {
-        return new BasicProductAttribute(groupAttribute, value);
-    }
-
-    @Override
-    public double getValue() {
-        return value;
-    }
-
-    @Override
-    public String getName() {
-        return getGroup().getName();
+    public BasicProductAttribute(String name, ProductGroupAttribute groupAttribute, double value) {
+        setName(name);
+        setGroup(groupAttribute);
+        setDoubleValue(value);
     }
 }

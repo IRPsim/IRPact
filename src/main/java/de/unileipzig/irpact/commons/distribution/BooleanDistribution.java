@@ -1,46 +1,48 @@
 package de.unileipzig.irpact.commons.distribution;
 
-import de.unileipzig.irpact.v2.commons.Check;
+import de.unileipzig.irpact.commons.NameableBase;
 
 import java.util.Random;
 
 /**
  * @author Daniel Abitz
  */
-public class BooleanDistribution extends UnivariateDistributionBase {
+public class BooleanDistribution extends NameableBase implements UnivariateDoubleDistribution {
 
-    public static final String NAME = BooleanDistribution.class.getSimpleName();
+    protected long seed;
+    protected Random rnd;
 
-    private Random rnd;
-    private long seed;
-    private double threshold;
-
-    public BooleanDistribution(String name, Random rnd, double threshold) {
-        super(name);
-        this.rnd = Check.requireNonNull(rnd, "rnd");
-        this.threshold = Check.require0to1(threshold, "threshold");
-        seed = NO_SEED;
+    public BooleanDistribution() {
     }
 
-    public BooleanDistribution(String name, long seed, double threshold) {
-        super(name);
+    public BooleanDistribution(String name, long seed) {
+        setName(name);
+        init(seed);
+    }
+
+    public void init(long seed) {
+        setSeed(seed);
+        setRandom(new Random(seed));
+    }
+
+    public void setSeed(long seed) {
         this.seed = seed;
-        this.rnd = newRandom(seed);
-        this.threshold = Check.require0to1(threshold, "threshold");
-    }
-
-    public double getThreshold() {
-        return threshold;
     }
 
     public long getSeed() {
         return seed;
     }
 
+    public void setRandom(Random rnd) {
+        this.rnd = rnd;
+    }
+
+    public Random getRandom() {
+        return rnd;
+    }
+
     @Override
-    public double drawValue() {
-        return rnd.nextDouble() < threshold
-                ? 1.0
-                : 0.0;
+    public double drawDoubleValue() {
+        return rnd.nextBoolean() ? 1.0 : 0.0;
     }
 }

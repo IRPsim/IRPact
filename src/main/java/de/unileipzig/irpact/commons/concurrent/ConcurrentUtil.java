@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.concurrent;
 
-import de.unileipzig.irpact.commons.exception.UncheckedInterruptedException;
+import de.unileipzig.irpact.commons.exception.UncheckedException;
 
 import java.util.concurrent.TimeUnit;
 
@@ -9,25 +9,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class ConcurrentUtil {
 
-    private ConcurrentUtil() {
-    }
-
-    public static Thread start(long delay, Runnable task) {
-        Thread t = new Thread(() -> {
-            sleepSilently(delay);
-            task.run();
-        });
-        t.start();
-        return t;
-    }
-
-    public static Thread start(long delay, String name, Runnable task) {
-        Thread t = new Thread(() -> {
-            sleepSilently(delay);
-            task.run();
-        }, name);
-        t.start();
-        return t;
+    protected ConcurrentUtil() {
     }
 
     public static void sleep(long time, TimeUnit unit) throws InterruptedException {
@@ -35,19 +17,19 @@ public final class ConcurrentUtil {
         Thread.sleep(ms);
     }
 
-    public static void sleepSilently(long time, TimeUnit unit) throws UncheckedInterruptedException {
+    public static void sleepSilently(long time, TimeUnit unit) throws UncheckedException {
         try {
             sleep(time, unit);
         } catch (InterruptedException e) {
-            throw new UncheckedInterruptedException(e);
+            throw new UncheckedException(e);
         }
     }
 
-    public static void sleepSilently(long ms) throws UncheckedInterruptedException {
+    public static void sleepSilently(long ms) throws UncheckedException {
         try {
             Thread.sleep(ms);
         } catch (InterruptedException e) {
-            throw new UncheckedInterruptedException(e);
+            throw new UncheckedException(e);
         }
     }
 }

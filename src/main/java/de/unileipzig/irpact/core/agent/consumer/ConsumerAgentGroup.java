@@ -1,13 +1,12 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
-import de.unileipzig.irpact.commons.distribution.UnivariateDistribution;
+import de.unileipzig.irpact.commons.awareness.Awareness;
+import de.unileipzig.irpact.commons.awareness.AwarenessDistributionMapping;
+import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.core.agent.AgentGroup;
-import de.unileipzig.irpact.core.need.NeedDevelopmentScheme;
-import de.unileipzig.irpact.core.need.NeedExpirationScheme;
-import de.unileipzig.irpact.core.need.NeedSatisfyScheme;
-import de.unileipzig.irpact.core.preference.Value;
+import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.core.spatial.SpatialDistribution;
 
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -19,15 +18,11 @@ public interface ConsumerAgentGroup extends AgentGroup<ConsumerAgent> {
 
     Set<ConsumerAgentGroupAttribute> getAttributes();
 
-    Map<Value, UnivariateDistribution> getValuePreferences();
+    SpatialDistribution getSpatialDistribution();
 
-    ProductFindingScheme getFindingScheme();
+    Awareness<Product> getProductAwareness();
 
-    ProductAdoptionDecisionScheme getAdoptionDecisionScheme();
+    AwarenessDistributionMapping<Product, UnivariateDoubleDistribution> getFixedProductAwarenessMapping();
 
-    NeedDevelopmentScheme getNeedDevelopmentScheme();
-
-    NeedExpirationScheme getNeedExpirationScheme();
-
-    NeedSatisfyScheme getNeedSatisfyScheme();
+    ConsumerAgentInitializationData derive();
 }

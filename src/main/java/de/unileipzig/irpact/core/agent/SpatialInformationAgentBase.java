@@ -1,34 +1,18 @@
 package de.unileipzig.irpact.core.agent;
 
-import de.unileipzig.irpact.v2.commons.Check;
-import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.core.spatial.SpatialInformation;
-
 /**
  * @author Daniel Abitz
  */
-public abstract class SpatialInformationAgentBase extends AgentBase implements SpatialInformationAgent {
+public class SpatialInformationAgentBase extends SpatialAgentBase implements InformationAgent {
 
     protected double informationAuthority;
-    protected SpatialInformation spatialInformation;
 
-    public SpatialInformationAgentBase(
-            SimulationEnvironment environment,
-            String name,
-            double informationAuthority,
-            SpatialInformation spatialInformation) {
-        super(environment, name);
+    public void setInformationAuthority(double informationAuthority) {
         this.informationAuthority = informationAuthority;
-        this.spatialInformation = Check.requireNonNull(spatialInformation, "spatialInformation");
     }
 
     @Override
     public double getInformationAuthority() {
         return informationAuthority;
-    }
-
-    @Override
-    public SpatialInformation getSpatialInformation() {
-        return spatialInformation;
     }
 }

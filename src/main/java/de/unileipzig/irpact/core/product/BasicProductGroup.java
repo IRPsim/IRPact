@@ -1,44 +1,49 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.v2.commons.Check;
-import de.unileipzig.irpact.core.AbstractGroup;
-import de.unileipzig.irpact.core.need.Need;
-import de.unileipzig.irpact.core.simulation.EntityType;
-import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicProductGroup extends AbstractGroup<Product> implements ProductGroup {
+public class BasicProductGroup extends SimulationEntityBase implements ProductGroup {
 
     protected Set<ProductGroupAttribute> attributes;
-    protected Set<Need> needsSatisfied;
+    protected Set<Product> products;
+    protected Set<Product> fixedProducts;
 
-    public BasicProductGroup(
-            SimulationEnvironment environment,
-            Set<Product> derivedProducts,
-            String name,
-            Set<ProductGroupAttribute> attributes,
-            Set<Need> needsSatisfied) {
-        super(environment, name, derivedProducts);
-        this.name = Check.requireNonNull(name, "name");
-        this.attributes = Check.requireNonNull(attributes, "attributes");
-        this.needsSatisfied = Check.requireNonNull(needsSatisfied, "needsSatisfied");
+    public BasicProductGroup() {
+        this(new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
 
-    @SuppressWarnings("SwitchStatementWithTooFewBranches")
-    @Override
-    public boolean is(EntityType type) {
-        switch (type) {
-            case PRODUCT_GROUP:
-                return true;
+    public BasicProductGroup(
+            Set<ProductGroupAttribute> attributes,
+            Set<Product> products,
+            Set<Product> fixedProducts) {
+        this.attributes = attributes;
+        this.products = products;
+        this.fixedProducts = fixedProducts;
+    }
 
-            default:
-                return false;
-        }
+    @Override
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    @Override
+    public Set<Product> getFixedProducts() {
+        return fixedProducts;
+    }
+
+    public boolean addAttribute(ProductGroupAttribute attribute) {
+        return attributes.add(attribute);
+    }
+
+    public void setAttributes(Set<ProductGroupAttribute> attributes) {
+        this.attributes = attributes;
     }
 
     @Override
@@ -47,36 +52,50 @@ public class BasicProductGroup extends AbstractGroup<Product> implements Product
     }
 
     @Override
-    public Set<Need> getNeedsSatisfied() {
-        return needsSatisfied;
+    public ProductGroupAttribute getAttribute(String name) {
+        for(ProductGroupAttribute attr: attributes) {
+            if(Objects.equals(attr.getName(), name)) {
+                return attr;
+            }
+        }
+        return null;
+    }
+
+    public String deriveName() {
+        return getName();
+    }
+
+    public Set<ProductAttribute> deriveAttributes() {
+        Set<ProductAttribute> paSet = new HashSet<>();
+        for(ProductGroupAttribute pga: getAttributes()) {
+            ProductAttribute pa = pga.derive();
+            paSet.add(pa);
+        }
+        return paSet;
     }
 
     @Override
-    public boolean addEntity(Product entitiy) {
-        if(entitiy.getGroup() != this) {
-            return false;
+    public boolean register(Product product) {
+        if(product.getGroup() != this) {
+            throw new IllegalArgumentException();
         }
-        return entities.add(entitiy);
+        return products.add(product);
     }
 
-    protected int productId = 0;
-    protected synchronized String deriveName() {
-        String name = getName() + "#" + productId;
-        productId++;
-        return name;
-    }
-
-    protected Set<ProductAttribute> deriveAttributes() {
-        Set<ProductAttribute> attributes = new HashSet<>();
-        for(ProductGroupAttribute groupAttribute: getAttributes()) {
-            attributes.add(groupAttribute.derive());
+    @Override
+    public boolean registerFixed(Product product) {
+        if(product.getGroup() != this) {
+            throw new IllegalArgumentException();
         }
-        return attributes;
+        return fixedProducts.add(product);
     }
 
-    public Product deriveProduct() {
-        String derivedName = deriveName();
-        Set<ProductAttribute> derivedAttributes = deriveAttributes();
-        return new BasicProduct(getEnvironment(), derivedName, this, derivedAttributes);
+    @Override
+    public Product derive() {
+        return new BasicProduct(
+                deriveName(),
+                this,
+                deriveAttributes()
+        );
     }
 }

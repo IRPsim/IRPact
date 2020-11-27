@@ -2,8 +2,9 @@ package de.unileipzig.irpact.commons.distribution;
 
 /**
  * @author Daniel Abitz
+ * @param <T>
  */
-public interface UnivariateDistribution extends Distribution {
+public interface UnivariateDistribution<T> extends DistributionBase {
 
-    double drawValue();
+    T drawValue();
 }

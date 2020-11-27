@@ -1,176 +1,94 @@
 package de.unileipzig.irpact.jadex.simulation;
 
-import de.unileipzig.irpact.v2.commons.Check;
-import de.unileipzig.irpact.dev.ToImpl;
-import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
-import de.unileipzig.irpact.commons.concurrent.ResettableTimer;
-import de.unileipzig.irpact.core.simulation.SimulationEnvironmentBase;
-import de.unileipzig.irpact.jadex.message.JadexMessageSystem;
-import jadex.bridge.IComponentIdentifier;
-import jadex.bridge.IExternalAccess;
-import jadex.bridge.component.IExternalExecutionFeature;
-import jadex.bridge.service.search.ServiceQuery;
-import jadex.bridge.service.types.clock.IClock;
-import jadex.bridge.service.types.clock.IClockService;
-import jadex.bridge.service.types.simulation.ISimulationService;
-import jadex.bridge.service.types.threadpool.IThreadPoolService;
-
-import java.util.Set;
+import de.unileipzig.irpact.core.misc.DebugLevel;
+import de.unileipzig.irpact.core.agent.AgentManager;
+import de.unileipzig.irpact.core.agent.BasicAgentManager;
+import de.unileipzig.irpact.core.network.BasicSocialNetwork;
+import de.unileipzig.irpact.core.network.SocialNetwork;
+import de.unileipzig.irpact.core.product.BasicProductManager;
+import de.unileipzig.irpact.core.product.ProductManager;
+import de.unileipzig.irpact.core.spatial.SpatialModel;
+import de.unileipzig.irpact.jadex.time.JadexTimeModel;
+import jadex.bridge.service.annotation.Reference;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicJadexSimulationEnvironment extends SimulationEnvironmentBase implements JadexSimulationEnvironment {
+@Reference(local = true, remote = true)
+public class BasicJadexSimulationEnvironment implements JadexSimulationEnvironment {
 
-    //Jadex
-    private IExternalAccess platform;
-    private IExternalExecutionFeature platformExec;
-    private IClockService clockService;
-    private ISimulationService simulationService;
-    private IExternalAccess simulationAgent;
-    //util
-    private ResettableTimer activityTimer;
+    protected AgentManager agentManager = new BasicAgentManager();
+    protected SocialNetwork socialNetwork = new BasicSocialNetwork();
+    protected ProductManager productManager = new BasicProductManager();
+    protected SpatialModel spatialModel;
+    protected JadexTimeModel timeModel;
+    protected JadexSimulationControl simulationControl;
+
+    protected DebugLevel debugLevel = DebugLevel.DEFAULT;
 
     public BasicJadexSimulationEnvironment() {
     }
 
-    //=========================
-    //setter
-    //=========================
-
-    public void setPlatform(IExternalAccess platform) {
-        this.platform = platform;
-        this.platformExec = platform.getExternalFeature(IExternalExecutionFeature.class);
-    }
-
-    public void setSimulationAgent(IExternalAccess simulationAgent) {
-        this.simulationAgent = simulationAgent;
-    }
-
-    public void setClockService(IClockService clockService) {
-        this.clockService = clockService;
-    }
-
-    public void setSimulationService(ISimulationService simulationService) {
-        this.simulationService = simulationService;
-    }
-
-    public void setMessageSystem(JadexMessageSystem messageSystem) {
-        this.messageSystem = messageSystem;
-    }
-
-    public void setTimeModule(JadexTimeModule timeModule) {
-        this.timeModule = timeModule;
-    }
-
-    public void setConfig(JadexSimulationConfiguration simulationConfig) {
-        this.simulationConfiguration = simulationConfig;
-    }
-
-    public IClockService getClockService() {
-        return clockService;
-    }
-
-    public ISimulationService getSimulationService() {
-        return simulationService;
-    }
-
-    public void setTimer(ResettableTimer activityTimer) {
-        this.activityTimer = activityTimer;
-    }
-
-    public void setEventManager(JadexEventManager eventManager) {
-        this.eventManager = eventManager;
-    }
-
-    public void validateAll() {
-        validate();
-        Check.requireNonNull(timeModule, "timeModule");
-        Check.requireNonNull(clockService, "clockService");
-        Check.requireNonNull(simulationService, "simulationService");
-        Check.requireNonNull(platform, "platform");
-    }
-
-    public void prepare() {
-        simulationService.pause();
-        clockService.setClock(IClock.TYPE_CONTINUOUS, platform.searchService(new ServiceQuery<>(IThreadPoolService.class)).get());
-        simulationService.pause();
-    }
-
-    public void waitForSimulation(Set<IExternalAccess> accessSet) {
-        while(accessSet.size() != getConfiguration().getAccesses().size()) {
-            //Thread.onSpinWait();
-            //besser waere eine CountDownLatch, aber fuers testen reicht das
-            ConcurrentUtil.sleepSilently(10);
-        }
-        //access equals geht nicht, also muss id genutzt werden
-        for(IExternalAccess access: accessSet) {
-            IComponentIdentifier id = access.getId();
-            String name = id.getLocalName();
-            IComponentIdentifier configId = getConfiguration().getIdentifier(name);
-            if(id != configId) {
-                throw new IllegalStateException("Missing Agent: " + name);
-            }
-        }
-    }
-
-    @ToImpl
-    public void initialize() {
-        Check.requireNonNull(simulationAgent, "simulationAgent");
-    }
-
-    @ToImpl
-    public void start() {
-        simulationService.start();
-    }
-
-    //=========================
-    //JadexSimulationEnvironment
-    //=========================
-
-    @Override
-    public IExternalAccess getPlatform() {
-        return platform;
+    public void setAgentManager(AgentManager agentManager) {
+        this.agentManager = agentManager;
     }
 
     @Override
-    public IExternalExecutionFeature getPlatformExec() {
-        return platformExec;
+    public AgentManager getAgents() {
+        return agentManager;
+    }
+
+    public void setSocialNetwork(SocialNetwork socialNetwork) {
+        this.socialNetwork = socialNetwork;
     }
 
     @Override
-    public JadexMessageSystem getMessageSystem() {
-        return (JadexMessageSystem) messageSystem;
+    public SocialNetwork getNetwork() {
+        return socialNetwork;
+    }
+
+    public void setProductManager(ProductManager productManager) {
+        this.productManager = productManager;
     }
 
     @Override
-    public JadexTimeModule getTimeModule() {
-        return (JadexTimeModule) timeModule;
+    public ProductManager getProducts() {
+        return productManager;
+    }
+
+    public void setSpatialModel(SpatialModel spatialModel) {
+        this.spatialModel = spatialModel;
     }
 
     @Override
-    public JadexSimulationConfiguration getConfiguration() {
-        return (JadexSimulationConfiguration) super.getConfiguration();
+    public SpatialModel getSpatialModel() {
+        return spatialModel;
+    }
+
+    public void setTimeModel(JadexTimeModel timeModel) {
+        this.timeModel = timeModel;
     }
 
     @Override
-    public JadexEventManager getEventManager() {
-        return (JadexEventManager) super.getEventManager();
+    public JadexTimeModel getTimeModel() {
+        return timeModel;
     }
 
-    //=========================
-    //util
-    //=========================
-
-    @Override
-    public void validate() {
-        super.validate();
+    public void setSimulationControl(JadexSimulationControl simulationControl) {
+        this.simulationControl = simulationControl;
     }
 
     @Override
-    public void poke() {
-        if(activityTimer != null) {
-            activityTimer.reset();
-        }
+    public JadexSimulationControl getSimulationControl() {
+        return simulationControl;
+    }
+
+    public void setDebugLevel(DebugLevel debugLevel) {
+        this.debugLevel = debugLevel;
+    }
+
+    @Override
+    public DebugLevel getDebugLevel() {
+        return debugLevel;
     }
 }

@@ -1,11 +1,9 @@
 package de.unileipzig.irpact.core.spatial;
 
-import de.unileipzig.irpact.commons.distribution.Distribution;
+import de.unileipzig.irpact.commons.distribution.UnivariateDistribution;
 
 /**
  * @author Daniel Abitz
  */
-public interface SpatialDistribution extends Distribution {
-
-    SpatialInformation drawValue();
+public interface SpatialDistribution extends UnivariateDistribution<SpatialInformation> {
 }

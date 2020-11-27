@@ -66,6 +66,10 @@ dependencies {
 
     implementation 'guru.nidi:graphviz-java:0.17.1'
 
+    implementation "commons-codec:commons-codec:1.15"
+
+    implementation "org.mariuszgromada.math:MathParser.org-mXparser:4.4.2"
+
     //custom
     implementation files('customlibs/IRPtools-1.0-SNAPSHOT.jar')
 }
@@ -74,8 +78,6 @@ dependencies {
 //jar
 //==================================================
 
-// Invalid signature file digest for Manifest main attributes -> fatjar geht (erstmal?) nicht (Problem bleibt mit shadow bestehen)
-// einfach die key files entfernen...
 task buildUberJar(type: Jar) {
     archiveClassifier.set('uber')
     manifest {
@@ -89,48 +91,14 @@ task buildUberJar(type: Jar) {
     exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
 }
 
-artifacts {
-    archives buildUberJar
-}
-
-/*
-task buildDemoJarWithClasspath(type: Jar) {
-    archiveAppendix.set('demo')
-    from sourceSets.main.output
-    manifest {
-        attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
-        attributes 'Class-Path': configurations.runtimeClasspath.files.collect { "dependencies/$it.name" }.join(' ')
-    }
-}
-
-task buildDemoJarWithClasspathSameDir(type: Jar) {
-    archiveAppendix.set('demo')
-    archiveClassifier.set('v2')
-    from sourceSets.main.output
-    manifest {
-        attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
-        attributes 'Class-Path': configurations.runtimeClasspath.files.collect { "$it.name" }.join(' ')
-    }
-}
-
-task buildDemoJarWithoutClasspath(type: Jar) {
-    archiveAppendix.set('demo')
-    archiveClassifier.set('nocp')
+task buildStandardJar(type: Jar) {
     from sourceSets.main.output
     manifest {
         attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
     }
-}
-
-task copyDependencies(type: Copy) {
-    into "$buildDir/dependencies"
-    from configurations.runtimeClasspath
 }
 
 artifacts {
-    archives buildDemoFatJar
-    archives buildDemoJarWithClasspath
-    archives buildDemoJarWithClasspathSameDir
-    archives buildDemoJarWithoutClasspath
+    archives buildUberJar
+    archives buildStandardJar
 }
-*/

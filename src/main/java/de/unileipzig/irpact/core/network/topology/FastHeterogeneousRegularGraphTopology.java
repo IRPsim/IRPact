@@ -3,8 +3,7 @@ package de.unileipzig.irpact.core.network.topology;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinities;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinitiesMapping;
-import de.unileipzig.irpact.core.network.EdgeType;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
@@ -15,56 +14,47 @@ import java.util.*;
  */
 public class FastHeterogeneousRegularGraphTopology implements GraphTopologyScheme {
 
+    protected SocialGraph.Type edgeType;
     protected Map<ConsumerAgentGroup, Integer> consumerGroupZMapping;
     protected boolean isSelfReferential;
-    protected EdgeType edgeType;
     protected double initialWeight;
+    protected long seed;
     protected Random rnd;
 
     public FastHeterogeneousRegularGraphTopology(
-            EdgeType edgeType,
+            SocialGraph.Type edgeType,
             Map<ConsumerAgentGroup, Integer> consumerGroupZMapping,
             boolean isSelfReferential,
             double initialWeight,
-            Random rnd) {
+            long seed) {
         this.edgeType = edgeType;
         this.consumerGroupZMapping = consumerGroupZMapping;
         this.isSelfReferential = isSelfReferential;
         this.initialWeight = initialWeight;
-        this.rnd = rnd;
+        this.seed = seed;
+        rnd = new Random(seed);
     }
 
-    public static void initalize(
-            SocialGraph graph,
-            EdgeType edgeType,
-            Collection<? extends SocialGraph.Node> consideredNodes,
-            ConsumerAgentGroupAffinitiesMapping affinitiesMapping,
-            Map<ConsumerAgentGroup, Integer> consumerGroupZMapping,
-            boolean isSelfReferential,
-            double initialWeight,
-            Random rnd) {
-        for(SocialGraph.Node node: consideredNodes) {
-            if(!graph.hasNode(node)) {
-                throw new IllegalStateException("Missing Node: " + node.getLabel());
-            }
-        }
-        Map<ConsumerAgentGroup, HelpNodeList> cagNodes = new HashMap<>();
-        for(SocialGraph.Node node: consideredNodes) {
+    @Override
+    public void initalize(SimulationEnvironment environment, SocialGraph graph) {
+        Map<ConsumerAgentGroup, NodeHelper> cagNodes = new HashMap<>();
+        for(SocialGraph.Node node: graph.getNodes()) {
             ConsumerAgentGroup cag = node.getAgent(ConsumerAgent.class).getGroup();
-            HelpNodeList cagNodeList = cagNodes.computeIfAbsent(cag, _cag -> new HelpNodeList());
+            NodeHelper cagNodeList = cagNodes.computeIfAbsent(cag, _cag -> new NodeHelper());
             cagNodeList.add(node);
         }
-        for(HelpNodeList cagNodeList: cagNodes.values()) {
+        for(NodeHelper cagNodeList: cagNodes.values()) {
             cagNodeList.init(rnd);
         }
-        for(SocialGraph.Node sourceNode: consideredNodes) {
+        ConsumerAgentGroupAffinityMapping affinityMapping = environment.getAgents().getConsumerAgentGroupAffinityMapping();
+        for(SocialGraph.Node sourceNode: graph.getNodes()) {
             ConsumerAgentGroup sourceCag = sourceNode.getAgent(ConsumerAgent.class).getGroup();
-            ConsumerAgentGroupAffinities sourceAffinities = affinitiesMapping.get(sourceCag);
+            ConsumerAgentGroupAffinities sourceAffinities = affinityMapping.get(sourceCag);
             int i = 0;
             final int zMapping = consumerGroupZMapping.get(sourceCag);
             while(i < zMapping) {
-                ConsumerAgentGroup targetCag = sourceAffinities.getRandom(rnd);
-                HelpNodeList nodeList = cagNodes.get(targetCag);
+                ConsumerAgentGroup targetCag = sourceAffinities.getWeightedRandom(rnd);
+                NodeHelper nodeList = cagNodes.get(targetCag);
                 SocialGraph.Node peek = nodeList.peek();
                 if(!isSelfReferential && peek == sourceNode) {
                     continue;
@@ -74,67 +64,47 @@ public class FastHeterogeneousRegularGraphTopology implements GraphTopologySchem
                     continue;
                 }
                 SocialGraph.Node targetNode = nodeList.next(rnd);
-                SocialGraph.Edge edge = graph.addEdge(sourceNode, targetNode, edgeType);
+                graph.addEdge(sourceNode, targetNode, edgeType);
+                SocialGraph.Edge edge = graph.getEdge(sourceNode, targetNode, edgeType);
                 edge.setWeight(initialWeight);
                 i++;
             }
         }
     }
 
-    @Override
-    public void initalize(SimulationEnvironment environment, SocialGraph graph) {
-        initalize(
-                graph,
-                edgeType,
-                graph.getNodes(),
-                environment.getConfiguration().getAffinitiesMapping(),
-                consumerGroupZMapping,
-                isSelfReferential,
-                initialWeight,
-                rnd
-        );
-    }
+    /**
+     * @author Daniel Abitz
+     */
+    protected static class NodeHelper {
 
-    @Override
-    public void addSubsequently(SimulationEnvironment environment, SocialGraph graph, ConsumerAgent agent) {
+        protected LinkedList<SocialGraph.Node> back = new LinkedList<>();
+        protected LinkedList<SocialGraph.Node> front = new LinkedList<>();
 
-    }
-
-    @Override
-    public void removeSubsequently(SimulationEnvironment environment, SocialGraph graph, ConsumerAgent agent) {
-
-    }
-
-    static class HelpNodeList {
-
-        private LinkedList<SocialGraph.Node> back = new LinkedList<>();
-        private LinkedList<SocialGraph.Node> front = new LinkedList<>();
-
-        private HelpNodeList() {
+        protected NodeHelper() {
         }
 
-        private void add(SocialGraph.Node node) {
+        protected void add(SocialGraph.Node node) {
             front.add(node);
         }
 
-        private void init(Random rnd) {
+        protected void init(Random rnd) {
             shuffle(rnd);
         }
 
-        private void shuffle(Random rnd) {
+        protected void shuffle(Random rnd) {
             Collections.shuffle(front, rnd);
         }
 
-        private SocialGraph.Node peek() {
+        protected SocialGraph.Node peek() {
             return front.getFirst();
         }
 
-        private void discard() {
+        protected void discard() {
             SocialGraph.Node next = front.removeFirst();
             front.addLast(next);
         }
 
-        private SocialGraph.Node next(Random rnd) {
+        protected SocialGraph.Node next(Random rnd) {
             SocialGraph.Node next = front.removeFirst();
             back.addLast(next);
             if(front.isEmpty()) {

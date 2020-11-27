@@ -1,13 +1,9 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.core.attribute.UnivariateAttribute;
+import de.unileipzig.irpact.commons.attribute.DerivableUnivariateDistributionAttribute;
 
 /**
  * @author Daniel Abitz
  */
-public interface ProductGroupAttribute extends UnivariateAttribute {
-
-    ProductAttribute derive();
-
-    ProductAttribute derive(double fixedValue);
+public interface ProductGroupAttribute extends DerivableUnivariateDistributionAttribute<ProductAttribute> {
 }

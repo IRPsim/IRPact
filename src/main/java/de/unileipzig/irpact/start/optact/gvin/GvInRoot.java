@@ -1,12 +1,11 @@
 package de.unileipzig.irpact.start.optact.gvin;
 
-import de.unileipzig.irpact.start.optact.OptActMain;
 import de.unileipzig.irpact.start.optact.OptActRes;
 import de.unileipzig.irpact.start.optact.in.*;
-import de.unileipzig.irpact.v2.commons.graph.topology.GraphTopology;
-import de.unileipzig.irpact.v2.io.input2.network.IFreeMultiGraphTopology;
-import de.unileipzig.irpact.v2.io.input2.network.IGraphTopology;
-import de.unileipzig.irpact.v2.io.input2.network.IWattsStrogatzModel;
+import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
+import de.unileipzig.irpact.io.input2.network.IFreeMultiGraphTopology;
+import de.unileipzig.irpact.io.input2.network.IGraphTopology;
+import de.unileipzig.irpact.io.input2.network.IWattsStrogatzModel;
 import de.unileipzig.irptools.defstructure.DefaultScenarioFactory;
 import de.unileipzig.irptools.defstructure.ParserInput;
 import de.unileipzig.irptools.defstructure.RootClass;
@@ -23,7 +22,6 @@ import de.unileipzig.irptools.util.Util;
 import java.awt.*;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * @author Daniel Abitz

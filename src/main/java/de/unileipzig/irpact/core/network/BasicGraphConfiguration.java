@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.network;
 
-import de.unileipzig.irpact.core.network.topology.EdgeWeightManipulationScheme;
 import de.unileipzig.irpact.core.network.topology.GraphTopologyScheme;
 import de.unileipzig.irpact.core.network.topology.TopologyManipulationScheme;
 
@@ -9,31 +8,27 @@ import de.unileipzig.irpact.core.network.topology.TopologyManipulationScheme;
  */
 public class BasicGraphConfiguration implements GraphConfiguration {
 
-    private GraphTopologyScheme graphTopologyScheme;
-    private TopologyManipulationScheme topologyManipulationScheme;
-    private EdgeWeightManipulationScheme edgeWeightManipulationScheme;
+    protected GraphTopologyScheme topologyScheme;
+    protected TopologyManipulationScheme manipulationScheme;
 
-    public BasicGraphConfiguration(
-            GraphTopologyScheme graphTopologyScheme,
-            TopologyManipulationScheme topologyManipulationScheme,
-            EdgeWeightManipulationScheme edgeWeightManipulationScheme) {
-        this.graphTopologyScheme = graphTopologyScheme;
-        this.topologyManipulationScheme = topologyManipulationScheme;
-        this.edgeWeightManipulationScheme = edgeWeightManipulationScheme;
+    public BasicGraphConfiguration() {
+    }
+
+    public void setGraphTopologyScheme(GraphTopologyScheme topologyScheme) {
+        this.topologyScheme = topologyScheme;
     }
 
     @Override
     public GraphTopologyScheme getGraphTopologyScheme() {
-        return graphTopologyScheme;
+        return topologyScheme;
+    }
+
+    public void setTopologyManipulationScheme(TopologyManipulationScheme manipulationScheme) {
+        this.manipulationScheme = manipulationScheme;
     }
 
     @Override
     public TopologyManipulationScheme getTopologyManipulationScheme() {
-        return topologyManipulationScheme;
-    }
-
-    @Override
-    public EdgeWeightManipulationScheme getEdgeWeightManipulationScheme() {
-        return edgeWeightManipulationScheme;
+        return manipulationScheme;
     }
 }

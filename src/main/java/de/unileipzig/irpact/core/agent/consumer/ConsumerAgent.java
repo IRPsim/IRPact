@@ -1,46 +1,24 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
-import de.unileipzig.irpact.core.GroupEntity;
-import de.unileipzig.irpact.core.agent.SpatialInformationAgent;
-import de.unileipzig.irpact.core.need.Need;
-import de.unileipzig.irpact.core.preference.Preference;
-import de.unileipzig.irpact.core.product.AdoptedProduct;
+import de.unileipzig.irpact.commons.awareness.Awareness;
+import de.unileipzig.irpact.core.misc.Initializable;
 import de.unileipzig.irpact.core.product.Product;
-import de.unileipzig.irpact.core.product.ProductAttribute;
-import de.unileipzig.irpact.core.product.ProductGroup;
-import de.unileipzig.irpact.core.product.perception.ProductAttributePerceptionScheme;
+import de.unileipzig.irpact.core.agent.SpatialInformationAgent;
 
 import java.util.Set;
 
 /**
  * @author Daniel Abitz
  */
-public interface ConsumerAgent extends SpatialInformationAgent, GroupEntity<ConsumerAgent> {
+public interface ConsumerAgent extends SpatialInformationAgent, Initializable<ConsumerAgentInitializationData> {
 
-    @Override
     ConsumerAgentGroup getGroup();
 
     Set<ConsumerAgentAttribute> getAttributes();
 
-    Set<Need> getNeeds();
+    ConsumerAgentAttribute getAttribute(String name);
 
-    Set<Product> getKnownProducts();
+    Awareness<Product> getProductAwareness();
 
-    Set<AdoptedProduct> getAdoptedProducts();
-
-    Set<Preference> getPreferences();
-
-    ProductAttributePerceptionScheme getScheme(ProductAttribute attribute);
-
-    //=========================
-    //...
-    //=========================
-
-    void addNeed(Need need);
-
-    boolean isAwareOf(Product product);
-
-    void makeAwareOf(Product product);
-
-    void updateProductAttributePerception(ProductAttribute attribute, double perceptionValue, double informationWeight);
+    Set<Product> getAdoptedProducts();
 }

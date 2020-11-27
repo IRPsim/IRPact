@@ -1,20 +1,25 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.core.Group;
-import de.unileipzig.irpact.core.need.Need;
+import de.unileipzig.irpact.core.simulation.SimulationEntity;
 
 import java.util.Set;
 
 /**
  * @author Daniel Abitz
  */
-public interface ProductGroup extends Group<Product> {
+public interface ProductGroup extends SimulationEntity {
+
+    Set<Product> getProducts();
+
+    Set<Product> getFixedProducts();
 
     Set<ProductGroupAttribute> getAttributes();
 
-    Set<Need> getNeedsSatisfied();
+    ProductGroupAttribute getAttribute(String name);
 
-    default boolean satisfy(Need need) {
-        return getNeedsSatisfied().contains(need);
-    }
+    boolean register(Product product);
+
+    boolean registerFixed(Product product);
+
+    Product derive();
 }

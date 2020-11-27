@@ -1,10 +1,8 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.v2.commons.Check;
-import de.unileipzig.irpact.core.simulation.EntityType;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
-import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -12,17 +10,26 @@ import java.util.Set;
  */
 public class BasicProduct extends SimulationEntityBase implements Product {
 
-    private ProductGroup group;
-    private Set<ProductAttribute> attributes;
+    protected ProductGroup group;
+    protected Set<ProductAttribute> attributes;
+    protected boolean fixed = false;
 
-    public BasicProduct(
-            SimulationEnvironment environment,
-            String name,
-            ProductGroup group,
-            Set<ProductAttribute> attributes) {
-        super(environment, name);
-        this.group = Check.requireNonNull(group, "group");
-        this.attributes = Check.requireNonNull(attributes, "attributes");
+    public BasicProduct() {
+        this(new LinkedHashSet<>());
+    }
+
+    public BasicProduct(Set<ProductAttribute> attributes) {
+        this.attributes = attributes;
+    }
+
+    public BasicProduct(String name, ProductGroup group, Set<ProductAttribute> attributes) {
+        setName(name);
+        setGroup(group);
+        setAttributes(attributes);
+    }
+
+    public void setGroup(ProductGroup group) {
+        this.group = group;
     }
 
     @Override
@@ -30,9 +37,12 @@ public class BasicProduct extends SimulationEntityBase implements Product {
         return group;
     }
 
-    @Override
-    public String getName() {
-        return name;
+    public boolean addAttribute(ProductAttribute attribute) {
+        return attributes.add(attribute);
+    }
+
+    public void setAttributes(Set<ProductAttribute> attributes) {
+        this.attributes = attributes;
     }
 
     @Override
@@ -40,15 +50,12 @@ public class BasicProduct extends SimulationEntityBase implements Product {
         return attributes;
     }
 
-    @SuppressWarnings("SwitchStatementWithTooFewBranches")
-    @Override
-    public boolean is(EntityType type) {
-        switch (type) {
-            case PRODUCT:
-                return true;
+    public void setFixed(boolean fixed) {
+        this.fixed = fixed;
+    }
 
-            default:
-                return false;
-        }
+    @Override
+    public boolean isFixed() {
+        return fixed;
     }
 }

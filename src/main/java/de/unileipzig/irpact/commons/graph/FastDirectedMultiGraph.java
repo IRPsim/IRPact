@@ -1,387 +1,342 @@
 package de.unileipzig.irpact.commons.graph;
 
-import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
-import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
-
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
+ * @param <V>
+ * @param <E>
+ * @param <T>
  * @author Daniel Abitz
  */
-public class FastDirectedMultiGraph<N extends Node, E extends Edge<N>, T> implements MultiGraph<N, E, T> {
+public class FastDirectedMultiGraph<V, E, T> implements DirectedMultiGraph<V, E, T> {
 
-    protected Supplier<? extends Set<N>> nodeSetSupplier;
-    protected Supplier<? extends Set<E>> edgeSetSupplier;
-    protected Supplier<? extends Map<T, Set<E>>> typeEdgeMapSupplier;
-    protected Supplier<? extends Map<N, Map<T, E>>> nodeEdgeMapSupplier;
-    protected Supplier<? extends Map<T, E>> edgeMapSupplier;
-    protected Set<N> nodes;
-    protected Map<T, Set<E>> edges;
-    protected Map<N, Map<T, Set<E>>> outEdges;
-    protected Map<N, Map<T, Set<E>>> inEdges;
-    protected Map<N, Map<N, Map<T, E>>> nodeEdgeMapping;
+    protected Supplier<? extends Map<V, Map<T, Map<V, E>>>> mapSupplier;
+    protected Function<? super V, ? extends Map<T, Map<V, E>>> map0Supplier;
+    protected Function<? super T, ? extends Map<V, E>> map1Supplier;
 
-    public FastDirectedMultiGraph(
-            Set<N> nodes,
-            Map<T, Set<E>> edges,
-            Map<N, Map<T, Set<E>>> outEdges,
-            Map<N, Map<T, Set<E>>> inEdges,
-            Map<N, Map<N, Map<T, E>>> nodeEdgeMapping) {
-        this(
-                HashSet::new,
-                HashSet::new,
-                HashMap::new,
-                HashMap::new,
-                HashMap::new,
-                nodes,
-                edges,
-                outEdges,
-                inEdges,
-                nodeEdgeMapping
-        );
+    protected Map<V, Map<T, Map<V, E>>> outEdges;
+    protected Map<V, Map<T, Map<V, E>>> inEdges;
+    protected Map<E, EdgeData> edges;
+
+    public FastDirectedMultiGraph() {
+        this(LinkedHashMap::new, v -> new LinkedHashMap<>(), v -> new LinkedHashMap<>());
     }
 
     public FastDirectedMultiGraph(
-            Supplier<? extends Set<N>> nodeSetSupplier,
-            Supplier<? extends Set<E>> edgeSetSupplier,
-            Supplier<? extends Map<T, Set<E>>> typeEdgeMapSupplier,
-            Supplier<? extends Map<N, Map<T, E>>> nodeEdgeMapSupplier,
-            Supplier<? extends Map<T, E>> edgeMapSupplier,
-            Set<N> nodes,
-            Map<T, Set<E>> edges,
-            Map<N, Map<T, Set<E>>> outEdges,
-            Map<N, Map<T, Set<E>>> inEdges,
-            Map<N, Map<N, Map<T, E>>> nodeEdgeMapping) {
-        this.nodeSetSupplier = nodeSetSupplier;
-        this.edgeSetSupplier = edgeSetSupplier;
-        this.typeEdgeMapSupplier = typeEdgeMapSupplier;
-        this.nodeEdgeMapSupplier = nodeEdgeMapSupplier;
-        this.edgeMapSupplier = edgeMapSupplier;
-        this.nodes = nodes;
-        this.edges = edges;
-        this.outEdges = outEdges;
-        this.inEdges = inEdges;
-        this.nodeEdgeMapping = nodeEdgeMapping;
+            Supplier<? extends Map<V, Map<T, Map<V, E>>>> mapSupplier,
+            Function<? super V, ? extends Map<T, Map<V, E>>> map0Supplier,
+            Function<? super T, ? extends Map<V, E>> map1Supplier) {
+        this.mapSupplier = mapSupplier;
+        this.map0Supplier = map0Supplier;
+        this.map1Supplier = map1Supplier;
+        outEdges = mapSupplier.get();
+        inEdges = mapSupplier.get();
+        edges = new LinkedHashMap<>();
     }
 
-    protected boolean scanNode(N node) {
-        if(nodes.contains(node)) return true;
-        if(outEdges.containsKey(node)) return true;
-        if(inEdges.containsKey(node)) return true;
-        if(nodeEdgeMapping.containsKey(node)) return true;
-        for(Map<N, Map<T, E>> map: nodeEdgeMapping.values()) {
-            if(map.containsKey(node)) {
-                return true;
-            }
+    protected void validate() {
+        if(!Objects.equals(outEdges.keySet(), inEdges.keySet())) {
+            throw new IllegalStateException("vertex mismatch");
         }
-        return false;
+
+        Set<E> outE = outEdges.values()
+                .stream()
+                .flatMap(m -> m.values().stream())
+                .flatMap(m -> m.values().stream())
+                .collect(Collectors.toSet());
+        Set<E> inE = inEdges.values()
+                .stream()
+                .flatMap(m -> m.values().stream())
+                .flatMap(m -> m.values().stream())
+                .collect(Collectors.toSet());
+        if(!Objects.equals(outE, inE)) {
+            throw new IllegalStateException("edges mismatch #1");
+        }
+        if(!Objects.equals(outE, edges.keySet())) {
+            throw new IllegalStateException("edges mismatch #2");
+        }
+        if(!Objects.equals(edges.keySet(), inE)) {
+            throw new IllegalStateException("edges mismatch #3");
+        }
     }
 
-    protected boolean scanEdge(E edge) {
-        for(Set<E> set: edges.values()) {
-            if(set.contains(edge)) {
-                return true;
-            }
-        }
-        for(Map<T, Set<E>> map: outEdges.values()) {
-            for(Set<E> set: map.values()) {
-                if(set.contains(edge)) {
-                    return true;
-                }
-            }
-        }
-        for(Map<T, Set<E>> map: inEdges.values()) {
-            for(Set<E> set: map.values()) {
-                if(set.contains(edge)) {
-                    return true;
-                }
-            }
-        }
-        for(Map<N, Map<T, E>> map: nodeEdgeMapping.values()) {
-            for(Map<T, E> map1: map.values()) {
-                if(map1.containsValue(edge)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    protected boolean scanEdge(E edge, T type) {
-        Set<E> set = edges.get(type);
-        if(set != null && set.contains(edge)) {
+    @Override
+    public boolean addVertex(V vertex) {
+        if(hasVertex(vertex)) {
+            return false;
+        } else {
+            outEdges.put(vertex, map0Supplier.apply(vertex));
+            inEdges.put(vertex, map0Supplier.apply(vertex));
             return true;
         }
-        for(Map<T, Set<E>> map: outEdges.values()) {
-            Set<E> set1 = map.get(type);
-            if(set1 != null && set1.contains(edge)) {
-                return true;
+    }
+
+    @Override
+    public boolean hasVertex(V vertex) {
+        return outEdges.containsKey(vertex);
+    }
+
+    @Override
+    public boolean removeVertex(V vertex) {
+        if(hasVertex(vertex)) {
+            outEdges.remove(vertex);
+            inEdges.remove(vertex);
+            for(Map<T, Map<V, E>> outMap0: outEdges.values()) {
+                for(Map<V, E> outMap1: outMap0.values()) {
+                    E edge = outMap1.remove(vertex);
+                    edges.remove(edge);
+                }
             }
-        }
-        for(Map<T, Set<E>> map: inEdges.values()) {
-            Set<E> set1 = map.get(type);
-            if(set1 != null && set1.contains(edge)) {
-                return true;
-            }
-        }
-        for(Map<N, Map<T, E>> map: nodeEdgeMapping.values()) {
-            for(Map<T, E> map1: map.values()) {
-                E e = map1.get(type);
-                return e == edge;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public Set<N> getNodes() {
-        return nodes;
-    }
-
-    @Override
-    public Set<E> getEdges(T type) {
-        return edges.get(type);
-    }
-
-    @Override
-    public Set<N> getSourceNodes(N targetNode, T type) {
-        Map<T, Set<E>> typedEdges = inEdges.get(targetNode);
-        if(typedEdges == null) {
-            return null;
-        }
-        Set<E> edges = typedEdges.get(type);
-        if(edges == null) {
-            return null;
-        }
-        Set<N> nodes = nodeSetSupplier.get();
-        for(E edge: edges) {
-            nodes.add(edge.getSource());
-        }
-        return nodes;
-    }
-
-    @Override
-    public Stream<N> streamSourceNodes(N targetNode, T type) {
-        Map<T, Set<E>> typedEdges = inEdges.get(targetNode);
-        if(typedEdges == null) {
-            return Stream.empty();
-        }
-        Set<E> edges = typedEdges.get(type);
-        if(edges == null) {
-            return Stream.empty();
-        }
-        return edges.stream()
-                .map(Edge::getSource);
-    }
-
-    @Override
-    public Set<N> getTargetNodes(N sourceNode, T type) {
-        Map<T, Set<E>> typedEdges = outEdges.get(sourceNode);
-        if(typedEdges == null) {
-            return null;
-        }
-        Set<E> edges = typedEdges.get(type);
-        if(edges == null) {
-            return null;
-        }
-        Set<N> nodes = nodeSetSupplier.get();
-        for(E edge: edges) {
-            nodes.add(edge.getTarget());
-        }
-        return nodes;
-    }
-
-    @Override
-    public int getDegree(N node, T type) {
-        int in = getIndegree(node, type);
-        int out = getOutdegree(node, type);
-        if(in == -1 && out == -1) {
-            return -1;
-        }
-        return (in == -1 ? 0 : in)
-                + (out == -1 ? 0 : out);
-    }
-
-    @Override
-    public int getIndegree(N node, T type) {
-        Map<T, Set<E>> map = inEdges.get(node);
-        if(map == null) {
-            return -1;
-        }
-        Set<E> set = map.get(type);
-        return set == null
-                ? 0
-                : set.size();
-    }
-
-    @Override
-    public int getOutdegree(N node, T type) {
-        Map<T, Set<E>> map = outEdges.get(node);
-        if(map == null) {
-            return -1;
-        }
-        Set<E> set = map.get(type);
-        return set == null
-                ? 0
-                : set.size();
-    }
-
-    @Override
-    public Set<E> getOutEdges(N node, T type) {
-        Map<T, Set<E>> map = outEdges.get(node);
-        if(map == null) {
-            return null;
-        }
-        return map.get(type);
-    }
-
-    @Override
-    public Set<E> getInEdges(N node, T type) {
-        Map<T, Set<E>> map = inEdges.get(node);
-        if(map == null) {
-            return null;
-        }
-        return map.get(type);
-    }
-
-    @Override
-    public boolean hasNode(N node) {
-        return nodes.contains(node);
-    }
-
-    @Override
-    public boolean hasEdge(N source, N target, T type) {
-        return getEdge(source, target, type) != null;
-    }
-
-    @Override
-    public boolean hasEdge(E edge, T type) {
-        Set<E> edges = this.edges.get(type);
-        return edges != null && edges.contains(edge);
-    }
-
-    protected boolean addIfNotExists(N node) {
-        return nodes.add(node);
-    }
-
-    @Override
-    public void addNode(N node) throws NodeAlreadyExistsException {
-        if(!addIfNotExists(node)) {
-            throw new NodeAlreadyExistsException();
-        }
-    }
-
-    protected void addEdgeTo(N node, E edge, T type, boolean out) {
-        Map<T, Set<E>> edgeMap = out
-                ? outEdges.computeIfAbsent(node, _node -> typeEdgeMapSupplier.get())
-                : inEdges.computeIfAbsent(node, _node -> typeEdgeMapSupplier.get());
-        Set<E> edges = edgeMap.computeIfAbsent(type, _type -> edgeSetSupplier.get());
-        edges.add(edge);
-    }
-
-    @Override
-    public void addEdge(E edge, T type) throws EdgeAlreadyExistsException {
-        if(hasEdge(edge, type)) {
-            throw new EdgeAlreadyExistsException();
-        }
-        N source = edge.getSource();
-        N target = edge.getTarget();
-        addIfNotExists(source);
-        addIfNotExists(target);
-        addEdgeTo(source, edge, type, true);
-        addEdgeTo(target, edge, type, false);
-        Set<E> edges = this.edges.computeIfAbsent(type, _type -> edgeSetSupplier.get());
-        edges.add(edge);
-        Map<N, Map<T, E>> map = nodeEdgeMapping.computeIfAbsent(source, _source -> nodeEdgeMapSupplier.get());
-        Map<T, E> map1 = map.computeIfAbsent(target, _target -> edgeMapSupplier.get());
-        map1.put(type, edge);
-    }
-
-    protected void removeAllEdges(Map<T, Set<E>> edges) {
-        if(edges == null) {
-            return;
-        }
-        for(Map.Entry<T, Set<E>> edgesEntry: edges.entrySet()) {
-            Set<E> thisEdges = this.edges.get(edgesEntry.getKey());
-            if(thisEdges != null) {
-                thisEdges.removeAll(edgesEntry.getValue());
-            }
-        }
-    }
-
-    @Override
-    public boolean removeNode(N node) {
-        if(nodes.remove(node)) {
-            removeAllEdges(outEdges.remove(node));
-            removeAllEdges(inEdges.remove(node));
-            nodeEdgeMapping.remove(node);
-            for(Map<N, Map<T, E>> map: nodeEdgeMapping.values()) {
-                map.remove(node);
+            for(Map<T, Map<V, E>> inMap0: inEdges.values()) {
+                for(Map<V, E> inMap1: inMap0.values()) {
+                    E edge = inMap1.remove(vertex);
+                    edges.remove(edge);
+                }
             }
             return true;
-        }
-        return false;
-    }
-
-    protected void removeEdge(Map<N, Map<T, Set<E>>> edgeMap, N node, E edge, T type) {
-        Map<T, Set<E>> map = edgeMap.get(node);
-        if(map != null) {
-            Set<E> set = map.get(type);
-            if(set != null) {
-                set.remove(edge);
-            }
-        }
-    }
-
-    @Override
-    public boolean removeEdge(N source, N target, T type) {
-        E edge = getEdge(source, target, type);
-        if(edge == null) {
+        } else {
             return false;
         }
-        return removeEdge(edge, type);
     }
 
     @Override
-    public boolean removeEdge(E edge, T type) {
-        Set<E> edges = this.edges.get(type);
-        if(edges != null && edges.remove(edge)) {
-            removeEdge(outEdges, edge.getSource(), edge, type);
-            removeEdge(inEdges, edge.getTarget(), edge, type);
-            Map<N, Map<T, E>> map = nodeEdgeMapping.get(edge.getSource());
-            if(map != null) {
-                Map<T, E> map1 = map.get(edge.getTarget());
-                if(map1 != null) {
-                    map1.remove(type);
-                }
-            }
+    public int vertexCount() {
+        return outEdges.size();
+    }
+
+    @Override
+    public int inDegree(V vertex, T type) {
+        Map<T, Map<V, E>> map0 = inEdges.get(vertex);
+        if(map0 == null) return 0;
+        Map<V, E> map1 = map0.get(type);
+        return map1 == null
+                ? 0
+                : map1.size();
+    }
+
+    @Override
+    public int outDegree(V vertex, T type) {
+        Map<T, Map<V, E>> map0 = outEdges.get(vertex);
+        if(map0 == null) return 0;
+        Map<V, E> map1 = map0.get(type);
+        return map1 == null
+                ? 0
+                : map1.size();
+    }
+
+    @Override
+    public int degree(V vertex, T type) {
+        return inDegree(vertex, type) + outDegree(vertex, type);
+    }
+
+    @Override
+    public Set<V> getVertices() {
+        return outEdges.keySet();
+    }
+
+    @Override
+    public Stream<V> streamVertices() {
+        return outEdges.keySet().stream();
+    }
+
+    @Override
+    public boolean hasEdge(E edge) {
+        return edges.containsKey(edge);
+    }
+
+    @Override
+    public boolean removeEdge(E edge) {
+        EdgeData ed = edges.get(edge); //wird im naechsten Aufruf entfernt
+        if(ed != null) {
+            return removeEdge(ed.getSource(), ed.getTarget(), ed.getType());
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int edgeCount() {
+        return edges.size();
+    }
+
+    @Override
+    public Set<V> getTargets(V from, T type) {
+        Map<T, Map<V, E>> map0 = outEdges.get(from);
+        if(map0 == null) return Collections.emptySet();
+        Map<V, E> map1 = map0.get(type);
+        return map1 == null ? Collections.emptySet() : map1.keySet();
+    }
+
+    @Override
+    public Stream<V> streamTargets(V from, T type) {
+        return getTargets(from, type).stream();
+    }
+
+    @Override
+    public Set<V> getAllTargets(V vertex) {
+        Map<T, Map<V, E>> map0 = outEdges.get(vertex);
+        if(map0 == null) return Collections.emptySet();
+        return map0.values()
+                .stream()
+                .flatMap(m -> m.keySet().stream())
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public boolean addEdge(V from, V to, T type, E edge) {
+        if(hasEdge(edge) || hasEdge(from, to, type)) {
+            return false;
+        } else {
+            setEdge(from, to, type, edge);
             return true;
         }
-        return false;
     }
 
     @Override
-    public E getEdge(N source, N target, T type) {
-        Map<N, Map<T, E>> map = nodeEdgeMapping.get(source);
-        if(map == null) {
-            return null;
+    public E setEdge(V from, V to, T type, E edge) {
+        addVertex(from);
+        addVertex(to);
+
+        Map<T, Map<V, E>> outMap0 = outEdges.get(from);
+        Map<V, E> outMap1 = outMap0.computeIfAbsent(type, map1Supplier);
+        E outE = outMap1.put(to, edge);
+
+        Map<T, Map<V, E>> inMap0 = inEdges.get(to);
+        Map<V, E> inMap1 = inMap0.computeIfAbsent(type, map1Supplier);
+        E inE = inMap1.put(from, edge);
+
+        edges.put(edge, new EdgeData(from, to, type));
+
+        if(outE != inE) {
+            throw new IllegalStateException();
         }
-        Map<T, E> map1 = map.get(target);
-        if(map1 == null) {
-            return null;
-        }
-        return map1.get(type);
+        return outE;
     }
 
     @Override
-    public boolean isDirected() {
+    public boolean hasEdge(V from, V to, T type) {
+        Map<T, Map<V, E>> map0 = outEdges.get(from);
+        if(map0 == null) return false;
+        Map<V, E> map1 = map0.get(type);
+        if(map1 == null) return false;
+        return map1.containsKey(to);
+    }
+
+    @Override
+    public boolean removeEdge(V from, V to, T type) {
+        Map<T, Map<V, E>> outMap0 = outEdges.get(from);
+        if(outMap0 == null) return false;
+        Map<V, E> outMap1 = outMap0.get(type);
+        if(outMap1 == null) return false;
+        if(!outMap1.containsKey(to)) {
+            return false;
+        }
+        E edge = outMap1.remove(to);
+
+        Map<T, Map<V, E>> inMap0 = inEdges.get(to);
+        Map<V, E> inMap1 = inMap0.get(type);
+        inMap1.remove(from);
+
+        edges.remove(edge);
         return true;
     }
 
     @Override
-    public boolean isUndirected() {
-        return false;
+    public Set<E> removeAllEdges(T type) {
+        Set<E> removed = new LinkedHashSet<>();
+        for(Map.Entry<E, EdgeData> entry: edges.entrySet()) {
+            if(entry.getValue().getType() == type) {
+                removed.add(entry.getKey());
+            }
+        }
+        for(E edge: removed) {
+            removeEdge(edge);
+        }
+        return removed;
+    }
+
+    @Override
+    public E getEdge(V from, V to, T type) {
+        Map<T, Map<V, E>> map0 = outEdges.get(from);
+        if(map0 == null) return null;
+        Map<V, E> map1 = map0.get(type);
+        if(map1 == null) return null;
+        return map1.get(to);
+    }
+
+    @Override
+    public Map<T, E> getEdges(V from, V to) {
+        Map<T, E> edges = new LinkedHashMap<>();
+        Map<T, Map<V, E>> map0 = outEdges.get(from);
+        if(map0 == null) return edges;
+        for(Map.Entry<T, Map<V, E>> entry: map0.entrySet()) {
+            if(entry.getValue().containsKey(to)) {
+                E edge = entry.getValue().get(to);
+                edges.put(entry.getKey(), edge);
+            }
+        }
+        return edges;
+    }
+
+    @Override
+    public Set<E> getEdges(T type) {
+        Set<E> e = new LinkedHashSet<>();
+        for(Map.Entry<E, EdgeData> entry: edges.entrySet()) {
+            if(entry.getValue().getType() == type) {
+                e.add(entry.getKey());
+            }
+        }
+        return e;
+    }
+
+    @Override
+    public Stream<E> streamEdgesFrom(V from, T type) {
+        Map<T, Map<V, E>> map0 = outEdges.get(from);
+        if(map0 == null) return Stream.empty();
+        Map<V, E> map1 = map0.get(type);
+        return map1 == null
+                ? Stream.empty()
+                : map1.values().stream();
+    }
+
+    @Override
+    public Stream<E> streamEdgesTo(V to, T type) {
+        Map<T, Map<V, E>> map0 = inEdges.get(to);
+        if(map0 == null) return Stream.empty();
+        Map<V, E> map1 = map0.get(type);
+        return map1 == null
+                ? Stream.empty()
+                : map1.values().stream();
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    protected class EdgeData {
+        protected V source;
+        protected V target;
+        protected T type;
+
+        protected EdgeData(V source, V target, T type) {
+            this.source = source;
+            this.target = target;
+            this.type = type;
+        }
+
+        public V getSource() {
+            return source;
+        }
+
+        public V getTarget() {
+            return target;
+        }
+
+        public T getType() {
+            return type;
+        }
     }
 }

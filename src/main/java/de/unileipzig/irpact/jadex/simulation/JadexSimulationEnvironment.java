@@ -1,33 +1,18 @@
 package de.unileipzig.irpact.jadex.simulation;
 
-import de.unileipzig.irpact.dev.Experimental;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.jadex.message.JadexMessageSystem;
-import jadex.bridge.IExternalAccess;
-import jadex.bridge.component.IExternalExecutionFeature;
+import de.unileipzig.irpact.jadex.time.JadexTimeModel;
+import jadex.bridge.service.annotation.Reference;
 
 /**
  * @author Daniel Abitz
  */
+@Reference(local = true, remote = true)
 public interface JadexSimulationEnvironment extends SimulationEnvironment {
 
-    IExternalAccess getPlatform();
-
-    IExternalExecutionFeature getPlatformExec();
+    @Override
+    JadexTimeModel getTimeModel();
 
     @Override
-    JadexMessageSystem getMessageSystem();
-
-    @Override
-    JadexSimulationConfiguration getConfiguration();
-
-    @Override
-    JadexEventManager getEventManager();
-
-    //=========================
-    //util
-    //=========================
-
-    @Experimental
-    void poke();
+    JadexSimulationControl getSimulationControl();
 }

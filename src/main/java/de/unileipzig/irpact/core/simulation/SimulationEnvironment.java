@@ -1,34 +1,36 @@
 package de.unileipzig.irpact.core.simulation;
 
-import de.unileipzig.irpact.core.message.MessageSystem;
-import de.unileipzig.irpact.core.network.AgentNetwork;
+import de.unileipzig.irpact.core.misc.DebugLevel;
+import de.unileipzig.irpact.core.agent.AgentManager;
+import de.unileipzig.irpact.core.network.SocialNetwork;
+import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
-import org.slf4j.Logger;
+import de.unileipzig.irpact.core.time.TimeModel;
 
 /**
  * @author Daniel Abitz
  */
 public interface SimulationEnvironment {
 
+    //=========================
+    //main components
+    //=========================
+
+    AgentManager getAgents();
+
+    SocialNetwork getNetwork();
+
+    ProductManager getProducts();
+
     SpatialModel getSpatialModel();
 
-    MessageSystem getMessageSystem();
+    TimeModel getTimeModel();
 
-    AgentNetwork getAgentNetwork();
-
-    EconomicSpace getEconomicSpace();
-
-    TimeModule getTimeModule();
-
-    SimulationConfiguration getConfiguration();
-
-    EventManager getEventManager();
-
-    Logger getLogger();
+    SimulationControl getSimulationControl();
 
     //=========================
-    //util
+    //stuff
     //=========================
 
-    void validate();
+    DebugLevel getDebugLevel();
 }

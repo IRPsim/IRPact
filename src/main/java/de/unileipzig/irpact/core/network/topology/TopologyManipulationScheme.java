@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.network.topology;
 
-import de.unileipzig.irpact.core.Scheme;
+import de.unileipzig.irpact.core.misc.Scheme;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
@@ -9,8 +9,5 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
  */
 public interface TopologyManipulationScheme extends Scheme {
 
-    void apply(
-            SimulationEnvironment environment,
-            SocialGraph graph
-    );
+    void manipulate(SimulationEnvironment environment, SocialGraph graph);
 }

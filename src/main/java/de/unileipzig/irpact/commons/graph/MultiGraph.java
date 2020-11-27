@@ -1,51 +1,46 @@
 package de.unileipzig.irpact.commons.graph;
 
-import de.unileipzig.irpact.dev.ToDo;
-import de.unileipzig.irpact.commons.exception.EdgeAlreadyExistsException;
-import de.unileipzig.irpact.commons.exception.NodeAlreadyExistsException;
-
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
 /**
+ * @param <V>
+ * @param <E>
+ * @param <T>
  * @author Daniel Abitz
  */
-public interface MultiGraph<N extends Node, E extends Edge<N>, T> extends GraphBase<N, E> {
+public interface MultiGraph<V, E, T> extends Graph<V, E> {
+
+    int inDegree(V vertex, T type);
+
+    int outDegree(V vertex, T type);
+
+    int degree(V vertex, T type);
+
+    Set<V> getTargets(V from, T type);
+
+    Stream<V> streamTargets(V from, T type);
+
+    Set<V> getAllTargets(V from);
+
+    boolean addEdge(V from, V to, T type, E edge);
+
+    E setEdge(V from, V to, T type, E edge);
+
+    boolean hasEdge(V from, V to, T type);
+
+    boolean removeEdge(V from, V to, T type);
+
+    Set<E> removeAllEdges(T type);
+
+    E getEdge(V from, V to, T type);
+
+    Map<T, E> getEdges(V from, V to);
 
     Set<E> getEdges(T type);
 
-    Set<N> getSourceNodes(N targetNode, T type);
+    Stream<E> streamEdgesFrom(V from, T type);
 
-    Stream<N> streamSourceNodes(N targetNode, T type);
-
-    Set<N> getTargetNodes(N sourceNode, T type);
-
-    Set<E> getOutEdges(N node, T type);
-
-    Set<E> getInEdges(N node, T type);
-
-    int getDegree(N node, T type);
-
-    int getIndegree(N node, T type);
-
-    int getOutdegree(N node, T type);
-
-    boolean hasNode(N node);
-
-    boolean hasEdge(E edge, T type);
-
-    boolean hasEdge(N source, N target, T type);
-
-    E getEdge(N source, N target, T type);
-
-    void addNode(N node) throws NodeAlreadyExistsException;
-
-    @ToDo("ueberlegen, ob selbe edgeinstanz mehrmals hinzugefuegt werden darf fuer unterschiedliche typen")
-    void addEdge(E edge, T type) throws EdgeAlreadyExistsException;
-
-    boolean removeNode(N node);
-
-    boolean removeEdge(N source, N target, T type);
-
-    boolean removeEdge(E edge, T type);
+    Stream<E> streamEdgesTo(V to, T type);
 }

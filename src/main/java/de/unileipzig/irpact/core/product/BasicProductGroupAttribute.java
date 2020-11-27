@@ -1,24 +1,35 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.commons.distribution.UnivariateDistribution;
-import de.unileipzig.irpact.core.attribute.UnivariateDistributionAttribute;
+import de.unileipzig.irpact.commons.distattr.AbstractDerivableUnivariateDoubleDistributionAttribute;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicProductGroupAttribute extends UnivariateDistributionAttribute implements ProductGroupAttribute {
+public class BasicProductGroupAttribute extends AbstractDerivableUnivariateDoubleDistributionAttribute<ProductAttribute> implements ProductGroupAttribute {
 
-    public BasicProductGroupAttribute(String name, UnivariateDistribution distribution) {
-        super(name, distribution);
+    protected int id = 0;
+
+    public BasicProductGroupAttribute() {
     }
 
     @Override
-    public ProductAttribute derive() {
-        return derive(drawValue());
+    public BasicProductAttribute derive() {
+        double value = drawDoubleValue();
+        return derive(value);
+    }
+
+    protected synchronized int nextId() {
+        int next = id;
+        id++;
+        return next;
     }
 
     @Override
-    public ProductAttribute derive(double fixedValue) {
-        return new BasicProductAttribute(this, fixedValue);
+    public BasicProductAttribute derive(double value) {
+        return new BasicProductAttribute(
+                getName() + "_" + nextId(),
+                this,
+                value
+        );
     }
 }

@@ -1,25 +1,23 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
-import de.unileipzig.irpact.commons.distribution.UnivariateDistribution;
-import de.unileipzig.irpact.core.attribute.UnivariateDistributionAttribute;
+import de.unileipzig.irpact.commons.distattr.AbstractDerivableUnivariateDoubleDistributionAttribute;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicConsumerAgentGroupAttribute extends UnivariateDistributionAttribute
-        implements ConsumerAgentGroupAttribute {
+public class BasicConsumerAgentGroupAttribute extends AbstractDerivableUnivariateDoubleDistributionAttribute<ConsumerAgentAttribute> implements ConsumerAgentGroupAttribute {
 
-    public BasicConsumerAgentGroupAttribute(String name, UnivariateDistribution distribution) {
-        super(name, distribution);
+    public BasicConsumerAgentGroupAttribute() {
     }
 
     @Override
-    public ConsumerAgentAttribute derive() {
-        return derive(drawValue());
+    public BasicConsumerAgentAttribute derive() {
+        double value = drawDoubleValue();
+        return derive(value);
     }
 
     @Override
-    public ConsumerAgentAttribute derive(double fixedValue) {
-        return new BasicConsumerAgentAttribute(this, fixedValue);
+    public BasicConsumerAgentAttribute derive(double value) {
+        return new BasicConsumerAgentAttribute(getName(), this, value);
     }
 }
