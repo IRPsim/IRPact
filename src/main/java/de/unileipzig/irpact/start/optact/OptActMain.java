@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.start.optact;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
@@ -9,18 +10,17 @@ import de.unileipzig.irpact.start.optact.out.OutRoot;
 import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
 import de.unileipzig.irpact.commons.graph.topology.AbstractMultiGraphTopology;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
-import de.unileipzig.irptools.defstructure.AnnotationParser;
-import de.unileipzig.irptools.defstructure.Converter;
-import de.unileipzig.irptools.defstructure.DefinitionCollection;
-import de.unileipzig.irptools.defstructure.DefinitionMapper;
+import de.unileipzig.irptools.defstructure.*;
 import de.unileipzig.irptools.graphviz.DotProcess;
 import de.unileipzig.irptools.graphviz.GraphvizGenerator;
 import de.unileipzig.irptools.graphviz.LayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.OutputFormat;
 import de.unileipzig.irptools.graphviz.def.GraphvizColor;
+import de.unileipzig.irptools.io.ContentType;
+import de.unileipzig.irptools.io.ContentTypeDetector;
+import de.unileipzig.irptools.io.annual.AnnualData;
+import de.unileipzig.irptools.io.annual.AnnualFile;
 import de.unileipzig.irptools.io.base.AnnualEntry;
-import de.unileipzig.irptools.io.perennial.PerennialData;
-import de.unileipzig.irptools.io.perennial.PerennialFile;
 import de.unileipzig.irptools.util.ProcessResult;
 import de.unileipzig.irptools.util.Util;
 import org.slf4j.Logger;
@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -99,11 +100,13 @@ public class OptActMain implements Callable<Integer> {
         return new Converter(dmap);
     }
 
-    private PerennialData<GvInRoot> loadInput(Converter converter) throws IOException {
+    private AnnualEntry<GvInRoot> loadInput(Converter converter) throws IOException {
         logger.trace("parse input file");
-        PerennialFile inFile = PerennialFile.parse(inputPath);
+        ObjectNode rootNode = Util.readJson(inputPath, StandardCharsets.UTF_8);
+        ContentType contentType = ContentTypeDetector.detect(rootNode);
+        logger.trace("content type: {}", contentType);
         logger.trace("deserialize input file");
-        return inFile.deserialize(converter);
+        return ContentTypeDetector.parseFirstEntry(rootNode, contentType, converter);
     }
 
     private OutRoot createOutputRoot(GvInRoot inputData) {
@@ -120,19 +123,16 @@ public class OptActMain implements Callable<Integer> {
         return outRoot;
     }
 
-    private PerennialData<OutRoot> createOutputData(AnnualEntry<GvInRoot> inputEntry, OutRoot outRoot) {
-        PerennialData<OutRoot> outData = new PerennialData<>();
-        outData.add(inputEntry.getConfig().getYear(), outRoot);
-        AnnualEntry<OutRoot> outEntry = outData.get(0);
-        outEntry.getConfig().copyFrom(inputEntry.getConfig());
+    private AnnualData<OutRoot> createOutputData(AnnualEntry<GvInRoot> inputEntry, OutRoot outRoot) {
+        AnnualData<OutRoot> outData = new AnnualData<>(outRoot);
+        outData.getConfig().copyFrom(inputEntry.getConfig());
         return outData;
     }
 
     public void run() {
         AnnualEntry<GvInRoot> inputEntry;
         try {
-            PerennialData<GvInRoot> inputData = loadInput(createInputConverter());
-            inputEntry = inputData.get(0);
+            inputEntry = loadInput(createInputConverter());
         } catch (IOException e) {
             logger.error("parsing and deserialization failed", e);
             return;
@@ -263,17 +263,28 @@ public class OptActMain implements Callable<Integer> {
         }
     }
 
-    private void runOptActDemo(AnnualEntry<GvInRoot> inputEntry) throws IOException {
+    private void runOptActDemo(AnnualEntry<GvInRoot> inputEntry) {
         logger.trace("run optact demo");
         if(noSimulation) {
             logger.warn("no simulation");
             return;
         }
 
+        storeOutputToAnnualFile(inputEntry);
+    }
+
+    private void storeOutputToAnnualFile(AnnualEntry<GvInRoot> inputEntry) {
+        logger.trace("generate output data");
         OutRoot outRoot = createOutputRoot(inputEntry.getData());
-        PerennialData<OutRoot> outData = createOutputData(inputEntry, outRoot);
-        PerennialFile outFile = outData.serialize(createOutputConverter());
-        outFile.store(outputPath);
+        logger.trace("create raw output");
+        AnnualData<OutRoot> outData = createOutputData(inputEntry, outRoot);
+        logger.trace("serialize output");
+        try {
+            AnnualFile outFile = outData.serialize(createOutputConverter());
+            outFile.store(outputPath);
+        } catch (Throwable t) {
+            logger.error("serialization failed", t);
+        }
     }
 
     @Override
