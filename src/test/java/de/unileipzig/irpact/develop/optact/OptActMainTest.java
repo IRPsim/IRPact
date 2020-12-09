@@ -1,16 +1,20 @@
-package de.unileipzig.irpact.dev.optact;
+package de.unileipzig.irpact.develop.optact;
 
-import de.unileipzig.irpact.experimental.TestFiles;
+import de.unileipzig.irpact.develop.TestFiles;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irpact.start.optact.out.OutRoot;
 import de.unileipzig.irpact.commons.log.Logback;
 import de.unileipzig.irptools.Constants;
+import de.unileipzig.irptools.io.annual.AnnualFile;
+import de.unileipzig.irptools.io.perennial.PerennialFile;
 import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.Util;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -29,7 +33,7 @@ class OptActMainTest {
     @Test
     void runIt() {
         Path dir = Paths.get("src", "main", "resources", "scenarios");
-        Path outDir = Paths.get("exppriv");
+        Path outDir = Paths.get("testfiles", "fasttests");
         String[] args = {
                 "-i", dir.resolve(Constants.DEFAULT_JSON).toString(),
                 "-o", outDir.resolve("default.out.noimage.json").toString()
@@ -40,7 +44,7 @@ class OptActMainTest {
     @Test
     void runImageNoSimu() {
         Path dir = Paths.get("src", "main", "resources", "scenarios");
-        Path outDir = TestFiles.fasttests;
+        Path outDir = Paths.get("testfiles", "fasttests");
         String[] args = {
                 "-i", dir.resolve(Constants.DEFAULT_JSON).toString(),
                 "-o", outDir.resolve("default.out.nosimu.json").toString(),
@@ -53,11 +57,11 @@ class OptActMainTest {
     @Test
     void runImageWithSimu() {
         Path dir = Paths.get("src", "main", "resources", "scenarios");
-        Path outDir = TestFiles.fasttests;
+        Path outDir = Paths.get("testfiles", "fasttests");
         String[] args = {
                 "-i", dir.resolve(Constants.DEFAULT_JSON).toString(),
-                "-o", outDir.resolve("default.out.simuX.json").toString(),
-                "--image", outDir.resolve("testimageX.png").toString()
+                "-o", outDir.resolve("default.out.json").toString(),
+                "--image", outDir.resolve("default.image.png").toString()
         };
         Start.main(args);
     }
@@ -65,11 +69,50 @@ class OptActMainTest {
     @Test
     void runDoNothing() {
         Path dir = Paths.get("src", "main", "resources", "scenarios");
-        Path outDir = Paths.get("exppriv");
+        Path outDir = Paths.get("testfiles", "fasttests");
         String[] args = {
                 "-i", dir.resolve(Constants.DEFAULT_JSON).toString(),
                 "-o", outDir.resolve("default.out.nope.json").toString(),
                 "--noSimulation"
+        };
+        Start.main(args);
+    }
+
+    @Test
+    void createPerennialAnnualTestFiles() throws IOException {
+        Path defaultJson = Paths.get("src", "main", "resources", "scenarios", Constants.DEFAULT_JSON);
+        Path outDir = TestFiles.testfiles.resolve("annualPerennial");
+
+        PerennialFile defaultFile = PerennialFile.parse(defaultJson);
+
+        AnnualFile annualFile = defaultFile.toAnnual();
+        PerennialFile perennialFile2 = annualFile.toPerennial();
+        perennialFile2.getDescription().copyFrom(defaultFile.getDescription());
+
+        Assertions.assertEquals(defaultFile.root(), perennialFile2.root());
+
+        annualFile.store(outDir.resolve("default-annual.json"));
+        perennialFile2.store(outDir.resolve("default-perennial.json"));
+    }
+
+    @Test
+    void runImageWithSimu_perennial() {
+        Path outDir = Paths.get("testfiles", "fasttests");
+        String[] args = {
+                "-i", TestFiles.testfiles.resolve("annualPerennial").resolve("default-perennial.json").toString(),
+                "-o", outDir.resolve("default-perennial.out.json").toString(),
+                "--image", outDir.resolve("default-perennial.image.png").toString()
+        };
+        Start.main(args);
+    }
+
+    @Test
+    void runImageWithSimu_annual() {
+        Path outDir = Paths.get("testfiles", "fasttests");
+        String[] args = {
+                "-i", TestFiles.testfiles.resolve("annualPerennial").resolve("default-annual.json").toString(),
+                "-o", outDir.resolve("default-annual.out.json").toString(),
+                "--image", outDir.resolve("default-annual.image.png").toString()
         };
         Start.main(args);
     }
