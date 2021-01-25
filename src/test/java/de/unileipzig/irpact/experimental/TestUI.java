@@ -1,9 +1,12 @@
 package de.unileipzig.irpact.experimental;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.start.optact.in.InRoot;
 import de.unileipzig.irpact.start.optact.out.OutRoot;
 import de.unileipzig.irpact.commons.log.Logback;
 import de.unileipzig.irptools.start.IRPtools;
+import de.unileipzig.irptools.util.Clj;
+import de.unileipzig.irptools.util.ProcessResult;
 import de.unileipzig.irptools.util.Util;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -14,6 +17,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 /**
@@ -21,6 +25,29 @@ import java.util.Arrays;
  */
 @Disabled
 class TestUI {
+
+    @Test
+    void testCustomUI() throws IOException, InterruptedException {
+        ProcessResult result = Clj.runClojureJar(
+                TestFiles.java11,
+                TestFiles.frontendGeneratorJar,
+                Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\spezifikation\\imageTest")
+        );
+        Charset charset = Util.windows1252();
+
+        if(result.isError()) {
+            throw new RuntimeException("clj canceled");
+        } else {
+            ObjectNode root = Util.parseJson(result.getData(), charset);
+            Path outputPath = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\spezifikation\\imageTest", "frontend.json");
+            Util.writeJson(
+                    root,
+                    outputPath,
+                    charset,
+                    Util.defaultPrinter
+            );
+        }
+    }
 
     @Test
     void runStart() throws Exception {
