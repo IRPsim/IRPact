@@ -129,6 +129,31 @@ class TestReal {
     }
 
     @Test
+    void printDachDatenFuerEmilyX() throws IOException {
+        Path path = dir.resolve("Stand_19.11..dbf");
+        Path out = dir.resolve("test_voll.csv");
+
+        try(DbaseFileReader reader = new DbaseFileReader(FileChannel.open(path), false, StandardCharsets.UTF_8);
+            BufferedWriter writer = Files.newBufferedWriter(out, StandardCharsets.UTF_8)) {
+            DbaseFileHeader header = reader.getHeader();
+            int markId = getIndex2(header, "Mic_Mil_Do");
+            int count = header.getNumRecords();
+            int i = 1;
+            writer.write("Adresse;Postleitzahl;Ortsteil;Dachorientierung;Dachneigung\n");
+            while(reader.hasNext()) {
+                reader.read(); //!!!
+                Object mark = reader.readField(markId);
+                System.out.println(mark);
+
+                if(i == 100) {
+                    break;
+                }
+                i++;
+            }
+        }
+    }
+
+    @Test
     void printShp() throws IOException {
         Path path = dir.resolve("Stand_19.11..shp");
         FileDataStore store = FileDataStoreFinder.getDataStore(path.toFile());
