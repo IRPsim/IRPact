@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.experimental.tests.timeModelWithController;
 
-import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationControl;
-import de.unileipzig.irpact.jadex.simulation.JadexSimulationControl;
+import de.unileipzig.irpact.jadex.simulation.BasicJadexLiveCycleControl;
+import de.unileipzig.irpact.jadex.simulation.JadexLiveCycleControl;
 import de.unileipzig.irpact.jadex.time.ContinuousTimeModel;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.jadex.util.JadexUtil2;
@@ -25,7 +25,7 @@ public class MainContinous {
         return MainContinous.class.getPackage().getName();
     }
 
-    private static CreationInfo newModelInfo(String name, JadexTimeModel timeModel, JadexSimulationControl simulationControl) {
+    private static CreationInfo newModelInfo(String name, JadexTimeModel timeModel, JadexLiveCycleControl simulationControl) {
         CreationInfo info = new CreationInfo();
         info.setName(name);
         info.setFilename(getPackageName() + ".TimeModelAgent.class");
@@ -75,13 +75,13 @@ public class MainContinous {
         cTimeModel.setSimulation(simulationService);
         cTimeModel.setStartYear(2015);
         cTimeModel.setStartTime(clock.getStarttime());
-        cTimeModel.setEnd(cTimeModel.plusYears(cTimeModel.getStart(), 1L));
-        log("start: " + cTimeModel.getStart());
-        log("end:   " + cTimeModel.getEnd());
+        cTimeModel.setEndTime(cTimeModel.plusYears(cTimeModel.startTime(), 1L));
+        log("start: " + cTimeModel.startTime());
+        log("end:   " + cTimeModel.endTime());
 
         log("pre start:   " +  clock.getTick() + " " + clock.getTime() + " " + cTimeModel.now());
-        BasicJadexSimulationControl simulationControl = new BasicJadexSimulationControl();
-        simulationControl.setNumberOfAgents(4);
+        BasicJadexLiveCycleControl simulationControl = new BasicJadexLiveCycleControl();
+        simulationControl.setTotalNumberOfAgents(4);
 
         IExternalAccess modelAgent = platform.createComponent(newModelInfo("M", cTimeModel, simulationControl)).get();
         IExternalAccess agent1 = platform.createComponent(newAgentInfo("A_1", 604800000L)).get();

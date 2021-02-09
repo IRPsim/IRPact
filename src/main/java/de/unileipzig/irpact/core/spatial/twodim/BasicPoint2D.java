@@ -1,19 +1,28 @@
 package de.unileipzig.irpact.core.spatial.twodim;
 
-import java.util.Objects;
+import de.unileipzig.irpact.core.spatial.SpatialAttribute;
+
+import java.util.*;
 
 /**
  * @author Daniel Abitz
  */
 public class BasicPoint2D implements Point2D {
 
+    protected Map<String, SpatialAttribute> attributes;
     protected double x;
     protected double y;
 
     public BasicPoint2D() {
+        this(0, 0);
     }
 
     public BasicPoint2D(double x, double y) {
+        this(new HashMap<>(), x, y);
+    }
+
+    public BasicPoint2D(Map<String, SpatialAttribute> attributes, double x, double y) {
+        this.attributes = attributes;
         this.x = x;
         this.y = y;
     }
@@ -34,6 +43,20 @@ public class BasicPoint2D implements Point2D {
     @Override
     public double getY() {
         return y;
+    }
+
+    public void put(SpatialAttribute attribute) {
+        attributes.put(attribute.getName(), attribute);
+    }
+
+    @Override
+    public Collection<SpatialAttribute> getAttributes() {
+        return attributes.values();
+    }
+
+    @Override
+    public SpatialAttribute getAttribute(String name) {
+        return attributes.get(name);
     }
 
     @Override

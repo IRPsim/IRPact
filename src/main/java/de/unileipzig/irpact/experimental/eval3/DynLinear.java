@@ -28,6 +28,6 @@ public class DynLinear extends AbstractBoundedEval {
 
     @Override
     public String toString() {
-        return "'" + m + "' * x + '" + n;
+        return "'" + m + "' * x + '" + n + "'";
     }
 }

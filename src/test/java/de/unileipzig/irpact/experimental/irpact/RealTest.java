@@ -2,9 +2,9 @@ package de.unileipzig.irpact.experimental.irpact;
 
 import de.unileipzig.irpact.experimental.TestFiles;
 import de.unileipzig.irpact.start.Start;
-import de.unileipzig.irpact.io.DefaultScenario;
-import de.unileipzig.irpact.io.input.IRoot;
-import de.unileipzig.irpact.io.output.ORoot;
+import de.unileipzig.irpact.experimental.deprecated.DefaultScenario;
+import de.unileipzig.irpact.experimental.deprecated.input.IRoot;
+import de.unileipzig.irpact.experimental.deprecated.output.ORoot;
 import de.unileipzig.irptools.defstructure.*;
 import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.uiedn.io.EdnPrinter;

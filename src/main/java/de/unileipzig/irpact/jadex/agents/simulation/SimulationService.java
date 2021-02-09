@@ -1,13 +1,17 @@
 package de.unileipzig.irpact.jadex.agents.simulation;
 
-import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
+import de.unileipzig.irpact.core.agent.Agent;
 import jadex.bridge.service.annotation.Reference;
 
 /**
+ *
+ *
  * @author Daniel Abitz
  */
 @Reference(local = true, remote = true)
 public interface SimulationService {
 
-    JadexSimulationEnvironment getEnvironment();
+    void reportAgentCreated(Agent agent);
+
+    void reportFatalException(Exception e);
 }

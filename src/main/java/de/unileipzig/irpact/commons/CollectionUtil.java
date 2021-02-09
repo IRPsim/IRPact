@@ -166,7 +166,7 @@ public final class CollectionUtil {
 
     public static <T> int getWeightedRandomIndex(
             Collection<? extends T> coll,
-            ValueIntToDoubleFunction<? super T> weightFunction,
+            ValueAndIntToDoubleFunction<? super T> weightFunction,
             Random rnd) {
         double sum = 0.0;
         int i = 0;
@@ -179,7 +179,7 @@ public final class CollectionUtil {
 
     public static <T> int getWeightedRandomIndex(
             Collection<? extends T> coll,
-            ValueIntToDoubleFunction<? super T> weightFunction,
+            ValueAndIntToDoubleFunction<? super T> weightFunction,
             double sum,
             Random rnd) {
         final double rndDraw = rnd.nextDouble() * sum;
@@ -193,5 +193,13 @@ public final class CollectionUtil {
             i++;
         }
         return -1;
+    }
+
+    public static <K, V> V getNonNull(Map<K, V> map, K key) {
+        V value = map.get(key);
+        if(value == null) {
+            throw new NullPointerException(Objects.toString(key));
+        }
+        return value;
     }
 }

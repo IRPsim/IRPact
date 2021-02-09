@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.experimental.tests.timeModelWithController;
 
+import de.unileipzig.irpact.experimental.tests.TestAgent;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.jadex.time.JadexTimestamp;
 import de.unileipzig.irpact.jadex.util.JadexUtil2;
@@ -21,7 +22,7 @@ import java.time.LocalTime;
  * @author Daniel Abitz
  */
 @Agent(type = BDIAgentFactory.TYPE)
-public class TestAgentBDI {
+public class TestAgentBDI implements TestAgent {
 
     @Agent
     protected IInternalAccess agent;
@@ -68,7 +69,7 @@ public class TestAgentBDI {
             if(timeModelSerivce == null) {
                 log("timeModelSerivce found");
                 timeModelSerivce = result;
-                timeModelSerivce.getControl().reportAgentCreation();
+                timeModelSerivce.getControl().reportAgentCreated(this);
                 doOnStart();
             }
         });

@@ -14,21 +14,21 @@ public class BasicGraphConfiguration implements GraphConfiguration {
     public BasicGraphConfiguration() {
     }
 
-    public void setGraphTopologyScheme(GraphTopologyScheme topologyScheme) {
-        this.topologyScheme = topologyScheme;
-    }
-
     @Override
     public GraphTopologyScheme getGraphTopologyScheme() {
         return topologyScheme;
     }
 
-    public void setTopologyManipulationScheme(TopologyManipulationScheme manipulationScheme) {
-        this.manipulationScheme = manipulationScheme;
+    public void setGraphTopologyScheme(GraphTopologyScheme topologyScheme) {
+        this.topologyScheme = topologyScheme;
     }
 
     @Override
     public TopologyManipulationScheme getTopologyManipulationScheme() {
         return manipulationScheme;
+    }
+
+    public void setTopologyManipulationScheme(TopologyManipulationScheme manipulationScheme) {
+        this.manipulationScheme = manipulationScheme;
     }
 }

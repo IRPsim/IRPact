@@ -12,7 +12,4 @@ public interface JadexSimulationEnvironment extends SimulationEnvironment {
 
     @Override
     JadexTimeModel getTimeModel();
-
-    @Override
-    JadexSimulationControl getSimulationControl();
 }

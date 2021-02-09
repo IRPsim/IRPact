@@ -5,5 +5,5 @@ import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
 /**
  * @author Daniel Abitz
  */
-public class AgentBase extends SimulationEntityBase implements Agent {
+public abstract class AgentBase extends SimulationEntityBase implements Agent {
 }

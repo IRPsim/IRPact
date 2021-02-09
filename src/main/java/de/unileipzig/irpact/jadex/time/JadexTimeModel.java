@@ -22,16 +22,28 @@ public interface JadexTimeModel extends TimeModel {
 
     IFuture<Void> waitUntil(IExecutionFeature exec, JadexTimestamp ts, IComponentStep<Void> task);
 
-    IFuture<Void> wait(IExecutionFeature exec, long delayMs, IComponentStep<Void> task);
+    IFuture<Void> wait(IExecutionFeature exec, long delay, IComponentStep<Void> task);
 
-    IFuture<Void> waitUntil0(IExecutionFeature exec, JadexTimestamp ts, IComponentStep<Void> task);
+    IFuture<Void> forceWait(IExecutionFeature exec, long delay, IComponentStep<Void> task);
 
-    IFuture<Void> wait0(IExecutionFeature exec, long delayMs, IComponentStep<Void> task);
+//    IFuture<Void> waitUntil0(IExecutionFeature exec, JadexTimestamp ts, IComponentStep<Void> task);
+//
+//    //delay = ms or tick!
+//    IFuture<Void> wait0(IExecutionFeature exec, long delay, IComponentStep<Void> task);
+//
+//    IFuture<Void> waitUntilEnd(IExecutionFeature exec, IComponentStep<Void> task);
 
-    IFuture<Void> waitUntilEnd(IExecutionFeature exec, IComponentStep<Void> task);
+    @Override
+    JadexTimestamp convert(ZonedDateTime zdt);
 
     @Override
     JadexTimestamp now();
+
+    @Override
+    JadexTimestamp startTime();
+
+    @Override
+    JadexTimestamp endTime();
 
     @Override
     default JadexTimestamp plusMillis(long millis) {

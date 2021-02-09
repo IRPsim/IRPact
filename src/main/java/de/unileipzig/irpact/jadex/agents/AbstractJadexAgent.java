@@ -24,8 +24,4 @@ public abstract class AbstractJadexAgent extends AbstractAgentBase {
 
     public AbstractJadexAgent() {
     }
-
-    protected void initData() {
-        initData(resultsFeature.getArguments());
-    }
 }

@@ -1,14 +1,17 @@
 package de.unileipzig.irpact.jadex.simulation;
 
-import de.unileipzig.irpact.core.misc.DebugLevel;
+import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
+import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
 import de.unileipzig.irpact.core.network.SocialNetwork;
 import de.unileipzig.irpact.core.product.BasicProductManager;
 import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
+import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
 
 /**
@@ -17,20 +20,19 @@ import jadex.bridge.service.annotation.Reference;
 @Reference(local = true, remote = true)
 public class BasicJadexSimulationEnvironment implements JadexSimulationEnvironment {
 
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicJadexSimulationEnvironment.class);
+
     protected AgentManager agentManager = new BasicAgentManager();
     protected SocialNetwork socialNetwork = new BasicSocialNetwork();
     protected ProductManager productManager = new BasicProductManager();
     protected SpatialModel spatialModel;
     protected JadexTimeModel timeModel;
-    protected JadexSimulationControl simulationControl;
-
-    protected DebugLevel debugLevel = DebugLevel.DEFAULT;
+    protected Rnd rnd;
 
     public BasicJadexSimulationEnvironment() {
-    }
-
-    public void setAgentManager(AgentManager agentManager) {
-        this.agentManager = agentManager;
+        ((BasicAgentManager) agentManager).setEnvironment(this);
+        ((BasicSocialNetwork) socialNetwork).setEnvironment(this);
+        ((BasicProductManager) productManager).setEnvironment(this);
     }
 
     @Override
@@ -38,17 +40,9 @@ public class BasicJadexSimulationEnvironment implements JadexSimulationEnvironme
         return agentManager;
     }
 
-    public void setSocialNetwork(SocialNetwork socialNetwork) {
-        this.socialNetwork = socialNetwork;
-    }
-
     @Override
     public SocialNetwork getNetwork() {
         return socialNetwork;
-    }
-
-    public void setProductManager(ProductManager productManager) {
-        this.productManager = productManager;
     }
 
     @Override
@@ -74,21 +68,38 @@ public class BasicJadexSimulationEnvironment implements JadexSimulationEnvironme
         return timeModel;
     }
 
-    public void setSimulationControl(JadexSimulationControl simulationControl) {
-        this.simulationControl = simulationControl;
+    @Override
+    public Rnd getSimulationRandom() {
+        return rnd;
+    }
+
+    public void setSimulationRandom(Rnd rnd) {
+        this.rnd = rnd;
     }
 
     @Override
-    public JadexSimulationControl getSimulationControl() {
-        return simulationControl;
-    }
-
-    public void setDebugLevel(DebugLevel debugLevel) {
-        this.debugLevel = debugLevel;
+    public void initialize() {
+        agentManager.initialize();
+        socialNetwork.initialize();
+        productManager.initialize();
+        spatialModel.initialize();
+        timeModel.initialize();
     }
 
     @Override
-    public DebugLevel getDebugLevel() {
-        return debugLevel;
+    public void validate() throws ValidationException {
+        agentManager.validate();
+        socialNetwork.validate();
+        productManager.validate();
+        spatialModel.validate();
+        timeModel.validate();
+    }
+
+    @Override
+    public void setup() {
+        socialNetwork.getConfiguration().getGraphTopologyScheme().initalize(
+                this,
+                socialNetwork.getGraph()
+        );
     }
 }

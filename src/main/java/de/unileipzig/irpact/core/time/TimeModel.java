@@ -2,15 +2,26 @@ package de.unileipzig.irpact.core.time;
 
 import de.unileipzig.irpact.commons.time.TimeMode;
 import de.unileipzig.irpact.commons.time.Timestamp;
+import de.unileipzig.irpact.core.misc.Initialization;
+
+import java.time.ZonedDateTime;
 
 /**
  * @author Daniel Abitz
  */
-public interface TimeModel {
+public interface TimeModel extends Initialization {
 
     TimeMode getMode();
 
+    Timestamp convert(ZonedDateTime zdt);
+
+    int getYear();
+
     Timestamp now();
+
+    Timestamp startTime();
+
+    Timestamp endTime();
 
     Timestamp plusMillis(long millis);
 
@@ -20,7 +31,7 @@ public interface TimeModel {
 
     Timestamp plusYears(Timestamp ts, long years);
 
-    boolean isValid(long delayInMs);
+    boolean isValid(long delay);
 
     boolean isValid(Timestamp ts);
 }

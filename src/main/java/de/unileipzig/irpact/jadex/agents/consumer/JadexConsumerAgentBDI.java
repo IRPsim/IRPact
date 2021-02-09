@@ -1,68 +1,92 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
+import de.unileipzig.irpact.commons.time.Timestamp;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentInitializationData;
+import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.LoggingPart;
+import de.unileipzig.irpact.core.log.LoggingType;
+import de.unileipzig.irpact.core.need.Need;
+import de.unileipzig.irpact.core.network.SocialGraph;
+import de.unileipzig.irpact.core.process.ProcessFindingScheme;
+import de.unileipzig.irpact.core.process.ProcessModel;
+import de.unileipzig.irpact.core.process.ProcessPlan;
+import de.unileipzig.irpact.core.process.ProcessPlanResult;
+import de.unileipzig.irpact.core.product.AdoptedProduct;
+import de.unileipzig.irpact.core.product.BasicAdoptedProduct;
+import de.unileipzig.irpact.core.product.ProductFindingScheme;
+import de.unileipzig.irpact.jadex.JadexConstants;
 import de.unileipzig.irpact.jadex.agents.AbstractJadexAgentBDI;
 import de.unileipzig.irpact.jadex.agents.simulation.SimulationService;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
-import de.unileipzig.irpact.jadex.util.AgentUtil;
+import de.unileipzig.irpact.jadex.time.JadexTimestamp;
 import de.unileipzig.irpact.jadex.util.JadexUtil2;
 import de.unileipzig.irpact.commons.awareness.Awareness;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentInitializationData;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bdiv3.BDIAgentFactory;
+import jadex.bdiv3.annotation.Belief;
+import jadex.bdiv3.annotation.Goal;
+import jadex.bdiv3.annotation.Plan;
+import jadex.bdiv3.annotation.Trigger;
+import jadex.bdiv3.model.MProcessableElement;
+import jadex.bdiv3.runtime.impl.PlanFailureException;
 import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.RequiredService;
 import jadex.micro.annotation.RequiredServices;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Daniel Abitz
  */
+@SuppressWarnings("ALL")
 @Agent(type = BDIAgentFactory.TYPE)
 @RequiredServices(
         @RequiredService(type = SimulationService.class)
 )
 public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements ConsumerAgent {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(JadexConsumerAgentBDI.class);
+    protected static final IRPLogger LOGGER = IRPLogging.getLogger(JadexConsumerAgentBDI.class);
 
+    protected JadexConsumerAgentGroup group;
+    protected SpatialInformation spatialInformation;
     protected SimulationService simulationService;
     protected Set<ConsumerAgentAttribute> attributes = new HashSet<>();
     protected double informationAuthority;
+    protected SocialGraph.Node node;
     protected Awareness<Product> productAwareness;
-    protected Set<Product> adoptedProducts = new HashSet<>();
+    protected Set<AdoptedProduct> adoptedProducts = new HashSet<>();
+    protected ProductFindingScheme productFindingScheme;
+    protected ProcessFindingScheme processFindingScheme;
+
+    protected final Lock LOCK = new ReentrantLock();
+    protected Timestamp lastStamp = null;
+    protected int actionsInThisStep = 0;
+    protected int maxActions = 1; //!!!
+
+    @Belief
+    protected Set<Need> needs = new HashSet<>();
+    @Belief
+    protected Map<Need, ProcessPlan> plans = new HashMap<>();
 
     public JadexConsumerAgentBDI() {
     }
 
     @Override
-    public JadexConsumerAgentInitializationData getData() {
-        return (JadexConsumerAgentInitializationData) data;
-    }
-
-    @Override
-    protected Logger log() {
+    protected IRPLogger log() {
         return LOGGER;
-    }
-
-    @Override
-    protected void initData() {
-        super.initData();
-        init(getData());
     }
 
     protected void searchSimulationService() {
         JadexUtil2.searchPlatformServices(reqFeature, SimulationService.class, result -> {
             if(simulationService == null) {
-                log().trace("[{}] SimulationService found", getName());
+                log().trace(LoggingType.INITIALIZATION, LoggingPart.AGENT, "[{}] SimulationService found", getName());
                 simulationService = result;
                 setupAgent();
             }
@@ -71,7 +95,8 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
 
     protected void setupAgent() {
         //HIER KOMMEN AUFGABEN HIN
-        simulationService.getEnvironment().getSimulationControl().reportAgentCreation();
+        //node setzen
+        simulationService.reportAgentCreated(this);
     }
 
     //=========================
@@ -82,34 +107,51 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     protected void onInit() {
         initData();
         searchSimulationService();
-        log().trace("[{}] init", getName());
+        log().trace(LoggingType.INITIALIZATION, LoggingPart.AGENT, "[{}] init", getName());
     }
 
     @Override
     protected void onStart() {
-        log().trace("[{}] start", getName());
+        log().trace(LoggingType.INITIALIZATION, LoggingPart.AGENT, "[{}] start", getName());
     }
 
     @Override
     protected void onEnd() {
-        log().trace("[{}] end", getName());
+        log().trace(LoggingType.INITIALIZATION, LoggingPart.AGENT, "[{}] end", getName());
     }
 
     //=========================
     //ConsumerAgent
     //=========================
 
+    protected ConsumerAgentInitializationData getData() {
+        return (ConsumerAgentInitializationData) resultsFeature.getArguments().get(JadexConstants.DATA);
+    }
+
+    protected void initData() {
+        ConsumerAgentInitializationData data = getData();
+        name = data.getName();
+        group = (JadexConsumerAgentGroup) data.getGroup();
+        environment = (JadexSimulationEnvironment) data.getEnvironment();
+        informationAuthority = data.getInformationAuthority();
+        spatialInformation = data.getSpatialInformation();
+        attributes.addAll(data.getAttributes());
+        productAwareness = data.getProductAwareness();
+        adoptedProducts.addAll(data.getAdoptedProducts());
+        processFindingScheme = data.getProcessFindingScheme();
+        productFindingScheme = data.getProductFindingScheme();
+
+        environment.getAgents().replacePlaceholder(this);
+    }
+
     @Override
-    public void init(ConsumerAgentInitializationData data) {
-        JadexConsumerAgentInitializationData jdata = (JadexConsumerAgentInitializationData) data;
-        this.data = jdata;
-        attributes.addAll(jdata.getAttributes());
-        productAwareness = jdata.getProductAwareness();
+    public String getName() {
+        return name;
     }
 
     @Override
     public ConsumerAgentGroup getGroup() {
-        return getData().getGroup();
+        return group;
     }
 
     @Override
@@ -128,59 +170,159 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
+    public boolean addAttribute(ConsumerAgentAttribute attribute) {
+        return attributes.add(attribute);
+    }
+
+    @Override
     public Awareness<Product> getProductAwareness() {
         return productAwareness;
     }
 
     @Override
     public double getInformationAuthority() {
-        return getData().getInformationAuthority();
+        return informationAuthority;
     }
 
     @Override
     public JadexSimulationEnvironment getEnvironment() {
-        return getData().getEnvironment();
+        return environment;
     }
 
     @Override
-    public boolean hasName(String input) {
-        return Objects.equals(getName(), input);
+    public void setSocialGraphNode(SocialGraph.Node node) {
+        this.node = node;
+    }
+
+    @Override
+    public SocialGraph.Node getSocialGraphNode() {
+        return node;
+    }
+
+    @Override
+    public boolean aquireAction() {
+        LOCK.lock();
+        try {
+            Timestamp now = getEnvironment().getTimeModel().now();
+            if(Objects.equals(now, lastStamp)) {
+                if(actionsInThisStep >= maxActions) {
+                    return false;
+                }
+                actionsInThisStep++;
+                return true;
+            } else {
+                lastStamp = now;
+                actionsInThisStep = 1;
+                return true;
+            }
+        } finally {
+            LOCK.unlock();
+        }
     }
 
     @Override
     public SpatialInformation getSpatialInformation() {
-        return getData().getSpatialInformation();
+        return spatialInformation;
     }
 
     @Override
-    public Set<Product> getAdoptedProducts() {
+    public Set<AdoptedProduct> getAdoptedProducts() {
         return adoptedProducts;
     }
 
-    //=========================
-    //
-    //=========================
-
-    protected void handleCommunication(ConsumerAgent sender, Product product) {
-        if(AgentUtil.isAdopter(sender, product)) {
-            getProductAwareness().update(product, 3.0);
-        }
-        else if(AgentUtil.isInterested(sender, product)) {
-            getProductAwareness().update(product, 2.0);
-        }
-        else if(AgentUtil.isAwareOf(sender, product)) {
-            getProductAwareness().update(product, 1.0);
-        }
-    }
-
-    protected void feasibilityTest(Product product) {
-        if(AgentUtil.isHouseOwner(this) || AgentUtil.isConstructing(this)) {
-            if(productAwareness.isInterested(product)) {
-                decisionMaking(product);
+    @Override
+    public boolean hasAdopted(Product product) {
+        for(AdoptedProduct ap: adoptedProducts) {
+            if(ap.getProduct() == product) {
+                return true;
             }
         }
+        return false;
     }
 
-    protected void decisionMaking(Product product) {
+    @Override
+    public boolean adopt(Need need, Product product) {
+        if(needs.contains(need)) {
+            JadexTimestamp now = environment.getTimeModel().now();
+            AdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, now);
+            adoptedProducts.add(adoptedProduct);
+            needs.remove(need);
+            ProcessPlan plan = plans.remove(need);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //=========================
+    //new need
+    //=========================
+
+    @Goal
+    public class FindProcessForNeedGoal {
+
+        protected Need need;
+
+        public FindProcessForNeedGoal(Need need) {
+            this.need = need;
+        }
+
+        public Need getNeed() {
+            return need;
+        }
+    }
+
+    @Plan(trigger = @Trigger(goals = FindProcessForNeedGoal.class))
+    protected void handleNewNeed(FindProcessForNeedGoal goal) throws PlanFailureException {
+        Need need = goal.getNeed();
+        Product product = productFindingScheme.findProduct(this, need);
+        if(product == null) {
+            throw new PlanFailureException();
+        }
+        ProcessModel model = processFindingScheme.findModel(product);
+        if(model == null) {
+            throw new PlanFailureException();
+        }
+        ProcessPlan plan = model.newPlan(this, need, product);
+        plans.put(need, plan);
+        bdiFeature.dispatchTopLevelGoal(new ProcessExecutionGoal(need, plan));
+    }
+
+    //=========================
+    //new plan
+    //=========================
+
+    @Goal(excludemode = MProcessableElement.ExcludeMode.WhenSucceeded, retry = true, retrydelay = 1)
+    public class ProcessExecutionGoal {
+
+        protected Need need;
+        protected ProcessPlan plan;
+
+        public ProcessExecutionGoal(Need need, ProcessPlan plan) {
+            this.need = need;
+            this.plan = plan;
+        }
+
+        public Need getNeed() {
+            return need;
+        }
+
+        public ProcessPlan getPlan() {
+            return plan;
+        }
+    }
+
+    @Plan(trigger = @Trigger(goals = ProcessExecutionGoal.class))
+    protected void handleProcessExecution(ProcessExecutionGoal goal) {
+        ProcessPlan plan = goal.getPlan();
+        ProcessPlanResult result = plan.execute();
+        switch(result) {
+            case ADOPTED:
+                break;
+
+            case IN_PROCESS:
+            default:
+                throw new PlanFailureException();
+        }
     }
 }

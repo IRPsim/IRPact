@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental.tests.timeModelWithController;
 
-import de.unileipzig.irpact.jadex.simulation.JadexSimulationControl;
+import de.unileipzig.irpact.jadex.simulation.JadexLiveCycleControl;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 
 /**
@@ -10,5 +10,5 @@ public interface TimeModelService {
 
     JadexTimeModel getTimeModel();
 
-    JadexSimulationControl getControl();
+    JadexLiveCycleControl getControl();
 }

@@ -13,5 +13,7 @@ public interface Product extends SimulationEntity {
 
     Set<ProductAttribute> getAttributes();
 
+    ProductAttribute getAttribute(String name);
+
     boolean isFixed();
 }

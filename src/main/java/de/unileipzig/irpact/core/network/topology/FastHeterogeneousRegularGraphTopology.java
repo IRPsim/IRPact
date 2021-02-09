@@ -64,9 +64,7 @@ public class FastHeterogeneousRegularGraphTopology implements GraphTopologySchem
                     continue;
                 }
                 SocialGraph.Node targetNode = nodeList.next(rnd);
-                graph.addEdge(sourceNode, targetNode, edgeType);
-                SocialGraph.Edge edge = graph.getEdge(sourceNode, targetNode, edgeType);
-                edge.setWeight(initialWeight);
+                graph.addEdge(sourceNode, targetNode, edgeType, initialWeight);
                 i++;
             }
         }

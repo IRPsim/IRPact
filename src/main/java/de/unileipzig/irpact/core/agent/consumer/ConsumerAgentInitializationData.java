@@ -2,11 +2,14 @@ package de.unileipzig.irpact.core.agent.consumer;
 
 import de.unileipzig.irpact.commons.awareness.Awareness;
 import de.unileipzig.irpact.core.misc.InitializationData;
+import de.unileipzig.irpact.core.process.ProcessFindingScheme;
+import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.core.product.ProductFindingScheme;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * @author Daniel Abitz
@@ -21,7 +24,13 @@ public interface ConsumerAgentInitializationData extends InitializationData {
 
     ConsumerAgentGroup getGroup();
 
-    Set<ConsumerAgentAttribute> getAttributes();
+    Collection<ConsumerAgentAttribute> getAttributes();
 
     Awareness<Product> getProductAwareness();
+
+    Collection<AdoptedProduct> getAdoptedProducts();
+
+    ProductFindingScheme getProductFindingScheme();
+
+    ProcessFindingScheme getProcessFindingScheme();
 }

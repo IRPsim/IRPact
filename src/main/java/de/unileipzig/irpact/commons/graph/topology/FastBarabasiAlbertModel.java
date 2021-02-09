@@ -1,9 +1,9 @@
 package de.unileipzig.irpact.commons.graph.topology;
 
-import de.unileipzig.irpact.start.IRPact;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.graph.Graph;
-import de.unileipzig.irptools.util.IRPLogger;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
 
@@ -15,7 +15,7 @@ import java.util.*;
  */
 public class FastBarabasiAlbertModel<V, E, T> extends BarabasiAlbertModel<V, E, T> {
 
-    private static final IRPLogger logger = IRPact.getUtilLogger(FastBarabasiAlbertModel.class);
+    private static final IRPLogger logger = IRPLogging.getLogger(FastBarabasiAlbertModel.class);
 
     public FastBarabasiAlbertModel() {
     }

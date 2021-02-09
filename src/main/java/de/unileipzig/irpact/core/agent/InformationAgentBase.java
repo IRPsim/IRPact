@@ -3,7 +3,7 @@ package de.unileipzig.irpact.core.agent;
 /**
  * @author Daniel Abitz
  */
-public class InformationAgentBase extends AgentBase implements InformationAgent {
+public abstract class InformationAgentBase extends AgentBase implements InformationAgent {
 
     protected double informationAuthority;
 

@@ -107,10 +107,6 @@ public final class TickConverter {
         return delta + startTick;
     }
 
-    public double delayToTick(long delay) {
-        return delay / (double) timePerTickInMs;
-    }
-
     /**
      * Addiert eine Tickanzahl zu einem Datum.
      *
@@ -121,5 +117,10 @@ public final class TickConverter {
      */
     public ZonedDateTime addTicks(ZonedDateTime input, double tickDelta) {
         return tickToTime(timeToTick(input) + tickDelta);
+    }
+
+    public double ticksUntil(ZonedDateTime now, ZonedDateTime other) {
+        long ms = now.until(other, ChronoUnit.MILLIS);
+        return ms / (double) timePerTickInMs;
     }
 }

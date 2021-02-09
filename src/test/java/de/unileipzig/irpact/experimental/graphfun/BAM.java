@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.experimental.graphfun;
 
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
@@ -23,7 +24,7 @@ import java.util.Random;
 @Disabled
 class BAM {
 
-    private static final Logger logger = IRPact.getUtilLogger(BAM.class);
+    private static final Logger logger = IRPLogging.getLogger(BAM.class);
 
     private static class Node {
         private final String label;
@@ -71,7 +72,7 @@ class BAM {
             g.addVertex(new Node("Node#" + i));
         }
 
-        IRPact.disableUtilLogging();
+        //IRPact.disableUtilLogging();
         BarabasiAlbertModel<Node, Link, String> bam = new BarabasiAlbertModel<>();
         bam.setM(10);
         bam.setM0(10);
@@ -79,7 +80,7 @@ class BAM {
         bam.setRandom(new Random(123));
         bam.setMultiEdgeCreatorFunction(Link::create);
         bam.initalizeEdges(g);
-        IRPact.enableUtilLogging();
+        //IRPact.enableUtilLogging();
 
         System.out.println("nodes: " + g.vertexCount());
         System.out.println("edges: " + g.edgeCount());
@@ -164,7 +165,7 @@ class BAM {
             g.addVertex(new Node("Node#" + i));
         }
 
-        IRPact.disableUtilLogging();
+        //IRPact.disableUtilLogging();
         FastBarabasiAlbertModel<Node, Link, String> bam = new FastBarabasiAlbertModel<>();
         bam.setM(2);
         bam.setM0(10);
@@ -172,7 +173,7 @@ class BAM {
         bam.setRandom(new Random(123));
         bam.setMultiEdgeCreatorFunction(Link::create);
         bam.initalizeEdges(g);
-        IRPact.enableUtilLogging();
+        //IRPact.enableUtilLogging();
 
         System.out.println("nodes: " + g.vertexCount());
         System.out.println("edges: " + g.edgeCount());
@@ -199,7 +200,7 @@ class BAM {
             g.addVertex(new Node("Node#" + i));
         }
 
-        IRPact.disableUtilLogging();
+        //IRPact.disableUtilLogging();
         WattsStrogatzModel<Node, Link, String> wsm = new WattsStrogatzModel<>();
         wsm.setK(10);
         wsm.setBeta(0.1);
@@ -207,7 +208,7 @@ class BAM {
         wsm.setRandom(new Random(123));
         wsm.setMultiEdgeCreatorFunction(Link::create);
         wsm.initalizeEdges(g);
-        IRPact.enableUtilLogging();
+        //IRPact.enableUtilLogging();
 
         System.out.println("nodes: " + g.vertexCount());
         System.out.println("edges: " + g.edgeCount());
@@ -234,7 +235,7 @@ class BAM {
             g.addVertex(new Node("Node#" + i));
         }
 
-        IRPact.disableUtilLogging();
+        //IRPact.disableUtilLogging();
         HeterogeneousSmallWorldTopology<Node, Link, String, String> wsm = new HeterogeneousSmallWorldTopology<>();
         wsm.setGrpZMapping(CollectionUtil.hashMapOf("xxx", 10));
         wsm.setGrpBetaMapping(CollectionUtil.hashMapOf("xxx", 0.1));
@@ -246,7 +247,7 @@ class BAM {
         wsm.setMultiEdgeCreatorFunction(Link::create);
         wsm.setDrawWeightedGroupFunction((grp, r) -> "xxx");
         wsm.initalizeEdges(g);
-        IRPact.enableUtilLogging();
+        //IRPact.enableUtilLogging();
 
         System.out.println("nodes: " + g.vertexCount());
         System.out.println("edges: " + g.edgeCount());

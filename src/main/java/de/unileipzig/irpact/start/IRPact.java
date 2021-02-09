@@ -1,7 +1,15 @@
 package de.unileipzig.irpact.start;
 
-import de.unileipzig.irptools.util.IRPLogger;
+import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irptools.util.log.IRPLogger;
+import org.slf4j.Logger;
+import picocli.CommandLine;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Optional;
+import java.util.concurrent.Callable;
 import java.util.function.BooleanSupplier;
 
 /**
@@ -9,37 +17,14 @@ import java.util.function.BooleanSupplier;
  */
 public class IRPact {
 
-    //=========================
-    //logging and co
-    //=========================
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(IRPact.class);
 
-    public static BooleanSupplier UTIL_LOGGING = IRPact::doUtilLogging;
-    private static boolean utilLogging = true;
+    private Start param;
 
-    public static boolean doUtilLogging() {
-        return utilLogging;
+    public IRPact(Start param) {
+        this.param = param;
     }
 
-    public static void setUtilLogging(boolean enabled) {
-        utilLogging = enabled;
-    }
-
-    public static void disableUtilLogging() {
-        setUtilLogging(false);
-    }
-
-    public static void enableUtilLogging() {
-        setUtilLogging(true);
-    }
-
-    public static IRPLogger getUtilLogger(Class<?> c) {
-        return IRPLogger.getLogger(UTIL_LOGGING, c);
-    }
-
-    //=========================
-    //main
-    //=========================
-
-    public static void main(String[] args) {
+    public void start() {
     }
 }

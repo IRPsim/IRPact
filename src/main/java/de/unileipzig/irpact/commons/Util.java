@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Random;
 
 /**
@@ -9,6 +11,7 @@ public final class Util {
 
     public static final long USE_RANDOM_SEED = 0L;
     public static final Random RND = new Random();
+    public static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 
     private Util() {
     }

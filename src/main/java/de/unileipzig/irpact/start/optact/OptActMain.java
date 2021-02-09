@@ -185,9 +185,7 @@ public class OptActMain implements Callable<Integer> {
         ((AbstractMultiGraphTopology<Node, Link, String>) topo).setMultiEdgeCreatorFunction(Link::create);
 
         logger.trace("initalize edges");
-        IRPact.disableUtilLogging();
         topo.initalizeEdges(g);
-        IRPact.enableUtilLogging();
         logger.trace("edges: " + g.edgeCount());
 
         GraphvizGenerator<Node, Link> gen = new GraphvizGenerator<>(

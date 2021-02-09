@@ -3,6 +3,7 @@ package de.unileipzig.irpact.core.product;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
 
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -48,6 +49,16 @@ public class BasicProduct extends SimulationEntityBase implements Product {
     @Override
     public Set<ProductAttribute> getAttributes() {
         return attributes;
+    }
+
+    @Override
+    public ProductAttribute getAttribute(String name) {
+        for(ProductAttribute attr: attributes) {
+            if(Objects.equals(attr.getName(), name)) {
+                return attr;
+            }
+        }
+        return null;
     }
 
     public void setFixed(boolean fixed) {

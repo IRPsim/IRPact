@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons.distattr;
 
+import de.unileipzig.irpact.commons.distribution.DistributionBase;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.NameableBase;
 
@@ -17,6 +18,11 @@ public class UnivariateDoubleDistributionAttributeBase extends NameableBase impl
     @Override
     public UnivariateDoubleDistribution getValue() {
         return distribution;
+    }
+
+    @Override
+    public void setValue(DistributionBase value) {
+        this.distribution = (UnivariateDoubleDistribution) value;
     }
 
     @Override

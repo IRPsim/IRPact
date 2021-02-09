@@ -5,7 +5,7 @@ import de.unileipzig.irpact.core.spatial.SpatialInformation;
 /**
  * @author Daniel Abitz
  */
-public class SpatialAgentBase extends AgentBase implements SpatialAgent {
+public abstract class SpatialAgentBase extends AgentBase implements SpatialAgent {
 
     protected SpatialInformation spatialInformation;
 

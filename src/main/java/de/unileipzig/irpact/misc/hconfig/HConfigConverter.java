@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.Util;
-import de.unileipzig.irpact.io.input.distribution.IConstantUnivariateDistribution;
-import de.unileipzig.irpact.io.input.distribution.IFiniteMassPointsDiscreteDistribution;
-import de.unileipzig.irpact.io.input.distribution.IMassPoint;
-import de.unileipzig.irpact.io.input.distribution.IUnivariateDoubleDistribution;
+import de.unileipzig.irpact.experimental.deprecated.input.distribution.IConstantUnivariateDistribution;
+import de.unileipzig.irpact.experimental.deprecated.input.distribution.IFiniteMassPointsDiscreteDistribution;
+import de.unileipzig.irpact.experimental.deprecated.input.distribution.IMassPoint;
+import de.unileipzig.irpact.experimental.deprecated.input.distribution.IUnivariateDoubleDistribution;
 
 import java.util.*;
 import java.util.stream.Stream;

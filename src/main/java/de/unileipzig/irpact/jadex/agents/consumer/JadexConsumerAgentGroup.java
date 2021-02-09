@@ -1,24 +1,24 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
+import de.unileipzig.irpact.core.agent.consumer.*;
+import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.misc.Placeholder;
+import de.unileipzig.irpact.core.process.ProcessFindingScheme;
+import de.unileipzig.irpact.core.product.ProductFindingScheme;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.commons.Derivable;
 import de.unileipzig.irpact.commons.awareness.Awareness;
 import de.unileipzig.irpact.commons.awareness.AwarenessDistributionMapping;
 import de.unileipzig.irpact.commons.awareness.BasicAwarenessDistributionMapping;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
 import de.unileipzig.irpact.core.spatial.SpatialDistribution;
+import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
 
-import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -27,21 +27,25 @@ import java.util.stream.Collectors;
 @Reference(local = true, remote = true)
 public class JadexConsumerAgentGroup extends SimulationEntityBase implements ConsumerAgentGroup {
 
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(JadexConsumerAgentGroup.class);
+
     protected int agentId = 0;
     protected double informationAuthority;
     protected SpatialDistribution spatialDistribution;
-    protected Set<ConsumerAgentGroupAttribute> attributes;
-    protected Set<ConsumerAgent> agents;
+    protected Map<String, ConsumerAgentGroupAttribute> attributes;
+    protected Map<String, ConsumerAgent> agents;
     protected AwarenessDistributionMapping<Product, UnivariateDoubleDistribution> fixedProductAwarenessMapping = new BasicAwarenessDistributionMapping<>();
     protected Awareness<Product> productAwareness;
+    protected ProductFindingScheme productFindingScheme;
+    protected ProcessFindingScheme processFindingScheme;
 
     public JadexConsumerAgentGroup() {
-        this(new HashSet<>(), new HashSet<>());
+        this(new HashMap<>(), new HashMap<>());
     }
 
     public JadexConsumerAgentGroup(
-            Set<ConsumerAgentGroupAttribute> attributes,
-            Set<ConsumerAgent> agents) {
+            Map<String, ConsumerAgentGroupAttribute> attributes,
+            Map<String, ConsumerAgent> agents) {
         this.attributes = attributes;
         this.agents = agents;
     }
@@ -60,27 +64,55 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         return informationAuthority;
     }
 
-    public boolean addAttribute(ConsumerAgentGroupAttribute attribute) {
-        return attributes.add(attribute);
+    @Override
+    public boolean addGroupAttribute(ConsumerAgentGroupAttribute attribute) {
+        if(attributes.containsKey(attribute.getName())) {
+            return false;
+        } else {
+            attributes.put(attribute.getName(), attribute);
+            return true;
+        }
     }
 
     @Override
-    public Set<ConsumerAgentGroupAttribute> getAttributes() {
-        return attributes;
+    public boolean hasGroupAttribute(String name) {
+        return attributes.containsKey(name);
     }
 
+    @Override
+    public Collection<ConsumerAgentGroupAttribute> getAttributes() {
+        return attributes.values();
+    }
+
+    @Override
     public boolean addAgent(ConsumerAgent agent) {
         if(agent.getGroup() != this) {
             throw new IllegalArgumentException();
         }
-        return agents.add(agent);
+        if(agents.containsKey(agent.getName())) {
+            return false;
+        } else {
+            agents.put(agent.getName(), agent);
+            return true;
+        }
     }
 
     @Override
-    public Set<ConsumerAgent> getAgents() {
-        return agents;
+    public void replacePlaceholder(ConsumerAgent realAgent) {
+        ConsumerAgent placeholder = agents.get(realAgent.getName());
+        if(Placeholder.isPlaceholder(placeholder)) {
+            agents.put(realAgent.getName(), realAgent);
+        } else {
+            throw new IllegalStateException("no placeholder");
+        }
     }
 
+    @Override
+    public Collection<ConsumerAgent> getAgents() {
+        return agents.values();
+    }
+
+    @Override
     public void setSpatialDistribution(SpatialDistribution spatialDistribution) {
         this.spatialDistribution = spatialDistribution;
     }
@@ -108,6 +140,24 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         return fixedProductAwarenessMapping;
     }
 
+    @Override
+    public ProcessFindingScheme getProcessFindingScheme() {
+        return processFindingScheme;
+    }
+
+    public void setProcessFindingScheme(ProcessFindingScheme processFindingScheme) {
+        this.processFindingScheme = processFindingScheme;
+    }
+
+    @Override
+    public ProductFindingScheme getProductFindingScheme() {
+        return productFindingScheme;
+    }
+
+    public void setProductFindingScheme(ProductFindingScheme productFindingScheme) {
+        this.productFindingScheme = productFindingScheme;
+    }
+
     protected synchronized int nextId() {
         int nextId = agentId;
         agentId++;
@@ -115,7 +165,7 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     }
 
     protected Set<ConsumerAgentAttribute> deriveAttributes() {
-        return attributes.stream()
+        return getAttributes().stream()
                 .map(Derivable::derive)
                 .collect(Collectors.toSet());
     }
@@ -140,15 +190,17 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     }
 
     @Override
-    public JadexConsumerAgentInitializationData derive() {
-        JadexConsumerAgentInitializationData data = new JadexConsumerAgentInitializationData();
-        data.setName(getName() + "_" + nextId());
-        data.setGroup(this);
-        data.setEnvironment(getEnvironment());
-        data.setInformationAuthority(getInformationAuthority());
-        data.setAttributes(deriveAttributes());
-        data.setSpatialInformation(getSpatialDistribution().drawValue());
-        data.setProductAwareness(deriveAwareness());
-        return data;
+    public PlaceholderConsumerAgent deriveAgent() {
+        PlaceholderConsumerAgent agent = new PlaceholderConsumerAgent();
+        agent.setName(getName() + "_" + nextId());
+        agent.setGroup(this);
+        agent.setEnvironment(getEnvironment());
+        agent.setInformationAuthority(getInformationAuthority());
+        agent.addAttributes(deriveAttributes());
+        agent.setSpatialInformation(getSpatialDistribution().drawValue());
+        agent.setProductAwareness(deriveAwareness());
+        agent.setProcessFindingScheme(getProcessFindingScheme());
+        agent.setProductFindingScheme(getProductFindingScheme());
+        return agent;
     }
 }

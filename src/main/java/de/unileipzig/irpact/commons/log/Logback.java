@@ -22,7 +22,10 @@ import java.util.List;
  */
 public final class Logback {
 
-    private static final String PATTERN = "%d{HH:mm:ss.SSS} [%level] [%thread] [%logger{36}]: %msg%n";
+    //long
+    //private static final String PATTERN = "%d{HH:mm:ss.SSS} [%level] [%thread] [%logger{36}]: %msg%n";
+    //short
+    private static final String PATTERN = "%d{HH:mm:ss.SSS} [%logger{0},%level]: %msg%n";
     private static final String SYSTEMOUT = "SYSTEMOUT";
     private static final String SYSTEMERR = "SYSTEMERR";
 

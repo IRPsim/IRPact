@@ -14,7 +14,7 @@ public final class ContinuousConverter {
 
     private int startYear;
     private ZoneId zoneId;
-    private long simulationstartTimeMs;
+    private long simulationStartTimeMs;
     private ZonedDateTime startTime;
     private long startTimeInMs;
 
@@ -34,12 +34,12 @@ public final class ContinuousConverter {
         this.zoneId = zoneId;
     }
 
-    public long getSimulationstartTimeMs() {
-        return simulationstartTimeMs;
+    public long getSimulationStartTimeMs() {
+        return simulationStartTimeMs;
     }
 
     public void setStart(long startTimeMs) {
-        this.simulationstartTimeMs = startTimeMs;
+        this.simulationStartTimeMs = startTimeMs;
         startTime = LocalDate.of(startYear, 1, 1)
                 .atStartOfDay(zoneId);
         startTimeInMs = startTime.toInstant().toEpochMilli();
@@ -51,17 +51,21 @@ public final class ContinuousConverter {
         }
     }
 
-    public ZonedDateTime toTime(long timeMs) {
+    public ZonedDateTime timeToDate(long timeMs) {
         validate();
-        return startTime.plus(timeMs - simulationstartTimeMs, ChronoUnit.MILLIS);
+        return startTime.plus(timeMs - simulationStartTimeMs, ChronoUnit.MILLIS);
     }
 
-    public long fromTime(ZonedDateTime time) {
+    public long dateToTime(ZonedDateTime time) {
         validate();
-        return time.toInstant().toEpochMilli() - startTimeInMs + simulationstartTimeMs;
+        return time.toInstant().toEpochMilli() - startTimeInMs + simulationStartTimeMs;
     }
 
     public ZonedDateTime getStartTime() {
         return startTime;
+    }
+
+    public long timeBetween(ZonedDateTime now, ZonedDateTime other) {
+        return now.until(other, ChronoUnit.MILLIS);
     }
 }

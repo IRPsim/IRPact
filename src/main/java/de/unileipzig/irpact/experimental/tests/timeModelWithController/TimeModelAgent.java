@@ -1,7 +1,10 @@
 package de.unileipzig.irpact.experimental.tests.timeModelWithController;
 
-import de.unileipzig.irpact.jadex.simulation.JadexSimulationControl;
+import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.experimental.tests.TestAgent;
+import de.unileipzig.irpact.jadex.simulation.JadexLiveCycleControl;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
+import de.unileipzig.irpact.jadex.time.JadexTimestamp;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IArgumentsResultsFeature;
@@ -27,7 +30,7 @@ import java.time.LocalTime;
 @ProvidedServices({
         @ProvidedService(type = TimeModelService.class)
 })
-public class TimeModelAgent implements TimeModelService {
+public class TimeModelAgent implements TimeModelService, TestAgent {
 
     @Agent
     protected IInternalAccess agent;
@@ -40,7 +43,7 @@ public class TimeModelAgent implements TimeModelService {
 
     protected String name;
     protected JadexTimeModel timeModel;
-    protected JadexSimulationControl simulationControl;
+    protected JadexLiveCycleControl simulationControl;
 
     public TimeModelAgent() {
     }
@@ -55,17 +58,18 @@ public class TimeModelAgent implements TimeModelService {
     protected void onInit() {
         name = (String) resultsFeature.getArguments().get("name");
         timeModel = (JadexTimeModel) resultsFeature.getArguments().get("timeModel");
-        simulationControl = (JadexSimulationControl) resultsFeature.getArguments().get("simulationControl");
-        simulationControl.registerControlAgent(agent);
+        simulationControl = (JadexLiveCycleControl) resultsFeature.getArguments().get("simulationControl");
+        simulationControl.registerSimulationAgentAccess(agent);
         log("onInit");
-        simulationControl.reportAgentCreation();
+        simulationControl.reportAgentCreated(this);
     }
 
     @OnStart
     protected void onStart() {
         log("onStart");
         log("wait for termination");
-        timeModel.waitUntilEnd(execFeature, ia -> {
+        JadexTimestamp ts = timeModel.endTime();;
+        timeModel.waitUntil(execFeature, ts, ia -> {
             log("terminate " + timeModel.getClockService().getTick() + " " + timeModel.getClockService().getTime() + " " + timeModel.now());
             simulationControl.terminate();
             return IFuture.DONE;
@@ -83,7 +87,22 @@ public class TimeModelAgent implements TimeModelService {
     }
 
     @Override
-    public JadexSimulationControl getControl() {
+    public JadexLiveCycleControl getControl() {
         return simulationControl;
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public boolean hasName(String input) {
+        return false;
+    }
+
+    @Override
+    public SimulationEnvironment getEnvironment() {
+        return null;
     }
 }
