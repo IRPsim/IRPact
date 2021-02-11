@@ -1,65 +1,206 @@
 [
   {
-    :label "Skalare und einfache Zeitreihen" 
-    :description "Hier sind die skalaren Werte und einfache Zeitreihen" 
+    :label "Allgemeine Einstellungen" 
+    :tags [["InGeneral" "seed"] ["InGeneral" "runOptActDemo"] ["InGeneral" "logGraphCreation"] ["InGeneral" "logAgentCreation"]]
+  } 
+  {
+    :label "Namen" 
+    :set "set_InAttributeName" 
+    :tags [["InAttributeName" "placeholder"]]
+  } 
+  {
+    :label "Verteilungsfunktionen" 
     :sections [
       {
-        :label "Scalar" 
-        :description "Hier stehen skalare Werte" 
-        :tags [["Tax" "PS" "vat"] ["X" "MS" "DE" "country"] ["X" "MS" "CH" "country"]]
-      } 
-      {
-        :label "TimeSeries" 
-        :description "Hier stehen einfache Zeitreihen" 
-        :tags [["C" "MS" "E"]]
+        :label "Dirac" 
+        :set "set_InConstantUnivariateDistribution" 
+        :tags [["InConstantUnivariateDistribution" "constDistValue"]]
       }
     ]
   } 
   {
-    :label "Link" 
-    :description "Hier stehen Tables-Einträge." 
+    :label "Agenten" 
     :sections [
       {
-        :label "Table" 
-        :set "set_tech_DES_ES" 
-        :description "Hier stehen primitive Tables-Einträge" 
-        :tags [["SOH" "pss" "sector"]]
-      } 
-      {
-        :label "TableWithTimeSeries" 
-        :set "set_load_DS_E" 
-        :description "Hier stehen Zeitreihen als Tables-Einträge" 
-        :tags [["F" "E" "EGrid" "energy"]]
+        :label "Konsumer" 
+        :sections [
+          {
+            :label "Gruppen" 
+            :set "set_InConsumerAgentGroup" 
+            :tags [["InConsumerAgentGroup" "informationAuthority"] ["InConsumerAgentGroup" "numberOfAgentsX"]]
+          } 
+          {
+            :label "Awareness" 
+            :sections [
+              {
+                :label "Threshold" 
+                :set "set_InThresholdAwareness" 
+                :tags [["InThresholdAwareness" "awarenessThreshold"]]
+              }
+            ]
+          } 
+          {
+            :label "Gruppe-Attribut-Mapping" 
+            :set "set_InConsumerAgentGroup" 
+            :tags [["link" "InConsumerAgentGroup" "InConsumerAgentGroupAttribute" "cagAttributes"]]
+          } 
+          {
+            :label "Gruppe-Awareness-Mapping" 
+            :set "set_InConsumerAgentGroup" 
+            :tags [["link" "InConsumerAgentGroup" "InAwareness" "cagAwareness"]]
+          } 
+          {
+            :label "Attribute-Name-Mapping" 
+            :set "set_InConsumerAgentGroupAttribute" 
+            :tags [["link" "InConsumerAgentGroupAttribute" "InAttributeName" "cagAttrName"]]
+          } 
+          {
+            :label "Affinity" 
+            :set "set_InAffinityEntry" 
+            :tags [["link" "InAffinityEntry" "InConsumerAgentGroup" "srcCag"] ["link" "InAffinityEntry" "InConsumerAgentGroup" "tarCag"] ["InAffinityEntry" "affinityValue"]]
+          } 
+          {
+            :label "Attribute-Verteilung-Mapping" 
+            :set "set_InConsumerAgentGroupAttribute" 
+            :tags [["link" "InConsumerAgentGroupAttribute" "InUnivariateDoubleDistribution" "cagAttrDistribution"]]
+          }
+        ]
       }
     ]
   } 
   {
-    :label "Sets" 
-    :description "Hier sind Sets." 
+    :label "Netzwerk" 
     :sections [
       {
-        :label "Strom-Verbrauchertechnologie" 
-        :set "set_load_DS_E" 
-        :description "Hier sind Strom-Verbrauchertechnologie" 
-        :tags [["L" "DS" "E"]]
+        :label "Topologie" 
+        :sections [
+          {
+            :label "Freie Topologie" 
+            :set "set_InFreeNetworkTopology" 
+            :tags [["link" "InFreeNetworkTopology" "InDistanceEvaluator" "distanceEvaluator"] ["link" "InFreeNetworkTopology" "InNumberOfTies" "numberOfTies"] ["InFreeNetworkTopology" "initialWeight"]] 
+            :sections [
+              {
+                :label "Anzahl Kanten" 
+                :set "set_InNumberOfTies" 
+                :tags [["link" "InNumberOfTies" "InConsumerAgentGroup" "cag"] ["InNumberOfTies" "count"]]
+              }
+            ]
+          }
+        ]
       } 
       {
-        :label "Kundengruppen" 
-        :set "set_side_cust" 
-        :description "Hier sind Kundengruppen." 
-        :tags [["S" "DS"] ["kg" "modifier"] ["IuO" "ESector" "CustSide"]]
+        :label "Abstandsfunktion" 
+        :sections [
+          {
+            :label "NoDistance" 
+            :set "set_InNoDistance" 
+            :tags [["InNoDistance" "placeholderNoDistance"]]
+          } 
+          {
+            :label "Invers" 
+            :set "set_InInverse" 
+            :tags [["InInverse" "placeholderInverse"]]
+          }
+        ]
+      }
+    ]
+  } 
+  {
+    :label "Produkte" 
+    :sections [
+      {
+        :label "Produkt-Attribut-Mapping" 
+        :set "set_InProductGroup" 
+        :tags [["link" "InProductGroup" "InProductGroupAttribute" "pgAttributes"]]
       } 
       {
-        :label "Stromspeicher" 
-        :set "set_tech_DES_ES" 
-        :description "Hier sind Stromspeicher" 
-        :tags [["Inc" "PS" "ES"]]
+        :label "Gruppen" 
+        :set "set_InProductGroup" 
+        :tags [["InProductGroup" "placeholderProduct"]]
       } 
       {
-        :label "PV" 
-        :set "set_tech_DES_PV" 
-        :description "Hier sind PV" 
-        :tags [["A" "DES" "PV"]]
+        :label "Attribut-Namen-Mapping" 
+        :set "set_InProductGroupAttribute" 
+        :tags [["link" "InProductGroupAttribute" "InAttributeName" "attrName"]]
+      } 
+      {
+        :label "Attribut-Verteilungs-Mapping" 
+        :set "set_InProductGroupAttribute" 
+        :tags [["link" "InProductGroupAttribute" "InUnivariateDoubleDistribution" "attrDistribution"]]
+      }
+    ]
+  } 
+  {
+    :label "Prozessmodell" 
+    :sections [
+      {
+        :label "Relative Agreement" 
+        :set "set_InRAProcessModel" 
+        :tags [["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interesetedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"]] 
+        :sections [
+          {
+            :label "Orientierungsdaten" 
+            :sections [
+              {
+                :label "Namen-Mapping" 
+                :set "set_InOrientationSupplier" 
+                :tags [["link" "InOrientationSupplier" "InAttributeName" "attrNameInOrientation"]]
+              } 
+              {
+                :label "Verteilungs-Mapping" 
+                :set "set_InOrientationSupplier" 
+                :tags [["link" "InOrientationSupplier" "InUnivariateDoubleDistribution" "distInOrientation"]]
+              }
+            ]
+          } 
+          {
+            :label "Neigungsdaten" 
+            :sections [
+              {
+                :label "Namen-Mapping" 
+                :set "set_InSlopeSupplier" 
+                :tags [["link" "InSlopeSupplier" "InAttributeName" "attrNameSlope"]]
+              } 
+              {
+                :label "Verteilungs-Mapping" 
+                :set "set_InSlopeSupplier" 
+                :tags [["link" "InSlopeSupplier" "InUnivariateDoubleDistribution" "distSlope"]]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  } 
+  {
+    :label "Räumliche Modell" 
+    :sections [
+      {
+        :label "Space2D" 
+        :set "set_InSpace2D" 
+        :tags [["InSpace2D" "useEuclid"]]
+      } 
+      {
+        :label "Verteilungsfunktion" 
+        :set "set_InConstantSpatialDistribution2D" 
+        :tags [["InConstantSpatialDistribution2D" "x"] ["InConstantSpatialDistribution2D" "y"]] 
+        :sections [
+          {
+            :label "Agenten-Mapping" 
+            :set "set_InConstantSpatialDistribution2D" 
+            :tags [["link" "InConstantSpatialDistribution2D" "InConsumerAgentGroup" "cagConstant"]]
+          }
+        ]
+      }
+    ]
+  } 
+  {
+    :label "Zeitliche Modell" 
+    :sections [
+      {
+        :label "Diskret" 
+        :set "set_InDiscreteTimeModel" 
+        :tags [["InDiscreteTimeModel" "timePerTickInMs"]]
       }
     ]
   } 
@@ -68,33 +209,10 @@
     :description "Graphviz Einstellungen" 
     :sections [
       {
-        :label "Farben" 
-        :set "set_GraphvizColor" 
-        :description "Farben, welche von Graphviz bei der Grapherstellung genutzt werden sollen." 
-        :tags [["GraphvizColor" "rgba"]]
-      } 
-      {
-        :label "Layout-Algorithmen" 
-        :set "set_GraphvizLayoutAlgorithm" 
-        :description "LayoutAlgorithm Einstellungen. Über den Namen kann ein eigenes Layout definiert werden (muss von Graphviz unterstützt werden). Wichtig: Falls ein eigenes Layout genutzt wird, muss id auf -1 gesetzt werden." 
-        :tags [["GraphvizLayoutAlgorithm" "layoutId"] ["GraphvizLayoutAlgorithm" "useLayout"]]
-      } 
-      {
-        :label "Ausgabeformate" 
-        :set "set_GraphvizOutputFormat" 
-        :description "OutputFormat Einstellungen. Über den Namen kann ein eigenes Format definiert werden. Der Syntax dafür ist format[:renderer[:formatter]] (z.B. png:cairo:gd erzeugt ein png mit dem Caitro Renderer und der GD Library als Formatter). Wichtig: Falls ein eigenes Format genutzt wird, muss id auf -1 gesetzt werden." 
-        :tags [["GraphvizOutputFormat" "formatId"] ["GraphvizOutputFormat" "useFormat"]]
-      } 
-      {
-        :label "Allgemeine Einstellungen" 
-        :description "Allgemeine Einstellungen für Graphviz." 
-        :tags [["GraphvizGlobal" "fixedNeatoPosition"] ["GraphvizGlobal" "scaleFactor"]]
-      } 
-      {
-        :label "Agentengruppen" 
-        :set "set_AgentGroup" 
+        :label "Agentengruppe-Farben-Mapping" 
+        :set "set_InConsumerAgentGroupColor" 
         :description "Agentengruppe, welche im Graphen dargestellt werden sollen." 
-        :tags [["AgentGroup" "numberOfAgents"] ["link" "AgentGroup" "GraphvizColor" "agentColor"]]
+        :tags [["link" "InConsumerAgentGroupColor" "InConsumerAgentGroup" "group"] ["link" "InConsumerAgentGroupColor" "GraphvizColor" "color"]]
       } 
       {
         :label "Topologie" 
@@ -111,6 +229,110 @@
             :set "set_IFreeMultiGraphTopology" 
             :description "Freie Topologie" 
             :tags [["IFreeMultiGraphTopology" "ftEdgeCount"] ["IFreeMultiGraphTopology" "ftSelfReferential"] ["IFreeMultiGraphTopology" "ftSeed"] ["IFreeMultiGraphTopology" "ftUseThis"]]
+          }
+        ]
+      } 
+      {
+        :label "Farben" 
+        :set "set_GraphvizColor" 
+        :description "Farben, welche von Graphviz bei der Grapherstellung genutzt werden sollen." 
+        :tags [["GraphvizColor" "rgba"]]
+      } 
+      {
+        :label "Layout-Algorithmen" 
+        :set "set_GraphvizLayoutAlgorithm" 
+        :description "LayoutAlgorithm Einstellungen. Ueber den Namen kann ein eigenes Layout definiert werden (muss von Graphviz unterstuetzt werden). Wichtig: Falls ein eigenes Layout genutzt wird, muss id auf -1 gesetzt werden." 
+        :tags [["GraphvizLayoutAlgorithm" "layoutId"] ["GraphvizLayoutAlgorithm" "useLayout"]]
+      } 
+      {
+        :label "Ausgabeformate" 
+        :set "set_GraphvizOutputFormat" 
+        :description "OutputFormat Einstellungen. Ueber den Namen kann ein eigenes Format definiert werden. Der Syntax dafuer ist format[:renderer[:formatter]] (z.B. png:cairo:gd erzeugt ein png mit dem Caitro Renderer und der GD Library als Formatter). Wichtig: Falls ein eigenes Format genutzt wird, muss id auf -1 gesetzt werden." 
+        :tags [["GraphvizOutputFormat" "formatId"] ["GraphvizOutputFormat" "useFormat"]]
+      } 
+      {
+        :label "Allgemeine Einstellungen" 
+        :description "Allgemeine Einstellungen fuer Graphviz." 
+        :tags [["GraphvizGlobal" "fixedNeatoPosition"] ["GraphvizGlobal" "scaleFactor"]]
+      }
+    ]
+  } 
+  {
+    :label "Submodule" 
+    :sections [
+      {
+        :label "OptAct" 
+        :description "Modul mit Testparametern für die Kopplung." 
+        :sections [
+          {
+            :label "Skalare und einfache Zeitreihen" 
+            :description "Hier sind die skalaren Werte und einfache Zeitreihen" 
+            :sections [
+              {
+                :label "Skalare" 
+                :description "Hier stehen skalare Werte" 
+                :tags [["Tax" "PS" "vat"] ["X" "MS" "DE" "country"] ["X" "MS" "CH" "country"]]
+              } 
+              {
+                :label "Zeitreihen" 
+                :description "Hier stehen einfache Zeitreihen" 
+                :tags [["C" "MS" "E"]]
+              }
+            ]
+          } 
+          {
+            :label "Link" 
+            :description "Hier stehen Tables-Einträge." 
+            :sections [
+              {
+                :label "Table" 
+                :set "set_tech_DES_ES" 
+                :description "Hier stehen primitive Tables-Einträge." 
+                :tags [["SOH" "pss" "sector"]]
+              } 
+              {
+                :label "TableWithTimeSeries" 
+                :set "set_load_DS_E" 
+                :description "Hier stehen Zeitreihen als Tables-Einträge." 
+                :tags [["F" "E" "EGrid" "energy"]]
+              }
+            ]
+          } 
+          {
+            :label "Set" 
+            :description "Hier sind Sets." 
+            :sections [
+              {
+                :label "Strom-Verbrauchertechnologie" 
+                :set "set_load_DS_E" 
+                :description "Hier sind Strom-Verbrauchertechnologie" 
+                :tags [["L" "DS" "E"]]
+              } 
+              {
+                :label "Kundengruppen" 
+                :set "set_side_cust" 
+                :description "Hier sind Kundengruppen." 
+                :tags [["S" "DS"] ["kg" "modifier"] ["IuO" "ESector" "CustSide"]]
+              } 
+              {
+                :label "Stromspeicher" 
+                :set "set_tech_DES_ES" 
+                :description "Hier sind Stromspeicher." 
+                :tags [["Inc" "PS" "ES"]]
+              } 
+              {
+                :label "PV" 
+                :set "set_tech_DES_PV" 
+                :description "Hier sind PV." 
+                :tags [["A" "DES" "PV"]]
+              }
+            ]
+          } 
+          {
+            :label "Agentengruppen für Graphviz" 
+            :set "set_AgentGroup" 
+            :description "Agentengruppe, welche im Graphen dargestellt werden sollen." 
+            :tags [["AgentGroup" "numberOfAgents"] ["link" "AgentGroup" "GraphvizColor" "agentColor"]]
           }
         ]
       }

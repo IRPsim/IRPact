@@ -1,5 +1,11 @@
 [
   {
+    :label "Agentennetzwerk" 
+    :icon "fa fa-spinner" 
+    :description "Agentennetzwerk in IRPact" 
+    :image "agentGraph"
+  } 
+  {
     :label "Sets" 
     :description "Hier sind Sets." 
     :sections [
