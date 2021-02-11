@@ -51,7 +51,7 @@ public final class IRPLogging {
 
         @Override
         public boolean doLogging(IRPLoggingType type, int level) {
-            return backed != null && backed.doLogging(type, level);
+            return backed == null || backed.doLogging(type, level);
         }
     }
 }

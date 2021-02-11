@@ -92,9 +92,9 @@ public class Asd {
     }
     @Test
     void runImage_NEW() {
-        Path outDir = TestFiles.testfiles.resolve("uitests").resolve("x3");
+        Path outDir = TestFiles.testfiles.resolve("uitests").resolve("x4");
         String[] args = {
-                "-i", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\uitests\\x3\\scenarios", "default.json").toString(),
+                "-i", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\uitests\\x4\\scenarios", "default.json").toString(),
                 "-o", outDir.resolve("runImage_NEW.json").toString(),
                 "--image", outDir.resolve("runImage_NEW.png").toString()
         };
