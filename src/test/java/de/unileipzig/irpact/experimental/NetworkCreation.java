@@ -1,10 +1,9 @@
 package de.unileipzig.irpact.experimental;
 
 import de.unileipzig.irpact.commons.Rnd;
-import de.unileipzig.irpact.commons.spatial.DistanceEvaluator;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.agent.consumer.PlaceholderConsumerAgent;
+import de.unileipzig.irpact.jadex.agents.consumer.PlaceholderConsumerAgent;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.LoggingPart;
 import de.unileipzig.irpact.core.log.LoggingPartFilter;

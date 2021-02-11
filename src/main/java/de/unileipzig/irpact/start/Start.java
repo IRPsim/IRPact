@@ -1,15 +1,12 @@
 package de.unileipzig.irpact.start;
 
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.start.optact.OptActMain;
-import de.unileipzig.irpact.commons.log.Logback;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import picocli.CommandLine;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
 import java.util.concurrent.Callable;
 
 /**
@@ -17,6 +14,10 @@ import java.util.concurrent.Callable;
  *
  * @author Daniel Abitz
  */
+@SuppressWarnings("unused")
+@CommandLine.Command(
+        name = "IRPact"
+)
 public class Start implements Callable<Integer> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(Start.class);
@@ -25,36 +26,58 @@ public class Start implements Callable<Integer> {
             names = { "-i", "--input" },
             description = "path to input file"
     )
-    @SuppressWarnings("unused")
     private String inputFile;
+    private Path inputPath;
 
     @CommandLine.Option(
             names = { "-o", "--output" },
             description = "path to output file"
     )
-    @SuppressWarnings("unused")
     private String outputFile;
+    private Path outputPath;
 
     @CommandLine.Option(
             names = { "--image" },
             description = "path to image file"
     )
-    @SuppressWarnings("unused")
     private String imageFile;
+    private Path imagePath;
 
     @CommandLine.Option(
             names = { "--noSimulation" },
             description = "disable simulation"
     )
-    @SuppressWarnings("unused")
     private boolean noSimulation;
 
-    private Path inputPath;
-    private Path outputPath;
-    private Path imagePath;
+    //=========================
+    //hidden
+    //=========================
 
-    public Start() {
-        IRPLogging.initConsole();
+    @CommandLine.Option(
+            names = { "--logPath" },
+            hidden = true
+    )
+    private String logFile;
+    private Path logPath;
+
+    @CommandLine.Option(
+            names = { "--irptools" },
+            hidden = true
+    )
+    private boolean callIRPtools;
+
+    //=========================
+    //data
+    //=========================
+
+    private final String[] ARGS;
+
+    public Start(String[] args) {
+        this.ARGS = args;
+    }
+
+    public String[] getArgs() {
+        return ARGS;
     }
 
     public Path getInputPath() {
@@ -69,18 +92,33 @@ public class Start implements Callable<Integer> {
         return imagePath;
     }
 
+    public boolean hasLogPath() {
+        return logPath != null;
+    }
+
+    public Path getLogPath() {
+        return logPath;
+    }
+
     public boolean isNoSimulation() {
         return noSimulation;
     }
 
+    public boolean isCallIRPtools() {
+        return callIRPtools;
+    }
+
     @Override
     public Integer call() {
+        if(callIRPtools) {
+            return CommandLine.ExitCode.OK;
+        }
+
         if(inputFile == null) {
             LOGGER.error("input file missing");
             return CommandLine.ExitCode.USAGE;
         }
         inputPath = Paths.get(inputFile);
-        LOGGER.debug("input file: {}", inputFile);
         if(Files.notExists(inputPath)) {
             LOGGER.error("input file not found: {}", inputPath);
             return CommandLine.ExitCode.SOFTWARE;
@@ -93,30 +131,31 @@ public class Start implements Callable<Integer> {
             }
         } else {
             outputPath = Paths.get(outputFile);
-            LOGGER.debug("output file: {}", outputPath);
         }
 
         if(imageFile != null) {
             imagePath = Paths.get(imageFile);
-            LOGGER.debug("image file: {}", imagePath);
         }
 
-        if(noSimulation) {
-            LOGGER.debug("simulation disabled");
-        } else {
-            LOGGER.debug("simulation enabled");
+        if(logFile != null) {
+            logPath = Paths.get(logFile);
         }
 
         return CommandLine.ExitCode.OK;
     }
 
     public static void main(String[] args) {
-        Start start = new Start();
+        IRPLogging.initConsole();
+        Start start = new Start(args);
         CommandLine cmdLine = new CommandLine(start);
         int exitCode = cmdLine.execute(args);
         if(exitCode == CommandLine.ExitCode.OK) {
-            IRPact irpact = new IRPact(start);
-            irpact.start();
+            Preloader irpact = new Preloader(start);
+            try {
+                irpact.start();
+            } catch (Throwable t) {
+                LOGGER.error("Start failed", t);
+            }
         } else {
             System.exit(CommandLine.ExitCode.USAGE);
         }

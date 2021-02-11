@@ -3,9 +3,9 @@ package de.unileipzig.irpact.start.optact.gvin;
 import de.unileipzig.irpact.start.optact.OptActRes;
 import de.unileipzig.irpact.start.optact.in.*;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
-import de.unileipzig.irpact.experimental.deprecated.input2.network.IFreeMultiGraphTopology;
-import de.unileipzig.irpact.experimental.deprecated.input2.network.IGraphTopology;
-import de.unileipzig.irpact.experimental.deprecated.input2.network.IWattsStrogatzModel;
+import de.unileipzig.irpact.start.optact.network.IFreeMultiGraphTopology;
+import de.unileipzig.irpact.start.optact.network.IGraphTopology;
+import de.unileipzig.irpact.start.optact.network.IWattsStrogatzModel;
 import de.unileipzig.irptools.defstructure.DefaultScenarioFactory;
 import de.unileipzig.irptools.defstructure.ParserInput;
 import de.unileipzig.irptools.defstructure.RootClass;
@@ -15,6 +15,8 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.graphviz.LayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.OutputFormat;
 import de.unileipzig.irptools.graphviz.def.*;
+import de.unileipzig.irptools.uiedn.Section;
+import de.unileipzig.irptools.uiedn.Sections;
 import de.unileipzig.irptools.util.DoubleTimeSeries;
 import de.unileipzig.irptools.util.Table;
 import de.unileipzig.irptools.util.Util;
@@ -37,6 +39,11 @@ public class GvInRoot implements RootClass, DefaultScenarioFactory {
             ParserInput.newInstance(Type.INPUT, IGraphTopology.class),
             ParserInput.newInstance(Type.INPUT, IWattsStrogatzModel.class),
             ParserInput.newInstance(Type.INPUT, IFreeMultiGraphTopology.class)
+    );
+
+    public static final List<ParserInput> CLASSES_WITHOUT_ROOT_AND_GRAPHVIZ = Util.mergedArrayListOf(
+            InRoot.CLASSES_WITHOUT_ROOT,
+            CLASSES_WITHOUT_ROOT
     );
 
     public static final List<ParserInput> CLASSES = Util.mergedArrayListOf(
@@ -97,6 +104,15 @@ public class GvInRoot implements RootClass, DefaultScenarioFactory {
     @Override
     public Collection<? extends ParserInput> getInput() {
         return CLASSES;
+    }
+
+    @Override
+    public void peekEdn(Sections sections, boolean output, boolean delta) {
+        if(output) {
+            Section imageSection = new Section();
+            imageSection.setImage("testImage");
+            sections.addFirst(imageSection);
+        }
     }
 
     @Override

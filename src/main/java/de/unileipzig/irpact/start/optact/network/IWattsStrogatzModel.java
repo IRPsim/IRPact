@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.experimental.deprecated.input2.network;
+package de.unileipzig.irpact.start.optact.network;
 
 import de.unileipzig.irpact.commons.Util;
 import de.unileipzig.irpact.commons.graph.topology.WattsStrogatzModel;

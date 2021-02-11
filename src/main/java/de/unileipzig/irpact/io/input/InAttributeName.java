@@ -1,21 +1,25 @@
 package de.unileipzig.irpact.io.input;
 
 import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-@Definition(
-        edn = @Edn(
-                label = {"Namen"},
-                priorities = {"-8"}
-        )
-)
+@Definition
 public class InAttributeName {
+
+    public static void initRes(TreeAnnotationResource res) {
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+        res.putPath(
+                InAttributeName.class,
+                res.getCachedElement("Namen")
+        );
+    }
 
     public String _name;
 

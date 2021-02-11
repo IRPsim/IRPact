@@ -1,7 +1,8 @@
-package de.unileipzig.irpact.core.agent.consumer;
+package de.unileipzig.irpact.jadex.agents.consumer;
 
 import de.unileipzig.irpact.commons.awareness.Awareness;
-import de.unileipzig.irpact.core.misc.InitializationData;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.product.Product;
@@ -14,7 +15,9 @@ import java.util.Collection;
 /**
  * @author Daniel Abitz
  */
-public interface ConsumerAgentInitializationData extends InitializationData {
+public interface ConsumerAgentInitializationData {
+
+    String getName();
 
     SimulationEnvironment getEnvironment();
 
@@ -33,4 +36,6 @@ public interface ConsumerAgentInitializationData extends InitializationData {
     ProductFindingScheme getProductFindingScheme();
 
     ProcessFindingScheme getProcessFindingScheme();
+
+    PlaceholderConsumerAgent getPlaceholder();
 }

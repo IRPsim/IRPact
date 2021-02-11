@@ -7,8 +7,10 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.experimental.TestFiles;
 import de.unileipzig.irpact.io.input.InExample;
 import de.unileipzig.irpact.io.input.InRoot;
-import de.unileipzig.irpact.io.input.InputParser;
+import de.unileipzig.irpact.io.input.InputParserX;
 import de.unileipzig.irpact.io.output.OutRoot;
+import de.unileipzig.irpact.start.Start;
+import de.unileipzig.irpact.start.optact.OptActMain;
 import de.unileipzig.irptools.defstructure.*;
 import de.unileipzig.irptools.io.ContentTypeDetector;
 import de.unileipzig.irptools.io.base.AnnualEntry;
@@ -21,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * @author Daniel Abitz
@@ -31,7 +34,7 @@ public class Asd {
     @Test
     void runStart() throws Exception {
         Logback.setupSystemOutAndErr();
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x1");
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x3");
         String[] args = {
                 "--inputRootClass", InRoot.class.getName(),
                 "--outputRootClass", OutRoot.class.getName(),
@@ -50,6 +53,27 @@ public class Asd {
                 "--sortAfterPriority"
         };
         IRPtools.start(args);
+    }
+
+    @Test
+    void runImage_GvRoot() {
+        Path outDir = TestFiles.testfiles.resolve("uitests").resolve("x3");
+        String[] args = {
+                "-i", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\scenarios", "default.json").toString(),
+                "-o", outDir.resolve("runImage_GvRoot.json").toString(),
+                "--image", outDir.resolve("runImage_GvRoot.png").toString()
+        };
+        OptActMain.main(args);
+    }
+    @Test
+    void runImage_NEW() {
+        Path outDir = TestFiles.testfiles.resolve("uitests").resolve("x3");
+        String[] args = {
+                "-i", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\uitests\\x3\\scenarios", "default.json").toString(),
+                "-o", outDir.resolve("runImage_NEW.json").toString(),
+                "--image", outDir.resolve("runImage_NEW.png").toString()
+        };
+        Start.main(args);
     }
 
     @Test
@@ -110,7 +134,7 @@ public class Asd {
         InRoot root = InExample.createExample();
         root.general.logGraphCreation = true;
         root.general.logAgentCreation = true;
-        InputParser parser = new InputParser();
+        InputParserX parser = new InputParserX();
         SimulationEnvironment environment = parser.parse(root);
         environment.initialize();
         environment.validate();

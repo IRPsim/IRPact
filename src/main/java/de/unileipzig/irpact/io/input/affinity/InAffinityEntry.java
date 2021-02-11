@@ -8,19 +8,30 @@ import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-@Definition(
-        edn = @Edn(
-                label = {"Agenten", "Konsumer", "Affinity"},
-                priorities = {"-7", "0", "5"}
-        )
-)
+@Definition
 public class InAffinityEntry {
+
+    public static void initRes(TreeAnnotationResource res) {
+        res.newElementBuilder()
+                .setEdnLabel("Affinity")
+                .setEdnPriority(5)
+                .putCache("Affinity");
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+        res.putPath(
+                InAffinityEntry.class,
+                res.getCachedElement("Agenten"),
+                res.getCachedElement("Konsumer"),
+                res.getCachedElement("Affinity")
+        );
+    }
 
     public String _name;
 

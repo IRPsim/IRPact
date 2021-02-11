@@ -2,7 +2,7 @@ package de.unileipzig.irpact.experimental.tests.timeModelWithController;
 
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.experimental.tests.TestAgent;
-import de.unileipzig.irpact.jadex.simulation.JadexLiveCycleControl;
+import de.unileipzig.irpact.jadex.simulation.JadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.jadex.time.JadexTimestamp;
 import jadex.bdiv3.BDIAgentFactory;
@@ -43,7 +43,7 @@ public class TimeModelAgent implements TimeModelService, TestAgent {
 
     protected String name;
     protected JadexTimeModel timeModel;
-    protected JadexLiveCycleControl simulationControl;
+    protected JadexLifeCycleControl simulationControl;
 
     public TimeModelAgent() {
     }
@@ -58,7 +58,7 @@ public class TimeModelAgent implements TimeModelService, TestAgent {
     protected void onInit() {
         name = (String) resultsFeature.getArguments().get("name");
         timeModel = (JadexTimeModel) resultsFeature.getArguments().get("timeModel");
-        simulationControl = (JadexLiveCycleControl) resultsFeature.getArguments().get("simulationControl");
+        simulationControl = (JadexLifeCycleControl) resultsFeature.getArguments().get("simulationControl");
         simulationControl.registerSimulationAgentAccess(agent);
         log("onInit");
         simulationControl.reportAgentCreated(this);
@@ -87,7 +87,7 @@ public class TimeModelAgent implements TimeModelService, TestAgent {
     }
 
     @Override
-    public JadexLiveCycleControl getControl() {
+    public JadexLifeCycleControl getControl() {
         return simulationControl;
     }
 

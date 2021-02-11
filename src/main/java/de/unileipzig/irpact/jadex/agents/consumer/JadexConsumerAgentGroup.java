@@ -98,12 +98,15 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     }
 
     @Override
-    public void replacePlaceholder(ConsumerAgent realAgent) {
-        ConsumerAgent placeholder = agents.get(realAgent.getName());
-        if(Placeholder.isPlaceholder(placeholder)) {
-            agents.put(realAgent.getName(), realAgent);
+    public void replace(ConsumerAgent toRemove, ConsumerAgent toAdd) throws IllegalStateException {
+        if(agents.get(toRemove.getName()) == toRemove) {
+            if(!Objects.equals(toRemove.getName(), toAdd.getName()) && hasName(toAdd.getName())) {
+                throw new IllegalStateException("name '" + toAdd.getName() + "' already exists");
+            }
+            agents.remove(toRemove.getName());
+            agents.put(toAdd.getName(), toAdd);
         } else {
-            throw new IllegalStateException("no placeholder");
+            throw new IllegalArgumentException("name '" + toRemove.getName() + "' does not exist");
         }
     }
 

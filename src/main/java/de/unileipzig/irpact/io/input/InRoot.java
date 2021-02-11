@@ -1,8 +1,12 @@
 package de.unileipzig.irpact.io.input;
 
+import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.io.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.io.input.awareness.InAwareness;
+import de.unileipzig.irpact.io.input.awareness.InThresholdAwareness;
 import de.unileipzig.irpact.io.input.distribution.InConstantUnivariateDistribution;
 import de.unileipzig.irpact.io.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.input.graphviz.InConsumerAgentGroupColor;
@@ -19,14 +23,21 @@ import de.unileipzig.irpact.io.input.spatial.InSpatialDistribution;
 import de.unileipzig.irpact.io.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.input.time.InDiscreteTimeModel;
 import de.unileipzig.irpact.io.input.time.InTimeModel;
+import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
+import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irpact.start.optact.in.*;
+import de.unileipzig.irpact.start.optact.network.IGraphTopology;
 import de.unileipzig.irptools.defstructure.AnnotationResource;
 import de.unileipzig.irptools.defstructure.ParserInput;
 import de.unileipzig.irptools.defstructure.RootClass;
 import de.unileipzig.irptools.defstructure.Type;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.graphviz.LayoutAlgorithm;
+import de.unileipzig.irptools.graphviz.OutputFormat;
 import de.unileipzig.irptools.graphviz.def.*;
+import de.unileipzig.irptools.uiedn.Sections;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.Util;
 
 import java.util.Arrays;
@@ -40,12 +51,68 @@ import java.util.Objects;
 @Definition(root = true)
 public class InRoot implements RootClass {
 
+    public static void initRes(TreeAnnotationResource res) {
+        res.newElementBuilder()
+                .setEdnLabel("Allgemeine Einstellungen")
+                .setEdnPriority(0)
+                .putCache("Allgemeine Einstellungen");
+        res.newElementBuilder()
+                .setEdnLabel("Namen")
+                .setEdnPriority(1)
+                .putCache("Namen");
+        res.newElementBuilder()
+                .setEdnLabel("Verteilungsfunktionen")
+                .setEdnPriority(2)
+                .putCache("Verteilungsfunktionen");
+        res.newElementBuilder()
+                .setEdnLabel("Agenten")
+                .setEdnPriority(3)
+                .putCache("Agenten");
+        res.newElementBuilder()
+                .setEdnLabel("Netzwerk")
+                .setEdnPriority(4)
+                .putCache("Netzwerk");
+        res.newElementBuilder()
+                .setEdnLabel("Produkte")
+                .setEdnPriority(5)
+                .putCache("Produkte");
+        res.newElementBuilder()
+                .setEdnLabel("Prozessmodell")
+                .setEdnPriority(6)
+                .putCache("Prozessmodell");
+        res.newElementBuilder()
+                .setEdnLabel("Räumliche Modell")
+                .setEdnPriority(7)
+                .putCache("Räumliche Modell");
+        res.newElementBuilder()
+                .setEdnLabel("Zeitliche Modell")
+                .setEdnPriority(8)
+                .putCache("Zeitliche Modell");
+        res.wrapElementBuilder(res.getCachedElement("Graphviz"))
+                .setEdnPriority(9);
+        res.newElementBuilder()
+                .setEdnLabel("Submodule")
+                .setEdnPriority(10)
+                .putCache("Submodule");
+        res.newElementBuilder()
+                .setEdnLabel("Graphvizdemo")
+                .setEdnPriority(1)
+                .putCache("Graphvizdemo");
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+        res.getCachedElement("OPTACT").setParent(res.getCachedElement("Submodule"));
+        res.getCachedElement("AgentGroup_Element").setParent(res.getCachedElement("OPTACT"));
+    }
+
     //=========================
     //general
     //=========================
 
     @FieldDefinition
     public InGeneral general;
+
+    @FieldDefinition
+    public InVersion[] version;
 
     //=========================
     //affinity
@@ -131,8 +198,14 @@ public class InRoot implements RootClass {
     public GraphvizGlobal graphvizGlobal;
 
     //=========================
-    //OLD DATA
+    //OPTACT
     //=========================
+
+    @FieldDefinition
+    public AgentGroup[] agentGroups;
+
+    @FieldDefinition
+    public IGraphTopology[] topologies;
 
     @FieldDefinition()
     public InGlobal global;
@@ -157,12 +230,15 @@ public class InRoot implements RootClass {
 
     //==================================================
 
-    public static final List<ParserInput> INPUT = ParserInput.listOf(Type.INPUT,
+    public static final List<ParserInput> INPUT_WITHOUT_ROOT = ParserInput.listOf(Type.INPUT,
             InAffinityEntry.class,
+            InAwareness.class,
+            InThresholdAwareness.class,
             InConsumerAgentGroup.class,
             InConsumerAgentGroupAttribute.class,
             InConstantUnivariateDistribution.class,
             InUnivariateDoubleDistribution.class,
+            InConsumerAgentGroupColor.class,
             InDistanceEvaluator.class,
             InFreeNetworkTopology.class,
             InGraphTopologyScheme.class,
@@ -184,33 +260,54 @@ public class InRoot implements RootClass {
             //===
             InAttributeName.class,
             InGeneral.class,
-            InRoot.class,
-            //===
-            InConsumerAgentGroupColor.class,
-            GraphvizColor.class,
-            GraphvizLayoutAlgorithm.class,
-            GraphvizOutputFormat.class,
-            GraphvizGlobal.class
+            InVersion.class
     );
 
-    public static final List<ParserInput> MERGED_INPUT = Util.mergedArrayListOf(
-            de.unileipzig.irpact.start.optact.in.InRoot.CLASSES_WITHOUT_ROOT,
-            INPUT
+    public static final List<ParserInput> INPUT_WITH_ROOT = Util.mergedArrayListOf(
+            INPUT_WITHOUT_ROOT,
+            ParserInput.asInput(Type.INPUT,
+                    CollectionUtil.arrayListOf(
+                            InRoot.class
+                    )
+            )
     );
 
-    private static final AnnotationResource RES = GraphvizResource.DEFAULT;
+    public static final List<ParserInput> CLASSES_WITHOUT_GRAPHVIZ = Util.mergedArrayListOf(
+            INPUT_WITH_ROOT,
+            GvInRoot.CLASSES_WITHOUT_ROOT_AND_GRAPHVIZ
+    );
+
+    public static final List<ParserInput> CLASSES_WITH_GRAPHVIZ = Util.mergedArrayListOf(
+            CLASSES_WITHOUT_GRAPHVIZ,
+            ParserInput.asInput(Type.INPUT,
+                    CollectionUtil.arrayListOf(
+                            GraphvizColor.class,
+                            GraphvizLayoutAlgorithm.class,
+                            GraphvizOutputFormat.class,
+                            GraphvizGlobal.class
+                    )
+            )
+    );
 
     public InRoot() {
     }
 
     @Override
     public Collection<? extends ParserInput> getInput() {
-        return MERGED_INPUT;
+        return CLASSES_WITH_GRAPHVIZ;
+    }
+
+    //private static final AnnotationResource RES = GraphvizResource.DEFAULT;
+    @Override
+    public AnnotationResource getResources() {
+        return new InResources();
     }
 
     @Override
-    public AnnotationResource getResources() {
-        return RES;
+    public void peekEdn(Sections sections, boolean input, boolean delta) {
+//        for(Section s: sections.getList()) {
+//            System.out.println("'" + s.getPriority() + "' '" + s.getLabel() + "'");
+//        }
     }
 
     @Override
@@ -256,5 +353,45 @@ public class InRoot implements RootClass {
                 ", spatialDistributions=" + Arrays.toString(spatialDistributions) +
                 ", timeModel=" + Arrays.toString(timeModel) +
                 '}';
+    }
+
+    //=========================
+    //OPTACT
+    //=========================
+
+    public GraphvizColor getColor(String agentName) {
+        for(AgentGroup grp: agentGroups) {
+            if(agentName.startsWith(grp._name)) {
+                return grp.agentColor;
+            }
+        }
+        return null;
+    }
+
+    public OutputFormat getOutputFormat() {
+        for(GraphvizOutputFormat f: outputFormats) {
+            if(f.useFormat) {
+                return f.toOutputFormat();
+            }
+        }
+        return null;
+    }
+
+    public LayoutAlgorithm getLayoutAlgorithm() {
+        for(GraphvizLayoutAlgorithm a: layoutAlgorithms) {
+            if(a.useLayout) {
+                return a.toLayoutAlgorithm();
+            }
+        }
+        return null;
+    }
+
+    public <N, E> GraphTopology<N, E> getTopology() {
+        for(IGraphTopology topology: topologies) {
+            if(topology.use()) {
+                return topology.createInstance();
+            }
+        }
+        return null;
     }
 }

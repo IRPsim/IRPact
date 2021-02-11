@@ -1,21 +1,30 @@
 package de.unileipzig.irpact.io.input.time;
 
 import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-@Definition(
-        edn = @Edn(
-                label = {"Zeitliche Modell", "Diskret"},
-                priorities = {"-2", "1"}
-        )
-)
+@Definition
 public class InDiscreteTimeModel implements InTimeModel {
+
+    public static void initRes(TreeAnnotationResource res) {
+        res.newElementBuilder()
+                .setEdnLabel("Diskret")
+                .setEdnPriority(0)
+                .putCache("Diskret");
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+        res.putPath(
+                InDiscreteTimeModel.class,
+                res.getCachedElement("Zeitliche Modell"),
+                res.getCachedElement("Diskret")
+        );
+    }
 
     public String _name;
 

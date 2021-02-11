@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.start.optact;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irpact.start.optact.in.SideCustom;

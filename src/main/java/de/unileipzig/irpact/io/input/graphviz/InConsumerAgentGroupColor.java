@@ -2,20 +2,30 @@ package de.unileipzig.irpact.io.input.graphviz;
 
 import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.graphviz.def.GraphvizColor;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 /**
  * @author Daniel Abitz
  */
-@Definition(
-        edn = @Edn(
-                label = {"Graphviz", "Agentengruppe-Farben-Mapping"},
-                description = {"Graphviz Einstellungen", "Agentengruppe, welche im Graphen dargestellt werden sollen."}
-        )
-)
+@Definition
 public class InConsumerAgentGroupColor {
+
+    public static void initRes(TreeAnnotationResource res) {
+        res.newElementBuilder()
+                .setEdnLabel("Agentengruppe-Farben-Mapping")
+                .setEdnPriority(0)
+                .setEdnDescription("Agentengruppe, welche im Graphen dargestellt werden sollen.")
+                .putCache("Agentengruppe-Farben-Mapping");
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+        res.putPath(
+                InConsumerAgentGroupColor.class,
+                res.getCachedElement("Graphviz"),
+                res.getCachedElement("Agentengruppe-Farben-Mapping")
+        );
+    }
 
     public String _name;
 

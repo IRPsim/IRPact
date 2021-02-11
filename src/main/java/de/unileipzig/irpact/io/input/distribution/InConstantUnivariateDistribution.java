@@ -2,22 +2,32 @@ package de.unileipzig.irpact.io.input.distribution;
 
 import de.unileipzig.irpact.commons.distribution.ConstantUnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
+import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-@Definition(
-        edn = @Edn(
-                label = {"Verteilungsfunktionen", "Dirac"},
-                priorities = {"-6", "0"}
-        )
-)
+@Definition
 public class InConstantUnivariateDistribution implements InUnivariateDoubleDistribution {
+
+    public static void initRes(TreeAnnotationResource res) {
+        res.newElementBuilder()
+                .setEdnLabel("Dirac")
+                .setEdnPriority(0)
+                .putCache("Dirac");
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+        res.putPath(
+                InConstantUnivariateDistribution.class,
+                res.getCachedElement("Verteilungsfunktionen"),
+                res.getCachedElement("Dirac")
+        );
+    }
 
     public String _name;
 

@@ -5,6 +5,8 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import de.unileipzig.irptools.util.log.IRPLoggingType;
 import de.unileipzig.irptools.util.log.LoggingFilter;
 
+import java.nio.file.Path;
+
 /**
  * Global logging of IRPact.
  *
@@ -19,6 +21,10 @@ public final class IRPLogging {
 
     public static void initConsole() {
         Logback.setupSystemOutAndErr();
+    }
+
+    public static void initFile(Path target) {
+        Logback.setupFile(target);
     }
 
     public static IRPLogger getLogger(Class<?> c) {

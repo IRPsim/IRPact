@@ -2,21 +2,31 @@ package de.unileipzig.irpact.io.input.network;
 
 import de.unileipzig.irpact.commons.spatial.DistanceEvaluator;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-@Definition(
-        edn = @Edn(
-                label = {"Netzwerk", "Abstandsfunktion", "Invers"},
-                priorities = {"-5", "1", "0"}
-        )
-)
+@Definition
 public class InNoDistance implements InDistanceEvaluator {
+
+    public static void initRes(TreeAnnotationResource res) {
+        res.newElementBuilder()
+                .setEdnLabel("NoDistance")
+                .setEdnPriority(0)
+                .putCache("NoDistance");
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+        res.putPath(
+                InNoDistance.class,
+                res.getCachedElement("Netzwerk"),
+                res.getCachedElement("Abstandsfunktion"),
+                res.getCachedElement("NoDistance")
+        );
+    }
 
     public String _name;
 

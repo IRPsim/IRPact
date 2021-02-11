@@ -3,7 +3,7 @@ package de.unileipzig.irpact.core.network;
 import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.core.agent.Agent;
-import de.unileipzig.irpact.core.misc.Placeholder;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 
 import java.util.*;
 import java.util.function.Function;
@@ -110,22 +110,21 @@ public class BasicSocialGraph implements SocialGraph {
     }
 
     @Override
-    public void replacePlaceholder(Agent realAgent) throws IllegalStateException {
-        if(NODE_CACHE.containsKey(realAgent)) {
-            throw new IllegalStateException("real agent already exists");
+    public void replace(ConsumerAgent toRemove, ConsumerAgent toAdd) throws IllegalStateException {
+        if(!NODE_CACHE.containsKey(toRemove)) {
+            throw new IllegalArgumentException("to-remove-agent '" + toRemove.getName() + "' does not exist");
         }
-        BasicNode node = (BasicNode) realAgent.getSocialGraphNode();
-        Agent placeholder = node.getAgent();
-        if(Placeholder.isPlaceholder(placeholder)) {
-            if(node == getNode(placeholder)) {
-                NODE_CACHE.remove(placeholder);
-                node.agent = realAgent;
-                NODE_CACHE.put(realAgent, node);
-            } else {
-                throw new IllegalStateException("node mismatch");
-            }
+        if(NODE_CACHE.containsKey(toAdd)) {
+            throw new IllegalArgumentException("to-add-agent '" + toRemove.getName() + "' already exists");
+        }
+        BasicNode node = (BasicNode) toRemove.getSocialGraphNode();
+        if(node == getNode(toRemove)) {
+            NODE_CACHE.remove(toRemove);
+            node.agent = toAdd;
+            toAdd.setSocialGraphNode(node);
+            NODE_CACHE.put(toAdd, node);
         } else {
-            throw new IllegalStateException("no placeholder");
+            throw new IllegalStateException("node mismatch for agent '" + toRemove.getName() + "'");
         }
     }
 

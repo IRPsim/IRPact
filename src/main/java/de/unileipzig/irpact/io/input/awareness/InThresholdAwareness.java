@@ -2,17 +2,34 @@ package de.unileipzig.irpact.io.input.awareness;
 
 import de.unileipzig.irpact.commons.awareness.Awareness;
 import de.unileipzig.irpact.commons.awareness.ThresholdAwareness;
+import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-//TODO aktuell fix gesetzt
 @Definition
 public class InThresholdAwareness implements InAwareness {
+
+    public static void initRes(TreeAnnotationResource res) {
+        res.newElementBuilder()
+                .setEdnLabel("Threshold")
+                .setEdnPriority(0)
+                .putCache("Threshold");
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+        res.putPath(
+                InThresholdAwareness.class,
+                res.getCachedElement("Agenten"),
+                res.getCachedElement("Konsumer"),
+                res.getCachedElement("Awareness"),
+                res.getCachedElement("Threshold")
+        );
+    }
 
     public String _name;
 

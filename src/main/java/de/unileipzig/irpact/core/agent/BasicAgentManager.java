@@ -8,10 +8,8 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.LoggingPart;
 import de.unileipzig.irpact.core.log.LoggingType;
 import de.unileipzig.irpact.core.misc.ValidationException;
-import de.unileipzig.irpact.core.network.SocialGraph;
+import de.unileipzig.irpact.core.simulation.InitializationData;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.develop.TodoException;
-import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
@@ -26,15 +24,13 @@ public class BasicAgentManager implements AgentManager {
     protected SimulationEnvironment environment;
     protected Map<String, ConsumerAgentGroup> consumerAgentGroups;
     protected ConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
-    protected Map<ConsumerAgentGroup, Integer> agentCount;
 
     public BasicAgentManager() {
-        this(new HashMap<>(), new HashMap<>());
+        this(new HashMap<>());
     }
 
-    public BasicAgentManager(Map<String, ConsumerAgentGroup> consumerAgentGroups, Map<ConsumerAgentGroup, Integer> agentCount) {
+    public BasicAgentManager(Map<String, ConsumerAgentGroup> consumerAgentGroups) {
         this.consumerAgentGroups = consumerAgentGroups;
-        this.agentCount = agentCount;
     }
 
     public void setEnvironment(SimulationEnvironment environment) {
@@ -43,8 +39,9 @@ public class BasicAgentManager implements AgentManager {
 
     @Override
     public void initialize() {
+        InitializationData initData = environment.getInitializationData();
         for(ConsumerAgentGroup cag: getConsumerAgentGroups()) {
-            int count = getInitialNumberOfConsumerAgent(cag);
+            int count = initData.getInitialNumberOfConsumerAgent(cag);
             for(int i = 0; i < count; i++) {
                 ConsumerAgent ca = cag.deriveAgent();
                 if(cag.addAgent(ca)) {
@@ -99,25 +96,5 @@ public class BasicAgentManager implements AgentManager {
         return getConsumerAgentGroups().stream()
                 .mapToInt(AgentGroup::getNumberOfAgents)
                 .sum();
-    }
-
-    @Override
-    public void setInitialNumberOfConsumerAgents(ConsumerAgentGroup group, int count) {
-        agentCount.put(group, count);
-    }
-
-    @Override
-    public int getInitialNumberOfConsumerAgent(ConsumerAgentGroup group) {
-        return agentCount.get(group);
-    }
-
-    @Override
-    public void replacePlaceholder(ConsumerAgent realAgent) throws IllegalStateException {
-        ConsumerAgentGroup cag = realAgent.getGroup();
-        cag.replacePlaceholder(realAgent);
-
-        environment.getNetwork()
-                .getGraph()
-                .replacePlaceholder(realAgent);
     }
 }

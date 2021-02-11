@@ -63,7 +63,7 @@ public class JadexInputConverter implements InputConverter {
                 //jgrp.addAttribute(battr);
             }
             env.getAgents().add(jgrp);
-            env.getAgents().setInitialNumberOfConsumerAgents(jgrp, grp.getNumberOfAgents());
+            env.getInitializationData().setInitialNumberOfConsumerAgents(jgrp, grp.getNumberOfAgents());
         }
         initAffinities(env, input);
     }

@@ -6,6 +6,5 @@ import de.unileipzig.irptools.util.log.IRPLoggingType;
  * @author Daniel Abitz
  */
 public enum LoggingType implements IRPLoggingType {
-    CORE,
     INITIALIZATION
 }

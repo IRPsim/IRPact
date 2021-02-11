@@ -2,8 +2,8 @@ package de.unileipzig.irpact.io.input.network;
 
 import de.unileipzig.irpact.core.network.topology.FreeNetworkTopology;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -11,13 +11,23 @@ import java.util.Objects;
 /**
  * @author Daniel Abitz
  */
-@Definition(
-        edn = @Edn(
-                label = {"Netzwerk", "Topologie", "Freie Topologie"},
-                priorities = {"-5", "0", "0"}
-        )
-)
+@Definition
 public class InFreeNetworkTopology implements InGraphTopologyScheme {
+
+    public static void initRes(TreeAnnotationResource res) {
+        res.newElementBuilder()
+                .setEdnLabel("Freie Topologie")
+                .setEdnPriority(0)
+                .putCache("Freie Topologie");
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+        res.putPath(
+                InFreeNetworkTopology.class,
+                res.getCachedElement("Netzwerk"),
+                res.getCachedElement("Topologie"),
+                res.getCachedElement("Freie Topologie")
+        );
+    }
 
     public String _name;
 

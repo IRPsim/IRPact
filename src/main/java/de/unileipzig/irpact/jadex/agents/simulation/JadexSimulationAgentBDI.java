@@ -5,7 +5,6 @@ import de.unileipzig.irpact.core.log.LoggingPart;
 import de.unileipzig.irpact.core.log.LoggingType;
 import de.unileipzig.irpact.jadex.JadexConstants;
 import de.unileipzig.irpact.jadex.agents.AbstractJadexAgentBDI;
-import de.unileipzig.irpact.jadex.simulation.JadexLiveCycleControl;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.jadex.time.JadexTimestamp;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -30,8 +29,6 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(JadexSimulationAgentBDI.class);
 
-    protected JadexLiveCycleControl control;
-
     public JadexSimulationAgentBDI() {
     }
 
@@ -47,20 +44,20 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     @Override
     protected void onInit() {
         initData();
-        control.registerSimulationAgentAccess(agent);
-        log().trace(LoggingType.CORE, LoggingPart.AGENT, "[{}] init", getName());
+        environment.getLiveCycleControl().registerSimulationAgentAccess(agent);
+        log().trace(LoggingType.INITIALIZATION, LoggingPart.AGENT, "[{}] init", getName());
     }
 
     @Override
     protected void onStart() {
-        log().trace(LoggingType.CORE, LoggingPart.AGENT, "[{}] init", getName());
+        log().trace(LoggingType.INITIALIZATION, LoggingPart.AGENT, "[{}] init", getName());
         waitUntilEnd();
         reportAgentCreated(this);
     }
 
     @Override
     protected void onEnd() {
-        log().trace(LoggingType.CORE, LoggingPart.AGENT, "[{}] init", getName());
+        log().trace(LoggingType.INITIALIZATION, LoggingPart.AGENT, "[{}] init", getName());
     }
 
     //=========================
@@ -75,7 +72,6 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
         JadexSimulationAgentInitializationData data = getData();
         name = data.getName();
         environment = data.getEnvironment();
-        control = data.getControl();
     }
 
     protected void waitUntilEnd() {
@@ -95,11 +91,11 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
 
     @Override
     public void reportAgentCreated(de.unileipzig.irpact.core.agent.Agent agent) {
-        control.reportAgentCreated(agent);
+        environment.getLiveCycleControl().reportAgentCreated(agent);
     }
 
     @Override
     public void reportFatalException(Exception e) {
-        control.terminateWithError(e);
+        environment.getLiveCycleControl().terminateWithError(e);
     }
 }

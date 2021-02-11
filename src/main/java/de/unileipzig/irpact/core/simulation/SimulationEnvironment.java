@@ -23,6 +23,8 @@ public interface SimulationEnvironment extends Initialization {
     //main components
     //=========================
 
+    InitializationData getInitializationData();
+
     AgentManager getAgents();
 
     SocialNetwork getNetwork();
@@ -32,6 +34,8 @@ public interface SimulationEnvironment extends Initialization {
     SpatialModel getSpatialModel();
 
     TimeModel getTimeModel();
+
+    LifeCycleControl getLiveCycleControl();
 
     //=========================
     //util

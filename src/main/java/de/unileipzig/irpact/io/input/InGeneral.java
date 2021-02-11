@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.io.input;
 
 import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.util.Objects;
 
@@ -10,13 +10,20 @@ import java.util.Objects;
  * @author Daniel Abitz
  */
 @Definition(
-        global = true,
-        edn = @Edn(
-                label = {"Allgemeine Einstellungen"},
-                priorities = {"-9"}
-        )
+        global = true
 )
 public class InGeneral {
+
+    public static void initRes(TreeAnnotationResource res) {
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+        res.putPath(
+                InGeneral.class,
+                res.getCachedElement("Allgemeine Einstellungen")
+        );
+    }
+
+    public static final String OPT_ACT_PAR_NAME = "sca_InGeneral_runOptActDemo";
 
     @FieldDefinition
     public long seed;

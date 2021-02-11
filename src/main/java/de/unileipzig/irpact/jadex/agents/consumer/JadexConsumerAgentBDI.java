@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
 import de.unileipzig.irpact.commons.time.Timestamp;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentInitializationData;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.LoggingPart;
 import de.unileipzig.irpact.core.log.LoggingType;
@@ -141,7 +140,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         processFindingScheme = data.getProcessFindingScheme();
         productFindingScheme = data.getProductFindingScheme();
 
-        environment.getAgents().replacePlaceholder(this);
+        environment.replace(data.getPlaceholder(), this);
     }
 
     @Override

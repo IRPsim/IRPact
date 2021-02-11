@@ -1,9 +1,6 @@
 package de.unileipzig.irpact.experimental.deprecated.input.product;
 
-import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.Edn;
-import de.unileipzig.irptools.defstructure.annotation.EdnParameter;
-import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.defstructure.annotation.*;
 
 /**
  * @author Daniel Abitz

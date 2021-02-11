@@ -6,36 +6,61 @@ import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.EdnParameter;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-@Definition(
-        edn = @Edn(
-                label = {"Agenten", "Konsumer", "Attribute"},
-                priorities = {"-7", "0", "1"}
-        )
-)
+@Definition
 public class InConsumerAgentGroupAttribute {
+
+    public static void initRes(TreeAnnotationResource res) {
+        res.newElementBuilder()
+                .setEdnLabel("Attribute")
+                .setEdnPriority(1)
+                .putCache("Attribute");
+
+        res.newElementBuilder()
+                .setEdnLabel("Attribute-Name-Mapping")
+                .setEdnPriority(4)
+                .putCache("Attribute-Name-Mapping");
+
+        res.newElementBuilder()
+                .setEdnLabel("Attribute-Verteilung-Mapping")
+                .setEdnPriority(5)
+                .putCache("Attribute-Verteilung-Mapping");
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+        res.putPath(
+                InConsumerAgentGroupAttribute.class,
+                res.getCachedElement("Agenten"),
+                res.getCachedElement("Konsumer"),
+                res.getCachedElement("Attribute")
+        );
+
+        res.putPath(
+                InConsumerAgentGroupAttribute.class, "cagAttrName",
+                res.getCachedElement("Agenten"),
+                res.getCachedElement("Konsumer"),
+                res.getCachedElement("Attribute-Name-Mapping")
+        );
+
+        res.putPath(
+                InConsumerAgentGroupAttribute.class, "cagAttrDistribution",
+                res.getCachedElement("Agenten"),
+                res.getCachedElement("Konsumer"),
+                res.getCachedElement("Attribute-Verteilung-Mapping")
+        );
+    }
 
     public String _name;
 
-    @FieldDefinition(
-            edn = @EdnParameter(
-                    label = {"Agenten", "Konsumer", "Attribute-Name-Mapping"},
-                    priorities = {"-7", "0", "3"}
-            )
-    )
+    @FieldDefinition
     public InAttributeName cagAttrName;
 
-    @FieldDefinition(
-            edn = @EdnParameter(
-                    label = {"Agenten", "Konsumer", "Attribute-Verteilung-Mapping"},
-                    priorities = {"-7", "0", "4"}
-            )
-    )
+    @FieldDefinition
     public InUnivariateDoubleDistribution cagAttrDistribution;
 
     public InConsumerAgentGroupAttribute() {

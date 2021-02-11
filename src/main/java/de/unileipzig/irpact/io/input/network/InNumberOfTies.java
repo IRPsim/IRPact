@@ -2,21 +2,32 @@ package de.unileipzig.irpact.io.input.network;
 
 import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-@Definition(
-        edn = @Edn(
-                label = {"Netzwerk", "Topologie", "Freie Topologie", "Anzahl Kanten"},
-                priorities = {"-5", "0", "0", "0"}
-        )
-)
+@Definition
 public class InNumberOfTies {
+
+    public static void initRes(TreeAnnotationResource res) {
+        res.newElementBuilder()
+                .setEdnLabel("Anzahl Kanten")
+                .setEdnPriority(0)
+                .putCache("Anzahl Kanten");
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+        res.putPath(
+                InNumberOfTies.class,
+                res.getCachedElement("Netzwerk"),
+                res.getCachedElement("Topologie"),
+                res.getCachedElement("Freie Topologie"),
+                res.getCachedElement("Anzahl Kanten")
+        );
+    }
 
     public String _name;
 

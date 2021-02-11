@@ -35,13 +35,7 @@ public interface AgentManager extends Initialization {
 
     int getTotalNumberOfConsumerAgents();
 
-    void setInitialNumberOfConsumerAgents(ConsumerAgentGroup group, int count);
-
-    int getInitialNumberOfConsumerAgent(ConsumerAgentGroup group);
-
     ConsumerAgentGroupAffinityMapping getConsumerAgentGroupAffinityMapping();
 
     void setConsumerAgentGroupAffinityMapping(ConsumerAgentGroupAffinityMapping affinityMapping);
-
-    void replacePlaceholder(ConsumerAgent realAgent) throws IllegalStateException;
 }

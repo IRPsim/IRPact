@@ -1,7 +1,10 @@
-package de.unileipzig.irpact.core.agent.consumer;
+package de.unileipzig.irpact.jadex.agents.consumer;
 
 import de.unileipzig.irpact.commons.awareness.Awareness;
 import de.unileipzig.irpact.core.agent.SpatialInformationAgentBase;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.misc.Placeholder;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
@@ -9,13 +12,16 @@ import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
+import de.unileipzig.irpact.jadex.agents.consumer.ConsumerAgentInitializationData;
 
 import java.util.*;
 
 /**
  * @author Daniel Abitz
  */
-public class PlaceholderConsumerAgent extends SpatialInformationAgentBase implements ConsumerAgent, ConsumerAgentInitializationData, Placeholder {
+public final class PlaceholderConsumerAgent
+        extends SpatialInformationAgentBase
+        implements ConsumerAgent, ConsumerAgentInitializationData, Placeholder {
 
     protected ConsumerAgentGroup group;
     protected SocialGraph.Node node;
@@ -135,5 +141,10 @@ public class PlaceholderConsumerAgent extends SpatialInformationAgentBase implem
 
     public void setProcessFindingScheme(ProcessFindingScheme processFindingScheme) {
         this.processFindingScheme = processFindingScheme;
+    }
+
+    @Override
+    public PlaceholderConsumerAgent getPlaceholder() {
+        return this;
     }
 }

@@ -1,21 +1,31 @@
 package de.unileipzig.irpact.io.input.spatial;
 
 import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-@Definition(
-        edn = @Edn(
-                label = {"Raeumliche Modell", "Space2D"},
-                priorities = {"-3", "0"}
-        )
-)
+@Definition
 public class InSpace2D implements InSpatialModel {
+
+    public static void initRes(TreeAnnotationResource res) {
+        res.newElementBuilder()
+                .setEdnLabel("Space2D")
+                .setEdnPriority(0)
+                .putCache("Space2D");
+    }
+
+    public static void applyRes(TreeAnnotationResource res) {
+        res.putPath(
+                InSpace2D.class,
+                res.getCachedElement("Räumliche Modell"),
+                res.getCachedElement("Space2D")
+        );
+    }
 
     public String _name;
 

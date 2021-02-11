@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.experimental.tests.timeModelWithController;
 
-import de.unileipzig.irpact.jadex.simulation.BasicJadexLiveCycleControl;
-import de.unileipzig.irpact.jadex.simulation.JadexLiveCycleControl;
+import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
+import de.unileipzig.irpact.jadex.simulation.JadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.time.ContinuousTimeModel;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.jadex.util.JadexUtil2;
@@ -25,7 +25,7 @@ public class MainContinous {
         return MainContinous.class.getPackage().getName();
     }
 
-    private static CreationInfo newModelInfo(String name, JadexTimeModel timeModel, JadexLiveCycleControl simulationControl) {
+    private static CreationInfo newModelInfo(String name, JadexTimeModel timeModel, JadexLifeCycleControl simulationControl) {
         CreationInfo info = new CreationInfo();
         info.setName(name);
         info.setFilename(getPackageName() + ".TimeModelAgent.class");
@@ -80,7 +80,7 @@ public class MainContinous {
         log("end:   " + cTimeModel.endTime());
 
         log("pre start:   " +  clock.getTick() + " " + clock.getTime() + " " + cTimeModel.now());
-        BasicJadexLiveCycleControl simulationControl = new BasicJadexLiveCycleControl();
+        BasicJadexLifeCycleControl simulationControl = new BasicJadexLifeCycleControl();
         simulationControl.setTotalNumberOfAgents(4);
 
         IExternalAccess modelAgent = platform.createComponent(newModelInfo("M", cTimeModel, simulationControl)).get();

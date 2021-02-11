@@ -120,7 +120,7 @@ class OptActMainTest {
     @Test
     void createFiles4GV() throws Exception {
         Logback.setupSystemOutAndErr();
-        Path dir = Paths.get("exppriv", "optact", "gv");
+        Path dir = TestFiles.testfiles.resolve("optact").resolve("gv");
         String[] args = {
                 "--inputRootClass", GvInRoot.class.getName(),
                 "--outputRootClass", OutRoot.class.getName(),

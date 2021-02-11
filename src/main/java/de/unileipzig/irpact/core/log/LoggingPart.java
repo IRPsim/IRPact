@@ -10,6 +10,7 @@ public final class LoggingPart {
         return id++;
     }
 
+    public static final int PARAMETER = nextId();
     public static final int PLATFORM = nextId();
     public static final int AGENT = nextId();
     public static final int NETWORK = nextId();

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.core.agent.Agent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 
 import java.util.Collection;
 import java.util.Set;
@@ -72,7 +73,7 @@ public interface SocialGraph {
         }
     }
 
-    void replacePlaceholder(Agent realAgent) throws IllegalStateException;
+    void replace(ConsumerAgent toRemove, ConsumerAgent toAdd) throws IllegalStateException;
 
     boolean addAgent(Agent agent);
 

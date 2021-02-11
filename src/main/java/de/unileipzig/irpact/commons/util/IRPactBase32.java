@@ -51,6 +51,11 @@ public final class IRPactBase32 {
         return new String(b32, StandardCharsets.US_ASCII);
     }
 
+    public static String encodeUTF8ToString(String input) {
+        byte[] b = input.getBytes(StandardCharsets.UTF_8);
+        return encodeToString(b);
+    }
+
     public static byte[] decode(byte[] b32) {
         restore(b32);
         byte[] output = BASE32.decode(b32);
@@ -61,6 +66,11 @@ public final class IRPactBase32 {
     public static byte[] decodeString(String b32) {
         byte[] b32Bytes = b32.getBytes(StandardCharsets.US_ASCII);
         return decode(b32Bytes);
+    }
+
+    public static String decodeStringToUTF8(String b32) {
+        byte[] b = decodeString(b32);
+        return new String(b, StandardCharsets.UTF_8);
     }
 
     public static void exchange(byte[] b32) {

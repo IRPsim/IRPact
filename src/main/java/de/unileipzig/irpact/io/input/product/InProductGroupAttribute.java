@@ -3,39 +3,59 @@ package de.unileipzig.irpact.io.input.product;
 import de.unileipzig.irpact.io.input.InAttributeName;
 import de.unileipzig.irpact.io.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.Edn;
-import de.unileipzig.irptools.defstructure.annotation.EdnParameter;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-@Definition(
-        edn = @Edn(
-                label = {"Produkte", "Attribute"},
-                priorities = {"-1", "1"}
-        )
-)
+@Definition
 public class InProductGroupAttribute {
+
+    public static void initRes(TreeAnnotationResource res) {
+        res.newElementBuilder()
+                .setEdnLabel("Attribute")
+                .setEdnPriority(1)
+                .putCache("Attribute_Product");
+
+        res.newElementBuilder()
+                .setEdnLabel("Attribut-Namen-Mapping")
+                .setEdnPriority(0)
+                .putCache("Namen-Mapping_Product");
+
+        res.newElementBuilder()
+                .setEdnLabel("Attribut-Verteilungs-Mapping")
+                .setEdnPriority(1)
+                .putCache("Verteilungs-Mapping_Product");
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+        res.putPath(
+                InProductGroupAttribute.class,
+                res.getCachedElement("Produkte"),
+                res.getCachedElement("Attribute_Product")
+        );
+
+        res.putPath(
+                InProductGroupAttribute.class, "attrName",
+                res.getCachedElement("Produkte"),
+                res.getCachedElement("Namen-Mapping_Product")
+        );
+
+        res.putPath(
+                InProductGroupAttribute.class, "attrDistribution",
+                res.getCachedElement("Produkte"),
+                res.getCachedElement("Verteilungs-Mapping_Product")
+        );
+    }
 
     public String _name;
 
-    @FieldDefinition(
-            edn = @EdnParameter(
-                    label = {"Produkte", "Attribute", "Namen-Mapping"},
-                    priorities = {"-1", "1", "0"}
-            )
-    )
+    @FieldDefinition
     public InAttributeName attrName;
 
-    @FieldDefinition(
-            edn = @EdnParameter(
-                    label = {"Produkte", "Attribute", "Verteilungs-Mapping"},
-                    priorities = {"-1", "1", "1"}
-            )
-    )
+    @FieldDefinition
     public InUnivariateDoubleDistribution attrDistribution;
 
     public InProductGroupAttribute() {

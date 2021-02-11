@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.start.optact;
 
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
-import de.unileipzig.irpact.experimental.deprecated.input2.network.IFreeMultiGraphTopology;
-import de.unileipzig.irpact.experimental.deprecated.input2.network.IWattsStrogatzModel;
+import de.unileipzig.irpact.start.optact.network.IFreeMultiGraphTopology;
+import de.unileipzig.irpact.start.optact.network.IWattsStrogatzModel;
 import de.unileipzig.irptools.graphviz.def.GraphvizResource;
 import de.unileipzig.irptools.util.MultiAnnotationResource;
 import de.unileipzig.irptools.util.Util;

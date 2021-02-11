@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.experimental.graphfun;
 
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
 import de.unileipzig.irpact.commons.graph.FastDirectedMultiGraph;

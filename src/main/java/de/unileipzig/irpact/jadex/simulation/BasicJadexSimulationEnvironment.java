@@ -3,12 +3,15 @@ package de.unileipzig.irpact.jadex.simulation;
 import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
 import de.unileipzig.irpact.core.network.SocialNetwork;
 import de.unileipzig.irpact.core.product.BasicProductManager;
 import de.unileipzig.irpact.core.product.ProductManager;
+import de.unileipzig.irpact.core.simulation.InitializationData;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -22,17 +25,28 @@ public class BasicJadexSimulationEnvironment implements JadexSimulationEnvironme
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicJadexSimulationEnvironment.class);
 
-    protected AgentManager agentManager = new BasicAgentManager();
-    protected SocialNetwork socialNetwork = new BasicSocialNetwork();
-    protected ProductManager productManager = new BasicProductManager();
+    protected InitializationData initializationData;
+    protected BasicAgentManager agentManager = new BasicAgentManager();
+    protected BasicSocialNetwork socialNetwork = new BasicSocialNetwork();
+    protected BasicProductManager productManager = new BasicProductManager();
     protected SpatialModel spatialModel;
     protected JadexTimeModel timeModel;
+    protected BasicJadexLifeCycleControl lifeCycleControl = new BasicJadexLifeCycleControl();
     protected Rnd rnd;
 
     public BasicJadexSimulationEnvironment() {
-        ((BasicAgentManager) agentManager).setEnvironment(this);
-        ((BasicSocialNetwork) socialNetwork).setEnvironment(this);
-        ((BasicProductManager) productManager).setEnvironment(this);
+        agentManager.setEnvironment(this);
+        socialNetwork.setEnvironment(this);
+        productManager.setEnvironment(this);
+    }
+
+    @Override
+    public InitializationData getInitializationData() {
+        return initializationData;
+    }
+
+    public void setInitializationData(InitializationData initializationData) {
+        this.initializationData = initializationData;
     }
 
     @Override
@@ -69,6 +83,11 @@ public class BasicJadexSimulationEnvironment implements JadexSimulationEnvironme
     }
 
     @Override
+    public JadexLifeCycleControl getLiveCycleControl() {
+        return lifeCycleControl;
+    }
+
+    @Override
     public Rnd getSimulationRandom() {
         return rnd;
     }
@@ -84,6 +103,7 @@ public class BasicJadexSimulationEnvironment implements JadexSimulationEnvironme
         productManager.initialize();
         spatialModel.initialize();
         timeModel.initialize();
+        lifeCycleControl.initialize();
     }
 
     @Override
@@ -93,6 +113,7 @@ public class BasicJadexSimulationEnvironment implements JadexSimulationEnvironme
         productManager.validate();
         spatialModel.validate();
         timeModel.validate();
+        lifeCycleControl.validate();
     }
 
     @Override
@@ -101,5 +122,13 @@ public class BasicJadexSimulationEnvironment implements JadexSimulationEnvironme
                 this,
                 socialNetwork.getGraph()
         );
+    }
+
+    @Override
+    public void replace(ConsumerAgent placeholder, ConsumerAgent real) throws IllegalStateException {
+        ConsumerAgentGroup cag = placeholder.getGroup();
+        cag.replace(placeholder, real);
+
+        getNetwork().getGraph().replace(placeholder, real);
     }
 }

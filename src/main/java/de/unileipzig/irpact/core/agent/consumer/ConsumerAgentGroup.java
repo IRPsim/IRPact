@@ -37,7 +37,7 @@ public interface ConsumerAgentGroup extends AgentGroup<ConsumerAgent> {
 
     boolean hasGroupAttribute(String name);
 
-    void replacePlaceholder(ConsumerAgent realAgent) throws IllegalStateException;
+    void replace(ConsumerAgent toRemove, ConsumerAgent toAdd) throws IllegalStateException;
 
     ProcessFindingScheme getProcessFindingScheme();
 

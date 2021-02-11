@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.io.input;
 
 import de.unileipzig.irpact.core.process.ra.RAConstants;
+import de.unileipzig.irpact.io.input.awareness.InThresholdAwareness;
 import de.unileipzig.irpact.io.input.distribution.InConstantUnivariateDistribution;
 import de.unileipzig.irpact.io.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroup;
@@ -20,7 +21,12 @@ import de.unileipzig.irpact.io.input.spatial.InSpatialDistribution;
 import de.unileipzig.irpact.io.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.input.time.InDiscreteTimeModel;
 import de.unileipzig.irpact.io.input.time.InTimeModel;
+import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
+import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irpact.start.optact.in.*;
+import de.unileipzig.irpact.start.optact.network.IFreeMultiGraphTopology;
+import de.unileipzig.irpact.start.optact.network.IGraphTopology;
+import de.unileipzig.irpact.start.optact.network.IWattsStrogatzModel;
 import de.unileipzig.irptools.defstructure.DefaultScenarioFactory;
 import de.unileipzig.irptools.graphviz.def.GraphvizColor;
 import de.unileipzig.irptools.graphviz.def.GraphvizGlobal;
@@ -29,6 +35,7 @@ import de.unileipzig.irptools.graphviz.def.GraphvizOutputFormat;
 import de.unileipzig.irptools.util.DoubleTimeSeries;
 import de.unileipzig.irptools.util.Table;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +52,7 @@ public class InExample implements DefaultScenarioFactory {
         return createExample();
     }
 
+    @SuppressWarnings("unused")
     public static InRoot createExample() {
         //===
         InAttributeName A1 = new InAttributeName(RAConstants.PURCHASE_POWER);
@@ -106,7 +114,9 @@ public class InExample implements DefaultScenarioFactory {
         InConsumerAgentGroupAttribute cag0_D3_attr = build(name, D3, dist, list);
         InConsumerAgentGroupAttribute cag0_D4_attr = build(name, D4, dist, list);
 
-        InConsumerAgentGroup cag0 = new InConsumerAgentGroup(name, 1.0, 8, list);
+        InThresholdAwareness cag0_awa = new InThresholdAwareness("cag0_awa", 10);
+
+        InConsumerAgentGroup cag0 = new InConsumerAgentGroup(name, 1.0, 8, list, cag0_awa);
 
         //cag1
         name = "cag1";
@@ -134,7 +144,9 @@ public class InExample implements DefaultScenarioFactory {
         InConsumerAgentGroupAttribute cag1_D3_attr = build(name, D3, dist, list);
         InConsumerAgentGroupAttribute cag1_D4_attr = build(name, D4, dist, list);
 
-        InConsumerAgentGroup cag1 = new InConsumerAgentGroup(name, 1.0, 12, list);
+        InThresholdAwareness cag1_awa = new InThresholdAwareness("cag0_awa", 10);
+
+        InConsumerAgentGroup cag1 = new InConsumerAgentGroup(name, 1.0, 12, list, cag1_awa);
 
         //affinity
         InAffinityEntry cag0_cag0 = new InAffinityEntry("cag0_cag0", cag0, cag0, 0.7);
@@ -199,6 +211,7 @@ public class InExample implements DefaultScenarioFactory {
         //=====
         InRoot root = new InRoot();
         initOptAct(root);
+        initGV(root);
 
         //graphviz
         GraphvizColor gc1 = GraphvizColor.RED;
@@ -220,6 +233,7 @@ public class InExample implements DefaultScenarioFactory {
         root.graphvizGlobal.scaleFactor = 0.0;
 
         //=====
+        root.version = new InVersion[]{InVersion.currentVersion()};
         root.general = general;
         root.affinityEntries = new InAffinityEntry[]{cag0_cag0, cag0_cag1, cag1_cag1, cag1_cag0};
         root.consumerAgentGroups = new InConsumerAgentGroup[]{cag0, cag1};
@@ -243,6 +257,57 @@ public class InExample implements DefaultScenarioFactory {
         return attr;
     }
 
+    @SuppressWarnings("SameParameterValue")
+    private static IWattsStrogatzModel createWattsStrogatzModel(String name, int k, double beta, long seed, boolean use) {
+        IWattsStrogatzModel model = new IWattsStrogatzModel();
+        model._name = name;
+        model.wsmSelfReferential = false;
+        model.wsmBeta = beta;
+        model.wsmK = k;
+        model.wsmSeed = seed;
+        model.wsmUseThis = use;
+        return model;
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private static IFreeMultiGraphTopology createFreeMultiGraphTopology(String name, int edgeCount, long seed, boolean use) {
+        IFreeMultiGraphTopology model = new IFreeMultiGraphTopology();
+        model._name = name;
+        model.ftEdgeCount = edgeCount;
+        model.ftSelfReferential = false;
+        model.ftSeed = seed;
+        model.ftUseThis = use;
+        return model;
+    }
+
+    private static void initGV(InRoot root) {
+        GraphvizColor gc1 = GraphvizColor.RED;
+        GraphvizColor gc2 = GraphvizColor.GREEN;
+        GraphvizColor gc3 = new GraphvizColor("BLUE", Color.BLUE);
+        GraphvizColor gc4 = GraphvizColor.PINK;
+        root.colors = new GraphvizColor[]{gc1, gc2, gc3, gc4};
+
+        AgentGroup ag1 = new AgentGroup("Gruppe1", 10, gc1);
+        AgentGroup ag2 = new AgentGroup("Gruppe2", 15, gc2);
+        AgentGroup ag3 = new AgentGroup("Gruppe3", 20, gc3);
+        AgentGroup ag4 = new AgentGroup("Gruppe4", 25, gc4);
+        root.agentGroups = new AgentGroup[]{ag1, ag2, ag3, ag4};
+
+        GraphvizLayoutAlgorithm.DOT.useLayout = false;
+        GraphvizLayoutAlgorithm.CIRCO.useLayout = true;
+        root.layoutAlgorithms = GraphvizLayoutAlgorithm.DEFAULTS;
+        GraphvizOutputFormat.PNG.useFormat = true;
+        root.outputFormats = new GraphvizOutputFormat[] { GraphvizOutputFormat.PNG };
+        root.topologies = new IGraphTopology[] {
+                createWattsStrogatzModel("WSM1", 4, 0.0, 42, true),
+                createFreeMultiGraphTopology("FREE1", 3, 24, false)
+        };
+
+        root.graphvizGlobal = new GraphvizGlobal();
+        root.graphvizGlobal.fixedNeatoPosition = false;
+        root.graphvizGlobal.scaleFactor = 0.0;
+    }
+
     private static void initOptAct(InRoot root) {
         SideFares SMS = new SideFares("SMS");
         SideFares NS = new SideFares("NS");
@@ -262,8 +327,8 @@ public class InExample implements DefaultScenarioFactory {
         TechDESPV techPV1 = new TechDESPV("tech_PV1");
         techPV1.a = 25.0;
 
-        SideCustom grp1 = new SideCustom("grp1", 10, 5, new DoubleTimeSeries("0"));
-        SideCustom grp2 = new SideCustom("grp2", 20, 10, new DoubleTimeSeries("0"));
+        SideCustom grp1 = new SideCustom("p1", 10, 5, new DoubleTimeSeries("0"));
+        SideCustom grp2 = new SideCustom("p2", 20, 10, new DoubleTimeSeries("0"));
 
         InGlobal global = new InGlobal();
         global.mwst = 0.19;

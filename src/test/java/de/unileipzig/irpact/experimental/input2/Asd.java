@@ -2,9 +2,9 @@ package de.unileipzig.irpact.experimental.input2;
 
 import de.unileipzig.irpact.experimental.deprecated.input2.InputResource;
 import de.unileipzig.irpact.experimental.deprecated.input2.agent.consumer.IConsumerAgentGroup;
-import de.unileipzig.irpact.experimental.deprecated.input2.network.IFreeMultiGraphTopology;
-import de.unileipzig.irpact.experimental.deprecated.input2.network.IGraphTopology;
-import de.unileipzig.irpact.experimental.deprecated.input2.network.IWattsStrogatzModel;
+import de.unileipzig.irpact.start.optact.network.IFreeMultiGraphTopology;
+import de.unileipzig.irpact.start.optact.network.IGraphTopology;
+import de.unileipzig.irpact.start.optact.network.IWattsStrogatzModel;
 import de.unileipzig.irptools.defstructure.AnnotationParser;
 import de.unileipzig.irptools.defstructure.DefinitionCollection;
 import de.unileipzig.irptools.defstructure.ParserInput;

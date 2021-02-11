@@ -4,21 +4,31 @@ import de.unileipzig.irpact.commons.eval.Inverse;
 import de.unileipzig.irpact.commons.spatial.BasicDistanceEvaluator;
 import de.unileipzig.irpact.commons.spatial.DistanceEvaluator;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-@Definition(
-        edn = @Edn(
-                label = {"Netzwerk", "Abstandsfunktion", "Invers"},
-                priorities = {"-5", "1", "1"}
-        )
-)
+@Definition
 public class InInverse implements InDistanceEvaluator {
+
+    public static void initRes(TreeAnnotationResource res) {
+        res.newElementBuilder()
+                .setEdnLabel("Invers")
+                .setEdnPriority(1)
+                .putCache("Invers");
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+        res.putPath(
+                InInverse.class,
+                res.getCachedElement("Netzwerk"),
+                res.getCachedElement("Abstandsfunktion"),
+                res.getCachedElement("Invers")
+        );
+    }
 
     public String _name;
 
