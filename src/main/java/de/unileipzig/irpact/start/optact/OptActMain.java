@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.start.optact;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irpact.start.optact.in.SideCustom;
@@ -185,9 +184,7 @@ public class OptActMain implements Callable<Integer> {
         ((AbstractMultiGraphTopology<Node, Link, String>) topo).setMultiEdgeCreatorFunction(Link::create);
 
         logger.trace("initalize edges");
-        IRPact.disableUtilLogging();
         topo.initalizeEdges(g);
-        IRPact.enableUtilLogging();
         logger.trace("edges: " + g.edgeCount());
 
         GraphvizGenerator<Node, Link> gen = new GraphvizGenerator<>(
@@ -362,7 +359,8 @@ public class OptActMain implements Callable<Integer> {
 
     public static void main(String[] args) {
         OptActMain optact = new OptActMain();
-        CommandLine cmdLine = new CommandLine(optact);
+        CommandLine cmdLine = new CommandLine(optact)
+                .setUnmatchedArgumentsAllowed(true);
         int exitCode = cmdLine.execute(args);
         if(exitCode == CommandLine.ExitCode.OK) {
             optact.run();

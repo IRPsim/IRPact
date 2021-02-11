@@ -13,6 +13,7 @@ public class DoubleAttributeBase extends NameableBase implements DoubleAttribute
         setDoubleValue(value.doubleValue());
     }
 
+    @Override
     public void setDoubleValue(double value) {
         this.value = value;
     }

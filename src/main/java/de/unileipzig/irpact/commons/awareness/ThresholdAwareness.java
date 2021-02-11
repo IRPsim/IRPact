@@ -48,19 +48,21 @@ public class ThresholdAwareness<T> implements Awareness<T> {
     }
 
     @Override
-    public boolean isAwareOf(T item) {
+    public boolean isAware(T item) {
         Double v = items.get(item);
         return v != null && v > 0.0;
     }
 
     @Override
     public void update(T item, double influence) {
-        double current = items.computeIfAbsent(item, _item -> 0.0);
-        items.put(item, Math.max(current + influence, 0.0));
+        if(influence != 0.0) {
+            double current = items.computeIfAbsent(item, _item -> 0.0);
+            items.put(item, Math.max(current + influence, 0.0));
+        }
     }
 
     @Override
-    public void makeAware(T item) {
+    public void makeInterested(T item) {
         items.put(item, threshold);
     }
 

@@ -30,21 +30,17 @@ test {
 
 ext {
     junitJupiterVersion = '5.4.2'
-    junitPlatformVersion = '1.4.2'
     jacksonVersion = '2.10.2'
-    picocliVersion = '4.2.0'
     jadexDistVersion = '4.0.187' //'4.0.171'
-    sl4jVersion = '1.7.30'
     logbackVersion = '1.2.3'
-    geotoolsVersion = '23.2'
-    ednjavaVersion = '0.6.0'
+    apachePoiVersion = '5.0.0'
 }
 
 dependencies {
     testCompileOnly "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
     runtimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
     runtimeOnly "org.junit.vintage:junit-vintage-engine:$junitJupiterVersion"
-    runtimeOnly "org.junit.platform:junit-platform-launcher:$junitPlatformVersion"
+    runtimeOnly "org.junit.platform:junit-platform-launcher:1.4.2"
     testCompileOnly "org.apiguardian:apiguardian-api:1.0.0"
 
     //implementation "org.activecomponents.jadex:jadex-distribution-standard:$jadexDistVersion"
@@ -54,21 +50,28 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
     implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     implementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-smile:$jacksonVersion"
 
-    implementation "info.picocli:picocli:$picocliVersion"
+    implementation "info.picocli:picocli:4.2.0"
+
+    implementation "org.slf4j:slf4j-api:1.7.30"
 
     implementation "ch.qos.logback:logback-classic:$logbackVersion"
     implementation "ch.qos.logback:logback-core:$logbackVersion"
 
-    implementation "org.geotools:gt-shapefile:$geotoolsVersion"
+    implementation "org.geotools:gt-shapefile:23.2"
 
-    implementation "us.bpsm:edn-java:$ednjavaVersion"
+    implementation "us.bpsm:edn-java:0.6.0"
 
     implementation 'guru.nidi:graphviz-java:0.17.1'
 
+    //base32
     implementation "commons-codec:commons-codec:1.15"
 
     implementation "org.mariuszgromada.math:MathParser.org-mXparser:4.4.2"
+
+    implementation "org.apache.poi:poi:$apachePoiVersion"
+    implementation "org.apache.poi:poi-ooxml:$apachePoiVersion"
 
     //custom
     implementation files('customlibs/IRPtools-1.0-SNAPSHOT.jar')

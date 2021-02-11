@@ -3,7 +3,7 @@ package de.unileipzig.irpact.core.agent;
 /**
  * @author Daniel Abitz
  */
-public class SpatialInformationAgentBase extends SpatialAgentBase implements InformationAgent {
+public abstract class SpatialInformationAgentBase extends SpatialAgentBase implements InformationAgent {
 
     protected double informationAuthority;
 

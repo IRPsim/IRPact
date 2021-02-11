@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.agent;
 
 import de.unileipzig.irpact.core.simulation.SimulationEntity;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * @param <T>
@@ -10,5 +10,9 @@ import java.util.Set;
  */
 public interface AgentGroup<T extends Agent> extends SimulationEntity {
 
-    Set<T> getAgents();
+    Collection<T> getAgents();
+
+    default int getNumberOfAgents() {
+        return getAgents().size();
+    }
 }

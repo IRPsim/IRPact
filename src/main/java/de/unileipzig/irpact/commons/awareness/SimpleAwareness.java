@@ -36,7 +36,7 @@ public class SimpleAwareness<T> implements Awareness<T> {
     }
 
     @Override
-    public boolean isAwareOf(T item) {
+    public boolean isAware(T item) {
         return items.contains(item);
     }
 
@@ -50,7 +50,7 @@ public class SimpleAwareness<T> implements Awareness<T> {
     }
 
     @Override
-    public void makeAware(T item) {
+    public void makeInterested(T item) {
         items.add(item);
     }
 

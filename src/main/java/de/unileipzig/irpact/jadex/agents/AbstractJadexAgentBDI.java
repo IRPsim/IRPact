@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.agents;
 
+import jadex.bdiv3.features.IBDIAgentFeature;
 import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IArgumentsResultsFeature;
 import jadex.bridge.component.IExecutionFeature;
@@ -20,11 +21,9 @@ public abstract class AbstractJadexAgentBDI extends AbstractAgentBase {
     protected IExecutionFeature execFeature;
     @AgentFeature
     protected IRequiredServicesFeature reqFeature;
+    @AgentFeature
+    protected IBDIAgentFeature bdiFeature;
 
     public AbstractJadexAgentBDI() {
-    }
-
-    protected void initData() {
-        initData(resultsFeature.getArguments());
     }
 }

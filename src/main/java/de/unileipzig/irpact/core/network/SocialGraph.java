@@ -1,7 +1,9 @@
 package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.core.agent.Agent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -71,7 +73,11 @@ public interface SocialGraph {
         }
     }
 
+    void replace(ConsumerAgent toRemove, ConsumerAgent toAdd) throws IllegalStateException;
+
     boolean addAgent(Agent agent);
+
+    Node addAgentAndGetNode(Agent agent);
 
     boolean addNode(Node node);
 
@@ -83,9 +89,11 @@ public interface SocialGraph {
 
     Set<? extends Node> getTargets(Node from, Type type);
 
+    boolean getTargets(Node from, Type type, Collection<? super Node> targets);
+
     Stream<? extends Node> streamTargets(Node source, Type type);
 
-    boolean addEdge(Node from, Node to, Type type);
+    boolean addEdge(Node from, Node to, Type type, double weight);
 
     Edge getEdge(Node from, Node to, Type type);
 

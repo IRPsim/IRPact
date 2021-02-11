@@ -15,6 +15,10 @@
     "scalars" : {
       "sca_GraphvizGlobal_fixedNeatoPosition" : 0,
       "sca_GraphvizGlobal_scaleFactor" : 0.0,
+      "sca_InGeneral_logAgentCreation" : 0,
+      "sca_InGeneral_logGraphCreation" : 0,
+      "sca_InGeneral_runOptActDemo" : 1,
+      "sca_InGeneral_seed" : 42,
       "sca_Tax_PS_vat" : 0.19,
       "sca_X_MS_CH_country" : 0,
       "sca_X_MS_DE_country" : 1
@@ -93,6 +97,259 @@
         "WSM1" : { }
       },
       "set_ii" : { },
+      "set_InAffinityEntry" : {
+        "cag0_cag0" : {
+          "par_InAffinityEntry_affinityValue" : 0.7
+        },
+        "cag0_cag1" : {
+          "par_InAffinityEntry_affinityValue" : 0.3
+        },
+        "cag1_cag0" : {
+          "par_InAffinityEntry_affinityValue" : 0.1
+        },
+        "cag1_cag1" : {
+          "par_InAffinityEntry_affinityValue" : 0.9
+        }
+      },
+      "set_InAttributeName" : {
+        "A" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "A1" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "A2" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "A2_1" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "A2_2" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "A3" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "A3_1" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "A3_2" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "A4" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "A4_1" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "A4_2" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "A5" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "A6" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "A7" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "A8" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "C1" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "D1" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "D2" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "D3" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "D4" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "E1" : {
+          "par_InAttributeName_placeholder" : 0
+        },
+        "N" : {
+          "par_InAttributeName_placeholder" : 0
+        }
+      },
+      "set_InAwareness" : {
+        "cag0_awa" : { }
+      },
+      "set_InConstantSpatialDistribution2D" : {
+        "cag0_spatial" : {
+          "par_InConstantSpatialDistribution2D_x" : 0.0,
+          "par_InConstantSpatialDistribution2D_y" : 1.0
+        },
+        "cag1_spatial" : {
+          "par_InConstantSpatialDistribution2D_x" : 1.0,
+          "par_InConstantSpatialDistribution2D_y" : 0.0
+        }
+      },
+      "set_InConstantUnivariateDistribution" : {
+        "constant01" : {
+          "par_InConstantUnivariateDistribution_constDistValue" : 0.1
+        },
+        "constant09" : {
+          "par_InConstantUnivariateDistribution_constDistValue" : 0.9
+        },
+        "constant24" : {
+          "par_InConstantUnivariateDistribution_constDistValue" : 24.0
+        },
+        "constant42" : {
+          "par_InConstantUnivariateDistribution_constDistValue" : 42.0
+        }
+      },
+      "set_InConsumerAgentGroup" : {
+        "cag0" : {
+          "par_InConsumerAgentGroup_informationAuthority" : 1.0,
+          "par_InConsumerAgentGroup_numberOfAgentsX" : 8
+        },
+        "cag1" : {
+          "par_InConsumerAgentGroup_informationAuthority" : 1.0,
+          "par_InConsumerAgentGroup_numberOfAgentsX" : 12
+        }
+      },
+      "set_InConsumerAgentGroupAttribute" : {
+        "cag0_A1" : { },
+        "cag0_A2" : { },
+        "cag0_A2_1" : { },
+        "cag0_A2_2" : { },
+        "cag0_A3" : { },
+        "cag0_A3_1" : { },
+        "cag0_A3_2" : { },
+        "cag0_A4" : { },
+        "cag0_A4_1" : { },
+        "cag0_A4_2" : { },
+        "cag0_A5" : { },
+        "cag0_A6" : { },
+        "cag0_A7" : { },
+        "cag0_A8" : { },
+        "cag0_C1" : { },
+        "cag0_D1" : { },
+        "cag0_D2" : { },
+        "cag0_D3" : { },
+        "cag0_D4" : { },
+        "cag1_A1" : { },
+        "cag1_A2" : { },
+        "cag1_A2_1" : { },
+        "cag1_A2_2" : { },
+        "cag1_A3" : { },
+        "cag1_A3_1" : { },
+        "cag1_A3_2" : { },
+        "cag1_A4" : { },
+        "cag1_A4_1" : { },
+        "cag1_A4_2" : { },
+        "cag1_A5" : { },
+        "cag1_A6" : { },
+        "cag1_A7" : { },
+        "cag1_A8" : { },
+        "cag1_C1" : { },
+        "cag1_D1" : { },
+        "cag1_D2" : { },
+        "cag1_D3" : { },
+        "cag1_D4" : { }
+      },
+      "set_InConsumerAgentGroupColor" : {
+        "cag0_color" : { },
+        "cag1_color" : { }
+      },
+      "set_InDiscreteTimeModel" : {
+        "Discrete" : {
+          "par_InDiscreteTimeModel_timePerTickInMs" : 604800000
+        }
+      },
+      "set_InDistanceEvaluator" : {
+        "NoDistance" : { }
+      },
+      "set_InFreeNetworkTopology" : {
+        "FreeTopo" : {
+          "par_InFreeNetworkTopology_initialWeight" : 1.0
+        }
+      },
+      "set_InGraphTopologyScheme" : {
+        "FreeTopo" : { }
+      },
+      "set_InInverse" : { },
+      "set_InNoDistance" : {
+        "NoDistance" : {
+          "par_InNoDistance_placeholderNoDistance" : 0
+        }
+      },
+      "set_InNumberOfTies" : {
+        "cag0_ties" : {
+          "par_InNumberOfTies_count" : 3
+        },
+        "cag1_ties" : {
+          "par_InNumberOfTies_count" : 4
+        }
+      },
+      "set_InOrientationSupplier" : {
+        "OrientationSupplier" : { }
+      },
+      "set_InProcessModel" : {
+        "RA" : { }
+      },
+      "set_InProductGroup" : {
+        "PV" : {
+          "par_InProductGroup_placeholderProduct" : 0
+        }
+      },
+      "set_InProductGroupAttribute" : {
+        "PV_E1" : { }
+      },
+      "set_InRAProcessModel" : {
+        "RA" : {
+          "par_InRAProcessModel_a" : 0.25,
+          "par_InRAProcessModel_b" : 0.25,
+          "par_InRAProcessModel_c" : 0.25,
+          "par_InRAProcessModel_d" : 0.25,
+          "par_InRAProcessModel_adopterPoints" : 3,
+          "par_InRAProcessModel_interesetedPoints" : 2,
+          "par_InRAProcessModel_awarePoints" : 1,
+          "par_InRAProcessModel_unknownPoints" : 0
+        }
+      },
+      "set_InSlopeSupplier" : {
+        "SlopeSupplier" : { }
+      },
+      "set_InSpace2D" : {
+        "Space2D" : {
+          "par_InSpace2D_useEuclid" : 1
+        }
+      },
+      "set_InSpatialDistribution" : {
+        "cag0_spatial" : { },
+        "cag1_spatial" : { }
+      },
+      "set_InSpatialModel" : {
+        "Space2D" : { }
+      },
+      "set_InThresholdAwareness" : {
+        "cag0_awa" : {
+          "par_InThresholdAwareness_awarenessThreshold" : 10.0
+        }
+      },
+      "set_InTimeModel" : {
+        "Discrete" : { }
+      },
+      "set_InUnivariateDoubleDistribution" : {
+        "constant01" : { },
+        "constant09" : { },
+        "constant24" : { },
+        "constant42" : { }
+      },
+      "set_InVersion" : {
+        "v0_0_0" : {
+          "par_InVersion_placeholderVersion" : 0
+        }
+      },
       "set_IWattsStrogatzModel" : {
         "WSM1" : {
           "par_IWattsStrogatzModel_wsmK" : 4,
@@ -128,19 +385,19 @@
         "E" : { }
       },
       "set_side" : {
-        "grp1" : { },
-        "grp2" : { },
         "NS" : { },
+        "p1" : { },
+        "p2" : { },
         "PS" : { },
         "SMS" : { }
       },
       "set_side_cust" : {
-        "grp1" : {
+        "p1" : {
           "par_S_DS" : 10,
           "par_kg_modifier" : 5,
           "par_IuO_ESector_CustSide" : "0"
         },
-        "grp2" : {
+        "p2" : {
           "par_S_DS" : 20,
           "par_kg_modifier" : 10,
           "par_IuO_ESector_CustSide" : "0"
@@ -220,6 +477,1438 @@
           "GREEN" : 0.0,
           "PINK" : 1.0,
           "RED" : 0.0
+        }
+      },
+      "par_link_InAffinityEntry_InConsumerAgentGroup_srcCag" : {
+        "cag0_cag0" : {
+          "cag0" : 1.0,
+          "cag1" : 0.0
+        },
+        "cag0_cag1" : {
+          "cag0" : 1.0,
+          "cag1" : 0.0
+        },
+        "cag1_cag0" : {
+          "cag0" : 0.0,
+          "cag1" : 1.0
+        },
+        "cag1_cag1" : {
+          "cag0" : 0.0,
+          "cag1" : 1.0
+        }
+      },
+      "par_link_InAffinityEntry_InConsumerAgentGroup_tarCag" : {
+        "cag0_cag0" : {
+          "cag0" : 1.0,
+          "cag1" : 0.0
+        },
+        "cag0_cag1" : {
+          "cag0" : 0.0,
+          "cag1" : 1.0
+        },
+        "cag1_cag0" : {
+          "cag0" : 1.0,
+          "cag1" : 0.0
+        },
+        "cag1_cag1" : {
+          "cag0" : 0.0,
+          "cag1" : 1.0
+        }
+      },
+      "par_link_InConstantSpatialDistribution2D_InConsumerAgentGroup_cagConstant" : {
+        "cag0_spatial" : {
+          "cag0" : 1.0,
+          "cag1" : 0.0
+        },
+        "cag1_spatial" : {
+          "cag0" : 0.0,
+          "cag1" : 1.0
+        }
+      },
+      "par_link_InConsumerAgentGroup_InAwareness_cagAwareness" : {
+        "cag0" : {
+          "cag0_awa" : 1.0
+        },
+        "cag1" : {
+          "cag0_awa" : 1.0
+        }
+      },
+      "par_link_InConsumerAgentGroup_InConsumerAgentGroupAttribute_cagAttributes" : {
+        "cag0" : {
+          "cag0_A1" : 1.0,
+          "cag0_A2" : 1.0,
+          "cag0_A2_1" : 1.0,
+          "cag0_A2_2" : 1.0,
+          "cag0_A3" : 1.0,
+          "cag0_A3_1" : 1.0,
+          "cag0_A3_2" : 1.0,
+          "cag0_A4" : 1.0,
+          "cag0_A4_1" : 1.0,
+          "cag0_A4_2" : 1.0,
+          "cag0_A5" : 1.0,
+          "cag0_A6" : 1.0,
+          "cag0_A7" : 1.0,
+          "cag0_A8" : 1.0,
+          "cag0_C1" : 1.0,
+          "cag0_D1" : 1.0,
+          "cag0_D2" : 1.0,
+          "cag0_D3" : 1.0,
+          "cag0_D4" : 1.0,
+          "cag1_A1" : 0.0,
+          "cag1_A2" : 0.0,
+          "cag1_A2_1" : 0.0,
+          "cag1_A2_2" : 0.0,
+          "cag1_A3" : 0.0,
+          "cag1_A3_1" : 0.0,
+          "cag1_A3_2" : 0.0,
+          "cag1_A4" : 0.0,
+          "cag1_A4_1" : 0.0,
+          "cag1_A4_2" : 0.0,
+          "cag1_A5" : 0.0,
+          "cag1_A6" : 0.0,
+          "cag1_A7" : 0.0,
+          "cag1_A8" : 0.0,
+          "cag1_C1" : 0.0,
+          "cag1_D1" : 0.0,
+          "cag1_D2" : 0.0,
+          "cag1_D3" : 0.0,
+          "cag1_D4" : 0.0
+        },
+        "cag1" : {
+          "cag0_A1" : 0.0,
+          "cag0_A2" : 0.0,
+          "cag0_A2_1" : 0.0,
+          "cag0_A2_2" : 0.0,
+          "cag0_A3" : 0.0,
+          "cag0_A3_1" : 0.0,
+          "cag0_A3_2" : 0.0,
+          "cag0_A4" : 0.0,
+          "cag0_A4_1" : 0.0,
+          "cag0_A4_2" : 0.0,
+          "cag0_A5" : 0.0,
+          "cag0_A6" : 0.0,
+          "cag0_A7" : 0.0,
+          "cag0_A8" : 0.0,
+          "cag0_C1" : 0.0,
+          "cag0_D1" : 0.0,
+          "cag0_D2" : 0.0,
+          "cag0_D3" : 0.0,
+          "cag0_D4" : 0.0,
+          "cag1_A1" : 1.0,
+          "cag1_A2" : 1.0,
+          "cag1_A2_1" : 1.0,
+          "cag1_A2_2" : 1.0,
+          "cag1_A3" : 1.0,
+          "cag1_A3_1" : 1.0,
+          "cag1_A3_2" : 1.0,
+          "cag1_A4" : 1.0,
+          "cag1_A4_1" : 1.0,
+          "cag1_A4_2" : 1.0,
+          "cag1_A5" : 1.0,
+          "cag1_A6" : 1.0,
+          "cag1_A7" : 1.0,
+          "cag1_A8" : 1.0,
+          "cag1_C1" : 1.0,
+          "cag1_D1" : 1.0,
+          "cag1_D2" : 1.0,
+          "cag1_D3" : 1.0,
+          "cag1_D4" : 1.0
+        }
+      },
+      "par_link_InConsumerAgentGroupAttribute_InAttributeName_cagAttrName" : {
+        "cag0_A1" : {
+          "A" : 0.0,
+          "A1" : 1.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_A2" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 1.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_A2_1" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 1.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_A2_2" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 1.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_A3" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 1.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_A3_1" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 1.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_A3_2" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 1.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_A4" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 1.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_A4_1" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 1.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_A4_2" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 1.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_A5" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 1.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_A6" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 1.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_A7" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 1.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_A8" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 1.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_C1" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 1.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_D1" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 1.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_D2" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 1.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_D3" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 1.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag0_D4" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 1.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_A1" : {
+          "A" : 0.0,
+          "A1" : 1.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_A2" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 1.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_A2_1" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 1.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_A2_2" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 1.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_A3" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 1.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_A3_1" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 1.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_A3_2" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 1.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_A4" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 1.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_A4_1" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 1.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_A4_2" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 1.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_A5" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 1.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_A6" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 1.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_A7" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 1.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_A8" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 1.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_C1" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 1.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_D1" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 1.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_D2" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 1.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_D3" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 1.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        },
+        "cag1_D4" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 1.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        }
+      },
+      "par_link_InConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_cagAttrDistribution" : {
+        "cag0_A1" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_A2" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_A2_1" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_A2_2" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_A3" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_A3_1" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_A3_2" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_A4" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_A4_1" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_A4_2" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_A5" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_A6" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_A7" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_A8" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_C1" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_D1" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_D2" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_D3" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag0_D4" : {
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_A1" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_A2" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_A2_1" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_A2_2" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_A3" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_A3_1" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_A3_2" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_A4" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_A4_1" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_A4_2" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_A5" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_A6" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_A7" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_A8" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_C1" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_D1" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_D2" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_D3" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        },
+        "cag1_D4" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        }
+      },
+      "par_link_InConsumerAgentGroupColor_GraphvizColor_color" : {
+        "cag0_color" : {
+          "BLUE" : 0.0,
+          "GREEN" : 0.0,
+          "PINK" : 0.0,
+          "RED" : 1.0
+        },
+        "cag1_color" : {
+          "BLUE" : 0.0,
+          "GREEN" : 1.0,
+          "PINK" : 0.0,
+          "RED" : 0.0
+        }
+      },
+      "par_link_InConsumerAgentGroupColor_InConsumerAgentGroup_group" : {
+        "cag0_color" : {
+          "cag0" : 1.0,
+          "cag1" : 0.0
+        },
+        "cag1_color" : {
+          "cag0" : 0.0,
+          "cag1" : 1.0
+        }
+      },
+      "par_link_InFreeNetworkTopology_InDistanceEvaluator_distanceEvaluator" : {
+        "FreeTopo" : {
+          "NoDistance" : 1.0
+        }
+      },
+      "par_link_InFreeNetworkTopology_InNumberOfTies_numberOfTies" : {
+        "FreeTopo" : {
+          "cag0_ties" : 1.0,
+          "cag1_ties" : 1.0
+        }
+      },
+      "par_link_InNumberOfTies_InConsumerAgentGroup_cag" : {
+        "cag0_ties" : {
+          "cag0" : 1.0,
+          "cag1" : 0.0
+        },
+        "cag1_ties" : {
+          "cag0" : 0.0,
+          "cag1" : 1.0
+        }
+      },
+      "par_link_InOrientationSupplier_InAttributeName_attrNameInOrientation" : {
+        "OrientationSupplier" : {
+          "A" : 1.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 0.0
+        }
+      },
+      "par_link_InOrientationSupplier_InUnivariateDoubleDistribution_distInOrientation" : {
+        "OrientationSupplier" : {
+          "constant01" : 0.0,
+          "constant09" : 0.0,
+          "constant24" : 1.0,
+          "constant42" : 0.0
+        }
+      },
+      "par_link_InProductGroup_InProductGroupAttribute_pgAttributes" : {
+        "PV" : {
+          "PV_E1" : 1.0
+        }
+      },
+      "par_link_InProductGroupAttribute_InAttributeName_attrName" : {
+        "PV_E1" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 1.0,
+          "N" : 0.0
+        }
+      },
+      "par_link_InProductGroupAttribute_InUnivariateDoubleDistribution_attrDistribution" : {
+        "PV_E1" : {
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant24" : 0.0,
+          "constant42" : 0.0
+        }
+      },
+      "par_link_InSlopeSupplier_InAttributeName_attrNameSlope" : {
+        "SlopeSupplier" : {
+          "A" : 0.0,
+          "A1" : 0.0,
+          "A2" : 0.0,
+          "A2_1" : 0.0,
+          "A2_2" : 0.0,
+          "A3" : 0.0,
+          "A3_1" : 0.0,
+          "A3_2" : 0.0,
+          "A4" : 0.0,
+          "A4_1" : 0.0,
+          "A4_2" : 0.0,
+          "A5" : 0.0,
+          "A6" : 0.0,
+          "A7" : 0.0,
+          "A8" : 0.0,
+          "C1" : 0.0,
+          "D1" : 0.0,
+          "D2" : 0.0,
+          "D3" : 0.0,
+          "D4" : 0.0,
+          "E1" : 0.0,
+          "N" : 1.0
+        }
+      },
+      "par_link_InSlopeSupplier_InUnivariateDoubleDistribution_distSlope" : {
+        "SlopeSupplier" : {
+          "constant01" : 0.0,
+          "constant09" : 0.0,
+          "constant24" : 0.0,
+          "constant42" : 1.0
         }
       },
       "par_SOH_pss_sector" : {

@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.jadex.simulation;
 
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.simulation.LifeCycleControl;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import jadex.bridge.service.annotation.Reference;
@@ -14,5 +16,7 @@ public interface JadexSimulationEnvironment extends SimulationEnvironment {
     JadexTimeModel getTimeModel();
 
     @Override
-    JadexSimulationControl getSimulationControl();
+    JadexLifeCycleControl getLiveCycleControl();
+
+    void replace(ConsumerAgent placeholder, ConsumerAgent real) throws IllegalStateException;
 }

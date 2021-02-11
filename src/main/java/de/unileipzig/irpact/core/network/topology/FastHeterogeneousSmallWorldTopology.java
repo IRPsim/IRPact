@@ -63,9 +63,7 @@ public class FastHeterogeneousSmallWorldTopology extends FastHeterogeneousRegula
                     }
                     SocialGraph.Node newTarget = CollectionUtil.getRandom(potentialTargets, rnd);
                     graph.removeEdge(edge);
-                    graph.addEdge(sourceNode, newTarget, edgeType);
-                    SocialGraph.Edge newEdge = graph.getEdge(sourceNode, newTarget, edgeType);
-                    newEdge.setWeight(initialWeight);
+                    graph.addEdge(sourceNode, newTarget, edgeType, initialWeight);
                     break;
                 }
             }

@@ -9,5 +9,11 @@ public interface DoubleAttribute extends Attribute<Number> {
         return getDoubleValue();
     }
 
+    default void setValue(Number value) {
+        setDoubleValue(value.doubleValue());
+    }
+
     double getDoubleValue();
+
+    void setDoubleValue(double value);
 }

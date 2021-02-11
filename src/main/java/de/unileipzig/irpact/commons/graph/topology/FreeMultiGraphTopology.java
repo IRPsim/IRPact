@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.commons.graph.topology;
 
-import de.unileipzig.irpact.start.IRPact;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.commons.graph.Graph;
-import de.unileipzig.irptools.util.IRPLogger;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.Random;
  */
 public class FreeMultiGraphTopology<V, E, T> extends AbstractMultiGraphTopology<V, E, T> {
 
-    private static final IRPLogger logger = IRPact.getUtilLogger(FreeMultiGraphTopology.class);
+    private static final IRPLogger logger = IRPLogging.getLogger(FreeMultiGraphTopology.class);
 
     protected boolean selfReferential;
     protected int edgeCount;

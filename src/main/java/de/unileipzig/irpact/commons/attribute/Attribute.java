@@ -6,4 +6,6 @@ package de.unileipzig.irpact.commons.attribute;
 public interface Attribute<T> extends AttributeBase {
 
     T getValue();
+
+    void setValue(T value);
 }

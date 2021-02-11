@@ -58,7 +58,8 @@ public class IDiscreteTimeModel implements ITimeModel {
         DiscreteTimeModel model = new DiscreteTimeModel();
         model.setStoredDelta(delta);
         model.setStoredTimePerTickInMs(timePerTickInMs);
-        model.setStoredDelay(discDelay);
-        return model;
+        //model.setStoredDelay(discDelay);
+        throw new RuntimeException("NICHT AUFRUFEN");
+        //return model;
     }
 }

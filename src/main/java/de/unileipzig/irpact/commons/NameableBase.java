@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.commons;
 
-import java.util.Objects;
-
 /**
  * @author Daniel Abitz
  */
@@ -23,10 +21,5 @@ public class NameableBase implements Nameable {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public boolean hasName(String input) {
-        return Objects.equals(name, input);
     }
 }

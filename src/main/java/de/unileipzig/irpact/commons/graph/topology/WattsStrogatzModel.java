@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.commons.graph.topology;
 
-import de.unileipzig.irpact.start.IRPact;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.commons.graph.Graph;
-import de.unileipzig.irptools.util.IRPLogger;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.Random;
 //https://www.frontiersin.org/articles/10.3389/fncom.2011.00011/full
 public class WattsStrogatzModel<V, E, T> extends AbstractMultiGraphTopology<V, E, T> {
 
-    private static final IRPLogger logger = IRPact.getUtilLogger(WattsStrogatzModel.class);
+    private static final IRPLogger logger = IRPLogging.getLogger(WattsStrogatzModel.class);
 
     protected int k;
     protected double beta;

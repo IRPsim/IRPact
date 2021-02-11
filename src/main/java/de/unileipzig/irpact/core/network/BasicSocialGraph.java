@@ -3,11 +3,9 @@ package de.unileipzig.irpact.core.network;
 import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.core.agent.Agent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -20,40 +18,33 @@ public class BasicSocialGraph implements SocialGraph {
     /**
      * @author Daniel Abitz
      */
+    //Da wir den Agent austauschen, wird equals und hashCode nicht veraendert.
     private static class BasicNode implements Node {
 
-        private final Agent AGENT;
+        private Agent agent;
 
         public BasicNode(Agent agent) {
-            AGENT = agent;
+            this.agent = agent;
         }
 
         @Override
         public String getLabel() {
-            return AGENT.getName();
+            return agent.getName();
         }
 
         @Override
         public Agent getAgent() {
-            return AGENT;
+            return agent;
         }
 
         @Override
         public <T extends Agent> T getAgent(Class<T> type) {
-            return type.cast(AGENT);
+            return type.cast(agent);
         }
 
         @Override
-        public boolean equals(Object obj) {
-            if(this == obj) return true;
-            if(!(obj instanceof BasicNode)) return false;
-            BasicNode other = (BasicNode) obj;
-            return Objects.equals(AGENT, other.AGENT);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(AGENT);
+        public String toString() {
+            return getLabel();
         }
     }
 
@@ -119,9 +110,42 @@ public class BasicSocialGraph implements SocialGraph {
     }
 
     @Override
+    public void replace(ConsumerAgent toRemove, ConsumerAgent toAdd) throws IllegalStateException {
+        if(!NODE_CACHE.containsKey(toRemove)) {
+            throw new IllegalArgumentException("to-remove-agent '" + toRemove.getName() + "' does not exist");
+        }
+        if(NODE_CACHE.containsKey(toAdd)) {
+            throw new IllegalArgumentException("to-add-agent '" + toRemove.getName() + "' already exists");
+        }
+        BasicNode node = (BasicNode) toRemove.getSocialGraphNode();
+        if(node == getNode(toRemove)) {
+            NODE_CACHE.remove(toRemove);
+            node.agent = toAdd;
+            toAdd.setSocialGraphNode(node);
+            NODE_CACHE.put(toAdd, node);
+        } else {
+            throw new IllegalStateException("node mismatch for agent '" + toRemove.getName() + "'");
+        }
+    }
+
+    @Override
     public boolean addAgent(Agent agent) {
+        if(NODE_CACHE.containsKey(agent)) {
+            return false;
+        }
         Node node = NODE_SUPPLIER.apply(agent);
         return addNode(node);
+    }
+
+    @Override
+    public Node addAgentAndGetNode(Agent agent) {
+        if(NODE_CACHE.containsKey(agent)) {
+            return NODE_CACHE.get(agent);
+        } else {
+            Node node = NODE_SUPPLIER.apply(agent);
+            addNode(node);
+            return node;
+        }
     }
 
     @Override
@@ -154,18 +178,24 @@ public class BasicSocialGraph implements SocialGraph {
     }
 
     @Override
+    public boolean getTargets(Node from, Type type, Collection<? super Node> targets) {
+        return GRAPH.getTargets(from, type, targets);
+    }
+
+    @Override
     public Stream<? extends Node> streamTargets(Node source, Type type) {
         return GRAPH.streamTargets(source, type);
     }
 
     @Override
-    public boolean addEdge(Node from, Node to, Type type) {
+    public boolean addEdge(Node from, Node to, Type type, double weight) {
         if(GRAPH.hasEdge(from, to, type)) {
             return false;
         } else {
             Edge edge = EDGE_SUPPLIER.get();
             edge.setSource(from);
             edge.setTarget(to);
+            edge.setWeight(weight);
             return GRAPH.addEdge(from, to, type, edge);
         }
     }

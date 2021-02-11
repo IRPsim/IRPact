@@ -172,6 +172,12 @@ public class FastDirectedMultiGraph<V, E, T> implements DirectedMultiGraph<V, E,
     }
 
     @Override
+    public boolean getTargets(V from, T type, Collection<? super V> targets) {
+        Set<V> t = getTargets(from, type);
+        return targets.addAll(t);
+    }
+
+    @Override
     public Stream<V> streamTargets(V from, T type) {
         return getTargets(from, type).stream();
     }

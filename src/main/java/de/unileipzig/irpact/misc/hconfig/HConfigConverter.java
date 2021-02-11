@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.Util;
-import de.unileipzig.irpact.io.input.distribution.IConstantUnivariateDistribution;
-import de.unileipzig.irpact.io.input.distribution.IFiniteMassPointsDiscreteDistribution;
-import de.unileipzig.irpact.io.input.distribution.IMassPoint;
-import de.unileipzig.irpact.io.input.distribution.IUnivariateDoubleDistribution;
+//import de.unileipzig.irpact.experimental.deprecated.input.distribution.IConstantUnivariateDistribution;
+//import de.unileipzig.irpact.experimental.deprecated.input.distribution.IFiniteMassPointsDiscreteDistribution;
+//import de.unileipzig.irpact.experimental.deprecated.input.distribution.IMassPoint;
+//import de.unileipzig.irpact.experimental.deprecated.input.distribution.IUnivariateDoubleDistribution;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -109,68 +109,68 @@ public class HConfigConverter {
         }
     }
 
-    private IMassPoint toMassPoint(String key, JsonNode value) {
-        double mpValue = Double.parseDouble(key);
-        double mpWeight = value.doubleValue();
-        String name = mpValue + "|" + mpWeight;
-        return getOrPut(name, new IMassPoint(name, mpValue, mpWeight));
-    }
-
-    //=========================
-    //from json
-    //=========================
-
-    public IUnivariateDoubleDistribution toIUnivariateDoubleDistribution(ObjectNode node) {
-        String dist = getString(node, distribution);
-        if(FiniteMassPointsDiscreteDistribution.equals(dist)) {
-            return toIFiniteMassPointsDiscreteDistribution(node);
-        }
-        if(ConstantUnivariateDistribution.equals(dist)) {
-            return toIConstantUnivariateDistribution(node);
-        }
-        throw new IllegalArgumentException(dist);
-    }
-
-    public IFiniteMassPointsDiscreteDistribution toIFiniteMassPointsDiscreteDistribution(ObjectNode node) {
-        String fmpName = getString(node, name);
-        long fmpSeed = getLongOr(node, seed, Util.USE_RANDOM_SEED);
-        IMassPoint[] massPoints = toIMassPoint(getObject(node, parameters));
-        return new IFiniteMassPointsDiscreteDistribution(fmpName, fmpSeed, massPoints);
-    }
-
-    public IConstantUnivariateDistribution toIConstantUnivariateDistribution(ObjectNode node) {
-        String cName = getString(node, name);
-        double cValue = getDouble(node, value);
-        return new IConstantUnivariateDistribution(cName, cValue);
-    }
-
-    public IMassPoint[] toIMassPoint(ObjectNode node) {
-        return streamFields(node)
-                .map(e -> toMassPoint(e.getKey(), e.getValue()))
-                .toArray(IMassPoint[]::new);
-    }
-
-    //=========================
-    //to json
-    //=========================
-
-    public ObjectNode fromIFiniteMassPointsDiscreteDistribution(IFiniteMassPointsDiscreteDistribution dist) {
-        ObjectNode root = MAPPER.createObjectNode();
-        root.put(name, dist.getName());
-        root.put(seed, dist.getFmpSeed());
-        root.put(distribution, FiniteMassPointsDiscreteDistribution);
-        ObjectNode paramNode = root.putObject(parameters);
-        for(IMassPoint mp: dist.getMassPoints()) {
-            paramNode.put(Double.toString(mp.getMpValue()), mp.getMpWeight());
-        }
-        return root;
-    }
-
-    public ObjectNode fromIConstantUnivariateDistribution(IConstantUnivariateDistribution dist) {
-        ObjectNode root = MAPPER.createObjectNode();
-        root.put(name, dist.getName());
-        root.put(distribution, FiniteMassPointsDiscreteDistribution);
-        root.put(value, dist.getConstDistValue());
-        return root;
-    }
+//    private IMassPoint toMassPoint(String key, JsonNode value) {
+//        double mpValue = Double.parseDouble(key);
+//        double mpWeight = value.doubleValue();
+//        String name = mpValue + "|" + mpWeight;
+//        return getOrPut(name, new IMassPoint(name, mpValue, mpWeight));
+//    }
+//
+//    //=========================
+//    //from json
+//    //=========================
+//
+//    public IUnivariateDoubleDistribution toIUnivariateDoubleDistribution(ObjectNode node) {
+//        String dist = getString(node, distribution);
+//        if(FiniteMassPointsDiscreteDistribution.equals(dist)) {
+//            return toIFiniteMassPointsDiscreteDistribution(node);
+//        }
+//        if(ConstantUnivariateDistribution.equals(dist)) {
+//            return toIConstantUnivariateDistribution(node);
+//        }
+//        throw new IllegalArgumentException(dist);
+//    }
+//
+//    public IFiniteMassPointsDiscreteDistribution toIFiniteMassPointsDiscreteDistribution(ObjectNode node) {
+//        String fmpName = getString(node, name);
+//        long fmpSeed = getLongOr(node, seed, Util.USE_RANDOM_SEED);
+//        IMassPoint[] massPoints = toIMassPoint(getObject(node, parameters));
+//        return new IFiniteMassPointsDiscreteDistribution(fmpName, fmpSeed, massPoints);
+//    }
+//
+//    public IConstantUnivariateDistribution toIConstantUnivariateDistribution(ObjectNode node) {
+//        String cName = getString(node, name);
+//        double cValue = getDouble(node, value);
+//        return new IConstantUnivariateDistribution(cName, cValue);
+//    }
+//
+//    public IMassPoint[] toIMassPoint(ObjectNode node) {
+//        return streamFields(node)
+//                .map(e -> toMassPoint(e.getKey(), e.getValue()))
+//                .toArray(IMassPoint[]::new);
+//    }
+//
+//    //=========================
+//    //to json
+//    //=========================
+//
+//    public ObjectNode fromIFiniteMassPointsDiscreteDistribution(IFiniteMassPointsDiscreteDistribution dist) {
+//        ObjectNode root = MAPPER.createObjectNode();
+//        root.put(name, dist.getName());
+//        root.put(seed, dist.getFmpSeed());
+//        root.put(distribution, FiniteMassPointsDiscreteDistribution);
+//        ObjectNode paramNode = root.putObject(parameters);
+//        for(IMassPoint mp: dist.getMassPoints()) {
+//            paramNode.put(Double.toString(mp.getMpValue()), mp.getMpWeight());
+//        }
+//        return root;
+//    }
+//
+//    public ObjectNode fromIConstantUnivariateDistribution(IConstantUnivariateDistribution dist) {
+//        ObjectNode root = MAPPER.createObjectNode();
+//        root.put(name, dist.getName());
+//        root.put(distribution, FiniteMassPointsDiscreteDistribution);
+//        root.put(value, dist.getConstDistValue());
+//        return root;
+//    }
 }

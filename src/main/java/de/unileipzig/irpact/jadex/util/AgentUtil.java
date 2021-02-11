@@ -22,7 +22,7 @@ public final class AgentUtil {
     }
 
     public static boolean isAwareOf(ConsumerAgent agent, Product product) {
-        return agent.getProductAwareness().isAwareOf(product);
+        return agent.getProductAwareness().isAware(product);
     }
 
     public static boolean isHouseOwner(ConsumerAgent agent) {

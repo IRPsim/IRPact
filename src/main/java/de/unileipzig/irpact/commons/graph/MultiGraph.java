@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons.graph;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -19,6 +20,8 @@ public interface MultiGraph<V, E, T> extends Graph<V, E> {
     int degree(V vertex, T type);
 
     Set<V> getTargets(V from, T type);
+
+    boolean getTargets(V from, T type, Collection<? super V> targets);
 
     Stream<V> streamTargets(V from, T type);
 

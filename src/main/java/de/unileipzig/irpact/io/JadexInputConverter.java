@@ -49,6 +49,7 @@ public class JadexInputConverter implements InputConverter {
     }
 
     protected void initConsumerAgentGroups(BasicJadexSimulationEnvironment env, IRoot input) {
+        if(true) throw new RuntimeException("NOPE");
         for(IConsumerAgentGroup grp: input.consumerAgentGroups) {
             JadexConsumerAgentGroup jgrp = new JadexConsumerAgentGroup();
             jgrp.setEnvironment(env);
@@ -60,10 +61,10 @@ public class JadexInputConverter implements InputConverter {
                 BasicConsumerAgentGroupAttribute battr = new BasicConsumerAgentGroupAttribute();
                 battr.setName(attr.getName());
                 battr.setDistribution(attr.getCagAttrDistribution().createInstance());
-                jgrp.addAttribute(battr);
+                //jgrp.addAttribute(battr);
             }
             env.getAgents().add(jgrp);
-            env.getAgents().setNumberOfAgents(jgrp, grp.getNumberOfAgents());
+            //env.getAgents().setNumberOfAgents(jgrp, grp.getNumberOfAgents());
         }
         initAffinities(env, input);
     }
@@ -137,6 +138,7 @@ public class JadexInputConverter implements InputConverter {
     }
 
     protected void initNetwork(BasicJadexSimulationEnvironment env, IRoot input) {
+        if(true) throw new RuntimeException("NOPE");
         IFastHeterogeneousSmallWorldTopology iTopology = input.topology[0];
         BasicSocialNetwork network = new BasicSocialNetwork();
         BasicGraphConfiguration configuration = new BasicGraphConfiguration();
@@ -160,12 +162,13 @@ public class JadexInputConverter implements InputConverter {
         );
         configuration.setGraphTopologyScheme(topology);
 
-        env.setSocialNetwork(network);
+        //env.setSocialNetwork(network);
     }
 
     protected void initGlobal(BasicJadexSimulationEnvironment environment, IRoot input) {
+        if(true) throw new RuntimeException("NOPE");
         DebugLevel debugLevel = DebugLevel.get(input.generalSettings.getDebugLevel());
-        environment.setDebugLevel(debugLevel);
+        //environment.setDebugLevel(debugLevel);
     }
 
     @Override

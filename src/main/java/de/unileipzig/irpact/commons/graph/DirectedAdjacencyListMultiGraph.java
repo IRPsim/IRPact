@@ -138,14 +138,21 @@ public class DirectedAdjacencyListMultiGraph<V, E, T> implements DirectedMultiGr
     @Override
     public Set<V> getTargets(V from, T type) {
         Set<V> targets = new LinkedHashSet<>();
+        getTargets(from, type, targets);
+        return targets;
+    }
+
+    @Override
+    public boolean getTargets(V from, T type, Collection<? super V> targets) {
         Map<V, Map<T, E>> map0 = adjacencyMap.get(from);
-        if(map0 == null) return targets;
+        if(map0 == null) return false;
+        boolean changed = false;
         for(Map.Entry<V, Map<T, E>> map1Entry: map0.entrySet()) {
             if(map1Entry.getValue().containsKey(type)) {
-                targets.add(map1Entry.getKey());
+                changed |= targets.add(map1Entry.getKey());
             }
         }
-        return targets;
+        return changed;
     }
 
     @Override

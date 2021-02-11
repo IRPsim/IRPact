@@ -11,6 +11,6 @@ import java.nio.file.Paths;
 @Disabled
 public final class TestFiles {
 
-    public static final Path root = Paths.get("");
+    public static final Path root = Paths.get("").toAbsolutePath();
     public static final Path testfiles = root.resolve("testfiles");
 }

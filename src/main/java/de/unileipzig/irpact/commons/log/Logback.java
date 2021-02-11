@@ -8,10 +8,12 @@ import ch.qos.logback.classic.filter.LevelFilter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.ConsoleAppender;
+import ch.qos.logback.core.FileAppender;
 import ch.qos.logback.core.encoder.LayoutWrappingEncoder;
 import ch.qos.logback.core.spi.FilterReply;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -22,12 +24,14 @@ import java.util.List;
  */
 public final class Logback {
 
-    private static final String PATTERN = "%d{HH:mm:ss.SSS} [%level] [%thread] [%logger{36}]: %msg%n";
+    private static final String PATTERN = "%d{HH:mm:ss.SSS} [%logger{0},%level]: %msg%n";
     private static final String SYSTEMOUT = "SYSTEMOUT";
     private static final String SYSTEMERR = "SYSTEMERR";
+    private static final String FILE = "FILE";
 
     private static ConsoleAppender<ILoggingEvent> systemOutAppender;
     private static ConsoleAppender<ILoggingEvent> systemErrAppender;
+    private static FileAppender<ILoggingEvent> fileAppender;
 
     private Logback() {
     }
@@ -65,6 +69,9 @@ public final class Logback {
             return;
         } else {
             setupSystemOutAndErrCalled = true;
+            setupFileCalled = false;
+            FileAppender<ILoggingEvent> fileAppender = getFileAppender();
+            fileAppender.stop();
         }
         Logger root = getRootLogger();
         root.setLevel(Level.ALL);
@@ -72,8 +79,32 @@ public final class Logback {
         detachAllAppenders(root);
         ConsoleAppender<ILoggingEvent> systemOutAppender = getSystemOutAppender();
         ConsoleAppender<ILoggingEvent> systemErrAppender = getSystemErrAppender();
+        systemOutAppender.start();
+        systemErrAppender.start();
         root.addAppender(systemOutAppender);
         root.addAppender(systemErrAppender);
+    }
+
+    private static boolean setupFileCalled = false;
+    public static void setupFile(Path target) {
+        if(setupFileCalled) {
+            return;
+        } else {
+            setupFileCalled = true;
+            setupSystemOutAndErrCalled = false;
+            ConsoleAppender<ILoggingEvent> systemOutAppender = getSystemOutAppender();
+            ConsoleAppender<ILoggingEvent> systemErrAppender = getSystemErrAppender();
+            systemOutAppender.stop();
+            systemErrAppender.stop();
+        }
+        Logger root = getRootLogger();
+        root.setLevel(Level.ALL);
+        root.setAdditive(true);
+        detachAllAppenders(root);
+        FileAppender<ILoggingEvent> fileAppender = getFileAppender();
+        fileAppender.setFile(target.toFile().toString());
+        fileAppender.start();
+        root.addAppender(fileAppender);
     }
 
     public static void setLevel(Level level) {
@@ -104,7 +135,6 @@ public final class Logback {
             appender.addFilter(filter);
             appender.setName(SYSTEMOUT);
             appender.setEncoder(encoder);
-            appender.start();
             systemOutAppender = appender;
         }
         return systemOutAppender;
@@ -134,9 +164,29 @@ public final class Logback {
             appender.addFilter(filter);
             appender.setName(SYSTEMERR);
             appender.setEncoder(encoder);
-            appender.start();
             systemErrAppender = appender;
         }
         return systemErrAppender;
+    }
+
+    public static FileAppender<ILoggingEvent> getFileAppender() {
+        if(fileAppender == null) {
+            PatternLayout layout = new PatternLayout();
+            layout.setContext(getContext());
+            layout.setPattern(PATTERN);
+            layout.start();
+
+            LayoutWrappingEncoder<ILoggingEvent> encoder = new LayoutWrappingEncoder<>();
+            encoder.setContext(getContext());
+            encoder.setLayout(layout);
+            encoder.start();
+
+            FileAppender<ILoggingEvent> appender = new FileAppender<>();
+            appender.setContext(getContext());
+            appender.setName(FILE);
+            appender.setEncoder(encoder);
+            fileAppender = appender;
+        }
+        return fileAppender;
     }
 }
