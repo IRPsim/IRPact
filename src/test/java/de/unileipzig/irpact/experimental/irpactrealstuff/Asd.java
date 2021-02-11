@@ -34,7 +34,7 @@ public class Asd {
     @Test
     void runStart() throws Exception {
         Logback.setupSystemOutAndErr();
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x3");
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x4");
         String[] args = {
                 "--inputRootClass", InRoot.class.getName(),
                 "--outputRootClass", OutRoot.class.getName(),
@@ -53,6 +53,31 @@ public class Asd {
                 "--sortAfterPriority"
         };
         IRPtools.start(args);
+    }
+
+    @Test
+    void runStartWithTools() throws Exception {
+        Logback.setupSystemOutAndErr();
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x4");
+        String[] args = {
+                "--irptools",
+                "--inputRootClass", InRoot.class.getName(),
+                "--outputRootClass", OutRoot.class.getName(),
+                "--defaultScenarioClass", InExample.class.getName(),
+                "--outDir", dir.toString(),
+                "--charset", Util.windows1252().name(),
+                "--validate",
+                "--skipReference",
+                "--dummyNomenklatur",
+                "--pathToJava", TestFiles.java11.toString(),
+                "--pathToResourceDir", dir.toString(),
+                "--pathToJar", TestFiles.frontendGeneratorJar.toString(),
+                "--frontendOutputFile", dir.resolve("frontend.json").toString(),
+                "--pathToBackendJar", TestFiles.backendGeneratorJar.toString(),
+                "--backendOutputFile", dir.resolve("backend.json").toString(),
+                "--sortAfterPriority"
+        };
+        Start.main(args);
     }
 
     @Test

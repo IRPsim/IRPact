@@ -147,7 +147,8 @@ public class Start implements Callable<Integer> {
     public static void main(String[] args) {
         IRPLogging.initConsole();
         Start start = new Start(args);
-        CommandLine cmdLine = new CommandLine(start);
+        CommandLine cmdLine = new CommandLine(start)
+                .setUnmatchedArgumentsAllowed(true);
         int exitCode = cmdLine.execute(args);
         if(exitCode == CommandLine.ExitCode.OK) {
             Preloader irpact = new Preloader(start);
@@ -160,4 +161,9 @@ public class Start implements Callable<Integer> {
             System.exit(CommandLine.ExitCode.USAGE);
         }
     }
+/*
+ALT:
+Logback.setupSystemOutAndErr();
+OptActMain.main(args);
+*/
 }

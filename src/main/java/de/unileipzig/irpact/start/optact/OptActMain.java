@@ -359,7 +359,8 @@ public class OptActMain implements Callable<Integer> {
 
     public static void main(String[] args) {
         OptActMain optact = new OptActMain();
-        CommandLine cmdLine = new CommandLine(optact);
+        CommandLine cmdLine = new CommandLine(optact)
+                .setUnmatchedArgumentsAllowed(true);
         int exitCode = cmdLine.execute(args);
         if(exitCode == CommandLine.ExitCode.OK) {
             optact.run();

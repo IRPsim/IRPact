@@ -19,6 +19,7 @@ import de.unileipzig.irptools.uiedn.Section;
 import de.unileipzig.irptools.uiedn.Sections;
 import de.unileipzig.irptools.util.DoubleTimeSeries;
 import de.unileipzig.irptools.util.Table;
+import de.unileipzig.irptools.util.UiEdn;
 import de.unileipzig.irptools.util.Util;
 
 import java.awt.*;
@@ -107,12 +108,7 @@ public class GvInRoot implements RootClass, DefaultScenarioFactory {
     }
 
     @Override
-    public void peekEdn(Sections sections, boolean output, boolean delta) {
-        if(output) {
-            Section imageSection = new Section();
-            imageSection.setImage("testImage");
-            sections.addFirst(imageSection);
-        }
+    public void peekEdn(Sections sections, UiEdn ednType) {
     }
 
     @Override

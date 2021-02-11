@@ -15,17 +15,23 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 public class InVersion {
 
     public static void initRes(TreeAnnotationResource res) {
-        res.newElementBuilder()
-                .setEdnLabel("Version")
-                .setEdnPriority(0)
-                .putCache("Version");
+//        res.newElementBuilder()
+//                .setEdnLabel("Version")
+//                .setEdnPriority(0)
+//                .setGamsHidden(true)
+//                .putCache("Version");
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InVersion.class,
-                res.getCachedElement("Allgemeine Einstellungen"),
-                res.getCachedElement("Version")
-        );
+//        res.putPath(
+//                InVersion.class,
+//                res.getCachedElement("Allgemeine Einstellungen"),
+//                res.getCachedElement("Version")
+//        );
+        res.newEntryBuilder()
+                .setGamsDescription("Version von IRPact für dieses Szenario.")
+                .setGamsIdentifier("InVersion")
+                .setGamsHidden(true)
+                .store(InVersion.class);
     }
 
     public String _name;

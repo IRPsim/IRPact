@@ -35,23 +35,14 @@ public final class IRPLogging {
         FILTER.setBacked(filter);
     }
 
-    public static void setLogIfNoFilter(boolean logIfNoFilter) {
-        FILTER.setLogIfNoFilter(logIfNoFilter);
-    }
-
     /**
      * @author Daniel Abitz
      */
     private static class GlobalFilter implements LoggingFilter {
 
         private LoggingFilter backed;
-        private boolean logIfNoFilter = true;
 
         private GlobalFilter() {
-        }
-
-        private void setLogIfNoFilter(boolean logIfNoFilter) {
-            this.logIfNoFilter = logIfNoFilter;
         }
 
         private void setBacked(LoggingFilter backed) {
@@ -60,9 +51,7 @@ public final class IRPLogging {
 
         @Override
         public boolean doLogging(IRPLoggingType type, int level) {
-            return backed == null
-                    ? logIfNoFilter
-                    : backed.doLogging(type, level);
+            return backed != null && backed.doLogging(type, level);
         }
     }
 }

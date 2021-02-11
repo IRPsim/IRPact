@@ -38,6 +38,7 @@ import de.unileipzig.irptools.graphviz.OutputFormat;
 import de.unileipzig.irptools.graphviz.def.*;
 import de.unileipzig.irptools.uiedn.Sections;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
+import de.unileipzig.irptools.util.UiEdn;
 import de.unileipzig.irptools.util.Util;
 
 import java.util.Arrays;
@@ -304,7 +305,7 @@ public class InRoot implements RootClass {
     }
 
     @Override
-    public void peekEdn(Sections sections, boolean input, boolean delta) {
+    public void peekEdn(Sections sections, UiEdn ednType) {
 //        for(Section s: sections.getList()) {
 //            System.out.println("'" + s.getPriority() + "' '" + s.getLabel() + "'");
 //        }

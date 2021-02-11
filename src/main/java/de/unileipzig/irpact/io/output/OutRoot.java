@@ -9,6 +9,7 @@ import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.uiedn.Section;
 import de.unileipzig.irptools.uiedn.Sections;
+import de.unileipzig.irptools.util.UiEdn;
 import de.unileipzig.irptools.util.Util;
 
 import java.util.List;
@@ -54,12 +55,15 @@ public class OutRoot implements RootClass {
     }
 
     @Override
-    public void peekEdn(Sections sections, boolean input, boolean delta) {
-        if(!input) {
+    public void peekEdn(Sections sections, UiEdn ednType) {
+        if(ednType == UiEdn.OUTPUT) {
             Section imageSection = new Section();
             imageSection.setPriority(-1);
-            imageSection.setImage("agentImage");
-            imageSection.setDescription("Bildanzeige");
+            imageSection.setLabel("Agentennetzwerk");
+            imageSection.setImage("agentGraph");
+            imageSection.setDescription("Agentennetzwerk in IRPact");
+            imageSection.setIcon("fa fa-spinner");
+            sections.add(imageSection);
         }
     }
 }
