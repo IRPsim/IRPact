@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.distribution.RandomBoundedIntegerDistributio
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -31,6 +32,16 @@ public class InRandomBoundedIntegerDistribution implements InUnivariateDoubleDis
                 res.getCachedElement("Verteilungsfunktionen"),
                 res.getCachedElement("RandomBoundedInteger")
         );
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Untergrenze (inklusiv)")
+                .setGamsDescription("Untergrenze")
+                .store(InRandomBoundedIntegerDistribution.class, "lowerBoundInt");
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Obergrenze (exklusiv)")
+                .setGamsDescription("Obergrenze")
+                .store(InRandomBoundedIntegerDistribution.class, "upperBoundInt");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InRandomBoundedIntegerDistribution.class);

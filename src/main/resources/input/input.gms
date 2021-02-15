@@ -23,7 +23,8 @@ SET set_InAwareness(*)
 * - type: String
 SET set_InThresholdAwareness(set_InAwareness)
 
-* - identifier: awarenessThreshold
+* - description: Grenzwert ab der das Produkt adoptiert wird
+* - identifier: Grenzwert
 * - type: Float
 PARAMETER par_InThresholdAwareness_awarenessThreshold(set_InThresholdAwareness)
 
@@ -31,19 +32,23 @@ PARAMETER par_InThresholdAwareness_awarenessThreshold(set_InThresholdAwareness)
 * - type: String
 SET set_InConsumerAgentGroup(*)
 
-* - identifier: cagAttributes
+* - description: Attribute
+* - identifier: Attribute der KG
 * - type: Boolean
 PARAMETER par_link_InConsumerAgentGroup_InConsumerAgentGroupAttribute_cagAttributes(set_InConsumerAgentGroup,set_InConsumerAgentGroupAttribute)
 
-* - identifier: cagAwareness
+* - description: genutzte Awareness
+* - identifier: Awareness der KG
 * - type: Boolean
 PARAMETER par_link_InConsumerAgentGroup_InAwareness_cagAwareness(set_InConsumerAgentGroup,set_InAwareness)
 
-* - identifier: informationAuthority
+* - description: informationAuthority
+* - identifier: [ungenutzt] informationAuthority
 * - type: Float
 PARAMETER par_InConsumerAgentGroup_informationAuthority(set_InConsumerAgentGroup)
 
-* - identifier: numberOfAgentsX
+* - description: Anzahl der Agenten in der Konsumergruppe
+* - identifier: Agenten in der KG
 * - type: Integer
 PARAMETER par_InConsumerAgentGroup_numberOfAgentsX(set_InConsumerAgentGroup)
 
@@ -51,11 +56,13 @@ PARAMETER par_InConsumerAgentGroup_numberOfAgentsX(set_InConsumerAgentGroup)
 * - type: String
 SET set_InConsumerAgentGroupAttribute(*)
 
-* - identifier: cagAttrName
+* - description: Attributname
+* - identifier: Name des KG-Attributes
 * - type: Boolean
 PARAMETER par_link_InConsumerAgentGroupAttribute_InAttributeName_cagAttrName(set_InConsumerAgentGroupAttribute,set_InAttributeName)
 
-* - identifier: cagAttrDistribution
+* - description: genutzte Funktion
+* - identifier: Verteilungsfunktion des KG-Attributes
 * - type: Boolean
 PARAMETER par_link_InConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_cagAttrDistribution(set_InConsumerAgentGroupAttribute,set_InUnivariateDoubleDistribution)
 
@@ -63,9 +70,24 @@ PARAMETER par_link_InConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_
 * - type: String
 SET set_InConstantUnivariateDistribution(set_InUnivariateDoubleDistribution)
 
-* - identifier: constDistValue
+* - description: Wert
+* - identifier: Wert
 * - type: Float
 PARAMETER par_InConstantUnivariateDistribution_constDistValue(set_InConstantUnivariateDistribution)
+
+* - identifier: InRandomBoundedIntegerDistribution
+* - type: String
+SET set_InRandomBoundedIntegerDistribution(set_InUnivariateDoubleDistribution)
+
+* - description: Untergrenze
+* - identifier: Untergrenze (inklusiv)
+* - type: Integer
+PARAMETER par_InRandomBoundedIntegerDistribution_lowerBoundInt(set_InRandomBoundedIntegerDistribution)
+
+* - description: Obergrenze
+* - identifier: Obergrenze (exklusiv)
+* - type: Integer
+PARAMETER par_InRandomBoundedIntegerDistribution_upperBoundInt(set_InRandomBoundedIntegerDistribution)
 
 * - identifier: InUnivariateDoubleDistribution
 * - hidden: 1
@@ -93,17 +115,27 @@ SET set_InDistanceEvaluator(*)
 * - type: String
 SET set_InFreeNetworkTopology(set_InGraphTopologyScheme)
 
-* - identifier: distanceEvaluator
+* - description: Evaluator für Abstände
+* - identifier: Legt den Evaluator für die Abstände zwischen den Agenten fest.
 * - type: Boolean
 PARAMETER par_link_InFreeNetworkTopology_InDistanceEvaluator_distanceEvaluator(set_InFreeNetworkTopology,set_InDistanceEvaluator)
 
-* - identifier: numberOfTies
+* - description: Knotenanzahl
+* - identifier: Knotenanzahl je KG
 * - type: Boolean
 PARAMETER par_link_InFreeNetworkTopology_InNumberOfTies_numberOfTies(set_InFreeNetworkTopology,set_InNumberOfTies)
 
 * - identifier: initialWeight
 * - type: Float
 PARAMETER par_InFreeNetworkTopology_initialWeight(set_InFreeNetworkTopology)
+
+* - identifier: InUnlinkedGraphTopology
+* - type: String
+SET set_InUnlinkedGraphTopology(set_InGraphTopologyScheme)
+
+* - identifier: placeholderUnlinked
+* - type: Float
+PARAMETER par_InUnlinkedGraphTopology_placeholderUnlinked(set_InUnlinkedGraphTopology)
 
 * - identifier: InGraphTopologyScheme
 * - hidden: 1
@@ -130,23 +162,46 @@ PARAMETER par_InNoDistance_placeholderNoDistance(set_InNoDistance)
 * - type: String
 SET set_InNumberOfTies(*)
 
-* - identifier: cag
+* - description: Konsumergruppe
+* - identifier: Konsumergruppe
 * - type: Boolean
 PARAMETER par_link_InNumberOfTies_InConsumerAgentGroup_cag(set_InNumberOfTies,set_InConsumerAgentGroup)
 
-* - identifier: count
+* - description: Anzahl Kanten je Konsumergruppe
+* - identifier: Anzahl Kanten
 * - type: Integer
 PARAMETER par_InNumberOfTies_count(set_InNumberOfTies)
+
+* - description: Binäre Daten für diverse Funktionalitäten
+* - hidden: 0
+* - identifier: VisibleBinaryData
+* - type: String
+SET set_VisibleBinaryData(*)
+
+* - description: Spezielle ID der Daten, Verwendungszweck und Funktionsweise ist von den Daten selber abhängig.
+* - hidden: 0
+* - identifier: VisibleBinaryDataID
+* - type: Integer
+PARAMETER par_VisibleBinaryData_idVisible(set_VisibleBinaryData)
+
+* - description: Binäre Daten für diverse Funktionalitäten. Identisch zu VisibleBinaryData, aber für den internen Austausch gedacht und damit versteckt, um nicht im UI zu erscheinen.
+* - hidden: 1
+* - identifier: HiddenBinaryData
+* - type: String
+SET set_HiddenBinaryData(*)
+
+* - description: Spezielle ID der Daten, Verwendungszweck und Funktionsweise ist von den Daten selber abhängig.
+* - hidden: 1
+* - identifier: HiddenBinaryDataID
+* - type: Integer
+PARAMETER par_HiddenBinaryData_idHidden(set_HiddenBinaryData)
 
 * - identifier: InOrientationSupplier
 * - type: String
 SET set_InOrientationSupplier(*)
 
-* - identifier: attrNameInOrientation
-* - type: Boolean
-PARAMETER par_link_InOrientationSupplier_InAttributeName_attrNameInOrientation(set_InOrientationSupplier,set_InAttributeName)
-
-* - identifier: distInOrientation
+* - description: Verteilungsfunktion
+* - identifier: Verteilungsfunktion für die Orientierung
 * - type: Boolean
 PARAMETER par_link_InOrientationSupplier_InUnivariateDoubleDistribution_distInOrientation(set_InOrientationSupplier,set_InUnivariateDoubleDistribution)
 
@@ -179,9 +234,9 @@ PARAMETER par_InRAProcessModel_d(set_InRAProcessModel)
 * - type: Integer
 PARAMETER par_InRAProcessModel_adopterPoints(set_InRAProcessModel)
 
-* - identifier: interesetedPoints
+* - identifier: interestedPoints
 * - type: Integer
-PARAMETER par_InRAProcessModel_interesetedPoints(set_InRAProcessModel)
+PARAMETER par_InRAProcessModel_interestedPoints(set_InRAProcessModel)
 
 * - identifier: awarePoints
 * - type: Integer
@@ -195,11 +250,8 @@ PARAMETER par_InRAProcessModel_unknownPoints(set_InRAProcessModel)
 * - type: String
 SET set_InSlopeSupplier(*)
 
-* - identifier: attrNameSlope
-* - type: Boolean
-PARAMETER par_link_InSlopeSupplier_InAttributeName_attrNameSlope(set_InSlopeSupplier,set_InAttributeName)
-
-* - identifier: distSlope
+* - description: Verteilungsfunktion
+* - identifier: Verteilungsfunktion für die Neigung
 * - type: Boolean
 PARAMETER par_link_InSlopeSupplier_InUnivariateDoubleDistribution_distSlope(set_InSlopeSupplier,set_InUnivariateDoubleDistribution)
 
@@ -282,21 +334,65 @@ SET set_InAttributeName(*)
 * - type: Integer
 PARAMETER par_InAttributeName_placeholder(set_InAttributeName)
 
-* - identifier: seed
+* - default: -1
+* - description: Setzt den Seed für den Zufallsgenerator der Simulation. Falls er auf -1 gesetzt wird, wird ein zufälliger Seed generiert.
+* - identifier: Zufallsgenerator (seed)
 * - type: Integer
 SCALAR sca_InGeneral_seed
 
-* - identifier: runOptActDemo
+* - default: 5
+* - description: Setzt den Timeout der Simulation in Millisekunden. Diese Einstellung dient dazu die Simulation zu beenden, falls sie unerwartet abstürzt. Im Laufe der Simulation wird der Timeout unentwegt zurück gesetzt. Sollte es zu einem unerwarteten Fehler kommen und die Rücksetzung ausbleiben, wird die Simulation abgebrochen und beendet. Werte kleiner 1 deaktivieren den Timeout vollständig.
+* - identifier: Timeout
+* - unit: [ms]
+* - type: Integer
+SCALAR sca_InGeneral_timeout
+
+* - description: [TEMPORÄRE OPTION] Setzt das finale Jahr der Simulation. Wichtig: Der Wert ist inklusiv. Es wird dabei immer mindestens ein Jahr simuliert, auch wenn der Wert kleiner ist als das des Ausgangsjahres.
+* - identifier: Endjahr der Simulation
+* - type: Integer
+SCALAR sca_InGeneral_endYear
+
+* - description: [TEMPORÄRE OPTION] Falls gesetzt, wird die optact-Demo gestartet. Anderenfalls wird IRPact gestartet.
+* - identifier: optact-Testmodell ausführen
 * - type: Boolean
 SCALAR sca_InGeneral_runOptActDemo
 
-* - identifier: logGraphCreation
+* - default: 6
+* - domain: [0, 6]
+* - description: Setzt das zu nutzende Logging-Level in IRPact, folgende Werte werden unterstützt: 0 = OFF, 1 = TRACE, 2 = DEBUG, 3 = INFO, 4 = WARN, 5 = ERROR, 6 = ALL. Das Level ist der Hauptfilter für alle log-Operationen.
+* - identifier: Logging-Level
+* - type: Integer
+SCALAR sca_InGeneral_logLevel
+
+* - domain: [0|1]
+* - description: Ob die Initialisierung der Parameter geloggt werden soll.
+* - identifier: log Initialisierung der Parameter
+* - type: Boolean
+SCALAR sca_InGeneral_logParamInit
+
+* - domain: [0|1]
+* - description: [SPAM] Ob die Grapherzeugung geloggt werden soll.
+* - identifier: log Grapherzeugung
 * - type: Boolean
 SCALAR sca_InGeneral_logGraphCreation
 
-* - identifier: logAgentCreation
+* - domain: [0|1]
+* - description: [SPAM] Ob die Agentenerzeugung geloggt werden soll.
+* - identifier: log Agentenerzeugung
 * - type: Boolean
 SCALAR sca_InGeneral_logAgentCreation
+
+* - domain: [0|1]
+* - description: Ob die Erstellung der Simulation (Agentenplatform) geloggt werden soll.
+* - identifier: log Platformerstellung
+* - type: Boolean
+SCALAR sca_InGeneral_logPlatformCreation
+
+* - domain: [0|1]
+* - description: [SPAM] Ob Aufrufe der Tools-Bibliothek geloggt werden sollen.
+* - identifier: log Tools-Aufrufe
+* - type: Boolean
+SCALAR sca_InGeneral_logTools
 
 * - description: Version von IRPact für dieses Szenario.
 * - hidden: 1

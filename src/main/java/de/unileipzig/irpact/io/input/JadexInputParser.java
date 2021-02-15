@@ -20,6 +20,7 @@ import de.unileipzig.irpact.core.network.BasicSocialGraph;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.FreeNetworkTopology;
+import de.unileipzig.irpact.core.network.topology.UnlinkedGraphTopology;
 import de.unileipzig.irpact.core.process.BasicProcessModelManager;
 import de.unileipzig.irpact.core.process.FixProcessModelFindingScheme;
 import de.unileipzig.irpact.core.process.ra.RADataSupplier;
@@ -42,6 +43,7 @@ import de.unileipzig.irpact.io.input.distribution.InUnivariateDoubleDistribution
 import de.unileipzig.irpact.io.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.input.network.InNumberOfTies;
+import de.unileipzig.irpact.io.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.input.process.InOrientationSupplier;
 import de.unileipzig.irpact.io.input.process.InProcessModel;
 import de.unileipzig.irpact.io.input.process.InRAProcessModel;
@@ -299,6 +301,9 @@ public class JadexInputParser implements InputParser<JadexSimulationEnvironment>
             if(inTopo instanceof InFreeNetworkTopology) {
                 parseInFreeNetworkTopology((InFreeNetworkTopology) inTopo);
             }
+            else if(inTopo instanceof InUnlinkedGraphTopology) {
+                parseUnlinkedGraphTopology((InUnlinkedGraphTopology) inTopo);
+            }
             else {
                 throw new IllegalArgumentException("unsupported InGraphTopologyScheme: " + inTopo.getClass());
             }
@@ -337,6 +342,11 @@ public class JadexInputParser implements InputParser<JadexSimulationEnvironment>
                     rnd
             );
 
+            graphConfiguration.setGraphTopologyScheme(topo);
+        }
+
+        private void parseUnlinkedGraphTopology(InUnlinkedGraphTopology inTopo) {
+            UnlinkedGraphTopology topo = new UnlinkedGraphTopology(SocialGraph.Type.COMMUNICATION);
             graphConfiguration.setGraphTopologyScheme(topo);
         }
 

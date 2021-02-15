@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.io.input.agent.consumer;
 
 import de.unileipzig.irpact.io.input.InAttributeName;
+import de.unileipzig.irpact.io.input.InGeneral;
 import de.unileipzig.irpact.io.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -51,6 +52,16 @@ public class InConsumerAgentGroupAttribute {
                 res.getCachedElement("Konsumer"),
                 res.getCachedElement("Attribute-Verteilung-Mapping")
         );
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Name des KG-Attributes")
+                .setGamsDescription("Attributname")
+                .store(InConsumerAgentGroupAttribute.class, "cagAttrName");
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Verteilungsfunktion des KG-Attributes")
+                .setGamsDescription("genutzte Funktion")
+                .store(InConsumerAgentGroupAttribute.class, "cagAttrDistribution");
     }
 
     public String _name;

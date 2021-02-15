@@ -27,6 +27,16 @@ public class InNumberOfTies {
                 res.getCachedElement("Freie Topologie"),
                 res.getCachedElement("Anzahl Kanten")
         );
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Konsumergruppe")
+                .setGamsDescription("Konsumergruppe")
+                .store(InNumberOfTies.class, "cag");
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Anzahl Kanten")
+                .setGamsDescription("Anzahl Kanten je Konsumergruppe")
+                .store(InNumberOfTies.class, "count");
     }
 
     public String _name;

@@ -56,6 +56,26 @@ public class InConsumerAgentGroup {
                 res.getCachedElement("Konsumer"),
                 res.getCachedElement("Gruppe-Awareness-Mapping")
         );
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Attribute der KG")
+                .setGamsDescription("Attribute")
+                .store(InConsumerAgentGroup.class, "cagAttributes");
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Awareness der KG")
+                .setGamsDescription("genutzte Awareness")
+                .store(InConsumerAgentGroup.class, "cagAwareness");
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("[ungenutzt] informationAuthority")
+                .setGamsDescription("informationAuthority")
+                .store(InConsumerAgentGroup.class, "informationAuthority");
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Agenten in der KG")
+                .setGamsDescription("Anzahl der Agenten in der Konsumergruppe")
+                .store(InConsumerAgentGroup.class, "numberOfAgentsX");
     }
 
     public String _name;

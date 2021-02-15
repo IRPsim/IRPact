@@ -8,6 +8,10 @@ import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroupAttribut
 import de.unileipzig.irpact.io.input.awareness.InAwareness;
 import de.unileipzig.irpact.io.input.awareness.InThresholdAwareness;
 import de.unileipzig.irpact.io.input.distribution.InUnivariateDoubleDistribution;
+import de.unileipzig.irpact.io.input.network.InGraphTopologyScheme;
+import de.unileipzig.irpact.io.input.network.InUnlinkedGraphTopology;
+import de.unileipzig.irpact.io.input.product.InProductGroup;
+import de.unileipzig.irpact.io.input.product.InProductGroupAttribute;
 import de.unileipzig.irpact.io.input.time.InDiscreteTimeModel;
 import de.unileipzig.irpact.io.input.time.InTimeModel;
 import org.junit.jupiter.api.Disabled;
@@ -31,6 +35,25 @@ public class DemoUtil {
 
     private static InAttributeName getName(Map<String, Object> cache, String name) {
         return (InAttributeName) cache.computeIfAbsent(name, InAttributeName::new);
+    }
+
+    public static InGraphTopologyScheme[] getGraphTopo() {
+        return new InGraphTopologyScheme[]{new InUnlinkedGraphTopology("Unlinked")};
+    }
+
+    public static InProductGroup[] createProd(Map<String, Object> cache) {
+        return new InProductGroup[]{
+                new InProductGroup(
+                        "PV",
+                        new InProductGroupAttribute[] {
+                                new InProductGroupAttribute(
+                                        "PV_X",
+                                        getName(cache, "X"),
+                                        (InUnivariateDoubleDistribution) cache.get("DiraqDistribution0")
+                                )
+                        }
+                )
+        };
     }
 
     public static InConsumerAgentGroup createGroup(
@@ -97,8 +120,17 @@ public class DemoUtil {
                         (InUnivariateDoubleDistribution) cache.get("DiraqDistribution0")),
 
                 new InConsumerAgentGroupAttribute(
+                        name + "_" + RAConstants.CONSTRUCTION_RATE,
+                        getName(cache, RAConstants.CONSTRUCTION_RATE),
+                        (InUnivariateDoubleDistribution) cache.get("DiraqDistribution0")),
+                new InConsumerAgentGroupAttribute(
+                        name + "_" + RAConstants.RENOVATION_RATE,
+                        getName(cache, RAConstants.RENOVATION_RATE),
+                        (InUnivariateDoubleDistribution) cache.get("DiraqDistribution0")),
+
+                new InConsumerAgentGroupAttribute(
                         name + "_" + RAConstants.INITIAL_PRODUCT_AWARENESS,
-                        getName(cache, RAConstants.HOUSE_OWNER),
+                        getName(cache, RAConstants.INITIAL_PRODUCT_AWARENESS),
                         (InUnivariateDoubleDistribution) cache.get(d1Dist))
         };
 

@@ -2,6 +2,7 @@ package de.unileipzig.irpact.io.input.awareness;
 
 import de.unileipzig.irpact.commons.awareness.Awareness;
 import de.unileipzig.irpact.commons.awareness.ThresholdAwareness;
+import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -18,6 +19,7 @@ public class InThresholdAwareness implements InAwareness {
         res.newElementBuilder()
                 .setEdnLabel("Threshold")
                 .setEdnPriority(0)
+                .setEdnDescription("Grenzwert-basierte Awareness")
                 .putCache("Threshold");
     }
     public static void applyRes(TreeAnnotationResource res) {
@@ -28,6 +30,11 @@ public class InThresholdAwareness implements InAwareness {
                 res.getCachedElement("Awareness"),
                 res.getCachedElement("Threshold")
         );
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Grenzwert")
+                .setGamsDescription("Grenzwert ab der das Produkt adoptiert wird")
+                .store(InThresholdAwareness.class, "awarenessThreshold");
     }
 
     public String _name;

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.io.input.network;
 
+import de.unileipzig.irpact.io.input.distribution.InConstantUnivariateDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -17,6 +18,7 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         res.newElementBuilder()
                 .setEdnLabel("Freie Topologie")
                 .setEdnPriority(0)
+                .setEdnDescription("Freie Topologie")
                 .putCache("Freie Topologie");
     }
     public static void applyRes(TreeAnnotationResource res) {
@@ -26,6 +28,16 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
                 res.getCachedElement("Topologie"),
                 res.getCachedElement("Freie Topologie")
         );
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Legt den Evaluator für die Abstände zwischen den Agenten fest.")
+                .setGamsDescription("Evaluator für Abstände")
+                .store(InFreeNetworkTopology.class, "distanceEvaluator");
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Knotenanzahl je KG")
+                .setGamsDescription("Knotenanzahl")
+                .store(InFreeNetworkTopology.class, "numberOfTies");
     }
 
     public String _name;

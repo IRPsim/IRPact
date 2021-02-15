@@ -15,6 +15,7 @@ public interface InAwareness {
         res.newElementBuilder()
                 .setEdnLabel("Awareness")
                 .setEdnPriority(2)
+                .setEdnDescription("Legt die verwendeten Awareness-Varianten für die Konsumergruppen fest.")
                 .putCache("Awareness");
     }
     static void applyRes(TreeAnnotationResource res) {

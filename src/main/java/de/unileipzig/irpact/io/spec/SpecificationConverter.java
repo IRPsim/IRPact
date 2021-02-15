@@ -57,6 +57,7 @@ public class SpecificationConverter {
         put(InInverse.class, inInverseToJson);
         put(InNoDistance.class, noDistanceToJson);
         put(InFreeNetworkTopology.class, inFreeNetworkTopologyToJson);
+        put(InUnlinkedGraphTopology.class, inUnlinkedGraphToJson);
         put(InRAProcessModel.class, inRAProcessModelToJson);
         put(InOrientationSupplier.class, inOrientationSupplierToJson);
         put(InSlopeSupplier.class, inSlopeSupplierToJson);
@@ -240,6 +241,12 @@ public class SpecificationConverter {
         converter.apply(manager, instance.getDistanceEvaluator());
     };
 
+    private static final ToSpecFunction<InUnlinkedGraphTopology> inUnlinkedGraphToJson = (instance, manager, converter) -> {
+        SpecificationHelper spec = new SpecificationHelper(manager.getTopology());
+        spec.setName(instance.getName());
+        spec.setType("UnlinkedGraphTopology");
+    };
+
     private static final ToSpecFunction<InRAProcessModel> inRAProcessModelToJson = (instance, manager, converter) -> {
         SpecificationHelper spec = new SpecificationHelper(manager.getProcess());
         spec.setName(instance.getName());
@@ -320,7 +327,7 @@ public class SpecificationConverter {
     private static final ToSpecFunction<InGeneral> inGeneralToJson = (instance, manager, converter) -> {
         SpecificationHelper spec = new SpecificationHelper(manager.getGeneralSettings());
         spec.set(TAG_seed, instance.seed);
-        spec.set(TAG_timeout, instance.seed);
+        spec.set(TAG_timeout, instance.timeout);
         spec.set(TAG_startYear, instance.startYear);
         spec.set(TAG_endYear, instance.endYear);
     };
@@ -519,6 +526,9 @@ public class SpecificationConverter {
                     tieList.toArray(new InNumberOfTies[0]),
                     initialWeight
             );
+        }
+        else if("UnlinkedGraphTopology".equals(type)) {
+            scheme = new InUnlinkedGraphTopology(name);
         }
         else {
             throw new IllegalArgumentException("unknown type: " + type);

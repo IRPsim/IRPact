@@ -19,6 +19,7 @@ public class InConstantUnivariateDistribution implements InUnivariateDoubleDistr
         res.newElementBuilder()
                 .setEdnLabel("Dirac")
                 .setEdnPriority(0)
+                .setEdnDescription("Verteilungsfunktion, welche einen konstanten Wert zurück gibt.")
                 .putCache("Dirac");
     }
     public static void applyRes(TreeAnnotationResource res) {
@@ -27,6 +28,11 @@ public class InConstantUnivariateDistribution implements InUnivariateDoubleDistr
                 res.getCachedElement("Verteilungsfunktionen"),
                 res.getCachedElement("Dirac")
         );
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Wert")
+                .setGamsDescription("Wert")
+                .store(InConstantUnivariateDistribution.class, "constDistValue");
     }
 
     public String _name;

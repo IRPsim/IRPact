@@ -17,8 +17,9 @@ public class InInverse implements InDistanceEvaluator {
 
     public static void initRes(TreeAnnotationResource res) {
         res.newElementBuilder()
-                .setEdnLabel("Invers")
+                .setEdnLabel("Invers Distanz")
                 .setEdnPriority(1)
+                .setEdnDescription("Benutzt 1/distance für die Auswertung.")
                 .putCache("Invers");
     }
     public static void applyRes(TreeAnnotationResource res) {

@@ -15,10 +15,16 @@
     "scalars" : {
       "sca_GraphvizGlobal_fixedNeatoPosition" : 0,
       "sca_GraphvizGlobal_scaleFactor" : 0.0,
-      "sca_InGeneral_logAgentCreation" : 0,
-      "sca_InGeneral_logGraphCreation" : 0,
+      "sca_InGeneral_endYear" : 0,
+      "sca_InGeneral_logAgentCreation" : 1,
+      "sca_InGeneral_logGraphCreation" : 1,
+      "sca_InGeneral_logLevel" : 6,
+      "sca_InGeneral_logParamInit" : 1,
+      "sca_InGeneral_logPlatformCreation" : 1,
+      "sca_InGeneral_logTools" : 1,
       "sca_InGeneral_runOptActDemo" : 1,
       "sca_InGeneral_seed" : 42,
+      "sca_InGeneral_timeout" : 300000,
       "sca_Tax_PS_vat" : 0.19,
       "sca_X_MS_CH_country" : 0,
       "sca_X_MS_DE_country" : 1
@@ -84,6 +90,11 @@
           "par_GraphvizOutputFormat_useFormat" : 1
         }
       },
+      "set_HiddenBinaryData" : {
+        "78KGK0FQG1KL8I35DHM6ULRFE9M68L31EDLLUI39CHI6ARK0EJ1FMZZZ" : {
+          "par_HiddenBinaryData_idHidden" : -200
+        }
+      },
       "set_IFreeMultiGraphTopology" : {
         "FREE1" : {
           "par_IFreeMultiGraphTopology_ftEdgeCount" : 3,
@@ -112,9 +123,6 @@
         }
       },
       "set_InAttributeName" : {
-        "A" : {
-          "par_InAttributeName_placeholder" : 0
-        },
         "A1" : {
           "par_InAttributeName_placeholder" : 0
         },
@@ -174,13 +182,11 @@
         },
         "E1" : {
           "par_InAttributeName_placeholder" : 0
-        },
-        "N" : {
-          "par_InAttributeName_placeholder" : 0
         }
       },
       "set_InAwareness" : {
-        "cag0_awa" : { }
+        "cag0_awa" : { },
+        "cag1_awa" : { }
       },
       "set_InConstantSpatialDistribution2D" : {
         "cag0_spatial" : {
@@ -198,12 +204,6 @@
         },
         "constant09" : {
           "par_InConstantUnivariateDistribution_constDistValue" : 0.9
-        },
-        "constant24" : {
-          "par_InConstantUnivariateDistribution_constDistValue" : 24.0
-        },
-        "constant42" : {
-          "par_InConstantUnivariateDistribution_constDistValue" : 42.0
         }
       },
       "set_InConsumerAgentGroup" : {
@@ -304,6 +304,16 @@
       "set_InProductGroupAttribute" : {
         "PV_E1" : { }
       },
+      "set_InRandomBoundedIntegerDistribution" : {
+        "ori_dist" : {
+          "par_InRandomBoundedIntegerDistribution_lowerBoundInt" : 0,
+          "par_InRandomBoundedIntegerDistribution_upperBoundInt" : 91
+        },
+        "slope_dist" : {
+          "par_InRandomBoundedIntegerDistribution_lowerBoundInt" : 0,
+          "par_InRandomBoundedIntegerDistribution_upperBoundInt" : 91
+        }
+      },
       "set_InRAProcessModel" : {
         "RA" : {
           "par_InRAProcessModel_a" : 0.25,
@@ -311,7 +321,7 @@
           "par_InRAProcessModel_c" : 0.25,
           "par_InRAProcessModel_d" : 0.25,
           "par_InRAProcessModel_adopterPoints" : 3,
-          "par_InRAProcessModel_interesetedPoints" : 2,
+          "par_InRAProcessModel_interestedPoints" : 2,
           "par_InRAProcessModel_awarePoints" : 1,
           "par_InRAProcessModel_unknownPoints" : 0
         }
@@ -333,7 +343,10 @@
       },
       "set_InThresholdAwareness" : {
         "cag0_awa" : {
-          "par_InThresholdAwareness_awarenessThreshold" : 10.0
+          "par_InThresholdAwareness_awarenessThreshold" : 1.0
+        },
+        "cag1_awa" : {
+          "par_InThresholdAwareness_awarenessThreshold" : 9.0
         }
       },
       "set_InTimeModel" : {
@@ -342,11 +355,12 @@
       "set_InUnivariateDoubleDistribution" : {
         "constant01" : { },
         "constant09" : { },
-        "constant24" : { },
-        "constant42" : { }
+        "ori_dist" : { },
+        "slope_dist" : { }
       },
+      "set_InUnlinkedGraphTopology" : { },
       "set_InVersion" : {
-        "v0_0_0" : {
+        "0_0_0" : {
           "par_InVersion_placeholderVersion" : 0
         }
       },
@@ -427,6 +441,11 @@
       },
       "set_tech_DESTO" : {
         "tech_ES1" : { }
+      },
+      "set_VisibleBinaryData" : {
+        "78KGK0FQG1KLAI35DHM6ULRFE9M68L31EDLLULJ9EDKM4R35G1QC5UOZ" : {
+          "par_VisibleBinaryData_idVisible" : -200
+        }
       }
     },
     "timeseries" : {
@@ -527,10 +546,12 @@
       },
       "par_link_InConsumerAgentGroup_InAwareness_cagAwareness" : {
         "cag0" : {
-          "cag0_awa" : 1.0
+          "cag0_awa" : 1.0,
+          "cag1_awa" : 0.0
         },
         "cag1" : {
-          "cag0_awa" : 1.0
+          "cag0_awa" : 0.0,
+          "cag1_awa" : 1.0
         }
       },
       "par_link_InConsumerAgentGroup_InConsumerAgentGroupAttribute_cagAttributes" : {
@@ -617,7 +638,6 @@
       },
       "par_link_InConsumerAgentGroupAttribute_InAttributeName_cagAttrName" : {
         "cag0_A1" : {
-          "A" : 0.0,
           "A1" : 1.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -637,11 +657,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_A2" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 1.0,
           "A2_1" : 0.0,
@@ -661,11 +679,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_A2_1" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 1.0,
@@ -685,11 +701,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_A2_2" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -709,11 +723,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_A3" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -733,11 +745,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_A3_1" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -757,11 +767,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_A3_2" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -781,11 +789,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_A4" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -805,11 +811,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_A4_1" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -829,11 +833,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_A4_2" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -853,11 +855,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_A5" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -877,11 +877,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_A6" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -901,11 +899,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_A7" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -925,11 +921,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_A8" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -949,11 +943,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_C1" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -973,11 +965,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_D1" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -997,11 +987,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_D2" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1021,11 +1009,9 @@
           "D2" : 1.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_D3" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1045,11 +1031,9 @@
           "D2" : 0.0,
           "D3" : 1.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag0_D4" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1069,11 +1053,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 1.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_A1" : {
-          "A" : 0.0,
           "A1" : 1.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1093,11 +1075,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_A2" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 1.0,
           "A2_1" : 0.0,
@@ -1117,11 +1097,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_A2_1" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 1.0,
@@ -1141,11 +1119,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_A2_2" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1165,11 +1141,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_A3" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1189,11 +1163,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_A3_1" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1213,11 +1185,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_A3_2" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1237,11 +1207,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_A4" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1261,11 +1229,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_A4_1" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1285,11 +1251,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_A4_2" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1309,11 +1273,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_A5" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1333,11 +1295,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_A6" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1357,11 +1317,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_A7" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1381,11 +1339,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_A8" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1405,11 +1361,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_C1" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1429,11 +1383,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_D1" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1453,11 +1405,9 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_D2" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1477,11 +1427,9 @@
           "D2" : 1.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_D3" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1501,11 +1449,9 @@
           "D2" : 0.0,
           "D3" : 1.0,
           "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         },
         "cag1_D4" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1525,238 +1471,237 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 1.0,
-          "E1" : 0.0,
-          "N" : 0.0
+          "E1" : 0.0
         }
       },
       "par_link_InConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_cagAttrDistribution" : {
         "cag0_A1" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_A2" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_A2_1" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_A2_2" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_A3" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_A3_1" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_A3_2" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_A4" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_A4_1" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_A4_2" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_A5" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_A6" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_A7" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_A8" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_C1" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_D1" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_D2" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_D3" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag0_D4" : {
           "constant01" : 1.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_A1" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_A2" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_A2_1" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_A2_2" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_A3" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_A3_1" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_A3_2" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_A4" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_A4_1" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_A4_2" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_A5" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_A6" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_A7" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_A8" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_C1" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_D1" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_D2" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_D3" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         },
         "cag1_D4" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         }
       },
       "par_link_InConsumerAgentGroupColor_GraphvizColor_color" : {
@@ -1804,38 +1749,12 @@
           "cag1" : 1.0
         }
       },
-      "par_link_InOrientationSupplier_InAttributeName_attrNameInOrientation" : {
-        "OrientationSupplier" : {
-          "A" : 1.0,
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 0.0
-        }
-      },
       "par_link_InOrientationSupplier_InUnivariateDoubleDistribution_distInOrientation" : {
         "OrientationSupplier" : {
           "constant01" : 0.0,
           "constant09" : 0.0,
-          "constant24" : 1.0,
-          "constant42" : 0.0
+          "ori_dist" : 1.0,
+          "slope_dist" : 0.0
         }
       },
       "par_link_InProductGroup_InProductGroupAttribute_pgAttributes" : {
@@ -1845,7 +1764,6 @@
       },
       "par_link_InProductGroupAttribute_InAttributeName_attrName" : {
         "PV_E1" : {
-          "A" : 0.0,
           "A1" : 0.0,
           "A2" : 0.0,
           "A2_1" : 0.0,
@@ -1865,50 +1783,23 @@
           "D2" : 0.0,
           "D3" : 0.0,
           "D4" : 0.0,
-          "E1" : 1.0,
-          "N" : 0.0
+          "E1" : 1.0
         }
       },
       "par_link_InProductGroupAttribute_InUnivariateDoubleDistribution_attrDistribution" : {
         "PV_E1" : {
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "constant24" : 0.0,
-          "constant42" : 0.0
-        }
-      },
-      "par_link_InSlopeSupplier_InAttributeName_attrNameSlope" : {
-        "SlopeSupplier" : {
-          "A" : 0.0,
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0,
-          "N" : 1.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 0.0
         }
       },
       "par_link_InSlopeSupplier_InUnivariateDoubleDistribution_distSlope" : {
         "SlopeSupplier" : {
           "constant01" : 0.0,
           "constant09" : 0.0,
-          "constant24" : 0.0,
-          "constant42" : 1.0
+          "ori_dist" : 0.0,
+          "slope_dist" : 1.0
         }
       },
       "par_SOH_pss_sector" : {

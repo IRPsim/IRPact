@@ -17,6 +17,7 @@ public class InSlopeSupplier {
         res.newElementBuilder()
                 .setEdnLabel("Neigungsdaten")
                 .setEdnPriority(1)
+                .setEdnDescription("Zieht die Neigungsdaten basierend auf der verwendeten Verteilungsfunktion.")
                 .putCache("Neigungsdaten");
 
         res.newElementBuilder()
@@ -39,6 +40,11 @@ public class InSlopeSupplier {
                 res.getCachedElement("Neigungsdaten"),
                 res.getCachedElement("Verteilungs-Mapping_Slope")
         );
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Verteilungsfunktion für die Neigung")
+                .setGamsDescription("Verteilungsfunktion")
+                .store(InSlopeSupplier.class, "distSlope");
     }
 
     public String _name;

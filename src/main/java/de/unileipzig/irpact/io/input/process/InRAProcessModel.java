@@ -1,8 +1,5 @@
 package de.unileipzig.irpact.io.input.process;
 
-import de.unileipzig.irpact.io.spec.SpecificationConstants;
-import de.unileipzig.irpact.io.spec.SpecificationHelper;
-import de.unileipzig.irpact.io.spec.SpecificationManager;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;

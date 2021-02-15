@@ -262,6 +262,7 @@ public class InRoot implements RootClass {
             InConsumerAgentGroupColor.class,
             InDistanceEvaluator.class,
             InFreeNetworkTopology.class,
+            InUnlinkedGraphTopology.class,
             InGraphTopologyScheme.class,
             InInverse.class,
             InNoDistance.class,

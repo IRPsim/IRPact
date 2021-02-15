@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.io.input.process;
 
 import de.unileipzig.irpact.io.input.distribution.InUnivariateDoubleDistribution;
+import de.unileipzig.irpact.io.input.network.InNumberOfTies;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -17,6 +18,7 @@ public class InOrientationSupplier {
         res.newElementBuilder()
                 .setEdnLabel("Orientierungsdaten")
                 .setEdnPriority(0)
+                .setEdnDescription("Zieht die Orietierungsdaten basierend auf der verwendeten Verteilungsfunktion.")
                 .putCache("Orientierungsdaten");
 
         res.newElementBuilder()
@@ -39,6 +41,11 @@ public class InOrientationSupplier {
                 res.getCachedElement("Orientierungsdaten"),
                 res.getCachedElement("Verteilungs-Mapping")
         );
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Verteilungsfunktion für die Orientierung")
+                .setGamsDescription("Verteilungsfunktion")
+                .store(InOrientationSupplier.class, "distInOrientation");
     }
 
     public String _name;
