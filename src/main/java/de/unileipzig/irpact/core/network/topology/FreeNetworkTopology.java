@@ -9,8 +9,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinities;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.LoggingPart;
-import de.unileipzig.irpact.core.log.LoggingType;
+import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
@@ -57,7 +56,7 @@ public class FreeNetworkTopology implements GraphTopologyScheme {
             ConsumerAgent ca = node.getAgent(ConsumerAgent.class);
             Set<ConsumerAgent> agents = drawTargets(environment, ca);
             for(ConsumerAgent targetCa: agents) {
-                LOGGER.trace(LoggingType.INITIALIZATION, LoggingPart.NETWORK, "add edge: {}-{} ({},{})", ca.getName(), targetCa.getName(), edgeType, initialWeight);
+                LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "add edge: {}-{} ({},{})", ca.getName(), targetCa.getName(), edgeType, initialWeight);
                 graph.addEdge(ca.getSocialGraphNode(), targetCa.getSocialGraphNode(), edgeType, initialWeight);
             }
         }

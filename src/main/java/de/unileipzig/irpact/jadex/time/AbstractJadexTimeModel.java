@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.jadex.time;
 
 import de.unileipzig.irpact.commons.time.Timestamp;
+import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import jadex.bridge.service.types.clock.IClockService;
 import jadex.bridge.service.types.simulation.ISimulationService;
 
@@ -11,12 +12,15 @@ import java.time.ZonedDateTime;
  */
 public abstract class AbstractJadexTimeModel implements JadexTimeModel {
 
-    protected IClockService clock;
-    protected ISimulationService simulation;
+    protected JadexSimulationEnvironment environment;
     protected JadexTimestamp startTime;
     protected JadexTimestamp endTime;
 
     public AbstractJadexTimeModel() {
+    }
+
+    public void setEnvironment(JadexSimulationEnvironment environment) {
+        this.environment = environment;
     }
 
     public void setStartTime(JadexTimestamp startTime) {
@@ -46,20 +50,12 @@ public abstract class AbstractJadexTimeModel implements JadexTimeModel {
 
     @Override
     public IClockService getClockService() {
-        return clock;
-    }
-
-    public void setClock(IClockService clock) {
-        this.clock = clock;
-    }
-
-    public void setSimulation(ISimulationService simulation) {
-        this.simulation = simulation;
+        return environment.getLiveCycleControl().getClockService();
     }
 
     @Override
     public ISimulationService getSimulationService() {
-        return simulation;
+        return environment.getLiveCycleControl().getSimulationService();
     }
 
     @Override

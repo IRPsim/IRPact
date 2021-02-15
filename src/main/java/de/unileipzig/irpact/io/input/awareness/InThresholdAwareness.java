@@ -2,7 +2,6 @@ package de.unileipzig.irpact.io.input.awareness;
 
 import de.unileipzig.irpact.commons.awareness.Awareness;
 import de.unileipzig.irpact.commons.awareness.ThresholdAwareness;
-import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -44,6 +43,7 @@ public class InThresholdAwareness implements InAwareness {
         this.awarenessThreshold = threshold;
     }
 
+    @Override
     public String getName() {
         return _name;
     }

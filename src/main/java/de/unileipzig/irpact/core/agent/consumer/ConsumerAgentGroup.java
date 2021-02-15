@@ -10,7 +10,6 @@ import de.unileipzig.irpact.core.product.ProductFindingScheme;
 import de.unileipzig.irpact.core.spatial.SpatialDistribution;
 
 import java.util.Collection;
-import java.util.Set;
 
 /**
  * @author Daniel Abitz
@@ -21,9 +20,11 @@ public interface ConsumerAgentGroup extends AgentGroup<ConsumerAgent> {
 
     Collection<ConsumerAgentGroupAttribute> getAttributes();
 
-    SpatialDistribution getSpatialDistribution();
+    boolean hasGroupAttribute(String name);
 
-    void setSpatialDistribution(SpatialDistribution distribution);
+    void addGroupAttribute(ConsumerAgentGroupAttribute attribute);
+
+    SpatialDistribution getSpatialDistribution();
 
     Awareness<Product> getProductAwareness();
 
@@ -32,10 +33,6 @@ public interface ConsumerAgentGroup extends AgentGroup<ConsumerAgent> {
     ConsumerAgent deriveAgent();
 
     boolean addAgent(ConsumerAgent agent);
-
-    boolean addGroupAttribute(ConsumerAgentGroupAttribute cagAttr);
-
-    boolean hasGroupAttribute(String name);
 
     void replace(ConsumerAgent toRemove, ConsumerAgent toAdd) throws IllegalStateException;
 

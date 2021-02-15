@@ -1,7 +1,10 @@
 package de.unileipzig.irpact.io.output;
 
+import de.unileipzig.irpact.io.IOResources;
+import de.unileipzig.irpact.io.inout.binary.HiddenBinaryData;
 import de.unileipzig.irpact.start.optact.in.Ii;
 import de.unileipzig.irpact.start.optact.out.OutCustom;
+import de.unileipzig.irptools.defstructure.AnnotationResource;
 import de.unileipzig.irptools.defstructure.ParserInput;
 import de.unileipzig.irptools.defstructure.RootClass;
 import de.unileipzig.irptools.defstructure.Type;
@@ -12,6 +15,7 @@ import de.unileipzig.irptools.uiedn.Sections;
 import de.unileipzig.irptools.util.UiEdn;
 import de.unileipzig.irptools.util.Util;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -20,8 +24,8 @@ import java.util.List;
 @Definition(root = true)
 public class OutRoot implements RootClass {
 
-    public static final List<ParserInput> LIST = ParserInput.listOf(Type.OUTPUT
-            //TODO
+    public static final List<ParserInput> LIST = ParserInput.listOf(Type.OUTPUT,
+            HiddenBinaryData.class
     );
 
     public static final List<ParserInput> WITH_OPTACT = Util.mergedArrayListOf(
@@ -50,8 +54,13 @@ public class OutRoot implements RootClass {
     }
 
     @Override
-    public List<ParserInput> getInput() {
+    public Collection<? extends ParserInput> getInput() {
         return CLASSES;
+    }
+
+    @Override
+    public AnnotationResource getResources() {
+        return IOResources.getInstance();
     }
 
     @Override

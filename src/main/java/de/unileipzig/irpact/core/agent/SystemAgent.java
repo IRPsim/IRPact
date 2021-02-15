@@ -8,6 +8,16 @@ import de.unileipzig.irpact.core.network.SocialGraph;
 public interface SystemAgent extends Agent {
 
     @Override
+    default void lockAction() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default void releaseAction() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     default boolean aquireAction() {
         throw new UnsupportedOperationException();
     }

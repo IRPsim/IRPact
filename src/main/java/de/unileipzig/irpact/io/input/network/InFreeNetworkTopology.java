@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.io.input.network;
 
-import de.unileipzig.irpact.core.network.topology.FreeNetworkTopology;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -40,14 +39,12 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
     @FieldDefinition
     public double initialWeight;
 
-    private FreeNetworkTopology instance;
-
     public InFreeNetworkTopology() {
     }
 
-    public InFreeNetworkTopology(String name, InDistanceEvaluator[] evaluator, InNumberOfTies[] numberOfTies, double initialWeight) {
+    public InFreeNetworkTopology(String name, InDistanceEvaluator evaluator, InNumberOfTies[] numberOfTies, double initialWeight) {
         this._name = name;
-        this.distanceEvaluator = evaluator;
+        this.distanceEvaluator = new InDistanceEvaluator[]{evaluator};
         this.numberOfTies = numberOfTies;
         this.initialWeight = initialWeight;
     }

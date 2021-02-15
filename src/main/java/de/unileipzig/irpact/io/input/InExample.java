@@ -1,11 +1,16 @@
 package de.unileipzig.irpact.io.input;
 
+import de.unileipzig.irpact.core.log.IRPLevel;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
+import de.unileipzig.irpact.core.simulation.tasks.BasicNonSimulationTask;
+import de.unileipzig.irpact.io.inout.binary.HiddenBinaryData;
 import de.unileipzig.irpact.io.input.awareness.InThresholdAwareness;
+import de.unileipzig.irpact.io.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.input.distribution.InConstantUnivariateDistribution;
 import de.unileipzig.irpact.io.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.io.input.distribution.InRandomBoundedIntegerDistribution;
 import de.unileipzig.irpact.io.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.input.graphviz.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.input.network.*;
@@ -22,7 +27,6 @@ import de.unileipzig.irpact.io.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.input.time.InDiscreteTimeModel;
 import de.unileipzig.irpact.io.input.time.InTimeModel;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
-import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irpact.start.optact.in.*;
 import de.unileipzig.irpact.start.optact.network.IFreeMultiGraphTopology;
 import de.unileipzig.irpact.start.optact.network.IGraphTopology;
@@ -38,6 +42,7 @@ import de.unileipzig.irptools.util.Table;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Daniel Abitz
@@ -77,9 +82,6 @@ public class InExample implements DefaultScenarioFactory {
         InAttributeName D3 = new InAttributeName(RAConstants.FINANCIAL_THRESHOLD);
         InAttributeName D4 = new InAttributeName(RAConstants.ADOPTION_THRESHOLD);
 
-        InAttributeName ORIENTATION = new InAttributeName(RAConstants.ORIENTATION);
-        InAttributeName SLOPE = new InAttributeName(RAConstants.SLOPE);
-
         InAttributeName E1 = new InAttributeName("E1");
 
         //===
@@ -114,7 +116,7 @@ public class InExample implements DefaultScenarioFactory {
         InConsumerAgentGroupAttribute cag0_D3_attr = build(name, D3, dist, list);
         InConsumerAgentGroupAttribute cag0_D4_attr = build(name, D4, dist, list);
 
-        InThresholdAwareness cag0_awa = new InThresholdAwareness("cag0_awa", 10);
+        InThresholdAwareness cag0_awa = new InThresholdAwareness("cag0_awa", 1);
 
         InConsumerAgentGroup cag0 = new InConsumerAgentGroup(name, 1.0, 8, list, cag0_awa);
 
@@ -144,7 +146,7 @@ public class InExample implements DefaultScenarioFactory {
         InConsumerAgentGroupAttribute cag1_D3_attr = build(name, D3, dist, list);
         InConsumerAgentGroupAttribute cag1_D4_attr = build(name, D4, dist, list);
 
-        InThresholdAwareness cag1_awa = new InThresholdAwareness("cag0_awa", 10);
+        InThresholdAwareness cag1_awa = new InThresholdAwareness("cag1_awa", 9);
 
         InConsumerAgentGroup cag1 = new InConsumerAgentGroup(name, 1.0, 12, list, cag1_awa);
 
@@ -158,11 +160,10 @@ public class InExample implements DefaultScenarioFactory {
         InNumberOfTies cag0_ties = new InNumberOfTies("cag0_ties", cag0, 3);
         InNumberOfTies cag1_ties = new InNumberOfTies("cag1_ties", cag1, 4);
 
-        InNoDistance[] noDistances = new InNoDistance[]{new InNoDistance("NoDistance")};
         InNumberOfTies[] numberOfTies = new InNumberOfTies[]{cag0_ties, cag1_ties};
         InFreeNetworkTopology topology = new InFreeNetworkTopology(
                 "FreeTopo",
-                noDistances,
+                new InNoDistance("NoDistance"),
                 numberOfTies,
                 1.0
         );
@@ -173,15 +174,15 @@ public class InExample implements DefaultScenarioFactory {
                 0.25, 0.25, 0.25, 0.25,
                 3, 2, 1, 0
         );
+        InRandomBoundedIntegerDistribution oriDist = new InRandomBoundedIntegerDistribution("ori_dist", 0, 91);
         InOrientationSupplier orientationSupplier = new InOrientationSupplier(
                 "OrientationSupplier",
-                ORIENTATION,
-                constant24
+                oriDist
         );
+        InRandomBoundedIntegerDistribution slopeDist = new InRandomBoundedIntegerDistribution("slope_dist", 0, 91);
         InSlopeSupplier slopeSupplier = new InSlopeSupplier(
                 "SlopeSupplier",
-                SLOPE,
-                constant42
+                slopeDist
         );
 
         //Product
@@ -196,7 +197,7 @@ public class InExample implements DefaultScenarioFactory {
         InConstantSpatialDistribution2D cag0_spatial = new InConstantSpatialDistribution2D("cag0_spatial", cag0, 0, 1);
         InConstantSpatialDistribution2D cag1_spatial = new InConstantSpatialDistribution2D("cag1_spatial", cag1, 1, 0);
 
-        InSpace2D space2D = new InSpace2D("Space2D");
+        InSpace2D space2D = new InSpace2D("Space2D", true);
 
         //time
         InDiscreteTimeModel timeModel = new InDiscreteTimeModel("Discrete", 604800000L);
@@ -204,14 +205,33 @@ public class InExample implements DefaultScenarioFactory {
         //general
         InGeneral general = new InGeneral();
         general.seed = 42;
-        general.logGraphCreation = false;
-        general.logAgentCreation = false;
+        general.timeout = TimeUnit.MINUTES.toMillis(5);
         general.runOptActDemo = true;
+        general.logLevel = IRPLevel.ALL.getLevelId();
+        general.logParamInit = true;
+        general.logGraphCreation = true;
+        general.logAgentCreation = true;
+        general.logPlatformCreation = true;
+        general.logTools = true;
 
         //=====
         InRoot root = new InRoot();
         initOptAct(root);
         initGV(root);
+
+        try {
+            BasicNonSimulationTask helloWorldVisible = new BasicNonSimulationTask();
+            helloWorldVisible.setInfo("HelloWorldTask_Visible");
+            helloWorldVisible.setTaskNumber(BasicNonSimulationTask.HELLO_WORLD);
+            root.visibleBinaryData = new VisibleBinaryData[]{helloWorldVisible.toBinary(VisibleBinaryData.class)};
+
+            BasicNonSimulationTask helloWorldHidden = new BasicNonSimulationTask();
+            helloWorldHidden.setInfo("HelloWorldTask_Hidden");
+            helloWorldHidden.setTaskNumber(BasicNonSimulationTask.HELLO_WORLD);
+            root.hiddenBinaryData = new HiddenBinaryData[]{helloWorldHidden.toBinary(HiddenBinaryData.class)};
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         //graphviz
         GraphvizColor gc1 = GraphvizColor.RED;

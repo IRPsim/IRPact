@@ -62,8 +62,9 @@ public class MainDiscrete {
 
         DiscreteTimeModel dTimeModel = new DiscreteTimeModel();
         dTimeModel.setStartYear(2015, 900000L); //86400000L
-        dTimeModel.setClock(clock);
-        dTimeModel.setSimulation(simulationService);
+        if(true) throw new IllegalStateException("A");
+//        dTimeModel.setClock(clock);
+//        dTimeModel.setSimulation(simulationService);
         dTimeModel.setStartTick(clock.getTick());
 
 

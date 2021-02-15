@@ -62,8 +62,8 @@ public class JadexInputConverter implements InputConverter {
                 battr.setDistribution(attr.getCagAttrDistribution().createInstance());
                 //jgrp.addAttribute(battr);
             }
-            env.getAgents().add(jgrp);
-            env.getInitializationData().setInitialNumberOfConsumerAgents(jgrp, grp.getNumberOfAgents());
+            //env.getAgents().add(jgrp);
+            //env.getInitializationData().setInitialNumberOfConsumerAgents(jgrp, grp.getNumberOfAgents());
         }
         initAffinities(env, input);
     }
@@ -89,7 +89,7 @@ public class JadexInputConverter implements InputConverter {
                 pga.setDistribution(attr.getPgAttrDistribution().createInstance());
                 pg.addAttribute(pga);
             }
-            env.getProducts().add(pg);
+            //env.getProducts().add(pg);
         }
         initFixedProducts(env, input);
     }

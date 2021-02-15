@@ -151,7 +151,7 @@ class DivTest {
     }
 
     @Test
-    void resTest() {
+    void resTest() throws Exception {
         IRPLogging.initConsole();
         IRPact irpact = new IRPact(null, null);
         irpact.start();

@@ -2,6 +2,7 @@ package de.unileipzig.irpact.experimental.irpactrealstuff;
 
 import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.log.Logback;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.experimental.TestFiles;
@@ -56,9 +57,9 @@ public class Asd {
     }
 
     @Test
-    void runStartWithTools() throws Exception {
-        Logback.setupSystemOutAndErr();
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x4");
+    void runStartWithTools() {
+        IRPLogging.initConsole();
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x5_task");
         String[] args = {
                 "--irptools",
                 "--inputRootClass", InRoot.class.getName(),
@@ -76,6 +77,22 @@ public class Asd {
                 "--pathToBackendJar", TestFiles.backendGeneratorJar.toString(),
                 "--backendOutputFile", dir.resolve("backend.json").toString(),
                 "--sortAfterPriority"
+        };
+        Start.main(args);
+    }
+
+    @Test
+    void versionEtc() {
+        String[] args = {
+                "-v"
+        };
+        Start.main(args);
+    }
+
+    @Test
+    void helpEtc() {
+        String[] args = {
+                "-?"
         };
         Start.main(args);
     }

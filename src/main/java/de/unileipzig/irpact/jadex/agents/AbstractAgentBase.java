@@ -32,6 +32,10 @@ public abstract class AbstractAgentBase {
         return getEnvironment().getTimeModel();
     }
 
+    protected void pulse() {
+        getEnvironment().getLiveCycleControl().pulse();
+    }
+
     @OnInit
     protected abstract void onInit();
 

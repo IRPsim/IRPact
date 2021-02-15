@@ -62,8 +62,9 @@ public class ConsumerAgentGroupAttributeSupplier implements DataSupplier {
     }
 
     protected void addGroupAttribute(ConsumerAgentGroup cag) {
-        if(!cag.addGroupAttribute(newCagAttr)) {
+        if(cag.hasGroupAttribute(newCagAttr.getName())) {
             throw new IllegalStateException("adding group attribute '" + name + "' failed; group: '" + cag.getName() + "'");
         }
+        cag.addGroupAttribute(newCagAttr);
     }
 }

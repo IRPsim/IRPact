@@ -6,7 +6,7 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 /**
  * @author Daniel Abitz
  */
-public interface InputParser {
+public interface InputParser<R> {
 
-    SimulationEnvironment parse(ObjectNode root) throws Exception;
+    R parse(InRoot root, ObjectNode jsonRoot) throws Exception;
 }

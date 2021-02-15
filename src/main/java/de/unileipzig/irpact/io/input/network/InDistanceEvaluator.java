@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.io.input.network;
 
 import de.unileipzig.irpact.commons.spatial.DistanceEvaluator;
+import de.unileipzig.irpact.io.spec.SpecificationManager;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
@@ -18,6 +19,8 @@ public interface InDistanceEvaluator {
     }
     static void applyRes(TreeAnnotationResource res) {
     }
+
+    String getName();
 
     DistanceEvaluator getInstance();
 }

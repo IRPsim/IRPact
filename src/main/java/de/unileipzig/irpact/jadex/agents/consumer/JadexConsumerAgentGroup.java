@@ -2,7 +2,6 @@ package de.unileipzig.irpact.jadex.agents.consumer;
 
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.misc.Placeholder;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
@@ -65,13 +64,11 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     }
 
     @Override
-    public boolean addGroupAttribute(ConsumerAgentGroupAttribute attribute) {
-        if(attributes.containsKey(attribute.getName())) {
-            return false;
-        } else {
-            attributes.put(attribute.getName(), attribute);
-            return true;
+    public void addGroupAttribute(ConsumerAgentGroupAttribute attribute) {
+        if(hasGroupAttribute(attribute.getName())) {
+            throw new IllegalArgumentException("attribute '" + attribute.getName() + "' already exists");
         }
+        attributes.put(attribute.getName(), attribute);
     }
 
     @Override
@@ -115,7 +112,6 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         return agents.values();
     }
 
-    @Override
     public void setSpatialDistribution(SpatialDistribution spatialDistribution) {
         this.spatialDistribution = spatialDistribution;
     }

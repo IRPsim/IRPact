@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.product;
 
 import de.unileipzig.irpact.core.simulation.SimulationEntity;
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -13,7 +14,7 @@ public interface ProductGroup extends SimulationEntity {
 
     Set<Product> getFixedProducts();
 
-    Set<ProductGroupAttribute> getAttributes();
+    Collection<ProductGroupAttribute> getAttributes();
 
     ProductGroupAttribute getAttribute(String name);
 

@@ -1,5 +1,6 @@
-package de.unileipzig.irpact.io.input;
+package de.unileipzig.irpact.io;
 
+import de.unileipzig.irpact.io.input.InRoot;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.in.*;
 import de.unileipzig.irpact.start.optact.network.IFreeMultiGraphTopology;
@@ -15,9 +16,17 @@ import static de.unileipzig.irptools.Constants.*;
 /**
  * @author Daniel Abitz
  */
-public class InResources extends TreeAnnotationResource {
+public class IOResources extends TreeAnnotationResource {
 
-    public InResources() {
+    private static IOResources instance;
+    public static IOResources getInstance() {
+        if(instance == null) {
+            instance = new IOResources();
+        }
+        return instance;
+    }
+
+    public IOResources() {
         init();
     }
 

@@ -3,11 +3,8 @@ package de.unileipzig.irpact.experimental;
 import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.log.*;
 import de.unileipzig.irpact.jadex.agents.consumer.PlaceholderConsumerAgent;
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.LoggingPart;
-import de.unileipzig.irpact.core.log.LoggingPartFilter;
-import de.unileipzig.irpact.core.log.LoggingType;
 import de.unileipzig.irpact.core.network.BasicSocialGraph;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.FreeNetworkTopology;
@@ -38,8 +35,8 @@ public class NetworkCreation {
     @Test
     void testIt() {
         IRPLogging.initConsole();
-        LoggingPartFilter filter = new LoggingPartFilter();
-        filter.put(LoggingType.INITIALIZATION, LoggingPart.NETWORK);
+        SectionLoggingFilter filter = new SectionLoggingFilter();
+        filter.add(IRPSection.INITIALIZATION_NETWORK);
         IRPLogging.setFilter(filter);
 
         BasicSocialGraph graph = new BasicSocialGraph();

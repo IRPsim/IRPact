@@ -40,6 +40,15 @@ public class InInverse implements InDistanceEvaluator {
     public InInverse() {
     }
 
+    public InInverse(String name) {
+        this._name = name;
+    }
+
+    @Override
+    public String getName() {
+        return _name;
+    }
+
     @Override
     public DistanceEvaluator getInstance() {
         return instance;

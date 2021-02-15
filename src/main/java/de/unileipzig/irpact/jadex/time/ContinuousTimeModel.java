@@ -58,6 +58,16 @@ public class ContinuousTimeModel extends AbstractJadexTimeModel {
     }
 
     @Override
+    public void setup() {
+        throw new RuntimeException("TODO");
+    }
+
+    @Override
+    public void setupNextYear() {
+        throw new RuntimeException("TODO");
+    }
+
+    @Override
     public void setEndTime(JadexTimestamp endTime) {
         super.setEndTime(endTime);
         delayUntilEnd = converter.timeBetween(startTime.getTime(), endTime.getTime());
@@ -138,9 +148,19 @@ public class ContinuousTimeModel extends AbstractJadexTimeModel {
     //TODO instanzerzeugung optimieren
     @Override
     public JadexTimestamp now() {
-        long nowMs = clock.getTime();
+        long nowMs = getClockService().getTime();
         ZonedDateTime nowZdt = converter.timeToDate(nowMs);
         return new BasicTimestamp(nowZdt);
+    }
+
+    @Override
+    public int getStartYear() {
+        throw new RuntimeException("TODO");
+    }
+
+    @Override
+    public int getEndYearInclusive() {
+        throw new RuntimeException("TODO");
     }
 
     @Override

@@ -10,8 +10,6 @@ import java.util.stream.Stream;
  */
 public interface ProductManager extends Initialization {
 
-    boolean add(ProductGroup group);
-
     Collection<ProductGroup> getGroups();
 
     ProductGroup getGroup(String name);

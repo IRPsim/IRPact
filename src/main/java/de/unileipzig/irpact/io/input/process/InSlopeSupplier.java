@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.io.input.process;
 
-import de.unileipzig.irpact.io.input.InAttributeName;
-import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -22,13 +20,8 @@ public class InSlopeSupplier {
                 .putCache("Neigungsdaten");
 
         res.newElementBuilder()
-                .setEdnLabel("Namen-Mapping")
-                .setEdnPriority(0)
-                .putCache("Namen-Mapping_Slope");
-
-        res.newElementBuilder()
                 .setEdnLabel("Verteilungs-Mapping")
-                .setEdnPriority(1)
+                .setEdnPriority(0)
                 .putCache("Verteilungs-Mapping_Slope");
     }
     public static void applyRes(TreeAnnotationResource res) {
@@ -37,14 +30,6 @@ public class InSlopeSupplier {
                 res.getCachedElement("Prozessmodell"),
                 res.getCachedElement("Relative Agreement"),
                 res.getCachedElement("Neigungsdaten")
-        );
-
-        res.putPath(
-                InSlopeSupplier.class, "attrNameSlope",
-                res.getCachedElement("Prozessmodell"),
-                res.getCachedElement("Relative Agreement"),
-                res.getCachedElement("Neigungsdaten"),
-                res.getCachedElement("Namen-Mapping_Slope")
         );
 
         res.putPath(
@@ -59,25 +44,21 @@ public class InSlopeSupplier {
     public String _name;
 
     @FieldDefinition
-    public InAttributeName attrNameSlope;
-
-    @FieldDefinition
     public InUnivariateDoubleDistribution distSlope;
 
     public InSlopeSupplier() {
     }
 
-    public InSlopeSupplier(String name, InAttributeName attributeName, InUnivariateDoubleDistribution distribution) {
+    public InSlopeSupplier(String name, InUnivariateDoubleDistribution distribution) {
         this._name = name;
-        this.attrNameSlope = attributeName;
         this.distSlope = distribution;
     }
 
-    public InAttributeName getAttributeName() {
-        return attrNameSlope;
+    public String getName() {
+        return _name;
     }
 
-    public InUnivariateDoubleDistribution getCagAttrDistribution() {
+    public InUnivariateDoubleDistribution getDistribution() {
         return distSlope;
     }
 
@@ -86,19 +67,18 @@ public class InSlopeSupplier {
         if (this == o) return true;
         if (!(o instanceof InSlopeSupplier)) return false;
         InSlopeSupplier that = (InSlopeSupplier) o;
-        return Objects.equals(_name, that._name) && Objects.equals(attrNameSlope, that.attrNameSlope) && Objects.equals(distSlope, that.distSlope);
+        return Objects.equals(_name, that._name) && Objects.equals(distSlope, that.distSlope);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(_name, attrNameSlope, distSlope);
+        return Objects.hash(_name, distSlope);
     }
 
     @Override
     public String toString() {
         return "InSlopeSupplier{" +
                 "_name='" + _name + '\'' +
-                ", attrNameSlope=" + attrNameSlope +
                 ", distSlope=" + distSlope +
                 '}';
     }

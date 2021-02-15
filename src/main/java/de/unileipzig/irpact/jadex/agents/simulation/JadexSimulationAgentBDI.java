@@ -1,12 +1,11 @@
 package de.unileipzig.irpact.jadex.agents.simulation;
 
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.LoggingPart;
-import de.unileipzig.irpact.core.log.LoggingType;
-import de.unileipzig.irpact.jadex.JadexConstants;
+import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.jadex.agents.AbstractJadexAgentBDI;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.jadex.time.JadexTimestamp;
+import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bridge.IInternalAccess;
@@ -31,7 +30,8 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
 
     public JadexSimulationAgentBDI() {
     }
-
+//TODO diesen agenten so konfigurieren, dass er x,y,z macht
+//            + halbzeit + endzeit noch einrichten
     @Override
     protected IRPLogger log() {
         return LOGGER;
@@ -44,32 +44,32 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     @Override
     protected void onInit() {
         initData();
-        environment.getLiveCycleControl().registerSimulationAgentAccess(agent);
-        log().trace(LoggingType.INITIALIZATION, LoggingPart.AGENT, "[{}] init", getName());
+        environment.getLiveCycleControl().registerSimulationAgentAccess(this, agent);
+        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] init", getName());
     }
 
     @Override
     protected void onStart() {
-        log().trace(LoggingType.INITIALIZATION, LoggingPart.AGENT, "[{}] init", getName());
+        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] init", getName());
         waitUntilEnd();
         reportAgentCreated(this);
     }
 
     @Override
     protected void onEnd() {
-        log().trace(LoggingType.INITIALIZATION, LoggingPart.AGENT, "[{}] init", getName());
+        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] init", getName());
     }
 
     //=========================
     //SimulationAgent
     //=========================
 
-    protected JadexSimulationAgentInitializationData getData() {
-        return (JadexSimulationAgentInitializationData) resultsFeature.getArguments().get(JadexConstants.DATA);
+    protected SimulationAgentInitializationData getData() {
+        return (SimulationAgentInitializationData) resultsFeature.getArguments().get(IRPact.DATA);
     }
 
     protected void initData() {
-        JadexSimulationAgentInitializationData data = getData();
+        SimulationAgentInitializationData data = getData();
         name = data.getName();
         environment = data.getEnvironment();
     }

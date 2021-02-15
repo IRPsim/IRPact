@@ -5,6 +5,8 @@ package de.unileipzig.irpact.core.process.ra;
  */
 public final class RAConstants {
 
+    public static final String XLSX_FILE = "irpacttempdata/BarwertrechnerMini_ES.xlsx";
+
     //Attribute
     public static final String PURCHASE_POWER = "A1";                    //A1
     public static final String NOVELTY_SEEKING = "A2";                   //A2

@@ -2,8 +2,7 @@ package de.unileipzig.irpact.jadex.agents.consumer;
 
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.LoggingPart;
-import de.unileipzig.irpact.core.log.LoggingType;
+import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
@@ -13,7 +12,6 @@ import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.product.BasicAdoptedProduct;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
-import de.unileipzig.irpact.jadex.JadexConstants;
 import de.unileipzig.irpact.jadex.agents.AbstractJadexAgentBDI;
 import de.unileipzig.irpact.jadex.agents.simulation.SimulationService;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
@@ -25,6 +23,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bdiv3.annotation.Belief;
@@ -85,7 +84,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     protected void searchSimulationService() {
         JadexUtil2.searchPlatformServices(reqFeature, SimulationService.class, result -> {
             if(simulationService == null) {
-                log().trace(LoggingType.INITIALIZATION, LoggingPart.AGENT, "[{}] SimulationService found", getName());
+                log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] SimulationService found", getName());
                 simulationService = result;
                 setupAgent();
             }
@@ -105,18 +104,18 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     protected void onInit() {
         initData();
+        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] init", getName());
         searchSimulationService();
-        log().trace(LoggingType.INITIALIZATION, LoggingPart.AGENT, "[{}] init", getName());
     }
 
     @Override
     protected void onStart() {
-        log().trace(LoggingType.INITIALIZATION, LoggingPart.AGENT, "[{}] start", getName());
+        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] start", getName());
     }
 
     @Override
     protected void onEnd() {
-        log().trace(LoggingType.INITIALIZATION, LoggingPart.AGENT, "[{}] end", getName());
+        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] end", getName());
     }
 
     //=========================
@@ -124,7 +123,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     //=========================
 
     protected ConsumerAgentInitializationData getData() {
-        return (ConsumerAgentInitializationData) resultsFeature.getArguments().get(JadexConstants.DATA);
+        return (ConsumerAgentInitializationData) resultsFeature.getArguments().get(IRPact.DATA);
     }
 
     protected void initData() {
@@ -196,6 +195,16 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     public SocialGraph.Node getSocialGraphNode() {
         return node;
+    }
+
+    @Override
+    public void lockAction() {
+        LOCK.lock();
+    }
+
+    @Override
+    public void releaseAction() {
+        LOCK.unlock();
     }
 
     @Override

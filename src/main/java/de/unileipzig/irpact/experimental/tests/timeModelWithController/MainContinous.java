@@ -71,8 +71,9 @@ public class MainContinous {
         clock.stop();
 
         ContinuousTimeModel cTimeModel = new ContinuousTimeModel();
-        cTimeModel.setClock(clock);
-        cTimeModel.setSimulation(simulationService);
+        if(true) throw new IllegalStateException();
+//        cTimeModel.setClock(clock);
+//        cTimeModel.setSimulation(simulationService);
         cTimeModel.setStartYear(2015);
         cTimeModel.setStartTime(clock.getStarttime());
         cTimeModel.setEndTime(cTimeModel.plusYears(cTimeModel.startTime(), 1L));

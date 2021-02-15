@@ -2,8 +2,8 @@ package de.unileipzig.irpact.core.log;
 
 import de.unileipzig.irpact.commons.log.Logback;
 import de.unileipzig.irptools.util.log.IRPLogger;
-import de.unileipzig.irptools.util.log.IRPLoggingType;
 import de.unileipzig.irptools.util.log.LoggingFilter;
+import de.unileipzig.irptools.util.log.LoggingSection;
 
 import java.nio.file.Path;
 
@@ -35,10 +35,22 @@ public final class IRPLogging {
         FILTER.setBacked(filter);
     }
 
+    public static boolean hasFilter() {
+        return FILTER.getBacked() != null;
+    }
+
+    public static LoggingFilter getFilter() {
+        return FILTER.getBacked();
+    }
+
+    public static void setLevel(IRPLevel level) {
+        Logback.setLevel(level.toLogbackLevel());
+    }
+
     /**
      * @author Daniel Abitz
      */
-    private static class GlobalFilter implements LoggingFilter {
+    private static final class GlobalFilter implements LoggingFilter {
 
         private LoggingFilter backed;
 
@@ -46,12 +58,24 @@ public final class IRPLogging {
         }
 
         private void setBacked(LoggingFilter backed) {
+            if(this.backed != null) {
+                throw new IllegalArgumentException("filter aready set");
+            }
             this.backed = backed;
         }
 
+        private LoggingFilter getBacked() {
+            return backed;
+        }
+
         @Override
-        public boolean doLogging(IRPLoggingType type, int level) {
-            return backed == null || backed.doLogging(type, level);
+        public boolean doLogging() {
+            return backed == null || backed.doLogging();
+        }
+
+        @Override
+        public boolean doLogging(LoggingSection section) {
+            return backed == null || backed.doLogging(section);
         }
     }
 }

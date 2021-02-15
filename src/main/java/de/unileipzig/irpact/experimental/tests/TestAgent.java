@@ -32,6 +32,16 @@ public interface TestAgent extends Agent {
     }
 
     @Override
+    default void lockAction() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default void releaseAction() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     default boolean aquireAction() {
         return false;
     }

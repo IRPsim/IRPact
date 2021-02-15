@@ -14,6 +14,11 @@ import java.util.Map;
  */
 public class RAModelData {
 
+    public static final int DEFAULT_ADOPTER_POINTS = 3;
+    public static final int DEFAULT_INTERESTED_POINTS = 2;
+    public static final int DEFAULT_AWARE_POINTS = 1;
+    public static final int DEFAULT_UNKNOWN_POINTS = 3;
+
     protected Map<Integer, NPVMatrix> npData;
 
     protected double a;
@@ -21,10 +26,10 @@ public class RAModelData {
     protected double c;
     protected double d;
 
-    protected int adopterPoints = 3;
-    protected int interesetedPoints = 2;
-    protected int awarePoints = 1;
-    protected int unknownPoints = 0;
+    protected int adopterPoints = DEFAULT_ADOPTER_POINTS;
+    protected int interestedPoints = DEFAULT_INTERESTED_POINTS;
+    protected int awarePoints = DEFAULT_AWARE_POINTS;
+    protected int unknownPoints = DEFAULT_UNKNOWN_POINTS;
 
     public RAModelData() {
         this(new HashMap<>());
@@ -54,8 +59,8 @@ public class RAModelData {
         this.adopterPoints = adopterPoints;
     }
 
-    public void setInteresetedPoints(int interesetedPoints) {
-        this.interesetedPoints = interesetedPoints;
+    public void setInterestedPoints(int interestedPoints) {
+        this.interestedPoints = interestedPoints;
     }
 
     public void setAwarePoints(int awarePoints) {
@@ -124,8 +129,8 @@ public class RAModelData {
         return adopterPoints;
     }
 
-    public int getInteresetedPoints() {
-        return interesetedPoints;
+    public int getInterestedPoints() {
+        return interestedPoints;
     }
 
     public int getAwarePoints() {

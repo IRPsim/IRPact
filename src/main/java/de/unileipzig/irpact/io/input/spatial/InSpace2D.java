@@ -35,9 +35,9 @@ public class InSpace2D implements InSpatialModel {
     public InSpace2D() {
     }
 
-    public InSpace2D(String name) {
+    public InSpace2D(String name, boolean useEuclid) {
         this._name = name;
-        useEuclid = true;
+        this.useEuclid = useEuclid;
     }
 
     public String getName() {

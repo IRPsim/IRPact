@@ -86,7 +86,7 @@ public class InConstantSpatialDistribution2D implements InSpatialDistribution {
         if(instance == null) {
             instance = new ConstantSpatialDistribution();
             instance.setName(getName());
-            instance.setInformation(new BasicPoint2D(getX(), getY()));
+            instance.setInformationSupplier(() -> new BasicPoint2D(getX(), getY()));
         }
         return instance;
     }

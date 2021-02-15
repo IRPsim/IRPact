@@ -1,7 +1,9 @@
 package de.unileipzig.irpact.experimental.tests.timeModelWithController;
 
+import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.experimental.tests.TestAgent;
+import de.unileipzig.irpact.jadex.agents.simulation.SimulationAgent;
 import de.unileipzig.irpact.jadex.simulation.JadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.jadex.time.JadexTimestamp;
@@ -30,7 +32,7 @@ import java.time.LocalTime;
 @ProvidedServices({
         @ProvidedService(type = TimeModelService.class)
 })
-public class TimeModelAgent implements TimeModelService, TestAgent {
+public class TimeModelAgent implements TimeModelService, TestAgent, SimulationAgent {
 
     @Agent
     protected IInternalAccess agent;
@@ -59,7 +61,7 @@ public class TimeModelAgent implements TimeModelService, TestAgent {
         name = (String) resultsFeature.getArguments().get("name");
         timeModel = (JadexTimeModel) resultsFeature.getArguments().get("timeModel");
         simulationControl = (JadexLifeCycleControl) resultsFeature.getArguments().get("simulationControl");
-        simulationControl.registerSimulationAgentAccess(agent);
+        simulationControl.registerSimulationAgentAccess(this, agent);
         log("onInit");
         simulationControl.reportAgentCreated(this);
     }
@@ -74,6 +76,31 @@ public class TimeModelAgent implements TimeModelService, TestAgent {
             simulationControl.terminate();
             return IFuture.DONE;
         });
+    }
+
+    @Override
+    public void lockAction() {
+        throw new RuntimeException();
+    }
+
+    @Override
+    public void releaseAction() {
+        throw new RuntimeException();
+    }
+
+    @Override
+    public boolean aquireAction() {
+        throw new RuntimeException();
+    }
+
+    @Override
+    public SocialGraph.Node getSocialGraphNode() {
+        throw new RuntimeException();
+    }
+
+    @Override
+    public void setSocialGraphNode(SocialGraph.Node node) {
+        throw new RuntimeException();
     }
 
     @OnEnd

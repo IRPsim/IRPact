@@ -14,13 +14,28 @@ import java.util.concurrent.Callable;
  *
  * @author Daniel Abitz
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "BooleanMethodIsAlwaysInverted"})
 @CommandLine.Command(
-        name = "IRPact"
+        name = "java -jar <IRPact.jar>",
+        version = "IRPact version " + IRPact.VERSION
 )
 public class Start implements Callable<Integer> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(Start.class);
+
+    @CommandLine.Option(
+            names = { "-?", "-h", "--help" },
+            description = "print help",
+            usageHelp = true
+    )
+    private boolean printHelp;
+
+    @CommandLine.Option(
+            names = { "-v", "--version" },
+            description = "print version information",
+            versionHelp = true
+    )
+    private boolean printVersion;
 
     @CommandLine.Option(
             names = { "-i", "--input" },
@@ -38,7 +53,7 @@ public class Start implements Callable<Integer> {
 
     @CommandLine.Option(
             names = { "--image" },
-            description = "path to image file"
+            description = "path to image output file"
     )
     private String imageFile;
     private Path imagePath;
@@ -55,6 +70,7 @@ public class Start implements Callable<Integer> {
 
     @CommandLine.Option(
             names = { "--logPath" },
+            description = "set path to log file, disables console logging",
             hidden = true
     )
     private String logFile;
@@ -62,9 +78,26 @@ public class Start implements Callable<Integer> {
 
     @CommandLine.Option(
             names = { "--irptools" },
+            description = "calls IRPtools, all arguments will be transmitted, IRPact is not called",
             hidden = true
     )
     private boolean callIRPtools;
+
+    @CommandLine.Option(
+            names = { "--paramToSpec" },
+            description = "converts the parameter input to the alternative format",
+            hidden = true
+    )
+    private String specOutputDir;
+    private Path specOutputDirPath;
+
+    @CommandLine.Option(
+            names = { "--specToParam" },
+            description = "converts the alternative format to the parameter input",
+            hidden = true
+    )
+    private String specInputDir;
+    private Path specInputDirPath;
 
     //=========================
     //data
@@ -92,12 +125,20 @@ public class Start implements Callable<Integer> {
         return imagePath;
     }
 
+    public boolean hasImagePath() {
+        return imagePath != null;
+    }
+
     public boolean hasLogPath() {
         return logPath != null;
     }
 
     public Path getLogPath() {
         return logPath;
+    }
+
+    public boolean isSimulation() {
+        return !noSimulation;
     }
 
     public boolean isNoSimulation() {
@@ -108,29 +149,104 @@ public class Start implements Callable<Integer> {
         return callIRPtools;
     }
 
+    public boolean hasSpecOutputDirPath() {
+        return specOutputDirPath != null;
+    }
+
+    public Path getSpecOutputDirPath() {
+        return specOutputDirPath;
+    }
+
+    public boolean hasSpecInputDirPath() {
+        return specInputDirPath != null;
+    }
+
+    public Path getSpecInputDirPath() {
+        return specInputDirPath;
+    }
+
+    public boolean hasSpecialArgumentForIRPact() {
+        return hasSpecOutputDirPath()
+                || hasSpecInputDirPath();
+    }
+
+    private boolean handleInput() {
+        if(inputPath != null) {
+            return true;
+        }
+        if(inputFile != null) {
+            inputPath = Paths.get(inputFile);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean handleOutput() {
+        if(outputPath != null) {
+            return true;
+        }
+        if(outputFile != null) {
+            outputPath = Paths.get(outputFile);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean handleSpecInput() {
+        if(specInputDirPath != null) {
+            return true;
+        }
+        if(specInputDir != null) {
+            specInputDirPath = Paths.get(specInputDir);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean handleSpecOutput() {
+        if(specOutputDirPath != null) {
+            return true;
+        }
+        if(specOutputDir != null) {
+            specOutputDirPath = Paths.get(specOutputDir);
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public Integer call() {
+        if(printVersion || printHelp) {
+            return CommandLine.ExitCode.OK;
+        }
+
         if(callIRPtools) {
             return CommandLine.ExitCode.OK;
         }
 
-        if(inputFile == null) {
-            LOGGER.error("input file missing");
-            return CommandLine.ExitCode.USAGE;
-        }
-        inputPath = Paths.get(inputFile);
-        if(Files.notExists(inputPath)) {
-            LOGGER.error("input file not found: {}", inputPath);
-            return CommandLine.ExitCode.SOFTWARE;
-        }
-
-        if(outputFile == null) {
-            if(!noSimulation) {
+        if(handleInput()) {
+            if(Files.notExists(inputPath)) {
+                LOGGER.error("input file not found: {}", inputPath);
+                return CommandLine.ExitCode.SOFTWARE;
+            }
+            if(!handleOutput() && !handleSpecOutput() && isSimulation()) {
                 LOGGER.error("output file missing");
                 return CommandLine.ExitCode.USAGE;
             }
-        } else {
-            outputPath = Paths.get(outputFile);
+        }
+        else if(handleSpecInput()) {
+            if(Files.notExists(specInputDirPath)) {
+                LOGGER.error("input dir not found: {}", specInputDirPath);
+                return CommandLine.ExitCode.SOFTWARE;
+            }
+            if(!handleOutput() && isSimulation()) {
+                LOGGER.error("output file missing");
+                return CommandLine.ExitCode.USAGE;
+            }
+        }
+        else {
+            LOGGER.error("input file missing");
+            return CommandLine.ExitCode.USAGE;
         }
 
         if(imageFile != null) {
@@ -144,22 +260,31 @@ public class Start implements Callable<Integer> {
         return CommandLine.ExitCode.OK;
     }
 
-    public static void main(String[] args) {
+    //TODO listener access einfuegen fuer gui
+    public static void start(String[] args) {
         IRPLogging.initConsole();
         Start start = new Start(args);
         CommandLine cmdLine = new CommandLine(start)
                 .setUnmatchedArgumentsAllowed(true);
         int exitCode = cmdLine.execute(args);
         if(exitCode == CommandLine.ExitCode.OK) {
-            Preloader irpact = new Preloader(start);
+            if(start.printHelp || start.printVersion) {
+                return;
+            }
+            Preloader loader = new Preloader(start);
             try {
-                irpact.start();
+                loader.start();
             } catch (Throwable t) {
-                LOGGER.error("Start failed", t);
+                LOGGER.error("Start failed with uncaught exception", t);
+                System.exit(CommandLine.ExitCode.SOFTWARE);
             }
         } else {
             System.exit(CommandLine.ExitCode.USAGE);
         }
+    }
+
+    public static void main(String[] args) {
+        start(args);
     }
 /*
 ALT:

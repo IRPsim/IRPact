@@ -5,12 +5,12 @@ import de.unileipzig.irpact.commons.NameableBase;
 /**
  * @author Daniel Abitz
  */
-public class SpatialAttributeBase extends NameableBase implements SpatialAttribute {
+public class SimpleSpatialAttribute extends NameableBase implements SpatialAttribute {
 
     protected final DataType TYPE;
     protected Object value;
 
-    public SpatialAttributeBase(DataType type) {
+    public SimpleSpatialAttribute(DataType type) {
         this.TYPE = type;
     }
 

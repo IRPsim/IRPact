@@ -2,15 +2,19 @@ package de.unileipzig.irpact.io.input;
 
 import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
+import de.unileipzig.irpact.io.IOResources;
 import de.unileipzig.irpact.io.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.io.input.awareness.InAwareness;
 import de.unileipzig.irpact.io.input.awareness.InThresholdAwareness;
+import de.unileipzig.irpact.io.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.input.distribution.InConstantUnivariateDistribution;
+import de.unileipzig.irpact.io.input.distribution.InRandomBoundedIntegerDistribution;
 import de.unileipzig.irpact.io.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.input.graphviz.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.input.network.*;
+import de.unileipzig.irpact.io.inout.binary.HiddenBinaryData;
 import de.unileipzig.irpact.io.input.process.InOrientationSupplier;
 import de.unileipzig.irpact.io.input.process.InProcessModel;
 import de.unileipzig.irpact.io.input.process.InRAProcessModel;
@@ -41,10 +45,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.UiEdn;
 import de.unileipzig.irptools.util.Util;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author Daniel Abitz
@@ -99,135 +100,153 @@ public class InRoot implements RootClass {
                 .setEdnLabel("Graphvizdemo")
                 .setEdnPriority(1)
                 .putCache("Graphvizdemo");
+        res.newElementBuilder()
+                .setEdnLabel("Diverses")
+                .setEdnPriority(0)
+                .putCache("Diverses");
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.getCachedElement("OPTACT").setParent(res.getCachedElement("Submodule"));
         res.getCachedElement("AgentGroup_Element").setParent(res.getCachedElement("OPTACT"));
     }
 
+    public static final String SET_VERSION = "set_InVersion";
+
+    public static final InRoot INSTANCE = new InRoot();
+
     //=========================
     //general
     //=========================
 
     @FieldDefinition
-    public InGeneral general;
+    public InGeneral general = new InGeneral();
 
     @FieldDefinition
-    public InVersion[] version;
+    public InVersion[] version = new InVersion[0];
 
     //=========================
     //affinity
     //=========================
 
     @FieldDefinition
-    public InAffinityEntry[] affinityEntries;
+    public InAffinityEntry[] affinityEntries = new InAffinityEntry[0];
 
     //=========================
     //agent
     //=========================
 
     @FieldDefinition
-    public InConsumerAgentGroup[] consumerAgentGroups;
+    public InConsumerAgentGroup[] consumerAgentGroups = new InConsumerAgentGroup[0];
 
     //=========================
     //network
     //=========================
 
     @FieldDefinition
-    public InGraphTopologyScheme[] graphTopologySchemes;
+    public InGraphTopologyScheme[] graphTopologySchemes = new InGraphTopologyScheme[0];
 
     @FieldDefinition
-    public InDistanceEvaluator[] distanceEvaluators;
+    public InDistanceEvaluator[] distanceEvaluators = new InDistanceEvaluator[0];
 
     @FieldDefinition
-    public InNumberOfTies[] numberOfTies;
+    public InNumberOfTies[] numberOfTies = new InNumberOfTies[0];
 
     //=========================
     //process
     //=========================
 
     @FieldDefinition
-    public InProcessModel[] processModel;
+    public InProcessModel[] processModel = new InProcessModel[0];
 
     @FieldDefinition
-    public InOrientationSupplier[] orientationSupplier;
+    public InOrientationSupplier[] orientationSupplier = new InOrientationSupplier[0];
 
     @FieldDefinition
-    public InSlopeSupplier[] slopeSupplier;
+    public InSlopeSupplier[] slopeSupplier = new InSlopeSupplier[0];
 
     //=========================
     //product
     //=========================
 
     @FieldDefinition
-    public InProductGroup[] productGroups;
+    public InProductGroup[] productGroups = new InProductGroup[0];
 
     //=========================
     //spatial
     //=========================
 
     @FieldDefinition
-    public InSpatialModel[] spatialModel;
+    public InSpatialModel[] spatialModel = new InSpatialModel[0];
 
     @FieldDefinition
-    public InSpatialDistribution[] spatialDistributions;
+    public InSpatialDistribution[] spatialDistributions = new InSpatialDistribution[0];
 
     //=========================
     //time
     //=========================
 
     @FieldDefinition
-    public InTimeModel[] timeModel;
+    public InTimeModel[] timeModel = new InTimeModel[0];
+
+    //=========================
+    //binary
+    //=========================
+
+    @FieldDefinition
+    public VisibleBinaryData[] visibleBinaryData = new VisibleBinaryData[0];
+
+    @FieldDefinition
+    public HiddenBinaryData[] hiddenBinaryData = new HiddenBinaryData[0];
 
     //=========================
     //Graphviz
     //=========================
 
     @FieldDefinition
-    public InConsumerAgentGroupColor[] consumerAgentGroupColors;
+    public InConsumerAgentGroupColor[] consumerAgentGroupColors = new InConsumerAgentGroupColor[0];
 
     @FieldDefinition
-    public GraphvizLayoutAlgorithm[] layoutAlgorithms;
+    public GraphvizLayoutAlgorithm[] layoutAlgorithms = new GraphvizLayoutAlgorithm[0];
 
     @FieldDefinition
-    public GraphvizOutputFormat[] outputFormats;
+    public GraphvizOutputFormat[] outputFormats = new GraphvizOutputFormat[0];
 
     @FieldDefinition
-    public GraphvizColor[] colors;
+    public GraphvizColor[] colors = new GraphvizColor[0];
 
     @FieldDefinition
-    public GraphvizGlobal graphvizGlobal;
+    public GraphvizGlobal graphvizGlobal = new GraphvizGlobal();
 
     //=========================
     //OPTACT
     //=========================
 
     @FieldDefinition
-    public AgentGroup[] agentGroups;
+    public AgentGroup[] agentGroups = new AgentGroup[0];
 
     @FieldDefinition
-    public IGraphTopology[] topologies;
+    public IGraphTopology[] topologies = new IGraphTopology[0];
 
     @FieldDefinition()
-    public InGlobal global;
+    public InGlobal global = new InGlobal();
 
     @FieldDefinition
-    public Sector[] sectors;
+    public Sector[] sectors = new Sector[0];
 
     @FieldDefinition
-    public SideCustom[] customs;
+    public SideCustom[] customs = new SideCustom[0];
 
     @FieldDefinition
-    public SideFares[] fares;
+    public SideFares[] fares = new SideFares[0];
 
     @FieldDefinition
-    public LoadDSE[] dse;
+    public LoadDSE[] dse = new LoadDSE[0];
 
     @FieldDefinition
-    public TechDESES[] deses;
+    public TechDESES[] deses = new TechDESES[0];
 
     @FieldDefinition
-    public TechDESPV[] despv;
+    public TechDESPV[] despv = new TechDESPV[0];
 
     //==================================================
 
@@ -238,6 +257,7 @@ public class InRoot implements RootClass {
             InConsumerAgentGroup.class,
             InConsumerAgentGroupAttribute.class,
             InConstantUnivariateDistribution.class,
+            InRandomBoundedIntegerDistribution.class,
             InUnivariateDoubleDistribution.class,
             InConsumerAgentGroupColor.class,
             InDistanceEvaluator.class,
@@ -246,6 +266,8 @@ public class InRoot implements RootClass {
             InInverse.class,
             InNoDistance.class,
             InNumberOfTies.class,
+            VisibleBinaryData.class,
+            HiddenBinaryData.class,
             InOrientationSupplier.class,
             InProcessModel.class,
             InRAProcessModel.class,
@@ -298,10 +320,9 @@ public class InRoot implements RootClass {
         return CLASSES_WITH_GRAPHVIZ;
     }
 
-    //private static final AnnotationResource RES = GraphvizResource.DEFAULT;
     @Override
     public AnnotationResource getResources() {
-        return new InResources();
+        return IOResources.getInstance();
     }
 
     @Override
@@ -311,12 +332,38 @@ public class InRoot implements RootClass {
 //        }
     }
 
+    public InConsumerAgentGroup findCag(String name) {
+        if(consumerAgentGroups == null) {
+            throw new NoSuchElementException(name);
+        }
+        for(InConsumerAgentGroup cag: consumerAgentGroups) {
+            if(Objects.equals(cag.getName(), name)) {
+                return cag;
+            }
+        }
+        throw new NoSuchElementException(name);
+    }
+
+    public InDistanceEvaluator findDistEval(String name) {
+        if(distanceEvaluators == null) {
+            throw new NoSuchElementException(name);
+        }
+        for(InDistanceEvaluator eval: distanceEvaluators) {
+            if(Objects.equals(eval.getName(), name)) {
+                return eval;
+            }
+        }
+        throw new NoSuchElementException(name);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof InRoot)) return false;
         InRoot root = (InRoot) o;
-        return Objects.equals(general, root.general) && Arrays.equals(affinityEntries, root.affinityEntries) && Arrays.equals(consumerAgentGroups, root.consumerAgentGroups) && Arrays.equals(graphTopologySchemes, root.graphTopologySchemes) && Arrays.equals(distanceEvaluators, root.distanceEvaluators) && Arrays.equals(numberOfTies, root.numberOfTies) && Arrays.equals(processModel, root.processModel) && Arrays.equals(orientationSupplier, root.orientationSupplier) && Arrays.equals(slopeSupplier, root.slopeSupplier) && Arrays.equals(productGroups, root.productGroups) && Arrays.equals(spatialModel, root.spatialModel) && Arrays.equals(spatialDistributions, root.spatialDistributions) && Arrays.equals(timeModel, root.timeModel);
+        return Objects.equals(general, root.general) && Arrays.equals(affinityEntries, root.affinityEntries) && Arrays.equals(consumerAgentGroups, root.consumerAgentGroups) && Arrays.equals(graphTopologySchemes, root.graphTopologySchemes) && Arrays.equals(distanceEvaluators, root.distanceEvaluators)
+                && Arrays.equals(numberOfTies, root.numberOfTies)
+                && Arrays.equals(processModel, root.processModel) && Arrays.equals(orientationSupplier, root.orientationSupplier) && Arrays.equals(slopeSupplier, root.slopeSupplier) && Arrays.equals(productGroups, root.productGroups) && Arrays.equals(spatialModel, root.spatialModel) && Arrays.equals(spatialDistributions, root.spatialDistributions) && Arrays.equals(timeModel, root.timeModel);
     }
 
     @Override

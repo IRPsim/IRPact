@@ -18,5 +18,12 @@ public interface JadexSimulationEnvironment extends SimulationEnvironment {
     @Override
     JadexLifeCycleControl getLiveCycleControl();
 
+    /**
+     * Replaces the placeholder agent with the real agent. This method is thread safe.
+     *
+     * @param placeholder placeholder agent
+     * @param real real agent
+     * @throws IllegalStateException If the real agent is invalid
+     */
     void replace(ConsumerAgent placeholder, ConsumerAgent real) throws IllegalStateException;
 }

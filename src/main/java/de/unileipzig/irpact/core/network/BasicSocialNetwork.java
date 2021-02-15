@@ -2,8 +2,7 @@ package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.LoggingPart;
-import de.unileipzig.irpact.core.log.LoggingType;
+import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -16,7 +15,7 @@ public class BasicSocialNetwork implements SocialNetwork {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicSocialNetwork.class);
 
     protected SimulationEnvironment environment;
-    protected SocialGraph graph = new BasicSocialGraph();
+    protected SocialGraph graph;
     protected GraphConfiguration configuration;
 
     public BasicSocialNetwork() {
@@ -26,7 +25,6 @@ public class BasicSocialNetwork implements SocialNetwork {
         this.environment = environment;
     }
 
-    @Override
     public void setGraph(SocialGraph graph) {
         this.graph = graph;
     }
@@ -36,7 +34,6 @@ public class BasicSocialNetwork implements SocialNetwork {
         return graph;
     }
 
-    @Override
     public void setConfiguration(GraphConfiguration configuration) {
         this.configuration = configuration;
     }
@@ -56,7 +53,7 @@ public class BasicSocialNetwork implements SocialNetwork {
     protected void addNode(ConsumerAgent agent) {
         SocialGraph.Node node = getGraph().addAgentAndGetNode(agent);
         agent.setSocialGraphNode(node);
-        LOGGER.trace(LoggingType.INITIALIZATION, LoggingPart.NETWORK, "added node: {}", agent.getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "added node: {}", agent.getName());
     }
 
     @Override

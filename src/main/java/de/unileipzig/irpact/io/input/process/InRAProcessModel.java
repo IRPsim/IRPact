@@ -1,5 +1,8 @@
 package de.unileipzig.irpact.io.input.process;
 
+import de.unileipzig.irpact.io.spec.SpecificationConstants;
+import de.unileipzig.irpact.io.spec.SpecificationHelper;
+import de.unileipzig.irpact.io.spec.SpecificationManager;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -44,7 +47,7 @@ public class InRAProcessModel implements InProcessModel {
     public int adopterPoints = 3;
 
     @FieldDefinition
-    public int interesetedPoints = 2;
+    public int interestedPoints = 2;
 
     @FieldDefinition
     public int awarePoints = 1;
@@ -58,14 +61,14 @@ public class InRAProcessModel implements InProcessModel {
     public InRAProcessModel(
             String name,
             double a, double b, double c, double d,
-            int adopterPoints, int interesetedPoints, int awarePoints, int unknownPoints) {
+            int adopterPoints, int interestedPoints, int awarePoints, int unknownPoints) {
         this._name = name;
         this.a = a;
         this.b = b;
         this.c = c;
         this.d = d;
         this.adopterPoints = adopterPoints;
-        this.interesetedPoints = interesetedPoints;
+        this.interestedPoints = interestedPoints;
         this.awarePoints = awarePoints;
         this.unknownPoints = unknownPoints;
     }
@@ -94,8 +97,8 @@ public class InRAProcessModel implements InProcessModel {
         return adopterPoints;
     }
 
-    public int getInteresetedPoints() {
-        return interesetedPoints;
+    public int getInterestedPoints() {
+        return interestedPoints;
     }
 
     public int getAwarePoints() {
@@ -111,12 +114,12 @@ public class InRAProcessModel implements InProcessModel {
         if (this == o) return true;
         if (!(o instanceof InRAProcessModel)) return false;
         InRAProcessModel that = (InRAProcessModel) o;
-        return Double.compare(that.a, a) == 0 && Double.compare(that.b, b) == 0 && Double.compare(that.c, c) == 0 && Double.compare(that.d, d) == 0 && adopterPoints == that.adopterPoints && interesetedPoints == that.interesetedPoints && awarePoints == that.awarePoints && unknownPoints == that.unknownPoints && Objects.equals(_name, that._name);
+        return Double.compare(that.a, a) == 0 && Double.compare(that.b, b) == 0 && Double.compare(that.c, c) == 0 && Double.compare(that.d, d) == 0 && adopterPoints == that.adopterPoints && interestedPoints == that.interestedPoints && awarePoints == that.awarePoints && unknownPoints == that.unknownPoints && Objects.equals(_name, that._name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(_name, a, b, c, d, adopterPoints, interesetedPoints, awarePoints, unknownPoints);
+        return Objects.hash(_name, a, b, c, d, adopterPoints, interestedPoints, awarePoints, unknownPoints);
     }
 
     @Override
@@ -128,7 +131,7 @@ public class InRAProcessModel implements InProcessModel {
                 ", c=" + c +
                 ", d=" + d +
                 ", adopterPoints=" + adopterPoints +
-                ", interesetedPoints=" + interesetedPoints +
+                ", interesetedPoints=" + interestedPoints +
                 ", awarePoints=" + awarePoints +
                 ", unknownPoints=" + unknownPoints +
                 '}';

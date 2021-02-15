@@ -41,6 +41,11 @@ public class InNoDistance implements InDistanceEvaluator {
     }
 
     @Override
+    public String getName() {
+        return _name;
+    }
+
+    @Override
     public DistanceEvaluator getInstance() {
         return null; //todo haesslich, aendern!
     }
