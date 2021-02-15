@@ -1,6 +1,6 @@
 [
   {
-    :label "Allgemeine Einstellungen" 
+    :label "Allgemeine EinstellungenX"
     :tags [["InGeneral" "seed"] ["InGeneral" "runOptActDemo"] ["InGeneral" "logGraphCreation"] ["InGeneral" "logAgentCreation"]]
   } 
   {
