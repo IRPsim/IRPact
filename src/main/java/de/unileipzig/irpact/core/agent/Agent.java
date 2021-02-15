@@ -8,6 +8,10 @@ import de.unileipzig.irpact.core.simulation.SimulationEntity;
  */
 public interface Agent extends SimulationEntity {
 
+    void lockAction();
+
+    void releaseAction();
+
     boolean aquireAction();
 
     SocialGraph.Node getSocialGraphNode();

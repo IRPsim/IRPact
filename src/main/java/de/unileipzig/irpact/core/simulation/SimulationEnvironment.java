@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.misc.Initialization;
 import de.unileipzig.irpact.core.network.SocialNetwork;
+import de.unileipzig.irpact.core.process.ProcessModelManager;
 import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.core.time.TimeModel;
@@ -29,6 +30,8 @@ public interface SimulationEnvironment extends Initialization {
 
     SocialNetwork getNetwork();
 
+    ProcessModelManager getProcessModels();
+
     ProductManager getProducts();
 
     SpatialModel getSpatialModel();
@@ -40,6 +43,8 @@ public interface SimulationEnvironment extends Initialization {
     //=========================
     //util
     //=========================
+
+    Version getVersion();
 
     Rnd getSimulationRandom();
 }

@@ -20,9 +20,9 @@ public interface AgentManager extends Initialization {
 
     Collection<ConsumerAgentGroup> getConsumerAgentGroups();
 
-    ConsumerAgentGroup getConsumerAgentGroup(String name);
+    boolean hasConsumerAgentGroup(String name);
 
-    boolean add(ConsumerAgentGroup group);
+    ConsumerAgentGroup getConsumerAgentGroup(String name);
 
     default Stream<ConsumerAgent> streamConsumerAgents() {
         return getConsumerAgentGroups().stream()

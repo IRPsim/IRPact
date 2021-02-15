@@ -4,21 +4,29 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.LoggingPart;
-import de.unileipzig.irpact.core.log.LoggingType;
+import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.log.SectionLoggingFilter;
 import de.unileipzig.irpact.io.input.InGeneral;
+import de.unileipzig.irpact.io.input.InRoot;
+import de.unileipzig.irpact.io.spec.SpecificationConverter;
+import de.unileipzig.irpact.io.spec.SpecificationManager;
 import de.unileipzig.irpact.start.optact.OptAct;
 import de.unileipzig.irptools.io.ContentType;
 import de.unileipzig.irptools.io.ContentTypeDetector;
 import de.unileipzig.irptools.io.annual.AnnualFile;
+import de.unileipzig.irptools.io.base.AnnualEntry;
 import de.unileipzig.irptools.io.base.DataEntry;
 import de.unileipzig.irptools.io.base.Scalars;
+import de.unileipzig.irptools.io.base.Sets;
 import de.unileipzig.irptools.io.downloaded.DownloadedFile;
+import de.unileipzig.irptools.io.perennial.PerennialData;
 import de.unileipzig.irptools.io.perennial.PerennialFile;
 import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 
 /**
  * @author Daniel Abitz
@@ -41,32 +49,41 @@ public class Preloader {
 
     public void start() throws Throwable {
         setup();
-        if(checkForTools()) {
+        if(param.isCallIRPtools()) {
+            runIRPTools();
+            return;
+        }
+        if(param.hasSpecInputDirPath()) {
+            convertSpecToParam();
             return;
         }
         load();
     }
 
-    private boolean checkForTools() {
-        if(param.isCallIRPtools()) {
-            IRPtools.main(param.getArgs());
-            return true;
-        } else {
-            return false;
-        }
+    private void runIRPTools() {
+        LOGGER.info("executing IRPtools");
+        SectionLoggingFilter filter = new SectionLoggingFilter();
+        filter.add(IRPSection.TOOLS);
+        IRPLogging.setFilter(filter);
+        IRPtools.setLoggingFilter(filter);
+        IRPtools.setLoggingSection(IRPSection.TOOLS);
+        IRPtools.main(param.getArgs());
     }
 
     private void setup() {
         if(param.hasLogPath()) {
             IRPLogging.initFile(param.getLogPath());
-            LOGGER.debug(LoggingType.INITIALIZATION, LoggingPart.PARAMETER, "log file: {}", param.getLogPath());
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "log file: {}", param.getLogPath());
         }
         if(param.isCallIRPtools()) {
-            LOGGER.debug(LoggingType.INITIALIZATION, LoggingPart.PARAMETER, "call IRPtools");
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "call IRPtools");
         }
-        LOGGER.debug(LoggingType.INITIALIZATION, LoggingPart.PARAMETER, "input file: {}", param.getInputPath());
-        LOGGER.debug(LoggingType.INITIALIZATION, LoggingPart.PARAMETER, "output file: {}", param.getOutputPath());
-        LOGGER.debug(LoggingType.INITIALIZATION, LoggingPart.PARAMETER, "image file: {}", param.getImagePath());
+        if(param.hasSpecOutputDirPath()) {
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "call specification converter");
+        }
+        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "input file: {}", param.getInputPath());
+        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "output file: {}", param.getOutputPath());
+        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "image file: {}", param.getImagePath());
         if(param.isNoSimulation()) {
             LOGGER.debug("simulation disabled");
         } else {
@@ -74,8 +91,40 @@ public class Preloader {
         }
     }
 
-    private void load() throws IOException {
+    private void load() throws Exception {
         ObjectNode root = IRPactJson.readJson(param.getInputPath());
+        if(param.hasSpecOutputDirPath()) {
+            convertParamToSpec(root);
+            return;
+        }
+
+        load(root);
+    }
+
+    private void convertParamToSpec(ObjectNode root) throws Exception {
+        LOGGER.debug("convert parameter to specification");
+        AnnualEntry<InRoot> entry = IRPact.convert(root);
+        InRoot inRoot = entry.getData();
+        inRoot.general.startYear = entry.getConfig().getYear(); //!
+        SpecificationConverter converter = new SpecificationConverter();
+        SpecificationManager manager = converter.toSpec(inRoot);
+        manager.store(param.getSpecOutputDirPath());
+    }
+
+    private void convertSpecToParam() throws IOException {
+        LOGGER.debug("convert specification to parameter");
+        SpecificationManager manager = new SpecificationManager(IRPactJson.JSON);
+        manager.load(param.getSpecInputDirPath());
+        SpecificationConverter converter = new SpecificationConverter();
+        InRoot root = converter.toParam(manager);
+        PerennialData<InRoot> pData = new PerennialData<>();
+        pData.add(root.general.startYear, root);
+        PerennialFile pFile = pData.serialize(IRPact.getConverter());
+        pFile.store(param.getOutputPath(), StandardCharsets.UTF_8);
+        LOGGER.debug(IRPSection.SPECIFICATION_CONVERTER, "param file stored: '{}'", param.getOutputPath());
+    }
+
+    private void load(ObjectNode root) throws Exception {
         SubModul modul = detectModul(root);
         switch (modul) {
             case IRPACT:
@@ -94,7 +143,7 @@ public class Preloader {
         }
     }
 
-    private SubModul detectModul(ObjectNode root) {
+    private SubModul detectModul(ObjectNode root) throws Exception {
         ContentType type = ContentTypeDetector.detect(root);
         switch (type) {
             case ANNUAL:
@@ -116,21 +165,45 @@ public class Preloader {
         }
     }
 
-    private SubModul detectModulInAnnualFile(AnnualFile file) {
+    private void checkVersion(Sets setsNode) throws Exception {
+        JsonNode versionNode = setsNode.getNode(InRoot.SET_VERSION);
+        if(versionNode == null) {
+            throw new Exception("'" + InRoot.SET_VERSION + "' not found");
+        }
+        if(versionNode.isObject()) {
+            ObjectNode versionObj = (ObjectNode) versionNode;
+            if(versionObj.size() != 1) {
+                throw new Exception("version node not valid (size != 1)");
+            }
+            Iterator<String> iter = versionNode.fieldNames();
+            String inputVersion = iter.next();
+            checkVersion(inputVersion);
+        } else {
+            throw new Exception("version node not valid (no object)");
+        }
+    }
+
+    private void checkVersion(String inputVersion) {
+        LOGGER.info("IRPact version: {}, input version: {}", IRPact.VERSION, inputVersion);
+    }
+
+    private SubModul detectModulInAnnualFile(AnnualFile file) throws Exception {
+        checkVersion(file.getYear().getSets());
         Scalars scalars = file.getYear().getScalars();
         return detectModul(scalars);
     }
 
-    private SubModul detectModulInPerennialFile(PerennialFile file) {
+    private SubModul detectModulInPerennialFile(PerennialFile file) throws Exception {
         if(file.getYears().size() == 0) {
             LOGGER.error("years.szie() == 0");
             return SubModul.UNKNOWN;
         }
+        checkVersion(file.getYears().get(0).getSets());
         Scalars scalars = file.getYears().get(0).getScalars();
         return detectModul(scalars);
     }
 
-    private SubModul detectModulInDownloadedFile(DownloadedFile file) {
+    private SubModul detectModulInDownloadedFile(DownloadedFile file) throws Exception {
         if(file.getData().size() == 0) {
             LOGGER.error("data.szie() == 0");
             return SubModul.UNKNOWN;
@@ -140,14 +213,15 @@ public class Preloader {
             LOGGER.error("years.szie() == 0");
             return SubModul.UNKNOWN;
         }
+        checkVersion(entry0.getYears().get(0).getSets());
         Scalars scalars = entry0.getYears().get(0).getScalars();
         return detectModul(scalars);
     }
 
     private SubModul detectModul(Scalars scalars) {
-        JsonNode optactNode = scalars.getNode(InGeneral.OPT_ACT_PAR_NAME);
+        JsonNode optactNode = scalars.getNode(InGeneral.RUN_OPTACT_DEMO_PARAM_NAME);
         if(optactNode == null) {
-            LOGGER.error("'{}' not found", InGeneral.OPT_ACT_PAR_NAME);
+            LOGGER.error("'{}' not found", InGeneral.RUN_OPTACT_DEMO_PARAM_NAME);
             return SubModul.UNKNOWN;
         }
         boolean optact;
@@ -166,7 +240,7 @@ public class Preloader {
                 : SubModul.IRPACT;
     }
 
-    private void callIRPact(ObjectNode root) {
+    private void callIRPact(ObjectNode root) throws Exception {
         IRPact irpact = new IRPact(param, root);
         irpact.start();
     }

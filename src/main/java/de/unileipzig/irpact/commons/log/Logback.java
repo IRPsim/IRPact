@@ -24,7 +24,7 @@ import java.util.List;
  */
 public final class Logback {
 
-    private static final String PATTERN = "%d{HH:mm:ss.SSS} [%logger{0},%level]: %msg%n";
+    private static final String PATTERN = "%d{HH:mm:ss.SSS} [%logger{0},%level] %msg%n";
     private static final String SYSTEMOUT = "SYSTEMOUT";
     private static final String SYSTEMERR = "SYSTEMERR";
     private static final String FILE = "FILE";

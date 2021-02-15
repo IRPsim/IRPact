@@ -45,7 +45,11 @@ public class BasicPoint2D implements Point2D {
         return y;
     }
 
-    public void put(SpatialAttribute attribute) {
+    @Override
+    public void addAttribute(SpatialAttribute attribute) {
+        if(attributes.containsKey(attribute.getName())) {
+            throw new IllegalArgumentException("name '" + attribute.getName() + "' already exists");
+        }
         attributes.put(attribute.getName(), attribute);
     }
 
@@ -57,6 +61,11 @@ public class BasicPoint2D implements Point2D {
     @Override
     public SpatialAttribute getAttribute(String name) {
         return attributes.get(name);
+    }
+
+    @Override
+    public boolean hasAttribute(String name) {
+        return attributes.containsKey(name);
     }
 
     @Override

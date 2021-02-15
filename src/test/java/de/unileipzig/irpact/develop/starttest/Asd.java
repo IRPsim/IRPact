@@ -2,7 +2,7 @@ package de.unileipzig.irpact.develop.starttest;
 
 import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.log.Logback;
-import de.unileipzig.irpact.commons.util.IRPactBase32;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.develop.TestFiles;
@@ -11,6 +11,7 @@ import de.unileipzig.irpact.io.input.InRoot;
 import de.unileipzig.irpact.io.input.InputParserX;
 import de.unileipzig.irpact.io.output.OutRoot;
 import de.unileipzig.irpact.start.Start;
+import de.unileipzig.irpact.start.optact.OptActMain;
 import de.unileipzig.irptools.defstructure.*;
 import de.unileipzig.irptools.io.ContentTypeDetector;
 import de.unileipzig.irptools.io.base.AnnualEntry;
@@ -62,9 +63,9 @@ public class Asd {
     }
 
     @Test
-    void runStartWithTools() throws Exception {
-        Logback.setupSystemOutAndErr();
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x4");
+    void runStartWithTools() {
+        IRPLogging.initConsole();
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x5_task");
         String[] args = {
                 "--irptools",
                 "--inputRootClass", InRoot.class.getName(),
@@ -87,38 +88,40 @@ public class Asd {
     }
 
     @Test
-    void runImage_GvRoot() {
-//        Path outDir = TestFiles.testfiles.resolve("uitests").resolve("x3");
-//        String[] args = {
-//                "-i", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\scenarios", "default.json").toString(),
-//                "-o", outDir.resolve("runImage_GvRoot.json").toString(),
-//                "--image", outDir.resolve("runImage_GvRoot.png").toString()
-//        };
-//        OptActMain.main(args);
-    }
-    @Test
-    void runImage_NEW() {
-        Path outDir = TestFiles.testfiles.resolve("uitests").resolve("x4");
+    void versionEtc() {
         String[] args = {
-                "-i", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\scenarios", "default.json").toString(),
-                "-o", outDir.resolve("runImage_NEWx.json").toString(),
-                "--image", outDir.resolve("runImage_NEWx.png").toString()
-        };
-        Start.main(args);
-    }
-    @Test
-    void runImage_NEW2() {
-        Path outDir = TestFiles.testfiles.resolve("uitests").resolve("x4");
-        String[] args = {
-                "-i", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\scenarios", "default.json").toString(),
-                "-o", outDir.resolve("runImage_NEWx2.json").toString()
+                "-v"
         };
         Start.main(args);
     }
 
     @Test
-    void x() {
-        System.out.println(IRPactBase32.decodeStringToUTF8("EDQ62SJK78G68QBI41HMGPB3DC568QBI78G2S2HU40N5OQBECPNIST3OEG53S81EBH4L4K31CDQ2QC9E60ML6JI1A19KGJQK5LQM4PBI5PL62SGA7OG2SN3FELQ70TBK5LKMQOB7CKN70RJ718V20BISDTQN8S3LEGN6KSRFDO56ARJ4CKT20P39E8G66Q35CDLGKZZZ"));
+    void helpEtc() {
+        String[] args = {
+                "-?"
+        };
+        Start.main(args);
+    }
+
+    @Test
+    void runImage_GvRoot() {
+        Path outDir = TestFiles.testfiles.resolve("uitests").resolve("x3");
+        String[] args = {
+                "-i", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\scenarios", "default.json").toString(),
+                "-o", outDir.resolve("runImage_GvRoot.json").toString(),
+                "--image", outDir.resolve("runImage_GvRoot.png").toString()
+        };
+        OptActMain.main(args);
+    }
+    @Test
+    void runImage_NEW() {
+        Path outDir = TestFiles.testfiles.resolve("uitests").resolve("x4");
+        String[] args = {
+                "-i", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\uitests\\x4\\scenarios", "default.json").toString(),
+                "-o", outDir.resolve("runImage_NEW.json").toString(),
+                "--image", outDir.resolve("runImage_NEW.png").toString()
+        };
+        Start.main(args);
     }
 
     @Test

@@ -2,25 +2,23 @@ package de.unileipzig.irpact.core.product;
 
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Daniel Abitz
  */
 public class BasicProductGroup extends SimulationEntityBase implements ProductGroup {
 
-    protected Set<ProductGroupAttribute> attributes;
+    protected Map<String, ProductGroupAttribute> attributes;
     protected Set<Product> products;
     protected Set<Product> fixedProducts;
 
     public BasicProductGroup() {
-        this(new HashSet<>(), new HashSet<>(), new HashSet<>());
+        this(new HashMap<>(), new HashSet<>(), new HashSet<>());
     }
 
     public BasicProductGroup(
-            Set<ProductGroupAttribute> attributes,
+            Map<String, ProductGroupAttribute> attributes,
             Set<Product> products,
             Set<Product> fixedProducts) {
         this.attributes = attributes;
@@ -38,27 +36,22 @@ public class BasicProductGroup extends SimulationEntityBase implements ProductGr
         return fixedProducts;
     }
 
-    public boolean addAttribute(ProductGroupAttribute attribute) {
-        return attributes.add(attribute);
+    public boolean hasAttribute(String name) {
+        return attributes.containsKey(name);
     }
 
-    public void setAttributes(Set<ProductGroupAttribute> attributes) {
-        this.attributes = attributes;
+    public void addAttribute(ProductGroupAttribute attribute) {
+        attributes.put(attribute.getName(), attribute);
     }
 
     @Override
-    public Set<ProductGroupAttribute> getAttributes() {
-        return attributes;
+    public Collection<ProductGroupAttribute> getAttributes() {
+        return attributes.values();
     }
 
     @Override
     public ProductGroupAttribute getAttribute(String name) {
-        for(ProductGroupAttribute attr: attributes) {
-            if(Objects.equals(attr.getName(), name)) {
-                return attr;
-            }
-        }
-        return null;
+        return attributes.get(name);
     }
 
     public String deriveName() {

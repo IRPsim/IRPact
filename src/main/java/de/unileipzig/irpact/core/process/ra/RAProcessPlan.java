@@ -27,16 +27,16 @@ public class RAProcessPlan implements ProcessPlan {
     protected Product product;
     protected ConsumerAgent agent;
     protected Rnd rnd;
-    protected RAModelData modelData;
+    protected RAProcessModel model;
 
     protected RAPhase currentPhase = RAPhase.NONE;
 
     public RAProcessPlan() {
     }
 
-    public RAProcessPlan(SimulationEnvironment environment, RAModelData modelData, Rnd rnd, ConsumerAgent agent, Need need, Product product) {
+    public RAProcessPlan(SimulationEnvironment environment, RAProcessModel model, Rnd rnd, ConsumerAgent agent, Need need, Product product) {
         setEnvironment(environment);
-        setModelData(modelData);
+        setModel(model);
         setRnd(rnd);
         setAgent(agent);
         setNeed(need);
@@ -47,8 +47,8 @@ public class RAProcessPlan implements ProcessPlan {
         this.environment = environment;
     }
 
-    public void setModelData(RAModelData modelData) {
-        this.modelData = modelData;
+    public void setModel(RAProcessModel model) {
+        this.model = model;
     }
 
     public void setRnd(Rnd rnd) {
@@ -83,7 +83,7 @@ public class RAProcessPlan implements ProcessPlan {
         product = null;
         agent = null;
         rnd = null;
-        modelData = null;
+        model = null;
     }
 
     //=========================
@@ -91,7 +91,7 @@ public class RAProcessPlan implements ProcessPlan {
     //=========================
 
     protected ProcessPlanResult initPlan() {
-        return ProcessPlanResult.IN_PROCESS;
+        throw new IllegalStateException("EMILY IDEEN EINFÜGEN,guck dazu auf dem usb-stick");
     }
 
     protected ProcessPlanResult executePlan() {
@@ -130,6 +130,26 @@ public class RAProcessPlan implements ProcessPlan {
         if(productAwareness.isInterested(product)) {
             currentPhase = RAPhase.FEASIBILITY;
             return handleFeasibility();
+        }
+        if(isAware(agent)) {
+            if(isUnderConstruction(agent) || isUnderRenovation(agent)) {
+                productAwareness.makeInterested(product);
+                return ProcessPlanResult.IN_PROCESS;
+            }
+            return tryCommunication();
+        }
+        return ProcessPlanResult.IN_PROCESS;
+    }
+
+    protected ProcessPlanResult handleAwareness(boolean init) {
+        Awareness<Product> productAwareness = agent.getProductAwareness();
+        if(productAwareness.isInterested(product)) {
+            currentPhase = RAPhase.FEASIBILITY;
+            if(init) {
+                return handleFeasibility();
+            } else {
+                return ProcessPlanResult.IN_PROCESS;
+            }
         }
         if(isAware(agent)) {
             if(isUnderConstruction(agent) || isUnderRenovation(agent)) {
@@ -193,11 +213,23 @@ public class RAProcessPlan implements ProcessPlan {
         return ProcessPlanResult.IN_PROCESS;
     }
 
+    protected ProcessPlanResult handleFeasibility(boolean init) {
+        if(isShareOf1Or2FamilyHouse(agent) || isHouseOwner(agent) || isUnderConstruction(agent)) {
+            currentPhase = RAPhase.DECISION_MAKING;
+            if(init) {
+                return handleDecisionMaking();
+            } else {
+                return ProcessPlanResult.IN_PROCESS;
+            }
+        }
+        return ProcessPlanResult.IN_PROCESS;
+    }
+
     protected ProcessPlanResult handleDecisionMaking() {
-        double a = modelData.a();
-        double b = modelData.b();
-        double c = modelData.c();
-        double d = modelData.d();
+        double a = modelData().a();
+        double b = modelData().b();
+        double c = modelData().c();
+        double d = modelData().d();
 
         double B = 0.0;
         if(a != 0.0) {
@@ -234,12 +266,16 @@ public class RAProcessPlan implements ProcessPlan {
     //util
     //=========================
 
+    protected RAModelData modelData() {
+        return model.getModelData();
+    }
+
     protected double getFinancialComponent() {
         double ftThis = getFinancialThresholdAgent(agent);
         double ftAvg = getAverageFinancialThresholdAgent();
 
-        double npvThis = modelData.NPV(agent, environment.getTimeModel().getYear());
-        double npvAvg = modelData.avgNPV(environment.getTimeModel().getYear());
+        double npvThis = modelData().NPV(agent, environment.getTimeModel().getYear());
+        double npvAvg = modelData().avgNPV(environment.getTimeModel().getYear());
 
         return Math.log(ftThis - ftAvg) / Math.log(npvThis - npvAvg);
     }
@@ -355,15 +391,15 @@ public class RAProcessPlan implements ProcessPlan {
 
     protected int getInterestPoints(ConsumerAgent agent) {
         if(isAdopter(agent)) {
-            return modelData.getAdopterPoints();
+            return modelData().getAdopterPoints();
         }
         if(isInterested(agent)) {
-            return modelData.getInteresetedPoints();
+            return modelData().getInterestedPoints();
         }
         if(isAware(agent)) {
-            return modelData.getAwarePoints();
+            return modelData().getAwarePoints();
         }
-        return modelData.getUnknownPoints();
+        return modelData().getUnknownPoints();
     }
 
     protected void updateAwareness(ConsumerAgent agent, double points) {

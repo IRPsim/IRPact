@@ -33,6 +33,10 @@ public class KillSwitch implements Runnable {
         if(killThread != null) {
             return;
         }
+        if(timeout < 1L) {
+            LOGGER.info("KillSwitch disabled, timeout: {}", timeout);
+            return;
+        }
         killThread = new Thread(this);
         killThread.start();
     }

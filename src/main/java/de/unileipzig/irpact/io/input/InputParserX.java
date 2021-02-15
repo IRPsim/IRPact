@@ -7,9 +7,7 @@ import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityM
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.LoggingPart;
-import de.unileipzig.irpact.core.log.LoggingPartFilter;
-import de.unileipzig.irpact.core.log.LoggingType;
+import de.unileipzig.irpact.core.log.SectionLoggingFilter;
 import de.unileipzig.irpact.core.network.BasicGraphConfiguration;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.FreeNetworkTopology;
@@ -56,12 +54,12 @@ public class InputParserX {
         environment.setSimulationRandom(rnd);
 
         IRPLogging.initConsole();
-        LoggingPartFilter filter = new LoggingPartFilter();
+        SectionLoggingFilter filter = new SectionLoggingFilter();
         if(root.general.logGraphCreation) {
-            filter.put(LoggingType.INITIALIZATION, LoggingPart.NETWORK);
+            //filter.put(LoggingType.INITIALIZATION, LoggingPart.NETWORK);
         }
         if(root.general.logAgentCreation) {
-            filter.put(LoggingType.INITIALIZATION, LoggingPart.AGENT);
+            //filter.put(LoggingType.INITIALIZATION, LoggingPart.AGENT);
         }
         IRPLogging.setFilter(filter);
     }
@@ -78,10 +76,10 @@ public class InputParserX {
             for(InConsumerAgentGroupAttribute inAttr: inGrp.getAttributes()) {
                 BasicConsumerAgentGroupAttribute cagAttr = new BasicConsumerAgentGroupAttribute();
                 cagAttr.setName(inAttr.getCagAttrName().getName());
-                cagAttr.setDistribution(inAttr.getCagAttrDistribution().getInstance());
+                cagAttr.setDistribution(inAttr.getCagAttrDistribution().getInstance(null));
             }
-            environment.getAgents().add(jcag);
-            environment.getInitializationData().setInitialNumberOfConsumerAgents(jcag, inGrp.getNumberOfAgents());
+            //environment.getAgents().add(jcag);
+            //environment.getInitializationData().setInitialNumberOfConsumerAgents(jcag, inGrp.getNumberOfAgents());
         }
     }
 
@@ -150,7 +148,7 @@ public class InputParserX {
             BasicGraphConfiguration configuration = new BasicGraphConfiguration();
             configuration.setGraphTopologyScheme(topology);
 
-            environment.getNetwork().setConfiguration(configuration);
+            //environment.getNetwork().setConfiguration(configuration);
         } else {
             throw new IllegalArgumentException("unsupported: " + topologyScheme.getClass());
         }
@@ -167,7 +165,7 @@ public class InputParserX {
             data.setC(inRA.getC());
             data.setD(inRA.getD());
             data.setAdopterPoints(inRA.getAdopterPoints());
-            data.setInteresetedPoints(inRA.getInteresetedPoints());
+            data.setInterestedPoints(inRA.getInterestedPoints());
             data.setAwarePoints(inRA.getAwarePoints());
             data.setUnknownPoints(inRA.getUnknownPoints());
 
@@ -192,9 +190,9 @@ public class InputParserX {
             for(InProductGroupAttribute inGrpAttr: pgrp.getAttributes()) {
                 BasicProductGroupAttribute pgAttr = new BasicProductGroupAttribute();
                 pgAttr.setName(inGrpAttr.getAttrName().getName());
-                pgAttr.setDistribution(inGrpAttr.getAttrDistribution().getInstance());
+                pgAttr.setDistribution(inGrpAttr.getAttrDistribution().getInstance(null));
             }
-            environment.getProducts().add(group);
+            //environment.getProducts().add(group);
         }
     }
 

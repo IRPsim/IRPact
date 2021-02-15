@@ -15,8 +15,9 @@ public class InNoDistance implements InDistanceEvaluator {
 
     public static void initRes(TreeAnnotationResource res) {
         res.newElementBuilder()
-                .setEdnLabel("NoDistance")
+                .setEdnLabel("Keine Distanzfunktion")
                 .setEdnPriority(0)
+                .setEdnDescription("Keine Distanzfunktion")
                 .putCache("NoDistance");
     }
     public static void applyRes(TreeAnnotationResource res) {
@@ -38,6 +39,11 @@ public class InNoDistance implements InDistanceEvaluator {
 
     public InNoDistance(String name) {
         this._name = name;
+    }
+
+    @Override
+    public String getName() {
+        return _name;
     }
 
     @Override

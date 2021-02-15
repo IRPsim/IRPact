@@ -5,14 +5,12 @@ import de.unileipzig.irpact.core.agent.SpatialInformationAgentBase;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.misc.Placeholder;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
-import de.unileipzig.irpact.jadex.agents.consumer.ConsumerAgentInitializationData;
 
 import java.util.*;
 
@@ -21,7 +19,7 @@ import java.util.*;
  */
 public final class PlaceholderConsumerAgent
         extends SpatialInformationAgentBase
-        implements ConsumerAgent, ConsumerAgentInitializationData, Placeholder {
+        implements ConsumerAgent, ConsumerAgentInitializationData {
 
     protected ConsumerAgentGroup group;
     protected SocialGraph.Node node;
@@ -41,6 +39,16 @@ public final class PlaceholderConsumerAgent
     }
 
     protected static UnsupportedOperationException placeholderException() {
+        throw placeholderException();
+    }
+
+    @Override
+    public void lockAction() {
+        throw placeholderException();
+    }
+
+    @Override
+    public void releaseAction() {
         throw placeholderException();
     }
 

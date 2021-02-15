@@ -11,6 +11,10 @@ import java.time.ZonedDateTime;
  */
 public interface TimeModel extends Initialization {
 
+    void setup();
+
+    void setupNextYear();
+
     TimeMode getMode();
 
     Timestamp convert(ZonedDateTime zdt);
@@ -18,6 +22,10 @@ public interface TimeModel extends Initialization {
     int getYear();
 
     Timestamp now();
+
+    int getStartYear();
+
+    int getEndYearInclusive();
 
     Timestamp startTime();
 

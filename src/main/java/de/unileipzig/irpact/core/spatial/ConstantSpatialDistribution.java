@@ -2,30 +2,32 @@ package de.unileipzig.irpact.core.spatial;
 
 import de.unileipzig.irpact.commons.NameableBase;
 
+import java.util.function.Supplier;
+
 /**
  * @author Daniel Abitz
  */
 public class ConstantSpatialDistribution extends NameableBase implements SpatialDistribution {
 
-    protected SpatialInformation information;
+    protected Supplier<SpatialInformation> informationSupplier;
 
     public ConstantSpatialDistribution() {
     }
 
-    public ConstantSpatialDistribution(SpatialInformation information) {
-        setInformation(information);
+    public ConstantSpatialDistribution(Supplier<SpatialInformation> informationSupplier) {
+        setInformationSupplier(informationSupplier);
     }
 
-    public void setInformation(SpatialInformation information) {
-        this.information = information;
+    public void setInformationSupplier(Supplier<SpatialInformation> informationSupplier) {
+        this.informationSupplier = informationSupplier;
     }
 
-    public SpatialInformation getInformation() {
-        return information;
+    public Supplier<SpatialInformation> getInformationSupplier() {
+        return informationSupplier;
     }
 
     @Override
     public SpatialInformation drawValue() {
-        return information;
+        return informationSupplier.get();
     }
 }

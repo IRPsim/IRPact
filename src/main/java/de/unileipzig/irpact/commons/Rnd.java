@@ -10,7 +10,7 @@ import java.util.Random;
 public final class Rnd {
 
     private static final Random R = new Random();
-    private static synchronized long randomSeed() {
+    public static synchronized long randomSeed() {
         return R.nextLong();
     }
 
@@ -48,6 +48,10 @@ public final class Rnd {
 
     public synchronized long syncNextLong() {
         return rnd.nextLong();
+    }
+
+    public int nextInt() {
+        return rnd.nextInt();
     }
 
     public double nextDouble() {

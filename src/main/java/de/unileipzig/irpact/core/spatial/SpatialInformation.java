@@ -10,4 +10,8 @@ public interface SpatialInformation {
     Collection<SpatialAttribute> getAttributes();
 
     SpatialAttribute getAttribute(String name);
+
+    boolean hasAttribute(String name);
+
+    void addAttribute(SpatialAttribute attribute);
 }

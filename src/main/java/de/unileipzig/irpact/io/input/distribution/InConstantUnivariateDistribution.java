@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.io.input.distribution;
 
+import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.distribution.ConstantUnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
-import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -19,6 +19,7 @@ public class InConstantUnivariateDistribution implements InUnivariateDoubleDistr
         res.newElementBuilder()
                 .setEdnLabel("Dirac")
                 .setEdnPriority(0)
+                .setEdnDescription("Verteilungsfunktion, welche einen konstanten Wert zurück gibt.")
                 .putCache("Dirac");
     }
     public static void applyRes(TreeAnnotationResource res) {
@@ -27,6 +28,11 @@ public class InConstantUnivariateDistribution implements InUnivariateDoubleDistr
                 res.getCachedElement("Verteilungsfunktionen"),
                 res.getCachedElement("Dirac")
         );
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Wert")
+                .setGamsDescription("Wert")
+                .store(InConstantUnivariateDistribution.class, "constDistValue");
     }
 
     public String _name;
@@ -50,7 +56,7 @@ public class InConstantUnivariateDistribution implements InUnivariateDoubleDistr
     }
 
     @Override
-    public UnivariateDoubleDistribution getInstance() {
+    public UnivariateDoubleDistribution getInstance(Rnd rnd) {
         if(instance == null) {
             instance = new ConstantUnivariateDoubleDistribution();
             instance.setName(getName());

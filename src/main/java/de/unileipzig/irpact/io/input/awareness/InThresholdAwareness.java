@@ -19,6 +19,7 @@ public class InThresholdAwareness implements InAwareness {
         res.newElementBuilder()
                 .setEdnLabel("Threshold")
                 .setEdnPriority(0)
+                .setEdnDescription("Grenzwert-basierte Awareness")
                 .putCache("Threshold");
     }
     public static void applyRes(TreeAnnotationResource res) {
@@ -29,6 +30,11 @@ public class InThresholdAwareness implements InAwareness {
                 res.getCachedElement("Awareness"),
                 res.getCachedElement("Threshold")
         );
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Grenzwert")
+                .setGamsDescription("Grenzwert ab der das Produkt adoptiert wird")
+                .store(InThresholdAwareness.class, "awarenessThreshold");
     }
 
     public String _name;
@@ -44,6 +50,7 @@ public class InThresholdAwareness implements InAwareness {
         this.awarenessThreshold = threshold;
     }
 
+    @Override
     public String getName() {
         return _name;
     }

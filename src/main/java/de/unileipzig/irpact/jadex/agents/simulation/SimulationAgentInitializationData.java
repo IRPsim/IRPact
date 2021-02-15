@@ -7,9 +7,9 @@ import jadex.bridge.service.annotation.Reference;
  * @author Daniel Abitz
  */
 @Reference(local = true, remote = true)
-public final class JadexSimulationAgentInitializationData {
+public final class SimulationAgentInitializationData {
 
-    public JadexSimulationAgentInitializationData() {
+    public SimulationAgentInitializationData() {
     }
 
     protected String name;

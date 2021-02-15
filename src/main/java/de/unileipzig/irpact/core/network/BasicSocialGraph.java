@@ -97,7 +97,11 @@ public class BasicSocialGraph implements SocialGraph {
     private final Map<Agent, Node> NODE_CACHE = new HashMap<>();
 
     public BasicSocialGraph() {
-        this(BasicNode::new, BasicEdge::new, new DirectedAdjacencyListMultiGraph<>());
+        this(new DirectedAdjacencyListMultiGraph<>());
+    }
+
+    public BasicSocialGraph(DirectedMultiGraph<Node, Edge, Type> graph) {
+        this(BasicNode::new, BasicEdge::new, graph);
     }
 
     public BasicSocialGraph(

@@ -28,4 +28,8 @@ public interface Timestamp extends Comparable<Timestamp> {
     default boolean isEqual(Timestamp other) {
         return getTime().isEqual(other.getTime());
     }
+
+    default boolean isNotEqual(Timestamp other) {
+        return !isEqual(other);
+    }
 }

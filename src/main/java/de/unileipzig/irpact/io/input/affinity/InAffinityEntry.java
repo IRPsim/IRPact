@@ -4,9 +4,9 @@ import de.unileipzig.irpact.commons.NamedData;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
+import de.unileipzig.irpact.io.input.InGeneral;
 import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
@@ -22,6 +22,7 @@ public class InAffinityEntry {
         res.newElementBuilder()
                 .setEdnLabel("Affinity")
                 .setEdnPriority(5)
+                .setEdnDescription("Legt die Affinity zwischen den jeweiligen Konsumergruppen fest.")
                 .putCache("Affinity");
     }
     public static void applyRes(TreeAnnotationResource res) {
@@ -31,6 +32,19 @@ public class InAffinityEntry {
                 res.getCachedElement("Konsumer"),
                 res.getCachedElement("Affinity")
         );
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("Ausgangsgruppe")
+                .setGamsDescription("Ausgangsgruppe")
+                .store(InGeneral.class, "srcCag");
+        res.newEntryBuilder()
+                .setGamsIdentifier("Zielgruppe")
+                .setGamsDescription("Zielgruppe")
+                .store(InGeneral.class, "tarCag");
+        res.newEntryBuilder()
+                .setGamsIdentifier("Affinity-Wert")
+                .setGamsDescription("Affinity-Wert")
+                .store(InGeneral.class, "affinityValue");
     }
 
     public String _name;

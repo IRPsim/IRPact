@@ -34,13 +34,12 @@ public class BasicProductManager implements ProductManager {
     public void validate() throws ValidationException {
     }
 
-    @Override
-    public boolean add(ProductGroup group) {
-        if(products.containsKey(group.getName())) {
-            return false;
-        }
+    public boolean has(String name) {
+        return products.containsKey(name);
+    }
+
+    public void add(ProductGroup group) {
         products.put(group.getName(), group);
-        return true;
     }
 
     @Override
