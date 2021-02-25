@@ -11,6 +11,14 @@ public class BasicConsumerAgentGroupAttribute extends AbstractDerivableUnivariat
     }
 
     @Override
+    public BasicConsumerAgentGroupAttribute copyAttribute() {
+        BasicConsumerAgentGroupAttribute copy = new BasicConsumerAgentGroupAttribute();
+        copy.setName(name);
+        copy.setDistribution(distribution.copyDistribution());
+        return copy;
+    }
+
+    @Override
     public BasicConsumerAgentAttribute derive() {
         double value = drawDoubleValue();
         return derive(value);

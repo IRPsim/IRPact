@@ -2,10 +2,7 @@ package de.unileipzig.irpact.commons.affinity;
 
 import de.unileipzig.irpact.commons.CollectionUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @param <T>
@@ -21,6 +18,11 @@ public class BasicAffinities<T> implements Affinities<T> {
 
     public BasicAffinities(Map<T, Double> values) {
         this.values = values;
+    }
+
+    @Override
+    public Set<T> targets() {
+        return values.keySet();
     }
 
     @Override

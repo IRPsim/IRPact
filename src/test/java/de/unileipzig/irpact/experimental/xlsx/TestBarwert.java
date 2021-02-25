@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.experimental.xlsx;
 
+import de.unileipzig.irpact.commons.util.xlsx.ComplexXlsxTable;
 import de.unileipzig.irpact.commons.util.xlsx.KeyValueXlsxTable;
 import de.unileipzig.irpact.commons.util.xlsx.SimplifiedXlsxTable;
 import de.unileipzig.irpact.commons.util.xlsx.XlsxUtil;
@@ -15,9 +16,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -26,6 +30,48 @@ import java.util.Map;
  */
 @Disabled
 public class TestBarwert {
+
+    @Test
+    void testGis() throws IOException, InvalidFormatException {
+        Path path = TestFiles.testfiles.resolve("0data").resolve("GIS_final_1.xlsx");
+        XSSFWorkbook book = XlsxUtil.load(path);
+        XSSFSheet sheet = book.getSheetAt(0);
+        ComplexXlsxTable table = new ComplexXlsxTable();
+        table.parse(sheet);
+
+        System.out.println(Arrays.toString(table.getHeader()));
+        System.out.println(table.getNumberOfRows());
+    }
+
+    @Test
+    void testGisCsv() throws IOException, InvalidFormatException {
+        Path path = TestFiles.testfiles.resolve("0data").resolve("GIS_final_1.csv");
+        int i = 0;
+        try(BufferedReader br = Files.newBufferedReader(path, StandardCharsets.ISO_8859_1)) {
+            String line;
+            while((line = br.readLine()) != null) {
+                i++;
+            }
+        }
+        System.out.println(i);
+    }
+
+    @Test
+    void testGisCsv2() throws IOException, InvalidFormatException {
+        Path path = TestFiles.testfiles.resolve("0data").resolve("GIS_final_2.csv");
+        int i = 0;
+        try(BufferedReader br = Files.newBufferedReader(path, StandardCharsets.ISO_8859_1)) {
+            String line;
+            while((line = br.readLine()) != null) {
+                i++;
+                System.out.println(line);
+                if(i == 35) {
+                    return;
+                }
+            }
+        }
+        System.out.println(i);
+    }
 
     @Test
     void testKeyValue() throws IOException, InvalidFormatException {

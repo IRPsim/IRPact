@@ -27,9 +27,8 @@ import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.FastHeterogeneousSmallWorldTopology;
 import de.unileipzig.irpact.core.spatial.Metric;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
-import de.unileipzig.irpact.core.spatial.twodim.RandomPoint2DDistribution;
 import de.unileipzig.irpact.core.spatial.twodim.Space2D;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.util.TodoOLD;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
@@ -40,7 +39,7 @@ import java.util.Map;
 /**
  * @author Daniel Abitz
  */
-@Todo("selbe inputinstance -> selbe instance hier machen - keine neue erstellen (cachen)")
+@TodoOLD("selbe inputinstance -> selbe instance hier machen - keine neue erstellen (cachen)")
 public class JadexInputConverter implements InputConverter {
 
     public static JadexInputConverter INSTANCE = new JadexInputConverter();
@@ -54,8 +53,8 @@ public class JadexInputConverter implements InputConverter {
             jgrp.setEnvironment(env);
             jgrp.setInformationAuthority(grp.getInformationAuthority());
             jgrp.setName(grp.getName());
-            jgrp.setSpatialDistribution(new RandomPoint2DDistribution(0, 1, 0, 1, Util.RND.nextLong()));
-            jgrp.setProductAwareness(grp.getProductAwareness().createInstance());
+            //jgrp.setSpatialDistribution(new RandomPoint2DDistribution(0, 1, 0, 1, Util.RND.nextLong()));
+            //jgrp.setProductAwareness(grp.getProductAwareness().createInstance());
             for(IConsumerAgentGroupAttribute attr: grp.getCagAttributes()) {
                 BasicConsumerAgentGroupAttribute battr = new BasicConsumerAgentGroupAttribute();
                 battr.setName(attr.getName());
@@ -98,7 +97,7 @@ public class JadexInputConverter implements InputConverter {
         for(IFixedProduct product: input.fixedProducts) {
             ProductGroup pg = env.getProducts().getGroup(product.getFpGroup().getName());
             BasicProduct fp = new BasicProduct();
-            fp.setFixed(true);
+            fp.setFixed(false);
             fp.setName(product.getName());
             fp.setGroup(pg);
             for(IFixedProductAttribute attr: product.getFpAttributes()) {
@@ -108,7 +107,7 @@ public class JadexInputConverter implements InputConverter {
                 battr.setGroup(pg.getAttribute(attr.getFpaGroupAttribute().getName()));
                 fp.addAttribute(battr);
             }
-            pg.registerFixed(fp);
+            //pg.registerFixed(fp);
         }
         initFixedProductAwareness(env, input);
     }
@@ -116,9 +115,9 @@ public class JadexInputConverter implements InputConverter {
     protected void initFixedProductAwareness(BasicJadexSimulationEnvironment env, IRoot input) {
         for(IFixedProductAwareness awareness: input.fixedProductAwarenesses) {
             ConsumerAgentGroup cag = env.getAgents().getConsumerAgentGroup(awareness.awarenessAgentGroup.getName());
-            Product fp = env.getProducts().getFixedProduct(awareness.awarenessFixedProduct.getName());
-            UnivariateDoubleDistribution dist = awareness.awarenessDistribution.createInstance();
-            cag.getFixedProductAwarenessMapping().put(fp, dist);
+            //Product fp = env.getProducts().getFixedProduct(awareness.awarenessFixedProduct.getName());
+            //UnivariateDoubleDistribution dist = awareness.awarenessDistribution.createInstance();
+            //cag.getFixedProductAwarenessMapping().put(fp, dist);
         }
     }
 

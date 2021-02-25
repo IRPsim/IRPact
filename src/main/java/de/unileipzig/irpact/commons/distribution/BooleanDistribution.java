@@ -1,8 +1,7 @@
 package de.unileipzig.irpact.commons.distribution;
 
 import de.unileipzig.irpact.commons.NameableBase;
-
-import java.util.Random;
+import de.unileipzig.irpact.commons.Rnd;
 
 /**
  * @author Daniel Abitz
@@ -10,39 +9,34 @@ import java.util.Random;
 public class BooleanDistribution extends NameableBase implements UnivariateDoubleDistribution {
 
     protected long seed;
-    protected Random rnd;
+    protected Rnd rnd;
 
     public BooleanDistribution() {
     }
 
-    public BooleanDistribution(String name, long seed) {
+    public BooleanDistribution(String name, Rnd rnd) {
         setName(name);
-        init(seed);
+        setRandom(rnd);
     }
 
-    public void init(long seed) {
-        setSeed(seed);
-        setRandom(new Random(seed));
-    }
-
-    public void setSeed(long seed) {
-        this.seed = seed;
-    }
-
-    public long getSeed() {
-        return seed;
-    }
-
-    public void setRandom(Random rnd) {
+    public void setRandom(Rnd rnd) {
         this.rnd = rnd;
     }
 
-    public Random getRandom() {
+    public Rnd getRandom() {
         return rnd;
     }
 
     @Override
     public double drawDoubleValue() {
         return rnd.nextBoolean() ? 1.0 : 0.0;
+    }
+
+    @Override
+    public boolean isEqualsSameClass(Object obj) {
+        BooleanDistribution other = (BooleanDistribution) obj;
+        return name.equals(other.name)
+                && seed == other.seed
+                && rnd.isEquals(other.rnd);
     }
 }

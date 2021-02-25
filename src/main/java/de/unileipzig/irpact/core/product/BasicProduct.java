@@ -2,9 +2,7 @@ package de.unileipzig.irpact.core.product;
 
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
 
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Daniel Abitz
@@ -12,14 +10,14 @@ import java.util.Set;
 public class BasicProduct extends SimulationEntityBase implements Product {
 
     protected ProductGroup group;
-    protected Set<ProductAttribute> attributes;
+    protected Map<String, ProductAttribute> attributes;
     protected boolean fixed = false;
 
     public BasicProduct() {
-        this(new LinkedHashSet<>());
+        this(new HashMap<>());
     }
 
-    public BasicProduct(Set<ProductAttribute> attributes) {
+    public BasicProduct(Map<String, ProductAttribute> attributes) {
         this.attributes = attributes;
     }
 
@@ -38,27 +36,35 @@ public class BasicProduct extends SimulationEntityBase implements Product {
         return group;
     }
 
-    public boolean addAttribute(ProductAttribute attribute) {
-        return attributes.add(attribute);
-    }
-
-    public void setAttributes(Set<ProductAttribute> attributes) {
-        this.attributes = attributes;
+    public void addAllAttributes(ProductAttribute... attributes) {
+        for(ProductAttribute attribute: attributes) {
+            addAttribute(attribute);
+        }
     }
 
     @Override
-    public Set<ProductAttribute> getAttributes() {
-        return attributes;
+    public boolean hasAttribute(String name) {
+        return attributes.containsKey(name);
+    }
+
+    public void addAttribute(ProductAttribute attribute) {
+        attributes.put(attribute.getName(), attribute);
+    }
+
+    public void setAttributes(Set<ProductAttribute> attributes) {
+        for(ProductAttribute attribute: attributes) {
+            addAttribute(attribute);
+        }
+    }
+
+    @Override
+    public Collection<ProductAttribute> getAttributes() {
+        return attributes.values();
     }
 
     @Override
     public ProductAttribute getAttribute(String name) {
-        for(ProductAttribute attr: attributes) {
-            if(Objects.equals(attr.getName(), name)) {
-                return attr;
-            }
-        }
-        return null;
+        return attributes.get(name);
     }
 
     public void setFixed(boolean fixed) {

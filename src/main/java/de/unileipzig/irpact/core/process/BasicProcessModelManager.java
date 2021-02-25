@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.process;
 
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
@@ -43,9 +43,23 @@ public class BasicProcessModelManager implements ProcessModelManager {
     }
 
     @Override
-    public void setup() {
+    public void preAgentCreation() throws MissingDataException {
         for(ProcessModel model: getProcessModels()) {
-            model.setup();
+            model.preAgentCreation();
+        }
+    }
+
+    @Override
+    public void postAgentCreation() throws MissingDataException {
+        for(ProcessModel model: getProcessModels()) {
+            model.postAgentCreation();
+        }
+    }
+
+    @Override
+    public void preSimulationStart() throws MissingDataException {
+        for(ProcessModel model: getProcessModels()) {
+            model.preSimulationStart();
         }
     }
 

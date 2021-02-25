@@ -4,9 +4,9 @@ import de.unileipzig.irpact.commons.time.TickConverter;
 import de.unileipzig.irpact.commons.time.TimeMode;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.IComponentStep;
+import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IExecutionFeature;
 import jadex.bridge.service.types.clock.IClock;
 import jadex.commons.future.IFuture;
@@ -25,9 +25,11 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
     protected long storedDelta;
     protected long storedTimePerTickInMs;
 
+    protected double startTick;
+    protected double endTick;
     protected double nowTick;
+    protected double tickModifier;
     protected JadexTimestamp nowStamp;
-    protected double halfTimeDelay;
     protected double delayTillEnd;
 
     public DiscreteTimeModel() {
@@ -57,23 +59,36 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
 
     public void setStartTick(double tick) {
         converter.setStart(tick);
-        setStartTime(new BasicTimestamp(converter.getStartTime()));
+        startTick = tick;
+        setStartTime(new BasicTimestamp(converter.getStartTime(), tick, 0.0));
+    }
+
+    public double getTickModifier() {
+        return tickModifier;
+    }
+
+    public void setTickModifier(double tickModifier) {
+        this.tickModifier = tickModifier;
+    }
+
+    public JadexTimestamp getNowStamp() {
+        return nowStamp;
+    }
+
+    public void setNowStamp(JadexTimestamp nowStamp) {
+        this.nowStamp = nowStamp;
     }
 
     public TickConverter getConverter() {
         return converter;
     }
 
-    @Override
-    public void initialize() {
+    protected double normalizeTick(double tick) {
+        return tick - startTick;
     }
 
     @Override
-    public void validate() throws ValidationException {
-    }
-
-    @Override
-    public void setup() {
+    public void setupTimeModel() {
         LOGGER.debug("setup clock '{}'", IClock.TYPE_EVENT_DRIVEN);
         getSimulationService().setClockType(IClock.TYPE_EVENT_DRIVEN).get();
         LOGGER.debug("set tick delta: {}", getStoredDelta());
@@ -88,7 +103,7 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
                 getStartYear(),
                 getStoredTimePerTickInMs()
         );
-        setStartTick(getClockService().getTick());
+        setStartTick(getModifiedClockTick());
         LOGGER.debug("internal simulation start time: {}", startTime());
 
         //endjahr ist inklusiv, hier wird aber exklusiv betrachtet!
@@ -97,8 +112,13 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
         setEndTime(endStamp);
 
         LOGGER.debug("internal simulation end time: {}", endTime());
-        LOGGER.debug("half-time delay (ticks): {}", halfTimeDelay);
+        LOGGER.debug("end tick: {}", endTick);
         LOGGER.debug("end delay (ticks): {}", delayTillEnd);
+
+        LOGGER.info("decrement tick for init");
+        LOGGER.debug("old 'now': {}", now());
+        decTickModifier();
+        LOGGER.debug("new 'now': {}", now());
     }
 
     @Override
@@ -117,83 +137,44 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
     public void setEndTime(JadexTimestamp endTime) {
         super.setEndTime(endTime);
         delayTillEnd = converter.ticksUntil(startTime.getTime(), endTime.getTime());
-        halfTimeDelay = delayTillEnd / 2.0;
-    }
-
-    protected IFuture<Void> recursiveWait(IExecutionFeature exec, double tsTick, IComponentStep<Void> task) {
-        return exec.waitForTick(ia -> {
-            if(getClockService().getTick() < tsTick) {
-                return recursiveWait(exec, tsTick, task);
-            } else {
-                return task.execute(ia);
-            }
-        });
+        endTick = startTick + delayTillEnd;
     }
 
     @Override
-    public IFuture<Void> waitUntil(IExecutionFeature exec, JadexTimestamp ts, IComponentStep<Void> task) {
+    public IFuture<Void> waitUntil(IExecutionFeature exec, JadexTimestamp ts, IInternalAccess access, IComponentStep<Void> task) {
         if(isValid(ts)) {
             JadexTimestamp now = now();
             long delay = (long) converter.ticksUntil(now.getTime(), ts.getTime());
-            return wait(exec, delay, task);
+            return uncheckedWait(exec, delay, access, task);
         } else {
             return IFuture.DONE;
         }
     }
 
     @Override
-    public IFuture<Void> wait(IExecutionFeature exec, long delay, IComponentStep<Void> task) {
+    public IFuture<Void> wait(IExecutionFeature exec, long delay, IInternalAccess access, IComponentStep<Void> task) {
         if(isValid(delay)) {
-            return exec.waitForDelay(delay, task);
+            return uncheckedWait(exec, delay, access, task);
         } else {
             return IFuture.DONE;
         }
     }
 
     @Override
-    public IFuture<Void> forceWait(IExecutionFeature exec, long delay, IComponentStep<Void> task) {
-        return exec.waitForDelay(delay, task);
+    public IFuture<Void> uncheckedWait(IExecutionFeature exec, long delay, IInternalAccess access, IComponentStep<Void> task) {
+        if(delay == 0L) {
+            return task.execute(access);
+        }
+        if(delay == 1L) {
+            return exec.waitForTick(task);
+        }
+        return exec.waitForDelay(delay - 1L, ia -> exec.waitForTick(task));
     }
 
-//    @Override
-//    public IFuture<Void> waitUntil0(IExecutionFeature exec, JadexTimestamp ts, IComponentStep<Void> task) {
-//        return waitUntil0(true, exec, ts, task);
-//    }
-//
-//    @Override
-//    public IFuture<Void> wait0(IExecutionFeature exec, long delayMs, IComponentStep<Void> task) {
-//        return wait0(true, exec, delayMs, task);
-//    }
-
-//    protected IFuture<Void> waitUntil0(boolean noValidation, IExecutionFeature exec, JadexTimestamp ts, IComponentStep<Void> task) {
-//        if(noValidation || isValid(ts)) {
-//            final double tsTick = converter.timeToTick(ts.getTime());
-//            final double nowTick = clock.getTick();
-//            if(tsTick <= nowTick) {
-//                return exec.scheduleStep(task);
-//            } else {
-//                return recursiveWait(exec, tsTick, task);
-//            }
-//        } else {
-//             return IFuture.DONE;
-//        }
-//    }
-//
-//    protected IFuture<Void> wait0(boolean noValidation, IExecutionFeature exec, long delayMs, IComponentStep<Void> task) {
-//        if(noValidation || isValid(delayMs)) {
-//            if(delayMs <= 0L) {
-//                return exec.scheduleStep(task);
-//            }
-//            final double tickDelta = converter.delayToTick(delayMs);
-//            if(tickDelta <= 0.0) {
-//                return exec.scheduleStep(task);
-//            }
-//            final double untilTick = clock.getTick() + tickDelta;
-//            return recursiveWait(exec, untilTick, task);
-//        } else {
-//            return IFuture.DONE;
-//        }
-//    }
+    @Override
+    public IFuture<Void> scheduleImmediately(IExecutionFeature exec, IInternalAccess access, IComponentStep<Void> task) {
+        return uncheckedWait(exec, 1L, access, task);
+    }
 
     @Override
     public TimeMode getMode() {
@@ -202,12 +183,25 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
 
     @Override
     public JadexTimestamp convert(ZonedDateTime zdt) {
-        return new BasicTimestamp(zdt);
+        double tick = converter.timeToTick(zdt);
+        return new BasicTimestamp(zdt, tick, normalizeTick(tick));
+    }
+
+    protected double getModifiedClockTick() {
+        return getClockService().getTick() + tickModifier;
+    }
+
+    protected void incTickModifier() {
+        tickModifier++;
+    }
+
+    protected void decTickModifier() {
+        tickModifier--;
     }
 
     @Override
     public JadexTimestamp now() {
-        double nt = getClockService().getTick();
+        double nt = getModifiedClockTick();
         if(nowStamp != null && nowTick == nt) {
             return nowStamp;
         }
@@ -220,14 +214,14 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
         }
         nowTick = nt;
         ZonedDateTime nowZdt = converter.tickToTime(nt);
-        nowStamp = new BasicTimestamp(nowZdt);
+        nowStamp = new BasicTimestamp(nowZdt, nt, normalizeTick(nt));
         return nowStamp;
     }
 
     @Override
     public boolean isValid(long delay) {
         delay = Math.max(delay, 0L);
-        return delay < delayTillEnd;
+        return getModifiedClockTick() + delay < endTick;
     }
 
     @Override

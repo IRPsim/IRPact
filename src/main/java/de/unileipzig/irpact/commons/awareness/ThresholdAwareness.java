@@ -27,18 +27,8 @@ public class ThresholdAwareness<T> implements Awareness<T> {
         return threshold;
     }
 
-    @Override
-    public ThresholdAwareness<T> emptyCopy() {
-        ThresholdAwareness<T> copy = new ThresholdAwareness<>();
-        copy.setThreshold(getThreshold());
-        return copy;
-    }
-
-    @Override
-    public ThresholdAwareness<T> fullCopy() {
-        ThresholdAwareness<T> copy = emptyCopy();
-        copy.items.putAll(items);
-        return copy;
+    public Map<T, Double> getItems() {
+        return items;
     }
 
     @Override

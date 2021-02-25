@@ -22,6 +22,10 @@ public class RADataSupplier extends NameableBase implements UnivariateDoubleDist
         return dist.getName();
     }
 
+    public UnivariateDoubleDistribution getDistribution() {
+        return dist;
+    }
+
     @Override
     public double drawDoubleValue() {
         return dist.drawDoubleValue();

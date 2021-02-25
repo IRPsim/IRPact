@@ -3,9 +3,11 @@ package de.unileipzig.irpact.jadex.agents.simulation;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.jadex.agents.AbstractJadexAgentBDI;
+import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.jadex.time.JadexTimestamp;
 import de.unileipzig.irpact.start.IRPact;
+import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bridge.IInternalAccess;
@@ -24,17 +26,34 @@ import jadex.micro.annotation.ProvidedServices;
 @ProvidedServices({
         @ProvidedService(type = SimulationService.class, scope = ServiceScope.NETWORK)
 })
+@Todo("HIER AUCH EINEN PLACEHOLDER AGENT EINBAUEN")
 public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements SimulationService, SimulationAgent {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(JadexSimulationAgentBDI.class);
 
+    protected ProxySimulationAgent proxyAgent;
+
     public JadexSimulationAgentBDI() {
     }
-//TODO diesen agenten so konfigurieren, dass er x,y,z macht
-//            + halbzeit + endzeit noch einrichten
+
     @Override
     protected IRPLogger log() {
         return LOGGER;
+    }
+
+    @Override
+    protected SimulationAgent getThisAgent() {
+        return getProxyAgent();
+    }
+
+    @Override
+    protected ProxySimulationAgent getProxyAgent() {
+        return proxyAgent;
+    }
+
+    @Override
+    protected JadexSimulationAgentBDI getRealAgent() {
+        return this;
     }
 
     //=========================
@@ -44,7 +63,7 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     @Override
     protected void onInit() {
         initData();
-        environment.getLiveCycleControl().registerSimulationAgentAccess(this, agent);
+        environment.getLiveCycleControl().registerSimulationAgentAccess(getThisAgent(), agent);
         log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] init", getName());
     }
 
@@ -52,7 +71,8 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     protected void onStart() {
         log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] init", getName());
         waitUntilEnd();
-        reportAgentCreated(this);
+        reportAgentCreated(getThisAgent());
+        scheduleFirstAction();
     }
 
     @Override
@@ -64,29 +84,49 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     //SimulationAgent
     //=========================
 
-    protected SimulationAgentInitializationData getData() {
-        return (SimulationAgentInitializationData) resultsFeature.getArguments().get(IRPact.DATA);
+    protected ProxySimulationAgent getProxy() {
+        Object obj = resultsFeature.getArguments().get(IRPact.PROXY);
+        if(obj instanceof ProxySimulationAgent) {
+            return (ProxySimulationAgent) obj;
+        } else {
+            throw new IllegalStateException("ProxySimulationAgent not found");
+        }
     }
 
     protected void initData() {
-        SimulationAgentInitializationData data = getData();
-        name = data.getName();
-        environment = data.getEnvironment();
+        proxyAgent = getProxy();
+        name = proxyAgent.getName();
+        environment = (JadexSimulationEnvironment) proxyAgent.getEnvironment();
+
+        proxyAgent.sync(getRealAgent());
     }
 
     protected void waitUntilEnd() {
         JadexTimeModel timeModel = environment.getTimeModel();
         JadexTimestamp end = timeModel.endTime();
-        timeModel.waitUntil(execFeature, end, this::onEnd);
+        log().trace("waitUntilEnd: {} -> {} ({})", timeModel.now(), end, timeModel.endTimeReached());
+        timeModel.waitUntil(execFeature, end, agent, this::onEnd);
     }
 
     protected IFuture<Void> onEnd(IInternalAccess ia) {
         JadexTimeModel timeModel = environment.getTimeModel();
-        return timeModel.wait(execFeature, 1L, this::afterEnd);
+        log().trace("onEnd: {} ({})", timeModel.now(), timeModel.endTimeReached());
+        return timeModel.scheduleImmediately(execFeature, agent, this::afterEnd);
     }
 
     protected IFuture<Void> afterEnd(IInternalAccess ia) {
+        JadexTimeModel timeModel = environment.getTimeModel();
+        log().trace("afterEnd: {} ({})", timeModel.now(), timeModel.endTimeReached());
         return IFuture.DONE;
+    }
+
+    @Override
+    protected void firstAction() {
+        log().trace("[{}] firstAction", getName());
+    }
+
+    @Override
+    protected void loopAction() {
     }
 
     @Override

@@ -1,13 +1,13 @@
 package de.unileipzig.irpact.experimental.toolstest;
 
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.util.TodoOLD;
 import org.junit.jupiter.api.Disabled;
 
 /**
  * @author Daniel Abitz
  */
 @Disabled
-@Todo("neue io-file und daten typen einbauen")
+@TodoOLD("neue io-file und daten typen einbauen")
 class SimpleExample {
 
 //    @Test

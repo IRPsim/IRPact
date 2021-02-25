@@ -1,12 +1,15 @@
 package de.unileipzig.irpact.commons.affinity;
 
 import java.util.Random;
+import java.util.Set;
 
 /**
  * @param <T>
  * @author Daniel Abitz
  */
 public interface Affinities<T> {
+
+    Set<T> targets();
 
     int size();
 

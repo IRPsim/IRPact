@@ -86,7 +86,7 @@ public final class XlsxUtil {
         return table;
     }
 
-    private static String[] extractHeader(Row row) {
+    public static String[] extractHeader(Row row) {
         List<String> headerList = new ArrayList<>();
         Iterator<Cell> cellIter = row.cellIterator();
         while(cellIter.hasNext()) {
@@ -141,7 +141,7 @@ public final class XlsxUtil {
         return rowData;
     }
 
-    private static boolean isBlankRow(Iterator<Cell> cellIter, int headerLength) {
+    public static boolean isBlankRow(Iterator<Cell> cellIter, int headerLength) {
         int index = 1;
         while(cellIter.hasNext() && index < headerLength) {
             Cell cell = cellIter.next();

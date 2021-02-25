@@ -13,8 +13,4 @@ public interface ProductManager extends Initialization {
     Collection<ProductGroup> getGroups();
 
     ProductGroup getGroup(String name);
-
-    Stream<Product> streamFixedProducts();
-
-    Product getFixedProduct(String name);
 }

@@ -1,11 +1,16 @@
 package de.unileipzig.irpact.experimental.demos;
 
+import de.unileipzig.irpact.commons.res.BasicResourceLoader;
+import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.experimental.TestFiles;
-import de.unileipzig.irpact.io.input.InExample;
-import de.unileipzig.irpact.io.input.InRoot;
-import de.unileipzig.irpact.io.output.OutRoot;
+import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.output.OutRoot;
+import de.unileipzig.irpact.jadex.time.BasicTimestamp;
+import de.unileipzig.irpact.misc.ExampleFactory;
+import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irpact.start.Start;
+import de.unileipzig.irptools.io.base.AnnualEntry;
 import de.unileipzig.irptools.util.Util;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -14,6 +19,9 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.time.ZonedDateTime;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 /**
  * @author Daniel Abitz
@@ -70,5 +78,36 @@ public class DemosX {
         String content0 = Util.readString(dir.resolve("scenarios").resolve("default.json"), StandardCharsets.UTF_8);
         String content1 = Util.readString(dir.resolve("scenarios").resolve("default.spec.json"), StandardCharsets.UTF_8);
         Assertions.assertEquals(content0, content1);
+    }
+
+    @Test
+    void runMyStuff() throws Exception {
+        Start start = Start.testMode();
+        IRPact act = new IRPact(start, new BasicResourceLoader());
+        AnnualEntry<InRoot> entry = ExampleFactory.buildMinimalExampleWith2Groups();
+        act.start(entry);
+    }
+
+    @Test
+    void MpaFun() {
+        NavigableMap<Integer, String> map = new TreeMap<>();
+        map.put(1, "a");
+        map.put(2, "b");
+        map.put(3, "c");
+        map.put(4, "d");
+        System.out.println(map.headMap(3, true));
+    }
+
+    @Test
+    void MpaFun2() {
+        NavigableMap<Timestamp, String> map = new TreeMap<>();
+        ZonedDateTime now = ZonedDateTime.now();
+        map.put(new BasicTimestamp(now), "a");
+        map.put(new BasicTimestamp(now.plusDays(1)), "b");
+        map.put(new BasicTimestamp(now.plusDays(2)), "c");
+        map.put(new BasicTimestamp(now.plusDays(3)), "d");
+        System.out.println(map.headMap(new BasicTimestamp(now.plusDays(2)), true));
+        
+        System.out.println(map);
     }
 }

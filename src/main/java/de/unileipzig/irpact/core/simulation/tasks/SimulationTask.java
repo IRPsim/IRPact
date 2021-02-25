@@ -5,7 +5,7 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 /**
  * @author Daniel Abitz
  */
-public interface SimulationTask extends Task {
+public interface SimulationTask extends BinaryTask {
 
-    void run(SimulationEnvironment environment);
+    void run(SimulationEnvironment environment) throws Exception;
 }

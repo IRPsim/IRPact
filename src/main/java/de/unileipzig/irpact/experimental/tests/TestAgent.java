@@ -17,11 +17,6 @@ public interface TestAgent extends Agent {
     }
 
     @Override
-    default boolean hasName(String input) {
-        return false;
-    }
-
-    @Override
     default String getName() {
         return null;
     }
@@ -33,6 +28,11 @@ public interface TestAgent extends Agent {
 
     @Override
     default void lockAction() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default void actionPerformed() {
         throw new UnsupportedOperationException();
     }
 

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.process;
 
+import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.core.product.Product;
 
 /**
@@ -7,11 +8,15 @@ import de.unileipzig.irpact.core.product.Product;
  *
  * @author Daniel Abitz
  */
-public class FixProcessModelFindingScheme implements ProcessFindingScheme {
+public class FixProcessModelFindingScheme extends NameableBase implements ProcessFindingScheme {
 
     protected ProcessModel model;
 
     public FixProcessModelFindingScheme() {
+    }
+
+    public ProcessModel getModel() {
+        return model;
     }
 
     public void setModel(ProcessModel model) {

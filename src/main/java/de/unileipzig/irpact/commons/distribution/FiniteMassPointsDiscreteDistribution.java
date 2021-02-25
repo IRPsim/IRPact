@@ -1,88 +1,86 @@
 package de.unileipzig.irpact.commons.distribution;
 
-import de.unileipzig.irpact.commons.Pair;
+import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.WeightedDouble;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 /**
  * @author Daniel Abitz
  */
 public class FiniteMassPointsDiscreteDistribution extends AbstractBoundedUnivariateDoubleDistribution {
 
-    protected long seed;
-    protected Random rnd;
-    protected List<Pair<Double, Double>> massPoints;
+    protected List<WeightedDouble> massPoints;
+    protected List<WeightedDouble> sortedNormalizedMassPoints;
+    protected Rnd rnd;
 
     public FiniteMassPointsDiscreteDistribution() {
         this(new ArrayList<>());
     }
 
-    public FiniteMassPointsDiscreteDistribution(List<Pair<Double, Double>> massPoints) {
+    public FiniteMassPointsDiscreteDistribution(List<WeightedDouble> massPoints) {
         this.massPoints = massPoints;
     }
 
-    public void init(long seed) {
-        setSeed(seed);
-        setRandom(new Random(seed));
-    }
-
-    public void setSeed(long seed) {
-        this.seed = seed;
-    }
-
-    public long getSeed() {
-        return seed;
-    }
-
-    public void setRandom(Random rnd) {
+    public void setRandom(Rnd rnd) {
         this.rnd = rnd;
     }
 
-    public Random getRandom() {
+    public Rnd getRandom() {
         return rnd;
     }
 
-    public void init(List<Pair<Double, Double>> input) {
-        if(input.isEmpty()) {
-            throw new IllegalStateException("empty");
-        }
-        massPoints.clear();
-        double sum = input.stream()
-                .mapToDouble(Pair::second)
+    public void add(WeightedDouble point) {
+        massPoints.add(point);
+        sortedNormalizedMassPoints = null; //reset !
+    }
+
+    public void add(double value, double weight) {
+        add(new WeightedDouble(value, weight));
+    }
+
+    public void init() {
+        sortAndNorm();
+    }
+
+    private void sortAndNorm() {
+        double totalWeight = massPoints.stream()
+                .mapToDouble(WeightedDouble::getWeight)
                 .sum();
         upperBound = Double.MIN_VALUE;
         lowerBound = Double.MAX_VALUE;
-        for(Pair<Double, Double> pair: input) {
-            double value = pair.first();
-            double weight = pair.second();
-            massPoints.add(new Pair<>(value, weight / sum)); //normalize
-            if(value > upperBound) {
-                upperBound = value;
+        sortedNormalizedMassPoints = new ArrayList<>();
+        for(WeightedDouble mp: massPoints) {
+            WeightedDouble normMp = mp.norm(totalWeight);
+            sortedNormalizedMassPoints.add(normMp);
+            if(normMp.getValue() > upperBound) {
+                upperBound = normMp.getValue();
             }
-            if(value < lowerBound) {
-                lowerBound = value;
+            if(normMp.getValue() < lowerBound) {
+                lowerBound = normMp.getValue();
             }
         }
-        massPoints.sort(Comparator.comparingDouble(Pair::second));
+        sortedNormalizedMassPoints.sort(WeightedDouble.getDescendingWeightComparator());
     }
 
     @Override
     public double drawDoubleValue() {
         if(massPoints.isEmpty()) {
-            throw new IllegalStateException("empty");
+            throw new IllegalStateException("no points");
         }
         if(massPoints.size() == 1) {
-            return massPoints.get(0).first();
+            return massPoints.get(0).getValue();
+        }
+        if(sortedNormalizedMassPoints == null) {
+            init();
         }
         final double rndValue = rnd.nextDouble();
         double temp = 0.0;
         double lastValue = 0.0;
-        for(Pair<Double, Double> massPoint: massPoints) {
-            temp += massPoint.second();
-            lastValue = massPoint.first();
+        for(WeightedDouble massPoint: sortedNormalizedMassPoints) {
+            temp += massPoint.getWeight();
+            lastValue = massPoint.getValue();
             if(rndValue < temp) {
                 return lastValue;
             }

@@ -17,9 +17,8 @@ import de.unileipzig.irpact.experimental.deprecated.input.product.IProductGroup;
 import de.unileipzig.irpact.experimental.deprecated.input.product.IProductGroupAttribute;
 import de.unileipzig.irpact.experimental.deprecated.input.spatial.ISpace2D;
 import de.unileipzig.irpact.experimental.deprecated.input.time.ITimeModel;
-import de.unileipzig.irpact.io.input.distribution.*;
 import de.unileipzig.irpact.commons.CollectionUtil;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.util.TodoOLD;
 import de.unileipzig.irpact.experimental.deprecated.input.time.IContinuousTimeModel;
 import de.unileipzig.irpact.experimental.deprecated.input.time.IDiscreteTimeModel;
 import de.unileipzig.irptools.defstructure.ParserInput;
@@ -80,7 +79,7 @@ public class IRoot implements RootClass {
     @FieldDefinition
     public IConsumerAgentGroup[] consumerAgentGroups;
 
-    @Todo("remove array")
+    @TodoOLD("remove array")
     @FieldDefinition
     public IBasicAffinityMapping[] affinityMapping;
 
@@ -93,16 +92,16 @@ public class IRoot implements RootClass {
     @FieldDefinition
     public IFixedProductAwareness[] fixedProductAwarenesses;
 
-    @Todo("remove array")
+    @TodoOLD("remove array")
     @FieldDefinition
     public ISpace2D[] spatialModel;
 
-    @Todo("remove array")
+    @TodoOLD("remove array")
     @FieldDefinition
     public ITimeModel[] timeModel;
 
-    @Todo("remove array")
-    @Todo("interface einfuegen")
+    @TodoOLD("remove array")
+    @TodoOLD("interface einfuegen")
     @FieldDefinition
     public IFastHeterogeneousSmallWorldTopology[] topology;
 

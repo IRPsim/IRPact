@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.experimental;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.unileipzig.irpact.commons.res.BasicResourceLoader;
 import de.unileipzig.irpact.commons.util.IRPactBase32;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -153,8 +154,8 @@ class DivTest {
     @Test
     void resTest() throws Exception {
         IRPLogging.initConsole();
-        IRPact irpact = new IRPact(null, null);
-        irpact.start();
+        IRPact irpact = new IRPact(null, new BasicResourceLoader());
+        irpact.start((ObjectNode) null);
     }
 
     @Test

@@ -10,17 +10,19 @@ import java.util.Set;
  */
 public interface ProductGroup extends SimulationEntity {
 
-    Set<Product> getProducts();
+    Collection<Product> getProducts();
 
-    Set<Product> getFixedProducts();
+    Product getProduct(String name);
 
     Collection<ProductGroupAttribute> getAttributes();
 
     ProductGroupAttribute getAttribute(String name);
 
-    boolean register(Product product);
+    boolean hasProduct(String name);
 
-    boolean registerFixed(Product product);
+    void addProduct(Product product);
 
     Product derive();
+
+    Product deriveAndAdd();
 }

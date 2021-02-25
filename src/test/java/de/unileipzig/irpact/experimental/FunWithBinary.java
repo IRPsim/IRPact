@@ -2,10 +2,12 @@ package de.unileipzig.irpact.experimental;
 
 import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.simulation.BasicBinaryDataManager;
-import de.unileipzig.irpact.core.simulation.tasks.BasicNonSimulationTask;
-import de.unileipzig.irpact.io.inout.binary.HiddenBinaryData;
-import de.unileipzig.irpact.io.input.binary.VisibleBinaryData;
+import de.unileipzig.irpact.core.simulation.BasicBinaryTaskManager;
+import de.unileipzig.irpact.core.simulation.tasks.PredefinedAppTask;
+import de.unileipzig.irpact.core.simulation.tasks.PredefinedSimulationTask;
+import de.unileipzig.irpact.io.param.inout.binary.HiddenBinaryData;
+import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
+import de.unileipzig.irptools.util.Util;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -16,22 +18,30 @@ import org.junit.jupiter.api.Test;
 public class FunWithBinary {
 
     @Test
-    void lala() throws Exception {
+    void lala() {
         IRPLogging.initConsole();
 
-        BasicNonSimulationTask task1 = new BasicNonSimulationTask();
+        PredefinedAppTask task1 = new PredefinedAppTask();
         task1.setInfo("XXX");
-        task1.setTaskNumber(BasicNonSimulationTask.HELLO_WORLD);
-        VisibleBinaryData hdb1 = task1.toBinary(VisibleBinaryData.class);
-        System.out.println(hdb1._name);
+        task1.setTask(PredefinedAppTask.HELLO_WORLD);
+        VisibleBinaryData vdb1 = new VisibleBinaryData();
+        vdb1.setID(task1.getID());
+        vdb1.setBytes(task1.getBytes());
+        System.out.println(vdb1.getName());
+        System.out.println(Util.printJson(task1.getRoot()));
 
-        BasicNonSimulationTask task2 = new BasicNonSimulationTask();
+        PredefinedSimulationTask task2 = new PredefinedSimulationTask();
         task2.setInfo("YYY");
-        task2.setTaskNumber(BasicNonSimulationTask.HELLO_WORLD);
-        HiddenBinaryData hdb2 = task2.toBinary(HiddenBinaryData.class);
-        System.out.println(hdb2._name);
+        task2.setTask(PredefinedSimulationTask.HELLO_WORLD);
+        HiddenBinaryData hdb1 = new HiddenBinaryData();
+        hdb1.setID(task2.getID());
+        hdb1.setBytes(task2.getBytes());
+        System.out.println(hdb1.getName());
+        System.out.println(Util.printJson(task2.getRoot()));
 
-        BasicBinaryDataManager bbbm = new BasicBinaryDataManager();
-        bbbm.handle(CollectionUtil.arrayListOf(hdb1.asBinary(), hdb2.asBinary()));
+        BasicBinaryTaskManager bbbm = new BasicBinaryTaskManager();
+        bbbm.handle(CollectionUtil.arrayListOf(vdb1.asBinary(), hdb1.asBinary()));
+        bbbm.runAppTasks();
+        bbbm.runSimulationTasks(null);
     }
 }

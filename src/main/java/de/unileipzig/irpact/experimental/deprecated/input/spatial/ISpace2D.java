@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental.deprecated.input.spatial;
 
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.util.TodoOLD;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -13,7 +13,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
                 label = {"SpatialModel/Space2D"}
         )
 )
-@Todo("verallgemeinern")
+@TodoOLD("verallgemeinern")
 public class ISpace2D {
 
     public String _name;

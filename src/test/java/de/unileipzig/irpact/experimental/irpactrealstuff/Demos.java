@@ -2,9 +2,9 @@ package de.unileipzig.irpact.experimental.irpactrealstuff;
 
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.experimental.TestFiles;
-import de.unileipzig.irpact.io.input.InExample;
-import de.unileipzig.irpact.io.input.InRoot;
-import de.unileipzig.irpact.io.output.OutRoot;
+import de.unileipzig.irpact.io.param.input.InExample;
+import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irptools.util.Util;
 import org.junit.jupiter.api.Disabled;

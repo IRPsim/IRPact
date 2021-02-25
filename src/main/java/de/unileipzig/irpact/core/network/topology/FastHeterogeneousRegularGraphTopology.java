@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.network.topology;
 
+import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinities;
@@ -12,7 +13,7 @@ import java.util.*;
 /**
  * @author Daniel Abitz
  */
-public class FastHeterogeneousRegularGraphTopology implements GraphTopologyScheme {
+public class FastHeterogeneousRegularGraphTopology extends NameableBase implements GraphTopologyScheme {
 
     protected SocialGraph.Type edgeType;
     protected Map<ConsumerAgentGroup, Integer> consumerGroupZMapping;

@@ -50,6 +50,14 @@ public class BasicWeightedMapping<S, T, W> implements WeightedMapping<S, T, W> {
         this.weightFunction = weightFunction;
     }
 
+    public void clear() {
+        mapping.clear();
+    }
+
+    public Map<S, Map<T, W>> getMapping() {
+        return mapping;
+    }
+
     @Override
     public boolean has(S source) {
         return mapping.containsKey(source);

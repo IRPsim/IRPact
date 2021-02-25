@@ -71,7 +71,7 @@ public class TimeModelAgent implements TimeModelService, TestAgent, SimulationAg
         log("onStart");
         log("wait for termination");
         JadexTimestamp ts = timeModel.endTime();;
-        timeModel.waitUntil(execFeature, ts, ia -> {
+        timeModel.waitUntil(execFeature, ts, agent, ia -> {
             log("terminate " + timeModel.getClockService().getTick() + " " + timeModel.getClockService().getTime() + " " + timeModel.now());
             simulationControl.terminate();
             return IFuture.DONE;
@@ -81,6 +81,11 @@ public class TimeModelAgent implements TimeModelService, TestAgent, SimulationAg
     @Override
     public void lockAction() {
         throw new RuntimeException();
+    }
+
+    @Override
+    public void actionPerformed() {
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -121,11 +126,6 @@ public class TimeModelAgent implements TimeModelService, TestAgent, SimulationAg
     @Override
     public String getName() {
         return null;
-    }
-
-    @Override
-    public boolean hasName(String input) {
-        return false;
     }
 
     @Override

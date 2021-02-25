@@ -3,13 +3,10 @@ package de.unileipzig.irpact.experimental.irpactrealstuff;
 import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.log.Logback;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.misc.ValidationException;
-import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.experimental.TestFiles;
-import de.unileipzig.irpact.io.input.InExample;
-import de.unileipzig.irpact.io.input.InRoot;
-import de.unileipzig.irpact.io.input.InputParserX;
-import de.unileipzig.irpact.io.output.OutRoot;
+import de.unileipzig.irpact.io.param.input.InExample;
+import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.start.optact.OptActMain;
 import de.unileipzig.irptools.defstructure.*;
@@ -59,7 +56,7 @@ public class Asd {
     @Test
     void runStartWithTools() {
         IRPLogging.initConsole();
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x5_task");
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
         String[] args = {
                 "--irptools",
                 "--inputRootClass", InRoot.class.getName(),
@@ -77,6 +74,17 @@ public class Asd {
                 "--pathToBackendJar", TestFiles.backendGeneratorJar.toString(),
                 "--backendOutputFile", dir.resolve("backend.json").toString(),
                 "--sortAfterPriority"
+        };
+        Start.main(args);
+    }
+
+    @Test
+    void runIt() {
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
+        String[] args = {
+                "-i", dir.resolve("scenarios").resolve("default.json").toString(),
+                "-o", dir.resolve("scenarios").resolve("default.out.json").toString(),
+                "--dataDir", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data").toString()
         };
         Start.main(args);
     }
@@ -120,66 +128,54 @@ public class Asd {
 
     @Test
     void testEqualsWithLoad() throws IOException {
-        DefinitionCollection dcoll = AnnotationParser.parse(new InRoot());
-        DefinitionMapper dmap = new DefinitionMapper(dcoll);
-        Converter converter = new Converter(dmap);
-
-        Path file = TestFiles.testfiles.resolve("uitests").resolve("x1").resolve("scenarios").resolve("default.json");
-        AnnualEntry<InRoot> entry = ContentTypeDetector.parseFirstEntry(file, StandardCharsets.UTF_8, converter);
-
-        InRoot x = new InExample().createDefaultScenario();
-        Assertions.assertEquals(
-                CollectionUtil.hashSetOf(x.affinityEntries), CollectionUtil.hashSetOf(entry.getData().affinityEntries)
-        );
-        Assertions.assertEquals(
-                CollectionUtil.hashSetOf(x.consumerAgentGroups), CollectionUtil.hashSetOf(entry.getData().consumerAgentGroups)
-        );
-        Assertions.assertEquals(
-                CollectionUtil.hashSetOf(x.graphTopologySchemes), CollectionUtil.hashSetOf(entry.getData().graphTopologySchemes)
-        );
-        Assertions.assertEquals(
-                CollectionUtil.hashSetOf(x.distanceEvaluators), CollectionUtil.hashSetOf(entry.getData().distanceEvaluators)
-        );
-        Assertions.assertEquals(
-                CollectionUtil.hashSetOf(x.numberOfTies), CollectionUtil.hashSetOf(entry.getData().numberOfTies)
-        );
-        Assertions.assertEquals(
-                CollectionUtil.hashSetOf(x.processModel), CollectionUtil.hashSetOf(entry.getData().processModel)
-        );
-        Assertions.assertEquals(
-                CollectionUtil.hashSetOf(x.orientationSupplier), CollectionUtil.hashSetOf(entry.getData().orientationSupplier)
-        );
-        Assertions.assertEquals(
-                CollectionUtil.hashSetOf(x.slopeSupplier), CollectionUtil.hashSetOf(entry.getData().slopeSupplier)
-        );
-        Assertions.assertEquals(
-                CollectionUtil.hashSetOf(x.productGroups), CollectionUtil.hashSetOf(entry.getData().productGroups)
-        );
-        Assertions.assertEquals(
-                CollectionUtil.hashSetOf(x.spatialModel), CollectionUtil.hashSetOf(entry.getData().spatialModel)
-        );
-        Assertions.assertEquals(
-                CollectionUtil.hashSetOf(x.spatialDistributions), CollectionUtil.hashSetOf(entry.getData().spatialDistributions)
-        );
-        Assertions.assertEquals(
-                CollectionUtil.hashSetOf(x.timeModel), CollectionUtil.hashSetOf(entry.getData().timeModel)
-        );
+//        DefinitionCollection dcoll = AnnotationParser.parse(new InRoot());
+//        DefinitionMapper dmap = new DefinitionMapper(dcoll);
+//        Converter converter = new Converter(dmap);
+//
+//        Path file = TestFiles.testfiles.resolve("uitests").resolve("x1").resolve("scenarios").resolve("default.json");
+//        AnnualEntry<InRoot> entry = ContentTypeDetector.parseFirstEntry(file, StandardCharsets.UTF_8, converter);
+//
+//        InRoot x = new InExample().createDefaultScenario();
+//        Assertions.assertEquals(
+//                CollectionUtil.hashSetOf(x.affinityEntries), CollectionUtil.hashSetOf(entry.getData().affinityEntries)
+//        );
+//        Assertions.assertEquals(
+//                CollectionUtil.hashSetOf(x.consumerAgentGroups), CollectionUtil.hashSetOf(entry.getData().consumerAgentGroups)
+//        );
+//        Assertions.assertEquals(
+//                CollectionUtil.hashSetOf(x.graphTopologySchemes), CollectionUtil.hashSetOf(entry.getData().graphTopologySchemes)
+//        );
+//        Assertions.assertEquals(
+//                CollectionUtil.hashSetOf(x.distanceEvaluators), CollectionUtil.hashSetOf(entry.getData().distanceEvaluators)
+//        );
+//        Assertions.assertEquals(
+//                CollectionUtil.hashSetOf(x.numberOfTies), CollectionUtil.hashSetOf(entry.getData().numberOfTies)
+//        );
+//        Assertions.assertEquals(
+//                CollectionUtil.hashSetOf(x.processModel), CollectionUtil.hashSetOf(entry.getData().processModel)
+//        );
+//        Assertions.assertEquals(
+//                CollectionUtil.hashSetOf(x.orientationSupplier), CollectionUtil.hashSetOf(entry.getData().orientationSupplier)
+//        );
+//        Assertions.assertEquals(
+//                CollectionUtil.hashSetOf(x.slopeSupplier), CollectionUtil.hashSetOf(entry.getData().slopeSupplier)
+//        );
+//        Assertions.assertEquals(
+//                CollectionUtil.hashSetOf(x.productGroups), CollectionUtil.hashSetOf(entry.getData().productGroups)
+//        );
+//        Assertions.assertEquals(
+//                CollectionUtil.hashSetOf(x.spatialModel), CollectionUtil.hashSetOf(entry.getData().spatialModel)
+//        );
+//        Assertions.assertEquals(
+//                CollectionUtil.hashSetOf(x.spatialDistributions), CollectionUtil.hashSetOf(entry.getData().spatialDistributions)
+//        );
+//        Assertions.assertEquals(
+//                CollectionUtil.hashSetOf(x.timeModel), CollectionUtil.hashSetOf(entry.getData().timeModel)
+//        );
     }
 
     @Test
     void testEquals() {
         Assertions.assertEquals(new InExample().createDefaultScenario(), new InExample().createDefaultScenario());
-    }
-
-    @Test
-    void testParse() throws ValidationException {
-        InRoot root = InExample.createExample();
-        root.general.logGraphCreation = true;
-        root.general.logAgentCreation = true;
-        InputParserX parser = new InputParserX();
-        SimulationEnvironment environment = parser.parse(root);
-        environment.initialize();
-        environment.validate();
-        environment.setup();
     }
 }

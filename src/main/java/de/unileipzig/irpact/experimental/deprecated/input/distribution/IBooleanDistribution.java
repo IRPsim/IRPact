@@ -38,6 +38,7 @@ public class IBooleanDistribution implements IUnivariateDoubleDistribution {
 
     @Override
     public BooleanDistribution createInstance() {
-        return new BooleanDistribution(getName(), getBoolDistSeed());
+        //return new BooleanDistribution(getName(), getBoolDistSeed());
+        throw new RuntimeException();
     }
 }

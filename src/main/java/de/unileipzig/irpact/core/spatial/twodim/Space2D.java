@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.spatial.twodim;
 
+import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.spatial.AbstractMetricalSpatialModel;
 import de.unileipzig.irpact.core.spatial.Metric;

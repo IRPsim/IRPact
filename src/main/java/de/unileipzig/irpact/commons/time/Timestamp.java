@@ -9,6 +9,10 @@ public interface Timestamp extends Comparable<Timestamp> {
 
     ZonedDateTime getTime();
 
+    default long getEpochMilli() {
+        return getTime().toInstant().toEpochMilli();
+    }
+
     default boolean isAfter(Timestamp other) {
         return getTime().isAfter(other.getTime());
     }

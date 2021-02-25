@@ -5,7 +5,7 @@ import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
 import de.unileipzig.irpact.commons.graph.topology.AbstractMultiGraphTopology;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.io.input.InRoot;
+import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.in.SideCustom;

@@ -2,12 +2,14 @@ package de.unileipzig.irpact.start;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.unileipzig.irpact.commons.res.BasicResourceLoader;
+import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.SectionLoggingFilter;
-import de.unileipzig.irpact.io.input.InGeneral;
-import de.unileipzig.irpact.io.input.InRoot;
+import de.unileipzig.irpact.io.param.input.InGeneral;
+import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.spec.SpecificationConverter;
 import de.unileipzig.irpact.io.spec.SpecificationManager;
 import de.unileipzig.irpact.start.optact.OptAct;
@@ -42,6 +44,7 @@ public class Preloader {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(Preloader.class);
 
     private final Start param;
+    private ResourceLoader resourceLoader;
 
     public Preloader(Start param) {
         this.param = param;
@@ -89,6 +92,11 @@ public class Preloader {
         } else {
             LOGGER.debug("simulation enabled");
         }
+
+        BasicResourceLoader loader = new BasicResourceLoader();
+        loader.setDir(param.getDataDirPath());
+        resourceLoader = loader;
+        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "data dir: {}", param.getDataDirPath());
     }
 
     private void load() throws Exception {
@@ -241,8 +249,8 @@ public class Preloader {
     }
 
     private void callIRPact(ObjectNode root) throws Exception {
-        IRPact irpact = new IRPact(param, root);
-        irpact.start();
+        IRPact irpact = new IRPact(param, resourceLoader);
+        irpact.start(root);
     }
 
     private void callOptact(ObjectNode root) {

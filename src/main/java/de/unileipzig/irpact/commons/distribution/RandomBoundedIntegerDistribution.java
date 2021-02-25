@@ -33,4 +33,13 @@ public class RandomBoundedIntegerDistribution extends AbstractBoundedUnivariateD
     public double drawDoubleValue() {
         return Math.floor(rnd.nextDouble() * (upperBound - lowerBound) + lowerBound);
     }
+
+    @Override
+    public boolean isEqualsSameClass(Object obj) {
+        RandomBoundedIntegerDistribution other = (RandomBoundedIntegerDistribution) obj;
+        return name.equals(other.name)
+                && lowerBound == other.lowerBound
+                && upperBound == other.upperBound
+                && rnd.isEquals(other.rnd);
+    }
 }

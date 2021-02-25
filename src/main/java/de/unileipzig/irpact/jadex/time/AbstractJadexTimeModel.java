@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.time;
 
+import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import jadex.bridge.service.types.clock.IClockService;
@@ -10,7 +11,7 @@ import java.time.ZonedDateTime;
 /**
  * @author Daniel Abitz
  */
-public abstract class AbstractJadexTimeModel implements JadexTimeModel {
+public abstract class AbstractJadexTimeModel extends NameableBase implements JadexTimeModel {
 
     protected JadexSimulationEnvironment environment;
     protected JadexTimestamp startTime;
@@ -64,5 +65,11 @@ public abstract class AbstractJadexTimeModel implements JadexTimeModel {
             return false;
         }
         return ts.isAfterOrEquals(startTime) && ts.isBeforeOrEqual(endTime);
+    }
+
+    @Override
+    public boolean endTimeReached() {
+        Timestamp now = now();
+        return now.isAfterOrEquals(endTime);
     }
 }

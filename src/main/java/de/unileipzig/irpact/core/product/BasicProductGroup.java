@@ -10,34 +10,37 @@ import java.util.*;
 public class BasicProductGroup extends SimulationEntityBase implements ProductGroup {
 
     protected Map<String, ProductGroupAttribute> attributes;
-    protected Set<Product> products;
-    protected Set<Product> fixedProducts;
+    protected Map<String, Product> products;
 
     public BasicProductGroup() {
-        this(new HashMap<>(), new HashSet<>(), new HashSet<>());
+        this(new HashMap<>(), new HashMap<>());
     }
 
     public BasicProductGroup(
             Map<String, ProductGroupAttribute> attributes,
-            Set<Product> products,
-            Set<Product> fixedProducts) {
+            Map<String, Product> products) {
         this.attributes = attributes;
         this.products = products;
-        this.fixedProducts = fixedProducts;
     }
 
     @Override
-    public Set<Product> getProducts() {
-        return products;
+    public Collection<Product> getProducts() {
+        return products.values();
     }
 
     @Override
-    public Set<Product> getFixedProducts() {
-        return fixedProducts;
+    public Product getProduct(String name) {
+        return products.get(name);
     }
 
     public boolean hasAttribute(String name) {
         return attributes.containsKey(name);
+    }
+
+    public void addAllAttributes(ProductGroupAttribute... attributes) {
+        for(ProductGroupAttribute attribute: attributes) {
+            addAttribute(attribute);
+        }
     }
 
     public void addAttribute(ProductGroupAttribute attribute) {
@@ -68,19 +71,28 @@ public class BasicProductGroup extends SimulationEntityBase implements ProductGr
     }
 
     @Override
-    public boolean register(Product product) {
-        if(product.getGroup() != this) {
-            throw new IllegalArgumentException();
-        }
-        return products.add(product);
+    public boolean hasProduct(String name) {
+        return products.containsKey(name);
     }
 
     @Override
-    public boolean registerFixed(Product product) {
-        if(product.getGroup() != this) {
-            throw new IllegalArgumentException();
+    public void addProduct(Product product) {
+        if(hasProduct(product.getName())) {
+            throw new IllegalArgumentException("name '" + product.getName() + "' already exists");
         }
-        return fixedProducts.add(product);
+        if(product.getGroup() != this) {
+            throw new IllegalArgumentException("group mismatch");
+        }
+        if(product.getAttributes().size() != attributes.size()) {
+            throw new IllegalArgumentException("number of ProductGroupAttribute mismatch: " + product.getAttributes().size() + " != " + attributes.size());
+        }
+        for(ProductAttribute pa: product.getAttributes()) {
+            ProductGroupAttribute pga = attributes.get(pa.getGroup().getName());
+            if(pga != pa.getGroup()) {
+                throw new IllegalArgumentException("ProductGroupAttribute mismatch: " + pga.getName());
+            }
+        }
+        products.put(product.getName(), product);
     }
 
     @Override
@@ -90,5 +102,12 @@ public class BasicProductGroup extends SimulationEntityBase implements ProductGr
                 this,
                 deriveAttributes()
         );
+    }
+
+    @Override
+    public Product deriveAndAdd() {
+        Product product = derive();
+        products.put(product.getName(), product);
+        return product;
     }
 }

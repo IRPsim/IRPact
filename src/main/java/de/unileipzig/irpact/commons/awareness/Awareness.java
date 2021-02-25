@@ -5,10 +5,6 @@ package de.unileipzig.irpact.commons.awareness;
  */
 public interface Awareness<T> {
 
-    Awareness<T> emptyCopy();
-
-    Awareness<T> fullCopy();
-
     boolean isInterested(T item);
 
     boolean isAware(T item);

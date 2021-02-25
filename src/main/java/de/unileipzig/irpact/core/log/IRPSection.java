@@ -24,10 +24,28 @@ public enum IRPSection implements LoggingSection {
      *
      */
     SIMULATION_LICECYCLE,
+    SIMULATION_AGENT,
 
     /*
      *
      */
-    SPECIFICATION_CONVERTER
+    SPECIFICATION_CONVERTER,
+
+    /*
+     *
+     */
+    JADEX_SYSTEM_OUT
     ;
+
+    public static void addAllTo(SectionLoggingFilter filter) {
+        for(IRPSection section: values()) {
+            filter.add(section);
+        }
+    }
+
+    public static void removeAllFrom(SectionLoggingFilter filter) {
+        for(IRPSection section: values()) {
+            filter.remove(section);
+        }
+    }
 }

@@ -9,8 +9,6 @@ import java.util.Collection;
  */
 public interface ProcessModelManager extends Initialization {
 
-    void setup();
-
     Collection<ProcessModel> getProcessModels();
 
     boolean hasProcessModel(String name);

@@ -1,19 +1,19 @@
 package de.unileipzig.irpact.experimental.demos;
 
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.process.ra.RAProcessModel;
-import de.unileipzig.irpact.io.input.InAttributeName;
-import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroup;
-import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.io.input.awareness.InAwareness;
-import de.unileipzig.irpact.io.input.awareness.InThresholdAwareness;
-import de.unileipzig.irpact.io.input.distribution.InUnivariateDoubleDistribution;
-import de.unileipzig.irpact.io.input.network.InGraphTopologyScheme;
-import de.unileipzig.irpact.io.input.network.InUnlinkedGraphTopology;
-import de.unileipzig.irpact.io.input.product.InProductGroup;
-import de.unileipzig.irpact.io.input.product.InProductGroupAttribute;
-import de.unileipzig.irpact.io.input.time.InDiscreteTimeModel;
-import de.unileipzig.irpact.io.input.time.InTimeModel;
+import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.io.param.input.awareness.InProductAwarenessSupplyScheme;
+import de.unileipzig.irpact.io.param.input.awareness.InProductThresholdAwarenessSupplyScheme;
+import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
+import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
+import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
+import de.unileipzig.irpact.io.param.input.product.InProductGroup;
+import de.unileipzig.irpact.io.param.input.product.InProductGroupAttribute;
+import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
+import de.unileipzig.irpact.io.param.input.time.InTimeModel;
+import de.unileipzig.irpact.misc.ExampleUtil;
 import org.junit.jupiter.api.Disabled;
 
 import java.util.Map;
@@ -64,7 +64,7 @@ public class DemoUtil {
         grp._name = name;
         grp.informationAuthority = 1.0;
         grp.numberOfAgentsX = 10;
-        grp.cagAwareness = new InAwareness[]{new InThresholdAwareness(name + "_" + "awa", 10.0)};
+        grp.cagAwareness = new InProductAwarenessSupplyScheme[]{new InProductThresholdAwarenessSupplyScheme(name + "_" + "awa", ExampleUtil.diraq10)};
         grp.cagAttributes = new InConsumerAgentGroupAttribute[]{
                 new InConsumerAgentGroupAttribute(
                         name + "_" + RAConstants.PURCHASE_POWER,
@@ -79,10 +79,10 @@ public class DemoUtil {
                         name + "_" + RAConstants.NOVELTY_SEEKING_UNCERTAINTY,
                         getName(cache, RAConstants.NOVELTY_SEEKING_UNCERTAINTY),
                         (InUnivariateDoubleDistribution) cache.get("DiraqDistribution1")),
-                new InConsumerAgentGroupAttribute(
-                        name + "_" + RAConstants.NOVELTY_SEEKING_CONVERGENCE,
-                        getName(cache, RAConstants.NOVELTY_SEEKING_CONVERGENCE),
-                        (InUnivariateDoubleDistribution) cache.get("DiraqDistribution1")),
+//                new InConsumerAgentGroupAttribute(
+//                        name + "_" + RAConstants.NOVELTY_SEEKING_CONVERGENCE,
+//                        getName(cache, RAConstants.NOVELTY_SEEKING_CONVERGENCE),
+//                        (InUnivariateDoubleDistribution) cache.get("DiraqDistribution1")),
 
                 new InConsumerAgentGroupAttribute(
                         name + "_" + RAConstants.DEPENDENT_JUDGMENT_MAKING,
@@ -92,10 +92,10 @@ public class DemoUtil {
                         name + "_" + RAConstants.DEPENDENT_JUDGMENT_MAKING_UNCERTAINTY,
                         getName(cache, RAConstants.DEPENDENT_JUDGMENT_MAKING_UNCERTAINTY),
                         (InUnivariateDoubleDistribution) cache.get("DiraqDistribution1")),
-                new InConsumerAgentGroupAttribute(
-                        name + "_" + RAConstants.DEPENDENT_JUDGMENT_MAKING_CONVERGENCE,
-                        getName(cache, RAConstants.DEPENDENT_JUDGMENT_MAKING_CONVERGENCE),
-                        (InUnivariateDoubleDistribution) cache.get("DiraqDistribution1")),
+//                new InConsumerAgentGroupAttribute(
+//                        name + "_" + RAConstants.DEPENDENT_JUDGMENT_MAKING_CONVERGENCE,
+//                        getName(cache, RAConstants.DEPENDENT_JUDGMENT_MAKING_CONVERGENCE),
+//                        (InUnivariateDoubleDistribution) cache.get("DiraqDistribution1")),
 
                 new InConsumerAgentGroupAttribute(
                         name + "_" + RAConstants.ENVIRONMENTAL_CONCERN,
@@ -105,10 +105,10 @@ public class DemoUtil {
                         name + "_" + RAConstants.ENVIRONMENTAL_CONCERN_UNCERTAINTY,
                         getName(cache, RAConstants.ENVIRONMENTAL_CONCERN_UNCERTAINTY),
                         (InUnivariateDoubleDistribution) cache.get("DiraqDistribution1")),
-                new InConsumerAgentGroupAttribute(
-                        name + "_" + RAConstants.ENVIRONMENTAL_CONCERN_CONVERGENCE,
-                        getName(cache, RAConstants.ENVIRONMENTAL_CONCERN_CONVERGENCE),
-                        (InUnivariateDoubleDistribution) cache.get("DiraqDistribution1")),
+//                new InConsumerAgentGroupAttribute(
+//                        name + "_" + RAConstants.ENVIRONMENTAL_CONCERN_CONVERGENCE,
+//                        getName(cache, RAConstants.ENVIRONMENTAL_CONCERN_CONVERGENCE),
+//                        (InUnivariateDoubleDistribution) cache.get("DiraqDistribution1")),
 
                 new InConsumerAgentGroupAttribute(
                         name + "_" + RAConstants.SHARE_1_2_HOUSE,

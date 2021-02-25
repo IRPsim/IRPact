@@ -9,25 +9,25 @@ import java.util.function.Supplier;
  */
 public class ConstantSpatialDistribution extends NameableBase implements SpatialDistribution {
 
-    protected Supplier<SpatialInformation> informationSupplier;
+    protected SpatialInformation information;
 
     public ConstantSpatialDistribution() {
     }
 
-    public ConstantSpatialDistribution(Supplier<SpatialInformation> informationSupplier) {
-        setInformationSupplier(informationSupplier);
+    public ConstantSpatialDistribution(SpatialInformation information) {
+        setConstantInformation(information);
     }
 
-    public void setInformationSupplier(Supplier<SpatialInformation> informationSupplier) {
-        this.informationSupplier = informationSupplier;
+    public void setConstantInformation(SpatialInformation information) {
+        this.information = information;
     }
 
-    public Supplier<SpatialInformation> getInformationSupplier() {
-        return informationSupplier;
+    public SpatialInformation getConstantInformation() {
+        return information;
     }
 
     @Override
     public SpatialInformation drawValue() {
-        return informationSupplier.get();
+        return information.emptyCopy();
     }
 }

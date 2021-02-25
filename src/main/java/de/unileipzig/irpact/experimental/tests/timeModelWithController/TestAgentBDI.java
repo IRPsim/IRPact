@@ -82,14 +82,14 @@ public class TestAgentBDI implements TestAgent {
     protected void doOnStart() {
         JadexTimeModel timeModel = timeModel();
         if("A_1".equals(name)) {
-            timeModel.wait(execFeature, delay, ia -> {
+            timeModel.wait(execFeature, delay, agent, ia -> {
                 log("DELAY1 " + timeModel.getClockService().getTick() + " " + timeModel.getClockService().getTime() + " " + timeModel.now());
                 return IFuture.DONE;
             });
         }
         if("A_2".equals(name)) {
             JadexTimestamp until = timeModel.plusMillis(delay);
-            timeModel.waitUntil(execFeature, until, ia -> {
+            timeModel.waitUntil(execFeature, until, agent, ia -> {
                 log("DELAY2 " + timeModel.getClockService().getTick() + " " + timeModel.getClockService().getTime() + " " + timeModel.now());
                 return IFuture.DONE;
             });

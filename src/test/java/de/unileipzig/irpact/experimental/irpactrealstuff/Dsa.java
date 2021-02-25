@@ -2,9 +2,7 @@ package de.unileipzig.irpact.experimental.irpactrealstuff;
 
 import de.unileipzig.irpact.commons.log.Logback;
 import de.unileipzig.irpact.experimental.TestFiles;
-import de.unileipzig.irpact.io.input.InExample;
-import de.unileipzig.irpact.io.input.InRoot;
-import de.unileipzig.irpact.io.output.OutRoot;
+import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.Util;

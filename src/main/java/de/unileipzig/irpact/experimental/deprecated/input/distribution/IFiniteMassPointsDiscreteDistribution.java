@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.experimental.deprecated.input.distribution;
 
 import de.unileipzig.irpact.commons.Pair;
-import de.unileipzig.irpact.commons.distribution.FiniteMassPointsDiscreteDistribution;
+import de.unileipzig.irpact.commons.distribution.FiniteMassPointsDiscreteDistributionOLD;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -54,8 +54,8 @@ public class IFiniteMassPointsDiscreteDistribution implements IUnivariateDoubleD
     }
 
     @Override
-    public FiniteMassPointsDiscreteDistribution createInstance() {
-        FiniteMassPointsDiscreteDistribution dist = new FiniteMassPointsDiscreteDistribution();
+    public FiniteMassPointsDiscreteDistributionOLD createInstance() {
+        FiniteMassPointsDiscreteDistributionOLD dist = new FiniteMassPointsDiscreteDistributionOLD();
         dist.setName(getName());
         dist.init(getFmpSeed());
         List<Pair<Double, Double>> list = Arrays.stream(getMassPoints())

@@ -17,6 +17,10 @@ public class ConstantUnivariateDoubleDistribution extends NameableBase implement
         setValue(value);
     }
 
+    public double getValue() {
+        return value;
+    }
+
     public void setValue(double value) {
         this.value = value;
     }
@@ -24,5 +28,12 @@ public class ConstantUnivariateDoubleDistribution extends NameableBase implement
     @Override
     public double drawDoubleValue() {
         return value;
+    }
+
+    @Override
+    public boolean isEqualsSameClass(Object obj) {
+        ConstantUnivariateDoubleDistribution other = (ConstantUnivariateDoubleDistribution) obj;
+        return name.equals(other.name)
+                && value == other.value;
     }
 }
