@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
-import de.unileipzig.irpact.commons.attribute.DerivableUnivariateDistributionAttribute;
+import de.unileipzig.irpact.commons.distattr.DerivableUnivariateDistributionAttribute;
 import de.unileipzig.irpact.core.product.ProductGroup;
 
 /**

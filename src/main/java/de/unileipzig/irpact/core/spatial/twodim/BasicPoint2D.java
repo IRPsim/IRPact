@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.core.spatial.twodim;
 
-import de.unileipzig.irpact.core.spatial.SpatialAttribute;
+import de.unileipzig.irpact.commons.attribute.AttributeAccess;
+import de.unileipzig.irpact.commons.attribute.BasicAttributeAccess;
+import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
 
 import java.util.*;
 
@@ -9,7 +11,8 @@ import java.util.*;
  */
 public class BasicPoint2D implements Point2D {
 
-    protected Map<String, SpatialAttribute> attributes;
+    protected final AttributeAccess ACCESS;
+    protected Map<String, SpatialAttribute<?>> attributes;
     protected double x;
     protected double y;
 
@@ -21,10 +24,16 @@ public class BasicPoint2D implements Point2D {
         this(new HashMap<>(), x, y);
     }
 
-    public BasicPoint2D(Map<String, SpatialAttribute> attributes, double x, double y) {
+    public BasicPoint2D(Map<String, SpatialAttribute<?>> attributes, double x, double y) {
         this.attributes = attributes;
         this.x = x;
         this.y = y;
+        ACCESS = new BasicAttributeAccess(attributes);
+    }
+
+    @Override
+    public AttributeAccess getAttributeAccess() {
+        return ACCESS;
     }
 
     public void setX(double x) {
@@ -45,8 +54,20 @@ public class BasicPoint2D implements Point2D {
         return y;
     }
 
+    public void addAllAttributes(Collection<? extends SpatialAttribute<?>> attributes) {
+        for(SpatialAttribute<?> attribute: attributes) {
+            addAttribute(attribute);
+        }
+    }
+
+    public void addAllAttributes(SpatialAttribute<?>... attributes) {
+        for(SpatialAttribute<?> attribute: attributes) {
+            addAttribute(attribute);
+        }
+    }
+
     @Override
-    public void addAttribute(SpatialAttribute attribute) {
+    public void addAttribute(SpatialAttribute<?> attribute) {
         if(attributes.containsKey(attribute.getName())) {
             throw new IllegalArgumentException("name '" + attribute.getName() + "' already exists");
         }
@@ -54,12 +75,12 @@ public class BasicPoint2D implements Point2D {
     }
 
     @Override
-    public Collection<SpatialAttribute> getAttributes() {
+    public Collection<SpatialAttribute<?>> getAttributes() {
         return attributes.values();
     }
 
     @Override
-    public SpatialAttribute getAttribute(String name) {
+    public SpatialAttribute<?> getAttribute(String name) {
         return attributes.get(name);
     }
 
@@ -69,20 +90,17 @@ public class BasicPoint2D implements Point2D {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if(obj == null) return false;
-        if(obj == this) return true;
-        if(obj instanceof BasicPoint2D) {
-            BasicPoint2D other = (BasicPoint2D) obj;
-            return x == other.x
-                    && y == other.y;
-        }
-        return false;
+    public BasicPoint2D emptyCopy() {
+        return new BasicPoint2D(getX(), getY());
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(x, y);
+    public BasicPoint2D fullCopy() {
+        BasicPoint2D copy = emptyCopy();
+        for(SpatialAttribute<?> attr: getAttributes()) {
+            copy.addAttribute(attr.copyAttribute());
+        }
+        return copy;
     }
 
     @Override

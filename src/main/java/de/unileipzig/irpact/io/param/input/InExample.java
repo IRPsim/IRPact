@@ -1,0 +1,358 @@
+package de.unileipzig.irpact.io.param.input;
+
+import de.unileipzig.irpact.core.log.IRPLevel;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
+import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.io.param.input.awareness.InProductThresholdAwarenessSupplyScheme;
+import de.unileipzig.irpact.io.param.input.distribution.InConstantUnivariateDistribution;
+import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
+import de.unileipzig.irpact.io.param.input.file.InPVFile;
+import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
+import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
+import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
+import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
+import de.unileipzig.irpact.io.param.input.process.*;
+import de.unileipzig.irpact.io.param.input.product.*;
+import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
+import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomSelectedGroupedSpatialDistribution2D;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
+import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
+import de.unileipzig.irpact.io.param.input.time.InTimeModel;
+import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
+import de.unileipzig.irpact.start.optact.in.*;
+import de.unileipzig.irpact.start.optact.network.IFreeMultiGraphTopology;
+import de.unileipzig.irpact.start.optact.network.IGraphTopology;
+import de.unileipzig.irpact.start.optact.network.IWattsStrogatzModel;
+import de.unileipzig.irptools.defstructure.DefaultScenarioFactory;
+import de.unileipzig.irptools.graphviz.def.GraphvizColor;
+import de.unileipzig.irptools.graphviz.def.GraphvizGlobal;
+import de.unileipzig.irptools.graphviz.def.GraphvizLayoutAlgorithm;
+import de.unileipzig.irptools.graphviz.def.GraphvizOutputFormat;
+import de.unileipzig.irptools.util.DoubleTimeSeries;
+import de.unileipzig.irptools.util.Table;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * @author Daniel Abitz
+ */
+public class InExample implements DefaultScenarioFactory {
+
+    public InExample() {
+    }
+
+    @Override
+    public de.unileipzig.irpact.io.param.input.InRoot createDefaultScenario() {
+        return createExample();
+    }
+
+    @SuppressWarnings("unused")
+    public static de.unileipzig.irpact.io.param.input.InRoot createExample() {
+        //===
+        InAttributeName A1 = new InAttributeName(RAConstants.PURCHASE_POWER);
+        InAttributeName A2 = new InAttributeName(RAConstants.NOVELTY_SEEKING);
+        InAttributeName A3 = new InAttributeName(RAConstants.DEPENDENT_JUDGMENT_MAKING);
+        InAttributeName A4 = new InAttributeName(RAConstants.ENVIRONMENTAL_CONCERN);
+        InAttributeName A5 = new InAttributeName(RAConstants.SHARE_1_2_HOUSE);
+        InAttributeName A6 = new InAttributeName(RAConstants.HOUSE_OWNER);
+        InAttributeName A7 = new InAttributeName(RAConstants.CONSTRUCTION_RATE);
+        InAttributeName A8 = new InAttributeName(RAConstants.RENOVATION_RATE);
+
+        InAttributeName C1 = new InAttributeName(RAConstants.COMMUNICATION_FREQUENCY_SN);
+
+        InAttributeName D1 = new InAttributeName(RAConstants.INITIAL_PRODUCT_AWARENESS);
+        InAttributeName D2 = new InAttributeName(RAConstants.INTEREST_THRESHOLD);
+        InAttributeName D3 = new InAttributeName(RAConstants.FINANCIAL_THRESHOLD);
+        InAttributeName D4 = new InAttributeName(RAConstants.ADOPTION_THRESHOLD);
+
+        InAttributeName E1 = new InAttributeName(RAConstants.INVESTMENT_COST);
+
+        InAttributeName Mic_Dominantes_Milieu = new InAttributeName(RAConstants.DOM_MILIEU);
+        InAttributeName Dummy_PLZ = new InAttributeName("Dummy_PLZ");
+
+        //===
+        InUnivariateDoubleDistribution constant0 = new InConstantUnivariateDistribution("constant0", 0);
+        InUnivariateDoubleDistribution constant1 = new InConstantUnivariateDistribution("constant1", 1);
+        InUnivariateDoubleDistribution constant10 = new InConstantUnivariateDistribution("constant10", 10);
+        InUnivariateDoubleDistribution constant01 = new InConstantUnivariateDistribution("constant01", 0.1);
+        InUnivariateDoubleDistribution constant09 = new InConstantUnivariateDistribution("constant09", 0.9);
+        InUnivariateDoubleDistribution constant42 = new InConstantUnivariateDistribution("constant42", 42);
+        InUnivariateDoubleDistribution constant24 = new InConstantUnivariateDistribution("constant24", 24);
+
+        //cag0
+        String name = "TRA";
+        InUnivariateDoubleDistribution dist = constant0;
+        List<InConsumerAgentGroupAttribute> list = new ArrayList<>();
+        InConsumerAgentGroupAttribute cag0_A1_attr = build(name, A1, dist, list);
+        InConsumerAgentGroupAttribute cag0_A2_attr = build(name, A2, dist, list);
+        InConsumerAgentGroupAttribute cag0_A3_attr = build(name, A3, dist, list);
+        InConsumerAgentGroupAttribute cag0_A4_attr = build(name, A4, dist, list);
+        InConsumerAgentGroupAttribute cag0_A5_attr = build(name, A5, dist, list);
+        InConsumerAgentGroupAttribute cag0_A6_attr = build(name, A6, dist, list);
+        InConsumerAgentGroupAttribute cag0_A7_attr = build(name, A7, dist, list);
+        InConsumerAgentGroupAttribute cag0_A8_attr = build(name, A8, dist, list);
+
+        InConsumerAgentGroupAttribute cag0_C1_attr = build(name, C1, dist, list);
+
+        InConsumerAgentGroupAttribute cag0_D1_attr = build(name, D1, dist, list);
+        InConsumerAgentGroupAttribute cag0_D2_attr = build(name, D2, dist, list);
+        InConsumerAgentGroupAttribute cag0_D3_attr = build(name, D3, dist, list);
+        InConsumerAgentGroupAttribute cag0_D4_attr = build(name, D4, dist, list);
+
+        InProductThresholdAwarenessSupplyScheme cag0_awa = new InProductThresholdAwarenessSupplyScheme(name + "_awa", constant10);
+
+        InConsumerAgentGroup cag0 = new InConsumerAgentGroup(name, 1.0, 1, list, cag0_awa);
+
+        //cag1
+        name = "BUM";
+        dist = constant09;
+        list.clear();
+        InConsumerAgentGroupAttribute cag1_A1_attr = build(name, A1, dist, list);
+        InConsumerAgentGroupAttribute cag1_A2_attr = build(name, A2, dist, list);
+        InConsumerAgentGroupAttribute cag1_A3_attr = build(name, A3, dist, list);
+        InConsumerAgentGroupAttribute cag1_A4_attr = build(name, A4, dist, list);
+        InConsumerAgentGroupAttribute cag1_A5_attr = build(name, A5, dist, list);
+        InConsumerAgentGroupAttribute cag1_A6_attr = build(name, A6, dist, list);
+        InConsumerAgentGroupAttribute cag1_A7_attr = build(name, A7, dist, list);
+        InConsumerAgentGroupAttribute cag1_A8_attr = build(name, A8, dist, list);
+
+        InConsumerAgentGroupAttribute cag1_C1_attr = build(name, C1, dist, list);
+
+        InConsumerAgentGroupAttribute cag1_D1_attr = build(name, D1, dist, list);
+        InConsumerAgentGroupAttribute cag1_D2_attr = build(name, D2, dist, list);
+        InConsumerAgentGroupAttribute cag1_D3_attr = build(name, D3, dist, list);
+        InConsumerAgentGroupAttribute cag1_D4_attr = build(name, D4, dist, list);
+
+        InProductThresholdAwarenessSupplyScheme cag1_awa = new InProductThresholdAwarenessSupplyScheme(name + "_awa", constant10);
+
+        InConsumerAgentGroup cag1 = new InConsumerAgentGroup(name, 1.0, 1, list, cag1_awa);
+
+        //affinity
+        InAffinityEntry cag0_cag0 = new InAffinityEntry(cag0.getName() + "_" + cag0.getName(), cag0, cag0, 0.7);
+        InAffinityEntry cag0_cag1 = new InAffinityEntry(cag0.getName() + "_" + cag1.getName(), cag0, cag1, 0.3);
+        InAffinityEntry cag1_cag1 = new InAffinityEntry(cag1.getName() + "_" + cag1.getName(), cag1, cag1, 0.9);
+        InAffinityEntry cag1_cag0 = new InAffinityEntry(cag1.getName() + "_" + cag0.getName(), cag1, cag0, 0.1);
+
+        InUnlinkedGraphTopology topology = new InUnlinkedGraphTopology("unlinked");
+
+        InPVFile pvFile = new InPVFile("BarwertrechnerMini_ES");
+
+        InCustomUncertaintyGroupAttribute uncert = new InCustomUncertaintyGroupAttribute();
+        uncert.setName("Uncerter");
+        uncert.cags = new InConsumerAgentGroup[]{cag0, cag1};
+        uncert.names = new InAttributeName[]{A2, A3, A4};
+        uncert.uncertDist = constant01;
+        uncert.convergenceDist = constant09;
+
+        //process
+        InRAProcessModel processModel = new InRAProcessModel(
+                "RA",
+                0.25, 0.25, 0.25, 0.25,
+                3, 2, 1, 0,
+                pvFile,
+                new InSlopeSupplier[0],
+                new InOrientationSupplier[0],
+                new InUncertaintyGroupAttribute[]{uncert}
+        );
+
+        //Product
+        InProductGroupAttribute pv_e1 = new InProductGroupAttribute(
+                "PV_E1",
+                E1,
+                constant09
+        );
+        InProductGroup pv = new InProductGroup("PV", new InProductGroupAttribute[]{pv_e1});
+
+        InFixProductAttribute fix_pv_e1 = new InFixProductAttribute("PV_E1_fix", pv_e1, 1.0);
+        InFixProduct fix_pv = new InFixProduct("PV_fix", pv, new InFixProductAttribute[]{fix_pv_e1});
+        InFixProductFindingScheme fixScheme = new InFixProductFindingScheme("PV_fix_scheme", fix_pv);
+        cag0.productFindingSchemes = new InProductFindingScheme[]{fixScheme};
+        cag1.productFindingSchemes = new InProductFindingScheme[]{fixScheme};
+
+        InSpatialTableFile tableFile = new InSpatialTableFile("GIS_final_1_x");
+        InCustomSelectedGroupedSpatialDistribution2D spaDist = new InCustomSelectedGroupedSpatialDistribution2D(
+                "testdist",
+                constant0,
+                constant0,
+                tableFile,
+                Mic_Dominantes_Milieu,
+                Dummy_PLZ
+        );
+        cag0.spatialDistribution = new InSpatialDistribution[]{spaDist};
+        cag1.spatialDistribution = new InSpatialDistribution[]{spaDist};
+
+        InSpace2D space2D = new InSpace2D("Space2D", true);
+
+        //time
+        InDiscreteTimeModel timeModel = new InDiscreteTimeModel("Discrete", 604800000L);
+
+        //general
+        InGeneral general = new InGeneral();
+        general.seed = 42;
+        general.timeout = TimeUnit.MINUTES.toMillis(5);
+        general.runOptActDemo = true;
+        general.logLevel = IRPLevel.ALL.getLevelId();
+        general.logAll = true;
+
+        //=====
+        de.unileipzig.irpact.io.param.input.InRoot root = new de.unileipzig.irpact.io.param.input.InRoot();
+        initOptAct(root);
+        initGV(root);
+//
+//        try {
+//            BasicAppTask helloWorldVisible = new BasicAppTask();
+//            helloWorldVisible.setInfo("HelloWorldTask_Visible");
+//            helloWorldVisible.setTaskNumber(BasicAppTask.HELLO_WORLD);
+//            root.visibleBinaryData = new VisibleBinaryData[]{helloWorldVisible.toBinary(VisibleBinaryData.class)};
+//
+//            BasicAppTask helloWorldHidden = new BasicAppTask();
+//            helloWorldHidden.setInfo("HelloWorldTask_Hidden");
+//            helloWorldHidden.setTaskNumber(BasicAppTask.HELLO_WORLD);
+//            root.hiddenBinaryData = new HiddenBinaryData[]{helloWorldHidden.toBinary(HiddenBinaryData.class)};
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//
+        //graphviz
+        GraphvizColor gc1 = GraphvizColor.RED;
+        GraphvizColor gc2 = GraphvizColor.GREEN;
+        root.colors = new GraphvizColor[]{gc1, gc2};
+
+        InConsumerAgentGroupColor cag0Color = new InConsumerAgentGroupColor(cag0.getName() + "_color", cag0, gc1);
+        InConsumerAgentGroupColor cag1Color = new InConsumerAgentGroupColor(cag1.getName() + "_color", cag1, gc2);
+        root.consumerAgentGroupColors = new InConsumerAgentGroupColor[]{cag0Color, cag1Color};
+
+        GraphvizLayoutAlgorithm.DOT.useLayout = false;
+        GraphvizLayoutAlgorithm.CIRCO.useLayout = true;
+        root.layoutAlgorithms = GraphvizLayoutAlgorithm.DEFAULTS;
+        GraphvizOutputFormat.PNG.useFormat = true;
+        root.outputFormats = new GraphvizOutputFormat[] { GraphvizOutputFormat.PNG };
+
+        root.graphvizGlobal = new GraphvizGlobal();
+        root.graphvizGlobal.fixedNeatoPosition = false;
+        root.graphvizGlobal.scaleFactor = 0.0;
+
+        //=====
+        root.version = new InVersion[]{InVersion.currentVersion()};
+        root.general = general;
+        root.affinityEntries = new InAffinityEntry[]{cag0_cag0, cag0_cag1, cag1_cag1, cag1_cag0};
+        root.consumerAgentGroups = new InConsumerAgentGroup[]{cag0, cag1};
+        root.graphTopologySchemes = new InGraphTopologyScheme[]{topology};
+        root.processModel = new InProcessModel[]{processModel};
+        root.productGroups = new InProductGroup[]{pv};
+        root.spatialModel = new InSpatialModel[]{space2D};
+        root.timeModel = new InTimeModel[]{timeModel};
+
+        return root;
+    }
+
+    private static InConsumerAgentGroupAttribute build(String prefix, InAttributeName name, InUnivariateDoubleDistribution dist, List<InConsumerAgentGroupAttribute> out) {
+        InConsumerAgentGroupAttribute attr = new InConsumerAgentGroupAttribute(prefix + "_" + name.getName(), name, dist);
+        out.add(attr);
+        return attr;
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private static IWattsStrogatzModel createWattsStrogatzModel(String name, int k, double beta, long seed, boolean use) {
+        IWattsStrogatzModel model = new IWattsStrogatzModel();
+        model._name = name;
+        model.wsmSelfReferential = false;
+        model.wsmBeta = beta;
+        model.wsmK = k;
+        model.wsmSeed = seed;
+        model.wsmUseThis = use;
+        return model;
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private static IFreeMultiGraphTopology createFreeMultiGraphTopology(String name, int edgeCount, long seed, boolean use) {
+        IFreeMultiGraphTopology model = new IFreeMultiGraphTopology();
+        model._name = name;
+        model.ftEdgeCount = edgeCount;
+        model.ftSelfReferential = false;
+        model.ftSeed = seed;
+        model.ftUseThis = use;
+        return model;
+    }
+
+    private static void initGV(de.unileipzig.irpact.io.param.input.InRoot root) {
+        GraphvizColor gc1 = GraphvizColor.RED;
+        GraphvizColor gc2 = GraphvizColor.GREEN;
+        GraphvizColor gc3 = new GraphvizColor("BLUE", Color.BLUE);
+        GraphvizColor gc4 = GraphvizColor.PINK;
+        root.colors = new GraphvizColor[]{gc1, gc2, gc3, gc4};
+
+        AgentGroup ag1 = new AgentGroup("Gruppe1", 10, gc1);
+        AgentGroup ag2 = new AgentGroup("Gruppe2", 15, gc2);
+        AgentGroup ag3 = new AgentGroup("Gruppe3", 20, gc3);
+        AgentGroup ag4 = new AgentGroup("Gruppe4", 25, gc4);
+        root.agentGroups = new AgentGroup[]{ag1, ag2, ag3, ag4};
+
+        GraphvizLayoutAlgorithm.DOT.useLayout = false;
+        GraphvizLayoutAlgorithm.CIRCO.useLayout = true;
+        root.layoutAlgorithms = GraphvizLayoutAlgorithm.DEFAULTS;
+        GraphvizOutputFormat.PNG.useFormat = true;
+        root.outputFormats = new GraphvizOutputFormat[] { GraphvizOutputFormat.PNG };
+        root.topologies = new IGraphTopology[] {
+                createWattsStrogatzModel("WSM1", 4, 0.0, 42, true),
+                createFreeMultiGraphTopology("FREE1", 3, 24, false)
+        };
+
+        root.graphvizGlobal = new GraphvizGlobal();
+        root.graphvizGlobal.fixedNeatoPosition = false;
+        root.graphvizGlobal.scaleFactor = 0.0;
+    }
+
+    private static void initOptAct(InRoot root) {
+        SideFares SMS = new SideFares("SMS");
+        SideFares NS = new SideFares("NS");
+        SideFares PS = new SideFares("PS");
+
+        LoadDSE loadE1 = new LoadDSE("load_E1");
+        loadE1.ldse = new DoubleTimeSeries("0");
+
+        LoadDSE loadE2 = new LoadDSE("load_E2");
+        loadE2.ldse = new DoubleTimeSeries("0");
+
+        Sector E = new Sector("E");
+
+        TechDESES techES1 = new TechDESES("tech_ES1");
+        techES1.foerderung = 0.5;
+
+        TechDESPV techPV1 = new TechDESPV("tech_PV1");
+        techPV1.a = 25.0;
+
+        SideCustom grp1 = new SideCustom("p1", 10, 5, new DoubleTimeSeries("0"));
+        SideCustom grp2 = new SideCustom("p2", 20, 10, new DoubleTimeSeries("0"));
+
+        InGlobal global = new InGlobal();
+        global.mwst = 0.19;
+        global.de = true;
+        global.ch = false;
+        global.energy = Table.newLinked();
+        global.energy.put(SMS, loadE1, new DoubleTimeSeries("0"));
+        global.energy.put(NS, loadE1, new DoubleTimeSeries("0"));
+        global.energy.put(PS, loadE1, new DoubleTimeSeries("0"));
+        global.energy.put(SMS, loadE2, new DoubleTimeSeries("0"));
+        global.energy.put(NS, loadE2, new DoubleTimeSeries("0"));
+        global.energy.put(PS, loadE2, new DoubleTimeSeries("0"));
+        global.marktpreis = new DoubleTimeSeries("0");
+        global.zuweisung = Table.newLinked();
+        global.zuweisung.put(E, loadE1, 0.0);
+        global.zuweisung.put(E, loadE2, 0.0);
+
+        root.global = global;
+        root.sectors = new Sector[] {E};
+        root.customs = new SideCustom[] {grp1, grp2};
+        root.fares = new SideFares[] {SMS, NS, PS};
+        root.dse = new LoadDSE[] {loadE1, loadE2};
+        root.deses = new TechDESES[]{techES1};
+        root.despv = new TechDESPV[]{techPV1};
+    }
+}

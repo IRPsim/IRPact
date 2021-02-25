@@ -7,12 +7,25 @@ import de.unileipzig.irpact.commons.NameableBase;
 /**
  * @author Daniel Abitz
  */
-public class UnivariateDoubleDistributionAttributeBase extends NameableBase implements UnivariateDoubleDistributionAttribute {
+public class UnivariateDoubleDistributionAttributeBase extends NameableBase implements AttributableUnivariateDoubleDistribution {
 
     protected UnivariateDoubleDistribution distribution;
 
     public void setDistribution(UnivariateDoubleDistribution distribution) {
         this.distribution = distribution;
+    }
+
+    @Override
+    public UnivariateDoubleDistributionAttributeBase copyDistribution() {
+        UnivariateDoubleDistributionAttributeBase copy = new UnivariateDoubleDistributionAttributeBase();
+        copy.setName(name);
+        copy.setDistribution(distribution.copyDistribution());
+        return copy;
+    }
+
+    @Override
+    public UnivariateDoubleDistributionAttributeBase copyAttribute() {
+        return copyDistribution();
     }
 
     @Override

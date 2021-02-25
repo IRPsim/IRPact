@@ -16,12 +16,16 @@
       "sca_GraphvizGlobal_fixedNeatoPosition" : 0,
       "sca_GraphvizGlobal_scaleFactor" : 0.0,
       "sca_InGeneral_endYear" : 0,
-      "sca_InGeneral_logAgentCreation" : 1,
-      "sca_InGeneral_logGraphCreation" : 1,
+      "sca_InGeneral_logAgentCreation" : 0,
+      "sca_InGeneral_logAll" : 1,
+      "sca_InGeneral_logGraphCreation" : 0,
+      "sca_InGeneral_logJadexSystemOut" : 0,
       "sca_InGeneral_logLevel" : 6,
-      "sca_InGeneral_logParamInit" : 1,
-      "sca_InGeneral_logPlatformCreation" : 1,
-      "sca_InGeneral_logTools" : 1,
+      "sca_InGeneral_logParamInit" : 0,
+      "sca_InGeneral_logPlatformCreation" : 0,
+      "sca_InGeneral_logSimulationAgent" : 0,
+      "sca_InGeneral_logSimulationLifecycle" : 0,
+      "sca_InGeneral_logTools" : 0,
       "sca_InGeneral_runOptActDemo" : 1,
       "sca_InGeneral_seed" : 42,
       "sca_InGeneral_timeout" : 300000,
@@ -90,11 +94,7 @@
           "par_GraphvizOutputFormat_useFormat" : 1
         }
       },
-      "set_HiddenBinaryData" : {
-        "78KGK0FQG1KL8I35DHM6ULRFE9M68L31EDLLUI39CHI6ARK0EJ1FMZZZ" : {
-          "par_HiddenBinaryData_idHidden" : -200
-        }
-      },
+      "set_HiddenBinaryData" : { },
       "set_IFreeMultiGraphTopology" : {
         "FREE1" : {
           "par_IFreeMultiGraphTopology_ftEdgeCount" : 3,
@@ -109,211 +109,263 @@
       },
       "set_ii" : { },
       "set_InAffinityEntry" : {
-        "cag0_cag0" : {
-          "par_InAffinityEntry_affinityValue" : 0.7
+        "BUM_BUM" : {
+          "par_InAffinityEntry_affinityValue" : 0.9
         },
-        "cag0_cag1" : {
-          "par_InAffinityEntry_affinityValue" : 0.3
-        },
-        "cag1_cag0" : {
+        "BUM_TRA" : {
           "par_InAffinityEntry_affinityValue" : 0.1
         },
-        "cag1_cag1" : {
-          "par_InAffinityEntry_affinityValue" : 0.9
+        "TRA_BUM" : {
+          "par_InAffinityEntry_affinityValue" : 0.3
+        },
+        "TRA_TRA" : {
+          "par_InAffinityEntry_affinityValue" : 0.7
         }
       },
       "set_InAttributeName" : {
-        "A1" : {
+        "adoption_threshold" : {
           "par_InAttributeName_placeholder" : 0
         },
-        "A2" : {
+        "communication_frequency" : {
           "par_InAttributeName_placeholder" : 0
         },
-        "A2_1" : {
+        "construction_rate" : {
           "par_InAttributeName_placeholder" : 0
         },
-        "A2_2" : {
+        "dependent_judgment_making" : {
           "par_InAttributeName_placeholder" : 0
         },
-        "A3" : {
+        "Dummy_PLZ" : {
           "par_InAttributeName_placeholder" : 0
         },
-        "A3_1" : {
+        "environmental_concern" : {
           "par_InAttributeName_placeholder" : 0
         },
-        "A3_2" : {
+        "financial_threshold" : {
           "par_InAttributeName_placeholder" : 0
         },
-        "A4" : {
+        "house_owner" : {
           "par_InAttributeName_placeholder" : 0
         },
-        "A4_1" : {
+        "initial_product_awareness" : {
           "par_InAttributeName_placeholder" : 0
         },
-        "A4_2" : {
+        "interest_threshold" : {
           "par_InAttributeName_placeholder" : 0
         },
-        "A5" : {
+        "investment_cost" : {
           "par_InAttributeName_placeholder" : 0
         },
-        "A6" : {
+        "Mic_Dominantes_Milieu" : {
           "par_InAttributeName_placeholder" : 0
         },
-        "A7" : {
+        "Mic_Kaufkraft_Index" : {
           "par_InAttributeName_placeholder" : 0
         },
-        "A8" : {
+        "novelty_seeking" : {
           "par_InAttributeName_placeholder" : 0
         },
-        "C1" : {
+        "renovation_rate" : {
           "par_InAttributeName_placeholder" : 0
         },
-        "D1" : {
-          "par_InAttributeName_placeholder" : 0
-        },
-        "D2" : {
-          "par_InAttributeName_placeholder" : 0
-        },
-        "D3" : {
-          "par_InAttributeName_placeholder" : 0
-        },
-        "D4" : {
-          "par_InAttributeName_placeholder" : 0
-        },
-        "E1" : {
+        "share_1_2_house" : {
           "par_InAttributeName_placeholder" : 0
         }
       },
-      "set_InAwareness" : {
-        "cag0_awa" : { },
-        "cag1_awa" : { }
-      },
-      "set_InConstantSpatialDistribution2D" : {
-        "cag0_spatial" : {
-          "par_InConstantSpatialDistribution2D_x" : 0.0,
-          "par_InConstantSpatialDistribution2D_y" : 1.0
-        },
-        "cag1_spatial" : {
-          "par_InConstantSpatialDistribution2D_x" : 1.0,
-          "par_InConstantSpatialDistribution2D_y" : 0.0
-        }
-      },
+      "set_InAutoUncertaintyGroupAttribute" : { },
+      "set_InBooleanDistribution" : { },
+      "set_InCompleteGraphTopology" : { },
       "set_InConstantUnivariateDistribution" : {
+        "constant0" : {
+          "par_InConstantUnivariateDistribution_constDistValue" : 0.0
+        },
         "constant01" : {
           "par_InConstantUnivariateDistribution_constDistValue" : 0.1
         },
         "constant09" : {
           "par_InConstantUnivariateDistribution_constDistValue" : 0.9
+        },
+        "constant10" : {
+          "par_InConstantUnivariateDistribution_constDistValue" : 10.0
         }
       },
       "set_InConsumerAgentGroup" : {
-        "cag0" : {
+        "BUM" : {
           "par_InConsumerAgentGroup_informationAuthority" : 1.0,
-          "par_InConsumerAgentGroup_numberOfAgentsX" : 8
+          "par_InConsumerAgentGroup_numberOfAgentsX" : 1
         },
-        "cag1" : {
+        "TRA" : {
           "par_InConsumerAgentGroup_informationAuthority" : 1.0,
-          "par_InConsumerAgentGroup_numberOfAgentsX" : 12
+          "par_InConsumerAgentGroup_numberOfAgentsX" : 1
         }
       },
       "set_InConsumerAgentGroupAttribute" : {
-        "cag0_A1" : { },
-        "cag0_A2" : { },
-        "cag0_A2_1" : { },
-        "cag0_A2_2" : { },
-        "cag0_A3" : { },
-        "cag0_A3_1" : { },
-        "cag0_A3_2" : { },
-        "cag0_A4" : { },
-        "cag0_A4_1" : { },
-        "cag0_A4_2" : { },
-        "cag0_A5" : { },
-        "cag0_A6" : { },
-        "cag0_A7" : { },
-        "cag0_A8" : { },
-        "cag0_C1" : { },
-        "cag0_D1" : { },
-        "cag0_D2" : { },
-        "cag0_D3" : { },
-        "cag0_D4" : { },
-        "cag1_A1" : { },
-        "cag1_A2" : { },
-        "cag1_A2_1" : { },
-        "cag1_A2_2" : { },
-        "cag1_A3" : { },
-        "cag1_A3_1" : { },
-        "cag1_A3_2" : { },
-        "cag1_A4" : { },
-        "cag1_A4_1" : { },
-        "cag1_A4_2" : { },
-        "cag1_A5" : { },
-        "cag1_A6" : { },
-        "cag1_A7" : { },
-        "cag1_A8" : { },
-        "cag1_C1" : { },
-        "cag1_D1" : { },
-        "cag1_D2" : { },
-        "cag1_D3" : { },
-        "cag1_D4" : { }
+        "BUM_adoption_threshold" : { },
+        "BUM_communication_frequency" : { },
+        "BUM_construction_rate" : { },
+        "BUM_dependent_judgment_making" : { },
+        "BUM_environmental_concern" : { },
+        "BUM_financial_threshold" : { },
+        "BUM_house_owner" : { },
+        "BUM_initial_product_awareness" : { },
+        "BUM_interest_threshold" : { },
+        "BUM_Mic_Kaufkraft_Index" : { },
+        "BUM_novelty_seeking" : { },
+        "BUM_renovation_rate" : { },
+        "BUM_share_1_2_house" : { },
+        "TRA_adoption_threshold" : { },
+        "TRA_communication_frequency" : { },
+        "TRA_construction_rate" : { },
+        "TRA_dependent_judgment_making" : { },
+        "TRA_environmental_concern" : { },
+        "TRA_financial_threshold" : { },
+        "TRA_house_owner" : { },
+        "TRA_initial_product_awareness" : { },
+        "TRA_interest_threshold" : { },
+        "TRA_Mic_Kaufkraft_Index" : { },
+        "TRA_novelty_seeking" : { },
+        "TRA_renovation_rate" : { },
+        "TRA_share_1_2_house" : { }
       },
       "set_InConsumerAgentGroupColor" : {
-        "cag0_color" : { },
-        "cag1_color" : { }
+        "BUM_color" : { },
+        "TRA_color" : { }
+      },
+      "set_InCustomSelectedGroupedSpatialDistribution2D" : {
+        "testdist" : { }
+      },
+      "set_InCustomSelectedSpatialDistribution2D" : { },
+      "set_InCustomSpatialDistribution2D" : { },
+      "set_InCustomUncertaintyGroupAttribute" : {
+        "Uncerter" : { }
       },
       "set_InDiscreteTimeModel" : {
         "Discrete" : {
           "par_InDiscreteTimeModel_timePerTickInMs" : 604800000
         }
       },
-      "set_InDistanceEvaluator" : {
-        "NoDistance" : { }
+      "set_InDistanceEvaluator" : { },
+      "set_InEntity" : {
+        "0_0_0" : { },
+        "adoption_threshold" : { },
+        "BarwertrechnerMini_ES" : { },
+        "BUM" : { },
+        "BUM_adoption_threshold" : { },
+        "BUM_awa" : { },
+        "BUM_BUM" : { },
+        "BUM_communication_frequency" : { },
+        "BUM_construction_rate" : { },
+        "BUM_dependent_judgment_making" : { },
+        "BUM_environmental_concern" : { },
+        "BUM_financial_threshold" : { },
+        "BUM_house_owner" : { },
+        "BUM_initial_product_awareness" : { },
+        "BUM_interest_threshold" : { },
+        "BUM_Mic_Kaufkraft_Index" : { },
+        "BUM_novelty_seeking" : { },
+        "BUM_renovation_rate" : { },
+        "BUM_share_1_2_house" : { },
+        "BUM_TRA" : { },
+        "communication_frequency" : { },
+        "constant0" : { },
+        "constant01" : { },
+        "constant09" : { },
+        "constant10" : { },
+        "construction_rate" : { },
+        "dependent_judgment_making" : { },
+        "Discrete" : { },
+        "Dummy_PLZ" : { },
+        "environmental_concern" : { },
+        "financial_threshold" : { },
+        "GIS_final_1_x" : { },
+        "house_owner" : { },
+        "initial_product_awareness" : { },
+        "interest_threshold" : { },
+        "investment_cost" : { },
+        "Mic_Dominantes_Milieu" : { },
+        "Mic_Kaufkraft_Index" : { },
+        "novelty_seeking" : { },
+        "PV" : { },
+        "PV_E1" : { },
+        "PV_E1_fix" : { },
+        "PV_fix" : { },
+        "PV_fix_scheme" : { },
+        "RA" : { },
+        "renovation_rate" : { },
+        "share_1_2_house" : { },
+        "Space2D" : { },
+        "testdist" : { },
+        "TRA" : { },
+        "TRA_adoption_threshold" : { },
+        "TRA_awa" : { },
+        "TRA_BUM" : { },
+        "TRA_communication_frequency" : { },
+        "TRA_construction_rate" : { },
+        "TRA_dependent_judgment_making" : { },
+        "TRA_environmental_concern" : { },
+        "TRA_financial_threshold" : { },
+        "TRA_house_owner" : { },
+        "TRA_initial_product_awareness" : { },
+        "TRA_interest_threshold" : { },
+        "TRA_Mic_Kaufkraft_Index" : { },
+        "TRA_novelty_seeking" : { },
+        "TRA_renovation_rate" : { },
+        "TRA_share_1_2_house" : { },
+        "TRA_TRA" : { },
+        "Uncerter" : { },
+        "unlinked" : { }
       },
-      "set_InFreeNetworkTopology" : {
-        "FreeTopo" : {
-          "par_InFreeNetworkTopology_initialWeight" : 1.0
+      "set_InFile" : {
+        "BarwertrechnerMini_ES" : { },
+        "GIS_final_1_x" : { }
+      },
+      "set_InFiniteMassPointsDiscreteDistribution" : { },
+      "set_InFixProduct" : {
+        "PV_fix" : { }
+      },
+      "set_InFixProductAttribute" : {
+        "PV_E1_fix" : {
+          "par_InFixProductAttribute_fixPAvalue" : 1.0
         }
       },
+      "set_InFixProductFindingScheme" : {
+        "PV_fix_scheme" : { }
+      },
+      "set_InFreeNetworkTopology" : { },
       "set_InGraphTopologyScheme" : {
-        "FreeTopo" : { }
+        "unlinked" : { }
       },
       "set_InInverse" : { },
-      "set_InNoDistance" : {
-        "NoDistance" : {
-          "par_InNoDistance_placeholderNoDistance" : 0
-        }
-      },
-      "set_InNumberOfTies" : {
-        "cag0_ties" : {
-          "par_InNumberOfTies_count" : 3
-        },
-        "cag1_ties" : {
-          "par_InNumberOfTies_count" : 4
-        }
-      },
-      "set_InOrientationSupplier" : {
-        "OrientationSupplier" : { }
-      },
+      "set_InMassPoint" : { },
+      "set_InNoDistance" : { },
+      "set_InNumberOfTies" : { },
+      "set_InOrientationSupplier" : { },
       "set_InProcessModel" : {
         "RA" : { }
       },
+      "set_InProductAwarenessSupplyScheme" : {
+        "BUM_awa" : { },
+        "TRA_awa" : { }
+      },
+      "set_InProductFindingScheme" : {
+        "PV_fix_scheme" : { }
+      },
       "set_InProductGroup" : {
-        "PV" : {
-          "par_InProductGroup_placeholderProduct" : 0
-        }
+        "PV" : { }
       },
       "set_InProductGroupAttribute" : {
         "PV_E1" : { }
       },
-      "set_InRandomBoundedIntegerDistribution" : {
-        "ori_dist" : {
-          "par_InRandomBoundedIntegerDistribution_lowerBoundInt" : 0,
-          "par_InRandomBoundedIntegerDistribution_upperBoundInt" : 91
-        },
-        "slope_dist" : {
-          "par_InRandomBoundedIntegerDistribution_lowerBoundInt" : 0,
-          "par_InRandomBoundedIntegerDistribution_upperBoundInt" : 91
+      "set_InProductThresholdAwarenessSupplyScheme" : {
+        "BUM_awa" : { },
+        "TRA_awa" : { }
+      },
+      "set_InPVFile" : {
+        "BarwertrechnerMini_ES" : {
+          "par_InPVFile_placeholderPVFile" : 0.0
         }
       },
+      "set_InRandomBoundedIntegerDistribution" : { },
       "set_InRAProcessModel" : {
         "RA" : {
           "par_InRAProcessModel_a" : 0.25,
@@ -326,39 +378,40 @@
           "par_InRAProcessModel_unknownPoints" : 0
         }
       },
-      "set_InSlopeSupplier" : {
-        "SlopeSupplier" : { }
-      },
+      "set_InSlopeSupplier" : { },
       "set_InSpace2D" : {
         "Space2D" : {
           "par_InSpace2D_useEuclid" : 1
         }
       },
       "set_InSpatialDistribution" : {
-        "cag0_spatial" : { },
-        "cag1_spatial" : { }
+        "testdist" : { }
       },
       "set_InSpatialModel" : {
         "Space2D" : { }
       },
-      "set_InThresholdAwareness" : {
-        "cag0_awa" : {
-          "par_InThresholdAwareness_awarenessThreshold" : 1.0
-        },
-        "cag1_awa" : {
-          "par_InThresholdAwareness_awarenessThreshold" : 9.0
+      "set_InSpatialTableFile" : {
+        "GIS_final_1_x" : {
+          "par_InSpatialTableFile_placeholderInSpatialFile" : 0.0
         }
       },
       "set_InTimeModel" : {
         "Discrete" : { }
       },
+      "set_InUncertaintyGroupAttribute" : {
+        "Uncerter" : { }
+      },
       "set_InUnivariateDoubleDistribution" : {
+        "constant0" : { },
         "constant01" : { },
         "constant09" : { },
-        "ori_dist" : { },
-        "slope_dist" : { }
+        "constant10" : { }
       },
-      "set_InUnlinkedGraphTopology" : { },
+      "set_InUnlinkedGraphTopology" : {
+        "unlinked" : {
+          "par_InUnlinkedGraphTopology_placeholderUnlinked" : 0.0
+        }
+      },
       "set_InVersion" : {
         "0_0_0" : {
           "par_InVersion_placeholderVersion" : 0
@@ -442,11 +495,7 @@
       "set_tech_DESTO" : {
         "tech_ES1" : { }
       },
-      "set_VisibleBinaryData" : {
-        "78KGK0FQG1KLAI35DHM6ULRFE9M68L31EDLLULJ9EDKM4R35G1QC5UOZ" : {
-          "par_VisibleBinaryData_idVisible" : -200
-        }
-      }
+      "set_VisibleBinaryData" : { }
     },
     "timeseries" : {
       "par_C_MS_E" : "0"
@@ -499,1264 +548,913 @@
         }
       },
       "par_link_InAffinityEntry_InConsumerAgentGroup_srcCag" : {
-        "cag0_cag0" : {
-          "cag0" : 1.0,
-          "cag1" : 0.0
+        "BUM_BUM" : {
+          "BUM" : 1.0,
+          "TRA" : 0.0
         },
-        "cag0_cag1" : {
-          "cag0" : 1.0,
-          "cag1" : 0.0
+        "BUM_TRA" : {
+          "BUM" : 1.0,
+          "TRA" : 0.0
         },
-        "cag1_cag0" : {
-          "cag0" : 0.0,
-          "cag1" : 1.0
+        "TRA_BUM" : {
+          "BUM" : 0.0,
+          "TRA" : 1.0
         },
-        "cag1_cag1" : {
-          "cag0" : 0.0,
-          "cag1" : 1.0
+        "TRA_TRA" : {
+          "BUM" : 0.0,
+          "TRA" : 1.0
         }
       },
       "par_link_InAffinityEntry_InConsumerAgentGroup_tarCag" : {
-        "cag0_cag0" : {
-          "cag0" : 1.0,
-          "cag1" : 0.0
+        "BUM_BUM" : {
+          "BUM" : 1.0,
+          "TRA" : 0.0
         },
-        "cag0_cag1" : {
-          "cag0" : 0.0,
-          "cag1" : 1.0
+        "BUM_TRA" : {
+          "BUM" : 0.0,
+          "TRA" : 1.0
         },
-        "cag1_cag0" : {
-          "cag0" : 1.0,
-          "cag1" : 0.0
+        "TRA_BUM" : {
+          "BUM" : 1.0,
+          "TRA" : 0.0
         },
-        "cag1_cag1" : {
-          "cag0" : 0.0,
-          "cag1" : 1.0
-        }
-      },
-      "par_link_InConstantSpatialDistribution2D_InConsumerAgentGroup_cagConstant" : {
-        "cag0_spatial" : {
-          "cag0" : 1.0,
-          "cag1" : 0.0
-        },
-        "cag1_spatial" : {
-          "cag0" : 0.0,
-          "cag1" : 1.0
-        }
-      },
-      "par_link_InConsumerAgentGroup_InAwareness_cagAwareness" : {
-        "cag0" : {
-          "cag0_awa" : 1.0,
-          "cag1_awa" : 0.0
-        },
-        "cag1" : {
-          "cag0_awa" : 0.0,
-          "cag1_awa" : 1.0
+        "TRA_TRA" : {
+          "BUM" : 0.0,
+          "TRA" : 1.0
         }
       },
       "par_link_InConsumerAgentGroup_InConsumerAgentGroupAttribute_cagAttributes" : {
-        "cag0" : {
-          "cag0_A1" : 1.0,
-          "cag0_A2" : 1.0,
-          "cag0_A2_1" : 1.0,
-          "cag0_A2_2" : 1.0,
-          "cag0_A3" : 1.0,
-          "cag0_A3_1" : 1.0,
-          "cag0_A3_2" : 1.0,
-          "cag0_A4" : 1.0,
-          "cag0_A4_1" : 1.0,
-          "cag0_A4_2" : 1.0,
-          "cag0_A5" : 1.0,
-          "cag0_A6" : 1.0,
-          "cag0_A7" : 1.0,
-          "cag0_A8" : 1.0,
-          "cag0_C1" : 1.0,
-          "cag0_D1" : 1.0,
-          "cag0_D2" : 1.0,
-          "cag0_D3" : 1.0,
-          "cag0_D4" : 1.0,
-          "cag1_A1" : 0.0,
-          "cag1_A2" : 0.0,
-          "cag1_A2_1" : 0.0,
-          "cag1_A2_2" : 0.0,
-          "cag1_A3" : 0.0,
-          "cag1_A3_1" : 0.0,
-          "cag1_A3_2" : 0.0,
-          "cag1_A4" : 0.0,
-          "cag1_A4_1" : 0.0,
-          "cag1_A4_2" : 0.0,
-          "cag1_A5" : 0.0,
-          "cag1_A6" : 0.0,
-          "cag1_A7" : 0.0,
-          "cag1_A8" : 0.0,
-          "cag1_C1" : 0.0,
-          "cag1_D1" : 0.0,
-          "cag1_D2" : 0.0,
-          "cag1_D3" : 0.0,
-          "cag1_D4" : 0.0
+        "BUM" : {
+          "BUM_adoption_threshold" : 1.0,
+          "BUM_communication_frequency" : 1.0,
+          "BUM_construction_rate" : 1.0,
+          "BUM_dependent_judgment_making" : 1.0,
+          "BUM_environmental_concern" : 1.0,
+          "BUM_financial_threshold" : 1.0,
+          "BUM_house_owner" : 1.0,
+          "BUM_initial_product_awareness" : 1.0,
+          "BUM_interest_threshold" : 1.0,
+          "BUM_Mic_Kaufkraft_Index" : 1.0,
+          "BUM_novelty_seeking" : 1.0,
+          "BUM_renovation_rate" : 1.0,
+          "BUM_share_1_2_house" : 1.0,
+          "TRA_adoption_threshold" : 0.0,
+          "TRA_communication_frequency" : 0.0,
+          "TRA_construction_rate" : 0.0,
+          "TRA_dependent_judgment_making" : 0.0,
+          "TRA_environmental_concern" : 0.0,
+          "TRA_financial_threshold" : 0.0,
+          "TRA_house_owner" : 0.0,
+          "TRA_initial_product_awareness" : 0.0,
+          "TRA_interest_threshold" : 0.0,
+          "TRA_Mic_Kaufkraft_Index" : 0.0,
+          "TRA_novelty_seeking" : 0.0,
+          "TRA_renovation_rate" : 0.0,
+          "TRA_share_1_2_house" : 0.0
         },
-        "cag1" : {
-          "cag0_A1" : 0.0,
-          "cag0_A2" : 0.0,
-          "cag0_A2_1" : 0.0,
-          "cag0_A2_2" : 0.0,
-          "cag0_A3" : 0.0,
-          "cag0_A3_1" : 0.0,
-          "cag0_A3_2" : 0.0,
-          "cag0_A4" : 0.0,
-          "cag0_A4_1" : 0.0,
-          "cag0_A4_2" : 0.0,
-          "cag0_A5" : 0.0,
-          "cag0_A6" : 0.0,
-          "cag0_A7" : 0.0,
-          "cag0_A8" : 0.0,
-          "cag0_C1" : 0.0,
-          "cag0_D1" : 0.0,
-          "cag0_D2" : 0.0,
-          "cag0_D3" : 0.0,
-          "cag0_D4" : 0.0,
-          "cag1_A1" : 1.0,
-          "cag1_A2" : 1.0,
-          "cag1_A2_1" : 1.0,
-          "cag1_A2_2" : 1.0,
-          "cag1_A3" : 1.0,
-          "cag1_A3_1" : 1.0,
-          "cag1_A3_2" : 1.0,
-          "cag1_A4" : 1.0,
-          "cag1_A4_1" : 1.0,
-          "cag1_A4_2" : 1.0,
-          "cag1_A5" : 1.0,
-          "cag1_A6" : 1.0,
-          "cag1_A7" : 1.0,
-          "cag1_A8" : 1.0,
-          "cag1_C1" : 1.0,
-          "cag1_D1" : 1.0,
-          "cag1_D2" : 1.0,
-          "cag1_D3" : 1.0,
-          "cag1_D4" : 1.0
+        "TRA" : {
+          "BUM_adoption_threshold" : 0.0,
+          "BUM_communication_frequency" : 0.0,
+          "BUM_construction_rate" : 0.0,
+          "BUM_dependent_judgment_making" : 0.0,
+          "BUM_environmental_concern" : 0.0,
+          "BUM_financial_threshold" : 0.0,
+          "BUM_house_owner" : 0.0,
+          "BUM_initial_product_awareness" : 0.0,
+          "BUM_interest_threshold" : 0.0,
+          "BUM_Mic_Kaufkraft_Index" : 0.0,
+          "BUM_novelty_seeking" : 0.0,
+          "BUM_renovation_rate" : 0.0,
+          "BUM_share_1_2_house" : 0.0,
+          "TRA_adoption_threshold" : 1.0,
+          "TRA_communication_frequency" : 1.0,
+          "TRA_construction_rate" : 1.0,
+          "TRA_dependent_judgment_making" : 1.0,
+          "TRA_environmental_concern" : 1.0,
+          "TRA_financial_threshold" : 1.0,
+          "TRA_house_owner" : 1.0,
+          "TRA_initial_product_awareness" : 1.0,
+          "TRA_interest_threshold" : 1.0,
+          "TRA_Mic_Kaufkraft_Index" : 1.0,
+          "TRA_novelty_seeking" : 1.0,
+          "TRA_renovation_rate" : 1.0,
+          "TRA_share_1_2_house" : 1.0
+        }
+      },
+      "par_link_InConsumerAgentGroup_InProductAwarenessSupplyScheme_cagAwareness" : {
+        "BUM" : {
+          "BUM_awa" : 1.0,
+          "TRA_awa" : 0.0
+        },
+        "TRA" : {
+          "BUM_awa" : 0.0,
+          "TRA_awa" : 1.0
+        }
+      },
+      "par_link_InConsumerAgentGroup_InProductFindingScheme_productFindingSchemes" : {
+        "BUM" : {
+          "PV_fix_scheme" : 1.0
+        },
+        "TRA" : {
+          "PV_fix_scheme" : 1.0
+        }
+      },
+      "par_link_InConsumerAgentGroup_InSpatialDistribution_spatialDistribution" : {
+        "BUM" : {
+          "testdist" : 1.0
+        },
+        "TRA" : {
+          "testdist" : 1.0
         }
       },
       "par_link_InConsumerAgentGroupAttribute_InAttributeName_cagAttrName" : {
-        "cag0_A1" : {
-          "A1" : 1.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "BUM_adoption_threshold" : {
+          "adoption_threshold" : 1.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag0_A2" : {
-          "A1" : 0.0,
-          "A2" : 1.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "BUM_communication_frequency" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 1.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag0_A2_1" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 1.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "BUM_construction_rate" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 1.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag0_A2_2" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 1.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "BUM_dependent_judgment_making" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 1.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag0_A3" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 1.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "BUM_environmental_concern" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 1.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag0_A3_1" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 1.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "BUM_financial_threshold" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 1.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag0_A3_2" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 1.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "BUM_house_owner" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 1.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag0_A4" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 1.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "BUM_initial_product_awareness" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 1.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag0_A4_1" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 1.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "BUM_interest_threshold" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 1.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag0_A4_2" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 1.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "BUM_Mic_Kaufkraft_Index" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 1.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag0_A5" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 1.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "BUM_novelty_seeking" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 1.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag0_A6" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 1.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "BUM_renovation_rate" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 1.0,
+          "share_1_2_house" : 0.0
         },
-        "cag0_A7" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 1.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "BUM_share_1_2_house" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 1.0
         },
-        "cag0_A8" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 1.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "TRA_adoption_threshold" : {
+          "adoption_threshold" : 1.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag0_C1" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 1.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "TRA_communication_frequency" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 1.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag0_D1" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 1.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "TRA_construction_rate" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 1.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag0_D2" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 1.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "TRA_dependent_judgment_making" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 1.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag0_D3" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 1.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "TRA_environmental_concern" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 1.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag0_D4" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 1.0,
-          "E1" : 0.0
+        "TRA_financial_threshold" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 1.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag1_A1" : {
-          "A1" : 1.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "TRA_house_owner" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 1.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag1_A2" : {
-          "A1" : 0.0,
-          "A2" : 1.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "TRA_initial_product_awareness" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 1.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag1_A2_1" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 1.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "TRA_interest_threshold" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 1.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag1_A2_2" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 1.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "TRA_Mic_Kaufkraft_Index" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 1.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag1_A3" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 1.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "TRA_novelty_seeking" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 1.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         },
-        "cag1_A3_1" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 1.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
+        "TRA_renovation_rate" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 1.0,
+          "share_1_2_house" : 0.0
         },
-        "cag1_A3_2" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 1.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
-        },
-        "cag1_A4" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 1.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
-        },
-        "cag1_A4_1" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 1.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
-        },
-        "cag1_A4_2" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 1.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
-        },
-        "cag1_A5" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 1.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
-        },
-        "cag1_A6" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 1.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
-        },
-        "cag1_A7" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 1.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
-        },
-        "cag1_A8" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 1.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
-        },
-        "cag1_C1" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 1.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
-        },
-        "cag1_D1" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 1.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
-        },
-        "cag1_D2" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 1.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 0.0
-        },
-        "cag1_D3" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 1.0,
-          "D4" : 0.0,
-          "E1" : 0.0
-        },
-        "cag1_D4" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 1.0,
-          "E1" : 0.0
+        "TRA_share_1_2_house" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 1.0
         }
       },
       "par_link_InConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_cagAttrDistribution" : {
-        "cag0_A1" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_A2" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_A2_1" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_A2_2" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_A3" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_A3_1" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_A3_2" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_A4" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_A4_1" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_A4_2" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_A5" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_A6" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_A7" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_A8" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_C1" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_D1" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_D2" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_D3" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag0_D4" : {
-          "constant01" : 1.0,
-          "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
-        },
-        "cag1_A1" : {
+        "BUM_adoption_threshold" : {
+          "constant0" : 0.0,
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant10" : 0.0
         },
-        "cag1_A2" : {
+        "BUM_communication_frequency" : {
+          "constant0" : 0.0,
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant10" : 0.0
         },
-        "cag1_A2_1" : {
+        "BUM_construction_rate" : {
+          "constant0" : 0.0,
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant10" : 0.0
         },
-        "cag1_A2_2" : {
+        "BUM_dependent_judgment_making" : {
+          "constant0" : 0.0,
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant10" : 0.0
         },
-        "cag1_A3" : {
+        "BUM_environmental_concern" : {
+          "constant0" : 0.0,
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant10" : 0.0
         },
-        "cag1_A3_1" : {
+        "BUM_financial_threshold" : {
+          "constant0" : 0.0,
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant10" : 0.0
         },
-        "cag1_A3_2" : {
+        "BUM_house_owner" : {
+          "constant0" : 0.0,
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant10" : 0.0
         },
-        "cag1_A4" : {
+        "BUM_initial_product_awareness" : {
+          "constant0" : 0.0,
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant10" : 0.0
         },
-        "cag1_A4_1" : {
+        "BUM_interest_threshold" : {
+          "constant0" : 0.0,
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant10" : 0.0
         },
-        "cag1_A4_2" : {
+        "BUM_Mic_Kaufkraft_Index" : {
+          "constant0" : 0.0,
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant10" : 0.0
         },
-        "cag1_A5" : {
+        "BUM_novelty_seeking" : {
+          "constant0" : 0.0,
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant10" : 0.0
         },
-        "cag1_A6" : {
+        "BUM_renovation_rate" : {
+          "constant0" : 0.0,
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant10" : 0.0
         },
-        "cag1_A7" : {
+        "BUM_share_1_2_house" : {
+          "constant0" : 0.0,
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant10" : 0.0
         },
-        "cag1_A8" : {
+        "TRA_adoption_threshold" : {
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant09" : 0.0,
+          "constant10" : 0.0
         },
-        "cag1_C1" : {
+        "TRA_communication_frequency" : {
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant09" : 0.0,
+          "constant10" : 0.0
         },
-        "cag1_D1" : {
+        "TRA_construction_rate" : {
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant09" : 0.0,
+          "constant10" : 0.0
         },
-        "cag1_D2" : {
+        "TRA_dependent_judgment_making" : {
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant09" : 0.0,
+          "constant10" : 0.0
         },
-        "cag1_D3" : {
+        "TRA_environmental_concern" : {
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant09" : 0.0,
+          "constant10" : 0.0
         },
-        "cag1_D4" : {
+        "TRA_financial_threshold" : {
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant09" : 0.0,
+          "constant10" : 0.0
+        },
+        "TRA_house_owner" : {
+          "constant0" : 1.0,
+          "constant01" : 0.0,
+          "constant09" : 0.0,
+          "constant10" : 0.0
+        },
+        "TRA_initial_product_awareness" : {
+          "constant0" : 1.0,
+          "constant01" : 0.0,
+          "constant09" : 0.0,
+          "constant10" : 0.0
+        },
+        "TRA_interest_threshold" : {
+          "constant0" : 1.0,
+          "constant01" : 0.0,
+          "constant09" : 0.0,
+          "constant10" : 0.0
+        },
+        "TRA_Mic_Kaufkraft_Index" : {
+          "constant0" : 1.0,
+          "constant01" : 0.0,
+          "constant09" : 0.0,
+          "constant10" : 0.0
+        },
+        "TRA_novelty_seeking" : {
+          "constant0" : 1.0,
+          "constant01" : 0.0,
+          "constant09" : 0.0,
+          "constant10" : 0.0
+        },
+        "TRA_renovation_rate" : {
+          "constant0" : 1.0,
+          "constant01" : 0.0,
+          "constant09" : 0.0,
+          "constant10" : 0.0
+        },
+        "TRA_share_1_2_house" : {
+          "constant0" : 1.0,
+          "constant01" : 0.0,
+          "constant09" : 0.0,
+          "constant10" : 0.0
         }
       },
       "par_link_InConsumerAgentGroupColor_GraphvizColor_color" : {
-        "cag0_color" : {
-          "BLUE" : 0.0,
-          "GREEN" : 0.0,
-          "PINK" : 0.0,
-          "RED" : 1.0
-        },
-        "cag1_color" : {
+        "BUM_color" : {
           "BLUE" : 0.0,
           "GREEN" : 1.0,
           "PINK" : 0.0,
           "RED" : 0.0
+        },
+        "TRA_color" : {
+          "BLUE" : 0.0,
+          "GREEN" : 0.0,
+          "PINK" : 0.0,
+          "RED" : 1.0
         }
       },
       "par_link_InConsumerAgentGroupColor_InConsumerAgentGroup_group" : {
-        "cag0_color" : {
-          "cag0" : 1.0,
-          "cag1" : 0.0
+        "BUM_color" : {
+          "BUM" : 1.0,
+          "TRA" : 0.0
         },
-        "cag1_color" : {
-          "cag0" : 0.0,
-          "cag1" : 1.0
+        "TRA_color" : {
+          "BUM" : 0.0,
+          "TRA" : 1.0
         }
       },
-      "par_link_InFreeNetworkTopology_InDistanceEvaluator_distanceEvaluator" : {
-        "FreeTopo" : {
-          "NoDistance" : 1.0
+      "par_link_InCustomSelectedGroupedSpatialDistribution2D_InAttributeName_groupKey" : {
+        "testdist" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 1.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         }
       },
-      "par_link_InFreeNetworkTopology_InNumberOfTies_numberOfTies" : {
-        "FreeTopo" : {
-          "cag0_ties" : 1.0,
-          "cag1_ties" : 1.0
+      "par_link_InCustomSelectedGroupedSpatialDistribution2D_InAttributeName_selectKey" : {
+        "testdist" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 1.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         }
       },
-      "par_link_InNumberOfTies_InConsumerAgentGroup_cag" : {
-        "cag0_ties" : {
-          "cag0" : 1.0,
-          "cag1" : 0.0
-        },
-        "cag1_ties" : {
-          "cag0" : 0.0,
-          "cag1" : 1.0
+      "par_link_InCustomSelectedGroupedSpatialDistribution2D_InSpatialTableFile_file" : {
+        "testdist" : {
+          "GIS_final_1_x" : 1.0
         }
       },
-      "par_link_InOrientationSupplier_InUnivariateDoubleDistribution_distInOrientation" : {
-        "OrientationSupplier" : {
+      "par_link_InCustomSelectedGroupedSpatialDistribution2D_InUnivariateDoubleDistribution_xPosSupplier" : {
+        "testdist" : {
+          "constant0" : 1.0,
           "constant01" : 0.0,
           "constant09" : 0.0,
-          "ori_dist" : 1.0,
-          "slope_dist" : 0.0
+          "constant10" : 0.0
         }
       },
+      "par_link_InCustomSelectedGroupedSpatialDistribution2D_InUnivariateDoubleDistribution_yPosSupplier" : {
+        "testdist" : {
+          "constant0" : 1.0,
+          "constant01" : 0.0,
+          "constant09" : 0.0,
+          "constant10" : 0.0
+        }
+      },
+      "par_link_InCustomSelectedSpatialDistribution2D_InAttributeName_selectKey" : { },
+      "par_link_InCustomSelectedSpatialDistribution2D_InSpatialTableFile_attrFile" : { },
+      "par_link_InCustomSelectedSpatialDistribution2D_InUnivariateDoubleDistribution_xPosSupplier" : { },
+      "par_link_InCustomSelectedSpatialDistribution2D_InUnivariateDoubleDistribution_yPosSupplier" : { },
+      "par_link_InCustomSpatialDistribution2D_InSpatialTableFile_attrFile" : { },
+      "par_link_InCustomSpatialDistribution2D_InUnivariateDoubleDistribution_xPosSupplier" : { },
+      "par_link_InCustomSpatialDistribution2D_InUnivariateDoubleDistribution_yPosSupplier" : { },
+      "par_link_InCustomUncertaintyGroupAttribute_InAttributeName_names" : {
+        "Uncerter" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 1.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 1.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 1.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
+        }
+      },
+      "par_link_InCustomUncertaintyGroupAttribute_InConsumerAgentGroup_cags" : {
+        "Uncerter" : {
+          "BUM" : 1.0,
+          "TRA" : 1.0
+        }
+      },
+      "par_link_InCustomUncertaintyGroupAttribute_InUnivariateDoubleDistribution_convergenceDist" : {
+        "Uncerter" : {
+          "constant0" : 0.0,
+          "constant01" : 0.0,
+          "constant09" : 1.0,
+          "constant10" : 0.0
+        }
+      },
+      "par_link_InCustomUncertaintyGroupAttribute_InUnivariateDoubleDistribution_uncertDist" : {
+        "Uncerter" : {
+          "constant0" : 0.0,
+          "constant01" : 1.0,
+          "constant09" : 0.0,
+          "constant10" : 0.0
+        }
+      },
+      "par_link_InFiniteMassPointsDiscreteDistribution_InMassPoint_massPoints" : { },
+      "par_link_InFixProduct_InFixProductAttribute_fixPAttrs" : {
+        "PV_fix" : {
+          "PV_E1_fix" : 1.0
+        }
+      },
+      "par_link_InFixProduct_InProductGroup_refPG" : {
+        "PV_fix" : {
+          "PV" : 1.0
+        }
+      },
+      "par_link_InFixProductAttribute_InProductGroupAttribute_refPGA" : {
+        "PV_E1_fix" : {
+          "PV_E1" : 1.0
+        }
+      },
+      "par_link_InFixProductFindingScheme_InFixProduct_refFixProduct" : {
+        "PV_fix_scheme" : {
+          "PV_fix" : 1.0
+        }
+      },
+      "par_link_InFreeNetworkTopology_InDistanceEvaluator_distanceEvaluator" : { },
+      "par_link_InFreeNetworkTopology_InNumberOfTies_numberOfTies" : { },
+      "par_link_InNumberOfTies_InConsumerAgentGroup_cag" : { },
+      "par_link_InOrientationSupplier_InConsumerAgentGroup_oriCags" : { },
+      "par_link_InOrientationSupplier_InUnivariateDoubleDistribution_distInOrientation" : { },
       "par_link_InProductGroup_InProductGroupAttribute_pgAttributes" : {
         "PV" : {
           "PV_E1" : 1.0
@@ -1764,44 +1462,64 @@
       },
       "par_link_InProductGroupAttribute_InAttributeName_attrName" : {
         "PV_E1" : {
-          "A1" : 0.0,
-          "A2" : 0.0,
-          "A2_1" : 0.0,
-          "A2_2" : 0.0,
-          "A3" : 0.0,
-          "A3_1" : 0.0,
-          "A3_2" : 0.0,
-          "A4" : 0.0,
-          "A4_1" : 0.0,
-          "A4_2" : 0.0,
-          "A5" : 0.0,
-          "A6" : 0.0,
-          "A7" : 0.0,
-          "A8" : 0.0,
-          "C1" : 0.0,
-          "D1" : 0.0,
-          "D2" : 0.0,
-          "D3" : 0.0,
-          "D4" : 0.0,
-          "E1" : 1.0
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 1.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "share_1_2_house" : 0.0
         }
       },
       "par_link_InProductGroupAttribute_InUnivariateDoubleDistribution_attrDistribution" : {
         "PV_E1" : {
+          "constant0" : 0.0,
           "constant01" : 0.0,
           "constant09" : 1.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 0.0
+          "constant10" : 0.0
         }
       },
-      "par_link_InSlopeSupplier_InUnivariateDoubleDistribution_distSlope" : {
-        "SlopeSupplier" : {
+      "par_link_InProductThresholdAwarenessSupplyScheme_InUnivariateDoubleDistribution_awarenessDistribution" : {
+        "BUM_awa" : {
+          "constant0" : 0.0,
           "constant01" : 0.0,
           "constant09" : 0.0,
-          "ori_dist" : 0.0,
-          "slope_dist" : 1.0
+          "constant10" : 1.0
+        },
+        "TRA_awa" : {
+          "constant0" : 0.0,
+          "constant01" : 0.0,
+          "constant09" : 0.0,
+          "constant10" : 1.0
         }
       },
+      "par_link_InRAProcessModel_InOrientationSupplier_orientationSuppliers" : {
+        "RA" : { }
+      },
+      "par_link_InRAProcessModel_InPVFile_pvFile" : {
+        "RA" : {
+          "BarwertrechnerMini_ES" : 1.0
+        }
+      },
+      "par_link_InRAProcessModel_InSlopeSupplier_slopeSuppliers" : {
+        "RA" : { }
+      },
+      "par_link_InRAProcessModel_InUncertaintyGroupAttribute_uncertaintyGroupAttributes" : {
+        "RA" : {
+          "Uncerter" : 1.0
+        }
+      },
+      "par_link_InSlopeSupplier_InConsumerAgentGroup_slopeCags" : { },
+      "par_link_InSlopeSupplier_InUnivariateDoubleDistribution_distSlope" : { },
       "par_SOH_pss_sector" : {
         "E" : {
           "load_E1" : 0.0,

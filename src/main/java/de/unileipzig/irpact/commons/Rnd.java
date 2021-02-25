@@ -7,11 +7,13 @@ import java.util.Random;
  *
  * @author Daniel Abitz
  */
-public final class Rnd {
+public final class Rnd implements IsEquals {
 
-    private static final Random R = new Random();
-    public static synchronized long randomSeed() {
-        return R.nextLong();
+    private static final class Holder {
+        private static final Random R = new Random();
+    }
+    private static synchronized long randomSeed() {
+        return Holder.R.nextLong();
     }
 
     protected long initialSeed;
@@ -28,14 +30,34 @@ public final class Rnd {
         setInitialSeed(initialSeed);
     }
 
+    private Rnd(Void v) {
+        rnd = null;
+    }
+
+    /**
+     * Creates an instance without a random.
+     *
+     * @return created instance
+     */
+    public static Rnd empty() {
+        return new Rnd(null);
+    }
+
     public void setInitialSeed(long initialSeed) {
         this.initialSeed = initialSeed;
         this.rnd = new Random(initialSeed);
     }
 
-    public void reseed() {
+    /**
+     * Creates a new random seed based on {@link #nextLong()} und calls {@link Random#setSeed(long)}.
+     *
+     * @return new seed
+     */
+    public long reseed() {
         long nextSeed = rnd.nextLong();
         rnd.setSeed(nextSeed);
+        initialSeed = nextSeed;
+        return nextSeed;
     }
 
     public long getInitialSeed() {
@@ -46,20 +68,34 @@ public final class Rnd {
         return rnd;
     }
 
-    public synchronized long syncNextLong() {
-        return rnd.nextLong();
+    public boolean nextBoolean() {
+        return rnd.nextBoolean();
     }
 
     public int nextInt() {
         return rnd.nextInt();
     }
 
+    public long nextLong() {
+        return rnd.nextLong();
+    }
+
+    public synchronized long syncNextLong() {
+        return nextLong();
+    }
+
     public double nextDouble() {
         return rnd.nextDouble();
     }
 
-    public Rnd createNewRandom() {
+    public Rnd deriveInstance() {
         long seed = syncNextLong();
         return new Rnd(seed);
+    }
+
+    @Override
+    public boolean isEqualsSameClass(Object obj) {
+        Rnd other = (Rnd) obj;
+        return initialSeed == other.initialSeed;
     }
 }

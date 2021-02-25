@@ -3,6 +3,7 @@ package de.unileipzig.irpact.commons.affinity;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 /**
  * @param <S>
@@ -19,6 +20,11 @@ public class BasicAffinityMapping<S, T> implements AffinityMapping<S, T> {
 
     public BasicAffinityMapping(Map<S, Affinities<T>> mapping) {
         this.mapping = mapping;
+    }
+
+    @Override
+    public Set<S> sources() {
+        return mapping.keySet();
     }
 
     @Override

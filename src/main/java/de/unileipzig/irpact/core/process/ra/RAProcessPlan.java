@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.core.process.ra;
 
 import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.attribute.Attribute;
+import de.unileipzig.irpact.commons.attribute.AttributeUtil;
 import de.unileipzig.irpact.commons.awareness.Awareness;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
@@ -51,20 +53,48 @@ public class RAProcessPlan implements ProcessPlan {
         this.model = model;
     }
 
+    public RAProcessModel getModel() {
+        return model;
+    }
+
     public void setRnd(Rnd rnd) {
         this.rnd = rnd;
+    }
+
+    public Rnd getRnd() {
+        return rnd;
     }
 
     public void setAgent(ConsumerAgent agent) {
         this.agent = agent;
     }
 
+    public ConsumerAgent getAgent() {
+        return agent;
+    }
+
     public void setNeed(Need need) {
         this.need = need;
     }
 
+    public Need getNeed() {
+        return need;
+    }
+
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setCurrentPhase(RAPhase currentPhase) {
+        this.currentPhase = currentPhase;
+    }
+
+    public RAPhase getCurrentPhase() {
+        return currentPhase;
     }
 
     @Override
@@ -78,12 +108,6 @@ public class RAProcessPlan implements ProcessPlan {
 
     @Override
     public void onAdopted() {
-        environment = null;
-        need = null;
-        product = null;
-        agent = null;
-        rnd = null;
-        model = null;
     }
 
     //=========================
@@ -266,6 +290,18 @@ public class RAProcessPlan implements ProcessPlan {
     //util
     //=========================
 
+    protected static double getDouble(ConsumerAgent agent, String attrName) {
+        Attribute<?> attr = agent.findAttribute(attrName);
+        return getDouble(attr, attrName);
+    }
+
+    protected static double getDouble(Attribute<?> attr, String attrName) {
+        if(attr == null) {
+            throw new NoSuchElementException("missing attribute: '" + attrName + "'");
+        }
+        return AttributeUtil.getDoubleValue(attr, () -> "attribute '" + attrName + "' has no number");
+    }
+
     protected RAModelData modelData() {
         return model.getModelData();
     }
@@ -417,35 +453,33 @@ public class RAProcessPlan implements ProcessPlan {
 
     protected void applyRelativeAgreement(ConsumerAgent target) {
         //A2
-        applyRelativeAgreement(target, RAConstants.NOVELTY_SEEKING, RAConstants.NOVELTY_SEEKING_UNCERTAINTY, RAConstants.NOVELTY_SEEKING_CONVERGENCE);
+        applyRelativeAgreement(target, RAConstants.NOVELTY_SEEKING);
         //A3
-        applyRelativeAgreement(target, RAConstants.DEPENDENT_JUDGMENT_MAKING, RAConstants.DEPENDENT_JUDGMENT_MAKING_UNCERTAINTY, RAConstants.DEPENDENT_JUDGMENT_MAKING_CONVERGENCE);
+        applyRelativeAgreement(target, RAConstants.DEPENDENT_JUDGMENT_MAKING);
         //A4
-        applyRelativeAgreement(target, RAConstants.ENVIRONMENTAL_CONCERN, RAConstants.ENVIRONMENTAL_CONCERN_UNCERTAINTY, RAConstants.ENVIRONMENTAL_CONCERN_CONVERGENCE);
+        applyRelativeAgreement(target, RAConstants.ENVIRONMENTAL_CONCERN);
     }
 
-    protected void applyRelativeAgreement(ConsumerAgent target, String attrName, String uncName, String convergenceName) {
+    protected void applyRelativeAgreement(ConsumerAgent target, String attrName) {
         ConsumerAgentAttribute o1Attr = agent.getAttribute(attrName);
-        ConsumerAgentAttribute u1Attr = agent.getAttribute(uncName);
-        ConsumerAgentAttribute m1Attr = agent.getAttribute(convergenceName);
+        UncertaintyAttribute u1Attr = (UncertaintyAttribute) agent.getAttribute(RAConstants.getUncertaintyAttributeName(attrName));
         ConsumerAgentAttribute o2Attr = target.getAttribute(attrName);
-        ConsumerAgentAttribute u2Attr = target.getAttribute(uncName);
-        ConsumerAgentAttribute m2Attr = target.getAttribute(convergenceName);
-        applyRelativeAgreement(o1Attr, u1Attr, m1Attr.getDoubleValue(), o2Attr, u2Attr, m2Attr.getDoubleValue());
+        UncertaintyAttribute u2Attr = (UncertaintyAttribute) target.getAttribute(RAConstants.getUncertaintyAttributeName(attrName));
+        applyRelativeAgreement(o1Attr, u1Attr, o2Attr, u2Attr);
     }
 
     protected static void applyRelativeAgreement(
             ConsumerAgentAttribute o1Attr,
-            ConsumerAgentAttribute u1Attr,
-            double m1,
+            UncertaintyAttribute u1Attr,
             ConsumerAgentAttribute o2Attr,
-            ConsumerAgentAttribute u2Attr,
-            double m2) {
+            UncertaintyAttribute u2Attr) {
         //anmerkung: werte extrahieren um keine ueberschreibungen zu erhalten
         double o1 = o1Attr.getDoubleValue();
-        double u1 = u1Attr.getDoubleValue();
+        double u1 = u1Attr.getUncertainty();
+        double m1 = u1Attr.getConvergence();
         double o2 = o2Attr.getDoubleValue();
-        double u2 = u2Attr.getDoubleValue();
+        double u2 = u2Attr.getUncertainty();
+        double m2 = u2Attr.getConvergence();
         //1 beeinflusst 2
         applyRelativeAgreement(o1, u1, o2, u2, o2Attr, u2Attr, m2);
         //2 beeinflusst 1

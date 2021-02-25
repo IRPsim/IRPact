@@ -3,11 +3,9 @@ package de.unileipzig.irpact.core.network;
 import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.core.agent.Agent;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
@@ -19,7 +17,7 @@ public class BasicSocialGraph implements SocialGraph {
      * @author Daniel Abitz
      */
     //Da wir den Agent austauschen, wird equals und hashCode nicht veraendert.
-    private static class BasicNode implements Node {
+    public static class BasicNode implements Node {
 
         private Agent agent;
 
@@ -51,10 +49,11 @@ public class BasicSocialGraph implements SocialGraph {
     /**
      * @author Daniel Abitz
      */
-    private static class BasicEdge implements Edge {
+    public static class BasicEdge implements Edge {
 
         private Node source;
         private Node target;
+        private Type type;
         private double weight;
 
         public BasicEdge() {
@@ -89,10 +88,24 @@ public class BasicSocialGraph implements SocialGraph {
         public double getWeight() {
             return weight;
         }
+
+        public void setType(Type type) {
+            this.type = type;
+        }
+
+        public Type getType() {
+            return type;
+        }
     }
 
+    private static final Function<? super Type, ? extends Edge> DEFAULT_EDGE_SUPPLIER = type -> {
+        BasicEdge edge = new BasicEdge();
+        edge.setType(type);
+        return edge;
+    };
+
     private final Function<? super Agent, ? extends Node> NODE_SUPPLIER;
-    private final Supplier<? extends Edge> EDGE_SUPPLIER;
+    private final Function<? super Type, ? extends Edge> EDGE_SUPPLIER;
     private final DirectedMultiGraph<Node, Edge, Type> GRAPH;
     private final Map<Agent, Node> NODE_CACHE = new HashMap<>();
 
@@ -101,35 +114,16 @@ public class BasicSocialGraph implements SocialGraph {
     }
 
     public BasicSocialGraph(DirectedMultiGraph<Node, Edge, Type> graph) {
-        this(BasicNode::new, BasicEdge::new, graph);
+        this(BasicNode::new, DEFAULT_EDGE_SUPPLIER, graph);
     }
 
     public BasicSocialGraph(
             Function<? super Agent, ? extends Node> nodeSupplier,
-            Supplier<? extends Edge> edgeSupplier,
+            Function<? super Type, ? extends Edge> edgeSupplier,
             DirectedMultiGraph<Node, Edge, Type> graph) {
         NODE_SUPPLIER = nodeSupplier;
         EDGE_SUPPLIER = edgeSupplier;
         GRAPH = graph;
-    }
-
-    @Override
-    public void replace(ConsumerAgent toRemove, ConsumerAgent toAdd) throws IllegalStateException {
-        if(!NODE_CACHE.containsKey(toRemove)) {
-            throw new IllegalArgumentException("to-remove-agent '" + toRemove.getName() + "' does not exist");
-        }
-        if(NODE_CACHE.containsKey(toAdd)) {
-            throw new IllegalArgumentException("to-add-agent '" + toRemove.getName() + "' already exists");
-        }
-        BasicNode node = (BasicNode) toRemove.getSocialGraphNode();
-        if(node == getNode(toRemove)) {
-            NODE_CACHE.remove(toRemove);
-            node.agent = toAdd;
-            toAdd.setSocialGraphNode(node);
-            NODE_CACHE.put(toAdd, node);
-        } else {
-            throw new IllegalStateException("node mismatch for agent '" + toRemove.getName() + "'");
-        }
     }
 
     @Override
@@ -167,6 +161,11 @@ public class BasicSocialGraph implements SocialGraph {
     }
 
     @Override
+    public boolean hasNode(Agent agent) {
+        return NODE_CACHE.containsKey(agent);
+    }
+
+    @Override
     public boolean hasNode(Node node) {
         return GRAPH.hasVertex(node);
     }
@@ -196,7 +195,7 @@ public class BasicSocialGraph implements SocialGraph {
         if(GRAPH.hasEdge(from, to, type)) {
             return false;
         } else {
-            Edge edge = EDGE_SUPPLIER.get();
+            Edge edge = EDGE_SUPPLIER.apply(type);
             edge.setSource(from);
             edge.setTarget(to);
             edge.setWeight(weight);

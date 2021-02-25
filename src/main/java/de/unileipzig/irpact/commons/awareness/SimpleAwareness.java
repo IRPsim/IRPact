@@ -19,18 +19,6 @@ public class SimpleAwareness<T> implements Awareness<T> {
     }
 
     @Override
-    public SimpleAwareness<T> emptyCopy() {
-        return new SimpleAwareness<>();
-    }
-
-    @Override
-    public SimpleAwareness<T> fullCopy() {
-        SimpleAwareness<T> copy = emptyCopy();
-        copy.items.addAll(items);
-        return copy;
-    }
-
-    @Override
     public boolean isInterested(T item) {
         return items.contains(item);
     }

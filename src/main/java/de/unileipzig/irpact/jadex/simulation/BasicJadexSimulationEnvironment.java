@@ -1,23 +1,22 @@
 package de.unileipzig.irpact.jadex.simulation;
 
 import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.AgentManager;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.SocialNetwork;
 import de.unileipzig.irpact.core.process.ProcessModelManager;
 import de.unileipzig.irpact.core.product.ProductManager;
+import de.unileipzig.irpact.core.simulation.BinaryTaskManager;
 import de.unileipzig.irpact.core.simulation.InitializationData;
 import de.unileipzig.irpact.core.simulation.Version;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
+import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
-
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Daniel Abitz
@@ -27,8 +26,6 @@ public class BasicJadexSimulationEnvironment implements JadexSimulationEnvironme
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicJadexSimulationEnvironment.class);
 
-    protected final Lock REPLACE_LOCK = new ReentrantLock();
-
     protected InitializationData initializationData;
     protected AgentManager agentManager;
     protected SocialNetwork socialNetwork;
@@ -37,7 +34,8 @@ public class BasicJadexSimulationEnvironment implements JadexSimulationEnvironme
     protected SpatialModel spatialModel;
     protected JadexTimeModel timeModel;
     protected JadexLifeCycleControl lifeCycleControl;
-    protected Version version;
+    protected ResourceLoader resourceLoader;
+    protected BinaryTaskManager taskManager;
     protected Rnd rnd;
 
     public BasicJadexSimulationEnvironment() {
@@ -76,7 +74,7 @@ public class BasicJadexSimulationEnvironment implements JadexSimulationEnvironme
 
     @Override
     public ProcessModelManager getProcessModels() {
-        return null;
+        return processModelManager;
     }
 
     public void setProductManager(ProductManager productManager) {
@@ -115,17 +113,31 @@ public class BasicJadexSimulationEnvironment implements JadexSimulationEnvironme
         return lifeCycleControl;
     }
 
-    public void setVersion(Version version) {
-        this.version = version;
+    @Override
+    public Version getVersion() {
+        return IRPact.VERSION;
+    }
+
+    public void setResourceLoader(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
     }
 
     @Override
-    public Version getVersion() {
-        return version;
+    public ResourceLoader getResourceLoader() {
+        return resourceLoader;
     }
 
     public void setSimulationRandom(Rnd rnd) {
         this.rnd = rnd;
+    }
+
+    @Override
+    public BinaryTaskManager getTaskManager() {
+        return taskManager;
+    }
+
+    public void setTaskManager(BinaryTaskManager taskManager) {
+        this.taskManager = taskManager;
     }
 
     @Override
@@ -156,24 +168,35 @@ public class BasicJadexSimulationEnvironment implements JadexSimulationEnvironme
     }
 
     @Override
-    public void setup() {
-        socialNetwork.getConfiguration().getGraphTopologyScheme().initalize(
-                this,
-                socialNetwork.getGraph()
-        );
-        processModelManager.setup();
+    public void preAgentCreation() throws MissingDataException {
+        agentManager.preAgentCreation();
+        socialNetwork.preAgentCreation();
+        productManager.preAgentCreation();
+        processModelManager.preAgentCreation();
+        spatialModel.preAgentCreation();
+        timeModel.preAgentCreation();
+        lifeCycleControl.preAgentCreation();
     }
 
     @Override
-    public void replace(ConsumerAgent placeholder, ConsumerAgent real) throws IllegalStateException {
-        REPLACE_LOCK.lock();
-        try {
-            ConsumerAgentGroup cag = placeholder.getGroup();
-            cag.replace(placeholder, real);
+    public void postAgentCreation() throws MissingDataException {
+        agentManager.postAgentCreation();
+        socialNetwork.postAgentCreation();
+        productManager.postAgentCreation();
+        processModelManager.postAgentCreation();
+        spatialModel.postAgentCreation();
+        timeModel.postAgentCreation();
+        lifeCycleControl.postAgentCreation();
+    }
 
-            getNetwork().getGraph().replace(placeholder, real);
-        } finally {
-            REPLACE_LOCK.unlock();
-        }
+    @Override
+    public void preSimulationStart() throws MissingDataException {
+        agentManager.preSimulationStart();
+        socialNetwork.preSimulationStart();
+        productManager.preSimulationStart();
+        processModelManager.preSimulationStart();
+        spatialModel.preSimulationStart();
+        timeModel.preSimulationStart();
+        lifeCycleControl.preSimulationStart();
     }
 }

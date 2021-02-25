@@ -4,14 +4,11 @@ import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
+import de.unileipzig.irpact.core.product.awareness.ProductAwareness;
+import de.unileipzig.irpact.core.product.awareness.ProductAwarenessSupplyScheme;
+import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.commons.Derivable;
-import de.unileipzig.irpact.commons.awareness.Awareness;
-import de.unileipzig.irpact.commons.awareness.AwarenessDistributionMapping;
-import de.unileipzig.irpact.commons.awareness.BasicAwarenessDistributionMapping;
-import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
-import de.unileipzig.irpact.core.product.Product;
-import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
 import de.unileipzig.irpact.core.spatial.SpatialDistribution;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -28,13 +25,12 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(JadexConsumerAgentGroup.class);
 
-    protected int agentId = 0;
+    protected int nextAgentId = 0;
     protected double informationAuthority;
     protected SpatialDistribution spatialDistribution;
     protected Map<String, ConsumerAgentGroupAttribute> attributes;
     protected Map<String, ConsumerAgent> agents;
-    protected AwarenessDistributionMapping<Product, UnivariateDoubleDistribution> fixedProductAwarenessMapping = new BasicAwarenessDistributionMapping<>();
-    protected Awareness<Product> productAwareness;
+    protected ProductAwarenessSupplyScheme awarenessSupplyScheme;
     protected ProductFindingScheme productFindingScheme;
     protected ProcessFindingScheme processFindingScheme;
 
@@ -61,6 +57,17 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     @Override
     public double getInformationAuthority() {
         return informationAuthority;
+    }
+
+    public void addAllGroupAttributes(ConsumerAgentGroupAttribute... attributes) {
+        for(ConsumerAgentGroupAttribute attr: attributes) {
+            addGroupAttribute(attr);
+        }
+    }
+
+    @Override
+    public ConsumerAgentGroupAttribute getGroupAttribute(String name) {
+        return attributes.get(name);
     }
 
     @Override
@@ -95,19 +102,6 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     }
 
     @Override
-    public void replace(ConsumerAgent toRemove, ConsumerAgent toAdd) throws IllegalStateException {
-        if(agents.get(toRemove.getName()) == toRemove) {
-            if(!Objects.equals(toRemove.getName(), toAdd.getName()) && hasName(toAdd.getName())) {
-                throw new IllegalStateException("name '" + toAdd.getName() + "' already exists");
-            }
-            agents.remove(toRemove.getName());
-            agents.put(toAdd.getName(), toAdd);
-        } else {
-            throw new IllegalArgumentException("name '" + toRemove.getName() + "' does not exist");
-        }
-    }
-
-    @Override
     public Collection<ConsumerAgent> getAgents() {
         return agents.values();
     }
@@ -121,22 +115,13 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         return spatialDistribution;
     }
 
-    public void setProductAwareness(Awareness<Product> productAwareness) {
-        this.productAwareness = productAwareness;
+    public void setAwarenessSupplyScheme(ProductAwarenessSupplyScheme awarenessSupplyScheme) {
+        this.awarenessSupplyScheme = awarenessSupplyScheme;
     }
 
     @Override
-    public Awareness<Product> getProductAwareness() {
-        return productAwareness;
-    }
-
-    public void setFixedProductAwarenessMapping(AwarenessDistributionMapping<Product, UnivariateDoubleDistribution> fixedProductAwareness) {
-        this.fixedProductAwarenessMapping = fixedProductAwareness;
-    }
-
-    @Override
-    public AwarenessDistributionMapping<Product, UnivariateDoubleDistribution> getFixedProductAwarenessMapping() {
-        return fixedProductAwarenessMapping;
+    public ProductAwarenessSupplyScheme getAwarenessSupplyScheme() {
+        return awarenessSupplyScheme;
     }
 
     @Override
@@ -158,8 +143,8 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     }
 
     protected synchronized int nextId() {
-        int nextId = agentId;
-        agentId++;
+        int nextId = nextAgentId;
+        nextAgentId++;
         return nextId;
     }
 
@@ -169,37 +154,25 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
                 .collect(Collectors.toSet());
     }
 
-    protected Awareness<Product> deriveAwareness() {
-        Awareness<Product> awareness = getProductAwareness().emptyCopy();
-        addFixedProductAwareness(awareness);
-        return awareness;
-    }
-
-    protected void addFixedProductAwareness(Awareness<Product> awareness) {
-        for(ProductGroup pgrp: getEnvironment().getProducts().getGroups()) {
-            for(Product fixedProduct: pgrp.getFixedProducts()) {
-                UnivariateDoubleDistribution dist = getFixedProductAwarenessMapping().getDistribution(fixedProduct);
-                if(dist == null) {
-                    throw new NoSuchElementException("no dist for '" + fixedProduct.getName() + "'");
-                }
-                double value = dist.drawDoubleValue();
-                awareness.update(fixedProduct, value);
-            }
-        }
+    protected ProductAwareness deriveAwareness() {
+        return awarenessSupplyScheme.derive();
     }
 
     @Override
-    public PlaceholderConsumerAgent deriveAgent() {
-        PlaceholderConsumerAgent agent = new PlaceholderConsumerAgent();
+    public ProxyConsumerAgent deriveAgent() {
+        SpatialInformation spatialInformation = getSpatialDistribution().drawValue();
+        ProxyConsumerAgent agent = new ProxyConsumerAgent();
         agent.setName(getName() + "_" + nextId());
         agent.setGroup(this);
         agent.setEnvironment(getEnvironment());
         agent.setInformationAuthority(getInformationAuthority());
-        agent.addAttributes(deriveAttributes());
-        agent.setSpatialInformation(getSpatialDistribution().drawValue());
+        agent.addAllAttributes(deriveAttributes());
+        agent.setSpatialInformation(spatialInformation);
         agent.setProductAwareness(deriveAwareness());
         agent.setProcessFindingScheme(getProcessFindingScheme());
         agent.setProductFindingScheme(getProductFindingScheme());
+
+        agent.link(spatialInformation.getAttributeAccess());
         return agent;
     }
 }

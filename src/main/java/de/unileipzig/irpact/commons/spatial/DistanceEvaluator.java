@@ -5,5 +5,7 @@ package de.unileipzig.irpact.commons.spatial;
  */
 public interface DistanceEvaluator {
 
+    boolean isDisabled();
+
     double evaluate(double distance);
 }

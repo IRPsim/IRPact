@@ -4,6 +4,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.misc.Initialization;
+import de.unileipzig.irpact.util.Todo;
 
 import java.util.Collection;
 import java.util.stream.Stream;
@@ -12,6 +13,8 @@ import java.util.stream.Stream;
  * @author Daniel Abitz
  */
 //Listener support fuer neue Gruppen?
+@Todo("WICHTIG: AFFINITY AGENT REPLACE!!!!")
+@Todo("ProcessPlan auch Agenten austauschen!!! -> wenn er dem Jadexagenten uebergeben wird")
 public interface AgentManager extends Initialization {
 
     //=========================

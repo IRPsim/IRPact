@@ -73,8 +73,6 @@ public interface SocialGraph {
         }
     }
 
-    void replace(ConsumerAgent toRemove, ConsumerAgent toAdd) throws IllegalStateException;
-
     boolean addAgent(Agent agent);
 
     Node addAgentAndGetNode(Agent agent);
@@ -84,6 +82,8 @@ public interface SocialGraph {
     Node getNode(Agent agent);
 
     boolean hasNode(Node node);
+
+    boolean hasNode(Agent agent);
 
     Set<? extends Node> getNodes();
 

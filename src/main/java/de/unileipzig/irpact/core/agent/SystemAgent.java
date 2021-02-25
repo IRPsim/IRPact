@@ -13,6 +13,11 @@ public interface SystemAgent extends Agent {
     }
 
     @Override
+    default void actionPerformed() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     default void releaseAction() {
         throw new UnsupportedOperationException();
     }

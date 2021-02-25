@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.commons.distattr;
 
-import de.unileipzig.irpact.commons.attribute.DerivableUnivariateDistributionAttribute;
-
 /**
  * @author Daniel Abitz
  */

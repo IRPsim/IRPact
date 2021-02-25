@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.network.topology;
 
 import de.unileipzig.irpact.commons.BasicWeightedMapping;
+import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.WeightedMapping;
 import de.unileipzig.irpact.commons.spatial.DistanceEvaluator;
@@ -16,14 +17,13 @@ import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * @author Daniel Abitz
  */
-public class FreeNetworkTopology implements GraphTopologyScheme {
+public class FreeNetworkTopology extends NameableBase implements GraphTopologyScheme {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(FreeNetworkTopology.class);
 
@@ -34,14 +34,19 @@ public class FreeNetworkTopology implements GraphTopologyScheme {
     protected double initialWeight;
     protected Rnd rnd;
 
+    public FreeNetworkTopology() {
+    }
+
     public FreeNetworkTopology(
             SocialGraph.Type edgeType,
+            String name,
             Map<ConsumerAgentGroup, Integer> edgeCountMap,
             ConsumerAgentGroupAffinityMapping affinityMapping,
             DistanceEvaluator distanceEvaluator,
             double initialWeight,
             Rnd rnd) {
         this.edgeType = edgeType;
+        setName(name);
         this.edgeCountMap = edgeCountMap;
         this.affinityMapping = affinityMapping;
         this.distanceEvaluator = distanceEvaluator;
@@ -49,14 +54,62 @@ public class FreeNetworkTopology implements GraphTopologyScheme {
         this.rnd = rnd;
     }
 
+    public void setEdgeType(SocialGraph.Type edgeType) {
+        this.edgeType = edgeType;
+    }
+
+    public SocialGraph.Type getEdgeType() {
+        return edgeType;
+    }
+
+    public void setEdgeCountMap(Map<ConsumerAgentGroup, Integer> edgeCountMap) {
+        this.edgeCountMap = edgeCountMap;
+    }
+
+    public Map<ConsumerAgentGroup, Integer> getEdgeCountMap() {
+        return edgeCountMap;
+    }
+
+    public void setAffinityMapping(ConsumerAgentGroupAffinityMapping affinityMapping) {
+        this.affinityMapping = affinityMapping;
+    }
+
+    public ConsumerAgentGroupAffinityMapping getAffinityMapping() {
+        return affinityMapping;
+    }
+
+    public void setDistanceEvaluator(DistanceEvaluator distanceEvaluator) {
+        this.distanceEvaluator = distanceEvaluator;
+    }
+
+    public DistanceEvaluator getDistanceEvaluator() {
+        return distanceEvaluator;
+    }
+
+    public void setInitialWeight(double initialWeight) {
+        this.initialWeight = initialWeight;
+    }
+
+    public double getInitialWeight() {
+        return initialWeight;
+    }
+
+    public void setRnd(Rnd rnd) {
+        this.rnd = rnd;
+    }
+
+    public Rnd getRnd() {
+        return rnd;
+    }
+
     @Override
     public void initalize(SimulationEnvironment environment, SocialGraph graph) {
-        LOGGER.debug("HALLO {}", graph.getNodes().size());
+        LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "initialize free network graph");
         for(SocialGraph.Node node: graph.getNodes()) {
             ConsumerAgent ca = node.getAgent(ConsumerAgent.class);
             Set<ConsumerAgent> agents = drawTargets(environment, ca);
             for(ConsumerAgent targetCa: agents) {
-                LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "add edge: {}-{} ({},{})", ca.getName(), targetCa.getName(), edgeType, initialWeight);
+                LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "add edge: {}->{} ({},{})", ca.getName(), targetCa.getName(), edgeType, initialWeight);
                 graph.addEdge(ca.getSocialGraphNode(), targetCa.getSocialGraphNode(), edgeType, initialWeight);
             }
         }
@@ -88,7 +141,7 @@ public class FreeNetworkTopology implements GraphTopologyScheme {
             ConsumerAgentGroup targetCag) {
         BasicWeightedMapping<ConsumerAgent, ConsumerAgent, Double> mapping = new BasicWeightedMapping<>();
         for(ConsumerAgent target: targetCag.getAgents()) {
-            if(distanceEvaluator == null) {
+            if(distanceEvaluator.isDisabled()) {
                 mapping.put(ca, target, 1.0);
             } else {
                 SpatialModel spatialModel = environment.getSpatialModel();

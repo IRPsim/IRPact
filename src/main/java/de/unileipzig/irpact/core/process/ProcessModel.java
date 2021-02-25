@@ -11,8 +11,6 @@ import de.unileipzig.irpact.core.product.Product;
  */
 public interface ProcessModel extends Nameable, Initialization {
 
-    void setup();
-
     void onNewSimulationPeriod();
 
     ProcessPlan newPlan(Agent agent, Need need, Product product);

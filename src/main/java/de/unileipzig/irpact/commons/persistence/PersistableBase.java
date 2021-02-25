@@ -15,21 +15,6 @@ public abstract class PersistableBase implements Persistable {
         }
     }
 
-    @Override
-    public boolean hasUID() {
-        return hasUID;
-    }
-
-    @Override
-    public synchronized boolean setUID(UIDManager manager) {
-        if(hasUID) {
-            return false;
-        } else {
-            setUID(manager.getUID());
-            return true;
-        }
-    }
-
     public void setUID(long uid) {
         if(hasUID) {
             throw new IllegalStateException("uid already set");

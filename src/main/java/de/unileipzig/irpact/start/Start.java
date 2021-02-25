@@ -17,7 +17,7 @@ import java.util.concurrent.Callable;
 @SuppressWarnings({"unused", "BooleanMethodIsAlwaysInverted"})
 @CommandLine.Command(
         name = "java -jar <IRPact.jar>",
-        version = "IRPact version " + IRPact.VERSION
+        version = "IRPact version " + IRPact.VERSION_STRING
 )
 public class Start implements Callable<Integer> {
 
@@ -77,6 +77,13 @@ public class Start implements Callable<Integer> {
     private Path logPath;
 
     @CommandLine.Option(
+            names = { "--testMode" },
+            description = "test mode",
+            hidden = true
+    )
+    private boolean testMode;
+
+    @CommandLine.Option(
             names = { "--irptools" },
             description = "calls IRPtools, all arguments will be transmitted, IRPact is not called",
             hidden = true
@@ -98,6 +105,14 @@ public class Start implements Callable<Integer> {
     )
     private String specInputDir;
     private Path specInputDirPath;
+
+    @CommandLine.Option(
+            names = { "--dataDir" },
+            description = "path to data directory",
+            hidden = true
+    )
+    private String dataDir;
+    private Path dataDirPath;
 
     //=========================
     //data
@@ -170,6 +185,12 @@ public class Start implements Callable<Integer> {
                 || hasSpecInputDirPath();
     }
 
+    public Path getDataDirPath() {
+        return dataDirPath == null
+                ? Paths.get("irpactdata")
+                : dataDirPath;
+    }
+
     private boolean handleInput() {
         if(inputPath != null) {
             return true;
@@ -224,6 +245,14 @@ public class Start implements Callable<Integer> {
             return CommandLine.ExitCode.OK;
         }
 
+        if(testMode) {
+            return CommandLine.ExitCode.OK;
+        }
+
+        if(dataDir != null) {
+            dataDirPath = Paths.get(dataDir);
+        }
+
         if(handleInput()) {
             if(Files.notExists(inputPath)) {
                 LOGGER.error("input file not found: {}", inputPath);
@@ -258,6 +287,20 @@ public class Start implements Callable<Integer> {
         }
 
         return CommandLine.ExitCode.OK;
+    }
+
+    public static Start testMode() {
+        IRPLogging.initConsole();
+        String[] args = new String[]{"--testMode"};
+        Start start = new Start(args);
+        CommandLine cmdLine = new CommandLine(start)
+                .setUnmatchedArgumentsAllowed(true);
+        int exitCode = cmdLine.execute(args);
+        if(exitCode == CommandLine.ExitCode.OK) {
+            return start;
+        } else {
+            throw new RuntimeException("exit code: " + CommandLine.ExitCode.USAGE);
+        }
     }
 
     //TODO listener access einfuegen fuer gui

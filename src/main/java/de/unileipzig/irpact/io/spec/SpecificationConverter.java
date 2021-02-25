@@ -4,31 +4,33 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.util.IRPactJson;
-import de.unileipzig.irpact.io.input.InAttributeName;
-import de.unileipzig.irpact.io.input.InGeneral;
-import de.unileipzig.irpact.io.input.InRoot;
-import de.unileipzig.irpact.io.input.InVersion;
-import de.unileipzig.irpact.io.input.affinity.InAffinityEntry;
-import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroup;
-import de.unileipzig.irpact.io.input.agent.consumer.InConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.io.input.awareness.InAwareness;
-import de.unileipzig.irpact.io.input.awareness.InThresholdAwareness;
-import de.unileipzig.irpact.io.input.distribution.InConstantUnivariateDistribution;
-import de.unileipzig.irpact.io.input.distribution.InRandomBoundedIntegerDistribution;
-import de.unileipzig.irpact.io.input.distribution.InUnivariateDoubleDistribution;
-import de.unileipzig.irpact.io.input.network.*;
-import de.unileipzig.irpact.io.input.process.InOrientationSupplier;
-import de.unileipzig.irpact.io.input.process.InProcessModel;
-import de.unileipzig.irpact.io.input.process.InRAProcessModel;
-import de.unileipzig.irpact.io.input.process.InSlopeSupplier;
-import de.unileipzig.irpact.io.input.product.InProductGroup;
-import de.unileipzig.irpact.io.input.product.InProductGroupAttribute;
-import de.unileipzig.irpact.io.input.spatial.InConstantSpatialDistribution2D;
-import de.unileipzig.irpact.io.input.spatial.InSpace2D;
-import de.unileipzig.irpact.io.input.spatial.InSpatialDistribution;
-import de.unileipzig.irpact.io.input.spatial.InSpatialModel;
-import de.unileipzig.irpact.io.input.time.InDiscreteTimeModel;
-import de.unileipzig.irpact.io.input.time.InTimeModel;
+import de.unileipzig.irpact.develop.TodoException;
+import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.io.param.input.InGeneral;
+import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.input.InVersion;
+import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.io.param.input.awareness.InProductAwarenessSupplyScheme;
+import de.unileipzig.irpact.io.param.input.awareness.InProductThresholdAwarenessSupplyScheme;
+import de.unileipzig.irpact.io.param.input.distribution.InConstantUnivariateDistribution;
+import de.unileipzig.irpact.io.param.input.distribution.InRandomBoundedIntegerDistribution;
+import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
+import de.unileipzig.irpact.io.param.input.network.*;
+import de.unileipzig.irpact.io.param.input.process.InOrientationSupplier;
+import de.unileipzig.irpact.io.param.input.process.InProcessModel;
+import de.unileipzig.irpact.io.param.input.process.InRAProcessModel;
+import de.unileipzig.irpact.io.param.input.process.InSlopeSupplier;
+import de.unileipzig.irpact.io.param.input.product.InProductGroup;
+import de.unileipzig.irpact.io.param.input.product.InProductGroupAttribute;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomSpatialDistribution2D;
+import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
+import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
+import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
+import de.unileipzig.irpact.io.param.input.time.InTimeModel;
+import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.util.Util;
 
 import java.util.*;
@@ -39,6 +41,8 @@ import static de.unileipzig.irpact.io.spec.SpecificationConstants.*;
 /**
  * @author Daniel Abitz
  */
+@Todo("AWARENESS")
+@Todo("fixen, siehe die todos")
 public class SpecificationConverter {
 
     @SuppressWarnings("rawtypes")
@@ -51,7 +55,7 @@ public class SpecificationConverter {
     private void initDefaults() {
         put(InAffinityEntry.class, affinityEntryToJson);
         put(InConsumerAgentGroup.class, cagToJson);
-        put(InThresholdAwareness.class, thresholdAwarenessToJson);
+        put(InProductThresholdAwarenessSupplyScheme.class, thresholdAwarenessToJson);
         put(InConstantUnivariateDistribution.class, constantUnivariateDoubleDistributionToJson);
         put(InRandomBoundedIntegerDistribution.class, randomBoundedIntegerDistributiontoJson);
         put(InInverse.class, inInverseToJson);
@@ -63,7 +67,7 @@ public class SpecificationConverter {
         put(InSlopeSupplier.class, inSlopeSupplierToJson);
         put(InProductGroup.class, inProductGroupToJson);
         put(InSpace2D.class, inSpace2DToJson);
-        put(InConstantSpatialDistribution2D.class, inConstantSpatialDistribution2DToJson);
+        put(InCustomSpatialDistribution2D.class, inConstantSpatialDistribution2DToJson);
         put(InDiscreteTimeModel.class, inDiscreteTimeModelToJson);
         put(InGeneral.class, inGeneralToJson);
         put(InVersion.class, inVersionToJson);
@@ -93,55 +97,57 @@ public class SpecificationConverter {
     }
 
     public SpecificationManager toSpec(InRoot inRoot) {
+        if(true) throw new TodoException();
         SpecificationManager manager = new SpecificationManager(IRPactJson.JSON);
 
-        //general
-        apply(manager, inRoot.general);
-        apply(manager, inRoot.version);
-        //affinity
-        apply(manager, inRoot.affinityEntries);
-        //agent
-        apply(manager, inRoot.consumerAgentGroups);
-        //network
-        apply(manager, inRoot.graphTopologySchemes);
-        apply(manager, inRoot.distanceEvaluators);
-        //process
-        apply(manager, inRoot.processModel);
-        apply(manager, inRoot.orientationSupplier);
-        apply(manager, inRoot.slopeSupplier);
-        //product
-        apply(manager, inRoot.productGroups);
-        //spatial
-        apply(manager, inRoot.spatialModel);
-        apply(manager, inRoot.spatialDistributions);
-        //spatial
-        apply(manager, inRoot.timeModel);
+//        //general
+//        apply(manager, inRoot.general);
+//        apply(manager, inRoot.version);
+//        //affinity
+//        apply(manager, inRoot.affinityEntries);
+//        //agent
+//        apply(manager, inRoot.consumerAgentGroups);
+//        //network
+//        apply(manager, inRoot.graphTopologySchemes);
+//        apply(manager, inRoot.distanceEvaluators);
+//        //process
+//        apply(manager, inRoot.processModel);
+//        apply(manager, inRoot.orientationSupplier);
+//        apply(manager, inRoot.slopeSupplier);
+//        //product
+//        apply(manager, inRoot.productGroups);
+//        //spatial
+//        apply(manager, inRoot.spatialModel);
+//        apply(manager, inRoot.spatialDistributions);
+//        //spatial
+//        apply(manager, inRoot.timeModel);
 
         return manager;
     }
 
     public InRoot toParam(SpecificationManager manager) {
+        if(true) throw new TodoException();
         InRoot root = new InRoot();
         Map<String, Object> cache = new HashMap<>();
 
-        putAll(cache, awarenessToParam.toParam(manager, null, cache), InAwareness::getName);
+        putAll(cache, awarenessToParam.toParam(manager, null, cache), InProductAwarenessSupplyScheme::getName);
         putAll(cache, univariateDoubleDistributionToParam.toParam(manager, null, cache), InUnivariateDoubleDistribution::getName);
 
-        root.distanceEvaluators = distEvalToParam.toParam(manager, root.distanceEvaluators, cache);
-        putAll(cache, root.distanceEvaluators, InDistanceEvaluator::getName);
-        root.consumerAgentGroups = cagToParam.toParam(manager, root.consumerAgentGroups, cache);
-        putAll(cache, root.consumerAgentGroups, InConsumerAgentGroup::getName);
-        root.affinityEntries = affinityEntryToParam.toParam(manager, root.affinityEntries, cache);
-        root.graphTopologySchemes = topoToParam.toParam(manager, root.graphTopologySchemes, cache);
-        root.processModel = processToParam.toParam(manager, root.processModel, cache);
-        root.orientationSupplier = orientationSupplierToParam.toParam(manager, root.orientationSupplier, cache);
-        root.slopeSupplier = slopeSupplierToParam.toParam(manager, root.slopeSupplier, cache);
-        root.productGroups = productToParam.toParam(manager, root.productGroups, cache);
-        root.spatialModel = spatialModelToParam.toParam(manager, root.spatialModel, cache);
-        root.spatialDistributions = spatialDistToParam.toParam(manager, root.spatialDistributions, cache);
-        root.timeModel = timeModelToParam.toParam(manager, root.timeModel, cache);
-        root.general = inGeneralToParam.toParam(manager, root.general, cache);
-        root.version = inVersionToParam.toParam(manager, root.version, cache);
+//        root.distanceEvaluators = distEvalToParam.toParam(manager, root.distanceEvaluators, cache);
+//        putAll(cache, root.distanceEvaluators, InDistanceEvaluator::getName);
+//        root.consumerAgentGroups = cagToParam.toParam(manager, root.consumerAgentGroups, cache);
+//        putAll(cache, root.consumerAgentGroups, InConsumerAgentGroup::getName);
+//        root.affinityEntries = affinityEntryToParam.toParam(manager, root.affinityEntries, cache);
+//        root.graphTopologySchemes = topoToParam.toParam(manager, root.graphTopologySchemes, cache);
+//        root.processModel = processToParam.toParam(manager, root.processModel, cache);
+//        root.orientationSupplier = orientationSupplierToParam.toParam(manager, root.orientationSupplier, cache);
+//        root.slopeSupplier = slopeSupplierToParam.toParam(manager, root.slopeSupplier, cache);
+//        root.productGroups = productToParam.toParam(manager, root.productGroups, cache);
+//        root.spatialModel = spatialModelToParam.toParam(manager, root.spatialModel, cache);
+//        root.spatialDistributions = spatialDistToParam.toParam(manager, root.spatialDistributions, cache);
+//        root.timeModel = timeModelToParam.toParam(manager, root.timeModel, cache);
+//        root.general = inGeneralToParam.toParam(manager, root.general, cache);
+//        root.version = inVersionToParam.toParam(manager, root.version, cache);
 
         return root;
     }
@@ -182,12 +188,13 @@ public class SpecificationConverter {
         converter.apply(manager, instance.getAwareness());
     };
 
-    private static final ToSpecFunction<InThresholdAwareness> thresholdAwarenessToJson = (instance, manager, converter) -> {
+    private static final ToSpecFunction<InProductThresholdAwarenessSupplyScheme> thresholdAwarenessToJson = (instance, manager, converter) -> {
         if(!manager.hasAwareness(instance.getName())) {
             SpecificationHelper spec = new SpecificationHelper(manager.getAwareness(instance.getName()));
             spec.setName(instance.getName());
             spec.setType("ThresholdAwareness");
-            spec.setParametersValue(instance.getAwarenessThreshold());
+            //spec.setParametersValue(instance.getAwarenessThreshold()); //TODO
+            throw new RuntimeException("TODO");
         }
     };
 
@@ -304,17 +311,19 @@ public class SpecificationConverter {
         );
     };
 
-    private static final ToSpecFunction<InConstantSpatialDistribution2D> inConstantSpatialDistribution2DToJson = (instance, manager, converter) -> {
-        SpecificationHelper cagSpec = new SpecificationHelper(manager.getConsumerAgentGroup(instance.getConsumerAgentGroup().getName()));
-        cagSpec.set(TAG_spatialDistribution, instance.getName());
-
-        if(!manager.hasSpatialDistribution(instance.getName())) {
-            SpecificationHelper spec = new SpecificationHelper(manager.getSpatialDistribution(instance.getName()));
-            spec.setName(instance.getName());
-            spec.setType("ConstantSpatialDistribution2D");
-            spec.setParameters(TAG_x, instance.getX());
-            spec.setParameters(TAG_y, instance.getY());
-        }
+    //TODO
+    private static final ToSpecFunction<InCustomSpatialDistribution2D> inConstantSpatialDistribution2DToJson = (instance, manager, converter) -> {
+        throw new UnsupportedOperationException("TODO");
+//        SpecificationHelper cagSpec = new SpecificationHelper(manager.getConsumerAgentGroup(instance.getConsumerAgentGroup().getName()));
+//        cagSpec.set(TAG_spatialDistribution, instance.getName());
+//
+//        if(!manager.hasSpatialDistribution(instance.getName())) {
+//            SpecificationHelper spec = new SpecificationHelper(manager.getSpatialDistribution(instance.getName()));
+//            spec.setName(instance.getName());
+//            spec.setType("ConstantSpatialDistribution2D");
+//            spec.setParameters(TAG_x, instance.getX());
+//            spec.setParameters(TAG_y, instance.getY());
+//        }
     };
 
     private static final ToSpecFunction<InDiscreteTimeModel> inDiscreteTimeModelToJson = (instance, manager, converter) -> {
@@ -400,7 +409,7 @@ public class SpecificationConverter {
             SpecificationHelper spec = new SpecificationHelper(cagEntry.getValue());
             String cagName = spec.getName();
             int numberOfAgents = spec.getInt(TAG_numberOfAgents);
-            InAwareness awareness = find(cache, spec.getText(TAG_awareness));
+            InProductAwarenessSupplyScheme awareness = find(cache, spec.getText(TAG_awareness));
 
             List<InConsumerAgentGroupAttribute> attrList = new ArrayList<>();
             for(JsonNode attrNode: Util.iterateElements(spec.getAttributes())) {
@@ -429,8 +438,8 @@ public class SpecificationConverter {
         return cagList.toArray(new InConsumerAgentGroup[0]);
     };
 
-    private static final ToParamFunction<InAwareness[]> awarenessToParam = (manager, instance, cache) -> {
-        List<InAwareness> list = new ArrayList<>();
+    private static final ToParamFunction<InProductAwarenessSupplyScheme[]> awarenessToParam = (manager, instance, cache) -> {
+        List<InProductAwarenessSupplyScheme> list = new ArrayList<>();
         for(Map.Entry<String, ObjectNode> entry: manager.awarenessMap.entrySet()) {
             SpecificationHelper spec = new SpecificationHelper(entry.getValue());
             String name = spec.getName();
@@ -438,15 +447,17 @@ public class SpecificationConverter {
 
             if("ThresholdAwareness".equals(type)) {
                 double threshold = spec.getParametersSpec().getDouble(TAG_value);
-                InThresholdAwareness awa = new InThresholdAwareness(name, threshold);
-                list.add(awa);
+                //TODO
+                //InProductThresholdAwarenessSupplyScheme awa = new InProductThresholdAwarenessSupplyScheme(name, threshold);
+                //list.add(awa);
+                throw new RuntimeException("TODO");
             }
             else {
                 throw new IllegalArgumentException("unknown type: " + type);
             }
         }
 
-        return list.toArray(new InAwareness[0]);
+        return list.toArray(new InProductAwarenessSupplyScheme[0]);
     };
 
     private static final ToParamFunction<InUnivariateDoubleDistribution[]> univariateDoubleDistributionToParam = (manager, instance, cache) -> {
@@ -544,23 +555,26 @@ public class SpecificationConverter {
 
         InProcessModel model;
         if("RAProcessModel".equals(type)) {
-            model = new InRAProcessModel(
-                    name,
-                    spec.getDouble(TAG_a),
-                    spec.getDouble(TAG_b),
-                    spec.getDouble(TAG_c),
-                    spec.getDouble(TAG_d),
-                    spec.getInt(TAG_adopterPoints),
-                    spec.getInt(TAG_interestedPoints),
-                    spec.getInt(TAG_awarePoints),
-                    spec.getInt(TAG_unknownPoints)
-            );
+            //TODO
+            throw new TodoException();
+//            model = new InRAProcessModel(
+//                    name,
+//                    spec.getDouble(TAG_a),
+//                    spec.getDouble(TAG_b),
+//                    spec.getDouble(TAG_c),
+//                    spec.getDouble(TAG_d),
+//                    spec.getInt(TAG_adopterPoints),
+//                    spec.getInt(TAG_interestedPoints),
+//                    spec.getInt(TAG_awarePoints),
+//                    spec.getInt(TAG_unknownPoints)
+//            );
         }
         else {
             throw new IllegalArgumentException("unknown type: " + type);
         }
 
-        return new InProcessModel[]{model};
+        //TODO
+//        return new InProcessModel[]{model};
     };
 
     private static final ToParamFunction<InOrientationSupplier[]> orientationSupplierToParam = (manager, instance, cache) -> {
@@ -666,6 +680,7 @@ public class SpecificationConverter {
         return list;
     }
 
+    //TODO
     private static final ToParamFunction<InSpatialDistribution[]> spatialDistToParam = (manager, instance, cache) -> {
         List<InSpatialDistribution> distList = new ArrayList<>();
         for(Map.Entry<String, ObjectNode> entry: manager.spatialDistributionMap.entrySet()) {
@@ -680,13 +695,14 @@ public class SpecificationConverter {
                 if(cagList.size() != 1) {
                     throw new IllegalArgumentException("cagList.size != 1");
                 }
-                InConstantSpatialDistribution2D dist = new InConstantSpatialDistribution2D(
-                        name,
-                        cagList.get(0),
-                        x,
-                        y
-                );
-                distList.add(dist);
+                throw new UnsupportedOperationException("TODO");
+//                InCustomSpatialDistribution2D dist = new InCustomSpatialDistribution2D(
+//                        name,
+//                        cagList.get(0),
+//                        x,
+//                        y
+//                );
+//                distList.add(dist);
             }
             else {
                 throw new IllegalArgumentException("unknown type: " + type);

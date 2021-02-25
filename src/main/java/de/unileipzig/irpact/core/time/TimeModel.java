@@ -1,17 +1,22 @@
 package de.unileipzig.irpact.core.time;
 
+import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.time.TimeMode;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.misc.Initialization;
 
+import java.time.Month;
 import java.time.ZonedDateTime;
 
 /**
  * @author Daniel Abitz
  */
-public interface TimeModel extends Initialization {
+public interface TimeModel extends Nameable, Initialization {
 
-    void setup();
+    /**
+     * Special setup for time model.
+     */
+    void setupTimeModel();
 
     void setupNextYear();
 
@@ -31,6 +36,16 @@ public interface TimeModel extends Initialization {
 
     Timestamp endTime();
 
+    boolean isValid(long delay);
+
+    boolean isValid(Timestamp ts);
+
+    boolean endTimeReached();
+
+    //=========================
+    //util
+    //=========================
+
     Timestamp plusMillis(long millis);
 
     Timestamp plusMillis(Timestamp ts, long millis);
@@ -39,7 +54,5 @@ public interface TimeModel extends Initialization {
 
     Timestamp plusYears(Timestamp ts, long years);
 
-    boolean isValid(long delay);
-
-    boolean isValid(Timestamp ts);
+    Timestamp at(int year, Month month, int day);
 }

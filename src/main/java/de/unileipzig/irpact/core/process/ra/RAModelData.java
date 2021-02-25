@@ -1,13 +1,13 @@
 package de.unileipzig.irpact.core.process.ra;
 
+import de.unileipzig.irpact.commons.attribute.Attribute;
+import de.unileipzig.irpact.commons.attribute.AttributeUtil;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
-import de.unileipzig.irpact.core.spatial.SpatialAttribute;
-import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * @author Daniel Abitz
@@ -88,25 +88,19 @@ public class RAModelData {
     }
 
     protected static int getN(ConsumerAgent agent) {
-        SpatialInformation information = agent.getSpatialInformation();
-        SpatialAttribute sAttr = information.getAttribute(RAConstants.SLOPE);
-        if(sAttr != null) {
-            return (int) sAttr.getDoubleValue();
-        } else {
-            ConsumerAgentAttribute caAttr = agent.getAttribute(RAConstants.SLOPE);
-            return (int) caAttr.getDoubleValue();
-        }
+        return getIntValue(agent, RAConstants.SLOPE);
     }
 
     protected static int getA(ConsumerAgent agent) {
-        SpatialInformation information = agent.getSpatialInformation();
-        SpatialAttribute sAttr = information.getAttribute(RAConstants.ORIENTATION);
-        if(sAttr != null) {
-            return (int) sAttr.getDoubleValue();
-        } else {
-            ConsumerAgentAttribute caAttr = agent.getAttribute(RAConstants.ORIENTATION);
-            return (int) caAttr.getDoubleValue();
+        return getIntValue(agent, RAConstants.ORIENTATION);
+    }
+
+    protected static int getIntValue(ConsumerAgent agent, String attrName) {
+        Attribute<?> attr = agent.findAttribute(attrName);
+        if(attr == null) {
+            throw new NoSuchElementException("missing argument '" + attrName + "'");
         }
+        return (int) AttributeUtil.getDoubleValue(attr, () -> "attribute '" + attrName + "' is no number");
     }
 
     public double a() {

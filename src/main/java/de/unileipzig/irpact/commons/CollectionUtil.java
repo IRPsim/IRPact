@@ -80,7 +80,7 @@ public final class CollectionUtil {
         throw new IndexOutOfBoundsException("index: " + i + ", size: " + coll.size());
     }
 
-    public static <T> T remove(Collection<T> coll, int index) {
+    public static <T> T remove2(Collection<T> coll, int index) {
         if(coll instanceof List) {
             List<T> list = (List<T>) coll;
             return list.remove(index);
@@ -103,6 +103,25 @@ public final class CollectionUtil {
             }
         });
         return value.get();
+    }
+
+    public static <T> T remove(Collection<T> coll, int index) {
+        if(coll instanceof List) {
+            List<T> list = (List<T>) coll;
+            return list.remove(index);
+        }
+        if(index < 0 || index >= coll.size()) {
+            throw new IndexOutOfBoundsException("index: " + index + ", size: " + coll.size());
+        }
+        int i = 0;
+        for(T value: coll) {
+            if(i == index) {
+                coll.remove(value);
+                return value;
+            }
+            i++;
+        }
+        throw new IllegalStateException("index not found"); //unerreichbar
     }
 
     public static <T> T getFirst(Collection<T> coll) {

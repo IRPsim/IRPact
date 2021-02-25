@@ -2,8 +2,8 @@ package de.unileipzig.irpact.jadex.time;
 
 import de.unileipzig.irpact.commons.time.ContinuousConverter;
 import de.unileipzig.irpact.commons.time.TimeMode;
-import de.unileipzig.irpact.core.misc.ValidationException;
 import jadex.bridge.IComponentStep;
+import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IExecutionFeature;
 import jadex.commons.future.IFuture;
 
@@ -50,15 +50,7 @@ public class ContinuousTimeModel extends AbstractJadexTimeModel {
     }
 
     @Override
-    public void initialize() {
-    }
-
-    @Override
-    public void validate() throws ValidationException {
-    }
-
-    @Override
-    public void setup() {
+    public void setupTimeModel() {
         throw new RuntimeException("TODO");
     }
 
@@ -78,31 +70,36 @@ public class ContinuousTimeModel extends AbstractJadexTimeModel {
     }
 
     @Override
-    public IFuture<Void> waitUntil(IExecutionFeature exec, JadexTimestamp ts, IComponentStep<Void> task) {
+    public IFuture<Void> waitUntil(IExecutionFeature exec, JadexTimestamp ts, IInternalAccess access, IComponentStep<Void> task) {
         if(isValid(ts)) {
             JadexTimestamp now = now();
             long delay = converter.timeBetween(now.getTime(), ts.getTime());
-            return wait(exec, delay, task);
+            return wait(exec, delay, access, task);
         } else {
             return IFuture.DONE;
         }
     }
 
     @Override
-    public IFuture<Void> wait(IExecutionFeature exec, long delay, IComponentStep<Void> task) {
+    public IFuture<Void> wait(IExecutionFeature exec, long delay, IInternalAccess access, IComponentStep<Void> task) {
         if(isValid(delay)) {
-            return exec.waitForDelay(delay, task, false);
+            return uncheckedWait(exec, delay, access, task);
         } else {
             return IFuture.DONE;
         }
     }
 
     @Override
-    public IFuture<Void> forceWait(IExecutionFeature exec, long delay, IComponentStep<Void> task) {
-        return exec.waitForDelay(delay, task);
+    public IFuture<Void> uncheckedWait(IExecutionFeature exec, long delay, IInternalAccess access, IComponentStep<Void> task) {
+        return exec.waitForDelay(delay, task, false);
     }
 
-//    @Override
+    @Override
+    public IFuture<Void> scheduleImmediately(IExecutionFeature exec, IInternalAccess access, IComponentStep<Void> task) {
+        return uncheckedWait(exec, 0L, access, task);
+    }
+
+    //    @Override
 //    public IFuture<Void> waitUntil0(IExecutionFeature exec, JadexTimestamp ts, IComponentStep<Void> task) {
 //        return waitUntil0(true, exec, ts, task);
 //    }

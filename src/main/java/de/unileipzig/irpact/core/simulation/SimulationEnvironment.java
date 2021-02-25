@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.misc.Initialization;
 import de.unileipzig.irpact.core.network.SocialNetwork;
@@ -17,8 +18,6 @@ public interface SimulationEnvironment extends Initialization {
     //=========================
     //general
     //=========================
-
-    void setup();
 
     //=========================
     //main components
@@ -45,6 +44,10 @@ public interface SimulationEnvironment extends Initialization {
     //=========================
 
     Version getVersion();
+
+    ResourceLoader getResourceLoader();
+
+    BinaryTaskManager getTaskManager();
 
     Rnd getSimulationRandom();
 }

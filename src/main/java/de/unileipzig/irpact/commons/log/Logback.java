@@ -24,7 +24,12 @@ import java.util.List;
  */
 public final class Logback {
 
-    private static final String PATTERN = "%d{HH:mm:ss.SSS} [%logger{0},%level] %msg%n";
+    //padding ja/nein?
+    //private static final String PATTERN = "%d{HH:mm:ss.SSS} %-40([%logger{0},%level]) %msg%n";
+    //ohne thread
+    //private static final String PATTERN = "%d{HH:mm:ss.SSS} [%logger{0},%level] %msg%n";
+    //mit thread
+    private static final String PATTERN = "%d{HH:mm:ss.SSS} [%logger{0},%level,%thread] %msg%n";
     private static final String SYSTEMOUT = "SYSTEMOUT";
     private static final String SYSTEMERR = "SYSTEMERR";
     private static final String FILE = "FILE";

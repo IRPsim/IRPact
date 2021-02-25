@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.io;
 
-import de.unileipzig.irpact.io.input.InRoot;
+import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.in.*;
 import de.unileipzig.irpact.start.optact.network.IFreeMultiGraphTopology;

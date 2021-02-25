@@ -10,6 +10,8 @@ public interface Agent extends SimulationEntity {
 
     void lockAction();
 
+    void actionPerformed();
+
     void releaseAction();
 
     boolean aquireAction();

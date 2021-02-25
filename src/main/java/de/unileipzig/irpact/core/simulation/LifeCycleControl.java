@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.simulation;
 
+import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.misc.Initialization;
@@ -39,26 +40,9 @@ public interface LifeCycleControl extends Initialization {
 
     void pulse();
 
-    void addSynchronisationPoint(Timestamp ts);
-
-    /**
-     * Tests if the simulation requires a synchronisation step (e.g. global data update).
-     *
-     * @return true: yes
-     */
-    boolean requiresSynchronisation(Agent agent);
-
-    /**
-     * Waits until the synchronisation is finished.
-     *
-     * @return If there was an exception, if yes: cancel all.
-     */
-    boolean waitForSynchronisation(Agent agent);
-
-    /**
-     * Finish the synchronisation process.
-     */
-    void releaseSynchronisation();
+    //=========================
+    //terminate
+    //=========================
 
     Object terminate();
 
@@ -67,4 +51,15 @@ public interface LifeCycleControl extends Initialization {
     Object terminateWithError(Exception e);
 
     TerminationState getTerminationState();
+
+    //=========================
+    //sync
+    //=========================
+
+    boolean registerSyncTask(Timestamp ts, SyncTask task);
+
+    /**
+     * Waits until the synchronisation is finished (if required).
+     */
+    void waitForSynchronisationIfRequired(Agent agent);
 }

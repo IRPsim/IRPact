@@ -7,7 +7,7 @@ import de.unileipzig.irpact.commons.distattr.AbstractDerivableUnivariateDoubleDi
  */
 public class BasicProductGroupAttribute extends AbstractDerivableUnivariateDoubleDistributionAttribute<ProductAttribute> implements ProductGroupAttribute {
 
-    protected int id = 0;
+    protected int nextId = 0;
 
     public BasicProductGroupAttribute() {
     }
@@ -19,15 +19,20 @@ public class BasicProductGroupAttribute extends AbstractDerivableUnivariateDoubl
     }
 
     protected synchronized int nextId() {
-        int next = id;
-        id++;
+        int next = nextId;
+        nextId++;
         return next;
     }
 
     @Override
     public BasicProductAttribute derive(double value) {
+        return derive(getName() + "_" + nextId(), value);
+    }
+
+    @Override
+    public BasicProductAttribute derive(String name, double value) {
         return new BasicProductAttribute(
-                getName() + "_" + nextId(),
+                name,
                 this,
                 value
         );

@@ -6,9 +6,18 @@ package de.unileipzig.irpact.core.misc;
 public interface Initialization {
 
     /**
+     * Called before all proxy agents are created.
+     *
+     * @throws MissingDataException something went wrong
+     */
+    default void preAgentCreation() throws MissingDataException {
+    }
+
+    /**
      * Initalize the basic setup without dependencies.
      */
-    void initialize();
+    default void initialize() {
+    }
 
     /**
      * Validates the object.
@@ -29,5 +38,22 @@ public interface Initialization {
      *
      * @throws ValidationException something went wrong
      */
-    void validate() throws ValidationException;
+    default void validate() throws ValidationException {
+    }
+
+    /**
+     * Called after all proxy agents are created.
+     *
+     * @throws MissingDataException something went wrong
+     */
+    default void postAgentCreation() throws MissingDataException {
+    }
+
+    /**
+     * Final setup before the simulation is started (simulation dependencies are now available).
+     *
+     * @throws MissingDataException something is missing
+     */
+    default void preSimulationStart() throws MissingDataException {
+    }
 }

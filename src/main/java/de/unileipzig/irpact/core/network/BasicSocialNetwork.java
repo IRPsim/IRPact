@@ -3,6 +3,7 @@ package de.unileipzig.irpact.core.network;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -57,6 +58,10 @@ public class BasicSocialNetwork implements SocialNetwork {
     }
 
     @Override
-    public void validate() throws ValidationException {
+    public void postAgentCreation() throws MissingDataException {
+        getConfiguration().getGraphTopologyScheme().initalize(
+                environment,
+                getGraph()
+        );
     }
 }
