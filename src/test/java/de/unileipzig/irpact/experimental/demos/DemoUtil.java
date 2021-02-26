@@ -4,8 +4,8 @@ import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.io.param.input.awareness.InProductAwarenessSupplyScheme;
-import de.unileipzig.irpact.io.param.input.awareness.InProductThresholdAwarenessSupplyScheme;
+import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
+import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
@@ -64,7 +64,7 @@ public class DemoUtil {
         grp._name = name;
         grp.informationAuthority = 1.0;
         grp.numberOfAgentsX = 10;
-        grp.cagAwareness = new InProductAwarenessSupplyScheme[]{new InProductThresholdAwarenessSupplyScheme(name + "_" + "awa", ExampleUtil.diraq10)};
+        grp.cagAwareness = new InProductInterestSupplyScheme[]{new InProductThresholdInterestSupplyScheme(name + "_" + "awa", ExampleUtil.diraq10)};
         grp.cagAttributes = new InConsumerAgentGroupAttribute[]{
                 new InConsumerAgentGroupAttribute(
                         name + "_" + RAConstants.PURCHASE_POWER,

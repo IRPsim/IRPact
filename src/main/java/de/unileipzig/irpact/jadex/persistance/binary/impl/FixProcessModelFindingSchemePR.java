@@ -26,7 +26,7 @@ public class FixProcessModelFindingSchemePR implements Persister<FixProcessModel
     }
 
     @Override
-    public FixProcessModelFindingScheme initalize(Persistable persistable) {
+    public FixProcessModelFindingScheme initalize(Persistable persistable, RestoreManager manager) {
         return new FixProcessModelFindingScheme();
     }
 

@@ -43,7 +43,7 @@ public class FreeNetworkTopologyPR implements Persister<FreeNetworkTopology>, Re
     }
 
     @Override
-    public FreeNetworkTopology initalize(Persistable persistable) {
+    public FreeNetworkTopology initalize(Persistable persistable, RestoreManager manager) {
         return new FreeNetworkTopology();
     }
 

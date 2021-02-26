@@ -127,7 +127,7 @@ public class Preloader {
         InRoot root = converter.toParam(manager);
         PerennialData<InRoot> pData = new PerennialData<>();
         pData.add(root.general.startYear, root);
-        PerennialFile pFile = pData.serialize(IRPact.getConverter());
+        PerennialFile pFile = pData.serialize(IRPact.getInputConverter());
         pFile.store(param.getOutputPath(), StandardCharsets.UTF_8);
         LOGGER.debug(IRPSection.SPECIFICATION_CONVERTER, "param file stored: '{}'", param.getOutputPath());
     }

@@ -10,11 +10,13 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.FreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.lang.invoke.MethodHandles;
 import java.util.*;
 
 /**
@@ -23,11 +25,17 @@ import java.util.*;
 @Definition
 public class InFreeNetworkTopology implements InGraphTopologyScheme {
 
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
+
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.putPath(
-                InFreeNetworkTopology.class,
+                thisClass(),
                 res.getCachedElement("Netzwerk"),
                 res.getCachedElement("Topologie"),
                 res.getCachedElement("Freie Topologie")
@@ -36,20 +44,20 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         res.newEntryBuilder()
                 .setGamsIdentifier("Legt den Evaluator für die Abstände zwischen den Agenten fest.")
                 .setGamsDescription("Evaluator für Abstände")
-                .store(InFreeNetworkTopology.class, "distanceEvaluator");
+                .store(thisClass(), "distanceEvaluator");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("Knotenanzahl je KG")
                 .setGamsDescription("Knotenanzahl")
-                .store(InFreeNetworkTopology.class, "numberOfTies");
+                .store(thisClass(), "numberOfTies");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("Initiale Kantengewicht")
                 .setGamsDescription("Initiale Gewicht der Kanten")
-                .store(InCompleteGraphTopology.class, "initialWeight");
+                .store(thisClass(), "initialWeight");
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InFreeNetworkTopology.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
 
@@ -93,8 +101,10 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
     public Object parse(InputParser parser) throws ParsingException {
         Map<ConsumerAgentGroup, Integer> edgeCountMap = new HashMap<>();
         for(InNumberOfTies entry: getNumberOfTies()) {
-            ConsumerAgentGroup cag = parser.parseEntityTo(entry.getCag());
-            edgeCountMap.put(cag, entry.getCount());
+            for(InConsumerAgentGroup inCag: entry.getConsumerAgentGroups()) {
+                ConsumerAgentGroup cag = parser.parseEntityTo(inCag);
+                edgeCountMap.put(cag, entry.getCount());
+            }
         }
 
         AgentManager agentManager = parser.getEnvironment().getAgents();

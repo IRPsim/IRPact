@@ -6,13 +6,14 @@ import de.unileipzig.irpact.core.product.BasicProduct;
 import de.unileipzig.irpact.core.product.BasicProductGroup;
 import de.unileipzig.irpact.core.product.ProductAttribute;
 import de.unileipzig.irpact.io.param.input.InEntity;
+import de.unileipzig.irpact.io.param.input.InUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
-import de.unileipzig.irpact.io.param.input.distribution.InBooleanDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Collection;
 
 /**
@@ -21,17 +22,23 @@ import java.util.Collection;
 @Definition
 public class InFixProduct implements InEntity {
 
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
+
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.putPath(
-                InFixProduct.class,
+                thisClass(),
                 res.getCachedElement("Produkte"),
                 res.getCachedElement("Initiale_Produkte")
         );
 
         res.putPath(
-                InFixProduct.class, "fixPAttrs",
+                thisClass(), "fixPAttrs",
                 res.getCachedElement("Produkte"),
                 res.getCachedElement("Initiale_Produkte"),
                 res.getCachedElement("Initiale_Produkt-Attribut-Mapping")
@@ -40,20 +47,20 @@ public class InFixProduct implements InEntity {
         res.newEntryBuilder()
                 .setGamsIdentifier("Produktgruppe")
                 .setGamsDescription("Zugehörige Gruppe")
-                .store(InFixProduct.class, "refPG");
+                .store(thisClass(), "refPG");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("Attribute")
                 .setGamsDescription("Attribute")
-                .store(InFixProduct.class, "fixPAttrs");
+                .store(thisClass(), "fixPAttrs");
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InFixProduct.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
 
     @FieldDefinition
-    public InProductGroup refPG;
+    public InProductGroup[] refPG;
 
     @FieldDefinition
     public InFixProductAttribute[] fixPAttrs;
@@ -63,7 +70,7 @@ public class InFixProduct implements InEntity {
 
     public InFixProduct(String name, InProductGroup grp, InFixProductAttribute[] attrs) {
         this._name = name;
-        this.refPG = grp;
+        setProductGroup(grp);
         this.fixPAttrs = attrs;
     }
 
@@ -76,8 +83,12 @@ public class InFixProduct implements InEntity {
         return _name;
     }
 
-    public InProductGroup getProductGroup() {
-        return refPG;
+    public void setProductGroup(InProductGroup refPG) {
+        this.refPG = new InProductGroup[]{refPG};
+    }
+
+    public InProductGroup getProductGroup() throws ParsingException {
+        return InUtil.getInstance(refPG, "ProductGroup");
     }
 
     public InFixProductAttribute[] getAttributes() {

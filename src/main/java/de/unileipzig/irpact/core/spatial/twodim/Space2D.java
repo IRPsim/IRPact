@@ -1,10 +1,11 @@
 package de.unileipzig.irpact.core.spatial.twodim;
 
-import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.spatial.AbstractMetricalSpatialModel;
 import de.unileipzig.irpact.core.spatial.Metric;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+
+import java.util.Objects;
 
 /**
  * @author Daniel Abitz
@@ -44,5 +45,10 @@ public class Space2D extends AbstractMetricalSpatialModel {
     @Override
     public double distance(SpatialInformation from, SpatialInformation to) {
         return getMetric().distance(from, to);
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(getName(), getMetric().getHashCode());
     }
 }

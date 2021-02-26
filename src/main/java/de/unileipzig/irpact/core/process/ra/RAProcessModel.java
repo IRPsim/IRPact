@@ -23,6 +23,7 @@ import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.time.Month;
+import java.util.Objects;
 
 /**
  * @author Daniel Abitz
@@ -49,6 +50,19 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
     protected Rnd rnd;
 
     public RAProcessModel() {
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                modelData.getHashCode(),
+                rnd.getHashCode(),
+                orientationSupplier.getHashCode(),
+                slopeSupplier.getHashCode(),
+                underConstructionSupplier.getHashCode(),
+                underRenovationSupplier.getHashCode(),
+                uncertaintySupplier.getHashCode()
+        );
     }
 
     public void setEnvironment(SimulationEnvironment environment) {
@@ -79,55 +93,41 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         return slopeSupplier;
     }
 
+    public void setSlopeSupplier(BasicConsumerAgentSpatialAttributeSupplier slopeSupplier) {
+        this.slopeSupplier = slopeSupplier;
+    }
+
     public BasicConsumerAgentSpatialAttributeSupplier getOrientationSupplier() {
         return orientationSupplier;
+    }
+
+    public void setOrientationSupplier(BasicConsumerAgentSpatialAttributeSupplier orientationSupplier) {
+        this.orientationSupplier = orientationSupplier;
     }
 
     public BasicConsumerAgentGroupAttributeSupplier getUnderConstructionSupplier() {
         return underConstructionSupplier;
     }
 
+    public void setUnderConstructionSupplier(BasicConsumerAgentGroupAttributeSupplier underConstructionSupplier) {
+        this.underConstructionSupplier = underConstructionSupplier;
+    }
+
     public BasicConsumerAgentGroupAttributeSupplier getUnderRenovationSupplier() {
         return underRenovationSupplier;
+    }
+
+    public void setUnderRenovationSupplier(BasicConsumerAgentGroupAttributeSupplier underRenovationSupplier) {
+        this.underRenovationSupplier = underRenovationSupplier;
     }
 
     public BasicUncertaintyGroupAttributeSupplier getUncertaintySupplier() {
         return uncertaintySupplier;
     }
 
-//    @SuppressWarnings("UnnecessaryReturnStatement")
-//    private void loadNPVData() {
-//        if(tryLoadXlxsFromResources()) {
-//            return;
-//        }
-//        //hier kommt noch mehr
-//    }
-
-//    private boolean tryLoadXlxsFromResources() {
-//        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "try loading npv data from resources ('{}')", RAConstants.XLSX_FILE);
-//        final InputStream in = BasicResourceLoader.getResourceAsStream0(RAConstants.XLSX_FILE);
-//        if(in == null) {
-//            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "npv data not found in resources");
-//            return false;
-//        }
-//        try {
-//            try {
-//                LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "parsing xlsx");
-//                XSSFWorkbook book = new XSSFWorkbook(in);
-//                NPVXlsxData xlsxData = new NPVXlsxData();
-//                xlsxData.setAllgemeinSheet(XlsxUtil.extractKeyValueTable(book.getSheetAt(0)));
-//                xlsxData.putAllTables(XlsxUtil.extractTablesWithTwoHeaderLines(book, 1));
-//                LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "parsing finished");
-//                npvData = xlsxData;
-//                return true;
-//            } finally {
-//                in.close();
-//            }
-//        } catch (Exception e) {
-//            LOGGER.error("npv data loading failed", e);
-//            return false;
-//        }
-//    }
+    public void setUncertaintySupplier(BasicUncertaintyGroupAttributeSupplier uncertaintySupplier) {
+        this.uncertaintySupplier = uncertaintySupplier;
+    }
 
     @Override
     public void preAgentCreation() {
@@ -206,7 +206,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
         LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "create sync points");
         for(int y = startYear; y <= endYear; y++) {
-            Timestamp ts = environment.getTimeModel().at(startYear, Month.JUNE, 1);
+            Timestamp ts = environment.getTimeModel().at(startYear, Month.JULY, 1);
             SyncTask task = createConstructionRenovationSyncTask("ConsReno_" + startYear);
             LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} @ {}", task.getName(), ts);
             environment.getLiveCycleControl().registerSyncTask(ts, task);

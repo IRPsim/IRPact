@@ -29,7 +29,7 @@ public class BasicAdoptedProductPR implements Persister<BasicAdoptedProduct>, Re
     }
 
     @Override
-    public BasicAdoptedProduct initalize(Persistable persistable) {
+    public BasicAdoptedProduct initalize(Persistable persistable, RestoreManager manager) {
         return new BasicAdoptedProduct();
     }
 

@@ -10,6 +10,7 @@ import de.unileipzig.irpact.core.process.FixProcessModelFindingScheme;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
+import de.unileipzig.irpact.io.param.input.InUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
@@ -18,7 +19,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.Objects;
+import java.lang.invoke.MethodHandles;
 
 /**
  * @author Daniel Abitz
@@ -26,11 +27,17 @@ import java.util.Objects;
 @Definition
 public class InRAProcessModel implements InProcessModel {
 
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
+
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.putPath(
-                InRAProcessModel.class,
+                thisClass(),
                 res.getCachedElement("Prozessmodell"),
                 res.getCachedElement("Relative Agreement")
         );
@@ -38,59 +45,59 @@ public class InRAProcessModel implements InProcessModel {
         res.newEntryBuilder()
                 .setGamsIdentifier("a")
                 .setGamsDescription("a")
-                .store(InRAProcessModel.class, "a");
+                .store(thisClass(), "a");
         res.newEntryBuilder()
                 .setGamsIdentifier("b")
                 .setGamsDescription("b")
-                .store(InRAProcessModel.class, "b");
+                .store(thisClass(), "b");
         res.newEntryBuilder()
                 .setGamsIdentifier("c")
                 .setGamsDescription("c")
-                .store(InRAProcessModel.class, "c");
+                .store(thisClass(), "c");
         res.newEntryBuilder()
                 .setGamsIdentifier("d")
                 .setGamsDescription("d")
-                .store(InRAProcessModel.class, "d");
+                .store(thisClass(), "d");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("Adopter-Punkte")
                 .setGamsDescription("-")
-                .store(InRAProcessModel.class, "adopterPoints");
+                .store(thisClass(), "adopterPoints");
         res.newEntryBuilder()
                 .setGamsIdentifier("Interessenten-Punkte")
                 .setGamsDescription("-")
-                .store(InRAProcessModel.class, "interestedPoints");
+                .store(thisClass(), "interestedPoints");
         res.newEntryBuilder()
                 .setGamsIdentifier("Aware-Punkte")
                 .setGamsDescription("-")
-                .store(InRAProcessModel.class, "awarePoints");
+                .store(thisClass(), "awarePoints");
         res.newEntryBuilder()
                 .setGamsIdentifier("Unbekannt-Punkte")
                 .setGamsDescription("-")
-                .store(InRAProcessModel.class, "unknownPoints");
+                .store(thisClass(), "unknownPoints");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("PV Datei")
                 .setGamsDescription("-")
-                .store(InRAProcessModel.class, "pvFile");
+                .store(thisClass(), "pvFile");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("Datenerweiterung-Neigung")
                 .setGamsDescription("-")
-                .store(InRAProcessModel.class, "slopeSuppliers");
+                .store(thisClass(), "slopeSuppliers");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("Datenerweiterung-Orientierung")
                 .setGamsDescription("-")
-                .store(InRAProcessModel.class, "orientationSuppliers");
+                .store(thisClass(), "orientationSuppliers");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("Attribute für Unsicherheit")
                 .setGamsDescription("-")
-                .store(InRAProcessModel.class, "uncertaintyGroupAttributes");
+                .store(thisClass(), "uncertaintyGroupAttributes");
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InRAProcessModel.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
 
@@ -119,7 +126,7 @@ public class InRAProcessModel implements InProcessModel {
     public int unknownPoints = 0;
 
     @FieldDefinition
-    public InPVFile pvFile;
+    public InPVFile[] pvFile;
 
     @FieldDefinition
     public InSlopeSupplier[] slopeSuppliers = new InSlopeSupplier[0];
@@ -150,7 +157,7 @@ public class InRAProcessModel implements InProcessModel {
         this.interestedPoints = interestedPoints;
         this.awarePoints = awarePoints;
         this.unknownPoints = unknownPoints;
-        this.pvFile = pvFile;
+        setPvFile(pvFile);
         this.slopeSuppliers = slopeSuppliers;
         this.orientationSuppliers = orientationSuppliers;
         this.uncertaintyGroupAttributes = uncertaintyGroupAttributes;
@@ -193,8 +200,12 @@ public class InRAProcessModel implements InProcessModel {
         return unknownPoints;
     }
 
-    public InPVFile getPvFile() {
-        return pvFile;
+    public void setPvFile(InPVFile pvFile) {
+        this.pvFile = new InPVFile[]{pvFile};
+    }
+
+    public InPVFile getPvFile() throws ParsingException {
+        return InUtil.getInstance(pvFile, "PvFile");
     }
 
     public InSlopeSupplier[] getSlopeSuppliers() {
@@ -261,33 +272,5 @@ public class InRAProcessModel implements InProcessModel {
         model.setNpvData(xlsxData);
 
         return model;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof InRAProcessModel)) return false;
-        InRAProcessModel that = (InRAProcessModel) o;
-        return Double.compare(that.a, a) == 0 && Double.compare(that.b, b) == 0 && Double.compare(that.c, c) == 0 && Double.compare(that.d, d) == 0 && adopterPoints == that.adopterPoints && interestedPoints == that.interestedPoints && awarePoints == that.awarePoints && unknownPoints == that.unknownPoints && Objects.equals(_name, that._name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(_name, a, b, c, d, adopterPoints, interestedPoints, awarePoints, unknownPoints);
-    }
-
-    @Override
-    public String toString() {
-        return "InRAProcessModel{" +
-                "_name='" + _name + '\'' +
-                ", a=" + a +
-                ", b=" + b +
-                ", c=" + c +
-                ", d=" + d +
-                ", adopterPoints=" + adopterPoints +
-                ", interesetedPoints=" + interestedPoints +
-                ", awarePoints=" + awarePoints +
-                ", unknownPoints=" + unknownPoints +
-                '}';
     }
 }

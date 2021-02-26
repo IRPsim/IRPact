@@ -13,6 +13,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -22,23 +23,29 @@ import java.util.Objects;
 @Definition
 public class InProductGroup implements InEntity {
 
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
+
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.putPath(
-                InProductGroup.class,
+                thisClass(),
                 res.getCachedElement("Produkte"),
                 res.getCachedElement("Gruppen_Product")
         );
 
         res.putPath(
-                InProductGroup.class, "pgAttributes",
+                thisClass(), "pgAttributes",
                 res.getCachedElement("Produkte"),
                 res.getCachedElement("Produkt-Attribut-Mapping")
         );
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InProductGroup.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
 
@@ -73,12 +80,12 @@ public class InProductGroup implements InEntity {
 
         for(InProductGroupAttribute inAttr: getAttributes()) {
             ProductGroupAttribute attr = parser.parseEntityTo(inAttr);
-            if(bpg.hasAttribute(attr.getName())) {
+            if(bpg.hasGroupAttribute(attr.getName())) {
                 throw new ParsingException("ProductGroupAttribute '" + attr.getName() + "' already exists in " + bpg.getName());
             }
 
             LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "add ProductGroupAttribute '{}' ('{}') to group '{}'", attr.getName(), inAttr.getName(), bpg.getName());
-            bpg.addAttribute(attr);
+            bpg.addGroupAttribute(attr);
         }
 
         return bpg;

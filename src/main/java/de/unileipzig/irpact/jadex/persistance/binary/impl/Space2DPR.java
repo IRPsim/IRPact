@@ -28,14 +28,16 @@ public class Space2DPR implements Persister<Space2D>, Restorer<Space2D> {
     }
 
     @Override
-    public Space2D initalize(Persistable persistable) {
-        return new Space2D();
+    public Space2D initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        Space2D object = new Space2D();
+        object.setName(data.getText());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, Space2D object, RestoreManager manager) {
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setName(data.getText());
         object.setMetric(Metric2D.get(data.getInt()));
     }
 

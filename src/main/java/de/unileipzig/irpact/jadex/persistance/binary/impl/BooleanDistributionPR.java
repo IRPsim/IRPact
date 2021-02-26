@@ -27,14 +27,16 @@ public class BooleanDistributionPR implements Persister<BooleanDistribution>, Re
     }
 
     @Override
-    public BooleanDistribution initalize(Persistable persistable) {
-        return new BooleanDistribution();
+    public BooleanDistribution initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        BooleanDistribution object = new BooleanDistribution();
+        object.setName(data.getText());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, BooleanDistribution object, RestoreManager manager) {
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setName(data.getText());
         object.setRandom(manager.ensureGet(data.getLong()));
     }
 

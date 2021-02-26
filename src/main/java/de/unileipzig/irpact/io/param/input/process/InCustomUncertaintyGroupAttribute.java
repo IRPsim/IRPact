@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.io.param.input.InUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
@@ -15,17 +16,25 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.lang.invoke.MethodHandles;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InCustomUncertaintyGroupAttribute implements InUncertaintyGroupAttribute {
 
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
+
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.putPath(
-                InCustomUncertaintyGroupAttribute.class,
+                thisClass(),
                 res.getCachedElement("Prozessmodell"),
                 res.getCachedElement("Relative Agreement"),
                 res.getCachedElement("Uncertainty"),
@@ -35,25 +44,25 @@ public class InCustomUncertaintyGroupAttribute implements InUncertaintyGroupAttr
         res.newEntryBuilder()
                 .setGamsIdentifier("Ziel-KGs")
                 .setGamsDescription("-")
-                .store(InCustomUncertaintyGroupAttribute.class, "cags");
+                .store(thisClass(), "cags");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("Ziel-Attribute")
                 .setGamsDescription("-")
-                .store(InCustomUncertaintyGroupAttribute.class, "names");
+                .store(thisClass(), "names");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("Unsicherheit")
                 .setGamsDescription("-")
-                .store(InCustomUncertaintyGroupAttribute.class, "uncertDist");
+                .store(thisClass(), "uncertDist");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("Konvergenz")
                 .setGamsDescription("-")
-                .store(InCustomUncertaintyGroupAttribute.class, "convergenceDist");
+                .store(thisClass(), "convergenceDist");
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InCustomUncertaintyGroupAttribute.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
 
@@ -64,10 +73,10 @@ public class InCustomUncertaintyGroupAttribute implements InUncertaintyGroupAttr
     public InAttributeName[] names;
 
     @FieldDefinition
-    public InUnivariateDoubleDistribution uncertDist;
+    public InUnivariateDoubleDistribution[] uncertDist;
 
     @FieldDefinition
-    public InUnivariateDoubleDistribution convergenceDist;
+    public InUnivariateDoubleDistribution[] convergenceDist;
 
     public InCustomUncertaintyGroupAttribute() {
     }
@@ -122,11 +131,19 @@ public class InCustomUncertaintyGroupAttribute implements InUncertaintyGroupAttr
         return names;
     }
 
-    public InUnivariateDoubleDistribution getUncertaintyDistribution() {
-        return uncertDist;
+    public void setUncertaintyDistribution(InUnivariateDoubleDistribution uncertDist) {
+        this.uncertDist = new InUnivariateDoubleDistribution[]{uncertDist};
     }
 
-    public InUnivariateDoubleDistribution getConvergenceDistribution() {
-        return convergenceDist;
+    public InUnivariateDoubleDistribution getUncertaintyDistribution() throws ParsingException {
+        return InUtil.getInstance(uncertDist, "UncertaintyDistribution");
+    }
+
+    public void setConvergenceDistribution(InUnivariateDoubleDistribution convergenceDist) {
+        this.convergenceDist = new InUnivariateDoubleDistribution[]{convergenceDist};
+    }
+
+    public InUnivariateDoubleDistribution getConvergenceDistribution() throws ParsingException {
+        return InUtil.getInstance(convergenceDist, "ConvergenceDistribution");
     }
 }

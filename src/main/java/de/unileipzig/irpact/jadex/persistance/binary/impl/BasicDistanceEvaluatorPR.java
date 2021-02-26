@@ -26,7 +26,7 @@ public class BasicDistanceEvaluatorPR implements Persister<BasicDistanceEvaluato
     }
 
     @Override
-    public BasicDistanceEvaluator initalize(Persistable persistable) {
+    public BasicDistanceEvaluator initalize(Persistable persistable, RestoreManager manager) {
         return new BasicDistanceEvaluator();
     }
 

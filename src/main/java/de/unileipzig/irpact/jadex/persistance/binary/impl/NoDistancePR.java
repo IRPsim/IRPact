@@ -22,7 +22,7 @@ public class NoDistancePR implements Persister<NoDistance>, Restorer<NoDistance>
     }
 
     @Override
-    public NoDistance initalize(Persistable persistable) {
+    public NoDistance initalize(Persistable persistable, RestoreManager manager) {
         return new NoDistance();
     }
 

@@ -8,6 +8,7 @@ import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InEntity;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
+import de.unileipzig.irpact.util.RemoveFromRoot;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -18,6 +19,7 @@ import java.util.Objects;
 /**
  * @author Daniel Abitz
  */
+@RemoveFromRoot
 @Definition
 public class InConsumerAgentGroupAttribute implements InEntity {
 
@@ -80,6 +82,10 @@ public class InConsumerAgentGroupAttribute implements InEntity {
     @Override
     public String getName() {
         return _name;
+    }
+
+    public String splitName(String suffixWithoutDelimiter) {
+        return getName().substring(suffixWithoutDelimiter.length() + 1);
     }
 
     public InAttributeName getCagAttrName() {

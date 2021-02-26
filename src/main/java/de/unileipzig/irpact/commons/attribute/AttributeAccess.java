@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons.attribute;
 
+import de.unileipzig.irpact.commons.IsEquals;
+
 import java.util.Collection;
 
 /**
@@ -7,7 +9,7 @@ import java.util.Collection;
  *
  * @author Daniel Abitz
  */
-public interface AttributeAccess {
+public interface AttributeAccess extends IsEquals {
 
     boolean hasAttribute(String name);
 

@@ -1,12 +1,15 @@
 package de.unileipzig.irpact.core.persistence;
 
-import de.unileipzig.irpact.commons.persistence.Persistable;
-import de.unileipzig.irpact.commons.persistence.PersistenceException;
+import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.output.OutRoot;
 
 /**
  * @author Daniel Abitz
  */
 public interface PersistenceModul {
 
-    void persist(Persistable persistable) throws PersistenceException;
+    void store(SimulationEnvironment environment, OutRoot root) throws Exception;
+
+    SimulationEnvironment restore(SimulationEnvironment initialEnvironment, InRoot root) throws Exception;
 }

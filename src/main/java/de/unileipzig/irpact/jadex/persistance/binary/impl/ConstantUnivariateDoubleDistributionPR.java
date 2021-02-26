@@ -27,15 +27,16 @@ public class ConstantUnivariateDoubleDistributionPR implements Persister<Constan
     }
 
     @Override
-    public ConstantUnivariateDoubleDistribution initalize(Persistable persistable) {
-        return new ConstantUnivariateDoubleDistribution();
+    public ConstantUnivariateDoubleDistribution initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        ConstantUnivariateDoubleDistribution object = new ConstantUnivariateDoubleDistribution();
+        object.setName(data.getText());
+        object.setValue(data.getDouble());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, ConstantUnivariateDoubleDistribution object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setName(data.getText());
-        object.setValue(data.getDouble());
     }
 
     @Override

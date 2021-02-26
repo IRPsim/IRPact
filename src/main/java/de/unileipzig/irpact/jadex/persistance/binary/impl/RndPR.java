@@ -26,7 +26,7 @@ public class RndPR implements Persister<Rnd>, Restorer<Rnd> {
     }
 
     @Override
-    public Rnd initalize(Persistable persistable) {
+    public Rnd initalize(Persistable persistable, RestoreManager manager) {
         return new Rnd();
     }
 

@@ -1,12 +1,13 @@
 package de.unileipzig.irpact.jadex.persistance.binary;
 
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.Persistable;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.commons.persistence.Restorer;
+import de.unileipzig.irpact.jadex.persistance.binary.impl.*;
 
 import java.util.*;
 import java.util.function.IntFunction;
-import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -17,6 +18,76 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     protected final Map<BinaryJsonData, Object> restoredMap = new HashMap<>();
     protected final Map<Long, BinaryJsonData> uidData = new HashMap<>();
     protected final Map<String, Restorer<?>> restorerMap = new HashMap<>();
+    protected Object initalInstance;
+    protected Object restoredInstance;
+    protected Integer hash;
+
+    public BinaryJsonRestoreManager() {
+        init();
+    }
+
+    private void init() {
+        ensureRegister(BasicAdoptedProductPR.INSTANCE);
+        ensureRegister(BasicConsumerAgentAttributePR.INSTANCE);
+        ensureRegister(BasicConsumerAgentGroupAffinityMappingPR.INSTANCE);
+        ensureRegister(BasicConsumerAgentGroupAttributePR.INSTANCE);
+        ensureRegister(BasicConsumerAgentGroupAttributeSupplierPR.INSTANCE);
+        ensureRegister(BasicConsumerAgentSpatialAttributeSupplierPR.INSTANCE);
+        ensureRegister(BasicDistanceEvaluatorPR.INSTANCE);
+        ensureRegister(BasicEdgePR.INSTANCE);
+        ensureRegister(BasicJadexLifeCycleControlPR.INSTANCE);
+        ensureRegister(BasicJadexSimulationEnvironmentPR.INSTANCE);
+        ensureRegister(BasicNeedPR.INSTANCE);
+        ensureRegister(BasicPoint2DPR.INSTANCE);
+        ensureRegister(BasicProductAttributePR.INSTANCE);
+        ensureRegister(BasicProductGroupAttributePR.INSTANCE);
+        ensureRegister(BasicProductGroupPR.INSTANCE);
+        ensureRegister(BasicProductPR.INSTANCE);
+        ensureRegister(BasicSocialGraphPR.INSTANCE);
+        ensureRegister(BasicVersionPR.INSTANCE);
+        ensureRegister(BooleanDistributionPR.INSTANCE);
+        ensureRegister(CompleteGraphTopologyPR.INSTANCE);
+        ensureRegister(ConstantUnivariateDoubleDistributionPR.INSTANCE);
+        ensureRegister(DiscreteTimeModelPR.INSTANCE);
+        ensureRegister(FixProcessModelFindingSchemePR.INSTANCE);
+        ensureRegister(FixProductFindingSchemePR.INSTANCE);
+        ensureRegister(FreeNetworkTopologyPR.INSTANCE);
+        ensureRegister(InversePR.INSTANCE);
+        ensureRegister(JadexConsumerAgentGroupPR.INSTANCE);
+        ensureRegister(NoDistancePR.INSTANCE);
+        ensureRegister(ProductThresholdInterestPR.INSTANCE);
+        ensureRegister(ProductThresholdInterestSupplySchemePR.INSTANCE);
+        ensureRegister(ProxyConsumerAgentPR.INSTANCE);
+        ensureRegister(ProxySimulationAgentPR.INSTANCE);
+        ensureRegister(RADataSupplierPR.INSTANCE);
+        ensureRegister(RAModelDataPR.INSTANCE);
+        ensureRegister(RandomBoundedIntegerDistributionPR.INSTANCE);
+        ensureRegister(RAProcessModelPR.INSTANCE);
+        ensureRegister(RAProcessPlanPR.INSTANCE);
+        ensureRegister(RndPR.INSTANCE);
+        ensureRegister(Space2DPR.INSTANCE);
+        ensureRegister(SpatialDoubleAttributeBasePR.INSTANCE);
+        ensureRegister(SpatialStringAttributeBasePR.INSTANCE);
+        ensureRegister(UncertaintyAttributePR.INSTANCE);
+        ensureRegister(UncertaintyGroupAttributePR.INSTANCE);
+        ensureRegister(UnlinkedGraphTopologyPR.INSTANCE);
+        ensureRegister(WeightedDiscreteSpatialDistributionPR.INSTANCE);
+    }
+
+    public <T> boolean register(Restorer<T> restorer) {
+        if(restorerMap.containsKey(restorer.getType().getName())) {
+            return false;
+        } else {
+            restorerMap.put(restorer.getType().getName(), restorer);
+            return true;
+        }
+    }
+
+    public <T> void ensureRegister(Restorer<T> restorer) {
+        if(!register(restorer)) {
+            throw new IllegalArgumentException("class '" + restorer.getType().getName() + "' already exists");
+        }
+    }
 
     protected boolean isNotRestored(BinaryJsonData data) {
         return !restoredMap.containsKey(data);
@@ -52,20 +123,10 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         return restorer;
     }
 
-    public <T> T restore(Persistable persistable) {
-        BinaryJsonData data = check(persistable);
-        if(isNotRestored(data)) {
-            String type = data.ensureGetType();
-            Restorer<T> restorer = ensureGetRestorer(type);
-            T object = restorer.initalize(data);
-            restorer.setup(data, object, this);
-            restoredMap.put(data, object);
-            uidData.put(data.getUID(), data);
-        }
-        return ensureGetObject(data);
-    }
+    @Override
+    public void restore(Collection<? extends Persistable> coll) throws RestoreException {
+        restoredInstance = null;
 
-    public void restore(Collection<? extends Persistable> coll) {
         //phase 1
         for(Persistable persistable: coll) {
             initalize(persistable);
@@ -80,19 +141,19 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         }
     }
 
-    public void initalize(Persistable persistable) {
+    protected void initalize(Persistable persistable) throws RestoreException {
         BinaryJsonData data = check(persistable);
         if(isRestored(data)) {
             return;
         }
         String type = data.ensureGetType();
         Restorer<?> restorer = ensureGetRestorer(type);
-        Object object = restorer.initalize(data);
+        Object object = restorer.initalize(data, this);
         restoredMap.put(data, object);
         uidData.put(data.getUID(), data);
     }
 
-    public <T> void setup(Persistable persistable) {
+    protected <T> void setup(Persistable persistable) throws RestoreException {
         BinaryJsonData data = check(persistable);
         String type = data.ensureGetType();
         Restorer<T> restorer = ensureGetRestorer(type);
@@ -100,12 +161,59 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         restorer.setup(data, object, this);
     }
 
-    public <T> void finalize(Persistable persistable) {
+    protected <T> void finalize(Persistable persistable) throws RestoreException {
         BinaryJsonData data = check(persistable);
         String type = data.ensureGetType();
         Restorer<T> restorer = ensureGetRestorer(type);
         T object = ensureGetObject(data);
         restorer.finalize(data, object, this);
+    }
+
+    @Override
+    public void setInitialInstance(Object initial) {
+        this.initalInstance = initial;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getInitialInstance() {
+        if(initalInstance == null) {
+            throw new NoSuchElementException("initial instance");
+        }
+        return (T) initalInstance;
+    }
+
+    @Override
+    public void setRestoredInstance(Object restored) {
+        if(restoredInstance != null) {
+            throw new IllegalStateException("restored instance already set");
+        }
+        this.restoredInstance = restored;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getRestoredInstance() {
+        if(restoredInstance == null) {
+            throw new NoSuchElementException("restored instance");
+        }
+        return (T) restoredInstance;
+    }
+
+    @Override
+    public void setValidationHash(int hash) {
+        if(this.hash != null) {
+            throw new IllegalStateException("validation hash already set");
+        }
+        this.hash = hash;
+    }
+
+    @Override
+    public int getValidationHash() {
+        if(hash == null) {
+            throw new NoSuchElementException("hash");
+        }
+        return hash;
     }
 
     @Override
@@ -135,20 +243,6 @@ public class BinaryJsonRestoreManager implements RestoreManager {
             out.put(key, value);
         }
         return out;
-    }
-
-    @Override
-    public <T> Stream<T> streamSameClass(Class<T> c) {
-        return restoredMap.values().stream()
-                .filter(obj -> obj.getClass() == c)
-                .map(c::cast);
-    }
-
-    @Override
-    public <T> Stream<T> streamIsInstance(Class<T> c) {
-        return restoredMap.values().stream()
-                .filter(c::isInstance)
-                .map(c::cast);
     }
 
     @Override

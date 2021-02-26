@@ -1,16 +1,19 @@
 package de.unileipzig.irpact.commons.time;
 
+import de.unileipzig.irpact.commons.IsEquals;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 /**
  * Wandelt diskrete Zeitmomente (Ticks) in konkrete Datums- und Zeitangaben ({@link ZonedDateTime}) um.
  *
  * @author Daniel Abitz
  */
-public final class TickConverter {
+public final class TickConverter implements IsEquals {
 
     private int startYear;
     private long timePerTickInMs;
@@ -20,6 +23,14 @@ public final class TickConverter {
     private long startTimeMs;
 
     public TickConverter() {
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                timePerTickInMs,
+                startTimeMs
+        );
     }
 
     public TickConverter(int startYear, long timePerTickInMs) {

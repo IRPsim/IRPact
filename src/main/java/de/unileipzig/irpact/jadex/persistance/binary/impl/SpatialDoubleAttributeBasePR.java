@@ -27,15 +27,16 @@ public class SpatialDoubleAttributeBasePR implements Persister<SpatialDoubleAttr
     }
 
     @Override
-    public SpatialDoubleAttributeBase initalize(Persistable persistable) {
-        return new SpatialDoubleAttributeBase();
+    public SpatialDoubleAttributeBase initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        SpatialDoubleAttributeBase object = new SpatialDoubleAttributeBase();
+        object.setName(data.getText());
+        object.setDoubleValue(data.getDouble());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, SpatialDoubleAttributeBase object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setName(data.getText());
-        object.setDoubleValue(data.getDouble());
     }
 
     @Override

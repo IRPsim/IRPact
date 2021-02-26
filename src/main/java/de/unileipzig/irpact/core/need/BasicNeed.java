@@ -3,6 +3,8 @@ package de.unileipzig.irpact.core.need;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.util.Todo;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -14,5 +16,10 @@ public class BasicNeed extends NameableBase implements Need {
 
     public BasicNeed(String name) {
         setName(name);
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hashCode(getName());
     }
 }

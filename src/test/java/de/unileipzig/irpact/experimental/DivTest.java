@@ -1,10 +1,15 @@
 package de.unileipzig.irpact.experimental;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.res.BasicResourceLoader;
 import de.unileipzig.irpact.commons.util.IRPactBase32;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
+import de.unileipzig.irpact.core.spatial.attribute.SpatialDoubleAttributeBase;
+import de.unileipzig.irpact.core.spatial.attribute.SpatialStringAttributeBase;
 import de.unileipzig.irpact.experimental.eval3.DynExponential;
 import de.unileipzig.irpact.experimental.eval3.DynLinear;
 import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
@@ -17,8 +22,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -27,6 +31,87 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 @Disabled
 class DivTest {
+
+    @Test
+    void testMyHashStuff() {
+        List<SpatialAttribute<?>> list0 = CollectionUtil.arrayListOf(
+                new SpatialDoubleAttributeBase("a", 1),
+                new SpatialStringAttributeBase("b", "x1")
+        );
+        List<SpatialAttribute<?>> list00 = CollectionUtil.arrayListOf(
+                new SpatialDoubleAttributeBase("a", 1),
+                new SpatialStringAttributeBase("b", "x1")
+        );
+        List<SpatialAttribute<?>> list1 = CollectionUtil.arrayListOf(
+                new SpatialDoubleAttributeBase("c", 2),
+                new SpatialStringAttributeBase("d", "x2")
+        );
+        Set<SpatialAttribute<?>> set0 = CollectionUtil.hashSetOf(
+                new SpatialDoubleAttributeBase("e", 3),
+                new SpatialStringAttributeBase("f", "x3")
+        );
+        Set<SpatialAttribute<?>> set00 = CollectionUtil.hashSetOf(
+                new SpatialDoubleAttributeBase("e", 3),
+                new SpatialStringAttributeBase("f", "x3")
+        );
+        Set<SpatialAttribute<?>> set1 = CollectionUtil.hashSetOf(
+                new SpatialDoubleAttributeBase("g", 4),
+                new SpatialStringAttributeBase("h", "x4")
+        );
+
+        List<Collection<SpatialAttribute<?>>> listColl0 = CollectionUtil.arrayListOf(
+                list0,
+                list1,
+                set0,
+                set1
+        );
+        List<Collection<SpatialAttribute<?>>> listColl1 = CollectionUtil.arrayListOf(
+                list00,
+                list1,
+                set00,
+                set1
+        );
+
+        Set<Collection<SpatialAttribute<?>>> setColl0 = CollectionUtil.hashSetOf(
+                list0,
+                list1,
+                set0,
+                set1
+        );
+        Set<Collection<SpatialAttribute<?>>> setColl1 = CollectionUtil.hashSetOf(
+                list00,
+                list1,
+                set00,
+                set1
+        );
+
+        System.out.println(IsEquals.getCollHashCode(list0)
+                + " "
+                + IsEquals.getCollHashCode(list00)
+        );
+        System.out.println(IsEquals.getCollHashCode(list0)
+                + " "
+                + IsEquals.getCollHashCode(list1)
+        );
+        System.out.println();
+        System.out.println(IsEquals.getCollHashCode(set0)
+                + " "
+                + IsEquals.getCollHashCode(set00)
+        );
+        System.out.println(IsEquals.getCollHashCode(set0)
+                + " "
+                + IsEquals.getCollHashCode(set1)
+        );
+        System.out.println();
+        System.out.println(IsEquals.getCollCollHashCode(listColl0)
+                + " "
+                + IsEquals.getCollCollHashCode(listColl1)
+        );
+        System.out.println(IsEquals.getCollCollHashCode(setColl0)
+                + " "
+                + IsEquals.getCollCollHashCode(setColl1)
+        );
+    }
 
     @Test
     void testStuff() {

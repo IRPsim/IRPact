@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental.deprecated.input.awareness;
 
-import de.unileipzig.irpact.commons.awareness.Awareness;
+import de.unileipzig.irpact.commons.interest.Interest;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 
 /**
@@ -9,5 +9,5 @@ import de.unileipzig.irptools.defstructure.annotation.Definition;
 @Definition
 public interface IAwareness {
 
-    <T> Awareness<T> createInstance();
+    <T> Interest<T> createInstance();
 }

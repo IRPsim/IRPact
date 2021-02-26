@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.core.agent.ProxyAgent;
@@ -11,7 +12,7 @@ import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
-import de.unileipzig.irpact.core.product.awareness.ProductAwareness;
+import de.unileipzig.irpact.core.product.interest.ProductInterest;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
@@ -27,7 +28,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     protected ConsumerAgentGroup group;
     protected SocialGraph.Node node;
     protected Map<String, ConsumerAgentAttribute> attributes;
-    protected ProductAwareness awareness;
+    protected ProductInterest interest;
     protected Set<AdoptedProduct> adoptedProducts;
     protected ProductFindingScheme productFindingScheme;
     protected ProcessFindingScheme processFindingScheme;
@@ -53,6 +54,28 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     @Override
+    public int getHashCode() {
+        if(isSynced()) {
+            return getRealAgent().getHashCode();
+        } else {
+            return Objects.hash(
+                    getName(),
+                    getGroup().getName(),
+                    getInformationAuthority(),
+                    getSpatialInformation().getHashCode(),
+                    IsEquals.getCollHashCode(getAttributes()),
+                    getProductInterest().getHashCode(),
+                    IsEquals.getCollHashCode(getAdoptedProducts()),
+                    getProductFindingScheme().getHashCode(),
+                    getProcessFindingScheme().getHashCode(),
+                    IsEquals.getCollHashCode(getNeeds()),
+                    IsEquals.getMapHashCode(getPlans()),
+                    IsEquals.getCollHashCode(getExternAttributes())
+            );
+        }
+    }
+
+    @Override
     public boolean isSynced() {
         return realAgent != null;
     }
@@ -73,7 +96,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         group = null;
         node = null;
         attributes = null;
-        awareness = null;
+        interest = null;
         adoptedProducts = null;
         productFindingScheme = null;
         processFindingScheme = null;
@@ -266,16 +289,16 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     @Override
-    public ProductAwareness getProductAwareness() {
+    public ProductInterest getProductInterest() {
         if(isSynced()) {
-            return getRealAgent().getProductAwareness();
+            return getRealAgent().getProductInterest();
         } else {
-            return awareness;
+            return interest;
         }
     }
 
-    public void setProductAwareness(ProductAwareness awareness) {
-        this.awareness = awareness;
+    public void setProductAwareness(ProductInterest awareness) {
+        this.interest = awareness;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.product;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
 
 import java.util.*;
@@ -9,6 +10,7 @@ import java.util.*;
  */
 public class BasicProductGroup extends SimulationEntityBase implements ProductGroup {
 
+    protected int nextProductId = 0;
     protected Map<String, ProductGroupAttribute> attributes;
     protected Map<String, Product> products;
 
@@ -33,37 +35,47 @@ public class BasicProductGroup extends SimulationEntityBase implements ProductGr
         return products.get(name);
     }
 
-    public boolean hasAttribute(String name) {
+    public boolean hasGroupAttribute(ProductGroupAttribute attribute) {
+        return hasGroupAttribute(attribute.getName());
+    }
+
+    public boolean hasGroupAttribute(String name) {
         return attributes.containsKey(name);
     }
 
-    public void addAllAttributes(ProductGroupAttribute... attributes) {
+    public void addAllGroupAttributes(ProductGroupAttribute... attributes) {
         for(ProductGroupAttribute attribute: attributes) {
-            addAttribute(attribute);
+            addGroupAttribute(attribute);
         }
     }
 
-    public void addAttribute(ProductGroupAttribute attribute) {
+    public void addGroupAttribute(ProductGroupAttribute attribute) {
         attributes.put(attribute.getName(), attribute);
     }
 
     @Override
-    public Collection<ProductGroupAttribute> getAttributes() {
+    public Collection<ProductGroupAttribute> getGroupAttributes() {
         return attributes.values();
     }
 
     @Override
-    public ProductGroupAttribute getAttribute(String name) {
+    public ProductGroupAttribute getGroupAttribute(String name) {
         return attributes.get(name);
     }
 
+    protected synchronized int nextId() {
+        int nextId = nextProductId;
+        nextProductId++;
+        return nextId;
+    }
+
     public String deriveName() {
-        return getName();
+        return getName() + "_" + nextId();
     }
 
     public Set<ProductAttribute> deriveAttributes() {
         Set<ProductAttribute> paSet = new HashSet<>();
-        for(ProductGroupAttribute pga: getAttributes()) {
+        for(ProductGroupAttribute pga: getGroupAttributes()) {
             ProductAttribute pa = pga.derive();
             paSet.add(pa);
         }
@@ -109,5 +121,15 @@ public class BasicProductGroup extends SimulationEntityBase implements ProductGr
         Product product = derive();
         products.put(product.getName(), product);
         return product;
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getName(),
+                nextProductId,
+                IsEquals.getCollHashCode(getProducts()),
+                IsEquals.getCollHashCode(getGroupAttributes())
+        );
     }
 }

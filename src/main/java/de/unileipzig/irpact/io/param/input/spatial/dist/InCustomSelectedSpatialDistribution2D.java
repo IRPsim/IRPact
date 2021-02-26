@@ -10,6 +10,7 @@ import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.io.param.input.InUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
@@ -19,6 +20,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 
 /**
@@ -27,13 +29,19 @@ import java.util.List;
 @Definition
 public class InCustomSelectedSpatialDistribution2D implements InSpatialDistribution {
 
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
+
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.putPath(
                 InCustomSelectedSpatialDistribution2D.class,
                 res.getCachedElement("Räumliche Modell"),
-                res.getCachedElement("Verteilungsfunktionen"),
+                res.getCachedElement("SpatialDist"),
                 res.getCachedElement("CustomPos"),
                 res.getCachedElement("InCustomSelectedSpatialDistribution2D")
         );
@@ -64,16 +72,16 @@ public class InCustomSelectedSpatialDistribution2D implements InSpatialDistribut
     public String _name;
 
     @FieldDefinition
-    public InUnivariateDoubleDistribution xPosSupplier;
+    public InUnivariateDoubleDistribution[] xPosSupplier;
 
     @FieldDefinition
-    public InUnivariateDoubleDistribution yPosSupplier;
+    public InUnivariateDoubleDistribution[] yPosSupplier;
 
     @FieldDefinition
-    public InSpatialTableFile attrFile;
+    public InSpatialTableFile[] attrFile;
 
     @FieldDefinition
-    public InAttributeName selectKey;
+    public InAttributeName[] selectKey;
 
     public InCustomSelectedSpatialDistribution2D() {
     }
@@ -103,19 +111,19 @@ public class InCustomSelectedSpatialDistribution2D implements InSpatialDistribut
         jCag.setSpatialDistribution(dist);
     }
 
-    public InUnivariateDoubleDistribution getXPosSupplier() {
-        return xPosSupplier;
+    public InUnivariateDoubleDistribution getXPosSupplier() throws ParsingException {
+        return InUtil.getInstance(xPosSupplier, "XPosSupplier");
     }
 
-    public InUnivariateDoubleDistribution getYPosSupplier() {
-        return yPosSupplier;
+    public InUnivariateDoubleDistribution getYPosSupplier() throws ParsingException {
+        return InUtil.getInstance(yPosSupplier, "YPosSupplier");
     }
 
-    public InSpatialTableFile getAttributeFile() {
-        return attrFile;
+    public InSpatialTableFile getAttributeFile() throws ParsingException {
+        return InUtil.getInstance(attrFile, "AttributeFile");
     }
 
-    public InAttributeName getSelectKey() {
-        return selectKey;
+    public InAttributeName getSelectKey() throws ParsingException {
+        return InUtil.getInstance(selectKey, "SelectKey");
     }
 }

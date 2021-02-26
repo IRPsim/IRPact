@@ -47,4 +47,9 @@ public class BasicVersion implements Version {
     public int hashCode() {
         return Objects.hash(text);
     }
+
+    @Override
+    public int getHashCode() {
+        return hashCode();
+    }
 }

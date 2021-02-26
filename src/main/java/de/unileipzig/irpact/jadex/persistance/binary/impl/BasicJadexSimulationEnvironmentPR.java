@@ -1,11 +1,9 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.persistence.*;
-import de.unileipzig.irpact.commons.res.BasicResourceLoader;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.network.BasicGraphConfiguration;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
 import de.unileipzig.irpact.core.network.SocialNetwork;
 import de.unileipzig.irpact.core.process.BasicProcessModelManager;
@@ -14,8 +12,6 @@ import de.unileipzig.irpact.core.process.ProcessModelManager;
 import de.unileipzig.irpact.core.product.BasicProductManager;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.ProductManager;
-import de.unileipzig.irpact.core.simulation.BasicInitializationData;
-import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
@@ -43,7 +39,7 @@ public class BasicJadexSimulationEnvironmentPR implements Persister<BasicJadexSi
         //===
         SocialNetwork sn = object.getNetwork();
         data.putLong(manager.ensureGetUID(sn.getGraph()));
-        data.putLong(manager.ensureGetUID(sn.getConfiguration().getGraphTopologyScheme()));
+        data.putLong(manager.ensureGetUID(sn.getGraphTopologyScheme()));
         //===
         ProcessModelManager pmm = object.getProcessModels();
         data.putLongArray(manager.ensureGetAllUIDs(pmm.getProcessModels()));
@@ -60,41 +56,20 @@ public class BasicJadexSimulationEnvironmentPR implements Persister<BasicJadexSi
         data.putLong(manager.ensureGetUID(object.getVersion()));
         //===
         data.putLong(manager.ensureGetUID(object.getSimulationRandom()));
+        //===
+        data.putInt(object.getHashCode());
         return data;
     }
 
     @Override
-    public BasicJadexSimulationEnvironment initalize(Persistable persistable) {
+    public BasicJadexSimulationEnvironment initalize(Persistable persistable, RestoreManager manager) {
         BasicJadexSimulationEnvironment environment = new BasicJadexSimulationEnvironment();
-        //===
-        environment.setInitializationData(new BasicInitializationData());
-        environment.setResourceLoader(new BasicResourceLoader());
-        //===
-        BasicAgentManager agentManager = new BasicAgentManager();
-        agentManager.setEnvironment(environment);
-        environment.setAgentManager(agentManager);
-        //===
-        BasicSocialNetwork socialNetwork = new BasicSocialNetwork();
-        socialNetwork.setEnvironment(environment);
-        environment.setSocialNetwork(socialNetwork);
-        BasicGraphConfiguration graphConfiguration = new BasicGraphConfiguration();
-        socialNetwork.setConfiguration(graphConfiguration);
-        //===
-        BasicProcessModelManager processModelManager = new BasicProcessModelManager();
-        processModelManager.setEnvironment(environment);
-        environment.setProcessModels(processModelManager);
-        //===
-        BasicProductManager productManager = new BasicProductManager();
-        productManager.setEnvironment(environment);
-        environment.setProductManager(productManager);
-        //===
+        environment.initDefault();
         return environment;
     }
 
     @Override
     public void setup(Persistable persistable, BasicJadexSimulationEnvironment object, RestoreManager manager) {
-        if(true) throw new TodoException();
-
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
         //===
         BasicAgentManager agentManager = (BasicAgentManager) object.getAgents();
@@ -106,8 +81,7 @@ public class BasicJadexSimulationEnvironmentPR implements Persister<BasicJadexSi
         //===
         BasicSocialNetwork socialNetwork = (BasicSocialNetwork) object.getNetwork();
         socialNetwork.setGraph(manager.ensureGet(data.getLong()));
-        BasicGraphConfiguration graphConfiguration = (BasicGraphConfiguration) socialNetwork.getConfiguration();
-        graphConfiguration.setGraphTopologyScheme(manager.ensureGet(data.getLong()));
+        socialNetwork.setGraphTopologyScheme(manager.ensureGet(data.getLong()));
         //===
         BasicProcessModelManager processModelManager = (BasicProcessModelManager) object.getProcessModels();
         ProcessModel[] processModels = manager.ensureGetAll(data.getLongArray(), ProcessModel[]::new);
@@ -127,12 +101,16 @@ public class BasicJadexSimulationEnvironmentPR implements Persister<BasicJadexSi
         //===
         object.setLifeCycleControl(manager.ensureGet(data.getLong()));
         //===
-//        object.setVersion(manager.ensureGet(data.getLong()));
+        manager.ensureGet(data.getLong()); //Versioncheck !
         //===
         object.setSimulationRandom(manager.ensureGet(data.getLong()));
+        //===
+        int hash = data.getInt();
+        manager.setValidationHash(hash);
     }
 
     @Override
     public void finalize(Persistable persistable, BasicJadexSimulationEnvironment object, RestoreManager manager) {
+        manager.setRestoredInstance(object);
     }
 }

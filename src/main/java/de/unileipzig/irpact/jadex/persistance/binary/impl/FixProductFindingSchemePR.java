@@ -26,7 +26,7 @@ public class FixProductFindingSchemePR implements Persister<FixProductFindingSch
     }
 
     @Override
-    public FixProductFindingScheme initalize(Persistable persistable) {
+    public FixProductFindingScheme initalize(Persistable persistable, RestoreManager manager) {
         return new FixProductFindingScheme();
     }
 

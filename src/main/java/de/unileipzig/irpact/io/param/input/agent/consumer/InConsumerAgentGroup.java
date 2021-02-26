@@ -6,10 +6,10 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
-import de.unileipzig.irpact.core.product.awareness.ProductAwarenessSupplyScheme;
+import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.InEntity;
 import de.unileipzig.irpact.io.param.input.InputParser;
-import de.unileipzig.irpact.io.param.input.awareness.InProductAwarenessSupplyScheme;
+import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.product.InProductFindingScheme;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
@@ -18,6 +18,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
@@ -27,6 +28,12 @@ import java.util.Objects;
  */
 @Definition
 public class InConsumerAgentGroup implements InEntity {
+
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
 
     public static void initRes(TreeAnnotationResource res) {
     }
@@ -109,7 +116,7 @@ public class InConsumerAgentGroup implements InEntity {
     public InConsumerAgentGroupAttribute[] cagAttributes;
 
     @FieldDefinition
-    public InProductAwarenessSupplyScheme[] cagAwareness;
+    public InProductInterestSupplyScheme[] cagAwareness;
 
     @FieldDefinition
     public InProductFindingScheme[] productFindingSchemes;
@@ -131,12 +138,12 @@ public class InConsumerAgentGroup implements InEntity {
             double informationAuthority,
             int numberOfAgents,
             Collection<? extends InConsumerAgentGroupAttribute> attributes,
-            InProductAwarenessSupplyScheme awareness) {
+            InProductInterestSupplyScheme awareness) {
         this._name = name;
         this.informationAuthority = informationAuthority;
         this.numberOfAgentsX = numberOfAgents;
         this.cagAttributes = attributes.toArray(new InConsumerAgentGroupAttribute[0]);
-        this.cagAwareness = new InProductAwarenessSupplyScheme[]{awareness};
+        this.cagAwareness = new InProductInterestSupplyScheme[]{awareness};
     }
 
     @Override
@@ -156,12 +163,12 @@ public class InConsumerAgentGroup implements InEntity {
         return cagAttributes;
     }
 
-    public InProductAwarenessSupplyScheme getAwareness() {
+    public InProductInterestSupplyScheme getAwareness() {
         return cagAwareness[0];
     }
 
-    public void setAwareness(InProductAwarenessSupplyScheme awareness) {
-        this.cagAwareness = new InProductAwarenessSupplyScheme[]{awareness};
+    public void setAwareness(InProductInterestSupplyScheme awareness) {
+        this.cagAwareness = new InProductInterestSupplyScheme[]{awareness};
     }
 
     public InProductFindingScheme getProductFindingScheme() {
@@ -185,7 +192,7 @@ public class InConsumerAgentGroup implements InEntity {
             throw new ParsingException("ConsumerAgentGroup '" + getName() + "' already exists");
         }
 
-        ProductAwarenessSupplyScheme awarenessSupplyScheme = parser.parseEntityTo(getAwareness());
+        ProductInterestSupplyScheme awarenessSupplyScheme = parser.parseEntityTo(getAwareness());
         jCag.setAwarenessSupplyScheme(awarenessSupplyScheme);
 
         ProductFindingScheme productFindingScheme = parser.parseEntityTo(getProductFindingScheme());

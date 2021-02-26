@@ -27,15 +27,16 @@ public class SpatialStringAttributeBasePR implements Persister<SpatialStringAttr
     }
 
     @Override
-    public SpatialStringAttributeBase initalize(Persistable persistable) {
-        return new SpatialStringAttributeBase();
+    public SpatialStringAttributeBase initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        SpatialStringAttributeBase object = new SpatialStringAttributeBase();
+        object.setName(data.getText());
+        object.setStringValue(data.getText());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, SpatialStringAttributeBase object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setName(data.getText());
-        object.setStringValue(data.getText());
     }
 
     @Override

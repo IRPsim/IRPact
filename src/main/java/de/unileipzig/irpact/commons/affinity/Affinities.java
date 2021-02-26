@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons.affinity;
 
+import de.unileipzig.irpact.commons.IsEquals;
+
 import java.util.Random;
 import java.util.Set;
 
@@ -7,7 +9,7 @@ import java.util.Set;
  * @param <T>
  * @author Daniel Abitz
  */
-public interface Affinities<T> {
+public interface Affinities<T> extends IsEquals {
 
     Set<T> targets();
 

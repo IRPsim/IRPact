@@ -26,14 +26,15 @@ public class BasicNeedPR implements Persister<BasicNeed>, Restorer<BasicNeed> {
     }
 
     @Override
-    public BasicNeed initalize(Persistable persistable) {
-        return new BasicNeed();
+    public BasicNeed initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        BasicNeed object = new BasicNeed();
+        object.setName(data.getText());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, BasicNeed object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setName(data.getText());
     }
 
     @Override

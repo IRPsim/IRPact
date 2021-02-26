@@ -31,7 +31,7 @@ public class BasicEdgePR implements Persister<BasicSocialGraph.BasicEdge>, Resto
     }
 
     @Override
-    public BasicSocialGraph.BasicEdge initalize(Persistable persistable) {
+    public BasicSocialGraph.BasicEdge initalize(Persistable persistable, RestoreManager manager) {
         return new BasicSocialGraph.BasicEdge();
     }
 

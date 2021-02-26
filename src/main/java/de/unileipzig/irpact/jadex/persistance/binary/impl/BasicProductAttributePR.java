@@ -22,22 +22,24 @@ public class BasicProductAttributePR implements Persister<BasicProductAttribute>
     public Persistable persist(BasicProductAttribute object, PersistManager manager) {
         BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
         data.putText(object.getName());
-        data.putLong(manager.ensureGetUID(object.getGroup()));
         data.putDouble(object.getDoubleValue());
+        data.putLong(manager.ensureGetUID(object.getGroup()));
         return data;
     }
 
     @Override
-    public BasicProductAttribute initalize(Persistable persistable) {
-        return new BasicProductAttribute();
+    public BasicProductAttribute initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        BasicProductAttribute object = new BasicProductAttribute();
+        object.setName(data.getText());
+        object.setDoubleValue(data.getDouble());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, BasicProductAttribute object, RestoreManager manager) {
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setName(data.getText());
         object.setGroup(manager.ensureGet(data.getLong()));
-        object.setDoubleValue(data.getDouble());
     }
 
     @Override

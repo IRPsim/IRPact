@@ -39,14 +39,16 @@ public class BasicConsumerAgentSpatialAttributeSupplierPR implements Persister<B
     }
 
     @Override
-    public BasicConsumerAgentSpatialAttributeSupplier initalize(Persistable persistable) {
-        return new BasicConsumerAgentSpatialAttributeSupplier();
+    public BasicConsumerAgentSpatialAttributeSupplier initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        BasicConsumerAgentSpatialAttributeSupplier object = new BasicConsumerAgentSpatialAttributeSupplier();
+        object.setName(data.getText());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, BasicConsumerAgentSpatialAttributeSupplier object, RestoreManager manager) {
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setName(data.getText());
         Map<Long, Long> map = data.getLongLongMap();
         for(Map.Entry<Long, Long> entry: map.entrySet()) {
             ConsumerAgentGroup cag = manager.ensureGet(entry.getKey());

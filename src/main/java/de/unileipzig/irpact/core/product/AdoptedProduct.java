@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.product;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.need.Need;
 
@@ -8,7 +9,7 @@ import de.unileipzig.irpact.core.need.Need;
  *
  * @author Daniel Abitz
  */
-public interface AdoptedProduct {
+public interface AdoptedProduct extends IsEquals {
 
     Need getNeed();
 

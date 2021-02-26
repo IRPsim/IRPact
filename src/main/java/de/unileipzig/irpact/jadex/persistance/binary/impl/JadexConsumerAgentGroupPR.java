@@ -1,7 +1,11 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.core.spatial.SpatialDistribution;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
@@ -32,15 +36,49 @@ public class JadexConsumerAgentGroupPR implements Persister<JadexConsumerAgentGr
     }
 
     @Override
-    public JadexConsumerAgentGroup initalize(Persistable persistable) {
-        return new JadexConsumerAgentGroup();
+    public JadexConsumerAgentGroup initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        JadexConsumerAgentGroup object = new JadexConsumerAgentGroup();
+        object.setName(data.getText());
+        return object;
+    }
+
+    private JadexConsumerAgentGroup getOriginal(
+            JadexConsumerAgentGroup object,
+            RestoreManager manager) {
+        SimulationEnvironment originalEnvironment = manager.getInitialInstance();
+        ConsumerAgentGroup originalCag = originalEnvironment.getAgents().getConsumerAgentGroup(object.getName());
+        return (JadexConsumerAgentGroup) originalCag;
+    }
+
+    private SpatialDistribution restoreSpatialDistribution(
+            BinaryJsonData data,
+            JadexConsumerAgentGroup object,
+            RestoreManager manager) throws RestoreException {
+        JadexConsumerAgentGroup original = getOriginal(object, manager);
+        if(original == null) {
+            throw new RestoreException("original group '" + object.getName() + "' not found");
+        }
+
+        SpatialDistribution originalDist = original.getSpatialDistribution();
+        SpatialDistribution restoredDist = manager.ensureGet(data.getLong());
+
+        if(originalDist.isShareble(restoredDist)) {
+            originalDist.addComplexDataTo(restoredDist);
+        } else {
+            throw new RestoreException("distribution mismatch: " + originalDist.getClass() + " != " + restoredDist.getClass());
+        }
+
+        return restoredDist;
     }
 
     @Override
-    public void setup(Persistable persistable, JadexConsumerAgentGroup object, RestoreManager manager) {
+    public void setup(Persistable persistable, JadexConsumerAgentGroup object, RestoreManager manager) throws RestoreException {
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setName(data.getText());
-        object.setSpatialDistribution(manager.ensureGet(data.getLong()));
+
+        SpatialDistribution spatialDistribution = restoreSpatialDistribution(data, object, manager);
+        object.setSpatialDistribution(spatialDistribution);
+
         object.addAllGroupAttributes(manager.ensureGetAll(data.getLongArray(), ConsumerAgentGroupAttribute[]::new));
         object.setAwarenessSupplyScheme(manager.ensureGet(data.getLong()));
         object.setProductFindingScheme(manager.ensureGet(data.getLong()));

@@ -29,14 +29,16 @@ public class UncertaintyGroupAttributePR implements Persister<UncertaintyGroupAt
     }
 
     @Override
-    public UncertaintyGroupAttribute initalize(Persistable persistable) {
-        return new UncertaintyGroupAttribute();
+    public UncertaintyGroupAttribute initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        UncertaintyGroupAttribute object = new UncertaintyGroupAttribute();
+        object.setName(data.getText());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, UncertaintyGroupAttribute object, RestoreManager manager) {
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setName(data.getText());
         object.setUncertainty(manager.ensureGet(data.getLong()));
         object.setConvergence(manager.ensureGet(data.getLong()));
     }

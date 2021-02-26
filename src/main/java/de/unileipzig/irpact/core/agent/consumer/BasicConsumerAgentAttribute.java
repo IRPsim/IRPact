@@ -2,6 +2,8 @@ package de.unileipzig.irpact.core.agent.consumer;
 
 import de.unileipzig.irpact.commons.attribute.DoubleAttributeGroupEntityBase;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -14,5 +16,14 @@ public class BasicConsumerAgentAttribute extends DoubleAttributeGroupEntityBase<
         setName(name);
         setGroup(groupAttribute);
         setDoubleValue(value);
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getName(),
+                getGroup().getName(),
+                getDoubleValue()
+        );
     }
 }

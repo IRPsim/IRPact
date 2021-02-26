@@ -3,10 +3,13 @@ package de.unileipzig.irpact.io.param.input.product;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.product.FixProductFindingScheme;
 import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.io.param.input.InUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
+
+import java.lang.invoke.MethodHandles;
 
 /**
  * @author Daniel Abitz
@@ -14,11 +17,17 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 @Definition
 public class InFixProductFindingScheme implements InProductFindingScheme {
 
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
+
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.putPath(
-                InFixProductFindingScheme.class,
+                thisClass(),
                 res.getCachedElement("Produkte"),
                 res.getCachedElement("InProductFindingScheme"),
                 res.getCachedElement("InFixProductFindingScheme")
@@ -27,20 +36,20 @@ public class InFixProductFindingScheme implements InProductFindingScheme {
         res.newEntryBuilder()
                 .setGamsIdentifier("Produkt")
                 .setGamsDescription("Produkt")
-                .store(InFixProductFindingScheme.class, "refFixProduct");
+                .store(thisClass(), "refFixProduct");
     }
 
     public String _name;
 
     @FieldDefinition
-    public InFixProduct refFixProduct;
+    public InFixProduct[] refFixProduct;
 
     public InFixProductFindingScheme() {
     }
 
     public InFixProductFindingScheme(String name, InFixProduct product) {
         this._name = name;
-        this.refFixProduct = product;
+        setFixProduct(product);
     }
 
     @Override
@@ -48,8 +57,12 @@ public class InFixProductFindingScheme implements InProductFindingScheme {
         return _name;
     }
 
-    public InFixProduct getFixProduct() {
-        return refFixProduct;
+    public void setFixProduct(InFixProduct refFixProduct) {
+        this.refFixProduct = new InFixProduct[]{refFixProduct};
+    }
+
+    public InFixProduct getFixProduct() throws ParsingException {
+        return InUtil.getInstance(refFixProduct, "FixProduct");
     }
 
     @Override

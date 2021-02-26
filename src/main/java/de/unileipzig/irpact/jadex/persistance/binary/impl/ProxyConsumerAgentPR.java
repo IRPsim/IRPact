@@ -33,8 +33,7 @@ public class ProxyConsumerAgentPR implements Persister<ProxyConsumerAgent>, Rest
         data.putLong(manager.ensureGetUID(object.getSpatialInformation()));
         data.putLongArray(manager.ensureGetAllUIDs(object.getAttributes()));
         data.putDouble(object.getInformationAuthority());
-        //data.putLong(manager.ensureGetUID(object.getSocialGraphNode()));          //ad hoc
-        data.putLong(manager.ensureGetUID(object.getProductAwareness()));
+        data.putLong(manager.ensureGetUID(object.getProductInterest()));
         data.putLongArray(manager.ensureGetAllUIDs(object.getAdoptedProducts()));
         data.putLong(manager.ensureGetUID(object.getProductFindingScheme()));
         data.putLong(manager.ensureGetUID(object.getProcessFindingScheme()));
@@ -45,8 +44,11 @@ public class ProxyConsumerAgentPR implements Persister<ProxyConsumerAgent>, Rest
     }
 
     @Override
-    public ProxyConsumerAgent initalize(Persistable persistable) {
-        return new ProxyConsumerAgent();
+    public ProxyConsumerAgent initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        ProxyConsumerAgent object = new ProxyConsumerAgent();
+        object.setName(data.getText());
+        return object;
     }
 
     @Override
@@ -54,7 +56,6 @@ public class ProxyConsumerAgentPR implements Persister<ProxyConsumerAgent>, Rest
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
         object.setEnvironment(manager.ensureGetSameClass(BasicJadexSimulationEnvironment.class));
         //...
-        object.setName(data.getText());
         object.setGroup(manager.ensureGet(data.getLong()));
         object.setSpatialInformation(manager.ensureGet(data.getLong()));
         object.addAllAttributes(manager.ensureGetAll(data.getLongArray(), ConsumerAgentAttribute[]::new));

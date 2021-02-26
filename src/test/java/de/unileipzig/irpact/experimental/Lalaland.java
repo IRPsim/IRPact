@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.regex.Pattern;
 
 /**
  * @author Daniel Abitz
@@ -53,5 +54,16 @@ public class Lalaland {
             lock.unlock();
         }
         ConcurrentUtil.sleepSilently(1000);
+    }
+
+    @Test
+    void x() {
+        Pattern p = Pattern.compile("[A-Za-z0-9ÄÖÜäöüß_]+");
+        System.out.println(p.matcher("").matches());
+        System.out.println(p.matcher("Hallo1ß").matches());
+        System.out.println(p.matcher("Hallo1 Welt1").matches());
+        System.out.println(p.matcher("Hallo1_Welt1").matches());
+        System.out.println(p.matcher("Hallo1__Welt1").matches());
+        System.out.println(p.matcher("äüöß1ÄÖÜ").matches());
     }
 }

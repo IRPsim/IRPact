@@ -3,6 +3,8 @@ package de.unileipzig.irpact.jadex.agents.simulation;
 import de.unileipzig.irpact.core.agent.ProxyAgent;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -75,5 +77,14 @@ public class ProxySimulationAgent implements SimulationAgent, ProxyAgent<Simulat
     public void setEnvironment(SimulationEnvironment environment) {
         checkNotSynced();
         this.environment = environment;
+    }
+
+    @Override
+    public int getHashCode() {
+        if(isSynced()) {
+            return getRealAgent().getHashCode();
+        } else {
+            return Objects.hash(getName());
+        }
     }
 }

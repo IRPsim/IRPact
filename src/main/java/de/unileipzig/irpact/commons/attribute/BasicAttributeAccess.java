@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons.attribute;
 
+import de.unileipzig.irpact.commons.IsEquals;
+
 import java.util.Collection;
 import java.util.Map;
 
@@ -27,5 +29,10 @@ public class BasicAttributeAccess implements AttributeAccess {
     @Override
     public Collection<? extends Attribute<?>> getAttributes() {
         return attributes.values();
+    }
+
+    @Override
+    public int getHashCode() {
+        return IsEquals.getCollHashCode(getAttributes());
     }
 }

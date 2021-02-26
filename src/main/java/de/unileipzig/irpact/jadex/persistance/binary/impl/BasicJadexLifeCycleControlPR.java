@@ -32,7 +32,7 @@ public class BasicJadexLifeCycleControlPR implements Persister<BasicJadexLifeCyc
     }
 
     @Override
-    public BasicJadexLifeCycleControl initalize(Persistable persistable) {
+    public BasicJadexLifeCycleControl initalize(Persistable persistable, RestoreManager manager) {
         return new BasicJadexLifeCycleControl();
     }
 

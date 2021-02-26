@@ -5,7 +5,7 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.simulation.BasicBinaryTaskManager;
 import de.unileipzig.irpact.core.simulation.tasks.PredefinedAppTask;
 import de.unileipzig.irpact.core.simulation.tasks.PredefinedSimulationTask;
-import de.unileipzig.irpact.io.param.inout.binary.HiddenBinaryData;
+import de.unileipzig.irpact.io.param.inout.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irptools.util.Util;
 import org.junit.jupiter.api.Disabled;
@@ -33,14 +33,14 @@ public class FunWithBinary {
         PredefinedSimulationTask task2 = new PredefinedSimulationTask();
         task2.setInfo("YYY");
         task2.setTask(PredefinedSimulationTask.HELLO_WORLD);
-        HiddenBinaryData hdb1 = new HiddenBinaryData();
-        hdb1.setID(task2.getID());
-        hdb1.setBytes(task2.getBytes());
-        System.out.println(hdb1.getName());
+        VisibleBinaryData vbd2 = new VisibleBinaryData();
+        vbd2.setID(task2.getID());
+        vbd2.setBytes(task2.getBytes());
+        System.out.println(vbd2.getName());
         System.out.println(Util.printJson(task2.getRoot()));
 
         BasicBinaryTaskManager bbbm = new BasicBinaryTaskManager();
-        bbbm.handle(CollectionUtil.arrayListOf(vdb1.asBinary(), hdb1.asBinary()));
+        bbbm.handle(CollectionUtil.arrayListOf(vdb1.asBinary(), vbd2.asBinary()));
         bbbm.runAppTasks();
         bbbm.runSimulationTasks(null);
     }

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.time;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.time.TickConverter;
 import de.unileipzig.irpact.commons.time.TimeMode;
 import de.unileipzig.irpact.commons.time.Timestamp;
@@ -13,6 +14,7 @@ import jadex.commons.future.IFuture;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 
 /**
  * @author Daniel Abitz
@@ -33,6 +35,64 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
     protected double delayTillEnd;
 
     public DiscreteTimeModel() {
+    }
+
+    @Override
+    public int getHashCode() {
+        //keine ticks hashen, die sind nicht detrministisch
+        return Objects.hash(
+                getName(),
+                storedDelta,
+                storedTimePerTickInMs,
+                tickModifier,
+                IsEquals.getHashCode(nowStamp),
+                IsEquals.getHashCode(startTime),
+                IsEquals.getHashCode(endTime),
+                converter.getHashCode()
+        );
+    }
+
+    public void setDirect(
+            int startYear,
+            long storedDelta,
+            long storedTimePerTickInMs,
+            double startTick,
+            double endTick,
+            double nowTick,
+            double tickModifier,
+            JadexTimestamp nowStamp,
+            JadexTimestamp startTime,
+            JadexTimestamp endTime,
+            double delayTillEnd) {
+        this.storedDelta = storedDelta;
+        this.storedTimePerTickInMs = storedTimePerTickInMs;
+        this.startTick = startTick;
+        this.endTick = endTick;
+        this.nowTick = nowTick;
+        this.tickModifier = tickModifier;
+        this.nowStamp = nowStamp;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.delayTillEnd = delayTillEnd;
+
+        converter.init(startYear, storedTimePerTickInMs, ZoneId.systemDefault());
+        setStartTick(startTick);
+    }
+
+    public double getStartTick() {
+        return startTick;
+    }
+
+    public double getEndTick() {
+        return endTick;
+    }
+
+    public double getNowTick() {
+        return nowTick;
+    }
+
+    public double getDelayTillEnd() {
+        return delayTillEnd;
     }
 
     public void setStoredDelta(long storedDelta) {

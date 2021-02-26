@@ -29,14 +29,16 @@ public class RandomBoundedIntegerDistributionPR implements Persister<RandomBound
     }
 
     @Override
-    public RandomBoundedIntegerDistribution initalize(Persistable persistable) {
-        return new RandomBoundedIntegerDistribution();
+    public RandomBoundedIntegerDistribution initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        RandomBoundedIntegerDistribution object = new RandomBoundedIntegerDistribution();
+        object.setName(data.getText());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, RandomBoundedIntegerDistribution object, RestoreManager manager) {
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setName(data.getText());
         object.setRandom(manager.ensureGet(data.getLong()));
         object.setLowerBound(data.getDouble());
         object.setUpperBound(data.getDouble());

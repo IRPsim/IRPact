@@ -2,19 +2,26 @@ package de.unileipzig.irpact.io.param.input.network;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.io.param.input.InEntity;
+import de.unileipzig.irpact.io.param.input.InUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
-import java.util.Objects;
+import java.lang.invoke.MethodHandles;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InNumberOfTies implements InEntity {
+
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
 
     public static void initRes(TreeAnnotationResource res) {
     }
@@ -41,7 +48,7 @@ public class InNumberOfTies implements InEntity {
     public String _name;
 
     @FieldDefinition
-    public InConsumerAgentGroup cag;
+    public InConsumerAgentGroup[] cags;
 
     @FieldDefinition
     public int count;
@@ -50,8 +57,12 @@ public class InNumberOfTies implements InEntity {
     }
 
     public InNumberOfTies(String name, InConsumerAgentGroup cag, int count) {
+        this(name, new InConsumerAgentGroup[]{cag}, count);
+    }
+
+    public InNumberOfTies(String name, InConsumerAgentGroup[] cags, int count) {
         this._name = name;
-        this.cag = cag;
+        this.cags = cags;
         this.count = count;
     }
 
@@ -60,8 +71,8 @@ public class InNumberOfTies implements InEntity {
         return _name;
     }
 
-    public InConsumerAgentGroup getCag() {
-        return cag;
+    public InConsumerAgentGroup[] getConsumerAgentGroups() throws ParsingException {
+        return InUtil.getArray(cags, "ConsumerAgentGroup");
     }
 
     public int getCount() {
@@ -71,27 +82,5 @@ public class InNumberOfTies implements InEntity {
     @Override
     public Object parse(InputParser parser) throws ParsingException {
         return this;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof InNumberOfTies)) return false;
-        InNumberOfTies that = (InNumberOfTies) o;
-        return count == that.count && Objects.equals(_name, that._name) && Objects.equals(cag, that.cag);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(_name, cag, count);
-    }
-
-    @Override
-    public String toString() {
-        return "InNumberOfTies{" +
-                "_name='" + _name + '\'' +
-                ", cag=" + cag +
-                ", count=" + count +
-                '}';
     }
 }

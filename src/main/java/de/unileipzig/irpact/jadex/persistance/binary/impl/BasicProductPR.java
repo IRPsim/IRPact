@@ -29,14 +29,16 @@ public class BasicProductPR implements Persister<BasicProduct>, Restorer<BasicPr
     }
 
     @Override
-    public BasicProduct initalize(Persistable persistable) {
-        return new BasicProduct();
+    public BasicProduct initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        BasicProduct object = new BasicProduct();
+        object.setName(data.getText());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, BasicProduct object, RestoreManager manager) {
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setName(data.getText());
         object.setGroup(manager.ensureGet(data.getLong()));
         object.addAllAttributes(manager.ensureGetAll(data.getLongArray(), ProductAttribute[]::new));
     }

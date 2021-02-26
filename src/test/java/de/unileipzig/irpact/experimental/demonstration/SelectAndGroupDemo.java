@@ -26,7 +26,7 @@ public class SelectAndGroupDemo {
 
     /*
      * - nerviges Format in .xlsx -> siehe SpatialTableFileLoader.extractRowData
-     * - Zeichensatz Fehler in Daten -> z.B. Zeile 646
+     * - Zeichensatzfehler in Daten -> z.B. Zeile 646
      */
     @Test
     void testIt() throws MissingDataException {
@@ -51,10 +51,10 @@ public class SelectAndGroupDemo {
                 new ConstantUnivariateDoubleDistribution("x", 0),
                 new ConstantUnivariateDoubleDistribution("y", 0),
 
-                "Mic_Dominantes_Milieu",          //!!!
-                "TRA",                          //!!! Name der Cag
-//                "FS_Eigentum",
-//                "Stadt Leipzig",
+//                "Mic_Dominantes_Milieu",          //!!!
+//                "TRA",                          //!!! Name der Cag
+                "FS_Eigentum",
+                "Stadt Leipzig",
 
                 "Dummy_PLZ",                   //!!!
                 new Rnd(42)

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.product;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
 
 import java.util.*;
@@ -74,5 +75,14 @@ public class BasicProduct extends SimulationEntityBase implements Product {
     @Override
     public boolean isFixed() {
         return fixed;
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getName(),
+                group.getName(),
+                IsEquals.getCollHashCode(getAttributes())
+        );
     }
 }

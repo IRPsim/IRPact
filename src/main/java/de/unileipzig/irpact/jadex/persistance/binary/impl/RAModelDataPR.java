@@ -33,7 +33,7 @@ public class RAModelDataPR implements Persister<RAModelData>, Restorer<RAModelDa
     }
 
     @Override
-    public RAModelData initalize(Persistable persistable) {
+    public RAModelData initalize(Persistable persistable, RestoreManager manager) {
         return new RAModelData();
     }
 

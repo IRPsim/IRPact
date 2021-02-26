@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.persistence.*;
+import de.unileipzig.irpact.core.agent.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.jadex.agents.simulation.ProxySimulationAgent;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
@@ -27,15 +28,16 @@ public class ProxySimulationAgentPR implements Persister<ProxySimulationAgent>, 
     }
 
     @Override
-    public ProxySimulationAgent initalize(Persistable persistable) {
-        return new ProxySimulationAgent();
+    public ProxySimulationAgent initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        ProxySimulationAgent object = new ProxySimulationAgent();
+        object.setName(data.getText());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, ProxySimulationAgent object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
         object.setEnvironment(manager.ensureGetSameClass(BasicJadexSimulationEnvironment.class));
-        object.setName(data.getText());
     }
 
     @Override

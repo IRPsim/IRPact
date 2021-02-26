@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental.deprecated.input.awareness;
 
-import de.unileipzig.irpact.commons.awareness.ThresholdAwareness;
+import de.unileipzig.irpact.commons.interest.ThresholdInterest;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -29,8 +29,8 @@ public class IThresholdAwareness implements IAwareness {
     }
 
     @Override
-    public <T> ThresholdAwareness<T> createInstance() {
-        ThresholdAwareness<T> awa = new ThresholdAwareness<>();
+    public <T> ThresholdInterest<T> createInstance() {
+        ThresholdInterest<T> awa = new ThresholdInterest<>();
         awa.setThreshold(awarenessThreshold);
         return awa;
     }

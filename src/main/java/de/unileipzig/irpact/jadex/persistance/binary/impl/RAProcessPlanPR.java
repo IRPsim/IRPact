@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.persistence.*;
-import de.unileipzig.irpact.core.process.ra.RAPhase;
+import de.unileipzig.irpact.core.process.ra.RAStage;
 import de.unileipzig.irpact.core.process.ra.RAProcessPlan;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
@@ -28,12 +28,12 @@ public class RAProcessPlanPR implements Persister<RAProcessPlan>, Restorer<RAPro
         data.putLong(manager.ensureGetUID(object.getAgent()));
         data.putLong(manager.ensureGetUID(object.getRnd()));
         data.putLong(manager.ensureGetUID(object.getModel()));
-        data.putInt(object.getCurrentPhase().getID());
+        data.putInt(object.getCurrentStage().getID());
         return data;
     }
 
     @Override
-    public RAProcessPlan initalize(Persistable persistable) {
+    public RAProcessPlan initalize(Persistable persistable, RestoreManager manager) {
         return new RAProcessPlan();
     }
 
@@ -46,7 +46,7 @@ public class RAProcessPlanPR implements Persister<RAProcessPlan>, Restorer<RAPro
         object.setAgent(manager.ensureGet(data.getLong()));
         object.setRnd(manager.ensureGet(data.getLong()));
         object.setModel(manager.ensureGet(data.getLong()));
-        object.setCurrentPhase(RAPhase.get(data.getInt()));
+        object.setCurrentStage(RAStage.get(data.getInt()));
     }
 
     @Override

@@ -2,10 +2,7 @@ package de.unileipzig.irpact.jadex.persistance.binary;
 
 import de.unileipzig.irpact.commons.persistence.BasicPersistManager;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
-import de.unileipzig.irpact.commons.persistence.Persistable;
-import de.unileipzig.irpact.commons.persistence.Persister;
 import de.unileipzig.irpact.commons.util.IRPactJson;
-import de.unileipzig.irpact.jadex.agents.simulation.JadexSimulationAgentBDI;
 import de.unileipzig.irpact.jadex.persistance.binary.impl.*;
 
 /**
@@ -23,6 +20,7 @@ public class BinaryJsonPersistanceManager extends BasicPersistManager {
         ensureRegister(BasicConsumerAgentAttributePR.INSTANCE);
         ensureRegister(BasicConsumerAgentGroupAffinityMappingPR.INSTANCE);
         ensureRegister(BasicConsumerAgentGroupAttributePR.INSTANCE);
+        ensureRegister(BasicConsumerAgentGroupAttributeSupplierPR.INSTANCE);
         ensureRegister(BasicConsumerAgentSpatialAttributeSupplierPR.INSTANCE);
         ensureRegister(BasicDistanceEvaluatorPR.INSTANCE);
         ensureRegister(BasicEdgePR.INSTANCE);
@@ -38,7 +36,6 @@ public class BinaryJsonPersistanceManager extends BasicPersistManager {
         ensureRegister(BasicVersionPR.INSTANCE);
         ensureRegister(BooleanDistributionPR.INSTANCE);
         ensureRegister(CompleteGraphTopologyPR.INSTANCE);
-        ensureRegister(ConstantSpatialDistributionPR.INSTANCE);
         ensureRegister(ConstantUnivariateDoubleDistributionPR.INSTANCE);
         ensureRegister(DiscreteTimeModelPR.INSTANCE);
         ensureRegister(FixProcessModelFindingSchemePR.INSTANCE);
@@ -47,8 +44,8 @@ public class BinaryJsonPersistanceManager extends BasicPersistManager {
         ensureRegister(InversePR.INSTANCE);
         ensureRegister(JadexConsumerAgentGroupPR.INSTANCE);
         ensureRegister(NoDistancePR.INSTANCE);
-        ensureRegister(ProductThresholdAwarenessPR.INSTANCE);
-        ensureRegister(ProductThresholdAwarenessSupplySchemePR.INSTANCE);
+        ensureRegister(ProductThresholdInterestPR.INSTANCE);
+        ensureRegister(ProductThresholdInterestSupplySchemePR.INSTANCE);
         ensureRegister(ProxyConsumerAgentPR.INSTANCE);
         ensureRegister(ProxySimulationAgentPR.INSTANCE);
         ensureRegister(RADataSupplierPR.INSTANCE);

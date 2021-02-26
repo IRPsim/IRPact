@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.misc.Initialization;
 import de.unileipzig.irpact.core.network.SocialNetwork;
+import de.unileipzig.irpact.core.persistence.PersistenceModul;
 import de.unileipzig.irpact.core.process.ProcessModelManager;
 import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
@@ -48,6 +49,8 @@ public interface SimulationEnvironment extends Initialization {
     ResourceLoader getResourceLoader();
 
     BinaryTaskManager getTaskManager();
+
+    PersistenceModul getPersistenceModul();
 
     Rnd getSimulationRandom();
 }

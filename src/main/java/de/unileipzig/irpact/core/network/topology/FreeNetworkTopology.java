@@ -1,9 +1,6 @@
 package de.unileipzig.irpact.core.network.topology;
 
-import de.unileipzig.irpact.commons.BasicWeightedMapping;
-import de.unileipzig.irpact.commons.NameableBase;
-import de.unileipzig.irpact.commons.Rnd;
-import de.unileipzig.irpact.commons.WeightedMapping;
+import de.unileipzig.irpact.commons.*;
 import de.unileipzig.irpact.commons.spatial.DistanceEvaluator;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -18,6 +15,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -151,5 +149,18 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
             }
         }
         return mapping;
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getName(),
+                getInitialWeight(),
+                getRnd().getHashCode(),
+                getDistanceEvaluator().getHashCode(),
+                getEdgeType().getHashCode(),
+                getAffinityMapping().getHashCode(),
+                IsEquals.getMapHashCode(getEdgeCountMap())
+        );
     }
 }

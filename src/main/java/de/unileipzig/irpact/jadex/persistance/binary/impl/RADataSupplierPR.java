@@ -27,14 +27,16 @@ public class RADataSupplierPR implements Persister<RADataSupplier>, Restorer<RAD
     }
 
     @Override
-    public RADataSupplier initalize(Persistable persistable) {
-        return new RADataSupplier();
+    public RADataSupplier initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        RADataSupplier object = new RADataSupplier();
+        object.setName(data.getText());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, RADataSupplier object, RestoreManager manager) {
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setName(data.getText());
         object.setDistribution(manager.ensureGet(data.getLong()));
     }
 

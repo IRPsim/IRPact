@@ -13,7 +13,6 @@ import java.util.stream.Stream;
  * @author Daniel Abitz
  */
 //Listener support fuer neue Gruppen?
-@Todo("WICHTIG: AFFINITY AGENT REPLACE!!!!")
 @Todo("ProcessPlan auch Agenten austauschen!!! -> wenn er dem Jadexagenten uebergeben wird")
 public interface AgentManager extends Initialization {
 

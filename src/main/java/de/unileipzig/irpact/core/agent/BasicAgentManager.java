@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.agent;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -30,6 +31,14 @@ public class BasicAgentManager implements AgentManager {
 
     public BasicAgentManager(Map<String, ConsumerAgentGroup> consumerAgentGroups) {
         this.consumerAgentGroups = consumerAgentGroups;
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                IsEquals.getMapHashCode(consumerAgentGroups),
+                affinityMapping.getHashCode()
+        );
     }
 
     public void setEnvironment(SimulationEnvironment environment) {

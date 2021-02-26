@@ -1,13 +1,16 @@
 package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.core.misc.Initialization;
+import de.unileipzig.irpact.core.network.topology.GraphTopologyScheme;
 
 /**
  * @author Daniel Abitz
  */
 public interface SocialNetwork extends Initialization {
 
-    SocialGraph getGraph();
+    GraphTopologyScheme getGraphTopologyScheme();
 
-    GraphConfiguration getConfiguration();
+    void setGraphTopologyScheme(GraphTopologyScheme topologyScheme);
+
+    SocialGraph getGraph();
 }

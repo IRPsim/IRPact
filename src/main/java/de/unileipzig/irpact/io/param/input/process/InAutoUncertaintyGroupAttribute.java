@@ -1,15 +1,22 @@
 package de.unileipzig.irpact.io.param.input.process;
 
-import de.unileipzig.irpact.io.param.input.distribution.InBooleanDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
+
+import java.lang.invoke.MethodHandles;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InAutoUncertaintyGroupAttribute implements InUncertaintyGroupAttribute {
+
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
 
     public static void initRes(TreeAnnotationResource res) {
     }

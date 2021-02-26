@@ -2,15 +2,13 @@ package de.unileipzig.irpact.core.agent.consumer;
 
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
-import de.unileipzig.irpact.commons.awareness.Awareness;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.agent.SpatialInformationAgent;
-import de.unileipzig.irpact.core.product.awareness.ProductAwareness;
+import de.unileipzig.irpact.core.product.interest.ProductInterest;
 
 import java.util.Collection;
-import java.util.Set;
 
 /**
  * @author Daniel Abitz
@@ -27,7 +25,7 @@ public interface ConsumerAgent extends SpatialInformationAgent {
 
     void addAttribute(ConsumerAgentAttribute attribute);
 
-    ProductAwareness getProductAwareness();
+    ProductInterest getProductInterest();
 
     Collection<AdoptedProduct> getAdoptedProducts();
 

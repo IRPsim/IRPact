@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.agent.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.core.log.*;
 import de.unileipzig.irpact.core.network.BasicSocialGraph;
 import de.unileipzig.irpact.core.network.SocialGraph;
+import de.unileipzig.irpact.core.network.SupportedGraphStructure;
 import de.unileipzig.irpact.core.network.topology.FreeNetworkTopology;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import org.junit.jupiter.api.Disabled;
@@ -39,7 +40,7 @@ public class NetworkCreation {
         filter.add(IRPSection.INITIALIZATION_NETWORK);
         IRPLogging.setFilter(filter);
 
-        BasicSocialGraph graph = new BasicSocialGraph();
+        BasicSocialGraph graph = new BasicSocialGraph(SupportedGraphStructure.DIRECTED_ADJACENCY_LIST_MULTI_GRAPH);
 
         JadexConsumerAgentGroup grp0 = new JadexConsumerAgentGroup();
         grp0.setName("A");

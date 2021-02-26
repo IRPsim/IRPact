@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental.deprecated.input.awareness;
 
-import de.unileipzig.irpact.commons.awareness.SimpleAwareness;
+import de.unileipzig.irpact.commons.interest.SimpleInterest;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -28,7 +28,7 @@ public class ISimpleAwareness implements IAwareness {
     }
 
     @Override
-    public <T> SimpleAwareness<T> createInstance() {
-        return new SimpleAwareness<>();
+    public <T> SimpleInterest<T> createInstance() {
+        return new SimpleInterest<>();
     }
 }

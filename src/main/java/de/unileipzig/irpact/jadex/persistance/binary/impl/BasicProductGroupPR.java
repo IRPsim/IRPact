@@ -23,13 +23,16 @@ public class BasicProductGroupPR implements Persister<BasicProductGroup>, Restor
     public Persistable persist(BasicProductGroup object, PersistManager manager) {
         BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
         data.putText(object.getName());
-        data.putLongArray(manager.ensureGetAllUIDs(object.getAttributes()));
+        data.putLongArray(manager.ensureGetAllUIDs(object.getGroupAttributes()));
         return data;
     }
 
     @Override
-    public BasicProductGroup initalize(Persistable persistable) {
-        return new BasicProductGroup();
+    public BasicProductGroup initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        BasicProductGroup object = new BasicProductGroup();
+        object.setName(data.getText());
+        return object;
     }
 
     /*
@@ -38,8 +41,7 @@ public class BasicProductGroupPR implements Persister<BasicProductGroup>, Restor
     @Override
     public void setup(Persistable persistable, BasicProductGroup object, RestoreManager manager) {
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setName(data.getText());
-        object.addAllAttributes(manager.ensureGetAll(data.getLongArray(), ProductGroupAttribute[]::new));
+        object.addAllGroupAttributes(manager.ensureGetAll(data.getLongArray(), ProductGroupAttribute[]::new));
     }
 
     @Override

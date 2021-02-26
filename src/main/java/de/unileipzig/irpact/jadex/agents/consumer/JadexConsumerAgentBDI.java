@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.time.Timestamp;
@@ -14,7 +15,7 @@ import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.product.BasicAdoptedProduct;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
-import de.unileipzig.irpact.core.product.awareness.ProductAwareness;
+import de.unileipzig.irpact.core.product.interest.ProductInterest;
 import de.unileipzig.irpact.jadex.agents.AbstractJadexAgentBDI;
 import de.unileipzig.irpact.jadex.agents.simulation.SimulationService;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
@@ -61,7 +62,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     protected Map<String, ConsumerAgentAttribute> attributes = new HashMap<>();
     protected double informationAuthority;
     protected SocialGraph.Node node;
-    protected ProductAwareness productAwareness;
+    protected ProductInterest productAwareness;
     protected Set<AdoptedProduct> adoptedProducts = new HashSet<>();
     protected ProductFindingScheme productFindingScheme;
     protected ProcessFindingScheme processFindingScheme;
@@ -161,7 +162,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         for(ConsumerAgentAttribute attr: proxyAgent.getAttributes()) {
             attributes.put(attr.getName(), attr);
         }
-        productAwareness = proxyAgent.getProductAwareness();
+        productAwareness = proxyAgent.getProductInterest();
         adoptedProducts.addAll(proxyAgent.getAdoptedProducts());
         processFindingScheme = proxyAgent.getProcessFindingScheme();
         productFindingScheme = proxyAgent.getProductFindingScheme();
@@ -223,7 +224,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public ProductAwareness getProductAwareness() {
+    public ProductInterest getProductInterest() {
         return productAwareness;
     }
 
@@ -245,6 +246,24 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     public SocialGraph.Node getSocialGraphNode() {
         return node;
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getName(),
+                getGroup().getName(),
+                getInformationAuthority(),
+                getSpatialInformation().getHashCode(),
+                IsEquals.getCollHashCode(getAttributes()),
+                getProductInterest().getHashCode(),
+                IsEquals.getCollHashCode(getAdoptedProducts()),
+                getProductFindingScheme().getHashCode(),
+                getProcessFindingScheme().getHashCode(),
+                IsEquals.getCollHashCode(getNeeds()),
+                IsEquals.getMapHashCode(getPlans()),
+                IsEquals.getCollHashCode(externAttributes)
+        );
     }
 
     @Override

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.simulation;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.Agent;
@@ -50,6 +51,14 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
     public BasicJadexLifeCycleControl() {
         killSwitch = new KillSwitch();
         killSwitch.setControl(this);
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                IsEquals.getHashCode(current),
+                IsEquals.getHashCode(controlAgent)
+        );
     }
 
     public void setEnvironment(JadexSimulationEnvironment environment) {

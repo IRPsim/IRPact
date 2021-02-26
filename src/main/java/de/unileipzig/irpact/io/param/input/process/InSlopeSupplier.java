@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.io.param.input.InEntity;
+import de.unileipzig.irpact.io.param.input.InUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
@@ -12,7 +13,7 @@ import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
-import java.util.Objects;
+import java.lang.invoke.MethodHandles;
 
 /**
  * @author Daniel Abitz
@@ -20,11 +21,17 @@ import java.util.Objects;
 @Definition
 public class InSlopeSupplier implements InEntity {
 
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
+
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.putPath(
-                InSlopeSupplier.class,
+                thisClass(),
                 res.getCachedElement("Prozessmodell"),
                 res.getCachedElement("Relative Agreement"),
                 res.getCachedElement("Datenerweiterung"),
@@ -34,18 +41,18 @@ public class InSlopeSupplier implements InEntity {
         res.newEntryBuilder()
                 .setGamsIdentifier("Verteilungsfunktion für die Neigung")
                 .setGamsDescription("Verteilungsfunktion")
-                .store(InSlopeSupplier.class, "distSlope");
+                .store(thisClass(), "distSlope");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("Ziel-KGs für Neigung")
                 .setGamsDescription("Gruppen, denen die Werte hinzugefügt werden sollen.")
-                .store(InSlopeSupplier.class, "slopeCags");
+                .store(thisClass(), "slopeCags");
     }
 
     public String _name;
 
     @FieldDefinition
-    public InUnivariateDoubleDistribution distSlope;
+    public InUnivariateDoubleDistribution[] distSlope;
 
     @FieldDefinition
     public InConsumerAgentGroup[] slopeCags;
@@ -55,7 +62,7 @@ public class InSlopeSupplier implements InEntity {
 
     public InSlopeSupplier(String name, InUnivariateDoubleDistribution distribution) {
         this._name = name;
-        this.distSlope = distribution;
+        setDistribution(distribution);
     }
 
     @Override
@@ -63,8 +70,12 @@ public class InSlopeSupplier implements InEntity {
         return _name;
     }
 
-    public InUnivariateDoubleDistribution getDistribution() {
-        return distSlope;
+    public void setDistribution(InUnivariateDoubleDistribution distribution) {
+        this.distSlope = new InUnivariateDoubleDistribution[]{distribution};
+    }
+
+    public InUnivariateDoubleDistribution getDistribution() throws ParsingException {
+        return InUtil.getInstance(distSlope, "Distribution");
     }
 
     public InConsumerAgentGroup[] getConsumerAgentGroups() {
@@ -80,26 +91,5 @@ public class InSlopeSupplier implements InEntity {
             ConsumerAgentGroup cag = parser.parseEntityTo(inCag);
             model.getSlopeSupplier().put(cag, dist);
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof InSlopeSupplier)) return false;
-        InSlopeSupplier that = (InSlopeSupplier) o;
-        return Objects.equals(_name, that._name) && Objects.equals(distSlope, that.distSlope);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(_name, distSlope);
-    }
-
-    @Override
-    public String toString() {
-        return "InSlopeSupplier{" +
-                "_name='" + _name + '\'' +
-                ", distSlope=" + distSlope +
-                '}';
     }
 }

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.process;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -26,6 +27,11 @@ public class BasicProcessModelManager implements ProcessModelManager {
 
     public void setEnvironment(SimulationEnvironment environment) {
         this.environment = environment;
+    }
+
+    @Override
+    public int getHashCode() {
+        return IsEquals.getCollHashCode(getProcessModels());
     }
 
     @Override

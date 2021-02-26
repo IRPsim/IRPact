@@ -27,14 +27,16 @@ public class BasicProductGroupAttributePR implements Persister<BasicProductGroup
     }
 
     @Override
-    public BasicProductGroupAttribute initalize(Persistable persistable) {
-        return new BasicProductGroupAttribute();
+    public BasicProductGroupAttribute initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        BasicProductGroupAttribute object = new BasicProductGroupAttribute();
+        object.setName(data.getText());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, BasicProductGroupAttribute object, RestoreManager manager) {
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setName(data.getText());
         object.setDistribution(manager.ensureGet(data.getLong()));
     }
 

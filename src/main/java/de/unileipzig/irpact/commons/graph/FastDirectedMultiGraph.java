@@ -289,6 +289,15 @@ public class FastDirectedMultiGraph<V, E, T> implements DirectedMultiGraph<V, E,
     }
 
     @Override
+    public Collection<E> getAllEdges(T[] types) {
+        List<E> list = new ArrayList<>();
+        for(T type: types) {
+            list.addAll(getEdges(type));
+        }
+        return list;
+    }
+
+    @Override
     public Set<E> getEdges(T type) {
         Set<E> e = new LinkedHashSet<>();
         for(Map.Entry<E, EdgeData> entry: edges.entrySet()) {

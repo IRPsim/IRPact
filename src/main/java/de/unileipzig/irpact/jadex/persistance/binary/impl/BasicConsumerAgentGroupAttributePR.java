@@ -27,14 +27,16 @@ public class BasicConsumerAgentGroupAttributePR implements Persister<BasicConsum
     }
 
     @Override
-    public BasicConsumerAgentGroupAttribute initalize(Persistable persistable) {
-        return new BasicConsumerAgentGroupAttribute();
+    public BasicConsumerAgentGroupAttribute initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        BasicConsumerAgentGroupAttribute object = new BasicConsumerAgentGroupAttribute();
+        object.setName(data.getText());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, BasicConsumerAgentGroupAttribute object, RestoreManager manager) {
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setName(data.getText());
         object.setDistribution(manager.ensureGet(data.getLong()));
     }
 

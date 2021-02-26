@@ -22,26 +22,47 @@ public class DiscreteTimeModelPR implements Persister<DiscreteTimeModel>, Restor
     @Override
     public Persistable persist(DiscreteTimeModel object, PersistManager manager) {
         BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+        data.putText(object.getName());
+
+        data.putInt(object.getStartYear());
         data.putLong(object.getStoredDelta());
         data.putLong(object.getStoredTimePerTickInMs());
+        data.putDouble(object.getStartTick());
+        data.putDouble(object.getEndTick());
+        data.putDouble(object.getNowTick());
         data.putDouble(object.getTickModifier());
         data.putLong(object.getNowStamp().getEpochMilli());
-        //falls noetig: ZoneId speicherbar ueber getId():String und dann of(String ZoneId)
+        data.putLong(object.startTime().getEpochMilli());
+        data.putLong(object.endTime().getEpochMilli());
+        data.putDouble(object.getDelayTillEnd());
+
         return data;
     }
 
     @Override
-    public DiscreteTimeModel initalize(Persistable persistable) {
-        return new DiscreteTimeModel();
+    public DiscreteTimeModel initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        DiscreteTimeModel object = new DiscreteTimeModel();
+        object.setName(data.getText());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, DiscreteTimeModel object, RestoreManager manager) {
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setStoredDelta(data.getLong());
-        object.setStoredTimePerTickInMs(data.getLong());
-        object.setTickModifier(data.getDouble());
-        object.setNowStamp(new BasicTimestamp(data.getLong()));
+        object.setDirect(
+                data.getInt(),
+                data.getLong(),
+                data.getLong(),
+                data.getDouble(),
+                data.getDouble(),
+                data.getDouble(),
+                data.getDouble(),
+                new BasicTimestamp(data.getLong()),
+                new BasicTimestamp(data.getLong()),
+                new BasicTimestamp(data.getLong()),
+                data.getDouble()
+        );
     }
 
     @Override

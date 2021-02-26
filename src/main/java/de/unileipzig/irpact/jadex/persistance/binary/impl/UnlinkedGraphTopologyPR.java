@@ -27,7 +27,7 @@ public class UnlinkedGraphTopologyPR implements Persister<UnlinkedGraphTopology>
     }
 
     @Override
-    public UnlinkedGraphTopology initalize(Persistable persistable) {
+    public UnlinkedGraphTopology initalize(Persistable persistable, RestoreManager manager) {
         return new UnlinkedGraphTopology();
     }
 

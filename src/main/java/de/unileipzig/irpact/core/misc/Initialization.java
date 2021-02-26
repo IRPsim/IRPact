@@ -1,9 +1,11 @@
 package de.unileipzig.irpact.core.misc;
 
+import de.unileipzig.irpact.commons.IsEquals;
+
 /**
  * @author Daniel Abitz
  */
-public interface Initialization {
+public interface Initialization extends IsEquals {
 
     /**
      * Called before all proxy agents are created.

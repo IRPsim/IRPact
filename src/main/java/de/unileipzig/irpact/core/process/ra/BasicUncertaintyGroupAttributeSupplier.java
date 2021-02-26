@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.core.process.ra;
 
+import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -67,5 +69,15 @@ public class BasicUncertaintyGroupAttributeSupplier extends NameableBase impleme
             LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "add uncertainty '{}={},{}' to '{}->{}'", cagAttr.getName(), uncert.getName(), conv.getName(), cag.getName(), name);
             cag.addGroupAttribute(cagAttr);
         }
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getName(),
+                IsEquals.getMapCollHashCodeWithMappedKey(attrNames, Nameable::getName),
+                IsEquals.getMapCollHashCodeWithMappedKey(uncertDists, Nameable::getName),
+                IsEquals.getMapCollHashCodeWithMappedKey(convDists, Nameable::getName)
+        );
     }
 }

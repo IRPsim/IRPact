@@ -8,42 +8,51 @@ import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InEntity;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
+import de.unileipzig.irpact.util.RemoveFromRoot;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
+@RemoveFromRoot
 @Definition
 public class InProductGroupAttribute implements InEntity {
+
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.putPath(
-                InProductGroupAttribute.class,
+                thisClass(),
                 res.getCachedElement("Produkte"),
                 res.getCachedElement("Attribute_Product")
         );
 
         res.putPath(
-                InProductGroupAttribute.class, "attrName",
+                thisClass(), "attrName",
                 res.getCachedElement("Produkte"),
                 res.getCachedElement("Namen-Mapping_Product")
         );
 
         res.putPath(
-                InProductGroupAttribute.class, "attrDistribution",
+                thisClass(), "attrDistribution",
                 res.getCachedElement("Produkte"),
                 res.getCachedElement("Verteilungs-Mapping_Product")
         );
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InProductGroupAttribute.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
 

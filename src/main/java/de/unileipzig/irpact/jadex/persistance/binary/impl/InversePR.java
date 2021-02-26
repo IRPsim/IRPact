@@ -22,7 +22,7 @@ public class InversePR implements Persister<Inverse>, Restorer<Inverse> {
     }
 
     @Override
-    public Inverse initalize(Persistable persistable) {
+    public Inverse initalize(Persistable persistable, RestoreManager manager) {
         return new Inverse();
     }
 

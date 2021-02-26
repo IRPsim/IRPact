@@ -11,6 +11,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Objects;
 
 /**
@@ -18,6 +19,12 @@ import java.util.Objects;
  */
 @Definition
 public class InRandomBoundedIntegerDistribution implements InUnivariateDoubleDistribution {
+
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
 
     public static void initRes(TreeAnnotationResource res) {
     }

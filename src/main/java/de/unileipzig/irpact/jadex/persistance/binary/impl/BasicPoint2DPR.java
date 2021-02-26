@@ -29,15 +29,17 @@ public class BasicPoint2DPR implements Persister<BasicPoint2D>, Restorer<BasicPo
     }
 
     @Override
-    public BasicPoint2D initalize(Persistable persistable) {
-        return new BasicPoint2D();
+    public BasicPoint2D initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        BasicPoint2D object = new BasicPoint2D();
+        object.setX(data.getDouble());
+        object.setY(data.getDouble());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, BasicPoint2D object, RestoreManager manager) {
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setX(data.getDouble());
-        object.setY(data.getDouble());
         object.addAllAttributes(manager.ensureGetAll(data.getLongArray(), SpatialAttribute[]::new));
     }
 

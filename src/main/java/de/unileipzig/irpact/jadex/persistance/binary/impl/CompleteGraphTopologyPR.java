@@ -28,7 +28,7 @@ public class CompleteGraphTopologyPR implements Persister<CompleteGraphTopology>
     }
 
     @Override
-    public CompleteGraphTopology initalize(Persistable persistable) {
+    public CompleteGraphTopology initalize(Persistable persistable, RestoreManager manager) {
         return new CompleteGraphTopology();
     }
 

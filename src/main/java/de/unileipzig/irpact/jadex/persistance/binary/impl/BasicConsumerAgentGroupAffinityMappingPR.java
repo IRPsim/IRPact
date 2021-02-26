@@ -42,7 +42,7 @@ public class BasicConsumerAgentGroupAffinityMappingPR implements Persister<Basic
     }
 
     @Override
-    public BasicConsumerAgentGroupAffinityMapping initalize(Persistable persistable) {
+    public BasicConsumerAgentGroupAffinityMapping initalize(Persistable persistable, RestoreManager manager) {
         return new BasicConsumerAgentGroupAffinityMapping();
     }
 

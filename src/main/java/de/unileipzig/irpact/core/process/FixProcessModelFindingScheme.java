@@ -3,6 +3,8 @@ package de.unileipzig.irpact.core.process;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.core.product.Product;
 
+import java.util.Objects;
+
 /**
  * Returns the same ProcessModel instance for every product.
  *
@@ -29,5 +31,10 @@ public class FixProcessModelFindingScheme extends NameableBase implements Proces
             throw new NullPointerException("model not set");
         }
         return model;
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(getName(), getModel().getHashCode());
     }
 }

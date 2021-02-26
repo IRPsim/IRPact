@@ -26,6 +26,7 @@ public class GraphvizInputParser implements InputParser {
 
     protected SimulationEnvironment environment;
     protected Path imageOutputPath;
+    protected InRoot root;
 
     public GraphvizInputParser() {
     }
@@ -68,9 +69,15 @@ public class GraphvizInputParser implements InputParser {
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public InRoot getRoot() {
+        return root;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public <T> T parseRoot(InRoot root) throws ParsingException {
+        this.root = root;
         ParsingJob job = new ParsingJob(environment, imageOutputPath, root);
         return (T) job.run();
     }
@@ -112,7 +119,7 @@ public class GraphvizInputParser implements InputParser {
             LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, pattern, arg1, arg2);
         }
 
-        private GraphvizConfiguration run() {
+        private GraphvizConfiguration run() throws ParsingException {
             parseColors();
             parseLayoutAlgorithm();
             parseOutputFormat();
@@ -120,7 +127,7 @@ public class GraphvizInputParser implements InputParser {
             return configuration;
         }
 
-        private void parseColors() {
+        private void parseColors() throws ParsingException {
             log("parse Colors");
             for(InConsumerAgentGroupColor grpColor: root.consumerAgentGroupColors) {
                 ConsumerAgentGroup cag = environment.getAgents().getConsumerAgentGroup(grpColor.getGroup().getName());

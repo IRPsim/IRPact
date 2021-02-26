@@ -166,7 +166,7 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
                 case FORMULA:
                     double numValue = cell.getNumericCellValue();
 
-                    //TEST
+                    //apply cell format
                     CellStyle cs = cell.getCellStyle();
                     String format = cs.getDataFormatString();
                     if(!"General".equals(format)) {

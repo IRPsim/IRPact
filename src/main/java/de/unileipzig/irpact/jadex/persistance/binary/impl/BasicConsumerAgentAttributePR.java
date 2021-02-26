@@ -22,22 +22,25 @@ public class BasicConsumerAgentAttributePR implements Persister<BasicConsumerAge
     public Persistable persist(BasicConsumerAgentAttribute object, PersistManager manager) {
         BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
         data.putText(object.getName());
-        data.putLong(manager.ensureGetUID(object.getGroup()));
         data.putDouble(object.getDoubleValue());
+
+        data.putLong(manager.ensureGetUID(object.getGroup()));
         return data;
     }
 
     @Override
-    public BasicConsumerAgentAttribute initalize(Persistable persistable) {
-        return new BasicConsumerAgentAttribute();
+    public BasicConsumerAgentAttribute initalize(Persistable persistable, RestoreManager manager) {
+        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+        BasicConsumerAgentAttribute object = new BasicConsumerAgentAttribute();
+        object.setName(data.getText());
+        object.setDoubleValue(data.getDouble());
+        return object;
     }
 
     @Override
     public void setup(Persistable persistable, BasicConsumerAgentAttribute object, RestoreManager manager) {
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setName(data.getText());
         object.setGroup(manager.ensureGet(data.getLong()));
-        object.setDoubleValue(data.getDouble());
     }
 
     @Override

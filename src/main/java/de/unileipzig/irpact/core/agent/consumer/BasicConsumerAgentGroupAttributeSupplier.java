@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -8,6 +9,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Daniel Abitz
@@ -18,7 +20,7 @@ public class BasicConsumerAgentGroupAttributeSupplier extends NameableBase imple
 
     protected String attributeName;
     protected Map<ConsumerAgentGroup, UnivariateDoubleDistribution> distMapping;
-    protected UnivariateDoubleDistribution general;
+    protected UnivariateDoubleDistribution defaultDist; //wird genutzt
 
     public BasicConsumerAgentGroupAttributeSupplier() {
         this(null);
@@ -28,9 +30,9 @@ public class BasicConsumerAgentGroupAttributeSupplier extends NameableBase imple
         this(attributeName, new HashMap<>());
     }
 
-    public BasicConsumerAgentGroupAttributeSupplier(String attributeName, UnivariateDoubleDistribution general) {
+    public BasicConsumerAgentGroupAttributeSupplier(String attributeName, UnivariateDoubleDistribution defaultDist) {
         this(attributeName, new HashMap<>());
-        setGeneral(general);
+        setDefaultDisttribution(defaultDist);
     }
 
     public BasicConsumerAgentGroupAttributeSupplier(String attributeName, Map<ConsumerAgentGroup, UnivariateDoubleDistribution> distMapping) {
@@ -42,12 +44,28 @@ public class BasicConsumerAgentGroupAttributeSupplier extends NameableBase imple
         this.attributeName = attributeName;
     }
 
+    public String getAttributeName() {
+        return attributeName;
+    }
+
+    public Map<ConsumerAgentGroup, UnivariateDoubleDistribution> getMapping() {
+        return distMapping;
+    }
+
     public void put(ConsumerAgentGroup cag, UnivariateDoubleDistribution dist) {
         distMapping.put(cag, dist);
     }
 
-    public void setGeneral(UnivariateDoubleDistribution general) {
-        this.general = general;
+    public boolean hasDefaultDisttribution() {
+        return defaultDist != null;
+    }
+
+    public void setDefaultDisttribution(UnivariateDoubleDistribution defaultDist) {
+        this.defaultDist = defaultDist;
+    }
+
+    public UnivariateDoubleDistribution getDefaultDisttribution() {
+        return defaultDist;
     }
 
     public void putAll(BasicConsumerAgentGroupAttributeSupplier other) {
@@ -70,9 +88,9 @@ public class BasicConsumerAgentGroupAttributeSupplier extends NameableBase imple
             throw new IllegalArgumentException("agent group '" + cag.getName() + "' already has '" + attributeName + "'");
         }
 
-        UnivariateDoubleDistribution dist = general == null
+        UnivariateDoubleDistribution dist = defaultDist == null
                 ? distMapping.get(cag)
-                : general;
+                : defaultDist;
         if(dist == null) {
             throw new NullPointerException("no distribution for consumer group '" + cag.getName() + "'");
         }
@@ -83,5 +101,15 @@ public class BasicConsumerAgentGroupAttributeSupplier extends NameableBase imple
         cag.addGroupAttribute(grpAttr);
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added '{}={}' to group '{}'", attributeName, dist.getName(), cag.getName());
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getName(),
+                attributeName,
+                IsEquals.getHashCode(defaultDist),
+                IsEquals.getMapHashCode(distMapping)
+        );
     }
 }

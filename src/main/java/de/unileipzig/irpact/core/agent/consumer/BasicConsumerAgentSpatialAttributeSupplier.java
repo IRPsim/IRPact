@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -10,6 +11,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Daniel Abitz
@@ -83,5 +85,14 @@ public class BasicConsumerAgentSpatialAttributeSupplier extends NameableBase imp
         info.addAttribute(attr);
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added '{}={}' to agent '{}'", attributeName, attr.getDoubleValue(), ca.getName());
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getName(),
+                attributeName,
+                IsEquals.getMapHashCode(distMapping)
+        );
     }
 }

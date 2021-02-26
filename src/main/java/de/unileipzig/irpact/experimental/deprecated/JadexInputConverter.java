@@ -2,6 +2,7 @@ package de.unileipzig.irpact.experimental.deprecated;
 
 import de.unileipzig.irpact.core.misc.DebugLevel;
 import de.unileipzig.irpact.core.product.*;
+import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.experimental.deprecated.input.IRoot;
 import de.unileipzig.irpact.experimental.deprecated.input.affinity.IBasicAffinitiesEntry;
 import de.unileipzig.irpact.experimental.deprecated.input.affinity.IBasicAffinityMapping;
@@ -16,12 +17,9 @@ import de.unileipzig.irpact.experimental.deprecated.input.product.IProductGroup;
 import de.unileipzig.irpact.experimental.deprecated.input.product.IProductGroupAttribute;
 import de.unileipzig.irpact.experimental.deprecated.input.spatial.ISpace2D;
 import de.unileipzig.irpact.experimental.deprecated.input.time.ITimeModel;
-import de.unileipzig.irpact.commons.Util;
-import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
-import de.unileipzig.irpact.core.network.BasicGraphConfiguration;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.FastHeterogeneousSmallWorldTopology;
@@ -86,7 +84,7 @@ public class JadexInputConverter implements InputConverter {
                 BasicProductGroupAttribute pga = new BasicProductGroupAttribute();
                 pga.setName(attr.getName());
                 pga.setDistribution(attr.getPgAttrDistribution().createInstance());
-                pg.addAttribute(pga);
+                pg.addGroupAttribute(pga);
             }
             //env.getProducts().add(pg);
         }
@@ -104,7 +102,7 @@ public class JadexInputConverter implements InputConverter {
                 BasicProductAttribute battr = new BasicProductAttribute();
                 battr.setName(attr.getName());
                 battr.setDoubleValue(attr.getFpaValue());
-                battr.setGroup(pg.getAttribute(attr.getFpaGroupAttribute().getName()));
+                battr.setGroup(pg.getGroupAttribute(attr.getFpaGroupAttribute().getName()));
                 fp.addAttribute(battr);
             }
             //pg.registerFixed(fp);
@@ -136,28 +134,29 @@ public class JadexInputConverter implements InputConverter {
     }
 
     protected void initNetwork(BasicJadexSimulationEnvironment env, IRoot input) {
-        IFastHeterogeneousSmallWorldTopology iTopology = input.topology[0];
-        BasicSocialNetwork network = new BasicSocialNetwork();
-        BasicGraphConfiguration configuration = new BasicGraphConfiguration();
-        network.setConfiguration(configuration);
-
-        Map<ConsumerAgentGroup, Double> betaMapping = new HashMap<>();
-        Map<ConsumerAgentGroup, Integer> zMapping = new HashMap<>();
-        for(IFastHeterogeneousSmallWorldTopologyEntry entry: iTopology.topoEntries) {
-            ConsumerAgentGroup cag = env.getAgents().getConsumerAgentGroup(entry.topoGroup.getName());
-            betaMapping.put(cag, entry.beta);
-            zMapping.put(cag, entry.z);
-        }
-
-        FastHeterogeneousSmallWorldTopology topology = new FastHeterogeneousSmallWorldTopology(
-                SocialGraph.Type.get(iTopology.edgeType),
-                betaMapping,
-                zMapping,
-                iTopology.isSelfReferential,
-                iTopology.initialWeight,
-                iTopology.topoSeed
-        );
-        configuration.setGraphTopologyScheme(topology);
+        throw new TodoException();
+//        IFastHeterogeneousSmallWorldTopology iTopology = input.topology[0];
+//        BasicSocialNetwork network = new BasicSocialNetwork();
+//        BasicGraphConfiguration configuration = new BasicGraphConfiguration();
+//        network.setConfiguration(configuration);
+//
+//        Map<ConsumerAgentGroup, Double> betaMapping = new HashMap<>();
+//        Map<ConsumerAgentGroup, Integer> zMapping = new HashMap<>();
+//        for(IFastHeterogeneousSmallWorldTopologyEntry entry: iTopology.topoEntries) {
+//            ConsumerAgentGroup cag = env.getAgents().getConsumerAgentGroup(entry.topoGroup.getName());
+//            betaMapping.put(cag, entry.beta);
+//            zMapping.put(cag, entry.z);
+//        }
+//
+//        FastHeterogeneousSmallWorldTopology topology = new FastHeterogeneousSmallWorldTopology(
+//                SocialGraph.Type.get(iTopology.edgeType),
+//                betaMapping,
+//                zMapping,
+//                iTopology.isSelfReferential,
+//                iTopology.initialWeight,
+//                iTopology.topoSeed
+//        );
+//        configuration.setGraphTopologyScheme(topology);
 
         //env.setSocialNetwork(network);
     }

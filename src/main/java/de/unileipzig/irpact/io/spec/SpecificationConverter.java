@@ -9,11 +9,11 @@ import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.InVersion;
-import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
+import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.io.param.input.awareness.InProductAwarenessSupplyScheme;
-import de.unileipzig.irpact.io.param.input.awareness.InProductThresholdAwarenessSupplyScheme;
+import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
+import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.distribution.InConstantUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InRandomBoundedIntegerDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
@@ -53,9 +53,9 @@ public class SpecificationConverter {
     }
 
     private void initDefaults() {
-        put(InAffinityEntry.class, affinityEntryToJson);
+        put(InComplexAffinityEntry.class, affinityEntryToJson);
         put(InConsumerAgentGroup.class, cagToJson);
-        put(InProductThresholdAwarenessSupplyScheme.class, thresholdAwarenessToJson);
+        put(InProductThresholdInterestSupplyScheme.class, thresholdAwarenessToJson);
         put(InConstantUnivariateDistribution.class, constantUnivariateDoubleDistributionToJson);
         put(InRandomBoundedIntegerDistribution.class, randomBoundedIntegerDistributiontoJson);
         put(InInverse.class, inInverseToJson);
@@ -130,7 +130,7 @@ public class SpecificationConverter {
         InRoot root = new InRoot();
         Map<String, Object> cache = new HashMap<>();
 
-        putAll(cache, awarenessToParam.toParam(manager, null, cache), InProductAwarenessSupplyScheme::getName);
+        putAll(cache, awarenessToParam.toParam(manager, null, cache), InProductInterestSupplyScheme::getName);
         putAll(cache, univariateDoubleDistributionToParam.toParam(manager, null, cache), InUnivariateDoubleDistribution::getName);
 
 //        root.distanceEvaluators = distEvalToParam.toParam(manager, root.distanceEvaluators, cache);
@@ -164,10 +164,11 @@ public class SpecificationConverter {
         void toJson(T instance, SpecificationManager manager, SpecificationConverter converter);
     }
 
-    private static final ToSpecFunction<InAffinityEntry> affinityEntryToJson = (instance, manager, converter) -> {
-        ObjectNode root = manager.getAffinities();
-        ObjectNode srcNode = Util.getOrCreateObject(root, instance.getSrcCag().getName());
-        srcNode.put(instance.getTarCag().getName(), instance.getAffinityValue());
+    private static final ToSpecFunction<InComplexAffinityEntry> affinityEntryToJson = (instance, manager, converter) -> {
+        throw new TodoException();
+//        ObjectNode root = manager.getAffinities();
+//        ObjectNode srcNode = Util.getOrCreateObject(root, instance.getSrcCag().getName());
+//        srcNode.put(instance.getTarCag().getName(), instance.getAffinityValue());
     };
 
     private static final ToSpecFunction<InConsumerAgentGroup> cagToJson = (instance, manager, converter) -> {
@@ -188,7 +189,7 @@ public class SpecificationConverter {
         converter.apply(manager, instance.getAwareness());
     };
 
-    private static final ToSpecFunction<InProductThresholdAwarenessSupplyScheme> thresholdAwarenessToJson = (instance, manager, converter) -> {
+    private static final ToSpecFunction<InProductThresholdInterestSupplyScheme> thresholdAwarenessToJson = (instance, manager, converter) -> {
         if(!manager.hasAwareness(instance.getName())) {
             SpecificationHelper spec = new SpecificationHelper(manager.getAwareness(instance.getName()));
             spec.setName(instance.getName());
@@ -234,18 +235,19 @@ public class SpecificationConverter {
     };
 
     private static final ToSpecFunction<InFreeNetworkTopology> inFreeNetworkTopologyToJson = (instance, manager, converter) -> {
-        SpecificationHelper spec = new SpecificationHelper(manager.getTopology());
-        spec.setName(instance.getName());
-        spec.setType("FreeNetworkTopology");
-        spec.set(TAG_distanceEvaluator, instance.getDistanceEvaluator().getName());
-        spec.setInitialWeight(instance.getInitialWeight());
-
-        ObjectNode tieNode = spec.getObject(TAG_numberOfTies);
-        for(InNumberOfTies tie: instance.getNumberOfTies()) {
-            tieNode.put(tie.getCag().getName(), tie.getCount());
-        }
-
-        converter.apply(manager, instance.getDistanceEvaluator());
+        throw new TodoException();
+//        SpecificationHelper spec = new SpecificationHelper(manager.getTopology());
+//        spec.setName(instance.getName());
+//        spec.setType("FreeNetworkTopology");
+//        spec.set(TAG_distanceEvaluator, instance.getDistanceEvaluator().getName());
+//        spec.setInitialWeight(instance.getInitialWeight());
+//
+//        ObjectNode tieNode = spec.getObject(TAG_numberOfTies);
+//        for(InNumberOfTies tie: instance.getNumberOfTies()) {
+//            tieNode.put(tie.getCag().getName(), tie.getCount());
+//        }
+//
+//        converter.apply(manager, instance.getDistanceEvaluator());
     };
 
     private static final ToSpecFunction<InUnlinkedGraphTopology> inUnlinkedGraphToJson = (instance, manager, converter) -> {
@@ -269,21 +271,23 @@ public class SpecificationConverter {
     };
 
     private static final ToSpecFunction<InOrientationSupplier> inOrientationSupplierToJson = (instance, manager, converter) -> {
-        SpecificationHelper processSpec = new SpecificationHelper(manager.getProcess());
-        SpecificationHelper spec = processSpec.getObjectSpec(TAG_orientation);
-        spec.setName(instance.getName());
-        spec.setDistribution(instance.getDistribution().getName());
-
-        converter.apply(manager, instance.getDistribution());
+        throw new TodoException();
+//        SpecificationHelper processSpec = new SpecificationHelper(manager.getProcess());
+//        SpecificationHelper spec = processSpec.getObjectSpec(TAG_orientation);
+//        spec.setName(instance.getName());
+//        spec.setDistribution(instance.getDistribution().getName());
+//
+//        converter.apply(manager, instance.getDistribution());
     };
 
     private static final ToSpecFunction<InSlopeSupplier> inSlopeSupplierToJson = (instance, manager, converter) -> {
-        SpecificationHelper processSpec = new SpecificationHelper(manager.getProcess());
-        SpecificationHelper spec = processSpec.getObjectSpec(TAG_slope);
-        spec.setName(instance.getName());
-        spec.setDistribution(instance.getDistribution().getName());
-
-        converter.apply(manager, instance.getDistribution());
+        throw new TodoException();
+//        SpecificationHelper processSpec = new SpecificationHelper(manager.getProcess());
+//        SpecificationHelper spec = processSpec.getObjectSpec(TAG_slope);
+//        spec.setName(instance.getName());
+//        spec.setDistribution(instance.getDistribution().getName());
+//
+//        converter.apply(manager, instance.getDistribution());
     };
 
     private static final ToSpecFunction<InProductGroup> inProductGroupToJson = (instance, manager, converter) -> {
@@ -388,19 +392,19 @@ public class SpecificationConverter {
         }
     }
 
-    private static final ToParamFunction<InAffinityEntry[]> affinityEntryToParam = (manager, instance, cache) -> {
-        List<InAffinityEntry> entryList = new ArrayList<>();
+    private static final ToParamFunction<InComplexAffinityEntry[]> affinityEntryToParam = (manager, instance, cache) -> {
+        List<InComplexAffinityEntry> entryList = new ArrayList<>();
         ObjectNode affinityRoot = manager.getAffinities();
         for(Map.Entry<String, JsonNode> srcEntry: Util.iterateFields(affinityRoot)) {
             InConsumerAgentGroup srcCag = find(cache, srcEntry.getKey());
             for(Map.Entry<String, JsonNode> tarEntry: Util.iterateFields(srcEntry.getValue())) {
                 InConsumerAgentGroup tarCag = find(cache, tarEntry.getKey());
                 double value = tarEntry.getValue().doubleValue();
-                InAffinityEntry entry = new InAffinityEntry(srcCag.getName() + "_" + tarCag.getName(), srcCag, tarCag, value);
+                InComplexAffinityEntry entry = new InComplexAffinityEntry(srcCag.getName() + "_" + tarCag.getName(), srcCag, tarCag, value);
                 entryList.add(entry);
             }
         }
-        return entryList.toArray(new InAffinityEntry[0]);
+        return entryList.toArray(new InComplexAffinityEntry[0]);
     };
 
     private static final ToParamFunction<InConsumerAgentGroup[]> cagToParam = (manager, instance, cache) -> {
@@ -409,7 +413,7 @@ public class SpecificationConverter {
             SpecificationHelper spec = new SpecificationHelper(cagEntry.getValue());
             String cagName = spec.getName();
             int numberOfAgents = spec.getInt(TAG_numberOfAgents);
-            InProductAwarenessSupplyScheme awareness = find(cache, spec.getText(TAG_awareness));
+            InProductInterestSupplyScheme awareness = find(cache, spec.getText(TAG_awareness));
 
             List<InConsumerAgentGroupAttribute> attrList = new ArrayList<>();
             for(JsonNode attrNode: Util.iterateElements(spec.getAttributes())) {
@@ -438,8 +442,8 @@ public class SpecificationConverter {
         return cagList.toArray(new InConsumerAgentGroup[0]);
     };
 
-    private static final ToParamFunction<InProductAwarenessSupplyScheme[]> awarenessToParam = (manager, instance, cache) -> {
-        List<InProductAwarenessSupplyScheme> list = new ArrayList<>();
+    private static final ToParamFunction<InProductInterestSupplyScheme[]> awarenessToParam = (manager, instance, cache) -> {
+        List<InProductInterestSupplyScheme> list = new ArrayList<>();
         for(Map.Entry<String, ObjectNode> entry: manager.awarenessMap.entrySet()) {
             SpecificationHelper spec = new SpecificationHelper(entry.getValue());
             String name = spec.getName();
@@ -457,7 +461,7 @@ public class SpecificationConverter {
             }
         }
 
-        return list.toArray(new InProductAwarenessSupplyScheme[0]);
+        return list.toArray(new InProductInterestSupplyScheme[0]);
     };
 
     private static final ToParamFunction<InUnivariateDoubleDistribution[]> univariateDoubleDistributionToParam = (manager, instance, cache) -> {
@@ -643,24 +647,26 @@ public class SpecificationConverter {
         return cagList.toArray(new InProductGroup[0]);
     };
 
+    //TODO
     private static final ToParamFunction<InSpatialModel[]> spatialModelToParam = (manager, instance, cache) -> {
-        SpecificationHelper spec = new SpecificationHelper(manager.getSpatial());
-        String name = spec.getName();
-        String type = spec.getType();
-
-        InSpatialModel model;
-        if("Space2D".equals(type)) {
-            String metric = spec.getParametersSpec().getText(TAG_value);
-            model = new InSpace2D(
-                    name,
-                    TAG_euclid.equals(metric)
-            );
-        }
-        else {
-            throw new IllegalArgumentException("unknown type: " + type);
-        }
-
-        return new InSpatialModel[]{model};
+        throw new TodoException();
+//        SpecificationHelper spec = new SpecificationHelper(manager.getSpatial());
+//        String name = spec.getName();
+//        String type = spec.getType();
+//
+//        InSpatialModel model;
+//        if("Space2D".equals(type)) {
+//            String metric = spec.getParametersSpec().getText(TAG_value);
+//            model = new InSpace2D(
+//                    name,
+//                    TAG_euclid.equals(metric)
+//            );
+//        }
+//        else {
+//            throw new IllegalArgumentException("unknown type: " + type);
+//        }
+//
+//        return new InSpatialModel[]{model};
     };
 
     private static List<InConsumerAgentGroup> findCagsWithSpatialDist(
