@@ -139,6 +139,10 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         for(Persistable persistable: coll) {
             finalize(persistable);
         }
+        //phase 4
+        for(Persistable persistable: coll) {
+            validation(persistable);
+        }
     }
 
     protected void initalize(Persistable persistable) throws RestoreException {
@@ -167,6 +171,14 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         Restorer<T> restorer = ensureGetRestorer(type);
         T object = ensureGetObject(data);
         restorer.finalize(data, object, this);
+    }
+
+    protected <T> void validation(Persistable persistable) throws RestoreException {
+        BinaryJsonData data = check(persistable);
+        String type = data.ensureGetType();
+        Restorer<T> restorer = ensureGetRestorer(type);
+        T object = ensureGetObject(data);
+        restorer.validation(data, object, this);
     }
 
     @Override

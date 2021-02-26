@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.experimental.irpactrealstuff;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.log.Logback;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.experimental.TestFiles;
@@ -10,8 +9,6 @@ import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.start.optact.OptActMain;
-import de.unileipzig.irptools.defstructure.*;
-import de.unileipzig.irptools.io.ContentTypeDetector;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.annual.AnnualFile;
 import de.unileipzig.irptools.io.base.AnnualEntry;
@@ -23,11 +20,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 /**
  * @author Daniel Abitz
@@ -115,7 +110,7 @@ public class Asd {
         IRPact.resultConsumer = consumer;
         Start.main(args);
     }
-//restored=bbe0c2a != validation=5ace3516
+
     @Test
     void runItNext() {
         int startYear = 2016;

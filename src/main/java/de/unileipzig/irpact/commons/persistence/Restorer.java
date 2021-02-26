@@ -14,4 +14,7 @@ public interface Restorer<T> {
     void setup(Persistable persistable, T object, RestoreManager manager) throws RestoreException;
 
     void finalize(Persistable persistable, T object, RestoreManager manager) throws RestoreException;
+    
+    default void validation(Persistable persistable, T object, RestoreManager manager) throws RestoreException {
+    }
 }
