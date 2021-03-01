@@ -114,6 +114,13 @@ public class Start implements Callable<Integer> {
     private String dataDir;
     private Path dataDirPath;
 
+    @CommandLine.Option(
+            names = { "--ignorePersistenceCheck" },
+            description = "ignore load mismatches",
+            hidden = true
+    )
+    private boolean ignorePersistenceCheck;
+
     //=========================
     //data
     //=========================
@@ -233,6 +240,10 @@ public class Start implements Callable<Integer> {
             return true;
         }
         return false;
+    }
+
+    public boolean isIgnorePersistenceCheck() {
+        return ignorePersistenceCheck;
     }
 
     @Override

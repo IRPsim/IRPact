@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.process.ra;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.distribution.ConstantUnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.Rnd;
@@ -55,6 +56,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
     @Override
     public int getHashCode() {
         return Objects.hash(
+                getName(),
                 modelData.getHashCode(),
                 rnd.getHashCode(),
                 orientationSupplier.getHashCode(),
@@ -63,6 +65,25 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
                 underRenovationSupplier.getHashCode(),
                 uncertaintySupplier.getHashCode()
         );
+    }
+
+    private static void logHash(String msg, int storedHash) {
+        LOGGER.warn(
+                "hash @ '{}': stored={}",
+                msg,
+                Integer.toHexString(storedHash)
+        );
+    }
+
+    public void deepHashCode() {
+        logHash("name", IsEquals.getHashCode(getName()));
+        logHash("model data", IsEquals.getHashCode(modelData));
+        logHash("rnd", IsEquals.getHashCode(rnd));
+        logHash("orientation supplier", IsEquals.getHashCode(orientationSupplier));
+        logHash("slope supplier", IsEquals.getHashCode(slopeSupplier));
+        logHash("under construction supplier", IsEquals.getHashCode(underConstructionSupplier));
+        logHash("under renovation supplier", IsEquals.getHashCode(underRenovationSupplier));
+        logHash("uncertainty supplier", IsEquals.getHashCode(uncertaintySupplier));
     }
 
     public void setEnvironment(SimulationEnvironment environment) {
@@ -83,6 +104,10 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
     public Rnd getRnd() {
         return rnd;
+    }
+
+    public NPVData getNpvData() {
+        return npvData;
     }
 
     public void setNpvData(NPVData npvData) {
@@ -130,14 +155,18 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
     }
 
     @Override
-    public void preAgentCreation() {
-        if(npvData != null) {
-            npvCalculator = new NPVCalculator();
-            npvCalculator.setData(npvData);
+    public void preAgentCreation() throws MissingDataException {
+        if(npvData == null) {
+            throw new MissingDataException("np npv data");
         }
 
-        int startYear = environment.getTimeModel().getStartYear();
-        int endYear = environment.getTimeModel().getEndYearInclusive();
+        npvCalculator = new NPVCalculator();
+        npvCalculator.setData(npvData);
+
+        int startYear = environment.getTimeModel()
+                .getStartYear();
+        int endYear = environment.getTimeModel()
+                .getEndYearInclusive();
 
         LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "calculating npv matrix from '{}' to '{}'", startYear, endYear);
         for(int y = startYear; y <= endYear; y++) {
@@ -222,7 +251,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
             @Override
             public void run() {
-                LOGGER.debug("HALLO SYNC");
+                RAProcessModel.LOGGER.debug("HALLO SYNC");
             }
         };
     }

@@ -113,7 +113,7 @@ public class Asd {
 
     @Test
     void runItNext() {
-        int startYear = 2016;
+        int startYear = 2017;
         Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
 
         BiConsumer<AnnualEntry<InRoot>, AnnualData<OutRoot>> consumer = (i, o) -> {

@@ -169,6 +169,7 @@ public class JadexInputConverter implements InputConverter {
     @Override
     public JadexSimulationEnvironment build(IRoot input) {
         BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
+        env.setName("Initial_Environment");
         initConsumerAgentGroups(env, input);
         initProducts(env, input);
         initSpatialModel(env, input);

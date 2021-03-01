@@ -13,6 +13,14 @@ public interface PersistManager {
 
     Collection<Persistable> getPersistables();
 
+    <T> void prepare(T object);
+
+    default void prepareAll(Collection<?> coll) {
+        for(Object object: coll) {
+            prepare(object);
+        }
+    }
+
     <T> long ensureGetUID(T object) throws NoSuchElementException;
 
     default <T> long[] ensureGetAllUIDs(Collection<? extends T> coll) throws NoSuchElementException {

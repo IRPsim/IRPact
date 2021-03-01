@@ -1,10 +1,14 @@
-package de.unileipzig.irpact.core.agent.consumer;
+package de.unileipzig.irpact.jadex.agents.consumer;
 
 import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.core.agent.ProxyAgent;
 import de.unileipzig.irpact.core.agent.SpatialInformationAgentBase;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
@@ -15,13 +19,18 @@ import de.unileipzig.irpact.core.product.ProductFindingScheme;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irptools.util.log.IRPLogger;
+import jadex.bridge.service.annotation.Reference;
 
 import java.util.*;
 
 /**
  * @author Daniel Abitz
  */
+@Reference(local = true, remote = true)
 public class ProxyConsumerAgent extends SpatialInformationAgentBase implements ConsumerAgent, ProxyAgent<ConsumerAgent> {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(ProxyConsumerAgent.class);
 
     protected ConsumerAgent realAgent;
 
@@ -75,6 +84,29 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         }
     }
 
+    private static void logHash(String msg, int storedHash) {
+        LOGGER.warn(
+                "hash @ '{}': stored={}",
+                msg,
+                Integer.toHexString(storedHash)
+        );
+    }
+
+    public void deepHashCheck() {
+        logHash("name", IsEquals.getHashCode(getName()));
+        logHash("group name", IsEquals.getHashCode(getGroup().getName()));
+        logHash("information authority", IsEquals.getHashCode(getInformationAuthority()));
+        logHash("spatial information", IsEquals.getHashCode(getSpatialInformation()));
+        logHash("attributes", IsEquals.getCollHashCode(getAttributes()));
+        logHash("interest", IsEquals.getHashCode(getProductInterest()));
+        logHash("adopted products", IsEquals.getCollHashCode(getAdoptedProducts()));
+        logHash("product finding scheme", IsEquals.getHashCode(getProductFindingScheme()));
+        logHash("process finding scheme", IsEquals.getHashCode(getProcessFindingScheme()));
+        logHash("needs", IsEquals.getCollHashCode(getNeeds()));
+        logHash("plans", IsEquals.getMapHashCode(getPlans()));
+        logHash("external attributes", IsEquals.getCollHashCode(getExternAttributes()));
+    }
+
     @Override
     public boolean isSynced() {
         return realAgent != null;
@@ -95,13 +127,36 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     protected void clear() {
         group = null;
         node = null;
-        attributes = null;
+        attributes.clear();
         interest = null;
-        adoptedProducts = null;
+        adoptedProducts.clear();
         productFindingScheme = null;
         processFindingScheme = null;
-        needs = null;
-        plans = null;
+        needs.clear();
+        plans.clear();
+    }
+
+    public void unsync(ConsumerAgent realAgent) {
+        if(isNotSynced()) {
+            throw new IllegalStateException("not synced");
+        }
+        if(this.realAgent != realAgent) {
+            throw new IllegalArgumentException("synced to another agent");
+        }
+        this.realAgent = null;
+        reset(realAgent);
+    }
+
+    protected void reset(ConsumerAgent realAgent) {
+        group = realAgent.getGroup();
+        node = realAgent.getSocialGraphNode();
+        addAllAttributes(realAgent.getAttributes());
+        interest = realAgent.getProductInterest();
+        adoptedProducts.addAll(realAgent.getAdoptedProducts());
+        productFindingScheme = realAgent.getProductFindingScheme();
+        processFindingScheme = realAgent.getProcessFindingScheme();
+        needs.addAll(realAgent.getNeeds());
+        addAllPlans(realAgent.getPlans());
     }
 
     @Override
@@ -233,6 +288,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     public void setGroup(ConsumerAgentGroup group) {
+        checkNotSynced();
         this.group = group;
     }
 
@@ -345,6 +401,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         getRealAgent().adopt(need, product);
     }
 
+    @Override
     public ProductFindingScheme getProductFindingScheme() {
         return productFindingScheme;
     }
@@ -353,6 +410,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         this.productFindingScheme = productFindingScheme;
     }
 
+    @Override
     public ProcessFindingScheme getProcessFindingScheme() {
         return processFindingScheme;
     }
@@ -369,6 +427,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         this.needs.addAll(Arrays.asList(needs));
     }
 
+    @Override
     public Map<Need, ProcessPlan> getPlans() {
         return plans;
     }
@@ -378,18 +437,18 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     @Override
-    public boolean link(AttributeAccess attributeAccess) {
+    public boolean linkAccess(AttributeAccess attributeAccess) {
         if(isSynced()) {
-            return getRealAgent().link(attributeAccess);
+            return getRealAgent().linkAccess(attributeAccess);
         } else {
             return externAttributes.add(attributeAccess);
         }
     }
 
     @Override
-    public boolean unlink(AttributeAccess attributeAccess) {
+    public boolean unlinkAccess(AttributeAccess attributeAccess) {
         if(isSynced()) {
-            return getRealAgent().unlink(attributeAccess);
+            return getRealAgent().unlinkAccess(attributeAccess);
         } else {
             return externAttributes.remove(attributeAccess);
         }

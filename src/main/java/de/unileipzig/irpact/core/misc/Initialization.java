@@ -18,7 +18,7 @@ public interface Initialization extends IsEquals {
     /**
      * Initalize the basic setup without dependencies.
      */
-    default void initialize() {
+    default void initialize() throws MissingDataException {
     }
 
     /**

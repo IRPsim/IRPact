@@ -138,6 +138,21 @@ public interface IsEquals {
         return h;
     }
 
+    static <K, V> int getMapHashCodeWithMapping(
+            Map<K, V> map,
+            Function<? super K, ?> keyMapper,
+            Function<? super V, ?> valueMapper) {
+        int h = 0;
+        for(Map.Entry<K, V> entry: map.entrySet()) {
+            Object mappedKey = keyMapper.apply(entry.getKey());
+            Object mappedValue = valueMapper.apply(entry.getValue());
+            int keyHash = getHashCode(mappedKey);
+            int valueHash = getHashCode(mappedValue);
+            h += keyHash ^ valueHash;
+        }
+        return h;
+    }
+
     static int getMapCollHashCode(Map<?, ? extends Collection<?>> map) {
         int h = 0;
         for(Map.Entry<?, ? extends Collection<?>> entry: map.entrySet()) {

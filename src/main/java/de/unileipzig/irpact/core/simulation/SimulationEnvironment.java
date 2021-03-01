@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.simulation;
 
+import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.AgentManager;
@@ -14,7 +15,7 @@ import de.unileipzig.irpact.core.time.TimeModel;
 /**
  * @author Daniel Abitz
  */
-public interface SimulationEnvironment extends Initialization {
+public interface SimulationEnvironment extends Nameable, Initialization {
 
     //=========================
     //general

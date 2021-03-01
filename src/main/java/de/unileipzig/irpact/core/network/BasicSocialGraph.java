@@ -237,6 +237,18 @@ public class BasicSocialGraph implements SocialGraph {
         }
     }
 
+    public void addEdgeDirect(BasicEdge edge) {
+        if(GRAPH.hasEdge(edge.getSource(), edge.getTarget(), edge.getType())) {
+            throw new IllegalArgumentException("edge '"
+                    + edge.getSource().getLabel()
+                    + "' -> '"
+                    + edge.getTarget().getLabel()
+                    + "' already exists"
+            );
+        }
+        GRAPH.addEdge(edge.getSource(), edge.getTarget(), edge.getType(), edge);
+    }
+
     @Override
     public Edge getEdge(Node from, Node to, Type type) {
         return GRAPH.getEdge(from, to, type);

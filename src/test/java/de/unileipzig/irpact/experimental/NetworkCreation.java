@@ -3,7 +3,7 @@ package de.unileipzig.irpact.experimental;
 import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.agent.consumer.ProxyConsumerAgent;
+import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.core.log.*;
 import de.unileipzig.irpact.core.network.BasicSocialGraph;
 import de.unileipzig.irpact.core.network.SocialGraph;

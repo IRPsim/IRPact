@@ -51,12 +51,15 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         return Objects.hash(
                 getName(),
                 getInformationAuthority(),
-                nextAgentId,
+                getNextAgentId(),
+
+                getSpatialDistribution().getHashCode(),
                 IsEquals.getCollHashCode(getAttributes()),
-                IsEquals.getCollHashCode(getAgents()),
                 getAwarenessSupplyScheme().getHashCode(),
                 getProductFindingScheme().getHashCode(),
-                getProductFindingScheme().getHashCode()
+                getProcessFindingScheme().getHashCode(),
+
+                IsEquals.getCollHashCode(getAgents())
         );
     }
 
@@ -177,6 +180,14 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         return getName() + "_" + nextId();
     }
 
+    public void setNextAgentId(int nextAgentId) {
+        this.nextAgentId = nextAgentId;
+    }
+
+    public int getNextAgentId() {
+        return nextAgentId;
+    }
+
     @Override
     public ProxyConsumerAgent deriveAgent() {
         SpatialInformation spatialInformation = getSpatialDistribution().drawValue();
@@ -191,7 +202,7 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         agent.setProcessFindingScheme(getProcessFindingScheme());
         agent.setProductFindingScheme(getProductFindingScheme());
 
-        agent.link(spatialInformation.getAttributeAccess());
+        agent.linkAccess(spatialInformation.getAttributeAccess());
         return agent;
     }
 }

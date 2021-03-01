@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.simulation.InitializationData;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -46,11 +47,14 @@ public class BasicAgentManager implements AgentManager {
     }
 
     @Override
-    public void initialize() {
+    public void initialize() throws MissingDataException {
         InitializationData initData = environment.getInitializationData();
         for(ConsumerAgentGroup cag: getConsumerAgentGroups()) {
+            checkConsumerAgentGroup(cag);
             int count = initData.getInitialNumberOfConsumerAgent(cag);
-            for(int i = 0; i < count; i++) {
+            int i = cag.getNumberOfAgents();
+            LOGGER.debug("create {} agents for group '{}'", Math.max(count - i, 0), cag.getName());
+            for(; i < count; i++) {
                 ConsumerAgent ca = cag.deriveAgent();
                 if(cag.addAgent(ca)) {
                     LOGGER.trace(IRPSection.INITIALIZATION_AGENT, "added agent '{}' to group '{}'", ca.getName(), cag.getName());
@@ -58,6 +62,12 @@ public class BasicAgentManager implements AgentManager {
                     throw new IllegalStateException("adding agent '" + ca.getName() + "' failed, name already exists");
                 }
             }
+        }
+    }
+
+    private void checkConsumerAgentGroup(ConsumerAgentGroup cag) throws MissingDataException {
+        if(cag.getEnvironment() == null) {
+            throw new MissingDataException("missing environment");
         }
     }
 

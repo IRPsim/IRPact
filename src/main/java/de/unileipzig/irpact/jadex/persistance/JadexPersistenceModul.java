@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.Persistable;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.persistence.PersistenceModul;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.io.param.inout.binary.BinaryPersistData;
@@ -13,6 +14,8 @@ import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
+import de.unileipzig.irpact.start.Start;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,9 +27,12 @@ import java.util.List;
  */
 public class JadexPersistenceModul extends NameableBase implements PersistenceModul {
 
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(JadexPersistenceModul.class);
+
     protected Modus modus = Modus.getDefault();
 
     protected SimulationEnvironment environment;
+    protected Start param;
 
     public JadexPersistenceModul() {
     }
@@ -107,6 +113,7 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
         List<BinaryJsonData> dataList = new ArrayList<>();
         for(BinaryPersistData hdb: root.binaryPersistData) {
             BinaryJsonData data = BinaryJsonData.restore(hdb.getBytes());
+            data.setGetMode();
             dataList.add(data);
         }
         binaryRestore.setInitialInstance(initialEnvironment);
@@ -114,8 +121,15 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
         SimulationEnvironment restoredEnvironment = binaryRestore.getRestoredInstance();
         int restoredHash = restoredEnvironment.getHashCode();
         int validationHash = binaryRestore.getValidationHash();
-        if(restoredHash != validationHash) {
-            throw new RestoreException("hash mismatch: restored=" + Integer.toHexString(restoredHash) + " != validation=" + Integer.toHexString(validationHash));
+        if(restoredHash == validationHash) {
+            LOGGER.info("environment successfully restored");
+        } else {
+            String msg = "hash mismatch: restored=" + Integer.toHexString(restoredHash) + " != validation=" + Integer.toHexString(validationHash);
+            if(environment.getInitializationData().ignorePersistenceCheckResult()) {
+                LOGGER.warn("ignore persistence check: {}", msg);
+            } else {
+                throw new RestoreException(msg);
+            }
         }
         return restoredEnvironment;
     }

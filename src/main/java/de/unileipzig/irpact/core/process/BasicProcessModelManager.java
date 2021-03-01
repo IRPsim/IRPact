@@ -35,7 +35,7 @@ public class BasicProcessModelManager implements ProcessModelManager {
     }
 
     @Override
-    public void initialize() {
+    public void initialize() throws MissingDataException {
         for(ProcessModel model: getProcessModels()) {
             model.initialize();
         }

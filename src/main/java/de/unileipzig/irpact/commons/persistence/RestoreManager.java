@@ -33,5 +33,25 @@ public interface RestoreManager {
 
     <K, V> Map<K, V> ensureGetAll(Map<Long, Long> idMap) throws NoSuchElementException;
 
+    /**
+     * Search for the exact class (c == x.getClass)
+     *
+     * @param c class of the searched instance
+     * @param <T> type of the searched instance
+     * @return found instance
+     * @throws NoSuchElementException If no instance was found.
+     */
     <T> T ensureGetSameClass(Class<T> c) throws NoSuchElementException;
+
+    /**
+     * Search for the instance with {@link Class#isInstance(Object)}.
+     *
+     * @param c class of the searched instance
+     * @param <T> type of the searched instance
+     * @return found instance
+     * @throws NoSuchElementException If no instance was found.
+     */
+    <T> T ensureGetInstanceOf(Class<T> c) throws NoSuchElementException;
+
+    <T> T ensureGetByName(String name) throws NoSuchElementException;
 }

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.simulation;
 
+import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.AgentManager;
@@ -28,7 +29,7 @@ import java.util.Objects;
  * @author Daniel Abitz
  */
 @Reference(local = true, remote = true)
-public class BasicJadexSimulationEnvironment implements JadexSimulationEnvironment {
+public class BasicJadexSimulationEnvironment extends NameableBase implements JadexSimulationEnvironment {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicJadexSimulationEnvironment.class);
 
@@ -211,7 +212,7 @@ public class BasicJadexSimulationEnvironment implements JadexSimulationEnvironme
     }
 
     @Override
-    public void initialize() {
+    public void initialize() throws MissingDataException {
         agentManager.initialize();
         socialNetwork.initialize();
         productManager.initialize();

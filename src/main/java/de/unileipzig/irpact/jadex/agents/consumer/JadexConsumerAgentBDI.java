@@ -4,7 +4,6 @@ import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.time.Timestamp;
-import de.unileipzig.irpact.core.agent.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.need.Need;
@@ -137,6 +136,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     protected void onEnd() {
         log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] end", getName());
+        proxyAgent.unsync(this);
     }
 
     //=========================
@@ -173,18 +173,22 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         proxyAgent.sync(getRealAgent());
     }
 
+    @Override
     public ProductFindingScheme getProductFindingScheme() {
         return productFindingScheme;
     }
 
+    @Override
     public ProcessFindingScheme getProcessFindingScheme() {
         return processFindingScheme;
     }
 
+    @Override
     public Set<Need> getNeeds() {
         return needs;
     }
 
+    @Override
     public Map<Need, ProcessPlan> getPlans() {
         return plans;
     }
@@ -341,12 +345,12 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public boolean link(AttributeAccess attributeAccess) {
+    public boolean linkAccess(AttributeAccess attributeAccess) {
         return externAttributes.add(attributeAccess);
     }
 
     @Override
-    public boolean unlink(AttributeAccess attributeAccess) {
+    public boolean unlinkAccess(AttributeAccess attributeAccess) {
         return externAttributes.remove(attributeAccess);
     }
 

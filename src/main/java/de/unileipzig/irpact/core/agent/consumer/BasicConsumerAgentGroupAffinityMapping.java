@@ -5,8 +5,8 @@ import de.unileipzig.irpact.commons.affinity.Affinities;
 import de.unileipzig.irpact.commons.affinity.BasicAffinityMapping;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author Daniel Abitz
@@ -35,8 +35,14 @@ public class BasicConsumerAgentGroupAffinityMapping
 
     @Override
     public int getHashCode() {
-        return Objects.hash(
-                IsEquals.getMapHashCode(mapping)
-        );
+        Map<String, Map<String, Double>> helper = new LinkedHashMap<>();
+        for(ConsumerAgentGroup src: sources()) {
+            ConsumerAgentGroupAffinities srcAffi = get(src);
+            Map<String, Double> srcMap = helper.computeIfAbsent(src.getName(), _name -> new LinkedHashMap<>());
+            for(ConsumerAgentGroup tar: srcAffi.targets()) {
+                srcMap.put(tar.getName(), srcAffi.getValue(tar));
+            }
+        }
+        return IsEquals.getMapHashCode(helper);
     }
 }

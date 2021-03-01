@@ -1,18 +1,28 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.persistence.*;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
+import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.BasicTimestamp;
 import de.unileipzig.irpact.jadex.time.DiscreteTimeModel;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class DiscreteTimeModelPR implements Persister<DiscreteTimeModel>, Restorer<DiscreteTimeModel> {
+public class DiscreteTimeModelPR extends BinaryPRBase<DiscreteTimeModel> {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(DiscreteTimeModelPR.class);
 
     public static final DiscreteTimeModelPR INSTANCE = new DiscreteTimeModelPR();
+
+    @Override
+    protected IRPLogger log() {
+        return LOGGER;
+    }
 
     @Override
     public Class<DiscreteTimeModel> getType() {
@@ -20,7 +30,7 @@ public class DiscreteTimeModelPR implements Persister<DiscreteTimeModel>, Restor
     }
 
     @Override
-    public Persistable persist(DiscreteTimeModel object, PersistManager manager) {
+    public Persistable initalizePersist(DiscreteTimeModel object, PersistManager manager) {
         BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
         data.putText(object.getName());
 
@@ -36,11 +46,12 @@ public class DiscreteTimeModelPR implements Persister<DiscreteTimeModel>, Restor
         data.putLong(object.endTime().getEpochMilli());
         data.putDouble(object.getDelayTillEnd());
 
+        storeHash(object, data);
         return data;
     }
 
     @Override
-    public DiscreteTimeModel initalize(Persistable persistable, RestoreManager manager) {
+    public DiscreteTimeModel initalizeRestore(Persistable persistable, RestoreManager manager) {
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
         DiscreteTimeModel object = new DiscreteTimeModel();
         object.setName(data.getText());
@@ -48,7 +59,9 @@ public class DiscreteTimeModelPR implements Persister<DiscreteTimeModel>, Restor
     }
 
     @Override
-    public void setup(Persistable persistable, DiscreteTimeModel object, RestoreManager manager) {
+    public void setupRestore(Persistable persistable, DiscreteTimeModel object, RestoreManager manager) {
+        object.setEnvironment(manager.ensureGetInstanceOf(JadexSimulationEnvironment.class));
+
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
         object.setDirect(
                 data.getInt(),
@@ -63,9 +76,5 @@ public class DiscreteTimeModelPR implements Persister<DiscreteTimeModel>, Restor
                 new BasicTimestamp(data.getLong()),
                 data.getDouble()
         );
-    }
-
-    @Override
-    public void finalize(Persistable persistable, DiscreteTimeModel object, RestoreManager manager) {
     }
 }

@@ -2,17 +2,13 @@ package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
-import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.network.BasicSocialGraph;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
-import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.GraphTopologyScheme;
 import de.unileipzig.irpact.core.process.BasicProcessModelManager;
 import de.unileipzig.irpact.core.process.ProcessModel;
@@ -67,6 +63,7 @@ public class JadexInputParser implements InputParser {
         CACHE.clear();
 
         environment = new BasicJadexSimulationEnvironment();
+        environment.setName("Initial_Environment");
         environment.initDefault();
     }
 

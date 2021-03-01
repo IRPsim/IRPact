@@ -9,12 +9,11 @@ public interface Restorer<T> {
 
     Class<T> getType();
 
-    T initalize(Persistable persistable, RestoreManager manager) throws RestoreException;
+    T initalizeRestore(Persistable persistable, RestoreManager manager) throws RestoreException;
 
-    void setup(Persistable persistable, T object, RestoreManager manager) throws RestoreException;
+    void setupRestore(Persistable persistable, T object, RestoreManager manager) throws RestoreException;
 
-    void finalize(Persistable persistable, T object, RestoreManager manager) throws RestoreException;
-    
-    default void validation(Persistable persistable, T object, RestoreManager manager) throws RestoreException {
-    }
+    void finalizeRestore(Persistable persistable, T object, RestoreManager manager) throws RestoreException;
+
+    void validateRestore(Persistable persistable, T object, RestoreManager manager) throws RestoreException;
 }

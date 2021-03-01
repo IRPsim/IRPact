@@ -5,17 +5,14 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.agent.consumer.ProxyConsumerAgent;
+import de.unileipzig.irpact.core.simulation.*;
+import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.network.SocialGraph;
-import de.unileipzig.irpact.core.simulation.BasicVersion;
-import de.unileipzig.irpact.core.simulation.LifeCycleControl;
-import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.core.simulation.Version;
 import de.unileipzig.irpact.io.param.input.GraphvizInputParser;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.JadexInputParser;
@@ -44,11 +41,8 @@ import jadex.bridge.service.types.cms.CreationInfo;
 import jadex.bridge.service.types.simulation.ISimulationService;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 /**
  * @author Daniel Abitz
@@ -139,6 +133,7 @@ public class IRPact {
 
     private void start() throws Exception {
         createSimulationEnvironment();
+        applyCliToEnvironment();
         restorPreviousSimulationEnvironment();
         createGraphvizConfiguration();
 
@@ -148,11 +143,6 @@ public class IRPact {
         postAgentCreation();
 
         printInitialNetwork();
-
-        if(clParam.isNoSimulation()) {
-            LOGGER.info("execution finished (noSimulation flag set)");
-            return;
-        }
 
         createPlatform();
         preparePlatform();
@@ -182,6 +172,11 @@ public class IRPact {
         if(environment.getInitializationData().hasValidEndYear()) {
             LOGGER.info("valid custom end year found, simulation will run multiple years");
         }
+    }
+
+    private void applyCliToEnvironment() {
+        BasicInitializationData initData = (BasicInitializationData) environment.getInitializationData();
+        initData.setIgnorePersistenceCheckResult(clParam.isIgnorePersistenceCheck());
     }
 
     private void restorPreviousSimulationEnvironment() throws Exception {
@@ -214,7 +209,7 @@ public class IRPact {
         environment.getTaskManager().runAppTasks();
     }
 
-    private void initEnvironment() {
+    private void initEnvironment() throws MissingDataException {
         LOGGER.info("initialize");
         environment.initialize();
     }
@@ -288,9 +283,7 @@ public class IRPact {
 
 
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-            //die placeholder-Agenten werden direkt geaendert, damit duerfen wir nicht ueber die Agentenliste selber interieren
-            Set<ConsumerAgent> agentsCopy = new HashSet<>(cag.getAgents());
-            for(ConsumerAgent ca: agentsCopy) {
+            for(ConsumerAgent ca: cag.getAgents()) {
                 LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "create jadex agent '{}' ({}/{})", ca.getName(), ++agentCount, totalNumberOfAgents);
                 ProxyConsumerAgent data = createConsumerAgentInitializationData(ca);
                 CreationInfo info = createConsumerAgentInfo(data);

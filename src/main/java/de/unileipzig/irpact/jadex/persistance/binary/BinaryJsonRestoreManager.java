@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary;
 
+import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.Persistable;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
@@ -15,12 +16,16 @@ import java.util.function.IntFunction;
 @SuppressWarnings("unused")
 public class BinaryJsonRestoreManager implements RestoreManager {
 
+    public static final String INITIAL_INSTANCE = "_INITIAL_INSTANCE_";
+    public static final String RESTORED_INSTANCE = "_RESTORED_INSTANCE_";
+    public static final String VALIDATION_HASH = "_VALIDATION_HASH_";
+    public static final String IN_ROOT = "_IN_ROOT_";
+    public static final String PARAM = "_PARAM_";
+
     protected final Map<BinaryJsonData, Object> restoredMap = new HashMap<>();
     protected final Map<Long, BinaryJsonData> uidData = new HashMap<>();
     protected final Map<String, Restorer<?>> restorerMap = new HashMap<>();
-    protected Object initalInstance;
-    protected Object restoredInstance;
-    protected Integer hash;
+    protected final Map<Object, Object> cache = new HashMap<>();
 
     public BinaryJsonRestoreManager() {
         init();
@@ -44,6 +49,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         ensureRegister(BasicProductGroupPR.INSTANCE);
         ensureRegister(BasicProductPR.INSTANCE);
         ensureRegister(BasicSocialGraphPR.INSTANCE);
+        ensureRegister(BasicUncertaintyGroupAttributeSupplierPR.INSTANCE);
         ensureRegister(BasicVersionPR.INSTANCE);
         ensureRegister(BooleanDistributionPR.INSTANCE);
         ensureRegister(CompleteGraphTopologyPR.INSTANCE);
@@ -125,7 +131,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
 
     @Override
     public void restore(Collection<? extends Persistable> coll) throws RestoreException {
-        restoredInstance = null;
+        setRestoredInstance(null);
 
         //phase 1
         for(Persistable persistable: coll) {
@@ -152,7 +158,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         }
         String type = data.ensureGetType();
         Restorer<?> restorer = ensureGetRestorer(type);
-        Object object = restorer.initalize(data, this);
+        Object object = restorer.initalizeRestore(data, this);
         restoredMap.put(data, object);
         uidData.put(data.getUID(), data);
     }
@@ -162,7 +168,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         String type = data.ensureGetType();
         Restorer<T> restorer = ensureGetRestorer(type);
         T object = ensureGetObject(data);
-        restorer.setup(data, object, this);
+        restorer.setupRestore(data, object, this);
     }
 
     protected <T> void finalize(Persistable persistable) throws RestoreException {
@@ -170,7 +176,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         String type = data.ensureGetType();
         Restorer<T> restorer = ensureGetRestorer(type);
         T object = ensureGetObject(data);
-        restorer.finalize(data, object, this);
+        restorer.finalizeRestore(data, object, this);
     }
 
     protected <T> void validation(Persistable persistable) throws RestoreException {
@@ -178,54 +184,57 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         String type = data.ensureGetType();
         Restorer<T> restorer = ensureGetRestorer(type);
         T object = ensureGetObject(data);
-        restorer.validation(data, object, this);
+        restorer.validateRestore(data, object, this);
+    }
+
+    protected void checkedSet(Object key, Object value, String msg) {
+        if(value == null) {
+            cache.remove(key);
+        } else {
+            if(cache.containsKey(key)) {
+                throw new IllegalStateException(msg);
+            }
+            cache.put(key, value);
+        }
+    }
+
+    protected Object checkedGet(Object key, String msg) {
+        if(!cache.containsKey(key)) {
+            throw new NoSuchElementException(msg);
+        }
+        return cache.get(key);
     }
 
     @Override
     public void setInitialInstance(Object initial) {
-        this.initalInstance = initial;
+        checkedSet(INITIAL_INSTANCE, initial, "initial instance already set");
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getInitialInstance() {
-        if(initalInstance == null) {
-            throw new NoSuchElementException("initial instance");
-        }
-        return (T) initalInstance;
+        return (T) checkedGet(INITIAL_INSTANCE, "initial instance");
     }
 
     @Override
     public void setRestoredInstance(Object restored) {
-        if(restoredInstance != null) {
-            throw new IllegalStateException("restored instance already set");
-        }
-        this.restoredInstance = restored;
+        checkedSet(RESTORED_INSTANCE, restored, "restored instance already set");
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getRestoredInstance() {
-        if(restoredInstance == null) {
-            throw new NoSuchElementException("restored instance");
-        }
-        return (T) restoredInstance;
+        return (T) checkedGet(RESTORED_INSTANCE, "restored instance");
     }
 
     @Override
     public void setValidationHash(int hash) {
-        if(this.hash != null) {
-            throw new IllegalStateException("validation hash already set");
-        }
-        this.hash = hash;
+        checkedSet(VALIDATION_HASH, hash, "validation hash already set");
     }
 
     @Override
     public int getValidationHash() {
-        if(hash == null) {
-            throw new NoSuchElementException("hash");
-        }
-        return hash;
+        return (Integer) checkedGet(VALIDATION_HASH, "validation hash");
     }
 
     @Override
@@ -265,6 +274,30 @@ public class BinaryJsonRestoreManager implements RestoreManager {
             }
         }
         throw new NoSuchElementException(c.getName());
+    }
+
+    @Override
+    public <T> T ensureGetInstanceOf(Class<T> c) throws NoSuchElementException {
+        for(Object value: restoredMap.values()) {
+            if(c.isInstance(value)) {
+                return c.cast(value);
+            }
+        }
+        throw new NoSuchElementException(c.getName());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T ensureGetByName(String name) throws NoSuchElementException {
+        for(Object value: restoredMap.values()) {
+            if(value instanceof Nameable) {
+                Nameable n = (Nameable) value;
+                if(Objects.equals(name, n.getName())) {
+                    return (T) n;
+                }
+            }
+        }
+        throw new NoSuchElementException(name);
     }
 
     //=========================

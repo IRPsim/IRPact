@@ -2,11 +2,13 @@ package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.FreeNetworkTopology;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,9 +16,16 @@ import java.util.Map;
 /**
  * @author Daniel Abitz
  */
-public class FreeNetworkTopologyPR implements Persister<FreeNetworkTopology>, Restorer<FreeNetworkTopology> {
+public class FreeNetworkTopologyPR extends BinaryPRBase<FreeNetworkTopology> {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(FreeNetworkTopologyPR.class);
 
     public static final FreeNetworkTopologyPR INSTANCE = new FreeNetworkTopologyPR();
+
+    @Override
+    protected IRPLogger log() {
+        return LOGGER;
+    }
 
     @Override
     public Class<FreeNetworkTopology> getType() {
@@ -24,7 +33,7 @@ public class FreeNetworkTopologyPR implements Persister<FreeNetworkTopology>, Re
     }
 
     @Override
-    public Persistable persist(FreeNetworkTopology object, PersistManager manager) {
+    public Persistable initalizePersist(FreeNetworkTopology object, PersistManager manager) {
         BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
         data.putInt(object.getEdgeType().id());
 
@@ -39,16 +48,17 @@ public class FreeNetworkTopologyPR implements Persister<FreeNetworkTopology>, Re
         data.putLong(manager.ensureGetUID(object.getDistanceEvaluator()));
         data.putDouble(object.getInitialWeight());
         data.putLong(manager.ensureGetUID(object.getRnd()));
+        storeHash(object, data);
         return data;
     }
 
     @Override
-    public FreeNetworkTopology initalize(Persistable persistable, RestoreManager manager) {
+    public FreeNetworkTopology initalizeRestore(Persistable persistable, RestoreManager manager) {
         return new FreeNetworkTopology();
     }
 
     @Override
-    public void setup(Persistable persistable, FreeNetworkTopology object, RestoreManager manager) {
+    public void setupRestore(Persistable persistable, FreeNetworkTopology object, RestoreManager manager) {
         BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
         object.setEdgeType(SocialGraph.Type.get(data.getInt()));
 
@@ -64,9 +74,5 @@ public class FreeNetworkTopologyPR implements Persister<FreeNetworkTopology>, Re
         object.setDistanceEvaluator(manager.ensureGet(data.getLong()));
         object.setInitialWeight(data.getDouble());
         object.setRnd(manager.ensureGet(data.getLong()));
-    }
-
-    @Override
-    public void finalize(Persistable persistable, FreeNetworkTopology object, RestoreManager manager) {
     }
 }

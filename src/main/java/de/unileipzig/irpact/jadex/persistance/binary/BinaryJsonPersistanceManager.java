@@ -8,7 +8,6 @@ import de.unileipzig.irpact.jadex.persistance.binary.impl.*;
 /**
  * @author Daniel Abitz
  */
-@SuppressWarnings("unused")
 public class BinaryJsonPersistanceManager extends BasicPersistManager {
 
     public BinaryJsonPersistanceManager() {
@@ -33,6 +32,7 @@ public class BinaryJsonPersistanceManager extends BasicPersistManager {
         ensureRegister(BasicProductGroupPR.INSTANCE);
         ensureRegister(BasicProductPR.INSTANCE);
         ensureRegister(BasicSocialGraphPR.INSTANCE);
+        ensureRegister(BasicUncertaintyGroupAttributeSupplierPR.INSTANCE);
         ensureRegister(BasicVersionPR.INSTANCE);
         ensureRegister(BooleanDistributionPR.INSTANCE);
         ensureRegister(CompleteGraphTopologyPR.INSTANCE);
@@ -72,6 +72,8 @@ public class BinaryJsonPersistanceManager extends BasicPersistManager {
     }
 
     public static BinaryJsonData initDataWithClass(Class<?> c, PersistManager manager) {
-        return BinaryJsonData.init(IRPactJson.SMILE.getNodeFactory(), manager.newUID(), c);
+        BinaryJsonData data = BinaryJsonData.init(IRPactJson.SMILE.getNodeFactory(), manager.newUID(), c);
+        data.setPutMode();
+        return data;
     }
 }

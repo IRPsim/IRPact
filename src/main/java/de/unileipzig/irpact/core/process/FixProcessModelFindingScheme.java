@@ -35,6 +35,6 @@ public class FixProcessModelFindingScheme extends NameableBase implements Proces
 
     @Override
     public int getHashCode() {
-        return Objects.hash(getName(), getModel().getHashCode());
+        return Objects.hash(getName(), getModel().getName());
     }
 }

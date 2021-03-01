@@ -109,11 +109,13 @@ public class BasicProductGroup extends SimulationEntityBase implements ProductGr
 
     @Override
     public Product derive() {
-        return new BasicProduct(
+        BasicProduct product = new BasicProduct(
                 deriveName(),
                 this,
                 deriveAttributes()
         );
+        product.setEnvironment(getEnvironment());
+        return product;
     }
 
     @Override

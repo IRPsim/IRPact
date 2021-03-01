@@ -125,6 +125,10 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
         killSwitch.setTimeout(timeout);
     }
 
+    public long getKillSwitchTimeout() {
+        return killSwitch.getTimeout();
+    }
+
     @Override
     public void registerSimulationAgentAccess(SimulationAgent agent, IInternalAccess access) {
         this.controlAgent = agent;
