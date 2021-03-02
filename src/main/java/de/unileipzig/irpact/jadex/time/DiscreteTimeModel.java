@@ -41,43 +41,43 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
     public int getHashCode() {
         //keine ticks hashen, die sind nicht detrministisch
         return Objects.hash(
-                getName(),
-                storedDelta,
-                storedTimePerTickInMs,
-                tickModifier,
-                IsEquals.getHashCode(nowStamp),
-                IsEquals.getHashCode(startTime),
-                IsEquals.getHashCode(endTime),
-                converter.getHashCode()
+                getName()
+//                storedDelta,
+//                storedTimePerTickInMs,
+//                tickModifier,
+//                IsEquals.getHashCode(nowStamp),
+//                IsEquals.getHashCode(startTime),
+//                IsEquals.getHashCode(endTime),
+//                converter.getHashCode()
         );
     }
 
-    public void setDirect(
-            int startYear,
-            long storedDelta,
-            long storedTimePerTickInMs,
-            double startTick,
-            double endTick,
-            double nowTick,
-            double tickModifier,
-            JadexTimestamp nowStamp,
-            JadexTimestamp startTime,
-            JadexTimestamp endTime,
-            double delayTillEnd) {
-        this.storedDelta = storedDelta;
-        this.storedTimePerTickInMs = storedTimePerTickInMs;
-        this.startTick = startTick;
-        this.endTick = endTick;
-        this.nowTick = nowTick;
-        this.tickModifier = tickModifier;
-        this.nowStamp = nowStamp;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.delayTillEnd = delayTillEnd;
-
-        converter.init(startYear, storedTimePerTickInMs, ZoneId.systemDefault());
-        setStartTick(startTick);
-    }
+//    public void setDirect(
+//            int startYear,
+//            long storedDelta,
+//            long storedTimePerTickInMs,
+//            double startTick,
+//            double endTick,
+//            double nowTick,
+//            double tickModifier,
+//            JadexTimestamp nowStamp,
+//            JadexTimestamp startTime,
+//            JadexTimestamp endTime,
+//            double delayTillEnd) {
+//        this.storedDelta = storedDelta;
+//        this.storedTimePerTickInMs = storedTimePerTickInMs;
+//        this.startTick = startTick;
+//        this.endTick = endTick;
+//        this.nowTick = nowTick;
+//        this.tickModifier = tickModifier;
+//        this.nowStamp = nowStamp;
+//        this.startTime = startTime;
+//        this.endTime = endTime;
+//        this.delayTillEnd = delayTillEnd;
+//
+//        converter.init(startYear, storedTimePerTickInMs, ZoneId.systemDefault());
+//        setStartTick(startTick);
+//    }
 
     public double getStartTick() {
         return startTick;

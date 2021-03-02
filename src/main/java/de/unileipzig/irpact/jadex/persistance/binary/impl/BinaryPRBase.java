@@ -21,7 +21,7 @@ public abstract class BinaryPRBase<T> implements Persister<T>, Restorer<T> {
 
     protected static BinaryJsonData initDataWithClass(Class<?> c, PersistManager manager) {
         BinaryJsonData data = BinaryJsonData.init(IRPactJson.SMILE.getNodeFactory(), manager.newUID(), c);
-        System.out.println(data.getUID() + " " + c.getName());
+        //System.out.println(data.getUID() + " " + c.getName()); //TODO
         data.setPutMode();
         return data;
     }

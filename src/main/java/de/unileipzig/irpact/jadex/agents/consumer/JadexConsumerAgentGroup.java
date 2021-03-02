@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
+import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -16,7 +17,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -169,7 +169,7 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     protected Set<ConsumerAgentAttribute> deriveAttributes() {
         return getAttributes().stream()
                 .map(Derivable::derive)
-                .collect(Collectors.toSet());
+                .collect(CollectionUtil.collectToLinkedSet());
     }
 
     protected ProductInterest deriveAwareness() {

@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons.persistence;
 
+import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
+
 import java.util.*;
 
 /**
@@ -80,7 +82,7 @@ public class BasicPersistManager implements PersistManager {
 
     protected void finalizePersist() {
         do {
-            Set<Holder> temp = new HashSet<>(requiresSetupCache);
+            Set<Holder> temp = new LinkedHashSet<>(requiresSetupCache);
             for(Holder holder: temp) {
                 setup(holder); //setup removes holder from requiresSetupCache
             }
@@ -106,6 +108,7 @@ public class BasicPersistManager implements PersistManager {
                 throw new IllegalStateException("instance already exists: " + object.getClass());
             }
             requiresSetupCache.add(holder);
+            //System.out.println("XXXX " + persistable.getUID() + " " + object.getClass()); //TODO
         }
     }
 

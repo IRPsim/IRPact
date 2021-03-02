@@ -37,17 +37,17 @@ public class DiscreteTimeModelPR extends BinaryPRBase<DiscreteTimeModel> {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
 
-        data.putInt(object.getStartYear());
+//        data.putInt(object.getStartYear());
         data.putLong(object.getStoredDelta());
         data.putLong(object.getStoredTimePerTickInMs());
-        data.putDouble(object.getStartTick());
-        data.putDouble(object.getEndTick());
-        data.putDouble(object.getNowTick());
-        data.putDouble(object.getTickModifier());
-        data.putLong(object.getNowStamp().getEpochMilli());
-        data.putLong(object.startTime().getEpochMilli());
-        data.putLong(object.endTime().getEpochMilli());
-        data.putDouble(object.getDelayTillEnd());
+//        data.putDouble(object.getStartTick());
+//        data.putDouble(object.getEndTick());
+//        data.putDouble(object.getNowTick());
+//        data.putDouble(object.getTickModifier());
+//        data.putLong(object.getNowStamp().getEpochMilli());
+//        data.putLong(object.startTime().getEpochMilli());
+//        data.putLong(object.endTime().getEpochMilli());
+//        data.putDouble(object.getDelayTillEnd());
 
         return data;
     }
@@ -67,18 +67,20 @@ public class DiscreteTimeModelPR extends BinaryPRBase<DiscreteTimeModel> {
     protected void doSetupRestore(BinaryJsonData data, DiscreteTimeModel object, RestoreManager manager) throws RestoreException {
         object.setEnvironment(manager.ensureGetInstanceOf(JadexSimulationEnvironment.class));
 
-        object.setDirect(
-                data.getInt(),
-                data.getLong(),
-                data.getLong(),
-                data.getDouble(),
-                data.getDouble(),
-                data.getDouble(),
-                data.getDouble(),
-                new BasicTimestamp(data.getLong()),
-                new BasicTimestamp(data.getLong()),
-                new BasicTimestamp(data.getLong()),
-                data.getDouble()
-        );
+        object.setStoredDelta(data.getLong());
+        object.setStoredTimePerTickInMs(data.getLong());
+//        object.setDirect(
+//                data.getInt(),
+//                data.getLong(),
+//                data.getLong(),
+//                data.getDouble(),
+//                data.getDouble(),
+//                data.getDouble(),
+//                data.getDouble(),
+//                new BasicTimestamp(data.getLong()),
+//                new BasicTimestamp(data.getLong()),
+//                new BasicTimestamp(data.getLong()),
+//                data.getDouble()
+//        );
     }
 }

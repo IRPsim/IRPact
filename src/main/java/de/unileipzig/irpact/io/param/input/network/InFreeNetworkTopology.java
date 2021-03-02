@@ -109,7 +109,7 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
 
         AgentManager agentManager = parser.getEnvironment().getAgents();
         if(edgeCountMap.size() != agentManager.getConsumerAgentGroups().size()) {
-            Set<ConsumerAgentGroup> cagSet = new HashSet<>(agentManager.getConsumerAgentGroups());
+            Set<ConsumerAgentGroup> cagSet = new LinkedHashSet<>(agentManager.getConsumerAgentGroups());
             cagSet.removeAll(edgeCountMap.keySet());
             for(ConsumerAgentGroup cag: cagSet) {
                 LOGGER.error("missing NumberOfTies-ConsumerGroup: '{}'", cag.getName());

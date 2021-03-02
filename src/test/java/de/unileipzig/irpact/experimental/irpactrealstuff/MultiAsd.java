@@ -159,11 +159,11 @@ class MultiAsd {
     public void asd() throws IOException {
         Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
         Path p0 = dir.resolve("scenariosX").resolve("full_scenario.json");
-        Path p1 = dir.resolve("scenariosX").resolve("backup3").resolve("full_scenario.json");
+        Path p1 = dir.resolve("scenariosX").resolve("backup").resolve("full_scenario.json");
         check(p0, p1);
 
         Path p2 = dir.resolve("scenariosX").resolve("output-2015.json");
-        Path p3 = dir.resolve("scenariosX").resolve("backup3").resolve("output-2015.json");
+        Path p3 = dir.resolve("scenariosX").resolve("backup").resolve("output-2015.json");
         check2(p2, p3);
     }
 

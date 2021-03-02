@@ -2,6 +2,8 @@ package de.unileipzig.irpact.commons;
 
 import java.util.*;
 import java.util.function.ToDoubleFunction;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -29,6 +31,10 @@ public final class CollectionUtil {
             changed |= coll.add(iter.next());
         }
         return changed;
+    }
+
+    public static <T> Collector<T, ?, LinkedHashSet<T>> collectToLinkedSet() {
+        return Collectors.toCollection(LinkedHashSet::new);
     }
 
     @SafeVarargs

@@ -74,7 +74,7 @@ public class BasicProductGroup extends SimulationEntityBase implements ProductGr
     }
 
     public Set<ProductAttribute> deriveAttributes() {
-        Set<ProductAttribute> paSet = new HashSet<>();
+        Set<ProductAttribute> paSet = new LinkedHashSet<>();
         for(ProductGroupAttribute pga: getGroupAttributes()) {
             ProductAttribute pa = pga.derive();
             paSet.add(pa);

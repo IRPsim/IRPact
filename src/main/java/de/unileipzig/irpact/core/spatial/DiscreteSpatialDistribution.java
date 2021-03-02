@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.Rnd;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -17,7 +17,7 @@ public class DiscreteSpatialDistribution extends ResettableSpatialDistributionBa
     protected Rnd rnd;
 
     public DiscreteSpatialDistribution() {
-        this(new HashSet<>(), new HashSet<>());
+        this(new LinkedHashSet<>(), new LinkedHashSet<>());
     }
 
     public DiscreteSpatialDistribution(Set<SpatialInformation> unused, Set<SpatialInformation> used) {
