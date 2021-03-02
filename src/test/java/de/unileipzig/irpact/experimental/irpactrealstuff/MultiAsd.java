@@ -181,6 +181,20 @@ class MultiAsd {
         check2(p2, p3);
     }
 
+    @Test
+    public void asd2() throws IOException {
+        Path dir0 = TestFiles.testfiles.resolve("uitests").resolve("x6");
+        Path dir1 = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0uberJarTest\\2021-03-02");
+
+        Path p0 = dir0.resolve("scenariosX").resolve("output-2019.json");
+        Path p1 = dir1.resolve("output-2019.2.json");
+        check(p0, p1);
+
+        Path p2 = dir0.resolve("scenariosX").resolve("output-2015.json");
+        Path p3 = dir1.resolve("output-2015.2.json");
+        check(p2, p3);
+    }
+
     private void check(Path p0, Path p1) throws IOException {
         String str0 = Util.readString(p0, StandardCharsets.UTF_8);
         String str1 = Util.readString(p1, StandardCharsets.UTF_8);
