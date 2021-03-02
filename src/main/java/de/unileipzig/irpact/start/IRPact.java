@@ -144,6 +144,11 @@ public class IRPact {
 
         printInitialNetwork();
 
+        if(clParam.isNoSimulation()) {
+            LOGGER.info("no simulation");
+            return;
+        }
+
         createPlatform();
         preparePlatform();
         setupTimeModel();

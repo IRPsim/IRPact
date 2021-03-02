@@ -110,6 +110,20 @@ class MultiAsd {
         Start.main(args);
     }
 
+    @Test
+    void runImage_NEW() {
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
+        int startYear = 2019;
+        String[] args = {
+                "-i", dir.resolve("scenariosX").resolve("input-" + startYear + ".json").toString(),
+                "-o", dir.resolve("scenariosX").resolve("output-" + startYear + ".json").toString(),
+                "--dataDir", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data").toString(),
+                "--image", dir.resolve("scenariosX").resolve("image-" + startYear + ".png").toString(),
+                "--noSimulation"
+        };
+        Start.main(args);
+    }
+
     @SuppressWarnings("unchecked")
     private void storePerennial(
             Path outputFile,
