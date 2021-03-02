@@ -1,12 +1,17 @@
 [
   {
+    :label "set_InNameSplitAffinityEntry" 
+    :set "set_InNameSplitAffinityEntry" 
+    :tags [["InNameSplitAffinityEntry" "affinityValue"]]
+  } 
+  {
     :label "Allgemeine Einstellungen" 
     :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "endYear"] ["InGeneral" "runOptActDemo"]] 
     :sections [
       {
         :label "Logging" 
         :description "Einstellungen für das Logging und die Ausgabe von Informationen und Daten. Unabhängig von den individuellen Logging-Einstellungen werden wichtige Informationen weiterhin geloggt. Diese können nur mittels dem Logging-Level deaktiviert werden (nicht empfohlen)." 
-        :tags [["InGeneral" "logLevel"] ["InGeneral" "logAll"] ["InGeneral" "logTools"] ["InGeneral" "logParamInit"] ["InGeneral" "logGraphCreation"] ["InGeneral" "logAgentCreation"] ["InGeneral" "logPlatformCreation"] ["InGeneral" "logSimulationLifecycle"] ["InGeneral" "logSimulationAgent"] ["InGeneral" "logJadexSystemOut"]]
+        :tags [["InGeneral" "logLevel"] ["InGeneral" "logAll"] ["InGeneral" "logAllTools"] ["InGeneral" "logToolsCore"] ["InGeneral" "logToolsDefinition"] ["InGeneral" "logParamInit"] ["InGeneral" "logGraphCreation"] ["InGeneral" "logAgentCreation"] ["InGeneral" "logPlatformCreation"] ["InGeneral" "logSimulationLifecycle"] ["InGeneral" "logSimulationAgent"] ["InGeneral" "logJadexSystemOut"]]
       } 
       {
         :label "Spezielle Einstellungen" 
@@ -41,11 +46,75 @@
     ]
   } 
   {
+    :label "Verteilungsfunktionen" 
+    :sections [
+      {
+        :label "Boolean" 
+        :set "set_InBooleanDistribution" 
+        :description "Verteilungsfunktion, welche 0 oder 1 zurück gibt." 
+        :tags [["InBooleanDistribution" "placeholderBooleanDist"]]
+      } 
+      {
+        :label "Dirac" 
+        :set "set_InConstantUnivariateDistribution" 
+        :description "Verteilungsfunktion, welche einen konstanten Wert zurück gibt." 
+        :tags [["InConstantUnivariateDistribution" "constDistValue"]]
+      } 
+      {
+        :label "Gleichverteilte ganze Zahlen" 
+        :set "set_InRandomBoundedIntegerDistribution" 
+        :description "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht." 
+        :tags [["InRandomBoundedIntegerDistribution" "lowerBoundInt"] ["InRandomBoundedIntegerDistribution" "upperBoundInt"]]
+      } 
+      {
+        :label "Gewichtete Massepunkte" 
+        :set "set_InFiniteMassPointsDiscreteDistribution" 
+        :description "Verteilungsfunktion, welche auf Massepunkten basiert." 
+        :tags [["link" "InFiniteMassPointsDiscreteDistribution" "InMassPoint" "massPoints"]] 
+        :sections [
+          {
+            :label "Massepunkt" 
+            :set "set_InMassPoint" 
+            :description "Massepunkt mit Wert und Gewicht" 
+            :tags [["InMassPoint" "mpValue"] ["InMassPoint" "mpWeight"]]
+          }
+        ]
+      }
+    ]
+  } 
+  {
     :label "Agenten" 
     :sections [
       {
         :label "Konsumer" 
         :sections [
+          {
+            :label "Gruppen" 
+            :set "set_InConsumerAgentGroup" 
+            :tags [["InConsumerAgentGroup" "informationAuthority"] ["InConsumerAgentGroup" "numberOfAgentsX"]] 
+            :sections [
+              {
+                :label "Gruppe-Attribut-Mapping" 
+                :set "set_InConsumerAgentGroup" 
+                :tags [["link" "InConsumerAgentGroup" "InConsumerAgentGroupAttribute" "cagAttributes"]]
+              } 
+              {
+                :label "Gruppe-Awareness-Mapping" 
+                :set "set_InConsumerAgentGroup" 
+                :tags [["link" "InConsumerAgentGroup" "InProductInterestSupplyScheme" "cagAwareness"]]
+              } 
+              {
+                :label "Gruppe-ProductFinding-Mapping" 
+                :set "set_InConsumerAgentGroup" 
+                :tags [["link" "InConsumerAgentGroup" "InProductFindingScheme" "productFindingSchemes"]]
+              } 
+              {
+                :label "Gruppe-Spatial-Mapping" 
+                :set "set_InConsumerAgentGroup" 
+                :tags [["link" "InConsumerAgentGroup" "InSpatialDistribution" "spatialDistribution"]]
+              }
+            ]
+          } 
           {
             :label "Attribute" 
             :sections [
@@ -63,36 +132,9 @@
           } 
           {
             :label "Affinity" 
-            :set "set_InAffinityEntry" 
+            :set "set_InComplexAffinityEntry" 
             :description "Legt die Affinity zwischen den jeweiligen Konsumergruppen fest." 
-            :tags [["link" "InAffinityEntry" "InConsumerAgentGroup" "srcCag"] ["link" "InAffinityEntry" "InConsumerAgentGroup" "tarCag"] ["InAffinityEntry" "affinityValue"]]
-          } 
-          {
-            :label "Gruppen" 
-            :set "set_InConsumerAgentGroup" 
-            :tags [["InConsumerAgentGroup" "informationAuthority"] ["InConsumerAgentGroup" "numberOfAgentsX"]] 
-            :sections [
-              {
-                :label "Gruppe-Attribut-Mapping" 
-                :set "set_InConsumerAgentGroup" 
-                :tags [["link" "InConsumerAgentGroup" "InConsumerAgentGroupAttribute" "cagAttributes"]]
-              } 
-              {
-                :label "Gruppe-Awareness-Mapping" 
-                :set "set_InConsumerAgentGroup" 
-                :tags [["link" "InConsumerAgentGroup" "InProductAwarenessSupplyScheme" "cagAwareness"]]
-              } 
-              {
-                :label "Gruppe-ProductFinding-Mapping" 
-                :set "set_InConsumerAgentGroup" 
-                :tags [["link" "InConsumerAgentGroup" "InProductFindingScheme" "productFindingSchemes"]]
-              } 
-              {
-                :label "Gruppe-Spatial-Mapping" 
-                :set "set_InConsumerAgentGroup" 
-                :tags [["link" "InConsumerAgentGroup" "InSpatialDistribution" "spatialDistribution"]]
-              }
-            ]
+            :tags [["link" "InComplexAffinityEntry" "InConsumerAgentGroup" "srcCag"] ["link" "InComplexAffinityEntry" "InConsumerAgentGroup" "tarCag"] ["InComplexAffinityEntry" "affinityValue"]]
           } 
           {
             :label "Awareness" 
@@ -100,9 +142,9 @@
             :sections [
               {
                 :label "Threshold" 
-                :set "set_InProductThresholdAwarenessSupplyScheme" 
+                :set "set_InProductThresholdInterestSupplyScheme" 
                 :description "Grenzwert-basierte Awareness" 
-                :tags [["link" "InProductThresholdAwarenessSupplyScheme" "InUnivariateDoubleDistribution" "awarenessDistribution"]]
+                :tags [["link" "InProductThresholdInterestSupplyScheme" "InUnivariateDoubleDistribution" "awarenessDistribution"]]
               }
             ]
           }
@@ -138,7 +180,7 @@
                 :label "Kanten je Konsumergruppe" 
                 :set "set_InNumberOfTies" 
                 :description "Legt die Kantenanzahl je Gruppe fest." 
-                :tags [["link" "InNumberOfTies" "InConsumerAgentGroup" "cag"] ["InNumberOfTies" "count"]]
+                :tags [["link" "InNumberOfTies" "InConsumerAgentGroup" "cags"] ["InNumberOfTies" "count"]]
               }
             ]
           }
@@ -262,17 +304,11 @@
       {
         :label "Space2D" 
         :set "set_InSpace2D" 
-        :tags [["InSpace2D" "useEuclid"]]
+        :tags [["InSpace2D" "useManhatten"] ["InSpace2D" "useEuclid"] ["InSpace2D" "useEuclid2"] ["InSpace2D" "useMaximum"]]
       } 
       {
-        :label "Verteilungsfunktionen" 
+        :label "Verteilungsfunktion" 
         :sections [
-          {
-            :label "Boolean" 
-            :set "set_InBooleanDistribution" 
-            :description "Verteilungsfunktion, welche 0 oder 1 zurück gibt." 
-            :tags [["InBooleanDistribution" "placeholderBooleanDist"]]
-          } 
           {
             :label "Benutzerdefinierte Position" 
             :sections [
@@ -290,32 +326,6 @@
                 :label "Gefiltert und gewichtet" 
                 :set "set_InCustomSelectedGroupedSpatialDistribution2D" 
                 :tags [["link" "InCustomSelectedGroupedSpatialDistribution2D" "InUnivariateDoubleDistribution" "xPosSupplier"] ["link" "InCustomSelectedGroupedSpatialDistribution2D" "InUnivariateDoubleDistribution" "yPosSupplier"] ["link" "InCustomSelectedGroupedSpatialDistribution2D" "InSpatialTableFile" "file"] ["link" "InCustomSelectedGroupedSpatialDistribution2D" "InAttributeName" "selectKey"] ["link" "InCustomSelectedGroupedSpatialDistribution2D" "InAttributeName" "groupKey"]]
-              }
-            ]
-          } 
-          {
-            :label "Dirac" 
-            :set "set_InConstantUnivariateDistribution" 
-            :description "Verteilungsfunktion, welche einen konstanten Wert zurück gibt." 
-            :tags [["InConstantUnivariateDistribution" "constDistValue"]]
-          } 
-          {
-            :label "Gleichverteilte ganze Zahlen" 
-            :set "set_InRandomBoundedIntegerDistribution" 
-            :description "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht." 
-            :tags [["InRandomBoundedIntegerDistribution" "lowerBoundInt"] ["InRandomBoundedIntegerDistribution" "upperBoundInt"]]
-          } 
-          {
-            :label "Gewichtete Massepunkte" 
-            :set "set_InFiniteMassPointsDiscreteDistribution" 
-            :description "Verteilungsfunktion, welche auf Massepunkten basiert." 
-            :tags [["link" "InFiniteMassPointsDiscreteDistribution" "InMassPoint" "massPoints"]] 
-            :sections [
-              {
-                :label "Massepunkt" 
-                :set "set_InMassPoint" 
-                :description "Massepunkt mit Wert und Gewicht" 
-                :tags [["InMassPoint" "mpValue"] ["InMassPoint" "mpWeight"]]
               }
             ]
           }

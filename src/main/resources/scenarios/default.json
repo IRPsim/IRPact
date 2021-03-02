@@ -18,6 +18,7 @@
       "sca_InGeneral_endYear" : 0,
       "sca_InGeneral_logAgentCreation" : 0,
       "sca_InGeneral_logAll" : 1,
+      "sca_InGeneral_logAllTools" : 0,
       "sca_InGeneral_logGraphCreation" : 0,
       "sca_InGeneral_logJadexSystemOut" : 0,
       "sca_InGeneral_logLevel" : 6,
@@ -25,7 +26,8 @@
       "sca_InGeneral_logPlatformCreation" : 0,
       "sca_InGeneral_logSimulationAgent" : 0,
       "sca_InGeneral_logSimulationLifecycle" : 0,
-      "sca_InGeneral_logTools" : 0,
+      "sca_InGeneral_logToolsCore" : 0,
+      "sca_InGeneral_logToolsDefinition" : 0,
       "sca_InGeneral_runOptActDemo" : 1,
       "sca_InGeneral_seed" : 42,
       "sca_InGeneral_timeout" : 300000,
@@ -48,6 +50,7 @@
           "par_AgentGroup_numberOfAgents" : 25
         }
       },
+      "set_BinaryPersistData" : { },
       "set_GraphvizColor" : {
         "BLUE" : {
           "par_GraphvizColor_rgba" : 4278190335
@@ -94,7 +97,6 @@
           "par_GraphvizOutputFormat_useFormat" : 1
         }
       },
-      "set_HiddenBinaryData" : { },
       "set_IFreeMultiGraphTopology" : {
         "FREE1" : {
           "par_IFreeMultiGraphTopology_ftEdgeCount" : 3,
@@ -109,18 +111,10 @@
       },
       "set_ii" : { },
       "set_InAffinityEntry" : {
-        "BUM_BUM" : {
-          "par_InAffinityEntry_affinityValue" : 0.9
-        },
-        "BUM_TRA" : {
-          "par_InAffinityEntry_affinityValue" : 0.1
-        },
-        "TRA_BUM" : {
-          "par_InAffinityEntry_affinityValue" : 0.3
-        },
-        "TRA_TRA" : {
-          "par_InAffinityEntry_affinityValue" : 0.7
-        }
+        "BUM_BUM" : { },
+        "BUM_TRA" : { },
+        "TRA_BUM" : { },
+        "TRA_TRA" : { }
       },
       "set_InAttributeName" : {
         "adoption_threshold" : {
@@ -175,6 +169,20 @@
       "set_InAutoUncertaintyGroupAttribute" : { },
       "set_InBooleanDistribution" : { },
       "set_InCompleteGraphTopology" : { },
+      "set_InComplexAffinityEntry" : {
+        "BUM_BUM" : {
+          "par_InComplexAffinityEntry_affinityValue" : 0.9
+        },
+        "BUM_TRA" : {
+          "par_InComplexAffinityEntry_affinityValue" : 0.1
+        },
+        "TRA_BUM" : {
+          "par_InComplexAffinityEntry_affinityValue" : 0.3
+        },
+        "TRA_TRA" : {
+          "par_InComplexAffinityEntry_affinityValue" : 0.7
+        }
+      },
       "set_InConstantUnivariateDistribution" : {
         "constant0" : {
           "par_InConstantUnivariateDistribution_constDistValue" : 0.0
@@ -247,6 +255,7 @@
       "set_InDistanceEvaluator" : { },
       "set_InEntity" : {
         "0_0_0" : { },
+        "78KGK0FQG1I281KFG1KK4IAE8E079H7R" : { },
         "adoption_threshold" : { },
         "BarwertrechnerMini_ES" : { },
         "BUM" : { },
@@ -337,15 +346,12 @@
       },
       "set_InInverse" : { },
       "set_InMassPoint" : { },
+      "set_InNameSplitAffinityEntry" : { },
       "set_InNoDistance" : { },
       "set_InNumberOfTies" : { },
       "set_InOrientationSupplier" : { },
       "set_InProcessModel" : {
         "RA" : { }
-      },
-      "set_InProductAwarenessSupplyScheme" : {
-        "BUM_awa" : { },
-        "TRA_awa" : { }
       },
       "set_InProductFindingScheme" : {
         "PV_fix_scheme" : { }
@@ -356,7 +362,11 @@
       "set_InProductGroupAttribute" : {
         "PV_E1" : { }
       },
-      "set_InProductThresholdAwarenessSupplyScheme" : {
+      "set_InProductInterestSupplyScheme" : {
+        "BUM_awa" : { },
+        "TRA_awa" : { }
+      },
+      "set_InProductThresholdInterestSupplyScheme" : {
         "BUM_awa" : { },
         "TRA_awa" : { }
       },
@@ -381,7 +391,10 @@
       "set_InSlopeSupplier" : { },
       "set_InSpace2D" : {
         "Space2D" : {
-          "par_InSpace2D_useEuclid" : 1
+          "par_InSpace2D_useManhatten" : 0,
+          "par_InSpace2D_useEuclid" : 1,
+          "par_InSpace2D_useEuclid2" : 0,
+          "par_InSpace2D_useMaximum" : 0
         }
       },
       "set_InSpatialDistribution" : {
@@ -495,7 +508,11 @@
       "set_tech_DESTO" : {
         "tech_ES1" : { }
       },
-      "set_VisibleBinaryData" : { }
+      "set_VisibleBinaryData" : {
+        "78KGK0FQG1I281KFG1KK4IAE8E079H7R" : {
+          "par_VisibleBinaryData_idVisible" : -200
+        }
+      }
     },
     "timeseries" : {
       "par_C_MS_E" : "0"
@@ -547,7 +564,7 @@
           "RED" : 0.0
         }
       },
-      "par_link_InAffinityEntry_InConsumerAgentGroup_srcCag" : {
+      "par_link_InComplexAffinityEntry_InConsumerAgentGroup_srcCag" : {
         "BUM_BUM" : {
           "BUM" : 1.0,
           "TRA" : 0.0
@@ -565,7 +582,7 @@
           "TRA" : 1.0
         }
       },
-      "par_link_InAffinityEntry_InConsumerAgentGroup_tarCag" : {
+      "par_link_InComplexAffinityEntry_InConsumerAgentGroup_tarCag" : {
         "BUM_BUM" : {
           "BUM" : 1.0,
           "TRA" : 0.0
@@ -641,7 +658,15 @@
           "TRA_share_1_2_house" : 1.0
         }
       },
-      "par_link_InConsumerAgentGroup_InProductAwarenessSupplyScheme_cagAwareness" : {
+      "par_link_InConsumerAgentGroup_InProductFindingScheme_productFindingSchemes" : {
+        "BUM" : {
+          "PV_fix_scheme" : 1.0
+        },
+        "TRA" : {
+          "PV_fix_scheme" : 1.0
+        }
+      },
+      "par_link_InConsumerAgentGroup_InProductInterestSupplyScheme_cagAwareness" : {
         "BUM" : {
           "BUM_awa" : 1.0,
           "TRA_awa" : 0.0
@@ -649,14 +674,6 @@
         "TRA" : {
           "BUM_awa" : 0.0,
           "TRA_awa" : 1.0
-        }
-      },
-      "par_link_InConsumerAgentGroup_InProductFindingScheme_productFindingSchemes" : {
-        "BUM" : {
-          "PV_fix_scheme" : 1.0
-        },
-        "TRA" : {
-          "PV_fix_scheme" : 1.0
         }
       },
       "par_link_InConsumerAgentGroup_InSpatialDistribution_spatialDistribution" : {
@@ -1452,7 +1469,7 @@
       },
       "par_link_InFreeNetworkTopology_InDistanceEvaluator_distanceEvaluator" : { },
       "par_link_InFreeNetworkTopology_InNumberOfTies_numberOfTies" : { },
-      "par_link_InNumberOfTies_InConsumerAgentGroup_cag" : { },
+      "par_link_InNumberOfTies_InConsumerAgentGroup_cags" : { },
       "par_link_InOrientationSupplier_InConsumerAgentGroup_oriCags" : { },
       "par_link_InOrientationSupplier_InUnivariateDoubleDistribution_distInOrientation" : { },
       "par_link_InProductGroup_InProductGroupAttribute_pgAttributes" : {
@@ -1488,7 +1505,7 @@
           "constant10" : 0.0
         }
       },
-      "par_link_InProductThresholdAwarenessSupplyScheme_InUnivariateDoubleDistribution_awarenessDistribution" : {
+      "par_link_InProductThresholdInterestSupplyScheme_InUnivariateDoubleDistribution_awarenessDistribution" : {
         "BUM_awa" : {
           "constant0" : 0.0,
           "constant01" : 0.0,
