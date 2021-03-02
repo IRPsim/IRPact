@@ -1,12 +1,11 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.CompleteGraphTopology;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -28,24 +27,27 @@ public class CompleteGraphTopologyPR extends BinaryPRBase<CompleteGraphTopology>
         return CompleteGraphTopology.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable initalizePersist(CompleteGraphTopology object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(CompleteGraphTopology object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putInt(object.getEdgeType().id());
         data.putDouble(object.getInitialWeight());
-        storeHash(object, data);
         return data;
     }
 
-    @Override
-    public CompleteGraphTopology initalizeRestore(Persistable persistable, RestoreManager manager) {
-        return new CompleteGraphTopology();
-    }
+    //=========================
+    //restore
+    //=========================
 
     @Override
-    public void setupRestore(Persistable persistable, CompleteGraphTopology object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected CompleteGraphTopology doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        CompleteGraphTopology object = new CompleteGraphTopology();
         object.setEdgeType(SocialGraph.Type.get(data.getInt()));
         object.setInitialWeight(data.getDouble());
+        return object;
     }
 }

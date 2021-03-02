@@ -6,8 +6,6 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinities;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.HashMap;
@@ -32,9 +30,27 @@ public class BasicConsumerAgentGroupAffinityMappingPR extends BinaryPRBase<Basic
         return LOGGER;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable initalizePersist(BasicConsumerAgentGroupAffinityMapping object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(BasicConsumerAgentGroupAffinityMapping object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
+
+        for(ConsumerAgentGroup src: object.sources()) {
+            manager.prepare(src);
+            ConsumerAgentGroupAffinities aff = object.get(src);
+            for(ConsumerAgentGroup tar: aff.targets()) {
+                manager.prepare(tar);
+            }
+        }
+
+        return data;
+    }
+
+    @Override
+    protected void doSetupPersist(BasicConsumerAgentGroupAffinityMapping object, BinaryJsonData data, PersistManager manager) {
         Map<Long, Map<Long, Double>> table = new HashMap<>();
         for(ConsumerAgentGroup src: object.sources()) {
             long srcUid = manager.ensureGetUID(src);
@@ -47,18 +63,19 @@ public class BasicConsumerAgentGroupAffinityMappingPR extends BinaryPRBase<Basic
             }
         }
         data.putLongLongDoubleTable(table);
-        storeHash(object, data);
-        return data;
     }
 
+    //=========================
+    //restore
+    //=========================
+
     @Override
-    public BasicConsumerAgentGroupAffinityMapping initalizeRestore(Persistable persistable, RestoreManager manager) {
+    protected BasicConsumerAgentGroupAffinityMapping doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
         return new BasicConsumerAgentGroupAffinityMapping();
     }
 
     @Override
-    public void setupRestore(Persistable persistable, BasicConsumerAgentGroupAffinityMapping object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected void doSetupRestore(BinaryJsonData data, BasicConsumerAgentGroupAffinityMapping object, RestoreManager manager) {
         Map<Long, Map<Long, Double>> table = data.getLongLongDoubleTable();
         for(Map.Entry<Long, Map<Long, Double>> srcEntry: table.entrySet()) {
             ConsumerAgentGroup srcCag = manager.ensureGet(srcEntry.getKey());

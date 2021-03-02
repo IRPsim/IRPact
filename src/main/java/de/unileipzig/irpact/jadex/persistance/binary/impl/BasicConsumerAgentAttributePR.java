@@ -4,8 +4,6 @@ import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -27,20 +25,32 @@ public class BasicConsumerAgentAttributePR extends BinaryPRBase<BasicConsumerAge
         return LOGGER;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable initalizePersist(BasicConsumerAgentAttribute object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(BasicConsumerAgentAttribute object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putDouble(object.getDoubleValue());
 
-        data.putLong(manager.ensureGetUID(object.getGroup()));
-        storeHash(object, data);
+        manager.prepare(object.getGroup());
+
         return data;
     }
 
     @Override
-    public BasicConsumerAgentAttribute initalizeRestore(Persistable persistable, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected void doSetupPersist(BasicConsumerAgentAttribute object, BinaryJsonData data, PersistManager manager) {
+        data.putLong(manager.ensureGetUID(object.getGroup()));
+    }
+
+    //=========================
+    //restore
+    //=========================
+
+    @Override
+    protected BasicConsumerAgentAttribute doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
         BasicConsumerAgentAttribute object = new BasicConsumerAgentAttribute();
         object.setName(data.getText());
         object.setDoubleValue(data.getDouble());
@@ -48,8 +58,7 @@ public class BasicConsumerAgentAttributePR extends BinaryPRBase<BasicConsumerAge
     }
 
     @Override
-    public void setupRestore(Persistable persistable, BasicConsumerAgentAttribute object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected void doSetupRestore(BinaryJsonData data, BasicConsumerAgentAttribute object, RestoreManager manager) {
         object.setGroup(manager.ensureGet(data.getLong()));
     }
 }

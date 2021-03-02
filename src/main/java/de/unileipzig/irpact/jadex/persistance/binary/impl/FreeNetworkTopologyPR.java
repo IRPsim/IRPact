@@ -1,13 +1,12 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.FreeNetworkTopology;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.HashMap;
@@ -32,11 +31,29 @@ public class FreeNetworkTopologyPR extends BinaryPRBase<FreeNetworkTopology> {
         return FreeNetworkTopology.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable initalizePersist(FreeNetworkTopology object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(FreeNetworkTopology object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
+        data.putDouble(object.getInitialWeight());
         data.putInt(object.getEdgeType().id());
 
+        for(Map.Entry<ConsumerAgentGroup, Integer> entry: object.getEdgeCountMap().entrySet()) {
+            manager.prepare(entry.getKey());
+        }
+
+        manager.prepare(object.getAffinityMapping());
+        manager.prepare(object.getDistanceEvaluator());
+        manager.prepare(object.getRnd());
+
+        return data;
+    }
+
+    @Override
+    protected void doSetupPersist(FreeNetworkTopology object, BinaryJsonData data, PersistManager manager) {
         Map<Long, Long> map = new HashMap<>();
         for(Map.Entry<ConsumerAgentGroup, Integer> entry: object.getEdgeCountMap().entrySet()) {
             long uid = manager.ensureGetUID(entry.getKey());
@@ -46,22 +63,23 @@ public class FreeNetworkTopologyPR extends BinaryPRBase<FreeNetworkTopology> {
 
         data.putLong(manager.ensureGetUID(object.getAffinityMapping()));
         data.putLong(manager.ensureGetUID(object.getDistanceEvaluator()));
-        data.putDouble(object.getInitialWeight());
         data.putLong(manager.ensureGetUID(object.getRnd()));
-        storeHash(object, data);
-        return data;
     }
 
-    @Override
-    public FreeNetworkTopology initalizeRestore(Persistable persistable, RestoreManager manager) {
-        return new FreeNetworkTopology();
-    }
+    //=========================
+    //restore
+    //=========================
 
     @Override
-    public void setupRestore(Persistable persistable, FreeNetworkTopology object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected FreeNetworkTopology doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        FreeNetworkTopology object = new FreeNetworkTopology();
+        object.setInitialWeight(data.getDouble());
         object.setEdgeType(SocialGraph.Type.get(data.getInt()));
+        return object;
+    }
 
+    @Override
+    protected void doSetupRestore(BinaryJsonData data, FreeNetworkTopology object, RestoreManager manager) throws RestoreException {
         Map<ConsumerAgentGroup, Integer> countMap = new HashMap<>();
         Map<Long, Long> map = data.getLongLongMap();
         for(Map.Entry<Long, Long> entry: map.entrySet()) {
@@ -72,7 +90,6 @@ public class FreeNetworkTopologyPR extends BinaryPRBase<FreeNetworkTopology> {
 
         object.setAffinityMapping(manager.ensureGet(data.getLong()));
         object.setDistanceEvaluator(manager.ensureGet(data.getLong()));
-        object.setInitialWeight(data.getDouble());
         object.setRnd(manager.ensureGet(data.getLong()));
     }
 }

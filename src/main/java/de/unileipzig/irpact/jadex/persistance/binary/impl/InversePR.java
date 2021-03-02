@@ -1,10 +1,10 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.eval.Inverse;
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -26,19 +26,23 @@ public class InversePR extends BinaryPRBase<Inverse> {
         return Inverse.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
+    @SuppressWarnings("UnnecessaryLocalVariable")
     @Override
-    public Persistable initalizePersist(Inverse object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
-        storeHash(object, data);
+    protected BinaryJsonData doInitalizePersist(Inverse object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         return data;
     }
 
-    @Override
-    public Inverse initalizeRestore(Persistable persistable, RestoreManager manager) {
-        return new Inverse();
-    }
+    //=========================
+    //restore
+    //=========================
 
     @Override
-    public void setupRestore(Persistable persistable, Inverse object, RestoreManager manager) {
+    protected Inverse doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        return new Inverse();
     }
 }

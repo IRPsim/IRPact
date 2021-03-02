@@ -1,9 +1,6 @@
 package de.unileipzig.irpact.commons.persistence;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * @author Daniel Abitz
@@ -23,6 +20,7 @@ public class BasicPersistManager implements PersistManager {
     };
 
     protected final Map<Holder, Persistable> persistableMap = new HashMap<>();
+    protected final Set<Holder> requiresSetupCache = new HashSet<>();
     protected final Map<Class<?>, Persister<?>> persisterMap = new HashMap<>();
     protected UIDManager uidManager = new SimpleUIDManager();
 
@@ -52,6 +50,10 @@ public class BasicPersistManager implements PersistManager {
         return !persistableMap.containsKey(holder);
     }
 
+    protected boolean requiresSetup(Holder holder) {
+        return requiresSetupCache.contains(holder);
+    }
+
     @SuppressWarnings("unchecked")
     protected <T> Persister<T> ensureGetPersister(T obj) {
         Persister<T> persister = (Persister<T>) persisterMap.get(obj.getClass());
@@ -60,7 +62,7 @@ public class BasicPersistManager implements PersistManager {
         }
         return persister;
     }
-    
+
     protected Persistable ensureGetPersistable(Holder holder) throws NoSuchElementException {
         Persistable persistable = persistableMap.get(holder);
         if(persistable == null) {
@@ -73,6 +75,17 @@ public class BasicPersistManager implements PersistManager {
     public <T> void persist(T object) {
         prepare(object);
         setup(object);
+        finalizePersist();
+    }
+
+    protected void finalizePersist() {
+        do {
+            Set<Holder> temp = new HashSet<>(requiresSetupCache);
+            for(Holder holder: temp) {
+                setup(holder); //setup removes holder from requiresSetupCache
+            }
+            temp.clear();
+        } while (requiresSetupCache.size() > 0);
     }
 
     @Override
@@ -85,24 +98,37 @@ public class BasicPersistManager implements PersistManager {
             }
             Persister<T> persister = ensureGetPersister(object);
             Persistable persistable = persister.initalizePersist(object, this);
+            if(persistable == null) {
+                throw new NullPointerException("persistable is null: " + object.getClass());
+            }
             //store
             if(persistableMap.put(holder, persistable) != PLACEHOLDER) {
-                throw new IllegalStateException("entry already exists: " + object.getClass());
+                throw new IllegalStateException("instance already exists: " + object.getClass());
             }
+            requiresSetupCache.add(holder);
         }
     }
 
     private <T> void setup(T object) {
         Holder holder = new Holder(object);
+        setup(holder);
+    }
+
+    private <T> void setup(Holder holder) {
+        T object = holder.getHoldedObject();
         if(isNotPersisted(holder)) {
+            throw new IllegalStateException("not prepared: " + object.getClass());
+        } else {
+            if(!requiresSetup(holder)) {
+                throw new IllegalStateException("setup already called: " + object.getClass());
+            }
             Persister<T> persister = ensureGetPersister(object);
             Persistable persistable = ensureGetPersistable(holder);
             if(persistable == PLACEHOLDER) {
                 throw new IllegalStateException("placeholder found: " + object.getClass());
             }
             persister.setupPersist(object, persistable, this);
-        } else {
-            throw new IllegalStateException("not prepared: " + object.getClass());
+            requiresSetupCache.remove(holder);
         }
     }
 
@@ -123,6 +149,9 @@ public class BasicPersistManager implements PersistManager {
             throw new IllegalStateException("not prepared: " + object.getClass());
         }
         Persistable persistable = ensureGetPersistable(holder);
+        if(persistable == PLACEHOLDER) {
+            throw new IllegalStateException("placeholder found: " + object.getClass());
+        }
         return persistable.getUID();
     }
 

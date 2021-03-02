@@ -7,8 +7,6 @@ import de.unileipzig.irpact.core.network.BasicSocialGraph;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.SupportedGraphStructure;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -30,11 +28,26 @@ public class BasicSocialGraphPR extends BinaryPRBase<BasicSocialGraph> {
         return BasicSocialGraph.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable initalizePersist(BasicSocialGraph object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(BasicSocialGraph object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
+
+        for(SocialGraph.Type type: SocialGraph.Type.values()) {
+            for(SocialGraph.Edge edge: object.getEdges(type)) {
+                manager.prepare(edge);
+            }
+        }
+
+        return data;
+    }
+
+    @Override
+    protected void doSetupPersist(BasicSocialGraph object, BinaryJsonData data, PersistManager manager) {
         data.putInt(object.getStructure().getID());
-        storeHash(object, data);
 
         //Knoten werden ueber Agenten rekonstruiert
         //trick: wir speichern keine Kantenliste, sondern rekonstruieren diese auch ad hoc
@@ -49,23 +62,15 @@ public class BasicSocialGraphPR extends BinaryPRBase<BasicSocialGraph> {
             log().debug("stores {} edges (type = {})", typeEdgeCount, type);
         }
         log().debug("total edges stored: {}", totalEdgeCount);
-
-        return data;
     }
 
+    //=========================
+    //restore
+    //=========================
+
     @Override
-    public BasicSocialGraph initalizeRestore(Persistable persistable, RestoreManager manager) throws RestoreException {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        int graphStructureId = data.getInt();
-        SupportedGraphStructure structure = SupportedGraphStructure.get(graphStructureId);
-        if(structure == SupportedGraphStructure.UNKNOWN) {
-            throw new RestoreException("Unsupported structure");
-        }
+    protected BasicSocialGraph doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        SupportedGraphStructure structure = SupportedGraphStructure.get(data.getInt());
         return new BasicSocialGraph(structure);
-    }
-
-    //Alles in Edge ausgelagert + Agent
-    @Override
-    public void setupRestore(Persistable persistable, BasicSocialGraph object, RestoreManager manager) {
     }
 }

@@ -1,14 +1,13 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
-import de.unileipzig.irpact.commons.persistence.Persistable;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.process.ra.BasicUncertaintyGroupAttributeSupplier;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.ArrayList;
@@ -35,18 +34,34 @@ public class BasicUncertaintyGroupAttributeSupplierPR extends BinaryPRBase<Basic
         return BasicUncertaintyGroupAttributeSupplier.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable initalizePersist(BasicUncertaintyGroupAttributeSupplier object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
-        //data.putText(object.getName());
+    protected BinaryJsonData doInitalizePersist(BasicUncertaintyGroupAttributeSupplier object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
+
+        for(ConsumerAgentGroup cag: object.getConsumerAgentGroups()) {
+            manager.prepare(cag);
+
+            List<UnivariateDoubleDistribution> uncerDists = object.getUncertaintyeDistributions(cag);
+            List<UnivariateDoubleDistribution> convDists = object.getConvergenceeDistributions(cag);
+
+            for(int i = 0; i < uncerDists.size(); i++) {
+                UnivariateDoubleDistribution uncertDist = uncerDists.get(i);
+                UnivariateDoubleDistribution convDist = convDists.get(i);
+
+                manager.prepare(uncertDist);
+                manager.prepare(convDist);
+            }
+        }
 
         return data;
     }
 
     @Override
-    protected void doSetupPersist(BasicUncertaintyGroupAttributeSupplier object, Persistable persistable, PersistManager manager) {
-        BinaryJsonData data = check(persistable);
-
+    protected void doSetupPersist(BasicUncertaintyGroupAttributeSupplier object, BinaryJsonData data, PersistManager manager) {
         Map<Long, List<String>> namesMap = new HashMap<>();
         Map<Long, List<Long>> uncertMap = new HashMap<>();
         Map<Long, List<Long>> convMap = new HashMap<>();
@@ -74,23 +89,22 @@ public class BasicUncertaintyGroupAttributeSupplierPR extends BinaryPRBase<Basic
         data.putLongMultiStringMap(namesMap);
         data.putLongMultiLongMap(uncertMap);
         data.putLongMultiLongMap(convMap);
-        
-        storeHash(object, data);
     }
 
-    @Override
-    public BasicUncertaintyGroupAttributeSupplier initalizeRestore(Persistable persistable, RestoreManager manager) {
-        BinaryJsonData data = check(persistable);
+    //=========================
+    //restore
+    //=========================
 
+
+    @SuppressWarnings("UnnecessaryLocalVariable")
+    @Override
+    protected BasicUncertaintyGroupAttributeSupplier doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         BasicUncertaintyGroupAttributeSupplier object = new BasicUncertaintyGroupAttributeSupplier();
-        //object.setName(data.getText());
         return object;
     }
 
     @Override
-    public void setupRestore(Persistable persistable, BasicUncertaintyGroupAttributeSupplier object, RestoreManager manager) {
-        BinaryJsonData data = check(persistable);
-
+    protected void doSetupRestore(BinaryJsonData data, BasicUncertaintyGroupAttributeSupplier object, RestoreManager manager) throws RestoreException {
         Map<Long, List<String>> namesMap = data.getLongMultiStringMap();
         Map<Long, List<Long>> uncertMap = data.getLongMultiLongMap();
         Map<Long, List<Long>> convMap = data.getLongMultiLongMap();

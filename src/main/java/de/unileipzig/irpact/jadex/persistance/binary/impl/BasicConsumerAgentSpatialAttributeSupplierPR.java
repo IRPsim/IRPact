@@ -6,8 +6,6 @@ import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentSpatialAttribu
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.LinkedHashMap;
@@ -27,15 +25,30 @@ public class BasicConsumerAgentSpatialAttributeSupplierPR extends BinaryPRBase<B
         return LOGGER;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
     public Class<BasicConsumerAgentSpatialAttributeSupplier> getType() {
         return BasicConsumerAgentSpatialAttributeSupplier.class;
     }
 
     @Override
-    public Persistable initalizePersist(BasicConsumerAgentSpatialAttributeSupplier object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(BasicConsumerAgentSpatialAttributeSupplier object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
+
+        for(Map.Entry<ConsumerAgentGroup, UnivariateDoubleDistribution> entry: object.getMapping().entrySet()) {
+            manager.prepare(entry.getKey());
+            manager.prepare(entry.getValue());
+        }
+
+        return data;
+    }
+
+    @Override
+    protected void doSetupPersist(BasicConsumerAgentSpatialAttributeSupplier object, BinaryJsonData data, PersistManager manager) {
         Map<Long, Long> map = new LinkedHashMap<>();
         for(Map.Entry<ConsumerAgentGroup, UnivariateDoubleDistribution> entry: object.getMapping().entrySet()) {
             map.put(
@@ -44,21 +57,21 @@ public class BasicConsumerAgentSpatialAttributeSupplierPR extends BinaryPRBase<B
             );
         }
         data.putLongLongMap(map);
-        storeHash(object, data);
-        return data;
     }
 
+    //=========================
+    //restore
+    //=========================
+
     @Override
-    public BasicConsumerAgentSpatialAttributeSupplier initalizeRestore(Persistable persistable, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected BasicConsumerAgentSpatialAttributeSupplier doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
         BasicConsumerAgentSpatialAttributeSupplier object = new BasicConsumerAgentSpatialAttributeSupplier();
         object.setName(data.getText());
         return object;
     }
 
     @Override
-    public void setupRestore(Persistable persistable, BasicConsumerAgentSpatialAttributeSupplier object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected void doSetupRestore(BinaryJsonData data, BasicConsumerAgentSpatialAttributeSupplier object, RestoreManager manager) {
         Map<Long, Long> map = data.getLongLongMap();
         for(Map.Entry<Long, Long> entry: map.entrySet()) {
             ConsumerAgentGroup cag = manager.ensureGet(entry.getKey());

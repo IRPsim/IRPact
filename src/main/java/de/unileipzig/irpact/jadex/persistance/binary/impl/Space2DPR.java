@@ -1,13 +1,12 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.spatial.twodim.Space2D;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -29,28 +28,32 @@ public class Space2DPR extends BinaryPRBase<Space2D> {
         return Space2D.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable initalizePersist(Space2D object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(Space2D object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putInt(object.getMetric().id());
-        storeHash(object, data);
         return data;
     }
 
+    //=========================
+    //restore
+    //=========================
+
     @Override
-    public Space2D initalizeRestore(Persistable persistable, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected Space2D doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         Space2D object = new Space2D();
         object.setName(data.getText());
+        object.setMetric(Metric2D.get(data.getInt()));
         return object;
     }
 
     @Override
-    public void setupRestore(Persistable persistable, Space2D object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, Space2D object, RestoreManager manager) throws RestoreException {
         object.setEnvironment(manager.ensureGetInstanceOf(SimulationEnvironment.class));
-
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setMetric(Metric2D.get(data.getInt()));
     }
 }

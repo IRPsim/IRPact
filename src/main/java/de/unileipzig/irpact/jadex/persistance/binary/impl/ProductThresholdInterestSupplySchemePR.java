@@ -1,11 +1,10 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.product.interest.ProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -27,26 +26,39 @@ public class ProductThresholdInterestSupplySchemePR extends BinaryPRBase<Product
         return ProductThresholdInterestSupplyScheme.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
+
     @Override
-    public Persistable initalizePersist(ProductThresholdInterestSupplyScheme object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(ProductThresholdInterestSupplyScheme object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
-        data.putLong(manager.ensureGetUID(object.getDistribution()));
-        storeHash(object, data);
+
+        manager.prepare(object.getDistribution());
+
         return data;
     }
 
     @Override
-    public ProductThresholdInterestSupplyScheme initalizeRestore(Persistable persistable, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected void doSetupPersist(ProductThresholdInterestSupplyScheme object, BinaryJsonData data, PersistManager manager) {
+        data.putLong(manager.ensureGetUID(object.getDistribution()));
+    }
+
+    //=========================
+    //restore
+    //=========================
+
+    @Override
+    protected ProductThresholdInterestSupplyScheme doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         ProductThresholdInterestSupplyScheme object = new ProductThresholdInterestSupplyScheme();
         object.setName(data.getText());
         return object;
     }
 
     @Override
-    public void setupRestore(Persistable persistable, ProductThresholdInterestSupplyScheme object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected void doSetupRestore(BinaryJsonData data, ProductThresholdInterestSupplyScheme object, RestoreManager manager) throws RestoreException {
         object.setDistribution(manager.ensureGet(data.getLong()));
     }
 }

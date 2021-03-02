@@ -11,8 +11,6 @@ import de.unileipzig.irpact.core.network.BasicSocialNetwork;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -35,17 +33,32 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
         return ProxyConsumerAgent.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable initalizePersist(ProxyConsumerAgent object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(ProxyConsumerAgent object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
+
+        manager.prepare(object.getGroup());
+        manager.prepare(object.getSpatialInformation());
+        manager.prepareAll(object.getAttributes());
+
+        manager.prepare(object.getProductInterest());
+        manager.prepareAll(object.getAdoptedProducts());
+        manager.prepare(object.getProductFindingScheme());
+        manager.prepare(object.getProcessFindingScheme());
+
+        manager.prepareAll(object.getNeeds());
+        manager.prepareAll(object.getPlans());
+
         return data;
     }
 
     @Override
-    protected void doSetupPersist(ProxyConsumerAgent object, Persistable persistable, PersistManager manager) {
-        BinaryJsonData data = check(persistable);
-
+    protected void doSetupPersist(ProxyConsumerAgent object, BinaryJsonData data, PersistManager manager) {
         data.putLong(manager.ensureGetUID(object.getGroup()));
         data.putLong(manager.ensureGetUID(object.getSpatialInformation()));
         data.putLongArray(manager.ensureGetAllUIDs(object.getAttributes()));
@@ -58,22 +71,23 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
 
         data.putLongArray(manager.ensureGetAllUIDs(object.getNeeds()));
         data.putLongLongMap(manager.ensureGetAllUIDs(object.getPlans()));
-        storeHash(object, data);
     }
 
+    //=========================
+    //restore
+    //=========================
+
     @Override
-    public ProxyConsumerAgent initalizeRestore(Persistable persistable, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected ProxyConsumerAgent doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
         ProxyConsumerAgent object = new ProxyConsumerAgent();
         object.setName(data.getText());
         return object;
     }
 
     @Override
-    public void setupRestore(Persistable persistable, ProxyConsumerAgent object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, ProxyConsumerAgent object, RestoreManager manager) {
         object.setEnvironment(manager.ensureGetInstanceOf(SimulationEnvironment.class));
 
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
         //...
         object.setGroup(manager.ensureGet(data.getLong()));
         object.setSpatialInformation(manager.ensureGet(data.getLong()));
@@ -90,7 +104,7 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
     }
 
     @Override
-    public void finalizeRestore(Persistable persistable, ProxyConsumerAgent object, RestoreManager manager) {
+    protected void doFinalizeRestore(BinaryJsonData data, ProxyConsumerAgent object, RestoreManager manager) {
         //grp
         object.getGroup().addAgent(object);
         //access
@@ -109,7 +123,7 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
     }
 
     @Override
-    protected void onHashMismatch(Persistable persistable, ProxyConsumerAgent object, RestoreManager manager) {
+    protected void onHashMismatch(BinaryJsonData data, ProxyConsumerAgent object, RestoreManager manager) {
         object.deepHashCheck();
     }
 }

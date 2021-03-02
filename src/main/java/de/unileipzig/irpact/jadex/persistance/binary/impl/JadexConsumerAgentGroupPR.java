@@ -10,8 +10,6 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialDistribution;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -33,26 +31,38 @@ public class JadexConsumerAgentGroupPR extends BinaryPRBase<JadexConsumerAgentGr
         return JadexConsumerAgentGroup.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable initalizePersist(JadexConsumerAgentGroup object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(JadexConsumerAgentGroup object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
+        data.putDouble(object.getInformationAuthority());
+        data.putInt(object.getNextAgentId());
+
+        manager.prepare(object.getSpatialDistribution());
+        manager.prepareAll(object.getAttributes());
+        manager.prepare(object.getAwarenessSupplyScheme());
+        manager.prepare(object.getProductFindingScheme());
+        manager.prepare(object.getProcessFindingScheme());
+
+        //agents ohne speichern, identisch zu edges in graph
+        for(ConsumerAgent ca: object.getAgents()) {
+            manager.prepare(ca);
+        }
+
         return data;
     }
 
     @Override
-    protected void doSetupPersist(JadexConsumerAgentGroup object, Persistable persistable, PersistManager manager) {
-        BinaryJsonData data = check(persistable);
-        data.putDouble(object.getInformationAuthority());
-        data.putInt(object.getNextAgentId());
-
+    protected void doSetupPersist(JadexConsumerAgentGroup object, BinaryJsonData data, PersistManager manager) {
         data.putLong(manager.ensureGetUID(object.getSpatialDistribution()));
         data.putLongArray(manager.ensureGetAllUIDs(object.getAttributes()));
         data.putLong(manager.ensureGetUID(object.getAwarenessSupplyScheme()));
         data.putLong(manager.ensureGetUID(object.getProductFindingScheme()));
         data.putLong(manager.ensureGetUID(object.getProcessFindingScheme()));
-
-        storeHash(object, data);
 
         //agents ohne speichern, identisch zu edges in graph
         int caCount = 0;
@@ -63,22 +73,22 @@ public class JadexConsumerAgentGroupPR extends BinaryPRBase<JadexConsumerAgentGr
         log().debug("stores {} agents", caCount);
     }
 
+    //=========================
+    //restore
+    //=========================
+
     @Override
-    public JadexConsumerAgentGroup initalizeRestore(Persistable persistable, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected JadexConsumerAgentGroup doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         JadexConsumerAgentGroup object = new JadexConsumerAgentGroup();
         object.setName(data.getText());
         object.setInformationAuthority(data.getDouble());
         object.setNextAgentId(data.getInt());
-
         return object;
     }
 
     @Override
-    public void setupRestore(Persistable persistable, JadexConsumerAgentGroup object, RestoreManager manager) throws RestoreException {
+    protected void doSetupRestore(BinaryJsonData data, JadexConsumerAgentGroup object, RestoreManager manager) throws RestoreException {
         object.setEnvironment(manager.ensureGetInstanceOf(SimulationEnvironment.class));
-
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
 
         SpatialDistribution spatialDistribution = restoreSpatialDistribution(data, object, manager);
         object.setSpatialDistribution(spatialDistribution);

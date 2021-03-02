@@ -4,8 +4,6 @@ import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.spatial.BasicDistanceEvaluator;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -22,27 +20,33 @@ public class BasicDistanceEvaluatorPR extends BinaryPRBase<BasicDistanceEvaluato
         return LOGGER;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
     public Class<BasicDistanceEvaluator> getType() {
         return BasicDistanceEvaluator.class;
     }
 
     @Override
-    public Persistable initalizePersist(BasicDistanceEvaluator object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(BasicDistanceEvaluator object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putLong(manager.ensureGetUID(object.getEval()));
-        storeHash(object, data);
         return data;
     }
 
+    //=========================
+    //restore
+    //=========================
+
     @Override
-    public BasicDistanceEvaluator initalizeRestore(Persistable persistable, RestoreManager manager) {
+    protected BasicDistanceEvaluator doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
         return new BasicDistanceEvaluator();
     }
 
     @Override
-    public void setupRestore(Persistable persistable, BasicDistanceEvaluator object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected void doSetupRestore(BinaryJsonData data, BasicDistanceEvaluator object, RestoreManager manager) {
         object.setEval(manager.ensureGet(data.getLong()));
     }
 }

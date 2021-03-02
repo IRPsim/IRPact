@@ -1,11 +1,10 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.product.FixProductFindingScheme;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -27,26 +26,38 @@ public class FixProductFindingSchemePR extends BinaryPRBase<FixProductFindingSch
         return FixProductFindingScheme.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable initalizePersist(FixProductFindingScheme object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(FixProductFindingScheme object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
-        data.putLong(manager.ensureGetUID(object.getProduct()));
-        storeHash(object, data);
+
+        manager.prepare(object.getProduct());
+
         return data;
     }
 
     @Override
-    public FixProductFindingScheme initalizeRestore(Persistable persistable, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected void doSetupPersist(FixProductFindingScheme object, BinaryJsonData data, PersistManager manager) {
+        data.putLong(manager.ensureGetUID(object.getProduct()));
+    }
+
+    //=========================
+    //restore
+    //=========================
+
+    @Override
+    protected FixProductFindingScheme doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         FixProductFindingScheme object = new FixProductFindingScheme();
         object.setName(data.getText());
         return object;
     }
 
     @Override
-    public void setupRestore(Persistable persistable, FixProductFindingScheme object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected void doSetupRestore(BinaryJsonData data, FixProductFindingScheme object, RestoreManager manager) throws RestoreException {
         object.setProduct(manager.ensureGet(data.getLong()));
     }
 }

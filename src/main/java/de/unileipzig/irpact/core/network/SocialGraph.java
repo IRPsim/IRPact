@@ -46,7 +46,6 @@ public interface SocialGraph extends IsEquals {
      * @author Daniel Abitz
      */
     enum Type implements IsEquals {
-        UNKNOWN(0),
         COMMUNICATION(1);
 
         private final int ID;
@@ -61,15 +60,11 @@ public interface SocialGraph extends IsEquals {
                     return t;
                 }
             }
-            return UNKNOWN;
+            throw new IllegalArgumentException("unknown type, id = " + id);
         }
 
         public int id() {
             return ID;
-        }
-
-        public boolean isValid() {
-            return this != UNKNOWN;
         }
 
         @Override

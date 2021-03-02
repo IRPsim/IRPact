@@ -1,11 +1,10 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.distribution.ConstantUnivariateDoubleDistribution;
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -27,25 +26,27 @@ public class ConstantUnivariateDoubleDistributionPR extends BinaryPRBase<Constan
         return ConstantUnivariateDoubleDistribution.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable initalizePersist(ConstantUnivariateDoubleDistribution object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(ConstantUnivariateDoubleDistribution object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putDouble(object.getValue());
-        storeHash(object, data);
         return data;
     }
 
+    //=========================
+    //restore
+    //=========================
+
     @Override
-    public ConstantUnivariateDoubleDistribution initalizeRestore(Persistable persistable, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected ConstantUnivariateDoubleDistribution doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         ConstantUnivariateDoubleDistribution object = new ConstantUnivariateDoubleDistribution();
         object.setName(data.getText());
         object.setValue(data.getDouble());
         return object;
-    }
-
-    @Override
-    public void setupRestore(Persistable persistable, ConstantUnivariateDoubleDistribution object, RestoreManager manager) {
     }
 }

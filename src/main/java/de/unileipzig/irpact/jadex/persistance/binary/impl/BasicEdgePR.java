@@ -6,8 +6,6 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.network.BasicSocialGraph;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -24,31 +22,50 @@ public class BasicEdgePR extends BinaryPRBase<BasicSocialGraph.BasicEdge> {
         return LOGGER;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
     public Class<BasicSocialGraph.BasicEdge> getType() {
         return BasicSocialGraph.BasicEdge.class;
     }
 
     @Override
-    public Persistable initalizePersist(BasicSocialGraph.BasicEdge object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
-        data.putLong(manager.ensureGetUID(object.getSource().getAgent()));  //Agent!
-        data.putLong(manager.ensureGetUID(object.getTarget().getAgent()));  //Agent
+    protected BinaryJsonData doInitalizePersist(BasicSocialGraph.BasicEdge object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putInt(object.getType().id());
         data.putDouble(object.getWeight());
-        storeHash(object, data);
+
+        manager.prepare(object.getSource().getAgent());
+        manager.prepare(object.getTarget().getAgent());
+
         return data;
     }
 
     @Override
-    public BasicSocialGraph.BasicEdge initalizeRestore(Persistable persistable, RestoreManager manager) {
+    protected void doSetupPersist(BasicSocialGraph.BasicEdge object, BinaryJsonData data, PersistManager manager) {
+        data.putLong(manager.ensureGetUID(object.getSource().getAgent()));
+        data.putLong(manager.ensureGetUID(object.getTarget().getAgent()));
+    }
+
+    //=========================
+    //restore
+    //=========================
+
+
+    @Override
+    protected BasicSocialGraph.BasicEdge doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
         return new BasicSocialGraph.BasicEdge();
     }
 
     @Override
-    public void setupRestore(Persistable persistable, BasicSocialGraph.BasicEdge object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, BasicSocialGraph.BasicEdge object, RestoreManager manager) {
         BasicSocialGraph graph = manager.ensureGetSameClass(BasicSocialGraph.class);
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+
+        object.setType(SocialGraph.Type.get(data.getInt()));
+        object.setWeight(data.getDouble());
+
         Agent srcAgent = manager.ensureGet(data.getLong());
         SocialGraph.Node srcNode;
         if(graph.hasNode(srcAgent)) {
@@ -57,6 +74,7 @@ public class BasicEdgePR extends BinaryPRBase<BasicSocialGraph.BasicEdge> {
             srcNode = graph.addAgentAndGetNode(srcAgent);
             srcAgent.setSocialGraphNode(srcNode);
         }
+
         Agent tarAgent = manager.ensureGet(data.getLong());
         SocialGraph.Node tarNode;
         if(graph.hasNode(tarAgent)) {
@@ -65,10 +83,9 @@ public class BasicEdgePR extends BinaryPRBase<BasicSocialGraph.BasicEdge> {
             tarNode = graph.addAgentAndGetNode(tarAgent);
             tarAgent.setSocialGraphNode(tarNode);
         }
+
         object.setSource(srcNode);
         object.setTarget(tarNode);
-        object.setType(SocialGraph.Type.get(data.getInt()));
-        object.setWeight(data.getDouble());
 
         graph.addEdgeDirect(object);
     }

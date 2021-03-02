@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.agent.AgentManager;
@@ -17,8 +18,6 @@ import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.simulation.BasicBinaryTaskManager;
 import de.unileipzig.irpact.core.simulation.BasicInitializationData;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -36,15 +35,50 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
         return LOGGER;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
     public Class<BasicJadexSimulationEnvironment> getType() {
         return BasicJadexSimulationEnvironment.class;
     }
 
     @Override
-    public Persistable initalizePersist(BasicJadexSimulationEnvironment object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(BasicJadexSimulationEnvironment object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
+
         //===
+        AgentManager am = object.getAgents();
+        manager.prepareAll(am.getConsumerAgentGroups());
+        manager.prepare(am.getConsumerAgentGroupAffinityMapping());
+        //===
+        SocialNetwork sn = object.getNetwork();
+        manager.prepare(sn.getGraph());
+        manager.prepare(sn.getGraphTopologyScheme());
+        //===
+        ProcessModelManager pmm = object.getProcessModels();
+        manager.prepareAll(pmm.getProcessModels());
+        //===
+        ProductManager pm = object.getProducts();
+        manager.prepareAll(pm.getGroups());
+        //===
+        manager.prepare(object.getSpatialModel());
+        //===
+        manager.prepare(object.getTimeModel());
+        //===
+        manager.prepare(object.getLiveCycleControl());
+        //===
+        manager.prepare(object.getVersion());
+        //===
+        manager.prepare(object.getSimulationRandom());
+        //===
+
+        return data;
+    }
+
+    @Override
+    protected void doSetupPersist(BasicJadexSimulationEnvironment object, BinaryJsonData data, PersistManager manager) {
         AgentManager am = object.getAgents();
         data.putLongArray(manager.ensureGetAllUIDs(am.getConsumerAgentGroups()));
         data.putLong(manager.ensureGetUID(am.getConsumerAgentGroupAffinityMapping()));
@@ -69,13 +103,14 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
         //===
         data.putLong(manager.ensureGetUID(object.getSimulationRandom()));
         //===
-        data.putInt(object.getHashCode());
-        storeHash(object, data);
-        return data;
     }
 
+    //=========================
+    //restore
+    //=========================
+
     @Override
-    public BasicJadexSimulationEnvironment initalizeRestore(Persistable persistable, RestoreManager manager) {
+    protected BasicJadexSimulationEnvironment doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
         BasicJadexSimulationEnvironment environment = new BasicJadexSimulationEnvironment();
         environment.setName("Restored_Environment");
         environment.initDefault();
@@ -83,8 +118,7 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
     }
 
     @Override
-    public void setupRestore(Persistable persistable, BasicJadexSimulationEnvironment object, RestoreManager manager) throws RestoreException {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected void doSetupRestore(BinaryJsonData data, BasicJadexSimulationEnvironment object, RestoreManager manager) throws RestoreException {
         setupAgentManager(data, object, manager);
         setupSocialNetwork(data, object, manager);
         setupProcessModels(data, object, manager);
@@ -96,9 +130,6 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
         object.setLifeCycleControl(manager.ensureGet(data.getLong()));
         manager.ensureGet(data.getLong()); //Versioncheck !
         object.setSimulationRandom(manager.ensureGet(data.getLong()));
-        //===
-        int hash = data.getInt();
-        manager.setValidationHash(hash);
     }
 
     private void setupAgentManager(BinaryJsonData data, BasicJadexSimulationEnvironment object, RestoreManager manager) {
@@ -132,7 +163,8 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
         }
     }
 
-    private void setupBinaryTaskManager(@SuppressWarnings("unused") BinaryJsonData data, BasicJadexSimulationEnvironment object, RestoreManager manager) {
+    @SuppressWarnings("unused")
+    private void setupBinaryTaskManager(BinaryJsonData data, BasicJadexSimulationEnvironment object, RestoreManager manager) {
         BasicJadexSimulationEnvironment initialEnv = manager.getInitialInstance();
 
         BasicBinaryTaskManager initial = (BasicBinaryTaskManager) initialEnv.getTaskManager();
@@ -142,7 +174,18 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
     }
 
     @Override
-    protected void doFinalizeRestore(Persistable persistable, BasicJadexSimulationEnvironment object, RestoreManager manager) throws RestoreException {
+    protected void checkHash(BinaryJsonData data, BasicJadexSimulationEnvironment object, RestoreManager manager) {
+        int storedHash = data.getInt();
+        int restoredHash = ((IsEquals) object).getHashCode();
+        if(!checkHash(object, storedHash, restoredHash)) {
+            onHashMismatch(data, object, manager);
+        }
+
+        manager.setValidationHash(storedHash);
+    }
+
+    @Override
+    protected void doFinalizeRestore(BinaryJsonData data, BasicJadexSimulationEnvironment object, RestoreManager manager) throws RestoreException {
         BasicJadexSimulationEnvironment initial = manager.getInitialInstance();
         setupInitializationData(initial, object);
 

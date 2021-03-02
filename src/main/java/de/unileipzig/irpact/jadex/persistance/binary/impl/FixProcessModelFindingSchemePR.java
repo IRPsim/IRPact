@@ -4,10 +4,7 @@ import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.process.FixProcessModelFindingScheme;
-import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -29,37 +26,39 @@ public class FixProcessModelFindingSchemePR extends BinaryPRBase<FixProcessModel
         return FixProcessModelFindingScheme.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable initalizePersist(FixProcessModelFindingScheme object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(FixProcessModelFindingScheme object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
-        data.putText(object.getModel().getName());
-        storeHash(object, data);
+
+        manager.prepare(object.getModel());
+
         return data;
     }
 
     @Override
-    public FixProcessModelFindingScheme initalizeRestore(Persistable persistable, RestoreManager manager) {
-        BinaryJsonData data = check(persistable);
+    protected void doSetupPersist(FixProcessModelFindingScheme object, BinaryJsonData data, PersistManager manager) {
+        data.putLong(manager.ensureGetUID(object.getModel()));
+    }
+
+    //=========================
+    //restore
+    //=========================
+
+
+    @Override
+    protected FixProcessModelFindingScheme doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         FixProcessModelFindingScheme object = new FixProcessModelFindingScheme();
         object.setName(data.getText());
         return object;
     }
 
     @Override
-    public void setupRestore(Persistable persistable, FixProcessModelFindingScheme object, RestoreManager manager) {
-    }
-
-    @Override
-    protected void doFinalizeRestore(Persistable persistable, FixProcessModelFindingScheme object, RestoreManager manager) throws RestoreException {
-        BinaryJsonData data = check(persistable);
-        String modelName = data.getText();
-
-        JadexSimulationEnvironment env = manager.ensureGetInstanceOf(JadexSimulationEnvironment.class);
-        ProcessModel model = env.getProcessModels().getProcessModel(modelName);
-        if(model == null) {
-            throw new RestoreException("model '" + modelName + "' not found");
-        }
-        object.setModel(model);
+    protected void doSetupRestore(BinaryJsonData data, FixProcessModelFindingScheme object, RestoreManager manager) throws RestoreException {
+        object.setModel(manager.ensureGet(data.getLong()));
     }
 }

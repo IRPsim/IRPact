@@ -1,12 +1,11 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.UnlinkedGraphTopology;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -28,25 +27,27 @@ public class UnlinkedGraphTopologyPR extends BinaryPRBase<UnlinkedGraphTopology>
         return UnlinkedGraphTopology.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable initalizePersist(UnlinkedGraphTopology object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(UnlinkedGraphTopology object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putInt(object.getEdgeType().id());
-        storeHash(object, data);
         return data;
     }
 
+    //=========================
+    //restore
+    //=========================
+
     @Override
-    public UnlinkedGraphTopology initalizeRestore(Persistable persistable, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected UnlinkedGraphTopology doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         UnlinkedGraphTopology object = new UnlinkedGraphTopology();
         object.setName(data.getText());
         object.setEdgeType(SocialGraph.Type.get(data.getInt()));
         return object;
-    }
-
-    @Override
-    public void setupRestore(Persistable persistable, UnlinkedGraphTopology object, RestoreManager manager) {
     }
 }

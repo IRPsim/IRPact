@@ -1,8 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary;
 
 import de.unileipzig.irpact.commons.persistence.BasicPersistManager;
-import de.unileipzig.irpact.commons.persistence.PersistManager;
-import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.jadex.persistance.binary.impl.*;
 
 /**
@@ -61,19 +59,5 @@ public class BinaryJsonPersistanceManager extends BasicPersistManager {
         ensureRegister(UncertaintyGroupAttributePR.INSTANCE);
         ensureRegister(UnlinkedGraphTopologyPR.INSTANCE);
         ensureRegister(WeightedDiscreteSpatialDistributionPR.INSTANCE);
-    }
-
-    //=========================
-    //util
-    //=========================
-
-    public static BinaryJsonData initData(Object obj, PersistManager manager) {
-        return initDataWithClass(obj.getClass(), manager);
-    }
-
-    public static BinaryJsonData initDataWithClass(Class<?> c, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonData.init(IRPactJson.SMILE.getNodeFactory(), manager.newUID(), c);
-        data.setPutMode();
-        return data;
     }
 }

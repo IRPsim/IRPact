@@ -9,12 +9,6 @@ import de.unileipzig.irpact.commons.graph.FastDirectedMultiGraph;
  * @author Daniel Abitz
  */
 public enum SupportedGraphStructure implements IsEquals {
-    UNKNOWN(0) {
-        @Override
-        public <V, E, T> DirectedMultiGraph<V, E, T> newInstance() throws UnsupportedOperationException {
-            throw new UnsupportedOperationException();
-        }
-    },
     DIRECTED_ADJACENCY_LIST_MULTI_GRAPH(1) {
         @Override
         public <V, E, T> DirectedAdjacencyListMultiGraph<V, E, T> newInstance() {
@@ -51,6 +45,6 @@ public enum SupportedGraphStructure implements IsEquals {
                 return v;
             }
         }
-        return UNKNOWN;
+        throw new IllegalArgumentException("unknown id: " + id);
     }
 }

@@ -1,11 +1,10 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -27,22 +26,25 @@ public class RndPR extends BinaryPRBase<Rnd> {
         return Rnd.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable initalizePersist(Rnd object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(Rnd object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putLong(object.reseed());
-        storeHash(object, data);
         return data;
     }
 
-    @Override
-    public Rnd initalizeRestore(Persistable persistable, RestoreManager manager) {
-        return new Rnd();
-    }
+    //=========================
+    //restore
+    //=========================
 
     @Override
-    public void setupRestore(Persistable persistable, Rnd object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected Rnd doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        Rnd object = new Rnd();
         object.setInitialSeed(data.getLong());
+        return object;
     }
 }

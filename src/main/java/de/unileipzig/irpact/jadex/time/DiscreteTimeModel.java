@@ -183,13 +183,15 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
 
     @Override
     public int getStartYear() {
-        return environment.getInitializationData().getStartYear();
+        return environment.getInitializationData()
+                .getStartYear();
     }
 
     @Override
     public int getEndYearInclusive() {
         int start = getStartYear();
-        int end = environment.getInitializationData().getEndYear();
+        int end = environment.getInitializationData()
+                .getEndYear();
         return Math.max(start, end);
     }
 

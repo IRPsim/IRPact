@@ -21,6 +21,13 @@ public interface PersistManager {
         }
     }
 
+    default void prepareAll(Map<?, ?> map) {
+        for(Map.Entry<?, ?> entry: map.entrySet()) {
+            prepare(entry.getKey());
+            prepare(entry.getValue());
+        }
+    }
+
     <T> long ensureGetUID(T object) throws NoSuchElementException;
 
     default <T> long[] ensureGetAllUIDs(Collection<? extends T> coll) throws NoSuchElementException {

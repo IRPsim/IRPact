@@ -3,8 +3,6 @@ package de.unileipzig.irpact.jadex.persistance.binary.impl;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
@@ -25,37 +23,50 @@ public class BasicJadexLifeCycleControlPR extends BinaryPRBase<BasicJadexLifeCyc
         return LOGGER;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
     public Class<BasicJadexLifeCycleControl> getType() {
         return BasicJadexLifeCycleControl.class;
     }
 
     @Override
-    public Persistable initalizePersist(BasicJadexLifeCycleControl object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(BasicJadexLifeCycleControl object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         if(object.getCurrent() == null) {
             data.putNothing();
         } else {
             data.putLong(object.getCurrent().getEpochMilli());
         }
-        data.putLong(manager.ensureGetUID(object.getControlAgent()));
-        storeHash(object, data);
+
+        manager.prepare(object.getControlAgent());
+
         return data;
     }
 
     @Override
-    public BasicJadexLifeCycleControl initalizeRestore(Persistable persistable, RestoreManager manager) {
+    protected void doSetupPersist(BasicJadexLifeCycleControl object, BinaryJsonData data, PersistManager manager) {
+        data.putLong(manager.ensureGetUID(object.getControlAgent()));
+    }
+
+    //=========================
+    //restore
+    //=========================
+
+    @Override
+    protected BasicJadexLifeCycleControl doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
         return new BasicJadexLifeCycleControl();
     }
 
     @Override
-    public void setupRestore(Persistable persistable, BasicJadexLifeCycleControl object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, BasicJadexLifeCycleControl object, RestoreManager manager) {
         object.setEnvironment(manager.ensureGetInstanceOf(JadexSimulationEnvironment.class));
 
         BasicJadexSimulationEnvironment initial = manager.getInitialInstance();
         setupKillSwitch(initial, object);
 
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
         long epochMilli = data.getLong();
         if(epochMilli != BinaryJsonData.NOTHING_ID) {
             object.setCurrent(new BasicTimestamp(epochMilli));
