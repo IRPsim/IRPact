@@ -144,6 +144,11 @@ public class IRPact {
 
         printInitialNetwork();
 
+        if(clParam.isNoSimulation()) {
+            LOGGER.info("no simulation");
+            return;
+        }
+
         createPlatform();
         preparePlatform();
         setupTimeModel();
@@ -345,7 +350,7 @@ public class IRPact {
         LOGGER.info("wait for termination");
 
         //ConcurrentUtil.sleepSilently(5000);
-        environment.getLiveCycleControl().terminate().get();
+        environment.getLiveCycleControl().waitForTermination().get();
         JadexSystemOut.reset();
 
         LOGGER.info("simulation terminated");
@@ -417,10 +422,13 @@ public class IRPact {
         if(resultConsumer != null) {
             LOGGER.info("call result consumer");
             resultConsumer.accept(entry, outData);
+        } else {
+            LOGGER.trace("no result consumer found");
         }
     }
 
     private void finalTask() {
         IRPLogging.removeFilter();
+        LOGGER.info("simulation finished");
     }
 }

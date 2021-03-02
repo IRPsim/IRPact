@@ -250,8 +250,10 @@ public class Preloader {
     }
 
     private void callIRPact(ObjectNode root) throws Exception {
+        LOGGER.debug("call IRPact");
         IRPact irpact = new IRPact(param, resourceLoader);
         irpact.start(root);
+        LOGGER.debug("IRPact finished");
     }
 
     private void callOptact(ObjectNode root) {

@@ -16,6 +16,8 @@ public class BasicResourceLoader implements ResourceLoader {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicResourceLoader.class);
 
+    //Intellij-Tests-Only!
+    protected String resDir2 = "src/main/resources/irpacttempdata/";
     protected String resDir = "irpacttempdata";
     protected Path dir = Paths.get("irpactdata");
 

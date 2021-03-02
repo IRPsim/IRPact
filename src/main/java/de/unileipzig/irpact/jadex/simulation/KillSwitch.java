@@ -56,18 +56,19 @@ public class KillSwitch implements Runnable {
     public void finished() {
         finished = true;
         killThread.interrupt();
+        LOGGER.debug("KillSwitch finished");
     }
 
     @SuppressWarnings("BusyWait")
     @Override
     public void run() {
         LOGGER.debug("Start KillSwitch with " + timeout + "ms.");
-        while(running) {
+        while(running && !finished) {
             running = false;
             try {
                 Thread.sleep(timeout);
             } catch (InterruptedException e) {
-                //ignore
+                LOGGER.trace("KillSwitch interrupted (finished={},running={})", finished, running);
             }
         }
         if(finished) {

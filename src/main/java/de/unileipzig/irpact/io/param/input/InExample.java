@@ -67,6 +67,8 @@ public class InExample implements DefaultScenarioFactory {
         InAttributeName A7 = new InAttributeName(RAConstants.CONSTRUCTION_RATE);
         InAttributeName A8 = new InAttributeName(RAConstants.RENOVATION_RATE);
 
+        InAttributeName B6 = new InAttributeName(RAConstants.REWIRING_RATE);
+
         InAttributeName C1 = new InAttributeName(RAConstants.COMMUNICATION_FREQUENCY_SN);
 
         InAttributeName D1 = new InAttributeName(RAConstants.INITIAL_PRODUCT_AWARENESS);
@@ -101,6 +103,8 @@ public class InExample implements DefaultScenarioFactory {
         InConsumerAgentGroupAttribute cag0_A7_attr = build(name, A7, dist, list);
         InConsumerAgentGroupAttribute cag0_A8_attr = build(name, A8, dist, list);
 
+        InConsumerAgentGroupAttribute cag0_B6_attr = build(name, B6, dist, list);
+
         InConsumerAgentGroupAttribute cag0_C1_attr = build(name, C1, dist, list);
 
         InConsumerAgentGroupAttribute cag0_D1_attr = build(name, D1, dist, list);
@@ -114,7 +118,7 @@ public class InExample implements DefaultScenarioFactory {
 
         //cag1
         name = "BUM";
-        dist = constant09;
+        dist = constant0;
         list.clear();
         InConsumerAgentGroupAttribute cag1_A1_attr = build(name, A1, dist, list);
         InConsumerAgentGroupAttribute cag1_A2_attr = build(name, A2, dist, list);
@@ -124,6 +128,8 @@ public class InExample implements DefaultScenarioFactory {
         InConsumerAgentGroupAttribute cag1_A6_attr = build(name, A6, dist, list);
         InConsumerAgentGroupAttribute cag1_A7_attr = build(name, A7, dist, list);
         InConsumerAgentGroupAttribute cag1_A8_attr = build(name, A8, dist, list);
+
+        InConsumerAgentGroupAttribute cag1_B6_attr = build(name, B6, dist, list);
 
         InConsumerAgentGroupAttribute cag1_C1_attr = build(name, C1, dist, list);
 

@@ -23,13 +23,13 @@ public class NPVXlsxData implements NPVData {
     protected static final String BERECHNUNGSZEITPUNKT = "Berechnungszeitpunkt";
     protected static final String NETTOSYSTEMPREIS = "Nettosystempreis zum Berechnungszeitpunkt";
     protected static final String STROMPREIS = "Strompreis zum Berechnungszeitpunkt";
-    protected static final String EINSPEIS = "Einspeisevergütung zum Berechnungszeitpunkt (1.1., kl. Anlage)";
-    protected static final String ZINSSATZ = "Zinssatz für Spareinlagen";
+    protected static final String EINSPEIS = "Einspeiseverg\u00FCtung zum Berechnungszeitpunkt (1.1., kl. Anlage)";
+    protected static final String ZINSSATZ = "Zinssatz f\u00FCr Spareinlagen";
 
-    protected static final String NEIGUNGSWINKEL = "Neigungswinkel Dachfläche Agent i";
+    protected static final String NEIGUNGSWINKEL = "Neigungswinkel Dachfl\u00E4che Agent i";
     protected static final String GLOBALSTRAHLUNG = "Globalstrahlung pro 6m^2 mit Neigung Ni";
 
-    protected static final String AUSRICHTUNG_AGENT = "Ausrichtung Dachfläche Agent i";
+    protected static final String AUSRICHTUNG_AGENT = "Ausrichtung Dachfl\u00E4che Agent i";
     protected static final String AUSRICHTUNG_FAKTOR = "Faktor Ausrichtung";
 
     protected static final String MODULWIRKUNGSGRAD = "Modulwirkungsgrad(Jahr)";
