@@ -8,11 +8,14 @@ import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialDoubleAttributeBase;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialStringAttributeBase;
 import de.unileipzig.irptools.util.log.IRPLogger;
+import org.apache.poi.common.usermodel.fonts.FontCharset;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -82,6 +85,7 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
             try(InputStream in = loader.getResourceAsStream(csvFile)) {
                 data = parseCsv(in);
             }
+            return;
         }
 
         String xlsxFile = inputFileName + ".xlsx";
@@ -98,6 +102,7 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
             try(InputStream in = loader.getResourceAsStream(xlsxFile)) {
                 data = parseXlsx(in);
             }
+            return;
         }
 
         throw new FileNotFoundException("file '" + inputFileName + "' not found");
@@ -120,7 +125,10 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
     //=========================
 
     private static List<List<SpatialAttribute<?>>> parseXlsx(InputStream in) throws IOException {
+
         XSSFWorkbook book = new XSSFWorkbook(in);
+        XSSFFont font = book.createFont();
+        font.setCharSet(FontCharset.ANSI);
         return parseXlsx(book);
     }
 

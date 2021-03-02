@@ -71,6 +71,7 @@ public class PVFileLoader {
             try(InputStream in = loader.getResourceAsStream(xlsxFile)) {
                 data = parseXlsx(in);
             }
+            return;
         }
 
         throw new FileNotFoundException("file '" + inputFileName + "' not found");

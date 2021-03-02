@@ -7,7 +7,6 @@ import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.jadex.time.JadexTimestamp;
 import de.unileipzig.irpact.start.IRPact;
-import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bridge.IInternalAccess;
@@ -28,7 +27,6 @@ import java.util.Objects;
 @ProvidedServices({
         @ProvidedService(type = SimulationService.class, scope = ServiceScope.NETWORK)
 })
-@Todo("HIER AUCH EINEN PLACEHOLDER AGENT EINBAUEN")
 public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements SimulationService, SimulationAgent {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(JadexSimulationAgentBDI.class);
@@ -124,6 +122,7 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     protected IFuture<Void> afterEnd(IInternalAccess ia) {
         JadexTimeModel timeModel = environment.getTimeModel();
         log().trace("afterEnd: {} ({})", timeModel.now(), timeModel.endTimeReached());
+        environment.getLiveCycleControl().terminate();
         return IFuture.DONE;
     }
 

@@ -328,6 +328,7 @@ public class Start implements Callable<Integer> {
             Preloader loader = new Preloader(start);
             try {
                 loader.start();
+                LOGGER.debug("Start finished");
             } catch (Throwable t) {
                 LOGGER.error("Start failed with uncaught exception", t);
                 System.exit(CommandLine.ExitCode.SOFTWARE);
