@@ -234,6 +234,15 @@ public class DirectedAdjacencyListMultiGraph<V, E, T> implements DirectedMultiGr
     }
 
     @Override
+    public Collection<E> getAllEdges(T[] types) {
+        List<E> list = new ArrayList<>();
+        for(T type: types) {
+            list.addAll(getEdges(type));
+        }
+        return list;
+    }
+
+    @Override
     public Set<E> getEdges(T type) {
         Set<E> edges = new LinkedHashSet<>();
         for(Map<V, Map<T, E>> map0: adjacencyMap.values()) {

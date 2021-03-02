@@ -1,48 +1,60 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
-import de.unileipzig.irpact.core.network.SocialGraph;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.spatial.WeightedDiscreteSpatialDistribution;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class WeightedDiscreteSpatialDistributionPR implements Persister<WeightedDiscreteSpatialDistribution>, Restorer<WeightedDiscreteSpatialDistribution> {
+public class WeightedDiscreteSpatialDistributionPR extends BinaryPRBase<WeightedDiscreteSpatialDistribution> {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(WeightedDiscreteSpatialDistributionPR.class);
 
     public static final WeightedDiscreteSpatialDistributionPR INSTANCE = new WeightedDiscreteSpatialDistributionPR();
+
+    @Override
+    protected IRPLogger log() {
+        return LOGGER;
+    }
 
     @Override
     public Class<WeightedDiscreteSpatialDistribution> getType() {
         return WeightedDiscreteSpatialDistribution.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable persist(WeightedDiscreteSpatialDistribution object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(WeightedDiscreteSpatialDistribution object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putLong(object.getRandom().getInitialSeed());
-        data.putInt(object.getNummberOfCalls());
+        data.putInt(object.getNumberOfCalls());
         return data;
     }
 
-    @Override
-    public WeightedDiscreteSpatialDistribution initalize(Persistable persistable) {
-        return new WeightedDiscreteSpatialDistribution();
-    }
+    //=========================
+    //restore
+    //=========================
 
     @Override
-    public void setup(Persistable persistable, WeightedDiscreteSpatialDistribution object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected WeightedDiscreteSpatialDistribution doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        WeightedDiscreteSpatialDistribution object = new WeightedDiscreteSpatialDistribution();
         object.setName(data.getText());
         object.setRandom(new Rnd(data.getLong()));
         object.setRequiredNumberOfCalls(data.getInt());
+        return object;
     }
 
     @Override
-    public void finalize(Persistable persistable, WeightedDiscreteSpatialDistribution object, RestoreManager manager) {
+    protected void doFinalizeRestore(BinaryJsonData data, WeightedDiscreteSpatialDistribution object, RestoreManager manager) {
+        object.initalize();
     }
 }

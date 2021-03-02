@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.network;
 
-import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.core.agent.Agent;
 
@@ -19,7 +19,7 @@ public class BasicSocialGraph implements SocialGraph {
     //Da wir den Agent austauschen, wird equals und hashCode nicht veraendert.
     public static class BasicNode implements Node {
 
-        private Agent agent;
+        private final Agent agent;
 
         public BasicNode(Agent agent) {
             this.agent = agent;
@@ -43,6 +43,11 @@ public class BasicSocialGraph implements SocialGraph {
         @Override
         public String toString() {
             return getLabel();
+        }
+
+        @Override
+        public int getHashCode() {
+            return agent.getHashCode();
         }
     }
 
@@ -96,6 +101,16 @@ public class BasicSocialGraph implements SocialGraph {
         public Type getType() {
             return type;
         }
+
+        @Override
+        public int getHashCode() {
+            return Objects.hash(
+                    getSource().getHashCode(),
+                    getTarget().getHashCode(),
+                    getWeight(),
+                    getType().getHashCode()
+            );
+        }
     }
 
     private static final Function<? super Type, ? extends Edge> DEFAULT_EDGE_SUPPLIER = type -> {
@@ -106,24 +121,43 @@ public class BasicSocialGraph implements SocialGraph {
 
     private final Function<? super Agent, ? extends Node> NODE_SUPPLIER;
     private final Function<? super Type, ? extends Edge> EDGE_SUPPLIER;
+    private final SupportedGraphStructure STRUCTURE;
     private final DirectedMultiGraph<Node, Edge, Type> GRAPH;
-    private final Map<Agent, Node> NODE_CACHE = new HashMap<>();
+    private final Map<Agent, Node> NODE_CACHE = new LinkedHashMap<>();
 
-    public BasicSocialGraph() {
-        this(new DirectedAdjacencyListMultiGraph<>());
-    }
-
-    public BasicSocialGraph(DirectedMultiGraph<Node, Edge, Type> graph) {
-        this(BasicNode::new, DEFAULT_EDGE_SUPPLIER, graph);
+    public BasicSocialGraph(SupportedGraphStructure structure) {
+        this(BasicNode::new, DEFAULT_EDGE_SUPPLIER, structure);
     }
 
     public BasicSocialGraph(
             Function<? super Agent, ? extends Node> nodeSupplier,
             Function<? super Type, ? extends Edge> edgeSupplier,
-            DirectedMultiGraph<Node, Edge, Type> graph) {
+            SupportedGraphStructure structure) {
         NODE_SUPPLIER = nodeSupplier;
         EDGE_SUPPLIER = edgeSupplier;
-        GRAPH = graph;
+        STRUCTURE = structure;
+        GRAPH = structure.newInstance();
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getStructure().getHashCode(),
+                IsEquals.getCollHashCode(getAllAgents()),
+                IsEquals.getCollHashCode(getAllEdges())
+        );
+    }
+
+    public SupportedGraphStructure getStructure() {
+        return STRUCTURE;
+    }
+
+    public Collection<Agent> getAllAgents() {
+        return NODE_CACHE.keySet();
+    }
+
+    public Collection<Edge> getAllEdges() {
+        return GRAPH.getAllEdges(Type.values());
     }
 
     @Override
@@ -201,6 +235,18 @@ public class BasicSocialGraph implements SocialGraph {
             edge.setWeight(weight);
             return GRAPH.addEdge(from, to, type, edge);
         }
+    }
+
+    public void addEdgeDirect(BasicEdge edge) {
+        if(GRAPH.hasEdge(edge.getSource(), edge.getTarget(), edge.getType())) {
+            throw new IllegalArgumentException("edge '"
+                    + edge.getSource().getLabel()
+                    + "' -> '"
+                    + edge.getTarget().getLabel()
+                    + "' already exists"
+            );
+        }
+        GRAPH.addEdge(edge.getSource(), edge.getTarget(), edge.getType(), edge);
     }
 
     @Override

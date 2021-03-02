@@ -1,18 +1,18 @@
 package de.unileipzig.irpact.core.process.ra;
 
-import de.unileipzig.irpact.commons.attribute.Attribute;
-import de.unileipzig.irpact.commons.attribute.AttributeUtil;
+import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.attribute.DoubleAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-public class RAModelData {
+public class RAModelData implements IsEquals {
 
     public static final int DEFAULT_ADOPTER_POINTS = 3;
     public static final int DEFAULT_INTERESTED_POINTS = 2;
@@ -37,6 +37,14 @@ public class RAModelData {
 
     public RAModelData(Map<Integer, NPVMatrix> npData) {
         this.npData = npData;
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                a, b, c, d,
+                adopterPoints, interestedPoints, awarePoints, unknownPoints
+        );
     }
 
     public void setA(double a) {
@@ -96,11 +104,8 @@ public class RAModelData {
     }
 
     protected static int getIntValue(ConsumerAgent agent, String attrName) {
-        Attribute<?> attr = agent.findAttribute(attrName);
-        if(attr == null) {
-            throw new NoSuchElementException("missing argument '" + attrName + "'");
-        }
-        return (int) AttributeUtil.getDoubleValue(attr, () -> "attribute '" + attrName + "' is no number");
+        DoubleAttribute attr = (DoubleAttribute) agent.findAttribute(attrName);
+        return (int) attr.getDoubleValue();
     }
 
     public double a() {

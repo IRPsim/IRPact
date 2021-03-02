@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.spatial.twodim;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.attribute.BasicAttributeAccess;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
@@ -21,7 +22,7 @@ public class BasicPoint2D implements Point2D {
     }
 
     public BasicPoint2D(double x, double y) {
-        this(new HashMap<>(), x, y);
+        this(new LinkedHashMap<>(), x, y);
     }
 
     public BasicPoint2D(Map<String, SpatialAttribute<?>> attributes, double x, double y) {
@@ -106,5 +107,10 @@ public class BasicPoint2D implements Point2D {
     @Override
     public String toString() {
         return "Point2D[" + x + "," + y + "]";
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(x, y, IsEquals.getCollHashCode(attributes.values()));
     }
 }

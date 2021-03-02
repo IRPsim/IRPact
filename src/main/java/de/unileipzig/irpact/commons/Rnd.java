@@ -94,8 +94,7 @@ public final class Rnd implements IsEquals {
     }
 
     @Override
-    public boolean isEqualsSameClass(Object obj) {
-        Rnd other = (Rnd) obj;
-        return initialSeed == other.initialSeed;
+    public int getHashCode() {
+        return Long.hashCode(initialSeed);
     }
 }

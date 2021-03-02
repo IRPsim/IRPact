@@ -18,6 +18,8 @@ import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.ProvidedService;
 import jadex.micro.annotation.ProvidedServices;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -83,6 +85,11 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     //=========================
     //SimulationAgent
     //=========================
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(getName());
+    }
 
     protected ProxySimulationAgent getProxy() {
         Object obj = resultsFeature.getArguments().get(IRPact.PROXY);

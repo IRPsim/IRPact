@@ -4,6 +4,8 @@ import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.need.Need;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -25,5 +27,10 @@ public class FixProductFindingScheme extends NameableBase implements ProductFind
     @Override
     public Product findProduct(Agent agent, Need need) {
         return product;
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(getName(), getProduct().getHashCode());
     }
 }

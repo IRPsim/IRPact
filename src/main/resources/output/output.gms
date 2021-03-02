@@ -1,8 +1,6 @@
-* - description: Spezielle ID der Daten, Verwendungszweck und Funktionsweise ist von den Daten selber abhängig.
-* - hidden: 1
-* - identifier: HiddenBinaryDataID
+* - identifier: id
 * - type: Integer
-PARAMETER par_out_HiddenBinaryData_idHidden(set_HiddenBinaryData)
+PARAMETER par_out_BinaryPersistData_id(set_BinaryPersistData)
 
 * - description: Neue Anzahl der Kunden
 * - identifier: OUTKGA

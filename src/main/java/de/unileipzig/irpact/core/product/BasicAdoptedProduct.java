@@ -3,6 +3,8 @@ package de.unileipzig.irpact.core.product;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.need.Need;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -46,5 +48,10 @@ public class BasicAdoptedProduct implements AdoptedProduct {
     @Override
     public Timestamp getTimestamp() {
         return timestamp;
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(need.getHashCode(), product.getHashCode(), timestamp.getHashCode());
     }
 }

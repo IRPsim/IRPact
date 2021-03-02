@@ -2,6 +2,8 @@ package de.unileipzig.irpact.core.spatial.attribute;
 
 import de.unileipzig.irpact.commons.attribute.DoubleAttributeBase;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -26,5 +28,10 @@ public class SpatialDoubleAttributeBase extends DoubleAttributeBase implements S
     @Override
     public String toString() {
         return "{" + getName() + "=" + getValueAsString() + "}";
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(getName(), getDoubleValue());
     }
 }

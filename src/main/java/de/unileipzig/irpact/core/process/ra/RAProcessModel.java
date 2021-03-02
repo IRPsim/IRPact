@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.process.ra;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.distribution.ConstantUnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.Rnd;
@@ -23,6 +24,7 @@ import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.time.Month;
+import java.util.Objects;
 
 /**
  * @author Daniel Abitz
@@ -51,6 +53,39 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
     public RAProcessModel() {
     }
 
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getName(),
+                modelData.getHashCode(),
+                rnd.getHashCode(),
+                orientationSupplier.getHashCode(),
+                slopeSupplier.getHashCode(),
+                underConstructionSupplier.getHashCode(),
+                underRenovationSupplier.getHashCode(),
+                uncertaintySupplier.getHashCode()
+        );
+    }
+
+    private static void logHash(String msg, int storedHash) {
+        LOGGER.warn(
+                "hash @ '{}': stored={}",
+                msg,
+                Integer.toHexString(storedHash)
+        );
+    }
+
+    public void deepHashCode() {
+        logHash("name", IsEquals.getHashCode(getName()));
+        logHash("model data", IsEquals.getHashCode(modelData));
+        logHash("rnd", IsEquals.getHashCode(rnd));
+        logHash("orientation supplier", IsEquals.getHashCode(orientationSupplier));
+        logHash("slope supplier", IsEquals.getHashCode(slopeSupplier));
+        logHash("under construction supplier", IsEquals.getHashCode(underConstructionSupplier));
+        logHash("under renovation supplier", IsEquals.getHashCode(underRenovationSupplier));
+        logHash("uncertainty supplier", IsEquals.getHashCode(uncertaintySupplier));
+    }
+
     public void setEnvironment(SimulationEnvironment environment) {
         this.environment = environment;
     }
@@ -71,6 +106,10 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         return rnd;
     }
 
+    public NPVData getNpvData() {
+        return npvData;
+    }
+
     public void setNpvData(NPVData npvData) {
         this.npvData = npvData;
     }
@@ -79,65 +118,55 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         return slopeSupplier;
     }
 
+    public void setSlopeSupplier(BasicConsumerAgentSpatialAttributeSupplier slopeSupplier) {
+        this.slopeSupplier = slopeSupplier;
+    }
+
     public BasicConsumerAgentSpatialAttributeSupplier getOrientationSupplier() {
         return orientationSupplier;
+    }
+
+    public void setOrientationSupplier(BasicConsumerAgentSpatialAttributeSupplier orientationSupplier) {
+        this.orientationSupplier = orientationSupplier;
     }
 
     public BasicConsumerAgentGroupAttributeSupplier getUnderConstructionSupplier() {
         return underConstructionSupplier;
     }
 
+    public void setUnderConstructionSupplier(BasicConsumerAgentGroupAttributeSupplier underConstructionSupplier) {
+        this.underConstructionSupplier = underConstructionSupplier;
+    }
+
     public BasicConsumerAgentGroupAttributeSupplier getUnderRenovationSupplier() {
         return underRenovationSupplier;
+    }
+
+    public void setUnderRenovationSupplier(BasicConsumerAgentGroupAttributeSupplier underRenovationSupplier) {
+        this.underRenovationSupplier = underRenovationSupplier;
     }
 
     public BasicUncertaintyGroupAttributeSupplier getUncertaintySupplier() {
         return uncertaintySupplier;
     }
 
-//    @SuppressWarnings("UnnecessaryReturnStatement")
-//    private void loadNPVData() {
-//        if(tryLoadXlxsFromResources()) {
-//            return;
-//        }
-//        //hier kommt noch mehr
-//    }
-
-//    private boolean tryLoadXlxsFromResources() {
-//        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "try loading npv data from resources ('{}')", RAConstants.XLSX_FILE);
-//        final InputStream in = BasicResourceLoader.getResourceAsStream0(RAConstants.XLSX_FILE);
-//        if(in == null) {
-//            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "npv data not found in resources");
-//            return false;
-//        }
-//        try {
-//            try {
-//                LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "parsing xlsx");
-//                XSSFWorkbook book = new XSSFWorkbook(in);
-//                NPVXlsxData xlsxData = new NPVXlsxData();
-//                xlsxData.setAllgemeinSheet(XlsxUtil.extractKeyValueTable(book.getSheetAt(0)));
-//                xlsxData.putAllTables(XlsxUtil.extractTablesWithTwoHeaderLines(book, 1));
-//                LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "parsing finished");
-//                npvData = xlsxData;
-//                return true;
-//            } finally {
-//                in.close();
-//            }
-//        } catch (Exception e) {
-//            LOGGER.error("npv data loading failed", e);
-//            return false;
-//        }
-//    }
+    public void setUncertaintySupplier(BasicUncertaintyGroupAttributeSupplier uncertaintySupplier) {
+        this.uncertaintySupplier = uncertaintySupplier;
+    }
 
     @Override
-    public void preAgentCreation() {
-        if(npvData != null) {
-            npvCalculator = new NPVCalculator();
-            npvCalculator.setData(npvData);
+    public void preAgentCreation() throws MissingDataException {
+        if(npvData == null) {
+            throw new MissingDataException("np npv data");
         }
 
-        int startYear = environment.getTimeModel().getStartYear();
-        int endYear = environment.getTimeModel().getEndYearInclusive();
+        npvCalculator = new NPVCalculator();
+        npvCalculator.setData(npvData);
+
+        int startYear = environment.getTimeModel()
+                .getStartYear();
+        int endYear = environment.getTimeModel()
+                .getEndYearInclusive();
 
         LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "calculating npv matrix from '{}' to '{}'", startYear, endYear);
         for(int y = startYear; y <= endYear; y++) {
@@ -206,7 +235,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
         LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "create sync points");
         for(int y = startYear; y <= endYear; y++) {
-            Timestamp ts = environment.getTimeModel().at(startYear, Month.JUNE, 1);
+            Timestamp ts = environment.getTimeModel().at(startYear, Month.JULY, 1);
             SyncTask task = createConstructionRenovationSyncTask("ConsReno_" + startYear);
             LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} @ {}", task.getName(), ts);
             environment.getLiveCycleControl().registerSyncTask(ts, task);
@@ -222,7 +251,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
             @Override
             public void run() {
-                LOGGER.debug("HALLO SYNC");
+                RAProcessModel.LOGGER.debug("HALLO SYNC");
             }
         };
     }

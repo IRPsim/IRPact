@@ -2,30 +2,24 @@ package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
-import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.network.BasicGraphConfiguration;
-import de.unileipzig.irpact.core.network.BasicSocialGraph;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
-import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.GraphTopologyScheme;
 import de.unileipzig.irpact.core.process.BasicProcessModelManager;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.product.BasicProductManager;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
-import de.unileipzig.irpact.core.simulation.BasicBinaryTaskManager;
 import de.unileipzig.irpact.core.simulation.BasicInitializationData;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.simulation.BinaryTaskManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
-import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
+import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
@@ -35,14 +29,13 @@ import de.unileipzig.irpact.io.param.input.product.InFixProduct;
 import de.unileipzig.irpact.io.param.input.product.InProductGroup;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
-import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -53,10 +46,11 @@ public class JadexInputParser implements InputParser {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(JadexInputParser.class);
 
-    private final Map<Holder, Object> CACHE = new HashMap<>();
+    private final Map<Holder, Object> CACHE = new LinkedHashMap<>();
     private ResourceLoader resourceLoader;
 
     private BasicJadexSimulationEnvironment environment;
+    private InRoot root;
 
     public JadexInputParser() {
     }
@@ -69,36 +63,8 @@ public class JadexInputParser implements InputParser {
         CACHE.clear();
 
         environment = new BasicJadexSimulationEnvironment();
-        BasicInitializationData initData = new BasicInitializationData();
-        BasicAgentManager agentManager = new BasicAgentManager();
-        BasicSocialNetwork socialNetwork = new BasicSocialNetwork();
-        BasicGraphConfiguration graphConfiguration = new BasicGraphConfiguration();
-        BasicProcessModelManager processModelManager = new BasicProcessModelManager();
-        BasicProductManager productManager = new BasicProductManager();
-        BasicJadexLifeCycleControl lifeCycleControl = new BasicJadexLifeCycleControl();
-        BasicBinaryTaskManager taskManager = new BasicBinaryTaskManager();
-
-        environment.setInitializationData(initData);
-        environment.setResourceLoader(resourceLoader);
-
-        environment.setAgentManager(agentManager);
-        agentManager.setEnvironment(environment);
-
-        environment.setSocialNetwork(socialNetwork);
-        socialNetwork.setEnvironment(environment);
-        socialNetwork.setConfiguration(graphConfiguration);
-
-        environment.setProductManager(productManager);
-        productManager.setEnvironment(environment);
-
-        environment.setProcessModels(processModelManager);
-        processModelManager.setEnvironment(environment);
-
-        environment.setLifeCycleControl(lifeCycleControl);
-        lifeCycleControl.setEnvironment(environment);
-
-        environment.setTaskManager(taskManager);
-        taskManager.setEnvironment(environment);
+        environment.setName("Initial_Environment");
+        environment.initDefault();
     }
 
     @Override
@@ -140,10 +106,16 @@ public class JadexInputParser implements InputParser {
         return environment.getSimulationRandom().deriveInstance();
     }
 
+    @Override
+    public InRoot getRoot() {
+        return root;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public <T> T parseRoot(InRoot root) throws ParsingException {
         reset();
+        this.root = root;
         doParse(root);
         return (T) environment;
     }
@@ -289,7 +261,7 @@ public class JadexInputParser implements InputParser {
 
     private void parseConsumerAgentGroupAffinityMapping(InRoot root) throws ParsingException {
         BasicConsumerAgentGroupAffinityMapping mapping = new BasicConsumerAgentGroupAffinityMapping();
-        for(InAffinityEntry entry: root.affinityEntries) {
+        for(InComplexAffinityEntry entry: root.affinityEntries) {
             ConsumerAgentGroup srcCag = parseEntityTo(entry.getSrcCag());
             ConsumerAgentGroup tarCag = parseEntityTo(entry.getTarCag());
             double value = entry.getAffinityValue();
@@ -302,17 +274,14 @@ public class JadexInputParser implements InputParser {
     private void parseNetwork(InRoot root) throws ParsingException {
         InGraphTopologyScheme topo = getInstance(root.graphTopologySchemes, InGraphTopologyScheme.class, "missing GraphTopologyScheme");
         GraphTopologyScheme scheme = parseEntityTo(topo);
-        BasicGraphConfiguration configuration = (BasicGraphConfiguration) environment.getNetwork().getConfiguration();
-        configuration.setGraphTopologyScheme(scheme);
+        environment.getNetwork().setGraphTopologyScheme(scheme);
         debug("set graph topology scheme '{}'", scheme.getName());
     }
 
     private void parseSocialGraph(@SuppressWarnings("unused") InRoot root) {
         debug("[Fixed] use DirectedAdjacencyListMultiGraph");
-        DirectedMultiGraph<SocialGraph.Node, SocialGraph.Edge, SocialGraph.Type> graph = new DirectedAdjacencyListMultiGraph<>();
-        BasicSocialGraph socialGraph = new BasicSocialGraph(graph);
         BasicSocialNetwork network = (BasicSocialNetwork) environment.getNetwork();
-        network.setGraph(socialGraph);
+        network.initDefaultGraph();
     }
 
     private void parseSpatialModel(InRoot root) throws ParsingException {

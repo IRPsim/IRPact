@@ -2,10 +2,13 @@ package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.core.log.IRPLevel;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
+import de.unileipzig.irpact.core.simulation.tasks.PredefinedSimulationTask;
+import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
+import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.io.param.input.awareness.InProductThresholdAwarenessSupplyScheme;
+import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
+import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.distribution.InConstantUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
@@ -105,7 +108,7 @@ public class InExample implements DefaultScenarioFactory {
         InConsumerAgentGroupAttribute cag0_D3_attr = build(name, D3, dist, list);
         InConsumerAgentGroupAttribute cag0_D4_attr = build(name, D4, dist, list);
 
-        InProductThresholdAwarenessSupplyScheme cag0_awa = new InProductThresholdAwarenessSupplyScheme(name + "_awa", constant10);
+        InProductThresholdInterestSupplyScheme cag0_awa = new InProductThresholdInterestSupplyScheme(name + "_awa", constant10);
 
         InConsumerAgentGroup cag0 = new InConsumerAgentGroup(name, 1.0, 1, list, cag0_awa);
 
@@ -129,15 +132,15 @@ public class InExample implements DefaultScenarioFactory {
         InConsumerAgentGroupAttribute cag1_D3_attr = build(name, D3, dist, list);
         InConsumerAgentGroupAttribute cag1_D4_attr = build(name, D4, dist, list);
 
-        InProductThresholdAwarenessSupplyScheme cag1_awa = new InProductThresholdAwarenessSupplyScheme(name + "_awa", constant10);
+        InProductThresholdInterestSupplyScheme cag1_awa = new InProductThresholdInterestSupplyScheme(name + "_awa", constant10);
 
         InConsumerAgentGroup cag1 = new InConsumerAgentGroup(name, 1.0, 1, list, cag1_awa);
 
         //affinity
-        InAffinityEntry cag0_cag0 = new InAffinityEntry(cag0.getName() + "_" + cag0.getName(), cag0, cag0, 0.7);
-        InAffinityEntry cag0_cag1 = new InAffinityEntry(cag0.getName() + "_" + cag1.getName(), cag0, cag1, 0.3);
-        InAffinityEntry cag1_cag1 = new InAffinityEntry(cag1.getName() + "_" + cag1.getName(), cag1, cag1, 0.9);
-        InAffinityEntry cag1_cag0 = new InAffinityEntry(cag1.getName() + "_" + cag0.getName(), cag1, cag0, 0.1);
+        InComplexAffinityEntry cag0_cag0 = new InComplexAffinityEntry(cag0.getName() + "_" + cag0.getName(), cag0, cag0, 0.7);
+        InComplexAffinityEntry cag0_cag1 = new InComplexAffinityEntry(cag0.getName() + "_" + cag1.getName(), cag0, cag1, 0.3);
+        InComplexAffinityEntry cag1_cag1 = new InComplexAffinityEntry(cag1.getName() + "_" + cag1.getName(), cag1, cag1, 0.9);
+        InComplexAffinityEntry cag1_cag0 = new InComplexAffinityEntry(cag1.getName() + "_" + cag0.getName(), cag1, cag0, 0.1);
 
         InUnlinkedGraphTopology topology = new InUnlinkedGraphTopology("unlinked");
 
@@ -147,8 +150,8 @@ public class InExample implements DefaultScenarioFactory {
         uncert.setName("Uncerter");
         uncert.cags = new InConsumerAgentGroup[]{cag0, cag1};
         uncert.names = new InAttributeName[]{A2, A3, A4};
-        uncert.uncertDist = constant01;
-        uncert.convergenceDist = constant09;
+        uncert.setUncertaintyDistribution(constant01);
+        uncert.setConvergenceDistribution(constant09);
 
         //process
         InRAProcessModel processModel = new InRAProcessModel(
@@ -187,7 +190,7 @@ public class InExample implements DefaultScenarioFactory {
         cag0.spatialDistribution = new InSpatialDistribution[]{spaDist};
         cag1.spatialDistribution = new InSpatialDistribution[]{spaDist};
 
-        InSpace2D space2D = new InSpace2D("Space2D", true);
+        InSpace2D space2D = new InSpace2D("Space2D", Metric2D.EUCLIDEAN);
 
         //time
         InDiscreteTimeModel timeModel = new InDiscreteTimeModel("Discrete", 604800000L);
@@ -204,21 +207,15 @@ public class InExample implements DefaultScenarioFactory {
         de.unileipzig.irpact.io.param.input.InRoot root = new de.unileipzig.irpact.io.param.input.InRoot();
         initOptAct(root);
         initGV(root);
-//
-//        try {
-//            BasicAppTask helloWorldVisible = new BasicAppTask();
-//            helloWorldVisible.setInfo("HelloWorldTask_Visible");
-//            helloWorldVisible.setTaskNumber(BasicAppTask.HELLO_WORLD);
-//            root.visibleBinaryData = new VisibleBinaryData[]{helloWorldVisible.toBinary(VisibleBinaryData.class)};
-//
-//            BasicAppTask helloWorldHidden = new BasicAppTask();
-//            helloWorldHidden.setInfo("HelloWorldTask_Hidden");
-//            helloWorldHidden.setTaskNumber(BasicAppTask.HELLO_WORLD);
-//            root.hiddenBinaryData = new HiddenBinaryData[]{helloWorldHidden.toBinary(HiddenBinaryData.class)};
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//
+
+        PredefinedSimulationTask task = new PredefinedSimulationTask();
+        task.setInfo("INC");
+        task.setTask(PredefinedSimulationTask.ADD_ONE_AGENT_TO_EVERY_GROUP);
+        VisibleBinaryData vbd = new VisibleBinaryData();
+        vbd.setID(task.getID());
+        vbd.setBytes(task.getBytes());
+        root.visibleBinaryData = new VisibleBinaryData[]{vbd};
+
         //graphviz
         GraphvizColor gc1 = GraphvizColor.RED;
         GraphvizColor gc2 = GraphvizColor.GREEN;
@@ -241,7 +238,7 @@ public class InExample implements DefaultScenarioFactory {
         //=====
         root.version = new InVersion[]{InVersion.currentVersion()};
         root.general = general;
-        root.affinityEntries = new InAffinityEntry[]{cag0_cag0, cag0_cag1, cag1_cag1, cag1_cag0};
+        root.affinityEntries = new InComplexAffinityEntry[]{cag0_cag0, cag0_cag1, cag1_cag1, cag1_cag0};
         root.consumerAgentGroups = new InConsumerAgentGroup[]{cag0, cag1};
         root.graphTopologySchemes = new InGraphTopologyScheme[]{topology};
         root.processModel = new InProcessModel[]{processModel};

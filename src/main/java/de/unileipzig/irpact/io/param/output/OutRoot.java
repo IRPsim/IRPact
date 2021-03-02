@@ -1,7 +1,8 @@
 package de.unileipzig.irpact.io.param.output;
 
 import de.unileipzig.irpact.io.IOResources;
-import de.unileipzig.irpact.io.param.inout.binary.HiddenBinaryData;
+import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.start.optact.in.Ii;
 import de.unileipzig.irpact.start.optact.out.OutCustom;
 import de.unileipzig.irptools.defstructure.AnnotationResource;
@@ -15,6 +16,7 @@ import de.unileipzig.irptools.uiedn.Sections;
 import de.unileipzig.irptools.util.UiEdn;
 import de.unileipzig.irptools.util.Util;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -25,7 +27,7 @@ import java.util.List;
 public class OutRoot implements RootClass {
 
     public static final List<ParserInput> LIST = ParserInput.listOf(Type.OUTPUT,
-            HiddenBinaryData.class
+            BinaryPersistData.class
     );
 
     public static final List<ParserInput> WITH_OPTACT = Util.mergedArrayListOf(
@@ -44,13 +46,46 @@ public class OutRoot implements RootClass {
     );
 
     //=========================
+    //IRPact
+    //=========================
+
+    @FieldDefinition
+    public BinaryPersistData[] binaryPersistData = new BinaryPersistData[0];
+
+    //=========================
     //OptAct
     //=========================
 
     @FieldDefinition
-    public OutCustom[] outGrps;
+    public OutCustom[] outGrps = new OutCustom[0];
+
+    //=========================
+    //OptAct
+    //=========================
 
     public OutRoot() {
+    }
+
+    public void addHiddenBinaryData(Collection<? extends BinaryPersistData> coll) {
+        int pos;
+        if(binaryPersistData == null) {
+            pos = 0;
+            binaryPersistData = new BinaryPersistData[coll.size()];
+        } else {
+            pos = binaryPersistData.length;
+            binaryPersistData = Arrays.copyOf(binaryPersistData, binaryPersistData.length + coll.size());
+        }
+        for(BinaryPersistData hbd: coll) {
+            binaryPersistData[pos++] = hbd;
+        }
+    }
+
+    public BinaryPersistData[] getHiddenBinaryData() {
+        return binaryPersistData;
+    }
+
+    public int getHiddenBinaryDataLength() {
+        return ParamUtil.len(binaryPersistData);
     }
 
     @Override

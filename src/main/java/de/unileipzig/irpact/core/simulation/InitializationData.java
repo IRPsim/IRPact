@@ -27,4 +27,6 @@ public interface InitializationData {
     void addTask(SimulationTask task);
 
     List<SimulationTask> getTasks();
+
+    boolean ignorePersistenceCheckResult();
 }

@@ -14,9 +14,9 @@ public interface ProductGroup extends SimulationEntity {
 
     Product getProduct(String name);
 
-    Collection<ProductGroupAttribute> getAttributes();
+    Collection<ProductGroupAttribute> getGroupAttributes();
 
-    ProductGroupAttribute getAttribute(String name);
+    ProductGroupAttribute getGroupAttribute(String name);
 
     boolean hasProduct(String name);
 

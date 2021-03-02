@@ -2,6 +2,8 @@ package de.unileipzig.irpact.core.product;
 
 import de.unileipzig.irpact.commons.distattr.AbstractDerivableUnivariateDoubleDistributionAttribute;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -35,6 +37,15 @@ public class BasicProductGroupAttribute extends AbstractDerivableUnivariateDoubl
                 name,
                 this,
                 value
+        );
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getName(),
+                nextId,
+                getValue().getHashCode()
         );
     }
 }

@@ -1,9 +1,9 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.time.Timestamp;
-import de.unileipzig.irpact.core.agent.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.need.Need;
@@ -14,7 +14,7 @@ import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.product.BasicAdoptedProduct;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
-import de.unileipzig.irpact.core.product.awareness.ProductAwareness;
+import de.unileipzig.irpact.core.product.interest.ProductInterest;
 import de.unileipzig.irpact.jadex.agents.AbstractJadexAgentBDI;
 import de.unileipzig.irpact.jadex.agents.simulation.SimulationService;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
@@ -58,14 +58,14 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     protected JadexConsumerAgentGroup group;
     protected SpatialInformation spatialInformation;
     protected SimulationService simulationService;
-    protected Map<String, ConsumerAgentAttribute> attributes = new HashMap<>();
+    protected Map<String, ConsumerAgentAttribute> attributes = new LinkedHashMap<>();
     protected double informationAuthority;
     protected SocialGraph.Node node;
-    protected ProductAwareness productAwareness;
-    protected Set<AdoptedProduct> adoptedProducts = new HashSet<>();
+    protected ProductInterest productAwareness;
+    protected Set<AdoptedProduct> adoptedProducts = new LinkedHashSet<>();
     protected ProductFindingScheme productFindingScheme;
     protected ProcessFindingScheme processFindingScheme;
-    protected Set<AttributeAccess> externAttributes = new HashSet<>();
+    protected Set<AttributeAccess> externAttributes = new LinkedHashSet<>();
 
     protected final Lock LOCK = new ReentrantLock();
     protected Timestamp currentStamp = null;
@@ -73,9 +73,9 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     protected int maxActions = 1; //!!!
 
     @Belief
-    protected Set<Need> needs = new HashSet<>();
+    protected Set<Need> needs = new LinkedHashSet<>();
     @Belief
-    protected Map<Need, ProcessPlan> plans = new HashMap<>();
+    protected Map<Need, ProcessPlan> plans = new LinkedHashMap<>();
 
     public JadexConsumerAgentBDI() {
     }
@@ -136,6 +136,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     protected void onEnd() {
         log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] end", getName());
+        proxyAgent.unsync(this);
     }
 
     //=========================
@@ -161,7 +162,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         for(ConsumerAgentAttribute attr: proxyAgent.getAttributes()) {
             attributes.put(attr.getName(), attr);
         }
-        productAwareness = proxyAgent.getProductAwareness();
+        productAwareness = proxyAgent.getProductInterest();
         adoptedProducts.addAll(proxyAgent.getAdoptedProducts());
         processFindingScheme = proxyAgent.getProcessFindingScheme();
         productFindingScheme = proxyAgent.getProductFindingScheme();
@@ -172,18 +173,22 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         proxyAgent.sync(getRealAgent());
     }
 
+    @Override
     public ProductFindingScheme getProductFindingScheme() {
         return productFindingScheme;
     }
 
+    @Override
     public ProcessFindingScheme getProcessFindingScheme() {
         return processFindingScheme;
     }
 
+    @Override
     public Set<Need> getNeeds() {
         return needs;
     }
 
+    @Override
     public Map<Need, ProcessPlan> getPlans() {
         return plans;
     }
@@ -223,7 +228,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public ProductAwareness getProductAwareness() {
+    public ProductInterest getProductInterest() {
         return productAwareness;
     }
 
@@ -245,6 +250,24 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     public SocialGraph.Node getSocialGraphNode() {
         return node;
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getName(),
+                getGroup().getName(),
+                getInformationAuthority(),
+                getSpatialInformation().getHashCode(),
+                IsEquals.getCollHashCode(getAttributes()),
+                getProductInterest().getHashCode(),
+                IsEquals.getCollHashCode(getAdoptedProducts()),
+                getProductFindingScheme().getHashCode(),
+                getProcessFindingScheme().getHashCode(),
+                IsEquals.getCollHashCode(getNeeds()),
+                IsEquals.getMapHashCode(getPlans()),
+                IsEquals.getCollHashCode(externAttributes)
+        );
     }
 
     @Override
@@ -322,12 +345,12 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public boolean link(AttributeAccess attributeAccess) {
+    public boolean linkAccess(AttributeAccess attributeAccess) {
         return externAttributes.add(attributeAccess);
     }
 
     @Override
-    public boolean unlink(AttributeAccess attributeAccess) {
+    public boolean unlinkAccess(AttributeAccess attributeAccess) {
         return externAttributes.remove(attributeAccess);
     }
 

@@ -3,7 +3,9 @@ package de.unileipzig.irpact.core.process.ra;
 import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeUtil;
-import de.unileipzig.irpact.commons.awareness.Awareness;
+import de.unileipzig.irpact.commons.attribute.DoubleAttribute;
+import de.unileipzig.irpact.commons.attribute.StringAttribute;
+import de.unileipzig.irpact.commons.interest.Interest;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.need.Need;
@@ -13,6 +15,8 @@ import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductAttribute;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.develop.TodoException;
+import de.unileipzig.irpact.util.Todo;
 
 import java.util.*;
 
@@ -31,7 +35,7 @@ public class RAProcessPlan implements ProcessPlan {
     protected Rnd rnd;
     protected RAProcessModel model;
 
-    protected RAPhase currentPhase = RAPhase.NONE;
+    protected RAStage currentStage = RAStage.PRE_INITIALIZATION;
 
     public RAProcessPlan() {
     }
@@ -43,6 +47,18 @@ public class RAProcessPlan implements ProcessPlan {
         setAgent(agent);
         setNeed(need);
         setProduct(product);
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getNeed().getHashCode(),
+                getProduct().getHashCode(),
+                getAgent().getHashCode(),
+                getRnd().getHashCode(),
+                getModel().getName(),
+                getCurrentStage().getHashCode()
+        );
     }
 
     public void setEnvironment(SimulationEnvironment environment) {
@@ -89,17 +105,17 @@ public class RAProcessPlan implements ProcessPlan {
         return product;
     }
 
-    public void setCurrentPhase(RAPhase currentPhase) {
-        this.currentPhase = currentPhase;
+    public void setCurrentStage(RAStage currentStage) {
+        this.currentStage = currentStage;
     }
 
-    public RAPhase getCurrentPhase() {
-        return currentPhase;
+    public RAStage getCurrentStage() {
+        return currentStage;
     }
 
     @Override
     public ProcessPlanResult execute() {
-        if(currentPhase == RAPhase.NONE) {
+        if(currentStage == RAStage.PRE_INITIALIZATION) {
             return initPlan();
         } else {
             return executePlan();
@@ -122,7 +138,7 @@ public class RAProcessPlan implements ProcessPlan {
         if(isNewYear()) {
             adjustParametersOnNewYear();
         }
-        switch (currentPhase) {
+        switch (currentStage) {
             case AWARENESS:
                 return handleAwareness();
 
@@ -133,42 +149,40 @@ public class RAProcessPlan implements ProcessPlan {
                 return handleDecisionMaking();
 
             case ADOPTED:
-                return ProcessPlanResult.ADOPTED;
-
             case IMPEDED:
-                return ProcessPlanResult.IMPEDED;
+                return doAction();
 
             default:
-                throw new IllegalStateException("unknown phase: " + currentPhase);
+                throw new IllegalStateException("unknown phase: " + currentStage);
         }
     }
 
     protected void adjustParametersOnNewYear() {
-        if(currentPhase == RAPhase.IMPEDED) {
-            currentPhase = RAPhase.DECISION_MAKING;
+        if(currentStage == RAStage.IMPEDED) {
+            currentStage = RAStage.DECISION_MAKING;
         }
     }
 
     protected ProcessPlanResult handleAwareness() {
-        Awareness<Product> productAwareness = agent.getProductAwareness();
-        if(productAwareness.isInterested(product)) {
-            currentPhase = RAPhase.FEASIBILITY;
+        Interest<Product> productInterest = agent.getProductInterest();
+        if(productInterest.isInterested(product)) {
+            currentStage = RAStage.FEASIBILITY;
             return handleFeasibility();
         }
         if(isAware(agent)) {
             if(isUnderConstruction(agent) || isUnderRenovation(agent)) {
-                productAwareness.makeInterested(product);
+                productInterest.makeInterested(product);
                 return ProcessPlanResult.IN_PROCESS;
             }
-            return tryCommunication();
+            return doAction();
         }
         return ProcessPlanResult.IN_PROCESS;
     }
 
     protected ProcessPlanResult handleAwareness(boolean init) {
-        Awareness<Product> productAwareness = agent.getProductAwareness();
-        if(productAwareness.isInterested(product)) {
-            currentPhase = RAPhase.FEASIBILITY;
+        Interest<Product> productInterest = agent.getProductInterest();
+        if(productInterest.isInterested(product)) {
+            currentStage = RAStage.FEASIBILITY;
             if(init) {
                 return handleFeasibility();
             } else {
@@ -177,20 +191,22 @@ public class RAProcessPlan implements ProcessPlan {
         }
         if(isAware(agent)) {
             if(isUnderConstruction(agent) || isUnderRenovation(agent)) {
-                productAwareness.makeInterested(product);
+                productInterest.makeInterested(product);
                 return ProcessPlanResult.IN_PROCESS;
             }
-            return tryCommunication();
+            return doAction();
         }
         return ProcessPlanResult.IN_PROCESS;
     }
 
-    protected ProcessPlanResult tryCommunication() {
+    protected ProcessPlanResult doAction() {
         if(doCommunicate()) {
             return communicate();
-        } else {
-            return ProcessPlanResult.IN_PROCESS;
         }
+        if(doRewire()) {
+            return rewire();
+        }
+        return nop();
     }
 
     protected boolean doCommunicate() {
@@ -223,6 +239,22 @@ public class RAProcessPlan implements ProcessPlan {
         return ProcessPlanResult.IN_PROCESS;
     }
 
+    protected boolean doRewire() {
+        double r = rnd.nextDouble();
+        double freq = getRewiringRate(agent);
+        return r < freq;
+    }
+
+    @Todo
+    protected ProcessPlanResult rewire() {
+        throw new TodoException();
+    }
+
+    @Todo
+    protected ProcessPlanResult nop() {
+        throw new TodoException();
+    }
+
     protected void updateCommunicationGraph(SocialGraph graph, SocialGraph.Node target) {
         if(!graph.hasEdge(target, agent.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION)) {
             graph.addEdge(target, agent.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION, 1.0);
@@ -231,7 +263,7 @@ public class RAProcessPlan implements ProcessPlan {
 
     protected ProcessPlanResult handleFeasibility() {
         if(isShareOf1Or2FamilyHouse(agent) || isHouseOwner(agent) || isUnderConstruction(agent)) {
-            currentPhase = RAPhase.DECISION_MAKING;
+            currentStage = RAStage.DECISION_MAKING;
             return handleDecisionMaking();
         }
         return ProcessPlanResult.IN_PROCESS;
@@ -239,7 +271,7 @@ public class RAProcessPlan implements ProcessPlan {
 
     protected ProcessPlanResult handleFeasibility(boolean init) {
         if(isShareOf1Or2FamilyHouse(agent) || isHouseOwner(agent) || isUnderConstruction(agent)) {
-            currentPhase = RAPhase.DECISION_MAKING;
+            currentStage = RAStage.DECISION_MAKING;
             if(init) {
                 return handleDecisionMaking();
             } else {
@@ -261,7 +293,7 @@ public class RAProcessPlan implements ProcessPlan {
             double financialThreshold = getFinancialThresholdProduct(product);
             //check D3 reached
             if(financial < financialThreshold) {
-                currentPhase = RAPhase.IMPEDED;
+                currentStage = RAStage.IMPEDED;
                 return ProcessPlanResult.IMPEDED;
             }
             B += a * financial;
@@ -277,11 +309,11 @@ public class RAProcessPlan implements ProcessPlan {
         }
         double adoptionThreshold = getAdoptionThreshold(product);
         if(B < adoptionThreshold) {
-            currentPhase = RAPhase.IMPEDED;
+            currentStage = RAStage.IMPEDED;
             return ProcessPlanResult.IMPEDED;
         } else {
             agent.adopt(need, product);
-            currentPhase = RAPhase.ADOPTED;
+            currentStage = RAStage.ADOPTED;
             return ProcessPlanResult.ADOPTED;
         }
     }
@@ -361,8 +393,13 @@ public class RAProcessPlan implements ProcessPlan {
         return attr.getDoubleValue();
     }
 
+    protected static double getRewiringRate(ConsumerAgent agent) {
+        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.REWIRING_RATE);
+        return attr.getDoubleValue();
+    }
+
     protected static double getPurchasePower(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.PURCHASE_POWER);
+        DoubleAttribute attr = (DoubleAttribute) agent.findAttribute(RAConstants.PURCHASE_POWER);
         return attr.getDoubleValue();
     }
 
@@ -382,13 +419,14 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected static boolean isShareOf1Or2FamilyHouse(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.SHARE_1_2_HOUSE);
-        return attr.getDoubleValue() == 1.0;
+        DoubleAttribute attr = (DoubleAttribute) agent.findAttribute(RAConstants.SHARE_1_2_HOUSE);
+        double value = attr.getDoubleValue();
+        return value == 1.0 || value == 2.0;
     }
 
     protected static boolean isHouseOwner(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.HOUSE_OWNER);
-        return attr.getDoubleValue() == 1.0;
+        StringAttribute attr = (StringAttribute) agent.findAttribute(RAConstants.HOUSE_OWNER);
+        return RAConstants.PRIVATE.equals(attr.getStringValue());
     }
 
     protected static double getConstructionRate(ConsumerAgent agent) {
@@ -398,7 +436,7 @@ public class RAProcessPlan implements ProcessPlan {
 
     protected static boolean isUnderConstruction(ConsumerAgent agent) {
         ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.UNDER_CONSTRUCTION);
-        return attr != null && attr.getDoubleValue() == 1.0;
+        return attr.getDoubleValue() == 1.0;
     }
 
     protected static double getRenovationRate(ConsumerAgent agent) {
@@ -408,7 +446,7 @@ public class RAProcessPlan implements ProcessPlan {
 
     protected static boolean isUnderRenovation(ConsumerAgent agent) {
         ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.UNDER_RENOVATION);
-        return attr != null && attr.getDoubleValue() == 1.0;
+        return attr.getDoubleValue() == 1.0;
     }
 
     protected boolean isAdopter(ConsumerAgent agent) {
@@ -416,13 +454,13 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected boolean isInterested(ConsumerAgent agent) {
-        Awareness<Product> awareness = agent.getProductAwareness();
-        return awareness.isInterested(product);
+        Interest<Product> interest = agent.getProductInterest();
+        return interest.isInterested(product);
     }
 
     protected boolean isAware(ConsumerAgent agent) {
-        Awareness<Product> awareness = agent.getProductAwareness();
-        return awareness.isAware(product);
+        Interest<Product> interest = agent.getProductInterest();
+        return interest.isAware(product);
     }
 
     protected int getInterestPoints(ConsumerAgent agent) {
@@ -439,8 +477,8 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected void updateAwareness(ConsumerAgent agent, double points) {
-        Awareness<Product> awareness = agent.getProductAwareness();
-        awareness.update(product, points);
+        Interest<Product> interest = agent.getProductInterest();
+        interest.update(product, points);
     }
 
     protected double getShareOfAdopterInSocialNetwork() {

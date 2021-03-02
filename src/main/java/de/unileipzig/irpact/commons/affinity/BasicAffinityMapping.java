@@ -1,9 +1,6 @@
 package de.unileipzig.irpact.commons.affinity;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @param <S>
@@ -15,7 +12,7 @@ public class BasicAffinityMapping<S, T> implements AffinityMapping<S, T> {
     protected Map<S, Affinities<T>> mapping;
 
     public BasicAffinityMapping() {
-        this(new HashMap<>());
+        this(new LinkedHashMap<>());
     }
 
     public BasicAffinityMapping(Map<S, Affinities<T>> mapping) {

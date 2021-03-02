@@ -39,4 +39,10 @@ public class OutCustom {
     public OutCustom(String name) {
         _name = name;
     }
+
+    public OutCustom(String name, int size) {
+        _name = name;
+        numberOut = size;
+        summe = 0;
+    }
 }

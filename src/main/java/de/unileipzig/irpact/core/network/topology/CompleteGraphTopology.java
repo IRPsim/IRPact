@@ -7,6 +7,8 @@ import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -57,5 +59,14 @@ public class CompleteGraphTopology extends NameableBase implements GraphTopology
                 graph.addEdge(src, tar, edgeType, initialWeight);
             }
         }
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getName(),
+                getInitialWeight(),
+                getEdgeType().getHashCode()
+        );
     }
 }

@@ -2,18 +2,21 @@ package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.MultiCounter;
+import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.io.IOResources;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
+import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
+import de.unileipzig.irpact.io.param.input.affinity.InNameSplitAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.io.param.input.awareness.InProductAwarenessSupplyScheme;
-import de.unileipzig.irpact.io.param.input.awareness.InProductThresholdAwarenessSupplyScheme;
+import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
+import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.param.input.file.InFile;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
-import de.unileipzig.irpact.io.param.inout.binary.HiddenBinaryData;
+import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.process.*;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomSelectedGroupedSpatialDistribution2D;
@@ -46,6 +49,8 @@ import de.unileipzig.irptools.util.UiEdn;
 import de.unileipzig.irptools.util.Util;
 
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -73,7 +78,7 @@ public class InRoot implements RootClass {
     //=========================
 
     @FieldDefinition
-    public InAffinityEntry[] affinityEntries = new InAffinityEntry[0];
+    public InComplexAffinityEntry[] affinityEntries = new InComplexAffinityEntry[0];
 
     //=========================
     //agent
@@ -132,7 +137,7 @@ public class InRoot implements RootClass {
 
     //fuer out->in transfer
     @FieldDefinition
-    public HiddenBinaryData[] hiddenBinaryData = new HiddenBinaryData[0];
+    public BinaryPersistData[] binaryPersistData = new BinaryPersistData[0];
 
     //=========================
     //Graphviz
@@ -204,6 +209,57 @@ public class InRoot implements RootClass {
     }
 
     //=========================
+    //IRPACT
+    //=========================
+
+    private static <T> Stream<T> streamArray(T[] array, Predicate<? super T> filter) {
+        if(array == null) {
+            return Stream.empty();
+        } else {
+            return Arrays.stream(array)
+                    .filter(filter);
+        }
+    }
+
+    public InConsumerAgentGroup findConsumerAgentGroup(String name) throws ParsingException {
+        if(consumerAgentGroups == null) {
+            throw new ParsingException("missing cag '" + name + "'");
+        }
+        for(InConsumerAgentGroup cag: consumerAgentGroups) {
+            if(Objects.equals(cag.getName(), name)) {
+                return cag;
+            }
+        }
+        throw new ParsingException("missing cag '" + name + "'");
+    }
+
+    protected InConsumerAgentGroupAttribute[] consumerAgentGroupAttributes = new InConsumerAgentGroupAttribute[0];
+    public Stream<InConsumerAgentGroupAttribute> streamConsumerAgentGroupAttributes(Predicate<? super InConsumerAgentGroupAttribute> filter) {
+        return streamArray(consumerAgentGroupAttributes, filter);
+    }
+
+    public InProductGroup findProductGroup(String name) {
+        if(productGroups == null) {
+            return null;
+        }
+        for(InProductGroup pg: productGroups) {
+            if(Objects.equals(pg.getName(), name)) {
+                return pg;
+            }
+        }
+        return null;
+    }
+
+    protected InProductGroupAttribute[] productGroupAttributes = new InProductGroupAttribute[0];
+    public Stream<InProductGroupAttribute> streamProductGroupAttribute(Predicate<? super InProductGroupAttribute> filter) {
+        return streamArray(productGroupAttributes, filter);
+    }
+
+    public boolean hasBinaryPersistData() {
+        return binaryPersistData != null && binaryPersistData.length > 0;
+    }
+
+    //=========================
     //OPTACT
     //=========================
 
@@ -249,15 +305,17 @@ public class InRoot implements RootClass {
 
     public static final List<ParserInput> INPUT_WITHOUT_ROOT = ParserInput.listOf(Type.INPUT,
             InAffinityEntry.class,
+            InComplexAffinityEntry.class,
+            InNameSplitAffinityEntry.class,
 
             InConsumerAgentGroup.class,
             InConsumerAgentGroupAttribute.class,
 
-            InProductAwarenessSupplyScheme.class,
-            InProductThresholdAwarenessSupplyScheme.class,
+            InProductInterestSupplyScheme.class,
+            InProductThresholdInterestSupplyScheme.class,
 
             VisibleBinaryData.class,
-            HiddenBinaryData.class, //special
+            BinaryPersistData.class, //special
 
             InBooleanDistribution.class,
             InConstantUnivariateDistribution.class,
@@ -433,7 +491,7 @@ public class InRoot implements RootClass {
 
                         res.newElementBuilder()
                                 .setEdnLabel("Gruppen")
-                                .setEdnPriority(counter.getAndInc("Agenten"))
+                                .setEdnPriority(counter.getAndInc("Konsumer"))
                                 .putCache("Gruppen");
 
                                 res.newElementBuilder()

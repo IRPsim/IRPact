@@ -2,6 +2,8 @@ package de.unileipzig.irpact.commons.distribution;
 
 import de.unileipzig.irpact.commons.NameableBase;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -31,9 +33,7 @@ public class ConstantUnivariateDoubleDistribution extends NameableBase implement
     }
 
     @Override
-    public boolean isEqualsSameClass(Object obj) {
-        ConstantUnivariateDoubleDistribution other = (ConstantUnivariateDoubleDistribution) obj;
-        return name.equals(other.name)
-                && value == other.value;
+    public int getHashCode() {
+        return Objects.hash(getName(), getValue());
     }
 }

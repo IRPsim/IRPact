@@ -7,6 +7,8 @@ import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -36,5 +38,10 @@ public class UnlinkedGraphTopology extends NameableBase implements GraphTopology
     public void initalize(SimulationEnvironment environment, SocialGraph graph) {
         LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "initialize unlinked graph");
         graph.removeAllEdges(edgeType);
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(getName(), getEdgeType().getHashCode());
     }
 }

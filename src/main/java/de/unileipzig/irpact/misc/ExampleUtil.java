@@ -3,14 +3,15 @@ package de.unileipzig.irpact.misc;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.core.log.IRPLevel;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
+import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
+import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.io.param.input.awareness.InProductThresholdAwarenessSupplyScheme;
+import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.distribution.InConstantUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InRandomBoundedIntegerDistribution;
 import de.unileipzig.irpact.io.param.input.network.InCompleteGraphTopology;
@@ -91,7 +92,7 @@ public final class ExampleUtil {
         cag._name = name;
         cag.informationAuthority = 1.0;
         cag.numberOfAgentsX = numberOfAgents;
-        cag.setAwareness(new InProductThresholdAwarenessSupplyScheme(name + "_tawa", diraq10));
+        cag.setAwareness(new InProductThresholdInterestSupplyScheme(name + "_tawa", diraq10));
         cag.cagAttributes = new InConsumerAgentGroupAttribute[]{
                 createAttribute(name, RAConstants.PURCHASE_POWER),
                 createAttribute(name, RAConstants.NOVELTY_SEEKING),
@@ -118,16 +119,16 @@ public final class ExampleUtil {
         return cag;
     }
 
-    public static InAffinityEntry[] buildAffinityEntries(InConsumerAgentGroup... cags) {
-        List<InAffinityEntry> list = new ArrayList<>();
+    public static InComplexAffinityEntry[] buildAffinityEntries(InConsumerAgentGroup... cags) {
+        List<InComplexAffinityEntry> list = new ArrayList<>();
         for(InConsumerAgentGroup src: cags) {
             for(InConsumerAgentGroup tar: cags) {
                 double value = src == tar ? 1.0 : 0.0;
-                InAffinityEntry entry = new InAffinityEntry(src.getName() + "_" + tar.getName(), src, tar, value);
+                InComplexAffinityEntry entry = new InComplexAffinityEntry(src.getName() + "_" + tar.getName(), src, tar, value);
                 list.add(entry);
             }
         }
-        return list.toArray(new InAffinityEntry[0]);
+        return list.toArray(new InComplexAffinityEntry[0]);
     }
 
     public static InGraphTopologyScheme[] getCompleteGraph() {
@@ -162,7 +163,7 @@ public final class ExampleUtil {
     }
 
     public static InSpatialModel[] space2D() {
-        InSpace2D space2D = new InSpace2D("Space2D", true);
+        InSpace2D space2D = new InSpace2D("Space2D", Metric2D.EUCLIDEAN);
         return new InSpatialModel[]{space2D};
     }
 
@@ -207,7 +208,7 @@ public final class ExampleUtil {
         general.logGraphCreation = true;
         general.logAgentCreation = true;
         general.logPlatformCreation = true;
-        general.logTools = true;
+        general.logToolsCore = true;
         general.logJadexSystemOut = true;
         return general;
     }

@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeCreator;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.persistence.PersistableBase;
+import de.unileipzig.irpact.commons.util.IRPactBase32;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irptools.util.Util;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.*;
 
 /**
@@ -31,6 +33,7 @@ public final class BinaryJsonData extends PersistableBase {
     protected ObjectNode root;
 
     protected boolean simulationMode = false;
+    protected boolean putMode = true;
 
     private BinaryJsonData(JsonNodeCreator creator) {
         this(creator.objectNode());
@@ -52,6 +55,14 @@ public final class BinaryJsonData extends PersistableBase {
         BinaryJsonData data = new BinaryJsonData(creator.objectNode());
         data.init(uid, c);
         return data;
+    }
+
+    public void setPutMode() {
+        putMode = true;
+    }
+
+    public void setGetMode() {
+        putMode = false;
     }
 
     private void init(long uid, Class<?> c) {
@@ -90,6 +101,18 @@ public final class BinaryJsonData extends PersistableBase {
         return IRPactJson.toBytesWithSmile(root);
     }
 
+    public String printBytes() {
+        try {
+            return IRPactBase32.encodeToString(toBytes());
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    public String printMinimalJson() {
+        return root.toString();
+    }
+
     boolean isSimulationMode() {
         return simulationMode;
     }
@@ -104,15 +127,34 @@ public final class BinaryJsonData extends PersistableBase {
         }
     }
 
+    public ObjectNode getRoot() {
+        return root;
+    }
+
+    public Collection<String> getFields() {
+        List<String> list = new ArrayList<>();
+        for(String str: Util.iterateFieldNames(root)) {
+            list.add(str);
+        }
+        return list;
+    }
+
     //=========================
     //auto put
     //=========================
+
+    private void requiresPutMode() {
+        if(!putMode) {
+            throw new IllegalStateException("get mode");
+        }
+    }
 
     public void resetPut() {
         autoPutId = FIRST_AUTO_ID;
     }
 
     private String nextPutId() {
+        requiresPutMode();
         return str(autoPutId++);
     }
 
@@ -165,6 +207,17 @@ public final class BinaryJsonData extends PersistableBase {
         }
     }
 
+    public void putLongMultiStringMap(Map<Long, List<String>> map) {
+        if(isSimulationMode()) return;
+        ObjectNode obj = root.putObject(nextPutId());
+        for(Map.Entry<Long, List<String>> entry: map.entrySet()) {
+            ArrayNode arr = obj.putArray(Long.toString(entry.getKey()));
+            for(String n: entry.getValue()) {
+                arr.add(n);
+            }
+        }
+    }
+
     public void putLongLongMap(Map<Long, Long> map) {
         if(isSimulationMode()) return;
         ObjectNode obj = root.putObject(nextPutId());
@@ -196,42 +249,74 @@ public final class BinaryJsonData extends PersistableBase {
     //auto get
     //=========================
 
+    private void requiresGetMode() {
+        if(putMode) {
+            throw new IllegalStateException("get mode");
+        }
+    }
+
     public void resetGet() {
         autoGetId = FIRST_AUTO_ID;
     }
 
     private String nextGetId() {
+        requiresGetMode();
         return str(autoGetId++);
+    }
+
+    private JsonNode nextNode() {
+        return nextNode(false);
+    }
+
+    private JsonNode nextNodeAllowNull() {
+        return nextNode(true);
+    }
+
+    private JsonNode nextNode(boolean allowNull) {
+        String id = nextGetId();
+        JsonNode node = root.get(id);
+        if(node == null || node.isMissingNode() || (!allowNull && node.isNull())) {
+            String type = node == null
+                    ? "null"
+                    : node.getNodeType().toString();
+            throw new IllegalStateException("missing node: " + id + " (type: " + type + ")");
+        }
+        return node;
     }
 
     public boolean getBoolean() {
         checkSimulationMode();
-        return root.get(nextGetId()).booleanValue();
+        return nextNode().booleanValue();
     }
 
     public int getInt() {
         checkSimulationMode();
-        return root.get(nextGetId()).intValue();
+        return nextNode().intValue();
     }
 
     public long getLong() {
         checkSimulationMode();
-        return root.get(nextGetId()).longValue();
+        return nextNode().longValue();
     }
 
     public double getDouble() {
         checkSimulationMode();
-        return root.get(nextGetId()).doubleValue();
+        return nextNode().doubleValue();
     }
 
     public String getText() {
         checkSimulationMode();
-        return root.get(nextGetId()).textValue();
+        return nextNode().textValue();
+    }
+
+    public String getTextOrNull() {
+        checkSimulationMode();
+        return nextNodeAllowNull().textValue();
     }
 
     public long[] getLongArray() {
         checkSimulationMode();
-        ArrayNode arrNode = (ArrayNode) root.get(nextGetId());
+        ArrayNode arrNode = (ArrayNode) nextNode();
         long[] arr = new long[arrNode.size()];
         for(int i = 0; i < arrNode.size(); i++) {
             arr[i] = arrNode.get(i).longValue();
@@ -242,7 +327,7 @@ public final class BinaryJsonData extends PersistableBase {
     public Map<Long, Map<Long, Double>> getLongLongDoubleTable() {
         checkSimulationMode();
         Map<Long, Map<Long, Double>> table = new LinkedHashMap<>();
-        ObjectNode obj = (ObjectNode) root.get(nextGetId());
+        ObjectNode obj = (ObjectNode) nextNode();
         for(Map.Entry<String, JsonNode> entry: Util.iterateFields(obj)) {
             long srcId = Long.parseLong(entry.getKey());
             ObjectNode srcNode = (ObjectNode) entry.getValue();
@@ -259,7 +344,7 @@ public final class BinaryJsonData extends PersistableBase {
     public Map<Long, Long> getLongLongMap() {
         checkSimulationMode();
         Map<Long, Long> map = new LinkedHashMap<>();
-        ObjectNode obj = (ObjectNode) root.get(nextGetId());
+        ObjectNode obj = (ObjectNode) nextNode();
         for(Map.Entry<String, JsonNode> entry: Util.iterateFields(obj)) {
             long srcId = Long.parseLong(entry.getKey());
             long tarId = entry.getValue().longValue();
@@ -271,7 +356,7 @@ public final class BinaryJsonData extends PersistableBase {
     public Map<Long, Double> getLongDoubleMap() {
         checkSimulationMode();
         Map<Long, Double> map = new LinkedHashMap<>();
-        ObjectNode obj = (ObjectNode) root.get(nextGetId());
+        ObjectNode obj = (ObjectNode) nextNode();
         for(Map.Entry<String, JsonNode> entry: Util.iterateFields(obj)) {
             long key = Long.parseLong(entry.getKey());
             double value = entry.getValue().doubleValue();
@@ -280,10 +365,25 @@ public final class BinaryJsonData extends PersistableBase {
         return map;
     }
 
+    public Map<Long, List<String>> getLongMultiStringMap() {
+        checkSimulationMode();
+        Map<Long, List<String>> map = new LinkedHashMap<>();
+        ObjectNode obj = (ObjectNode) nextNode();
+        for(Map.Entry<String, JsonNode> entry: Util.iterateFields(obj)) {
+            long srcId = Long.parseLong(entry.getKey());
+            ArrayNode tarNode = (ArrayNode) entry.getValue();
+            List<String> tarList = map.computeIfAbsent(srcId, _srcId -> new ArrayList<>());
+            for(JsonNode node: Util.iterateElements(tarNode)) {
+                tarList.add(node.textValue());
+            }
+        }
+        return map;
+    }
+
     public Map<Long, List<Long>> getLongMultiLongMap() {
         checkSimulationMode();
         Map<Long, List<Long>> map = new LinkedHashMap<>();
-        ObjectNode obj = (ObjectNode) root.get(nextGetId());
+        ObjectNode obj = (ObjectNode) nextNode();
         for(Map.Entry<String, JsonNode> entry: Util.iterateFields(obj)) {
             long srcId = Long.parseLong(entry.getKey());
             ArrayNode tarNode = (ArrayNode) entry.getValue();

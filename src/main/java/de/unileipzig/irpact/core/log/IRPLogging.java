@@ -35,6 +35,10 @@ public final class IRPLogging {
         FILTER.setBacked(filter);
     }
 
+    public static void removeFilter() {
+        FILTER.removeBacked();
+    }
+
     public static boolean hasFilter() {
         return FILTER.getBacked() != null;
     }
@@ -62,6 +66,10 @@ public final class IRPLogging {
                 throw new IllegalArgumentException("filter aready set");
             }
             this.backed = backed;
+        }
+
+        private void removeBacked() {
+            backed = null;
         }
 
         private LoggingFilter getBacked() {

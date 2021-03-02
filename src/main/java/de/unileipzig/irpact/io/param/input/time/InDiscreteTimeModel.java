@@ -8,6 +8,7 @@ import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Objects;
 
 /**
@@ -16,11 +17,17 @@ import java.util.Objects;
 @Definition
 public class InDiscreteTimeModel implements InTimeModel {
 
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
+
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.putPath(
-                InDiscreteTimeModel.class,
+                thisClass(),
                 res.getCachedElement("Zeitliche Modell"),
                 res.getCachedElement("Diskret")
         );
@@ -29,7 +36,7 @@ public class InDiscreteTimeModel implements InTimeModel {
                 .setGamsIdentifier("Zeit pro Schritt")
                 .setGamsDescription("Zeit pro Schritt")
                 .setGamsUnit("[ms]")
-                .store(InDiscreteTimeModel.class, "timePerTickInMs");
+                .store(thisClass(), "timePerTickInMs");
     }
 
     public String _name;

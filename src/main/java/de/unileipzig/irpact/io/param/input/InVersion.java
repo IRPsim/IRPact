@@ -7,6 +7,8 @@ import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
+import java.lang.invoke.MethodHandles;
+
 /**
  * Stores the current Version of IRPact.
  *
@@ -15,6 +17,12 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 @Definition
 public class InVersion implements InEntity {
 
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
+
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
@@ -22,7 +30,7 @@ public class InVersion implements InEntity {
                 .setGamsDescription("Version von IRPact für dieses Szenario.")
                 .setGamsIdentifier("InVersion")
                 .setGamsHidden(true)
-                .store(InVersion.class);
+                .store(thisClass());
     }
 
     public String _name;

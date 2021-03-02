@@ -22,7 +22,7 @@ public class UnmodifiableWeightedMapping<S, T, W> implements WeightedMapping<S, 
 
     public UnmodifiableWeightedMapping(
             BasicWeightedMapping<S, T, W> back) {
-        this(back, HashMap::new, ArrayList::new);
+        this(back, LinkedHashMap::new, ArrayList::new);
     }
 
     public UnmodifiableWeightedMapping(

@@ -11,11 +11,19 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.lang.invoke.MethodHandles;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InPVFile implements InFile {
+
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
 
     public static void initRes(TreeAnnotationResource res) {
     }
@@ -25,6 +33,11 @@ public class InPVFile implements InFile {
                 res.getCachedElement("Dateien"),
                 res.getCachedElement("PV Daten")
         );
+
+        res.newEntryBuilder()
+                .setGamsIdentifier("-")
+                .setGamsDescription("Platzhalter")
+                .store(InPVFile.class, "placeholderPVFile");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InPVFile.class);

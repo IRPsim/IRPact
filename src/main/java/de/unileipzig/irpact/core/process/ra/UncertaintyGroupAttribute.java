@@ -3,6 +3,8 @@ package de.unileipzig.irpact.core.process.ra;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -51,6 +53,7 @@ public class UncertaintyGroupAttribute extends BasicConsumerAgentGroupAttribute 
     public UncertaintyAttribute derive(double uncertainty, double convergence) {
         UncertaintyAttribute attr = new UncertaintyAttribute();
         attr.setName(getName());
+        attr.setGroup(this);
         attr.setUncertainity(uncertainty);
         attr.setConvergence(convergence);
         attr.setAutoAdjustment(isAutoAdjustment());
@@ -67,5 +70,14 @@ public class UncertaintyGroupAttribute extends BasicConsumerAgentGroupAttribute 
     public UncertaintyAttribute derive() {
         double uncertainty = getUncertainty().drawDoubleValue();
         return derive(uncertainty);
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getName(),
+                getUncertainty().getHashCode(),
+                getConvergence().getHashCode()
+        );
     }
 }

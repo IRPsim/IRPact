@@ -70,7 +70,7 @@ public class PredefinedSimulationTask extends PredefinedBinaryTask implements Si
     }
 
     private void addOneAgentToEveryGroup(SimulationEnvironment environment) {
-        LOGGER.trace("called 'addOneAgentToEveryGroup'");
+        LOGGER.trace("called 'addOneAgentToEveryGroup' ('{}')", environment.getName());
         AgentManager manager = environment.getAgents();
         SocialGraph graph = environment.getNetwork().getGraph();
         for(ConsumerAgentGroup cag: manager.getConsumerAgentGroups()) {

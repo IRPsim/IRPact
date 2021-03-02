@@ -34,4 +34,9 @@ public class BasicDistanceEvaluator implements DistanceEvaluator, Eval {
     public double evaluate(double distance) {
         return eval.evaluate(distance);
     }
+
+    @Override
+    public int getHashCode() {
+        return eval.getHashCode();
+    }
 }

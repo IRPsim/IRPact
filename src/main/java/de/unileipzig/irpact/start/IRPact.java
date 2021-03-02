@@ -5,30 +5,31 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.agent.consumer.ProxyConsumerAgent;
+import de.unileipzig.irpact.core.simulation.*;
+import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.network.SocialGraph;
-import de.unileipzig.irpact.core.simulation.BasicVersion;
-import de.unileipzig.irpact.core.simulation.LifeCycleControl;
-import de.unileipzig.irpact.core.simulation.Version;
 import de.unileipzig.irpact.io.param.input.GraphvizInputParser;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.JadexInputParser;
+import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.jadex.agents.simulation.ProxySimulationAgent;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.util.JadexSystemOut;
 import de.unileipzig.irpact.jadex.util.JadexUtil2;
+import de.unileipzig.irpact.start.optact.out.OutCustom;
 import de.unileipzig.irptools.defstructure.AnnotationParser;
 import de.unileipzig.irptools.defstructure.Converter;
 import de.unileipzig.irptools.defstructure.DefinitionCollection;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
 import de.unileipzig.irptools.io.ContentType;
 import de.unileipzig.irptools.io.ContentTypeDetector;
+import de.unileipzig.irptools.io.annual.AnnualData;
+import de.unileipzig.irptools.io.annual.AnnualFile;
 import de.unileipzig.irptools.io.base.AnnualEntry;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.base.IPlatformConfiguration;
@@ -39,8 +40,9 @@ import jadex.bridge.service.types.clock.IClockService;
 import jadex.bridge.service.types.cms.CreationInfo;
 import jadex.bridge.service.types.simulation.ISimulationService;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiConsumer;
 
 /**
  * @author Daniel Abitz
@@ -83,14 +85,24 @@ public class IRPact {
         environment.getLiveCycleControl().pulse();
     }
 
-    private static Converter converter;
-    public static Converter getConverter() {
-        if(converter == null) {
+    private static Converter inputConverter;
+    public static Converter getInputConverter() {
+        if(inputConverter == null) {
             DefinitionCollection dcoll = AnnotationParser.parse(InRoot.CLASSES_WITH_GRAPHVIZ);
             DefinitionMapper dmap = new DefinitionMapper(dcoll);
-            converter = new Converter(dmap);
+            inputConverter = new Converter(dmap);
         }
-        return converter;
+        return inputConverter;
+    }
+
+    private static Converter outputConverter;
+    public static Converter getOutputConverter() {
+        if(outputConverter == null) {
+            DefinitionCollection dcoll = AnnotationParser.parse(OutRoot.CLASSES);
+            DefinitionMapper dmap = new DefinitionMapper(dcoll);
+            outputConverter = new Converter(dmap);
+        }
+        return outputConverter;
     }
 
     public static AnnualEntry<InRoot> convert(ObjectNode rootNode) {
@@ -99,7 +111,7 @@ public class IRPact {
         return ContentTypeDetector.parseFirstEntry(
                 rootNode,
                 contentType,
-                getConverter()
+                getInputConverter()
         );
     }
 
@@ -121,6 +133,8 @@ public class IRPact {
 
     private void start() throws Exception {
         createSimulationEnvironment();
+        applyCliToEnvironment();
+        restorPreviousSimulationEnvironment();
         createGraphvizConfiguration();
 
         preAgentCreation();
@@ -129,15 +143,6 @@ public class IRPact {
         postAgentCreation();
 
         printInitialNetwork();
-
-        if(clParam.isNoSimulation()) {
-            LOGGER.info("execution finished (noSimulation flag set)");
-            return;
-        }
-
-        if(true) {
-            throw new RuntimeException("NOCH NICHT");
-        }
 
         createPlatform();
         preparePlatform();
@@ -169,6 +174,20 @@ public class IRPact {
         }
     }
 
+    private void applyCliToEnvironment() {
+        BasicInitializationData initData = (BasicInitializationData) environment.getInitializationData();
+        initData.setIgnorePersistenceCheckResult(clParam.isIgnorePersistenceCheck());
+    }
+
+    private void restorPreviousSimulationEnvironment() throws Exception {
+        if(!hasPreviousState()) {
+            return;
+        }
+        LOGGER.info("restore previous state");
+        SimulationEnvironment restoredEnvironment = environment.getPersistenceModul().restore(environment, inRoot);
+        this.environment = (JadexSimulationEnvironment) restoredEnvironment;
+    }
+
     private void createGraphvizConfiguration() throws Exception {
         if(!clParam.hasImagePath()) {
             return;
@@ -180,12 +199,17 @@ public class IRPact {
         graphvizConfiguration = parser.parseRoot(inRoot);
     }
 
+    private boolean hasPreviousState() {
+        return inRoot.hasBinaryPersistData();
+    }
+
     private void preAgentCreation() throws MissingDataException {
         LOGGER.info("preAgentCreation");
         environment.preAgentCreation();
+        environment.getTaskManager().runAppTasks();
     }
 
-    private void initEnvironment() {
+    private void initEnvironment() throws MissingDataException {
         LOGGER.info("initialize");
         environment.initialize();
     }
@@ -198,6 +222,7 @@ public class IRPact {
     private void postAgentCreation() throws MissingDataException {
         LOGGER.info("postAgentCreation");
         environment.postAgentCreation();
+        environment.getTaskManager().runSimulationTasks(environment);
     }
 
     private void printInitialNetwork() throws Exception {
@@ -258,9 +283,7 @@ public class IRPact {
 
 
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-            //die placeholder-Agenten werden direkt geaendert, damit duerfen wir nicht ueber die Agentenliste selber interieren
-            Set<ConsumerAgent> agentsCopy = new HashSet<>(cag.getAgents());
-            for(ConsumerAgent ca: agentsCopy) {
+            for(ConsumerAgent ca: cag.getAgents()) {
                 LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "create jadex agent '{}' ({}/{})", ca.getName(), ++agentCount, totalNumberOfAgents);
                 ProxyConsumerAgent data = createConsumerAgentInitializationData(ca);
                 CreationInfo info = createConsumerAgentInfo(data);
@@ -321,22 +344,83 @@ public class IRPact {
     private void waitForTermination() {
         LOGGER.info("wait for termination");
 
-        //Map<String, Object> result = environment.getLiveCycleControl().waitForTermination().get();
         //ConcurrentUtil.sleepSilently(5000);
         environment.getLiveCycleControl().terminate().get();
-        //===
         JadexSystemOut.reset();
 
         LOGGER.info("simulation terminated");
     }
 
-    private void postSimulation() {
+    private void postSimulation() throws Exception {
         LOGGER.info("simulation finished");
+        OutRoot outRoot = createOutRoot();
+        AnnualData<OutRoot> outData = createOutputData(outRoot);
+        storeOutputData(outData);
+        forwardResult(outData);
+        finalTask();
+    }
 
-        BinaryJsonPersistanceManager persistanceManager = new BinaryJsonPersistanceManager();
-        persistanceManager.persist(environment);
-        LOGGER.info("persistables: {}", persistanceManager.getPersistables().size());
+    private OutRoot createOutRoot() throws Exception {
+        LOGGER.info("create output");
+        OutRoot outRoot = new OutRoot();
+        applySimulationResult(outRoot);
+        applyPersistenceData(outRoot);
+        return outRoot;
+    }
 
-        throw new RuntimeException("TEST");
+    private void applySimulationResult(OutRoot outRoot) {
+        List<OutCustom> outList = new ArrayList<>();
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            int size = cag.getNumberOfAgents();
+            OutCustom oc = new OutCustom(cag.getName(), size);
+            outList.add(oc);
+        }
+        outRoot.outGrps = outList.toArray(new OutCustom[0]);
+
+//        Timestamp start = environment.getTimeModel().startTime();
+//        Timestamp end = environment.getTimeModel().endTime();
+//
+//        //TODO triplemapping
+//        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+//            for(ConsumerAgent ca: cag.getAgents()) {
+//                for(AdoptedProduct ap: ca.getAdoptedProducts()) {
+//                    if(ap.getTimestamp().isBetween(start, end)) {
+//                        //inc 'cag-product'
+//                    }
+//                }
+//            }
+//        }
+//        //
+    }
+
+    private void applyPersistenceData(OutRoot outRoot) throws Exception {
+        environment.getPersistenceModul().store(environment, outRoot);
+    }
+
+    private AnnualData<OutRoot> createOutputData(OutRoot outRoot) {
+        AnnualData<OutRoot> outData = new AnnualData<>(outRoot);
+        outData.getConfig().copyFrom(entry.getConfig());
+        return outData;
+    }
+
+    private void storeOutputData(AnnualData<OutRoot> outData) {
+        try {
+            AnnualFile outFile = outData.serialize(getOutputConverter());
+            outFile.store(clParam.getOutputPath());
+        } catch (Throwable t) {
+            LOGGER.error("saving output failed", t);
+        }
+    }
+
+    public static BiConsumer<? super AnnualEntry<InRoot>, ? super AnnualData<OutRoot>> resultConsumer;
+    private void forwardResult(AnnualData<OutRoot> outData) {
+        if(resultConsumer != null) {
+            LOGGER.info("call result consumer");
+            resultConsumer.accept(entry, outData);
+        }
+    }
+
+    private void finalTask() {
+        IRPLogging.removeFilter();
     }
 }

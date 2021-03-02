@@ -10,6 +10,7 @@ import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.core.spatial.WeightedDiscreteSpatialDistribution;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
@@ -19,6 +20,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Map;
 
@@ -28,13 +30,19 @@ import java.util.Map;
 @Definition
 public class InCustomSelectedGroupedSpatialDistribution2D implements InSpatialDistribution {
 
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
+
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.putPath(
-                InCustomSelectedGroupedSpatialDistribution2D.class,
+                thisClass(),
                 res.getCachedElement("Räumliche Modell"),
-                res.getCachedElement("Verteilungsfunktionen"),
+                res.getCachedElement("SpatialDist"),
                 res.getCachedElement("CustomPos"),
                 res.getCachedElement("InCustomSelectedGroupedSpatialDistribution2D")
         );
@@ -42,47 +50,47 @@ public class InCustomSelectedGroupedSpatialDistribution2D implements InSpatialDi
         res.newEntryBuilder()
                 .setGamsIdentifier("X-Position1")
                 .setGamsDescription("X-Position")
-                .store(InCustomSelectedGroupedSpatialDistribution2D.class, "xPosSupplier");
+                .store(thisClass(), "xPosSupplier");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("Y-Position1")
                 .setGamsDescription("Y-Position")
-                .store(InCustomSelectedGroupedSpatialDistribution2D.class, "yPosSupplier");
+                .store(thisClass(), "yPosSupplier");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("Tabellendaten1")
                 .setGamsDescription("Zu nutzende Tabelle für weitere Informationen")
-                .store(InCustomSelectedGroupedSpatialDistribution2D.class, "file");
+                .store(thisClass(), "file");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("Filterschlüssel1")
                 .setGamsDescription("Dieser Schlüssel wird verwendet, um die Daten zu filtern (z.B. Milieu).")
-                .store(InCustomSelectedGroupedSpatialDistribution2D.class, "selectKey");
+                .store(thisClass(), "selectKey");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("Gruppierungsschlüssel1")
                 .setGamsDescription("Dieser Schlüssel wird verwendet, um die Daten zu für die Wichtung zu gruppieren.")
-                .store(InCustomSelectedGroupedSpatialDistribution2D.class, "groupKey");
+                .store(thisClass(), "groupKey");
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InCustomSelectedGroupedSpatialDistribution2D.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
 
     @FieldDefinition
-    public InUnivariateDoubleDistribution xPosSupplier;
+    public InUnivariateDoubleDistribution[] xPosSupplier;
 
     @FieldDefinition
-    public InUnivariateDoubleDistribution yPosSupplier;
+    public InUnivariateDoubleDistribution[] yPosSupplier;
 
     @FieldDefinition
-    public InSpatialTableFile file;
+    public InSpatialTableFile[] file;
 
     @FieldDefinition
-    public InAttributeName selectKey;
+    public InAttributeName[] selectKey;
 
     @FieldDefinition
-    public InAttributeName groupKey;
+    public InAttributeName[] groupKey;
 
     public InCustomSelectedGroupedSpatialDistribution2D() {
     }
@@ -95,11 +103,11 @@ public class InCustomSelectedGroupedSpatialDistribution2D implements InSpatialDi
             InAttributeName selectKey,
             InAttributeName groupKey) {
         this._name = name;
-        this.xPosSupplier = xPosSupplier;
-        this.yPosSupplier = yPosSupplier;
-        this.file = file;
-        this.selectKey = selectKey;
-        this.groupKey = groupKey;
+        setXPosSupplier(xPosSupplier);
+        setYPosSupplier(yPosSupplier);
+        setFile(file);
+        setSelectKey(selectKey);
+        setGroupKey(groupKey);
     }
 
     public void setName(String name) {
@@ -112,11 +120,23 @@ public class InCustomSelectedGroupedSpatialDistribution2D implements InSpatialDi
     }
 
     public void setXPosSupplier(InUnivariateDoubleDistribution xPosSupplier) {
-        this.xPosSupplier = xPosSupplier;
+        this.xPosSupplier = new InUnivariateDoubleDistribution[]{xPosSupplier};
     }
 
     public void setYPosSupplier(InUnivariateDoubleDistribution yPosSupplier) {
-        this.yPosSupplier = yPosSupplier;
+        this.yPosSupplier = new InUnivariateDoubleDistribution[]{yPosSupplier};
+    }
+
+    public void setFile(InSpatialTableFile file) {
+        this.file = new InSpatialTableFile[]{file};
+    }
+
+    public void setSelectKey(InAttributeName selectKey) {
+        this.selectKey = new InAttributeName[]{selectKey};
+    }
+
+    public void setGroupKey(InAttributeName groupKey) {
+        this.groupKey = new InAttributeName[]{groupKey};
     }
 
     public static WeightedDiscreteSpatialDistribution createInstance(
@@ -167,23 +187,23 @@ public class InCustomSelectedGroupedSpatialDistribution2D implements InSpatialDi
         jCag.setSpatialDistribution(dist);
     }
 
-    public InUnivariateDoubleDistribution getXPosSupplier() {
-        return xPosSupplier;
+    public InUnivariateDoubleDistribution getXPosSupplier() throws ParsingException {
+        return ParamUtil.getInstance(xPosSupplier, "XPosSupplier");
     }
 
-    public InUnivariateDoubleDistribution getYPosSupplier() {
-        return yPosSupplier;
+    public InUnivariateDoubleDistribution getYPosSupplier() throws ParsingException {
+        return ParamUtil.getInstance(yPosSupplier, "YPosSupplier");
     }
 
-    public InSpatialTableFile getFile() {
-        return file;
+    public InSpatialTableFile getFile() throws ParsingException {
+        return ParamUtil.getInstance(file, "File");
     }
 
-    public InAttributeName getSelectKey() {
-        return selectKey;
+    public InAttributeName getSelectKey() throws ParsingException {
+        return ParamUtil.getInstance(selectKey, "SelectKey");
     }
 
-    public InAttributeName getGroupKey() {
-        return groupKey;
+    public InAttributeName getGroupKey() throws ParsingException {
+        return ParamUtil.getInstance(groupKey, "GroupKey");
     }
 }

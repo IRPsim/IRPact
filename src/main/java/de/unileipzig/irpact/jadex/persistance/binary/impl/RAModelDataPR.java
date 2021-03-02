@@ -1,26 +1,38 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class RAModelDataPR implements Persister<RAModelData>, Restorer<RAModelData> {
+public class RAModelDataPR extends BinaryPRBase<RAModelData> {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(RAModelDataPR.class);
 
     public static final RAModelDataPR INSTANCE = new RAModelDataPR();
+
+    @Override
+    protected IRPLogger log() {
+        return LOGGER;
+    }
 
     @Override
     public Class<RAModelData> getType() {
         return RAModelData.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable persist(RAModelData object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(RAModelData object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putDouble(object.a());
         data.putDouble(object.b());
         data.putDouble(object.c());
@@ -32,14 +44,13 @@ public class RAModelDataPR implements Persister<RAModelData>, Restorer<RAModelDa
         return data;
     }
 
-    @Override
-    public RAModelData initalize(Persistable persistable) {
-        return new RAModelData();
-    }
+    //=========================
+    //restore
+    //=========================
 
     @Override
-    public void setup(Persistable persistable, RAModelData object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected RAModelData doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        RAModelData object = new RAModelData();
         object.setA(data.getDouble());
         object.setB(data.getDouble());
         object.setC(data.getDouble());
@@ -48,9 +59,6 @@ public class RAModelDataPR implements Persister<RAModelData>, Restorer<RAModelDa
         object.setInterestedPoints(data.getInt());
         object.setAwarePoints(data.getInt());
         object.setUnknownPoints(data.getInt());
-    }
-
-    @Override
-    public void finalize(Persistable persistable, RAModelData object, RestoreManager manager) {
+        return object;
     }
 }

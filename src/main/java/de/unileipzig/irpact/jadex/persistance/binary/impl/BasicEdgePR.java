@@ -2,18 +2,29 @@ package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.agent.Agent;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.network.BasicSocialGraph;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicEdgePR implements Persister<BasicSocialGraph.BasicEdge>, Restorer<BasicSocialGraph.BasicEdge> {
+public class BasicEdgePR extends BinaryPRBase<BasicSocialGraph.BasicEdge> {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicEdgePR.class);
 
     public static final BasicEdgePR INSTANCE = new BasicEdgePR();
+
+    @Override
+    protected IRPLogger log() {
+        return LOGGER;
+    }
+
+    //=========================
+    //persist
+    //=========================
 
     @Override
     public Class<BasicSocialGraph.BasicEdge> getType() {
@@ -21,24 +32,40 @@ public class BasicEdgePR implements Persister<BasicSocialGraph.BasicEdge>, Resto
     }
 
     @Override
-    public Persistable persist(BasicSocialGraph.BasicEdge object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
-        data.putLong(manager.ensureGetUID(object.getSource().getAgent()));  //Agent!
-        data.putLong(manager.ensureGetUID(object.getTarget().getAgent()));  //Agent
+    protected BinaryJsonData doInitalizePersist(BasicSocialGraph.BasicEdge object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putInt(object.getType().id());
         data.putDouble(object.getWeight());
+
+        manager.prepare(object.getSource().getAgent());
+        manager.prepare(object.getTarget().getAgent());
+
         return data;
     }
 
     @Override
-    public BasicSocialGraph.BasicEdge initalize(Persistable persistable) {
+    protected void doSetupPersist(BasicSocialGraph.BasicEdge object, BinaryJsonData data, PersistManager manager) {
+        data.putLong(manager.ensureGetUID(object.getSource().getAgent()));
+        data.putLong(manager.ensureGetUID(object.getTarget().getAgent()));
+    }
+
+    //=========================
+    //restore
+    //=========================
+
+
+    @Override
+    protected BasicSocialGraph.BasicEdge doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
         return new BasicSocialGraph.BasicEdge();
     }
 
     @Override
-    public void setup(Persistable persistable, BasicSocialGraph.BasicEdge object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, BasicSocialGraph.BasicEdge object, RestoreManager manager) {
         BasicSocialGraph graph = manager.ensureGetSameClass(BasicSocialGraph.class);
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+
+        object.setType(SocialGraph.Type.get(data.getInt()));
+        object.setWeight(data.getDouble());
+
         Agent srcAgent = manager.ensureGet(data.getLong());
         SocialGraph.Node srcNode;
         if(graph.hasNode(srcAgent)) {
@@ -47,6 +74,7 @@ public class BasicEdgePR implements Persister<BasicSocialGraph.BasicEdge>, Resto
             srcNode = graph.addAgentAndGetNode(srcAgent);
             srcAgent.setSocialGraphNode(srcNode);
         }
+
         Agent tarAgent = manager.ensureGet(data.getLong());
         SocialGraph.Node tarNode;
         if(graph.hasNode(tarAgent)) {
@@ -55,13 +83,10 @@ public class BasicEdgePR implements Persister<BasicSocialGraph.BasicEdge>, Resto
             tarNode = graph.addAgentAndGetNode(tarAgent);
             tarAgent.setSocialGraphNode(tarNode);
         }
+
         object.setSource(srcNode);
         object.setTarget(tarNode);
-        object.setType(SocialGraph.Type.get(data.getInt()));
-        object.setWeight(data.getDouble());
-    }
 
-    @Override
-    public void finalize(Persistable persistable, BasicSocialGraph.BasicEdge object, RestoreManager manager) {
+        graph.addEdgeDirect(object);
     }
 }

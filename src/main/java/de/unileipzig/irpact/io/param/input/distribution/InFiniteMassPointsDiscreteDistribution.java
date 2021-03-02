@@ -13,12 +13,20 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.lang.invoke.MethodHandles;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 @Todo("ref einfuegen")
 public class InFiniteMassPointsDiscreteDistribution implements InUnivariateDoubleDistribution {
+
+    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
 
     public static void initRes(TreeAnnotationResource res) {
     }
@@ -48,6 +56,10 @@ public class InFiniteMassPointsDiscreteDistribution implements InUnivariateDoubl
     @Override
     public String getName() {
         return _name;
+    }
+
+    public InMassPoint[] getMassPoints() {
+        return massPoints;
     }
 
     @Override

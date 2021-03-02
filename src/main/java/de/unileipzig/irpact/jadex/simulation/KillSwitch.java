@@ -25,6 +25,10 @@ public class KillSwitch implements Runnable {
         this.timeout = timeout;
     }
 
+    public long getTimeout() {
+        return timeout;
+    }
+
     public void setControl(LifeCycleControl control) {
         this.control = control;
     }

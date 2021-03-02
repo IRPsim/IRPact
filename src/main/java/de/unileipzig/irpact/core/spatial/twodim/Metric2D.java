@@ -93,6 +93,11 @@ public enum Metric2D implements Metric {
         return ID;
     }
 
+    @Override
+    public int getHashCode() {
+        return ID;
+    }
+
     public abstract double distance(Point2D from, Point2D to);
 
     @Override

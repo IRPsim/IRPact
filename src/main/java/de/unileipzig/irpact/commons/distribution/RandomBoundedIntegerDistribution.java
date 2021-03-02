@@ -2,6 +2,8 @@ package de.unileipzig.irpact.commons.distribution;
 
 import de.unileipzig.irpact.commons.Rnd;
 
+import java.util.Objects;
+
 /**
  * Returns the floor value.
  *
@@ -35,11 +37,7 @@ public class RandomBoundedIntegerDistribution extends AbstractBoundedUnivariateD
     }
 
     @Override
-    public boolean isEqualsSameClass(Object obj) {
-        RandomBoundedIntegerDistribution other = (RandomBoundedIntegerDistribution) obj;
-        return name.equals(other.name)
-                && lowerBound == other.lowerBound
-                && upperBound == other.upperBound
-                && rnd.isEquals(other.rnd);
+    public int getHashCode() {
+        return Objects.hash(name, lowerBound, upperBound, rnd.getHashCode());
     }
 }

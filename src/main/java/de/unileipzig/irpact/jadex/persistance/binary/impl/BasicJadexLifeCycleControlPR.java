@@ -1,18 +1,31 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.persistence.*;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
+import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
+import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.BasicTimestamp;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicJadexLifeCycleControlPR implements Persister<BasicJadexLifeCycleControl>, Restorer<BasicJadexLifeCycleControl> {
+public class BasicJadexLifeCycleControlPR extends BinaryPRBase<BasicJadexLifeCycleControl> {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicJadexLifeCycleControlPR.class);
 
     public static final BasicJadexLifeCycleControlPR INSTANCE = new BasicJadexLifeCycleControlPR();
+
+    @Override
+    protected IRPLogger log() {
+        return LOGGER;
+    }
+
+    //=========================
+    //persist
+    //=========================
 
     @Override
     public Class<BasicJadexLifeCycleControl> getType() {
@@ -20,25 +33,40 @@ public class BasicJadexLifeCycleControlPR implements Persister<BasicJadexLifeCyc
     }
 
     @Override
-    public Persistable persist(BasicJadexLifeCycleControl object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(BasicJadexLifeCycleControl object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         if(object.getCurrent() == null) {
             data.putNothing();
         } else {
             data.putLong(object.getCurrent().getEpochMilli());
         }
-        data.putLong(manager.ensureGetUID(object.getControlAgent()));
+
+        manager.prepare(object.getControlAgent());
+
         return data;
     }
 
     @Override
-    public BasicJadexLifeCycleControl initalize(Persistable persistable) {
+    protected void doSetupPersist(BasicJadexLifeCycleControl object, BinaryJsonData data, PersistManager manager) {
+        data.putLong(manager.ensureGetUID(object.getControlAgent()));
+    }
+
+    //=========================
+    //restore
+    //=========================
+
+    @Override
+    protected BasicJadexLifeCycleControl doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
         return new BasicJadexLifeCycleControl();
     }
 
     @Override
-    public void setup(Persistable persistable, BasicJadexLifeCycleControl object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected void doSetupRestore(BinaryJsonData data, BasicJadexLifeCycleControl object, RestoreManager manager) {
+        object.setEnvironment(manager.ensureGetInstanceOf(JadexSimulationEnvironment.class));
+
+        BasicJadexSimulationEnvironment initial = manager.getInitialInstance();
+        setupKillSwitch(initial, object);
+
         long epochMilli = data.getLong();
         if(epochMilli != BinaryJsonData.NOTHING_ID) {
             object.setCurrent(new BasicTimestamp(epochMilli));
@@ -46,7 +74,8 @@ public class BasicJadexLifeCycleControlPR implements Persister<BasicJadexLifeCyc
         object.setControlAgent(manager.ensureGet(data.getLong()));
     }
 
-    @Override
-    public void finalize(Persistable persistable, BasicJadexLifeCycleControl object, RestoreManager manager) {
+    private void setupKillSwitch(BasicJadexSimulationEnvironment initialEnv, BasicJadexLifeCycleControl restored) {
+        BasicJadexLifeCycleControl initial = (BasicJadexLifeCycleControl) initialEnv.getLiveCycleControl();
+        restored.setKillSwitchTimeout(initial.getKillSwitchTimeout());
     }
 }

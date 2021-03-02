@@ -1,49 +1,71 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
-import de.unileipzig.irpact.core.network.SocialGraph;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.process.ra.UncertaintyAttribute;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class UncertaintyAttributePR implements Persister<UncertaintyAttribute>, Restorer<UncertaintyAttribute> {
+public class UncertaintyAttributePR extends BinaryPRBase<UncertaintyAttribute> {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(UncertaintyAttributePR.class);
 
     public static final UncertaintyAttributePR INSTANCE = new UncertaintyAttributePR();
+
+    @Override
+    protected IRPLogger log() {
+        return LOGGER;
+    }
 
     @Override
     public Class<UncertaintyAttribute> getType() {
         return UncertaintyAttribute.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable persist(UncertaintyAttribute object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(UncertaintyAttribute object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
-        data.putLong(manager.ensureGetUID(object.getGroup()));
         data.putDouble(object.getUncertainty());
         data.putDouble(object.getConvergence());
+
+        manager.prepare(object.getGroup());
+
         return data;
     }
 
     @Override
-    public UncertaintyAttribute initalize(Persistable persistable) {
-        return new UncertaintyAttribute();
+    protected void doSetupPersist(UncertaintyAttribute object, BinaryJsonData data, PersistManager manager) {
+        data.putLong(manager.ensureGetUID(object.getGroup()));
+
+        //TODO
+        //System.out.println(">  " + data.getUID() + " " + data.printBytes());
+        //System.out.println(">> " + data.getUID() + " " + data.printMinimalJson());
     }
 
+    //=========================
+    //restore
+    //=========================
+
     @Override
-    public void setup(Persistable persistable, UncertaintyAttribute object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected UncertaintyAttribute doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        UncertaintyAttribute object = new UncertaintyAttribute();
         object.setName(data.getText());
-        object.setGroup(manager.ensureGet(data.getLong()));
         object.setUncertainity(data.getDouble());
         object.setConvergence(data.getDouble());
+        return object;
     }
 
     @Override
-    public void finalize(Persistable persistable, UncertaintyAttribute object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, UncertaintyAttribute object, RestoreManager manager) throws RestoreException {
+        object.setGroup(manager.ensureGet(data.getLong()));
     }
 }

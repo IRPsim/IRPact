@@ -3,10 +3,7 @@ package de.unileipzig.irpact.core.simulation;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.simulation.tasks.SimulationTask;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Daniel Abitz
@@ -17,10 +14,10 @@ public class BasicInitializationData implements InitializationData {
     protected List<SimulationTask> tasks;
     protected int startYear;
     protected int endYear = -1; //inclusive, z.b. 2015-2016 -> 2015 UND 2016
-
+    protected boolean ignorePersistCheck = false;
 
     public BasicInitializationData() {
-        this(new HashMap<>(), new ArrayList<>());
+        this(new LinkedHashMap<>(), new ArrayList<>());
     }
 
     public BasicInitializationData(
@@ -28,6 +25,17 @@ public class BasicInitializationData implements InitializationData {
             List<SimulationTask> tasks) {
         this.agentCount = agentCount;
         this.tasks = tasks;
+    }
+
+    public void copyFrom(BasicInitializationData other) {
+        if(this == other) {
+            throw new IllegalStateException("self reference");
+        }
+
+        tasks.addAll(other.tasks);
+        startYear = other.startYear;
+        endYear = other.endYear;
+        ignorePersistCheck = other.ignorePersistCheck;
     }
 
     public void setInitialNumberOfConsumerAgents(ConsumerAgentGroup group, int count) {
@@ -77,5 +85,14 @@ public class BasicInitializationData implements InitializationData {
     @Override
     public List<SimulationTask> getTasks() {
         return tasks;
+    }
+
+    public void setIgnorePersistenceCheckResult(boolean value) {
+        ignorePersistCheck = value;
+    }
+
+    @Override
+    public boolean ignorePersistenceCheckResult() {
+        return ignorePersistCheck;
     }
 }

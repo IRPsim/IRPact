@@ -1,44 +1,56 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
+import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.jadex.agents.simulation.ProxySimulationAgent;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
-import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class ProxySimulationAgentPR implements Persister<ProxySimulationAgent>, Restorer<ProxySimulationAgent> {
+public class ProxySimulationAgentPR extends BinaryPRBase<ProxySimulationAgent> {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(ProxySimulationAgentPR.class);
 
     public static final ProxySimulationAgentPR INSTANCE = new ProxySimulationAgentPR();
+
+    @Override
+    protected IRPLogger log() {
+        return LOGGER;
+    }
 
     @Override
     public Class<ProxySimulationAgent> getType() {
         return ProxySimulationAgent.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable persist(ProxySimulationAgent object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(ProxySimulationAgent object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         return data;
     }
 
-    @Override
-    public ProxySimulationAgent initalize(Persistable persistable) {
-        return new ProxySimulationAgent();
-    }
+    //=========================
+    //restore
+    //=========================
 
     @Override
-    public void setup(Persistable persistable, ProxySimulationAgent object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
-        object.setEnvironment(manager.ensureGetSameClass(BasicJadexSimulationEnvironment.class));
+    protected ProxySimulationAgent doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        ProxySimulationAgent object = new ProxySimulationAgent();
         object.setName(data.getText());
+        return object;
     }
 
     @Override
-    public void finalize(Persistable persistable, ProxySimulationAgent object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, ProxySimulationAgent object, RestoreManager manager) throws RestoreException {
+        object.setEnvironment(manager.ensureGetInstanceOf(SimulationEnvironment.class));
     }
 }

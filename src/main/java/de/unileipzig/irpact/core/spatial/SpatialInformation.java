@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.spatial;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
 
@@ -8,7 +9,7 @@ import java.util.Collection;
 /**
  * @author Daniel Abitz
  */
-public interface SpatialInformation {
+public interface SpatialInformation extends IsEquals {
 
     AttributeAccess getAttributeAccess();
 

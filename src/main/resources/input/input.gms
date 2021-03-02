@@ -1,18 +1,34 @@
 * - identifier: InAffinityEntry
+* - hidden: 1
 * - type: String
 SET set_InAffinityEntry(set_InEntity)
 
-* - identifier: srcCag
-* - type: Boolean
-PARAMETER par_link_InAffinityEntry_InConsumerAgentGroup_srcCag(set_InAffinityEntry,set_InConsumerAgentGroup)
+* - identifier: InComplexAffinityEntry
+* - type: String
+SET set_InComplexAffinityEntry(set_InAffinityEntry,set_InEntity)
 
-* - identifier: tarCag
+* - description: Ausgangsgruppe
+* - identifier: Ausgangsgruppe
 * - type: Boolean
-PARAMETER par_link_InAffinityEntry_InConsumerAgentGroup_tarCag(set_InAffinityEntry,set_InConsumerAgentGroup)
+PARAMETER par_link_InComplexAffinityEntry_InConsumerAgentGroup_srcCag(set_InComplexAffinityEntry,set_InConsumerAgentGroup)
+
+* - description: Zielgruppe
+* - identifier: Zielgruppe
+* - type: Boolean
+PARAMETER par_link_InComplexAffinityEntry_InConsumerAgentGroup_tarCag(set_InComplexAffinityEntry,set_InConsumerAgentGroup)
+
+* - description: Affinity-Wert
+* - identifier: Affinity-Wert
+* - type: Float
+PARAMETER par_InComplexAffinityEntry_affinityValue(set_InComplexAffinityEntry)
+
+* - identifier: InNameSplitAffinityEntry
+* - type: String
+SET set_InNameSplitAffinityEntry(set_InAffinityEntry,set_InEntity)
 
 * - identifier: affinityValue
 * - type: Float
-PARAMETER par_InAffinityEntry_affinityValue(set_InAffinityEntry)
+PARAMETER par_InNameSplitAffinityEntry_affinityValue(set_InNameSplitAffinityEntry)
 
 * - identifier: InConsumerAgentGroup
 * - type: String
@@ -26,7 +42,7 @@ PARAMETER par_link_InConsumerAgentGroup_InConsumerAgentGroupAttribute_cagAttribu
 * - description: genutzte Awareness
 * - identifier: Awareness der KG
 * - type: Boolean
-PARAMETER par_link_InConsumerAgentGroup_InProductAwarenessSupplyScheme_cagAwareness(set_InConsumerAgentGroup,set_InProductAwarenessSupplyScheme)
+PARAMETER par_link_InConsumerAgentGroup_InProductInterestSupplyScheme_cagAwareness(set_InConsumerAgentGroup,set_InProductInterestSupplyScheme)
 
 * - description: Legt das Schema für das finden von passenden Produkten fest
 * - identifier: Schema für die Produktfindung
@@ -62,19 +78,19 @@ PARAMETER par_link_InConsumerAgentGroupAttribute_InAttributeName_cagAttrName(set
 * - type: Boolean
 PARAMETER par_link_InConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_cagAttrDistribution(set_InConsumerAgentGroupAttribute,set_InUnivariateDoubleDistribution)
 
-* - identifier: InProductAwarenessSupplyScheme
+* - identifier: InProductInterestSupplyScheme
 * - hidden: 1
 * - type: String
-SET set_InProductAwarenessSupplyScheme(set_InEntity)
+SET set_InProductInterestSupplyScheme(set_InEntity)
 
-* - identifier: InProductThresholdAwarenessSupplyScheme
+* - identifier: InProductThresholdInterestSupplyScheme
 * - type: String
-SET set_InProductThresholdAwarenessSupplyScheme(set_InProductAwarenessSupplyScheme,set_InEntity)
+SET set_InProductThresholdInterestSupplyScheme(set_InProductInterestSupplyScheme,set_InEntity)
 
 * - description: Grenzwert ab dem das Produkt interessant wird
 * - identifier: Grenzwert
 * - type: Boolean
-PARAMETER par_link_InProductThresholdAwarenessSupplyScheme_InUnivariateDoubleDistribution_awarenessDistribution(set_InProductThresholdAwarenessSupplyScheme,set_InUnivariateDoubleDistribution)
+PARAMETER par_link_InProductThresholdInterestSupplyScheme_InUnivariateDoubleDistribution_awarenessDistribution(set_InProductThresholdInterestSupplyScheme,set_InUnivariateDoubleDistribution)
 
 * - description: Binäre Daten für diverse Funktionalitäten
 * - hidden: 0
@@ -88,17 +104,15 @@ SET set_VisibleBinaryData(set_InEntity)
 * - type: Integer
 PARAMETER par_VisibleBinaryData_idVisible(set_VisibleBinaryData)
 
-* - description: Binäre Daten für diverse Funktionalitäten. Identisch zu VisibleBinaryData, aber für den internen Austausch gedacht und damit versteckt, um nicht im UI zu erscheinen.
+* - description: Binäre Daten für den Transfer zwischen zwei Simulationsschritten.
 * - hidden: 1
-* - identifier: HiddenBinaryData
+* - identifier: BinaryPersistData
 * - type: String
-SET set_HiddenBinaryData(*)
+SET set_BinaryPersistData(*)
 
-* - description: Spezielle ID der Daten, Verwendungszweck und Funktionsweise ist von den Daten selber abhängig.
-* - hidden: 1
-* - identifier: HiddenBinaryDataID
+* - identifier: id
 * - type: Integer
-PARAMETER par_HiddenBinaryData_idHidden(set_HiddenBinaryData)
+PARAMETER par_BinaryPersistData_id(set_BinaryPersistData)
 
 * - identifier: InBooleanDistribution
 * - type: String
@@ -169,7 +183,8 @@ SET set_InFile(set_InEntity)
 * - type: String
 SET set_InPVFile(set_InFile,set_InEntity)
 
-* - identifier: placeholderPVFile
+* - description: Platzhalter
+* - identifier: -
 * - type: Float
 PARAMETER par_InPVFile_placeholderPVFile(set_InPVFile)
 
@@ -177,7 +192,8 @@ PARAMETER par_InPVFile_placeholderPVFile(set_InPVFile)
 * - type: String
 SET set_InSpatialTableFile(set_InFile,set_InEntity)
 
-* - identifier: placeholderInSpatialFile
+* - description: Platzhalter
+* - identifier: -
 * - type: Float
 PARAMETER par_InSpatialTableFile_placeholderInSpatialFile(set_InSpatialTableFile)
 
@@ -223,7 +239,8 @@ PARAMETER par_link_InFreeNetworkTopology_InDistanceEvaluator_distanceEvaluator(s
 * - type: Boolean
 PARAMETER par_link_InFreeNetworkTopology_InNumberOfTies_numberOfTies(set_InFreeNetworkTopology,set_InNumberOfTies)
 
-* - identifier: initialWeight
+* - description: Initiale Gewicht der Kanten
+* - identifier: Initiale Kantengewicht
 * - type: Float
 PARAMETER par_InFreeNetworkTopology_initialWeight(set_InFreeNetworkTopology)
 
@@ -252,10 +269,9 @@ PARAMETER par_InNoDistance_placeholderNoDistance(set_InNoDistance)
 * - type: String
 SET set_InNumberOfTies(set_InEntity)
 
-* - description: Konsumergruppe
-* - identifier: Zu nutzende Konsumergruppe
+* - identifier: cags
 * - type: Boolean
-PARAMETER par_link_InNumberOfTies_InConsumerAgentGroup_cag(set_InNumberOfTies,set_InConsumerAgentGroup)
+PARAMETER par_link_InNumberOfTies_InConsumerAgentGroup_cags(set_InNumberOfTies,set_InConsumerAgentGroup)
 
 * - description: Anzahl Kanten je Konsumergruppe
 * - identifier: Anzahl Kanten
@@ -267,7 +283,7 @@ PARAMETER par_InNumberOfTies_count(set_InNumberOfTies)
 SET set_InUnlinkedGraphTopology(set_InGraphTopologyScheme,set_InEntity)
 
 * - description: Platzhalter
-* - identifier: --
+* - identifier: -
 * - type: Float
 PARAMETER par_InUnlinkedGraphTopology_placeholderUnlinked(set_InUnlinkedGraphTopology)
 
@@ -549,9 +565,21 @@ SET set_InSpatialDistribution(set_InEntity)
 * - type: String
 SET set_InSpace2D(set_InSpatialModel,set_InEntity)
 
+* - identifier: useManhatten
+* - type: Boolean
+PARAMETER par_InSpace2D_useManhatten(set_InSpace2D)
+
 * - identifier: useEuclid
 * - type: Boolean
 PARAMETER par_InSpace2D_useEuclid(set_InSpace2D)
+
+* - identifier: useEuclid2
+* - type: Boolean
+PARAMETER par_InSpace2D_useEuclid2(set_InSpace2D)
+
+* - identifier: useMaximum
+* - type: Boolean
+PARAMETER par_InSpace2D_useMaximum(set_InSpace2D)
 
 * - identifier: InSpatialModel
 * - hidden: 1
@@ -624,10 +652,22 @@ SCALAR sca_InGeneral_logLevel
 SCALAR sca_InGeneral_logAll
 
 * - domain: [0|1]
-* - description: [SPAM] Ob Aufrufe der Tools-Bibliothek geloggt werden sollen.
-* - identifier: log Tools-Aufrufe
+* - description: [SPAM] Ob alle Aufrufe der Tools-Bibliothek geloggt werden sollen.
+* - identifier: log alle Aufrufe von Tools
 * - type: Boolean
-SCALAR sca_InGeneral_logTools
+SCALAR sca_InGeneral_logAllTools
+
+* - domain: [0|1]
+* - description: [SPAM] Ob die Kernaufrufe der Tools-Bibliothek geloggt werden sollen.
+* - identifier: log primäre Aufrufe von Tools
+* - type: Boolean
+SCALAR sca_InGeneral_logToolsCore
+
+* - domain: [0|1]
+* - description: [SPAM] Ob Definitions-Aufrufe der Tools-Bibliothek geloggt werden sollen.
+* - identifier: log Definitionerstellung von Tools
+* - type: Boolean
+SCALAR sca_InGeneral_logToolsDefinition
 
 * - domain: [0|1]
 * - description: Ob die Initialisierung der Parameter geloggt werden soll.

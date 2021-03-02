@@ -1,9 +1,10 @@
 package de.unileipzig.irpact.commons.graph;
 
+import de.unileipzig.irpact.commons.CollectionUtil;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -47,12 +48,12 @@ public class FastDirectedMultiGraph<V, E, T> implements DirectedMultiGraph<V, E,
                 .stream()
                 .flatMap(m -> m.values().stream())
                 .flatMap(m -> m.values().stream())
-                .collect(Collectors.toSet());
+                .collect(CollectionUtil.collectToLinkedSet());
         Set<E> inE = inEdges.values()
                 .stream()
                 .flatMap(m -> m.values().stream())
                 .flatMap(m -> m.values().stream())
-                .collect(Collectors.toSet());
+                .collect(CollectionUtil.collectToLinkedSet());
         if(!Objects.equals(outE, inE)) {
             throw new IllegalStateException("edges mismatch #1");
         }
@@ -189,7 +190,7 @@ public class FastDirectedMultiGraph<V, E, T> implements DirectedMultiGraph<V, E,
         return map0.values()
                 .stream()
                 .flatMap(m -> m.keySet().stream())
-                .collect(Collectors.toSet());
+                .collect(CollectionUtil.collectToLinkedSet());
     }
 
     @Override
@@ -286,6 +287,15 @@ public class FastDirectedMultiGraph<V, E, T> implements DirectedMultiGraph<V, E,
             }
         }
         return edges;
+    }
+
+    @Override
+    public Collection<E> getAllEdges(T[] types) {
+        List<E> list = new ArrayList<>();
+        for(T type: types) {
+            list.addAll(getEdges(type));
+        }
+        return list;
     }
 
     @Override

@@ -3,7 +3,7 @@ package de.unileipzig.irpact.core.agent.consumer;
 import de.unileipzig.irpact.core.agent.AgentGroup;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
-import de.unileipzig.irpact.core.product.awareness.ProductAwarenessSupplyScheme;
+import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
 import de.unileipzig.irpact.core.spatial.SpatialDistribution;
 
 import java.util.Collection;
@@ -19,13 +19,17 @@ public interface ConsumerAgentGroup extends AgentGroup<ConsumerAgent> {
 
     boolean hasGroupAttribute(String name);
 
+    default boolean hasGroupAttribute(ConsumerAgentGroupAttribute attribute) {
+        return hasGroupAttribute(attribute.getName());
+    }
+
     ConsumerAgentGroupAttribute getGroupAttribute(String name);
 
     void addGroupAttribute(ConsumerAgentGroupAttribute attribute);
 
     SpatialDistribution getSpatialDistribution();
 
-    ProductAwarenessSupplyScheme getAwarenessSupplyScheme();
+    ProductInterestSupplyScheme getAwarenessSupplyScheme();
 
     ConsumerAgent deriveAgent();
 

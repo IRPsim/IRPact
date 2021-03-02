@@ -1,18 +1,30 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.spatial.twodim.BasicPoint2D;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicPoint2DPR implements Persister<BasicPoint2D>, Restorer<BasicPoint2D> {
+public class BasicPoint2DPR extends BinaryPRBase<BasicPoint2D> {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicPoint2DPR.class);
 
     public static final BasicPoint2DPR INSTANCE = new BasicPoint2DPR();
+
+    @Override
+    protected IRPLogger log() {
+        return LOGGER;
+    }
+
+    //=========================
+    //persist
+    //=========================
 
     @Override
     public Class<BasicPoint2D> getType() {
@@ -20,28 +32,35 @@ public class BasicPoint2DPR implements Persister<BasicPoint2D>, Restorer<BasicPo
     }
 
     @Override
-    public Persistable persist(BasicPoint2D object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(BasicPoint2D object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putDouble(object.getX());
         data.putDouble(object.getY());
-        data.putLongArray(manager.ensureGetAllUIDs(object.getAttributes()));
+
+        manager.prepareAll(object.getAttributes());
+
         return data;
     }
 
     @Override
-    public BasicPoint2D initalize(Persistable persistable) {
-        return new BasicPoint2D();
+    protected void doSetupPersist(BasicPoint2D object, BinaryJsonData data, PersistManager manager) {
+        data.putLongArray(manager.ensureGetAllUIDs(object.getAttributes()));
     }
 
+    //=========================
+    //restore
+    //=========================
+
     @Override
-    public void setup(Persistable persistable, BasicPoint2D object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected BasicPoint2D doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        BasicPoint2D object = new BasicPoint2D();
         object.setX(data.getDouble());
         object.setY(data.getDouble());
-        object.addAllAttributes(manager.ensureGetAll(data.getLongArray(), SpatialAttribute[]::new));
+        return object;
     }
 
     @Override
-    public void finalize(Persistable persistable, BasicPoint2D object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, BasicPoint2D object, RestoreManager manager) throws RestoreException {
+        object.addAllAttributes(manager.ensureGetAll(data.getLongArray(), SpatialAttribute[]::new));
     }
 }

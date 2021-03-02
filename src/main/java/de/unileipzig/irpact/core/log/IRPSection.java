@@ -9,7 +9,8 @@ public enum IRPSection implements LoggingSection {
     /*
      * Used for IRPTools.
      */
-    TOOLS,
+    TOOLS_CORE,
+    TOOLS_DEFINITION,
 
     /*
      * Used in the initialization process.
@@ -47,5 +48,15 @@ public enum IRPSection implements LoggingSection {
         for(IRPSection section: values()) {
             filter.remove(section);
         }
+    }
+
+    public static void addAllToolsTo(SectionLoggingFilter filter) {
+        filter.add(TOOLS_CORE);
+        filter.add(TOOLS_DEFINITION);
+    }
+
+    public static void removeAllToolsFrom(SectionLoggingFilter filter) {
+        filter.remove(TOOLS_CORE);
+        filter.remove(TOOLS_DEFINITION);
     }
 }

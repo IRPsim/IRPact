@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.product;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
@@ -14,7 +15,7 @@ public class BasicProductManager implements ProductManager {
     private Map<String, ProductGroup> products;
 
     public BasicProductManager() {
-        this(new HashMap<>());
+        this(new LinkedHashMap<>());
     }
 
     public BasicProductManager(Map<String, ProductGroup> products) {
@@ -23,6 +24,13 @@ public class BasicProductManager implements ProductManager {
 
     public void setEnvironment(SimulationEnvironment environment) {
         this.environment = environment;
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                IsEquals.getCollHashCode(getGroups())
+        );
     }
 
     @Override

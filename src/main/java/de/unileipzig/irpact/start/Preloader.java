@@ -66,10 +66,11 @@ public class Preloader {
     private void runIRPTools() {
         LOGGER.info("executing IRPtools");
         SectionLoggingFilter filter = new SectionLoggingFilter();
-        filter.add(IRPSection.TOOLS);
+        IRPSection.addAllToolsTo(filter);
         IRPLogging.setFilter(filter);
         IRPtools.setLoggingFilter(filter);
-        IRPtools.setLoggingSection(IRPSection.TOOLS);
+        IRPtools.setToolsSection(IRPSection.TOOLS_CORE);
+        IRPtools.setDefinitionSection(IRPSection.TOOLS_DEFINITION);
         IRPtools.main(param.getArgs());
     }
 
@@ -127,7 +128,7 @@ public class Preloader {
         InRoot root = converter.toParam(manager);
         PerennialData<InRoot> pData = new PerennialData<>();
         pData.add(root.general.startYear, root);
-        PerennialFile pFile = pData.serialize(IRPact.getConverter());
+        PerennialFile pFile = pData.serialize(IRPact.getInputConverter());
         pFile.store(param.getOutputPath(), StandardCharsets.UTF_8);
         LOGGER.debug(IRPSection.SPECIFICATION_CONVERTER, "param file stored: '{}'", param.getOutputPath());
     }

@@ -77,4 +77,9 @@ public final class BasicTimestamp implements JadexTimestamp {
     public int hashCode() {
         return Objects.hash(TIME);
     }
+
+    @Override
+    public int getHashCode() {
+        return hashCode();
+    }
 }

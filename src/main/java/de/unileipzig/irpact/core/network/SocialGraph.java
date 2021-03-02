@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.network;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.core.agent.Agent;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 
 import java.util.Collection;
 import java.util.Set;
@@ -10,12 +10,12 @@ import java.util.stream.Stream;
 /**
  * @author Daniel Abitz
  */
-public interface SocialGraph {
+public interface SocialGraph extends IsEquals {
 
     /**
      * @author Daniel Abitz
      */
-    interface Node {
+    interface Node extends IsEquals {
 
         String getLabel();
 
@@ -27,7 +27,7 @@ public interface SocialGraph {
     /**
      * @author Daniel Abitz
      */
-    interface Edge {
+    interface Edge extends IsEquals {
 
         void setSource(Node node);
 
@@ -45,9 +45,8 @@ public interface SocialGraph {
     /**
      * @author Daniel Abitz
      */
-    enum Type {
-        COMMUNICATION(0),
-        UNKNOWN(-1);
+    enum Type implements IsEquals {
+        COMMUNICATION(1);
 
         private final int ID;
 
@@ -61,15 +60,16 @@ public interface SocialGraph {
                     return t;
                 }
             }
-            return UNKNOWN;
+            throw new IllegalArgumentException("unknown type, id = " + id);
         }
 
         public int id() {
             return ID;
         }
 
-        public boolean isValid() {
-            return this != UNKNOWN;
+        @Override
+        public int getHashCode() {
+            return ID;
         }
     }
 

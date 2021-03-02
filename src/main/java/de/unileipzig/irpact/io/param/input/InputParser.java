@@ -23,6 +23,8 @@ public interface InputParser {
 
     Rnd deriveRnd();
 
+    InRoot getRoot();
+
     //mal aendern, dass der parser den typ vorgibt
     <T> T parseRoot(InRoot root) throws ParsingException;
 

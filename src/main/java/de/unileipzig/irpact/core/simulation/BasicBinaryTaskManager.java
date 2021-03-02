@@ -26,6 +26,11 @@ public class BasicBinaryTaskManager implements BinaryTaskManager {
         this.environment = environment;
     }
 
+    public void copyFrom(BasicBinaryTaskManager other) {
+        appTasks.addAll(other.appTasks);
+        simulationTasks.addAll(other.simulationTasks);
+    }
+
     @Override
     public void handle(Collection<? extends BinaryData> rawData) {
         for(BinaryData bd: rawData) {

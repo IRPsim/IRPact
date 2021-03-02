@@ -41,6 +41,8 @@ public interface MultiGraph<V, E, T> extends Graph<V, E> {
 
     Map<T, E> getEdges(V from, V to);
 
+    Collection<E> getAllEdges(T[] types);
+
     Set<E> getEdges(T type);
 
     Stream<E> streamEdgesFrom(V from, T type);

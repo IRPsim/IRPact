@@ -2,6 +2,8 @@ package de.unileipzig.irpact.core.process.ra;
 
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentAttribute;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -41,9 +43,20 @@ public class UncertaintyAttribute extends BasicConsumerAgentAttribute {
     public UncertaintyAttribute copyAttribute() {
         UncertaintyAttribute copy = new UncertaintyAttribute();
         copy.setName(getName());
+        copy.setGroup(getGroup());
         copy.setUncertainity(getUncertainty());
         copy.setConvergence(getConvergence());
         copy.setAutoAdjustment(isAutoAdjustment());
         return copy;
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getName(),
+                getGroup().getName(),
+                getUncertainty(),
+                getConvergence()
+        );
     }
 }

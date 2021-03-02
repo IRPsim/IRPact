@@ -1,11 +1,12 @@
 package de.unileipzig.irpact.core.process;
 
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -17,7 +18,7 @@ public class BasicProcessModelManager implements ProcessModelManager {
     protected Map<String, ProcessModel> models;
 
     public BasicProcessModelManager() {
-        this(new HashMap<>());
+        this(new LinkedHashMap<>());
     }
 
     public BasicProcessModelManager(Map<String, ProcessModel> models) {
@@ -29,7 +30,12 @@ public class BasicProcessModelManager implements ProcessModelManager {
     }
 
     @Override
-    public void initialize() {
+    public int getHashCode() {
+        return IsEquals.getCollHashCode(getProcessModels());
+    }
+
+    @Override
+    public void initialize() throws MissingDataException {
         for(ProcessModel model: getProcessModels()) {
             model.initialize();
         }

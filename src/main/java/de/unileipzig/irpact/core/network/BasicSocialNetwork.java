@@ -1,12 +1,15 @@
 package de.unileipzig.irpact.core.network;
 
+import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
+import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.misc.MissingDataException;
-import de.unileipzig.irpact.core.misc.ValidationException;
+import de.unileipzig.irpact.core.network.topology.GraphTopologyScheme;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
+
+import java.util.Objects;
 
 /**
  * @author Daniel Abitz
@@ -16,14 +19,27 @@ public class BasicSocialNetwork implements SocialNetwork {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicSocialNetwork.class);
 
     protected SimulationEnvironment environment;
+    protected GraphTopologyScheme topologyScheme;
     protected SocialGraph graph;
-    protected GraphConfiguration configuration;
 
     public BasicSocialNetwork() {
     }
 
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                topologyScheme.getHashCode(),
+                graph.getHashCode()
+        );
+    }
+
     public void setEnvironment(SimulationEnvironment environment) {
         this.environment = environment;
+    }
+
+    public void initDefaultGraph() {
+        BasicSocialGraph socialGraph = new BasicSocialGraph(SupportedGraphStructure.DIRECTED_ADJACENCY_LIST_MULTI_GRAPH);
+        setGraph(socialGraph);
     }
 
     public void setGraph(SocialGraph graph) {
@@ -35,13 +51,13 @@ public class BasicSocialNetwork implements SocialNetwork {
         return graph;
     }
 
-    public void setConfiguration(GraphConfiguration configuration) {
-        this.configuration = configuration;
+    @Override
+    public GraphTopologyScheme getGraphTopologyScheme() {
+        return topologyScheme;
     }
 
-    @Override
-    public GraphConfiguration getConfiguration() {
-        return configuration;
+    public void setGraphTopologyScheme(GraphTopologyScheme topologyScheme) {
+        this.topologyScheme = topologyScheme;
     }
 
     @Override
@@ -58,8 +74,8 @@ public class BasicSocialNetwork implements SocialNetwork {
     }
 
     @Override
-    public void postAgentCreation() throws MissingDataException {
-        getConfiguration().getGraphTopologyScheme().initalize(
+    public void postAgentCreation() {
+        topologyScheme.initalize(
                 environment,
                 getGraph()
         );

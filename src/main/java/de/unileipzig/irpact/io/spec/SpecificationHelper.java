@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irptools.util.Util;
 
+import java.util.Objects;
+
 import static de.unileipzig.irpact.io.spec.SpecificationConstants.*;
 
 /**
@@ -75,6 +77,10 @@ public final class SpecificationHelper {
         return new SpecificationHelper(getParameters());
     }
 
+    public SpecificationHelper addObjectSpec() {
+        return new SpecificationHelper(rootAsArray().addObject());
+    }
+
     public double getParametersValue() {
         JsonNode params = getParameters();
         if(params == null) {
@@ -113,16 +119,47 @@ public final class SpecificationHelper {
         return Util.getOrCreateObject(rootAsObject(), name);
     }
 
+    public ArrayNode getArray(String name) {
+        return Util.getOrCreateArray(rootAsObject(), name);
+    }
+
     public SpecificationHelper getObjectSpec(String name) {
         return new SpecificationHelper(getObject(name));
+    }
+
+    public SpecificationHelper getArraySpec(String name) {
+        return new SpecificationHelper(getArray(name));
     }
 
     public void set(String key, String value) {
         rootAsObject().put(key, value);
     }
 
+    public void set(String key, long value) {
+        rootAsObject().put(key, value);
+    }
+
     public void set(String key, double value) {
         rootAsObject().put(key, value);
+    }
+
+    public boolean hasArrayEntry(String value) {
+        for(JsonNode node: iterateElements()) {
+            if(node.isTextual() && Objects.equals(node.textValue(), value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addIfNotExists(String value) {
+        if(!hasArrayEntry(value)) {
+            rootAsArray().add(value);
+        }
+    }
+
+    public Iterable<JsonNode> iterateElements() {
+        return Util.iterateElements(root);
     }
 
     public String getText(String key) {

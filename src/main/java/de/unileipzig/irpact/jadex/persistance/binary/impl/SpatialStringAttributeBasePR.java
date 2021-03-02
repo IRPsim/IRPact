@@ -1,44 +1,52 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialStringAttributeBase;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class SpatialStringAttributeBasePR implements Persister<SpatialStringAttributeBase>, Restorer<SpatialStringAttributeBase> {
+public class SpatialStringAttributeBasePR extends BinaryPRBase<SpatialStringAttributeBase> {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(SpatialStringAttributeBasePR.class);
 
     public static final SpatialStringAttributeBasePR INSTANCE = new SpatialStringAttributeBasePR();
+
+    @Override
+    protected IRPLogger log() {
+        return LOGGER;
+    }
 
     @Override
     public Class<SpatialStringAttributeBase> getType() {
         return SpatialStringAttributeBase.class;
     }
 
+    //=========================
+    //persist
+    //=========================
+
     @Override
-    public Persistable persist(SpatialStringAttributeBase object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected BinaryJsonData doInitalizePersist(SpatialStringAttributeBase object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putText(object.getStringValue());
         return data;
     }
 
-    @Override
-    public SpatialStringAttributeBase initalize(Persistable persistable) {
-        return new SpatialStringAttributeBase();
-    }
+    //=========================
+    //restore
+    //=========================
 
     @Override
-    public void setup(Persistable persistable, SpatialStringAttributeBase object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected SpatialStringAttributeBase doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        SpatialStringAttributeBase object = new SpatialStringAttributeBase();
         object.setName(data.getText());
         object.setStringValue(data.getText());
-    }
-
-    @Override
-    public void finalize(Persistable persistable, SpatialStringAttributeBase object, RestoreManager manager) {
+        return object;
     }
 }

@@ -3,6 +3,8 @@ package de.unileipzig.irpact.commons.distribution;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.Rnd;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -33,10 +35,7 @@ public class BooleanDistribution extends NameableBase implements UnivariateDoubl
     }
 
     @Override
-    public boolean isEqualsSameClass(Object obj) {
-        BooleanDistribution other = (BooleanDistribution) obj;
-        return name.equals(other.name)
-                && seed == other.seed
-                && rnd.isEquals(other.rnd);
+    public int getHashCode() {
+        return Objects.hash(name, seed, rnd.getHashCode());
     }
 }

@@ -1,15 +1,18 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.product.BasicProductGroupAttribute;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicProductGroupAttributePR implements Persister<BasicProductGroupAttribute>, Restorer<BasicProductGroupAttribute> {
+public class BasicProductGroupAttributePR extends BinaryPRBase<BasicProductGroupAttribute> {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicProductGroupAttributePR.class);
 
     public static final BasicProductGroupAttributePR INSTANCE = new BasicProductGroupAttributePR();
 
@@ -19,26 +22,42 @@ public class BasicProductGroupAttributePR implements Persister<BasicProductGroup
     }
 
     @Override
-    public Persistable persist(BasicProductGroupAttribute object, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonPersistanceManager.initData(object, manager);
+    protected IRPLogger log() {
+        return LOGGER;
+    }
+
+    //=========================
+    //persist
+    //=========================
+
+    @Override
+    protected BinaryJsonData doInitalizePersist(BasicProductGroupAttribute object, PersistManager manager) {
+        BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
-        data.putLong(manager.ensureGetUID(object.getValue()));
+
+        manager.prepare(object.getValue());
+
         return data;
     }
 
     @Override
-    public BasicProductGroupAttribute initalize(Persistable persistable) {
-        return new BasicProductGroupAttribute();
+    protected void doSetupPersist(BasicProductGroupAttribute object, BinaryJsonData data, PersistManager manager) {
+        data.putLong(manager.ensureGetUID(object.getValue()));
     }
 
+    //=========================
+    //restore
+    //=========================
+
     @Override
-    public void setup(Persistable persistable, BasicProductGroupAttribute object, RestoreManager manager) {
-        BinaryJsonData data = BinaryJsonRestoreManager.check(persistable);
+    protected BasicProductGroupAttribute doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        BasicProductGroupAttribute object = new BasicProductGroupAttribute();
         object.setName(data.getText());
-        object.setDistribution(manager.ensureGet(data.getLong()));
+        return object;
     }
 
     @Override
-    public void finalize(Persistable persistable, BasicProductGroupAttribute object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, BasicProductGroupAttribute object, RestoreManager manager) throws RestoreException {
+        object.setDistribution(manager.ensureGet(data.getLong()));
     }
 }

@@ -1,11 +1,13 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
+import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
-import de.unileipzig.irpact.core.product.awareness.ProductAwareness;
-import de.unileipzig.irpact.core.product.awareness.ProductAwarenessSupplyScheme;
+import de.unileipzig.irpact.core.product.interest.ProductInterest;
+import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.commons.Derivable;
@@ -15,7 +17,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -30,12 +31,12 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     protected SpatialDistribution spatialDistribution;
     protected Map<String, ConsumerAgentGroupAttribute> attributes;
     protected Map<String, ConsumerAgent> agents;
-    protected ProductAwarenessSupplyScheme awarenessSupplyScheme;
+    protected ProductInterestSupplyScheme awarenessSupplyScheme;
     protected ProductFindingScheme productFindingScheme;
     protected ProcessFindingScheme processFindingScheme;
 
     public JadexConsumerAgentGroup() {
-        this(new HashMap<>(), new HashMap<>());
+        this(new LinkedHashMap<>(), new LinkedHashMap<>());
     }
 
     public JadexConsumerAgentGroup(
@@ -43,6 +44,23 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
             Map<String, ConsumerAgent> agents) {
         this.attributes = attributes;
         this.agents = agents;
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getName(),
+                getInformationAuthority(),
+                getNextAgentId(),
+
+                getSpatialDistribution().getHashCode(),
+                IsEquals.getCollHashCode(getAttributes()),
+                getAwarenessSupplyScheme().getHashCode(),
+                getProductFindingScheme().getHashCode(),
+                getProcessFindingScheme().getHashCode(),
+
+                IsEquals.getCollHashCode(getAgents())
+        );
     }
 
     @Override
@@ -115,12 +133,12 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         return spatialDistribution;
     }
 
-    public void setAwarenessSupplyScheme(ProductAwarenessSupplyScheme awarenessSupplyScheme) {
+    public void setAwarenessSupplyScheme(ProductInterestSupplyScheme awarenessSupplyScheme) {
         this.awarenessSupplyScheme = awarenessSupplyScheme;
     }
 
     @Override
-    public ProductAwarenessSupplyScheme getAwarenessSupplyScheme() {
+    public ProductInterestSupplyScheme getAwarenessSupplyScheme() {
         return awarenessSupplyScheme;
     }
 
@@ -151,18 +169,30 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     protected Set<ConsumerAgentAttribute> deriveAttributes() {
         return getAttributes().stream()
                 .map(Derivable::derive)
-                .collect(Collectors.toSet());
+                .collect(CollectionUtil.collectToLinkedSet());
     }
 
-    protected ProductAwareness deriveAwareness() {
+    protected ProductInterest deriveAwareness() {
         return awarenessSupplyScheme.derive();
+    }
+
+    public String deriveName() {
+        return getName() + "_" + nextId();
+    }
+
+    public void setNextAgentId(int nextAgentId) {
+        this.nextAgentId = nextAgentId;
+    }
+
+    public int getNextAgentId() {
+        return nextAgentId;
     }
 
     @Override
     public ProxyConsumerAgent deriveAgent() {
         SpatialInformation spatialInformation = getSpatialDistribution().drawValue();
         ProxyConsumerAgent agent = new ProxyConsumerAgent();
-        agent.setName(getName() + "_" + nextId());
+        agent.setName(deriveName());
         agent.setGroup(this);
         agent.setEnvironment(getEnvironment());
         agent.setInformationAuthority(getInformationAuthority());
@@ -172,7 +202,7 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         agent.setProcessFindingScheme(getProcessFindingScheme());
         agent.setProductFindingScheme(getProductFindingScheme());
 
-        agent.link(spatialInformation.getAttributeAccess());
+        agent.linkAccess(spatialInformation.getAttributeAccess());
         return agent;
     }
 }

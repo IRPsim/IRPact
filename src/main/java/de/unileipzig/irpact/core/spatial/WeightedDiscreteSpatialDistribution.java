@@ -7,12 +7,9 @@ import java.util.*;
 /**
  * @author Daniel Abitz
  */
-public class WeightedDiscreteSpatialDistribution extends NameableBase implements SpatialDistribution {
+public class WeightedDiscreteSpatialDistribution extends ResettableSpatialDistributionBase {
 
     protected static final String X = "x";
-
-    protected int requiredNumberOfCalls = 0;
-    protected int nummberOfCalls = 0;
 
     protected BasicWeightedMapping<String, String, Number> weightedMapping;
     protected UnmodifiableWeightedMapping<String, String, Number> unmodWeightedMapping;
@@ -21,7 +18,7 @@ public class WeightedDiscreteSpatialDistribution extends NameableBase implements
     protected Rnd rnd;
 
     public WeightedDiscreteSpatialDistribution() {
-        this(new BasicWeightedMapping<>(), new HashMap<>(), new HashMap<>());
+        this(new BasicWeightedMapping<>(), new LinkedHashMap<>(), new LinkedHashMap<>());
     }
 
     public WeightedDiscreteSpatialDistribution(
@@ -33,24 +30,44 @@ public class WeightedDiscreteSpatialDistribution extends NameableBase implements
         this.used = used;
     }
 
-    public void clear() {
+    @Override
+    public void reset() {
+        numberOfCalls = 0;
         weightedMapping.clear();
         unmodWeightedMapping = null;
         unused.clear();
         used.clear();
     }
 
+    @Override
+    public boolean isShareble(SpatialDistribution target) {
+        return target instanceof WeightedDiscreteSpatialDistribution;
+    }
+
+    @Override
+    public void addComplexDataTo(SpatialDistribution target) {
+        if(target instanceof WeightedDiscreteSpatialDistribution) {
+            WeightedDiscreteSpatialDistribution targetDist = (WeightedDiscreteSpatialDistribution) target;
+            targetDist.getUnused().putAll(getUnused());
+            targetDist.getUsed().putAll(getUsed());
+        } else {
+            throw new IllegalArgumentException("requires " + getClass().getName());
+        }
+    }
+
     public void add(String key, Collection<SpatialInformation> informations) {
         unused.put(key, informations);
     }
 
+    @Override
     public void initalize() {
-        nummberOfCalls = 0;
+        numberOfCalls = 0;
         for(Map.Entry<String, Collection<SpatialInformation>> entry: unused.entrySet()) {
             weightedMapping.put(X, entry.getKey(), entry.getValue().size());
         }
         unmodWeightedMapping = new UnmodifiableWeightedMapping<>(weightedMapping);
         unmodWeightedMapping.makeImmutable();
+        call();
     }
 
     protected void removeAndReweight(String key) {
@@ -84,23 +101,12 @@ public class WeightedDiscreteSpatialDistribution extends NameableBase implements
         return unused;
     }
 
-    public int getNummberOfCalls() {
-        return nummberOfCalls;
+    public int getNumberOfCalls() {
+        return numberOfCalls;
     }
 
     public void setRequiredNumberOfCalls(int requiredNumberOfCalls) {
         this.requiredNumberOfCalls = requiredNumberOfCalls;
-    }
-
-    public void call() {
-        call(requiredNumberOfCalls);
-        requiredNumberOfCalls = 0;
-    }
-
-    public void call(int times) {
-        for(int i = 0; i < times; i++) {
-            drawValue();
-        }
     }
 
     public int countUnusedEntries() {
@@ -133,7 +139,7 @@ public class WeightedDiscreteSpatialDistribution extends NameableBase implements
             removeAndReweight(key);
         }
 
-        nummberOfCalls++;
+        numberOfCalls++;
         return info;
     }
 
@@ -145,5 +151,15 @@ public class WeightedDiscreteSpatialDistribution extends NameableBase implements
 
         String key = unmodWeightedMapping.getWeightedRandom(X, rnd.getRandom());
         return drawValue(key);
+    }
+
+    @Override
+    public int getHashCode() {
+        return Objects.hash(
+                getName(),
+                getRandom().getHashCode(),
+                IsEquals.getCollCollHashCode(unused.values()),
+                IsEquals.getCollCollHashCode(used.values())
+        );
     }
 }
