@@ -1,5 +1,8 @@
 package de.unileipzig.irpact.commons.res;
 
+import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irptools.util.log.IRPLogger;
+
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
@@ -10,6 +13,8 @@ import java.nio.file.Paths;
  * @author Daniel Abitz
  */
 public class BasicResourceLoader implements ResourceLoader {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicResourceLoader.class);
 
     protected String resDir = "irpacttempdata";
     protected Path dir = Paths.get("irpactdata");
@@ -49,7 +54,9 @@ public class BasicResourceLoader implements ResourceLoader {
     @Override
     public boolean hasPath(String fileName) {
         Path path = resolve(fileName);
-        return Files.exists(path);
+        boolean has = Files.exists(path);
+        LOGGER.debug("has path '{}': {}", path, has);
+        return has;
     }
 
     @Override
@@ -65,12 +72,14 @@ public class BasicResourceLoader implements ResourceLoader {
     //=========================
 
     protected String getResourcePath(String fileName) {
-        return resDir + "/" + fileName;
+        return "/" + resDir + "/" + fileName;
     }
 
     @Override
     public boolean hasResource(String fileName) {
-        return getResource(fileName) != null;
+        boolean has = getResource(fileName) != null;
+        LOGGER.debug("has resource '{}': {}", fileName, has);
+        return has;
     }
 
     @Override
@@ -80,7 +89,7 @@ public class BasicResourceLoader implements ResourceLoader {
     }
 
     public static URL getResource0(String path) {
-        return BasicResourceLoader.class.getClassLoader().getResource(path);
+        return BasicResourceLoader.class.getResource(path);
     }
 
     @Override
@@ -90,6 +99,6 @@ public class BasicResourceLoader implements ResourceLoader {
     }
 
     public static InputStream getResourceAsStream0(String path) {
-        return BasicResourceLoader.class.getClassLoader().getResourceAsStream(path);
+        return BasicResourceLoader.class.getResourceAsStream(path);
     }
 }

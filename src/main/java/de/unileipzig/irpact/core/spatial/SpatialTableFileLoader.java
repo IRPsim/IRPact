@@ -82,6 +82,7 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
             try(InputStream in = loader.getResourceAsStream(csvFile)) {
                 data = parseCsv(in);
             }
+            return;
         }
 
         String xlsxFile = inputFileName + ".xlsx";
@@ -98,7 +99,10 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
             try(InputStream in = loader.getResourceAsStream(xlsxFile)) {
                 data = parseXlsx(in);
             }
+            return;
         }
+
+        //System.out.println((SpatialTableFileLoader.class.getResourceAsStream("/irpacttempdata/GIS_final_1_x.xlsx") != null));
 
         throw new FileNotFoundException("file '" + inputFileName + "' not found");
     }
