@@ -162,6 +162,9 @@
         "renovation_rate" : {
           "par_InAttributeName_placeholder" : 0
         },
+        "rewiring_rate" : {
+          "par_InAttributeName_placeholder" : 0
+        },
         "share_1_2_house" : {
           "par_InAttributeName_placeholder" : 0
         }
@@ -220,6 +223,7 @@
         "BUM_Mic_Kaufkraft_Index" : { },
         "BUM_novelty_seeking" : { },
         "BUM_renovation_rate" : { },
+        "BUM_rewiring_rate" : { },
         "BUM_share_1_2_house" : { },
         "TRA_adoption_threshold" : { },
         "TRA_communication_frequency" : { },
@@ -233,6 +237,7 @@
         "TRA_Mic_Kaufkraft_Index" : { },
         "TRA_novelty_seeking" : { },
         "TRA_renovation_rate" : { },
+        "TRA_rewiring_rate" : { },
         "TRA_share_1_2_house" : { }
       },
       "set_InConsumerAgentGroupColor" : {
@@ -273,6 +278,7 @@
         "BUM_Mic_Kaufkraft_Index" : { },
         "BUM_novelty_seeking" : { },
         "BUM_renovation_rate" : { },
+        "BUM_rewiring_rate" : { },
         "BUM_share_1_2_house" : { },
         "BUM_TRA" : { },
         "communication_frequency" : { },
@@ -301,6 +307,7 @@
         "PV_fix_scheme" : { },
         "RA" : { },
         "renovation_rate" : { },
+        "rewiring_rate" : { },
         "share_1_2_house" : { },
         "Space2D" : { },
         "testdist" : { },
@@ -319,6 +326,7 @@
         "TRA_Mic_Kaufkraft_Index" : { },
         "TRA_novelty_seeking" : { },
         "TRA_renovation_rate" : { },
+        "TRA_rewiring_rate" : { },
         "TRA_share_1_2_house" : { },
         "TRA_TRA" : { },
         "Uncerter" : { },
@@ -614,6 +622,7 @@
           "BUM_Mic_Kaufkraft_Index" : 1.0,
           "BUM_novelty_seeking" : 1.0,
           "BUM_renovation_rate" : 1.0,
+          "BUM_rewiring_rate" : 1.0,
           "BUM_share_1_2_house" : 1.0,
           "TRA_adoption_threshold" : 0.0,
           "TRA_communication_frequency" : 0.0,
@@ -627,6 +636,7 @@
           "TRA_Mic_Kaufkraft_Index" : 0.0,
           "TRA_novelty_seeking" : 0.0,
           "TRA_renovation_rate" : 0.0,
+          "TRA_rewiring_rate" : 0.0,
           "TRA_share_1_2_house" : 0.0
         },
         "TRA" : {
@@ -642,6 +652,7 @@
           "BUM_Mic_Kaufkraft_Index" : 0.0,
           "BUM_novelty_seeking" : 0.0,
           "BUM_renovation_rate" : 0.0,
+          "BUM_rewiring_rate" : 0.0,
           "BUM_share_1_2_house" : 0.0,
           "TRA_adoption_threshold" : 1.0,
           "TRA_communication_frequency" : 1.0,
@@ -655,6 +666,7 @@
           "TRA_Mic_Kaufkraft_Index" : 1.0,
           "TRA_novelty_seeking" : 1.0,
           "TRA_renovation_rate" : 1.0,
+          "TRA_rewiring_rate" : 1.0,
           "TRA_share_1_2_house" : 1.0
         }
       },
@@ -701,6 +713,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "BUM_communication_frequency" : {
@@ -719,6 +732,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "BUM_construction_rate" : {
@@ -737,6 +751,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "BUM_dependent_judgment_making" : {
@@ -755,6 +770,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "BUM_environmental_concern" : {
@@ -773,6 +789,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "BUM_financial_threshold" : {
@@ -791,6 +808,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "BUM_house_owner" : {
@@ -809,6 +827,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "BUM_initial_product_awareness" : {
@@ -827,6 +846,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "BUM_interest_threshold" : {
@@ -845,6 +865,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "BUM_Mic_Kaufkraft_Index" : {
@@ -863,6 +884,7 @@
           "Mic_Kaufkraft_Index" : 1.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "BUM_novelty_seeking" : {
@@ -881,6 +903,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 1.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "BUM_renovation_rate" : {
@@ -899,6 +922,26 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 1.0,
+          "rewiring_rate" : 0.0,
+          "share_1_2_house" : 0.0
+        },
+        "BUM_rewiring_rate" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "rewiring_rate" : 1.0,
           "share_1_2_house" : 0.0
         },
         "BUM_share_1_2_house" : {
@@ -917,6 +960,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 1.0
         },
         "TRA_adoption_threshold" : {
@@ -935,6 +979,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "TRA_communication_frequency" : {
@@ -953,6 +998,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "TRA_construction_rate" : {
@@ -971,6 +1017,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "TRA_dependent_judgment_making" : {
@@ -989,6 +1036,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "TRA_environmental_concern" : {
@@ -1007,6 +1055,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "TRA_financial_threshold" : {
@@ -1025,6 +1074,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "TRA_house_owner" : {
@@ -1043,6 +1093,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "TRA_initial_product_awareness" : {
@@ -1061,6 +1112,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "TRA_interest_threshold" : {
@@ -1079,6 +1131,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "TRA_Mic_Kaufkraft_Index" : {
@@ -1097,6 +1150,7 @@
           "Mic_Kaufkraft_Index" : 1.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "TRA_novelty_seeking" : {
@@ -1115,6 +1169,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 1.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         },
         "TRA_renovation_rate" : {
@@ -1133,6 +1188,26 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 1.0,
+          "rewiring_rate" : 0.0,
+          "share_1_2_house" : 0.0
+        },
+        "TRA_rewiring_rate" : {
+          "adoption_threshold" : 0.0,
+          "communication_frequency" : 0.0,
+          "construction_rate" : 0.0,
+          "dependent_judgment_making" : 0.0,
+          "Dummy_PLZ" : 0.0,
+          "environmental_concern" : 0.0,
+          "financial_threshold" : 0.0,
+          "house_owner" : 0.0,
+          "initial_product_awareness" : 0.0,
+          "interest_threshold" : 0.0,
+          "investment_cost" : 0.0,
+          "Mic_Dominantes_Milieu" : 0.0,
+          "Mic_Kaufkraft_Index" : 0.0,
+          "novelty_seeking" : 0.0,
+          "renovation_rate" : 0.0,
+          "rewiring_rate" : 1.0,
           "share_1_2_house" : 0.0
         },
         "TRA_share_1_2_house" : {
@@ -1151,86 +1226,93 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 1.0
         }
       },
       "par_link_InConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_cagAttrDistribution" : {
         "BUM_adoption_threshold" : {
-          "constant0" : 0.0,
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
+          "constant09" : 0.0,
           "constant10" : 0.0
         },
         "BUM_communication_frequency" : {
-          "constant0" : 0.0,
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
+          "constant09" : 0.0,
           "constant10" : 0.0
         },
         "BUM_construction_rate" : {
-          "constant0" : 0.0,
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
+          "constant09" : 0.0,
           "constant10" : 0.0
         },
         "BUM_dependent_judgment_making" : {
-          "constant0" : 0.0,
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
+          "constant09" : 0.0,
           "constant10" : 0.0
         },
         "BUM_environmental_concern" : {
-          "constant0" : 0.0,
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
+          "constant09" : 0.0,
           "constant10" : 0.0
         },
         "BUM_financial_threshold" : {
-          "constant0" : 0.0,
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
+          "constant09" : 0.0,
           "constant10" : 0.0
         },
         "BUM_house_owner" : {
-          "constant0" : 0.0,
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
+          "constant09" : 0.0,
           "constant10" : 0.0
         },
         "BUM_initial_product_awareness" : {
-          "constant0" : 0.0,
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
+          "constant09" : 0.0,
           "constant10" : 0.0
         },
         "BUM_interest_threshold" : {
-          "constant0" : 0.0,
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
+          "constant09" : 0.0,
           "constant10" : 0.0
         },
         "BUM_Mic_Kaufkraft_Index" : {
-          "constant0" : 0.0,
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
+          "constant09" : 0.0,
           "constant10" : 0.0
         },
         "BUM_novelty_seeking" : {
-          "constant0" : 0.0,
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
+          "constant09" : 0.0,
           "constant10" : 0.0
         },
         "BUM_renovation_rate" : {
-          "constant0" : 0.0,
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
+          "constant09" : 0.0,
+          "constant10" : 0.0
+        },
+        "BUM_rewiring_rate" : {
+          "constant0" : 1.0,
+          "constant01" : 0.0,
+          "constant09" : 0.0,
           "constant10" : 0.0
         },
         "BUM_share_1_2_house" : {
-          "constant0" : 0.0,
+          "constant0" : 1.0,
           "constant01" : 0.0,
-          "constant09" : 1.0,
+          "constant09" : 0.0,
           "constant10" : 0.0
         },
         "TRA_adoption_threshold" : {
@@ -1300,6 +1382,12 @@
           "constant10" : 0.0
         },
         "TRA_renovation_rate" : {
+          "constant0" : 1.0,
+          "constant01" : 0.0,
+          "constant09" : 0.0,
+          "constant10" : 0.0
+        },
+        "TRA_rewiring_rate" : {
           "constant0" : 1.0,
           "constant01" : 0.0,
           "constant09" : 0.0,
@@ -1353,6 +1441,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         }
       },
@@ -1373,6 +1462,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         }
       },
@@ -1421,6 +1511,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 1.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         }
       },
@@ -1494,6 +1585,7 @@
           "Mic_Kaufkraft_Index" : 0.0,
           "novelty_seeking" : 0.0,
           "renovation_rate" : 0.0,
+          "rewiring_rate" : 0.0,
           "share_1_2_house" : 0.0
         }
       },
