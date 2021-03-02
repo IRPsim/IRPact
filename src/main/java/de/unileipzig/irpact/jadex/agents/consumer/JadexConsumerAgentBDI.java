@@ -58,14 +58,14 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     protected JadexConsumerAgentGroup group;
     protected SpatialInformation spatialInformation;
     protected SimulationService simulationService;
-    protected Map<String, ConsumerAgentAttribute> attributes = new HashMap<>();
+    protected Map<String, ConsumerAgentAttribute> attributes = new LinkedHashMap<>();
     protected double informationAuthority;
     protected SocialGraph.Node node;
     protected ProductInterest productAwareness;
-    protected Set<AdoptedProduct> adoptedProducts = new HashSet<>();
+    protected Set<AdoptedProduct> adoptedProducts = new LinkedHashSet<>();
     protected ProductFindingScheme productFindingScheme;
     protected ProcessFindingScheme processFindingScheme;
-    protected Set<AttributeAccess> externAttributes = new HashSet<>();
+    protected Set<AttributeAccess> externAttributes = new LinkedHashSet<>();
 
     protected final Lock LOCK = new ReentrantLock();
     protected Timestamp currentStamp = null;
@@ -73,9 +73,9 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     protected int maxActions = 1; //!!!
 
     @Belief
-    protected Set<Need> needs = new HashSet<>();
+    protected Set<Need> needs = new LinkedHashSet<>();
     @Belief
-    protected Map<Need, ProcessPlan> plans = new HashMap<>();
+    protected Map<Need, ProcessPlan> plans = new LinkedHashMap<>();
 
     public JadexConsumerAgentBDI() {
     }

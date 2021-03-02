@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.interest;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -12,7 +12,7 @@ public class ThresholdInterest<T> implements Interest<T> {
     protected double threshold;
 
     public ThresholdInterest() {
-        this(new HashMap<>());
+        this(new LinkedHashMap<>());
     }
 
     public ThresholdInterest(Map<T, Double> items) {

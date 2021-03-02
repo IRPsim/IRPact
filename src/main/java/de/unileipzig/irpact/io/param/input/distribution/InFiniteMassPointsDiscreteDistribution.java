@@ -58,6 +58,10 @@ public class InFiniteMassPointsDiscreteDistribution implements InUnivariateDoubl
         return _name;
     }
 
+    public InMassPoint[] getMassPoints() {
+        return massPoints;
+    }
+
     @Override
     public FiniteMassPointsDiscreteDistribution parse(InputParser parser) throws ParsingException {
         FiniteMassPointsDiscreteDistribution dist = new FiniteMassPointsDiscreteDistribution();

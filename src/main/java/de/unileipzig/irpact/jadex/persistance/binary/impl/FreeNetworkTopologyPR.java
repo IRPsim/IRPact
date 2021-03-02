@@ -9,7 +9,7 @@ import de.unileipzig.irpact.core.network.topology.FreeNetworkTopology;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -54,7 +54,7 @@ public class FreeNetworkTopologyPR extends BinaryPRBase<FreeNetworkTopology> {
 
     @Override
     protected void doSetupPersist(FreeNetworkTopology object, BinaryJsonData data, PersistManager manager) {
-        Map<Long, Long> map = new HashMap<>();
+        Map<Long, Long> map = new LinkedHashMap<>();
         for(Map.Entry<ConsumerAgentGroup, Integer> entry: object.getEdgeCountMap().entrySet()) {
             long uid = manager.ensureGetUID(entry.getKey());
             map.put(uid, entry.getValue().longValue());
@@ -80,7 +80,7 @@ public class FreeNetworkTopologyPR extends BinaryPRBase<FreeNetworkTopology> {
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, FreeNetworkTopology object, RestoreManager manager) throws RestoreException {
-        Map<ConsumerAgentGroup, Integer> countMap = new HashMap<>();
+        Map<ConsumerAgentGroup, Integer> countMap = new LinkedHashMap<>();
         Map<Long, Long> map = data.getLongLongMap();
         for(Map.Entry<Long, Long> entry: map.entrySet()) {
             ConsumerAgentGroup cag = manager.ensureGet(entry.getKey());

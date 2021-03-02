@@ -46,6 +46,9 @@ public final class SpecificationManager {
     protected Map<String, ObjectNode> spatialDistributionMap = new HashMap<>();
     protected Map<String, ObjectNode> evalMap = new HashMap<>();
     protected Map<String, ObjectNode> productMap = new HashMap<>();
+    protected Map<String, ObjectNode> fixProductsMap = new HashMap<>();
+    protected Map<String, ObjectNode> productFindingSchemeMap = new HashMap<>();
+    protected Map<String, ObjectNode> productInterestSupplySchemeMap = new HashMap<>();
 
     protected ObjectNode generalRoot;
     protected ObjectNode affinityRoot;
@@ -53,6 +56,8 @@ public final class SpecificationManager {
     protected ObjectNode processRoot;
     protected ObjectNode spatialRoot;
     protected ObjectNode timeRoot;
+    protected ObjectNode binaryDataRoot;
+    protected ObjectNode filesRoot;
 
     public SpecificationManager(ObjectMapper mapper) {
         this.mapper = mapper;
@@ -66,6 +71,8 @@ public final class SpecificationManager {
         processRoot = mapper.createObjectNode();
         spatialRoot = mapper.createObjectNode();
         timeRoot = mapper.createObjectNode();
+        binaryDataRoot = mapper.createObjectNode();
+        filesRoot = mapper.createObjectNode();
     }
 
     //=========================
@@ -93,6 +100,9 @@ public final class SpecificationManager {
             case DIR_SpatialDistributions:
             case DIR_DistanceEvaluators:
             case DIR_ProductGroups:
+            case DIR_FixProducts:
+            case DIR_ProductFindingSchemes:
+            case DIR_ProductInterestSupplyScheme:
                 return name;
 
             default:
@@ -130,6 +140,18 @@ public final class SpecificationManager {
                 productMap.put(fileNameWithoutJson, root);
                 break;
 
+            case DIR_FixProducts:
+                fixProductsMap.put(fileNameWithoutJson, root);
+                break;
+
+            case DIR_ProductFindingSchemes:
+                productFindingSchemeMap.put(fileNameWithoutJson, root);
+                break;
+
+            case DIR_ProductInterestSupplyScheme:
+                productInterestSupplySchemeMap.put(fileNameWithoutJson, root);
+                break;
+
             case DIR_NONE:
                 switch (fileName) {
                     case FILE_General:
@@ -154,6 +176,14 @@ public final class SpecificationManager {
 
                     case FILE_TimeModel:
                         timeRoot = root;
+                        break;
+
+                    case FILE_BinaryData:
+                        binaryDataRoot = root;
+                        break;
+
+                    case FILE_Files:
+                        filesRoot = root;
                         break;
 
                     default:
@@ -182,6 +212,9 @@ public final class SpecificationManager {
         createFiles(dir.resolve(DIR_SpatialDistributions), spatialDistributionMap);
         createFiles(dir.resolve(DIR_DistanceEvaluators), evalMap);
         createFiles(dir.resolve(DIR_ProductGroups), productMap);
+        createFiles(dir.resolve(DIR_FixProducts), fixProductsMap);
+        createFiles(dir.resolve(DIR_ProductFindingSchemes), productFindingSchemeMap);
+        createFiles(dir.resolve(DIR_ProductInterestSupplyScheme), productInterestSupplySchemeMap);
 
         createFile(dir.resolve(FILE_General), generalRoot);
         createFile(dir.resolve(FILE_Affinities), affinityRoot);
@@ -189,6 +222,8 @@ public final class SpecificationManager {
         createFile(dir.resolve(FILE_ProcessModel), processRoot);
         createFile(dir.resolve(FILE_SpatialModel), spatialRoot);
         createFile(dir.resolve(FILE_TimeModel), timeRoot);
+        createFile(dir.resolve(FILE_BinaryData), binaryDataRoot);
+        createFile(dir.resolve(FILE_Files), filesRoot);
     }
 
     private static String toJson(String input) {
@@ -280,6 +315,14 @@ public final class SpecificationManager {
         return timeRoot;
     }
 
+    public ObjectNode getBinaryDataRoot() {
+        return binaryDataRoot;
+    }
+
+    public ObjectNode getFilesRoot() {
+        return filesRoot;
+    }
+
     public ObjectNode getAwareness(String name) {
         return awarenessMap.computeIfAbsent(name, _name -> mapper.createObjectNode());
     }
@@ -287,6 +330,9 @@ public final class SpecificationManager {
         return awarenessMap.containsKey(name);
     }
 
+    public Map<String, ObjectNode> getConsumerAgentGroups() {
+        return cagMap;
+    }
     public ObjectNode getConsumerAgentGroup(String name) {
         return cagMap.computeIfAbsent(name, _name -> mapper.createObjectNode());
     }
@@ -320,5 +366,35 @@ public final class SpecificationManager {
     }
     public boolean hasSpatialDistribution(String name) {
         return spatialDistributionMap.containsKey(name);
+    }
+
+    public Map<String, ObjectNode> getProductFindingSchemes() {
+        return productFindingSchemeMap;
+    }
+    public ObjectNode getProductFindingScheme(String name) {
+        return productFindingSchemeMap.computeIfAbsent(name, _name -> mapper.createObjectNode());
+    }
+    public boolean hasProductFindingScheme(String name) {
+        return productFindingSchemeMap.containsKey(name);
+    }
+
+    public Map<String, ObjectNode> getProductInterestSupplySchemes() {
+        return productInterestSupplySchemeMap;
+    }
+    public ObjectNode getProductInterestSupplyScheme(String name) {
+        return productInterestSupplySchemeMap.computeIfAbsent(name, _name -> mapper.createObjectNode());
+    }
+    public boolean hasProductInterestSupplyScheme(String name) {
+        return productInterestSupplySchemeMap.containsKey(name);
+    }
+
+    public Map<String, ObjectNode> getFixProducts() {
+        return fixProductsMap;
+    }
+    public ObjectNode getFixProduct(String name) {
+        return fixProductsMap.computeIfAbsent(name, _name -> mapper.createObjectNode());
+    }
+    public boolean hasFixProduct(String name) {
+        return fixProductsMap.containsKey(name);
     }
 }

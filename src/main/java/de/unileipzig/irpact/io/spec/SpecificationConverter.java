@@ -87,7 +87,7 @@ public class SpecificationConverter {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    protected void apply(SpecificationManager manager, Object obj) {
+    public void apply(SpecificationManager manager, Object obj) {
         Class c = obj.getClass();
         ToSpecFunction func = toSpecMap.get(c);
         if(func == null) {
@@ -175,7 +175,7 @@ public class SpecificationConverter {
         SpecificationHelper spec = new SpecificationHelper(manager.getConsumerAgentGroup(instance.getName()));
         spec.setName(instance.getName());
         spec.setNumberOfAgents(instance.getNumberOfAgents());
-        spec.set(TAG_awareness, instance.getAwareness().getName());
+        spec.set(TAG_interest, instance.getAwareness().getName());
 
         ArrayNode arr = spec.getAttributes();
         for(InConsumerAgentGroupAttribute inAttr: instance.getAttributes()) {
@@ -413,7 +413,7 @@ public class SpecificationConverter {
             SpecificationHelper spec = new SpecificationHelper(cagEntry.getValue());
             String cagName = spec.getName();
             int numberOfAgents = spec.getInt(TAG_numberOfAgents);
-            InProductInterestSupplyScheme awareness = find(cache, spec.getText(TAG_awareness));
+            InProductInterestSupplyScheme awareness = find(cache, spec.getText(TAG_interest));
 
             List<InConsumerAgentGroupAttribute> attrList = new ArrayList<>();
             for(JsonNode attrNode: Util.iterateElements(spec.getAttributes())) {

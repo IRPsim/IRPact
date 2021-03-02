@@ -19,9 +19,9 @@ public class BasicPersistManager implements PersistManager {
         }
     };
 
-    protected final Map<Holder, Persistable> persistableMap = new HashMap<>();
-    protected final Set<Holder> requiresSetupCache = new HashSet<>();
-    protected final Map<Class<?>, Persister<?>> persisterMap = new HashMap<>();
+    protected final Map<Holder, Persistable> persistableMap = new LinkedHashMap<>();
+    protected final Set<Holder> requiresSetupCache = new LinkedHashSet<>();
+    protected final Map<Class<?>, Persister<?>> persisterMap = new LinkedHashMap<>();
     protected UIDManager uidManager = new SimpleUIDManager();
 
     public BasicPersistManager() {

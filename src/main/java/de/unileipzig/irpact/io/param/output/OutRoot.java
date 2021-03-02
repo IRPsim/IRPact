@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.io.param.output;
 
 import de.unileipzig.irpact.io.IOResources;
-import de.unileipzig.irpact.io.param.inout.binary.BinaryPersistData;
-import de.unileipzig.irpact.io.param.input.InUtil;
+import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.start.optact.in.Ii;
 import de.unileipzig.irpact.start.optact.out.OutCustom;
 import de.unileipzig.irptools.defstructure.AnnotationResource;
@@ -85,7 +85,7 @@ public class OutRoot implements RootClass {
     }
 
     public int getHiddenBinaryDataLength() {
-        return InUtil.len(binaryPersistData);
+        return ParamUtil.len(binaryPersistData);
     }
 
     @Override

@@ -1,8 +1,9 @@
-package de.unileipzig.irpact.io.param.input;
+package de.unileipzig.irpact.io.param;
 
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.io.param.input.InEntity;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.function.Predicate;
@@ -10,13 +11,13 @@ import java.util.function.Predicate;
 /**
  * @author Daniel Abitz
  */
-public final class InUtil {
+public final class ParamUtil {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InUtil.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(ParamUtil.class);
 
     public static final String DELIMITER = "__";
 
-    private InUtil() {
+    private ParamUtil() {
     }
 
     public static String conc(InEntity first, InEntity second) {
@@ -40,7 +41,7 @@ public final class InUtil {
     }
 
     private static String getPart(String concStr, int part) throws ParsingException {
-        String[] parts = concStr.split(InUtil.DELIMITER);
+        String[] parts = concStr.split(ParamUtil.DELIMITER);
         if(parts.length != 2) {
             throw new ParsingException("Illegal Name: '" + concStr + "'");
         }

@@ -8,7 +8,7 @@ import de.unileipzig.irpact.core.product.interest.ProductThresholdInterest;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -46,7 +46,7 @@ public class ProductThresholdInterestPR extends BinaryPRBase<ProductThresholdInt
 
     @Override
     protected void doSetupPersist(ProductThresholdInterest object, BinaryJsonData data, PersistManager manager) {
-        Map<Long, Double> idMap = new HashMap<>();
+        Map<Long, Double> idMap = new LinkedHashMap<>();
         for(Map.Entry<Product, Double> entry: object.getItems().entrySet()) {
             long id = manager.ensureGetUID(entry.getKey());
             idMap.put(id, entry.getValue());

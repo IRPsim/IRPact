@@ -15,7 +15,7 @@ public class BasicProductGroup extends SimulationEntityBase implements ProductGr
     protected Map<String, Product> products;
 
     public BasicProductGroup() {
-        this(new HashMap<>(), new HashMap<>());
+        this(new LinkedHashMap<>(), new LinkedHashMap<>());
     }
 
     public BasicProductGroup(

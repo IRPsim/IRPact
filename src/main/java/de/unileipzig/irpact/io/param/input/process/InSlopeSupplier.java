@@ -5,7 +5,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.io.param.input.InEntity;
-import de.unileipzig.irpact.io.param.input.InUtil;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
@@ -75,7 +75,7 @@ public class InSlopeSupplier implements InEntity {
     }
 
     public InUnivariateDoubleDistribution getDistribution() throws ParsingException {
-        return InUtil.getInstance(distSlope, "Distribution");
+        return ParamUtil.getInstance(distSlope, "Distribution");
     }
 
     public InConsumerAgentGroup[] getConsumerAgentGroups() {

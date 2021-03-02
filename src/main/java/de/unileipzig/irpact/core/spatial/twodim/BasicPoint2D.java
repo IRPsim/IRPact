@@ -22,7 +22,7 @@ public class BasicPoint2D implements Point2D {
     }
 
     public BasicPoint2D(double x, double y) {
-        this(new HashMap<>(), x, y);
+        this(new LinkedHashMap<>(), x, y);
     }
 
     public BasicPoint2D(Map<String, SpatialAttribute<?>> attributes, double x, double y) {

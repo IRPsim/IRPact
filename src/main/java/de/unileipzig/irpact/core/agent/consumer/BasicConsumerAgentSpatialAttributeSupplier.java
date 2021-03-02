@@ -9,7 +9,7 @@ import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialDoubleAttributeBase;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -28,7 +28,7 @@ public class BasicConsumerAgentSpatialAttributeSupplier extends NameableBase imp
     }
 
     public BasicConsumerAgentSpatialAttributeSupplier(String attributeName) {
-        this(attributeName, new HashMap<>());
+        this(attributeName, new LinkedHashMap<>());
     }
 
     public BasicConsumerAgentSpatialAttributeSupplier(String attributeName, Map<ConsumerAgentGroup, UnivariateDoubleDistribution> distMapping) {

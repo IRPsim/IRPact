@@ -22,10 +22,10 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     public static final String IN_ROOT = "_IN_ROOT_";
     public static final String PARAM = "_PARAM_";
 
-    protected final Map<BinaryJsonData, Object> restoredMap = new HashMap<>();
-    protected final Map<Long, BinaryJsonData> uidData = new HashMap<>();
-    protected final Map<String, Restorer<?>> restorerMap = new HashMap<>();
-    protected final Map<Object, Object> cache = new HashMap<>();
+    protected final Map<BinaryJsonData, Object> restoredMap = new LinkedHashMap<>();
+    protected final Map<Long, BinaryJsonData> uidData = new LinkedHashMap<>();
+    protected final Map<String, Restorer<?>> restorerMap = new LinkedHashMap<>();
+    protected final Map<Object, Object> cache = new LinkedHashMap<>();
 
     public BinaryJsonRestoreManager() {
         init();

@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
-import de.unileipzig.irpact.io.param.input.InUtil;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.util.AddToRoot;
@@ -73,7 +73,7 @@ public class InComplexConsumerAgentGroupAttribute implements I_InConsumerAgentGr
     }
 
     public InAttributeName getAttributeNameInstance() throws ParsingException {
-        return InUtil.getInstance(attrName, "AttributeName");
+        return ParamUtil.getInstance(attrName, "AttributeName");
     }
 
     @Override
@@ -86,7 +86,7 @@ public class InComplexConsumerAgentGroupAttribute implements I_InConsumerAgentGr
     }
 
     public InConsumerAgentGroup getConsumerAgentGroup() throws ParsingException {
-        return InUtil.getInstance(cag, "ConsumerAgentGroup");
+        return ParamUtil.getInstance(cag, "ConsumerAgentGroup");
     }
 
     @Override
@@ -99,7 +99,7 @@ public class InComplexConsumerAgentGroupAttribute implements I_InConsumerAgentGr
     }
 
     public InUnivariateDoubleDistribution getDistribution() throws ParsingException {
-        return InUtil.getInstance(dist, "UnivariateDoubleDistribution");
+        return ParamUtil.getInstance(dist, "UnivariateDoubleDistribution");
     }
 
     @Override

@@ -1,8 +1,9 @@
-package de.unileipzig.irpact.io.param.inout.persistance;
+package de.unileipzig.irpact.io.param.inout.persist.param.util;
 
 import de.unileipzig.irpact.commons.util.IRPactBase32;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.util.Objects;
 
@@ -10,24 +11,21 @@ import java.util.Objects;
  * @author Daniel Abitz
  */
 @Definition
-public class UIDName implements UIDElement {
+public class UIDJavaString {
+
+    public static void initRes(TreeAnnotationResource res) {
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+    }
 
     public String _name;
-
-    @FieldDefinition
-    public long uid;
 
     @FieldDefinition
     public boolean encoded;
 
     private String decodedName;
 
-    public UIDName() {
-    }
-
-    @Override
-    public long getUID() {
-        return uid;
+    public UIDJavaString() {
     }
 
     public String getName() {
@@ -45,8 +43,7 @@ public class UIDName implements UIDElement {
         }
     }
 
-    public void setAll(long id, String name, String decodedName) {
-        this.uid = id;
+    public void initialize(String name, String decodedName) {
         this._name = name;
         this.decodedName = decodedName;
         this.encoded = !Objects.equals(_name, decodedName);

@@ -46,7 +46,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     protected Set<AttributeAccess> externAttributes;
 
     public ProxyConsumerAgent() {
-        this(new HashMap<>(), new HashSet<>(), new HashSet<>(), new HashMap<>(), new HashSet<>());
+        this(new LinkedHashMap<>(), new LinkedHashSet<>(), new LinkedHashSet<>(), new LinkedHashMap<>(), new LinkedHashSet<>());
     }
 
     public ProxyConsumerAgent(

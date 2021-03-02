@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.product.BasicProductGroup;
 import de.unileipzig.irpact.core.product.BasicProductGroupAttribute;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
-import de.unileipzig.irpact.io.param.input.InUtil;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.util.AddToRoot;
@@ -50,7 +50,7 @@ public class InNameSplitProductGroupAttribute implements I_InProductGroupAttribu
             InProductGroup pg,
             InAttributeName attributeName,
             InUnivariateDoubleDistribution distribution) {
-        this._name = InUtil.conc(pg, attributeName);
+        this._name = ParamUtil.conc(pg, attributeName);
         setDistribution(distribution);
     }
 
@@ -60,11 +60,11 @@ public class InNameSplitProductGroupAttribute implements I_InProductGroupAttribu
     }
 
     public String getProductGroupName() throws ParsingException {
-        return InUtil.firstPart(getName());
+        return ParamUtil.firstPart(getName());
     }
 
     public String getAttributeName() throws ParsingException {
-        return InUtil.secondPart(getName());
+        return ParamUtil.secondPart(getName());
     }
 
     public void setDistribution(InUnivariateDoubleDistribution dist) {
@@ -72,7 +72,7 @@ public class InNameSplitProductGroupAttribute implements I_InProductGroupAttribu
     }
 
     public InUnivariateDoubleDistribution getDistribution() throws ParsingException {
-        return InUtil.getInstance(dist, "UnivariateDoubleDistribution");
+        return ParamUtil.getInstance(dist, "UnivariateDoubleDistribution");
     }
 
     @Override

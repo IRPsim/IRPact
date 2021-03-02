@@ -2,7 +2,7 @@ package de.unileipzig.irpact.io.param.input.network;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.io.param.input.InEntity;
-import de.unileipzig.irpact.io.param.input.InUtil;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -72,7 +72,7 @@ public class InNumberOfTies implements InEntity {
     }
 
     public InConsumerAgentGroup[] getConsumerAgentGroups() throws ParsingException {
-        return InUtil.getArray(cags, "ConsumerAgentGroup");
+        return ParamUtil.getArray(cags, "ConsumerAgentGroup");
     }
 
     public int getCount() {

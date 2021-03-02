@@ -10,7 +10,7 @@ import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
-import de.unileipzig.irpact.io.param.input.InUtil;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
@@ -112,18 +112,18 @@ public class InCustomSelectedSpatialDistribution2D implements InSpatialDistribut
     }
 
     public InUnivariateDoubleDistribution getXPosSupplier() throws ParsingException {
-        return InUtil.getInstance(xPosSupplier, "XPosSupplier");
+        return ParamUtil.getInstance(xPosSupplier, "XPosSupplier");
     }
 
     public InUnivariateDoubleDistribution getYPosSupplier() throws ParsingException {
-        return InUtil.getInstance(yPosSupplier, "YPosSupplier");
+        return ParamUtil.getInstance(yPosSupplier, "YPosSupplier");
     }
 
     public InSpatialTableFile getAttributeFile() throws ParsingException {
-        return InUtil.getInstance(attrFile, "AttributeFile");
+        return ParamUtil.getInstance(attrFile, "AttributeFile");
     }
 
     public InAttributeName getSelectKey() throws ParsingException {
-        return InUtil.getInstance(selectKey, "SelectKey");
+        return ParamUtil.getInstance(selectKey, "SelectKey");
     }
 }

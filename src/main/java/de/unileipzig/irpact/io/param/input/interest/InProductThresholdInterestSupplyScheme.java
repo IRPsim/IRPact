@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param.input.interest;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.product.interest.ProductThresholdInterestSupplyScheme;
-import de.unileipzig.irpact.io.param.input.InUtil;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.util.Todo;
@@ -66,7 +66,7 @@ public class InProductThresholdInterestSupplyScheme implements InProductInterest
     }
 
     public InUnivariateDoubleDistribution getAwarenessDistribution() throws ParsingException {
-        return InUtil.getInstance(awarenessDistribution, "AwarenessDistribution");
+        return ParamUtil.getInstance(awarenessDistribution, "AwarenessDistribution");
     }
 
     @Override

@@ -82,15 +82,32 @@ public class InGeneral {
         );
 
         res.newEntryBuilder()
-                .setGamsDescription("[SPAM] Ob Aufrufe der Tools-Bibliothek geloggt werden sollen.")
-                .setGamsIdentifier("log Tools-Aufrufe")
+                .setGamsDescription("[SPAM] Ob alle Aufrufe der Tools-Bibliothek geloggt werden sollen.")
+                .setGamsIdentifier("log alle Aufrufe von Tools")
                 .setGamsDomain("[0|1]")
-                .store(InGeneral.class, "logTools");
+                .store(InGeneral.class, "logAllTools");
         res.putPath(
-                InGeneral.class, "logTools",
+                InGeneral.class, "logAllTools",
                 res.getCachedElements("Allgemeine Einstellungen", "Logging")
         );
-
+        res.newEntryBuilder()
+                .setGamsDescription("[SPAM] Ob die Kernaufrufe der Tools-Bibliothek geloggt werden sollen.")
+                .setGamsIdentifier("log primäre Aufrufe von Tools")
+                .setGamsDomain("[0|1]")
+                .store(InGeneral.class, "logToolsCore");
+        res.putPath(
+                InGeneral.class, "logToolsCore",
+                res.getCachedElements("Allgemeine Einstellungen", "Logging")
+        );
+        res.newEntryBuilder()
+                .setGamsDescription("[SPAM] Ob Definitions-Aufrufe der Tools-Bibliothek geloggt werden sollen.")
+                .setGamsIdentifier("log Definitionerstellung von Tools")
+                .setGamsDomain("[0|1]")
+                .store(InGeneral.class, "logToolsDefinition");
+        res.putPath(
+                InGeneral.class, "logToolsDefinition",
+                res.getCachedElements("Allgemeine Einstellungen", "Logging")
+        );
 
         res.newEntryBuilder()
                 .setGamsDescription("Ob die Initialisierung der Parameter geloggt werden soll.")
@@ -189,7 +206,11 @@ public class InGeneral {
     public boolean logAll;
 
     @FieldDefinition
-    public boolean logTools;
+    public boolean logAllTools;
+    @FieldDefinition
+    public boolean logToolsCore;
+    @FieldDefinition
+    public boolean logToolsDefinition;
 
     @FieldDefinition
     public boolean logParamInit;
@@ -233,7 +254,12 @@ public class InGeneral {
             return;
         }
 
-        if(logTools) filter.add(IRPSection.TOOLS);
+        if(logAllTools) {
+            IRPSection.addAllToolsTo(filter);
+        } else {
+            if(logToolsCore) filter.add(IRPSection.TOOLS_CORE);
+            if(logToolsDefinition) filter.add(IRPSection.TOOLS_DEFINITION);
+        }
 
         if(logParamInit) filter.add(IRPSection.INITIALIZATION_PARAMETER);
         if(logAgentCreation) filter.add(IRPSection.INITIALIZATION_AGENT);

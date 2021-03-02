@@ -10,7 +10,7 @@ import de.unileipzig.irpact.core.process.FixProcessModelFindingScheme;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
-import de.unileipzig.irpact.io.param.input.InUtil;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
@@ -205,7 +205,7 @@ public class InRAProcessModel implements InProcessModel {
     }
 
     public InPVFile getPvFile() throws ParsingException {
-        return InUtil.getInstance(pvFile, "PvFile");
+        return ParamUtil.getInstance(pvFile, "PvFile");
     }
 
     public InSlopeSupplier[] getSlopeSuppliers() {

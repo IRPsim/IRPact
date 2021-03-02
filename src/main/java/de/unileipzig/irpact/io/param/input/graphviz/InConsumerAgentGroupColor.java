@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.io.param.input.graphviz;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.io.param.input.InUtil;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -64,10 +64,10 @@ public class InConsumerAgentGroupColor {
     }
 
     public InConsumerAgentGroup getGroup() throws ParsingException {
-        return InUtil.getInstance(group, "Group");
+        return ParamUtil.getInstance(group, "Group");
     }
 
     public GraphvizColor getColor() throws ParsingException {
-        return InUtil.getInstance(color, "Color");
+        return ParamUtil.getInstance(color, "Color");
     }
 }

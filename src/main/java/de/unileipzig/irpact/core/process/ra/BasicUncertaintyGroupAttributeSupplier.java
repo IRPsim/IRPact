@@ -27,7 +27,7 @@ public class BasicUncertaintyGroupAttributeSupplier extends NameableBase impleme
     }
 
     public BasicUncertaintyGroupAttributeSupplier(String name) {
-        this(name, new HashMap<>(), new HashMap<>(), new HashMap<>());
+        this(name, new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>());
     }
 
     public BasicUncertaintyGroupAttributeSupplier(

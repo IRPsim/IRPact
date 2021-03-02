@@ -10,10 +10,7 @@ import de.unileipzig.irpact.core.process.ra.BasicUncertaintyGroupAttributeSuppli
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Daniel Abitz
@@ -62,9 +59,9 @@ public class BasicUncertaintyGroupAttributeSupplierPR extends BinaryPRBase<Basic
 
     @Override
     protected void doSetupPersist(BasicUncertaintyGroupAttributeSupplier object, BinaryJsonData data, PersistManager manager) {
-        Map<Long, List<String>> namesMap = new HashMap<>();
-        Map<Long, List<Long>> uncertMap = new HashMap<>();
-        Map<Long, List<Long>> convMap = new HashMap<>();
+        Map<Long, List<String>> namesMap = new LinkedHashMap<>();
+        Map<Long, List<Long>> uncertMap = new LinkedHashMap<>();
+        Map<Long, List<Long>> convMap = new LinkedHashMap<>();
 
         for(ConsumerAgentGroup cag: object.getConsumerAgentGroups()) {
             long cagId = manager.ensureGetUID(cag);

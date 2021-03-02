@@ -123,7 +123,7 @@ public class BasicSocialGraph implements SocialGraph {
     private final Function<? super Type, ? extends Edge> EDGE_SUPPLIER;
     private final SupportedGraphStructure STRUCTURE;
     private final DirectedMultiGraph<Node, Edge, Type> GRAPH;
-    private final Map<Agent, Node> NODE_CACHE = new HashMap<>();
+    private final Map<Agent, Node> NODE_CACHE = new LinkedHashMap<>();
 
     public BasicSocialGraph(SupportedGraphStructure structure) {
         this(BasicNode::new, DEFAULT_EDGE_SUPPLIER, structure);

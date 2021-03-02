@@ -15,7 +15,7 @@ public class BasicProductManager implements ProductManager {
     private Map<String, ProductGroup> products;
 
     public BasicProductManager() {
-        this(new HashMap<>());
+        this(new LinkedHashMap<>());
     }
 
     public BasicProductManager(Map<String, ProductGroup> products) {

@@ -6,7 +6,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
-import de.unileipzig.irpact.io.param.input.InUtil;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.I_InConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -97,14 +97,14 @@ public class InExplicitCustomUncertaintyGroupAttribute implements InUncertaintyG
     }
 
     public I_InConsumerAgentGroupAttribute[] getAttributes() throws ParsingException {
-        return InUtil.getArray(cagAttrs, "ConsumerAgentGroupAttribute");
+        return ParamUtil.getArray(cagAttrs, "ConsumerAgentGroupAttribute");
     }
 
     public InUnivariateDoubleDistribution getUncertaintyDistribution() throws ParsingException {
-        return InUtil.getInstance(uncertDist, "UncertaintyDistribution");
+        return ParamUtil.getInstance(uncertDist, "UncertaintyDistribution");
     }
 
     public InUnivariateDoubleDistribution getConvergenceDistribution() throws ParsingException {
-        return InUtil.getInstance(convergenceDist, "ConvergenceDistribution");
+        return ParamUtil.getInstance(convergenceDist, "ConvergenceDistribution");
     }
 }

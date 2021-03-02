@@ -357,6 +357,7 @@ public class IRPact {
         AnnualData<OutRoot> outData = createOutputData(outRoot);
         storeOutputData(outData);
         forwardResult(outData);
+        finalTask();
     }
 
     private OutRoot createOutRoot() throws Exception {
@@ -417,5 +418,9 @@ public class IRPact {
             LOGGER.info("call result consumer");
             resultConsumer.accept(entry, outData);
         }
+    }
+
+    private void finalTask() {
+        IRPLogging.removeFilter();
     }
 }

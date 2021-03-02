@@ -8,7 +8,7 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -51,14 +51,14 @@ public class BasicConsumerAgentGroupAffinityMappingPR extends BinaryPRBase<Basic
 
     @Override
     protected void doSetupPersist(BasicConsumerAgentGroupAffinityMapping object, BinaryJsonData data, PersistManager manager) {
-        Map<Long, Map<Long, Double>> table = new HashMap<>();
+        Map<Long, Map<Long, Double>> table = new LinkedHashMap<>();
         for(ConsumerAgentGroup src: object.sources()) {
             long srcUid = manager.ensureGetUID(src);
             ConsumerAgentGroupAffinities aff = object.get(src);
             for(ConsumerAgentGroup tar: aff.targets()) {
                 long tarUid = manager.ensureGetUID(tar);
                 double value = aff.getValue(tar);
-                Map<Long, Double> m = table.computeIfAbsent(srcUid, _srcUid -> new HashMap<>());
+                Map<Long, Double> m = table.computeIfAbsent(srcUid, _srcUid -> new LinkedHashMap<>());
                 m.put(tarUid, value);
             }
         }

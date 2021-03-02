@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.io.param.input.affinity;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.io.param.input.InUtil;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.util.AddToRoot;
@@ -79,7 +79,7 @@ public class InComplexAffinityEntry implements InAffinityEntry {
     }
 
     public InConsumerAgentGroup getSrcCag() throws ParsingException {
-        return InUtil.getInstance(srcCag, "Source-ConsumerAgentGroup");
+        return ParamUtil.getInstance(srcCag, "Source-ConsumerAgentGroup");
     }
 
     @Override
@@ -92,7 +92,7 @@ public class InComplexAffinityEntry implements InAffinityEntry {
     }
 
     public InConsumerAgentGroup getTarCag() throws ParsingException {
-        return InUtil.getInstance(tarCag, "Target-ConsumerAgentGroup");
+        return ParamUtil.getInstance(tarCag, "Target-ConsumerAgentGroup");
     }
 
     @Override

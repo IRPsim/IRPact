@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
-import de.unileipzig.irpact.io.param.input.InUtil;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
@@ -136,7 +136,7 @@ public class InCustomUncertaintyGroupAttribute implements InUncertaintyGroupAttr
     }
 
     public InUnivariateDoubleDistribution getUncertaintyDistribution() throws ParsingException {
-        return InUtil.getInstance(uncertDist, "UncertaintyDistribution");
+        return ParamUtil.getInstance(uncertDist, "UncertaintyDistribution");
     }
 
     public void setConvergenceDistribution(InUnivariateDoubleDistribution convergenceDist) {
@@ -144,6 +144,6 @@ public class InCustomUncertaintyGroupAttribute implements InUncertaintyGroupAttr
     }
 
     public InUnivariateDoubleDistribution getConvergenceDistribution() throws ParsingException {
-        return InUtil.getInstance(convergenceDist, "ConvergenceDistribution");
+        return ParamUtil.getInstance(convergenceDist, "ConvergenceDistribution");
     }
 }

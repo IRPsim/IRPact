@@ -175,8 +175,17 @@ public class InConsumerAgentGroup implements InEntity {
         return productFindingSchemes[0];
     }
 
+
+    public void setProductFindingScheme(InProductFindingScheme scheme) {
+        productFindingSchemes = new InProductFindingScheme[]{scheme};
+    }
+
     public InSpatialDistribution getSpatialDistribution() {
         return spatialDistribution[0];
+    }
+
+    public void setSpatialDistribution(InSpatialDistribution dist) {
+        this.spatialDistribution = new InSpatialDistribution[]{dist};
     }
 
     @Override

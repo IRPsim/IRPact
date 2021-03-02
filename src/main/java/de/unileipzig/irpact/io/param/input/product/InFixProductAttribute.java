@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.product.ProductAttribute;
 import de.unileipzig.irpact.core.product.ProductGroupAttribute;
 import de.unileipzig.irpact.io.param.input.InEntity;
-import de.unileipzig.irpact.io.param.input.InUtil;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -71,7 +71,7 @@ public class InFixProductAttribute implements InEntity {
     }
 
     public InProductGroupAttribute getRefPGA() throws ParsingException {
-        return InUtil.getInstance(refPGA, "ProductGroupAttribute");
+        return ParamUtil.getInstance(refPGA, "ProductGroupAttribute");
     }
 
     public double getValue() {

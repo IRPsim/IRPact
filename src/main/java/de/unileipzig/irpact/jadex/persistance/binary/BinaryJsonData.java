@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeCreator;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.persistence.PersistableBase;
+import de.unileipzig.irpact.commons.util.IRPactBase32;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irptools.util.Util;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.*;
 
 /**
@@ -97,6 +99,18 @@ public final class BinaryJsonData extends PersistableBase {
     public byte[] toBytes() throws IOException {
         checkSimulationMode();
         return IRPactJson.toBytesWithSmile(root);
+    }
+
+    public String printBytes() {
+        try {
+            return IRPactBase32.encodeToString(toBytes());
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    public String printMinimalJson() {
+        return root.toString();
     }
 
     boolean isSimulationMode() {

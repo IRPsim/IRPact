@@ -23,6 +23,8 @@ public final class RAConstants {
     public static final String RENOVATION_RATE = "renovation_rate";                        //A8
     public static final String UNDER_RENOVATION = "under_renovation";
 
+    public static final String REWIRING_RATE = "rewiring_rate";                         //B6
+
     public static final String COMMUNICATION_FREQUENCY_SN = "communication_frequency";           //C1
 
     public static final String INITIAL_PRODUCT_AWARENESS = "initial_product_awareness";        //D1

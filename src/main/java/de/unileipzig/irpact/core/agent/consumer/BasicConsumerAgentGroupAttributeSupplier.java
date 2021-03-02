@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,11 +27,11 @@ public class BasicConsumerAgentGroupAttributeSupplier extends NameableBase imple
     }
 
     public BasicConsumerAgentGroupAttributeSupplier(String attributeName) {
-        this(attributeName, new HashMap<>());
+        this(attributeName, new LinkedHashMap<>());
     }
 
     public BasicConsumerAgentGroupAttributeSupplier(String attributeName, UnivariateDoubleDistribution defaultDist) {
-        this(attributeName, new HashMap<>());
+        this(attributeName, new LinkedHashMap<>());
         setDefaultDisttribution(defaultDist);
     }
 

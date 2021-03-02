@@ -18,7 +18,7 @@ public class WeightedDiscreteSpatialDistribution extends ResettableSpatialDistri
     protected Rnd rnd;
 
     public WeightedDiscreteSpatialDistribution() {
-        this(new BasicWeightedMapping<>(), new HashMap<>(), new HashMap<>());
+        this(new BasicWeightedMapping<>(), new LinkedHashMap<>(), new LinkedHashMap<>());
     }
 
     public WeightedDiscreteSpatialDistribution(

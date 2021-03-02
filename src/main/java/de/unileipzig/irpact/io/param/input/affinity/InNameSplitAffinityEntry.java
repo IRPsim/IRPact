@@ -2,7 +2,7 @@ package de.unileipzig.irpact.io.param.input.affinity;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.InUtil;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.util.AddToRoot;
@@ -39,7 +39,7 @@ public class InNameSplitAffinityEntry implements InAffinityEntry {
     }
 
     public InNameSplitAffinityEntry(InConsumerAgentGroup srcCag, InConsumerAgentGroup tarCag, double value) {
-        this._name = InUtil.conc(srcCag, tarCag);
+        this._name = ParamUtil.conc(srcCag, tarCag);
         this.affinityValue = value;
     }
 
@@ -68,11 +68,11 @@ public class InNameSplitAffinityEntry implements InAffinityEntry {
     }
 
     public String getSrcCagName() throws ParsingException {
-        return InUtil.firstPart(getName());
+        return ParamUtil.firstPart(getName());
     }
 
     public String getTarCagName() throws ParsingException {
-        return InUtil.secondPart(getName());
+        return ParamUtil.secondPart(getName());
     }
 
     @Override

@@ -35,7 +35,7 @@ import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -46,7 +46,7 @@ public class JadexInputParser implements InputParser {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(JadexInputParser.class);
 
-    private final Map<Holder, Object> CACHE = new HashMap<>();
+    private final Map<Holder, Object> CACHE = new LinkedHashMap<>();
     private ResourceLoader resourceLoader;
 
     private BasicJadexSimulationEnvironment environment;

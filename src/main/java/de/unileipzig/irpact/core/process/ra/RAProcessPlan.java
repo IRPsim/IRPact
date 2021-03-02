@@ -15,6 +15,8 @@ import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductAttribute;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.develop.TodoException;
+import de.unileipzig.irpact.util.Todo;
 
 import java.util.*;
 
@@ -147,10 +149,8 @@ public class RAProcessPlan implements ProcessPlan {
                 return handleDecisionMaking();
 
             case ADOPTED:
-                return ProcessPlanResult.ADOPTED;
-
             case IMPEDED:
-                return ProcessPlanResult.IMPEDED;
+                return doAction();
 
             default:
                 throw new IllegalStateException("unknown phase: " + currentStage);
@@ -174,7 +174,7 @@ public class RAProcessPlan implements ProcessPlan {
                 productInterest.makeInterested(product);
                 return ProcessPlanResult.IN_PROCESS;
             }
-            return tryCommunication();
+            return doAction();
         }
         return ProcessPlanResult.IN_PROCESS;
     }
@@ -194,17 +194,19 @@ public class RAProcessPlan implements ProcessPlan {
                 productInterest.makeInterested(product);
                 return ProcessPlanResult.IN_PROCESS;
             }
-            return tryCommunication();
+            return doAction();
         }
         return ProcessPlanResult.IN_PROCESS;
     }
 
-    protected ProcessPlanResult tryCommunication() {
+    protected ProcessPlanResult doAction() {
         if(doCommunicate()) {
             return communicate();
-        } else {
-            return ProcessPlanResult.IN_PROCESS;
         }
+        if(doRewire()) {
+            return rewire();
+        }
+        return nop();
     }
 
     protected boolean doCommunicate() {
@@ -235,6 +237,22 @@ public class RAProcessPlan implements ProcessPlan {
             }
         }
         return ProcessPlanResult.IN_PROCESS;
+    }
+
+    protected boolean doRewire() {
+        double r = rnd.nextDouble();
+        double freq = getRewiringRate(agent);
+        return r < freq;
+    }
+
+    @Todo
+    protected ProcessPlanResult rewire() {
+        throw new TodoException();
+    }
+
+    @Todo
+    protected ProcessPlanResult nop() {
+        throw new TodoException();
     }
 
     protected void updateCommunicationGraph(SocialGraph graph, SocialGraph.Node target) {
@@ -372,6 +390,11 @@ public class RAProcessPlan implements ProcessPlan {
 
     protected static double getCommunicationFrequencySN(ConsumerAgent agent) {
         ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.COMMUNICATION_FREQUENCY_SN);
+        return attr.getDoubleValue();
+    }
+
+    protected static double getRewiringRate(ConsumerAgent agent) {
+        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.REWIRING_RATE);
         return attr.getDoubleValue();
     }
 

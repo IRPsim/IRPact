@@ -36,7 +36,7 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     protected ProcessFindingScheme processFindingScheme;
 
     public JadexConsumerAgentGroup() {
-        this(new HashMap<>(), new HashMap<>());
+        this(new LinkedHashMap<>(), new LinkedHashMap<>());
     }
 
     public JadexConsumerAgentGroup(

@@ -15,7 +15,7 @@ public class BasicProduct extends SimulationEntityBase implements Product {
     protected boolean fixed = false;
 
     public BasicProduct() {
-        this(new HashMap<>());
+        this(new LinkedHashMap<>());
     }
 
     public BasicProduct(Map<String, ProductAttribute> attributes) {

@@ -27,7 +27,7 @@ public class BasicAgentManager implements AgentManager {
     protected ConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
 
     public BasicAgentManager() {
-        this(new HashMap<>());
+        this(new LinkedHashMap<>());
     }
 
     public BasicAgentManager(Map<String, ConsumerAgentGroup> consumerAgentGroups) {

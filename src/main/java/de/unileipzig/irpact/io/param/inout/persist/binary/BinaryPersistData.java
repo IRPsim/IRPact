@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.io.param.inout.binary;
+package de.unileipzig.irpact.io.param.inout.persist.binary;
 
 import de.unileipzig.irpact.commons.util.IRPactBase32;
 import de.unileipzig.irptools.defstructure.annotation.Definition;

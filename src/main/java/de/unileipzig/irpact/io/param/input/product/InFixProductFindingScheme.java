@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param.input.product;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.product.FixProductFindingScheme;
 import de.unileipzig.irpact.core.product.Product;
-import de.unileipzig.irpact.io.param.input.InUtil;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -62,7 +62,7 @@ public class InFixProductFindingScheme implements InProductFindingScheme {
     }
 
     public InFixProduct getFixProduct() throws ParsingException {
-        return InUtil.getInstance(refFixProduct, "FixProduct");
+        return ParamUtil.getInstance(refFixProduct, "FixProduct");
     }
 
     @Override

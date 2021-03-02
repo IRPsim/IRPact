@@ -13,7 +13,7 @@ public class BasicAffinities<T> implements Affinities<T> {
     protected Map<T, Double> values;
 
     public BasicAffinities() {
-        this(new HashMap<>());
+        this(new LinkedHashMap<>());
     }
 
     public BasicAffinities(Map<T, Double> values) {

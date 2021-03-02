@@ -45,6 +45,9 @@ public class UncertaintyAttributePR extends BinaryPRBase<UncertaintyAttribute> {
     @Override
     protected void doSetupPersist(UncertaintyAttribute object, BinaryJsonData data, PersistManager manager) {
         data.putLong(manager.ensureGetUID(object.getGroup()));
+
+        System.out.println(">  " + data.getUID() + " " + data.printBytes());
+        System.out.println(">> " + data.getUID() + " " + data.printMinimalJson());
     }
 
     //=========================

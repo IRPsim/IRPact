@@ -3,10 +3,7 @@ package de.unileipzig.irpact.core.simulation;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.simulation.tasks.SimulationTask;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Daniel Abitz
@@ -20,7 +17,7 @@ public class BasicInitializationData implements InitializationData {
     protected boolean ignorePersistCheck = false;
 
     public BasicInitializationData() {
-        this(new HashMap<>(), new ArrayList<>());
+        this(new LinkedHashMap<>(), new ArrayList<>());
     }
 
     public BasicInitializationData(

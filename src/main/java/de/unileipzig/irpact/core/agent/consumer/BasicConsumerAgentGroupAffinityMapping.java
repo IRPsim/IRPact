@@ -4,7 +4,6 @@ import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.affinity.Affinities;
 import de.unileipzig.irpact.commons.affinity.BasicAffinityMapping;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -16,7 +15,7 @@ public class BasicConsumerAgentGroupAffinityMapping
         implements ConsumerAgentGroupAffinityMapping {
 
     public BasicConsumerAgentGroupAffinityMapping() {
-        this(new HashMap<>());
+        this(new LinkedHashMap<>());
     }
 
     public BasicConsumerAgentGroupAffinityMapping(Map<ConsumerAgentGroup, Affinities<ConsumerAgentGroup>> mapping) {

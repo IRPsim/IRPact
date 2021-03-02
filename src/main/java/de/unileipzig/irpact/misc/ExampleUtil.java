@@ -208,7 +208,7 @@ public final class ExampleUtil {
         general.logGraphCreation = true;
         general.logAgentCreation = true;
         general.logPlatformCreation = true;
-        general.logTools = true;
+        general.logToolsCore = true;
         general.logJadexSystemOut = true;
         return general;
     }

@@ -99,7 +99,7 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
 
     @Override
     public Object parse(InputParser parser) throws ParsingException {
-        Map<ConsumerAgentGroup, Integer> edgeCountMap = new HashMap<>();
+        Map<ConsumerAgentGroup, Integer> edgeCountMap = new LinkedHashMap<>();
         for(InNumberOfTies entry: getNumberOfTies()) {
             for(InConsumerAgentGroup inCag: entry.getConsumerAgentGroups()) {
                 ConsumerAgentGroup cag = parser.parseEntityTo(inCag);

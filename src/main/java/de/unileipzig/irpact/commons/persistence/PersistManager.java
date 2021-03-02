@@ -41,7 +41,7 @@ public interface PersistManager {
     }
 
     default <K, V> Map<Long, Long> ensureGetAllUIDs(Map<? extends K, ? extends V> map) throws NoSuchElementException {
-        Map<Long, Long> idMap = new HashMap<>();
+        Map<Long, Long> idMap = new LinkedHashMap<>();
         for(Map.Entry<? extends K, ? extends V> entry: map.entrySet()) {
             long keyId = ensureGetUID(entry.getKey());
             long valueId = ensureGetUID(entry.getValue());
