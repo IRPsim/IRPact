@@ -163,7 +163,7 @@ public class InConsumerAgentGroup implements InEntity {
         return cagAttributes;
     }
 
-    public InProductInterestSupplyScheme getAwareness() {
+    public InProductInterestSupplyScheme getInterest() {
         return cagAwareness[0];
     }
 
@@ -201,7 +201,7 @@ public class InConsumerAgentGroup implements InEntity {
             throw new ParsingException("ConsumerAgentGroup '" + getName() + "' already exists");
         }
 
-        ProductInterestSupplyScheme awarenessSupplyScheme = parser.parseEntityTo(getAwareness());
+        ProductInterestSupplyScheme awarenessSupplyScheme = parser.parseEntityTo(getInterest());
         jCag.setAwarenessSupplyScheme(awarenessSupplyScheme);
 
         ProductFindingScheme productFindingScheme = parser.parseEntityTo(getProductFindingScheme());

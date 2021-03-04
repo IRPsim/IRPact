@@ -1,82 +1,32 @@
 package de.unileipzig.irpact.io.spec.impl.agent.consumer;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.product.InProductFindingScheme;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
-import de.unileipzig.irpact.io.spec.SpecificationConverter;
-import de.unileipzig.irpact.io.spec.SpecificationHelper;
-import de.unileipzig.irpact.io.spec.SpecificationManager;
-import de.unileipzig.irpact.io.spec.impl.SpecBase;
-import de.unileipzig.irptools.util.Util;
+import de.unileipzig.irpact.io.spec.*;
+import de.unileipzig.irpact.io.spec.impl.SpecUtil;
+import de.unileipzig.irpact.io.spec.impl.interest.ProductInterestSupplySchemeSpec;
+import de.unileipzig.irpact.io.spec.impl.product.ProductFindingSchemeSpec;
+import de.unileipzig.irpact.io.spec.impl.spatial.dist.SpatialDistributionSpec;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static de.unileipzig.irpact.io.spec.SpecificationConstants.*;
 
 /**
  * @author Daniel Abitz
  */
-public class ConsumerAgentGroupSpec extends SpecBase<InConsumerAgentGroup, InConsumerAgentGroup[]> {
+public class ConsumerAgentGroupSpec
+        implements ToSpecConverter<InConsumerAgentGroup>, ToParamConverter<InConsumerAgentGroup> {
 
     public static final ConsumerAgentGroupSpec INSTANCE = new ConsumerAgentGroupSpec();
-
-    public ConsumerAgentGroupSpec() {
-    }
-
-    @Override
-    public InConsumerAgentGroup[] toParam(
-            SpecificationManager manager,
-            Map<String, Object> cache) {
-        List<InConsumerAgentGroup> cagList = new ArrayList<>();
-        for(Map.Entry<String, ObjectNode> cagEntry: manager.getConsumerAgentGroups().entrySet()) {
-            SpecificationHelper spec = new SpecificationHelper(cagEntry.getValue());
-            String cagName = spec.getName();
-            int numberOfAgents = spec.getInt(TAG_numberOfAgents);
-            InProductInterestSupplyScheme interest = find(cache, spec.getText(TAG_interest));
-
-            List<InConsumerAgentGroupAttribute> attrList = new ArrayList<>();
-            for(JsonNode attrNode: Util.iterateElements(spec.getAttributes())) {
-                SpecificationHelper attrSpec = new SpecificationHelper(attrNode);
-                String attrName = cagName + "_" + attrSpec.getName();
-                InAttributeName inName = putIfMissing(cache, attrSpec.getName(), new InAttributeName(attrSpec.getName()));
-                InUnivariateDoubleDistribution attrDist = find(cache, attrSpec.getText(TAG_distribution));
-                InConsumerAgentGroupAttribute cagAttr = new InConsumerAgentGroupAttribute(
-                        attrName,
-                        inName,
-                        attrDist
-                );
-                attrList.add(cagAttr);
-            }
-
-            InConsumerAgentGroup cag = new InConsumerAgentGroup(
-                    cagName,
-                    1.0, //!!!
-                    numberOfAgents,
-                    attrList,
-                    interest
-            );
-
-            InSpatialDistribution spatialDist = find(cache, spec.getText(TAG_spatialDistribution));
-            cag.setSpatialDistribution(spatialDist);
-
-
-            InProductFindingScheme findingScheme = find(cache, spec.getText(TAG_productFindingScheme));
-            cag.setProductFindingScheme(findingScheme);
-
-            cagList.add(cag);
-        }
-
-        return cagList.toArray(new InConsumerAgentGroup[0]);
-    }
 
     @Override
     public Class<InConsumerAgentGroup> getParamType() {
@@ -84,27 +34,140 @@ public class ConsumerAgentGroupSpec extends SpecBase<InConsumerAgentGroup, InCon
     }
 
     @Override
-    public void toSpec(
-            InConsumerAgentGroup instance,
-            SpecificationManager manager,
-            SpecificationConverter converter) {
-        SpecificationHelper spec = new SpecificationHelper(manager.getConsumerAgentGroup(instance.getName()));
-        spec.setName(instance.getName());
-        spec.setNumberOfAgents(instance.getNumberOfAgents());
-        spec.set(TAG_interest, instance.getAwareness().getName());
-        spec.set(TAG_spatialDistribution, instance.getSpatialDistribution().getName());
-        spec.set(TAG_productFindingScheme, instance.getProductFindingScheme().getName());
-        spec.set(TAG_informationAuthority, instance.getInformationAuthority());
+    public void toSpec(InConsumerAgentGroup input, SpecificationManager manager, SpecificationConverter converter, boolean inline) throws ParsingException {
+        create(input, manager.getConsumerAgentGroups().get(input.getName()), manager, converter, inline);
+    }
 
-        ArrayNode arr = spec.getAttributes();
-        for(InConsumerAgentGroupAttribute inAttr: instance.getAttributes()) {
-            SpecificationHelper specAttr = new SpecificationHelper(arr.addObject());
-            specAttr.setName(inAttr.getCagAttrName().getName());
-            specAttr.setDistribution(inAttr.getCagAttrDistribution().getName());
+    @Override
+    public void create(InConsumerAgentGroup input, ObjectNode root, SpecificationManager manager, SpecificationConverter converter, boolean inline) throws ParsingException {
+        SpecificationHelper spec = new SpecificationHelper(root);
+        spec.setName(input.getName());
+        spec.setNumberOfAgents(input.getNumberOfAgents());
+        spec.set(TAG_informationAuthority, input.getInformationAuthority());
 
-            converter.apply(manager, inAttr.getCagAttrDistribution());
+        SpecUtil.inline(
+                input.getInterest(), input.getInterest().getName(),
+                TAG_interest,
+                manager,
+                spec,
+                converter,
+                true
+        );
+        SpecUtil.inline(
+                input.getSpatialDistribution(), input.getSpatialDistribution().getName(),
+                TAG_spatialDistribution,
+                manager,
+                spec,
+                converter,
+                true
+        );
+        SpecUtil.inline(
+                input.getProductFindingScheme(), input.getProductFindingScheme().getName(),
+                TAG_productFindingScheme,
+                manager,
+                spec,
+                converter,
+                true
+        );
+
+        SpecificationHelper attrsSpec = spec.getAttributesSpec();
+        for(InConsumerAgentGroupAttribute inAttr: input.getAttributes()) {
+            SpecificationHelper attrSpec = attrsSpec.addObjectSpec();
+            attrSpec.setName(inAttr.getCagAttrName().getName());
+
+            SpecUtil.inlineDistribution(
+                    inAttr.getCagAttrDistribution(),
+                    attrSpec,
+                    manager,
+                    converter,
+                    inline
+            );
+        }
+    }
+
+    @Override
+    public InConsumerAgentGroup[] toParam(SpecificationManager manager, SpecificationConverter converter, SpecificationCache cache) {
+        List<InConsumerAgentGroup> groups = new ArrayList<>();
+        for(ObjectNode root: manager.getConsumerAgentGroups().getAll().values()) {
+            InConsumerAgentGroup cag = toParam(root, manager, converter, cache);
+            groups.add(cag);
+        }
+        return groups.toArray(new InConsumerAgentGroup[0]);
+    }
+
+    @Override
+    public InConsumerAgentGroup toParam(ObjectNode root, SpecificationManager manager, SpecificationConverter converter, SpecificationCache cache) {
+        SpecificationHelper spec = new SpecificationHelper(root);
+        String name = spec.getName();
+
+        if(cache.has(name)) {
+            return cache.getAs(name);
         }
 
-        converter.apply(manager, instance.getAwareness());
+        InProductInterestSupplyScheme interestScheme = SpecUtil.parseInlined(
+                TAG_interest,
+                spec,
+                _name -> {
+                    try {
+                        return ProductInterestSupplySchemeSpec.INSTANCE.toParamByName(_name, manager, converter, cache);
+                    } catch (ParsingException e) {
+                        throw e.unchecked();
+                    }
+                },
+                _spec -> ProductInterestSupplySchemeSpec.INSTANCE.toParam(_spec.rootAsObject(), manager, converter, cache)
+        );
+
+        InSpatialDistribution spatialDistribution = SpecUtil.parseInlined(
+                TAG_spatialDistribution,
+                spec,
+                _name -> {
+                    try {
+                        return SpatialDistributionSpec.INSTANCE.toParamByName(_name, manager, converter, cache);
+                    } catch (ParsingException e) {
+                        throw e.unchecked();
+                    }
+                },
+                _spec -> SpatialDistributionSpec.INSTANCE.toParam(_spec.rootAsObject(), manager, converter, cache)
+        );
+
+        InProductFindingScheme findingScheme = SpecUtil.parseInlined(
+                TAG_productFindingScheme,
+                spec,
+                _name -> {
+                    try {
+                        return ProductFindingSchemeSpec.INSTANCE.toParamByName(_name, manager, converter, cache);
+                    } catch (ParsingException e) {
+                        throw e.unchecked();
+                    }
+                },
+                _spec -> ProductFindingSchemeSpec.INSTANCE.toParam(_spec.rootAsObject(), manager, converter, cache)
+        );
+
+        InConsumerAgentGroup cag = new InConsumerAgentGroup();
+        cag._name = name;
+        cag.numberOfAgentsX = spec.getNumberOfAgents();
+        cag.informationAuthority = spec.getDouble(TAG_informationAuthority);
+        cag.setAwareness(interestScheme);
+        cag.setSpatialDistribution(spatialDistribution);
+        cag.setProductFindingScheme(findingScheme);
+
+        List<InConsumerAgentGroupAttribute> attrList = new ArrayList<>();
+        SpecificationHelper attrsSpec = spec.getAttributesSpec();
+        for(JsonNode attrNode: attrsSpec.iterateElements()) {
+            SpecificationHelper attrSpec = new SpecificationHelper(attrNode);
+            String attrName = attrSpec.getName();
+            InUnivariateDoubleDistribution attrDist = SpecUtil.parseInlinedDistribution(
+                    attrSpec,
+                    manager,
+                    converter,
+                    cache
+            );
+            InConsumerAgentGroupAttribute attr = new InConsumerAgentGroupAttribute(name + "_" + attrName , cache.getAttrName(attrName), attrDist);
+            attrList.add(attr);
+        }
+        cag.cagAttributes = attrList.toArray(new InConsumerAgentGroupAttribute[0]);
+
+        cache.securePut(name, cag);
+        return cag;
     }
 }

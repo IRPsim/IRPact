@@ -12,4 +12,8 @@ public class ParsingException extends Exception {
     public ParsingException(Throwable cause) {
         super(cause);
     }
+
+    public UncheckedParsingException unchecked() {
+        return new UncheckedParsingException(this);
+    }
 }

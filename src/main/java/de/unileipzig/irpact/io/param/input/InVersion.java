@@ -49,6 +49,10 @@ public class InVersion implements InEntity {
         return new InVersion(IRPact.VERSION_STRING);
     }
 
+    public static InVersion[] currentVersionAsArray() {
+        return new InVersion[] {currentVersion()};
+    }
+
     @Override
     public String getName() {
         return _name;

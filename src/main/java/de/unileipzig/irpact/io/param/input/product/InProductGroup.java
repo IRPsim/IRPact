@@ -15,6 +15,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
@@ -66,6 +67,15 @@ public class InProductGroup implements InEntity {
 
     public InProductGroupAttribute[] getAttributes() {
         return pgAttributes;
+    }
+
+    public InProductGroupAttribute findAttribute(String name) throws ParsingException {
+        for(InProductGroupAttribute attr: getAttributes()) {
+            if(Objects.equals(name, attr.getAttrNameString())) {
+                return attr;
+            }
+        }
+        throw new ParsingException("not found: " + name);
     }
 
     @Override

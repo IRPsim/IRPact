@@ -107,8 +107,32 @@ public final class IRPactJson {
     }
 
     public static double getDouble(JsonNode node, double ifNotValid) {
-        if(node != null && node.isTextual()) {
+        if(node != null && node.isNumber()) {
             return node.doubleValue();
+        } else {
+            return ifNotValid;
+        }
+    }
+
+    public static long getLong(JsonNode parent, String key, long ifNotValid) {
+        return getLong(parent.get(key), ifNotValid);
+    }
+
+    public static long getLong(JsonNode node, long ifNotValid) {
+        if(node != null && node.isNumber()) {
+            return node.longValue();
+        } else {
+            return ifNotValid;
+        }
+    }
+
+    public static int getInt(JsonNode parent, String key, int ifNotValid) {
+        return getInt(parent.get(key), ifNotValid);
+    }
+
+    public static int getInt(JsonNode node, int ifNotValid) {
+        if(node != null && node.isNumber()) {
+            return node.intValue();
         } else {
             return ifNotValid;
         }

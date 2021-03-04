@@ -58,8 +58,16 @@ public class InFiniteMassPointsDiscreteDistribution implements InUnivariateDoubl
         return _name;
     }
 
+    public void setName(String _name) {
+        this._name = _name;
+    }
+
     public InMassPoint[] getMassPoints() {
         return massPoints;
+    }
+
+    public void setMassPoints(InMassPoint[] massPoints) {
+        this.massPoints = massPoints;
     }
 
     @Override

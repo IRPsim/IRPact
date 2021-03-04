@@ -24,7 +24,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Daniel Abitz
@@ -86,6 +91,15 @@ class MultiAsd {
                 x2017.in,
                 x2018.in,
                 x2019.in
+        );
+        Path perennialFile2 = dir.resolve("scenariosX").resolve("full_scenario2.json");
+        storePerennial(
+                perennialFile2,
+                x2015.in,
+                x2015.in,
+                x2015.in,
+                x2015.in,
+                x2015.in
         );
     }
 
@@ -207,6 +221,67 @@ class MultiAsd {
         String str0 = Util.readString(p0, StandardCharsets.UTF_8);
         String str1 = Util.readString(p1, StandardCharsets.UTF_8);
 
-        Assertions.assertEquals(str0, str1);
+        assertEquals(str0, str1);
+    }
+
+    @Test
+    void runToSpec() {
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
+        String[] args = {
+                "-i", dir.resolve("scenarios").resolve("default.json").toString(),
+                "--paramToSpec", dir.resolve("spec").resolve("example1").toString()
+        };
+        Start.main(args);
+    }
+    @Test
+    void runToSpec2() {
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
+        String[] args = {
+                "-i", dir.resolve("scenariosS").resolve("default.spec1.json").toString(),
+                "--paramToSpec", dir.resolve("spec").resolve("example2").toString()
+        };
+        Start.main(args);
+    }
+
+    @Test
+    void runToParam() {
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
+        String[] args = {
+                "--specToParam", dir.resolve("spec").resolve("example1").toString(),
+                "-o", dir.resolve("scenariosS").resolve("default.spec1.json").toString()
+        };
+        Start.main(args);
+    }
+
+    @Test
+    void testContent() throws IOException {
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6").resolve("spec");
+        Path dir1 = dir.resolve("example1");
+        Path dir2 = dir.resolve("example2");
+
+        List<Path> paths1;
+        try(Stream<Path> stream = Files.walk(dir1, Integer.MAX_VALUE)) {
+            paths1 = stream.filter(Files::isRegularFile)
+                    .collect(Collectors.toList());
+        }
+
+        List<Path> paths2;
+        try(Stream<Path> stream = Files.walk(dir2, Integer.MAX_VALUE)) {
+            paths2 = stream.filter(Files::isRegularFile)
+                    .collect(Collectors.toList());
+        }
+
+        assertEquals(paths1.size(), paths2.size());
+        for(int i = 0; i < paths1.size(); i++) {
+            Path p1 = paths1.get(i);
+            Path p2 = paths2.get(i);
+            assertEquals(p1.getFileName(), p2.getFileName());
+
+            String content1 = Util.readString(p1, StandardCharsets.UTF_8);
+            String content2 = Util.readString(p2, StandardCharsets.UTF_8);
+
+            System.out.println("check: " + p1 + " | " + p2);
+            assertEquals(content1, content2);
+        }
     }
 }

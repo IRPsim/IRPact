@@ -1,25 +1,18 @@
 package de.unileipzig.irpact.io.spec.impl.file;
 
-import de.unileipzig.irpact.io.param.input.distribution.InBooleanDistribution;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
-import de.unileipzig.irpact.io.spec.SpecificationConverter;
-import de.unileipzig.irpact.io.spec.SpecificationHelper;
-import de.unileipzig.irpact.io.spec.SpecificationManager;
-import de.unileipzig.irpact.io.spec.impl.SpecBase;
-
-import java.util.Map;
+import de.unileipzig.irpact.io.spec.*;
 
 import static de.unileipzig.irpact.io.spec.SpecificationConstants.TAG_pvFiles;
+import static de.unileipzig.irpact.io.spec.SpecificationConstants.TAG_spatialTable;
 
 /**
  * @author Daniel Abitz
  */
-public class PVFileSpec extends SpecBase<InPVFile, Void> {
+public class PVFileSpec implements ToSpecConverter<InPVFile> {
 
-    @Override
-    public Void toParam(SpecificationManager manager, Map<String, Object> cache) {
-        throw new UnsupportedOperationException();
-    }
+    public static final PVFileSpec INSTANCE = new PVFileSpec();
 
     @Override
     public Class<InPVFile> getParamType() {
@@ -27,9 +20,14 @@ public class PVFileSpec extends SpecBase<InPVFile, Void> {
     }
 
     @Override
-    public void toSpec(InPVFile instance, SpecificationManager manager, SpecificationConverter converter) {
-        SpecificationHelper spec = new SpecificationHelper(manager.getBinaryDataRoot());
-        SpecificationHelper pvSpec = spec.getArraySpec(TAG_pvFiles);
-        pvSpec.addIfNotExists(instance.getName());
+    public void toSpec(InPVFile input, SpecificationManager manager, SpecificationConverter converter, boolean inline) {
+        create(input, manager.getFiles().get(), manager, converter, inline);
+    }
+
+    @Override
+    public void create(InPVFile input, ObjectNode root, SpecificationManager manager, SpecificationConverter converter, boolean inline) {
+        SpecificationHelper rootSpec = new SpecificationHelper(root);
+        SpecificationHelper spec = rootSpec.getArraySpec(TAG_pvFiles);
+        spec.addIfNotExists(input.getName());
     }
 }

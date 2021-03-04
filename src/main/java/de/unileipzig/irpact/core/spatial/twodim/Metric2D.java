@@ -83,6 +83,15 @@ public enum Metric2D implements Metric {
         throw new IllegalArgumentException("unknown id: " + id);
     }
 
+    public static Metric2D get(String name) {
+        for(Metric2D m: values()) {
+            if(m.name().equalsIgnoreCase(name)) {
+                return m;
+            }
+        }
+        throw new IllegalArgumentException("unknown metric: " + name);
+    }
+
     private final int ID;
 
     Metric2D(int id) {

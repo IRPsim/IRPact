@@ -26,7 +26,6 @@ import de.unileipzig.irptools.io.perennial.PerennialFile;
 import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
@@ -120,9 +119,9 @@ public class Preloader {
         manager.store(param.getSpecOutputDirPath());
     }
 
-    private void convertSpecToParam() throws IOException {
+    private void convertSpecToParam() throws Exception {
         LOGGER.debug("convert specification to parameter");
-        SpecificationManager manager = new SpecificationManager(IRPactJson.JSON);
+        SpecificationManager manager = new SpecificationManager();
         manager.load(param.getSpecInputDirPath());
         SpecificationConverter converter = new SpecificationConverter();
         InRoot root = converter.toParam(manager);

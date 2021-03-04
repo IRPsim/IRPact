@@ -1,23 +1,19 @@
 package de.unileipzig.irpact.io.spec.impl.network;
 
-import de.unileipzig.irpact.commons.exception.ParsingException;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
-import de.unileipzig.irpact.io.spec.SpecificationConverter;
-import de.unileipzig.irpact.io.spec.SpecificationHelper;
-import de.unileipzig.irpact.io.spec.SpecificationManager;
-import de.unileipzig.irpact.io.spec.impl.SpecBase;
+import de.unileipzig.irpact.io.spec.*;
 
-import java.util.Map;
+import static de.unileipzig.irpact.io.spec.SpecificationConstants.TAG_topology;
 
 /**
  * @author Daniel Abitz
  */
-public class UnlinkedGraphTopologySpec extends SpecBase<InUnlinkedGraphTopology, Void> {
+public class UnlinkedGraphTopologySpec
+        implements ToSpecConverter<InUnlinkedGraphTopology>, ToParamConverter<InUnlinkedGraphTopology> {
 
-    @Override
-    public Void toParam(SpecificationManager manager, Map<String, Object> cache) {
-        throw new UnsupportedOperationException();
-    }
+    public static final UnlinkedGraphTopologySpec INSTANCE = new UnlinkedGraphTopologySpec();
+    public static final String TYPE = "UnlinkedGraphTopology";
 
     @Override
     public Class<InUnlinkedGraphTopology> getParamType() {
@@ -25,9 +21,23 @@ public class UnlinkedGraphTopologySpec extends SpecBase<InUnlinkedGraphTopology,
     }
 
     @Override
-    public void toSpec(InUnlinkedGraphTopology instance, SpecificationManager manager, SpecificationConverter converter) throws ParsingException {
-        SpecificationHelper spec = new SpecificationHelper(manager.getTopology());
-        spec.setName(instance.getName());
-        spec.setType("UnlinkedGraphTopology");
+    public void toSpec(InUnlinkedGraphTopology input, SpecificationManager manager, SpecificationConverter converter, boolean inline) {
+        SpecificationHelper spec = new SpecificationHelper(manager.getSocialNetwork().get());
+        create(input, spec.getObject(TAG_topology), manager, converter, inline);
+    }
+
+    @Override
+    public void create(InUnlinkedGraphTopology input, ObjectNode root, SpecificationManager manager, SpecificationConverter converter, boolean inline) {
+        SpecificationHelper spec = new SpecificationHelper(root);
+        spec.setName(input.getName());
+        spec.setType(TYPE);
+    }
+
+    @Override
+    public InUnlinkedGraphTopology[] toParam(SpecificationManager manager, SpecificationConverter converter, SpecificationCache cache) {
+        SpecificationHelper spec = new SpecificationHelper(manager.getSocialNetwork().get());
+        SpecificationHelper topoSpec = spec.getObjectSpec(TAG_topology);
+        InUnlinkedGraphTopology topo = new InUnlinkedGraphTopology(topoSpec.getName());
+        return new InUnlinkedGraphTopology[]{topo};
     }
 }

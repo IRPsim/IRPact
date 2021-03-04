@@ -80,6 +80,10 @@ public class InProductGroupAttribute implements InEntity {
         return attrName;
     }
 
+    public String getAttrNameString() {
+        return attrName.getName();
+    }
+
     public InUnivariateDoubleDistribution getAttrDistribution() {
         return attrDistribution;
     }

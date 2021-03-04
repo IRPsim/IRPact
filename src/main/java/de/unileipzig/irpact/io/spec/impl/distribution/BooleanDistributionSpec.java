@@ -1,23 +1,17 @@
 package de.unileipzig.irpact.io.spec.impl.distribution;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.io.param.input.distribution.InBooleanDistribution;
-import de.unileipzig.irpact.io.param.input.distribution.InConstantUnivariateDistribution;
-import de.unileipzig.irpact.io.spec.SpecificationConverter;
-import de.unileipzig.irpact.io.spec.SpecificationHelper;
-import de.unileipzig.irpact.io.spec.SpecificationManager;
-import de.unileipzig.irpact.io.spec.impl.SpecBase;
-
-import java.util.Map;
+import de.unileipzig.irpact.io.spec.*;
 
 /**
  * @author Daniel Abitz
  */
-public class BooleanDistributionSpec extends SpecBase<InBooleanDistribution, Void> {
+public class BooleanDistributionSpec
+        implements ToSpecConverter<InBooleanDistribution>, ToParamConverter<InBooleanDistribution> {
 
-    @Override
-    public Void toParam(SpecificationManager manager, Map<String, Object> cache) {
-        throw new UnsupportedOperationException();
-    }
+    public static final BooleanDistributionSpec INSTANCE = new BooleanDistributionSpec();
+    public static final String TYPE = "BooleanDistribution";
 
     @Override
     public Class<InBooleanDistribution> getParamType() {
@@ -25,11 +19,22 @@ public class BooleanDistributionSpec extends SpecBase<InBooleanDistribution, Voi
     }
 
     @Override
-    public void toSpec(InBooleanDistribution instance, SpecificationManager manager, SpecificationConverter converter) {
-        if(!manager.hasDistribution(instance.getName())) {
-            SpecificationHelper spec = new SpecificationHelper(manager.getDistribution(instance.getName()));
-            spec.setName(instance.getName());
-            spec.setType("BooleanDistribution");
+    public void toSpec(InBooleanDistribution input, SpecificationManager manager, SpecificationConverter converter, boolean inline) {
+        if(manager.getDistributions().hasNot(input.getName())) {
+            create(input, manager.getDistributions().get(input.getName()), manager, converter, inline);
         }
+    }
+
+    @Override
+    public void create(InBooleanDistribution input, ObjectNode root, SpecificationManager manager, SpecificationConverter converter, boolean inline) {
+        SpecificationHelper spec = new SpecificationHelper(root);
+        spec.setName(input.getName());
+        spec.setType(TYPE);
+    }
+
+    @Override
+    public InBooleanDistribution toParam(ObjectNode root, SpecificationManager manager, SpecificationConverter converter, SpecificationCache cache) {
+        SpecificationHelper spec = new SpecificationHelper(root);
+        return new InBooleanDistribution(spec.getName());
     }
 }

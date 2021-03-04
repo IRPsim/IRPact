@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irptools.util.Util;
 
+import java.util.Map;
 import java.util.Objects;
 
 import static de.unileipzig.irpact.io.spec.SpecificationConstants.*;
@@ -19,6 +20,10 @@ public final class SpecificationHelper {
 
     public SpecificationHelper(JsonNode root) {
         this.root = root;
+    }
+
+    public JsonNode root() {
+        return root;
     }
 
     public ObjectNode rootAsObject() {
@@ -37,12 +42,32 @@ public final class SpecificationHelper {
         }
     }
 
+    public int size() {
+        return root.size();
+    }
+
+    public SpecificationHelper get(int index) {
+        return new SpecificationHelper(root.get(index));
+    }
+
     public String getName() {
         return IRPactJson.getText(root, TAG_name, null);
     }
 
     public void setName(String name) {
         rootAsObject().put(TAG_name, name);
+    }
+
+    public void setGroup(String name) {
+        rootAsObject().put(TAG_group, name);
+    }
+
+    public String getGroup() {
+        return IRPactJson.getText(root, TAG_group, null);
+    }
+
+    public void setValue(double value) {
+        rootAsObject().put(TAG_value, value);
     }
 
     public String getType() {
@@ -57,16 +82,20 @@ public final class SpecificationHelper {
         return IRPactJson.getDouble(root, TAG_value, Double.NaN);
     }
 
-    public double getNumberOfAgents() {
-        return IRPactJson.getDouble(root, TAG_numberOfAgents, Double.NaN);
+    public int getNumberOfAgents() {
+        return IRPactJson.getInt(root, TAG_numberOfAgents, -1);
     }
 
-    public void setNumberOfAgents(double value) {
+    public void setNumberOfAgents(int value) {
         rootAsObject().put(TAG_numberOfAgents, value);
     }
 
     public ArrayNode getAttributes() {
         return Util.getOrCreateArray(rootAsObject(), TAG_attributes);
+    }
+
+    public SpecificationHelper getAttributesSpec() {
+        return new SpecificationHelper(getAttributes());
     }
 
     public JsonNode getParameters() {
@@ -77,8 +106,44 @@ public final class SpecificationHelper {
         return new SpecificationHelper(getParameters());
     }
 
+    public ObjectNode addObject() {
+        return rootAsArray().addObject();
+    }
+
     public SpecificationHelper addObjectSpec() {
-        return new SpecificationHelper(rootAsArray().addObject());
+        return new SpecificationHelper(addObject());
+    }
+
+    public double getParametersDouble(String key) {
+        JsonNode params = getParameters();
+        if(params == null) {
+            throw new NullPointerException("no parameters");
+        }
+        return IRPactJson.getDouble(params, key, Double.NaN);
+    }
+
+    public long getParametersLong(String key) {
+        JsonNode params = getParameters();
+        if(params == null) {
+            throw new NullPointerException("no parameters");
+        }
+        return IRPactJson.getLong(params, key, -1L);
+    }
+
+    public int getParametersInt(String key) {
+        JsonNode params = getParameters();
+        if(params == null) {
+            throw new NullPointerException("no parameters");
+        }
+        return IRPactJson.getInt(params, key, -1);
+    }
+
+    public String getParametersText(String key) {
+        JsonNode params = getParameters();
+        if(params == null) {
+            throw new NullPointerException("no parameters");
+        }
+        return IRPactJson.getText(params, key, null);
     }
 
     public double getParametersValue() {
@@ -93,6 +158,11 @@ public final class SpecificationHelper {
         setParameters(TAG_value, value);
     }
 
+    public void setParameters(String key, long value) {
+        ObjectNode params = Util.getOrCreateObject(rootAsObject(), TAG_parameters);
+        params.put(key, value);
+    }
+
     public void setParameters(String key, double value) {
         ObjectNode params = Util.getOrCreateObject(rootAsObject(), TAG_parameters);
         params.put(key, value);
@@ -105,6 +175,10 @@ public final class SpecificationHelper {
     public void setParameters(String key, String value) {
         ObjectNode params = Util.getOrCreateObject(rootAsObject(), TAG_parameters);
         params.put(key, value);
+    }
+
+    public void setParameter(double value) {
+        rootAsObject().put(TAG_parameter, value);
     }
 
     public void setDistribution(String name) {
@@ -152,14 +226,34 @@ public final class SpecificationHelper {
         return false;
     }
 
+    public void add(String text) {
+        rootAsArray().add(text);
+    }
+
     public void addIfNotExists(String value) {
         if(!hasArrayEntry(value)) {
             rootAsArray().add(value);
         }
     }
 
+    public boolean isInline(String key) {
+        JsonNode node = root.get(key);
+        if(node == null) {
+            throw new IllegalArgumentException("missing node: " + key);
+        }
+        return node.isObject();
+    }
+
+    public boolean isInline() {
+        return root.isObject();
+    }
+
     public Iterable<JsonNode> iterateElements() {
         return Util.iterateElements(root);
+    }
+
+    public Iterable<Map.Entry<String, JsonNode>> iterateFields() {
+        return Util.iterateFields(root);
     }
 
     public String getText(String key) {

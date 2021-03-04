@@ -1,42 +1,22 @@
 package de.unileipzig.irpact.io.spec.impl.binary;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
-import de.unileipzig.irpact.io.spec.SpecificationConverter;
-import de.unileipzig.irpact.io.spec.SpecificationHelper;
-import de.unileipzig.irpact.io.spec.SpecificationManager;
-import de.unileipzig.irpact.io.spec.impl.SpecBase;
+import de.unileipzig.irpact.io.spec.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static de.unileipzig.irpact.io.spec.SpecificationConstants.*;
 
 /**
  * @author Daniel Abitz
  */
-public class VisibleBinaryDataSpec extends SpecBase<VisibleBinaryData, VisibleBinaryData[]> {
+public class VisibleBinaryDataSpec
+        implements ToSpecConverter<VisibleBinaryData>, ToParamConverter<VisibleBinaryData> {
 
-    @Override
-    public VisibleBinaryData[] toParam(SpecificationManager manager, Map<String, Object> cache) {
-        List<VisibleBinaryData> list = new ArrayList<>();
-
-        SpecificationHelper rootSpec = new SpecificationHelper(manager.getBinaryDataRoot());
-        SpecificationHelper content = rootSpec.getArraySpec(TAG_content);
-
-        for(JsonNode child: content.iterateElements()) {
-            SpecificationHelper childSpec = new SpecificationHelper(child);
-            String binary = childSpec.getText(TAG_binary);
-            long id = childSpec.getLong(TAG_id);
-
-            VisibleBinaryData vbd = new VisibleBinaryData();
-            vbd.setName(binary);
-            vbd.setID(id);
-            list.add(vbd);
-        }
-        return list.toArray(new VisibleBinaryData[0]);
-    }
+    public static final VisibleBinaryDataSpec INSTANCE = new VisibleBinaryDataSpec();
 
     @Override
     public Class<VisibleBinaryData> getParamType() {
@@ -44,11 +24,35 @@ public class VisibleBinaryDataSpec extends SpecBase<VisibleBinaryData, VisibleBi
     }
 
     @Override
-    public void toSpec(VisibleBinaryData instance, SpecificationManager manager, SpecificationConverter converter) {
-        SpecificationHelper spec = new SpecificationHelper(manager.getBinaryDataRoot());
-        SpecificationHelper content = spec.getArraySpec(TAG_content);
-        SpecificationHelper newEntry = content.addObjectSpec();
-        newEntry.set(TAG_binary, instance.getName());
-        newEntry.set(TAG_id, instance.getID());
+    public void toSpec(VisibleBinaryData input, SpecificationManager manager, SpecificationConverter converter, boolean inline) {
+        SpecificationHelper spec = new SpecificationHelper(manager.getBinaryData().get());
+        SpecificationHelper list = spec.getArraySpec(TAG_list);
+        create(input, list.addObject(), manager, converter, inline);
+    }
+
+    @Override
+    public void create(VisibleBinaryData input, ObjectNode root, SpecificationManager manager, SpecificationConverter converter, boolean inline) {
+        SpecificationHelper spec = new SpecificationHelper(root);
+        spec.set(TAG_binary, input.getName());
+        spec.set(TAG_id, input.getID());
+    }
+
+    @Override
+    public VisibleBinaryData[] toParam(SpecificationManager manager, SpecificationConverter converter, SpecificationCache cache) {
+        SpecificationHelper spec = new SpecificationHelper(manager.getBinaryData().get());
+        SpecificationHelper list = spec.getArraySpec(TAG_list);
+
+        List<VisibleBinaryData> outList = new ArrayList<>();
+        for(JsonNode root: list.iterateElements()) {
+            SpecificationHelper entry = new SpecificationHelper(root);
+            String bin = entry.getText(TAG_binary);
+            long id = entry.getLong(TAG_id);
+            VisibleBinaryData data = new VisibleBinaryData();
+            data.setName(bin);
+            data.setID(id);
+            outList.add(data);
+        }
+
+        return outList.toArray(new VisibleBinaryData[0]);
     }
 }

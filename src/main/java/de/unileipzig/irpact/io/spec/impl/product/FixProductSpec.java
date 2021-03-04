@@ -1,28 +1,26 @@
 package de.unileipzig.irpact.io.spec.impl.product;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.io.param.input.product.InFixProduct;
 import de.unileipzig.irpact.io.param.input.product.InFixProductAttribute;
-import de.unileipzig.irpact.io.spec.SpecificationConverter;
-import de.unileipzig.irpact.io.spec.SpecificationHelper;
-import de.unileipzig.irpact.io.spec.SpecificationManager;
-import de.unileipzig.irpact.io.spec.impl.SpecBase;
+import de.unileipzig.irpact.io.param.input.product.InProductGroup;
+import de.unileipzig.irpact.io.param.input.product.InProductGroupAttribute;
+import de.unileipzig.irpact.io.spec.*;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-import static de.unileipzig.irpact.io.spec.SpecificationConstants.TAG_group;
-import static de.unileipzig.irpact.io.spec.SpecificationConstants.TAG_value;
+import static de.unileipzig.irpact.io.spec.SpecificationConstants.*;
 
 /**
  * @author Daniel Abitz
  */
-public class FixProductSpec extends SpecBase<InFixProduct, Void> {
+public class FixProductSpec
+        implements ToSpecConverter<InFixProduct>, ToParamConverter<InFixProduct> {
 
-    @Override
-    public Void toParam(SpecificationManager manager, Map<String, Object> cache) {
-        throw new UnsupportedOperationException();
-    }
+    public static final FixProductSpec INSTANCE = new FixProductSpec();
 
     @Override
     public Class<InFixProduct> getParamType() {
@@ -30,19 +28,57 @@ public class FixProductSpec extends SpecBase<InFixProduct, Void> {
     }
 
     @Override
-    public void toSpec(InFixProduct instance, SpecificationManager manager, SpecificationConverter converter) throws ParsingException {
-        if(!manager.hasFixProduct(instance.getName())) {
-            SpecificationHelper spec = new SpecificationHelper(manager.getFixProduct(instance.getName()));
-            spec.setName(instance.getName());
-            spec.set(TAG_group, instance.getProductGroup().getName());
+    public void toSpec(InFixProduct input, SpecificationManager manager, SpecificationConverter converter, boolean inline) throws ParsingException {
+        String pgName = input.getProductGroup().getName();
+        SpecificationHelper pgSpec = new SpecificationHelper(manager.getProductGroups().get(pgName));
+        SpecificationHelper fixSpec = pgSpec.getArraySpec(TAG_fixProducts);
+        create(input, fixSpec.addObject(), manager, converter, true);
+    }
 
-            ArrayNode arr = spec.getAttributes();
-            for(InFixProductAttribute inAttr: instance.getAttributes()) {
-                SpecificationHelper specAttr = new SpecificationHelper(arr.addObject());
-                specAttr.setName(inAttr.getName());
-                specAttr.set(TAG_group, inAttr.getRefPGA().getName());
-                specAttr.set(TAG_value, inAttr.getValue());
+    @Override
+    public void create(InFixProduct input, ObjectNode root, SpecificationManager manager, SpecificationConverter converter, boolean inline) throws ParsingException {
+        SpecificationHelper spec = new SpecificationHelper(root);
+        spec.setName(input.getName());
+        spec.setGroup(input.getProductGroup().getName());
+
+        SpecificationHelper attrsSpec = spec.getAttributesSpec();
+        for(InFixProductAttribute inAttr: input.getAttributes()) {
+            SpecificationHelper attrSpec = attrsSpec.addObjectSpec();
+            attrSpec.setGroup(inAttr.getRefPGA().getAttrNameString());
+            attrSpec.setValue(inAttr.getValue());
+        }
+    }
+
+    @Override
+    public InFixProduct[] toParam(SpecificationManager manager, SpecificationConverter converter, SpecificationCache cache) throws ParsingException {
+        List<InFixProduct> products = new ArrayList<>();
+
+        for(ObjectNode root: manager.getProductGroups().getAll().values()) {
+            SpecificationHelper pgSpec = new SpecificationHelper(root);
+            SpecificationHelper fixArraySpec = pgSpec.getArraySpec(TAG_fixProducts);
+            for(JsonNode fixNode: fixArraySpec.iterateElements()) {
+                SpecificationHelper fixSpec = new SpecificationHelper(fixNode);
+                String name = fixSpec.getName();
+                String pgName = fixSpec.getGroup();
+                InProductGroup pg = converter.getProductGroup(pgName, manager, cache);
+
+                List<InFixProductAttribute> fixAttrs = new ArrayList<>();
+                SpecificationHelper attrsSpec = fixSpec.getAttributesSpec();
+                for(JsonNode attrNode: attrsSpec.iterateElements()) {
+                    SpecificationHelper attrSpec = new SpecificationHelper(attrNode);
+                    String attrGroupName = attrSpec.getGroup();
+                    InProductGroupAttribute attrGroup = pg.findAttribute(attrGroupName);
+                    double value = attrSpec.getValue();
+
+                    InFixProductAttribute fixAttr = new InFixProductAttribute(name + "_" + attrGroupName, attrGroup, value);
+                    fixAttrs.add(fixAttr);
+                }
+
+                InFixProduct fixProduct = new InFixProduct(name, pg, fixAttrs.toArray(new InFixProductAttribute[0]));
+                products.add(fixProduct);
             }
         }
+
+        return products.toArray(new InFixProduct[0]);
     }
 }

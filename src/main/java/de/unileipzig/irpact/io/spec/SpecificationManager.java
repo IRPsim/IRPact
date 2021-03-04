@@ -16,14 +16,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static de.unileipzig.irpact.io.spec.SpecificationConstants.*;
 
 /**
  * @author Daniel Abitz
  */
-@SuppressWarnings("BooleanMethodIsAlwaysInverted")
-public final class SpecificationManager {
+public class SpecificationManager {
 
     private static final DirectoryStream.Filter<Path> FILTER = path -> {
         if(path == null) {
@@ -33,46 +33,80 @@ public final class SpecificationManager {
             return true;
         }
         String fileName = path.getFileName().toString();
-        return fileName.endsWith(JSON_EXTENSION);
+        return fileName.endsWith(JSON_EXTENSION_WITH_DOT);
     };
 
-    private static final IRPLogger logger = IRPLogging.getLogger(SpecificationManager.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(SpecificationManager.class);
 
-    protected ObjectMapper mapper;
+    protected final ObjectMapper mapper;
 
-    protected Map<String, ObjectNode> cagMap = new HashMap<>();
-    protected Map<String, ObjectNode> awarenessMap = new HashMap<>();
-    protected Map<String, ObjectNode> distributionMap = new HashMap<>();
-    protected Map<String, ObjectNode> spatialDistributionMap = new HashMap<>();
-    protected Map<String, ObjectNode> evalMap = new HashMap<>();
-    protected Map<String, ObjectNode> productMap = new HashMap<>();
-    protected Map<String, ObjectNode> fixProductsMap = new HashMap<>();
-    protected Map<String, ObjectNode> productFindingSchemeMap = new HashMap<>();
-    protected Map<String, ObjectNode> productInterestSupplySchemeMap = new HashMap<>();
+    protected final Map<String, FileEntry> fileEntries = new HashMap<>();
+    protected final Map<String, DirEntry> dirEntries = new HashMap<>();
 
-    protected ObjectNode generalRoot;
-    protected ObjectNode affinityRoot;
-    protected ObjectNode topologyRoot;
-    protected ObjectNode processRoot;
-    protected ObjectNode spatialRoot;
-    protected ObjectNode timeRoot;
-    protected ObjectNode binaryDataRoot;
-    protected ObjectNode filesRoot;
+    public SpecificationManager() {
+        this(IRPactJson.JSON);
+    }
 
     public SpecificationManager(ObjectMapper mapper) {
         this.mapper = mapper;
         init();
     }
 
-    protected void init() {
-        generalRoot = mapper.createObjectNode();
-        affinityRoot = mapper.createObjectNode();
-        topologyRoot = mapper.createObjectNode();
-        processRoot = mapper.createObjectNode();
-        spatialRoot = mapper.createObjectNode();
-        timeRoot = mapper.createObjectNode();
-        binaryDataRoot = mapper.createObjectNode();
-        filesRoot = mapper.createObjectNode();
+    private void init() {
+        //dir
+        addDir(DIR_Distributions);
+        addDir(DIR_SpatialDistributions);
+        addDir(DIR_ProductGroups);
+        addDir(DIR_ConsumerAgentGroups);
+        //file
+        addFile(FILE_General);
+        addFile(FILE_TimeModel);
+        addFile(FILE_SpatialModel);
+        addFile(FILE_BinaryData);
+        addFile(FILE_SocialNetwork);
+        addFile(FILE_Files);
+        addFile(FILE_Affinities);
+        addFile(FILE_ProcessModel);
+    }
+
+    private void addDir(String name) {
+        addDir(new DirEntry(mapper, name));
+    }
+
+    private void addDir(DirEntry entry) {
+        if(dirEntries.containsKey(entry.getDirKey())) {
+            throw new IllegalArgumentException("key '" + entry.getDirKey() + "' already exists");
+        } else {
+            dirEntries.put(entry.getDirKey(),entry);
+        }
+    }
+
+    private void addFile(String name) {
+        addFile(new FileEntry(name, mapper.createObjectNode()));
+    }
+
+    private void addFile(FileEntry entry) {
+        if(fileEntries.containsKey(entry.getFileName())) {
+            throw new IllegalArgumentException("key '" + entry.getFileName() + "' already exists");
+        } else {
+            fileEntries.put(entry.getFileName(),entry);
+        }
+    }
+
+    //=========================
+    //general
+    //=========================
+
+    private static String toJson(String input) {
+        return input.endsWith(JSON_EXTENSION_WITH_DOT)
+                ? input
+                : input + JSON_EXTENSION_WITH_DOT;
+    }
+
+    private static String removeJson(String input) {
+        return input.endsWith(JSON_EXTENSION_WITH_DOT)
+                ? input.substring(0, input.length() - JSON_EXTENSION_WITH_DOT.length())
+                : input;
     }
 
     //=========================
@@ -91,22 +125,12 @@ public final class SpecificationManager {
         }
     }
 
-    private static String getDirKey(Path dir) {
+    private String getDirKey(Path dir) {
         String name = dir.getFileName().toString();
-        switch (name) {
-            case DIR_ConsumerAgentGroups:
-            case DIR_Awareness:
-            case DIR_Distributions:
-            case DIR_SpatialDistributions:
-            case DIR_DistanceEvaluators:
-            case DIR_ProductGroups:
-            case DIR_FixProducts:
-            case DIR_ProductFindingSchemes:
-            case DIR_ProductInterestSupplyScheme:
-                return name;
-
-            default:
-                return DIR_NONE;
+        if(dirEntries.containsKey(name)) {
+            return name;
+        } else {
+            return DIR_NONE;
         }
     }
 
@@ -115,84 +139,20 @@ public final class SpecificationManager {
         String fileNameWithoutJson = removeJson(fileName);
         ObjectNode root = IRPactJson.readJson(file, StandardCharsets.UTF_8);
 
-        switch (dirKey) {
-            case DIR_ConsumerAgentGroups:
-                cagMap.put(fileNameWithoutJson, root);
-                break;
-
-            case DIR_Awareness:
-                awarenessMap.put(fileNameWithoutJson, root);
-                break;
-
-            case DIR_Distributions:
-                distributionMap.put(fileNameWithoutJson, root);
-                break;
-
-            case DIR_SpatialDistributions:
-                spatialDistributionMap.put(fileNameWithoutJson, root);
-                break;
-
-            case DIR_DistanceEvaluators:
-                evalMap.put(fileNameWithoutJson, root);
-                break;
-
-            case DIR_ProductGroups:
-                productMap.put(fileNameWithoutJson, root);
-                break;
-
-            case DIR_FixProducts:
-                fixProductsMap.put(fileNameWithoutJson, root);
-                break;
-
-            case DIR_ProductFindingSchemes:
-                productFindingSchemeMap.put(fileNameWithoutJson, root);
-                break;
-
-            case DIR_ProductInterestSupplyScheme:
-                productInterestSupplySchemeMap.put(fileNameWithoutJson, root);
-                break;
-
-            case DIR_NONE:
-                switch (fileName) {
-                    case FILE_General:
-                        generalRoot = root;
-                        break;
-
-                    case FILE_Affinities:
-                        affinityRoot = root;
-                        break;
-
-                    case FILE_SocialNetwork:
-                        topologyRoot = root;
-                        break;
-
-                    case FILE_ProcessModel:
-                        processRoot = root;
-                        break;
-
-                    case FILE_SpatialModel:
-                        spatialRoot = root;
-                        break;
-
-                    case FILE_TimeModel:
-                        timeRoot = root;
-                        break;
-
-                    case FILE_BinaryData:
-                        binaryDataRoot = root;
-                        break;
-
-                    case FILE_Files:
-                        filesRoot = root;
-                        break;
-
-                    default:
-                        throw new IllegalArgumentException("unknown file: " + fileName);
-                }
-                break;
-
-            default:
-                throw new IllegalArgumentException("unknown key: " + dirKey);
+        if(Objects.equals(dirKey, DIR_NONE)) {
+            FileEntry entry = fileEntries.get(fileName);
+            if(entry != null) {
+                entry.set(root);
+            } else {
+                LOGGER.warn("unsupported file: '{}'", fileName);
+            }
+        } else {
+            DirEntry entry = dirEntries.get(dirKey);
+            if(entry != null) {
+                entry.put(fileNameWithoutJson, root);
+            } else {
+                LOGGER.warn("unsupported dir: '{}'", dirKey);
+            }
         }
     }
 
@@ -201,200 +161,215 @@ public final class SpecificationManager {
     //=========================
 
     public void store(Path dir) throws IOException {
+        store(dir, IRPactJson.JSON, Util.defaultPrinter, true);
+    }
+
+    public void store(Path dir, ObjectMapper mapper, PrettyPrinter printer, boolean skipIfEmpty) throws IOException {
         if(Files.notExists(dir)) {
-            logger.debug(IRPSection.SPECIFICATION_CONVERTER, "create '{}'", dir);
+            LOGGER.debug(IRPSection.SPECIFICATION_CONVERTER, "create '{}'", dir);
             Files.createDirectories(dir);
         }
 
-        createFiles(dir.resolve(DIR_ConsumerAgentGroups), cagMap);
-        createFiles(dir.resolve(DIR_Awareness), awarenessMap);
-        createFiles(dir.resolve(DIR_Distributions), distributionMap);
-        createFiles(dir.resolve(DIR_SpatialDistributions), spatialDistributionMap);
-        createFiles(dir.resolve(DIR_DistanceEvaluators), evalMap);
-        createFiles(dir.resolve(DIR_ProductGroups), productMap);
-        createFiles(dir.resolve(DIR_FixProducts), fixProductsMap);
-        createFiles(dir.resolve(DIR_ProductFindingSchemes), productFindingSchemeMap);
-        createFiles(dir.resolve(DIR_ProductInterestSupplyScheme), productInterestSupplySchemeMap);
-
-        createFile(dir.resolve(FILE_General), generalRoot);
-        createFile(dir.resolve(FILE_Affinities), affinityRoot);
-        createFile(dir.resolve(FILE_SocialNetwork), topologyRoot);
-        createFile(dir.resolve(FILE_ProcessModel), processRoot);
-        createFile(dir.resolve(FILE_SpatialModel), spatialRoot);
-        createFile(dir.resolve(FILE_TimeModel), timeRoot);
-        createFile(dir.resolve(FILE_BinaryData), binaryDataRoot);
-        createFile(dir.resolve(FILE_Files), filesRoot);
-    }
-
-    private static String toJson(String input) {
-        return input.endsWith(JSON_EXTENSION)
-                ? input
-                : input + JSON_EXTENSION;
-    }
-
-    private static String removeJson(String input) {
-        return input.endsWith(JSON_EXTENSION)
-                ? input.substring(0, input.length() - JSON_EXTENSION.length())
-                : input;
-    }
-
-    private static void createFile(Path path, ObjectNode node) throws IOException {
-        createFile(IRPactJson.JSON, Util.defaultPrinter, path, node);
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    private static void createFile(
-            ObjectMapper mapper,
-            PrettyPrinter printer,
-            Path path,
-            ObjectNode node) throws IOException {
-        logger.debug(IRPSection.SPECIFICATION_CONVERTER, "write '{}'", path);
-        IRPactJson.write(
-                node,
-                path,
-                StandardCharsets.UTF_8,
-                printer,
-                mapper
-        );
-    }
-
-    private static void createFiles(
-            Path dir,
-            Map<String, ObjectNode> map) throws IOException {
-        createFiles(IRPactJson.JSON, Util.defaultPrinter, dir, map);
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    private static void createFiles(
-            ObjectMapper mapper,
-            PrettyPrinter printer,
-            Path dir,
-            Map<String, ObjectNode> map) throws IOException {
-        if(Files.notExists(dir)) {
-            logger.debug(IRPSection.SPECIFICATION_CONVERTER, "create '{}'", dir);
-            Files.createDirectories(dir);
+        for(FileEntry entry: fileEntries.values()) {
+            entry.store(dir, mapper, printer, skipIfEmpty);
         }
-        for(Map.Entry<String, ObjectNode> entry: map.entrySet()) {
-            Path path = dir.resolve(toJson(entry.getKey()));
-            logger.debug(IRPSection.SPECIFICATION_CONVERTER, "write '{}'", path);
+
+        for(DirEntry entry: dirEntries.values()) {
+            entry.store(dir, mapper, printer, skipIfEmpty);
+        }
+    }
+
+    //=========================
+    //access
+    //=========================
+
+    public FileEntry getFileEntry(String key) {
+        FileEntry entry = fileEntries.get(key);
+        if(entry == null) {
+            throw new IllegalArgumentException("key '" + key + "' not found");
+        }
+        return entry;
+    }
+
+    public FileEntry getGeneral() {
+        return getFileEntry(FILE_General);
+    }
+
+    public FileEntry getTimeModel() {
+        return getFileEntry(FILE_TimeModel);
+    }
+
+    public FileEntry getSpatialModel() {
+        return getFileEntry(FILE_SpatialModel);
+    }
+
+    public FileEntry getBinaryData() {
+        return getFileEntry(FILE_BinaryData);
+    }
+
+    public FileEntry getSocialNetwork() {
+        return getFileEntry(FILE_SocialNetwork);
+    }
+
+    public FileEntry getFiles() {
+        return getFileEntry(FILE_Files);
+    }
+
+    public FileEntry getAffinities() {
+        return getFileEntry(FILE_Affinities);
+    }
+
+    public FileEntry getProcessModel() {
+        return getFileEntry(FILE_ProcessModel);
+    }
+
+    public DirEntry getDirEntry(String key) {
+        DirEntry entry = dirEntries.get(key);
+        if(entry == null) {
+            throw new IllegalArgumentException("key '" + key + "' not found");
+        }
+        return entry;
+    }
+
+    public DirEntry getDistributions() {
+        return getDirEntry(DIR_Distributions);
+    }
+
+    public DirEntry getSpatialDistributions() {
+        return getDirEntry(DIR_SpatialDistributions);
+    }
+
+    public DirEntry getProductGroups() {
+        return getDirEntry(DIR_ProductGroups);
+    }
+
+    public DirEntry getConsumerAgentGroups() {
+        return getDirEntry(DIR_ConsumerAgentGroups);
+    }
+
+//    public DirEntry getProductInterests() {
+//        return getDirEntry(DIR_ConsumerAgentGroups);
+//    }
+
+    //=========================
+    //helper
+    //=========================
+
+    /**
+     * @author Daniel Abitz
+     */
+    @SuppressWarnings("FieldMayBeFinal")
+    public static class FileEntry {
+
+        private final String NAME;
+        private ObjectNode root;
+
+        public FileEntry(String name, ObjectNode root) {
+            this.NAME = name;
+            this.root = root;
+        }
+
+        public String getFileName() {
+            return NAME;
+        }
+
+        private void store(Path dir, ObjectMapper mapper, PrettyPrinter printer, boolean skipIfEmpty) throws IOException {
+            if(skipIfEmpty && isEmpty()) {
+                return;
+            }
+
+            Path path = dir.resolve(getFileName());
+            LOGGER.debug(IRPSection.SPECIFICATION_CONVERTER, "write '{}'", path);
             IRPactJson.write(
-                    entry.getValue(),
+                    root,
                     path,
                     StandardCharsets.UTF_8,
                     printer,
                     mapper
             );
         }
+
+        public boolean isEmpty() {
+            return root.isEmpty();
+        }
+
+        public void set(ObjectNode root) {
+            this.root = root;
+        }
+
+        public ObjectNode get() {
+            return root;
+        }
     }
 
-    //=========================
-    //util
-    //=========================
+    /**
+     * @author Daniel Abitz
+     */
+    public static class DirEntry {
 
-    public ObjectNode getGeneralSettings() {
-        return generalRoot;
-    }
+        private final String KEY;
+        private final ObjectMapper MAPPER;
+        private final Map<String, ObjectNode> ENTRIES = new HashMap<>();
 
-    public ObjectNode getAffinities() {
-        return affinityRoot;
-    }
+        public DirEntry(ObjectMapper mapper, String dirKey) {
+            this.MAPPER = mapper;
+            this.KEY = dirKey;
+        }
 
-    public ObjectNode getTopology() {
-        return topologyRoot;
-    }
+        public String getDirKey() {
+            return KEY;
+        }
 
-    public ObjectNode getProcess() {
-        return processRoot;
-    }
+        public boolean isEmpty() {
+            int count = 0;
+            for(ObjectNode node: getAll().values()) {
+                count += node.size();
+            }
+            return count == 0;
+        }
 
-    public ObjectNode getSpatial() {
-        return spatialRoot;
-    }
+        private void store(Path dir, ObjectMapper mapper, PrettyPrinter printer, boolean skipIfEmpty) throws IOException {
+            if(skipIfEmpty && isEmpty()) {
+                return;
+            }
 
-    public ObjectNode getTime() {
-        return timeRoot;
-    }
+            Path thisDir = dir.resolve(KEY);
+            if(Files.notExists(thisDir)) {
+                LOGGER.debug(IRPSection.SPECIFICATION_CONVERTER, "create '{}'", thisDir);
+                Files.createDirectories(thisDir);
+            }
 
-    public ObjectNode getBinaryDataRoot() {
-        return binaryDataRoot;
-    }
+            for(Map.Entry<String, ObjectNode> entry: getAll().entrySet()) {
+                Path path = thisDir.resolve(toJson(entry.getKey()));
+                LOGGER.debug(IRPSection.SPECIFICATION_CONVERTER, "write '{}'", path);
+                IRPactJson.write(
+                        entry.getValue(),
+                        path,
+                        StandardCharsets.UTF_8,
+                        printer,
+                        mapper
+                );
+            }
+        }
 
-    public ObjectNode getFilesRoot() {
-        return filesRoot;
-    }
+        public Map<String, ObjectNode> getAll() {
+            return ENTRIES;
+        }
 
-    public ObjectNode getAwareness(String name) {
-        return awarenessMap.computeIfAbsent(name, _name -> mapper.createObjectNode());
-    }
-    public boolean hasAwareness(String name) {
-        return awarenessMap.containsKey(name);
-    }
+        public void put(String nameWithoutExtension, ObjectNode node) {
+            ENTRIES.put(nameWithoutExtension, node);
+        }
 
-    public Map<String, ObjectNode> getConsumerAgentGroups() {
-        return cagMap;
-    }
-    public ObjectNode getConsumerAgentGroup(String name) {
-        return cagMap.computeIfAbsent(name, _name -> mapper.createObjectNode());
-    }
-    public boolean hasConsumerAgentGroup(String name) {
-        return cagMap.containsKey(name);
-    }
+        public ObjectNode get(String name) {
+            return ENTRIES.computeIfAbsent(name, _name -> MAPPER.createObjectNode());
+        }
 
-    public ObjectNode getDistribution(String name) {
-        return distributionMap.computeIfAbsent(name, _name -> mapper.createObjectNode());
-    }
-    public boolean hasDistribution(String name) {
-        return distributionMap.containsKey(name);
-    }
+        public boolean has(String name) {
+            return ENTRIES.containsKey(name);
+        }
 
-    public ObjectNode getEvaluator(String name) {
-        return evalMap.computeIfAbsent(name, _name -> mapper.createObjectNode());
-    }
-    public boolean hasEvaluator(String name) {
-        return evalMap.containsKey(name);
-    }
-
-    public ObjectNode getProductGroup(String name) {
-        return productMap.computeIfAbsent(name, _name -> mapper.createObjectNode());
-    }
-    public boolean hasProductGroup(String name) {
-        return productMap.containsKey(name);
-    }
-
-    public ObjectNode getSpatialDistribution(String name) {
-        return spatialDistributionMap.computeIfAbsent(name, _name -> mapper.createObjectNode());
-    }
-    public boolean hasSpatialDistribution(String name) {
-        return spatialDistributionMap.containsKey(name);
-    }
-
-    public Map<String, ObjectNode> getProductFindingSchemes() {
-        return productFindingSchemeMap;
-    }
-    public ObjectNode getProductFindingScheme(String name) {
-        return productFindingSchemeMap.computeIfAbsent(name, _name -> mapper.createObjectNode());
-    }
-    public boolean hasProductFindingScheme(String name) {
-        return productFindingSchemeMap.containsKey(name);
-    }
-
-    public Map<String, ObjectNode> getProductInterestSupplySchemes() {
-        return productInterestSupplySchemeMap;
-    }
-    public ObjectNode getProductInterestSupplyScheme(String name) {
-        return productInterestSupplySchemeMap.computeIfAbsent(name, _name -> mapper.createObjectNode());
-    }
-    public boolean hasProductInterestSupplyScheme(String name) {
-        return productInterestSupplySchemeMap.containsKey(name);
-    }
-
-    public Map<String, ObjectNode> getFixProducts() {
-        return fixProductsMap;
-    }
-    public ObjectNode getFixProduct(String name) {
-        return fixProductsMap.computeIfAbsent(name, _name -> mapper.createObjectNode());
-    }
-    public boolean hasFixProduct(String name) {
-        return fixProductsMap.containsKey(name);
+        public boolean hasNot(String name) {
+            return !has(name);
+        }
     }
 }

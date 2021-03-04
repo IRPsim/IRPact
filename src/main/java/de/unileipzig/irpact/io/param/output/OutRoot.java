@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.io.param.output;
 
-import de.unileipzig.irpact.io.IOResources;
+import de.unileipzig.irpact.io.param.IOResources;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.start.optact.in.Ii;

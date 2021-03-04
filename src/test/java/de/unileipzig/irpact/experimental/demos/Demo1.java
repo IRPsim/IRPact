@@ -1,24 +1,34 @@
 package de.unileipzig.irpact.experimental.demos;
 
-import de.unileipzig.irpact.develop.TodoException;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
+import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
+import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.InVersion;
+import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.param.input.distribution.InConstantUnivariateDistribution;
-import de.unileipzig.irpact.io.param.input.distribution.InRandomBoundedIntegerDistribution;
-import de.unileipzig.irpact.io.param.input.process.InOrientationSupplier;
-import de.unileipzig.irpact.io.param.input.process.InProcessModel;
-import de.unileipzig.irpact.io.param.input.process.InRAProcessModel;
-import de.unileipzig.irpact.io.param.input.process.InSlopeSupplier;
+import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
+import de.unileipzig.irpact.io.param.input.file.InPVFile;
+import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
+import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
+import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
+import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
+import de.unileipzig.irpact.io.param.input.process.*;
+import de.unileipzig.irpact.io.param.input.product.*;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomSpatialDistribution2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
+import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
+import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irptools.defstructure.DefaultScenarioFactory;
 import org.junit.jupiter.api.Disabled;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -27,64 +37,172 @@ import java.util.concurrent.TimeUnit;
 @Disabled
 public class Demo1 implements DefaultScenarioFactory {
 
+
+    private static InConsumerAgentGroupAttribute build(
+            String prefix,
+            InAttributeName name,
+            InUnivariateDoubleDistribution dist,
+            List<InConsumerAgentGroupAttribute> out) {
+        InConsumerAgentGroupAttribute attr = new InConsumerAgentGroupAttribute(prefix + "_" + name.getName(), name, dist);
+        out.add(attr);
+        return attr;
+    }
+
     private static InRoot getRoot() {
-        throw new TodoException();
-//        Map<String, Object> cache = new HashMap<>();
-//        cache.put("DiraqDistribution1", new InConstantUnivariateDistribution("DiraqDistribution1", 1));
-//        cache.put("DiraqDistribution0", new InConstantUnivariateDistribution("DiraqDistribution0", 0));
-//
-//        InConsumerAgentGroup A = DemoUtil.createGroup(
-//                "A",
-//                "DiraqDistribution1",
-//                cache
-//        );
-//        InConsumerAgentGroup B = DemoUtil.createGroup(
-//                "B",
-//                "DiraqDistribution0",
-//                cache
-//        );
-//
-//        InCustomSpatialDistribution2D A_spa = new InCustomSpatialDistribution2D(
-//                "A_spatial",
-//                A,
-//                0, 0
-//        );
-//        InCustomSpatialDistribution2D B_spa = new InCustomSpatialDistribution2D(
-//                "B_spatial",
-//                B,
-//                0, 0
-//        );
-//
-//        InRoot root = new InRoot();
-//        root.general.seed = 123;
-//        root.general.timeout = TimeUnit.MINUTES.toMillis(5);
-//        root.general.startYear = 2015;
-//        root.general.endYear = 2015;
-//        root.version = new InVersion[]{InVersion.currentVersion()};
-//
-//        root.consumerAgentGroups = new InConsumerAgentGroup[]{A, B};
-//
-//        root.graphTopologySchemes = DemoUtil.getGraphTopo();
-//
-//        root.processModel = new InProcessModel[]{
-//                new InRAProcessModel("", 0.25, 0.25, 0.25, 0.25, 3, 2, 1, 0)
-//        };
-//        InRandomBoundedIntegerDistribution b_0_91 = new InRandomBoundedIntegerDistribution("b_0_91", 0, 91);
-//        root.orientationSupplier = new InOrientationSupplier[]{
-//                new InOrientationSupplier("ori_supplier", b_0_91)
-//        };
-//        root.slopeSupplier = new InSlopeSupplier[]{
-//                new InSlopeSupplier("slope_supplier", b_0_91)
-//        };
-//
-//        root.productGroups = DemoUtil.createProd(cache);
-//
-//        root.spatialModel = new InSpatialModel[]{new InSpace2D("Space2D", true)};
-//        root.spatialDistributions = new InSpatialDistribution[]{A_spa, B_spa};
-//
-//        root.timeModel = DemoUtil.getDiscrete1D();
-//
-//        return root;
+        //attr
+        InAttributeName A2 = new InAttributeName(RAConstants.NOVELTY_SEEKING);
+        InAttributeName A3 = new InAttributeName(RAConstants.DEPENDENT_JUDGMENT_MAKING);
+        InAttributeName A4 = new InAttributeName(RAConstants.ENVIRONMENTAL_CONCERN);
+        InAttributeName A7 = new InAttributeName(RAConstants.CONSTRUCTION_RATE);
+        InAttributeName A8 = new InAttributeName(RAConstants.RENOVATION_RATE);
+
+        InAttributeName B6 = new InAttributeName(RAConstants.REWIRING_RATE);
+
+        InAttributeName C1 = new InAttributeName(RAConstants.COMMUNICATION_FREQUENCY_SN);
+
+        InAttributeName D1 = new InAttributeName(RAConstants.INITIAL_PRODUCT_AWARENESS);
+        InAttributeName D3 = new InAttributeName(RAConstants.FINANCIAL_THRESHOLD);
+        InAttributeName D4 = new InAttributeName(RAConstants.ADOPTION_THRESHOLD);
+
+        InAttributeName E1 = new InAttributeName(RAConstants.INVESTMENT_COST);
+
+        InAttributeName A1 = new InAttributeName(RAConstants.PURCHASE_POWER);
+        InAttributeName A5 = new InAttributeName(RAConstants.SHARE_1_2_HOUSE);
+        InAttributeName A6 = new InAttributeName(RAConstants.HOUSE_OWNER);
+        InAttributeName Mic_Dominantes_Milieu = new InAttributeName(RAConstants.DOM_MILIEU);
+
+        //files
+        InPVFile pvFile = new InPVFile("BarwertrechnerMini_ES");
+        InSpatialTableFile tableFile = new InSpatialTableFile("GIS_final_2");
+
+        //dist
+        InUnivariateDoubleDistribution diraq0 = new InConstantUnivariateDistribution("diraq0", 0);
+        InUnivariateDoubleDistribution diraq07 = new InConstantUnivariateDistribution("diraq07", 0.7);
+        InUnivariateDoubleDistribution diraq1 = new InConstantUnivariateDistribution("diraq1", 1);
+
+        //product
+        InProductGroupAttribute pv_e1 = new InProductGroupAttribute(
+                "PV_E1",
+                E1,
+                diraq1
+        );
+        InProductGroup pv = new InProductGroup("PV", new InProductGroupAttribute[]{pv_e1});
+        InFixProductAttribute fix_pv_e1 = new InFixProductAttribute("PV_E1_fix", pv_e1, 1.0);
+        InFixProduct fix_pv = new InFixProduct("PV_fix", pv, new InFixProductAttribute[]{fix_pv_e1});
+        InFixProductFindingScheme fixScheme = new InFixProductFindingScheme("PV_fix_scheme", fix_pv);
+
+        //spatial
+        InCustomSpatialDistribution2D spaDist = new InCustomSpatialDistribution2D(
+                "RandomDraw00",
+                diraq0,
+                diraq0,
+                tableFile
+        );
+
+        //cags
+        //A
+        String name = "A";
+        List<InConsumerAgentGroupAttribute> list = new ArrayList<>();
+        build(name, A1, diraq1, list);      //ueberschreiben der spatial-datei
+        build(name, A2, diraq1, list);
+        build(name, A3, diraq1, list);
+        build(name, A4, diraq1, list);
+        build(name, A5, diraq1, list);      //ueberschreiben der spatial-datei
+        build(name, A6, diraq0, list);      //ueberschreiben der spatial-datei
+        build(name, A7, diraq0, list);
+        build(name, A8, diraq0, list);
+
+        build(name, B6, diraq0, list);
+
+        build(name, C1, diraq0, list);
+
+        build(name, D1, diraq1, list);
+        build(name, D3, diraq07, list);
+        build(name, D4, diraq07, list);
+
+        InProductThresholdInterestSupplyScheme A_awa = new InProductThresholdInterestSupplyScheme(name + "_awa", diraq1);
+
+        InConsumerAgentGroup A = new InConsumerAgentGroup(name, 1.0, 10, list, A_awa);
+        A.productFindingSchemes = new InProductFindingScheme[]{fixScheme};
+        A.spatialDistribution = new InSpatialDistribution[]{spaDist};
+
+        //B
+        name = "B";
+        list.clear();
+        build(name, A1, diraq1, list);      //ueberschreiben der spatial-datei
+        build(name, A2, diraq1, list);
+        build(name, A3, diraq1, list);
+        build(name, A4, diraq1, list);
+        build(name, A5, diraq1, list);      //ueberschreiben der spatial-datei
+        build(name, A6, diraq0, list);      //ueberschreiben der spatial-datei
+        build(name, A7, diraq0, list);
+        build(name, A8, diraq0, list);
+
+        build(name, B6, diraq0, list);
+
+        build(name, C1, diraq0, list);
+
+        build(name, D1, diraq0, list);      //!
+        build(name, D3, diraq07, list);
+        build(name, D4, diraq07, list);
+
+        InProductThresholdInterestSupplyScheme B_awa = new InProductThresholdInterestSupplyScheme(name + "_awa", diraq1);
+
+        InConsumerAgentGroup B = new InConsumerAgentGroup(name, 1.0, 10, list, B_awa);
+        B.productFindingSchemes = new InProductFindingScheme[]{fixScheme};
+        B.spatialDistribution = new InSpatialDistribution[]{spaDist};
+
+        //affinity
+        InComplexAffinityEntry A_A = new InComplexAffinityEntry(A.getName() + "_" + A.getName(), A, A, 0.0);
+        InComplexAffinityEntry A_B = new InComplexAffinityEntry(A.getName() + "_" + B.getName(), A, B, 0.0);
+        InComplexAffinityEntry B_B = new InComplexAffinityEntry(B.getName() + "_" + B.getName(), B, B, 0.0);
+        InComplexAffinityEntry B_A = new InComplexAffinityEntry(B.getName() + "_" + A.getName(), B, A, 0.0);
+
+        //process
+        InCustomUncertaintyGroupAttribute uncert = new InCustomUncertaintyGroupAttribute();
+        uncert.setName("RA_uncer");
+        uncert.cags = new InConsumerAgentGroup[]{A, B};
+        uncert.names = new InAttributeName[]{A2, A3, A4};
+        uncert.setUncertaintyDistribution(diraq0);
+        uncert.setConvergenceDistribution(diraq0);
+
+        InRAProcessModel processModel = new InRAProcessModel(
+                "RA",
+                0.25, 0.25, 0.25, 0.25,
+                3, 2, 1, 0,
+                pvFile,
+                new InSlopeSupplier[0],
+                new InOrientationSupplier[0],
+                new InUncertaintyGroupAttribute[]{uncert}
+        );
+
+        //=========================
+
+        InRoot root = new InRoot();
+        //general
+        root.general.seed = 1;
+        root.general.startYear = 2015;
+        root.general.endYear = 2015;
+        root.version = InVersion.currentVersionAsArray();
+        //affinity
+        root.affinityEntries = new InComplexAffinityEntry[]{A_A, A_B, B_A, B_B};
+        //agent
+        root.consumerAgentGroups = new InConsumerAgentGroup[] {A, B};
+        //network
+        root.graphTopologySchemes = new InGraphTopologyScheme[]{new InUnlinkedGraphTopology("Unlinked")};
+        //process
+        root.processModel = new InProcessModel[] {processModel};
+        //product
+        root.productGroups = new InProductGroup[] {pv};
+        root.fixProducts = new InFixProduct[] {fix_pv};
+        //spatial
+        root.spatialModel = new InSpatialModel[] {new InSpace2D("2D", Metric2D.EUCLIDEAN)};
+        //time
+        root.timeModel = new InTimeModel[] {new InDiscreteTimeModel("Diskret", TimeUnit.DAYS.toMillis(1))};
+        //binary
+        root.visibleBinaryData = new VisibleBinaryData[0];
+
+        return root;
     }
 
     @Override

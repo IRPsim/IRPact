@@ -79,6 +79,17 @@ public class InCustomSpatialDistribution2D implements InSpatialDistribution {
     public InCustomSpatialDistribution2D() {
     }
 
+    public InCustomSpatialDistribution2D(
+            String name,
+            InUnivariateDoubleDistribution xPosSupplier,
+            InUnivariateDoubleDistribution yPosSupplier,
+            InSpatialTableFile attrFile) {
+        this._name = name;
+        this.xPosSupplier = new InUnivariateDoubleDistribution[] {xPosSupplier};
+        this.yPosSupplier = new InUnivariateDoubleDistribution[] {yPosSupplier};
+        this.attrFile = new InSpatialTableFile[] {attrFile};
+    }
+
     @Override
     public String getName() {
         return _name;

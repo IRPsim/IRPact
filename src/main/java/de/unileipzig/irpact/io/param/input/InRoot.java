@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.MultiCounter;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
-import de.unileipzig.irpact.io.IOResources;
+import de.unileipzig.irpact.io.param.IOResources;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InNameSplitAffinityEntry;
