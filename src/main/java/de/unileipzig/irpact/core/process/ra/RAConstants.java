@@ -23,7 +23,7 @@ public final class RAConstants {
 
     public static final String COMMUNICATION_FREQUENCY_SN = "communication_frequency";           //C1
 
-    public static final String INITIAL_PRODUCT_AWARENESS = "initial_product_awareness";        //D1
+    public static final String INITIAL_PRODUCT_INTEREST = "initial_product_awareness";        //D1
     public static final String INTEREST_THRESHOLD = "interest_threshold";               //D2
     public static final String FINANCIAL_THRESHOLD = "financial_threshold";              //D3
     public static final String ADOPTION_THRESHOLD = "adoption_threshold";               //D4

@@ -268,12 +268,14 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         }
     }
 
+    //TODO aufraeumen
     private void checkInitialAdopter() {
         LOGGER.trace("setup initial adopter");
         Need need = pvNeed;
         Timestamp startTime = environment.getTimeModel().startTime();
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
             for(ConsumerAgent ca: cag.getAgents()) {
+
                 if(RAProcessPlan.isInitialAdopter(ca)) {
                     Product p = ca.getProductFindingScheme()
                             .findProduct(ca, need);
@@ -282,6 +284,13 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
                         ca.adoptAt(need, p, startTime);
                     }
                 }
+                //===
+                Product p = ca.getProductFindingScheme()
+                        .findProduct(ca, need);
+                double initialInterest = RAProcessPlan.getInitialProductInterest(ca);
+                ca.getProductInterest().update(p, initialInterest);
+                double v =  ca.getProductInterest().isAware(p) ? ca.getProductInterest().getValue(p) : 0;
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, ">>>>> {} {}", ca.getName(), v);
             }
         }
     }

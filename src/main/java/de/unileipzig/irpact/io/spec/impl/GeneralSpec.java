@@ -30,6 +30,8 @@ public class GeneralSpec implements ToSpecConverter<InGeneral>, ToParamConverter
         SpecificationHelper spec = new SpecificationHelper(root);
         spec.set(TAG_seed, input.seed);
         spec.set(TAG_timeout, input.timeout);
+        spec.set(TAG_logLevel, input.logLevel);
+        spec.set(TAG_logAll, input.logAll);
         spec.set(TAG_startYear, input.startYear);
         spec.set(TAG_endYear, input.endYear);
     }
@@ -50,6 +52,8 @@ public class GeneralSpec implements ToSpecConverter<InGeneral>, ToParamConverter
         general.timeout = spec.getLong(TAG_timeout);
         general.startYear = spec.getInt(TAG_startYear);
         general.endYear = spec.getInt(TAG_endYear);
+        general.logLevel = spec.getInt(TAG_logLevel);
+        general.logAll = spec.getBoolean(TAG_logAll);
         return general;
     }
 }

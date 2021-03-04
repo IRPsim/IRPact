@@ -52,7 +52,8 @@ public class FreeNetworkTopologySpec
 
     @Override
     public InFreeNetworkTopology[] toParam(SpecificationManager manager, SpecificationConverter converter, SpecificationCache cache) throws ParsingException {
-        SpecificationHelper spec = new SpecificationHelper(manager.getSpatialModel().get());
+        SpecificationHelper rootSpec = new SpecificationHelper(manager.getSocialNetwork().get());
+        SpecificationHelper spec = rootSpec.getObjectSpec(TAG_topology);
 
         InDistanceEvaluator eval = getDistance(spec.getParametersText(TAG_distanceEvaluator), cache);
         double initialWeight = spec.getParametersDouble(TAG_initialWeight);

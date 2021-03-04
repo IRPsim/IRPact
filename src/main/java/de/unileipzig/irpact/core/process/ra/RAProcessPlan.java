@@ -6,6 +6,7 @@ import de.unileipzig.irpact.commons.attribute.AttributeUtil;
 import de.unileipzig.irpact.commons.attribute.DoubleAttribute;
 import de.unileipzig.irpact.commons.attribute.StringAttribute;
 import de.unileipzig.irpact.commons.interest.Interest;
+import de.unileipzig.irpact.commons.util.DataType;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
@@ -159,7 +160,7 @@ public class RAProcessPlan implements ProcessPlan {
     protected ProcessPlanResult executePlan() {
         switch (currentStage) {
             case AWARENESS:
-                return handleAwareness();
+                return handleInterest();
 
             case FEASIBILITY:
                 return handleFeasibility();
@@ -182,7 +183,7 @@ public class RAProcessPlan implements ProcessPlan {
         return result;
     }
 
-    protected ProcessPlanResult handleAwareness() {
+    protected ProcessPlanResult handleInterest() {
         LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] handleAwareness", agent.getName());
 
         Interest<Product> productInterest = agent.getProductInterest();
@@ -334,6 +335,7 @@ public class RAProcessPlan implements ProcessPlan {
     protected ProcessPlanResult handleFeasibility() {
         LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] handleFeasibility", agent.getName());
 
+        LOGGER.trace(">>>>> {} {} {}", agent.getName(), isShareOf1Or2FamilyHouse(agent), isHouseOwner(agent));
         if(isShareOf1Or2FamilyHouse(agent) && isHouseOwner(agent)) {
             currentStage = RAStage.DECISION_MAKING;
             LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] new stage: {}", agent.getName(), currentStage);
@@ -455,6 +457,11 @@ public class RAProcessPlan implements ProcessPlan {
         return attr.getDoubleValue();
     }
 
+    protected static double getInitialProductInterest(ConsumerAgent agent) {
+        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.INITIAL_PRODUCT_INTEREST);
+        return attr.getDoubleValue();
+    }
+
     protected static double getCommunicationFrequencySN(ConsumerAgent agent) {
         ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.COMMUNICATION_FREQUENCY_SN);
         return attr.getDoubleValue();
@@ -496,9 +503,16 @@ public class RAProcessPlan implements ProcessPlan {
         attr.setDoubleValue(n);
     }
 
+    @Todo("URGS")
     protected static boolean isHouseOwner(ConsumerAgent agent) {
-        StringAttribute attr = (StringAttribute) agent.findAttribute(RAConstants.HOUSE_OWNER);
-        return RAConstants.PRIVATE.equals(attr.getStringValue());
+        Attribute<?> attr = agent.findAttribute(RAConstants.HOUSE_OWNER);
+        if(attr.getType() == DataType.DOUBLE) {
+            double v = attr.as(DoubleAttribute.class).getDoubleValue();
+            return v == 1.0;
+        } else {
+            String v = attr.as(StringAttribute.class).getStringValue();
+            return RAConstants.PRIVATE.equals(v);
+        }
     }
 
     protected static void setHouseOwner(ConsumerAgent agent, String value) {

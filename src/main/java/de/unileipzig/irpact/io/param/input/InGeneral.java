@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.io.param.input;
 
+import ch.qos.logback.classic.Level;
 import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLevel;
@@ -230,6 +231,14 @@ public class InGeneral {
     public boolean logJadexSystemOut;
 
     public InGeneral() {
+    }
+
+    public void setLogLevel(IRPLevel level) {
+        this.logLevel = level.getLevelId();
+    }
+
+    public void setTimeout(long duration, TimeUnit unit) {
+        this.timeout = unit.toMillis(duration);
     }
 
     public void setup(InputParser parser) throws ParsingException {

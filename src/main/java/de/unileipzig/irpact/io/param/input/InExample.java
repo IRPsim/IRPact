@@ -71,7 +71,7 @@ public class InExample implements DefaultScenarioFactory {
 
         InAttributeName C1 = new InAttributeName(RAConstants.COMMUNICATION_FREQUENCY_SN);
 
-        InAttributeName D1 = new InAttributeName(RAConstants.INITIAL_PRODUCT_AWARENESS);
+        InAttributeName D1 = new InAttributeName(RAConstants.INITIAL_PRODUCT_INTEREST);
         InAttributeName D2 = new InAttributeName(RAConstants.INTEREST_THRESHOLD);
         InAttributeName D3 = new InAttributeName(RAConstants.FINANCIAL_THRESHOLD);
         InAttributeName D4 = new InAttributeName(RAConstants.ADOPTION_THRESHOLD);

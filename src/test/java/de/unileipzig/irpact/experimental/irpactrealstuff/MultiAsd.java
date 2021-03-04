@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.experimental.irpactrealstuff;
 
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.process.ra.RAProcessPlan;
 import de.unileipzig.irpact.experimental.TestFiles;
 import de.unileipzig.irpact.io.param.input.InExample;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -284,4 +285,50 @@ class MultiAsd {
             assertEquals(content1, content2);
         }
     }
+
+    //===========================
+
+
+    @Test
+    void runToSpec3() {
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
+        String[] args = {
+                "-i", dir.resolve("scenariosX").resolve("input-" + 2015 + ".json").toString(),
+                "--paramToSpec", dir.resolve("spec").resolve("example1").toString()
+        };
+        Start.main(args);
+    }
+
+    @Test
+    void runToParam3() {
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
+        String[] args = {
+                "--specToParam", dir.resolve("spec").resolve("example1").toString(),
+                "-o", dir.resolve("scenariosX").resolve("input-spec-" + 2015 + ".json").toString()
+        };
+        Start.main(args);
+    }
+
+    @Test
+    void runIt3() {
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
+        String[] args = {
+                "-i", dir.resolve("spec").resolve("example1").toString(),
+                "-o", dir.resolve("scenariosX").resolve("output-spec-2015.json").toString()
+        };
+        Start.main(args);
+    }
+
+    @Test
+    void runIt4() {
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
+        String[] args = {
+                "-i", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\demos\\Demo1_Entscheidungsprozess_Bewusstsein").toString(),
+                "-o", dir.resolve("scenariosX").resolve("Demo1_Entscheidungsprozess_Bewusstsein.out.json").toString()
+        };
+        Start.main(args);
+    }
+
+
+    //
 }

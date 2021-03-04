@@ -35,6 +35,7 @@ public class BinaryJsonPersistanceManager extends BasicPersistManager {
         ensureRegister(BooleanDistributionPR.INSTANCE);
         ensureRegister(CompleteGraphTopologyPR.INSTANCE);
         ensureRegister(ConstantUnivariateDoubleDistributionPR.INSTANCE);
+        ensureRegister(DiscreteSpatialDistributionPR.INSTANCE);
         ensureRegister(DiscreteTimeModelPR.INSTANCE);
         ensureRegister(FixProcessModelFindingSchemePR.INSTANCE);
         ensureRegister(FixProductFindingSchemePR.INSTANCE);

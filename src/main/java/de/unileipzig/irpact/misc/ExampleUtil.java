@@ -71,7 +71,7 @@ public final class ExampleUtil {
 
         addName(RAConstants.COMMUNICATION_FREQUENCY_SN);
 
-        addName(RAConstants.INITIAL_PRODUCT_AWARENESS);
+        addName(RAConstants.INITIAL_PRODUCT_INTEREST);
         addName(RAConstants.INTEREST_THRESHOLD);
         addName(RAConstants.FINANCIAL_THRESHOLD);
         addName(RAConstants.ADOPTION_THRESHOLD);
@@ -111,7 +111,7 @@ public final class ExampleUtil {
 
                 createAttribute(name, RAConstants.COMMUNICATION_FREQUENCY_SN),
 
-                createAttribute(name, RAConstants.INITIAL_PRODUCT_AWARENESS),
+                createAttribute(name, RAConstants.INITIAL_PRODUCT_INTEREST),
                 createAttribute(name, RAConstants.INTEREST_THRESHOLD),
                 createAttribute(name, RAConstants.FINANCIAL_THRESHOLD),
                 createAttribute(name, RAConstants.ADOPTION_THRESHOLD)

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.experimental.demos;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.core.log.IRPLevel;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
@@ -76,7 +77,7 @@ public class Demo8 implements DefaultScenarioFactory {
 
         InAttributeName C1 = new InAttributeName(RAConstants.COMMUNICATION_FREQUENCY_SN);
 
-        InAttributeName D1 = new InAttributeName(RAConstants.INITIAL_PRODUCT_AWARENESS);
+        InAttributeName D1 = new InAttributeName(RAConstants.INITIAL_PRODUCT_INTEREST);
         InAttributeName D3 = new InAttributeName(RAConstants.FINANCIAL_THRESHOLD);
         InAttributeName D4 = new InAttributeName(RAConstants.ADOPTION_THRESHOLD);
         InAttributeName D5 = new InAttributeName(RAConstants.INITIAL_ADOPTER);
@@ -198,10 +199,13 @@ public class Demo8 implements DefaultScenarioFactory {
 
         InRoot root = new InRoot();
         //general
-        root.general.seed = 1;
+        root.general.seed = 8;
         root.general.startYear = 2015;
         root.general.endYear = 2015;
         root.version = InVersion.currentVersionAsArray();
+        root.general.setTimeout(5, TimeUnit.MINUTES);
+        root.general.setLogLevel(IRPLevel.ALL);
+        root.general.logAll = true;
         //affinity
         root.affinityEntries = new InComplexAffinityEntry[]{A_A, A_B, B_A, B_B};
         //agent
@@ -228,7 +232,7 @@ public class Demo8 implements DefaultScenarioFactory {
         return getRoot();
     }
 
-    private static final String demo = "Demo5_Entscheidungsprozess_Wohnsituation_Konstruktionsfall";
+    private static final String demo = "Demo8_Entscheidungsprozess_Wohnsituation_Konstruktionsfall";
 
     @Test
     void store() throws IOException, ParsingException {
@@ -240,11 +244,17 @@ public class Demo8 implements DefaultScenarioFactory {
         manager.store(out);
     }
 
+
     @Test
     void runAll() throws IOException, ParsingException {
         store();
         runToParam();
         runToSpec();
+    }
+
+    @Test
+    void runAllWithTest() throws IOException, ParsingException {
+        runAll();
         testContent();
     }
 

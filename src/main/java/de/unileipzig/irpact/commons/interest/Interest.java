@@ -16,4 +16,8 @@ public interface Interest<T> extends IsEquals {
     void makeInterested(T item);
 
     void forget(T item);
+
+    default double getValue(T item) {
+        throw new UnsupportedOperationException();
+    }
 }

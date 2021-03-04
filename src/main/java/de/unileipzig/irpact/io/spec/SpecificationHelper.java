@@ -217,6 +217,10 @@ public final class SpecificationHelper {
         rootAsObject().put(key, value);
     }
 
+    public void set(String key, boolean value) {
+        rootAsObject().put(key, value);
+    }
+
     public boolean hasArrayEntry(String value) {
         for(JsonNode node: iterateElements()) {
             if(node.isTextual() && Objects.equals(node.textValue(), value)) {
@@ -277,6 +281,14 @@ public final class SpecificationHelper {
             throw new IllegalArgumentException("missing node: " + key);
         }
         return node.intValue();
+    }
+
+    public boolean getBoolean(String key) {
+        JsonNode node = root.get(key);
+        if(node == null || !node.isBoolean()) {
+            throw new IllegalArgumentException("missing node: " + key);
+        }
+        return node.booleanValue();
     }
 
     public long getLong(String key) {

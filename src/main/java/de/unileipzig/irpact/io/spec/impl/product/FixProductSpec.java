@@ -59,23 +59,29 @@ public class FixProductSpec
             for(JsonNode fixNode: fixArraySpec.iterateElements()) {
                 SpecificationHelper fixSpec = new SpecificationHelper(fixNode);
                 String name = fixSpec.getName();
-                String pgName = fixSpec.getGroup();
-                InProductGroup pg = converter.getProductGroup(pgName, manager, cache);
 
-                List<InFixProductAttribute> fixAttrs = new ArrayList<>();
-                SpecificationHelper attrsSpec = fixSpec.getAttributesSpec();
-                for(JsonNode attrNode: attrsSpec.iterateElements()) {
-                    SpecificationHelper attrSpec = new SpecificationHelper(attrNode);
-                    String attrGroupName = attrSpec.getGroup();
-                    InProductGroupAttribute attrGroup = pg.findAttribute(attrGroupName);
-                    double value = attrSpec.getValue();
+                if(cache.has(name)) {
+                    products.add(cache.getAs(name));
+                } else {
+                    String pgName = fixSpec.getGroup();
+                    InProductGroup pg = converter.getProductGroup(pgName, manager, cache);
 
-                    InFixProductAttribute fixAttr = new InFixProductAttribute(name + "_" + attrGroupName, attrGroup, value);
-                    fixAttrs.add(fixAttr);
+                    List<InFixProductAttribute> fixAttrs = new ArrayList<>();
+                    SpecificationHelper attrsSpec = fixSpec.getAttributesSpec();
+                    for(JsonNode attrNode: attrsSpec.iterateElements()) {
+                        SpecificationHelper attrSpec = new SpecificationHelper(attrNode);
+                        String attrGroupName = attrSpec.getGroup();
+                        InProductGroupAttribute attrGroup = pg.findAttribute(attrGroupName);
+                        double value = attrSpec.getValue();
+
+                        InFixProductAttribute fixAttr = new InFixProductAttribute(name + "_" + attrGroupName, attrGroup, value);
+                        fixAttrs.add(fixAttr);
+                    }
+
+                    InFixProduct fixProduct = new InFixProduct(name, pg, fixAttrs.toArray(new InFixProductAttribute[0]));
+                    cache.securePut(name, fixProduct);
+                    products.add(fixProduct);
                 }
-
-                InFixProduct fixProduct = new InFixProduct(name, pg, fixAttrs.toArray(new InFixProductAttribute[0]));
-                products.add(fixProduct);
             }
         }
 

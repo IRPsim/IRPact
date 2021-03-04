@@ -27,6 +27,8 @@ import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Iterator;
 
 /**
@@ -100,6 +102,27 @@ public class Preloader {
     }
 
     private void load() throws Exception {
+        if(Files.isDirectory(param.getInputPath())) {
+            loadSpec();
+        }
+        else {
+            loadJson();
+        }
+    }
+
+    private void loadSpec() throws Exception {
+        InRoot root = convertSpecToParam(param.getInputPath());
+        AnnualEntry<InRoot> entry = new AnnualEntry<>(root, IRPactJson.JSON.createObjectNode());
+        entry.getConfig().init();
+        entry.getConfig().setYear(root.general.startYear);
+
+        LOGGER.debug("call IRPact with Spec");
+        IRPact irpact = new IRPact(param, resourceLoader);
+        irpact.start(entry);
+        LOGGER.debug("IRPact finished");
+    }
+
+    private void loadJson() throws Exception {
         ObjectNode root = IRPactJson.readJson(param.getInputPath());
         if(param.hasSpecOutputDirPath()) {
             convertParamToSpec(root);
@@ -121,15 +144,19 @@ public class Preloader {
 
     private void convertSpecToParam() throws Exception {
         LOGGER.debug("convert specification to parameter");
-        SpecificationManager manager = new SpecificationManager();
-        manager.load(param.getSpecInputDirPath());
-        SpecificationConverter converter = new SpecificationConverter();
-        InRoot root = converter.toParam(manager);
+        InRoot root = convertSpecToParam(param.getSpecInputDirPath());
         PerennialData<InRoot> pData = new PerennialData<>();
         pData.add(root.general.startYear, root);
         PerennialFile pFile = pData.serialize(IRPact.getInputConverter());
         pFile.store(param.getOutputPath(), StandardCharsets.UTF_8);
         LOGGER.debug(IRPSection.SPECIFICATION_CONVERTER, "param file stored: '{}'", param.getOutputPath());
+    }
+
+    private InRoot convertSpecToParam(Path input) throws Exception {
+        SpecificationManager manager = new SpecificationManager();
+        manager.load(input);
+        SpecificationConverter converter = new SpecificationConverter();
+        return converter.toParam(manager);
     }
 
     private void load(ObjectNode root) throws Exception {

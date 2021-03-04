@@ -338,6 +338,31 @@ public class Start implements Callable<Integer> {
         }
     }
 
+    //kein system.exit
+    public static int startWithGui(String[] args) throws Throwable {
+        IRPLogging.initConsole();
+        Start start = new Start(args);
+        CommandLine cmdLine = new CommandLine(start)
+                .setUnmatchedArgumentsAllowed(true);
+        int exitCode = cmdLine.execute(args);
+        if(exitCode == CommandLine.ExitCode.OK) {
+            if(start.printHelp || start.printVersion) {
+                return CommandLine.ExitCode.OK;
+            }
+            Preloader loader = new Preloader(start);
+            try {
+                loader.start();
+                LOGGER.debug("Start finished");
+                return CommandLine.ExitCode.OK;
+            } catch (Throwable t) {
+                LOGGER.error("Start failed with uncaught exception", t);
+                throw t;
+            }
+        } else {
+            throw new IllegalArgumentException("Fehlerhafte Eingabe (...)");
+        }
+    }
+
     public static void main(String[] args) {
         start(args);
     }

@@ -64,6 +64,8 @@ public final class SpecificationConstants {
     public static final String TAG_timePerTickInMs = "timePerTickInMs";
     public static final String TAG_seed = "seed";
     public static final String TAG_timeout = "timeout";
+    public static final String TAG_logLevel = "logLevel";
+    public static final String TAG_logAll = "logAll";
     public static final String TAG_startYear = "startYear";
     public static final String TAG_endYear = "endYear";
     public static final String TAG_version = "version";

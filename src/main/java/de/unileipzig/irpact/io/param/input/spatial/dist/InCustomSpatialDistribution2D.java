@@ -5,6 +5,8 @@ import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.process.ra.RAModelData;
+import de.unileipzig.irpact.core.process.ra.RAProcessPlan;
 import de.unileipzig.irpact.core.spatial.DiscreteSpatialDistribution;
 import de.unileipzig.irpact.core.spatial.SpatialDistribution;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
