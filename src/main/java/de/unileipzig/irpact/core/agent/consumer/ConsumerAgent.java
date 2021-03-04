@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.agent.consumer;
 
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
+import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.process.ProcessPlan;
@@ -39,6 +40,8 @@ public interface ConsumerAgent extends SpatialInformationAgent {
 
     void adopt(Need need, Product product);
 
+    void adoptAt(Need need, Product product, Timestamp stamp);
+
     boolean linkAccess(AttributeAccess attributeAccess);
 
     boolean unlinkAccess(AttributeAccess attributeAccess);
@@ -47,9 +50,31 @@ public interface ConsumerAgent extends SpatialInformationAgent {
 
     Collection<Need> getNeeds();
 
+    void addNeed(Need need);
+
     ProductFindingScheme getProductFindingScheme();
 
     ProcessFindingScheme getProcessFindingScheme();
 
     Map<Need, ProcessPlan> getPlans();
+
+    Map<ConsumerAgentGroup, Integer> getLinkCounter();
+
+    default void inc(ConsumerAgentGroup tarCag, int delta) {
+        Map<ConsumerAgentGroup, Integer> map = getLinkCounter();
+        int current = map.computeIfAbsent(tarCag, _cag -> 0);
+        map.put(tarCag, current + delta);
+    }
+
+    default int getLinkCount(ConsumerAgentGroup tarCag) {
+        Map<ConsumerAgentGroup, Integer> map = getLinkCounter();
+        return map.computeIfAbsent(tarCag, _cag -> 0);
+    }
+
+    default int getTotalLinkCount() {
+        Map<ConsumerAgentGroup, Integer> map = getLinkCounter();
+        return map.values().stream()
+                .mapToInt(i -> i)
+                .sum();
+    }
 }

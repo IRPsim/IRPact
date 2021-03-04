@@ -16,8 +16,16 @@ public class SuppliedSpatialDistribution2D extends ResettableSpatialDistribution
     public SuppliedSpatialDistribution2D() {
     }
 
+    public UnivariateDoubleDistribution getXSupplier() {
+        return xSupplier;
+    }
+
     public void setXSupplier(UnivariateDoubleDistribution xSupplier) {
         this.xSupplier = xSupplier;
+    }
+
+    public UnivariateDoubleDistribution getYSupplier() {
+        return ySupplier;
     }
 
     public void setYSupplier(UnivariateDoubleDistribution ySupplier) {
@@ -36,13 +44,18 @@ public class SuppliedSpatialDistribution2D extends ResettableSpatialDistribution
 
     @Override
     public void reset() {
-        numberOfCalls = 0;
     }
 
     @Override
     public void initalize() {
-        numberOfCalls = 0;
-        call();
+    }
+
+    @Override
+    public void call() {
+    }
+
+    @Override
+    public void call(int times) {
     }
 
     @Override

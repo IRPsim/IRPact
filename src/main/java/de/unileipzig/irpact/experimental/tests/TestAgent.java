@@ -27,7 +27,22 @@ public interface TestAgent extends Agent {
     }
 
     @Override
-    default void lockAction() {
+    default boolean tryAquireAction() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default boolean tryAquireSelf() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default void aquireFailed() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default void allowAquire() {
         throw new UnsupportedOperationException();
     }
 
@@ -37,13 +52,8 @@ public interface TestAgent extends Agent {
     }
 
     @Override
-    default void releaseAction() {
+    default void releaseAquire() {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    default boolean aquireAction() {
-        return false;
     }
 
     @Override

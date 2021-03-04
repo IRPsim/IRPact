@@ -109,6 +109,7 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
             for(ConsumerAgent targetCa: agents) {
                 LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "add edge: {}->{} ({},{})", ca.getName(), targetCa.getName(), edgeType, initialWeight);
                 graph.addEdge(ca.getSocialGraphNode(), targetCa.getSocialGraphNode(), edgeType, initialWeight);
+                ca.inc(targetCa.getGroup(), 1);
             }
         }
     }

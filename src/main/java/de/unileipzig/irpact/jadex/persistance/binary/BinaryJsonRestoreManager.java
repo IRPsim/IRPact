@@ -74,6 +74,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         ensureRegister(Space2DPR.INSTANCE);
         ensureRegister(SpatialDoubleAttributeBasePR.INSTANCE);
         ensureRegister(SpatialStringAttributeBasePR.INSTANCE);
+        ensureRegister(SuppliedSpatialDistribution2DPR.INSTANCE);
         ensureRegister(UncertaintyAttributePR.INSTANCE);
         ensureRegister(UncertaintyGroupAttributePR.INSTANCE);
         ensureRegister(UnlinkedGraphTopologyPR.INSTANCE);

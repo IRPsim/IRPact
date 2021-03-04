@@ -264,5 +264,8 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         spatialModel.preSimulationStart();
         timeModel.preSimulationStart();
         lifeCycleControl.preSimulationStart();
+        //==
+        LOGGER.debug("enable sync mode for master rnd");
+        rnd.enableSync();
     }
 }

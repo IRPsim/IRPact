@@ -6,12 +6,12 @@ import de.unileipzig.irpact.commons.distribution.ConstantUnivariateDoubleDistrib
 import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.Agent;
-import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
+import de.unileipzig.irpact.core.need.BasicNeed;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
@@ -228,18 +228,88 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         }
     }
 
+    protected Timestamp now() {
+        return environment.getTimeModel().now();
+    }
+
     @Override
     public void preSimulationStart() {
+        setupTasks();
+        addNeedToConsumers();
+        checkInitialAdopter();
+    }
+
+    private void setupTasks() {
         int startYear = environment.getTimeModel().getStartYear();
         int endYear = environment.getTimeModel().getEndYearInclusive();
 
         LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "create sync points");
         for(int y = startYear; y <= endYear; y++) {
-            Timestamp ts = environment.getTimeModel().at(startYear, Month.JULY, 1);
-            SyncTask task = createConstructionRenovationSyncTask("ConsReno_" + startYear);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} @ {}", task.getName(), ts);
-            environment.getLiveCycleControl().registerSyncTask(ts, task);
+            Timestamp tsJan = environment.getTimeModel().at(startYear, Month.JANUARY, 1);
+            SyncTask taskJan = createNewYearTask("NewYear_" + startYear);
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} @ {}", taskJan.getName(), tsJan);
+            environment.getLiveCycleControl().registerSyncTask(tsJan, taskJan);
+
+            Timestamp tsJuly = environment.getTimeModel().at(startYear, Month.JULY, 1);
+            SyncTask taskJuly = createConstructionRenovationSyncTask("ConsReno_" + startYear);
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} @ {}", taskJuly.getName(), tsJuly);
+            environment.getLiveCycleControl().registerSyncTask(tsJuly, taskJuly);
         }
+    }
+
+    //TODO auslagern
+    private final Need pvNeed = new BasicNeed("PV");
+    private void addNeedToConsumers() {
+        LOGGER.trace("add initial need '{}'", pvNeed.getName());
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            for(ConsumerAgent ca: cag.getAgents()) {
+                ca.addNeed(pvNeed);
+            }
+        }
+    }
+
+    private void checkInitialAdopter() {
+        LOGGER.trace("setup initial adopter");
+        Need need = pvNeed;
+        Timestamp startTime = environment.getTimeModel().startTime();
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            for(ConsumerAgent ca: cag.getAgents()) {
+                if(RAProcessPlan.isInitialAdopter(ca)) {
+                    Product p = ca.getProductFindingScheme()
+                            .findProduct(ca, need);
+                    if(p != null) {
+                        LOGGER.trace(IRPSection.INITIALIZATION_AGENT, "initial adopter '{}' (need '{}', product '{}')", ca.getName(), need.getName(), p.getName());
+                        ca.adoptAt(need, p, startTime);
+                    }
+                }
+            }
+        }
+    }
+
+    private SyncTask createNewYearTask(String name) {
+        return new SyncTask() {
+            @Override
+            public String getName() {
+                return name;
+            }
+
+            @Override
+            public void run() {
+                LOGGER.debug("run 'createNewYearTask' ({})", now());
+                for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+                    for(ConsumerAgent ca: cag.getAgents()) {
+                        for(ProcessPlan plan: ca.getPlans().values()) {
+                            if(plan instanceof RAProcessPlan) {
+                                RAProcessPlan raPlan = (RAProcessPlan) plan;
+                                if(raPlan.getModel() == RAProcessModel.this) {
+                                    raPlan.adjustParametersOnNewYear();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
     }
 
     private SyncTask createConstructionRenovationSyncTask(String name) {
@@ -251,26 +321,21 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
             @Override
             public void run() {
-                RAProcessModel.LOGGER.debug("HALLO SYNC");
+                LOGGER.debug("run 'createConstructionRenovationSyncTask' ({})", now());
+                for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+                    for(ConsumerAgent ca: cag.getAgents()) {
+                        for(ProcessPlan plan: ca.getPlans().values()) {
+                            if(plan instanceof RAProcessPlan) {
+                                RAProcessPlan raPlan = (RAProcessPlan) plan;
+                                if(raPlan.getModel() == RAProcessModel.this) {
+                                    raPlan.updateConstructionAndRenovation();
+                                }
+                            }
+                        }
+                    }
+                }
             }
         };
-    }
-
-    @Override
-    public void onNewSimulationPeriod() {
-        AgentManager agentManager = environment.getAgents();
-        agentManager.streamConsumerAgents()
-                .forEach(this::setupAgentForNewPeriod);
-    }
-
-    protected void setupAgentForNewPeriod(ConsumerAgent agent) {
-        double renovationRate = RAProcessPlan.getRenovationRate(agent);
-        boolean doRenovation = rnd.nextDouble() < renovationRate;
-        setUnderRenovation(agent, doRenovation);
-
-        double constructionRate = RAProcessPlan.getConstructionRate(agent);
-        boolean doConstruction = rnd.nextDouble() < constructionRate;
-        setUnderConstruction(agent, doConstruction);
     }
 
     @Override
@@ -291,16 +356,4 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
     //=========================
     //util
     //=========================
-
-    protected void setUnderConstruction(ConsumerAgent agent, boolean value) {
-        double dvalue = value ? 1.0 : 0.0;
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.UNDER_CONSTRUCTION);
-        attr.setDoubleValue(dvalue);
-    }
-
-    protected void setUnderRenovation(ConsumerAgent agent, boolean value) {
-        double dvalue = value ? 1.0 : 0.0;
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.UNDER_RENOVATION);
-        attr.setDoubleValue(dvalue);
-    }
 }

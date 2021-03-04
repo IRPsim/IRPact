@@ -17,14 +17,13 @@ import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistri
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
-import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
-import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
+import de.unileipzig.irpact.io.param.input.network.*;
 import de.unileipzig.irpact.io.param.input.process.*;
 import de.unileipzig.irpact.io.param.input.product.*;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomSpatialDistribution2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomSpatialDistribution2D;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.spec.SpecificationConverter;
@@ -51,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author Daniel Abitz
  */
 @Disabled
-public class Demo1 implements DefaultScenarioFactory {
+public class Demo6 implements DefaultScenarioFactory {
 
 
     private static InConsumerAgentGroupAttribute build(
@@ -93,6 +92,7 @@ public class Demo1 implements DefaultScenarioFactory {
 
         //dist
         InUnivariateDoubleDistribution diraq0 = new InConstantUnivariateDistribution("diraq0", 0);
+        InUnivariateDoubleDistribution diraq03 = new InConstantUnivariateDistribution("diraq03", 0.3);
         InUnivariateDoubleDistribution diraq07 = new InConstantUnivariateDistribution("diraq07", 0.7);
         InUnivariateDoubleDistribution diraq1 = new InConstantUnivariateDistribution("diraq1", 1);
 
@@ -133,11 +133,11 @@ public class Demo1 implements DefaultScenarioFactory {
         build(name, C1, diraq0, list);
 
         build(name, D1, diraq1, list);
-        build(name, D3, diraq07, list);
+        build(name, D3, diraq03, list);
         build(name, D4, diraq07, list);
         build(name, D5, diraq0, list);
 
-        InProductThresholdInterestSupplyScheme A_awa = new InProductThresholdInterestSupplyScheme(name + "_awa", diraq1);
+        InProductThresholdInterestSupplyScheme A_awa = new InProductThresholdInterestSupplyScheme(name + "_awa", diraq0);
 
         InConsumerAgentGroup A = new InConsumerAgentGroup(name, 1.0, 10, list, A_awa);
         A.productFindingSchemes = new InProductFindingScheme[]{fixScheme};
@@ -160,38 +160,82 @@ public class Demo1 implements DefaultScenarioFactory {
         build(name, C1, diraq0, list);
 
         build(name, D1, diraq0, list);      //!
-        build(name, D3, diraq07, list);
+        build(name, D3, diraq03, list);
         build(name, D4, diraq07, list);
         build(name, D5, diraq0, list);
 
-        InProductThresholdInterestSupplyScheme B_awa = new InProductThresholdInterestSupplyScheme(name + "_awa", diraq1);
+        InProductThresholdInterestSupplyScheme B_awa = new InProductThresholdInterestSupplyScheme(name + "_awa", diraq0);
 
         InConsumerAgentGroup K = new InConsumerAgentGroup(name, 1.0, 10, list, B_awa);
         K.productFindingSchemes = new InProductFindingScheme[]{fixScheme};
         K.spatialDistribution = new InSpatialDistribution[]{spaDist};
 
+        //S
+        name = "S";
+        list.clear();
+        build(name, A1, diraq1, list);      //ueberschreiben der spatial-datei
+        build(name, A2, diraq1, list);
+        build(name, A3, diraq1, list);
+        build(name, A4, diraq0, list);
+        build(name, A5, diraq1, list);      //ueberschreiben der spatial-datei
+        build(name, A6, diraq0, list);      //ueberschreiben der spatial-datei
+        build(name, A7, diraq0, list);
+        build(name, A8, diraq0, list);
+
+        build(name, B6, diraq0, list);
+
+        build(name, C1, diraq0, list);
+
+        build(name, D1, diraq0, list);      //!
+        build(name, D3, diraq03, list);
+        build(name, D4, diraq07, list);
+        build(name, D5, diraq1, list);
+
+        InProductThresholdInterestSupplyScheme S_awa = new InProductThresholdInterestSupplyScheme(name + "_awa", diraq0);
+
+        InConsumerAgentGroup S = new InConsumerAgentGroup(name, 1.0, 10, list, S_awa);
+        S.productFindingSchemes = new InProductFindingScheme[]{fixScheme};
+        S.spatialDistribution = new InSpatialDistribution[]{spaDist};
+
         //affinity
         InComplexAffinityEntry A_A = new InComplexAffinityEntry(A.getName() + "_" + A.getName(), A, A, 0.0);
-        InComplexAffinityEntry A_B = new InComplexAffinityEntry(A.getName() + "_" + K.getName(), A, K, 0.0);
-        InComplexAffinityEntry B_B = new InComplexAffinityEntry(K.getName() + "_" + K.getName(), K, K, 0.0);
-        InComplexAffinityEntry B_A = new InComplexAffinityEntry(K.getName() + "_" + A.getName(), K, A, 0.0);
+        InComplexAffinityEntry A_S = new InComplexAffinityEntry(A.getName() + "_" + S.getName(), A, S, 1.0);
+        InComplexAffinityEntry A_K = new InComplexAffinityEntry(A.getName() + "_" + K.getName(), A, K, 0.0);
+        InComplexAffinityEntry S_A = new InComplexAffinityEntry(S.getName() + "_" + A.getName(), S, A, 0.0);
+        InComplexAffinityEntry S_S = new InComplexAffinityEntry(S.getName() + "_" + S.getName(), S, S, 1.0);
+        InComplexAffinityEntry S_K = new InComplexAffinityEntry(S.getName() + "_" + K.getName(), S, K, 0.0);
+        InComplexAffinityEntry K_A = new InComplexAffinityEntry(K.getName() + "_" + A.getName(), K, A, 0.0);
+        InComplexAffinityEntry K_S = new InComplexAffinityEntry(K.getName() + "_" + S.getName(), K, S, 0.0);
+        InComplexAffinityEntry K_K = new InComplexAffinityEntry(K.getName() + "_" + K.getName(), K, K, 1.0);
 
         //process
         InCustomUncertaintyGroupAttribute uncert = new InCustomUncertaintyGroupAttribute();
         uncert.setName("RA_uncer");
-        uncert.cags = new InConsumerAgentGroup[]{A, K};
+        uncert.cags = new InConsumerAgentGroup[]{A, S};
         uncert.names = new InAttributeName[]{A2, A3, A4};
         uncert.setUncertaintyDistribution(diraq0);
         uncert.setConvergenceDistribution(diraq0);
 
         InRAProcessModel processModel = new InRAProcessModel(
                 "RA",
-                0.25, 0.25, 0.25, 0.25,
+                0, 0, 0, 1,
                 3, 2, 1, 0,
                 pvFile,
                 new InSlopeSupplier[0],
                 new InOrientationSupplier[0],
                 new InUncertaintyGroupAttribute[]{uncert}
+        );
+
+        //topo
+        List<InNumberOfTies> ties = new ArrayList<>();
+        ties.add(new InNumberOfTies("A_ties", A, A.getNumberOfAgents()));
+        ties.add(new InNumberOfTies("S_ties", S, S.getNumberOfAgents()));
+        ties.add(new InNumberOfTies("K_ties", K, K.getNumberOfAgents()));
+        InFreeNetworkTopology freeNetwork = new InFreeNetworkTopology(
+                "FreierGraph",
+                new InNoDistance("NoDistance"),
+                ties.toArray(new InNumberOfTies[0]),
+                1.0
         );
 
         //=========================
@@ -203,11 +247,15 @@ public class Demo1 implements DefaultScenarioFactory {
         root.general.endYear = 2015;
         root.version = InVersion.currentVersionAsArray();
         //affinity
-        root.affinityEntries = new InComplexAffinityEntry[]{A_A, A_B, B_A, B_B};
+        root.affinityEntries = new InComplexAffinityEntry[]{
+                A_A, A_S, A_K,
+                S_A, S_S, S_K,
+                K_A, K_S, K_K
+        };
         //agent
-        root.consumerAgentGroups = new InConsumerAgentGroup[] {A, K};
+        root.consumerAgentGroups = new InConsumerAgentGroup[] {A, S};
         //network
-        root.graphTopologySchemes = new InGraphTopologyScheme[]{new InUnlinkedGraphTopology("Unlinked")};
+        root.graphTopologySchemes = new InGraphTopologyScheme[]{freeNetwork};
         //process
         root.processModel = new InProcessModel[] {processModel};
         //product
@@ -228,7 +276,7 @@ public class Demo1 implements DefaultScenarioFactory {
         return getRoot();
     }
 
-    private static final String demo = "Demo1_Entscheidungsprozess_Bewusstsein";
+    private static final String demo = "Demo5_Entscheidungsprozess_Soziale_Komponente_S1";
 
     @Test
     void store() throws IOException, ParsingException {

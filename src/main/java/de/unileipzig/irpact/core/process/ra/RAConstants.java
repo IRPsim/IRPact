@@ -27,6 +27,7 @@ public final class RAConstants {
     public static final String INTEREST_THRESHOLD = "interest_threshold";               //D2
     public static final String FINANCIAL_THRESHOLD = "financial_threshold";              //D3
     public static final String ADOPTION_THRESHOLD = "adoption_threshold";               //D4
+    public static final String INITIAL_ADOPTER = "initial_adopter";                     //D5
 
     //Product
     public static final String INVESTMENT_COST = "investment_cost";                               //E1

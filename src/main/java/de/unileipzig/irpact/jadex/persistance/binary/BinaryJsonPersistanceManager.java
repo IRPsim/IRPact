@@ -55,6 +55,7 @@ public class BinaryJsonPersistanceManager extends BasicPersistManager {
         ensureRegister(Space2DPR.INSTANCE);
         ensureRegister(SpatialDoubleAttributeBasePR.INSTANCE);
         ensureRegister(SpatialStringAttributeBasePR.INSTANCE);
+        ensureRegister(SuppliedSpatialDistribution2DPR.INSTANCE);
         ensureRegister(UncertaintyAttributePR.INSTANCE);
         ensureRegister(UncertaintyGroupAttributePR.INSTANCE);
         ensureRegister(UnlinkedGraphTopologyPR.INSTANCE);

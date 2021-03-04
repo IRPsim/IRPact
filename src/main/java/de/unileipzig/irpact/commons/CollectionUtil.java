@@ -143,11 +143,29 @@ public final class CollectionUtil {
         return list.get(index);
     }
 
+    public static <T> T getRandom(List<T> list, Rnd rnd) {
+        return getRandom(list, 0, list.size(), rnd);
+    }
+
+    public static <T> T getRandom(List<T> list, int from, int to, Rnd rnd) {
+        int index = Util.nextInt(rnd, from, to);
+        return list.get(index);
+    }
+
     public static <T> T getRandom(Collection<T> coll, Random rnd) {
         return getRandom(coll, 0, coll.size(), rnd);
     }
 
     public static <T> T getRandom(Collection<T> coll, int from, int to, Random rnd) {
+        int index = Util.nextInt(rnd, from, to);
+        return get(coll, index);
+    }
+
+    public static <T> T getRandom(Collection<T> coll, Rnd rnd) {
+        return getRandom(coll, 0, coll.size(), rnd);
+    }
+
+    public static <T> T getRandom(Collection<T> coll, int from, int to, Rnd rnd) {
         int index = Util.nextInt(rnd, from, to);
         return get(coll, index);
     }

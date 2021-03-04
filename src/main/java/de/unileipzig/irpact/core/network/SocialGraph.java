@@ -1,7 +1,9 @@
 package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.core.agent.Agent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 
 import java.util.Collection;
 import java.util.Set;
@@ -104,4 +106,14 @@ public interface SocialGraph extends IsEquals {
     boolean removeEdge(Edge edge);
 
     Set<? extends Edge> removeAllEdges(Type type);
+
+    //=========================
+    //special
+    //=========================
+
+    int countUnlinked(Node srcNode, ConsumerAgentGroup tarCag, Type type);
+
+    int countUnlinked(Node srcNode, Collection<? extends ConsumerAgentGroup> tarCags, Type type);
+
+    Node getRandomUnlinked(Node srcNode, ConsumerAgentGroup tarCag, Type type, Rnd rnd);
 }

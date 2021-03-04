@@ -1,8 +1,12 @@
 package de.unileipzig.irpact.core.network;
 
+import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.core.agent.Agent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 
 import java.util.*;
 import java.util.function.Function;
@@ -272,5 +276,46 @@ public class BasicSocialGraph implements SocialGraph {
     @Override
     public Set<? extends Edge> removeAllEdges(Type type) {
         return GRAPH.removeAllEdges(type);
+    }
+
+    //=========================
+    //special
+    //=========================
+
+    @Override
+    public int countUnlinked(Node srcNode, ConsumerAgentGroup tarCag, Type type) {
+        int count = 0;
+        for(ConsumerAgent tar: tarCag.getAgents()) {
+            Node tarNode = tar.getSocialGraphNode();
+            if(!hasEdge(srcNode, tarNode, type)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    @Override
+    public int countUnlinked(Node srcNode, Collection<? extends ConsumerAgentGroup> tarCags, Type type) {
+        int total = 0;
+        for(ConsumerAgentGroup tarCag: tarCags) {
+            total += countUnlinked(srcNode, tarCag, type);
+        }
+        return total;
+    }
+
+    @Override
+    public Node getRandomUnlinked(Node srcNode, ConsumerAgentGroup tarCag, Type type, Rnd rnd) {
+        List<Node> tars = new ArrayList<>();
+        for(ConsumerAgent tar: tarCag.getAgents()) {
+            Node tarNode = tar.getSocialGraphNode();
+            if(!hasEdge(srcNode, tarNode, type)) {
+                tars.add(tarNode);
+            }
+        }
+        if(tars.isEmpty()) {
+            return null;
+        } else {
+            return CollectionUtil.getRandom(tars, rnd);
+        }
     }
 }

@@ -3,6 +3,7 @@ package de.unileipzig.irpact.jadex.agents.consumer;
 import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
+import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.ProxyAgent;
 import de.unileipzig.irpact.core.agent.SpatialInformationAgentBase;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
@@ -14,6 +15,7 @@ import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
+import de.unileipzig.irpact.core.product.BasicAdoptedProduct;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
@@ -44,9 +46,17 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     protected Set<Need> needs;
     protected Map<Need, ProcessPlan> plans;
     protected Set<AttributeAccess> externAttributes;
+    protected Map<ConsumerAgentGroup, Integer> cagLinkCount;
 
     public ProxyConsumerAgent() {
-        this(new LinkedHashMap<>(), new LinkedHashSet<>(), new LinkedHashSet<>(), new LinkedHashMap<>(), new LinkedHashSet<>());
+        this(
+                new LinkedHashMap<>(),
+                new LinkedHashSet<>(),
+                new LinkedHashSet<>(),
+                new LinkedHashMap<>(),
+                new LinkedHashSet<>(),
+                new LinkedHashMap<>()
+        );
     }
 
     public ProxyConsumerAgent(
@@ -54,12 +64,14 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
             Set<AdoptedProduct> adoptedProducts,
             Set<Need> needs,
             Map<Need, ProcessPlan> plans,
-            Set<AttributeAccess> externAttributes) {
+            Set<AttributeAccess> externAttributes,
+            Map<ConsumerAgentGroup, Integer> cagLinkCount) {
         this.attributes = attributes;
         this.adoptedProducts = adoptedProducts;
         this.needs = needs;
         this.plans = plans;
         this.externAttributes = externAttributes;
+        this.cagLinkCount = cagLinkCount;
     }
 
     @Override
@@ -134,6 +146,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         processFindingScheme = null;
         needs.clear();
         plans.clear();
+        cagLinkCount.clear();
     }
 
     public void unsync(ConsumerAgent realAgent) {
@@ -157,6 +170,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         processFindingScheme = realAgent.getProcessFindingScheme();
         needs.addAll(realAgent.getNeeds());
         addAllPlans(realAgent.getPlans());
+        cagLinkCount.putAll(realAgent.getLinkCounter());
     }
 
     @Override
@@ -177,9 +191,27 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     @Override
-    public void lockAction() {
+    public boolean tryAquireAction() {
         checkSynced();
-        getRealAgent().lockAction();
+        return getRealAgent().tryAquireAction();
+    }
+
+    @Override
+    public boolean tryAquireSelf() {
+        checkSynced();
+        return getRealAgent().tryAquireSelf();
+    }
+
+    @Override
+    public void allowAquire() {
+        checkSynced();
+        getRealAgent().allowAquire();
+    }
+
+    @Override
+    public void aquireFailed() {
+        checkSynced();
+        getRealAgent().aquireFailed();
     }
 
     @Override
@@ -189,15 +221,9 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     @Override
-    public void releaseAction() {
+    public void releaseAquire() {
         checkSynced();
-        getRealAgent().releaseAction();
-    }
-
-    @Override
-    public boolean aquireAction() {
-        checkSynced();
-        return getRealAgent().aquireAction();
+        getRealAgent().releaseAquire();
     }
 
     @Override
@@ -397,13 +423,32 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
 
     @Override
     public void adopt(Need need, Product product) {
-        checkSynced();
-        getRealAgent().adopt(need, product);
+        if(isSynced()) {
+            getRealAgent().adopt(need, product);
+        } else {
+            Timestamp now = environment.getTimeModel().now();
+            BasicAdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, now);
+            adoptedProducts.add(adoptedProduct);
+        }
+    }
+
+    @Override
+    public void adoptAt(Need need, Product product, Timestamp stamp) {
+        if(isSynced()) {
+            getRealAgent().adoptAt(need, product, stamp);
+        } else {
+            BasicAdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, stamp);
+            adoptedProducts.add(adoptedProduct);
+        }
     }
 
     @Override
     public ProductFindingScheme getProductFindingScheme() {
-        return productFindingScheme;
+        if(isSynced()) {
+            return getRealAgent().getProductFindingScheme();
+        } else {
+            return productFindingScheme;
+        }
     }
 
     public void setProductFindingScheme(ProductFindingScheme productFindingScheme) {
@@ -419,8 +464,22 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         this.processFindingScheme = processFindingScheme;
     }
 
-    public Set<Need> getNeeds() {
-        return needs;
+    @Override
+    public Collection<Need> getNeeds() {
+        if(isSynced()) {
+            return getRealAgent().getNeeds();
+        } else {
+            return needs;
+        }
+    }
+
+    @Override
+    public void addNeed(Need need) {
+        if(isSynced()) {
+            getRealAgent().addNeed(need);
+        } else {
+            needs.add(need);
+        }
     }
 
     public void addAllNeeds(Need... needs) {
@@ -429,7 +488,11 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
 
     @Override
     public Map<Need, ProcessPlan> getPlans() {
-        return plans;
+        if(isSynced()) {
+            return getRealAgent().getPlans();
+        } else {
+            return plans;
+        }
     }
 
     public void addAllPlans(Map<Need, ProcessPlan> plans) {
@@ -474,5 +537,14 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
 
     public Collection<AttributeAccess> getExternAttributes() {
         return externAttributes;
+    }
+
+    @Override
+    public Map<ConsumerAgentGroup, Integer> getLinkCounter() {
+        if(isSynced()) {
+            return getRealAgent().getLinkCounter();
+        } else {
+            return cagLinkCount;
+        }
     }
 }

@@ -21,10 +21,10 @@ import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.process.*;
 import de.unileipzig.irpact.io.param.input.product.*;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomSpatialDistribution2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomSpatialDistribution2D;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.spec.SpecificationConverter;
@@ -51,7 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author Daniel Abitz
  */
 @Disabled
-public class Demo1 implements DefaultScenarioFactory {
+public class Demo9 implements DefaultScenarioFactory {
 
 
     private static InConsumerAgentGroupAttribute build(
@@ -93,7 +93,7 @@ public class Demo1 implements DefaultScenarioFactory {
 
         //dist
         InUnivariateDoubleDistribution diraq0 = new InConstantUnivariateDistribution("diraq0", 0);
-        InUnivariateDoubleDistribution diraq07 = new InConstantUnivariateDistribution("diraq07", 0.7);
+        InUnivariateDoubleDistribution diraq05 = new InConstantUnivariateDistribution("diraq05", 0.5);
         InUnivariateDoubleDistribution diraq1 = new InConstantUnivariateDistribution("diraq1", 1);
 
         //product
@@ -124,17 +124,17 @@ public class Demo1 implements DefaultScenarioFactory {
         build(name, A3, diraq1, list);
         build(name, A4, diraq1, list);
         build(name, A5, diraq1, list);      //ueberschreiben der spatial-datei
-        build(name, A6, diraq0, list);      //ueberschreiben der spatial-datei
+        build(name, A6, diraq1, list);      //ueberschreiben der spatial-datei
         build(name, A7, diraq0, list);
-        build(name, A8, diraq0, list);
+        build(name, A8, diraq05, list);
 
         build(name, B6, diraq0, list);
 
         build(name, C1, diraq0, list);
 
-        build(name, D1, diraq1, list);
-        build(name, D3, diraq07, list);
-        build(name, D4, diraq07, list);
+        build(name, D1, diraq0, list);
+        build(name, D3, diraq0, list);
+        build(name, D4, diraq0, list);
         build(name, D5, diraq0, list);
 
         InProductThresholdInterestSupplyScheme A_awa = new InProductThresholdInterestSupplyScheme(name + "_awa", diraq1);
@@ -160,8 +160,8 @@ public class Demo1 implements DefaultScenarioFactory {
         build(name, C1, diraq0, list);
 
         build(name, D1, diraq0, list);      //!
-        build(name, D3, diraq07, list);
-        build(name, D4, diraq07, list);
+        build(name, D3, diraq0, list);
+        build(name, D4, diraq0, list);
         build(name, D5, diraq0, list);
 
         InProductThresholdInterestSupplyScheme B_awa = new InProductThresholdInterestSupplyScheme(name + "_awa", diraq1);
@@ -228,7 +228,7 @@ public class Demo1 implements DefaultScenarioFactory {
         return getRoot();
     }
 
-    private static final String demo = "Demo1_Entscheidungsprozess_Bewusstsein";
+    private static final String demo = "Demo5_Entscheidungsprozess_Wohnsituation_Renovierungsfall";
 
     @Test
     void store() throws IOException, ParsingException {

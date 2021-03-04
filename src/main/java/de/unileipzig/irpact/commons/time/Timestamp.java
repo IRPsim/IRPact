@@ -15,6 +15,10 @@ public interface Timestamp extends Comparable<Timestamp>, IsEquals {
         return getTime().toInstant().toEpochMilli();
     }
 
+    default int getYear() {
+        return getTime().getYear();
+    }
+
     default boolean isBetween(Timestamp from, Timestamp to) {
         return isAfterOrEquals(from) && isBeforeOrEqual(to);
     }

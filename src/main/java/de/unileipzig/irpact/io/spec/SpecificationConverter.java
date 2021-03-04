@@ -31,6 +31,7 @@ import de.unileipzig.irpact.io.spec.impl.product.ProductGroupSpec;
 import de.unileipzig.irpact.io.spec.impl.spatial.Space2DSpec;
 import de.unileipzig.irpact.io.spec.impl.spatial.SpatialSpec;
 import de.unileipzig.irpact.io.spec.impl.spatial.dist.CustomSelectedGroupedSpatialDistribution2DSpec;
+import de.unileipzig.irpact.io.spec.impl.spatial.dist.CustomSpatialDistribution2DSpec;
 import de.unileipzig.irpact.io.spec.impl.time.DiscreteTimeModelSpec;
 import de.unileipzig.irpact.io.spec.impl.time.TimeModelSpec;
 
@@ -146,6 +147,7 @@ public class SpecificationConverter {
         //securePut(ProductFindingSchemeSpec.INSTANCE);
         securePut(ProductGroupSpec.INSTANCE);
         securePut(CustomSelectedGroupedSpatialDistribution2DSpec.INSTANCE);
+        securePut(CustomSpatialDistribution2DSpec.INSTANCE);
         //securePut(SpatialDistributionSpec.INSTANCE);
         securePut(Space2DSpec.INSTANCE);
         securePut(SpatialSpec.INSTANCE);

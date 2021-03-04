@@ -28,6 +28,9 @@ public class SpatialDistributionSpec
         if(CustomSelectedGroupedSpatialDistribution2DSpec.TYPE.equals(type)) {
             return CustomSelectedGroupedSpatialDistribution2DSpec.INSTANCE.toParam(root, manager, converter, cache);
         }
+        else if(CustomSpatialDistribution2DSpec.TYPE.equals(type)) {
+            return CustomSpatialDistribution2DSpec.INSTANCE.toParam(root, manager, converter, cache);
+        }
 
         throw new IllegalArgumentException("unknown type: " + type);
     }

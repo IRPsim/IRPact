@@ -26,6 +26,8 @@ public enum IRPSection implements LoggingSection {
      */
     SIMULATION_LICECYCLE,
     SIMULATION_AGENT,
+    SIMULATION_AGENT_COMMUNICATION,
+    SIMULATION_AGENT_REWIRE,
 
     /*
      *

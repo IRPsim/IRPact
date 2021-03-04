@@ -3,9 +3,12 @@ package de.unileipzig.irpact.start;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
+import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.simulation.*;
+import de.unileipzig.irpact.io.param.output.OutAdoptionResult;
 import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
@@ -382,20 +385,26 @@ public class IRPact {
         }
         outRoot.outGrps = outList.toArray(new OutCustom[0]);
 
-//        Timestamp start = environment.getTimeModel().startTime();
-//        Timestamp end = environment.getTimeModel().endTime();
-//
-//        //TODO triplemapping
-//        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-//            for(ConsumerAgent ca: cag.getAgents()) {
-//                for(AdoptedProduct ap: ca.getAdoptedProducts()) {
-//                    if(ap.getTimestamp().isBetween(start, end)) {
-//                        //inc 'cag-product'
-//                    }
-//                }
-//            }
-//        }
-//        //
+        //=====
+        Timestamp start = environment.getTimeModel().startTime();
+        Timestamp end = environment.getTimeModel().endTime();
+
+        List<OutAdoptionResult> outResults = new ArrayList<>();
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            OutAdoptionResult outResult = new OutAdoptionResult(cag.getName() + "__" + start.getYear());
+            int adoptions = 0;
+            for(ConsumerAgent ca: cag.getAgents()) {
+                for(AdoptedProduct ap: ca.getAdoptedProducts()) {
+                    if(ap.getTimestamp().isBetween(start, end)) {
+                        adoptions++;
+                    }
+                }
+            }
+            outResult.setAdoptions(adoptions);
+            outResult.setShare((double) adoptions / (double) cag.getNumberOfAgents());
+            outResults.add(outResult);
+        }
+        outRoot.adoptionResults = outResults.toArray(new OutAdoptionResult[0]);
     }
 
     private void applyPersistenceData(OutRoot outRoot) throws Exception {

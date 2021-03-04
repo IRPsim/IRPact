@@ -95,6 +95,34 @@ public class InCustomSpatialDistribution2D implements InSpatialDistribution {
         return _name;
     }
 
+    public void setName(String name) {
+        this._name = name;
+    }
+
+    public InUnivariateDoubleDistribution getXPosSupplier() throws ParsingException {
+        return ParamUtil.getInstance(xPosSupplier, "XPosSupplier");
+    }
+
+    public void setXPosSupplier(InUnivariateDoubleDistribution xPosSupplier) {
+        this.xPosSupplier = new InUnivariateDoubleDistribution[]{xPosSupplier};
+    }
+
+    public InUnivariateDoubleDistribution getYPosSupplier() throws ParsingException {
+        return ParamUtil.getInstance(yPosSupplier, "YPosSupplier");
+    }
+
+    public void setYPosSupplier(InUnivariateDoubleDistribution yPosSupplier) {
+        this.yPosSupplier = new InUnivariateDoubleDistribution[]{yPosSupplier};
+    }
+
+    public InSpatialTableFile getAttributeFile() throws ParsingException {
+        return ParamUtil.getInstance(attrFile, "AttributeFile");
+    }
+
+    public void setAttributeFile(InSpatialTableFile attrFile) {
+        this.attrFile = new InSpatialTableFile[]{attrFile};
+    }
+
     @Override
     public void setup(InputParser parser, Object input) throws ParsingException {
         JadexConsumerAgentGroup jCag = (JadexConsumerAgentGroup) input;
@@ -128,17 +156,5 @@ public class InCustomSpatialDistribution2D implements InSpatialDistribution {
             parser.cache(this, dist);
             jCag.setSpatialDistribution(dist);
         }
-    }
-
-    public InUnivariateDoubleDistribution getXPosSupplier() throws ParsingException {
-        return ParamUtil.getInstance(xPosSupplier, "XPosSupplier");
-    }
-
-    public InUnivariateDoubleDistribution getYPosSupplier() throws ParsingException {
-        return ParamUtil.getInstance(yPosSupplier, "YPosSupplier");
-    }
-
-    public InSpatialTableFile getAttributeFile() throws ParsingException {
-        return ParamUtil.getInstance(attrFile, "AttributeFile");
     }
 }

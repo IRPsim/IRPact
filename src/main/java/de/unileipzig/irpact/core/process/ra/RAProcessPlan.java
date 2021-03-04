@@ -6,8 +6,9 @@ import de.unileipzig.irpact.commons.attribute.AttributeUtil;
 import de.unileipzig.irpact.commons.attribute.DoubleAttribute;
 import de.unileipzig.irpact.commons.attribute.StringAttribute;
 import de.unileipzig.irpact.commons.interest.Interest;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
+import de.unileipzig.irpact.core.agent.consumer.*;
+import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.process.ProcessPlan;
@@ -15,8 +16,8 @@ import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductAttribute;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
 
@@ -27,6 +28,8 @@ import java.util.*;
  * http://jasss.soc.surrey.ac.uk/5/4/1.html
  */
 public class RAProcessPlan implements ProcessPlan {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(RAProcessPlan.class);
 
     protected SimulationEnvironment environment;
     protected Need need;
@@ -54,7 +57,7 @@ public class RAProcessPlan implements ProcessPlan {
         return Objects.hash(
                 getNeed().getHashCode(),
                 getProduct().getHashCode(),
-                getAgent().getHashCode(),
+                getAgent().getName(), //loop sonst
                 getRnd().getHashCode(),
                 getModel().getName(),
                 getCurrentStage().getHashCode()
@@ -75,6 +78,7 @@ public class RAProcessPlan implements ProcessPlan {
 
     public void setRnd(Rnd rnd) {
         this.rnd = rnd;
+        rnd.enableSync();
     }
 
     public Rnd getRnd() {
@@ -122,22 +126,37 @@ public class RAProcessPlan implements ProcessPlan {
         }
     }
 
-    @Override
-    public void onAdopted() {
-    }
-
     //=========================
     //phases
     //=========================
 
+    protected void adjustParametersOnNewYear() {
+        if(currentStage == RAStage.IMPEDED) {
+            currentStage = RAStage.DECISION_MAKING;
+        }
+    }
+
+    protected void updateConstructionAndRenovation() {
+        double renovationRate = RAProcessPlan.getRenovationRate(agent);
+        boolean doRenovation = rnd.nextDouble() < renovationRate;
+        RAProcessPlan.setUnderRenovation(agent, doRenovation);
+
+        double constructionRate = RAProcessPlan.getConstructionRate(agent);
+        boolean doConstruction = rnd.nextDouble() < constructionRate;
+        RAProcessPlan.setUnderConstruction(agent, doConstruction);
+    }
+
     protected ProcessPlanResult initPlan() {
-        throw new IllegalStateException("EMILY IDEEN EINFÜGEN,guck dazu auf dem usb-stick");
+        if(agent.hasAdopted(product)) {
+            currentStage = RAStage.ADOPTED;
+        } else {
+            currentStage = RAStage.AWARENESS;
+        }
+        LOGGER.debug(IRPSection.INITIALIZATION_AGENT, "initial stage for '{}': {}", agent.getName(), currentStage);
+        return executePlan();
     }
 
     protected ProcessPlanResult executePlan() {
-        if(isNewYear()) {
-            adjustParametersOnNewYear();
-        }
         switch (currentStage) {
             case AWARENESS:
                 return handleAwareness();
@@ -157,55 +176,45 @@ public class RAProcessPlan implements ProcessPlan {
         }
     }
 
-    protected void adjustParametersOnNewYear() {
-        if(currentStage == RAStage.IMPEDED) {
-            currentStage = RAStage.DECISION_MAKING;
-        }
+    protected ProcessPlanResult finishOwnAction(ProcessPlanResult result) {
+        agent.actionPerformed();
+        agent.allowAquire();
+        return result;
     }
 
     protected ProcessPlanResult handleAwareness() {
-        Interest<Product> productInterest = agent.getProductInterest();
-        if(productInterest.isInterested(product)) {
-            currentStage = RAStage.FEASIBILITY;
-            return handleFeasibility();
-        }
-        if(isAware(agent)) {
-            if(isUnderConstruction(agent) || isUnderRenovation(agent)) {
-                productInterest.makeInterested(product);
-                return ProcessPlanResult.IN_PROCESS;
-            }
-            return doAction();
-        }
-        return ProcessPlanResult.IN_PROCESS;
-    }
+        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] handleAwareness", agent.getName());
 
-    protected ProcessPlanResult handleAwareness(boolean init) {
         Interest<Product> productInterest = agent.getProductInterest();
         if(productInterest.isInterested(product)) {
             currentStage = RAStage.FEASIBILITY;
-            if(init) {
-                return handleFeasibility();
-            } else {
-                return ProcessPlanResult.IN_PROCESS;
-            }
+            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] new stage: {}", agent.getName(), currentStage);
+            return finishOwnAction(ProcessPlanResult.IN_PROCESS);
         }
         if(isAware(agent)) {
             if(isUnderConstruction(agent) || isUnderRenovation(agent)) {
                 productInterest.makeInterested(product);
-                return ProcessPlanResult.IN_PROCESS;
+                currentStage = RAStage.FEASIBILITY;
+                LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] new stage: {}", agent.getName(), currentStage);
+                return finishOwnAction(ProcessPlanResult.IN_PROCESS);
             }
-            return doAction();
         }
-        return ProcessPlanResult.IN_PROCESS;
+        return doAction();
     }
 
     protected ProcessPlanResult doAction() {
+        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] doAction", agent.getName());
+
+        agent.allowAquire();
+
         if(doCommunicate()) {
             return communicate();
         }
+
         if(doRewire()) {
             return rewire();
         }
+
         return nop();
     }
 
@@ -216,16 +225,27 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected ProcessPlanResult communicate() {
-        if(agent.aquireAction()) {
-            SocialGraph graph = environment.getNetwork().getGraph();
-            SocialGraph.Node node = agent.getSocialGraphNode();
-            LinkedList<SocialGraph.Node> targetList = new LinkedList<>();
-            graph.getTargets(node, SocialGraph.Type.COMMUNICATION, targetList);
-            Collections.shuffle(targetList, rnd.getRandom());
-            while(targetList.size() > 0) {
-                SocialGraph.Node targetNode = targetList.removeFirst();
-                ConsumerAgent targetAgent = targetNode.getAgent(ConsumerAgent.class);
-                if(targetAgent.aquireAction()) {
+        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] communicate", agent.getName());
+
+        SocialGraph graph = environment.getNetwork().getGraph();
+        SocialGraph.Node node = agent.getSocialGraphNode();
+        LinkedList<SocialGraph.Node> targetList = new LinkedList<>();
+        graph.getTargets(node, SocialGraph.Type.COMMUNICATION, targetList);
+        Collections.shuffle(targetList, rnd.getRandom());
+
+        while(targetList.size() > 0) {
+            SocialGraph.Node targetNode = targetList.removeFirst();
+            ConsumerAgent targetAgent = targetNode.getAgent(ConsumerAgent.class);
+
+            if(targetAgent.tryAquireAction()) {
+                if(agent.tryAquireSelf()) {
+                    LOGGER.trace(IRPSection.SIMULATION_AGENT_COMMUNICATION, "communication: '{}' -> '{}'", agent.getName(), targetAgent.getName());
+
+                    targetAgent.actionPerformed();
+                    agent.actionPerformed();
+                    targetAgent.releaseAquire();
+                    agent.releaseAquire();
+
                     int myPoints = getInterestPoints(agent);
                     int targetPoints = getInterestPoints(targetAgent);
                     updateAwareness(agent, targetPoints);
@@ -233,10 +253,19 @@ public class RAProcessPlan implements ProcessPlan {
                     updateCommunicationGraph(graph, targetNode);
                     applyRelativeAgreement(targetAgent);
                     return ProcessPlanResult.IN_PROCESS;
+                } else {
+                    targetAgent.aquireFailed();
+                    LOGGER.trace(IRPSection.SIMULATION_AGENT_COMMUNICATION, "failed communication: '{}' -> '{}'", agent.getName(), targetAgent.getName());
                 }
             }
         }
         return ProcessPlanResult.IN_PROCESS;
+    }
+
+    protected void updateCommunicationGraph(SocialGraph graph, SocialGraph.Node target) {
+        if(!graph.hasEdge(target, agent.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION)) {
+            graph.addEdge(target, agent.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION, 1.0);
+        }
     }
 
     protected boolean doRewire() {
@@ -247,41 +276,76 @@ public class RAProcessPlan implements ProcessPlan {
 
     @Todo
     protected ProcessPlanResult rewire() {
-        throw new TodoException();
+        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] rewire", agent.getName());
+
+        if(agent.tryAquireSelf()) {
+            agent.actionPerformed();
+            agent.releaseAquire();
+        } else {
+            return ProcessPlanResult.IN_PROCESS;
+        }
+
+        int totalLinks = agent.getTotalLinkCount();
+        int totalAgents = environment.getAgents().getTotalNumberOfConsumerAgents();
+        if(totalLinks == totalAgents) {
+            LOGGER.warn("all links already exist for '{}', cancel rewire", agent.getName());
+            return ProcessPlanResult.IN_PROCESS;
+        }
+
+        ConsumerAgentGroupAffinities affinities = environment.getAgents()
+                .getConsumerAgentGroupAffinityMapping()
+                .get(agent.getGroup());
+
+
+        SocialGraph.Node tarNode = null;
+        while(tarNode == null) {
+            ConsumerAgentGroup tarCag = affinities.getWeightedRandom(environment.getSimulationRandom());
+
+            int currentLinkCount = agent.getLinkCount(tarCag);
+            if(tarCag.getNumberOfAgents() == currentLinkCount) {
+                affinities = affinities.without(tarCag);
+                continue;
+            }
+
+            tarNode = environment.getNetwork()
+                    .getGraph()
+                    .getRandomUnlinked(
+                            agent.getSocialGraphNode(),
+                            tarCag,
+                            SocialGraph.Type.COMMUNICATION,
+                            environment.getSimulationRandom()
+                    );
+        }
+
+        LOGGER.debug("rewire-add edge '{} -> {}", agent.getName(), tarNode.getLabel());
+        environment.getNetwork()
+                .getGraph()
+                .addEdge(agent.getSocialGraphNode(), tarNode, SocialGraph.Type.COMMUNICATION, 1.0);
+
+        return ProcessPlanResult.IN_PROCESS;
     }
 
     @Todo
     protected ProcessPlanResult nop() {
-        throw new TodoException();
-    }
-
-    protected void updateCommunicationGraph(SocialGraph graph, SocialGraph.Node target) {
-        if(!graph.hasEdge(target, agent.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION)) {
-            graph.addEdge(target, agent.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION, 1.0);
-        }
+        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] nop", agent.getName());
+        return ProcessPlanResult.IN_PROCESS;
     }
 
     protected ProcessPlanResult handleFeasibility() {
-        if(isShareOf1Or2FamilyHouse(agent) || isHouseOwner(agent) || isUnderConstruction(agent)) {
-            currentStage = RAStage.DECISION_MAKING;
-            return handleDecisionMaking();
-        }
-        return ProcessPlanResult.IN_PROCESS;
-    }
+        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] handleFeasibility", agent.getName());
 
-    protected ProcessPlanResult handleFeasibility(boolean init) {
-        if(isShareOf1Or2FamilyHouse(agent) || isHouseOwner(agent) || isUnderConstruction(agent)) {
+        if(isShareOf1Or2FamilyHouse(agent) && isHouseOwner(agent)) {
             currentStage = RAStage.DECISION_MAKING;
-            if(init) {
-                return handleDecisionMaking();
-            } else {
-                return ProcessPlanResult.IN_PROCESS;
-            }
+            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] new stage: {}", agent.getName(), currentStage);
+            return finishOwnAction(ProcessPlanResult.IN_PROCESS);
         }
-        return ProcessPlanResult.IN_PROCESS;
+
+        return doAction();
     }
 
     protected ProcessPlanResult handleDecisionMaking() {
+        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] handleDecisionMaking", agent.getName());
+
         double a = modelData().a();
         double b = modelData().b();
         double c = modelData().c();
@@ -294,7 +358,8 @@ public class RAProcessPlan implements ProcessPlan {
             //check D3 reached
             if(financial < financialThreshold) {
                 currentStage = RAStage.IMPEDED;
-                return ProcessPlanResult.IMPEDED;
+                LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] new stage: {}", agent.getName(), currentStage);
+                return finishOwnAction(ProcessPlanResult.IMPEDED);
             }
             B += a * financial;
         }
@@ -310,11 +375,13 @@ public class RAProcessPlan implements ProcessPlan {
         double adoptionThreshold = getAdoptionThreshold(product);
         if(B < adoptionThreshold) {
             currentStage = RAStage.IMPEDED;
-            return ProcessPlanResult.IMPEDED;
+            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] new stage: {}", agent.getName(), currentStage);
+            return finishOwnAction(ProcessPlanResult.IMPEDED);
         } else {
             agent.adopt(need, product);
             currentStage = RAStage.ADOPTED;
-            return ProcessPlanResult.ADOPTED;
+            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] new stage: {}", agent.getName(), currentStage);
+            return finishOwnAction(ProcessPlanResult.ADOPTED);
         }
     }
 
@@ -424,9 +491,19 @@ public class RAProcessPlan implements ProcessPlan {
         return value == 1.0 || value == 2.0;
     }
 
+    protected static void setShareOf1Or2FamilyHouse(ConsumerAgent agent, double n) {
+        DoubleAttribute attr = (DoubleAttribute) agent.findAttribute(RAConstants.SHARE_1_2_HOUSE);
+        attr.setDoubleValue(n);
+    }
+
     protected static boolean isHouseOwner(ConsumerAgent agent) {
         StringAttribute attr = (StringAttribute) agent.findAttribute(RAConstants.HOUSE_OWNER);
         return RAConstants.PRIVATE.equals(attr.getStringValue());
+    }
+
+    protected static void setHouseOwner(ConsumerAgent agent, String value) {
+        StringAttribute attr = (StringAttribute) agent.findAttribute(RAConstants.HOUSE_OWNER);
+        attr.setValue(value);
     }
 
     protected static double getConstructionRate(ConsumerAgent agent) {
@@ -439,6 +516,16 @@ public class RAProcessPlan implements ProcessPlan {
         return attr.getDoubleValue() == 1.0;
     }
 
+    protected static void setUnderConstruction(ConsumerAgent agent, boolean value) {
+        double dvalue = value ? 1.0 : 0.0;
+        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.UNDER_CONSTRUCTION);
+        attr.setDoubleValue(dvalue);
+        if(value) {
+            setShareOf1Or2FamilyHouse(agent, 1);
+            setHouseOwner(agent, RAConstants.PRIVATE);
+        }
+    }
+
     protected static double getRenovationRate(ConsumerAgent agent) {
         ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.RENOVATION_RATE);
         return attr.getDoubleValue();
@@ -446,6 +533,17 @@ public class RAProcessPlan implements ProcessPlan {
 
     protected static boolean isUnderRenovation(ConsumerAgent agent) {
         ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.UNDER_RENOVATION);
+        return attr.getDoubleValue() == 1.0;
+    }
+
+    protected static void setUnderRenovation(ConsumerAgent agent, boolean value) {
+        double dvalue = value ? 1.0 : 0.0;
+        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.UNDER_RENOVATION);
+        attr.setDoubleValue(dvalue);
+    }
+
+    protected static boolean isInitialAdopter(ConsumerAgent agent) {
+        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.INITIAL_ADOPTER);
         return attr.getDoubleValue() == 1.0;
     }
 

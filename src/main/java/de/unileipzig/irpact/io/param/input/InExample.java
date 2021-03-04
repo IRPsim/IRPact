@@ -75,11 +75,12 @@ public class InExample implements DefaultScenarioFactory {
         InAttributeName D2 = new InAttributeName(RAConstants.INTEREST_THRESHOLD);
         InAttributeName D3 = new InAttributeName(RAConstants.FINANCIAL_THRESHOLD);
         InAttributeName D4 = new InAttributeName(RAConstants.ADOPTION_THRESHOLD);
+        InAttributeName D5 = new InAttributeName(RAConstants.INITIAL_ADOPTER);
 
         InAttributeName E1 = new InAttributeName(RAConstants.INVESTMENT_COST);
 
         InAttributeName Mic_Dominantes_Milieu = new InAttributeName(RAConstants.DOM_MILIEU);
-        InAttributeName Dummy_PLZ = new InAttributeName("Dummy_PLZ");
+        InAttributeName PLZ = new InAttributeName(RAConstants.ZIP);
 
         //===
         InUnivariateDoubleDistribution constant0 = new InConstantUnivariateDistribution("constant0", 0);
@@ -111,6 +112,7 @@ public class InExample implements DefaultScenarioFactory {
         InConsumerAgentGroupAttribute cag0_D2_attr = build(name, D2, dist, list);
         InConsumerAgentGroupAttribute cag0_D3_attr = build(name, D3, dist, list);
         InConsumerAgentGroupAttribute cag0_D4_attr = build(name, D4, dist, list);
+        InConsumerAgentGroupAttribute cag0_D5_attr = build(name, D5, constant1, list);
 
         InProductThresholdInterestSupplyScheme cag0_awa = new InProductThresholdInterestSupplyScheme(name + "_awa", constant10);
 
@@ -137,6 +139,7 @@ public class InExample implements DefaultScenarioFactory {
         InConsumerAgentGroupAttribute cag1_D2_attr = build(name, D2, dist, list);
         InConsumerAgentGroupAttribute cag1_D3_attr = build(name, D3, dist, list);
         InConsumerAgentGroupAttribute cag1_D4_attr = build(name, D4, dist, list);
+        InConsumerAgentGroupAttribute cag1_D5_attr = build(name, D5, dist, list);
 
         InProductThresholdInterestSupplyScheme cag1_awa = new InProductThresholdInterestSupplyScheme(name + "_awa", constant10);
 
@@ -184,14 +187,14 @@ public class InExample implements DefaultScenarioFactory {
         cag0.productFindingSchemes = new InProductFindingScheme[]{fixScheme};
         cag1.productFindingSchemes = new InProductFindingScheme[]{fixScheme};
 
-        InSpatialTableFile tableFile = new InSpatialTableFile("GIS_final_1_x");
+        InSpatialTableFile tableFile = new InSpatialTableFile("210225_Datensatz");
         InCustomSelectedGroupedSpatialDistribution2D spaDist = new InCustomSelectedGroupedSpatialDistribution2D(
                 "testdist",
                 constant0,
                 constant0,
                 tableFile,
                 Mic_Dominantes_Milieu,
-                Dummy_PLZ
+                PLZ
         );
         cag0.spatialDistribution = new InSpatialDistribution[]{spaDist};
         cag1.spatialDistribution = new InSpatialDistribution[]{spaDist};

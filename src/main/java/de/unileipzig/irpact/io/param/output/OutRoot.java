@@ -27,6 +27,7 @@ import java.util.List;
 public class OutRoot implements RootClass {
 
     public static final List<ParserInput> LIST = ParserInput.listOf(Type.OUTPUT,
+            OutAdoptionResult.class,
             BinaryPersistData.class
     );
 
@@ -48,6 +49,9 @@ public class OutRoot implements RootClass {
     //=========================
     //IRPact
     //=========================
+
+    @FieldDefinition
+    public OutAdoptionResult[] adoptionResults = new OutAdoptionResult[0];
 
     @FieldDefinition
     public BinaryPersistData[] binaryPersistData = new BinaryPersistData[0];

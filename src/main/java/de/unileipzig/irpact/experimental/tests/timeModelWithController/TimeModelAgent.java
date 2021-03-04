@@ -79,28 +79,34 @@ public class TimeModelAgent implements TimeModelService, TestAgent, SimulationAg
     }
 
     @Override
-    public void lockAction() {
+    public SocialGraph.Node getSocialGraphNode() {
         throw new RuntimeException();
+    }
+
+    @Override
+    public boolean tryAquireAction() {
+        return false;
+    }
+
+    @Override
+    public boolean tryAquireSelf() {
+        return false;
+    }
+
+    @Override
+    public void aquireFailed() {
+    }
+
+    @Override
+    public void allowAquire() {
     }
 
     @Override
     public void actionPerformed() {
-        throw new UnsupportedOperationException();
     }
 
     @Override
-    public void releaseAction() {
-        throw new RuntimeException();
-    }
-
-    @Override
-    public boolean aquireAction() {
-        throw new RuntimeException();
-    }
-
-    @Override
-    public SocialGraph.Node getSocialGraphNode() {
-        throw new RuntimeException();
+    public void releaseAquire() {
     }
 
     @Override
