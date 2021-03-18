@@ -85,7 +85,7 @@ public class IRPact {
         environment.getLiveCycleControl().pulse();
     }
 
-    private static DefinitionMapper newMapper(DefinitionCollection dcoll) {
+    public static DefinitionMapper newMapper(DefinitionCollection dcoll) {
         //return new DefinitionMapper(dcoll, DefinitionMapper.MAX_GAMS_NAME_LENGTH, true);
         return new DefinitionMapper(dcoll, DefinitionMapper.MAX_GAMS_NAME_LENGTH, true);
     }

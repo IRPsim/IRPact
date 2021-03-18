@@ -6,6 +6,7 @@ import de.unileipzig.irpact.commons.graph.topology.AbstractMultiGraphTopology;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.in.SideCustom;
@@ -64,13 +65,13 @@ public class OptAct {
 
     private Converter createInputConverter() {
         DefinitionCollection dcoll = AnnotationParser.parse(InRoot.CLASSES_WITH_GRAPHVIZ);
-        DefinitionMapper dmap = new DefinitionMapper(dcoll);
+        DefinitionMapper dmap = IRPact.newMapper(dcoll);
         return new Converter(dmap);
     }
 
     private Converter createOutputConverter() {
         DefinitionCollection dcoll = AnnotationParser.parse(OutRoot.CLASSES);
-        DefinitionMapper dmap = new DefinitionMapper(dcoll);
+        DefinitionMapper dmap = IRPact.newMapper(dcoll);
         return new Converter(dmap);
     }
 
