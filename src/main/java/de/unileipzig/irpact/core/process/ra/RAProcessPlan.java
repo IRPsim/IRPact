@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.core.process.ra;
 
+import de.unileipzig.irpact.commons.MathUtil;
+import de.unileipzig.irpact.commons.MutableDouble;
 import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeUtil;
@@ -12,8 +14,11 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
+import de.unileipzig.irpact.core.network.filter.NodeDistanceFilter;
+import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
+import de.unileipzig.irpact.core.process.ra.attributes.UncertaintyAttribute;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductAttribute;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -21,6 +26,8 @@ import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * @author Daniel Abitz
@@ -32,19 +39,30 @@ public class RAProcessPlan implements ProcessPlan {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(RAProcessPlan.class);
 
+    protected final Predicate<SocialGraph.Node> IS_CONSUMER = node -> node.is(ConsumerAgent.class);
+    protected final Function<SocialGraph.Node, ConsumerAgent> TO_CONSUMER = node -> node.getAgent(ConsumerAgent.class);
+    protected final Predicate<ConsumerAgent> IS_ADOPTER = ca -> ca.hasAdopted(getProduct());
+
     protected SimulationEnvironment environment;
     protected Need need;
     protected Product product;
     protected ConsumerAgent agent;
     protected Rnd rnd;
     protected RAProcessModel model;
+    protected NodeDistanceFilter distanceFilter;
 
     protected RAStage currentStage = RAStage.PRE_INITIALIZATION;
 
     public RAProcessPlan() {
     }
 
-    public RAProcessPlan(SimulationEnvironment environment, RAProcessModel model, Rnd rnd, ConsumerAgent agent, Need need, Product product) {
+    public RAProcessPlan(
+            SimulationEnvironment environment,
+            RAProcessModel model,
+            Rnd rnd,
+            ConsumerAgent agent,
+            Need need,
+            Product product) {
         setEnvironment(environment);
         setModel(model);
         setRnd(rnd);
@@ -116,6 +134,10 @@ public class RAProcessPlan implements ProcessPlan {
 
     public RAStage getCurrentStage() {
         return currentStage;
+    }
+
+    public double getLogisticFactor() {
+        return modelData().getLogisticFactor();
     }
 
     @Override
@@ -275,7 +297,7 @@ public class RAProcessPlan implements ProcessPlan {
         return r < freq;
     }
 
-    @Todo
+    @Todo("remove fehlt")
     protected ProcessPlanResult rewire() {
         LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] rewire", agent.getName());
 
@@ -296,7 +318,6 @@ public class RAProcessPlan implements ProcessPlan {
         ConsumerAgentGroupAffinities affinities = environment.getAgents()
                 .getConsumerAgentGroupAffinityMapping()
                 .get(agent.getGroup());
-
 
         SocialGraph.Node tarNode = null;
         while(tarNode == null) {
@@ -414,7 +435,9 @@ public class RAProcessPlan implements ProcessPlan {
         double npvThis = modelData().NPV(agent, environment.getTimeModel().getYear());
         double npvAvg = modelData().avgNPV(environment.getTimeModel().getYear());
 
-        return Math.log(ftThis - ftAvg) / Math.log(npvThis - npvAvg);
+        double ft = getLogisticFactor() * (ftThis - ftAvg);
+        double npv = getLogisticFactor() * (npvThis - npvAvg);
+        return (MathUtil.logistic(ft) + MathUtil.logistic(npv)) / 2.0;
     }
 
     protected double getNoveltyCompoenent() {
@@ -426,11 +449,10 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected double getSocialComponent() {
-        return getDependentJudgmentMaking(agent) * getShareOfAdopterInSocialNetwork();
-    }
-
-    protected boolean isNewYear() {
-        return false;
+        MutableDouble shareOfAdopterInSocialNetwork = MutableDouble.zero();
+        MutableDouble shareOfAdopterInLocalArea = MutableDouble.zero();
+        getShareOfAdopterInSocialNetworkAndLocalArea(shareOfAdopterInSocialNetwork, shareOfAdopterInLocalArea, distanceFilter);
+        return getDependentJudgmentMaking() * (shareOfAdopterInSocialNetwork.get() + shareOfAdopterInLocalArea.get()) / 2.0;
     }
 
     protected static double getFinancialThresholdAgent(ConsumerAgent agent) {
@@ -482,6 +504,9 @@ public class RAProcessPlan implements ProcessPlan {
         return attr.getDoubleValue();
     }
 
+    protected double getDependentJudgmentMaking() {
+        return getDependentJudgmentMaking(agent);
+    }
     protected static double getDependentJudgmentMaking(ConsumerAgent agent) {
         ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.DEPENDENT_JUDGMENT_MAKING);
         return attr.getDoubleValue();
@@ -593,12 +618,62 @@ public class RAProcessPlan implements ProcessPlan {
         interest.update(product, points);
     }
 
-    protected double getShareOfAdopterInSocialNetwork() {
-        long adopterCount = environment.getAgents().streamConsumerAgents()
-                .filter(ca -> ca.hasAdopted(product))
-                .count();
-        long total = environment.getAgents().getTotalNumberOfConsumerAgents();
-        return (double) adopterCount / total;
+//    protected double getShareOfAdopterInSocialNetwork() {
+//        return getShareOfAdopterInSocialNetwork(EntireNetworkNodeFilter.INSTANCE);
+//    }
+//
+//    protected double getShareOfAdopterInLocalArea() {
+//        return getShareOfAdopterInSocialNetwork(distanceFilter);
+//    }
+//
+//    protected double getShareOfAdopterInSocialNetwork(NodeFilter distanceFilter) {
+//        MutableDouble total = MutableDouble.zero();
+//        long adopterCount = environment.getNetwork().getGraph()
+//                .streamNodes()
+//                .filter(distanceFilter)
+//                .filter(IS_CONSUMER)
+//                .map(TO_CONSUMER)
+//                .peek(total.incConsumer())
+//                .filter(IS_ADOPTER)
+//                .count();
+//        return total.isZero()
+//                ? 0.0
+//                : (double) adopterCount / total.get();
+//    }
+
+    protected void getShareOfAdopterInSocialNetworkAndLocalArea(
+            MutableDouble global,
+            MutableDouble local,
+            NodeFilter distanceFilter) {
+        MutableDouble totalGlobal = MutableDouble.zero();
+        MutableDouble adopterGlobal = MutableDouble.zero();
+        MutableDouble totalLocal = MutableDouble.zero();
+        MutableDouble adopterLocal = MutableDouble.zero();
+        environment.getNetwork().getGraph().streamNodes()
+                .filter(IS_CONSUMER)
+                .peek(globalNode -> {
+                    totalGlobal.inc();
+                    if(globalNode.getAgent(ConsumerAgent.class).hasAdopted(getProduct())) {
+                        adopterGlobal.inc();
+                    }
+                })
+                .filter(distanceFilter)
+                .forEach(localNode -> {
+                    totalLocal.inc();
+                    if(localNode.getAgent(ConsumerAgent.class).hasAdopted(getProduct())) {
+                        adopterLocal.inc();
+                    }
+                });
+        if(totalGlobal.isZero()) {
+            global.set(0);
+        } else {
+            global.set(adopterGlobal.get() / totalGlobal.get());
+        }
+        if(totalLocal.isZero()) {
+            local.set(0);
+        } else {
+            local.set(adopterLocal.get() / totalLocal.get());
+        }
     }
 
     protected void applyRelativeAgreement(ConsumerAgent target) {

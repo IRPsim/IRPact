@@ -24,5 +24,9 @@ public interface InAffinityEntry extends InEntity {
 
     InConsumerAgentGroup getTarCag(InputParser parser) throws ParsingException;
 
+    String getSrcCagName() throws ParsingException;
+
+    String getTarCagName() throws ParsingException;
+
     double getAffinityValue();
 }

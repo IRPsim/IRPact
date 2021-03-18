@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.core.spatial.SpatialDistribution;
+import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -94,7 +94,7 @@ public class JadexConsumerAgentGroupPR extends BinaryPRBase<JadexConsumerAgentGr
         object.setSpatialDistribution(spatialDistribution);
 
         object.addAllGroupAttributes(manager.ensureGetAll(data.getLongArray(), ConsumerAgentGroupAttribute[]::new));
-        object.setAwarenessSupplyScheme(manager.ensureGet(data.getLong()));
+        object.setInterestSupplyScheme(manager.ensureGet(data.getLong()));
         object.setProductFindingScheme(manager.ensureGet(data.getLong()));
         object.setProcessFindingScheme(manager.ensureGet(data.getLong()));
     }

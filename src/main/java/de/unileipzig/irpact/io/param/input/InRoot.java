@@ -5,11 +5,11 @@ import de.unileipzig.irpact.commons.MultiCounter;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.io.param.IOResources;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InNameSplitAffinityEntry;
-import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
-import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.io.param.input.agent.consumer.*;
 import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
@@ -34,6 +34,7 @@ import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irpact.start.optact.in.*;
 import de.unileipzig.irpact.start.optact.network.IGraphTopology;
+import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.defstructure.AnnotationResource;
 import de.unileipzig.irptools.defstructure.ParserInput;
 import de.unileipzig.irptools.defstructure.RootClass;
@@ -70,15 +71,42 @@ public class InRoot implements RootClass {
     @FieldDefinition
     public InGeneral general = new InGeneral();
 
+    public void setGeneral(InGeneral general) {
+        this.general = general;
+    }
+    public void setGeneral(InGeneral[] general) throws ParsingException {
+        this.general = ParamUtil.getInstance(general, "general");
+    }
+    public InGeneral getGeneral() {
+        return general;
+    }
+
     @FieldDefinition
     public InVersion[] version = new InVersion[]{InVersion.currentVersion()};
+
+    public void setVersion(InVersion version) {
+        this.version = new InVersion[]{version};
+    }
+    public void setVersion(InVersion[] version) {
+        this.version = version;
+    }
+    public InVersion getVersion() throws ParsingException {
+        return ParamUtil.getInstance(version, "version");
+    }
 
     //=========================
     //affinity
     //=========================
 
     @FieldDefinition
-    public InComplexAffinityEntry[] affinityEntries = new InComplexAffinityEntry[0];
+    public InAffinityEntry[] affinityEntries = new InComplexAffinityEntry[0];
+
+    public void setAffinityEntries(InAffinityEntry[] affinityEntries) {
+        this.affinityEntries = affinityEntries;
+    }
+    public InAffinityEntry[] getAffinityEntries() throws ParsingException {
+        return ParamUtil.getNonEmptyArray(affinityEntries, "affinitEntries");
+    }
 
     //=========================
     //agent
@@ -87,46 +115,22 @@ public class InRoot implements RootClass {
     @FieldDefinition
     public InConsumerAgentGroup[] consumerAgentGroups = new InConsumerAgentGroup[0];
 
-    //=========================
-    //network
-    //=========================
+    public void setConsumerAgentGroups(InConsumerAgentGroup[] consumerAgentGroups) {
+        this.consumerAgentGroups = consumerAgentGroups;
+    }
+    public InConsumerAgentGroup[] getConsumerAgentGroups() throws ParsingException {
+        return ParamUtil.getNonEmptyArray(consumerAgentGroups, "consumerAgentGroups");
+    }
 
     @FieldDefinition
-    public InGraphTopologyScheme[] graphTopologySchemes = new InGraphTopologyScheme[0];
+    public InConsumerAgentGroupAttribute[] consumerAgentGroupAttributes = new InConsumerAgentGroupAttribute[0];
 
-    //=========================
-    //process
-    //=========================
-
-    @FieldDefinition
-    public InProcessModel[] processModel = new InProcessModel[0];
-
-    @FieldDefinition
-    public InUncertaintyGroupAttribute[] uncertaintyGroupAttributes = new InUncertaintyGroupAttribute[0];
-
-    //=========================
-    //product
-    //=========================
-
-    @FieldDefinition
-    public InProductGroup[] productGroups = new InProductGroup[0];
-
-    @FieldDefinition
-    public InFixProduct[] fixProducts = new InFixProduct[0];
-
-    //=========================
-    //spatial
-    //=========================
-
-    @FieldDefinition
-    public InSpatialModel[] spatialModel = new InSpatialModel[0];
-
-    //=========================
-    //time
-    //=========================
-
-    @FieldDefinition
-    public InTimeModel[] timeModel = new InTimeModel[0];
+    public void setConsumerAgentGroupAttributes(InConsumerAgentGroupAttribute[] consumerAgentGroupAttributes) {
+        this.consumerAgentGroupAttributes = consumerAgentGroupAttributes;
+    }
+    public InConsumerAgentGroupAttribute[] getConsumerAgentGroupAttributes() throws ParsingException {
+        return ParamUtil.getNonEmptyArray(consumerAgentGroupAttributes, "consumerAgentGroupAttributes");
+    }
 
     //=========================
     //binary
@@ -135,10 +139,108 @@ public class InRoot implements RootClass {
     @FieldDefinition
     public VisibleBinaryData[] visibleBinaryData = new VisibleBinaryData[0];
 
+    public void setVisibleBinaryData(VisibleBinaryData[] visibleBinaryData) {
+        this.visibleBinaryData = visibleBinaryData;
+    }
+    public VisibleBinaryData[] getVisibleBinaryData() throws ParsingException {
+        return ParamUtil.getNonEmptyArray(visibleBinaryData, "visibleBinaryData");
+    }
+
     //fuer out->in transfer
     @FieldDefinition
     public BinaryPersistData[] binaryPersistData = new BinaryPersistData[0];
 
+    //=========================
+    //network
+    //=========================
+
+    @FieldDefinition
+    public InGraphTopologyScheme[] graphTopologySchemes = new InGraphTopologyScheme[0];
+
+    public void setGraphTopologyScheme(InGraphTopologyScheme[] graphTopologySchemes) throws ParsingException {
+        this.graphTopologySchemes = ParamUtil.getOneElementArray(graphTopologySchemes, "graphTopologySchemes");
+    }
+    public void setGraphTopologyScheme(InGraphTopologyScheme graphTopologyScheme) {
+        this.graphTopologySchemes = new InGraphTopologyScheme[]{graphTopologyScheme};
+    }
+    public InGraphTopologyScheme getGraphTopologyScheme() throws ParsingException {
+        return ParamUtil.getInstance(graphTopologySchemes, "graphTopologySchemes");
+    }
+
+    //=========================
+    //process
+    //=========================
+
+    @FieldDefinition
+    public InProcessModel[] processModels = new InProcessModel[0];
+
+    public void setProcessModel(InProcessModel processModel) {
+        this.processModels = new InProcessModel[]{processModel};
+    }
+    public void setProcessModels(InProcessModel[] processModels) throws ParsingException {
+        this.processModels = ParamUtil.getNonEmptyArray(processModels, "processModel");
+    }
+    public InProcessModel[] getProcessModels() throws ParsingException {
+        return ParamUtil.getNonEmptyArray(processModels, "processModel");
+    }
+
+    //=========================
+    //product
+    //=========================
+
+    @FieldDefinition
+    public InProductGroup[] productGroups = new InProductGroup[0];
+
+    public void setProductGroups(InProductGroup[] productGroups) throws ParsingException {
+        this.productGroups = ParamUtil.getNonEmptyArray(productGroups, "productGroups");
+    }
+    public InProductGroup[] getProductGroups() throws ParsingException {
+        return ParamUtil.getNonEmptyArray(productGroups, "productGroups");
+    }
+
+    @FieldDefinition
+    public InFixProduct[] fixProducts = new InFixProduct[0];
+
+    public void setFixProducts(InFixProduct[] fixProducts) throws ParsingException {
+        this.fixProducts = ParamUtil.getNonEmptyArray(fixProducts, "fixProducts");
+    }
+    public InFixProduct[] getFixProducts() throws ParsingException {
+        return ParamUtil.getNonEmptyArray(fixProducts, "fixProducts");
+    }
+
+    //=========================
+    //spatial
+    //=========================
+
+    @FieldDefinition
+    public InSpatialModel[] spatialModel = new InSpatialModel[0];
+
+    public void setSpatialModel(InSpatialModel[] spatialModel) throws ParsingException {
+        this.spatialModel = ParamUtil.getOneElementArray(spatialModel, "spatialModel");
+    }
+    public void setSpatialModel(InSpatialModel spatialModel) {
+        this.spatialModel = new InSpatialModel[]{spatialModel};
+    }
+    public InSpatialModel getSpatialModel() throws ParsingException {
+        return ParamUtil.getInstance(spatialModel, "spatialModel");
+    }
+
+    //=========================
+    //time
+    //=========================
+
+    @FieldDefinition
+    public InTimeModel[] timeModel = new InTimeModel[0];
+
+    public void setTimeModel(InTimeModel[] timeModel) throws ParsingException {
+        this.timeModel = ParamUtil.getOneElementArray(timeModel, "timeModel");
+    }
+    public void setTimeModel(InTimeModel timeModel) {
+        this.timeModel = new InTimeModel[]{timeModel};
+    }
+    public InTimeModel getTimeModel() throws ParsingException {
+        return ParamUtil.getInstance(timeModel, "timeModel");
+    }
     //=========================
     //Graphviz
     //=========================
@@ -233,11 +335,6 @@ public class InRoot implements RootClass {
         throw new ParsingException("missing cag '" + name + "'");
     }
 
-    protected InConsumerAgentGroupAttribute[] consumerAgentGroupAttributes = new InConsumerAgentGroupAttribute[0];
-    public Stream<InConsumerAgentGroupAttribute> streamConsumerAgentGroupAttributes(Predicate<? super InConsumerAgentGroupAttribute> filter) {
-        return streamArray(consumerAgentGroupAttributes, filter);
-    }
-
     public InProductGroup findProductGroup(String name) {
         if(productGroups == null) {
             return null;
@@ -248,11 +345,6 @@ public class InRoot implements RootClass {
             }
         }
         return null;
-    }
-
-    protected InProductGroupAttribute[] productGroupAttributes = new InProductGroupAttribute[0];
-    public Stream<InProductGroupAttribute> streamProductGroupAttribute(Predicate<? super InProductGroupAttribute> filter) {
-        return streamArray(productGroupAttributes, filter);
     }
 
     public boolean hasBinaryPersistData() {
@@ -303,6 +395,7 @@ public class InRoot implements RootClass {
     //CLASSES
     //=========================
 
+    @Todo("testen, ob alles Klassen geladen werden")
     public static final List<ParserInput> INPUT_WITHOUT_ROOT = ParserInput.listOf(Type.INPUT,
             InAffinityEntry.class,
             InComplexAffinityEntry.class,
@@ -310,6 +403,10 @@ public class InRoot implements RootClass {
 
             InConsumerAgentGroup.class,
             InConsumerAgentGroupAttribute.class,
+            InGeneralConsumerAgentGroup.class,
+            InGeneralConsumerAgentGroupAttribute.class,
+            InNameSplitConsumerAgentGroupAttribute.class,
+            InPVactConsumerAgentGroup.class,
 
             InProductInterestSupplyScheme.class,
             InProductThresholdInterestSupplyScheme.class,
@@ -340,7 +437,7 @@ public class InRoot implements RootClass {
             InUnlinkedGraphTopology.class,
 
             InAutoUncertaintyGroupAttribute.class,
-            InCustomUncertaintyGroupAttribute.class,
+            InNameBasedUncertaintyWithConvergenceGroupAttribute.class,
             InOrientationSupplier.class,
             InProcessModel.class,
             InRAProcessModel.class,
@@ -400,6 +497,7 @@ public class InRoot implements RootClass {
     //UI
     //=========================
 
+    @Todo("Alle cache-Elemente etc in Konstanten umwandeln")
     public static void initRes(TreeAnnotationResource res) {
         MultiCounter counter = new MultiCounter();
 

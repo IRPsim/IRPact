@@ -1,8 +1,7 @@
 package de.unileipzig.irpact.experimental;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.commons.CollectionUtil;
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.*;
 import de.unileipzig.irpact.commons.res.BasicResourceLoader;
 import de.unileipzig.irpact.commons.util.IRPactBase32;
 import de.unileipzig.irpact.commons.util.IRPactJson;
@@ -246,5 +245,25 @@ class DivTest {
     @Test
     void lol() {
         System.out.println(IRPactBase32.decodeStringToUTF8("EDQ62SJK78G68QBI41HMGPB3DC568QBI78G2S2HU40N5OBJ7D5Q0KFH05PE2SPR9EHKMERJFE9IGKFH05PE2SPRIC5I6OP8A7OG2SN1ED5I6AO8A7OG2SN32ELKMOP0A7OG2SN32ELKMOP1ECTP62P3CCK53S81EBHHNASRKDTMMOQB2EC53S81EBHIM8TRFDTI2QS335PPMAT3KD5N6ESPEF1MMO2HU40N5OPRIC5I6OP8A7OG2SN37E9GM8R35ES53S81EBHJN4OB4DHINEBJ2C5Q0KFH05PE6IRJ6DTPISQJJDTN0KFH05PE6UTBK18V20BISE1M62T36DTP6QNR1ELQ6UBJ3DTN6C2HU40N5OSJ5C5I6QP9EDLI0KFH05PE76PBKEHKMSPRJ5PJN4OB4DHIGKFH05PE76PBKEHKMSPRJBTIM8TRFDTI2QS3318V20BISEDIN8T39DPJN6NRID5HMMSR8C5RJ42HU40N5OSRICC53S81EBHQ6ASRKCPKMOPBJ19IMSP3578G68QBI41HMGPB3DC50ZZZZ"));
+    }
+
+    @Test
+    void testRndReducer() {
+        List<String> list = CollectionUtil.arrayListOf("a", "b", "c", "d");
+        System.out.println(list.stream().reduce(new RndElementReducer<>(0)));
+        System.out.println(list.stream().reduce(new RndElementReducer<>(1)));
+        System.out.println(list.stream().reduce(new RndElementReducer<>(2)));
+        System.out.println(list.stream().reduce(new RndElementReducer<>(3)));
+        System.out.println(list.stream().reduce(new RndElementReducer<>(4)));
+    }
+
+    @Test
+    void testWeightedRndReducer() {
+        List<String> list = CollectionUtil.arrayListOf("a", "b", "c", "d");
+        System.out.println(list.stream().reduce(new WeightedRndElementReducer<>(4 * 0, x -> 1)));
+        System.out.println(list.stream().reduce(new WeightedRndElementReducer<>(4 * 0.25, x -> 1)));
+        System.out.println(list.stream().reduce(new WeightedRndElementReducer<>(4 * 0.5, x -> 1)));
+        System.out.println(list.stream().reduce(new WeightedRndElementReducer<>(4 * 0.75, x -> 1)));
+        System.out.println(list.stream().reduce(new WeightedRndElementReducer<>(4 * 1, x -> 1)));
     }
 }

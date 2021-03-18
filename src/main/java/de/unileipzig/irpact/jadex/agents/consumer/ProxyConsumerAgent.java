@@ -21,6 +21,7 @@ import de.unileipzig.irpact.core.product.ProductFindingScheme;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
 
@@ -46,6 +47,8 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     protected Set<Need> needs;
     protected Map<Need, ProcessPlan> plans;
     protected Set<AttributeAccess> externAttributes;
+    @Todo("diese Information sollte lieber ins SN.Node")
+    @Todo("speichern dieser Information nicht vergessen")
     protected Map<ConsumerAgentGroup, Integer> cagLinkCount;
 
     public ProxyConsumerAgent() {

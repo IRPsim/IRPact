@@ -1,9 +1,9 @@
 package de.unileipzig.irpact.commons;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * Simple triple map based on two maps.
@@ -17,7 +17,7 @@ public class TripleMapping<A, B, C> {
     protected Map<A, Map<B, C>> mapping;
 
     public TripleMapping() {
-        this(HashMap::new, a -> new HashMap<>());
+        this(CollectionUtil.newMapSupplier(), CollectionUtil.newMapFunction());
     }
 
     public TripleMapping(
@@ -40,6 +40,17 @@ public class TripleMapping<A, B, C> {
                 : map1.get(b);
     }
 
+    public C get(A a, B b, C ifNull) {
+        Map<B, C> map1 = mapping.get(a);
+        if(map1 == null) {
+            return ifNull;
+        }
+        C c = map1.get(b);
+        return c == null
+                ? ifNull
+                : c;
+    }
+
     public C remove(A a, B b) {
         Map<B, C> map1 = mapping.get(a);
         return map1 == null
@@ -59,5 +70,12 @@ public class TripleMapping<A, B, C> {
                 .stream()
                 .mapToInt(Map::size)
                 .sum();
+    }
+
+    public Stream<C> streamValues(A a) {
+        Map<B, C> map1 = mapping.get(a);
+        return map1 == null
+                ? Stream.empty()
+                : map1.values().stream();
     }
 }

@@ -71,12 +71,28 @@ public class InNumberOfTies implements InEntity {
         return _name;
     }
 
+    public void setName(String name) {
+        this._name = name;
+    }
+
     public InConsumerAgentGroup[] getConsumerAgentGroups() throws ParsingException {
-        return ParamUtil.getArray(cags, "ConsumerAgentGroup");
+        return ParamUtil.getNonEmptyArray(cags, "ConsumerAgentGroup");
+    }
+
+    public void setConsumerAgentGroups(InConsumerAgentGroup[] cags) {
+        this.cags = cags;
+    }
+
+    public void setConsumerAgentGroup(InConsumerAgentGroup cag) {
+        this.cags = new InConsumerAgentGroup[]{cag};
     }
 
     public int getCount() {
         return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     @Override

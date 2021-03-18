@@ -46,4 +46,9 @@ public class SimpleInterest<T> implements Interest<T> {
     public void forget(T item) {
         items.remove(item);
     }
+
+    @Override
+    public double getValue(T item) {
+        return isInterested(item) ? 1 : 0;
+    }
 }

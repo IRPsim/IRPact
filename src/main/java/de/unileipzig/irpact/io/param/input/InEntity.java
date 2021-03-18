@@ -4,8 +4,6 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
-import java.lang.invoke.MethodHandles;
-
 /**
  * @author Daniel Abitz
  */
@@ -15,10 +13,6 @@ public interface InEntity {
     static void initRes(TreeAnnotationResource res) {
     }
     static void applyRes(TreeAnnotationResource res) {
-    }
-
-    static Class<?> lookupClass() {
-        return MethodHandles.lookup().lookupClass();
     }
 
     String getName();

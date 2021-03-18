@@ -80,7 +80,7 @@ public class InProductGroupAttribute implements InEntity {
         return attrName;
     }
 
-    public String getAttrNameString() {
+    public String getAttributeName() {
         return attrName.getName();
     }
 

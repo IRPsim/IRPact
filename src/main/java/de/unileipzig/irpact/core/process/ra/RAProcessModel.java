@@ -15,12 +15,15 @@ import de.unileipzig.irpact.core.need.BasicNeed;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
+import de.unileipzig.irpact.core.process.ra.attributes.BasicUncertaintyGroupAttributeSupplier;
+import de.unileipzig.irpact.core.process.ra.attributes.UncertaintyGroupAttributeSupplier;
 import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
+import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.time.Month;
@@ -43,7 +46,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
     protected BasicConsumerAgentGroupAttributeSupplier underConstructionSupplier = new BasicConsumerAgentGroupAttributeSupplier(RAConstants.UNDER_CONSTRUCTION, DIRAQ0);
     protected BasicConsumerAgentGroupAttributeSupplier underRenovationSupplier = new BasicConsumerAgentGroupAttributeSupplier(RAConstants.UNDER_RENOVATION, DIRAQ0);
 
-    protected BasicUncertaintyGroupAttributeSupplier uncertaintySupplier = new BasicUncertaintyGroupAttributeSupplier();
+    protected UncertaintyGroupAttributeSupplier uncertaintySupplier = new BasicUncertaintyGroupAttributeSupplier();
 
     protected NPVData npvData;
     protected NPVCalculator npvCalculator;
@@ -146,11 +149,11 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         this.underRenovationSupplier = underRenovationSupplier;
     }
 
-    public BasicUncertaintyGroupAttributeSupplier getUncertaintySupplier() {
+    public UncertaintyGroupAttributeSupplier getUncertaintySupplier() {
         return uncertaintySupplier;
     }
 
-    public void setUncertaintySupplier(BasicUncertaintyGroupAttributeSupplier uncertaintySupplier) {
+    public void setUncertaintySupplier(UncertaintyGroupAttributeSupplier uncertaintySupplier) {
         this.uncertaintySupplier = uncertaintySupplier;
     }
 
@@ -257,7 +260,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         }
     }
 
-    //TODO auslagern
+    @Todo("auslagern")
     private final Need pvNeed = new BasicNeed("PV");
     private void addNeedToConsumers() {
         LOGGER.trace("add initial need '{}'", pvNeed.getName());
@@ -268,7 +271,10 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         }
     }
 
-    //TODO aufraeumen
+    @Todo("awareness und interest trennen")
+    @Todo("aufraeumen")
+    @Todo("ueberlegen welche Parameter noch eine initialisierung benoetigen")
+    @Todo("noch eine stage einbauen, aber speziell fuers ProzessModel, fuer init der Agenten")
     private void checkInitialAdopter() {
         LOGGER.trace("setup initial adopter");
         Need need = pvNeed;

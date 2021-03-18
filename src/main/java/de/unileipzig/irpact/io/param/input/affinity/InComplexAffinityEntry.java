@@ -87,6 +87,11 @@ public class InComplexAffinityEntry implements InAffinityEntry {
         return getSrcCag();
     }
 
+    @Override
+    public String getSrcCagName() throws ParsingException {
+        return getSrcCag().getName();
+    }
+
     public void setTarCag(InConsumerAgentGroup tarCag) {
         this.tarCag = new InConsumerAgentGroup[]{tarCag};
     }
@@ -98,6 +103,11 @@ public class InComplexAffinityEntry implements InAffinityEntry {
     @Override
     public InConsumerAgentGroup getTarCag(InputParser parser) throws ParsingException {
         return getTarCag();
+    }
+
+    @Override
+    public String getTarCagName() throws ParsingException {
+        return getTarCag().getName();
     }
 
     public void setAffinityValue(double affinityValue) {

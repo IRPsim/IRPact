@@ -56,6 +56,10 @@ public class InUnlinkedGraphTopology implements InGraphTopologyScheme {
         return _name;
     }
 
+    public void setName(String name) {
+        this._name = name;
+    }
+
     @Override
     public UnlinkedGraphTopology parse(InputParser parser) throws ParsingException {
         return new UnlinkedGraphTopology(SocialGraph.Type.COMMUNICATION, getName());

@@ -1,5 +1,8 @@
 package de.unileipzig.irpact.core.process.ra;
 
+import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.util.Todo;
+
 /**
  * @author Daniel Abitz
  */
@@ -33,11 +36,11 @@ public final class RAConstants {
     public static final String INVESTMENT_COST = "investment_cost";                               //E1
 
     //Spatial
+    @Todo("ANPASSEN AN MOMENTANE DATEI")
     public static final String ADDRESS = "Adresse";
     public static final String ZIP = "PLZ";
     public static final String ORIENTATION = "Dachorient";
     public static final String SLOPE = "Dachneig";
-    public static final String Dachfl = "Dachneig";
     public static final String X_CENT = "X_Zentroid";
     public static final String Y_CENT = "Y_Zentroid";
     public static final String PURCHASE_POWER = "KK";          //A1
@@ -47,7 +50,9 @@ public final class RAConstants {
 
     public static final String UNCERTAINTY_SUFFIX = "uncertainty";
 
+    public static final String RATE_OF_CONVERGENCE = "rate_of_convergence";
+
     public static String getUncertaintyAttributeName(String name) {
-        return name + "_" + UNCERTAINTY_SUFFIX;
+        return ParamUtil.concData(name, UNCERTAINTY_SUFFIX);
     }
 }

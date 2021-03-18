@@ -1,11 +1,12 @@
 package de.unileipzig.irpact.commons;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-public final class Pair<A, B> {
+public final class Pair<A, B> implements Map.Entry<A, B> {
 
     private final A first;
     private final B second;
@@ -35,6 +36,21 @@ public final class Pair<A, B> {
     @Override
     public int hashCode() {
         return Objects.hash(first, second);
+    }
+
+    @Override
+    public A getKey() {
+        return first();
+    }
+
+    @Override
+    public B getValue() {
+        return second();
+    }
+
+    @Override
+    public B setValue(B value) {
+        throw new UnsupportedOperationException();
     }
 
     @Override

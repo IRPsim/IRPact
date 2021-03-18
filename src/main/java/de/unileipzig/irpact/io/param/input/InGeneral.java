@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.io.param.input;
 
-import ch.qos.logback.classic.Level;
 import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLevel;
@@ -10,6 +9,7 @@ import de.unileipzig.irpact.core.log.SectionLoggingFilter;
 import de.unileipzig.irpact.core.simulation.BasicInitializationData;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
+import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -197,11 +197,29 @@ public class InGeneral {
     @FieldDefinition
     public int endYear;
 
+    //=========================
+    //flags
+    //=========================
+
+    //ProductFindingScheme, ProcessFindingScheme
+    @Todo("EINBAUEN + ueberlegen, welche Daten hiermit automatisch eingefuegt werden muessen")
+    @Todo("Subroutine in den Parser einbauen")
+    @FieldDefinition
+    public boolean runPVAct;
+
     @FieldDefinition
     public boolean runOptActDemo;
 
+    //=========================
+    //general logging
+    //=========================
+
     @FieldDefinition
     public int logLevel;
+
+    //=========================
+    //custom logging
+    //=========================
 
     @FieldDefinition
     public boolean logAll;

@@ -1,6 +1,10 @@
 package de.unileipzig.irpact.commons;
 
+import de.unileipzig.irpact.util.Todo;
+
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -11,6 +15,19 @@ import java.util.stream.Collectors;
 public final class CollectionUtil {
 
     private CollectionUtil() {
+    }
+
+    @Todo("alles nicht-zwang-linkged hashmaps austauschen")
+    public static <K, V> Map<K, V> newMap() {
+        return new LinkedHashMap<>();
+    }
+
+    public static <K, V> Supplier<Map<K, V>> newMapSupplier() {
+        return CollectionUtil::newMap;
+    }
+
+    public static <A, K, V> Function<A, Map<K, V>> newMapFunction() {
+        return a -> newMap();
     }
 
     public static <T> List<T> toList(Iterator<? extends T> iter) {

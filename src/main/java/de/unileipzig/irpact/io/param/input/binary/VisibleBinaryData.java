@@ -52,6 +52,11 @@ public class VisibleBinaryData implements InEntity {
     public VisibleBinaryData() {
     }
 
+    public VisibleBinaryData(String name, long id) {
+        setName(name);
+        setID(id);
+    }
+
     @Override
     public String getName() {
         return _name;

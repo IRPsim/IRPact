@@ -24,6 +24,8 @@ public interface SocialGraph extends IsEquals {
         Agent getAgent();
 
         <T extends Agent> T getAgent(Class<T> type);
+
+        <T extends Agent> boolean is(Class<T> type);
     }
 
     /**
@@ -92,6 +94,8 @@ public interface SocialGraph extends IsEquals {
     Set<? extends Node> getTargets(Node from, Type type);
 
     boolean getTargets(Node from, Type type, Collection<? super Node> targets);
+
+    Stream<? extends Node> streamNodes();
 
     Stream<? extends Node> streamTargets(Node source, Type type);
 

@@ -4,7 +4,7 @@ import de.unileipzig.irpact.core.agent.AgentGroup;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
 import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
-import de.unileipzig.irpact.core.spatial.SpatialDistribution;
+import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
 
 import java.util.Collection;
 

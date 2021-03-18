@@ -11,6 +11,7 @@ import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.agent.SpatialInformationAgent;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
+import de.unileipzig.irpact.util.Todo;
 
 import java.util.Collection;
 import java.util.Map;
@@ -58,12 +59,19 @@ public interface ConsumerAgent extends SpatialInformationAgent {
 
     Map<Need, ProcessPlan> getPlans();
 
+    @Todo("HMMM")
     Map<ConsumerAgentGroup, Integer> getLinkCounter();
 
     default void inc(ConsumerAgentGroup tarCag, int delta) {
         Map<ConsumerAgentGroup, Integer> map = getLinkCounter();
         int current = map.computeIfAbsent(tarCag, _cag -> 0);
         map.put(tarCag, current + delta);
+    }
+
+    default void dec(ConsumerAgentGroup tarCag, int delta) {
+        Map<ConsumerAgentGroup, Integer> map = getLinkCounter();
+        int current = map.computeIfAbsent(tarCag, _cag -> 0);
+        map.put(tarCag, current - delta);
     }
 
     default int getLinkCount(ConsumerAgentGroup tarCag) {

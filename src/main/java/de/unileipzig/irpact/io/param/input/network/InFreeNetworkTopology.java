@@ -9,6 +9,7 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.FreeNetworkTopology;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -85,16 +86,32 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         return _name;
     }
 
-    public InDistanceEvaluator getDistanceEvaluator() {
-        return distanceEvaluator[0];
+    public void setName(String name) {
+        this._name = name;
+    }
+
+    public InDistanceEvaluator getDistanceEvaluator() throws ParsingException {
+        return ParamUtil.getInstance(distanceEvaluator, "distanceEvaluator");
+    }
+
+    public void setDistanceEvaluator(InDistanceEvaluator distanceEvaluator) {
+        this.distanceEvaluator = new InDistanceEvaluator[]{distanceEvaluator};
     }
 
     public InNumberOfTies[] getNumberOfTies() {
         return numberOfTies;
     }
 
+    public void setNumberOfTies(Collection<? extends InNumberOfTies> ties) {
+        this.numberOfTies = ties.toArray(new InNumberOfTies[0]);
+    }
+
     public double getInitialWeight() {
         return initialWeight;
+    }
+
+    public void setInitialWeight(double initialWeight) {
+        this.initialWeight = initialWeight;
     }
 
     @Override

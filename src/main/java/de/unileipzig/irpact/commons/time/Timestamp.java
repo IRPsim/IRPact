@@ -11,6 +11,8 @@ public interface Timestamp extends Comparable<Timestamp>, IsEquals {
 
     ZonedDateTime getTime();
 
+    String printSimple();
+
     default long getEpochMilli() {
         return getTime().toInstant().toEpochMilli();
     }

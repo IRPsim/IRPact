@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.io.param.input.process;
 
+import de.unileipzig.irpact.util.Placeholder;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -9,6 +10,7 @@ import java.lang.invoke.MethodHandles;
 /**
  * @author Daniel Abitz
  */
+@Placeholder
 @Definition
 public class InAutoUncertaintyGroupAttribute implements InUncertaintyGroupAttribute {
 

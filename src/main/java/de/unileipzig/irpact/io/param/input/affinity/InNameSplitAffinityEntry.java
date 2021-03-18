@@ -39,7 +39,7 @@ public class InNameSplitAffinityEntry implements InAffinityEntry {
     }
 
     public InNameSplitAffinityEntry(InConsumerAgentGroup srcCag, InConsumerAgentGroup tarCag, double value) {
-        this._name = ParamUtil.conc(srcCag, tarCag);
+        this._name = ParamUtil.concName(srcCag, tarCag);
         this.affinityValue = value;
     }
 
@@ -67,10 +67,12 @@ public class InNameSplitAffinityEntry implements InAffinityEntry {
         return affinityValue;
     }
 
+    @Override
     public String getSrcCagName() throws ParsingException {
         return ParamUtil.firstPart(getName());
     }
 
+    @Override
     public String getTarCagName() throws ParsingException {
         return ParamUtil.secondPart(getName());
     }

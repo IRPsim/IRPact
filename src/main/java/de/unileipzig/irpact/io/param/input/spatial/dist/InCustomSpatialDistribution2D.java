@@ -5,22 +5,21 @@ import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.process.ra.RAModelData;
-import de.unileipzig.irpact.core.process.ra.RAProcessPlan;
-import de.unileipzig.irpact.core.spatial.DiscreteSpatialDistribution;
-import de.unileipzig.irpact.core.spatial.SpatialDistribution;
+import de.unileipzig.irpact.core.spatial.distribution.DiscreteSpatialDistribution;
+import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
-import de.unileipzig.irpact.core.spatial.twodim.SuppliedSpatialDistribution2D;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
+import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
+import de.unileipzig.irptools.util.TreeResourceApplier;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
@@ -28,6 +27,16 @@ import java.util.List;
 
 /**
  * @author Daniel Abitz
+ */
+@Todo("noch eine volle custom variante implementieren? ja/nein?")
+/*
+
+            SuppliedSpatialDistribution2D dist = new SuppliedSpatialDistribution2D();
+            dist.setName(getName());
+            dist.setXSupplier(xDist);
+            dist.setYSupplier(yDist);
+            parser.cache(this, dist);
+            jCag.setSpatialDistribution(dist);
  */
 @Definition
 public class InCustomSpatialDistribution2D implements InSpatialDistribution {
@@ -39,6 +48,7 @@ public class InCustomSpatialDistribution2D implements InSpatialDistribution {
     }
 
     public static void initRes(TreeAnnotationResource res) {
+        TreeResourceApplier.callAllSubInitResSilently(thisClass(), res);
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.putPath(
@@ -48,33 +58,43 @@ public class InCustomSpatialDistribution2D implements InSpatialDistribution {
                 res.getCachedElement("CustomPos"),
                 res.getCachedElement("InCustomSpatialDistribution2D")
         );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("X-Position")
-                .setGamsDescription("X-Position")
-                .store(InCustomSpatialDistribution2D.class, "xPosSupplier");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Y-Position")
-                .setGamsDescription("Y-Position")
-                .store(InCustomSpatialDistribution2D.class, "yPosSupplier");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Tabellendaten")
-                .setGamsDescription("Zu nutzende Tabelle für weitere Informationen")
-                .store(InCustomSpatialDistribution2D.class, "attrFile");
+        TreeResourceApplier.callAllSubApplyResSilently(thisClass(), res);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InCustomSpatialDistribution2D.class);
 
     public String _name;
 
+    public static void initRes0(TreeAnnotationResource res) {
+    }
+    public static void applyRes0(TreeAnnotationResource res) {
+        res.newEntryBuilder()
+                .setGamsIdentifier("X-Position")
+                .setGamsDescription("X-Position")
+                .store(InCustomSpatialDistribution2D.class, "xPosSupplier");
+    }
     @FieldDefinition
     public InUnivariateDoubleDistribution[] xPosSupplier;
 
+    public static void initRes1(TreeAnnotationResource res) {
+    }
+    public static void applyRes1(TreeAnnotationResource res) {
+        res.newEntryBuilder()
+                .setGamsIdentifier("Y-Position")
+                .setGamsDescription("Y-Position")
+                .store(InCustomSpatialDistribution2D.class, "yPosSupplier");
+    }
     @FieldDefinition
     public InUnivariateDoubleDistribution[] yPosSupplier;
 
+    public static void initRes2(TreeAnnotationResource res) {
+    }
+    public static void applyRes2(TreeAnnotationResource res) {
+        res.newEntryBuilder()
+                .setGamsIdentifier("Tabellendaten")
+                .setGamsDescription("Zu nutzende Tabelle für weitere Informationen")
+                .store(InCustomSpatialDistribution2D.class, "attrFile");
+    }
     @FieldDefinition
     public InSpatialTableFile[] attrFile;
 
@@ -138,25 +158,16 @@ public class InCustomSpatialDistribution2D implements InSpatialDistribution {
         UnivariateDoubleDistribution xDist = parser.parseEntityTo(getXPosSupplier());
         UnivariateDoubleDistribution yDist = parser.parseEntityTo(getYPosSupplier());
 
-        if(getAttributeFile() == null) {
-            SuppliedSpatialDistribution2D dist = new SuppliedSpatialDistribution2D();
-            dist.setName(getName());
-            dist.setXSupplier(xDist);
-            dist.setYSupplier(yDist);
-            parser.cache(this, dist);
-            jCag.setSpatialDistribution(dist);
-        } else {
-            List<List<SpatialAttribute<?>>> attrList = parser.parseEntityTo(getAttributeFile());
-            List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList, xDist, yDist);
+        List<List<SpatialAttribute<?>>> attrList = parser.parseEntityTo(getAttributeFile());
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList, xDist, yDist);
 
-            DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();
-            dist.setName(getName());
-            Rnd rnd = parser.deriveRnd();
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "InCustomSpatialDistribution2D '{}' uses seed: {}", getName(), rnd.getInitialSeed());
-            dist.setRandom(rnd);
-            dist.addAll(infos);
-            parser.cache(this, dist);
-            jCag.setSpatialDistribution(dist);
-        }
+        DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();
+        dist.setName(getName());
+        Rnd rnd = parser.deriveRnd();
+        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "InCustomSpatialDistribution2D '{}' uses seed: {}", getName(), rnd.getInitialSeed());
+        dist.setRandom(rnd);
+        dist.addAll(infos);
+        parser.cache(this, dist);
+        jCag.setSpatialDistribution(dist);
     }
 }

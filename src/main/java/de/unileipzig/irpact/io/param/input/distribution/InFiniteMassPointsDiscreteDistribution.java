@@ -6,6 +6,7 @@ import de.unileipzig.irpact.commons.distribution.FiniteMassPointsDiscreteDistrib
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -14,6 +15,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Collection;
 
 /**
  * @author Daniel Abitz
@@ -53,6 +55,11 @@ public class InFiniteMassPointsDiscreteDistribution implements InUnivariateDoubl
     public InFiniteMassPointsDiscreteDistribution() {
     }
 
+    public InFiniteMassPointsDiscreteDistribution(String name, Collection<? extends InMassPoint> massPoints) {
+        setName(name);
+        setMassPoints(massPoints);
+    }
+
     @Override
     public String getName() {
         return _name;
@@ -62,8 +69,12 @@ public class InFiniteMassPointsDiscreteDistribution implements InUnivariateDoubl
         this._name = _name;
     }
 
-    public InMassPoint[] getMassPoints() {
-        return massPoints;
+    public InMassPoint[] getMassPoints() throws ParsingException {
+        return ParamUtil.getNonEmptyArray(massPoints, "massPoints");
+    }
+
+    public void setMassPoints(Collection<? extends InMassPoint> massPoints) {
+        this.massPoints = massPoints.toArray(new InMassPoint[0]);
     }
 
     public void setMassPoints(InMassPoint[] massPoints) {

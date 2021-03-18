@@ -46,14 +46,14 @@ public class InProductThresholdInterestSupplyScheme implements InProductInterest
     public String _name;
 
     @FieldDefinition
-    public InUnivariateDoubleDistribution[] awarenessDistribution;
+    public InUnivariateDoubleDistribution[] interestDistribution;
 
     public InProductThresholdInterestSupplyScheme() {
     }
 
-    public InProductThresholdInterestSupplyScheme(String name, InUnivariateDoubleDistribution awarenessDistribution) {
+    public InProductThresholdInterestSupplyScheme(String name, InUnivariateDoubleDistribution interestDistribution) {
         this._name = name;
-        setAwarenessDistribution(awarenessDistribution);
+        setInterestDistribution(interestDistribution);
     }
 
     @Override
@@ -61,12 +61,16 @@ public class InProductThresholdInterestSupplyScheme implements InProductInterest
         return _name;
     }
 
-    public void setAwarenessDistribution(InUnivariateDoubleDistribution awarenessDistribution) {
-        this.awarenessDistribution = new InUnivariateDoubleDistribution[]{awarenessDistribution};
+    public void setName(String name) {
+        this._name = name;
     }
 
-    public InUnivariateDoubleDistribution getAwarenessDistribution() throws ParsingException {
-        return ParamUtil.getInstance(awarenessDistribution, "AwarenessDistribution");
+    public void setInterestDistribution(InUnivariateDoubleDistribution interestDistribution) {
+        this.interestDistribution = new InUnivariateDoubleDistribution[]{interestDistribution};
+    }
+
+    public InUnivariateDoubleDistribution getInterestDistribution() throws ParsingException {
+        return ParamUtil.getInstance(interestDistribution, "interestDistribution");
     }
 
     @Override
@@ -74,7 +78,7 @@ public class InProductThresholdInterestSupplyScheme implements InProductInterest
         ProductThresholdInterestSupplyScheme awa = new ProductThresholdInterestSupplyScheme();
         awa.setName(getName());
 
-        UnivariateDoubleDistribution dist = parser.parseEntityTo(getAwarenessDistribution());
+        UnivariateDoubleDistribution dist = parser.parseEntityTo(getInterestDistribution());
         awa.setDistribution(dist);
 
         return awa;

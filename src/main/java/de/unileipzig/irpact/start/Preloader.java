@@ -10,8 +10,8 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.SectionLoggingFilter;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.spec.SpecificationConverter;
-import de.unileipzig.irpact.io.spec.SpecificationManager;
+import de.unileipzig.irpact.io.spec2.SpecificationConverter2;
+import de.unileipzig.irpact.io.spec2.SpecificationData2;
 import de.unileipzig.irpact.start.optact.OptAct;
 import de.unileipzig.irptools.io.ContentType;
 import de.unileipzig.irptools.io.ContentTypeDetector;
@@ -28,7 +28,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Iterator;
 
 /**
@@ -111,7 +110,8 @@ public class Preloader {
     }
 
     private void loadSpec() throws Exception {
-        InRoot root = convertSpecToParam(param.getInputPath());
+        SpecificationConverter2 converter = new SpecificationConverter2();
+        InRoot root =  converter.toParam(param.getSpecInputDirPath());
         AnnualEntry<InRoot> entry = new AnnualEntry<>(root, IRPactJson.JSON.createObjectNode());
         entry.getConfig().init();
         entry.getConfig().setYear(root.general.startYear);
@@ -137,26 +137,20 @@ public class Preloader {
         AnnualEntry<InRoot> entry = IRPact.convert(root);
         InRoot inRoot = entry.getData();
         inRoot.general.startYear = entry.getConfig().getYear(); //!
-        SpecificationConverter converter = new SpecificationConverter();
-        SpecificationManager manager = converter.toSpec(inRoot);
-        manager.store(param.getSpecOutputDirPath());
+        SpecificationConverter2 converter = new SpecificationConverter2();
+        SpecificationData2 data = converter.toSpec(inRoot);
+        data.store(param.getSpecOutputDirPath());
     }
 
     private void convertSpecToParam() throws Exception {
         LOGGER.debug("convert specification to parameter");
-        InRoot root = convertSpecToParam(param.getSpecInputDirPath());
+        SpecificationConverter2 converter = new SpecificationConverter2();
+        InRoot root =  converter.toParam(param.getSpecInputDirPath());
         PerennialData<InRoot> pData = new PerennialData<>();
         pData.add(root.general.startYear, root);
         PerennialFile pFile = pData.serialize(IRPact.getInputConverter());
         pFile.store(param.getOutputPath(), StandardCharsets.UTF_8);
         LOGGER.debug(IRPSection.SPECIFICATION_CONVERTER, "param file stored: '{}'", param.getOutputPath());
-    }
-
-    private InRoot convertSpecToParam(Path input) throws Exception {
-        SpecificationManager manager = new SpecificationManager();
-        manager.load(input);
-        SpecificationConverter converter = new SpecificationConverter();
-        return converter.toParam(manager);
     }
 
     private void load(ObjectNode root) throws Exception {

@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.io.spec;
 
+import de.unileipzig.irpact.core.process.ra.RAConstants;
+
 /**
  * @author Daniel Abitz
  */
@@ -79,16 +81,27 @@ public final class SpecificationConstants {
     public static final String TAG_spatialTableFiles = "spatialTableFiles";
     public static final String TAG_metric = "metric";
     public static final String TAG_file = "file";
+    public static final String TAG_logisticFactor = "file";
     public static final String TAG_selectBy = "selectBy";
     public static final String TAG_groupBy = "groupBy";
     public static final String TAG_topology = "topology";
-    public static final String TAG_spatialTable = "spatialTable";
+    public static final String TAG_spatialTableFile = "spatialTable";
     public static final String TAG_attribute = "attribute";
     public static final String TAG_consumerAgentGroup = "consumerAgentGroup";
     public static final String TAG_consumerAgentGroups = "consumerAgentGroups";
     public static final String TAG_uncertainties = "uncertainties";
     public static final String TAG_uncertainty = "uncertainty";
     public static final String TAG_convergence = "convergence";
+
+    public static final String TAG_NOVELTY_SEEKING = RAConstants.NOVELTY_SEEKING;
+    public static final String TAG_INDEPENDENT_JUDGMENT_MAKING = RAConstants.DEPENDENT_JUDGMENT_MAKING;
+    public static final String TAG_ENVIRONMENTAL_CONCERN = RAConstants.ENVIRONMENTAL_CONCERN;
+    public static final String TAG_FINANCIAL_THRESHOLD = RAConstants.FINANCIAL_THRESHOLD;
+    public static final String TAG_ADOPTION_THRESHOLD = RAConstants.ADOPTION_THRESHOLD;
+    public static final String TAG_COMMUNICATION_FREQUENCY_SN = RAConstants.COMMUNICATION_FREQUENCY_SN;
+    public static final String TAG_REWIRING_RATE = RAConstants.REWIRING_RATE;
+    public static final String TAG_INITIAL_ADOPTER = RAConstants.INITIAL_ADOPTER;
+    public static final String TAG_INTEREST_THRESHOLD = RAConstants.INTEREST_THRESHOLD;
 
     private SpecificationConstants() {
     }

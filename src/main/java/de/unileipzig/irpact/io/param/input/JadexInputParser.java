@@ -6,6 +6,7 @@ import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
@@ -19,12 +20,12 @@ import de.unileipzig.irpact.core.simulation.BasicInitializationData;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.simulation.BinaryTaskManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
-import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
+import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
-import de.unileipzig.irpact.io.param.input.process.InUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.param.input.product.InFixProduct;
 import de.unileipzig.irpact.io.param.input.product.InProductGroup;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
@@ -190,6 +191,7 @@ public class JadexInputParser implements InputParser {
         parseFixProducts(root);
 
         parseConsumerAgentGroups(root);
+        parseConsumerAgentGroupAttributes(root);
         parseConsumerAgentGroupAffinityMapping(root);
         parseNetwork(root);
         parseSocialGraph(root);
@@ -259,11 +261,36 @@ public class JadexInputParser implements InputParser {
         }
     }
 
+    private void parseConsumerAgentGroupAttributes(InRoot root) throws ParsingException {
+        int len = len(root.consumerAgentGroupAttributes);
+        debug("InConsumerAgentGroupAttribute: {}", len);
+        if(len == -1) {
+            return;
+        }
+
+        BasicAgentManager agentManager = (BasicAgentManager) environment.getAgents();
+
+        for(InConsumerAgentGroupAttribute inGrpAttr: root.getConsumerAgentGroupAttributes()) {
+            String cagName = inGrpAttr.getConsumerAgentGroupName();
+            if(!agentManager.hasConsumerAgentGroup(cagName)) {
+                throw new ParsingException("missing ConsumerAgentGroup: '" + cagName + "'");
+            }
+            ConsumerAgentGroup cag = agentManager.getConsumerAgentGroup(cagName);
+
+            ConsumerAgentGroupAttribute grpAttr = parseEntityTo(inGrpAttr);
+            if(cag.hasGroupAttribute(grpAttr)) {
+                throw new ParsingException("ConsumerAgentGroupAttribute '" + grpAttr.getName() + "' already exists in '" + cag.getName() + "'");
+            }
+            cag.addGroupAttribute(grpAttr);
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added ConsumerAgentGroupAttribute '{}' to group '{}'", grpAttr.getName(), cag.getName());
+        }
+    }
+
     private void parseConsumerAgentGroupAffinityMapping(InRoot root) throws ParsingException {
         BasicConsumerAgentGroupAffinityMapping mapping = new BasicConsumerAgentGroupAffinityMapping();
-        for(InComplexAffinityEntry entry: root.affinityEntries) {
-            ConsumerAgentGroup srcCag = parseEntityTo(entry.getSrcCag());
-            ConsumerAgentGroup tarCag = parseEntityTo(entry.getTarCag());
+        for(InAffinityEntry entry: root.affinityEntries) {
+            ConsumerAgentGroup srcCag = parseEntityTo(entry.getSrcCag(this));
+            ConsumerAgentGroup tarCag = parseEntityTo(entry.getTarCag(this));
             double value = entry.getAffinityValue();
             mapping.put(srcCag, tarCag, value);
             debug("added affinity '{}' -> '{}' with value '{}'", srcCag.getName(), tarCag.getName(), value);
@@ -292,25 +319,11 @@ public class JadexInputParser implements InputParser {
     }
 
     private void parseProcessModel(InRoot root) throws ParsingException {
-        InProcessModel inPm = getInstance(root.processModel, InProcessModel.class, "missing process model");
+        InProcessModel inPm = getInstance(root.processModels, InProcessModel.class, "missing process model");
         ProcessModel pm = parseEntityTo(inPm);
         BasicProcessModelManager processModelManager = (BasicProcessModelManager) environment.getProcessModels();
         processModelManager.addProcessModel(pm);
         debug("added process model '{}'", pm.getName());
-
-        setupUncertaintyGroupAttributes(root, pm);
-    }
-
-    private void setupUncertaintyGroupAttributes(InRoot root, ProcessModel pm) throws ParsingException {
-        int len = len(root.uncertaintyGroupAttributes);
-        debug("InUncertaintyGroupAttributes: {}", len);
-        if(len == -1) {
-            return;
-        }
-
-        for(InUncertaintyGroupAttribute attr: root.uncertaintyGroupAttributes) {
-            attr.setup(this, pm);
-        }
     }
 
     private void parseTimeModel(InRoot root) throws ParsingException {

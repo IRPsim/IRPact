@@ -12,7 +12,7 @@ import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.commons.Derivable;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
-import de.unileipzig.irpact.core.spatial.SpatialDistribution;
+import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
 
@@ -133,7 +133,7 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         return spatialDistribution;
     }
 
-    public void setAwarenessSupplyScheme(ProductInterestSupplyScheme awarenessSupplyScheme) {
+    public void setInterestSupplyScheme(ProductInterestSupplyScheme awarenessSupplyScheme) {
         this.awarenessSupplyScheme = awarenessSupplyScheme;
     }
 

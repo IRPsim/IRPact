@@ -57,6 +57,10 @@ public class InFixProductFindingScheme implements InProductFindingScheme {
         return _name;
     }
 
+    public void setName(String name) {
+        this._name = name;
+    }
+
     public void setFixProduct(InFixProduct refFixProduct) {
         this.refFixProduct = new InFixProduct[]{refFixProduct};
     }

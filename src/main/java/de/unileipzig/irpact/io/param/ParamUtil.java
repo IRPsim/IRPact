@@ -15,21 +15,34 @@ public final class ParamUtil {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ParamUtil.class);
 
-    public static final String DELIMITER = "__";
+    public static final String DATA_DELIMITER = "_";
+    public static final String NAME_DELIMITER = "__";
 
     private ParamUtil() {
     }
 
-    public static String conc(InEntity first, InEntity second) {
-        return conc(first.getName(), second.getName());
+    public static String concData(InEntity first, InEntity second) {
+        return concData(first.getName(), second.getName());
     }
 
-    public static String conc(Nameable first, Nameable second) {
-        return conc(first.getName(), second.getName());
+    public static String concData(Nameable first, Nameable second) {
+        return concData(first.getName(), second.getName());
     }
 
-    public static String conc(String first, String second) {
-        return first + DELIMITER + second;
+    public static String concData(String first, String second) {
+        return first + DATA_DELIMITER + second;
+    }
+
+    public static String concName(InEntity first, InEntity second) {
+        return concName(first.getName(), second.getName());
+    }
+
+    public static String concName(Nameable first, Nameable second) {
+        return concName(first.getName(), second.getName());
+    }
+
+    public static String concName(String first, String second) {
+        return first + NAME_DELIMITER + second;
     }
 
     public static String firstPart(String concStr) throws ParsingException {
@@ -41,7 +54,7 @@ public final class ParamUtil {
     }
 
     private static String getPart(String concStr, int part) throws ParsingException {
-        String[] parts = concStr.split(ParamUtil.DELIMITER);
+        String[] parts = concStr.split(ParamUtil.NAME_DELIMITER);
         if(parts.length != 2) {
             throw new ParsingException("Illegal Name: '" + concStr + "'");
         }
@@ -83,9 +96,19 @@ public final class ParamUtil {
         return onTooMany(name, len(arr));
     }
 
-    public static <T> T[] getArray(T[] arr, String name) throws ParsingException {
+    public static <T> T[] getNonEmptyArray(T[] arr, String name) throws ParsingException {
         if(arr == null || arr.length == 0) {
             throw new ParsingException(onMissing(name));
+        }
+        return arr;
+    }
+
+    public static <T> T[] getOneElementArray(T[] arr, String name) throws ParsingException {
+        if(arr == null || arr.length == 0) {
+            throw new ParsingException(onMissing(name));
+        }
+        if(arr.length > 1) {
+            throw new ParsingException(onTooMany(name, arr));
         }
         return arr;
     }

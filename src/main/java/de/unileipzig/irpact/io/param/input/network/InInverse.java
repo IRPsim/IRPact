@@ -56,6 +56,10 @@ public class InInverse implements InDistanceEvaluator {
         return _name;
     }
 
+    public void setName(String name) {
+        this._name = name;
+    }
+
     @Override
     public BasicDistanceEvaluator parse(InputParser parser) throws ParsingException {
         return new BasicDistanceEvaluator(new Inverse());

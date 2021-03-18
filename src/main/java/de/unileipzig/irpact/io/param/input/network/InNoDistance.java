@@ -56,6 +56,10 @@ public class InNoDistance implements InDistanceEvaluator {
         return _name;
     }
 
+    public void setName(String _name) {
+        this._name = _name;
+    }
+
     @Override
     public BasicDistanceEvaluator parse(InputParser parser) throws ParsingException {
         return new BasicDistanceEvaluator(new NoDistance());

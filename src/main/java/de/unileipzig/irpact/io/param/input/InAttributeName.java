@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.io.param.input;
 
+import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -9,6 +10,7 @@ import java.util.Objects;
 /**
  * @author Daniel Abitz
  */
+@Todo("vllt nochmal unterteilen? bzw. schonmal Interface vorbereiten")
 @Definition
 public class InAttributeName implements InEntity {
 

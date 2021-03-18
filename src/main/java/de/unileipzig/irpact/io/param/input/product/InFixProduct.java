@@ -74,13 +74,13 @@ public class InFixProduct implements InEntity {
         this.fixPAttrs = attrs;
     }
 
-    public void setAttributes(Collection<? extends InFixProductAttribute> attrs) {
-        fixPAttrs = attrs.toArray(new InFixProductAttribute[0]);
-    }
-
     @Override
     public String getName() {
         return _name;
+    }
+
+    public void setName(String name) {
+        this._name = name;
     }
 
     public void setProductGroup(InProductGroup refPG) {
@@ -93,6 +93,10 @@ public class InFixProduct implements InEntity {
 
     public InFixProductAttribute[] getAttributes() {
         return fixPAttrs;
+    }
+
+    public void setAttributes(Collection<? extends InFixProductAttribute> attrs) {
+        fixPAttrs = attrs.toArray(new InFixProductAttribute[0]);
     }
 
     @Override

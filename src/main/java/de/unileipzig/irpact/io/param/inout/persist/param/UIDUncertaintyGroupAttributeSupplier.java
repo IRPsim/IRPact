@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.io.param.inout.persist.param;
 
-import de.unileipzig.irpact.core.process.ra.BasicUncertaintyGroupAttributeSupplier;
+import de.unileipzig.irpact.core.process.ra.attributes.BasicUncertaintyGroupAttributeSupplier;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;

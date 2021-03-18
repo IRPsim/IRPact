@@ -126,6 +126,9 @@ public class InRAProcessModel implements InProcessModel {
     public int unknownPoints = 0;
 
     @FieldDefinition
+    public double logisticFactor;
+
+    @FieldDefinition
     public InPVFile[] pvFile;
 
     @FieldDefinition
@@ -144,6 +147,7 @@ public class InRAProcessModel implements InProcessModel {
             String name,
             double a, double b, double c, double d,
             int adopterPoints, int interestedPoints, int awarePoints, int unknownPoints,
+            double logisticFactor,
             InPVFile pvFile,
             InSlopeSupplier[] slopeSuppliers,
             InOrientationSupplier[] orientationSuppliers,
@@ -157,6 +161,7 @@ public class InRAProcessModel implements InProcessModel {
         this.interestedPoints = interestedPoints;
         this.awarePoints = awarePoints;
         this.unknownPoints = unknownPoints;
+        this.logisticFactor = logisticFactor;
         setPvFile(pvFile);
         this.slopeSuppliers = slopeSuppliers;
         this.orientationSuppliers = orientationSuppliers;
@@ -168,44 +173,88 @@ public class InRAProcessModel implements InProcessModel {
         return _name;
     }
 
+    public void setName(String name) {
+        this._name = name;
+    }
+
     public double getA() {
         return a;
+    }
+
+    public void setA(double a) {
+        this.a = a;
     }
 
     public double getB() {
         return b;
     }
 
+    public void setB(double b) {
+        this.b = b;
+    }
+
     public double getC() {
         return c;
+    }
+
+    public void setC(double c) {
+        this.c = c;
     }
 
     public double getD() {
         return d;
     }
 
+    public void setD(double d) {
+        this.d = d;
+    }
+
     public int getAdopterPoints() {
         return adopterPoints;
+    }
+
+    public void setAdopterPoints(int adopterPoints) {
+        this.adopterPoints = adopterPoints;
     }
 
     public int getInterestedPoints() {
         return interestedPoints;
     }
 
+    public void setInterestedPoints(int interestedPoints) {
+        this.interestedPoints = interestedPoints;
+    }
+
     public int getAwarePoints() {
         return awarePoints;
+    }
+
+    public void setAwarePoints(int awarePoints) {
+        this.awarePoints = awarePoints;
     }
 
     public int getUnknownPoints() {
         return unknownPoints;
     }
 
-    public void setPvFile(InPVFile pvFile) {
-        this.pvFile = new InPVFile[]{pvFile};
+    public void setUnknownPoints(int unknownPoints) {
+        this.unknownPoints = unknownPoints;
+    }
+
+    public double getLogisticFactor() {
+        return logisticFactor;
+    }
+
+    public void setLogisticFactor(double logisticFactor) {
+        this.logisticFactor = logisticFactor;
     }
 
     public InPVFile getPvFile() throws ParsingException {
         return ParamUtil.getInstance(pvFile, "PvFile");
+    }
+
+    public void setPvFile(InPVFile pvFile) {
+        this.pvFile = new InPVFile[]{pvFile};
     }
 
     public InSlopeSupplier[] getSlopeSuppliers() {
@@ -220,6 +269,10 @@ public class InRAProcessModel implements InProcessModel {
         return uncertaintyGroupAttributes;
     }
 
+    public void setUncertaintyGroupAttributes(InUncertaintyGroupAttribute[] uncertaintyGroupAttributes) {
+        this.uncertaintyGroupAttributes = uncertaintyGroupAttributes;
+    }
+
     @Override
     public Object parse(InputParser parser) throws ParsingException {
         RAModelData data = new RAModelData();
@@ -231,6 +284,7 @@ public class InRAProcessModel implements InProcessModel {
         data.setInterestedPoints(getInterestedPoints());
         data.setAwarePoints(getAwarePoints());
         data.setUnknownPoints(getUnknownPoints());
+        data.setLogisticFactor(getLogisticFactor());
 
         Rnd rnd = parser.deriveRnd();
         LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "RAProcessModel '{}' uses seed: {}", getName(), rnd.getInitialSeed());

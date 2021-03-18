@@ -50,7 +50,7 @@ public class InNameSplitProductGroupAttribute implements I_InProductGroupAttribu
             InProductGroup pg,
             InAttributeName attributeName,
             InUnivariateDoubleDistribution distribution) {
-        this._name = ParamUtil.conc(pg, attributeName);
+        this._name = ParamUtil.concName(pg, attributeName);
         setDistribution(distribution);
     }
 

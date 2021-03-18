@@ -11,16 +11,15 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
+import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Daniel Abitz
  */
+@Todo("erstelle ein vollstaendiges agentenmapping")
 public class FreeNetworkTopology extends NameableBase implements GraphTopologyScheme {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(FreeNetworkTopology.class);
@@ -163,5 +162,15 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
                 getAffinityMapping().getHashCode(),
                 IsEquals.getMapHashCode(getEdgeCountMap())
         );
+    }
+
+    protected Map<ConsumerAgentGroup, List<ConsumerAgent>> createGroupMapping(Collection<ConsumerAgent> agents) {
+        Map<ConsumerAgentGroup, List<ConsumerAgent>> mapping = new HashMap<>();
+        for(ConsumerAgent ca: agents) {
+            ConsumerAgentGroup cag = ca.getGroup();
+            List<ConsumerAgent> caSet = mapping.computeIfAbsent(cag, _cag -> new ArrayList<>());
+            caSet.add(ca);
+        }
+        return mapping;
     }
 }

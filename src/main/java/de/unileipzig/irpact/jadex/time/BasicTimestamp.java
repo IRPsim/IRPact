@@ -21,6 +21,8 @@ public final class BasicTimestamp implements JadexTimestamp {
     private final double simulationTick;
     private final double normalizedTick;
 
+    private String cachedSimpleStr;
+
     public BasicTimestamp(long epochMilli) {
         this(ZonedDateTime.ofInstant(Instant.ofEpochMilli(epochMilli), ZoneId.systemDefault()));
     }
@@ -33,6 +35,10 @@ public final class BasicTimestamp implements JadexTimestamp {
         TIME = time;
         this.simulationTick = simulationTick;
         this.normalizedTick = normalizedTick;
+    }
+
+    public boolean hasTick() {
+        return !Double.isNaN(normalizedTick);
     }
 
     @Override
@@ -53,6 +59,24 @@ public final class BasicTimestamp implements JadexTimestamp {
     @Override
     public int compareTo(Timestamp other) {
         return getTime().compareTo(other.getTime());
+    }
+
+    @Override
+    public String printSimple() {
+        if(cachedSimpleStr == null) {
+            if(hasTick()) {
+                cachedSimpleStr = "@{"
+                        + normalizedTick
+                        + ", "
+                        + FORMATTER.format(TIME)
+                        + "}";
+            } else {
+                cachedSimpleStr = "@{"
+                        + FORMATTER.format(TIME)
+                        + "}";
+            }
+        }
+        return cachedSimpleStr;
     }
 
     @Override

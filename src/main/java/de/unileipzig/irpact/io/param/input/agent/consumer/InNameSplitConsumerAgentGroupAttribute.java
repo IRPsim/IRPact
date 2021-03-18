@@ -8,6 +8,7 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.util.AddToRoot;
@@ -23,7 +24,7 @@ import java.lang.invoke.MethodHandles;
  */
 @AddToRoot
 @Definition
-public class InNameSplitConsumerAgentGroupAttribute implements I_InConsumerAgentGroupAttribute {
+public class InNameSplitConsumerAgentGroupAttribute implements InConsumerAgentGroupAttribute {
 
     //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -50,13 +51,28 @@ public class InNameSplitConsumerAgentGroupAttribute implements I_InConsumerAgent
             InConsumerAgentGroup cag,
             InAttributeName attributeName,
             InUnivariateDoubleDistribution distribution) {
-        this._name = ParamUtil.conc(cag, attributeName);
+        this._name = ParamUtil.concName(cag, attributeName);
         setDistribution(distribution);
     }
 
     @Override
     public String getName() {
         return _name;
+    }
+
+    public void setName(String fullName) {
+        this._name = fullName;
+    }
+
+    public void setName(String cagName, String attrName) {
+        this._name = ParamUtil.concName(cagName, attrName);
+    }
+
+    @Override
+    public InConsumerAgentGroup getConsumerAgentGroup(InputParser parser) throws ParsingException {
+        String name = getConsumerAgentGroupName();
+        InRoot root = parser.getRoot();
+        return root.findConsumerAgentGroup(name);
     }
 
     @Override
@@ -73,13 +89,14 @@ public class InNameSplitConsumerAgentGroupAttribute implements I_InConsumerAgent
         this.dist = new InUnivariateDoubleDistribution[]{dist};
     }
 
+    @Override
     public InUnivariateDoubleDistribution getDistribution() throws ParsingException {
         return ParamUtil.getInstance(dist, "UnivariateDoubleDistribution");
     }
 
     @Override
     public BasicConsumerAgentGroupAttribute parse(InputParser parser) throws ParsingException {
-        InConsumerAgentGroup inCag = parser.getRoot().findConsumerAgentGroup(getConsumerAgentGroupName());
+        InConsumerAgentGroup inCag = getConsumerAgentGroup(parser);
         ConsumerAgentGroup cag = parser.parseEntityTo(inCag);
 
         BasicConsumerAgentGroupAttribute cagAttr = new BasicConsumerAgentGroupAttribute();

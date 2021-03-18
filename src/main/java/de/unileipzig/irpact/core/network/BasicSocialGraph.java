@@ -3,10 +3,12 @@ package de.unileipzig.irpact.core.network;
 import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.TripleMapping;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.util.Todo;
 
 import java.util.*;
 import java.util.function.Function;
@@ -24,6 +26,7 @@ public class BasicSocialGraph implements SocialGraph {
     public static class BasicNode implements Node {
 
         private final Agent agent;
+        protected TripleMapping<Type, Object, Integer> linkCounter = new TripleMapping<>();
 
         public BasicNode(Agent agent) {
             this.agent = agent;
@@ -42,6 +45,32 @@ public class BasicSocialGraph implements SocialGraph {
         @Override
         public <T extends Agent> T getAgent(Class<T> type) {
             return type.cast(agent);
+        }
+
+        @Override
+        public <T extends Agent> boolean is(Class<T> type) {
+            return type.isInstance(agent);
+        }
+
+        @Todo("HMMM, generisches Objekt: ja/nein?")
+        public void inc(Type type, Object key, int delta) {
+            int current = linkCounter.get(type, key, 0);
+            linkCounter.put(type, key, current + delta);
+        }
+
+        public void dec(Type type, Object key, int delta) {
+            int current = linkCounter.get(type, key, 0);
+            linkCounter.put(type, key, current - delta);
+        }
+
+        public int getLinkCount(Type type, Object key) {
+            return linkCounter.get(type, key, 0);
+        }
+
+        public int getTotalLinkCount(Type typ) {
+            return linkCounter.streamValues(typ)
+                    .mapToInt(i -> i)
+                    .sum();
         }
 
         @Override
@@ -221,6 +250,11 @@ public class BasicSocialGraph implements SocialGraph {
     @Override
     public boolean getTargets(Node from, Type type, Collection<? super Node> targets) {
         return GRAPH.getTargets(from, type, targets);
+    }
+
+    @Override
+    public Stream<? extends Node> streamNodes() {
+        return GRAPH.streamVertices();
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.smile.databind.SmileMapper;
+import de.unileipzig.irptools.util.Util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -26,6 +27,14 @@ public final class IRPactJson {
     public static final ObjectMapper JSON = new ObjectMapper();
 
     private IRPactJson() {
+    }
+
+    public static String toString(JsonNode node) {
+        return Util.printJson(node);
+    }
+
+    public static String toString(JsonNode node, PrettyPrinter printer) {
+        return Util.printJson(node, printer);
     }
 
     public static byte[] toBytes(ObjectMapper mapper, JsonNode node) throws IOException {

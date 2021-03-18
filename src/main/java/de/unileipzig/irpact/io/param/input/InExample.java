@@ -5,8 +5,7 @@ import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.simulation.tasks.PredefinedSimulationTask;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
-import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
-import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.io.param.input.agent.consumer.*;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.distribution.InConstantUnivariateDistribution;
@@ -93,57 +92,60 @@ public class InExample implements DefaultScenarioFactory {
 
         //cag0
         String name = "TRA";
+        InGeneralConsumerAgentGroup cag0 = new InGeneralConsumerAgentGroup();
+        cag0.setName(name);
+        cag0.setInformationAuthority(1);
+        cag0.setNumberOfAgents(1);
         InUnivariateDoubleDistribution dist = constant0;
         List<InConsumerAgentGroupAttribute> list = new ArrayList<>();
-        InConsumerAgentGroupAttribute cag0_A1_attr = build(name, A1, dist, list);
-        InConsumerAgentGroupAttribute cag0_A2_attr = build(name, A2, dist, list);
-        InConsumerAgentGroupAttribute cag0_A3_attr = build(name, A3, dist, list);
-        InConsumerAgentGroupAttribute cag0_A4_attr = build(name, A4, dist, list);
-        InConsumerAgentGroupAttribute cag0_A5_attr = build(name, A5, dist, list);
-        InConsumerAgentGroupAttribute cag0_A6_attr = build(name, A6, dist, list);
-        InConsumerAgentGroupAttribute cag0_A7_attr = build(name, A7, dist, list);
-        InConsumerAgentGroupAttribute cag0_A8_attr = build(name, A8, dist, list);
+        createAttribute(cag0, A1, dist, list);
+        createAttribute(cag0, A2, dist, list);
+        createAttribute(cag0, A3, dist, list);
+        createAttribute(cag0, A4, dist, list);
+        createAttribute(cag0, A5, dist, list);
+        createAttribute(cag0, A6, dist, list);
+        createAttribute(cag0, A7, dist, list);
+        createAttribute(cag0, A8, dist, list);
 
-        InConsumerAgentGroupAttribute cag0_B6_attr = build(name, B6, dist, list);
+        createAttribute(cag0, B6, dist, list);
 
-        InConsumerAgentGroupAttribute cag0_C1_attr = build(name, C1, dist, list);
+        createAttribute(cag0, C1, dist, list);
 
-        InConsumerAgentGroupAttribute cag0_D1_attr = build(name, D1, dist, list);
-        InConsumerAgentGroupAttribute cag0_D2_attr = build(name, D2, dist, list);
-        InConsumerAgentGroupAttribute cag0_D3_attr = build(name, D3, dist, list);
-        InConsumerAgentGroupAttribute cag0_D4_attr = build(name, D4, dist, list);
-        InConsumerAgentGroupAttribute cag0_D5_attr = build(name, D5, constant1, list);
+        createAttribute(cag0, D1, dist, list);
+        createAttribute(cag0, D2, dist, list);
+        createAttribute(cag0, D3, dist, list);
+        createAttribute(cag0, D4, dist, list);
+        createAttribute(cag0, D5, constant1, list);
 
         InProductThresholdInterestSupplyScheme cag0_awa = new InProductThresholdInterestSupplyScheme(name + "_awa", constant10);
-
-        InConsumerAgentGroup cag0 = new InConsumerAgentGroup(name, 1.0, 1, list, cag0_awa);
+        cag0.setInterest(cag0_awa);
 
         //cag1
         name = "BUM";
+        InGeneralConsumerAgentGroup cag1 = new InGeneralConsumerAgentGroup();
         dist = constant0;
         list.clear();
-        InConsumerAgentGroupAttribute cag1_A1_attr = build(name, A1, dist, list);
-        InConsumerAgentGroupAttribute cag1_A2_attr = build(name, A2, dist, list);
-        InConsumerAgentGroupAttribute cag1_A3_attr = build(name, A3, dist, list);
-        InConsumerAgentGroupAttribute cag1_A4_attr = build(name, A4, dist, list);
-        InConsumerAgentGroupAttribute cag1_A5_attr = build(name, A5, dist, list);
-        InConsumerAgentGroupAttribute cag1_A6_attr = build(name, A6, dist, list);
-        InConsumerAgentGroupAttribute cag1_A7_attr = build(name, A7, dist, list);
-        InConsumerAgentGroupAttribute cag1_A8_attr = build(name, A8, dist, list);
+        createAttribute(cag1, A1, dist, list);
+        createAttribute(cag1, A2, dist, list);
+        createAttribute(cag1, A3, dist, list);
+        createAttribute(cag1, A4, dist, list);
+        createAttribute(cag1, A5, dist, list);
+        createAttribute(cag1, A6, dist, list);
+        createAttribute(cag1, A7, dist, list);
+        createAttribute(cag1, A8, dist, list);
 
-        InConsumerAgentGroupAttribute cag1_B6_attr = build(name, B6, dist, list);
+        createAttribute(cag1, B6, dist, list);
 
-        InConsumerAgentGroupAttribute cag1_C1_attr = build(name, C1, dist, list);
+        createAttribute(cag1, C1, dist, list);
 
-        InConsumerAgentGroupAttribute cag1_D1_attr = build(name, D1, dist, list);
-        InConsumerAgentGroupAttribute cag1_D2_attr = build(name, D2, dist, list);
-        InConsumerAgentGroupAttribute cag1_D3_attr = build(name, D3, dist, list);
-        InConsumerAgentGroupAttribute cag1_D4_attr = build(name, D4, dist, list);
-        InConsumerAgentGroupAttribute cag1_D5_attr = build(name, D5, dist, list);
+        createAttribute(cag1, D1, dist, list);
+        createAttribute(cag1, D2, dist, list);
+        createAttribute(cag1, D3, dist, list);
+        createAttribute(cag1, D4, dist, list);
+        createAttribute(cag1, D5, dist, list);
 
         InProductThresholdInterestSupplyScheme cag1_awa = new InProductThresholdInterestSupplyScheme(name + "_awa", constant10);
-
-        InConsumerAgentGroup cag1 = new InConsumerAgentGroup(name, 1.0, 1, list, cag1_awa);
+        cag1.setInterest(cag1_awa);
 
         //affinity
         InComplexAffinityEntry cag0_cag0 = new InComplexAffinityEntry(cag0.getName() + "_" + cag0.getName(), cag0, cag0, 0.7);
@@ -155,7 +157,7 @@ public class InExample implements DefaultScenarioFactory {
 
         InPVFile pvFile = new InPVFile("BarwertrechnerMini_ES");
 
-        InCustomUncertaintyGroupAttribute uncert = new InCustomUncertaintyGroupAttribute();
+        InNameBasedUncertaintyWithConvergenceGroupAttribute uncert = new InNameBasedUncertaintyWithConvergenceGroupAttribute();
         uncert.setName("Uncerter");
         uncert.cags = new InConsumerAgentGroup[]{cag0, cag1};
         uncert.names = new InAttributeName[]{A2, A3, A4};
@@ -167,6 +169,7 @@ public class InExample implements DefaultScenarioFactory {
                 "RA",
                 0.25, 0.25, 0.25, 0.25,
                 3, 2, 1, 0,
+                1.0,
                 pvFile,
                 new InSlopeSupplier[0],
                 new InOrientationSupplier[0],
@@ -250,7 +253,7 @@ public class InExample implements DefaultScenarioFactory {
         root.affinityEntries = new InComplexAffinityEntry[]{cag0_cag0, cag0_cag1, cag1_cag1, cag1_cag0};
         root.consumerAgentGroups = new InConsumerAgentGroup[]{cag0, cag1};
         root.graphTopologySchemes = new InGraphTopologyScheme[]{topology};
-        root.processModel = new InProcessModel[]{processModel};
+        root.processModels = new InProcessModel[]{processModel};
         root.productGroups = new InProductGroup[]{pv};
         root.spatialModel = new InSpatialModel[]{space2D};
         root.timeModel = new InTimeModel[]{timeModel};
@@ -258,10 +261,13 @@ public class InExample implements DefaultScenarioFactory {
         return root;
     }
 
-    private static InConsumerAgentGroupAttribute build(String prefix, InAttributeName name, InUnivariateDoubleDistribution dist, List<InConsumerAgentGroupAttribute> out) {
-        InConsumerAgentGroupAttribute attr = new InConsumerAgentGroupAttribute(prefix + "_" + name.getName(), name, dist);
+    private static void createAttribute(
+            InConsumerAgentGroup cag,
+            InAttributeName name,
+            InUnivariateDoubleDistribution dist,
+            List<InConsumerAgentGroupAttribute> out) {
+        InGeneralConsumerAgentGroupAttribute attr = new InGeneralConsumerAgentGroupAttribute(cag.getName() + "_" + name.getName(), cag, name, dist);
         out.add(attr);
-        return attr;
     }
 
     @SuppressWarnings("SameParameterValue")
