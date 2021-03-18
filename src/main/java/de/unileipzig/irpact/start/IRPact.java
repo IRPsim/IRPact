@@ -85,11 +85,16 @@ public class IRPact {
         environment.getLiveCycleControl().pulse();
     }
 
+    private static DefinitionMapper newMapper(DefinitionCollection dcoll) {
+        //return new DefinitionMapper(dcoll, DefinitionMapper.MAX_GAMS_NAME_LENGTH, true);
+        return new DefinitionMapper(dcoll, DefinitionMapper.MAX_GAMS_NAME_LENGTH, true);
+    }
+
     private static Converter inputConverter;
     public static Converter getInputConverter() {
         if(inputConverter == null) {
             DefinitionCollection dcoll = AnnotationParser.parse(InRoot.CLASSES_WITH_GRAPHVIZ);
-            DefinitionMapper dmap = new DefinitionMapper(dcoll);
+            DefinitionMapper dmap = newMapper(dcoll);
             inputConverter = new Converter(dmap);
         }
         return inputConverter;
@@ -99,7 +104,7 @@ public class IRPact {
     public static Converter getOutputConverter() {
         if(outputConverter == null) {
             DefinitionCollection dcoll = AnnotationParser.parse(OutRoot.CLASSES);
-            DefinitionMapper dmap = new DefinitionMapper(dcoll);
+            DefinitionMapper dmap = newMapper(dcoll);
             outputConverter = new Converter(dmap);
         }
         return outputConverter;
