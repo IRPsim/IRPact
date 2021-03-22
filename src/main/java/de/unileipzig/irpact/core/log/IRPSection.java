@@ -11,6 +11,7 @@ public enum IRPSection implements LoggingSection {
      */
     TOOLS_CORE,
     TOOLS_DEFINITION,
+    TOOLS_UTIL,
 
     /*
      * Used in the initialization process.
@@ -53,6 +54,7 @@ public enum IRPSection implements LoggingSection {
     public static void addAllToolsTo(SectionLoggingFilter filter) {
         filter.add(TOOLS_CORE);
         filter.add(TOOLS_DEFINITION);
+        filter.add(TOOLS_UTIL);
     }
 
     public static void removeAllToolsFrom(SectionLoggingFilter filter) {

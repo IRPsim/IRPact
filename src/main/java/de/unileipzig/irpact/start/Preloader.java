@@ -71,6 +71,7 @@ public class Preloader {
         IRPtools.setLoggingFilter(filter);
         IRPtools.setToolsSection(IRPSection.TOOLS_CORE);
         IRPtools.setDefinitionSection(IRPSection.TOOLS_DEFINITION);
+        IRPtools.setUtilSection(IRPSection.TOOLS_UTIL);
         IRPtools.main(param.getArgs());
     }
 
