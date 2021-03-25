@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.smile.databind.SmileMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import de.unileipzig.irptools.util.Util;
 
 import java.io.BufferedReader;
@@ -25,6 +26,7 @@ public final class IRPactJson {
 
     public static final SmileMapper SMILE = new SmileMapper();
     public static final ObjectMapper JSON = new ObjectMapper();
+    public static final YAMLMapper YAML = new YAMLMapper();
 
     private IRPactJson() {
     }

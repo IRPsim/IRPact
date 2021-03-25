@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.MultiCounter;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.io.param.IOResources;
+import de.unileipzig.irpact.io.param.LocData;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
@@ -54,6 +55,8 @@ import de.unileipzig.irptools.util.Util;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import static de.unileipzig.irpact.io.param.IOConstants.*;
 
 /**
  * @author Daniel Abitz
@@ -315,7 +318,7 @@ public class InRoot implements RootClass {
 
     @Override
     public AnnotationResource getResources() {
-        return IOResources.getInstance();
+        return new IOResources();
     }
 
     @Override
@@ -506,9 +509,122 @@ public class InRoot implements RootClass {
     //UI
     //=========================
 
-    @Todo("Alle cache-Elemente etc in Konstanten umwandeln")
+    private static void add(TreeAnnotationResource res, String dataKey, String priorityKey) {
+        IOResources.Data userData = res.getUserDataAs();
+        MultiCounter counter = userData.getCounter();
+        LocData loc = userData.getData();
+
+        TreeAnnotationResource.PathElementBuilder builder = res.newElementBuilder();
+        builder = builder.peek(loc.applyPathElementBuilder(dataKey));
+        if(priorityKey != null) {
+            builder = builder.setEdnPriority(counter.getAndInc(priorityKey));
+        }
+        builder.putCache(dataKey);
+    }
+
     public static void initRes(TreeAnnotationResource res) {
-        MultiCounter counter = new MultiCounter();
+        IOResources.Data userData = res.getUserDataAs();
+        MultiCounter counter = userData.getCounter();
+        LocData loc = userData.getData();
+
+        add(res, GENERAL_SETTINGS, ROOT);
+                add(res, LOGGING, GENERAL_SETTINGS);
+                add(res, SPECIAL_SETTINGS, GENERAL_SETTINGS);
+                    add(res, BINARY_DATA, SPECIAL_SETTINGS);
+
+        add(res, NAMES, ROOT);
+
+        add(res, FILES, ROOT);
+            add(res, PV_FILES, FILES);
+            add(res, TABLE_FILES, FILES);
+
+        add(res, DISTRIBUTIONS, ROOT);
+            add(res, BOOLEAN, DISTRIBUTIONS);
+            add(res, DIRAC, DISTRIBUTIONS);
+            add(res, RANDOM_BOUNDED_INTEGER, DISTRIBUTIONS);
+            add(res, FINITE_MASSPOINTS_DISCRETE_DISTRIBUTION, DISTRIBUTIONS);
+                add(res, MASSPOINT, FINITE_MASSPOINTS_DISCRETE_DISTRIBUTION);
+
+        add(res, AGENTS, ROOT);
+                add(res, CONSUMER, AGENTS);
+                        add(res, CONSUMER_GROUP, CONSUMER);
+                        add(res, CONSUMER_GROUP_ATTR_MAPPING, CONSUMER);
+                        add(res, CONSUMER_GROUP_INTEREST_MAPPING, CONSUMER);
+                        add(res, CONSUMER_GROUP_PRODUCT_FINDING_MAPPING, CONSUMER);
+                        add(res, CONSUMER_GROUP_SPATIAL_DIST_MAPPING, CONSUMER);
+                add(res, CONSUMER_ATTR, AGENTS);
+                        add(res, CONSUMER_ATTR_NAME_MAPPING, CONSUMER_ATTR);
+                        add(res, CONSUMER_ATTR_DIST_MAPPING, CONSUMER_ATTR);
+                add(res, CONSUMER_AFFINITY, AGENTS);
+                add(res, CONSUMER_INTEREST, AGENTS);
+                        add(res, CONSUMER_INTEREST_THRESHOLD, CONSUMER_INTEREST);
+
+        add(res, NETWORK, ROOT);
+                add(res, TOPOLOGY, NETWORK);
+                        add(res, TOPOLOGY_EMPTY, TOPOLOGY);
+                        add(res, TOPOLOGY_COMPLETE, TOPOLOGY);
+                        add(res, TOPOLOGY_FREE, TOPOLOGY);
+                                add(res, TOPOLOGY_FREE_EDGECOUNT, TOPOLOGY_FREE);
+                add(res, DIST_FUNC, NETWORK);
+                        add(res, DIST_FUNC_NO, DIST_FUNC);
+                        add(res, DIST_FUNC_INVERSE, DIST_FUNC);
+
+        add(res, PRODUCTS, ROOT);
+                add(res, PRODUCTS_GROUP, PRODUCTS);
+                        add(res, PRODUCTS_GROUP_ATTR_MAPPING, PRODUCTS_GROUP);
+                add(res, PRODUCTS_ATTR, PRODUCTS);
+                        add(res, PRODUCTS_ATTR_NAME_MAPPING, PRODUCTS_ATTR);
+                        add(res, PRODUCTS_ATTR_DIST_MAPPING, PRODUCTS_ATTR);
+                add(res, PRODUCTS_INITIAL, PRODUCTS);
+                        add(res, PRODUCTS_INITIAL_ATTR_MAPPING, PRODUCTS_INITIAL);
+                add(res, PRODUCTS_INITIAL_ATTR, PRODUCTS);
+                add(res, PRODUCTS_FINDING_SCHEME, PRODUCTS);
+                        add(res, PRODUCTS_FINDING_SCHEME_INITIAL, PRODUCTS_FINDING_SCHEME);
+
+        add(res, PROCESS_MODEL, ROOT);
+                add(res, PROCESS_MODEL_RA, PROCESS_MODEL);
+                        add(res, PROCESS_MODEL_RA_UNCERT, PROCESS_MODEL_RA);
+                                add(res, PROCESS_MODEL_RA_UNCERT_AUTO, PROCESS_MODEL_RA_UNCERT);
+                                add(res, PROCESS_MODEL_RA_UNCERT_CUSTOM, PROCESS_MODEL_RA_UNCERT);
+
+        add(res, SPATIAL, ROOT);
+                add(res, SPATIAL_FILE, SPATIAL);
+                add(res, SPATIAL_MODEL, SPATIAL);
+                        add(res, SPATIAL_MODEL_SPACE2D, SPATIAL_MODEL);
+                add(res, SPATIAL_MODEL_DIST, SPATIAL);
+                        add(res, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST);
+                                add(res, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS, SPATIAL_MODEL_DIST_FILE);
+                                        add(res, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS_INDEP, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS);
+                                        add(res, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS_SELECTED, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS);
+                                        add(res, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS_SELECTEDWEIGHTED, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS);
+                                add(res, SPATIAL_MODEL_DIST_FILE_FILEPOS, SPATIAL_MODEL_DIST_FILE);
+                                        add(res, SPATIAL_MODEL_DIST_FILE_FILEPOS_INDEP, SPATIAL_MODEL_DIST_FILE_FILEPOS);
+                                        add(res, SPATIAL_MODEL_DIST_FILE_FILEPOS_SELECTED, SPATIAL_MODEL_DIST_FILE_FILEPOS);
+                                        add(res, SPATIAL_MODEL_DIST_FILE_FILEPOS_SELECTEDWEIGHTED, SPATIAL_MODEL_DIST_FILE_FILEPOS);
+
+        add(res, TIME, ROOT);
+                add(res, TIME_DISCRETE_MS, TIME);
+                add(res, TIME_DISCRETE_UNIT, TIME);
+
+        res.wrapElementBuilder(res.getCachedElement(GRAPHVIZ))
+                .setEdnPriority(counter.getAndInc(ROOT));
+
+                add(res, GRAPHVIZ_AGENT_COLOR_MAPPING, GRAPHVIZ);
+
+        add(res, SUBMODULE, ROOT);
+                add(res, SUBMODULE_GRAPHVIZDEMO, SUBMODULE);
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+        res.getCachedElement("OPTACT").setParent(res.getCachedElement(SUBMODULE));
+        res.getCachedElement("AgentGroup_Element").setParent(res.getCachedElement("OPTACT"));
+    }
+}
+
+
+
+    /*
+    public static void initRes(TreeAnnotationResource res) {
+        MultiCounter counter = res.getUserDataAs();
 
         res.newElementBuilder()
                 .setEdnLabel("Allgemeine Einstellungen")
@@ -899,8 +1015,4 @@ public class InRoot implements RootClass {
                 .putCache("Diverses");
 
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        res.getCachedElement("OPTACT").setParent(res.getCachedElement("Submodule"));
-        res.getCachedElement("AgentGroup_Element").setParent(res.getCachedElement("OPTACT"));
-    }
-}
+    */

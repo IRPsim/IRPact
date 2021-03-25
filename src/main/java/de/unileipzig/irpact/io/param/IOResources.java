@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.io.param;
 
+import de.unileipzig.irpact.commons.MultiCounter;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.in.*;
@@ -9,7 +10,11 @@ import de.unileipzig.irptools.graphviz.def.GraphvizTreeResource;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.TreeResourceApplier;
 
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+import java.util.NoSuchElementException;
 
 import static de.unileipzig.irptools.Constants.*;
 
@@ -17,6 +22,27 @@ import static de.unileipzig.irptools.Constants.*;
  * @author Daniel Abitz
  */
 public class IOResources extends TreeAnnotationResource {
+
+    /**
+     * @author Daniel Abitz
+     */
+    public static final class Data {
+
+        private final MultiCounter COUNTER = new MultiCounter();
+        private final LocData DATA;
+
+        public Data(LocData data) {
+            this.DATA = data;
+        }
+
+        public MultiCounter getCounter() {
+            return COUNTER;
+        }
+
+        public LocData getData() {
+            return DATA;
+        }
+    }
 
     private static IOResources instance;
     public static IOResources getInstance() {
@@ -27,7 +53,30 @@ public class IOResources extends TreeAnnotationResource {
     }
 
     public IOResources() {
+        this(Locale.GERMAN);
+    }
+
+    public IOResources(Locale locale) {
+        LocData locData = loadLocData(locale);
+        IOResources.Data userData = new Data(locData);
+        setUserData(userData);
         init();
+    }
+
+    protected LocData loadLocData(Locale locale) {
+        String langTag = locale.toLanguageTag();
+        String fileName = "loc_" + langTag + ".yaml";
+        String resName = "irpactdata/" + fileName;
+        InputStream in = IOResources.class.getResourceAsStream(resName);
+        if(in == null) {
+            throw new NoSuchElementException("resource '" + resName + "' not found");
+        } else {
+            try(Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
+                return new LocData(reader);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        }
     }
 
     protected void init() {

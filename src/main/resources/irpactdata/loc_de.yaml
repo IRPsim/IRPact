@@ -1,0 +1,175 @@
+---
+general_settings:
+  edn_label: "Allgemeine Einstellungen"
+logging:
+  edn_label: "Logging"
+  edn_description: "Einstellungen für das Logging und die Ausgabe von Informationen und Daten. Unabhängig von den individuellen Logging-Einstellungen werden wichtige Informationen weiterhin geloggt. Diese können nur mittels dem Logging-Level deaktiviert werden (nicht empfohlen)."
+special_settings:
+  edn_label: "Spezielle Einstellungen"
+binary_data:
+  edn_label: "Binäre Daten"
+
+names:
+  edn_label: "Namen"
+
+files:
+  edn_label: "Dateien"
+pv_files:
+  edn_label: "PV Dateien"
+table_files:
+  edn_label: "Tabellarische Dateien"
+
+distributions:
+  edn_label: "Verteilungsfunktionen"
+boolean:
+  edn_label: "Boolean"
+  edn_description: "Verteilungsfunktion, welche 0 oder 1 zurück gibt."
+dirac:
+  edn_label: "Dirac"
+  edn_description: "Verteilungsfunktion, welche einen konstanten Wert zurück gibt."
+random_bounded_integer:
+  edn_label: "Gleichverteilte ganze Zahlen"
+  edn_description: "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht."
+finite_masspoints_discrete_distribution:
+  edn_label: "Gewichtete Massepunkte"
+  edn_description: "Verteilungsfunktion, welche auf Massepunkten basiert."
+masspoint:
+  edn_label: "Massepunkt"
+  edn_description: "Massepunkt mit Wert und Gewicht"
+
+agents:
+  edn_label: "Agenten"
+consumer:
+  edn_label: "Konsumer"
+consumer_group:
+  edn_label: "Gruppen"
+consumer_group_attr_mapping:
+  edn_label: "Gruppe-Attribut-Mapping"
+consumer_group_interest_mapping:
+  edn_label: "Gruppe-Interest-Mapping"
+consumer_group_product_finding_mapping:
+  edn_label: "Gruppe-ProductFinding-Mapping"
+consumer_group_spatial_dist_mapping:
+  edn_label: "Gruppe-Spatial-Mapping"
+consumer_attr:
+  edn_label: "Attribute"
+consumer_attr_name_mapping:
+  edn_label: "Attribute-Name-Mapping"
+consumer_attr_dist_mapping:
+  edn_label: "Attribute-Verteilung-Mapping"
+consumer_affinity:
+  edn_label: "Affinity"
+  edn_description: "Legt die Affinity zwischen den jeweiligen Konsumergruppen fest."
+consumer_interest:
+  edn_label: "Awareness"
+  edn_description: "Legt die verwendeten Awareness-Varianten für die Konsumergruppen fest."
+consumer_interest_threshold:
+  edn_label: "Threshold"
+  edn_description: "Grenzwert-basierte Awareness"
+
+network:
+  edn_label: "Netzwerk"
+topology:
+  edn_label: "Topologie"
+topology_empty:
+  edn_label: "Knotenloser Graph"
+  edn_description: "Leere Topologie, welche keine Kanten besitzt."
+topology_complete:
+  edn_label: "Vollständiger Graph"
+  edn_description: "Nutzt einen vollständigen Netzwerkgraph."
+topology_free:
+  edn_label: "Freie Topologie"
+  edn_description: "Freie Topologie"
+topology_free_edgecount:
+  edn_label: "Kanten je Konsumergruppe"
+  edn_description: "Legt die Kantenanzahl je Gruppe fest."
+dist_func:
+  edn_label: "Abstandsfunktion"
+dist_func_no:
+  edn_label: "Keine Distanzfunktion"
+  edn_description: "Keine Distanzfunktion"
+dist_func_inverse:
+  edn_label: "Inverse Distanz"
+  edn_description: "Benutzt 1/distance für die Auswertung."
+
+products:
+  edn_label: "Produkte"
+products_group:
+  edn_label: "Gruppen"
+products_attr_mapping:
+  edn_label: "Produkt-Attribut-Mapping"
+products_attr:
+  edn_label: "Attribute"
+products_attr_name_mapping:
+  edn_label: "Attribut-Namen-Mapping"
+products_attr_dist_mapping:
+  edn_label: "Attribut-Verteilungs-Mapping"
+products_initial:
+  edn_label: "Initiale Produkte"
+  edn_description: "Die initialen Produkte, welche von Beginn an existieren sollen."
+products_initial_attr_mapping:
+  edn_label: "Initiale Produkt-Attribut-Mapping"
+products_initial_attr:
+  edn_label: "Initiale Produktattribute"
+  edn_description: "Attribute der initialen Produkte"
+products_finding_scheme:
+  edn_label: "Schema für Produktfindung"
+products_finding_scheme_initial:
+  edn_label: "Schema für initiale Produkte"
+  edn_description: "Schema basierend auf initialen Produkten"
+
+process_model:
+  edn_label: "Prozessmodell"
+process_model_ra:
+  edn_label: "Relative Agreement"
+process_model_ra_uncert:
+  edn_label: "Uncertainty"
+process_model_ra_uncert_auto:
+  edn_label: "Automatisch"
+process_model_ra_uncert_custom:
+  edn_label: "Benutzerdefiniert"
+
+spatial:
+  edn_label: "Räumliche Modell"
+spatial_model_file:
+  edn_label: "Eingabedateien"
+spatial_model:
+  edn_label: "Modell"
+spatial_model_space2d:
+  edn_label: "Space2D"
+spatial_model_dist:
+  edn_label: "Verteilungsfunktionen"
+spatial_model_dist_file:
+  edn_label: "Dateibezogen"
+spatial_model_dist_file_custompos:
+  edn_label: "Benutzerdefinierte Positionen"
+spatial_model_dist_file_custompos_indep:
+  edn_label: "Milieuunabhängig"
+spatial_model_dist_file_custompos_selected:
+  edn_label: "Milieuabhängig"
+spatial_model_dist_file_custompos_selectedweighted:
+  edn_label: "Milieuabhängig und gewichtet"
+spatial_model_dist_file_filepos:
+  edn_label: "Gelesene Positionen"
+spatial_model_dist_file_filepos_indep:
+  edn_label: "Milieuunabhängig"
+spatial_model_dist_file_filepos_selected:
+  edn_label: "Milieuabhängig"
+spatial_model_dist_file_filepos_selectedweighted:
+  edn_label: "Milieuabhängig und gewichtet"
+
+time:
+  edn_label: "Zeitliche Modell"
+time_discrete_ms:
+  edn_label: "Diskret - Millisekunde"
+time_discrete_unit:
+  edn_label: "Diskret"
+
+graphviz_agent_color_mapping:
+  edn_label: "Agentengruppe-Farben-Mapping"
+  edn_description: "Agentengruppe, welche im Graphen dargestellt werden sollen."
+
+submodule:
+  edn_label: "Submodule"
+submodule_graphvizdemo:
+  edn_label: "Graphvizdemo"

@@ -99,7 +99,7 @@ public class OutRoot implements RootClass {
 
     @Override
     public AnnotationResource getResources() {
-        return IOResources.getInstance();
+        return new IOResources();
     }
 
     @Override
