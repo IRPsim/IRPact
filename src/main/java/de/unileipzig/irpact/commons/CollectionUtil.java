@@ -22,6 +22,11 @@ public final class CollectionUtil {
         return new LinkedHashMap<>();
     }
 
+    @Todo("alles nicht-zwang-linkged hashmaps austauschen")
+    public static <E> Set<E> newSet() {
+        return new LinkedHashSet<>();
+    }
+
     public static <K, V> Supplier<Map<K, V>> newMapSupplier() {
         return CollectionUtil::newMap;
     }

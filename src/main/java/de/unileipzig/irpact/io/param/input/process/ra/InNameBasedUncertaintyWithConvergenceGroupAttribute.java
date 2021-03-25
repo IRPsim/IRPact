@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.io.param.input.process;
+package de.unileipzig.irpact.io.param.input.process.ra;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;

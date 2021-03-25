@@ -40,11 +40,8 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
     protected SimulationEnvironment environment;
 
-    protected BasicConsumerAgentSpatialAttributeSupplier orientationSupplier = new BasicConsumerAgentSpatialAttributeSupplier(RAConstants.ORIENTATION);
-    protected BasicConsumerAgentSpatialAttributeSupplier slopeSupplier = new BasicConsumerAgentSpatialAttributeSupplier(RAConstants.SLOPE);
-
-    protected BasicConsumerAgentGroupAttributeSupplier underConstructionSupplier = new BasicConsumerAgentGroupAttributeSupplier(RAConstants.UNDER_CONSTRUCTION, DIRAQ0);
-    protected BasicConsumerAgentGroupAttributeSupplier underRenovationSupplier = new BasicConsumerAgentGroupAttributeSupplier(RAConstants.UNDER_RENOVATION, DIRAQ0);
+    protected ConsumerAgentGroupAttributeSupplier underConstructionSupplier = new BasicConsumerAgentGroupAttributeSupplier(RAConstants.UNDER_CONSTRUCTION, DIRAQ0);
+    protected ConsumerAgentGroupAttributeSupplier underRenovationSupplier = new BasicConsumerAgentGroupAttributeSupplier(RAConstants.UNDER_RENOVATION, DIRAQ0);
 
     protected UncertaintyGroupAttributeSupplier uncertaintySupplier = new BasicUncertaintyGroupAttributeSupplier();
 
@@ -62,8 +59,6 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
                 getName(),
                 modelData.getHashCode(),
                 rnd.getHashCode(),
-                orientationSupplier.getHashCode(),
-                slopeSupplier.getHashCode(),
                 underConstructionSupplier.getHashCode(),
                 underRenovationSupplier.getHashCode(),
                 uncertaintySupplier.getHashCode()
@@ -82,8 +77,6 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         logHash("name", IsEquals.getHashCode(getName()));
         logHash("model data", IsEquals.getHashCode(modelData));
         logHash("rnd", IsEquals.getHashCode(rnd));
-        logHash("orientation supplier", IsEquals.getHashCode(orientationSupplier));
-        logHash("slope supplier", IsEquals.getHashCode(slopeSupplier));
         logHash("under construction supplier", IsEquals.getHashCode(underConstructionSupplier));
         logHash("under renovation supplier", IsEquals.getHashCode(underRenovationSupplier));
         logHash("uncertainty supplier", IsEquals.getHashCode(uncertaintySupplier));
@@ -117,35 +110,19 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         this.npvData = npvData;
     }
 
-    public BasicConsumerAgentSpatialAttributeSupplier getSlopeSupplier() {
-        return slopeSupplier;
-    }
-
-    public void setSlopeSupplier(BasicConsumerAgentSpatialAttributeSupplier slopeSupplier) {
-        this.slopeSupplier = slopeSupplier;
-    }
-
-    public BasicConsumerAgentSpatialAttributeSupplier getOrientationSupplier() {
-        return orientationSupplier;
-    }
-
-    public void setOrientationSupplier(BasicConsumerAgentSpatialAttributeSupplier orientationSupplier) {
-        this.orientationSupplier = orientationSupplier;
-    }
-
-    public BasicConsumerAgentGroupAttributeSupplier getUnderConstructionSupplier() {
+    public ConsumerAgentGroupAttributeSupplier getUnderConstructionSupplier() {
         return underConstructionSupplier;
     }
 
-    public void setUnderConstructionSupplier(BasicConsumerAgentGroupAttributeSupplier underConstructionSupplier) {
+    public void setUnderConstructionSupplier(ConsumerAgentGroupAttributeSupplier underConstructionSupplier) {
         this.underConstructionSupplier = underConstructionSupplier;
     }
 
-    public BasicConsumerAgentGroupAttributeSupplier getUnderRenovationSupplier() {
+    public ConsumerAgentGroupAttributeSupplier getUnderRenovationSupplier() {
         return underRenovationSupplier;
     }
 
-    public void setUnderRenovationSupplier(BasicConsumerAgentGroupAttributeSupplier underRenovationSupplier) {
+    public void setUnderRenovationSupplier(ConsumerAgentGroupAttributeSupplier underRenovationSupplier) {
         this.underRenovationSupplier = underRenovationSupplier;
     }
 
@@ -211,25 +188,26 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
     @Override
     public void postAgentCreation() throws MissingDataException {
-        checkSpatialInformation();
+        //checkSpatialInformation();
     }
 
-    private void checkSpatialInformation() throws MissingDataException {
-        try {
-            for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-                for(ConsumerAgent ca: cag.getAgents()) {
-                    if(!orientationSupplier.hasAttribute(ca)) {
-                        orientationSupplier.addAttributeTo(ca);
-                    }
-                    if(!slopeSupplier.hasAttribute(ca)) {
-                        slopeSupplier.addAttributeTo(ca);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            throw new MissingDataException(e);
-        }
-    }
+    @Todo("NOCH ETWAS UEBERARBEITEN, bessere validierung")
+//    private void checkSpatialInformation() throws MissingDataException {
+//        try {
+//            for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+//                for(ConsumerAgent ca: cag.getAgents()) {
+//                    if(!orientationSupplier.hasAttribute(ca)) {
+//                        orientationSupplier.addAttributeTo(ca);
+//                    }
+//                    if(!slopeSupplier.hasAttribute(ca)) {
+//                        slopeSupplier.addAttributeTo(ca);
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            throw new MissingDataException(e);
+//        }
+//    }
 
     protected Timestamp now() {
         return environment.getTimeModel().now();

@@ -16,10 +16,10 @@ import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistri
 import de.unileipzig.irpact.io.param.input.file.InFile;
 import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.network.InDistanceEvaluator;
-import de.unileipzig.irpact.io.param.input.process.InUncertaintyGroupAttribute;
+import de.unileipzig.irpact.io.param.input.process.ra.InUncertaintyGroupAttribute;
+import de.unileipzig.irpact.io.param.input.product.InProductGroup;
 import de.unileipzig.irpact.io.param.input.product.InFixProduct;
 import de.unileipzig.irpact.io.param.input.product.InProductFindingScheme;
-import de.unileipzig.irpact.io.param.input.product.InProductGroup;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.spec2.impl.agent.consumer.ConsumerAgentGroupSpec;
 import de.unileipzig.irpact.io.spec2.impl.distance.DistanceEvaluatorSpec;

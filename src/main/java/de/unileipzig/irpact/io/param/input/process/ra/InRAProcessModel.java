@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.io.param.input.process;
+package de.unileipzig.irpact.io.param.input.process.ra;
 
 import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
@@ -13,6 +13,7 @@ import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
+import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -132,12 +133,6 @@ public class InRAProcessModel implements InProcessModel {
     public InPVFile[] pvFile;
 
     @FieldDefinition
-    public InSlopeSupplier[] slopeSuppliers = new InSlopeSupplier[0];
-
-    @FieldDefinition
-    public InOrientationSupplier[] orientationSuppliers = new InOrientationSupplier[0];
-
-    @FieldDefinition
     public InUncertaintyGroupAttribute[] uncertaintyGroupAttributes = new InUncertaintyGroupAttribute[0];
 
     public InRAProcessModel() {
@@ -149,8 +144,6 @@ public class InRAProcessModel implements InProcessModel {
             int adopterPoints, int interestedPoints, int awarePoints, int unknownPoints,
             double logisticFactor,
             InPVFile pvFile,
-            InSlopeSupplier[] slopeSuppliers,
-            InOrientationSupplier[] orientationSuppliers,
             InUncertaintyGroupAttribute[] uncertaintyGroupAttributes) {
         this._name = name;
         this.a = a;
@@ -163,8 +156,6 @@ public class InRAProcessModel implements InProcessModel {
         this.unknownPoints = unknownPoints;
         this.logisticFactor = logisticFactor;
         setPvFile(pvFile);
-        this.slopeSuppliers = slopeSuppliers;
-        this.orientationSuppliers = orientationSuppliers;
         this.uncertaintyGroupAttributes = uncertaintyGroupAttributes;
     }
 
@@ -257,14 +248,6 @@ public class InRAProcessModel implements InProcessModel {
         this.pvFile = new InPVFile[]{pvFile};
     }
 
-    public InSlopeSupplier[] getSlopeSuppliers() {
-        return slopeSuppliers;
-    }
-
-    public InOrientationSupplier[] getOrientationSuppliers() {
-        return orientationSuppliers;
-    }
-
     public InUncertaintyGroupAttribute[] getUncertaintyGroupAttributes() {
         return uncertaintyGroupAttributes;
     }
@@ -306,16 +289,6 @@ public class InRAProcessModel implements InProcessModel {
             LOGGER.info(IRPSection.INITIALIZATION_PARAMETER, "set '{}' to '{}'", findingScheme.getName(), jcag.getName());
         }
 
-        if(getSlopeSuppliers() != null) {
-            for(InSlopeSupplier inSlope: getSlopeSuppliers()) {
-                inSlope.setup(parser, model);
-            }
-        }
-        if(getOrientationSuppliers() != null) {
-            for(InOrientationSupplier inOri: getOrientationSuppliers()) {
-                inOri.setup(parser, model);
-            }
-        }
         if(getUncertaintyGroupAttributes() != null) {
             for(InUncertaintyGroupAttribute inUncert: getUncertaintyGroupAttributes()) {
                 inUncert.setup(parser, model);

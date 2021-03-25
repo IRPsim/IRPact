@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.io.param.input.process;
+package de.unileipzig.irpact.io.param.input.process.ra;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
@@ -11,8 +11,6 @@ import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
-import de.unileipzig.irpact.util.AddToRoot;
-import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -23,10 +21,8 @@ import java.lang.invoke.MethodHandles;
 /**
  * @author Daniel Abitz
  */
-@Todo("auch was PVact-iges einbauen")
-@AddToRoot
 @Definition
-public class InIndividualAttributeBasedUncertaintyGroupAttribute implements InUncertaintyGroupAttribute {
+public class InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute implements InUncertaintyGroupAttribute {
 
     //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -39,7 +35,7 @@ public class InIndividualAttributeBasedUncertaintyGroupAttribute implements InUn
     public static void applyRes(TreeAnnotationResource res) {
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InIndividualAttributeBasedUncertaintyGroupAttribute.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute.class);
 
     public String _name;
 
@@ -49,7 +45,10 @@ public class InIndividualAttributeBasedUncertaintyGroupAttribute implements InUn
     @FieldDefinition
     public InUnivariateDoubleDistribution[] uncertDist;
 
-    public InIndividualAttributeBasedUncertaintyGroupAttribute() {
+    @FieldDefinition
+    public InUnivariateDoubleDistribution[] convergenceDist;
+
+    public InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute() {
     }
 
     public void setName(String name) {
@@ -71,6 +70,7 @@ public class InIndividualAttributeBasedUncertaintyGroupAttribute implements InUn
         RAProcessModel processModel = (RAProcessModel) input;
 
         UnivariateDoubleDistribution uncert = parser.parseEntityTo(getUncertaintyDistribution());
+        UnivariateDoubleDistribution conv = parser.parseEntityTo(getConvergenceDistribution());
 
         for(InConsumerAgentGroupAttribute inCagAttr: getAttributes()) {
             InConsumerAgentGroup inCag = inCagAttr.getConsumerAgentGroup(parser);
@@ -80,14 +80,16 @@ public class InIndividualAttributeBasedUncertaintyGroupAttribute implements InUn
             processModel.getUncertaintySupplier().add(
                     cag,
                     attrName,
-                    uncert
+                    uncert,
+                    conv
             );
             LOGGER.debug(
                     IRPSection.INITIALIZATION_PARAMETER,
-                    "add UncertaintySupplier for group '{}', attribute '{}', uncertainity '{}'",
+                    "add UncertaintySupplier for group '{}', attribute '{}', uncertainity '{}', convergence '{}'",
                     cag.getName(),
                     attrName,
-                    uncert.getName()
+                    uncert.getName(),
+                    conv.getName()
             );
         }
     }
@@ -106,5 +108,13 @@ public class InIndividualAttributeBasedUncertaintyGroupAttribute implements InUn
 
     public void setUncertaintyDistribution(InUnivariateDoubleDistribution uncertDist) {
         this.uncertDist = new InUnivariateDoubleDistribution[]{uncertDist};
+    }
+
+    public InUnivariateDoubleDistribution getConvergenceDistribution() throws ParsingException {
+        return ParamUtil.getInstance(convergenceDist, "ConvergenceDistribution");
+    }
+
+    public void setConvergenceDistribution(InUnivariateDoubleDistribution convergenceDist) {
+        this.convergenceDist = new InUnivariateDoubleDistribution[]{convergenceDist};
     }
 }

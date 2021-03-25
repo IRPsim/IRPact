@@ -1,24 +1,23 @@
 package de.unileipzig.irpact.io.param.input.spatial.dist;
 
 import de.unileipzig.irpact.commons.Rnd;
-import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.spatial.distribution.DiscreteSpatialDistribution;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.core.spatial.distribution.DiscreteSpatialDistribution;
 import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InputParser;
-import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
+import de.unileipzig.irptools.util.TreeResourceApplier;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
@@ -29,7 +28,7 @@ import java.util.List;
  */
 @Todo("umbennen ->")
 @Definition
-public class InCustomSelectedSpatialDistribution2D implements InSpatialDistribution {
+public class InFileSelectedSelectedSpatialDistribution2D implements InSpatialDistribution {
 
     //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -38,54 +37,68 @@ public class InCustomSelectedSpatialDistribution2D implements InSpatialDistribut
     }
 
     public static void initRes(TreeAnnotationResource res) {
+        TreeResourceApplier.callAllSubInitResSilently(thisClass(), res);
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.putPath(
-                InCustomSelectedSpatialDistribution2D.class,
+                InFileSelectedSelectedSpatialDistribution2D.class,
                 res.getCachedElement("Räumliche Modell"),
                 res.getCachedElement("SpatialDist"),
                 res.getCachedElement("CustomPos"),
                 res.getCachedElement("InCustomSelectedSpatialDistribution2D")
         );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("X-Position0")
-                .setGamsDescription("X-Position")
-                .store(InCustomSelectedSpatialDistribution2D.class, "xPosSupplier");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Y-Position0")
-                .setGamsDescription("Y-Position")
-                .store(InCustomSelectedSpatialDistribution2D.class, "yPosSupplier");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Tabellendaten0")
-                .setGamsDescription("Zu nutzende Tabelle für weitere Informationen")
-                .store(InCustomSelectedSpatialDistribution2D.class, "attrFile");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Filterschlüssel0")
-                .setGamsDescription("Dieser Schlüssel wird verwendet, um die Daten zu filtern (z.B. Milieu).")
-                .store(InCustomSelectedSpatialDistribution2D.class, "selectKey");
+        TreeResourceApplier.callAllSubApplyResSilently(thisClass(), res);
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InCustomSelectedSpatialDistribution2D.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
 
+    public static void initRes0(TreeAnnotationResource res) {
+    }
+    public static void applyRes0(TreeAnnotationResource res) {
+        res.newEntryBuilder()
+                .setGamsIdentifier("X-Position0")
+                .setGamsDescription("X-Position")
+                .store(InFileSelectedSelectedSpatialDistribution2D.class, "xPosSupplier");
+    }
     @FieldDefinition
-    public InUnivariateDoubleDistribution[] xPosSupplier;
+    public InAttributeName[] xPositionKey;
 
+    public static void initRes1(TreeAnnotationResource res) {
+    }
+    public static void applyRes1(TreeAnnotationResource res) {
+        res.newEntryBuilder()
+                .setGamsIdentifier("Y-Position0")
+                .setGamsDescription("Y-Position")
+                .store(InFileSelectedSelectedSpatialDistribution2D.class, "yPosSupplier");
+    }
     @FieldDefinition
-    public InUnivariateDoubleDistribution[] yPosSupplier;
+    public InAttributeName[] yPositionKey;
 
+    public static void initRes2(TreeAnnotationResource res) {
+    }
+    public static void applyRes2(TreeAnnotationResource res) {
+        res.newEntryBuilder()
+                .setGamsIdentifier("Tabellendaten0")
+                .setGamsDescription("Zu nutzende Tabelle für weitere Informationen")
+                .store(InFileSelectedSelectedSpatialDistribution2D.class, "attrFile");
+    }
     @FieldDefinition
     public InSpatialTableFile[] attrFile;
 
+    public static void initRes3(TreeAnnotationResource res) {
+    }
+    public static void applyRes3(TreeAnnotationResource res) {
+        res.newEntryBuilder()
+                .setGamsIdentifier("Filterschlüssel0")
+                .setGamsDescription("Dieser Schlüssel wird verwendet, um die Daten zu filtern (z.B. Milieu).")
+                .store(InFileSelectedSelectedSpatialDistribution2D.class, "selectKey");
+    }
     @FieldDefinition
     public InAttributeName[] selectKey;
 
-    public InCustomSelectedSpatialDistribution2D() {
+    public InFileSelectedSelectedSpatialDistribution2D() {
     }
 
     @Override
@@ -97,12 +110,12 @@ public class InCustomSelectedSpatialDistribution2D implements InSpatialDistribut
     public void setup(InputParser parser, Object input) throws ParsingException {
         JadexConsumerAgentGroup jCag = (JadexConsumerAgentGroup) input;
 
-        UnivariateDoubleDistribution xSupplier = parser.parseEntityTo(getXPosSupplier());
-        UnivariateDoubleDistribution ySupplier = parser.parseEntityTo(getYPosSupplier());
+        String xKey = getXPositionKey().getName();
+        String yKey = getYPositionKey().getName();
         String selectKey = getSelectKey().getName();
         List<List<SpatialAttribute<?>>> attrList = parser.parseEntityTo(getAttributeFile());
         List<List<SpatialAttribute<?>>> selectedList = SpatialUtil.filter(attrList, selectKey, jCag.getName());
-        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xSupplier, ySupplier);
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xKey, yKey);
 
         DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();
         dist.setName(getName());
@@ -113,12 +126,20 @@ public class InCustomSelectedSpatialDistribution2D implements InSpatialDistribut
         jCag.setSpatialDistribution(dist);
     }
 
-    public InUnivariateDoubleDistribution getXPosSupplier() throws ParsingException {
-        return ParamUtil.getInstance(xPosSupplier, "XPosSupplier");
+    public void setXPositionKey(InAttributeName xPositionKey) {
+        this.xPositionKey = new InAttributeName[]{xPositionKey};
     }
 
-    public InUnivariateDoubleDistribution getYPosSupplier() throws ParsingException {
-        return ParamUtil.getInstance(yPosSupplier, "YPosSupplier");
+    public InAttributeName getXPositionKey() throws ParsingException {
+        return ParamUtil.getInstance(xPositionKey, "XPositionKey");
+    }
+
+    public void setYPositionKey(InAttributeName yPositionKey) {
+        this.yPositionKey = new InAttributeName[]{yPositionKey};
+    }
+
+    public InAttributeName getYPositionKey() throws ParsingException {
+        return ParamUtil.getInstance(yPositionKey, "YPositionKey");
     }
 
     public InSpatialTableFile getAttributeFile() throws ParsingException {

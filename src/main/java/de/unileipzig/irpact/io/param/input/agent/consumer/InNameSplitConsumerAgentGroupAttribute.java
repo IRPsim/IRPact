@@ -11,7 +11,6 @@ import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
-import de.unileipzig.irpact.util.AddToRoot;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -22,7 +21,6 @@ import java.lang.invoke.MethodHandles;
 /**
  * @author Daniel Abitz
  */
-@AddToRoot
 @Definition
 public class InNameSplitConsumerAgentGroupAttribute implements InConsumerAgentGroupAttribute {
 

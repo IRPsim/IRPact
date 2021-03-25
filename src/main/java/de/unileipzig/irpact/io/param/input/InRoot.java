@@ -10,6 +10,7 @@ import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InNameSplitAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.*;
+import de.unileipzig.irpact.io.param.input.agent.population.PopulationSize;
 import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
@@ -19,9 +20,10 @@ import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.process.*;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomSelectedGroupedSpatialDistribution2D;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomSelectedSpatialDistribution2D;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomSpatialDistribution2D;
+import de.unileipzig.irpact.io.param.input.process.ra.*;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSelectedGroupedSpatialDistribution2D;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSelectedSpatialDistribution2D;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSpatialDistribution2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
@@ -119,7 +121,7 @@ public class InRoot implements RootClass {
         this.consumerAgentGroups = consumerAgentGroups;
     }
     public InConsumerAgentGroup[] getConsumerAgentGroups() throws ParsingException {
-        return ParamUtil.getNonEmptyArray(consumerAgentGroups, "consumerAgentGroups");
+        return ParamUtil.getNonNullArray(consumerAgentGroups, "consumerAgentGroups");
     }
 
     @FieldDefinition
@@ -129,7 +131,17 @@ public class InRoot implements RootClass {
         this.consumerAgentGroupAttributes = consumerAgentGroupAttributes;
     }
     public InConsumerAgentGroupAttribute[] getConsumerAgentGroupAttributes() throws ParsingException {
-        return ParamUtil.getNonEmptyArray(consumerAgentGroupAttributes, "consumerAgentGroupAttributes");
+        return ParamUtil.getNonNullArray(consumerAgentGroupAttributes, "consumerAgentGroupAttributes");
+    }
+
+    @FieldDefinition
+    public PopulationSize[] agentPopulationSizes = new PopulationSize[0];
+
+    public void setAgentPopulationSizes(PopulationSize[] agentPopulationSizes) {
+        this.agentPopulationSizes = agentPopulationSizes;
+    }
+    public PopulationSize[] getAgentPopulationSizes() throws ParsingException {
+        return ParamUtil.getNonNullArray(agentPopulationSizes, "agentPopulationSizes");
     }
 
     //=========================
@@ -438,22 +450,19 @@ public class InRoot implements RootClass {
 
             InAutoUncertaintyGroupAttribute.class,
             InNameBasedUncertaintyWithConvergenceGroupAttribute.class,
-            InOrientationSupplier.class,
             InProcessModel.class,
             InRAProcessModel.class,
-            InSlopeSupplier.class,
             InUncertaintyGroupAttribute.class,
 
             InFixProduct.class,
             InFixProductAttribute.class,
             InFixProductFindingScheme.class,
             InProductFindingScheme.class,
-            InProductGroup.class,
-            InProductGroupAttribute.class,
+            InBasicProductGroup.class,
 
-            InCustomSelectedGroupedSpatialDistribution2D.class,
-            InCustomSelectedSpatialDistribution2D.class,
-            InCustomSpatialDistribution2D.class,
+            InCustomFileSelectedGroupedSpatialDistribution2D.class,
+            InCustomFileSelectedSpatialDistribution2D.class,
+            InCustomFileSpatialDistribution2D.class,
             InSpatialDistribution.class,
             InSpace2D.class,
             InSpatialModel.class,

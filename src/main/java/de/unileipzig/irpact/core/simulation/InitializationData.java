@@ -1,18 +1,23 @@
 package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.simulation.tasks.SimulationTask;
-
-import java.util.List;
 
 /**
  * @author Daniel Abitz
  */
 public interface InitializationData {
 
-    void setStartYear(int year);
+    //=========================
+    //general
+    //=========================
 
-    void incrementStartYear();
+    boolean ignorePersistenceCheckResult();
+
+    //=========================
+    //time
+    //=========================
+
+    void setStartYear(int year);
 
     int getStartYear();
 
@@ -22,11 +27,13 @@ public interface InitializationData {
 
     boolean hasValidEndYear();
 
-    int getInitialNumberOfConsumerAgent(ConsumerAgentGroup group);
+    //=========================
+    //population size
+    //=========================
 
-    void addTask(SimulationTask task);
+    boolean hasInitialNumberOfConsumerAgents(ConsumerAgentGroup group);
 
-    List<SimulationTask> getTasks();
+    void setInitialNumberOfConsumerAgents(ConsumerAgentGroup group, int size);
 
-    boolean ignorePersistenceCheckResult();
+    int getInitialNumberOfConsumerAgents(ConsumerAgentGroup group);
 }

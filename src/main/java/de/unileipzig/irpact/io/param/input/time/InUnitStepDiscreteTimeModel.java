@@ -5,7 +5,6 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.UnitStepDiscreteTimeModel;
-import de.unileipzig.irpact.util.AddToRoot;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -19,7 +18,6 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
-@AddToRoot
 @Definition
 public class InUnitStepDiscreteTimeModel implements InTimeModel {
 

@@ -21,7 +21,6 @@ import de.unileipzig.irpact.core.product.ProductFindingScheme;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
-import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
 
@@ -47,9 +46,6 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     protected Set<Need> needs;
     protected Map<Need, ProcessPlan> plans;
     protected Set<AttributeAccess> externAttributes;
-    @Todo("diese Information sollte lieber ins SN.Node")
-    @Todo("speichern dieser Information nicht vergessen")
-    protected Map<ConsumerAgentGroup, Integer> cagLinkCount;
 
     public ProxyConsumerAgent() {
         this(
@@ -57,8 +53,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
                 new LinkedHashSet<>(),
                 new LinkedHashSet<>(),
                 new LinkedHashMap<>(),
-                new LinkedHashSet<>(),
-                new LinkedHashMap<>()
+                new LinkedHashSet<>()
         );
     }
 
@@ -67,14 +62,12 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
             Set<AdoptedProduct> adoptedProducts,
             Set<Need> needs,
             Map<Need, ProcessPlan> plans,
-            Set<AttributeAccess> externAttributes,
-            Map<ConsumerAgentGroup, Integer> cagLinkCount) {
+            Set<AttributeAccess> externAttributes) {
         this.attributes = attributes;
         this.adoptedProducts = adoptedProducts;
         this.needs = needs;
         this.plans = plans;
         this.externAttributes = externAttributes;
-        this.cagLinkCount = cagLinkCount;
     }
 
     @Override
@@ -149,7 +142,6 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         processFindingScheme = null;
         needs.clear();
         plans.clear();
-        cagLinkCount.clear();
     }
 
     public void unsync(ConsumerAgent realAgent) {
@@ -173,7 +165,6 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         processFindingScheme = realAgent.getProcessFindingScheme();
         needs.addAll(realAgent.getNeeds());
         addAllPlans(realAgent.getPlans());
-        cagLinkCount.putAll(realAgent.getLinkCounter());
     }
 
     @Override
@@ -540,14 +531,5 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
 
     public Collection<AttributeAccess> getExternAttributes() {
         return externAttributes;
-    }
-
-    @Override
-    public Map<ConsumerAgentGroup, Integer> getLinkCounter() {
-        if(isSynced()) {
-            return getRealAgent().getLinkCounter();
-        } else {
-            return cagLinkCount;
-        }
     }
 }

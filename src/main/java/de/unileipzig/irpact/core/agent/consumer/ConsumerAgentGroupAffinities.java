@@ -8,5 +8,5 @@ import de.unileipzig.irpact.commons.affinity.Affinities;
 public interface ConsumerAgentGroupAffinities extends Affinities<ConsumerAgentGroup> {
 
     @Override
-    ConsumerAgentGroupAffinities without(ConsumerAgentGroup target);
+    ConsumerAgentGroupAffinities createWithout(ConsumerAgentGroup target);
 }

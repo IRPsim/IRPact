@@ -5,7 +5,6 @@ package de.unileipzig.irpact.util;
  *
  * @author Daniel Abitz
  */
-@Todo("BEACHTEN")
 public @interface AddToRoot {
 
     String value() default "";

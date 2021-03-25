@@ -23,11 +23,12 @@ import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.io.param.input.agent.population.PopulationSize;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
-import de.unileipzig.irpact.io.param.input.product.InFixProduct;
 import de.unileipzig.irpact.io.param.input.product.InProductGroup;
+import de.unileipzig.irpact.io.param.input.product.InFixProduct;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
@@ -193,6 +194,7 @@ public class JadexInputParser implements InputParser {
         parseConsumerAgentGroups(root);
         parseConsumerAgentGroupAttributes(root);
         parseConsumerAgentGroupAffinityMapping(root);
+        parseAgentPopulation(root);
         parseNetwork(root);
         parseSocialGraph(root);
 
@@ -251,13 +253,19 @@ public class JadexInputParser implements InputParser {
         }
 
         BasicAgentManager agentManager = (BasicAgentManager) environment.getAgents();
-        BasicInitializationData initData = (BasicInitializationData) environment.getInitializationData();
 
         for(InConsumerAgentGroup inCag: root.consumerAgentGroups) {
             ConsumerAgentGroup cag = parseEntityTo(inCag);
-            debug("added ConsumerAgentGroup '{}' with '{}' agents", cag.getName(), inCag.getNumberOfAgents());
+            debug("added ConsumerAgentGroup '{}'", cag.getName());
             agentManager.addConsumerAgentGroup(cag);
-            initData.setInitialNumberOfConsumerAgents(cag, inCag.getNumberOfAgents());
+        }
+    }
+
+    private void parseAgentPopulation(InRoot root) throws ParsingException {
+        BasicInitializationData initData = (BasicInitializationData) environment.getInitializationData();
+
+        for(PopulationSize popSize: root.getAgentPopulationSizes()) {
+            popSize.setup(this, initData);
         }
     }
 

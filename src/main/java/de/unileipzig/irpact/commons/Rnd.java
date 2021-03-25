@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons;
 
+import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -147,6 +148,10 @@ public final class Rnd implements IsEquals {
 
     public synchronized double syncNextDouble() {
         return rnd.nextDouble();
+    }
+
+    public <T> T getRandom(Collection<? extends T> coll) {
+        return CollectionUtil.getRandom(coll, this);
     }
 
     public Rnd deriveInstance() {

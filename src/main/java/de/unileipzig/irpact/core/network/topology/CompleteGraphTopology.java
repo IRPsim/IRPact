@@ -52,13 +52,15 @@ public class CompleteGraphTopology extends NameableBase implements GraphTopology
     public void initalize(SimulationEnvironment environment, SocialGraph graph) {
         LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "initialize complete graph");
         for(SocialGraph.Node src: graph.getNodes()) {
+            SocialGraph.LinkageInformation srcLi = graph.getLinkageInformation(src);
             for(SocialGraph.Node tar: graph.getNodes()) {
                 if(src == tar) {
                     continue;
                 }
                 LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "add edge: {}->{} ({},{})", src.getLabel(), tar.getLabel(), edgeType, initialWeight);
                 graph.addEdge(src, tar, edgeType, initialWeight);
-                src.getAgent(ConsumerAgent.class).inc(tar.getAgent(ConsumerAgent.class).getGroup(), 1);
+
+                srcLi.inc(tar.getAgent(ConsumerAgent.class).getGroup(), edgeType);
             }
         }
     }

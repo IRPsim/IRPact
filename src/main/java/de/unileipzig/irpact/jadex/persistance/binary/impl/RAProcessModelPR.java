@@ -79,9 +79,6 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
         SimulationEnvironment initialEnv = manager.getInitialInstance();
         RAProcessModel initialRA = (RAProcessModel) initialEnv.getProcessModels().getProcessModel(restoredInstance.getName());
 
-        restoredInstance.setSlopeSupplier(initialRA.getSlopeSupplier());
-        restoredInstance.setOrientationSupplier(initialRA.getOrientationSupplier());
-
         restoredInstance.setUnderConstructionSupplier(initialRA.getUnderConstructionSupplier());
         restoredInstance.setUnderRenovationSupplier(initialRA.getUnderRenovationSupplier());
 

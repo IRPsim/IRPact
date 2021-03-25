@@ -1,14 +1,11 @@
 package de.unileipzig.irpact.core.network;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.IsEquals;
-import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.TripleMapping;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.core.agent.Agent;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
 import java.util.function.Function;
@@ -22,11 +19,10 @@ public class BasicSocialGraph implements SocialGraph {
     /**
      * @author Daniel Abitz
      */
-    //Da wir den Agent austauschen, wird equals und hashCode nicht veraendert.
     public static class BasicNode implements Node {
 
+        private final BasicLinkageInformation linkageInformation = new BasicLinkageInformation();
         private final Agent agent;
-        protected TripleMapping<Type, Object, Integer> linkCounter = new TripleMapping<>();
 
         public BasicNode(Agent agent) {
             this.agent = agent;
@@ -52,25 +48,8 @@ public class BasicSocialGraph implements SocialGraph {
             return type.isInstance(agent);
         }
 
-        @Todo("HMMM, generisches Objekt: ja/nein?")
-        public void inc(Type type, Object key, int delta) {
-            int current = linkCounter.get(type, key, 0);
-            linkCounter.put(type, key, current + delta);
-        }
-
-        public void dec(Type type, Object key, int delta) {
-            int current = linkCounter.get(type, key, 0);
-            linkCounter.put(type, key, current - delta);
-        }
-
-        public int getLinkCount(Type type, Object key) {
-            return linkCounter.get(type, key, 0);
-        }
-
-        public int getTotalLinkCount(Type typ) {
-            return linkCounter.streamValues(typ)
-                    .mapToInt(i -> i)
-                    .sum();
+        private BasicLinkageInformation getLinkageInformation() {
+            return linkageInformation;
         }
 
         @Override
@@ -146,11 +125,72 @@ public class BasicSocialGraph implements SocialGraph {
         }
     }
 
+    /**
+     * @author Daniel Abitz
+     */
+    public static class BasicLinkageInformation implements LinkageInformation {
+
+        private final TripleMapping<Type, Object, Integer> linkCounter = new TripleMapping<>();
+
+        public BasicLinkageInformation() {
+        }
+
+        @Override
+        public void set(Object key, Type type, int value) {
+            linkCounter.put(type, key, value);
+        }
+
+        @Override
+        public void update(Object key, Type type, int delta) {
+            int current = linkCounter.get(type, key, 0);
+            int newValue = Math.max(current + delta, 0);
+            linkCounter.put(type, key, newValue);
+        }
+
+        @Override
+        public void inc(Object key, Type type) {
+            update(key, type, 1);
+        }
+
+        @Override
+        public void dec(Object key, Type type) {
+            update(key, type, -1);
+        }
+
+        @Override
+        public int get(Object key, Type type) {
+            return linkCounter.get(type, key, 0);
+        }
+
+        @Override
+        public int sum(Object[] keys, Type type) {
+            return sum(Arrays.asList(keys), type);
+        }
+
+        @Override
+        public int sum(Collection<?> keys, Type type) {
+            int total = 0;
+            for(Object key: keys) {
+                total += get(key, type);
+            }
+            return total;
+        }
+
+        @Override
+        public int total(Type type) {
+            return linkCounter.streamValues(type)
+                    .mapToInt(v -> v)
+                    .sum();
+        }
+    }
+
     private static final Function<? super Type, ? extends Edge> DEFAULT_EDGE_SUPPLIER = type -> {
         BasicEdge edge = new BasicEdge();
         edge.setType(type);
         return edge;
     };
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicSocialGraph.class);
 
     private final Function<? super Agent, ? extends Node> NODE_SUPPLIER;
     private final Function<? super Type, ? extends Edge> EDGE_SUPPLIER;
@@ -172,6 +212,17 @@ public class BasicSocialGraph implements SocialGraph {
         GRAPH = structure.newInstance();
     }
 
+    private static BasicNode check(Node node) {
+        if(node == null) {
+            throw new NullPointerException("node is null");
+        }
+        if(node instanceof BasicNode) {
+            return (BasicNode) node;
+        } else {
+            throw new IllegalArgumentException("node '" + node.getLabel() + "' not supported");
+        }
+    }
+
     @Override
     public int getHashCode() {
         return Objects.hash(
@@ -191,6 +242,12 @@ public class BasicSocialGraph implements SocialGraph {
 
     public Collection<Edge> getAllEdges() {
         return GRAPH.getAllEdges(Type.values());
+    }
+
+    @Override
+    public LinkageInformation getLinkageInformation(Node node) {
+        BasicNode bNode = check(node);
+        return bNode.getLinkageInformation();
     }
 
     @Override
@@ -245,6 +302,13 @@ public class BasicSocialGraph implements SocialGraph {
     @Override
     public Set<? extends Node> getTargets(Node from, Type type) {
         return GRAPH.getTargets(from, type);
+    }
+
+    @Override
+    public List<? extends Node> listTargets(Node from, Type type) {
+        List<Node> targets = new ArrayList<>();
+        getTargets(from, type, targets);
+        return targets;
     }
 
     @Override
@@ -303,6 +367,11 @@ public class BasicSocialGraph implements SocialGraph {
     }
 
     @Override
+    public boolean hasNoEdge(Node from, Node to, Type type) {
+        return !hasEdge(from, to, type);
+    }
+
+    @Override
     public boolean removeEdge(Edge edge) {
         return GRAPH.removeEdge(edge);
     }
@@ -310,46 +379,5 @@ public class BasicSocialGraph implements SocialGraph {
     @Override
     public Set<? extends Edge> removeAllEdges(Type type) {
         return GRAPH.removeAllEdges(type);
-    }
-
-    //=========================
-    //special
-    //=========================
-
-    @Override
-    public int countUnlinked(Node srcNode, ConsumerAgentGroup tarCag, Type type) {
-        int count = 0;
-        for(ConsumerAgent tar: tarCag.getAgents()) {
-            Node tarNode = tar.getSocialGraphNode();
-            if(!hasEdge(srcNode, tarNode, type)) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    @Override
-    public int countUnlinked(Node srcNode, Collection<? extends ConsumerAgentGroup> tarCags, Type type) {
-        int total = 0;
-        for(ConsumerAgentGroup tarCag: tarCags) {
-            total += countUnlinked(srcNode, tarCag, type);
-        }
-        return total;
-    }
-
-    @Override
-    public Node getRandomUnlinked(Node srcNode, ConsumerAgentGroup tarCag, Type type, Rnd rnd) {
-        List<Node> tars = new ArrayList<>();
-        for(ConsumerAgent tar: tarCag.getAgents()) {
-            Node tarNode = tar.getSocialGraphNode();
-            if(!hasEdge(srcNode, tarNode, type)) {
-                tars.add(tarNode);
-            }
-        }
-        if(tars.isEmpty()) {
-            return null;
-        } else {
-            return CollectionUtil.getRandom(tars, rnd);
-        }
     }
 }

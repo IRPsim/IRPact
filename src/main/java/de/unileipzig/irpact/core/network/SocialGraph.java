@@ -6,6 +6,7 @@ import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -77,6 +78,30 @@ public interface SocialGraph extends IsEquals {
         }
     }
 
+    /**
+     * @author Daniel Abitz
+     */
+    interface LinkageInformation {
+
+        void set(Object key, Type type, int value);
+
+        void update(Object key, Type type, int delta);
+
+        void inc(Object key, Type type);
+
+        void dec(Object key, Type type);
+
+        int get(Object key, Type type);
+
+        int sum(Object[] keys, Type type);
+
+        int sum(Collection<?> keys, Type type);
+
+        int total(Type type);
+    }
+
+    LinkageInformation getLinkageInformation(Node node);
+
     boolean addAgent(Agent agent);
 
     Node addAgentAndGetNode(Agent agent);
@@ -93,6 +118,8 @@ public interface SocialGraph extends IsEquals {
 
     Set<? extends Node> getTargets(Node from, Type type);
 
+    List<? extends Node> listTargets(Node from, Type type);
+
     boolean getTargets(Node from, Type type, Collection<? super Node> targets);
 
     Stream<? extends Node> streamNodes();
@@ -107,17 +134,9 @@ public interface SocialGraph extends IsEquals {
 
     boolean hasEdge(Node from, Node to, Type type);
 
+    boolean hasNoEdge(Node from, Node to, Type type);
+
     boolean removeEdge(Edge edge);
 
     Set<? extends Edge> removeAllEdges(Type type);
-
-    //=========================
-    //special
-    //=========================
-
-    int countUnlinked(Node srcNode, ConsumerAgentGroup tarCag, Type type);
-
-    int countUnlinked(Node srcNode, Collection<? extends ConsumerAgentGroup> tarCags, Type type);
-
-    Node getRandomUnlinked(Node srcNode, ConsumerAgentGroup tarCag, Type type, Rnd rnd);
 }

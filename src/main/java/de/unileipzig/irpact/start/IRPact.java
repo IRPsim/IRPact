@@ -44,13 +44,13 @@ import jadex.bridge.service.types.cms.CreationInfo;
 import jadex.bridge.service.types.simulation.ISimulationService;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 /**
  * @author Daniel Abitz
  */
-public class IRPact {
+public class IRPact implements IRPActAccess {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(IRPact.class);
 
@@ -68,54 +68,71 @@ public class IRPact {
      *
      * Used to identify valid input data.
      */
-    public static final String VERSION_STRING = "0_0_0";
+    public static final String VERSION_STRING = "v0_0_0";
     public static final Version VERSION = new BasicVersion(VERSION_STRING);
 
-    private final Start clParam;
-    private final ResourceLoader resourceLoader;
-    private AnnualEntry<InRoot> entry;
+    private final List<IRPactCallback> CALLBACKS = new ArrayList<>();
+    private final CommandLineOptions CL_OPTIONS;
+    private final ResourceLoader RESOURCE_LOADER;
+
+    private AnnualEntry<InRoot> inEntry;
     private InRoot inRoot;
+    private AnnualData<OutRoot> outData;
     private JadexSimulationEnvironment environment;
     private GraphvizConfiguration graphvizConfiguration;
     private IExternalAccess platform;
 
-    public IRPact(Start clParam, ResourceLoader resourceLoader) {
-        this.clParam = clParam;
-        this.resourceLoader = resourceLoader;
+    public IRPact(
+            CommandLineOptions clOptions,
+            Collection<? extends IRPactCallback> callbacks,
+            ResourceLoader resourceLoader) {
+        this.CL_OPTIONS = clOptions;
+        this.CALLBACKS.addAll(callbacks);
+        this.RESOURCE_LOADER = resourceLoader;
     }
 
-    private void pulse() {
-        environment.getLiveCycleControl().pulse();
+    private static DefinitionMapper createMapper(CommandLineOptions options, DefinitionCollection dcoll) {
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "setup definition mapper: autoTrim={}, maxNameLength={}, minPartLength={}", options.isEnableGamsNameTrimming(), options.getMaxGamsNameLength(), options.getMinGamsPartLength());
+        DefinitionMapper mapper = new DefinitionMapper(dcoll, false);
+        mapper.setAutoTrimName(options.isEnableGamsNameTrimming());
+        mapper.setMaxNameLength(options.getMaxGamsNameLength());
+        mapper.setMinPartLength(options.getMinGamsPartLength());
+        mapper.init();
+        return mapper;
     }
 
     private static Converter inputConverter;
-    public static Converter getInputConverter() {
+    public static Converter getInputConverter(CommandLineOptions options) {
         if(inputConverter == null) {
             DefinitionCollection dcoll = AnnotationParser.parse(InRoot.CLASSES_WITH_GRAPHVIZ);
-            DefinitionMapper dmap = new DefinitionMapper(dcoll);
+            DefinitionMapper dmap = createMapper(options, dcoll);
             inputConverter = new Converter(dmap);
         }
         return inputConverter;
     }
 
     private static Converter outputConverter;
-    public static Converter getOutputConverter() {
+    public static Converter getOutputConverter(CommandLineOptions options) {
         if(outputConverter == null) {
             DefinitionCollection dcoll = AnnotationParser.parse(OutRoot.CLASSES);
-            DefinitionMapper dmap = new DefinitionMapper(dcoll);
+            DefinitionMapper dmap = createMapper(options, dcoll);
             outputConverter = new Converter(dmap);
         }
         return outputConverter;
     }
 
-    public static AnnualEntry<InRoot> convert(ObjectNode rootNode) {
+    public static AnnualEntry<InRoot> convert(CommandLineOptions options, ObjectNode rootNode) {
         ContentType contentType = ContentTypeDetector.detect(rootNode);
         LOGGER.debug("content type: {}", contentType);
         return ContentTypeDetector.parseFirstEntry(
                 rootNode,
                 contentType,
-                getInputConverter()
+                getInputConverter(options)
         );
+    }
+
+    private void pulse() {
+        environment.getLiveCycleControl().pulse();
     }
 
     public void start(ObjectNode jsonRoot) throws Exception {
@@ -124,12 +141,12 @@ public class IRPact {
     }
 
     private void parseInputFile(ObjectNode jsonRoot) {
-        entry = convert(jsonRoot);
-        inRoot = entry.getData();
+        inEntry = convert(CL_OPTIONS, jsonRoot);
+        inRoot = inEntry.getData();
     }
 
     public void start(AnnualEntry<InRoot> entry) throws Exception {
-        this.entry = entry;
+        this.inEntry = entry;
         inRoot = entry.getData();
         start();
     }
@@ -147,7 +164,7 @@ public class IRPact {
 
         printInitialNetwork();
 
-        if(clParam.isNoSimulation()) {
+        if(CL_OPTIONS.isNoSimulation()) {
             LOGGER.info("no simulation");
             return;
         }
@@ -173,9 +190,9 @@ public class IRPact {
 
     private void createSimulationEnvironment() throws ParsingException {
         JadexInputParser parser = new JadexInputParser();
-        parser.setResourceLoader(resourceLoader);
+        parser.setResourceLoader(RESOURCE_LOADER);
         environment = parser.parseRoot(inRoot);
-        int year = entry.getConfig().getYear();
+        int year = inEntry.getConfig().getYear();
         environment.getInitializationData().setStartYear(year);
         if(environment.getInitializationData().hasValidEndYear()) {
             LOGGER.info("valid custom end year found, simulation will run multiple years");
@@ -184,7 +201,7 @@ public class IRPact {
 
     private void applyCliToEnvironment() {
         BasicInitializationData initData = (BasicInitializationData) environment.getInitializationData();
-        initData.setIgnorePersistenceCheckResult(clParam.isIgnorePersistenceCheck());
+        initData.setIgnorePersistenceCheckResult(CL_OPTIONS.isIgnorePersistenceCheck());
     }
 
     private void restorPreviousSimulationEnvironment() throws Exception {
@@ -197,13 +214,13 @@ public class IRPact {
     }
 
     private void createGraphvizConfiguration() throws Exception {
-        if(!clParam.hasImagePath()) {
+        if(!CL_OPTIONS.hasImagePath()) {
             return;
         }
         LOGGER.info("valid image path, setup graphviz");
         GraphvizInputParser parser = new GraphvizInputParser();
         parser.setEnvironment(environment);
-        parser.setImageOutputPath(clParam.getImagePath());
+        parser.setImageOutputPath(CL_OPTIONS.getImagePath());
         graphvizConfiguration = parser.parseRoot(inRoot);
     }
 
@@ -362,9 +379,9 @@ public class IRPact {
     private void postSimulation() throws Exception {
         LOGGER.info("simulation finished");
         OutRoot outRoot = createOutRoot();
-        AnnualData<OutRoot> outData = createOutputData(outRoot);
+        outData = createOutputData(outRoot);
         storeOutputData(outData);
-        forwardResult(outData);
+        callCallbacks();
         finalTask();
     }
 
@@ -413,31 +430,51 @@ public class IRPact {
 
     private AnnualData<OutRoot> createOutputData(OutRoot outRoot) {
         AnnualData<OutRoot> outData = new AnnualData<>(outRoot);
-        outData.getConfig().copyFrom(entry.getConfig());
+        outData.getConfig().copyFrom(inEntry.getConfig());
         return outData;
     }
 
     private void storeOutputData(AnnualData<OutRoot> outData) {
         try {
-            AnnualFile outFile = outData.serialize(getOutputConverter());
-            outFile.store(clParam.getOutputPath());
+            AnnualFile outFile = outData.serialize(getOutputConverter(CL_OPTIONS));
+            outFile.store(CL_OPTIONS.getOutputPath());
         } catch (Throwable t) {
             LOGGER.error("saving output failed", t);
         }
     }
 
-    public static BiConsumer<? super AnnualEntry<InRoot>, ? super AnnualData<OutRoot>> resultConsumer;
-    private void forwardResult(AnnualData<OutRoot> outData) {
-        if(resultConsumer != null) {
-            LOGGER.info("call result consumer");
-            resultConsumer.accept(entry, outData);
-        } else {
-            LOGGER.trace("no result consumer found");
+    private void callCallbacks() {
+        LOGGER.info("call {} callbacks", CALLBACKS.size());
+        for(IRPactCallback callback: CALLBACKS) {
+            try {
+                callback.onFinished(this);
+            } catch (Exception e) {
+                LOGGER.error("on running callback", e);
+            }
         }
     }
 
     private void finalTask() {
         IRPLogging.removeFilter();
         LOGGER.info("simulation finished");
+    }
+
+    //=========================
+    //IRPactAccess
+    //=========================
+
+    @Override
+    public CommandLineOptions getCommandLineOptions() {
+        return CL_OPTIONS;
+    }
+
+    @Override
+    public AnnualEntry<InRoot> getInput() {
+        return inEntry;
+    }
+
+    @Override
+    public AnnualData<OutRoot> getOutput() {
+        return outData;
     }
 }

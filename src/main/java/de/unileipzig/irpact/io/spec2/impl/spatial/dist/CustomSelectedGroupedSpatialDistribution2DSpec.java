@@ -2,7 +2,7 @@ package de.unileipzig.irpact.io.spec2.impl.spatial.dist;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomSelectedGroupedSpatialDistribution2D;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSelectedGroupedSpatialDistribution2D;
 import de.unileipzig.irpact.io.spec2.SpecificationHelper2;
 import de.unileipzig.irpact.io.spec2.SpecificationJob2;
 import de.unileipzig.irpact.io.spec2.impl.AbstractSubSpec;
@@ -15,7 +15,7 @@ import static de.unileipzig.irpact.io.spec.SpecificationConstants.*;
 /**
  * @author Daniel Abitz
  */
-public class CustomSelectedGroupedSpatialDistribution2DSpec extends AbstractSubSpec<InCustomSelectedGroupedSpatialDistribution2D> {
+public class CustomSelectedGroupedSpatialDistribution2DSpec extends AbstractSubSpec<InCustomFileSelectedGroupedSpatialDistribution2D> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(CustomSelectedGroupedSpatialDistribution2DSpec.class);
 
@@ -34,12 +34,12 @@ public class CustomSelectedGroupedSpatialDistribution2DSpec extends AbstractSubS
 
     @Override
     public boolean isInstance(Object input) {
-        return input instanceof InCustomSelectedGroupedSpatialDistribution2D;
+        return input instanceof InCustomFileSelectedGroupedSpatialDistribution2D;
     }
 
     @Override
-    protected InCustomSelectedGroupedSpatialDistribution2D[] newArray(int len) {
-        return new InCustomSelectedGroupedSpatialDistribution2D[len];
+    protected InCustomFileSelectedGroupedSpatialDistribution2D[] newArray(int len) {
+        return new InCustomFileSelectedGroupedSpatialDistribution2D[len];
     }
 
     @Override
@@ -48,18 +48,18 @@ public class CustomSelectedGroupedSpatialDistribution2DSpec extends AbstractSubS
     }
 
     @Override
-    public InCustomSelectedGroupedSpatialDistribution2D[] toParamArray(SpecificationJob2 job) throws ParsingException {
+    public InCustomFileSelectedGroupedSpatialDistribution2D[] toParamArray(SpecificationJob2 job) throws ParsingException {
         return toParamArray(job.getData().getSpatialModel(), job);
     }
 
     @Override
-    public InCustomSelectedGroupedSpatialDistribution2D toParam(SpecificationHelper2 rootSpec, SpecificationJob2 job) throws ParsingException {
+    public InCustomFileSelectedGroupedSpatialDistribution2D toParam(SpecificationHelper2 rootSpec, SpecificationJob2 job) throws ParsingException {
         String name = rootSpec.getText(TAG_name);
         if(job.isCached(name)) {
             return job.getCached(name);
         }
 
-        InCustomSelectedGroupedSpatialDistribution2D dist = new InCustomSelectedGroupedSpatialDistribution2D();
+        InCustomFileSelectedGroupedSpatialDistribution2D dist = new InCustomFileSelectedGroupedSpatialDistribution2D();
         dist.setName(name);
 
         dist.setXPosSupplier(job.parseInlinedDistribution(rootSpec.getNode(TAG_x)));
@@ -73,17 +73,17 @@ public class CustomSelectedGroupedSpatialDistribution2DSpec extends AbstractSubS
     }
 
     @Override
-    public Class<InCustomSelectedGroupedSpatialDistribution2D> getParamType() {
-        return InCustomSelectedGroupedSpatialDistribution2D.class;
+    public Class<InCustomFileSelectedGroupedSpatialDistribution2D> getParamType() {
+        return InCustomFileSelectedGroupedSpatialDistribution2D.class;
     }
 
     @Override
-    public void toSpec(InCustomSelectedGroupedSpatialDistribution2D input, SpecificationJob2 job) throws ParsingException {
+    public void toSpec(InCustomFileSelectedGroupedSpatialDistribution2D input, SpecificationJob2 job) throws ParsingException {
         create(input, job.getData().getConsumerAgentGroups().get(input.getName()), job);
     }
 
     @Override
-    protected void create(InCustomSelectedGroupedSpatialDistribution2D input, SpecificationHelper2 rootSpec, SpecificationJob2 job) throws ParsingException {
+    protected void create(InCustomFileSelectedGroupedSpatialDistribution2D input, SpecificationHelper2 rootSpec, SpecificationJob2 job) throws ParsingException {
         rootSpec.set(TAG_name, input.getName());
         rootSpec.set(TAG_type, TYPE);
 

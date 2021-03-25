@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons;
 
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
@@ -11,6 +12,7 @@ import java.util.function.Function;
  *
  * @author Daniel Abitz
  */
+@Todo("hash umbennen in checksum und klasse auch besser bennen")
 public interface IsEquals {
 
     IRPLogger LOGGER = IRPLogging.getLogger(IsEquals.class);

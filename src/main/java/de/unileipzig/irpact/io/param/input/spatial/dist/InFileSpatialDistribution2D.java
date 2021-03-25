@@ -27,10 +27,8 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
-@Todo("vllt schauen, dass die namen angepasst werden -> damit die datei-abhaengigen direkt erkennbar sind")
-@Todo("trennen in eine variante mit datei und eine ohne")
 @Definition
-public class InSelectedSpatialDistribution2D implements InSpatialDistribution {
+public class InFileSpatialDistribution2D implements InSpatialDistribution {
 
     //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -43,7 +41,7 @@ public class InSelectedSpatialDistribution2D implements InSpatialDistribution {
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.putPath(
-                InSelectedSpatialDistribution2D.class,
+                InFileSpatialDistribution2D.class,
                 res.getCachedElement("Räumliche Modell"),
                 res.getCachedElement("SpatialDist"),
                 res.getCachedElement("CustomPos"),
@@ -52,7 +50,7 @@ public class InSelectedSpatialDistribution2D implements InSpatialDistribution {
         TreeResourceApplier.callAllSubApplyResSilently(thisClass(), res);
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InSelectedSpatialDistribution2D.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
 
@@ -62,7 +60,7 @@ public class InSelectedSpatialDistribution2D implements InSpatialDistribution {
         res.newEntryBuilder()
                 .setGamsIdentifier("X-Position")
                 .setGamsDescription("X-Position")
-                .store(InSelectedSpatialDistribution2D.class, "xPosSupplier");
+                .store(thisClass(), "xPosSupplier");
     }
     @FieldDefinition
     public InAttributeName[] xPositionKey;
@@ -73,7 +71,7 @@ public class InSelectedSpatialDistribution2D implements InSpatialDistribution {
         res.newEntryBuilder()
                 .setGamsIdentifier("Y-Position")
                 .setGamsDescription("Y-Position")
-                .store(InSelectedSpatialDistribution2D.class, "yPosSupplier");
+                .store(thisClass(), "yPosSupplier");
     }
     @FieldDefinition
     public InAttributeName[] yPositionKey;
@@ -84,15 +82,15 @@ public class InSelectedSpatialDistribution2D implements InSpatialDistribution {
         res.newEntryBuilder()
                 .setGamsIdentifier("Tabellendaten")
                 .setGamsDescription("Zu nutzende Tabelle für weitere Informationen")
-                .store(InSelectedSpatialDistribution2D.class, "attrFile");
+                .store(thisClass(), "attrFile");
     }
     @FieldDefinition
     public InSpatialTableFile[] attrFile;
 
-    public InSelectedSpatialDistribution2D() {
+    public InFileSpatialDistribution2D() {
     }
 
-    public InSelectedSpatialDistribution2D(
+    public InFileSpatialDistribution2D(
             String name,
             InAttributeName xPositionKey,
             InAttributeName yPositionKey,

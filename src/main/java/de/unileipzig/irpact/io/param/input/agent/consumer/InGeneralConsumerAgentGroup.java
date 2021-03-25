@@ -133,17 +133,6 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
     @FieldDefinition
     public double informationAuthority;
 
-    public static void initRes5(TreeAnnotationResource res) {
-    }
-    public static void applyRes5(TreeAnnotationResource res) {
-        res.newEntryBuilder()
-                .setGamsIdentifier("Agenten in der KG")
-                .setGamsDescription("Anzahl der Agenten in der Konsumergruppe")
-                .store(thisClass(), "numberOfCustomConsumerAgents");
-    }
-    @FieldDefinition
-    public int numberOfCustomConsumerAgents;
-
     public InGeneralConsumerAgentGroup() {
     }
 
@@ -162,15 +151,6 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
 
     public void setInformationAuthority(double informationAuthority) {
         this.informationAuthority = informationAuthority;
-    }
-
-    @Override
-    public int getNumberOfAgents() {
-        return numberOfCustomConsumerAgents;
-    }
-
-    public void setNumberOfAgents(int numberOfAgents) {
-        this.numberOfCustomConsumerAgents = numberOfAgents;
     }
 
     public InConsumerAgentGroupAttribute[] getAttributes() {

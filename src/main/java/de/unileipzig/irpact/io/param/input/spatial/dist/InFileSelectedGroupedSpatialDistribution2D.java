@@ -30,7 +30,7 @@ import java.util.Map;
 @Todo("einbinden - persi und spec")
 @Todo("special PVact Variante einbauen -> nurnoch Datei auswählen")
 @Definition
-public class InSelectedGroupedSpatialDistribution2D implements InSpatialDistribution {
+public class InFileSelectedGroupedSpatialDistribution2D implements InSpatialDistribution {
 
     //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -111,10 +111,10 @@ public class InSelectedGroupedSpatialDistribution2D implements InSpatialDistribu
     @FieldDefinition
     public InAttributeName[] groupKey;
 
-    public InSelectedGroupedSpatialDistribution2D() {
+    public InFileSelectedGroupedSpatialDistribution2D() {
     }
 
-    public InSelectedGroupedSpatialDistribution2D(
+    public InFileSelectedGroupedSpatialDistribution2D(
             String name,
             InAttributeName xPositionKey,
             InAttributeName yPositionKey,

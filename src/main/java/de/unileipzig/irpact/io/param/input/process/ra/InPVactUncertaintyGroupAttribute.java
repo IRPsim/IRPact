@@ -1,13 +1,13 @@
-package de.unileipzig.irpact.io.param.input.process;
+package de.unileipzig.irpact.io.param.input.process.ra;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
@@ -22,7 +22,7 @@ import java.lang.invoke.MethodHandles;
  * @author Daniel Abitz
  */
 @Definition
-public class InNameBasedUncertaintyGroupAttribute implements InUncertaintyGroupAttribute {
+public class InPVactUncertaintyGroupAttribute implements InUncertaintyGroupAttribute {
 
     //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -70,12 +70,15 @@ public class InNameBasedUncertaintyGroupAttribute implements InUncertaintyGroupA
     public InConsumerAgentGroup[] cags;
 
     @FieldDefinition
-    public InAttributeName[] names;
+    public InUnivariateDoubleDistribution[] noveltySeekingUncert;
 
     @FieldDefinition
-    public InUnivariateDoubleDistribution[] uncertDist;
+    public InUnivariateDoubleDistribution[] dependentJudgmentMakingUncert;
 
-    public InNameBasedUncertaintyGroupAttribute() {
+    @FieldDefinition
+    public InUnivariateDoubleDistribution[] environmentalConcernUncert;
+
+    public InPVactUncertaintyGroupAttribute() {
     }
 
     public void setName(String name) {
@@ -96,25 +99,36 @@ public class InNameBasedUncertaintyGroupAttribute implements InUncertaintyGroupA
     public void setup(InputParser parser, Object input) throws ParsingException {
         RAProcessModel processModel = (RAProcessModel) input;
 
-        UnivariateDoubleDistribution uncert = parser.parseEntityTo(getUncertaintyDistribution());
+        UnivariateDoubleDistribution novelDist = parser.parseEntityTo(getNoveltySeekingUncertainty());
+        UnivariateDoubleDistribution depJudgDist = parser.parseEntityTo(getDependentJudgmentMakingUncertainty());
+        UnivariateDoubleDistribution envConDist = parser.parseEntityTo(getEnvironmentalConcernUncertainty());
 
         for(InConsumerAgentGroup inCag: getGroups()) {
             ConsumerAgentGroup cag = parser.parseEntityTo(inCag);
-            for(InAttributeName attrName: getNames()) {
-                processModel.getUncertaintySupplier().add(
-                        cag,
-                        attrName.getName(),
-                        uncert
-                );
-                LOGGER.debug(
-                        IRPSection.INITIALIZATION_PARAMETER,
-                        "add UncertaintySupplier for group '{}', attribute '{}', uncertainity '{}'",
-                        cag.getName(),
-                        attrName.getName(),
-                        uncert.getName()
-                );
-            }
+            add(processModel, cag, RAConstants.NOVELTY_SEEKING, novelDist);
+            add(processModel, cag, RAConstants.DEPENDENT_JUDGMENT_MAKING, depJudgDist);
+            add(processModel, cag, RAConstants.ENVIRONMENTAL_CONCERN, envConDist);
         }
+    }
+
+    protected void add(
+            RAProcessModel processModel,
+            ConsumerAgentGroup cag,
+            String attrName,
+            UnivariateDoubleDistribution dist) throws ParsingException {
+
+        processModel.getUncertaintySupplier().add(
+                cag,
+                attrName,
+                dist
+        );
+        LOGGER.debug(
+                IRPSection.INITIALIZATION_PARAMETER,
+                "add UncertaintySupplier for group '{}', attribute '{}', uncertainity '{}'",
+                cag.getName(),
+                attrName,
+                dist.getName()
+        );
     }
 
     public InConsumerAgentGroup[] getGroups() {
@@ -125,19 +139,27 @@ public class InNameBasedUncertaintyGroupAttribute implements InUncertaintyGroupA
         this.cags = cags;
     }
 
-    public InAttributeName[] getNames() {
-        return names;
+    public InUnivariateDoubleDistribution getNoveltySeekingUncertainty() throws ParsingException {
+        return ParamUtil.getInstance(noveltySeekingUncert, "noveltySeekingUncert");
     }
 
-    public void setNames(InAttributeName[] names) {
-        this.names = names;
+    public void setNoveltySeekingUncertainty(InUnivariateDoubleDistribution dist) {
+        this.noveltySeekingUncert = new InUnivariateDoubleDistribution[]{dist};
     }
 
-    public void setUncertaintyDistribution(InUnivariateDoubleDistribution uncertDist) {
-        this.uncertDist = new InUnivariateDoubleDistribution[]{uncertDist};
+    public InUnivariateDoubleDistribution getDependentJudgmentMakingUncertainty() throws ParsingException {
+        return ParamUtil.getInstance(dependentJudgmentMakingUncert, "dependentJudgmentMakingUncert");
     }
 
-    public InUnivariateDoubleDistribution getUncertaintyDistribution() throws ParsingException {
-        return ParamUtil.getInstance(uncertDist, "UncertaintyDistribution");
+    public void setDependentJudgmentMakingUncertainty(InUnivariateDoubleDistribution dist) {
+        this.dependentJudgmentMakingUncert = new InUnivariateDoubleDistribution[]{dist};
+    }
+
+    public InUnivariateDoubleDistribution getEnvironmentalConcernUncertainty() throws ParsingException {
+        return ParamUtil.getInstance(environmentalConcernUncert, "environmentalConcernUncert");
+    }
+
+    public void setEnvironmentalConcernUncertainty(InUnivariateDoubleDistribution dist) {
+        this.environmentalConcernUncert = new InUnivariateDoubleDistribution[]{dist};
     }
 }

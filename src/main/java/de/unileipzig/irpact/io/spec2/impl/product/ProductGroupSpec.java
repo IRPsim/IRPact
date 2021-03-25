@@ -5,10 +5,12 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.io.param.input.product.InProductGroup;
 import de.unileipzig.irpact.io.spec2.BidirectionalConverter2;
 import de.unileipzig.irpact.io.spec2.SpecificationJob2;
+import de.unileipzig.irpact.util.Todo;
 
 /**
  * @author Daniel Abitz
  */
+@Todo
 public class ProductGroupSpec implements BidirectionalConverter2<InProductGroup> {
 
     public static final ProductGroupSpec INSTANCE = new ProductGroupSpec();

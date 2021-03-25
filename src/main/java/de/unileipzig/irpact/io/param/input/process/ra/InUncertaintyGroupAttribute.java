@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.io.param.input.process;
+package de.unileipzig.irpact.io.param.input.process.ra;
 
 import de.unileipzig.irpact.io.param.input.InEntity;
 import de.unileipzig.irptools.defstructure.annotation.Definition;

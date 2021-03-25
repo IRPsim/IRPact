@@ -5,7 +5,7 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
-import de.unileipzig.irpact.io.param.input.process.InNameBasedUncertaintyGroupAttribute;
+import de.unileipzig.irpact.io.param.input.process.ra.InNameBasedUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.spec2.SpecificationHelper2;
 import de.unileipzig.irpact.io.spec2.SpecificationJob2;
 import de.unileipzig.irpact.io.spec2.impl.AbstractSubSpec;

@@ -7,6 +7,7 @@ import de.unileipzig.irpact.io.param.input.InExample;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.start.IRPact;
+import de.unileipzig.irpact.start.IRPactCallback;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.start.optact.OptActMain;
 import de.unileipzig.irptools.io.annual.AnnualData;
@@ -19,10 +20,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.function.BiConsumer;
 
 /**
  * @author Daniel Abitz
@@ -84,7 +83,10 @@ public class Asd {
     void runItFirst() {
         Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
 
-        BiConsumer<AnnualEntry<InRoot>, AnnualData<OutRoot>> consumer = (i, o) -> {
+        IRPactCallback callback = access -> {
+            AnnualEntry<InRoot> i = access.getInput();
+            AnnualData<OutRoot> o = access.getOutput();
+
             System.out.println("out len: " + o.getData().getHiddenBinaryDataLength());
 
             i.getData().binaryPersistData = o.getData().binaryPersistData;
@@ -93,13 +95,9 @@ public class Asd {
             nextRoot.getConfig().copyFrom(i.getConfig());
             nextRoot.getConfig().setYear(nextRoot.getConfig().getYear() + 1);
 
-            AnnualFile nextFile = nextRoot.serialize(IRPact.getInputConverter());
+            AnnualFile nextFile = nextRoot.serialize(IRPact.getInputConverter(access.getCommandLineOptions()));
             Path nextPath = dir.resolve("scenarios").resolve("default." + nextRoot.getConfig().getYear() + ".json");
-            try {
-                nextFile.store(nextPath);
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
+            nextFile.store(nextPath);
         };
 
         String[] args = {
@@ -107,8 +105,7 @@ public class Asd {
                 "-o", dir.resolve("scenarios").resolve("default.out.2015.json").toString(),
                 "--dataDir", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data").toString()
         };
-        IRPact.resultConsumer = consumer;
-        Start.main(args);
+        Start.start(args, callback);
     }
 
     @Test
@@ -116,7 +113,10 @@ public class Asd {
         int startYear = 2017;
         Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
 
-        BiConsumer<AnnualEntry<InRoot>, AnnualData<OutRoot>> consumer = (i, o) -> {
+        IRPactCallback callback = access -> {
+            AnnualEntry<InRoot> i = access.getInput();
+            AnnualData<OutRoot> o = access.getOutput();
+
             System.out.println("out len: " + o.getData().getHiddenBinaryDataLength());
 
             i.getData().binaryPersistData = o.getData().binaryPersistData;
@@ -125,13 +125,9 @@ public class Asd {
             nextRoot.getConfig().copyFrom(i.getConfig());
             nextRoot.getConfig().setYear(nextRoot.getConfig().getYear() + 1);
 
-            AnnualFile nextFile = nextRoot.serialize(IRPact.getInputConverter());
+            AnnualFile nextFile = nextRoot.serialize(IRPact.getInputConverter(access.getCommandLineOptions()));
             Path nextPath = dir.resolve("scenarios").resolve("default." + nextRoot.getConfig().getYear() + ".json");
-            try {
-                nextFile.store(nextPath);
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
+            nextFile.store(nextPath);
         };
 
         String[] args = {
@@ -139,8 +135,7 @@ public class Asd {
                 "-o", dir.resolve("scenarios").resolve("default.out." + startYear + ".json").toString(),
                 "--dataDir", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data").toString()
         };
-        IRPact.resultConsumer = consumer;
-        Start.main(args);
+        Start.start(args, callback);
     }
 
     @Test

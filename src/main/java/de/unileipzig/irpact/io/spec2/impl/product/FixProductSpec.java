@@ -2,10 +2,7 @@ package de.unileipzig.irpact.io.spec2.impl.product;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.io.param.input.product.InFixProduct;
-import de.unileipzig.irpact.io.param.input.product.InFixProductAttribute;
-import de.unileipzig.irpact.io.param.input.product.InProductGroup;
-import de.unileipzig.irpact.io.param.input.product.InProductGroupAttribute;
+import de.unileipzig.irpact.io.param.input.product.*;
 import de.unileipzig.irpact.io.spec2.SpecificationHelper2;
 import de.unileipzig.irpact.io.spec2.SpecificationJob2;
 import de.unileipzig.irpact.io.spec2.impl.AbstractSubSpec;

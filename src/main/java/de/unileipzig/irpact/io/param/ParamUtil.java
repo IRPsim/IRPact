@@ -84,6 +84,26 @@ public final class ParamUtil {
         };
     }
 
+    public static String printClass(Object input) {
+        if(input == null) {
+            return "null";
+        }
+        else if(input instanceof Class<?>) {
+            return ((Class<?>) input).getName();
+        }
+        else {
+            return input.getClass().getName();
+        }
+    }
+
+    public static <T> T castTo(Object input, Class<T> c) throws ParsingException {
+        if(c.isInstance(input)) {
+            return c.cast(input);
+        } else {
+            throw new ParsingException("type mismatch: " + printClass(input) + " != " + printClass(c));
+        }
+    }
+
     public static String onMissing(String name) {
         return "missing entry: '" + name + "'";
     }
@@ -94,6 +114,13 @@ public final class ParamUtil {
 
     public static String onTooMany(String name, Object[] arr) {
         return onTooMany(name, len(arr));
+    }
+
+    public static <T> T[] getNonNullArray(T[] arr, String name) throws ParsingException {
+        if(arr == null) {
+            throw new ParsingException(onMissing(name));
+        }
+        return arr;
     }
 
     public static <T> T[] getNonEmptyArray(T[] arr, String name) throws ParsingException {

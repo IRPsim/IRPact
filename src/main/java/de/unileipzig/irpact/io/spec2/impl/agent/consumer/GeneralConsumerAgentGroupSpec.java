@@ -67,7 +67,6 @@ public class GeneralConsumerAgentGroupSpec extends AbstractSubSpec<InGeneralCons
         InGeneralConsumerAgentGroup grp = new InGeneralConsumerAgentGroup();
         grp.setName(rootSpec.getText(TAG_name));
 
-        grp.setNumberOfAgents(rootSpec.getInt(TAG_parameters, TAG_numberOfAgents));
         grp.setInformationAuthority(rootSpec.getDouble(TAG_parameters, TAG_informationAuthority));
 
         grp.setInterest(job.parseInlinedProductInterestSupplyScheme(rootSpec.getNode(TAG_interest)));
@@ -105,7 +104,6 @@ public class GeneralConsumerAgentGroupSpec extends AbstractSubSpec<InGeneralCons
         rootSpec.set(TAG_name, input.getName());
         rootSpec.set(TAG_type, TYPE);
 
-        rootSpec.set(TAG_parameters, TAG_numberOfAgents, input.getNumberOfAgents());
         rootSpec.set(TAG_parameters, TAG_informationAuthority, input.getInformationAuthority());
 
         rootSpec.set(TAG_interest, job.inlineEntity(input.getInterest(), false));

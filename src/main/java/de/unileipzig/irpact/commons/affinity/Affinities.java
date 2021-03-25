@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public interface Affinities<T> extends IsEquals {
 
-    Affinities<T> without(T target);
+    Affinities<T> createWithout(T target);
 
     Set<T> targets();
 

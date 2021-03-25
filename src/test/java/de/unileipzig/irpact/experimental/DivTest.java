@@ -238,7 +238,7 @@ class DivTest {
     @Test
     void resTest() throws Exception {
         IRPLogging.initConsole();
-        IRPact irpact = new IRPact(null, new BasicResourceLoader());
+        IRPact irpact = new IRPact(null, Collections.emptyList(), new BasicResourceLoader());
         irpact.start((ObjectNode) null);
     }
 

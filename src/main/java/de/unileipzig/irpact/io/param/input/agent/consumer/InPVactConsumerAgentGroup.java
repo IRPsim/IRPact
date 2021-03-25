@@ -12,8 +12,6 @@ import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
-import de.unileipzig.irpact.util.AddToRoot;
-import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -27,8 +25,6 @@ import static de.unileipzig.irpact.core.process.ra.RAConstants.*;
 /**
  * @author Daniel Abitz
  */
-@Todo("einbauen + schauen, ob alles da ist")
-@AddToRoot
 @Definition
 public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
@@ -125,13 +121,6 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
     @FieldDefinition
     public double informationAuthority;
 
-    public static void initRes11(TreeAnnotationResource res) {
-    }
-    public static void applyRes12(TreeAnnotationResource res) {
-    }
-    @FieldDefinition
-    public int numberOfPVactConsumerAgents;
-
     public InPVactConsumerAgentGroup() {
     }
 
@@ -150,15 +139,6 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
     public void setInformationAuthority(double informationAuthority) {
         this.informationAuthority = informationAuthority;
-    }
-
-    @Override
-    public int getNumberOfAgents() {
-        return numberOfPVactConsumerAgents;
-    }
-
-    public void setNumberOfAgents(int numberOfAgents) {
-        this.numberOfPVactConsumerAgents = numberOfAgents;
     }
 
     public InUnivariateDoubleDistribution getNoveltySeeking() throws ParsingException {

@@ -7,8 +7,6 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -19,25 +17,19 @@ public class BasicConsumerAgentGroupAttributeSupplier extends NameableBase imple
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicConsumerAgentGroupAttributeSupplier.class);
 
     protected String attributeName;
-    protected Map<ConsumerAgentGroup, UnivariateDoubleDistribution> distMapping;
-    protected UnivariateDoubleDistribution defaultDist; //wird genutzt
+    protected UnivariateDoubleDistribution defaultDist;
 
     public BasicConsumerAgentGroupAttributeSupplier() {
         this(null);
     }
 
     public BasicConsumerAgentGroupAttributeSupplier(String attributeName) {
-        this(attributeName, new LinkedHashMap<>());
+        this(attributeName, null);
     }
 
     public BasicConsumerAgentGroupAttributeSupplier(String attributeName, UnivariateDoubleDistribution defaultDist) {
-        this(attributeName, new LinkedHashMap<>());
-        setDefaultDisttribution(defaultDist);
-    }
-
-    public BasicConsumerAgentGroupAttributeSupplier(String attributeName, Map<ConsumerAgentGroup, UnivariateDoubleDistribution> distMapping) {
         this.attributeName = attributeName;
-        this.distMapping = distMapping;
+        setDefaultDisttribution(defaultDist);
     }
 
     public void setAttributeName(String attributeName) {
@@ -46,14 +38,6 @@ public class BasicConsumerAgentGroupAttributeSupplier extends NameableBase imple
 
     public String getAttributeName() {
         return attributeName;
-    }
-
-    public Map<ConsumerAgentGroup, UnivariateDoubleDistribution> getMapping() {
-        return distMapping;
-    }
-
-    public void put(ConsumerAgentGroup cag, UnivariateDoubleDistribution dist) {
-        distMapping.put(cag, dist);
     }
 
     public boolean hasDefaultDisttribution() {
@@ -68,15 +52,6 @@ public class BasicConsumerAgentGroupAttributeSupplier extends NameableBase imple
         return defaultDist;
     }
 
-    public void putAll(BasicConsumerAgentGroupAttributeSupplier other) {
-        for(Map.Entry<ConsumerAgentGroup, UnivariateDoubleDistribution> entry: other.distMapping.entrySet()) {
-            if(distMapping.containsKey(entry.getKey())) {
-                throw new IllegalArgumentException("cag '" + entry.getKey().getName() + "' already exists");
-            }
-            distMapping.put(entry.getKey(), entry.getValue());
-        }
-    }
-
     @Override
     public boolean hasGroupAttribute(ConsumerAgentGroup cag) {
         return cag.hasGroupAttribute(attributeName);
@@ -88,19 +63,16 @@ public class BasicConsumerAgentGroupAttributeSupplier extends NameableBase imple
             throw new IllegalArgumentException("agent group '" + cag.getName() + "' already has '" + attributeName + "'");
         }
 
-        UnivariateDoubleDistribution dist = defaultDist == null
-                ? distMapping.get(cag)
-                : defaultDist;
-        if(dist == null) {
+        if(defaultDist == null) {
             throw new NullPointerException("no distribution for consumer group '" + cag.getName() + "'");
         }
 
         BasicConsumerAgentGroupAttribute grpAttr = new BasicConsumerAgentGroupAttribute();
         grpAttr.setName(attributeName);
-        grpAttr.setDistribution(dist);
+        grpAttr.setDistribution(defaultDist);
         cag.addGroupAttribute(grpAttr);
 
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added '{}={}' to group '{}'", attributeName, dist.getName(), cag.getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added '{}={}' to group '{}'", attributeName, defaultDist.getName(), cag.getName());
     }
 
     @Override
@@ -108,8 +80,7 @@ public class BasicConsumerAgentGroupAttributeSupplier extends NameableBase imple
         return Objects.hash(
                 getName(),
                 attributeName,
-                IsEquals.getHashCode(defaultDist),
-                IsEquals.getMapHashCode(distMapping)
+                IsEquals.getHashCode(defaultDist)
         );
     }
 }

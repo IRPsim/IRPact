@@ -39,7 +39,7 @@ import java.util.List;
             jCag.setSpatialDistribution(dist);
  */
 @Definition
-public class InCustomSpatialDistribution2D implements InSpatialDistribution {
+public class InCustomFileSpatialDistribution2D implements InSpatialDistribution {
 
     //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -52,7 +52,7 @@ public class InCustomSpatialDistribution2D implements InSpatialDistribution {
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.putPath(
-                InCustomSpatialDistribution2D.class,
+                InCustomFileSpatialDistribution2D.class,
                 res.getCachedElement("Räumliche Modell"),
                 res.getCachedElement("SpatialDist"),
                 res.getCachedElement("CustomPos"),
@@ -61,7 +61,7 @@ public class InCustomSpatialDistribution2D implements InSpatialDistribution {
         TreeResourceApplier.callAllSubApplyResSilently(thisClass(), res);
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InCustomSpatialDistribution2D.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(InCustomFileSpatialDistribution2D.class);
 
     public String _name;
 
@@ -71,7 +71,7 @@ public class InCustomSpatialDistribution2D implements InSpatialDistribution {
         res.newEntryBuilder()
                 .setGamsIdentifier("X-Position")
                 .setGamsDescription("X-Position")
-                .store(InCustomSpatialDistribution2D.class, "xPosSupplier");
+                .store(InCustomFileSpatialDistribution2D.class, "xPosSupplier");
     }
     @FieldDefinition
     public InUnivariateDoubleDistribution[] xPosSupplier;
@@ -82,7 +82,7 @@ public class InCustomSpatialDistribution2D implements InSpatialDistribution {
         res.newEntryBuilder()
                 .setGamsIdentifier("Y-Position")
                 .setGamsDescription("Y-Position")
-                .store(InCustomSpatialDistribution2D.class, "yPosSupplier");
+                .store(InCustomFileSpatialDistribution2D.class, "yPosSupplier");
     }
     @FieldDefinition
     public InUnivariateDoubleDistribution[] yPosSupplier;
@@ -93,15 +93,15 @@ public class InCustomSpatialDistribution2D implements InSpatialDistribution {
         res.newEntryBuilder()
                 .setGamsIdentifier("Tabellendaten")
                 .setGamsDescription("Zu nutzende Tabelle für weitere Informationen")
-                .store(InCustomSpatialDistribution2D.class, "attrFile");
+                .store(InCustomFileSpatialDistribution2D.class, "attrFile");
     }
     @FieldDefinition
     public InSpatialTableFile[] attrFile;
 
-    public InCustomSpatialDistribution2D() {
+    public InCustomFileSpatialDistribution2D() {
     }
 
-    public InCustomSpatialDistribution2D(
+    public InCustomFileSpatialDistribution2D(
             String name,
             InUnivariateDoubleDistribution xPosSupplier,
             InUnivariateDoubleDistribution yPosSupplier,

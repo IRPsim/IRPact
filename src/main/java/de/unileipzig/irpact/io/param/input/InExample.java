@@ -16,10 +16,11 @@ import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.process.*;
+import de.unileipzig.irpact.io.param.input.process.ra.*;
 import de.unileipzig.irpact.io.param.input.product.*;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomSelectedGroupedSpatialDistribution2D;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSelectedGroupedSpatialDistribution2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
@@ -95,7 +96,7 @@ public class InExample implements DefaultScenarioFactory {
         InGeneralConsumerAgentGroup cag0 = new InGeneralConsumerAgentGroup();
         cag0.setName(name);
         cag0.setInformationAuthority(1);
-        cag0.setNumberOfAgents(1);
+        //cag0.setNumberOfAgents(1);
         InUnivariateDoubleDistribution dist = constant0;
         List<InConsumerAgentGroupAttribute> list = new ArrayList<>();
         createAttribute(cag0, A1, dist, list);
@@ -171,27 +172,26 @@ public class InExample implements DefaultScenarioFactory {
                 3, 2, 1, 0,
                 1.0,
                 pvFile,
-                new InSlopeSupplier[0],
-                new InOrientationSupplier[0],
                 new InUncertaintyGroupAttribute[]{uncert}
         );
 
         //Product
-        InProductGroupAttribute pv_e1 = new InProductGroupAttribute(
-                "PV_E1",
-                E1,
-                constant09
-        );
-        InProductGroup pv = new InProductGroup("PV", new InProductGroupAttribute[]{pv_e1});
+//        InProductGroupAttribute pv_e1 = new InProductGroupAttribute(
+//                "PV_E1",
+//                E1,
+//                constant09
+//        );
+//        InBasicProductGroup pv = new InBasicProductGroup("PV", new InProductGroupAttribute[]{pv_e1});
+        InBasicProductGroup pv = new InBasicProductGroup("PV", new InProductGroupAttribute[]{});
 
-        InFixProductAttribute fix_pv_e1 = new InFixProductAttribute("PV_E1_fix", pv_e1, 1.0);
+        InFixProductAttribute fix_pv_e1 = new InFixProductAttribute("PV_E1_fix", null, 1.0);
         InFixProduct fix_pv = new InFixProduct("PV_fix", pv, new InFixProductAttribute[]{fix_pv_e1});
         InFixProductFindingScheme fixScheme = new InFixProductFindingScheme("PV_fix_scheme", fix_pv);
         cag0.productFindingSchemes = new InProductFindingScheme[]{fixScheme};
         cag1.productFindingSchemes = new InProductFindingScheme[]{fixScheme};
 
         InSpatialTableFile tableFile = new InSpatialTableFile("210225_Datensatz");
-        InCustomSelectedGroupedSpatialDistribution2D spaDist = new InCustomSelectedGroupedSpatialDistribution2D(
+        InCustomFileSelectedGroupedSpatialDistribution2D spaDist = new InCustomFileSelectedGroupedSpatialDistribution2D(
                 "testdist",
                 constant0,
                 constant0,
@@ -254,7 +254,7 @@ public class InExample implements DefaultScenarioFactory {
         root.consumerAgentGroups = new InConsumerAgentGroup[]{cag0, cag1};
         root.graphTopologySchemes = new InGraphTopologyScheme[]{topology};
         root.processModels = new InProcessModel[]{processModel};
-        root.productGroups = new InProductGroup[]{pv};
+        root.productGroups = new InBasicProductGroup[]{pv};
         root.spatialModel = new InSpatialModel[]{space2D};
         root.timeModel = new InTimeModel[]{timeModel};
 

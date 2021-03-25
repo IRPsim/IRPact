@@ -26,7 +26,7 @@ public class BasicAffinities<T> implements Affinities<T> {
     }
 
     @Override
-    public Affinities<T> without(T target) {
+    public Affinities<T> createWithout(T target) {
         BasicAffinities<T> copy = newInstance();
         copy.values.putAll(values);
         copy.values.remove(target);

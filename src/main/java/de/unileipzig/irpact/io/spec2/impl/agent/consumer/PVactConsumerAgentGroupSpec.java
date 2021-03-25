@@ -61,7 +61,6 @@ public class PVactConsumerAgentGroupSpec extends AbstractSubSpec<InPVactConsumer
 
         InPVactConsumerAgentGroup grp = new InPVactConsumerAgentGroup();
 
-        grp.setNumberOfAgents(rootSpec.getInt(TAG_parameters, TAG_numberOfAgents));
         grp.setInformationAuthority(rootSpec.getDouble(TAG_parameters, TAG_informationAuthority));
 
         grp.setNoveltySeeking(job.parseInlinedDistribution(rootSpec.getNode(TAG_parameters, TAG_NOVELTY_SEEKING)));
@@ -96,7 +95,6 @@ public class PVactConsumerAgentGroupSpec extends AbstractSubSpec<InPVactConsumer
         rootSpec.set(TAG_name, input.getName());
         rootSpec.set(TAG_type, TYPE);
 
-        rootSpec.set(TAG_parameters, TAG_numberOfAgents, input.getNumberOfAgents());
         rootSpec.set(TAG_parameters, TAG_informationAuthority, input.getInformationAuthority());
 
         rootSpec.set(TAG_parameters, TAG_NOVELTY_SEEKING, job.inlineEntity(input.getNoveltySeeking(), false));

@@ -67,7 +67,6 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     protected ProductFindingScheme productFindingScheme;
     protected ProcessFindingScheme processFindingScheme;
     protected Set<AttributeAccess> externAttributes = new LinkedHashSet<>();
-    protected Map<ConsumerAgentGroup, Integer> cagLinkCount = new LinkedHashMap<>();
 
     protected final Lock LOCK = new ReentrantLock();
     protected final Condition PRE_CON = LOCK.newCondition();
@@ -173,7 +172,6 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         addAllNeeds(proxyAgent.getNeeds()); //!
         plans.putAll(proxyAgent.getPlans()); //!
         externAttributes.addAll(proxyAgent.getExternAttributes());
-        cagLinkCount.putAll(proxyAgent.getLinkCounter());
 
         proxyAgent.sync(getRealAgent());
     }
@@ -291,11 +289,6 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     public SocialGraph.Node getSocialGraphNode() {
         return node;
-    }
-
-    @Override
-    public Map<ConsumerAgentGroup, Integer> getLinkCounter() {
-        return cagLinkCount;
     }
 
     @Override

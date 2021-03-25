@@ -10,7 +10,6 @@ import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
-import de.unileipzig.irpact.util.AddToRoot;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -21,9 +20,8 @@ import java.lang.invoke.MethodHandles;
 /**
  * @author Daniel Abitz
  */
-@AddToRoot
 @Definition
-public class InComplexProductGroupAttribute implements I_InProductGroupAttribute {
+public class InComplexProductGroupAttribute implements InProductGroupAttribute {
 
     //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -76,6 +74,7 @@ public class InComplexProductGroupAttribute implements I_InProductGroupAttribute
         return ParamUtil.getInstance(attrName, "AttributeName");
     }
 
+    @Override
     public String getAttributeName() throws ParsingException {
         return getAttributeNameInstance().getName();
     }
@@ -84,14 +83,25 @@ public class InComplexProductGroupAttribute implements I_InProductGroupAttribute
         this.pg = new InProductGroup[]{pg};
     }
 
+    @Override
+    public InProductGroup getProductGroup(InputParser parser) throws ParsingException {
+        return getProductGroup();
+    }
+
     public InProductGroup getProductGroup() throws ParsingException {
         return ParamUtil.getInstance(pg, "ProductGroup");
+    }
+
+    @Override
+    public String getProductGroupName() throws ParsingException {
+        return getProductGroup().getName();
     }
 
     public void setDistribution(InUnivariateDoubleDistribution dist) {
         this.dist = new InUnivariateDoubleDistribution[]{dist};
     }
 
+    @Override
     public InUnivariateDoubleDistribution getDistribution() throws ParsingException {
         return ParamUtil.getInstance(dist, "UnivariateDoubleDistribution");
     }

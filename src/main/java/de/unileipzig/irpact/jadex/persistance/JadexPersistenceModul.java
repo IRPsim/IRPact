@@ -14,7 +14,7 @@ import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
-import de.unileipzig.irpact.start.Start;
+import de.unileipzig.irpact.start.CommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
     protected Modus modus = Modus.getDefault();
 
     protected SimulationEnvironment environment;
-    protected Start param;
+    protected CommandLineOptions clOptions;
 
     public JadexPersistenceModul() {
     }

@@ -1,14 +1,13 @@
 package de.unileipzig.irpact.core.spatial;
 
-import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.util.DataType;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialDoubleAttribute;
-import de.unileipzig.irpact.core.spatial.attribute.SpatialStringAttribute;
 import de.unileipzig.irpact.core.spatial.twodim.BasicPoint2D;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -16,16 +15,26 @@ import java.util.stream.Collectors;
  */
 public final class SpatialUtil {
 
+    protected static Predicate<List<SpatialAttribute<?>>> filterAttribute(String attrName, String value) {
+        return row -> {
+            for(SpatialAttribute<?> attr: row) {
+                if(Objects.equals(attr.getName(), attrName)) {
+                    return Objects.equals(attr.getValue(), value);
+                }
+            }
+            return false;
+        };
+    }
+
+    public static int filterAndCount(List<List<SpatialAttribute<?>>> input, String attrName, String value) {
+        return (int) input.stream()
+                .filter(filterAttribute(attrName, value))
+                .count();
+    }
+
     public static List<List<SpatialAttribute<?>>> filter(List<List<SpatialAttribute<?>>> input, String attrName, String value) {
         return input.stream()
-                .filter(row -> {
-                    for(SpatialAttribute<?> attr: row) {
-                        if(Objects.equals(attr.getName(), attrName)) {
-                            return Objects.equals(attr.getValue(), value);
-                        }
-                    }
-                    return false;
-                })
+                .filter(filterAttribute(attrName, value))
                 .collect(Collectors.toList());
     }
 

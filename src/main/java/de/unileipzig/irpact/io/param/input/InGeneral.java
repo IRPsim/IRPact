@@ -218,11 +218,18 @@ public class InGeneral {
     public int logLevel;
 
     //=========================
-    //custom logging
+    //specific logging
     //=========================
 
     @FieldDefinition
     public boolean logAll;
+
+    @FieldDefinition
+    public boolean logInitialization;
+
+    //=========================
+    //custom logging
+    //=========================
 
     @FieldDefinition
     public boolean logAllTools;
@@ -247,6 +254,10 @@ public class InGeneral {
 
     @FieldDefinition
     public boolean logJadexSystemOut;
+
+    //=========================
+    //...
+    //=========================
 
     public InGeneral() {
     }

@@ -2,7 +2,7 @@ package de.unileipzig.irpact.io.spec2.impl.spatial.dist;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InSelectedGroupedSpatialDistribution2D;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InFileSelectedGroupedSpatialDistribution2D;
 import de.unileipzig.irpact.io.spec2.SpecificationHelper2;
 import de.unileipzig.irpact.io.spec2.SpecificationJob2;
 import de.unileipzig.irpact.io.spec2.impl.AbstractSubSpec;
@@ -15,7 +15,7 @@ import static de.unileipzig.irpact.io.spec.SpecificationConstants.*;
 /**
  * @author Daniel Abitz
  */
-public class SelectedGroupedSpatialDistribution2DSpec extends AbstractSubSpec<InSelectedGroupedSpatialDistribution2D> {
+public class SelectedGroupedSpatialDistribution2DSpec extends AbstractSubSpec<InFileSelectedGroupedSpatialDistribution2D> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(SelectedGroupedSpatialDistribution2DSpec.class);
 
@@ -34,12 +34,12 @@ public class SelectedGroupedSpatialDistribution2DSpec extends AbstractSubSpec<In
 
     @Override
     public boolean isInstance(Object input) {
-        return input instanceof InSelectedGroupedSpatialDistribution2D;
+        return input instanceof InFileSelectedGroupedSpatialDistribution2D;
     }
 
     @Override
-    protected InSelectedGroupedSpatialDistribution2D[] newArray(int len) {
-        return new InSelectedGroupedSpatialDistribution2D[len];
+    protected InFileSelectedGroupedSpatialDistribution2D[] newArray(int len) {
+        return new InFileSelectedGroupedSpatialDistribution2D[len];
     }
 
     @Override
@@ -48,18 +48,18 @@ public class SelectedGroupedSpatialDistribution2DSpec extends AbstractSubSpec<In
     }
 
     @Override
-    public InSelectedGroupedSpatialDistribution2D[] toParamArray(SpecificationJob2 job) throws ParsingException {
+    public InFileSelectedGroupedSpatialDistribution2D[] toParamArray(SpecificationJob2 job) throws ParsingException {
         return toParamArray(job.getData().getSpatialModel(), job);
     }
 
     @Override
-    public InSelectedGroupedSpatialDistribution2D toParam(SpecificationHelper2 rootSpec, SpecificationJob2 job) throws ParsingException {
+    public InFileSelectedGroupedSpatialDistribution2D toParam(SpecificationHelper2 rootSpec, SpecificationJob2 job) throws ParsingException {
         String name = rootSpec.getText(TAG_name);
         if(job.isCached(name)) {
             return job.getCached(name);
         }
 
-        InSelectedGroupedSpatialDistribution2D dist = new InSelectedGroupedSpatialDistribution2D();
+        InFileSelectedGroupedSpatialDistribution2D dist = new InFileSelectedGroupedSpatialDistribution2D();
         dist.setName(name);
 
         dist.setXPositionKey(job.getAttributeName(TAG_x));
@@ -73,17 +73,17 @@ public class SelectedGroupedSpatialDistribution2DSpec extends AbstractSubSpec<In
     }
 
     @Override
-    public Class<InSelectedGroupedSpatialDistribution2D> getParamType() {
-        return InSelectedGroupedSpatialDistribution2D.class;
+    public Class<InFileSelectedGroupedSpatialDistribution2D> getParamType() {
+        return InFileSelectedGroupedSpatialDistribution2D.class;
     }
 
     @Override
-    public void toSpec(InSelectedGroupedSpatialDistribution2D input, SpecificationJob2 job) throws ParsingException {
+    public void toSpec(InFileSelectedGroupedSpatialDistribution2D input, SpecificationJob2 job) throws ParsingException {
         create(input, job.getData().getConsumerAgentGroups().get(input.getName()), job);
     }
 
     @Override
-    protected void create(InSelectedGroupedSpatialDistribution2D input, SpecificationHelper2 rootSpec, SpecificationJob2 job) throws ParsingException {
+    protected void create(InFileSelectedGroupedSpatialDistribution2D input, SpecificationHelper2 rootSpec, SpecificationJob2 job) throws ParsingException {
         rootSpec.set(TAG_name, input.getName());
         rootSpec.set(TAG_type, TYPE);
 

@@ -2,7 +2,7 @@ package de.unileipzig.irpact.io.spec2.impl.process;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.io.param.input.process.InUncertaintyGroupAttribute;
+import de.unileipzig.irpact.io.param.input.process.ra.InUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.spec2.SpecificationJob2;
 import de.unileipzig.irpact.io.spec2.impl.AbstractSubSpec;
 import de.unileipzig.irpact.io.spec2.impl.AbstractSuperSpec;

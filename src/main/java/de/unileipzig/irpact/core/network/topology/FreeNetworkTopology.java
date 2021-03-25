@@ -11,7 +11,6 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
-import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
@@ -19,7 +18,6 @@ import java.util.*;
 /**
  * @author Daniel Abitz
  */
-@Todo("erstelle ein vollstaendiges agentenmapping")
 public class FreeNetworkTopology extends NameableBase implements GraphTopologyScheme {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(FreeNetworkTopology.class);
@@ -103,12 +101,13 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
     public void initalize(SimulationEnvironment environment, SocialGraph graph) {
         LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "initialize free network graph");
         for(SocialGraph.Node node: graph.getNodes()) {
+            SocialGraph.LinkageInformation li = graph.getLinkageInformation(node);
             ConsumerAgent ca = node.getAgent(ConsumerAgent.class);
             Set<ConsumerAgent> agents = drawTargets(environment, ca);
             for(ConsumerAgent targetCa: agents) {
                 LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "add edge: {}->{} ({},{})", ca.getName(), targetCa.getName(), edgeType, initialWeight);
                 graph.addEdge(ca.getSocialGraphNode(), targetCa.getSocialGraphNode(), edgeType, initialWeight);
-                ca.inc(targetCa.getGroup(), 1);
+                li.inc(targetCa.getGroup(), edgeType);
             }
         }
     }

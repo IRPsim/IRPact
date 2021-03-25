@@ -204,7 +204,7 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
             if(restoredCag == null) {
                 throw new RestoreException("restored cag '" + initialCag.getName() + "' not found");
             }
-            int initialCount = initialData.getInitialNumberOfConsumerAgent(initialCag);
+            int initialCount = initialData.getInitialNumberOfConsumerAgents(initialCag);
             restoredData.setInitialNumberOfConsumerAgents(restoredCag, initialCount);
         }
     }

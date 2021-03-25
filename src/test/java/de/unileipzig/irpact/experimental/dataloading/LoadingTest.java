@@ -8,7 +8,7 @@ import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.core.spatial.distribution.WeightedDiscreteSpatialDistribution;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomSelectedGroupedSpatialDistribution2D;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSelectedGroupedSpatialDistribution2D;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -65,7 +65,7 @@ public class LoadingTest {
         System.out.println(attrs.size());
         System.out.println(attrs.get(0));
 
-        WeightedDiscreteSpatialDistribution dist = InCustomSelectedGroupedSpatialDistribution2D.createInstance(
+        WeightedDiscreteSpatialDistribution dist = InCustomFileSelectedGroupedSpatialDistribution2D.createInstance(
                 "TEST",
                 attrs,
                 new ConstantUnivariateDoubleDistribution("x", 0.0),

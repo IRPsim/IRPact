@@ -28,7 +28,7 @@ import java.util.Map;
  * @author Daniel Abitz
  */
 @Definition
-public class InCustomSelectedGroupedSpatialDistribution2D implements InSpatialDistribution {
+public class InCustomFileSelectedGroupedSpatialDistribution2D implements InSpatialDistribution {
 
     //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -92,10 +92,10 @@ public class InCustomSelectedGroupedSpatialDistribution2D implements InSpatialDi
     @FieldDefinition
     public InAttributeName[] groupKey;
 
-    public InCustomSelectedGroupedSpatialDistribution2D() {
+    public InCustomFileSelectedGroupedSpatialDistribution2D() {
     }
 
-    public InCustomSelectedGroupedSpatialDistribution2D(
+    public InCustomFileSelectedGroupedSpatialDistribution2D(
             String name,
             InUnivariateDoubleDistribution xPosSupplier,
             InUnivariateDoubleDistribution yPosSupplier,

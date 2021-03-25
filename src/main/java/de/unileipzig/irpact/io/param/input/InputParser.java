@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 
 /**
@@ -33,6 +34,15 @@ public interface InputParser {
     @SuppressWarnings("unchecked")
     default <R> R parseEntityTo(InEntity input) throws ParsingException {
         return (R) parseEntity(input);
+    }
+
+    default <R> R parseEntitiyTo(InEntity input, Class<R> outClass) throws ParsingException {
+        Object obj = parseEntity(input);
+        if(outClass.isInstance(obj)) {
+            return outClass.cast(obj);
+        } else {
+            throw new ParsingException("class mismatch: " + ParamUtil.printClass(obj) + " != " + ParamUtil.printClass(outClass));
+        }
     }
 
     void dispose();
