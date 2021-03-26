@@ -30,6 +30,11 @@ import java.nio.file.Paths;
 public class Asd {
 
     @Test
+    void printHelp() {
+        Start.main(new String[]{"-?"});
+    }
+
+    @Test
     void runStart() throws Exception {
         Logback.setupSystemOutAndErr();
         Path dir = TestFiles.testfiles.resolve("uitests").resolve("x4");

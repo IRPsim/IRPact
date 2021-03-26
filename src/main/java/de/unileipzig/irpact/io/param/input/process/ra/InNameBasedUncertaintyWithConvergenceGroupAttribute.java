@@ -18,48 +18,33 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_MODEL;
+import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_MODEL_RA_UNCERT;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InNameBasedUncertaintyWithConvergenceGroupAttribute implements InUncertaintyGroupAttribute {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                thisClass(),
-                res.getCachedElement("Prozessmodell"),
-                res.getCachedElement("Relative Agreement"),
-                res.getCachedElement("Uncertainty"),
-                res.getCachedElement("UncertaintyCustom")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Ziel-KGs")
-                .setGamsDescription("-")
-                .store(thisClass(), "cags");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Ziel-Attribute")
-                .setGamsDescription("-")
-                .store(thisClass(), "names");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Unsicherheit")
-                .setGamsDescription("-")
-                .store(thisClass(), "uncertDist");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Konvergenz")
-                .setGamsDescription("-")
-                .store(thisClass(), "convergenceDist");
+        putClassPath(res, thisClass(), PROCESS_MODEL, InRAProcessModel.thisName(), PROCESS_MODEL_RA_UNCERT, thisName());
+        addEntry(res, thisClass(), "uncertDist");
+        addEntry(res, thisClass(), "convergenceDist");
+        addEntry(res, thisClass(), "names");
+        addEntry(res, thisClass(), "cags");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());

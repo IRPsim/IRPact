@@ -20,42 +20,38 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 import java.util.*;
 
+import static de.unileipzig.irpact.io.param.IOConstants.NETWORK;
+import static de.unileipzig.irpact.io.param.IOConstants.TOPOLOGY;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InFreeNetworkTopology implements InGraphTopologyScheme {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                thisClass(),
-                res.getCachedElement("Netzwerk"),
-                res.getCachedElement("Topologie"),
-                res.getCachedElement("Freie Topologie")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Legt den Evaluator für die Abstände zwischen den Agenten fest.")
-                .setGamsDescription("Evaluator für Abstände")
-                .store(thisClass(), "distanceEvaluator");
+        putClassPath(res, thisClass(), NETWORK, TOPOLOGY, thisName());
+        addEntry(res, thisClass(), "initialWeight");
+        addEntry(res, thisClass(), "distanceEvaluator");
+        addEntry(res, thisClass(), "numberOfTies");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("Knotenanzahl je KG")
                 .setGamsDescription("Knotenanzahl")
                 .store(thisClass(), "numberOfTies");
 
-        res.newEntryBuilder()
-                .setGamsIdentifier("Initiale Kantengewicht")
-                .setGamsDescription("Initiale Gewicht der Kanten")
-                .store(thisClass(), "initialWeight");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());

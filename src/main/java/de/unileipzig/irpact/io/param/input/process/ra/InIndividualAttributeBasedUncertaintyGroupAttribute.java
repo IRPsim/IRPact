@@ -18,6 +18,11 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_MODEL;
+import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_MODEL_RA_UNCERT;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
@@ -29,10 +34,16 @@ public class InIndividualAttributeBasedUncertaintyGroupAttribute implements InUn
     public static Class<?> thisClass() {
         return L.lookupClass();
     }
+    public static String thisName() {
+        return thisClass().getSimpleName();
+    }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
+        putClassPath(res, thisClass(), PROCESS_MODEL, InRAProcessModel.thisName(), PROCESS_MODEL_RA_UNCERT, thisName());
+        addEntry(res, thisClass(), "uncertDist");
+        addEntry(res, thisClass(), "cagAttrs");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InIndividualAttributeBasedUncertaintyGroupAttribute.class);
@@ -69,7 +80,7 @@ public class InIndividualAttributeBasedUncertaintyGroupAttribute implements InUn
         UnivariateDoubleDistribution uncert = parser.parseEntityTo(getUncertaintyDistribution());
 
         for(InConsumerAgentGroupAttribute inCagAttr: getAttributes()) {
-            InConsumerAgentGroup inCag = inCagAttr.getConsumerAgentGroup(parser);
+            InConsumerAgentGroup inCag = parser.getRoot().findConsumerAgentGroup(inCagAttr);
             ConsumerAgentGroup cag = parser.parseEntityTo(inCag);
             String attrName = inCagAttr.getAttributeName();
 

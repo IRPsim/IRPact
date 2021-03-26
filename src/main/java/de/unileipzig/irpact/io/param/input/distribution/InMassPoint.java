@@ -4,7 +4,6 @@ import de.unileipzig.irpact.commons.WeightedDouble;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.io.param.input.InEntity;
 import de.unileipzig.irpact.io.param.input.InputParser;
-import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -12,37 +11,30 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
 
+import static de.unileipzig.irpact.io.param.IOConstants.DISTRIBUTIONS;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
-@Todo("ref einfuegen")
 public class InMassPoint implements InEntity {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InMassPoint.class,
-                res.getCachedElement("Verteilungsfunktionen"),
-                res.getCachedElement("FiniteMassPointsDiscreteDistribution"),
-                res.getCachedElement("Massepunkt")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Wert des Punktes")
-                .setGamsDescription("Wert des Punktes")
-                .store(InMassPoint.class, "mpValue");
-        res.newEntryBuilder()
-                .setGamsIdentifier("Wichtun des Punktesg")
-                .setGamsDescription("Wichtung des Punktes")
-                .store(InMassPoint.class, "mpWeight");
+        putClassPath(res, thisClass(), DISTRIBUTIONS, InFiniteMassPointsDiscreteDistribution.thisName(), thisName());
+        addEntry(res, thisClass(), "mpValue");
+        addEntry(res, thisClass(), "mpWeight");
     }
 
     public String _name;

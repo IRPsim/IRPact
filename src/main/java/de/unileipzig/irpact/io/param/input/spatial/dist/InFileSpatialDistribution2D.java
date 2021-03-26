@@ -14,15 +14,17 @@ import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
-import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
-import de.unileipzig.irptools.util.TreeResourceApplier;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 import java.util.List;
+
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 
 /**
  * @author Daniel Abitz
@@ -30,60 +32,33 @@ import java.util.List;
 @Definition
 public class InFileSpatialDistribution2D implements InSpatialDistribution {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
     }
+    public static String thisName() {
+        return thisClass().getSimpleName();
+    }
 
     public static void initRes(TreeAnnotationResource res) {
-        TreeResourceApplier.callAllSubInitResSilently(thisClass(), res);
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InFileSpatialDistribution2D.class,
-                res.getCachedElement("Räumliche Modell"),
-                res.getCachedElement("SpatialDist"),
-                res.getCachedElement("CustomPos"),
-                res.getCachedElement("InCustomSpatialDistribution2D")
-        );
-        TreeResourceApplier.callAllSubApplyResSilently(thisClass(), res);
+        putClassPath(res, thisClass(), SPATIAL, SPATIAL_MODEL_DIST, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST_FILE_FILEPOS, thisName());        addEntry(res, thisClass(), "xPosSupplier");
+        addEntry(res, thisClass(), "attrFile");
+        addEntry(res, thisClass(), "xPositionKey");
+        addEntry(res, thisClass(), "yPositionKey");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
 
-    public static void initRes0(TreeAnnotationResource res) {
-    }
-    public static void applyRes0(TreeAnnotationResource res) {
-        res.newEntryBuilder()
-                .setGamsIdentifier("X-Position")
-                .setGamsDescription("X-Position")
-                .store(thisClass(), "xPosSupplier");
-    }
     @FieldDefinition
     public InAttributeName[] xPositionKey;
 
-    public static void initRes1(TreeAnnotationResource res) {
-    }
-    public static void applyRes1(TreeAnnotationResource res) {
-        res.newEntryBuilder()
-                .setGamsIdentifier("Y-Position")
-                .setGamsDescription("Y-Position")
-                .store(thisClass(), "yPosSupplier");
-    }
     @FieldDefinition
     public InAttributeName[] yPositionKey;
 
-    public static void initRes2(TreeAnnotationResource res) {
-    }
-    public static void applyRes2(TreeAnnotationResource res) {
-        res.newEntryBuilder()
-                .setGamsIdentifier("Tabellendaten")
-                .setGamsDescription("Zu nutzende Tabelle für weitere Informationen")
-                .store(thisClass(), "attrFile");
-    }
     @FieldDefinition
     public InSpatialTableFile[] attrFile;
 

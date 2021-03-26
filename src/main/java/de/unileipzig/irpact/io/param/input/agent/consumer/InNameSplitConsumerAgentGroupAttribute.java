@@ -18,21 +18,29 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
-public class InNameSplitConsumerAgentGroupAttribute implements InConsumerAgentGroupAttribute {
+public class InNameSplitConsumerAgentGroupAttribute implements InIndependentConsumerAgentGroupAttribute {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
+        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_ATTR, thisName());
+        addEntry(res, thisClass(), "dist");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InNameSplitConsumerAgentGroupAttribute.class);
@@ -93,7 +101,7 @@ public class InNameSplitConsumerAgentGroupAttribute implements InConsumerAgentGr
     }
 
     @Override
-    public BasicConsumerAgentGroupAttribute parse(InputParser parser) throws ParsingException {
+    public void setup(InputParser parser, Object input) throws ParsingException {
         InConsumerAgentGroup inCag = getConsumerAgentGroup(parser);
         ConsumerAgentGroup cag = parser.parseEntityTo(inCag);
 
@@ -109,7 +117,5 @@ public class InNameSplitConsumerAgentGroupAttribute implements InConsumerAgentGr
 
         cag.addGroupAttribute(cagAttr);
         LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), getName(), cag.getName());
-
-        return cagAttr;
     }
 }

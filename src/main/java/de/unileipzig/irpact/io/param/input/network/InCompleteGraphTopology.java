@@ -11,32 +11,30 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
 
+import static de.unileipzig.irpact.io.param.IOConstants.NETWORK;
+import static de.unileipzig.irpact.io.param.IOConstants.TOPOLOGY;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InCompleteGraphTopology implements InGraphTopologyScheme {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InCompleteGraphTopology.class,
-                res.getCachedElement("Netzwerk"),
-                res.getCachedElement("Topologie"),
-                res.getCachedElement("Complete Topologie")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Initiale Kantengewicht")
-                .setGamsDescription("Initiale Gewicht der Kanten")
-                .store(InCompleteGraphTopology.class, "initialWeight");
+        putClassPath(res, thisClass(), NETWORK, TOPOLOGY, thisName());
+        addEntry(res, thisClass(), "placeholderUnlinked");
     }
 
     public String _name;

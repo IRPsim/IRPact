@@ -15,21 +15,36 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import static de.unileipzig.irpact.io.param.IOConstants.TIME;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InUnitStepDiscreteTimeModel implements InTimeModel {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
+        putClassPath(res, thisClass(), TIME, thisName());
+        addEntry(res, thisClass(), "amountOfTime");
+        addEntry(res, thisClass(), "useMs");
+        addEntry(res, thisClass(), "useSec");
+        addEntry(res, thisClass(), "useMin");
+        addEntry(res, thisClass(), "useH");
+        addEntry(res, thisClass(), "useD");
+        addEntry(res, thisClass(), "useW");
+        addEntry(res, thisClass(), "useM");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -50,7 +65,7 @@ public class InUnitStepDiscreteTimeModel implements InTimeModel {
     public long amountOfTime;
 
     @FieldDefinition
-    public boolean useMs = true;
+    public boolean useMs;
 
     @FieldDefinition
     public boolean useSec;

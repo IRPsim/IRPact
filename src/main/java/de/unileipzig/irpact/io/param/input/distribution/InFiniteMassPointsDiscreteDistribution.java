@@ -17,32 +17,29 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 import java.util.Collection;
 
+import static de.unileipzig.irpact.io.param.IOConstants.DISTRIBUTIONS;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
-@Todo("ref einfuegen")
 public class InFiniteMassPointsDiscreteDistribution implements InUnivariateDoubleDistribution {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InFiniteMassPointsDiscreteDistribution.class,
-                res.getCachedElement("Verteilungsfunktionen"),
-                res.getCachedElement("FiniteMassPointsDiscreteDistribution")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Massepunkte")
-                .setGamsDescription("Die zu nutzende Massepunkte")
-                .store(InFiniteMassPointsDiscreteDistribution.class, "massPoints");
+        putClassPath(res, thisClass(), DISTRIBUTIONS, thisName());
+        addEntry(res, thisClass(), "lowerBoundInt");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InFiniteMassPointsDiscreteDistribution.class);

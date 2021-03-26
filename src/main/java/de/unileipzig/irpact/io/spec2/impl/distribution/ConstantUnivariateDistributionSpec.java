@@ -10,7 +10,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.Objects;
 
-import static de.unileipzig.irpact.io.spec.SpecificationConstants.*;
+import static de.unileipzig.irpact.io.spec2.SpecificationConstants.*;
 
 /**
  * @author Daniel Abitz

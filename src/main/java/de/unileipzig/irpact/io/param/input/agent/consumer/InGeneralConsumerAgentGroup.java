@@ -16,11 +16,14 @@ import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
-import de.unileipzig.irptools.util.TreeResourceApplier;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 import java.util.Collection;
+
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 
 /**
  * @author Daniel Abitz
@@ -32,104 +35,37 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
     public static Class<?> thisClass() {
         return L.lookupClass();
     }
+    public static String thisName() {
+        return thisClass().getSimpleName();
+    }
 
     public static void initRes(TreeAnnotationResource res) {
-        TreeResourceApplier.callAllSubInitResSilently(thisClass(), res);
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                thisClass(),
-                res.getCachedElement("Agenten"),
-                res.getCachedElement("Konsumer"),
-                res.getCachedElement("Gruppen")
-        );
-        TreeResourceApplier.callAllSubApplyResSilently(thisClass(), res);
+        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_GROUP, thisName());
+        addEntry(res, thisClass(), "cagAttributes");
+        addEntry(res, thisClass(), "cagInterest");
+        addEntry(res, thisClass(), "productFindingSchemes");
+        addEntry(res, thisClass(), "spatialDistribution");
+        addEntry(res, thisClass(), "informationAuthority");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
 
-    public static void initRes0(TreeAnnotationResource res) {
-        res.putPath(
-                thisClass(), "cagAttributes",
-                res.getCachedElement("Agenten"),
-                res.getCachedElement("Konsumer"),
-                res.getCachedElement("Gruppen"),
-                res.getCachedElement("Gruppe-Attribut-Mapping")
-        );
-    }
-    public static void applyRes0(TreeAnnotationResource res) {
-        res.newEntryBuilder()
-                .setGamsIdentifier("Attribute der KG")
-                .setGamsDescription("Attribute")
-                .store(thisClass(), "cagAttributes");
-    }
     @FieldDefinition
-    public InConsumerAgentGroupAttribute[] cagAttributes;
+    public InDependentConsumerAgentGroupAttribute[] cagAttributes;
 
-    public static void initRes1(TreeAnnotationResource res) {
-        res.putPath(
-                thisClass(), "cagInterest",
-                res.getCachedElement("Agenten"),
-                res.getCachedElement("Konsumer"),
-                res.getCachedElement("Gruppen"),
-                res.getCachedElement("Gruppe-Awareness-Mapping")
-        );
-    }
-    public static void applyRes1(TreeAnnotationResource res) {
-        res.newEntryBuilder()
-                .setGamsIdentifier("Interest der KG")
-                .setGamsDescription("genutzter Interest")
-                .store(thisClass(), "cagInterest");
-    }
     @FieldDefinition
     public InProductInterestSupplyScheme[] cagInterest;
 
-    public static void initRes2(TreeAnnotationResource res) {
-        res.putPath(
-                thisClass(), "productFindingSchemes",
-                res.getCachedElement("Agenten"),
-                res.getCachedElement("Konsumer"),
-                res.getCachedElement("Gruppen"),
-                res.getCachedElement("Gruppe-ProductFinding-Mapping")
-        );
-    }
-    public static void applyRes2(TreeAnnotationResource res) {
-        res.newEntryBuilder()
-                .setGamsIdentifier("Schema für die Produktfindung")
-                .setGamsDescription("Legt das Schema für das finden von passenden Produkten fest")
-                .store(thisClass(), "productFindingSchemes");
-    }
     @FieldDefinition
     public InProductFindingScheme[] productFindingSchemes;
 
-    public static void initRes3(TreeAnnotationResource res) {
-        res.putPath(
-                thisClass(), "spatialDistribution",
-                res.getCachedElement("Agenten"),
-                res.getCachedElement("Konsumer"),
-                res.getCachedElement("Gruppen"),
-                res.getCachedElement("Gruppe-Spatial-Mapping")
-        );
-    }
-    public static void applyRes3(TreeAnnotationResource res) {
-        res.newEntryBuilder()
-                .setGamsIdentifier("Räumliche Verteilungsfunktion")
-                .setGamsDescription("Legt die Verteilungsfunktion für diese Gruppe fest")
-                .store(thisClass(), "spatialDistribution");
-    }
     @FieldDefinition
     public InSpatialDistribution[] spatialDistribution;
 
-    public static void initRes4(TreeAnnotationResource res) {
-    }
-    public static void applyRes4(TreeAnnotationResource res) {
-        res.newEntryBuilder()
-                .setGamsIdentifier("[ungenutzt] informationAuthority")
-                .setGamsDescription("informationAuthority")
-                .store(thisClass(), "informationAuthority");
-    }
     @FieldDefinition
     public double informationAuthority;
 
@@ -153,12 +89,21 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
         this.informationAuthority = informationAuthority;
     }
 
-    public InConsumerAgentGroupAttribute[] getAttributes() {
-        return cagAttributes;
+    public InDependentConsumerAgentGroupAttribute[] getAttributes() throws ParsingException {
+        return ParamUtil.getNonNullArray(cagAttributes, "cagAttributes");
     }
 
-    public void setAttributes(Collection<? extends InConsumerAgentGroupAttribute> attrs) {
-        this.cagAttributes = attrs.toArray(new InConsumerAgentGroupAttribute[0]);
+    public void setAttributes(Collection<? extends InDependentConsumerAgentGroupAttribute> attrs) {
+        this.cagAttributes = attrs.toArray(new InDependentConsumerAgentGroupAttribute[0]);
+    }
+
+    public boolean hasAttribute(InDependentConsumerAgentGroupAttribute attr) throws ParsingException {
+        for(InDependentConsumerAgentGroupAttribute a: getAttributes()) {
+            if(a == attr) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public InProductInterestSupplyScheme getInterest() throws ParsingException {

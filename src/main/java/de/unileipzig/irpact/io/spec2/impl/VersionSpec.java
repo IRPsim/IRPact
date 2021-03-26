@@ -7,7 +7,7 @@ import de.unileipzig.irpact.io.spec2.SpecificationHelper2;
 import de.unileipzig.irpact.io.spec2.SpecificationJob2;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import static de.unileipzig.irpact.io.spec.SpecificationConstants.TAG_version;
+import static de.unileipzig.irpact.io.spec2.SpecificationConstants.TAG_version;
 
 /**
  * @author Daniel Abitz

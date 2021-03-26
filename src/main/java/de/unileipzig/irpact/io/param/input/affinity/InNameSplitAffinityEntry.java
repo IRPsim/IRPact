@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.io.param.input.affinity;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.io.param.IOConstants;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -11,21 +11,28 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InNameSplitAffinityEntry implements InAffinityEntry {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
+        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_AFFINITY, thisName());
+        addEntry(res, thisClass(), "affinityValue");
     }
 
     public String _name;
@@ -37,7 +44,7 @@ public class InNameSplitAffinityEntry implements InAffinityEntry {
     }
 
     public InNameSplitAffinityEntry(InConsumerAgentGroup srcCag, InConsumerAgentGroup tarCag, double value) {
-        this._name = ParamUtil.concName(srcCag, tarCag);
+        this._name = concName(srcCag, tarCag);
         this.affinityValue = value;
     }
 
@@ -67,12 +74,12 @@ public class InNameSplitAffinityEntry implements InAffinityEntry {
 
     @Override
     public String getSrcCagName() throws ParsingException {
-        return ParamUtil.firstPart(getName());
+        return firstPart(getName());
     }
 
     @Override
     public String getTarCagName() throws ParsingException {
-        return ParamUtil.secondPart(getName());
+        return secondPart(getName());
     }
 
     @Override

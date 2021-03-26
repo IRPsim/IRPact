@@ -69,10 +69,6 @@ public enum IRPLevel {
 
     public abstract Level toLogbackLevel();
 
-    public static String getDomain() {
-        return "[" + OFF.getLevelId() + ", " + + ALL.LEVEL_ID + "]";
-    }
-
     public static String getDefaultAsString() {
         return Integer.toString(getDefault().getLevelId());
     }

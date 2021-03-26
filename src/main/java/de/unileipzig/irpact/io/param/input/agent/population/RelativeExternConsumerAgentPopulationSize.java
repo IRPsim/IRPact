@@ -22,6 +22,11 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 import java.util.*;
 
+import static de.unileipzig.irpact.io.param.IOConstants.AGENTS;
+import static de.unileipzig.irpact.io.param.IOConstants.POPULATION;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
@@ -32,57 +37,41 @@ public class RelativeExternConsumerAgentPopulationSize implements PopulationSize
     public static Class<?> thisClass() {
         return L.lookupClass();
     }
+    public static String thisName() {
+        return thisClass().getSimpleName();
+    }
 
     public static void initRes(TreeAnnotationResource res) {
-        TreeResourceApplier.callAllSubInitResSilently(thisClass(), res);
     }
     public static void applyRes(TreeAnnotationResource res) {
-        TreeResourceApplier.callAllSubApplyResSilently(thisClass(), res);
+        putClassPath(res, thisClass(), AGENTS, POPULATION, thisName());
+        addEntry(res, thisClass(), "totalSize");
+        addEntry(res, thisClass(), "useMaximumSize");
+        addEntry(res, thisClass(), "considerAllForShares");
+        addEntry(res, thisClass(), "cags");
+        addEntry(res, thisClass(), "file");
+        addEntry(res, thisClass(), "selectKey");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
 
-    public static void initRes0(TreeAnnotationResource res) {
-    }
-    public static void applyRes0(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public int totalSize;
 
-    public static void initRes1(TreeAnnotationResource res) {
-    }
-    public static void applyRe1(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public boolean useMaximumSize;
 
-    public static void initRes5(TreeAnnotationResource res) {
-    }
-    public static void applyRe5(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public boolean considerAllForShares;
 
-    public static void initRes2(TreeAnnotationResource res) {
-    }
-    public static void applyRes2(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public InConsumerAgentGroup[] cags;
 
-    public static void initRes3(TreeAnnotationResource res) {
-    }
-    public static void applyRes3(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public InSpatialTableFile[] file;
 
-    public static void initRes4(TreeAnnotationResource res) {
-    }
-    public static void applyRes4(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public InAttributeName[] selectKey;
 

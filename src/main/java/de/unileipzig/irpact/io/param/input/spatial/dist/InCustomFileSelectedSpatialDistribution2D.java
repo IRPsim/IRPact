@@ -15,7 +15,6 @@ import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
-import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -24,49 +23,33 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.IOConstants.SPATIAL_MODEL_DIST_FILE_CUSTOMPOS;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
-@Todo("umbennen ->")
 @Definition
 public class InCustomFileSelectedSpatialDistribution2D implements InSpatialDistribution {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InCustomFileSelectedSpatialDistribution2D.class,
-                res.getCachedElement("Räumliche Modell"),
-                res.getCachedElement("SpatialDist"),
-                res.getCachedElement("CustomPos"),
-                res.getCachedElement("InCustomSelectedSpatialDistribution2D")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("X-Position0")
-                .setGamsDescription("X-Position")
-                .store(InCustomFileSelectedSpatialDistribution2D.class, "xPosSupplier");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Y-Position0")
-                .setGamsDescription("Y-Position")
-                .store(InCustomFileSelectedSpatialDistribution2D.class, "yPosSupplier");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Tabellendaten0")
-                .setGamsDescription("Zu nutzende Tabelle für weitere Informationen")
-                .store(InCustomFileSelectedSpatialDistribution2D.class, "attrFile");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Filterschlüssel0")
-                .setGamsDescription("Dieser Schlüssel wird verwendet, um die Daten zu filtern (z.B. Milieu).")
-                .store(InCustomFileSelectedSpatialDistribution2D.class, "selectKey");
+        putClassPath(res, thisClass(), SPATIAL, SPATIAL_MODEL_DIST, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS, thisName());
+        addEntry(res, thisClass(), "xPosSupplier");
+        addEntry(res, thisClass(), "yPosSupplier");
+        addEntry(res, thisClass(), "attrFile");
+        addEntry(res, thisClass(), "selectKey");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InCustomFileSelectedSpatialDistribution2D.class);

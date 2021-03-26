@@ -1,173 +1,718 @@
 ---
 general_settings:
   edn_label: "Allgemeine Einstellungen"
+InGeneral_seed:
+  gams_identifier: "Zufallsgenerator (seed)"
+  gams_description: "Setzt den Seed für den Zufallsgenerator der Simulation. Falls er auf -1 gesetzt wird, wird ein zufälliger Seed generiert."
+InGeneral_timeout:
+  gams_identifier: "Timeout"
+  gams_description: "Setzt den Timeout der Simulation in Millisekunden. Diese Einstellung dient dazu die Simulation zu beenden, falls sie unerwartet abstürzt. Im Laufe der Simulation wird der Timeout unentwegt zurück gesetzt. Sollte es zu einem unerwarteten Fehler kommen und die Rücksetzung ausbleiben, wird die Simulation abgebrochen und beendet. Werte kleiner 1 deaktivieren den Timeout vollständig."
+  gams_unit: "[ms]"
+InGeneral_endYear:
+  gams_identifier: "[Testoption] Endjahr der Simulation"
+  gams_description: "Setzt das finale Jahr der Simulation. Wichtig: Der Wert ist inklusiv. Es wird dabei immer mindestens ein Jahr simuliert, auch wenn der Wert kleiner ist als das des Ausgangsjahres."
+
 logging:
   edn_label: "Logging"
   edn_description: "Einstellungen für das Logging und die Ausgabe von Informationen und Daten. Unabhängig von den individuellen Logging-Einstellungen werden wichtige Informationen weiterhin geloggt. Diese können nur mittels dem Logging-Level deaktiviert werden (nicht empfohlen)."
+
+logging_general:
+  edn_label: "Allgemeine Loggingoptionen"
+  edn_description: "Ermöglicht die Einstellung der allgemeinen Loggingoptionen."
+InGeneral_logLevel:
+  gams_identifier: "Logging-Level"
+  gams_description: "Setzt das zu nutzende Logging-Level in IRPact, folgende Werte werden unterstützt: 0 = OFF, 1 = TRACE, 2 = DEBUG, 3 = INFO, 4 = WARN, 5 = ERROR, 6 = ALL. Das Level ist der Hauptfilter für alle log-Operationen."
+  gams_domain: "[0,6]"
+InGeneral_logAll:
+  gams_identifier: "Alles loggen?"
+  gams_description: "[SPAM] Ob alles geloggt werden soll. Falls ja, überschreibt diese Option alles."
+  gams_domain: "[0|1]"
+InGeneral_logAllTools:
+  gams_identifier: "Tools-Bibliothek loggen?"
+  gams_description: "[SPAM] Ob alle Aufrufe der Tools-Bibliothek geloggt werden sollen."
+  gams_domain: "[0|1]"
+
+logging_specific:
+  edn_label: "Spezielle Loggingoptionen"
+  edn_description: "Ermöglicht es spezielle Loggingoptionen einzustellen."
+
 special_settings:
   edn_label: "Spezielle Einstellungen"
-binary_data:
+InGeneral_runOptActDemo:
+  gams_identifier: "[Testoption] optact-Testmodell ausführen"
+  gams_description: "Falls gesetzt, wird die optact-Demo gestartet. Anderenfalls wird IRPact gestartet."
+  gams_domain: "[0|1]"
+InGeneral_runPVAct:
+  gams_identifier: "PVact"
+  gams_description: "Falls gesetzt, werden automatisch spezielle Einstellungen für PVact bei der Initialisierung ergänzt. Dies betrifft aktuell Produkte und die Prozessmodellzuordnung."
+  gams_domain: "[0|1]"
+
+VisibleBinaryData:
   edn_label: "Binäre Daten"
+  gams_identifier: "Binäre Daten"
+  gams_description: "Binäre Daten für diverse Funktionalitäten"
+VisibleBinaryData_idVisible:
+  gams_identifier: "ID"
+  gams_description: "Spezielle ID der Daten, Verwendungszweck und Funktionsweise ist von den Daten selber abhängig."
+
+
 
 names:
   edn_label: "Namen"
 
+
+
 files:
   edn_label: "Dateien"
-pv_files:
+
+InPVFile:
   edn_label: "PV Dateien"
-table_files:
+  edn_description: "Daten im PV-Datenformat, welche in einer .xlsx sein müssen."
+InPVFile_placeholderPVFile:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+InSpatialTableFile:
   edn_label: "Tabellarische Dateien"
+  edn_description: "Daten in tabellarischer Form. Es werden .xlsx und .csv unterstützt."
+InSpatialTableFile_placeholderInSpatialFile:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+
 
 distributions:
   edn_label: "Verteilungsfunktionen"
-boolean:
+
+InBooleanDistribution:
   edn_label: "Boolean"
   edn_description: "Verteilungsfunktion, welche 0 oder 1 zurück gibt."
-dirac:
+InBooleanDistribution_placeholderBooleanDist:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+InConstantUnivariateDistribution:
   edn_label: "Dirac"
   edn_description: "Verteilungsfunktion, welche einen konstanten Wert zurück gibt."
-random_bounded_integer:
-  edn_label: "Gleichverteilte ganze Zahlen"
-  edn_description: "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht."
-finite_masspoints_discrete_distribution:
+InConstantUnivariateDistribution_constDistValue:
+  gams_identifier: "Wert"
+  gams_description: "Legt den konstante Rückgabewert fest."
+
+InFiniteMassPointsDiscreteDistribution:
   edn_label: "Gewichtete Massepunkte"
   edn_description: "Verteilungsfunktion, welche auf Massepunkten basiert."
-masspoint:
+InFiniteMassPointsDiscreteDistribution_massPoints:
+  gams_identifier: "Massepunkte"
+  gams_description: "Legt die zu nutzenden Massepunkte fest."
+
+InMassPoint:
   edn_label: "Massepunkt"
   edn_description: "Massepunkt mit Wert und Gewicht"
+InMassPoint_mpValue:
+  gams_identifier: "Wert des Punktes"
+  gams_description: "Legt den Wert des Punktes fest."
+InMassPoint_mpWeight:
+  gams_identifier: "Wichtung des Punktes"
+  gams_description: "Legt die Wichtung des Punktes fest."
+
+InRandomBoundedIntegerDistribution:
+  edn_label: "Gleichverteilte ganze Zahlen"
+  edn_description: "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht."
+InRandomBoundedIntegerDistribution_lowerBoundInt:
+  gams_identifier: "Untergrenze (inklusiv)"
+  gams_description: "Legt die Untergrenze fest."
+InRandomBoundedIntegerDistribution_upperBoundInt:
+  gams_identifier: "Obergrenze (exklusiv)"
+  gams_description: "Legt die Obergrenze fest."
 
 agents:
   edn_label: "Agenten"
+
 consumer:
   edn_label: "Konsumer"
+
 consumer_group:
   edn_label: "Gruppen"
-consumer_group_attr_mapping:
-  edn_label: "Gruppe-Attribut-Mapping"
-consumer_group_interest_mapping:
-  edn_label: "Gruppe-Interest-Mapping"
-consumer_group_product_finding_mapping:
-  edn_label: "Gruppe-ProductFinding-Mapping"
-consumer_group_spatial_dist_mapping:
-  edn_label: "Gruppe-Spatial-Mapping"
+
+InGeneralConsumerAgentGroup:
+  edn_label: "Allgemeine Gruppen"
+InGeneralConsumerAgentGroup_cagAttributes:
+  gams_identifier: "Gruppenattribute"
+  gams_description: "Zu dieser Gruppe gehörende Attribute."
+InGeneralConsumerAgentGroup_cagInterest:
+  gams_identifier: "Interessensschema"
+  gams_description: "Legt das Interessensschema fest."
+InGeneralConsumerAgentGroup_productFindingSchemes:
+  gams_identifier: "Schema für die Produktfindung"
+  gams_description: "Legt das Schema für das finden von passenden Produkten fest"
+InGeneralConsumerAgentGroup_spatialDistribution:
+  gams_identifier: "Räumliche Verteilungsfunktion"
+  gams_description: "Legt die Verteilungsfunktion für diese Gruppe fest"
+InGeneralConsumerAgentGroup_informationAuthority:
+  gams_identifier: "[ungenutzt] informationAuthority"
+  gams_description: "informationAuthority"
+
+InPVactConsumerAgentGroup:
+  edn_label: "PVact Gruppen"
+InPVactConsumerAgentGroup_noveltySeeking:
+  gams_identifier: "noveltySeeking"
+  gams_description: "noveltySeeking"
+InPVactConsumerAgentGroup_independentJudgmentMaking:
+  gams_identifier: "independentJudgmentMaking"
+  gams_description: "independentJudgmentMaking"
+InPVactConsumerAgentGroup_environmentalConcern:
+  gams_identifier: "environmentalConcern"
+  gams_description: "environmentalConcern"
+InPVactConsumerAgentGroup_interestThreshold:
+  gams_identifier: "interestThreshold"
+  gams_description: "interestThreshold"
+InPVactConsumerAgentGroup_financialThreshold:
+  gams_identifier: "financialThreshold"
+  gams_description: "financialThreshold"
+InPVactConsumerAgentGroup_adoptionThreshold:
+  gams_identifier: "adoptionThreshold"
+  gams_description: "adoptionThreshold"
+InPVactConsumerAgentGroup_communication:
+  gams_identifier: "communication"
+  gams_description: "communication"
+InPVactConsumerAgentGroup_rewire:
+  gams_identifier: "rewire"
+  gams_description: "rewire"
+InPVactConsumerAgentGroup_initialAdopter:
+  gams_identifier: "initialAdopter"
+  gams_description: "initialAdopter"
+InPVactConsumerAgentGroup_spatialDistribution:
+  gams_identifier: "spatialDistribution"
+  gams_description: "spatialDistribution"
+InPVactConsumerAgentGroup_informationAuthority:
+  gams_identifier: "informationAuthority"
+  gams_description: "informationAuthority"
+
 consumer_attr:
   edn_label: "Attribute"
-consumer_attr_name_mapping:
-  edn_label: "Attribute-Name-Mapping"
-consumer_attr_dist_mapping:
-  edn_label: "Attribute-Verteilung-Mapping"
+
+InGeneralConsumerAgentGroupAttribute:
+  edn_label: "Allgemeines Attribut"
+  edn_description: ""
+InGeneralConsumerAgentGroupAttribute_attrName:
+  gams_identifier: "Attributname"
+  gams_description: "Name des Attributes für das Gruppenattribut."
+InGeneralConsumerAgentGroupAttribute_dist:
+  gams_identifier: "Verteilungsfunktion"
+  gams_description: "Legt die zu nutzende Verteilungsfunktion fest."
+
+InNameSplitConsumerAgentGroupAttribute:
+  edn_label: "Namensbasiertes Attribute"
+  edn_description: "Dieses Attribut wird über seinen Namen definiert."
+InNameSplitConsumerAgentGroupAttribute_dist:
+  gams_identifier: "Verteilungsfunktion"
+  gams_description: "Legt die Verteilungsfunktion fest, auf deren Basis die Attributwerte gezogen werden."
+
 consumer_affinity:
   edn_label: "Affinity"
   edn_description: "Legt die Affinity zwischen den jeweiligen Konsumergruppen fest."
+
+InComplexAffinityEntry:
+  edn_label: "Komplexe Affinity"
+InComplexAffinityEntry_srcCag:
+  gams_identifier: "Ausgangsgruppe"
+  gams_description: "Ausgangsgruppe"
+InComplexAffinityEntry_tarCag:
+  gams_identifier: "Zielgruppe"
+  gams_description: "Zielgruppe"
+InComplexAffinityEntry_affinityValue:
+  gams_identifier: "Affinity-Wert"
+  gams_description: "Affinity-Wert"
+
+InNameSplitAffinityEntry:
+  edn_label: "Namensbasierte Affinity"
+InNameSplitAffinityEntry_affinityValue:
+  gams_identifier: "Affinity-Wert"
+  gams_description: "Affinity-Wert"
+
 consumer_interest:
-  edn_label: "Awareness"
-  edn_description: "Legt die verwendeten Awareness-Varianten für die Konsumergruppen fest."
-consumer_interest_threshold:
-  edn_label: "Threshold"
-  edn_description: "Grenzwert-basierte Awareness"
+  edn_label: "Produktinteresse"
+  edn_description: "Legt die verwendeten Interessens-Varianten für die Konsumergruppen fest."
+
+InProductThresholdInterestSupplyScheme:
+  edn_label: "Grenzwertbasiert"
+  edn_description: "Grenzwertbasierte Interessens-Varianten"
+InProductThresholdInterestSupplyScheme_interestDistribution:
+  gams_identifier: "Grenzwert"
+  gams_description: "Grenzwert ab dem das Produkt von Interesse ist."
+
+population:
+  edn_label: "Population"
+  edn_description: "Legt die Agentenpopulation fest."
+
+FixConsumerAgentPopulationSize:
+  edn_label: "Feste Konsumergruppengröße"
+  edn_description: ""
+FixConsumerAgentPopulationSize_size:
+  gams_identifier: "Anzahl der Agenten"
+  gams_description: "Legt die Anzahl der Agenten bzw. die Populationsgröße für diese Konsumergruppe fest."
+FixConsumerAgentPopulationSize_cags:
+  gams_identifier: "Konsumergruppen"
+  gams_description: "Legt die Konsumergruppen fest, welche diese Populationsgröße haben sollen."
+
+RelativeExternConsumerAgentPopulationSize:
+  edn_label: "Feste Konsumergruppengröße"
+  edn_description: ""
+RelativeExternConsumerAgentPopulationSize_totalSize:
+  gams_identifier: "Anzahl der Agenten"
+  gams_description: "Legt gesamte Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls die maximal mögliche Anzahl genutzt werden soll, wird dieser Wert ignoriert."
+RelativeExternConsumerAgentPopulationSize_useMaximumSize:
+  gams_identifier: "Maximal mögliche Population nutzen?"
+  gams_description: "Legt fest, ob die gesamte Populationsgröße aus der Datei berechnet werden soll."
+RelativeExternConsumerAgentPopulationSize_considerAllForShares:
+  gams_identifier: "Alle Konsumergruppenfür die Anteilsberechnung berücksichtigen?"
+  gams_description: "Legt fest, ob alle Gruppen aus der Datei für die Berechnung der Anteile genutzt werden sollen oder nur die hier spezifizierten."
+RelativeExternConsumerAgentPopulationSize_cags:
+  gams_identifier: "Konsumergruppen"
+  gams_description: "Legt die Konsumergruppen fest, welche berücksichtigt werden sollen."
+RelativeExternConsumerAgentPopulationSize_file:
+  gams_identifier: "Tabellarische Datei"
+  gams_description: "Tabellarische Eingabedatei, aus der die Informationen gelesen werden sollen."
+RelativeExternConsumerAgentPopulationSize_selectKey:
+  gams_identifier: "Auswahlschlüssel"
+  gams_description: "Schlüssel, nachdem die Datei gefiltert wird. Wichtig: Der Daten in der Datei müssen dem Konsumergruppennamen entsprechen."
+
+
 
 network:
   edn_label: "Netzwerk"
+
 topology:
   edn_label: "Topologie"
-topology_empty:
+
+InUnlinkedGraphTopology:
   edn_label: "Knotenloser Graph"
   edn_description: "Leere Topologie, welche keine Kanten besitzt."
-topology_complete:
+InUnlinkedGraphTopology_placeholderUnlinked:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+InCompleteGraphTopology:
   edn_label: "Vollständiger Graph"
   edn_description: "Nutzt einen vollständigen Netzwerkgraph."
-topology_free:
+InCompleteGraphTopology_initialWeight:
+  gams_identifier: "Initiales Kantengewicht"
+  gams_description: "Legt das initiale Gewicht der Kanten fest."
+
+InFreeNetworkTopology:
   edn_label: "Freie Topologie"
   edn_description: "Freie Topologie"
-topology_free_edgecount:
+InFreeNetworkTopology_initialWeight:
+  gams_identifier: "Initiales Kantengewicht"
+  gams_description: "Legt das initiale Gewicht der Kanten fest."
+InFreeNetworkTopology_distanceEvaluator:
+  gams_identifier: "Distanzfunktion"
+  gams_description: "Legt die zu nutzende Distanzfunktion für den Einfluss des Abstandes fest."
+InFreeNetworkTopology_numberOfTies:
+  gams_identifier: "Konsumergruppenspezifische Kantenanzahl"
+  gams_description: "Legt die Anzahl defür die jeweiligen Konsumergruppen fest."
+
+InNumberOfTies:
   edn_label: "Kanten je Konsumergruppe"
-  edn_description: "Legt die Kantenanzahl je Gruppe fest."
+  edn_description: "Legt die Kantenanzahl je Konsumergruppe fest."
+InNumberOfTies_count:
+  gams_identifier: "Kantenanzahl"
+  gams_description: "Legt die Anzahl der Kanten fest."
+InNumberOfTies_cags:
+  gams_identifier: "Konsumergruppen"
+  gams_description: "Bestimmt die Konsumergruppen, welche diese Anzahl Kanten aufweisen sollen."
+
 dist_func:
   edn_label: "Abstandsfunktion"
-dist_func_no:
+
+InNoDistance:
   edn_label: "Keine Distanzfunktion"
   edn_description: "Keine Distanzfunktion"
-dist_func_inverse:
+InNoDistance_placeholderNoDistance:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+InInverse:
   edn_label: "Inverse Distanz"
   edn_description: "Benutzt 1/distance für die Auswertung."
+InInverse_placeholderInverse:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+
 
 products:
   edn_label: "Produkte"
+  edn_description: "Ermöglicht das Einstellen von Produkten und verwandten Optionen."
+
 products_group:
   edn_label: "Gruppen"
-products_attr_mapping:
-  edn_label: "Produkt-Attribut-Mapping"
+  edn_description: "Ermöglicht die Erstellung von Produktgruppen."
+
+InBasicProductGroup:
+  edn_label: "Allgemeines Produkt"
+  edn_description: "Ermöglicht die Erstellung von allgemeinen Produktgruppen."
+InBasicProductGroup_pgAttributes:
+  gams_identifier: "Attribute"
+  gams_description: "Bestimmt die Attribute für diese Gruppe."
+
 products_attr:
   edn_label: "Attribute"
-products_attr_name_mapping:
-  edn_label: "Attribut-Namen-Mapping"
-products_attr_dist_mapping:
-  edn_label: "Attribut-Verteilungs-Mapping"
-products_initial:
-  edn_label: "Initiale Produkte"
-  edn_description: "Die initialen Produkte, welche von Beginn an existieren sollen."
-products_initial_attr_mapping:
-  edn_label: "Initiale Produkt-Attribut-Mapping"
-products_initial_attr:
-  edn_label: "Initiale Produktattribute"
-  edn_description: "Attribute der initialen Produkte"
+  edn_description: "Ermöglicht die Erstellung von Produktgruppenattributen."
+
+InBasicProductGroupAttribute:
+  edn_label: "Allgemeines Attribut"
+  edn_description: ""
+InBasicProductGroupAttribute_attrName:
+  gams_identifier: "Attributname"
+  gams_description: "Legt die Attributnamen fest."
+InBasicProductGroupAttribute_dist:
+  gams_identifier: "Verteilungsfunktion"
+  gams_description: "Legt die Verteilungsfunktion fest, auf deren Basis die Attributwerte gezogen werden."
+
+InNameSplitProductGroupAttribute:
+  edn_label: "Namensbasiertes Attribute"
+  edn_description: "Dieses Attribut wird über seinen Namen definiert."
+InNameSplitProductGroupAttribute_dist:
+  gams_identifier: "Verteilungsfunktion"
+  gams_description: "Legt die Verteilungsfunktion fest, auf deren Basis die Attributwerte gezogen werden."
+
+InFixProduct:
+  edn_label: "Fixprodukte"
+  edn_description: "Ermöglicht es Fixprodukte zu erstellen."
+InFixProduct_refPG:
+  gams_identifier: "Produktgruppe"
+  gams_description: "Legt die Produktgruppe fest, zu der dieses Produkt gehören soll."
+InFixProduct_fixPAttrs:
+  gams_identifier: "Attribute"
+  gams_description: "Bestimmt die Attribute für dieses Fixprodukt."
+
+InFixProductAttribute:
+  edn_label: "Fixprodukte"
+  edn_description: "Ermöglicht es Fixprodukte zu erstellen."
+InFixProductAttribute_refPGA:
+  gams_identifier: "Produktgruppenattribut"
+  gams_description: "Legt das Produktgruppenattribut fest, zu dem dieses Produkt gehören soll."
+InFixProductAttribute_fixPAvalue:
+  gams_identifier: "Wert"
+  gams_description: "Bestimmt die Wert für dieses Attribut."
+
 products_finding_scheme:
   edn_label: "Schema für Produktfindung"
-products_finding_scheme_initial:
-  edn_label: "Schema für initiale Produkte"
-  edn_description: "Schema basierend auf initialen Produkten"
+  edn_description: "Benutzt 1/distance für die Auswertung."
+
+InFixProductFindingScheme:
+  edn_label: "Fixproduktschema"
+  edn_description: "Dieses Schema basiert auf Fixprodukten."
+InFixProductFindingScheme_refFixProduct:
+  gams_identifier: "Fixprodukt"
+  gams_description: "Legt das Fixprodukt fest, welches von diesem Schema verwendet werden soll."
+
+
 
 process_model:
   edn_label: "Prozessmodell"
-process_model_ra:
+
+InRAProcessModel:
   edn_label: "Relative Agreement"
+InAutoUncertaintyGroupAttribute_a:
+  gams_identifier: "Einfluss finanzielle Komponente (a)"
+  gams_description: "Legt den Einfluss der finanziellen Komponente fest."
+InAutoUncertaintyGroupAttribute_b:
+  gams_identifier: "Einfluss novelty Komponente (b)"
+  gams_description: "Legt den Einfluss der novelty Komponente fest."
+InAutoUncertaintyGroupAttribute_c:
+  gams_identifier: "Umwelteinfluss (c)"
+  gams_description: "Legt den Umwelteinfluss fest."
+InAutoUncertaintyGroupAttribute_d:
+  gams_identifier: "Einfluss soziale Komponente (d)"
+  gams_description: "Legt den Einfluss der sozialen Komponente fest."
+InAutoUncertaintyGroupAttribute_adopterPoints:
+  gams_identifier: "Einfluss der Kommunikation mit Adoptern"
+  gams_description: "Legt den Einfluss für die Kommunikation mit Adoptern fest."
+InAutoUncertaintyGroupAttribute_interestedPoints:
+  gams_identifier: "Einfluss der Kommunikation mit Interessenten"
+  gams_description: "Legt den Einfluss für die Kommunikation mit Interessenten fest."
+InAutoUncertaintyGroupAttribute_awarePoints:
+  gams_identifier: "Einfluss der Kommunikation mit Bewussten"
+  gams_description: "Legt den Einfluss für die Kommunikation mit Bewussten fest."
+InAutoUncertaintyGroupAttribute_unknownPoints:
+  gams_identifier: "Einfluss der Kommunikation mit Unwissenden"
+  gams_description: "Legt den Einfluss für die Kommunikation mit Unwissenden fest."
+InAutoUncertaintyGroupAttribute_logisticFactor:
+  gams_identifier: "Einflussfaktor der logistischen Funktion"
+  gams_description: "Legt den Einflussfaktor 'a' der logistischen Funktion fest: logistic(a * -x)."
+InAutoUncertaintyGroupAttribute_pvFile:
+  gams_identifier: "PV-Datei"
+  gams_description: "Legt die zu nutzende PV-Datei fest."
+InAutoUncertaintyGroupAttribute_uncertaintyGroupAttributes:
+  gams_identifier: "Unsicherheiten"
+  gams_description: "Bestimmt die Unsicherheiten, welche von diesem Modell verwendet werden."
+
 process_model_ra_uncert:
-  edn_label: "Uncertainty"
-process_model_ra_uncert_auto:
+  edn_label: "Unsicherheit"
+  edn_description: "Ermöglicht es die Unsicherheit für Attribute zu bestimmen, welche durch den 'relative agreement' Algorithmus beeinflusst werden."
+
+InAutoUncertaintyGroupAttribute:
   edn_label: "Automatisch"
-process_model_ra_uncert_custom:
-  edn_label: "Benutzerdefiniert"
+  edn_description: "Bestimmt die Unsicherheit automatisch. Achtung: Diese Variante wird aktuell noch nicht unterstützt."
+InAutoUncertaintyGroupAttribute_placeholderAutoUncert:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+InIndividualAttributeBasedUncertaintyGroupAttribute:
+  edn_label: "Attributbezogen"
+  edn_description: "Ermöglicht die Festlegung der Unsicherheit für spezielle Konsumergruppenattribute."
+InIndividualAttributeBasedUncertaintyGroupAttribute_uncertDist:
+  gams_identifier: "Verteilungsfunktion"
+  gams_description: "Legt die zu nutzende Verteilungsfunktion fest."
+InIndividualAttributeBasedUncertaintyGroupAttribute_cagAttrs:
+  gams_identifier: "Konsumergruppenattribute"
+  gams_description: "Bestimmt die Konsumergruppenattribute, welche mit dieser Unsicherheit behandelt werden sollen."
+
+InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute:
+  edn_label: "Attributbezogen mit Konvergenz"
+  edn_description: "Ermöglicht die Festlegung der Unsicherheit für spezielle Konsumergruppenattribute. Diese Variante ermöglicht auch die Festlegung der Konvergenz."
+InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute_uncertDist:
+  gams_identifier: "Verteilungsfunktion"
+  gams_description: "Legt die zu nutzende Verteilungsfunktion fest."
+InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute_convergenceDist:
+  gams_identifier: "Konvergenzfunktion"
+  gams_description: "Legt die Verteilungsfunktion für die Konvergenz fest."
+InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute_cagAttrs:
+  gams_identifier: "Konsumergruppenattribute"
+  gams_description: "Bestimmt die Konsumergruppenattribute, welche mit dieser Unsicherheit behandelt werden sollen."
+
+InNameBasedUncertaintyGroupAttribute:
+  edn_label: "Gruppenbezogen"
+  edn_description: "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen und ausgewählte Attribute."
+InNameBasedUncertaintyGroupAttribute_uncertDist:
+  gams_identifier: "Verteilungsfunktion"
+  gams_description: "Legt die zu nutzende Verteilungsfunktion fest."
+InNameBasedUncertaintyGroupAttribute_names:
+  gams_identifier: "Attributnamen"
+  gams_description: "Legt die Attributnamen fest, welche mit dieser Unsicherheit behandelt werden sollen."
+InNameBasedUncertaintyGroupAttribute_cags:
+  gams_identifier: "Konsumergruppe"
+  gams_description: "Bestimmt die Konsumergruppe, deren Attribute mit dieser Unsicherheit behandelt werden sollen."
+
+InNameBasedUncertaintyWithConvergenceGroupAttribute:
+  edn_label: "Gruppenbezogen"
+  edn_description: "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen und ausgewählte Attribute. Diese Variante ermöglicht auch die Festlegung der Konvergenz."
+InNameBasedUncertaintyWithConvergenceGroupAttribute_uncertDist:
+  gams_identifier: "Verteilungsfunktion"
+  gams_description: "Legt die zu nutzende Verteilungsfunktion fest."
+InNameBasedUncertaintyWithConvergenceGroupAttribute_convergenceDist:
+  gams_identifier: "Konvergenzfunktion"
+  gams_description: "Legt die Verteilungsfunktion für die Konvergenz fest."
+InNameBasedUncertaintyWithConvergenceGroupAttribute_names:
+  gams_identifier: "Attributnamen"
+  gams_description: "Legt die Attributnamen fest, welche mit dieser Unsicherheit behandelt werden sollen."
+InNameBasedUncertaintyWithConvergenceGroupAttribute_cags:
+  gams_identifier: "Konsumergruppe"
+  gams_description: "Bestimmt die Konsumergruppe, deren Attribute mit dieser Unsicherheit behandelt werden sollen."
+
+InPVactUncertaintyGroupAttribute:
+  edn_label: "PVact"
+  edn_description: "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus."
+InPVactUncertaintyGroupAttribute_noveltySeekingUncert:
+  gams_identifier: "novelty seeking"
+  gams_description: "Legt die zu nutzende Verteilungsfunktion für novelty seeking fest."
+InPVactUncertaintyGroupAttribute_dependentJudgmentMakingUncert:
+  gams_identifier: "dependent judgment making"
+  gams_description: "Legt die zu nutzende Verteilungsfunktion für dependent judgment making fest."
+InPVactUncertaintyGroupAttribute_environmentalConcernUncert:
+  gams_identifier: "environmental concern"
+  gams_description: "Legt die zu nutzende Verteilungsfunktion für environmental concern fest."
+InPVactUncertaintyGroupAttribute_cags:
+  gams_identifier: "Konsumergruppe"
+  gams_description: "Bestimmt die Konsumergruppe, deren Attribute mit dieser Unsicherheit behandelt werden sollen."
+
+
 
 spatial:
   edn_label: "Räumliche Modell"
-spatial_model_file:
-  edn_label: "Eingabedateien"
+
 spatial_model:
   edn_label: "Modell"
-spatial_model_space2d:
+
+InSpace2D:
   edn_label: "Space2D"
+  edn_description: "Nutzt ein 2D-Modell mit der gewünschten Metrik."
+InSpace2D_useManhatten:
+  gams_identifier: "Manhattenmetrik"
+  gams_description: "Nutzt die Manhattenmetrik für die Berechnung der Abstände."
+InSpace2D_useEuclid:
+  gams_identifier: "Euklidische Metrik"
+  gams_description: "Nutzt die euklidische Metrik für die Berechnung der Abstände."
+InSpace2D_useMaximum:
+  gams_identifier: "Maximumsmetrik"
+  gams_description: "Nutzt die Maximumsmetrik für die Berechnung der Abstände."
+InSpace2D_useHaversine:
+  gams_identifier: "Haversine (km)"
+  gams_description: "Nutzt die Haversine-Formel für die Berechnung der Entfernungen. Die Berechnungen finden auf Kilometerbasis statt."
+
 spatial_model_dist:
   edn_label: "Verteilungsfunktionen"
+  edn_description: "Ermöglicht es die räumlichen Verteilungsfunktionen zu definieren."
+
 spatial_model_dist_file:
   edn_label: "Dateibezogen"
+  edn_description: "Ermöglicht es räumliche Verteilungsfunktionen zu definieren, deren Daten aus Dateien geladen werden."
+
 spatial_model_dist_file_custompos:
   edn_label: "Benutzerdefinierte Positionen"
-spatial_model_dist_file_custompos_indep:
+  edn_description: "Ermöglicht es räumliche Verteilungsfunktionen zu definieren, deren Daten aus Dateien geladen werden. Die Positionen können dabei separat definiert werden."
+
+InCustomFileSpatialDistribution2D:
   edn_label: "Milieuunabhängig"
-spatial_model_dist_file_custompos_selected:
+  edn_description: "Milieuunabhängig"
+InCustomFileSpatialDistribution2D_xPosSupplier:
+  gams_identifier: "X-Position"
+  gams_description: "Legt die Verteilungsfunktion fest, welche die X-Position bestimmt."
+InCustomFileSpatialDistribution2D_yPosSupplier:
+  gams_identifier: "Y-Position"
+  gams_description: "Legt die Verteilungsfunktion fest, welche die Y-Position bestimmt."
+InCustomFileSpatialDistribution2D_attrFile:
+  gams_identifier: "Tabellarische Datei"
+  gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
+
+InCustomFileSelectedSpatialDistribution2D:
   edn_label: "Milieuabhängig"
-spatial_model_dist_file_custompos_selectedweighted:
+  edn_description: "Milieuabhängig"
+InCustomFileSelectedSpatialDistribution2D_xPosSupplier:
+  gams_identifier: "X-Position"
+  gams_description: "Legt die Verteilungsfunktion fest, welche die X-Position bestimmt."
+InCustomFileSelectedSpatialDistribution2D_yPosSupplier:
+  gams_identifier: "Y-Position"
+  gams_description: "Legt die Verteilungsfunktion fest, welche die Y-Position bestimmt."
+InCustomFileSelectedSpatialDistribution2D_attrFile:
+  gams_identifier: "Tabellarische Datei"
+  gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
+InCustomFileSelectedSpatialDistribution2D_selectKey:
+  gams_identifier: "Auswahlschlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname)."
+
+InCustomFileSelectedGroupedSpatialDistribution2D:
   edn_label: "Milieuabhängig und gewichtet"
+  edn_description: "Milieuabhängig und gewichtet"
+InCustomFileSelectedGroupedSpatialDistribution2D_xPosSupplier:
+  gams_identifier: "X-Position"
+  gams_description: "Legt die Verteilungsfunktion fest, welche die X-Position bestimmt."
+InCustomFileSelectedGroupedSpatialDistribution2D_yPosSupplier:
+  gams_identifier: "Y-Position"
+  gams_description: "Legt die Verteilungsfunktion fest, welche die Y-Position bestimmt."
+InCustomFileSelectedGroupedSpatialDistribution2D_attrFile:
+  gams_identifier: "Tabellarische Datei"
+  gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
+InCustomFileSelectedGroupedSpatialDistribution2D_selectKey:
+  gams_identifier: "Auswahlschlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname)."
+InCustomFileSelectedGroupedSpatialDistribution2D_groupKey:
+  gams_identifier: "Gruppierungsschlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Gruppierung und Wichtung anhand der tabellarischen Datei (Spaltenname)."
+
 spatial_model_dist_file_filepos:
   edn_label: "Gelesene Positionen"
-spatial_model_dist_file_filepos_indep:
+  edn_description: "Ermöglicht es räumliche Verteilungsfunktionen zu definieren, deren Daten aus Dateien geladen werden. Die Positionen werden dabei ebenfalls aus den Dateien gelesen."
+
+InFileSpatialDistribution2D:
   edn_label: "Milieuunabhängig"
-spatial_model_dist_file_filepos_selected:
+  edn_description: "Milieuunabhängig"
+InFileSpatialDistribution2D_xPositionKey:
+  gams_identifier: "X-Schlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname)."
+InFileSpatialDistribution2D_yPositionKey:
+  gams_identifier: "Y-Schlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Auswahl der Y-Position in der tabellarischen Datei (Spaltenname)."
+InFileSpatialDistribution2D_attrFile:
+  gams_identifier: "Tabellarische Datei"
+  gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
+
+InFileSelectedSpatialDistribution2D:
   edn_label: "Milieuabhängig"
-spatial_model_dist_file_filepos_selectedweighted:
+  edn_description: "Milieuabhängig"
+InFileSelectedSpatialDistribution2D_attrFile:
+  gams_identifier: "Tabellarische Datei"
+  gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
+InFileSelectedSpatialDistribution2D_xPositionKey:
+  gams_identifier: "X-Schlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname)."
+InFileSelectedSpatialDistribution2D_yPositionKey:
+  gams_identifier: "Y-Schlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Auswahl der Y-Position in der tabellarischen Datei (Spaltenname)."
+InFileSelectedSpatialDistribution2D_selectKey:
+  gams_identifier: "Auswahlschlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname)."
+
+InFileSelectedGroupedSpatialDistribution2D:
   edn_label: "Milieuabhängig und gewichtet"
+  edn_description: "Milieuabhängig und gewichtet"
+InFileSelectedGroupedSpatialDistribution2D_attrFile:
+  gams_identifier: "Tabellarische Datei"
+  gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
+InFileSelectedGroupedSpatialDistribution2D_xPositionKey:
+  gams_identifier: "X-Schlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname)."
+InFileSelectedGroupedSpatialDistribution2D_yPositionKey:
+  gams_identifier: "Y-Schlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Auswahl der Y-Position in der tabellarischen Datei (Spaltenname)."
+InFileSelectedGroupedSpatialDistribution2D_selectKey:
+  gams_identifier: "Auswahlschlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname)."
+InFileSelectedGroupedSpatialDistribution2D_groupKey:
+  gams_identifier: "Gruppierungsschlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Gruppierung und Wichtung anhand der tabellarischen Datei (Spaltenname)."
+
+
 
 time:
   edn_label: "Zeitliche Modell"
-time_discrete_ms:
+  edn_description: ""
+
+InDiscreteTimeModel:
   edn_label: "Diskret - Millisekunde"
-time_discrete_unit:
-  edn_label: "Diskret"
+  edn_description: ""
+InDiscreteTimeModel_timePerTickInMs:
+  gams_identifier: "Zeit pro Schritt"
+  gams_description: "Legt die Zeit fest, welche pro diskreten Schritt vergeht. Der Wert muss in Millisekunden angegeben werden."
+  gams_unit: "[ms]"
+
+InUnitStepDiscreteTimeModel:
+  edn_label: "Diskret - Millisekunde"
+  edn_description: ""
+InUnitStepDiscreteTimeModel_amountOfTime:
+  gams_identifier: "Zeitdauer"
+  gams_description: "Legt die Zeitdauer fest, welche pro diskreten Schritt vergeht."
+InUnitStepDiscreteTimeModel_useMs:
+  gams_identifier: "Millisekunden"
+  gams_description: "Verwendet Millisekunden alsEinheit für die Zeitdauer."
+InUnitStepDiscreteTimeModel_useSec:
+  gams_identifier: "Sekunden"
+  gams_description: "Verwendet Sekunden alsEinheit für die Zeitdauer."
+InUnitStepDiscreteTimeModel_useMin:
+  gams_identifier: "Minuten"
+  gams_description: "Verwendet Minuten alsEinheit für die Zeitdauer."
+InUnitStepDiscreteTimeModel_useH:
+  gams_identifier: "Stunden"
+  gams_description: "Verwendet Stunden alsEinheit für die Zeitdauer."
+InUnitStepDiscreteTimeModel_useD:
+  gams_identifier: "Tage"
+  gams_description: "Verwendet Tage alsEinheit für die Zeitdauer."
+InUnitStepDiscreteTimeModel_useW:
+  gams_identifier: "Wochen"
+  gams_description: "Verwendet Wochen alsEinheit für die Zeitdauer."
+InUnitStepDiscreteTimeModel_useM:
+  gams_identifier: "Monate"
+  gams_description: "Verwendet Monate alsEinheit für die Zeitdauer."
+
+
 
 graphviz_agent_color_mapping:
   edn_label: "Agentengruppe-Farben-Mapping"
   edn_description: "Agentengruppe, welche im Graphen dargestellt werden sollen."
+
+
 
 submodule:
   edn_label: "Submodule"

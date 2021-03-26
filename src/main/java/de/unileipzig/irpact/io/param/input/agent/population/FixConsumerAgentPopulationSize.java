@@ -14,6 +14,10 @@ import de.unileipzig.irptools.util.TreeResourceApplier;
 import java.lang.invoke.MethodHandles;
 import java.util.Collection;
 
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
@@ -24,27 +28,23 @@ public class FixConsumerAgentPopulationSize implements PopulationSize {
     public static Class<?> thisClass() {
         return L.lookupClass();
     }
+    public static String thisName() {
+        return thisClass().getSimpleName();
+    }
 
     public static void initRes(TreeAnnotationResource res) {
-        TreeResourceApplier.callAllSubInitResSilently(thisClass(), res);
     }
     public static void applyRes(TreeAnnotationResource res) {
-        TreeResourceApplier.callAllSubApplyResSilently(thisClass(), res);
+        putClassPath(res, thisClass(), AGENTS, POPULATION, thisName());
+        addEntry(res, thisClass(), "size");
+        addEntry(res, thisClass(), "cags");
     }
 
     public String _name;
 
-    public static void initRes0(TreeAnnotationResource res) {
-    }
-    public static void applyRes0(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public int size;
 
-    public static void initRes1(TreeAnnotationResource res) {
-    }
-    public static void applyRes1(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public InConsumerAgentGroup[] cags;
 

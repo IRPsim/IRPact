@@ -10,40 +10,30 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InComplexAffinityEntry implements InAffinityEntry {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                thisClass(),
-                res.getCachedElement("Agenten"),
-                res.getCachedElement("Konsumer"),
-                res.getCachedElement("Affinity")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Ausgangsgruppe")
-                .setGamsDescription("Ausgangsgruppe")
-                .store(thisClass(), "srcCag");
-        res.newEntryBuilder()
-                .setGamsIdentifier("Zielgruppe")
-                .setGamsDescription("Zielgruppe")
-                .store(thisClass(), "tarCag");
-        res.newEntryBuilder()
-                .setGamsIdentifier("Affinity-Wert")
-                .setGamsDescription("Affinity-Wert")
-                .store(thisClass(), "affinityValue");
+        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_AFFINITY, thisName());
+        addEntry(res, thisClass(), "srcCag");
+        addEntry(res, thisClass(), "tarCag");
+        addEntry(res, thisClass(), "affinityValue");
     }
 
     public String _name;

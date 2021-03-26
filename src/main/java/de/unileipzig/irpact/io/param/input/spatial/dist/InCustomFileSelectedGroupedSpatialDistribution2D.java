@@ -24,53 +24,34 @@ import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Map;
 
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.IOConstants.SPATIAL_MODEL_DIST_FILE_CUSTOMPOS;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InCustomFileSelectedGroupedSpatialDistribution2D implements InSpatialDistribution {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                thisClass(),
-                res.getCachedElement("Räumliche Modell"),
-                res.getCachedElement("SpatialDist"),
-                res.getCachedElement("CustomPos"),
-                res.getCachedElement("InCustomSelectedGroupedSpatialDistribution2D")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("X-Position1")
-                .setGamsDescription("X-Position")
-                .store(thisClass(), "xPosSupplier");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Y-Position1")
-                .setGamsDescription("Y-Position")
-                .store(thisClass(), "yPosSupplier");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Tabellendaten1")
-                .setGamsDescription("Zu nutzende Tabelle für weitere Informationen")
-                .store(thisClass(), "file");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Filterschlüssel1")
-                .setGamsDescription("Dieser Schlüssel wird verwendet, um die Daten zu filtern (z.B. Milieu).")
-                .store(thisClass(), "selectKey");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Gruppierungsschlüssel1")
-                .setGamsDescription("Dieser Schlüssel wird verwendet, um die Daten zu für die Wichtung zu gruppieren.")
-                .store(thisClass(), "groupKey");
+        putClassPath(res, thisClass(), SPATIAL, SPATIAL_MODEL_DIST, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS, thisName());
+        addEntry(res, thisClass(), "xPosSupplier");
+        addEntry(res, thisClass(), "yPosSupplier");
+        addEntry(res, thisClass(), "attrFile");
+        addEntry(res, thisClass(), "selectKey");
+        addEntry(res, thisClass(), "groupKey");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());

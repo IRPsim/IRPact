@@ -6,7 +6,6 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.io.param.input.InputParser;
-import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -15,32 +14,29 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
 
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
-@Todo("UI")
 public class InBooleanDistribution implements InUnivariateDoubleDistribution {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InBooleanDistribution.class,
-                res.getCachedElement("Verteilungsfunktionen"),
-                res.getCachedElement("Boolean")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("-")
-                .setGamsDescription("Platzhalter")
-                .store(InBooleanDistribution.class, "placeholderBooleanDist");
+        putClassPath(res, thisClass(), DISTRIBUTIONS, thisName());
+        addEntry(res, thisClass(), "placeholderBooleanDist");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InBooleanDistribution.class);

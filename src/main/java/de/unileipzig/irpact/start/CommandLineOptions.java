@@ -64,10 +64,11 @@ public class CommandLineOptions implements Callable<Integer> {
     private boolean noSimulation;
 
     @CommandLine.Option(
-            names = { "--disableGamsNameTrimming" },
-            description = "Disables gams name trimming. Use this option only if you know what you are doing."
+            names = { "--useGamsNameTrimming" },
+            defaultValue = "0",
+            description = "Enables (1) or disables (0) gams name trimming. Default value is ${DEFAULT-VALUE}. Change this option only if you know what you are doing."
     )
-    private boolean disableGamsNameTrimming;
+    private int useGamsNameTrimming;
 
     @CommandLine.Option(
             names = "--maxGamsNameLength",
@@ -187,12 +188,10 @@ public class CommandLineOptions implements Callable<Integer> {
     //=========================
 
     public boolean isPrintHelp() {
-        checkExecuted();
         return printHelp;
     }
 
     public boolean isPrintVersion() {
-        checkExecuted();
         return printVersion;
     }
 
@@ -286,12 +285,8 @@ public class CommandLineOptions implements Callable<Integer> {
         return minGamsPartLength;
     }
 
-    public boolean isDisableGamsNameTrimming() {
-        return disableGamsNameTrimming;
-    }
-
     public boolean isEnableGamsNameTrimming() {
-        return !disableGamsNameTrimming;
+        return useGamsNameTrimming == 1;
     }
 
     //=========================

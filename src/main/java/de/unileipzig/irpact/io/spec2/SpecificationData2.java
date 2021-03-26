@@ -18,8 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static de.unileipzig.irpact.io.spec.SpecificationConstants.*;
-import static de.unileipzig.irpact.io.spec.SpecificationConstants.DIR_ConsumerAgentGroups;
+import static de.unileipzig.irpact.io.spec2.SpecificationConstants.*;
+import static de.unileipzig.irpact.io.spec2.SpecificationConstants.DIR_ConsumerAgentGroups;
 
 /**
  * @author Daniel Abitz

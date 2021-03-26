@@ -2,11 +2,8 @@ package de.unileipzig.irpact.io.param.input.process.ra;
 
 import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.agent.AgentManager;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.process.FixProcessModelFindingScheme;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
@@ -14,7 +11,6 @@ import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
-import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -22,80 +18,43 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_MODEL;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InRAProcessModel implements InProcessModel {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                thisClass(),
-                res.getCachedElement("Prozessmodell"),
-                res.getCachedElement("Relative Agreement")
-        );
+        putClassPath(res, thisClass(), PROCESS_MODEL, thisName());
 
-        res.newEntryBuilder()
-                .setGamsIdentifier("a")
-                .setGamsDescription("a")
-                .store(thisClass(), "a");
-        res.newEntryBuilder()
-                .setGamsIdentifier("b")
-                .setGamsDescription("b")
-                .store(thisClass(), "b");
-        res.newEntryBuilder()
-                .setGamsIdentifier("c")
-                .setGamsDescription("c")
-                .store(thisClass(), "c");
-        res.newEntryBuilder()
-                .setGamsIdentifier("d")
-                .setGamsDescription("d")
-                .store(thisClass(), "d");
+        addEntry(res, thisClass(), "a");
+        addEntry(res, thisClass(), "b");
+        addEntry(res, thisClass(), "c");
+        addEntry(res, thisClass(), "d");
 
-        res.newEntryBuilder()
-                .setGamsIdentifier("Adopter-Punkte")
-                .setGamsDescription("-")
-                .store(thisClass(), "adopterPoints");
-        res.newEntryBuilder()
-                .setGamsIdentifier("Interessenten-Punkte")
-                .setGamsDescription("-")
-                .store(thisClass(), "interestedPoints");
-        res.newEntryBuilder()
-                .setGamsIdentifier("Aware-Punkte")
-                .setGamsDescription("-")
-                .store(thisClass(), "awarePoints");
-        res.newEntryBuilder()
-                .setGamsIdentifier("Unbekannt-Punkte")
-                .setGamsDescription("-")
-                .store(thisClass(), "unknownPoints");
+        addEntry(res, thisClass(), "adopterPoints");
+        addEntry(res, thisClass(), "interestedPoints");
+        addEntry(res, thisClass(), "awarePoints");
+        addEntry(res, thisClass(), "unknownPoints");
 
-        res.newEntryBuilder()
-                .setGamsIdentifier("PV Datei")
-                .setGamsDescription("-")
-                .store(thisClass(), "pvFile");
+        addEntry(res, thisClass(), "logisticFactor");
 
-        res.newEntryBuilder()
-                .setGamsIdentifier("Datenerweiterung-Neigung")
-                .setGamsDescription("-")
-                .store(thisClass(), "slopeSuppliers");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Datenerweiterung-Orientierung")
-                .setGamsDescription("-")
-                .store(thisClass(), "orientationSuppliers");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Attribute für Unsicherheit")
-                .setGamsDescription("-")
-                .store(thisClass(), "uncertaintyGroupAttributes");
+        addEntry(res, thisClass(), "pvFile");
+        addEntry(res, thisClass(), "uncertaintyGroupAttributes");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -278,21 +237,8 @@ public class InRAProcessModel implements InProcessModel {
         model.setModelData(data);
         model.setRnd(rnd);
 
-        //FIXED
-        FixProcessModelFindingScheme findingScheme = new FixProcessModelFindingScheme();
-        findingScheme.setName("FIXED_ProcessFindingScheme");
-        findingScheme.setModel(model);
-        AgentManager agentManager = parser.getEnvironment().getAgents();
-        for(ConsumerAgentGroup cag: agentManager.getConsumerAgentGroups()) {
-            JadexConsumerAgentGroup jcag = (JadexConsumerAgentGroup) cag;
-            jcag.setProcessFindingScheme(findingScheme);
-            LOGGER.info(IRPSection.INITIALIZATION_PARAMETER, "set '{}' to '{}'", findingScheme.getName(), jcag.getName());
-        }
-
-        if(getUncertaintyGroupAttributes() != null) {
-            for(InUncertaintyGroupAttribute inUncert: getUncertaintyGroupAttributes()) {
-                inUncert.setup(parser, model);
-            }
+        for(InUncertaintyGroupAttribute inUncert: getUncertaintyGroupAttributes()) {
+            inUncert.setup(parser, model);
         }
 
         NPVXlsxData xlsxData = parser.parseEntityTo(getPvFile());

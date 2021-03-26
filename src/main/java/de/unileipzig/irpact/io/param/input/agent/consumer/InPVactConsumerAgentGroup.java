@@ -21,6 +21,9 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.core.process.ra.RAConstants.*;
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 
 /**
  * @author Daniel Abitz
@@ -32,92 +35,61 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
     public static Class<?> thisClass() {
         return L.lookupClass();
     }
+    public static String thisName() {
+        return thisClass().getSimpleName();
+    }
 
     public static void initRes(TreeAnnotationResource res) {
-        TreeResourceApplier.callAllSubInitResSilently(thisClass(), res);
     }
     public static void applyRes(TreeAnnotationResource res) {
-        TreeResourceApplier.callAllSubApplyResSilently(thisClass(), res);
+        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_GROUP, thisName());
+        addEntry(res, thisClass(), "noveltySeeking");
+        addEntry(res, thisClass(), "independentJudgmentMaking");
+        addEntry(res, thisClass(), "environmentalConcern");
+        addEntry(res, thisClass(), "interestThreshold");
+        addEntry(res, thisClass(), "financialThreshold");
+        addEntry(res, thisClass(), "adoptionThreshold");
+        addEntry(res, thisClass(), "communication");
+        addEntry(res, thisClass(), "rewire");
+        addEntry(res, thisClass(), "initialAdopter");
+        addEntry(res, thisClass(), "spatialDistribution");
+        addEntry(res, thisClass(), "informationAuthority");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
 
-    public static void initRes0(TreeAnnotationResource res) {
-    }
-    public static void applyRes0(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public InUnivariateDoubleDistribution[] noveltySeeking;
 
-    public static void initRes1(TreeAnnotationResource res) {
-    }
-    public static void applyRes1(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public InUnivariateDoubleDistribution[] independentJudgmentMaking;
 
-    public static void initRes2(TreeAnnotationResource res) {
-    }
-    public static void applyRes2(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public InUnivariateDoubleDistribution[] environmentalConcern;
 
-    public static void initRes3(TreeAnnotationResource res) {
-    }
-    public static void applyRes3(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public InUnivariateDoubleDistribution[] interestThreshold;
 
-    public static void initRes4(TreeAnnotationResource res) {
-    }
-    public static void applyRes4(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public InUnivariateDoubleDistribution[] financialThreshold;
 
-    public static void initRes5(TreeAnnotationResource res) {
-    }
-    public static void applyRes5(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public InUnivariateDoubleDistribution[] adoptionThreshold;
 
-    public static void initRes6(TreeAnnotationResource res) {
-    }
-    public static void applyRes6(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public InUnivariateDoubleDistribution[] communication;
 
-    public static void initRes7(TreeAnnotationResource res) {
-    }
-    public static void applyRes7(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public InUnivariateDoubleDistribution[] rewire;
 
-    public static void initRes8(TreeAnnotationResource res) {
-    }
-    public static void applyRes8(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public InUnivariateDoubleDistribution[] initialAdopter;
 
-    public static void initRes9(TreeAnnotationResource res) {
-    }
-    public static void applyRes9(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public InSpatialDistribution[] spatialDistribution;
 
-    public static void initRes10(TreeAnnotationResource res) {
-    }
-    public static void applyRes10(TreeAnnotationResource res) {
-    }
     @FieldDefinition
     public double informationAuthority;
 

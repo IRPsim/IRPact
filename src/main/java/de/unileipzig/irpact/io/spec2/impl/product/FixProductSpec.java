@@ -2,6 +2,7 @@ package de.unileipzig.irpact.io.spec2.impl.product;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.io.param.input.product.*;
 import de.unileipzig.irpact.io.spec2.SpecificationHelper2;
 import de.unileipzig.irpact.io.spec2.SpecificationJob2;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static de.unileipzig.irpact.io.spec.SpecificationConstants.*;
+import static de.unileipzig.irpact.io.spec2.SpecificationConstants.*;
 
 /**
  * @author Daniel Abitz
@@ -61,6 +62,9 @@ public class FixProductSpec extends AbstractSubSpec<InFixProduct> {
             return job.getCached(name);
         }
 
+        if(true)
+            throw new TodoException();
+
         InFixProduct product = new InFixProduct();
         product.setName(name);
         InProductGroup pg = job.findProductGroup(rootSpec.getText(TAG_group));
@@ -69,13 +73,13 @@ public class FixProductSpec extends AbstractSubSpec<InFixProduct> {
         List<InFixProductAttribute> attrList = new ArrayList<>();
         SpecificationHelper2 attrsSpec = rootSpec.getArray(TAG_attributes);
         for(SpecificationHelper2 attrSpec: attrsSpec.iterateElements()) {
-            InProductGroupAttribute grpAttr = pg.findAttribute(attrSpec.getText(TAG_group));
-            double value = attrSpec.getDouble(TAG_value);
-            InFixProductAttribute attr = new InFixProductAttribute();
-            attr.setName(name, grpAttr.getAttributeName());
-            attr.setGroupAttribute(grpAttr);
-            attr.setValue(value);
-            attrList.add(attr);
+//            InProductGroupAttribute grpAttr = pg.findAttribute(attrSpec.getText(TAG_group)); //TODO
+//            double value = attrSpec.getDouble(TAG_value);
+//            InFixProductAttribute attr = new InFixProductAttribute();
+//            attr.setName(name, grpAttr.getAttributeName());
+//            attr.setGroupAttribute(grpAttr);
+//            attr.setValue(value);
+//            attrList.add(attr);
         }
         product.setAttributes(attrList);
 

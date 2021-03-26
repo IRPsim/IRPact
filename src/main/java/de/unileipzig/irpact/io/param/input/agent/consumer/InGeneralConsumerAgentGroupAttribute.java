@@ -16,61 +16,35 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
-public class InGeneralConsumerAgentGroupAttribute implements InConsumerAgentGroupAttribute {
+public class InGeneralConsumerAgentGroupAttribute implements InDependentConsumerAgentGroupAttribute {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                thisClass(),
-                res.getCachedElement("Agenten"),
-                res.getCachedElement("Konsumer"),
-                res.getCachedElement("Attribute")
-        );
-
-        res.putPath(
-                thisClass(), "cagAttrName",
-                res.getCachedElement("Agenten"),
-                res.getCachedElement("Konsumer"),
-                res.getCachedElement("Attribute"),
-                res.getCachedElement("Attribute-Name-Mapping")
-        );
-
-        res.putPath(
-                thisClass(), "cagAttrDistribution",
-                res.getCachedElement("Agenten"),
-                res.getCachedElement("Konsumer"),
-                res.getCachedElement("Attribute"),
-                res.getCachedElement("Attribute-Verteilung-Mapping")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Name des KG-Attributes")
-                .setGamsDescription("Attributname")
-                .store(thisClass(), "cagAttrName");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Verteilungsfunktion des KG-Attributes")
-                .setGamsDescription("genutzte Funktion")
-                .store(thisClass(), "cagAttrDistribution");
+        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_ATTR, thisName());
+        addEntry(res, thisClass(), "attrName");
+        addEntry(res, thisClass(), "dist");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InGeneralConsumerAgentGroupAttribute.class);
 
     public String _name;
-
-    @FieldDefinition
-    public InConsumerAgentGroup[] cag;
 
     @FieldDefinition
     public InAttributeName[] attrName;
@@ -83,11 +57,9 @@ public class InGeneralConsumerAgentGroupAttribute implements InConsumerAgentGrou
 
     public InGeneralConsumerAgentGroupAttribute(
             String name,
-            InConsumerAgentGroup cag,
             InAttributeName attributeName,
             InUnivariateDoubleDistribution distribution) {
         this._name = name;
-        setConsumerAgentGroup(cag);
         setAttributeNameInstance(attributeName);
         setDistribution(distribution);
     }
@@ -110,29 +82,10 @@ public class InGeneralConsumerAgentGroupAttribute implements InConsumerAgentGrou
         return getAttributeNameInstance().getName();
     }
 
-    public void setConsumerAgentGroup(InConsumerAgentGroup cag) {
-        this.cag = new InConsumerAgentGroup[]{cag};
-    }
-
-    @Override
-    public InConsumerAgentGroup getConsumerAgentGroup(InputParser parser) throws ParsingException {
-        return getConsumerAgentGroup();
-    }
-
-    public InConsumerAgentGroup getConsumerAgentGroup() throws ParsingException {
-        return ParamUtil.getInstance(cag, "ConsumerAgentGroup");
-    }
-
-    @Override
-    public String getConsumerAgentGroupName() throws ParsingException {
-        return getConsumerAgentGroup().getName();
-    }
-
     public void setDistribution(InUnivariateDoubleDistribution dist) {
         this.dist = new InUnivariateDoubleDistribution[]{dist};
     }
 
-    @Override
     public InUnivariateDoubleDistribution getDistribution() throws ParsingException {
         return ParamUtil.getInstance(dist, "UnivariateDoubleDistribution");
     }

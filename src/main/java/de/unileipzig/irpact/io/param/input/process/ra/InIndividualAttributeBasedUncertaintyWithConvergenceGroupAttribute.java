@@ -18,24 +18,35 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_MODEL;
+import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_MODEL_RA_UNCERT;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute implements InUncertaintyGroupAttribute {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
+        putClassPath(res, thisClass(), PROCESS_MODEL, InRAProcessModel.thisName(), PROCESS_MODEL_RA_UNCERT, thisName());
+        addEntry(res, thisClass(), "uncertDist");
+        addEntry(res, thisClass(), "convergenceDist");
+        addEntry(res, thisClass(), "cagAttrs");
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
 
@@ -73,7 +84,7 @@ public class InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute 
         UnivariateDoubleDistribution conv = parser.parseEntityTo(getConvergenceDistribution());
 
         for(InConsumerAgentGroupAttribute inCagAttr: getAttributes()) {
-            InConsumerAgentGroup inCag = inCagAttr.getConsumerAgentGroup(parser);
+            InConsumerAgentGroup inCag = parser.getRoot().findConsumerAgentGroup(inCagAttr);
             ConsumerAgentGroup cag = parser.parseEntityTo(inCag);
             String attrName = inCagAttr.getAttributeName();
 

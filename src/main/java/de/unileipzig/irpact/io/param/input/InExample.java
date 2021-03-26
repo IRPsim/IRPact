@@ -4,6 +4,7 @@ import de.unileipzig.irpact.core.log.IRPLevel;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.simulation.tasks.PredefinedSimulationTask;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
+import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.*;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
@@ -182,7 +183,8 @@ public class InExample implements DefaultScenarioFactory {
 //                constant09
 //        );
 //        InBasicProductGroup pv = new InBasicProductGroup("PV", new InProductGroupAttribute[]{pv_e1});
-        InBasicProductGroup pv = new InBasicProductGroup("PV", new InProductGroupAttribute[]{});
+        //InBasicProductGroup pv = new InBasicProductGroup("PV", new InProductGroupAttribute[]{});
+        InBasicProductGroup pv = null;
 
         InFixProductAttribute fix_pv_e1 = new InFixProductAttribute("PV_E1_fix", null, 1.0);
         InFixProduct fix_pv = new InFixProduct("PV_fix", pv, new InFixProductAttribute[]{fix_pv_e1});
@@ -266,8 +268,9 @@ public class InExample implements DefaultScenarioFactory {
             InAttributeName name,
             InUnivariateDoubleDistribution dist,
             List<InConsumerAgentGroupAttribute> out) {
-        InGeneralConsumerAgentGroupAttribute attr = new InGeneralConsumerAgentGroupAttribute(cag.getName() + "_" + name.getName(), cag, name, dist);
-        out.add(attr);
+//        InGeneralConsumerAgentGroupAttribute attr = new InGeneralConsumerAgentGroupAttribute(cag.getName() + "_" + name.getName(), cag, name, dist);
+//        out.add(attr);
+        throw new TodoException();
     }
 
     @SuppressWarnings("SameParameterValue")

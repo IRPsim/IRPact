@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static de.unileipzig.irpact.io.spec.SpecificationConstants.*;
+import static de.unileipzig.irpact.io.spec2.SpecificationConstants.*;
 
 /**
  * @author Daniel Abitz

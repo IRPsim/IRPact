@@ -16,43 +16,30 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 import java.util.Collection;
 
+import static de.unileipzig.irpact.io.param.IOConstants.PRODUCTS;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InFixProduct implements InEntity {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                thisClass(),
-                res.getCachedElement("Produkte"),
-                res.getCachedElement("Initiale_Produkte")
-        );
-
-        res.putPath(
-                thisClass(), "fixPAttrs",
-                res.getCachedElement("Produkte"),
-                res.getCachedElement("Initiale_Produkte"),
-                res.getCachedElement("Initiale_Produkt-Attribut-Mapping")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Produktgruppe")
-                .setGamsDescription("Zugehörige Gruppe")
-                .store(thisClass(), "refPG");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Attribute")
-                .setGamsDescription("Attribute")
-                .store(thisClass(), "fixPAttrs");
+        putClassPath(res, thisClass(), PRODUCTS, thisName());
+        addEntry(res, thisClass(), "refPG");
+        addEntry(res, thisClass(), "fixPAttrs");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());

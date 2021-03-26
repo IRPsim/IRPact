@@ -10,8 +10,8 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.Objects;
 
-import static de.unileipzig.irpact.io.spec.SpecificationConstants.TAG_name;
-import static de.unileipzig.irpact.io.spec.SpecificationConstants.TAG_type;
+import static de.unileipzig.irpact.io.spec2.SpecificationConstants.TAG_name;
+import static de.unileipzig.irpact.io.spec2.SpecificationConstants.TAG_type;
 
 /**
  * @author Daniel Abitz

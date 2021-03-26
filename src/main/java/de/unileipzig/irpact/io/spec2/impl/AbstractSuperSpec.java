@@ -7,7 +7,7 @@ import de.unileipzig.irpact.io.spec2.SpecificationJob2;
 
 import java.util.*;
 
-import static de.unileipzig.irpact.io.spec.SpecificationConstants.TAG_type;
+import static de.unileipzig.irpact.io.spec2.SpecificationConstants.TAG_type;
 
 /**
  * @author Daniel Abitz

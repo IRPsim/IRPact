@@ -15,86 +15,51 @@ import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
-import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
-import de.unileipzig.irptools.util.TreeResourceApplier;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
- */
-@Todo("noch eine volle custom variante implementieren? ja/nein?")
-/*
-
-            SuppliedSpatialDistribution2D dist = new SuppliedSpatialDistribution2D();
-            dist.setName(getName());
-            dist.setXSupplier(xDist);
-            dist.setYSupplier(yDist);
-            parser.cache(this, dist);
-            jCag.setSpatialDistribution(dist);
  */
 @Definition
 public class InCustomFileSpatialDistribution2D implements InSpatialDistribution {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
     }
+    public static String thisName() {
+        return thisClass().getSimpleName();
+    }
 
     public static void initRes(TreeAnnotationResource res) {
-        TreeResourceApplier.callAllSubInitResSilently(thisClass(), res);
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InCustomFileSpatialDistribution2D.class,
-                res.getCachedElement("Räumliche Modell"),
-                res.getCachedElement("SpatialDist"),
-                res.getCachedElement("CustomPos"),
-                res.getCachedElement("InCustomSpatialDistribution2D")
-        );
-        TreeResourceApplier.callAllSubApplyResSilently(thisClass(), res);
+        putClassPath(res, thisClass(), SPATIAL, SPATIAL_MODEL_DIST, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS, thisName());
+        addEntry(res, thisClass(), "xPosSupplier");
+        addEntry(res, thisClass(), "yPosSupplier");
+        addEntry(res, thisClass(), "attrFile");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InCustomFileSpatialDistribution2D.class);
 
     public String _name;
 
-    public static void initRes0(TreeAnnotationResource res) {
-    }
-    public static void applyRes0(TreeAnnotationResource res) {
-        res.newEntryBuilder()
-                .setGamsIdentifier("X-Position")
-                .setGamsDescription("X-Position")
-                .store(InCustomFileSpatialDistribution2D.class, "xPosSupplier");
-    }
     @FieldDefinition
     public InUnivariateDoubleDistribution[] xPosSupplier;
 
-    public static void initRes1(TreeAnnotationResource res) {
-    }
-    public static void applyRes1(TreeAnnotationResource res) {
-        res.newEntryBuilder()
-                .setGamsIdentifier("Y-Position")
-                .setGamsDescription("Y-Position")
-                .store(InCustomFileSpatialDistribution2D.class, "yPosSupplier");
-    }
     @FieldDefinition
     public InUnivariateDoubleDistribution[] yPosSupplier;
 
-    public static void initRes2(TreeAnnotationResource res) {
-    }
-    public static void applyRes2(TreeAnnotationResource res) {
-        res.newEntryBuilder()
-                .setGamsIdentifier("Tabellendaten")
-                .setGamsDescription("Zu nutzende Tabelle für weitere Informationen")
-                .store(InCustomFileSpatialDistribution2D.class, "attrFile");
-    }
     @FieldDefinition
     public InSpatialTableFile[] attrFile;
 

@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static de.unileipzig.irpact.io.spec.SpecificationConstants.TAG_pvFiles;
-
 /**
  * @author Daniel Abitz
  */

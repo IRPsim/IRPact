@@ -6,12 +6,13 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.io.param.IOResources;
 import de.unileipzig.irpact.io.param.LocData;
-import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InNameSplitAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.*;
+import de.unileipzig.irpact.io.param.input.agent.population.FixConsumerAgentPopulationSize;
 import de.unileipzig.irpact.io.param.input.agent.population.PopulationSize;
+import de.unileipzig.irpact.io.param.input.agent.population.RelativeExternConsumerAgentPopulationSize;
 import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
@@ -22,10 +23,7 @@ import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.process.*;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.process.ra.*;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSelectedGroupedSpatialDistribution2D;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSelectedSpatialDistribution2D;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSpatialDistribution2D;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
+import de.unileipzig.irpact.io.param.input.spatial.dist.*;
 import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.distribution.*;
@@ -33,6 +31,7 @@ import de.unileipzig.irpact.io.param.input.network.*;
 import de.unileipzig.irpact.io.param.input.product.*;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
+import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irpact.start.optact.in.*;
@@ -57,6 +56,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz
@@ -80,7 +80,7 @@ public class InRoot implements RootClass {
         this.general = general;
     }
     public void setGeneral(InGeneral[] general) throws ParsingException {
-        this.general = ParamUtil.getInstance(general, "general");
+        this.general = getInstance(general, "general");
     }
     public InGeneral getGeneral() {
         return general;
@@ -96,7 +96,7 @@ public class InRoot implements RootClass {
         this.version = version;
     }
     public InVersion getVersion() throws ParsingException {
-        return ParamUtil.getInstance(version, "version");
+        return getInstance(version, "version");
     }
 
     //=========================
@@ -110,7 +110,7 @@ public class InRoot implements RootClass {
         this.affinityEntries = affinityEntries;
     }
     public InAffinityEntry[] getAffinityEntries() throws ParsingException {
-        return ParamUtil.getNonEmptyArray(affinityEntries, "affinitEntries");
+        return getNonEmptyArray(affinityEntries, "affinitEntries");
     }
 
     //=========================
@@ -124,17 +124,17 @@ public class InRoot implements RootClass {
         this.consumerAgentGroups = consumerAgentGroups;
     }
     public InConsumerAgentGroup[] getConsumerAgentGroups() throws ParsingException {
-        return ParamUtil.getNonNullArray(consumerAgentGroups, "consumerAgentGroups");
+        return getNonNullArray(consumerAgentGroups, "consumerAgentGroups");
     }
 
     @FieldDefinition
-    public InConsumerAgentGroupAttribute[] consumerAgentGroupAttributes = new InConsumerAgentGroupAttribute[0];
+    public InIndependentConsumerAgentGroupAttribute[] independentConsumerAgentGroupAttributes = new InIndependentConsumerAgentGroupAttribute[0];
 
-    public void setConsumerAgentGroupAttributes(InConsumerAgentGroupAttribute[] consumerAgentGroupAttributes) {
-        this.consumerAgentGroupAttributes = consumerAgentGroupAttributes;
+    public void setIndependentConsumerAgentGroupAttributes(InIndependentConsumerAgentGroupAttribute[] independentConsumerAgentGroupAttributes) {
+        this.independentConsumerAgentGroupAttributes = independentConsumerAgentGroupAttributes;
     }
-    public InConsumerAgentGroupAttribute[] getConsumerAgentGroupAttributes() throws ParsingException {
-        return ParamUtil.getNonNullArray(consumerAgentGroupAttributes, "consumerAgentGroupAttributes");
+    public InIndependentConsumerAgentGroupAttribute[] getIndependentConsumerAgentGroupAttributes() throws ParsingException {
+        return getNonNullArray(independentConsumerAgentGroupAttributes, "independentConsumerAgentGroupAttributes");
     }
 
     @FieldDefinition
@@ -144,7 +144,7 @@ public class InRoot implements RootClass {
         this.agentPopulationSizes = agentPopulationSizes;
     }
     public PopulationSize[] getAgentPopulationSizes() throws ParsingException {
-        return ParamUtil.getNonNullArray(agentPopulationSizes, "agentPopulationSizes");
+        return getNonNullArray(agentPopulationSizes, "agentPopulationSizes");
     }
 
     //=========================
@@ -158,7 +158,7 @@ public class InRoot implements RootClass {
         this.visibleBinaryData = visibleBinaryData;
     }
     public VisibleBinaryData[] getVisibleBinaryData() throws ParsingException {
-        return ParamUtil.getNonEmptyArray(visibleBinaryData, "visibleBinaryData");
+        return getNonEmptyArray(visibleBinaryData, "visibleBinaryData");
     }
 
     //fuer out->in transfer
@@ -173,13 +173,13 @@ public class InRoot implements RootClass {
     public InGraphTopologyScheme[] graphTopologySchemes = new InGraphTopologyScheme[0];
 
     public void setGraphTopologyScheme(InGraphTopologyScheme[] graphTopologySchemes) throws ParsingException {
-        this.graphTopologySchemes = ParamUtil.getOneElementArray(graphTopologySchemes, "graphTopologySchemes");
+        this.graphTopologySchemes = getOneElementArray(graphTopologySchemes, "graphTopologySchemes");
     }
     public void setGraphTopologyScheme(InGraphTopologyScheme graphTopologyScheme) {
         this.graphTopologySchemes = new InGraphTopologyScheme[]{graphTopologyScheme};
     }
     public InGraphTopologyScheme getGraphTopologyScheme() throws ParsingException {
-        return ParamUtil.getInstance(graphTopologySchemes, "graphTopologySchemes");
+        return getInstance(graphTopologySchemes, "graphTopologySchemes");
     }
 
     //=========================
@@ -193,10 +193,10 @@ public class InRoot implements RootClass {
         this.processModels = new InProcessModel[]{processModel};
     }
     public void setProcessModels(InProcessModel[] processModels) throws ParsingException {
-        this.processModels = ParamUtil.getNonEmptyArray(processModels, "processModel");
+        this.processModels = getNonEmptyArray(processModels, "processModel");
     }
     public InProcessModel[] getProcessModels() throws ParsingException {
-        return ParamUtil.getNonEmptyArray(processModels, "processModel");
+        return getNonEmptyArray(processModels, "processModel");
     }
 
     //=========================
@@ -206,21 +206,31 @@ public class InRoot implements RootClass {
     @FieldDefinition
     public InProductGroup[] productGroups = new InProductGroup[0];
 
-    public void setProductGroups(InProductGroup[] productGroups) throws ParsingException {
-        this.productGroups = ParamUtil.getNonEmptyArray(productGroups, "productGroups");
+    public void setProductGroups(InProductGroup[] productGroups) {
+        this.productGroups = productGroups;
     }
     public InProductGroup[] getProductGroups() throws ParsingException {
-        return ParamUtil.getNonEmptyArray(productGroups, "productGroups");
+        return getNonNullArray(productGroups, "productGroups");
+    }
+
+    @FieldDefinition
+    public InIndependentProductGroupAttribute[] independentProductGroupAttributes = new InIndependentProductGroupAttribute[0];
+
+    public void setIndependentProductGroupAttributes(InIndependentProductGroupAttribute[] independentProductGroupAttributes) {
+        this.independentProductGroupAttributes = independentProductGroupAttributes;
+    }
+    public InIndependentProductGroupAttribute[] getIndependentProductGroupAttributes() throws ParsingException {
+        return getNonNullArray(independentProductGroupAttributes, "independentProductGroupAttributes");
     }
 
     @FieldDefinition
     public InFixProduct[] fixProducts = new InFixProduct[0];
 
-    public void setFixProducts(InFixProduct[] fixProducts) throws ParsingException {
-        this.fixProducts = ParamUtil.getNonEmptyArray(fixProducts, "fixProducts");
+    public void setFixProducts(InFixProduct[] fixProducts) {
+        this.fixProducts = fixProducts;
     }
     public InFixProduct[] getFixProducts() throws ParsingException {
-        return ParamUtil.getNonEmptyArray(fixProducts, "fixProducts");
+        return getNonNullArray(fixProducts, "fixProducts");
     }
 
     //=========================
@@ -231,13 +241,13 @@ public class InRoot implements RootClass {
     public InSpatialModel[] spatialModel = new InSpatialModel[0];
 
     public void setSpatialModel(InSpatialModel[] spatialModel) throws ParsingException {
-        this.spatialModel = ParamUtil.getOneElementArray(spatialModel, "spatialModel");
+        this.spatialModel = getOneElementArray(spatialModel, "spatialModel");
     }
     public void setSpatialModel(InSpatialModel spatialModel) {
         this.spatialModel = new InSpatialModel[]{spatialModel};
     }
     public InSpatialModel getSpatialModel() throws ParsingException {
-        return ParamUtil.getInstance(spatialModel, "spatialModel");
+        return getInstance(spatialModel, "spatialModel");
     }
 
     //=========================
@@ -248,13 +258,13 @@ public class InRoot implements RootClass {
     public InTimeModel[] timeModel = new InTimeModel[0];
 
     public void setTimeModel(InTimeModel[] timeModel) throws ParsingException {
-        this.timeModel = ParamUtil.getOneElementArray(timeModel, "timeModel");
+        this.timeModel = getOneElementArray(timeModel, "timeModel");
     }
     public void setTimeModel(InTimeModel timeModel) {
         this.timeModel = new InTimeModel[]{timeModel};
     }
     public InTimeModel getTimeModel() throws ParsingException {
-        return ParamUtil.getInstance(timeModel, "timeModel");
+        return getInstance(timeModel, "timeModel");
     }
     //=========================
     //Graphviz
@@ -335,6 +345,33 @@ public class InRoot implements RootClass {
         } else {
             return Arrays.stream(array)
                     .filter(filter);
+        }
+    }
+
+    public InConsumerAgentGroup findConsumerAgentGroup(InConsumerAgentGroupAttribute attribute) throws ParsingException {
+        if(consumerAgentGroups == null) {
+            throw new ParsingException("no cags");
+        }
+
+        if(attribute instanceof InDependentConsumerAgentGroupAttribute) {
+            InDependentConsumerAgentGroupAttribute inDepAttr = (InDependentConsumerAgentGroupAttribute) attribute;
+            for(InConsumerAgentGroup inCag: getConsumerAgentGroups()) {
+                if(inCag instanceof InGeneralConsumerAgentGroup) {
+                    InGeneralConsumerAgentGroup inGenCag = (InGeneralConsumerAgentGroup) inCag;
+                    if(inGenCag.hasAttribute(inDepAttr)) {
+                        return inGenCag;
+                    }
+                }
+            }
+            throw new ParsingException("attribute '" + attribute.getName() + "' has no group");
+        }
+        else if(attribute instanceof InIndependentConsumerAgentGroupAttribute) {
+            InIndependentConsumerAgentGroupAttribute inIndepAttr = (InIndependentConsumerAgentGroupAttribute) attribute;
+            String cagName = inIndepAttr.getConsumerAgentGroupName();
+            return findConsumerAgentGroup(cagName);
+        }
+        else {
+            throw new ParsingException("unsupported attribute");
         }
     }
 
@@ -509,110 +546,104 @@ public class InRoot implements RootClass {
     //UI
     //=========================
 
-    private static void add(TreeAnnotationResource res, String dataKey, String priorityKey) {
-        IOResources.Data userData = res.getUserDataAs();
-        MultiCounter counter = userData.getCounter();
-        LocData loc = userData.getData();
-
-        TreeAnnotationResource.PathElementBuilder builder = res.newElementBuilder();
-        builder = builder.peek(loc.applyPathElementBuilder(dataKey));
-        if(priorityKey != null) {
-            builder = builder.setEdnPriority(counter.getAndInc(priorityKey));
-        }
-        builder.putCache(dataKey);
-    }
-
     public static void initRes(TreeAnnotationResource res) {
         IOResources.Data userData = res.getUserDataAs();
         MultiCounter counter = userData.getCounter();
         LocData loc = userData.getData();
 
-        add(res, GENERAL_SETTINGS, ROOT);
-                add(res, LOGGING, GENERAL_SETTINGS);
-                add(res, SPECIAL_SETTINGS, GENERAL_SETTINGS);
-                    add(res, BINARY_DATA, SPECIAL_SETTINGS);
+        addPathElement(res, GENERAL_SETTINGS, ROOT);
+                addPathElement(res, LOGGING, GENERAL_SETTINGS);
+                        addPathElement(res, LOGGING_GENERAL, LOGGING);
+                        addPathElement(res, LOGGING_SPECIFIC, LOGGING);
+                addPathElement(res, SPECIAL_SETTINGS, GENERAL_SETTINGS);
+                    addPathElement(res, VisibleBinaryData.thisName(), SPECIAL_SETTINGS);
 
-        add(res, NAMES, ROOT);
+        addPathElement(res, NAMES, ROOT);
 
-        add(res, FILES, ROOT);
-            add(res, PV_FILES, FILES);
-            add(res, TABLE_FILES, FILES);
+        addPathElement(res, FILES, ROOT);
+            addPathElement(res, InPVFile.thisName(), FILES);
+            addPathElement(res, InSpatialTableFile.thisName(), FILES);
 
-        add(res, DISTRIBUTIONS, ROOT);
-            add(res, BOOLEAN, DISTRIBUTIONS);
-            add(res, DIRAC, DISTRIBUTIONS);
-            add(res, RANDOM_BOUNDED_INTEGER, DISTRIBUTIONS);
-            add(res, FINITE_MASSPOINTS_DISCRETE_DISTRIBUTION, DISTRIBUTIONS);
-                add(res, MASSPOINT, FINITE_MASSPOINTS_DISCRETE_DISTRIBUTION);
+        addPathElement(res, DISTRIBUTIONS, ROOT);
+            addPathElement(res, InBooleanDistribution.thisName(), DISTRIBUTIONS);
+            addPathElement(res, InConstantUnivariateDistribution.thisName(), DISTRIBUTIONS);
+            addPathElement(res, InRandomBoundedIntegerDistribution.thisName(), DISTRIBUTIONS);
+            addPathElement(res, InFiniteMassPointsDiscreteDistribution.thisName(), DISTRIBUTIONS);
+                addPathElement(res, InMassPoint.thisName(), InFiniteMassPointsDiscreteDistribution.thisName());
 
-        add(res, AGENTS, ROOT);
-                add(res, CONSUMER, AGENTS);
-                        add(res, CONSUMER_GROUP, CONSUMER);
-                        add(res, CONSUMER_GROUP_ATTR_MAPPING, CONSUMER);
-                        add(res, CONSUMER_GROUP_INTEREST_MAPPING, CONSUMER);
-                        add(res, CONSUMER_GROUP_PRODUCT_FINDING_MAPPING, CONSUMER);
-                        add(res, CONSUMER_GROUP_SPATIAL_DIST_MAPPING, CONSUMER);
-                add(res, CONSUMER_ATTR, AGENTS);
-                        add(res, CONSUMER_ATTR_NAME_MAPPING, CONSUMER_ATTR);
-                        add(res, CONSUMER_ATTR_DIST_MAPPING, CONSUMER_ATTR);
-                add(res, CONSUMER_AFFINITY, AGENTS);
-                add(res, CONSUMER_INTEREST, AGENTS);
-                        add(res, CONSUMER_INTEREST_THRESHOLD, CONSUMER_INTEREST);
+        addPathElement(res, AGENTS, ROOT);
+                addPathElement(res, CONSUMER, AGENTS);
+                        addPathElement(res, CONSUMER_GROUP, CONSUMER);
+                            addPathElement(res, InGeneralConsumerAgentGroup.thisName(), CONSUMER_GROUP);
+                            addPathElement(res, InPVactConsumerAgentGroup.thisName(), CONSUMER_GROUP);
+                        addPathElement(res, CONSUMER_ATTR, CONSUMER);
+                                    addPathElement(res, InGeneralConsumerAgentGroupAttribute.thisName(), CONSUMER_GROUP);
+                                    addPathElement(res, InNameSplitConsumerAgentGroupAttribute.thisName(), CONSUMER_GROUP);
+                        addPathElement(res, CONSUMER_AFFINITY, CONSUMER);
+                                addPathElement(res, InComplexAffinityEntry.thisName(), CONSUMER_AFFINITY);
+                                addPathElement(res, InNameSplitAffinityEntry.thisName(), CONSUMER_AFFINITY);
+                        addPathElement(res, CONSUMER_INTEREST, CONSUMER);
+                                addPathElement(res, InProductThresholdInterestSupplyScheme.thisName(), CONSUMER_INTEREST);
+                addPathElement(res, POPULATION, AGENTS);
+                        addPathElement(res, FixConsumerAgentPopulationSize.thisName(), POPULATION);
+                        addPathElement(res, RelativeExternConsumerAgentPopulationSize.thisName(), POPULATION);
 
-        add(res, NETWORK, ROOT);
-                add(res, TOPOLOGY, NETWORK);
-                        add(res, TOPOLOGY_EMPTY, TOPOLOGY);
-                        add(res, TOPOLOGY_COMPLETE, TOPOLOGY);
-                        add(res, TOPOLOGY_FREE, TOPOLOGY);
-                                add(res, TOPOLOGY_FREE_EDGECOUNT, TOPOLOGY_FREE);
-                add(res, DIST_FUNC, NETWORK);
-                        add(res, DIST_FUNC_NO, DIST_FUNC);
-                        add(res, DIST_FUNC_INVERSE, DIST_FUNC);
+        addPathElement(res, NETWORK, ROOT);
+                addPathElement(res, TOPOLOGY, NETWORK);
+                        addPathElement(res, InUnlinkedGraphTopology.thisName(), TOPOLOGY);
+                        addPathElement(res, InCompleteGraphTopology.thisName(), TOPOLOGY);
+                        addPathElement(res, InFreeNetworkTopology.thisName(), TOPOLOGY);
+                                addPathElement(res, InNumberOfTies.thisName(), InFreeNetworkTopology.thisName());
+                addPathElement(res, DIST_FUNC, NETWORK);
+                        addPathElement(res, InNoDistance.thisName(), DIST_FUNC);
+                        addPathElement(res, InInverse.thisName(), DIST_FUNC);
 
-        add(res, PRODUCTS, ROOT);
-                add(res, PRODUCTS_GROUP, PRODUCTS);
-                        add(res, PRODUCTS_GROUP_ATTR_MAPPING, PRODUCTS_GROUP);
-                add(res, PRODUCTS_ATTR, PRODUCTS);
-                        add(res, PRODUCTS_ATTR_NAME_MAPPING, PRODUCTS_ATTR);
-                        add(res, PRODUCTS_ATTR_DIST_MAPPING, PRODUCTS_ATTR);
-                add(res, PRODUCTS_INITIAL, PRODUCTS);
-                        add(res, PRODUCTS_INITIAL_ATTR_MAPPING, PRODUCTS_INITIAL);
-                add(res, PRODUCTS_INITIAL_ATTR, PRODUCTS);
-                add(res, PRODUCTS_FINDING_SCHEME, PRODUCTS);
-                        add(res, PRODUCTS_FINDING_SCHEME_INITIAL, PRODUCTS_FINDING_SCHEME);
+        addPathElement(res, PRODUCTS, ROOT);
+                addPathElement(res, PRODUCTS_GROUP, PRODUCTS);
+                        addPathElement(res, InBasicProductGroup.thisName(), PRODUCTS_GROUP);
+                addPathElement(res, PRODUCTS_ATTR, PRODUCTS);
+                        addPathElement(res, InBasicProductGroupAttribute.thisName(), PRODUCTS_ATTR);
+                        addPathElement(res, InNameSplitProductGroupAttribute.thisName(), PRODUCTS_ATTR);
+                addPathElement(res, InFixProduct.thisName(), PRODUCTS);
+                addPathElement(res, InFixProductAttribute.thisName(), PRODUCTS);
+                addPathElement(res, PRODUCTS_FINDING_SCHEME, PRODUCTS);
+                        addPathElement(res, InFixProductFindingScheme.thisName(), PRODUCTS_FINDING_SCHEME);
 
-        add(res, PROCESS_MODEL, ROOT);
-                add(res, PROCESS_MODEL_RA, PROCESS_MODEL);
-                        add(res, PROCESS_MODEL_RA_UNCERT, PROCESS_MODEL_RA);
-                                add(res, PROCESS_MODEL_RA_UNCERT_AUTO, PROCESS_MODEL_RA_UNCERT);
-                                add(res, PROCESS_MODEL_RA_UNCERT_CUSTOM, PROCESS_MODEL_RA_UNCERT);
+        addPathElement(res, PROCESS_MODEL, ROOT);
+                addPathElement(res, InRAProcessModel.thisName(), PROCESS_MODEL);
+                        addPathElement(res, PROCESS_MODEL_RA_UNCERT, InRAProcessModel.thisName());
+                                addPathElement(res, InAutoUncertaintyGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
+                                addPathElement(res, InIndividualAttributeBasedUncertaintyGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
+                                addPathElement(res, InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
+                                addPathElement(res, InNameBasedUncertaintyGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
+                                addPathElement(res, InNameBasedUncertaintyWithConvergenceGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
+                                addPathElement(res, InPVactUncertaintyGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
 
-        add(res, SPATIAL, ROOT);
-                add(res, SPATIAL_FILE, SPATIAL);
-                add(res, SPATIAL_MODEL, SPATIAL);
-                        add(res, SPATIAL_MODEL_SPACE2D, SPATIAL_MODEL);
-                add(res, SPATIAL_MODEL_DIST, SPATIAL);
-                        add(res, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST);
-                                add(res, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS, SPATIAL_MODEL_DIST_FILE);
-                                        add(res, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS_INDEP, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS);
-                                        add(res, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS_SELECTED, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS);
-                                        add(res, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS_SELECTEDWEIGHTED, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS);
-                                add(res, SPATIAL_MODEL_DIST_FILE_FILEPOS, SPATIAL_MODEL_DIST_FILE);
-                                        add(res, SPATIAL_MODEL_DIST_FILE_FILEPOS_INDEP, SPATIAL_MODEL_DIST_FILE_FILEPOS);
-                                        add(res, SPATIAL_MODEL_DIST_FILE_FILEPOS_SELECTED, SPATIAL_MODEL_DIST_FILE_FILEPOS);
-                                        add(res, SPATIAL_MODEL_DIST_FILE_FILEPOS_SELECTEDWEIGHTED, SPATIAL_MODEL_DIST_FILE_FILEPOS);
+        addPathElement(res, SPATIAL, ROOT);
+                addPathElement(res, SPATIAL_MODEL, SPATIAL);
+                        addPathElement(res, InSpace2D.thisName(), SPATIAL_MODEL);
+                addPathElement(res, SPATIAL_MODEL_DIST, SPATIAL);
+                        addPathElement(res, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST);
+                                addPathElement(res, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS, SPATIAL_MODEL_DIST_FILE);
+                                        addPathElement(res, InCustomFileSpatialDistribution2D.thisName(), SPATIAL_MODEL_DIST_FILE_CUSTOMPOS);
+                                        addPathElement(res, InCustomFileSelectedSpatialDistribution2D.thisName(), SPATIAL_MODEL_DIST_FILE_CUSTOMPOS);
+                                        addPathElement(res, InCustomFileSelectedGroupedSpatialDistribution2D.thisName(), SPATIAL_MODEL_DIST_FILE_CUSTOMPOS);
+                                addPathElement(res, SPATIAL_MODEL_DIST_FILE_FILEPOS, SPATIAL_MODEL_DIST_FILE);
+                                        addPathElement(res, InFileSpatialDistribution2D.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
+                                        addPathElement(res, InFileSelectedSpatialDistribution2D.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
+                                        addPathElement(res, InFileSelectedGroupedSpatialDistribution2D.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
 
-        add(res, TIME, ROOT);
-                add(res, TIME_DISCRETE_MS, TIME);
-                add(res, TIME_DISCRETE_UNIT, TIME);
+        addPathElement(res, TIME, ROOT);
+                addPathElement(res, InDiscreteTimeModel.thisName(), TIME);
+                addPathElement(res, InUnitStepDiscreteTimeModel.thisName(), TIME);
 
         res.wrapElementBuilder(res.getCachedElement(GRAPHVIZ))
                 .setEdnPriority(counter.getAndInc(ROOT));
 
-                add(res, GRAPHVIZ_AGENT_COLOR_MAPPING, GRAPHVIZ);
+                addPathElement(res, GRAPHVIZ_AGENT_COLOR_MAPPING, GRAPHVIZ);
 
-        add(res, SUBMODULE, ROOT);
-                add(res, SUBMODULE_GRAPHVIZDEMO, SUBMODULE);
+        addPathElement(res, SUBMODULE, ROOT);
+                addPathElement(res, SUBMODULE_GRAPHVIZDEMO, SUBMODULE);
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.getCachedElement("OPTACT").setParent(res.getCachedElement(SUBMODULE));

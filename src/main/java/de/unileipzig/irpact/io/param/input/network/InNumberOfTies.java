@@ -11,38 +11,31 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.NETWORK;
+import static de.unileipzig.irpact.io.param.IOConstants.TOPOLOGY;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InNumberOfTies implements InEntity {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InNumberOfTies.class,
-                res.getCachedElement("Netzwerk"),
-                res.getCachedElement("Topologie"),
-                res.getCachedElement("Freie Topologie"),
-                res.getCachedElement("Anzahl Kanten")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Zu nutzende Konsumergruppe")
-                .setGamsDescription("Konsumergruppe")
-                .store(InNumberOfTies.class, "cag");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Anzahl Kanten")
-                .setGamsDescription("Anzahl Kanten je Konsumergruppe")
-                .store(InNumberOfTies.class, "count");
+        putClassPath(res, thisClass(), NETWORK, TOPOLOGY, InFreeNetworkTopology.thisName(), thisName());
+        addEntry(res, thisClass(), "count");
+        addEntry(res, thisClass(), "cags");
     }
 
     public String _name;

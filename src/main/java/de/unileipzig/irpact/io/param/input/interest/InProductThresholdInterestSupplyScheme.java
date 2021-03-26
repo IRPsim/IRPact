@@ -6,41 +6,35 @@ import de.unileipzig.irpact.core.product.interest.ProductThresholdInterestSupply
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
-import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
-@Todo("res testen")
 public class InProductThresholdInterestSupplyScheme implements InProductInterestSupplyScheme {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InProductThresholdInterestSupplyScheme.class,
-                res.getCachedElement("Agenten"),
-                res.getCachedElement("Konsumer"),
-                res.getCachedElement("Awareness"),
-                res.getCachedElement("Threshold")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Grenzwert")
-                .setGamsDescription("Grenzwert ab dem das Produkt interessant wird")
-                .store(InProductThresholdInterestSupplyScheme.class, "awarenessDistribution");
+        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_INTEREST, thisName());
+        addEntry(res, thisClass(), "interestDistribution");
     }
 
     public String _name;

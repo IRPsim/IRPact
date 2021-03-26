@@ -1,11 +1,14 @@
 package de.unileipzig.irpact.io.param;
 
+import de.unileipzig.irpact.commons.MultiCounter;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.io.param.input.InEntity;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 /**
@@ -163,5 +166,54 @@ public final class ParamUtil {
         return arr == null
                 ? -1
                 : arr.length;
+    }
+
+
+    //=========================
+    //TreeAnnotationResource
+    //=========================
+
+    public static void addPathElement(TreeAnnotationResource res, String dataKey, String priorityKey) {
+        IOResources.Data userData = res.getUserDataAs();
+        MultiCounter counter = userData.getCounter();
+        LocData loc = userData.getData();
+
+        TreeAnnotationResource.PathElementBuilder builder = res.newElementBuilder();
+        builder = builder.peek(loc.applyPathElementBuilder(dataKey));
+        if(priorityKey != null) {
+            builder = builder.setEdnPriority(counter.getAndInc(priorityKey));
+        }
+        builder.putCache(dataKey);
+    }
+
+    public static void addEntry(TreeAnnotationResource res, Class<?> c) {
+        IOResources.Data userData = res.getUserDataAs();
+        LocData loc = userData.getData();
+
+        res.newEntryBuilder()
+                .peek(loc.applyEntryBuilder(c))
+                .store(c);
+    }
+
+    public static void addEntry(TreeAnnotationResource res, Class<?> c, String field) {
+        IOResources.Data userData = res.getUserDataAs();
+        LocData loc = userData.getData();
+
+        res.newEntryBuilder()
+                .peek(loc.applyEntryBuilder(c, field))
+                .store(c, field);
+    }
+
+    public static void putClassPath(TreeAnnotationResource res, Class<?> c, String... keys) {
+        res.putPath(c, res.getCachedElements(keys));
+    }
+
+    public static void putFieldPath(TreeAnnotationResource res, Class<?> c, String field, String... keys) {
+        res.putPath(c, field, res.getCachedElements(keys));
+    }
+
+    public static void putFieldPathAndAddEntry(TreeAnnotationResource res, Class<?> c, String field, String... keys) {
+        putFieldPath(res, c, field, keys);
+        addEntry(res, c, field);
     }
 }

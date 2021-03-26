@@ -10,7 +10,7 @@ import de.unileipzig.irpact.io.spec2.SpecificationJob2;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.unileipzig.irpact.io.spec.SpecificationConstants.*;
+import static de.unileipzig.irpact.io.spec2.SpecificationConstants.*;
 
 /**
  * @author Daniel Abitz

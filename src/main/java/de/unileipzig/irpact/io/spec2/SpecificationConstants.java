@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.io.spec;
+package de.unileipzig.irpact.io.spec2;
 
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 

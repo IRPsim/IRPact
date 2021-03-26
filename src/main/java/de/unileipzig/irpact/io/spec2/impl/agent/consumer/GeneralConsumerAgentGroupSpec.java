@@ -2,7 +2,9 @@ package de.unileipzig.irpact.io.spec2.impl.agent.consumer;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InDependentConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InGeneralConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InNameSplitConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static de.unileipzig.irpact.io.spec.SpecificationConstants.*;
+import static de.unileipzig.irpact.io.spec2.SpecificationConstants.*;
 
 /**
  * @author Daniel Abitz
@@ -64,6 +66,9 @@ public class GeneralConsumerAgentGroupSpec extends AbstractSubSpec<InGeneralCons
             return job.getCached(name);
         }
 
+        if(true)
+            throw new TodoException();
+
         InGeneralConsumerAgentGroup grp = new InGeneralConsumerAgentGroup();
         grp.setName(rootSpec.getText(TAG_name));
 
@@ -73,7 +78,7 @@ public class GeneralConsumerAgentGroupSpec extends AbstractSubSpec<InGeneralCons
         grp.setSpatialDistribution(job.parseInlinedSpatialDistribution(rootSpec.getNode(TAG_spatialDistribution)));
         grp.setProductFindingScheme(job.parseInlinedProductFindingScheme(rootSpec.getNode(TAG_productFindingScheme)));
 
-        List<InConsumerAgentGroupAttribute> attrList = new ArrayList<>();
+        List<InDependentConsumerAgentGroupAttribute> attrList = new ArrayList<>();
         SpecificationHelper2 attrsSpec = rootSpec.getArray(TAG_attributes);
         for(SpecificationHelper2 attrSpec: attrsSpec.iterateElements()) {
             String attrName = attrSpec.getText(TAG_name);
@@ -81,7 +86,7 @@ public class GeneralConsumerAgentGroupSpec extends AbstractSubSpec<InGeneralCons
             InNameSplitConsumerAgentGroupAttribute grpAttr = new InNameSplitConsumerAgentGroupAttribute();
             grpAttr.setName(grp.getName(), attrName);
             grpAttr.setDistribution(attrDist);
-            attrList.add(grpAttr);
+            //attrList.add(grpAttr); //TODO
         }
         grp.setAttributes(attrList);
 
@@ -111,10 +116,10 @@ public class GeneralConsumerAgentGroupSpec extends AbstractSubSpec<InGeneralCons
         rootSpec.set(TAG_productFindingScheme, job.inlineEntity(input.getProductFindingScheme(), false));
 
         SpecificationHelper2 attrsSpec = rootSpec.getOrCreateArray(TAG_attributes);
-        for(InConsumerAgentGroupAttribute grpAttr: input.getAttributes()) {
+        for(InDependentConsumerAgentGroupAttribute grpAttr: input.getAttributes()) {
             SpecificationHelper2 attrSpec = attrsSpec.addObject();
-            attrSpec.set(TAG_name, grpAttr.getAttributeName());
-            attrSpec.set(TAG_distribution, job.inlineEntity(grpAttr.getDistribution(), false));
+//            attrSpec.set(TAG_name, grpAttr.getAttributeName()); //TODO
+//            attrSpec.set(TAG_distribution, job.inlineEntity(grpAttr.getDistribution(), false)); //TODO
         }
     }
 }

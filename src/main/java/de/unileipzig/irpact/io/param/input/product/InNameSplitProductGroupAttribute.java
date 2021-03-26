@@ -16,21 +16,30 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.PRODUCTS;
+import static de.unileipzig.irpact.io.param.IOConstants.PRODUCTS_ATTR;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
-public class InNameSplitProductGroupAttribute implements InProductGroupAttribute {
+public class InNameSplitProductGroupAttribute implements InIndependentProductGroupAttribute {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
+        putClassPath(res, thisClass(), PRODUCTS, PRODUCTS_ATTR, thisName());
+        addEntry(res, thisClass(), "dist");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InNameSplitProductGroupAttribute.class);
@@ -73,7 +82,7 @@ public class InNameSplitProductGroupAttribute implements InProductGroupAttribute
     }
 
     @Override
-    public BasicProductGroupAttribute parse(InputParser parser) throws ParsingException {
+    public void setup(InputParser parser, Object input) throws ParsingException {
         InProductGroup inPg = getProductGroup(parser);
         BasicProductGroup pg = parser.parseEntityTo(inPg);
 
@@ -89,7 +98,5 @@ public class InNameSplitProductGroupAttribute implements InProductGroupAttribute
 
         pg.addGroupAttribute(pgAttr);
         LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added ProductGroupAttribute '{}' ('{}') to group '{}'", pgAttr.getName(), getName(), pg.getName());
-
-        return pgAttr;
     }
 }

@@ -38,7 +38,7 @@ public class LocData {
         this.root = (ObjectNode) IRPactJson.YAML.readTree(reader);
     }
 
-    public String get(String key, String tag) {
+    public String getString(String key, String tag) {
         JsonNode keyNode = root.get(key);
         if(keyNode == null) {
             throw new NoSuchElementException(key);
@@ -58,6 +58,26 @@ public class LocData {
         }
     }
 
+    public Boolean getBoolean(String key, String tag) {
+        JsonNode keyNode = root.get(key);
+        if(keyNode == null) {
+            throw new NoSuchElementException(key);
+        }
+        if(!keyNode.isObject()) {
+            throw new IllegalArgumentException("no object: " + key);
+        }
+        JsonNode paramNode = keyNode.get(tag);
+        if(paramNode == null) {
+            return null;
+        } else {
+            if(paramNode.isBoolean()) {
+                return paramNode.booleanValue();
+            } else {
+                throw new IllegalArgumentException("no text: " + key + " -> " + tag);
+            }
+        }
+    }
+
     public Consumer<TreeAnnotationResource.PathElementBuilder> applyPathElementBuilder(String key) {
         return builder -> {
             setValidString(getEdnLabel(key), builder::setEdnLabel);
@@ -69,6 +89,9 @@ public class LocData {
         return builder -> {
             setValidString(getGamsIdentifier(key), builder::setGamsIdentifier);
             setValidString(getGamsDescription(key), builder::setGamsDescription);
+            setValidString(getGamsUnit(key), builder::setGamsUnit);
+            setValidString(getGamsDomain(key), builder::setGamsDomain);
+            setValidBoolean(getGamsHidden(key), builder::setGamsHidden);
         };
     }
 
@@ -91,19 +114,37 @@ public class LocData {
         }
     }
 
+    private void setValidBoolean(Boolean input, Consumer<? super Boolean> consumer) {
+        if(input != null) {
+            consumer.accept(input);
+        }
+    }
+
     private String getEdnLabel(String key) {
-        return get(key, EDN_LABEL);
+        return getString(key, EDN_LABEL);
     }
 
     private String getEdnDescription(String key) {
-        return get(key, EDN_DESCRIPTION);
+        return getString(key, EDN_DESCRIPTION);
     }
 
     private String getGamsIdentifier(String key) {
-        return get(key, GAMS_IDENTIFIER);
+        return getString(key, GAMS_IDENTIFIER);
     }
 
     private String getGamsDescription(String key) {
-        return get(key, GAMS_DESCRIPTION);
+        return getString(key, GAMS_DESCRIPTION);
+    }
+
+    private Boolean getGamsHidden(String key) {
+        return getBoolean(key, GAMS_HIDDEN);
+    }
+
+    private String getGamsUnit(String key) {
+        return getString(key, GAMS_UNIT);
+    }
+
+    private String getGamsDomain(String key) {
+        return getString(key, GAMS_DOMAIN);
     }
 }

@@ -7,6 +7,10 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
@@ -14,27 +18,19 @@ import java.lang.invoke.MethodHandles;
 @Definition
 public class InAutoUncertaintyGroupAttribute implements InUncertaintyGroupAttribute {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InAutoUncertaintyGroupAttribute.class,
-                res.getCachedElement("Prozessmodell"),
-                res.getCachedElement("Relative Agreement"),
-                res.getCachedElement("Uncertainty"),
-                res.getCachedElement("UncertaintyAuto")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("---")
-                .setGamsDescription("Platzhalter")
-                .store(InAutoUncertaintyGroupAttribute.class, "placeholderAutoUncert");
+        putClassPath(res, thisClass(), PROCESS_MODEL, InRAProcessModel.thisName(), PROCESS_MODEL_RA_UNCERT, thisName());
+        addEntry(res, thisClass(), "placeholderAutoUncert");
     }
 
     public String _name;

@@ -8,7 +8,7 @@ import de.unileipzig.irpact.io.spec2.SpecificationJob2;
 import de.unileipzig.irpact.io.spec2.impl.AbstractSpec;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import static de.unileipzig.irpact.io.spec.SpecificationConstants.TAG_spatialTableFile;
+import static de.unileipzig.irpact.io.spec2.SpecificationConstants.TAG_spatialTableFile;
 
 /**
  * @author Daniel Abitz
