@@ -1,14 +1,12 @@
 package de.unileipzig.irpact.experimental;
 
+import de.unileipzig.irpact.develop.TestFiles;
 import de.unileipzig.irptools.util.Util;
 import org.geotools.data.*;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.shapefile.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
-import org.geotools.data.store.ContentDataStore;
-import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.referencing.CRS;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

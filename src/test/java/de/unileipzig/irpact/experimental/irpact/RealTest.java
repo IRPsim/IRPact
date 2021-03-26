@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental.irpact;
 
-import de.unileipzig.irpact.experimental.TestFiles;
+import de.unileipzig.irpact.develop.TestFiles;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.experimental.deprecated.DefaultScenario;
 import de.unileipzig.irpact.experimental.deprecated.input.IRoot;

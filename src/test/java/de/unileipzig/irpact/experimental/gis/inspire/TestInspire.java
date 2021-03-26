@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental.gis.inspire;
 
-import de.unileipzig.irpact.experimental.TestFiles;
+import de.unileipzig.irpact.develop.TestFiles;
 import org.geotools.data.*;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.dbf.DbaseFileHeader;

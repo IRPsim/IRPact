@@ -162,9 +162,11 @@ public class IRPact implements IRPActAccess {
         validateEnvironment();
         postAgentCreation();
 
-        printNetwork();
-
         if(CL_OPTIONS.isNoSimulation()) {
+            if(CL_OPTIONS.hasImagePath()) {
+                LOGGER.info("create initial network image");
+                printNetwork();
+            }
             LOGGER.info("no simulation");
             return;
         }
@@ -251,13 +253,10 @@ public class IRPact implements IRPActAccess {
     }
 
     private void printNetwork() throws Exception {
-        if(graphvizConfiguration != null) {
-            LOGGER.info("create network image");
-            graphvizConfiguration.printSocialGraph(
-                    environment.getNetwork().getGraph(),
-                    SocialGraph.Type.COMMUNICATION
-            );
-        }
+        graphvizConfiguration.printSocialGraph(
+                environment.getNetwork().getGraph(),
+                SocialGraph.Type.COMMUNICATION
+        );
     }
 
     private void createPlatform() {
@@ -378,11 +377,19 @@ public class IRPact implements IRPActAccess {
 
     private void postSimulation() throws Exception {
         LOGGER.info("simulation finished");
+        if(CL_OPTIONS.hasImagePath()) {
+            LOGGER.info("create network image after simulation finished");
+            printNetwork();
+        }
+        createOutput();
+        callCallbacks();
+        finalTask();
+    }
+
+    private void createOutput() throws Exception {
         OutRoot outRoot = createOutRoot();
         outData = createOutputData(outRoot);
         storeOutputData(outData);
-        callCallbacks();
-        finalTask();
     }
 
     private OutRoot createOutRoot() throws Exception {

@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental.gis.realdata;
 
-import de.unileipzig.irpact.experimental.TestFiles;
+import de.unileipzig.irpact.develop.TestFiles;
 import org.geotools.data.*;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.dbf.DbaseFileHeader;
@@ -20,8 +20,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
