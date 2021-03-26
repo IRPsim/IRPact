@@ -91,6 +91,7 @@ public class LocData {
             setValidString(getGamsDescription(key), builder::setGamsDescription);
             setValidString(getGamsUnit(key), builder::setGamsUnit);
             setValidString(getGamsDomain(key), builder::setGamsDomain);
+            setValidString(getGamsDefault(key), builder::setGamsDefault);
             setValidBoolean(getGamsHidden(key), builder::setGamsHidden);
         };
     }
@@ -101,11 +102,11 @@ public class LocData {
     }
 
     public Consumer<TreeAnnotationResource.EntryBuilder> applyEntryBuilder(Class<?> c) {
-        return applyEntryBuilder(c.getName());
+        return applyEntryBuilder(c.getSimpleName());
     }
 
     public Consumer<TreeAnnotationResource.EntryBuilder> applyEntryBuilder(Class<?> c, String field) {
-        return applyEntryBuilder(c.getName(), field);
+        return applyEntryBuilder(c.getSimpleName(), field);
     }
 
     private void setValidString(String input, Consumer<? super String> consumer) {
@@ -146,5 +147,9 @@ public class LocData {
 
     private String getGamsDomain(String key) {
         return getString(key, GAMS_DOMAIN);
+    }
+
+    private String getGamsDefault(String key) {
+        return getString(key, GAMS_DEFAULT);
     }
 }

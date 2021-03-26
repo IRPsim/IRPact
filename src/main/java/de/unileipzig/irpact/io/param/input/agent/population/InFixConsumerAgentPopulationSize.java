@@ -2,6 +2,8 @@ package de.unileipzig.irpact.io.param.input.agent.population;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.simulation.InitializationData;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
@@ -9,7 +11,7 @@ import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
-import de.unileipzig.irptools.util.TreeResourceApplier;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 import java.util.Collection;
@@ -22,7 +24,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class FixConsumerAgentPopulationSize implements PopulationSize {
+public class InFixConsumerAgentPopulationSize implements InPopulationSize {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -31,6 +33,8 @@ public class FixConsumerAgentPopulationSize implements PopulationSize {
     public static String thisName() {
         return thisClass().getSimpleName();
     }
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public static void initRes(TreeAnnotationResource res) {
     }
@@ -48,7 +52,7 @@ public class FixConsumerAgentPopulationSize implements PopulationSize {
     @FieldDefinition
     public InConsumerAgentGroup[] cags;
 
-    public FixConsumerAgentPopulationSize() {
+    public InFixConsumerAgentPopulationSize() {
     }
 
     @Override
@@ -88,6 +92,7 @@ public class FixConsumerAgentPopulationSize implements PopulationSize {
             if(initData.hasInitialNumberOfConsumerAgents(cag)) {
                 throw new ParsingException("cag '" + cag.getName() + "' already has a population size: " + initData.getInitialNumberOfConsumerAgents(cag) + " (try to set: " + size + ")");
             }
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "set initial number of consumer agents '{}': {}", cag.getName(), size);
             initData.setInitialNumberOfConsumerAgents(cag, size);
         }
     }

@@ -17,8 +17,6 @@ public final class IOConstants {
     public static final String LOGGING_SPECIFIC = "logging_specific";
     public static final String SPECIAL_SETTINGS = "special_settings";
 
-    public static final String NAMES = "names";
-
     public static final String FILES = "files";
 
     public static final String DISTRIBUTIONS = "distributions";
@@ -68,6 +66,7 @@ public final class IOConstants {
     public static final String GAMS_HIDDEN = "gams_hidden";
     public static final String GAMS_UNIT = "gams_unit";
     public static final String GAMS_DOMAIN = "gams_domain";
+    public static final String GAMS_DEFAULT = "gams_default";
 
     private IOConstants() {
     }

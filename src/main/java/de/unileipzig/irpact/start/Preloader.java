@@ -72,9 +72,7 @@ public class Preloader {
         IRPSection.addAllToolsTo(filter);
         IRPLogging.setFilter(filter);
         IRPtools.setLoggingFilter(filter);
-        IRPtools.setToolsSection(IRPSection.TOOLS_CORE);
-        IRPtools.setDefinitionSection(IRPSection.TOOLS_DEFINITION);
-        IRPtools.setToolsSection(IRPSection.TOOLS_UTIL);
+        IRPSection.addSectionsToTools();
         IRPtools.main(clOptions.getArgs());
     }
 

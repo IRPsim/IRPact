@@ -22,7 +22,7 @@ import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InIndependentConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.io.param.input.agent.population.PopulationSize;
+import de.unileipzig.irpact.io.param.input.agent.population.InPopulationSize;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
@@ -190,14 +190,14 @@ public class JadexInputParser implements InputParser {
         checkVersion(root);
         setupGeneral(root);
 
-        parseProducts(root);
-        parseProductGroupAttributes(root);
-        parseFixProducts(root);
-
         parseConsumerAgentGroups(root);
         parseConsumerAgentGroupAttributes(root);
         parseConsumerAgentGroupAffinityMapping(root);
         parseAgentPopulation(root);
+
+        parseProducts(root);
+        parseProductGroupAttributes(root);
+        parseFixProducts(root);
         parseNetwork(root);
         parseSocialGraph(root);
 
@@ -280,9 +280,15 @@ public class JadexInputParser implements InputParser {
     }
 
     private void parseAgentPopulation(InRoot root) throws ParsingException {
+        int len = len(root.agentPopulationSizes);
+        debug("InPopulationSize: {}", len);
+        if(len == -1) {
+            return;
+        }
+
         BasicInitializationData initData = (BasicInitializationData) environment.getInitializationData();
 
-        for(PopulationSize popSize: root.getAgentPopulationSizes()) {
+        for(InPopulationSize popSize: root.getAgentPopulationSizes()) {
             popSize.setup(this, initData);
         }
     }

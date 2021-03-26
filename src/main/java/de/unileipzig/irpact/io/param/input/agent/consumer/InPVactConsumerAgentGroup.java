@@ -15,7 +15,6 @@ import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
-import de.unileipzig.irptools.util.TreeResourceApplier;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
@@ -86,6 +85,18 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
     @FieldDefinition
     public InUnivariateDoubleDistribution[] initialAdopter;
+
+    @FieldDefinition
+    public InUnivariateDoubleDistribution[] rateOfConvergence;
+
+    @FieldDefinition
+    public InUnivariateDoubleDistribution[] initialProductInterest;
+
+    @FieldDefinition
+    public InUnivariateDoubleDistribution[] constructionRate;
+
+    @FieldDefinition
+    public InUnivariateDoubleDistribution[] renovationRate;
 
     @FieldDefinition
     public InSpatialDistribution[] spatialDistribution;
@@ -185,6 +196,38 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         this.initialAdopter = new InUnivariateDoubleDistribution[]{initialAdopter};
     }
 
+    public InUnivariateDoubleDistribution getRateOfConvergence() throws ParsingException {
+        return ParamUtil.getInstance(rateOfConvergence, "rateOfConvergence");
+    }
+
+    public void setRateOfConvergence(InUnivariateDoubleDistribution rateOfConvergence) {
+        this.rateOfConvergence = new InUnivariateDoubleDistribution[]{rateOfConvergence};
+    }
+
+    public InUnivariateDoubleDistribution getInitialProductInterest() throws ParsingException {
+        return ParamUtil.getInstance(initialProductInterest, "initialProductInterest");
+    }
+
+    public void setInitialProductInterest(InUnivariateDoubleDistribution initialProductInterest) {
+        this.initialProductInterest = new InUnivariateDoubleDistribution[]{initialProductInterest};
+    }
+
+    public InUnivariateDoubleDistribution getConstructionRate() throws ParsingException {
+        return ParamUtil.getInstance(constructionRate, "constructionRate");
+    }
+
+    public void setConstructionRate(InUnivariateDoubleDistribution constructionRate) {
+        this.constructionRate = new InUnivariateDoubleDistribution[]{constructionRate};
+    }
+
+    public InUnivariateDoubleDistribution getRenovationRate() throws ParsingException {
+        return ParamUtil.getInstance(renovationRate, "renovationRate");
+    }
+
+    public void setRenovationRate(InUnivariateDoubleDistribution renovationRate) {
+        this.renovationRate = new InUnivariateDoubleDistribution[]{renovationRate};
+    }
+
     public InSpatialDistribution getSpatialDistribution() throws ParsingException {
         return ParamUtil.getInstance(spatialDistribution, "spatialDistribution");
     }
@@ -195,6 +238,7 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
     @Override
     public JadexConsumerAgentGroup parse(InputParser parser) throws ParsingException {
+
         AgentManager agentManager = parser.getEnvironment().getAgents();
 
         JadexConsumerAgentGroup jcag = new JadexConsumerAgentGroup();
@@ -205,6 +249,12 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         if(agentManager.hasConsumerAgentGroup(getName())) {
             throw new ParsingException("ConsumerAgentGroup '" + getName() + "' already exists");
         }
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse InPVactConsumerAgentGroup '{}'", jcag.getName());
+        if(parser.getRoot().addConsumerAgentGroup(this)) {
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added InPVactConsumerAgentGroup '{}' to InRoot", getName());
+            agentManager.addConsumerAgentGroup(jcag);
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added JadexConsumerAgentGroup '{}'", jcag.getName());
+        }
 
         addGroupAttribute(parser, jcag, getNoveltySeeking(), NOVELTY_SEEKING);
         addGroupAttribute(parser, jcag, getIndependentJudgmentMaking(), DEPENDENT_JUDGMENT_MAKING);
@@ -214,6 +264,10 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         addGroupAttribute(parser, jcag, getCommunication(), COMMUNICATION_FREQUENCY_SN);
         addGroupAttribute(parser, jcag, getRewire(), REWIRING_RATE);
         addGroupAttribute(parser, jcag, getInitialAdopter(), INITIAL_ADOPTER);
+        addGroupAttribute(parser, jcag, getRateOfConvergence(), RATE_OF_CONVERGENCE);
+        addGroupAttribute(parser, jcag, getInitialProductInterest(), INITIAL_PRODUCT_INTEREST);
+        addGroupAttribute(parser, jcag, getConstructionRate(), CONSTRUCTION_RATE);
+        addGroupAttribute(parser, jcag, getRenovationRate(), RENOVATION_RATE);
 
         UnivariateDoubleDistribution interestDist = parser.parseEntityTo(getInterestThreshold());
         ProductThresholdInterestSupplyScheme interestSupplyScheme = new ProductThresholdInterestSupplyScheme();

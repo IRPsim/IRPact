@@ -50,7 +50,9 @@ public class BasicUncertaintyGroupAttributeSupplierPR extends BinaryPRBase<Basic
                 UnivariateDoubleDistribution convDist = convDists.get(i);
 
                 manager.prepare(uncertDist);
-                manager.prepare(convDist);
+                if(convDist != null) {
+                    manager.prepare(convDist);
+                }
             }
         }
 
@@ -76,7 +78,9 @@ public class BasicUncertaintyGroupAttributeSupplierPR extends BinaryPRBase<Basic
                 UnivariateDoubleDistribution convDist = convDists.get(i);
 
                 long uncertDistId = manager.ensureGetUID(uncertDist);
-                long convDistId = manager.ensureGetUID(convDist);
+                long convDistId = convDist == null
+                        ? BinaryJsonData.NOTHING_ID
+                        : manager.ensureGetUID(convDist);
 
                 namesMap.computeIfAbsent(cagId, _cagId -> new ArrayList<>()).add(name);
                 uncertMap.computeIfAbsent(cagId, _cagId -> new ArrayList<>()).add(uncertDistId);
@@ -119,7 +123,9 @@ public class BasicUncertaintyGroupAttributeSupplierPR extends BinaryPRBase<Basic
                 long convId = convs.get(i);
 
                 UnivariateDoubleDistribution uncert = manager.ensureGet(uncertId);
-                UnivariateDoubleDistribution conv = manager.ensureGet(convId);
+                UnivariateDoubleDistribution conv = convId == BinaryJsonData.NOTHING_ID
+                        ? null
+                        : manager.ensureGet(convId);
 
                 object.add(cag, name, uncert, conv);
             }

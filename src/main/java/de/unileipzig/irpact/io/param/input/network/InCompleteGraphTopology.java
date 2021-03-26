@@ -34,7 +34,7 @@ public class InCompleteGraphTopology implements InGraphTopologyScheme {
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), NETWORK, TOPOLOGY, thisName());
-        addEntry(res, thisClass(), "placeholderUnlinked");
+        addEntry(res, thisClass(), "initialWeight");
     }
 
     public String _name;

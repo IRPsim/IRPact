@@ -56,6 +56,13 @@ public class IOResources extends TreeAnnotationResource {
         this(Locale.GERMAN);
     }
 
+    public IOResources(java.nio.file.Path pathToResource) {
+        LocData locData = loadLocData(pathToResource);
+        IOResources.Data userData = new Data(locData);
+        setUserData(userData);
+        init();
+    }
+
     public IOResources(Locale locale) {
         LocData locData = loadLocData(locale);
         IOResources.Data userData = new Data(locData);
@@ -63,7 +70,7 @@ public class IOResources extends TreeAnnotationResource {
         init();
     }
 
-    protected LocData loadLocData(Locale locale) {
+    protected static LocData loadLocData(Locale locale) {
         String langTag = locale.toLanguageTag();
         String fileName = "loc_" + langTag + ".yaml";
         String resName = "irpactdata/" + fileName;
@@ -76,6 +83,14 @@ public class IOResources extends TreeAnnotationResource {
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
             }
+        }
+    }
+
+    protected static LocData loadLocData(java.nio.file.Path pathToFile) {
+        try {
+            return new LocData(pathToFile);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -98,7 +113,7 @@ public class IOResources extends TreeAnnotationResource {
         gvRes.initEdn();
         gvRes.update();
         putAll(gvRes);
-        putCache("Graphviz", gvRes.graphviz);
+        putCache(IOConstants.GRAPHVIZ, gvRes.graphviz);
     }
 
     //=========================
@@ -148,14 +163,14 @@ public class IOResources extends TreeAnnotationResource {
         IWattsStrogatzModel_Element.set(EDN_LABEL, "Watts-Strogatz-Model");
         IWattsStrogatzModel_Element.set(SPECIAL_EDN_PRIORITIES, "0");
         IWattsStrogatzModel_Element.set(EDN_DESCRIPTION, "Watts-Strogatz-Model");
-        Path IWattsStrogatzModel_Path = buildPath(getCachedElement("Graphviz"), topo, IWattsStrogatzModel_Element);
+        Path IWattsStrogatzModel_Path = buildPath(getCachedElement(IOConstants.GRAPHVIZ), topo, IWattsStrogatzModel_Element);
         putPath(IWattsStrogatzModel.class, IWattsStrogatzModel_Path);
 
         PathElement IFreeMultiGraphTopology_Element = newElement();
         IFreeMultiGraphTopology_Element.set(EDN_LABEL, "Freie Topologie");
         IFreeMultiGraphTopology_Element.set(SPECIAL_EDN_PRIORITIES, "0");
         IFreeMultiGraphTopology_Element.set(EDN_DESCRIPTION, "Freie Topologie");
-        Path IFreeMultiGraphTopology_Path = buildPath(getCachedElement("Graphviz"), topo, IFreeMultiGraphTopology_Element);
+        Path IFreeMultiGraphTopology_Path = buildPath(getCachedElement(IOConstants.GRAPHVIZ), topo, IFreeMultiGraphTopology_Element);
         putPath(IFreeMultiGraphTopology.class, IFreeMultiGraphTopology_Path);
     }
 

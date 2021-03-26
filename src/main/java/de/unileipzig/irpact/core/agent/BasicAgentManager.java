@@ -94,6 +94,7 @@ public class BasicAgentManager implements AgentManager {
         return consumerAgentGroups.containsKey(name);
     }
 
+    @Override
     public void addConsumerAgentGroup(ConsumerAgentGroup group) {
         if(hasConsumerAgentGroup(group.getName())) {
             throw new IllegalArgumentException("group name '" + group.getName() + "' already exists");

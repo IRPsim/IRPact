@@ -181,6 +181,18 @@ InPVactConsumerAgentGroup_rewire:
 InPVactConsumerAgentGroup_initialAdopter:
   gams_identifier: "initialAdopter"
   gams_description: "initialAdopter"
+InPVactConsumerAgentGroup_rateOfConvergence:
+  gams_identifier: "rateOfConvergence"
+  gams_description: "rateOfConvergence"
+InPVactConsumerAgentGroup_initialProductInterest:
+  gams_identifier: "initialProductInterest"
+  gams_description: "initialProductInterest"
+InPVactConsumerAgentGroup_constructionRate:
+  gams_identifier: "constructionRate"
+  gams_description: "constructionRate"
+InPVactConsumerAgentGroup_renovationRate:
+  gams_identifier: "renovationRate"
+  gams_description: "renovationRate"
 InPVactConsumerAgentGroup_spatialDistribution:
   gams_identifier: "spatialDistribution"
   gams_description: "spatialDistribution"
@@ -245,35 +257,35 @@ population:
   edn_label: "Population"
   edn_description: "Legt die Agentenpopulation fest."
 
-FixConsumerAgentPopulationSize:
+InFixConsumerAgentPopulationSize:
   edn_label: "Feste Konsumergruppengröße"
   edn_description: ""
-FixConsumerAgentPopulationSize_size:
+InFixConsumerAgentPopulationSize_size:
   gams_identifier: "Anzahl der Agenten"
   gams_description: "Legt die Anzahl der Agenten bzw. die Populationsgröße für diese Konsumergruppe fest."
-FixConsumerAgentPopulationSize_cags:
+InFixConsumerAgentPopulationSize_cags:
   gams_identifier: "Konsumergruppen"
   gams_description: "Legt die Konsumergruppen fest, welche diese Populationsgröße haben sollen."
 
-RelativeExternConsumerAgentPopulationSize:
+InRelativeExternConsumerAgentPopulationSize:
   edn_label: "Feste Konsumergruppengröße"
   edn_description: ""
-RelativeExternConsumerAgentPopulationSize_totalSize:
+InRelativeExternConsumerAgentPopulationSize_totalSize:
   gams_identifier: "Anzahl der Agenten"
   gams_description: "Legt gesamte Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls die maximal mögliche Anzahl genutzt werden soll, wird dieser Wert ignoriert."
-RelativeExternConsumerAgentPopulationSize_useMaximumSize:
+InRelativeExternConsumerAgentPopulationSize_useMaximumSize:
   gams_identifier: "Maximal mögliche Population nutzen?"
   gams_description: "Legt fest, ob die gesamte Populationsgröße aus der Datei berechnet werden soll."
-RelativeExternConsumerAgentPopulationSize_considerAllForShares:
+InRelativeExternConsumerAgentPopulationSize_considerAllForShares:
   gams_identifier: "Alle Konsumergruppenfür die Anteilsberechnung berücksichtigen?"
   gams_description: "Legt fest, ob alle Gruppen aus der Datei für die Berechnung der Anteile genutzt werden sollen oder nur die hier spezifizierten."
-RelativeExternConsumerAgentPopulationSize_cags:
+InRelativeExternConsumerAgentPopulationSize_cags:
   gams_identifier: "Konsumergruppen"
   gams_description: "Legt die Konsumergruppen fest, welche berücksichtigt werden sollen."
-RelativeExternConsumerAgentPopulationSize_file:
+InRelativeExternConsumerAgentPopulationSize_file:
   gams_identifier: "Tabellarische Datei"
   gams_description: "Tabellarische Eingabedatei, aus der die Informationen gelesen werden sollen."
-RelativeExternConsumerAgentPopulationSize_selectKey:
+InRelativeExternConsumerAgentPopulationSize_selectKey:
   gams_identifier: "Auswahlschlüssel"
   gams_description: "Schlüssel, nachdem die Datei gefiltert wird. Wichtig: Der Daten in der Datei müssen dem Konsumergruppennamen entsprechen."
 
@@ -415,37 +427,37 @@ process_model:
 
 InRAProcessModel:
   edn_label: "Relative Agreement"
-InAutoUncertaintyGroupAttribute_a:
+InRAProcessModel_a:
   gams_identifier: "Einfluss finanzielle Komponente (a)"
   gams_description: "Legt den Einfluss der finanziellen Komponente fest."
-InAutoUncertaintyGroupAttribute_b:
+InRAProcessModel_b:
   gams_identifier: "Einfluss novelty Komponente (b)"
   gams_description: "Legt den Einfluss der novelty Komponente fest."
-InAutoUncertaintyGroupAttribute_c:
+InRAProcessModel_c:
   gams_identifier: "Umwelteinfluss (c)"
   gams_description: "Legt den Umwelteinfluss fest."
-InAutoUncertaintyGroupAttribute_d:
+InRAProcessModel_d:
   gams_identifier: "Einfluss soziale Komponente (d)"
   gams_description: "Legt den Einfluss der sozialen Komponente fest."
-InAutoUncertaintyGroupAttribute_adopterPoints:
+InRAProcessModel_adopterPoints:
   gams_identifier: "Einfluss der Kommunikation mit Adoptern"
   gams_description: "Legt den Einfluss für die Kommunikation mit Adoptern fest."
-InAutoUncertaintyGroupAttribute_interestedPoints:
+InRAProcessModel_interestedPoints:
   gams_identifier: "Einfluss der Kommunikation mit Interessenten"
   gams_description: "Legt den Einfluss für die Kommunikation mit Interessenten fest."
-InAutoUncertaintyGroupAttribute_awarePoints:
+InRAProcessModel_awarePoints:
   gams_identifier: "Einfluss der Kommunikation mit Bewussten"
   gams_description: "Legt den Einfluss für die Kommunikation mit Bewussten fest."
-InAutoUncertaintyGroupAttribute_unknownPoints:
+InRAProcessModel_unknownPoints:
   gams_identifier: "Einfluss der Kommunikation mit Unwissenden"
   gams_description: "Legt den Einfluss für die Kommunikation mit Unwissenden fest."
-InAutoUncertaintyGroupAttribute_logisticFactor:
+InRAProcessModel_logisticFactor:
   gams_identifier: "Einflussfaktor der logistischen Funktion"
   gams_description: "Legt den Einflussfaktor 'a' der logistischen Funktion fest: logistic(a * -x)."
-InAutoUncertaintyGroupAttribute_pvFile:
+InRAProcessModel_pvFile:
   gams_identifier: "PV-Datei"
   gams_description: "Legt die zu nutzende PV-Datei fest."
-InAutoUncertaintyGroupAttribute_uncertaintyGroupAttributes:
+InRAProcessModel_uncertaintyGroupAttributes:
   gams_identifier: "Unsicherheiten"
   gams_description: "Bestimmt die Unsicherheiten, welche von diesem Modell verwendet werden."
 
@@ -718,3 +730,22 @@ submodule:
   edn_label: "Submodule"
 submodule_graphvizdemo:
   edn_label: "Graphvizdemo"
+
+
+
+InVersion:
+  gams_identifier: "IRPact Version"
+  gams_description: "Die Version von IRPact, welche bei der Erstellung des Szenarios aktuell war."
+  gams_hidden: true
+InVersion_placeholderVersion:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+
+
+InAttributeName:
+  edn_label: "Namen"
+  edn_description: "Verteilungsfunktion, welche 0 oder 1 zurück gibt."
+InAttributeName_placeholder:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"

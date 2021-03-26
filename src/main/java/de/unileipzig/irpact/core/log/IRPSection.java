@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.log;
 
+import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.LoggingSection;
 
 /**
@@ -51,6 +52,12 @@ public enum IRPSection implements LoggingSection {
         for(IRPSection section: values()) {
             filter.remove(section);
         }
+    }
+
+    public static void addSectionsToTools() {
+        IRPtools.setToolsSection(TOOLS_CORE);
+        IRPtools.setDefinitionSection(TOOLS_DEFINITION);
+        IRPtools.setUtilSection(TOOLS_UTIL);
     }
 
     public static void addAllToolsTo(SectionLoggingFilter filter) {

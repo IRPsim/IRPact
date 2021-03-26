@@ -43,7 +43,7 @@ public class InFileSpatialDistribution2D implements InSpatialDistribution {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), SPATIAL, SPATIAL_MODEL_DIST, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST_FILE_FILEPOS, thisName());        addEntry(res, thisClass(), "xPosSupplier");
+        putClassPath(res, thisClass(), SPATIAL, SPATIAL_MODEL_DIST, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST_FILE_FILEPOS, thisName());
         addEntry(res, thisClass(), "attrFile");
         addEntry(res, thisClass(), "xPositionKey");
         addEntry(res, thisClass(), "yPositionKey");

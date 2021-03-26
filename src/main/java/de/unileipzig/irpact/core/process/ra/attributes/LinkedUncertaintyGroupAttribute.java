@@ -10,8 +10,6 @@ import java.util.Objects;
 /**
  * @author Daniel Abitz
  */
-@Todo("PR adden")
-@Todo("Spec adden")
 public class LinkedUncertaintyGroupAttribute extends BasicConsumerAgentGroupAttribute implements UncertaintyGroupAttribute {
 
     protected boolean autoAdjustment;

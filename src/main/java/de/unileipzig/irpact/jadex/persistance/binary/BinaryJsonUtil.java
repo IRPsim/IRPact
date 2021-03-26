@@ -38,6 +38,7 @@ public final class BinaryJsonUtil {
         ensureRegister(manager, BasicProductGroupPR.INSTANCE);
         ensureRegister(manager, BasicProductPR.INSTANCE);
         ensureRegister(manager, BasicSocialGraphPR.INSTANCE);
+        ensureRegister(manager, BasicUncertaintyAttributePR.INSTANCE);
         ensureRegister(manager, BasicUncertaintyGroupAttributeSupplierPR.INSTANCE);
         ensureRegister(manager, BasicVersionPR.INSTANCE);
         ensureRegister(manager, BooleanDistributionPR.INSTANCE);
@@ -50,6 +51,7 @@ public final class BinaryJsonUtil {
         ensureRegister(manager, FreeNetworkTopologyPR.INSTANCE);
         ensureRegister(manager, InversePR.INSTANCE);
         ensureRegister(manager, JadexConsumerAgentGroupPR.INSTANCE);
+        ensureRegister(manager, LinkedUncertaintyGroupAttributePR.INSTANCE);
         ensureRegister(manager, NoDistancePR.INSTANCE);
         ensureRegister(manager, ProductThresholdInterestPR.INSTANCE);
         ensureRegister(manager, ProductThresholdInterestSupplySchemePR.INSTANCE);

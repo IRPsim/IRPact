@@ -16,7 +16,6 @@ import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
-import de.unileipzig.irptools.util.TreeResourceApplier;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
@@ -31,7 +30,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class RelativeExternConsumerAgentPopulationSize implements PopulationSize {
+public class InRelativeExternConsumerAgentPopulationSize implements InPopulationSize {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -75,7 +74,7 @@ public class RelativeExternConsumerAgentPopulationSize implements PopulationSize
     @FieldDefinition
     public InAttributeName[] selectKey;
 
-    public RelativeExternConsumerAgentPopulationSize() {
+    public InRelativeExternConsumerAgentPopulationSize() {
     }
 
     @Override

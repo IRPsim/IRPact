@@ -142,6 +142,13 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
         if(agentManager.hasConsumerAgentGroup(getName())) {
             throw new ParsingException("ConsumerAgentGroup '" + getName() + "' already exists");
         }
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse InGeneralConsumerAgentGroup '{}'", jCag.getName());
+
+        if(parser.getRoot().addConsumerAgentGroup(this)) {
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added InGeneralConsumerAgentGroup '{}' to InRoot", getName());
+            agentManager.addConsumerAgentGroup(jCag);
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added JadexConsumerAgentGroup '{}'", jCag.getName());
+        }
 
         ProductInterestSupplyScheme awarenessSupplyScheme = parser.parseEntityTo(getInterest());
         jCag.setInterestSupplyScheme(awarenessSupplyScheme);

@@ -148,7 +148,6 @@ public class RAModelData implements IsEquals {
         return unknownPoints;
     }
 
-    @Todo("PERSIST")
     public double getLogisticFactor() {
         return logisticFactor;
     }

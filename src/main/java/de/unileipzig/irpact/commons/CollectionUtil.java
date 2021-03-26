@@ -17,6 +17,24 @@ public final class CollectionUtil {
     private CollectionUtil() {
     }
 
+    public static <T> boolean containsSame(T[] array, T object) {
+        for(T t: array) {
+            if(t == object) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static <T> boolean containsEquals(T[] array, T object) {
+        for(T t: array) {
+            if(Objects.equals(t, object)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Todo("alles nicht-zwang-linkged hashmaps austauschen")
     public static <K, V> Map<K, V> newMap() {
         return new LinkedHashMap<>();

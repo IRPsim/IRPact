@@ -155,6 +155,7 @@ public class InGeneral {
 
         SectionLoggingFilter filter = new SectionLoggingFilter();
         IRPLogging.setFilter(filter);
+        IRPSection.addSectionsToTools();
 
         if(logAll) {
             IRPSection.addAllTo(filter);

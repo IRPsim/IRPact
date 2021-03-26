@@ -50,7 +50,7 @@ public class InCustomFileSpatialDistribution2D implements InSpatialDistribution 
         addEntry(res, thisClass(), "attrFile");
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InCustomFileSpatialDistribution2D.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
 

@@ -8,7 +8,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
  * @author Daniel Abitz
  */
 @Definition
-public interface PopulationSize extends InEntity {
+public interface InPopulationSize extends InEntity {
 
     static void initRes(TreeAnnotationResource res) {
     }

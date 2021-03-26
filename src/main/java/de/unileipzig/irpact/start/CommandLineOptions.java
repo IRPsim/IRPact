@@ -20,6 +20,9 @@ import java.util.concurrent.Callable;
 )
 public class CommandLineOptions implements Callable<Integer> {
 
+    private static final String TRUE1 = "1";
+    private static final String FALSE0 = "0";
+
     private static final IRPLogger LOGGER = IRPLogging.getLogger(CommandLineOptions.class);
 
     @CommandLine.Option(
@@ -65,14 +68,14 @@ public class CommandLineOptions implements Callable<Integer> {
 
     @CommandLine.Option(
             names = { "--useGamsNameTrimming" },
-            defaultValue = "0",
+            defaultValue = FALSE0,
             description = "Enables (1) or disables (0) gams name trimming. Default value is ${DEFAULT-VALUE}. Change this option only if you know what you are doing."
     )
     private int useGamsNameTrimming;
 
     @CommandLine.Option(
             names = "--maxGamsNameLength",
-            defaultValue = DefinitionMapper.MAX_GAMS_NAME_LENGTH_AS_STR,
+            defaultValue = DefinitionMapper.IGNORE_NAME_LENGTH_AS_STR,
             description = "Max length for gams field names. Value -1 disables this option. Max length for gams is 63. Default value is ${DEFAULT-VALUE}. Change this option only if you know what you are doing."
     )
     private int maxGamsNameLength;

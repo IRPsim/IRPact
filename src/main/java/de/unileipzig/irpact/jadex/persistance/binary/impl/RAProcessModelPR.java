@@ -48,6 +48,8 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
         data.putLong(manager.ensureGetUID(object.getModelData()));
         data.putLong(manager.ensureGetUID(object.getRnd()));
         data.putLong(manager.ensureGetUID(object.getUncertaintySupplier()));
+
+        object.deepHashCode();
     }
 
     //=========================
@@ -86,7 +88,7 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
     }
 
     @Override
-    protected void doValidationRestore(BinaryJsonData data, RAProcessModel object, RestoreManager manager) {
+    protected void onHashMismatch(BinaryJsonData data, RAProcessModel object, RestoreManager manager) {
         object.deepHashCode();
     }
 }

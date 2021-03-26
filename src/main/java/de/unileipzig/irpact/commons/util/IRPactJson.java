@@ -39,6 +39,10 @@ public final class IRPactJson {
         return Util.printJson(node, printer);
     }
 
+    public static String toString(JsonNode node, ObjectMapper mapper) {
+        return Util.printJson(mapper, node);
+    }
+
     public static byte[] toBytes(ObjectMapper mapper, JsonNode node) throws IOException {
         return toBytes(mapper, node, null);
     }

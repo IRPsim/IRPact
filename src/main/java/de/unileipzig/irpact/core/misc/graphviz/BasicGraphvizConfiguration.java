@@ -17,6 +17,7 @@ import guru.nidi.graphviz.attribute.Shape;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -37,7 +38,8 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
     protected LayoutAlgorithm layoutAlgorithm;
     protected OutputFormat outputFormat;
     protected Path imageOutputPath;
-    protected boolean logDotFile;
+    protected boolean logDotFile = true;
+    protected boolean logEncoded = false;
 
     public BasicGraphvizConfiguration() {
         this(new HashMap<>());
@@ -118,13 +120,9 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         };
     }
 
-    private GraphvizGenerator<SocialGraph.Node, SocialGraph.Edge> createAndSetupNewGenerator() {
+    private GraphvizGenerator<SocialGraph.Node, SocialGraph.Edge> createGenerator() {
         GraphvizGenerator<SocialGraph.Node, SocialGraph.Edge> gen = newGenerator();
         gen.setDirected(true);
-        gen.configureNodes(getNodeConfiguration());
-        gen.configureLinks(getLinkConfiguration());
-        gen.setHideNodeLabels(true);
-        gen.setNodeShape(Shape.POINT);
         return gen;
     }
 
@@ -136,7 +134,27 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         gen.addAllLinks(graph.getEdges(edgeType));
     }
 
+    private void setupGenerator(GraphvizGenerator<SocialGraph.Node, SocialGraph.Edge> gen) {
+        gen.configureNodes(getNodeConfiguration());
+        gen.configureLinks(getLinkConfiguration());
+        gen.setHideNodeLabels(true);
+        gen.setNodeShape(Shape.POINT);
+    }
+
     private void logContent(Path file) throws IOException {
+        if(logEncoded) {
+            logContentEncoded(file);
+        } else {
+            logContentClear(file);
+        }
+    }
+
+    private void logContentClear(Path file) throws IOException {
+        String content = Util.readString(file, StandardCharsets.UTF_8);
+        LOGGER.info("dot file content\n{}", content);
+    }
+
+    private void logContentEncoded(Path file) throws IOException {
         byte[] content;
         try(InputStream in = Files.newInputStream(file);
             DeflaterInputStream defIn = new DeflaterInputStream(in)) {
@@ -149,8 +167,9 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
 
     @Override
     public void printSocialGraph(SocialGraph graph, SocialGraph.Type edgeType) throws Exception {
-        GraphvizGenerator<SocialGraph.Node, SocialGraph.Edge> gen = createAndSetupNewGenerator();
+        GraphvizGenerator<SocialGraph.Node, SocialGraph.Edge> gen = createGenerator();
         applySocialNetwork(gen, graph, edgeType);
+        setupGenerator(gen);
 
         Path dotPath = imageOutputPath.resolveSibling(imageOutputPath.getFileName().toString() + ".dot");
         try {

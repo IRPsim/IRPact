@@ -8,8 +8,6 @@ import java.util.Objects;
 /**
  * @author Daniel Abitz
  */
-@Todo("PR adden")
-@Todo("Spec adden")
 public class BasicUncertaintyAttribute extends BasicConsumerAgentAttribute {
 
     protected boolean autoAdjustment;

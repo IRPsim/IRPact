@@ -162,7 +162,7 @@ public class IRPact implements IRPActAccess {
         validateEnvironment();
         postAgentCreation();
 
-        printInitialNetwork();
+        printNetwork();
 
         if(CL_OPTIONS.isNoSimulation()) {
             LOGGER.info("no simulation");
@@ -250,9 +250,9 @@ public class IRPact implements IRPActAccess {
         environment.getTaskManager().runSimulationTasks(environment);
     }
 
-    private void printInitialNetwork() throws Exception {
+    private void printNetwork() throws Exception {
         if(graphvizConfiguration != null) {
-            LOGGER.info("create initial network image");
+            LOGGER.info("create network image");
             graphvizConfiguration.printSocialGraph(
                     environment.getNetwork().getGraph(),
                     SocialGraph.Type.COMMUNICATION

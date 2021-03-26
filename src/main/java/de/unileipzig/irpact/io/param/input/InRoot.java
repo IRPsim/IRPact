@@ -6,13 +6,14 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.io.param.IOResources;
 import de.unileipzig.irpact.io.param.LocData;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InNameSplitAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.*;
-import de.unileipzig.irpact.io.param.input.agent.population.FixConsumerAgentPopulationSize;
-import de.unileipzig.irpact.io.param.input.agent.population.PopulationSize;
-import de.unileipzig.irpact.io.param.input.agent.population.RelativeExternConsumerAgentPopulationSize;
+import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulationSize;
+import de.unileipzig.irpact.io.param.input.agent.population.InPopulationSize;
+import de.unileipzig.irpact.io.param.input.agent.population.InRelativeExternConsumerAgentPopulationSize;
 import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
@@ -51,6 +52,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.UiEdn;
 import de.unileipzig.irptools.util.Util;
 
+import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -126,6 +128,18 @@ public class InRoot implements RootClass {
     public InConsumerAgentGroup[] getConsumerAgentGroups() throws ParsingException {
         return getNonNullArray(consumerAgentGroups, "consumerAgentGroups");
     }
+    public boolean addConsumerAgentGroup(InConsumerAgentGroup consumerAgentGroup) {
+        if(consumerAgentGroups == null) {
+            consumerAgentGroups = new InConsumerAgentGroup[]{consumerAgentGroup};
+            return true;
+        }
+        else if(!CollectionUtil.containsSame(consumerAgentGroups, consumerAgentGroup)) {
+            consumerAgentGroups = Arrays.copyOf(consumerAgentGroups, consumerAgentGroups.length + 1);
+            consumerAgentGroups[consumerAgentGroups.length - 1] = consumerAgentGroup;
+            return true;
+        }
+        return false;
+    }
 
     @FieldDefinition
     public InIndependentConsumerAgentGroupAttribute[] independentConsumerAgentGroupAttributes = new InIndependentConsumerAgentGroupAttribute[0];
@@ -138,12 +152,15 @@ public class InRoot implements RootClass {
     }
 
     @FieldDefinition
-    public PopulationSize[] agentPopulationSizes = new PopulationSize[0];
+    public InPopulationSize[] agentPopulationSizes = new InPopulationSize[0];
 
-    public void setAgentPopulationSizes(PopulationSize[] agentPopulationSizes) {
+    public void setAgentPopulationSize(InPopulationSize agentPopulationSize) {
+        this.agentPopulationSizes = new InPopulationSize[]{agentPopulationSize};
+    }
+    public void setAgentPopulationSizes(InPopulationSize[] agentPopulationSizes) {
         this.agentPopulationSizes = agentPopulationSizes;
     }
-    public PopulationSize[] getAgentPopulationSizes() throws ParsingException {
+    public InPopulationSize[] getAgentPopulationSizes() throws ParsingException {
         return getNonNullArray(agentPopulationSizes, "agentPopulationSizes");
     }
 
@@ -273,6 +290,13 @@ public class InRoot implements RootClass {
     @FieldDefinition
     public InConsumerAgentGroupColor[] consumerAgentGroupColors = new InConsumerAgentGroupColor[0];
 
+    public void setConsumerAgentGroupColors(InConsumerAgentGroupColor[] consumerAgentGroupColors) {
+        this.consumerAgentGroupColors = consumerAgentGroupColors;
+    }
+    public InConsumerAgentGroupColor[] getConsumerAgentGroupColors() throws ParsingException {
+        return ParamUtil.getNonNullArray(consumerAgentGroupColors, "consumerAgentGroupColors");
+    }
+
     @FieldDefinition
     public GraphvizLayoutAlgorithm[] layoutAlgorithms = new GraphvizLayoutAlgorithm[0];
 
@@ -329,6 +353,16 @@ public class InRoot implements RootClass {
     @Override
     public AnnotationResource getResources() {
         return new IOResources();
+    }
+
+    @Override
+    public AnnotationResource getResource(Path pathToFile) {
+        return new IOResources(pathToFile);
+    }
+
+    @Override
+    public AnnotationResource getResource(Locale locale) {
+        return new IOResources(locale);
     }
 
     @Override
@@ -455,13 +489,15 @@ public class InRoot implements RootClass {
 
             InConsumerAgentGroup.class,
             InConsumerAgentGroupAttribute.class,
+            InDependentConsumerAgentGroupAttribute.class,
             InGeneralConsumerAgentGroup.class,
             InGeneralConsumerAgentGroupAttribute.class,
+            InIndependentConsumerAgentGroupAttribute.class,
             InNameSplitConsumerAgentGroupAttribute.class,
             InPVactConsumerAgentGroup.class,
-
-            InProductInterestSupplyScheme.class,
-            InProductThresholdInterestSupplyScheme.class,
+            InFixConsumerAgentPopulationSize.class,
+            InPopulationSize.class,
+            InRelativeExternConsumerAgentPopulationSize.class,
 
             VisibleBinaryData.class,
             BinaryPersistData.class, //special
@@ -479,6 +515,9 @@ public class InRoot implements RootClass {
 
             InConsumerAgentGroupColor.class,
 
+            InProductInterestSupplyScheme.class,
+            InProductThresholdInterestSupplyScheme.class,
+
             InCompleteGraphTopology.class,
             InDistanceEvaluator.class,
             InFreeNetworkTopology.class,
@@ -489,26 +528,40 @@ public class InRoot implements RootClass {
             InUnlinkedGraphTopology.class,
 
             InAutoUncertaintyGroupAttribute.class,
+            InIndividualAttributeBasedUncertaintyGroupAttribute.class,
+            InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute.class,
+            InNameBasedUncertaintyGroupAttribute.class,
             InNameBasedUncertaintyWithConvergenceGroupAttribute.class,
-            InProcessModel.class,
+            InPVactUncertaintyGroupAttribute.class,
             InRAProcessModel.class,
             InUncertaintyGroupAttribute.class,
+            InProcessModel.class,
 
+            InBasicProductGroup.class,
+            InBasicProductGroupAttribute.class,
+            InDependentProductGroupAttribute.class,
             InFixProduct.class,
             InFixProductAttribute.class,
             InFixProductFindingScheme.class,
+            InIndependentProductGroupAttribute.class,
+            InNameSplitProductGroupAttribute.class,
             InProductFindingScheme.class,
-            InBasicProductGroup.class,
+            InProductGroup.class,
+            InProductGroupAttribute.class,
 
             InCustomFileSelectedGroupedSpatialDistribution2D.class,
             InCustomFileSelectedSpatialDistribution2D.class,
             InCustomFileSpatialDistribution2D.class,
+            InFileSelectedGroupedSpatialDistribution2D.class,
+            InFileSelectedSpatialDistribution2D.class,
+            InFileSpatialDistribution2D.class,
             InSpatialDistribution.class,
             InSpace2D.class,
             InSpatialModel.class,
 
             InDiscreteTimeModel.class,
             InTimeModel.class,
+            InUnitStepDiscreteTimeModel.class,
 
             InAttributeName.class,
             InEntity.class,
@@ -558,7 +611,7 @@ public class InRoot implements RootClass {
                 addPathElement(res, SPECIAL_SETTINGS, GENERAL_SETTINGS);
                     addPathElement(res, VisibleBinaryData.thisName(), SPECIAL_SETTINGS);
 
-        addPathElement(res, NAMES, ROOT);
+        addPathElement(res, InAttributeName.thisName(), ROOT);
 
         addPathElement(res, FILES, ROOT);
             addPathElement(res, InPVFile.thisName(), FILES);
@@ -585,8 +638,8 @@ public class InRoot implements RootClass {
                         addPathElement(res, CONSUMER_INTEREST, CONSUMER);
                                 addPathElement(res, InProductThresholdInterestSupplyScheme.thisName(), CONSUMER_INTEREST);
                 addPathElement(res, POPULATION, AGENTS);
-                        addPathElement(res, FixConsumerAgentPopulationSize.thisName(), POPULATION);
-                        addPathElement(res, RelativeExternConsumerAgentPopulationSize.thisName(), POPULATION);
+                        addPathElement(res, InFixConsumerAgentPopulationSize.thisName(), POPULATION);
+                        addPathElement(res, InRelativeExternConsumerAgentPopulationSize.thisName(), POPULATION);
 
         addPathElement(res, NETWORK, ROOT);
                 addPathElement(res, TOPOLOGY, NETWORK);
