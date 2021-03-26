@@ -26,80 +26,217 @@ PARAMETER par_InComplexAffinityEntry_affinityValue(set_InComplexAffinityEntry)
 * - type: String
 SET set_InNameSplitAffinityEntry(set_InAffinityEntry,set_InEntity)
 
-* - identifier: affinityValue
+* - description: Affinity-Wert
+* - identifier: Affinity-Wert
 * - type: Float
 PARAMETER par_InNameSplitAffinityEntry_affinityValue(set_InNameSplitAffinityEntry)
 
 * - identifier: InConsumerAgentGroup
+* - hidden: 1
 * - type: String
 SET set_InConsumerAgentGroup(set_InEntity)
 
-* - description: Attribute
-* - identifier: Attribute der KG
-* - type: Boolean
-PARAMETER par_link_InConsumerAgentGroup_InConsumerAgentGroupAttribute_cagAttributes(set_InConsumerAgentGroup,set_InConsumerAgentGroupAttribute)
+* - identifier: InConsumerAgentGroupAttribute
+* - hidden: 1
+* - type: String
+SET set_InConsumerAgentGroupAttribute(set_InEntity)
 
-* - description: genutzte Awareness
-* - identifier: Awareness der KG
+* - identifier: InDependentConsumerAgentGroupAttribute
+* - hidden: 1
+* - type: String
+SET set_InDependentConsumerAgentGroupAttribute(set_InConsumerAgentGroupAttribute,set_InEntity)
+
+* - identifier: InGeneralConsumerAgentGroup
+* - type: String
+SET set_InGeneralConsumerAgentGroup(set_InConsumerAgentGroup,set_InEntity)
+
+* - description: Zu dieser Gruppe gehörende Attribute.
+* - identifier: Gruppenattribute
 * - type: Boolean
-PARAMETER par_link_InConsumerAgentGroup_InProductInterestSupplyScheme_cagAwareness(set_InConsumerAgentGroup,set_InProductInterestSupplyScheme)
+PARAMETER par_link_InGeneralConsumerAgentGroup_InDependentConsumerAgentGroupAttribute_cagAttributes(set_InGeneralConsumerAgentGroup,set_InDependentConsumerAgentGroupAttribute)
+
+* - description: Legt das Interessensschema fest.
+* - identifier: Interessensschema
+* - type: Boolean
+PARAMETER par_link_InGeneralConsumerAgentGroup_InProductInterestSupplyScheme_cagInterest(set_InGeneralConsumerAgentGroup,set_InProductInterestSupplyScheme)
 
 * - description: Legt das Schema für das finden von passenden Produkten fest
 * - identifier: Schema für die Produktfindung
 * - type: Boolean
-PARAMETER par_link_InConsumerAgentGroup_InProductFindingScheme_productFindingSchemes(set_InConsumerAgentGroup,set_InProductFindingScheme)
+PARAMETER par_link_InGeneralConsumerAgentGroup_InProductFindingScheme_productFindingSchemes(set_InGeneralConsumerAgentGroup,set_InProductFindingScheme)
 
 * - description: Legt die Verteilungsfunktion für diese Gruppe fest
 * - identifier: Räumliche Verteilungsfunktion
 * - type: Boolean
-PARAMETER par_link_InConsumerAgentGroup_InSpatialDistribution_spatialDistribution(set_InConsumerAgentGroup,set_InSpatialDistribution)
+PARAMETER par_link_InGeneralConsumerAgentGroup_InSpatialDistribution_spatialDistribution(set_InGeneralConsumerAgentGroup,set_InSpatialDistribution)
 
 * - description: informationAuthority
 * - identifier: [ungenutzt] informationAuthority
 * - type: Float
-PARAMETER par_InConsumerAgentGroup_informationAuthority(set_InConsumerAgentGroup)
+PARAMETER par_InGeneralConsumerAgentGroup_informationAuthority(set_InGeneralConsumerAgentGroup)
 
-* - description: Anzahl der Agenten in der Konsumergruppe
-* - identifier: Agenten in der KG
-* - type: Integer
-PARAMETER par_InConsumerAgentGroup_numberOfAgentsX(set_InConsumerAgentGroup)
-
-* - identifier: InConsumerAgentGroupAttribute
+* - identifier: InGeneralConsumerAgentGroupAttribute
 * - type: String
-SET set_InConsumerAgentGroupAttribute(set_InEntity)
+SET set_InGeneralConsumerAgentGroupAttribute(set_InDependentConsumerAgentGroupAttribute,set_InConsumerAgentGroupAttribute,set_InEntity)
 
-* - description: Attributname
-* - identifier: Name des KG-Attributes
+* - description: Name des Attributes für das Gruppenattribut.
+* - identifier: Attributname
 * - type: Boolean
-PARAMETER par_link_InConsumerAgentGroupAttribute_InAttributeName_cagAttrName(set_InConsumerAgentGroupAttribute,set_InAttributeName)
+PARAMETER par_link_InGeneralConsumerAgentGroupAttribute_InAttributeName_attrName(set_InGeneralConsumerAgentGroupAttribute,set_InAttributeName)
 
-* - description: genutzte Funktion
-* - identifier: Verteilungsfunktion des KG-Attributes
+* - description: Legt die zu nutzende Verteilungsfunktion fest.
+* - identifier: Verteilungsfunktion
 * - type: Boolean
-PARAMETER par_link_InConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_cagAttrDistribution(set_InConsumerAgentGroupAttribute,set_InUnivariateDoubleDistribution)
+PARAMETER par_link_InGeneralConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_dist(set_InGeneralConsumerAgentGroupAttribute,set_InUnivariateDoubleDistribution)
 
-* - identifier: InProductInterestSupplyScheme
+* - identifier: InIndependentConsumerAgentGroupAttribute
 * - hidden: 1
 * - type: String
-SET set_InProductInterestSupplyScheme(set_InEntity)
+SET set_InIndependentConsumerAgentGroupAttribute(set_InConsumerAgentGroupAttribute,set_InEntity)
 
-* - identifier: InProductThresholdInterestSupplyScheme
+* - identifier: InNameSplitConsumerAgentGroupAttribute
 * - type: String
-SET set_InProductThresholdInterestSupplyScheme(set_InProductInterestSupplyScheme,set_InEntity)
+SET set_InNameSplitConsumerAgentGroupAttribute(set_InIndependentConsumerAgentGroupAttribute,set_InConsumerAgentGroupAttribute,set_InEntity)
 
-* - description: Grenzwert ab dem das Produkt interessant wird
-* - identifier: Grenzwert
+* - description: Legt die Verteilungsfunktion fest, auf deren Basis die Attributwerte gezogen werden.
+* - identifier: Verteilungsfunktion
 * - type: Boolean
-PARAMETER par_link_InProductThresholdInterestSupplyScheme_InUnivariateDoubleDistribution_awarenessDistribution(set_InProductThresholdInterestSupplyScheme,set_InUnivariateDoubleDistribution)
+PARAMETER par_link_InNameSplitConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_dist(set_InNameSplitConsumerAgentGroupAttribute,set_InUnivariateDoubleDistribution)
+
+* - identifier: InPVactConsumerAgentGroup
+* - type: String
+SET set_InPVactConsumerAgentGroup(set_InConsumerAgentGroup,set_InEntity)
+
+* - description: noveltySeeking
+* - identifier: noveltySeeking
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_noveltySeeking(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
+
+* - description: dependentJudgmentMaking
+* - identifier: dependentJudgmentMaking
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_dependentJudgmentMaking(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
+
+* - description: environmentalConcern
+* - identifier: environmentalConcern
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_environmentalConcern(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
+
+* - description: interestThreshold
+* - identifier: interestThreshold
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_interestThreshold(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
+
+* - description: financialThreshold
+* - identifier: financialThreshold
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_financialThreshold(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
+
+* - description: adoptionThreshold
+* - identifier: adoptionThreshold
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_adoptionThreshold(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
+
+* - description: communication
+* - identifier: communication
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_communication(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
+
+* - description: rewire
+* - identifier: rewire
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_rewire(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
+
+* - description: initialAdopter
+* - identifier: initialAdopter
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_initialAdopter(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
+
+* - identifier: rateOfConvergence
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_rateOfConvergence(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
+
+* - identifier: initialProductInterest
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_initialProductInterest(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
+
+* - identifier: constructionRate
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_constructionRate(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
+
+* - identifier: renovationRate
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_renovationRate(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
+
+* - description: spatialDistribution
+* - identifier: spatialDistribution
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerAgentGroup_InSpatialDistribution_spatialDistribution(set_InPVactConsumerAgentGroup,set_InSpatialDistribution)
+
+* - description: informationAuthority
+* - identifier: informationAuthority
+* - type: Float
+PARAMETER par_InPVactConsumerAgentGroup_informationAuthority(set_InPVactConsumerAgentGroup)
+
+* - identifier: InFixConsumerAgentPopulationSize
+* - type: String
+SET set_InFixConsumerAgentPopulationSize(set_InPopulationSize,set_InEntity)
+
+* - description: Legt die Anzahl der Agenten bzw. die Populationsgröße für diese Konsumergruppe fest.
+* - identifier: Anzahl der Agenten
+* - type: Integer
+PARAMETER par_InFixConsumerAgentPopulationSize_size(set_InFixConsumerAgentPopulationSize)
+
+* - description: Legt die Konsumergruppen fest, welche diese Populationsgröße haben sollen.
+* - identifier: Konsumergruppen
+* - type: Boolean
+PARAMETER par_link_InFixConsumerAgentPopulationSize_InConsumerAgentGroup_cags(set_InFixConsumerAgentPopulationSize,set_InConsumerAgentGroup)
+
+* - identifier: InPopulationSize
+* - hidden: 1
+* - type: String
+SET set_InPopulationSize(set_InEntity)
+
+* - identifier: InRelativeExternConsumerAgentPopulationSize
+* - type: String
+SET set_InRelativeExternConsumerAgentPopulationSize(set_InPopulationSize,set_InEntity)
+
+* - description: Legt gesamte Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls die maximal mögliche Anzahl genutzt werden soll, wird dieser Wert ignoriert.
+* - identifier: Anzahl der Agenten
+* - type: Integer
+PARAMETER par_InRelativeExternConsumerAgentPopulationSize_totalSize(set_InRelativeExternConsumerAgentPopulationSize)
+
+* - description: Legt fest, ob die gesamte Populationsgröße aus der Datei berechnet werden soll.
+* - identifier: Maximal mögliche Population nutzen?
+* - type: Boolean
+PARAMETER par_InRelativeExternConsumerAgentPopulationSize_useMaximumSize(set_InRelativeExternConsumerAgentPopulationSize)
+
+* - description: Legt fest, ob alle Gruppen aus der Datei für die Berechnung der Anteile genutzt werden sollen oder nur die hier spezifizierten.
+* - identifier: Alle Konsumergruppenfür die Anteilsberechnung berücksichtigen?
+* - type: Boolean
+PARAMETER par_InRelativeExternConsumerAgentPopulationSize_considerAllForShares(set_InRelativeExternConsumerAgentPopulationSize)
+
+* - description: Legt die Konsumergruppen fest, welche berücksichtigt werden sollen.
+* - identifier: Konsumergruppen
+* - type: Boolean
+PARAMETER par_link_InRelativeExternConsumerAgentPopulationSize_InConsumerAgentGroup_cags(set_InRelativeExternConsumerAgentPopulationSize,set_InConsumerAgentGroup)
+
+* - description: Tabellarische Eingabedatei, aus der die Informationen gelesen werden sollen.
+* - identifier: Tabellarische Datei
+* - type: Boolean
+PARAMETER par_link_InRelativeExternConsumerAgentPopulationSize_InSpatialTableFile_file(set_InRelativeExternConsumerAgentPopulationSize,set_InSpatialTableFile)
+
+* - description: Schlüssel, nachdem die Datei gefiltert wird. Wichtig: Der Daten in der Datei müssen dem Konsumergruppennamen entsprechen.
+* - identifier: Auswahlschlüssel
+* - type: Boolean
+PARAMETER par_link_InRelativeExternConsumerAgentPopulationSize_InAttributeName_selectKey(set_InRelativeExternConsumerAgentPopulationSize,set_InAttributeName)
 
 * - description: Binäre Daten für diverse Funktionalitäten
-* - hidden: 0
 * - identifier: Binäre Daten
 * - type: String
 SET set_VisibleBinaryData(set_InEntity)
 
 * - description: Spezielle ID der Daten, Verwendungszweck und Funktionsweise ist von den Daten selber abhängig.
-* - hidden: 0
 * - identifier: ID
 * - type: Integer
 PARAMETER par_VisibleBinaryData_idVisible(set_VisibleBinaryData)
@@ -118,8 +255,8 @@ PARAMETER par_BinaryPersistData_id(set_BinaryPersistData)
 * - type: String
 SET set_InBooleanDistribution(set_InUnivariateDoubleDistribution,set_InEntity)
 
-* - description: Platzhalter
-* - identifier: -
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
 * - type: Integer
 PARAMETER par_InBooleanDistribution_placeholderBooleanDist(set_InBooleanDistribution)
 
@@ -127,7 +264,7 @@ PARAMETER par_InBooleanDistribution_placeholderBooleanDist(set_InBooleanDistribu
 * - type: String
 SET set_InConstantUnivariateDistribution(set_InUnivariateDoubleDistribution,set_InEntity)
 
-* - description: Konstante Rückgabewert
+* - description: Legt den konstante Rückgabewert fest.
 * - identifier: Wert
 * - type: Float
 PARAMETER par_InConstantUnivariateDistribution_constDistValue(set_InConstantUnivariateDistribution)
@@ -136,7 +273,7 @@ PARAMETER par_InConstantUnivariateDistribution_constDistValue(set_InConstantUniv
 * - type: String
 SET set_InFiniteMassPointsDiscreteDistribution(set_InUnivariateDoubleDistribution,set_InEntity)
 
-* - description: Die zu nutzende Massepunkte
+* - description: Legt die zu nutzenden Massepunkte fest.
 * - identifier: Massepunkte
 * - type: Boolean
 PARAMETER par_link_InFiniteMassPointsDiscreteDistribution_InMassPoint_massPoints(set_InFiniteMassPointsDiscreteDistribution,set_InMassPoint)
@@ -145,13 +282,13 @@ PARAMETER par_link_InFiniteMassPointsDiscreteDistribution_InMassPoint_massPoints
 * - type: String
 SET set_InMassPoint(set_InEntity)
 
-* - description: Wert des Punktes
+* - description: Legt den Wert des Punktes fest.
 * - identifier: Wert des Punktes
 * - type: Float
 PARAMETER par_InMassPoint_mpValue(set_InMassPoint)
 
-* - description: Wichtung des Punktes
-* - identifier: Wichtun des Punktesg
+* - description: Legt die Wichtung des Punktes fest.
+* - identifier: Wichtung des Punktes
 * - type: Float
 PARAMETER par_InMassPoint_mpWeight(set_InMassPoint)
 
@@ -159,12 +296,12 @@ PARAMETER par_InMassPoint_mpWeight(set_InMassPoint)
 * - type: String
 SET set_InRandomBoundedIntegerDistribution(set_InUnivariateDoubleDistribution,set_InEntity)
 
-* - description: Untergrenze
+* - description: Legt die Untergrenze fest.
 * - identifier: Untergrenze (inklusiv)
 * - type: Integer
 PARAMETER par_InRandomBoundedIntegerDistribution_lowerBoundInt(set_InRandomBoundedIntegerDistribution)
 
-* - description: Obergrenze
+* - description: Legt die Obergrenze fest.
 * - identifier: Obergrenze (exklusiv)
 * - type: Integer
 PARAMETER par_InRandomBoundedIntegerDistribution_upperBoundInt(set_InRandomBoundedIntegerDistribution)
@@ -183,8 +320,8 @@ SET set_InFile(set_InEntity)
 * - type: String
 SET set_InPVFile(set_InFile,set_InEntity)
 
-* - description: Platzhalter
-* - identifier: -
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
 * - type: Float
 PARAMETER par_InPVFile_placeholderPVFile(set_InPVFile)
 
@@ -192,8 +329,8 @@ PARAMETER par_InPVFile_placeholderPVFile(set_InPVFile)
 * - type: String
 SET set_InSpatialTableFile(set_InFile,set_InEntity)
 
-* - description: Platzhalter
-* - identifier: -
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
 * - type: Float
 PARAMETER par_InSpatialTableFile_placeholderInSpatialFile(set_InSpatialTableFile)
 
@@ -211,12 +348,26 @@ PARAMETER par_link_InConsumerAgentGroupColor_InConsumerAgentGroup_group(set_InCo
 * - type: Boolean
 PARAMETER par_link_InConsumerAgentGroupColor_GraphvizColor_color(set_InConsumerAgentGroupColor,set_GraphvizColor)
 
+* - identifier: InProductInterestSupplyScheme
+* - hidden: 1
+* - type: String
+SET set_InProductInterestSupplyScheme(set_InEntity)
+
+* - identifier: InProductThresholdInterestSupplyScheme
+* - type: String
+SET set_InProductThresholdInterestSupplyScheme(set_InProductInterestSupplyScheme,set_InEntity)
+
+* - description: Grenzwert ab dem das Produkt von Interesse ist.
+* - identifier: Grenzwert
+* - type: Boolean
+PARAMETER par_link_InProductThresholdInterestSupplyScheme_InUnivariateDoubleDistribution_interestDistribution(set_InProductThresholdInterestSupplyScheme,set_InUnivariateDoubleDistribution)
+
 * - identifier: InCompleteGraphTopology
 * - type: String
 SET set_InCompleteGraphTopology(set_InGraphTopologyScheme,set_InEntity)
 
-* - description: Initiale Gewicht der Kanten
-* - identifier: Initiale Kantengewicht
+* - description: Legt das initiale Gewicht der Kanten fest.
+* - identifier: Initiales Kantengewicht
 * - type: Float
 PARAMETER par_InCompleteGraphTopology_initialWeight(set_InCompleteGraphTopology)
 
@@ -229,8 +380,8 @@ SET set_InDistanceEvaluator(set_InEntity)
 * - type: String
 SET set_InFreeNetworkTopology(set_InGraphTopologyScheme,set_InEntity)
 
-* - description: Evaluator für Abstände
-* - identifier: Legt den Evaluator für die Abstände zwischen den Agenten fest.
+* - description: Legt die zu nutzende Distanzfunktion für den Einfluss des Abstandes fest.
+* - identifier: Distanzfunktion
 * - type: Boolean
 PARAMETER par_link_InFreeNetworkTopology_InDistanceEvaluator_distanceEvaluator(set_InFreeNetworkTopology,set_InDistanceEvaluator)
 
@@ -239,8 +390,8 @@ PARAMETER par_link_InFreeNetworkTopology_InDistanceEvaluator_distanceEvaluator(s
 * - type: Boolean
 PARAMETER par_link_InFreeNetworkTopology_InNumberOfTies_numberOfTies(set_InFreeNetworkTopology,set_InNumberOfTies)
 
-* - description: Initiale Gewicht der Kanten
-* - identifier: Initiale Kantengewicht
+* - description: Legt das initiale Gewicht der Kanten fest.
+* - identifier: Initiales Kantengewicht
 * - type: Float
 PARAMETER par_InFreeNetworkTopology_initialWeight(set_InFreeNetworkTopology)
 
@@ -253,7 +404,8 @@ SET set_InGraphTopologyScheme(set_InEntity)
 * - type: String
 SET set_InInverse(set_InDistanceEvaluator,set_InEntity)
 
-* - identifier: placeholderInverse
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
 * - type: Integer
 PARAMETER par_InInverse_placeholderInverse(set_InInverse)
 
@@ -261,7 +413,8 @@ PARAMETER par_InInverse_placeholderInverse(set_InInverse)
 * - type: String
 SET set_InNoDistance(set_InDistanceEvaluator,set_InEntity)
 
-* - identifier: placeholderNoDistance
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
 * - type: Integer
 PARAMETER par_InNoDistance_placeholderNoDistance(set_InNoDistance)
 
@@ -269,12 +422,13 @@ PARAMETER par_InNoDistance_placeholderNoDistance(set_InNoDistance)
 * - type: String
 SET set_InNumberOfTies(set_InEntity)
 
-* - identifier: cags
+* - description: Bestimmt die Konsumergruppen, welche diese Anzahl Kanten aufweisen sollen.
+* - identifier: Konsumergruppen
 * - type: Boolean
 PARAMETER par_link_InNumberOfTies_InConsumerAgentGroup_cags(set_InNumberOfTies,set_InConsumerAgentGroup)
 
-* - description: Anzahl Kanten je Konsumergruppe
-* - identifier: Anzahl Kanten
+* - description: Legt die Anzahl der Kanten fest.
+* - identifier: Kantenanzahl
 * - type: Integer
 PARAMETER par_InNumberOfTies_count(set_InNumberOfTies)
 
@@ -282,8 +436,8 @@ PARAMETER par_InNumberOfTies_count(set_InNumberOfTies)
 * - type: String
 SET set_InUnlinkedGraphTopology(set_InGraphTopologyScheme,set_InEntity)
 
-* - description: Platzhalter
-* - identifier: -
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
 * - type: Float
 PARAMETER par_InUnlinkedGraphTopology_placeholderUnlinked(set_InUnlinkedGraphTopology)
 
@@ -291,147 +445,218 @@ PARAMETER par_InUnlinkedGraphTopology_placeholderUnlinked(set_InUnlinkedGraphTop
 * - type: String
 SET set_InAutoUncertaintyGroupAttribute(set_InUncertaintyGroupAttribute,set_InEntity)
 
-* - description: Platzhalter
+* - description: Ungenutzter Platzhalter
 * - identifier: ---
 * - type: Float
 PARAMETER par_InAutoUncertaintyGroupAttribute_placeholderAutoUncert(set_InAutoUncertaintyGroupAttribute)
 
-* - identifier: InCustomUncertaintyGroupAttribute
+* - identifier: InIndividualAttributeBasedUncertaintyGroupAttribute
 * - type: String
-SET set_InCustomUncertaintyGroupAttribute(set_InUncertaintyGroupAttribute,set_InEntity)
+SET set_InIndividualAttributeBasedUncertaintyGroupAttribute(set_InUncertaintyGroupAttribute,set_InEntity)
 
-* - description: -
-* - identifier: Ziel-KGs
+* - description: Bestimmt die Konsumergruppenattribute, welche mit dieser Unsicherheit behandelt werden sollen.
+* - identifier: Konsumergruppenattribute
 * - type: Boolean
-PARAMETER par_link_InCustomUncertaintyGroupAttribute_InConsumerAgentGroup_cags(set_InCustomUncertaintyGroupAttribute,set_InConsumerAgentGroup)
+PARAMETER par_link_InIndividualAttributeBasedUncertaintyGroupAttribute_InConsumerAgentGroupAttribute_cagAttrs(set_InIndividualAttributeBasedUncertaintyGroupAttribute,set_InConsumerAgentGroupAttribute)
 
-* - description: -
-* - identifier: Ziel-Attribute
+* - description: Legt die zu nutzende Verteilungsfunktion fest.
+* - identifier: Verteilungsfunktion
 * - type: Boolean
-PARAMETER par_link_InCustomUncertaintyGroupAttribute_InAttributeName_names(set_InCustomUncertaintyGroupAttribute,set_InAttributeName)
+PARAMETER par_link_InIndividualAttributeBasedUncertaintyGroupAttribute_InUnivariateDoubleDistribution_uncertDist(set_InIndividualAttributeBasedUncertaintyGroupAttribute,set_InUnivariateDoubleDistribution)
 
-* - description: -
-* - identifier: Unsicherheit
-* - type: Boolean
-PARAMETER par_link_InCustomUncertaintyGroupAttribute_InUnivariateDoubleDistribution_uncertDist(set_InCustomUncertaintyGroupAttribute,set_InUnivariateDoubleDistribution)
-
-* - description: -
-* - identifier: Konvergenz
-* - type: Boolean
-PARAMETER par_link_InCustomUncertaintyGroupAttribute_InUnivariateDoubleDistribution_convergenceDist(set_InCustomUncertaintyGroupAttribute,set_InUnivariateDoubleDistribution)
-
-* - identifier: InOrientationSupplier
+* - identifier: InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute
 * - type: String
-SET set_InOrientationSupplier(set_InEntity)
+SET set_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute(set_InUncertaintyGroupAttribute,set_InEntity)
 
-* - description: Verteilungsfunktion
-* - identifier: Verteilungsfunktion für die Orientierung
+* - description: Bestimmt die Konsumergruppenattribute, welche mit dieser Unsicherheit behandelt werden sollen.
+* - identifier: Konsumergruppenattribute
 * - type: Boolean
-PARAMETER par_link_InOrientationSupplier_InUnivariateDoubleDistribution_distInOrientation(set_InOrientationSupplier,set_InUnivariateDoubleDistribution)
+PARAMETER par_link_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute_InConsumerAgentGroupAttribute_cagAttrs(set_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute,set_InConsumerAgentGroupAttribute)
 
-* - description: Gruppen, denen die Werte hinzugefügt werden sollen.
-* - identifier: Ziel-KGs für Orientierung
+* - description: Legt die zu nutzende Verteilungsfunktion fest.
+* - identifier: Verteilungsfunktion
 * - type: Boolean
-PARAMETER par_link_InOrientationSupplier_InConsumerAgentGroup_oriCags(set_InOrientationSupplier,set_InConsumerAgentGroup)
+PARAMETER par_link_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute_InUnivariateDoubleDistribution_uncertDist(set_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute,set_InUnivariateDoubleDistribution)
 
-* - identifier: InProcessModel
-* - hidden: 1
+* - description: Legt die Verteilungsfunktion für die Konvergenz fest.
+* - identifier: Konvergenzfunktion
+* - type: Boolean
+PARAMETER par_link_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute_InUnivariateDoubleDistribution_convergenceDist(set_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute,set_InUnivariateDoubleDistribution)
+
+* - identifier: InNameBasedUncertaintyGroupAttribute
 * - type: String
-SET set_InProcessModel(set_InEntity)
+SET set_InNameBasedUncertaintyGroupAttribute(set_InUncertaintyGroupAttribute,set_InEntity)
+
+* - description: Bestimmt die Konsumergruppe, deren Attribute mit dieser Unsicherheit behandelt werden sollen.
+* - identifier: Konsumergruppe
+* - type: Boolean
+PARAMETER par_link_InNameBasedUncertaintyGroupAttribute_InConsumerAgentGroup_cags(set_InNameBasedUncertaintyGroupAttribute,set_InConsumerAgentGroup)
+
+* - description: Legt die Attributnamen fest, welche mit dieser Unsicherheit behandelt werden sollen.
+* - identifier: Attributnamen
+* - type: Boolean
+PARAMETER par_link_InNameBasedUncertaintyGroupAttribute_InAttributeName_names(set_InNameBasedUncertaintyGroupAttribute,set_InAttributeName)
+
+* - description: Legt die zu nutzende Verteilungsfunktion fest.
+* - identifier: Verteilungsfunktion
+* - type: Boolean
+PARAMETER par_link_InNameBasedUncertaintyGroupAttribute_InUnivariateDoubleDistribution_uncertDist(set_InNameBasedUncertaintyGroupAttribute,set_InUnivariateDoubleDistribution)
+
+* - identifier: InNameBasedUncertaintyWithConvergenceGroupAttribute
+* - type: String
+SET set_InNameBasedUncertaintyWithConvergenceGroupAttribute(set_InUncertaintyGroupAttribute,set_InEntity)
+
+* - description: Bestimmt die Konsumergruppe, deren Attribute mit dieser Unsicherheit behandelt werden sollen.
+* - identifier: Konsumergruppe
+* - type: Boolean
+PARAMETER par_link_InNameBasedUncertaintyWithConvergenceGroupAttribute_InConsumerAgentGroup_cags(set_InNameBasedUncertaintyWithConvergenceGroupAttribute,set_InConsumerAgentGroup)
+
+* - description: Legt die Attributnamen fest, welche mit dieser Unsicherheit behandelt werden sollen.
+* - identifier: Attributnamen
+* - type: Boolean
+PARAMETER par_link_InNameBasedUncertaintyWithConvergenceGroupAttribute_InAttributeName_names(set_InNameBasedUncertaintyWithConvergenceGroupAttribute,set_InAttributeName)
+
+* - description: Legt die zu nutzende Verteilungsfunktion fest.
+* - identifier: Verteilungsfunktion
+* - type: Boolean
+PARAMETER par_link_InNameBasedUncertaintyWithConvergenceGroupAttribute_InUnivariateDoubleDistribution_uncertDist(set_InNameBasedUncertaintyWithConvergenceGroupAttribute,set_InUnivariateDoubleDistribution)
+
+* - description: Legt die Verteilungsfunktion für die Konvergenz fest.
+* - identifier: Konvergenzfunktion
+* - type: Boolean
+PARAMETER par_link_InNameBasedUncertaintyWithConvergenceGroupAttribute_InUnivariateDoubleDistribution_convergenceDist(set_InNameBasedUncertaintyWithConvergenceGroupAttribute,set_InUnivariateDoubleDistribution)
+
+* - identifier: InPVactUncertaintyGroupAttribute
+* - type: String
+SET set_InPVactUncertaintyGroupAttribute(set_InUncertaintyGroupAttribute,set_InEntity)
+
+* - description: Bestimmt die Konsumergruppe, deren Attribute mit dieser Unsicherheit behandelt werden sollen.
+* - identifier: Konsumergruppe
+* - type: Boolean
+PARAMETER par_link_InPVactUncertaintyGroupAttribute_InConsumerAgentGroup_cags(set_InPVactUncertaintyGroupAttribute,set_InConsumerAgentGroup)
+
+* - description: Legt die zu nutzende Verteilungsfunktion für novelty seeking fest.
+* - identifier: novelty seeking
+* - type: Boolean
+PARAMETER par_link_InPVactUncertaintyGroupAttribute_InUnivariateDoubleDistribution_noveltySeekingUncert(set_InPVactUncertaintyGroupAttribute,set_InUnivariateDoubleDistribution)
+
+* - description: Legt die zu nutzende Verteilungsfunktion für dependent judgment making fest.
+* - identifier: dependent judgment making
+* - type: Boolean
+PARAMETER par_link_InPVactUncertaintyGroupAttribute_InUnivariateDoubleDistribution_dependentJudgmentMakingUncert(set_InPVactUncertaintyGroupAttribute,set_InUnivariateDoubleDistribution)
+
+* - description: Legt die zu nutzende Verteilungsfunktion für environmental concern fest.
+* - identifier: environmental concern
+* - type: Boolean
+PARAMETER par_link_InPVactUncertaintyGroupAttribute_InUnivariateDoubleDistribution_environmentalConcernUncert(set_InPVactUncertaintyGroupAttribute,set_InUnivariateDoubleDistribution)
 
 * - identifier: InRAProcessModel
 * - type: String
 SET set_InRAProcessModel(set_InProcessModel,set_InEntity)
 
-* - description: a
-* - identifier: a
+* - description: Legt den Einfluss der finanziellen Komponente fest.
+* - identifier: Einfluss finanzielle Komponente (a)
 * - type: Float
 PARAMETER par_InRAProcessModel_a(set_InRAProcessModel)
 
-* - description: b
-* - identifier: b
+* - description: Legt den Einfluss der novelty Komponente fest.
+* - identifier: Einfluss novelty Komponente (b)
 * - type: Float
 PARAMETER par_InRAProcessModel_b(set_InRAProcessModel)
 
-* - description: c
-* - identifier: c
+* - description: Legt den Umwelteinfluss fest.
+* - identifier: Umwelteinfluss (c)
 * - type: Float
 PARAMETER par_InRAProcessModel_c(set_InRAProcessModel)
 
-* - description: d
-* - identifier: d
+* - description: Legt den Einfluss der sozialen Komponente fest.
+* - identifier: Einfluss soziale Komponente (d)
 * - type: Float
 PARAMETER par_InRAProcessModel_d(set_InRAProcessModel)
 
-* - description: -
-* - identifier: Adopter-Punkte
+* - description: Legt den Einfluss für die Kommunikation mit Adoptern fest.
+* - identifier: Einfluss der Kommunikation mit Adoptern
 * - type: Integer
 PARAMETER par_InRAProcessModel_adopterPoints(set_InRAProcessModel)
 
-* - description: -
-* - identifier: Interessenten-Punkte
+* - description: Legt den Einfluss für die Kommunikation mit Interessenten fest.
+* - identifier: Einfluss der Kommunikation mit Interessenten
 * - type: Integer
 PARAMETER par_InRAProcessModel_interestedPoints(set_InRAProcessModel)
 
-* - description: -
-* - identifier: Aware-Punkte
+* - description: Legt den Einfluss für die Kommunikation mit Bewussten fest.
+* - identifier: Einfluss der Kommunikation mit Bewussten
 * - type: Integer
 PARAMETER par_InRAProcessModel_awarePoints(set_InRAProcessModel)
 
-* - description: -
-* - identifier: Unbekannt-Punkte
+* - description: Legt den Einfluss für die Kommunikation mit Unwissenden fest.
+* - identifier: Einfluss der Kommunikation mit Unwissenden
 * - type: Integer
 PARAMETER par_InRAProcessModel_unknownPoints(set_InRAProcessModel)
 
-* - description: -
-* - identifier: PV Datei
+* - description: Legt den Einflussfaktor 'a' der logistischen Funktion fest: logistic(a * -x).
+* - identifier: Einflussfaktor der logistischen Funktion
+* - type: Float
+PARAMETER par_InRAProcessModel_logisticFactor(set_InRAProcessModel)
+
+* - description: Legt die zu nutzende PV-Datei fest.
+* - identifier: PV-Datei
 * - type: Boolean
 PARAMETER par_link_InRAProcessModel_InPVFile_pvFile(set_InRAProcessModel,set_InPVFile)
 
-* - description: -
-* - identifier: Datenerweiterung-Neigung
-* - type: Boolean
-PARAMETER par_link_InRAProcessModel_InSlopeSupplier_slopeSuppliers(set_InRAProcessModel,set_InSlopeSupplier)
-
-* - description: -
-* - identifier: Datenerweiterung-Orientierung
-* - type: Boolean
-PARAMETER par_link_InRAProcessModel_InOrientationSupplier_orientationSuppliers(set_InRAProcessModel,set_InOrientationSupplier)
-
-* - description: -
-* - identifier: Attribute für Unsicherheit
+* - description: Bestimmt die Unsicherheiten, welche von diesem Modell verwendet werden.
+* - identifier: Unsicherheiten
 * - type: Boolean
 PARAMETER par_link_InRAProcessModel_InUncertaintyGroupAttribute_uncertaintyGroupAttributes(set_InRAProcessModel,set_InUncertaintyGroupAttribute)
-
-* - identifier: InSlopeSupplier
-* - type: String
-SET set_InSlopeSupplier(set_InEntity)
-
-* - description: Verteilungsfunktion
-* - identifier: Verteilungsfunktion für die Neigung
-* - type: Boolean
-PARAMETER par_link_InSlopeSupplier_InUnivariateDoubleDistribution_distSlope(set_InSlopeSupplier,set_InUnivariateDoubleDistribution)
-
-* - description: Gruppen, denen die Werte hinzugefügt werden sollen.
-* - identifier: Ziel-KGs für Neigung
-* - type: Boolean
-PARAMETER par_link_InSlopeSupplier_InConsumerAgentGroup_slopeCags(set_InSlopeSupplier,set_InConsumerAgentGroup)
 
 * - identifier: InUncertaintyGroupAttribute
 * - hidden: 1
 * - type: String
 SET set_InUncertaintyGroupAttribute(set_InEntity)
 
+* - identifier: InProcessModel
+* - hidden: 1
+* - type: String
+SET set_InProcessModel(set_InEntity)
+
+* - identifier: InBasicProductGroup
+* - type: String
+SET set_InBasicProductGroup(set_InProductGroup,set_InEntity)
+
+* - description: Bestimmt die Attribute für diese Gruppe.
+* - identifier: Attribute
+* - type: Boolean
+PARAMETER par_link_InBasicProductGroup_InDependentProductGroupAttribute_pgAttributes(set_InBasicProductGroup,set_InDependentProductGroupAttribute)
+
+* - identifier: InBasicProductGroupAttribute
+* - type: String
+SET set_InBasicProductGroupAttribute(set_InDependentProductGroupAttribute,set_InProductGroupAttribute,set_InEntity)
+
+* - description: Legt die Attributnamen fest.
+* - identifier: Attributname
+* - type: Boolean
+PARAMETER par_link_InBasicProductGroupAttribute_InAttributeName_attrName(set_InBasicProductGroupAttribute,set_InAttributeName)
+
+* - description: Legt die Verteilungsfunktion fest, auf deren Basis die Attributwerte gezogen werden.
+* - identifier: Verteilungsfunktion
+* - type: Boolean
+PARAMETER par_link_InBasicProductGroupAttribute_InUnivariateDoubleDistribution_dist(set_InBasicProductGroupAttribute,set_InUnivariateDoubleDistribution)
+
+* - identifier: InDependentProductGroupAttribute
+* - hidden: 1
+* - type: String
+SET set_InDependentProductGroupAttribute(set_InProductGroupAttribute,set_InEntity)
+
 * - identifier: InFixProduct
 * - type: String
 SET set_InFixProduct(set_InEntity)
 
-* - description: Zugehörige Gruppe
+* - description: Legt die Produktgruppe fest, zu der dieses Produkt gehören soll.
 * - identifier: Produktgruppe
 * - type: Boolean
 PARAMETER par_link_InFixProduct_InProductGroup_refPG(set_InFixProduct,set_InProductGroup)
 
-* - description: Attribute
+* - description: Bestimmt die Attribute für dieses Fixprodukt.
 * - identifier: Attribute
 * - type: Boolean
 PARAMETER par_link_InFixProduct_InFixProductAttribute_fixPAttrs(set_InFixProduct,set_InFixProductAttribute)
@@ -440,13 +665,13 @@ PARAMETER par_link_InFixProduct_InFixProductAttribute_fixPAttrs(set_InFixProduct
 * - type: String
 SET set_InFixProductAttribute(set_InEntity)
 
-* - description: Gruppenattribut
-* - identifier: Gruppenattribut
+* - description: Legt das Produktgruppenattribut fest, zu dem dieses Produkt gehören soll.
+* - identifier: Produktgruppenattribut
 * - type: Boolean
 PARAMETER par_link_InFixProductAttribute_InProductGroupAttribute_refPGA(set_InFixProductAttribute,set_InProductGroupAttribute)
 
-* - description: Wert
-* - identifier: Fixierte Wert
+* - description: Bestimmt die Wert für dieses Attribut.
+* - identifier: Wert
 * - type: Float
 PARAMETER par_InFixProductAttribute_fixPAvalue(set_InFixProductAttribute)
 
@@ -454,10 +679,24 @@ PARAMETER par_InFixProductAttribute_fixPAvalue(set_InFixProductAttribute)
 * - type: String
 SET set_InFixProductFindingScheme(set_InProductFindingScheme,set_InEntity)
 
-* - description: Produkt
-* - identifier: Produkt
+* - description: Legt das Fixprodukt fest, welches von diesem Schema verwendet werden soll.
+* - identifier: Fixprodukt
 * - type: Boolean
 PARAMETER par_link_InFixProductFindingScheme_InFixProduct_refFixProduct(set_InFixProductFindingScheme,set_InFixProduct)
+
+* - identifier: InIndependentProductGroupAttribute
+* - hidden: 1
+* - type: String
+SET set_InIndependentProductGroupAttribute(set_InProductGroupAttribute,set_InEntity)
+
+* - identifier: InNameSplitProductGroupAttribute
+* - type: String
+SET set_InNameSplitProductGroupAttribute(set_InIndependentProductGroupAttribute,set_InProductGroupAttribute,set_InEntity)
+
+* - description: Legt die Verteilungsfunktion fest, auf deren Basis die Attributwerte gezogen werden.
+* - identifier: Verteilungsfunktion
+* - type: Boolean
+PARAMETER par_link_InNameSplitProductGroupAttribute_InUnivariateDoubleDistribution_dist(set_InNameSplitProductGroupAttribute,set_InUnivariateDoubleDistribution)
 
 * - identifier: InProductFindingScheme
 * - hidden: 1
@@ -465,96 +704,156 @@ PARAMETER par_link_InFixProductFindingScheme_InFixProduct_refFixProduct(set_InFi
 SET set_InProductFindingScheme(set_InEntity)
 
 * - identifier: InProductGroup
+* - hidden: 1
 * - type: String
 SET set_InProductGroup(set_InEntity)
 
-* - identifier: pgAttributes
-* - type: Boolean
-PARAMETER par_link_InProductGroup_InProductGroupAttribute_pgAttributes(set_InProductGroup,set_InProductGroupAttribute)
-
 * - identifier: InProductGroupAttribute
+* - hidden: 1
 * - type: String
 SET set_InProductGroupAttribute(set_InEntity)
 
-* - identifier: attrName
-* - type: Boolean
-PARAMETER par_link_InProductGroupAttribute_InAttributeName_attrName(set_InProductGroupAttribute,set_InAttributeName)
-
-* - identifier: attrDistribution
-* - type: Boolean
-PARAMETER par_link_InProductGroupAttribute_InUnivariateDoubleDistribution_attrDistribution(set_InProductGroupAttribute,set_InUnivariateDoubleDistribution)
-
-* - identifier: InCustomSelectedGroupedSpatialDistribution2D
+* - identifier: InCustomFileSelectedGroupedSpatialDistribution2D
 * - type: String
-SET set_InCustomSelectedGroupedSpatialDistribution2D(set_InSpatialDistribution,set_InEntity)
+SET set_InCustomFileSelectedGroupedSpatialDistribution2D(set_InSpatialDistribution,set_InEntity)
 
-* - description: X-Position
-* - identifier: X-Position1
-* - type: Boolean
-PARAMETER par_link_InCustomSelectedGroupedSpatialDistribution2D_InUnivariateDoubleDistribution_xPosSupplier(set_InCustomSelectedGroupedSpatialDistribution2D,set_InUnivariateDoubleDistribution)
-
-* - description: Y-Position
-* - identifier: Y-Position1
-* - type: Boolean
-PARAMETER par_link_InCustomSelectedGroupedSpatialDistribution2D_InUnivariateDoubleDistribution_yPosSupplier(set_InCustomSelectedGroupedSpatialDistribution2D,set_InUnivariateDoubleDistribution)
-
-* - description: Zu nutzende Tabelle für weitere Informationen
-* - identifier: Tabellendaten1
-* - type: Boolean
-PARAMETER par_link_InCustomSelectedGroupedSpatialDistribution2D_InSpatialTableFile_file(set_InCustomSelectedGroupedSpatialDistribution2D,set_InSpatialTableFile)
-
-* - description: Dieser Schlüssel wird verwendet, um die Daten zu filtern (z.B. Milieu).
-* - identifier: Filterschlüssel1
-* - type: Boolean
-PARAMETER par_link_InCustomSelectedGroupedSpatialDistribution2D_InAttributeName_selectKey(set_InCustomSelectedGroupedSpatialDistribution2D,set_InAttributeName)
-
-* - description: Dieser Schlüssel wird verwendet, um die Daten zu für die Wichtung zu gruppieren.
-* - identifier: Gruppierungsschlüssel1
-* - type: Boolean
-PARAMETER par_link_InCustomSelectedGroupedSpatialDistribution2D_InAttributeName_groupKey(set_InCustomSelectedGroupedSpatialDistribution2D,set_InAttributeName)
-
-* - identifier: InCustomSelectedSpatialDistribution2D
-* - type: String
-SET set_InCustomSelectedSpatialDistribution2D(set_InSpatialDistribution,set_InEntity)
-
-* - description: X-Position
-* - identifier: X-Position0
-* - type: Boolean
-PARAMETER par_link_InCustomSelectedSpatialDistribution2D_InUnivariateDoubleDistribution_xPosSupplier(set_InCustomSelectedSpatialDistribution2D,set_InUnivariateDoubleDistribution)
-
-* - description: Y-Position
-* - identifier: Y-Position0
-* - type: Boolean
-PARAMETER par_link_InCustomSelectedSpatialDistribution2D_InUnivariateDoubleDistribution_yPosSupplier(set_InCustomSelectedSpatialDistribution2D,set_InUnivariateDoubleDistribution)
-
-* - description: Zu nutzende Tabelle für weitere Informationen
-* - identifier: Tabellendaten0
-* - type: Boolean
-PARAMETER par_link_InCustomSelectedSpatialDistribution2D_InSpatialTableFile_attrFile(set_InCustomSelectedSpatialDistribution2D,set_InSpatialTableFile)
-
-* - description: Dieser Schlüssel wird verwendet, um die Daten zu filtern (z.B. Milieu).
-* - identifier: Filterschlüssel0
-* - type: Boolean
-PARAMETER par_link_InCustomSelectedSpatialDistribution2D_InAttributeName_selectKey(set_InCustomSelectedSpatialDistribution2D,set_InAttributeName)
-
-* - identifier: InCustomSpatialDistribution2D
-* - type: String
-SET set_InCustomSpatialDistribution2D(set_InSpatialDistribution,set_InEntity)
-
-* - description: X-Position
+* - description: Legt die Verteilungsfunktion fest, welche die X-Position bestimmt.
 * - identifier: X-Position
 * - type: Boolean
-PARAMETER par_link_InCustomSpatialDistribution2D_InUnivariateDoubleDistribution_xPosSupplier(set_InCustomSpatialDistribution2D,set_InUnivariateDoubleDistribution)
+PARAMETER par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InUnivariateDoubleDistribution_xPosSupplier(set_InCustomFileSelectedGroupedSpatialDistribution2D,set_InUnivariateDoubleDistribution)
 
-* - description: Y-Position
+* - description: Legt die Verteilungsfunktion fest, welche die Y-Position bestimmt.
 * - identifier: Y-Position
 * - type: Boolean
-PARAMETER par_link_InCustomSpatialDistribution2D_InUnivariateDoubleDistribution_yPosSupplier(set_InCustomSpatialDistribution2D,set_InUnivariateDoubleDistribution)
+PARAMETER par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InUnivariateDoubleDistribution_yPosSupplier(set_InCustomFileSelectedGroupedSpatialDistribution2D,set_InUnivariateDoubleDistribution)
 
-* - description: Zu nutzende Tabelle für weitere Informationen
-* - identifier: Tabellendaten
+* - identifier: file
 * - type: Boolean
-PARAMETER par_link_InCustomSpatialDistribution2D_InSpatialTableFile_attrFile(set_InCustomSpatialDistribution2D,set_InSpatialTableFile)
+PARAMETER par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InSpatialTableFile_file(set_InCustomFileSelectedGroupedSpatialDistribution2D,set_InSpatialTableFile)
+
+* - description: Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname).
+* - identifier: Auswahlschlüssel
+* - type: Boolean
+PARAMETER par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InAttributeName_selectKey(set_InCustomFileSelectedGroupedSpatialDistribution2D,set_InAttributeName)
+
+* - description: Bestimmt den Schlüssel für die Gruppierung und Wichtung anhand der tabellarischen Datei (Spaltenname).
+* - identifier: Gruppierungsschlüssel
+* - type: Boolean
+PARAMETER par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InAttributeName_groupKey(set_InCustomFileSelectedGroupedSpatialDistribution2D,set_InAttributeName)
+
+* - identifier: InCustomFileSelectedSpatialDistribution2D
+* - type: String
+SET set_InCustomFileSelectedSpatialDistribution2D(set_InSpatialDistribution,set_InEntity)
+
+* - description: Legt die Verteilungsfunktion fest, welche die X-Position bestimmt.
+* - identifier: X-Position
+* - type: Boolean
+PARAMETER par_link_InCustomFileSelectedSpatialDistribution2D_InUnivariateDoubleDistribution_xPosSupplier(set_InCustomFileSelectedSpatialDistribution2D,set_InUnivariateDoubleDistribution)
+
+* - description: Legt die Verteilungsfunktion fest, welche die Y-Position bestimmt.
+* - identifier: Y-Position
+* - type: Boolean
+PARAMETER par_link_InCustomFileSelectedSpatialDistribution2D_InUnivariateDoubleDistribution_yPosSupplier(set_InCustomFileSelectedSpatialDistribution2D,set_InUnivariateDoubleDistribution)
+
+* - description: Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen.
+* - identifier: Tabellarische Datei
+* - type: Boolean
+PARAMETER par_link_InCustomFileSelectedSpatialDistribution2D_InSpatialTableFile_attrFile(set_InCustomFileSelectedSpatialDistribution2D,set_InSpatialTableFile)
+
+* - description: Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname).
+* - identifier: Auswahlschlüssel
+* - type: Boolean
+PARAMETER par_link_InCustomFileSelectedSpatialDistribution2D_InAttributeName_selectKey(set_InCustomFileSelectedSpatialDistribution2D,set_InAttributeName)
+
+* - identifier: InCustomFileSpatialDistribution2D
+* - type: String
+SET set_InCustomFileSpatialDistribution2D(set_InSpatialDistribution,set_InEntity)
+
+* - description: Legt die Verteilungsfunktion fest, welche die X-Position bestimmt.
+* - identifier: X-Position
+* - type: Boolean
+PARAMETER par_link_InCustomFileSpatialDistribution2D_InUnivariateDoubleDistribution_xPosSupplier(set_InCustomFileSpatialDistribution2D,set_InUnivariateDoubleDistribution)
+
+* - description: Legt die Verteilungsfunktion fest, welche die Y-Position bestimmt.
+* - identifier: Y-Position
+* - type: Boolean
+PARAMETER par_link_InCustomFileSpatialDistribution2D_InUnivariateDoubleDistribution_yPosSupplier(set_InCustomFileSpatialDistribution2D,set_InUnivariateDoubleDistribution)
+
+* - description: Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen.
+* - identifier: Tabellarische Datei
+* - type: Boolean
+PARAMETER par_link_InCustomFileSpatialDistribution2D_InSpatialTableFile_attrFile(set_InCustomFileSpatialDistribution2D,set_InSpatialTableFile)
+
+* - identifier: InFileSelectedGroupedSpatialDistribution2D
+* - type: String
+SET set_InFileSelectedGroupedSpatialDistribution2D(set_InSpatialDistribution,set_InEntity)
+
+* - description: Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname).
+* - identifier: X-Schlüssel
+* - type: Boolean
+PARAMETER par_link_InFileSelectedGroupedSpatialDistribution2D_InAttributeName_xPositionKey(set_InFileSelectedGroupedSpatialDistribution2D,set_InAttributeName)
+
+* - description: Bestimmt den Schlüssel für die Auswahl der Y-Position in der tabellarischen Datei (Spaltenname).
+* - identifier: Y-Schlüssel
+* - type: Boolean
+PARAMETER par_link_InFileSelectedGroupedSpatialDistribution2D_InAttributeName_yPositionKey(set_InFileSelectedGroupedSpatialDistribution2D,set_InAttributeName)
+
+* - identifier: file
+* - type: Boolean
+PARAMETER par_link_InFileSelectedGroupedSpatialDistribution2D_InSpatialTableFile_file(set_InFileSelectedGroupedSpatialDistribution2D,set_InSpatialTableFile)
+
+* - description: Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname).
+* - identifier: Auswahlschlüssel
+* - type: Boolean
+PARAMETER par_link_InFileSelectedGroupedSpatialDistribution2D_InAttributeName_selectKey(set_InFileSelectedGroupedSpatialDistribution2D,set_InAttributeName)
+
+* - description: Bestimmt den Schlüssel für die Gruppierung und Wichtung anhand der tabellarischen Datei (Spaltenname).
+* - identifier: Gruppierungsschlüssel
+* - type: Boolean
+PARAMETER par_link_InFileSelectedGroupedSpatialDistribution2D_InAttributeName_groupKey(set_InFileSelectedGroupedSpatialDistribution2D,set_InAttributeName)
+
+* - identifier: InFileSelectedSpatialDistribution2D
+* - type: String
+SET set_InFileSelectedSpatialDistribution2D(set_InSpatialDistribution,set_InEntity)
+
+* - description: Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname).
+* - identifier: X-Schlüssel
+* - type: Boolean
+PARAMETER par_link_InFileSelectedSpatialDistribution2D_InAttributeName_xPositionKey(set_InFileSelectedSpatialDistribution2D,set_InAttributeName)
+
+* - description: Bestimmt den Schlüssel für die Auswahl der Y-Position in der tabellarischen Datei (Spaltenname).
+* - identifier: Y-Schlüssel
+* - type: Boolean
+PARAMETER par_link_InFileSelectedSpatialDistribution2D_InAttributeName_yPositionKey(set_InFileSelectedSpatialDistribution2D,set_InAttributeName)
+
+* - description: Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen.
+* - identifier: Tabellarische Datei
+* - type: Boolean
+PARAMETER par_link_InFileSelectedSpatialDistribution2D_InSpatialTableFile_attrFile(set_InFileSelectedSpatialDistribution2D,set_InSpatialTableFile)
+
+* - description: Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname).
+* - identifier: Auswahlschlüssel
+* - type: Boolean
+PARAMETER par_link_InFileSelectedSpatialDistribution2D_InAttributeName_selectKey(set_InFileSelectedSpatialDistribution2D,set_InAttributeName)
+
+* - identifier: InFileSpatialDistribution2D
+* - type: String
+SET set_InFileSpatialDistribution2D(set_InSpatialDistribution,set_InEntity)
+
+* - description: Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname).
+* - identifier: X-Schlüssel
+* - type: Boolean
+PARAMETER par_link_InFileSpatialDistribution2D_InAttributeName_xPositionKey(set_InFileSpatialDistribution2D,set_InAttributeName)
+
+* - description: Bestimmt den Schlüssel für die Auswahl der Y-Position in der tabellarischen Datei (Spaltenname).
+* - identifier: Y-Schlüssel
+* - type: Boolean
+PARAMETER par_link_InFileSpatialDistribution2D_InAttributeName_yPositionKey(set_InFileSpatialDistribution2D,set_InAttributeName)
+
+* - description: Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen.
+* - identifier: Tabellarische Datei
+* - type: Boolean
+PARAMETER par_link_InFileSpatialDistribution2D_InSpatialTableFile_attrFile(set_InFileSpatialDistribution2D,set_InSpatialTableFile)
 
 * - identifier: InSpatialDistribution
 * - hidden: 1
@@ -565,21 +864,25 @@ SET set_InSpatialDistribution(set_InEntity)
 * - type: String
 SET set_InSpace2D(set_InSpatialModel,set_InEntity)
 
-* - identifier: useManhatten
+* - description: Nutzt die Manhattenmetrik für die Berechnung der Abstände.
+* - identifier: Manhattenmetrik
 * - type: Boolean
 PARAMETER par_InSpace2D_useManhatten(set_InSpace2D)
 
-* - identifier: useEuclid
+* - description: Nutzt die euklidische Metrik für die Berechnung der Abstände.
+* - identifier: Euklidische Metrik
 * - type: Boolean
 PARAMETER par_InSpace2D_useEuclid(set_InSpace2D)
 
-* - identifier: useEuclid2
-* - type: Boolean
-PARAMETER par_InSpace2D_useEuclid2(set_InSpace2D)
-
-* - identifier: useMaximum
+* - description: Nutzt die Maximumsmetrik für die Berechnung der Abstände.
+* - identifier: Maximumsmetrik
 * - type: Boolean
 PARAMETER par_InSpace2D_useMaximum(set_InSpace2D)
+
+* - description: Nutzt die Haversine-Formel für die Berechnung der Entfernungen. Die Berechnungen finden auf Kilometerbasis statt.
+* - identifier: Haversine (km)
+* - type: Boolean
+PARAMETER par_InSpace2D_useHaversine(set_InSpace2D)
 
 * - identifier: InSpatialModel
 * - hidden: 1
@@ -590,7 +893,7 @@ SET set_InSpatialModel(set_InEntity)
 * - type: String
 SET set_InDiscreteTimeModel(set_InTimeModel,set_InEntity)
 
-* - description: Zeit pro Schritt
+* - description: Legt die Zeit fest, welche pro diskreten Schritt vergeht. Der Wert muss in Millisekunden angegeben werden.
 * - identifier: Zeit pro Schritt
 * - unit: [ms]
 * - type: Integer
@@ -601,12 +904,56 @@ PARAMETER par_InDiscreteTimeModel_timePerTickInMs(set_InDiscreteTimeModel)
 * - type: String
 SET set_InTimeModel(set_InEntity)
 
+* - identifier: InUnitStepDiscreteTimeModel
+* - type: String
+SET set_InUnitStepDiscreteTimeModel(set_InTimeModel,set_InEntity)
+
+* - description: Legt die Zeitdauer fest, welche pro diskreten Schritt vergeht.
+* - identifier: Zeitdauer
+* - type: Integer
+PARAMETER par_InUnitStepDiscreteTimeModel_amountOfTime(set_InUnitStepDiscreteTimeModel)
+
+* - description: Verwendet Millisekunden alsEinheit für die Zeitdauer.
+* - identifier: Millisekunden
+* - type: Boolean
+PARAMETER par_InUnitStepDiscreteTimeModel_useMs(set_InUnitStepDiscreteTimeModel)
+
+* - description: Verwendet Sekunden alsEinheit für die Zeitdauer.
+* - identifier: Sekunden
+* - type: Boolean
+PARAMETER par_InUnitStepDiscreteTimeModel_useSec(set_InUnitStepDiscreteTimeModel)
+
+* - description: Verwendet Minuten alsEinheit für die Zeitdauer.
+* - identifier: Minuten
+* - type: Boolean
+PARAMETER par_InUnitStepDiscreteTimeModel_useMin(set_InUnitStepDiscreteTimeModel)
+
+* - description: Verwendet Stunden alsEinheit für die Zeitdauer.
+* - identifier: Stunden
+* - type: Boolean
+PARAMETER par_InUnitStepDiscreteTimeModel_useH(set_InUnitStepDiscreteTimeModel)
+
+* - description: Verwendet Tage alsEinheit für die Zeitdauer.
+* - identifier: Tage
+* - type: Boolean
+PARAMETER par_InUnitStepDiscreteTimeModel_useD(set_InUnitStepDiscreteTimeModel)
+
+* - description: Verwendet Wochen alsEinheit für die Zeitdauer.
+* - identifier: Wochen
+* - type: Boolean
+PARAMETER par_InUnitStepDiscreteTimeModel_useW(set_InUnitStepDiscreteTimeModel)
+
+* - description: Verwendet Monate alsEinheit für die Zeitdauer.
+* - identifier: Monate
+* - type: Boolean
+PARAMETER par_InUnitStepDiscreteTimeModel_useM(set_InUnitStepDiscreteTimeModel)
+
 * - identifier: InAttributeName
 * - type: String
 SET set_InAttributeName(set_InEntity)
 
-* - description: Platzhalter
-* - identifier: ----
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
 * - type: Integer
 PARAMETER par_InAttributeName_placeholder(set_InAttributeName)
 
@@ -615,31 +962,35 @@ PARAMETER par_InAttributeName_placeholder(set_InAttributeName)
 * - type: String
 SET set_InEntity(*)
 
-* - default: -1
 * - description: Setzt den Seed für den Zufallsgenerator der Simulation. Falls er auf -1 gesetzt wird, wird ein zufälliger Seed generiert.
 * - identifier: Zufallsgenerator (seed)
 * - type: Integer
 SCALAR sca_InGeneral_seed
 
-* - default: 5
 * - description: Setzt den Timeout der Simulation in Millisekunden. Diese Einstellung dient dazu die Simulation zu beenden, falls sie unerwartet abstürzt. Im Laufe der Simulation wird der Timeout unentwegt zurück gesetzt. Sollte es zu einem unerwarteten Fehler kommen und die Rücksetzung ausbleiben, wird die Simulation abgebrochen und beendet. Werte kleiner 1 deaktivieren den Timeout vollständig.
 * - identifier: Timeout
 * - unit: [ms]
 * - type: Integer
 SCALAR sca_InGeneral_timeout
 
-* - description: [TEMPORÄRE OPTION] Setzt das finale Jahr der Simulation. Wichtig: Der Wert ist inklusiv. Es wird dabei immer mindestens ein Jahr simuliert, auch wenn der Wert kleiner ist als das des Ausgangsjahres.
-* - identifier: Endjahr der Simulation
+* - description: Setzt das finale Jahr der Simulation. Wichtig: Der Wert ist inklusiv. Es wird dabei immer mindestens ein Jahr simuliert, auch wenn der Wert kleiner ist als das des Ausgangsjahres.
+* - identifier: [Testoption] Endjahr der Simulation
 * - type: Integer
 SCALAR sca_InGeneral_endYear
 
-* - description: [TEMPORÄRE OPTION] Falls gesetzt, wird die optact-Demo gestartet. Anderenfalls wird IRPact gestartet.
-* - identifier: optact-Testmodell ausführen
+* - domain: [0|1]
+* - description: Falls gesetzt, werden automatisch spezielle Einstellungen für PVact bei der Initialisierung ergänzt. Dies betrifft aktuell Produkte und die Prozessmodellzuordnung.
+* - identifier: PVact
+* - type: Boolean
+SCALAR sca_InGeneral_runPVAct
+
+* - domain: [0|1]
+* - description: Falls gesetzt, wird die optact-Demo gestartet. Anderenfalls wird IRPact gestartet.
+* - identifier: [Testoption] optact-Testmodell ausführen
 * - type: Boolean
 SCALAR sca_InGeneral_runOptActDemo
 
-* - default: 6
-* - domain: [0, 6]
+* - domain: [0,6]
 * - description: Setzt das zu nutzende Logging-Level in IRPact, folgende Werte werden unterstützt: 0 = OFF, 1 = TRACE, 2 = DEBUG, 3 = INFO, 4 = WARN, 5 = ERROR, 6 = ALL. Das Level ist der Hauptfilter für alle log-Operationen.
 * - identifier: Logging-Level
 * - type: Integer
@@ -647,77 +998,84 @@ SCALAR sca_InGeneral_logLevel
 
 * - domain: [0|1]
 * - description: [SPAM] Ob alles geloggt werden soll. Falls ja, überschreibt diese Option alles.
-* - identifier: log alles
+* - identifier: Alles loggen?
 * - type: Boolean
 SCALAR sca_InGeneral_logAll
 
 * - domain: [0|1]
 * - description: [SPAM] Ob alle Aufrufe der Tools-Bibliothek geloggt werden sollen.
-* - identifier: log alle Aufrufe von Tools
+* - identifier: Tools-Bibliothek loggen?
 * - type: Boolean
 SCALAR sca_InGeneral_logAllTools
 
 * - domain: [0|1]
-* - description: [SPAM] Ob die Kernaufrufe der Tools-Bibliothek geloggt werden sollen.
-* - identifier: log primäre Aufrufe von Tools
+* - description: [SPAM] logToolsCore
+* - identifier: logToolsCore
 * - type: Boolean
 SCALAR sca_InGeneral_logToolsCore
 
 * - domain: [0|1]
-* - description: [SPAM] Ob Definitions-Aufrufe der Tools-Bibliothek geloggt werden sollen.
-* - identifier: log Definitionerstellung von Tools
+* - description: [SPAM] logToolsDefinition
+* - identifier: logToolsDefinition
 * - type: Boolean
 SCALAR sca_InGeneral_logToolsDefinition
 
 * - domain: [0|1]
-* - description: Ob die Initialisierung der Parameter geloggt werden soll.
-* - identifier: log Initialisierung der Parameter
+* - description: logInitialization
+* - identifier: logInitialization
+* - type: Boolean
+SCALAR sca_InGeneral_logInitialization
+
+* - domain: [0|1]
+* - description: [SPAM] logParamInit
+* - identifier: logParamInit
 * - type: Boolean
 SCALAR sca_InGeneral_logParamInit
 
 * - domain: [0|1]
-* - description: [SPAM] Ob die Grapherzeugung geloggt werden soll.
-* - identifier: log Grapherzeugung
+* - description: [SPAM] logGraphCreation
+* - identifier: logGraphCreation
 * - type: Boolean
 SCALAR sca_InGeneral_logGraphCreation
 
 * - domain: [0|1]
-* - description: [SPAM] Ob die Agentenerzeugung geloggt werden soll.
-* - identifier: log Agentenerzeugung
+* - description: [SPAM] logAgentCreation
+* - identifier: logAgentCreation
 * - type: Boolean
 SCALAR sca_InGeneral_logAgentCreation
 
 * - domain: [0|1]
-* - description: [SPAM] Ob die Erstellung der Simulation (Agentenplatform) geloggt werden soll.
-* - identifier: log Platformerstellung
+* - description: [SPAM] logPlatformCreation
+* - identifier: logPlatformCreation
 * - type: Boolean
 SCALAR sca_InGeneral_logPlatformCreation
 
 * - domain: [0|1]
-* - description: [SPAM] Ob der Lebenszyklus geloggt werden soll.
-* - identifier: log Simulationszyklen
+* - description: [SPAM] logSimulationLifecycle
+* - identifier: logSimulationLifecycle
 * - type: Boolean
 SCALAR sca_InGeneral_logSimulationLifecycle
 
 * - domain: [0|1]
-* - description: [SPAM] Ob die Agenten während der Simulation geloggt werden sollen.
-* - identifier: log Agenten während Simulation
+* - description: [SPAM] logSimulationAgent
+* - identifier: logSimulationAgent
 * - type: Boolean
 SCALAR sca_InGeneral_logSimulationAgent
 
 * - domain: [0|1]
-* - description: [SPAM] Ob spezielle Jadex-Ausgaben geloggt werden sollen. (Anmerkung: Diese Ausgaben von Jadex selbst generiert.)
-* - identifier: log Jadex Systemnachrichten
+* - description: [SPAM] logJadexSystemOut
+* - identifier: logJadexSystemOut
 * - type: Boolean
 SCALAR sca_InGeneral_logJadexSystemOut
 
-* - description: Version von IRPact für dieses Szenario.
+* - description: Die Version von IRPact, welche bei der Erstellung des Szenarios aktuell war.
 * - hidden: 1
-* - identifier: InVersion
+* - identifier: IRPact Version
 * - type: String
 SET set_InVersion(set_InEntity)
 
-* - identifier: placeholderVersion
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
 * - type: Integer
 PARAMETER par_InVersion_placeholderVersion(set_InVersion)
 

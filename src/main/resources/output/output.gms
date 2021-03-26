@@ -1,3 +1,15 @@
+* - identifier: OutAdoptionResult
+* - type: String
+SET set_OutAdoptionResult(*)
+
+* - identifier: adoptions
+* - type: Integer
+PARAMETER par_out_OutAdoptionResult_adoptions(set_OutAdoptionResult)
+
+* - identifier: adoptionShare
+* - type: Float
+PARAMETER par_out_OutAdoptionResult_adoptionShare(set_OutAdoptionResult)
+
 * - identifier: id
 * - type: Integer
 PARAMETER par_out_BinaryPersistData_id(set_BinaryPersistData)
