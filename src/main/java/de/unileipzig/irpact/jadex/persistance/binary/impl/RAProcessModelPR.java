@@ -48,8 +48,6 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
         data.putLong(manager.ensureGetUID(object.getModelData()));
         data.putLong(manager.ensureGetUID(object.getRnd()));
         data.putLong(manager.ensureGetUID(object.getUncertaintySupplier()));
-
-        object.deepHashCode();
     }
 
     //=========================

@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.network;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.TripleMapping;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.core.agent.Agent;
@@ -58,8 +58,8 @@ public class BasicSocialGraph implements SocialGraph {
         }
 
         @Override
-        public int getHashCode() {
-            return agent.getHashCode();
+        public int getChecksum() {
+            return agent.getChecksum();
         }
     }
 
@@ -115,12 +115,12 @@ public class BasicSocialGraph implements SocialGraph {
         }
 
         @Override
-        public int getHashCode() {
+        public int getChecksum() {
             return Objects.hash(
-                    getSource().getHashCode(),
-                    getTarget().getHashCode(),
+                    getSource().getChecksum(),
+                    getTarget().getChecksum(),
                     getWeight(),
-                    getType().getHashCode()
+                    getType().getChecksum()
             );
         }
     }
@@ -224,11 +224,11 @@ public class BasicSocialGraph implements SocialGraph {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
-                getStructure().getHashCode(),
-                IsEquals.getCollHashCode(getAllAgents()),
-                IsEquals.getCollHashCode(getAllEdges())
+                getStructure().getChecksum(),
+                ChecksumComparable.getCollChecksum(getAllAgents()),
+                ChecksumComparable.getCollChecksum(getAllEdges())
         );
     }
 

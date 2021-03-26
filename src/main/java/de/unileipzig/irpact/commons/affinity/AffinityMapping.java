@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.affinity;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 
 import java.util.Set;
 
@@ -9,7 +9,7 @@ import java.util.Set;
  * @param <T>
  * @author Daniel Abitz
  */
-public interface AffinityMapping<S, T> extends IsEquals {
+public interface AffinityMapping<S, T> extends ChecksumComparable {
 
     Set<S> sources();
 

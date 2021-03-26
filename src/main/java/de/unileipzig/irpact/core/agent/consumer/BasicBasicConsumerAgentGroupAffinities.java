@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.affinity.BasicAffinities;
 
 import java.util.Map;
@@ -30,9 +30,9 @@ public class BasicBasicConsumerAgentGroupAffinities extends BasicAffinities<Cons
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
-                IsEquals.getMapHashCode(values)
+                ChecksumComparable.getMapChecksum(values)
         );
     }
 }

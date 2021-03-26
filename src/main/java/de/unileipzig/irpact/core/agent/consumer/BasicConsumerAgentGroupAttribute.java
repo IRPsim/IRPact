@@ -32,10 +32,10 @@ public class BasicConsumerAgentGroupAttribute extends AbstractDerivableUnivariat
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
-                getValue().getHashCode()
+                getValue().getChecksum()
         );
     }
 }

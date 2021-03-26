@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.process;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -30,8 +30,8 @@ public class BasicProcessModelManager implements ProcessModelManager {
     }
 
     @Override
-    public int getHashCode() {
-        return IsEquals.getCollHashCode(getProcessModels());
+    public int getChecksum() {
+        return ChecksumComparable.getCollChecksum(getProcessModels());
     }
 
     @Override

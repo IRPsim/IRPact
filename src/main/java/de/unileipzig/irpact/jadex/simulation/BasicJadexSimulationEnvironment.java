@@ -50,16 +50,16 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
-                agentManager.getHashCode(),
-                socialNetwork.getHashCode(),
-                processModelManager.getHashCode(),
-                productManager.getHashCode(),
-                spatialModel.getHashCode(),
-                timeModel.getHashCode(),
-                lifeCycleControl.getHashCode(),
-                rnd.getHashCode()
+                agentManager.getChecksum(),
+                socialNetwork.getChecksum(),
+                processModelManager.getChecksum(),
+                productManager.getChecksum(),
+                spatialModel.getChecksum(),
+                timeModel.getChecksum(),
+                lifeCycleControl.getChecksum(),
+                rnd.getChecksum()
         );
     }
 

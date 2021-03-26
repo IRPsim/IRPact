@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
@@ -27,9 +27,9 @@ public class BasicProductManager implements ProductManager {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
-                IsEquals.getCollHashCode(getGroups())
+                ChecksumComparable.getCollChecksum(getGroups())
         );
     }
 

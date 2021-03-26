@@ -119,7 +119,7 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
         binaryRestore.setInitialInstance(initialEnvironment);
         binaryRestore.restore(dataList);
         SimulationEnvironment restoredEnvironment = binaryRestore.getRestoredInstance();
-        int restoredHash = restoredEnvironment.getHashCode();
+        int restoredHash = restoredEnvironment.getChecksum();
         int validationHash = binaryRestore.getValidationHash();
         if(restoredHash == validationHash) {
             LOGGER.info("environment successfully restored");

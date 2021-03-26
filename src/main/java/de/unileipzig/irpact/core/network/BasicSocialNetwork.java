@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.core.network;
 
-import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
-import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
@@ -26,10 +24,10 @@ public class BasicSocialNetwork implements SocialNetwork {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
-                topologyScheme.getHashCode(),
-                graph.getHashCode()
+                topologyScheme.getChecksum(),
+                graph.getChecksum()
         );
     }
 

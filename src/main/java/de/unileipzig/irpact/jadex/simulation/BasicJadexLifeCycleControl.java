@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.simulation;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.Agent;
@@ -54,10 +54,10 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
-                IsEquals.getHashCode(current),
-                IsEquals.getHashCode(controlAgent)
+                ChecksumComparable.getChecksum(current),
+                ChecksumComparable.getChecksum(controlAgent)
         );
     }
 

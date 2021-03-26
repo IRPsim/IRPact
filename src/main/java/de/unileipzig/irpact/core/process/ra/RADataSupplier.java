@@ -34,10 +34,10 @@ public class RADataSupplier extends NameableBase implements UnivariateDoubleDist
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
-                getDistribution().getHashCode()
+                getDistribution().getChecksum()
         );
     }
 }

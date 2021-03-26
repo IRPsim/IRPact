@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
 
 import java.util.*;
@@ -78,11 +78,11 @@ public class BasicProduct extends SimulationEntityBase implements Product {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
                 group.getName(),
-                IsEquals.getCollHashCode(getAttributes())
+                ChecksumComparable.getCollChecksum(getAttributes())
         );
     }
 }

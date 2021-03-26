@@ -103,7 +103,7 @@ public enum Metric2D implements Metric {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return ID;
     }
 

@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.time.Timestamp;
@@ -292,20 +292,20 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
                 getGroup().getName(),
                 getInformationAuthority(),
-                getSpatialInformation().getHashCode(),
-                IsEquals.getCollHashCode(getAttributes()),
-                getProductInterest().getHashCode(),
-                IsEquals.getCollHashCode(getAdoptedProducts()),
-                getProductFindingScheme().getHashCode(),
-                getProcessFindingScheme().getHashCode(),
-                IsEquals.getCollHashCode(getNeeds()),
-                IsEquals.getMapHashCode(getPlans()),
-                IsEquals.getCollHashCode(externAttributes)
+                getSpatialInformation().getChecksum(),
+                ChecksumComparable.getCollChecksum(getAttributes()),
+                getProductInterest().getChecksum(),
+                ChecksumComparable.getCollChecksum(getAdoptedProducts()),
+                getProductFindingScheme().getChecksum(),
+                getProcessFindingScheme().getChecksum(),
+                ChecksumComparable.getCollChecksum(getNeeds()),
+                ChecksumComparable.getMapChecksum(getPlans()),
+                ChecksumComparable.getCollChecksum(externAttributes)
         );
     }
 

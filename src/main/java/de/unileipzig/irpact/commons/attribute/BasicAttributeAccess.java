@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.attribute;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 
 import java.util.Collection;
 import java.util.Map;
@@ -32,7 +32,7 @@ public class BasicAttributeAccess implements AttributeAccess {
     }
 
     @Override
-    public int getHashCode() {
-        return IsEquals.getCollHashCode(getAttributes());
+    public int getChecksum() {
+        return ChecksumComparable.getCollChecksum(getAttributes());
     }
 }

@@ -41,11 +41,11 @@ public class BasicProductGroupAttribute extends AbstractDerivableUnivariateDoubl
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
                 nextId,
-                getValue().getHashCode()
+                getValue().getChecksum()
         );
     }
 }

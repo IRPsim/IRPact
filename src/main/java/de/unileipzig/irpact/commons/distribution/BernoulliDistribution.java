@@ -49,7 +49,7 @@ public class BernoulliDistribution extends NameableBase implements UnivariateDou
     }
 
     @Override
-    public int getHashCode() {
-        return Objects.hash(name, seed, rnd.getHashCode(), p);
+    public int getChecksum() {
+        return Objects.hash(name, seed, rnd.getChecksum(), p);
     }
 }

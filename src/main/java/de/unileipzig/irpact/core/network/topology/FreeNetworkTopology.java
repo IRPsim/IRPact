@@ -151,15 +151,15 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
                 getInitialWeight(),
-                getRnd().getHashCode(),
-                getDistanceEvaluator().getHashCode(),
-                getEdgeType().getHashCode(),
-                getAffinityMapping().getHashCode(),
-                IsEquals.getMapHashCode(getEdgeCountMap())
+                getRnd().getChecksum(),
+                getDistanceEvaluator().getChecksum(),
+                getEdgeType().getChecksum(),
+                getAffinityMapping().getChecksum(),
+                ChecksumComparable.getMapChecksum(getEdgeCountMap())
         );
     }
 

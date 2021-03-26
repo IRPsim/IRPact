@@ -30,7 +30,7 @@ public class FixProductFindingScheme extends NameableBase implements ProductFind
     }
 
     @Override
-    public int getHashCode() {
-        return Objects.hash(getName(), getProduct().getHashCode());
+    public int getChecksum() {
+        return Objects.hash(getName(), getProduct().getChecksum());
     }
 }

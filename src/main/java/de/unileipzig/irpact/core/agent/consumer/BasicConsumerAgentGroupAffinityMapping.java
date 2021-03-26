@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.affinity.Affinities;
 import de.unileipzig.irpact.commons.affinity.BasicAffinityMapping;
 
@@ -33,7 +33,7 @@ public class BasicConsumerAgentGroupAffinityMapping
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         Map<String, Map<String, Double>> helper = new LinkedHashMap<>();
         for(ConsumerAgentGroup src: sources()) {
             ConsumerAgentGroupAffinities srcAffi = get(src);
@@ -42,6 +42,6 @@ public class BasicConsumerAgentGroupAffinityMapping
                 srcMap.put(tar.getName(), srcAffi.getValue(tar));
             }
         }
-        return IsEquals.getMapHashCode(helper);
+        return ChecksumComparable.getMapChecksum(helper);
     }
 }

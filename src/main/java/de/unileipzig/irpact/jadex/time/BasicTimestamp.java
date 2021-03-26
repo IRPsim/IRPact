@@ -103,7 +103,7 @@ public final class BasicTimestamp implements JadexTimestamp {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return hashCode();
     }
 }

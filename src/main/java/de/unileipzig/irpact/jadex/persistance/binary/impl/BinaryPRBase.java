@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.util.IRPactJson;
@@ -58,8 +58,8 @@ public abstract class BinaryPRBase<T> implements Persister<T>, Restorer<T> {
     }
 
     protected void storeHash(T object, BinaryJsonData data) {
-        if(object instanceof IsEquals) {
-            data.putInt(((IsEquals) object).getHashCode());
+        if(object instanceof ChecksumComparable) {
+            data.putInt(((ChecksumComparable) object).getChecksum());
         } else {
             log().debug("type '{}' not hashable", object.getClass().getName());
         }
@@ -111,9 +111,9 @@ public abstract class BinaryPRBase<T> implements Persister<T>, Restorer<T> {
     }
 
     protected void checkHash(BinaryJsonData data, T object, RestoreManager manager) {
-        if(object instanceof IsEquals) {
+        if(object instanceof ChecksumComparable) {
             int storedHash = data.getInt();
-            int restoredHash = ((IsEquals) object).getHashCode();
+            int restoredHash = ((ChecksumComparable) object).getChecksum();
             if(!checkHash(object, storedHash, restoredHash)) {
                 onHashMismatch(data, object, manager);
             }

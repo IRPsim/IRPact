@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.process.ra.attributes;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
@@ -136,12 +136,12 @@ public class BasicUncertaintyGroupAttributeSupplier extends NameableBase impleme
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
-                IsEquals.getMapCollHashCodeWithMappedKey(attrNames, Nameable::getName),
-                IsEquals.getMapCollHashCodeWithMappedKey(uncertDists, Nameable::getName),
-                IsEquals.getMapCollHashCodeWithMappedKey(convDists, Nameable::getName)
+                ChecksumComparable.getMapCollChecksumWithMappedKey(attrNames, Nameable::getName),
+                ChecksumComparable.getMapCollChecksumWithMappedKey(uncertDists, Nameable::getName),
+                ChecksumComparable.getMapCollChecksumWithMappedKey(convDists, Nameable::getName)
         );
     }
 }

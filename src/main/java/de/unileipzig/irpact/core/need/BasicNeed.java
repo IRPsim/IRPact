@@ -19,7 +19,7 @@ public class BasicNeed extends NameableBase implements Need {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hashCode(getName());
     }
 

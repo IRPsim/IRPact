@@ -1,13 +1,13 @@
 package de.unileipzig.irpact.commons.time;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 
 import java.time.ZonedDateTime;
 
 /**
  * @author Daniel Abitz
  */
-public interface Timestamp extends Comparable<Timestamp>, IsEquals {
+public interface Timestamp extends Comparable<Timestamp>, ChecksumComparable {
 
     ZonedDateTime getTime();
 

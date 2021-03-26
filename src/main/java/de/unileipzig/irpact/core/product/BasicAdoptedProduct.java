@@ -51,7 +51,7 @@ public class BasicAdoptedProduct implements AdoptedProduct {
     }
 
     @Override
-    public int getHashCode() {
-        return Objects.hash(need.getHashCode(), product.getHashCode(), timestamp.getHashCode());
+    public int getChecksum() {
+        return Objects.hash(need.getChecksum(), product.getChecksum(), timestamp.getChecksum());
     }
 }

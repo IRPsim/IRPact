@@ -84,31 +84,31 @@ class DivTest {
                 set1
         );
 
-        System.out.println(IsEquals.getCollHashCode(list0)
+        System.out.println(ChecksumComparable.getCollChecksum(list0)
                 + " "
-                + IsEquals.getCollHashCode(list00)
+                + ChecksumComparable.getCollChecksum(list00)
         );
-        System.out.println(IsEquals.getCollHashCode(list0)
+        System.out.println(ChecksumComparable.getCollChecksum(list0)
                 + " "
-                + IsEquals.getCollHashCode(list1)
-        );
-        System.out.println();
-        System.out.println(IsEquals.getCollHashCode(set0)
-                + " "
-                + IsEquals.getCollHashCode(set00)
-        );
-        System.out.println(IsEquals.getCollHashCode(set0)
-                + " "
-                + IsEquals.getCollHashCode(set1)
+                + ChecksumComparable.getCollChecksum(list1)
         );
         System.out.println();
-        System.out.println(IsEquals.getCollCollHashCode(listColl0)
+        System.out.println(ChecksumComparable.getCollChecksum(set0)
                 + " "
-                + IsEquals.getCollCollHashCode(listColl1)
+                + ChecksumComparable.getCollChecksum(set00)
         );
-        System.out.println(IsEquals.getCollCollHashCode(setColl0)
+        System.out.println(ChecksumComparable.getCollChecksum(set0)
                 + " "
-                + IsEquals.getCollCollHashCode(setColl1)
+                + ChecksumComparable.getCollChecksum(set1)
+        );
+        System.out.println();
+        System.out.println(ChecksumComparable.getCollCollChecksum(listColl0)
+                + " "
+                + ChecksumComparable.getCollCollChecksum(listColl1)
+        );
+        System.out.println(ChecksumComparable.getCollCollChecksum(setColl0)
+                + " "
+                + ChecksumComparable.getCollCollChecksum(setColl1)
         );
     }
 

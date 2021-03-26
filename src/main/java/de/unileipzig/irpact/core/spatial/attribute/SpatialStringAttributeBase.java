@@ -31,7 +31,7 @@ public class SpatialStringAttributeBase extends StringAttributeBase implements S
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(getName(), getStringValue());
     }
 }

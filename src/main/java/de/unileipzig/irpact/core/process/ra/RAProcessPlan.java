@@ -74,14 +74,14 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
-                getNeed().getHashCode(),
-                getProduct().getHashCode(),
+                getNeed().getChecksum(),
+                getProduct().getChecksum(),
                 getAgent().getName(), //loop sonst
-                getRnd().getHashCode(),
+                getRnd().getChecksum(),
                 getModel().getName(),
-                getCurrentStage().getHashCode()
+                getCurrentStage().getChecksum()
         );
     }
 

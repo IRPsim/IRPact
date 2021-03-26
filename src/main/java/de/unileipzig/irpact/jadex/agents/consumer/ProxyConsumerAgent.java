@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.time.Timestamp;
@@ -71,23 +71,23 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         if(isSynced()) {
-            return getRealAgent().getHashCode();
+            return getRealAgent().getChecksum();
         } else {
             return Objects.hash(
                     getName(),
                     getGroup().getName(),
                     getInformationAuthority(),
-                    getSpatialInformation().getHashCode(),
-                    IsEquals.getCollHashCode(getAttributes()),
-                    getProductInterest().getHashCode(),
-                    IsEquals.getCollHashCode(getAdoptedProducts()),
-                    getProductFindingScheme().getHashCode(),
-                    getProcessFindingScheme().getHashCode(),
-                    IsEquals.getCollHashCode(getNeeds()),
-                    IsEquals.getMapHashCode(getPlans()),
-                    IsEquals.getCollHashCode(getExternAttributes())
+                    getSpatialInformation().getChecksum(),
+                    ChecksumComparable.getCollChecksum(getAttributes()),
+                    getProductInterest().getChecksum(),
+                    ChecksumComparable.getCollChecksum(getAdoptedProducts()),
+                    getProductFindingScheme().getChecksum(),
+                    getProcessFindingScheme().getChecksum(),
+                    ChecksumComparable.getCollChecksum(getNeeds()),
+                    ChecksumComparable.getMapChecksum(getPlans()),
+                    ChecksumComparable.getCollChecksum(getExternAttributes())
             );
         }
     }
@@ -101,18 +101,18 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     public void deepHashCheck() {
-        logHash("name", IsEquals.getHashCode(getName()));
-        logHash("group name", IsEquals.getHashCode(getGroup().getName()));
-        logHash("information authority", IsEquals.getHashCode(getInformationAuthority()));
-        logHash("spatial information", IsEquals.getHashCode(getSpatialInformation()));
-        logHash("attributes", IsEquals.getCollHashCode(getAttributes()));
-        logHash("interest", IsEquals.getHashCode(getProductInterest()));
-        logHash("adopted products", IsEquals.getCollHashCode(getAdoptedProducts()));
-        logHash("product finding scheme", IsEquals.getHashCode(getProductFindingScheme()));
-        logHash("process finding scheme", IsEquals.getHashCode(getProcessFindingScheme()));
-        logHash("needs", IsEquals.getCollHashCode(getNeeds()));
-        logHash("plans", IsEquals.getMapHashCode(getPlans()));
-        logHash("external attributes", IsEquals.getCollHashCode(getExternAttributes()));
+        logHash("name", ChecksumComparable.getChecksum(getName()));
+        logHash("group name", ChecksumComparable.getChecksum(getGroup().getName()));
+        logHash("information authority", ChecksumComparable.getChecksum(getInformationAuthority()));
+        logHash("spatial information", ChecksumComparable.getChecksum(getSpatialInformation()));
+        logHash("attributes", ChecksumComparable.getCollChecksum(getAttributes()));
+        logHash("interest", ChecksumComparable.getChecksum(getProductInterest()));
+        logHash("adopted products", ChecksumComparable.getCollChecksum(getAdoptedProducts()));
+        logHash("product finding scheme", ChecksumComparable.getChecksum(getProductFindingScheme()));
+        logHash("process finding scheme", ChecksumComparable.getChecksum(getProcessFindingScheme()));
+        logHash("needs", ChecksumComparable.getCollChecksum(getNeeds()));
+        logHash("plans", ChecksumComparable.getMapChecksum(getPlans()));
+        logHash("external attributes", ChecksumComparable.getCollChecksum(getExternAttributes()));
     }
 
     @Override

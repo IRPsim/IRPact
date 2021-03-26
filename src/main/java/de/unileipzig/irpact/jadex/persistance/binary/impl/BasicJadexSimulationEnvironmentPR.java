@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.agent.AgentManager;
@@ -176,7 +176,7 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
     @Override
     protected void checkHash(BinaryJsonData data, BasicJadexSimulationEnvironment object, RestoreManager manager) {
         int storedHash = data.getInt();
-        int restoredHash = ((IsEquals) object).getHashCode();
+        int restoredHash = ((ChecksumComparable) object).getChecksum();
         if(!checkHash(object, storedHash, restoredHash)) {
             onHashMismatch(data, object, manager);
         }

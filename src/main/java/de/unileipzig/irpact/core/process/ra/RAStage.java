@@ -1,11 +1,11 @@
 package de.unileipzig.irpact.core.process.ra;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 
 /**
  * @author Daniel Abitz
  */
-public enum RAStage implements IsEquals {
+public enum RAStage implements ChecksumComparable {
     PRE_INITIALIZATION(0),
     AWARENESS(1),
     FEASIBILITY(2),
@@ -24,7 +24,7 @@ public enum RAStage implements IsEquals {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return ID;
     }
 

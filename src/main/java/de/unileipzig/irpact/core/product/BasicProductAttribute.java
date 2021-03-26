@@ -19,7 +19,7 @@ public class BasicProductAttribute extends DoubleAttributeGroupEntityBase<Produc
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
                 getGroup().getName(),

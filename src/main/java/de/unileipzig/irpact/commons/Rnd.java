@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  * @author Daniel Abitz
  */
-public final class Rnd implements IsEquals {
+public final class Rnd implements ChecksumComparable {
 
     private static final class Holder {
         private static final Random R = new Random();
@@ -160,7 +160,7 @@ public final class Rnd implements IsEquals {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Long.hashCode(initialSeed);
     }
 }

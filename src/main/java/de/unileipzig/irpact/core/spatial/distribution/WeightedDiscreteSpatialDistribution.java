@@ -155,12 +155,12 @@ public class WeightedDiscreteSpatialDistribution extends ResettableSpatialDistri
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
-                getRandom().getHashCode(),
-                IsEquals.getCollCollHashCode(unused.values()),
-                IsEquals.getCollCollHashCode(used.values())
+                getRandom().getChecksum(),
+                ChecksumComparable.getCollCollChecksum(unused.values()),
+                ChecksumComparable.getCollCollChecksum(used.values())
         );
     }
 }

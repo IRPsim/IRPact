@@ -1,13 +1,13 @@
 package de.unileipzig.irpact.core.misc;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.util.Todo;
 
 /**
  * @author Daniel Abitz
  */
 @Todo("besser organisieren und umbennen")
-public interface Initialization extends IsEquals {
+public interface Initialization extends ChecksumComparable {
 
     /**
      * Called before all proxy agents are created.

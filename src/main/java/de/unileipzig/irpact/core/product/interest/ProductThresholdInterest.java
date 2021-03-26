@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.product.interest;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.interest.ThresholdInterest;
 import de.unileipzig.irpact.core.product.Product;
 
@@ -12,10 +12,10 @@ import java.util.Objects;
 public class ProductThresholdInterest extends ThresholdInterest<Product> implements ProductInterest {
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getThreshold(),
-                IsEquals.getMapHashCode(getItems())
+                ChecksumComparable.getMapChecksum(getItems())
         );
     }
 }

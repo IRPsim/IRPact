@@ -1,11 +1,11 @@
 package de.unileipzig.irpact.core.process;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 
 /**
  * @author Daniel Abitz
  */
-public interface ProcessPlan extends IsEquals {
+public interface ProcessPlan extends ChecksumComparable {
 
     ProcessPlanResult execute();
 }

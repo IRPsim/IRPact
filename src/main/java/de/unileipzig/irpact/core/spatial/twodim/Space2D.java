@@ -48,7 +48,7 @@ public class Space2D extends AbstractMetricalSpatialModel {
     }
 
     @Override
-    public int getHashCode() {
-        return Objects.hash(getName(), getMetric().getHashCode());
+    public int getChecksum() {
+        return Objects.hash(getName(), getMetric().getChecksum());
     }
 }

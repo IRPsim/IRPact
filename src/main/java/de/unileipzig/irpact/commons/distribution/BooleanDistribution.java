@@ -35,7 +35,7 @@ public class BooleanDistribution extends NameableBase implements UnivariateDoubl
     }
 
     @Override
-    public int getHashCode() {
-        return Objects.hash(name, seed, rnd.getHashCode());
+    public int getChecksum() {
+        return Objects.hash(name, seed, rnd.getChecksum());
     }
 }

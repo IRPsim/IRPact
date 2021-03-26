@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -86,11 +86,11 @@ public class CustomConsumerAgentGroupAttributeSupplier extends NameableBase impl
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
                 attributeName,
-                IsEquals.getMapHashCode(distMapping)
+                ChecksumComparable.getMapChecksum(distMapping)
         );
     }
 }

@@ -52,7 +52,7 @@ public class BasicUncertaintyAttribute extends BasicConsumerAgentAttribute {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
                 getGroup().getName(),

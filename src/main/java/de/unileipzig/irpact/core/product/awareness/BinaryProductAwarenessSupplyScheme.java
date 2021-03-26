@@ -19,7 +19,7 @@ public class BinaryProductAwarenessSupplyScheme extends BinaryAwarenessSupplySch
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName()
         );

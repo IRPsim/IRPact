@@ -76,11 +76,11 @@ public class UncertaintyWithConvergenceGroupAttribute extends BasicConsumerAgent
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
-                getUncertainty().getHashCode(),
-                getConvergence().getHashCode()
+                getUncertainty().getChecksum(),
+                getConvergence().getChecksum()
         );
     }
 }

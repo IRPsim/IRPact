@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.time;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -13,7 +13,7 @@ import java.util.Objects;
  *
  * @author Daniel Abitz
  */
-public final class TickConverter implements IsEquals {
+public final class TickConverter implements ChecksumComparable {
 
     private int startYear;
     private long timePerTickInMs;
@@ -26,7 +26,7 @@ public final class TickConverter implements IsEquals {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 timePerTickInMs,
                 startTimeMs

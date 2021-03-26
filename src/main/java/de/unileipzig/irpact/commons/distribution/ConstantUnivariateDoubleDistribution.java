@@ -33,7 +33,7 @@ public class ConstantUnivariateDoubleDistribution extends NameableBase implement
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(getName(), getValue());
     }
 }

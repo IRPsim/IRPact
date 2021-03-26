@@ -19,7 +19,7 @@ public class BasicConsumerAgentAttribute extends DoubleAttributeGroupEntityBase<
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
                 getGroup().getName(),

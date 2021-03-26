@@ -21,10 +21,10 @@ public class ProductThresholdInterestSupplyScheme extends ThresholdInterestSuppl
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
-                getDistribution().getHashCode()
+                getDistribution().getChecksum()
         );
     }
 }

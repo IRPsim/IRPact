@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.affinity;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.Rnd;
 
 import java.util.Random;
@@ -10,7 +10,7 @@ import java.util.Set;
  * @param <T>
  * @author Daniel Abitz
  */
-public interface Affinities<T> extends IsEquals {
+public interface Affinities<T> extends ChecksumComparable {
 
     Affinities<T> createWithout(T target);
 

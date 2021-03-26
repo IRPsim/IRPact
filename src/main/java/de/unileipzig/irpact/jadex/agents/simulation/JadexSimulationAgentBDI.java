@@ -85,7 +85,7 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     //=========================
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(getName());
     }
 

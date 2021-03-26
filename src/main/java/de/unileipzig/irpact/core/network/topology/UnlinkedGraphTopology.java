@@ -41,7 +41,7 @@ public class UnlinkedGraphTopology extends NameableBase implements GraphTopology
     }
 
     @Override
-    public int getHashCode() {
-        return Objects.hash(getName(), getEdgeType().getHashCode());
+    public int getChecksum() {
+        return Objects.hash(getName(), getEdgeType().getChecksum());
     }
 }

@@ -37,7 +37,7 @@ public class RandomBoundedIntegerDistribution extends AbstractBoundedUnivariateD
     }
 
     @Override
-    public int getHashCode() {
-        return Objects.hash(name, lowerBound, upperBound, rnd.getHashCode());
+    public int getChecksum() {
+        return Objects.hash(name, lowerBound, upperBound, rnd.getChecksum());
     }
 }

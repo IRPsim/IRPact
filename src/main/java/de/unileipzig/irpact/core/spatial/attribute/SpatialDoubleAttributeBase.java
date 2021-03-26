@@ -31,7 +31,7 @@ public class SpatialDoubleAttributeBase extends DoubleAttributeBase implements S
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(getName(), getDoubleValue());
     }
 }

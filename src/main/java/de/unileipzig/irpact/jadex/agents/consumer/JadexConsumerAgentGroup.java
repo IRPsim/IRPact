@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
 import de.unileipzig.irpact.commons.CollectionUtil;
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
@@ -47,19 +47,19 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
                 getInformationAuthority(),
                 getNextAgentId(),
 
-                getSpatialDistribution().getHashCode(),
-                IsEquals.getCollHashCode(getAttributes()),
-                getAwarenessSupplyScheme().getHashCode(),
-                getProductFindingScheme().getHashCode(),
-                getProcessFindingScheme().getHashCode(),
+                getSpatialDistribution().getChecksum(),
+                ChecksumComparable.getCollChecksum(getAttributes()),
+                getAwarenessSupplyScheme().getChecksum(),
+                getProductFindingScheme().getChecksum(),
+                getProcessFindingScheme().getChecksum(),
 
-                IsEquals.getCollHashCode(getAgents())
+                ChecksumComparable.getCollChecksum(getAgents())
         );
     }
 

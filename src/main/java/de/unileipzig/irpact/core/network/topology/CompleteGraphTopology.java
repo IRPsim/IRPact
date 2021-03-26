@@ -66,11 +66,11 @@ public class CompleteGraphTopology extends NameableBase implements GraphTopology
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
                 getInitialWeight(),
-                getEdgeType().getHashCode()
+                getEdgeType().getChecksum()
         );
     }
 }

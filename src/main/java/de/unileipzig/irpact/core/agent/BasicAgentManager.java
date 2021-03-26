@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.agent;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -35,10 +35,10 @@ public class BasicAgentManager implements AgentManager {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
-                IsEquals.getMapHashCode(consumerAgentGroups),
-                affinityMapping.getHashCode()
+                ChecksumComparable.getMapChecksum(consumerAgentGroups),
+                affinityMapping.getChecksum()
         );
     }
 

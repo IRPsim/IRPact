@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.spatial.twodim;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.attribute.BasicAttributeAccess;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
@@ -110,7 +110,7 @@ public class BasicPoint2D implements Point2D {
     }
 
     @Override
-    public int getHashCode() {
-        return Objects.hash(x, y, IsEquals.getCollHashCode(attributes.values()));
+    public int getChecksum() {
+        return Objects.hash(x, y, ChecksumComparable.getCollChecksum(attributes.values()));
     }
 }

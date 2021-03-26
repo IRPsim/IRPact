@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.attribute;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 
 import java.util.Collection;
 
@@ -9,7 +9,7 @@ import java.util.Collection;
  *
  * @author Daniel Abitz
  */
-public interface AttributeAccess extends IsEquals {
+public interface AttributeAccess extends ChecksumComparable {
 
     boolean hasAttribute(String name);
 

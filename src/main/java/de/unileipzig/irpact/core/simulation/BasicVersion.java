@@ -49,7 +49,7 @@ public class BasicVersion implements Version {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return hashCode();
     }
 }

@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.jadex.time;
 
-import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.time.TickConverter;
 import de.unileipzig.irpact.commons.time.TimeMode;
 import de.unileipzig.irpact.commons.time.Timestamp;
@@ -38,7 +37,7 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         //keine ticks hashen, die sind nicht detrministisch
         return Objects.hash(
                 getName()

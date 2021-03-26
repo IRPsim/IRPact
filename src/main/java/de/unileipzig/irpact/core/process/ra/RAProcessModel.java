@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.process.ra;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.distribution.ConstantUnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.Rnd;
@@ -54,14 +54,14 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
-                modelData.getHashCode(),
-                rnd.getHashCode(),
-                underConstructionSupplier.getHashCode(),
-                underRenovationSupplier.getHashCode(),
-                uncertaintySupplier.getHashCode()
+                modelData.getChecksum(),
+                rnd.getChecksum(),
+                underConstructionSupplier.getChecksum(),
+                underRenovationSupplier.getChecksum(),
+                uncertaintySupplier.getChecksum()
         );
     }
 
@@ -74,12 +74,12 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
     }
 
     public void deepHashCode() {
-        logHash("name", IsEquals.getHashCode(getName()));
-        logHash("model data", IsEquals.getHashCode(modelData));
-        logHash("rnd", IsEquals.getHashCode(rnd));
-        logHash("under construction supplier", IsEquals.getHashCode(underConstructionSupplier));
-        logHash("under renovation supplier", IsEquals.getHashCode(underRenovationSupplier));
-        logHash("uncertainty supplier", IsEquals.getHashCode(uncertaintySupplier));
+        logHash("name", ChecksumComparable.getChecksum(getName()));
+        logHash("model data", ChecksumComparable.getChecksum(modelData));
+        logHash("rnd", ChecksumComparable.getChecksum(rnd));
+        logHash("under construction supplier", ChecksumComparable.getChecksum(underConstructionSupplier));
+        logHash("under renovation supplier", ChecksumComparable.getChecksum(underRenovationSupplier));
+        logHash("uncertainty supplier", ChecksumComparable.getChecksum(uncertaintySupplier));
     }
 
     public void setEnvironment(SimulationEnvironment environment) {

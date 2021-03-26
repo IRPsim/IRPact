@@ -1,10 +1,9 @@
 package de.unileipzig.irpact.core.process.ra;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.attribute.DoubleAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
-import de.unileipzig.irpact.util.Todo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +12,7 @@ import java.util.Objects;
 /**
  * @author Daniel Abitz
  */
-public class RAModelData implements IsEquals {
+public class RAModelData implements ChecksumComparable {
 
     public static final int DEFAULT_ADOPTER_POINTS = 3;
     public static final int DEFAULT_INTERESTED_POINTS = 2;
@@ -43,7 +42,7 @@ public class RAModelData implements IsEquals {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 a, b, c, d,
                 adopterPoints, interestedPoints, awarePoints, unknownPoints,

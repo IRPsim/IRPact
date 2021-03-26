@@ -10,8 +10,8 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.SectionLoggingFilter;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.spec2.SpecificationConverter2;
-import de.unileipzig.irpact.io.spec2.SpecificationData2;
+import de.unileipzig.irpact.io.spec.SpecificationConverter;
+import de.unileipzig.irpact.io.spec.SpecificationData;
 import de.unileipzig.irpact.start.optact.OptAct;
 import de.unileipzig.irptools.io.ContentType;
 import de.unileipzig.irptools.io.ContentTypeDetector;
@@ -113,7 +113,7 @@ public class Preloader {
     }
 
     private void loadSpec() throws Exception {
-        SpecificationConverter2 converter = new SpecificationConverter2();
+        SpecificationConverter converter = new SpecificationConverter();
         InRoot root =  converter.toParam(clOptions.getSpecInputDirPath());
         AnnualEntry<InRoot> entry = new AnnualEntry<>(root, IRPactJson.JSON.createObjectNode());
         entry.getConfig().init();
@@ -140,14 +140,14 @@ public class Preloader {
         AnnualEntry<InRoot> entry = IRPact.convert(clOptions, root);
         InRoot inRoot = entry.getData();
         inRoot.general.startYear = entry.getConfig().getYear(); //!
-        SpecificationConverter2 converter = new SpecificationConverter2();
-        SpecificationData2 data = converter.toSpec(inRoot);
+        SpecificationConverter converter = new SpecificationConverter();
+        SpecificationData data = converter.toSpec(inRoot);
         data.store(clOptions.getSpecOutputDirPath());
     }
 
     private void convertSpecToParam() throws Exception {
         LOGGER.debug("convert specification to parameter");
-        SpecificationConverter2 converter = new SpecificationConverter2();
+        SpecificationConverter converter = new SpecificationConverter();
         InRoot root =  converter.toParam(clOptions.getSpecInputDirPath());
         PerennialData<InRoot> pData = new PerennialData<>();
         pData.add(root.general.startYear, root);
