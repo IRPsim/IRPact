@@ -136,3 +136,12 @@ public class BasicWeightedMapping<S, T, W> implements WeightedMapping<S, T, W> {
         return draw;
     }
 }
+
+/*
+[0,1) -> x
+drawValue = sum * x = (a+b+c..) * x = ax+bx+cx..
+
+X
+
+
+ */

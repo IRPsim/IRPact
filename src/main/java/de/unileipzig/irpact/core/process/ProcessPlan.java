@@ -8,6 +8,4 @@ import de.unileipzig.irpact.commons.IsEquals;
 public interface ProcessPlan extends IsEquals {
 
     ProcessPlanResult execute();
-
-    void onAdopted();
 }

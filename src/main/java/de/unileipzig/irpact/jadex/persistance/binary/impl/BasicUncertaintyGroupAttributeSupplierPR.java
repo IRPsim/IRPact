@@ -6,7 +6,7 @@ import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.process.ra.BasicUncertaintyGroupAttributeSupplier;
+import de.unileipzig.irpact.core.process.ra.attributes.BasicUncertaintyGroupAttributeSupplier;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -50,7 +50,9 @@ public class BasicUncertaintyGroupAttributeSupplierPR extends BinaryPRBase<Basic
                 UnivariateDoubleDistribution convDist = convDists.get(i);
 
                 manager.prepare(uncertDist);
-                manager.prepare(convDist);
+                if(convDist != null) {
+                    manager.prepare(convDist);
+                }
             }
         }
 
@@ -76,7 +78,9 @@ public class BasicUncertaintyGroupAttributeSupplierPR extends BinaryPRBase<Basic
                 UnivariateDoubleDistribution convDist = convDists.get(i);
 
                 long uncertDistId = manager.ensureGetUID(uncertDist);
-                long convDistId = manager.ensureGetUID(convDist);
+                long convDistId = convDist == null
+                        ? BinaryJsonData.NOTHING_ID
+                        : manager.ensureGetUID(convDist);
 
                 namesMap.computeIfAbsent(cagId, _cagId -> new ArrayList<>()).add(name);
                 uncertMap.computeIfAbsent(cagId, _cagId -> new ArrayList<>()).add(uncertDistId);
@@ -119,7 +123,9 @@ public class BasicUncertaintyGroupAttributeSupplierPR extends BinaryPRBase<Basic
                 long convId = convs.get(i);
 
                 UnivariateDoubleDistribution uncert = manager.ensureGet(uncertId);
-                UnivariateDoubleDistribution conv = manager.ensureGet(convId);
+                UnivariateDoubleDistribution conv = convId == BinaryJsonData.NOTHING_ID
+                        ? null
+                        : manager.ensureGet(convId);
 
                 object.add(cag, name, uncert, conv);
             }

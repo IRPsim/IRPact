@@ -14,31 +14,29 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
+import static de.unileipzig.irpact.io.param.IOConstants.FILES;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InSpatialTableFile implements InFile {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InSpatialTableFile.class,
-                res.getCachedElement("Dateien"),
-                res.getCachedElement("Tabellen")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("-")
-                .setGamsDescription("Platzhalter")
-                .store(InSpatialTableFile.class, "placeholderInSpatialFile");
+        putClassPath(res, thisClass(), FILES, thisName());
+        addEntry(res, thisClass(), "placeholderInSpatialFile");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InSpatialTableFile.class);

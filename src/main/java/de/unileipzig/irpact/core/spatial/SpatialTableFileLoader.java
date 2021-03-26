@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.spatial;
 
 import de.unileipzig.irpact.commons.res.ResourceLoader;
-import de.unileipzig.irpact.commons.util.xlsx.XlsxUtil;
+import de.unileipzig.irpact.commons.util.xlsx.SimpleXlsxTableParser;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
@@ -9,12 +9,7 @@ import de.unileipzig.irpact.core.spatial.attribute.SpatialDoubleAttributeBase;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialStringAttributeBase;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.apache.poi.common.usermodel.fonts.FontCharset;
-import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -24,7 +19,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -136,12 +130,20 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
 
     private static List<List<SpatialAttribute<?>>> parseXlsx(XSSFWorkbook book) {
         XSSFSheet sheet = book.getSheetAt(0);
-        List<List<SpatialAttribute<?>>> out = new ArrayList<>();
-        parse(sheet, out);
+
+        SimpleXlsxTableParser<SpatialAttribute<?>> parser = new SimpleXlsxTableParser<>();
+        parser.setTextConverter((columnIndex, header, value) ->
+                new SpatialStringAttributeBase(header[columnIndex], value));
+        parser.setNumbericConverter((columnIndex, header, value) ->
+                new SpatialDoubleAttributeBase(header[columnIndex], value.doubleValue()));
+        parser.parse(sheet);
+
+        List<List<SpatialAttribute<?>>> out = parser.getRows();
+        parser.reset();
         return out;
     }
 
-    private static void parse(XSSFSheet sheet, List<List<SpatialAttribute<?>>> out) {
+    /*private static void parse(XSSFSheet sheet, List<List<SpatialAttribute<?>>> out) {
         Iterator<Row> rowIter = sheet.rowIterator();
         if(!rowIter.hasNext()) {
             throw new IllegalArgumentException("empty sheet");
@@ -220,5 +222,5 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
             index++;
         }
         return out;
-    }
+    }*/
 }

@@ -13,31 +13,30 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.DISTRIBUTIONS;
+import static de.unileipzig.irpact.io.param.IOConstants.FILES;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InPVFile implements InFile {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InPVFile.class,
-                res.getCachedElement("Dateien"),
-                res.getCachedElement("PV Daten")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("-")
-                .setGamsDescription("Platzhalter")
-                .store(InPVFile.class, "placeholderPVFile");
+        putClassPath(res, thisClass(), FILES, thisName());
+        addEntry(res, thisClass(), "placeholderPVFile");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InPVFile.class);

@@ -64,6 +64,10 @@ public final class SectionLoggingFilter implements LoggingFilter {
         return sections.contains(section);
     }
 
+    public Set<IRPSection> getSections() {
+        return sections;
+    }
+
     @Override
     public boolean doLogging() {
         return logDefault;

@@ -35,6 +35,10 @@ public final class Util {
         return rnd.nextInt(upper - lower) + lower;
     }
 
+    public static int nextInt(Rnd rnd, int lower, int upper) {
+        return rnd.nextInt(upper - lower) + lower;
+    }
+
     public static double nextDouble(Random rnd, double lower, double upper) {
         return rnd.nextDouble() * (upper - lower) + lower;
     }

@@ -20,6 +20,16 @@ public class BasicBasicConsumerAgentGroupAffinities extends BasicAffinities<Cons
     }
 
     @Override
+    protected BasicBasicConsumerAgentGroupAffinities newInstance() {
+        return new BasicBasicConsumerAgentGroupAffinities();
+    }
+
+    @Override
+    public BasicBasicConsumerAgentGroupAffinities createWithout(ConsumerAgentGroup target) {
+        return (BasicBasicConsumerAgentGroupAffinities) super.createWithout(target);
+    }
+
+    @Override
     public int getHashCode() {
         return Objects.hash(
                 IsEquals.getMapHashCode(values)

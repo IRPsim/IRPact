@@ -6,48 +6,56 @@ import ch.qos.logback.classic.Level;
  * @author Daniel Abitz
  */
 public enum IRPLevel {
-    OFF(IRPLevelID.OFF_ID) {
+    OFF(0) {
         @Override
         public Level toLogbackLevel() {
             return Level.OFF;
         }
     },
-    TRACE(IRPLevelID.TRACE_ID) {
+    TRACE(1) {
         @Override
         public Level toLogbackLevel() {
             return Level.OFF;
         }
     },
-    DEBUG(IRPLevelID.DEBUG_ID) {
+    DEBUG(2) {
         @Override
         public Level toLogbackLevel() {
             return Level.DEBUG;
         }
     },
-    INFO(IRPLevelID.INFO_ID) {
+    INFO(3) {
         @Override
         public Level toLogbackLevel() {
             return Level.INFO;
         }
     },
-    WARN(IRPLevelID.WARN_ID) {
+    WARN(4) {
         @Override
         public Level toLogbackLevel() {
             return Level.WARN;
         }
     },
-    ERROR(IRPLevelID.ERROR_ID) {
+    ERROR(5) {
         @Override
         public Level toLogbackLevel() {
             return Level.ERROR;
         }
     },
-    ALL(IRPLevelID.ALL_ID) {
+    ALL(6) {
         @Override
         public Level toLogbackLevel() {
             return Level.ALL;
         }
     };
+
+    public static final int OFF_ID = 0;
+    public static final int TRACE_ID = 1;
+    public static final int INFO_ID = 2;
+    public static final int DEBUG_ID = 3;
+    public static final int WARN_ID = 4;
+    public static final int ERROR_ID = 5;
+    public static final int ALL_ID = 6;
 
     private final int LEVEL_ID;
 
@@ -61,10 +69,6 @@ public enum IRPLevel {
 
     public abstract Level toLogbackLevel();
 
-    public static String getDomain() {
-        return "[" + OFF.getLevelId() + ", " + + ALL.LEVEL_ID + "]";
-    }
-
     public static String getDefaultAsString() {
         return Integer.toString(getDefault().getLevelId());
     }
@@ -75,19 +79,19 @@ public enum IRPLevel {
 
     public static IRPLevel get(int levelId) {
         switch (levelId) {
-            case IRPLevelID.OFF_ID:
+            case OFF_ID:
                 return OFF;
-            case IRPLevelID.TRACE_ID:
+            case TRACE_ID:
                 return TRACE;
-            case IRPLevelID.DEBUG_ID:
+            case DEBUG_ID:
                 return DEBUG;
-            case IRPLevelID.INFO_ID:
+            case INFO_ID:
                 return INFO;
-            case IRPLevelID.WARN_ID:
+            case WARN_ID:
                 return WARN;
-            case IRPLevelID.ERROR_ID:
+            case ERROR_ID:
                 return ERROR;
-            case IRPLevelID.ALL_ID:
+            case ALL_ID:
                 return ALL;
             default:
                 return null;

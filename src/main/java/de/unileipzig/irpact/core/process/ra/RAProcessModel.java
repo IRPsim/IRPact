@@ -6,21 +6,24 @@ import de.unileipzig.irpact.commons.distribution.ConstantUnivariateDoubleDistrib
 import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.Agent;
-import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
+import de.unileipzig.irpact.core.need.BasicNeed;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
+import de.unileipzig.irpact.core.process.ra.attributes.BasicUncertaintyGroupAttributeSupplier;
+import de.unileipzig.irpact.core.process.ra.attributes.UncertaintyGroupAttributeSupplier;
 import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
+import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.time.Month;
@@ -37,13 +40,10 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
     protected SimulationEnvironment environment;
 
-    protected BasicConsumerAgentSpatialAttributeSupplier orientationSupplier = new BasicConsumerAgentSpatialAttributeSupplier(RAConstants.ORIENTATION);
-    protected BasicConsumerAgentSpatialAttributeSupplier slopeSupplier = new BasicConsumerAgentSpatialAttributeSupplier(RAConstants.SLOPE);
+    protected ConsumerAgentGroupAttributeSupplier underConstructionSupplier = new BasicConsumerAgentGroupAttributeSupplier(RAConstants.UNDER_CONSTRUCTION, DIRAQ0);
+    protected ConsumerAgentGroupAttributeSupplier underRenovationSupplier = new BasicConsumerAgentGroupAttributeSupplier(RAConstants.UNDER_RENOVATION, DIRAQ0);
 
-    protected BasicConsumerAgentGroupAttributeSupplier underConstructionSupplier = new BasicConsumerAgentGroupAttributeSupplier(RAConstants.UNDER_CONSTRUCTION, DIRAQ0);
-    protected BasicConsumerAgentGroupAttributeSupplier underRenovationSupplier = new BasicConsumerAgentGroupAttributeSupplier(RAConstants.UNDER_RENOVATION, DIRAQ0);
-
-    protected BasicUncertaintyGroupAttributeSupplier uncertaintySupplier = new BasicUncertaintyGroupAttributeSupplier();
+    protected UncertaintyGroupAttributeSupplier uncertaintySupplier = new BasicUncertaintyGroupAttributeSupplier();
 
     protected NPVData npvData;
     protected NPVCalculator npvCalculator;
@@ -59,8 +59,6 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
                 getName(),
                 modelData.getHashCode(),
                 rnd.getHashCode(),
-                orientationSupplier.getHashCode(),
-                slopeSupplier.getHashCode(),
                 underConstructionSupplier.getHashCode(),
                 underRenovationSupplier.getHashCode(),
                 uncertaintySupplier.getHashCode()
@@ -79,8 +77,6 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         logHash("name", IsEquals.getHashCode(getName()));
         logHash("model data", IsEquals.getHashCode(modelData));
         logHash("rnd", IsEquals.getHashCode(rnd));
-        logHash("orientation supplier", IsEquals.getHashCode(orientationSupplier));
-        logHash("slope supplier", IsEquals.getHashCode(slopeSupplier));
         logHash("under construction supplier", IsEquals.getHashCode(underConstructionSupplier));
         logHash("under renovation supplier", IsEquals.getHashCode(underRenovationSupplier));
         logHash("uncertainty supplier", IsEquals.getHashCode(uncertaintySupplier));
@@ -114,43 +110,27 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         this.npvData = npvData;
     }
 
-    public BasicConsumerAgentSpatialAttributeSupplier getSlopeSupplier() {
-        return slopeSupplier;
-    }
-
-    public void setSlopeSupplier(BasicConsumerAgentSpatialAttributeSupplier slopeSupplier) {
-        this.slopeSupplier = slopeSupplier;
-    }
-
-    public BasicConsumerAgentSpatialAttributeSupplier getOrientationSupplier() {
-        return orientationSupplier;
-    }
-
-    public void setOrientationSupplier(BasicConsumerAgentSpatialAttributeSupplier orientationSupplier) {
-        this.orientationSupplier = orientationSupplier;
-    }
-
-    public BasicConsumerAgentGroupAttributeSupplier getUnderConstructionSupplier() {
+    public ConsumerAgentGroupAttributeSupplier getUnderConstructionSupplier() {
         return underConstructionSupplier;
     }
 
-    public void setUnderConstructionSupplier(BasicConsumerAgentGroupAttributeSupplier underConstructionSupplier) {
+    public void setUnderConstructionSupplier(ConsumerAgentGroupAttributeSupplier underConstructionSupplier) {
         this.underConstructionSupplier = underConstructionSupplier;
     }
 
-    public BasicConsumerAgentGroupAttributeSupplier getUnderRenovationSupplier() {
+    public ConsumerAgentGroupAttributeSupplier getUnderRenovationSupplier() {
         return underRenovationSupplier;
     }
 
-    public void setUnderRenovationSupplier(BasicConsumerAgentGroupAttributeSupplier underRenovationSupplier) {
+    public void setUnderRenovationSupplier(ConsumerAgentGroupAttributeSupplier underRenovationSupplier) {
         this.underRenovationSupplier = underRenovationSupplier;
     }
 
-    public BasicUncertaintyGroupAttributeSupplier getUncertaintySupplier() {
+    public UncertaintyGroupAttributeSupplier getUncertaintySupplier() {
         return uncertaintySupplier;
     }
 
-    public void setUncertaintySupplier(BasicUncertaintyGroupAttributeSupplier uncertaintySupplier) {
+    public void setUncertaintySupplier(UncertaintyGroupAttributeSupplier uncertaintySupplier) {
         this.uncertaintySupplier = uncertaintySupplier;
     }
 
@@ -207,39 +187,122 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
     }
 
     @Override
-    public void postAgentCreation() throws MissingDataException {
-        checkSpatialInformation();
+    public void postAgentCreation(boolean initialCall) throws MissingDataException {
+        //checkSpatialInformation();
     }
 
-    private void checkSpatialInformation() throws MissingDataException {
-        try {
-            for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-                for(ConsumerAgent ca: cag.getAgents()) {
-                    if(!orientationSupplier.hasAttribute(ca)) {
-                        orientationSupplier.addAttributeTo(ca);
-                    }
-                    if(!slopeSupplier.hasAttribute(ca)) {
-                        slopeSupplier.addAttributeTo(ca);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            throw new MissingDataException(e);
-        }
+    @Todo("NOCH ETWAS UEBERARBEITEN, bessere validierung")
+//    private void checkSpatialInformation() throws MissingDataException {
+//        try {
+//            for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+//                for(ConsumerAgent ca: cag.getAgents()) {
+//                    if(!orientationSupplier.hasAttribute(ca)) {
+//                        orientationSupplier.addAttributeTo(ca);
+//                    }
+//                    if(!slopeSupplier.hasAttribute(ca)) {
+//                        slopeSupplier.addAttributeTo(ca);
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            throw new MissingDataException(e);
+//        }
+//    }
+
+    protected Timestamp now() {
+        return environment.getTimeModel().now();
     }
 
     @Override
     public void preSimulationStart() {
+        setupTasks();
+        addNeedToConsumers();
+        checkInitialAdopter();
+    }
+
+    private void setupTasks() {
         int startYear = environment.getTimeModel().getStartYear();
         int endYear = environment.getTimeModel().getEndYearInclusive();
 
         LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "create sync points");
         for(int y = startYear; y <= endYear; y++) {
-            Timestamp ts = environment.getTimeModel().at(startYear, Month.JULY, 1);
-            SyncTask task = createConstructionRenovationSyncTask("ConsReno_" + startYear);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} @ {}", task.getName(), ts);
-            environment.getLiveCycleControl().registerSyncTask(ts, task);
+            Timestamp tsJan = environment.getTimeModel().at(startYear, Month.JANUARY, 1);
+            SyncTask taskJan = createNewYearTask("NewYear_" + startYear);
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} @ {}", taskJan.getName(), tsJan);
+            environment.getLiveCycleControl().registerSyncTask(tsJan, taskJan);
+
+            Timestamp tsJuly = environment.getTimeModel().at(startYear, Month.JULY, 1);
+            SyncTask taskJuly = createConstructionRenovationSyncTask("ConsReno_" + startYear);
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} @ {}", taskJuly.getName(), tsJuly);
+            environment.getLiveCycleControl().registerSyncTask(tsJuly, taskJuly);
         }
+    }
+
+    @Todo("auslagern")
+    private final Need pvNeed = new BasicNeed("PV");
+    private void addNeedToConsumers() {
+        LOGGER.trace("add initial need '{}'", pvNeed.getName());
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            for(ConsumerAgent ca: cag.getAgents()) {
+                ca.addNeed(pvNeed);
+            }
+        }
+    }
+
+    @Todo("awareness und interest trennen")
+    @Todo("aufraeumen")
+    @Todo("ueberlegen welche Parameter noch eine initialisierung benoetigen")
+    @Todo("noch eine stage einbauen, aber speziell fuers ProzessModel, fuer init der Agenten")
+    private void checkInitialAdopter() {
+        LOGGER.trace("setup initial adopter");
+        Need need = pvNeed;
+        Timestamp startTime = environment.getTimeModel().startTime();
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            for(ConsumerAgent ca: cag.getAgents()) {
+
+                if(RAProcessPlan.isInitialAdopter(ca)) {
+                    Product p = ca.getProductFindingScheme()
+                            .findProduct(ca, need);
+                    if(p != null) {
+                        LOGGER.trace(IRPSection.INITIALIZATION_AGENT, "initial adopter '{}' (need '{}', product '{}')", ca.getName(), need.getName(), p.getName());
+                        ca.adoptAt(need, p, startTime);
+                    }
+                }
+                //===
+                Product p = ca.getProductFindingScheme()
+                        .findProduct(ca, need);
+                double initialInterest = RAProcessPlan.getInitialProductInterest(ca);
+                ca.getProductInterest().update(p, initialInterest);
+                double v =  ca.getProductInterest().isAware(p) ? ca.getProductInterest().getValue(p) : 0;
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, ">>>>> {} {}", ca.getName(), v);
+            }
+        }
+    }
+
+    private SyncTask createNewYearTask(String name) {
+        return new SyncTask() {
+            @Override
+            public String getName() {
+                return name;
+            }
+
+            @Override
+            public void run() {
+                LOGGER.debug("run 'createNewYearTask' ({})", now());
+                for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+                    for(ConsumerAgent ca: cag.getAgents()) {
+                        for(ProcessPlan plan: ca.getPlans().values()) {
+                            if(plan instanceof RAProcessPlan) {
+                                RAProcessPlan raPlan = (RAProcessPlan) plan;
+                                if(raPlan.getModel() == RAProcessModel.this) {
+                                    raPlan.adjustParametersOnNewYear();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
     }
 
     private SyncTask createConstructionRenovationSyncTask(String name) {
@@ -251,26 +314,21 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
             @Override
             public void run() {
-                RAProcessModel.LOGGER.debug("HALLO SYNC");
+                LOGGER.debug("run 'createConstructionRenovationSyncTask' ({})", now());
+                for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+                    for(ConsumerAgent ca: cag.getAgents()) {
+                        for(ProcessPlan plan: ca.getPlans().values()) {
+                            if(plan instanceof RAProcessPlan) {
+                                RAProcessPlan raPlan = (RAProcessPlan) plan;
+                                if(raPlan.getModel() == RAProcessModel.this) {
+                                    raPlan.updateConstructionAndRenovation();
+                                }
+                            }
+                        }
+                    }
+                }
             }
         };
-    }
-
-    @Override
-    public void onNewSimulationPeriod() {
-        AgentManager agentManager = environment.getAgents();
-        agentManager.streamConsumerAgents()
-                .forEach(this::setupAgentForNewPeriod);
-    }
-
-    protected void setupAgentForNewPeriod(ConsumerAgent agent) {
-        double renovationRate = RAProcessPlan.getRenovationRate(agent);
-        boolean doRenovation = rnd.nextDouble() < renovationRate;
-        setUnderRenovation(agent, doRenovation);
-
-        double constructionRate = RAProcessPlan.getConstructionRate(agent);
-        boolean doConstruction = rnd.nextDouble() < constructionRate;
-        setUnderConstruction(agent, doConstruction);
     }
 
     @Override
@@ -291,16 +349,4 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
     //=========================
     //util
     //=========================
-
-    protected void setUnderConstruction(ConsumerAgent agent, boolean value) {
-        double dvalue = value ? 1.0 : 0.0;
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.UNDER_CONSTRUCTION);
-        attr.setDoubleValue(dvalue);
-    }
-
-    protected void setUnderRenovation(ConsumerAgent agent, boolean value) {
-        double dvalue = value ? 1.0 : 0.0;
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.UNDER_RENOVATION);
-        attr.setDoubleValue(dvalue);
-    }
 }

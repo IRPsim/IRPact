@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.io.param.input;
 
+import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
@@ -11,30 +12,33 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
 import de.unileipzig.irpact.core.network.topology.GraphTopologyScheme;
 import de.unileipzig.irpact.core.process.BasicProcessModelManager;
+import de.unileipzig.irpact.core.process.FixProcessModelFindingScheme;
 import de.unileipzig.irpact.core.process.ProcessModel;
-import de.unileipzig.irpact.core.product.BasicProductManager;
-import de.unileipzig.irpact.core.product.Product;
-import de.unileipzig.irpact.core.product.ProductGroup;
+import de.unileipzig.irpact.core.product.*;
 import de.unileipzig.irpact.core.simulation.BasicInitializationData;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.simulation.BinaryTaskManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
-import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
+import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InIndependentConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.io.param.input.agent.population.InPopulationSize;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
-import de.unileipzig.irpact.io.param.input.process.InUncertaintyGroupAttribute;
-import de.unileipzig.irpact.io.param.input.product.InFixProduct;
+import de.unileipzig.irpact.io.param.input.product.InIndependentProductGroupAttribute;
 import de.unileipzig.irpact.io.param.input.product.InProductGroup;
+import de.unileipzig.irpact.io.param.input.product.InFixProduct;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
+import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -186,11 +190,14 @@ public class JadexInputParser implements InputParser {
         checkVersion(root);
         setupGeneral(root);
 
-        parseProducts(root);
-        parseFixProducts(root);
-
         parseConsumerAgentGroups(root);
+        parseConsumerAgentGroupAttributes(root);
         parseConsumerAgentGroupAffinityMapping(root);
+        parseAgentPopulation(root);
+
+        parseProducts(root);
+        parseProductGroupAttributes(root);
+        parseFixProducts(root);
         parseNetwork(root);
         parseSocialGraph(root);
 
@@ -199,7 +206,10 @@ public class JadexInputParser implements InputParser {
         parseTimeModel(root);
 
         setupBinaryTaskManager(root);
+
+        runSpecialOperations(root);
     }
+
 
     private void checkVersion(InRoot root) throws ParsingException {
         InVersion inVersion = getInstance(root.version, InVersion.class, "missing Version");
@@ -227,6 +237,18 @@ public class JadexInputParser implements InputParser {
         }
     }
 
+    private void parseProductGroupAttributes(InRoot root) throws ParsingException {
+        int len = len(root.independentProductGroupAttributes);
+        debug("InConsumerAgentGroupAttribute: {}", len);
+        if(len == -1) {
+            return;
+        }
+
+        for(InIndependentProductGroupAttribute inPgAttr: root.getIndependentProductGroupAttributes()) {
+            inPgAttr.setup(this, null);
+        }
+    }
+
     private void parseFixProducts(InRoot root) throws ParsingException {
         int len = len(root.fixProducts);
         debug("InFixProducts: {}", len);
@@ -249,21 +271,45 @@ public class JadexInputParser implements InputParser {
         }
 
         BasicAgentManager agentManager = (BasicAgentManager) environment.getAgents();
-        BasicInitializationData initData = (BasicInitializationData) environment.getInitializationData();
 
         for(InConsumerAgentGroup inCag: root.consumerAgentGroups) {
             ConsumerAgentGroup cag = parseEntityTo(inCag);
-            debug("added ConsumerAgentGroup '{}' with '{}' agents", cag.getName(), inCag.getNumberOfAgents());
+            debug("added ConsumerAgentGroup '{}'", cag.getName());
             agentManager.addConsumerAgentGroup(cag);
-            initData.setInitialNumberOfConsumerAgents(cag, inCag.getNumberOfAgents());
+        }
+    }
+
+    private void parseAgentPopulation(InRoot root) throws ParsingException {
+        int len = len(root.agentPopulationSizes);
+        debug("InPopulationSize: {}", len);
+        if(len == -1) {
+            return;
+        }
+
+        BasicInitializationData initData = (BasicInitializationData) environment.getInitializationData();
+
+        for(InPopulationSize popSize: root.getAgentPopulationSizes()) {
+            popSize.setup(this, initData);
+        }
+    }
+
+    private void parseConsumerAgentGroupAttributes(InRoot root) throws ParsingException {
+        int len = len(root.independentConsumerAgentGroupAttributes);
+        debug("InConsumerAgentGroupAttribute: {}", len);
+        if(len == -1) {
+            return;
+        }
+
+        for(InIndependentConsumerAgentGroupAttribute inGrpAttr: root.getIndependentConsumerAgentGroupAttributes()) {
+            inGrpAttr.setup(this, null);
         }
     }
 
     private void parseConsumerAgentGroupAffinityMapping(InRoot root) throws ParsingException {
         BasicConsumerAgentGroupAffinityMapping mapping = new BasicConsumerAgentGroupAffinityMapping();
-        for(InComplexAffinityEntry entry: root.affinityEntries) {
-            ConsumerAgentGroup srcCag = parseEntityTo(entry.getSrcCag());
-            ConsumerAgentGroup tarCag = parseEntityTo(entry.getTarCag());
+        for(InAffinityEntry entry: root.affinityEntries) {
+            ConsumerAgentGroup srcCag = parseEntityTo(entry.getSrcCag(this));
+            ConsumerAgentGroup tarCag = parseEntityTo(entry.getTarCag(this));
             double value = entry.getAffinityValue();
             mapping.put(srcCag, tarCag, value);
             debug("added affinity '{}' -> '{}' with value '{}'", srcCag.getName(), tarCag.getName(), value);
@@ -292,25 +338,11 @@ public class JadexInputParser implements InputParser {
     }
 
     private void parseProcessModel(InRoot root) throws ParsingException {
-        InProcessModel inPm = getInstance(root.processModel, InProcessModel.class, "missing process model");
+        InProcessModel inPm = getInstance(root.processModels, InProcessModel.class, "missing process model");
         ProcessModel pm = parseEntityTo(inPm);
         BasicProcessModelManager processModelManager = (BasicProcessModelManager) environment.getProcessModels();
         processModelManager.addProcessModel(pm);
         debug("added process model '{}'", pm.getName());
-
-        setupUncertaintyGroupAttributes(root, pm);
-    }
-
-    private void setupUncertaintyGroupAttributes(InRoot root, ProcessModel pm) throws ParsingException {
-        int len = len(root.uncertaintyGroupAttributes);
-        debug("InUncertaintyGroupAttributes: {}", len);
-        if(len == -1) {
-            return;
-        }
-
-        for(InUncertaintyGroupAttribute attr: root.uncertaintyGroupAttributes) {
-            attr.setup(this, pm);
-        }
     }
 
     private void parseTimeModel(InRoot root) throws ParsingException {
@@ -330,6 +362,86 @@ public class JadexInputParser implements InputParser {
         BinaryTaskManager taskManager = environment.getTaskManager();
         for(VisibleBinaryData data: root.visibleBinaryData) {
             taskManager.handle(data.asBinary());
+        }
+    }
+
+    private void runSpecialOperations(InRoot root) throws ParsingException {
+        if(root.general.runPVAct) {
+            initPVact();
+        }
+    }
+
+    //=========================
+    //PVact
+    //=========================
+
+    private void initPVact() throws ParsingException {
+        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "[PVACT] initalize");
+
+        createPVProductGroup();
+        createFixPVProductAndFindingScheme();
+        addProcessModelFindingScheme();
+    }
+
+    private void createPVProductGroup() throws ParsingException {
+        BasicProductManager productManager = (BasicProductManager) environment.getProducts();
+        if(productManager.getNumberOfProductGroups() != 0) {
+            throw new ParsingException("[PVact] requires no ProductGroup, current: " + productManager.getNumberOfProductGroups());
+        }
+
+        BasicProductGroup pvGroup = new BasicProductGroup();
+        pvGroup.setEnvironment(environment);
+        pvGroup.setName("PV");
+        //Attribute?
+
+        productManager.add(pvGroup);
+        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "[PVACT] add ProductGroup '{}'", pvGroup.getName());
+    }
+
+    private void createFixPVProductAndFindingScheme() throws ParsingException {
+        BasicProductManager productManager = (BasicProductManager) environment.getProducts();
+        BasicProductGroup pvGroup = (BasicProductGroup) productManager.getGroup("PV");
+
+        BasicProduct pvFix = new BasicProduct();
+        pvFix.setEnvironment(environment);
+        pvFix.setName(pvGroup.getName() + "_" + "fix");
+        pvFix.setGroup(pvGroup);
+        pvFix.setFixed(true);
+        //Attribute?
+
+        pvGroup.addProduct(pvFix);
+        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "[PVACT] add fix product '{}' to group '{}'", pvFix.getName(), pvGroup.getName());
+
+        FixProductFindingScheme findingScheme = new FixProductFindingScheme();
+        findingScheme.setName(pvFix.getName() + "_" + "FindingScheme");
+        findingScheme.setProduct(pvFix);
+
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            if(cag.getProductFindingScheme() != null) {
+                throw new ParsingException("[PVact] cag '" + cag.getName() + "' already has a ProductFindingScheme");
+            }
+            ((JadexConsumerAgentGroup) cag).setProductFindingScheme(findingScheme);
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "[PVACT] set ProductFindingScheme '{}' to '{}'", findingScheme.getName(), cag.getName());
+        }
+    }
+
+    private void addProcessModelFindingScheme() throws ParsingException {
+        Collection<ProcessModel> processModels = environment.getProcessModels().getProcessModels();
+        if(processModels.size() != 1) {
+            throw new ParsingException("[PVact] requires exactly 1 ProcessModel (current: " + processModels.size() + ")");
+        }
+
+        ProcessModel processModel = CollectionUtil.get(processModels, 0);
+        FixProcessModelFindingScheme findingScheme = new FixProcessModelFindingScheme();
+        findingScheme.setName("PVact_ProcessFindingScheme");
+        findingScheme.setModel(processModel);
+
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            if(cag.getProcessFindingScheme() != null) {
+                throw new ParsingException("[PVact] cag '" + cag.getName() + "' already has a ProcessFindingScheme");
+            }
+            ((JadexConsumerAgentGroup) cag).setProcessFindingScheme(findingScheme);
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "[PVACT] set ProcessFindingScheme '{}' to '{}'", findingScheme.getName(), cag.getName());
         }
     }
 

@@ -245,14 +245,14 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     }
 
     @Override
-    public void postAgentCreation() throws MissingDataException {
-        agentManager.postAgentCreation();
-        socialNetwork.postAgentCreation();
-        productManager.postAgentCreation();
-        processModelManager.postAgentCreation();
-        spatialModel.postAgentCreation();
-        timeModel.postAgentCreation();
-        lifeCycleControl.postAgentCreation();
+    public void postAgentCreation(boolean initialCall) throws MissingDataException {
+        agentManager.postAgentCreation(initialCall);
+        socialNetwork.postAgentCreation(initialCall);
+        productManager.postAgentCreation(initialCall);
+        processModelManager.postAgentCreation(initialCall);
+        spatialModel.postAgentCreation(initialCall);
+        timeModel.postAgentCreation(initialCall);
+        lifeCycleControl.postAgentCreation(initialCall);
     }
 
     @Override
@@ -264,5 +264,8 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         spatialModel.preSimulationStart();
         timeModel.preSimulationStart();
         lifeCycleControl.preSimulationStart();
+        //==
+        LOGGER.debug("enable sync mode for master rnd");
+        rnd.enableSync();
     }
 }

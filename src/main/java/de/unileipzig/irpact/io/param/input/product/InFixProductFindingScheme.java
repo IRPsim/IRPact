@@ -11,32 +11,30 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.PRODUCTS;
+import static de.unileipzig.irpact.io.param.IOConstants.PRODUCTS_FINDING_SCHEME;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InFixProductFindingScheme implements InProductFindingScheme {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                thisClass(),
-                res.getCachedElement("Produkte"),
-                res.getCachedElement("InProductFindingScheme"),
-                res.getCachedElement("InFixProductFindingScheme")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Produkt")
-                .setGamsDescription("Produkt")
-                .store(thisClass(), "refFixProduct");
+        putClassPath(res, thisClass(), PRODUCTS, PRODUCTS_FINDING_SCHEME, thisName());
+        addEntry(res, thisClass(), "refFixProduct");
     }
 
     public String _name;
@@ -55,6 +53,10 @@ public class InFixProductFindingScheme implements InProductFindingScheme {
     @Override
     public String getName() {
         return _name;
+    }
+
+    public void setName(String name) {
+        this._name = name;
     }
 
     public void setFixProduct(InFixProduct refFixProduct) {

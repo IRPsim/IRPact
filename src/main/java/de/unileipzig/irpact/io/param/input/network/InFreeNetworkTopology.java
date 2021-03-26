@@ -9,6 +9,7 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.FreeNetworkTopology;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -19,42 +20,38 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 import java.util.*;
 
+import static de.unileipzig.irpact.io.param.IOConstants.NETWORK;
+import static de.unileipzig.irpact.io.param.IOConstants.TOPOLOGY;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InFreeNetworkTopology implements InGraphTopologyScheme {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                thisClass(),
-                res.getCachedElement("Netzwerk"),
-                res.getCachedElement("Topologie"),
-                res.getCachedElement("Freie Topologie")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Legt den Evaluator für die Abstände zwischen den Agenten fest.")
-                .setGamsDescription("Evaluator für Abstände")
-                .store(thisClass(), "distanceEvaluator");
+        putClassPath(res, thisClass(), NETWORK, TOPOLOGY, thisName());
+        addEntry(res, thisClass(), "initialWeight");
+        addEntry(res, thisClass(), "distanceEvaluator");
+        addEntry(res, thisClass(), "numberOfTies");
 
         res.newEntryBuilder()
                 .setGamsIdentifier("Knotenanzahl je KG")
                 .setGamsDescription("Knotenanzahl")
                 .store(thisClass(), "numberOfTies");
 
-        res.newEntryBuilder()
-                .setGamsIdentifier("Initiale Kantengewicht")
-                .setGamsDescription("Initiale Gewicht der Kanten")
-                .store(thisClass(), "initialWeight");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -85,16 +82,32 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         return _name;
     }
 
-    public InDistanceEvaluator getDistanceEvaluator() {
-        return distanceEvaluator[0];
+    public void setName(String name) {
+        this._name = name;
+    }
+
+    public InDistanceEvaluator getDistanceEvaluator() throws ParsingException {
+        return ParamUtil.getInstance(distanceEvaluator, "distanceEvaluator");
+    }
+
+    public void setDistanceEvaluator(InDistanceEvaluator distanceEvaluator) {
+        this.distanceEvaluator = new InDistanceEvaluator[]{distanceEvaluator};
     }
 
     public InNumberOfTies[] getNumberOfTies() {
         return numberOfTies;
     }
 
+    public void setNumberOfTies(Collection<? extends InNumberOfTies> ties) {
+        this.numberOfTies = ties.toArray(new InNumberOfTies[0]);
+    }
+
     public double getInitialWeight() {
         return initialWeight;
+    }
+
+    public void setInitialWeight(double initialWeight) {
+        this.initialWeight = initialWeight;
     }
 
     @Override

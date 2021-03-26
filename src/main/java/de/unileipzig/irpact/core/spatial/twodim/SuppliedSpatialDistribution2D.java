@@ -1,23 +1,44 @@
 package de.unileipzig.irpact.core.spatial.twodim;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
-import de.unileipzig.irpact.core.spatial.ResettableSpatialDistributionBase;
-import de.unileipzig.irpact.core.spatial.SpatialDistribution;
+import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
+import de.unileipzig.irpact.core.spatial.attribute.SuppliedSpatialAttribute;
+import de.unileipzig.irpact.core.spatial.distribution.ResettableSpatialDistributionBase;
+import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.util.Todo;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author Daniel Abitz
  */
+@Todo("aenderung uebernehmen")
 public class SuppliedSpatialDistribution2D extends ResettableSpatialDistributionBase {
 
     protected UnivariateDoubleDistribution xSupplier;
     protected UnivariateDoubleDistribution ySupplier;
+    protected Map<String, SuppliedSpatialAttribute<SpatialAttribute<?>>> suppliedAttributes;
 
     public SuppliedSpatialDistribution2D() {
+        this(new LinkedHashMap<>());
+    }
+
+    public SuppliedSpatialDistribution2D(Map<String, SuppliedSpatialAttribute<SpatialAttribute<?>>> suppliedAttributes) {
+        this.suppliedAttributes = suppliedAttributes;
+    }
+
+    public UnivariateDoubleDistribution getXSupplier() {
+        return xSupplier;
     }
 
     public void setXSupplier(UnivariateDoubleDistribution xSupplier) {
         this.xSupplier = xSupplier;
+    }
+
+    public UnivariateDoubleDistribution getYSupplier() {
+        return ySupplier;
     }
 
     public void setYSupplier(UnivariateDoubleDistribution ySupplier) {
@@ -36,13 +57,18 @@ public class SuppliedSpatialDistribution2D extends ResettableSpatialDistribution
 
     @Override
     public void reset() {
-        numberOfCalls = 0;
     }
 
     @Override
     public void initalize() {
-        numberOfCalls = 0;
-        call();
+    }
+
+    @Override
+    public void call() {
+    }
+
+    @Override
+    public void call(int times) {
     }
 
     @Override
@@ -50,6 +76,11 @@ public class SuppliedSpatialDistribution2D extends ResettableSpatialDistribution
         double x = xSupplier.drawDoubleValue();
         double y = ySupplier.drawDoubleValue();
         numberOfCalls++;
-        return new BasicPoint2D(x, y);
+        BasicPoint2D p = new BasicPoint2D(x, y);
+        for(SuppliedSpatialAttribute<SpatialAttribute<?>> suppliedAttribute: suppliedAttributes.values()) {
+            SpatialAttribute<?> attr = suppliedAttribute.derive();
+            p.addAttribute(attr);
+        }
+        return p;
     }
 }

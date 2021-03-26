@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.log;
 
+import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.LoggingSection;
 
 /**
@@ -27,6 +28,8 @@ public enum IRPSection implements LoggingSection {
      */
     SIMULATION_LICECYCLE,
     SIMULATION_AGENT,
+    SIMULATION_AGENT_COMMUNICATION,
+    SIMULATION_AGENT_REWIRE,
 
     /*
      *
@@ -38,6 +41,11 @@ public enum IRPSection implements LoggingSection {
      */
     JADEX_SYSTEM_OUT
     ;
+
+    public static void addAllNonToolsTo(SectionLoggingFilter filter) {
+        addAllTo(filter);
+        removeAllToolsFrom(filter);
+    }
 
     public static void addAllTo(SectionLoggingFilter filter) {
         for(IRPSection section: values()) {
@@ -51,6 +59,12 @@ public enum IRPSection implements LoggingSection {
         }
     }
 
+    public static void addSectionsToTools() {
+        IRPtools.setToolsSection(TOOLS_CORE);
+        IRPtools.setDefinitionSection(TOOLS_DEFINITION);
+        IRPtools.setUtilSection(TOOLS_UTIL);
+    }
+
     public static void addAllToolsTo(SectionLoggingFilter filter) {
         filter.add(TOOLS_CORE);
         filter.add(TOOLS_DEFINITION);
@@ -60,5 +74,6 @@ public enum IRPSection implements LoggingSection {
     public static void removeAllToolsFrom(SectionLoggingFilter filter) {
         filter.remove(TOOLS_CORE);
         filter.remove(TOOLS_DEFINITION);
+        filter.remove(TOOLS_UTIL);
     }
 }

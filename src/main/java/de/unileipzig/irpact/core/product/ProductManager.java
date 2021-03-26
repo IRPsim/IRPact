@@ -12,5 +12,9 @@ public interface ProductManager extends Initialization {
 
     Collection<ProductGroup> getGroups();
 
+    default int getNumberOfProductGroups() {
+        return getGroups().size();
+    }
+
     ProductGroup getGroup(String name);
 }

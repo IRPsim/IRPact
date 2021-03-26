@@ -9,6 +9,8 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+
 /**
  * Stores the current Version of IRPact.
  *
@@ -17,20 +19,19 @@ import java.lang.invoke.MethodHandles;
 @Definition
 public class InVersion implements InEntity {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.newEntryBuilder()
-                .setGamsDescription("Version von IRPact für dieses Szenario.")
-                .setGamsIdentifier("InVersion")
-                .setGamsHidden(true)
-                .store(thisClass());
+        addEntry(res, thisClass());
+        addEntry(res, thisClass(), "placeholderVersion");
     }
 
     public String _name;
@@ -47,6 +48,10 @@ public class InVersion implements InEntity {
 
     public static InVersion currentVersion() {
         return new InVersion(IRPact.VERSION_STRING);
+    }
+
+    public static InVersion[] currentVersionAsArray() {
+        return new InVersion[] {currentVersion()};
     }
 
     @Override

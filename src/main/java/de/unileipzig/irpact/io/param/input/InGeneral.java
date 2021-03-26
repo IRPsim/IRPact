@@ -17,6 +17,9 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 import java.util.concurrent.TimeUnit;
 
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
+
 /**
  * @author Daniel Abitz
  */
@@ -25,162 +28,43 @@ import java.util.concurrent.TimeUnit;
 )
 public class InGeneral {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InGeneral.class,
-                res.getCachedElement("Allgemeine Einstellungen")
-        );
+        putClassPath(res, thisClass(), GENERAL_SETTINGS);
 
-        res.newEntryBuilder()
-                .setGamsIdentifier("Zufallsgenerator (seed)")
-                .setGamsDescription("Setzt den Seed für den Zufallsgenerator der Simulation. Falls er auf -1 gesetzt wird, wird ein zufälliger Seed generiert.")
-                .setGamsDefault("-1")
-                .store(InGeneral.class, "seed");
-        res.newEntryBuilder()
-                .setGamsIdentifier("Timeout")
-                .setGamsDescription("Setzt den Timeout der Simulation in Millisekunden. Diese Einstellung dient dazu die Simulation zu beenden, falls sie unerwartet abstürzt. Im Laufe der Simulation wird der Timeout unentwegt zurück gesetzt. Sollte es zu einem unerwarteten Fehler kommen und die Rücksetzung ausbleiben, wird die Simulation abgebrochen und beendet. Werte kleiner 1 deaktivieren den Timeout vollständig.")
-                .setGamsDefault(Long.toString(TimeUnit.MINUTES.toMinutes(5)))
-                .setGamsUnit("[ms]")
-                .store(InGeneral.class, "timeout");
-        res.newEntryBuilder()
-                .setGamsIdentifier("Endjahr der Simulation")
-                .setGamsDescription("[TEMPORÄRE OPTION] Setzt das finale Jahr der Simulation. Wichtig: Der Wert ist inklusiv. Es wird dabei immer mindestens ein Jahr simuliert, auch wenn der Wert kleiner ist als das des Ausgangsjahres.")
-                .store(InGeneral.class, "endYear");
+        addEntry(res, thisClass(), "seed");
+        addEntry(res, thisClass(), "timeout");
+        addEntry(res, thisClass(), "endYear");
 
-        res.newEntryBuilder()
-                .setGamsIdentifier("optact-Testmodell ausführen")
-                .setGamsDescription("[TEMPORÄRE OPTION] Falls gesetzt, wird die optact-Demo gestartet. Anderenfalls wird IRPact gestartet.")
-                .store(InGeneral.class, "runOptActDemo");
+        putFieldPathAndAddEntry(res, thisClass(), "logLevel", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
+        putFieldPathAndAddEntry(res, thisClass(), "logAll", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
+        putFieldPathAndAddEntry(res, thisClass(), "logAllTools", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
 
-        res.newEntryBuilder()
-                .setGamsDescription("Setzt das zu nutzende Logging-Level in IRPact, folgende Werte werden unterstützt: 0 = OFF, 1 = TRACE, 2 = DEBUG, 3 = INFO, 4 = WARN, 5 = ERROR, 6 = ALL. Das Level ist der Hauptfilter für alle log-Operationen.")
-                .setGamsIdentifier("Logging-Level")
-                .setGamsDomain(IRPLevel.getDomain())
-                .setGamsDefault(IRPLevel.getDefaultAsString())
-                .store(InGeneral.class, "logLevel");
-        res.putPath(
-                InGeneral.class, "logLevel",
-                res.getCachedElements("Allgemeine Einstellungen", "Logging")
-        );
+        putFieldPathAndAddEntry(res, thisClass(), "logToolsCore", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logToolsDefinition", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logInitialization", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logParamInit", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logGraphCreation", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logAgentCreation", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logPlatformCreation", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logSimulationLifecycle", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logSimulationAgent", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logJadexSystemOut", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
 
-        res.newEntryBuilder()
-                .setGamsDescription("[SPAM] Ob alles geloggt werden soll. Falls ja, überschreibt diese Option alles.")
-                .setGamsIdentifier("log alles")
-                .setGamsDomain("[0|1]")
-                .store(InGeneral.class, "logAll");
-        res.putPath(
-                InGeneral.class, "logAll",
-                res.getCachedElements("Allgemeine Einstellungen", "Logging")
-        );
-
-        res.newEntryBuilder()
-                .setGamsDescription("[SPAM] Ob alle Aufrufe der Tools-Bibliothek geloggt werden sollen.")
-                .setGamsIdentifier("log alle Aufrufe von Tools")
-                .setGamsDomain("[0|1]")
-                .store(InGeneral.class, "logAllTools");
-        res.putPath(
-                InGeneral.class, "logAllTools",
-                res.getCachedElements("Allgemeine Einstellungen", "Logging")
-        );
-        res.newEntryBuilder()
-                .setGamsDescription("[SPAM] Ob die Kernaufrufe der Tools-Bibliothek geloggt werden sollen.")
-                .setGamsIdentifier("log primäre Aufrufe von Tools")
-                .setGamsDomain("[0|1]")
-                .store(InGeneral.class, "logToolsCore");
-        res.putPath(
-                InGeneral.class, "logToolsCore",
-                res.getCachedElements("Allgemeine Einstellungen", "Logging")
-        );
-        res.newEntryBuilder()
-                .setGamsDescription("[SPAM] Ob Definitions-Aufrufe der Tools-Bibliothek geloggt werden sollen.")
-                .setGamsIdentifier("log Definitionerstellung von Tools")
-                .setGamsDomain("[0|1]")
-                .store(InGeneral.class, "logToolsDefinition");
-        res.putPath(
-                InGeneral.class, "logToolsDefinition",
-                res.getCachedElements("Allgemeine Einstellungen", "Logging")
-        );
-
-        res.newEntryBuilder()
-                .setGamsDescription("Ob die Initialisierung der Parameter geloggt werden soll.")
-                .setGamsIdentifier("log Initialisierung der Parameter")
-                .setGamsDomain("[0|1]")
-                .store(InGeneral.class, "logParamInit");
-        res.putPath(
-                InGeneral.class, "logParamInit",
-                res.getCachedElements("Allgemeine Einstellungen", "Logging")
-        );
-
-        res.newEntryBuilder()
-                .setGamsDescription("[SPAM] Ob die Grapherzeugung geloggt werden soll.")
-                .setGamsIdentifier("log Grapherzeugung")
-                .setGamsDomain("[0|1]")
-                .store(InGeneral.class, "logGraphCreation");
-        res.putPath(
-                InGeneral.class, "logGraphCreation",
-                res.getCachedElements("Allgemeine Einstellungen", "Logging")
-        );
-
-        res.newEntryBuilder()
-                .setGamsDescription("[SPAM] Ob die Agentenerzeugung geloggt werden soll.")
-                .setGamsIdentifier("log Agentenerzeugung")
-                .setGamsDomain("[0|1]")
-                .store(InGeneral.class, "logAgentCreation");
-        res.putPath(
-                InGeneral.class, "logAgentCreation",
-                res.getCachedElements("Allgemeine Einstellungen", "Logging")
-        );
-
-        res.newEntryBuilder()
-                .setGamsDescription("[SPAM] Ob die Erstellung der Simulation (Agentenplatform) geloggt werden soll.")
-                .setGamsIdentifier("log Platformerstellung")
-                .setGamsDomain("[0|1]")
-                .store(InGeneral.class, "logPlatformCreation");
-        res.putPath(
-                InGeneral.class, "logPlatformCreation",
-                res.getCachedElements("Allgemeine Einstellungen", "Logging")
-        );
-
-        res.newEntryBuilder()
-                .setGamsDescription("[SPAM] Ob der Lebenszyklus geloggt werden soll.")
-                .setGamsIdentifier("log Simulationszyklen")
-                .setGamsDomain("[0|1]")
-                .store(InGeneral.class, "logSimulationLifecycle");
-        res.putPath(
-                InGeneral.class, "logSimulationLifecycle",
-                res.getCachedElements("Allgemeine Einstellungen", "Logging")
-        );
-
-        res.newEntryBuilder()
-                .setGamsDescription("[SPAM] Ob die Agenten während der Simulation geloggt werden sollen.")
-                .setGamsIdentifier("log Agenten während Simulation")
-                .setGamsDomain("[0|1]")
-                .store(InGeneral.class, "logSimulationAgent");
-        res.putPath(
-                InGeneral.class, "logSimulationAgent",
-                res.getCachedElements("Allgemeine Einstellungen", "Logging")
-        );
-
-        res.newEntryBuilder()
-                .setGamsDescription("[SPAM] Ob spezielle Jadex-Ausgaben geloggt werden sollen. (Anmerkung: Diese Ausgaben von Jadex selbst generiert.)")
-                .setGamsIdentifier("log Jadex Systemnachrichten")
-                .setGamsDomain("[0|1]")
-                .store(InGeneral.class, "logJadexSystemOut");
-        res.putPath(
-                InGeneral.class, "logJadexSystemOut",
-                res.getCachedElements("Allgemeine Einstellungen", "Logging")
-        );
+        putFieldPathAndAddEntry(res, thisClass(), "runOptActDemo", GENERAL_SETTINGS, SPECIAL_SETTINGS);
+        putFieldPathAndAddEntry(res, thisClass(), "runPVAct", GENERAL_SETTINGS, SPECIAL_SETTINGS);
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InGeneral.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public static final String RUN_OPTACT_DEMO_PARAM_NAME = "sca_InGeneral_runOptActDemo";
 
@@ -196,8 +80,19 @@ public class InGeneral {
     @FieldDefinition
     public int endYear;
 
+    //=========================
+    //flags
+    //=========================
+
+    @FieldDefinition
+    public boolean runPVAct;
+
     @FieldDefinition
     public boolean runOptActDemo;
+
+    //=========================
+    //general logging
+    //=========================
 
     @FieldDefinition
     public int logLevel;
@@ -207,11 +102,17 @@ public class InGeneral {
 
     @FieldDefinition
     public boolean logAllTools;
+
+    //=========================
+    //specific logging
+    //=========================
     @FieldDefinition
     public boolean logToolsCore;
     @FieldDefinition
     public boolean logToolsDefinition;
 
+    @FieldDefinition
+    public boolean logInitialization;
     @FieldDefinition
     public boolean logParamInit;
     @FieldDefinition
@@ -229,7 +130,19 @@ public class InGeneral {
     @FieldDefinition
     public boolean logJadexSystemOut;
 
+    //=========================
+    //...
+    //=========================
+
     public InGeneral() {
+    }
+
+    public void setLogLevel(IRPLevel level) {
+        this.logLevel = level.getLevelId();
+    }
+
+    public void setTimeout(long duration, TimeUnit unit) {
+        this.timeout = unit.toMillis(duration);
     }
 
     public void setup(InputParser parser) throws ParsingException {
@@ -246,11 +159,12 @@ public class InGeneral {
         }
         IRPLogging.setLevel(level);
 
-        SectionLoggingFilter filter = new SectionLoggingFilter();
-        IRPLogging.setFilter(filter);
+        SectionLoggingFilter filter = (SectionLoggingFilter) IRPLogging.getFilter();
+        IRPSection.removeAllFrom(filter);
 
         if(logAll) {
-            IRPSection.addAllTo(filter);
+            IRPSection.addAllNonToolsTo(filter);
+            if(logAllTools) IRPSection.addAllToolsTo(filter);
             return;
         }
 

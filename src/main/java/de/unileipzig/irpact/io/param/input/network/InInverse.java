@@ -11,32 +11,30 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
 
+import static de.unileipzig.irpact.io.param.IOConstants.DIST_FUNC;
+import static de.unileipzig.irpact.io.param.IOConstants.NETWORK;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InInverse implements InDistanceEvaluator {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InInverse.class,
-                res.getCachedElement("Netzwerk"),
-                res.getCachedElement("Abstandsfunktion"),
-                res.getCachedElement("Invers")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("-")
-                .setGamsDescription("Platzhalter")
-                .store(InUnlinkedGraphTopology.class, "placeholderInverse");
+        putClassPath(res, thisClass(), NETWORK, DIST_FUNC, thisName());
+        addEntry(res, thisClass(), "placeholderInverse");
     }
 
     public String _name;
@@ -54,6 +52,10 @@ public class InInverse implements InDistanceEvaluator {
     @Override
     public String getName() {
         return _name;
+    }
+
+    public void setName(String name) {
+        this._name = name;
     }
 
     @Override

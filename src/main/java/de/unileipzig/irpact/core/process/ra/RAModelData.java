@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.attribute.DoubleAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
+import de.unileipzig.irpact.util.Todo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +32,8 @@ public class RAModelData implements IsEquals {
     protected int awarePoints = DEFAULT_AWARE_POINTS;
     protected int unknownPoints = DEFAULT_UNKNOWN_POINTS;
 
+    protected double logisticFactor = 0.0;
+
     public RAModelData() {
         this(new HashMap<>());
     }
@@ -43,7 +46,8 @@ public class RAModelData implements IsEquals {
     public int getHashCode() {
         return Objects.hash(
                 a, b, c, d,
-                adopterPoints, interestedPoints, awarePoints, unknownPoints
+                adopterPoints, interestedPoints, awarePoints, unknownPoints,
+                logisticFactor
         );
     }
 
@@ -95,6 +99,10 @@ public class RAModelData implements IsEquals {
         return matrix.averageValue();
     }
 
+    public void setLogisticFactor(double logisticFactor) {
+        this.logisticFactor = logisticFactor;
+    }
+
     protected static int getN(ConsumerAgent agent) {
         return getIntValue(agent, RAConstants.SLOPE);
     }
@@ -138,5 +146,9 @@ public class RAModelData implements IsEquals {
 
     public int getUnknownPoints() {
         return unknownPoints;
+    }
+
+    public double getLogisticFactor() {
+        return logisticFactor;
     }
 }

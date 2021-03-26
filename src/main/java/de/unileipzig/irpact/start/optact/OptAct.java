@@ -6,8 +6,7 @@ import de.unileipzig.irpact.commons.graph.topology.AbstractMultiGraphTopology;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.start.IRPact;
-import de.unileipzig.irpact.start.Start;
+import de.unileipzig.irpact.start.CommandLineOptions;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.in.SideCustom;
 import de.unileipzig.irpact.start.optact.out.OutCustom;
@@ -44,11 +43,11 @@ public class OptAct {
 
     private static final IRPLogger logger = IRPLogging.getLogger(OptAct.class);
 
-    private final Start clParam;
+    private final CommandLineOptions clOptions;
     private final ObjectNode inRoot;
 
-    public OptAct(Start clParam, ObjectNode inRoot) {
-        this.clParam = clParam;
+    public OptAct(CommandLineOptions clOptions, ObjectNode inRoot) {
+        this.clOptions = clOptions;
         this.inRoot = inRoot;
     }
 
@@ -65,13 +64,13 @@ public class OptAct {
 
     private Converter createInputConverter() {
         DefinitionCollection dcoll = AnnotationParser.parse(InRoot.CLASSES_WITH_GRAPHVIZ);
-        DefinitionMapper dmap = IRPact.newMapper(dcoll);
+        DefinitionMapper dmap = new DefinitionMapper(dcoll);
         return new Converter(dmap);
     }
 
     private Converter createOutputConverter() {
         DefinitionCollection dcoll = AnnotationParser.parse(OutRoot.CLASSES);
-        DefinitionMapper dmap = IRPact.newMapper(dcoll);
+        DefinitionMapper dmap = new DefinitionMapper(dcoll);
         return new Converter(dmap);
     }
 
@@ -113,10 +112,10 @@ public class OptAct {
         }
 
         try {
-            if(clParam.getImagePath() != null) {
+            if(clOptions.getImagePath() != null) {
                 runImageDemo(inputEntry);
             }
-            if(!clParam.isNoSimulation()) {
+            if(!clOptions.isNoSimulation()) {
                 runOptActDemo(inputEntry);
             }
             logger.trace("IRPact finished");
@@ -187,7 +186,7 @@ public class OptAct {
         gen.setHideNodeLabels(true);
         gen.setNodeShape(guru.nidi.graphviz.attribute.Shape.POINT);
 
-        Path imagePath = clParam.getImagePath();
+        Path imagePath = clOptions.getImagePath();
         Path dotPath = imagePath.resolveSibling(imagePath.getFileName().toString() + ".dot");
         try {
             logger.debug("store temp-dot file: {}", dotPath);
@@ -238,7 +237,7 @@ public class OptAct {
 
     private void runOptActDemo(AnnualEntry<InRoot> inputEntry) {
         logger.trace("run optact demo");
-        if(clParam.isNoSimulation()) {
+        if(clOptions.isNoSimulation()) {
             logger.warn("no simulation");
             return;
         }
@@ -254,7 +253,7 @@ public class OptAct {
         logger.trace("serialize output");
         try {
             AnnualFile outFile = outData.serialize(createOutputConverter());
-            outFile.store(clParam.getOutputPath());
+            outFile.store(clOptions.getOutputPath());
         } catch (Throwable t) {
             logger.error("serialization failed", t);
         }

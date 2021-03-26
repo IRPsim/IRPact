@@ -1,6 +1,10 @@
 package de.unileipzig.irpact.commons;
 
+import de.unileipzig.irpact.util.Todo;
+
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -11,6 +15,42 @@ import java.util.stream.Collectors;
 public final class CollectionUtil {
 
     private CollectionUtil() {
+    }
+
+    public static <T> boolean containsSame(T[] array, T object) {
+        for(T t: array) {
+            if(t == object) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static <T> boolean containsEquals(T[] array, T object) {
+        for(T t: array) {
+            if(Objects.equals(t, object)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Todo("alles nicht-zwang-linkged hashmaps austauschen")
+    public static <K, V> Map<K, V> newMap() {
+        return new LinkedHashMap<>();
+    }
+
+    @Todo("alles nicht-zwang-linkged hashmaps austauschen")
+    public static <E> Set<E> newSet() {
+        return new LinkedHashSet<>();
+    }
+
+    public static <K, V> Supplier<Map<K, V>> newMapSupplier() {
+        return CollectionUtil::newMap;
+    }
+
+    public static <A, K, V> Function<A, Map<K, V>> newMapFunction() {
+        return a -> newMap();
     }
 
     public static <T> List<T> toList(Iterator<? extends T> iter) {
@@ -143,11 +183,29 @@ public final class CollectionUtil {
         return list.get(index);
     }
 
+    public static <T> T getRandom(List<T> list, Rnd rnd) {
+        return getRandom(list, 0, list.size(), rnd);
+    }
+
+    public static <T> T getRandom(List<T> list, int from, int to, Rnd rnd) {
+        int index = Util.nextInt(rnd, from, to);
+        return list.get(index);
+    }
+
     public static <T> T getRandom(Collection<T> coll, Random rnd) {
         return getRandom(coll, 0, coll.size(), rnd);
     }
 
     public static <T> T getRandom(Collection<T> coll, int from, int to, Random rnd) {
+        int index = Util.nextInt(rnd, from, to);
+        return get(coll, index);
+    }
+
+    public static <T> T getRandom(Collection<T> coll, Rnd rnd) {
+        return getRandom(coll, 0, coll.size(), rnd);
+    }
+
+    public static <T> T getRandom(Collection<T> coll, int from, int to, Rnd rnd) {
         int index = Util.nextInt(rnd, from, to);
         return get(coll, index);
     }

@@ -3,14 +3,14 @@ package de.unileipzig.irpact.jadex.persistance.binary.impl;
 import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.process.ra.UncertaintyGroupAttribute;
+import de.unileipzig.irpact.core.process.ra.attributes.UncertaintyGroupAttributeOLD;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class UncertaintyGroupAttributePR extends BinaryPRBase<UncertaintyGroupAttribute> {
+public class UncertaintyGroupAttributePR extends BinaryPRBase<UncertaintyGroupAttributeOLD> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(UncertaintyGroupAttributePR.class);
 
@@ -22,8 +22,8 @@ public class UncertaintyGroupAttributePR extends BinaryPRBase<UncertaintyGroupAt
     }
 
     @Override
-    public Class<UncertaintyGroupAttribute> getType() {
-        return UncertaintyGroupAttribute.class;
+    public Class<UncertaintyGroupAttributeOLD> getType() {
+        return UncertaintyGroupAttributeOLD.class;
     }
 
     //=========================
@@ -31,7 +31,7 @@ public class UncertaintyGroupAttributePR extends BinaryPRBase<UncertaintyGroupAt
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(UncertaintyGroupAttribute object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(UncertaintyGroupAttributeOLD object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
 
@@ -42,7 +42,7 @@ public class UncertaintyGroupAttributePR extends BinaryPRBase<UncertaintyGroupAt
     }
 
     @Override
-    protected void doSetupPersist(UncertaintyGroupAttribute object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(UncertaintyGroupAttributeOLD object, BinaryJsonData data, PersistManager manager) {
         data.putLong(manager.ensureGetUID(object.getUncertainty()));
         data.putLong(manager.ensureGetUID(object.getConvergence()));
     }
@@ -52,14 +52,14 @@ public class UncertaintyGroupAttributePR extends BinaryPRBase<UncertaintyGroupAt
     //=========================
 
     @Override
-    protected UncertaintyGroupAttribute doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
-        UncertaintyGroupAttribute object = new UncertaintyGroupAttribute();
+    protected UncertaintyGroupAttributeOLD doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        UncertaintyGroupAttributeOLD object = new UncertaintyGroupAttributeOLD();
         object.setName(data.getText());
         return object;
     }
 
     @Override
-    protected void doSetupRestore(BinaryJsonData data, UncertaintyGroupAttribute object, RestoreManager manager) throws RestoreException {
+    protected void doSetupRestore(BinaryJsonData data, UncertaintyGroupAttributeOLD object, RestoreManager manager) throws RestoreException {
         object.setUncertainty(manager.ensureGet(data.getLong()));
         object.setConvergence(manager.ensureGet(data.getLong()));
     }

@@ -38,6 +38,7 @@ import jadex.micro.annotation.RequiredService;
 import jadex.micro.annotation.RequiredServices;
 
 import java.util.*;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -68,7 +69,9 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     protected Set<AttributeAccess> externAttributes = new LinkedHashSet<>();
 
     protected final Lock LOCK = new ReentrantLock();
+    protected final Condition PRE_CON = LOCK.newCondition();
     protected Timestamp currentStamp = null;
+    protected boolean execPlanInit = true;
     protected int actionsInThisStep = 0;
     protected int maxActions = 1; //!!!
 
@@ -166,8 +169,8 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         adoptedProducts.addAll(proxyAgent.getAdoptedProducts());
         processFindingScheme = proxyAgent.getProcessFindingScheme();
         productFindingScheme = proxyAgent.getProductFindingScheme();
-        needs.addAll(proxyAgent.getNeeds()); //TODO plan etc aufrufen?
-        plans.putAll(proxyAgent.getPlans()); //TODO plan etc aufrufen?
+        addAllNeeds(proxyAgent.getNeeds()); //!
+        plans.putAll(proxyAgent.getPlans()); //!
         externAttributes.addAll(proxyAgent.getExternAttributes());
 
         proxyAgent.sync(getRealAgent());
@@ -186,6 +189,42 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     public Set<Need> getNeeds() {
         return needs;
+    }
+
+    protected void addAllNeeds(Collection<Need> needs) {
+        for(Need need: needs) {
+            addNeed(need);
+        }
+    }
+
+    @Override
+    public void addNeed(Need need) {
+        needs.add(need);
+        handleNewNeed(need);
+    }
+
+    protected void handleNewNeed(Need need) {
+        Product product = productFindingScheme.findProduct(getThisAgent(), need);
+        if(product == null) {
+            return;
+        }
+        ProcessModel model = processFindingScheme.findModel(product);
+        if(model == null) {
+            return;
+        }
+        ProcessPlan plan = model.newPlan(getThisAgent(), need, product);
+        addPlan(need, plan);
+        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] added plan for need='{}' and product='{}'", getName(), need.getName(), product.getName());
+    }
+
+    protected void addAllPlans(Map<Need, ProcessPlan> plans) {
+        for(Map.Entry<Need, ProcessPlan> entry: plans.entrySet()) {
+            addPlan(entry.getKey(), entry.getValue());
+        }
+    }
+
+    protected void addPlan(Need need, ProcessPlan plan) {
+        plans.put(need, plan);
     }
 
     @Override
@@ -271,8 +310,69 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public void lockAction() {
+    public boolean tryAquireAction() {
+        if(actionsInThisStep > 0) {
+            //Warte bis Agent mit der pre-Phase zu Ende ist
+            while(execPlanInit) {
+                LOCK.lock();
+                try {
+                    try {
+                        PRE_CON.await();
+                    } catch (InterruptedException e) {
+                        //ignore
+                    }
+                } finally {
+                    LOCK.unlock();
+                }
+            }
+            if(actionsInThisStep == 0) {
+                return false;
+            }
+            //Der Erste bekommt das Lock
+            if(LOCK.tryLock()) {
+                if(actionsInThisStep > 0) {
+                    return true;
+                } else {
+                    //unlock, falls fehlschlag
+                    LOCK.unlock();
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean tryAquireSelf() {
+        if(LOCK.tryLock()) {
+            if(actionsInThisStep > 0) {
+                return true;
+            } else {
+                LOCK.unlock();
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void allowAquire() {
+        execPlanInit = false;
         LOCK.lock();
+        try {
+            PRE_CON.signalAll();
+        } finally {
+            LOCK.unlock();
+        }
+    }
+
+    @Override
+    public void aquireFailed() {
+        LOCK.unlock();
     }
 
     @Override
@@ -281,29 +381,8 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public void releaseAction() {
+    public void releaseAquire() {
         LOCK.unlock();
-    }
-
-    @Override
-    public boolean aquireAction() {
-        LOCK.lock();
-        try {
-            Timestamp now = getEnvironment().getTimeModel().now();
-            if(Objects.equals(currentStamp, now)) {
-                if(actionsInThisStep >= maxActions) {
-                    return false;
-                }
-                actionPerformed();
-                return true;
-            } else {
-                currentStamp = now;
-                actionsInThisStep = 1;
-                return true;
-            }
-        } finally {
-            LOCK.unlock();
-        }
     }
 
     @Override
@@ -333,14 +412,20 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
 
     @Override
     public void adopt(Need need, Product product) {
+        JadexTimestamp now = environment.getTimeModel().now();
+        adoptAt(need, product, now);
+    }
+
+    @Override
+    public void adoptAt(Need need, Product product, Timestamp stamp) {
         if(needs.contains(need)) {
-            JadexTimestamp now = environment.getTimeModel().now();
-            AdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, now);
+            AdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, stamp);
             needs.remove(need);
             plans.remove(need);
             addAdoptedProduct(adoptedProduct);
+            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] adopt '{}' at {}", getName(), product.getName(), stamp);
         } else {
-            throw new IllegalStateException("need '" + need.getName() + "' not exists");
+            LOGGER.warn("need '{}' does not exist", need.getName());
         }
     }
 
@@ -370,7 +455,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
 
     @Override
     protected void firstAction() {
-        bdiFeature.dispatchTopLevelGoal(new ProcessExecutionGoal(null, null));
+        //bdiFeature.dispatchTopLevelGoal(new ProcessExecutionGoal(null, null));
         log().debug("[{}] start loop", getName());
         scheduleLoop();
     }
@@ -378,6 +463,14 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     protected void loopAction() {
         log().trace(IRPSection.SIMULATION_AGENT, "[{}] loop @ {}", getName(), now());
+
+        //log().trace(IRPSection.SIMULATION_AGENT, "[{}] pre sync @ {}", getName(), now());
+        waitForSynchronisationIfRequired();
+        //log().trace(IRPSection.SIMULATION_AGENT, "[{}] post sync @ {}", getName(), now());
+
+        for(ProcessPlan plan: getPlans().values())  {
+            plan.execute();
+        }
     }
 
     //=========================

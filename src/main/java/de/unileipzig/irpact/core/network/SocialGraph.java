@@ -1,9 +1,12 @@
 package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.core.agent.Agent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -22,6 +25,8 @@ public interface SocialGraph extends IsEquals {
         Agent getAgent();
 
         <T extends Agent> T getAgent(Class<T> type);
+
+        <T extends Agent> boolean is(Class<T> type);
     }
 
     /**
@@ -73,6 +78,30 @@ public interface SocialGraph extends IsEquals {
         }
     }
 
+    /**
+     * @author Daniel Abitz
+     */
+    interface LinkageInformation {
+
+        void set(Object key, Type type, int value);
+
+        void update(Object key, Type type, int delta);
+
+        void inc(Object key, Type type);
+
+        void dec(Object key, Type type);
+
+        int get(Object key, Type type);
+
+        int sum(Object[] keys, Type type);
+
+        int sum(Collection<?> keys, Type type);
+
+        int total(Type type);
+    }
+
+    LinkageInformation getLinkageInformation(Node node);
+
     boolean addAgent(Agent agent);
 
     Node addAgentAndGetNode(Agent agent);
@@ -89,7 +118,11 @@ public interface SocialGraph extends IsEquals {
 
     Set<? extends Node> getTargets(Node from, Type type);
 
+    List<? extends Node> listTargets(Node from, Type type);
+
     boolean getTargets(Node from, Type type, Collection<? super Node> targets);
+
+    Stream<? extends Node> streamNodes();
 
     Stream<? extends Node> streamTargets(Node source, Type type);
 
@@ -100,6 +133,8 @@ public interface SocialGraph extends IsEquals {
     Set<? extends Edge> getEdges(Type type);
 
     boolean hasEdge(Node from, Node to, Type type);
+
+    boolean hasNoEdge(Node from, Node to, Type type);
 
     boolean removeEdge(Edge edge);
 

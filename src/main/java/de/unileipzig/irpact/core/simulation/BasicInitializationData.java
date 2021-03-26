@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.simulation.tasks.SimulationTask;
 
 import java.util.*;
 
@@ -11,20 +10,17 @@ import java.util.*;
 public class BasicInitializationData implements InitializationData {
 
     protected Map<ConsumerAgentGroup, Integer> agentCount;
-    protected List<SimulationTask> tasks;
     protected int startYear;
-    protected int endYear = -1; //inclusive, z.b. 2015-2016 -> 2015 UND 2016
+    protected int endYearInclusive = -1; //inclusive, z.b. 2015-2016 -> 2015 UND 2016
     protected boolean ignorePersistCheck = false;
 
     public BasicInitializationData() {
-        this(new LinkedHashMap<>(), new ArrayList<>());
+        this(new LinkedHashMap<>());
     }
 
     public BasicInitializationData(
-            Map<ConsumerAgentGroup, Integer> agentCount,
-            List<SimulationTask> tasks) {
+            Map<ConsumerAgentGroup, Integer> agentCount) {
         this.agentCount = agentCount;
-        this.tasks = tasks;
     }
 
     public void copyFrom(BasicInitializationData other) {
@@ -32,24 +28,31 @@ public class BasicInitializationData implements InitializationData {
             throw new IllegalStateException("self reference");
         }
 
-        tasks.addAll(other.tasks);
         startYear = other.startYear;
-        endYear = other.endYear;
+        endYearInclusive = other.endYearInclusive;
         ignorePersistCheck = other.ignorePersistCheck;
     }
 
-    public void setInitialNumberOfConsumerAgents(ConsumerAgentGroup group, int count) {
-        agentCount.put(group, count);
+    //=========================
+    //general
+    //=========================
+
+    public void setIgnorePersistenceCheckResult(boolean value) {
+        ignorePersistCheck = value;
     }
+
+    @Override
+    public boolean ignorePersistenceCheckResult() {
+        return ignorePersistCheck;
+    }
+
+    //=========================
+    //time
+    //=========================
 
     @Override
     public void setStartYear(int startYear) {
         this.startYear = startYear;
-    }
-
-    @Override
-    public void incrementStartYear() {
-        startYear++;
     }
 
     @Override
@@ -59,40 +62,39 @@ public class BasicInitializationData implements InitializationData {
 
     @Override
     public void setEndYear(int endYear) {
-        this.endYear = endYear;
+        this.endYearInclusive = endYear;
     }
 
     @Override
     public int getEndYear() {
-        return endYear;
+        return endYearInclusive;
     }
 
     @Override
     public boolean hasValidEndYear() {
-        return endYear > startYear;
+        return endYearInclusive > startYear;
+    }
+
+    //=========================
+    //population size
+    //=========================
+
+    @Override
+    public boolean hasInitialNumberOfConsumerAgents(ConsumerAgentGroup group) {
+        return agentCount.containsKey(group);
     }
 
     @Override
-    public int getInitialNumberOfConsumerAgent(ConsumerAgentGroup group) {
-        return agentCount.get(group);
+    public void setInitialNumberOfConsumerAgents(ConsumerAgentGroup group, int size) {
+        agentCount.put(group, size);
     }
 
     @Override
-    public void addTask(SimulationTask task) {
-        tasks.add(task);
-    }
-
-    @Override
-    public List<SimulationTask> getTasks() {
-        return tasks;
-    }
-
-    public void setIgnorePersistenceCheckResult(boolean value) {
-        ignorePersistCheck = value;
-    }
-
-    @Override
-    public boolean ignorePersistenceCheckResult() {
-        return ignorePersistCheck;
+    public int getInitialNumberOfConsumerAgents(ConsumerAgentGroup group) {
+        Integer count = agentCount.get(group);
+        if(count == null) {
+            throw new NoSuchElementException(group.getName());
+        }
+        return count;
     }
 }

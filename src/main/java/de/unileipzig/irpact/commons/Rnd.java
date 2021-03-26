@@ -1,6 +1,9 @@
 package de.unileipzig.irpact.commons;
 
+import java.util.Collection;
 import java.util.Random;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Wrapper for {@link Random} for simple serialisation.
@@ -16,6 +19,8 @@ public final class Rnd implements IsEquals {
         return Holder.R.nextLong();
     }
 
+    protected final Lock LOCK = new ReentrantLock();
+    protected boolean useLock = false;
     protected long initialSeed;
     protected Random rnd;
 
@@ -41,6 +46,26 @@ public final class Rnd implements IsEquals {
      */
     public static Rnd empty() {
         return new Rnd(null);
+    }
+
+    protected void lock() {
+        if(useLock) {
+            LOCK.lock();;
+        }
+    }
+
+    protected void unlock() {
+        if(useLock) {
+            LOCK.unlock();
+        }
+    }
+
+    public void enableSync() {
+        useLock = true;
+    }
+
+    public void disableSync() {
+        useLock = false;
     }
 
     public void setInitialSeed(long initialSeed) {
@@ -69,15 +94,39 @@ public final class Rnd implements IsEquals {
     }
 
     public boolean nextBoolean() {
-        return rnd.nextBoolean();
+        lock();
+        try {
+            return rnd.nextBoolean();
+        } finally {
+            unlock();
+        }
     }
 
     public int nextInt() {
-        return rnd.nextInt();
+        lock();
+        try {
+            return rnd.nextInt();
+        } finally {
+            unlock();
+        }
+    }
+
+    public int nextInt(int bound) {
+        lock();
+        try {
+            return rnd.nextInt(bound);
+        } finally {
+            unlock();
+        }
     }
 
     public long nextLong() {
-        return rnd.nextLong();
+        lock();
+        try {
+            return rnd.nextLong();
+        } finally {
+            unlock();
+        }
     }
 
     public synchronized long syncNextLong() {
@@ -85,7 +134,24 @@ public final class Rnd implements IsEquals {
     }
 
     public double nextDouble() {
+        lock();
+        try {
+            return rnd.nextDouble();
+        } finally {
+            unlock();
+        }
+    }
+
+    public double unsyncNextDouble() {
         return rnd.nextDouble();
+    }
+
+    public synchronized double syncNextDouble() {
+        return rnd.nextDouble();
+    }
+
+    public <T> T getRandom(Collection<? extends T> coll) {
+        return CollectionUtil.getRandom(coll, this);
     }
 
     public Rnd deriveInstance() {

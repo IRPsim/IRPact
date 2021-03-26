@@ -4,7 +4,11 @@ import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Objects;
+
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 
 /**
  * @author Daniel Abitz
@@ -12,18 +16,19 @@ import java.util.Objects;
 @Definition
 public class InAttributeName implements InEntity {
 
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
+    }
+
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InAttributeName.class,
-                res.getCachedElement("Namen")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("----")
-                .setGamsDescription("Platzhalter")
-                .store(InAttributeName.class, "placeholder");
+        putClassPath(res, thisClass(), thisName());
+        addEntry(res, thisClass(), "placeholder");
     }
 
     public String _name;

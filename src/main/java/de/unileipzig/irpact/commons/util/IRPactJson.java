@@ -6,6 +6,8 @@ import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.smile.databind.SmileMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import de.unileipzig.irptools.util.Util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -24,8 +26,21 @@ public final class IRPactJson {
 
     public static final SmileMapper SMILE = new SmileMapper();
     public static final ObjectMapper JSON = new ObjectMapper();
+    public static final YAMLMapper YAML = new YAMLMapper();
 
     private IRPactJson() {
+    }
+
+    public static String toString(JsonNode node) {
+        return Util.printJson(node);
+    }
+
+    public static String toString(JsonNode node, PrettyPrinter printer) {
+        return Util.printJson(node, printer);
+    }
+
+    public static String toString(JsonNode node, ObjectMapper mapper) {
+        return Util.printJson(mapper, node);
     }
 
     public static byte[] toBytes(ObjectMapper mapper, JsonNode node) throws IOException {
@@ -107,8 +122,32 @@ public final class IRPactJson {
     }
 
     public static double getDouble(JsonNode node, double ifNotValid) {
-        if(node != null && node.isTextual()) {
+        if(node != null && node.isNumber()) {
             return node.doubleValue();
+        } else {
+            return ifNotValid;
+        }
+    }
+
+    public static long getLong(JsonNode parent, String key, long ifNotValid) {
+        return getLong(parent.get(key), ifNotValid);
+    }
+
+    public static long getLong(JsonNode node, long ifNotValid) {
+        if(node != null && node.isNumber()) {
+            return node.longValue();
+        } else {
+            return ifNotValid;
+        }
+    }
+
+    public static int getInt(JsonNode parent, String key, int ifNotValid) {
+        return getInt(parent.get(key), ifNotValid);
+    }
+
+    public static int getInt(JsonNode node, int ifNotValid) {
+        if(node != null && node.isNumber()) {
+            return node.intValue();
         } else {
             return ifNotValid;
         }

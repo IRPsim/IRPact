@@ -24,6 +24,8 @@ public interface AgentManager extends Initialization {
 
     boolean hasConsumerAgentGroup(String name);
 
+    void addConsumerAgentGroup(ConsumerAgentGroup group);
+
     ConsumerAgentGroup getConsumerAgentGroup(String name);
 
     default Stream<ConsumerAgent> streamConsumerAgents() {

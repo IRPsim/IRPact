@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.network.topology;
 
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
@@ -51,12 +52,15 @@ public class CompleteGraphTopology extends NameableBase implements GraphTopology
     public void initalize(SimulationEnvironment environment, SocialGraph graph) {
         LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "initialize complete graph");
         for(SocialGraph.Node src: graph.getNodes()) {
+            SocialGraph.LinkageInformation srcLi = graph.getLinkageInformation(src);
             for(SocialGraph.Node tar: graph.getNodes()) {
                 if(src == tar) {
                     continue;
                 }
                 LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "add edge: {}->{} ({},{})", src.getLabel(), tar.getLabel(), edgeType, initialWeight);
                 graph.addEdge(src, tar, edgeType, initialWeight);
+
+                srcLi.inc(tar.getAgent(ConsumerAgent.class).getGroup(), edgeType);
             }
         }
     }

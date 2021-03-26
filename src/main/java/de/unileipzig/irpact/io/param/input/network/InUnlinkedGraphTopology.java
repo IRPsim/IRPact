@@ -11,32 +11,29 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
 
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InUnlinkedGraphTopology implements InGraphTopologyScheme {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InUnlinkedGraphTopology.class,
-                res.getCachedElement("Netzwerk"),
-                res.getCachedElement("Topologie"),
-                res.getCachedElement("Leere Topologie")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("-")
-                .setGamsDescription("Platzhalter")
-                .store(InUnlinkedGraphTopology.class, "placeholderUnlinked");
+        putClassPath(res, thisClass(), NETWORK, TOPOLOGY, thisName());
+        addEntry(res, thisClass(), "placeholderUnlinked");
     }
 
     public String _name;
@@ -54,6 +51,10 @@ public class InUnlinkedGraphTopology implements InGraphTopologyScheme {
     @Override
     public String getName() {
         return _name;
+    }
+
+    public void setName(String name) {
+        this._name = name;
     }
 
     @Override

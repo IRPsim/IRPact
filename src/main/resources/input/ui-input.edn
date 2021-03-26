@@ -1,23 +1,30 @@
 [
   {
-    :label "set_InNameSplitAffinityEntry" 
-    :set "set_InNameSplitAffinityEntry" 
-    :tags [["InNameSplitAffinityEntry" "affinityValue"]]
-  } 
-  {
     :label "Allgemeine Einstellungen" 
-    :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "endYear"] ["InGeneral" "runOptActDemo"]] 
+    :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "endYear"]] 
     :sections [
       {
         :label "Logging" 
         :description "Einstellungen für das Logging und die Ausgabe von Informationen und Daten. Unabhängig von den individuellen Logging-Einstellungen werden wichtige Informationen weiterhin geloggt. Diese können nur mittels dem Logging-Level deaktiviert werden (nicht empfohlen)." 
-        :tags [["InGeneral" "logLevel"] ["InGeneral" "logAll"] ["InGeneral" "logAllTools"] ["InGeneral" "logToolsCore"] ["InGeneral" "logToolsDefinition"] ["InGeneral" "logParamInit"] ["InGeneral" "logGraphCreation"] ["InGeneral" "logAgentCreation"] ["InGeneral" "logPlatformCreation"] ["InGeneral" "logSimulationLifecycle"] ["InGeneral" "logSimulationAgent"] ["InGeneral" "logJadexSystemOut"]]
+        :sections [
+          {
+            :label "Allgemeine Loggingoptionen" 
+            :description "Ermöglicht die Einstellung der allgemeinen Loggingoptionen." 
+            :tags [["InGeneral" "logLevel"] ["InGeneral" "logAll"] ["InGeneral" "logAllTools"]]
+          } 
+          {
+            :label "Spezielle Loggingoptionen" 
+            :description "Ermöglicht es spezielle Loggingoptionen einzustellen." 
+            :tags [["InGeneral" "logToolsCore"] ["InGeneral" "logToolsDefinition"] ["InGeneral" "logInitialization"] ["InGeneral" "logParamInit"] ["InGeneral" "logGraphCreation"] ["InGeneral" "logAgentCreation"] ["InGeneral" "logPlatformCreation"] ["InGeneral" "logSimulationLifecycle"] ["InGeneral" "logSimulationAgent"] ["InGeneral" "logJadexSystemOut"]]
+          }
+        ]
       } 
       {
         :label "Spezielle Einstellungen" 
+        :tags [["InGeneral" "runPVAct"] ["InGeneral" "runOptActDemo"]] 
         :sections [
           {
-            :label "Binäre Datem" 
+            :label "Binäre Daten" 
             :set "set_VisibleBinaryData" 
             :tags [["VisibleBinaryData" "idVisible"]]
           }
@@ -28,19 +35,22 @@
   {
     :label "Namen" 
     :set "set_InAttributeName" 
+    :description "Verteilungsfunktion, welche 0 oder 1 zurück gibt." 
     :tags [["InAttributeName" "placeholder"]]
   } 
   {
     :label "Dateien" 
     :sections [
       {
-        :label "PV Daten" 
+        :label "PV Dateien" 
         :set "set_InPVFile" 
+        :description "Daten im PV-Datenformat, welche in einer .xlsx sein müssen." 
         :tags [["InPVFile" "placeholderPVFile"]]
       } 
       {
-        :label "Tabellen" 
+        :label "Tabellarische Dateien" 
         :set "set_InSpatialTableFile" 
+        :description "Daten in tabellarischer Form. Es werden .xlsx und .csv unterstützt." 
         :tags [["InSpatialTableFile" "placeholderInSpatialFile"]]
       }
     ]
@@ -70,7 +80,7 @@
         :label "Gewichtete Massepunkte" 
         :set "set_InFiniteMassPointsDiscreteDistribution" 
         :description "Verteilungsfunktion, welche auf Massepunkten basiert." 
-        :tags [["InFiniteMassPointsDiscreteDistribution" "InMassPoin" "massPoint"]] 
+        :tags [["link" "InFiniteMassPointsDiscreteDistribution" "InMassPoint" "massPoints"]] 
         :sections [
           {
             :label "Massepunkt" 
@@ -90,28 +100,16 @@
         :sections [
           {
             :label "Gruppen" 
-            :set "set_InConsumerAgentGroup" 
-            :tags [["InConsumerAgentGroup" "informationAuthority"] ["InConsumerAgentGroup" "numberOfAgentsX"]] 
             :sections [
               {
-                :label "Gruppe-Attribut-Mapping" 
-                :set "set_InConsumerAgentGroup" 
-                :tags [["InConsumerAgentGrou" "InConsumerAgentGroupAttribu" "cagAttribut"]]
+                :label "Allgemeine Gruppen" 
+                :set "set_InGeneralConsumerAgentGroup" 
+                :tags [["link" "InGeneralConsumerAgentGroup" "InDependentConsumerAgentGroupAttribute" "cagAttributes"] ["link" "InGeneralConsumerAgentGroup" "InProductInterestSupplyScheme" "cagInterest"] ["link" "InGeneralConsumerAgentGroup" "InProductFindingScheme" "productFindingSchemes"] ["link" "InGeneralConsumerAgentGroup" "InSpatialDistribution" "spatialDistribution"] ["InGeneralConsumerAgentGroup" "informationAuthority"]]
               } 
               {
-                :label "Gruppe-Awareness-Mapping" 
-                :set "set_InConsumerAgentGroup" 
-                :tags [["InConsumerAgentGrou" "InProductInterestSupplySchem" "cagAwarene"]]
-              } 
-              {
-                :label "Gruppe-ProductFinding-Mapping" 
-                :set "set_InConsumerAgentGroup" 
-                :tags [["InConsumerAgentGro" "InProductFindingSche" "productFindingSchem"]]
-              } 
-              {
-                :label "Gruppe-Spatial-Mapping" 
-                :set "set_InConsumerAgentGroup" 
-                :tags [["InConsumerAgentGrou" "InSpatialDistributio" "spatialDistributio"]]
+                :label "PVact Gruppen" 
+                :set "set_InPVactConsumerAgentGroup" 
+                :tags [["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "noveltySeeking"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "dependentJudgmentMaking"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "environmentalConcern"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "interestThreshold"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "financialThreshold"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "adoptionThreshold"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "communication"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "rewire"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "initialAdopter"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "rateOfConvergence"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "initialProductInterest"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "constructionRate"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "renovationRate"] ["link" "InPVactConsumerAgentGroup" "InSpatialDistribution" "spatialDistribution"] ["InPVactConsumerAgentGroup" "informationAuthority"]]
               }
             ]
           } 
@@ -119,34 +117,61 @@
             :label "Attribute" 
             :sections [
               {
-                :label "Attribute-Name-Mapping" 
-                :set "set_InConsumerAgentGroupAttribute" 
-                :tags [["InConsumerAgentGroupAttribute" "InAttributeName" "cagAttrNam"]]
+                :label "Allgemeines Attribut" 
+                :set "set_InGeneralConsumerAgentGroupAttribute" 
+                :tags [["link" "InGeneralConsumerAgentGroupAttribute" "InAttributeName" "attrName"] ["link" "InGeneralConsumerAgentGroupAttribute" "InUnivariateDoubleDistribution" "dist"]]
               } 
               {
-                :label "Attribute-Verteilung-Mapping" 
-                :set "set_InConsumerAgentGroupAttribute" 
-                :tags [["InConsumerAgentGroupAt" "InUnivariateDoubleDistr" "cagAttrDistr"]]
+                :label "Namensbasiertes Attribute" 
+                :set "set_InNameSplitConsumerAgentGroupAttribute" 
+                :description "Dieses Attribut wird über seinen Namen definiert." 
+                :tags [["link" "InNameSplitConsumerAgentGroupAttribute" "InUnivariateDoubleDistribution" "dist"]]
               }
             ]
           } 
           {
             :label "Affinity" 
-            :set "set_InComplexAffinityEntry" 
             :description "Legt die Affinity zwischen den jeweiligen Konsumergruppen fest." 
-            :tags [["link" "InComplexAffinityEntry" "InConsumerAgentGroup" "srcCag"] ["link" "InComplexAffinityEntry" "InConsumerAgentGroup" "tarCag"] ["InComplexAffinityEntry" "affinityValue"]]
-          } 
-          {
-            :label "Awareness" 
-            :description "Legt die verwendeten Awareness-Varianten für die Konsumergruppen fest." 
             :sections [
               {
-                :label "Threshold" 
-                :set "set_InProductThresholdInterestSupplyScheme" 
-                :description "Grenzwert-basierte Awareness" 
-                :tags [["InProductThresholdInterestSu" "InUnivariateDoubleD" "awarenessD"]]
+                :label "Komplexe Affinity" 
+                :set "set_InComplexAffinityEntry" 
+                :tags [["link" "InComplexAffinityEntry" "InConsumerAgentGroup" "srcCag"] ["link" "InComplexAffinityEntry" "InConsumerAgentGroup" "tarCag"] ["InComplexAffinityEntry" "affinityValue"]]
+              } 
+              {
+                :label "Namensbasierte Affinity" 
+                :set "set_InNameSplitAffinityEntry" 
+                :tags [["InNameSplitAffinityEntry" "affinityValue"]]
               }
             ]
+          } 
+          {
+            :label "Produktinteresse" 
+            :description "Legt die verwendeten Interessens-Varianten für die Konsumergruppen fest." 
+            :sections [
+              {
+                :label "Grenzwertbasiert" 
+                :set "set_InProductThresholdInterestSupplyScheme" 
+                :description "Grenzwertbasierte Interessens-Varianten" 
+                :tags [["link" "InProductThresholdInterestSupplyScheme" "InUnivariateDoubleDistribution" "interestDistribution"]]
+              }
+            ]
+          }
+        ]
+      } 
+      {
+        :label "Population" 
+        :description "Legt die Agentenpopulation fest." 
+        :sections [
+          {
+            :label "Feste Konsumergruppengröße" 
+            :set "set_InFixConsumerAgentPopulationSize" 
+            :tags [["InFixConsumerAgentPopulationSize" "size"] ["link" "InFixConsumerAgentPopulationSize" "InConsumerAgentGroup" "cags"]]
+          } 
+          {
+            :label "Dynamische Konsumergruppengröße" 
+            :set "set_InRelativeExternConsumerAgentPopulationSize" 
+            :tags [["InRelativeExternConsumerAgentPopulationSize" "totalSize"] ["InRelativeExternConsumerAgentPopulationSize" "useMaximumSize"] ["InRelativeExternConsumerAgentPopulationSize" "considerAllForShares"] ["link" "InRelativeExternConsumerAgentPopulationSize" "InConsumerAgentGroup" "cags"] ["link" "InRelativeExternConsumerAgentPopulationSize" "InSpatialTableFile" "file"] ["link" "InRelativeExternConsumerAgentPopulationSize" "InAttributeName" "selectKey"]]
           }
         ]
       }
@@ -159,7 +184,7 @@
         :label "Topologie" 
         :sections [
           {
-            :label "Leere Topologie" 
+            :label "Knotenloser Graph" 
             :set "set_InUnlinkedGraphTopology" 
             :description "Leere Topologie, welche keine Kanten besitzt." 
             :tags [["InUnlinkedGraphTopology" "placeholderUnlinked"]]
@@ -174,12 +199,12 @@
             :label "Freie Topologie" 
             :set "set_InFreeNetworkTopology" 
             :description "Freie Topologie" 
-            :tags [["InFreeNetworkTopology" "InDistanceEvaluator" "distanceEvaluato"] ["link" "InFreeNetworkTopology" "InNumberOfTies" "numberOfTies"] ["InFreeNetworkTopology" "initialWeight"]] 
+            :tags [["link" "InFreeNetworkTopology" "InDistanceEvaluator" "distanceEvaluator"] ["link" "InFreeNetworkTopology" "InNumberOfTies" "numberOfTies"] ["InFreeNetworkTopology" "initialWeight"]] 
             :sections [
               {
                 :label "Kanten je Konsumergruppe" 
                 :set "set_InNumberOfTies" 
-                :description "Legt die Kantenanzahl je Gruppe fest." 
+                :description "Legt die Kantenanzahl je Konsumergruppe fest." 
                 :tags [["link" "InNumberOfTies" "InConsumerAgentGroup" "cags"] ["InNumberOfTies" "count"]]
               }
             ]
@@ -190,16 +215,16 @@
         :label "Abstandsfunktion" 
         :sections [
           {
-            :label "Inverse Distanz" 
-            :set "set_InInverse" 
-            :description "Benutzt 1" 
-            :tags [["InInverse" "placeholderInverse"]]
-          } 
-          {
             :label "Keine Distanzfunktion" 
             :set "set_InNoDistance" 
             :description "Keine Distanzfunktion" 
             :tags [["InNoDistance" "placeholderNoDistance"]]
+          } 
+          {
+            :label "Inverse Distanz" 
+            :set "set_InInverse" 
+            :description "Benutzt 1" 
+            :tags [["InInverse" "placeholderInverse"]]
           }
         ]
       }
@@ -207,48 +232,51 @@
   } 
   {
     :label "Produkte" 
+    :description "Ermöglicht das Einstellen von Produkten und verwandten Optionen." 
     :sections [
       {
-        :label "Produkt-Attribut-Mapping" 
-        :set "set_InProductGroup" 
-        :tags [["link" "InProductGroup" "InProductGroupAttribute" "pgAttributes"]]
-      } 
-      {
-        :label "Attribut-Namen-Mapping" 
-        :set "set_InProductGroupAttribute" 
-        :tags [["link" "InProductGroupAttribute" "InAttributeName" "attrName"]]
-      } 
-      {
-        :label "Attribut-Verteilungs-Mapping" 
-        :set "set_InProductGroupAttribute" 
-        :tags [["InProductGroupAttri" "InUnivariateDoubleDistribu" "attrDistribu"]]
-      } 
-      {
-        :label "Initiale Produkte" 
-        :set "set_InFixProduct" 
-        :description "Die initialen Produkte, welche von Beginn an existieren sollen." 
-        :tags [["link" "InFixProduct" "InProductGroup" "refPG"]] 
+        :label "Gruppen" 
+        :description "Ermöglicht die Erstellung von Produktgruppen." 
         :sections [
           {
-            :label "Initiale Produkt-Attribut-Mapping" 
-            :set "set_InFixProduct" 
-            :tags [["link" "InFixProduct" "InFixProductAttribute" "fixPAttrs"]]
+            :label "Allgemeines Produkt" 
+            :set "set_InBasicProductGroup" 
+            :description "Ermöglicht die Erstellung von allgemeinen Produktgruppen." 
+            :tags [["link" "InBasicProductGroup" "InDependentProductGroupAttribute" "pgAttributes"]]
           }
         ]
       } 
       {
-        :label "Initiale Produktattribute" 
+        :label "Attribute" 
+        :description "Ermöglicht die Erstellung von Produktgruppenattributen." 
+        :sections [
+          {
+            :label "Allgemeine Attribute" 
+            :set "set_InBasicProductGroupAttribute" 
+            :tags [["link" "InBasicProductGroupAttribute" "InAttributeName" "attrName"] ["link" "InBasicProductGroupAttribute" "InUnivariateDoubleDistribution" "dist"]]
+          } 
+          {
+            :label "Namensbasierte Attribute" 
+            :set "set_InNameSplitProductGroupAttribute" 
+            :description "Dieses Attribut wird über seinen Namen definiert." 
+            :tags [["link" "InNameSplitProductGroupAttribute" "InUnivariateDoubleDistribution" "dist"]]
+          }
+        ]
+      } 
+      {
+        :label "Fixprodukte" 
         :set "set_InFixProductAttribute" 
-        :description "Attribute der initialen Produkte" 
-        :tags [["link" "InFixProductAttribute" "InProductGroupAttribute" "refPGA"] ["InFixProductAttribute" "fixPAvalue"]]
+        :description "Ermöglicht es Fixprodukte zu erstellen." 
+        :tags [["link" "InFixProduct" "InProductGroup" "refPG"] ["link" "InFixProduct" "InFixProductAttribute" "fixPAttrs"] ["link" "InFixProductAttribute" "InProductGroupAttribute" "refPGA"] ["InFixProductAttribute" "fixPAvalue"]]
       } 
       {
         :label "Schema für Produktfindung" 
+        :description "Benutzt 1" 
         :sections [
           {
-            :label "Schema für initiale Produkte" 
+            :label "Fixproduktschema" 
             :set "set_InFixProductFindingScheme" 
-            :description "Schema basierend auf initialen Produkten" 
+            :description "distance für die Auswertung." 
             :tags [["link" "InFixProductFindingScheme" "InFixProduct" "refFixProduct"]]
           }
         ]
@@ -261,36 +289,41 @@
       {
         :label "Relative Agreement" 
         :set "set_InRAProcessModel" 
-        :tags [["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InSlopeSupplier" "slopeSuppliers"] ["InRAProcessModel" "InOrientationSupplier" "orientationSupplier"] ["InRAProcessM" "InUncertaintyGroupAttri" "uncertaintyGroupAttrib"]] 
+        :tags [["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertaintyGroupAttribute" "uncertaintyGroupAttributes"]] 
         :sections [
           {
-            :label "Datenerweiterung" 
-            :sections [
-              {
-                :label "Orientierung" 
-                :set "set_InOrientationSupplier" 
-                :description "Zieht die Orietierungsdaten basierend auf der verwendeten Verteilungsfunktion." 
-                :tags [["InOrientationSuppl" "InUnivariateDoubleDistribu" "distInOrienta"] ["link" "InOrientationSupplier" "InConsumerAgentGroup" "oriCags"]]
-              } 
-              {
-                :label "Neigung" 
-                :set "set_InSlopeSupplier" 
-                :tags [["InSlopeSupplier" "InUnivariateDoubleDistribution" "distSlop"] ["link" "InSlopeSupplier" "InConsumerAgentGroup" "slopeCags"]]
-              }
-            ]
-          } 
-          {
-            :label "Uncertainty" 
+            :label "Unsicherheit" 
+            :description "Ermöglicht es die Unsicherheit für Attribute zu bestimmen, welche durch den 'relative agreement' Algorithmus beeinflusst werden." 
             :sections [
               {
                 :label "Automatisch" 
                 :set "set_InAutoUncertaintyGroupAttribute" 
+                :description "Bestimmt die Unsicherheit automatisch. Achtung: Diese Variante wird aktuell noch nicht unterstützt." 
                 :tags [["InAutoUncertaintyGroupAttribute" "placeholderAutoUncert"]]
               } 
               {
-                :label "Benutzerdefiniert" 
-                :set "set_InCustomUncertaintyGroupAttribute" 
-                :tags [["InCustomUncertaintyGroupAttribute" "InConsumerAgentGroup" "cag"] ["InCustomUncertaintyGroupAttribute" "InAttributeName" "name"] ["InCustomUncertaintyGroupAttr" "InUnivariateDoubleDistrib" "unce"] ["InCustomUncertaintyGroupAt" "InUnivariateDoubleDistr" "converge"]]
+                :label "Attributbezogen" 
+                :set "set_InIndividualAttributeBasedUncertaintyGroupAttribute" 
+                :description "Ermöglicht die Festlegung der Unsicherheit für spezielle Konsumergruppenattribute." 
+                :tags [["link" "InIndividualAttributeBasedUncertaintyGroupAttribute" "InConsumerAgentGroupAttribute" "cagAttrs"] ["link" "InIndividualAttributeBasedUncertaintyGroupAttribute" "InUnivariateDoubleDistribution" "uncertDist"]]
+              } 
+              {
+                :label "Attributbezogen mit Konvergenz" 
+                :set "set_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute" 
+                :description "Ermöglicht die Festlegung der Unsicherheit für spezielle Konsumergruppenattribute. Diese Variante ermöglicht auch die Festlegung der Konvergenz." 
+                :tags [["link" "InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute" "InConsumerAgentGroupAttribute" "cagAttrs"] ["link" "InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute" "InUnivariateDoubleDistribution" "uncertDist"] ["link" "InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute" "InUnivariateDoubleDistribution" "convergenceDist"]]
+              } 
+              {
+                :label "Gruppenbezogen" 
+                :set "set_InNameBasedUncertaintyWithConvergenceGroupAttribute" 
+                :description "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen und ausgewählte Attribute." 
+                :tags [["link" "InNameBasedUncertaintyGroupAttribute" "InConsumerAgentGroup" "cags"] ["link" "InNameBasedUncertaintyGroupAttribute" "InAttributeName" "names"] ["link" "InNameBasedUncertaintyGroupAttribute" "InUnivariateDoubleDistribution" "uncertDist"] ["link" "InNameBasedUncertaintyWithConvergenceGroupAttribute" "InConsumerAgentGroup" "cags"] ["link" "InNameBasedUncertaintyWithConvergenceGroupAttribute" "InAttributeName" "names"] ["link" "InNameBasedUncertaintyWithConvergenceGroupAttribute" "InUnivariateDoubleDistribution" "uncertDist"] ["link" "InNameBasedUncertaintyWithConvergenceGroupAttribute" "InUnivariateDoubleDistribution" "convergenceDist"]]
+              } 
+              {
+                :label "PVact" 
+                :set "set_InPVactUncertaintyGroupAttribute" 
+                :description "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus." 
+                :tags [["link" "InPVactUncertaintyGroupAttribute" "InConsumerAgentGroup" "cags"] ["link" "InPVactUncertaintyGroupAttribute" "InUnivariateDoubleDistribution" "noveltySeekingUncert"] ["link" "InPVactUncertaintyGroupAttribute" "InUnivariateDoubleDistribution" "dependentJudgmentMakingUncert"] ["link" "InPVactUncertaintyGroupAttribute" "InUnivariateDoubleDistribution" "environmentalConcernUncert"]]
               }
             ]
           }
@@ -302,30 +335,71 @@
     :label "Räumliche Modell" 
     :sections [
       {
-        :label "Space2D" 
-        :set "set_InSpace2D" 
-        :tags [["InSpace2D" "useManhatten"] ["InSpace2D" "useEuclid"] ["InSpace2D" "useEuclid2"] ["InSpace2D" "useMaximum"]]
-      } 
-      {
-        :label "Verteilungsfunktion" 
+        :label "Modell" 
         :sections [
           {
-            :label "Benutzerdefinierte Position" 
+            :label "Space2D" 
+            :set "set_InSpace2D" 
+            :description "Nutzt ein 2D-Modell mit der gewünschten Metrik." 
+            :tags [["InSpace2D" "useManhatten"] ["InSpace2D" "useEuclid"] ["InSpace2D" "useMaximum"] ["InSpace2D" "useHaversine"]]
+          }
+        ]
+      } 
+      {
+        :label "Verteilungsfunktionen" 
+        :description "Ermöglicht es die räumlichen Verteilungsfunktionen zu definieren." 
+        :sections [
+          {
+            :label "Dateibezogen" 
+            :description "Ermöglicht es räumliche Verteilungsfunktionen zu definieren, deren Daten aus Dateien geladen werden." 
             :sections [
               {
-                :label "Ungefiltert" 
-                :set "set_InCustomSpatialDistribution2D" 
-                :tags [["InCustomSpatialDistributi" "InUnivariateDoubleDistrib" "xPosSup"] ["InCustomSpatialDistributi" "InUnivariateDoubleDistrib" "yPosSup"] ["InCustomSpatialDistribution2D" "InSpatialTableFile" "attrFil"]]
+                :label "Benutzerdefinierte Positionen" 
+                :description "Ermöglicht es räumliche Verteilungsfunktionen zu definieren, deren Daten aus Dateien geladen werden. Die Positionen können dabei separat definiert werden." 
+                :sections [
+                  {
+                    :label "Milieuunabhängig" 
+                    :set "set_InCustomFileSpatialDistribution2D" 
+                    :description "Milieuunabhängig" 
+                    :tags [["link" "InCustomFileSpatialDistribution2D" "InUnivariateDoubleDistribution" "xPosSupplier"] ["link" "InCustomFileSpatialDistribution2D" "InUnivariateDoubleDistribution" "yPosSupplier"] ["link" "InCustomFileSpatialDistribution2D" "InSpatialTableFile" "attrFile"]]
+                  } 
+                  {
+                    :label "Milieuabhängig" 
+                    :set "set_InCustomFileSelectedSpatialDistribution2D" 
+                    :description "Milieuabhängig" 
+                    :tags [["link" "InCustomFileSelectedSpatialDistribution2D" "InUnivariateDoubleDistribution" "xPosSupplier"] ["link" "InCustomFileSelectedSpatialDistribution2D" "InUnivariateDoubleDistribution" "yPosSupplier"] ["link" "InCustomFileSelectedSpatialDistribution2D" "InSpatialTableFile" "attrFile"] ["link" "InCustomFileSelectedSpatialDistribution2D" "InAttributeName" "selectKey"]]
+                  } 
+                  {
+                    :label "Milieuabhängig und gewichtet" 
+                    :set "set_InCustomFileSelectedGroupedSpatialDistribution2D" 
+                    :description "Milieuabhängig und gewichtet" 
+                    :tags [["link" "InCustomFileSelectedGroupedSpatialDistribution2D" "InUnivariateDoubleDistribution" "xPosSupplier"] ["link" "InCustomFileSelectedGroupedSpatialDistribution2D" "InUnivariateDoubleDistribution" "yPosSupplier"] ["link" "InCustomFileSelectedGroupedSpatialDistribution2D" "InSpatialTableFile" "file"] ["link" "InCustomFileSelectedGroupedSpatialDistribution2D" "InAttributeName" "selectKey"] ["link" "InCustomFileSelectedGroupedSpatialDistribution2D" "InAttributeName" "groupKey"]]
+                  }
+                ]
               } 
               {
-                :label "Gefiltert" 
-                :set "set_InCustomSelectedSpatialDistribution2D" 
-                :tags [["InCustomSelectedSpatialDistrib" "InUnivariateDoubleDistr" "xPos"] ["InCustomSelectedSpatialDistrib" "InUnivariateDoubleDistr" "yPos"] ["InCustomSelectedSpatialDistribution" "InSpatialTableFi" "attrFi"] ["InCustomSelectedSpatialDistribution2" "InAttributeNam" "selectK"]]
-              } 
-              {
-                :label "Gefiltert und gewichtet" 
-                :set "set_InCustomSelectedGroupedSpatialDistribution2D" 
-                :tags [["InCustomSelectedGroupedSpatialDistr" "InUnivariateDoubleDi" "xP"] ["InCustomSelectedGroupedSpatialDistr" "InUnivariateDoubleDi" "yP"] ["InCustomSelectedGroupedSpatialDistributio" "InSpatialTableF" "f"] ["InCustomSelectedGroupedSpatialDistributio" "InAttribute" "selec"] ["InCustomSelectedGroupedSpatialDistributio" "InAttributeN" "grou"]]
+                :label "Gelesene Positionen" 
+                :description "Ermöglicht es räumliche Verteilungsfunktionen zu definieren, deren Daten aus Dateien geladen werden. Die Positionen werden dabei ebenfalls aus den Dateien gelesen." 
+                :sections [
+                  {
+                    :label "Milieuunabhängig" 
+                    :set "set_InFileSpatialDistribution2D" 
+                    :description "Milieuunabhängig" 
+                    :tags [["link" "InFileSpatialDistribution2D" "InAttributeName" "xPositionKey"] ["link" "InFileSpatialDistribution2D" "InAttributeName" "yPositionKey"] ["link" "InFileSpatialDistribution2D" "InSpatialTableFile" "attrFile"]]
+                  } 
+                  {
+                    :label "Milieuabhängig" 
+                    :set "set_InFileSelectedSpatialDistribution2D" 
+                    :description "Milieuabhängig" 
+                    :tags [["link" "InFileSelectedSpatialDistribution2D" "InAttributeName" "xPositionKey"] ["link" "InFileSelectedSpatialDistribution2D" "InAttributeName" "yPositionKey"] ["link" "InFileSelectedSpatialDistribution2D" "InSpatialTableFile" "attrFile"] ["link" "InFileSelectedSpatialDistribution2D" "InAttributeName" "selectKey"]]
+                  } 
+                  {
+                    :label "Milieuabhängig und gewichtet" 
+                    :set "set_InFileSelectedGroupedSpatialDistribution2D" 
+                    :description "Milieuabhängig und gewichtet" 
+                    :tags [["link" "InFileSelectedGroupedSpatialDistribution2D" "InAttributeName" "xPositionKey"] ["link" "InFileSelectedGroupedSpatialDistribution2D" "InAttributeName" "yPositionKey"] ["link" "InFileSelectedGroupedSpatialDistribution2D" "InSpatialTableFile" "file"] ["link" "InFileSelectedGroupedSpatialDistribution2D" "InAttributeName" "selectKey"] ["link" "InFileSelectedGroupedSpatialDistribution2D" "InAttributeName" "groupKey"]]
+                  }
+                ]
               }
             ]
           }
@@ -337,9 +411,9 @@
     :label "Zeitliche Modell" 
     :sections [
       {
-        :label "Diskret" 
-        :set "set_InDiscreteTimeModel" 
-        :tags [["InDiscreteTimeModel" "timePerTickInMs"]]
+        :label "Diskret - Millisekunde" 
+        :set "set_InUnitStepDiscreteTimeModel" 
+        :tags [["InDiscreteTimeModel" "timePerTickInMs"] ["InUnitStepDiscreteTimeModel" "amountOfTime"] ["InUnitStepDiscreteTimeModel" "useMs"] ["InUnitStepDiscreteTimeModel" "useSec"] ["InUnitStepDiscreteTimeModel" "useMin"] ["InUnitStepDiscreteTimeModel" "useH"] ["InUnitStepDiscreteTimeModel" "useD"] ["InUnitStepDiscreteTimeModel" "useW"] ["InUnitStepDiscreteTimeModel" "useM"]]
       }
     ]
   } 

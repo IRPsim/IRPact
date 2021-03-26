@@ -41,6 +41,7 @@ public class RAModelDataPR extends BinaryPRBase<RAModelData> {
         data.putInt(object.getInterestedPoints());
         data.putInt(object.getAwarePoints());
         data.putInt(object.getUnknownPoints());
+        data.putDouble(object.getLogisticFactor());
         return data;
     }
 
@@ -59,6 +60,7 @@ public class RAModelDataPR extends BinaryPRBase<RAModelData> {
         object.setInterestedPoints(data.getInt());
         object.setAwarePoints(data.getInt());
         object.setUnknownPoints(data.getInt());
+        object.setLogisticFactor(data.getDouble());
         return object;
     }
 }

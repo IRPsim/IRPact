@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.io.param.output;
 
-import de.unileipzig.irpact.io.IOResources;
+import de.unileipzig.irpact.io.param.IOResources;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.start.optact.in.Ii;
@@ -27,6 +27,7 @@ import java.util.List;
 public class OutRoot implements RootClass {
 
     public static final List<ParserInput> LIST = ParserInput.listOf(Type.OUTPUT,
+            OutAdoptionResult.class,
             BinaryPersistData.class
     );
 
@@ -48,6 +49,9 @@ public class OutRoot implements RootClass {
     //=========================
     //IRPact
     //=========================
+
+    @FieldDefinition
+    public OutAdoptionResult[] adoptionResults = new OutAdoptionResult[0];
 
     @FieldDefinition
     public BinaryPersistData[] binaryPersistData = new BinaryPersistData[0];
@@ -95,7 +99,7 @@ public class OutRoot implements RootClass {
 
     @Override
     public AnnotationResource getResources() {
-        return IOResources.getInstance();
+        return new IOResources();
     }
 
     @Override

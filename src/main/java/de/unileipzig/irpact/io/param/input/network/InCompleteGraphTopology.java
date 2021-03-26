@@ -11,32 +11,30 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
 
+import static de.unileipzig.irpact.io.param.IOConstants.NETWORK;
+import static de.unileipzig.irpact.io.param.IOConstants.TOPOLOGY;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InCompleteGraphTopology implements InGraphTopologyScheme {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InCompleteGraphTopology.class,
-                res.getCachedElement("Netzwerk"),
-                res.getCachedElement("Topologie"),
-                res.getCachedElement("Complete Topologie")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Initiale Kantengewicht")
-                .setGamsDescription("Initiale Gewicht der Kanten")
-                .store(InCompleteGraphTopology.class, "initialWeight");
+        putClassPath(res, thisClass(), NETWORK, TOPOLOGY, thisName());
+        addEntry(res, thisClass(), "initialWeight");
     }
 
     public String _name;
@@ -57,6 +55,10 @@ public class InCompleteGraphTopology implements InGraphTopologyScheme {
         return _name;
     }
 
+    public void setName(String name) {
+        this._name = name;
+    }
+
     public double getInitialWeight() {
         return initialWeight;
     }
@@ -64,26 +66,5 @@ public class InCompleteGraphTopology implements InGraphTopologyScheme {
     @Override
     public CompleteGraphTopology parse(InputParser parser) throws ParsingException {
         return new CompleteGraphTopology(SocialGraph.Type.COMMUNICATION, getName(), getInitialWeight());
-    }
-
-    @Override
-    public String toString() {
-        return "InCompleteGraphTopology{" +
-                "_name='" + _name + '\'' +
-                ", initialWeight=" + initialWeight +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof InCompleteGraphTopology)) return false;
-        InCompleteGraphTopology that = (InCompleteGraphTopology) o;
-        return Double.compare(that.initialWeight, initialWeight) == 0 && Objects.equals(_name, that._name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(_name, initialWeight);
     }
 }

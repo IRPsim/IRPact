@@ -56,9 +56,9 @@ public class BasicProcessModelManager implements ProcessModelManager {
     }
 
     @Override
-    public void postAgentCreation() throws MissingDataException {
+    public void postAgentCreation(boolean initialCall) throws MissingDataException {
         for(ProcessModel model: getProcessModels()) {
-            model.postAgentCreation();
+            model.postAgentCreation(initialCall);
         }
     }
 

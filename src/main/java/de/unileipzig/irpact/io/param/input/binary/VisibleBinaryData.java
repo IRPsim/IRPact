@@ -9,39 +9,30 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class VisibleBinaryData implements InEntity {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                VisibleBinaryData.class,
-                res.getCachedElement("Allgemeine Einstellungen"),
-                res.getCachedElement("Spezielle Einstellungen"),
-                res.getCachedElement("VisibleBinaryData")
-        );
-
-        res.newEntryBuilder()
-                .setGamsHidden(false)
-                .setGamsIdentifier("Binäre Daten")
-                .setGamsDescription("Binäre Daten für diverse Funktionalitäten")
-                .store(VisibleBinaryData.class);
-
-        res.newEntryBuilder()
-                .setGamsHidden(false)
-                .setGamsIdentifier("ID")
-                .setGamsDescription("Spezielle ID der Daten, Verwendungszweck und Funktionsweise ist von den Daten selber abhängig.")
-                .store(VisibleBinaryData.class, "idVisible");
+        putClassPath(res, thisClass(), GENERAL_SETTINGS, SPECIAL_SETTINGS, thisName());
+        addEntry(res, thisClass());
+        addEntry(res, thisClass(), "idVisible");
     }
 
     public String _name;
@@ -50,6 +41,11 @@ public class VisibleBinaryData implements InEntity {
     public long idVisible;
 
     public VisibleBinaryData() {
+    }
+
+    public VisibleBinaryData(String name, long id) {
+        setName(name);
+        setID(id);
     }
 
     @Override

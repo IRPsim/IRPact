@@ -12,36 +12,30 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.PRODUCTS;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InFixProductAttribute implements InEntity {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                thisClass(),
-                res.getCachedElement("Produkte"),
-                res.getCachedElement("Initiale_Produktattribute")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Gruppenattribut")
-                .setGamsDescription("Gruppenattribut")
-                .store(thisClass(), "refPGA");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Fixierte Wert")
-                .setGamsDescription("Wert")
-                .store(thisClass(), "fixPAvalue");
+        putClassPath(res, thisClass(), PRODUCTS, thisName());
+        addEntry(res, thisClass(), "refPGA");
+        addEntry(res, thisClass(), "fixPAvalue");
     }
 
     public String _name;
@@ -57,7 +51,7 @@ public class InFixProductAttribute implements InEntity {
 
     public InFixProductAttribute(String name, InProductGroupAttribute grpAttr, double value) {
         this._name = name;
-        setRefPGA(grpAttr);
+        setGroupAttribute(grpAttr);
         this.fixPAvalue = value;
     }
 
@@ -66,11 +60,23 @@ public class InFixProductAttribute implements InEntity {
         return _name;
     }
 
-    public void setRefPGA(InProductGroupAttribute refPGA) {
+    public void setName(String fullName) {
+        this._name = fullName;
+    }
+
+    public void setName(String grpName, String attributeName) {
+        this._name = ParamUtil.concName(grpName, attributeName);
+    }
+
+    public String getAttributeName() throws ParsingException {
+        return getGroupAttribute().getAttributeName();
+    }
+
+    public void setGroupAttribute(InProductGroupAttribute refPGA) {
         this.refPGA = new InProductGroupAttribute[]{refPGA};
     }
 
-    public InProductGroupAttribute getRefPGA() throws ParsingException {
+    public InProductGroupAttribute getGroupAttribute() throws ParsingException {
         return ParamUtil.getInstance(refPGA, "ProductGroupAttribute");
     }
 
@@ -78,9 +84,13 @@ public class InFixProductAttribute implements InEntity {
         return fixPAvalue;
     }
 
+    public void setValue(double fixPAvalue) {
+        this.fixPAvalue = fixPAvalue;
+    }
+
     @Override
     public ProductAttribute parse(InputParser parser) throws ParsingException {
-        ProductGroupAttribute pgAttr = parser.parseEntityTo(getRefPGA());
+        ProductGroupAttribute pgAttr = parser.parseEntityTo(getGroupAttribute());
         return pgAttr.derive(getName(), getValue());
     }
 }

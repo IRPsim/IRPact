@@ -8,9 +8,9 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
-import de.unileipzig.irpact.util.AddToRoot;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -18,22 +18,29 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
-@AddToRoot
 @Definition
-public class InNameSplitConsumerAgentGroupAttribute implements I_InConsumerAgentGroupAttribute {
+public class InNameSplitConsumerAgentGroupAttribute implements InIndependentConsumerAgentGroupAttribute {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
+        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_ATTR, thisName());
+        addEntry(res, thisClass(), "dist");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InNameSplitConsumerAgentGroupAttribute.class);
@@ -50,13 +57,28 @@ public class InNameSplitConsumerAgentGroupAttribute implements I_InConsumerAgent
             InConsumerAgentGroup cag,
             InAttributeName attributeName,
             InUnivariateDoubleDistribution distribution) {
-        this._name = ParamUtil.conc(cag, attributeName);
+        this._name = ParamUtil.concName(cag, attributeName);
         setDistribution(distribution);
     }
 
     @Override
     public String getName() {
         return _name;
+    }
+
+    public void setName(String fullName) {
+        this._name = fullName;
+    }
+
+    public void setName(String cagName, String attrName) {
+        this._name = ParamUtil.concName(cagName, attrName);
+    }
+
+    @Override
+    public InConsumerAgentGroup getConsumerAgentGroup(InputParser parser) throws ParsingException {
+        String name = getConsumerAgentGroupName();
+        InRoot root = parser.getRoot();
+        return root.findConsumerAgentGroup(name);
     }
 
     @Override
@@ -73,13 +95,14 @@ public class InNameSplitConsumerAgentGroupAttribute implements I_InConsumerAgent
         this.dist = new InUnivariateDoubleDistribution[]{dist};
     }
 
+    @Override
     public InUnivariateDoubleDistribution getDistribution() throws ParsingException {
         return ParamUtil.getInstance(dist, "UnivariateDoubleDistribution");
     }
 
     @Override
-    public BasicConsumerAgentGroupAttribute parse(InputParser parser) throws ParsingException {
-        InConsumerAgentGroup inCag = parser.getRoot().findConsumerAgentGroup(getConsumerAgentGroupName());
+    public void setup(InputParser parser, Object input) throws ParsingException {
+        InConsumerAgentGroup inCag = getConsumerAgentGroup(parser);
         ConsumerAgentGroup cag = parser.parseEntityTo(inCag);
 
         BasicConsumerAgentGroupAttribute cagAttr = new BasicConsumerAgentGroupAttribute();
@@ -94,7 +117,5 @@ public class InNameSplitConsumerAgentGroupAttribute implements I_InConsumerAgent
 
         cag.addGroupAttribute(cagAttr);
         LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), getName(), cag.getName());
-
-        return cagAttr;
     }
 }

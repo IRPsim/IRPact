@@ -6,11 +6,9 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.product.BasicProductGroup;
 import de.unileipzig.irpact.core.product.BasicProductGroupAttribute;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
-import de.unileipzig.irpact.util.AddToRoot;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -18,22 +16,30 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.PRODUCTS;
+import static de.unileipzig.irpact.io.param.IOConstants.PRODUCTS_ATTR;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
-@AddToRoot
 @Definition
-public class InNameSplitProductGroupAttribute implements I_InProductGroupAttribute {
+public class InNameSplitProductGroupAttribute implements InIndependentProductGroupAttribute {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
+        putClassPath(res, thisClass(), PRODUCTS, PRODUCTS_ATTR, thisName());
+        addEntry(res, thisClass(), "dist");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InNameSplitProductGroupAttribute.class);
@@ -46,23 +52,22 @@ public class InNameSplitProductGroupAttribute implements I_InProductGroupAttribu
     public InNameSplitProductGroupAttribute() {
     }
 
-    public InNameSplitProductGroupAttribute(
-            InProductGroup pg,
-            InAttributeName attributeName,
-            InUnivariateDoubleDistribution distribution) {
-        this._name = ParamUtil.conc(pg, attributeName);
-        setDistribution(distribution);
-    }
-
     @Override
     public String getName() {
         return _name;
     }
 
+    @Override
     public String getProductGroupName() throws ParsingException {
         return ParamUtil.firstPart(getName());
     }
 
+    @Override
+    public InProductGroup getProductGroup(InputParser parser) throws ParsingException {
+        return parser.getRoot().findProductGroup(getProductGroupName());
+    }
+
+    @Override
     public String getAttributeName() throws ParsingException {
         return ParamUtil.secondPart(getName());
     }
@@ -71,13 +76,14 @@ public class InNameSplitProductGroupAttribute implements I_InProductGroupAttribu
         this.dist = new InUnivariateDoubleDistribution[]{dist};
     }
 
+    @Override
     public InUnivariateDoubleDistribution getDistribution() throws ParsingException {
         return ParamUtil.getInstance(dist, "UnivariateDoubleDistribution");
     }
 
     @Override
-    public BasicProductGroupAttribute parse(InputParser parser) throws ParsingException {
-        InProductGroup inPg = parser.getRoot().findProductGroup(getProductGroupName());
+    public void setup(InputParser parser, Object input) throws ParsingException {
+        InProductGroup inPg = getProductGroup(parser);
         BasicProductGroup pg = parser.parseEntityTo(inPg);
 
         BasicProductGroupAttribute pgAttr = new BasicProductGroupAttribute();
@@ -92,7 +98,5 @@ public class InNameSplitProductGroupAttribute implements I_InProductGroupAttribu
 
         pg.addGroupAttribute(pgAttr);
         LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added ProductGroupAttribute '{}' ('{}') to group '{}'", pgAttr.getName(), getName(), pg.getName());
-
-        return pgAttr;
     }
 }

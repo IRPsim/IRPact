@@ -2,12 +2,11 @@ package de.unileipzig.irpact.develop.starttest;
 
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.develop.TestFiles;
+import de.unileipzig.irpact.io.param.IOConstants;
 import de.unileipzig.irpact.io.param.input.InExample;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.output.OutRoot;
-import de.unileipzig.irpact.start.IRPact;
-import de.unileipzig.irpact.start.Start;
-import de.unileipzig.irptools.defstructure.DefinitionMapper;
+import de.unileipzig.irpact.start.*;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.annual.AnnualFile;
 import de.unileipzig.irptools.io.base.AnnualEntry;
@@ -18,14 +17,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,18 +34,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @Disabled
 class MultiAsd {
 
-    private static final Path java11 = Paths.get("C:\\MyProgs\\Java\\jdk-11.0.2\\bin", "java.exe");
-    private static final Path IRPTools = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPtools");
-    private static final Path cljlibs = IRPTools.resolve("cljlibs");
-    private static final Path frontendGeneratorJar = cljlibs.resolve("frontend-generator.jar");
-    private static final Path backendGeneratorJar = cljlibs.resolve("backend-generator.jar");
-
-    private static final String XXX = "x8";
-
     @Test
     void runStartWithTools() throws IOException {
         IRPLogging.initConsole();
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve(XXX);
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
         String[] args = {
                 "--irptools",
                 "--inputRootClass", InRoot.class.getName(),
@@ -59,14 +48,12 @@ class MultiAsd {
                 "--validate",
                 "--skipReference",
                 "--skipGamsIdentifier",
-                "--maxGamsNameLength", DefinitionMapper.MAX_GAMS_NAME_LENGTH_AS_STR,
-                "--autoTrimGamsNames",
                 "--dummyNomenklatur",
-                "--pathToJava", java11.toString(),
+                "--pathToJava", TestFiles.java11.toString(),
                 "--pathToResourceDir", dir.toString(),
-                "--pathToJar", frontendGeneratorJar.toString(),
+                "--pathToJar", TestFiles.frontendGeneratorJar.toString(),
                 "--frontendOutputFile", dir.resolve("frontend.json").toString(),
-                "--pathToBackendJar", backendGeneratorJar.toString(),
+                "--pathToBackendJar", TestFiles.backendGeneratorJar.toString(),
                 "--backendOutputFile", dir.resolve("backend.json").toString(),
                 "--sortAfterPriority"
         };
@@ -80,7 +67,7 @@ class MultiAsd {
     @SuppressWarnings("unchecked")
     @Test
     void runMulti() throws IOException {
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve(XXX);
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
         X x2015 = new X(dir);
         X x2016 = new X(dir);
         X x2017 = new X(dir);
@@ -95,7 +82,7 @@ class MultiAsd {
 
         Path perennialFile = dir.resolve("scenariosX").resolve("full_scenario.json");
         storePerennial(
-                perennialFile,
+                perennialFile, x2015.options,
                 x2015.in,
                 x2016.in,
                 x2017.in,
@@ -104,7 +91,7 @@ class MultiAsd {
         );
         Path perennialFile2 = dir.resolve("scenariosX").resolve("full_scenario2.json");
         storePerennial(
-                perennialFile2,
+                perennialFile2, x2015.options,
                 x2015.in,
                 x2015.in,
                 x2015.in,
@@ -115,7 +102,7 @@ class MultiAsd {
 
     @Test
     void runSingle() {
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve(XXX);
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
         X x2015 = new X(dir);
 
         runIt(dir, 2015, x2015);
@@ -124,19 +111,18 @@ class MultiAsd {
     private void runIt(
             Path dir,
             int startYear,
-            BiConsumer<AnnualEntry<InRoot>, AnnualData<OutRoot>> consumer) {
+            IRPactCallback callback) {
         String[] args = {
                 "-i", dir.resolve("scenariosX").resolve("input-" + startYear + ".json").toString(),
                 "-o", dir.resolve("scenariosX").resolve("output-" + startYear + ".json").toString(),
                 "--dataDir", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data").toString()
         };
-        IRPact.resultConsumer = consumer;
-        Start.main(args);
+        Start.start(args, callback);
     }
 
     @Test
     void runImage_NEW() {
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve(XXX);
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
         int startYear = 2019;
         String[] args = {
                 "-i", dir.resolve("scenariosX").resolve("input-" + startYear + ".json").toString(),
@@ -151,51 +137,50 @@ class MultiAsd {
     @SuppressWarnings("unchecked")
     private void storePerennial(
             Path outputFile,
+            CommandLineOptions options,
             AnnualEntry<InRoot>... input) throws IOException {
         PerennialData<InRoot> perennialData = new PerennialData<>();
         for(AnnualEntry<InRoot> entry: input) {
             perennialData.add(entry);
         }
-        PerennialFile perennialFile = perennialData.serialize(IRPact.getInputConverter());
+        PerennialFile perennialFile = perennialData.serialize(IRPact.getInputConverter(options));
         perennialFile.store(outputFile);
     }
 
-    private static class X implements BiConsumer<AnnualEntry<InRoot>, AnnualData<OutRoot>> {
+    private static class X implements IRPactCallback {
 
         protected Path dir;
         protected AnnualEntry<InRoot> in;
         protected AnnualData<OutRoot> out;
+        protected CommandLineOptions options;
 
         public X(Path dir) {
             this.dir = dir;
         }
 
         @Override
-        public void accept(AnnualEntry<InRoot> i, AnnualData<OutRoot> o) {
-            in = i;
-            out = o;
+        public void onFinished(IRPActAccess access) throws Exception {
+            in = access.getInput();
+            out = access.getOutput();
+            options = access.getCommandLineOptions();
 
-            System.out.println("out len: " + o.getData().getHiddenBinaryDataLength());
+            System.out.println("out len: " + out.getData().getHiddenBinaryDataLength());
 
-            i.getData().binaryPersistData = o.getData().binaryPersistData;
+            in.getData().binaryPersistData = out.getData().binaryPersistData;
 
-            AnnualData<InRoot> nextRoot = new AnnualData<>(i.getData());
-            nextRoot.getConfig().copyFrom(i.getConfig());
+            AnnualData<InRoot> nextRoot = new AnnualData<>(in.getData());
+            nextRoot.getConfig().copyFrom(in.getConfig());
             nextRoot.getConfig().setYear(nextRoot.getConfig().getYear() + 1);
 
-            AnnualFile nextFile = nextRoot.serialize(IRPact.getInputConverter());
+            AnnualFile nextFile = nextRoot.serialize(IRPact.getInputConverter(options));
             Path nextPath = dir.resolve("scenariosX").resolve("input-" + nextRoot.getConfig().getYear() + ".json");
-            try {
-                nextFile.store(nextPath);
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
+            nextFile.store(nextPath);
         }
     }
 
     @Test
     public void asd() throws IOException {
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve(XXX);
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
         Path p0 = dir.resolve("scenariosX").resolve("full_scenario.json");
         Path p1 = dir.resolve("scenariosX").resolve("backup").resolve("full_scenario.json");
         check(p0, p1);
@@ -207,7 +192,7 @@ class MultiAsd {
 
     @Test
     public void asd2() throws IOException {
-        Path dir0 = TestFiles.testfiles.resolve("uitests").resolve(XXX);
+        Path dir0 = TestFiles.testfiles.resolve("uitests").resolve("x6");
         Path dir1 = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0uberJarTest\\2021-03-02");
 
         Path p0 = dir0.resolve("scenariosX").resolve("output-2019.json");
@@ -236,7 +221,7 @@ class MultiAsd {
 
     @Test
     void runToSpec() {
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve(XXX);
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
         String[] args = {
                 "-i", dir.resolve("scenarios").resolve("default.json").toString(),
                 "--paramToSpec", dir.resolve("spec").resolve("example1").toString()
@@ -245,7 +230,7 @@ class MultiAsd {
     }
     @Test
     void runToSpec2() {
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve(XXX);
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
         String[] args = {
                 "-i", dir.resolve("scenariosS").resolve("default.spec1.json").toString(),
                 "--paramToSpec", dir.resolve("spec").resolve("example2").toString()
@@ -255,7 +240,7 @@ class MultiAsd {
 
     @Test
     void runToParam() {
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve(XXX);
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
         String[] args = {
                 "--specToParam", dir.resolve("spec").resolve("example1").toString(),
                 "-o", dir.resolve("scenariosS").resolve("default.spec1.json").toString()
@@ -265,7 +250,7 @@ class MultiAsd {
 
     @Test
     void testContent() throws IOException {
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve(XXX).resolve("spec");
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6").resolve("spec");
         Path dir1 = dir.resolve("example1");
         Path dir2 = dir.resolve("example2");
 
@@ -300,7 +285,7 @@ class MultiAsd {
 
     @Test
     void runToSpec3() {
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve(XXX);
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
         String[] args = {
                 "-i", dir.resolve("scenariosX").resolve("input-" + 2015 + ".json").toString(),
                 "--paramToSpec", dir.resolve("spec").resolve("example1").toString()
@@ -310,7 +295,7 @@ class MultiAsd {
 
     @Test
     void runToParam3() {
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve(XXX);
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
         String[] args = {
                 "--specToParam", dir.resolve("spec").resolve("example1").toString(),
                 "-o", dir.resolve("scenariosX").resolve("input-spec-" + 2015 + ".json").toString()
@@ -320,7 +305,7 @@ class MultiAsd {
 
     @Test
     void runIt3() {
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve(XXX);
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
         String[] args = {
                 "-i", dir.resolve("spec").resolve("example1").toString(),
                 "-o", dir.resolve("scenariosX").resolve("output-spec-2015.json").toString()
@@ -330,7 +315,7 @@ class MultiAsd {
 
     @Test
     void runIt4() {
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve(XXX);
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
         String[] args = {
                 "-i", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\demos\\Demo1_Entscheidungsprozess_Bewusstsein").toString(),
                 "-o", dir.resolve("scenariosX").resolve("Demo1_Entscheidungsprozess_Bewusstsein.out.json").toString()
@@ -338,6 +323,8 @@ class MultiAsd {
         Start.main(args);
     }
 
-
-    //
+    @Test
+    void checkNames() {
+        IOConstants.validateNames();
+    }
 }

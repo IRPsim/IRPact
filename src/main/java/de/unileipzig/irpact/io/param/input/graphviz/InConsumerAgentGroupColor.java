@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.io.param.input.graphviz;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.io.param.IOConstants;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -16,10 +17,12 @@ import java.lang.invoke.MethodHandles;
 @Definition
 public class InConsumerAgentGroupColor {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
@@ -27,8 +30,8 @@ public class InConsumerAgentGroupColor {
     public static void applyRes(TreeAnnotationResource res) {
         res.putPath(
                 thisClass(),
-                res.getCachedElement("Graphviz"),
-                res.getCachedElement("Agentengruppe-Farben-Mapping")
+                res.getCachedElement(IOConstants.GRAPHVIZ),
+                res.getCachedElement(IOConstants.GRAPHVIZ_AGENT_COLOR_MAPPING)
         );
 
         res.newEntryBuilder()

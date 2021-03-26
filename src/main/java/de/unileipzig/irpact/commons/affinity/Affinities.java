@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons.affinity;
 
 import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.Rnd;
 
 import java.util.Random;
 import java.util.Set;
@@ -11,7 +12,13 @@ import java.util.Set;
  */
 public interface Affinities<T> extends IsEquals {
 
+    Affinities<T> createWithout(T target);
+
     Set<T> targets();
+
+    Set<T> accessibleTargets();
+
+    boolean isEmpty();
 
     int size();
 
@@ -26,4 +33,8 @@ public interface Affinities<T> extends IsEquals {
     T getRandom(Random rnd);
 
     T getWeightedRandom(Random rnd);
+
+    T getRandom(Rnd rnd);
+
+    T getWeightedRandom(Rnd rnd);
 }

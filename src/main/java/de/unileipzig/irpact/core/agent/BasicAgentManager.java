@@ -51,7 +51,7 @@ public class BasicAgentManager implements AgentManager {
         InitializationData initData = environment.getInitializationData();
         for(ConsumerAgentGroup cag: getConsumerAgentGroups()) {
             checkConsumerAgentGroup(cag);
-            int count = initData.getInitialNumberOfConsumerAgent(cag);
+            int count = initData.getInitialNumberOfConsumerAgents(cag);
             int i = cag.getNumberOfAgents();
             LOGGER.debug("create {} agents for group '{}'", Math.max(count - i, 0), cag.getName());
             for(; i < count; i++) {
@@ -94,6 +94,7 @@ public class BasicAgentManager implements AgentManager {
         return consumerAgentGroups.containsKey(name);
     }
 
+    @Override
     public void addConsumerAgentGroup(ConsumerAgentGroup group) {
         if(hasConsumerAgentGroup(group.getName())) {
             throw new IllegalArgumentException("group name '" + group.getName() + "' already exists");

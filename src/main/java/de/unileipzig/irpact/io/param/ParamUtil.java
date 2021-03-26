@@ -1,9 +1,11 @@
 package de.unileipzig.irpact.io.param;
 
+import de.unileipzig.irpact.commons.MultiCounter;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.io.param.input.InEntity;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.function.Predicate;
@@ -15,21 +17,34 @@ public final class ParamUtil {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ParamUtil.class);
 
-    public static final String DELIMITER = "__";
+    public static final String DATA_DELIMITER = "_";
+    public static final String NAME_DELIMITER = "__";
 
     private ParamUtil() {
     }
 
-    public static String conc(InEntity first, InEntity second) {
-        return conc(first.getName(), second.getName());
+    public static String concData(InEntity first, InEntity second) {
+        return concData(first.getName(), second.getName());
     }
 
-    public static String conc(Nameable first, Nameable second) {
-        return conc(first.getName(), second.getName());
+    public static String concData(Nameable first, Nameable second) {
+        return concData(first.getName(), second.getName());
     }
 
-    public static String conc(String first, String second) {
-        return first + DELIMITER + second;
+    public static String concData(String first, String second) {
+        return first + DATA_DELIMITER + second;
+    }
+
+    public static String concName(InEntity first, InEntity second) {
+        return concName(first.getName(), second.getName());
+    }
+
+    public static String concName(Nameable first, Nameable second) {
+        return concName(first.getName(), second.getName());
+    }
+
+    public static String concName(String first, String second) {
+        return first + NAME_DELIMITER + second;
     }
 
     public static String firstPart(String concStr) throws ParsingException {
@@ -41,7 +56,7 @@ public final class ParamUtil {
     }
 
     private static String getPart(String concStr, int part) throws ParsingException {
-        String[] parts = concStr.split(ParamUtil.DELIMITER);
+        String[] parts = concStr.split(ParamUtil.NAME_DELIMITER);
         if(parts.length != 2) {
             throw new ParsingException("Illegal Name: '" + concStr + "'");
         }
@@ -71,6 +86,26 @@ public final class ParamUtil {
         };
     }
 
+    public static String printClass(Object input) {
+        if(input == null) {
+            return "null";
+        }
+        else if(input instanceof Class<?>) {
+            return ((Class<?>) input).getName();
+        }
+        else {
+            return input.getClass().getName();
+        }
+    }
+
+    public static <T> T castTo(Object input, Class<T> c) throws ParsingException {
+        if(c.isInstance(input)) {
+            return c.cast(input);
+        } else {
+            throw new ParsingException("type mismatch: " + printClass(input) + " != " + printClass(c));
+        }
+    }
+
     public static String onMissing(String name) {
         return "missing entry: '" + name + "'";
     }
@@ -83,9 +118,26 @@ public final class ParamUtil {
         return onTooMany(name, len(arr));
     }
 
-    public static <T> T[] getArray(T[] arr, String name) throws ParsingException {
+    public static <T> T[] getNonNullArray(T[] arr, String name) throws ParsingException {
+        if(arr == null) {
+            throw new ParsingException(onMissing(name));
+        }
+        return arr;
+    }
+
+    public static <T> T[] getNonEmptyArray(T[] arr, String name) throws ParsingException {
         if(arr == null || arr.length == 0) {
             throw new ParsingException(onMissing(name));
+        }
+        return arr;
+    }
+
+    public static <T> T[] getOneElementArray(T[] arr, String name) throws ParsingException {
+        if(arr == null || arr.length == 0) {
+            throw new ParsingException(onMissing(name));
+        }
+        if(arr.length > 1) {
+            throw new ParsingException(onTooMany(name, arr));
         }
         return arr;
     }
@@ -113,5 +165,54 @@ public final class ParamUtil {
         return arr == null
                 ? -1
                 : arr.length;
+    }
+
+
+    //=========================
+    //TreeAnnotationResource
+    //=========================
+
+    public static void addPathElement(TreeAnnotationResource res, String dataKey, String priorityKey) {
+        IOResources.Data userData = res.getUserDataAs();
+        MultiCounter counter = userData.getCounter();
+        LocData loc = userData.getData();
+
+        TreeAnnotationResource.PathElementBuilder builder = res.newElementBuilder();
+        builder = builder.peek(loc.applyPathElementBuilder(dataKey));
+        if(priorityKey != null) {
+            builder = builder.setEdnPriority(counter.getAndInc(priorityKey));
+        }
+        builder.putCache(dataKey);
+    }
+
+    public static void addEntry(TreeAnnotationResource res, Class<?> c) {
+        IOResources.Data userData = res.getUserDataAs();
+        LocData loc = userData.getData();
+
+        res.newEntryBuilder()
+                .peek(loc.applyEntryBuilder(c))
+                .store(c);
+    }
+
+    public static void addEntry(TreeAnnotationResource res, Class<?> c, String field) {
+        IOResources.Data userData = res.getUserDataAs();
+        LocData loc = userData.getData();
+
+        res.newEntryBuilder()
+                .peek(loc.applyEntryBuilder(c, field))
+                .store(c, field);
+    }
+
+    public static void putClassPath(TreeAnnotationResource res, Class<?> c, String... keys) {
+        res.putPath(c, res.getCachedElements(keys));
+    }
+
+    public static void putFieldPath(TreeAnnotationResource res, Class<?> c, String field, String... keys) {
+        res.putPath(c, field, res.getCachedElements(keys));
+    }
+
+    public static void putFieldPathAndAddEntry(TreeAnnotationResource res, Class<?> c, String field, String... keys) {
+        putFieldPath(res, c, field, keys);
+        addEntry(res, c, field);
     }
 }

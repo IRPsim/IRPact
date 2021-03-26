@@ -1,18 +1,18 @@
 package de.unileipzig.irpact.develop.starttest;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
 import de.unileipzig.irpact.commons.log.Logback;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.misc.ValidationException;
-import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.develop.TestFiles;
 import de.unileipzig.irpact.io.param.input.InExample;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.output.OutRoot;
+import de.unileipzig.irpact.start.IRPact;
+import de.unileipzig.irpact.start.IRPactCallback;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.start.optact.OptActMain;
-import de.unileipzig.irptools.defstructure.*;
-import de.unileipzig.irptools.io.ContentTypeDetector;
+import de.unileipzig.irptools.io.annual.AnnualData;
+import de.unileipzig.irptools.io.annual.AnnualFile;
+import de.unileipzig.irptools.io.base.AnnualEntry;
 import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.Util;
 import org.junit.jupiter.api.Assertions;
@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -30,11 +29,10 @@ import java.nio.file.Paths;
 @Disabled
 public class Asd {
 
-    private static final Path java11 = Paths.get("C:\\MyProgs\\Java\\jdk-11.0.2\\bin", "java.exe");
-    private static final Path IRPTools = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPtools");
-    private static final Path cljlibs = IRPTools.resolve("cljlibs");
-    private static final Path frontendGeneratorJar = cljlibs.resolve("frontend-generator.jar");
-    private static final Path backendGeneratorJar = cljlibs.resolve("backend-generator.jar");
+    @Test
+    void printHelp() {
+        Start.main(new String[]{"-?"});
+    }
 
     @Test
     void runStart() throws Exception {
@@ -49,11 +47,11 @@ public class Asd {
                 "--validate",
                 "--skipReference",
                 "--dummyNomenklatur",
-                "--pathToJava", java11.toString(),
+                "--pathToJava", TestFiles.java11.toString(),
                 "--pathToResourceDir", dir.toString(),
-                "--pathToJar", frontendGeneratorJar.toString(),
+                "--pathToJar", TestFiles.frontendGeneratorJar.toString(),
                 "--frontendOutputFile", dir.resolve("frontend.json").toString(),
-                "--pathToBackendJar", backendGeneratorJar.toString(),
+                "--pathToBackendJar", TestFiles.backendGeneratorJar.toString(),
                 "--backendOutputFile", dir.resolve("backend.json").toString(),
                 "--sortAfterPriority"
         };
@@ -63,7 +61,7 @@ public class Asd {
     @Test
     void runStartWithTools() {
         IRPLogging.initConsole();
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x5_task");
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
         String[] args = {
                 "--irptools",
                 "--inputRootClass", InRoot.class.getName(),
@@ -73,16 +71,76 @@ public class Asd {
                 "--charset", Util.windows1252().name(),
                 "--validate",
                 "--skipReference",
+                "--skipGamsIdentifier",
                 "--dummyNomenklatur",
-                "--pathToJava", java11.toString(),
+                "--pathToJava", TestFiles.java11.toString(),
                 "--pathToResourceDir", dir.toString(),
-                "--pathToJar", frontendGeneratorJar.toString(),
+                "--pathToJar", TestFiles.frontendGeneratorJar.toString(),
                 "--frontendOutputFile", dir.resolve("frontend.json").toString(),
-                "--pathToBackendJar", backendGeneratorJar.toString(),
+                "--pathToBackendJar", TestFiles.backendGeneratorJar.toString(),
                 "--backendOutputFile", dir.resolve("backend.json").toString(),
                 "--sortAfterPriority"
         };
         Start.main(args);
+    }
+
+    @Test
+    void runItFirst() {
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
+
+        IRPactCallback callback = access -> {
+            AnnualEntry<InRoot> i = access.getInput();
+            AnnualData<OutRoot> o = access.getOutput();
+
+            System.out.println("out len: " + o.getData().getHiddenBinaryDataLength());
+
+            i.getData().binaryPersistData = o.getData().binaryPersistData;
+
+            AnnualData<InRoot> nextRoot = new AnnualData<>(i.getData());
+            nextRoot.getConfig().copyFrom(i.getConfig());
+            nextRoot.getConfig().setYear(nextRoot.getConfig().getYear() + 1);
+
+            AnnualFile nextFile = nextRoot.serialize(IRPact.getInputConverter(access.getCommandLineOptions()));
+            Path nextPath = dir.resolve("scenarios").resolve("default." + nextRoot.getConfig().getYear() + ".json");
+            nextFile.store(nextPath);
+        };
+
+        String[] args = {
+                "-i", dir.resolve("scenarios").resolve("default.json").toString(),
+                "-o", dir.resolve("scenarios").resolve("default.out.2015.json").toString(),
+                "--dataDir", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data").toString()
+        };
+        Start.start(args, callback);
+    }
+
+    @Test
+    void runItNext() {
+        int startYear = 2017;
+        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x6");
+
+        IRPactCallback callback = access -> {
+            AnnualEntry<InRoot> i = access.getInput();
+            AnnualData<OutRoot> o = access.getOutput();
+
+            System.out.println("out len: " + o.getData().getHiddenBinaryDataLength());
+
+            i.getData().binaryPersistData = o.getData().binaryPersistData;
+
+            AnnualData<InRoot> nextRoot = new AnnualData<>(i.getData());
+            nextRoot.getConfig().copyFrom(i.getConfig());
+            nextRoot.getConfig().setYear(nextRoot.getConfig().getYear() + 1);
+
+            AnnualFile nextFile = nextRoot.serialize(IRPact.getInputConverter(access.getCommandLineOptions()));
+            Path nextPath = dir.resolve("scenarios").resolve("default." + nextRoot.getConfig().getYear() + ".json");
+            nextFile.store(nextPath);
+        };
+
+        String[] args = {
+                "-i", dir.resolve("scenarios").resolve("default." + startYear + ".json").toString(),
+                "-o", dir.resolve("scenarios").resolve("default.out." + startYear + ".json").toString(),
+                "--dataDir", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data").toString()
+        };
+        Start.start(args, callback);
     }
 
     @Test
@@ -115,9 +173,9 @@ public class Asd {
     void runImage_NEW() {
         Path outDir = TestFiles.testfiles.resolve("uitests").resolve("x4");
         String[] args = {
-                "-i", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\scenarios", "default.json").toString(),
+                "-i", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\uitests\\x4\\scenarios", "default.json").toString(),
                 "-o", outDir.resolve("runImage_NEW.json").toString(),
-                "--image", outDir.resolve("runImage_NEWX.png").toString()
+                "--image", outDir.resolve("runImage_NEW.png").toString()
         };
         Start.main(args);
     }
@@ -173,17 +231,5 @@ public class Asd {
     @Test
     void testEquals() {
         Assertions.assertEquals(new InExample().createDefaultScenario(), new InExample().createDefaultScenario());
-    }
-
-    @Test
-    void testParse() throws ValidationException {
-//        InRoot root = InExample.createExample();
-//        root.general.logGraphCreation = true;
-//        root.general.logAgentCreation = true;
-//        InputParserX parser = new InputParserX();
-//        SimulationEnvironment environment = parser.parse(root);
-//        environment.initialize();
-//        environment.validate();
-//        environment.setup();
     }
 }

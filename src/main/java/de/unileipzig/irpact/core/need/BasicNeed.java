@@ -22,4 +22,9 @@ public class BasicNeed extends NameableBase implements Need {
     public int getHashCode() {
         return Objects.hashCode(getName());
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

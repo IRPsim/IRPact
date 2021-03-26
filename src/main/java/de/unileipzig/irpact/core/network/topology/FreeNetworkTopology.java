@@ -13,10 +13,7 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Daniel Abitz
@@ -104,11 +101,13 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
     public void initalize(SimulationEnvironment environment, SocialGraph graph) {
         LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "initialize free network graph");
         for(SocialGraph.Node node: graph.getNodes()) {
+            SocialGraph.LinkageInformation li = graph.getLinkageInformation(node);
             ConsumerAgent ca = node.getAgent(ConsumerAgent.class);
             Set<ConsumerAgent> agents = drawTargets(environment, ca);
             for(ConsumerAgent targetCa: agents) {
                 LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "add edge: {}->{} ({},{})", ca.getName(), targetCa.getName(), edgeType, initialWeight);
                 graph.addEdge(ca.getSocialGraphNode(), targetCa.getSocialGraphNode(), edgeType, initialWeight);
+                li.inc(targetCa.getGroup(), edgeType);
             }
         }
     }
@@ -162,5 +161,15 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
                 getAffinityMapping().getHashCode(),
                 IsEquals.getMapHashCode(getEdgeCountMap())
         );
+    }
+
+    protected Map<ConsumerAgentGroup, List<ConsumerAgent>> createGroupMapping(Collection<ConsumerAgent> agents) {
+        Map<ConsumerAgentGroup, List<ConsumerAgent>> mapping = new HashMap<>();
+        for(ConsumerAgent ca: agents) {
+            ConsumerAgentGroup cag = ca.getGroup();
+            List<ConsumerAgent> caSet = mapping.computeIfAbsent(cag, _cag -> new ArrayList<>());
+            caSet.add(ca);
+        }
+        return mapping;
     }
 }

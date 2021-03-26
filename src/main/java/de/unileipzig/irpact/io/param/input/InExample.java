@@ -6,22 +6,23 @@ import de.unileipzig.irpact.core.simulation.tasks.PredefinedSimulationTask;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
-import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulationSize;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
-import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.distribution.InConstantUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
+import de.unileipzig.irpact.io.param.input.network.InCompleteGraphTopology;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
-import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
-import de.unileipzig.irpact.io.param.input.process.*;
-import de.unileipzig.irpact.io.param.input.product.*;
+import de.unileipzig.irpact.io.param.input.process.InProcessModel;
+import de.unileipzig.irpact.io.param.input.process.ra.InPVactUncertaintyGroupAttribute;
+import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
+import de.unileipzig.irpact.io.param.input.process.ra.InUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomSelectedGroupedSpatialDistribution2D;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSelectedGroupedSpatialDistribution2D;
 import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
@@ -38,8 +39,6 @@ import de.unileipzig.irptools.util.DoubleTimeSeries;
 import de.unileipzig.irptools.util.Table;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -51,96 +50,36 @@ public class InExample implements DefaultScenarioFactory {
     }
 
     @Override
-    public de.unileipzig.irpact.io.param.input.InRoot createDefaultScenario() {
+    public InRoot createDefaultScenario() {
         return createExample();
     }
 
     @SuppressWarnings("unused")
-    public static de.unileipzig.irpact.io.param.input.InRoot createExample() {
+    public static InRoot createExample() {
         //===
-        InAttributeName A1 = new InAttributeName(RAConstants.PURCHASE_POWER);
-        InAttributeName A2 = new InAttributeName(RAConstants.NOVELTY_SEEKING);
-        InAttributeName A3 = new InAttributeName(RAConstants.DEPENDENT_JUDGMENT_MAKING);
-        InAttributeName A4 = new InAttributeName(RAConstants.ENVIRONMENTAL_CONCERN);
-        InAttributeName A5 = new InAttributeName(RAConstants.SHARE_1_2_HOUSE);
-        InAttributeName A6 = new InAttributeName(RAConstants.HOUSE_OWNER);
-        InAttributeName A7 = new InAttributeName(RAConstants.CONSTRUCTION_RATE);
-        InAttributeName A8 = new InAttributeName(RAConstants.RENOVATION_RATE);
-
-        InAttributeName B6 = new InAttributeName(RAConstants.REWIRING_RATE);
-
-        InAttributeName C1 = new InAttributeName(RAConstants.COMMUNICATION_FREQUENCY_SN);
-
-        InAttributeName D1 = new InAttributeName(RAConstants.INITIAL_PRODUCT_AWARENESS);
-        InAttributeName D2 = new InAttributeName(RAConstants.INTEREST_THRESHOLD);
-        InAttributeName D3 = new InAttributeName(RAConstants.FINANCIAL_THRESHOLD);
-        InAttributeName D4 = new InAttributeName(RAConstants.ADOPTION_THRESHOLD);
-
-        InAttributeName E1 = new InAttributeName(RAConstants.INVESTMENT_COST);
-
         InAttributeName Mic_Dominantes_Milieu = new InAttributeName(RAConstants.DOM_MILIEU);
-        InAttributeName Dummy_PLZ = new InAttributeName("Dummy_PLZ");
+        InAttributeName PLZ = new InAttributeName(RAConstants.ZIP);
 
         //===
         InUnivariateDoubleDistribution constant0 = new InConstantUnivariateDistribution("constant0", 0);
-        InUnivariateDoubleDistribution constant1 = new InConstantUnivariateDistribution("constant1", 1);
-        InUnivariateDoubleDistribution constant10 = new InConstantUnivariateDistribution("constant10", 10);
-        InUnivariateDoubleDistribution constant01 = new InConstantUnivariateDistribution("constant01", 0.1);
-        InUnivariateDoubleDistribution constant09 = new InConstantUnivariateDistribution("constant09", 0.9);
-        InUnivariateDoubleDistribution constant42 = new InConstantUnivariateDistribution("constant42", 42);
-        InUnivariateDoubleDistribution constant24 = new InConstantUnivariateDistribution("constant24", 24);
 
         //cag0
-        String name = "TRA";
-        InUnivariateDoubleDistribution dist = constant0;
-        List<InConsumerAgentGroupAttribute> list = new ArrayList<>();
-        InConsumerAgentGroupAttribute cag0_A1_attr = build(name, A1, dist, list);
-        InConsumerAgentGroupAttribute cag0_A2_attr = build(name, A2, dist, list);
-        InConsumerAgentGroupAttribute cag0_A3_attr = build(name, A3, dist, list);
-        InConsumerAgentGroupAttribute cag0_A4_attr = build(name, A4, dist, list);
-        InConsumerAgentGroupAttribute cag0_A5_attr = build(name, A5, dist, list);
-        InConsumerAgentGroupAttribute cag0_A6_attr = build(name, A6, dist, list);
-        InConsumerAgentGroupAttribute cag0_A7_attr = build(name, A7, dist, list);
-        InConsumerAgentGroupAttribute cag0_A8_attr = build(name, A8, dist, list);
-
-        InConsumerAgentGroupAttribute cag0_B6_attr = build(name, B6, dist, list);
-
-        InConsumerAgentGroupAttribute cag0_C1_attr = build(name, C1, dist, list);
-
-        InConsumerAgentGroupAttribute cag0_D1_attr = build(name, D1, dist, list);
-        InConsumerAgentGroupAttribute cag0_D2_attr = build(name, D2, dist, list);
-        InConsumerAgentGroupAttribute cag0_D3_attr = build(name, D3, dist, list);
-        InConsumerAgentGroupAttribute cag0_D4_attr = build(name, D4, dist, list);
-
-        InProductThresholdInterestSupplyScheme cag0_awa = new InProductThresholdInterestSupplyScheme(name + "_awa", constant10);
-
-        InConsumerAgentGroup cag0 = new InConsumerAgentGroup(name, 1.0, 1, list, cag0_awa);
+        InPVactConsumerAgentGroup cag0 = new InPVactConsumerAgentGroup();
+        cag0.setName("TRA");
+        cag0.setInformationAuthority(1);
+        cag0.setForAll(constant0);
 
         //cag1
-        name = "BUM";
-        dist = constant0;
-        list.clear();
-        InConsumerAgentGroupAttribute cag1_A1_attr = build(name, A1, dist, list);
-        InConsumerAgentGroupAttribute cag1_A2_attr = build(name, A2, dist, list);
-        InConsumerAgentGroupAttribute cag1_A3_attr = build(name, A3, dist, list);
-        InConsumerAgentGroupAttribute cag1_A4_attr = build(name, A4, dist, list);
-        InConsumerAgentGroupAttribute cag1_A5_attr = build(name, A5, dist, list);
-        InConsumerAgentGroupAttribute cag1_A6_attr = build(name, A6, dist, list);
-        InConsumerAgentGroupAttribute cag1_A7_attr = build(name, A7, dist, list);
-        InConsumerAgentGroupAttribute cag1_A8_attr = build(name, A8, dist, list);
+        InPVactConsumerAgentGroup cag1 = new InPVactConsumerAgentGroup();
+        cag1.setName("BUM");
+        cag1.setInformationAuthority(1);
+        cag1.setForAll(constant0);
 
-        InConsumerAgentGroupAttribute cag1_B6_attr = build(name, B6, dist, list);
-
-        InConsumerAgentGroupAttribute cag1_C1_attr = build(name, C1, dist, list);
-
-        InConsumerAgentGroupAttribute cag1_D1_attr = build(name, D1, dist, list);
-        InConsumerAgentGroupAttribute cag1_D2_attr = build(name, D2, dist, list);
-        InConsumerAgentGroupAttribute cag1_D3_attr = build(name, D3, dist, list);
-        InConsumerAgentGroupAttribute cag1_D4_attr = build(name, D4, dist, list);
-
-        InProductThresholdInterestSupplyScheme cag1_awa = new InProductThresholdInterestSupplyScheme(name + "_awa", constant10);
-
-        InConsumerAgentGroup cag1 = new InConsumerAgentGroup(name, 1.0, 1, list, cag1_awa);
+        //Population
+        InFixConsumerAgentPopulationSize populationSize = new InFixConsumerAgentPopulationSize();
+        populationSize.setName("PopSize");
+        populationSize.setSize(1);
+        populationSize.setConsumerAgentGroups(new InConsumerAgentGroup[]{cag0, cag1});
 
         //affinity
         InComplexAffinityEntry cag0_cag0 = new InComplexAffinityEntry(cag0.getName() + "_" + cag0.getName(), cag0, cag0, 0.7);
@@ -148,53 +87,39 @@ public class InExample implements DefaultScenarioFactory {
         InComplexAffinityEntry cag1_cag1 = new InComplexAffinityEntry(cag1.getName() + "_" + cag1.getName(), cag1, cag1, 0.9);
         InComplexAffinityEntry cag1_cag0 = new InComplexAffinityEntry(cag1.getName() + "_" + cag0.getName(), cag1, cag0, 0.1);
 
-        InUnlinkedGraphTopology topology = new InUnlinkedGraphTopology("unlinked");
+        //InUnlinkedGraphTopology topology = new InUnlinkedGraphTopology("unlinked");
+        InCompleteGraphTopology topology = new InCompleteGraphTopology("complete", 1.0);
 
         InPVFile pvFile = new InPVFile("BarwertrechnerMini_ES");
 
-        InCustomUncertaintyGroupAttribute uncert = new InCustomUncertaintyGroupAttribute();
-        uncert.setName("Uncerter");
-        uncert.cags = new InConsumerAgentGroup[]{cag0, cag1};
-        uncert.names = new InAttributeName[]{A2, A3, A4};
-        uncert.setUncertaintyDistribution(constant01);
-        uncert.setConvergenceDistribution(constant09);
+        InPVactUncertaintyGroupAttribute uncert = new InPVactUncertaintyGroupAttribute();
+        uncert.setName("PVact_Uncert");
+        uncert.setGroups(new InConsumerAgentGroup[]{cag0, cag1});
+        uncert.setNoveltySeekingUncertainty(constant0);
+        uncert.setDependentJudgmentMakingUncertainty(constant0);
+        uncert.setEnvironmentalConcernUncertainty(constant0);
 
         //process
         InRAProcessModel processModel = new InRAProcessModel(
                 "RA",
                 0.25, 0.25, 0.25, 0.25,
                 3, 2, 1, 0,
+                1.0,
                 pvFile,
-                new InSlopeSupplier[0],
-                new InOrientationSupplier[0],
                 new InUncertaintyGroupAttribute[]{uncert}
         );
 
-        //Product
-        InProductGroupAttribute pv_e1 = new InProductGroupAttribute(
-                "PV_E1",
-                E1,
-                constant09
-        );
-        InProductGroup pv = new InProductGroup("PV", new InProductGroupAttribute[]{pv_e1});
-
-        InFixProductAttribute fix_pv_e1 = new InFixProductAttribute("PV_E1_fix", pv_e1, 1.0);
-        InFixProduct fix_pv = new InFixProduct("PV_fix", pv, new InFixProductAttribute[]{fix_pv_e1});
-        InFixProductFindingScheme fixScheme = new InFixProductFindingScheme("PV_fix_scheme", fix_pv);
-        cag0.productFindingSchemes = new InProductFindingScheme[]{fixScheme};
-        cag1.productFindingSchemes = new InProductFindingScheme[]{fixScheme};
-
-        InSpatialTableFile tableFile = new InSpatialTableFile("GIS_final_1_x");
-        InCustomSelectedGroupedSpatialDistribution2D spaDist = new InCustomSelectedGroupedSpatialDistribution2D(
+        InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210225");
+        InCustomFileSelectedGroupedSpatialDistribution2D spaDist = new InCustomFileSelectedGroupedSpatialDistribution2D(
                 "testdist",
                 constant0,
                 constant0,
                 tableFile,
                 Mic_Dominantes_Milieu,
-                Dummy_PLZ
+                PLZ
         );
-        cag0.spatialDistribution = new InSpatialDistribution[]{spaDist};
-        cag1.spatialDistribution = new InSpatialDistribution[]{spaDist};
+        cag0.setSpatialDistribution(spaDist);
+        cag1.setSpatialDistribution(spaDist);
 
         InSpace2D space2D = new InSpace2D("Space2D", Metric2D.EUCLIDEAN);
 
@@ -206,11 +131,13 @@ public class InExample implements DefaultScenarioFactory {
         general.seed = 42;
         general.timeout = TimeUnit.MINUTES.toMillis(5);
         general.runOptActDemo = true;
+        general.runPVAct = true;
         general.logLevel = IRPLevel.ALL.getLevelId();
         general.logAll = true;
+        general.logAllTools = true;
 
         //=====
-        de.unileipzig.irpact.io.param.input.InRoot root = new de.unileipzig.irpact.io.param.input.InRoot();
+        InRoot root = new InRoot();
         initOptAct(root);
         initGV(root);
 
@@ -229,7 +156,7 @@ public class InExample implements DefaultScenarioFactory {
 
         InConsumerAgentGroupColor cag0Color = new InConsumerAgentGroupColor(cag0.getName() + "_color", cag0, gc1);
         InConsumerAgentGroupColor cag1Color = new InConsumerAgentGroupColor(cag1.getName() + "_color", cag1, gc2);
-        root.consumerAgentGroupColors = new InConsumerAgentGroupColor[]{cag0Color, cag1Color};
+        root.setConsumerAgentGroupColors(new InConsumerAgentGroupColor[]{cag0Color, cag1Color});
 
         GraphvizLayoutAlgorithm.DOT.useLayout = false;
         GraphvizLayoutAlgorithm.CIRCO.useLayout = true;
@@ -246,19 +173,13 @@ public class InExample implements DefaultScenarioFactory {
         root.general = general;
         root.affinityEntries = new InComplexAffinityEntry[]{cag0_cag0, cag0_cag1, cag1_cag1, cag1_cag0};
         root.consumerAgentGroups = new InConsumerAgentGroup[]{cag0, cag1};
+        root.setAgentPopulationSize(populationSize);
         root.graphTopologySchemes = new InGraphTopologyScheme[]{topology};
-        root.processModel = new InProcessModel[]{processModel};
-        root.productGroups = new InProductGroup[]{pv};
+        root.processModels = new InProcessModel[]{processModel};
         root.spatialModel = new InSpatialModel[]{space2D};
         root.timeModel = new InTimeModel[]{timeModel};
 
         return root;
-    }
-
-    private static InConsumerAgentGroupAttribute build(String prefix, InAttributeName name, InUnivariateDoubleDistribution dist, List<InConsumerAgentGroupAttribute> out) {
-        InConsumerAgentGroupAttribute attr = new InConsumerAgentGroupAttribute(prefix + "_" + name.getName(), name, dist);
-        out.add(attr);
-        return attr;
     }
 
     @SuppressWarnings("SameParameterValue")

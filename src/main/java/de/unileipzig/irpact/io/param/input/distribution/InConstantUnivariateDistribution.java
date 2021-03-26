@@ -12,31 +12,29 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
 
+import static de.unileipzig.irpact.io.param.IOConstants.DISTRIBUTIONS;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
 @Definition
 public class InConstantUnivariateDistribution implements InUnivariateDoubleDistribution {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
     }
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.putPath(
-                InConstantUnivariateDistribution.class,
-                res.getCachedElement("Verteilungsfunktionen"),
-                res.getCachedElement("Dirac")
-        );
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Wert")
-                .setGamsDescription("Konstante Rückgabewert")
-                .store(InConstantUnivariateDistribution.class, "constDistValue");
+        putClassPath(res, thisClass(), DISTRIBUTIONS, thisName());
+        addEntry(res, thisClass(), "constDistValue");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InConstantUnivariateDistribution.class);

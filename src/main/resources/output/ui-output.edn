@@ -6,6 +6,16 @@
     :image "agentGraph"
   } 
   {
+    :label "set_OutAdoptionResult" 
+    :set "set_OutAdoptionResult" 
+    :tags [["OutAdoptionResult" "adoptions"] ["OutAdoptionResult" "adoptionShare"]]
+  } 
+  {
+    :label "set_BinaryPersistData" 
+    :set "set_BinaryPersistData" 
+    :tags [["BinaryPersistData" "id"]]
+  } 
+  {
     :label "Sets" 
     :description "Hier sind Sets." 
     :sections [

@@ -232,12 +232,18 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
         return environment.getTimeModel().isValid(ts);
     }
 
+    protected int countSyncTasks() {
+        return syncTasks.values().stream()
+                .mapToInt(List::size)
+                .sum();
+    }
+
     @Override
     public boolean registerSyncTask(Timestamp ts, SyncTask task) {
         if(isValid(ts)) {
             List<SyncTask> taskList = syncTasks.computeIfAbsent(ts, _ts -> new ArrayList<>());
             taskList.add(task);
-            LOGGER.debug(IRPSection.SIMULATION_LICECYCLE, "add sync task '{}' at '{}'", task.getName(), ts);
+            LOGGER.debug(IRPSection.SIMULATION_LICECYCLE, "add sync task '{}' at '{}' (total = {})", task.getName(), ts, countSyncTasks());
             return true;
         } else {
             LOGGER.debug(IRPSection.SIMULATION_LICECYCLE, "ignore invalid timestamp ({})", ts);
