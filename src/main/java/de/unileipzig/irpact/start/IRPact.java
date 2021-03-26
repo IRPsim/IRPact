@@ -34,6 +34,7 @@ import de.unileipzig.irptools.io.ContentTypeDetector;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.annual.AnnualFile;
 import de.unileipzig.irptools.io.base.AnnualEntry;
+import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
@@ -230,6 +231,10 @@ public class IRPact implements IRPActAccess {
         return inRoot.hasBinaryPersistData();
     }
 
+    private boolean isFirstCall() {
+        return !hasPreviousState();
+    }
+
     private void preAgentCreation() throws MissingDataException {
         LOGGER.info("preAgentCreation");
         environment.preAgentCreation();
@@ -248,7 +253,7 @@ public class IRPact implements IRPActAccess {
 
     private void postAgentCreation() throws MissingDataException {
         LOGGER.info("postAgentCreation");
-        environment.postAgentCreation();
+        environment.postAgentCreation(isFirstCall());
         environment.getTaskManager().runSimulationTasks(environment);
     }
 
@@ -463,6 +468,7 @@ public class IRPact implements IRPActAccess {
 
     private void finalTask() {
         IRPLogging.removeFilter();
+        IRPtools.setLoggingFilter(null);
         LOGGER.info("simulation finished");
     }
 

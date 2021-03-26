@@ -67,37 +67,13 @@ public class InExample implements DefaultScenarioFactory {
         InPVactConsumerAgentGroup cag0 = new InPVactConsumerAgentGroup();
         cag0.setName("TRA");
         cag0.setInformationAuthority(1);
-        cag0.setNoveltySeeking(constant0);
-        cag0.setIndependentJudgmentMaking(constant0);
-        cag0.setEnvironmentalConcern(constant0);
-        cag0.setInterestThreshold(constant0);
-        cag0.setFinancialThreshold(constant0);
-        cag0.setAdoptionThreshold(constant0);
-        cag0.setCommunication(constant0);
-        cag0.setRewire(constant0);
-        cag0.setInitialAdopter(constant0);
-        cag0.setRateOfConvergence(constant0);
-        cag0.setInitialProductInterest(constant0);
-        cag0.setConstructionRate(constant0);
-        cag0.setRenovationRate(constant0);
+        cag0.setForAll(constant0);
 
         //cag1
         InPVactConsumerAgentGroup cag1 = new InPVactConsumerAgentGroup();
         cag1.setName("BUM");
         cag1.setInformationAuthority(1);
-        cag1.setNoveltySeeking(constant0);
-        cag1.setIndependentJudgmentMaking(constant0);
-        cag1.setEnvironmentalConcern(constant0);
-        cag1.setInterestThreshold(constant0);
-        cag1.setFinancialThreshold(constant0);
-        cag1.setAdoptionThreshold(constant0);
-        cag1.setCommunication(constant0);
-        cag1.setRewire(constant0);
-        cag1.setInitialAdopter(constant0);
-        cag1.setRateOfConvergence(constant0);
-        cag1.setInitialProductInterest(constant0);
-        cag1.setConstructionRate(constant0);
-        cag1.setRenovationRate(constant0);
+        cag1.setForAll(constant0);
 
         //Population
         InFixConsumerAgentPopulationSize populationSize = new InFixConsumerAgentPopulationSize();

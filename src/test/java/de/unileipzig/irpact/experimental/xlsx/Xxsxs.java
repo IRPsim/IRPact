@@ -9,6 +9,7 @@ import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.commons.util.xlsx.SimpleXlsxTableParser;
 import de.unileipzig.irpact.commons.util.xlsx.SimpleXlsxTableWriter;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
+@Disabled
 class Xxsxs {
 
     @Test

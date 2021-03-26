@@ -187,7 +187,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
     }
 
     @Override
-    public void postAgentCreation() throws MissingDataException {
+    public void postAgentCreation(boolean initialCall) throws MissingDataException {
         //checkSpatialInformation();
     }
 

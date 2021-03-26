@@ -67,25 +67,4 @@ public class InCompleteGraphTopology implements InGraphTopologyScheme {
     public CompleteGraphTopology parse(InputParser parser) throws ParsingException {
         return new CompleteGraphTopology(SocialGraph.Type.COMMUNICATION, getName(), getInitialWeight());
     }
-
-    @Override
-    public String toString() {
-        return "InCompleteGraphTopology{" +
-                "_name='" + _name + '\'' +
-                ", initialWeight=" + initialWeight +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof InCompleteGraphTopology)) return false;
-        InCompleteGraphTopology that = (InCompleteGraphTopology) o;
-        return Double.compare(that.initialWeight, initialWeight) == 0 && Objects.equals(_name, that._name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(_name, initialWeight);
-    }
 }

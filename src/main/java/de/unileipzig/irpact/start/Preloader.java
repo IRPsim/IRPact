@@ -68,11 +68,8 @@ public class Preloader {
 
     private void runIRPTools() {
         LOGGER.info("executing IRPtools");
-        SectionLoggingFilter filter = new SectionLoggingFilter();
+        SectionLoggingFilter filter = (SectionLoggingFilter) IRPLogging.getFilter();
         IRPSection.addAllToolsTo(filter);
-        IRPLogging.setFilter(filter);
-        IRPtools.setLoggingFilter(filter);
-        IRPSection.addSectionsToTools();
         IRPtools.main(clOptions.getArgs());
     }
 

@@ -11,6 +11,7 @@ import de.unileipzig.irpact.core.spatial.distribution.WeightedDiscreteSpatialDis
 import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSelectedGroupedSpatialDistribution2D;
 import de.unileipzig.irptools.util.log.IRPLogger;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
@@ -20,6 +21,7 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
+@Disabled
 public class SelectAndGroupDemo {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(SelectAndGroupDemo.class);

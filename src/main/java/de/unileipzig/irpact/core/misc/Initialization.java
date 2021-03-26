@@ -50,7 +50,7 @@ public interface Initialization extends IsEquals {
      *
      * @throws MissingDataException something went wrong
      */
-    default void postAgentCreation() throws MissingDataException {
+    default void postAgentCreation(boolean initialCall) throws MissingDataException {
     }
 
     /**

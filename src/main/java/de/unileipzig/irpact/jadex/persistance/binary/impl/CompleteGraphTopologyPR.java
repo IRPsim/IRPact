@@ -34,6 +34,7 @@ public class CompleteGraphTopologyPR extends BinaryPRBase<CompleteGraphTopology>
     @Override
     protected BinaryJsonData doInitalizePersist(CompleteGraphTopology object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
+        data.putText(object.getName());
         data.putInt(object.getEdgeType().id());
         data.putDouble(object.getInitialWeight());
         return data;
@@ -46,6 +47,7 @@ public class CompleteGraphTopologyPR extends BinaryPRBase<CompleteGraphTopology>
     @Override
     protected CompleteGraphTopology doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         CompleteGraphTopology object = new CompleteGraphTopology();
+        object.setName(data.getText());
         object.setEdgeType(SocialGraph.Type.get(data.getInt()));
         object.setInitialWeight(data.getDouble());
         return object;

@@ -74,10 +74,12 @@ public class BasicSocialNetwork implements SocialNetwork {
     }
 
     @Override
-    public void postAgentCreation() {
-        topologyScheme.initalize(
-                environment,
-                getGraph()
-        );
+    public void postAgentCreation(boolean initialCall) {
+        if(initialCall) {
+            topologyScheme.initalize(
+                    environment,
+                    getGraph()
+            );
+        }
     }
 }

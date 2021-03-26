@@ -49,6 +49,17 @@ public class InGeneral {
         putFieldPathAndAddEntry(res, thisClass(), "logAll", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
         putFieldPathAndAddEntry(res, thisClass(), "logAllTools", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
 
+        putFieldPathAndAddEntry(res, thisClass(), "logToolsCore", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logToolsDefinition", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logInitialization", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logParamInit", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logGraphCreation", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logAgentCreation", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logPlatformCreation", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logSimulationLifecycle", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logSimulationAgent", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logJadexSystemOut", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+
         putFieldPathAndAddEntry(res, thisClass(), "runOptActDemo", GENERAL_SETTINGS, SPECIAL_SETTINGS);
         putFieldPathAndAddEntry(res, thisClass(), "runPVAct", GENERAL_SETTINGS, SPECIAL_SETTINGS);
     }
@@ -86,27 +97,22 @@ public class InGeneral {
     @FieldDefinition
     public int logLevel;
 
-    //=========================
-    //specific logging
-    //=========================
-
     @FieldDefinition
     public boolean logAll;
 
     @FieldDefinition
-    public boolean logInitialization;
-
-    //=========================
-    //custom logging
-    //=========================
-
-    @FieldDefinition
     public boolean logAllTools;
+
+    //=========================
+    //specific logging
+    //=========================
     @FieldDefinition
     public boolean logToolsCore;
     @FieldDefinition
     public boolean logToolsDefinition;
 
+    @FieldDefinition
+    public boolean logInitialization;
     @FieldDefinition
     public boolean logParamInit;
     @FieldDefinition
@@ -153,12 +159,12 @@ public class InGeneral {
         }
         IRPLogging.setLevel(level);
 
-        SectionLoggingFilter filter = new SectionLoggingFilter();
-        IRPLogging.setFilter(filter);
-        IRPSection.addSectionsToTools();
+        SectionLoggingFilter filter = (SectionLoggingFilter) IRPLogging.getFilter();
+        IRPSection.removeAllFrom(filter);
 
         if(logAll) {
-            IRPSection.addAllTo(filter);
+            IRPSection.addAllNonToolsTo(filter);
+            if(logAllTools) IRPSection.addAllToolsTo(filter);
             return;
         }
 

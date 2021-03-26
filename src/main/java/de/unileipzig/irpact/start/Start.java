@@ -1,6 +1,9 @@
 package de.unileipzig.irpact.start;
 
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.log.SectionLoggingFilter;
+import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import picocli.CommandLine;
 
@@ -19,12 +22,21 @@ public final class Start {
     private Start() {
     }
 
+    private static void startLogging() {
+        IRPLogging.initConsole();
+        SectionLoggingFilter filter = new SectionLoggingFilter();
+        IRPLogging.setFilter(filter);
+        IRPtools.setLoggingFilter(filter);
+        IRPSection.addSectionsToTools();
+        IRPSection.addAllNonToolsTo(filter);
+    }
+
     public static void start(String[] args, IRPactCallback... callbacks) {
         start(args, Arrays.asList(callbacks));
     }
 
     public static void start(String[] args, Collection<? extends IRPactCallback> callbacks) {
-        IRPLogging.initConsole();
+        startLogging();
         CommandLineOptions options = new CommandLineOptions(args);
         int exitCode = options.parse();
         if(exitCode == CommandLine.ExitCode.OK) {
@@ -49,7 +61,7 @@ public final class Start {
     }
 
     public static int startWithGui(String[] args, Collection<? extends IRPactCallback> callbacks) throws Throwable {
-        IRPLogging.initConsole();
+        startLogging();
         CommandLineOptions options = new CommandLineOptions(args);
         int exitCode = options.parse();
         if(exitCode == CommandLine.ExitCode.OK) {

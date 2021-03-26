@@ -43,7 +43,7 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_GROUP, thisName());
         addEntry(res, thisClass(), "noveltySeeking");
-        addEntry(res, thisClass(), "independentJudgmentMaking");
+        addEntry(res, thisClass(), "dependentJudgmentMaking");
         addEntry(res, thisClass(), "environmentalConcern");
         addEntry(res, thisClass(), "interestThreshold");
         addEntry(res, thisClass(), "financialThreshold");
@@ -63,7 +63,7 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
     public InUnivariateDoubleDistribution[] noveltySeeking;
 
     @FieldDefinition
-    public InUnivariateDoubleDistribution[] independentJudgmentMaking;
+    public InUnivariateDoubleDistribution[] dependentJudgmentMaking;
 
     @FieldDefinition
     public InUnivariateDoubleDistribution[] environmentalConcern;
@@ -107,6 +107,22 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
     public InPVactConsumerAgentGroup() {
     }
 
+    public void setForAll(InUnivariateDoubleDistribution dist) {
+        setNoveltySeeking(dist);
+        setDependentJudgmentMaking(dist);
+        setEnvironmentalConcern(dist);
+        setInterestThreshold(dist);
+        setFinancialThreshold(dist);
+        setAdoptionThreshold(dist);
+        setCommunication(dist);
+        setRewire(dist);
+        setInitialAdopter(dist);
+        setRateOfConvergence(dist);
+        setInitialProductInterest(dist);
+        setConstructionRate(dist);
+        setRenovationRate(dist);
+    }
+
     @Override
     public String getName() {
         return _name;
@@ -132,12 +148,12 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         this.noveltySeeking = new InUnivariateDoubleDistribution[]{noveltySeeking};
     }
 
-    public InUnivariateDoubleDistribution getIndependentJudgmentMaking() throws ParsingException {
-        return ParamUtil.getInstance(independentJudgmentMaking, "independentJudgmentMaking");
+    public InUnivariateDoubleDistribution getDependentJudgmentMaking() throws ParsingException {
+        return ParamUtil.getInstance(dependentJudgmentMaking, "independentJudgmentMaking");
     }
 
-    public void setIndependentJudgmentMaking(InUnivariateDoubleDistribution independentJudgmentMaking) {
-        this.independentJudgmentMaking = new InUnivariateDoubleDistribution[]{independentJudgmentMaking};
+    public void setDependentJudgmentMaking(InUnivariateDoubleDistribution dependentJudgmentMaking) {
+        this.dependentJudgmentMaking = new InUnivariateDoubleDistribution[]{dependentJudgmentMaking};
     }
 
     public InUnivariateDoubleDistribution getEnvironmentalConcern() throws ParsingException {
@@ -257,7 +273,7 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         }
 
         addGroupAttribute(parser, jcag, getNoveltySeeking(), NOVELTY_SEEKING);
-        addGroupAttribute(parser, jcag, getIndependentJudgmentMaking(), DEPENDENT_JUDGMENT_MAKING);
+        addGroupAttribute(parser, jcag, getDependentJudgmentMaking(), DEPENDENT_JUDGMENT_MAKING);
         addGroupAttribute(parser, jcag, getEnvironmentalConcern(), ENVIRONMENTAL_CONCERN);
         addGroupAttribute(parser, jcag, getFinancialThreshold(), FINANCIAL_THRESHOLD);
         addGroupAttribute(parser, jcag, getAdoptionThreshold(), ADOPTION_THRESHOLD);

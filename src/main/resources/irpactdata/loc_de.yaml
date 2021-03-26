@@ -35,6 +35,46 @@ InGeneral_logAllTools:
 logging_specific:
   edn_label: "Spezielle Loggingoptionen"
   edn_description: "Ermöglicht es spezielle Loggingoptionen einzustellen."
+InGeneral_logToolsCore:
+  gams_identifier: "logToolsCore"
+  gams_description: "[SPAM] logToolsCore"
+  gams_domain: "[0|1]"
+InGeneral_logToolsDefinition:
+  gams_identifier: "logToolsDefinition"
+  gams_description: "[SPAM] logToolsDefinition"
+  gams_domain: "[0|1]"
+InGeneral_logInitialization:
+  gams_identifier: "logInitialization"
+  gams_description: "logInitialization"
+  gams_domain: "[0|1]"
+InGeneral_logParamInit:
+  gams_identifier: "logParamInit"
+  gams_description: "[SPAM] logParamInit"
+  gams_domain: "[0|1]"
+InGeneral_logGraphCreation:
+  gams_identifier: "logGraphCreation"
+  gams_description: "[SPAM] logGraphCreation"
+  gams_domain: "[0|1]"
+InGeneral_logAgentCreation:
+  gams_identifier: "logAgentCreation"
+  gams_description: "[SPAM] logAgentCreation"
+  gams_domain: "[0|1]"
+InGeneral_logPlatformCreation:
+  gams_identifier: "logPlatformCreation"
+  gams_description: "[SPAM] logPlatformCreation"
+  gams_domain: "[0|1]"
+InGeneral_logSimulationLifecycle:
+  gams_identifier: "logSimulationLifecycle"
+  gams_description: "[SPAM] logSimulationLifecycle"
+  gams_domain: "[0|1]"
+InGeneral_logSimulationAgent:
+  gams_identifier: "logSimulationAgent"
+  gams_description: "[SPAM] logSimulationAgent"
+  gams_domain: "[0|1]"
+InGeneral_logJadexSystemOut:
+  gams_identifier: "logJadexSystemOut"
+  gams_description: "[SPAM] logJadexSystemOut"
+  gams_domain: "[0|1]"
 
 special_settings:
   edn_label: "Spezielle Einstellungen"
@@ -157,9 +197,9 @@ InPVactConsumerAgentGroup:
 InPVactConsumerAgentGroup_noveltySeeking:
   gams_identifier: "noveltySeeking"
   gams_description: "noveltySeeking"
-InPVactConsumerAgentGroup_independentJudgmentMaking:
-  gams_identifier: "independentJudgmentMaking"
-  gams_description: "independentJudgmentMaking"
+InPVactConsumerAgentGroup_dependentJudgmentMaking:
+  gams_identifier: "dependentJudgmentMaking"
+  gams_description: "dependentJudgmentMaking"
 InPVactConsumerAgentGroup_environmentalConcern:
   gams_identifier: "environmentalConcern"
   gams_description: "environmentalConcern"
@@ -268,7 +308,7 @@ InFixConsumerAgentPopulationSize_cags:
   gams_description: "Legt die Konsumergruppen fest, welche diese Populationsgröße haben sollen."
 
 InRelativeExternConsumerAgentPopulationSize:
-  edn_label: "Feste Konsumergruppengröße"
+  edn_label: "Dynamische Konsumergruppengröße"
   edn_description: ""
 InRelativeExternConsumerAgentPopulationSize_totalSize:
   gams_identifier: "Anzahl der Agenten"
@@ -373,7 +413,7 @@ products_attr:
   edn_description: "Ermöglicht die Erstellung von Produktgruppenattributen."
 
 InBasicProductGroupAttribute:
-  edn_label: "Allgemeines Attribut"
+  edn_label: "Allgemeine Attribute"
   edn_description: ""
 InBasicProductGroupAttribute_attrName:
   gams_identifier: "Attributname"
@@ -383,7 +423,7 @@ InBasicProductGroupAttribute_dist:
   gams_description: "Legt die Verteilungsfunktion fest, auf deren Basis die Attributwerte gezogen werden."
 
 InNameSplitProductGroupAttribute:
-  edn_label: "Namensbasiertes Attribute"
+  edn_label: "Namensbasierte Attribute"
   edn_description: "Dieses Attribut wird über seinen Namen definiert."
 InNameSplitProductGroupAttribute_dist:
   gams_identifier: "Verteilungsfunktion"

@@ -64,7 +64,7 @@ public class PVactConsumerAgentGroupSpec extends AbstractSubSpec<InPVactConsumer
         grp.setInformationAuthority(rootSpec.getDouble(TAG_parameters, TAG_informationAuthority));
 
         grp.setNoveltySeeking(job.parseInlinedDistribution(rootSpec.getNode(TAG_parameters, TAG_NOVELTY_SEEKING)));
-        grp.setIndependentJudgmentMaking(job.parseInlinedDistribution(rootSpec.getNode(TAG_parameters, TAG_INDEPENDENT_JUDGMENT_MAKING)));
+        grp.setDependentJudgmentMaking(job.parseInlinedDistribution(rootSpec.getNode(TAG_parameters, TAG_INDEPENDENT_JUDGMENT_MAKING)));
         grp.setEnvironmentalConcern(job.parseInlinedDistribution(rootSpec.getNode(TAG_parameters, TAG_ENVIRONMENTAL_CONCERN)));
         grp.setFinancialThreshold(job.parseInlinedDistribution(rootSpec.getNode(TAG_parameters, TAG_FINANCIAL_THRESHOLD)));
         grp.setAdoptionThreshold(job.parseInlinedDistribution(rootSpec.getNode(TAG_parameters, TAG_ADOPTION_THRESHOLD)));
@@ -98,7 +98,7 @@ public class PVactConsumerAgentGroupSpec extends AbstractSubSpec<InPVactConsumer
         rootSpec.set(TAG_parameters, TAG_informationAuthority, input.getInformationAuthority());
 
         rootSpec.set(TAG_parameters, TAG_NOVELTY_SEEKING, job.inlineEntity(input.getNoveltySeeking(), false));
-        rootSpec.set(TAG_parameters, TAG_INDEPENDENT_JUDGMENT_MAKING, job.inlineEntity(input.getIndependentJudgmentMaking(), false));
+        rootSpec.set(TAG_parameters, TAG_INDEPENDENT_JUDGMENT_MAKING, job.inlineEntity(input.getDependentJudgmentMaking(), false));
         rootSpec.set(TAG_parameters, TAG_ENVIRONMENTAL_CONCERN, job.inlineEntity(input.getEnvironmentalConcern(), false));
         rootSpec.set(TAG_parameters, TAG_FINANCIAL_THRESHOLD, job.inlineEntity(input.getFinancialThreshold(), false));
         rootSpec.set(TAG_parameters, TAG_ADOPTION_THRESHOLD, job.inlineEntity(input.getAdoptionThreshold(), false));

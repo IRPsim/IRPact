@@ -84,11 +84,11 @@ public class NewMultiAsd {
         X x2018 = new X(dir);
         X x2019 = new X(dir);
 
-        runIt(dir, 2015, x2015);
-        runIt(dir, 2016, x2016);
-        runIt(dir, 2017, x2017);
-        runIt(dir, 2018, x2018);
-        runIt(dir, 2019, x2019);
+        runItImage(dir, 2015, x2015);
+        runItImage(dir, 2016, x2016);
+        runItImage(dir, 2017, x2017);
+        runItImage(dir, 2018, x2018);
+        runItImage(dir, 2019, x2019);
 
         Path perennialFile = dir.resolve("scenariosX").resolve("full_scenario.json");
         storePerennial(
@@ -135,7 +135,7 @@ public class NewMultiAsd {
         Start.start(args, callback);
     }
 
-    private void runItImage(
+    private void runItInitialImage(
             Path dir,
             int startYear,
             IRPactCallback callback) {
@@ -145,6 +145,19 @@ public class NewMultiAsd {
                 "--dataDir", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data").toString(),
                 "--image", dir.resolve("image-" + startYear + ".png").toString(),
                 "--noSimulation"
+        };
+        Start.start(args, callback);
+    }
+
+    private void runItImage(
+            Path dir,
+            int startYear,
+            IRPactCallback callback) {
+        String[] args = {
+                "-i", dir.resolve("scenariosX").resolve("input-" + startYear + ".json").toString(),
+                "-o", dir.resolve("scenariosX").resolve("output-" + startYear + ".json").toString(),
+                "--dataDir", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data").toString(),
+                "--image", dir.resolve("image-" + startYear + ".png").toString()
         };
         Start.start(args, callback);
     }
