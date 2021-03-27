@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.start;
 
+import de.unileipzig.irpact.commons.log.LoggingMessage;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -27,42 +28,42 @@ public class CommandLineOptions implements Callable<Integer> {
 
     @CommandLine.Option(
             names = { "-?", "-h", "--help" },
-            description = "print help",
+            description = "Print help.",
             usageHelp = true
     )
     private boolean printHelp;
 
     @CommandLine.Option(
             names = { "-v", "--version" },
-            description = "print version information",
+            description = "Print version information.",
             versionHelp = true
     )
     private boolean printVersion;
 
     @CommandLine.Option(
             names = { "-i", "--input" },
-            description = "path to input file"
+            description = "Set path to input file."
     )
     private String inputFile;
     private Path inputPath;
 
     @CommandLine.Option(
             names = { "-o", "--output" },
-            description = "path to output file"
+            description = "Set path to output file."
     )
     private String outputFile;
     private Path outputPath;
 
     @CommandLine.Option(
             names = { "--image" },
-            description = "path to image output file"
+            description = "Set path to image output file."
     )
     private String imageFile;
     private Path imagePath;
 
     @CommandLine.Option(
             names = { "--noSimulation" },
-            description = "disable simulation"
+            description = "Disable simulation, run initialization only."
     )
     private boolean noSimulation;
 
@@ -87,28 +88,39 @@ public class CommandLineOptions implements Callable<Integer> {
     )
     private int minGamsPartLength;
 
-    //=========================
-    //hidden
-    //=========================
+    @CommandLine.Option(
+            names = { "--checkOutputExistence" },
+            description = "Checks if output already exists."
+    )
+    private boolean checkOutputExistence;
 
     @CommandLine.Option(
             names = { "--logPath" },
-            description = "set path to log file, disables console logging",
-            hidden = true
+            description = "Set path to log file and disable console logging."
     )
     private String logFile;
     private Path logPath;
 
     @CommandLine.Option(
+            names = { "--logConsoleAndFile" },
+            description = "Enable logging to console if '--logPath' is set."
+    )
+    private boolean logConsoleAndFile;
+
+    //=========================
+    //hidden
+    //=========================
+
+    @CommandLine.Option(
             names = { "--irptools" },
-            description = "calls IRPtools, all arguments will be transmitted, IRPact is not called",
+            description = "Call IRPtools, all arguments will be transmitted, IRPact is not called.",
             hidden = true
     )
     private boolean callIRPtools;
 
     @CommandLine.Option(
             names = { "--paramToSpec" },
-            description = "converts the parameter input to the alternative format",
+            description = "Converts the parameter input format to the alternative format.",
             hidden = true
     )
     private String specOutputDir;
@@ -116,7 +128,7 @@ public class CommandLineOptions implements Callable<Integer> {
 
     @CommandLine.Option(
             names = { "--specToParam" },
-            description = "converts the alternative format to the parameter input",
+            description = "Convert the alternative format to the parameter input format.",
             hidden = true
     )
     private String specInputDir;
@@ -124,7 +136,7 @@ public class CommandLineOptions implements Callable<Integer> {
 
     @CommandLine.Option(
             names = { "--dataDir" },
-            description = "path to data directory",
+            description = "Set path to data directory.",
             hidden = true
     )
     private String dataDir;
@@ -155,6 +167,7 @@ public class CommandLineOptions implements Callable<Integer> {
     private final String[] ARGS;
     private int errorCode;
     private boolean executed = false;
+    private LoggingMessage executeResult;
 
     public CommandLineOptions(String[] args) {
         this.ARGS = args;
@@ -186,6 +199,14 @@ public class CommandLineOptions implements Callable<Integer> {
         return executed;
     }
 
+    public boolean hasExecuteResultMessage() {
+        return executeResult != null;
+    }
+
+    public LoggingMessage getExecuteResultMessage() {
+        return executeResult;
+    }
+
     //=========================
     //options
     //=========================
@@ -198,34 +219,40 @@ public class CommandLineOptions implements Callable<Integer> {
         return printVersion;
     }
 
+    public boolean hasInputPath() {
+        return getInputPath() != null;
+    }
     public Path getInputPath() {
         checkExecuted();
         return inputPath;
     }
 
+    public boolean hasOutputPath() {
+        return getOutputPath() != null;
+    }
     public Path getOutputPath() {
         checkExecuted();
         return outputPath;
     }
 
+    public boolean hasImagePath() {
+        return getImagePath() != null;
+    }
     public Path getImagePath() {
         checkExecuted();
         return imagePath;
     }
 
-    public boolean hasImagePath() {
-        checkExecuted();
-        return imagePath != null;
+    public boolean logToFile() {
+        return getLogPath() != null;
     }
-
-    public boolean hasLogPath() {
-        checkExecuted();
-        return logPath != null;
-    }
-
     public Path getLogPath() {
         checkExecuted();
         return logPath;
+    }
+
+    public boolean logConsoleAndFile() {
+        return logConsoleAndFile;
     }
 
     public boolean isSimulation() {
@@ -244,20 +271,16 @@ public class CommandLineOptions implements Callable<Integer> {
     }
 
     public boolean hasSpecOutputDirPath() {
-        checkExecuted();
-        return specOutputDirPath != null;
+        return getSpecOutputDirPath() != null;
     }
-
     public Path getSpecOutputDirPath() {
         checkExecuted();
         return specOutputDirPath;
     }
 
     public boolean hasSpecInputDirPath() {
-        checkExecuted();
-        return specInputDirPath != null;
+        return getSpecInputDirPath() != null;
     }
-
     public Path getSpecInputDirPath() {
         checkExecuted();
         return specInputDirPath;
@@ -299,101 +322,135 @@ public class CommandLineOptions implements Callable<Integer> {
     @Override
     public Integer call() {
         executed = true;
+        setup();
+        return validate();
+    }
 
-        if(printVersion || printHelp) {
+    private void setup() {
+        inputPath = tryGetPath(inputFile);
+        outputPath = tryGetPath(outputFile);
+        imagePath = tryGetPath(imageFile);
+        logPath = tryGetPath(logFile);
+        specOutputDirPath = tryGetPath(specOutputDir);
+        specInputDirPath = tryGetPath(specInputDir);
+        dataDirPath = tryGetPath(dataDir);
+    }
+
+    private static Path tryGetPath(String pathStr) {
+        return pathStr == null
+                ? null
+                : Paths.get(pathStr);
+    }
+
+    @SuppressWarnings("RedundantIfStatement")
+    private int validate() {
+        if(cancelValidation()) {
             return CommandLine.ExitCode.OK;
         }
 
-        if(callIRPtools) {
-            return CommandLine.ExitCode.OK;
+        int inputOk = validateInput();
+        if(inputOk != CommandLine.ExitCode.OK) {
+            return inputOk;
         }
 
-        if(testMode) {
-            return CommandLine.ExitCode.OK;
+        int outputOk = validateInput();
+        if(outputOk != CommandLine.ExitCode.OK) {
+            return outputOk;
         }
 
-        if(dataDir != null) {
-            dataDirPath = Paths.get(dataDir);
-        }
-
-        if(handleInput()) {
-            if(Files.notExists(inputPath)) {
-                LOGGER.error("input file not found: {}", inputPath);
-                return CommandLine.ExitCode.SOFTWARE;
-            }
-            if(!handleOutput() && !handleSpecOutput() && isSimulation()) {
-                LOGGER.error("output file missing");
-                return CommandLine.ExitCode.USAGE;
-            }
-        }
-        else if(handleSpecInput()) {
-            if(Files.notExists(specInputDirPath)) {
-                LOGGER.error("input dir not found: {}", specInputDirPath);
-                return CommandLine.ExitCode.SOFTWARE;
-            }
-            if(!handleOutput() && isSimulation()) {
-                LOGGER.error("output file missing");
-                return CommandLine.ExitCode.USAGE;
-            }
-        }
-        else {
-            LOGGER.error("input file missing");
-            return CommandLine.ExitCode.USAGE;
-        }
-
-        if(imageFile != null) {
-            imagePath = Paths.get(imageFile);
-        }
-
-        if(logFile != null) {
-            logPath = Paths.get(logFile);
+        int consistencyOk = validateConsistency();
+        if(consistencyOk != CommandLine.ExitCode.OK) {
+            return consistencyOk;
         }
 
         return CommandLine.ExitCode.OK;
     }
 
-    private boolean handleInput() {
-        if(inputPath != null) {
-            return true;
-        }
-        if(inputFile != null) {
-            inputPath = Paths.get(inputFile);
-            return true;
-        }
-        return false;
+    private boolean cancelValidation() {
+        return testMode
+                || printHelp
+                || printVersion
+                || callIRPtools;
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private boolean handleOutput() {
-        if(outputPath != null) {
-            return true;
+    private int validateInput() {
+        int specifiedInput = countSpecified(inputPath, specInputDirPath);
+        switch (specifiedInput) {
+            case 0b00:
+                executeResult = new LoggingMessage("missing input");
+                return CommandLine.ExitCode.USAGE;
+
+            case 0b01:
+                if(Files.notExists(inputPath)) {
+                    executeResult = new LoggingMessage("input file '{}' not exists", inputPath);
+                    return CommandLine.ExitCode.USAGE;
+                }
+                if(Files.isDirectory(inputPath)) {
+                    executeResult = new LoggingMessage("input file '{}' is a directory", inputPath);
+                    return CommandLine.ExitCode.USAGE;
+                }
+                break;
+
+            case 0b10:
+                if(Files.notExists(specInputDirPath)) {
+                    executeResult = new LoggingMessage("input file '{}' not exists", specInputDirPath);
+                    return CommandLine.ExitCode.USAGE;
+                }
+                if(Files.isDirectory(specInputDirPath)) {
+                    executeResult = new LoggingMessage("input file '{}' is a directory", specInputDirPath);
+                    return CommandLine.ExitCode.USAGE;
+                }
+                break;
+
+            case 0b11:
+                executeResult = new LoggingMessage("input file '{}' and spec input dir '{}' specified", inputPath, specInputDirPath);
+                return CommandLine.ExitCode.USAGE;
         }
-        if(outputFile != null) {
-            outputPath = Paths.get(outputFile);
-            return true;
-        }
-        return false;
+
+        return CommandLine.ExitCode.OK;
     }
 
-    private boolean handleSpecInput() {
-        if(specInputDirPath != null) {
-            return true;
+    private int validateOutput() {
+        int specifiedOutput = countSpecified(outputPath, specOutputDirPath);
+        switch (specifiedOutput) {
+            case 0b00:
+                executeResult = new LoggingMessage("missing output");
+                return CommandLine.ExitCode.USAGE;
+
+            case 0b01:
+                if(checkOutputExistence && Files.exists(outputPath)) {
+                    executeResult = new LoggingMessage("output file '{}' already exists", outputPath);
+                    return CommandLine.ExitCode.USAGE;
+                }
+                if(Files.isDirectory(outputPath)) {
+                    executeResult = new LoggingMessage("output file '{}' is a directory", outputPath);
+                    return CommandLine.ExitCode.USAGE;
+                }
+                break;
+
+            case 0b10:
+                if(!Files.isDirectory(specOutputDirPath)) {
+                    executeResult = new LoggingMessage("output file '{}' is not a directory", specOutputDirPath);
+                    return CommandLine.ExitCode.USAGE;
+                }
+                break;
+
+            case 0b11:
+                executeResult = new LoggingMessage("output file '{}' and spec output dir '{}' specified", outputPath, specOutputDirPath);
+                return CommandLine.ExitCode.USAGE;
         }
-        if(specInputDir != null) {
-            specInputDirPath = Paths.get(specInputDir);
-            return true;
-        }
-        return false;
+
+        return CommandLine.ExitCode.OK;
     }
 
-    private boolean handleSpecOutput() {
-        if(specOutputDirPath != null) {
-            return true;
-        }
-        if(specOutputDir != null) {
-            specOutputDirPath = Paths.get(specOutputDir);
-            return true;
-        }
-        return false;
+    private int validateConsistency() {
+        return CommandLine.ExitCode.OK;
+    }
+
+    private static int countSpecified(Object obj0, Object obj1) {
+        int out = 0;
+        if(obj0 != null) out |= 0b01;
+        if(obj1 != null) out |= 0b10;
+        return out;
     }
 }

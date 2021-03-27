@@ -119,7 +119,7 @@ class OptActMainTest {
 
     @Test
     void createFiles4GV() throws Exception {
-        Logback.setupSystemOutAndErr();
+        Logback.setupConsole();
         Path dir = TestFiles.testfiles.resolve("optact").resolve("gv");
         String[] args = {
                 "--inputRootClass", GvInRoot.class.getName(),
@@ -142,7 +142,7 @@ class OptActMainTest {
 
     @Test
     void rebuildStuff() throws Exception {
-        Logback.setupSystemOutAndErr();
+        Logback.setupConsole();
         Path dir = Paths.get("exppriv", "optact", "gv_test");
         String[] args = {
 //                "--inputRootClass", GvInRoot.class.getName(),
@@ -165,7 +165,7 @@ class OptActMainTest {
 
     @Test
     void asdIRPopt() throws Exception {
-        Logback.setupSystemOutAndErr();
+        Logback.setupConsole();
         Path dir = Paths.get("D:\\SUSIC\\SUSIC\\Programming\\Research\\model-HEAD-758fe47\\IRPsim");
         String[] args = {
 //                "--inputRootClass", GvInRoot.class.getName(),

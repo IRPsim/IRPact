@@ -42,6 +42,11 @@ public enum IRPSection implements LoggingSection {
     JADEX_SYSTEM_OUT
     ;
 
+    @Override
+    public Class<IRPSection> getType() {
+        return IRPSection.class;
+    }
+
     public static void addAllNonToolsTo(SectionLoggingFilter filter) {
         addAllTo(filter);
         removeAllToolsFrom(filter);

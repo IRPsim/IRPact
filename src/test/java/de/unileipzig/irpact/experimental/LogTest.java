@@ -15,7 +15,7 @@ class LogTest {
 
     @Test
     void asd() {
-        Logback.setupSystemOutAndErr();
+        Logback.setupConsole();
         Logger logger = LoggerFactory.getLogger(LogTest.class);
         logger.trace("trace");
         logger.debug("debug");

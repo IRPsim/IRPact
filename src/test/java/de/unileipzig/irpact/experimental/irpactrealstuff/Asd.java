@@ -36,7 +36,7 @@ public class Asd {
 
     @Test
     void runStart() throws Exception {
-        Logback.setupSystemOutAndErr();
+        Logback.setupConsole();
         Path dir = TestFiles.testfiles.resolve("uitests").resolve("x4");
         String[] args = {
                 "--inputRootClass", InRoot.class.getName(),

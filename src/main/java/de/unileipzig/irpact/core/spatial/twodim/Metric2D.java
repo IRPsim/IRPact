@@ -44,24 +44,26 @@ public enum Metric2D implements Metric {
             return x2 + y2;
         }
     },
+    //Info: lat = y, long = x
     HAVERSINE_M(4) {
         @Override
         public double distance(Point2D from, Point2D to) {
             if(from == to) return 0.0;
             return GeoMath.haversineDistance(
-                    from.getX(), from.getY(),
-                    to.getX(), to.getY(),
+                    from.getY(), from.getX(),
+                    to.getY(), to.getX(),
                     GeoMath.EARTH_RADIUS_METER
             );
         }
     },
+    //Info: lat = y, long = x
     HAVERSINE_KM(5) {
         @Override
         public double distance(Point2D from, Point2D to) {
             if(from == to) return 0.0;
             return GeoMath.haversineDistance(
-                    from.getX(), from.getY(),
-                    to.getX(), to.getY(),
+                    from.getY(), from.getX(),
+                    to.getY(), to.getX(),
                     GeoMath.EARTH_RADIUS_KILOMETER
             );
         }

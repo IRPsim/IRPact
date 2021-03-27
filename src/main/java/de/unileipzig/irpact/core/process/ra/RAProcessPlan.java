@@ -641,29 +641,6 @@ public class RAProcessPlan implements ProcessPlan {
         interest.update(product, points);
     }
 
-//    protected double getShareOfAdopterInSocialNetwork() {
-//        return getShareOfAdopterInSocialNetwork(EntireNetworkNodeFilter.INSTANCE);
-//    }
-//
-//    protected double getShareOfAdopterInLocalArea() {
-//        return getShareOfAdopterInSocialNetwork(distanceFilter);
-//    }
-//
-//    protected double getShareOfAdopterInSocialNetwork(NodeFilter distanceFilter) {
-//        MutableDouble total = MutableDouble.zero();
-//        long adopterCount = environment.getNetwork().getGraph()
-//                .streamNodes()
-//                .filter(distanceFilter)
-//                .filter(IS_CONSUMER)
-//                .map(TO_CONSUMER)
-//                .peek(total.incConsumer())
-//                .filter(IS_ADOPTER)
-//                .count();
-//        return total.isZero()
-//                ? 0.0
-//                : (double) adopterCount / total.get();
-//    }
-
     protected void getShareOfAdopterInSocialNetworkAndLocalArea(
             MutableDouble global,
             MutableDouble local,

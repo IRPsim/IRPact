@@ -52,7 +52,7 @@ class TestUI {
 
     @Test
     void runStart() throws Exception {
-        Logback.setupSystemOutAndErr();
+        Logback.setupConsole();
         Path dir = TestFiles.testfiles.resolve("optact").resolve("test2");
         String[] args = {
                 "--inputRootClass", InRoot.class.getName(),

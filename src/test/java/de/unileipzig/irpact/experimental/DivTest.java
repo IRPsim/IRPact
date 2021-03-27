@@ -137,7 +137,7 @@ class DivTest {
 
     @Test
     void asd2() {
-        Logback.setupSystemOutAndErr();
+        Logback.setupConsole();
         MultiGraph<String, String, String> g = new DirectedAdjacencyListMultiGraph<>();
         for(int i = 0; i < 11; i++) {
             g.addVertex("a" + i);
@@ -155,7 +155,7 @@ class DivTest {
 
     @Test
     void asd3() {
-        Logback.setupSystemOutAndErr();
+        Logback.setupConsole();
         MultiGraph<String, String, String> g = new DirectedAdjacencyListMultiGraph<>();
         for(int i = 0; i < 11; i++) {
             g.addVertex("a" + i);

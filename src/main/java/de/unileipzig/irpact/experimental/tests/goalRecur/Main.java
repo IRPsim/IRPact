@@ -2,9 +2,6 @@ package de.unileipzig.irpact.experimental.tests.goalRecur;
 
 import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
 import de.unileipzig.irpact.commons.log.Logback;
-import de.unileipzig.irpact.experimental.tests.reference.NonRefData;
-import de.unileipzig.irpact.experimental.tests.reference.RefData;
-import de.unileipzig.irpact.experimental.tests.reference.X;
 import de.unileipzig.irpact.jadex.util.JadexUtil2;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
@@ -17,7 +14,6 @@ import jadex.bridge.service.types.simulation.ISimulationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalTime;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -41,7 +37,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Logback.setupSystemOutAndErr();
+        Logback.setupConsole();
         LOGGER.trace("TEST");
 
         IPlatformConfiguration config = PlatformConfigurationHandler.getMinimal();

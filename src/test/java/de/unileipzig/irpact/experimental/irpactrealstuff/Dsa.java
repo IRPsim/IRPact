@@ -19,7 +19,7 @@ public class Dsa {
 
     @Test
     void runStart() throws Exception {
-        Logback.setupSystemOutAndErr();
+        Logback.setupConsole();
         Path dir = TestFiles.testfiles.resolve("uitests").resolve("x2");
         String[] args = {
                 "--inputRootClass", GvInRoot.class.getName(),

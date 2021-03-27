@@ -37,7 +37,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Logback.setupSystemOutAndErr();
+        Logback.setupConsole();
         LOGGER.trace("TEST");
 
         IPlatformConfiguration config = PlatformConfigurationHandler.getMinimal();

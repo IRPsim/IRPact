@@ -1,9 +1,8 @@
 package de.unileipzig.irpact.commons;
 
-import de.unileipzig.irpact.util.Todo;
-
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
@@ -15,6 +14,28 @@ import java.util.stream.Collectors;
 public final class CollectionUtil {
 
     private CollectionUtil() {
+    }
+
+    public static <E> List<E> filterToList(Collection<? extends E> input, Predicate<? super E> filter) {
+        List<E> list = new ArrayList<>();
+        filter(input, filter, list);
+        return list;
+    }
+
+    public static <E> Set<E> filterToSet(Collection<? extends E> input, Predicate<? super E> filter) {
+        Set<E> list = newSet();
+        filter(input, filter, list);
+        return list;
+    }
+
+    public static <E> boolean filter(Collection<? extends E> input, Predicate<? super E> filter, Collection<? super E> output) {
+        boolean changed = false;
+        for(E element: input) {
+            if(filter.test(element)) {
+                changed |= output.add(element);
+            }
+        }
+        return changed;
     }
 
     public static <T> boolean containsSame(T[] array, T object) {
@@ -35,12 +56,10 @@ public final class CollectionUtil {
         return false;
     }
 
-    @Todo("alles nicht-zwang-linkged hashmaps austauschen")
     public static <K, V> Map<K, V> newMap() {
         return new LinkedHashMap<>();
     }
 
-    @Todo("alles nicht-zwang-linkged hashmaps austauschen")
     public static <E> Set<E> newSet() {
         return new LinkedHashSet<>();
     }

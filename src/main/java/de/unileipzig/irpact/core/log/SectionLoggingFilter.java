@@ -8,16 +8,10 @@ import java.util.*;
 /**
  * @author Daniel Abitz
  */
-/*
- * Dieser Filter arbeitet mit Bereichen. Ein Bereich kann geloggt werden oder auch nicht.
- *
- * - Die Level-Beschraenkungen des Loggers selber gelten weiterhin. Dieser Filter ist fuer die reine
- * Informationsausgabe gedacht und konzipiert.
- * - Das Error-Level kann nicht gefiltert werden.
- */
 public final class SectionLoggingFilter implements LoggingFilter {
 
-    protected EnumSet<IRPSection> sections;
+    protected final EnumSet<IRPSection> SECTIONS;
+
     protected boolean logAll = false;
     protected boolean logNothing = false;
     protected boolean logIfSectionIsNull = false;
@@ -29,7 +23,7 @@ public final class SectionLoggingFilter implements LoggingFilter {
     }
 
     public SectionLoggingFilter(EnumSet<IRPSection> sections) {
-        this.sections = sections;
+        this.SECTIONS = sections;
     }
 
     public void setLogAll(boolean logAll) {
@@ -53,19 +47,19 @@ public final class SectionLoggingFilter implements LoggingFilter {
     }
 
     public void add(IRPSection section) {
-        sections.add(section);
+        SECTIONS.add(section);
     }
 
     public boolean remove(IRPSection section) {
-        return sections.remove(section);
+        return SECTIONS.remove(section);
     }
 
     public boolean has(IRPSection section) {
-        return sections.contains(section);
+        return SECTIONS.contains(section);
     }
 
     public Set<IRPSection> getSections() {
-        return sections;
+        return SECTIONS;
     }
 
     @Override
@@ -84,7 +78,12 @@ public final class SectionLoggingFilter implements LoggingFilter {
         if(section == null) {
             return logIfSectionIsNull;
         }
-        return section.getClass() == IRPSection.class
-                && has((IRPSection) section);
+        if(section.getType() == IRPSection.class) {
+            return has((IRPSection) section);
+        }
+        if(section.getType() == ComplexIRPSection.class) {
+            return ((ComplexIRPSection) section).test(SECTIONS);
+        }
+        return false;
     }
 }

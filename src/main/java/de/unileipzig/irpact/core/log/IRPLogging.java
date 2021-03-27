@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.core.log;
 
 import de.unileipzig.irpact.commons.log.Logback;
-import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import de.unileipzig.irptools.util.log.LoggingFilter;
 import de.unileipzig.irptools.util.log.LoggingSection;
@@ -17,22 +16,40 @@ public final class IRPLogging {
 
     private static final GlobalFilter FILTER = new GlobalFilter();
 
+    private static IRPLogger clearLogger;
+
     private IRPLogging() {
     }
 
     public static void initConsole() {
-        Logback.setupSystemOutAndErr();
+        Logback.setupConsole();
     }
 
     public static void initFile(Path target) {
         Logback.setupFile(target);
     }
 
+    public static void initConsoleAndFile(Path target) {
+        Logback.setupConsoleAndFile(target);
+    }
+
     public static IRPLogger getLogger(Class<?> c) {
         return IRPLogger.getLogger(FILTER, c);
     }
 
-    public static void setFilter(LoggingFilter filter) {
+    public static IRPLogger getClearLogger() {
+        if(clearLogger == null) {
+            initClearLogger();
+        }
+        return clearLogger;
+    }
+    private static synchronized void initClearLogger() {
+        if(clearLogger == null) {
+            clearLogger = new IRPLogger(FILTER, Logback.getClearLogger());
+        }
+    }
+
+    public static void setFilter(SectionLoggingFilter filter) {
         FILTER.setBacked(filter);
     }
 
@@ -44,7 +61,7 @@ public final class IRPLogging {
         return FILTER.getBacked() != null;
     }
 
-    public static LoggingFilter getFilter() {
+    public static SectionLoggingFilter getFilter() {
         return FILTER.getBacked();
     }
 
@@ -57,12 +74,12 @@ public final class IRPLogging {
      */
     private static final class GlobalFilter implements LoggingFilter {
 
-        private LoggingFilter backed;
+        private SectionLoggingFilter backed;
 
         private GlobalFilter() {
         }
 
-        private void setBacked(LoggingFilter backed) {
+        private void setBacked(SectionLoggingFilter backed) {
             if(this.backed != null) {
                 throw new IllegalArgumentException("filter aready set");
             }
@@ -73,7 +90,7 @@ public final class IRPLogging {
             backed = null;
         }
 
-        private LoggingFilter getBacked() {
+        private SectionLoggingFilter getBacked() {
             return backed;
         }
 

@@ -68,16 +68,12 @@ public class Preloader {
 
     private void runIRPTools() {
         LOGGER.info("executing IRPtools");
-        SectionLoggingFilter filter = (SectionLoggingFilter) IRPLogging.getFilter();
+        SectionLoggingFilter filter = IRPLogging.getFilter();
         IRPSection.addAllToolsTo(filter);
         IRPtools.main(clOptions.getArgs());
     }
 
     private void setup() {
-        if(clOptions.hasLogPath()) {
-            IRPLogging.initFile(clOptions.getLogPath());
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "log file: {}", clOptions.getLogPath());
-        }
         if(clOptions.isCallIRPtools()) {
             LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "call IRPtools");
         }
