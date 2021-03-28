@@ -174,6 +174,10 @@ public interface ChecksumComparable {
         return h;
     }
 
+    static int getChecksum(long value) {
+        return Long.hashCode(value);
+    }
+
     //nutzt bei IsEquals-Objekten den getHashCode
     static int getChecksum(Object value) {
         if(value == null) {

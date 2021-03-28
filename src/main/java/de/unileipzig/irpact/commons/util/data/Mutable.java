@@ -1,18 +1,18 @@
-package de.unileipzig.irpact.commons;
+package de.unileipzig.irpact.commons.util.data;
 
 /**
  * @author Daniel Abitz
  */
-public final class Ref<T> {
+public final class Mutable<T> {
 
     private boolean hasValue;
     private T value;
 
-    public Ref() {
+    public Mutable() {
         clear();
     }
 
-    public Ref(T value) {
+    public Mutable(T value) {
         set(value);
     }
 

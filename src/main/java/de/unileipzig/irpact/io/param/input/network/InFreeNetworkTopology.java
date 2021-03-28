@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.io.param.input.network;
 
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.spatial.DistanceEvaluator;
 import de.unileipzig.irpact.core.agent.AgentManager;

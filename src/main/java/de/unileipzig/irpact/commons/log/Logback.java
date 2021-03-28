@@ -11,7 +11,7 @@ import ch.qos.logback.core.ConsoleAppender;
 import ch.qos.logback.core.FileAppender;
 import ch.qos.logback.core.encoder.LayoutWrappingEncoder;
 import ch.qos.logback.core.spi.FilterReply;
-import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
@@ -40,9 +40,7 @@ public final class Logback {
     private static final String CLEAR_SYSTEMERR = "CLEAR_SYSTEMERR";
     private static final String CLEAR_FILE = "CLEAR_FILE";
 
-    private static final List<Appender<ILoggingEvent>> ALL_APPENDERS = new ArrayList<>();
-    private static final List<FileAppender<ILoggingEvent>> FILE_APPENDERS = new ArrayList<>();
-    private static final List<ConsoleAppender<ILoggingEvent>> CONSOLE_APPENDERS = new ArrayList<>();
+    private static final List<LoggerSetup> SETUPS = new ArrayList<>();
 
     private static Logger rootLogger;
     private static Logger clearLogger;
@@ -80,8 +78,9 @@ public final class Logback {
         setupFileCalled = false;
         setupConsoleAndFileCalled = false;
 
-        stopAppenders(FILE_APPENDERS);
-        setAndStart(CONSOLE_APPENDERS);
+        for(LoggerSetup setup: SETUPS) {
+            setup.setupConsole();
+        }
     }
 
     private static boolean setupFileCalled = false;
@@ -95,9 +94,9 @@ public final class Logback {
         setupConsoleCalled = false;
         setupConsoleAndFileCalled = false;
 
-        stopAppenders(ALL_APPENDERS);
-        setFile(FILE_APPENDERS, target);
-        setAndStart(FILE_APPENDERS);
+        for(LoggerSetup setup: SETUPS) {
+            setup.setupFile(target);
+        }
     }
 
     private static boolean setupConsoleAndFileCalled = false;
@@ -111,9 +110,9 @@ public final class Logback {
         setupConsoleCalled = false;
         setupFileCalled = false;
 
-        stopAppenders(ALL_APPENDERS);
-        setFile(FILE_APPENDERS, target);
-        setAndStart(ALL_APPENDERS);
+        for(LoggerSetup setup: SETUPS) {
+            setup.setupConsoleAndFile(target);
+        }
     }
 
     public static void setLevel(Level level) {
@@ -131,7 +130,7 @@ public final class Logback {
         initCalled = true;
         initRootLogger();
         initClearLogger();
-        initAppenders();
+        initSetups();
     }
 
     private static void checkInit() {
@@ -154,17 +153,20 @@ public final class Logback {
         detachAllAppenders(clearLogger);
     }
 
-    private static void initAppenders() {
-        CONSOLE_APPENDERS.add(getSystemOutAppender());
-        CONSOLE_APPENDERS.add(getSystemErrAppender());
-        CONSOLE_APPENDERS.add(getClearSystemOutAppender());
-        CONSOLE_APPENDERS.add(getClearSystemErrAppender());
+    private static void initSetups() {
+        LoggerSetup rootSetup = new LoggerSetup(
+                getRootLogger(),
+                CollectionUtil.arrayListOf(getSystemOutAppender(), getSystemErrAppender()),
+                CollectionUtil.arrayListOf(getFileAppender())
+        );
+        SETUPS.add(rootSetup);
 
-        FILE_APPENDERS.add(getFileAppender());
-        FILE_APPENDERS.add(getClearFileAppender());
-
-        ALL_APPENDERS.addAll(CONSOLE_APPENDERS);
-        ALL_APPENDERS.addAll(FILE_APPENDERS);
+        LoggerSetup clearSetup = new LoggerSetup(
+                getClearLogger(),
+                CollectionUtil.arrayListOf(getClearSystemOutAppender(), getClearSystemErrAppender()),
+                CollectionUtil.arrayListOf(getClearFileAppender())
+        );
+        SETUPS.add(clearSetup);
     }
 
     private static void setFile(Collection<? extends FileAppender<ILoggingEvent>> appenders, Path path) {
@@ -172,11 +174,6 @@ public final class Logback {
         for(FileAppender<ILoggingEvent> appender: appenders) {
             appender.setFile(file);
         }
-    }
-
-    private static void setAndStart(Collection<? extends Appender<ILoggingEvent>> appenders) {
-        startAppenders(appenders);
-        setAppenders(appenders, getRootLogger(), getClearLogger());
     }
 
     private static void stopAppenders(Collection<? extends Appender<ILoggingEvent>> appenders) {
@@ -195,12 +192,9 @@ public final class Logback {
         }
     }
 
-    private static void setAppenders(Collection<? extends Appender<ILoggingEvent>> appenders, Logger... loggers) {
-        for(Logger logger: loggers) {
-            detachAllAppenders(logger);
-            for(Appender<ILoggingEvent> appender: appenders) {
-                logger.addAppender(appender);
-            }
+    private static void addAppenders(Collection<? extends Appender<ILoggingEvent>> appenders, Logger logger) {
+        for(Appender<ILoggingEvent> appender: appenders) {
+            logger.addAppender(appender);
         }
     }
 
@@ -335,5 +329,53 @@ public final class Logback {
         appender.setEncoder(encoder);
 
         return appender;
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    private static final class LoggerSetup {
+
+        private final Logger LOGGER;
+        private final List<ConsoleAppender<ILoggingEvent>> CONSOLE_APPENDERS;
+        private final List<FileAppender<ILoggingEvent>> FILE_APPENDERS;
+        private final List<Appender<ILoggingEvent>> ALL_APPENDERS;
+
+        private LoggerSetup(
+                Logger logger,
+                List<ConsoleAppender<ILoggingEvent>> consoleAppenders,
+                List<FileAppender<ILoggingEvent>> fileAppenders) {
+            LOGGER = logger;
+            CONSOLE_APPENDERS = consoleAppenders;
+            FILE_APPENDERS = fileAppenders;
+            ALL_APPENDERS = new ArrayList<>();
+            ALL_APPENDERS.addAll(CONSOLE_APPENDERS);
+            ALL_APPENDERS.addAll(FILE_APPENDERS);
+        }
+
+        private void reset() {
+            detachAllAppenders(LOGGER);
+            stopAppenders(ALL_APPENDERS);
+        }
+
+        private void setupConsole() {
+            reset();
+            startAppenders(CONSOLE_APPENDERS);
+            addAppenders(CONSOLE_APPENDERS, LOGGER);
+        }
+
+        private void setupFile(Path target) {
+            reset();
+            setFile(FILE_APPENDERS, target);
+            startAppenders(FILE_APPENDERS);
+            addAppenders(FILE_APPENDERS, LOGGER);
+        }
+
+        private void setupConsoleAndFile(Path target) {
+            reset();
+            setFile(FILE_APPENDERS, target);
+            startAppenders(ALL_APPENDERS);
+            addAppenders(ALL_APPENDERS, LOGGER);
+        }
     }
 }

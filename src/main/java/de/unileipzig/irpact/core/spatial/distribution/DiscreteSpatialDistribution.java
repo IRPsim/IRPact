@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.core.spatial.distribution;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
 import java.util.Collection;
@@ -92,7 +91,7 @@ public class DiscreteSpatialDistribution extends ResettableSpatialDistributionBa
         if(unused.isEmpty()) {
             throw new IllegalStateException("set is empty");
         }
-        SpatialInformation info = CollectionUtil.removeRandom(unused, rnd.getRandom());
+        SpatialInformation info = rnd.removeRandom(unused);
         used.add(info);
         numberOfCalls++;
         return info;

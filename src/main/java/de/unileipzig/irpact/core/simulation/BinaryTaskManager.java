@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.simulation;
 
-import de.unileipzig.irpact.commons.BinaryData;
+import de.unileipzig.irpact.commons.util.data.BinaryData;
 
 import java.util.Collection;
 

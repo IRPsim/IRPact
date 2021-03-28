@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeCreator;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.commons.MultiCounter;
+import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.io.param.input.InAttributeName;

@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.commons;
 
+import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.commons.util.weighted.BasicWeightedMapping;
 import org.junit.jupiter.api.Test;
-
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,7 +24,7 @@ class BasicWeightedMappingTest {
         int ax = 0;
         int ay = 0;
         int az = 0;
-        Random rnd = new Random(123);
+        Rnd rnd = new Rnd(123);
         for(int i = 0; i < 1000; i++) {
             String t = wm.getWeightedRandom("a", rnd);
             if("x".equals(t)) ax++;
@@ -40,7 +40,7 @@ class BasicWeightedMappingTest {
         int za = 0;
         int zb = 0;
         int zc = 0;
-        Random rnd2 = new Random(123);
+        Rnd rnd2 = new Rnd(123);
         for(int i = 0; i < 1000; i++) {
             String t = wm.getWeightedRandom("z", rnd2);
             if("a".equals(t)) za++;

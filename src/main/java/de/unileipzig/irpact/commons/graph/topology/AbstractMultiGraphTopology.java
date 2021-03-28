@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.graph.topology;
 
-import de.unileipzig.irpact.commons.TriFunction;
+import de.unileipzig.irpact.commons.util.TriFunction;
 import de.unileipzig.irpact.commons.graph.Graph;
 import de.unileipzig.irpact.commons.graph.MultiGraph;
 import de.unileipzig.irpact.commons.graph.SingleGraph;

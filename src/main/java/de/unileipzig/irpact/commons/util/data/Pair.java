@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.commons;
+package de.unileipzig.irpact.commons.util.data;
 
 import java.util.Map;
 import java.util.Objects;

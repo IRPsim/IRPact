@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.start.optact.network;
 
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.experimental.deprecated.input2.InputResource;
-import de.unileipzig.irpact.commons.Util;
 import de.unileipzig.irpact.commons.graph.topology.FreeMultiGraphTopology;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
@@ -65,7 +65,7 @@ public class IFreeMultiGraphTopology implements IGraphTopology {
         FreeMultiGraphTopology<V, E, ?> ft = new FreeMultiGraphTopology<>();
         ft.setEdgeCount(ftEdgeCount);
         ft.setSelfReferential(ftSelfReferential);
-        long seed = Util.getRandomSeedIf0(ftSeed);
+        long seed = Rnd.nextLongGlobalIfEquals(ftSeed, Rnd.USE_RANDOM_SEED);
         ft.setRandom(new Random(seed));
         return ft;
     }

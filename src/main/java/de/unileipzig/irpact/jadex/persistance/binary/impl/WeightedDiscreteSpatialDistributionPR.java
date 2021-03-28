@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;

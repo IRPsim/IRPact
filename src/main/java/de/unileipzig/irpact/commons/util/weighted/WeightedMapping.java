@@ -1,6 +1,6 @@
-package de.unileipzig.irpact.commons;
+package de.unileipzig.irpact.commons.util.weighted;
 
-import java.util.Random;
+import de.unileipzig.irpact.commons.util.Rnd;
 
 /**
  * @param <S>
@@ -22,7 +22,7 @@ public interface WeightedMapping<S, T, W> {
 
     boolean remove(S source, T target);
 
-    T getRandom(S source, Random rnd);
+    T getRandom(S source, Rnd rnd);
 
-    T getWeightedRandom(S source, Random rnd);
+    T getWeightedRandom(S source, Rnd rnd);
 }

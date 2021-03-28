@@ -1,4 +1,6 @@
-package de.unileipzig.irpact.commons;
+package de.unileipzig.irpact.commons.util.data;
+
+import de.unileipzig.irpact.commons.util.CollectionUtil;
 
 import java.util.Map;
 import java.util.function.Function;

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons;
 
+import de.unileipzig.irpact.commons.util.CollectionUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;

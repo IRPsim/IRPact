@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.experimental.dataDist;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
@@ -70,7 +71,7 @@ public class TestIt {
         List<List<SpatialAttribute<?>>> attrList = SpatialTableFileLoader.parseXlsx(path);
         List<SpatialInformation> infoList = SpatialUtil.mapToPoint2D(attrList, x, y);
 
-        Random rnd = new Random(123);
+        Rnd rnd = new Rnd(123);
         int k = 5;
         MaxDistanceSpatialInformationFilter max02 = new MaxDistanceSpatialInformationFilter();
         max02.setMetric(Metric2D.HAVERSINE_KM);
@@ -122,7 +123,7 @@ public class TestIt {
         List<List<SpatialAttribute<?>>> attrList = SpatialTableFileLoader.parseXlsx(path);
         List<SpatialInformation> infoList = SpatialUtil.mapToPoint2D(attrList, x, y);
 
-        Random rnd = new Random(123);
+        Rnd rnd = new Rnd(123);
         int k = 5;
         MaxDistanceSpatialInformationFilter max02 = new MaxDistanceSpatialInformationFilter();
         max02.setMetric(Metric2D.HAVERSINE_KM);

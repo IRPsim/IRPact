@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.io.param.input.distribution;
 
-import de.unileipzig.irpact.commons.WeightedDouble;
+import de.unileipzig.irpact.commons.util.weighted.WeightedDouble;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.io.param.input.InEntity;
 import de.unileipzig.irpact.io.param.input.InputParser;

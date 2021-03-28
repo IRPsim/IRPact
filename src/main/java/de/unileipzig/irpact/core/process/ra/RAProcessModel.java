@@ -3,7 +3,7 @@ package de.unileipzig.irpact.core.process.ra;
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.distribution.ConstantUnivariateDoubleDistribution;
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.*;

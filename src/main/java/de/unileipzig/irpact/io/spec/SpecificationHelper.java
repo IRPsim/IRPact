@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.spec;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.commons.Pair;
+import de.unileipzig.irpact.commons.util.data.Pair;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irptools.util.Util;
 

@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.io.param;
 
-import de.unileipzig.irpact.commons.MultiCounter;
+import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;

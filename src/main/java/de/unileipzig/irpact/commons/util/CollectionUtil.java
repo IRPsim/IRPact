@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.commons;
+package de.unileipzig.irpact.commons.util;
 
 import java.util.*;
 import java.util.function.Function;
@@ -145,31 +145,6 @@ public final class CollectionUtil {
         throw new IndexOutOfBoundsException("index: " + i + ", size: " + coll.size());
     }
 
-    public static <T> T remove2(Collection<T> coll, int index) {
-        if(coll instanceof List) {
-            List<T> list = (List<T>) coll;
-            return list.remove(index);
-        }
-        if(index < 0 || index >= coll.size()) {
-            throw new IndexOutOfBoundsException("index: " + index + ", size: " + coll.size());
-        }
-        Ref<Integer> counter = new Ref<>(0);
-        Ref<T> value = new Ref<>();
-        coll.removeIf(t -> {
-            int current = counter.get();
-            if(current == -1) return false;
-            counter.set(current + 1);
-            if(current == index) {
-                counter.set(-1);
-                value.set(t);
-                return true;
-            } else {
-                return false;
-            }
-        });
-        return value.get();
-    }
-
     public static <T> T remove(Collection<T> coll, int index) {
         if(coll instanceof List) {
             List<T> list = (List<T>) coll;
@@ -193,31 +168,13 @@ public final class CollectionUtil {
         return get(coll, 0);
     }
 
-    public static <T> T getRandom(List<T> list, Random rnd) {
-        return getRandom(list, 0, list.size(), rnd);
-    }
-
-    public static <T> T getRandom(List<T> list, int from, int to, Random rnd) {
-        int index = Util.nextInt(rnd, from, to);
-        return list.get(index);
-    }
-
     public static <T> T getRandom(List<T> list, Rnd rnd) {
         return getRandom(list, 0, list.size(), rnd);
     }
 
     public static <T> T getRandom(List<T> list, int from, int to, Rnd rnd) {
-        int index = Util.nextInt(rnd, from, to);
+        int index = rnd.nextInt(from, to);
         return list.get(index);
-    }
-
-    public static <T> T getRandom(Collection<T> coll, Random rnd) {
-        return getRandom(coll, 0, coll.size(), rnd);
-    }
-
-    public static <T> T getRandom(Collection<T> coll, int from, int to, Random rnd) {
-        int index = Util.nextInt(rnd, from, to);
-        return get(coll, index);
     }
 
     public static <T> T getRandom(Collection<T> coll, Rnd rnd) {
@@ -225,23 +182,23 @@ public final class CollectionUtil {
     }
 
     public static <T> T getRandom(Collection<T> coll, int from, int to, Rnd rnd) {
-        int index = Util.nextInt(rnd, from, to);
+        int index = rnd.nextInt(from, to);
         return get(coll, index);
     }
 
-    public static <T> T removeRandom(Collection<T> coll, Random rnd) {
+    public static <T> T removeRandom(Collection<T> coll, Rnd rnd) {
         return removeRandom(coll, 0, coll.size(), rnd);
     }
 
-    public static <T> T removeRandom(Collection<T> coll, int from, int to, Random rnd) {
-        int index = Util.nextInt(rnd, from, to);
+    public static <T> T removeRandom(Collection<T> coll, int from, int to, Rnd rnd) {
+        int index = rnd.nextInt(from, to);
         return remove(coll, index);
     }
 
     public static <T> T getWeightedRandom(
             Collection<? extends T> coll,
             ToDoubleFunction<? super T> weightFunction,
-            Random rnd) {
+            Rnd rnd) {
         double sum = coll.stream()
                 .mapToDouble(weightFunction)
                 .sum();
@@ -252,7 +209,7 @@ public final class CollectionUtil {
             Collection<? extends T> coll,
             ToDoubleFunction<? super T> weightFunction,
             double sum,
-            Random rnd) {
+            Rnd rnd) {
         final double rndDraw = rnd.nextDouble() * sum;
         double temp = 0.0;
         T result = null;
@@ -269,7 +226,7 @@ public final class CollectionUtil {
     public static <T> int getWeightedRandomIndex(
             Collection<? extends T> coll,
             ValueAndIntToDoubleFunction<? super T> weightFunction,
-            Random rnd) {
+            Rnd rnd) {
         double sum = 0.0;
         int i = 0;
         for(T value: coll) {
@@ -283,7 +240,7 @@ public final class CollectionUtil {
             Collection<? extends T> coll,
             ValueAndIntToDoubleFunction<? super T> weightFunction,
             double sum,
-            Random rnd) {
+            Rnd rnd) {
         final double rndDraw = rnd.nextDouble() * sum;
         double temp = 0.0;
         int i = 0;

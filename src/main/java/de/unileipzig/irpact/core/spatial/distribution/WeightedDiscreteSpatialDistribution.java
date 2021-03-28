@@ -1,6 +1,9 @@
 package de.unileipzig.irpact.core.spatial.distribution;
 
 import de.unileipzig.irpact.commons.*;
+import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.commons.util.weighted.BasicWeightedMapping;
+import de.unileipzig.irpact.commons.util.weighted.UnmodifiableWeightedMapping;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
 import java.util.*;
@@ -133,7 +136,7 @@ public class WeightedDiscreteSpatialDistribution extends ResettableSpatialDistri
         if(unusedInfos == null || unusedInfos.isEmpty()) {
             throw new IllegalStateException("set '" + key + "' is empty");
         }
-        SpatialInformation info = CollectionUtil.removeRandom(unusedInfos, rnd.getRandom());
+        SpatialInformation info = rnd.removeRandom(unusedInfos);
         Collection<SpatialInformation> usedInfos = used.computeIfAbsent(key, _key -> new ArrayList<>());
         usedInfos.add(info);
         if(unusedInfos.isEmpty()) {
@@ -150,7 +153,7 @@ public class WeightedDiscreteSpatialDistribution extends ResettableSpatialDistri
             throw new IllegalStateException("empty");
         }
 
-        String key = unmodWeightedMapping.getWeightedRandom(X, rnd.getRandom());
+        String key = unmodWeightedMapping.getWeightedRandom(X, rnd);
         return drawValue(key);
     }
 

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.network.topology;
 
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinities;
@@ -20,7 +21,7 @@ public class FastHeterogeneousRegularGraphTopology extends NameableBase implemen
     protected boolean isSelfReferential;
     protected double initialWeight;
     protected long seed;
-    protected Random rnd;
+    protected Rnd rnd;
 
     public FastHeterogeneousRegularGraphTopology(
             SocialGraph.Type edgeType,
@@ -33,7 +34,7 @@ public class FastHeterogeneousRegularGraphTopology extends NameableBase implemen
         this.isSelfReferential = isSelfReferential;
         this.initialWeight = initialWeight;
         this.seed = seed;
-        rnd = new Random(seed);
+        rnd = new Rnd(seed);
     }
 
     @Override
@@ -86,12 +87,12 @@ public class FastHeterogeneousRegularGraphTopology extends NameableBase implemen
             front.add(node);
         }
 
-        protected void init(Random rnd) {
+        protected void init(Rnd rnd) {
             shuffle(rnd);
         }
 
-        protected void shuffle(Random rnd) {
-            Collections.shuffle(front, rnd);
+        protected void shuffle(Rnd rnd) {
+            rnd.shuffle(front);
         }
 
         protected SocialGraph.Node peek() {
@@ -103,7 +104,7 @@ public class FastHeterogeneousRegularGraphTopology extends NameableBase implemen
             front.addLast(next);
         }
 
-        protected SocialGraph.Node next(Random rnd) {
+        protected SocialGraph.Node next(Rnd rnd) {
             SocialGraph.Node next = front.removeFirst();
             back.addLast(next);
             if(front.isEmpty()) {

@@ -1,8 +1,10 @@
-package de.unileipzig.irpact.commons;
+package de.unileipzig.irpact.commons.util.weighted;
+
+import de.unileipzig.irpact.commons.util.CollectionUtil;
+import de.unileipzig.irpact.commons.util.Rnd;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.function.Supplier;
 import java.util.function.ToDoubleFunction;
 
@@ -96,7 +98,7 @@ public class BasicWeightedMapping<S, T, W> implements WeightedMapping<S, T, W> {
     }
 
     @Override
-    public T getRandom(S source, Random rnd) {
+    public T getRandom(S source, Rnd rnd) {
         Map<T, W> map0 = mapping.get(source);
         return map0 == null || map0.isEmpty()
                 ? null
@@ -114,7 +116,7 @@ public class BasicWeightedMapping<S, T, W> implements WeightedMapping<S, T, W> {
     }
 
     @Override
-    public T getWeightedRandom(S source, Random rnd) {
+    public T getWeightedRandom(S source, Rnd rnd) {
         Map<T, W> map0 = mapping.get(source);
         if(map0 == null || map0.isEmpty()) {
             return null;
@@ -136,12 +138,3 @@ public class BasicWeightedMapping<S, T, W> implements WeightedMapping<S, T, W> {
         return draw;
     }
 }
-
-/*
-[0,1) -> x
-drawValue = sum * x = (a+b+c..) * x = ax+bx+cx..
-
-X
-
-
- */

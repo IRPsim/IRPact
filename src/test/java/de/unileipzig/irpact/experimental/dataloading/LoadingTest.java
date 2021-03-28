@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental.dataloading;
 
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.distribution.ConstantUnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.res.BasicResourceLoader;
 import de.unileipzig.irpact.core.log.IRPLogging;

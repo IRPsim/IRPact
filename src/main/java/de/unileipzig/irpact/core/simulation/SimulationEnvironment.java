@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.commons.Nameable;
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.misc.Initialization;

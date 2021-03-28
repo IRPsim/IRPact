@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.simulation.tasks.*;
-import de.unileipzig.irpact.commons.BinaryData;
+import de.unileipzig.irpact.commons.util.data.BinaryData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;

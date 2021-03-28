@@ -1,4 +1,6 @@
-package de.unileipzig.irpact.commons;
+package de.unileipzig.irpact.commons.util;
+
+import de.unileipzig.irpact.commons.util.Rnd;
 
 import java.util.function.BinaryOperator;
 

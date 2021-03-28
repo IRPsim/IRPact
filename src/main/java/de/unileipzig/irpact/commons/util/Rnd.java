@@ -1,6 +1,10 @@
-package de.unileipzig.irpact.commons;
+package de.unileipzig.irpact.commons.util;
+
+import de.unileipzig.irpact.commons.ChecksumComparable;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -12,12 +16,9 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public final class Rnd implements ChecksumComparable {
 
-    private static final class Holder {
-        private static final Random R = new Random();
-    }
-    private static synchronized long randomSeed() {
-        return Holder.R.nextLong();
-    }
+    private static final Random GLOBAL_RND = new Random();
+
+    public static final long USE_RANDOM_SEED = -1L;
 
     protected final Lock LOCK = new ReentrantLock();
     protected boolean useLock = false;
@@ -28,7 +29,7 @@ public final class Rnd implements ChecksumComparable {
      * Creates an instance with a random initial seed.
      */
     public Rnd() {
-        this(randomSeed());
+        this(nextLongGlobal());
     }
 
     public Rnd(long initialSeed) {
@@ -37,6 +38,16 @@ public final class Rnd implements ChecksumComparable {
 
     private Rnd(Void v) {
         rnd = null;
+    }
+
+    public static synchronized long nextLongGlobal() {
+        return GLOBAL_RND.nextLong();
+    }
+
+    public static long nextLongGlobalIfEquals(long input, long checkValue) {
+        return input == checkValue
+                ? nextLongGlobal()
+                : input;
     }
 
     /**
@@ -69,8 +80,13 @@ public final class Rnd implements ChecksumComparable {
     }
 
     public void setInitialSeed(long initialSeed) {
-        this.initialSeed = initialSeed;
-        this.rnd = new Random(initialSeed);
+        lock();
+        try {
+            this.initialSeed = initialSeed;
+            rnd = new Random(initialSeed);
+        } finally {
+            unlock();
+        }
     }
 
     /**
@@ -79,10 +95,15 @@ public final class Rnd implements ChecksumComparable {
      * @return new seed
      */
     public long reseed() {
-        long nextSeed = rnd.nextLong();
-        rnd.setSeed(nextSeed);
-        initialSeed = nextSeed;
-        return nextSeed;
+        lock();
+        try {
+            long nextSeed = rnd.nextLong();
+            rnd.setSeed(nextSeed);
+            initialSeed = nextSeed;
+            return nextSeed;
+        } finally {
+            unlock();
+        }
     }
 
     public long getInitialSeed() {
@@ -120,6 +141,10 @@ public final class Rnd implements ChecksumComparable {
         }
     }
 
+    public int nextInt(int lowerBound, int upperBound) {
+        return nextInt(upperBound - lowerBound) + lowerBound;
+    }
+
     public long nextLong() {
         lock();
         try {
@@ -127,10 +152,6 @@ public final class Rnd implements ChecksumComparable {
         } finally {
             unlock();
         }
-    }
-
-    public synchronized long syncNextLong() {
-        return nextLong();
     }
 
     public double nextDouble() {
@@ -142,25 +163,44 @@ public final class Rnd implements ChecksumComparable {
         }
     }
 
-    public double unsyncNextDouble() {
-        return rnd.nextDouble();
-    }
-
-    public synchronized double syncNextDouble() {
-        return rnd.nextDouble();
+    public double nextDouble(double lowerBound, double upperBound) {
+        return (nextDouble() * (upperBound - lowerBound)) + lowerBound;
     }
 
     public <T> T getRandom(Collection<? extends T> coll) {
-        return CollectionUtil.getRandom(coll, this);
+        lock();
+        try {
+            return CollectionUtil.getRandom(coll, this);
+        } finally {
+            unlock();
+        }
     }
 
-    public Rnd deriveInstance() {
-        long seed = syncNextLong();
+    public <T> T removeRandom(Collection<? extends T> coll) {
+        lock();
+        try {
+            return CollectionUtil.removeRandom(coll, this);
+        } finally {
+            unlock();
+        }
+    }
+
+    public void shuffle(List<?> coll) {
+        lock();
+        try {
+            Collections.shuffle(coll, rnd);
+        } finally {
+            unlock();
+        }
+    }
+
+    public synchronized Rnd deriveInstance() {
+        long seed = nextLong();
         return new Rnd(seed);
     }
 
     @Override
     public int getChecksum() {
-        return Long.hashCode(initialSeed);
+        return ChecksumComparable.getChecksum(initialSeed);
     }
 }

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons;
 
+import de.unileipzig.irpact.commons.util.data.TripleMapping;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

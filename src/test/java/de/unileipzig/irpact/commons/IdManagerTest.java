@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons;
 
+import de.unileipzig.irpact.commons.util.IdManager;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;

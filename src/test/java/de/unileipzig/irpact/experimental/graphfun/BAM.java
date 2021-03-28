@@ -1,7 +1,8 @@
 package de.unileipzig.irpact.experimental.graphfun;
 
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
 import de.unileipzig.irpact.commons.graph.FastDirectedMultiGraph;
 import de.unileipzig.irpact.commons.graph.topology.BarabasiAlbertModel;
@@ -76,7 +77,7 @@ class BAM {
         bam.setM(10);
         bam.setM0(10);
         bam.setEdgeType("x");
-        bam.setRandom(new Random(123));
+        bam.setRandom(new Rnd(123));
         bam.setMultiEdgeCreatorFunction(Link::create);
         bam.initalizeEdges(g);
         //IRPact.enableUtilLogging();
@@ -169,7 +170,7 @@ class BAM {
         bam.setM(2);
         bam.setM0(10);
         bam.setEdgeType("x");
-        bam.setRandom(new Random(123));
+        bam.setRandom(new Rnd(123));
         bam.setMultiEdgeCreatorFunction(Link::create);
         bam.initalizeEdges(g);
         //IRPact.enableUtilLogging();
@@ -242,7 +243,7 @@ class BAM {
         wsm.setTargetFunction(Link::getTarget);
         wsm.setGetGroupFunction(n -> "xxx");
         wsm.setEdgeType("x");
-        wsm.setRandom(new Random(123));
+        wsm.setRandom(new Rnd(123));
         wsm.setMultiEdgeCreatorFunction(Link::create);
         wsm.setDrawWeightedGroupFunction((grp, r) -> "xxx");
         wsm.initalizeEdges(g);

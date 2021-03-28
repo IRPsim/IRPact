@@ -17,7 +17,7 @@ import de.unileipzig.irpact.experimental.deprecated.input.product.IProductGroup;
 import de.unileipzig.irpact.experimental.deprecated.input.product.IProductGroupAttribute;
 import de.unileipzig.irpact.experimental.deprecated.input.spatial.ISpace2D;
 import de.unileipzig.irpact.experimental.deprecated.input.time.ITimeModel;
-import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.util.TodoOLD;
 import de.unileipzig.irpact.experimental.deprecated.input.time.IContinuousTimeModel;
 import de.unileipzig.irpact.experimental.deprecated.input.time.IDiscreteTimeModel;

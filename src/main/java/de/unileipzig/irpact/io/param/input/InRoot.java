@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.io.param.input;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
-import de.unileipzig.irpact.commons.MultiCounter;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
+import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.io.param.IOResources;

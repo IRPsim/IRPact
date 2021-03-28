@@ -3,8 +3,7 @@ package de.unileipzig.irpact.experimental;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.*;
 import de.unileipzig.irpact.commons.res.BasicResourceLoader;
-import de.unileipzig.irpact.commons.util.IRPactBase32;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialDoubleAttributeBase;
@@ -265,5 +264,12 @@ class DivTest {
         System.out.println(list.stream().reduce(new WeightedRndElementReducer<>(4 * 0.5, x -> 1)));
         System.out.println(list.stream().reduce(new WeightedRndElementReducer<>(4 * 0.75, x -> 1)));
         System.out.println(list.stream().reduce(new WeightedRndElementReducer<>(4 * 1, x -> 1)));
+    }
+
+    @Test
+    void logFun() {
+        IRPLogging.initConsole();
+        IRPLogging.getLogger(DivTest.class).trace("HALLO");
+        IRPLogging.getClearLogger().trace("HALLO");
     }
 }

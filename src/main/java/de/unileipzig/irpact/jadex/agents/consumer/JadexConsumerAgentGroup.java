@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.log.IRPLogging;

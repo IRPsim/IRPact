@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.graph;
 
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.util.Rnd;
 
 import java.util.*;
 import java.util.function.Function;

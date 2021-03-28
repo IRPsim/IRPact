@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.commons.attribute;
 
 import de.unileipzig.irpact.commons.distribution.DistributionBase;
-import de.unileipzig.irpact.commons.util.DataType;
+import de.unileipzig.irpact.commons.util.data.DataType;
 
 /**
  * @author Daniel Abitz

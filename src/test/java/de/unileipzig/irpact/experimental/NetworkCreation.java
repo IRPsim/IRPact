@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental;
 
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;

@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.simulation.BasicBinaryTaskManager;
 import de.unileipzig.irpact.core.simulation.tasks.PredefinedAppTask;

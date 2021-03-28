@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.commons;
+package de.unileipzig.irpact.commons.util;
 
 import java.util.HashMap;
 import java.util.Map;

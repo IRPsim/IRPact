@@ -2,6 +2,9 @@ package de.unileipzig.irpact.core.network.topology;
 
 import de.unileipzig.irpact.commons.*;
 import de.unileipzig.irpact.commons.spatial.DistanceEvaluator;
+import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.commons.util.weighted.BasicWeightedMapping;
+import de.unileipzig.irpact.commons.util.weighted.WeightedMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinities;
@@ -120,10 +123,10 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
         while(set.size() < edgeCount) {
             ConsumerAgentGroup targetCag;
             do {
-                targetCag = cagAffinities.getWeightedRandom(rnd.getRandom());
+                targetCag = cagAffinities.getWeightedRandom(rnd);
             } while(set.containsAll(targetCag.getAgents()));
             WeightedMapping<ConsumerAgent, ConsumerAgent, Double> distanceMapping = calculateDistanceMapping(environment, ca, targetCag);
-            ConsumerAgent targetCa = distanceMapping.getWeightedRandom(ca, rnd.getRandom());
+            ConsumerAgent targetCa = distanceMapping.getWeightedRandom(ca, rnd);
             //TODO self referential hinzufuegen
             if(targetCa != ca) {
                 set.add(targetCa);

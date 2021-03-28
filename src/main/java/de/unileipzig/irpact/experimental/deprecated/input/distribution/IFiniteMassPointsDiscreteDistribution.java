@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental.deprecated.input.distribution;
 
-import de.unileipzig.irpact.commons.Pair;
+import de.unileipzig.irpact.commons.util.data.Pair;
 import de.unileipzig.irpact.commons.distribution.FiniteMassPointsDiscreteDistributionOLD;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;

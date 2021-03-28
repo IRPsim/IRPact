@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.commons.affinity;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
+import de.unileipzig.irpact.commons.util.Rnd;
 
 import java.util.*;
 
@@ -81,29 +81,6 @@ public class BasicAffinities<T> implements Affinities<T> {
                 .stream()
                 .mapToDouble(v -> v)
                 .sum();
-    }
-
-    @Override
-    public T getRandom(Random rnd) {
-        return values.isEmpty()
-                ? null
-                : CollectionUtil.getRandom(values.keySet(), rnd);
-    }
-
-    @Override
-    public T getWeightedRandom(Random rnd) {
-        final double sum = sum();
-        final double rndDraw = rnd.nextDouble() * sum;
-        double temp = 0.0;
-        T draw = null;
-        for(Map.Entry<T, Double> entry: values.entrySet()) {
-            temp += entry.getValue();
-            draw = entry.getKey();
-            if(rndDraw < temp) {
-                return draw;
-            }
-        }
-        return draw;
     }
 
     @Override

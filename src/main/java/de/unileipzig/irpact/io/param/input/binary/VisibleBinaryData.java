@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.io.param.input.binary;
 
 import de.unileipzig.irpact.commons.util.IRPactBase32;
-import de.unileipzig.irpact.commons.BinaryData;
+import de.unileipzig.irpact.commons.util.data.BinaryData;
 import de.unileipzig.irpact.io.param.input.InEntity;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;

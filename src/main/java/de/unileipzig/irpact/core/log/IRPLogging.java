@@ -22,14 +22,17 @@ public final class IRPLogging {
     }
 
     public static void initConsole() {
+        Logback.initLogging();
         Logback.setupConsole();
     }
 
     public static void initFile(Path target) {
+        Logback.initLogging();
         Logback.setupFile(target);
     }
 
     public static void initConsoleAndFile(Path target) {
+        Logback.initLogging();
         Logback.setupConsoleAndFile(target);
     }
 

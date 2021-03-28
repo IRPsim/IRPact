@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.commons.util;
+package de.unileipzig.irpact.commons.util.data;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;

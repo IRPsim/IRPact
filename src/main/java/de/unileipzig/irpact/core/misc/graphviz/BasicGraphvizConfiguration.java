@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.misc.graphviz;
 
 import de.unileipzig.irpact.commons.util.IRPactBase32;
+import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -161,7 +162,7 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
             content = Util.readAll(defIn);
         }
         String b32 = IRPactBase32.encodeToString(content);
-        String splittedB32 = de.unileipzig.irpact.commons.Util.splitLen(b32, LINE_LEN);
+        String splittedB32 = StringUtil.splitLen(b32, LINE_LEN);
         LOGGER.info("dot file content\n{}", splittedB32);
     }
 

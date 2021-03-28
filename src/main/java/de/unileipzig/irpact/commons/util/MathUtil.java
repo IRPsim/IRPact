@@ -1,6 +1,4 @@
-package de.unileipzig.irpact.commons;
-
-import java.util.Random;
+package de.unileipzig.irpact.commons.util;
 
 /**
  * @author Daniel Abitz
@@ -8,10 +6,6 @@ import java.util.Random;
 public final class MathUtil {
 
     private MathUtil() {
-    }
-
-    public static double nextDouble(Random rnd, double lowerBound, double upperBound) {
-        return rnd.nextDouble() * (upperBound - lowerBound) + lowerBound;
     }
 
     public static double logistic(double x) {

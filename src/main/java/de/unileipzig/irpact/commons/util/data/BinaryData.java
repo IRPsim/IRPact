@@ -1,11 +1,8 @@
-package de.unileipzig.irpact.commons;
-
-import de.unileipzig.irpact.util.Todo;
+package de.unileipzig.irpact.commons.util.data;
 
 /**
  * @author Daniel Abitz
  */
-@Todo("besser einbauen")
 public interface BinaryData {
 
     void setID(long id);

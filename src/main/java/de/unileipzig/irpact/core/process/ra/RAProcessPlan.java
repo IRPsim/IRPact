@@ -1,15 +1,15 @@
 package de.unileipzig.irpact.core.process.ra;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
-import de.unileipzig.irpact.commons.MathUtil;
-import de.unileipzig.irpact.commons.MutableDouble;
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
+import de.unileipzig.irpact.commons.util.MathUtil;
+import de.unileipzig.irpact.commons.util.data.MutableDouble;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeUtil;
 import de.unileipzig.irpact.commons.attribute.DoubleAttribute;
 import de.unileipzig.irpact.commons.attribute.StringAttribute;
 import de.unileipzig.irpact.commons.interest.Interest;
-import de.unileipzig.irpact.commons.util.DataType;
+import de.unileipzig.irpact.commons.util.data.DataType;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.log.IRPLogging;

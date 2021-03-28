@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.io.param;
 
-import de.unileipzig.irpact.commons.MultiCounter;
+import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.in.*;

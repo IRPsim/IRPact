@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.io.param.input.agent.population;
 
-import de.unileipzig.irpact.commons.ShareCalculator;
+import de.unileipzig.irpact.commons.util.ShareCalculator;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;

@@ -1,8 +1,7 @@
-package de.unileipzig.irpact.commons;
+package de.unileipzig.irpact.commons.util.weighted;
 
+import de.unileipzig.irpact.commons.util.Rnd;
 import org.junit.jupiter.api.Test;
-
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,7 +35,7 @@ class UnmodifiableWeightedMappingTest {
         int ax = 0;
         int ay = 0;
         int az = 0;
-        Random rnd = new Random(123);
+        Rnd rnd = new Rnd(123);
         for(int i = 0; i < 1000; i++) {
             String t = uwm.getWeightedRandom("a", rnd);
             if("x".equals(t)) ax++;
@@ -52,7 +51,7 @@ class UnmodifiableWeightedMappingTest {
         int za = 0;
         int zb = 0;
         int zc = 0;
-        Random rnd2 = new Random(123);
+        Rnd rnd2 = new Rnd(123);
         for(int i = 0; i < 1000; i++) {
             String t = uwm.getWeightedRandom("z", rnd2);
             if("a".equals(t)) za++;

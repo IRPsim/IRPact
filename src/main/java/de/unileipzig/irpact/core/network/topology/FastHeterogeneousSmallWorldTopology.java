@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.network.topology;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
@@ -61,7 +61,7 @@ public class FastHeterogeneousSmallWorldTopology extends FastHeterogeneousRegula
                         targetGroup = affinityMapping.get(sourceGroup).getWeightedRandom(rnd);
                         continue;
                     }
-                    SocialGraph.Node newTarget = CollectionUtil.getRandom(potentialTargets, rnd);
+                    SocialGraph.Node newTarget = rnd.getRandom(potentialTargets);
                     graph.removeEdge(edge);
                     graph.addEdge(sourceNode, newTarget, edgeType, initialWeight);
                     break;

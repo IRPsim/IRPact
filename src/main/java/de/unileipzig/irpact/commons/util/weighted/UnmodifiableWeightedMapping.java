@@ -1,10 +1,13 @@
-package de.unileipzig.irpact.commons;
+package de.unileipzig.irpact.commons.util.weighted;
+
+import de.unileipzig.irpact.commons.util.CollectionUtil;
+import de.unileipzig.irpact.commons.util.Rnd;
 
 import java.util.*;
 import java.util.function.Supplier;
 
 /**
- * Uses a normalized, sorted list to optimize {@link #getWeightedRandom(Object, Random)}.
+ * Uses a normalized, sorted list to optimize {@link #getWeightedRandom(Object, Rnd)}.
  *
  * @author Daniel Abitz
  */
@@ -112,7 +115,7 @@ public class UnmodifiableWeightedMapping<S, T, W> implements WeightedMapping<S, 
     }
 
     @Override
-    public T getRandom(S source, Random rnd) {
+    public T getRandom(S source, Rnd rnd) {
         if(!isImmutable()) {
             return back.getRandom(source, rnd);
         }
@@ -130,7 +133,7 @@ public class UnmodifiableWeightedMapping<S, T, W> implements WeightedMapping<S, 
     }
 
     @Override
-    public T getWeightedRandom(S source, Random rnd) {
+    public T getWeightedRandom(S source, Rnd rnd) {
         if(!isImmutable()) {
             return back.getWeightedRandom(source, rnd);
         }

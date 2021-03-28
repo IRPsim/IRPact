@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.start.optact.network;
 
-import de.unileipzig.irpact.commons.Util;
 import de.unileipzig.irpact.commons.graph.topology.WattsStrogatzModel;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.experimental.deprecated.input2.InputResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
@@ -73,7 +73,7 @@ public class IWattsStrogatzModel implements IGraphTopology {
         wsm.setSelfReferential(wsmSelfReferential);
         wsm.setBeta(wsmBeta);
         wsm.setK(wsmK);
-        long seed = Util.getRandomSeedIf0(wsmSeed);
+        long seed = Rnd.nextLongGlobalIfEquals(wsmSeed, Rnd.USE_RANDOM_SEED);
         wsm.setRandom(new Random(seed));
         return wsm;
     }

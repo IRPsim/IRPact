@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.io.spec.impl;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.io.spec.SpecificationHelper;
 import de.unileipzig.irpact.io.spec.SpecificationJob;

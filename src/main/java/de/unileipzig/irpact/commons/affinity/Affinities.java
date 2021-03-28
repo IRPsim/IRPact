@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.commons.affinity;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.util.Rnd;
 
 import java.util.Random;
 import java.util.Set;
@@ -29,10 +29,6 @@ public interface Affinities<T> extends ChecksumComparable {
     void setValue(T target, double value);
 
     double sum();
-
-    T getRandom(Random rnd);
-
-    T getWeightedRandom(Random rnd);
 
     T getRandom(Rnd rnd);
 

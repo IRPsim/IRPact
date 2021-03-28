@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.experimental.deprecated.output;
 
 import de.unileipzig.irpact.experimental.deprecated.output.agent.consumer.OConsumerAgentGroup;
-import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irptools.defstructure.ParserInput;
 import de.unileipzig.irptools.defstructure.RootClass;
 import de.unileipzig.irptools.defstructure.Type;
