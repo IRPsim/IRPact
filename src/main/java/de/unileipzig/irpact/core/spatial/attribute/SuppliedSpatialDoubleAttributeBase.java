@@ -1,17 +1,19 @@
 package de.unileipzig.irpact.core.spatial.attribute;
 
-import de.unileipzig.irpact.commons.distattr.AbstractDerivableUnivariateDoubleDistributionAttribute;
+import de.unileipzig.irpact.commons.distributionattribut.AbstractDerivableUnivariateDoubleDistributionAttribute;
 
 /**
  * @author Daniel Abitz
  */
-public class SuppliedSpatialDoubleAttributeBase extends AbstractDerivableUnivariateDoubleDistributionAttribute<SpatialDoubleAttribute> implements SuppliedSpatialDoubleAttribute{
+public class SuppliedSpatialDoubleAttributeBase
+        extends AbstractDerivableUnivariateDoubleDistributionAttribute<SpatialAttribute>
+        implements SuppliedSpatialAttribute {
 
     public SuppliedSpatialDoubleAttributeBase() {
     }
 
     @Override
     public SpatialDoubleAttribute derive(double value) {
-        return new SpatialDoubleAttributeBase(getName(), value);
+        return new SpatialDoubleAttribute(getName(), value);
     }
 }

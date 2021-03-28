@@ -9,8 +9,6 @@ import de.unileipzig.irpact.experimental.deprecated.input.affinity.IBasicAffinit
 import de.unileipzig.irpact.experimental.deprecated.input.agent.consumer.IConsumerAgentGroup;
 import de.unileipzig.irpact.experimental.deprecated.input.agent.consumer.IConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.experimental.deprecated.input.awareness.IFixedProductAwareness;
-import de.unileipzig.irpact.experimental.deprecated.input.network.IFastHeterogeneousSmallWorldTopology;
-import de.unileipzig.irpact.experimental.deprecated.input.network.IFastHeterogeneousSmallWorldTopologyEntry;
 import de.unileipzig.irpact.experimental.deprecated.input.product.IFixedProduct;
 import de.unileipzig.irpact.experimental.deprecated.input.product.IFixedProductAttribute;
 import de.unileipzig.irpact.experimental.deprecated.input.product.IProductGroup;
@@ -20,9 +18,6 @@ import de.unileipzig.irpact.experimental.deprecated.input.time.ITimeModel;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
-import de.unileipzig.irpact.core.network.BasicSocialNetwork;
-import de.unileipzig.irpact.core.network.SocialGraph;
-import de.unileipzig.irpact.core.network.topology.FastHeterogeneousSmallWorldTopology;
 import de.unileipzig.irpact.core.spatial.Metric;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.spatial.twodim.Space2D;
@@ -30,9 +25,6 @@ import de.unileipzig.irpact.util.TodoOLD;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Daniel Abitz
@@ -99,7 +91,7 @@ public class JadexInputConverter implements InputConverter {
             fp.setName(product.getName());
             fp.setGroup(pg);
             for(IFixedProductAttribute attr: product.getFpAttributes()) {
-                BasicProductAttribute battr = new BasicProductAttribute();
+                ProductDoubleAttribute battr = new ProductDoubleAttribute();
                 battr.setName(attr.getName());
                 battr.setDoubleValue(attr.getFpaValue());
                 battr.setGroup(pg.getGroupAttribute(attr.getFpaGroupAttribute().getName()));

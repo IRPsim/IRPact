@@ -1,9 +1,9 @@
 package de.unileipzig.irpact.core.spatial.attribute;
 
-import de.unileipzig.irpact.commons.attribute.DerivableDistributionAttribute;
+import de.unileipzig.irpact.commons.attribute.DerivableAttribute;
 
 /**
  * @author Daniel Abitz
  */
-public interface SuppliedSpatialAttribute<T> extends DerivableDistributionAttribute<T> {
+public interface SuppliedSpatialAttribute extends DerivableAttribute<SpatialAttribute> {
 }

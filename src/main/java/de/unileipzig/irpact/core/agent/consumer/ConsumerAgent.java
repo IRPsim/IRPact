@@ -46,7 +46,7 @@ public interface ConsumerAgent extends SpatialInformationAgent {
 
     boolean unlinkAccess(AttributeAccess attributeAccess);
 
-    Attribute<?> findAttribute(String name);
+    Attribute findAttribute(String name);
 
     Collection<Need> getNeeds();
 

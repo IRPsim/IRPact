@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.commons.distattr.AbstractDerivableUnivariateDoubleDistributionAttribute;
+import de.unileipzig.irpact.commons.distributionattribut.AbstractDerivableUnivariateDoubleDistributionAttribute;
 
 import java.util.Objects;
 
@@ -15,7 +15,7 @@ public class BasicProductGroupAttribute extends AbstractDerivableUnivariateDoubl
     }
 
     @Override
-    public BasicProductAttribute derive() {
+    public ProductDoubleAttribute derive() {
         double value = drawDoubleValue();
         return derive(value);
     }
@@ -27,13 +27,13 @@ public class BasicProductGroupAttribute extends AbstractDerivableUnivariateDoubl
     }
 
     @Override
-    public BasicProductAttribute derive(double value) {
+    public ProductDoubleAttribute derive(double value) {
         return derive(getName() + "_" + nextId(), value);
     }
 
     @Override
-    public BasicProductAttribute derive(String name, double value) {
-        return new BasicProductAttribute(
+    public ProductDoubleAttribute derive(String name, double value) {
+        return new ProductDoubleAttribute(
                 name,
                 this,
                 value

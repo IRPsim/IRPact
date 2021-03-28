@@ -200,6 +200,12 @@ public interface ChecksumComparable {
         return Objects.hash(values);
     }
 
+    static int getNameChecksum(Nameable nameable) {
+        return nameable == null
+                ? NULL_CHECKSUM
+                : Objects.hashCode(nameable.getName());
+    }
+
     //=========================
     //
     //=========================

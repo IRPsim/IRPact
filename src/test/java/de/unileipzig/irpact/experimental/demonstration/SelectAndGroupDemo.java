@@ -43,7 +43,7 @@ public class SelectAndGroupDemo {
         l.setInputFileName("GIS_final_1_x");
         l.initalize();
 
-        List<List<SpatialAttribute<?>>> allEntries = l.getAllAttributes();
+        List<List<SpatialAttribute>> allEntries = l.getAllAttributes();
         LOGGER.info("Entraege: {}", allEntries.size());
         LOGGER.info("erster Eintrag: {}", allEntries.get(0));
 

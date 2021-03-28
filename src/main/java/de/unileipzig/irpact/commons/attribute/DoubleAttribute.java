@@ -5,25 +5,47 @@ import de.unileipzig.irpact.commons.util.data.DataType;
 /**
  * @author Daniel Abitz
  */
-public interface DoubleAttribute extends Attribute<Number> {
+public class DoubleAttribute extends AbstractAttribute {
+
+    protected double value;
+
+    public DoubleAttribute() {
+    }
 
     @Override
-    DoubleAttribute copyAttribute();
+    public DoubleAttribute copyAttribute() {
+        DoubleAttribute copy = new DoubleAttribute();
+        copy.setName(getName());
+        copy.setDoubleValue(getDoubleValue());
+        return copy;
+    }
 
     @Override
-    default DataType getType() {
+    public DataType getType() {
         return DataType.DOUBLE;
     }
 
-    default Double getValue() {
-        return getDoubleValue();
+    @Override
+    public Double getValue() {
+        return value;
     }
 
-    default void setValue(Number value) {
-        setDoubleValue(value.doubleValue());
+    @Override
+    public void setValue(Object value) {
+        if(value == null) {
+            throw new NullPointerException();
+        } else {
+            this.value = castTo(Number.class, value).doubleValue();
+        }
     }
 
-    double getDoubleValue();
+    @Override
+    public void setDoubleValue(double value) {
+        this.value = value;
+    }
 
-    void setDoubleValue(double value);
+    @Override
+    public double getDoubleValue() {
+        return value;
+    }
 }

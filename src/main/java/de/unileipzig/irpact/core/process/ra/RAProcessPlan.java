@@ -5,7 +5,6 @@ import de.unileipzig.irpact.commons.util.MathUtil;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.attribute.Attribute;
-import de.unileipzig.irpact.commons.attribute.AttributeUtil;
 import de.unileipzig.irpact.commons.attribute.DoubleAttribute;
 import de.unileipzig.irpact.commons.attribute.StringAttribute;
 import de.unileipzig.irpact.commons.interest.Interest;
@@ -436,15 +435,8 @@ public class RAProcessPlan implements ProcessPlan {
     //=========================
 
     protected static double getDouble(ConsumerAgent agent, String attrName) {
-        Attribute<?> attr = agent.findAttribute(attrName);
-        return getDouble(attr, attrName);
-    }
-
-    protected static double getDouble(Attribute<?> attr, String attrName) {
-        if(attr == null) {
-            throw new NoSuchElementException("missing attribute: '" + attrName + "'");
-        }
-        return AttributeUtil.getDoubleValue(attr, () -> "attribute '" + attrName + "' has no number");
+        Attribute attr = agent.findAttribute(attrName);
+        return attr.getDoubleValue();
     }
 
     protected RAModelData modelData() {
@@ -551,16 +543,9 @@ public class RAProcessPlan implements ProcessPlan {
         attr.setDoubleValue(n);
     }
 
-    @Todo("URGS")
     protected static boolean isHouseOwner(ConsumerAgent agent) {
-        Attribute<?> attr = agent.findAttribute(RAConstants.HOUSE_OWNER);
-        if(attr.getType() == DataType.DOUBLE) {
-            double v = attr.as(DoubleAttribute.class).getDoubleValue();
-            return v == 1.0;
-        } else {
-            String v = attr.as(StringAttribute.class).getStringValue();
-            return RAConstants.PRIVATE.equals(v);
-        }
+        Attribute attr = agent.findAttribute(RAConstants.HOUSE_OWNER);
+        return attr.getDoubleValueAsBoolean();
     }
 
     protected static void setHouseOwner(ConsumerAgent agent, String value) {

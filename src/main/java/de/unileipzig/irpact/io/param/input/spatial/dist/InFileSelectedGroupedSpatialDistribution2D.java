@@ -120,14 +120,14 @@ public class InFileSelectedGroupedSpatialDistribution2D implements InSpatialDist
 
     public static WeightedDiscreteSpatialDistribution createInstance(
             String name,
-            List<List<SpatialAttribute<?>>> attrList,
+            List<List<SpatialAttribute>> attrList,
             String xKey,
             String yKey,
             String selectKey,
             String selectValue,
             String groupingKey,
             Rnd rnd) {
-        List<List<SpatialAttribute<?>>> selectedList = SpatialUtil.filter(attrList, selectKey, selectValue);
+        List<List<SpatialAttribute>> selectedList = SpatialUtil.filter(attrList, selectKey, selectValue);
         List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xKey, yKey);
         Map<String, List<SpatialInformation>> groupedInfos = SpatialUtil.groupingBy(infos, groupingKey);
 
@@ -149,7 +149,7 @@ public class InFileSelectedGroupedSpatialDistribution2D implements InSpatialDist
         String yKey = getYPositionKey().getName();
         String selectKey = getSelectKey().getName();
         String groupingKey = getGroupKey().getName();
-        List<List<SpatialAttribute<?>>> attrList = parser.parseEntityTo(getFile());
+        List<List<SpatialAttribute>> attrList = parser.parseEntityTo(getFile());
         Rnd rnd = parser.deriveRnd();
         LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "InCustomSelectedSpatialDistribution2D '{}' uses seed: {}", getName(), rnd.getInitialSeed());
 

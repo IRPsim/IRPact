@@ -6,7 +6,7 @@ import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
-import de.unileipzig.irpact.core.spatial.attribute.SpatialDoubleAttributeBase;
+import de.unileipzig.irpact.core.spatial.attribute.SpatialDoubleAttribute;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.LinkedHashMap;
@@ -79,7 +79,7 @@ public class BasicConsumerAgentSpatialAttributeSupplier extends NameableBase imp
         if(dist == null) {
             throw new NullPointerException("no distribution for consumer group '" + ca.getGroup().getName() + "'");
         }
-        SpatialDoubleAttributeBase attr = new SpatialDoubleAttributeBase();
+        SpatialDoubleAttribute attr = new SpatialDoubleAttribute();
         attr.setName(attributeName);
         attr.setDoubleValue(dist.drawDoubleValue());
         info.addAttribute(attr);

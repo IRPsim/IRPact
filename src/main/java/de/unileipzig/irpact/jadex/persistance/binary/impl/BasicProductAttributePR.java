@@ -3,14 +3,14 @@ package de.unileipzig.irpact.jadex.persistance.binary.impl;
 import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.product.BasicProductAttribute;
+import de.unileipzig.irpact.core.product.ProductDoubleAttribute;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicProductAttributePR extends BinaryPRBase<BasicProductAttribute> {
+public class BasicProductAttributePR extends BinaryPRBase<ProductDoubleAttribute> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicProductAttributePR.class);
 
@@ -26,12 +26,12 @@ public class BasicProductAttributePR extends BinaryPRBase<BasicProductAttribute>
     //=========================
 
     @Override
-    public Class<BasicProductAttribute> getType() {
-        return BasicProductAttribute.class;
+    public Class<ProductDoubleAttribute> getType() {
+        return ProductDoubleAttribute.class;
     }
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicProductAttribute object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(ProductDoubleAttribute object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putDouble(object.getDoubleValue());
@@ -42,7 +42,7 @@ public class BasicProductAttributePR extends BinaryPRBase<BasicProductAttribute>
     }
 
     @Override
-    protected void doSetupPersist(BasicProductAttribute object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(ProductDoubleAttribute object, BinaryJsonData data, PersistManager manager) {
         data.putLong(manager.ensureGetUID(object.getGroup()));
     }
 
@@ -52,15 +52,15 @@ public class BasicProductAttributePR extends BinaryPRBase<BasicProductAttribute>
 
 
     @Override
-    protected BasicProductAttribute doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
-        BasicProductAttribute object = new BasicProductAttribute();
+    protected ProductDoubleAttribute doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        ProductDoubleAttribute object = new ProductDoubleAttribute();
         object.setName(data.getText());
         object.setDoubleValue(data.getDouble());
         return object;
     }
 
     @Override
-    protected void doSetupRestore(BinaryJsonData data, BasicProductAttribute object, RestoreManager manager) throws RestoreException {
+    protected void doSetupRestore(BinaryJsonData data, ProductDoubleAttribute object, RestoreManager manager) throws RestoreException {
         object.setGroup(manager.ensureGet(data.getLong()));
     }
 }

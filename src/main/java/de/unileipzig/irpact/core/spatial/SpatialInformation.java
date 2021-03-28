@@ -13,13 +13,13 @@ public interface SpatialInformation extends ChecksumComparable {
 
     AttributeAccess getAttributeAccess();
 
-    Collection<SpatialAttribute<?>> getAttributes();
+    Collection<SpatialAttribute> getAttributes();
 
-    SpatialAttribute<?> getAttribute(String name);
+    SpatialAttribute getAttribute(String name);
 
     boolean hasAttribute(String name);
 
-    void addAttribute(SpatialAttribute<?> attribute);
+    void addAttribute(SpatialAttribute attribute);
 
     SpatialInformation emptyCopy();
 

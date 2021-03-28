@@ -512,7 +512,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     @Override
-    public Attribute<?> findAttribute(String name) {
+    public Attribute findAttribute(String name) {
         if(isSynced()) {
             return getRealAgent().findAttribute(name);
         } else {

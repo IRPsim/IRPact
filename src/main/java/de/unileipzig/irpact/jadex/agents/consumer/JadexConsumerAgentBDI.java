@@ -440,7 +440,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public Attribute<?> findAttribute(String name) {
+    public Attribute findAttribute(String name) {
         ConsumerAgentAttribute attr = getAttribute(name);
         if(attr != null) {
             return attr;

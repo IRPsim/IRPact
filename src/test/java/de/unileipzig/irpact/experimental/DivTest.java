@@ -6,8 +6,8 @@ import de.unileipzig.irpact.commons.res.BasicResourceLoader;
 import de.unileipzig.irpact.commons.util.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
-import de.unileipzig.irpact.core.spatial.attribute.SpatialDoubleAttributeBase;
-import de.unileipzig.irpact.core.spatial.attribute.SpatialStringAttributeBase;
+import de.unileipzig.irpact.core.spatial.attribute.SpatialDoubleAttribute;
+import de.unileipzig.irpact.core.spatial.attribute.SpatialStringAttribute;
 import de.unileipzig.irpact.experimental.eval3.DynExponential;
 import de.unileipzig.irpact.experimental.eval3.DynLinear;
 import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
@@ -32,51 +32,51 @@ class DivTest {
 
     @Test
     void testMyHashStuff() {
-        List<SpatialAttribute<?>> list0 = CollectionUtil.arrayListOf(
-                new SpatialDoubleAttributeBase("a", 1),
-                new SpatialStringAttributeBase("b", "x1")
+        List<SpatialAttribute> list0 = CollectionUtil.arrayListOf(
+                new SpatialDoubleAttribute("a", 1),
+                new SpatialStringAttribute("b", "x1")
         );
-        List<SpatialAttribute<?>> list00 = CollectionUtil.arrayListOf(
-                new SpatialDoubleAttributeBase("a", 1),
-                new SpatialStringAttributeBase("b", "x1")
+        List<SpatialAttribute> list00 = CollectionUtil.arrayListOf(
+                new SpatialDoubleAttribute("a", 1),
+                new SpatialStringAttribute("b", "x1")
         );
-        List<SpatialAttribute<?>> list1 = CollectionUtil.arrayListOf(
-                new SpatialDoubleAttributeBase("c", 2),
-                new SpatialStringAttributeBase("d", "x2")
+        List<SpatialAttribute> list1 = CollectionUtil.arrayListOf(
+                new SpatialDoubleAttribute("c", 2),
+                new SpatialStringAttribute("d", "x2")
         );
-        Set<SpatialAttribute<?>> set0 = CollectionUtil.hashSetOf(
-                new SpatialDoubleAttributeBase("e", 3),
-                new SpatialStringAttributeBase("f", "x3")
+        Set<SpatialAttribute> set0 = CollectionUtil.hashSetOf(
+                new SpatialDoubleAttribute("e", 3),
+                new SpatialStringAttribute("f", "x3")
         );
-        Set<SpatialAttribute<?>> set00 = CollectionUtil.hashSetOf(
-                new SpatialDoubleAttributeBase("e", 3),
-                new SpatialStringAttributeBase("f", "x3")
+        Set<SpatialAttribute> set00 = CollectionUtil.hashSetOf(
+                new SpatialDoubleAttribute("e", 3),
+                new SpatialStringAttribute("f", "x3")
         );
-        Set<SpatialAttribute<?>> set1 = CollectionUtil.hashSetOf(
-                new SpatialDoubleAttributeBase("g", 4),
-                new SpatialStringAttributeBase("h", "x4")
+        Set<SpatialAttribute> set1 = CollectionUtil.hashSetOf(
+                new SpatialDoubleAttribute("g", 4),
+                new SpatialStringAttribute("h", "x4")
         );
 
-        List<Collection<SpatialAttribute<?>>> listColl0 = CollectionUtil.arrayListOf(
+        List<Collection<SpatialAttribute>> listColl0 = CollectionUtil.arrayListOf(
                 list0,
                 list1,
                 set0,
                 set1
         );
-        List<Collection<SpatialAttribute<?>>> listColl1 = CollectionUtil.arrayListOf(
+        List<Collection<SpatialAttribute>> listColl1 = CollectionUtil.arrayListOf(
                 list00,
                 list1,
                 set00,
                 set1
         );
 
-        Set<Collection<SpatialAttribute<?>>> setColl0 = CollectionUtil.hashSetOf(
+        Set<Collection<SpatialAttribute>> setColl0 = CollectionUtil.hashSetOf(
                 list0,
                 list1,
                 set0,
                 set1
         );
-        Set<Collection<SpatialAttribute<?>>> setColl1 = CollectionUtil.hashSetOf(
+        Set<Collection<SpatialAttribute>> setColl1 = CollectionUtil.hashSetOf(
                 list00,
                 list1,
                 set00,

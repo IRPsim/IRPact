@@ -123,7 +123,7 @@ public class InCustomFileSpatialDistribution2D implements InSpatialDistribution 
         UnivariateDoubleDistribution xDist = parser.parseEntityTo(getXPosSupplier());
         UnivariateDoubleDistribution yDist = parser.parseEntityTo(getYPosSupplier());
 
-        List<List<SpatialAttribute<?>>> attrList = parser.parseEntityTo(getAttributeFile());
+        List<List<SpatialAttribute>> attrList = parser.parseEntityTo(getAttributeFile());
         List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList, xDist, yDist);
 
         DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();

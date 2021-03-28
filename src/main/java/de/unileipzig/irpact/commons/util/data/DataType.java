@@ -4,10 +4,12 @@ package de.unileipzig.irpact.commons.util.data;
  * @author Daniel Abitz
  */
 public enum DataType {
-    UNKNOWN(-1),
-    DOUBLE(0),
-    STRING(1),
-    OTHER(2);
+    UNKNOWN(0),
+    OTHER(1),
+    DOUBLE(2),
+    STRING(3),
+    UNIVARIATE_DOUBLE_DISTRIBUTION(4)
+    ;
 
     private final int ID;
 
@@ -20,18 +22,11 @@ public enum DataType {
     }
 
     public static DataType get(int id) {
-        switch (id) {
-            case 0:
-                return DOUBLE;
-
-            case 1:
-                return STRING;
-
-            case 2:
-                return OTHER;
-
-            default:
-                throw new IllegalArgumentException("unknown id: " + id);
+        for(DataType type: values()) {
+            if(type.getID() == id) {
+                return type;
+            }
         }
+        return UNKNOWN;
     }
 }

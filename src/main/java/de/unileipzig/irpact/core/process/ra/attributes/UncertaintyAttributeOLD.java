@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.process.ra.attributes;
 
-import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentAttribute;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentDoubleAttribute;
 import de.unileipzig.irpact.util.Todo;
 
 import java.util.Objects;
@@ -9,7 +9,7 @@ import java.util.Objects;
  * @author Daniel Abitz
  */
 @Todo("ENTFERNEN -> PR, SPEC")
-public class UncertaintyAttributeOLD extends BasicConsumerAgentAttribute {
+public class UncertaintyAttributeOLD extends ConsumerAgentDoubleAttribute {
 
     protected boolean autoAdjustment;
     protected double convergence;

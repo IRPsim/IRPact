@@ -5,10 +5,10 @@ import de.unileipzig.irpact.commons.attribute.Attribute;
 /**
  * @author Daniel Abitz
  */
-public interface SpatialAttribute<T> extends Attribute<T> {
+public interface SpatialAttribute extends Attribute {
 
     @Override
-    SpatialAttribute<T> copyAttribute();
+    SpatialAttribute copyAttribute();
 
     String getValueAsString();
 }

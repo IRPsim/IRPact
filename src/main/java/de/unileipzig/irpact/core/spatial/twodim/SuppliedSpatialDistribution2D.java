@@ -19,13 +19,13 @@ public class SuppliedSpatialDistribution2D extends ResettableSpatialDistribution
 
     protected UnivariateDoubleDistribution xSupplier;
     protected UnivariateDoubleDistribution ySupplier;
-    protected Map<String, SuppliedSpatialAttribute<SpatialAttribute<?>>> suppliedAttributes;
+    protected Map<String, SuppliedSpatialAttribute> suppliedAttributes;
 
     public SuppliedSpatialDistribution2D() {
         this(new LinkedHashMap<>());
     }
 
-    public SuppliedSpatialDistribution2D(Map<String, SuppliedSpatialAttribute<SpatialAttribute<?>>> suppliedAttributes) {
+    public SuppliedSpatialDistribution2D(Map<String, SuppliedSpatialAttribute> suppliedAttributes) {
         this.suppliedAttributes = suppliedAttributes;
     }
 
@@ -77,8 +77,8 @@ public class SuppliedSpatialDistribution2D extends ResettableSpatialDistribution
         double y = ySupplier.drawDoubleValue();
         numberOfCalls++;
         BasicPoint2D p = new BasicPoint2D(x, y);
-        for(SuppliedSpatialAttribute<SpatialAttribute<?>> suppliedAttribute: suppliedAttributes.values()) {
-            SpatialAttribute<?> attr = suppliedAttribute.derive();
+        for(SuppliedSpatialAttribute suppliedAttribute: suppliedAttributes.values()) {
+            SpatialAttribute attr = suppliedAttribute.derive();
             p.addAttribute(attr);
         }
         return p;

@@ -5,22 +5,40 @@ import de.unileipzig.irpact.commons.util.data.DataType;
 /**
  * @author Daniel Abitz
  */
-public interface StringAttribute extends Attribute<String> {
+public class StringAttribute extends AbstractAttribute {
+
+    protected String value;
 
     @Override
-    default DataType getType() {
+    public StringAttribute copyAttribute() {
+        StringAttribute copy = new StringAttribute();
+        copy.setName(getName());
+        copy.setStringValue(getStringValue());
+        return copy;
+    }
+
+    @Override
+    public DataType getType() {
         return DataType.STRING;
     }
 
-    default String getValue() {
-        return getStringValue();
+    @Override
+    public String getValue() {
+        return value;
     }
 
-    default void setValue(String value) {
-        setStringValue(value);
+    @Override
+    public void setValue(Object value) {
+        this.value = castTo(String.class, value);
     }
 
-    String getStringValue();
+    @Override
+    public void setStringValue(String value) {
+        this.value = value;
+    }
 
-    void setStringValue(String value);
+    @Override
+    public String getStringValue() {
+        return value;
+    }
 }

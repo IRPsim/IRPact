@@ -64,7 +64,7 @@ public class InSpatialTableFile implements InFile {
     }
 
     @Override
-    public  List<List<SpatialAttribute<?>>> parse(InputParser parser) throws ParsingException {
+    public  List<List<SpatialAttribute>> parse(InputParser parser) throws ParsingException {
         try {
             String fileName = getFileNameWithoutExtension();
             SpatialTableFileLoader gisLoader = new SpatialTableFileLoader();
@@ -72,7 +72,7 @@ public class InSpatialTableFile implements InFile {
             gisLoader.setInputFileName(fileName);
             LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "try load '{}'", fileName);
             gisLoader.initalize();
-            List<List<SpatialAttribute<?>>> spatialData = gisLoader.getAllAttributes();
+            List<List<SpatialAttribute>> spatialData = gisLoader.getAllAttributes();
             LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "loaded '{}' entries", spatialData.size());
             return spatialData;
         } catch (Exception e) {

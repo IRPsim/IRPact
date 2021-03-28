@@ -48,7 +48,7 @@ public class TestIt {
         Path path = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\irpacttempdata", "Datensatz_210225.xlsx");
         String x = "X_Zentroid";
         String y = "Y_Zentroid";
-        List<List<SpatialAttribute<?>>> attrList = SpatialTableFileLoader.parseXlsx(path);
+        List<List<SpatialAttribute>> attrList = SpatialTableFileLoader.parseXlsx(path);
         List<SpatialInformation> infoList = SpatialUtil.mapToPoint2D(attrList, x, y);
         System.out.println(infoList.size());
 
@@ -68,7 +68,7 @@ public class TestIt {
         Path path = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\irpacttempdata", "Datensatz_210225.xlsx");
         String x = "X_Zentroid";
         String y = "Y_Zentroid";
-        List<List<SpatialAttribute<?>>> attrList = SpatialTableFileLoader.parseXlsx(path);
+        List<List<SpatialAttribute>> attrList = SpatialTableFileLoader.parseXlsx(path);
         List<SpatialInformation> infoList = SpatialUtil.mapToPoint2D(attrList, x, y);
 
         Rnd rnd = new Rnd(123);
@@ -120,7 +120,7 @@ public class TestIt {
         Path path = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\irpacttempdata", "Datensatz_210225.xlsx");
         String x = "X_Zentroid";
         String y = "Y_Zentroid";
-        List<List<SpatialAttribute<?>>> attrList = SpatialTableFileLoader.parseXlsx(path);
+        List<List<SpatialAttribute>> attrList = SpatialTableFileLoader.parseXlsx(path);
         List<SpatialInformation> infoList = SpatialUtil.mapToPoint2D(attrList, x, y);
 
         Rnd rnd = new Rnd(123);

@@ -3,14 +3,14 @@ package de.unileipzig.irpact.jadex.persistance.binary.impl;
 import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.spatial.attribute.SpatialStringAttributeBase;
+import de.unileipzig.irpact.core.spatial.attribute.SpatialStringAttribute;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class SpatialStringAttributeBasePR extends BinaryPRBase<SpatialStringAttributeBase> {
+public class SpatialStringAttributeBasePR extends BinaryPRBase<SpatialStringAttribute> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(SpatialStringAttributeBasePR.class);
 
@@ -22,8 +22,8 @@ public class SpatialStringAttributeBasePR extends BinaryPRBase<SpatialStringAttr
     }
 
     @Override
-    public Class<SpatialStringAttributeBase> getType() {
-        return SpatialStringAttributeBase.class;
+    public Class<SpatialStringAttribute> getType() {
+        return SpatialStringAttribute.class;
     }
 
     //=========================
@@ -31,7 +31,7 @@ public class SpatialStringAttributeBasePR extends BinaryPRBase<SpatialStringAttr
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(SpatialStringAttributeBase object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(SpatialStringAttribute object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putText(object.getStringValue());
@@ -43,8 +43,8 @@ public class SpatialStringAttributeBasePR extends BinaryPRBase<SpatialStringAttr
     //=========================
 
     @Override
-    protected SpatialStringAttributeBase doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
-        SpatialStringAttributeBase object = new SpatialStringAttributeBase();
+    protected SpatialStringAttribute doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        SpatialStringAttribute object = new SpatialStringAttribute();
         object.setName(data.getText());
         object.setStringValue(data.getText());
         return object;

@@ -144,7 +144,7 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
         List<ConsumerAgentGroup> cags = parseCags(parser);
         checkConsumerAgentGroupExistence(cags, initData);
 
-        List<List<SpatialAttribute<?>>> attrList = parser.parseEntityTo(getFile());
+        List<List<SpatialAttribute>> attrList = parser.parseEntityTo(getFile());
         String selector = getSelectKey().getName();
         ShareCalculator<ConsumerAgentGroup> shareCalculator = new ShareCalculator<>();
 
@@ -182,7 +182,7 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
 
     protected static void parseIndividualSizes(
             List<ConsumerAgentGroup> cags,
-            List<List<SpatialAttribute<?>>> attrList,
+            List<List<SpatialAttribute>> attrList,
             String selector,
             ShareCalculator<ConsumerAgentGroup> shareCalculator) {
         for(ConsumerAgentGroup cag: cags) {
@@ -193,7 +193,7 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
     }
 
     protected int getTotalSizeForShareCalculation(
-            List<List<SpatialAttribute<?>>> attrList,
+            List<List<SpatialAttribute>> attrList,
             List<ConsumerAgentGroup> cags,
             ShareCalculator<ConsumerAgentGroup> shareCalculator) {
         int totalSize;

@@ -5,8 +5,8 @@ import de.unileipzig.irpact.commons.util.xlsx.SimpleXlsxTableParser;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
-import de.unileipzig.irpact.core.spatial.attribute.SpatialDoubleAttributeBase;
-import de.unileipzig.irpact.core.spatial.attribute.SpatialStringAttributeBase;
+import de.unileipzig.irpact.core.spatial.attribute.SpatialDoubleAttribute;
+import de.unileipzig.irpact.core.spatial.attribute.SpatialStringAttribute;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.apache.poi.common.usermodel.fonts.FontCharset;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -30,7 +30,7 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
 
     protected ResourceLoader loader;
     protected String inputFileName;
-    protected List<List<SpatialAttribute<?>>> data;
+    protected List<List<SpatialAttribute>> data;
 
     public SpatialTableFileLoader() {
     }
@@ -52,7 +52,7 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
     }
 
     @Override
-    public List<List<SpatialAttribute<?>>> getAllAttributes() {
+    public List<List<SpatialAttribute>> getAllAttributes() {
         if(data == null) {
             throw new IllegalStateException("not initalized");
         }
@@ -106,11 +106,11 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
     //csv
     //=========================
 
-    private static List<List<SpatialAttribute<?>>> parseCsv(InputStream in) {
+    private static List<List<SpatialAttribute>> parseCsv(InputStream in) {
         throw new UnsupportedOperationException();
     }
 
-    private static List<List<SpatialAttribute<?>>> parseCsv(Path path) {
+    private static List<List<SpatialAttribute>> parseCsv(Path path) {
         throw new UnsupportedOperationException();
     }
 
@@ -118,30 +118,30 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
     //xlsx
     //=========================
 
-    public static List<List<SpatialAttribute<?>>> parseXlsx(InputStream in) throws IOException {
+    public static List<List<SpatialAttribute>> parseXlsx(InputStream in) throws IOException {
         XSSFWorkbook book = new XSSFWorkbook(in);
         XSSFFont font = book.createFont();
         font.setCharSet(FontCharset.ANSI);
         return parseXlsx(book);
     }
 
-    public static List<List<SpatialAttribute<?>>> parseXlsx(Path path) throws IOException {
+    public static List<List<SpatialAttribute>> parseXlsx(Path path) throws IOException {
         try(InputStream in = Files.newInputStream(path)) {
             return parseXlsx(in);
         }
     }
 
-    public static List<List<SpatialAttribute<?>>> parseXlsx(XSSFWorkbook book) {
+    public static List<List<SpatialAttribute>> parseXlsx(XSSFWorkbook book) {
         XSSFSheet sheet = book.getSheetAt(0);
 
-        SimpleXlsxTableParser<SpatialAttribute<?>> parser = new SimpleXlsxTableParser<>();
+        SimpleXlsxTableParser<SpatialAttribute> parser = new SimpleXlsxTableParser<>();
         parser.setTextConverter((columnIndex, header, value) ->
-                new SpatialStringAttributeBase(header[columnIndex], value));
+                new SpatialStringAttribute(header[columnIndex], value));
         parser.setNumbericConverter((columnIndex, header, value) ->
-                new SpatialDoubleAttributeBase(header[columnIndex], value.doubleValue()));
+                new SpatialDoubleAttribute(header[columnIndex], value.doubleValue()));
         parser.parse(sheet);
 
-        List<List<SpatialAttribute<?>>> out = parser.getRows();
+        List<List<SpatialAttribute>> out = parser.getRows();
         parser.reset();
         return out;
     }

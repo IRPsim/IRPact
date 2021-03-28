@@ -1,18 +1,18 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.commons.attribute.DoubleAttributeGroupEntityBase;
+import de.unileipzig.irpact.commons.attribute.DoubleAttributeGroupEntity;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicProductAttribute extends DoubleAttributeGroupEntityBase<ProductGroupAttribute> implements ProductAttribute {
+public class ProductDoubleAttribute extends DoubleAttributeGroupEntity<ProductGroupAttribute> implements ProductAttribute {
 
-    public BasicProductAttribute() {
+    public ProductDoubleAttribute() {
     }
 
-    public BasicProductAttribute(String name, ProductGroupAttribute groupAttribute, double value) {
+    public ProductDoubleAttribute(String name, ProductGroupAttribute groupAttribute, double value) {
         setName(name);
         setGroup(groupAttribute);
         setDoubleValue(value);

@@ -81,8 +81,8 @@ public class InFileSelectedSpatialDistribution2D implements InSpatialDistributio
         String xKey = getXPositionKey().getName();
         String yKey = getYPositionKey().getName();
         String selectKey = getSelectKey().getName();
-        List<List<SpatialAttribute<?>>> attrList = parser.parseEntityTo(getAttributeFile());
-        List<List<SpatialAttribute<?>>> selectedList = SpatialUtil.filter(attrList, selectKey, jCag.getName());
+        List<List<SpatialAttribute>> attrList = parser.parseEntityTo(getAttributeFile());
+        List<List<SpatialAttribute>> selectedList = SpatialUtil.filter(attrList, selectKey, jCag.getName());
         List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xKey, yKey);
 
         DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();

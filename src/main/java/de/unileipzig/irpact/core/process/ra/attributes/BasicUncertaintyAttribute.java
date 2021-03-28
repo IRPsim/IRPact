@@ -1,14 +1,13 @@
 package de.unileipzig.irpact.core.process.ra.attributes;
 
-import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentAttribute;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentDoubleAttribute;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicUncertaintyAttribute extends BasicConsumerAgentAttribute {
+public class BasicUncertaintyAttribute extends ConsumerAgentDoubleAttribute {
 
     protected boolean autoAdjustment;
     protected double convergence;

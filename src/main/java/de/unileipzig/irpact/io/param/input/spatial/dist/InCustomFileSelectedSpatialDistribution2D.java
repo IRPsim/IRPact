@@ -83,8 +83,8 @@ public class InCustomFileSelectedSpatialDistribution2D implements InSpatialDistr
         UnivariateDoubleDistribution xSupplier = parser.parseEntityTo(getXPosSupplier());
         UnivariateDoubleDistribution ySupplier = parser.parseEntityTo(getYPosSupplier());
         String selectKey = getSelectKey().getName();
-        List<List<SpatialAttribute<?>>> attrList = parser.parseEntityTo(getAttributeFile());
-        List<List<SpatialAttribute<?>>> selectedList = SpatialUtil.filter(attrList, selectKey, jCag.getName());
+        List<List<SpatialAttribute>> attrList = parser.parseEntityTo(getAttributeFile());
+        List<List<SpatialAttribute>> selectedList = SpatialUtil.filter(attrList, selectKey, jCag.getName());
         List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xSupplier, ySupplier);
 
         DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();

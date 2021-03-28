@@ -1,11 +1,11 @@
-package de.unileipzig.irpact.commons.distattr;
+package de.unileipzig.irpact.commons.distributionattribut;
 
 /**
  * @author Daniel Abitz
  */
 public abstract class AbstractDerivableUnivariateDoubleDistributionAttribute<T>
-        extends UnivariateDoubleDistributionAttributeBase
-        implements DerivableUnivariateDistributionAttribute<T> {
+        extends AttributableUnivariateDoubleDistributionBase
+        implements DerivableUnivariateDoubleDistributionAttribute<T> {
 
     @Override
     public T derive() {

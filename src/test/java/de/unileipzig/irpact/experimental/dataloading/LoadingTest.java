@@ -61,7 +61,7 @@ public class LoadingTest {
         l.setLoader(loader);
         l.setInputFileName("GIS_final_1_x");
         l.initalize();
-        List<List<SpatialAttribute<?>>> attrs = l.getAllAttributes();
+        List<List<SpatialAttribute>> attrs = l.getAllAttributes();
         System.out.println(attrs.size());
         System.out.println(attrs.get(0));
 

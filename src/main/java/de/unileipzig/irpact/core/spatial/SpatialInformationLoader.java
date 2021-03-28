@@ -9,5 +9,5 @@ import java.util.List;
  */
 public interface SpatialInformationLoader {
 
-    List<List<SpatialAttribute<?>>> getAllAttributes();
+    List<List<SpatialAttribute>> getAllAttributes();
 }

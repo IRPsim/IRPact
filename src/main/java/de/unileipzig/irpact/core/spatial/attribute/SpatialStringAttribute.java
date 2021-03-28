@@ -2,16 +2,41 @@ package de.unileipzig.irpact.core.spatial.attribute;
 
 import de.unileipzig.irpact.commons.attribute.StringAttribute;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
-public interface SpatialStringAttribute extends StringAttribute, SpatialAttribute<String> {
+public class SpatialStringAttribute extends StringAttribute implements SpatialAttribute {
+
+    public SpatialStringAttribute() {
+    }
+
+    public SpatialStringAttribute(String name, String value) {
+        setName(name);
+        setStringValue(value);
+    }
 
     @Override
-    SpatialStringAttribute copyAttribute();
+    public SpatialStringAttribute copyAttribute() {
+        SpatialStringAttribute copy = new SpatialStringAttribute();
+        copy.setName(getName());
+        copy.setStringValue(getStringValue());
+        return copy;
+    }
 
     @Override
-    default String getValueAsString() {
+    public String getValueAsString() {
         return getStringValue();
+    }
+
+    @Override
+    public String toString() {
+        return "{" + getName() + "=" + getValueAsString() + "}";
+    }
+
+    @Override
+    public int getChecksum() {
+        return Objects.hash(getName(), getStringValue());
     }
 }
