@@ -5,8 +5,8 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.spatial.distribution.DiscreteSpatialDistribution;
 import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
 import de.unileipzig.irpact.io.param.ParamUtil;
@@ -122,8 +122,8 @@ public class InFileSpatialDistribution2D implements InSpatialDistribution {
         String xKey = getXPositionKey().getName();
         String yKey = getYPositionKey().getName();
 
-        List<List<SpatialAttribute>> attrList = parser.parseEntityTo(getAttributeFile());
-        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList, xKey, yKey);
+        SpatialTableFileContent attrList = parser.parseEntityTo(getAttributeFile());
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList.data(), xKey, yKey);
 
         DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();
         dist.setName(getName());

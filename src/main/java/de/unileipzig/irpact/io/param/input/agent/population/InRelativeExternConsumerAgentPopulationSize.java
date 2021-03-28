@@ -6,6 +6,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.simulation.InitializationData;
+import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.io.param.ParamUtil;
@@ -144,13 +145,13 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
         List<ConsumerAgentGroup> cags = parseCags(parser);
         checkConsumerAgentGroupExistence(cags, initData);
 
-        List<List<SpatialAttribute>> attrList = parser.parseEntityTo(getFile());
+        SpatialTableFileContent attrList = parser.parseEntityTo(getFile());
         String selector = getSelectKey().getName();
         ShareCalculator<ConsumerAgentGroup> shareCalculator = new ShareCalculator<>();
 
-        parseIndividualSizes(cags, attrList, selector, shareCalculator);
+        parseIndividualSizes(cags, attrList.data(), selector, shareCalculator);
 
-        int totalSizeForShares = getTotalSizeForShareCalculation(attrList, cags, shareCalculator);
+        int totalSizeForShares = getTotalSizeForShareCalculation(attrList.data(), cags, shareCalculator);
         calculateShares(cags, totalSizeForShares, shareCalculator);
 
         int totalPopulationSize = getTotalPopulationSize(cags, shareCalculator);

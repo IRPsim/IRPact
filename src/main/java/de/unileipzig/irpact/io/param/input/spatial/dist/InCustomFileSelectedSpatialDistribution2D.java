@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.distribution.DiscreteSpatialDistribution;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
@@ -83,8 +84,8 @@ public class InCustomFileSelectedSpatialDistribution2D implements InSpatialDistr
         UnivariateDoubleDistribution xSupplier = parser.parseEntityTo(getXPosSupplier());
         UnivariateDoubleDistribution ySupplier = parser.parseEntityTo(getYPosSupplier());
         String selectKey = getSelectKey().getName();
-        List<List<SpatialAttribute>> attrList = parser.parseEntityTo(getAttributeFile());
-        List<List<SpatialAttribute>> selectedList = SpatialUtil.filter(attrList, selectKey, jCag.getName());
+        SpatialTableFileContent attrList = parser.parseEntityTo(getAttributeFile());
+        List<List<SpatialAttribute>> selectedList = SpatialUtil.filter(attrList.data(), selectKey, jCag.getName());
         List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xSupplier, ySupplier);
 
         DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();

@@ -6,6 +6,7 @@ import de.unileipzig.irpact.commons.res.BasicResourceLoader;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.core.spatial.distribution.WeightedDiscreteSpatialDistribution;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
@@ -43,13 +44,13 @@ public class SelectAndGroupDemo {
         l.setInputFileName("GIS_final_1_x");
         l.initalize();
 
-        List<List<SpatialAttribute>> allEntries = l.getAllAttributes();
+        SpatialTableFileContent allEntries = l.getAllAttributes();
         LOGGER.info("Entraege: {}", allEntries.size());
         LOGGER.info("erster Eintrag: {}", allEntries.get(0));
 
         WeightedDiscreteSpatialDistribution dist = InCustomFileSelectedGroupedSpatialDistribution2D.createInstance(
                 "TestDist",
-                allEntries,
+                allEntries.data(),
                 new ConstantUnivariateDoubleDistribution("x", 0),
                 new ConstantUnivariateDoubleDistribution("y", 0),
 

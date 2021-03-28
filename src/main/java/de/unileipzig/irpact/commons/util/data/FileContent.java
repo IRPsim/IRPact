@@ -5,5 +5,5 @@ package de.unileipzig.irpact.commons.util.data;
  */
 public interface FileContent {
 
-    Object get();
+    Object data();
 }

@@ -5,11 +5,11 @@ import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.distribution.DiscreteSpatialDistribution;
 import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
@@ -123,8 +123,8 @@ public class InCustomFileSpatialDistribution2D implements InSpatialDistribution 
         UnivariateDoubleDistribution xDist = parser.parseEntityTo(getXPosSupplier());
         UnivariateDoubleDistribution yDist = parser.parseEntityTo(getYPosSupplier());
 
-        List<List<SpatialAttribute>> attrList = parser.parseEntityTo(getAttributeFile());
-        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList, xDist, yDist);
+        SpatialTableFileContent attrList = parser.parseEntityTo(getAttributeFile());
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList.data(), xDist, yDist);
 
         DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();
         dist.setName(getName());

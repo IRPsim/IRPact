@@ -3,6 +3,7 @@ package de.unileipzig.irpact.io.param.input.file;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.io.param.input.InputParser;
@@ -64,7 +65,7 @@ public class InSpatialTableFile implements InFile {
     }
 
     @Override
-    public  List<List<SpatialAttribute>> parse(InputParser parser) throws ParsingException {
+    public SpatialTableFileContent parse(InputParser parser) throws ParsingException {
         try {
             String fileName = getFileNameWithoutExtension();
             SpatialTableFileLoader gisLoader = new SpatialTableFileLoader();
@@ -72,7 +73,7 @@ public class InSpatialTableFile implements InFile {
             gisLoader.setInputFileName(fileName);
             LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "try load '{}'", fileName);
             gisLoader.initalize();
-            List<List<SpatialAttribute>> spatialData = gisLoader.getAllAttributes();
+            SpatialTableFileContent spatialData = gisLoader.getAllAttributes();
             LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "loaded '{}' entries", spatialData.size());
             return spatialData;
         } catch (Exception e) {

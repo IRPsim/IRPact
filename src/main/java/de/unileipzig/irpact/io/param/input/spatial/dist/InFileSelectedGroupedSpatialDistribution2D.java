@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.core.spatial.distribution.WeightedDiscreteSpatialDistribution;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
@@ -149,13 +150,13 @@ public class InFileSelectedGroupedSpatialDistribution2D implements InSpatialDist
         String yKey = getYPositionKey().getName();
         String selectKey = getSelectKey().getName();
         String groupingKey = getGroupKey().getName();
-        List<List<SpatialAttribute>> attrList = parser.parseEntityTo(getFile());
+        SpatialTableFileContent attrList = parser.parseEntityTo(getFile());
         Rnd rnd = parser.deriveRnd();
         LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "InCustomSelectedSpatialDistribution2D '{}' uses seed: {}", getName(), rnd.getInitialSeed());
 
         WeightedDiscreteSpatialDistribution dist = createInstance(
                 getName(),
-                attrList,
+                attrList.data(),
                 xKey,
                 yKey,
                 selectKey,

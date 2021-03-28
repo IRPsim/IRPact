@@ -52,11 +52,11 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
     }
 
     @Override
-    public List<List<SpatialAttribute>> getAllAttributes() {
+    public SpatialTableFileContent getAllAttributes() {
         if(data == null) {
             throw new IllegalStateException("not initalized");
         }
-        return data;
+        return new SpatialTableFileContent(data);
     }
 
     private void parse() throws IOException, InvalidFormatException {

@@ -5,16 +5,15 @@ import de.unileipzig.irpact.commons.distribution.ConstantUnivariateDoubleDistrib
 import de.unileipzig.irpact.commons.res.BasicResourceLoader;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.misc.MissingDataException;
+import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.core.spatial.distribution.WeightedDiscreteSpatialDistribution;
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSelectedGroupedSpatialDistribution2D;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -61,13 +60,13 @@ public class LoadingTest {
         l.setLoader(loader);
         l.setInputFileName("GIS_final_1_x");
         l.initalize();
-        List<List<SpatialAttribute>> attrs = l.getAllAttributes();
+        SpatialTableFileContent attrs = l.getAllAttributes();
         System.out.println(attrs.size());
         System.out.println(attrs.get(0));
 
         WeightedDiscreteSpatialDistribution dist = InCustomFileSelectedGroupedSpatialDistribution2D.createInstance(
                 "TEST",
-                attrs,
+                attrs.data(),
                 new ConstantUnivariateDoubleDistribution("x", 0.0),
                 new ConstantUnivariateDoubleDistribution("y", 0.0),
                 "Mic_Dominantes_Milieu",
