@@ -45,7 +45,7 @@ public class BasicConsumerAgentGroupAttributeSupplierPR extends BinaryPRBase<Bas
 //        if(object.hasDefaultDisttribution()) {
 //            manager.prepare(object.getDefaultDisttribution());
 //        }
-        manager.prepare(object.getDefaultDisttribution());
+        manager.prepare(object.getDistribution());
 
         return data;
     }
@@ -66,7 +66,7 @@ public class BasicConsumerAgentGroupAttributeSupplierPR extends BinaryPRBase<Bas
 //        } else {
 //            data.putNothing();
 //        }
-        data.putLong(manager.ensureGetUID(object.getDefaultDisttribution()));
+        data.putLong(manager.ensureGetUID(object.getDistribution()));
     }
 
     //=========================
@@ -90,6 +90,6 @@ public class BasicConsumerAgentGroupAttributeSupplierPR extends BinaryPRBase<Bas
 //            object.put(cag, dist);
 //        }
 
-        object.setDefaultDisttribution(manager.ensureGet(data.getLong()));
+        object.setDistribution(manager.ensureGet(data.getLong()));
     }
 }

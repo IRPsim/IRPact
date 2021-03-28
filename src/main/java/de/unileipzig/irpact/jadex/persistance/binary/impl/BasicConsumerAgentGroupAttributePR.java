@@ -33,8 +33,9 @@ public class BasicConsumerAgentGroupAttributePR extends BinaryPRBase<BasicConsum
     protected BinaryJsonData doInitalizePersist(BasicConsumerAgentGroupAttribute object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
+        data.putBoolean(object.isArtificial());
 
-        manager.prepare(object.getValue());
+        manager.prepare(object.getUnivariateDoubleDistributionValue());
 
         return data;
     }
@@ -52,11 +53,12 @@ public class BasicConsumerAgentGroupAttributePR extends BinaryPRBase<BasicConsum
     protected BasicConsumerAgentGroupAttribute doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
         BasicConsumerAgentGroupAttribute object = new BasicConsumerAgentGroupAttribute();
         object.setName(data.getText());
+        object.setArtificial(data.getBoolean());
         return object;
     }
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, BasicConsumerAgentGroupAttribute object, RestoreManager manager) {
-        object.setDistribution(manager.ensureGet(data.getLong()));
+        object.setUnivariateDoubleDistributionValue(manager.ensureGet(data.getLong()));
     }
 }

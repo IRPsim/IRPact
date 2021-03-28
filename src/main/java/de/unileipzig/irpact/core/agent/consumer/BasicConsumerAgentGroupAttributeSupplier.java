@@ -17,7 +17,7 @@ public class BasicConsumerAgentGroupAttributeSupplier extends NameableBase imple
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicConsumerAgentGroupAttributeSupplier.class);
 
     protected String attributeName;
-    protected UnivariateDoubleDistribution defaultDist;
+    protected UnivariateDoubleDistribution dist;
 
     public BasicConsumerAgentGroupAttributeSupplier() {
         this(null);
@@ -29,7 +29,7 @@ public class BasicConsumerAgentGroupAttributeSupplier extends NameableBase imple
 
     public BasicConsumerAgentGroupAttributeSupplier(String attributeName, UnivariateDoubleDistribution defaultDist) {
         this.attributeName = attributeName;
-        setDefaultDisttribution(defaultDist);
+        setDistribution(defaultDist);
     }
 
     public void setAttributeName(String attributeName) {
@@ -40,16 +40,16 @@ public class BasicConsumerAgentGroupAttributeSupplier extends NameableBase imple
         return attributeName;
     }
 
-    public boolean hasDefaultDisttribution() {
-        return defaultDist != null;
+    public boolean hasDistribution() {
+        return dist != null;
     }
 
-    public void setDefaultDisttribution(UnivariateDoubleDistribution defaultDist) {
-        this.defaultDist = defaultDist;
+    public void setDistribution(UnivariateDoubleDistribution dist) {
+        this.dist = dist;
     }
 
-    public UnivariateDoubleDistribution getDefaultDisttribution() {
-        return defaultDist;
+    public UnivariateDoubleDistribution getDistribution() {
+        return dist;
     }
 
     @Override
@@ -63,24 +63,25 @@ public class BasicConsumerAgentGroupAttributeSupplier extends NameableBase imple
             throw new IllegalArgumentException("agent group '" + cag.getName() + "' already has '" + attributeName + "'");
         }
 
-        if(defaultDist == null) {
+        if(dist == null) {
             throw new NullPointerException("no distribution for consumer group '" + cag.getName() + "'");
         }
 
         BasicConsumerAgentGroupAttribute grpAttr = new BasicConsumerAgentGroupAttribute();
         grpAttr.setName(attributeName);
-        grpAttr.setDistribution(defaultDist);
+        grpAttr.setUnivariateDoubleDistributionValue(dist);
+        grpAttr.setArtificial(true);
         cag.addGroupAttribute(grpAttr);
 
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added '{}={}' to group '{}'", attributeName, defaultDist.getName(), cag.getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added '{}={}' to group '{}'", attributeName, dist.getName(), cag.getName());
     }
 
     @Override
     public int getChecksum() {
         return Objects.hash(
                 getName(),
-                attributeName,
-                ChecksumComparable.getChecksum(defaultDist)
+                getAttributeName(),
+                ChecksumComparable.getChecksum(dist)
         );
     }
 }

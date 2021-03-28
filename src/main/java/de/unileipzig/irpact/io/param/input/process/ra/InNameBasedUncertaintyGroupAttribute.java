@@ -6,6 +6,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
+import de.unileipzig.irpact.core.process.ra.attributes.BasicUncertaintyGroupAttributeSupplier;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InputParser;
@@ -87,8 +88,11 @@ public class InNameBasedUncertaintyGroupAttribute implements InUncertaintyGroupA
             for(InAttributeName attrName: getNames()) {
                 processModel.getUncertaintySupplier().add(
                         cag,
-                        attrName.getName(),
-                        uncert
+                        new BasicUncertaintyGroupAttributeSupplier(
+                                getName() + "_" + cag.getName(),
+                                attrName.getName(),
+                                uncert
+                        )
                 );
                 LOGGER.debug(
                         IRPSection.INITIALIZATION_PARAMETER,

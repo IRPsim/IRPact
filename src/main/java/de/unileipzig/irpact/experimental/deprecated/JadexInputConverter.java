@@ -48,7 +48,7 @@ public class JadexInputConverter implements InputConverter {
             for(IConsumerAgentGroupAttribute attr: grp.getCagAttributes()) {
                 BasicConsumerAgentGroupAttribute battr = new BasicConsumerAgentGroupAttribute();
                 battr.setName(attr.getName());
-                battr.setDistribution(attr.getCagAttrDistribution().createInstance());
+                battr.setUnivariateDoubleDistributionValue(attr.getCagAttrDistribution().createInstance());
                 //jgrp.addAttribute(battr);
             }
             //env.getAgents().add(jgrp);
@@ -75,7 +75,7 @@ public class JadexInputConverter implements InputConverter {
             for(IProductGroupAttribute attr: grp.getPgAttributes()) {
                 BasicProductGroupAttribute pga = new BasicProductGroupAttribute();
                 pga.setName(attr.getName());
-                pga.setDistribution(attr.getPgAttrDistribution().createInstance());
+                pga.setUnivariateDoubleDistributionValue(attr.getPgAttrDistribution().createInstance());
                 pg.addGroupAttribute(pga);
             }
             //env.getProducts().add(pg);

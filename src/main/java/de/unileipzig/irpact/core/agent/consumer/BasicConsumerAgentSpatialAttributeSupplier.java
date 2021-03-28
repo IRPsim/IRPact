@@ -6,7 +6,7 @@ import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
-import de.unileipzig.irpact.core.spatial.attribute.SpatialDoubleAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialDoubleAttribute;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.LinkedHashMap;

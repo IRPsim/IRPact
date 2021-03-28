@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.commons.attribute;
 
 /**
- * simple marker interface
+ * Simple marker interface
  *
  * @author Daniel Abitz
  */

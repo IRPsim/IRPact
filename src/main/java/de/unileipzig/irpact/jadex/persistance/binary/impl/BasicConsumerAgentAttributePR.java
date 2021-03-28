@@ -34,6 +34,7 @@ public class BasicConsumerAgentAttributePR extends BinaryPRBase<ConsumerAgentDou
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putDouble(object.getDoubleValue());
+        data.putBoolean(object.isArtificial());
 
         manager.prepare(object.getGroup());
 
@@ -54,6 +55,7 @@ public class BasicConsumerAgentAttributePR extends BinaryPRBase<ConsumerAgentDou
         ConsumerAgentDoubleAttribute object = new ConsumerAgentDoubleAttribute();
         object.setName(data.getText());
         object.setDoubleValue(data.getDouble());
+        object.setArtificial(data.getBoolean());
         return object;
     }
 

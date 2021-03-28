@@ -58,6 +58,6 @@ public class BasicProductGroupAttributePR extends BinaryPRBase<BasicProductGroup
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, BasicProductGroupAttribute object, RestoreManager manager) throws RestoreException {
-        object.setDistribution(manager.ensureGet(data.getLong()));
+        object.setUnivariateDoubleDistributionValue(manager.ensureGet(data.getLong()));
     }
 }

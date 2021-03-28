@@ -6,6 +6,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
+import de.unileipzig.irpact.core.process.ra.attributes.BasicUncertaintyGroupAttributeSupplier;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -29,7 +30,6 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 @Definition
 public class InIndividualAttributeBasedUncertaintyGroupAttribute implements InUncertaintyGroupAttribute {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
@@ -86,8 +86,11 @@ public class InIndividualAttributeBasedUncertaintyGroupAttribute implements InUn
 
             processModel.getUncertaintySupplier().add(
                     cag,
-                    attrName,
-                    uncert
+                    new BasicUncertaintyGroupAttributeSupplier(
+                            getName() + "_" + cag.getName(),
+                            attrName,
+                            uncert
+                    )
             );
             LOGGER.debug(
                     IRPSection.INITIALIZATION_PARAMETER,

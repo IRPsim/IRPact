@@ -15,8 +15,6 @@ import de.unileipzig.irpact.core.need.BasicNeed;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
-import de.unileipzig.irpact.core.process.ra.attributes.BasicUncertaintyGroupAttributeSupplier;
-import de.unileipzig.irpact.core.process.ra.attributes.UncertaintyGroupAttributeSupplier;
 import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
@@ -43,7 +41,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
     protected ConsumerAgentGroupAttributeSupplier underConstructionSupplier = new BasicConsumerAgentGroupAttributeSupplier(RAConstants.UNDER_CONSTRUCTION, DIRAQ0);
     protected ConsumerAgentGroupAttributeSupplier underRenovationSupplier = new BasicConsumerAgentGroupAttributeSupplier(RAConstants.UNDER_RENOVATION, DIRAQ0);
 
-    protected UncertaintyGroupAttributeSupplier uncertaintySupplier = new BasicUncertaintyGroupAttributeSupplier();
+    protected MultiConsumerAgentGroupAttributeSupplier uncertaintySupplier = new BasicMultiConsumerAgentGroupAttributeSupplier();
 
     protected NPVData npvData;
     protected NPVCalculator npvCalculator;
@@ -126,11 +124,11 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         this.underRenovationSupplier = underRenovationSupplier;
     }
 
-    public UncertaintyGroupAttributeSupplier getUncertaintySupplier() {
+    public MultiConsumerAgentGroupAttributeSupplier getUncertaintySupplier() {
         return uncertaintySupplier;
     }
 
-    public void setUncertaintySupplier(UncertaintyGroupAttributeSupplier uncertaintySupplier) {
+    public void setUncertaintySupplier(MultiConsumerAgentGroupAttributeSupplier uncertaintySupplier) {
         this.uncertaintySupplier = uncertaintySupplier;
     }
 
@@ -182,7 +180,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
             if(!underRenovationSupplier.hasGroupAttribute(cag)) {
                 underRenovationSupplier.addGroupAttributeTo(cag);
             }
-            uncertaintySupplier.applyTo(cag);
+            uncertaintySupplier.addAllGroupAttributesTo(cag);
         }
     }
 

@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.spatial.attribute;
+package de.unileipzig.irpact.commons.spatial.attribute;
 
 import de.unileipzig.irpact.commons.attribute.Attribute;
 

@@ -96,7 +96,7 @@ public class InBasicProductGroupAttribute implements InDependentProductGroupAttr
         pgAttr.setName(getAttributeName());
 
         UnivariateDoubleDistribution dist = parser.parseEntityTo(getDistribution());
-        pgAttr.setDistribution(dist);
+        pgAttr.setUnivariateDoubleDistributionValue(dist);
 
         LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "created ProductGroupAttribute '{}' ('{}')", pgAttr.getName(), getName());
         return pgAttr;

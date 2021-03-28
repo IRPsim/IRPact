@@ -5,7 +5,7 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
-import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.spatial.filter.MaxDistanceSpatialInformationFilter;
 import de.unileipzig.irpact.core.spatial.filter.RangeSpatialInformationFilter;
 import de.unileipzig.irpact.core.spatial.twodim.BasicPoint2D;
@@ -18,7 +18,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.function.Predicate;
 
 /**

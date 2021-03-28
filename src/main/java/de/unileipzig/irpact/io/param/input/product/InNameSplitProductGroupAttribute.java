@@ -94,7 +94,7 @@ public class InNameSplitProductGroupAttribute implements InIndependentProductGro
         }
 
         UnivariateDoubleDistribution dist = parser.parseEntityTo(getDistribution());
-        pgAttr.setDistribution(dist);
+        pgAttr.setUnivariateDoubleDistributionValue(dist);
 
         pg.addGroupAttribute(pgAttr);
         LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added ProductGroupAttribute '{}' ('{}') to group '{}'", pgAttr.getName(), getName(), pg.getName());

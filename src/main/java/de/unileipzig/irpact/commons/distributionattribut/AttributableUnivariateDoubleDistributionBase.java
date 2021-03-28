@@ -11,10 +11,6 @@ public class AttributableUnivariateDoubleDistributionBase extends AbstractAttrib
 
     protected UnivariateDoubleDistribution distribution;
 
-    public void setDistribution(UnivariateDoubleDistribution distribution) {
-        this.distribution = distribution;
-    }
-
     @Override
     public DataType getType() {
         return DataType.UNIVARIATE_DOUBLE_DISTRIBUTION;
@@ -24,7 +20,7 @@ public class AttributableUnivariateDoubleDistributionBase extends AbstractAttrib
     public AttributableUnivariateDoubleDistributionBase copyDistribution() {
         AttributableUnivariateDoubleDistributionBase copy = new AttributableUnivariateDoubleDistributionBase();
         copy.setName(name);
-        copy.setDistribution(distribution.copyDistribution());
+        copy.setUnivariateDoubleDistributionValue(distribution.copyDistribution());
         return copy;
     }
 
@@ -41,6 +37,16 @@ public class AttributableUnivariateDoubleDistributionBase extends AbstractAttrib
     @Override
     public void setValue(Object value) {
         this.distribution = castTo(UnivariateDoubleDistribution.class, value);
+    }
+
+    @Override
+    public void setUnivariateDoubleDistributionValue(UnivariateDoubleDistribution value) {
+        this.distribution = distribution;
+    }
+
+    @Override
+    public UnivariateDoubleDistribution getUnivariateDoubleDistributionValue() {
+        return distribution;
     }
 
     @Override

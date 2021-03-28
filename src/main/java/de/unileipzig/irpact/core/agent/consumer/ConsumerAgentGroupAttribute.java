@@ -6,5 +6,9 @@ import de.unileipzig.irpact.commons.distributionattribut.DerivableUnivariateDoub
 /**
  * @author Daniel Abitz
  */
-public interface ConsumerAgentGroupAttribute extends GroupAttribute, DerivableUnivariateDoubleDistributionAttribute<ConsumerAgentAttribute> {
+public interface ConsumerAgentGroupAttribute
+        extends GroupAttribute,
+        DerivableUnivariateDoubleDistributionAttribute<ConsumerAgentAttribute> {
+
+    boolean isArtificial();
 }

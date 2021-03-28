@@ -31,6 +31,7 @@ public final class BinaryJsonUtil {
         ensureRegister(manager, BasicEdgePR.INSTANCE);
         ensureRegister(manager, BasicJadexLifeCycleControlPR.INSTANCE);
         ensureRegister(manager, BasicJadexSimulationEnvironmentPR.INSTANCE);
+        ensureRegister(manager, BasicMultiConsumerAgentGroupAttributeSupplierPR.INSTANCE);
         ensureRegister(manager, BasicNeedPR.INSTANCE);
         ensureRegister(manager, BasicPoint2DPR.INSTANCE);
         ensureRegister(manager, BasicProductAttributePR.INSTANCE);
@@ -66,9 +67,6 @@ public final class BinaryJsonUtil {
         ensureRegister(manager, Space2DPR.INSTANCE);
         ensureRegister(manager, SpatialDoubleAttributeBasePR.INSTANCE);
         ensureRegister(manager, SpatialStringAttributeBasePR.INSTANCE);
-        ensureRegister(manager, SuppliedSpatialDistribution2DPR.INSTANCE);
-        ensureRegister(manager, UncertaintyAttributePR.INSTANCE);
-        ensureRegister(manager, UncertaintyGroupAttributePR.INSTANCE);
         ensureRegister(manager, UnlinkedGraphTopologyPR.INSTANCE);
         ensureRegister(manager, WeightedDiscreteSpatialDistributionPR.INSTANCE);
     }

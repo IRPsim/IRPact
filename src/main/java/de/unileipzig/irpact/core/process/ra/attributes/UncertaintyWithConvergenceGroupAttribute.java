@@ -32,7 +32,7 @@ public class UncertaintyWithConvergenceGroupAttribute extends BasicConsumerAgent
     }
 
     public void setUncertainty(UnivariateDoubleDistribution distribution) {
-        setDistribution(distribution);
+        setUnivariateDoubleDistributionValue(distribution);
     }
 
     public void setConvergence(UnivariateDoubleDistribution convergence) {

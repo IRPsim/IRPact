@@ -7,7 +7,11 @@ import java.util.Objects;
 /**
  * @author Daniel Abitz
  */
-public class BasicConsumerAgentGroupAttribute extends AbstractDerivableUnivariateDoubleDistributionAttribute<ConsumerAgentAttribute> implements ConsumerAgentGroupAttribute {
+public class BasicConsumerAgentGroupAttribute
+        extends AbstractDerivableUnivariateDoubleDistributionAttribute<ConsumerAgentAttribute>
+        implements ConsumerAgentGroupAttribute {
+
+    protected boolean artificial;
 
     public BasicConsumerAgentGroupAttribute() {
     }
@@ -16,8 +20,17 @@ public class BasicConsumerAgentGroupAttribute extends AbstractDerivableUnivariat
     public BasicConsumerAgentGroupAttribute copyAttribute() {
         BasicConsumerAgentGroupAttribute copy = new BasicConsumerAgentGroupAttribute();
         copy.setName(name);
-        copy.setDistribution(distribution.copyDistribution());
+        copy.setUnivariateDoubleDistributionValue(distribution.copyDistribution());
         return copy;
+    }
+
+    @Override
+    public boolean isArtificial() {
+        return artificial;
+    }
+
+    public void setArtificial(boolean artificial) {
+        this.artificial = artificial;
     }
 
     @Override
@@ -28,13 +41,14 @@ public class BasicConsumerAgentGroupAttribute extends AbstractDerivableUnivariat
 
     @Override
     public ConsumerAgentDoubleAttribute derive(double value) {
-        return new ConsumerAgentDoubleAttribute(getName(), this, value);
+        return new ConsumerAgentDoubleAttribute(getName(), this, isArtificial(), value);
     }
 
     @Override
     public int getChecksum() {
         return Objects.hash(
                 getName(),
+                isArtificial(),
                 getValue().getChecksum()
         );
     }

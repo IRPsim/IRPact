@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
+import de.unileipzig.irpact.core.process.ra.attributes.BasicUncertaintyGroupAttributeSupplier;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -104,8 +105,11 @@ public class InPVactUncertaintyGroupAttribute implements InUncertaintyGroupAttri
 
         processModel.getUncertaintySupplier().add(
                 cag,
-                attrName,
-                dist
+                new BasicUncertaintyGroupAttributeSupplier(
+                        getName() + "_" + cag.getName(),
+                        attrName,
+                        dist
+                )
         );
         LOGGER.debug(
                 IRPSection.INITIALIZATION_PARAMETER,

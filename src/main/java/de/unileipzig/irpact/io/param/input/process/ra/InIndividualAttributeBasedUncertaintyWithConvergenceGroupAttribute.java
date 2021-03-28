@@ -6,6 +6,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
+import de.unileipzig.irpact.core.process.ra.attributes.BasicUncertaintyGroupAttributeSupplier;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -90,9 +91,12 @@ public class InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute 
 
             processModel.getUncertaintySupplier().add(
                     cag,
-                    attrName,
-                    uncert,
-                    conv
+                    new BasicUncertaintyGroupAttributeSupplier(
+                            getName() + "_" + cag.getName(),
+                            attrName,
+                            uncert,
+                            conv
+                    )
             );
             LOGGER.debug(
                     IRPSection.INITIALIZATION_PARAMETER,

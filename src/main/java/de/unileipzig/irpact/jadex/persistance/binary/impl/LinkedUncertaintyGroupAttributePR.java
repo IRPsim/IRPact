@@ -5,7 +5,6 @@ import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.process.ra.attributes.LinkedUncertaintyGroupAttribute;
-import de.unileipzig.irpact.core.process.ra.attributes.UncertaintyAttributeOLD;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 

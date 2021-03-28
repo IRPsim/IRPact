@@ -30,7 +30,7 @@ public class LinkedUncertaintyGroupAttribute extends BasicConsumerAgentGroupAttr
     }
 
     public void setUncertainty(UnivariateDoubleDistribution distribution) {
-        setDistribution(distribution);
+        setUnivariateDoubleDistributionValue(distribution);
     }
 
     public void setConvergence(ConsumerAgentGroupAttribute convergence) {
