@@ -16,6 +16,7 @@ import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
+import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
@@ -46,6 +47,8 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
     protected ConsumerAgentGroupAttributeSupplier underRenovationSupplier = new BasicConsumerAgentGroupAttributeSupplier(RAConstants.UNDER_RENOVATION, DIRAQ0);
 
     protected MultiConsumerAgentGroupAttributeSupplier uncertaintySupplier = new BasicMultiConsumerAgentGroupAttributeSupplier();
+
+    protected ProcessPlanNodeFilterScheme nodeFilterScheme;
 
     protected NPVData npvData;
     protected NPVCalculator npvCalculator;
@@ -134,6 +137,14 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
     public void setUncertaintySupplier(MultiConsumerAgentGroupAttributeSupplier uncertaintySupplier) {
         this.uncertaintySupplier = uncertaintySupplier;
+    }
+
+    public void setNodeFilterScheme(ProcessPlanNodeFilterScheme nodeFilterScheme) {
+        this.nodeFilterScheme = nodeFilterScheme;
+    }
+
+    public ProcessPlanNodeFilterScheme getNodeFilterScheme() {
+        return nodeFilterScheme;
     }
 
     @Override

@@ -53,6 +53,7 @@ public class InRAProcessModel implements InProcessModel {
 
         addEntry(res, thisClass(), "logisticFactor");
 
+        addEntry(res, thisClass(), "nodeFilterScheme");
         addEntry(res, thisClass(), "pvFile");
         addEntry(res, thisClass(), "uncertaintyGroupAttributes");
     }
@@ -87,6 +88,9 @@ public class InRAProcessModel implements InProcessModel {
 
     @FieldDefinition
     public double logisticFactor;
+
+    @FieldDefinition
+    public InRAProcessPlanNodeFilterScheme[] nodeFilterScheme;
 
     @FieldDefinition
     public InPVFile[] pvFile;
@@ -197,6 +201,14 @@ public class InRAProcessModel implements InProcessModel {
 
     public void setLogisticFactor(double logisticFactor) {
         this.logisticFactor = logisticFactor;
+    }
+
+    public InRAProcessPlanNodeFilterScheme getNodeFilterScheme() throws ParsingException {
+        return ParamUtil.getInstance(nodeFilterScheme, "nodeFilterScheme");
+    }
+
+    public void setNodeFilterScheme(InRAProcessPlanNodeFilterScheme nodeFilterScheme) {
+        this.nodeFilterScheme = new InRAProcessPlanNodeFilterScheme[]{nodeFilterScheme};
     }
 
     public InPVFile getPvFile() throws ParsingException {

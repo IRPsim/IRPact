@@ -13,14 +13,13 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.InfoTag;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
-import de.unileipzig.irpact.core.network.filter.NodeDistanceFilter;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.process.ra.attributes.UncertaintyAttribute;
 import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.core.simulation.InitializationData;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.slf4j.event.Level;
 
@@ -48,7 +47,7 @@ public class RAProcessPlan implements ProcessPlan {
     protected ConsumerAgent agent;
     protected Rnd rnd;
     protected RAProcessModel model;
-    protected NodeDistanceFilter distanceFilter;
+    protected NodeFilter networkFilter;
 
     protected RAStage currentStage = RAStage.PRE_INITIALIZATION;
 
@@ -68,6 +67,7 @@ public class RAProcessPlan implements ProcessPlan {
         setAgent(agent);
         setNeed(need);
         setProduct(product);
+        init();
     }
 
     @Override
@@ -82,8 +82,16 @@ public class RAProcessPlan implements ProcessPlan {
         );
     }
 
+    public void init() {
+        networkFilter = model.getNodeFilterScheme().createFilter(this);
+    }
+
     public void setEnvironment(SimulationEnvironment environment) {
         this.environment = environment;
+    }
+
+    public SimulationEnvironment getEnvironment() {
+        return environment;
     }
 
     public void setModel(RAProcessModel model) {
@@ -536,7 +544,7 @@ public class RAProcessPlan implements ProcessPlan {
     protected double getSocialComponent() {
         MutableDouble shareOfAdopterInSocialNetwork = MutableDouble.zero();
         MutableDouble shareOfAdopterInLocalArea = MutableDouble.zero();
-        getShareOfAdopterInSocialNetworkAndLocalArea(shareOfAdopterInSocialNetwork, shareOfAdopterInLocalArea, distanceFilter);
+        getShareOfAdopterInSocialNetworkAndLocalArea(shareOfAdopterInSocialNetwork, shareOfAdopterInLocalArea);
         return getDependentJudgmentMaking(agent) * (shareOfAdopterInSocialNetwork.get() + shareOfAdopterInLocalArea.get()) / 2.0;
     }
 
@@ -709,8 +717,7 @@ public class RAProcessPlan implements ProcessPlan {
 
     protected void getShareOfAdopterInSocialNetworkAndLocalArea(
             MutableDouble global,
-            MutableDouble local,
-            NodeFilter distanceFilter) {
+            MutableDouble local) {
         MutableDouble totalGlobal = MutableDouble.zero();
         MutableDouble adopterGlobal = MutableDouble.zero();
         MutableDouble totalLocal = MutableDouble.zero();
@@ -723,13 +730,14 @@ public class RAProcessPlan implements ProcessPlan {
                         adopterGlobal.inc();
                     }
                 })
-                .filter(distanceFilter)
+                .filter(networkFilter)
                 .forEach(localNode -> {
                     totalLocal.inc();
                     if(localNode.getAgent(ConsumerAgent.class).hasAdopted(getProduct())) {
                         adopterLocal.inc();
                     }
                 });
+
         if(totalGlobal.isZero()) {
             global.set(0);
         } else {
@@ -740,6 +748,8 @@ public class RAProcessPlan implements ProcessPlan {
         } else {
             local.set(adopterLocal.get() / totalLocal.get());
         }
+
+        logShareOfAdopterInSocialNetworkAndLocalArea(totalGlobal, adopterGlobal, global, totalLocal, adopterLocal, local);
     }
 
     protected void applyRelativeAgreement(ConsumerAgent target) {
@@ -854,14 +864,14 @@ public class RAProcessPlan implements ProcessPlan {
                 : Level.TRACE;
     }
 
-    protected boolean isLogData() {
-        throw new TodoException();
+    protected InitializationData getInitData() {
+        return environment.getInitializationData();
     }
 
     protected void logInterestUpdate(
             int myOldPoints, int myNewPoints,
             Agent target, int targetOldPoints, int targetNewPoints) {
-        boolean logData = isLogData();
+        boolean logData = getInitData().isLogInterestUpdate();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData, IRPSection.TAG_INTEREST_UPDATE);
         Level level = getLevel(logData);
@@ -875,7 +885,7 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected void logGraphUpdateEdgeAdded(Agent target) {
-        boolean logData = isLogData();
+        boolean logData = getInitData().isLogGraphUpdate();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData, IRPSection.TAG_GRAPH_UPDATE);
         Level level = getLevel(logData);
@@ -888,7 +898,7 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected void logGraphUpdateEdgeRemoved(Agent target) {
-        boolean logData = isLogData();
+        boolean logData = getInitData().isLogGraphUpdate();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData, IRPSection.TAG_GRAPH_UPDATE);
         Level level = getLevel(logData);
@@ -904,7 +914,7 @@ public class RAProcessPlan implements ProcessPlan {
             String ai, String aj, String attribute,
             double xi, double ui, double xj, double uj, double m,
             double hij, double ra, double newXj, double newUj) {
-        boolean logData = isLogData();
+        boolean logData = getInitData().isLogRelativeAgreement();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData, IRPSection.TAG_RELATIVE_AGREEMENT);
         Level level = getLevel(logData);
@@ -922,7 +932,7 @@ public class RAProcessPlan implements ProcessPlan {
     protected void logRelativeAgreementFailed(
             String ai, String aj, String attribute,
             double xi, double ui, double xj, double uj, double hij) {
-        boolean logData = isLogData();
+        boolean logData = getInitData().isLogRelativeAgreement();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData, IRPSection.TAG_RELATIVE_AGREEMENT);
         Level level = getLevel(logData);
@@ -931,6 +941,25 @@ public class RAProcessPlan implements ProcessPlan {
                 InfoTag.RELATIVE_AGREEMENT, ai, ai, aj, attribute, hij, ui,
                 xi, ui, xj, uj,
                 hij, xi, ui, xj, uj, xi, ui, xj, uj
+        );
+    }
+
+    protected void logShareOfAdopterInSocialNetworkAndLocalArea(
+            MutableDouble totalGlobal,
+            MutableDouble adopterGlobal,
+            MutableDouble shareGlobal,
+            MutableDouble totalLocal,
+            MutableDouble adopterLocal,
+            MutableDouble shareLocal) {
+        boolean logData = getInitData().isLogShareNetworkLocale();
+        IRPLogger logger = getLogger(logData);
+        IRPSection section = getSection(logData, IRPSection.TAG_SHARE_NETWORK_LOCAL);
+        Level level = getLevel(logData);
+
+        logger.log(section, level,
+                "{} [{}] global share = {} ({} / {}), local share = {} ({} / {})",
+                InfoTag.TAG_SHARE_NETORK_LOCAL, agent.getName(),
+                shareGlobal.doubleValue(), adopterGlobal.doubleValue(), totalGlobal.doubleValue(), shareLocal.doubleValue(), adopterLocal.doubleValue(), totalLocal.doubleValue()
         );
     }
 }

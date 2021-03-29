@@ -46,12 +46,6 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         addEntry(res, thisClass(), "initialWeight");
         addEntry(res, thisClass(), "distanceEvaluator");
         addEntry(res, thisClass(), "numberOfTies");
-
-        res.newEntryBuilder()
-                .setGamsIdentifier("Knotenanzahl je KG")
-                .setGamsDescription("Knotenanzahl")
-                .store(thisClass(), "numberOfTies");
-
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());

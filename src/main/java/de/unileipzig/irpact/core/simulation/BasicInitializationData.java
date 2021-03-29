@@ -14,6 +14,11 @@ public class BasicInitializationData implements InitializationData {
     protected int endYearInclusive = -1; //inclusive, z.b. 2015-2016 -> 2015 UND 2016
     protected boolean ignorePersistCheck = false;
 
+    protected boolean logRelativeAgreement = false;
+    protected boolean logInterestUpdate = false;
+    protected boolean logGraphUpdate = false;
+    protected boolean logShareNetworkLocale = false;
+
     public BasicInitializationData() {
         this(new LinkedHashMap<>());
     }
@@ -96,5 +101,49 @@ public class BasicInitializationData implements InitializationData {
             throw new NoSuchElementException(group.getName());
         }
         return count;
+    }
+
+    //=========================
+    //logging
+    //=========================
+
+    @Override
+    public void setLogGraphUpdate(boolean logGraphUpdate) {
+        this.logGraphUpdate = logGraphUpdate;
+    }
+
+    @Override
+    public boolean isLogGraphUpdate() {
+        return logGraphUpdate;
+    }
+
+    @Override
+    public void setLogInterestUpdate(boolean logInterestUpdate) {
+        this.logInterestUpdate = logInterestUpdate;
+    }
+
+    @Override
+    public boolean isLogInterestUpdate() {
+        return logInterestUpdate;
+    }
+
+    @Override
+    public void setLogRelativeAgreement(boolean logRelativeAgreement) {
+        this.logRelativeAgreement = logRelativeAgreement;
+    }
+
+    @Override
+    public boolean isLogRelativeAgreement() {
+        return logRelativeAgreement;
+    }
+
+    @Override
+    public void setLogShareNetworkLocale(boolean logShareNetworkLocale) {
+        this.logShareNetworkLocale = logShareNetworkLocale;
+    }
+
+    @Override
+    public boolean isLogShareNetworkLocale() {
+        return logShareNetworkLocale;
     }
 }

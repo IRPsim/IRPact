@@ -39,6 +39,7 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
         manager.prepare(object.getModelData());
         manager.prepare(object.getRnd());
         manager.prepare(object.getUncertaintySupplier());
+        manager.prepare(object.getNodeFilterScheme());
 
         return data;
     }
@@ -48,6 +49,7 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
         data.putLong(manager.ensureGetUID(object.getModelData()));
         data.putLong(manager.ensureGetUID(object.getRnd()));
         data.putLong(manager.ensureGetUID(object.getUncertaintySupplier()));
+        data.putLong(manager.ensureGetUID(object.getNodeFilterScheme()));
     }
 
     //=========================
@@ -68,6 +70,7 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
         object.setModelData(manager.ensureGet(data.getLong()));
         object.setRnd(manager.ensureGet(data.getLong()));
         object.setUncertaintySupplier(manager.ensureGet(data.getLong()));
+        object.setNodeFilterScheme(manager.ensureGet(data.getLong()));
     }
 
     @Override

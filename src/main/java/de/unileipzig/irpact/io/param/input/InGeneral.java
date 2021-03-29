@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.SectionLoggingFilter;
 import de.unileipzig.irpact.core.simulation.BasicInitializationData;
+import de.unileipzig.irpact.core.simulation.InitializationData;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -47,18 +48,15 @@ public class InGeneral {
 
         putFieldPathAndAddEntry(res, thisClass(), "logLevel", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
         putFieldPathAndAddEntry(res, thisClass(), "logAll", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
+        putFieldPathAndAddEntry(res, thisClass(), "logAllIRPact", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
         putFieldPathAndAddEntry(res, thisClass(), "logAllTools", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
+        putFieldPathAndAddEntry(res, thisClass(), "logInitialization", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
+        putFieldPathAndAddEntry(res, thisClass(), "logSimulation", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
 
-        putFieldPathAndAddEntry(res, thisClass(), "logToolsCore", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logToolsDefinition", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logInitialization", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logParamInit", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logGraphCreation", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logAgentCreation", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logPlatformCreation", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logSimulationLifecycle", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logSimulationAgent", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logJadexSystemOut", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logGraphUpdate", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+        putFieldPathAndAddEntry(res, thisClass(), "logRelativeAgreement", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+        putFieldPathAndAddEntry(res, thisClass(), "logInterestUpdate", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+        putFieldPathAndAddEntry(res, thisClass(), "logShareNetworkLocal", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
 
         putFieldPathAndAddEntry(res, thisClass(), "runOptActDemo", GENERAL_SETTINGS, SPECIAL_SETTINGS);
         putFieldPathAndAddEntry(res, thisClass(), "runPVAct", GENERAL_SETTINGS, SPECIAL_SETTINGS);
@@ -101,33 +99,39 @@ public class InGeneral {
     public boolean logAll;
 
     @FieldDefinition
-    public boolean logAllTools;
+    public boolean logAllIRPact;
 
-    //=========================
-    //specific logging
-    //=========================
     @FieldDefinition
-    public boolean logToolsCore;
-    @FieldDefinition
-    public boolean logToolsDefinition;
+    public boolean logAllTools;
 
     @FieldDefinition
     public boolean logInitialization;
-    @FieldDefinition
-    public boolean logParamInit;
-    @FieldDefinition
-    public boolean logGraphCreation;
-    @FieldDefinition
-    public boolean logAgentCreation;
-    @FieldDefinition
-    public boolean logPlatformCreation;
 
     @FieldDefinition
-    public boolean logSimulationLifecycle;
-    @FieldDefinition
-    public boolean logSimulationAgent;
+    public boolean logSimulation;
+
+    //=========================
+    //data logging
+    //=========================
 
     @FieldDefinition
+    public boolean logGraphUpdate;
+
+    @FieldDefinition
+    public boolean logRelativeAgreement;
+
+    @FieldDefinition
+    public boolean logInterestUpdate;
+
+    @FieldDefinition
+    public boolean logShareNetworkLocal;
+
+    //=========================
+    //dev logging
+    //=========================
+
+    public boolean logSpecificationConverter;
+
     public boolean logJadexSystemOut;
 
     //=========================
@@ -159,31 +163,22 @@ public class InGeneral {
         }
         IRPLogging.setLevel(level);
 
-        SectionLoggingFilter filter = (SectionLoggingFilter) IRPLogging.getFilter();
+        SectionLoggingFilter filter = IRPLogging.getFilter();
         IRPSection.removeAllFrom(filter);
+        IRPSection.addAllTo(logAll, filter);
+        IRPSection.addAllNonToolsTo(logAllIRPact, filter);
+        IRPSection.addAllToolsTo(logAllTools, filter);
+        IRPSection.addInitialization(logInitialization, filter);
+        IRPSection.addSimulation(logSimulation, filter);
 
-        if(logAll) {
-            IRPSection.addAllNonToolsTo(filter);
-            if(logAllTools) IRPSection.addAllToolsTo(filter);
-            return;
-        }
+        filter.add(logSpecificationConverter, IRPSection.SPECIFICATION_CONVERTER);
+        filter.add(logJadexSystemOut, IRPSection.JADEX_SYSTEM_OUT);
 
-        if(logAllTools) {
-            IRPSection.addAllToolsTo(filter);
-        } else {
-            if(logToolsCore) filter.add(IRPSection.TOOLS_CORE);
-            if(logToolsDefinition) filter.add(IRPSection.TOOLS_DEFINITION);
-        }
-
-        if(logParamInit) filter.add(IRPSection.INITIALIZATION_PARAMETER);
-        if(logAgentCreation) filter.add(IRPSection.INITIALIZATION_AGENT);
-        if(logGraphCreation) filter.add(IRPSection.INITIALIZATION_NETWORK);
-        if(logPlatformCreation) filter.add(IRPSection.INITIALIZATION_PLATFORM);
-
-        if(logSimulationLifecycle) filter.add(IRPSection.SIMULATION_LICECYCLE);
-        if(logSimulationAgent) filter.add(IRPSection.SIMULATION_AGENT);
-
-        if(logJadexSystemOut) filter.add(IRPSection.JADEX_SYSTEM_OUT);
+        InitializationData initData = parser.getEnvironment().getInitializationData();
+        initData.setLogGraphUpdate(logGraphUpdate);
+        initData.setLogRelativeAgreement(logRelativeAgreement);
+        initData.setLogInterestUpdate(logInterestUpdate);
+        initData.setLogShareNetworkLocale(logShareNetworkLocal);
     }
 
     private void parseSeed(InputParser parser) {

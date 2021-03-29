@@ -50,6 +50,12 @@ public final class SectionLoggingFilter implements LoggingFilter {
         SECTIONS.add(section);
     }
 
+    public void add(boolean add, IRPSection section) {
+        if(add) {
+            add(section);
+        }
+    }
+
     public boolean remove(IRPSection section) {
         return SECTIONS.remove(section);
     }

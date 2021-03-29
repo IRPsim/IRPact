@@ -22,6 +22,8 @@ import de.unileipzig.irpact.io.param.input.file.InFile;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
+import de.unileipzig.irpact.io.param.input.process.InProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.*;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.process.ra.*;
@@ -536,8 +538,11 @@ public class InRoot implements RootClass {
             InNameBasedUncertaintyWithConvergenceGroupAttribute.class,
             InPVactUncertaintyGroupAttribute.class,
             InRAProcessModel.class,
+            InRAProcessPlanMaxDistanceFilterScheme.class,
+            InRAProcessPlanNodeFilterScheme.class,
             InUncertaintyGroupAttribute.class,
             InProcessModel.class,
+            InProcessPlanNodeFilterScheme.class,
 
             InBasicProductGroup.class,
             InBasicProductGroupAttribute.class,
@@ -609,7 +614,7 @@ public class InRoot implements RootClass {
         addPathElement(res, GENERAL_SETTINGS, ROOT);
                 addPathElement(res, LOGGING, GENERAL_SETTINGS);
                         addPathElement(res, LOGGING_GENERAL, LOGGING);
-                        addPathElement(res, LOGGING_SPECIFIC, LOGGING);
+                        addPathElement(res, LOGGING_DATA, LOGGING);
                 addPathElement(res, SPECIAL_SETTINGS, GENERAL_SETTINGS);
                     addPathElement(res, VisibleBinaryData.thisName(), SPECIAL_SETTINGS);
 
@@ -674,6 +679,8 @@ public class InRoot implements RootClass {
                                 addPathElement(res, InNameBasedUncertaintyGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
                                 addPathElement(res, InNameBasedUncertaintyWithConvergenceGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
                                 addPathElement(res, InPVactUncertaintyGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
+                addPathElement(res, PROCESS_FILTER, PROCESS_MODEL);
+                        addPathElement(res, InRAProcessPlanMaxDistanceFilterScheme.thisName(), PROCESS_FILTER);
 
         addPathElement(res, SPATIAL, ROOT);
                 addPathElement(res, SPATIAL_MODEL, SPATIAL);

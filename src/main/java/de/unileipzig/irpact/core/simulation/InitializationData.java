@@ -36,4 +36,24 @@ public interface InitializationData {
     void setInitialNumberOfConsumerAgents(ConsumerAgentGroup group, int size);
 
     int getInitialNumberOfConsumerAgents(ConsumerAgentGroup group);
+
+    //=========================
+    //logging
+    //=========================
+
+    void setLogGraphUpdate(boolean logGraphUpdate);
+
+    boolean isLogGraphUpdate();
+
+    void setLogInterestUpdate(boolean logInterestUpdate);
+
+    boolean isLogInterestUpdate();
+
+    void setLogRelativeAgreement(boolean logRelativeAgreement);
+
+    boolean isLogRelativeAgreement();
+
+    void setLogShareNetworkLocale(boolean logShareNetworkLocale);
+
+    boolean isLogShareNetworkLocale();
 }

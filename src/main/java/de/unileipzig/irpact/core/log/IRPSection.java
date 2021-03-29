@@ -29,8 +29,6 @@ public enum IRPSection implements LoggingSection {
     SIMULATION_LICECYCLE,
     SIMULATION_AGENT,
     SIMULATION_PROCESS,
-    SIMULATION_AGENT_COMMUNICATION,
-    SIMULATION_AGENT_REWIRE,
 
     /*
      *
@@ -47,7 +45,8 @@ public enum IRPSection implements LoggingSection {
      */
     TAG_GRAPH_UPDATE,
     TAG_RELATIVE_AGREEMENT,
-    TAG_INTEREST_UPDATE
+    TAG_INTEREST_UPDATE,
+    TAG_SHARE_NETWORK_LOCAL
     ;
 
 
@@ -61,15 +60,44 @@ public enum IRPSection implements LoggingSection {
         removeAllToolsFrom(filter);
     }
 
+    public static void addAllNonToolsTo(boolean add, SectionLoggingFilter filter) {
+        if(add) {
+            addAllNonToolsTo(filter);
+        }
+    }
+
     public static void addAllTo(SectionLoggingFilter filter) {
         for(IRPSection section: values()) {
             filter.add(section);
         }
     }
 
+    public static void addAllTo(boolean add, SectionLoggingFilter filter) {
+        if(add) {
+            addAllTo(filter);
+        }
+    }
+
     public static void removeAllFrom(SectionLoggingFilter filter) {
         for(IRPSection section: values()) {
             filter.remove(section);
+        }
+    }
+
+    public static void addInitialization(boolean add, SectionLoggingFilter filter) {
+        if(add) {
+            filter.add(INITIALIZATION_PARAMETER);
+            filter.add(INITIALIZATION_AGENT);
+            filter.add(INITIALIZATION_PLATFORM);
+            filter.add(INITIALIZATION_NETWORK);
+        }
+    }
+
+    public static void addSimulation(boolean add, SectionLoggingFilter filter) {
+        if(add) {
+            filter.add(SIMULATION_LICECYCLE);
+            filter.add(SIMULATION_AGENT);
+            filter.add(SIMULATION_PROCESS);
         }
     }
 
@@ -83,6 +111,12 @@ public enum IRPSection implements LoggingSection {
         filter.add(TOOLS_CORE);
         filter.add(TOOLS_DEFINITION);
         filter.add(TOOLS_UTIL);
+    }
+
+    public static void addAllToolsTo(boolean add, SectionLoggingFilter filter) {
+        if(add) {
+            addAllToolsTo(filter);
+        }
     }
 
     public static void removeAllToolsFrom(SectionLoggingFilter filter) {

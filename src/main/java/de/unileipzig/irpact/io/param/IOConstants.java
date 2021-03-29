@@ -14,7 +14,7 @@ public final class IOConstants {
     public static final String GENERAL_SETTINGS = "general_settings";
     public static final String LOGGING = "logging";
     public static final String LOGGING_GENERAL = "logging_general";
-    public static final String LOGGING_SPECIFIC = "logging_specific";
+    public static final String LOGGING_DATA = "logging_data";
     public static final String SPECIAL_SETTINGS = "special_settings";
 
     public static final String FILES = "files";
@@ -39,6 +39,7 @@ public final class IOConstants {
     public static final String PRODUCTS_FINDING_SCHEME = "products_finding_scheme";
 
     public static final String PROCESS_MODEL = "process_model";
+    public static final String PROCESS_FILTER = "process_filter";
     public static final String PROCESS_MODEL_RA_UNCERT = "process_model_ra_uncert";
 
     public static final String SPATIAL = "spatial";

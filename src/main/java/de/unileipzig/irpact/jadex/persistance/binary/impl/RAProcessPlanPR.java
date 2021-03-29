@@ -77,4 +77,9 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
         object.setRnd(manager.ensureGet(data.getLong()));
         object.setModel(manager.ensureGet(data.getLong()));
     }
+
+    @Override
+    protected void doFinalizeRestore(BinaryJsonData data, RAProcessPlan object, RestoreManager manager) {
+        object.init();
+    }
 }

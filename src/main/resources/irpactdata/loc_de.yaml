@@ -25,55 +25,43 @@ InGeneral_logLevel:
   gams_domain: "[0,6]"
 InGeneral_logAll:
   gams_identifier: "Alles loggen?"
-  gams_description: "[SPAM] Ob alles geloggt werden soll. Falls ja, überschreibt diese Option alles."
+  gams_description: "Ob alles geloggt werden soll."
+  gams_domain: "[0|1]"
+InGeneral_logAllIRPact:
+  gams_identifier: "Komplett IRPact loggen?"
+  gams_description: "Ob alle Aufrufe von IRPact geloggt werden sollen."
   gams_domain: "[0|1]"
 InGeneral_logAllTools:
   gams_identifier: "Tools-Bibliothek loggen?"
+  gams_description: "Ob alle Aufrufe der Tools-Bibliothek geloggt werden sollen."
+  gams_domain: "[0|1]"
+InGeneral_logInitialization:
+  gams_identifier: "Initialisierung loggen?"
+  gams_description: "Ob der Initialisierungsprozess geloggt werden soll."
+  gams_domain: "[0|1]"
+InGeneral_logSimulation:
+  gams_identifier: "Ob der Simulationsprozess geloggt werden soll."
   gams_description: "[SPAM] Ob alle Aufrufe der Tools-Bibliothek geloggt werden sollen."
   gams_domain: "[0|1]"
 
-logging_specific:
-  edn_label: "Spezielle Loggingoptionen"
+logging_data:
+  edn_label: "Ausgabe von Dateninformationen"
   edn_description: "Ermöglicht es spezielle Loggingoptionen einzustellen."
-InGeneral_logToolsCore:
-  gams_identifier: "logToolsCore"
-  gams_description: "[SPAM] logToolsCore"
+InGeneral_logGraphUpdate:
+  gams_identifier: "Gibt die Graphänderungen aus [GU]"
+  gams_description: "Gibt an, ob die Graphänderungen ausgegeben werden sollen."
   gams_domain: "[0|1]"
-InGeneral_logToolsDefinition:
-  gams_identifier: "logToolsDefinition"
-  gams_description: "[SPAM] logToolsDefinition"
+InGeneral_logRelativeAgreement:
+  gams_identifier: "Gibt die 'relative agreement' Werte aus [RA]"
+  gams_description: "Gibt an, ob die Werte vom relative agreement Algorithmus ausgegeben werden sollen."
   gams_domain: "[0|1]"
-InGeneral_logInitialization:
-  gams_identifier: "logInitialization"
-  gams_description: "logInitialization"
+InGeneral_logInterestUpdate:
+  gams_identifier: "Gibt Änderungen beim Produktinteresse aus [IU]"
+  gams_description: "Gibt an, ob Änderungen des Produktinteresses ausgegeben werden sollen."
   gams_domain: "[0|1]"
-InGeneral_logParamInit:
-  gams_identifier: "logParamInit"
-  gams_description: "[SPAM] logParamInit"
-  gams_domain: "[0|1]"
-InGeneral_logGraphCreation:
-  gams_identifier: "logGraphCreation"
-  gams_description: "[SPAM] logGraphCreation"
-  gams_domain: "[0|1]"
-InGeneral_logAgentCreation:
-  gams_identifier: "logAgentCreation"
-  gams_description: "[SPAM] logAgentCreation"
-  gams_domain: "[0|1]"
-InGeneral_logPlatformCreation:
-  gams_identifier: "logPlatformCreation"
-  gams_description: "[SPAM] logPlatformCreation"
-  gams_domain: "[0|1]"
-InGeneral_logSimulationLifecycle:
-  gams_identifier: "logSimulationLifecycle"
-  gams_description: "[SPAM] logSimulationLifecycle"
-  gams_domain: "[0|1]"
-InGeneral_logSimulationAgent:
-  gams_identifier: "logSimulationAgent"
-  gams_description: "[SPAM] logSimulationAgent"
-  gams_domain: "[0|1]"
-InGeneral_logJadexSystemOut:
-  gams_identifier: "logJadexSystemOut"
-  gams_description: "[SPAM] logJadexSystemOut"
+InGeneral_logShareNetworkLocal:
+  gams_identifier: "Gibt die globalen und lokalen Anteile aus [SNL]"
+  gams_description: "Gibt an, ob die globalen und lokalen Adopteranteile ausgegeben werden sollen."
   gams_domain: "[0|1]"
 
 special_settings:
@@ -501,6 +489,9 @@ InRAProcessModel_unknownPoints:
 InRAProcessModel_logisticFactor:
   gams_identifier: "Einflussfaktor der logistischen Funktion"
   gams_description: "Legt den Einflussfaktor 'a' der logistischen Funktion fest: logistic(a * -x)."
+InRAProcessModel_nodeFilterScheme:
+  gams_identifier: "Netzwerkfilter für räumliche Sicht"
+  gams_description: "Legt den Filter fest, um 'sichtbare' Haushalte zu identifizieren."
 InRAProcessModel_pvFile:
   gams_identifier: "PV-Datei"
   gams_description: "Legt die zu nutzende PV-Datei fest."
@@ -587,6 +578,19 @@ InPVactUncertaintyGroupAttribute_cags:
   gams_identifier: "Konsumergruppe"
   gams_description: "Bestimmt die Konsumergruppe, deren Attribute mit dieser Unsicherheit behandelt werden sollen."
 
+process_filter:
+  edn_label: "Netzwerkfilter für Prozesse"
+  edn_description: "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus."
+
+InRAProcessPlanMaxDistanceFilterScheme:
+  edn_label: "PVact"
+  edn_description: "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus."
+InRAProcessPlanMaxDistanceFilterScheme_maxDistance:
+  gams_identifier: "Maximale Entfernung"
+  gams_description: "Legt die maximale Entfernung fest. Die Einheit richtet sich sowohl nach den Ausgangsdaten als auch der verwendeten Metric im räumlichen Modell."
+InRAProcessPlanMaxDistanceFilterScheme_inclusive:
+  gams_identifier: "Grenzwert inklusive?"
+  gams_description: "Legt fest, ob der Grenzwert inklusiv (<=) oder exklusiv (<) ist."
 
 
 spatial:
