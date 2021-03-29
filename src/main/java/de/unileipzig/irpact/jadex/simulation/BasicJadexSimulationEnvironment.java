@@ -212,6 +212,17 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     }
 
     @Override
+    public void preAgentCreation() throws MissingDataException {
+        agentManager.preAgentCreation();
+        socialNetwork.preAgentCreation();
+        productManager.preAgentCreation();
+        processModelManager.preAgentCreation();
+        spatialModel.preAgentCreation();
+        timeModel.preAgentCreation();
+        lifeCycleControl.preAgentCreation();
+    }
+
+    @Override
     public void initialize() throws MissingDataException {
         agentManager.initialize();
         socialNetwork.initialize();
@@ -234,17 +245,6 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     }
 
     @Override
-    public void preAgentCreation() throws MissingDataException {
-        agentManager.preAgentCreation();
-        socialNetwork.preAgentCreation();
-        productManager.preAgentCreation();
-        processModelManager.preAgentCreation();
-        spatialModel.preAgentCreation();
-        timeModel.preAgentCreation();
-        lifeCycleControl.preAgentCreation();
-    }
-
-    @Override
     public void postAgentCreation() throws MissingDataException {
         agentManager.postAgentCreation();
         socialNetwork.postAgentCreation();
@@ -253,6 +253,17 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         spatialModel.postAgentCreation();
         timeModel.postAgentCreation();
         lifeCycleControl.postAgentCreation();
+    }
+
+    @Override
+    public void postAgentCreationValidation() throws ValidationException {
+        agentManager.postAgentCreationValidation();
+        socialNetwork.postAgentCreationValidation();
+        productManager.postAgentCreationValidation();
+        processModelManager.postAgentCreationValidation();
+        spatialModel.postAgentCreationValidation();
+        timeModel.postAgentCreationValidation();
+        lifeCycleControl.postAgentCreationValidation();
     }
 
     @Override

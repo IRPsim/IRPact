@@ -40,8 +40,8 @@ public class ProductThresholdInterestSupplySchemePR extends BinaryPRBase<Product
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
 
-        manager.prepare(object.getDistributions().keySet());
-        manager.prepare(object.getDistributions().values());
+        manager.prepareAll(object.getDistributions().keySet());
+        manager.prepareAll(object.getDistributions().values());
 
         return data;
     }

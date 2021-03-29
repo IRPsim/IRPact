@@ -123,6 +123,7 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         setRewire(dist);
         setInitialAdopter(dist);
         setRateOfConvergence(dist);
+        setInitialProductAwareness(dist);
         setInitialProductInterest(dist);
         setConstructionRate(dist);
         setRenovationRate(dist);

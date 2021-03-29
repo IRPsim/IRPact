@@ -41,7 +41,7 @@ public class AttributableUnivariateDoubleDistributionBase extends AbstractAttrib
 
     @Override
     public void setUnivariateDoubleDistributionValue(UnivariateDoubleDistribution value) {
-        this.distribution = distribution;
+        this.distribution = value;
     }
 
     @Override

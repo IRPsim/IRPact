@@ -52,6 +52,12 @@ public class InRAProcessPlanMaxDistanceFilterScheme implements InRAProcessPlanNo
     public InRAProcessPlanMaxDistanceFilterScheme() {
     }
 
+    public InRAProcessPlanMaxDistanceFilterScheme(String name, double maxDistance, boolean inclusive) {
+        setName(name);
+        setMaxDistance(maxDistance);
+        setInclusive(inclusive);
+    }
+
     @Override
     public String getName() {
         return null;

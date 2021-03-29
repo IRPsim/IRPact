@@ -149,6 +149,13 @@ public class InGeneral {
         this.timeout = unit.toMillis(duration);
     }
 
+    public void enableAllDataLogging() {
+        logGraphUpdate = true;
+        logRelativeAgreement = true;
+        logInterestUpdate = true;
+        logShareNetworkLocal = true;
+    }
+
     public void setup(InputParser parser) throws ParsingException {
         parseLoggingSetup(parser);
         parseSeed(parser);
@@ -179,6 +186,8 @@ public class InGeneral {
         initData.setLogRelativeAgreement(logRelativeAgreement);
         initData.setLogInterestUpdate(logInterestUpdate);
         initData.setLogShareNetworkLocale(logShareNetworkLocal);
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "logging sections: {}", filter.getSections());
     }
 
     private void parseSeed(InputParser parser) {

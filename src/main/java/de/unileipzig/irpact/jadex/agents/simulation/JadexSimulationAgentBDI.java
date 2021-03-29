@@ -69,7 +69,7 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
 
     @Override
     protected void onStart() {
-        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] init", getName());
+        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] start", getName());
         waitUntilEnd();
         reportAgentCreated(getThisAgent());
         scheduleFirstAction();
@@ -77,7 +77,7 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
 
     @Override
     protected void onEnd() {
-        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] init", getName());
+        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] end", getName());
     }
 
     //=========================

@@ -19,12 +19,10 @@ import de.unileipzig.irpact.core.process.FixProcessModelFindingScheme;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.product.*;
 import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
-import de.unileipzig.irpact.core.product.interest.ProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.core.simulation.BasicInitializationData;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.simulation.BinaryTaskManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
-import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InIndependentConsumerAgentGroupAttribute;
@@ -442,9 +440,10 @@ public class JadexInputParser implements InputParser {
 
     private void initProductGroupRelatedAttributes(ProductGroup pvGroup) {
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} init product realated attributes for cag '{}' and product group '{}'", InfoTag.PVACT, cag.getName(), pvGroup.getName());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} init product related attributes for cag '{}' and product group '{}'", InfoTag.PVACT, cag.getName(), pvGroup.getName());
 
             JadexConsumerAgentGroup jcag = (JadexConsumerAgentGroup) cag;
+            mapToProductRelatedAttribute(jcag, pvGroup, INITIAL_PRODUCT_AWARENESS);
             mapToProductRelatedAttribute(jcag, pvGroup, INITIAL_PRODUCT_INTEREST);
             mapToProductRelatedAttribute(jcag, pvGroup, INTEREST_THRESHOLD);
             mapToProductRelatedAttribute(jcag, pvGroup, FINANCIAL_THRESHOLD);
@@ -474,6 +473,7 @@ public class JadexInputParser implements InputParser {
         }
         ProductRelatedConsumerAgentGroupAttribute relatedAttribute = jcag.getProductRelatedGroupAttribute(groupAttribute.getName());
         relatedAttribute.set(productGroup, groupAttribute);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} add attribute '{}' in cag '{}' for product group '{}'", InfoTag.PVACT, groupAttribute.getName(), jcag.getName(), productGroup.getName());
     }
 
     private void initProductInterest(ProductGroup pvGroup) {

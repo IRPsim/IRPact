@@ -83,7 +83,8 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     public void init() {
-        networkFilter = model.getNodeFilterScheme().createFilter(this);
+        networkFilter = model.getNodeFilterScheme()
+                .createFilter(this);
     }
 
     public void setEnvironment(SimulationEnvironment environment) {

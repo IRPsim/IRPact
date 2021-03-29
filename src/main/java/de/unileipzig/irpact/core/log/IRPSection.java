@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.log;
 
 import de.unileipzig.irptools.start.IRPtools;
+import de.unileipzig.irptools.util.log.IRPLogger;
 import de.unileipzig.irptools.util.log.LoggingSection;
 
 /**
@@ -48,7 +49,6 @@ public enum IRPSection implements LoggingSection {
     TAG_INTEREST_UPDATE,
     TAG_SHARE_NETWORK_LOCAL
     ;
-
 
     @Override
     public Class<IRPSection> getType() {

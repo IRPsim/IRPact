@@ -35,6 +35,13 @@ public class BasicProcessModelManager implements ProcessModelManager {
     }
 
     @Override
+    public void preAgentCreation() throws MissingDataException {
+        for(ProcessModel model: getProcessModels()) {
+            model.preAgentCreation();
+        }
+    }
+
+    @Override
     public void initialize() throws MissingDataException {
         for(ProcessModel model: getProcessModels()) {
             model.initialize();
@@ -49,16 +56,16 @@ public class BasicProcessModelManager implements ProcessModelManager {
     }
 
     @Override
-    public void preAgentCreation() throws MissingDataException {
+    public void postAgentCreation() throws MissingDataException {
         for(ProcessModel model: getProcessModels()) {
-            model.preAgentCreation();
+            model.postAgentCreation();
         }
     }
 
     @Override
-    public void postAgentCreation() throws MissingDataException {
+    public void postAgentCreationValidation() throws ValidationException {
         for(ProcessModel model: getProcessModels()) {
-            model.postAgentCreation();
+            model.postAgentCreationValidation();
         }
     }
 

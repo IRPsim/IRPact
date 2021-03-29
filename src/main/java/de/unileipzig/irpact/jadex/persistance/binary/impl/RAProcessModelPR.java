@@ -6,11 +6,13 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
+import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
+@Todo("persist aktualisieren bzw alles reinhauen was fehlt")
 public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(RAProcessModelPR.class);
@@ -39,7 +41,8 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
         manager.prepare(object.getModelData());
         manager.prepare(object.getRnd());
         manager.prepare(object.getUncertaintySupplier());
-        manager.prepare(object.getNodeFilterScheme());
+        //TODO
+        //manager.prepare(object.getNodeFilterScheme());
 
         return data;
     }
@@ -49,7 +52,7 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
         data.putLong(manager.ensureGetUID(object.getModelData()));
         data.putLong(manager.ensureGetUID(object.getRnd()));
         data.putLong(manager.ensureGetUID(object.getUncertaintySupplier()));
-        data.putLong(manager.ensureGetUID(object.getNodeFilterScheme()));
+        //data.putLong(manager.ensureGetUID(object.getNodeFilterScheme())); TODO
     }
 
     //=========================
@@ -70,7 +73,7 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
         object.setModelData(manager.ensureGet(data.getLong()));
         object.setRnd(manager.ensureGet(data.getLong()));
         object.setUncertaintySupplier(manager.ensureGet(data.getLong()));
-        object.setNodeFilterScheme(manager.ensureGet(data.getLong()));
+        //object.setNodeFilterScheme(manager.ensureGet(data.getLong())); TODO
     }
 
     @Override

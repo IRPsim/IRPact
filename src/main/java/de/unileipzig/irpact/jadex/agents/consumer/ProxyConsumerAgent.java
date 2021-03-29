@@ -9,6 +9,7 @@ import de.unileipzig.irpact.core.agent.ProxyAgent;
 import de.unileipzig.irpact.core.agent.SpatialInformationAgentBase;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
@@ -51,6 +52,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         this(
                 new LinkedHashMap<>(),
                 new LinkedHashMap<>(),
+                new LinkedHashMap<>(),
                 new LinkedHashSet<>(),
                 new LinkedHashMap<>(),
                 new LinkedHashSet<>()
@@ -59,11 +61,13 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
 
     public ProxyConsumerAgent(
             Map<String, ConsumerAgentAttribute> attributes,
+            Map<String, ProductRelatedConsumerAgentAttribute> productRelatedAttributes,
             Map<Product, AdoptedProduct> adoptedProducts,
             Set<Need> needs,
             Map<Need, ProcessPlan> plans,
             Set<AttributeAccess> externAttributes) {
         this.attributes = attributes;
+        this.productRelatedAttributes = productRelatedAttributes;
         this.adoptedProducts = adoptedProducts;
         this.needs = needs;
         this.plans = plans;
@@ -140,6 +144,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         group = null;
         node = null;
         attributes.clear();
+        productRelatedAttributes.clear();
         awareness = null;
         interest = null;
         adoptedProducts.clear();
@@ -156,22 +161,29 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         if(this.realAgent != realAgent) {
             throw new IllegalArgumentException("synced to another agent");
         }
+        LOGGER.trace(IRPSection.SIMULATION_LICECYCLE, "[{}] unsync", realAgent.getName());
         this.realAgent = null;
         reset(realAgent);
     }
 
     protected void reset(ConsumerAgent realAgent) {
-        group = realAgent.getGroup();
-        node = realAgent.getSocialGraphNode();
-        addAllAttributes(realAgent.getAttributes());
-        addAllProductRelatedAttribute(realAgent.getProductRelatedAttributes());
-        awareness = realAgent.getProductAwareness();
-        interest = realAgent.getProductInterest();
-        addAllAdoptedProducts(realAgent.getAdoptedProducts());
-        productFindingScheme = realAgent.getProductFindingScheme();
-        processFindingScheme = realAgent.getProcessFindingScheme();
-        needs.addAll(realAgent.getNeeds());
-        addAllPlans(realAgent.getPlans());
+        try {
+            group = realAgent.getGroup();
+            node = realAgent.getSocialGraphNode();
+            addAllAttributes(realAgent.getAttributes());
+            addAllProductRelatedAttribute(realAgent.getProductRelatedAttributes());
+            awareness = realAgent.getProductAwareness();
+            interest = realAgent.getProductInterest();
+            addAllAdoptedProducts(realAgent.getAdoptedProducts());
+            productFindingScheme = realAgent.getProductFindingScheme();
+            processFindingScheme = realAgent.getProcessFindingScheme();
+            needs.addAll(realAgent.getNeeds());
+            addAllPlans(realAgent.getPlans());
+
+        } catch (Throwable t) {
+            System.out.println("ERROR @ " + realAgent.getName() + " " + t.getClass() + " -> " + t.getMessage());
+            t.printStackTrace();
+        }
     }
 
     @Override

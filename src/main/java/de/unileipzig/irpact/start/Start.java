@@ -8,6 +8,9 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import org.slf4j.event.Level;
 import picocli.CommandLine;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -32,13 +35,21 @@ public final class Start {
         IRPSection.addAllNonToolsTo(filter);
     }
 
-    private static void setupLogging(CommandLineOptions options) {
+    private static void setupLogging(CommandLineOptions options) throws IOException {
         if(options.logToFile()) {
+
+            boolean hasOldLogFile = Files.exists(options.getLogPath());
+            if(hasOldLogFile) {
+                Files.delete(options.getLogPath());
+            }
+
             if(options.logConsoleAndFile()) {
                 IRPLogging.initConsoleAndFile(options.getLogPath());
+                logOldFileDeleted(hasOldLogFile, options.getLogPath());
                 LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "log to console and file '{}'", options.getLogPath());
             } else {
                 IRPLogging.initFile(options.getLogPath());
+                logOldFileDeleted(hasOldLogFile, options.getLogPath());
                 LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "log to file '{}'", options.getLogPath());
             }
         } else {
@@ -46,11 +57,23 @@ public final class Start {
         }
     }
 
+    private static void logOldFileDeleted(boolean deleted, Path path) {
+        if(deleted) {
+            LOGGER.debug("old logfile '{}' deleted", path);
+        }
+    }
+
     private static StartResult startApp(String[] args, Collection<? extends IRPactCallback> callbacks) {
         prepareLogging();
         CommandLineOptions options = new CommandLineOptions(args);
         int exitCode = options.parse();
-        setupLogging(options);
+
+        try {
+            setupLogging(options);
+        } catch (IOException e) {
+            LOGGER.error("Setup logging failed, cancel start", e);
+            return new StartResult(CommandLine.ExitCode.SOFTWARE, e);
+        }
 
         if(exitCode == CommandLine.ExitCode.OK) {
             if(options.hasExecuteResultMessage()) {
@@ -76,13 +99,13 @@ public final class Start {
         }
     }
 
-    public static void start(String[] args, IRPactCallback... callbacks) {
-        start(args, Arrays.asList(callbacks));
+    public static int start(String[] args, IRPactCallback... callbacks) {
+        return start(args, Arrays.asList(callbacks));
     }
 
-    public static void start(String[] args, Collection<? extends IRPactCallback> callbacks) {
+    public static int start(String[] args, Collection<? extends IRPactCallback> callbacks) {
         StartResult result = startApp(args, callbacks);
-        System.exit(result.getErrorCode());
+        return result.getErrorCode();
     }
 
     public static int startWithGui(String[] args, IRPactCallback... callbacks) throws Throwable {
@@ -100,8 +123,10 @@ public final class Start {
         return CommandLine.ExitCode.OK;
     }
 
+    //start nutzen, wenn nicht via konsole!
     public static void main(String[] args) {
-        start(args);
+        int errorCode = start(args);
+        System.exit(errorCode);
     }
 
     /**

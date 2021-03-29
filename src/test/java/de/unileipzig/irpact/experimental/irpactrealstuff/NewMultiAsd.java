@@ -59,7 +59,7 @@ public class NewMultiAsd {
 
                 "--pathToResourceFile", locDeFile.toString()
         };
-        Start.main(args);
+        Start.start(args);
 
         Path scen = dir.resolve("scenarios").resolve("default.json");
         Path scenX = dir.resolve("scenariosX").resolve("input-2015.json");
@@ -71,7 +71,7 @@ public class NewMultiAsd {
         Path dir = TestFiles.testfiles.resolve("uitests").resolve(xDir);
         X x2015 = new X(dir);
 
-        runItImage(dir, 2015, x2015);
+        runIt(dir, 2015, x2015);
     }
 
     @SuppressWarnings("unchecked")
@@ -130,6 +130,8 @@ public class NewMultiAsd {
         String[] args = {
                 "-i", dir.resolve("scenariosX").resolve("input-" + startYear + ".json").toString(),
                 "-o", dir.resolve("scenariosX").resolve("output-" + startYear + ".json").toString(),
+                "--logPath", dir.resolve("scenariosX").resolve("log-" + startYear + ".log").toString(),
+                "--logConsoleAndFile",
                 "--dataDir", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data").toString()
         };
         Start.start(args, callback);
@@ -142,6 +144,8 @@ public class NewMultiAsd {
         String[] args = {
                 "-i", dir.resolve("scenariosX").resolve("input-" + startYear + ".json").toString(),
                 "-o", dir.resolve("scenariosX").resolve("output-" + startYear + ".json").toString(),
+                "--logPath", dir.resolve("scenariosX").resolve("log-" + startYear + ".log").toString(),
+                "--logConsoleAndFile",
                 "--dataDir", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data").toString(),
                 "--image", dir.resolve("image-" + startYear + ".png").toString(),
                 "--noSimulation"
@@ -156,6 +160,8 @@ public class NewMultiAsd {
         String[] args = {
                 "-i", dir.resolve("scenariosX").resolve("input-" + startYear + ".json").toString(),
                 "-o", dir.resolve("scenariosX").resolve("output-" + startYear + ".json").toString(),
+                "--logPath", dir.resolve("scenariosX").resolve("log-" + startYear + ".log").toString(),
+                "--logConsoleAndFile",
                 "--dataDir", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data").toString(),
                 "--image", dir.resolve("image-" + startYear + ".png").toString()
         };

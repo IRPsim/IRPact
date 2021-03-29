@@ -19,6 +19,7 @@ import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.InPVactUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
+import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.InUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
@@ -88,7 +89,7 @@ public class InExample implements DefaultScenarioFactory {
         //InUnlinkedGraphTopology topology = new InUnlinkedGraphTopology("unlinked");
         InCompleteGraphTopology topology = new InCompleteGraphTopology("complete", 1.0);
 
-        InPVFile pvFile = new InPVFile("BarwertrechnerMini_ES");
+        InPVFile pvFile = new InPVFile("Barwertrechner");
 
         InPVactUncertaintyGroupAttribute uncert = new InPVactUncertaintyGroupAttribute();
         uncert.setName("PVact_Uncert");
@@ -103,6 +104,7 @@ public class InExample implements DefaultScenarioFactory {
                 0.25, 0.25, 0.25, 0.25,
                 3, 2, 1, 0,
                 1.0,
+                new InRAProcessPlanMaxDistanceFilterScheme("RA_maxFilter", 100, true),
                 pvFile,
                 new InUncertaintyGroupAttribute[]{uncert}
         );
@@ -127,12 +129,12 @@ public class InExample implements DefaultScenarioFactory {
         //general
         InGeneral general = new InGeneral();
         general.seed = 42;
-        general.timeout = TimeUnit.MINUTES.toMillis(5);
-        general.runOptActDemo = true;
+        general.timeout = TimeUnit.MINUTES.toMillis(1);
+        general.runOptActDemo = false;
         general.runPVAct = true;
         general.logLevel = IRPLevel.ALL.getLevelId();
-        general.logAll = true;
-        general.logAllTools = true;
+        general.logAllIRPact = true;
+        general.enableAllDataLogging();
 
         //=====
         InRoot root = new InRoot();

@@ -172,12 +172,6 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         addMissingGroupAttributesToCags();
     }
 
-    private void checkHasAttribute(ConsumerAgentGroup cag, String name) throws ValidationException {
-        if(!cag.hasGroupAttribute(name)) {
-            throw ExceptionUtil.create(ValidationException::new, "consumer agent group '{}' has no group attribute '{}'", name);
-        }
-    }
-
     private void addMissingGroupAttributesToCags() {
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
             if(!underConstructionSupplier.hasGroupAttribute(cag)) {
@@ -207,12 +201,16 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
             checkHasAttribute(cag, RAConstants.NOVELTY_SEEKING);
             checkHasAttribute(cag, RAConstants.DEPENDENT_JUDGMENT_MAKING);
             checkHasAttribute(cag, RAConstants.ENVIRONMENTAL_CONCERN);
-            checkHasAttribute(cag, RAConstants.SHARE_1_2_HOUSE);
-            checkHasAttribute(cag, RAConstants.HOUSE_OWNER);
             checkHasAttribute(cag, RAConstants.CONSTRUCTION_RATE);
             checkHasAttribute(cag, RAConstants.RENOVATION_RATE);
             checkHasAttribute(cag, RAConstants.REWIRING_RATE);
             checkHasAttribute(cag, RAConstants.COMMUNICATION_FREQUENCY_SN);
+        }
+    }
+
+    private void checkHasAttribute(ConsumerAgentGroup cag, String name) throws ValidationException {
+        if(!cag.hasGroupAttribute(name)) {
+            throw ExceptionUtil.create(ValidationException::new, "consumer agent group '{}' has no group attribute '{}'", cag.getName(), name);
         }
     }
 
@@ -231,6 +229,8 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
             for(ConsumerAgent ca: cag.getAgents()) {
                 checkHasAnyAttribute(ca, RAConstants.ORIENTATION);
                 checkHasAnyAttribute(ca, RAConstants.SLOPE);
+                checkHasAnyAttribute(ca, RAConstants.SHARE_1_2_HOUSE);
+                checkHasAnyAttribute(ca, RAConstants.HOUSE_OWNER);
             }
         }
     }
@@ -292,24 +292,13 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         }
 
         globalRAProcessInitCalled = true;
-        initalizeInitialProductAwarenessAndInterest();
-    }
-
-    private void initalizeInitialProductAwarenessAndInterest() {
-        ProductManager productManager = environment.getProducts();
-
-        for(ProductGroup pg: productManager.getGroups()) {
-            for(Product fp : pg.getProducts()) {
-                handleNewProduct(fp);
-            }
-        }
     }
 
     private boolean initalizeInitialAdopter(ConsumerAgent ca, Product fp) {
         double chance = RAProcessPlan.getInitialAdopter(ca, fp);
         double draw = rnd.nextDouble();
         boolean isAdopter = draw < chance;
-        LOGGER.trace("Is consumer agent '{}' initial adopter of product '{}'? {} ({} < {})", ca.getName(), fp.getName(), isAdopter, draw, chance);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "Is consumer agent '{}' initial adopter of product '{}'? {} ({} < {})", ca.getName(), fp.getName(), isAdopter, draw, chance);
         if(isAdopter) {
             if(!ca.isAware(fp)) {
                 ca.makeAware(fp);
@@ -328,7 +317,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         double chance = RAProcessPlan.getInitialProductAwareness(ca, fp);
         double draw = rnd.nextDouble();
         boolean isAware = draw < chance;
-        LOGGER.trace("is consumer agent '{}' initial aware of product '{}'? {} ({} < {})", ca.getName(), fp.getName(), isAware, draw, chance);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "is consumer agent '{}' initial aware of product '{}'? {} ({} < {})", ca.getName(), fp.getName(), isAware, draw, chance);
         if(isAware) {
             ca.makeAware(fp);
         }
@@ -341,9 +330,10 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
                 ca.makeAware(fp);
             }
             ca.updateInterest(fp, interest);
-            LOGGER.trace("consumer agent '{}' has initial interest value {} for product '{}'", ca.getName(), interest, fp.getName());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "consumer agent '{}' has initial interest value {} for product '{}'", ca.getName(), interest, fp.getName());
             return true;
         } else {
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "consumer agent '{}' has no initial interest for product '{}'", ca.getName(), fp.getName());
             return false;
         }
     }

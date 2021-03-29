@@ -4,6 +4,8 @@ import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessModelManager;
@@ -16,8 +18,8 @@ import java.util.*;
  */
 public class BasicProductManager implements ProductManager {
 
+    private final Map<String, ProductGroup> products;
     private SimulationEnvironment environment;
-    private Map<String, ProductGroup> products;
 
     public BasicProductManager() {
         this(new LinkedHashMap<>());
@@ -39,11 +41,13 @@ public class BasicProductManager implements ProductManager {
     }
 
     @Override
-    public void initialize() {
-    }
-
-    @Override
-    public void preAgentCreationValidation() throws ValidationException {
+    public void postAgentCreation() {
+        for(ProductGroup pg: getGroups()) {
+            for(Product fp : pg.getProducts()) {
+                LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "make product '{}' known in simulation", fp.getName());
+                makeKnownInSimulation(fp);
+            }
+        }
     }
 
     @Override

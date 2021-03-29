@@ -4,6 +4,9 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.network.filter.DisabledNodeFilter;
+import de.unileipzig.irpact.core.process.filter.DisabledProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
@@ -106,6 +109,7 @@ public class InRAProcessModel implements InProcessModel {
             double a, double b, double c, double d,
             int adopterPoints, int interestedPoints, int awarePoints, int unknownPoints,
             double logisticFactor,
+            InRAProcessPlanNodeFilterScheme filterScheme,
             InPVFile pvFile,
             InUncertaintyGroupAttribute[] uncertaintyGroupAttributes) {
         this._name = name;
@@ -118,8 +122,9 @@ public class InRAProcessModel implements InProcessModel {
         this.awarePoints = awarePoints;
         this.unknownPoints = unknownPoints;
         this.logisticFactor = logisticFactor;
+        setNodeFilterScheme(filterScheme);
         setPvFile(pvFile);
-        this.uncertaintyGroupAttributes = uncertaintyGroupAttributes;
+        setUncertaintyGroupAttributes(uncertaintyGroupAttributes);
     }
 
     @Override
@@ -203,6 +208,10 @@ public class InRAProcessModel implements InProcessModel {
         this.logisticFactor = logisticFactor;
     }
 
+    public boolean hasNodeFilterScheme() {
+        return ParamUtil.len(nodeFilterScheme) > 0;
+    }
+
     public InRAProcessPlanNodeFilterScheme getNodeFilterScheme() throws ParsingException {
         return ParamUtil.getInstance(nodeFilterScheme, "nodeFilterScheme");
     }
@@ -241,7 +250,7 @@ public class InRAProcessModel implements InProcessModel {
         data.setLogisticFactor(getLogisticFactor());
 
         Rnd rnd = parser.deriveRnd();
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "RAProcessModel '{}' uses seed: {}", getName(), rnd.getInitialSeed());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "RAProcessModel '{}' uses seed: {}", getName(), rnd.getInitialSeed());
 
         RAProcessModel model = new RAProcessModel();
         model.setName(getName());
@@ -251,6 +260,16 @@ public class InRAProcessModel implements InProcessModel {
 
         for(InUncertaintyGroupAttribute inUncert: getUncertaintyGroupAttributes()) {
             inUncert.setup(parser, model);
+        }
+
+        if(hasNodeFilterScheme()) {
+            InRAProcessPlanNodeFilterScheme inFilterScheme = getNodeFilterScheme();
+            ProcessPlanNodeFilterScheme filterScheme = parser.parseEntityTo(inFilterScheme);
+            model.setNodeFilterScheme(filterScheme);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set node filter scheme '{}'", filterScheme.getName());
+        } else {
+            model.setNodeFilterScheme(DisabledProcessPlanNodeFilterScheme.INSTANCE);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "no node filter scheme specified");
         }
 
         NPVXlsxData xlsxData = parser.parseEntityTo(getPvFile());

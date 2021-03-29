@@ -73,7 +73,7 @@ public class BasicConsumerAgentGroupAttributeSupplier extends NameableBase imple
         grpAttr.setArtificial(true);
         cag.addGroupAttribute(grpAttr);
 
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added '{}={}' to group '{}'", attributeName, dist.getName(), cag.getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add artificial cag attribute '{}' with '{}' to group '{}'", attributeName, dist.getName(), cag.getName());
     }
 
     @Override

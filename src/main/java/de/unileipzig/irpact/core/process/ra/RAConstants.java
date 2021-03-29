@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.core.process.ra;
 
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.util.Todo;
 
 /**
  * @author Daniel Abitz
@@ -15,8 +14,8 @@ public final class RAConstants {
     public static final String DEPENDENT_JUDGMENT_MAKING_UNCERTAINTY = getUncertaintyAttributeName(DEPENDENT_JUDGMENT_MAKING);
     public static final String ENVIRONMENTAL_CONCERN = "environmental_concern";             //A4
     public static final String ENVIRONMENTAL_CONCERN_UNCERTAINTY = getUncertaintyAttributeName(ENVIRONMENTAL_CONCERN);
-    public static final String SHARE_1_2_HOUSE = "HH_Anzahl";                         //A5
-    public static final String HOUSE_OWNER = "Eigentum";                       //A6
+    public static final String SHARE_1_2_HOUSE = "Anzahl_HH_Dummy";                         //A5
+    public static final String HOUSE_OWNER = "Privatbesitz";                       //A6
     public static final String CONSTRUCTION_RATE = "construction_rate";                      //A7
     public static final String UNDER_CONSTRUCTION = "under_construction";
     public static final String RENOVATION_RATE = "renovation_rate";                        //A8
@@ -37,15 +36,14 @@ public final class RAConstants {
     public static final String INVESTMENT_COST = "investment_cost";                               //E1
 
     //Spatial
-    @Todo("ANPASSEN AN MOMENTANE DATEI")
     public static final String ADDRESS = "Adresse";
     public static final String ZIP = "PLZ";
     public static final String ORIENTATION = "Dachorient";
     public static final String SLOPE = "Dachneig";
     public static final String X_CENT = "X_Zentroid";
     public static final String Y_CENT = "Y_Zentroid";
-    public static final String PURCHASE_POWER = "KK";          //A1
-    public static final String DOM_MILIEU = "Milieu_Dom";
+    public static final String PURCHASE_POWER = "KK_Index";          //A1
+    public static final String DOM_MILIEU = "Milieu";
 
     public static final String PRIVATE = "PRIVAT";
 

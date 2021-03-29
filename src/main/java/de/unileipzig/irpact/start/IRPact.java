@@ -162,6 +162,7 @@ public class IRPact implements IRPActAccess {
         initEnvironment();
         validateEnvironment();
         postAgentCreation();
+        postAgentCreationValidation();
 
         if(CL_OPTIONS.isNoSimulation()) {
             if(CL_OPTIONS.hasImagePath()) {
@@ -253,8 +254,13 @@ public class IRPact implements IRPActAccess {
 
     private void postAgentCreation() throws MissingDataException {
         LOGGER.info("postAgentCreation");
-        environment.postAgentCreation();
         environment.getTaskManager().runSimulationTasks(environment);
+        environment.postAgentCreation();
+    }
+
+    private void postAgentCreationValidation() throws ValidationException {
+        LOGGER.info("postAgentCreationValidation");
+        environment.postAgentCreationValidation();
     }
 
     private void printNetwork() throws Exception {
@@ -420,11 +426,11 @@ public class IRPact implements IRPActAccess {
 
         List<OutAdoptionResult> outResults = new ArrayList<>();
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-            OutAdoptionResult outResult = new OutAdoptionResult(cag.getName() + "__" + start.getYear());
+            OutAdoptionResult outResult = new OutAdoptionResult(cag.getName() + "_" + start.getYear());
             int adoptions = 0;
             for(ConsumerAgent ca: cag.getAgents()) {
                 for(AdoptedProduct ap: ca.getAdoptedProducts()) {
-                    if(ap.getTimestamp().isBetween(start, end)) {
+                    if(ap.isInitial() || ap.getTimestamp().isBetween(start, end)) {
                         adoptions++;
                     }
                 }
