@@ -1,46 +1,51 @@
 package de.unileipzig.irpact.commons.interest;
 
-import java.util.LinkedHashMap;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
+
 import java.util.Map;
 
 /**
  * @author Daniel Abitz
  */
-public class ThresholdInterest<T> implements Interest<T> {
+public abstract class ThresholdInterest<T, U> implements Interest<T> {
 
     protected Map<T, Double> items;
-    protected double threshold;
+    protected Map<U, Double> thresholds;
 
     public ThresholdInterest() {
-        this(new LinkedHashMap<>());
+        this(CollectionUtil.newMap(), CollectionUtil.newMap());
     }
 
-    public ThresholdInterest(Map<T, Double> items) {
+    public ThresholdInterest(Map<T, Double> items, Map<U, Double> thresholds) {
         this.items = items;
+        this.thresholds = thresholds;
     }
 
-    public void setThreshold(double threshold) {
-        this.threshold = threshold;
+    public void setThreshold(U key, double threshold) {
+        thresholds.put(key, threshold);
     }
 
-    public double getThreshold() {
-        return threshold;
+    public double getThreshold(U key) {
+        Double threshold = thresholds.get(key);
+        return threshold == null
+                ? 0
+                : threshold;
     }
+
+    protected abstract double getThresholdFor(T item);
 
     public Map<T, Double> getItems() {
         return items;
     }
 
-    @Override
-    public boolean isInterested(T item) {
-        Double v = items.get(item);
-        return v != null && v >= threshold;
+    public Map<U, Double> getThresholds() {
+        return thresholds;
     }
 
     @Override
-    public boolean isAware(T item) {
+    public boolean isInterested(T item) {
         Double v = items.get(item);
-        return v != null && v > 0.0;
+        return v != null && v >= getThresholdFor(item);
     }
 
     @Override
@@ -53,7 +58,7 @@ public class ThresholdInterest<T> implements Interest<T> {
 
     @Override
     public void makeInterested(T item) {
-        items.put(item, threshold);
+        items.put(item, getThresholdFor(item));
     }
 
     @Override
@@ -63,6 +68,9 @@ public class ThresholdInterest<T> implements Interest<T> {
 
     @Override
     public double getValue(T item) {
-        return items.get(item);
+        Double value = items.get(item);
+        return value == null
+                ? 0
+                : value;
     }
 }

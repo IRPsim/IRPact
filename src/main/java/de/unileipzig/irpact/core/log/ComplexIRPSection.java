@@ -27,6 +27,10 @@ public interface ComplexIRPSection extends LoggingSection {
             this.sections = sections;
         }
 
+        public static And get(IRPSection... sections) {
+            return new And(sections);
+        }
+
         @Override
         public boolean test(EnumSet<IRPSection> set) {
             for(IRPSection section: sections) {
@@ -47,6 +51,10 @@ public interface ComplexIRPSection extends LoggingSection {
 
         public Or(IRPSection... sections) {
             this.sections = sections;
+        }
+
+        public static Or get(IRPSection... sections) {
+            return new Or(sections);
         }
 
         @Override

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.data.TripleMapping;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.core.agent.Agent;
@@ -324,6 +325,11 @@ public class BasicSocialGraph implements SocialGraph {
     @Override
     public Stream<? extends Node> streamTargets(Node source, Type type) {
         return GRAPH.streamTargets(source, type);
+    }
+
+    @Override
+    public Node getRandomTarget(Node source, Type type, Rnd rnd) {
+        return GRAPH.getRandomTarget(source, type, rnd);
     }
 
     @Override

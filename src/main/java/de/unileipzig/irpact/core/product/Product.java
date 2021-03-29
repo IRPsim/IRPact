@@ -30,4 +30,6 @@ public interface Product extends SimulationEntity {
     ProductAttribute getAttribute(String name);
 
     boolean isFixed();
+
+    boolean isNotFixed();
 }

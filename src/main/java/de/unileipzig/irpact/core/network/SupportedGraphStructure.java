@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.commons.graph.FastDirectedMultiGraph;
+import de.unileipzig.irpact.commons.graph.FastDirectedMultiGraph2;
 
 /**
  * @author Daniel Abitz
@@ -19,6 +20,12 @@ public enum SupportedGraphStructure implements ChecksumComparable {
         @Override
         public <V, E, T> FastDirectedMultiGraph<V, E, T> newInstance() {
             return new FastDirectedMultiGraph<>();
+        }
+    },
+    FAST_DIRECTED_MULTI_GRAPH2(3) {
+        @Override
+        public <V, E, T> FastDirectedMultiGraph2<V, E, T> newInstance() {
+            return new FastDirectedMultiGraph2<>();
         }
     };
 

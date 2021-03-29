@@ -6,6 +6,7 @@ import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSu
 import de.unileipzig.irpact.io.spec.SpecificationHelper;
 import de.unileipzig.irpact.io.spec.SpecificationJob;
 import de.unileipzig.irpact.io.spec.impl.AbstractSubSpec;
+import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.Objects;
@@ -15,6 +16,7 @@ import static de.unileipzig.irpact.io.spec.SpecificationConstants.*;
 /**
  * @author Daniel Abitz
  */
+@Todo("KAPUTT")
 public class ProductThresholdInterestSupplySchemeSpec extends AbstractSubSpec<InProductThresholdInterestSupplyScheme> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ProductThresholdInterestSupplySchemeSpec.class);
@@ -61,7 +63,8 @@ public class ProductThresholdInterestSupplySchemeSpec extends AbstractSubSpec<In
 
         InProductThresholdInterestSupplyScheme scheme = new InProductThresholdInterestSupplyScheme();
         scheme.setName(rootSpec.getText(TAG_name));
-        scheme.setInterestDistribution(job.parseInlinedDistribution(rootSpec.getNode(TAG_distribution)));
+        //TODO
+        //scheme.setInterestDistribution(job.parseInlinedDistribution(rootSpec.getNode(TAG_distribution)));
 
         job.cache(name, scheme);
         return scheme;
@@ -81,6 +84,7 @@ public class ProductThresholdInterestSupplySchemeSpec extends AbstractSubSpec<In
     protected void create(InProductThresholdInterestSupplyScheme input, SpecificationHelper rootSpec, SpecificationJob job) throws ParsingException {
         rootSpec.set(TAG_name, input.getName());
         rootSpec.set(TAG_type, TYPE);
-        rootSpec.set(TAG_distribution, job.inlineEntity(input.getInterestDistribution(), false));
+        //TODO
+        //rootSpec.set(TAG_distribution, job.inlineEntity(input.getInterestDistribution(), false));
     }
 }

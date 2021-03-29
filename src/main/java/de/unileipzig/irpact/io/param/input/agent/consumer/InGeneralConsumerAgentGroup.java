@@ -47,7 +47,6 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
         addEntry(res, thisClass(), "cagInterest");
         addEntry(res, thisClass(), "productFindingSchemes");
         addEntry(res, thisClass(), "spatialDistribution");
-        addEntry(res, thisClass(), "informationAuthority");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -66,9 +65,6 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
     @FieldDefinition
     public InSpatialDistribution[] spatialDistribution;
 
-    @FieldDefinition
-    public double informationAuthority;
-
     public InGeneralConsumerAgentGroup() {
     }
 
@@ -79,14 +75,6 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
 
     public void setName(String _name) {
         this._name = _name;
-    }
-
-    public double getInformationAuthority() {
-        return informationAuthority;
-    }
-
-    public void setInformationAuthority(double informationAuthority) {
-        this.informationAuthority = informationAuthority;
     }
 
     public InDependentConsumerAgentGroupAttribute[] getAttributes() throws ParsingException {
@@ -137,7 +125,8 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
         JadexConsumerAgentGroup jCag = new JadexConsumerAgentGroup();
         jCag.setEnvironment(parser.getEnvironment());
         jCag.setName(getName());
-        jCag.setInformationAuthority(getInformationAuthority());
+        jCag.setInformationAuthority(1.0);
+        jCag.setMaxNumberOfActions(1);
 
         if(agentManager.hasConsumerAgentGroup(getName())) {
             throw new ParsingException("ConsumerAgentGroup '" + getName() + "' already exists");

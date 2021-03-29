@@ -5,7 +5,10 @@ package de.unileipzig.irpact.core.log;
  */
 public final class InfoTag {
 
+    public static final String PVACT = "[PVact]";
     public static final String RELATIVE_AGREEMENT = "[RA]";
+    public static final String INTEREST_UPDATE = "[IU]";
+    public static final String GRAPH_UPDATE = "[GU]";
 
     private InfoTag() {
     }

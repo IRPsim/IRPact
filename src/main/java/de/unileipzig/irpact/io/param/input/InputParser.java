@@ -35,7 +35,7 @@ public interface InputParser {
         return (R) parseEntity(input);
     }
 
-    default <R> R parseEntitiyTo(InEntity input, Class<R> outClass) throws ParsingException {
+    default <R> R parseEntityTo(InEntity input, Class<R> outClass) throws ParsingException {
         Object obj = parseEntity(input);
         if(outClass.isInstance(obj)) {
             return outClass.cast(obj);

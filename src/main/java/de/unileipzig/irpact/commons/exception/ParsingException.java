@@ -3,7 +3,7 @@ package de.unileipzig.irpact.commons.exception;
 /**
  * @author Daniel Abitz
  */
-public class ParsingException extends Exception {
+public class ParsingException extends IRPactException {
 
     public ParsingException(String msg) {
         super(msg);
@@ -13,6 +13,11 @@ public class ParsingException extends Exception {
         super(cause);
     }
 
+    public ParsingException(String msg, Throwable cause) {
+        super(msg, cause);
+    }
+
+    @Override
     public UncheckedParsingException unchecked() {
         return new UncheckedParsingException(this);
     }

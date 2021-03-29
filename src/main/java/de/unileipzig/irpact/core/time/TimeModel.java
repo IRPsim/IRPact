@@ -3,7 +3,7 @@ package de.unileipzig.irpact.core.time;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.time.TimeMode;
 import de.unileipzig.irpact.commons.time.Timestamp;
-import de.unileipzig.irpact.core.misc.Initialization;
+import de.unileipzig.irpact.core.misc.InitalizablePart;
 
 import java.time.Month;
 import java.time.ZonedDateTime;
@@ -11,7 +11,7 @@ import java.time.ZonedDateTime;
 /**
  * @author Daniel Abitz
  */
-public interface TimeModel extends Nameable, Initialization {
+public interface TimeModel extends Nameable, InitalizablePart {
 
     /**
      * Special setup for time model.

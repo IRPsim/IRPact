@@ -2,6 +2,7 @@ package de.unileipzig.irpact.experimental;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.*;
+import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.res.BasicResourceLoader;
 import de.unileipzig.irpact.commons.util.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -271,5 +272,12 @@ class DivTest {
         IRPLogging.initConsole();
         IRPLogging.getLogger(DivTest.class).trace("HALLO");
         IRPLogging.getClearLogger().trace("HALLO");
+    }
+
+    @Test
+    void testExceptionStuff() {
+        IOException io = ExceptionUtil.create(IOException::new, "{} + {} | {} - {}", "ich", "bin", 1, true);
+        ParsingException p = ExceptionUtil.createWithCause(ParsingException::new, io, "{}? {}! {}!!!", "nein", "doch", "oh");
+        p.printStackTrace();
     }
 }

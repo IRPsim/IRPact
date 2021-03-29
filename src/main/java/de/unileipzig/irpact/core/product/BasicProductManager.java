@@ -1,7 +1,12 @@
 package de.unileipzig.irpact.core.product;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.core.agent.AgentManager;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.misc.ValidationException;
+import de.unileipzig.irpact.core.process.ProcessModel;
+import de.unileipzig.irpact.core.process.ProcessModelManager;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
 import java.util.*;
@@ -38,7 +43,23 @@ public class BasicProductManager implements ProductManager {
     }
 
     @Override
-    public void validate() throws ValidationException {
+    public void preAgentCreationValidation() throws ValidationException {
+    }
+
+    @Override
+    public void makeKnownInSimulation(Product product) {
+        AgentManager agentManager = environment.getAgents();
+
+        for(ConsumerAgentGroup cag: agentManager.getConsumerAgentGroups()) {
+            for(ConsumerAgent ca: cag.getAgents()) {
+                ca.updateProductRelatedAttributes(product);
+            }
+        }
+
+        ProcessModelManager processModelManager = environment.getProcessModels();
+        for(ProcessModel processModel: processModelManager.getProcessModels()) {
+            processModel.handleNewProduct(product);
+        }
     }
 
     public boolean has(String name) {

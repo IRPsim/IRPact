@@ -23,6 +23,7 @@ import jadex.micro.annotation.ProvidedService;
 import jadex.micro.annotation.ProvidedServices;
 
 import java.time.LocalTime;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Daniel Abitz
@@ -84,21 +85,17 @@ public class TimeModelAgent implements TimeModelService, TestAgent, SimulationAg
     }
 
     @Override
-    public boolean tryAquireAction() {
+    public boolean tryAquireAttention() {
         return false;
     }
 
     @Override
-    public boolean tryAquireSelf() {
-        return false;
+    public int getMaxNumberOfActions() {
+        return -1;
     }
 
     @Override
-    public void aquireFailed() {
-    }
-
-    @Override
-    public void allowAquire() {
+    public void allowAttention() {
     }
 
     @Override
@@ -106,7 +103,26 @@ public class TimeModelAgent implements TimeModelService, TestAgent, SimulationAg
     }
 
     @Override
-    public void releaseAquire() {
+    public void releaseAttention() {
+    }
+
+    @Override
+    public void aquireDataAccess() {
+    }
+
+    @Override
+    public boolean tryAquireDataAccess() {
+        return false;
+    }
+
+    @Override
+    public boolean tryAquireDataAccess(long time, TimeUnit unit) {
+        return false;
+    }
+
+    @Override
+    public void releaseDataAccess() {
+
     }
 
     @Override

@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.commons.graph;
 
 import de.unileipzig.irpact.commons.util.CollectionUtil;
+import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.develop.TodoException;
 
 import java.util.*;
 import java.util.function.Function;
@@ -191,6 +193,11 @@ public class FastDirectedMultiGraph<V, E, T> implements DirectedMultiGraph<V, E,
                 .stream()
                 .flatMap(m -> m.keySet().stream())
                 .collect(CollectionUtil.collectToLinkedSet());
+    }
+
+    @Override
+    public V getRandomTarget(V from, T type, Rnd rnd) {
+        throw new TodoException();
     }
 
     @Override

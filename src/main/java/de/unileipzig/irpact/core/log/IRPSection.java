@@ -24,10 +24,11 @@ public enum IRPSection implements LoggingSection {
     INITIALIZATION_PLATFORM,
 
     /*
-     *
+     * Simulation
      */
     SIMULATION_LICECYCLE,
     SIMULATION_AGENT,
+    SIMULATION_PROCESS,
     SIMULATION_AGENT_COMMUNICATION,
     SIMULATION_AGENT_REWIRE,
 
@@ -37,10 +38,18 @@ public enum IRPSection implements LoggingSection {
     SPECIFICATION_CONVERTER,
 
     /*
-     *
+     * Outputspam
      */
-    JADEX_SYSTEM_OUT
+    JADEX_SYSTEM_OUT,
+
+    /*
+     * Tag-stuff
+     */
+    TAG_GRAPH_UPDATE,
+    TAG_RELATIVE_AGREEMENT,
+    TAG_INTEREST_UPDATE
     ;
+
 
     @Override
     public Class<IRPSection> getType() {

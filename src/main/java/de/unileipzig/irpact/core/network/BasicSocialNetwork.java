@@ -36,7 +36,7 @@ public class BasicSocialNetwork implements SocialNetwork {
     }
 
     public void initDefaultGraph() {
-        BasicSocialGraph socialGraph = new BasicSocialGraph(SupportedGraphStructure.DIRECTED_ADJACENCY_LIST_MULTI_GRAPH);
+        BasicSocialGraph socialGraph = new BasicSocialGraph(SupportedGraphStructure.FAST_DIRECTED_MULTI_GRAPH2);
         setGraph(socialGraph);
     }
 
@@ -72,12 +72,10 @@ public class BasicSocialNetwork implements SocialNetwork {
     }
 
     @Override
-    public void postAgentCreation(boolean initialCall) {
-        if(initialCall) {
-            topologyScheme.initalize(
-                    environment,
-                    getGraph()
-            );
-        }
+    public void postAgentCreation() {
+        topologyScheme.initalize(
+                environment,
+                getGraph()
+        );
     }
 }

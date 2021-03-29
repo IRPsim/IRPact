@@ -188,9 +188,6 @@ InGeneralConsumerAgentGroup_productFindingSchemes:
 InGeneralConsumerAgentGroup_spatialDistribution:
   gams_identifier: "Räumliche Verteilungsfunktion"
   gams_description: "Legt die Verteilungsfunktion für diese Gruppe fest"
-InGeneralConsumerAgentGroup_informationAuthority:
-  gams_identifier: "[ungenutzt] informationAuthority"
-  gams_description: "informationAuthority"
 
 InPVactConsumerAgentGroup:
   edn_label: "PVact Gruppen"
@@ -227,6 +224,9 @@ InPVactConsumerAgentGroup_rateOfConvergence:
 InPVactConsumerAgentGroup_initialProductInterest:
   gams_identifier: "initialProductInterest"
   gams_description: "initialProductInterest"
+InPVactConsumerAgentGroup_initialProductAwareness:
+  gams_identifier: "initialProductAwareness"
+  gams_description: "initialProductAwareness"
 InPVactConsumerAgentGroup_constructionRate:
   gams_identifier: "constructionRate"
   gams_description: "constructionRate"
@@ -236,9 +236,6 @@ InPVactConsumerAgentGroup_renovationRate:
 InPVactConsumerAgentGroup_spatialDistribution:
   gams_identifier: "spatialDistribution"
   gams_description: "spatialDistribution"
-InPVactConsumerAgentGroup_informationAuthority:
-  gams_identifier: "informationAuthority"
-  gams_description: "informationAuthority"
 
 consumer_attr:
   edn_label: "Attribute"
@@ -289,9 +286,19 @@ consumer_interest:
 InProductThresholdInterestSupplyScheme:
   edn_label: "Grenzwertbasiert"
   edn_description: "Grenzwertbasierte Interessens-Varianten"
-InProductThresholdInterestSupplyScheme_interestDistribution:
-  gams_identifier: "Grenzwert"
-  gams_description: "Grenzwert ab dem das Produkt von Interesse ist."
+InProductThresholdInterestSupplyScheme_entries:
+  gams_identifier: "Einträge"
+  gams_description: "Grenzwerte ab dem Produkte der zugehörigen Produktgruppen von Interesse werden."
+
+InProductGroupThresholdEntry:
+  edn_label: "Grenzwertbasierte Einträge"
+  edn_description: "Ermöglicht die Definition von Einträgen für einen grezwertbasierte Interessen."
+InProductGroupThresholdEntry_interestDistribution:
+  gams_identifier: "Verteilungsfunktion für den Grenzwert"
+  gams_description: "Legt die Verteilungsfunktion für den Grenzwert fest."
+InProductGroupThresholdEntry_productGroups:
+  gams_identifier: "Produktgruppen"
+  gams_description: "Legt die Produktgruppen fest, zu denen der definierte Grenzwert gehören soll."
 
 population:
   edn_label: "Population"

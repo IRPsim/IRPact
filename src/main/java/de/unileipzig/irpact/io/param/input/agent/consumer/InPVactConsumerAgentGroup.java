@@ -6,6 +6,7 @@ import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.product.awareness.ProductBinaryAwarenessSupplyScheme;
 import de.unileipzig.irpact.core.product.interest.ProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
@@ -51,8 +52,12 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         addEntry(res, thisClass(), "communication");
         addEntry(res, thisClass(), "rewire");
         addEntry(res, thisClass(), "initialAdopter");
+        addEntry(res, thisClass(), "rateOfConvergence");
+        addEntry(res, thisClass(), "initialProductInterest");
+        addEntry(res, thisClass(), "initialProductAwareness");
+        addEntry(res, thisClass(), "constructionRate");
+        addEntry(res, thisClass(), "renovationRate");
         addEntry(res, thisClass(), "spatialDistribution");
-        addEntry(res, thisClass(), "informationAuthority");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -93,6 +98,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
     public InUnivariateDoubleDistribution[] initialProductInterest;
 
     @FieldDefinition
+    public InUnivariateDoubleDistribution[] initialProductAwareness;
+
+    @FieldDefinition
     public InUnivariateDoubleDistribution[] constructionRate;
 
     @FieldDefinition
@@ -100,9 +108,6 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
     @FieldDefinition
     public InSpatialDistribution[] spatialDistribution;
-
-    @FieldDefinition
-    public double informationAuthority;
 
     public InPVactConsumerAgentGroup() {
     }
@@ -130,14 +135,6 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
     public void setName(String _name) {
         this._name = _name;
-    }
-
-    public double getInformationAuthority() {
-        return informationAuthority;
-    }
-
-    public void setInformationAuthority(double informationAuthority) {
-        this.informationAuthority = informationAuthority;
     }
 
     public InUnivariateDoubleDistribution getNoveltySeeking() throws ParsingException {
@@ -228,6 +225,14 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         this.initialProductInterest = new InUnivariateDoubleDistribution[]{initialProductInterest};
     }
 
+    public InUnivariateDoubleDistribution getInitialProductAwareness() throws ParsingException {
+        return ParamUtil.getInstance(initialProductAwareness, "initialProductAwareness");
+    }
+
+    public void setInitialProductAwareness(InUnivariateDoubleDistribution initialProductAwareness) {
+        this.initialProductAwareness = new InUnivariateDoubleDistribution[]{initialProductAwareness};
+    }
+
     public InUnivariateDoubleDistribution getConstructionRate() throws ParsingException {
         return ParamUtil.getInstance(constructionRate, "constructionRate");
     }
@@ -260,7 +265,8 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         JadexConsumerAgentGroup jcag = new JadexConsumerAgentGroup();
         jcag.setEnvironment(parser.getEnvironment());
         jcag.setName(getName());
-        jcag.setInformationAuthority(getInformationAuthority());
+        jcag.setInformationAuthority(1.0);
+        jcag.setMaxNumberOfActions(1);
 
         if(agentManager.hasConsumerAgentGroup(getName())) {
             throw new ParsingException("ConsumerAgentGroup '" + getName() + "' already exists");
@@ -282,13 +288,17 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         addGroupAttribute(parser, jcag, getInitialAdopter(), INITIAL_ADOPTER);
         addGroupAttribute(parser, jcag, getRateOfConvergence(), RATE_OF_CONVERGENCE);
         addGroupAttribute(parser, jcag, getInitialProductInterest(), INITIAL_PRODUCT_INTEREST);
+        addGroupAttribute(parser, jcag, getInitialProductAwareness(), INITIAL_PRODUCT_AWARENESS);
+        addGroupAttribute(parser, jcag, getInterestThreshold(), INTEREST_THRESHOLD);
         addGroupAttribute(parser, jcag, getConstructionRate(), CONSTRUCTION_RATE);
         addGroupAttribute(parser, jcag, getRenovationRate(), RENOVATION_RATE);
 
-        UnivariateDoubleDistribution interestDist = parser.parseEntityTo(getInterestThreshold());
+        ProductBinaryAwarenessSupplyScheme awarenessSupplyScheme = new ProductBinaryAwarenessSupplyScheme();
+        awarenessSupplyScheme.setName(ParamUtil.concName(jcag.getName(), AWARENESS));
+        jcag.setAwarenessSupplyScheme(awarenessSupplyScheme);
+
         ProductThresholdInterestSupplyScheme interestSupplyScheme = new ProductThresholdInterestSupplyScheme();
-        interestSupplyScheme.setName(ParamUtil.concName(jcag.getName(), INTEREST_THRESHOLD));
-        interestSupplyScheme.setDistribution(interestDist);
+        interestSupplyScheme.setName(ParamUtil.concName(jcag.getName(), INTEREST));
         jcag.setInterestSupplyScheme(interestSupplyScheme);
 
         getSpatialDistribution().setup(parser, jcag);
@@ -304,7 +314,18 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         if(jcag.hasGroupAttribute(name)) {
             throw new ParsingException("ConsumerAgentGroupAttribute '" + name + "' already exists in " + jcag.getName());
         }
-        UnivariateDoubleDistribution dist = (UnivariateDoubleDistribution) inDist.parse(parser);
+
+        UnivariateDoubleDistribution dist = parser.parseEntityTo(inDist);
+        addGroupAttribute(jcag, dist, name);
+    }
+
+    private static void addGroupAttribute(
+            JadexConsumerAgentGroup jcag,
+            UnivariateDoubleDistribution dist,
+            String name) throws ParsingException {
+        if(jcag.hasGroupAttribute(name)) {
+            throw new ParsingException("ConsumerAgentGroupAttribute '" + name + "' already exists in " + jcag.getName());
+        }
 
         BasicConsumerAgentGroupAttribute cagAttr = new BasicConsumerAgentGroupAttribute();
         cagAttr.setName(name);

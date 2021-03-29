@@ -248,12 +248,12 @@ public class IRPact implements IRPActAccess {
 
     private void validateEnvironment() throws ValidationException {
         LOGGER.info("validate");
-        environment.validate();
+        environment.preAgentCreationValidation();
     }
 
     private void postAgentCreation() throws MissingDataException {
         LOGGER.info("postAgentCreation");
-        environment.postAgentCreation(isFirstCall());
+        environment.postAgentCreation();
         environment.getTaskManager().runSimulationTasks(environment);
     }
 

@@ -223,14 +223,14 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     }
 
     @Override
-    public void validate() throws ValidationException {
-        agentManager.validate();
-        socialNetwork.validate();
-        productManager.validate();
-        processModelManager.validate();
-        spatialModel.validate();
-        timeModel.validate();
-        lifeCycleControl.validate();
+    public void preAgentCreationValidation() throws ValidationException {
+        agentManager.preAgentCreationValidation();
+        socialNetwork.preAgentCreationValidation();
+        productManager.preAgentCreationValidation();
+        processModelManager.preAgentCreationValidation();
+        spatialModel.preAgentCreationValidation();
+        timeModel.preAgentCreationValidation();
+        lifeCycleControl.preAgentCreationValidation();
     }
 
     @Override
@@ -245,14 +245,14 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     }
 
     @Override
-    public void postAgentCreation(boolean initialCall) throws MissingDataException {
-        agentManager.postAgentCreation(initialCall);
-        socialNetwork.postAgentCreation(initialCall);
-        productManager.postAgentCreation(initialCall);
-        processModelManager.postAgentCreation(initialCall);
-        spatialModel.postAgentCreation(initialCall);
-        timeModel.postAgentCreation(initialCall);
-        lifeCycleControl.postAgentCreation(initialCall);
+    public void postAgentCreation() throws MissingDataException {
+        agentManager.postAgentCreation();
+        socialNetwork.postAgentCreation();
+        productManager.postAgentCreation();
+        processModelManager.postAgentCreation();
+        spatialModel.postAgentCreation();
+        timeModel.postAgentCreation();
+        lifeCycleControl.postAgentCreation();
     }
 
     @Override

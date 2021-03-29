@@ -1,9 +1,8 @@
 package de.unileipzig.irpact.core.product;
 
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.need.Need;
-
-import java.util.Objects;
 
 /**
  * @author Daniel Abitz
@@ -13,14 +12,23 @@ public class BasicAdoptedProduct implements AdoptedProduct {
     protected Need need;
     protected Product product;
     protected Timestamp timestamp;
+    protected boolean initial;
 
     public BasicAdoptedProduct() {
+    }
+
+    public BasicAdoptedProduct(Product product) {
+        setNeed(null);
+        setProduct(product);
+        setTimestamp(null);
+        setInitial(true);
     }
 
     public BasicAdoptedProduct(Need need, Product product, Timestamp timestamp) {
         setNeed(need);
         setProduct(product);
         setTimestamp(timestamp);
+        setInitial(false);
     }
 
     public void setNeed(Need need) {
@@ -33,6 +41,10 @@ public class BasicAdoptedProduct implements AdoptedProduct {
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public void setInitial(boolean initial) {
+        this.initial = initial;
     }
 
     @Override
@@ -51,7 +63,17 @@ public class BasicAdoptedProduct implements AdoptedProduct {
     }
 
     @Override
+    public boolean isInitial() {
+        return initial;
+    }
+
+    @Override
     public int getChecksum() {
-        return Objects.hash(need.getChecksum(), product.getChecksum(), timestamp.getChecksum());
+        return ChecksumComparable.getChecksum(
+                need,
+                product,
+                timestamp,
+                initial
+        );
     }
 }

@@ -71,8 +71,6 @@ public class GeneralConsumerAgentGroupSpec extends AbstractSubSpec<InGeneralCons
         InGeneralConsumerAgentGroup grp = new InGeneralConsumerAgentGroup();
         grp.setName(rootSpec.getText(TAG_name));
 
-        grp.setInformationAuthority(rootSpec.getDouble(TAG_parameters, TAG_informationAuthority));
-
         grp.setInterest(job.parseInlinedProductInterestSupplyScheme(rootSpec.getNode(TAG_interest)));
         grp.setSpatialDistribution(job.parseInlinedSpatialDistribution(rootSpec.getNode(TAG_spatialDistribution)));
         grp.setProductFindingScheme(job.parseInlinedProductFindingScheme(rootSpec.getNode(TAG_productFindingScheme)));
@@ -107,8 +105,6 @@ public class GeneralConsumerAgentGroupSpec extends AbstractSubSpec<InGeneralCons
     protected void create(InGeneralConsumerAgentGroup input, SpecificationHelper rootSpec, SpecificationJob job) throws ParsingException {
         rootSpec.set(TAG_name, input.getName());
         rootSpec.set(TAG_type, TYPE);
-
-        rootSpec.set(TAG_parameters, TAG_informationAuthority, input.getInformationAuthority());
 
         rootSpec.set(TAG_interest, job.inlineEntity(input.getInterest(), false));
         rootSpec.set(TAG_spatialDistribution, job.inlineEntity(input.getSpatialDistribution(), false));

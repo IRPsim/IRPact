@@ -6,7 +6,6 @@ import de.unileipzig.irpact.experimental.deprecated.input.agent.consumer.IConsum
 import de.unileipzig.irpact.experimental.deprecated.input.agent.consumer.IConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.experimental.deprecated.input.awareness.IAwareness;
 import de.unileipzig.irpact.experimental.deprecated.input.awareness.IFixedProductAwareness;
-import de.unileipzig.irpact.experimental.deprecated.input.awareness.ISimpleAwareness;
 import de.unileipzig.irpact.experimental.deprecated.input.awareness.IThresholdAwareness;
 import de.unileipzig.irpact.experimental.deprecated.input.distribution.*;
 import de.unileipzig.irpact.experimental.deprecated.input.network.IFastHeterogeneousSmallWorldTopology;
@@ -48,7 +47,6 @@ public class IRoot implements RootClass {
             //awareness
             ParserInput.newInstance(Type.INPUT, IAwareness.class),
             ParserInput.newInstance(Type.INPUT, IFixedProductAwareness.class),
-            ParserInput.newInstance(Type.INPUT, ISimpleAwareness.class),
             ParserInput.newInstance(Type.INPUT, IThresholdAwareness.class),
             //distribution
             ParserInput.newInstance(Type.INPUT, IBooleanDistribution.class),

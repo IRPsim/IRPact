@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeCreator;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.PersistableBase;
+import de.unileipzig.irpact.commons.persistence.RestoreManager;
+import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.IRPactBase32;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irptools.util.Util;
@@ -12,6 +15,10 @@ import de.unileipzig.irptools.util.Util;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.*;
+import java.util.function.DoubleFunction;
+import java.util.function.LongFunction;
+import java.util.function.ToDoubleFunction;
+import java.util.function.ToLongFunction;
 
 /**
  * Stores data in a binary json (SMILE) format.
@@ -392,6 +399,102 @@ public final class BinaryJsonData extends PersistableBase {
                 tarList.add(node.longValue());
             }
         }
+        return map;
+    }
+
+    //=========================
+    //util
+    //=========================
+
+    public static <K> Map<Long, Double> mapToLongDoubleMap(
+            Map<K, ? extends Number> input,
+            PersistManager manager) {
+        return mapToLongDoubleMap(
+                input,
+                manager::ensureGetUID,
+                Number::doubleValue
+        );
+    }
+
+    public static <K, V> Map<Long, Double> mapToLongDoubleMap(
+            Map<K, V> input,
+            ToLongFunction<K> keyToLong,
+            ToDoubleFunction<V> valueToDouble) {
+        Map<Long, Double> idMap = new LinkedHashMap<>();
+
+        for(Map.Entry<K, V> entry: input.entrySet()) {
+            long id = keyToLong.applyAsLong(entry.getKey());
+            double value = valueToDouble.applyAsDouble(entry.getValue());
+            if(idMap.containsKey(id)) {
+                throw ExceptionUtil.create(IllegalArgumentException::new, "id {} already exists", id);
+            }
+            idMap.put(id, value);
+        }
+
+        return idMap;
+    }
+
+    public static <K, V> Map<Long, Long> mapToLongLongMap(
+            Map<K, V> input,
+            PersistManager manager) {
+        return mapToLongLongMap(
+                input,
+                manager::ensureGetUID,
+                manager::ensureGetUID
+        );
+    }
+
+    public static <K, V> Map<Long, Long> mapToLongLongMap(
+            Map<K, V> input,
+            ToLongFunction<K> keyToLong,
+            ToLongFunction<V> valueToLong) {
+        Map<Long, Long> idMap = new LinkedHashMap<>();
+
+        for(Map.Entry<K, V> entry: input.entrySet()) {
+            long id = keyToLong.applyAsLong(entry.getKey());
+            long value = valueToLong.applyAsLong(entry.getValue());
+            if(idMap.containsKey(id)) {
+                throw ExceptionUtil.create(IllegalArgumentException::new, "id {} already exists", id);
+            }
+            idMap.put(id, value);
+        }
+
+        return idMap;
+    }
+
+    public static <K, V> Map<K, V> mapFromLongDoubleMap(
+            Map<Long, Double> input,
+            LongFunction<K> longToKey,
+            DoubleFunction<V> doubleToValue) {
+        Map<K, V> map = new LinkedHashMap<>();
+
+        for(Map.Entry<Long, Double> entry: input.entrySet()) {
+            K key = longToKey.apply(entry.getKey());
+            V value = doubleToValue.apply(entry.getValue());
+            if(map.containsKey(key)) {
+                throw ExceptionUtil.create(IllegalArgumentException::new, "key already exists");
+            }
+            map.put(key, value);
+        }
+
+        return map;
+    }
+
+    public static <K, V> Map<K, V> mapFromLongLongMap(
+            Map<Long, Long> input,
+            LongFunction<K> longToKey,
+            LongFunction<V> longToValue) {
+        Map<K, V> map = new LinkedHashMap<>();
+
+        for(Map.Entry<Long, Long> entry: input.entrySet()) {
+            K key = longToKey.apply(entry.getKey());
+            V value = longToValue.apply(entry.getValue());
+            if(map.containsKey(key)) {
+                throw ExceptionUtil.create(IllegalArgumentException::new, "key already exists");
+            }
+            map.put(key, value);
+        }
+
         return map;
     }
 }

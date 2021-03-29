@@ -6,8 +6,7 @@ import de.unileipzig.irpact.util.Todo;
 /**
  * @author Daniel Abitz
  */
-@Todo("besser organisieren und umbennen")
-public interface Initialization extends ChecksumComparable {
+public interface InitalizablePart extends ChecksumComparable {
 
     /**
      * Called before all proxy agents are created.
@@ -24,25 +23,11 @@ public interface Initialization extends ChecksumComparable {
     }
 
     /**
-     * Validates the object.
-     *
-     * @return true: is valid
-     */
-    default boolean isValid() {
-        try {
-            validate();
-            return true;
-        } catch (ValidationException e) {
-            return false;
-        }
-    }
-
-    /**
      * Validates existence of all dependencies.
      *
      * @throws ValidationException something went wrong
      */
-    default void validate() throws ValidationException {
+    default void preAgentCreationValidation() throws ValidationException {
     }
 
     /**
@@ -50,7 +35,15 @@ public interface Initialization extends ChecksumComparable {
      *
      * @throws MissingDataException something went wrong
      */
-    default void postAgentCreation(boolean initialCall) throws MissingDataException {
+    default void postAgentCreation() throws MissingDataException {
+    }
+
+    /**
+     * Validates existence of all dependencies.
+     *
+     * @throws ValidationException something went wrong
+     */
+    default void postAgentCreationValidation() throws ValidationException {
     }
 
     /**
@@ -59,5 +52,11 @@ public interface Initialization extends ChecksumComparable {
      * @throws MissingDataException something is missing
      */
     default void preSimulationStart() throws MissingDataException {
+    }
+
+    /**
+     * Called after the simulation was finished.
+     */
+    default void postSimulation() {
     }
 }

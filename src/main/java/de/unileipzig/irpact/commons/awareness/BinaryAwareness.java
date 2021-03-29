@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  * @author Daniel Abitz
  */
-public class BinaryAwareness<T> implements Awareness<T> {
+public class BinaryAwareness<T, U> implements Awareness<T> {
 
     protected Set<T> items;
 

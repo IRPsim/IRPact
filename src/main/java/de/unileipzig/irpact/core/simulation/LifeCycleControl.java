@@ -3,14 +3,14 @@ package de.unileipzig.irpact.core.simulation;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.Agent;
-import de.unileipzig.irpact.core.misc.Initialization;
+import de.unileipzig.irpact.core.misc.InitalizablePart;
 
 /**
  * Controls the live cycle of the simulation.
  *
  * @author Daniel Abitz
  */
-public interface LifeCycleControl extends Initialization {
+public interface LifeCycleControl extends InitalizablePart {
 
     /**
      * @author Daniel Abitz

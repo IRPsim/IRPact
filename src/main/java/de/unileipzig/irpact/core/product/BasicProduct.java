@@ -78,6 +78,11 @@ public class BasicProduct extends SimulationEntityBase implements Product {
     }
 
     @Override
+    public boolean isNotFixed() {
+        return !fixed;
+    }
+
+    @Override
     public int getChecksum() {
         return Objects.hash(
                 getName(),

@@ -1,13 +1,13 @@
 package de.unileipzig.irpact.core.process;
 
-import de.unileipzig.irpact.core.misc.Initialization;
+import de.unileipzig.irpact.core.misc.InitalizablePart;
 
 import java.util.Collection;
 
 /**
  * @author Daniel Abitz
  */
-public interface ProcessModelManager extends Initialization {
+public interface ProcessModelManager extends InitalizablePart {
 
     Collection<ProcessModel> getProcessModels();
 

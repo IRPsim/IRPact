@@ -17,6 +17,7 @@ import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.AgentFeature;
 
 import java.time.LocalTime;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Daniel Abitz
@@ -101,5 +102,25 @@ public class TestAgentBDI implements TestAgent {
             log("valid: " + x364 + " -> " + timeModel.isValid(x364));
             log("valid: " + x366 + " -> " + timeModel.isValid(x366));
         }
+    }
+
+    @Override
+    public void aquireDataAccess() {
+
+    }
+
+    @Override
+    public boolean tryAquireDataAccess() {
+        return false;
+    }
+
+    @Override
+    public boolean tryAquireDataAccess(long time, TimeUnit unit) throws InterruptedException {
+        return false;
+    }
+
+    @Override
+    public void releaseDataAccess() {
+
     }
 }

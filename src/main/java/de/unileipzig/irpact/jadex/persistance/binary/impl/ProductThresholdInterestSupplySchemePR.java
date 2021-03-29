@@ -1,11 +1,15 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.interest.ProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
+
+import java.util.Map;
 
 /**
  * @author Daniel Abitz
@@ -36,14 +40,16 @@ public class ProductThresholdInterestSupplySchemePR extends BinaryPRBase<Product
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
 
-        manager.prepare(object.getDistribution());
+        manager.prepare(object.getDistributions().keySet());
+        manager.prepare(object.getDistributions().values());
 
         return data;
     }
 
     @Override
     protected void doSetupPersist(ProductThresholdInterestSupplyScheme object, BinaryJsonData data, PersistManager manager) {
-        data.putLong(manager.ensureGetUID(object.getDistribution()));
+        Map<Long, Long> idMap = BinaryJsonData.mapToLongLongMap(object.getDistributions(), manager);
+        data.putLongLongMap(idMap);
     }
 
     //=========================
@@ -59,6 +65,12 @@ public class ProductThresholdInterestSupplySchemePR extends BinaryPRBase<Product
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, ProductThresholdInterestSupplyScheme object, RestoreManager manager) throws RestoreException {
-        object.setDistribution(manager.ensureGet(data.getLong()));
+        Map<Long, Long> idMap = data.getLongLongMap();
+        for(Map.Entry<Long, Long> entry: idMap.entrySet()) {
+            ProductGroup pg = manager.ensureGet(entry.getKey());
+            UnivariateDoubleDistribution dist = manager.ensureGet(entry.getValue());
+
+            object.setThresholdDistribution(pg, dist);
+        }
     }
 }

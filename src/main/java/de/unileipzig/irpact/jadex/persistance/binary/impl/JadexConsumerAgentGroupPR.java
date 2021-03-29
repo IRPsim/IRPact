@@ -44,7 +44,7 @@ public class JadexConsumerAgentGroupPR extends BinaryPRBase<JadexConsumerAgentGr
 
         manager.prepare(object.getSpatialDistribution());
         manager.prepareAll(object.getAttributes());
-        manager.prepare(object.getAwarenessSupplyScheme());
+        manager.prepare(object.getInterestSupplyScheme());
         manager.prepare(object.getProductFindingScheme());
         manager.prepare(object.getProcessFindingScheme());
 
@@ -60,7 +60,7 @@ public class JadexConsumerAgentGroupPR extends BinaryPRBase<JadexConsumerAgentGr
     protected void doSetupPersist(JadexConsumerAgentGroup object, BinaryJsonData data, PersistManager manager) {
         data.putLong(manager.ensureGetUID(object.getSpatialDistribution()));
         data.putLongArray(manager.ensureGetAllUIDs(object.getAttributes()));
-        data.putLong(manager.ensureGetUID(object.getAwarenessSupplyScheme()));
+        data.putLong(manager.ensureGetUID(object.getInterestSupplyScheme()));
         data.putLong(manager.ensureGetUID(object.getProductFindingScheme()));
         data.putLong(manager.ensureGetUID(object.getProcessFindingScheme()));
 

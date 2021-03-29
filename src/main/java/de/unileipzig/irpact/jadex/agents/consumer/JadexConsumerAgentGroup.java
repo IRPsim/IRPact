@@ -2,10 +2,14 @@ package de.unileipzig.irpact.jadex.agents.consumer;
 
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
+import de.unileipzig.irpact.core.product.awareness.ProductAwareness;
+import de.unileipzig.irpact.core.product.awareness.ProductAwarenessSupplyScheme;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
 import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
@@ -28,22 +32,31 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
 
     protected int nextAgentId = 0;
     protected double informationAuthority;
+    protected int maxNumberOfActions;
     protected SpatialDistribution spatialDistribution;
     protected Map<String, ConsumerAgentGroupAttribute> attributes;
+    protected Map<String, ProductRelatedConsumerAgentGroupAttribute> productRelatedAttributes;
     protected Map<String, ConsumerAgent> agents;
-    protected ProductInterestSupplyScheme awarenessSupplyScheme;
+    protected ProductAwarenessSupplyScheme awarenessSupplyScheme;
+    protected ProductInterestSupplyScheme interestsSupplyScheme;
     protected ProductFindingScheme productFindingScheme;
     protected ProcessFindingScheme processFindingScheme;
 
+    protected Set<Need> initialNeeds;
+
     public JadexConsumerAgentGroup() {
-        this(new LinkedHashMap<>(), new LinkedHashMap<>());
+        this(CollectionUtil.newMap(), CollectionUtil.newMap(), CollectionUtil.newMap(), CollectionUtil.newSet());
     }
 
     public JadexConsumerAgentGroup(
             Map<String, ConsumerAgentGroupAttribute> attributes,
-            Map<String, ConsumerAgent> agents) {
+            Map<String, ProductRelatedConsumerAgentGroupAttribute> productRelatedAttributes,
+            Map<String, ConsumerAgent> agents,
+            Set<Need> initialNeeds) {
         this.attributes = attributes;
+        this.productRelatedAttributes = productRelatedAttributes;
         this.agents = agents;
+        this.initialNeeds = initialNeeds;
     }
 
     @Override
@@ -56,6 +69,7 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
                 getSpatialDistribution().getChecksum(),
                 ChecksumComparable.getCollChecksum(getAttributes()),
                 getAwarenessSupplyScheme().getChecksum(),
+                getInterestSupplyScheme().getChecksum(),
                 getProductFindingScheme().getChecksum(),
                 getProcessFindingScheme().getChecksum(),
 
@@ -77,6 +91,15 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         return informationAuthority;
     }
 
+    @Override
+    public int getMaxNumberOfActions() {
+        return maxNumberOfActions;
+    }
+
+    public void setMaxNumberOfActions(int maxNumberOfActions) {
+        this.maxNumberOfActions = maxNumberOfActions;
+    }
+
     public void addAllGroupAttributes(ConsumerAgentGroupAttribute... attributes) {
         for(ConsumerAgentGroupAttribute attr: attributes) {
             addGroupAttribute(attr);
@@ -96,6 +119,10 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         attributes.put(attribute.getName(), attribute);
     }
 
+    public void removeGroupAttribute(ConsumerAgentGroupAttribute attribute) {
+        attributes.remove(attribute.getName());
+    }
+
     @Override
     public boolean hasGroupAttribute(String name) {
         return attributes.containsKey(name);
@@ -104,6 +131,29 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     @Override
     public Collection<ConsumerAgentGroupAttribute> getAttributes() {
         return attributes.values();
+    }
+
+    @Override
+    public Collection<ProductRelatedConsumerAgentGroupAttribute> getProductRelatedGroupAttributes() {
+        return productRelatedAttributes.values();
+    }
+
+    @Override
+    public boolean hasProductRelatedGroupAttribute(String name) {
+        return productRelatedAttributes.containsKey(name);
+    }
+
+    @Override
+    public ProductRelatedConsumerAgentGroupAttribute getProductRelatedGroupAttribute(String name) {
+        return productRelatedAttributes.get(name);
+    }
+
+    @Override
+    public void addProductRelatedGroupAttribute(ProductRelatedConsumerAgentGroupAttribute attribute) {
+        if(hasProductRelatedGroupAttribute(attribute)) {
+            throw ExceptionUtil.create(IllegalArgumentException::new, "attribute '{}' already exists", attribute.getName());
+        }
+        productRelatedAttributes.put(attribute.getName(), attribute);
     }
 
     @Override
@@ -133,13 +183,22 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         return spatialDistribution;
     }
 
-    public void setInterestSupplyScheme(ProductInterestSupplyScheme awarenessSupplyScheme) {
+    public void setAwarenessSupplyScheme(ProductAwarenessSupplyScheme awarenessSupplyScheme) {
         this.awarenessSupplyScheme = awarenessSupplyScheme;
     }
 
     @Override
-    public ProductInterestSupplyScheme getAwarenessSupplyScheme() {
+    public ProductAwarenessSupplyScheme getAwarenessSupplyScheme() {
         return awarenessSupplyScheme;
+    }
+
+    public void setInterestSupplyScheme(ProductInterestSupplyScheme awarenessSupplyScheme) {
+        this.interestsSupplyScheme = awarenessSupplyScheme;
+    }
+
+    @Override
+    public ProductInterestSupplyScheme getInterestSupplyScheme() {
+        return interestsSupplyScheme;
     }
 
     @Override
@@ -160,6 +219,18 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         this.productFindingScheme = productFindingScheme;
     }
 
+    public Set<Need> getInitialNeeds() {
+        return initialNeeds;
+    }
+
+    public boolean hasInitialNeed(Need need) {
+        return initialNeeds.contains(need);
+    }
+
+    public void addInitialNeed(Need need) {
+        initialNeeds.add(need);
+    }
+
     protected synchronized int nextId() {
         int nextId = nextAgentId;
         nextAgentId++;
@@ -172,8 +243,12 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
                 .collect(CollectionUtil.collectToLinkedSet());
     }
 
-    protected ProductInterest deriveAwareness() {
+    protected ProductAwareness deriveAwareness() {
         return awarenessSupplyScheme.derive();
+    }
+
+    protected ProductInterest deriveInterest() {
+        return interestsSupplyScheme.derive();
     }
 
     public String deriveName() {
@@ -196,11 +271,17 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         agent.setGroup(this);
         agent.setEnvironment(getEnvironment());
         agent.setInformationAuthority(getInformationAuthority());
+        agent.setMaxNumberOfActions(getMaxNumberOfActions());
         agent.addAllAttributes(deriveAttributes());
         agent.setSpatialInformation(spatialInformation);
         agent.setProductAwareness(deriveAwareness());
+        agent.setProductInterest(deriveInterest());
         agent.setProcessFindingScheme(getProcessFindingScheme());
         agent.setProductFindingScheme(getProductFindingScheme());
+
+        for(Need need: getInitialNeeds()) {
+            agent.addNeed(need);
+        }
 
         agent.linkAccess(spatialInformation.getAttributeAccess());
         return agent;

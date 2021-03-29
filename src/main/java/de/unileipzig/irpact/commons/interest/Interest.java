@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.commons.interest;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
-import de.unileipzig.irpact.util.Todo;
 
 /**
  * @author Daniel Abitz
@@ -9,9 +8,6 @@ import de.unileipzig.irpact.util.Todo;
 public interface Interest<T> extends ChecksumComparable {
 
     boolean isInterested(T item);
-
-    @Todo("entfernen")
-    boolean isAware(T item);
 
     void update(T item, double influence);
 

@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons.util;
 
+import org.slf4j.helpers.MessageFormatter;
+
 /**
  * @author Daniel Abitz
  */
@@ -26,5 +28,17 @@ public final class StringUtil {
             sb.append(text, start, Math.min(start + lineLen, text.length()));
         }
         return sb.toString();
+    }
+
+    public static String format(String pattern, Object arg) {
+        return MessageFormatter.format(pattern, arg).getMessage();
+    }
+
+    public static String format(String pattern, Object arg1, Object arg2) {
+        return MessageFormatter.format(pattern, arg1, arg2).getMessage();
+    }
+
+    public static String format(String pattern, Object... args) {
+        return MessageFormatter.arrayFormat(pattern, args).getMessage();
     }
 }

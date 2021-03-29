@@ -25,7 +25,7 @@ public class Space2D extends AbstractMetricalSpatialModel {
     }
 
     @Override
-    public void validate() throws ValidationException {
+    public void preAgentCreationValidation() throws ValidationException {
     }
 
     @Override

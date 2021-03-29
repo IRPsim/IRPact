@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons.graph;
 
+import de.unileipzig.irpact.commons.util.Rnd;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -26,6 +28,8 @@ public interface MultiGraph<V, E, T> extends Graph<V, E> {
     Stream<V> streamTargets(V from, T type);
 
     Set<V> getAllTargets(V from);
+
+    V getRandomTarget(V from, T type, Rnd rnd);
 
     boolean addEdge(V from, V to, T type, E edge);
 

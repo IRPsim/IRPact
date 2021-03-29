@@ -16,4 +16,6 @@ public interface AdoptedProduct extends ChecksumComparable {
     Product getProduct();
 
     Timestamp getTimestamp();
+
+    boolean isInitial();
 }

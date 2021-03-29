@@ -283,6 +283,15 @@ public class FastDirectedMultiGraph2<V, E, T> implements DirectedMultiGraph<V, E
     }
 
     @Override
+    public V getRandomTarget(V from, T type, Rnd rnd) {
+        VertexData<V, E, T> data = vertices.get(from);
+        if(data == null) {
+            return null;
+        }
+        return data.getRandomTarget(type, rnd);
+    }
+
+    @Override
     public boolean addEdge(V from, V to, T type, E edge) {
         if(hasEdge(edge) || hasEdge(from, to, type)) {
             return false;

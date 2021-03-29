@@ -66,13 +66,11 @@ public class InExample implements DefaultScenarioFactory {
         //cag0
         InPVactConsumerAgentGroup cag0 = new InPVactConsumerAgentGroup();
         cag0.setName("TRA");
-        cag0.setInformationAuthority(1);
         cag0.setForAll(constant0);
 
         //cag1
         InPVactConsumerAgentGroup cag1 = new InPVactConsumerAgentGroup();
         cag1.setName("BUM");
-        cag1.setInformationAuthority(1);
         cag1.setForAll(constant0);
 
         //Population

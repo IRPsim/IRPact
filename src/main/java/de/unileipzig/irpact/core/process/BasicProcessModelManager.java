@@ -42,9 +42,9 @@ public class BasicProcessModelManager implements ProcessModelManager {
     }
 
     @Override
-    public void validate() throws ValidationException {
+    public void preAgentCreationValidation() throws ValidationException {
         for(ProcessModel model: getProcessModels()) {
-            model.validate();
+            model.preAgentCreationValidation();
         }
     }
 
@@ -56,9 +56,9 @@ public class BasicProcessModelManager implements ProcessModelManager {
     }
 
     @Override
-    public void postAgentCreation(boolean initialCall) throws MissingDataException {
+    public void postAgentCreation() throws MissingDataException {
         for(ProcessModel model: getProcessModels()) {
-            model.postAgentCreation(initialCall);
+            model.postAgentCreation();
         }
     }
 

@@ -18,7 +18,7 @@ public final class ParamUtil {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ParamUtil.class);
 
     public static final String DATA_DELIMITER = "_";
-    public static final String NAME_DELIMITER = "__";
+    public static final String NAME_DELIMITER = "_";
 
     private ParamUtil() {
     }

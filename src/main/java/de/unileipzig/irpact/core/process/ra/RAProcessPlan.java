@@ -1,18 +1,16 @@
 package de.unileipzig.irpact.core.process.ra;
 
-import de.unileipzig.irpact.commons.util.CollectionUtil;
+import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.MathUtil;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.attribute.Attribute;
-import de.unileipzig.irpact.commons.attribute.DoubleAttribute;
-import de.unileipzig.irpact.commons.attribute.StringAttribute;
-import de.unileipzig.irpact.commons.interest.Interest;
-import de.unileipzig.irpact.commons.util.data.DataType;
+import de.unileipzig.irpact.core.agent.Acting;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.log.InfoTag;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeDistanceFilter;
@@ -21,10 +19,10 @@ import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.process.ra.attributes.UncertaintyAttribute;
 import de.unileipzig.irpact.core.product.Product;
-import de.unileipzig.irpact.core.product.ProductAttribute;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irptools.util.log.IRPLogger;
+import org.slf4j.event.Level;
 
 import java.util.*;
 import java.util.function.Function;
@@ -199,37 +197,46 @@ public class RAProcessPlan implements ProcessPlan {
                 throw new IllegalStateException("unknown phase: " + currentStage);
         }
     }
-
-    protected ProcessPlanResult finishOwnAction(ProcessPlanResult result) {
+    
+    protected void doSelfActionAndAllowAttention() {
         agent.actionPerformed();
-        agent.allowAquire();
-        return result;
+        agent.allowAttention();
     }
 
     protected ProcessPlanResult handleInterest() {
-        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] handleAwareness", agent.getName());
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle interest", agent.getName());
 
-        Interest<Product> productInterest = agent.getProductInterest();
-        if(productInterest.isInterested(product)) {
-            currentStage = RAStage.FEASIBILITY;
-            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] new stage: {}", agent.getName(), currentStage);
-            return finishOwnAction(ProcessPlanResult.IN_PROCESS);
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] current interest for '{}': {}", agent.getName(), product.getName(), getInterest(agent));
+
+        if(isInterested(agent)) {
+            doSelfActionAndAllowAttention();
+            LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] is interested in '{}'", agent.getName(), product.getName());
+            updateStage(RAStage.FEASIBILITY);
+            return ProcessPlanResult.IN_PROCESS;
         }
+
         if(isAware(agent)) {
-            if(isUnderConstruction(agent) || isUnderRenovation(agent)) {
-                productInterest.makeInterested(product);
-                currentStage = RAStage.FEASIBILITY;
-                LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] new stage: {}", agent.getName(), currentStage);
-                return finishOwnAction(ProcessPlanResult.IN_PROCESS);
+            boolean underConstruction = isUnderConstruction(agent);
+            boolean underRenovation = isUnderRenovation(agent);
+            if(underConstruction || underRenovation) {
+                makeInterested(agent);
+                doSelfActionAndAllowAttention();
+                if(underConstruction) {
+                    LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] under construction, interest for '{}' set to maximum", agent.getName(), product.getName());
+                }
+                if(underRenovation) {
+                    LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] under renovation, interest for '{}' set to maximum", agent.getName(), product.getName());
+                }
+                return ProcessPlanResult.IN_PROCESS;
             }
         }
         return doAction();
     }
 
     protected ProcessPlanResult doAction() {
-        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] doAction", agent.getName());
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] doAction", agent.getName());
 
-        agent.allowAquire();
+        agent.allowAttention();
 
         if(doCommunicate()) {
             return communicate();
@@ -245,151 +252,208 @@ public class RAProcessPlan implements ProcessPlan {
     protected boolean doCommunicate() {
         double r = rnd.nextDouble();
         double freq = getCommunicationFrequencySN(agent);
-        return r < freq;
+        boolean doCommunicate = r < freq;
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] do communicate: {} ({} < {})", agent.getName(), doCommunicate, r, freq);
+        return doCommunicate;
     }
 
     protected ProcessPlanResult communicate() {
-        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] communicate", agent.getName());
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] start communication", agent.getName());
 
         SocialGraph graph = environment.getNetwork().getGraph();
         SocialGraph.Node node = agent.getSocialGraphNode();
-        LinkedList<SocialGraph.Node> targetList = new LinkedList<>();
+        //create random target order
+        List<SocialGraph.Node> targetList = new ArrayList<>();
         graph.getTargets(node, SocialGraph.Type.COMMUNICATION, targetList);
         Collections.shuffle(targetList, rnd.getRandom());
 
-        while(targetList.size() > 0) {
-            SocialGraph.Node targetNode = targetList.removeFirst();
+        for(SocialGraph.Node targetNode: targetList) {
             ConsumerAgent targetAgent = targetNode.getAgent(ConsumerAgent.class);
 
-            if(targetAgent.tryAquireAction()) {
-                if(agent.tryAquireSelf()) {
-                    LOGGER.trace(IRPSection.SIMULATION_AGENT_COMMUNICATION, "communication: '{}' -> '{}'", agent.getName(), targetAgent.getName());
-
-                    targetAgent.actionPerformed();
-                    agent.actionPerformed();
-                    targetAgent.releaseAquire();
-                    agent.releaseAquire();
-
-                    int myPoints = getInterestPoints(agent);
-                    int targetPoints = getInterestPoints(targetAgent);
-                    updateAwareness(agent, targetPoints);
-                    updateAwareness(targetAgent, myPoints);
-                    updateCommunicationGraph(graph, targetNode);
-                    applyRelativeAgreement(targetAgent);
+            Acting.AttentionResult result = Acting.aquireDoubleSidedAttentionAndDataAccess(agent, targetAgent);
+            switch (result) {
+                case SELF_OCCUPIED:
+                    LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] failed communication('{}' -> '{}') , self occupied", agent.getName(), agent.getName(), targetAgent.getName());
                     return ProcessPlanResult.IN_PROCESS;
-                } else {
-                    targetAgent.aquireFailed();
-                    LOGGER.trace(IRPSection.SIMULATION_AGENT_COMMUNICATION, "failed communication: '{}' -> '{}'", agent.getName(), targetAgent.getName());
-                }
+
+                case TARGET_OCCUPIED:
+                    LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] failed communication ('{}' -> '{}'), target occupied, try next target", agent.getName(), agent.getName(), targetAgent.getName());
+                    continue;
+
+                case SUCCESS:
+                    //nur hier haben wir datalock durch aquireAttentionAndDataAccess
+                    try {
+                        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] start communication ('{}' -> '{}')", agent.getName(), agent.getName(), targetAgent.getName());
+
+                        updateInterest(targetAgent);
+                        updateCommunicationGraph(graph, targetNode);
+                        applyRelativeAgreement(targetAgent);
+
+                        return ProcessPlanResult.IN_PROCESS;
+                    } finally {
+                        agent.releaseDataAccess();
+                        targetAgent.releaseDataAccess();
+                    }
             }
         }
+
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] no valid communication partner found", agent.getName());
         return ProcessPlanResult.IN_PROCESS;
+    }
+
+    protected void updateInterest(ConsumerAgent targetAgent) {
+        int myPoints = getInterestPoints(agent);
+        int targetPoints = getInterestPoints(targetAgent);
+        updateInterest(agent, targetPoints);
+        updateInterest(targetAgent, myPoints);
+        logInterestUpdate(myPoints, getInterestPoints(agent), targetAgent, targetPoints, getInterestPoints(targetAgent));
     }
 
     protected void updateCommunicationGraph(SocialGraph graph, SocialGraph.Node target) {
         if(!graph.hasEdge(target, agent.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION)) {
             graph.addEdge(target, agent.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION, 1.0);
+            logGraphUpdateEdgeAdded(target.getAgent());
         }
     }
 
     protected boolean doRewire() {
         double r = rnd.nextDouble();
         double freq = getRewiringRate(agent);
-        return r < freq;
+        boolean doRewire = r < freq;
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] do rewire: {} ({} < {})", agent.getName(), doRewire, r, freq);
+        return doRewire;
     }
 
-    @Todo("LOGGING")
     protected ProcessPlanResult rewire() {
-        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] rewire", agent.getName());
-
-        if(agent.tryAquireSelf()) {
+        if(agent.tryAquireAttention()) {
             agent.actionPerformed();
-            agent.releaseAquire();
+            agent.aquireDataAccess(); //lock data
+            agent.releaseAttention();
         } else {
+            LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] rewire canceled, already occupied", agent.getName());
             return ProcessPlanResult.IN_PROCESS;
         }
+        
+        //data locked
+        try {
+            LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] rewire", agent.getName());
 
-        SocialGraph graph = environment.getNetwork().getGraph();
-        SocialGraph.Node node = agent.getSocialGraphNode();
-        SocialGraph.LinkageInformation linkInfo = graph.getLinkageInformation(node);
+            SocialGraph graph = environment.getNetwork().getGraph();
+            SocialGraph.Node node = agent.getSocialGraphNode();
+            SocialGraph.LinkageInformation linkInfo = graph.getLinkageInformation(node);
 
-        //remove
-        List<? extends SocialGraph.Node> targets = graph.listTargets(node, SocialGraph.Type.COMMUNICATION);
-        if(!targets.isEmpty()) {
-            SocialGraph.Node rndTarget = rnd.getRandom(targets);
-            SocialGraph.Edge edge = graph.getEdge(node, rndTarget, SocialGraph.Type.COMMUNICATION);
-            graph.removeEdge(edge);
-            ConsumerAgentGroup tarCag = rndTarget.getAgent(ConsumerAgent.class).getGroup();
-            linkInfo.dec(tarCag, SocialGraph.Type.COMMUNICATION);
-            //TODO add Logging mit entsprechender IRPSection
-        }
-
-        ConsumerAgentGroupAffinities affinities = environment.getAgents()
-                .getConsumerAgentGroupAffinityMapping()
-                .get(agent.getGroup());
-
-        SocialGraph.Node tarNode = null;
-        while(tarNode == null) {
-            ConsumerAgentGroup tarCag = affinities.getWeightedRandom(rnd);
-
-            int currentLinkCount = linkInfo.get(tarCag, SocialGraph.Type.COMMUNICATION);
-            if(tarCag.getNumberOfAgents() == currentLinkCount) {
-                affinities = affinities.createWithout(tarCag);
-                continue;
+            //remove
+            SocialGraph.Node rndTarget = graph.getRandomTarget(node, SocialGraph.Type.COMMUNICATION, rnd);
+            if(rndTarget != null) {
+                ConsumerAgentGroup tarCag = rndTarget.getAgent(ConsumerAgent.class).getGroup();
+                SocialGraph.Edge edge = graph.getEdge(node, rndTarget, SocialGraph.Type.COMMUNICATION);
+                graph.removeEdge(edge);
+                logGraphUpdateEdgeRemoved(rndTarget.getAgent());
+                updateLinkCount(linkInfo, tarCag, -1); //dec
             }
 
-            tarNode = getRandomUnlinked(
-                    agent.getSocialGraphNode(),
-                    tarCag,
-                    SocialGraph.Type.COMMUNICATION
-            );
+            ConsumerAgentGroupAffinities affinities = environment.getAgents()
+                    .getConsumerAgentGroupAffinityMapping()
+                    .get(agent.getGroup());
+
+            SocialGraph.Node tarNode = null;
+            ConsumerAgentGroup tarCag = null;
+            while(tarNode == null) {
+                if(affinities.isEmpty()) {
+                    tarCag = null;
+                    break;
+                }
+
+                tarCag = affinities.getWeightedRandom(rnd);
+
+                int currentLinkCount = linkInfo.get(tarCag, SocialGraph.Type.COMMUNICATION);
+                if(tarCag.getNumberOfAgents() == currentLinkCount) {
+                    affinities = affinities.createWithout(tarCag);
+                    continue;
+                }
+                int unlinkedInCag = tarCag.getNumberOfAgents() - currentLinkCount;
+
+                tarNode = getRandomUnlinked(
+                        agent.getSocialGraphNode(),
+                        tarCag,
+                        unlinkedInCag,
+                        SocialGraph.Type.COMMUNICATION
+                );
+            }
+
+            if(tarNode == null) {
+                LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] no valid rewire target found", agent.getName());
+            } else {
+                graph.addEdge(agent.getSocialGraphNode(), tarNode, SocialGraph.Type.COMMUNICATION, 1.0);
+                logGraphUpdateEdgeAdded(tarNode.getAgent());
+                updateLinkCount(linkInfo, tarCag, 1); //inc
+            }
+            
+            return ProcessPlanResult.IN_PROCESS;
+        } finally {
+            agent.releaseDataAccess();
         }
-
-        LOGGER.debug("rewire-add edge '{} -> {}", agent.getName(), tarNode.getLabel());
-        environment.getNetwork()
-                .getGraph()
-                .addEdge(agent.getSocialGraphNode(), tarNode, SocialGraph.Type.COMMUNICATION, 1.0);
-
-        return ProcessPlanResult.IN_PROCESS;
     }
 
-    protected SocialGraph.Node getRandomUnlinked(SocialGraph.Node srcNode, ConsumerAgentGroup cag, SocialGraph.Type type) {
+    protected void updateLinkCount(
+            SocialGraph.LinkageInformation linkInfo,
+            ConsumerAgentGroup tarCag,
+            int delta) {
+        int oldLinkCount = linkInfo.get(tarCag, SocialGraph.Type.COMMUNICATION);
+        linkInfo.update(tarCag, SocialGraph.Type.COMMUNICATION, delta);
+        int newLinkCount = linkInfo.get(tarCag, SocialGraph.Type.COMMUNICATION);
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] update link count to cag '{}': {} -> {}", agent.getName(), tarCag.getName(), oldLinkCount, newLinkCount);
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    protected SocialGraph.Node getRandomUnlinked(
+            SocialGraph.Node srcNode,
+            ConsumerAgentGroup tarCag,
+            int unlinkedInCag,
+            SocialGraph.Type type) {
         SocialGraph graph = environment.getNetwork().getGraph();
-        List<SocialGraph.Node> tars = new ArrayList<>();
-        for(Agent tar: cag.getAgents()) {
+
+        int rndId = rnd.nextInt(unlinkedInCag);
+        int id = 0;
+
+        for(Agent tar: tarCag.getAgents()) {
             SocialGraph.Node tarNode = tar.getSocialGraphNode();
             if(graph.hasNoEdge(srcNode, tarNode, type)) {
-                tars.add(tarNode);
+                if(id == rndId) {
+                    return tarNode;
+                } else {
+                    id++;
+                }
             }
         }
-        if(tars.isEmpty()) {
-            return null;
-        } else {
-            return CollectionUtil.getRandom(tars, rnd);
-        }
+
+        return null;
     }
 
-    @Todo
     protected ProcessPlanResult nop() {
-        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] nop", agent.getName());
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] nop", agent.getName());
         return ProcessPlanResult.IN_PROCESS;
     }
 
     protected ProcessPlanResult handleFeasibility() {
-        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] handleFeasibility", agent.getName());
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle feasibility", agent.getName());
 
-        LOGGER.trace(">>>>> {} {} {}", agent.getName(), isShareOf1Or2FamilyHouse(agent), isHouseOwner(agent));
-        if(isShareOf1Or2FamilyHouse(agent) && isHouseOwner(agent)) {
-            currentStage = RAStage.DECISION_MAKING;
-            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] new stage: {}", agent.getName(), currentStage);
-            return finishOwnAction(ProcessPlanResult.IN_PROCESS);
+        boolean isShare = isShareOf1Or2FamilyHouse(agent);
+        boolean isOwner = isHouseOwner(agent);
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] share of 1 or 2 family house={}, house owner={}", agent.getName(), isShareOf1Or2FamilyHouse(agent), isHouseOwner(agent));
+
+        if(isShare && isOwner) {
+            doSelfActionAndAllowAttention();
+            updateStage(RAStage.DECISION_MAKING);
+            return ProcessPlanResult.IN_PROCESS;
         }
 
         return doAction();
     }
 
     protected ProcessPlanResult handleDecisionMaking() {
-        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] handleDecisionMaking", agent.getName());
+        doSelfActionAndAllowAttention();
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handleDecisionMaking", agent.getName());
 
         double a = modelData().a();
         double b = modelData().b();
@@ -399,12 +463,11 @@ public class RAProcessPlan implements ProcessPlan {
         double B = 0.0;
         if(a != 0.0) {
             double financial = getFinancialComponent();
-            double financialThreshold = getFinancialThresholdProduct(product);
+            double financialThreshold = getFinancialThresholdProduct(agent, product);
             //check D3 reached
             if(financial < financialThreshold) {
-                currentStage = RAStage.IMPEDED;
-                LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] new stage: {}", agent.getName(), currentStage);
-                return finishOwnAction(ProcessPlanResult.IMPEDED);
+                updateStage(RAStage.IMPEDED);
+                return ProcessPlanResult.IMPEDED;
             }
             B += a * financial;
         }
@@ -417,22 +480,29 @@ public class RAProcessPlan implements ProcessPlan {
         if(d != 0.0) {
             B += d * getSocialComponent();
         }
-        double adoptionThreshold = getAdoptionThreshold(product);
+        double adoptionThreshold = getAdoptionThreshold(agent, product);
         if(B < adoptionThreshold) {
-            currentStage = RAStage.IMPEDED;
-            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] new stage: {}", agent.getName(), currentStage);
-            return finishOwnAction(ProcessPlanResult.IMPEDED);
+            updateStage(RAStage.IMPEDED);
+            return ProcessPlanResult.IMPEDED;
         } else {
-            agent.adopt(need, product);
-            currentStage = RAStage.ADOPTED;
-            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] new stage: {}", agent.getName(), currentStage);
-            return finishOwnAction(ProcessPlanResult.ADOPTED);
+            agent.adopt(need, product, now());
+            updateStage(RAStage.ADOPTED);
+            return ProcessPlanResult.ADOPTED;
         }
     }
 
     //=========================
     //util
     //=========================
+
+    protected Timestamp now() {
+        return environment.getTimeModel().now();
+    }
+
+    protected void updateStage(RAStage nextStage) {
+        logStageUpdate(nextStage);
+        currentStage = nextStage;
+    }
 
     protected static double getDouble(ConsumerAgent agent, String attrName) {
         Attribute attr = agent.findAttribute(attrName);
@@ -467,7 +537,7 @@ public class RAProcessPlan implements ProcessPlan {
         MutableDouble shareOfAdopterInSocialNetwork = MutableDouble.zero();
         MutableDouble shareOfAdopterInLocalArea = MutableDouble.zero();
         getShareOfAdopterInSocialNetworkAndLocalArea(shareOfAdopterInSocialNetwork, shareOfAdopterInLocalArea, distanceFilter);
-        return getDependentJudgmentMaking() * (shareOfAdopterInSocialNetwork.get() + shareOfAdopterInLocalArea.get()) / 2.0;
+        return getDependentJudgmentMaking(agent) * (shareOfAdopterInSocialNetwork.get() + shareOfAdopterInLocalArea.get()) / 2.0;
     }
 
     protected static double getFinancialThresholdAgent(ConsumerAgent agent) {
@@ -484,63 +554,75 @@ public class RAProcessPlan implements ProcessPlan {
         return sum / environment.getAgents().getTotalNumberOfConsumerAgents();
     }
 
-    protected static double getFinancialThresholdProduct(Product product) {
-        ProductAttribute attr = product.getAttribute(RAConstants.FINANCIAL_THRESHOLD);
+    protected static double getFinancialThresholdProduct(ConsumerAgent agent, Product product) {
+        ProductRelatedConsumerAgentAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.FINANCIAL_THRESHOLD);
+        ConsumerAgentAttribute attr = prAttr.getAttribute(product);
         return attr.getDoubleValue();
     }
 
-    protected static double getAdoptionThreshold(Product product) {
-        ProductAttribute attr = product.getAttribute(RAConstants.ADOPTION_THRESHOLD);
+    protected static double getAdoptionThreshold(ConsumerAgent agent, Product product) {
+        ProductRelatedConsumerAgentAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.ADOPTION_THRESHOLD);
+        ConsumerAgentAttribute attr = prAttr.getAttribute(product);
         return attr.getDoubleValue();
     }
 
-    protected static double getInitialProductInterest(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.INITIAL_PRODUCT_INTEREST);
+    protected static double getInitialProductAwareness(ConsumerAgent agent, Product product) {
+        ProductRelatedConsumerAgentAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.INITIAL_PRODUCT_AWARENESS);
+        ConsumerAgentAttribute attr = prAttr.getAttribute(product);
+        return attr.getDoubleValue();
+    }
+
+    protected static double getInitialProductInterest(ConsumerAgent agent, Product product) {
+        ProductRelatedConsumerAgentAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.INITIAL_PRODUCT_INTEREST);
+        ConsumerAgentAttribute attr = prAttr.getAttribute(product);
+        return attr.getDoubleValue();
+    }
+
+    protected static double getInitialAdopter(ConsumerAgent agent, Product product) {
+        ProductRelatedConsumerAgentAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.INITIAL_PRODUCT_INTEREST);
+        ConsumerAgentAttribute attr = prAttr.getAttribute(product);
         return attr.getDoubleValue();
     }
 
     protected static double getCommunicationFrequencySN(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.COMMUNICATION_FREQUENCY_SN);
+        Attribute attr = agent.getAttribute(RAConstants.COMMUNICATION_FREQUENCY_SN);
         return attr.getDoubleValue();
     }
 
     protected static double getRewiringRate(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.REWIRING_RATE);
+        Attribute attr = agent.getAttribute(RAConstants.REWIRING_RATE);
         return attr.getDoubleValue();
     }
 
     protected static double getPurchasePower(ConsumerAgent agent) {
-        DoubleAttribute attr = (DoubleAttribute) agent.findAttribute(RAConstants.PURCHASE_POWER);
+        Attribute attr = agent.findAttribute(RAConstants.PURCHASE_POWER);
         return attr.getDoubleValue();
     }
 
     protected static double getNoveltySeeking(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.NOVELTY_SEEKING);
+        Attribute attr = agent.getAttribute(RAConstants.NOVELTY_SEEKING);
         return attr.getDoubleValue();
     }
 
-    protected double getDependentJudgmentMaking() {
-        return getDependentJudgmentMaking(agent);
-    }
     protected static double getDependentJudgmentMaking(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.DEPENDENT_JUDGMENT_MAKING);
+        Attribute attr = agent.getAttribute(RAConstants.DEPENDENT_JUDGMENT_MAKING);
         return attr.getDoubleValue();
     }
 
     protected static double getEnvironmentalConcern(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.ENVIRONMENTAL_CONCERN);
+        Attribute attr = agent.getAttribute(RAConstants.ENVIRONMENTAL_CONCERN);
         return attr.getDoubleValue();
     }
 
     protected static boolean isShareOf1Or2FamilyHouse(ConsumerAgent agent) {
-        DoubleAttribute attr = (DoubleAttribute) agent.findAttribute(RAConstants.SHARE_1_2_HOUSE);
-        double value = attr.getDoubleValue();
-        return value == 1.0 || value == 2.0;
+        Attribute attr = agent.findAttribute(RAConstants.SHARE_1_2_HOUSE);
+        return attr.getDoubleValueAsBoolean();
     }
 
-    protected static void setShareOf1Or2FamilyHouse(ConsumerAgent agent, double n) {
-        DoubleAttribute attr = (DoubleAttribute) agent.findAttribute(RAConstants.SHARE_1_2_HOUSE);
-        attr.setDoubleValue(n);
+    @SuppressWarnings("SameParameterValue")
+    protected static void setShareOf1Or2FamilyHouse(ConsumerAgent agent, boolean value) {
+        Attribute attr = agent.findAttribute(RAConstants.SHARE_1_2_HOUSE);
+        attr.setDoubleValue(value);
     }
 
     protected static boolean isHouseOwner(ConsumerAgent agent) {
@@ -548,50 +630,44 @@ public class RAProcessPlan implements ProcessPlan {
         return attr.getDoubleValueAsBoolean();
     }
 
-    protected static void setHouseOwner(ConsumerAgent agent, String value) {
-        StringAttribute attr = (StringAttribute) agent.findAttribute(RAConstants.HOUSE_OWNER);
-        attr.setValue(value);
+    @SuppressWarnings("SameParameterValue")
+    protected static void setHouseOwner(ConsumerAgent agent, boolean value) {
+        Attribute attr = agent.findAttribute(RAConstants.HOUSE_OWNER);
+        attr.setDoubleValue(value);
     }
 
     protected static double getConstructionRate(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.CONSTRUCTION_RATE);
+        Attribute attr = agent.getAttribute(RAConstants.CONSTRUCTION_RATE);
         return attr.getDoubleValue();
     }
 
     protected static boolean isUnderConstruction(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.UNDER_CONSTRUCTION);
+        Attribute attr = agent.getAttribute(RAConstants.UNDER_CONSTRUCTION);
         return attr.getDoubleValue() == 1.0;
     }
 
     protected static void setUnderConstruction(ConsumerAgent agent, boolean value) {
-        double dvalue = value ? 1.0 : 0.0;
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.UNDER_CONSTRUCTION);
-        attr.setDoubleValue(dvalue);
+        Attribute attr = agent.getAttribute(RAConstants.UNDER_CONSTRUCTION);
+        attr.setDoubleValue(value);
         if(value) {
-            setShareOf1Or2FamilyHouse(agent, 1);
-            setHouseOwner(agent, RAConstants.PRIVATE);
+            setShareOf1Or2FamilyHouse(agent, true);
+            setHouseOwner(agent, true);
         }
     }
 
     protected static double getRenovationRate(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.RENOVATION_RATE);
+        Attribute attr = agent.getAttribute(RAConstants.RENOVATION_RATE);
         return attr.getDoubleValue();
     }
 
     protected static boolean isUnderRenovation(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.UNDER_RENOVATION);
+        Attribute attr = agent.getAttribute(RAConstants.UNDER_RENOVATION);
         return attr.getDoubleValue() == 1.0;
     }
 
     protected static void setUnderRenovation(ConsumerAgent agent, boolean value) {
-        double dvalue = value ? 1.0 : 0.0;
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.UNDER_RENOVATION);
-        attr.setDoubleValue(dvalue);
-    }
-
-    protected static boolean isInitialAdopter(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.INITIAL_ADOPTER);
-        return attr.getDoubleValue() == 1.0;
+        Attribute attr = agent.getAttribute(RAConstants.UNDER_RENOVATION);
+        attr.setDoubleValue(value);
     }
 
     protected boolean isAdopter(ConsumerAgent agent) {
@@ -599,13 +675,19 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected boolean isInterested(ConsumerAgent agent) {
-        Interest<Product> interest = agent.getProductInterest();
-        return interest.isInterested(product);
+        return agent.isInterested(product);
+    }
+
+    protected void makeInterested(ConsumerAgent agent) {
+        agent.makeInterested(product);
+    }
+
+    protected double getInterest(ConsumerAgent agent) {
+        return agent.getInterest(product);
     }
 
     protected boolean isAware(ConsumerAgent agent) {
-        Interest<Product> interest = agent.getProductInterest();
-        return interest.isAware(product);
+        return agent.isAware(product);
     }
 
     protected int getInterestPoints(ConsumerAgent agent) {
@@ -621,9 +703,8 @@ public class RAProcessPlan implements ProcessPlan {
         return modelData().getUnknownPoints();
     }
 
-    protected void updateAwareness(ConsumerAgent agent, double points) {
-        Interest<Product> interest = agent.getProductInterest();
-        interest.update(product, points);
+    protected void updateInterest(ConsumerAgent agent, double points) {
+        agent.updateInterest(product, points);
     }
 
     protected void getShareOfAdopterInSocialNetworkAndLocalArea(
@@ -662,23 +743,38 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected void applyRelativeAgreement(ConsumerAgent target) {
-        //A2
         applyRelativeAgreement(target, RAConstants.NOVELTY_SEEKING);
-        //A3
         applyRelativeAgreement(target, RAConstants.DEPENDENT_JUDGMENT_MAKING);
-        //A4
         applyRelativeAgreement(target, RAConstants.ENVIRONMENTAL_CONCERN);
     }
+
+      //Diese Variante nutzt einen datalock
+//    protected void applyRelativeAgreement(ConsumerAgent target) {
+//        if(!waitForDoubleSidedDataAccess(target)) {
+//            LOGGER.warn("[{}] Agent-Thread interrupted, 'applyRelativeAgreement' canceled.", agent.getName());
+//            return;
+//        }
+//        try {
+//            applyRelativeAgreement(target, RAConstants.NOVELTY_SEEKING);
+//            applyRelativeAgreement(target, RAConstants.DEPENDENT_JUDGMENT_MAKING);
+//            applyRelativeAgreement(target, RAConstants.ENVIRONMENTAL_CONCERN);
+//        } finally {
+//            agent.releaseDataAccess();
+//            target.releaseDataAccess();
+//        }
+//    }
+
 
     protected void applyRelativeAgreement(ConsumerAgent target, String attrName) {
         ConsumerAgentAttribute o1Attr = agent.getAttribute(attrName);
         UncertaintyAttribute u1Attr = (UncertaintyAttribute) agent.getAttribute(RAConstants.getUncertaintyAttributeName(attrName));
         ConsumerAgentAttribute o2Attr = target.getAttribute(attrName);
         UncertaintyAttribute u2Attr = (UncertaintyAttribute) target.getAttribute(RAConstants.getUncertaintyAttributeName(attrName));
-        applyRelativeAgreement(o1Attr, u1Attr, o2Attr, u2Attr);
+        applyRelativeAgreement(agent, target, attrName, o1Attr, u1Attr, o2Attr, u2Attr);
     }
 
-    protected static void applyRelativeAgreement(
+    protected void applyRelativeAgreement(
+            Agent a1, Agent a2, String attribute,
             ConsumerAgentAttribute o1Attr,
             UncertaintyAttribute u1Attr,
             ConsumerAgentAttribute o2Attr,
@@ -691,14 +787,17 @@ public class RAProcessPlan implements ProcessPlan {
         double u2 = u2Attr.getUncertainty();
         double m2 = u2Attr.getConvergence();
         //1 beeinflusst 2
-        applyRelativeAgreement(o1, u1, o2, u2, o2Attr, u2Attr, m2);
+        applyRelativeAgreement(a1, a2, attribute, o1, u1, o2, u2, o2Attr, u2Attr, m2);
         //2 beeinflusst 1
-        applyRelativeAgreement(o2, u2, o1, u1, o1Attr, u1Attr, m1);
+        applyRelativeAgreement(a2, a1, attribute, o2, u2, o1, u1, o1Attr, u1Attr, m1);
     }
 
     /**
      * Calculates the realtive agreement betwenn agent i and j, where i influences j and updates j.
      *
+     * @param ai name of agent i
+     * @param aj name of agent j
+     * @param attribute attribute name
      * @param oi opinion of i
      * @param ui uncertainty of i
      * @param oj opinion of j
@@ -707,7 +806,8 @@ public class RAProcessPlan implements ProcessPlan {
      * @param ujAttr corresponding parameter to store the uncertainty of j
      * @param m convergence parameter
      */
-    protected static void applyRelativeAgreement(
+    protected void applyRelativeAgreement(
+            Agent ai, Agent aj, String attribute,
             double oi,
             double ui,
             double oj,
@@ -715,13 +815,122 @@ public class RAProcessPlan implements ProcessPlan {
             ConsumerAgentAttribute ojAttr,
             ConsumerAgentAttribute ujAttr,
             double m) {
-        double hij = Math.min(oi + ui, oj + uj) - Math.max(oi - ui, oj -uj);
+        double hij = Math.min(oi + ui, oj + uj) - Math.max(oi - ui, oj - uj);
         if(hij > ui) {
             double ra = hij / ui - 1.0;
             double newOj = oj + m * ra * (oi - oj);
             double newUj = uj + m * ra * (ui - uj);
             ojAttr.setDoubleValue(newOj);
             ujAttr.setDoubleValue(newUj);
+            logRelativeAgreementSuccess(ai.getName(), aj.getName(), attribute, oi, ui, oj, uj, m, hij, ra, newOj, newUj);
+        } else {
+            logRelativeAgreementFailed(ai.getName(), aj.getName(), attribute, oi, ui, oj, uj, hij);
         }
+    }
+
+    //=========================
+    //data logging
+    //=========================
+
+    protected void logStageUpdate(RAStage nextStage)  {
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] stage update: {} -> {}", agent.getName(), currentStage, nextStage);
+    }
+
+    protected static IRPLogger getLogger(boolean logData) {
+        return logData
+                ? IRPLogging.getClearLogger()
+                : LOGGER;
+    }
+
+    protected static IRPSection getSection(boolean logData, IRPSection ifLogData) {
+        return logData
+                ? ifLogData
+                : IRPSection.SIMULATION_PROCESS;
+    }
+
+    protected static Level getLevel(boolean logData) {
+        return logData
+                ? Level.INFO
+                : Level.TRACE;
+    }
+
+    protected boolean isLogData() {
+        throw new TodoException();
+    }
+
+    protected void logInterestUpdate(
+            int myOldPoints, int myNewPoints,
+            Agent target, int targetOldPoints, int targetNewPoints) {
+        boolean logData = isLogData();
+        IRPLogger logger = getLogger(logData);
+        IRPSection section = getSection(logData, IRPSection.TAG_INTEREST_UPDATE);
+        Level level = getLevel(logData);
+        logger.log(
+                section, level,
+                "{} [{}] interest update: '{}': {} -> {}, '{}': {} -> {}",
+                InfoTag.INTEREST_UPDATE, agent.getName(),
+                agent.getName(), myOldPoints, myNewPoints,
+                target.getName(), targetOldPoints, targetNewPoints
+        );
+    }
+
+    protected void logGraphUpdateEdgeAdded(Agent target) {
+        boolean logData = isLogData();
+        IRPLogger logger = getLogger(logData);
+        IRPSection section = getSection(logData, IRPSection.TAG_GRAPH_UPDATE);
+        Level level = getLevel(logData);
+        logger.log(
+                section, level,
+                "{} [{}] graph update, edge added: '{}' -> '{}'",
+                InfoTag.GRAPH_UPDATE, agent.getName(),
+                agent.getName(), target.getName()
+        );
+    }
+
+    protected void logGraphUpdateEdgeRemoved(Agent target) {
+        boolean logData = isLogData();
+        IRPLogger logger = getLogger(logData);
+        IRPSection section = getSection(logData, IRPSection.TAG_GRAPH_UPDATE);
+        Level level = getLevel(logData);
+        logger.log(
+                section, level,
+                "{} [{}] graph update, edge removed: '{}' -> '{}'",
+                InfoTag.GRAPH_UPDATE, agent.getName(),
+                agent.getName(), target.getName()
+        );
+    }
+
+    protected void logRelativeAgreementSuccess(
+            String ai, String aj, String attribute,
+            double xi, double ui, double xj, double uj, double m,
+            double hij, double ra, double newXj, double newUj) {
+        boolean logData = isLogData();
+        IRPLogger logger = getLogger(logData);
+        IRPSection section = getSection(logData, IRPSection.TAG_RELATIVE_AGREEMENT);
+        Level level = getLevel(logData);
+        logger.log(section, level,
+                "{} [{}] relative agreement between i='{}' and j='{}' for '{}' success (hij={} > ui={}) | xi={}, ui={}, xj={}, uj={} | hij = {} = Math.min({} + {}, {} + {}) - Math.max({} - {}, {} - {}) | ra = {} = {} / {} - 1.0 | newXj = {} = {} + {} * {} * ({} - {}) | newUj = {} = {} + {} * {} * ({} - {})",
+                InfoTag.RELATIVE_AGREEMENT, ai, ai, aj, attribute, hij, ui,
+                xi, ui, xj, uj,
+                hij, xi, ui, xj, uj, xi, ui, xj, uj,
+                ra, hij, ui,
+                newXj, xj, m, ra, xi, xj,
+                newUj, uj, m, ra, ui, uj
+        );
+    }
+
+    protected void logRelativeAgreementFailed(
+            String ai, String aj, String attribute,
+            double xi, double ui, double xj, double uj, double hij) {
+        boolean logData = isLogData();
+        IRPLogger logger = getLogger(logData);
+        IRPSection section = getSection(logData, IRPSection.TAG_RELATIVE_AGREEMENT);
+        Level level = getLevel(logData);
+        logger.log(section, level,
+                "{} [{}] relative agreement between i='{}' and j='{}' for '{}' failed (hij={} <= ui={})) | xi={}, ui={}, xj={}, uj={} | hij = {} = Math.min({} + {}, {} + {}) - Math.max({} - {}, {} - {})",
+                InfoTag.RELATIVE_AGREEMENT, ai, ai, aj, attribute, hij, ui,
+                xi, ui, xj, uj,
+                hij, xi, ui, xj, uj, xi, ui, xj, uj
+        );
     }
 }

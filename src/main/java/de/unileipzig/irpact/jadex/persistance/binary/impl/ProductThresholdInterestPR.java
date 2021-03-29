@@ -4,11 +4,11 @@ import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.interest.ProductThresholdInterest;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -37,39 +37,43 @@ public class ProductThresholdInterestPR extends BinaryPRBase<ProductThresholdInt
     @Override
     protected BinaryJsonData doInitalizePersist(ProductThresholdInterest object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
-        data.putDouble(object.getThreshold());
 
         manager.prepareAll(object.getItems().keySet());
+        manager.prepareAll(object.getThresholds().keySet());
 
         return data;
     }
 
     @Override
     protected void doSetupPersist(ProductThresholdInterest object, BinaryJsonData data, PersistManager manager) {
-        Map<Long, Double> idMap = new LinkedHashMap<>();
-        for(Map.Entry<Product, Double> entry: object.getItems().entrySet()) {
-            long id = manager.ensureGetUID(entry.getKey());
-            idMap.put(id, entry.getValue());
-        }
-        data.putLongDoubleMap(idMap);
+        Map<Long, Double> thresholdMap = BinaryJsonData.mapToLongDoubleMap(object.getThresholds(), manager);
+        data.putLongDoubleMap(thresholdMap);
+
+        Map<Long, Double> itemMap = BinaryJsonData.mapToLongDoubleMap(object.getItems(), manager);
+        data.putLongDoubleMap(itemMap);
     }
 
     //=========================
     //restore
     //=========================
 
-
+    @SuppressWarnings("UnnecessaryLocalVariable")
     @Override
     protected ProductThresholdInterest doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         ProductThresholdInterest object = new ProductThresholdInterest();
-        object.setThreshold(data.getDouble());
         return object;
     }
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, ProductThresholdInterest object, RestoreManager manager) throws RestoreException {
-        Map<Long, Double> idMap = data.getLongDoubleMap();
-        for(Map.Entry<Long, Double> entry: idMap.entrySet()) {
+        Map<Long, Double> thresholdMap = data.getLongDoubleMap();
+        for(Map.Entry<Long, Double> entry: thresholdMap.entrySet()) {
+            ProductGroup group = manager.ensureGet(entry.getKey());
+            object.setThreshold(group, entry.getValue());
+        }
+
+        Map<Long, Double> itemMap = data.getLongDoubleMap();
+        for(Map.Entry<Long, Double> entry: itemMap.entrySet()) {
             Product product = manager.ensureGet(entry.getKey());
             object.update(product, entry.getValue());
         }

@@ -61,8 +61,6 @@ public class PVactConsumerAgentGroupSpec extends AbstractSubSpec<InPVactConsumer
 
         InPVactConsumerAgentGroup grp = new InPVactConsumerAgentGroup();
 
-        grp.setInformationAuthority(rootSpec.getDouble(TAG_parameters, TAG_informationAuthority));
-
         grp.setNoveltySeeking(job.parseInlinedDistribution(rootSpec.getNode(TAG_parameters, TAG_NOVELTY_SEEKING)));
         grp.setDependentJudgmentMaking(job.parseInlinedDistribution(rootSpec.getNode(TAG_parameters, TAG_INDEPENDENT_JUDGMENT_MAKING)));
         grp.setEnvironmentalConcern(job.parseInlinedDistribution(rootSpec.getNode(TAG_parameters, TAG_ENVIRONMENTAL_CONCERN)));
@@ -94,8 +92,6 @@ public class PVactConsumerAgentGroupSpec extends AbstractSubSpec<InPVactConsumer
     protected void create(InPVactConsumerAgentGroup input, SpecificationHelper rootSpec, SpecificationJob job) throws ParsingException {
         rootSpec.set(TAG_name, input.getName());
         rootSpec.set(TAG_type, TYPE);
-
-        rootSpec.set(TAG_parameters, TAG_informationAuthority, input.getInformationAuthority());
 
         rootSpec.set(TAG_parameters, TAG_NOVELTY_SEEKING, job.inlineEntity(input.getNoveltySeeking(), false));
         rootSpec.set(TAG_parameters, TAG_INDEPENDENT_JUDGMENT_MAKING, job.inlineEntity(input.getDependentJudgmentMaking(), false));

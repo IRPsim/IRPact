@@ -1,24 +1,30 @@
 package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.commons.util.CollectionUtil;
+import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
+import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
-import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.log.InfoTag;
+import de.unileipzig.irpact.core.need.BasicNeed;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
 import de.unileipzig.irpact.core.network.topology.GraphTopologyScheme;
 import de.unileipzig.irpact.core.process.BasicProcessModelManager;
 import de.unileipzig.irpact.core.process.FixProcessModelFindingScheme;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.product.*;
+import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
+import de.unileipzig.irpact.core.product.interest.ProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.core.simulation.BasicInitializationData;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.simulation.BinaryTaskManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InIndependentConsumerAgentGroupAttribute;
@@ -41,6 +47,9 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
+
+import static de.unileipzig.irpact.core.process.ra.RAConstants.*;
 
 /**
  * @author Daniel Abitz
@@ -376,17 +385,19 @@ public class JadexInputParser implements InputParser {
     //=========================
 
     private void initPVact() throws ParsingException {
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "[PVACT] initalize");
+        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} initalize", InfoTag.PVACT);
 
         createPVProductGroup();
-        createFixPVProductAndFindingScheme();
         addProcessModelFindingScheme();
+        addInitialPVNeed();
     }
 
     private void createPVProductGroup() throws ParsingException {
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} create pv product group", InfoTag.PVACT);
+
         BasicProductManager productManager = (BasicProductManager) environment.getProducts();
         if(productManager.getNumberOfProductGroups() != 0) {
-            throw new ParsingException("[PVact] requires no ProductGroup, current: " + productManager.getNumberOfProductGroups());
+            throw new ParsingException(InfoTag.PVACT + " requires no ProductGroup, current: " + productManager.getNumberOfProductGroups());
         }
 
         BasicProductGroup pvGroup = new BasicProductGroup();
@@ -395,12 +406,13 @@ public class JadexInputParser implements InputParser {
         //Attribute?
 
         productManager.add(pvGroup);
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "[PVACT] add ProductGroup '{}'", pvGroup.getName());
+        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} add ProductGroup '{}'", InfoTag.PVACT, pvGroup.getName());
+
+        createFixPVProductAndFindingScheme(pvGroup);
     }
 
-    private void createFixPVProductAndFindingScheme() throws ParsingException {
-        BasicProductManager productManager = (BasicProductManager) environment.getProducts();
-        BasicProductGroup pvGroup = (BasicProductGroup) productManager.getGroup("PV");
+    private void createFixPVProductAndFindingScheme(ProductGroup pvGroup) throws ParsingException {
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} create finding scheme for '{}'", InfoTag.PVACT, pvGroup.getName());
 
         BasicProduct pvFix = new BasicProduct();
         pvFix.setEnvironment(environment);
@@ -410,7 +422,7 @@ public class JadexInputParser implements InputParser {
         //Attribute?
 
         pvGroup.addProduct(pvFix);
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "[PVACT] add fix product '{}' to group '{}'", pvFix.getName(), pvGroup.getName());
+        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} add fix product '{}' to group '{}'",InfoTag.PVACT, pvFix.getName(), pvGroup.getName());
 
         FixProductFindingScheme findingScheme = new FixProductFindingScheme();
         findingScheme.setName(pvFix.getName() + "_" + "FindingScheme");
@@ -418,17 +430,68 @@ public class JadexInputParser implements InputParser {
 
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
             if(cag.getProductFindingScheme() != null) {
-                throw new ParsingException("[PVact] cag '" + cag.getName() + "' already has a ProductFindingScheme");
+                throw new ParsingException(InfoTag.PVACT + " cag '" + cag.getName() + "' already has a ProductFindingScheme");
             }
             ((JadexConsumerAgentGroup) cag).setProductFindingScheme(findingScheme);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "[PVACT] set ProductFindingScheme '{}' to '{}'", findingScheme.getName(), cag.getName());
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} set ProductFindingScheme '{}' to '{}'", InfoTag.PVACT, findingScheme.getName(), cag.getName());
+        }
+
+        initProductGroupRelatedAttributes(pvGroup);
+        initProductInterest(pvGroup);
+    }
+
+    private void initProductGroupRelatedAttributes(ProductGroup pvGroup) {
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} init product realated attributes for cag '{}' and product group '{}'", InfoTag.PVACT, cag.getName(), pvGroup.getName());
+
+            JadexConsumerAgentGroup jcag = (JadexConsumerAgentGroup) cag;
+            mapToProductRelatedAttribute(jcag, pvGroup, INITIAL_PRODUCT_INTEREST);
+            mapToProductRelatedAttribute(jcag, pvGroup, INTEREST_THRESHOLD);
+            mapToProductRelatedAttribute(jcag, pvGroup, FINANCIAL_THRESHOLD);
+            mapToProductRelatedAttribute(jcag, pvGroup, ADOPTION_THRESHOLD);
+            mapToProductRelatedAttribute(jcag, pvGroup, INITIAL_ADOPTER);
+        }
+    }
+
+    private void mapToProductRelatedAttribute(
+            JadexConsumerAgentGroup jcag,
+            ProductGroup productGroup,
+            String groupAttributeName) {
+        ConsumerAgentGroupAttribute groupAttribute = jcag.getGroupAttribute(groupAttributeName);
+        if(groupAttribute == null) {
+            throw ExceptionUtil.create(NoSuchElementException::new, "cag '{}' has no '{}'", jcag.getName(), groupAttributeName);
+        }
+        mapToProductRelatedAttribute(jcag, productGroup, groupAttribute);
+    }
+
+    private void mapToProductRelatedAttribute(
+            JadexConsumerAgentGroup jcag,
+            ProductGroup productGroup,
+            ConsumerAgentGroupAttribute groupAttribute) {
+        jcag.removeGroupAttribute(groupAttribute);
+        if(!jcag.hasProductRelatedGroupAttribute(groupAttribute.getName())) {
+            jcag.addProductRelatedGroupAttribute(new BasicProductRelatedConsumerAgentGroupAttribute(groupAttribute.getName()));
+        }
+        ProductRelatedConsumerAgentGroupAttribute relatedAttribute = jcag.getProductRelatedGroupAttribute(groupAttribute.getName());
+        relatedAttribute.set(productGroup, groupAttribute);
+    }
+
+    private void initProductInterest(ProductGroup pvGroup) {
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} init product interest for cag '{}' and product group '{}'", InfoTag.PVACT, cag.getName(), pvGroup.getName());
+
+            ProductRelatedConsumerAgentGroupAttribute pgrAttr = cag.getProductRelatedGroupAttribute(INTEREST_THRESHOLD);
+            ConsumerAgentGroupAttribute cagAttr = pgrAttr.getAttribute(pvGroup);
+
+            ProductInterestSupplyScheme scheme = cag.getInterestSupplyScheme();
+            scheme.setThresholdDistribution(pvGroup, cagAttr.getUnivariateDoubleDistributionValue());
         }
     }
 
     private void addProcessModelFindingScheme() throws ParsingException {
         Collection<ProcessModel> processModels = environment.getProcessModels().getProcessModels();
         if(processModels.size() != 1) {
-            throw new ParsingException("[PVact] requires exactly 1 ProcessModel (current: " + processModels.size() + ")");
+            throw ExceptionUtil.create(ParsingException::new, "{} requires exactly 1 ProcessModel (current: {})", InfoTag.PVACT, processModels.size());
         }
 
         ProcessModel processModel = CollectionUtil.get(processModels, 0);
@@ -438,10 +501,21 @@ public class JadexInputParser implements InputParser {
 
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
             if(cag.getProcessFindingScheme() != null) {
-                throw new ParsingException("[PVact] cag '" + cag.getName() + "' already has a ProcessFindingScheme");
+                throw new ParsingException(InfoTag.PVACT + " cag '" + cag.getName() + "' already has a ProcessFindingScheme");
             }
             ((JadexConsumerAgentGroup) cag).setProcessFindingScheme(findingScheme);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "[PVACT] set ProcessFindingScheme '{}' to '{}'", findingScheme.getName(), cag.getName());
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} set ProcessFindingScheme '{}' to '{}'", InfoTag.PVACT, findingScheme.getName(), cag.getName());
+        }
+    }
+
+    private void addInitialPVNeed() {
+        BasicNeed pvNeed = new BasicNeed("PV");
+        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} create initial pv need: '{}'", InfoTag.PVACT, pvNeed.getName());
+        AgentManager agentManager = environment.getAgents();
+        for(ConsumerAgentGroup cag: agentManager.getConsumerAgentGroups()) {
+            JadexConsumerAgentGroup jcag = (JadexConsumerAgentGroup) cag;
+            jcag.addInitialNeed(pvNeed);
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} add initial pv need '{}' to cag '{}'", InfoTag.PVACT, pvNeed.getName(), jcag.getName());
         }
     }
 

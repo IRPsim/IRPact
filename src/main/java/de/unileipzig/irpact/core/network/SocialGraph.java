@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.Agent;
 
 import java.util.Collection;
@@ -123,6 +124,8 @@ public interface SocialGraph extends ChecksumComparable {
     Stream<? extends Node> streamNodes();
 
     Stream<? extends Node> streamTargets(Node source, Type type);
+
+    Node getRandomTarget(Node source, Type type, Rnd rnd);
 
     boolean addEdge(Node from, Node to, Type type, double weight);
 

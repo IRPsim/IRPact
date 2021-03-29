@@ -26,11 +26,12 @@ public final class RAConstants {
 
     public static final String COMMUNICATION_FREQUENCY_SN = "communication_frequency";           //C1
 
-    public static final String INITIAL_PRODUCT_INTEREST = "initial_product_awareness";        //D1
+    public static final String INITIAL_PRODUCT_AWARENESS = "initial_product_awareness";        //D1
     public static final String INTEREST_THRESHOLD = "interest_threshold";               //D2
     public static final String FINANCIAL_THRESHOLD = "financial_threshold";              //D3
     public static final String ADOPTION_THRESHOLD = "adoption_threshold";               //D4
     public static final String INITIAL_ADOPTER = "initial_adopter";                     //D5
+    public static final String INITIAL_PRODUCT_INTEREST = "initial_product_interest";        //D6
 
     //Product
     public static final String INVESTMENT_COST = "investment_cost";                               //E1
@@ -51,6 +52,9 @@ public final class RAConstants {
     public static final String UNCERTAINTY_SUFFIX = "uncertainty";
 
     public static final String RATE_OF_CONVERGENCE = "rate_of_convergence";
+
+    public static final String AWARENESS = "awareness";
+    public static final String INTEREST = "interest";
 
     public static String getUncertaintyAttributeName(String name) {
         return ParamUtil.concData(name, UNCERTAINTY_SUFFIX);

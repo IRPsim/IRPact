@@ -2,13 +2,19 @@ package de.unileipzig.irpact.io.param.input.interest;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.commons.util.ExceptionUtil;
+import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.interest.ProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
+import de.unileipzig.irpact.io.param.input.product.InProductGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
@@ -34,20 +40,17 @@ public class InProductThresholdInterestSupplyScheme implements InProductInterest
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_INTEREST, thisName());
-        addEntry(res, thisClass(), "interestDistribution");
+        addEntry(res, thisClass(), "entries");
     }
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
 
     @FieldDefinition
-    public InUnivariateDoubleDistribution[] interestDistribution;
+    public InProductGroupThresholdEntry[] entries;
 
     public InProductThresholdInterestSupplyScheme() {
-    }
-
-    public InProductThresholdInterestSupplyScheme(String name, InUnivariateDoubleDistribution interestDistribution) {
-        this._name = name;
-        setInterestDistribution(interestDistribution);
     }
 
     @Override
@@ -59,22 +62,35 @@ public class InProductThresholdInterestSupplyScheme implements InProductInterest
         this._name = name;
     }
 
-    public void setInterestDistribution(InUnivariateDoubleDistribution interestDistribution) {
-        this.interestDistribution = new InUnivariateDoubleDistribution[]{interestDistribution};
+    public void setEntries(InProductGroupThresholdEntry[] entries) {
+        this.entries = entries;
     }
 
-    public InUnivariateDoubleDistribution getInterestDistribution() throws ParsingException {
-        return ParamUtil.getInstance(interestDistribution, "interestDistribution");
+    public InProductGroupThresholdEntry[] getEntries() throws ParsingException {
+        return ParamUtil.getNonEmptyArray(entries, "entries");
     }
 
     @Override
     public ProductThresholdInterestSupplyScheme parse(InputParser parser) throws ParsingException {
-        ProductThresholdInterestSupplyScheme awa = new ProductThresholdInterestSupplyScheme();
-        awa.setName(getName());
+        ProductThresholdInterestSupplyScheme interest = new ProductThresholdInterestSupplyScheme();
+        interest.setName(getName());
 
-        UnivariateDoubleDistribution dist = parser.parseEntityTo(getInterestDistribution());
-        awa.setDistribution(dist);
+        for(InProductGroupThresholdEntry entry: getEntries()) {
+            InUnivariateDoubleDistribution inDist = entry.getDistribution();
+            UnivariateDoubleDistribution dist = parser.parseEntityTo(inDist);
 
-        return awa;
+            for(InProductGroup inPg: entry.getProductGroups()) {
+                ProductGroup pg = parser.parseEntityTo(inPg);
+
+                if(interest.hasThresholdDistribution(pg)) {
+                    throw ExceptionUtil.create(ParsingException::new, "product interest '{}' already has product group '{}'", interest.getName(), pg.getName());
+                }
+
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add product group '{}' with distribution '{}' to product interest '{}'", pg.getName(), dist.getName(), interest.getName());
+                interest.setThresholdDistribution(pg, dist);
+            }
+        }
+
+        return interest;
     }
 }
