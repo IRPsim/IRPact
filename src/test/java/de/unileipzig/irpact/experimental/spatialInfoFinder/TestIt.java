@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.experimental.dataDist;
+package de.unileipzig.irpact.experimental.spatialInfoFinder;
 
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;

@@ -60,4 +60,9 @@ public final class StringUtil {
             appendable.append(input);
         }
     }
+
+    public static String printDoubleWithComma(double value) {
+        String str = Double.toString(value);
+        return str.replace('.', ',');
+    }
 }

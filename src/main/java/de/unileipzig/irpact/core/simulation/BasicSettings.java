@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.start.CommandLineOptions;
+import de.unileipzig.irpact.util.AddToParam;
 
 import java.util.*;
 
@@ -16,12 +17,14 @@ public class BasicSettings implements Settings {
     protected boolean ignorePersistCheck = false;
     protected int run = 1;
     protected int previousLastSimulationYear = -1;
+    @AddToParam("InGeneral")
     protected boolean prefereCsv = false;
 
     protected boolean logRelativeAgreement = false;
     protected boolean logInterestUpdate = false;
     protected boolean logGraphUpdate = false;
     protected boolean logShareNetworkLocale = false;
+
     protected boolean logResultGroupedByZipAndMilieu = false;
     protected boolean logResultGroupedByZip = false;
     protected boolean logResultGroupedByMilieu = false;

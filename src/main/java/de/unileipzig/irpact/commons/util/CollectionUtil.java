@@ -1,10 +1,7 @@
 package de.unileipzig.irpact.commons.util;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.function.ToDoubleFunction;
+import java.util.function.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -14,6 +11,33 @@ import java.util.stream.Collectors;
 public final class CollectionUtil {
 
     private CollectionUtil() {
+    }
+
+    public static <K, V> void sortMap(
+            Map<K, V> map,
+            Comparator<? super K> keyComparator) {
+        List<Map.Entry<K, V>> entryList = new ArrayList<>(map.entrySet());
+        entryList.sort((o1, o2) -> {
+            K k1 = o1.getKey();
+            K k2 = o2.getKey();
+            return keyComparator.compare(k1, k2);
+        });
+        map.clear();
+        for(Map.Entry<K, V> entry: entryList) {
+            map.put(entry.getKey(), entry.getValue());
+        }
+    }
+
+    public static <E> E[][] transpose(
+            E[][] input,
+            BiFunction<? super Number, ? super Number, ? extends E[][]> arrayCreator) {
+        E[][] output = arrayCreator.apply(input[0].length, input.length);
+        for(int i = 0; i < input.length; i++) {
+            for(int j = 0; j < input[i].length; j++) {
+                output[j][i] = input[i][j];
+            }
+        }
+        return output;
     }
 
     public static <E> List<E> filterToList(Collection<? extends E> input, Predicate<? super E> filter) {
