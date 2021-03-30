@@ -15,10 +15,7 @@ import de.unileipzig.irptools.util.Util;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.*;
-import java.util.function.DoubleFunction;
-import java.util.function.LongFunction;
-import java.util.function.ToDoubleFunction;
-import java.util.function.ToLongFunction;
+import java.util.function.*;
 
 /**
  * Stores data in a binary json (SMILE) format.
@@ -457,6 +454,26 @@ public final class BinaryJsonData extends PersistableBase {
                 throw ExceptionUtil.create(IllegalArgumentException::new, "id {} already exists", id);
             }
             idMap.put(id, value);
+        }
+
+        return idMap;
+    }
+
+    public static <K, V> Map<Long, Long> mapToLongLongMap(
+            Collection<? extends K> keys,
+            Function<? super K, ? extends V> valueFunc,
+            ToLongFunction<K> keyToLong,
+            ToLongFunction<V> valueToLong) {
+        Map<Long, Long> idMap = new LinkedHashMap<>();
+
+        for(K key: keys) {
+            V value = valueFunc.apply(key);
+            long id = keyToLong.applyAsLong(key);
+            long valueId = valueToLong.applyAsLong(value);
+            if(idMap.containsKey(id)) {
+                throw ExceptionUtil.create(IllegalArgumentException::new, "id {} already exists", id);
+            }
+            idMap.put(id, valueId);
         }
 
         return idMap;

@@ -18,7 +18,7 @@ import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.process.ra.attributes.UncertaintyAttribute;
 import de.unileipzig.irpact.core.product.Product;
-import de.unileipzig.irpact.core.simulation.InitializationData;
+import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.slf4j.event.Level;
@@ -183,7 +183,7 @@ public class RAProcessPlan implements ProcessPlan {
         } else {
             currentStage = RAStage.AWARENESS;
         }
-        LOGGER.debug(IRPSection.INITIALIZATION_AGENT, "initial stage for '{}': {}", agent.getName(), currentStage);
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "initial stage for '{}': {}", agent.getName(), currentStage);
         return executePlan();
     }
 
@@ -526,8 +526,8 @@ public class RAProcessPlan implements ProcessPlan {
         double ftThis = getFinancialThresholdAgent(agent);
         double ftAvg = getAverageFinancialThresholdAgent();
 
-        double npvThis = modelData().NPV(agent, environment.getTimeModel().getYear());
-        double npvAvg = modelData().avgNPV(environment.getTimeModel().getYear());
+        double npvThis = modelData().NPV(agent, environment.getTimeModel().getCurrentYear());
+        double npvAvg = modelData().avgNPV(environment.getTimeModel().getCurrentYear());
 
         double ft = getLogisticFactor() * (ftThis - ftAvg);
         double npv = getLogisticFactor() * (npvThis - npvAvg);
@@ -853,10 +853,8 @@ public class RAProcessPlan implements ProcessPlan {
                 : LOGGER;
     }
 
-    protected static IRPSection getSection(boolean logData, IRPSection ifLogData) {
-        return logData
-                ? ifLogData
-                : IRPSection.SIMULATION_PROCESS;
+    protected static IRPSection getSection(boolean logData) {
+        return IRPSection.SIMULATION_PROCESS.orGeneral(logData);
     }
 
     protected static Level getLevel(boolean logData) {
@@ -865,8 +863,8 @@ public class RAProcessPlan implements ProcessPlan {
                 : Level.TRACE;
     }
 
-    protected InitializationData getInitData() {
-        return environment.getInitializationData();
+    protected Settings getInitData() {
+        return environment.getSettings();
     }
 
     protected void logInterestUpdate(
@@ -874,7 +872,7 @@ public class RAProcessPlan implements ProcessPlan {
             Agent target, int targetOldPoints, int targetNewPoints) {
         boolean logData = getInitData().isLogInterestUpdate();
         IRPLogger logger = getLogger(logData);
-        IRPSection section = getSection(logData, IRPSection.TAG_INTEREST_UPDATE);
+        IRPSection section = getSection(logData);
         Level level = getLevel(logData);
         logger.log(
                 section, level,
@@ -888,7 +886,7 @@ public class RAProcessPlan implements ProcessPlan {
     protected void logGraphUpdateEdgeAdded(Agent target) {
         boolean logData = getInitData().isLogGraphUpdate();
         IRPLogger logger = getLogger(logData);
-        IRPSection section = getSection(logData, IRPSection.TAG_GRAPH_UPDATE);
+        IRPSection section = getSection(logData);
         Level level = getLevel(logData);
         logger.log(
                 section, level,
@@ -901,7 +899,7 @@ public class RAProcessPlan implements ProcessPlan {
     protected void logGraphUpdateEdgeRemoved(Agent target) {
         boolean logData = getInitData().isLogGraphUpdate();
         IRPLogger logger = getLogger(logData);
-        IRPSection section = getSection(logData, IRPSection.TAG_GRAPH_UPDATE);
+        IRPSection section = getSection(logData);
         Level level = getLevel(logData);
         logger.log(
                 section, level,
@@ -917,7 +915,7 @@ public class RAProcessPlan implements ProcessPlan {
             double hij, double ra, double newXj, double newUj) {
         boolean logData = getInitData().isLogRelativeAgreement();
         IRPLogger logger = getLogger(logData);
-        IRPSection section = getSection(logData, IRPSection.TAG_RELATIVE_AGREEMENT);
+        IRPSection section = getSection(logData);
         Level level = getLevel(logData);
         logger.log(section, level,
                 "{} [{}] relative agreement between i='{}' and j='{}' for '{}' success (hij={} > ui={}) | xi={}, ui={}, xj={}, uj={} | hij = {} = Math.min({} + {}, {} + {}) - Math.max({} - {}, {} - {}) | ra = {} = {} / {} - 1.0 | newXj = {} = {} + {} * {} * ({} - {}) | newUj = {} = {} + {} * {} * ({} - {})",
@@ -935,7 +933,7 @@ public class RAProcessPlan implements ProcessPlan {
             double xi, double ui, double xj, double uj, double hij) {
         boolean logData = getInitData().isLogRelativeAgreement();
         IRPLogger logger = getLogger(logData);
-        IRPSection section = getSection(logData, IRPSection.TAG_RELATIVE_AGREEMENT);
+        IRPSection section = getSection(logData);
         Level level = getLevel(logData);
         logger.log(section, level,
                 "{} [{}] relative agreement between i='{}' and j='{}' for '{}' failed (hij={} <= ui={})) | xi={}, ui={}, xj={}, uj={} | hij = {} = Math.min({} + {}, {} + {}) - Math.max({} - {}, {} - {})",
@@ -954,7 +952,7 @@ public class RAProcessPlan implements ProcessPlan {
             MutableDouble shareLocal) {
         boolean logData = getInitData().isLogShareNetworkLocale();
         IRPLogger logger = getLogger(logData);
-        IRPSection section = getSection(logData, IRPSection.TAG_SHARE_NETWORK_LOCAL);
+        IRPSection section = getSection(logData);
         Level level = getLevel(logData);
 
         logger.log(section, level,

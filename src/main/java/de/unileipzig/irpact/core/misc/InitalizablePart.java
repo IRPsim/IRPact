@@ -17,12 +17,6 @@ public interface InitalizablePart extends ChecksumComparable {
     }
 
     /**
-     * Initalize the basic setup without dependencies.
-     */
-    default void initialize() throws MissingDataException {
-    }
-
-    /**
      * Validates existence of all dependencies.
      *
      * @throws ValidationException something went wrong

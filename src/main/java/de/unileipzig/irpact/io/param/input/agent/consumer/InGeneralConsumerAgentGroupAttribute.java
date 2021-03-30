@@ -98,7 +98,7 @@ public class InGeneralConsumerAgentGroupAttribute implements InDependentConsumer
         UnivariateDoubleDistribution dist = parser.parseEntityTo(getDistribution());
         cagAttr.setUnivariateDoubleDistributionValue(dist);
 
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "created ConsumerAgentGroupAttribute '{}' ('{}')", cagAttr.getName(), getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "created ConsumerAgentGroupAttribute '{}' ('{}')", cagAttr.getName(), getName());
         return cagAttr;
     }
 }

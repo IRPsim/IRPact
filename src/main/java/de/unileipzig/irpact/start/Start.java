@@ -46,20 +46,20 @@ public final class Start {
             if(options.logConsoleAndFile()) {
                 IRPLogging.initConsoleAndFile(options.getLogPath());
                 logOldFileDeleted(hasOldLogFile, options.getLogPath());
-                LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "log to console and file '{}'", options.getLogPath());
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "log to console and file '{}'", options.getLogPath());
             } else {
                 IRPLogging.initFile(options.getLogPath());
                 logOldFileDeleted(hasOldLogFile, options.getLogPath());
-                LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "log to file '{}'", options.getLogPath());
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "log to file '{}'", options.getLogPath());
             }
         } else {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "log to console");
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "log to console");
         }
     }
 
     private static void logOldFileDeleted(boolean deleted, Path path) {
         if(deleted) {
-            LOGGER.debug("old logfile '{}' deleted", path);
+            LOGGER.trace("old logfile '{}' deleted", path);
         }
     }
 
@@ -85,7 +85,7 @@ public final class Start {
             Preloader loader = new Preloader(options, callbacks);
             try {
                 loader.start();
-                LOGGER.debug("Start finished");
+                LOGGER.trace("Start finished");
                 return new StartResult(CommandLine.ExitCode.OK);
             } catch (Throwable t) {
                 LOGGER.error("Start failed with uncaught exception", t);

@@ -134,9 +134,9 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse InGeneralConsumerAgentGroup '{}'", jCag.getName());
 
         if(parser.getRoot().addConsumerAgentGroup(this)) {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added InGeneralConsumerAgentGroup '{}' to InRoot", getName());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added InGeneralConsumerAgentGroup '{}' to InRoot", getName());
             agentManager.addConsumerAgentGroup(jCag);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added JadexConsumerAgentGroup '{}'", jCag.getName());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added JadexConsumerAgentGroup '{}'", jCag.getName());
         }
 
         ProductInterestSupplyScheme awarenessSupplyScheme = parser.parseEntityTo(getInterest());
@@ -152,7 +152,7 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
             if(jCag.hasGroupAttribute(cagAttr.getName())) {
                 throw new ParsingException("ConsumerAgentGroupAttribute '" + cagAttr.getName() + "' already exists in " + jCag.getName());
             }
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "add ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), inCagAttr.getName(), jCag.getName());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), inCagAttr.getName(), jCag.getName());
             jCag.addGroupAttribute(cagAttr);
         }
 

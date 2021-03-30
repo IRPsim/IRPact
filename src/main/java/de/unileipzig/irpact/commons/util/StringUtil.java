@@ -2,6 +2,9 @@ package de.unileipzig.irpact.commons.util;
 
 import org.slf4j.helpers.MessageFormatter;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+
 /**
  * @author Daniel Abitz
  */
@@ -40,5 +43,21 @@ public final class StringUtil {
 
     public static String format(String pattern, Object... args) {
         return MessageFormatter.arrayFormat(pattern, args).getMessage();
+    }
+
+    public static String repeat(String input, int count) {
+        try {
+            StringBuilder sb = new StringBuilder();
+            appendRepeat(sb, input, count);
+            return sb.toString();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    public static void appendRepeat(Appendable appendable, String input, int count) throws IOException {
+        for(int i = 0; i < count; i++) {
+            appendable.append(input);
+        }
     }
 }

@@ -5,7 +5,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.simulation.InitializationData;
+import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
@@ -141,7 +141,7 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
 
     @Override
     public void setup(InputParser parser, Object input) throws ParsingException {
-        InitializationData initData = ParamUtil.castTo(input, InitializationData.class);
+        Settings initData = ParamUtil.castTo(input, Settings.class);
         List<ConsumerAgentGroup> cags = parseCags(parser);
         checkConsumerAgentGroupExistence(cags, initData);
 
@@ -160,11 +160,11 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
             ConsumerAgentGroup cag = propotionalEntry.getKey();
             int propotionalSize = propotionalEntry.getValue();
             initData.setInitialNumberOfConsumerAgents(cag, propotionalSize);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "set initial number of agents for cag '{}': {}", cag.getName(), propotionalSize);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set initial number of agents for cag '{}': {}", cag.getName(), propotionalSize);
         }
     }
 
-    protected void checkConsumerAgentGroupExistence(List<ConsumerAgentGroup> cags, InitializationData initData) throws ParsingException {
+    protected void checkConsumerAgentGroupExistence(List<ConsumerAgentGroup> cags, Settings initData) throws ParsingException {
         for(ConsumerAgentGroup cag: cags) {
             if(initData.hasInitialNumberOfConsumerAgents(cag)) {
                 throw new ParsingException("cag '" + cag.getName() + "' already has a population size: " + initData.getInitialNumberOfConsumerAgents(cag) + " (try to set: " + totalSize + ")");
@@ -252,13 +252,13 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
                 .mapToInt(v -> v)
                 .sum();
         int difference = totalSize - totalCagSize;
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "difference between totalSize and totalCagSize: {}", difference);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "difference between totalSize and totalCagSize: {}", difference);
         if(difference < 0) {
             //Das (sollte) ist unmoeglich sein!
             throw new ParsingException("something went terribly wrong");
         }
         if(difference > 0) {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "repair rounding errors");
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "repair rounding errors");
             ConsumerAgentGroup largestGroup = shareCalculator.getKeyWithLargestShare();
             int currentSize = cagSizes.get(largestGroup);
             cagSizes.put(largestGroup, currentSize + difference);

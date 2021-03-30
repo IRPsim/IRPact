@@ -189,10 +189,10 @@ public class OptAct {
         Path imagePath = clOptions.getImagePath();
         Path dotPath = imagePath.resolveSibling(imagePath.getFileName().toString() + ".dot");
         try {
-            logger.debug("store temp-dot file: {}", dotPath);
+            logger.trace("store temp-dot file: {}", dotPath);
             gen.store(dotPath);
 
-            logger.debug("init dot process");
+            logger.trace("init dot process");
             DotProcess process;
             try {
                 process = new DotProcess()
@@ -207,7 +207,7 @@ public class OptAct {
                 return;
             }
 
-            logger.debug("execute dot process");
+            logger.trace("execute dot process");
 
             ProcessResult result;
             try {
@@ -224,7 +224,7 @@ public class OptAct {
             }
 
             if(Files.exists(imagePath)) {
-                logger.debug("image created ({})", imagePath);
+                logger.trace("image created ({})", imagePath);
             } else {
                 logger.error("image not created ({})", imagePath);
             }

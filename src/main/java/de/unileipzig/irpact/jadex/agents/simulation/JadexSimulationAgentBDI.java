@@ -64,12 +64,12 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     protected void onInit() {
         initData();
         environment.getLiveCycleControl().registerSimulationAgentAccess(getThisAgent(), agent);
-        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] init", getName());
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] init", getName());
     }
 
     @Override
     protected void onStart() {
-        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] start", getName());
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] start", getName());
         waitUntilEnd();
         reportAgentCreated(getThisAgent());
         scheduleFirstAction();
@@ -77,7 +77,7 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
 
     @Override
     protected void onEnd() {
-        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] end", getName());
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] end", getName());
     }
 
     //=========================
@@ -132,16 +132,11 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     }
 
     @Override
-    protected void loopAction() {
+    protected void onLoopAction() {
     }
 
     @Override
     public void reportAgentCreated(de.unileipzig.irpact.core.agent.Agent agent) {
         environment.getLiveCycleControl().reportAgentCreated(agent);
-    }
-
-    @Override
-    public void reportFatalException(Exception e) {
-        environment.getLiveCycleControl().terminateWithError(e);
     }
 }

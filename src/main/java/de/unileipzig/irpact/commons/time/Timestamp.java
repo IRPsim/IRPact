@@ -13,6 +13,10 @@ public interface Timestamp extends Comparable<Timestamp>, ChecksumComparable {
 
     String printSimple();
 
+    String printPretty();
+
+    String printComplex();
+
     default long getEpochMilli() {
         return getTime().toInstant().toEpochMilli();
     }
@@ -22,7 +26,7 @@ public interface Timestamp extends Comparable<Timestamp>, ChecksumComparable {
     }
 
     default boolean isBetween(Timestamp from, Timestamp to) {
-        return isAfterOrEquals(from) && isBeforeOrEqual(to);
+        return isAfterOrEquals(from) && isBefore(to);
     }
 
     default boolean isAfter(Timestamp other) {

@@ -70,7 +70,7 @@ public class JadexConsumerAgentGroupPR extends BinaryPRBase<JadexConsumerAgentGr
             manager.ensureGetUID(ca);
             caCount++;
         }
-        log().debug("stores {} agents", caCount);
+        log().trace("stores {} agents", caCount);
     }
 
     //=========================

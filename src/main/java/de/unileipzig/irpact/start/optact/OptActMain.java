@@ -214,10 +214,10 @@ public class OptActMain implements Callable<Integer> {
 
         Path dotPath = imagePath.resolveSibling(imagePath.getFileName().toString() + ".dot");
         try {
-            logger.debug("store temp-dot file: {}", dotPath);
+            logger.trace("store temp-dot file: {}", dotPath);
             gen.store(dotPath);
 
-            logger.debug("init dot process");
+            logger.trace("init dot process");
             DotProcess process;
             try {
                 process = new DotProcess()
@@ -232,7 +232,7 @@ public class OptActMain implements Callable<Integer> {
                 return;
             }
 
-            logger.debug("execute dot process");
+            logger.trace("execute dot process");
 
             ProcessResult result;
             try {
@@ -249,7 +249,7 @@ public class OptActMain implements Callable<Integer> {
             }
 
             if(Files.exists(imagePath)) {
-                logger.debug("image created ({})", imagePath);
+                logger.trace("image created ({})", imagePath);
             } else {
                 logger.error("image not created ({})", imagePath);
             }
@@ -291,7 +291,7 @@ public class OptActMain implements Callable<Integer> {
             return CommandLine.ExitCode.USAGE;
         }
         inputPath = Paths.get(inputFile);
-        logger.debug("input file: {}", inputFile);
+        logger.trace("input file: {}", inputFile);
         if(Files.notExists(inputPath)) {
             logger.error("input file not found: {}", inputPath);
             return CommandLine.ExitCode.SOFTWARE;
@@ -304,18 +304,18 @@ public class OptActMain implements Callable<Integer> {
             }
         } else {
             outputPath = Paths.get(outputFile);
-            logger.debug("output file: {}", outputPath);
+            logger.trace("output file: {}", outputPath);
         }
 
         if(imageFile != null) {
             imagePath = Paths.get(imageFile);
-            logger.debug("image file: {}", imagePath);
+            logger.trace("image file: {}", imagePath);
         }
 
         if(noSimulation) {
-            logger.debug("simulation disabled");
+            logger.trace("simulation disabled");
         } else {
-            logger.debug("simulation enabled");
+            logger.trace("simulation enabled");
         }
 
         return CommandLine.ExitCode.OK;

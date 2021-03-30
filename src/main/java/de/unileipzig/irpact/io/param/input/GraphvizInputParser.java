@@ -108,15 +108,15 @@ public class GraphvizInputParser implements InputParser {
         }
 
         private static void log(String msg) {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, msg);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, msg);
         }
 
         private static void log(String pattern, Object arg) {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, pattern, arg);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, pattern, arg);
         }
 
         private static void log(String pattern, Object arg1, Object arg2) {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, pattern, arg1, arg2);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, pattern, arg1, arg2);
         }
 
         private GraphvizConfiguration run() throws ParsingException {

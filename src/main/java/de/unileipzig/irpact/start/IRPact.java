@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.start;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.commons.time.Timestamp;
@@ -124,7 +125,7 @@ public class IRPact implements IRPActAccess {
 
     public static AnnualEntry<InRoot> convert(CommandLineOptions options, ObjectNode rootNode) {
         ContentType contentType = ContentTypeDetector.detect(rootNode);
-        LOGGER.debug("content type: {}", contentType);
+        LOGGER.trace(IRPSection.GENERAL, "content type: {}", contentType);
         return ContentTypeDetector.parseFirstEntry(
                 rootNode,
                 contentType,
@@ -153,34 +154,32 @@ public class IRPact implements IRPActAccess {
     }
 
     private void start() throws Exception {
-        createSimulationEnvironment();
-        applyCliToEnvironment();
-        restorPreviousSimulationEnvironment();
-        createGraphvizConfiguration();
-
+        initialize();
         preAgentCreation();
-        initEnvironment();
-        validateEnvironment();
+        runAppTasks();
+        preAgentCreationValidation();
+        createAgents();
+        runSimulationTasks();
         postAgentCreation();
         postAgentCreationValidation();
 
         if(CL_OPTIONS.isNoSimulation()) {
             if(CL_OPTIONS.hasImagePath()) {
-                LOGGER.info("create initial network image");
+                LOGGER.info(IRPSection.GENERAL, "create initial network image");
                 printNetwork();
             }
-            LOGGER.info("no simulation");
+            LOGGER.info(IRPSection.GENERAL, "no simulation");
             return;
         }
 
         createPlatform();
         preparePlatform();
         setupTimeModel();
-        createAgents();
+        createJadexAgents();
         try {
             waitForCreation();
         } catch (InterruptedException e) {
-            LOGGER.warn("waiting interrupted", e);
+            LOGGER.warn(IRPSection.GENERAL, "waiting interrupted", e);
             if(environment.getLiveCycleControl().getTerminationState() != LifeCycleControl.TerminationState.NOT) {
                 environment.getLiveCycleControl().terminateWithError(e);
             }
@@ -192,27 +191,33 @@ public class IRPact implements IRPActAccess {
         postSimulation();
     }
 
+    private void initialize() throws Exception {
+        createSimulationEnvironment();
+        applyCliToEnvironment();
+        restorPreviousSimulationEnvironment();
+        createGraphvizConfiguration();
+        logSimulationInformations();
+    }
+
     private void createSimulationEnvironment() throws ParsingException {
         JadexInputParser parser = new JadexInputParser();
         parser.setResourceLoader(RESOURCE_LOADER);
         environment = parser.parseRoot(inRoot);
         int year = inEntry.getConfig().getYear();
-        environment.getInitializationData().setStartYear(year);
-        if(environment.getInitializationData().hasValidEndYear()) {
-            LOGGER.info("valid custom end year found, simulation will run multiple years");
-        }
+        environment.getSettings().setFirstSimulationYear(year);
     }
 
     private void applyCliToEnvironment() {
-        BasicInitializationData initData = (BasicInitializationData) environment.getInitializationData();
-        initData.setIgnorePersistenceCheckResult(CL_OPTIONS.isIgnorePersistenceCheck());
+        Settings settings = environment.getSettings();
+        settings.apply(CL_OPTIONS);
     }
 
     private void restorPreviousSimulationEnvironment() throws Exception {
-        if(!hasPreviousState()) {
+        if(isFirstCall()) {
             return;
         }
-        LOGGER.info("restore previous state");
+
+        LOGGER.info(IRPSection.GENERAL, "restore previous state");
         SimulationEnvironment restoredEnvironment = environment.getPersistenceModul().restore(environment, inRoot);
         this.environment = (JadexSimulationEnvironment) restoredEnvironment;
     }
@@ -221,45 +226,71 @@ public class IRPact implements IRPActAccess {
         if(!CL_OPTIONS.hasImagePath()) {
             return;
         }
-        LOGGER.info("valid image path, setup graphviz");
+        LOGGER.info(IRPSection.GENERAL, "valid image path, setup graphviz");
         GraphvizInputParser parser = new GraphvizInputParser();
         parser.setEnvironment(environment);
         parser.setImageOutputPath(CL_OPTIONS.getImagePath());
         graphvizConfiguration = parser.parseRoot(inRoot);
     }
 
-    private boolean hasPreviousState() {
-        return inRoot.hasBinaryPersistData();
+    private void logSimulationInformations() {
+        Settings settings = environment.getSettings();
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "run: {} (first run: {})", settings.getCurrentRun(), settings.isFirstRun());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "last simulation year of previous run: {}", settings.getLastSimulationYearOfPreviousRun());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "first simulation year: {} (actual: {})", settings.getFirstSimulationYear(), settings.getActualFirstSimulationYear());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "last simulation year: {}", settings.getLastSimulationYear());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "number of simulation years: {} (actuel: {})", settings.getNumberOfSimulationYears(), settings.getActualNumberOfSimulationYears());
+
+        if(settings.hasActualMultipleSimulationYears()) {
+            LOGGER.info(
+                    IRPSection.GENERAL,
+                    "simulation will run from {} to {} ({} years)",
+                    settings.getActualFirstSimulationYear(),
+                    settings.getLastSimulationYear(),
+                    settings.getActualNumberOfSimulationYears()
+            );
+        } else {
+            LOGGER.info(IRPSection.GENERAL, "simulation will run for year {}", settings.getFirstSimulationYear());
+        }
     }
 
     private boolean isFirstCall() {
-        return !hasPreviousState();
+        return !inRoot.hasBinaryPersistData();
     }
 
     private void preAgentCreation() throws MissingDataException {
-        LOGGER.info("preAgentCreation");
+        LOGGER.info(IRPSection.GENERAL, "run pre agent creation");
         environment.preAgentCreation();
+    }
+
+    private void runAppTasks() {
+        LOGGER.info(IRPSection.GENERAL, "run app tasks");
         environment.getTaskManager().runAppTasks();
     }
 
-    private void initEnvironment() throws MissingDataException {
-        LOGGER.info("initialize");
-        environment.initialize();
-    }
-
-    private void validateEnvironment() throws ValidationException {
-        LOGGER.info("validate");
+    private void preAgentCreationValidation() throws ValidationException {
+        LOGGER.info(IRPSection.GENERAL, "run pre-agent creation validation");
         environment.preAgentCreationValidation();
     }
 
-    private void postAgentCreation() throws MissingDataException {
-        LOGGER.info("postAgentCreation");
+    private void createAgents() throws InitializationException {
+        LOGGER.info(IRPSection.GENERAL, "run create agents");
+        environment.createAgents();
+    }
+
+    private void runSimulationTasks() {
+        LOGGER.info(IRPSection.GENERAL, "run simulation tasks");
         environment.getTaskManager().runSimulationTasks(environment);
+    }
+
+    private void postAgentCreation() throws MissingDataException {
+        LOGGER.info(IRPSection.GENERAL, "run post agent creation");
         environment.postAgentCreation();
     }
 
     private void postAgentCreationValidation() throws ValidationException {
-        LOGGER.info("postAgentCreationValidation");
+        LOGGER.info(IRPSection.GENERAL, "run post-agent creation validation");
         environment.postAgentCreationValidation();
     }
 
@@ -271,7 +302,7 @@ public class IRPact implements IRPActAccess {
     }
 
     private void createPlatform() {
-        LOGGER.info("create Platform");
+        LOGGER.info(IRPSection.GENERAL, "create platform");
 
         IPlatformConfiguration config = PlatformConfigurationHandler.getMinimal();
         config.setValue("kernel_component", true);
@@ -282,33 +313,33 @@ public class IRPact implements IRPActAccess {
         environment.getLiveCycleControl().setPlatform(platform);
         environment.getLiveCycleControl().startKillSwitch();
 
-        LOGGER.debug(IRPSection.INITIALIZATION_PLATFORM, "get ISimulationService");
+        LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "get ISimulationService");
         ISimulationService simulationService = JadexUtil2.getSimulationService(platform);
-        LOGGER.debug(IRPSection.INITIALIZATION_PLATFORM, "get IClockService");
+        LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "get IClockService");
         IClockService clock = simulationService.getClockService();
         environment.getLiveCycleControl().setSimulationService(simulationService);
         environment.getLiveCycleControl().setClockService(clock);
     }
 
     private void preparePlatform() {
-        LOGGER.info("prepare platform start");
+        LOGGER.info(IRPSection.GENERAL, "prepare platform start");
         environment.getLiveCycleControl().pause();
         pulse();
     }
 
     private void setupTimeModel() {
-        LOGGER.info("setup time model");
+        LOGGER.info(IRPSection.GENERAL, "setup time model");
         environment.getTimeModel().setupTimeModel();
     }
 
-    private void createAgents() {
-        LOGGER.info("create agents");
+    private void createJadexAgents() {
+        LOGGER.info(IRPSection.GENERAL, "create agents");
 
         final int totalNumberOfAgents = 1 //SimulationAgent
                 + environment.getAgents().getTotalNumberOfConsumerAgents();
         int agentCount = 0;
 
-        LOGGER.debug(IRPSection.INITIALIZATION_PLATFORM, "total number of agents: {}", totalNumberOfAgents);
+        LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "total number of agents: {}", totalNumberOfAgents);
         environment.getLiveCycleControl().setTotalNumberOfAgents(totalNumberOfAgents);
 
         CreationInfo simulationAgentInfo = createSimulationAgentInfo(createProxySimulationAgent());
@@ -360,36 +391,34 @@ public class IRPact implements IRPActAccess {
     }
 
     private void waitForCreation() throws InterruptedException {
-        LOGGER.info("wait until agent creation is finished...");
+        LOGGER.info(IRPSection.GENERAL, "wait until agent creation is finished...");
         environment.getLiveCycleControl().waitForCreationFinished();
-        LOGGER.info("...  agent creation finished");
+        LOGGER.info(IRPSection.GENERAL, "...  agent creation finished");
     }
 
     private void setupPreSimulationStart() throws MissingDataException {
-        LOGGER.info("pre simulation start environment");
+        LOGGER.info(IRPSection.GENERAL, "pre simulation start environment");
         environment.preSimulationStart();
     }
 
     private void startSimulation() {
-        //ConcurrentUtil.sleepSilently(5000);
-        LOGGER.info("start simulation");
+        LOGGER.info(IRPSection.GENERAL, "start simulation");
         environment.getLiveCycleControl().start();
     }
 
     private void waitForTermination() {
-        LOGGER.info("wait for termination");
+        LOGGER.info(IRPSection.GENERAL, "wait for termination");
 
-        //ConcurrentUtil.sleepSilently(5000);
         environment.getLiveCycleControl().waitForTermination().get();
         JadexSystemOut.reset();
 
-        LOGGER.info("simulation terminated");
+        LOGGER.info(IRPSection.GENERAL, "simulation terminated");
     }
 
     private void postSimulation() throws Exception {
-        LOGGER.info("simulation finished");
+        LOGGER.info(IRPSection.GENERAL, "simulation finished");
         if(CL_OPTIONS.hasImagePath()) {
-            LOGGER.info("create network image after simulation finished");
+            LOGGER.info(IRPSection.GENERAL, "create network image after simulation finished");
             printNetwork();
         }
         createOutput();
@@ -404,7 +433,7 @@ public class IRPact implements IRPActAccess {
     }
 
     private OutRoot createOutRoot() throws Exception {
-        LOGGER.info("create output");
+        LOGGER.info(IRPSection.GENERAL, "create output");
         OutRoot outRoot = new OutRoot();
         applySimulationResult(outRoot);
         applyPersistenceData(outRoot);
@@ -462,7 +491,7 @@ public class IRPact implements IRPActAccess {
     }
 
     private void callCallbacks() {
-        LOGGER.info("call {} callbacks", CALLBACKS.size());
+        LOGGER.info(IRPSection.GENERAL, "call {} callbacks", CALLBACKS.size());
         for(IRPactCallback callback: CALLBACKS) {
             try {
                 callback.onFinished(this);
@@ -475,7 +504,7 @@ public class IRPact implements IRPActAccess {
     private void finalTask() {
         IRPLogging.removeFilter();
         IRPtools.setLoggingFilter(null);
-        LOGGER.info("simulation finished");
+        LOGGER.info(IRPSection.GENERAL, "simulation finished");
     }
 
     //=========================

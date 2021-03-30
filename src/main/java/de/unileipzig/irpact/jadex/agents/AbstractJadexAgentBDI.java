@@ -46,10 +46,10 @@ public abstract class AbstractJadexAgentBDI extends AbstractAgentBase {
 
     @Override
     protected void scheduleLoop() {
-        nextStep();
+        nextAction();
     }
 
-    protected void nextStep() {
+    protected void nextAction() {
         getTimeModel().wait(
                 execFeature,
                 delay,
@@ -60,8 +60,8 @@ public abstract class AbstractJadexAgentBDI extends AbstractAgentBase {
 
     protected final IComponentStep<Void> LOOP_STEP = this::loopStep;
     protected IFuture<Void> loopStep(IInternalAccess access) {
-        loopAction();
-        nextStep();
+        onLoopAction();
+        nextAction();
         return IFuture.DONE;
     }
 }

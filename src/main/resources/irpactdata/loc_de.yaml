@@ -8,9 +8,9 @@ InGeneral_timeout:
   gams_identifier: "Timeout"
   gams_description: "Setzt den Timeout der Simulation in Millisekunden. Diese Einstellung dient dazu die Simulation zu beenden, falls sie unerwartet abstürzt. Im Laufe der Simulation wird der Timeout unentwegt zurück gesetzt. Sollte es zu einem unerwarteten Fehler kommen und die Rücksetzung ausbleiben, wird die Simulation abgebrochen und beendet. Werte kleiner 1 deaktivieren den Timeout vollständig."
   gams_unit: "[ms]"
-InGeneral_endYear:
-  gams_identifier: "[Testoption] Endjahr der Simulation"
-  gams_description: "Setzt das finale Jahr der Simulation. Wichtig: Der Wert ist inklusiv. Es wird dabei immer mindestens ein Jahr simuliert, auch wenn der Wert kleiner ist als das des Ausgangsjahres."
+InGeneral_lastSimulationYear:
+  gams_identifier: "[Spezialoption] Letzte zu simulierende Jahr"
+  gams_description: "([Wichtig] Diese Option darf nur bei puren IRPact-Aufrufen (keine Modellkopplungen) genutzt werden, da sonst die Zeitkonsistenz verletzt wird!) Setzt das letzte zu simulierende Jahr der Simulation. Es wird dabei immer mindestens ein Jahr simuliert. Sollte der Wert also kleiner sein als das Ausgangsjahr, so wird dennoch das Ausgangsjahr simuliert. Beispiel: Ist das Ausgangsjahr = 2010 und letzte Simulationsjahr = 2013, dann werden die Jahre 2010, 2011, 2012 und 2013 simuliert."
 
 logging:
   edn_label: "Logging"
@@ -62,6 +62,26 @@ InGeneral_logInterestUpdate:
 InGeneral_logShareNetworkLocal:
   gams_identifier: "Gibt die globalen und lokalen Anteile aus [SNL]"
   gams_description: "Gibt an, ob die globalen und lokalen Adopteranteile ausgegeben werden sollen."
+  gams_domain: "[0|1]"
+
+logging_result:
+  edn_label: "Ausgabe von Dateninformationen"
+  edn_description: "Ermöglicht es spezielle Loggingoptionen einzustellen."
+InGeneral_logResultGroupedByZip:
+  gams_identifier: "Ergebnisausgabe nach PLZ?"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus."
+  gams_domain: "[0|1]"
+InGeneral_logResultGroupedByMilieu:
+  gams_identifier: "Ergebnisausgabe nach Milieu?"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem Milieu aus."
+  gams_domain: "[0|1]"
+InGeneral_logResultGroupedByZipAndMilieu:
+  gams_identifier: "Ergebnisausgabe nach PLZ und Milieu?"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ und dem Milieu (in dieser Reihenfolge) aus."
+  gams_domain: "[0|1]"
+InGeneral_logProductAdoptions:
+  gams_identifier: "Ausgabe Adoptionszeitpunkte"
+  gams_description: "Gibt für alle Adoptionen mit ihren Zeitpunkten aus."
   gams_domain: "[0|1]"
 
 special_settings:

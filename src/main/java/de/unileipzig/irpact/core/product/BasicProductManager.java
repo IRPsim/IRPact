@@ -44,7 +44,7 @@ public class BasicProductManager implements ProductManager {
     public void postAgentCreation() {
         for(ProductGroup pg: getGroups()) {
             for(Product fp : pg.getProducts()) {
-                LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "make product '{}' known in simulation", fp.getName());
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "make product '{}' known in simulation", fp.getName());
                 makeKnownInSimulation(fp);
             }
         }

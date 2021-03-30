@@ -6,8 +6,8 @@ import de.unileipzig.irpact.core.log.IRPLevel;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.SectionLoggingFilter;
-import de.unileipzig.irpact.core.simulation.BasicInitializationData;
-import de.unileipzig.irpact.core.simulation.InitializationData;
+import de.unileipzig.irpact.core.simulation.BasicSettings;
+import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -44,7 +44,7 @@ public class InGeneral {
 
         addEntry(res, thisClass(), "seed");
         addEntry(res, thisClass(), "timeout");
-        addEntry(res, thisClass(), "endYear");
+        addEntry(res, thisClass(), "lastSimulationYear");
 
         putFieldPathAndAddEntry(res, thisClass(), "logLevel", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
         putFieldPathAndAddEntry(res, thisClass(), "logAll", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
@@ -57,6 +57,11 @@ public class InGeneral {
         putFieldPathAndAddEntry(res, thisClass(), "logRelativeAgreement", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
         putFieldPathAndAddEntry(res, thisClass(), "logInterestUpdate", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
         putFieldPathAndAddEntry(res, thisClass(), "logShareNetworkLocal", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+
+        putFieldPathAndAddEntry(res, thisClass(), "logResultGroupedByZip", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
+        putFieldPathAndAddEntry(res, thisClass(), "logResultGroupedByMilieu", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
+        putFieldPathAndAddEntry(res, thisClass(), "logResultGroupedByZipAndMilieu", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
+        putFieldPathAndAddEntry(res, thisClass(), "logProductAdoptions", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
 
         putFieldPathAndAddEntry(res, thisClass(), "runOptActDemo", GENERAL_SETTINGS, SPECIAL_SETTINGS);
         putFieldPathAndAddEntry(res, thisClass(), "runPVAct", GENERAL_SETTINGS, SPECIAL_SETTINGS);
@@ -72,11 +77,10 @@ public class InGeneral {
     @FieldDefinition
     public long timeout;
 
-    //fuer den anderen Spec
-    public int startYear = -1;
+    public int firstSimulationYear = -1;
 
     @FieldDefinition
-    public int endYear;
+    public int lastSimulationYear;
 
     //=========================
     //flags
@@ -125,6 +129,22 @@ public class InGeneral {
 
     @FieldDefinition
     public boolean logShareNetworkLocal;
+
+    //=========================
+    //result logging
+    //=========================
+
+    @FieldDefinition
+    public boolean logResultGroupedByZip;
+
+    @FieldDefinition
+    public boolean logResultGroupedByMilieu;
+
+    @FieldDefinition
+    public boolean logResultGroupedByZipAndMilieu;
+
+    @FieldDefinition
+    public boolean logProductAdoptions;
 
     //=========================
     //dev logging
@@ -181,11 +201,16 @@ public class InGeneral {
         filter.add(logSpecificationConverter, IRPSection.SPECIFICATION_CONVERTER);
         filter.add(logJadexSystemOut, IRPSection.JADEX_SYSTEM_OUT);
 
-        InitializationData initData = parser.getEnvironment().getInitializationData();
+        Settings initData = parser.getEnvironment().getSettings();
         initData.setLogGraphUpdate(logGraphUpdate);
         initData.setLogRelativeAgreement(logRelativeAgreement);
         initData.setLogInterestUpdate(logInterestUpdate);
         initData.setLogShareNetworkLocale(logShareNetworkLocal);
+
+        initData.setLogResultGroupedByZip(logResultGroupedByZip);
+        initData.setLogResultGroupedByMilieu(logResultGroupedByMilieu);
+        initData.setLogResultGroupedByZipAndMilieu(logResultGroupedByZipAndMilieu);
+        initData.setLogProductAdoptions(logProductAdoptions);
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "logging sections: {}", filter.getSections());
     }
@@ -205,7 +230,7 @@ public class InGeneral {
 
     private void parseLifeCycleControl(InputParser parser) {
         BasicJadexLifeCycleControl lifeCycleControl = (BasicJadexLifeCycleControl) parser.getEnvironment().getLiveCycleControl();
-        BasicInitializationData initData = (BasicInitializationData) parser.getEnvironment().getInitializationData();
+        BasicSettings initData = (BasicSettings) parser.getEnvironment().getSettings();
         if(timeout < 1L) {
             LOGGER.info(IRPSection.INITIALIZATION_PARAMETER, "timeout disabled");
         } else {
@@ -213,8 +238,8 @@ public class InGeneral {
         }
         lifeCycleControl.setKillSwitchTimeout(timeout);
 
-        initData.setStartYear(startYear);
-        initData.setEndYear(endYear);
-        LOGGER.info(IRPSection.INITIALIZATION_PARAMETER, "custom endyear: {}", endYear);
+        initData.setFirstSimulationYear(firstSimulationYear);
+        initData.setLastSimulationYear(lastSimulationYear);
+        LOGGER.info(IRPSection.INITIALIZATION_PARAMETER, "last simulation year: {}", lastSimulationYear);
     }
 }

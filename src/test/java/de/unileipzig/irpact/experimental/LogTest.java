@@ -18,7 +18,7 @@ class LogTest {
         Logback.setupConsole();
         Logger logger = LoggerFactory.getLogger(LogTest.class);
         logger.trace("trace");
-        logger.debug("debug");
+        logger.trace("debug");
         logger.info("info");
         logger.warn("warn");
         logger.error("error");
@@ -27,7 +27,7 @@ class LogTest {
         System.out.println("---");
 
         logger.trace("trace");
-        logger.debug("debug");
+        logger.trace("debug");
         logger.info("info");
         logger.warn("warn");
         logger.error("error");

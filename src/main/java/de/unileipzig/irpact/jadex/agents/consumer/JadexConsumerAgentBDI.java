@@ -105,7 +105,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     protected void searchSimulationService() {
         JadexUtil2.searchPlatformServices(reqFeature, SimulationService.class, result -> {
             if(simulationService == null) {
-                log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] SimulationService found", getName());
+                log().trace(IRPSection.INITIALIZATION_PLATFORM, "[{}] SimulationService found", getName());
                 simulationService = result;
                 setupAgent();
             }
@@ -125,19 +125,19 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     protected void onInit() {
         initData();
-        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] init", getName());
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] init", getName());
         searchSimulationService();
     }
 
     @Override
     protected void onStart() {
-        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] start", getName());
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] start", getName());
         scheduleFirstAction();
     }
 
     @Override
     protected void onEnd() {
-        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] end", getName());
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] end", getName());
         proxyAgent.unsync(this);
     }
 
@@ -225,34 +225,6 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
 
         needs.add(need);
         handleNewNeed(need, true);
-    }
-
-    protected void handleNewNeed(Need need, boolean initial) {
-        Product product = productFindingScheme.findProduct(getThisAgent(), need);
-        if(product == null) {
-            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] no product found for need '{}'", getName(), need.getName());
-            return;
-        }
-        if(hasInitialAdopted(product)) {
-            needs.remove(need);
-            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] product='{}' initally adoped", getName(), product.getName());
-            return;
-        }
-
-        ProcessModel model = processFindingScheme.findModel(product);
-        if(model == null) {
-            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] no process model found for product '{}'", getName(), product.getName());
-            return;
-        }
-
-        ProcessPlan plan = model.newPlan(getThisAgent(), need, product);
-        if(plan == null) {
-            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] no process plan found for product '{}' and need '{}'", getName(), product.getName(), need.getName());
-            return;
-        }
-
-        addPlan(need, plan);
-        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] added plan for need='{}' and product='{}'", getName(), need.getName(), product.getName());
     }
 
     protected void addAllPlans(Map<Need, ProcessPlan> plans) {
@@ -575,21 +547,22 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     protected void firstAction() {
         //bdiFeature.dispatchTopLevelGoal(new ProcessExecutionGoal(null, null));
-        log().debug("[{}] start loop", getName());
+        log().trace("[{}] start loop", getName());
         scheduleLoop();
     }
 
     @Override
-    protected void loopAction() {
-        resetOnNewAction();
-        log().trace(IRPSection.SIMULATION_AGENT, "[{}] loop @ {}", getName(), now());
+    protected void onLoopAction() {
+        //vor allen anderen checks
+        waitForYearChangeIfRequired();
+        log().trace(IRPSection.SIMULATION_AGENT, "[{}] start next action ({})", getName(), now());
 
-        //log().trace(IRPSection.SIMULATION_AGENT, "[{}] pre sync @ {}", getName(), now());
+        resetOnNewAction();
+
         waitForSynchronisationIfRequired();
-        //log().trace(IRPSection.SIMULATION_AGENT, "[{}] post sync @ {}", getName(), now());
 
         for(ProcessPlan plan: getPlans().values())  {
-            plan.execute();
+            executePlan(plan);
         }
     }
     
@@ -602,76 +575,108 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     //new need
     //=========================
 
-    @Goal
-    public class FindProcessForNeedGoal {
+//    @Goal
+//    public class FindProcessForNeedGoal {
+//
+//        protected Need need;
+//
+//        public FindProcessForNeedGoal(Need need) {
+//            this.need = need;
+//        }
+//
+//        public Need getNeed() {
+//            return need;
+//        }
+//    }
+//
+//    @Plan(trigger = @Trigger(goals = FindProcessForNeedGoal.class))
+//    protected void handleNewNeed(FindProcessForNeedGoal goal) throws PlanFailureException {
+//        Need need = goal.getNeed();
+//        Product product = productFindingScheme.findProduct(getThisAgent(), need);
+//        if(product == null) {
+//            throw new PlanFailureException();
+//        }
+//        ProcessModel model = processFindingScheme.findModel(product);
+//        if(model == null) {
+//            throw new PlanFailureException();
+//        }
+//        ProcessPlan plan = model.newPlan(getThisAgent(), need, product);
+//        plans.put(need, plan);
+//        bdiFeature.dispatchTopLevelGoal(new ProcessExecutionGoal(need, plan));
+//    }
 
-        protected Need need;
-
-        public FindProcessForNeedGoal(Need need) {
-            this.need = need;
-        }
-
-        public Need getNeed() {
-            return need;
-        }
-    }
-
-    @Plan(trigger = @Trigger(goals = FindProcessForNeedGoal.class))
-    protected void handleNewNeed(FindProcessForNeedGoal goal) throws PlanFailureException {
-        Need need = goal.getNeed();
+    protected void handleNewNeed(Need need, boolean initial) {
         Product product = productFindingScheme.findProduct(getThisAgent(), need);
         if(product == null) {
-            throw new PlanFailureException();
+            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] no product found for need '{}'", getName(), need.getName());
+            return;
         }
+        if(hasInitialAdopted(product)) {
+            needs.remove(need);
+            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] product='{}' initally adoped", getName(), product.getName());
+            return;
+        }
+
         ProcessModel model = processFindingScheme.findModel(product);
         if(model == null) {
-            throw new PlanFailureException();
+            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] no process model found for product '{}'", getName(), product.getName());
+            return;
         }
+
         ProcessPlan plan = model.newPlan(getThisAgent(), need, product);
-        plans.put(need, plan);
-        bdiFeature.dispatchTopLevelGoal(new ProcessExecutionGoal(need, plan));
+        if(plan == null) {
+            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] no process plan found for product '{}' and need '{}'", getName(), product.getName(), need.getName());
+            return;
+        }
+
+        addPlan(need, plan);
+        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] added plan for need='{}' and product='{}'", getName(), need.getName(), product.getName());
     }
 
     //=========================
     //new plan
     //=========================
 
-    //@Goal(excludemode = MProcessableElement.ExcludeMode.WhenSucceeded, retry = true, retrydelay = 1)
-    @Goal
-    public class ProcessExecutionGoal {
-
-        protected Need need;
-        protected ProcessPlan plan;
-
-        public ProcessExecutionGoal(Need need, ProcessPlan plan) {
-            this.need = need;
-            this.plan = plan;
-        }
-
-        public Need getNeed() {
-            return need;
-        }
-
-        public ProcessPlan getPlan() {
-            return plan;
-        }
-    }
-
-    @Plan(trigger = @Trigger(goals = ProcessExecutionGoal.class))
-    protected void handleProcessExecution(ProcessExecutionGoal goal) {
-        log().debug("[{}] @ {} ({})", getName(), now(), System.identityHashCode(now()));
-        log().debug("[{}] pre sync", getName());
-        waitForSynchronisationIfRequired();
-        log().debug("[{}] post sync", getName());
-//        ProcessPlan plan = goal.getPlan();
-//        ProcessPlanResult result = plan.execute();
-//        switch(result) {
-//            case ADOPTED:
-//                break;
+//    //@Goal(excludemode = MProcessableElement.ExcludeMode.WhenSucceeded, retry = true, retrydelay = 1)
+//    @Goal
+//    public class ProcessExecutionGoal {
 //
-//            case IN_PROCESS:
-//            default:
-//                throw new PlanFailureException();
+//        protected Need need;
+//        protected ProcessPlan plan;
+//
+//        public ProcessExecutionGoal(Need need, ProcessPlan plan) {
+//            this.need = need;
+//            this.plan = plan;
 //        }
+//
+//        public Need getNeed() {
+//            return need;
+//        }
+//
+//        public ProcessPlan getPlan() {
+//            return plan;
+//        }
+//    }
+//
+//    @Plan(trigger = @Trigger(goals = ProcessExecutionGoal.class))
+//    protected void handleProcessExecution(ProcessExecutionGoal goal) {
+//        log().trace("[{}] @ {} ({})", getName(), now(), System.identityHashCode(now()));
+//        log().trace("[{}] pre sync", getName());
+//        waitForSynchronisationIfRequired();
+//        log().trace("[{}] post sync", getName());
+////        ProcessPlan plan = goal.getPlan();
+////        ProcessPlanResult result = plan.execute();
+////        switch(result) {
+////            case ADOPTED:
+////                break;
+////
+////            case IN_PROCESS:
+////            default:
+////                throw new PlanFailureException();
+////        }
+//    }
+
+    protected void executePlan(ProcessPlan plan) {
+        plan.execute();
     }
 }

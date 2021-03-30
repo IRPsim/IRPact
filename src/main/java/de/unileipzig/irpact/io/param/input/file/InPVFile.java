@@ -70,9 +70,9 @@ public class InPVFile implements InFile {
             PVFileLoader pvLoader = new PVFileLoader();
             pvLoader.setLoader(parser.getResourceLoader());
             pvLoader.setInputFileName(fileName);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "try load '{}'", fileName);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "try load '{}'", fileName);
             pvLoader.initalize();
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "loading finished");
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "loading finished");
             return pvLoader.getData();
         } catch (Exception e) {
             throw new ParsingException(e);

@@ -64,7 +64,7 @@ public class InBooleanDistribution implements InUnivariateDoubleDistribution {
         dist.setName(getName());
         Rnd rnd = parser.deriveRnd();
         dist.setRandom(rnd);
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "BooleanDistribution '{}' uses seed: {}", getName(), rnd.getInitialSeed());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "BooleanDistribution '{}' uses seed: {}", getName(), rnd.getInitialSeed());
         return dist;
     }
 

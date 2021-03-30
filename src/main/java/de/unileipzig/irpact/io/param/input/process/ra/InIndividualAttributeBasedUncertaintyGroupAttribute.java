@@ -92,7 +92,7 @@ public class InIndividualAttributeBasedUncertaintyGroupAttribute implements InUn
                             uncert
                     )
             );
-            LOGGER.debug(
+            LOGGER.trace(
                     IRPSection.INITIALIZATION_PARAMETER,
                     "add UncertaintySupplier for group '{}', attribute '{}', uncertainity '{}'",
                     cag.getName(),

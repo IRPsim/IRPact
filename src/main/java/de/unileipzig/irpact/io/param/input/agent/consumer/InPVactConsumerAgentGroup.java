@@ -109,6 +109,14 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
     @FieldDefinition
     public InSpatialDistribution[] spatialDistribution;
 
+    //=========================
+    //toy model parameter
+    //=========================
+
+    public InUnivariateDoubleDistribution a1;
+    public InUnivariateDoubleDistribution a5;
+    public InUnivariateDoubleDistribution a6;
+
     public InPVactConsumerAgentGroup() {
     }
 
@@ -274,9 +282,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         }
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse InPVactConsumerAgentGroup '{}'", jcag.getName());
         if(parser.getRoot().addConsumerAgentGroup(this)) {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added InPVactConsumerAgentGroup '{}' to InRoot", getName());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added InPVactConsumerAgentGroup '{}' to InRoot", getName());
             agentManager.addConsumerAgentGroup(jcag);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added JadexConsumerAgentGroup '{}'", jcag.getName());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added JadexConsumerAgentGroup '{}'", jcag.getName());
         }
 
         addGroupAttribute(parser, jcag, getNoveltySeeking(), NOVELTY_SEEKING);
@@ -331,7 +339,7 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         BasicConsumerAgentGroupAttribute cagAttr = new BasicConsumerAgentGroupAttribute();
         cagAttr.setName(name);
         cagAttr.setUnivariateDoubleDistributionValue(dist);
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "add ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), cagAttr.getName(), jcag.getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), cagAttr.getName(), jcag.getName());
         jcag.addGroupAttribute(cagAttr);
     }
 }

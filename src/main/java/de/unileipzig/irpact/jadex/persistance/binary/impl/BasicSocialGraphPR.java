@@ -59,9 +59,9 @@ public class BasicSocialGraphPR extends BinaryPRBase<BasicSocialGraph> {
                 typeEdgeCount++;
                 totalEdgeCount++;
             }
-            log().debug("stores {} edges (type = {})", typeEdgeCount, type);
+            log().trace("stores {} edges (type = {})", typeEdgeCount, type);
         }
-        log().debug("total edges stored: {}", totalEdgeCount);
+        log().trace("total edges stored: {}", totalEdgeCount);
     }
 
     //=========================

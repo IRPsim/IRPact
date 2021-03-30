@@ -60,14 +60,14 @@ public class PVFileLoader {
         String xlsxFile = inputFileName + ".xlsx";
         if(loader.hasPath(xlsxFile)) {
             Path xlsxPath = loader.get(xlsxFile);
-            LOGGER.debug("load xlsx file '{}'", xlsxPath);
+            LOGGER.trace("load xlsx file '{}'", xlsxPath);
             try(InputStream in = Files.newInputStream(xlsxPath)) {
                 data = parseXlsx(in);
             }
             return;
         }
         if(loader.hasResource(xlsxFile)) {
-            LOGGER.debug("load xlsx resource '{}'", xlsxFile);
+            LOGGER.trace("load xlsx resource '{}'", xlsxFile);
             try(InputStream in = loader.getResourceAsStream(xlsxFile)) {
                 data = parseXlsx(in);
             }

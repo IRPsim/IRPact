@@ -154,7 +154,7 @@ public class InCustomFileSelectedGroupedSpatialDistribution2D implements InSpati
         String groupingKey = getGroupKey().getName();
         SpatialTableFileContent attrList = parser.parseEntityTo(getFile());
         Rnd rnd = parser.deriveRnd();
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "InCustomSelectedSpatialDistribution2D '{}' uses seed: {}", getName(), rnd.getInitialSeed());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "InCustomSelectedSpatialDistribution2D '{}' uses seed: {}", getName(), rnd.getInitialSeed());
 
         WeightedDiscreteSpatialDistribution dist = createInstance(
                 getName(),

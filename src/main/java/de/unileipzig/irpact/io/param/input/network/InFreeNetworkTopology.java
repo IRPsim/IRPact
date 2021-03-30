@@ -126,7 +126,7 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
 
         DistanceEvaluator distEval = parser.parseEntityTo(getDistanceEvaluator());
         Rnd rnd = parser.deriveRnd();
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "FreeNetworkTopology '{}' uses seed: {}", getName(), rnd.getInitialSeed());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "FreeNetworkTopology '{}' uses seed: {}", getName(), rnd.getInitialSeed());
 
         return new FreeNetworkTopology(
                 SocialGraph.Type.COMMUNICATION,

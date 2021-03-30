@@ -64,9 +64,11 @@ public final class BinaryJsonUtil {
         ensureRegister(manager, RAProcessModelPR.INSTANCE);
         ensureRegister(manager, RAProcessPlanPR.INSTANCE);
         ensureRegister(manager, RndPR.INSTANCE);
+        ensureRegister(manager, SimpleTimeAdvanceFunctionPR.INSTANCE);
         ensureRegister(manager, Space2DPR.INSTANCE);
         ensureRegister(manager, SpatialDoubleAttributeBasePR.INSTANCE);
         ensureRegister(manager, SpatialStringAttributeBasePR.INSTANCE);
+        ensureRegister(manager, UnitStepDiscreteTimeModelPR.INSTANCE);
         ensureRegister(manager, UnlinkedGraphTopologyPR.INSTANCE);
         ensureRegister(manager, WeightedDiscreteSpatialDistributionPR.INSTANCE);
     }

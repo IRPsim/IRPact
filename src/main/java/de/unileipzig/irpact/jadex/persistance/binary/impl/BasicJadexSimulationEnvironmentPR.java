@@ -3,6 +3,7 @@ package de.unileipzig.irpact.jadex.persistance.binary.impl;
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
+import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -16,7 +17,7 @@ import de.unileipzig.irpact.core.product.BasicProductManager;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.simulation.BasicBinaryTaskManager;
-import de.unileipzig.irpact.core.simulation.BasicInitializationData;
+import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -49,6 +50,10 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
         BinaryJsonData data = initData(object, manager);
 
         //===
+        Settings settings = object.getSettings();
+        data.putInt(settings.getCurrentRun());
+        data.putInt(settings.getLastSimulationYear());
+        //===
         AgentManager am = object.getAgents();
         manager.prepareAll(am.getConsumerAgentGroups());
         manager.prepare(am.getConsumerAgentGroupAffinityMapping());
@@ -79,6 +84,7 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
 
     @Override
     protected void doSetupPersist(BasicJadexSimulationEnvironment object, BinaryJsonData data, PersistManager manager) {
+        //===
         AgentManager am = object.getAgents();
         data.putLongArray(manager.ensureGetAllUIDs(am.getConsumerAgentGroups()));
         data.putLong(manager.ensureGetUID(am.getConsumerAgentGroupAffinityMapping()));
@@ -114,6 +120,11 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
         BasicJadexSimulationEnvironment environment = new BasicJadexSimulationEnvironment();
         environment.setName("Restored_Environment");
         environment.initDefault();
+        //===
+        Settings settings = environment.getSettings();
+        settings.setNumberOfPreviousRuns(data.getInt());
+        settings.setLastSimulationYearOfPreviousRun(data.getInt());
+        //===
         return environment;
     }
 
@@ -186,26 +197,28 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
 
     @Override
     protected void doFinalizeRestore(BinaryJsonData data, BasicJadexSimulationEnvironment object, RestoreManager manager) throws RestoreException {
-        BasicJadexSimulationEnvironment initial = manager.getInitialInstance();
-        setupInitializationData(initial, object);
-
         manager.setRestoredInstance(object);
+
+        replaceConsumerAgentGroupsInSettings(
+                manager.getInitialInstance(),
+                manager.getRestoredInstance()
+        );
     }
 
-    private void setupInitializationData(BasicJadexSimulationEnvironment initial, BasicJadexSimulationEnvironment restored) throws RestoreException {
-        BasicInitializationData initialData = (BasicInitializationData) initial.getInitializationData();
-        BasicInitializationData restoredData = (BasicInitializationData) restored.getInitializationData();
+    protected void replaceConsumerAgentGroupsInSettings(
+            BasicJadexSimulationEnvironment initial,
+            BasicJadexSimulationEnvironment restored) throws RestoreException {
 
-        restoredData.copyFrom(initialData);
+        Settings initialSettings = initial.getSettings();
+        Settings restoredSettings = restored.getSettings();
 
-        //cags manuell, da andere instanz (initialCag.syshash != restoredCag,syshash)
         for(ConsumerAgentGroup initialCag: initial.getAgents().getConsumerAgentGroups()) {
             ConsumerAgentGroup restoredCag = restored.getAgents().getConsumerAgentGroup(initialCag.getName());
             if(restoredCag == null) {
-                throw new RestoreException("restored cag '" + initialCag.getName() + "' not found");
+                throw ExceptionUtil.create(RestoreException::new, "restored cag '{}' not found", initialCag.getName());
             }
-            int initialCount = initialData.getInitialNumberOfConsumerAgents(initialCag);
-            restoredData.setInitialNumberOfConsumerAgents(restoredCag, initialCount);
+            int initialCount = initialSettings.getInitialNumberOfConsumerAgents(initialCag);
+            restoredSettings.setInitialNumberOfConsumerAgents(restoredCag, initialCount);
         }
     }
 }

@@ -2,6 +2,7 @@ package de.unileipzig.irpact.jadex.time;
 
 import de.unileipzig.irpact.commons.time.ContinuousConverter;
 import de.unileipzig.irpact.commons.time.TimeMode;
+import de.unileipzig.irpact.develop.TodoException;
 import jadex.bridge.IComponentStep;
 import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IExecutionFeature;
@@ -51,11 +52,6 @@ public class ContinuousTimeModel extends AbstractJadexTimeModel {
 
     @Override
     public void setupTimeModel() {
-        throw new RuntimeException("TODO");
-    }
-
-    @Override
-    public void setupNextYear() {
         throw new RuntimeException("TODO");
     }
 
@@ -151,12 +147,12 @@ public class ContinuousTimeModel extends AbstractJadexTimeModel {
     }
 
     @Override
-    public int getStartYear() {
+    public int getFirstSimulationYear() {
         throw new RuntimeException("TODO");
     }
 
     @Override
-    public int getEndYearInclusive() {
+    public int getLastSimulationYear() {
         throw new RuntimeException("TODO");
     }
 
@@ -164,5 +160,15 @@ public class ContinuousTimeModel extends AbstractJadexTimeModel {
     public boolean isValid(long delay) {
         delay = Math.max(delay, 0L);
         return delay < delayUntilEnd;
+    }
+
+    @Override
+    public boolean hasYearChange() {
+        throw new TodoException();
+    }
+
+    @Override
+    public void performYearChange() {
+        throw new TodoException();
     }
 }

@@ -99,6 +99,10 @@ public class InUnitStepDiscreteTimeModel implements InTimeModel {
         return _name;
     }
 
+    public void setName(String name) {
+        this._name = name;
+    }
+
     public void setAmountOfTime(long amountOfTime) {
         this.amountOfTime = amountOfTime;
     }

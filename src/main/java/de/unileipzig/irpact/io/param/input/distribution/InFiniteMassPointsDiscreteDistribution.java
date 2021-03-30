@@ -89,7 +89,7 @@ public class InFiniteMassPointsDiscreteDistribution implements InUnivariateDoubl
 
         Rnd rnd = parser.deriveRnd();
         dist.setRandom(rnd);
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "FiniteMassPointsDiscreteDistribution '{}' uses seed: {}", getName(), rnd.getInitialSeed());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "FiniteMassPointsDiscreteDistribution '{}' uses seed: {}", getName(), rnd.getInitialSeed());
 
         dist.init();
         return dist;

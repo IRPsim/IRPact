@@ -61,7 +61,7 @@ public abstract class BinaryPRBase<T> implements Persister<T>, Restorer<T> {
         if(object instanceof ChecksumComparable) {
             data.putInt(((ChecksumComparable) object).getChecksum());
         } else {
-            log().debug("type '{}' not hashable", object.getClass().getName());
+            log().trace("type '{}' not hashable", object.getClass().getName());
         }
     }
 
@@ -118,7 +118,7 @@ public abstract class BinaryPRBase<T> implements Persister<T>, Restorer<T> {
                 onHashMismatch(data, object, manager);
             }
         } else {
-            log().debug("type '{}' not hashable", object.getClass().getName());
+            log().trace("type '{}' not hashable", object.getClass().getName());
         }
     }
 

@@ -19,7 +19,7 @@ import de.unileipzig.irpact.core.process.FixProcessModelFindingScheme;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.product.*;
 import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
-import de.unileipzig.irpact.core.simulation.BasicInitializationData;
+import de.unileipzig.irpact.core.simulation.BasicSettings;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.simulation.BinaryTaskManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
@@ -174,19 +174,19 @@ public class JadexInputParser implements InputParser {
     }
 
     private static void debug(String msg) {
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, msg);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, msg);
     }
 
     private static void debug(String format, Object arg) {
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, format, arg);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, format, arg);
     }
 
     private static void debug(String format, Object arg1, Object arg2) {
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, format, arg1, arg2);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, format, arg1, arg2);
     }
 
     private static void debug(String format, Object... args) {
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, format, args);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, format, args);
     }
 
     //=========================
@@ -293,7 +293,7 @@ public class JadexInputParser implements InputParser {
             return;
         }
 
-        BasicInitializationData initData = (BasicInitializationData) environment.getInitializationData();
+        BasicSettings initData = (BasicSettings) environment.getSettings();
 
         for(InPopulationSize popSize: root.getAgentPopulationSizes()) {
             popSize.setup(this, initData);
@@ -383,7 +383,7 @@ public class JadexInputParser implements InputParser {
     //=========================
 
     private void initPVact() throws ParsingException {
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} initalize", InfoTag.PVACT);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} initalize", InfoTag.PVACT);
 
         createPVProductGroup();
         addProcessModelFindingScheme();
@@ -404,7 +404,7 @@ public class JadexInputParser implements InputParser {
         //Attribute?
 
         productManager.add(pvGroup);
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} add ProductGroup '{}'", InfoTag.PVACT, pvGroup.getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} add ProductGroup '{}'", InfoTag.PVACT, pvGroup.getName());
 
         createFixPVProductAndFindingScheme(pvGroup);
     }
@@ -420,7 +420,7 @@ public class JadexInputParser implements InputParser {
         //Attribute?
 
         pvGroup.addProduct(pvFix);
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} add fix product '{}' to group '{}'",InfoTag.PVACT, pvFix.getName(), pvGroup.getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} add fix product '{}' to group '{}'",InfoTag.PVACT, pvFix.getName(), pvGroup.getName());
 
         FixProductFindingScheme findingScheme = new FixProductFindingScheme();
         findingScheme.setName(pvFix.getName() + "_" + "FindingScheme");
@@ -431,7 +431,7 @@ public class JadexInputParser implements InputParser {
                 throw new ParsingException(InfoTag.PVACT + " cag '" + cag.getName() + "' already has a ProductFindingScheme");
             }
             ((JadexConsumerAgentGroup) cag).setProductFindingScheme(findingScheme);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} set ProductFindingScheme '{}' to '{}'", InfoTag.PVACT, findingScheme.getName(), cag.getName());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} set ProductFindingScheme '{}' to '{}'", InfoTag.PVACT, findingScheme.getName(), cag.getName());
         }
 
         initProductGroupRelatedAttributes(pvGroup);
@@ -504,18 +504,18 @@ public class JadexInputParser implements InputParser {
                 throw new ParsingException(InfoTag.PVACT + " cag '" + cag.getName() + "' already has a ProcessFindingScheme");
             }
             ((JadexConsumerAgentGroup) cag).setProcessFindingScheme(findingScheme);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} set ProcessFindingScheme '{}' to '{}'", InfoTag.PVACT, findingScheme.getName(), cag.getName());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} set ProcessFindingScheme '{}' to '{}'", InfoTag.PVACT, findingScheme.getName(), cag.getName());
         }
     }
 
     private void addInitialPVNeed() {
         BasicNeed pvNeed = new BasicNeed("PV");
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} create initial pv need: '{}'", InfoTag.PVACT, pvNeed.getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} create initial pv need: '{}'", InfoTag.PVACT, pvNeed.getName());
         AgentManager agentManager = environment.getAgents();
         for(ConsumerAgentGroup cag: agentManager.getConsumerAgentGroups()) {
             JadexConsumerAgentGroup jcag = (JadexConsumerAgentGroup) cag;
             jcag.addInitialNeed(pvNeed);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} add initial pv need '{}' to cag '{}'", InfoTag.PVACT, pvNeed.getName(), jcag.getName());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} add initial pv need '{}' to cag '{}'", InfoTag.PVACT, pvNeed.getName(), jcag.getName());
         }
     }
 

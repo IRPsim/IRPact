@@ -79,12 +79,12 @@ public class BasicUncertaintyGroupAttributeSupplier extends NameableBase impleme
     public void addGroupAttributeTo(ConsumerAgentGroup cag) {
         String uncertName = RAConstants.getUncertaintyAttributeName(attrName);
         if(cag.hasGroupAttribute(uncertName)) {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "cag '{}' already has '{}'", cag.getName(), uncertName);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "cag '{}' already has '{}'", cag.getName(), uncertName);
             return;
         }
 
         UncertaintyGroupAttribute cagAttr = createAttribute(cag, uncertName, uncertDist, convDist, false);
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "add uncertainty attribute '{}' for '{}->{}'", cagAttr, cag.getName(), cagAttr.getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add uncertainty attribute '{}' for '{}->{}'", cagAttr, cag.getName(), cagAttr.getName());
         cag.addGroupAttribute(cagAttr);
     }
 
@@ -95,7 +95,7 @@ public class BasicUncertaintyGroupAttributeSupplier extends NameableBase impleme
             UnivariateDoubleDistribution conv,
             @SuppressWarnings("SameParameterValue") boolean autoAdjust) {
         if(conv == null) {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "create uncertainty '{}' with linked convergence '{}->{}'", uncert.getName(), cag.getName(), RAConstants.RATE_OF_CONVERGENCE);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create uncertainty '{}' with linked convergence '{}->{}'", uncert.getName(), cag.getName(), RAConstants.RATE_OF_CONVERGENCE);
             ConsumerAgentGroupAttribute cagConv = cag.getGroupAttribute(RAConstants.RATE_OF_CONVERGENCE);
             if(cagConv == null) {
                 throw new NoSuchElementException("cag '" + cag.getName() + "' has no '" + RAConstants.RATE_OF_CONVERGENCE + "'");
@@ -108,7 +108,7 @@ public class BasicUncertaintyGroupAttributeSupplier extends NameableBase impleme
             cagAttr.setAutoAdjustment(autoAdjust);
             return cagAttr;
         } else {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "create uncertainty '{}' with convergence '{}'", uncert.getName(), conv.getName());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create uncertainty '{}' with convergence '{}'", uncert.getName(), conv.getName());
             UncertaintyWithConvergenceGroupAttribute cagAttr = new UncertaintyWithConvergenceGroupAttribute();
             cagAttr.setName(attrName);
             cagAttr.setUncertainty(uncert);

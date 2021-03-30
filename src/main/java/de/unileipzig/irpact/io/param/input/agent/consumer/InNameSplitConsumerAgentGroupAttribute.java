@@ -116,6 +116,6 @@ public class InNameSplitConsumerAgentGroupAttribute implements InIndependentCons
         cagAttr.setUnivariateDoubleDistributionValue(dist);
 
         cag.addGroupAttribute(cagAttr);
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), getName(), cag.getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), getName(), cag.getName());
     }
 }

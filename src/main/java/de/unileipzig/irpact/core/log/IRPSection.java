@@ -1,34 +1,56 @@
 package de.unileipzig.irpact.core.log;
 
 import de.unileipzig.irptools.start.IRPtools;
-import de.unileipzig.irptools.util.log.IRPLogger;
 import de.unileipzig.irptools.util.log.LoggingSection;
 
 /**
+ * Logging sections used in IRPact.
+ *
  * @author Daniel Abitz
  */
 public enum IRPSection implements LoggingSection {
-    /*
-     * Used for IRPTools.
+    /**
+     * For logging in IRPTools.
      */
     TOOLS_CORE,
+    /**
+     * For logging in IRPTools.
+     */
     TOOLS_DEFINITION,
+    /**
+     * For logging in IRPTools.
+     */
     TOOLS_UTIL,
 
-    /*
-     * Used in the initialization process.
-     * Set via input parameters.
+    /**
+     * This option is used for default logging operations.
+     */
+    GENERAL,
+
+    /**
+     * Used throughout the initialization.
      */
     INITIALIZATION_PARAMETER,
-    INITIALIZATION_AGENT,
+    /**
+     * Used in topologies.
+     */
     INITIALIZATION_NETWORK,
+    /**
+     * Used during platform creation.
+     */
     INITIALIZATION_PLATFORM,
 
-    /*
-     * Simulation
+    /**
+     * Used in all life cycle operations.
      */
-    SIMULATION_LICECYCLE,
+    SIMULATION_LIFECYCLE,
+    /**
+     * Used in agent operations during simulation.
+     */
     SIMULATION_AGENT,
+    /**
+     * Used in process model during simulation.
+     */
     SIMULATION_PROCESS,
 
     /*
@@ -36,23 +58,19 @@ public enum IRPSection implements LoggingSection {
      */
     SPECIFICATION_CONVERTER,
 
-    /*
-     * Outputspam
+    /**
+     * Used to log intern jadex informations.
      */
     JADEX_SYSTEM_OUT,
-
-    /*
-     * Tag-stuff
-     */
-    TAG_GRAPH_UPDATE,
-    TAG_RELATIVE_AGREEMENT,
-    TAG_INTEREST_UPDATE,
-    TAG_SHARE_NETWORK_LOCAL
     ;
 
     @Override
     public Class<IRPSection> getType() {
         return IRPSection.class;
+    }
+
+    public IRPSection orGeneral(boolean useGeneral) {
+        return useGeneral ? GENERAL : this;
     }
 
     public static void addAllNonToolsTo(SectionLoggingFilter filter) {
@@ -87,7 +105,6 @@ public enum IRPSection implements LoggingSection {
     public static void addInitialization(boolean add, SectionLoggingFilter filter) {
         if(add) {
             filter.add(INITIALIZATION_PARAMETER);
-            filter.add(INITIALIZATION_AGENT);
             filter.add(INITIALIZATION_PLATFORM);
             filter.add(INITIALIZATION_NETWORK);
         }
@@ -95,7 +112,7 @@ public enum IRPSection implements LoggingSection {
 
     public static void addSimulation(boolean add, SectionLoggingFilter filter) {
         if(add) {
-            filter.add(SIMULATION_LICECYCLE);
+            filter.add(SIMULATION_LIFECYCLE);
             filter.add(SIMULATION_AGENT);
             filter.add(SIMULATION_PROCESS);
         }

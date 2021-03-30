@@ -1,14 +1,20 @@
 package de.unileipzig.irpact.jadex.simulation;
 
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.exception.InitializationException;
+import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
+import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.SocialNetwork;
 import de.unileipzig.irpact.core.persistence.PersistenceModul;
 import de.unileipzig.irpact.core.process.BasicProcessModelManager;
@@ -33,7 +39,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicJadexSimulationEnvironment.class);
 
-    protected InitializationData initializationData;
+    protected Settings settings;
     protected AgentManager agentManager;
     protected SocialNetwork socialNetwork;
     protected ProcessModelManager processModelManager;
@@ -64,7 +70,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     }
 
     public void initDefault() {
-        BasicInitializationData initData = new BasicInitializationData();
+        BasicSettings initData = new BasicSettings();
         BasicAgentManager agentManager = new BasicAgentManager();
         BasicSocialNetwork socialNetwork = new BasicSocialNetwork();
         BasicProcessModelManager processModelManager = new BasicProcessModelManager();
@@ -99,12 +105,12 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     }
 
     @Override
-    public InitializationData getInitializationData() {
-        return initializationData;
+    public Settings getSettings() {
+        return settings;
     }
 
-    public void setInitializationData(InitializationData initializationData) {
-        this.initializationData = initializationData;
+    public void setInitializationData(Settings settings) {
+        this.settings = settings;
     }
 
     public void setAgentManager(AgentManager agentManager) {
@@ -223,14 +229,35 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     }
 
     @Override
-    public void initialize() throws MissingDataException {
-        agentManager.initialize();
-        socialNetwork.initialize();
-        productManager.initialize();
-        processModelManager.initialize();
-        spatialModel.initialize();
-        timeModel.initialize();
-        lifeCycleControl.initialize();
+    public void createAgents() throws InitializationException {
+        SocialGraph graph = getNetwork().getGraph();
+        for(ConsumerAgentGroup cag: agentManager.getConsumerAgentGroups()) {
+            int numberOfAgents = settings.getInitialNumberOfConsumerAgents(cag);
+            int currentNumberOfAgents = cag.getNumberOfAgents();
+            int agentsToCreate = Math.max(numberOfAgents - currentNumberOfAgents, 0);
+            if(agentsToCreate > 0) {
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create {} agents for group '{}'", agentsToCreate, cag.getName());
+                for(int i = 0; i < agentsToCreate; i++) {
+                    ConsumerAgent ca = cag.deriveAgent();
+
+                    if(ca.getSocialGraphNode() != null) {
+                        throw ExceptionUtil.create(InitializationException::new, "agent '{}' already has graph node", ca.getName());
+                    }
+                    if(graph.hasNode(ca)) {
+                        throw ExceptionUtil.create(InitializationException::new, "graph node for agent '{}' already exists", ca.getName());
+                    }
+                    if(!cag.addAgent(ca)) {
+                        throw ExceptionUtil.create(InitializationException::new, "adding agent '{}' failed, name already exists", ca.getName());
+                    }
+
+                    SocialGraph.Node node = graph.addAgentAndGetNode(ca);
+                    ca.setSocialGraphNode(node);
+                    LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added agent '{}' to group '{}'", ca.getName(), cag.getName());
+                }
+            } else {
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create no agents for group '{}'", cag.getName());
+            }
+        }
     }
 
     @Override
@@ -276,7 +303,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         timeModel.preSimulationStart();
         lifeCycleControl.preSimulationStart();
         //==
-        LOGGER.debug("enable sync mode for master rnd");
+        LOGGER.trace("enable sync mode for master rnd");
         rnd.enableSync();
     }
 }

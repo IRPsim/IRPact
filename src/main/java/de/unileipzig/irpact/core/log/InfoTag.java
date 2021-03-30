@@ -10,6 +10,8 @@ public final class InfoTag {
     public static final String INTEREST_UPDATE = "[IU]";
     public static final String GRAPH_UPDATE = "[GU]";
     public static final String TAG_SHARE_NETORK_LOCAL = "[SNL]";
+    public static final String NON_FATAL_ERROR = "[NFE]";
+    public static final String FATAL_ERROR = "[FE]";
 
     private InfoTag() {
     }

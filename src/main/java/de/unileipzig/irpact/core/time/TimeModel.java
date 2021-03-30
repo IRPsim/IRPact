@@ -18,19 +18,17 @@ public interface TimeModel extends Nameable, InitalizablePart {
      */
     void setupTimeModel();
 
-    void setupNextYear();
-
     TimeMode getMode();
 
     Timestamp convert(ZonedDateTime zdt);
 
-    int getYear();
+    int getCurrentYear();
 
     Timestamp now();
 
-    int getStartYear();
+    int getFirstSimulationYear();
 
-    int getEndYearInclusive();
+    int getLastSimulationYear();
 
     Timestamp startTime();
 
@@ -41,6 +39,10 @@ public interface TimeModel extends Nameable, InitalizablePart {
     boolean isValid(Timestamp ts);
 
     boolean endTimeReached();
+
+    boolean hasYearChange();
+
+    void performYearChange();
 
     //=========================
     //util

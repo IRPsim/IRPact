@@ -71,10 +71,10 @@ public class InSpatialTableFile implements InFile {
             SpatialTableFileLoader gisLoader = new SpatialTableFileLoader();
             gisLoader.setLoader(parser.getResourceLoader());
             gisLoader.setInputFileName(fileName);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "try load '{}'", fileName);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "try load '{}'", fileName);
             gisLoader.initalize();
             SpatialTableFileContent spatialData = gisLoader.getAllAttributes();
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "loaded '{}' entries", spatialData.size());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "loaded '{}' entries", spatialData.size());
             return spatialData;
         } catch (Exception e) {
             throw new ParsingException(e);

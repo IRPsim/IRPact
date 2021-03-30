@@ -42,13 +42,6 @@ public class BasicProcessModelManager implements ProcessModelManager {
     }
 
     @Override
-    public void initialize() throws MissingDataException {
-        for(ProcessModel model: getProcessModels()) {
-            model.initialize();
-        }
-    }
-
-    @Override
     public void preAgentCreationValidation() throws ValidationException {
         for(ProcessModel model: getProcessModels()) {
             model.preAgentCreationValidation();

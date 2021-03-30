@@ -111,7 +111,7 @@ public class InPVactUncertaintyGroupAttribute implements InUncertaintyGroupAttri
                         dist
                 )
         );
-        LOGGER.debug(
+        LOGGER.trace(
                 IRPSection.INITIALIZATION_PARAMETER,
                 "add UncertaintySupplier for group '{}', attribute '{}', uncertainity '{}'",
                 cag.getName(),
@@ -126,6 +126,12 @@ public class InPVactUncertaintyGroupAttribute implements InUncertaintyGroupAttri
 
     public void setGroups(InConsumerAgentGroup[] cags) {
         this.cags = cags;
+    }
+
+    public void setForAll(InUnivariateDoubleDistribution distribution) {
+        setNoveltySeekingUncertainty(distribution);
+        setDependentJudgmentMakingUncertainty(distribution);
+        setEnvironmentalConcernUncertainty(distribution);
     }
 
     public InUnivariateDoubleDistribution getNoveltySeekingUncertainty() throws ParsingException {

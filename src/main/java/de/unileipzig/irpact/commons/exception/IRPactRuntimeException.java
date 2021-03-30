@@ -5,6 +5,8 @@ package de.unileipzig.irpact.commons.exception;
  */
 public class IRPactRuntimeException extends RuntimeException {
 
+    protected boolean fatal = false;
+
     public IRPactRuntimeException() {
         super();
     }
@@ -17,7 +19,22 @@ public class IRPactRuntimeException extends RuntimeException {
         super(cause);
     }
 
+    public IRPactRuntimeException(IRPactException cause) {
+        super(cause);
+        if(cause.isFatal()) {
+            setFatal();
+        }
+    }
+
     public IRPactRuntimeException(String msg, Throwable cause) {
         super(msg, cause);
+    }
+
+    public void setFatal() {
+        this.fatal = true;
+    }
+
+    public boolean isFatal() {
+        return fatal;
     }
 }

@@ -9,7 +9,7 @@ import jadex.bridge.service.annotation.Reference;
 @Reference(remote = true, local = true)
 public interface JadexTimestamp extends Timestamp {
 
-    double getSimulationTick();
+    double getClockTick();
 
-    double getNormalizedTick();
+    double getTick();
 }

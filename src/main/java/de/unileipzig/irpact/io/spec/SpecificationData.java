@@ -167,7 +167,7 @@ public class SpecificationData {
 
     public void store(Path dir, ObjectMapper mapper, PrettyPrinter printer, boolean skipIfEmpty) throws IOException {
         if(Files.notExists(dir)) {
-            LOGGER.debug(IRPSection.SPECIFICATION_CONVERTER, "create '{}'", dir);
+            LOGGER.trace(IRPSection.SPECIFICATION_CONVERTER, "create '{}'", dir);
             Files.createDirectories(dir);
         }
 
@@ -280,7 +280,7 @@ public class SpecificationData {
             }
 
             Path path = dir.resolve(getFileName());
-            LOGGER.debug(IRPSection.SPECIFICATION_CONVERTER, "write '{}'", path);
+            LOGGER.trace(IRPSection.SPECIFICATION_CONVERTER, "write '{}'", path);
             IRPactJson.write(
                     root,
                     path,
@@ -336,13 +336,13 @@ public class SpecificationData {
 
             Path thisDir = dir.resolve(KEY);
             if(Files.notExists(thisDir)) {
-                LOGGER.debug(IRPSection.SPECIFICATION_CONVERTER, "create '{}'", thisDir);
+                LOGGER.trace(IRPSection.SPECIFICATION_CONVERTER, "create '{}'", thisDir);
                 Files.createDirectories(thisDir);
             }
 
             for(Map.Entry<String, ObjectNode> entry: getAll().entrySet()) {
                 Path path = thisDir.resolve(toJson(entry.getKey()));
-                LOGGER.debug(IRPSection.SPECIFICATION_CONVERTER, "write '{}'", path);
+                LOGGER.trace(IRPSection.SPECIFICATION_CONVERTER, "write '{}'", path);
                 IRPactJson.write(
                         entry.getValue(),
                         path,

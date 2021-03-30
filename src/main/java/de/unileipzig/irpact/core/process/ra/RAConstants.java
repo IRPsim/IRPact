@@ -36,6 +36,7 @@ public final class RAConstants {
     public static final String INVESTMENT_COST = "investment_cost";                               //E1
 
     //Spatial
+    public static final String ID = "ID";
     public static final String ADDRESS = "Adresse";
     public static final String ZIP = "PLZ";
     public static final String ORIENTATION = "Dachorient";

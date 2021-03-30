@@ -100,7 +100,7 @@ public class InNameBasedUncertaintyWithConvergenceGroupAttribute implements InUn
                                 conv
                         )
                 );
-                LOGGER.debug(
+                LOGGER.trace(
                         IRPSection.INITIALIZATION_PARAMETER,
                         "add UncertaintySupplier for group '{}', attribute '{}', uncertainity '{}', convergence '{}'",
                         cag.getName(),

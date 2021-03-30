@@ -57,7 +57,7 @@ public class BasicResourceLoader implements ResourceLoader {
     public boolean hasPath(String fileName) {
         Path path = resolve(fileName);
         boolean has = Files.exists(path);
-        LOGGER.debug("has path '{}': {}", path, has);
+        LOGGER.trace("has path '{}': {}", path, has);
         return has;
     }
 
@@ -80,7 +80,7 @@ public class BasicResourceLoader implements ResourceLoader {
     @Override
     public boolean hasResource(String fileName) {
         boolean has = getResource(fileName) != null;
-        LOGGER.debug("has resource '{}': {}", fileName, has);
+        LOGGER.trace("has resource '{}': {}", fileName, has);
         return has;
     }
 

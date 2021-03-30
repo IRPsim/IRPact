@@ -1,13 +1,15 @@
 package de.unileipzig.irpact.jadex.simulation;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.core.log.InfoTag;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.misc.ValidationException;
+import de.unileipzig.irpact.core.simulation.tasks.Task;
 import de.unileipzig.irpact.jadex.agents.simulation.SimulationAgent;
+import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.jadex.util.JadexSystemOut;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.IExternalAccess;
@@ -21,6 +23,7 @@ import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Function;
 
 /**
  * @author Daniel Abitz
@@ -28,10 +31,11 @@ import java.util.concurrent.locks.ReentrantLock;
 @Reference(local = true, remote = true)
 public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
 
+    private static final Function<? super Timestamp, ? extends Set<SyncTask>> SET_CREATOR = ts -> new TreeSet<>(Task.PRIORITY_COMPARATOR);
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicJadexLifeCycleControl.class);
 
     protected final Lock SYNC_LOCK = new ReentrantLock();
-    protected final NavigableMap<Timestamp, List<SyncTask>> syncTasks = new TreeMap<>(Comparable::compareTo);
+    protected final NavigableMap<Timestamp, Set<SyncTask>> syncTasks = new TreeMap<>(Comparable::compareTo);
 
     protected CountDownLatch startSynchronizer;
     protected int totalNumberOfAgents;
@@ -47,6 +51,9 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
     protected IClockService clockService;
 
     protected TerminationState state = TerminationState.NOT;
+
+    protected int nonFatalErrors = 0;
+    protected int fatalErrors = 0;
 
     public BasicJadexLifeCycleControl() {
         killSwitch = new KillSwitch();
@@ -156,14 +163,6 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
     }
 
     @Override
-    public void initialize() {
-    }
-
-    @Override
-    public void preAgentCreationValidation() throws ValidationException {
-    }
-
-    @Override
     public void start() {
         resume();
     }
@@ -188,6 +187,19 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
     //=========================
     //terminate
     //=========================
+
+    @Override
+    public void handleNonFatalError(Exception e) {
+        nonFatalErrors++;
+        LOGGER.error(InfoTag.NON_FATAL_ERROR + " non fatal error occurred, continue simulation", e);
+    }
+
+    @Override
+    public void handleFatalError(Exception e) {
+        fatalErrors++;
+        LOGGER.error(InfoTag.FATAL_ERROR + " fatal error occurred, stop simulation", e);
+        terminateWithError(e);
+    }
 
     protected void prepareTermination() {
         JadexSystemOut.redirect();
@@ -234,20 +246,37 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
 
     protected int countSyncTasks() {
         return syncTasks.values().stream()
-                .mapToInt(List::size)
+                .mapToInt(Set::size)
                 .sum();
     }
 
     @Override
     public boolean registerSyncTask(Timestamp ts, SyncTask task) {
         if(isValid(ts)) {
-            List<SyncTask> taskList = syncTasks.computeIfAbsent(ts, _ts -> new ArrayList<>());
+            Set<SyncTask> taskList = syncTasks.computeIfAbsent(ts, SET_CREATOR);
             taskList.add(task);
-            LOGGER.debug(IRPSection.SIMULATION_LICECYCLE, "add sync task '{}' at '{}' (total = {})", task.getName(), ts, countSyncTasks());
+            LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "add sync task '{}' at '{}' (total = {})", task.getName(), ts, countSyncTasks());
             return true;
         } else {
-            LOGGER.debug(IRPSection.SIMULATION_LICECYCLE, "ignore invalid timestamp ({})", ts);
+            LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "ignore invalid timestamp ({})", ts);
             return false;
+        }
+    }
+
+    @Override
+    public void waitForYearChangeIfRequired(Agent agent) {
+        JadexTimeModel timeModel = environment.getTimeModel();
+        if(!timeModel.hasYearChange()) {
+            return;
+        }
+
+        SYNC_LOCK.lock();
+        try {
+            if(timeModel.hasYearChange()) {
+                timeModel.performYearChange();
+            }
+        } finally {
+            SYNC_LOCK.unlock();
         }
     }
 
@@ -264,14 +293,14 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
                 if(current == now) {
                     return;
                 }
-                NavigableMap<Timestamp, List<SyncTask>> tasks = syncTasks.headMap(now, true);
-                LOGGER.debug("[{} @ {}] check for sync tasks: {}", agent.getName(), now, count(tasks));
+                NavigableMap<Timestamp, Set<SyncTask>> tasks = syncTasks.headMap(now, true);
+                LOGGER.trace("[{} @ {}] check for sync tasks: {}", agent.getName(), now, count(tasks));
                 if(!tasks.isEmpty()) {
                     List<Timestamp> toRemove = new ArrayList<>();
-                    for(Map.Entry<Timestamp, List<SyncTask>> entry: tasks.entrySet()) {
+                    for(Map.Entry<Timestamp, Set<SyncTask>> entry: tasks.entrySet()) {
                         toRemove.add(entry.getKey());
                         for(SyncTask task: entry.getValue()) {
-                            LOGGER.debug(IRPSection.SIMULATION_LICECYCLE, "execute sync task '{}' at '{}'", task.getName(), entry.getKey());
+                            LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "execute sync task '{}' at '{}'", task.getName(), entry.getKey());
                             task.run();
                         }
                     }
@@ -286,12 +315,12 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
         }
     }
 
-    protected static int count(NavigableMap<Timestamp, List<SyncTask>> tasks) {
+    protected static int count(NavigableMap<Timestamp, Set<SyncTask>> tasks) {
         return tasks.isEmpty()
                 ? 0
                 : tasks.values()
                 .stream()
-                .mapToInt(List::size)
+                .mapToInt(Set::size)
                 .sum();
     }
 }

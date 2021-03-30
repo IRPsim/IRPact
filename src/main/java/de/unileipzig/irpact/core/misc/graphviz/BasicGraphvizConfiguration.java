@@ -174,14 +174,14 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
 
         Path dotPath = imageOutputPath.resolveSibling(imageOutputPath.getFileName().toString() + ".dot");
         try {
-            LOGGER.debug("store temp-dot file: {}", dotPath);
+            LOGGER.trace("store temp-dot file: {}", dotPath);
             gen.store(dotPath);
 
             if(logDotFile) {
                 logContent(dotPath);
             }
 
-            LOGGER.debug("init dot process");
+            LOGGER.trace("init dot process");
             DotProcess process;
             try {
                 process = new DotProcess()
@@ -196,7 +196,7 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
                 return;
             }
 
-            LOGGER.debug("execute dot process");
+            LOGGER.trace("execute dot process");
             ProcessResult result;
             try {
                 result = process.execute();
@@ -212,7 +212,7 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
             }
 
             if(Files.exists(imageOutputPath)) {
-                LOGGER.debug("image created ({})", imageOutputPath);
+                LOGGER.trace("image created ({})", imageOutputPath);
             } else {
                 LOGGER.error("image not created ({})", imageOutputPath);
             }

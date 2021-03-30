@@ -79,7 +79,7 @@ public class InBasicProductGroup implements InProductGroup {
                 throw new ParsingException("ProductGroupAttribute '" + attr.getName() + "' already exists in " + bpg.getName());
             }
 
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "add ProductGroupAttribute '{}' ('{}') to group '{}'", attr.getName(), inAttr.getName(), bpg.getName());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add ProductGroupAttribute '{}' ('{}') to group '{}'", attr.getName(), inAttr.getName(), bpg.getName());
             bpg.addGroupAttribute(attr);
         }
 

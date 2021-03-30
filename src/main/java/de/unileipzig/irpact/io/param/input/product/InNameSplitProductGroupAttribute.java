@@ -97,6 +97,6 @@ public class InNameSplitProductGroupAttribute implements InIndependentProductGro
         pgAttr.setUnivariateDoubleDistributionValue(dist);
 
         pg.addGroupAttribute(pgAttr);
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added ProductGroupAttribute '{}' ('{}') to group '{}'", pgAttr.getName(), getName(), pg.getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added ProductGroupAttribute '{}' ('{}') to group '{}'", pgAttr.getName(), getName(), pg.getName());
     }
 }

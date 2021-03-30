@@ -24,8 +24,8 @@ import de.unileipzig.irpact.io.param.input.process.ra.InUncertaintyGroupAttribut
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSelectedGroupedSpatialDistribution2D;
-import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
+import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.in.*;
 import de.unileipzig.irpact.start.optact.network.IFreeMultiGraphTopology;
@@ -40,6 +40,7 @@ import de.unileipzig.irptools.util.DoubleTimeSeries;
 import de.unileipzig.irptools.util.Table;
 
 import java.awt.*;
+import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -124,7 +125,7 @@ public class InExample implements DefaultScenarioFactory {
         InSpace2D space2D = new InSpace2D("Space2D", Metric2D.EUCLIDEAN);
 
         //time
-        InDiscreteTimeModel timeModel = new InDiscreteTimeModel("Discrete", 604800000L);
+        InUnitStepDiscreteTimeModel timeModel = new InUnitStepDiscreteTimeModel("DiscreteUnitStep", 1, ChronoUnit.WEEKS);
 
         //general
         InGeneral general = new InGeneral();

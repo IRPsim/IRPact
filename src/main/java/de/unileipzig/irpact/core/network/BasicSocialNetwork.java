@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.network;
 
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.network.topology.GraphTopologyScheme;
@@ -59,20 +58,8 @@ public class BasicSocialNetwork implements SocialNetwork {
     }
 
     @Override
-    public void initialize() {
-        environment.getAgents()
-                .streamConsumerAgents()
-                .forEach(this::addNode);
-    }
-
-    protected void addNode(ConsumerAgent agent) {
-        SocialGraph.Node node = getGraph().addAgentAndGetNode(agent);
-        agent.setSocialGraphNode(node);
-        LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "added node: {}", agent.getName());
-    }
-
-    @Override
     public void postAgentCreation() {
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "initalize graph using topology '{}'", topologyScheme.getName());
         topologyScheme.initalize(
                 environment,
                 getGraph()

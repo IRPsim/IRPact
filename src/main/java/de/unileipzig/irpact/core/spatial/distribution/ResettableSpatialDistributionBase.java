@@ -34,7 +34,7 @@ public abstract class ResettableSpatialDistributionBase extends NameableBase imp
     }
 
     public void call(int times) {
-        LOGGER.debug("call {} times", times);
+        LOGGER.trace("call {} times", times);
         for(int i = 0; i < times; i++) {
             drawValue();
         }

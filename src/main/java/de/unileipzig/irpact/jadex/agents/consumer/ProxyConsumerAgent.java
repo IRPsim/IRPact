@@ -161,7 +161,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         if(this.realAgent != realAgent) {
             throw new IllegalArgumentException("synced to another agent");
         }
-        LOGGER.trace(IRPSection.SIMULATION_LICECYCLE, "[{}] unsync", realAgent.getName());
+        LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] unsync", realAgent.getName());
         this.realAgent = null;
         reset(realAgent);
     }

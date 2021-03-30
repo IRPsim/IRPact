@@ -3,6 +3,9 @@ package de.unileipzig.irpact.jadex.time;
 import de.unileipzig.irpact.commons.time.TimeMode;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
+import de.unileipzig.irpact.core.simulation.tasks.Task;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.IComponentStep;
 import jadex.bridge.IInternalAccess;
@@ -10,11 +13,9 @@ import jadex.bridge.component.IExecutionFeature;
 import jadex.bridge.service.types.clock.IClock;
 import jadex.commons.future.IFuture;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
+import java.util.NoSuchElementException;
 
 /**
  * @author Daniel Abitz
@@ -27,12 +28,14 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
     protected static final long DELTA = 1L;
     protected TimeAdvanceFunction timeAdvanceFunction;
 
-    protected double unmodifiedStartTick;
-    protected double endTick;
-    protected double nowTick;
+    protected double clockStartTick;
+    protected double clockEndTick;
+    protected double ticksTillEnd;
+
     protected double tickModifier = 0.0;
+    protected double nowClockTick;
     protected JadexTimestamp nowStamp;
-    protected double deltaTillEnd;
+    protected Duration dateModifier = null;
 
     public UnitStepDiscreteTimeModel() {
     }
@@ -47,56 +50,90 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
 
     @Override
     public void setupTimeModel() {
-        LOGGER.debug("setup clock '{}'", IClock.TYPE_EVENT_DRIVEN);
+        LOGGER.trace(IRPSection.GENERAL, "setup clock '{}'", IClock.TYPE_EVENT_DRIVEN);
         getSimulationService().setClockType(IClock.TYPE_EVENT_DRIVEN).get();
-        LOGGER.debug("set tick delta: {}", DELTA);
+
+        LOGGER.trace(IRPSection.GENERAL, "tick delta: {}", DELTA);
         getClockService().setDelta(DELTA);
 
-        setupNextYear();
-    }
+        clockStartTick = getClockTick();
+        ZonedDateTime startDate = LocalDate.of(getFirstSimulationYear(), Month.JANUARY, 1).atStartOfDay(ZONE);
+        startTime = new BasicTimestamp(startDate, clockStartTick, 0);
 
-    @Override
-    public void setupNextYear() {
-        setStartTick(getModifiedClockTick());
-        LOGGER.debug("internal simulation start time: {}", startTime());
+        endTime = plusYears(startTime(), getNumberOfSimulationYears());
+        clockEndTick = endTime.getClockTick();
+        ticksTillEnd = endTime.getTick();
 
-        //endjahr ist inklusiv, hier wird aber exklusiv betrachtet!
-        long yearDelta = getEndYearInclusive() - getStartYear();
-        JadexTimestamp endTime = plusYears(startTime(), yearDelta + 1L);
-        setEndTime(endTime);
-        LOGGER.debug("internal simulation end time: {}", endTime());
-        LOGGER.debug("end tick: {}", endTick);
-        LOGGER.debug("end delta (ticks): {}", deltaTillEnd);
+        currentYearForValidation = getFirstSimulationYear();
 
-        LOGGER.info("decrement tick for init");
-        LOGGER.debug("old 'now': {}", now());
+        LOGGER.trace(IRPSection.GENERAL, "simulation start time: {}", startTime().printComplex());
+        LOGGER.trace(IRPSection.GENERAL, "simulation end time: {}", endTime().printComplex());
+        LOGGER.trace(IRPSection.GENERAL, "start clock tick: {}", clockEndTick);
+        LOGGER.trace(IRPSection.GENERAL, "end clock tick: {}", clockEndTick);
+        LOGGER.trace(IRPSection.GENERAL, "ticks till end: {}", ticksTillEnd);
+
+        LOGGER.trace(IRPSection.GENERAL, "modify tick for upcoming simulation year");
+        LOGGER.trace(IRPSection.GENERAL, "unmodified current time: {}", now().printComplex());
         decTickModifier();
-        LOGGER.debug("new 'now': {}", now());
-    }
-
-    public void setStartTick(double tick) {
-        unmodifiedStartTick = tick;
-        ZonedDateTime startZdt = LocalDate.of(getStartYear(), Month.JANUARY, 1).atStartOfDay(ZONE);
-        startTime = new BasicTimestamp(startZdt, tick, 0);
+        LOGGER.trace(IRPSection.GENERAL, "modified current time: {}", now().printComplex());
     }
 
     @Override
-    public int getStartYear() {
-        return environment.getInitializationData().getStartYear();
+    public boolean hasYearChange() {
+        return getCurrentYear() != currentYearForValidation;
     }
 
     @Override
-    public void setEndTime(JadexTimestamp endTime) {
-        super.setEndTime(endTime);
-        endTick = endTime.getSimulationTick();
-        deltaTillEnd = endTime.getNormalizedTick();
+    public void performYearChange() {
+        Timestamp now = now();
+        ZonedDateTime nowTime = now.getTime();
+
+        ZonedDateTime currentYearStartDate = LocalDate.of(now.getYear(), Month.JANUARY, 1).atStartOfDay(ZONE);
+
+        if(nowTime.equals(currentYearStartDate)) {
+            dateModifier = null;
+        } else {
+            dateModifier = Duration.between(nowTime, currentYearStartDate);
+        }
+
+        currentYearForValidation = now.getYear();
+        resetNow();
+    }
+
+    private SyncTask createNewYearTask(String name) {
+        return new SyncTask() {
+            @Override
+            public String getName() {
+                return name;
+            }
+
+            @Override
+            public int priority() {
+                return Task.MAX_PRIORITY;
+            }
+
+            @Override
+            public void run() {
+                //setupNextYear();
+            }
+        };
     }
 
     @Override
-    public int getEndYearInclusive() {
-        int start = getStartYear();
-        int end = environment.getInitializationData().getEndYear();
-        return Math.max(start, end);
+    public int getFirstSimulationYear() {
+        return environment.getSettings()
+                .getActualFirstSimulationYear();
+    }
+
+    @Override
+    public int getLastSimulationYear() {
+        return environment.getSettings()
+                .getLastSimulationYear();
+    }
+
+    protected int getNumberOfSimulationYears() {
+        return environment.getSettings()
+                .getActualNumberOfSimulationYears();
     }
 
     @Override
@@ -143,25 +180,44 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
     @Override
     public JadexTimestamp convert(ZonedDateTime zdt) {
         long tickDelta = timeAdvanceFunction.calculateDelta(startTime().getTime(), zdt);
-        double tick = unmodifiedStartTick + tickDelta;
+        double tick = clockStartTick + tickDelta;
         return new BasicTimestamp(zdt, tick, tickDelta);
+    }
+
+    protected void resetNow() {
+        nowStamp = null;
+        now();
     }
 
     @Override
     public JadexTimestamp now() {
-        double tick = getModifiedClockTick();
-        if(nowStamp != null && nowTick == tick) {
+        double modifiedClockTick = getModifiedClockTick();
+        if(nowStamp != null && nowClockTick == modifiedClockTick) {
             return nowStamp;
         }
-        return syncNow(tick);
+        return syncNow(modifiedClockTick);
+    }
+
+    protected synchronized JadexTimestamp syncNow(double modifiedClockTick) {
+        if(nowStamp != null && nowClockTick == modifiedClockTick) {
+            return nowStamp;
+        }
+        nowClockTick = modifiedClockTick;
+        double modifiedTick = modifiedClockTick - clockStartTick;
+        ZonedDateTime nowData = tickToTime(modifiedTick);
+        if(dateModifier != null) {
+            nowData = nowData.plus(dateModifier);
+        }
+        nowStamp = new BasicTimestamp(nowData, modifiedClockTick, modifiedTick);
+        return nowStamp;
+    }
+
+    protected double getClockTick() {
+        return getClockService().getTick();
     }
 
     protected double getModifiedClockTick() {
-        return getModifiedTick(getClockService().getTick());
-    }
-
-    protected double getModifiedTick(double tick) {
-        return tick + tickModifier;
+        return getClockTick() + tickModifier;
     }
 
     protected void incTickModifier() {
@@ -171,31 +227,14 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
     protected void decTickModifier() {
         tickModifier--;
     }
-
-    protected synchronized JadexTimestamp syncNow(double modifiedTick) {
-        if(nowStamp != null && nowTick == modifiedTick) {
-            return nowStamp;
-        }
-        nowTick = modifiedTick;
-        long modifiedTickDelta = (long) (modifiedTick - unmodifiedStartTick);
-        ZonedDateTime startZdt = startTime.getTime();
-        ZonedDateTime nowZdt = timeAdvanceFunction.moveOn(startZdt, modifiedTickDelta);
-        nowStamp = new BasicTimestamp(nowZdt, modifiedTick, modifiedTickDelta);
-        return nowStamp;
+    protected ZonedDateTime tickToTime(double tick) {
+        return timeAdvanceFunction.moveOn(startTime.getTime(), (long) tick);
     }
 
     @Override
     public boolean isValid(long delay) {
-        delay = Math.max(delay, 0L);
-        return getModifiedClockTick() + delay < endTick;
-    }
-
-    @Override
-    public boolean isValid(Timestamp ts) {
-        if(startTime == null || endTime == null || ts == null) {
-            return false;
-        }
-        return ts.isAfterOrEquals(startTime) && ts.isBeforeOrEqual(endTime);
+        long delay0 = Math.max(delay, 0L);
+        return getModifiedClockTick() + delay0 < clockEndTick;
     }
 
     /**
@@ -222,6 +261,19 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
         public SimpleTimeAdvanceFunction(long amountToAdd, ChronoUnit unit) {
             setAmountToAdd(amountToAdd);
             setUnit(unit);
+        }
+
+        public static String getName(ChronoUnit unit) {
+            return unit.name();
+        }
+
+        public static ChronoUnit forName(String name) {
+            for(ChronoUnit unit: ChronoUnit.values()) {
+                if(unit.name().equals(name)) {
+                    return unit;
+                }
+            }
+            throw new NoSuchElementException(name);
         }
 
         public void setAmountToAdd(long amountToAdd) {

@@ -4,7 +4,6 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.network.filter.DisabledNodeFilter;
 import de.unileipzig.irpact.core.process.filter.DisabledProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
@@ -136,6 +135,13 @@ public class InRAProcessModel implements InProcessModel {
         this._name = name;
     }
 
+    public void setABCD(double value) {
+        setA(value);
+        setB(value);
+        setC(value);
+        setD(value);
+    }
+
     public double getA() {
         return a;
     }
@@ -166,6 +172,13 @@ public class InRAProcessModel implements InProcessModel {
 
     public void setD(double d) {
         this.d = d;
+    }
+
+    public void setDefaultPoints() {
+        setAdopterPoints(RAModelData.DEFAULT_ADOPTER_POINTS);
+        setInterestedPoints(RAModelData.DEFAULT_INTERESTED_POINTS);
+        setAwarePoints(RAModelData.DEFAULT_AWARE_POINTS);
+        setUnknownPoints(RAModelData.DEFAULT_UNKNOWN_POINTS);
     }
 
     public int getAdopterPoints() {
@@ -230,6 +243,10 @@ public class InRAProcessModel implements InProcessModel {
 
     public InUncertaintyGroupAttribute[] getUncertaintyGroupAttributes() {
         return uncertaintyGroupAttributes;
+    }
+
+    public void setUncertaintyGroupAttribute(InUncertaintyGroupAttribute uncertaintyGroupAttribute) {
+        this.uncertaintyGroupAttributes = new InUncertaintyGroupAttribute[]{uncertaintyGroupAttribute};
     }
 
     public void setUncertaintyGroupAttributes(InUncertaintyGroupAttribute[] uncertaintyGroupAttributes) {

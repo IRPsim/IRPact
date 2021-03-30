@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.simulation;
 
+import de.unileipzig.irpact.commons.listener.Listener;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.Agent;
@@ -44,6 +45,10 @@ public interface LifeCycleControl extends InitalizablePart {
     //terminate
     //=========================
 
+    void handleNonFatalError(Exception e);
+
+    void handleFatalError(Exception e);
+
     Object terminate();
 
     Object terminateTimeout();
@@ -57,6 +62,11 @@ public interface LifeCycleControl extends InitalizablePart {
     //=========================
 
     boolean registerSyncTask(Timestamp ts, SyncTask task);
+
+    /**
+     * Waits until the synchronisation is finished (if required).
+     */
+    void waitForYearChangeIfRequired(Agent agent);
 
     /**
      * Waits until the synchronisation is finished (if required).

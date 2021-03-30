@@ -21,8 +21,6 @@ import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
 import de.unileipzig.irpact.core.product.Product;
-import de.unileipzig.irpact.core.product.ProductGroup;
-import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -157,11 +155,11 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         npvCalculator.setData(npvData);
 
         int startYear = environment.getTimeModel()
-                .getStartYear();
+                .getFirstSimulationYear();
         int endYear = environment.getTimeModel()
-                .getEndYearInclusive();
+                .getLastSimulationYear();
 
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "calculating npv matrix from '{}' to '{}'", startYear, endYear);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "calculating npv matrix from '{}' to '{}'", startYear, endYear);
         for(int y = startYear; y <= endYear; y++) {
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "> '{}'", y);
             NPVMatrix matrix = new NPVMatrix();
@@ -251,19 +249,19 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
     }
 
     private void setupTasks() {
-        int startYear = environment.getTimeModel().getStartYear();
-        int endYear = environment.getTimeModel().getEndYearInclusive();
+        int startYear = environment.getTimeModel().getFirstSimulationYear();
+        int endYear = environment.getTimeModel().getLastSimulationYear();
 
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "create sync points");
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create sync points");
         for(int y = startYear; y <= endYear; y++) {
             Timestamp tsJan = environment.getTimeModel().at(startYear, Month.JANUARY, 1);
             SyncTask taskJan = createNewYearTask("NewYear_" + startYear);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} @ {}", taskJan.getName(), tsJan);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} @ {}", taskJan.getName(), tsJan);
             environment.getLiveCycleControl().registerSyncTask(tsJan, taskJan);
 
             Timestamp tsJuly = environment.getTimeModel().at(startYear, Month.JULY, 1);
             SyncTask taskJuly = createConstructionRenovationSyncTask("ConsReno_" + startYear);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "{} @ {}", taskJuly.getName(), tsJuly);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} @ {}", taskJuly.getName(), tsJuly);
             environment.getLiveCycleControl().registerSyncTask(tsJuly, taskJuly);
         }
     }
@@ -347,7 +345,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
             @Override
             public void run() {
-                LOGGER.debug("run 'createNewYearTask' ({})", now());
+                LOGGER.trace("run 'createNewYearTask' ({})", now());
                 for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
                     for(ConsumerAgent ca: cag.getAgents()) {
                         for(ProcessPlan plan: ca.getPlans().values()) {
@@ -373,7 +371,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
             @Override
             public void run() {
-                LOGGER.debug("run 'createConstructionRenovationSyncTask' ({})", now());
+                LOGGER.trace("run 'createConstructionRenovationSyncTask' ({})", now());
                 for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
                     for(ConsumerAgent ca: cag.getAgents()) {
                         for(ProcessPlan plan: ca.getPlans().values()) {
