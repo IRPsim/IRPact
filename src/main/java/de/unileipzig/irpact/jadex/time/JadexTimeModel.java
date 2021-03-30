@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.time;
 
+import de.unileipzig.irpact.commons.time.TimeUtil;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.time.TimeModel;
 import jadex.bridge.IComponentStep;
@@ -9,9 +10,7 @@ import jadex.bridge.service.types.clock.IClockService;
 import jadex.bridge.service.types.simulation.ISimulationService;
 import jadex.commons.future.IFuture;
 
-import java.time.LocalDate;
 import java.time.Month;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -25,6 +24,8 @@ public interface JadexTimeModel extends TimeModel {
     ISimulationService getSimulationService();
 
     IFuture<Void> waitUntil(IExecutionFeature exec, JadexTimestamp ts, IInternalAccess access, IComponentStep<Void> task);
+
+    IFuture<Void> waitUntilEnd(IExecutionFeature exec, IInternalAccess access, IComponentStep<Void> task);
 
     IFuture<Void> wait(IExecutionFeature exec, long delay, IInternalAccess access, IComponentStep<Void> task);
 
@@ -69,10 +70,19 @@ public interface JadexTimeModel extends TimeModel {
     }
 
     @Override
+    default Timestamp atStartOfYear(int year) {
+        return at(year, Month.JANUARY, 1);
+    }
+
+    @Override
+    default Timestamp at(int year, long weeks) {
+        ZonedDateTime zdt = TimeUtil.of(year, weeks);
+        return convert(zdt);
+    }
+
+    @Override
     default Timestamp at(int year, Month month, int day) {
-        ZonedDateTime zdt = LocalDate.of(year, month, day)
-                .atStartOfDay()
-                .atZone(ZoneId.systemDefault());
+        ZonedDateTime zdt = TimeUtil.of(year, month, day);
         return convert(zdt);
     }
 }

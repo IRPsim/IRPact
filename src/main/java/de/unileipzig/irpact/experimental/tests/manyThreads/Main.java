@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.experimental.tests.manyThreads;
 
 import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
-import de.unileipzig.irpact.jadex.util.JadexUtil2;
+import de.unileipzig.irpact.jadex.util.JadexUtil;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
 import jadex.base.Starter;
@@ -50,7 +50,7 @@ public class Main {
         IExternalAccess platform = Starter.createPlatform(config)
                 .get();
 
-        ISimulationService simulationService = JadexUtil2.getSimulationService(platform);
+        ISimulationService simulationService = JadexUtil.getSimulationService(platform);
         simulationService.pause().get();
 
         log("start agents...");

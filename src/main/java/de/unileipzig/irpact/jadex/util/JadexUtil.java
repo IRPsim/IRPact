@@ -7,6 +7,8 @@ import jadex.bridge.service.component.IRequiredServicesFeature;
 import jadex.bridge.service.search.ServiceQuery;
 import jadex.bridge.service.types.clock.IClockService;
 import jadex.bridge.service.types.simulation.ISimulationService;
+import jadex.commons.future.Future;
+import jadex.commons.future.IFuture;
 import jadex.commons.future.IntermediateDefaultResultListener;
 
 import java.util.function.Consumer;
@@ -14,9 +16,15 @@ import java.util.function.Consumer;
 /**
  * @author Daniel Abitz
  */
-public final class JadexUtil2 {
+public final class JadexUtil {
 
-    protected JadexUtil2() {
+    public static final IFuture<Void> END_TIME_REACHED = new Future<>((Void) null);
+
+    protected JadexUtil() {
+    }
+
+    public static boolean endTimeReached(IFuture<Void> future) {
+        return future == END_TIME_REACHED;
     }
 
     public static <T> void searchPlatformServices(

@@ -2,7 +2,6 @@ package de.unileipzig.irpact.core.process.ra;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
-import de.unileipzig.irpact.commons.distribution.ConstantUnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.time.Timestamp;
@@ -35,14 +34,11 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(RAProcessModel.class);
 
-    public static final ConstantUnivariateDoubleDistribution DIRAQ0 = new ConstantUnivariateDoubleDistribution("RAProcessModel_diraq0", 0.0);
+    private static final long WEEK27 = 27;
 
     protected static boolean globalRAProcessInitCalled = false;
 
     protected SimulationEnvironment environment;
-
-    protected ConsumerAgentGroupAttributeSupplier underConstructionSupplier = new BasicConsumerAgentGroupAttributeSupplier(RAConstants.UNDER_CONSTRUCTION, DIRAQ0);
-    protected ConsumerAgentGroupAttributeSupplier underRenovationSupplier = new BasicConsumerAgentGroupAttributeSupplier(RAConstants.UNDER_RENOVATION, DIRAQ0);
 
     protected MultiConsumerAgentGroupAttributeSupplier uncertaintySupplier = new BasicMultiConsumerAgentGroupAttributeSupplier();
 
@@ -62,8 +58,6 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
                 getName(),
                 modelData.getChecksum(),
                 rnd.getChecksum(),
-                underConstructionSupplier.getChecksum(),
-                underRenovationSupplier.getChecksum(),
                 uncertaintySupplier.getChecksum()
         );
     }
@@ -80,8 +74,6 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         logHash("name", ChecksumComparable.getChecksum(getName()));
         logHash("model data", ChecksumComparable.getChecksum(modelData));
         logHash("rnd", ChecksumComparable.getChecksum(rnd));
-        logHash("under construction supplier", ChecksumComparable.getChecksum(underConstructionSupplier));
-        logHash("under renovation supplier", ChecksumComparable.getChecksum(underRenovationSupplier));
         logHash("uncertainty supplier", ChecksumComparable.getChecksum(uncertaintySupplier));
     }
 
@@ -113,22 +105,6 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         this.npvData = npvData;
     }
 
-    public ConsumerAgentGroupAttributeSupplier getUnderConstructionSupplier() {
-        return underConstructionSupplier;
-    }
-
-    public void setUnderConstructionSupplier(ConsumerAgentGroupAttributeSupplier underConstructionSupplier) {
-        this.underConstructionSupplier = underConstructionSupplier;
-    }
-
-    public ConsumerAgentGroupAttributeSupplier getUnderRenovationSupplier() {
-        return underRenovationSupplier;
-    }
-
-    public void setUnderRenovationSupplier(ConsumerAgentGroupAttributeSupplier underRenovationSupplier) {
-        this.underRenovationSupplier = underRenovationSupplier;
-    }
-
     public MultiConsumerAgentGroupAttributeSupplier getUncertaintySupplier() {
         return uncertaintySupplier;
     }
@@ -154,14 +130,14 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         npvCalculator = new NPVCalculator();
         npvCalculator.setData(npvData);
 
-        int startYear = environment.getTimeModel()
+        int firstYear = environment.getTimeModel()
                 .getFirstSimulationYear();
-        int endYear = environment.getTimeModel()
+        int lastYear = environment.getTimeModel()
                 .getLastSimulationYear();
 
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "calculating npv matrix from '{}' to '{}'", startYear, endYear);
-        for(int y = startYear; y <= endYear; y++) {
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "> '{}'", y);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "calculating npv matrix from '{}' to '{}'", firstYear, lastYear);
+        for(int y = firstYear; y <= lastYear; y++) {
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "calculate year '{}'", y);
             NPVMatrix matrix = new NPVMatrix();
             matrix.calculate(npvCalculator, y);
             modelData.put(y, matrix);
@@ -172,12 +148,6 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
     private void addMissingGroupAttributesToCags() {
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-            if(!underConstructionSupplier.hasGroupAttribute(cag)) {
-                underConstructionSupplier.addGroupAttributeTo(cag);
-            }
-            if(!underRenovationSupplier.hasGroupAttribute(cag)) {
-                underRenovationSupplier.addGroupAttributeTo(cag);
-            }
             uncertaintySupplier.addAllGroupAttributesTo(cag);
         }
     }
@@ -249,20 +219,20 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
     }
 
     private void setupTasks() {
-        int startYear = environment.getTimeModel().getFirstSimulationYear();
-        int endYear = environment.getTimeModel().getLastSimulationYear();
+        int firstYear = environment.getTimeModel().getFirstSimulationYear();
+        int lastYear = environment.getTimeModel().getLastSimulationYear();
 
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create sync points");
-        for(int y = startYear; y <= endYear; y++) {
-            Timestamp tsJan = environment.getTimeModel().at(startYear, Month.JANUARY, 1);
-            SyncTask taskJan = createNewYearTask("NewYear_" + startYear);
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} @ {}", taskJan.getName(), tsJan);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create syncronisation tasks for process model '{}' ", getName());
+        for(int y = firstYear; y <= lastYear; y++) {
+            Timestamp tsJan = environment.getTimeModel().atStartOfYear(y);
+            SyncTask taskJan = createNewYearTask(getName() + "_NewYear_" + y);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create new year task '{}'", taskJan.getName());
             environment.getLiveCycleControl().registerSyncTask(tsJan, taskJan);
 
-            Timestamp tsJuly = environment.getTimeModel().at(startYear, Month.JULY, 1);
-            SyncTask taskJuly = createConstructionRenovationSyncTask("ConsReno_" + startYear);
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} @ {}", taskJuly.getName(), tsJuly);
-            environment.getLiveCycleControl().registerSyncTask(tsJuly, taskJuly);
+            Timestamp tsWeek27 = environment.getTimeModel().at(y, WEEK27);
+            SyncTask taskWeek27 = createWeek27Task(getName() + "_MidYear_" + y);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "created mid year task (27th week) '{}'", taskJan.getName());
+            environment.getLiveCycleControl().registerSyncTask(tsWeek27, taskWeek27);
         }
     }
 
@@ -345,15 +315,14 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
             @Override
             public void run() {
-                LOGGER.trace("run 'createNewYearTask' ({})", now());
+                LOGGER.trace(IRPSection.SIMULATION_PROCESS, "run 'createNewYearTask'");
+
                 for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
                     for(ConsumerAgent ca: cag.getAgents()) {
                         for(ProcessPlan plan: ca.getPlans().values()) {
-                            if(plan instanceof RAProcessPlan) {
+                            if(plan.isModel(RAProcessModel.this)) {
                                 RAProcessPlan raPlan = (RAProcessPlan) plan;
-                                if(raPlan.getModel() == RAProcessModel.this) {
-                                    raPlan.adjustParametersOnNewYear();
-                                }
+                                raPlan.adjustParametersOnNewYear();
                             }
                         }
                     }
@@ -362,7 +331,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         };
     }
 
-    private SyncTask createConstructionRenovationSyncTask(String name) {
+    private SyncTask createWeek27Task(String name) {
         return new SyncTask() {
             @Override
             public String getName() {
@@ -371,15 +340,14 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
             @Override
             public void run() {
-                LOGGER.trace("run 'createConstructionRenovationSyncTask' ({})", now());
+                LOGGER.trace(IRPSection.SIMULATION_PROCESS, "run 'createConstructionRenovationSyncTask'");
+
                 for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
                     for(ConsumerAgent ca: cag.getAgents()) {
                         for(ProcessPlan plan: ca.getPlans().values()) {
-                            if(plan instanceof RAProcessPlan) {
+                            if(plan.isModel(RAProcessModel.this)) {
                                 RAProcessPlan raPlan = (RAProcessPlan) plan;
-                                if(raPlan.getModel() == RAProcessModel.this) {
-                                    raPlan.updateConstructionAndRenovation();
-                                }
+                                raPlan.updateConstructionAndRenovation();
                             }
                         }
                     }

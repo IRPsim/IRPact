@@ -191,7 +191,7 @@ public class InUnitStepDiscreteTimeModel implements InTimeModel {
         UnitStepDiscreteTimeModel timeModel = new UnitStepDiscreteTimeModel();
         timeModel.setName(getName());
         timeModel.setEnvironment((JadexSimulationEnvironment) parser.getEnvironment());
-        UnitStepDiscreteTimeModel.SimpleTimeAdvanceFunction func = new UnitStepDiscreteTimeModel.SimpleTimeAdvanceFunction(
+        UnitStepDiscreteTimeModel.CeilingTimeAdvanceFunction func = new UnitStepDiscreteTimeModel.CeilingTimeAdvanceFunction(
                 getAmountOfTime(),
                 getUnit()
         );

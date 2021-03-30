@@ -14,8 +14,9 @@ public class BasicSettings implements Settings {
     protected int firstSimulationYear;
     protected int lastSimulationYear = -1;
     protected boolean ignorePersistCheck = false;
-    protected int run = 0;
+    protected int run = 1;
     protected int previousLastSimulationYear = -1;
+    protected boolean prefereCsv = false;
 
     protected boolean logRelativeAgreement = false;
     protected boolean logInterestUpdate = false;
@@ -42,6 +43,7 @@ public class BasicSettings implements Settings {
     @Override
     public void apply(CommandLineOptions clOptions) {
         setIgnorePersistenceCheckResult(clOptions.isIgnorePersistenceCheck());
+        setPrefereCsv(clOptions.isPrefereCsv());
     }
 
     public void setIgnorePersistenceCheckResult(boolean value) {
@@ -51,6 +53,15 @@ public class BasicSettings implements Settings {
     @Override
     public boolean ignorePersistenceCheckResult() {
         return ignorePersistCheck;
+    }
+
+    @Override
+    public boolean prefereCsv() {
+        return prefereCsv;
+    }
+
+    public void setPrefereCsv(boolean prefereCsv) {
+        this.prefereCsv = prefereCsv;
     }
 
     //=========================

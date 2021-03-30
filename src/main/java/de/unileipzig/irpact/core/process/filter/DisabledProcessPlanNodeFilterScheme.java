@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.process.filter;
 
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.core.network.filter.DisabledNodeFilter;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
@@ -22,5 +23,10 @@ public class DisabledProcessPlanNodeFilterScheme extends NameableBase implements
     @Override
     public NodeFilter createFilter(ProcessPlan plan) {
         return DisabledNodeFilter.INSTANCE;
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.getChecksum(getName());
     }
 }

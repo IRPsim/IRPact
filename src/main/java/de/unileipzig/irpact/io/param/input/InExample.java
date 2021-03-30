@@ -110,7 +110,7 @@ public class InExample implements DefaultScenarioFactory {
                 new InUncertaintyGroupAttribute[]{uncert}
         );
 
-        InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210225");
+        InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210322");
         InCustomFileSelectedGroupedSpatialDistribution2D spaDist = new InCustomFileSelectedGroupedSpatialDistribution2D(
                 "testdist",
                 constant0,

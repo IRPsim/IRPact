@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental.tests.serviceAndThreads;
 
-import de.unileipzig.irpact.jadex.util.JadexUtil2;
+import de.unileipzig.irpact.jadex.util.JadexUtil;
 import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IArgumentsResultsFeature;
 import jadex.bridge.component.IExecutionFeature;
@@ -66,7 +66,7 @@ public class SenderAgent implements Sender {
     @OnInit
     protected void onInit() {
         name = (String) resultsFeature.getArguments().get("name");
-        receiver = JadexUtil2.getPlatformService(reqFeature, ReceiverService.class);
+        receiver = JadexUtil.getPlatformService(reqFeature, ReceiverService.class);
         log("onInit");
     }
 

@@ -34,7 +34,7 @@ public final class BasicTimestamp implements JadexTimestamp {
     }
 
     public BasicTimestamp(ZonedDateTime time, double clockTick, double tick) {
-        TIME = time;
+        TIME = Objects.requireNonNull(time, "time");
         this.clockTick = clockTick;
         this.tick = tick;
     }

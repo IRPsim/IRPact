@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental.tests.goalRecur;
 
-import de.unileipzig.irpact.jadex.util.JadexUtil2;
+import de.unileipzig.irpact.jadex.util.JadexUtil;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bdiv3.annotation.*;
 import jadex.bdiv3.features.IBDIAgentFeature;
@@ -55,7 +55,7 @@ public class TestAgentBDI {
     protected void initData(Map<String, Object> input) {
         name = (String) input.get("NAME");
         latch = (CountDownLatch) input.get("LATCH");
-        clock = JadexUtil2.getClockService(agent);
+        clock = JadexUtil.getClockService(agent);
     }
 
     //=========================

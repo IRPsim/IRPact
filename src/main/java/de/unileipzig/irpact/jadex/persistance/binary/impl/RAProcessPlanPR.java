@@ -36,6 +36,8 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
     protected BinaryJsonData doInitalizePersist(RAProcessPlan object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
         data.putInt(object.getCurrentStage().getID());
+        data.putBoolean(object.isUnderConstruction());
+        data.putBoolean(object.isUnderRenovation());
 
         manager.prepare(object.getNeed());
         manager.prepare(object.getProduct());
@@ -64,6 +66,9 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
     protected RAProcessPlan doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         RAProcessPlan object = new RAProcessPlan();
         object.setCurrentStage(RAStage.get(data.getInt()));
+        object.setUnderConstruction(data.getBoolean());
+        object.setUnderRenovation(data.getBoolean());
+
         return object;
     }
 

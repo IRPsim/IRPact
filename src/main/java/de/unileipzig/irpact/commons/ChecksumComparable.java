@@ -13,7 +13,7 @@ import java.util.function.Function;
  */
 public interface ChecksumComparable {
 
-    IRPLogger LOGGER = IRPLogging.getLogger(ChecksumComparable.class);
+    IRPLogger LOGGER0 = IRPLogging.getLogger(ChecksumComparable.class);
 
     int NULL_CHECKSUM = 0;
     int DEFAULT_HASH = 31;
@@ -211,7 +211,7 @@ public interface ChecksumComparable {
     //=========================
 
     default int getChecksum() {
-        LOGGER.warn("called default 'getChecksum': '{}'", getClass().getName());
+        LOGGER0.warn("called default 'getChecksum': '{}'", getClass().getName());
         return System.identityHashCode(this);
     }
 

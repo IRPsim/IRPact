@@ -4,12 +4,12 @@ import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.misc.MissingDataException;
-import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessModelManager;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
 
@@ -17,6 +17,8 @@ import java.util.*;
  * @author Daniel Abitz
  */
 public class BasicProductManager implements ProductManager {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicProductManager.class);
 
     private final Map<String, ProductGroup> products;
     private SimulationEnvironment environment;

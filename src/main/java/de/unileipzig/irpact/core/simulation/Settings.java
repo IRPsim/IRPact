@@ -16,6 +16,8 @@ public interface Settings {
 
     boolean ignorePersistenceCheckResult();
 
+    boolean prefereCsv();
+
     //=========================
     //extra persist data
     //=========================

@@ -1,11 +1,12 @@
 package de.unileipzig.irpact.jadex.time;
 
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.time.TimeMode;
+import de.unileipzig.irpact.commons.time.TimeUtil;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
-import de.unileipzig.irpact.core.simulation.tasks.Task;
+import de.unileipzig.irpact.jadex.util.JadexUtil;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.IComponentStep;
 import jadex.bridge.IInternalAccess;
@@ -24,20 +25,29 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(UnitStepDiscreteTimeModel.class);
 
-    protected static final ZoneId ZONE = ZoneId.systemDefault();
     protected static final long DELTA = 1L;
     protected TimeAdvanceFunction timeAdvanceFunction;
 
-    protected double clockStartTick;
-    protected double clockEndTick;
+    protected JadexTimestamp referenceTime;
+
+    protected double referenceClockTick;
+    protected double startClockTick;
+    protected double endClockTick;
     protected double ticksTillEnd;
 
-    protected double tickModifier = 0.0;
     protected double nowClockTick;
     protected JadexTimestamp nowStamp;
-    protected Duration dateModifier = null;
+    protected Duration dateModifier;
 
     public UnitStepDiscreteTimeModel() {
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.getChecksum(
+                getName(),
+                getTimeAdvanceFunction()
+        );
     }
 
     public void setTimeAdvanceFunction(TimeAdvanceFunction timeAdvanceFunction) {
@@ -56,67 +66,55 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
         LOGGER.trace(IRPSection.GENERAL, "tick delta: {}", DELTA);
         getClockService().setDelta(DELTA);
 
-        clockStartTick = getClockTick();
-        ZonedDateTime startDate = LocalDate.of(getFirstSimulationYear(), Month.JANUARY, 1).atStartOfDay(ZONE);
-        startTime = new BasicTimestamp(startDate, clockStartTick, 0);
+        ZonedDateTime startDate = TimeUtil.startOfYear(getFirstSimulationYear());
+        ZonedDateTime initDate = timeAdvanceFunction.moveBackwards(startDate, 1);
+        ZonedDateTime endDate = startDate.plusYears(getNumberOfSimulationYears());
 
-        endTime = plusYears(startTime(), getNumberOfSimulationYears());
-        clockEndTick = endTime.getClockTick();
-        ticksTillEnd = endTime.getTick();
+        referenceClockTick = getClockTick();
+        startClockTick = referenceClockTick + 1;
+        referenceTime = new BasicTimestamp(initDate, referenceClockTick, 0);
+        startTime = new BasicTimestamp(startDate, startClockTick, 1);
+
+        ticksTillEnd = timeAdvanceFunction.calculateDelta(initDate, endDate);
+        endClockTick = referenceClockTick + ticksTillEnd;
+        endTime = new BasicTimestamp(endDate, endClockTick, ticksTillEnd);
 
         currentYearForValidation = getFirstSimulationYear();
 
+        LOGGER.trace(IRPSection.GENERAL, "current simulation year: {}", currentYearForValidation);
+        LOGGER.trace(IRPSection.GENERAL, "simulation init time: {}", referenceTime.printComplex());
         LOGGER.trace(IRPSection.GENERAL, "simulation start time: {}", startTime().printComplex());
         LOGGER.trace(IRPSection.GENERAL, "simulation end time: {}", endTime().printComplex());
-        LOGGER.trace(IRPSection.GENERAL, "start clock tick: {}", clockEndTick);
-        LOGGER.trace(IRPSection.GENERAL, "end clock tick: {}", clockEndTick);
+        LOGGER.trace(IRPSection.GENERAL, "init clock tick: {}", referenceClockTick);
+        LOGGER.trace(IRPSection.GENERAL, "start clock tick: {}", startClockTick);
+        LOGGER.trace(IRPSection.GENERAL, "end clock tick: {}", endClockTick);
         LOGGER.trace(IRPSection.GENERAL, "ticks till end: {}", ticksTillEnd);
-
-        LOGGER.trace(IRPSection.GENERAL, "modify tick for upcoming simulation year");
-        LOGGER.trace(IRPSection.GENERAL, "unmodified current time: {}", now().printComplex());
-        decTickModifier();
-        LOGGER.trace(IRPSection.GENERAL, "modified current time: {}", now().printComplex());
+        LOGGER.trace(IRPSection.GENERAL, "current simulation time: {}", now().printComplex());
     }
 
     @Override
     public boolean hasYearChange() {
-        return getCurrentYear() != currentYearForValidation;
+        int currentYear = getCurrentYear();
+        return currentYear != currentYearForValidation
+                && currentYear >= getFirstSimulationYear();
     }
 
     @Override
     public void performYearChange() {
-        Timestamp now = now();
-        ZonedDateTime nowTime = now.getTime();
+        LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "perform year change");
 
-        ZonedDateTime currentYearStartDate = LocalDate.of(now.getYear(), Month.JANUARY, 1).atStartOfDay(ZONE);
+        ZonedDateTime nowDate = unmodifiedNowDate();
+        ZonedDateTime modified = modify(nowDate);
+        ZonedDateTime startThisYear = TimeUtil.startOfYear(modified.getYear());
 
-        if(nowTime.equals(currentYearStartDate)) {
-            dateModifier = null;
-        } else {
-            dateModifier = Duration.between(nowTime, currentYearStartDate);
-        }
+        Duration currentModifier = Duration.between(modified, startThisYear);
 
-        currentYearForValidation = now.getYear();
+        LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "new partial date modifier: '{}'", currentModifier);
+        updateModifier(currentModifier);
+
         resetNow();
-    }
 
-    private SyncTask createNewYearTask(String name) {
-        return new SyncTask() {
-            @Override
-            public String getName() {
-                return name;
-            }
-
-            @Override
-            public int priority() {
-                return Task.MAX_PRIORITY;
-            }
-
-            @Override
-            public void run() {
-                //setupNextYear();
-            }
-        };
+        LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "using new date modifer: {} -> {}", nowDate, modify(nowDate));
     }
 
     @Override
@@ -143,8 +141,15 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
             long delay = timeAdvanceFunction.calculateDelta(now.getTime(), ts.getTime());
             return uncheckedWait(exec, delay, access, task);
         } else {
-            return IFuture.DONE;
+            return JadexUtil.END_TIME_REACHED;
         }
+    }
+
+    @Override
+    public IFuture<Void> waitUntilEnd(IExecutionFeature exec, IInternalAccess access, IComponentStep<Void> task) {
+        JadexTimestamp now = now();
+        long delay = timeAdvanceFunction.calculateDelta(now.getTime(), endTime.getTime());
+        return uncheckedWait(exec, delay, access, task);
     }
 
     @Override
@@ -152,7 +157,7 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
         if(isValid(delay)) {
             return uncheckedWait(exec, delay, access, task);
         } else {
-            return IFuture.DONE;
+            return JadexUtil.END_TIME_REACHED;
         }
     }
 
@@ -179,36 +184,67 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
 
     @Override
     public JadexTimestamp convert(ZonedDateTime zdt) {
-        long tickDelta = timeAdvanceFunction.calculateDelta(startTime().getTime(), zdt);
-        double tick = clockStartTick + tickDelta;
-        return new BasicTimestamp(zdt, tick, tickDelta);
-    }
-
-    protected void resetNow() {
-        nowStamp = null;
-        now();
+        long tick = timeAdvanceFunction.calculateDelta(referenceTime.getTime(), zdt);
+        double clockTick = referenceClockTick + tick;
+        return new BasicTimestamp(zdt, clockTick, tick);
     }
 
     @Override
     public JadexTimestamp now() {
-        double modifiedClockTick = getModifiedClockTick();
-        if(nowStamp != null && nowClockTick == modifiedClockTick) {
+        double clockTick = getClockTick();
+        if(nowStamp != null && nowClockTick == clockTick) {
             return nowStamp;
         }
-        return syncNow(modifiedClockTick);
+        return syncNow(clockTick);
     }
 
-    protected synchronized JadexTimestamp syncNow(double modifiedClockTick) {
-        if(nowStamp != null && nowClockTick == modifiedClockTick) {
+    protected void resetNow() {
+        nowStamp = null;
+    }
+
+    protected ZonedDateTime unmodifiedNowDate() {
+        return unmodifiedNowDate(getClockTick());
+    }
+
+    protected ZonedDateTime unmodifiedNowDate(double clockTick) {
+        double tick = clockTick - referenceClockTick;
+        return tickToTime(tick);
+    }
+
+    protected ZonedDateTime modify(ZonedDateTime date) {
+        return dateModifier == null
+                ? date
+                : date.plus(dateModifier);
+    }
+
+    protected void updateModifier(Duration modifier) {
+        if(!modifier.isZero()) {
+            dateModifier = dateModifier == null
+                    ? modifier
+                    : dateModifier.plus(modifier);
+        }
+        if(dateModifier != null && dateModifier.isZero()) {
+            dateModifier = null;
+        }
+
+        if(dateModifier == null) {
+            LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "updated date modifier is null");
+        } else {
+            LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "updated date modifier: '{}'", dateModifier);
+        }
+    }
+
+    protected synchronized JadexTimestamp syncNow(double clockTick) {
+        if(nowStamp != null && nowClockTick == clockTick) {
             return nowStamp;
         }
-        nowClockTick = modifiedClockTick;
-        double modifiedTick = modifiedClockTick - clockStartTick;
-        ZonedDateTime nowData = tickToTime(modifiedTick);
-        if(dateModifier != null) {
-            nowData = nowData.plus(dateModifier);
-        }
-        nowStamp = new BasicTimestamp(nowData, modifiedClockTick, modifiedTick);
+        nowClockTick = clockTick;
+        double tick = clockTick - referenceClockTick;
+        nowStamp = new BasicTimestamp(
+                modify(tickToTime(tick)),
+                clockTick,
+                tick
+        );
         return nowStamp;
     }
 
@@ -216,33 +252,24 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
         return getClockService().getTick();
     }
 
-    protected double getModifiedClockTick() {
-        return getClockTick() + tickModifier;
-    }
-
-    protected void incTickModifier() {
-        tickModifier++;
-    }
-
-    protected void decTickModifier() {
-        tickModifier--;
-    }
     protected ZonedDateTime tickToTime(double tick) {
-        return timeAdvanceFunction.moveOn(startTime.getTime(), (long) tick);
+        return timeAdvanceFunction.moveForward(referenceTime.getTime(), (long) tick);
     }
 
     @Override
     public boolean isValid(long delay) {
         long delay0 = Math.max(delay, 0L);
-        return getModifiedClockTick() + delay0 < clockEndTick;
+        return getClockTick() + delay0 < endClockTick;
     }
 
     /**
      * @author Daniel Abitz
      */
-    public interface TimeAdvanceFunction {
+    public interface TimeAdvanceFunction extends ChecksumComparable {
 
-        ZonedDateTime moveOn(ZonedDateTime in, long delta);
+        ZonedDateTime moveForward(ZonedDateTime in, long delta);
+
+        ZonedDateTime moveBackwards(ZonedDateTime in, long delta);
 
         long calculateDelta(ZonedDateTime startInclusive, ZonedDateTime endExclusive);
     }
@@ -250,6 +277,7 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
     /**
      * @author Daniel Abitz
      */
+    @SuppressWarnings("unused")
     public static class SimpleTimeAdvanceFunction implements TimeAdvanceFunction {
 
         protected long amountToAdd;
@@ -261,6 +289,14 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
         public SimpleTimeAdvanceFunction(long amountToAdd, ChronoUnit unit) {
             setAmountToAdd(amountToAdd);
             setUnit(unit);
+        }
+
+        @Override
+        public int getChecksum() {
+            return ChecksumComparable.getChecksum(
+                    amountToAdd,
+                    getName(unit)
+            );
         }
 
         public static String getName(ChronoUnit unit) {
@@ -321,13 +357,94 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
         }
 
         @Override
-        public ZonedDateTime moveOn(ZonedDateTime in, long delta) {
-            return in.plus(getAmountToAdd() * delta, getUnit());
+        public ZonedDateTime moveForward(ZonedDateTime in, long delta) {
+            return delta == 0
+                    ? in
+                    : in.plus(getAmountToAdd() * delta, getUnit());
+        }
+
+        @Override
+        public ZonedDateTime moveBackwards(ZonedDateTime in, long delta) {
+            return delta == 0
+                    ? in
+                    : in.minus(getAmountToAdd() * delta, getUnit());
+        }
+
+        protected long between(ZonedDateTime startInclusive, ZonedDateTime endExclusive) {
+            return getUnit().between(startInclusive, endExclusive);
         }
 
         @Override
         public long calculateDelta(ZonedDateTime startInclusive, ZonedDateTime endExclusive) {
-            return getUnit().between(startInclusive, endExclusive);
+            return between(startInclusive, endExclusive);
+        }
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    public static class CeilingTimeAdvanceFunction extends SimpleTimeAdvanceFunction {
+
+        public CeilingTimeAdvanceFunction() {
+            super();
+        }
+
+        public CeilingTimeAdvanceFunction(long amountToAdd, ChronoUnit unit) {
+            super(amountToAdd, unit);
+        }
+
+        @Override
+        public int getChecksum() {
+            return ChecksumComparable.getChecksum(
+                    amountToAdd,
+                    getName(unit)
+            );
+        }
+
+        protected long ceilingBetween(ZonedDateTime startInclusive, ZonedDateTime endExclusive) {
+            long delta = between(startInclusive, endExclusive);
+            ZonedDateTime startWithDelta = moveForward(startInclusive, delta);
+            return endExclusive.equals(startWithDelta)
+                    ? delta
+                    : delta + 1;
+        }
+
+        protected long calculateToStartOfNextYear(ZonedDateTime start) {
+            int year = start.getYear();
+            ZonedDateTime end = TimeUtil.startOfYear(year + 1);
+            return ceilingBetween(start, end);
+        }
+
+        protected long calculateFromStartOfSameYear(ZonedDateTime end) {
+            int year = end.getYear();
+            ZonedDateTime start = TimeUtil.startOfYear(year);
+            return ceilingBetween(start, end);
+        }
+
+        @Override
+        public long calculateDelta(ZonedDateTime startInclusive, ZonedDateTime endExclusive) {
+            int startYear = startInclusive.getYear();
+            int endYear = endExclusive.getYear();
+
+            if(startYear == endYear) {
+                return ceilingBetween(startInclusive, endExclusive);
+            }
+
+            long firstPart = calculateToStartOfNextYear(startInclusive);
+            long lastPart = calculateFromStartOfSameYear(endExclusive);
+
+            if(startYear + 1 == endYear) {
+                return firstPart + lastPart;
+            }
+
+            long partSum = 0L;
+            for(int y = startYear + 1; y < endYear; y++) {
+                ZonedDateTime from = TimeUtil.startOfYear(y);
+                ZonedDateTime to = TimeUtil.startOfYear(y + 1);
+                partSum += ceilingBetween(from, to);
+            }
+
+            return firstPart + partSum + lastPart;
         }
     }
 }

@@ -7,8 +7,6 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.Objects;
-
 /**
  * @author Daniel Abitz
  */
@@ -78,10 +76,10 @@ public class BasicConsumerAgentGroupAttributeSupplier extends NameableBase imple
 
     @Override
     public int getChecksum() {
-        return Objects.hash(
+        return ChecksumComparable.getChecksum(
                 getName(),
                 getAttributeName(),
-                ChecksumComparable.getChecksum(dist)
+                dist
         );
     }
 }

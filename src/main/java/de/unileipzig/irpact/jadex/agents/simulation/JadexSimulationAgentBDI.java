@@ -108,27 +108,20 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
 
     protected void waitUntilEnd() {
         JadexTimeModel timeModel = environment.getTimeModel();
-        JadexTimestamp end = timeModel.endTime();
-        log().trace("waitUntilEnd: {} -> {} ({})", timeModel.now(), end, timeModel.endTimeReached());
-        timeModel.waitUntil(execFeature, end, agent, this::onEnd);
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] wait until end: {}", getName(), timeModel.endTime());
+        timeModel.waitUntilEnd(execFeature, agent, this::onEnd);
     }
 
     protected IFuture<Void> onEnd(IInternalAccess ia) {
         JadexTimeModel timeModel = environment.getTimeModel();
-        log().trace("onEnd: {} ({})", timeModel.now(), timeModel.endTimeReached());
-        return timeModel.scheduleImmediately(execFeature, agent, this::afterEnd);
-    }
-
-    protected IFuture<Void> afterEnd(IInternalAccess ia) {
-        JadexTimeModel timeModel = environment.getTimeModel();
-        log().trace("afterEnd: {} ({})", timeModel.now(), timeModel.endTimeReached());
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] onEnd: {} ({})", getName(), timeModel.now(), timeModel.endTimeReached());
         environment.getLiveCycleControl().terminate();
         return IFuture.DONE;
     }
 
     @Override
     protected void firstAction() {
-        log().trace("[{}] firstAction", getName());
+        log().trace(IRPSection.SIMULATION_AGENT, "[{}] firstAction", getName());
     }
 
     @Override

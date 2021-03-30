@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.process.ra.filter;
 
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.network.filter.MaxNodeDistanceFilter;
 import de.unileipzig.irpact.core.process.ProcessPlan;
@@ -27,5 +28,14 @@ public class RAProcessPlanMaxDistanceFilterScheme extends ProcessPlanMaxDistance
         filter.setInclusive(isInclusive());
         filter.setOrigin(origin);
         return filter;
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.getChecksum(
+                getName(),
+                getMaxDistance(),
+                isInclusive()
+        );
     }
 }

@@ -302,6 +302,10 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         addGroupAttribute(parser, jcag, getConstructionRate(), CONSTRUCTION_RATE);
         addGroupAttribute(parser, jcag, getRenovationRate(), RENOVATION_RATE);
 
+        if(a1 != null) addGroupAttribute(parser, jcag, a1, RENOVATION_RATE);
+        if(a5 != null) addGroupAttribute(parser, jcag, a5, RENOVATION_RATE);
+        if(a6 != null) addGroupAttribute(parser, jcag, a6, RENOVATION_RATE);
+
         ProductBinaryAwarenessSupplyScheme awarenessSupplyScheme = new ProductBinaryAwarenessSupplyScheme();
         awarenessSupplyScheme.setName(ParamUtil.concName(jcag.getName(), AWARENESS));
         jcag.setAwarenessSupplyScheme(awarenessSupplyScheme);

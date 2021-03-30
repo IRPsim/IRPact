@@ -3,7 +3,7 @@ package de.unileipzig.irpact.experimental.tests.timeModel;
 import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
 import de.unileipzig.irpact.jadex.time.DiscreteTimeModel;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
-import de.unileipzig.irpact.jadex.util.JadexUtil2;
+import de.unileipzig.irpact.jadex.util.JadexUtil;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
 import jadex.base.Starter;
@@ -46,8 +46,8 @@ public class MainDiscrete {
         IExternalAccess platform = Starter.createPlatform(config)
                 .get();
 
-        IClockService clock = JadexUtil2.getClockService(platform);
-        ISimulationService simulationService = JadexUtil2.getSimulationService(platform);
+        IClockService clock = JadexUtil.getClockService(platform);
+        ISimulationService simulationService = JadexUtil.getSimulationService(platform);
 
         log("change clock");
         simulationService.pause().get();

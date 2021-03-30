@@ -43,8 +43,10 @@ public final class BinaryJsonUtil {
         ensureRegister(manager, BasicUncertaintyGroupAttributeSupplierPR.INSTANCE);
         ensureRegister(manager, BasicVersionPR.INSTANCE);
         ensureRegister(manager, BooleanDistributionPR.INSTANCE);
+        ensureRegister(manager, CeilingTimeAdvanceFunctionPR.INSTANCE);
         ensureRegister(manager, CompleteGraphTopologyPR.INSTANCE);
         ensureRegister(manager, ConstantUnivariateDoubleDistributionPR.INSTANCE);
+        ensureRegister(manager, DisabledProcessPlanNodeFilterSchemePR.INSTANCE);
         ensureRegister(manager, DiscreteSpatialDistributionPR.INSTANCE);
         ensureRegister(manager, DiscreteTimeModelPR.INSTANCE);
         ensureRegister(manager, FixProcessModelFindingSchemePR.INSTANCE);
@@ -62,9 +64,9 @@ public final class BinaryJsonUtil {
         ensureRegister(manager, RAModelDataPR.INSTANCE);
         ensureRegister(manager, RandomBoundedIntegerDistributionPR.INSTANCE);
         ensureRegister(manager, RAProcessModelPR.INSTANCE);
+        ensureRegister(manager, RAProcessPlanMaxDistanceFilterSchemePR.INSTANCE);
         ensureRegister(manager, RAProcessPlanPR.INSTANCE);
         ensureRegister(manager, RndPR.INSTANCE);
-        ensureRegister(manager, SimpleTimeAdvanceFunctionPR.INSTANCE);
         ensureRegister(manager, Space2DPR.INSTANCE);
         ensureRegister(manager, SpatialDoubleAttributeBasePR.INSTANCE);
         ensureRegister(manager, SpatialStringAttributeBasePR.INSTANCE);

@@ -4,7 +4,7 @@ import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.simulation.JadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.time.ContinuousTimeModel;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
-import de.unileipzig.irpact.jadex.util.JadexUtil2;
+import de.unileipzig.irpact.jadex.util.JadexUtil;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
 import jadex.base.Starter;
@@ -56,8 +56,8 @@ public class MainContinous {
         IExternalAccess platform = Starter.createPlatform(config)
                 .get();
 
-        IClockService clock = JadexUtil2.getClockService(platform);
-        ISimulationService simulationService = JadexUtil2.getSimulationService(platform);
+        IClockService clock = JadexUtil.getClockService(platform);
+        ISimulationService simulationService = JadexUtil.getSimulationService(platform);
 
         log("change clock");
         simulationService.pause().get();

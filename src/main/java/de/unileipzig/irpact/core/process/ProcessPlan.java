@@ -7,5 +7,7 @@ import de.unileipzig.irpact.commons.ChecksumComparable;
  */
 public interface ProcessPlan extends ChecksumComparable {
 
+    boolean isModel(ProcessModel model);
+
     ProcessPlanResult execute();
 }

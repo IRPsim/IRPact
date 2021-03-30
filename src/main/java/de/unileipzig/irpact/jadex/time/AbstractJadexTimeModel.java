@@ -33,17 +33,9 @@ public abstract class AbstractJadexTimeModel extends NameableBase implements Jad
         return now().getYear();
     }
 
-    public void setStartTime(JadexTimestamp startTime) {
-        this.startTime = startTime;
-    }
-
     @Override
     public JadexTimestamp startTime() {
         return startTime;
-    }
-
-    public void setEndTime(JadexTimestamp endTime) {
-        this.endTime = endTime;
     }
 
     @Override

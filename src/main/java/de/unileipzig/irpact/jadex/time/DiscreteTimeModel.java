@@ -85,7 +85,7 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
     public void setStartTick(double tick) {
         converter.setStart(tick);
         startTick = tick;
-        setStartTime(new BasicTimestamp(converter.getStartTime(), tick, 0.0));
+        this.startTime = new BasicTimestamp(converter.getStartTime(), tick, 0.0);
     }
 
     public double getTickModifier() {
@@ -159,9 +159,8 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
         return Math.max(start, end);
     }
 
-    @Override
     public void setEndTime(JadexTimestamp endTime) {
-        super.setEndTime(endTime);
+        this.endTime = endTime;
         delayTillEnd = converter.ticksUntil(startTime.getTime(), endTime.getTime());
         endTick = startTick + delayTillEnd;
     }
@@ -175,6 +174,11 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
         } else {
             return IFuture.DONE;
         }
+    }
+
+    @Override
+    public IFuture<Void> waitUntilEnd(IExecutionFeature exec, IInternalAccess access, IComponentStep<Void> task) {
+        throw new TodoException();
     }
 
     @Override

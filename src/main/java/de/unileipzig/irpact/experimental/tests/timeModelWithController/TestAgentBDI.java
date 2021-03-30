@@ -3,7 +3,7 @@ package de.unileipzig.irpact.experimental.tests.timeModelWithController;
 import de.unileipzig.irpact.experimental.tests.TestAgent;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.jadex.time.JadexTimestamp;
-import de.unileipzig.irpact.jadex.util.JadexUtil2;
+import de.unileipzig.irpact.jadex.util.JadexUtil;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IArgumentsResultsFeature;
@@ -66,7 +66,7 @@ public class TestAgentBDI implements TestAgent {
     }
 
     protected void searchTimerService() {
-        JadexUtil2.searchPlatformServices(reqFeature, TimeModelService.class, result -> {
+        JadexUtil.searchPlatformServices(reqFeature, TimeModelService.class, result -> {
             if(timeModelSerivce == null) {
                 log("timeModelSerivce found");
                 timeModelSerivce = result;

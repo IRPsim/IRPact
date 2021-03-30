@@ -107,6 +107,12 @@ public class CommandLineOptions implements Callable<Integer> {
     )
     private boolean logConsoleAndFile;
 
+    @CommandLine.Option(
+            names = { "--prefereCsv" },
+            description = "Prefere csv files when loading."
+    )
+    private boolean prefereCsv;
+
     //=========================
     //hidden
     //=========================
@@ -253,6 +259,10 @@ public class CommandLineOptions implements Callable<Integer> {
 
     public boolean logConsoleAndFile() {
         return logConsoleAndFile;
+    }
+
+    public boolean isPrefereCsv() {
+        return prefereCsv;
     }
 
     public boolean isSimulation() {

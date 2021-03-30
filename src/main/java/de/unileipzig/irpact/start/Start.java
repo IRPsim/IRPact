@@ -3,6 +3,8 @@ package de.unileipzig.irpact.start;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.SectionLoggingFilter;
+import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irptools.io.base.AnnualEntry;
 import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.slf4j.event.Level;
@@ -59,11 +61,11 @@ public final class Start {
 
     private static void logOldFileDeleted(boolean deleted, Path path) {
         if(deleted) {
-            LOGGER.trace("old logfile '{}' deleted", path);
+            LOGGER.trace(IRPSection.GENERAL, "old logfile '{}' deleted", path);
         }
     }
 
-    private static StartResult startApp(String[] args, Collection<? extends IRPactCallback> callbacks) {
+    private static StartResult startApp(String[] args, AnnualEntry<InRoot> scenario, Collection<? extends IRPactCallback> callbacks) {
         prepareLogging();
         CommandLineOptions options = new CommandLineOptions(args);
         int exitCode = options.parse();
@@ -84,8 +86,12 @@ public final class Start {
             }
             Preloader loader = new Preloader(options, callbacks);
             try {
-                loader.start();
-                LOGGER.trace("Start finished");
+                if(scenario == null) {
+                    loader.start();
+                } else {
+                    loader.start(scenario);
+                }
+                LOGGER.trace(IRPSection.GENERAL, "Start finished");
                 return new StartResult(CommandLine.ExitCode.OK);
             } catch (Throwable t) {
                 LOGGER.error("Start failed with uncaught exception", t);
@@ -97,6 +103,10 @@ public final class Start {
             }
             return new StartResult(options.getErrorCode());
         }
+    }
+
+    private static StartResult startApp(String[] args, Collection<? extends IRPactCallback> callbacks) {
+        return startApp(args, null, callbacks);
     }
 
     public static int start(String[] args, IRPactCallback... callbacks) {
@@ -121,6 +131,15 @@ public final class Start {
             throw new IllegalArgumentException("invalid arguments");
         }
         return CommandLine.ExitCode.OK;
+    }
+
+    public static int start(String[] args, AnnualEntry<InRoot> scenario, IRPactCallback... callbacks) {
+        return start(args, scenario, Arrays.asList(callbacks));
+    }
+
+    public static int start(String[] args, AnnualEntry<InRoot> scenario, Collection<? extends IRPactCallback> callbacks) {
+        StartResult result = startApp(args, scenario, callbacks);
+        return result.getErrorCode();
     }
 
     //start nutzen, wenn nicht via konsole!

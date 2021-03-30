@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
+import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.NameableBase;
 
 import java.util.ArrayList;
@@ -20,6 +22,14 @@ public class BasicMultiConsumerAgentGroupAttributeSupplier extends NameableBase 
 
     public BasicMultiConsumerAgentGroupAttributeSupplier(Map<ConsumerAgentGroup, List<ConsumerAgentGroupAttributeSupplier>> mapping) {
         this.mapping = mapping;
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.getMapCollChecksumWithMappedKey(
+                getMapping(),
+                Nameable::getName
+        );
     }
 
     public Map<ConsumerAgentGroup, List<ConsumerAgentGroupAttributeSupplier>> getMapping() {

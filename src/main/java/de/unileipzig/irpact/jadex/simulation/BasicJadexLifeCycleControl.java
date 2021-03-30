@@ -273,6 +273,7 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
         SYNC_LOCK.lock();
         try {
             if(timeModel.hasYearChange()) {
+                LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] perform year change", agent.getName());
                 timeModel.performYearChange();
             }
         } finally {
@@ -294,13 +295,13 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
                     return;
                 }
                 NavigableMap<Timestamp, Set<SyncTask>> tasks = syncTasks.headMap(now, true);
-                LOGGER.trace("[{} @ {}] check for sync tasks: {}", agent.getName(), now, count(tasks));
+                LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "[{} @ {}] check for sync tasks: {}", agent.getName(), now, count(tasks));
                 if(!tasks.isEmpty()) {
                     List<Timestamp> toRemove = new ArrayList<>();
                     for(Map.Entry<Timestamp, Set<SyncTask>> entry: tasks.entrySet()) {
                         toRemove.add(entry.getKey());
                         for(SyncTask task: entry.getValue()) {
-                            LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "execute sync task '{}' at '{}'", task.getName(), entry.getKey());
+                            LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] execute sync task '{}' at '{}'", agent.getName(), task.getName(), entry.getKey());
                             task.run();
                         }
                     }

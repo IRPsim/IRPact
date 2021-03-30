@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons.util.xlsx;
 
+import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -89,7 +90,8 @@ public final class XlsxUtil {
     public static String[] extractHeader(Row row) {
         List<String> headerList = new ArrayList<>();
         Iterator<Cell> cellIter = row.cellIterator();
-        while(cellIter.hasNext()) {
+        boolean noBlankCell = true;
+        while(cellIter.hasNext() && noBlankCell) {
             Cell cell = cellIter.next();
             switch(cell.getCellType()) {
                 case NUMERIC:
@@ -103,8 +105,12 @@ public final class XlsxUtil {
                     headerList.add(strValue);
                     break;
 
+                case BLANK:
+                    noBlankCell = false;
+                    break;
+
                 default:
-                    throw new IllegalArgumentException("unsupported cell type: " + cell.getCellType());
+                    throw ExceptionUtil.create(IllegalArgumentException::new, "unsupported cell type '{}' at row {} and column {}", cell.getCellType(), cell.getRowIndex(), cell.getColumnIndex());
 
             }
         }

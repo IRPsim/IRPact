@@ -19,16 +19,12 @@ import de.unileipzig.irpact.core.product.interest.ProductInterest;
 import de.unileipzig.irpact.jadex.agents.AbstractJadexAgentBDI;
 import de.unileipzig.irpact.jadex.agents.simulation.SimulationService;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
-import de.unileipzig.irpact.jadex.util.JadexUtil2;
+import de.unileipzig.irpact.jadex.util.JadexUtil;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bdiv3.annotation.Belief;
-import jadex.bdiv3.annotation.Goal;
-import jadex.bdiv3.annotation.Plan;
-import jadex.bdiv3.annotation.Trigger;
-import jadex.bdiv3.runtime.impl.PlanFailureException;
 import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.RequiredService;
 import jadex.micro.annotation.RequiredServices;
@@ -103,7 +99,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     protected void searchSimulationService() {
-        JadexUtil2.searchPlatformServices(reqFeature, SimulationService.class, result -> {
+        JadexUtil.searchPlatformServices(reqFeature, SimulationService.class, result -> {
             if(simulationService == null) {
                 log().trace(IRPSection.INITIALIZATION_PLATFORM, "[{}] SimulationService found", getName());
                 simulationService = result;
@@ -125,19 +121,19 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     protected void onInit() {
         initData();
-        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] init", getName());
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] init ({})", getName(), now());
         searchSimulationService();
     }
 
     @Override
     protected void onStart() {
-        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] start", getName());
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] start ({})", getName(), now());
         scheduleFirstAction();
     }
 
     @Override
     protected void onEnd() {
-        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] end", getName());
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] end ({})", getName(), now());
         proxyAgent.unsync(this);
     }
 
@@ -547,7 +543,8 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     protected void firstAction() {
         //bdiFeature.dispatchTopLevelGoal(new ProcessExecutionGoal(null, null));
-        log().trace("[{}] start loop", getName());
+        log().trace(IRPSection.SIMULATION_AGENT, "[{}] start loop ({})", getName(), now());
+        onLoopAction();
         scheduleLoop();
     }
 

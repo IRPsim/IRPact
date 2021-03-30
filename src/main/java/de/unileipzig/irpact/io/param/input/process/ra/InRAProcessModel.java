@@ -230,7 +230,11 @@ public class InRAProcessModel implements InProcessModel {
     }
 
     public void setNodeFilterScheme(InRAProcessPlanNodeFilterScheme nodeFilterScheme) {
-        this.nodeFilterScheme = new InRAProcessPlanNodeFilterScheme[]{nodeFilterScheme};
+        if(nodeFilterScheme == null) {
+            this.nodeFilterScheme = new InRAProcessPlanNodeFilterScheme[0];
+        } else {
+            this.nodeFilterScheme = new InRAProcessPlanNodeFilterScheme[]{nodeFilterScheme};
+        }
     }
 
     public InPVFile getPvFile() throws ParsingException {

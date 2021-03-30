@@ -24,7 +24,7 @@ import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.jadex.agents.simulation.ProxySimulationAgent;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.util.JadexSystemOut;
-import de.unileipzig.irpact.jadex.util.JadexUtil2;
+import de.unileipzig.irpact.jadex.util.JadexUtil;
 import de.unileipzig.irpact.start.optact.out.OutCustom;
 import de.unileipzig.irptools.defstructure.AnnotationParser;
 import de.unileipzig.irptools.defstructure.Converter;
@@ -314,7 +314,7 @@ public class IRPact implements IRPActAccess {
         environment.getLiveCycleControl().startKillSwitch();
 
         LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "get ISimulationService");
-        ISimulationService simulationService = JadexUtil2.getSimulationService(platform);
+        ISimulationService simulationService = JadexUtil.getSimulationService(platform);
         LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "get IClockService");
         IClockService clock = simulationService.getClockService();
         environment.getLiveCycleControl().setSimulationService(simulationService);

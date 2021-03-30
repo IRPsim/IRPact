@@ -176,6 +176,13 @@ public class InGeneral {
         logShareNetworkLocal = true;
     }
 
+    public void enableAllResultLogging() {
+        logResultGroupedByZip = true;
+        logResultGroupedByMilieu = true;
+        logResultGroupedByZipAndMilieu = true;
+        logProductAdoptions = true;
+    }
+
     public void setup(InputParser parser) throws ParsingException {
         parseLoggingSetup(parser);
         parseSeed(parser);

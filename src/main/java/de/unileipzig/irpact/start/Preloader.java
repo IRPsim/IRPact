@@ -279,4 +279,16 @@ public class Preloader {
         OptAct optact = new OptAct(clOptions, root);
         optact.start();
     }
+
+    public void start(AnnualEntry<InRoot> root) throws Exception {
+        setup();
+        callIRPact(root);
+    }
+
+    private void callIRPact(AnnualEntry<InRoot> root) throws Exception {
+        LOGGER.trace("call IRPact with InRoot");
+        IRPact irpact = createIRPactInstance();
+        irpact.start(root);
+        LOGGER.trace("IRPact finished");
+    }
 }

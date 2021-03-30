@@ -2,7 +2,7 @@ package de.unileipzig.irpact.experimental.tests.stepWithDelay.timeDriven;
 
 import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
 import de.unileipzig.irpact.commons.log.Logback;
-import de.unileipzig.irpact.jadex.util.JadexUtil2;
+import de.unileipzig.irpact.jadex.util.JadexUtil;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
 import jadex.base.Starter;
@@ -48,7 +48,7 @@ public class Main {
         IExternalAccess platform = Starter.createPlatform(config)
                 .get();
 
-        ISimulationService simulationService = JadexUtil2.getSimulationService(platform);
+        ISimulationService simulationService = JadexUtil.getSimulationService(platform);
         IClockService clock = simulationService.getClockService();
         IExecutionService exec = simulationService.getExecutorService();
 

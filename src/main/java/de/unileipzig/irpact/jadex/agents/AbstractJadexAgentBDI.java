@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.jadex.agents;
 
+import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.jadex.util.JadexUtil;
 import jadex.bdiv3.features.IBDIAgentFeature;
 import jadex.bridge.IComponentStep;
 import jadex.bridge.IInternalAccess;
@@ -46,22 +48,26 @@ public abstract class AbstractJadexAgentBDI extends AbstractAgentBase {
 
     @Override
     protected void scheduleLoop() {
-        nextAction();
+        scheduleNextLoopStep();
     }
 
-    protected void nextAction() {
-        getTimeModel().wait(
+    protected void scheduleNextLoopStep() {
+        IFuture<Void> nextTask = getTimeModel().wait(
                 execFeature,
                 delay,
                 agent,
                 LOOP_STEP
         );
+
+        if(JadexUtil.endTimeReached(nextTask)) {
+            log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] loop finished ({})", getName(), now().printComplex());
+        }
     }
 
     protected final IComponentStep<Void> LOOP_STEP = this::loopStep;
     protected IFuture<Void> loopStep(IInternalAccess access) {
         onLoopAction();
-        nextAction();
+        scheduleNextLoopStep();
         return IFuture.DONE;
     }
 }

@@ -120,11 +120,11 @@ public class BasicUncertaintyGroupAttributeSupplier extends NameableBase impleme
 
     @Override
     public int getChecksum() {
-        return Objects.hash(
+        return ChecksumComparable.getChecksum(
                 getName(),
                 attrName,
-                ChecksumComparable.getNameChecksum(uncertDist),
-                ChecksumComparable.getNameChecksum(convDist)
+                uncertDist,
+                convDist
         );
     }
 }

@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.simulation;
 
-import de.unileipzig.irpact.commons.listener.Listener;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.Agent;

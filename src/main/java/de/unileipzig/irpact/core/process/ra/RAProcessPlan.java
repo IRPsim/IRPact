@@ -14,6 +14,7 @@ import de.unileipzig.irpact.core.log.InfoTag;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
+import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.process.ra.attributes.UncertaintyAttribute;
@@ -48,6 +49,8 @@ public class RAProcessPlan implements ProcessPlan {
     protected Rnd rnd;
     protected RAProcessModel model;
     protected NodeFilter networkFilter;
+    protected boolean underRenovation = false;
+    protected boolean underConstruction = false;
 
     protected RAStage currentStage = RAStage.PRE_INITIALIZATION;
 
@@ -78,7 +81,9 @@ public class RAProcessPlan implements ProcessPlan {
                 getAgent().getName(), //loop sonst
                 getRnd().getChecksum(),
                 getModel().getName(),
-                getCurrentStage().getChecksum()
+                getCurrentStage().getChecksum(),
+                isUnderConstruction(),
+                isUnderRenovation()
         );
     }
 
@@ -149,6 +154,11 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     @Override
+    public boolean isModel(ProcessModel model) {
+        return this.model == model;
+    }
+
+    @Override
     public ProcessPlanResult execute() {
         if(currentStage == RAStage.PRE_INITIALIZATION) {
             return initPlan();
@@ -164,17 +174,26 @@ public class RAProcessPlan implements ProcessPlan {
     protected void adjustParametersOnNewYear() {
         if(currentStage == RAStage.IMPEDED) {
             currentStage = RAStage.DECISION_MAKING;
+            LOGGER.trace(IRPSection.SIMULATION_PROCESS, "reset process stage '{}' to '{}' for agent '{}'", RAStage.IMPEDED, RAStage.DECISION_MAKING, agent.getName());
         }
     }
 
     protected void updateConstructionAndRenovation() {
-        double renovationRate = RAProcessPlan.getRenovationRate(agent);
-        boolean doRenovation = rnd.nextDouble() < renovationRate;
-        RAProcessPlan.setUnderRenovation(agent, doRenovation);
+        double renovationRate = getRenovationRate(agent);
+        double renovationDraw = rnd.nextDouble();
+        boolean doRenovation = renovationDraw < renovationRate;
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "agent '{}' now under renovation? {} ({} < {})", agent.getName(), doRenovation, renovationDraw, renovationRate);
+        setUnderRenovation(doRenovation);
 
-        double constructionRate = RAProcessPlan.getConstructionRate(agent);
-        boolean doConstruction = rnd.nextDouble() < constructionRate;
-        RAProcessPlan.setUnderConstruction(agent, doConstruction);
+        double constructionRate = getConstructionRate(agent);
+        double constructionDraw = rnd.nextDouble();
+        boolean doConstruction = constructionDraw < constructionRate;
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "agent '{}' now under construction? {} ({} < {})", agent.getName(), doConstruction, constructionDraw, constructionRate);
+        setUnderConstruction(doConstruction);
+
+        if(doConstruction) {
+            applyUnderConstruction(agent);
+        }
     }
 
     protected ProcessPlanResult initPlan() {
@@ -225,17 +244,15 @@ public class RAProcessPlan implements ProcessPlan {
         }
 
         if(isAware(agent)) {
-            boolean underConstruction = isUnderConstruction(agent);
-            boolean underRenovation = isUnderRenovation(agent);
             if(underConstruction || underRenovation) {
-                makeInterested(agent);
-                doSelfActionAndAllowAttention();
                 if(underConstruction) {
                     LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] under construction, interest for '{}' set to maximum", agent.getName(), product.getName());
                 }
                 if(underRenovation) {
                     LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] under renovation, interest for '{}' set to maximum", agent.getName(), product.getName());
                 }
+                makeInterested(agent);
+                doSelfActionAndAllowAttention();
                 return ProcessPlanResult.IN_PROCESS;
             }
         }
@@ -650,17 +667,25 @@ public class RAProcessPlan implements ProcessPlan {
         return attr.getDoubleValue();
     }
 
-    protected static boolean isUnderConstruction(ConsumerAgent agent) {
-        Attribute attr = agent.getAttribute(RAConstants.UNDER_CONSTRUCTION);
-        return attr.getDoubleValue() == 1.0;
+    public boolean isUnderConstruction() {
+        return underConstruction;
     }
 
-    protected static void setUnderConstruction(ConsumerAgent agent, boolean value) {
-        Attribute attr = agent.getAttribute(RAConstants.UNDER_CONSTRUCTION);
-        attr.setDoubleValue(value);
-        if(value) {
-            setShareOf1Or2FamilyHouse(agent, true);
-            setHouseOwner(agent, true);
+    public void setUnderConstruction(boolean value) {
+        this.underConstruction = value;
+    }
+
+    protected static void applyUnderConstruction(ConsumerAgent agent) {
+        boolean isShare = isShareOf1Or2FamilyHouse(agent);
+        boolean isOwner = isHouseOwner(agent);
+        setShareOf1Or2FamilyHouse(agent, true);
+        setHouseOwner(agent, true);
+
+        if(!isShare) {
+            LOGGER.trace(IRPSection.SIMULATION_PROCESS, "agent '{}' not share of 1 or 2 family house", agent.getName());
+        }
+        if(!isOwner) {
+            LOGGER.trace(IRPSection.SIMULATION_PROCESS, "agent '{}' house owner", agent.getName());
         }
     }
 
@@ -669,14 +694,12 @@ public class RAProcessPlan implements ProcessPlan {
         return attr.getDoubleValue();
     }
 
-    protected static boolean isUnderRenovation(ConsumerAgent agent) {
-        Attribute attr = agent.getAttribute(RAConstants.UNDER_RENOVATION);
-        return attr.getDoubleValue() == 1.0;
+    public boolean isUnderRenovation() {
+        return underRenovation;
     }
 
-    protected static void setUnderRenovation(ConsumerAgent agent, boolean value) {
-        Attribute attr = agent.getAttribute(RAConstants.UNDER_RENOVATION);
-        attr.setDoubleValue(value);
+    public void setUnderRenovation(boolean value) {
+        this.underRenovation = value;
     }
 
     protected boolean isAdopter(ConsumerAgent agent) {

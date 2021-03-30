@@ -17,9 +17,7 @@ public final class RAConstants {
     public static final String SHARE_1_2_HOUSE = "Anzahl_HH_Dummy";                         //A5
     public static final String HOUSE_OWNER = "Privatbesitz";                       //A6
     public static final String CONSTRUCTION_RATE = "construction_rate";                      //A7
-    public static final String UNDER_CONSTRUCTION = "under_construction";
     public static final String RENOVATION_RATE = "renovation_rate";                        //A8
-    public static final String UNDER_RENOVATION = "under_renovation";
 
     public static final String REWIRING_RATE = "rewiring_rate";                         //B6
 

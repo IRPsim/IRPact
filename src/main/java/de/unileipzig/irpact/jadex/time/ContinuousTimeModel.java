@@ -47,7 +47,7 @@ public class ContinuousTimeModel extends AbstractJadexTimeModel {
 
     public void setStartTime(long timeInMs) {
         converter.setStart(timeInMs);
-        setStartTime(new BasicTimestamp(converter.getStartTime()));
+        this.startTime = new BasicTimestamp(converter.getStartTime());
     }
 
     @Override
@@ -55,9 +55,8 @@ public class ContinuousTimeModel extends AbstractJadexTimeModel {
         throw new RuntimeException("TODO");
     }
 
-    @Override
     public void setEndTime(JadexTimestamp endTime) {
-        super.setEndTime(endTime);
+        this.endTime = endTime;
         delayUntilEnd = converter.timeBetween(startTime.getTime(), endTime.getTime());
     }
 
@@ -74,6 +73,11 @@ public class ContinuousTimeModel extends AbstractJadexTimeModel {
         } else {
             return IFuture.DONE;
         }
+    }
+
+    @Override
+    public IFuture<Void> waitUntilEnd(IExecutionFeature exec, IInternalAccess access, IComponentStep<Void> task) {
+        throw new TodoException();
     }
 
     @Override

@@ -56,5 +56,9 @@ public interface TimeModel extends Nameable, InitalizablePart {
 
     Timestamp plusYears(Timestamp ts, long years);
 
+    Timestamp atStartOfYear(int year);
+
+    Timestamp at(int year, long weeks);
+
     Timestamp at(int year, Month month, int day);
 }

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons.util.xlsx;
 
+import de.unileipzig.irpact.commons.exception.UncheckedException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -11,6 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -134,7 +136,11 @@ public class SimpleXlsxTableParser<T> {
                     if(!"General".equals(format)) {
                         DecimalFormat df = new DecimalFormat(format);
                         String formatted = df.format(numValue);
-                        numValue = Double.parseDouble(formatted);
+                        try {
+                            numValue = df.parse(formatted).doubleValue();
+                        } catch (ParseException e) {
+                            throw new IllegalArgumentException(e);
+                        }
                     }
                     //===
                     T numEntry = numbericConverter.convert(index, header, numValue);
