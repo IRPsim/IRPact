@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.process.ra;
 
+import de.unileipzig.irpact.commons.log.MultiLoggingMessage;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.MathUtil;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
@@ -479,7 +480,10 @@ public class RAProcessPlan implements ProcessPlan {
 
     protected ProcessPlanResult handleDecisionMaking() {
         doSelfActionAndAllowAttention();
-        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handleDecisionMaking", agent.getName());
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle decision making", agent.getName());
+
+        MultiLoggingMessage mlm = new MultiLoggingMessage();
+        mlm.log("{} [{}] calculate U");
 
         double a = modelData().a();
         double b = modelData().b();
@@ -487,27 +491,57 @@ public class RAProcessPlan implements ProcessPlan {
         double d = modelData().d();
 
         double B = 0.0;
+
         if(a != 0.0) {
             double financial = getFinancialComponent();
             double financialThreshold = getFinancialThresholdProduct(agent, product);
+            boolean noFinancial = financial < financialThreshold;
             //check D3 reached
-            if(financial < financialThreshold) {
+            if(noFinancial) {
+                mlm.log("financial component < financial threshold ({} < {}) = {}", financial, financialThreshold, true);
+                logCalculateAdoption(mlm);
+
                 updateStage(RAStage.IMPEDED);
                 return ProcessPlanResult.IMPEDED;
             }
-            B += a * financial;
+            double temp = a * financial;
+            mlm.log("a * financial component = {} * {} = {}", a, financial, temp);
+            B += temp;
+        } else {
+            mlm.log("a = 0");
         }
+
         if(b != 0.0) {
-            B += b * getNoveltyCompoenent();
+            double env = getEnvironmentalComponent();
+            double benv = b * env;
+            mlm.log("b * environmental component = {} * {} = {}", b, env, benv);
+            B += benv;
+        } else {
+            mlm.log("b = 0");
         }
+
         if(c != 0.0) {
-            B += c * getEnvironmentalComponent();
+            double nov = getNoveltyCompoenent();
+            double cnov = c * nov;
+            mlm.log("c * novelty component = {} * {} = {}", c, nov, cnov);
+            B += cnov;
+        } else {
+            mlm.log("c = 0");
         }
+
         if(d != 0.0) {
-            B += d * getSocialComponent();
+            double soc = getSocialComponent();
+            double dsoc = d * soc;
+            mlm.log("d * social component = {} * {} = {}", d, soc, dsoc);
+            B += dsoc;
+        } else {
+            mlm.log("d = 0");
         }
+
         double adoptionThreshold = getAdoptionThreshold(agent, product);
-        if(B < adoptionThreshold) {
+        boolean noAdoption = B < adoptionThreshold;
+        mlm.log("U < adoption threshold ({} < {}): {}", B, adoptionThreshold, noAdoption);
+        if(noAdoption) {
             updateStage(RAStage.IMPEDED);
             return ProcessPlanResult.IMPEDED;
         } else {
@@ -540,14 +574,20 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected double getFinancialComponent() {
-        double ftThis = getFinancialThresholdAgent(agent);
         double ftAvg = getAverageFinancialThresholdAgent();
+        double ftThis = getFinancialThresholdAgent(agent);
 
-        double npvThis = modelData().NPV(agent, environment.getTimeModel().getCurrentYear());
         double npvAvg = modelData().avgNPV(environment.getTimeModel().getCurrentYear());
+        double npvThis = modelData().NPV(agent, environment.getTimeModel().getCurrentYear());
 
-        double ft = getLogisticFactor() * (ftThis - ftAvg);
-        double npv = getLogisticFactor() * (npvThis - npvAvg);
+        double ft = getLogisticFactor() * (ftAvg - ftThis);
+        double npv = getLogisticFactor() * (npvAvg - npvThis);
+
+        double logisticFt = MathUtil.logistic(ft);
+        double logisticNpv = MathUtil.logistic(npv);
+
+        logFinancialComponent(ftAvg, ftThis, npvAvg, npvThis, getLogisticFactor(), ft, npv, logisticFt, logisticNpv);
+
         return (MathUtil.logistic(ft) + MathUtil.logistic(npv)) / 2.0;
     }
 
@@ -618,6 +658,11 @@ public class RAProcessPlan implements ProcessPlan {
     protected static double getRewiringRate(ConsumerAgent agent) {
         Attribute attr = agent.getAttribute(RAConstants.REWIRING_RATE);
         return attr.getDoubleValue();
+    }
+
+    protected static int getId(ConsumerAgent agent) {
+        Attribute attr = agent.findAttribute(RAConstants.ID);
+        return (int) attr.getDoubleValue();
     }
 
     protected static double getPurchasePower(ConsumerAgent agent) {
@@ -782,23 +827,6 @@ public class RAProcessPlan implements ProcessPlan {
         applyRelativeAgreement(target, RAConstants.ENVIRONMENTAL_CONCERN);
     }
 
-      //Diese Variante nutzt einen datalock
-//    protected void applyRelativeAgreement(ConsumerAgent target) {
-//        if(!waitForDoubleSidedDataAccess(target)) {
-//            LOGGER.warn("[{}] Agent-Thread interrupted, 'applyRelativeAgreement' canceled.", agent.getName());
-//            return;
-//        }
-//        try {
-//            applyRelativeAgreement(target, RAConstants.NOVELTY_SEEKING);
-//            applyRelativeAgreement(target, RAConstants.DEPENDENT_JUDGMENT_MAKING);
-//            applyRelativeAgreement(target, RAConstants.ENVIRONMENTAL_CONCERN);
-//        } finally {
-//            agent.releaseDataAccess();
-//            target.releaseDataAccess();
-//        }
-//    }
-
-
     protected void applyRelativeAgreement(ConsumerAgent target, String attrName) {
         ConsumerAgentAttribute o1Attr = agent.getAttribute(attrName);
         UncertaintyAttribute u1Attr = (UncertaintyAttribute) agent.getAttribute(RAConstants.getUncertaintyAttributeName(attrName));
@@ -886,14 +914,14 @@ public class RAProcessPlan implements ProcessPlan {
                 : Level.TRACE;
     }
 
-    protected Settings getInitData() {
+    protected Settings getSettings() {
         return environment.getSettings();
     }
 
     protected void logInterestUpdate(
             int myOldPoints, int myNewPoints,
             Agent target, int targetOldPoints, int targetNewPoints) {
-        boolean logData = getInitData().isLogInterestUpdate();
+        boolean logData = getSettings().isLogInterestUpdate();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
@@ -907,7 +935,7 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected void logGraphUpdateEdgeAdded(Agent target) {
-        boolean logData = getInitData().isLogGraphUpdate();
+        boolean logData = getSettings().isLogGraphUpdate();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
@@ -920,7 +948,7 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected void logGraphUpdateEdgeRemoved(Agent target) {
-        boolean logData = getInitData().isLogGraphUpdate();
+        boolean logData = getSettings().isLogGraphUpdate();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
@@ -936,7 +964,7 @@ public class RAProcessPlan implements ProcessPlan {
             String ai, String aj, String attribute,
             double xi, double ui, double xj, double uj, double m,
             double hij, double ra, double newXj, double newUj) {
-        boolean logData = getInitData().isLogRelativeAgreement();
+        boolean logData = getSettings().isLogRelativeAgreement();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
@@ -954,7 +982,7 @@ public class RAProcessPlan implements ProcessPlan {
     protected void logRelativeAgreementFailed(
             String ai, String aj, String attribute,
             double xi, double ui, double xj, double uj, double hij) {
-        boolean logData = getInitData().isLogRelativeAgreement();
+        boolean logData = getSettings().isLogRelativeAgreement();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
@@ -973,15 +1001,40 @@ public class RAProcessPlan implements ProcessPlan {
             MutableDouble totalLocal,
             MutableDouble adopterLocal,
             MutableDouble shareLocal) {
-        boolean logData = getInitData().isLogShareNetworkLocale();
+        boolean logData = getSettings().isLogShareNetworkLocale();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
 
         logger.log(section, level,
                 "{} [{}] global share = {} ({} / {}), local share = {} ({} / {})",
-                InfoTag.TAG_SHARE_NETORK_LOCAL, agent.getName(),
+                InfoTag.SHARE_NETORK_LOCAL, agent.getName(),
                 shareGlobal.doubleValue(), adopterGlobal.doubleValue(), totalGlobal.doubleValue(), shareLocal.doubleValue(), adopterLocal.doubleValue(), totalLocal.doubleValue()
         );
+    }
+
+    protected void logFinancialComponent(
+            double ftAvg, double ftThis,
+            double npvAvg, double npvThis,
+            double logisticFactor,
+            double ft, double npv,
+            double logisticFt, double logisticNpv) {
+        boolean logData = getSettings().isLogFinancialComponent();
+        IRPLogger logger = getLogger(logData);
+        IRPSection section = getSection(logData);
+        Level level = getLevel(logData);
+        logger.log(section, level,
+                "{} [{}] financal component calculation: t_avg = {}, t = {}, NPV_avg = {}, NPV = {}, lf = {} | lf * (t_avg - t) = {}, lf * (NPV_avg - NPV) = {} | 1 / (1 + e^(-(lf * (t_avg - t))) = {}, 1 / (1 + e^(-(lf * (NPV_avg - NPV))) = {}",
+                InfoTag.FINANCAL_COMPONENT, agent.getName(),
+                ftAvg, ftThis, npvAvg, npvThis, logisticFactor, ft, npv, logisticFt, logisticNpv
+        );
+    }
+
+    protected void logCalculateAdoption(MultiLoggingMessage mlm) {
+        boolean logData = getSettings().isLogCalculateAdoption();
+        IRPLogger logger = getLogger(logData);
+        IRPSection section = getSection(logData);
+        Level level = getLevel(logData);
+        logger.log(section, level, "{}", mlm.buildLazyMessage(" | "));
     }
 }

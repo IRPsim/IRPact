@@ -3,6 +3,9 @@ package de.unileipzig.irpact.core.simulation;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.start.CommandLineOptions;
 
+import java.util.List;
+import java.util.stream.IntStream;
+
 /**
  * @author Daniel Abitz
  */
@@ -54,6 +57,12 @@ public interface Settings {
 
     int getNumberOfSimulationYears();
 
+    IntStream streamSimulationYears();
+
+    int[] getSimulationYears();
+
+    List<Number> listYears();
+
     boolean hasMultipleSimulationYears();
 
     //=========================
@@ -81,6 +90,12 @@ public interface Settings {
 
     void setLogShareNetworkLocale(boolean log);
     boolean isLogShareNetworkLocale();
+
+    void setLogFinancialComponent(boolean log);
+    boolean isLogFinancialComponent();
+
+    void setLogCalculateAdoption(boolean log);
+    boolean isLogCalculateAdoption();
 
     //=========================
     //result logging

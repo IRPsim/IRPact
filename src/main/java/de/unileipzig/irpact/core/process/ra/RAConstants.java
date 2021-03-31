@@ -33,12 +33,13 @@ public final class RAConstants {
     //Product
     public static final String INVESTMENT_COST = "investment_cost";                               //E1
 
-    //Spatial
+    //spatial datei
     public static final String ID = "ID";
     public static final String ADDRESS = "Adresse";
     public static final String ZIP = "PLZ";
     public static final String ORIENTATION = "Dachorient";
     public static final String SLOPE = "Dachneig";
+    public static final String AREA = "Flaeche";
     public static final String X_CENT = "X_Zentroid";
     public static final String Y_CENT = "Y_Zentroid";
     public static final String PURCHASE_POWER = "KK_Index";          //A1

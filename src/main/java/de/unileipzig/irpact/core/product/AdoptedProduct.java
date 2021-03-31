@@ -17,5 +17,13 @@ public interface AdoptedProduct extends ChecksumComparable {
 
     Timestamp getTimestamp();
 
+    default int getYear() {
+        return isInitial() ? -1 : getTimestamp().getYear();
+    }
+
     boolean isInitial();
+
+    default boolean isNotInitial() {
+        return !isInitial();
+    }
 }

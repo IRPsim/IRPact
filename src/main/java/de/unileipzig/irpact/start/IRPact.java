@@ -9,6 +9,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.simulation.*;
+import de.unileipzig.irpact.core.util.PVactResultLogging;
 import de.unileipzig.irpact.io.param.output.OutAdoptionResult;
 import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -423,6 +424,7 @@ public class IRPact implements IRPActAccess {
         }
         createOutput();
         callCallbacks();
+        printLoggingOutput();
         finalTask();
     }
 
@@ -499,6 +501,11 @@ public class IRPact implements IRPActAccess {
                 LOGGER.error("on running callback", e);
             }
         }
+    }
+
+    private void printLoggingOutput() {
+        PVactResultLogging logging = new PVactResultLogging(CL_OPTIONS, environment);
+        logging.execute();
     }
 
     private void finalTask() {

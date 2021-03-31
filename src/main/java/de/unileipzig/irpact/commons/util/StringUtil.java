@@ -1,9 +1,11 @@
 package de.unileipzig.irpact.commons.util;
 
+import de.unileipzig.irptools.util.Util;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Collection;
 
 /**
  * @author Daniel Abitz
@@ -17,6 +19,17 @@ public final class StringUtil {
 
     public static String lineSeparator() {
         return LINE_SEPARATOR;
+    }
+
+    public static String concat(String delimiter, Collection<? extends String> parts) {
+        StringBuilder sb = new StringBuilder();
+        for(String part: parts) {
+            if(sb.length() > 0) {
+                sb.append(delimiter);
+            }
+            sb.append(part);
+        }
+        return sb.toString();
     }
 
     public static String splitLen(String text, int lineLen) {

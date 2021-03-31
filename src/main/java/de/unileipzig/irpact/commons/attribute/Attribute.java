@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.commons.attribute;
 
-import de.unileipzig.irpact.commons.distribution.Distribution;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.util.data.DataType;
 import de.unileipzig.irpact.util.Todo;
@@ -59,6 +58,19 @@ public interface Attribute extends AttributeBase {
     String getStringValue();
 
     void setStringValue(String value);
+
+    default String printValue() {
+        switch (getType()) {
+            case STRING:
+                return getStringValue();
+
+            case DOUBLE:
+                return Double.toString(getDoubleValue());
+
+            default:
+                throw new UnsupportedOperationException("type: " + getType());
+        }
+    }
 
     UnivariateDoubleDistribution getUnivariateDoubleDistributionValue();
 

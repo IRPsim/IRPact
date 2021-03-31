@@ -5,6 +5,8 @@ import de.unileipzig.irpact.start.CommandLineOptions;
 import de.unileipzig.irpact.util.AddToParam;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @author Daniel Abitz
@@ -24,6 +26,8 @@ public class BasicSettings implements Settings {
     protected boolean logInterestUpdate = false;
     protected boolean logGraphUpdate = false;
     protected boolean logShareNetworkLocale = false;
+    protected boolean logFinancalComponent = false;
+    protected boolean logCalculateAdoption = false;
 
     protected boolean logResultGroupedByZipAndMilieu = false;
     protected boolean logResultGroupedByZip = false;
@@ -150,6 +154,22 @@ public class BasicSettings implements Settings {
     }
 
     @Override
+    public IntStream streamSimulationYears() {
+        return IntStream.rangeClosed(firstSimulationYear, lastSimulationYear);
+    }
+
+    @Override
+    public int[] getSimulationYears() {
+        return streamSimulationYears().toArray();
+    }
+
+    @Override
+    public List<Number> listYears() {
+        return streamSimulationYears().boxed()
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public boolean hasMultipleSimulationYears() {
         return getNumberOfSimulationYears() > 1;
     }
@@ -215,6 +235,24 @@ public class BasicSettings implements Settings {
     @Override
     public boolean isLogShareNetworkLocale() {
         return logShareNetworkLocale;
+    }
+
+    @Override
+    public void setLogFinancialComponent(boolean log) {
+        this.logFinancalComponent = log;
+    }
+    @Override
+    public boolean isLogFinancialComponent() {
+        return logFinancalComponent;
+    }
+
+    @Override
+    public void setLogCalculateAdoption(boolean log) {
+        this.logCalculateAdoption = log;
+    }
+    @Override
+    public boolean isLogCalculateAdoption() {
+        return logCalculateAdoption;
     }
 
     //=========================

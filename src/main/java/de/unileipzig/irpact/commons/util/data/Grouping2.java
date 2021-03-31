@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.util.CollectionUtil;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -25,8 +26,15 @@ public class Grouping2<A, B, X> implements Grouping<X> {
     @Override
     public void add(X element) {
         A a = groupASelector.apply(element);
-        B b = groupBSelector.apply(element);
+        add(a, element);
+    }
 
+    public void add(A a, X element) {
+        B b = groupBSelector.apply(element);
+        add(a, b, element);
+    }
+
+    public void add(A a, B b, X element) {
         Map<B, List<X>> bMap = grouping.computeIfAbsent(a, _a -> new LinkedHashMap<>());
         List<X> list = bMap.computeIfAbsent(b, _b -> new ArrayList<>());
         list.add(element);
@@ -34,6 +42,25 @@ public class Grouping2<A, B, X> implements Grouping<X> {
 
     public Map<A, Map<B, List<X>>> getGrouping() {
         return grouping;
+    }
+
+    public Collection<A> getFirstComponents() {
+        return grouping.keySet();
+    }
+
+    public List<A> listFirstComponents() {
+        return new ArrayList<>(getFirstComponents());
+    }
+
+    public Collection<B> getSecondComponents() {
+        return grouping.values()
+                .stream()
+                .flatMap(m -> m.keySet().stream())
+                .collect(Collectors.toSet());
+    }
+
+    public List<B> listSecondComponents() {
+        return new ArrayList<>(getSecondComponents());
     }
 
     public Map<B, List<X>> get(A a) {

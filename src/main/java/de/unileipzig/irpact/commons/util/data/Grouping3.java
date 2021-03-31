@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.util.CollectionUtil;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -28,9 +29,20 @@ public class Grouping3<A, B, C, X> implements Grouping<X> {
     @Override
     public void add(X element) {
         A a = groupASelector.apply(element);
-        B b = groupBSelector.apply(element);
-        C c = groupCSelector.apply(element);
+        add(a, element);
+    }
 
+    public void add(A a, X element) {
+        B b = groupBSelector.apply(element);
+        add(a, b, element);
+    }
+
+    public void add(A a, B b, X element) {
+        C c = groupCSelector.apply(element);
+        add(a, b, c, element);
+    }
+
+    public void add(A a, B b, C c, X element) {
         Map<B, Map<C, List<X>>> bMap = grouping.computeIfAbsent(a, _a -> new LinkedHashMap<>());
         Map<C, List<X>> cMap = bMap.computeIfAbsent(b, _b -> new LinkedHashMap<>());
         List<X> list = cMap.computeIfAbsent(c, _c -> new ArrayList<>());
@@ -39,6 +51,37 @@ public class Grouping3<A, B, C, X> implements Grouping<X> {
 
     public Map<A, Map<B, Map<C, List<X>>>> getGrouping() {
         return grouping;
+    }
+
+    public Collection<A> getFirstComponents() {
+        return grouping.keySet();
+    }
+
+    public List<A> listFirstComponents() {
+        return new ArrayList<>(getFirstComponents());
+    }
+
+    public Collection<B> getSecondComponents() {
+        return grouping.values()
+                .stream()
+                .flatMap(m -> m.keySet().stream())
+                .collect(Collectors.toSet());
+    }
+
+    public List<B> listSecondComponents() {
+        return new ArrayList<>(getSecondComponents());
+    }
+
+    public Collection<C> getThirdComponents() {
+        return grouping.values()
+                .stream()
+                .flatMap(m -> m.values().stream())
+                .flatMap(m -> m.keySet().stream())
+                .collect(Collectors.toSet());
+    }
+
+    public List<C> listThirdComponents() {
+        return new ArrayList<>(getThirdComponents());
     }
 
     public Map<B, Map<C, List<X>>> get(A a) {

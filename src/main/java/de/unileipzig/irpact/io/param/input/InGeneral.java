@@ -57,6 +57,8 @@ public class InGeneral {
         putFieldPathAndAddEntry(res, thisClass(), "logRelativeAgreement", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
         putFieldPathAndAddEntry(res, thisClass(), "logInterestUpdate", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
         putFieldPathAndAddEntry(res, thisClass(), "logShareNetworkLocal", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+        putFieldPathAndAddEntry(res, thisClass(), "logFinancalComponent", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+        putFieldPathAndAddEntry(res, thisClass(), "logCalculateAdoption", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
 
         putFieldPathAndAddEntry(res, thisClass(), "logResultGroupedByZip", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
         putFieldPathAndAddEntry(res, thisClass(), "logResultGroupedByMilieu", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
@@ -130,6 +132,12 @@ public class InGeneral {
     @FieldDefinition
     public boolean logShareNetworkLocal;
 
+    @FieldDefinition
+    public boolean logFinancalComponent;
+
+    @FieldDefinition
+    public boolean logCalculateAdoption;
+
     //=========================
     //result logging
     //=========================
@@ -174,6 +182,8 @@ public class InGeneral {
         logRelativeAgreement = true;
         logInterestUpdate = true;
         logShareNetworkLocal = true;
+        logFinancalComponent = true;
+        logCalculateAdoption = true;
     }
 
     public void enableAllResultLogging() {
@@ -213,6 +223,8 @@ public class InGeneral {
         initData.setLogRelativeAgreement(logRelativeAgreement);
         initData.setLogInterestUpdate(logInterestUpdate);
         initData.setLogShareNetworkLocale(logShareNetworkLocal);
+        initData.setLogFinancialComponent(logFinancalComponent);
+        initData.setLogCalculateAdoption(logCalculateAdoption);
 
         initData.setLogResultGroupedByZip(logResultGroupedByZip);
         initData.setLogResultGroupedByMilieu(logResultGroupedByMilieu);

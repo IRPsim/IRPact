@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons.log;
 
+import de.unileipzig.irpact.commons.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.event.Level;
 
@@ -27,7 +28,19 @@ public class LoggingMessage {
         this.cause = cause;
     }
 
+    public LoggingMessage(String message, Object arg) {
+        this((Void) null, message, new Object[]{arg});
+    }
+
+    public LoggingMessage(String message, Object arg1, Object arg2) {
+        this((Void) null, message, new Object[]{arg1, arg2});
+    }
+
     public LoggingMessage(String message, Object... args) {
+        this((Void) null, message, args);
+    }
+
+    protected LoggingMessage(@SuppressWarnings("unused") Void temp, String message, Object[] args) {
         this.message = message;
         this.args = args;
     }
@@ -72,6 +85,24 @@ public class LoggingMessage {
 
     public boolean hasLevel() {
         return level != null;
+    }
+
+    public String format() {
+        if(hasArguments()) {
+            switch(getNumberOfArguments()) {
+                case 1:
+                    return StringUtil.format(getMessage(), getFirstArgument());
+
+                case 2:
+                    return StringUtil.format(getMessage(), getFirstArgument(), getSecondArgument());
+
+                default:
+                    return StringUtil.format(getMessage(), getArguments());
+            }
+        }
+        else {
+            return getMessage();
+        }
     }
 
     public void log(Logger logger, Level ifNoLevel) {

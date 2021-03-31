@@ -79,7 +79,7 @@ public final class BasicTimestamp implements JadexTimestamp {
     public String printPretty() {
         if(cachedPretty == null) {
             if(hasTick()) {
-                cachedPretty = "Tick(" + tick + " [" + FORMATTER.format(TIME) + "])";
+                cachedPretty = "Tick(" + tick + " | "+ FORMATTER.format(TIME) + ")";
             } else {
                 cachedPretty = "Time(" + FORMATTER.format(TIME) + ")";
             }
