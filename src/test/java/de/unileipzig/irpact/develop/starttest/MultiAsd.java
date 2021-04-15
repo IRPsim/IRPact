@@ -327,4 +327,14 @@ class MultiAsd {
     void checkNames() {
         IOConstants.validateNames();
     }
+
+    @Test
+    void runItOptact() {
+        Path dir = Paths.get("E:\\Downloads\\0Skype\\329\\329\\model-1\\year-0");
+        String[] args = {
+                "-i", dir.resolve("input_0.json").toString(),
+                "-o", dir.resolve("xxxout.json").toString()
+        };
+        Start.main(args);
+    }
 }
