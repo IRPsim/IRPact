@@ -5,5 +5,7 @@ package de.unileipzig.irpact.commons.util.data;
  */
 public interface Grouping<X> {
 
+    boolean isEmpty();
+
     void add(X element);
 }

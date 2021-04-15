@@ -12,6 +12,7 @@ import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.start.CommandLineOptions;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +24,12 @@ import java.util.stream.Stream;
  */
 public class PVactResultLogging {
 
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(PVactResultLogging.class);
+
     protected final Function<? super List<AdoptionResult>, ? extends String> sumAdoptions = list -> {
+        if(list == null) {
+            return "0";
+        }
         int sum = 0;
         for(AdoptionResult r: list) {
             if(r.getProduct().getProduct() == getProduct()) {
@@ -45,6 +51,11 @@ public class PVactResultLogging {
 
     public void execute() {
         Settings settings = environment.getSettings();
+
+        LOGGER.trace("isLogResultGroupedByZip: {}", settings.isLogResultGroupedByZip());
+        LOGGER.trace("isLogResultGroupedByMilieu: {}", settings.isLogResultGroupedByMilieu());
+        LOGGER.trace("isLogResultGroupedByZipAndMilieu: {}", settings.isLogResultGroupedByZipAndMilieu());
+        LOGGER.trace("isLogProductAdoptions: {}", settings.isLogProductAdoptions());
 
         if(settings.isLogResultGroupedByZip()) {
             logResultGroupedByZip();
@@ -97,6 +108,11 @@ public class PVactResultLogging {
             }
         });
 
+        if(g.isEmpty()) {
+            printResult(description, "EMPTY");
+            return;
+        }
+
         List<Number> years = environment.getSettings().listYears();
         List<String> zips = g.listSecondComponents();
 
@@ -129,6 +145,11 @@ public class PVactResultLogging {
                 g.add(year, r);
             }
         });
+
+        if(g.isEmpty()) {
+            printResult(description, "EMPTY");
+            return;
+        }
 
         List<Number> years = environment.getSettings().listYears();
         List<String> k1 = g.listSecondComponents();
@@ -174,12 +195,12 @@ public class PVactResultLogging {
     protected void printResult(
             String description,
             String text) {
-        IRPLogging.getClearLogger().info(description);
-        IRPLogging.getClearLogger().info(text);
+        IRPLogging.getResultLogger().info(description);
+        IRPLogging.getResultLogger().info(text);
     }
 
     protected void printResult(String text) {
-        IRPLogging.getClearLogger().info(text);
+        IRPLogging.getResultLogger().info(text);
     }
 
     protected static int getId(ConsumerAgent agent) {
@@ -219,8 +240,8 @@ public class PVactResultLogging {
     protected Grouping3<Number, String, String, AdoptionResult> groupAdoptions(String key1, String key2) {
         Grouping3<Number, String, String, AdoptionResult> grouping = new Grouping3<>(
                 r -> r.getProduct().getYear(),
-                r -> r.getAgent().findAttribute(key1).printValue(),
-                r -> r.getAgent().findAttribute(key2).printValue()
+                r -> r.getAgent().findAttribute(key1).getValueAsString(),
+                r -> r.getAgent().findAttribute(key2).getValueAsString()
         );
 
         streamNonInitialResults().forEach(grouping::add);
@@ -231,7 +252,7 @@ public class PVactResultLogging {
     protected Grouping2<Number, String, AdoptionResult> groupAdoptions(String key) {
         Grouping2<Number, String, AdoptionResult> grouping = new Grouping2<>(
                 r -> r.getProduct().getYear(),
-                r -> r.getAgent().findAttribute(key).printValue()
+                r -> r.getAgent().findAttribute(key).getValueAsString()
         );
 
         streamNonInitialResults().forEach(grouping::add);

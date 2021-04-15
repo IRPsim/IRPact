@@ -52,4 +52,9 @@ public abstract class AbstractAttribute extends NameableBase implements Attribut
     public void setUnivariateDoubleDistributionValue(UnivariateDoubleDistribution value) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public String toString() {
+        return "{" + getName() + "=" + getValueAsString() + "}";
+    }
 }

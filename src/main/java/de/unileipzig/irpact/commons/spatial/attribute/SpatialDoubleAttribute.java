@@ -26,16 +26,6 @@ public class SpatialDoubleAttribute extends DoubleAttribute implements SpatialAt
     }
 
     @Override
-    public String getValueAsString() {
-        return Double.toString(getDoubleValue());
-    }
-
-    @Override
-    public String toString() {
-        return "{" + getName() + "=" + getValueAsString() + "}";
-    }
-
-    @Override
     public int getChecksum() {
         return Objects.hash(getName(), getDoubleValue());
     }

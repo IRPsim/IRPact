@@ -9,6 +9,4 @@ public interface SpatialAttribute extends Attribute {
 
     @Override
     SpatialAttribute copyAttribute();
-
-    String getValueAsString();
 }

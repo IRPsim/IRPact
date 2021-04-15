@@ -114,6 +114,7 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
         return ParamUtil.getInstance(spatialDistribution, "spatialDistribution");
     }
 
+    @Override
     public void setSpatialDistribution(InSpatialDistribution dist) {
         this.spatialDistribution = new InSpatialDistribution[]{dist};
     }

@@ -26,16 +26,6 @@ public class SpatialStringAttribute extends StringAttribute implements SpatialAt
     }
 
     @Override
-    public String getValueAsString() {
-        return getStringValue();
-    }
-
-    @Override
-    public String toString() {
-        return "{" + getName() + "=" + getValueAsString() + "}";
-    }
-
-    @Override
     public int getChecksum() {
         return Objects.hash(getName(), getStringValue());
     }

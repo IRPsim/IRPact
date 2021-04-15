@@ -271,7 +271,7 @@ class DivTest {
     void logFun() {
         IRPLogging.initConsole();
         IRPLogging.getLogger(DivTest.class).trace("HALLO");
-        IRPLogging.getClearLogger().trace("HALLO");
+        IRPLogging.getResultLogger().trace("HALLO");
     }
 
     @Test

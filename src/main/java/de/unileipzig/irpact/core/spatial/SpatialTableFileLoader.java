@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.spatial;
 
 import de.unileipzig.irpact.commons.res.ResourceLoader;
-import de.unileipzig.irpact.commons.util.xlsx.SimpleXlsxTableParser;
+import de.unileipzig.irpact.commons.util.xlsx.XlsxSheetParser;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
@@ -134,11 +134,12 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
     public static List<List<SpatialAttribute>> parseXlsx(XSSFWorkbook book) {
         XSSFSheet sheet = book.getSheetAt(0);
 
-        SimpleXlsxTableParser<SpatialAttribute> parser = new SimpleXlsxTableParser<>();
+        XlsxSheetParser<SpatialAttribute> parser = new XlsxSheetParser<>();
         parser.setTextConverter((columnIndex, header, value) ->
                 new SpatialStringAttribute(header[columnIndex], value));
         parser.setNumbericConverter((columnIndex, header, value) ->
                 new SpatialDoubleAttribute(header[columnIndex], value.doubleValue()));
+        parser.setNumberOfInfoRows(1);
         parser.parse(sheet);
 
         List<List<SpatialAttribute>> out = parser.getRows();

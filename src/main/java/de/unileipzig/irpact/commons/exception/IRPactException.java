@@ -17,14 +17,29 @@ public class IRPactException extends Exception {
 
     public IRPactException(Throwable cause) {
         super(cause);
+        checkFatal(cause);
     }
 
     public IRPactException(String msg, Throwable cause) {
         super(msg, cause);
+        checkFatal(cause);
     }
 
     public IRPactRuntimeException unchecked() {
         return new IRPactRuntimeException(this);
+    }
+
+    private void checkFatal(Throwable cause) {
+        if(cause instanceof IRPactRuntimeException) {
+            if(((IRPactRuntimeException) cause).isFatal()) {
+                setFatal();
+            }
+        }
+        else if(cause instanceof IRPactException) {
+            if(((IRPactException) cause).isFatal()) {
+                setFatal();
+            }
+        }
     }
 
     public void setFatal() {

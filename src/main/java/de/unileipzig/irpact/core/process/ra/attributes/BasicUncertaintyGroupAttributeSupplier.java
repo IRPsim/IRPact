@@ -84,7 +84,7 @@ public class BasicUncertaintyGroupAttributeSupplier extends NameableBase impleme
         }
 
         UncertaintyGroupAttribute cagAttr = createAttribute(cag, uncertName, uncertDist, convDist, false);
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add uncertainty attribute '{}' for '{}->{}'", cagAttr, cag.getName(), cagAttr.getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add uncertainty attribute '{}' for '{}->{}'", cagAttr.getName(), cag.getName(), cagAttr.getName());
         cag.addGroupAttribute(cagAttr);
     }
 

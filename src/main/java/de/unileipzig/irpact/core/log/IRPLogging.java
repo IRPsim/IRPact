@@ -16,7 +16,7 @@ public final class IRPLogging {
 
     private static final GlobalFilter FILTER = new GlobalFilter();
 
-    private static IRPLogger clearLogger;
+    private static IRPLogger resultLogger;
 
     private IRPLogging() {
     }
@@ -40,15 +40,15 @@ public final class IRPLogging {
         return IRPLogger.getLogger(FILTER, c);
     }
 
-    public static IRPLogger getClearLogger() {
-        if(clearLogger == null) {
-            initClearLogger();
+    public static IRPLogger getResultLogger() {
+        if(resultLogger == null) {
+            initResultLogger();
         }
-        return clearLogger;
+        return resultLogger;
     }
-    private static synchronized void initClearLogger() {
-        if(clearLogger == null) {
-            clearLogger = new IRPLogger(FILTER, Logback.getClearLogger());
+    private static synchronized void initResultLogger() {
+        if(resultLogger == null) {
+            resultLogger = new IRPLogger(FILTER, Logback.getResultLogger());
         }
     }
 

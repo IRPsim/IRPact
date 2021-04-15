@@ -14,6 +14,7 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
+import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
@@ -115,6 +116,8 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
         }
     }
 
+    @Todo("hier ist was kaputt")
+    @Todo("sicherheitschecks fuer endlosschleife einfuegen, wenn z.b. der einzig gueltige agent ich selber bin")
     protected Set<ConsumerAgent> drawTargets(SimulationEnvironment environment, ConsumerAgent ca) {
         ConsumerAgentGroup cag = ca.getGroup();
         ConsumerAgentGroupAffinities cagAffinities = affinityMapping.get(cag);
@@ -164,15 +167,5 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
                 getAffinityMapping().getChecksum(),
                 ChecksumComparable.getMapChecksum(getEdgeCountMap())
         );
-    }
-
-    protected Map<ConsumerAgentGroup, List<ConsumerAgent>> createGroupMapping(Collection<ConsumerAgent> agents) {
-        Map<ConsumerAgentGroup, List<ConsumerAgent>> mapping = new HashMap<>();
-        for(ConsumerAgent ca: agents) {
-            ConsumerAgentGroup cag = ca.getGroup();
-            List<ConsumerAgent> caSet = mapping.computeIfAbsent(cag, _cag -> new ArrayList<>());
-            caSet.add(ca);
-        }
-        return mapping;
     }
 }

@@ -1,12 +1,14 @@
 package de.unileipzig.irpact.core.spatial;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
+import de.unileipzig.irpact.commons.util.ShareCalculator;
 import de.unileipzig.irpact.commons.util.data.DataType;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialDoubleAttribute;
 import de.unileipzig.irpact.core.spatial.twodim.BasicPoint2D;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -15,7 +17,7 @@ import java.util.stream.Collectors;
  */
 public final class SpatialUtil {
 
-    protected static Predicate<List<SpatialAttribute>> filterAttribute(String attrName, String value) {
+    public static Predicate<List<SpatialAttribute>> filterAttribute(String attrName, String value) {
         return row -> {
             for(SpatialAttribute attr: row) {
                 if(Objects.equals(attr.getName(), attrName)) {
@@ -24,6 +26,23 @@ public final class SpatialUtil {
             }
             return false;
         };
+    }
+
+    public static Function<? super List<SpatialAttribute>, ? extends String> selectAttribute(String attrName) {
+        return row -> {
+            for(SpatialAttribute attr: row) {
+                if(Objects.equals(attr.getName(), attrName)) {
+                    return attr.getStringValue();
+                }
+            }
+            return null;
+        };
+    }
+
+    public static Set<String> collectDistinct(List<List<SpatialAttribute>> input, String attrName) {
+        return input.stream()
+                .map(selectAttribute(attrName))
+                .collect(Collectors.toSet());
     }
 
     public static int filterAndCount(List<List<SpatialAttribute>> input, String attrName, String value) {
@@ -83,5 +102,41 @@ public final class SpatialUtil {
                     }
                     return attr.getValueAsString();
                 }));
+    }
+
+    public static SpatialAttribute get(Collection<? extends SpatialAttribute> coll, String name) {
+        for(SpatialAttribute attr: coll) {
+            if(Objects.equals(attr.getName(), name)) {
+                return attr;
+            }
+        }
+        return null;
+    }
+
+    public static <T> void filterAndCount(
+            List<List<SpatialAttribute>> input,
+            String attrName,
+            ShareCalculator<T> share,
+            Function<? super String, ? extends T> mapper) {
+        input.forEach(list -> {
+            SpatialAttribute attr = get(list, attrName);
+            if(attr == null) throw new NullPointerException(attrName);
+            String value = attr.getValueAsString();
+            T t = mapper.apply(value);
+            share.updateSize(t, 1);
+        });
+    }
+
+    public static Map<String, Integer> filterAndCountAll(List<List<SpatialAttribute>> input, String attrName, Collection<String> keys) {
+        Map<String, Integer> map = new HashMap<>();
+        input.stream()
+                .map(selectAttribute(attrName))
+                .forEach(k -> {
+                    if(keys == null || keys.contains(k)) {
+                        int current = map.computeIfAbsent(k, _k -> 0);
+                        map.put(k, current + 1);
+                    }
+                });
+        return map;
     }
 }

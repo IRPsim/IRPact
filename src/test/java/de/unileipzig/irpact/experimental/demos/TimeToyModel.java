@@ -3,7 +3,6 @@ package de.unileipzig.irpact.experimental.demos;
 import de.unileipzig.irpact.core.log.IRPLevel;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
-import de.unileipzig.irpact.develop.TestFiles;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -28,17 +27,13 @@ import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSelectedGroupedSpatialDistribution2D;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
-import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irptools.graphviz.def.GraphvizColor;
 import de.unileipzig.irptools.graphviz.def.GraphvizGlobal;
 import de.unileipzig.irptools.graphviz.def.GraphvizLayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.def.GraphvizOutputFormat;
-import de.unileipzig.irptools.io.base.AnnualEntry;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
@@ -119,7 +114,7 @@ public class TimeToyModel {
         general.enableAllDataLogging();
         general.enableAllResultLogging();
         general.firstSimulationYear = 2015;
-        general.lastSimulationYear = 2019;
+        general.lastSimulationYear = 2016;
 
         //=====
         InRoot root = new InRoot();
@@ -158,19 +153,6 @@ public class TimeToyModel {
 
     @Test
     void runThisModel() {
-        Path dir = TestFiles.testfiles.resolve("uitests").resolve("x9");
-        String modelName = "time-test";
-
-        String[] args = {
-                "--testMode",
-                "-o", dir.resolve("scenariosX").resolve("output-" + modelName + ".json").toString(),
-                "--logPath", dir.resolve("scenariosX").resolve("log-" + modelName + ".log").toString(),
-                "--logConsoleAndFile",
-                "--dataDir", Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data").toString()
-        };
-
-        InRoot root = createRoot();
-        AnnualEntry<InRoot> entry = ToyModelUtil.buildEntry(root);
-        Start.start(args, entry);
+        ToyModelUtil.run("time-test", createRoot());
     }
 }

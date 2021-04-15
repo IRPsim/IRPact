@@ -32,6 +32,13 @@ public class ShareCalculator<T> {
         return size;
     }
 
+    public int sumSizes() {
+        return individualSizes.values()
+                .stream()
+                .mapToInt(i -> i)
+                .sum();
+    }
+
     public int sumSizes(Collection<? extends T> keys) {
         int totalSize = 0;
         for(T key: keys) {
@@ -51,12 +58,37 @@ public class ShareCalculator<T> {
         individualSizes.put(key, size);
     }
 
+    public void updateSize(T key, int delta) {
+        int current = individualSizes.computeIfAbsent(key, _key -> 0);
+        individualSizes.put(key, current + delta);
+    }
+
+    public void calculateShares() {
+        calculateShares(sumSizes());
+    }
+
     public void calculateShares(int totalSize) {
         individualShares.clear();
         for(Map.Entry<T, Integer> sizeEntry: individualSizes.entrySet()) {
             double share = (double) sizeEntry.getValue() / (double) totalSize;
             individualShares.put(sizeEntry.getKey(), share);
         }
+    }
+
+    public void normalizeShares() {
+        double shareSum = individualShares.values()
+                .stream()
+                .mapToDouble(d -> d)
+                .sum();
+        Map<T, Double> normed = new LinkedHashMap<>();
+        for(Map.Entry<T, Double> entry: individualShares.entrySet()) {
+            normed.put(
+                    entry.getKey(),
+                    entry.getValue() / shareSum
+            );
+        }
+        individualShares.clear();
+        individualShares.putAll(normed);
     }
 
     public double getShare(T key) throws NoSuchElementException {

@@ -15,7 +15,9 @@ public final class RAConstants {
     public static final String ENVIRONMENTAL_CONCERN = "environmental_concern";             //A4
     public static final String ENVIRONMENTAL_CONCERN_UNCERTAINTY = getUncertaintyAttributeName(ENVIRONMENTAL_CONCERN);
     public static final String SHARE_1_2_HOUSE = "Anzahl_HH_Dummy";                         //A5
+    public static final String SHARE_1_2_HOUSE_COUNT = "Anzahl_HH";                         //A5
     public static final String HOUSE_OWNER = "Privatbesitz";                       //A6
+    public static final String HOUSE_OWNER_STR = "Eigentuemer";                       //A6
     public static final String CONSTRUCTION_RATE = "construction_rate";                      //A7
     public static final String RENOVATION_RATE = "renovation_rate";                        //A8
 
@@ -43,6 +45,8 @@ public final class RAConstants {
     public static final String X_CENT = "X_Zentroid";
     public static final String Y_CENT = "Y_Zentroid";
     public static final String PURCHASE_POWER = "KK_Index";          //A1
+    public static final String PURCHASE_POWER_EUR = "KK_Euro";          //A1
+    public static final String PURCHASE_POWER_EUR_ADDR = "KK_Euro_Adresse";          //A1
     public static final String DOM_MILIEU = "Milieu";
 
     public static final String PRIVATE = "PRIVAT";

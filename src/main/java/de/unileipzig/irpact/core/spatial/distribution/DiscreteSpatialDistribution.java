@@ -1,7 +1,10 @@
 package de.unileipzig.irpact.core.spatial.distribution;
 
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -11,6 +14,8 @@ import java.util.Set;
  * @author Daniel Abitz
  */
 public class DiscreteSpatialDistribution extends ResettableSpatialDistributionBase {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(DiscreteSpatialDistribution.class);
 
     protected Set<SpatialInformation> unused;
     protected Set<SpatialInformation> used;
@@ -52,6 +57,14 @@ public class DiscreteSpatialDistribution extends ResettableSpatialDistributionBa
     public void initalize() {
         numberOfCalls = 0;
         call();
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.getChecksum(
+                getName(),
+                getRandom()
+        );
     }
 
     public Set<SpatialInformation> getUnused() {

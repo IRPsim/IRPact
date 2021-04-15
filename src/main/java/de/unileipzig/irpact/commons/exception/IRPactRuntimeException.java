@@ -17,17 +17,25 @@ public class IRPactRuntimeException extends RuntimeException {
 
     public IRPactRuntimeException(Throwable cause) {
         super(cause);
-    }
-
-    public IRPactRuntimeException(IRPactException cause) {
-        super(cause);
-        if(cause.isFatal()) {
-            setFatal();
-        }
+        checkFatal(cause);
     }
 
     public IRPactRuntimeException(String msg, Throwable cause) {
         super(msg, cause);
+        checkFatal(cause);
+    }
+
+    private void checkFatal(Throwable cause) {
+        if(cause instanceof IRPactRuntimeException) {
+            if(((IRPactRuntimeException) cause).isFatal()) {
+                setFatal();
+            }
+        }
+        else if(cause instanceof IRPactException) {
+            if(((IRPactException) cause).isFatal()) {
+                setFatal();
+            }
+        }
     }
 
     public void setFatal() {

@@ -19,6 +19,11 @@ public class Grouping1<A, X> implements Grouping<X> {
     }
 
     @Override
+    public boolean isEmpty() {
+        return grouping.isEmpty();
+    }
+
+    @Override
     public void add(X element) {
         A key = groupASelector.apply(element);
 

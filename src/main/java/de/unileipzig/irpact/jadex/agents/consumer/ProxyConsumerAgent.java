@@ -19,6 +19,7 @@ import de.unileipzig.irpact.core.product.awareness.ProductAwareness;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.util.AddToPersist;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
 
@@ -28,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Daniel Abitz
  */
+@AddToPersist("product related attr")
 @Reference(local = true, remote = true)
 public class ProxyConsumerAgent extends SpatialInformationAgentBase implements ConsumerAgent, ProxyAgent<ConsumerAgent> {
 
@@ -86,6 +88,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
                     getMaxNumberOfActions(),
                     getSpatialInformation().getChecksum(),
                     ChecksumComparable.getCollChecksum(getAttributes()),
+                    //TODO add product related
                     getProductAwareness().getChecksum(),
                     getProductInterest().getChecksum(),
                     ChecksumComparable.getCollChecksum(getAdoptedProducts()),
@@ -412,17 +415,29 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
 
     @Override
     public Collection<ProductRelatedConsumerAgentAttribute> getProductRelatedAttributes() {
-        return productRelatedAttributes.values();
+        if(isSynced()) {
+            return getRealAgent().getProductRelatedAttributes();
+        } else {
+            return productRelatedAttributes.values();
+        }
     }
 
     @Override
     public boolean hasProductRelatedAttribute(String name) {
-        return productRelatedAttributes.containsKey(name);
+        if(isSynced()) {
+            return getRealAgent().hasProductRelatedAttribute(name);
+        } else {
+            return productRelatedAttributes.containsKey(name);
+        }
     }
 
     @Override
     public ProductRelatedConsumerAgentAttribute getProductRelatedAttribute(String name) {
-        return productRelatedAttributes.get(name);
+        if(isSynced()) {
+            return getRealAgent().getProductRelatedAttribute(name);
+        } else {
+            return productRelatedAttributes.get(name);
+        }
     }
 
     @Override
@@ -441,13 +456,19 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
 
     @Override
     public void updateProductRelatedAttributes(Product newProduct) {
-        ProductGroup productGroup = newProduct.getGroup();
-        for(ProductRelatedConsumerAgentGroupAttribute relatedGroupAttribute: getGroup().getProductRelatedGroupAttributes()) {
-            if(relatedGroupAttribute.hasAttribute(productGroup)) {
-                ConsumerAgentAttribute derived = relatedGroupAttribute.derive(newProduct);
-                String relatedName = relatedGroupAttribute.getName();
-                ProductRelatedConsumerAgentAttribute relatedAttribute = productRelatedAttributes.computeIfAbsent(relatedName, BasicProductRelatedConsumerAgentAttribute::new);
-                relatedAttribute.set(newProduct, derived);
+        if(isSynced()) {
+            getRealAgent().updateProductRelatedAttributes(newProduct);
+        } else {
+            ProductGroup productGroup = newProduct.getGroup();
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "update product related attributes in agent '{}' for product '{}'", getName(), newProduct.getName());
+            for(ProductRelatedConsumerAgentGroupAttribute relatedGroupAttribute: getGroup().getProductRelatedGroupAttributes()) {
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "update attribute '{}' in agent '{}' for product '{}'? {}", relatedGroupAttribute.getName(), getName(), newProduct.getName(), relatedGroupAttribute.hasAttribute(productGroup));
+                if(relatedGroupAttribute.hasAttribute(productGroup)) {
+                    ConsumerAgentAttribute derived = relatedGroupAttribute.derive(newProduct);
+                    String relatedName = relatedGroupAttribute.getName();
+                    ProductRelatedConsumerAgentAttribute relatedAttribute = productRelatedAttributes.computeIfAbsent(relatedName, BasicProductRelatedConsumerAgentAttribute::new);
+                    relatedAttribute.set(newProduct, derived);
+                }
             }
         }
     }
@@ -466,10 +487,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         if(isSynced()) {
             getRealAgent().makeAware(product);
         } else {
-            if(!isAware(product)) {
-                awareness.makeAware(product);
-                updateProductRelatedAttributes(product);
-            }
+            awareness.makeAware(product);
         }
     }
 
@@ -496,7 +514,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         if(isSynced()) {
             getRealAgent().updateInterest(product, value);
         } else {
-            if(!isAware(product)) {
+            if(value != 0 && !isAware(product)) {
                 throw ExceptionUtil.create(IllegalArgumentException::new, "'{}' is not aware of '{}'", getName(), product.getName());
             }
             interest.update(product, value);
@@ -615,7 +633,11 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
 
     @Override
     public ProcessFindingScheme getProcessFindingScheme() {
-        return processFindingScheme;
+        if(isSynced()) {
+            return getRealAgent().getProcessFindingScheme();
+        } else {
+            return processFindingScheme;
+        }
     }
 
     public void setProcessFindingScheme(ProcessFindingScheme processFindingScheme) {

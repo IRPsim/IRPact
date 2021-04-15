@@ -24,6 +24,11 @@ public class Grouping2<A, B, X> implements Grouping<X> {
     }
 
     @Override
+    public boolean isEmpty() {
+        return grouping.isEmpty();
+    }
+
+    @Override
     public void add(X element) {
         A a = groupASelector.apply(element);
         add(a, element);

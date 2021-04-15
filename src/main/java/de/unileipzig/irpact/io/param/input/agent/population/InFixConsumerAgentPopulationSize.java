@@ -55,6 +55,12 @@ public class InFixConsumerAgentPopulationSize implements InPopulationSize {
     public InFixConsumerAgentPopulationSize() {
     }
 
+    public InFixConsumerAgentPopulationSize(String name, InConsumerAgentGroup cag, int size) {
+        setName(name);
+        setConsumerAgentGroup(cag);
+        setSize(size);
+    }
+
     @Override
     public String getName() {
         return _name;
@@ -74,6 +80,10 @@ public class InFixConsumerAgentPopulationSize implements InPopulationSize {
 
     public InConsumerAgentGroup[] getConsumerAgentGroups() throws ParsingException {
         return ParamUtil.getNonEmptyArray(cags, "consumerAgentGroups");
+    }
+
+    public void setConsumerAgentGroup(InConsumerAgentGroup cag) {
+        this.cags = new InConsumerAgentGroup[]{cag};
     }
 
     public void setConsumerAgentGroups(InConsumerAgentGroup[] cags) {

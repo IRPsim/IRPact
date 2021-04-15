@@ -33,9 +33,15 @@ public class BasicAdoptedProductPR extends BinaryPRBase<BasicAdoptedProduct> {
     @Override
     protected BinaryJsonData doInitalizePersist(BasicAdoptedProduct object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
-        data.putLong(object.getTimestamp().getEpochMilli());
+        data.putBoolean(object.isInitial());
 
-        manager.prepare(object.getNeed());
+        if(object.isInitial()) {
+            data.putNothing();
+        } else {
+            data.putLong(object.getTimestamp().getEpochMilli());
+            manager.prepare(object.getNeed());
+        }
+
         manager.prepare(object.getProduct());
 
         return data;
@@ -43,7 +49,11 @@ public class BasicAdoptedProductPR extends BinaryPRBase<BasicAdoptedProduct> {
 
     @Override
     protected void doSetupPersist(BasicAdoptedProduct object, BinaryJsonData data, PersistManager manager) {
-        data.putLong(manager.ensureGetUID(object.getNeed()));
+        if(object.isInitial()) {
+            data.putNothing();
+        } else {
+            data.putLong(manager.ensureGetUID(object.getNeed()));
+        }
         data.putLong(manager.ensureGetUID(object.getProduct()));
     }
 
@@ -53,13 +63,22 @@ public class BasicAdoptedProductPR extends BinaryPRBase<BasicAdoptedProduct> {
 
     @Override
     protected BasicAdoptedProduct doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
-        return new BasicAdoptedProduct();
+        BasicAdoptedProduct object = new BasicAdoptedProduct();
+        object.setInitial(data.getBoolean());
+        return object;
     }
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, BasicAdoptedProduct object, RestoreManager manager) {
-        object.setTimestamp(new BasicTimestamp(data.getLong()));
-        object.setNeed(manager.ensureGet(data.getLong()));
+        long millis = data.getLong();
+        long needId = data.getLong();
+        if(object.isInitial()) {
+            object.setTimestamp(null);
+            object.setNeed(null);
+        } else {
+            object.setTimestamp(new BasicTimestamp(millis));
+            object.setNeed(manager.ensureGet(needId));
+        }
         object.setProduct(manager.ensureGet(data.getLong()));
     }
 }

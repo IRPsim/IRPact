@@ -18,7 +18,9 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 /**
  * @author Daniel Abitz
  */
-@Definition
+@Definition(
+        ignore = true
+)
 public class InDiscreteTimeModel implements InTimeModel {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();

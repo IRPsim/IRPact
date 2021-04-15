@@ -153,6 +153,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     protected void initData() {
         proxyAgent = getProxy();
         name = proxyAgent.getName();
+        node = proxyAgent.getSocialGraphNode();
         group = (JadexConsumerAgentGroup) proxyAgent.getGroup();
         environment = (JadexSimulationEnvironment) proxyAgent.getEnvironment();
         informationAuthority = proxyAgent.getInformationAuthority();

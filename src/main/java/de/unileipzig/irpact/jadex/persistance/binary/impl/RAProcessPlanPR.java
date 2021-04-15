@@ -44,6 +44,7 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
         manager.prepare(object.getAgent());
         manager.prepare(object.getRnd());
         manager.prepare(object.getModel());
+        manager.prepare(object.getNetworkFilter());
 
         return data;
     }
@@ -55,6 +56,7 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
         data.putLong(manager.ensureGetUID(object.getAgent()));
         data.putLong(manager.ensureGetUID(object.getRnd()));
         data.putLong(manager.ensureGetUID(object.getModel()));
+        data.putLong(manager.ensureGetUID(object.getNetworkFilter()));
     }
 
     //=========================

@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.JsonNodeCreator;
 import com.fasterxml.jackson.databind.node.TextNode;
-import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.util.IRPactJson;
-import de.unileipzig.irpact.commons.util.xlsx.SimpleXlsxTableParser;
+import de.unileipzig.irpact.commons.util.xlsx.XlsxSheetParser;
 import de.unileipzig.irpact.commons.util.xlsx.SimpleXlsxTableWriter;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.junit.jupiter.api.Disabled;
@@ -30,7 +29,7 @@ class Xxsxs {
 
         JsonNodeCreator creator = IRPactJson.JSON.getNodeFactory();
 
-        SimpleXlsxTableParser<JsonNode> parser = new SimpleXlsxTableParser<>();
+        XlsxSheetParser<JsonNode> parser = new XlsxSheetParser<>();
         parser.setTextConverter((columnIndex, header, value) -> {
             if("Eigentum".equals(header[columnIndex])) {
                 double v = "Privat".equals(value) ? 1 : 0;

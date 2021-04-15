@@ -135,6 +135,10 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         setInitialProductInterest(dist);
         setConstructionRate(dist);
         setRenovationRate(dist);
+
+        a1 = dist;
+        a5 = dist;
+        a6 = dist;
     }
 
     @Override
@@ -262,6 +266,7 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         return ParamUtil.getInstance(spatialDistribution, "spatialDistribution");
     }
 
+    @Override
     public void setSpatialDistribution(InSpatialDistribution dist) {
         this.spatialDistribution = new InSpatialDistribution[]{dist};
     }
@@ -302,9 +307,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         addGroupAttribute(parser, jcag, getConstructionRate(), CONSTRUCTION_RATE);
         addGroupAttribute(parser, jcag, getRenovationRate(), RENOVATION_RATE);
 
-        if(a1 != null) addGroupAttribute(parser, jcag, a1, RENOVATION_RATE);
-        if(a5 != null) addGroupAttribute(parser, jcag, a5, RENOVATION_RATE);
-        if(a6 != null) addGroupAttribute(parser, jcag, a6, RENOVATION_RATE);
+        if(a1 != null) addGroupAttribute(parser, jcag, a1, PURCHASE_POWER);
+        if(a5 != null) addGroupAttribute(parser, jcag, a5, SHARE_1_2_HOUSE);
+        if(a6 != null) addGroupAttribute(parser, jcag, a6, HOUSE_OWNER);
 
         ProductBinaryAwarenessSupplyScheme awarenessSupplyScheme = new ProductBinaryAwarenessSupplyScheme();
         awarenessSupplyScheme.setName(ParamUtil.concName(jcag.getName(), AWARENESS));

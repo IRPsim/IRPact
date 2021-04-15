@@ -22,6 +22,7 @@ import de.unileipzig.irpact.core.process.ProcessModelManager;
 import de.unileipzig.irpact.core.product.BasicProductManager;
 import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.simulation.*;
+import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.jadex.persistance.JadexPersistenceModul;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
@@ -252,7 +253,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
 
                     SocialGraph.Node node = graph.addAgentAndGetNode(ca);
                     ca.setSocialGraphNode(node);
-                    LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added agent '{}' to group '{}'", ca.getName(), cag.getName());
+                    LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added agent '{}' (id:{}) to group '{}'", ca.getName(), SpatialInformation.tryGetId(ca.getSpatialInformation()), cag.getName());
                 }
             } else {
                 LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create no agents for group '{}'", cag.getName());

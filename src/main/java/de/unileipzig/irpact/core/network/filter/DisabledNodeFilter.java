@@ -6,7 +6,7 @@ import de.unileipzig.irpact.core.network.SocialGraph;
 /**
  * @author Daniel Abitz
  */
-public class DisabledNodeFilter extends NameableBase implements NodeDistanceFilter {
+public class DisabledNodeFilter extends NameableBase implements NodeFilter {
 
     public static final DisabledNodeFilter INSTANCE = new DisabledNodeFilter("DEFAULT_DisabledNodeFilter");
 

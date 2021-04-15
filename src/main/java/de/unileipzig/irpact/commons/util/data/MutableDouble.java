@@ -22,6 +22,30 @@ public final class MutableDouble extends Number {
         return new MutableDouble(1.0);
     }
 
+    public static MutableDouble maxValue() {
+        return new MutableDouble(Double.MAX_VALUE);
+    }
+
+    public static MutableDouble minValue() {
+        return new MutableDouble(Double.MIN_VALUE);
+    }
+
+    public void setZero() {
+        set(0);
+    }
+
+    public void setOne() {
+        set(1);
+    }
+
+    public void setMaxValue() {
+        set(Double.MAX_VALUE);
+    }
+
+    public void setMinValue() {
+        set(Double.MIN_VALUE);
+    }
+
     public void set(double value) {
         this.value = value;
     }
@@ -57,6 +81,24 @@ public final class MutableDouble extends Number {
 
     public boolean isZero() {
         return isEquals(0.0);
+    }
+
+    public boolean setMax(double value) {
+        if(value > get()) {
+            set(value);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean setMin(double value) {
+        if(value < get()) {
+            set(value);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

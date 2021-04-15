@@ -1,8 +1,10 @@
 package de.unileipzig.irpact.commons.util.xlsx;
 
+import de.unileipzig.irpact.commons.exception.UnsupportedCellTypeException;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -10,10 +12,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -115,6 +118,91 @@ public final class XlsxUtil {
             }
         }
         return headerList.toArray(new String[0]);
+    }
+
+    public static <T> List<T> extractRowData(
+            Row row,
+            String[] header,
+            CellValueConverter<Number, T> numbericConverter,
+            CellValueConverter<String, T> textConverter,
+            List<T> out) {
+        Iterator<Cell> cellIter = row.cellIterator();
+        while(cellIter.hasNext()) {
+            Cell cell = cellIter.next();
+            int columnIndex = cell.getColumnIndex();
+            if(columnIndex >= header.length) {
+                break;
+            }
+
+            switch(cell.getCellType()) {
+                case NUMERIC:
+                case FORMULA:
+                    if(numbericConverter == null) {
+                        throw unknownCellType(cell);
+                    }
+
+                    double numValue = cell.getNumericCellValue();
+
+                    //apply cell format
+                    CellStyle cs = cell.getCellStyle();
+                    String format = cs.getDataFormatString();
+                    if(!"General".equals(format)) {
+                        DecimalFormat df = new DecimalFormat(format);
+                        String formatted = df.format(numValue);
+                        try {
+                            numValue = df.parse(formatted).doubleValue();
+                        } catch (ParseException e) {
+                            throw new IllegalArgumentException(e);
+                        }
+                    }
+                    //===
+                    T numEntry = numbericConverter.convert(columnIndex, header, numValue);
+                    out.add(numEntry);
+                    break;
+
+                case STRING:
+                    if(textConverter == null) {
+                        throw unknownCellType(cell);
+                    }
+
+                    String strValue = cell.getStringCellValue();
+                    T textEntry = textConverter.convert(columnIndex, header, strValue);
+                    out.add(textEntry);
+                    break;
+
+                default:
+                    if(cell.getCellType() == CellType.BLANK) {
+                        if(textConverter == null) {
+                            throw unknownCellType(cell);
+                        }
+
+                        if(columnIndex == 0) {
+                            if(isBlankRow(cellIter, header.length)) {
+                                return null;
+                            } else {
+                                throw unknownCellType(cell);
+                            }
+                        } else {
+                            String blankValue = cell.getStringCellValue();
+                            T blankEntry = textConverter.convert(columnIndex, header, blankValue);
+                            out.add(blankEntry);
+                        }
+                    } else {
+                        throw unknownCellType(cell);
+                    }
+                    break;
+            }
+        }
+        return out;
+    }
+
+    private static UnsupportedCellTypeException unknownCellType(Cell cell) {
+        return ExceptionUtil.create(
+                UnsupportedCellTypeException::new,
+                "unsupported cell type '{}' (sheet: {}, row: {}, column: {})",
+                cell.getCellType(), cell.getSheet().getSheetName(),
+                cell.getRowIndex(), cell.getColumnIndex()
+        );
     }
 
     private static double[] extractRowData(Row row, int headerLength, String sheetName) {

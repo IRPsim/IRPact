@@ -50,10 +50,8 @@ public abstract class ThresholdInterest<T, U> implements Interest<T> {
 
     @Override
     public void update(T item, double influence) {
-        if(influence != 0.0) {
-            double current = items.computeIfAbsent(item, _item -> 0.0);
-            items.put(item, Math.max(current + influence, 0.0));
-        }
+        double current = items.computeIfAbsent(item, _item -> 0.0);
+        items.put(item, Math.max(current + influence, 0.0));
     }
 
     @Override

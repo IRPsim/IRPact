@@ -47,6 +47,14 @@ public interface Attribute extends AttributeBase {
         setDoubleValue(value ? 1.0 : 0.0);
     }
 
+    default int getIntValue() {
+        return (int) getDoubleValue();
+    }
+
+    default void setIntValue(int value) {
+        setDoubleValue(value);
+    }
+
     double getDoubleValue();
 
     void setDoubleValue(double value);
@@ -59,7 +67,7 @@ public interface Attribute extends AttributeBase {
 
     void setStringValue(String value);
 
-    default String printValue() {
+    default String getValueAsString() {
         switch (getType()) {
             case STRING:
                 return getStringValue();

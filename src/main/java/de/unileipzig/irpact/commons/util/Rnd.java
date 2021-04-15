@@ -163,6 +163,10 @@ public final class Rnd implements ChecksumComparable {
         }
     }
 
+    public double nextDouble(double bound) {
+        return nextDouble() * bound;
+    }
+
     public double nextDouble(double lowerBound, double upperBound) {
         return (nextDouble() * (upperBound - lowerBound)) + lowerBound;
     }

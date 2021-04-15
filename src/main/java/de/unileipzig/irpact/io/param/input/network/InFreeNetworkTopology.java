@@ -96,6 +96,10 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         this.numberOfTies = ties.toArray(new InNumberOfTies[0]);
     }
 
+    public void setNumberOfTies(InNumberOfTies... ties) {
+        this.numberOfTies = ties;
+    }
+
     public double getInitialWeight() {
         return initialWeight;
     }

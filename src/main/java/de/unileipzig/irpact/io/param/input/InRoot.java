@@ -532,6 +532,8 @@ public class InRoot implements RootClass {
             InUnlinkedGraphTopology.class,
 
             InAutoUncertaintyGroupAttribute.class,
+            InDisabledProcessPlanNodeFilterScheme.class,
+            InEntireNetworkNodeFilterScheme.class,
             InIndividualAttributeBasedUncertaintyGroupAttribute.class,
             InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute.class,
             InNameBasedUncertaintyGroupAttribute.class,
@@ -681,6 +683,8 @@ public class InRoot implements RootClass {
                                 addPathElement(res, InNameBasedUncertaintyWithConvergenceGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
                                 addPathElement(res, InPVactUncertaintyGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
                 addPathElement(res, PROCESS_FILTER, PROCESS_MODEL);
+                        addPathElement(res, InDisabledProcessPlanNodeFilterScheme.thisName(), PROCESS_FILTER);
+                        addPathElement(res, InEntireNetworkNodeFilterScheme.thisName(), PROCESS_FILTER);
                         addPathElement(res, InRAProcessPlanMaxDistanceFilterScheme.thisName(), PROCESS_FILTER);
 
         addPathElement(res, SPATIAL, ROOT);

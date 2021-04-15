@@ -118,6 +118,14 @@ public class RAProcessPlan implements ProcessPlan {
         return rnd;
     }
 
+    public NodeFilter getNetworkFilter() {
+        return networkFilter;
+    }
+
+    public void setNetworkFilter(NodeFilter networkFilter) {
+        this.networkFilter = networkFilter;
+    }
+
     public void setAgent(ConsumerAgent agent) {
         this.agent = agent;
     }
@@ -483,7 +491,9 @@ public class RAProcessPlan implements ProcessPlan {
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle decision making", agent.getName());
 
         MultiLoggingMessage mlm = new MultiLoggingMessage();
-        mlm.log("{} [{}] calculate U");
+        mlm.log("{} [{}] calculate U", InfoTag.ADOPTION_THRESHOLD, agent.getName());
+
+
 
         double a = modelData().a();
         double b = modelData().b();
@@ -494,7 +504,7 @@ public class RAProcessPlan implements ProcessPlan {
 
         if(a != 0.0) {
             double financial = getFinancialComponent();
-            double financialThreshold = getFinancialThresholdProduct(agent, product);
+            double financialThreshold = getFinancialThreshold(agent, product);
             boolean noFinancial = financial < financialThreshold;
             //check D3 reached
             if(noFinancial) {
@@ -540,7 +550,10 @@ public class RAProcessPlan implements ProcessPlan {
 
         double adoptionThreshold = getAdoptionThreshold(agent, product);
         boolean noAdoption = B < adoptionThreshold;
+
         mlm.log("U < adoption threshold ({} < {}): {}", B, adoptionThreshold, noAdoption);
+        logCalculateAdoption(mlm);
+
         if(noAdoption) {
             updateStage(RAStage.IMPEDED);
             return ProcessPlanResult.IMPEDED;
@@ -577,8 +590,8 @@ public class RAProcessPlan implements ProcessPlan {
         double ftAvg = getAverageFinancialThresholdAgent();
         double ftThis = getFinancialThresholdAgent(agent);
 
-        double npvAvg = modelData().avgNPV(environment.getTimeModel().getCurrentYear());
-        double npvThis = modelData().NPV(agent, environment.getTimeModel().getCurrentYear());
+        double npvAvg = getAverageNPV();
+        double npvThis = getNPV(agent);
 
         double ft = getLogisticFactor() * (ftAvg - ftThis);
         double npv = getLogisticFactor() * (npvAvg - npvThis);
@@ -586,9 +599,11 @@ public class RAProcessPlan implements ProcessPlan {
         double logisticFt = MathUtil.logistic(ft);
         double logisticNpv = MathUtil.logistic(npv);
 
-        logFinancialComponent(ftAvg, ftThis, npvAvg, npvThis, getLogisticFactor(), ft, npv, logisticFt, logisticNpv);
+        double comp = (logisticFt + logisticNpv) / 2.0;
 
-        return (MathUtil.logistic(ft) + MathUtil.logistic(npv)) / 2.0;
+        logFinancialComponent(ftAvg, ftThis, npvAvg, npvThis, getLogisticFactor(), ft, npv, logisticFt, logisticNpv, comp);
+
+        return comp;
     }
 
     protected double getNoveltyCompoenent() {
@@ -603,7 +618,14 @@ public class RAProcessPlan implements ProcessPlan {
         MutableDouble shareOfAdopterInSocialNetwork = MutableDouble.zero();
         MutableDouble shareOfAdopterInLocalArea = MutableDouble.zero();
         getShareOfAdopterInSocialNetworkAndLocalArea(shareOfAdopterInSocialNetwork, shareOfAdopterInLocalArea);
-        return getDependentJudgmentMaking(agent) * (shareOfAdopterInSocialNetwork.get() + shareOfAdopterInLocalArea.get()) / 2.0;
+        double djm = getDependentJudgmentMaking(agent);
+        double comp = djm * (shareOfAdopterInSocialNetwork.get() + shareOfAdopterInLocalArea.get()) / 2.0;
+        LOGGER.trace(
+                IRPSection.SIMULATION_PROCESS,
+                "[{}] dependent judgment making = {}, share of adopter in social network = {}, share of adopter in local area = {}, social component = {} = {} * ({} + {}) / 2.0",
+                agent.getName(), djm, shareOfAdopterInSocialNetwork.get(), shareOfAdopterInLocalArea.get(), comp, djm, shareOfAdopterInSocialNetwork.get(), shareOfAdopterInLocalArea.get()
+        );
+        return comp;
     }
 
     protected static double getFinancialThresholdAgent(ConsumerAgent agent) {
@@ -620,7 +642,19 @@ public class RAProcessPlan implements ProcessPlan {
         return sum / environment.getAgents().getTotalNumberOfConsumerAgents();
     }
 
-    protected static double getFinancialThresholdProduct(ConsumerAgent agent, Product product) {
+    protected double getNPV(ConsumerAgent agent) {
+        return modelData().NPV(agent, environment.getTimeModel().getCurrentYear());
+    }
+
+    protected double getAverageNPV() {
+        double sum = environment.getAgents()
+                .streamConsumerAgents()
+                .mapToDouble(this::getNPV)
+                .sum();
+        return sum / environment.getAgents().getTotalNumberOfConsumerAgents();
+    }
+
+    protected static double getFinancialThreshold(ConsumerAgent agent, Product product) {
         ProductRelatedConsumerAgentAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.FINANCIAL_THRESHOLD);
         ConsumerAgentAttribute attr = prAttr.getAttribute(product);
         return attr.getDoubleValue();
@@ -645,7 +679,7 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected static double getInitialAdopter(ConsumerAgent agent, Product product) {
-        ProductRelatedConsumerAgentAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.INITIAL_PRODUCT_INTEREST);
+        ProductRelatedConsumerAgentAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.INITIAL_ADOPTER);
         ConsumerAgentAttribute attr = prAttr.getAttribute(product);
         return attr.getDoubleValue();
     }
@@ -791,14 +825,22 @@ public class RAProcessPlan implements ProcessPlan {
         MutableDouble adopterGlobal = MutableDouble.zero();
         MutableDouble totalLocal = MutableDouble.zero();
         MutableDouble adopterLocal = MutableDouble.zero();
-        environment.getNetwork().getGraph().streamNodes()
+
+        environment.getNetwork().getGraph()
+                .streamTargets(agent.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION)
                 .filter(IS_CONSUMER)
-                .peek(globalNode -> {
+                .forEach(globalNode -> {
                     totalGlobal.inc();
                     if(globalNode.getAgent(ConsumerAgent.class).hasAdopted(getProduct())) {
                         adopterGlobal.inc();
                     }
-                })
+                });
+
+        //TODO vllt ergebnisse cachen
+        //-> selbiges dann auch gleich bei obrigen
+        environment.getNetwork().getGraph()
+                .streamNodes()
+                .filter(IS_CONSUMER)
                 .filter(networkFilter)
                 .forEach(localNode -> {
                     totalLocal.inc();
@@ -900,7 +942,7 @@ public class RAProcessPlan implements ProcessPlan {
 
     protected static IRPLogger getLogger(boolean logData) {
         return logData
-                ? IRPLogging.getClearLogger()
+                ? IRPLogging.getResultLogger()
                 : LOGGER;
     }
 
@@ -1018,15 +1060,16 @@ public class RAProcessPlan implements ProcessPlan {
             double npvAvg, double npvThis,
             double logisticFactor,
             double ft, double npv,
-            double logisticFt, double logisticNpv) {
+            double logisticFt, double logisticNpv,
+            double comp) {
         boolean logData = getSettings().isLogFinancialComponent();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
         logger.log(section, level,
-                "{} [{}] financal component calculation: t_avg = {}, t = {}, NPV_avg = {}, NPV = {}, lf = {} | lf * (t_avg - t) = {}, lf * (NPV_avg - NPV) = {} | 1 / (1 + e^(-(lf * (t_avg - t))) = {}, 1 / (1 + e^(-(lf * (NPV_avg - NPV))) = {}",
+                "{} [{}] financal component calculation: t_avg = {}, t = {}, NPV_avg = {}, NPV = {}, lf = {} | lf * (t_avg - t) = {}, lf * (NPV_avg - NPV) = {} | 1 / (1 + e^(-(lf * (t_avg - t))) = {}, 1 / (1 + e^(-(lf * (NPV_avg - NPV))) = {} | (logistic(t) + logistic(NPV)) / 2.0 = {}",
                 InfoTag.FINANCAL_COMPONENT, agent.getName(),
-                ftAvg, ftThis, npvAvg, npvThis, logisticFactor, ft, npv, logisticFt, logisticNpv
+                ftAvg, ftThis, npvAvg, npvThis, logisticFactor, ft, npv, logisticFt, logisticNpv, comp
         );
     }
 

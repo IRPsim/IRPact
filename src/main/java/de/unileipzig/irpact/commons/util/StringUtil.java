@@ -74,6 +74,11 @@ public final class StringUtil {
         }
     }
 
+    public static double parseDoubleWithComma(String value) {
+        String valueWithDot = value.replace(',', '.');
+        return Double.parseDouble(valueWithDot);
+    }
+
     public static String printDoubleWithComma(double value) {
         String str = Double.toString(value);
         return str.replace('.', ',');

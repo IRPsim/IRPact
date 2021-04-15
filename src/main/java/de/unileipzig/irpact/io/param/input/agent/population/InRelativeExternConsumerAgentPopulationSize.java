@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.io.param.input.agent.population;
 
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
+import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.ShareCalculator;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -8,7 +10,6 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InputParser;
@@ -21,6 +22,8 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.ToIntFunction;
 
 import static de.unileipzig.irpact.io.param.IOConstants.AGENTS;
 import static de.unileipzig.irpact.io.param.IOConstants.POPULATION;
@@ -45,9 +48,9 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), AGENTS, POPULATION, thisName());
-        addEntry(res, thisClass(), "totalSize");
-        addEntry(res, thisClass(), "useMaximumSize");
-        addEntry(res, thisClass(), "considerAllForShares");
+        addEntry(res, thisClass(), "maximumSize");
+        addEntry(res, thisClass(), "useMaximumPossibleSize");
+        addEntry(res, thisClass(), "allowSmallerSize");
         addEntry(res, thisClass(), "cags");
         addEntry(res, thisClass(), "file");
         addEntry(res, thisClass(), "selectKey");
@@ -58,13 +61,13 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
     public String _name;
 
     @FieldDefinition
-    public int totalSize;
+    public int maximumSize;
 
     @FieldDefinition
-    public boolean useMaximumSize;
+    public boolean useMaximumPossibleSize;
 
     @FieldDefinition
-    public boolean considerAllForShares;
+    public boolean allowSmallerSize;
 
     @FieldDefinition
     public InConsumerAgentGroup[] cags;
@@ -87,28 +90,28 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
         this._name = name;
     }
 
-    public int getTotalSize() {
-        return totalSize;
+    public int getMaximumSize() {
+        return maximumSize;
     }
 
-    public void setTotalSize(int totalSize) {
-        this.totalSize = totalSize;
+    public void setMaximumSize(int maximumSize) {
+        this.maximumSize = maximumSize;
     }
 
-    public void setUseMaximumSize(boolean useMaximumSize) {
-        this.useMaximumSize = useMaximumSize;
+    public void setUseMaximumPossibleSize(boolean useMaximumPossibleSize) {
+        this.useMaximumPossibleSize = useMaximumPossibleSize;
     }
 
-    public boolean isUseMaximumSize() {
-        return useMaximumSize;
+    public boolean isUseMaximumPossibleSize() {
+        return useMaximumPossibleSize;
     }
 
-    public void setConsiderAllForShares(boolean considerAllForShares) {
-        this.considerAllForShares = considerAllForShares;
+    public void setAllowSmallerSize(boolean allowSmallerSize) {
+        this.allowSmallerSize = allowSmallerSize;
     }
 
-    public boolean isConsiderAllForShares() {
-        return considerAllForShares;
+    public boolean isAllowSmallerSize() {
+        return allowSmallerSize;
     }
 
     public InConsumerAgentGroup[] getConsumerAgentGroups() throws ParsingException {
@@ -142,20 +145,23 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
     @Override
     public void setup(InputParser parser, Object input) throws ParsingException {
         Settings initData = ParamUtil.castTo(input, Settings.class);
-        List<ConsumerAgentGroup> cags = parseCags(parser);
+        final List<ConsumerAgentGroup> cags = parseCags(parser);
         checkConsumerAgentGroupExistence(cags, initData);
 
-        SpatialTableFileContent attrList = parser.parseEntityTo(getFile());
-        String selector = getSelectKey().getName();
-        ShareCalculator<ConsumerAgentGroup> shareCalculator = new ShareCalculator<>();
+        final SpatialTableFileContent attrList = parser.parseEntityTo(getFile());
+        final String selector = getSelectKey().getName();
 
-        parseIndividualSizes(cags, attrList.data(), selector, shareCalculator);
+        Map<ConsumerAgentGroup, Integer> proportionalSizes = calculateShares(
+                cags,
+                selector,
+                attrList.data(),
+                getMaximumSize(),
+                isAllowSmallerSize(),
+                isUseMaximumPossibleSize(),
+                ConsumerAgentGroup::getName,
+                true
+        );
 
-        int totalSizeForShares = getTotalSizeForShareCalculation(attrList.data(), cags, shareCalculator);
-        calculateShares(cags, totalSizeForShares, shareCalculator);
-
-        int totalPopulationSize = getTotalPopulationSize(cags, shareCalculator);
-        Map<ConsumerAgentGroup, Integer> proportionalSizes = calcProportionalSizes(cags, totalPopulationSize, shareCalculator);
         for(Map.Entry<ConsumerAgentGroup, Integer> propotionalEntry: proportionalSizes.entrySet()) {
             ConsumerAgentGroup cag = propotionalEntry.getKey();
             int propotionalSize = propotionalEntry.getValue();
@@ -167,7 +173,7 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
     protected void checkConsumerAgentGroupExistence(List<ConsumerAgentGroup> cags, Settings initData) throws ParsingException {
         for(ConsumerAgentGroup cag: cags) {
             if(initData.hasInitialNumberOfConsumerAgents(cag)) {
-                throw new ParsingException("cag '" + cag.getName() + "' already has a population size: " + initData.getInitialNumberOfConsumerAgents(cag) + " (try to set: " + totalSize + ")");
+                throw new ParsingException("cag '" + cag.getName() + "' already has a population size: " + initData.getInitialNumberOfConsumerAgents(cag) + " (try to set: " + maximumSize + ")");
             }
         }
     }
@@ -181,85 +187,112 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
         return cags;
     }
 
-    protected static void parseIndividualSizes(
-            List<ConsumerAgentGroup> cags,
-            List<List<SpatialAttribute>> attrList,
+    public static <T> Map<T, Integer> calculateShares(
+            List<T> cags,
             String selector,
-            ShareCalculator<ConsumerAgentGroup> shareCalculator) {
-        for(ConsumerAgentGroup cag: cags) {
-            int cagSize = SpatialUtil.filterAndCount(attrList, selector, cag.getName());
-            shareCalculator.setSize(cag, cagSize);
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parsed size for cag '{}': {}", cag.getName(), cagSize);
-        }
-    }
-
-    protected int getTotalSizeForShareCalculation(
             List<List<SpatialAttribute>> attrList,
-            List<ConsumerAgentGroup> cags,
-            ShareCalculator<ConsumerAgentGroup> shareCalculator) {
-        int totalSize;
-        if(considerAllForShares) {
-            totalSize = attrList.size();
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "total size for share calculation (consider all cags): '{}'", totalSize);
+            int maximumSize,
+            boolean allowSmallerSize,
+            boolean useMaximumPossibleSize,
+            Function<T, String> toString,
+            boolean doLogging) throws ParsingException {
+
+        ShareCalculator<T> shareCalculator = new ShareCalculator<>();
+
+        parseIndividualSizes(
+                cags,
+                shareCalculator,
+                cag -> SpatialUtil.filterAndCount(attrList, selector, toString.apply(cag)),
+                toString,
+                doLogging
+        );
+
+        calculateShares(
+                cags,
+                shareCalculator,
+                toString,
+                doLogging
+        );
+
+        int parsedTotalSize = shareCalculator.sumSizes();
+        if(useMaximumPossibleSize) {
+            if(doLogging) LOGGER.warn("use maximum possible size {}", parsedTotalSize);
+            maximumSize = parsedTotalSize;
         } else {
-            totalSize = shareCalculator.sumSizes(cags);
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "total size for share calculation of all parsed cags: '{}'", totalSize);
+            if(parsedTotalSize < maximumSize) {
+                if(allowSmallerSize) {
+                    if(doLogging) LOGGER.warn("parsed total size ({}) < maximum size ({}), set maximum size to {}", parsedTotalSize, maximumSize, parsedTotalSize);
+                    maximumSize = parsedTotalSize;
+                } else {
+                    throw ExceptionUtil.create(ParsingException::new, "requested maximum size is to large: maximum size ({}) > possible size ({})", maximumSize, parsedTotalSize);
+                }
+            }
         }
-        return totalSize;
+
+        return calculateProportionalSizes(
+                cags,
+                maximumSize,
+                shareCalculator,
+                doLogging
+        );
     }
 
-    protected int getTotalPopulationSize(List<ConsumerAgentGroup> cags, ShareCalculator<ConsumerAgentGroup> shareCalculator) {
-        int totalSize;
-        if(useMaximumSize) {
-            totalSize = shareCalculator.sumSizes(cags);
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "total size for all parsed cags: '{}'", totalSize);
-        } else {
-            totalSize = getTotalSize();
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "use total size set by user: '{}'", totalSize);
+    protected static <T> void parseIndividualSizes(
+            List<T> cags,
+            ShareCalculator<T> shareCalculator,
+            ToIntFunction<T> sizeOfCag,
+            Function<T, String> toString,
+            boolean doLogging) {
+        for(T cag: cags) {
+            int cagSize = sizeOfCag.applyAsInt(cag);
+            shareCalculator.setSize(cag, cagSize);
+            if(doLogging) LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parsed size for cag '{}': {}", toString.apply(cag), cagSize);
         }
-        return totalSize;
     }
 
-    protected static void calculateShares(
-            List<ConsumerAgentGroup> cags,
-            int totalSize,
-            ShareCalculator<ConsumerAgentGroup> shareCalculator) {
-        shareCalculator.calculateShares(totalSize);
-        for(ConsumerAgentGroup cag: cags) {
+    protected static <T> void calculateShares(
+            List<T> cags,
+            ShareCalculator<T> shareCalculator,
+            Function<? super T, ? extends String> toString,
+            boolean doLogging) {
+        shareCalculator.calculateShares();
+        for(T cag: cags) {
             double share = shareCalculator.getShare(cag);
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "size share for cag '{}': {}", cag.getName(), share);
+            if(doLogging) LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "size share for cag '{}': {}", toString.apply(cag), share);
         }
     }
 
-    protected static Map<ConsumerAgentGroup, Integer> calcProportionalSizes(
-            List<ConsumerAgentGroup> cags,
+    protected static <T> Map<T, Integer> calculateProportionalSizes(
+            List<T> cags,
             int totalSize,
-            ShareCalculator<ConsumerAgentGroup> shareCalculator) throws ParsingException {
-        Map<ConsumerAgentGroup, Integer> cagSizes = new HashMap<>();
-        for(ConsumerAgentGroup cag: cags) {
+            ShareCalculator<T> shareCalculator,
+            boolean doLogging) throws ParsingException {
+        Map<T, Integer> cagSizes = new HashMap<>();
+        for(T cag: cags) {
             int cagSize = shareCalculator.getProportionalSize(cag, totalSize);
             cagSizes.put(cag, cagSize);
         }
-        repairRoundingErrors(cagSizes, totalSize, shareCalculator);
+        repairRoundingErrors(cagSizes, totalSize, shareCalculator, doLogging);
         return cagSizes;
     }
 
-    protected static void repairRoundingErrors(
-            Map<ConsumerAgentGroup, Integer> cagSizes,
+    protected static <T> void repairRoundingErrors(
+            Map<T, Integer> cagSizes,
             int totalSize,
-            ShareCalculator<ConsumerAgentGroup> shareCalculator) throws ParsingException {
+            ShareCalculator<T> shareCalculator,
+            boolean doLogging) throws ParsingException {
         int totalCagSize = cagSizes.values().stream()
                 .mapToInt(v -> v)
                 .sum();
         int difference = totalSize - totalCagSize;
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "difference between totalSize and totalCagSize: {}", difference);
+        if(doLogging) LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "difference between totalSize and totalCagSize: {}", difference);
         if(difference < 0) {
             //Das (sollte) ist unmoeglich sein!
             throw new ParsingException("something went terribly wrong");
         }
         if(difference > 0) {
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "repair rounding errors");
-            ConsumerAgentGroup largestGroup = shareCalculator.getKeyWithLargestShare();
+            if(doLogging) LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "repair rounding errors");
+            T largestGroup = shareCalculator.getKeyWithLargestShare();
             int currentSize = cagSizes.get(largestGroup);
             cagSizes.put(largestGroup, currentSize + difference);
 

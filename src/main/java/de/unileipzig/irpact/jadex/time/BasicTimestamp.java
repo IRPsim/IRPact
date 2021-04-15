@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.jadex.time;
 
 import de.unileipzig.irpact.commons.time.Timestamp;
+import de.unileipzig.irpact.util.AddToPersist;
+import de.unileipzig.irpact.util.Todo;
 import jadex.bridge.service.annotation.Reference;
 
 import java.time.Instant;
@@ -12,6 +14,7 @@ import java.util.Objects;
 /**
  * @author Daniel Abitz
  */
+@AddToPersist("besser adden mit den werten")
 @Reference(local = true, remote = true)
 public final class BasicTimestamp implements JadexTimestamp {
 

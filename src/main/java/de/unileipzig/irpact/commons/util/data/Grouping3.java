@@ -27,6 +27,11 @@ public class Grouping3<A, B, C, X> implements Grouping<X> {
     }
 
     @Override
+    public boolean isEmpty() {
+        return grouping.isEmpty();
+    }
+
+    @Override
     public void add(X element) {
         A a = groupASelector.apply(element);
         add(a, element);

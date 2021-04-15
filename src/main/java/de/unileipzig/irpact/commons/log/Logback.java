@@ -22,6 +22,7 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
+@SuppressWarnings("unused")
 public final class Logback {
 
     //padding ja/nein?
@@ -34,16 +35,16 @@ public final class Logback {
     private static final String LOG_SYSTEMERR = "LOG_SYSTEMERR";
     private static final String LOG_FILE = "LOG_FILE";
 
-    private static final String CLEAR = "CLEAR";
-    private static final String CLEAR_PATTERN = "%msg%n";
-    private static final String CLEAR_SYSTEMOUT = "CLEAR_SYSTEMOUT";
-    private static final String CLEAR_SYSTEMERR = "CLEAR_SYSTEMERR";
-    private static final String CLEAR_FILE = "CLEAR_FILE";
+    private static final String RESULT = "RESULT";
+    private static final String RESULT_PATTERN = "%msg%n";
+    private static final String RESULT_SYSTEMOUT = "RESULT_SYSTEMOUT";
+    private static final String RESULT_SYSTEMERR = "RESULT_SYSTEMERR";
+    private static final String RESULT_FILE = "RESULT_FILE";
 
     private static final List<LoggerSetup> SETUPS = new ArrayList<>();
 
     private static Logger rootLogger;
-    private static Logger clearLogger;
+    private static Logger resultLogger;
 
     private Logback() {
     }
@@ -53,9 +54,9 @@ public final class Logback {
         return rootLogger;
     }
 
-    public static Logger getClearLogger() {
+    public static Logger getResultLogger() {
         checkInit();
-        return clearLogger;
+        return resultLogger;
     }
 
     public static LoggerContext getContext() {
@@ -118,7 +119,7 @@ public final class Logback {
     public static void setLevel(Level level) {
         checkInit();
         getRootLogger().setLevel(level);
-        getClearLogger().setLevel(level);
+        getResultLogger().setLevel(level);
     }
 
     private static boolean initCalled = false;
@@ -147,10 +148,10 @@ public final class Logback {
     }
 
     private static void initClearLogger() {
-        clearLogger = getLogger(CLEAR);
-        clearLogger.setAdditive(false);
-        clearLogger.setLevel(Level.ALL);
-        detachAllAppenders(clearLogger);
+        resultLogger = getLogger(RESULT);
+        resultLogger.setAdditive(false);
+        resultLogger.setLevel(Level.ALL);
+        detachAllAppenders(resultLogger);
     }
 
     private static void initSetups() {
@@ -162,9 +163,9 @@ public final class Logback {
         SETUPS.add(rootSetup);
 
         LoggerSetup clearSetup = new LoggerSetup(
-                getClearLogger(),
-                CollectionUtil.arrayListOf(getClearSystemOutAppender(), getClearSystemErrAppender()),
-                CollectionUtil.arrayListOf(getClearFileAppender())
+                getResultLogger(),
+                CollectionUtil.arrayListOf(getSystemOutAppender(), getSystemErrAppender()),
+                CollectionUtil.arrayListOf(getFileAppender())
         );
         SETUPS.add(clearSetup);
     }
@@ -237,7 +238,7 @@ public final class Logback {
     private static ConsoleAppender<ILoggingEvent> clearSystemOutAppender;
     private static ConsoleAppender<ILoggingEvent> getClearSystemOutAppender() {
         if(clearSystemOutAppender == null) {
-            clearSystemOutAppender = createSystemOutAppender(CLEAR_SYSTEMOUT, CLEAR_PATTERN);
+            clearSystemOutAppender = createSystemOutAppender(RESULT_SYSTEMOUT, RESULT_PATTERN);
         }
         return clearSystemOutAppender;
     }
@@ -245,7 +246,7 @@ public final class Logback {
     private static ConsoleAppender<ILoggingEvent> clearClearSystemErrAppender;
     private static ConsoleAppender<ILoggingEvent> getClearSystemErrAppender() {
         if(clearClearSystemErrAppender == null) {
-            clearClearSystemErrAppender = createSystemErrAppender(CLEAR_SYSTEMERR, CLEAR_PATTERN);
+            clearClearSystemErrAppender = createSystemErrAppender(RESULT_SYSTEMERR, RESULT_PATTERN);
         }
         return clearClearSystemErrAppender;
     }
@@ -253,7 +254,7 @@ public final class Logback {
     private static FileAppender<ILoggingEvent> clearFileAppender;
     private static FileAppender<ILoggingEvent> getClearFileAppender() {
         if(clearFileAppender == null) {
-            clearFileAppender = createFileAppender(CLEAR_FILE, CLEAR_PATTERN);
+            clearFileAppender = createFileAppender(RESULT_FILE, RESULT_PATTERN);
         }
         return clearFileAppender;
     }

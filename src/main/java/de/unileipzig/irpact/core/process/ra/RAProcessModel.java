@@ -242,14 +242,9 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
         for(ConsumerAgentGroup cag: agentManager.getConsumerAgentGroups()) {
             for(ConsumerAgent ca : cag.getAgents()) {
-
-                if(initalizeInitialAdopter(ca, newProduct)) {
-                    continue;
-                }
-                if(initalizeInitialProductInterest(ca, newProduct)) {
-                    continue;
-                }
                 initalizeInitialProductAwareness(ca, newProduct);
+                initalizeInitialProductInterest(ca, newProduct);
+                initalizeInitialAdopter(ca, newProduct);
             }
         }
     }
@@ -262,23 +257,20 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         globalRAProcessInitCalled = true;
     }
 
-    private boolean initalizeInitialAdopter(ConsumerAgent ca, Product fp) {
+    private void initalizeInitialAdopter(ConsumerAgent ca, Product fp) {
         double chance = RAProcessPlan.getInitialAdopter(ca, fp);
         double draw = rnd.nextDouble();
         boolean isAdopter = draw < chance;
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "Is consumer agent '{}' initial adopter of product '{}'? {} ({} < {})", ca.getName(), fp.getName(), isAdopter, draw, chance);
         if(isAdopter) {
-            if(!ca.isAware(fp)) {
-                ca.makeAware(fp);
-            }
-            if(!ca.isInterested(fp)) {
-                ca.makeInterested(fp);
-            }
             ca.adoptInitial(fp);
-            return true;
-        } else {
-            return false;
         }
+    }
+
+    private void initalizeInitialProductInterest(ConsumerAgent ca, Product fp) {
+        double interest = RAProcessPlan.getInitialProductInterest(ca, fp);
+        ca.updateInterest(fp, interest);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "consumer agent '{}' has initial interest value {} for product '{}'", ca.getName(), interest, fp.getName());
     }
 
     private void initalizeInitialProductAwareness(ConsumerAgent ca, Product fp) {
@@ -288,21 +280,6 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "is consumer agent '{}' initial aware of product '{}'? {} ({} < {})", ca.getName(), fp.getName(), isAware, draw, chance);
         if(isAware) {
             ca.makeAware(fp);
-        }
-    }
-
-    private boolean initalizeInitialProductInterest(ConsumerAgent ca, Product fp) {
-        double interest = RAProcessPlan.getInitialProductInterest(ca, fp);
-        if(interest > 0) {
-            if(!ca.isAware(fp)) {
-                ca.makeAware(fp);
-            }
-            ca.updateInterest(fp, interest);
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "consumer agent '{}' has initial interest value {} for product '{}'", ca.getName(), interest, fp.getName());
-            return true;
-        } else {
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "consumer agent '{}' has no initial interest for product '{}'", ca.getName(), fp.getName());
-            return false;
         }
     }
 

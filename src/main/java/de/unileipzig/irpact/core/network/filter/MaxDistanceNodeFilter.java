@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.network.filter;
 
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.core.agent.SpatialAgent;
 import de.unileipzig.irpact.core.network.SocialGraph;
@@ -9,14 +10,25 @@ import de.unileipzig.irpact.core.spatial.SpatialModel;
 /**
  * @author Daniel Abitz
  */
-public class MaxNodeDistanceFilter extends NameableBase implements NodeDistanceFilter {
+public class MaxDistanceNodeFilter extends NameableBase implements NodeDistanceFilter {
 
     protected SpatialModel model;
     protected double maxDistance;
     protected boolean inclusive;
     protected SpatialInformation origin;
 
-    public MaxNodeDistanceFilter() {
+    public MaxDistanceNodeFilter() {
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.getChecksum(
+                getName(),
+                getMaxDistance(),
+                isInclusive(),
+                ChecksumComparable.getNameChecksum(getModel()),
+                getOrigin()
+        );
     }
 
     public void setModel(SpatialModel model) {

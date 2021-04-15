@@ -16,6 +16,7 @@ public final class InfoTag {
     public static final String GRAPH_UPDATE = "[GU]";
     public static final String SHARE_NETORK_LOCAL = "[SNL]";
     public static final String FINANCAL_COMPONENT = "[FC]";
+    public static final String ADOPTION_THRESHOLD = "[U]";
 
     private InfoTag() {
     }

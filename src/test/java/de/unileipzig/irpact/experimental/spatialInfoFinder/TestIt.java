@@ -1,7 +1,11 @@
 package de.unileipzig.irpact.experimental.spatialInfoFinder;
 
+import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.commons.util.csv.CsvParser;
+import de.unileipzig.irpact.commons.util.xlsx.XlsxToCsvConverter;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
@@ -10,15 +14,17 @@ import de.unileipzig.irpact.core.spatial.filter.MaxDistanceSpatialInformationFil
 import de.unileipzig.irpact.core.spatial.filter.RangeSpatialInformationFilter;
 import de.unileipzig.irpact.core.spatial.twodim.BasicPoint2D;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
+import de.unileipzig.irpact.io.param.input.agent.population.InRelativeExternConsumerAgentPopulationSize;
+import de.unileipzig.irpact.util.PVactUtil;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -40,6 +46,142 @@ public class TestIt {
             }
         }
         return out;
+    }
+
+    @Test
+    void testMileuStuff() throws IOException {
+        Path dir = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data");
+        Path csv = dir.resolve("Datensatz_210322.csv");
+        CsvParser<SpatialAttribute> parser = new CsvParser<>();
+        parser.setConverter(PVactUtil.CSV_CONVERTER);
+        parser.setNumberOfInfoRows(1);
+        parser.parse(csv);
+        List<List<SpatialAttribute>> attrs = parser.getRows();
+
+        Set<String> milies = SpatialUtil.collectDistinct(attrs, RAConstants.DOM_MILIEU);
+        System.out.println(milies);
+
+        Map<String, Integer> count = SpatialUtil.filterAndCountAll(attrs, RAConstants.DOM_MILIEU, null);
+        Map<String, Integer> countSort = new TreeMap<>(count);
+        double total = countSort.values().stream().mapToInt(i -> i).sum();
+        System.out.println(total);
+        countSort.forEach((s, n) -> {
+            System.out.println(s + " " + n + " " + (n.doubleValue() / total));
+        });
+    }
+
+    /*
+        BUM 9090 0.18893415364150315
+        EPE 3112 0.06468240771533089
+        G   381  0.007919022281343531
+        HED 4591 0.09542317924842035
+        KET 3747 0.07788077818423678
+        LIB 7350 0.15276854007316262
+        PER 3055 0.06349767209843699
+        PRA 2999 0.06233372131692717
+        PRE 5567 0.11570917858330562
+        SOK 4824 0.10026604589291653
+        TRA 3396 0.07058530096441636
+     */
+
+    @Test
+    void testMileuSelect() throws IOException, ParsingException {
+        Path dir = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data");
+        Path csv = dir.resolve("Datensatz_210322.csv");
+        CsvParser<SpatialAttribute> parser = new CsvParser<>();
+        parser.setConverter(PVactUtil.CSV_CONVERTER);
+        parser.setNumberOfInfoRows(1);
+        parser.parse(csv);
+        List<List<SpatialAttribute>> attrs = parser.getRows();
+
+        //"PRA", "PER", "SOK", "BUM", "PRE", "EPE", "TRA", "KET", "LIB", "HED", "G"
+        List<String> milieus = CollectionUtil.arrayListOf("BUM", "EPE", "G");
+
+        int maximumSize = 100000;
+        boolean allowSmallerSize = true;
+        boolean useMaximumPossibleSize = false;
+
+        Map<String, Integer> share = InRelativeExternConsumerAgentPopulationSize.calculateShares(
+                milieus,
+                RAConstants.DOM_MILIEU,
+                attrs,
+                maximumSize,
+                allowSmallerSize,
+                useMaximumPossibleSize,
+                s -> s,
+                true
+        );
+        Map<String, Integer> countShare = new TreeMap<>(share);
+
+        double sum = countShare.values().stream().mapToInt(i -> i).sum();
+        System.out.println(sum);
+        countShare.forEach((s, i) -> System.out.println(s + " " + i + " " + (i/sum)));
+    }
+    /*
+        1000.0 false false
+        BUM 723 0.723
+        EPE 247 0.247
+        G 30 0.03
+
+        12583.0 false true
+        BUM 9090 0.7224032424699992
+        EPE 3112 0.24731780974330445
+        G 381 0.
+
+        100000 false true -> ERROR, da zu groß
+        BUM 9090 0.7224032424699992
+        EPE 3112 0.24731780974330445
+        G 381 0.030278947786696337
+
+        12583.0 true true ->
+        BUM 9090 0.7224032424699992
+        EPE 3112 0.24731780974330445
+        G 381 0.030278947786696337
+
+     */
+
+    @Test
+    void parseCsv() throws IOException {
+        Path dir = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data");
+        Path csv = dir.resolve("Datensatz_210322.csv");
+
+        CsvParser<SpatialAttribute> parser = new CsvParser<>();
+        parser.setConverter(PVactUtil.CSV_CONVERTER);
+        parser.setNumberOfInfoRows(1);
+        parser.parse(csv);
+
+        List<List<SpatialAttribute>> infos = parser.getRows();
+        System.out.println(infos.size());
+        System.out.println(infos.get(0));
+    }
+
+    @Test
+    void testConvertStuff() throws IOException {
+        Path dir = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data");
+        Path xlsx = dir.resolve("Datensatz_210322.xlsx");
+        Path csv = dir.resolve("Datensatz_210322.csv");
+
+        XlsxToCsvConverter converter = new XlsxToCsvConverter();
+        converter.setNumberOfInfoRows(1);
+        converter.convert(xlsx, csv);
+    }
+
+    @Test
+    void milieuGetter() throws IOException {
+        Path path = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\irpacttempdata", "Datensatz_210322.xlsx");
+        String x = "X_Zentroid";
+        String y = "Y_Zentroid";
+        List<List<SpatialAttribute>> attrList = SpatialTableFileLoader.parseXlsx(path);
+        List<SpatialInformation> infoList = SpatialUtil.mapToPoint2D(attrList, x, y);
+        System.out.println(infoList.size());
+
+        Set<String> milieus = infoList.stream()
+                .map(info -> info.getAttribute(RAConstants.DOM_MILIEU).getStringValue())
+                .map(str -> "\"" + str + "\"")
+                .collect(Collectors.toSet());
+
+        System.out.println(milieus);
+
     }
 
     @Test
