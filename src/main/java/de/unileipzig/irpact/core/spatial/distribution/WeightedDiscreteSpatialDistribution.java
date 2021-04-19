@@ -2,8 +2,8 @@ package de.unileipzig.irpact.core.spatial.distribution;
 
 import de.unileipzig.irpact.commons.*;
 import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.commons.util.weighted.BasicWeightedMapping;
-import de.unileipzig.irpact.commons.util.weighted.UnmodifiableWeightedMapping;
+import de.unileipzig.irpact.commons.util.weighted.BasicWeightedBiMapping;
+import de.unileipzig.irpact.commons.util.weighted.UnmodifiableWeightedBiMapping;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
 import java.util.*;
@@ -15,18 +15,18 @@ public class WeightedDiscreteSpatialDistribution extends ResettableSpatialDistri
 
     protected static final String X = "x";
 
-    protected BasicWeightedMapping<String, String, Number> weightedMapping;
-    protected UnmodifiableWeightedMapping<String, String, Number> unmodWeightedMapping;
+    protected BasicWeightedBiMapping<String, String, Number> weightedMapping;
+    protected UnmodifiableWeightedBiMapping<String, String, Number> unmodWeightedMapping;
     protected Map<String, Collection<SpatialInformation>> unused;
     protected Map<String, Collection<SpatialInformation>> used;
     protected Rnd rnd;
 
     public WeightedDiscreteSpatialDistribution() {
-        this(new BasicWeightedMapping<>(), new LinkedHashMap<>(), new LinkedHashMap<>());
+        this(new BasicWeightedBiMapping<>(), new LinkedHashMap<>(), new LinkedHashMap<>());
     }
 
     public WeightedDiscreteSpatialDistribution(
-            BasicWeightedMapping<String, String, Number> weightedMapping,
+            BasicWeightedBiMapping<String, String, Number> weightedMapping,
             Map<String, Collection<SpatialInformation>> unused,
             Map<String, Collection<SpatialInformation>> used) {
         this.weightedMapping = weightedMapping;
@@ -69,7 +69,7 @@ public class WeightedDiscreteSpatialDistribution extends ResettableSpatialDistri
         for(Map.Entry<String, Collection<SpatialInformation>> entry: unused.entrySet()) {
             weightedMapping.put(X, entry.getKey(), entry.getValue().size());
         }
-        unmodWeightedMapping = new UnmodifiableWeightedMapping<>(weightedMapping);
+        unmodWeightedMapping = new UnmodifiableWeightedBiMapping<>(weightedMapping);
         unmodWeightedMapping.makeImmutable();
         call();
     }
@@ -77,7 +77,7 @@ public class WeightedDiscreteSpatialDistribution extends ResettableSpatialDistri
     protected void removeAndReweight(String key) {
         unused.remove(key);
         weightedMapping.remove(X, key);
-        unmodWeightedMapping = new UnmodifiableWeightedMapping<>(weightedMapping);
+        unmodWeightedMapping = new UnmodifiableWeightedBiMapping<>(weightedMapping);
         unmodWeightedMapping.makeImmutable();
     }
 
@@ -89,11 +89,11 @@ public class WeightedDiscreteSpatialDistribution extends ResettableSpatialDistri
         return rnd;
     }
 
-    public BasicWeightedMapping<String, String, Number> getWeightedMapping() {
+    public BasicWeightedBiMapping<String, String, Number> getWeightedMapping() {
         return weightedMapping;
     }
 
-    public UnmodifiableWeightedMapping<String, String, Number> getUnmodifiableWeightedMapping() {
+    public UnmodifiableWeightedBiMapping<String, String, Number> getUnmodifiableWeightedMapping() {
         return unmodWeightedMapping;
     }
 

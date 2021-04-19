@@ -11,25 +11,25 @@ import java.util.function.Supplier;
  *
  * @author Daniel Abitz
  */
-public class UnmodifiableWeightedMapping<S, T, W> implements WeightedMapping<S, T, W> {
+public class UnmodifiableWeightedBiMapping<S, T, W> implements WeightedBiMapping<S, T, W> {
 
     protected Supplier<? extends Map<S, List<WeightedValue<T>>>> mapSupplier;
     protected Supplier<? extends List<WeightedValue<T>>> listSupplier;
     protected Map<S, List<WeightedValue<T>>> normalizedSortedValues;
-    protected BasicWeightedMapping<S, T, W> back;
+    protected BasicWeightedBiMapping<S, T, W> back;
     protected boolean immutable = false;
 
-    public UnmodifiableWeightedMapping() {
-        this(new BasicWeightedMapping<>());
+    public UnmodifiableWeightedBiMapping() {
+        this(new BasicWeightedBiMapping<>());
     }
 
-    public UnmodifiableWeightedMapping(
-            BasicWeightedMapping<S, T, W> back) {
+    public UnmodifiableWeightedBiMapping(
+            BasicWeightedBiMapping<S, T, W> back) {
         this(back, LinkedHashMap::new, ArrayList::new);
     }
 
-    public UnmodifiableWeightedMapping(
-            BasicWeightedMapping<S, T, W> back,
+    public UnmodifiableWeightedBiMapping(
+            BasicWeightedBiMapping<S, T, W> back,
             Supplier<? extends Map<S, List<WeightedValue<T>>>> mapSupplier,
             Supplier<? extends List<WeightedValue<T>>> listSupplier) {
         this.back = back;

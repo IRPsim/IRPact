@@ -3,6 +3,7 @@ package de.unileipzig.irpact.util.gis;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 /**
  * @author Daniel Abitz
@@ -25,12 +26,53 @@ public class ShapeFile {
         return name;
     }
 
-    public Path shp() {
-        return dir.resolve(name + ".shp");
+    private static void rename(ShapeFile from, ShapeFile to) throws IOException {
+        renameIfExists(from.dbf(), to.dbf());
+        renameIfExists(from.fix(), to.fix());
+        renameIfExists(from.prj(), to.prj());
+        renameIfExists(from.shp(), to.shp());
+        renameIfExists(from.shx(), to.shx());
+    }
+
+    private static void renameIfExists(Path from, Path to) throws IOException {
+        if(Files.exists(from)) {
+            Files.move(from, to, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    public ShapeFile rename(String newName) throws IOException {
+        ShapeFile renamed = new ShapeFile(dir, newName);
+        rename(this, renamed);
+        return renamed;
+    }
+
+    public void renameThis(String newName) throws IOException {
+        ShapeFile renamed = rename(newName);
+        name = renamed.getName();
+    }
+
+    public boolean exists() {
+        return Files.exists(dbf()) || Files.exists(shp());
     }
 
     public Path dbf() {
         return dir.resolve(name + ".dbf");
+    }
+
+    public Path fix() {
+        return dir.resolve(name + ".fix");
+    }
+
+    public Path prj() {
+        return dir.resolve(name + ".prj");
+    }
+
+    public Path shp() {
+        return dir.resolve(name + ".shp");
+    }
+
+    public Path shx() {
+        return dir.resolve(name + ".shx");
     }
 
     public Path template() {
@@ -44,7 +86,7 @@ public class ShapeFile {
         );
     }
 
-    private long getSize(Path path) throws IOException {
+    private static long getSize(Path path) throws IOException {
         if(Files.exists(path)) {
             return Files.size(path);
         } else {

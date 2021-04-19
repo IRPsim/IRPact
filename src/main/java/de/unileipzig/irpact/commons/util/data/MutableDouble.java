@@ -66,6 +66,10 @@ public final class MutableDouble extends Number {
         value++;
     }
 
+    public synchronized void syncUpdate(double delta) {
+        value += delta;
+    }
+
     @SuppressWarnings("unchecked")
     public <T> Consumer<T> incConsumer() {
         return (Consumer<T>) INC_CONSUMER;

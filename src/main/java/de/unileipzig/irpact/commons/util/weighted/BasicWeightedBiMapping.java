@@ -14,7 +14,7 @@ import java.util.function.ToDoubleFunction;
  * @param <W>
  * @author Daniel Abitz
  */
-public class BasicWeightedMapping<S, T, W> implements WeightedMapping<S, T, W> {
+public class BasicWeightedBiMapping<S, T, W> implements WeightedBiMapping<S, T, W> {
 
     protected static final ToDoubleFunction<? super Object> DEFAULT_W_FUNC = w -> {
         if(w instanceof Number) {
@@ -29,16 +29,16 @@ public class BasicWeightedMapping<S, T, W> implements WeightedMapping<S, T, W> {
     protected ToDoubleFunction<? super W> weightFunction;
     protected Map<S, Map<T, W>> mapping;
 
-    public BasicWeightedMapping() {
+    public BasicWeightedBiMapping() {
         this(DEFAULT_W_FUNC);
     }
 
-    public BasicWeightedMapping(
+    public BasicWeightedBiMapping(
             ToDoubleFunction<? super W> weightFunction) {
         this(LinkedHashMap::new, LinkedHashMap::new, weightFunction);
     }
 
-    public BasicWeightedMapping(
+    public BasicWeightedBiMapping(
             Supplier<? extends Map<S, Map<T, W>>> mappingSupplier,
             Supplier<? extends Map<T, W>> map0Supplier,
             ToDoubleFunction<? super W> weightFunction) {

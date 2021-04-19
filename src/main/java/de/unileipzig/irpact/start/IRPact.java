@@ -285,7 +285,7 @@ public class IRPact implements IRPActAccess {
         environment.getTaskManager().runSimulationTasks(environment);
     }
 
-    private void postAgentCreation() throws MissingDataException {
+    private void postAgentCreation() throws MissingDataException, InitializationException {
         LOGGER.info(IRPSection.GENERAL, "run post agent creation");
         environment.postAgentCreation();
     }

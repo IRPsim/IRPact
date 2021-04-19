@@ -300,7 +300,8 @@ public class Gis {
     public static void mergeShapeFiles3(
             Collection<? extends Path> shpFiles,
             CoordinateReferenceSystem crs,
-            Path outputShp) throws IOException, SchemaException {
+            Path outputShp,
+            int gc) throws IOException, SchemaException {
         ShapefileDataStoreFactory fac = new ShapefileDataStoreFactory();
 
         Map<String, Serializable> params = new HashMap<>();
@@ -336,6 +337,12 @@ public class Gis {
                     throw e;
                 } finally {
                     inStore.dispose();
+                }
+
+                if(gc > 0) {
+                    if(i % gc == 0) {
+                        System.gc();
+                    }
                 }
             }
             LOGGER.trace("[shp] {} entries added to {}", count, outputShp.getFileName());
@@ -443,13 +450,15 @@ public class Gis {
             ShapeFiles inputFiles,
             CoordinateReferenceSystem crs,
             Charset charset,
-            ShapeFile outputFile) throws SchemaException, IOException {
+            ShapeFile outputFile,
+            int gc) throws SchemaException, IOException {
         LOGGER.trace("merge {} files, {} -> {}, out: {}", inputFiles.count(), inputFiles.getFirst().getName(), inputFiles.getLast().getName(), outputFile.getName());
 
         mergeShapeFiles3(
                 inputFiles.getShpFiles(),
                 crs,
-                outputFile.shp()
+                outputFile.shp(),
+                gc
         );
 
         mergeDbfFiles(

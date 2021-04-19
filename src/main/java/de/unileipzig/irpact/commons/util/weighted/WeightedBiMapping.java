@@ -8,7 +8,7 @@ import de.unileipzig.irpact.commons.util.Rnd;
  * @param <W>
  * @author Daniel Abitz
  */
-public interface WeightedMapping<S, T, W> {
+public interface WeightedBiMapping<S, T, W> {
 
     boolean has(S source);
 

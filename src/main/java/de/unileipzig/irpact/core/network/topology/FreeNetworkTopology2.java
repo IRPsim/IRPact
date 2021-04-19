@@ -1,8 +1,12 @@
 package de.unileipzig.irpact.core.network.topology;
 
-import de.unileipzig.irpact.commons.*;
+import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.spatial.DistanceEvaluator;
+import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.commons.util.data.DataCounter;
 import de.unileipzig.irpact.commons.util.weighted.BasicWeightedBiMapping;
 import de.unileipzig.irpact.commons.util.weighted.WeightedBiMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
@@ -22,9 +26,9 @@ import java.util.*;
 /**
  * @author Daniel Abitz
  */
-public class FreeNetworkTopology extends NameableBase implements GraphTopologyScheme {
+public class FreeNetworkTopology2 extends NameableBase implements GraphTopologyScheme {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(FreeNetworkTopology.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(FreeNetworkTopology2.class);
 
     protected SocialGraph.Type edgeType;
     protected Map<ConsumerAgentGroup, Integer> edgeCountMap;
@@ -33,24 +37,7 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
     protected double initialWeight;
     protected Rnd rnd;
 
-    public FreeNetworkTopology() {
-    }
-
-    public FreeNetworkTopology(
-            SocialGraph.Type edgeType,
-            String name,
-            Map<ConsumerAgentGroup, Integer> edgeCountMap,
-            ConsumerAgentGroupAffinityMapping affinityMapping,
-            DistanceEvaluator distanceEvaluator,
-            double initialWeight,
-            Rnd rnd) {
-        this.edgeType = edgeType;
-        setName(name);
-        this.edgeCountMap = edgeCountMap;
-        this.affinityMapping = affinityMapping;
-        this.distanceEvaluator = distanceEvaluator;
-        this.initialWeight = initialWeight;
-        this.rnd = rnd;
+    public FreeNetworkTopology2() {
     }
 
     public void setEdgeType(SocialGraph.Type edgeType) {
@@ -99,6 +86,19 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
 
     public Rnd getRnd() {
         return rnd;
+    }
+
+    @Override
+    public int getChecksum() {
+        return Objects.hash(
+                getName(),
+                getInitialWeight(),
+                getRnd().getChecksum(),
+                getDistanceEvaluator().getChecksum(),
+                getEdgeType().getChecksum(),
+                getAffinityMapping().getChecksum(),
+                ChecksumComparable.getMapChecksum(getEdgeCountMap())
+        );
     }
 
     @Override
@@ -156,16 +156,60 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
         return mapping;
     }
 
-    @Override
-    public int getChecksum() {
-        return Objects.hash(
-                getName(),
-                getInitialWeight(),
-                getRnd().getChecksum(),
-                getDistanceEvaluator().getChecksum(),
-                getEdgeType().getChecksum(),
-                getAffinityMapping().getChecksum(),
-                ChecksumComparable.getMapChecksum(getEdgeCountMap())
-        );
+    /**
+     * @author Daniel Abitz
+     */
+    protected static class CagOrder {
+
+        protected DataCounter<ConsumerAgentGroup> linkCounter = new DataCounter<>();
+
+        protected CagOrder() {
+        }
+
+        protected boolean isMax(ConsumerAgentGroup cag) {
+            int numberOfAgents = cag.getNumberOfAgents();
+            int current = linkCounter.get(cag);
+            return current >= numberOfAgents;
+        }
+
+        protected void determine(
+                int count,
+                ConsumerAgentGroupAffinities affinities,
+                Rnd rnd) throws InitializationException {
+            boolean tryAgain = true;
+            ConsumerAgentGroupAffinities caga = affinities;
+            ConsumerAgentGroup target;
+            int found = 0;
+            while(tryAgain) {
+                target = caga.getWeightedRandom(rnd);
+
+                if(isMax(target)) {
+                    caga = caga.createWithout(target);
+                    if(caga.isEmpty()) {
+                        throw ExceptionUtil.create(
+                                InitializationException::new,
+                                "not enough agents, agents found: {}, required: {}",
+                                found, count
+                        );
+                    }
+                    tryAgain = true;
+                } else {
+                    found++;
+                    linkCounter.inc(target);
+                    tryAgain = found < count;
+                }
+            }
+        }
+
+        protected void apply(SocialGraph.LinkageInformation li, SocialGraph.Type edgeType) {
+            for(ConsumerAgentGroup cag: linkCounter.keys()) {
+                int count = linkCounter.get(cag);
+                li.set(cag, edgeType, count);
+            }
+        }
+
+        protected DataCounter<ConsumerAgentGroup> getLinkCounter() {
+            return linkCounter;
+        }
     }
 }

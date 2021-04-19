@@ -9,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -112,6 +111,7 @@ public class ShapeFiles {
                 coll.add(currentFiles);
                 currentSize = 0;
                 currentFiles = new ShapeFiles();
+                System.out.println("!");
             }
 
             currentFiles.add(next);

@@ -1,11 +1,7 @@
 package de.unileipzig.irpact.experimental.demos;
 
-import de.unileipzig.irpact.commons.util.weighted.WeightedMapping;
 import de.unileipzig.irpact.core.log.IRPLevel;
-import de.unileipzig.irpact.core.network.SocialGraph;
-import de.unileipzig.irpact.core.network.topology.CompleteGraphTopology;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InGeneral;

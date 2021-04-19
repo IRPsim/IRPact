@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.commons.util.data;
+package de.unileipzig.irpact.commons.util.data.grouping;
 
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.StringUtil;

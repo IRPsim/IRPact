@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.network;
 
+import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.network.topology.GraphTopologyScheme;
@@ -58,7 +59,7 @@ public class BasicSocialNetwork implements SocialNetwork {
     }
 
     @Override
-    public void postAgentCreation() {
+    public void postAgentCreation() throws InitializationException {
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "initalize graph using topology '{}'", topologyScheme.getName());
         topologyScheme.initalize(
                 environment,

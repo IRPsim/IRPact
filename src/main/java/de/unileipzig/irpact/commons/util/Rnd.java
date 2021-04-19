@@ -2,10 +2,7 @@ package de.unileipzig.irpact.commons.util;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -178,6 +175,10 @@ public final class Rnd implements ChecksumComparable {
         } finally {
             unlock();
         }
+    }
+
+    public <K> K getRandomKey(Map<? extends K, ?> map) {
+        return getRandom(map.keySet());
     }
 
     public <T> T removeRandom(Collection<? extends T> coll) {

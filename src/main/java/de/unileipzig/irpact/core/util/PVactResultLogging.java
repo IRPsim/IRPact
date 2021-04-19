@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.core.util;
 
-import de.unileipzig.irpact.commons.util.data.Grouping2;
-import de.unileipzig.irpact.commons.util.data.Grouping3;
-import de.unileipzig.irpact.commons.util.data.GroupingUtil;
+import de.unileipzig.irpact.commons.util.data.grouping.Grouping2;
+import de.unileipzig.irpact.commons.util.data.grouping.Grouping3;
+import de.unileipzig.irpact.commons.util.data.grouping.GroupingUtil;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.log.IRPLogging;

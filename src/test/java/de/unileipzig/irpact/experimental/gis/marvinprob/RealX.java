@@ -2,6 +2,7 @@ package de.unileipzig.irpact.experimental.gis.marvinprob;
 
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.data.MutableBoolean;
+import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.util.gis.CityGjm2Gis;
 import de.unileipzig.irpact.util.gis.Gis;
 import de.unileipzig.irpact.util.gis.ShapeFile;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.opengis.referencing.FactoryException;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -29,6 +31,7 @@ class RealX {
 
     private static final long MB100 = 100L * 1024 * 1024;
     private static final long GB2 = 2L * 1024 * 1024 * 1024;
+    private static final long GB2X = 2L * 1024 * 1024 * 1024 + MB100;
 
     private static final Path gjmDir = Paths.get("E:\\MyTemp\\Marvin-Daten\\LoD2_CityGML\\data");
     private static final Path gisDir = Paths.get("E:\\MyTemp\\Marvin-Daten\\LoD2_Shape\\data");
@@ -209,8 +212,8 @@ class RealX {
 
     @Test
     void peek333() throws IOException {
-        Gis.peekAllDbf(mergedDir1.resolve("3D_LoD2_33278_5590_2_sn__3D_LoD2_33294_5588_2_sn.dbf"), StandardCharsets.UTF_8, true);
-        Gis.peekAllShp(mergedDir1.resolve("3D_LoD2_33278_5590_2_sn__3D_LoD2_33294_5588_2_sn.shp"), true);
+        Gis.peekAllDbf(mergedDirFinal.resolve("3D_LoD2_33320_5676_2_sn__3D_LoD2_33322_5636_2_sn__3D_LoD2_33342_5708_2_sn__3D_LoD2_33344_5668_2_sn.dbf"), StandardCharsets.UTF_8, true);
+        Gis.peekAllShp(mergedDirFinal.resolve("3D_LoD2_33320_5676_2_sn__3D_LoD2_33322_5636_2_sn__3D_LoD2_33342_5708_2_sn__3D_LoD2_33344_5668_2_sn.shp"), true);
     }
 
     @Test
@@ -383,7 +386,7 @@ class RealX {
                         .limit(blockSize)
                         .collect(Collectors.toList());
 
-                Gis.mergeShapeFiles3(
+                Gis.mergeShapeFiles2(
                         shpPart,
                         CRS.decode("urn:ogc:def:crs:EPSG:6.12:25833"),
                         mergedDir2.resolve("merged_2_" + ii + ".shp")
@@ -461,21 +464,112 @@ class RealX {
         shapeFiles.addAll(outDirParts);
         System.out.println("total: " + shapeFiles.count());
 
-        List<ShapeFiles> part0 = shapeFiles.partAfterSize(GB2);
+        List<ShapeFiles> part0 = shapeFiles.partAfterSize(GB2X);
         System.out.println(part0.size());
+        part0.forEach(p -> {
+            try {
+                System.out.println(p.maxSize());
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        });
 
         List<ShapeFiles> part1 = shapeFiles.sortAfterMaxSize().partAfterSize(GB2);
         System.out.println(part1.size());
     }
 
+    //=========================
+    //TODO
+    //blocks
+    //=========================
+
+    @Test
+    void mergeAfterBlock() throws IOException, ExecutionException, InterruptedException {
+        MutableDouble total1 = MutableDouble.zero();
+        mergeAfterBlock(
+                outDirParts,
+                mergedDir1,
+                50,
+                7,
+                Integer.MAX_VALUE,
+                45,
+                total1
+        );
+        MutableDouble total2 = MutableDouble.zero();
+        mergeAfterBlock(
+                outDirParts,
+                mergedDir2,
+                75,
+                7,
+                Integer.MAX_VALUE,
+                50,
+                total2
+        );
+        System.out.println(total1.get() + " files merged");
+        System.out.println(total2.get() + " files merged");
+    }
+
+    void mergeAfterBlock(
+            Collection<? extends Path> dirs,
+            Path outDir,
+            int blockSize,
+            int cores,
+            int maxTasks,
+            int gc,
+            MutableDouble total) throws IOException, InterruptedException, ExecutionException {
+        ShapeFiles shapeFiles = new ShapeFiles();
+        shapeFiles.addAll(dirs);
+        List<ShapeFiles> parts = shapeFiles.partAfterCount(blockSize);
+        List<Callable<Void>> tasks = new ArrayList<>();
+        MutableBoolean err = new MutableBoolean(false);
+
+        for(ShapeFiles part: parts) {
+            Callable<Void> task = () -> {
+                if(err.get()) {
+                    return null;
+                }
+
+                String name = part.getFirst().getName() + "__" + part.getLast().getName();
+                ShapeFile outFile = new ShapeFile(outDir, name);
+                Gis.mergeAll(
+                        part,
+                        CRS.decode("urn:ogc:def:crs:EPSG:6.12:25833"),
+                        StandardCharsets.UTF_8,
+                        outFile,
+                        gc
+                );
+                total.syncUpdate(part.count());
+                return null;
+            };
+            tasks.add(task);
+            if(tasks.size() >= maxTasks) {
+                break;
+            }
+        }
+
+        System.out.println("run " + tasks.size() + " tasks");
+        ExecutorService exec = Executors.newFixedThreadPool(cores);
+        List<Future<Void>> futures = exec.invokeAll(tasks);
+        for(Future<Void> future: futures) {
+            future.get();
+        }
+        System.out.println(total.get() + " files merged");
+    }
+
+    //=========================
+    //TODO
+    //sizes
+    //=========================
+
     @Test
     void mergeAfterSize() throws IOException, ExecutionException, InterruptedException {
         mergeAfterSize(
-                CollectionUtil.arrayListOf(outDir0),
-                mergedDir1,
-                MB100,
+                CollectionUtil.arrayListOf(mergedDir1),
+                mergedDirFinal,
+                GB2,
                 6,
-                1
+                Integer.MAX_VALUE,
+                100
         );
     }
 
@@ -484,7 +578,8 @@ class RealX {
             Path outDir,
             long size,
             int cores,
-            int maxTasks) throws IOException, InterruptedException, ExecutionException {
+            int maxTasks,
+            int gc) throws IOException, InterruptedException, ExecutionException {
         ShapeFiles shapeFiles = new ShapeFiles();
         shapeFiles.addAll(dirs);
         List<ShapeFiles> parts = shapeFiles.partAfterSize(size);
@@ -503,7 +598,8 @@ class RealX {
                         part,
                         CRS.decode("urn:ogc:def:crs:EPSG:6.12:25833"),
                         StandardCharsets.UTF_8,
-                        outFile
+                        outFile,
+                        gc
                 );
                 return null;
             };

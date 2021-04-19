@@ -273,7 +273,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     }
 
     @Override
-    public void postAgentCreation() throws MissingDataException {
+    public void postAgentCreation() throws MissingDataException, InitializationException {
         agentManager.postAgentCreation();
         socialNetwork.postAgentCreation();
         productManager.postAgentCreation();

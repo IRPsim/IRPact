@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.misc;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.util.Todo;
 
 /**
@@ -29,7 +30,8 @@ public interface InitalizablePart extends ChecksumComparable {
      *
      * @throws MissingDataException something went wrong
      */
-    default void postAgentCreation() throws MissingDataException {
+    @Todo("neue exception eingebaut")
+    default void postAgentCreation() throws MissingDataException, InitializationException {
     }
 
     /**

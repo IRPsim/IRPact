@@ -2,9 +2,9 @@ package de.unileipzig.irpact.experimental;
 
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.StringUtil;
-import de.unileipzig.irpact.commons.util.data.Grouping1;
-import de.unileipzig.irpact.commons.util.data.Grouping2;
-import de.unileipzig.irpact.commons.util.data.GroupingUtil;
+import de.unileipzig.irpact.commons.util.data.grouping.Grouping1;
+import de.unileipzig.irpact.commons.util.data.grouping.Grouping2;
+import de.unileipzig.irpact.commons.util.data.grouping.GroupingUtil;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

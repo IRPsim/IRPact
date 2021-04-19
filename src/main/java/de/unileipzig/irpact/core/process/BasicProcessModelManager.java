@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.process;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -49,7 +50,7 @@ public class BasicProcessModelManager implements ProcessModelManager {
     }
 
     @Override
-    public void postAgentCreation() throws MissingDataException {
+    public void postAgentCreation() throws MissingDataException, InitializationException {
         for(ProcessModel model: getProcessModels()) {
             model.postAgentCreation();
         }
