@@ -1170,6 +1170,12 @@ SET set_sector(*)
 * - type: String
 SET set_side(*)
 
+* - description: Stromsparte je Kundengruppe
+* - identifier: SK
+* - unit: [EUR]
+* - type: Float
+PARAMETER par_IuO_ESector_CustSide(set_ii,set_side)
+
 * - description: Kundengruppe in IRPact
 * - identifier: KG
 * - type: String
@@ -1186,12 +1192,6 @@ PARAMETER par_S_DS(set_side_cust)
 * - identifier: KGAM
 * - type: Integer
 PARAMETER par_kg_modifier(set_side_cust)
-
-* - description: Stromsparte je Kundengruppe
-* - identifier: SK
-* - unit: [EUR]
-* - type: Float
-PARAMETER par_IuO_ESector_CustSide(set_ii,set_side_cust)
 
 * - default: SMS, NS, PS
 * - description: Tarifteilnehmer
@@ -1267,22 +1267,18 @@ SET set_IGraphTopology(*)
 * - type: String
 SET set_IWattsStrogatzModel(set_IGraphTopology)
 
-* - description: IWattsStrogatzModel_wsmK
 * - identifier: wsmK
 * - type: Integer
 PARAMETER par_IWattsStrogatzModel_wsmK(set_IWattsStrogatzModel)
 
-* - description: IWattsStrogatzModel_wsmBeta
 * - identifier: wsmBeta
 * - type: Float
 PARAMETER par_IWattsStrogatzModel_wsmBeta(set_IWattsStrogatzModel)
 
-* - description: IWattsStrogatzModel_wsmSelfReferential
 * - identifier: wsmSelfReferential
 * - type: Boolean
 PARAMETER par_IWattsStrogatzModel_wsmSelfReferential(set_IWattsStrogatzModel)
 
-* - description: IWattsStrogatzModel_wsmSeed
 * - identifier: wsmSeed
 * - type: Integer
 PARAMETER par_IWattsStrogatzModel_wsmSeed(set_IWattsStrogatzModel)
@@ -1296,17 +1292,14 @@ PARAMETER par_IWattsStrogatzModel_wsmUseThis(set_IWattsStrogatzModel)
 * - type: String
 SET set_IFreeMultiGraphTopology(set_IGraphTopology)
 
-* - description: IFreeMultiGraphTopology_ftEdgeCount
 * - identifier: ftEdgeCount
 * - type: Integer
 PARAMETER par_IFreeMultiGraphTopology_ftEdgeCount(set_IFreeMultiGraphTopology)
 
-* - description: IFreeMultiGraphTopology_ftSelfReferential
 * - identifier: ftSelfReferential
 * - type: Boolean
 PARAMETER par_IFreeMultiGraphTopology_ftSelfReferential(set_IFreeMultiGraphTopology)
 
-* - description: IFreeMultiGraphTopology_ftSeed
 * - identifier: ftSeed
 * - type: Integer
 PARAMETER par_IFreeMultiGraphTopology_ftSeed(set_IFreeMultiGraphTopology)

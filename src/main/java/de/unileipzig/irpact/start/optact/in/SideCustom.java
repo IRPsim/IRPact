@@ -39,17 +39,6 @@ public class SideCustom extends Side {
     )
     public int delta;
 
-    @FieldDefinition(
-            name = "IuO_ESector_CustSide",
-            timeSeries = Ii.class,
-            gams = @GamsParameter(
-                    unit = "[EUR]",
-                    description = "Stromsparte je Kundengruppe",
-                    identifier = "SK"
-            )
-    )
-    public DoubleTimeSeries timeStuff;
-
     public SideCustom() {
     }
 

@@ -47,6 +47,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.graphviz.LayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.OutputFormat;
 import de.unileipzig.irptools.graphviz.def.*;
+import de.unileipzig.irptools.uiedn.Section;
 import de.unileipzig.irptools.uiedn.Sections;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.UiEdn;
@@ -367,6 +368,15 @@ public class InRoot implements RootClass {
 
     @Override
     public void peekEdn(Sections sections, UiEdn ednType) {
+        if(ednType == UiEdn.INPUT) {
+            Section imageSection = new Section();
+            imageSection.setPriority(-1);
+            imageSection.setLabel("Agentennetzwerk");
+            imageSection.setImage("agentGraph");
+            imageSection.setDescription("Agentennetzwerk in IRPact");
+            imageSection.setIcon("fa fa-spinner");
+            sections.add(imageSection);
+        }
     }
 
     //=========================

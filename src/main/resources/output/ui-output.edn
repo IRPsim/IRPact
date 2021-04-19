@@ -1,11 +1,5 @@
 [
   {
-    :label "Agentennetzwerk" 
-    :icon "fa fa-spinner" 
-    :description "Agentennetzwerk in IRPact" 
-    :image "agentGraph"
-  } 
-  {
     :label "set_OutAdoptionResult" 
     :set "set_OutAdoptionResult" 
     :tags [["OutAdoptionResult" "adoptions"] ["OutAdoptionResult" "adoptionShare"]]

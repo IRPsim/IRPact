@@ -1,10 +1,10 @@
 [
-    {
-    :label "Agentennetzwerk"
-    :icon "fa fa-spinner"
-    :description "Agentennetzwerk in IRPact"
+  {
+    :label "Agentennetzwerk" 
+    :icon "fa fa-spinner" 
+    :description "Agentennetzwerk in IRPact" 
     :image "agentGraph"
-  }
+  } 
   {
     :label "Allgemeine Einstellungen" 
     :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "endYear"]] 
