@@ -99,6 +99,19 @@ public class Gis {
         }
     }
 
+    public static boolean getAllFromDbf(Path target, Charset charset, Collection<? super Object[]> out) throws IOException {
+        boolean changed = false;
+
+        try(DbaseFileReader reader = new DbaseFileReader(FileChannel.open(target), false, charset)) {
+            while(reader.hasNext()) {
+                Object[] entry = reader.readEntry();
+                changed |= out.add(entry);
+            }
+        }
+
+        return changed;
+    }
+
     public static void peekAllDbf(Path target, Charset charset) throws IOException {
         peekAllDbf(target, charset, false);
     }
@@ -141,6 +154,26 @@ public class Gis {
             store.dispose();
         }
         System.out.println("total: " + count);
+    }
+
+    public static boolean getAllFromShp(Path target, Collection<? super Object> out) throws IOException {
+        boolean changed = false;
+
+        ShapefileDataStore store = (ShapefileDataStore) FileDataStoreFinder.getDataStore(target.toFile());
+        String schema = getSchema(target);
+        Query query = new Query(schema);
+
+        try(FeatureReader<SimpleFeatureType, SimpleFeature> reader = store.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+            while(reader.hasNext()) {
+                SimpleFeature feature = reader.next();
+                Object obj = feature.getAttribute("the_geom");
+                changed |= out.add(obj);
+            }
+        } finally {
+            store.dispose();
+        }
+
+        return changed;
     }
 
     public static void peekAllShp(Path target) throws IOException {

@@ -9,6 +9,7 @@ import de.unileipzig.irpact.util.gis.ShapeFile;
 import de.unileipzig.irpact.util.gis.ShapeFiles;
 import org.geotools.feature.SchemaException;
 import org.geotools.referencing.CRS;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.opengis.referencing.FactoryException;
 
@@ -22,6 +23,8 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Daniel Abitz
@@ -614,6 +617,105 @@ class RealX {
         List<Future<Void>> futures = exec.invokeAll(tasks);
         for(Future<Void> future: futures) {
             future.get();
+        }
+    }
+
+    //=========================
+    //TODO
+    //renaming
+    //=========================
+
+    @Test
+    void renameIt() throws IOException {
+        ShapeFile sh0 = new ShapeFile(mergedDirFinal, "3D_LoD2_33278_5590_2_sn__3D_LoD2_33286_5598_2_sn__3D_LoD2_33318_5696_2_sn__3D_LoD2_33320_5674_2_sn");
+        sh0.renameThis("3D_LoD2_33278_5590_2_sn__3D_LoD2_33320_5674_2_sn");
+
+        ShapeFile sh1 = new ShapeFile(mergedDirFinal, "3D_LoD2_33320_5676_2_sn__3D_LoD2_33322_5636_2_sn__3D_LoD2_33342_5708_2_sn__3D_LoD2_33344_5668_2_sn");
+        sh1.renameThis("3D_LoD2_33320_5676_2_sn__3D_LoD2_33344_5668_2_sn");
+
+        ShapeFile sh2 = new ShapeFile(mergedDirFinal, "3D_LoD2_33344_5670_2_sn__3D_LoD2_33346_5632_2_sn__3D_LoD2_33376_5648_2_sn__3D_LoD2_33378_5652_2_sn");
+        sh2.renameThis("3D_LoD2_33344_5670_2_sn__3D_LoD2_33378_5652_2_sn");
+
+        ShapeFile sh3 = new ShapeFile(mergedDirFinal, "3D_LoD2_33378_5654_2_sn__3D_LoD2_33380_5660_2_sn__3D_LoD2_33414_5652_2_sn__3D_LoD2_33416_5676_2_sn");
+        sh3.renameThis("3D_LoD2_33378_5654_2_sn__3D_LoD2_33416_5676_2_sn");
+
+        ShapeFile sh4 = new ShapeFile(mergedDirFinal, "3D_LoD2_33416_5678_2_sn__3D_LoD2_33420_5628_2_sn__3D_LoD2_33480_5660_2_sn__3D_LoD2_33482_5668_2_sn");
+        sh4.renameThis("3D_LoD2_33416_5678_2_sn__3D_LoD2_33482_5668_2_sn");
+
+        ShapeFile sh5 = new ShapeFile(mergedDirFinal, "3D_LoD2_33482_5670_2_sn__3D_LoD2_33484_5686_2_sn__3D_LoD2_33496_5696_2_sn__3D_LoD2_33502_5682_2_sn");
+        sh5.renameThis("3D_LoD2_33482_5670_2_sn__3D_LoD2_33502_5682_2_sn");
+    }
+
+    //=========================
+    //TODO
+    //check
+    //=========================
+
+    protected Map<Object, Object[]> mapAfter(Collection<? extends Object[]> coll, int index) {
+        Map<Object, Object[]> mapping = new HashMap<>();
+        for(Object[] entry: coll) {
+            if(!"Ground".equals(entry[0].toString())) {
+                continue;
+            }
+            Object key = entry[index];
+            if(mapping.containsKey(key)) {
+                throw new IllegalStateException(Arrays.toString(entry));
+            }
+            mapping.put(key, entry);
+        }
+        return mapping;
+    }
+
+    @Test
+    void checkIt() throws IOException {
+        Path original = Paths.get("E:\\MyTemp\\Marvin-Daten\\LoD2_Shape\\data", "3D_LoD2_33498_5670_2_sn.dbf");
+        List<Object[]> dbfData = new ArrayList<>();
+        Gis.getAllFromDbf(original, StandardCharsets.UTF_8, dbfData);
+        Map<Object, Object[]> dbfMapping = mapAfter(dbfData, 2);
+
+        Path toCheck = mergedDirFinal.resolve("3D_LoD2_33482_5670_2_sn__3D_LoD2_33502_5682_2_sn.dbf");
+        List<Object[]> myData = new ArrayList<>();
+        Gis.getAllFromDbf(toCheck, StandardCharsets.UTF_8, myData);
+        Map<Object, Object[]> myMapping = mapAfter(myData, 2);
+
+        for(Map.Entry<Object, Object[]> entry: dbfMapping.entrySet()) {
+            Object[] dbfValue = entry.getValue();
+            Object[] myValue = myMapping.get(entry.getKey());
+            assertArrayEquals(dbfValue, myValue);
+        }
+    }
+
+    @Test
+    void checkIt2() throws IOException {
+        Path original = outDir9.resolve("3D_LoD2_33498_5670_2_sn.dbf");
+        List<Object[]> dbfData = new ArrayList<>();
+        Gis.getAllFromDbf(original, StandardCharsets.UTF_8, dbfData);
+        Map<Object, Object[]> dbfMapping = mapAfter(dbfData, 2);
+
+        Path toCheck = mergedDirFinal.resolve("3D_LoD2_33482_5670_2_sn__3D_LoD2_33502_5682_2_sn.dbf");
+        List<Object[]> myData = new ArrayList<>();
+        Gis.getAllFromDbf(toCheck, StandardCharsets.UTF_8, myData);
+        Map<Object, Object[]> myMapping = mapAfter(myData, 2);
+
+        for(Map.Entry<Object, Object[]> entry: dbfMapping.entrySet()) {
+            Object[] dbfValue = entry.getValue();
+            Object[] myValue = myMapping.get(entry.getKey());
+            assertArrayEquals(dbfValue, myValue);
+        }
+    }
+
+    @Test
+    void checkIt2Shp() throws IOException {
+        Path original = outDir9.resolve("3D_LoD2_33498_5670_2_sn.shp");
+        List<Object> shpData = new ArrayList<>();
+        Gis.getAllFromShp(original, shpData);
+
+        Path toCheck = mergedDirFinal.resolve("3D_LoD2_33482_5670_2_sn__3D_LoD2_33502_5682_2_sn.shp");
+        List<Object> myData = new ArrayList<>();
+        Gis.getAllFromShp(toCheck, myData);
+
+        for(Object shpGeo: shpData) {
+            assertTrue(myData.contains(shpGeo));
         }
     }
 }
