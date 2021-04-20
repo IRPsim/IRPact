@@ -3,6 +3,7 @@ package de.unileipzig.irpact.core.network.topology;
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.exception.InitializationException;
+import de.unileipzig.irpact.commons.log.LazyPrinter;
 import de.unileipzig.irpact.commons.spatial.DistanceEvaluator;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
@@ -125,6 +126,7 @@ public class FreeNetworkTopology2 extends NameableBase implements GraphTopologyS
         int edgeCount = edgeCountMap.get(sourceCag);
         CagOrder cagOrder = new CagOrder();
         cagOrder.determine(edgeCount, sourceAffinities, rnd);
+        LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "edge targets for '{}': {}", source.getName(), LazyPrinter.of(cagOrder::printEdgeTargets));
         cagOrder.apply(li, edgeType);
 
         List<ConsumerAgent> targetList = new ArrayList<>();
@@ -184,10 +186,10 @@ public class FreeNetworkTopology2 extends NameableBase implements GraphTopologyS
                 int count,
                 ConsumerAgentGroupAffinities affinities,
                 Rnd rnd) throws InitializationException {
-            boolean tryAgain = true;
             ConsumerAgentGroupAffinities caga = affinities;
             ConsumerAgentGroup target;
             int found = 0;
+            boolean tryAgain = true;
             while(tryAgain) {
                 target = caga.getWeightedRandom(rnd);
 
@@ -218,6 +220,14 @@ public class FreeNetworkTopology2 extends NameableBase implements GraphTopologyS
 
         protected DataCounter<ConsumerAgentGroup> getLinkCounter() {
             return linkCounter;
+        }
+
+        protected String printEdgeTargets() {
+            Map<String, String> printMap = new LinkedHashMap<>();
+            for(ConsumerAgentGroup cag: linkCounter.keys()) {
+                printMap.put(cag.getName(), Integer.toString(linkCounter.get(cag)));
+            }
+            return printMap.toString();
         }
     }
 }

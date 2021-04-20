@@ -7,6 +7,8 @@ import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.develop.TestFiles;
 import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.util.PVactUtil;
 import de.unileipzig.irptools.io.annual.AnnualData;
@@ -30,6 +32,32 @@ public class ToyModelUtil {
 
     public static Path getData(String name) {
         return dataDir.resolve(name);
+    }
+
+    public static InPVactConsumerAgentGroup createPVcag(String name, InUnivariateDoubleDistribution diraq0) {
+        InPVactConsumerAgentGroup cag = new InPVactConsumerAgentGroup();
+        cag.setName(name);
+        cag.a1 = diraq0;                                          //A1
+        cag.setNoveltySeeking(diraq0);                            //A2
+        cag.setDependentJudgmentMaking(diraq0);                   //A3
+        cag.setEnvironmentalConcern(diraq0);                      //A4
+        cag.a5 = diraq0;                                          //A5    //!
+        cag.a6 = diraq0;                                          //A6    //!
+        cag.setConstructionRate(diraq0);                          //A7
+        cag.setRenovationRate(diraq0);                            //A8
+
+        cag.setInitialProductAwareness(diraq0);                   //D1    //!
+        cag.setInterestThreshold(diraq0);                         //D2
+        cag.setFinancialThreshold(diraq0);                       //D3
+        cag.setAdoptionThreshold(diraq0);                        //D4
+        cag.setInitialAdopter(diraq0);                            //D5
+
+        cag.setRewire(diraq0);                                    //B6
+        cag.setCommunication(diraq0);                             //C1
+        cag.setRateOfConvergence(diraq0);                         //C3
+        cag.setInitialProductInterest(diraq0);                    //AX
+
+        return cag;
     }
 
     public static List<SpatialInformation> getInformations(String name) throws IOException {
