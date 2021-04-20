@@ -13,6 +13,7 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.InfoTag;
 import de.unileipzig.irpact.core.need.BasicNeed;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
+import de.unileipzig.irpact.core.network.SupportedGraphStructure;
 import de.unileipzig.irpact.core.network.topology.GraphTopologyScheme;
 import de.unileipzig.irpact.core.process.BasicProcessModelManager;
 import de.unileipzig.irpact.core.process.FixProcessModelFindingScheme;
@@ -332,7 +333,7 @@ public class JadexInputParser implements InputParser {
     }
 
     private void parseSocialGraph(@SuppressWarnings("unused") InRoot root) {
-        debug("[Fixed] use DirectedAdjacencyListMultiGraph");
+        debug("[Fixed] use {}", SupportedGraphStructure.getDefault());
         BasicSocialNetwork network = (BasicSocialNetwork) environment.getNetwork();
         network.initDefaultGraph();
     }

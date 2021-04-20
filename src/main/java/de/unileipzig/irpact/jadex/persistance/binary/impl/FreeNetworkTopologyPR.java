@@ -40,6 +40,8 @@ public class FreeNetworkTopologyPR extends BinaryPRBase<FreeNetworkTopology> {
         BinaryJsonData data = initData(object, manager);
         data.putDouble(object.getInitialWeight());
         data.putInt(object.getEdgeType().id());
+        data.putBoolean(object.isSelfReferential());
+        data.putBoolean(object.isAllowLessEdges());
 
         for(Map.Entry<ConsumerAgentGroup, Integer> entry: object.getEdgeCountMap().entrySet()) {
             manager.prepare(entry.getKey());
@@ -75,6 +77,8 @@ public class FreeNetworkTopologyPR extends BinaryPRBase<FreeNetworkTopology> {
         FreeNetworkTopology object = new FreeNetworkTopology();
         object.setInitialWeight(data.getDouble());
         object.setEdgeType(SocialGraph.Type.get(data.getInt()));
+        object.setSelfReferential(data.getBoolean());
+        object.setAllowLessEdges(data.getBoolean());
         return object;
     }
 

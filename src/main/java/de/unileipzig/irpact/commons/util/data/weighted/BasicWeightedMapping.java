@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.util.weighted.WeightedValue;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * @param <T>
@@ -108,15 +109,22 @@ public class BasicWeightedMapping<T> implements WeightedMapping<T> {
         set(value.getValue(), value.getWeight());
     }
 
-    protected void requiresNotEmpty() {
+    @Override
+    public boolean isEmpty() {
         if(mapping.isEmpty()) {
-            throw new IllegalStateException("empty");
+            return true;
+        } else {
+            long numberOfZeroWeight = mapping.values()
+                    .stream()
+                    .mapToDouble(d -> d)
+                    .filter(d -> d == 0.0)
+                    .count();
+            return numberOfZeroWeight == mapping.size();
         }
     }
 
     @Override
     public T getRandom(Rnd rnd) {
-        requiresNotEmpty();
         return rnd.getRandomKey(mapping);
     }
 
@@ -125,7 +133,6 @@ public class BasicWeightedMapping<T> implements WeightedMapping<T> {
         if(disableWeights) {
             return getRandom(rnd);
         }
-        requiresNotEmpty();
         tryNormalize();
         return isNormalized()
                 ? getNormalizedWeightedRandom(rnd)
@@ -149,12 +156,21 @@ public class BasicWeightedMapping<T> implements WeightedMapping<T> {
         final double rndDraw = rnd.nextDouble(totalWeight);
         double temp = 0.0;
         K draw = null;
+        boolean drawn = false;
         for(Map.Entry<K, Double> entry: mapping.entrySet()) {
-            temp += entry.getValue();
+            double weight = entry.getValue();
+            if(weight == 0.0) {
+                continue;
+            }
+            temp += weight;
             draw = entry.getKey();
+            drawn = true;
             if(rndDraw < temp) {
                 return draw;
             }
+        }
+        if(!drawn) {
+            throw new NoSuchElementException();
         }
         return draw;
     }

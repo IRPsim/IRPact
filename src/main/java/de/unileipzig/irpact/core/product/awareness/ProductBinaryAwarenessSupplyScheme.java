@@ -14,6 +14,10 @@ public class ProductBinaryAwarenessSupplyScheme extends BinaryAwarenessSupplySch
     public ProductBinaryAwarenessSupplyScheme() {
     }
 
+    public ProductBinaryAwarenessSupplyScheme(String name) {
+        setName(name);
+    }
+
     @Override
     public ProductBinaryAwareness derive() {
         return new ProductBinaryAwareness();

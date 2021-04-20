@@ -36,6 +36,10 @@ public final class WeightedValue<A> {
         return weight;
     }
 
+    public WeightedValue<A> normalize(double total) {
+        return new WeightedValue<>(value, weight / total);
+    }
+
     @Override
     public String toString() {
         return "(" + value + " = " + weight + ')';

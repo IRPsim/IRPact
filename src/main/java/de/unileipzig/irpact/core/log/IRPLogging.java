@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.log;
 
+import ch.qos.logback.classic.Level;
 import de.unileipzig.irpact.commons.log.Logback;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import de.unileipzig.irptools.util.log.LoggingFilter;
@@ -19,6 +20,12 @@ public final class IRPLogging {
     private static IRPLogger resultLogger;
 
     private IRPLogging() {
+    }
+
+    public static void disableAll() {
+        Logback.initLogging();
+        Logback.setupConsole();
+        Logback.setLevel(Level.OFF);
     }
 
     public static void initConsole() {

@@ -13,6 +13,13 @@ import java.util.Map;
  */
 public class ProductThresholdInterestSupplyScheme extends ThresholdInterestSupplyScheme<Product, ProductGroup> implements ProductInterestSupplyScheme {
 
+    public ProductThresholdInterestSupplyScheme() {
+    }
+
+    public ProductThresholdInterestSupplyScheme(String name) {
+        setName(name);
+    }
+
     @Override
     public boolean hasThresholdDistribution(ProductGroup group) {
         return distributions.containsKey(group);

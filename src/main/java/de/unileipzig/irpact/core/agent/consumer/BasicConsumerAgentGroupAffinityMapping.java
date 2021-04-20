@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.affinity.Affinities;
 import de.unileipzig.irpact.commons.affinity.BasicAffinityMapping;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -20,6 +21,14 @@ public class BasicConsumerAgentGroupAffinityMapping
 
     public BasicConsumerAgentGroupAffinityMapping(Map<ConsumerAgentGroup, Affinities<ConsumerAgentGroup>> mapping) {
         this.mapping = mapping;
+    }
+
+    public void putForAll(Collection<? extends ConsumerAgentGroup> cags, double value) {
+        for(ConsumerAgentGroup src: cags) {
+            for(ConsumerAgentGroup tar: cags) {
+                put(src, tar, value);
+            }
+        }
     }
 
     @Override

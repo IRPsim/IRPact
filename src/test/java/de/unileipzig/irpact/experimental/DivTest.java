@@ -280,4 +280,14 @@ class DivTest {
         ParsingException p = ExceptionUtil.createWithCause(ParsingException::new, io, "{}? {}! {}!!!", "nein", "doch", "oh");
         p.printStackTrace();
     }
+
+    @Test
+    void xxx() {
+        double[] arr = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        System.out.println(Arrays.binarySearch(arr, 5));
+        System.out.println(Arrays.binarySearch(arr, 5.5)); //-7 -> 6 (-7*-1 -1)
+        System.out.println(Arrays.binarySearch(arr, 4.5));
+        System.out.println(Arrays.binarySearch(arr, -1));
+        System.out.println(Arrays.binarySearch(arr, 100));
+    }
 }

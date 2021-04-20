@@ -9,6 +9,8 @@ import de.unileipzig.irpact.commons.util.weighted.WeightedValue;
  */
 public interface WeightedMapping<T> {
 
+    boolean isEmpty();
+
     boolean has(T target);
 
     double getWeight(T target);

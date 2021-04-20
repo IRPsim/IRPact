@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.weighted.WeightedValue;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
@@ -39,6 +40,11 @@ public class UnweightListMapping<T> implements WeightedMapping<T> {
     }
 
     @Override
+    public boolean isEmpty() {
+        return values.isEmpty();
+    }
+
+    @Override
     public boolean has(T target) {
         return values.contains(target);
     }
@@ -55,6 +61,10 @@ public class UnweightListMapping<T> implements WeightedMapping<T> {
 
     public void add(T target) {
         values.add(target);
+    }
+
+    public void addAll(Collection<? extends T> coll) {
+        values.addAll(coll);
     }
 
     @Override

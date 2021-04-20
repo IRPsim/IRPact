@@ -132,15 +132,17 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         Rnd rnd = parser.deriveRnd();
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "FreeNetworkTopology '{}' uses seed: {}", getName(), rnd.getInitialSeed());
 
-        return new FreeNetworkTopology(
-                SocialGraph.Type.COMMUNICATION,
-                getName(),
-                edgeCountMap,
-                agentManager.getConsumerAgentGroupAffinityMapping(),
-                distEval,
-                getInitialWeight(),
-                rnd
-        );
+        FreeNetworkTopology topology = new FreeNetworkTopology();
+        topology.setEdgeType(SocialGraph.Type.COMMUNICATION);
+        topology.setName(getName());
+        topology.setAffinityMapping(agentManager.getConsumerAgentGroupAffinityMapping());
+        topology.setDistanceEvaluator(distEval);
+        topology.setInitialWeight(getInitialWeight());
+        topology.setRnd(rnd);
+        topology.setEdgeCountMap(edgeCountMap);
+        topology.setAllowLessEdges(false);
+        topology.setSelfReferential(false);
+        return topology;
     }
 
     @Override

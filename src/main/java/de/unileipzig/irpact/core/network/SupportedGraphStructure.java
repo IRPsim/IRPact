@@ -54,4 +54,8 @@ public enum SupportedGraphStructure implements ChecksumComparable {
         }
         throw new IllegalArgumentException("unknown id: " + id);
     }
+
+    public static SupportedGraphStructure getDefault() {
+        return FAST_DIRECTED_MULTI_GRAPH2;
+    }
 }

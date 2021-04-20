@@ -48,7 +48,16 @@ public class BasicAffinities<T> implements Affinities<T> {
 
     @Override
     public boolean isEmpty() {
-        return values.isEmpty();
+        if(values.isEmpty()) {
+            return true;
+        } else {
+            long numberOfZeroWeight = values.values()
+                    .stream()
+                    .mapToDouble(d -> d)
+                    .filter(d -> d == 0.0)
+                    .count();
+            return numberOfZeroWeight == values.size();
+        }
     }
 
     @Override
@@ -96,12 +105,21 @@ public class BasicAffinities<T> implements Affinities<T> {
         final double rndDraw = rnd.nextDouble() * sum;
         double temp = 0.0;
         T draw = null;
+        boolean drawn = false;
         for(Map.Entry<T, Double> entry: values.entrySet()) {
-            temp += entry.getValue();
+            double weight = entry.getValue();
+            if(weight == 0.0) {
+                continue;
+            }
+            temp += weight;
             draw = entry.getKey();
+            drawn = true;
             if(rndDraw < temp) {
                 return draw;
             }
+        }
+        if(!drawn) {
+            throw new NoSuchElementException();
         }
         return draw;
     }
