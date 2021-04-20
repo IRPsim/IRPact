@@ -60,4 +60,28 @@ class BasicWeightedMappingTest {
         assertEquals(50, counter.get("c"), 20);
         assertEquals(1000, counter.total());
     }
+
+    @Test
+    void testDisableWeight() {
+        BasicWeightedMapping<String> wm = new BasicWeightedMapping<>();
+        wm.set("a", 0.8);
+        wm.set("b", 0.15);
+        wm.set("c", 0.05);
+
+        assertFalse(wm.isDisableWeights());
+        wm.setDisableWeights(true);
+        assertTrue(wm.isDisableWeights());
+
+        DataCounter<String> counter = new DataCounter<>();
+        Rnd rnd = new Rnd(123);
+        for(int i = 0; i < 1000; i++) {
+            String drawn = wm.getRandom(rnd);
+            counter.inc(drawn);
+        }
+
+        assertEquals(333, counter.get("a"), 20);
+        assertEquals(333, counter.get("b"), 20);
+        assertEquals(333, counter.get("c"), 20);
+        assertEquals(1000, counter.total());
+    }
 }

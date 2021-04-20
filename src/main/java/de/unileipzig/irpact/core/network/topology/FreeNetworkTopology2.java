@@ -7,8 +7,9 @@ import de.unileipzig.irpact.commons.spatial.DistanceEvaluator;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.data.DataCounter;
-import de.unileipzig.irpact.commons.util.weighted.BasicWeightedBiMapping;
-import de.unileipzig.irpact.commons.util.weighted.WeightedBiMapping;
+import de.unileipzig.irpact.commons.util.data.weighted.RemoveOnDrawUnweightListMapping;
+import de.unileipzig.irpact.commons.util.data.weighted.RemoveOnDrawWeightedMapping;
+import de.unileipzig.irpact.commons.util.data.weighted.WeightedMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinities;
@@ -18,7 +19,6 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
-import de.unileipzig.irpact.util.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
@@ -102,12 +102,12 @@ public class FreeNetworkTopology2 extends NameableBase implements GraphTopologyS
     }
 
     @Override
-    public void initalize(SimulationEnvironment environment, SocialGraph graph) {
+    public void initalize(SimulationEnvironment environment, SocialGraph graph) throws InitializationException {
         LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "initialize free network graph");
         for(SocialGraph.Node node: graph.getNodes()) {
             SocialGraph.LinkageInformation li = graph.getLinkageInformation(node);
             ConsumerAgent ca = node.getAgent(ConsumerAgent.class);
-            Set<ConsumerAgent> agents = drawTargets(environment, ca);
+            Collection<ConsumerAgent> agents = drawTargets(environment, ca, li);
             for(ConsumerAgent targetCa: agents) {
                 LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "add edge: {}->{} ({},{})", ca.getName(), targetCa.getName(), edgeType, initialWeight);
                 graph.addEdge(ca.getSocialGraphNode(), targetCa.getSocialGraphNode(), edgeType, initialWeight);
@@ -116,44 +116,52 @@ public class FreeNetworkTopology2 extends NameableBase implements GraphTopologyS
         }
     }
 
-    @Todo("hier ist was kaputt")
-    @Todo("sicherheitschecks fuer endlosschleife einfuegen, wenn z.b. der einzig gueltige agent ich selber bin")
-    protected Set<ConsumerAgent> drawTargets(SimulationEnvironment environment, ConsumerAgent ca) {
-        ConsumerAgentGroup cag = ca.getGroup();
-        ConsumerAgentGroupAffinities cagAffinities = affinityMapping.get(cag);
-        int edgeCount = edgeCountMap.get(cag);
-        Set<ConsumerAgent> set = new LinkedHashSet<>();
-        while(set.size() < edgeCount) {
-            ConsumerAgentGroup targetCag;
-            do {
-                targetCag = cagAffinities.getWeightedRandom(rnd);
-            } while(set.containsAll(targetCag.getAgents()));
-            WeightedBiMapping<ConsumerAgent, ConsumerAgent, Double> distanceMapping = calculateDistanceMapping(environment, ca, targetCag);
-            ConsumerAgent targetCa = distanceMapping.getWeightedRandom(ca, rnd);
-            //TODO self referential hinzufuegen
-            if(targetCa != ca) {
-                set.add(targetCa);
+    protected Collection<ConsumerAgent> drawTargets(
+            SimulationEnvironment environment,
+            ConsumerAgent source,
+            SocialGraph.LinkageInformation li) throws InitializationException {
+        ConsumerAgentGroup sourceCag = source.getGroup();
+        ConsumerAgentGroupAffinities sourceAffinities = affinityMapping.get(sourceCag);
+        int edgeCount = edgeCountMap.get(sourceCag);
+        CagOrder cagOrder = new CagOrder();
+        cagOrder.determine(edgeCount, sourceAffinities, rnd);
+        cagOrder.apply(li, edgeType);
+
+        List<ConsumerAgent> targetList = new ArrayList<>();
+        for(ConsumerAgentGroup targetCag: cagOrder.getLinkCounter().keys()) {
+            int targetCount = cagOrder.getLinkCounter().get(targetCag);
+            WeightedMapping<ConsumerAgent> targetWM = calculateDistanceMapping(environment, source, targetCag);
+            for(int i = 0; i < targetCount; i++) {
+                ConsumerAgent target = targetWM.getWeightedRandom(rnd);
+                targetList.add(target);
             }
         }
-        return set;
+        return targetList;
     }
 
-    protected WeightedBiMapping<ConsumerAgent, ConsumerAgent, Double> calculateDistanceMapping(
+    protected WeightedMapping<ConsumerAgent> calculateDistanceMapping(
             SimulationEnvironment environment,
-            ConsumerAgent ca,
+            ConsumerAgent source,
             ConsumerAgentGroup targetCag) {
-        BasicWeightedBiMapping<ConsumerAgent, ConsumerAgent, Double> mapping = new BasicWeightedBiMapping<>();
-        for(ConsumerAgent target: targetCag.getAgents()) {
-            if(distanceEvaluator.isDisabled()) {
-                mapping.put(ca, target, 1.0);
-            } else {
-                SpatialModel spatialModel = environment.getSpatialModel();
-                double distance = spatialModel.distance(ca.getSpatialInformation(), target.getSpatialInformation());
-                double eval = distanceEvaluator.evaluate(distance);
-                mapping.put(ca, target, eval);
+        if(distanceEvaluator.isDisabled()) {
+            RemoveOnDrawUnweightListMapping<ConsumerAgent> mapping = new RemoveOnDrawUnweightListMapping<>();
+            for(ConsumerAgent target: targetCag.getAgents()) {
+                mapping.add(target);
             }
+            mapping.shuffle(rnd);
+            mapping.setRemoveFrist(true);
+            return mapping;
+        } else {
+            RemoveOnDrawWeightedMapping<ConsumerAgent> mapping = new RemoveOnDrawWeightedMapping<>();
+            SpatialModel spatialModel = environment.getSpatialModel();
+            for(ConsumerAgent target: targetCag.getAgents()) {
+                double distance = spatialModel.distance(source.getSpatialInformation(), target.getSpatialInformation());
+                double influence = distanceEvaluator.evaluate(distance);
+                mapping.set(target, influence);
+            }
+            mapping.normalize();
+            return mapping;
         }
-        return mapping;
     }
 
     /**

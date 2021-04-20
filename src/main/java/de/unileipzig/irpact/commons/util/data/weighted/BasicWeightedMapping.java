@@ -15,6 +15,7 @@ public class BasicWeightedMapping<T> implements WeightedMapping<T> {
     protected Map<T, Double> mapping;
     protected boolean normalized = false;
     protected boolean autoNormalize = false;
+    protected boolean disableWeights = false;
 
     public BasicWeightedMapping() {
         this(new LinkedHashMap<>());
@@ -30,6 +31,14 @@ public class BasicWeightedMapping<T> implements WeightedMapping<T> {
 
     public boolean isAutoNormalize() {
         return autoNormalize;
+    }
+
+    public boolean isDisableWeights() {
+        return disableWeights;
+    }
+
+    public void setDisableWeights(boolean disableWeights) {
+        this.disableWeights = disableWeights;
     }
 
     public void clear() {
@@ -99,7 +108,7 @@ public class BasicWeightedMapping<T> implements WeightedMapping<T> {
         set(value.getValue(), value.getWeight());
     }
 
-    protected void requriedNotEmpty() {
+    protected void requiresNotEmpty() {
         if(mapping.isEmpty()) {
             throw new IllegalStateException("empty");
         }
@@ -107,14 +116,16 @@ public class BasicWeightedMapping<T> implements WeightedMapping<T> {
 
     @Override
     public T getRandom(Rnd rnd) {
-        requriedNotEmpty();
-        tryNormalize();
+        requiresNotEmpty();
         return rnd.getRandomKey(mapping);
     }
 
     @Override
     public T getWeightedRandom(Rnd rnd) {
-        requriedNotEmpty();
+        if(disableWeights) {
+            return getRandom(rnd);
+        }
+        requiresNotEmpty();
         tryNormalize();
         return isNormalized()
                 ? getNormalizedWeightedRandom(rnd)
