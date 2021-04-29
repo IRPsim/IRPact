@@ -66,7 +66,7 @@ public class LoadingTest {
 
         WeightedDiscreteSpatialDistribution dist = InCustomFileSelectedGroupedSpatialDistribution2D.createInstance(
                 "TEST",
-                attrs.data(),
+                attrs.content().listTable(),
                 new ConstantUnivariateDoubleDistribution("x", 0.0),
                 new ConstantUnivariateDoubleDistribution("y", 0.0),
                 "Mic_Dominantes_Milieu",

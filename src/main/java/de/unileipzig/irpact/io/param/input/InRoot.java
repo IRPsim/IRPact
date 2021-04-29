@@ -40,7 +40,7 @@ import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irpact.start.optact.in.*;
 import de.unileipzig.irpact.start.optact.network.IGraphTopology;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.defstructure.AnnotationResource;
 import de.unileipzig.irptools.defstructure.ParserInput;
 import de.unileipzig.irptools.defstructure.RootClass;

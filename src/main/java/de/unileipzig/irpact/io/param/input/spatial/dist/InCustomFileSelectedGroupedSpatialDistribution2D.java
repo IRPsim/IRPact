@@ -160,7 +160,7 @@ public class InCustomFileSelectedGroupedSpatialDistribution2D implements InSpati
 
         WeightedDiscreteSpatialDistribution dist = createInstance(
                 getName(),
-                attrList.data(),
+                attrList.content().listTable(),
                 xSupplier,
                 ySupplier,
                 selectKey,

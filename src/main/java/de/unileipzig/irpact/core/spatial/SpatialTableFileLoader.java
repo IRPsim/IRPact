@@ -1,7 +1,12 @@
 package de.unileipzig.irpact.core.spatial;
 
 import de.unileipzig.irpact.commons.res.ResourceLoader;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
+import de.unileipzig.irpact.commons.util.table.SimpleTable;
+import de.unileipzig.irpact.commons.util.table.Table;
+import de.unileipzig.irpact.commons.util.xlsx.CellValueConverter;
 import de.unileipzig.irpact.commons.util.xlsx.XlsxSheetParser;
+import de.unileipzig.irpact.commons.util.xlsx.XlsxTable;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
@@ -28,9 +33,14 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(SpatialTableFileLoader.class);
 
+    protected static final CellValueConverter<String, SpatialAttribute> STRING_CONVERTER =
+            (columnIndex, header, value) -> new SpatialStringAttribute(header[columnIndex], value);
+    protected static final CellValueConverter<Number, SpatialAttribute> NUMERIC_CONVERTER =
+            (columnIndex, header, value) -> new SpatialDoubleAttribute(header[columnIndex], value.doubleValue());
+
     protected ResourceLoader loader;
     protected String inputFileName;
-    protected List<List<SpatialAttribute>> data;
+    protected Table<SpatialAttribute> data;
 
     public SpatialTableFileLoader() {
     }
@@ -67,20 +77,21 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
             throw new NullPointerException("input file is null");
         }
 
-        String csvFile = inputFileName + ".csv";
-        if(loader.hasPath(csvFile)) {
-            Path csvPath = loader.get(csvFile);
-            LOGGER.trace("load csv file '{}'", csvPath);
-            data = parseCsv(csvPath);
-            return;
-        }
-        if(loader.hasResource(csvFile)) {
-            LOGGER.trace("load csv resource '{}'", csvFile);
-            try(InputStream in = loader.getResourceAsStream(csvFile)) {
-                data = parseCsv(in);
-            }
-            return;
-        }
+        LOGGER.info("csv disabled");
+//        String csvFile = inputFileName + ".csv";
+//        if(loader.hasPath(csvFile)) {
+//            Path csvPath = loader.get(csvFile);
+//            LOGGER.trace("load csv file '{}'", csvPath);
+//            data = parseCsv(csvPath);
+//            return;
+//        }
+//        if(loader.hasResource(csvFile)) {
+//            LOGGER.trace("load csv resource '{}'", csvFile);
+//            try(InputStream in = loader.getResourceAsStream(csvFile)) {
+//                data = parseCsv(in);
+//            }
+//            return;
+//        }
 
         String xlsxFile = inputFileName + ".xlsx";
         if(loader.hasPath(xlsxFile)) {
@@ -106,11 +117,11 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
     //csv
     //=========================
 
-    private static List<List<SpatialAttribute>> parseCsv(InputStream in) {
+    private static Table<SpatialAttribute> parseCsv(InputStream in) {
         throw new UnsupportedOperationException();
     }
 
-    private static List<List<SpatialAttribute>> parseCsv(Path path) {
+    private static Table<SpatialAttribute> parseCsv(Path path) {
         throw new UnsupportedOperationException();
     }
 
@@ -118,32 +129,30 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
     //xlsx
     //=========================
 
-    public static List<List<SpatialAttribute>> parseXlsx(InputStream in) throws IOException {
+    public static Table<SpatialAttribute> parseXlsx(InputStream in) throws IOException {
         XSSFWorkbook book = new XSSFWorkbook(in);
         XSSFFont font = book.createFont();
         font.setCharSet(FontCharset.ANSI);
         return parseXlsx(book);
     }
 
-    public static List<List<SpatialAttribute>> parseXlsx(Path path) throws IOException {
+    public static Table<SpatialAttribute> parseXlsx(Path path) throws IOException {
         try(InputStream in = Files.newInputStream(path)) {
             return parseXlsx(in);
         }
     }
 
-    public static List<List<SpatialAttribute>> parseXlsx(XSSFWorkbook book) {
+    public static Table<SpatialAttribute> parseXlsx(XSSFWorkbook book) {
         XSSFSheet sheet = book.getSheetAt(0);
 
         XlsxSheetParser<SpatialAttribute> parser = new XlsxSheetParser<>();
-        parser.setTextConverter((columnIndex, header, value) ->
-                new SpatialStringAttribute(header[columnIndex], value));
-        parser.setNumbericConverter((columnIndex, header, value) ->
-                new SpatialDoubleAttribute(header[columnIndex], value.doubleValue()));
+        parser.setTextConverter(STRING_CONVERTER);
+        parser.setNumbericConverter(NUMERIC_CONVERTER);
         parser.setNumberOfInfoRows(1);
-        parser.parse(sheet);
 
-        List<List<SpatialAttribute>> out = parser.getRows();
-        parser.reset();
-        return out;
+        XlsxTable<SpatialAttribute> table = new XlsxTable<>();
+        table.load(parser, sheet);
+
+        return table;
     }
 }

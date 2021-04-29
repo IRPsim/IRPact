@@ -11,6 +11,7 @@ import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulationSize;
+import de.unileipzig.irpact.io.param.input.agent.population.InPopulationSize;
 import de.unileipzig.irpact.io.param.input.distribution.InConstantUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
@@ -56,16 +57,16 @@ public class ToyModel74 {
         );
 
         //cag
-        InPVactConsumerAgentGroup S = ToyModelUtil.createPVcag("S", diraq0);
+        InPVactConsumerAgentGroup S = ToyModelUtil.createNullPVcag("S", diraq0);
         S.setSpatialDistribution(spatialDist);
 
-        InPVactConsumerAgentGroup A = ToyModelUtil.createPVcag("A", diraq0);
+        InPVactConsumerAgentGroup A = ToyModelUtil.createNullPVcag("A", diraq0);
         A.setSpatialDistribution(spatialDist);
 
-        InPVactConsumerAgentGroup K = ToyModelUtil.createPVcag("K", diraq0);
+        InPVactConsumerAgentGroup K = ToyModelUtil.createNullPVcag("K", diraq0);
         K.setSpatialDistribution(spatialDist);
 
-        InPVactConsumerAgentGroup H = ToyModelUtil.createPVcag("H", diraq0);
+        InPVactConsumerAgentGroup H = ToyModelUtil.createNullPVcag("H", diraq0);
         H.setSpatialDistribution(spatialDist);
 
 
@@ -93,10 +94,10 @@ public class ToyModel74 {
 
 
         //Population
-        InFixConsumerAgentPopulationSize populationSize = new InFixConsumerAgentPopulationSize();
-        populationSize.setName("PopSize");
-        populationSize.setSize(1);
-        populationSize.setConsumerAgentGroups(new InConsumerAgentGroup[]{A, H});
+        InFixConsumerAgentPopulationSize sizeS = new InFixConsumerAgentPopulationSize("size_S", S, 1);
+        InFixConsumerAgentPopulationSize sizeA = new InFixConsumerAgentPopulationSize("size_A", A, 1);
+        InFixConsumerAgentPopulationSize sizeK = new InFixConsumerAgentPopulationSize("size_K", K, 1);
+        InFixConsumerAgentPopulationSize sizeH = new InFixConsumerAgentPopulationSize("size_H", H, 1);
 
 
         InUnlinkedGraphTopology topology = new InUnlinkedGraphTopology("Unlinked_Topology");
@@ -143,8 +144,8 @@ public class ToyModel74 {
         root.version = new InVersion[]{InVersion.currentVersion()};
         root.general = general;
         root.affinityEntries = affinities;
-        root.consumerAgentGroups = new InConsumerAgentGroup[]{A, H};
-        root.setAgentPopulationSize(populationSize);
+        root.consumerAgentGroups = new InConsumerAgentGroup[]{S, A, H, K};
+        root.setAgentPopulationSizes(new InPopulationSize[]{sizeS, sizeA, sizeH, sizeK});
         root.graphTopologySchemes = new InGraphTopologyScheme[]{topology};
         root.processModels = new InProcessModel[]{processModel};
         root.spatialModel = new InSpatialModel[]{space2D};

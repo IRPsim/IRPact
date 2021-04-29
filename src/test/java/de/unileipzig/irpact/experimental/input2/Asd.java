@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.experimental.input2;
 
 import de.unileipzig.irpact.experimental.deprecated.input2.InputResource;
-import de.unileipzig.irpact.experimental.deprecated.input2.agent.consumer.IConsumerAgentGroup;
 import de.unileipzig.irpact.start.optact.network.IFreeMultiGraphTopology;
 import de.unileipzig.irpact.start.optact.network.IGraphTopology;
 import de.unileipzig.irpact.start.optact.network.IWattsStrogatzModel;
@@ -24,17 +23,17 @@ import java.util.List;
 @Disabled
 class Asd {
 
-    @Test
-    void asd() {
-        List<ParserInput> classes = ParserInput.listOf(Type.INPUT,
-                IConsumerAgentGroup.class,
-                IFreeMultiGraphTopology.class,
-                IGraphTopology.class,
-                IWattsStrogatzModel.class
-        );
-        DefinitionCollection dcoll = AnnotationParser.parse(InputResource.DEFAULT, classes);
-        dcoll.validate(true);
-    }
+//    @Test
+//    void asd() {
+//        List<ParserInput> classes = ParserInput.listOf(Type.INPUT,
+//                IConsumerAgentGroup.class,
+//                IFreeMultiGraphTopology.class,
+//                IGraphTopology.class,
+//                IWattsStrogatzModel.class
+//        );
+//        DefinitionCollection dcoll = AnnotationParser.parse(InputResource.DEFAULT, classes);
+//        dcoll.validate(true);
+//    }
 
     private static String toB32(String input) {
         return new String(new Base32().encode(input.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);

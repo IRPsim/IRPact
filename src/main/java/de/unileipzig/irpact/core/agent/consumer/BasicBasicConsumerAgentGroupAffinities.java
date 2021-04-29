@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.agent.consumer;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.affinity.BasicAffinities;
+import de.unileipzig.irpact.commons.util.data.weighted.WeightedMapping;
 
 import java.util.Map;
 import java.util.Objects;
@@ -15,13 +16,13 @@ public class BasicBasicConsumerAgentGroupAffinities extends BasicAffinities<Cons
         super();
     }
 
-    public BasicBasicConsumerAgentGroupAffinities(Map<ConsumerAgentGroup, Double> values) {
-        super(values);
+    public BasicBasicConsumerAgentGroupAffinities(WeightedMapping<ConsumerAgentGroup> mapping) {
+        super(mapping);
     }
 
     @Override
-    protected BasicBasicConsumerAgentGroupAffinities newInstance() {
-        return new BasicBasicConsumerAgentGroupAffinities();
+    protected BasicBasicConsumerAgentGroupAffinities newInstance(WeightedMapping<ConsumerAgentGroup> copy) {
+        return new BasicBasicConsumerAgentGroupAffinities(copy);
     }
 
     @Override
@@ -31,8 +32,6 @@ public class BasicBasicConsumerAgentGroupAffinities extends BasicAffinities<Cons
 
     @Override
     public int getChecksum() {
-        return Objects.hash(
-                ChecksumComparable.getMapChecksum(values)
-        );
+        return ChecksumComparable.getCollChecksum(mapping.elements());
     }
 }

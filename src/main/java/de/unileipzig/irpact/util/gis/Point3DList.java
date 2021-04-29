@@ -3,6 +3,7 @@ package de.unileipzig.irpact.util.gis;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -25,6 +26,13 @@ public class Point3DList {
         List<Point3D> reversed = new ArrayList<>(list);
         Collections.reverse(reversed);
         return new Point3DList(reversed);
+    }
+
+    public Point2DList to2D() {
+        List<Point2D> list2d = list.stream()
+                .map(Point3D::to2D)
+                .collect(Collectors.toList());
+        return new Point2DList(list2d);
     }
 
     public void close() {

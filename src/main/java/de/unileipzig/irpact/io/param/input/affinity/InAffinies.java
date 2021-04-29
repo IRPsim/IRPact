@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param.input.affinity;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InEntity;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;

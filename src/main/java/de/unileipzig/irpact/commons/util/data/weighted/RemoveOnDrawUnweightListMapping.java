@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * @author Daniel Abitz
@@ -14,11 +15,11 @@ public class RemoveOnDrawUnweightListMapping<T> extends UnweightListMapping<T> {
     protected boolean removeFrist = false;
 
     public RemoveOnDrawUnweightListMapping() {
-        this(new LinkedList<>());
+        this(LinkedList::new);
     }
 
-    public RemoveOnDrawUnweightListMapping(List<T> list) {
-        super(list);
+    public RemoveOnDrawUnweightListMapping(Supplier<? extends List<T>> listSupplier) {
+        super(listSupplier);
     }
 
     public void setRemoveFrist(boolean removeFrist) {

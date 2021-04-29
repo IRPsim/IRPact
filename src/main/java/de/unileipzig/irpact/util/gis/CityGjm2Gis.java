@@ -141,17 +141,44 @@ public class CityGjm2Gis {
         return out;
     }
 
-    private Pair<String, MultiPolygon> getLod2Terrain(CityObjectMember member) throws TransformException, ParseException {
+    public static Map<String, List<Point3DList>> getAllLod2Terrains(Path input) throws CityGMLBuilderException, CityGMLReadException {
+        Map<String, List<Point3DList>> out = new LinkedHashMap<>();
+        CityGMLContext ctx = CityGMLContext.getInstance();
+        CityGMLBuilder builder = ctx.createCityGMLBuilder();
+        CityGMLInputFactory in = builder.createCityGMLInputFactory();
+        CityGMLReader reader = in.createCityGMLReader(input.toFile());
+        while(reader.hasNext()) {
+            CityModel cityModel = (CityModel) reader.nextFeature();
+            for(CityObjectMember member: cityModel.getCityObjectMember()) {
+                Building building = (Building) member.getCityObject();
+                List<Point3DList> list3d = getLod2TerrainAsList(member);
+                String id = building.getId();
+                if(out.containsKey(id)) {
+                    throw ExceptionUtil.create(IllegalArgumentException::new, "key '{}' already exists", id);
+                } else {
+                    out.put(id, list3d);
+                }
+            }
+        }
+        return out;
+    }
+
+    private static List<Point3DList> getLod2TerrainAsList(CityObjectMember member) {
         Building building = (Building) member.getCityObject();
         MultiCurveProperty curveProperty = building.getLod2TerrainIntersection();
         MultiCurve curve = curveProperty.getMultiCurve();
-        List<Point3DList> list3d = curve.getCurveMember()
+        return curve.getCurveMember()
                 .stream()
                 .map(CurveProperty::getCurve)
                 .map(CoordinateListProvider::toList3d)
                 .map(CityGjm2Gis::toPoint3D)
                 .map(Point3DList::new)
                 .collect(Collectors.toList());
+    }
+
+    private Pair<String, MultiPolygon> getLod2Terrain(CityObjectMember member) throws TransformException, ParseException {
+        Building building = (Building) member.getCityObject();
+        List<Point3DList> list3d = getLod2TerrainAsList(member);
         List<Point3DList> merged = PolygonBuilder.getPolygons(list3d);
         MultiPolygon polygon = toMultiPolygon(merged);
         return new Pair<>(building.getId(), polygon);
@@ -239,7 +266,7 @@ public class CityGjm2Gis {
         return fac.createMultiLineString(lines.toArray(new LineString[0]));
     }
 
-    private static int findIndex(DbaseFileHeader header, String key) {
+    public static int findIndex(DbaseFileHeader header, String key) {
         for(int i = 0; i < header.getNumFields(); i++) {
             if(Objects.equals(key, header.getFieldName(i))) {
                 return i;

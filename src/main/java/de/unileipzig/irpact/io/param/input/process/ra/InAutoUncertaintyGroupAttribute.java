@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.io.param.input.process.ra;
 
-import de.unileipzig.irpact.util.Placeholder;
+import de.unileipzig.irpact.develop.Placeholder;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;

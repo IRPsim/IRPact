@@ -2,6 +2,7 @@ package de.unileipzig.irpact.commons.util.weighted;
 
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.commons.util.data.weighted.WeightedValue;
 
 import java.util.*;
 import java.util.function.Supplier;

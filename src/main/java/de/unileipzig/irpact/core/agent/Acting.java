@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.agent;
 
-import de.unileipzig.irpact.util.PotentialProblem;
+import de.unileipzig.irpact.develop.PotentialProblem;
 
 import java.util.concurrent.TimeUnit;
 

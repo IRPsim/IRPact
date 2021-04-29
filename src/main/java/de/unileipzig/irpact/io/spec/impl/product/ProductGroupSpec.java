@@ -5,7 +5,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.io.param.input.product.InProductGroup;
 import de.unileipzig.irpact.io.spec.BidirectionalConverter;
 import de.unileipzig.irpact.io.spec.SpecificationJob;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.develop.Todo;
 
 /**
  * @author Daniel Abitz

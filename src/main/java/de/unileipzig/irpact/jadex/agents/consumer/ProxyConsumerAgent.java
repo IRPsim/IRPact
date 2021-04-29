@@ -19,7 +19,7 @@ import de.unileipzig.irpact.core.product.awareness.ProductAwareness;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
-import de.unileipzig.irpact.util.AddToPersist;
+import de.unileipzig.irpact.develop.AddToPersist;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
 

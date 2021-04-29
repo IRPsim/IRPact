@@ -2,12 +2,15 @@ package de.unileipzig.irpact.core.process.ra;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.attribute.DoubleAttribute;
+import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -93,9 +96,36 @@ public class RAModelData implements ChecksumComparable {
         return matrix.getValue(N, A);
     }
 
-    public double avgNPV(int year) {
-        NPVMatrix matrix = npData.get(year);
-        return matrix.averageValue();
+    protected MutableDouble avgNPV = new MutableDouble(Double.NaN);
+    protected int avgNPVYear = -1;
+
+    public double avgNPV(Stream<? extends ConsumerAgent> agents, int year) {
+        if(Double.isNaN(avgNPV.get()) || year != avgNPVYear) {
+            MutableDouble total = MutableDouble.zero();
+            double sum = agents.mapToDouble(ca -> {
+                total.inc();
+                return NPV(ca, year);
+            }).sum();
+            double result = sum / total.get();
+            avgNPV.set(result);
+            avgNPVYear = year;
+        }
+        return avgNPV.get();
+    }
+
+    protected MutableDouble avgFT = new MutableDouble(Double.NaN);
+
+    public double getAverageFinancialThresholdAgent(Stream<? extends ConsumerAgent> agents) {
+        if(Double.isNaN(avgFT.get())) {
+            MutableDouble total = MutableDouble.zero();
+            double sum = agents.mapToDouble(ca -> {
+                total.inc();
+                return RAProcessPlan.getFinancialThresholdAgent(ca);
+            }).sum();
+            double result = sum / total.get();
+            avgFT.set(result);
+        }
+        return avgFT.get();
     }
 
     public void setLogisticFactor(double logisticFactor) {

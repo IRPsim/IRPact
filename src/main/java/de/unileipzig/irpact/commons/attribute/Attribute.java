@@ -2,14 +2,13 @@ package de.unileipzig.irpact.commons.attribute;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.util.data.DataType;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.develop.Todo;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-@Todo("Produktspezifische Attribute einbauen -> ProductGroupSpecificAttributes -> get(String Name): ?Attribut?")
 public interface Attribute extends AttributeBase {
 
     default Attribute copyAttribute() {

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.util.gis;
 
+import de.unileipzig.irpact.commons.util.data.DataCounter;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.geotools.data.*;
@@ -16,6 +17,7 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
+import org.locationtech.jts.geom.*;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -35,6 +37,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * @author Daniel Abitz
@@ -42,6 +45,28 @@ import java.util.*;
 public class Gis {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(Gis.class);
+
+    public static LineString toLineString(GeometryFactory fac, Point2DList list) {
+        Coordinate[] coords = list.getList()
+                .stream()
+                .map(Point2D::toCoordinate)
+                .toArray(Coordinate[]::new);
+        return fac.createLineString(coords);
+    }
+
+    public static MultiLineString toMultiLineString(GeometryFactory fac, Collection<? extends Point2DList> list) {
+        LineString[] lines = list.stream()
+                .map(l -> toLineString(fac, l))
+                .toArray(LineString[]::new);
+        return fac.createMultiLineString(lines);
+    }
+
+    public static GeometryCollection toGeometryCollection(GeometryFactory fac, Collection<? extends Point2DList> list) {
+        LineString[] lines = list.stream()
+                .map(l -> toLineString(fac, l))
+                .toArray(LineString[]::new);
+        return fac.createGeometryCollection(lines);
+    }
 
     public static DbaseFileHeader getHeader(Path path, Charset charset) throws IOException {
         try(DbaseFileReader reader = new DbaseFileReader(FileChannel.open(path), false, charset)) {
@@ -127,6 +152,79 @@ public class Gis {
                 count++;
             }
             System.out.println("entries: " + count);
+        }
+    }
+
+    public static boolean selectAllFromDbf(
+            Path target,
+            Charset charset,
+            String headerKey,
+            Collection<? super String> out) throws IOException {
+        boolean changed = false;
+
+        try(DbaseFileReader reader = new DbaseFileReader(FileChannel.open(target), false, charset)) {
+            DbaseFileHeader header = reader.getHeader();
+            int index = CityGjm2Gis.findIndex(header, headerKey);
+            if(index == -1) {
+                return false;
+            }
+
+            while(reader.hasNext()) {
+                Object[] entry = reader.readEntry();
+                Object value = entry[index];
+                changed |= out.add(value.toString());
+            }
+        }
+
+        return changed;
+    }
+
+    public static void countAllFromDbf(
+            Path target,
+            Charset charset,
+            String headerKey,
+            DataCounter<? super String> counter) throws IOException {
+        boolean changed = false;
+
+        try(DbaseFileReader reader = new DbaseFileReader(FileChannel.open(target), false, charset)) {
+            DbaseFileHeader header = reader.getHeader();
+            int index = CityGjm2Gis.findIndex(header, headerKey);
+            if(index == -1) {
+                return;
+            }
+
+            while(reader.hasNext()) {
+                Object[] entry = reader.readEntry();
+                Object value = entry[index];
+                String str = value.toString();
+                counter.inc(str);
+            }
+        }
+    }
+
+    public static void selectAllFromDbfAsList(
+            Path target,
+            Charset charset,
+            String keyKey,
+            String valueKey,
+            Map<String, Collection<String>> out,
+            Supplier<? extends Collection<String>> collSupplier) throws IOException {
+
+        try(DbaseFileReader reader = new DbaseFileReader(FileChannel.open(target), false, charset)) {
+            DbaseFileHeader header = reader.getHeader();
+            int keyIndex = CityGjm2Gis.findIndex(header, keyKey);
+            int valueIndex = CityGjm2Gis.findIndex(header, valueKey);
+
+            while(reader.hasNext()) {
+                Object[] entry = reader.readEntry();
+                Object k = entry[keyIndex];
+                Object v = entry[valueIndex];
+                String kStr = k.toString();
+                String vStr = v.toString();
+
+                Collection<String> list = out.computeIfAbsent(kStr, _kStr -> collSupplier.get());
+                list.add(vStr);
+            }
         }
     }
 

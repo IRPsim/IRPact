@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.spatial;
 
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.util.data.FileContent;
+import de.unileipzig.irpact.commons.util.table.Table;
 
 import java.util.List;
 
@@ -10,22 +11,22 @@ import java.util.List;
  */
 public class SpatialTableFileContent implements FileContent {
 
-    protected List<List<SpatialAttribute>> data;
+    protected Table<SpatialAttribute> data;
 
-    public SpatialTableFileContent(List<List<SpatialAttribute>> data) {
+    public SpatialTableFileContent(Table<SpatialAttribute> data) {
         this.data = data;
     }
 
     @Override
-    public List<List<SpatialAttribute>> data() {
+    public Table<SpatialAttribute> content() {
         return data;
     }
 
     public List<SpatialAttribute> get(int index) {
-        return data.get(index);
+        return data.listRow(index);
     }
 
     public int size() {
-        return data.size();
+        return data.rowCount();
     }
 }

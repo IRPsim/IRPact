@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.start.CommandLineOptions;
-import de.unileipzig.irpact.util.AddToParam;
+import de.unileipzig.irpact.develop.AddToParam;
 
 import java.util.*;
 import java.util.stream.Collectors;

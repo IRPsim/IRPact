@@ -5,6 +5,8 @@ import de.unileipzig.irptools.util.MultiAnnotationResource;
 /**
  * @author Daniel Abitz
  */
+@Deprecated
+//ENTFERNEN
 public class InputResource extends MultiAnnotationResource {
 
     public static final String ICONSUMERAGENTGROUP_LABEL = "IConsumerAgentGroup_label";

@@ -7,6 +7,7 @@ import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.misc.InitializationStage;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.simulation.*;
 import de.unileipzig.irpact.core.util.PVactResultLogging;
@@ -156,14 +157,18 @@ public class IRPact implements IRPActAccess {
 
     private void start() throws Exception {
         initialize();
+
         preAgentCreation();
-        runAppTasks();
+        runPreAgentCreationTasks();
         preAgentCreationValidation();
+
         createAgents();
-        runSimulationTasks();
+
         postAgentCreation();
+        runPostAgentCreationTasks();
         postAgentCreationValidation();
 
+        runPrePlatformCreationTasks();
         if(CL_OPTIONS.isNoSimulation()) {
             if(CL_OPTIONS.hasImagePath()) {
                 LOGGER.info(IRPSection.GENERAL, "create initial network image");
@@ -261,13 +266,13 @@ public class IRPact implements IRPActAccess {
     }
 
     private void preAgentCreation() throws MissingDataException {
-        LOGGER.info(IRPSection.GENERAL, "run pre agent creation");
+        LOGGER.info(IRPSection.GENERAL, "run pre-agent creation");
         environment.preAgentCreation();
     }
 
-    private void runAppTasks() {
-        LOGGER.info(IRPSection.GENERAL, "run app tasks");
-        environment.getTaskManager().runAppTasks();
+    private void runPreAgentCreationTasks() {
+        LOGGER.info(IRPSection.GENERAL, "run pre-agent creation tasks");
+        environment.getTaskManager().runInitializationStageTasks(InitializationStage.PRE_AGENT_CREATION, environment);
     }
 
     private void preAgentCreationValidation() throws ValidationException {
@@ -280,19 +285,24 @@ public class IRPact implements IRPActAccess {
         environment.createAgents();
     }
 
-    private void runSimulationTasks() {
-        LOGGER.info(IRPSection.GENERAL, "run simulation tasks");
-        environment.getTaskManager().runSimulationTasks(environment);
-    }
-
     private void postAgentCreation() throws MissingDataException, InitializationException {
         LOGGER.info(IRPSection.GENERAL, "run post agent creation");
         environment.postAgentCreation();
     }
 
+    private void runPostAgentCreationTasks() {
+        LOGGER.info(IRPSection.GENERAL, "run post-agent creation tasks");
+        environment.getTaskManager().runInitializationStageTasks(InitializationStage.POST_AGENT_CREATION, environment);
+    }
+
     private void postAgentCreationValidation() throws ValidationException {
         LOGGER.info(IRPSection.GENERAL, "run post-agent creation validation");
         environment.postAgentCreationValidation();
+    }
+
+    private void runPrePlatformCreationTasks() {
+        LOGGER.info(IRPSection.GENERAL, "run pre-platforn creation tasks");
+        environment.getTaskManager().runInitializationStageTasks(InitializationStage.PRE_PLATFORM_CREATION, environment);
     }
 
     private void printNetwork() throws Exception {

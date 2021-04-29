@@ -26,6 +26,10 @@ public class ShapeFile {
         return name;
     }
 
+    public Path getFileWithoutExtension() {
+        return dir.resolve(name);
+    }
+
     private static void rename(ShapeFile from, ShapeFile to) throws IOException {
         renameIfExists(from.dbf(), to.dbf());
         renameIfExists(from.fix(), to.fix());
@@ -37,6 +41,30 @@ public class ShapeFile {
     private static void renameIfExists(Path from, Path to) throws IOException {
         if(Files.exists(from)) {
             Files.move(from, to, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    public ShapeFile changeDir(Path dir) {
+        return new ShapeFile(dir, getName());
+    }
+
+    public ShapeFile copyTo(Path dir) throws IOException {
+        if(Files.notExists(dir)) {
+            Files.createDirectories(dir);
+        }
+
+        ShapeFile copy = new ShapeFile(dir, getName());
+        copyIfExists(dbf(), copy.dbf());
+        copyIfExists(fix(), copy.fix());
+        copyIfExists(prj(), copy.prj());
+        copyIfExists(shp(), copy.shp());
+        copyIfExists(shx(), copy.shx());
+        return copy;
+    }
+
+    private static void copyIfExists(Path from, Path to) throws IOException {
+        if(Files.exists(from)) {
+            Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
         }
     }
 

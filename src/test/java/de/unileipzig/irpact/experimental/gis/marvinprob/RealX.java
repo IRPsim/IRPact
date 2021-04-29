@@ -10,6 +10,7 @@ import de.unileipzig.irpact.util.gis.ShapeFiles;
 import org.geotools.feature.SchemaException;
 import org.geotools.referencing.CRS;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.opengis.referencing.FactoryException;
 
@@ -30,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Daniel Abitz
  */
 @SuppressWarnings("SameParameterValue")
+@Disabled
 class RealX {
 
     private static final long MB100 = 100L * 1024 * 1024;

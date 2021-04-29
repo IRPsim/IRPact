@@ -9,7 +9,6 @@ import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.core.spatial.distribution.WeightedDiscreteSpatialDistribution;
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSelectedGroupedSpatialDistribution2D;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.junit.jupiter.api.Disabled;
@@ -17,7 +16,6 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 /**
  * @author Daniel Abitz
@@ -50,7 +48,7 @@ public class SelectAndGroupDemo {
 
         WeightedDiscreteSpatialDistribution dist = InCustomFileSelectedGroupedSpatialDistribution2D.createInstance(
                 "TestDist",
-                allEntries.data(),
+                allEntries.content().listTable(),
                 new ConstantUnivariateDoubleDistribution("x", 0),
                 new ConstantUnivariateDoubleDistribution("y", 0),
 

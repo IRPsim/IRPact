@@ -1,11 +1,10 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
 import de.unileipzig.irpact.commons.NameableBase;
-import de.unileipzig.irpact.commons.exception.InvalidDataException;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.core.product.Product;
-import de.unileipzig.irpact.util.AddToPersist;
+import de.unileipzig.irpact.develop.AddToPersist;
 
 import java.util.Collection;
 import java.util.Map;

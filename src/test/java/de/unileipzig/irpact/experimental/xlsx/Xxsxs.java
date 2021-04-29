@@ -5,13 +5,14 @@ import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.JsonNodeCreator;
 import com.fasterxml.jackson.databind.node.TextNode;
 import de.unileipzig.irpact.commons.util.IRPactJson;
-import de.unileipzig.irpact.commons.util.xlsx.XlsxSheetParser;
-import de.unileipzig.irpact.commons.util.xlsx.SimpleXlsxTableWriter;
+import de.unileipzig.irpact.commons.util.csv.CsvPrinter;
+import de.unileipzig.irpact.commons.util.xlsx.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -62,5 +63,43 @@ class Xxsxs {
                 rows,
                 out
         );
+    }
+
+    @Test
+    void testParseAndCast() throws IOException, InvalidFormatException {
+        Path in = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data", "testdaten_Test_7_Y.xlsx");
+        Path out = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data", "testdaten_Test_7_Y.csv");
+
+        XlsxSheetParser<XlsxValue> parser = XlsxValue.newParser();
+        parser.setNumberOfInfoRows(1);
+
+        XlsxTable<XlsxValue> table = new XlsxTable<>();
+        table.load(parser, in);
+
+        table.validate();
+
+        CsvPrinter<XlsxValue> printer = new CsvPrinter<>(XlsxValue::printValue);
+        System.out.println(table.printCsv(printer));
+
+        table.keepColumns("KK_Index", "Milieu", "ID");
+        table.swapColumns("ID", "KK_Index");
+        System.out.println(table.printCsv(printer));
+        printer.write(out, StandardCharsets.UTF_8, table.getHeader(), table.listTable());
+    }
+
+    @Test
+    void testParseAndCopyLarge() throws IOException, InvalidFormatException {
+        Path in = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data", "Datensatz_210322.xlsx");
+        Path out = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data", "Datensatz_210322_KK.csv");
+
+        XlsxSheetParser<XlsxValue> parser = XlsxValue.newParser();
+        parser.setNumberOfInfoRows(1);
+
+        XlsxTable<XlsxValue> table = new XlsxTable<>();
+        table.load(parser, in);
+
+        XlsxTable<XlsxValue> mini = table.copyToNewTable("ID", "Milieu", "KK_Index");
+        CsvPrinter<XlsxValue> printer = new CsvPrinter<>(XlsxValue::printValue);
+        printer.write(out, StandardCharsets.UTF_8, mini.getHeader(), mini.listTable());
     }
 }

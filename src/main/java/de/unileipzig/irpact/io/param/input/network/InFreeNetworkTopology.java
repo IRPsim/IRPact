@@ -46,6 +46,7 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         addEntry(res, thisClass(), "initialWeight");
         addEntry(res, thisClass(), "distanceEvaluator");
         addEntry(res, thisClass(), "numberOfTies");
+        addEntry(res, thisClass(), "allowLessEdges");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -60,6 +61,9 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
 
     @FieldDefinition
     public double initialWeight;
+
+    @FieldDefinition
+    public boolean allowLessEdges;
 
     public InFreeNetworkTopology() {
     }
@@ -108,6 +112,14 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         this.initialWeight = initialWeight;
     }
 
+    public void setAllowLessEdges(boolean allowLessEdges) {
+        this.allowLessEdges = allowLessEdges;
+    }
+
+    public boolean isAllowLessEdges() {
+        return allowLessEdges;
+    }
+
     @Override
     public Object parse(InputParser parser) throws ParsingException {
         Map<ConsumerAgentGroup, Integer> edgeCountMap = new LinkedHashMap<>();
@@ -140,7 +152,7 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         topology.setInitialWeight(getInitialWeight());
         topology.setRnd(rnd);
         topology.setEdgeCountMap(edgeCountMap);
-        topology.setAllowLessEdges(false);
+        topology.setAllowLessEdges(isAllowLessEdges());
         topology.setSelfReferential(false);
         return topology;
     }

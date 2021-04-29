@@ -4,8 +4,6 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.Random;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,7 +17,7 @@ class BasicAffinitiesTest {
     void testSetGetValue() {
         BasicAffinities<String> aff = new BasicAffinities<>();
         assertFalse(aff.hasValue("a"));
-        assertThrows(NoSuchElementException.class, () -> aff.getValue("a"));
+        assertEquals(0, aff.getValue("a"));
         aff.setValue("a", 1);
         assertTrue(aff.hasValue("a"));
         assertEquals(1, aff.getValue("a"));

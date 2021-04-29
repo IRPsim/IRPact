@@ -3,6 +3,7 @@ package de.unileipzig.irpact.commons.util.data;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 /**
@@ -53,5 +54,9 @@ public class DataCounter<K> {
                 .stream()
                 .mapToInt(i -> i)
                 .sum();
+    }
+
+    public void forEach(BiConsumer<? super K, ? super Integer> action) {
+        counter.forEach(action);
     }
 }

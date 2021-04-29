@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.misc;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.exception.InitializationException;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.develop.Todo;
 
 /**
  * @author Daniel Abitz

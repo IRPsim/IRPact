@@ -319,8 +319,12 @@ public class JadexInputParser implements InputParser {
             ConsumerAgentGroup srcCag = parseEntityTo(entry.getSrcCag(this));
             ConsumerAgentGroup tarCag = parseEntityTo(entry.getTarCag(this));
             double value = entry.getAffinityValue();
-            mapping.put(srcCag, tarCag, value);
-            debug("added affinity '{}' -> '{}' with value '{}'", srcCag.getName(), tarCag.getName(), value);
+            if(value == 0.0) {
+                debug("skip affinity '{}' -> '{}' with value '{}'", srcCag.getName(), tarCag.getName(), value);
+            } else {
+                mapping.put(srcCag, tarCag, value);
+                debug("added affinity '{}' -> '{}' with value '{}'", srcCag.getName(), tarCag.getName(), value);
+            }
         }
         environment.getAgents().setConsumerAgentGroupAffinityMapping(mapping);
     }

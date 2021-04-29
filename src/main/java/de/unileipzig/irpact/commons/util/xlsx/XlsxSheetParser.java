@@ -36,6 +36,10 @@ public class XlsxSheetParser<T> extends XlsxSheetHandler<T> {
         return rows;
     }
 
+    public void parse(Path path) throws IOException, InvalidFormatException {
+        parse(path, 0);
+    }
+
     public void parse(Path path, int sheetIndex) throws IOException, InvalidFormatException {
         try(XSSFWorkbook book = new XSSFWorkbook(path.toFile())) {
             parse(book.getSheetAt(sheetIndex));

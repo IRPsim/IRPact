@@ -7,6 +7,8 @@ import de.unileipzig.irpact.io.param.ParamUtil;
  */
 public final class RAConstants {
 
+    public static final double DEFAULT_LOGISTIC_FACTOR = 1.0 / 8.0;
+
     //Agent
     public static final String NOVELTY_SEEKING = "novelty_seeking";                   //A2
     public static final String NOVELTY_SEEKING_UNCERTAINTY = getUncertaintyAttributeName(NOVELTY_SEEKING);

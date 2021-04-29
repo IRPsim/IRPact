@@ -2,9 +2,11 @@ package de.unileipzig.irpact.core.process.ra;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.time.Timestamp;
+import de.unileipzig.irpact.commons.util.data.DataType;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.consumer.*;
@@ -24,7 +26,6 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.time.Month;
 import java.util.Objects;
 
 /**
@@ -189,23 +190,36 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
     @Override
     public void postAgentCreationValidation() throws ValidationException {
-        checkSpatialInformation();
+        checkAttributes();
     }
 
-    private void checkSpatialInformation() throws ValidationException {
+    private void checkAttributes() throws ValidationException {
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
             for(ConsumerAgent ca: cag.getAgents()) {
-                checkHasAnyAttribute(ca, RAConstants.ORIENTATION);
-                checkHasAnyAttribute(ca, RAConstants.SLOPE);
-                checkHasAnyAttribute(ca, RAConstants.SHARE_1_2_HOUSE);
-                checkHasAnyAttribute(ca, RAConstants.HOUSE_OWNER);
+                checkFinancialInformation(ca);
+                checkSpatialInformation(ca);
             }
         }
     }
 
-    private void checkHasAnyAttribute(ConsumerAgent ca, String name) throws ValidationException {
+    private void checkFinancialInformation(ConsumerAgent ca) throws ValidationException {
+        checkHasDoubleAttribute(ca, RAConstants.PURCHASE_POWER);
+    }
+
+    private void checkSpatialInformation(ConsumerAgent ca) throws ValidationException {
+        checkHasDoubleAttribute(ca, RAConstants.ORIENTATION);
+        checkHasDoubleAttribute(ca, RAConstants.SLOPE);
+        checkHasDoubleAttribute(ca, RAConstants.SHARE_1_2_HOUSE);
+        checkHasDoubleAttribute(ca, RAConstants.HOUSE_OWNER);
+    }
+
+    private void checkHasDoubleAttribute(ConsumerAgent ca, String name) throws ValidationException {
         if(!ca.hasAnyAttribute(name)) {
             throw ExceptionUtil.create(ValidationException::new, "consumer agent '{}' has no attribute '{}'", name);
+        }
+        Attribute attr = ca.findAttribute(name);
+        if(attr.getType() != DataType.DOUBLE) {
+            throw ExceptionUtil.create(ValidationException::new, "consumer agent '{}' has no double-attribute '{}'", name);
         }
     }
 

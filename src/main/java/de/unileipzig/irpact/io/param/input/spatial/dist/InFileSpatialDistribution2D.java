@@ -123,7 +123,7 @@ public class InFileSpatialDistribution2D implements InSpatialDistribution {
         String yKey = getYPositionKey().getName();
 
         SpatialTableFileContent attrList = parser.parseEntityTo(getAttributeFile());
-        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList.data(), xKey, yKey);
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList.content().listTable(), xKey, yKey);
 
         DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();
         dist.setName(getName());

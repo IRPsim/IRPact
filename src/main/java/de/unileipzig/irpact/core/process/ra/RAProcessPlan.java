@@ -587,14 +587,18 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected double getFinancialComponent() {
-        double ftAvg = getAverageFinancialThresholdAgent();
-        double ftThis = getFinancialThresholdAgent(agent);
-
         double npvAvg = getAverageNPV();
         double npvThis = getNPV(agent);
 
-        double ft = getLogisticFactor() * (ftAvg - ftThis);
-        double npv = getLogisticFactor() * (npvAvg - npvThis);
+        return getFinancialComponent(npvAvg, npvThis);
+    }
+
+    protected double getFinancialComponent(double npvAvg, double npvThis) {
+        double ftAvg = getAverageFinancialThresholdAgent();
+        double ftThis = getFinancialThresholdAgent(agent);
+
+        double ft = getLogisticFactor() * (ftThis - ftAvg);
+        double npv = getLogisticFactor() * (npvThis - npvAvg);
 
         double logisticFt = MathUtil.logistic(ft);
         double logisticNpv = MathUtil.logistic(npv);
@@ -604,6 +608,13 @@ public class RAProcessPlan implements ProcessPlan {
         logFinancialComponent(ftAvg, ftThis, npvAvg, npvThis, getLogisticFactor(), ft, npv, logisticFt, logisticNpv, comp);
 
         return comp;
+    }
+
+    public double getFinancialComponent(int year) {
+        double npvAvg = getAverageNPV(year);
+        double npvThis = getNPV(agent, year);
+
+        return getFinancialComponent(npvAvg, npvThis);
     }
 
     protected double getNoveltyCompoenent() {
@@ -629,29 +640,40 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected static double getFinancialThresholdAgent(ConsumerAgent agent) {
-        double pp = getPurchasePower(agent);
-        double ns = getNoveltySeeking(agent);
-        return pp * ns;
+//        double pp = getPurchasePower(agent);
+//        double ns = getNoveltySeeking(agent);
+//        return pp;
+        return getPurchasePower(agent);
     }
 
     protected double getAverageFinancialThresholdAgent() {
-        double sum = environment.getAgents()
-                .streamConsumerAgents()
-                .mapToDouble(RAProcessPlan::getFinancialThresholdAgent)
-                .sum();
-        return sum / environment.getAgents().getTotalNumberOfConsumerAgents();
+        return modelData().getAverageFinancialThresholdAgent(environment.getAgents().streamConsumerAgents());
     }
 
     protected double getNPV(ConsumerAgent agent) {
-        return modelData().NPV(agent, environment.getTimeModel().getCurrentYear());
+        if(true) {
+            environment.getLiveCycleControl().terminateWithError(new RuntimeException("TODO"));
+        }
+        return getNPV(agent, environment.getTimeModel().getCurrentYear());
     }
 
     protected double getAverageNPV() {
+        if(true) {
+            environment.getLiveCycleControl().terminateWithError(new RuntimeException("TODO"));
+        }
         double sum = environment.getAgents()
                 .streamConsumerAgents()
                 .mapToDouble(this::getNPV)
                 .sum();
         return sum / environment.getAgents().getTotalNumberOfConsumerAgents();
+    }
+
+    protected double getNPV(ConsumerAgent agent, int year) {
+        return modelData().NPV(agent, year);
+    }
+
+    protected double getAverageNPV(int year) {
+        return modelData().avgNPV(environment.getAgents().streamConsumerAgents(), year);
     }
 
     protected static double getFinancialThreshold(ConsumerAgent agent, Product product) {
@@ -1067,7 +1089,7 @@ public class RAProcessPlan implements ProcessPlan {
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
         logger.log(section, level,
-                "{} [{}] financal component calculation: t_avg = {}, t = {}, NPV_avg = {}, NPV = {}, lf = {} | lf * (t_avg - t) = {}, lf * (NPV_avg - NPV) = {} | 1 / (1 + e^(-(lf * (t_avg - t))) = {}, 1 / (1 + e^(-(lf * (NPV_avg - NPV))) = {} | (logistic(t) + logistic(NPV)) / 2.0 = {}",
+                "{} [{}] financal component calculation: t_avg = {}, t = {}, NPV_avg = {}, NPV = {}, lf = {} | lf * (t - t_avg) = {}, lf * (NPV - NPV_avg) = {} | 1 / (1 + e^(-(lf * (t - t_avg))) = {}, 1 / (1 + e^(-(lf * (NPV - NPV_avg))) = {} | (logistic(t) + logistic(NPV)) / 2.0 = {}",
                 InfoTag.FINANCAL_COMPONENT, agent.getName(),
                 ftAvg, ftThis, npvAvg, npvThis, logisticFactor, ft, npv, logisticFt, logisticNpv, comp
         );

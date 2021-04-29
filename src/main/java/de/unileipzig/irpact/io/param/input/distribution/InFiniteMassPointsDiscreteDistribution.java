@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.io.param.input.distribution;
 
 import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.commons.util.weighted.WeightedDouble;
+import de.unileipzig.irpact.commons.util.data.weighted.WeightedDouble;
 import de.unileipzig.irpact.commons.distribution.FiniteMassPointsDiscreteDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;

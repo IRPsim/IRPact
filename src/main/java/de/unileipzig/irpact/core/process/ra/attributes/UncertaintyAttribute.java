@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.process.ra.attributes;
 
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.develop.Todo;
 
 /**
  * @author Daniel Abitz

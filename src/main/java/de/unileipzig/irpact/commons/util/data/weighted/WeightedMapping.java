@@ -1,7 +1,8 @@
 package de.unileipzig.irpact.commons.util.data.weighted;
 
 import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.commons.util.weighted.WeightedValue;
+
+import java.util.Collection;
 
 /**
  * @param <T>
@@ -9,13 +10,25 @@ import de.unileipzig.irpact.commons.util.weighted.WeightedValue;
  */
 public interface WeightedMapping<T> {
 
+    WeightedMapping<T> copy();
+
+    WeightedMapping<T> copyWithout(T toRemove);
+
+    Collection<T> elements();
+
     boolean isEmpty();
+
+    int size();
+
+    boolean allowsZeroWeight();
 
     boolean has(T target);
 
     double getWeight(T target);
 
     boolean remove(T target);
+
+    double totalWeight();
 
     void set(T target, double weight);
 

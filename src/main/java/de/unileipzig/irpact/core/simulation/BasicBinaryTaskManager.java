@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.misc.InitializationStage;
 import de.unileipzig.irpact.core.simulation.tasks.*;
 import de.unileipzig.irpact.commons.util.data.BinaryData;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -15,9 +16,7 @@ public class BasicBinaryTaskManager implements BinaryTaskManager {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicBinaryTaskManager.class);
 
     protected SimulationEnvironment environment;
-
-    protected List<AppTask> appTasks = new ArrayList<>();
-    protected List<SimulationTask> simulationTasks = new ArrayList<>();
+    protected List<InitalizationStageTask> stageTasks = new ArrayList<>();
 
     public BasicBinaryTaskManager() {
     }
@@ -27,8 +26,7 @@ public class BasicBinaryTaskManager implements BinaryTaskManager {
     }
 
     public void copyFrom(BasicBinaryTaskManager other) {
-        appTasks.addAll(other.appTasks);
-        simulationTasks.addAll(other.simulationTasks);
+        stageTasks.addAll(other.stageTasks);
     }
 
     @Override
@@ -46,16 +44,22 @@ public class BasicBinaryTaskManager implements BinaryTaskManager {
 
         try {
             int id = (int) data.getID();
+            InitalizationStageTask task = null;
             switch (id) {
-                case PredefinedAppTask.ID:
-                    PredefinedAppTask aTask = new PredefinedAppTask(data.getBytes());
-                    appTasks.add(aTask);
+                case PredefinedPreAgentCreationTask.ID:
+                    task = new PredefinedPreAgentCreationTask(data.getBytes());
                     break;
 
-                case PredefinedSimulationTask.ID:
-                    PredefinedSimulationTask sTask = new PredefinedSimulationTask(data.getBytes());
-                    simulationTasks.add(sTask);
+                case PredefinedPostAgentCreationTask.ID:
+                    task = new PredefinedPostAgentCreationTask(data.getBytes());
                     break;
+
+                case PredefinedPrePlatformCreationTask.ID:
+                    task = new PredefinedPrePlatformCreationTask(data.getBytes());
+                    break;
+            }
+            if(task != null) {
+                stageTasks.add(task);
             }
         } catch (Exception e) {
             LOGGER.error("failed to create task with id '" + data.getID() + "', content: '" + data.print() + "'", e);
@@ -63,19 +67,21 @@ public class BasicBinaryTaskManager implements BinaryTaskManager {
     }
 
     @Override
-    public void runAppTasks() {
-        for(AppTask task: appTasks) {
-            try {
-                task.run();
-            } catch (Exception e) {
-                LOGGER.error("AppTask '" + task.getInfo() + "' failed", e);
-            }
-        }
+    public void runInitializationStageTasks(InitializationStage stage, SimulationEnvironment environment) {
+        runInitializationStageTasks0(stage, environment);
     }
 
     @Override
-    public void runSimulationTasks(SimulationEnvironment environment) {
-        for(SimulationTask task: simulationTasks) {
+    public void runAllInitializationStageTasks(SimulationEnvironment environment) {
+        runInitializationStageTasks0(null, environment);
+    }
+
+    protected void runInitializationStageTasks0(InitializationStage stage, SimulationEnvironment environment) {
+        for(InitalizationStageTask task: stageTasks) {
+            if(stage != null && stage != task.getStage()) {
+                continue;
+            }
+
             try {
                 task.run(environment);
             } catch (Exception e) {

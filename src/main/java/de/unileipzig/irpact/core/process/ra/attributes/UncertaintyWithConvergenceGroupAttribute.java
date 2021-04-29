@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.process.ra.attributes;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.develop.Todo;
 
 import java.util.Objects;
 

@@ -9,7 +9,7 @@ import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.data.DataCounter;
 import de.unileipzig.irpact.commons.util.data.weighted.RemoveOnDrawUnweightListMapping;
-import de.unileipzig.irpact.commons.util.data.weighted.RemoveOnDrawWeightedMapping;
+import de.unileipzig.irpact.commons.util.data.weighted.RemoveOnDrawMapBasedWeightedMapping;
 import de.unileipzig.irpact.commons.util.data.weighted.WeightedMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -218,7 +218,7 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
             mapping.setRemoveFrist(true);
             return mapping;
         } else {
-            RemoveOnDrawWeightedMapping<ConsumerAgent> mapping = new RemoveOnDrawWeightedMapping<>();
+            RemoveOnDrawMapBasedWeightedMapping<ConsumerAgent> mapping = new RemoveOnDrawMapBasedWeightedMapping<>();
             SpatialModel spatialModel = environment.getSpatialModel();
             for(ConsumerAgent target: targetCag.getAgents()) {
                 double distance = spatialModel.distance(source.getSpatialInformation(), target.getSpatialInformation());

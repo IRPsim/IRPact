@@ -2,7 +2,7 @@ package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.core.log.IRPLevel;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.simulation.tasks.PredefinedSimulationTask;
+import de.unileipzig.irpact.core.simulation.tasks.PredefinedPostAgentCreationTask;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -142,9 +142,9 @@ public class InExample implements DefaultScenarioFactory {
         initOptAct(root);
         initGV(root);
 
-        PredefinedSimulationTask task = new PredefinedSimulationTask();
+        PredefinedPostAgentCreationTask task = new PredefinedPostAgentCreationTask();
         task.setInfo("INC");
-        task.setTask(PredefinedSimulationTask.ADD_ONE_AGENT_TO_EVERY_GROUP);
+        task.setTask(PredefinedPostAgentCreationTask.ADD_ONE_AGENT_TO_EVERY_GROUP);
         VisibleBinaryData vbd = new VisibleBinaryData();
         vbd.setID(task.getID());
         vbd.setBytes(task.getBytes());

@@ -81,6 +81,37 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
     public InRelativeExternConsumerAgentPopulationSize() {
     }
 
+    public InRelativeExternConsumerAgentPopulationSize(
+            String name,
+            InConsumerAgentGroup[] cags,
+            InSpatialTableFile file,
+            InAttributeName selectKey) {
+        setName(name);
+        setConsumerAgentGroups(cags);
+        setFile(file);
+        setSelectKey(selectKey);
+
+        setMaximumSize(-1);
+        setAllowSmallerSize(false);
+        setUseMaximumPossibleSize(true);
+    }
+
+    public InRelativeExternConsumerAgentPopulationSize(
+            String name,
+            InConsumerAgentGroup[] cags,
+            InSpatialTableFile file,
+            InAttributeName selectKey,
+            int maximumSize) {
+        setName(name);
+        setConsumerAgentGroups(cags);
+        setFile(file);
+        setSelectKey(selectKey);
+
+        setMaximumSize(maximumSize);
+        setAllowSmallerSize(false);
+        setUseMaximumPossibleSize(maximumSize < 0);
+    }
+
     @Override
     public String getName() {
         return _name;
@@ -154,7 +185,7 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
         Map<ConsumerAgentGroup, Integer> proportionalSizes = calculateShares(
                 cags,
                 selector,
-                attrList.data(),
+                attrList.content().listTable(),
                 getMaximumSize(),
                 isAllowSmallerSize(),
                 isUseMaximumPossibleSize(),
@@ -187,6 +218,10 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
         return cags;
     }
 
+    public static void x() {
+
+    }
+
     public static <T> Map<T, Integer> calculateShares(
             List<T> cags,
             String selector,
@@ -206,6 +241,15 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
                 toString,
                 doLogging
         );
+
+        if(useMaximumPossibleSize) {
+            if(doLogging) LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "use all sizes");
+            Map<T, Integer> cagSizes = new HashMap<>();
+            for(T cag: cags) {
+                cagSizes.put(cag, shareCalculator.getSize(cag));
+            }
+            return cagSizes;
+        }
 
         calculateShares(
                 cags,

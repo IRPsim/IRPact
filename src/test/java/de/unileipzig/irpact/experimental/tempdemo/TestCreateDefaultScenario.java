@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.experimental.tempdemo;
 
-import de.unileipzig.irpact.util.TodoOLD;
 import org.junit.jupiter.api.Disabled;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -9,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author Daniel Abitz
  */
 @Disabled
-@TodoOLD("neue io-file und daten typen einbauen")
 class TestCreateDefaultScenario {
 
 //    //=========================

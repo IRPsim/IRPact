@@ -1,10 +1,9 @@
 package de.unileipzig.irpact.core.product;
 
 import de.unileipzig.irpact.core.simulation.SimulationEntity;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.develop.Todo;
 
 import java.util.Collection;
-import java.util.Set;
 
 /**
  * @author Daniel Abitz

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.commons.util.data.BinaryData;
+import de.unileipzig.irpact.core.misc.InitializationStage;
 
 import java.util.Collection;
 
@@ -13,7 +14,7 @@ public interface BinaryTaskManager {
 
     void handle(BinaryData data);
 
-    void runAppTasks();
+    void runInitializationStageTasks(InitializationStage stage, SimulationEnvironment environment);
 
-    void runSimulationTasks(SimulationEnvironment environment);
+    void runAllInitializationStageTasks(SimulationEnvironment environment);
 }

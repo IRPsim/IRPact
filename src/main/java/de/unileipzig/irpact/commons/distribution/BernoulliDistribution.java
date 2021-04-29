@@ -2,7 +2,7 @@ package de.unileipzig.irpact.commons.distribution;
 
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.develop.Todo;
 
 import java.util.Objects;
 

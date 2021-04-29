@@ -59,6 +59,12 @@ public class ShapeFiles {
         return files.isEmpty();
     }
 
+    public List<ShapeFile> limit(int count) {
+        return files.stream()
+                .limit(count)
+                .collect(Collectors.toList());
+    }
+
     public List<ShapeFile> getFiles() {
         return files;
     }

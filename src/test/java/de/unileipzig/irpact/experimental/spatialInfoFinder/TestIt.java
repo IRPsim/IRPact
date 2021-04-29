@@ -1,10 +1,14 @@
 package de.unileipzig.irpact.experimental.spatialInfoFinder;
 
+import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.csv.CsvParser;
-import de.unileipzig.irpact.commons.util.xlsx.XlsxToCsvConverter;
+import de.unileipzig.irpact.commons.util.table.SimpleTable;
+import de.unileipzig.irpact.commons.util.table.Table;
+import de.unileipzig.irpact.commons.util.xlsx.XlsxToCsvConverterOLD;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
@@ -117,6 +121,7 @@ public class TestIt {
         System.out.println(sum);
         countShare.forEach((s, i) -> System.out.println(s + " " + i + " " + (i/sum)));
     }
+
     /*
         1000.0 false false
         BUM 723 0.723
@@ -141,6 +146,57 @@ public class TestIt {
      */
 
     @Test
+    void testMileuSelect2() throws IOException, ParsingException {
+        IRPLogging.initConsole();
+        Path dir = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data");
+        Path csv = dir.resolve("Datensatz_210322.csv");
+        CsvParser<SpatialAttribute> parser = new CsvParser<>();
+        parser.setConverter(PVactUtil.CSV_CONVERTER);
+        parser.setNumberOfInfoRows(1);
+        parser.parse(csv);
+        List<List<SpatialAttribute>> attrs = parser.getRows();
+
+        //"PRA", "PER", "SOK", "BUM", "PRE", "EPE", "TRA", "KET", "LIB", "HED", "G"
+        List<String> milieus = CollectionUtil.arrayListOf("PRA", "PER", "G");
+
+        Map<String, Integer> share = InRelativeExternConsumerAgentPopulationSize.calculateShares(
+                milieus,
+                RAConstants.DOM_MILIEU,
+                attrs,
+                100,
+                false,
+                false,
+                s -> s,
+                true
+        );
+        Map<String, Integer> countShare = new TreeMap<>(share);
+
+        double sum = countShare.values().stream().mapToInt(i -> i).sum();
+        System.out.println(sum);
+        countShare.forEach((s, i) -> System.out.println(s + " " + i + " " + (i/sum)));
+    }
+
+    @Test
+    void testMileuSelect3() throws IOException, ParsingException {
+        IRPLogging.initConsole();
+        Path dir = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data");
+        Path csv = dir.resolve("Datensatz_210322.csv");
+        CsvParser<SpatialAttribute> parser = new CsvParser<>();
+        parser.setConverter(PVactUtil.CSV_CONVERTER);
+        parser.setNumberOfInfoRows(1);
+        parser.parse(csv);
+        SimpleTable<SpatialAttribute> table = new SimpleTable<>();
+        table.set(parser.getHeader(), parser.getRows());
+
+        List<Object> objs = table.streamColumn(RAConstants.DOM_MILIEU)
+                .map(Attribute::getValue)
+                .distinct()
+                .collect(Collectors.toList());
+
+        System.out.println(objs);
+    }
+
+    @Test
     void parseCsv() throws IOException {
         Path dir = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\testfiles\\0data");
         Path csv = dir.resolve("Datensatz_210322.csv");
@@ -161,7 +217,7 @@ public class TestIt {
         Path xlsx = dir.resolve("Datensatz_210322.xlsx");
         Path csv = dir.resolve("Datensatz_210322.csv");
 
-        XlsxToCsvConverter converter = new XlsxToCsvConverter();
+        XlsxToCsvConverterOLD converter = new XlsxToCsvConverterOLD();
         converter.setNumberOfInfoRows(1);
         converter.convert(xlsx, csv);
     }
@@ -171,8 +227,8 @@ public class TestIt {
         Path path = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\irpacttempdata", "Datensatz_210322.xlsx");
         String x = "X_Zentroid";
         String y = "Y_Zentroid";
-        List<List<SpatialAttribute>> attrList = SpatialTableFileLoader.parseXlsx(path);
-        List<SpatialInformation> infoList = SpatialUtil.mapToPoint2D(attrList, x, y);
+        Table<SpatialAttribute> attrList = SpatialTableFileLoader.parseXlsx(path);
+        List<SpatialInformation> infoList = SpatialUtil.mapToPoint2D(attrList.listTable(), x, y);
         System.out.println(infoList.size());
 
         Set<String> milieus = infoList.stream()
@@ -189,8 +245,8 @@ public class TestIt {
         Path path = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\irpacttempdata", "Datensatz_210225.xlsx");
         String x = "X_Zentroid";
         String y = "Y_Zentroid";
-        List<List<SpatialAttribute>> attrList = SpatialTableFileLoader.parseXlsx(path);
-        List<SpatialInformation> infoList = SpatialUtil.mapToPoint2D(attrList, x, y);
+        Table<SpatialAttribute> attrList = SpatialTableFileLoader.parseXlsx(path);
+        List<SpatialInformation> infoList = SpatialUtil.mapToPoint2D(attrList.listTable(), x, y);
         System.out.println(infoList.size());
 
         BasicPoint2D p = new BasicPoint2D(12.505449, 51.346420780942);
@@ -209,8 +265,8 @@ public class TestIt {
         Path path = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\irpacttempdata", "Datensatz_210225.xlsx");
         String x = "X_Zentroid";
         String y = "Y_Zentroid";
-        List<List<SpatialAttribute>> attrList = SpatialTableFileLoader.parseXlsx(path);
-        List<SpatialInformation> infoList = SpatialUtil.mapToPoint2D(attrList, x, y);
+        Table<SpatialAttribute> attrList = SpatialTableFileLoader.parseXlsx(path);
+        List<SpatialInformation> infoList = SpatialUtil.mapToPoint2D(attrList.listTable(), x, y);
 
         Rnd rnd = new Rnd(123);
         int k = 5;
@@ -261,8 +317,8 @@ public class TestIt {
         Path path = Paths.get("D:\\Prog\\JetBrains\\SUSICProjects\\IRPact\\src\\main\\resources\\irpacttempdata", "Datensatz_210225.xlsx");
         String x = "X_Zentroid";
         String y = "Y_Zentroid";
-        List<List<SpatialAttribute>> attrList = SpatialTableFileLoader.parseXlsx(path);
-        List<SpatialInformation> infoList = SpatialUtil.mapToPoint2D(attrList, x, y);
+        Table<SpatialAttribute> attrList = SpatialTableFileLoader.parseXlsx(path);
+        List<SpatialInformation> infoList = SpatialUtil.mapToPoint2D(attrList.listTable(), x, y);
 
         Rnd rnd = new Rnd(123);
         int k = 5;

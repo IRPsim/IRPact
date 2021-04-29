@@ -5,7 +5,7 @@ import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
-import de.unileipzig.irpact.util.AddToPersist;
+import de.unileipzig.irpact.develop.AddToPersist;
 
 import java.util.Collection;
 import java.util.Map;

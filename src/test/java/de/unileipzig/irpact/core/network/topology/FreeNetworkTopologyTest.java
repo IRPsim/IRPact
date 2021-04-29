@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.network.topology;
 
+import de.unileipzig.irpact.TestLogging;
 import de.unileipzig.irpact.commons.eval.NoDistance;
 import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.spatial.BasicDistanceEvaluator;
@@ -32,7 +33,7 @@ class FreeNetworkTopologyTest {
 
     @Test
     void testNotEnoughAgents() throws InitializationException {
-        IRPLogging.initConsole();
+        TestLogging.init();
         BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
         env.initDefault();
         BasicSocialNetwork network = (BasicSocialNetwork) env.getNetwork();
@@ -73,7 +74,6 @@ class FreeNetworkTopologyTest {
         env.getSettings().setInitialNumberOfConsumerAgents(C, 6);
 
         BasicConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
-        affinityMapping.putForAll(agentManager.getConsumerAgentGroups(), 0);
         affinityMapping.put(A, A, 1);
         affinityMapping.put(B, B, 1);
         affinityMapping.put(C, C, 1);
@@ -101,7 +101,7 @@ class FreeNetworkTopologyTest {
 
     @Test
     void testNotEnoughAgentsWithMultipleCags() throws InitializationException {
-        IRPLogging.initConsole();
+        TestLogging.init();
         BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
         env.initDefault();
         BasicSocialNetwork network = (BasicSocialNetwork) env.getNetwork();
@@ -142,7 +142,6 @@ class FreeNetworkTopologyTest {
         env.getSettings().setInitialNumberOfConsumerAgents(C, 5);
 
         BasicConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
-        affinityMapping.putForAll(agentManager.getConsumerAgentGroups(), 0);
         affinityMapping.put(A, A, 1);
         affinityMapping.put(B, B, 1);
         affinityMapping.put(C, C, 0.1);
@@ -171,7 +170,7 @@ class FreeNetworkTopologyTest {
 
     @Test
     void testEnoughAgentsWithMultipleCags() throws InitializationException {
-        IRPLogging.initConsole();
+        TestLogging.init();
         BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
         env.initDefault();
         BasicSocialNetwork network = (BasicSocialNetwork) env.getNetwork();
@@ -212,7 +211,6 @@ class FreeNetworkTopologyTest {
         env.getSettings().setInitialNumberOfConsumerAgents(C, 5);
 
         BasicConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
-        affinityMapping.putForAll(agentManager.getConsumerAgentGroups(), 0);
         affinityMapping.put(A, A, 1);
         affinityMapping.put(B, B, 1);
         affinityMapping.put(C, B, 0.1);
@@ -241,7 +239,7 @@ class FreeNetworkTopologyTest {
 
     @Test
     void testEnougAgentsWithOneCag() throws InitializationException {
-        IRPLogging.initConsole();
+        TestLogging.init();
         BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
         env.initDefault();
         BasicSocialNetwork network = (BasicSocialNetwork) env.getNetwork();
@@ -282,7 +280,6 @@ class FreeNetworkTopologyTest {
         env.getSettings().setInitialNumberOfConsumerAgents(C, 6);
 
         BasicConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
-        affinityMapping.putForAll(agentManager.getConsumerAgentGroups(), 0);
         affinityMapping.put(A, A, 0.5);
         affinityMapping.put(A, B, 0.5);
         affinityMapping.put(B, B, 1);
@@ -313,7 +310,7 @@ class FreeNetworkTopologyTest {
     @Disabled
     @Test
     void testLargeGraph() throws InitializationException {
-        IRPLogging.disableAll();
+        TestLogging.noLogging();
         BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
         env.initDefault();
         BasicSocialNetwork network = (BasicSocialNetwork) env.getNetwork();

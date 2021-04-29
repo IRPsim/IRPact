@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.commons.distribution;
 
 import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.commons.util.weighted.WeightedDouble;
+import de.unileipzig.irpact.commons.util.data.weighted.WeightedDouble;
 
 import java.util.ArrayList;
 import java.util.List;

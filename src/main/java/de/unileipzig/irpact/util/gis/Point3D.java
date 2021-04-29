@@ -22,6 +22,10 @@ public class Point3D {
         setZ(z);
     }
 
+    public Point2D to2D() {
+        return new Point2D(getX(), getY());
+    }
+
     public double getX() {
         return x;
     }

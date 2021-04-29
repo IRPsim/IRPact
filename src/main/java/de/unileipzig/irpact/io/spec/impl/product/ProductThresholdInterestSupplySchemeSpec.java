@@ -6,7 +6,7 @@ import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSu
 import de.unileipzig.irpact.io.spec.SpecificationHelper;
 import de.unileipzig.irpact.io.spec.SpecificationJob;
 import de.unileipzig.irpact.io.spec.impl.AbstractSubSpec;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.Objects;
