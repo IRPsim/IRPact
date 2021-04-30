@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.experimental.spatialInfoFinder;
 
-import de.unileipzig.irpact.commons.attribute.Attribute;
+import de.unileipzig.irpact.commons.attribute.ValueAttribute;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
@@ -189,7 +189,7 @@ public class TestIt {
         table.set(parser.getHeader(), parser.getRows());
 
         List<Object> objs = table.streamColumn(RAConstants.DOM_MILIEU)
-                .map(Attribute::getValue)
+                .map(ValueAttribute::getValue)
                 .distinct()
                 .collect(Collectors.toList());
 

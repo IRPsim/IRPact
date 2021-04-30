@@ -1,13 +1,17 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
-import de.unileipzig.irpact.commons.attribute.Attribute;
+import de.unileipzig.irpact.commons.attribute.ValueAttribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.core.agent.ProxyAgent;
 import de.unileipzig.irpact.core.agent.SpatialInformationAgentBase;
 import de.unileipzig.irpact.core.agent.consumer.*;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicProductRelatedConsumerAgentAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentValueAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ProductRelatedConsumerAgentAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ProductRelatedConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.need.Need;
@@ -39,7 +43,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
 
     protected ConsumerAgentGroup group;
     protected SocialGraph.Node node;
-    protected Map<String, ConsumerAgentAttribute> attributes;
+    protected Map<String, ConsumerAgentValueAttribute> attributes;
     protected Map<String, ProductRelatedConsumerAgentAttribute> productRelatedAttributes;
     protected ProductAwareness awareness;
     protected ProductInterest interest;
@@ -62,7 +66,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     public ProxyConsumerAgent(
-            Map<String, ConsumerAgentAttribute> attributes,
+            Map<String, ConsumerAgentValueAttribute> attributes,
             Map<String, ProductRelatedConsumerAgentAttribute> productRelatedAttributes,
             Map<Product, AdoptedProduct> adoptedProducts,
             Set<Need> needs,
@@ -362,7 +366,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     @Override
-    public Collection<ConsumerAgentAttribute> getAttributes() {
+    public Collection<ConsumerAgentValueAttribute> getAttributes() {
         if(isSynced()) {
             return getRealAgent().getAttributes();
         } else {
@@ -371,7 +375,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     @Override
-    public ConsumerAgentAttribute getAttribute(String name) {
+    public ConsumerAgentValueAttribute getAttribute(String name) {
         if(isSynced()) {
             return getRealAgent().getAttribute(name);
         } else {
@@ -388,20 +392,20 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         }
     }
 
-    public void addAllAttributes(Collection<? extends ConsumerAgentAttribute> attributes) {
-        for(ConsumerAgentAttribute cagAttr: attributes) {
+    public void addAllAttributes(Collection<? extends ConsumerAgentValueAttribute> attributes) {
+        for(ConsumerAgentValueAttribute cagAttr: attributes) {
             addAttribute(cagAttr);
         }
     }
 
-    public void addAllAttributes(ConsumerAgentAttribute... attributes) {
-        for(ConsumerAgentAttribute cagAttr: attributes) {
+    public void addAllAttributes(ConsumerAgentValueAttribute... attributes) {
+        for(ConsumerAgentValueAttribute cagAttr: attributes) {
             addAttribute(cagAttr);
         }
     }
 
     @Override
-    public void addAttribute(ConsumerAgentAttribute attribute) {
+    public void addAttribute(ConsumerAgentValueAttribute attribute) {
         if(isSynced()) {
             getRealAgent().addAttribute(attribute);
         } else {
@@ -464,7 +468,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
             for(ProductRelatedConsumerAgentGroupAttribute relatedGroupAttribute: getGroup().getProductRelatedGroupAttributes()) {
                 LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "update attribute '{}' in agent '{}' for product '{}'? {}", relatedGroupAttribute.getName(), getName(), newProduct.getName(), relatedGroupAttribute.hasAttribute(productGroup));
                 if(relatedGroupAttribute.hasAttribute(productGroup)) {
-                    ConsumerAgentAttribute derived = relatedGroupAttribute.derive(newProduct);
+                    ConsumerAgentValueAttribute derived = relatedGroupAttribute.derive(newProduct);
                     String relatedName = relatedGroupAttribute.getName();
                     ProductRelatedConsumerAgentAttribute relatedAttribute = productRelatedAttributes.computeIfAbsent(relatedName, BasicProductRelatedConsumerAgentAttribute::new);
                     relatedAttribute.set(newProduct, derived);
@@ -724,11 +728,11 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     @Override
-    public Attribute findAttribute(String name) {
+    public ValueAttribute findAttribute(String name) {
         if(isSynced()) {
             return getRealAgent().findAttribute(name);
         } else {
-            ConsumerAgentAttribute attr = getAttribute(name);
+            ConsumerAgentValueAttribute attr = getAttribute(name);
             if(attr != null) {
                 return attr;
             }

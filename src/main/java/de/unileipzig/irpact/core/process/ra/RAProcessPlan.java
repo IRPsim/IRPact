@@ -5,10 +5,12 @@ import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.MathUtil;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.commons.attribute.Attribute;
+import de.unileipzig.irpact.commons.attribute.ValueAttribute;
 import de.unileipzig.irpact.core.agent.Acting;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.*;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentValueAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ProductRelatedConsumerAgentAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.InfoTag;
@@ -578,7 +580,7 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected static double getDouble(ConsumerAgent agent, String attrName) {
-        Attribute attr = agent.findAttribute(attrName);
+        ValueAttribute attr = agent.findAttribute(attrName);
         return attr.getDoubleValue();
     }
 
@@ -678,93 +680,93 @@ public class RAProcessPlan implements ProcessPlan {
 
     protected static double getFinancialThreshold(ConsumerAgent agent, Product product) {
         ProductRelatedConsumerAgentAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.FINANCIAL_THRESHOLD);
-        ConsumerAgentAttribute attr = prAttr.getAttribute(product);
+        ConsumerAgentValueAttribute attr = prAttr.getAttribute(product);
         return attr.getDoubleValue();
     }
 
     protected static double getAdoptionThreshold(ConsumerAgent agent, Product product) {
         ProductRelatedConsumerAgentAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.ADOPTION_THRESHOLD);
-        ConsumerAgentAttribute attr = prAttr.getAttribute(product);
+        ConsumerAgentValueAttribute attr = prAttr.getAttribute(product);
         return attr.getDoubleValue();
     }
 
     protected static double getInitialProductAwareness(ConsumerAgent agent, Product product) {
         ProductRelatedConsumerAgentAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.INITIAL_PRODUCT_AWARENESS);
-        ConsumerAgentAttribute attr = prAttr.getAttribute(product);
+        ConsumerAgentValueAttribute attr = prAttr.getAttribute(product);
         return attr.getDoubleValue();
     }
 
     protected static double getInitialProductInterest(ConsumerAgent agent, Product product) {
         ProductRelatedConsumerAgentAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.INITIAL_PRODUCT_INTEREST);
-        ConsumerAgentAttribute attr = prAttr.getAttribute(product);
+        ConsumerAgentValueAttribute attr = prAttr.getAttribute(product);
         return attr.getDoubleValue();
     }
 
     protected static double getInitialAdopter(ConsumerAgent agent, Product product) {
         ProductRelatedConsumerAgentAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.INITIAL_ADOPTER);
-        ConsumerAgentAttribute attr = prAttr.getAttribute(product);
+        ConsumerAgentValueAttribute attr = prAttr.getAttribute(product);
         return attr.getDoubleValue();
     }
 
     protected static double getCommunicationFrequencySN(ConsumerAgent agent) {
-        Attribute attr = agent.getAttribute(RAConstants.COMMUNICATION_FREQUENCY_SN);
+        ValueAttribute attr = agent.getAttribute(RAConstants.COMMUNICATION_FREQUENCY_SN);
         return attr.getDoubleValue();
     }
 
     protected static double getRewiringRate(ConsumerAgent agent) {
-        Attribute attr = agent.getAttribute(RAConstants.REWIRING_RATE);
+        ValueAttribute attr = agent.getAttribute(RAConstants.REWIRING_RATE);
         return attr.getDoubleValue();
     }
 
     protected static int getId(ConsumerAgent agent) {
-        Attribute attr = agent.findAttribute(RAConstants.ID);
+        ValueAttribute attr = agent.findAttribute(RAConstants.ID);
         return (int) attr.getDoubleValue();
     }
 
     protected static double getPurchasePower(ConsumerAgent agent) {
-        Attribute attr = agent.findAttribute(RAConstants.PURCHASE_POWER);
+        ValueAttribute attr = agent.findAttribute(RAConstants.PURCHASE_POWER);
         return attr.getDoubleValue();
     }
 
     protected static double getNoveltySeeking(ConsumerAgent agent) {
-        Attribute attr = agent.getAttribute(RAConstants.NOVELTY_SEEKING);
+        ValueAttribute attr = agent.getAttribute(RAConstants.NOVELTY_SEEKING);
         return attr.getDoubleValue();
     }
 
     protected static double getDependentJudgmentMaking(ConsumerAgent agent) {
-        Attribute attr = agent.getAttribute(RAConstants.DEPENDENT_JUDGMENT_MAKING);
+        ValueAttribute attr = agent.getAttribute(RAConstants.DEPENDENT_JUDGMENT_MAKING);
         return attr.getDoubleValue();
     }
 
     protected static double getEnvironmentalConcern(ConsumerAgent agent) {
-        Attribute attr = agent.getAttribute(RAConstants.ENVIRONMENTAL_CONCERN);
+        ValueAttribute attr = agent.getAttribute(RAConstants.ENVIRONMENTAL_CONCERN);
         return attr.getDoubleValue();
     }
 
     protected static boolean isShareOf1Or2FamilyHouse(ConsumerAgent agent) {
-        Attribute attr = agent.findAttribute(RAConstants.SHARE_1_2_HOUSE);
+        ValueAttribute attr = agent.findAttribute(RAConstants.SHARE_1_2_HOUSE);
         return attr.getDoubleValueAsBoolean();
     }
 
     @SuppressWarnings("SameParameterValue")
     protected static void setShareOf1Or2FamilyHouse(ConsumerAgent agent, boolean value) {
-        Attribute attr = agent.findAttribute(RAConstants.SHARE_1_2_HOUSE);
+        ValueAttribute attr = agent.findAttribute(RAConstants.SHARE_1_2_HOUSE);
         attr.setDoubleValue(value);
     }
 
     protected static boolean isHouseOwner(ConsumerAgent agent) {
-        Attribute attr = agent.findAttribute(RAConstants.HOUSE_OWNER);
+        ValueAttribute attr = agent.findAttribute(RAConstants.HOUSE_OWNER);
         return attr.getDoubleValueAsBoolean();
     }
 
     @SuppressWarnings("SameParameterValue")
     protected static void setHouseOwner(ConsumerAgent agent, boolean value) {
-        Attribute attr = agent.findAttribute(RAConstants.HOUSE_OWNER);
+        ValueAttribute attr = agent.findAttribute(RAConstants.HOUSE_OWNER);
         attr.setDoubleValue(value);
     }
 
     protected static double getConstructionRate(ConsumerAgent agent) {
-        Attribute attr = agent.getAttribute(RAConstants.CONSTRUCTION_RATE);
+        ValueAttribute attr = agent.getAttribute(RAConstants.CONSTRUCTION_RATE);
         return attr.getDoubleValue();
     }
 
@@ -791,7 +793,7 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected static double getRenovationRate(ConsumerAgent agent) {
-        Attribute attr = agent.getAttribute(RAConstants.RENOVATION_RATE);
+        ValueAttribute attr = agent.getAttribute(RAConstants.RENOVATION_RATE);
         return attr.getDoubleValue();
     }
 
@@ -892,18 +894,18 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected void applyRelativeAgreement(ConsumerAgent target, String attrName) {
-        ConsumerAgentAttribute o1Attr = agent.getAttribute(attrName);
+        ConsumerAgentValueAttribute o1Attr = agent.getAttribute(attrName);
         UncertaintyAttribute u1Attr = (UncertaintyAttribute) agent.getAttribute(RAConstants.getUncertaintyAttributeName(attrName));
-        ConsumerAgentAttribute o2Attr = target.getAttribute(attrName);
+        ConsumerAgentValueAttribute o2Attr = target.getAttribute(attrName);
         UncertaintyAttribute u2Attr = (UncertaintyAttribute) target.getAttribute(RAConstants.getUncertaintyAttributeName(attrName));
         applyRelativeAgreement(agent, target, attrName, o1Attr, u1Attr, o2Attr, u2Attr);
     }
 
     protected void applyRelativeAgreement(
             Agent a1, Agent a2, String attribute,
-            ConsumerAgentAttribute o1Attr,
+            ConsumerAgentValueAttribute o1Attr,
             UncertaintyAttribute u1Attr,
-            ConsumerAgentAttribute o2Attr,
+            ConsumerAgentValueAttribute o2Attr,
             UncertaintyAttribute u2Attr) {
         //anmerkung: werte extrahieren um keine ueberschreibungen zu erhalten
         double o1 = o1Attr.getDoubleValue();
@@ -938,8 +940,8 @@ public class RAProcessPlan implements ProcessPlan {
             double ui,
             double oj,
             double uj,
-            ConsumerAgentAttribute ojAttr,
-            ConsumerAgentAttribute ujAttr,
+            ConsumerAgentValueAttribute ojAttr,
+            ConsumerAgentValueAttribute ujAttr,
             double m) {
         double hij = Math.min(oi + ui, oj + uj) - Math.max(oi - ui, oj - uj);
         if(hij > ui) {

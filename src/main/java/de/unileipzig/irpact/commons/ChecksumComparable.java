@@ -211,8 +211,7 @@ public interface ChecksumComparable {
     //=========================
 
     default int getChecksum() {
-        LOGGER0.warn("called default 'getChecksum': '{}'", getClass().getName());
-        return System.identityHashCode(this);
+        throw new UnsupportedOperationException();
     }
 
     default void printChecksums() {

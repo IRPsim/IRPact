@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.process.ra.attributes;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
-import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentGroupValueAttribute;
 import de.unileipzig.irpact.develop.Todo;
 
 import java.util.Objects;
@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 @Todo("PR adden")
 @Todo("Spec adden")
-public class UncertaintyWithConvergenceGroupAttribute extends BasicConsumerAgentGroupAttribute implements UncertaintyGroupAttribute {
+public class UncertaintyWithConvergenceGroupAttribute extends BasicConsumerAgentGroupValueAttribute implements UncertaintyGroupAttribute {
 
     protected boolean autoAdjustment;
     protected UnivariateDoubleDistribution convergence;
@@ -44,7 +44,7 @@ public class UncertaintyWithConvergenceGroupAttribute extends BasicConsumerAgent
     }
 
     @Override
-    public UncertaintyWithConvergenceGroupAttribute copyAttribute() {
+    public UncertaintyWithConvergenceGroupAttribute copy() {
         UncertaintyWithConvergenceGroupAttribute copy = new UncertaintyWithConvergenceGroupAttribute();
         copy.setName(getName());
         copy.setUncertainty(getUncertainty().copyDistribution());

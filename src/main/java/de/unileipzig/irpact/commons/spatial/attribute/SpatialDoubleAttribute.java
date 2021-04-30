@@ -18,7 +18,7 @@ public class SpatialDoubleAttribute extends DoubleAttribute implements SpatialAt
     }
 
     @Override
-    public SpatialDoubleAttribute copyAttribute() {
+    public SpatialDoubleAttribute copy() {
         SpatialDoubleAttribute copy = new SpatialDoubleAttribute();
         copy.setName(getName());
         copy.setDoubleValue(getDoubleValue());

@@ -5,12 +5,12 @@ import de.unileipzig.irpact.commons.util.data.DataType;
 /**
  * @author Daniel Abitz
  */
-public class StringAttribute extends AbstractAttribute {
+public class StringAttribute extends AbstractValueAttribute {
 
     protected String value;
 
     @Override
-    public StringAttribute copyAttribute() {
+    public StringAttribute copy() {
         StringAttribute copy = new StringAttribute();
         copy.setName(getName());
         copy.setStringValue(getStringValue());
@@ -18,7 +18,7 @@ public class StringAttribute extends AbstractAttribute {
     }
 
     @Override
-    public DataType getType() {
+    public DataType getDataType() {
         return DataType.STRING;
     }
 

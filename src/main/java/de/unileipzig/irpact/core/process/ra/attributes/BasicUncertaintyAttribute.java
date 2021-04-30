@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.process.ra.attributes;
 
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentDoubleAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentDoubleAttribute;
 
 import java.util.Objects;
 
@@ -40,7 +40,7 @@ public class BasicUncertaintyAttribute extends ConsumerAgentDoubleAttribute {
     }
 
     @Override
-    public BasicUncertaintyAttribute copyAttribute() {
+    public BasicUncertaintyAttribute copy() {
         BasicUncertaintyAttribute copy = new BasicUncertaintyAttribute();
         copy.setName(getName());
         copy.setGroup(getGroup());

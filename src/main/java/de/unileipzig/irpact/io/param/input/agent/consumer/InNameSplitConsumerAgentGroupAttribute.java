@@ -2,7 +2,7 @@ package de.unileipzig.irpact.io.param.input.agent.consumer;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentGroupValueAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
@@ -105,7 +105,7 @@ public class InNameSplitConsumerAgentGroupAttribute implements InIndependentCons
         InConsumerAgentGroup inCag = getConsumerAgentGroup(parser);
         ConsumerAgentGroup cag = parser.parseEntityTo(inCag);
 
-        BasicConsumerAgentGroupAttribute cagAttr = new BasicConsumerAgentGroupAttribute();
+        BasicConsumerAgentGroupValueAttribute cagAttr = new BasicConsumerAgentGroupValueAttribute();
         cagAttr.setName(getAttributeName());
 
         if(cag.hasGroupAttribute(cagAttr)) {

@@ -99,7 +99,7 @@ public class BasicPoint2D implements Point2D {
     public BasicPoint2D fullCopy() {
         BasicPoint2D copy = emptyCopy();
         for(SpatialAttribute attr: getAttributes()) {
-            copy.addAttribute(attr.copyAttribute());
+            copy.addAttribute(attr.copy());
         }
         return copy;
     }

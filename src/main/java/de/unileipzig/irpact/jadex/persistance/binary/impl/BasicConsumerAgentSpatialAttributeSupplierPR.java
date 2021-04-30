@@ -2,7 +2,7 @@ package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.persistence.*;
-import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentSpatialAttributeSupplier;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentSpatialAttributeSupplier;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;

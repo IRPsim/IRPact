@@ -4,6 +4,9 @@ import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.core.agent.consumer.*;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentValueAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ProductRelatedConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
@@ -14,7 +17,7 @@ import de.unileipzig.irpact.core.product.interest.ProductInterest;
 import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
-import de.unileipzig.irpact.commons.Derivable;
+import de.unileipzig.irpact.commons.DirectDerivable;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
 import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -237,9 +240,9 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         return nextId;
     }
 
-    protected Set<ConsumerAgentAttribute> deriveAttributes() {
+    protected Set<ConsumerAgentValueAttribute> deriveAttributes() {
         return getAttributes().stream()
-                .map(Derivable::derive)
+                .map(DirectDerivable::derive)
                 .collect(CollectionUtil.collectToLinkedSet());
     }
 

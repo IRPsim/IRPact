@@ -1,13 +1,13 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.commons.attribute.DoubleAttributeGroupEntity;
+import de.unileipzig.irpact.commons.attribute.GroupEntityDoubleAttribute;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-public class ProductDoubleAttribute extends DoubleAttributeGroupEntity<ProductGroupAttribute> implements ProductAttribute {
+public class ProductDoubleAttribute extends GroupEntityDoubleAttribute<ProductGroupAttribute> implements ProductAttribute {
 
     public ProductDoubleAttribute() {
     }

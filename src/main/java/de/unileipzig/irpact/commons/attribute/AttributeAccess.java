@@ -13,7 +13,7 @@ public interface AttributeAccess extends ChecksumComparable {
 
     boolean hasAttribute(String name);
 
-    Attribute getAttribute(String name);
+    ValueAttribute getAttribute(String name);
 
-    Collection<? extends Attribute> getAttributes();
+    Collection<? extends ValueAttribute> getAttributes();
 }

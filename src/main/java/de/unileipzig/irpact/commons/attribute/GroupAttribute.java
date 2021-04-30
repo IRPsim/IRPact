@@ -5,5 +5,15 @@ package de.unileipzig.irpact.commons.attribute;
  *
  * @author Daniel Abitz
  */
-public interface GroupAttribute extends AttributeBase {
+public interface GroupAttribute extends Attribute {
+
+    @Override
+    default boolean isType(AttributeType type) {
+        return type == AttributeType.GROUP;
+    }
+
+    @Override
+    default GroupAttribute asGroupAttribute() {
+        return this;
+    }
 }

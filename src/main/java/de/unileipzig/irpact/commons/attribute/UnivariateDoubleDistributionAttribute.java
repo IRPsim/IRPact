@@ -6,12 +6,12 @@ import de.unileipzig.irpact.commons.util.data.DataType;
 /**
  * @author Daniel Abitz
  */
-public class UnivariateDoubleDistributionAttribute extends AbstractAttribute {
+public class UnivariateDoubleDistributionAttribute extends AbstractValueAttribute {
 
     protected UnivariateDoubleDistribution value;
 
     @Override
-    public UnivariateDoubleDistributionAttribute copyAttribute() {
+    public UnivariateDoubleDistributionAttribute copy() {
         UnivariateDoubleDistributionAttribute copy = new UnivariateDoubleDistributionAttribute();
         copy.setName(getName());
         copy.setUnivariateDoubleDistributionValue(getUnivariateDoubleDistributionValue());
@@ -19,7 +19,7 @@ public class UnivariateDoubleDistributionAttribute extends AbstractAttribute {
     }
 
     @Override
-    public DataType getType() {
+    public DataType getDataType() {
         return DataType.UNIVARIATE_DOUBLE_DISTRIBUTION;
     }
 

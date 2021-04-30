@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.persistence.*;
-import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentGroupValueAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -9,7 +9,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 /**
  * @author Daniel Abitz
  */
-public class BasicConsumerAgentGroupAttributePR extends BinaryPRBase<BasicConsumerAgentGroupAttribute> {
+public class BasicConsumerAgentGroupAttributePR extends BinaryPRBase<BasicConsumerAgentGroupValueAttribute> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicConsumerAgentGroupAttributePR.class);
 
@@ -25,12 +25,12 @@ public class BasicConsumerAgentGroupAttributePR extends BinaryPRBase<BasicConsum
     //=========================
 
     @Override
-    public Class<BasicConsumerAgentGroupAttribute> getType() {
-        return BasicConsumerAgentGroupAttribute.class;
+    public Class<BasicConsumerAgentGroupValueAttribute> getType() {
+        return BasicConsumerAgentGroupValueAttribute.class;
     }
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicConsumerAgentGroupAttribute object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicConsumerAgentGroupValueAttribute object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putBoolean(object.isArtificial());
@@ -41,7 +41,7 @@ public class BasicConsumerAgentGroupAttributePR extends BinaryPRBase<BasicConsum
     }
 
     @Override
-    protected void doSetupPersist(BasicConsumerAgentGroupAttribute object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BasicConsumerAgentGroupValueAttribute object, BinaryJsonData data, PersistManager manager) {
         data.putLong(manager.ensureGetUID(object.getValue()));
     }
 
@@ -50,15 +50,15 @@ public class BasicConsumerAgentGroupAttributePR extends BinaryPRBase<BasicConsum
     //=========================
 
     @Override
-    protected BasicConsumerAgentGroupAttribute doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
-        BasicConsumerAgentGroupAttribute object = new BasicConsumerAgentGroupAttribute();
+    protected BasicConsumerAgentGroupValueAttribute doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
+        BasicConsumerAgentGroupValueAttribute object = new BasicConsumerAgentGroupValueAttribute();
         object.setName(data.getText());
         object.setArtificial(data.getBoolean());
         return object;
     }
 
     @Override
-    protected void doSetupRestore(BinaryJsonData data, BasicConsumerAgentGroupAttribute object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, BasicConsumerAgentGroupValueAttribute object, RestoreManager manager) {
         object.setUnivariateDoubleDistributionValue(manager.ensureGet(data.getLong()));
     }
 }

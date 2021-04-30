@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.persistence.*;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentValueAttribute;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -91,7 +91,7 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
         //...
         object.setGroup(manager.ensureGet(data.getLong()));
         object.setSpatialInformation(manager.ensureGet(data.getLong()));
-        object.addAllAttributes(manager.ensureGetAll(data.getLongArray(), ConsumerAgentAttribute[]::new));
+        object.addAllAttributes(manager.ensureGetAll(data.getLongArray(), ConsumerAgentValueAttribute[]::new));
         object.setInformationAuthority(data.getDouble());
         //...
         object.setProductAwareness(manager.ensureGet(data.getLong()));

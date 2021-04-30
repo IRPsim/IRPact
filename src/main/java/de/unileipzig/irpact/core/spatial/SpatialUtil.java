@@ -60,7 +60,7 @@ public final class SpatialUtil {
     private static SpatialDoubleAttribute secureGet(List<SpatialAttribute> row, String key) {
         for(SpatialAttribute attr: row) {
             if(Objects.equals(attr.getName(), key)) {
-                if(attr.getType() != DataType.DOUBLE) {
+                if(attr.getDataType() != DataType.DOUBLE) {
                     throw new IllegalArgumentException("attribute '" + key + "' is no double");
                 }
                 return (SpatialDoubleAttribute) attr;

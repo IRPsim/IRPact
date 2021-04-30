@@ -1,85 +1,47 @@
 package de.unileipzig.irpact.commons.attribute;
 
-import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
-import de.unileipzig.irpact.commons.util.data.DataType;
-import de.unileipzig.irpact.develop.Todo;
-
-import java.util.Objects;
-
 /**
  * @author Daniel Abitz
  */
 public interface Attribute extends AttributeBase {
 
-    default Attribute copyAttribute() {
+    default Attribute copy() {
         throw new UnsupportedOperationException();
+    }
+
+    boolean isType(AttributeType type);
+
+    boolean isArtificial();
+
+    default boolean is(Class<?> c) {
+        return c.isInstance(this);
     }
 
     default <R> R as(Class<R> c) {
         return c.cast(this);
     }
 
-    DataType getType();
-
-    default <R> R getValue(Class<R> c) {
-        return c.cast(getValue());
+    default boolean isValueAttribute() {
+        return isType(AttributeType.VALUE);
     }
 
-    @SuppressWarnings("unchecked")
-    default <R> R getValueAs() {
-        return (R) getValue();
+    default ValueAttribute asValueAttribute() {
+        throw new UnsupportedOperationException();
     }
 
-    Object getValue();
-
-    void setValue(Object value);
-
-    //=========================
-    //special
-    //=========================
-
-    default boolean getDoubleValueAsBoolean() {
-        return getDoubleValue() == 1.0;
+    default boolean isRelatedAttribute() {
+        return isType(AttributeType.RELATED);
     }
 
-    default void setDoubleValue(boolean value) {
-        setDoubleValue(value ? 1.0 : 0.0);
+    default RelatedAttribute<?> asRelatedAttribute() {
+        throw new UnsupportedOperationException();
     }
 
-    default int getIntValue() {
-        return (int) getDoubleValue();
+    default boolean isGroupAttribute() {
+        return isType(AttributeType.GROUP);
     }
 
-    default void setIntValue(int value) {
-        setDoubleValue(value);
+    default GroupAttribute asGroupAttribute() {
+        throw new UnsupportedOperationException();
     }
-
-    double getDoubleValue();
-
-    void setDoubleValue(double value);
-
-    default boolean isStringValue(String input) {
-        return Objects.equals(getStringValue(), input);
-    }
-
-    String getStringValue();
-
-    void setStringValue(String value);
-
-    default String getValueAsString() {
-        switch (getType()) {
-            case STRING:
-                return getStringValue();
-
-            case DOUBLE:
-                return Double.toString(getDoubleValue());
-
-            default:
-                throw new UnsupportedOperationException("type: " + getType());
-        }
-    }
-
-    UnivariateDoubleDistribution getUnivariateDoubleDistributionValue();
-
-    void setUnivariateDoubleDistributionValue(UnivariateDoubleDistribution value);
 }

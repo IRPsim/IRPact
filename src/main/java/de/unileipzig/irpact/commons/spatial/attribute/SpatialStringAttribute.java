@@ -18,7 +18,7 @@ public class SpatialStringAttribute extends StringAttribute implements SpatialAt
     }
 
     @Override
-    public SpatialStringAttribute copyAttribute() {
+    public SpatialStringAttribute copy() {
         SpatialStringAttribute copy = new SpatialStringAttribute();
         copy.setName(getName());
         copy.setStringValue(getStringValue());

@@ -50,7 +50,7 @@ public class ToyModel71 {
         for(List<SpatialAttribute> row: data.listTable()) {
             //System.out.println(row);
             SpatialAttribute sa = row.get(9);
-            System.out.println(sa + " " + sa.getType());
+            System.out.println(sa + " " + sa.getDataType());
         }
     }
 

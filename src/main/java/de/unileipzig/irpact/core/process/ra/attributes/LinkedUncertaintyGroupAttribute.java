@@ -1,15 +1,15 @@
 package de.unileipzig.irpact.core.process.ra.attributes;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
-import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentGroupValueAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-public class LinkedUncertaintyGroupAttribute extends BasicConsumerAgentGroupAttribute implements UncertaintyGroupAttribute {
+public class LinkedUncertaintyGroupAttribute extends BasicConsumerAgentGroupValueAttribute implements UncertaintyGroupAttribute {
 
     protected boolean autoAdjustment;
     protected ConsumerAgentGroupAttribute convergence;
@@ -42,7 +42,7 @@ public class LinkedUncertaintyGroupAttribute extends BasicConsumerAgentGroupAttr
     }
 
     @Override
-    public LinkedUncertaintyGroupAttribute copyAttribute() {
+    public LinkedUncertaintyGroupAttribute copy() {
         LinkedUncertaintyGroupAttribute copy = new LinkedUncertaintyGroupAttribute();
         copy.setName(getName());
         copy.setUncertainty(getUncertainty().copyDistribution());

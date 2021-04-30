@@ -5,7 +5,7 @@ import de.unileipzig.irpact.commons.util.data.DataType;
 /**
  * @author Daniel Abitz
  */
-public class DoubleAttribute extends AbstractAttribute {
+public class DoubleAttribute extends AbstractValueAttribute {
 
     protected double value;
 
@@ -13,7 +13,7 @@ public class DoubleAttribute extends AbstractAttribute {
     }
 
     @Override
-    public DoubleAttribute copyAttribute() {
+    public DoubleAttribute copy() {
         DoubleAttribute copy = new DoubleAttribute();
         copy.setName(getName());
         copy.setDoubleValue(getDoubleValue());
@@ -21,7 +21,7 @@ public class DoubleAttribute extends AbstractAttribute {
     }
 
     @Override
-    public DataType getType() {
+    public DataType getDataType() {
         return DataType.DOUBLE;
     }
 

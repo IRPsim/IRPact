@@ -10,9 +10,9 @@ import java.util.Map;
  */
 public class BasicAttributeAccess implements AttributeAccess {
 
-    protected Map<? extends String, ? extends Attribute> attributes;
+    protected Map<? extends String, ? extends ValueAttribute> attributes;
 
-    public BasicAttributeAccess(Map<? extends String, ? extends Attribute> attributes) {
+    public BasicAttributeAccess(Map<? extends String, ? extends ValueAttribute> attributes) {
         this.attributes = attributes;
     }
 
@@ -22,12 +22,12 @@ public class BasicAttributeAccess implements AttributeAccess {
     }
 
     @Override
-    public Attribute getAttribute(String name) {
+    public ValueAttribute getAttribute(String name) {
         return attributes.get(name);
     }
 
     @Override
-    public Collection<? extends Attribute> getAttributes() {
+    public Collection<? extends ValueAttribute> getAttributes() {
         return attributes.values();
     }
 

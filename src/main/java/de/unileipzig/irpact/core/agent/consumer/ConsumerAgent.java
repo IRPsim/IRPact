@@ -1,8 +1,10 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
-import de.unileipzig.irpact.commons.attribute.Attribute;
+import de.unileipzig.irpact.commons.attribute.ValueAttribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.time.Timestamp;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentValueAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ProductRelatedConsumerAgentAttribute;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.process.ProcessPlan;
@@ -23,13 +25,13 @@ public interface ConsumerAgent extends SpatialInformationAgent {
 
     ConsumerAgentGroup getGroup();
 
-    Collection<ConsumerAgentAttribute> getAttributes();
+    Collection<ConsumerAgentValueAttribute> getAttributes();
 
-    ConsumerAgentAttribute getAttribute(String name);
+    ConsumerAgentValueAttribute getAttribute(String name);
 
     boolean hasAttribute(String name);
 
-    void addAttribute(ConsumerAgentAttribute attribute);
+    void addAttribute(ConsumerAgentValueAttribute attribute);
 
     Collection<ProductRelatedConsumerAgentAttribute> getProductRelatedAttributes();
 
@@ -77,7 +79,7 @@ public interface ConsumerAgent extends SpatialInformationAgent {
 
     boolean hasAnyAttribute(String name);
 
-    Attribute findAttribute(String name);
+    ValueAttribute findAttribute(String name);
 
     Collection<Need> getNeeds();
 

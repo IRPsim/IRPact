@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param.input.agent.consumer;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.AgentManager;
-import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentGroupValueAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.product.awareness.ProductBinaryAwarenessSupplyScheme;
@@ -345,7 +345,7 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
             throw new ParsingException("ConsumerAgentGroupAttribute '" + name + "' already exists in " + jcag.getName());
         }
 
-        BasicConsumerAgentGroupAttribute cagAttr = new BasicConsumerAgentGroupAttribute();
+        BasicConsumerAgentGroupValueAttribute cagAttr = new BasicConsumerAgentGroupValueAttribute();
         cagAttr.setName(name);
         cagAttr.setUnivariateDoubleDistributionValue(dist);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), cagAttr.getName(), jcag.getName());
