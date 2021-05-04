@@ -5,7 +5,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.product.BasicProductGroup;
-import de.unileipzig.irpact.core.product.BasicProductGroupAttribute;
+import de.unileipzig.irpact.core.product.attribute.BasicProductDoubleGroupAttribute;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
@@ -86,15 +86,16 @@ public class InNameSplitProductGroupAttribute implements InIndependentProductGro
         InProductGroup inPg = getProductGroup(parser);
         BasicProductGroup pg = parser.parseEntityTo(inPg);
 
-        BasicProductGroupAttribute pgAttr = new BasicProductGroupAttribute();
+        BasicProductDoubleGroupAttribute pgAttr = new BasicProductDoubleGroupAttribute();
         pgAttr.setName(getAttributeName());
+        pgAttr.setArtificial(false);
 
         if(pg.hasGroupAttribute(pgAttr)) {
             throw new ParsingException("ProductGroupAttribute '" + pgAttr.getName() + "' already exists in '" + pg.getName() + "'");
         }
 
         UnivariateDoubleDistribution dist = parser.parseEntityTo(getDistribution());
-        pgAttr.setUnivariateDoubleDistributionValue(dist);
+        pgAttr.setDistribution(dist);
 
         pg.addGroupAttribute(pgAttr);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added ProductGroupAttribute '{}' ('{}') to group '{}'", pgAttr.getName(), getName(), pg.getName());

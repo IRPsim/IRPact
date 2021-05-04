@@ -80,7 +80,7 @@ public class PredefinedPrePlatformCreationTask extends PredefinedBinaryTask impl
     private void fcLogCa(int year, RAProcessModel model, ConsumerAgent ca) {
         RAProcessPlan plan = (RAProcessPlan) model.newPlan(ca, null, null);
         double fc = plan.getFinancialComponent(year);
-        int id = ca.findAttribute(RAConstants.ID).getIntValue();
+        int id = ca.findAttribute(RAConstants.ID).asValueAttribute().getIntValue();
         String milieu = ca.getGroup().getName();
         IRPLogging.getResultLogger().trace("[FCX] {},{},{}", id, milieu, fc);
     }

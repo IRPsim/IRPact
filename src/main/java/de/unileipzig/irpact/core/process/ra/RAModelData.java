@@ -1,12 +1,12 @@
 package de.unileipzig.irpact.core.process.ra;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
-import de.unileipzig.irpact.commons.attribute.DoubleAttribute;
+import de.unileipzig.irpact.commons.attribute.v3.Attribute;
+import de.unileipzig.irpact.commons.attribute.v3.AttributeUtil;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -141,8 +141,8 @@ public class RAModelData implements ChecksumComparable {
     }
 
     protected static int getIntValue(ConsumerAgent agent, String attrName) {
-        DoubleAttribute attr = (DoubleAttribute) agent.findAttribute(attrName);
-        return (int) attr.getDoubleValue();
+        Attribute attr = agent.findAttribute(attrName);
+        return AttributeUtil.getIntValue(attr, attrName);
     }
 
     public double a() {

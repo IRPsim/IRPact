@@ -2,8 +2,8 @@ package de.unileipzig.irpact.io.param.input.agent.consumer;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentGroupValueAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.BasicConsumerAgentDoubleGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
@@ -105,15 +105,16 @@ public class InNameSplitConsumerAgentGroupAttribute implements InIndependentCons
         InConsumerAgentGroup inCag = getConsumerAgentGroup(parser);
         ConsumerAgentGroup cag = parser.parseEntityTo(inCag);
 
-        BasicConsumerAgentGroupValueAttribute cagAttr = new BasicConsumerAgentGroupValueAttribute();
+        BasicConsumerAgentDoubleGroupAttribute cagAttr = new BasicConsumerAgentDoubleGroupAttribute();
         cagAttr.setName(getAttributeName());
+        cagAttr.setArtificial(false);
 
         if(cag.hasGroupAttribute(cagAttr)) {
             throw new ParsingException("ConsumerAgentGroupAttribute '" + cagAttr.getName() + "' already exists in '" + cag.getName() + "'");
         }
 
         UnivariateDoubleDistribution dist = parser.parseEntityTo(getDistribution());
-        cagAttr.setUnivariateDoubleDistributionValue(dist);
+        cagAttr.setDistribution(dist);
 
         cag.addGroupAttribute(cagAttr);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), getName(), cag.getName());

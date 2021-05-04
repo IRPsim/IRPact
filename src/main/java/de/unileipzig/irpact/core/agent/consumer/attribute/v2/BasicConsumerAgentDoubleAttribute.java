@@ -1,12 +1,10 @@
 package de.unileipzig.irpact.core.agent.consumer.attribute.v2;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
-import de.unileipzig.irpact.develop.AddToPersist;
 
 /**
  * @author Daniel Abitz
  */
-@AddToPersist
 public class BasicConsumerAgentDoubleAttribute
         extends AbstractConsumerAgentAttribute
         implements ConsumerAgentDoubleAttribute {

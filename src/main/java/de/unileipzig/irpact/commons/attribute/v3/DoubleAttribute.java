@@ -38,12 +38,12 @@ public interface DoubleAttribute extends ValueAttribute<Number> {
     //=========================
 
     @Override
-    default boolean getDoubleValueAsBoolean() {
+    default boolean getBooleanValue() {
         return getDoubleValue() == 1.0;
     }
 
     @Override
-    default void setDoubleValue(boolean value) {
+    default void setBooleanValue(boolean value) {
         setDoubleValue(value ? 1.0 : 0.0);
     }
 

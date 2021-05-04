@@ -2,12 +2,10 @@ package de.unileipzig.irpact.core.agent.consumer.attribute.v2;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
-import de.unileipzig.irpact.develop.AddToPersist;
 
 /**
  * @author Daniel Abitz
  */
-@AddToPersist
 public class BasicConsumerAgentDoubleGroupAttribute
         extends AbstractConsumerAgentGroupAttribute
         implements ConsumerAgentDoubleGroupAttribute {
@@ -43,8 +41,14 @@ public class BasicConsumerAgentDoubleGroupAttribute
         this.distribution = distribution;
     }
 
+    @Override
     public UnivariateDoubleDistribution getDistribution() {
         return distribution;
+    }
+
+    @Override
+    public double drawDoubleValue() {
+        return distribution.drawDoubleValue();
     }
 
     @Override

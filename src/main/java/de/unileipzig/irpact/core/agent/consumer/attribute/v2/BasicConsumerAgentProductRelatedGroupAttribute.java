@@ -20,7 +20,7 @@ public class BasicConsumerAgentProductRelatedGroupAttribute
         implements ConsumerAgentProductRelatedGroupAttribute {
 
     protected MapSupplier mapSupplier;
-    protected Map<ProductGroup, DirectDerivable<? extends ConsumerAgentAttribute>> yearMapping;
+    protected Map<ProductGroup, ConsumerAgentGroupAttribute> yearMapping;
 
     public BasicConsumerAgentProductRelatedGroupAttribute() {
         this(MapSupplier.getDefault());
@@ -32,7 +32,7 @@ public class BasicConsumerAgentProductRelatedGroupAttribute
 
     public BasicConsumerAgentProductRelatedGroupAttribute(
             MapSupplier mapSupplier,
-            Map<ProductGroup, DirectDerivable<? extends ConsumerAgentAttribute>> yearMapping) {
+            Map<ProductGroup, ConsumerAgentGroupAttribute> yearMapping) {
         this.mapSupplier = mapSupplier;
         this.yearMapping = yearMapping;
     }
@@ -64,16 +64,22 @@ public class BasicConsumerAgentProductRelatedGroupAttribute
         return annualAttr;
     }
 
-    public boolean has(ProductGroup productGroup) {
-        return yearMapping.containsKey(productGroup);
-    }
-
-    public DirectDerivable<? extends ConsumerAgentAttribute> put(ProductGroup productGroup, DirectDerivable<? extends ConsumerAgentAttribute> derivable) {
+    public ConsumerAgentGroupAttribute put(ProductGroup productGroup, ConsumerAgentGroupAttribute derivable) {
         return yearMapping.put(productGroup, derivable);
     }
 
-    public DirectDerivable<? extends ConsumerAgentAttribute> remove(ProductGroup productGroup) {
+    public ConsumerAgentGroupAttribute remove(ProductGroup productGroup) {
         return yearMapping.remove(productGroup);
+    }
+
+    @Override
+    public boolean hasAttribute(ProductGroup productGroup) {
+        return yearMapping.containsKey(productGroup);
+    }
+
+    @Override
+    public ConsumerAgentGroupAttribute getAttribute(ProductGroup productGroup) {
+        return yearMapping.get(productGroup);
     }
 
     @Override
@@ -84,12 +90,12 @@ public class BasicConsumerAgentProductRelatedGroupAttribute
     @Override
     public BasicConsumerAgentProductRelatedAttribute derive(Product input) {
         BasicConsumerAgentProductRelatedAttribute newAttr = newAttribute();
-        derive(input, newAttr);
+        deriveUpdate(input, newAttr);
         return newAttr;
     }
 
     @Override
-    public void derive(Product input, ConsumerAgentProductRelatedAttribute target) {
+    public void deriveUpdate(Product input, ConsumerAgentProductRelatedAttribute target) {
         if(target.hasAttribute(input)) {
             throw ExceptionUtil.create(IllegalArgumentException::new, "attribute '{}' already has product '{}'", target.getName(), input.getName());
         }
@@ -103,7 +109,7 @@ public class BasicConsumerAgentProductRelatedGroupAttribute
         return mapSupplier;
     }
 
-    public Map<ProductGroup, DirectDerivable<? extends ConsumerAgentAttribute>> getMapping() {
+    public Map<ProductGroup, ConsumerAgentGroupAttribute> getMapping() {
         return yearMapping;
     }
 

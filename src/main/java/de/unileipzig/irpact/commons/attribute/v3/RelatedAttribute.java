@@ -11,9 +11,9 @@ public interface RelatedAttribute<R> extends Attribute {
 
     boolean hasAttribute(R related);
 
-    AttributeBase getAttribute(R related);
+    Attribute getAttribute(R related);
 
-    AttributeBase removeAttribute(R related);
+    Attribute removeAttribute(R related);
 
     //=========================
     //Attribute

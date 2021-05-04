@@ -1,15 +1,15 @@
 package de.unileipzig.irpact.commons.spatial.attribute.v2;
 
-import de.unileipzig.irpact.commons.attribute.v3.ValueAttribute;
+import de.unileipzig.irpact.commons.attribute.v3.Attribute;
 
 /**
  * @author Daniel Abitz
  */
-public interface SpatialAttribute<V> extends ValueAttribute<V> {
+public interface SpatialAttribute extends Attribute {
 
     @Override
-    SpatialAttribute<V> copy();
+    SpatialAttribute copy();
 
     @Override
-    SpatialAttribute<V> asValueAttribute();
+    SpatialValueAttribute<?> asValueAttribute();
 }

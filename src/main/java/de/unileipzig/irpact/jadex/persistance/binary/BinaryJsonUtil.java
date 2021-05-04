@@ -3,6 +3,8 @@ package de.unileipzig.irpact.jadex.persistance.binary;
 import de.unileipzig.irpact.commons.persistence.Persister;
 import de.unileipzig.irpact.commons.persistence.Restorer;
 import de.unileipzig.irpact.jadex.persistance.binary.impl.*;
+import de.unileipzig.irpact.jadex.persistance.binary.impl.dep.BasicConsumerAgentGroupAttributeSupplierPR;
+import de.unileipzig.irpact.jadex.persistance.binary.impl.dep.BasicConsumerAgentSpatialAttributeSupplierPR;
 
 /**
  * @author Daniel Abitz

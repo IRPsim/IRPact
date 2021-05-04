@@ -8,10 +8,18 @@ import de.unileipzig.irpact.develop.AddToPersist;
  */
 @AddToPersist
 public class BasicSpatialDoubleAttribute
-        extends AbstractSpatialAttribute<Number>
+        extends AbstractSpatialValueAttribute<Number>
         implements SpatialDoubleAttribute {
 
     protected double value;
+
+    public BasicSpatialDoubleAttribute() {
+    }
+
+    public BasicSpatialDoubleAttribute(String name, double value) {
+        setName(name);
+        setDoubleValue(value);
+    }
 
     @Override
     public BasicSpatialDoubleAttribute copy() {

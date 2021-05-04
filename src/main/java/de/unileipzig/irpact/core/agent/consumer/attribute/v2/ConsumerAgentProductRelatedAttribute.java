@@ -8,7 +8,16 @@ import de.unileipzig.irpact.core.product.Product;
 public interface ConsumerAgentProductRelatedAttribute extends ConsumerAgentRelatedAttribute<Product> {
 
     @Override
+    ConsumerAgentProductRelatedGroupAttribute getGroup();
+
+    @Override
     default ConsumerAgentProductRelatedAttribute asRelatedAttribute() {
         return this;
     }
+
+    @Override
+    ConsumerAgentAttribute getAttribute(Product related);
+
+    @Override
+    ConsumerAgentAttribute removeAttribute(Product related);
 }

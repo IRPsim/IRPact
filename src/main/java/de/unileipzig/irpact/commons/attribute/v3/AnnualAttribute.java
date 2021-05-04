@@ -11,9 +11,9 @@ public interface AnnualAttribute extends RelatedAttribute<Number> {
 
     boolean hasAttribute(int year);
 
-    AttributeBase getAttribute(int year);
+    Attribute getAttribute(int year);
 
-    AttributeBase removeAttribute(int year);
+    Attribute removeAttribute(int year);
 
     @Override
     default boolean hasAttribute(Number related) {
@@ -21,12 +21,12 @@ public interface AnnualAttribute extends RelatedAttribute<Number> {
     }
 
     @Override
-    default AttributeBase getAttribute(Number related) {
+    default Attribute getAttribute(Number related) {
         return getAttribute(related.intValue());
     }
 
     @Override
-    default AttributeBase removeAttribute(Number related) {
+    default Attribute removeAttribute(Number related) {
         return removeAttribute(related.intValue());
     }
 

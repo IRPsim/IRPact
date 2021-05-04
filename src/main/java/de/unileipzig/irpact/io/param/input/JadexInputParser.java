@@ -8,9 +8,10 @@ import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
 import de.unileipzig.irpact.core.agent.consumer.*;
-import de.unileipzig.irpact.core.agent.consumer.attribute.BasicProductRelatedConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ProductRelatedConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.BasicConsumerAgentProductRelatedGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentDoubleGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentProductRelatedGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.InfoTag;
@@ -477,10 +478,13 @@ public class JadexInputParser implements InputParser {
             ConsumerAgentGroupAttribute groupAttribute) {
         jcag.removeGroupAttribute(groupAttribute);
         if(!jcag.hasProductRelatedGroupAttribute(groupAttribute.getName())) {
-            jcag.addProductRelatedGroupAttribute(new BasicProductRelatedConsumerAgentGroupAttribute(groupAttribute.getName()));
+            BasicConsumerAgentProductRelatedGroupAttribute relatedGroupAttribute = new BasicConsumerAgentProductRelatedGroupAttribute();
+            relatedGroupAttribute.setName(groupAttribute.getName());
+            relatedGroupAttribute.setArtificial(false);
+            jcag.addProductRelatedGroupAttribute(relatedGroupAttribute);
         }
-        ProductRelatedConsumerAgentGroupAttribute relatedAttribute = jcag.getProductRelatedGroupAttribute(groupAttribute.getName());
-        relatedAttribute.set(productGroup, groupAttribute);
+        BasicConsumerAgentProductRelatedGroupAttribute relatedAttribute = (BasicConsumerAgentProductRelatedGroupAttribute) jcag.getProductRelatedGroupAttribute(groupAttribute.getName());
+        relatedAttribute.put(productGroup, groupAttribute);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} add attribute '{}' in cag '{}' for product group '{}'", InfoTag.PVACT, groupAttribute.getName(), jcag.getName(), productGroup.getName());
     }
 
@@ -488,11 +492,12 @@ public class JadexInputParser implements InputParser {
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} init product interest for cag '{}' and product group '{}'", InfoTag.PVACT, cag.getName(), pvGroup.getName());
 
-            ProductRelatedConsumerAgentGroupAttribute pgrAttr = cag.getProductRelatedGroupAttribute(INTEREST_THRESHOLD);
+            ConsumerAgentProductRelatedGroupAttribute pgrAttr = cag.getProductRelatedGroupAttribute(INTEREST_THRESHOLD);
             ConsumerAgentGroupAttribute cagAttr = pgrAttr.getAttribute(pvGroup);
+            ConsumerAgentDoubleGroupAttribute cagAttrD = cagAttr.as(ConsumerAgentDoubleGroupAttribute.class);
 
             ProductInterestSupplyScheme scheme = cag.getInterestSupplyScheme();
-            scheme.setThresholdDistribution(pvGroup, cagAttr.getUnivariateDoubleDistributionValue());
+            scheme.setThresholdDistribution(pvGroup, cagAttrD.getDistribution());
         }
     }
 

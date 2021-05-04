@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.product.BasicProduct;
 import de.unileipzig.irpact.core.product.BasicProductGroup;
-import de.unileipzig.irpact.core.product.ProductAttribute;
+import de.unileipzig.irpact.core.product.attribute.ProductAttribute;
 import de.unileipzig.irpact.io.param.input.InEntity;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;

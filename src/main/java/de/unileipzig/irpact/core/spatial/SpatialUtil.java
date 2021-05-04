@@ -1,10 +1,10 @@
 package de.unileipzig.irpact.core.spatial;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
+import de.unileipzig.irpact.commons.spatial.attribute.v2.SpatialAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.v2.SpatialDoubleAttribute;
 import de.unileipzig.irpact.commons.util.ShareCalculator;
 import de.unileipzig.irpact.commons.util.data.DataType;
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialDoubleAttribute;
 import de.unileipzig.irpact.core.spatial.twodim.BasicPoint2D;
 
 import java.util.*;
@@ -20,8 +20,8 @@ public final class SpatialUtil {
     public static Predicate<List<SpatialAttribute>> filterAttribute(String attrName, String value) {
         return row -> {
             for(SpatialAttribute attr: row) {
-                if(Objects.equals(attr.getName(), attrName)) {
-                    return Objects.equals(attr.getValue(), value);
+                if(attr.isValueAttribute() && Objects.equals(attr.getName(), attrName)) {
+                    return Objects.equals(attr.asValueAttribute().getValue(), value);
                 }
             }
             return false;
@@ -31,8 +31,8 @@ public final class SpatialUtil {
     public static Function<? super List<SpatialAttribute>, ? extends String> selectAttribute(String attrName) {
         return row -> {
             for(SpatialAttribute attr: row) {
-                if(Objects.equals(attr.getName(), attrName)) {
-                    return attr.getStringValue();
+                if(attr.isValueAttribute() && Objects.equals(attr.getName(), attrName)) {
+                    return attr.asValueAttribute().getStringValue();
                 }
             }
             return null;
@@ -60,7 +60,7 @@ public final class SpatialUtil {
     private static SpatialDoubleAttribute secureGet(List<SpatialAttribute> row, String key) {
         for(SpatialAttribute attr: row) {
             if(Objects.equals(attr.getName(), key)) {
-                if(attr.getDataType() != DataType.DOUBLE) {
+                if(!attr.isValueAttributeWithDataType(DataType.DOUBLE)) {
                     throw new IllegalArgumentException("attribute '" + key + "' is no double");
                 }
                 return (SpatialDoubleAttribute) attr;
@@ -100,7 +100,7 @@ public final class SpatialUtil {
                     if(attr == null) {
                         throw new IllegalArgumentException("missing '" + attrName + "'");
                     }
-                    return attr.getValueAsString();
+                    return attr.asValueAttribute().getValueAsString();
                 }));
     }
 
@@ -121,7 +121,7 @@ public final class SpatialUtil {
         input.forEach(list -> {
             SpatialAttribute attr = get(list, attrName);
             if(attr == null) throw new NullPointerException(attrName);
-            String value = attr.getValueAsString();
+            String value = attr.asValueAttribute().getValueAsString();
             T t = mapper.apply(value);
             share.updateSize(t, 1);
         });

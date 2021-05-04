@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.process.ra.attributes;
 
-import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentDoubleGroupAttribute;
 import de.unileipzig.irpact.develop.Todo;
 
 /**
@@ -8,5 +8,5 @@ import de.unileipzig.irpact.develop.Todo;
  */
 @Todo("PR adden")
 @Todo("Spec adden")
-public interface UncertaintyGroupAttribute extends ConsumerAgentGroupAttribute {
+public interface UncertaintyGroupAttribute extends ConsumerAgentDoubleGroupAttribute {
 }

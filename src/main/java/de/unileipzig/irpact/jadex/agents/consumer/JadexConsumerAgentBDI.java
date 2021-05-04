@@ -1,15 +1,13 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
-import de.unileipzig.irpact.commons.attribute.ValueAttribute;
-import de.unileipzig.irpact.commons.attribute.AttributeAccess;
+import de.unileipzig.irpact.commons.attribute.v3.Attribute;
+import de.unileipzig.irpact.commons.attribute.v3.AttributeAccess;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.core.agent.consumer.*;
-import de.unileipzig.irpact.core.agent.consumer.attribute.BasicProductRelatedConsumerAgentAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentValueAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ProductRelatedConsumerAgentAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ProductRelatedConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentProductRelatedAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.need.Need;
@@ -56,8 +54,8 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     protected JadexConsumerAgentGroup group;
     protected SpatialInformation spatialInformation;
     protected SimulationService simulationService;
-    protected Map<String, ConsumerAgentValueAttribute> attributes = new LinkedHashMap<>();
-    protected Map<String, ProductRelatedConsumerAgentAttribute> productRelatedAttributes = new LinkedHashMap<>();
+    protected Map<String, ConsumerAgentAttribute> attributes = new LinkedHashMap<>();
+    protected Map<String, ConsumerAgentProductRelatedAttribute> productRelatedAttributes = new LinkedHashMap<>();
     protected double informationAuthority;
     protected SocialGraph.Node node;
     protected ProductAwareness productAwareness;
@@ -163,10 +161,10 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         informationAuthority = proxyAgent.getInformationAuthority();
         maxNumberOfActions = proxyAgent.getMaxNumberOfActions();
         spatialInformation = proxyAgent.getSpatialInformation();
-        for(ConsumerAgentValueAttribute attr: proxyAgent.getAttributes()) {
+        for(ConsumerAgentAttribute attr: proxyAgent.getAttributes()) {
             attributes.put(attr.getName(), attr);
         }
-        for(ProductRelatedConsumerAgentAttribute attr: proxyAgent.getProductRelatedAttributes()) {
+        for(ConsumerAgentProductRelatedAttribute attr: proxyAgent.getProductRelatedAttributes()) {
             productRelatedAttributes.put(attr.getName(), attr);
         }
         productAwareness = proxyAgent.getProductAwareness();
@@ -254,17 +252,17 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public Collection<ConsumerAgentValueAttribute> getAttributes() {
+    public Collection<ConsumerAgentAttribute> getAttributes() {
         return attributes.values();
     }
 
     @Override
-    public ConsumerAgentValueAttribute getAttribute(String name) {
+    public ConsumerAgentAttribute getAttribute(String name) {
         return attributes.get(name);
     }
 
     @Override
-    public void addAttribute(ConsumerAgentValueAttribute attribute) {
+    public void addAttribute(ConsumerAgentAttribute attribute) {
         if(attributes.containsKey(attribute.getName())) {
             throw ExceptionUtil.create(IllegalArgumentException::new, "attribute '{}' already exists", attribute.getName());
         } else {
@@ -278,7 +276,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public Collection<ProductRelatedConsumerAgentAttribute> getProductRelatedAttributes() {
+    public Collection<ConsumerAgentProductRelatedAttribute> getProductRelatedAttributes() {
         return productRelatedAttributes.values();
     }
 
@@ -288,12 +286,12 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public ProductRelatedConsumerAgentAttribute getProductRelatedAttribute(String name) {
+    public ConsumerAgentProductRelatedAttribute getProductRelatedAttribute(String name) {
         return productRelatedAttributes.get(name);
     }
 
     @Override
-    public void addProductRelatedAttribute(ProductRelatedConsumerAgentAttribute attribute) {
+    public void addProductRelatedAttribute(ConsumerAgentProductRelatedAttribute attribute) {
         if(hasProductRelatedAttribute(attribute)) {
             throw ExceptionUtil.create(IllegalArgumentException::new, "attribute '{}' already exists", attribute.getName());
         }
@@ -303,13 +301,8 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     public void updateProductRelatedAttributes(Product newProduct) {
         ProductGroup productGroup = newProduct.getGroup();
-        for(ProductRelatedConsumerAgentGroupAttribute relatedGroupAttribute: getGroup().getProductRelatedGroupAttributes()) {
-            if(relatedGroupAttribute.hasAttribute(productGroup)) {
-                ConsumerAgentValueAttribute derived = relatedGroupAttribute.derive(newProduct);
-                String relatedName = relatedGroupAttribute.getName();
-                ProductRelatedConsumerAgentAttribute relatedAttribute = productRelatedAttributes.computeIfAbsent(relatedName, BasicProductRelatedConsumerAgentAttribute::new);
-                relatedAttribute.set(newProduct, derived);
-            }
+        for(ConsumerAgentProductRelatedAttribute relatedAttribute: getProductRelatedAttributes()) {
+            relatedAttribute.getGroup().deriveUpdate(newProduct, relatedAttribute);
         }
     }
 
@@ -532,8 +525,8 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public ValueAttribute findAttribute(String name) {
-        ConsumerAgentValueAttribute attr = getAttribute(name);
+    public Attribute findAttribute(String name) {
+        Attribute attr = getAttribute(name);
         if(attr != null) {
             return attr;
         }

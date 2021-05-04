@@ -1,18 +1,18 @@
 package de.unileipzig.irpact.core.process.ra.attributes;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
-import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentGroupValueAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.BasicConsumerAgentDoubleGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentDoubleGroupAttribute;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-public class LinkedUncertaintyGroupAttribute extends BasicConsumerAgentGroupValueAttribute implements UncertaintyGroupAttribute {
+public class LinkedUncertaintyGroupAttribute extends BasicConsumerAgentDoubleGroupAttribute implements UncertaintyGroupAttribute {
 
     protected boolean autoAdjustment;
-    protected ConsumerAgentGroupAttribute convergence;
+    protected ConsumerAgentDoubleGroupAttribute convergence;
 
     public LinkedUncertaintyGroupAttribute() {
     }
@@ -26,18 +26,18 @@ public class LinkedUncertaintyGroupAttribute extends BasicConsumerAgentGroupValu
     }
 
     public UnivariateDoubleDistribution getUncertainty() {
-        return getValue();
+        return getDistribution();
     }
 
     public void setUncertainty(UnivariateDoubleDistribution distribution) {
-        setUnivariateDoubleDistributionValue(distribution);
+        setDistribution(distribution);
     }
 
-    public void setConvergence(ConsumerAgentGroupAttribute convergence) {
+    public void setConvergence(ConsumerAgentDoubleGroupAttribute convergence) {
         this.convergence = convergence;
     }
 
-    public ConsumerAgentGroupAttribute getConvergence() {
+    public ConsumerAgentDoubleGroupAttribute getConvergence() {
         return convergence;
     }
 

@@ -8,10 +8,18 @@ import de.unileipzig.irpact.develop.AddToPersist;
  */
 @AddToPersist
 public class BasicSpatialStringAttribute
-        extends AbstractSpatialAttribute<String>
+        extends AbstractSpatialValueAttribute<String>
         implements SpatialStringAttribute {
 
     protected String value;
+
+    public BasicSpatialStringAttribute() {
+    }
+
+    public BasicSpatialStringAttribute(String name, String value) {
+        setName(name);
+        setValue(value);
+    }
 
     @Override
     public BasicSpatialStringAttribute copy() {

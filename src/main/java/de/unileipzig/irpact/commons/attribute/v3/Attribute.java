@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons.attribute.v3;
 
+import de.unileipzig.irpact.commons.util.data.DataType;
+
 /**
  * @author Daniel Abitz
  */
@@ -9,6 +11,14 @@ public interface Attribute extends AttributeBase {
 
     default boolean isValueAttribute() {
         return isType(AttributeType.VALUE);
+    }
+
+    default boolean isValueAttributeWithDataType(DataType dataType) {
+        return isValueAttribute() && asValueAttribute().isDataType(dataType);
+    }
+
+    default boolean isNoValueAttribute() {
+        return !isValueAttribute();
     }
 
     default ValueAttribute<?> asValueAttribute() {

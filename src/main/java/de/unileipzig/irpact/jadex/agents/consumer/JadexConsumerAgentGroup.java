@@ -4,9 +4,10 @@ import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.core.agent.consumer.*;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentValueAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ProductRelatedConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentProductRelatedAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentProductRelatedGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
@@ -38,7 +39,7 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     protected int maxNumberOfActions;
     protected SpatialDistribution spatialDistribution;
     protected Map<String, ConsumerAgentGroupAttribute> attributes;
-    protected Map<String, ProductRelatedConsumerAgentGroupAttribute> productRelatedAttributes;
+    protected Map<String, ConsumerAgentProductRelatedGroupAttribute> productRelatedAttributes;
     protected Map<String, ConsumerAgent> agents;
     protected ProductAwarenessSupplyScheme awarenessSupplyScheme;
     protected ProductInterestSupplyScheme interestsSupplyScheme;
@@ -53,7 +54,7 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
 
     public JadexConsumerAgentGroup(
             Map<String, ConsumerAgentGroupAttribute> attributes,
-            Map<String, ProductRelatedConsumerAgentGroupAttribute> productRelatedAttributes,
+            Map<String, ConsumerAgentProductRelatedGroupAttribute> productRelatedAttributes,
             Map<String, ConsumerAgent> agents,
             Set<Need> initialNeeds) {
         this.attributes = attributes;
@@ -137,7 +138,7 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     }
 
     @Override
-    public Collection<ProductRelatedConsumerAgentGroupAttribute> getProductRelatedGroupAttributes() {
+    public Collection<ConsumerAgentProductRelatedGroupAttribute> getProductRelatedGroupAttributes() {
         return productRelatedAttributes.values();
     }
 
@@ -147,12 +148,12 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     }
 
     @Override
-    public ProductRelatedConsumerAgentGroupAttribute getProductRelatedGroupAttribute(String name) {
+    public ConsumerAgentProductRelatedGroupAttribute getProductRelatedGroupAttribute(String name) {
         return productRelatedAttributes.get(name);
     }
 
     @Override
-    public void addProductRelatedGroupAttribute(ProductRelatedConsumerAgentGroupAttribute attribute) {
+    public void addProductRelatedGroupAttribute(ConsumerAgentProductRelatedGroupAttribute attribute) {
         if(hasProductRelatedGroupAttribute(attribute)) {
             throw ExceptionUtil.create(IllegalArgumentException::new, "attribute '{}' already exists", attribute.getName());
         }
@@ -240,7 +241,7 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         return nextId;
     }
 
-    protected Set<ConsumerAgentValueAttribute> deriveAttributes() {
+    protected Set<ConsumerAgentAttribute> deriveAttributes() {
         return getAttributes().stream()
                 .map(DirectDerivable::derive)
                 .collect(CollectionUtil.collectToLinkedSet());

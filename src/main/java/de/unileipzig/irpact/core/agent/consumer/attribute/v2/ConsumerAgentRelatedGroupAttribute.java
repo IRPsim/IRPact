@@ -7,6 +7,5 @@ import de.unileipzig.irpact.commons.DirectDerivable;
  * @author Daniel Abitz
  */
 public interface ConsumerAgentRelatedGroupAttribute<R, S>
-        extends ConsumerAgentGroupAttribute, DependentDerivable<ConsumerAgentRelatedAttribute<R>, S>,
-        DirectDerivable<ConsumerAgentRelatedAttribute<R>> {
+        extends ConsumerAgentGroupAttribute, DependentDerivable<ConsumerAgentRelatedAttribute<R>, S> {
 }

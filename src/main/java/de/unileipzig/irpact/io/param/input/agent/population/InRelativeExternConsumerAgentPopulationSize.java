@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.io.param.input.agent.population;
 
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.v2.SpatialAttribute;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.ShareCalculator;
 import de.unileipzig.irpact.commons.exception.ParsingException;

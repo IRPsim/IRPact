@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
 import de.unileipzig.irpact.core.agent.AgentGroup;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ProductRelatedConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentProductRelatedGroupAttribute;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
 import de.unileipzig.irpact.core.product.awareness.ProductAwarenessSupplyScheme;
@@ -32,17 +32,17 @@ public interface ConsumerAgentGroup extends AgentGroup<ConsumerAgent> {
 
     void addGroupAttribute(ConsumerAgentGroupAttribute attribute);
 
-    Collection<ProductRelatedConsumerAgentGroupAttribute> getProductRelatedGroupAttributes();
+    Collection<ConsumerAgentProductRelatedGroupAttribute> getProductRelatedGroupAttributes();
 
     boolean hasProductRelatedGroupAttribute(String name);
 
-    default boolean hasProductRelatedGroupAttribute(ProductRelatedConsumerAgentGroupAttribute attribute) {
+    default boolean hasProductRelatedGroupAttribute(ConsumerAgentProductRelatedGroupAttribute attribute) {
         return hasProductRelatedGroupAttribute(attribute.getName());
     }
 
-    ProductRelatedConsumerAgentGroupAttribute getProductRelatedGroupAttribute(String name);
+    ConsumerAgentProductRelatedGroupAttribute getProductRelatedGroupAttribute(String name);
 
-    void addProductRelatedGroupAttribute(ProductRelatedConsumerAgentGroupAttribute attribute);
+    void addProductRelatedGroupAttribute(ConsumerAgentProductRelatedGroupAttribute attribute);
 
     SpatialDistribution getSpatialDistribution();
 

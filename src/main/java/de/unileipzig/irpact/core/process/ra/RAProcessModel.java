@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.process.ra;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
-import de.unileipzig.irpact.commons.attribute.ValueAttribute;
+import de.unileipzig.irpact.commons.attribute.v3.Attribute;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.time.Timestamp;
@@ -10,8 +10,8 @@ import de.unileipzig.irpact.commons.util.data.DataType;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.consumer.*;
-import de.unileipzig.irpact.core.agent.consumer.attribute.BasicMultiConsumerAgentGroupAttributeSupplier;
-import de.unileipzig.irpact.core.agent.consumer.attribute.MultiConsumerAgentGroupAttributeSupplier;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.BasicMultiConsumerAgentGroupAttributeSupplier;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.MultiConsumerAgentGroupAttributeSupplier;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.misc.MissingDataException;
@@ -219,8 +219,8 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         if(!ca.hasAnyAttribute(name)) {
             throw ExceptionUtil.create(ValidationException::new, "consumer agent '{}' has no attribute '{}'", name);
         }
-        ValueAttribute attr = ca.findAttribute(name);
-        if(attr.getDataType() != DataType.DOUBLE) {
+        Attribute attr = ca.findAttribute(name);
+        if(attr.isNoValueAttribute() || attr.asValueAttribute().isNoDataType(DataType.DOUBLE)) {
             throw ExceptionUtil.create(ValidationException::new, "consumer agent '{}' has no double-attribute '{}'", name);
         }
     }

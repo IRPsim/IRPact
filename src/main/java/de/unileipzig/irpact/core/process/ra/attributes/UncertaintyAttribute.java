@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.process.ra.attributes;
 
-import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentValueAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentDoubleAttribute;
 import de.unileipzig.irpact.develop.Todo;
 
 /**
@@ -8,7 +8,7 @@ import de.unileipzig.irpact.develop.Todo;
  */
 @Todo("PR adden")
 @Todo("Spec adden")
-public interface UncertaintyAttribute extends ConsumerAgentValueAttribute {
+public interface UncertaintyAttribute extends ConsumerAgentDoubleAttribute {
 
     boolean isAutoAdjustment();
 

@@ -6,7 +6,7 @@ import de.unileipzig.irpact.core.product.attribute.ProductValueAttribute;
 /**
  * @author Daniel Abitz
  */
-public interface SpatialDoubleAttribute extends SpatialAttribute<Number>, DoubleAttribute {
+public interface SpatialDoubleAttribute extends SpatialValueAttribute<Number>, DoubleAttribute {
 
     @Override
     SpatialDoubleAttribute asValueAttribute();

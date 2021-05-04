@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.spatial;
 
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.v2.SpatialAttribute;
 import de.unileipzig.irpact.commons.util.data.FileContent;
 import de.unileipzig.irpact.commons.util.table.Table;
 

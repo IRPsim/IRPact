@@ -4,7 +4,8 @@ import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentDoubleGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -100,11 +101,15 @@ public class BasicUncertaintyGroupAttributeSupplier extends NameableBase impleme
             if(cagConv == null) {
                 throw new NoSuchElementException("cag '" + cag.getName() + "' has no '" + RAConstants.RATE_OF_CONVERGENCE + "'");
             }
+            if(!cagConv.is(ConsumerAgentDoubleGroupAttribute.class)) {
+                throw new IllegalArgumentException("cag '" + cag.getName() + "' does not supports distributions.");
+            }
+            ConsumerAgentDoubleGroupAttribute cagConfD = cagConv.as(ConsumerAgentDoubleGroupAttribute.class);
 
             LinkedUncertaintyGroupAttribute cagAttr = new LinkedUncertaintyGroupAttribute();
             cagAttr.setName(attrName);
             cagAttr.setUncertainty(uncert);
-            cagAttr.setConvergence(cagConv);
+            cagAttr.setConvergence(cagConfD);
             cagAttr.setAutoAdjustment(autoAdjust);
             return cagAttr;
         } else {

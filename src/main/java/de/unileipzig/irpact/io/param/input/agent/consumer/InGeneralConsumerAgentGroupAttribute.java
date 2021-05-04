@@ -2,7 +2,7 @@ package de.unileipzig.irpact.io.param.input.agent.consumer;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentGroupValueAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.v2.BasicConsumerAgentDoubleGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
@@ -91,12 +91,13 @@ public class InGeneralConsumerAgentGroupAttribute implements InDependentConsumer
     }
 
     @Override
-    public BasicConsumerAgentGroupValueAttribute parse(InputParser parser) throws ParsingException {
-        BasicConsumerAgentGroupValueAttribute cagAttr = new BasicConsumerAgentGroupValueAttribute();
+    public BasicConsumerAgentDoubleGroupAttribute parse(InputParser parser) throws ParsingException {
+        BasicConsumerAgentDoubleGroupAttribute cagAttr = new BasicConsumerAgentDoubleGroupAttribute();
         cagAttr.setName(getAttributeName());
+        cagAttr.setArtificial(false);
 
         UnivariateDoubleDistribution dist = parser.parseEntityTo(getDistribution());
-        cagAttr.setUnivariateDoubleDistributionValue(dist);
+        cagAttr.setDistribution(dist);
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "created ConsumerAgentGroupAttribute '{}' ('{}')", cagAttr.getName(), getName());
         return cagAttr;

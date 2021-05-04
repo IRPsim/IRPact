@@ -1,17 +1,15 @@
 package de.unileipzig.irpact.core.spatial;
 
 import de.unileipzig.irpact.commons.res.ResourceLoader;
-import de.unileipzig.irpact.commons.util.CollectionUtil;
-import de.unileipzig.irpact.commons.util.table.SimpleTable;
+import de.unileipzig.irpact.commons.spatial.attribute.v2.BasicSpatialDoubleAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.v2.BasicSpatialStringAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.v2.SpatialAttribute;
 import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.commons.util.xlsx.CellValueConverter;
 import de.unileipzig.irpact.commons.util.xlsx.XlsxSheetParser;
 import de.unileipzig.irpact.commons.util.xlsx.XlsxTable;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.misc.MissingDataException;
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialDoubleAttribute;
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialStringAttribute;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.apache.poi.common.usermodel.fonts.FontCharset;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -24,7 +22,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
 
 /**
  * @author Daniel Abitz
@@ -34,9 +31,9 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(SpatialTableFileLoader.class);
 
     protected static final CellValueConverter<String, SpatialAttribute> STRING_CONVERTER =
-            (columnIndex, header, value) -> new SpatialStringAttribute(header[columnIndex], value);
+            (columnIndex, header, value) -> new BasicSpatialStringAttribute(header[columnIndex], value);
     protected static final CellValueConverter<Number, SpatialAttribute> NUMERIC_CONVERTER =
-            (columnIndex, header, value) -> new SpatialDoubleAttribute(header[columnIndex], value.doubleValue());
+            (columnIndex, header, value) -> new BasicSpatialDoubleAttribute(header[columnIndex], value.doubleValue());
 
     protected ResourceLoader loader;
     protected String inputFileName;

@@ -9,4 +9,6 @@ public interface ProductDoubleGroupAttribute extends ProductValueGroupAttribute<
     ProductDoubleAttribute derive();
 
     ProductDoubleAttribute derive(double value);
+
+    ProductDoubleAttribute derive(String name, double value);
 }

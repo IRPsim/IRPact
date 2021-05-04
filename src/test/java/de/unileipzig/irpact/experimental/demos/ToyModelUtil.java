@@ -10,7 +10,6 @@ import de.unileipzig.irpact.develop.TestFiles;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
-import de.unileipzig.irpact.start.CommandLineOptions;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.util.PVactUtil;
 import de.unileipzig.irptools.io.annual.AnnualData;
@@ -20,7 +19,6 @@ import org.junit.jupiter.api.Disabled;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 

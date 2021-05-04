@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.product.BasicProductGroupAttribute;
+import de.unileipzig.irpact.core.product.attribute.BasicProductDoubleGroupAttribute;
 import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
@@ -91,12 +91,13 @@ public class InBasicProductGroupAttribute implements InDependentProductGroupAttr
     }
 
     @Override
-    public BasicProductGroupAttribute parse(InputParser parser) throws ParsingException {
-        BasicProductGroupAttribute pgAttr = new BasicProductGroupAttribute();
+    public BasicProductDoubleGroupAttribute parse(InputParser parser) throws ParsingException {
+        BasicProductDoubleGroupAttribute pgAttr = new BasicProductDoubleGroupAttribute();
         pgAttr.setName(getAttributeName());
+        pgAttr.setArtificial(false);
 
         UnivariateDoubleDistribution dist = parser.parseEntityTo(getDistribution());
-        pgAttr.setUnivariateDoubleDistributionValue(dist);
+        pgAttr.setDistribution(dist);
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "created ProductGroupAttribute '{}' ('{}')", pgAttr.getName(), getName());
         return pgAttr;

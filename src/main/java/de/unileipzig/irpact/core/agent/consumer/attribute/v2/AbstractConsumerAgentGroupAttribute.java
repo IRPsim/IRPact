@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.agent.consumer.attribute.v2;
 
-import de.unileipzig.irpact.commons.attribute.v2.AbstractGroupAttribute;
+import de.unileipzig.irpact.commons.attribute.v3.AbstractGroupAttribute;
 
 /**
  * @author Daniel Abitz

@@ -15,6 +15,10 @@ public interface ValueAttribute<V> extends Attribute {
 
     boolean isDataType(DataType dataType);
 
+    default boolean isNoDataType(DataType dataType) {
+        return !isDataType(dataType);
+    }
+
     default <R> R getValue(Class<R> c) {
         return c.cast(getValue());
     }
@@ -44,11 +48,11 @@ public interface ValueAttribute<V> extends Attribute {
     //special
     //=========================
 
-    default boolean getDoubleValueAsBoolean() {
+    default boolean getBooleanValue() {
         throw new UnsupportedOperationException();
     }
 
-    default void setDoubleValue(boolean value) {
+    default void setBooleanValue(boolean value) {
         throw new UnsupportedOperationException();
     }
 

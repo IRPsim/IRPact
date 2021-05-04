@@ -31,8 +31,13 @@ public class BasicProductDoubleGroupAttribute
 
     @Override
     public BasicProductDoubleAttribute derive(double value) {
+        return derive(getName(), value);
+    }
+
+    @Override
+    public BasicProductDoubleAttribute derive(String name, double value) {
         BasicProductDoubleAttribute attr = new BasicProductDoubleAttribute();
-        attr.setName(getName());
+        attr.setName(name);
         attr.setGroup(this);
         attr.setArtificial(isArtificial());
         attr.setDoubleValue(value);

@@ -55,6 +55,20 @@ public class BasicConsumerAgentProductRelatedAttribute
         return copy;
     }
 
+    @Override
+    public void setGroup(ConsumerAgentGroupAttribute group) {
+        if(group instanceof ConsumerAgentProductRelatedGroupAttribute) {
+            this.group = group;
+        } else {
+            throw new IllegalArgumentException("requries: ConsumerAgentProductRelatedGroupAttribute");
+        }
+    }
+
+    @Override
+    public ConsumerAgentProductRelatedGroupAttribute getGroup() {
+        return (ConsumerAgentProductRelatedGroupAttribute) group;
+    }
+
     public MapSupplier getMapSupplier() {
         return mapSupplier;
     }

@@ -5,7 +5,7 @@ import de.unileipzig.irpact.commons.attribute.v3.StringAttribute;
 /**
  * @author Daniel Abitz
  */
-public interface SpatialStringAttribute extends SpatialAttribute<String>, StringAttribute {
+public interface SpatialStringAttribute extends SpatialValueAttribute<String>, StringAttribute {
 
     @Override
     SpatialStringAttribute asValueAttribute();

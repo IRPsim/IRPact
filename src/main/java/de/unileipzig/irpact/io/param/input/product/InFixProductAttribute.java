@@ -1,8 +1,9 @@
 package de.unileipzig.irpact.io.param.input.product;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.product.ProductAttribute;
-import de.unileipzig.irpact.core.product.ProductGroupAttribute;
+import de.unileipzig.irpact.core.product.attribute.ProductAttribute;
+import de.unileipzig.irpact.core.product.attribute.ProductDoubleGroupAttribute;
+import de.unileipzig.irpact.core.product.attribute.ProductGroupAttribute;
 import de.unileipzig.irpact.io.param.input.InEntity;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
@@ -90,7 +91,7 @@ public class InFixProductAttribute implements InEntity {
 
     @Override
     public ProductAttribute parse(InputParser parser) throws ParsingException {
-        ProductGroupAttribute pgAttr = parser.parseEntityTo(getGroupAttribute());
+        ProductDoubleGroupAttribute pgAttr = parser.parseEntityTo(getGroupAttribute());
         return pgAttr.derive(getName(), getValue());
     }
 }
