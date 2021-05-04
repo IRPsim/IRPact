@@ -204,7 +204,7 @@ public class PVactResultLogging {
     }
 
     protected static int getId(ConsumerAgent agent) {
-        return (int) agent.findAttribute(RAConstants.ID).getDoubleValue();
+        return agent.findAttribute(RAConstants.ID).asValueAttribute().getIntValue();
     }
 
     protected static String getTimestamp(AdoptionResult result) {
@@ -240,8 +240,8 @@ public class PVactResultLogging {
     protected Grouping3<Number, String, String, AdoptionResult> groupAdoptions(String key1, String key2) {
         Grouping3<Number, String, String, AdoptionResult> grouping = new Grouping3<>(
                 r -> r.getProduct().getYear(),
-                r -> r.getAgent().findAttribute(key1).getValueAsString(),
-                r -> r.getAgent().findAttribute(key2).getValueAsString()
+                r -> r.getAgent().findAttribute(key1).asValueAttribute().getValueAsString(),
+                r -> r.getAgent().findAttribute(key2).asValueAttribute().getValueAsString()
         );
 
         streamNonInitialResults().forEach(grouping::add);
@@ -252,7 +252,7 @@ public class PVactResultLogging {
     protected Grouping2<Number, String, AdoptionResult> groupAdoptions(String key) {
         Grouping2<Number, String, AdoptionResult> grouping = new Grouping2<>(
                 r -> r.getProduct().getYear(),
-                r -> r.getAgent().findAttribute(key).getValueAsString()
+                r -> r.getAgent().findAttribute(key).asValueAttribute().getValueAsString()
         );
 
         streamNonInitialResults().forEach(grouping::add);

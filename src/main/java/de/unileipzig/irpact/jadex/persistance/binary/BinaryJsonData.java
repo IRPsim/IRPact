@@ -24,6 +24,9 @@ import java.util.function.*;
  */
 public final class BinaryJsonData extends PersistableBase {
 
+    public static ToLongFunction<Integer> INT2LONG = Number::longValue;
+    public static LongFunction<Integer> LONG2INT = l -> (int) l;
+
     public static final int NOTHING_ID = -1;
     private static final int UID_ID = 0;
     private static final int TYPE_ID = 1;
@@ -503,15 +506,24 @@ public final class BinaryJsonData extends PersistableBase {
             LongFunction<V> longToValue) {
         Map<K, V> map = new LinkedHashMap<>();
 
+        mapFromLongLongMap(input, longToKey, longToValue, map);
+
+        return map;
+    }
+
+    public static <K, V> void mapFromLongLongMap(
+            Map<Long, Long> input,
+            LongFunction<K> longToKey,
+            LongFunction<V> longToValue,
+            Map<K, V> target) {
+
         for(Map.Entry<Long, Long> entry: input.entrySet()) {
             K key = longToKey.apply(entry.getKey());
             V value = longToValue.apply(entry.getValue());
-            if(map.containsKey(key)) {
+            if(target.containsKey(key)) {
                 throw ExceptionUtil.create(IllegalArgumentException::new, "key already exists");
             }
-            map.put(key, value);
+            target.put(key, value);
         }
-
-        return map;
     }
 }

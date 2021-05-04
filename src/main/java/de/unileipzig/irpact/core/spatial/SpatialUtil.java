@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.core.spatial;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
-import de.unileipzig.irpact.commons.spatial.attribute.v2.SpatialAttribute;
-import de.unileipzig.irpact.commons.spatial.attribute.v2.SpatialDoubleAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialDoubleAttribute;
 import de.unileipzig.irpact.commons.util.ShareCalculator;
 import de.unileipzig.irpact.commons.util.data.DataType;
 import de.unileipzig.irpact.core.spatial.twodim.BasicPoint2D;

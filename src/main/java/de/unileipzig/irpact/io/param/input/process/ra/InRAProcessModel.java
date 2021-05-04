@@ -237,6 +237,10 @@ public class InRAProcessModel implements InProcessModel {
         }
     }
 
+    public boolean hasPvFile() {
+        return pvFile != null && pvFile.length > 0;
+    }
+
     public InPVFile getPvFile() throws ParsingException {
         return ParamUtil.getInstance(pvFile, "PvFile");
     }
@@ -293,8 +297,13 @@ public class InRAProcessModel implements InProcessModel {
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "no node filter scheme specified");
         }
 
-        NPVXlsxData xlsxData = parser.parseEntityTo(getPvFile());
-        model.setNpvData(xlsxData);
+        if(hasPvFile()) {
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "load pv file '{}'" , getPvFile().getName());
+            NPVXlsxData xlsxData = parser.parseEntityTo(getPvFile());
+            model.setNpvData(xlsxData);
+        } else {
+            LOGGER.trace("no pv file found");
+        }
 
         return model;
     }

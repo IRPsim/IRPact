@@ -7,13 +7,15 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Modification of Base32 for IRPact.
- * The implementation uses RFC 4648 Base32hex and exchanges = with Z.
+ * The implementation uses RFC 4648 Base32hex and exchanges = with Z. In addition all encoded strings start with X to
+ * avoid leading numbers.
  *
  * @author Daniel Abitz
  */
 public final class IRPactBase32 {
 
     private static final Base32 BASE32 = new Base32(true);
+    private static final String PREFIX = "X";
     private static final byte FILL_OLD = (byte) '=';
     private static final byte FILL_NEW = (byte) 'Z';
 
@@ -30,16 +32,6 @@ public final class IRPactBase32 {
         return new String(b32Bytes, StandardCharsets.US_ASCII);
     }
 
-    public static String base32ToUtf8(String b32) {
-        return toText(b32, StandardCharsets.UTF_8);
-    }
-
-    public static String toText(String b32, Charset charset) {
-        byte[] b32Bytes = b32.getBytes(StandardCharsets.US_ASCII);
-        byte[] textBytes = decode(b32Bytes);
-        return new String(textBytes, charset);
-    }
-
     public static byte[] encode(byte[] input) {
         byte[] b32 = BASE32.encode(input);
         exchange(b32);
@@ -48,11 +40,15 @@ public final class IRPactBase32 {
 
     public static String encodeToString(byte[] input) {
         byte[] b32 = encode(input);
-        return new String(b32, StandardCharsets.US_ASCII);
+        return PREFIX + new String(b32, StandardCharsets.US_ASCII);
     }
 
     public static String encodeUTF8ToString(String input) {
-        byte[] b = input.getBytes(StandardCharsets.UTF_8);
+        return encodeTextToString(input, StandardCharsets.UTF_8);
+    }
+
+    public static String encodeTextToString(String input, Charset charset) {
+        byte[] b = input.getBytes(charset);
         return encodeToString(b);
     }
 
@@ -63,14 +59,19 @@ public final class IRPactBase32 {
         return output;
     }
 
-    public static byte[] decodeString(String b32) {
-        byte[] b32Bytes = b32.getBytes(StandardCharsets.US_ASCII);
+    public static byte[] decodeString(String irpb32) {
+        String subb32 = irpb32.substring(PREFIX.length());
+        byte[] b32Bytes = subb32.getBytes(StandardCharsets.US_ASCII);
         return decode(b32Bytes);
     }
 
-    public static String decodeStringToUTF8(String b32) {
-        byte[] b = decodeString(b32);
-        return new String(b, StandardCharsets.UTF_8);
+    public static String decodeToUtf8(String irpb32) {
+        return decodeToText(irpb32, StandardCharsets.UTF_8);
+    }
+
+    public static String decodeToText(String irpb32, Charset charset) {
+        byte[] textBytes = decodeString(irpb32);
+        return new String(textBytes, charset);
     }
 
     public static void exchange(byte[] b32) {

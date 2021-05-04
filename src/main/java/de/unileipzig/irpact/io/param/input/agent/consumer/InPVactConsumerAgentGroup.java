@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param.input.agent.consumer;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.AgentManager;
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.BasicConsumerAgentDoubleGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentDoubleGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.product.awareness.ProductBinaryAwarenessSupplyScheme;
@@ -108,6 +108,8 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
     @FieldDefinition
     public InSpatialDistribution[] spatialDistribution;
+
+    public InDummyConsumerAgentAnnualGroupAttribute[] dummyAnnuals;
 
     //=========================
     //toy model parameter
@@ -321,7 +323,18 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
         getSpatialDistribution().setup(parser, jcag);
 
+        handleDummyAnnual(parser, jcag);
+
         return jcag;
+    }
+
+    private void handleDummyAnnual(InputParser parser, JadexConsumerAgentGroup jcag) throws ParsingException {
+        LOGGER.trace("handle dummy annuals: {}", dummyAnnuals == null ? -1 : dummyAnnuals.length);
+        if(dummyAnnuals != null) {
+            for(InDummyConsumerAgentAnnualGroupAttribute dummyAnnual: dummyAnnuals) {
+                dummyAnnual.setup(parser, jcag);;
+            }
+        }
     }
 
     private static void addGroupAttribute(

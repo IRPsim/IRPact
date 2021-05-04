@@ -4,10 +4,10 @@ import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.core.agent.consumer.*;
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentProductRelatedAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentProductRelatedGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
@@ -18,13 +18,14 @@ import de.unileipzig.irpact.core.product.interest.ProductInterest;
 import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
-import de.unileipzig.irpact.commons.DirectDerivable;
+import de.unileipzig.irpact.commons.derivable.DirectDerivable;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
 import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -247,6 +248,12 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
                 .collect(CollectionUtil.collectToLinkedSet());
     }
 
+    protected Set<ConsumerAgentProductRelatedAttribute> deriveProductRelatedAttributes() {
+        return getProductRelatedGroupAttributes().stream()
+                .map(ConsumerAgentProductRelatedGroupAttribute::derive)
+                .collect(CollectionUtil.collectToLinkedSet());
+    }
+
     protected ProductAwareness deriveAwareness() {
         return awarenessSupplyScheme.derive();
     }
@@ -277,6 +284,7 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         agent.setInformationAuthority(getInformationAuthority());
         agent.setMaxNumberOfActions(getMaxNumberOfActions());
         agent.addAllAttributes(deriveAttributes());
+        agent.addAllProductRelatedAttribute(deriveProductRelatedAttributes());
         agent.setSpatialInformation(spatialInformation);
         agent.setProductAwareness(deriveAwareness());
         agent.setProductInterest(deriveInterest());

@@ -3,14 +3,14 @@ package de.unileipzig.irpact.jadex.persistance.binary.impl;
 import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.product.ProductDoubleAttribute;
+import de.unileipzig.irpact.core.product.attribute.BasicProductDoubleAttribute;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicProductAttributePR extends BinaryPRBase<ProductDoubleAttribute> {
+public class BasicProductAttributePR extends BinaryPRBase<BasicProductDoubleAttribute> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicProductAttributePR.class);
 
@@ -26,12 +26,12 @@ public class BasicProductAttributePR extends BinaryPRBase<ProductDoubleAttribute
     //=========================
 
     @Override
-    public Class<ProductDoubleAttribute> getType() {
-        return ProductDoubleAttribute.class;
+    public Class<BasicProductDoubleAttribute> getType() {
+        return BasicProductDoubleAttribute.class;
     }
 
     @Override
-    protected BinaryJsonData doInitalizePersist(ProductDoubleAttribute object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicProductDoubleAttribute object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putDouble(object.getDoubleValue());
@@ -42,7 +42,7 @@ public class BasicProductAttributePR extends BinaryPRBase<ProductDoubleAttribute
     }
 
     @Override
-    protected void doSetupPersist(ProductDoubleAttribute object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BasicProductDoubleAttribute object, BinaryJsonData data, PersistManager manager) {
         data.putLong(manager.ensureGetUID(object.getGroup()));
     }
 
@@ -52,15 +52,15 @@ public class BasicProductAttributePR extends BinaryPRBase<ProductDoubleAttribute
 
 
     @Override
-    protected ProductDoubleAttribute doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
-        ProductDoubleAttribute object = new ProductDoubleAttribute();
+    protected BasicProductDoubleAttribute doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        BasicProductDoubleAttribute object = new BasicProductDoubleAttribute();
         object.setName(data.getText());
         object.setDoubleValue(data.getDouble());
         return object;
     }
 
     @Override
-    protected void doSetupRestore(BinaryJsonData data, ProductDoubleAttribute object, RestoreManager manager) throws RestoreException {
+    protected void doSetupRestore(BinaryJsonData data, BasicProductDoubleAttribute object, RestoreManager manager) throws RestoreException {
         object.setGroup(manager.ensureGet(data.getLong()));
     }
 }

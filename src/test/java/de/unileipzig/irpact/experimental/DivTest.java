@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.*;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.res.BasicResourceLoader;
+import de.unileipzig.irpact.commons.spatial.attribute.BasicSpatialDoubleAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.BasicSpatialStringAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.util.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialDoubleAttribute;
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialStringAttribute;
 import de.unileipzig.irpact.experimental.eval3.DynExponential;
 import de.unileipzig.irpact.experimental.eval3.DynLinear;
 import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
@@ -34,28 +34,28 @@ class DivTest {
     @Test
     void testMyHashStuff() {
         List<SpatialAttribute> list0 = CollectionUtil.arrayListOf(
-                new SpatialDoubleAttribute("a", 1),
-                new SpatialStringAttribute("b", "x1")
+                new BasicSpatialDoubleAttribute("a", 1),
+                new BasicSpatialStringAttribute("b", "x1")
         );
         List<SpatialAttribute> list00 = CollectionUtil.arrayListOf(
-                new SpatialDoubleAttribute("a", 1),
-                new SpatialStringAttribute("b", "x1")
+                new BasicSpatialDoubleAttribute("a", 1),
+                new BasicSpatialStringAttribute("b", "x1")
         );
         List<SpatialAttribute> list1 = CollectionUtil.arrayListOf(
-                new SpatialDoubleAttribute("c", 2),
-                new SpatialStringAttribute("d", "x2")
+                new BasicSpatialDoubleAttribute("c", 2),
+                new BasicSpatialStringAttribute("d", "x2")
         );
         Set<SpatialAttribute> set0 = CollectionUtil.hashSetOf(
-                new SpatialDoubleAttribute("e", 3),
-                new SpatialStringAttribute("f", "x3")
+                new BasicSpatialDoubleAttribute("e", 3),
+                new BasicSpatialStringAttribute("f", "x3")
         );
         Set<SpatialAttribute> set00 = CollectionUtil.hashSetOf(
-                new SpatialDoubleAttribute("e", 3),
-                new SpatialStringAttribute("f", "x3")
+                new BasicSpatialDoubleAttribute("e", 3),
+                new BasicSpatialStringAttribute("f", "x3")
         );
         Set<SpatialAttribute> set1 = CollectionUtil.hashSetOf(
-                new SpatialDoubleAttribute("g", 4),
-                new SpatialStringAttribute("h", "x4")
+                new BasicSpatialDoubleAttribute("g", 4),
+                new BasicSpatialStringAttribute("h", "x4")
         );
 
         List<Collection<SpatialAttribute>> listColl0 = CollectionUtil.arrayListOf(
@@ -217,7 +217,7 @@ class DivTest {
     @Test
     void testBase32Stuff() {
         System.out.println(IRPactBase32.utf8ToBase32("X"));
-        System.out.println(IRPactBase32.base32ToUtf8("B0ZZZZZZ"));
+        System.out.println(IRPactBase32.decodeToUtf8("B0ZZZZZZ"));
     }
 
     @Test
@@ -244,7 +244,7 @@ class DivTest {
 
     @Test
     void lol() {
-        System.out.println(IRPactBase32.decodeStringToUTF8("EDQ62SJK78G68QBI41HMGPB3DC568QBI78G2S2HU40N5OBJ7D5Q0KFH05PE2SPR9EHKMERJFE9IGKFH05PE2SPRIC5I6OP8A7OG2SN1ED5I6AO8A7OG2SN32ELKMOP0A7OG2SN32ELKMOP1ECTP62P3CCK53S81EBHHNASRKDTMMOQB2EC53S81EBHIM8TRFDTI2QS335PPMAT3KD5N6ESPEF1MMO2HU40N5OPRIC5I6OP8A7OG2SN37E9GM8R35ES53S81EBHJN4OB4DHINEBJ2C5Q0KFH05PE6IRJ6DTPISQJJDTN0KFH05PE6UTBK18V20BISE1M62T36DTP6QNR1ELQ6UBJ3DTN6C2HU40N5OSJ5C5I6QP9EDLI0KFH05PE76PBKEHKMSPRJ5PJN4OB4DHIGKFH05PE76PBKEHKMSPRJBTIM8TRFDTI2QS3318V20BISEDIN8T39DPJN6NRID5HMMSR8C5RJ42HU40N5OSRICC53S81EBHQ6ASRKCPKMOPBJ19IMSP3578G68QBI41HMGPB3DC50ZZZZ"));
+        System.out.println(IRPactBase32.decodeToUtf8("XEDQ62SJK78G68QBI41HMGPB3DC568QBI78G2S2HU40N5OBJ7D5Q0KFH05PE2SPR9EHKMERJFE9IGKFH05PE2SPRIC5I6OP8A7OG2SN1ED5I6AO8A7OG2SN32ELKMOP0A7OG2SN32ELKMOP1ECTP62P3CCK53S81EBHHNASRKDTMMOQB2EC53S81EBHIM8TRFDTI2QS335PPMAT3KD5N6ESPEF1MMO2HU40N5OPRIC5I6OP8A7OG2SN37E9GM8R35ES53S81EBHJN4OB4DHINEBJ2C5Q0KFH05PE6IRJ6DTPISQJJDTN0KFH05PE6UTBK18V20BISE1M62T36DTP6QNR1ELQ6UBJ3DTN6C2HU40N5OSJ5C5I6QP9EDLI0KFH05PE76PBKEHKMSPRJ5PJN4OB4DHIGKFH05PE76PBKEHKMSPRJBTIM8TRFDTI2QS3318V20BISEDIN8T39DPJN6NRID5HMMSR8C5RJ42HU40N5OSRICC53S81EBHQ6ASRKCPKMOPBJ19IMSP3578G68QBI41HMGPB3DC50ZZZZ"));
     }
 
     @Test

@@ -60,6 +60,8 @@ public final class RAConstants {
     public static final String AWARENESS = "awareness";
     public static final String INTEREST = "interest";
 
+    public static final String NET_PRESENT_VALUE = "net_present_value";
+
     public static String getUncertaintyAttributeName(String name) {
         return ParamUtil.concData(name, UNCERTAINTY_SUFFIX);
     }

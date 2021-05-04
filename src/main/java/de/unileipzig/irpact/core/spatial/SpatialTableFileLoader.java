@@ -1,9 +1,9 @@
 package de.unileipzig.irpact.core.spatial;
 
 import de.unileipzig.irpact.commons.res.ResourceLoader;
-import de.unileipzig.irpact.commons.spatial.attribute.v2.BasicSpatialDoubleAttribute;
-import de.unileipzig.irpact.commons.spatial.attribute.v2.BasicSpatialStringAttribute;
-import de.unileipzig.irpact.commons.spatial.attribute.v2.SpatialAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.BasicSpatialDoubleAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.BasicSpatialStringAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.commons.util.xlsx.CellValueConverter;
 import de.unileipzig.irpact.commons.util.xlsx.XlsxSheetParser;

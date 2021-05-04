@@ -3,22 +3,22 @@ package de.unileipzig.irpact.jadex.persistance.binary.impl;
 import de.unileipzig.irpact.commons.exception.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.product.BasicProductGroupAttribute;
+import de.unileipzig.irpact.core.product.attribute.BasicProductDoubleGroupAttribute;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicProductGroupAttributePR extends BinaryPRBase<BasicProductGroupAttribute> {
+public class BasicProductGroupAttributePR extends BinaryPRBase<BasicProductDoubleGroupAttribute> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicProductGroupAttributePR.class);
 
     public static final BasicProductGroupAttributePR INSTANCE = new BasicProductGroupAttributePR();
 
     @Override
-    public Class<BasicProductGroupAttribute> getType() {
-        return BasicProductGroupAttribute.class;
+    public Class<BasicProductDoubleGroupAttribute> getType() {
+        return BasicProductDoubleGroupAttribute.class;
     }
 
     @Override
@@ -31,18 +31,18 @@ public class BasicProductGroupAttributePR extends BinaryPRBase<BasicProductGroup
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicProductGroupAttribute object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicProductDoubleGroupAttribute object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
 
-        manager.prepare(object.getValue());
+        manager.prepare(object.getDistribution());
 
         return data;
     }
 
     @Override
-    protected void doSetupPersist(BasicProductGroupAttribute object, BinaryJsonData data, PersistManager manager) {
-        data.putLong(manager.ensureGetUID(object.getValue()));
+    protected void doSetupPersist(BasicProductDoubleGroupAttribute object, BinaryJsonData data, PersistManager manager) {
+        data.putLong(manager.ensureGetUID(object.getDistribution()));
     }
 
     //=========================
@@ -50,14 +50,14 @@ public class BasicProductGroupAttributePR extends BinaryPRBase<BasicProductGroup
     //=========================
 
     @Override
-    protected BasicProductGroupAttribute doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
-        BasicProductGroupAttribute object = new BasicProductGroupAttribute();
+    protected BasicProductDoubleGroupAttribute doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        BasicProductDoubleGroupAttribute object = new BasicProductDoubleGroupAttribute();
         object.setName(data.getText());
         return object;
     }
 
     @Override
-    protected void doSetupRestore(BinaryJsonData data, BasicProductGroupAttribute object, RestoreManager manager) throws RestoreException {
-        object.setUnivariateDoubleDistributionValue(manager.ensureGet(data.getLong()));
+    protected void doSetupRestore(BinaryJsonData data, BasicProductDoubleGroupAttribute object, RestoreManager manager) throws RestoreException {
+        object.setDistribution(manager.ensureGet(data.getLong()));
     }
 }

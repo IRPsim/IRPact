@@ -1,9 +1,9 @@
 package de.unileipzig.irpact.core.spatial;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
-import de.unileipzig.irpact.commons.attribute.v3.AttributeAccess;
-import de.unileipzig.irpact.commons.attribute.v3.AttributeType;
-import de.unileipzig.irpact.commons.spatial.attribute.v2.SpatialAttribute;
+import de.unileipzig.irpact.commons.attribute.AttributeAccess;
+import de.unileipzig.irpact.commons.attribute.AttributeType;
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 
 import java.util.Collection;

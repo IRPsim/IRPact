@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.core.process.ra.attributes;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.BasicConsumerAgentDoubleGroupAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentDoubleGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentDoubleGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentDoubleGroupAttribute;
 
 import java.util.Objects;
 

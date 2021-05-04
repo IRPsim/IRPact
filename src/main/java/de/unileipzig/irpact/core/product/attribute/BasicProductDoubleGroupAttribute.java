@@ -35,6 +35,16 @@ public class BasicProductDoubleGroupAttribute
     }
 
     @Override
+    public BasicProductDoubleAttribute derive(Number input) {
+        return derive(getName(), input);
+    }
+
+    @Override
+    public BasicProductDoubleAttribute derive(String str, Number value) {
+        return derive(str, value.doubleValue());
+    }
+
+    @Override
     public BasicProductDoubleAttribute derive(String name, double value) {
         BasicProductDoubleAttribute attr = new BasicProductDoubleAttribute();
         attr.setName(name);
@@ -48,8 +58,14 @@ public class BasicProductDoubleGroupAttribute
         this.distribution = distribution;
     }
 
+    @Override
     public UnivariateDoubleDistribution getDistribution() {
         return distribution;
+    }
+
+    @Override
+    public double drawDoubleValue() {
+        return distribution.drawDoubleValue();
     }
 
     @Override

@@ -227,7 +227,7 @@ public interface ChecksumComparable {
     //=========================
 
     default int getChecksum() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("missing checksum: '" + getClass().getName() + "'");
     }
 
     default void printChecksums() {

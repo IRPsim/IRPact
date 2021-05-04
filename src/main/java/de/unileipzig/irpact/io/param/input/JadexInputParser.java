@@ -8,10 +8,10 @@ import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
 import de.unileipzig.irpact.core.agent.consumer.*;
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.BasicConsumerAgentProductRelatedGroupAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentDoubleGroupAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentProductRelatedGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentProductRelatedGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentDoubleGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.InfoTag;
@@ -494,7 +494,7 @@ public class JadexInputParser implements InputParser {
 
             ConsumerAgentProductRelatedGroupAttribute pgrAttr = cag.getProductRelatedGroupAttribute(INTEREST_THRESHOLD);
             ConsumerAgentGroupAttribute cagAttr = pgrAttr.getAttribute(pvGroup);
-            ConsumerAgentDoubleGroupAttribute cagAttrD = cagAttr.as(ConsumerAgentDoubleGroupAttribute.class);
+            ConsumerAgentDoubleGroupAttribute cagAttrD = cagAttr.asDoubleGroupAttribute();
 
             ProductInterestSupplyScheme scheme = cag.getInterestSupplyScheme();
             scheme.setThresholdDistribution(pvGroup, cagAttrD.getDistribution());

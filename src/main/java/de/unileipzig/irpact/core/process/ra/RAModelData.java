@@ -1,10 +1,12 @@
 package de.unileipzig.irpact.core.process.ra;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
-import de.unileipzig.irpact.commons.attribute.v3.Attribute;
-import de.unileipzig.irpact.commons.attribute.v3.AttributeUtil;
+import de.unileipzig.irpact.commons.attribute.Attribute;
+import de.unileipzig.irpact.commons.attribute.AttributeUtil;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAnnualAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
 
 import java.util.HashMap;
@@ -91,9 +93,17 @@ public class RAModelData implements ChecksumComparable {
 
     public double NPV(ConsumerAgent agent, int year) {
         NPVMatrix matrix = npData.get(year);
-        int N = getN(agent);
-        int A = getA(agent);
-        return matrix.getValue(N, A);
+        if(matrix == null) {
+            ConsumerAgentAnnualAttribute aAttr = agent.getAttribute(RAConstants.NET_PRESENT_VALUE)
+                    .asAnnualAttribute();
+            ConsumerAgentAttribute attr = aAttr.getAttribute(year);
+            return attr.asValueAttribute()
+                    .getDoubleValue();
+        } else {
+            int N = getN(agent);
+            int A = getA(agent);
+            return matrix.getValue(N, A);
+        }
     }
 
     protected MutableDouble avgNPV = new MutableDouble(Double.NaN);

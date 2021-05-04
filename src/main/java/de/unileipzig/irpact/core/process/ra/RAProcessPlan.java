@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.process.ra;
 
-import de.unileipzig.irpact.commons.attribute.v3.Attribute;
-import de.unileipzig.irpact.commons.attribute.v3.AttributeUtil;
+import de.unileipzig.irpact.commons.attribute.Attribute;
+import de.unileipzig.irpact.commons.attribute.AttributeUtil;
 import de.unileipzig.irpact.commons.log.MultiLoggingMessage;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.MathUtil;
@@ -10,8 +10,9 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.Acting;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.*;
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentProductRelatedAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttributeUtil;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.InfoTag;
@@ -654,16 +655,10 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected double getNPV(ConsumerAgent agent) {
-        if(true) {
-            environment.getLiveCycleControl().terminateWithError(new RuntimeException("TODO"));
-        }
         return getNPV(agent, environment.getTimeModel().getCurrentYear());
     }
 
     protected double getAverageNPV() {
-        if(true) {
-            environment.getLiveCycleControl().terminateWithError(new RuntimeException("TODO"));
-        }
         double sum = environment.getAgents()
                 .streamConsumerAgents()
                 .mapToDouble(this::getNPV)
@@ -680,33 +675,23 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected static double getFinancialThreshold(ConsumerAgent agent, Product product) {
-        ConsumerAgentProductRelatedAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.FINANCIAL_THRESHOLD);
-        ConsumerAgentAttribute attr = prAttr.getAttribute(product);
-        return AttributeUtil.getDoubleValue(attr, RAConstants.FINANCIAL_THRESHOLD);
+        return ConsumerAgentAttributeUtil.getRelatedDoubleValue(agent, product, RAConstants.FINANCIAL_THRESHOLD);
     }
 
     protected static double getAdoptionThreshold(ConsumerAgent agent, Product product) {
-        ConsumerAgentProductRelatedAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.ADOPTION_THRESHOLD);
-        ConsumerAgentAttribute attr = prAttr.getAttribute(product);
-        return AttributeUtil.getDoubleValue(attr, RAConstants.ADOPTION_THRESHOLD);
+        return ConsumerAgentAttributeUtil.getRelatedDoubleValue(agent, product, RAConstants.ADOPTION_THRESHOLD);
     }
 
     protected static double getInitialProductAwareness(ConsumerAgent agent, Product product) {
-        ConsumerAgentProductRelatedAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.INITIAL_PRODUCT_AWARENESS);
-        ConsumerAgentAttribute attr = prAttr.getAttribute(product);
-        return AttributeUtil.getDoubleValue(attr, RAConstants.INITIAL_PRODUCT_AWARENESS);
+        return ConsumerAgentAttributeUtil.getRelatedDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_AWARENESS);
     }
 
     protected static double getInitialProductInterest(ConsumerAgent agent, Product product) {
-        ConsumerAgentProductRelatedAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.INITIAL_PRODUCT_INTEREST);
-        ConsumerAgentAttribute attr = prAttr.getAttribute(product);
-        return AttributeUtil.getDoubleValue(attr, RAConstants.INITIAL_PRODUCT_INTEREST);
+        return ConsumerAgentAttributeUtil.getRelatedDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_INTEREST);
     }
 
     protected static double getInitialAdopter(ConsumerAgent agent, Product product) {
-        ConsumerAgentProductRelatedAttribute prAttr = agent.getProductRelatedAttribute(RAConstants.INITIAL_ADOPTER);
-        ConsumerAgentAttribute attr = prAttr.getAttribute(product);
-        return AttributeUtil.getDoubleValue(attr, RAConstants.INITIAL_ADOPTER);
+        return ConsumerAgentAttributeUtil.getRelatedDoubleValue(agent, product, RAConstants.INITIAL_ADOPTER);
     }
 
     protected static double getCommunicationFrequencySN(ConsumerAgent agent) {

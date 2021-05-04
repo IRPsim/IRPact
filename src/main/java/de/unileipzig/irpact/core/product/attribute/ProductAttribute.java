@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.product.attribute;
 
-import de.unileipzig.irpact.commons.attribute.v3.GroupEntityAttribute;
+import de.unileipzig.irpact.commons.attribute.GroupEntityAttribute;
 
 /**
  * @author Daniel Abitz

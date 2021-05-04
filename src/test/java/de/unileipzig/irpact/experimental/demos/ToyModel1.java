@@ -9,6 +9,7 @@ import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.InVersion;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InDummyConsumerAgentAnnualGroupAttribute;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulationSize;
 import de.unileipzig.irpact.io.param.input.distribution.InConstantUnivariateDistribution;
@@ -109,6 +110,14 @@ public class ToyModel1 {
                 new InComplexAffinityEntry("Affinity_K_A", K, A, 0)
         };
 
+        //dummy
+
+        A.dummyAnnuals = new InDummyConsumerAgentAnnualGroupAttribute[] {
+                new InDummyConsumerAgentAnnualGroupAttribute("NPV_A", RAConstants.NET_PRESENT_VALUE, 2015, diraq07)
+        };
+        K.dummyAnnuals = new InDummyConsumerAgentAnnualGroupAttribute[] {
+                new InDummyConsumerAgentAnnualGroupAttribute("NPV_K", RAConstants.NET_PRESENT_VALUE, 2015, diraq1)
+        };
 
         //Population
         InFixConsumerAgentPopulationSize populationSize = new InFixConsumerAgentPopulationSize();
@@ -137,7 +146,7 @@ public class ToyModel1 {
         processModel.setDefaultPoints();
         processModel.setLogisticFactor(1.0 / 8.0);
         processModel.setUncertaintyGroupAttribute(uncertainty);
-        processModel.setPvFile(pvFile);
+        //processModel.setPvFile(pvFile);
 
 
         InSpace2D space2D = new InSpace2D("Space2D", Metric2D.HAVERSINE_KM);

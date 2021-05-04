@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.util;
 
-import de.unileipzig.irpact.commons.spatial.attribute.v2.*;
+import de.unileipzig.irpact.commons.spatial.attribute.BasicSpatialDoubleAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.BasicSpatialStringAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.commons.util.csv.CsvPartConverter;

@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.product.attribute;
 
-import de.unileipzig.irpact.commons.attribute.v3.ValueAttribute;
+import de.unileipzig.irpact.commons.attribute.ValueAttribute;
 
 /**
  * @author Daniel Abitz

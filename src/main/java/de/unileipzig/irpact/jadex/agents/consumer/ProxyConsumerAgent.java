@@ -1,15 +1,15 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
-import de.unileipzig.irpact.commons.attribute.v3.Attribute;
-import de.unileipzig.irpact.commons.attribute.v3.AttributeAccess;
+import de.unileipzig.irpact.commons.attribute.Attribute;
+import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.core.agent.ProxyAgent;
 import de.unileipzig.irpact.core.agent.SpatialInformationAgentBase;
 import de.unileipzig.irpact.core.agent.consumer.*;
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentProductRelatedAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.need.Need;

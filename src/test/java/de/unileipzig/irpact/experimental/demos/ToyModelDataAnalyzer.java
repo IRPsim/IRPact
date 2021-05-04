@@ -22,9 +22,9 @@ public class ToyModelDataAnalyzer {
     @SuppressWarnings("SameParameterValue")
     private static void calcDistances(Collection<SpatialInformation> coll, Metric2D metric) {
         for(SpatialInformation from: coll) {
-            String fromId = from.getAttribute(RAConstants.ID).getValueAsString();
+            String fromId = from.getAttribute(RAConstants.ID).asValueAttribute().getValueAsString();
             for(SpatialInformation to: coll) {
-                String toId = to.getAttribute(RAConstants.ID).getValueAsString();
+                String toId = to.getAttribute(RAConstants.ID).asValueAttribute().getValueAsString();
                 double dist = metric.distance(from, to);
                 System.out.println(fromId + " -> " + toId + " = " + dist);
             }
@@ -33,9 +33,9 @@ public class ToyModelDataAnalyzer {
 
     @SuppressWarnings("SameParameterValue")
     private static void calcDistances(SpatialInformation from, Collection<SpatialInformation> coll, Metric2D metric) {
-        String fromId = from.getAttribute(RAConstants.ID).getValueAsString();
+        String fromId = from.getAttribute(RAConstants.ID).asValueAttribute().getValueAsString();
         for(SpatialInformation to: coll) {
-            String toId = to.getAttribute(RAConstants.ID).getValueAsString();
+            String toId = to.getAttribute(RAConstants.ID).asValueAttribute().getValueAsString();
             double dist = metric.distance(from, to);
             System.out.println(fromId + " -> " + toId + " = " + dist);
         }

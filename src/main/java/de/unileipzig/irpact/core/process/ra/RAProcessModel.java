@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.process.ra;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
-import de.unileipzig.irpact.commons.attribute.v3.Attribute;
+import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.time.Timestamp;
@@ -10,8 +10,10 @@ import de.unileipzig.irpact.commons.util.data.DataType;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.consumer.*;
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.BasicMultiConsumerAgentGroupAttributeSupplier;
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.MultiConsumerAgentGroupAttributeSupplier;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicMultiConsumerAgentGroupAttributeSupplier;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAnnualGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.MultiConsumerAgentGroupAttributeSupplier;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.misc.MissingDataException;
@@ -126,10 +128,14 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
     @Override
     public void preAgentCreation() throws MissingDataException {
-        if(npvData == null) {
-            throw new MissingDataException("np npv data");
+        if(npvData != null) {
+            initNPVMatrixWithFile();
         }
 
+        addMissingGroupAttributesToCags();
+    }
+
+    private void initNPVMatrixWithFile() {
         npvCalculator = new NPVCalculator();
         npvCalculator.setData(npvData);
 
@@ -145,8 +151,6 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
             matrix.calculate(npvCalculator, y);
             modelData.put(y, matrix);
         }
-
-        addMissingGroupAttributesToCags();
     }
 
     private void addMissingGroupAttributesToCags() {
@@ -158,13 +162,36 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
     @Override
     public void preAgentCreationValidation() throws ValidationException {
         if(npvData == null) {
-            throw new ValidationException("npv data missing");
-        }
-        if(npvCalculator == null) {
-            throw new ValidationException("npv calculator missing");
+            LOGGER.trace("no npv data found, test existence of attribute '{}'", RAConstants.NET_PRESENT_VALUE);
+            validateNPVAttributeExistenceInCags();
         }
 
         checkGroupAttributExistance();
+    }
+
+    private void validateNPVAttributeExistenceInCags() throws ValidationException {
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            if(!cag.hasGroupAttribute(RAConstants.NET_PRESENT_VALUE)) {
+                throw ExceptionUtil.create(ValidationException::new, "cag '{}' has no '{}'", cag.getName(), RAConstants.NET_PRESENT_VALUE);
+            }
+            ConsumerAgentGroupAttribute cagAttr = cag.getGroupAttribute(RAConstants.NET_PRESENT_VALUE);
+            if(!cagAttr.isAnnualGroupAttribute()) {
+                throw ExceptionUtil.create(ValidationException::new, "cag '{}' has no annual data '{}'", cag.getName(), RAConstants.NET_PRESENT_VALUE);
+            }
+            ConsumerAgentAnnualGroupAttribute aCagAttr = cagAttr.asAnnualGroupAttribute();
+
+            int firstYear = environment.getTimeModel()
+                    .getFirstSimulationYear();
+            int lastYear = environment.getTimeModel()
+                    .getLastSimulationYear();
+
+            for(int y = firstYear; y <= lastYear; y++) {
+                if(!aCagAttr.hasYear(y)) {
+                    throw ExceptionUtil.create(ValidationException::new, "cag '{}' has no annual data '{}' for year '{}'", cag.getName(), RAConstants.NET_PRESENT_VALUE, y);
+                }
+            }
+        }
+        LOGGER.trace("annual attribute '{}' for all cags and years found", RAConstants.NET_PRESENT_VALUE);
     }
 
     private void checkGroupAttributExistance() throws ValidationException {

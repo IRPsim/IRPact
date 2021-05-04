@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.process.ra.attributes;
 
-import de.unileipzig.irpact.core.agent.consumer.attribute.v2.ConsumerAgentDoubleAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentDoubleAttribute;
 import de.unileipzig.irpact.develop.Todo;
 
 /**

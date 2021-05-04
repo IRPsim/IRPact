@@ -1,9 +1,9 @@
 package de.unileipzig.irpact.core.spatial.twodim;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
-import de.unileipzig.irpact.commons.attribute.v3.AttributeAccess;
-import de.unileipzig.irpact.commons.attribute.v3.BasicAttributeAccess;
-import de.unileipzig.irpact.commons.spatial.attribute.v2.SpatialAttribute;
+import de.unileipzig.irpact.commons.attribute.AttributeAccess;
+import de.unileipzig.irpact.commons.attribute.BasicAttributeAccess;
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 
 import java.util.*;
 

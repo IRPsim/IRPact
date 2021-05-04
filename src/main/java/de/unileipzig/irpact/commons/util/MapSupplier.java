@@ -85,6 +85,14 @@ public enum MapSupplier {
         }
     }
 
+    public static MapSupplier getValid(int id) {
+        MapSupplier mapSupplier = get(id);
+        if(mapSupplier == UNKNOWN) {
+            throw new IllegalArgumentException("unsupported id: " + id);
+        }
+        return mapSupplier;
+    }
+
     public static MapSupplier getDefault() {
         return LINKED;
     }

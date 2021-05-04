@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.experimental.spatialInfoFinder;
 
-import de.unileipzig.irpact.commons.attribute.ValueAttribute;
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.csv.CsvParser;
@@ -13,7 +13,6 @@ import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.spatial.filter.MaxDistanceSpatialInformationFilter;
 import de.unileipzig.irpact.core.spatial.filter.RangeSpatialInformationFilter;
 import de.unileipzig.irpact.core.spatial.twodim.BasicPoint2D;
@@ -189,7 +188,7 @@ public class TestIt {
         table.set(parser.getHeader(), parser.getRows());
 
         List<Object> objs = table.streamColumn(RAConstants.DOM_MILIEU)
-                .map(ValueAttribute::getValue)
+                .map(sa -> sa.asValueAttribute().getValue())
                 .distinct()
                 .collect(Collectors.toList());
 
@@ -232,7 +231,7 @@ public class TestIt {
         System.out.println(infoList.size());
 
         Set<String> milieus = infoList.stream()
-                .map(info -> info.getAttribute(RAConstants.DOM_MILIEU).getStringValue())
+                .map(info -> info.getAttribute(RAConstants.DOM_MILIEU).asValueAttribute().getStringValue())
                 .map(str -> "\"" + str + "\"")
                 .collect(Collectors.toSet());
 

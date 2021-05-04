@@ -35,7 +35,7 @@ public class UIDJavaString {
     public String getDecodedName() {
         if(encoded) {
             if(decodedName == null) {
-                decodedName = IRPactBase32.base32ToUtf8(_name);
+                decodedName = IRPactBase32.decodeToUtf8(_name);
             }
             return decodedName;
         } else {

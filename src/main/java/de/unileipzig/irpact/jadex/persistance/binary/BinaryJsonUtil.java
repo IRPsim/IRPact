@@ -3,8 +3,6 @@ package de.unileipzig.irpact.jadex.persistance.binary;
 import de.unileipzig.irpact.commons.persistence.Persister;
 import de.unileipzig.irpact.commons.persistence.Restorer;
 import de.unileipzig.irpact.jadex.persistance.binary.impl.*;
-import de.unileipzig.irpact.jadex.persistance.binary.impl.dep.BasicConsumerAgentGroupAttributeSupplierPR;
-import de.unileipzig.irpact.jadex.persistance.binary.impl.dep.BasicConsumerAgentSpatialAttributeSupplierPR;
 
 /**
  * @author Daniel Abitz
@@ -24,11 +22,11 @@ public final class BinaryJsonUtil {
 
     private static void ensureRegisterDefaults(Object manager) {
         ensureRegister(manager, BasicAdoptedProductPR.INSTANCE);
-        ensureRegister(manager, BasicConsumerAgentAttributePR.INSTANCE);
+        ensureRegister(manager, BasicConsumerAgentAnnualAttributePR.INSTANCE);
+        ensureRegister(manager, BasicConsumerAgentAnnualGroupAttributePR.INSTANCE);
+        ensureRegister(manager, BasicConsumerAgentDoubleAttributePR.INSTANCE);
         ensureRegister(manager, BasicConsumerAgentGroupAffinityMappingPR.INSTANCE);
-        ensureRegister(manager, BasicConsumerAgentGroupAttributePR.INSTANCE);
-        ensureRegister(manager, BasicConsumerAgentGroupAttributeSupplierPR.INSTANCE);
-        ensureRegister(manager, BasicConsumerAgentSpatialAttributeSupplierPR.INSTANCE);
+        ensureRegister(manager, BasicConsumerAgentDoubleGroupAttributePR.INSTANCE);
         ensureRegister(manager, BasicDistanceEvaluatorPR.INSTANCE);
         ensureRegister(manager, BasicEdgePR.INSTANCE);
         ensureRegister(manager, BasicJadexLifeCycleControlPR.INSTANCE);
