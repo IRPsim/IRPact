@@ -152,6 +152,22 @@ public interface ChecksumComparable {
         return h;
     }
 
+    static <K, V extends Nameable> int getMapChecksumWithNamedValue(Map<K, V> map) {
+        return getMapChecksumWithMapping(
+                map,
+                Function.identity(),
+                Nameable.toStringFunction()
+        );
+    }
+
+    static <K extends Nameable, V extends Nameable> int getNamedMapChecksum(Map<K, V> map) {
+        return getMapChecksumWithMapping(
+                map,
+                Nameable.toStringFunction(),
+                Nameable.toStringFunction()
+        );
+    }
+
     static int getMapCollChecksum(Map<?, ? extends Collection<?>> map) {
         int h = 0;
         for(Map.Entry<?, ? extends Collection<?>> entry: map.entrySet()) {

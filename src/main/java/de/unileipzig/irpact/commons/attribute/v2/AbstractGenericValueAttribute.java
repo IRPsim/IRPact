@@ -7,15 +7,8 @@ public abstract class AbstractGenericValueAttribute<T> extends AbstractValueAttr
 
     protected T value;
 
-    protected abstract Class<T> getTClass();
-
     @Override
     public T getValue() {
         return value;
-    }
-
-    @Override
-    public void setValue(Object value) {
-        this.value = castTo(getTClass(), value);
     }
 }

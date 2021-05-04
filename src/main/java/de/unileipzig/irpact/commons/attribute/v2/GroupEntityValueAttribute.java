@@ -5,5 +5,5 @@ import de.unileipzig.irpact.commons.GroupEntity;
 /**
  * @author Daniel Abitz
  */
-public interface GroupEntityAttribute<G> extends Attribute, GroupEntity<G> {
+public interface GroupEntityValueAttribute<G> extends ValueAttribute, GroupEntity<G> {
 }

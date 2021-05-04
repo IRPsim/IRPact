@@ -17,11 +17,6 @@ public class BasicDoubleAttribute extends AbstractValueAttribute {
         setDoubleValue(value);
     }
 
-    public BasicDoubleAttribute(String name, boolean value) {
-        setName(name);
-        setDoubleValue(value);
-    }
-
     @Override
     public BasicDoubleAttribute copy() {
         BasicDoubleAttribute copy = new BasicDoubleAttribute();

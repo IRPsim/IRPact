@@ -5,7 +5,9 @@ package de.unileipzig.irpact.commons.attribute.v2;
  */
 public abstract class AbstractValueAttribute extends AbstractAttribute implements ValueAttribute {
 
-    protected <R> R castTo(Class<R> type, Object input) {
+    protected static <R> R castTo(
+            Class<R> type,
+            Object input) {
         if(input == null) {
             return null;
         }

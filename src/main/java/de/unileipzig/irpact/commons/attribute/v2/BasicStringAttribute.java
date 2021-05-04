@@ -29,8 +29,8 @@ public class BasicStringAttribute extends AbstractGenericValueAttribute<String> 
     }
 
     @Override
-    protected Class<String> getTClass() {
-        return String.class;
+    public void setValue(Object value) {
+        this.value = castTo(String.class, value);
     }
 
     public void setStringValue(String value) {

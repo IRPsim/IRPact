@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.commons.attribute.v2;
+package de.unileipzig.irpact.commons.attribute.v3;
 
 import de.unileipzig.irpact.commons.GroupEntity;
 

@@ -1,19 +1,19 @@
-package de.unileipzig.irpact.commons.attribute.v2;
+package de.unileipzig.irpact.commons.attribute.v3;
 
 /**
  * @author Daniel Abitz
  */
-public interface RelatedAttribute<T> extends Attribute {
+public interface RelatedAttribute<R> extends Attribute {
 
     //=========================
     //Related
     //=========================
 
-    boolean hasAttribute(T related);
+    boolean hasAttribute(R related);
 
-    AttributeBase getAttribute(T related);
+    AttributeBase getAttribute(R related);
 
-    AttributeBase removeAttribute(T related);
+    AttributeBase removeAttribute(R related);
 
     //=========================
     //Attribute
@@ -24,8 +24,9 @@ public interface RelatedAttribute<T> extends Attribute {
         return type == AttributeType.RELATED;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    default RelatedAttribute<T> asRelatedAttribute() {
+    default RelatedAttribute<R> asRelatedAttribute() {
         return this;
     }
 

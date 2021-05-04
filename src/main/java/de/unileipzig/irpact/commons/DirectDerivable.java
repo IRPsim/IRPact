@@ -3,7 +3,7 @@ package de.unileipzig.irpact.commons;
 /**
  * @author Daniel Abitz
  */
-public interface DirectDerivable<T> extends DerivableBase {
+public interface DirectDerivable<D> extends DerivableBase {
 
-    T derive();
+    D derive();
 }
