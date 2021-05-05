@@ -88,7 +88,7 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
     }
 
     @Override
-    protected void onHashMismatch(BinaryJsonData data, RAProcessModel object, RestoreManager manager) {
+    protected void onChecksumMismatch(BinaryJsonData data, RAProcessModel object, RestoreManager manager) {
         object.deepHashCode();
     }
 }

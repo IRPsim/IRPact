@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.persistence.*;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentValueAttribute;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
@@ -41,11 +42,14 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
     protected BinaryJsonData doInitalizePersist(ProxyConsumerAgent object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
+        data.putInt(object.getMaxNumberOfActions());
 
         manager.prepare(object.getGroup());
         manager.prepare(object.getSpatialInformation());
         manager.prepareAll(object.getAttributes());
+        manager.prepareAll(object.getProductRelatedAttributes());
 
+        manager.prepare(object.getProductAwareness());
         manager.prepare(object.getProductInterest());
         manager.prepareAll(object.getAdoptedProducts());
         manager.prepare(object.getProductFindingScheme());
@@ -62,8 +66,10 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
         data.putLong(manager.ensureGetUID(object.getGroup()));
         data.putLong(manager.ensureGetUID(object.getSpatialInformation()));
         data.putLongArray(manager.ensureGetAllUIDs(object.getAttributes()));
+        data.putLongArray(manager.ensureGetAllUIDs(object.getProductRelatedAttributes()));
         data.putDouble(object.getInformationAuthority());
 
+        data.putLong(manager.ensureGetUID(object.getProductAwareness()));
         data.putLong(manager.ensureGetUID(object.getProductInterest()));
         data.putLongArray(manager.ensureGetAllUIDs(object.getAdoptedProducts()));
         data.putLong(manager.ensureGetUID(object.getProductFindingScheme()));
@@ -71,6 +77,8 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
 
         data.putLongArray(manager.ensureGetAllUIDs(object.getNeeds()));
         data.putLongLongMap(manager.ensureGetAllUIDs(object.getPlans()));
+
+        object.deepChecksumCheck();
     }
 
     //=========================
@@ -81,6 +89,7 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
     protected ProxyConsumerAgent doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
         ProxyConsumerAgent object = new ProxyConsumerAgent();
         object.setName(data.getText());
+        object.setMaxNumberOfActions(data.getInt());
         return object;
     }
 
@@ -88,13 +97,15 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
     protected void doSetupRestore(BinaryJsonData data, ProxyConsumerAgent object, RestoreManager manager) {
         object.setEnvironment(manager.ensureGetInstanceOf(SimulationEnvironment.class));
 
-        //...
+
         object.setGroup(manager.ensureGet(data.getLong()));
         object.setSpatialInformation(manager.ensureGet(data.getLong()));
         object.addAllAttributes(manager.ensureGetAll(data.getLongArray(), ConsumerAgentValueAttribute[]::new));
+        object.addAllProductRelatedAttribute(manager.ensureGetAll(data.getLongArray(), ConsumerAgentProductRelatedAttribute[]::new));
         object.setInformationAuthority(data.getDouble());
-        //...
+
         object.setProductAwareness(manager.ensureGet(data.getLong()));
+        object.setProductInterest(manager.ensureGet(data.getLong()));
         object.addAllAdoptedProducts(manager.ensureGetAll(data.getLongArray(), AdoptedProduct[]::new));
         object.setProductFindingScheme(manager.ensureGet(data.getLong()));
         object.setProcessFindingScheme(manager.ensureGet(data.getLong()));
@@ -123,7 +134,7 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
     }
 
     @Override
-    protected void onHashMismatch(BinaryJsonData data, ProxyConsumerAgent object, RestoreManager manager) {
-        object.deepHashCheck();
+    protected void onChecksumMismatch(BinaryJsonData data, ProxyConsumerAgent object, RestoreManager manager) {
+        object.deepChecksumCheck();
     }
 }

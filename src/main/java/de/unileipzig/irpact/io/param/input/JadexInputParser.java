@@ -67,6 +67,7 @@ public class JadexInputParser implements InputParser {
 
     private BasicJadexSimulationEnvironment environment;
     private InRoot root;
+    private int simulationYear;
 
     public JadexInputParser() {
     }
@@ -98,6 +99,15 @@ public class JadexInputParser implements InputParser {
         if(!CACHE.containsKey(holder)) {
             CACHE.put(holder, value);
         }
+    }
+
+    public void setSimulationYear(int simulationYear) {
+        this.simulationYear = simulationYear;
+    }
+
+    @Override
+    public int getSimulationYear() {
+        return simulationYear;
     }
 
     @Override

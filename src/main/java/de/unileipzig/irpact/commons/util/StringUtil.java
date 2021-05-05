@@ -59,6 +59,10 @@ public final class StringUtil {
     }
 
     public static String repeat(String input, int count) {
+        if(count == 0) {
+            return "";
+        }
+
         try {
             StringBuilder sb = new StringBuilder();
             appendRepeat(sb, input, count);

@@ -189,10 +189,10 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
         int storedHash = data.getInt();
         int restoredHash = ((ChecksumComparable) object).getChecksum();
         if(!checkHash(object, storedHash, restoredHash)) {
-            onHashMismatch(data, object, manager);
+            onChecksumMismatch(data, object, manager);
         }
 
-        manager.setValidationHash(storedHash);
+        manager.setValidationChecksum(storedHash);
     }
 
     @Override

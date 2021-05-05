@@ -149,12 +149,16 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
         getSpatialDistribution().setup(parser, jCag);
 
         for(InConsumerAgentGroupAttribute inCagAttr: getAttributes()) {
-            ConsumerAgentGroupAttribute cagAttr = parser.parseEntityTo(inCagAttr);
-            if(jCag.hasGroupAttribute(cagAttr.getName())) {
-                throw new ParsingException("ConsumerAgentGroupAttribute '" + cagAttr.getName() + "' already exists in " + jCag.getName());
+            if(inCagAttr.requiresSetup()) {
+                inCagAttr.setup(parser, this);
+            } else {
+                ConsumerAgentGroupAttribute cagAttr = parser.parseEntityTo(inCagAttr);
+                if(jCag.hasGroupAttribute(cagAttr.getName())) {
+                    throw new ParsingException("ConsumerAgentGroupAttribute '" + cagAttr.getName() + "' already exists in " + jCag.getName());
+                }
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), inCagAttr.getName(), jCag.getName());
+                jCag.addGroupAttribute(cagAttr);
             }
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), inCagAttr.getName(), jCag.getName());
-            jCag.addGroupAttribute(cagAttr);
         }
 
         return jCag;

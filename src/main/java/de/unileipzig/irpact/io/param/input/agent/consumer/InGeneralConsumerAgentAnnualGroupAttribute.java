@@ -10,7 +10,8 @@ import de.unileipzig.irpact.io.param.input.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
-import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.Constants;
+import de.unileipzig.irptools.defstructure.annotation.*;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -23,7 +24,8 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 /**
  * @author Daniel Abitz
  */
-public class InDummyConsumerAgentAnnualGroupAttribute {
+@Definition
+public class InGeneralConsumerAgentAnnualGroupAttribute implements InDependentConsumerAgentGroupAttribute {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -36,45 +38,50 @@ public class InDummyConsumerAgentAnnualGroupAttribute {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_GROUP, thisName());
-        addEntry(res, thisClass(), "cagAttributes");
-        addEntry(res, thisClass(), "cagInterest");
-        addEntry(res, thisClass(), "productFindingSchemes");
-        addEntry(res, thisClass(), "spatialDistribution");
+        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_ATTR, thisName());
+        addEntry(res, thisClass(), "attributeName");
+        addEntry(res, thisClass(), "distribution");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
 
+    @FieldDefinition
     public InAttributeName[] attributeName;
 
-    public int year;
-
+    @FieldDefinition(
+            edn = @EdnParameter(
+                    delta = Constants.TRUE1
+            )
+    )
     public InUnivariateDoubleDistribution[] distribution;
 
-    public InDummyConsumerAgentAnnualGroupAttribute() {
+    private int customYear;
+    private boolean hasCustomYear = false;
+
+    public InGeneralConsumerAgentAnnualGroupAttribute() {
     }
 
-    public InDummyConsumerAgentAnnualGroupAttribute(
-            String name,
-            String attributeName,
-            int year,
-            InUnivariateDoubleDistribution distribution) {
-        this(name, new InAttributeName(attributeName), year, distribution);
-    }
-
-    public InDummyConsumerAgentAnnualGroupAttribute(
+    public InGeneralConsumerAgentAnnualGroupAttribute(
             String name,
             InAttributeName attributeName,
-            int year,
             InUnivariateDoubleDistribution distribution) {
         setName(name);
-        setAttributeName(attributeName);
-        setYear(year);
+        setAttributeNameInstance(attributeName);
         setDistribution(distribution);
     }
 
+    public InGeneralConsumerAgentAnnualGroupAttribute(
+            String name,
+            InAttributeName attributeName,
+            InUnivariateDoubleDistribution distribution,
+            int customYear) {
+        this(name, attributeName, distribution);
+        setCustomYear(customYear);
+    }
+
+    @Override
     public String getName() {
         return _name;
     }
@@ -83,24 +90,35 @@ public class InDummyConsumerAgentAnnualGroupAttribute {
         this._name = name;
     }
 
-    public InAttributeName getAttributeName() throws ParsingException {
-        return ParamUtil.getInstance(attributeName, "attributeName");
+    public void setAttributeNameInstance(InAttributeName attrName) {
+        this.attributeName = new InAttributeName[]{attrName};
     }
 
-    public String getAttributeNameString() throws ParsingException {
-        return getAttributeName().getName();
+    public InAttributeName getAttributeNameInstance() throws ParsingException {
+        return ParamUtil.getInstance(attributeName, "AttributeName");
     }
 
-    public void setAttributeName(InAttributeName attributeName) {
-        this.attributeName = new InAttributeName[]{attributeName};
+    @Override
+    public String getAttributeName() throws ParsingException {
+        return getAttributeNameInstance().getName();
     }
 
-    public int getYear() {
-        return year;
+    public int getCustomYear() {
+        return customYear;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setCustomYear(int customYear) {
+        this.customYear = customYear;
+        hasCustomYear = true;
+    }
+
+    public void deleteCustomYear() {
+        customYear = 0;
+        hasCustomYear = false;
+    }
+
+    public boolean hasCustomYear() {
+        return hasCustomYear;
     }
 
     public InUnivariateDoubleDistribution getDistribution() throws ParsingException {
@@ -111,27 +129,39 @@ public class InDummyConsumerAgentAnnualGroupAttribute {
         this.distribution = new InUnivariateDoubleDistribution[]{distribution};
     }
 
+    @Override
+    public boolean requiresSetup() {
+        return true;
+    }
+
+    @Override
     public void setup(InputParser parser, Object input) throws ParsingException {
         JadexConsumerAgentGroup jcag = (JadexConsumerAgentGroup) input;
-        String attributeName = getAttributeNameString();
+
+        String attributeName = getAttributeName();
         if(!jcag.hasGroupAttribute(attributeName)) {
+            LOGGER.trace("add annual attribute '{}' to cag '{}'", attributeName, jcag.getName());
             BasicConsumerAgentAnnualGroupAttribute aGrpAttr = new BasicConsumerAgentAnnualGroupAttribute();
             aGrpAttr.setName(attributeName);
             aGrpAttr.setArtificial(false);
             jcag.addGroupAttribute(aGrpAttr);
         }
 
+        int year = hasCustomYear()
+                ? getCustomYear()
+                : parser.getSimulationYear();
+
         BasicConsumerAgentAnnualGroupAttribute aGrpAttr = (BasicConsumerAgentAnnualGroupAttribute) jcag.getGroupAttribute(attributeName);
-        if(aGrpAttr.hasYear(getYear())) {
-            throw ExceptionUtil.create(ParsingException::new, "cag '{}' attribute '{}' already has year '{}'", jcag.getName(), aGrpAttr.getName(), getYear());
+        if(aGrpAttr.hasYear(year)) {
+            throw ExceptionUtil.create(ParsingException::new, "cag '{}' attribute '{}' already has year '{}'", jcag.getName(), aGrpAttr.getName(), year);
         }
 
         BasicConsumerAgentDoubleGroupAttribute yearAttr = new BasicConsumerAgentDoubleGroupAttribute();
-        yearAttr.setName(getName() + "_" + getYear());
+        yearAttr.setName(getName() + "_" + year);
         yearAttr.setArtificial(true);
         yearAttr.setDistribution(parser.parseEntityTo(getDistribution()));
 
-        LOGGER.trace("add '{}' to annual attribute '{}' in cag '{}'", yearAttr.getName(), aGrpAttr.getName(), jcag.getName());
-        aGrpAttr.put(year, yearAttr);
+        LOGGER.trace("add '{}' to annual attribute '{}' in cag '{}' for year '{}'", yearAttr.getName(), aGrpAttr.getName(), jcag.getName(), year);
+        aGrpAttr.put(parser.getSimulationYear(), yearAttr);
     }
 }

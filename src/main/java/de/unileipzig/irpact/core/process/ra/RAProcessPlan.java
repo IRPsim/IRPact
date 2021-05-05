@@ -1,8 +1,9 @@
 package de.unileipzig.irpact.core.process.ra;
 
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeUtil;
-import de.unileipzig.irpact.commons.log.MultiLoggingMessage;
+import de.unileipzig.irpact.commons.log.AppendableLoggingMessage;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.MathUtil;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
@@ -12,7 +13,6 @@ import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttributeUtil;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.InfoTag;
@@ -26,6 +26,8 @@ import de.unileipzig.irpact.core.process.ra.attributes.UncertaintyAttribute;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.develop.PotentialProblem;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.slf4j.event.Level;
 
@@ -78,20 +80,24 @@ public class RAProcessPlan implements ProcessPlan {
         init();
     }
 
+    @PotentialProblem("hier fehlen noch ein paar Komponenten")
     @Override
     public int getChecksum() {
-        return Objects.hash(
-                getNeed().getChecksum(),
-                getProduct().getChecksum(),
-                getAgent().getName(), //loop sonst
-                getRnd().getChecksum(),
-                getModel().getName(),
-                getCurrentStage().getChecksum(),
+        return ChecksumComparable.getChecksum(
+                getCurrentStage(),
                 isUnderConstruction(),
-                isUnderRenovation()
+                isUnderRenovation(),
+
+                getNeed(),
+                getProduct(),
+                ChecksumComparable.getNameChecksum(getAgent()),
+                getRnd(),
+                ChecksumComparable.getNameChecksum(getModel()),
+                getNetworkFilter()
         );
     }
 
+    @Todo("haesslich")
     public void init() {
         networkFilter = model.getNodeFilterScheme()
                 .createFilter(this);
@@ -494,8 +500,8 @@ public class RAProcessPlan implements ProcessPlan {
         doSelfActionAndAllowAttention();
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle decision making", agent.getName());
 
-        MultiLoggingMessage mlm = new MultiLoggingMessage();
-        mlm.log("{} [{}] calculate U", InfoTag.ADOPTION_THRESHOLD, agent.getName());
+        AppendableLoggingMessage alm = new AppendableLoggingMessage();
+        alm.append("{} [{}] calculate U", InfoTag.DECISION_MAKING, agent.getName());
 
 
 
@@ -512,51 +518,51 @@ public class RAProcessPlan implements ProcessPlan {
             boolean noFinancial = financial < financialThreshold;
             //check D3 reached
             if(noFinancial) {
-                mlm.log("financial component < financial threshold ({} < {}) = {}", financial, financialThreshold, true);
-                logCalculateAdoption(mlm);
+                alm.append("financial component < financial threshold ({} < {}) = {}", financial, financialThreshold, true);
+                logCalculateDecisionMaking(alm);
 
                 updateStage(RAStage.IMPEDED);
                 return ProcessPlanResult.IMPEDED;
             }
             double temp = a * financial;
-            mlm.log("a * financial component = {} * {} = {}", a, financial, temp);
+            alm.append("a * financial component = {} * {} = {}", a, financial, temp);
             B += temp;
         } else {
-            mlm.log("a = 0");
+            alm.append("a = 0");
         }
 
         if(b != 0.0) {
             double env = getEnvironmentalComponent();
             double benv = b * env;
-            mlm.log("b * environmental component = {} * {} = {}", b, env, benv);
+            alm.append("b * environmental component = {} * {} = {}", b, env, benv);
             B += benv;
         } else {
-            mlm.log("b = 0");
+            alm.append("b = 0");
         }
 
         if(c != 0.0) {
             double nov = getNoveltyCompoenent();
             double cnov = c * nov;
-            mlm.log("c * novelty component = {} * {} = {}", c, nov, cnov);
+            alm.append("c * novelty component = {} * {} = {}", c, nov, cnov);
             B += cnov;
         } else {
-            mlm.log("c = 0");
+            alm.append("c = 0");
         }
 
         if(d != 0.0) {
             double soc = getSocialComponent();
             double dsoc = d * soc;
-            mlm.log("d * social component = {} * {} = {}", d, soc, dsoc);
+            alm.append("d * social component = {} * {} = {}", d, soc, dsoc);
             B += dsoc;
         } else {
-            mlm.log("d = 0");
+            alm.append("d = 0");
         }
 
         double adoptionThreshold = getAdoptionThreshold(agent, product);
         boolean noAdoption = B < adoptionThreshold;
 
-        mlm.log("U < adoption threshold ({} < {}): {}", B, adoptionThreshold, noAdoption);
-        logCalculateAdoption(mlm);
+        alm.append("U < adoption threshold ({} < {}): {}", B, adoptionThreshold, noAdoption);
+        logCalculateDecisionMaking(alm);
 
         if(noAdoption) {
             updateStage(RAStage.IMPEDED);
@@ -1083,8 +1089,8 @@ public class RAProcessPlan implements ProcessPlan {
         );
     }
 
-    protected void logCalculateAdoption(MultiLoggingMessage mlm) {
-        boolean logData = getSettings().isLogCalculateAdoption();
+    protected void logCalculateDecisionMaking(AppendableLoggingMessage mlm) {
+        boolean logData = getSettings().isLogCalculateDecisionMaking();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);

@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
@@ -43,7 +44,9 @@ public class JadexConsumerAgentGroupPR extends BinaryPRBase<JadexConsumerAgentGr
         data.putInt(object.getNextAgentId());
 
         manager.prepare(object.getSpatialDistribution());
-        manager.prepareAll(object.getAttributes());
+        manager.prepareAll(object.getGroupAttributes());
+        manager.prepareAll(object.getProductRelatedGroupAttributes());
+        manager.prepare(object.getAwarenessSupplyScheme());
         manager.prepare(object.getInterestSupplyScheme());
         manager.prepare(object.getProductFindingScheme());
         manager.prepare(object.getProcessFindingScheme());
@@ -59,7 +62,9 @@ public class JadexConsumerAgentGroupPR extends BinaryPRBase<JadexConsumerAgentGr
     @Override
     protected void doSetupPersist(JadexConsumerAgentGroup object, BinaryJsonData data, PersistManager manager) {
         data.putLong(manager.ensureGetUID(object.getSpatialDistribution()));
-        data.putLongArray(manager.ensureGetAllUIDs(object.getAttributes()));
+        data.putLongArray(manager.ensureGetAllUIDs(object.getGroupAttributes()));
+        data.putLongArray(manager.ensureGetAllUIDs(object.getProductRelatedGroupAttributes()));
+        data.putLong(manager.ensureGetUID(object.getAwarenessSupplyScheme()));
         data.putLong(manager.ensureGetUID(object.getInterestSupplyScheme()));
         data.putLong(manager.ensureGetUID(object.getProductFindingScheme()));
         data.putLong(manager.ensureGetUID(object.getProcessFindingScheme()));
@@ -94,6 +99,8 @@ public class JadexConsumerAgentGroupPR extends BinaryPRBase<JadexConsumerAgentGr
         object.setSpatialDistribution(spatialDistribution);
 
         object.addAllGroupAttributes(manager.ensureGetAll(data.getLongArray(), ConsumerAgentGroupAttribute[]::new));
+        object.addAllProductRelatedGroupAttribute(manager.ensureGetAll(data.getLongArray(), ConsumerAgentProductRelatedGroupAttribute[]::new));
+        object.setAwarenessSupplyScheme(manager.ensureGet(data.getLong()));
         object.setInterestSupplyScheme(manager.ensureGet(data.getLong()));
         object.setProductFindingScheme(manager.ensureGet(data.getLong()));
         object.setProcessFindingScheme(manager.ensureGet(data.getLong()));
@@ -126,5 +133,10 @@ public class JadexConsumerAgentGroupPR extends BinaryPRBase<JadexConsumerAgentGr
         }
 
         return restoredDist;
+    }
+
+    @Override
+    protected void onChecksumMismatch(BinaryJsonData data, JadexConsumerAgentGroup object, RestoreManager manager) {
+        object.deepChecksumCheck();
     }
 }

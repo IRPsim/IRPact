@@ -83,19 +83,19 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         if(isSynced()) {
             return getRealAgent().getChecksum();
         } else {
-            return Objects.hash(
+            return ChecksumComparable.getChecksum(
                     getName(),
                     getGroup().getName(),
                     getInformationAuthority(),
                     getMaxNumberOfActions(),
-                    getSpatialInformation().getChecksum(),
+                    getSpatialInformation(),
                     ChecksumComparable.getCollChecksum(getAttributes()),
-                    //TODO add product related
-                    getProductAwareness().getChecksum(),
-                    getProductInterest().getChecksum(),
+                    ChecksumComparable.getCollChecksum(getProductRelatedAttributes()),
+                    getProductAwareness(),
+                    getProductInterest(),
                     ChecksumComparable.getCollChecksum(getAdoptedProducts()),
-                    getProductFindingScheme().getChecksum(),
-                    getProcessFindingScheme().getChecksum(),
+                    getProductFindingScheme(),
+                    getProcessFindingScheme(),
                     ChecksumComparable.getCollChecksum(getNeeds()),
                     ChecksumComparable.getMapChecksum(getPlans()),
                     ChecksumComparable.getCollChecksum(getExternAttributes())
@@ -103,29 +103,30 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         }
     }
 
-    private static void logHash(String msg, int storedHash) {
+    private static void logChecksum(String msg, int storedHash) {
         LOGGER.warn(
-                "hash @ '{}': stored={}",
+                "checksum @ '{}': stored={}",
                 msg,
                 Integer.toHexString(storedHash)
         );
     }
 
-    public void deepHashCheck() {
-        logHash("name", ChecksumComparable.getChecksum(getName()));
-        logHash("group name", ChecksumComparable.getChecksum(getGroup().getName()));
-        logHash("information authority", ChecksumComparable.getChecksum(getInformationAuthority()));
-        logHash("max number of actions", ChecksumComparable.getChecksum(getMaxNumberOfActions()));
-        logHash("spatial information", ChecksumComparable.getChecksum(getSpatialInformation()));
-        logHash("attributes", ChecksumComparable.getCollChecksum(getAttributes()));
-        logHash("awareness", ChecksumComparable.getChecksum(getProductAwareness()));
-        logHash("interest", ChecksumComparable.getChecksum(getProductInterest()));
-        logHash("adopted products", ChecksumComparable.getCollChecksum(getAdoptedProducts()));
-        logHash("product finding scheme", ChecksumComparable.getChecksum(getProductFindingScheme()));
-        logHash("process finding scheme", ChecksumComparable.getChecksum(getProcessFindingScheme()));
-        logHash("needs", ChecksumComparable.getCollChecksum(getNeeds()));
-        logHash("plans", ChecksumComparable.getMapChecksum(getPlans()));
-        logHash("external attributes", ChecksumComparable.getCollChecksum(getExternAttributes()));
+    public void deepChecksumCheck() {
+        logChecksum("name", ChecksumComparable.getChecksum(getName()));
+        logChecksum("group name", ChecksumComparable.getChecksum(getGroup().getName()));
+        logChecksum("information authority", ChecksumComparable.getChecksum(getInformationAuthority()));
+        logChecksum("max number of actions", ChecksumComparable.getChecksum(getMaxNumberOfActions()));
+        logChecksum("spatial information", ChecksumComparable.getChecksum(getSpatialInformation()));
+        logChecksum("attributes", ChecksumComparable.getCollChecksum(getAttributes()));
+        logChecksum("product attributes", ChecksumComparable.getCollChecksum(getProductRelatedAttributes()));
+        logChecksum("awareness", ChecksumComparable.getChecksum(getProductAwareness()));
+        logChecksum("interest", ChecksumComparable.getChecksum(getProductInterest()));
+        logChecksum("adopted products", ChecksumComparable.getCollChecksum(getAdoptedProducts()));
+        logChecksum("product finding scheme", ChecksumComparable.getChecksum(getProductFindingScheme()));
+        logChecksum("process finding scheme", ChecksumComparable.getChecksum(getProcessFindingScheme()));
+        logChecksum("needs", ChecksumComparable.getCollChecksum(getNeeds()));
+        logChecksum("plans", ChecksumComparable.getMapChecksum(getPlans()));
+        logChecksum("external attributes", ChecksumComparable.getCollChecksum(getExternAttributes()));
     }
 
     @Override
@@ -448,6 +449,10 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
             throw ExceptionUtil.create(IllegalArgumentException::new, "attribute '{}' already exists", attribute.getName());
         }
         productRelatedAttributes.put(attribute.getName(), attribute);
+    }
+
+    public void addAllProductRelatedAttribute(ConsumerAgentProductRelatedAttribute... attributes) {
+        addAllProductRelatedAttribute(Arrays.asList(attributes));
     }
 
     public void addAllProductRelatedAttribute(Collection<? extends ConsumerAgentProductRelatedAttribute> attributes) {

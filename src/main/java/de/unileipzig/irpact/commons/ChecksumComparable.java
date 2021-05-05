@@ -223,14 +223,33 @@ public interface ChecksumComparable {
     }
 
     //=========================
+    //printing
+    //=========================
+
+    static void logChecksum(Object value) {
+        int checksum = ChecksumComparable.getChecksum(value);
+        LOGGER0.trace("checksum {} ({}): {}",
+                value instanceof Nameable ? ((Nameable) value).getName() : "-",
+                value == null ? "null" : value.getClass(),
+                checksum);
+    }
+
+    static void logChecksums(Object... values) {
+        for(Object value: values) {
+            logChecksum(value);
+        }
+    }
+
+    //=========================
     //
     //=========================
 
-    default int getChecksum() {
+    default int getChecksum() throws UnsupportedOperationException {
         throw new UnsupportedOperationException("missing checksum: '" + getClass().getName() + "'");
     }
 
-    default void printChecksums() {
+    default void logChecksum() {
+        LOGGER0.info("not implemented: {}", getClass().getName());
     }
 
     default boolean sameChecksum(Object obj) {

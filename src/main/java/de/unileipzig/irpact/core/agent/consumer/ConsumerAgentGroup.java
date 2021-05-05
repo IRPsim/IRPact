@@ -20,7 +20,7 @@ public interface ConsumerAgentGroup extends AgentGroup<ConsumerAgent> {
 
     int getMaxNumberOfActions();
 
-    Collection<ConsumerAgentGroupAttribute> getAttributes();
+    Collection<ConsumerAgentGroupAttribute> getGroupAttributes();
 
     boolean hasGroupAttribute(String name);
 

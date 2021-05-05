@@ -5,7 +5,10 @@ import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialDoubleAttribute;
 import de.unileipzig.irpact.commons.util.ShareCalculator;
 import de.unileipzig.irpact.commons.util.data.DataType;
+import de.unileipzig.irpact.commons.util.table.Table;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.spatial.twodim.BasicPoint2D;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
 import java.util.function.Function;
@@ -16,6 +19,8 @@ import java.util.stream.Collectors;
  * @author Daniel Abitz
  */
 public final class SpatialUtil {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(SpatialUtil.class);
 
     public static Predicate<List<SpatialAttribute>> filterAttribute(String attrName, String value) {
         return row -> {
@@ -138,5 +143,10 @@ public final class SpatialUtil {
                     }
                 });
         return map;
+    }
+
+    public static void xxx(
+            Table<SpatialAttribute> spatialData) {
+
     }
 }

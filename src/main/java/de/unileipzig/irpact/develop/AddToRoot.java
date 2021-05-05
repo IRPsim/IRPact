@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.develop;
 
 /**
- * Reminder to add the class to the input root.
+ * Reminder to add the class to InRoot.
  *
  * @author Daniel Abitz
  */

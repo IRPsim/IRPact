@@ -50,6 +50,10 @@ public class BasicUncertaintyGroupAttributeSupplier extends NameableBase impleme
         this.attrName = attrName;
     }
 
+    public String getAttributeName() {
+        return attrName;
+    }
+
     public void setUncertaintyDistribution(UnivariateDoubleDistribution uncertDist) {
         this.uncertDist = uncertDist;
     }
@@ -80,7 +84,7 @@ public class BasicUncertaintyGroupAttributeSupplier extends NameableBase impleme
     public void addGroupAttributeTo(ConsumerAgentGroup cag) {
         String uncertName = RAConstants.getUncertaintyAttributeName(attrName);
         if(cag.hasGroupAttribute(uncertName)) {
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "cag '{}' already has '{}'", cag.getName(), uncertName);
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "cag '{}' already has '{}'", cag.getName(), uncertName);
             return;
         }
 

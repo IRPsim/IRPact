@@ -187,7 +187,7 @@ public class CommandLineOptions implements Callable<Integer> {
     }
 
     protected void checkExecuted() {
-        if(!executed) {
+        if(isNotPrintHelpOrVersion() && !executed) {
             throw new IllegalStateException("not executed");
         }
     }
@@ -223,6 +223,14 @@ public class CommandLineOptions implements Callable<Integer> {
 
     public boolean isPrintVersion() {
         return printVersion;
+    }
+
+    public boolean isPrintHelpOrVersion() {
+        return isPrintHelp() || isPrintVersion();
+    }
+
+    public boolean isNotPrintHelpOrVersion() {
+        return !isPrintHelpOrVersion();
     }
 
     public boolean hasInputPath() {

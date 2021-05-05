@@ -17,7 +17,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
 
     public static final String INITIAL_INSTANCE = "_INITIAL_INSTANCE_";
     public static final String RESTORED_INSTANCE = "_RESTORED_INSTANCE_";
-    public static final String VALIDATION_HASH = "_VALIDATION_HASH_";
+    public static final String VALIDATION_CHECKSUM = "_VALIDATION_CHECKSUM_";
     public static final String IN_ROOT = "_IN_ROOT_";
     public static final String PARAM = "_PARAM_";
 
@@ -182,13 +182,13 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     }
 
     @Override
-    public void setValidationHash(int hash) {
-        checkedSet(VALIDATION_HASH, hash, "validation hash already set");
+    public void setValidationChecksum(int checksum) {
+        checkedSet(VALIDATION_CHECKSUM, checksum, "validation checksum already set");
     }
 
     @Override
-    public int getValidationHash() {
-        return (Integer) checkedGet(VALIDATION_HASH, "validation hash");
+    public int getValidationChecksum() {
+        return (Integer) checkedGet(VALIDATION_CHECKSUM, "validation checksum");
     }
 
     @Override
@@ -204,6 +204,16 @@ public class BinaryJsonRestoreManager implements RestoreManager {
             out[i] = ensureGet(uids[i]);
         }
         return out;
+    }
+
+    @Override
+    public <T> boolean ensureGetAll(long[] uids, Collection<? super T> target) throws NoSuchElementException {
+        boolean changed = false;
+        for(long uid: uids) {
+            T element = ensureGet(uid);
+            changed |= target.add(element);
+        }
+        return changed;
     }
 
     @Override

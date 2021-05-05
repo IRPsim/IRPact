@@ -23,6 +23,7 @@ public class BasicMultiConsumerAgentGroupAttributeSupplier extends NameableBase 
 
     public BasicMultiConsumerAgentGroupAttributeSupplier(Map<ConsumerAgentGroup, List<ConsumerAgentGroupAttributeSupplier>> mapping) {
         this.mapping = mapping;
+        setName(DEFAULT_NAME);
     }
 
     @Override

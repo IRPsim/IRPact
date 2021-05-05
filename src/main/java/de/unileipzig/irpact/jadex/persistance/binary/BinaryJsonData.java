@@ -513,6 +513,19 @@ public final class BinaryJsonData extends PersistableBase {
 
     public static <K, V> void mapFromLongLongMap(
             Map<Long, Long> input,
+            RestoreManager manager,
+            Map<K, V> target) {
+
+        mapFromLongLongMap(
+                input,
+                manager::ensureGet,
+                manager::ensureGet,
+                target
+        );
+    }
+
+    public static <K, V> void mapFromLongLongMap(
+            Map<Long, Long> input,
             LongFunction<K> longToKey,
             LongFunction<V> longToValue,
             Map<K, V> target) {

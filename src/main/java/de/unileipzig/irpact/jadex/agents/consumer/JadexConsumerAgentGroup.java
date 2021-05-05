@@ -25,7 +25,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -66,20 +65,44 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
 
     @Override
     public int getChecksum() {
-        return Objects.hash(
+        return ChecksumComparable.getChecksum(
                 getName(),
                 getInformationAuthority(),
                 getNextAgentId(),
 
-                getSpatialDistribution().getChecksum(),
-                ChecksumComparable.getCollChecksum(getAttributes()),
-                getAwarenessSupplyScheme().getChecksum(),
-                getInterestSupplyScheme().getChecksum(),
-                getProductFindingScheme().getChecksum(),
-                getProcessFindingScheme().getChecksum(),
+                getSpatialDistribution(),
+                ChecksumComparable.getCollChecksum(getGroupAttributes()),
+                ChecksumComparable.getCollChecksum(getProductRelatedGroupAttributes()),
+                getAwarenessSupplyScheme(),
+                getInterestSupplyScheme(),
+                getProductFindingScheme(),
+                getProcessFindingScheme(),
 
                 ChecksumComparable.getCollChecksum(getAgents())
         );
+    }
+
+    private static void logChecksum(String msg, int storedHash) {
+        LOGGER.warn(
+                "checksum @ '{}': stored={}",
+                msg,
+                Integer.toHexString(storedHash)
+        );
+    }
+
+    public void deepChecksumCheck() {
+        logChecksum("name", ChecksumComparable.getChecksum(getName()));
+        logChecksum("information authority", ChecksumComparable.getChecksum(getInformationAuthority()));
+        logChecksum("next agent id", ChecksumComparable.getChecksum(getNextAgentId()));
+
+        logChecksum("attributes", ChecksumComparable.getCollChecksum(getGroupAttributes()));
+        logChecksum("product attributes", ChecksumComparable.getCollChecksum(getProductRelatedGroupAttributes()));
+        logChecksum("awareness", ChecksumComparable.getChecksum(getAwarenessSupplyScheme()));
+        logChecksum("interest", ChecksumComparable.getChecksum(getInterestSupplyScheme()));
+        logChecksum("product finding scheme", ChecksumComparable.getChecksum(getProductFindingScheme()));
+        logChecksum("process finding scheme", ChecksumComparable.getChecksum(getProcessFindingScheme()));
+
+        logChecksum("agents", ChecksumComparable.getCollChecksum(getAgents()));
     }
 
     @Override
@@ -134,7 +157,7 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     }
 
     @Override
-    public Collection<ConsumerAgentGroupAttribute> getAttributes() {
+    public Collection<ConsumerAgentGroupAttribute> getGroupAttributes() {
         return attributes.values();
     }
 
@@ -159,6 +182,12 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
             throw ExceptionUtil.create(IllegalArgumentException::new, "attribute '{}' already exists", attribute.getName());
         }
         productRelatedAttributes.put(attribute.getName(), attribute);
+    }
+
+    public void addAllProductRelatedGroupAttribute(ConsumerAgentProductRelatedGroupAttribute... attributes) {
+        for(ConsumerAgentProductRelatedGroupAttribute attr: attributes) {
+            addProductRelatedGroupAttribute(attr);
+        }
     }
 
     @Override
@@ -243,7 +272,7 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     }
 
     protected Set<ConsumerAgentAttribute> deriveAttributes() {
-        return getAttributes().stream()
+        return getGroupAttributes().stream()
                 .map(DirectDerivable::derive)
                 .collect(CollectionUtil.collectToLinkedSet());
     }

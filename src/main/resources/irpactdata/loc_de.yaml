@@ -1,6 +1,7 @@
 ---
 general_settings:
   edn_label: "Allgemeine Einstellungen"
+  edn_description: "todo"
 InGeneral_seed:
   gams_identifier: "Zufallsgenerator (seed)"
   gams_description: "Setzt den Seed für den Zufallsgenerator der Simulation. Falls er auf -1 gesetzt wird, wird ein zufälliger Seed generiert."
@@ -18,35 +19,35 @@ logging:
 
 logging_general:
   edn_label: "Allgemeine Loggingoptionen"
-  edn_description: "Ermöglicht die Einstellung der allgemeinen Loggingoptionen."
+  edn_description: "Hier lässt sich das allgemeine Logging von IRPact konfigurieren."
 InGeneral_logLevel:
   gams_identifier: "Logging-Level"
   gams_description: "Setzt das zu nutzende Logging-Level in IRPact, folgende Werte werden unterstützt: 0 = OFF, 1 = TRACE, 2 = DEBUG, 3 = INFO, 4 = WARN, 5 = ERROR, 6 = ALL. Das Level ist der Hauptfilter für alle log-Operationen."
   gams_domain: "[0,6]"
 InGeneral_logAll:
   gams_identifier: "Alles loggen?"
-  gams_description: "Ob alles geloggt werden soll."
+  gams_description: "Aktiviert alle log-Operationen in allen Komponenten."
   gams_domain: "[0|1]"
 InGeneral_logAllIRPact:
-  gams_identifier: "Komplett IRPact loggen?"
-  gams_description: "Ob alle Aufrufe von IRPact geloggt werden sollen."
+  gams_identifier: "IRPact loggen?"
+  gams_description: "Aktiviert alle log-Operationen von IRPact."
   gams_domain: "[0|1]"
 InGeneral_logAllTools:
-  gams_identifier: "Tools-Bibliothek loggen?"
-  gams_description: "Ob alle Aufrufe der Tools-Bibliothek geloggt werden sollen."
+  gams_identifier: "IRPtools-Bibliothek loggen?"
+  gams_description: "Aktiviert alle log-Operationen von IRPtools."
   gams_domain: "[0|1]"
 InGeneral_logInitialization:
   gams_identifier: "Initialisierung loggen?"
-  gams_description: "Ob der Initialisierungsprozess geloggt werden soll."
+  gams_description: "Aktiviert das Logging des Initialisierungsprozesses. Dieser umfasst alles vom Start bis zum eigentlichen Start der Simulation."
   gams_domain: "[0|1]"
 InGeneral_logSimulation:
-  gams_identifier: "Ob der Simulationsprozess geloggt werden soll."
-  gams_description: "[SPAM] Ob alle Aufrufe der Tools-Bibliothek geloggt werden sollen."
+  gams_identifier: "Simulationsprozess loggen?"
+  gams_description: "Aktiviert das Logging des Simulationsprozesses."
   gams_domain: "[0|1]"
 
 logging_data:
-  edn_label: "Ausgabe von Dateninformationen"
-  edn_description: "Ermöglicht es spezielle Loggingoptionen einzustellen."
+  edn_label: "Ausgabe von Berechnungen und Informationen"
+  edn_description: "Hier lassen sich Optionen finden, mit denen Berechnungsschritte oder essenziell Änderungen ausgegeben werden können."
 InGeneral_logGraphUpdate:
   gams_identifier: "Gibt die Graphänderungen aus [GU]"
   gams_description: "Gibt an, ob die Graphänderungen ausgegeben werden sollen."
@@ -63,29 +64,38 @@ InGeneral_logShareNetworkLocal:
   gams_identifier: "Gibt die globalen und lokalen Anteile aus [SNL]"
   gams_description: "Gibt an, ob die globalen und lokalen Adopteranteile ausgegeben werden sollen."
   gams_domain: "[0|1]"
+InGeneral_logFinancalComponent:
+  gams_identifier: "Gibt die finanzielle Komponente aus [FC]"
+  gams_description: "Gibt an, ob die Berechnung der finanziellen Komponente ausgegen werden soll."
+  gams_domain: "[0|1]"
+InGeneral_logCalculateDecisionMaking:
+  gams_identifier: "Gibt die Berechnungen beim decision making aus [DM]"
+  gams_description: "Gibt an, ob die Berechnung beim decision making ausgegen werden sollen."
+  gams_domain: "[0|1]"
 
 logging_result:
-  edn_label: "Ausgabe von Dateninformationen"
-  edn_description: "Ermöglicht es spezielle Loggingoptionen einzustellen."
+  edn_label: "Ausgabe von speziellen Ergebnissen"
+  edn_description: "Diese Optionen ermöglichen die Ausgabe von Ergebnissen in spezieller Form."
 InGeneral_logResultGroupedByZip:
-  gams_identifier: "Ergebnisausgabe nach PLZ?"
+  gams_identifier: "Ergebnisausgabe nach PLZ"
   gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus."
   gams_domain: "[0|1]"
 InGeneral_logResultGroupedByMilieu:
-  gams_identifier: "Ergebnisausgabe nach Milieu?"
+  gams_identifier: "Ergebnisausgabe nach Milieu"
   gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem Milieu aus."
   gams_domain: "[0|1]"
 InGeneral_logResultGroupedByZipAndMilieu:
-  gams_identifier: "Ergebnisausgabe nach PLZ und Milieu?"
+  gams_identifier: "Ergebnisausgabe nach PLZ und Milieu"
   gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ und dem Milieu (in dieser Reihenfolge) aus."
   gams_domain: "[0|1]"
 InGeneral_logProductAdoptions:
   gams_identifier: "Ausgabe Adoptionszeitpunkte"
-  gams_description: "Gibt für alle Adoptionen mit ihren Zeitpunkten aus."
+  gams_description: "Gibt alle Adoptionen mit ihren Zeitpunkten aus."
   gams_domain: "[0|1]"
 
 special_settings:
   edn_label: "Spezielle Einstellungen"
+  edn_description: "Hier lassen sich spezielle Modi aktivieren."
 InGeneral_runOptActDemo:
   gams_identifier: "[Testoption] optact-Testmodell ausführen"
   gams_description: "Falls gesetzt, wird die optact-Demo gestartet. Anderenfalls wird IRPact gestartet."
@@ -107,11 +117,13 @@ VisibleBinaryData_idVisible:
 
 names:
   edn_label: "Namen"
+  edn_description: "todo"
 
 
 
 files:
   edn_label: "Dateien"
+  edn_description: "todo"
 
 InPVFile:
   edn_label: "PV Dateien"
@@ -131,6 +143,7 @@ InSpatialTableFile_placeholderInSpatialFile:
 
 distributions:
   edn_label: "Verteilungsfunktionen"
+  edn_description: "todo"
 
 InBooleanDistribution:
   edn_label: "Boolean"
@@ -175,18 +188,32 @@ InRandomBoundedIntegerDistribution_upperBoundInt:
 
 agents:
   edn_label: "Agenten"
+  edn_description: "todo"
 
 consumer:
   edn_label: "Konsumer"
+  edn_description: "todo"
 
 consumer_group:
   edn_label: "Gruppen"
+  edn_description: "todo"
+
+InGeneralConsumerAgentAnnualGroupAttribute:
+  edn_label: "Jahresabhängiges Attribut"
+  edn_description: "Der Wert (bzw. Verteilungsfunktion) dieser Attribute lässt sich für die jeweiligen Simulationsjahre individuell definieren."
+InGeneralConsumerAgentAnnualGroupAttribute_attributeName:
+  gams_identifier: "Attributname"
+  gams_description: "Name des Attributes für das Gruppenattribut."
+InGeneralConsumerAgentAnnualGroupAttribute_distribution:
+  gams_identifier: "Verteilungsfunktion"
+  gams_description: "Legt die zu nutzende Verteilungsfunktion fest."
 
 InGeneralConsumerAgentGroup:
   edn_label: "Allgemeine Gruppen"
+  edn_description: "todo"
 InGeneralConsumerAgentGroup_cagAttributes:
   gams_identifier: "Gruppenattribute"
-  gams_description: "Zu dieser Gruppe gehörende Attribute."
+  gams_description: "Zu dieser Gruppe gehörendes Attribut."
 InGeneralConsumerAgentGroup_cagInterest:
   gams_identifier: "Interessensschema"
   gams_description: "Legt das Interessensschema fest."
@@ -199,6 +226,7 @@ InGeneralConsumerAgentGroup_spatialDistribution:
 
 InPVactConsumerAgentGroup:
   edn_label: "PVact Gruppen"
+  edn_description: "todo"
 InPVactConsumerAgentGroup_noveltySeeking:
   gams_identifier: "noveltySeeking"
   gams_description: "noveltySeeking"
@@ -247,10 +275,11 @@ InPVactConsumerAgentGroup_spatialDistribution:
 
 consumer_attr:
   edn_label: "Attribute"
+  edn_description: "todo"
 
 InGeneralConsumerAgentGroupAttribute:
-  edn_label: "Allgemeines Attribut"
-  edn_description: ""
+  edn_label: "Allgemeine Attribute"
+  edn_description: "todo"
 InGeneralConsumerAgentGroupAttribute_attrName:
   gams_identifier: "Attributname"
   gams_description: "Name des Attributes für das Gruppenattribut."
@@ -258,8 +287,15 @@ InGeneralConsumerAgentGroupAttribute_dist:
   gams_identifier: "Verteilungsfunktion"
   gams_description: "Legt die zu nutzende Verteilungsfunktion fest."
 
+InNameSplitConsumerAgentAnnualGroupAttribute:
+  edn_label: "Namensbasierte und jahresabhängige Attribute"
+  edn_description: "Der Wert (bzw. Verteilungsfunktion) dieser Attribute lässt sich für die jeweiligen Simulationsjahre individuell definieren."
+InNameSplitConsumerAgentAnnualGroupAttribute_distribution:
+  gams_identifier: "Verteilungsfunktion"
+  gams_description: "Legt die Verteilungsfunktion fest, auf deren Basis die Attributwerte gezogen werden."
+
 InNameSplitConsumerAgentGroupAttribute:
-  edn_label: "Namensbasiertes Attribute"
+  edn_label: "Namensbasierte Attribute"
   edn_description: "Dieses Attribut wird über seinen Namen definiert."
 InNameSplitConsumerAgentGroupAttribute_dist:
   gams_identifier: "Verteilungsfunktion"
@@ -271,6 +307,7 @@ consumer_affinity:
 
 InComplexAffinityEntry:
   edn_label: "Komplexe Affinity"
+  edn_description: "todo"
 InComplexAffinityEntry_srcCag:
   gams_identifier: "Ausgangsgruppe"
   gams_description: "Ausgangsgruppe"
@@ -283,6 +320,7 @@ InComplexAffinityEntry_affinityValue:
 
 InNameSplitAffinityEntry:
   edn_label: "Namensbasierte Affinity"
+  edn_description: "todo"
 InNameSplitAffinityEntry_affinityValue:
   gams_identifier: "Affinity-Wert"
   gams_description: "Affinity-Wert"
@@ -314,7 +352,7 @@ population:
 
 InFixConsumerAgentPopulationSize:
   edn_label: "Feste Konsumergruppengröße"
-  edn_description: ""
+  edn_description: "todo"
 InFixConsumerAgentPopulationSize_size:
   gams_identifier: "Anzahl der Agenten"
   gams_description: "Legt die Anzahl der Agenten bzw. die Populationsgröße für diese Konsumergruppe fest."
@@ -324,16 +362,16 @@ InFixConsumerAgentPopulationSize_cags:
 
 InRelativeExternConsumerAgentPopulationSize:
   edn_label: "Dynamische Konsumergruppengröße"
-  edn_description: ""
-InRelativeExternConsumerAgentPopulationSize_totalSize:
-  gams_identifier: "Anzahl der Agenten"
-  gams_description: "Legt gesamte Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls die maximal mögliche Anzahl genutzt werden soll, wird dieser Wert ignoriert."
-InRelativeExternConsumerAgentPopulationSize_useMaximumSize:
+  edn_description: "todo"
+InRelativeExternConsumerAgentPopulationSize_maximumSize:
+  gams_identifier: "Maximale Anzahl der Agenten"
+  gams_description: "Legt die maximale Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls die maximal mögliche Anzahl genutzt werden soll, wird dieser Wert ignoriert."
+InRelativeExternConsumerAgentPopulationSize_useMaximumPossibleSize:
   gams_identifier: "Maximal mögliche Population nutzen?"
-  gams_description: "Legt fest, ob die gesamte Populationsgröße aus der Datei berechnet werden soll."
-InRelativeExternConsumerAgentPopulationSize_considerAllForShares:
-  gams_identifier: "Alle Konsumergruppenfür die Anteilsberechnung berücksichtigen?"
-  gams_description: "Legt fest, ob alle Gruppen aus der Datei für die Berechnung der Anteile genutzt werden sollen oder nur die hier spezifizierten."
+  gams_description: "Legt fest, ob die gesamte Populationsgröße aus der Datei verwendet werden soll."
+InRelativeExternConsumerAgentPopulationSize_allowSmallerSize:
+  gams_identifier: "Kleinere Populationen erlauben?"
+  gams_description: "Legt fest, ob kleinere Population zulässig sind. Falls zum Beispiel die maximale Anzahl auf 10.000 gesetzt wird, die Datei aber nur 1.000 Agenten erlaubt, werden nur 1.000 verwendet. Falls diese Option deaktiviert ist, wird in diesem Fall ein Fehler geworfen."
 InRelativeExternConsumerAgentPopulationSize_cags:
   gams_identifier: "Konsumergruppen"
   gams_description: "Legt die Konsumergruppen fest, welche berücksichtigt werden sollen."
@@ -342,15 +380,17 @@ InRelativeExternConsumerAgentPopulationSize_file:
   gams_description: "Tabellarische Eingabedatei, aus der die Informationen gelesen werden sollen."
 InRelativeExternConsumerAgentPopulationSize_selectKey:
   gams_identifier: "Auswahlschlüssel"
-  gams_description: "Schlüssel, nachdem die Datei gefiltert wird. Wichtig: Der Daten in der Datei müssen dem Konsumergruppennamen entsprechen."
+  gams_description: "Schlüssel, nachdem die Datei gefiltert wird. Wichtig: Der entsprechenden Daten in der Datei müssen dem Konsumergruppennamen entsprechen."
 
 
 
 network:
   edn_label: "Netzwerk"
+  edn_description: "todo"
 
 topology:
   edn_label: "Topologie"
+  edn_description: "todo"
 
 InUnlinkedGraphTopology:
   edn_label: "Knotenloser Graph"
@@ -378,6 +418,9 @@ InFreeNetworkTopology_distanceEvaluator:
 InFreeNetworkTopology_numberOfTies:
   gams_identifier: "Konsumergruppenspezifische Kantenanzahl"
   gams_description: "Legt die Anzahl defür die jeweiligen Konsumergruppen fest."
+InFreeNetworkTopology_allowLessEdges:
+  gams_identifier: "Weniger Kanten erlauben?"
+  gams_description: "Erlaubt es auch weniger Kanten als gewünscht zu nutzen. Sollten zum Beispiel 10 Kanten gewünscht sein je Knoten, aber für einen bestimmten Knoten nur 5 möglich sein, so werden nur 5 verwendet. Falls diese Option deaktiviert ist, wird ein Fehler geworfen."
 
 InNumberOfTies:
   edn_label: "Kanten je Konsumergruppe"
@@ -391,6 +434,7 @@ InNumberOfTies_cags:
 
 dist_func:
   edn_label: "Abstandsfunktion"
+  edn_description: "todo"
 
 InNoDistance:
   edn_label: "Keine Distanzfunktion"
@@ -479,6 +523,7 @@ InFixProductFindingScheme_refFixProduct:
 
 process_model:
   edn_label: "Prozessmodell"
+  edn_description: "todo"
 
 InRAProcessModel:
   edn_label: "Relative Agreement"
@@ -527,6 +572,20 @@ InAutoUncertaintyGroupAttribute:
   edn_label: "Automatisch"
   edn_description: "Bestimmt die Unsicherheit automatisch. Achtung: Diese Variante wird aktuell noch nicht unterstützt."
 InAutoUncertaintyGroupAttribute_placeholderAutoUncert:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+InDisabledProcessPlanNodeFilterScheme:
+  edn_label: "Kein Distanzfilter"
+  edn_description: "Deaktiviert den Netzwerkfilter für die sichtbaren PV-Anlagen. Die sichtbare Komponente wird somit deaktiviert."
+InDisabledProcessPlanNodeFilterScheme_placeholder:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+InEntireNetworkNodeFilterScheme:
+  edn_label: "Gesamtes Netzwerk"
+  edn_description: "Nutzt das gesamte Netzwerk für die sichtbaren PV-Anlagen."
+InEntireNetworkNodeFilterScheme_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
 
@@ -615,9 +674,11 @@ InRAProcessPlanMaxDistanceFilterScheme_inclusive:
 
 spatial:
   edn_label: "Räumliche Modell"
+  edn_description: "todo"
 
 spatial_model:
   edn_label: "Modell"
+  edn_description: "todo"
 
 InSpace2D:
   edn_label: "Space2D"
@@ -799,8 +860,10 @@ graphviz_agent_color_mapping:
 
 submodule:
   edn_label: "Submodule"
+  edn_description: "todo"
 submodule_graphvizdemo:
   edn_label: "Graphvizdemo"
+  edn_description: "todo"
 
 
 

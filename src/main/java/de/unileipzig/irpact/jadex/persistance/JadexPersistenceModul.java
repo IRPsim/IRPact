@@ -7,6 +7,7 @@ import de.unileipzig.irpact.commons.persistence.Persistable;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.persistence.PersistenceModul;
+import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -103,6 +104,8 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
             dataList.add(hbd);
         }
         root.addHiddenBinaryData(dataList);
+
+        LOGGER.trace("stored checksum: {}", environment.getChecksum());
     }
 
     public SimulationEnvironment restoreBinary(SimulationEnvironment initialEnvironment, InRoot root) throws IOException, RestoreException {
@@ -119,12 +122,13 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
         binaryRestore.setInitialInstance(initialEnvironment);
         binaryRestore.restore(dataList);
         SimulationEnvironment restoredEnvironment = binaryRestore.getRestoredInstance();
-        int restoredHash = restoredEnvironment.getChecksum();
-        int validationHash = binaryRestore.getValidationHash();
-        if(restoredHash == validationHash) {
+        int restoredChecksum = restoredEnvironment.getChecksum();
+        int validationChecksum = binaryRestore.getValidationChecksum();
+        if(restoredChecksum == validationChecksum) {
             LOGGER.info("environment successfully restored");
+            updateSettings(initialEnvironment, restoredEnvironment);
         } else {
-            String msg = "hash mismatch: restored=" + Integer.toHexString(restoredHash) + " != validation=" + Integer.toHexString(validationHash);
+            String msg = "checksum mismatch: restored=" + Integer.toHexString(restoredChecksum) + " != validation=" + Integer.toHexString(validationChecksum);
             if(environment.getSettings().ignorePersistenceCheckResult()) {
                 LOGGER.warn("ignore persistence check: {}", msg);
             } else {
@@ -132,6 +136,13 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
             }
         }
         return restoredEnvironment;
+    }
+
+    private void updateSettings(SimulationEnvironment initial, SimulationEnvironment restored) {
+        Settings initialSettings = initial.getSettings();
+        Settings restoredSettings = restored.getSettings();
+
+        restoredSettings.setLastSimulationYear(initialSettings.getLastSimulationYear());
     }
 
     //=========================

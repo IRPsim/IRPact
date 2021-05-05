@@ -109,7 +109,7 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
     @FieldDefinition
     public InSpatialDistribution[] spatialDistribution;
 
-    public InDummyConsumerAgentAnnualGroupAttribute[] dummyAnnuals;
+    public InGeneralConsumerAgentAnnualGroupAttribute[] dummyAnnuals;
 
     //=========================
     //toy model parameter
@@ -323,16 +323,16 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
         getSpatialDistribution().setup(parser, jcag);
 
-        handleDummyAnnual(parser, jcag);
+        handleCustomAnnual(parser, jcag);
 
         return jcag;
     }
 
-    private void handleDummyAnnual(InputParser parser, JadexConsumerAgentGroup jcag) throws ParsingException {
+    private void handleCustomAnnual(InputParser parser, JadexConsumerAgentGroup jcag) throws ParsingException {
         LOGGER.trace("handle dummy annuals: {}", dummyAnnuals == null ? -1 : dummyAnnuals.length);
         if(dummyAnnuals != null) {
-            for(InDummyConsumerAgentAnnualGroupAttribute dummyAnnual: dummyAnnuals) {
-                dummyAnnual.setup(parser, jcag);;
+            for(InGeneralConsumerAgentAnnualGroupAttribute dummyAnnual: dummyAnnuals) {
+                dummyAnnual.setup(parser, jcag);
             }
         }
     }

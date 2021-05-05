@@ -7,6 +7,8 @@ import java.util.function.Function;
  */
 public interface Nameable extends ChecksumComparable {
 
+    String DEFAULT_NAME = "DEFAULT_NAME";
+
     static <K extends Nameable> Function<? super K, ? extends String> toStringFunction() {
         return Nameable::getName;
     }

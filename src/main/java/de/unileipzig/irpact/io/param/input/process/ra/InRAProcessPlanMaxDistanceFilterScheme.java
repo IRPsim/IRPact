@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.filter.RAProcessPlanMaxDistanceFilterScheme;
+import de.unileipzig.irpact.develop.PotentialProblem;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -58,9 +59,10 @@ public class InRAProcessPlanMaxDistanceFilterScheme implements InRAProcessPlanNo
         setInclusive(inclusive);
     }
 
+    @PotentialProblem("teste, ob es andere return null gibt")
     @Override
     public String getName() {
-        return null;
+        return _name;
     }
 
     public void setName(String name) {

@@ -48,14 +48,20 @@ public final class Start {
             if(options.logConsoleAndFile()) {
                 IRPLogging.initConsoleAndFile(options.getLogPath());
                 logOldFileDeleted(hasOldLogFile, options.getLogPath());
-                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "log to console and file '{}'", options.getLogPath());
+                if(options.isNotPrintHelpOrVersion()) {
+                    LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "log to console and file '{}'", options.getLogPath());
+                }
             } else {
                 IRPLogging.initFile(options.getLogPath());
                 logOldFileDeleted(hasOldLogFile, options.getLogPath());
-                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "log to file '{}'", options.getLogPath());
+                if(options.isNotPrintHelpOrVersion()) {
+                    LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "log to file '{}'", options.getLogPath());
+                }
             }
         } else {
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "log to console");
+            if(options.isNotPrintHelpOrVersion()) {
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "log to console");
+            }
         }
     }
 
@@ -82,6 +88,9 @@ public final class Start {
                 options.getExecuteResultMessage().log(LOGGER, Level.INFO);
             }
             if(options.isPrintHelp() || options.isPrintVersion()) {
+                if(options.isCallIRPtools()) {
+                    IRPtools.main(new String[]{"-?"});
+                }
                 return new StartResult(CommandLine.ExitCode.OK);
             }
             Preloader loader = new Preloader(options, callbacks);

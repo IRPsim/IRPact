@@ -83,6 +83,7 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
         object.setAgent(manager.ensureGet(data.getLong()));
         object.setRnd(manager.ensureGet(data.getLong()));
         object.setModel(manager.ensureGet(data.getLong()));
+        object.setNetworkFilter(manager.ensureGet(data.getLong()));
     }
 
     @Override

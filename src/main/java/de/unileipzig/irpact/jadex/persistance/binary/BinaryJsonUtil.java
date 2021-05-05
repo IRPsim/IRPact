@@ -27,6 +27,8 @@ public final class BinaryJsonUtil {
         ensureRegister(manager, BasicConsumerAgentDoubleAttributePR.INSTANCE);
         ensureRegister(manager, BasicConsumerAgentGroupAffinityMappingPR.INSTANCE);
         ensureRegister(manager, BasicConsumerAgentDoubleGroupAttributePR.INSTANCE);
+        ensureRegister(manager, BasicConsumerAgentProductRelatedAttributePR.INSTANCE);
+        ensureRegister(manager, BasicConsumerAgentProductRelatedGroupAttributePR.INSTANCE);
         ensureRegister(manager, BasicDistanceEvaluatorPR.INSTANCE);
         ensureRegister(manager, BasicEdgePR.INSTANCE);
         ensureRegister(manager, BasicJadexLifeCycleControlPR.INSTANCE);
@@ -60,6 +62,8 @@ public final class BinaryJsonUtil {
         ensureRegister(manager, LinkedUncertaintyGroupAttributePR.INSTANCE);
         ensureRegister(manager, MaxDistanceNodeFilterPR.INSTANCE);
         ensureRegister(manager, NoDistancePR.INSTANCE);
+        ensureRegister(manager, ProductBinaryAwarenessPR.INSTANCE);
+        ensureRegister(manager, ProductBinaryAwarenessSupplySchemePR.INSTANCE);
         ensureRegister(manager, ProductThresholdInterestPR.INSTANCE);
         ensureRegister(manager, ProductThresholdInterestSupplySchemePR.INSTANCE);
         ensureRegister(manager, ProxyConsumerAgentPR.INSTANCE);

@@ -9,6 +9,7 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.misc.graphviz.BasicGraphvizConfiguration;
 import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.develop.PotentialProblem;
 import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
 import de.unileipzig.irptools.graphviz.def.GraphvizColor;
 import de.unileipzig.irptools.graphviz.def.GraphvizLayoutAlgorithm;
@@ -72,6 +73,12 @@ public class GraphvizInputParser implements InputParser {
     @Override
     public InRoot getRoot() {
         return root;
+    }
+
+    @PotentialProblem
+    @Override
+    public int getSimulationYear() {
+        throw new UnsupportedOperationException();
     }
 
     @SuppressWarnings("unchecked")

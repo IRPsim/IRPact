@@ -50,6 +50,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.graphviz.LayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.OutputFormat;
 import de.unileipzig.irptools.graphviz.def.*;
+import de.unileipzig.irptools.uiedn.Section;
 import de.unileipzig.irptools.uiedn.Sections;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.UiEdn;
@@ -370,6 +371,15 @@ public class InRoot implements RootClass {
 
     @Override
     public void peekEdn(Sections sections, UiEdn ednType) {
+        if(ednType == UiEdn.INPUT) {
+            Section imageSection = new Section();
+            imageSection.setPriority(-1);
+            imageSection.setLabel("Agentennetzwerk");
+            imageSection.setImage("agentGraph");
+            imageSection.setDescription("Agentennetzwerk in IRPact");
+            imageSection.setIcon("fa fa-spinner");
+            sections.add(imageSection);
+        }
     }
 
     //=========================
@@ -493,9 +503,11 @@ public class InRoot implements RootClass {
             InConsumerAgentGroup.class,
             InConsumerAgentGroupAttribute.class,
             InDependentConsumerAgentGroupAttribute.class,
+            InGeneralConsumerAgentAnnualGroupAttribute.class,
             InGeneralConsumerAgentGroup.class,
             InGeneralConsumerAgentGroupAttribute.class,
             InIndependentConsumerAgentGroupAttribute.class,
+            InNameSplitConsumerAgentAnnualGroupAttribute.class,
             InNameSplitConsumerAgentGroupAttribute.class,
             InPVactConsumerAgentGroup.class,
             InFixConsumerAgentPopulationSize.class,
@@ -641,7 +653,9 @@ public class InRoot implements RootClass {
                             addPathElement(res, InPVactConsumerAgentGroup.thisName(), CONSUMER_GROUP);
                         addPathElement(res, CONSUMER_ATTR, CONSUMER);
                                     addPathElement(res, InGeneralConsumerAgentGroupAttribute.thisName(), CONSUMER_GROUP);
+                                    addPathElement(res, InGeneralConsumerAgentAnnualGroupAttribute.thisName(), CONSUMER_GROUP);
                                     addPathElement(res, InNameSplitConsumerAgentGroupAttribute.thisName(), CONSUMER_GROUP);
+                                    addPathElement(res, InNameSplitConsumerAgentAnnualGroupAttribute.thisName(), CONSUMER_GROUP);
                         addPathElement(res, CONSUMER_AFFINITY, CONSUMER);
                                 addPathElement(res, InComplexAffinityEntry.thisName(), CONSUMER_AFFINITY);
                                 addPathElement(res, InNameSplitAffinityEntry.thisName(), CONSUMER_AFFINITY);

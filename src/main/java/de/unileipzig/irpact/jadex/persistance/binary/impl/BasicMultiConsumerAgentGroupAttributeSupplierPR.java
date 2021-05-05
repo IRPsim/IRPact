@@ -41,6 +41,7 @@ public class BasicMultiConsumerAgentGroupAttributeSupplierPR extends BinaryPRBas
     @Override
     protected BinaryJsonData doInitalizePersist(BasicMultiConsumerAgentGroupAttributeSupplier object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
+        data.putText(object.getName());
 
         for(Map.Entry<ConsumerAgentGroup, List<ConsumerAgentGroupAttributeSupplier>> entry: object.getMapping().entrySet()) {
             ConsumerAgentGroup cag = entry.getKey();
@@ -78,10 +79,10 @@ public class BasicMultiConsumerAgentGroupAttributeSupplierPR extends BinaryPRBas
     //restore
     //=========================
 
-    @SuppressWarnings("UnnecessaryLocalVariable")
     @Override
     protected BasicMultiConsumerAgentGroupAttributeSupplier doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         BasicMultiConsumerAgentGroupAttributeSupplier object = new BasicMultiConsumerAgentGroupAttributeSupplier();
+        object.setName(data.getText());
         return object;
     }
 

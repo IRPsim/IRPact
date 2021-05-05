@@ -23,13 +23,15 @@ public interface RestoreManager {
 
     <T> T getRestoredInstance();
 
-    void setValidationHash(int hash);
+    void setValidationChecksum(int checksum);
 
-    int getValidationHash();
+    int getValidationChecksum();
 
     <T> T ensureGet(long uid) throws NoSuchElementException;
 
     <T> T[] ensureGetAll(long[] uids, IntFunction<T[]> arrCreator) throws NoSuchElementException;
+
+    <T> boolean ensureGetAll(long[] uids, Collection<? super T> target) throws NoSuchElementException;
 
     <K, V> Map<K, V> ensureGetAll(Map<Long, Long> idMap) throws NoSuchElementException;
 

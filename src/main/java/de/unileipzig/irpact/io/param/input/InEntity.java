@@ -17,6 +17,10 @@ public interface InEntity {
 
     String getName();
 
+    default boolean requiresSetup() {
+        return false;
+    }
+
     default Object parse(InputParser parser) throws ParsingException {
         throw new UnsupportedOperationException();
     }

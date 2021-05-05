@@ -58,7 +58,7 @@ public class InGeneral {
         putFieldPathAndAddEntry(res, thisClass(), "logInterestUpdate", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
         putFieldPathAndAddEntry(res, thisClass(), "logShareNetworkLocal", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
         putFieldPathAndAddEntry(res, thisClass(), "logFinancalComponent", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
-        putFieldPathAndAddEntry(res, thisClass(), "logCalculateAdoption", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+        putFieldPathAndAddEntry(res, thisClass(), "logCalculateDecisionMaking", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
 
         putFieldPathAndAddEntry(res, thisClass(), "logResultGroupedByZip", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
         putFieldPathAndAddEntry(res, thisClass(), "logResultGroupedByMilieu", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
@@ -136,7 +136,7 @@ public class InGeneral {
     public boolean logFinancalComponent;
 
     @FieldDefinition
-    public boolean logCalculateAdoption;
+    public boolean logCalculateDecisionMaking;
 
     //=========================
     //result logging
@@ -183,7 +183,7 @@ public class InGeneral {
         logInterestUpdate = true;
         logShareNetworkLocal = true;
         logFinancalComponent = true;
-        logCalculateAdoption = true;
+        logCalculateDecisionMaking = true;
     }
 
     public void enableAllResultLogging() {
@@ -224,7 +224,7 @@ public class InGeneral {
         initData.setLogInterestUpdate(logInterestUpdate);
         initData.setLogShareNetworkLocale(logShareNetworkLocal);
         initData.setLogFinancialComponent(logFinancalComponent);
-        initData.setLogCalculateAdoption(logCalculateAdoption);
+        initData.setLogCalculateDecisionMaking(logCalculateDecisionMaking);
 
         initData.setLogResultGroupedByZip(logResultGroupedByZip);
         initData.setLogResultGroupedByMilieu(logResultGroupedByMilieu);

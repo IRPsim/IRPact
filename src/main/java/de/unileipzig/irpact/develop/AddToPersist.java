@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.develop;
 
 /**
- * Reminder to add the class to the persist.
+ * Reminder to add persist support for the class.
  *
  * @author Daniel Abitz
  */

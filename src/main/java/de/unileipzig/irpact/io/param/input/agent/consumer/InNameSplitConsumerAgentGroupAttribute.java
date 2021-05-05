@@ -102,8 +102,13 @@ public class InNameSplitConsumerAgentGroupAttribute implements InIndependentCons
 
     @Override
     public void setup(InputParser parser, Object input) throws ParsingException {
-        InConsumerAgentGroup inCag = getConsumerAgentGroup(parser);
-        ConsumerAgentGroup cag = parser.parseEntityTo(inCag);
+        final ConsumerAgentGroup cag;
+        if(input instanceof ConsumerAgentGroup) {
+            cag = (ConsumerAgentGroup) input;
+        } else {
+            InConsumerAgentGroup inCag = getConsumerAgentGroup(parser);
+            cag = parser.parseEntityTo(inCag);
+        }
 
         BasicConsumerAgentDoubleGroupAttribute cagAttr = new BasicConsumerAgentDoubleGroupAttribute();
         cagAttr.setName(getAttributeName());

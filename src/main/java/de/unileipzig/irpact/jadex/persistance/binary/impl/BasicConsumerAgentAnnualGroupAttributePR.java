@@ -65,6 +65,7 @@ public class BasicConsumerAgentAnnualGroupAttributePR extends BinaryPRBase<Basic
         BasicConsumerAgentAnnualGroupAttribute object = new BasicConsumerAgentAnnualGroupAttribute(mapSupplier);
         object.setName(data.getText());
         object.setArtificial(data.getBoolean());
+
         return object;
     }
 

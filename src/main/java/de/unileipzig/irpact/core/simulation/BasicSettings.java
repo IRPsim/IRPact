@@ -247,11 +247,11 @@ public class BasicSettings implements Settings {
     }
 
     @Override
-    public void setLogCalculateAdoption(boolean log) {
+    public void setLogCalculateDecisionMaking(boolean log) {
         this.logCalculateAdoption = log;
     }
     @Override
-    public boolean isLogCalculateAdoption() {
+    public boolean isLogCalculateDecisionMaking() {
         return logCalculateAdoption;
     }
 

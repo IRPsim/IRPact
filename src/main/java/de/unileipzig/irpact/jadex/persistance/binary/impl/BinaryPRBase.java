@@ -115,7 +115,7 @@ public abstract class BinaryPRBase<T> implements Persister<T>, Restorer<T> {
             int storedHash = data.getInt();
             int restoredHash = ((ChecksumComparable) object).getChecksum();
             if(!checkHash(object, storedHash, restoredHash)) {
-                onHashMismatch(data, object, manager);
+                onChecksumMismatch(data, object, manager);
             }
         } else {
             log().trace("type '{}' not hashable", object.getClass().getName());
@@ -136,6 +136,6 @@ public abstract class BinaryPRBase<T> implements Persister<T>, Restorer<T> {
         }
     }
 
-    protected void onHashMismatch(BinaryJsonData data, T object, RestoreManager manager) {
+    protected void onChecksumMismatch(BinaryJsonData data, T object, RestoreManager manager) {
     }
 }

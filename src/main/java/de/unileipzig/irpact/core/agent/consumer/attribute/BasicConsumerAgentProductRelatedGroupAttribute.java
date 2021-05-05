@@ -4,9 +4,12 @@ import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.derivable.DirectDerivable;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.MapSupplier;
+import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.develop.AddToPersist;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -18,6 +21,8 @@ import java.util.NoSuchElementException;
 public class BasicConsumerAgentProductRelatedGroupAttribute
         extends AbstractConsumerAgentGroupAttribute
         implements ConsumerAgentProductRelatedGroupAttribute {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicConsumerAgentProductRelatedGroupAttribute.class);
 
     protected MapSupplier mapSupplier;
     protected Map<ProductGroup, ConsumerAgentGroupAttribute> yearMapping;
@@ -97,7 +102,8 @@ public class BasicConsumerAgentProductRelatedGroupAttribute
     @Override
     public void deriveUpdate(Product input, ConsumerAgentProductRelatedAttribute target) {
         if(target.hasAttribute(input)) {
-            throw ExceptionUtil.create(IllegalArgumentException::new, "attribute '{}' already has product '{}'", target.getName(), input.getName());
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "attribute '{}' already has product '{}'", target.getName(), input.getName());
+            return;
         }
 
         ProductGroup pg = input.getGroup();

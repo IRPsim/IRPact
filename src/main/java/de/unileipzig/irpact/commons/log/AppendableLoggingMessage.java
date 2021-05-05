@@ -6,30 +6,30 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
-public class MultiLoggingMessage {
+public class AppendableLoggingMessage {
 
     private final List<LoggingMessage> parts = new ArrayList<>();
 
-    public MultiLoggingMessage() {
+    public AppendableLoggingMessage() {
     }
 
     public void reset() {
         parts.clear();
     }
 
-    public void log(String msg) {
+    public void append(String msg) {
         parts.add(new LoggingMessage(msg));
     }
 
-    public void log(String pattern, Object arg) {
+    public void append(String pattern, Object arg) {
         parts.add(new LoggingMessage(pattern, arg));
     }
 
-    public void log(String pattern, Object arg1, Object arg2) {
+    public void append(String pattern, Object arg1, Object arg2) {
         parts.add(new LoggingMessage(pattern, arg1, arg2));
     }
 
-    public void log(String pattern, Object... args) {
+    public void append(String pattern, Object... args) {
         parts.add(new LoggingMessage(pattern, args));
     }
 

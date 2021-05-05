@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.simulation;
 
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
@@ -30,8 +31,6 @@ import de.unileipzig.irpact.start.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
 
-import java.util.Objects;
-
 /**
  * @author Daniel Abitz
  */
@@ -58,15 +57,39 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
 
     @Override
     public int getChecksum() {
-        return Objects.hash(
-                agentManager.getChecksum(),
-                socialNetwork.getChecksum(),
-                processModelManager.getChecksum(),
-                productManager.getChecksum(),
-                spatialModel.getChecksum(),
-                timeModel.getChecksum(),
-                lifeCycleControl.getChecksum(),
-                rnd.getChecksum()
+//        return Objects.hash(
+//                agentManager.getChecksum(),
+//                socialNetwork.getChecksum(),
+//                processModelManager.getChecksum(),
+//                productManager.getChecksum(),
+//                spatialModel.getChecksum(),
+//                timeModel.getChecksum(),
+//                lifeCycleControl.getChecksum(),
+//                rnd.getChecksum()
+//        );
+        return ChecksumComparable.getChecksum(
+                agentManager,
+                socialNetwork,
+                processModelManager,
+                productManager,
+                spatialModel,
+                timeModel,
+                lifeCycleControl,
+                rnd
+        );
+    }
+
+    @Override
+    public void logChecksum() {
+        ChecksumComparable.logChecksums(
+                agentManager,
+                socialNetwork,
+                processModelManager,
+                productManager,
+                spatialModel,
+                timeModel,
+                lifeCycleControl,
+                rnd
         );
     }
 

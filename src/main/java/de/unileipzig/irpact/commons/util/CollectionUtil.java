@@ -15,6 +15,33 @@ public final class CollectionUtil {
     private CollectionUtil() {
     }
 
+    public static List<Object> listAll(Map<?, ?> map) {
+        List<Object> objs = new ArrayList<>();
+        for(Map.Entry<?, ?> entry: map.entrySet()) {
+            Object key = entry.getKey();
+            Object value = entry.getValue();
+
+            addTo(key, objs);
+            addTo(value, objs);
+        }
+        return objs;
+    }
+
+    private static void addTo(Object obj, Collection<Object> target) {
+        if(obj instanceof Collection) {
+            addTo((Collection<?>) obj, target);
+        }
+        else {
+            target.add(obj);
+        }
+    }
+
+    private static void addTo(Collection<?> coll, Collection<Object> target) {
+        for(Object obj: coll) {
+            addTo(obj, target);
+        }
+    }
+
     public static <K, V> void sortMap(
             Map<K, V> map,
             Comparator<? super K> keyComparator) {

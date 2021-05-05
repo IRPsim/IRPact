@@ -206,10 +206,11 @@ public class IRPact implements IRPActAccess {
     }
 
     private void createSimulationEnvironment() throws ParsingException {
+        int year = inEntry.getConfig().getYear();
         JadexInputParser parser = new JadexInputParser();
+        parser.setSimulationYear(year);
         parser.setResourceLoader(RESOURCE_LOADER);
         environment = parser.parseRoot(inRoot);
-        int year = inEntry.getConfig().getYear();
         environment.getSettings().setFirstSimulationYear(year);
     }
 

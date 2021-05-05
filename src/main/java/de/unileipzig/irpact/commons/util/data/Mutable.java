@@ -3,7 +3,7 @@ package de.unileipzig.irpact.commons.util.data;
 /**
  * @author Daniel Abitz
  */
-public final class Mutable<T> {
+public class Mutable<T> {
 
     private boolean hasValue;
     private T value;

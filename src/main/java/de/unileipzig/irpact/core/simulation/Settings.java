@@ -94,8 +94,8 @@ public interface Settings {
     void setLogFinancialComponent(boolean log);
     boolean isLogFinancialComponent();
 
-    void setLogCalculateAdoption(boolean log);
-    boolean isLogCalculateAdoption();
+    void setLogCalculateDecisionMaking(boolean log);
+    boolean isLogCalculateDecisionMaking();
 
     //=========================
     //result logging

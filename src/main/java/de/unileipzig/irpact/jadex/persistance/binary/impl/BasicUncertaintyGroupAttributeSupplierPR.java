@@ -35,6 +35,7 @@ public class BasicUncertaintyGroupAttributeSupplierPR extends BinaryPRBase<Basic
     protected BinaryJsonData doInitalizePersist(BasicUncertaintyGroupAttributeSupplier object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
+        data.putText(object.getAttributeName());
 
         manager.prepare(object.getUncertaintyDistribution());
         if(object.hasConvergenceDistribution()) {
@@ -62,6 +63,7 @@ public class BasicUncertaintyGroupAttributeSupplierPR extends BinaryPRBase<Basic
     protected BasicUncertaintyGroupAttributeSupplier doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         BasicUncertaintyGroupAttributeSupplier object = new BasicUncertaintyGroupAttributeSupplier();
         object.setName(data.getText());
+        object.setAttributeName(data.getText());
         return object;
     }
 

@@ -59,11 +59,11 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
     @Override
     public int getChecksum() {
-        return Objects.hash(
+        return ChecksumComparable.getChecksum(
                 getName(),
-                modelData.getChecksum(),
-                rnd.getChecksum(),
-                uncertaintySupplier.getChecksum()
+                modelData,
+                rnd,
+                uncertaintySupplier
         );
     }
 

@@ -33,9 +33,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 /**
  * @author Daniel Abitz
  */
-@Definition(
-        ignore = true
-)
+@Definition
 public class InCustomFileSelectedGroupedSpatialDistribution2D implements InSpatialDistribution {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
