@@ -3,5 +3,8 @@ package de.unileipzig.irpact.misc.toymodels;
 /**
  * @author Daniel Abitz
  */
-public class ToyModelUtil {
+public final class ToyModelUtil {
+
+    private ToyModelUtil() {
+    }
 }

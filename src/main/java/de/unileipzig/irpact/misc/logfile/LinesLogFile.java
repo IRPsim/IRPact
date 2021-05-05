@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
-public interface LogFileLines extends LogFile {
+public interface LinesLogFile extends LogFile {
 
     List<String> toList();
 

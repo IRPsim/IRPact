@@ -13,21 +13,21 @@ class ArgsTest {
     void testSetAll() {
         String[] argArr = {"--a", "x", "-hallo", "\"welt !\"", "--b", "--c", "abc", "xyz"};
         Args args = new Args();
-        args.setAll(argArr);
-        assertEquals("x", args.get("a"));
-        assertEquals("welt !", args.get("hallo"));
-        assertNull(args.get("b"));
-        assertEquals(CollectionUtil.arrayListOf("abc", "xyz"), args.getAll("c"));
+        args.parse(argArr);
+        assertEquals("x", args.get("--a"));
+        assertEquals("welt !", args.get("-hallo"));
+        assertNull(args.get("--b"));
+        assertEquals(CollectionUtil.arrayListOf("abc", "xyz"), args.getAll("--c"));
         assertArrayEquals(argArr, args.toArray());
     }
 
     @Test
     void testSet() {
         Args args = new Args()
-                .set("a", "x")
-                .set("hallo", "welt !")
-                .set("b")
-                .set("c", "abc", "xyz");
+                .set("--a", "x")
+                .set("-hallo", "welt !")
+                .set("--b")
+                .setAll("--c", "abc", "xyz");
 
         String[] argArr = {"--a", "x", "-hallo", "\"welt !\"", "--b", "--c", "abc", "xyz"};
         assertArrayEquals(argArr, args.toArray());

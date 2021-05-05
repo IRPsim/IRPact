@@ -5,7 +5,7 @@ import de.unileipzig.irpact.io.param.input.InRoot;
 /**
  * @author Daniel Abitz
  */
-public class ToyModel1 extends ToyModel {
+public class ToyModel1 extends AbstractToyModel {
 
     @Override
     public InRoot createRoot() throws Exception {

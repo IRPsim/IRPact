@@ -15,25 +15,25 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
-public class SimpleLogFileLines implements LogFileLines {
+public class SimpleLinesLogFile implements LinesLogFile {
 
     protected List<String> lines;
 
-    public SimpleLogFileLines() {
+    public SimpleLinesLogFile() {
         this(new ArrayList<>());
     }
 
-    public SimpleLogFileLines(List<String> lines) {
+    public SimpleLinesLogFile(List<String> lines) {
         this.lines = lines;
     }
 
-    public static SimpleLogFileLines parse(Path path, Charset charset, LogFileLineFilter filter) throws IOException {
+    public static SimpleLinesLogFile parse(Path path, Charset charset, LogFileLineFilter filter) throws IOException {
         try(BufferedReader reader = Files.newBufferedReader(path, charset)) {
             return parse(reader, filter);
         }
     }
 
-    public static SimpleLogFileLines parse(BufferedReader reader, LogFileLineFilter filter) throws IOException {
+    public static SimpleLinesLogFile parse(BufferedReader reader, LogFileLineFilter filter) throws IOException {
         List<String> lines = new ArrayList<>();
         String line;
         while((line = reader.readLine()) != null) {
@@ -41,7 +41,7 @@ public class SimpleLogFileLines implements LogFileLines {
                 lines.add(line);
             }
         }
-        return new SimpleLogFileLines(lines);
+        return new SimpleLinesLogFile(lines);
     }
 
     @Override
