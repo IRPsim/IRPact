@@ -642,11 +642,13 @@ public class InRoot implements RootClass {
             addPathElement(res, InSpatialTableFile.thisName(), FILES);
 
         addPathElement(res, DISTRIBUTIONS, ROOT);
+            addPathElement(res, InBernoulliDistribution.thisName(), DISTRIBUTIONS);
             addPathElement(res, InBooleanDistribution.thisName(), DISTRIBUTIONS);
             addPathElement(res, InConstantUnivariateDistribution.thisName(), DISTRIBUTIONS);
-            addPathElement(res, InRandomBoundedIntegerDistribution.thisName(), DISTRIBUTIONS);
             addPathElement(res, InFiniteMassPointsDiscreteDistribution.thisName(), DISTRIBUTIONS);
                 addPathElement(res, InMassPoint.thisName(), InFiniteMassPointsDiscreteDistribution.thisName());
+            addPathElement(res, InNormalDistribution.thisName(), DISTRIBUTIONS);
+            addPathElement(res, InRandomBoundedIntegerDistribution.thisName(), DISTRIBUTIONS);
 
         addPathElement(res, AGENTS, ROOT);
                 addPathElement(res, CONSUMER, AGENTS);

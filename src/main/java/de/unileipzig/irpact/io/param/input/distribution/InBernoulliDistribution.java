@@ -36,6 +36,8 @@ public class InBernoulliDistribution implements InUnivariateDoubleDistribution {
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), DISTRIBUTIONS, thisName());
         addEntry(res, thisClass(), "p");
+        addEntry(res, thisClass(), "trueValue");
+        addEntry(res, thisClass(), "falseValue");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InBernoulliDistribution.class);
@@ -44,6 +46,12 @@ public class InBernoulliDistribution implements InUnivariateDoubleDistribution {
 
     @FieldDefinition
     public double p;
+
+    @FieldDefinition
+    public double trueValue;
+
+    @FieldDefinition
+    public double falseValue;
 
     public InBernoulliDistribution() {
     }
@@ -69,6 +77,22 @@ public class InBernoulliDistribution implements InUnivariateDoubleDistribution {
         this.p = p;
     }
 
+    public void setTrueValue(double trueValue) {
+        this.trueValue = trueValue;
+    }
+
+    public double getTrueValue() {
+        return trueValue;
+    }
+
+    public void setFalseValue(double falseValue) {
+        this.falseValue = falseValue;
+    }
+
+    public double getFalseValue() {
+        return falseValue;
+    }
+
     @Override
     public Object parse(InputParser parser) throws ParsingException {
         BernoulliDistribution dist = new BernoulliDistribution();
@@ -76,6 +100,8 @@ public class InBernoulliDistribution implements InUnivariateDoubleDistribution {
         Rnd rnd = parser.deriveRnd();
         dist.setRandom(rnd);
         dist.setP(getP());
+        dist.setTrueValue(getTrueValue());
+        dist.setFalseValue(getFalseValue());
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "BernoulliDistribution '{}' uses seed: {}", getName(), rnd.getInitialSeed());
         return dist;
     }

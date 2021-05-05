@@ -36,6 +36,8 @@ public class BernoulliDistributionPR extends BinaryPRBase<BernoulliDistribution>
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putDouble(object.getP());
+        data.putDouble(object.getFalseValue());
+        data.putDouble(object.getTrueValue());
 
         manager.prepare(object.getRandom());
 
@@ -56,6 +58,8 @@ public class BernoulliDistributionPR extends BinaryPRBase<BernoulliDistribution>
         BernoulliDistribution object = new BernoulliDistribution();
         object.setName(data.getText());
         object.setP(data.getDouble());
+        object.setFalseValue(data.getDouble());
+        object.setTrueValue(data.getDouble());
 
         return object;
     }

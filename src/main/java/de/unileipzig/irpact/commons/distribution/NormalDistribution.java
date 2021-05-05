@@ -25,8 +25,8 @@ public class NormalDistribution extends NameableBase implements UnivariateDouble
     public NormalDistribution(String name, Rnd rnd, double standardDeviation, double mean) {
         setName(name);
         setRandom(rnd);
-        setMean(mean);
         setStandardDeviation(standardDeviation);
+        setMean(mean);
     }
 
     public void setRandom(Rnd rnd) {
@@ -37,12 +37,12 @@ public class NormalDistribution extends NameableBase implements UnivariateDouble
         return rnd;
     }
 
-    public void setMean(double mean) {
-        this.mean = mean;
+    public void setStandardDeviation(double standardDeviation) {
+        this.standardDeviation = standardDeviation;
     }
 
-    public double getMean() {
-        return mean;
+    public double getStandardDeviation() {
+        return standardDeviation;
     }
 
     public void setVariance(double variance) {
@@ -53,12 +53,12 @@ public class NormalDistribution extends NameableBase implements UnivariateDouble
         return standardDeviation * standardDeviation;
     }
 
-    public void setStandardDeviation(double standardDeviation) {
-        this.standardDeviation = standardDeviation;
+    public void setMean(double mean) {
+        this.mean = mean;
     }
 
-    public double getStandardDeviation() {
-        return standardDeviation;
+    public double getMean() {
+        return mean;
     }
 
     @Override

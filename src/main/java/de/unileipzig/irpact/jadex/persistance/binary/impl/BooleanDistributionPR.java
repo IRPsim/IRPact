@@ -34,6 +34,8 @@ public class BooleanDistributionPR extends BinaryPRBase<BooleanDistribution> {
     protected BinaryJsonData doInitalizePersist(BooleanDistribution object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
+        data.putDouble(object.getFalseValue());
+        data.putDouble(object.getTrueValue());
 
         manager.prepare(object.getRandom());
 
@@ -53,6 +55,9 @@ public class BooleanDistributionPR extends BinaryPRBase<BooleanDistribution> {
     protected BooleanDistribution doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         BooleanDistribution object = new BooleanDistribution();
         object.setName(data.getText());
+        object.setFalseValue(data.getDouble());
+        object.setTrueValue(data.getDouble());
+
         return object;
     }
 

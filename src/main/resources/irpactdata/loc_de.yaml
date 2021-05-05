@@ -145,12 +145,33 @@ distributions:
   edn_label: "Verteilungsfunktionen"
   edn_description: "todo"
 
+InBernoulliDistribution:
+  edn_label: "Bernoulliverteilung"
+  edn_description: "Verteilungsfunktion, welche 0 oder 1 zurück gibt."
+InBernoulliDistribution_p:
+  gams_identifier: "p"
+  gams_description: "Wahrscheinlichkeit p"
+  gams_domain: "[0,1]"
+InBernoulliDistribution_trueValue:
+  gams_identifier: "x"
+  gams_description: "Dieser Wert wird mit der Wahrscheinlichkeit p zurück gegeben."
+  gams_default: "1"
+InBernoulliDistribution_falseValue:
+  gams_identifier: "y"
+  gams_description: "Dieser Wert wird mit der Wahrscheinlichkeit 1-p zurück gegeben."
+  gams_default: "0"
+
 InBooleanDistribution:
   edn_label: "Boolean"
-  edn_description: "Verteilungsfunktion, welche 0 oder 1 zurück gibt."
-InBooleanDistribution_placeholderBooleanDist:
-  gams_identifier: "---"
-  gams_description: "Ungenutzter Platzhalter"
+  edn_description: "Verteilungsfunktion, welche x oder y zurück gibt. Der Wahrscheinlichkeit ist dabei gleichverteilt."
+InBooleanDistribution_trueValue:
+  gams_identifier: "x"
+  gams_description: "Der Wert, welcher zurückgegeben wird, wenn die Funktion intern 1 (WAHR) ergibt."
+  gams_default: "1"
+InBooleanDistribution_falseValue:
+  gams_identifier: "y"
+  gams_description: "Der Wert, welcher zurückgegeben wird, wenn die Funktion intern 0 (FALSCH) ergibt."
+  gams_default: "0"
 
 InConstantUnivariateDistribution:
   edn_label: "Dirac"
@@ -175,6 +196,18 @@ InMassPoint_mpValue:
 InMassPoint_mpWeight:
   gams_identifier: "Wichtung des Punktes"
   gams_description: "Legt die Wichtung des Punktes fest."
+
+InNormalDistribution:
+  edn_label: "Normalverteilung"
+  edn_description: "Verteilungsfunktionauf Basis der Normalverteilung."
+InNormalDistribution_standardDeviation:
+  gams_identifier: "Standardabweichung"
+  gams_description: "Die zu nutzende Standardabweichung."
+  gams_default: "1"
+InNormalDistribution_mean:
+  gams_identifier: "Mittelwert"
+  gams_description: "Der zu nutzende Mittelwert."
+  gams_default: "0"
 
 InRandomBoundedIntegerDistribution:
   edn_label: "Gleichverteilte ganze Zahlen"
