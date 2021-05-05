@@ -94,8 +94,8 @@ public final class Start {
                 options.getExecuteResultMessage().log(LOGGER, Level.INFO);
             }
 
-            if(options.isPrintHelp() || options.isPrintVersion()) {
-                if(options.isCallIRPtools()) {
+            if(options.isPrintHelpOrVersion()) {
+                if(options.isPrintIRPtoolsHelp()) {
                     IRPtools.main(new String[]{"-?"});
                 }
                 return new StartResult(CommandLine.ExitCode.OK);
@@ -155,9 +155,23 @@ public final class Start {
         return result.getExitCode();
     }
 
-    public static void main(String[] args) throws Throwable {
-        int exitCode = start(args);
-        System.exit(exitCode);
+    public static void main(String[] args) throws StartException {
+        try {
+            int exitCode = start(args);
+            System.exit(exitCode);
+        } catch (Throwable throwable) {
+            throw new StartException(throwable);
+        }
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    private static final class StartException extends RuntimeException {
+
+        private StartException(Throwable cause) {
+            super(cause);
+        }
     }
 
     /**

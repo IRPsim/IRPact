@@ -260,7 +260,7 @@ public class Preloader {
             optact = optactNode.booleanValue();
         }
         else {
-            LOGGER.error(" unsupported node tpye: '{}'", optactNode.getNodeType());
+            LOGGER.error("unsupported node tpye: '{}'", optactNode.getNodeType());
             return SubModul.UNKNOWN;
         }
         return optact
@@ -268,16 +268,16 @@ public class Preloader {
                 : SubModul.IRPACT;
     }
 
+    private void callOptact(ObjectNode root) {
+        OptAct optact = new OptAct(clOptions, root);
+        optact.start();
+    }
+
     private void callIRPact(ObjectNode root) throws Exception {
         LOGGER.trace("call IRPact with param");
         IRPact irpact = createIRPactInstance();
         irpact.start(root);
         LOGGER.trace("IRPact finished");
-    }
-
-    private void callOptact(ObjectNode root) {
-        OptAct optact = new OptAct(clOptions, root);
-        optact.start();
     }
 
     public void start(AnnualEntry<InRoot> root) throws Exception {

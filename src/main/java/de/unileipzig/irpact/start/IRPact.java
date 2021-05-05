@@ -47,9 +47,8 @@ import jadex.bridge.service.types.clock.IClockService;
 import jadex.bridge.service.types.cms.CreationInfo;
 import jadex.bridge.service.types.simulation.ISimulationService;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * @author Daniel Abitz
@@ -74,6 +73,9 @@ public class IRPact implements IRPActAccess {
      */
     public static final String VERSION_STRING = "v0_0_0";
     public static final Version VERSION = new BasicVersion(VERSION_STRING);
+
+    private static final Map<CommandLineOptions, Converter> INPUT_CONVERTS = new WeakHashMap<>();
+    private static final Map<CommandLineOptions, Converter> OUTPUT_CONVERTS = new WeakHashMap<>();
 
     private final List<IRPactCallback> CALLBACKS = new ArrayList<>();
     private final CommandLineOptions CL_OPTIONS;
@@ -105,24 +107,36 @@ public class IRPact implements IRPActAccess {
         return mapper;
     }
 
-    private static Converter inputConverter;
     public static Converter getInputConverter(CommandLineOptions options) {
-        if(inputConverter == null) {
+        if(INPUT_CONVERTS.containsKey(options)) {
+            return INPUT_CONVERTS.get(options);
+        } else {
             DefinitionCollection dcoll = AnnotationParser.parse(InRoot.CLASSES_WITH_GRAPHVIZ);
             DefinitionMapper dmap = createMapper(options, dcoll);
-            inputConverter = new Converter(dmap);
+            Converter converter = new Converter(dmap);
+            INPUT_CONVERTS.put(options, converter);
+            return converter;
         }
-        return inputConverter;
     }
 
-    private static Converter outputConverter;
+    private Converter getInputConverter() {
+        return getInputConverter(CL_OPTIONS);
+    }
+
     public static Converter getOutputConverter(CommandLineOptions options) {
-        if(outputConverter == null) {
+        if(OUTPUT_CONVERTS.containsKey(options)) {
+            return OUTPUT_CONVERTS.get(options);
+        } else {
             DefinitionCollection dcoll = AnnotationParser.parse(OutRoot.CLASSES);
             DefinitionMapper dmap = createMapper(options, dcoll);
-            outputConverter = new Converter(dmap);
+            Converter converter = new Converter(dmap);
+            OUTPUT_CONVERTS.put(options, converter);
+            return converter;
         }
-        return outputConverter;
+    }
+
+    private Converter getOutputConverter() {
+        return getOutputConverter(CL_OPTIONS);
     }
 
     public static AnnualEntry<InRoot> convert(CommandLineOptions options, ObjectNode rootNode) {
@@ -135,6 +149,15 @@ public class IRPact implements IRPActAccess {
         );
     }
 
+    private AnnualEntry<InRoot> convert(ObjectNode rootNode) {
+        return convert(CL_OPTIONS, rootNode);
+    }
+
+    public static void clearConverterCache() {
+        INPUT_CONVERTS.clear();
+        OUTPUT_CONVERTS.clear();
+    }
+
     private void pulse() {
         environment.getLiveCycleControl().pulse();
     }
@@ -145,7 +168,7 @@ public class IRPact implements IRPActAccess {
     }
 
     private void parseInputFile(ObjectNode jsonRoot) {
-        inEntry = convert(CL_OPTIONS, jsonRoot);
+        inEntry = convert(jsonRoot);
         inRoot = inEntry.getData();
     }
 
@@ -156,6 +179,14 @@ public class IRPact implements IRPActAccess {
     }
 
     private void start() throws Exception {
+        if(CL_OPTIONS.hasInputOutPath()) {
+            printInput();
+            if(CL_OPTIONS.isNoSimulationAndNoImage()) {
+                LOGGER.info(IRPSection.GENERAL, "no simulation");
+                return;
+            }
+        }
+
         initialize();
 
         preAgentCreation();
@@ -169,6 +200,7 @@ public class IRPact implements IRPActAccess {
         postAgentCreationValidation();
 
         runPrePlatformCreationTasks();
+
         if(CL_OPTIONS.isNoSimulation()) {
             if(CL_OPTIONS.hasImagePath()) {
                 LOGGER.info(IRPSection.GENERAL, "create initial network image");
@@ -195,6 +227,13 @@ public class IRPact implements IRPActAccess {
         startSimulation();
         waitForTermination();
         postSimulation();
+    }
+
+    private void printInput() throws IOException {
+        LOGGER.trace(IRPSection.GENERAL, "print input file to {} (using {})", CL_OPTIONS.getInputOutPath(), CL_OPTIONS.getInputOutCharset().name());
+        AnnualData<InRoot> inData = new AnnualData<>(inEntry);
+        AnnualFile aFile = inData.serialize(getInputConverter());
+        aFile.store(CL_OPTIONS.getInputOutPath(), CL_OPTIONS.getInputOutCharset());
     }
 
     private void initialize() throws Exception {
@@ -496,7 +535,7 @@ public class IRPact implements IRPActAccess {
 
     private void storeOutputData(AnnualData<OutRoot> outData) {
         try {
-            AnnualFile outFile = outData.serialize(getOutputConverter(CL_OPTIONS));
+            AnnualFile outFile = outData.serialize(getOutputConverter());
             outFile.store(CL_OPTIONS.getOutputPath());
         } catch (Throwable t) {
             LOGGER.error("saving output failed", t);
@@ -509,7 +548,7 @@ public class IRPact implements IRPActAccess {
             try {
                 callback.onFinished(this);
             } catch (Exception e) {
-                LOGGER.error("on running callback", e);
+                LOGGER.error("on running callback '" + callback.getName() + "'", e);
             }
         }
     }
@@ -522,6 +561,7 @@ public class IRPact implements IRPActAccess {
     private void finalTask() {
         IRPLogging.removeFilter();
         IRPtools.setLoggingFilter(null);
+        clearConverterCache();
         LOGGER.info(IRPSection.GENERAL, "simulation finished");
     }
 

@@ -6,6 +6,8 @@ import de.unileipzig.irptools.defstructure.DefinitionMapper;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import picocli.CommandLine;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -124,6 +126,20 @@ public class CommandLineOptions implements Callable<Integer> {
             description = "Calls IRPtools help."
     )
     protected boolean printIRPtoolsHelp;
+
+    @CommandLine.Option(
+            names = { "--printInput" },
+            description = "Saves input data to the specified file."
+    )
+    private String inputOutFile;
+    private Path inputOutPath;
+
+    @CommandLine.Option(
+            names = { "--printInputCharset" },
+            description = "Sets the charset for saving the input data."
+    )
+    private String inputOutCharsetName;
+    private Charset inputOutCharset;
 
     //=========================
     //hidden
@@ -273,6 +289,9 @@ public class CommandLineOptions implements Callable<Integer> {
         return outputPath;
     }
 
+    public boolean hasNoImagePath() {
+        return !hasImagePath();
+    }
     public boolean hasImagePath() {
         return getImagePath() != null;
     }
@@ -305,6 +324,10 @@ public class CommandLineOptions implements Callable<Integer> {
     public boolean isNoSimulation() {
         checkExecuted();
         return noSimulation;
+    }
+
+    public boolean isNoSimulationAndNoImage() {
+        return isNoSimulation() && hasNoImagePath();
     }
 
     public boolean isCallIRPtools() {
@@ -357,6 +380,25 @@ public class CommandLineOptions implements Callable<Integer> {
         return useGamsNameTrimming == 1;
     }
 
+    public boolean hasInputOutPath() {
+        return inputOutPath != null;
+    }
+
+    public Path getInputOutPath() {
+        return inputOutPath;
+    }
+
+    public Charset getInputOutCharset() {
+        if(inputOutCharsetName == null) {
+            return StandardCharsets.UTF_8;
+        } else {
+            if(inputOutCharset == null) {
+                inputOutCharset = Charset.forName(inputOutCharsetName);
+            }
+            return inputOutCharset;
+        }
+    }
+
     //=========================
     //execute
     //=========================
@@ -376,6 +418,7 @@ public class CommandLineOptions implements Callable<Integer> {
         specOutputDirPath = tryGetPath(specOutputDir);
         specInputDirPath = tryGetPath(specInputDir);
         dataDirPath = tryGetPath(dataDir);
+        inputOutPath = tryGetPath(inputOutFile);
     }
 
     private static Path tryGetPath(String pathStr) {
