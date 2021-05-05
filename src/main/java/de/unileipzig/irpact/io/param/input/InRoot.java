@@ -517,10 +517,12 @@ public class InRoot implements RootClass {
             VisibleBinaryData.class,
             BinaryPersistData.class, //special
 
+            InBernoulliDistribution.class,
             InBooleanDistribution.class,
             InConstantUnivariateDistribution.class,
             InFiniteMassPointsDiscreteDistribution.class,
             InMassPoint.class,
+            InNormalDistribution.class,
             InRandomBoundedIntegerDistribution.class,
             InUnivariateDoubleDistribution.class,
 

@@ -168,6 +168,19 @@ public final class Rnd implements ChecksumComparable {
         return (nextDouble() * (upperBound - lowerBound)) + lowerBound;
     }
 
+    public double nextGaussian() {
+        return nextGaussian(1.0, 0);
+    }
+
+    public double nextGaussian(double standardDeviation, double mean) {
+        lock();
+        try {
+            return rnd.nextGaussian() * standardDeviation + mean;
+        } finally {
+            unlock();
+        }
+    }
+
     public <T> T getRandom(Collection<? extends T> coll) {
         lock();
         try {

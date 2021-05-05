@@ -14,7 +14,6 @@ import java.util.Objects;
 @Todo("spec + persi adden")
 public class BernoulliDistribution extends NameableBase implements UnivariateDoubleDistribution {
 
-    protected long seed;
     protected Rnd rnd;
     protected double p;
 
@@ -50,6 +49,6 @@ public class BernoulliDistribution extends NameableBase implements UnivariateDou
 
     @Override
     public int getChecksum() {
-        return Objects.hash(name, seed, rnd.getChecksum(), p);
+        return Objects.hash(name, rnd.getChecksum(), p);
     }
 }
