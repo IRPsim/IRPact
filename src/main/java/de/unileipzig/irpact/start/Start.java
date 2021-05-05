@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.start;
 
+import de.unileipzig.irpact.commons.log.IRPLoggingMessage;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.SectionLoggingFilter;
@@ -12,7 +13,6 @@ import picocli.CommandLine;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -41,19 +41,25 @@ public final class Start {
         if(options.logToFile()) {
 
             boolean hasOldLogFile = Files.exists(options.getLogPath());
+            IRPLoggingMessage deletedMsg = null;
             if(hasOldLogFile) {
                 Files.delete(options.getLogPath());
+                deletedMsg = new IRPLoggingMessage(IRPSection.INITIALIZATION_PARAMETER, "old logfile '{}' deleted", options.getLogPath());
             }
 
             if(options.logConsoleAndFile()) {
                 IRPLogging.initConsoleAndFile(options.getLogPath());
-                logOldFileDeleted(hasOldLogFile, options.getLogPath());
+                if(deletedMsg != null) {
+                    deletedMsg.trace(LOGGER);
+                }
                 if(options.isNotPrintHelpOrVersion()) {
                     LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "log to console and file '{}'", options.getLogPath());
                 }
             } else {
                 IRPLogging.initFile(options.getLogPath());
-                logOldFileDeleted(hasOldLogFile, options.getLogPath());
+                if(deletedMsg != null) {
+                    deletedMsg.trace(LOGGER);
+                }
                 if(options.isNotPrintHelpOrVersion()) {
                     LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "log to file '{}'", options.getLogPath());
                 }
@@ -65,21 +71,21 @@ public final class Start {
         }
     }
 
-    private static void logOldFileDeleted(boolean deleted, Path path) {
-        if(deleted) {
-            LOGGER.trace(IRPSection.GENERAL, "old logfile '{}' deleted", path);
-        }
-    }
-
-    private static StartResult startApp(String[] args, AnnualEntry<InRoot> scenario, Collection<? extends IRPactCallback> callbacks) {
+    private static StartResult startApp(
+            String[] args,
+            AnnualEntry<InRoot> scenario,
+            Collection<? extends IRPactCallback> callbacks) {
         prepareLogging();
+
         CommandLineOptions options = new CommandLineOptions(args);
+        options.setHasCustomInput(scenario != null);
+        options.setHasCallback(callbacks != null && callbacks.size() > 0);
         int exitCode = options.parse();
 
         try {
             setupLogging(options);
         } catch (IOException e) {
-            LOGGER.error("Setup logging failed, cancel start", e);
+            LOGGER.error("setup logging failed, start canceled", e);
             return new StartResult(CommandLine.ExitCode.SOFTWARE, e);
         }
 
@@ -87,12 +93,14 @@ public final class Start {
             if(options.hasExecuteResultMessage()) {
                 options.getExecuteResultMessage().log(LOGGER, Level.INFO);
             }
+
             if(options.isPrintHelp() || options.isPrintVersion()) {
                 if(options.isCallIRPtools()) {
                     IRPtools.main(new String[]{"-?"});
                 }
                 return new StartResult(CommandLine.ExitCode.OK);
             }
+
             Preloader loader = new Preloader(options, callbacks);
             try {
                 if(scenario == null) {
@@ -114,47 +122,42 @@ public final class Start {
         }
     }
 
-    private static StartResult startApp(String[] args, Collection<? extends IRPactCallback> callbacks) {
-        return startApp(args, null, callbacks);
+    public static int start(
+            String[] args,
+            IRPactCallback... callbacks) throws Throwable {
+        return start(args, null, callbacks);
     }
 
-    public static int start(String[] args, IRPactCallback... callbacks) {
-        return start(args, Arrays.asList(callbacks));
+    public static int start(
+            String[] args,
+            Collection<? extends IRPactCallback> callbacks) throws Throwable {
+        return start(args, null, callbacks);
     }
 
-    public static int start(String[] args, Collection<? extends IRPactCallback> callbacks) {
-        StartResult result = startApp(args, callbacks);
-        return result.getErrorCode();
-    }
-
-    public static int startWithGui(String[] args, IRPactCallback... callbacks) throws Throwable {
-        return startWithGui(args, Arrays.asList(callbacks));
-    }
-
-    public static int startWithGui(String[] args, Collection<? extends IRPactCallback> callbacks) throws Throwable {
-        StartResult result = startApp(args, callbacks);
-        if(result.getCause() != null) {
-            throw result.getCause();
-        }
-        if(result.getErrorCode() != CommandLine.ExitCode.OK) {
-            throw new IllegalArgumentException("invalid arguments");
-        }
-        return CommandLine.ExitCode.OK;
-    }
-
-    public static int start(String[] args, AnnualEntry<InRoot> scenario, IRPactCallback... callbacks) {
+    public static int start(
+            String[] args,
+            AnnualEntry<InRoot> scenario,
+            IRPactCallback... callbacks) throws Throwable {
         return start(args, scenario, Arrays.asList(callbacks));
     }
 
-    public static int start(String[] args, AnnualEntry<InRoot> scenario, Collection<? extends IRPactCallback> callbacks) {
+    public static int start(
+            String[] args,
+            AnnualEntry<InRoot> scenario,
+            Collection<? extends IRPactCallback> callbacks) throws Throwable {
         StartResult result = startApp(args, scenario, callbacks);
-        return result.getErrorCode();
+        if(result.getCause() != null) {
+            throw result.getCause();
+        }
+        if(result.isFailure()) {
+            throw new IllegalArgumentException("invalid arguments");
+        }
+        return result.getExitCode();
     }
 
-    //start nutzen, wenn nicht via konsole!
-    public static void main(String[] args) {
-        int errorCode = start(args);
-        System.exit(errorCode);
+    public static void main(String[] args) throws Throwable {
+        int exitCode = start(args);
+        System.exit(exitCode);
     }
 
     /**
@@ -162,20 +165,28 @@ public final class Start {
      */
     private static final class StartResult {
 
-        private final int ERROR_CODE;
+        private final int EXIT_CODE;
         private final Throwable CAUSE;
 
-        private StartResult(int errorCode) {
-            this(errorCode, null);
+        private StartResult(int exitCode) {
+            this(exitCode, null);
         }
 
-        private StartResult(int errorCode, Throwable cause) {
-            this.ERROR_CODE = errorCode;
+        private StartResult(int exitCode, Throwable cause) {
+            this.EXIT_CODE = exitCode;
             this.CAUSE = cause;
         }
 
-        public int getErrorCode() {
-            return ERROR_CODE;
+        public int getExitCode() {
+            return EXIT_CODE;
+        }
+
+        public boolean isOk() {
+            return getExitCode() == CommandLine.ExitCode.OK;
+        }
+
+        public boolean isFailure() {
+            return !isOk();
         }
 
         public Throwable getCause() {

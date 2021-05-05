@@ -18,29 +18,20 @@ public class LoggingMessage {
         this.message = message;
     }
 
-    public LoggingMessage(String message, Level level) {
-        this.message = message;
-        this.level = level;
-    }
-
     public LoggingMessage(String message, Throwable cause) {
         this.message = message;
         this.cause = cause;
     }
 
     public LoggingMessage(String message, Object arg) {
-        this((Void) null, message, new Object[]{arg});
+        this(message, new Object[]{arg});
     }
 
     public LoggingMessage(String message, Object arg1, Object arg2) {
-        this((Void) null, message, new Object[]{arg1, arg2});
+        this(message, new Object[]{arg1, arg2});
     }
 
     public LoggingMessage(String message, Object... args) {
-        this((Void) null, message, args);
-    }
-
-    protected LoggingMessage(@SuppressWarnings("unused") Void temp, String message, Object[] args) {
         this.message = message;
         this.args = args;
     }
@@ -87,6 +78,15 @@ public class LoggingMessage {
         return level != null;
     }
 
+    public LoggingMessage setLevel(Level level) {
+        this.level = level;
+        return this;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
     public String format() {
         if(hasArguments()) {
             switch(getNumberOfArguments()) {
@@ -113,7 +113,7 @@ public class LoggingMessage {
         doLog(logger, level);
     }
 
-    private void doLog(Logger logger, Level level) {
+    protected void doLog(Logger logger, Level level) {
         if(hasLevel()) {
             switch (level) {
                 case ERROR:
@@ -187,7 +187,7 @@ public class LoggingMessage {
         );
     }
 
-    private void log(
+    protected void log(
             LogMessage logMessage,
             LogWithArgument logWithArgument,
             LogWithTwoArguments logWithTwoArguments,
@@ -219,7 +219,7 @@ public class LoggingMessage {
     /**
      * @author Daniel Abitz
      */
-    private interface LogWithError {
+    protected interface LogWithError {
 
         void log(String msg, Throwable cause);
     }
@@ -227,7 +227,7 @@ public class LoggingMessage {
     /**
      * @author Daniel Abitz
      */
-    private interface LogMessage {
+    protected interface LogMessage {
 
         void log(String msg);
     }
@@ -235,7 +235,7 @@ public class LoggingMessage {
     /**
      * @author Daniel Abitz
      */
-    private interface LogWithArgument {
+    protected interface LogWithArgument {
 
         void log(String format, Object arg);
     }
@@ -243,7 +243,7 @@ public class LoggingMessage {
     /**
      * @author Daniel Abitz
      */
-    private interface LogWithTwoArguments {
+    protected interface LogWithTwoArguments {
 
         void log(String format, Object arg1, Object arg2);
     }
@@ -251,7 +251,7 @@ public class LoggingMessage {
     /**
      * @author Daniel Abitz
      */
-    private interface LogWithrguments {
+    protected interface LogWithrguments {
 
         void log(String format, Object[] arguments);
     }

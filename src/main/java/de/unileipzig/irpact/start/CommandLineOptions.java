@@ -113,16 +113,21 @@ public class CommandLineOptions implements Callable<Integer> {
     )
     private boolean prefereCsv;
 
+    @CommandLine.Option(
+            names = { "--irptools" },
+            description = "Enables calling IRPtools, all arguments will be transmitted to IRPtools, IRPact is not called."
+    )
+    private boolean callIRPtools;
+
+    @CommandLine.Option(
+            names = { "--irptoolsUsage" },
+            description = "Calls IRPtools help."
+    )
+    protected boolean printIRPtoolsHelp;
+
     //=========================
     //hidden
     //=========================
-
-    @CommandLine.Option(
-            names = { "--irptools" },
-            description = "Call IRPtools, all arguments will be transmitted, IRPact is not called.",
-            hidden = true
-    )
-    private boolean callIRPtools;
 
     @CommandLine.Option(
             names = { "--paramToSpec" },
@@ -155,16 +160,12 @@ public class CommandLineOptions implements Callable<Integer> {
     )
     private boolean ignorePersistenceCheck;
 
-    //=========================
-    //dev
-    //=========================
-
     @CommandLine.Option(
-            names = { "--testMode" },
-            description = "Enables test mode and disables command-line validation.",
+            names = { "--skipArgValidation" },
+            description = "Skips command line validation.",
             hidden = true
     )
-    private boolean testMode;
+    private boolean skipArgValidation;
 
     //=========================
     //data
@@ -175,6 +176,9 @@ public class CommandLineOptions implements Callable<Integer> {
     private boolean executed = false;
     private LoggingMessage executeResult;
 
+    private boolean hasCustomInput = false;
+    private boolean hasCallback = false;
+
     public CommandLineOptions(String[] args) {
         this.ARGS = args;
     }
@@ -184,6 +188,22 @@ public class CommandLineOptions implements Callable<Integer> {
                 .setUnmatchedArgumentsAllowed(true);
         errorCode = cl.execute(ARGS);
         return errorCode;
+    }
+
+    public void setHasCustomInput(boolean hasCustomInput) {
+        this.hasCustomInput = hasCustomInput;
+    }
+
+    public boolean hasCustomInput() {
+        return hasCustomInput;
+    }
+
+    public void setHasCallback(boolean hasCallback) {
+        this.hasCallback = hasCallback;
+    }
+
+    public boolean hasCallback() {
+        return hasCallback;
     }
 
     protected void checkExecuted() {
@@ -225,8 +245,12 @@ public class CommandLineOptions implements Callable<Integer> {
         return printVersion;
     }
 
+    public boolean isPrintIRPtoolsHelp() {
+        return printIRPtoolsHelp;
+    }
+
     public boolean isPrintHelpOrVersion() {
-        return isPrintHelp() || isPrintVersion();
+        return isPrintHelp() || isPrintVersion() || isPrintIRPtoolsHelp();
     }
 
     public boolean isNotPrintHelpOrVersion() {
@@ -385,14 +409,25 @@ public class CommandLineOptions implements Callable<Integer> {
     }
 
     private boolean cancelValidation() {
-        return testMode
+        return skipArgValidation
                 || printHelp
                 || printVersion
-                || callIRPtools;
+                || callIRPtools
+                || printIRPtoolsHelp;
     }
 
     private int validateInput() {
         int specifiedInput = countSpecified(inputPath, specInputDirPath);
+
+        if(hasCustomInput()) {
+            if(specifiedInput == 0b00) {
+                return CommandLine.ExitCode.OK;
+            } else {
+                executeResult = new LoggingMessage("custom input and file input specified");
+                return CommandLine.ExitCode.USAGE;
+            }
+        }
+
         switch (specifiedInput) {
             case 0b00:
                 executeResult = new LoggingMessage("missing input");
@@ -432,6 +467,9 @@ public class CommandLineOptions implements Callable<Integer> {
         int specifiedOutput = countSpecified(outputPath, specOutputDirPath);
         switch (specifiedOutput) {
             case 0b00:
+                if(hasCallback()) {
+                    return CommandLine.ExitCode.OK;
+                }
                 executeResult = new LoggingMessage("missing output");
                 return CommandLine.ExitCode.USAGE;
 
