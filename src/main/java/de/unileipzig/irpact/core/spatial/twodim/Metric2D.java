@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.spatial.twodim;
 
-import de.unileipzig.irpact.commons.util.Utils;
 import de.unileipzig.irpact.commons.geo.GeoMath;
 import de.unileipzig.irpact.core.spatial.Metric;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
@@ -73,7 +72,7 @@ public enum Metric2D implements Metric {
         if(information instanceof Point2D) {
             return (Point2D) information;
         }
-        throw new IllegalArgumentException("no Point2D: " + Utils.printClass(information));
+        throw new IllegalArgumentException("no Point2D: " + (information == null ? "null" : information.getClass().getName()));
     }
 
     public static Metric2D get(int id) {

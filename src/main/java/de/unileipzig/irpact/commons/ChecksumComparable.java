@@ -16,7 +16,7 @@ public interface ChecksumComparable {
     IRPLogger LOGGER0 = IRPLogging.getLogger(ChecksumComparable.class);
 
     int NULL_CHECKSUM = 0;
-    int DEFAULT_HASH = 31;
+    int NONNULL_CHECKSUM = 31;
 
     static boolean sameChecksum(Object a, Object b) {
         if(a instanceof ChecksumComparable) {
@@ -98,7 +98,7 @@ public interface ChecksumComparable {
         if(coll instanceof List) {
             return getListCollChecksum((List<? extends Collection<?>>) coll);
         }
-        //fallback
+        //fallback, like set
         int h = 0;
         for(Collection<?> c: coll) {
             if(c != null) {

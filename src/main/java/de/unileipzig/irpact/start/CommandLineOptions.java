@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.start;
 
 import de.unileipzig.irpact.commons.log.LoggingMessage;
+import de.unileipzig.irpact.commons.util.AbstractCommandLineOptions;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -11,7 +12,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.Callable;
 
 /**
  * @author Daniel Abitz
@@ -21,7 +21,7 @@ import java.util.concurrent.Callable;
         name = "java -jar <IRPact.jar>",
         version = "IRPact version " + IRPact.VERSION_STRING
 )
-public class CommandLineOptions implements Callable<Integer> {
+public class CommandLineOptions extends AbstractCommandLineOptions {
 
     private static final String TRUE1 = "1";
     private static final String FALSE0 = "0";
@@ -187,8 +187,6 @@ public class CommandLineOptions implements Callable<Integer> {
     //data
     //=========================
 
-    private final String[] ARGS;
-    private int errorCode;
     private boolean executed = false;
     private LoggingMessage executeResult;
 
@@ -196,14 +194,7 @@ public class CommandLineOptions implements Callable<Integer> {
     private boolean hasCallback = false;
 
     public CommandLineOptions(String[] args) {
-        this.ARGS = args;
-    }
-
-    public int parse() {
-        CommandLine cl = new CommandLine(this)
-                .setUnmatchedArgumentsAllowed(true);
-        errorCode = cl.execute(ARGS);
-        return errorCode;
+        super(args);
     }
 
     public void setHasCustomInput(boolean hasCustomInput) {
@@ -226,10 +217,6 @@ public class CommandLineOptions implements Callable<Integer> {
         if(isNotPrintHelpOrVersion() && !executed) {
             throw new IllegalStateException("not executed");
         }
-    }
-
-    public String[] getArgs() {
-        return ARGS;
     }
 
     public int getErrorCode() {
