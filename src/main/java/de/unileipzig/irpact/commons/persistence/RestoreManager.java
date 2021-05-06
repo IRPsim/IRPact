@@ -24,13 +24,13 @@ public interface RestoreManager {
 
     int getValidationChecksum();
 
-    <T> T ensureGet(long uid) throws NoSuchElementException;
+    <T> T ensureGet(long uid) throws RestoreException;
 
-    <T> T[] ensureGetAll(long[] uids, IntFunction<T[]> arrCreator) throws NoSuchElementException;
+    <T> T[] ensureGetAll(long[] uids, IntFunction<T[]> arrCreator) throws RestoreException;
 
-    <T> boolean ensureGetAll(long[] uids, Collection<? super T> target) throws NoSuchElementException;
+    <T> boolean ensureGetAll(long[] uids, Collection<? super T> target) throws RestoreException;
 
-    <K, V> Map<K, V> ensureGetAll(Map<Long, Long> idMap) throws NoSuchElementException;
+    <K, V> Map<K, V> ensureGetAll(Map<Long, Long> idMap) throws RestoreException;
 
     /**
      * Search for the exact class (c == x.getClass)
@@ -38,9 +38,9 @@ public interface RestoreManager {
      * @param c class of the searched instance
      * @param <T> type of the searched instance
      * @return found instance
-     * @throws NoSuchElementException If no instance was found.
+     * @throws RestoreException If no instance was found.
      */
-    <T> T ensureGetSameClass(Class<T> c) throws NoSuchElementException;
+    <T> T ensureGetSameClass(Class<T> c) throws RestoreException;
 
     /**
      * Search for the instance with {@link Class#isInstance(Object)}.
@@ -48,9 +48,9 @@ public interface RestoreManager {
      * @param c class of the searched instance
      * @param <T> type of the searched instance
      * @return found instance
-     * @throws NoSuchElementException If no instance was found.
+     * @throws RestoreException If no instance was found.
      */
-    <T> T ensureGetInstanceOf(Class<T> c) throws NoSuchElementException;
+    <T> T ensureGetInstanceOf(Class<T> c) throws RestoreException;
 
-    <T> T ensureGetByName(String name) throws NoSuchElementException;
+    <T> T ensureGetByName(String name) throws RestoreException;
 }

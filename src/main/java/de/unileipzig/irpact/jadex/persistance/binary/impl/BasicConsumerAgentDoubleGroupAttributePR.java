@@ -58,7 +58,7 @@ public class BasicConsumerAgentDoubleGroupAttributePR extends BinaryPRBase<Basic
     }
 
     @Override
-    protected void doSetupRestore(BinaryJsonData data, BasicConsumerAgentDoubleGroupAttribute object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, BasicConsumerAgentDoubleGroupAttribute object, RestoreManager manager) throws RestoreException {
         object.setDistribution(manager.ensureGet(data.getLong()));
     }
 }

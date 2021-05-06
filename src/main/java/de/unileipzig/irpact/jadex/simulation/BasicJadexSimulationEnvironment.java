@@ -35,6 +35,7 @@ import jadex.bridge.service.annotation.Reference;
 /**
  * @author Daniel Abitz
  */
+@SuppressWarnings("DefaultAnnotationParam")
 @Reference(local = true, remote = true)
 public class BasicJadexSimulationEnvironment extends NameableBase implements JadexSimulationEnvironment {
 
@@ -209,7 +210,8 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     @Override
     public void validateVersion(Version version) throws VersionMismatchException {
         if(getVersion().isMismatch(version)) {
-            throw ExceptionUtil.create(VersionMismatchException::new, "version mismatch: (current) '{}' != '{}'", getVersion().print(), version.print());
+            //
+            throw ExceptionUtil.create(VersionMismatchException::new, "version mismatch: IRPact version '{}' != '{}'", getVersion().print(), version.print());
         }
     }
 

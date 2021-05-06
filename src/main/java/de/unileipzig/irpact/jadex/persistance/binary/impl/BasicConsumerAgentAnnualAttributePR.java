@@ -75,7 +75,7 @@ public class BasicConsumerAgentAnnualAttributePR extends BinaryPRBase<BasicConsu
         BinaryJsonData.mapFromLongLongMap(
                 idMap,
                 BinaryJsonData.LONG2INT,
-                manager::ensureGet,
+                BinaryJsonData.ensureGet(manager),
                 object.getMapping()
         );
     }

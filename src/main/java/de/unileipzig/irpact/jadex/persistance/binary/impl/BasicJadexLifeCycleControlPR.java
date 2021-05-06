@@ -61,7 +61,7 @@ public class BasicJadexLifeCycleControlPR extends BinaryPRBase<BasicJadexLifeCyc
     }
 
     @Override
-    protected void doSetupRestore(BinaryJsonData data, BasicJadexLifeCycleControl object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, BasicJadexLifeCycleControl object, RestoreManager manager) throws RestoreException {
         object.setEnvironment(manager.ensureGetInstanceOf(JadexSimulationEnvironment.class));
 
         BasicJadexSimulationEnvironment initial = manager.getInitialInstance();

@@ -60,7 +60,7 @@ public class BasicEdgePR extends BinaryPRBase<BasicSocialGraph.BasicEdge> {
     }
 
     @Override
-    protected void doSetupRestore(BinaryJsonData data, BasicSocialGraph.BasicEdge object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, BasicSocialGraph.BasicEdge object, RestoreManager manager) throws RestoreException {
         BasicSocialGraph graph = manager.ensureGetSameClass(BasicSocialGraph.class);
 
         object.setType(SocialGraph.Type.get(data.getInt()));

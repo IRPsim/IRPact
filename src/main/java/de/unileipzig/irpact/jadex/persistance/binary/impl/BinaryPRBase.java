@@ -91,17 +91,25 @@ public abstract class BinaryPRBase<T> implements BinaryPersister<T>, BinaryResto
 
     @Override
     public final T initalizeRestore(Persistable persistable, RestoreManager manager) throws RestoreException {
-        BinaryJsonData data = check(persistable);
-        T object = doInitalizeRestore(data, manager);
-        return object;
+        try {
+            BinaryJsonData data = check(persistable);
+            T object = doInitalizeRestore(data, manager);
+            return object;
+        } catch (UncheckedRestoreException e) {
+            throw e.getCause();
+        }
     }
 
     protected abstract T doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException;
 
     @Override
     public final void setupRestore(Persistable persistable, T object, RestoreManager manager) throws RestoreException {
-        BinaryJsonData data = check(persistable);
-        doSetupRestore(data, object, manager);
+        try {
+            BinaryJsonData data = check(persistable);
+            doSetupRestore(data, object, manager);
+        } catch (UncheckedRestoreException e) {
+            throw e.getCause();
+        }
     }
 
     //ueberschreiben, falls benoetigt
@@ -110,8 +118,12 @@ public abstract class BinaryPRBase<T> implements BinaryPersister<T>, BinaryResto
 
     @Override
     public final void finalizeRestore(Persistable persistable, T object, RestoreManager manager) throws RestoreException {
-        BinaryJsonData data = check(persistable);
-        doFinalizeRestore(data, object, manager);
+        try {
+            BinaryJsonData data = check(persistable);
+            doFinalizeRestore(data, object, manager);
+        } catch (UncheckedRestoreException e) {
+            throw e.getCause();
+        }
     }
 
     //ueberschreiben, falls benoetigt
@@ -120,9 +132,13 @@ public abstract class BinaryPRBase<T> implements BinaryPersister<T>, BinaryResto
 
     @Override
     public final void validateRestore(Persistable persistable, T object, RestoreManager manager) throws RestoreException {
-        BinaryJsonData data = check(persistable);
-        doValidationRestore(data, object, manager);
-        checkChecksum(data, object, manager);
+        try {
+            BinaryJsonData data = check(persistable);
+            doValidationRestore(data, object, manager);
+            checkChecksum(data, object, manager);
+        } catch (UncheckedRestoreException e) {
+            throw e.getCause();
+        }
     }
 
     //ueberschreiben, falls benoetigt
@@ -141,6 +157,7 @@ public abstract class BinaryPRBase<T> implements BinaryPersister<T>, BinaryResto
         }
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     protected boolean checkChecksum(T object, int storedChecksum, int restoredChecksum) {
         if(storedChecksum != restoredChecksum) {
             log().warn(

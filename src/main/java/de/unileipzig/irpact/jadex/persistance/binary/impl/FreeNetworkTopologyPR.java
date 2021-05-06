@@ -9,7 +9,6 @@ import de.unileipzig.irpact.core.network.topology.FreeNetworkTopology;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -56,12 +55,12 @@ public class FreeNetworkTopologyPR extends BinaryPRBase<FreeNetworkTopology> {
 
     @Override
     protected void doSetupPersist(FreeNetworkTopology object, BinaryJsonData data, PersistManager manager) throws PersistException {
-        Map<Long, Long> map = new LinkedHashMap<>();
-        for(Map.Entry<ConsumerAgentGroup, Integer> entry: object.getEdgeCountMap().entrySet()) {
-            long uid = manager.ensureGetUID(entry.getKey());
-            map.put(uid, entry.getValue().longValue());
-        }
-        data.putLongLongMap(map);
+        Map<Long, Long> idMap = BinaryJsonData.mapToLongLongMap(
+                object.getEdgeCountMap(),
+                BinaryJsonData.ensureGetUID(manager),
+                BinaryJsonData.INT2LONG
+        );
+        data.putLongLongMap(idMap);
 
         data.putLong(manager.ensureGetUID(object.getAffinityMapping()));
         data.putLong(manager.ensureGetUID(object.getDistanceEvaluator()));
@@ -84,12 +83,11 @@ public class FreeNetworkTopologyPR extends BinaryPRBase<FreeNetworkTopology> {
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, FreeNetworkTopology object, RestoreManager manager) throws RestoreException {
-        Map<ConsumerAgentGroup, Integer> countMap = new LinkedHashMap<>();
-        Map<Long, Long> map = data.getLongLongMap();
-        for(Map.Entry<Long, Long> entry: map.entrySet()) {
-            ConsumerAgentGroup cag = manager.ensureGet(entry.getKey());
-            countMap.put(cag, entry.getValue().intValue());
-        }
+        Map<ConsumerAgentGroup, Integer> countMap = BinaryJsonData.mapFromLongLongMap(
+                data.getLongLongMap(),
+                BinaryJsonData.ensureGet(manager),
+                BinaryJsonData.LONG2INT
+        );
         object.setEdgeCountMap(countMap);
 
         object.setAffinityMapping(manager.ensureGet(data.getLong()));

@@ -52,7 +52,7 @@ public class BasicDistanceEvaluatorPR extends BinaryPRBase<BasicDistanceEvaluato
     }
 
     @Override
-    protected void doSetupRestore(BinaryJsonData data, BasicDistanceEvaluator object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, BasicDistanceEvaluator object, RestoreManager manager) throws RestoreException {
         object.setEval(manager.ensureGet(data.getLong()));
     }
 }

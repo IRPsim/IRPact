@@ -69,7 +69,7 @@ public class BasicAdoptedProductPR extends BinaryPRBase<BasicAdoptedProduct> {
     }
 
     @Override
-    protected void doSetupRestore(BinaryJsonData data, BasicAdoptedProduct object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, BasicAdoptedProduct object, RestoreManager manager) throws RestoreException {
         long millis = data.getLong();
         long needId = data.getLong();
         if(object.isInitial()) {

@@ -62,10 +62,10 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         return restoredMap.containsKey(data);
     }
 
-    protected BinaryJsonData ensureGetData(long uid) {
+    protected BinaryJsonData ensureGetData(long uid) throws RestoreException {
         BinaryJsonData data = uidData.get(uid);
         if(data == null) {
-            throw new NoSuchElementException("missing data for uid: " + uid);
+            throw new RestoreException("missing data for uid: " + uid);
         }
         return data;
     }
@@ -201,13 +201,13 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     }
 
     @Override
-    public <T> T ensureGet(long uid) throws NoSuchElementException {
+    public <T> T ensureGet(long uid) throws RestoreException {
         BinaryJsonData data = ensureGetData(uid);
         return ensureGetObject(data);
     }
 
     @Override
-    public <T> T[] ensureGetAll(long[] uids, IntFunction<T[]> arrCreator) throws NoSuchElementException {
+    public <T> T[] ensureGetAll(long[] uids, IntFunction<T[]> arrCreator) throws RestoreException {
         T[] out = arrCreator.apply(uids.length);
         for(int i = 0; i < uids.length; i++) {
             out[i] = ensureGet(uids[i]);
@@ -216,7 +216,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     }
 
     @Override
-    public <T> boolean ensureGetAll(long[] uids, Collection<? super T> target) throws NoSuchElementException {
+    public <T> boolean ensureGetAll(long[] uids, Collection<? super T> target) throws RestoreException {
         boolean changed = false;
         for(long uid: uids) {
             T element = ensureGet(uid);
@@ -226,13 +226,13 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     }
 
     @Override
-    public <K, V> Map<K, V> ensureGetAll(Map<Long, Long> idMap) throws NoSuchElementException {
+    public <K, V> Map<K, V> ensureGetAll(Map<Long, Long> idMap) throws RestoreException {
         Map<K, V> out = new LinkedHashMap<>();
         for(Map.Entry<Long, Long> entry: idMap.entrySet()) {
             K key = ensureGet(entry.getKey());
             V value = ensureGet(entry.getValue());
             if(out.containsKey(key)) {
-                throw new IllegalArgumentException("key '" + key + "' already exists");
+                throw new RestoreException("key '" + key + "' already exists");
             }
             out.put(key, value);
         }
@@ -240,28 +240,28 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     }
 
     @Override
-    public <T> T ensureGetSameClass(Class<T> c) throws NoSuchElementException {
+    public <T> T ensureGetSameClass(Class<T> c) throws RestoreException {
         for(Object value: restoredMap.values()) {
             if(value.getClass() == c) {
                 return c.cast(value);
             }
         }
-        throw new NoSuchElementException(c.getName());
+        throw new RestoreException(c.getName());
     }
 
     @Override
-    public <T> T ensureGetInstanceOf(Class<T> c) throws NoSuchElementException {
+    public <T> T ensureGetInstanceOf(Class<T> c) throws RestoreException {
         for(Object value: restoredMap.values()) {
             if(c.isInstance(value)) {
                 return c.cast(value);
             }
         }
-        throw new NoSuchElementException(c.getName());
+        throw new RestoreException(c.getName());
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T ensureGetByName(String name) throws NoSuchElementException {
+    public <T> T ensureGetByName(String name) throws RestoreException {
         for(Object value: restoredMap.values()) {
             if(value instanceof Nameable) {
                 Nameable n = (Nameable) value;
@@ -270,7 +270,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
                 }
             }
         }
-        throw new NoSuchElementException(name);
+        throw new RestoreException(name);
     }
 
     //=========================

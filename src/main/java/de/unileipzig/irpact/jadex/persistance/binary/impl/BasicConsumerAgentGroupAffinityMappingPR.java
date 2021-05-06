@@ -75,7 +75,7 @@ public class BasicConsumerAgentGroupAffinityMappingPR extends BinaryPRBase<Basic
     }
 
     @Override
-    protected void doSetupRestore(BinaryJsonData data, BasicConsumerAgentGroupAffinityMapping object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, BasicConsumerAgentGroupAffinityMapping object, RestoreManager manager) throws RestoreException {
         Map<Long, Map<Long, Double>> table = data.getLongLongDoubleTable();
         for(Map.Entry<Long, Map<Long, Double>> srcEntry: table.entrySet()) {
             ConsumerAgentGroup srcCag = manager.ensureGet(srcEntry.getKey());

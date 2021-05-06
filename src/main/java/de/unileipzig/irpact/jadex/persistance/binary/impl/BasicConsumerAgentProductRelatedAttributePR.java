@@ -2,6 +2,7 @@ package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
+import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentProductRelatedAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -67,7 +68,7 @@ public class BasicConsumerAgentProductRelatedAttributePR extends BinaryPRBase<Ba
     }
 
     @Override
-    protected void doSetupRestore(BinaryJsonData data, BasicConsumerAgentProductRelatedAttribute object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, BasicConsumerAgentProductRelatedAttribute object, RestoreManager manager) throws RestoreException {
         object.setGroup(manager.ensureGet(data.getLong()));
 
         Map<Long, Long> idMap = data.getLongLongMap();

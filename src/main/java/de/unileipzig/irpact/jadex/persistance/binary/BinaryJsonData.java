@@ -490,6 +490,16 @@ public final class BinaryJsonData extends PersistableBase {
         return idMap;
     }
 
+    public static <R> LongFunction<R> ensureGet(RestoreManager manager) throws UncheckedRestoreException {
+        return uid -> {
+            try {
+                return manager.ensureGet(uid);
+            } catch (RestoreException e) {
+                throw new UncheckedRestoreException(e);
+            }
+        };
+    }
+
     public static <K, V> Map<K, V> mapFromLongDoubleMap(
             Map<Long, Double> input,
             LongFunction<K> longToKey,
@@ -526,8 +536,8 @@ public final class BinaryJsonData extends PersistableBase {
 
         mapFromLongLongMap(
                 input,
-                manager::ensureGet,
-                manager::ensureGet,
+                ensureGet(manager),
+                ensureGet(manager),
                 target
         );
     }
