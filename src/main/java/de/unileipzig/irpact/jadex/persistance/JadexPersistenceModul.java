@@ -117,7 +117,7 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
         if(!root.hasBinaryPersistData()) {
             throw new RestoreException("nothing to restore");
         }
-        
+
         binaryRestore.setCommandLineOptions(options);
         binaryRestore.setInRoot(root);
 
