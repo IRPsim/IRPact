@@ -238,7 +238,7 @@ public class IRPact implements IRPActAccess {
 
     private void initialize() throws Exception {
         createSimulationEnvironment();
-        applyCliToEnvironment();
+        applyCommandLineToEnvironment();
         restorPreviousSimulationEnvironment();
         createGraphvizConfiguration();
         logSimulationInformations();
@@ -253,7 +253,7 @@ public class IRPact implements IRPActAccess {
         environment.getSettings().setFirstSimulationYear(year);
     }
 
-    private void applyCliToEnvironment() {
+    private void applyCommandLineToEnvironment() {
         Settings settings = environment.getSettings();
         settings.apply(CL_OPTIONS);
     }
@@ -264,7 +264,7 @@ public class IRPact implements IRPActAccess {
         }
 
         LOGGER.info(IRPSection.GENERAL, "restore previous state");
-        SimulationEnvironment restoredEnvironment = environment.getPersistenceModul().restore(environment, inRoot);
+        SimulationEnvironment restoredEnvironment = environment.getPersistenceModul().restore(environment, CL_OPTIONS, inRoot);
         this.environment = (JadexSimulationEnvironment) restoredEnvironment;
     }
 

@@ -6,8 +6,4 @@ package de.unileipzig.irpact.jadex.persistance;
 public enum Modus {
     BINARY,
     PARAMETER;
-
-    public static Modus getDefault() {
-        return BINARY;
-    }
 }

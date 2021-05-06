@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.Persistable;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
+import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.start.CommandLineOptions;
 
 import java.util.*;
@@ -37,6 +38,10 @@ public class BinaryJsonRestoreManager implements RestoreManager {
 
     public void setCommandLineOptions(CommandLineOptions options) {
         restoreHelper.setOptions(options);
+    }
+
+    public void setInRoot(InRoot root) {
+        restoreHelper.setInRoot(root);
     }
 
     public <T> boolean register(BinaryRestorer<T> restorer) {

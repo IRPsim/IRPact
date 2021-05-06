@@ -37,8 +37,8 @@ public final class BinaryJsonData extends PersistableBase {
     protected int autoGetId = FIRST_AUTO_ID;
     protected ObjectNode root;
 
-    protected boolean simulationMode = false;
-    protected boolean putMode = true;
+    protected boolean simulationMode;
+    protected boolean putMode;
 
     private BinaryJsonData(JsonNodeCreator creator) {
         this(creator.objectNode());
@@ -46,6 +46,8 @@ public final class BinaryJsonData extends PersistableBase {
 
     private BinaryJsonData(ObjectNode root) {
         this.root = root;
+        setSimulationMode(false);
+        setPutMode();
     }
 
     public static BinaryJsonData restore(byte[] data) throws IOException {

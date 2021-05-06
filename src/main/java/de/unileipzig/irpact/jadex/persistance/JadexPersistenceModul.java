@@ -25,12 +25,12 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(JadexPersistenceModul.class);
 
-    protected Modus modus = Modus.getDefault();
+    protected Modus modus;
 
     protected SimulationEnvironment environment;
-    protected CommandLineOptions clOptions;
 
     public JadexPersistenceModul() {
+        setModus(Modus.BINARY);
     }
 
     public void setEnvironment(SimulationEnvironment environment) {
@@ -65,13 +65,16 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
     }
 
     @Override
-    public SimulationEnvironment restore(SimulationEnvironment initialEnvironment, InRoot root) throws Exception {
+    public SimulationEnvironment restore(
+            SimulationEnvironment initialEnvironment,
+            CommandLineOptions options,
+            InRoot root) throws Exception {
         switch (getModus()) {
             case BINARY:
-                return restoreBinary(initialEnvironment, root);
+                return restoreBinary(initialEnvironment, options, root);
 
             case PARAMETER:
-                return restoreParameter(initialEnvironment, root);
+                return restoreParameter(initialEnvironment, options, root);
 
             default:
                 throw new IllegalArgumentException("unsupported modus: " + getModus());
@@ -82,10 +85,12 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
     //binary
     //=========================
 
-    private final PersistManager binaryPersist = new BinaryJsonPersistanceManager();
-    private final RestoreManager binaryRestore = new BinaryJsonRestoreManager();
+    private final BinaryJsonPersistanceManager binaryPersist = new BinaryJsonPersistanceManager();
+    private final BinaryJsonRestoreManager binaryRestore = new BinaryJsonRestoreManager();
 
-    private void storeBinary(SimulationEnvironment environment, OutRoot root) throws PersistException, IOException {
+    private void storeBinary(
+            SimulationEnvironment environment,
+            OutRoot root) throws PersistException, IOException {
         binaryPersist.persist(environment);
         Collection<Persistable> persistables = binaryPersist.getPersistables();
         Set<BinaryPersistData> sortedDataList = new TreeSet<>(BinaryPersistData.ASCENDING);
@@ -105,10 +110,16 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
         LOGGER.trace("stored checksum: {}", environment.getChecksum());
     }
 
-    public SimulationEnvironment restoreBinary(SimulationEnvironment initialEnvironment, InRoot root) throws IOException, RestoreException {
+    public SimulationEnvironment restoreBinary(
+            SimulationEnvironment initialEnvironment,
+            CommandLineOptions options,
+            InRoot root) throws IOException, RestoreException {
         if(!root.hasBinaryPersistData()) {
-            return initialEnvironment;
+            throw new RestoreException("nothing to restore");
         }
+        
+        binaryRestore.setCommandLineOptions(options);
+        binaryRestore.setInRoot(root);
 
         List<BinaryJsonData> dataList = new ArrayList<>();
         for(BinaryPersistData hdb: root.binaryPersistData) {
@@ -146,11 +157,16 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
     //param
     //=========================
 
-    private void storeParameter(SimulationEnvironment environment, OutRoot root) {
+    private void storeParameter(
+            SimulationEnvironment environment,
+            OutRoot root) {
         throw new UnsupportedOperationException();
     }
 
-    public SimulationEnvironment restoreParameter(SimulationEnvironment initialEnvironment, InRoot root) {
+    public SimulationEnvironment restoreParameter(
+            SimulationEnvironment initialEnvironment,
+            CommandLineOptions options,
+            InRoot root) {
         throw new UnsupportedOperationException();
     }
 }
