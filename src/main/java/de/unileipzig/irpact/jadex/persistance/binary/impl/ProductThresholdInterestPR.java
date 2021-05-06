@@ -35,7 +35,7 @@ public class ProductThresholdInterestPR extends BinaryPRBase<ProductThresholdInt
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(ProductThresholdInterest object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(ProductThresholdInterest object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
 
         manager.prepareAll(object.getItems().keySet());

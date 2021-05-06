@@ -31,7 +31,7 @@ public class BasicProductGroupAttributePR extends BinaryPRBase<BasicProductDoubl
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicProductDoubleGroupAttribute object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicProductDoubleGroupAttribute object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
 
@@ -41,7 +41,7 @@ public class BasicProductGroupAttributePR extends BinaryPRBase<BasicProductDoubl
     }
 
     @Override
-    protected void doSetupPersist(BasicProductDoubleGroupAttribute object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BasicProductDoubleGroupAttribute object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getDistribution()));
     }
 

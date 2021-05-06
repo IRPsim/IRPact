@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentProductRelatedAttribute;
@@ -33,7 +34,7 @@ public class BasicConsumerAgentProductRelatedAttributePR extends BinaryPRBase<Ba
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicConsumerAgentProductRelatedAttribute object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicConsumerAgentProductRelatedAttribute object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putBoolean(object.isArtificial());
@@ -45,7 +46,7 @@ public class BasicConsumerAgentProductRelatedAttributePR extends BinaryPRBase<Ba
     }
 
     @Override
-    protected void doSetupPersist(BasicConsumerAgentProductRelatedAttribute object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BasicConsumerAgentProductRelatedAttribute object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getGroup()));
 
         Map<Long, Long> idMap = BinaryJsonData.mapToLongLongMap(object.getMapping(), manager);

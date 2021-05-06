@@ -33,7 +33,7 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(RAProcessPlan object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(RAProcessPlan object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putInt(object.getCurrentStage().getID());
         data.putBoolean(object.isUnderConstruction());
@@ -50,7 +50,7 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
     }
 
     @Override
-    protected void doSetupPersist(RAProcessPlan object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(RAProcessPlan object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getNeed()));
         data.putLong(manager.ensureGetUID(object.getProduct()));
         data.putLong(manager.ensureGetUID(object.getAgent()));

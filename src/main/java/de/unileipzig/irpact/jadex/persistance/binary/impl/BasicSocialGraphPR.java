@@ -33,7 +33,7 @@ public class BasicSocialGraphPR extends BinaryPRBase<BasicSocialGraph> {
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicSocialGraph object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicSocialGraph object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
 
         for(SocialGraph.Type type: SocialGraph.Type.values()) {
@@ -46,7 +46,7 @@ public class BasicSocialGraphPR extends BinaryPRBase<BasicSocialGraph> {
     }
 
     @Override
-    protected void doSetupPersist(BasicSocialGraph object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BasicSocialGraph object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putInt(object.getStructure().getID());
 
         //Knoten werden ueber Agenten rekonstruiert

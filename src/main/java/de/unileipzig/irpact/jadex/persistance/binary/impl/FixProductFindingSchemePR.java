@@ -31,7 +31,7 @@ public class FixProductFindingSchemePR extends BinaryPRBase<FixProductFindingSch
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(FixProductFindingScheme object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(FixProductFindingScheme object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
 
@@ -41,7 +41,7 @@ public class FixProductFindingSchemePR extends BinaryPRBase<FixProductFindingSch
     }
 
     @Override
-    protected void doSetupPersist(FixProductFindingScheme object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(FixProductFindingScheme object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getProduct()));
     }
 

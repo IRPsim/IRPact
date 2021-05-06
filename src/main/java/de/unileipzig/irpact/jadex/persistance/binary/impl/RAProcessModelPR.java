@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -34,7 +35,7 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(RAProcessModel object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(RAProcessModel object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
 
@@ -47,7 +48,7 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
     }
 
     @Override
-    protected void doSetupPersist(RAProcessModel object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(RAProcessModel object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getModelData()));
         data.putLong(manager.ensureGetUID(object.getRnd()));
         data.putLong(manager.ensureGetUID(object.getUncertaintySupplier()));

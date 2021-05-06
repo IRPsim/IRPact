@@ -5,13 +5,16 @@ import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
+import de.unileipzig.irpact.jadex.persistance.binary.BinaryPersister;
+import de.unileipzig.irpact.jadex.persistance.binary.BinaryRestorer;
+import de.unileipzig.irpact.jadex.persistance.binary.RestoreHelper;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
 @SuppressWarnings({"RedundantThrows", "unused", "UnnecessaryLocalVariable"})
-public abstract class BinaryPRBase<T> implements Persister<T>, Restorer<T> {
+public abstract class BinaryPRBase<T> implements BinaryPersister<T>, BinaryRestorer<T> {
 
     protected abstract IRPLogger log();
 
@@ -40,17 +43,24 @@ public abstract class BinaryPRBase<T> implements Persister<T>, Restorer<T> {
 
     @Override
     public final Persistable initalizePersist(T object, PersistManager manager) throws PersistException {
-        BinaryJsonData data = doInitalizePersist(object, manager);
-        return data;
+        try {
+            return doInitalizePersist(object, manager);
+        } catch (UncheckedPersistException e) {
+            throw e.getCause();
+        }
     }
 
     protected abstract BinaryJsonData doInitalizePersist(T object, PersistManager manager) throws PersistException;
 
     @Override
     public final void setupPersist(T object, Persistable persistable, PersistManager manager) throws PersistException {
-        BinaryJsonData data = check(persistable);
-        doSetupPersist(object, data, manager);
-        storeHash(object, data);
+        try {
+            BinaryJsonData data = check(persistable);
+            doSetupPersist(object, data, manager);
+            storeHash(object, data);
+        } catch (UncheckedPersistException e) {
+            throw e.getCause();
+        }
     }
 
     //ueberschreiben, falls benoetigt
@@ -69,6 +79,16 @@ public abstract class BinaryPRBase<T> implements Persister<T>, Restorer<T> {
     //restore
     //=========================
 
+    protected RestoreHelper restoreHelper;
+
+    @Override
+    public void setRestoreHelper(RestoreHelper restoreHelper) {
+        this.restoreHelper = restoreHelper;
+    }
+
+    protected RestoreHelper getRestoreHelper() {
+        return restoreHelper;
+    }
 
     @Override
     public final T initalizeRestore(Persistable persistable, RestoreManager manager) throws RestoreException {

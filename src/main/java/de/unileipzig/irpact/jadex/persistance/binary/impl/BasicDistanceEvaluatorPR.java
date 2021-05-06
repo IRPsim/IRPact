@@ -30,7 +30,7 @@ public class BasicDistanceEvaluatorPR extends BinaryPRBase<BasicDistanceEvaluato
     }
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicDistanceEvaluator object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicDistanceEvaluator object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         manager.prepare(object.getEval());
 
@@ -38,7 +38,7 @@ public class BasicDistanceEvaluatorPR extends BinaryPRBase<BasicDistanceEvaluato
     }
 
     @Override
-    protected void doSetupPersist(BasicDistanceEvaluator object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BasicDistanceEvaluator object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getEval()));
     }
 

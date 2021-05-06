@@ -33,7 +33,7 @@ public class BasicProductPR extends BinaryPRBase<BasicProduct> {
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicProduct object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicProduct object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
 
@@ -44,7 +44,7 @@ public class BasicProductPR extends BinaryPRBase<BasicProduct> {
     }
 
     @Override
-    protected void doSetupPersist(BasicProduct object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BasicProduct object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getGroup()));
         data.putLongArray(manager.ensureGetAllUIDs(object.getAttributes()));
     }

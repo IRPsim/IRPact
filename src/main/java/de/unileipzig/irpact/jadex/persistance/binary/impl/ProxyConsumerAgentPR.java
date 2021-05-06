@@ -39,7 +39,7 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(ProxyConsumerAgent object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(ProxyConsumerAgent object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putInt(object.getMaxNumberOfActions());
@@ -62,7 +62,7 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
     }
 
     @Override
-    protected void doSetupPersist(ProxyConsumerAgent object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(ProxyConsumerAgent object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getGroup()));
         data.putLong(manager.ensureGetUID(object.getSpatialInformation()));
         data.putLongArray(manager.ensureGetAllUIDs(object.getAttributes()));

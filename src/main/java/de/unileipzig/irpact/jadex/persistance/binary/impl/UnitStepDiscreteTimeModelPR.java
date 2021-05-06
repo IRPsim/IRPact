@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
@@ -33,7 +34,7 @@ public class UnitStepDiscreteTimeModelPR extends BinaryPRBase<UnitStepDiscreteTi
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(UnitStepDiscreteTimeModel object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(UnitStepDiscreteTimeModel object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
 
@@ -43,7 +44,7 @@ public class UnitStepDiscreteTimeModelPR extends BinaryPRBase<UnitStepDiscreteTi
     }
 
     @Override
-    protected void doSetupPersist(UnitStepDiscreteTimeModel object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(UnitStepDiscreteTimeModel object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getTimeAdvanceFunction()));
     }
 

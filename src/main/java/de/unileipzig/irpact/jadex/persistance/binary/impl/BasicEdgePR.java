@@ -32,7 +32,7 @@ public class BasicEdgePR extends BinaryPRBase<BasicSocialGraph.BasicEdge> {
     }
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicSocialGraph.BasicEdge object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicSocialGraph.BasicEdge object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putInt(object.getType().id());
         data.putDouble(object.getWeight());
@@ -44,7 +44,7 @@ public class BasicEdgePR extends BinaryPRBase<BasicSocialGraph.BasicEdge> {
     }
 
     @Override
-    protected void doSetupPersist(BasicSocialGraph.BasicEdge object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BasicSocialGraph.BasicEdge object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getSource().getAgent()));
         data.putLong(manager.ensureGetUID(object.getTarget().getAgent()));
     }

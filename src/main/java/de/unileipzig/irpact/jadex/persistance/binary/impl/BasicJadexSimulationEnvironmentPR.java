@@ -46,7 +46,7 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
     }
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicJadexSimulationEnvironment object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicJadexSimulationEnvironment object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
 
         //===
@@ -83,7 +83,7 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
     }
 
     @Override
-    protected void doSetupPersist(BasicJadexSimulationEnvironment object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BasicJadexSimulationEnvironment object, BinaryJsonData data, PersistManager manager) throws PersistException {
         //===
         AgentManager am = object.getAgents();
         data.putLongArray(manager.ensureGetAllUIDs(am.getConsumerAgentGroups()));

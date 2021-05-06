@@ -36,7 +36,7 @@ public class FreeNetworkTopologyPR extends BinaryPRBase<FreeNetworkTopology> {
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(FreeNetworkTopology object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(FreeNetworkTopology object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putDouble(object.getInitialWeight());
         data.putInt(object.getEdgeType().id());
@@ -55,7 +55,7 @@ public class FreeNetworkTopologyPR extends BinaryPRBase<FreeNetworkTopology> {
     }
 
     @Override
-    protected void doSetupPersist(FreeNetworkTopology object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(FreeNetworkTopology object, BinaryJsonData data, PersistManager manager) throws PersistException {
         Map<Long, Long> map = new LinkedHashMap<>();
         for(Map.Entry<ConsumerAgentGroup, Integer> entry: object.getEdgeCountMap().entrySet()) {
             long uid = manager.ensureGetUID(entry.getKey());

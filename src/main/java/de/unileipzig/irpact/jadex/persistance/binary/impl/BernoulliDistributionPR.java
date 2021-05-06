@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.distribution.BernoulliDistribution;
+import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
@@ -32,7 +33,7 @@ public class BernoulliDistributionPR extends BinaryPRBase<BernoulliDistribution>
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BernoulliDistribution object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BernoulliDistribution object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putDouble(object.getP());
@@ -45,7 +46,7 @@ public class BernoulliDistributionPR extends BinaryPRBase<BernoulliDistribution>
     }
 
     @Override
-    protected void doSetupPersist(BernoulliDistribution object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BernoulliDistribution object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getRandom()));
     }
 

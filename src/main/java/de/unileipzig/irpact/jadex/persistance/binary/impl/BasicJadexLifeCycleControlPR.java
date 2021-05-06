@@ -33,7 +33,7 @@ public class BasicJadexLifeCycleControlPR extends BinaryPRBase<BasicJadexLifeCyc
     }
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicJadexLifeCycleControl object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicJadexLifeCycleControl object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         if(object.getCurrent() == null) {
             data.putNothing();
@@ -47,7 +47,7 @@ public class BasicJadexLifeCycleControlPR extends BinaryPRBase<BasicJadexLifeCyc
     }
 
     @Override
-    protected void doSetupPersist(BasicJadexLifeCycleControl object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BasicJadexLifeCycleControl object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getControlAgent()));
     }
 

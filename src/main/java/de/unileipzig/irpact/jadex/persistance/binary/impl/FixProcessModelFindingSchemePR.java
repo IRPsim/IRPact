@@ -31,7 +31,7 @@ public class FixProcessModelFindingSchemePR extends BinaryPRBase<FixProcessModel
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(FixProcessModelFindingScheme object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(FixProcessModelFindingScheme object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
 
@@ -41,7 +41,7 @@ public class FixProcessModelFindingSchemePR extends BinaryPRBase<FixProcessModel
     }
 
     @Override
-    protected void doSetupPersist(FixProcessModelFindingScheme object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(FixProcessModelFindingScheme object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getModel()));
     }
 

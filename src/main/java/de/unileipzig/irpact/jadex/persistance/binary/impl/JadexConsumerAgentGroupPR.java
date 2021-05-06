@@ -37,7 +37,7 @@ public class JadexConsumerAgentGroupPR extends BinaryPRBase<JadexConsumerAgentGr
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(JadexConsumerAgentGroup object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(JadexConsumerAgentGroup object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putDouble(object.getInformationAuthority());
@@ -60,7 +60,7 @@ public class JadexConsumerAgentGroupPR extends BinaryPRBase<JadexConsumerAgentGr
     }
 
     @Override
-    protected void doSetupPersist(JadexConsumerAgentGroup object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(JadexConsumerAgentGroup object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getSpatialDistribution()));
         data.putLongArray(manager.ensureGetAllUIDs(object.getGroupAttributes()));
         data.putLongArray(manager.ensureGetAllUIDs(object.getProductRelatedGroupAttributes()));

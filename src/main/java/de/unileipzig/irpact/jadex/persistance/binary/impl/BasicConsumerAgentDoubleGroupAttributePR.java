@@ -30,7 +30,7 @@ public class BasicConsumerAgentDoubleGroupAttributePR extends BinaryPRBase<Basic
     }
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicConsumerAgentDoubleGroupAttribute object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicConsumerAgentDoubleGroupAttribute object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putBoolean(object.isArtificial());
@@ -41,7 +41,7 @@ public class BasicConsumerAgentDoubleGroupAttributePR extends BinaryPRBase<Basic
     }
 
     @Override
-    protected void doSetupPersist(BasicConsumerAgentDoubleGroupAttribute object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BasicConsumerAgentDoubleGroupAttribute object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getDistribution()));
     }
 

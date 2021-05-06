@@ -35,7 +35,7 @@ public class BasicConsumerAgentGroupAffinityMappingPR extends BinaryPRBase<Basic
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicConsumerAgentGroupAffinityMapping object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicConsumerAgentGroupAffinityMapping object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
 
         for(ConsumerAgentGroup src: object.sources()) {
@@ -50,7 +50,7 @@ public class BasicConsumerAgentGroupAffinityMappingPR extends BinaryPRBase<Basic
     }
 
     @Override
-    protected void doSetupPersist(BasicConsumerAgentGroupAffinityMapping object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BasicConsumerAgentGroupAffinityMapping object, BinaryJsonData data, PersistManager manager) throws PersistException {
         Map<Long, Map<Long, Double>> table = new LinkedHashMap<>();
         for(ConsumerAgentGroup src: object.sources()) {
             long srcUid = manager.ensureGetUID(src);

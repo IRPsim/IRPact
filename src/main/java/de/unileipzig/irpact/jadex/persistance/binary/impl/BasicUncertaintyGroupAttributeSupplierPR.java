@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
@@ -32,7 +33,7 @@ public class BasicUncertaintyGroupAttributeSupplierPR extends BinaryPRBase<Basic
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicUncertaintyGroupAttributeSupplier object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicUncertaintyGroupAttributeSupplier object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putText(object.getAttributeName());
@@ -46,7 +47,7 @@ public class BasicUncertaintyGroupAttributeSupplierPR extends BinaryPRBase<Basic
     }
 
     @Override
-    protected void doSetupPersist(BasicUncertaintyGroupAttributeSupplier object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BasicUncertaintyGroupAttributeSupplier object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getUncertaintyDistribution()));
         if(object.hasConvergenceDistribution()) {
             data.putLong(manager.ensureGetUID(object.getConvergenceDistribution()));

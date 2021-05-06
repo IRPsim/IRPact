@@ -1,23 +1,20 @@
 package de.unileipzig.irpact.jadex.persistance.binary;
 
-import de.unileipzig.irpact.commons.distribution.BernoulliDistribution;
-import de.unileipzig.irpact.commons.persistence.Persister;
-import de.unileipzig.irpact.commons.persistence.Restorer;
 import de.unileipzig.irpact.jadex.persistance.binary.impl.*;
 
 /**
  * @author Daniel Abitz
  */
-public final class BinaryJsonUtil {
+final class BinaryJsonUtil {
 
     private BinaryJsonUtil() {
     }
 
-    public static void registerDefaults(BinaryJsonPersistanceManager persistanceManager) {
+    static void registerDefaults(BinaryJsonPersistanceManager persistanceManager) {
         ensureRegisterDefaults(persistanceManager);
     }
 
-    public static void registerDefaults(BinaryJsonRestoreManager restoreManager) {
+    static void registerDefaults(BinaryJsonRestoreManager restoreManager) {
         ensureRegisterDefaults(restoreManager);
     }
 
@@ -89,11 +86,11 @@ public final class BinaryJsonUtil {
     private static void ensureRegister(Object manager, Object impl) {
         if(manager instanceof BinaryJsonPersistanceManager) {
             BinaryJsonPersistanceManager persistanceManager = (BinaryJsonPersistanceManager) manager;
-            Persister<?> persister = (Persister<?>) impl;
+            BinaryPersister<?> persister = (BinaryPersister<?>) impl;
             persistanceManager.ensureRegister(persister);
         } else {
             BinaryJsonRestoreManager restoreManager = (BinaryJsonRestoreManager) manager;
-            Restorer<?> restorer = (Restorer<?>) impl;
+            BinaryRestorer<?> restorer = (BinaryRestorer<?>) impl;
             restoreManager.ensureRegister(restorer);
         }
     }

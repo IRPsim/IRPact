@@ -32,7 +32,7 @@ public class BasicPoint2DPR extends BinaryPRBase<BasicPoint2D> {
     }
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicPoint2D object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicPoint2D object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putDouble(object.getX());
         data.putDouble(object.getY());
@@ -43,7 +43,7 @@ public class BasicPoint2DPR extends BinaryPRBase<BasicPoint2D> {
     }
 
     @Override
-    protected void doSetupPersist(BasicPoint2D object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BasicPoint2D object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLongArray(manager.ensureGetAllUIDs(object.getAttributes()));
     }
 

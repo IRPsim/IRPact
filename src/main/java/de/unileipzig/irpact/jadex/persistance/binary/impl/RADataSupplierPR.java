@@ -31,7 +31,7 @@ public class RADataSupplierPR extends BinaryPRBase<RADataSupplier> {
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(RADataSupplier object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(RADataSupplier object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
 
@@ -41,7 +41,7 @@ public class RADataSupplierPR extends BinaryPRBase<RADataSupplier> {
     }
 
     @Override
-    protected void doSetupPersist(RADataSupplier object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(RADataSupplier object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getDistribution()));
     }
 

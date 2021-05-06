@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
@@ -39,7 +40,7 @@ public class BasicMultiConsumerAgentGroupAttributeSupplierPR extends BinaryPRBas
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicMultiConsumerAgentGroupAttributeSupplier object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicMultiConsumerAgentGroupAttributeSupplier object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
 
@@ -57,7 +58,7 @@ public class BasicMultiConsumerAgentGroupAttributeSupplierPR extends BinaryPRBas
     }
 
     @Override
-    protected void doSetupPersist(BasicMultiConsumerAgentGroupAttributeSupplier object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BasicMultiConsumerAgentGroupAttributeSupplier object, BinaryJsonData data, PersistManager manager) throws PersistException {
         Map<Long, List<Long>> ids = new LinkedHashMap<>();
 
         for(Map.Entry<ConsumerAgentGroup, List<ConsumerAgentGroupAttributeSupplier>> entry: object.getMapping().entrySet()) {

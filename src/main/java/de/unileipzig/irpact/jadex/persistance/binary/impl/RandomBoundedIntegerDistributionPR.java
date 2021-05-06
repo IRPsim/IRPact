@@ -31,7 +31,7 @@ public class RandomBoundedIntegerDistributionPR extends BinaryPRBase<RandomBound
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(RandomBoundedIntegerDistribution object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(RandomBoundedIntegerDistribution object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putDouble(object.getLowerBound());
@@ -43,7 +43,7 @@ public class RandomBoundedIntegerDistributionPR extends BinaryPRBase<RandomBound
     }
 
     @Override
-    protected void doSetupPersist(RandomBoundedIntegerDistribution object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(RandomBoundedIntegerDistribution object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getRandom()));
     }
 

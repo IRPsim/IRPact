@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeCreator;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.commons.persistence.PersistManager;
-import de.unileipzig.irpact.commons.persistence.PersistableBase;
-import de.unileipzig.irpact.commons.persistence.RestoreManager;
+import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.IRPactBase32;
 import de.unileipzig.irpact.commons.util.IRPactJson;
@@ -406,12 +404,22 @@ public final class BinaryJsonData extends PersistableBase {
     //util
     //=========================
 
+    public static <T> ToLongFunction<T> ensureGetUID(PersistManager manager) {
+        return obj -> {
+            try {
+                return manager.ensureGetUID(obj);
+            } catch (PersistException e) {
+                throw new UncheckedPersistException(e);
+            }
+        };
+    }
+
     public static <K> Map<Long, Double> mapToLongDoubleMap(
             Map<K, ? extends Number> input,
             PersistManager manager) {
         return mapToLongDoubleMap(
                 input,
-                manager::ensureGetUID,
+                ensureGetUID(manager),
                 Number::doubleValue
         );
     }
@@ -439,8 +447,8 @@ public final class BinaryJsonData extends PersistableBase {
             PersistManager manager) {
         return mapToLongLongMap(
                 input,
-                manager::ensureGetUID,
-                manager::ensureGetUID
+                ensureGetUID(manager),
+                ensureGetUID(manager)
         );
     }
 

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
@@ -32,7 +33,7 @@ public class MaxDistanceNodeFilterPR extends BinaryPRBase<MaxDistanceNodeFilter>
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(MaxDistanceNodeFilter object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(MaxDistanceNodeFilter object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putDouble(object.getMaxDistance());
@@ -45,7 +46,7 @@ public class MaxDistanceNodeFilterPR extends BinaryPRBase<MaxDistanceNodeFilter>
     }
 
     @Override
-    protected void doSetupPersist(MaxDistanceNodeFilter object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(MaxDistanceNodeFilter object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getModel()));
         data.putLong(manager.ensureGetUID(object.getOrigin()));
     }

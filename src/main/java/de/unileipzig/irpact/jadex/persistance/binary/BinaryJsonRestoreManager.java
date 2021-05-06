@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.Persistable;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
-import de.unileipzig.irpact.commons.persistence.Restorer;
+import de.unileipzig.irpact.start.CommandLineOptions;
 
 import java.util.*;
 import java.util.function.IntFunction;
@@ -23,8 +23,9 @@ public class BinaryJsonRestoreManager implements RestoreManager {
 
     protected final Map<BinaryJsonData, Object> restoredMap = new LinkedHashMap<>();
     protected final Map<Long, BinaryJsonData> uidData = new LinkedHashMap<>();
-    protected final Map<String, Restorer<?>> restorerMap = new LinkedHashMap<>();
+    protected final Map<String, BinaryRestorer<?>> restorerMap = new LinkedHashMap<>();
     protected final Map<Object, Object> cache = new LinkedHashMap<>();
+    protected final RestoreHelper restoreHelper = new RestoreHelper();
 
     public BinaryJsonRestoreManager() {
         init();
@@ -34,7 +35,11 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         BinaryJsonUtil.registerDefaults(this);
     }
 
-    public <T> boolean register(Restorer<T> restorer) {
+    public void setCommandLineOptions(CommandLineOptions options) {
+        restoreHelper.setOptions(options);
+    }
+
+    public <T> boolean register(BinaryRestorer<T> restorer) {
         if(restorerMap.containsKey(restorer.getType().getName())) {
             return false;
         } else {
@@ -43,7 +48,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         }
     }
 
-    public <T> void ensureRegister(Restorer<T> restorer) {
+    public <T> void ensureRegister(BinaryRestorer<T> restorer) {
         if(!register(restorer)) {
             throw new IllegalArgumentException("class '" + restorer.getType().getName() + "' already exists");
         }
@@ -75,8 +80,8 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     }
 
     @SuppressWarnings("unchecked")
-    protected <T> Restorer<T> ensureGetRestorer(String type) {
-        Restorer<T> restorer = (Restorer<T>) restorerMap.get(type);
+    protected <T> BinaryRestorer<T> ensureGetRestorer(String type) {
+        BinaryRestorer<T> restorer = (BinaryRestorer<T>) restorerMap.get(type);
         if(restorer == null) {
             throw new NoSuchElementException("missing restorer for '" + type + "'");
         }
@@ -111,7 +116,8 @@ public class BinaryJsonRestoreManager implements RestoreManager {
             return;
         }
         String type = data.ensureGetType();
-        Restorer<?> restorer = ensureGetRestorer(type);
+        BinaryRestorer<?> restorer = ensureGetRestorer(type);
+        restorer.setRestoreHelper(restoreHelper);
         Object object = restorer.initalizeRestore(data, this);
         restoredMap.put(data, object);
         uidData.put(data.getUID(), data);
@@ -120,7 +126,8 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     protected <T> void setup(Persistable persistable) throws RestoreException {
         BinaryJsonData data = check(persistable);
         String type = data.ensureGetType();
-        Restorer<T> restorer = ensureGetRestorer(type);
+        BinaryRestorer<T> restorer = ensureGetRestorer(type);
+        restorer.setRestoreHelper(restoreHelper);
         T object = ensureGetObject(data);
         restorer.setupRestore(data, object, this);
     }
@@ -128,7 +135,8 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     protected <T> void finalize(Persistable persistable) throws RestoreException {
         BinaryJsonData data = check(persistable);
         String type = data.ensureGetType();
-        Restorer<T> restorer = ensureGetRestorer(type);
+        BinaryRestorer<T> restorer = ensureGetRestorer(type);
+        restorer.setRestoreHelper(restoreHelper);
         T object = ensureGetObject(data);
         restorer.finalizeRestore(data, object, this);
     }
@@ -136,7 +144,8 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     protected <T> void validation(Persistable persistable) throws RestoreException {
         BinaryJsonData data = check(persistable);
         String type = data.ensureGetType();
-        Restorer<T> restorer = ensureGetRestorer(type);
+        BinaryRestorer<T> restorer = ensureGetRestorer(type);
+        restorer.setRestoreHelper(restoreHelper);
         T object = ensureGetObject(data);
         restorer.validateRestore(data, object, this);
     }

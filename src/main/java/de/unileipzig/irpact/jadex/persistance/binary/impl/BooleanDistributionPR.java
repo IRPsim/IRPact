@@ -31,7 +31,7 @@ public class BooleanDistributionPR extends BinaryPRBase<BooleanDistribution> {
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BooleanDistribution object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BooleanDistribution object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putDouble(object.getFalseValue());
@@ -43,7 +43,7 @@ public class BooleanDistributionPR extends BinaryPRBase<BooleanDistribution> {
     }
 
     @Override
-    protected void doSetupPersist(BooleanDistribution object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BooleanDistribution object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getRandom()));
     }
 

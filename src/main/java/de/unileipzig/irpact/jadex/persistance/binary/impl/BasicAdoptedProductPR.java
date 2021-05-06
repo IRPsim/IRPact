@@ -31,7 +31,7 @@ public class BasicAdoptedProductPR extends BinaryPRBase<BasicAdoptedProduct> {
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicAdoptedProduct object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicAdoptedProduct object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putBoolean(object.isInitial());
 
@@ -48,7 +48,7 @@ public class BasicAdoptedProductPR extends BinaryPRBase<BasicAdoptedProduct> {
     }
 
     @Override
-    protected void doSetupPersist(BasicAdoptedProduct object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BasicAdoptedProduct object, BinaryJsonData data, PersistManager manager) throws PersistException {
         if(object.isInitial()) {
             data.putNothing();
         } else {

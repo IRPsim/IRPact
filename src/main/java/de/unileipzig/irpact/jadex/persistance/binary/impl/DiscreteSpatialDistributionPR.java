@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
@@ -32,7 +33,7 @@ public class DiscreteSpatialDistributionPR extends BinaryPRBase<DiscreteSpatialD
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(DiscreteSpatialDistribution object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(DiscreteSpatialDistribution object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
 
@@ -42,7 +43,7 @@ public class DiscreteSpatialDistributionPR extends BinaryPRBase<DiscreteSpatialD
     }
 
     @Override
-    protected void doSetupPersist(DiscreteSpatialDistribution object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(DiscreteSpatialDistribution object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getRandom()));
     }
 

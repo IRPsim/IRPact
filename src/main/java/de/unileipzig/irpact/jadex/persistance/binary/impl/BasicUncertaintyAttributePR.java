@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
+import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
@@ -32,7 +33,7 @@ public class BasicUncertaintyAttributePR extends BinaryPRBase<BasicUncertaintyAt
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(BasicUncertaintyAttribute object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(BasicUncertaintyAttribute object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putDouble(object.getUncertainty());
@@ -44,7 +45,7 @@ public class BasicUncertaintyAttributePR extends BinaryPRBase<BasicUncertaintyAt
     }
 
     @Override
-    protected void doSetupPersist(BasicUncertaintyAttribute object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(BasicUncertaintyAttribute object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getGroup()));
     }
 
