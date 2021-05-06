@@ -62,7 +62,7 @@ public class BasicConsumerAgentGroupAffinityMappingPR extends BinaryPRBase<Basic
                 m.put(tarUid, value);
             }
         }
-        data.putLongLongDoubleTable(table);
+        data.putLongLongDoubleMap(table);
     }
 
     //=========================

@@ -239,7 +239,7 @@ public final class BinaryJsonData extends PersistableBase {
         }
     }
 
-    public void putLongLongDoubleTable(Map<Long, Map<Long, Double>> table) {
+    public void putLongLongDoubleMap(Map<Long, Map<Long, Double>> table) {
         if(isSimulationMode()) return;
         ObjectNode obj = root.putObject(nextPutId());
         for(Map.Entry<Long, Map<Long, Double>> entry: table.entrySet()) {

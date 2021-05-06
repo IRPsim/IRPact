@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.exception.InitializationException;
+import de.unileipzig.irpact.commons.exception.VersionMismatchException;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.AgentManager;
@@ -54,6 +55,8 @@ public interface SimulationEnvironment extends Nameable, InitalizablePart {
     //=========================
 
     Version getVersion();
+
+    void validateVersion(Version version) throws VersionMismatchException;
 
     ResourceLoader getResourceLoader();
 

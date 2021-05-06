@@ -3,6 +3,7 @@ package de.unileipzig.irpact.jadex.simulation;
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.exception.InitializationException;
+import de.unileipzig.irpact.commons.exception.VersionMismatchException;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
@@ -103,7 +104,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         BasicBinaryTaskManager taskManager = new BasicBinaryTaskManager();
         JadexPersistenceModul persistenceModul = new JadexPersistenceModul();
 
-        setInitializationData(initData);
+        setSettings(initData);
         setResourceLoader(resourceLoader);
 
         setAgentManager(agentManager);
@@ -133,7 +134,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         return settings;
     }
 
-    public void setInitializationData(Settings settings) {
+    public void setSettings(Settings settings) {
         this.settings = settings;
     }
 
@@ -203,6 +204,13 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     @Override
     public Version getVersion() {
         return IRPact.VERSION;
+    }
+
+    @Override
+    public void validateVersion(Version version) throws VersionMismatchException {
+        if(getVersion().isMismatch(version)) {
+            throw ExceptionUtil.create(VersionMismatchException::new, "version mismatch: (current) '{}' != '{}'", getVersion().print(), version.print());
+        }
     }
 
     public void setResourceLoader(ResourceLoader resourceLoader) {

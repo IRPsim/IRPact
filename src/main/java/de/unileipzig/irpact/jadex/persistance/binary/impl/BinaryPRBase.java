@@ -24,7 +24,6 @@ public abstract class BinaryPRBase<T> implements BinaryPersister<T>, BinaryResto
 
     protected static BinaryJsonData initDataWithClass(Class<?> c, PersistManager manager) {
         BinaryJsonData data = BinaryJsonData.init(IRPactJson.SMILE.getNodeFactory(), manager.newUID(), c);
-        //System.out.println(data.getUID() + " " + c.getName()); //TODO
         data.setPutMode();
         return data;
     }
@@ -57,7 +56,7 @@ public abstract class BinaryPRBase<T> implements BinaryPersister<T>, BinaryResto
         try {
             BinaryJsonData data = check(persistable);
             doSetupPersist(object, data, manager);
-            storeHash(object, data);
+            storeChecksum(object, data);
         } catch (UncheckedPersistException e) {
             throw e.getCause();
         }
@@ -67,11 +66,11 @@ public abstract class BinaryPRBase<T> implements BinaryPersister<T>, BinaryResto
     protected void doSetupPersist(T object, BinaryJsonData data, PersistManager manager) throws PersistException {
     }
 
-    protected void storeHash(T object, BinaryJsonData data) {
+    protected void storeChecksum(T object, BinaryJsonData data) {
         if(object instanceof ChecksumComparable) {
             data.putInt(((ChecksumComparable) object).getChecksum());
         } else {
-            log().trace("type '{}' not hashable", object.getClass().getName());
+            log().trace("type '{}' has no checksum", object.getClass().getName());
         }
     }
 
@@ -123,32 +122,32 @@ public abstract class BinaryPRBase<T> implements BinaryPersister<T>, BinaryResto
     public final void validateRestore(Persistable persistable, T object, RestoreManager manager) throws RestoreException {
         BinaryJsonData data = check(persistable);
         doValidationRestore(data, object, manager);
-        checkHash(data, object, manager);
+        checkChecksum(data, object, manager);
     }
 
     //ueberschreiben, falls benoetigt
     protected void doValidationRestore(BinaryJsonData data, T object, RestoreManager manager) throws RestoreException {
     }
 
-    protected void checkHash(BinaryJsonData data, T object, RestoreManager manager) {
+    protected void checkChecksum(BinaryJsonData data, T object, RestoreManager manager) {
         if(object instanceof ChecksumComparable) {
             int storedHash = data.getInt();
-            int restoredHash = ((ChecksumComparable) object).getChecksum();
-            if(!checkHash(object, storedHash, restoredHash)) {
+            int restoredChecksum = ((ChecksumComparable) object).getChecksum();
+            if(!checkChecksum(object, storedHash, restoredChecksum)) {
                 onChecksumMismatch(data, object, manager);
             }
         } else {
-            log().trace("type '{}' not hashable", object.getClass().getName());
+            log().trace("type '{}' has no checksum", object.getClass().getName());
         }
     }
 
-    protected boolean checkHash(T object, int storedHash, int restoredHash) {
-        if(storedHash != restoredHash) {
+    protected boolean checkChecksum(T object, int storedChecksum, int restoredChecksum) {
+        if(storedChecksum != restoredChecksum) {
             log().warn(
-                    "[{}] hash mismatch: stored={} != restored={}",
+                    "[{}] checksum mismatch: stored={} != restored={}",
                     object.getClass().getSimpleName(),
-                    Integer.toHexString(storedHash),
-                    Integer.toHexString(restoredHash)
+                    Integer.toHexString(storedChecksum),
+                    Integer.toHexString(restoredChecksum)
             );
             return false;
         } else {

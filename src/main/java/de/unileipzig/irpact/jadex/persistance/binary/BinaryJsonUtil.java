@@ -20,6 +20,7 @@ final class BinaryJsonUtil {
 
     private static void ensureRegisterDefaults(Object manager) {
         ensureRegister(manager, BasicAdoptedProductPR.INSTANCE);
+        ensureRegister(manager, BasicAgentManagerPR.INSTANCE);
         ensureRegister(manager, BasicConsumerAgentAnnualAttributePR.INSTANCE);
         ensureRegister(manager, BasicConsumerAgentAnnualGroupAttributePR.INSTANCE);
         ensureRegister(manager, BasicConsumerAgentDoubleAttributePR.INSTANCE);
@@ -34,11 +35,15 @@ final class BinaryJsonUtil {
         ensureRegister(manager, BasicMultiConsumerAgentGroupAttributeSupplierPR.INSTANCE);
         ensureRegister(manager, BasicNeedPR.INSTANCE);
         ensureRegister(manager, BasicPoint2DPR.INSTANCE);
+        ensureRegister(manager, BasicProcessModelManagerPR.INSTANCE);
         ensureRegister(manager, BasicProductAttributePR.INSTANCE);
         ensureRegister(manager, BasicProductGroupAttributePR.INSTANCE);
         ensureRegister(manager, BasicProductGroupPR.INSTANCE);
+        ensureRegister(manager, BasicProductManagerPR.INSTANCE);
         ensureRegister(manager, BasicProductPR.INSTANCE);
+        ensureRegister(manager, BasicSettingsPR.INSTANCE);
         ensureRegister(manager, BasicSocialGraphPR.INSTANCE);
+        ensureRegister(manager, BasicSocialNetworkPR.INSTANCE);
         ensureRegister(manager, BasicUncertaintyAttributePR.INSTANCE);
         ensureRegister(manager, BasicUncertaintyGroupAttributeSupplierPR.INSTANCE);
         ensureRegister(manager, BasicVersionPR.INSTANCE);
