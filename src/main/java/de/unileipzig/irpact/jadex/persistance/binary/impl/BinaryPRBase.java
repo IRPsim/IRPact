@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
-import de.unileipzig.irpact.commons.exception.RestoreException;
+import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
@@ -39,22 +39,22 @@ public abstract class BinaryPRBase<T> implements Persister<T>, Restorer<T> {
     //=========================
 
     @Override
-    public final Persistable initalizePersist(T object, PersistManager manager) {
+    public final Persistable initalizePersist(T object, PersistManager manager) throws PersistException {
         BinaryJsonData data = doInitalizePersist(object, manager);
         return data;
     }
 
-    protected abstract BinaryJsonData doInitalizePersist(T object, PersistManager manager);
+    protected abstract BinaryJsonData doInitalizePersist(T object, PersistManager manager) throws PersistException;
 
     @Override
-    public final void setupPersist(T object, Persistable persistable, PersistManager manager) {
+    public final void setupPersist(T object, Persistable persistable, PersistManager manager) throws PersistException {
         BinaryJsonData data = check(persistable);
         doSetupPersist(object, data, manager);
         storeHash(object, data);
     }
 
     //ueberschreiben, falls benoetigt
-    protected void doSetupPersist(T object, BinaryJsonData data, PersistManager manager) {
+    protected void doSetupPersist(T object, BinaryJsonData data, PersistManager manager) throws PersistException {
     }
 
     protected void storeHash(T object, BinaryJsonData data) {

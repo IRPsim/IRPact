@@ -15,8 +15,9 @@ public interface Persister<T> {
      * @param object object to persist
      * @param manager used manager for reference calls
      * @return persited object
+     * @throws PersistException
      */
-    Persistable initalizePersist(T object, PersistManager manager);
+    Persistable initalizePersist(T object, PersistManager manager) throws PersistException;
 
     /**
      * Allows to set references to other objects. Reference calls can now be used without problem.
@@ -24,11 +25,7 @@ public interface Persister<T> {
      * @param object object to persist
      * @param persistable persisted object
      * @param manager used manager for reference calls
+     * @throws PersistException
      */
-    void setupPersist(T object, Persistable persistable, PersistManager manager);
-
-//    Diese Methode simuliert einen Speichervorgang.
-//    Dient primaer dazu Rnd (>Random) neu zu initialisieren.
-//    default void simulatePersist(T object, PersistManager manager) {
-//    }
+    void setupPersist(T object, Persistable persistable, PersistManager manager) throws PersistException;
 }

@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.jadex.persistance.binary;
 
 import de.unileipzig.irpact.commons.Nameable;
-import de.unileipzig.irpact.commons.exception.RestoreException;
+import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.Persistable;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.commons.persistence.Restorer;

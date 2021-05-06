@@ -7,5 +7,5 @@ public interface UIDManager {
 
     long peekUID();
 
-    long getUID();
+    long nextUID();
 }

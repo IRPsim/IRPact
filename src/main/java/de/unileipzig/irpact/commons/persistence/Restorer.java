@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.commons.persistence;
 
-import de.unileipzig.irpact.commons.exception.RestoreException;
-
 /**
  * @author Daniel Abitz
  */

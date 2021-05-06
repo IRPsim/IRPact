@@ -28,4 +28,8 @@ public interface InEntity {
     default void setup(InputParser parser, Object input) throws ParsingException {
         throw new UnsupportedOperationException();
     }
+
+    default void update(InputParser parser, Object input) throws ParsingException {
+        throw new UnsupportedOperationException();
+    }
 }

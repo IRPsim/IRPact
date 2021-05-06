@@ -1,9 +1,8 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
-import de.unileipzig.irpact.commons.exception.RestoreException;
+import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
-import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.network.filter.MaxDistanceNodeFilter;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;

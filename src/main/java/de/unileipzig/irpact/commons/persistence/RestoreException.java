@@ -1,4 +1,6 @@
-package de.unileipzig.irpact.commons.exception;
+package de.unileipzig.irpact.commons.persistence;
+
+import de.unileipzig.irpact.commons.exception.IRPactException;
 
 /**
  * @author Daniel Abitz

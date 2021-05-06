@@ -6,6 +6,7 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Comparator;
 
 /**
  * @author Daniel Abitz
@@ -14,6 +15,8 @@ import java.lang.invoke.MethodHandles;
         transferClass = true
 )
 public class BinaryPersistData {
+
+    public static final Comparator<BinaryPersistData> ASCENDING = Comparator.comparingLong(BinaryPersistData::getID);
 
     //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();

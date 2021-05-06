@@ -1,10 +1,7 @@
 package de.unileipzig.irpact.jadex.persistance;
 
 import de.unileipzig.irpact.commons.NameableBase;
-import de.unileipzig.irpact.commons.exception.RestoreException;
-import de.unileipzig.irpact.commons.persistence.PersistManager;
-import de.unileipzig.irpact.commons.persistence.Persistable;
-import de.unileipzig.irpact.commons.persistence.RestoreManager;
+import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.persistence.PersistenceModul;
 import de.unileipzig.irpact.core.simulation.Settings;
@@ -19,9 +16,7 @@ import de.unileipzig.irpact.start.CommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Daniel Abitz
@@ -90,10 +85,10 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
     private final PersistManager binaryPersist = new BinaryJsonPersistanceManager();
     private final RestoreManager binaryRestore = new BinaryJsonRestoreManager();
 
-    private void storeBinary(SimulationEnvironment environment, OutRoot root) throws IOException {
+    private void storeBinary(SimulationEnvironment environment, OutRoot root) throws PersistException, IOException {
         binaryPersist.persist(environment);
         Collection<Persistable> persistables = binaryPersist.getPersistables();
-        List<BinaryPersistData> dataList = new ArrayList<>();
+        Set<BinaryPersistData> sortedDataList = new TreeSet<>(BinaryPersistData.ASCENDING);
         for(Persistable persistable: persistables) {
             BinaryJsonData data = (BinaryJsonData) persistable;
             long uid = data.getUID();
@@ -101,9 +96,11 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
             BinaryPersistData hbd = new BinaryPersistData();
             hbd.setID(uid);
             hbd.setBytes(bin);
-            dataList.add(hbd);
+            if(!sortedDataList.add(hbd)) {
+                throw new PersistException("uid " + uid + "already exists");
+            }
         }
-        root.addHiddenBinaryData(dataList);
+        root.addHiddenBinaryData(sortedDataList);
 
         LOGGER.trace("stored checksum: {}", environment.getChecksum());
     }
