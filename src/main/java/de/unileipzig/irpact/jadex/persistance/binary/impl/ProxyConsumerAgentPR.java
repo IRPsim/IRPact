@@ -94,7 +94,7 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
     }
 
     @Override
-    protected void doSetupRestore(BinaryJsonData data, ProxyConsumerAgent object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, ProxyConsumerAgent object, RestoreManager manager) throws RestoreException {
         object.setEnvironment(manager.ensureGetInstanceOf(SimulationEnvironment.class));
 
 
@@ -115,7 +115,7 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
     }
 
     @Override
-    protected void doFinalizeRestore(BinaryJsonData data, ProxyConsumerAgent object, RestoreManager manager) {
+    protected void doFinalizeRestore(BinaryJsonData data, ProxyConsumerAgent object, RestoreManager manager) throws RestoreException {
         //grp
         object.getGroup().addAgent(object);
         //access

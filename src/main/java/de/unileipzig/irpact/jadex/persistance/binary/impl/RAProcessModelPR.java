@@ -2,6 +2,7 @@ package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
+import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
@@ -67,7 +68,7 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
     }
 
     @Override
-    protected void doSetupRestore(BinaryJsonData data, RAProcessModel object, RestoreManager manager) {
+    protected void doSetupRestore(BinaryJsonData data, RAProcessModel object, RestoreManager manager) throws RestoreException {
         object.setEnvironment(manager.ensureGetInstanceOf(SimulationEnvironment.class));
 
         object.setModelData(manager.ensureGet(data.getLong()));
