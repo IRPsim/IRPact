@@ -28,7 +28,7 @@ import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.jadex.persistance.JadexPersistenceModul;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
-import de.unileipzig.irpact.start.IRPact;
+import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
 
@@ -205,14 +205,6 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     @Override
     public Version getVersion() {
         return IRPact.VERSION;
-    }
-
-    @Override
-    public void validateVersion(Version version) throws VersionMismatchException {
-        if(getVersion().isMismatch(version)) {
-            //
-            throw ExceptionUtil.create(VersionMismatchException::new, "version mismatch: IRPact version '{}' != '{}'", getVersion().print(), version.print());
-        }
     }
 
     public void setResourceLoader(ResourceLoader resourceLoader) {

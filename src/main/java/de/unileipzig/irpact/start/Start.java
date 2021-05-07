@@ -5,6 +5,7 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.SectionLoggingFilter;
 import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.start.irpact.IRPactCallback;
 import de.unileipzig.irptools.io.base.AnnualEntry;
 import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -37,7 +38,7 @@ public final class Start {
         IRPSection.addAllNonToolsTo(filter);
     }
 
-    private static void setupLogging(CommandLineOptions options) throws IOException {
+    private static void setupLogging(MainCommandLineOptions options) throws IOException {
         if(options.logToFile()) {
 
             boolean hasOldLogFile = Files.exists(options.getLogPath());
@@ -77,7 +78,7 @@ public final class Start {
             Collection<? extends IRPactCallback> callbacks) {
         prepareLogging();
 
-        CommandLineOptions options = new CommandLineOptions(args);
+        MainCommandLineOptions options = new MainCommandLineOptions(args);
         options.setHasCustomInput(scenario != null);
         options.setHasCallback(callbacks != null && callbacks.size() > 0);
         int exitCode = options.parse();

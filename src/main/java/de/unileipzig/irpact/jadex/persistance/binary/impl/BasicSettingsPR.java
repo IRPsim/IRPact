@@ -8,12 +8,18 @@ import de.unileipzig.irpact.core.agent.BasicAgentManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.simulation.BasicSettings;
+import de.unileipzig.irpact.core.simulation.Settings;
+import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.core.simulation.Version;
+import de.unileipzig.irpact.develop.TodoException;
+import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
+@XXXXXXXXX("SIEHE UNTEN")
 public class BasicSettingsPR extends BinaryPRBase<BasicSettings> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicSettingsPR.class);
@@ -43,8 +49,10 @@ public class BasicSettingsPR extends BinaryPRBase<BasicSettings> {
         return data;
     }
 
+    @XXXXXXXXX
     @Override
     protected void doSetupPersist(BasicSettings object, BinaryJsonData data, PersistManager manager) throws PersistException {
+        throw new TodoException();
     }
 
     //=========================
@@ -63,4 +71,16 @@ public class BasicSettingsPR extends BinaryPRBase<BasicSettings> {
     @Override
     protected void doSetupRestore(BinaryJsonData data, BasicSettings object, RestoreManager manager) throws RestoreException {
     }
+
+//    private void updateSettings(XSimulationEnvironment initial, SimulationEnvironment restored) {
+//        Settings initialSettings = initial.getSettings();
+//        Settings restoredSettings = restored.getSettings();
+//
+//        restoredSettings.setLastSimulationYear(initialSettings.getLastSimulationYear());
+//    }
+//
+//    private void applyCommandLineToEnvironment() {
+//        Settings settings = environment.getSettings();
+//        settings.apply(CL_OPTIONS);
+//    }
 }

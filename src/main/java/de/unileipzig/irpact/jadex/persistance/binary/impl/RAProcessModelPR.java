@@ -7,6 +7,8 @@ import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.develop.TodoException;
+import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -82,11 +84,13 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
         setInitialData(object, manager);
     }
 
+    @XXXXXXXXX
     private void setInitialData(RAProcessModel restoredInstance, RestoreManager manager) {
-        SimulationEnvironment initialEnv = manager.getInitialInstance();
-        RAProcessModel initialRA = (RAProcessModel) initialEnv.getProcessModels().getProcessModel(restoredInstance.getName());
-
-        restoredInstance.setNpvData(initialRA.getNpvData());
+        throw new TodoException();
+//        SimulationEnvironment initialEnv = manager.getInitialInstance();
+//        RAProcessModel initialRA = (RAProcessModel) initialEnv.getProcessModels().getProcessModel(restoredInstance.getName());
+//
+//        restoredInstance.setNpvData(initialRA.getNpvData());
     }
 
     @Override

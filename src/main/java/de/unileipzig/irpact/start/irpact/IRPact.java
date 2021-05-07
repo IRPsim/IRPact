@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.start;
+package de.unileipzig.irpact.start.irpact;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.exception.InitializationException;
@@ -24,9 +24,11 @@ import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.JadexInputParser;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.jadex.agents.simulation.ProxySimulationAgent;
+import de.unileipzig.irpact.jadex.persistance.JadexPersistenceModul;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.util.JadexSystemOut;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.start.optact.out.OutCustom;
 import de.unileipzig.irptools.defstructure.AnnotationParser;
 import de.unileipzig.irptools.defstructure.Converter;
@@ -63,22 +65,17 @@ public class IRPact implements IRPActAccess {
     private static final String CONSUMER_AGENT = "de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentBDI.class";
     private static final String SIMULATION_AGENT_NAME = "IRPact_Simulation_Agent";
 
-    /**
-     * Current version.
-     * first digit: major version (large update)
-     * second digit: minor version (small update)
-     * third digit: patch version (fixes)
-     *
-     * Used to identify valid input data.
-     */
-    public static final String VERSION_STRING = "v0_0_0";
-    public static final Version VERSION = new BasicVersion(VERSION_STRING);
+    private static final String MAJOR_STRING = "0";
+    private static final String MINOR_STRING = "0";
+    private static final String BUILD_STRING = "0";
+    public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
+    public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
-    private static final Map<CommandLineOptions, Converter> INPUT_CONVERTS = new WeakHashMap<>();
-    private static final Map<CommandLineOptions, Converter> OUTPUT_CONVERTS = new WeakHashMap<>();
+    private static final Map<MainCommandLineOptions, Converter> INPUT_CONVERTS = new WeakHashMap<>();
+    private static final Map<MainCommandLineOptions, Converter> OUTPUT_CONVERTS = new WeakHashMap<>();
 
     private final List<IRPactCallback> CALLBACKS = new ArrayList<>();
-    private final CommandLineOptions CL_OPTIONS;
+    private final MainCommandLineOptions CL_OPTIONS;
     private final ResourceLoader RESOURCE_LOADER;
 
     private AnnualEntry<InRoot> inEntry;
@@ -89,7 +86,7 @@ public class IRPact implements IRPActAccess {
     private IExternalAccess platform;
 
     public IRPact(
-            CommandLineOptions clOptions,
+            MainCommandLineOptions clOptions,
             Collection<? extends IRPactCallback> callbacks,
             ResourceLoader resourceLoader) {
         this.CL_OPTIONS = clOptions;
@@ -97,7 +94,7 @@ public class IRPact implements IRPActAccess {
         this.RESOURCE_LOADER = resourceLoader;
     }
 
-    private static DefinitionMapper createMapper(CommandLineOptions options, DefinitionCollection dcoll) {
+    private static DefinitionMapper createMapper(MainCommandLineOptions options, DefinitionCollection dcoll) {
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "setup definition mapper: autoTrim={}, maxNameLength={}, minPartLength={}", options.isEnableGamsNameTrimming(), options.getMaxGamsNameLength(), options.getMinGamsPartLength());
         DefinitionMapper mapper = new DefinitionMapper(dcoll, false);
         mapper.setAutoTrimName(options.isEnableGamsNameTrimming());
@@ -107,7 +104,7 @@ public class IRPact implements IRPActAccess {
         return mapper;
     }
 
-    public static Converter getInputConverter(CommandLineOptions options) {
+    public static Converter getInputConverter(MainCommandLineOptions options) {
         if(INPUT_CONVERTS.containsKey(options)) {
             return INPUT_CONVERTS.get(options);
         } else {
@@ -123,7 +120,7 @@ public class IRPact implements IRPActAccess {
         return getInputConverter(CL_OPTIONS);
     }
 
-    public static Converter getOutputConverter(CommandLineOptions options) {
+    public static Converter getOutputConverter(MainCommandLineOptions options) {
         if(OUTPUT_CONVERTS.containsKey(options)) {
             return OUTPUT_CONVERTS.get(options);
         } else {
@@ -139,7 +136,7 @@ public class IRPact implements IRPActAccess {
         return getOutputConverter(CL_OPTIONS);
     }
 
-    public static AnnualEntry<InRoot> convert(CommandLineOptions options, ObjectNode rootNode) {
+    public static AnnualEntry<InRoot> convert(MainCommandLineOptions options, ObjectNode rootNode) {
         ContentType contentType = ContentTypeDetector.detect(rootNode);
         LOGGER.trace(IRPSection.GENERAL, "content type: {}", contentType);
         return ContentTypeDetector.parseFirstEntry(
@@ -237,11 +234,20 @@ public class IRPact implements IRPActAccess {
     }
 
     private void initialize() throws Exception {
-        createSimulationEnvironment();
-        applyCommandLineToEnvironment();
-        restorPreviousSimulationEnvironment();
+        if(hasPreviousState()) {
+            restorPreviousSimulationEnvironment();
+        } else {
+            initializeNewSimulationEnvironment();
+        }
+
         createGraphvizConfiguration();
         logSimulationInformations();
+    }
+
+    private void initializeNewSimulationEnvironment() throws Exception {
+        LOGGER.info(IRPSection.GENERAL, "create new environment");
+        createSimulationEnvironment();
+        applyCommandLineToEnvironment();
     }
 
     private void createSimulationEnvironment() throws ParsingException {
@@ -259,12 +265,9 @@ public class IRPact implements IRPActAccess {
     }
 
     private void restorPreviousSimulationEnvironment() throws Exception {
-        if(isFirstCall()) {
-            return;
-        }
-
-        LOGGER.info(IRPSection.GENERAL, "restore previous state");
-        SimulationEnvironment restoredEnvironment = environment.getPersistenceModul().restore(environment, CL_OPTIONS, inRoot);
+        LOGGER.info(IRPSection.GENERAL, "restore previous environment");
+        JadexPersistenceModul persistenceModul = new JadexPersistenceModul();
+        SimulationEnvironment restoredEnvironment = persistenceModul.restore(CL_OPTIONS, inRoot);
         this.environment = (JadexSimulationEnvironment) restoredEnvironment;
     }
 
@@ -301,8 +304,8 @@ public class IRPact implements IRPActAccess {
         }
     }
 
-    private boolean isFirstCall() {
-        return !inRoot.hasBinaryPersistData();
+    private boolean hasPreviousState() {
+        return inRoot.hasBinaryPersistData();
     }
 
     private void preAgentCreation() throws MissingDataException {
@@ -570,7 +573,7 @@ public class IRPact implements IRPActAccess {
     //=========================
 
     @Override
-    public CommandLineOptions getCommandLineOptions() {
+    public MainCommandLineOptions getCommandLineOptions() {
         return CL_OPTIONS;
     }
 

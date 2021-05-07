@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.start.CommandLineOptions;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.develop.AddToParam;
 
 import java.util.*;
@@ -48,7 +48,7 @@ public class BasicSettings implements Settings {
     //=========================
 
     @Override
-    public void apply(CommandLineOptions clOptions) {
+    public void apply(MainCommandLineOptions clOptions) {
         setIgnorePersistenceCheckResult(clOptions.isIgnorePersistenceCheck());
         setPrefereCsv(clOptions.isPrefereCsv());
     }

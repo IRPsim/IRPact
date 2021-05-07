@@ -17,6 +17,8 @@ public interface InputParser {
 
     Object getCached(InEntity key);
 
+    int getSimulationYear();
+
     ResourceLoader getResourceLoader();
 
     SimulationEnvironment getEnvironment();
@@ -24,8 +26,6 @@ public interface InputParser {
     Rnd deriveRnd();
 
     InRoot getRoot();
-
-    int getSimulationYear();
 
     //mal aendern, dass der parser den typ vorgibt
     <T> T parseRoot(InRoot root) throws ParsingException;

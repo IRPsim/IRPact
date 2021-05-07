@@ -44,7 +44,7 @@ public class BasicVersionPR extends BinaryPRBase<BasicVersion> {
     @Override
     protected BasicVersion doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         BasicVersion object = new BasicVersion();
-        object.set(data.getText());
+        object.setFunctional(data.getText());
 
         return object;
     }

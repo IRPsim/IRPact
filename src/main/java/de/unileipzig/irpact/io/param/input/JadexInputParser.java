@@ -44,7 +44,7 @@ import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
-import de.unileipzig.irpact.start.IRPact;
+import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.Collection;
@@ -236,7 +236,7 @@ public class JadexInputParser implements InputParser {
     private void checkVersion(InRoot root) throws ParsingException {
         InVersion inVersion = getInstance(root.version, InVersion.class, "missing Version");
         BasicVersion inputVersion = inVersion.parse(this);
-        if(IRPact.VERSION.isMismatch(inputVersion)) {
+        if(!IRPact.VERSION.supportsInput(inputVersion)) {
             throw new ParsingException("version mismatch! IRPact version: '" + IRPact.VERSION + "', input version: '" + inputVersion + "'");
         }
     }

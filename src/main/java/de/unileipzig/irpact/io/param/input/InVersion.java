@@ -2,7 +2,7 @@ package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
-import de.unileipzig.irpact.start.IRPact;
+import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -65,6 +65,8 @@ public class InVersion implements InEntity {
 
     @Override
     public BasicVersion parse(InputParser parser) throws ParsingException {
-        return new BasicVersion(getVersion());
+        BasicVersion version = new BasicVersion();
+        version.setFunctional(getVersion());
+        return version;
     }
 }

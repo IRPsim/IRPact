@@ -10,19 +10,25 @@ import java.util.function.IntFunction;
  */
 public interface RestoreManager {
 
-    void restore(Collection<? extends Persistable> coll) throws RestoreException;
+    void unregisterAll();
 
-    void setInitialInstance(Object initial);
+    void register(Persistable persistable);
 
-    <T> T getInitialInstance();
+    void register(Collection<? extends Persistable> coll);
+
+    void restore() throws RestoreException;
+
+//    void setInitialInstance(Object initial);
+//
+//    <T> T getInitialInstance();
 
     void setRestoredInstance(Object restored);
 
-    <T> T getRestoredInstance();
+    <T> T getRestoredInstance() throws NoSuchElementException;
 
     void setValidationChecksum(int checksum);
 
-    int getValidationChecksum();
+    int getValidationChecksum() throws NoSuchElementException;
 
     <T> T ensureGet(long uid) throws RestoreException;
 

@@ -56,8 +56,6 @@ public interface SimulationEnvironment extends Nameable, InitalizablePart {
 
     Version getVersion();
 
-    void validateVersion(Version version) throws VersionMismatchException;
-
     ResourceLoader getResourceLoader();
 
     BinaryTaskManager getTaskManager();

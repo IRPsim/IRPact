@@ -11,7 +11,7 @@ import java.util.function.Supplier;
  * @author Daniel Abitz
  */
 @XXXXXXXXX("TESTEN")
-public class NavigableMapWeightedMapping<T> implements WeightedMapping<T> {
+public class RemoveOnDrawnNavigableMapWeightedMapping<T> implements WeightedMapping<T> {
 
     protected Supplier<? extends NavigableMap<Double, T>> mapSupplier;
     protected Map<T, Double> weightMap = new LinkedHashMap<>();
@@ -19,11 +19,11 @@ public class NavigableMapWeightedMapping<T> implements WeightedMapping<T> {
     protected double totalWeight = 0;
     protected boolean disableWeights = false;
 
-    public NavigableMapWeightedMapping() {
+    public RemoveOnDrawnNavigableMapWeightedMapping() {
         this(TreeMap::new);
     }
 
-    public NavigableMapWeightedMapping(Supplier<? extends NavigableMap<Double, T>> mapSupplier) {
+    public RemoveOnDrawnNavigableMapWeightedMapping(Supplier<? extends NavigableMap<Double, T>> mapSupplier) {
         this.mapSupplier = mapSupplier;
         this.mapping = mapSupplier.get();
     }
@@ -37,20 +37,20 @@ public class NavigableMapWeightedMapping<T> implements WeightedMapping<T> {
     }
 
     @Override
-    public NavigableMapWeightedMapping<T> copy() {
+    public RemoveOnDrawnNavigableMapWeightedMapping<T> copy() {
         Map<T, Double> copy = new LinkedHashMap<>(weightMap);
         return createCopy(copy);
     }
 
     @Override
-    public NavigableMapWeightedMapping<T> copyWithout(T toRemove) {
+    public RemoveOnDrawnNavigableMapWeightedMapping<T> copyWithout(T toRemove) {
         Map<T, Double> copy = new LinkedHashMap<>(weightMap);
         copy.remove(toRemove);
         return createCopy(copy);
     }
 
-    protected NavigableMapWeightedMapping<T> createCopy(Map<T, Double> map) {
-        NavigableMapWeightedMapping<T> copy = new NavigableMapWeightedMapping<>(mapSupplier);
+    protected RemoveOnDrawnNavigableMapWeightedMapping<T> createCopy(Map<T, Double> map) {
+        RemoveOnDrawnNavigableMapWeightedMapping<T> copy = new RemoveOnDrawnNavigableMapWeightedMapping<>(mapSupplier);
         copy.weightMap = map;
         copy.rebuildMapping();
         return copy;
@@ -93,20 +93,38 @@ public class NavigableMapWeightedMapping<T> implements WeightedMapping<T> {
     @Override
     public boolean remove(T target) {
         if(has(target)) {
-            weightMap.remove(target);
-            rebuildMapping();
+            double summendWeight = Double.NaN;
+            for(Map.Entry<Double, T> entry: mapping.entrySet()) {
+                if(Objects.equals(target, entry.getValue())) {
+                    summendWeight = entry.getKey();
+                    break;
+                }
+            }
+            if(Double.isNaN(summendWeight)) {
+                throw new IllegalStateException();
+            }
+            //Hier ist inklusive true, da summendWeight der exakte Wert fuer T ist.
+            T removed = removeAndUpdate(summendWeight, true);
+            if(target != removed) {
+                throw new IllegalStateException();
+            }
             return true;
         } else {
             return false;
         }
     }
 
-    @XXXXXXXXX("!!!! problem beim reset von weightMap")
+    public void clear() {
+        totalWeight = 0;
+        mapping.clear();
+        weightMap.clear();
+    }
+
     protected void rebuildMapping() {
         totalWeight = 0;
         mapping.clear();
         for(Map.Entry<T, Double> entry: weightMap.entrySet()) {
-            set(entry.getKey(), entry.getValue()); //!!!! wegen dem set und weigtMap.set
+            set(entry.getKey(), entry.getValue(), true);
         }
     }
 
@@ -123,10 +141,16 @@ public class NavigableMapWeightedMapping<T> implements WeightedMapping<T> {
 
     @Override
     public void set(T target, double weight) {
+        set(target, weight, false);
+    }
+
+    protected void set(T target, double weight, boolean rebuild) {
         nonZeroWeight(weight);
-        weightMap.put(target, weight);
         totalWeight += weight;
         mapping.put(totalWeight, target);
+        if(!rebuild) {
+            weightMap.put(target, weight);
+        }
     }
 
     @Override
@@ -151,13 +175,35 @@ public class NavigableMapWeightedMapping<T> implements WeightedMapping<T> {
         if(isDisableWeights()) {
             return getRandom(rnd);
         }
+
         checkNotEmpty();
-        double rndDraw = rnd.nextDouble(totalWeight());
-        return higherValueOrLast(rndDraw);
+
+        if(mapping.size() == 1) {
+            T removed = mapping.pollFirstEntry().getValue();
+            weightMap.clear();
+            totalWeight = 0;
+            return removed;
+        } else {
+            double rndDraw = rnd.nextDouble(totalWeight());
+            //Hier ist inclusive false, weil die Obergrenze bei nextDouble exklusiv ist.
+            return removeAndUpdate(rndDraw, false);
+        }
     }
 
-    protected T higherValueOrLast(double key) {
-        Map.Entry<Double, T> drawn = mapping.higherEntry(key);
-        return drawn.getValue();
+    protected T removeAndUpdate(double key, boolean inclusive) {
+        NavigableMap<Double, T> tail = mapping.tailMap(key, inclusive);
+        T removed = tail.pollFirstEntry().getValue();
+        double weight = weightMap.remove(removed);
+        totalWeight -= weight;
+
+        Map<Double, T> temp = new HashMap<>();
+        for(Map.Entry<Double, T> entry: tail.entrySet()) {
+            temp.put(entry.getKey() - weight, entry.getValue());
+        }
+        tail.clear();
+        mapping.putAll(temp);
+        temp.clear();
+
+        return removed;
     }
 }

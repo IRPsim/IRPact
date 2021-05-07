@@ -12,6 +12,8 @@ import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.spec.SpecificationConverter;
 import de.unileipzig.irpact.io.spec.SpecificationData;
+import de.unileipzig.irpact.start.irpact.IRPact;
+import de.unileipzig.irpact.start.irpact.IRPactCallback;
 import de.unileipzig.irpact.start.optact.OptAct;
 import de.unileipzig.irptools.io.ContentType;
 import de.unileipzig.irptools.io.ContentTypeDetector;
@@ -44,11 +46,11 @@ public class Preloader {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(Preloader.class);
 
-    private final CommandLineOptions clOptions;
+    private final MainCommandLineOptions clOptions;
     private final Collection<? extends IRPactCallback> callbacks;
     private ResourceLoader resourceLoader;
 
-    public Preloader(CommandLineOptions clOptions, Collection<? extends IRPactCallback> callbacks) {
+    public Preloader(MainCommandLineOptions clOptions, Collection<? extends IRPactCallback> callbacks) {
         this.clOptions = clOptions;
         this.callbacks = callbacks;
     }

@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.start.CommandLineOptions;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -15,7 +15,7 @@ public interface Settings {
     //general
     //=========================
 
-    void apply(CommandLineOptions clOptions);
+    void apply(MainCommandLineOptions clOptions);
 
     boolean ignorePersistenceCheckResult();
 

@@ -1,7 +1,8 @@
-package de.unileipzig.irpact.start;
+package de.unileipzig.irpact.start.irpact;
 
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.output.OutRoot;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.base.AnnualEntry;
 
@@ -10,7 +11,7 @@ import de.unileipzig.irptools.io.base.AnnualEntry;
  */
 public interface IRPActAccess {
 
-    CommandLineOptions getCommandLineOptions();
+    MainCommandLineOptions getCommandLineOptions();
 
     AnnualEntry<InRoot> getInput();
 

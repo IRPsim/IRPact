@@ -3,7 +3,7 @@ package de.unileipzig.irpact.core.persistence;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.output.OutRoot;
-import de.unileipzig.irpact.start.CommandLineOptions;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
 
 /**
  * @author Daniel Abitz
@@ -15,7 +15,6 @@ public interface PersistenceModul {
             OutRoot root) throws Exception;
 
     SimulationEnvironment restore(
-            SimulationEnvironment initialEnvironment,
-            CommandLineOptions options,
+            MainCommandLineOptions options,
             InRoot root) throws Exception;
 }

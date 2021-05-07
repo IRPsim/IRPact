@@ -5,7 +5,7 @@ import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.Persistable;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.start.CommandLineOptions;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
 
 import java.util.*;
 import java.util.function.IntFunction;
@@ -25,8 +25,11 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     protected final Map<BinaryJsonData, Object> restoredMap = new LinkedHashMap<>();
     protected final Map<Long, BinaryJsonData> uidData = new LinkedHashMap<>();
     protected final Map<String, BinaryRestorer<?>> restorerMap = new LinkedHashMap<>();
-    protected final Map<Object, Object> cache = new LinkedHashMap<>();
     protected final RestoreHelper restoreHelper = new RestoreHelper();
+    protected final List<Persistable> persistables = new ArrayList<>();
+    protected boolean hasValidationChecksum;
+    protected int validationChecksum;
+    protected Object restoredInstance;
 
     public BinaryJsonRestoreManager() {
         init();
@@ -36,7 +39,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         BinaryJsonUtil.registerDefaults(this);
     }
 
-    public void setCommandLineOptions(CommandLineOptions options) {
+    public void setCommandLineOptions(MainCommandLineOptions options) {
         restoreHelper.setOptions(options);
     }
 
@@ -94,8 +97,41 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     }
 
     @Override
-    public void restore(Collection<? extends Persistable> coll) throws RestoreException {
-        setRestoredInstance(null);
+    public void unregisterAll() {
+        persistables.clear();
+        restoredMap.clear();
+        uidData.clear();
+        restoredMap.clear();
+        restoreHelper.clear();
+        clearRestoredInstance();
+        clearValidationChecksum();
+    }
+
+    @Override
+    public void register(Persistable persistable) {
+        persistables.add(persistable);
+    }
+
+    @Override
+    public void register(Collection<? extends Persistable> coll) {
+        persistables.addAll(coll);
+    }
+
+    @Override
+    public void restore() throws RestoreException {
+        restore(persistables);
+    }
+
+    protected void restore(Collection<? extends Persistable> coll) throws RestoreException {
+        if(coll == null) {
+            throw new RestoreException("persistables is null");
+        }
+        if(coll.isEmpty()) {
+            throw new RestoreException("persistables is empty");
+        }
+
+        clearRestoredInstance();
+        clearValidationChecksum();
 
         //phase 1
         for(Persistable persistable: coll) {
@@ -155,54 +191,41 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         restorer.validateRestore(data, object, this);
     }
 
-    protected void checkedSet(Object key, Object value, String msg) {
-        if(value == null) {
-            cache.remove(key);
-        } else {
-            if(cache.containsKey(key)) {
-                throw new IllegalStateException(msg);
-            }
-            cache.put(key, value);
-        }
-    }
-
-    protected Object checkedGet(Object key, String msg) {
-        if(!cache.containsKey(key)) {
-            throw new NoSuchElementException(msg);
-        }
-        return cache.get(key);
-    }
-
-    @Override
-    public void setInitialInstance(Object initial) {
-        checkedSet(INITIAL_INSTANCE, initial, "initial instance already set");
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T getInitialInstance() {
-        return (T) checkedGet(INITIAL_INSTANCE, "initial instance");
+    protected void clearRestoredInstance() {
+        setRestoredInstance(null);
     }
 
     @Override
     public void setRestoredInstance(Object restored) {
-        checkedSet(RESTORED_INSTANCE, restored, "restored instance already set");
+        this.restoredInstance = restored;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getRestoredInstance() {
-        return (T) checkedGet(RESTORED_INSTANCE, "restored instance");
+    public <T> T getRestoredInstance() throws NoSuchElementException {
+        if(restoredInstance == null) {
+            throw new NoSuchElementException();
+        }
+        return (T) restoredInstance;
+    }
+
+    private void clearValidationChecksum() {
+        validationChecksum = 0;
+        hasValidationChecksum = false;
     }
 
     @Override
     public void setValidationChecksum(int checksum) {
-        checkedSet(VALIDATION_CHECKSUM, checksum, "validation checksum already set");
+        this.validationChecksum = checksum;
+        hasValidationChecksum = true;
     }
 
     @Override
     public int getValidationChecksum() {
-        return (Integer) checkedGet(VALIDATION_CHECKSUM, "validation checksum");
+        if(!hasValidationChecksum) {
+            throw new NoSuchElementException();
+        }
+        return validationChecksum;
     }
 
     @Override

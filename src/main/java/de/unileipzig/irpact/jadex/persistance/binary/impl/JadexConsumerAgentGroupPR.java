@@ -9,6 +9,8 @@ import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRe
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
+import de.unileipzig.irpact.develop.TodoException;
+import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -106,12 +108,14 @@ public class JadexConsumerAgentGroupPR extends BinaryPRBase<JadexConsumerAgentGr
         object.setProcessFindingScheme(manager.ensureGet(data.getLong()));
     }
 
+    @XXXXXXXXX
     private JadexConsumerAgentGroup getOriginal(
             JadexConsumerAgentGroup object,
             RestoreManager manager) {
-        SimulationEnvironment originalEnvironment = manager.getInitialInstance();
-        ConsumerAgentGroup originalCag = originalEnvironment.getAgents().getConsumerAgentGroup(object.getName());
-        return (JadexConsumerAgentGroup) originalCag;
+        throw new TodoException();
+//        SimulationEnvironment originalEnvironment = manager.getInitialInstance();
+//        ConsumerAgentGroup originalCag = originalEnvironment.getAgents().getConsumerAgentGroup(object.getName());
+//        return (JadexConsumerAgentGroup) originalCag;
     }
 
     private SpatialDistribution restoreSpatialDistribution(

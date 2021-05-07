@@ -4,7 +4,6 @@ import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.persistence.PersistenceModul;
-import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -12,7 +11,7 @@ import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
-import de.unileipzig.irpact.start.CommandLineOptions;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
@@ -66,15 +65,14 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
 
     @Override
     public SimulationEnvironment restore(
-            SimulationEnvironment initialEnvironment,
-            CommandLineOptions options,
+            MainCommandLineOptions options,
             InRoot root) throws Exception {
         switch (getModus()) {
             case BINARY:
-                return restoreBinary(initialEnvironment, options, root);
+                return restoreBinary(options, root);
 
             case PARAMETER:
-                return restoreParameter(initialEnvironment, options, root);
+                return restoreParameter(options, root);
 
             default:
                 throw new IllegalArgumentException("unsupported modus: " + getModus());
@@ -111,8 +109,7 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
     }
 
     public SimulationEnvironment restoreBinary(
-            SimulationEnvironment initialEnvironment,
-            CommandLineOptions options,
+            MainCommandLineOptions options,
             InRoot root) throws IOException, RestoreException {
         if(!root.hasBinaryPersistData()) {
             throw new RestoreException("nothing to restore");
@@ -127,14 +124,17 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
             data.setGetMode();
             dataList.add(data);
         }
-        binaryRestore.setInitialInstance(initialEnvironment);
-        binaryRestore.restore(dataList);
+
+        binaryRestore.unregisterAll();
+        binaryRestore.register(dataList);
+        binaryRestore.restore();
         SimulationEnvironment restoredEnvironment = binaryRestore.getRestoredInstance();
+        binaryRestore.unregisterAll();
+
         int restoredChecksum = restoredEnvironment.getChecksum();
         int validationChecksum = binaryRestore.getValidationChecksum();
         if(restoredChecksum == validationChecksum) {
             LOGGER.info("environment successfully restored");
-            updateSettings(initialEnvironment, restoredEnvironment);
         } else {
             String msg = "checksum mismatch: restored=" + Integer.toHexString(restoredChecksum) + " != validation=" + Integer.toHexString(validationChecksum);
             if(environment.getSettings().ignorePersistenceCheckResult()) {
@@ -144,13 +144,6 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
             }
         }
         return restoredEnvironment;
-    }
-
-    private void updateSettings(SimulationEnvironment initial, SimulationEnvironment restored) {
-        Settings initialSettings = initial.getSettings();
-        Settings restoredSettings = restored.getSettings();
-
-        restoredSettings.setLastSimulationYear(initialSettings.getLastSimulationYear());
     }
 
     //=========================
@@ -164,8 +157,7 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
     }
 
     public SimulationEnvironment restoreParameter(
-            SimulationEnvironment initialEnvironment,
-            CommandLineOptions options,
+            MainCommandLineOptions options,
             InRoot root) {
         throw new UnsupportedOperationException();
     }

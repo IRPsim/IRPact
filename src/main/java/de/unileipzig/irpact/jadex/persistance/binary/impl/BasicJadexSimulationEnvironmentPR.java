@@ -1,27 +1,19 @@
 package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
-import de.unileipzig.irpact.commons.exception.VersionMismatchException;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
-import de.unileipzig.irpact.core.agent.AgentManager;
-import de.unileipzig.irpact.core.agent.BasicAgentManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.network.BasicSocialNetwork;
-import de.unileipzig.irpact.core.network.SocialNetwork;
-import de.unileipzig.irpact.core.process.BasicProcessModelManager;
-import de.unileipzig.irpact.core.process.ProcessModel;
-import de.unileipzig.irpact.core.process.ProcessModelManager;
-import de.unileipzig.irpact.core.product.BasicProductManager;
-import de.unileipzig.irpact.core.product.ProductGroup;
-import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.simulation.BasicBinaryTaskManager;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.Version;
+import de.unileipzig.irpact.develop.TodoException;
+import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
+import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -95,7 +87,7 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, BasicJadexSimulationEnvironment object, RestoreManager manager) throws RestoreException {
-        validateVersion(data, object, manager);
+        validateVersion(data, manager);
         object.setSettings(manager.ensureGet(data.getLong()));
         object.setAgentManager(manager.ensureGet(data.getLong()));
         object.setSocialNetwork(manager.ensureGet(data.getLong()));
@@ -109,23 +101,23 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
         setupBinaryTaskManager(data, object, manager);
     }
 
-    private void validateVersion(BinaryJsonData data, BasicJadexSimulationEnvironment object, RestoreManager manager) throws RestoreException {
+    private void validateVersion(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         Version version = manager.ensureGet(data.getLong());
-        try {
-            object.validateVersion(version);
-        } catch (VersionMismatchException e) {
-            throw new RestoreException(e);
+        if(!IRPact.VERSION.supportsInput(version)) {
+            throw ExceptionUtil.create(RestoreException::new, "version mismatch: IRPact version '{}' != '{}'", IRPact.VERSION.print(), version.print());
         }
     }
 
+    @XXXXXXXXX
     @SuppressWarnings("unused")
     private void setupBinaryTaskManager(BinaryJsonData data, BasicJadexSimulationEnvironment object, RestoreManager manager) {
-        BasicJadexSimulationEnvironment initialEnv = manager.getInitialInstance();
-
-        BasicBinaryTaskManager initial = (BasicBinaryTaskManager) initialEnv.getTaskManager();
-        BasicBinaryTaskManager restored = (BasicBinaryTaskManager) object.getTaskManager();
-
-        restored.copyFrom(initial);
+        if(true) throw new TodoException();
+//        BasicJadexSimulationEnvironment initialEnv = manager.getInitialInstance();
+//
+//        BasicBinaryTaskManager initial = (BasicBinaryTaskManager) initialEnv.getTaskManager();
+//        BasicBinaryTaskManager restored = (BasicBinaryTaskManager) object.getTaskManager();
+//
+//        restored.copyFrom(initial);
     }
 
     @Override
@@ -138,14 +130,16 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
         manager.setValidationChecksum(storedHash);
     }
 
+    @XXXXXXXXX
     @Override
     protected void doFinalizeRestore(BinaryJsonData data, BasicJadexSimulationEnvironment object, RestoreManager manager) throws RestoreException {
-        manager.setRestoredInstance(object);
-
-        replaceConsumerAgentGroupsInSettings(
-                manager.getInitialInstance(),
-                manager.getRestoredInstance()
-        );
+        if(true) throw new TodoException();
+//        manager.setRestoredInstance(object);
+//
+//        replaceConsumerAgentGroupsInSettings(
+//                manager.getInitialInstance(),
+//                manager.getRestoredInstance()
+//        );
     }
 
     protected void replaceConsumerAgentGroupsInSettings(

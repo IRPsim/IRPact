@@ -11,7 +11,7 @@ import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.start.CommandLineOptions;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.List;
@@ -39,11 +39,11 @@ public class PVactResultLogging {
         return Integer.toString(sum);
     };
 
-    protected CommandLineOptions clOptions;
+    protected MainCommandLineOptions clOptions;
     protected SimulationEnvironment environment;
 
     public PVactResultLogging(
-            CommandLineOptions clOptions,
+            MainCommandLineOptions clOptions,
             SimulationEnvironment environment) {
         this.clOptions = clOptions;
         this.environment = environment;

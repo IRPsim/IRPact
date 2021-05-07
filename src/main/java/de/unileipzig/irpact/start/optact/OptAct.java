@@ -6,7 +6,7 @@ import de.unileipzig.irpact.commons.graph.topology.AbstractMultiGraphTopology;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.start.CommandLineOptions;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.in.SideCustom;
 import de.unileipzig.irpact.start.optact.out.OutCustom;
@@ -43,10 +43,10 @@ public class OptAct {
 
     private static final IRPLogger logger = IRPLogging.getLogger(OptAct.class);
 
-    private final CommandLineOptions clOptions;
+    private final MainCommandLineOptions clOptions;
     private final ObjectNode inRoot;
 
-    public OptAct(CommandLineOptions clOptions, ObjectNode inRoot) {
+    public OptAct(MainCommandLineOptions clOptions, ObjectNode inRoot) {
         this.clOptions = clOptions;
         this.inRoot = inRoot;
     }

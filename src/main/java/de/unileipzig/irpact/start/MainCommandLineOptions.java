@@ -3,6 +3,7 @@ package de.unileipzig.irpact.start;
 import de.unileipzig.irpact.commons.log.LoggingMessage;
 import de.unileipzig.irpact.commons.util.AbstractCommandLineOptions;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import picocli.CommandLine;
@@ -21,12 +22,12 @@ import java.nio.file.Paths;
         name = "java -jar <IRPact.jar>",
         version = "IRPact version " + IRPact.VERSION_STRING
 )
-public class CommandLineOptions extends AbstractCommandLineOptions {
+public class MainCommandLineOptions extends AbstractCommandLineOptions {
 
     private static final String TRUE1 = "1";
     private static final String FALSE0 = "0";
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(CommandLineOptions.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(MainCommandLineOptions.class);
 
     @CommandLine.Option(
             names = { "-?", "-h", "--help" },
@@ -193,7 +194,7 @@ public class CommandLineOptions extends AbstractCommandLineOptions {
     private boolean hasCustomInput = false;
     private boolean hasCallback = false;
 
-    public CommandLineOptions(String[] args) {
+    public MainCommandLineOptions(String[] args) {
         super(args);
     }
 

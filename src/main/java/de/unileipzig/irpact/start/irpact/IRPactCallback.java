@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.start;
+package de.unileipzig.irpact.start.irpact;
 
 import de.unileipzig.irpact.commons.Nameable;
 

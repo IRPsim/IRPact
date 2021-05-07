@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.jadex.persistance.binary;
 
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.start.CommandLineOptions;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
 
 import java.util.NoSuchElementException;
 
@@ -10,17 +10,22 @@ import java.util.NoSuchElementException;
  */
 public final class RestoreHelper {
 
-    private CommandLineOptions options;
+    private MainCommandLineOptions options;
     private InRoot root;
 
     public RestoreHelper() {
     }
 
-    public void setOptions(CommandLineOptions options) {
+    public void clear() {
+        options = null;
+        root = null;
+    }
+
+    public void setOptions(MainCommandLineOptions options) {
         this.options = options;
     }
 
-    public CommandLineOptions getOptions() {
+    public MainCommandLineOptions getOptions() {
         if(options == null) {
             throw new NoSuchElementException("CommandLineOptions");
         }
