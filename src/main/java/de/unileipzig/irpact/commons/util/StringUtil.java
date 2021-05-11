@@ -5,6 +5,7 @@ import org.slf4j.helpers.MessageFormatter;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -19,6 +20,10 @@ public final class StringUtil {
 
     public static String lineSeparator() {
         return LINE_SEPARATOR;
+    }
+
+    public static String concat(String delimiter, String... parts) {
+        return concat(delimiter, Arrays.asList(parts));
     }
 
     public static String concat(String delimiter, Collection<? extends String> parts) {

@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.misc.logfile.modify;
+package de.unileipzig.irpact.util.logfile.modify;
 
 /**
  * @author Daniel Abitz

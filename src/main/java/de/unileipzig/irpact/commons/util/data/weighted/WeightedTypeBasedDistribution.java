@@ -72,6 +72,10 @@ public class WeightedTypeBasedDistribution<T, U> extends NameableBase implements
 
         DataCollection.View<U> view = data.createView(filter);
 
+        set(key, view);
+    }
+
+    protected void set(T key, DataCollection.View<U> view) {
         views.put(key, view);
         mapping.set(key, view.size());
     }

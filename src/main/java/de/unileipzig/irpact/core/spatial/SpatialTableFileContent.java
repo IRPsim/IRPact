@@ -11,22 +11,22 @@ import java.util.List;
  */
 public class SpatialTableFileContent implements FileContent {
 
-    protected Table<SpatialAttribute> data;
+    protected Table<SpatialAttribute> tableData;
 
-    public SpatialTableFileContent(Table<SpatialAttribute> data) {
-        this.data = data;
+    public SpatialTableFileContent(Table<SpatialAttribute> tableData) {
+        this.tableData = tableData;
     }
 
     @Override
     public Table<SpatialAttribute> content() {
-        return data;
+        return tableData;
     }
 
     public List<SpatialAttribute> get(int index) {
-        return data.listRow(index);
+        return tableData.listRow(index);
     }
 
     public int size() {
-        return data.rowCount();
+        return tableData.rowCount();
     }
 }

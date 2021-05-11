@@ -4,16 +4,21 @@ import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialDoubleAttribute;
 import de.unileipzig.irpact.commons.util.ShareCalculator;
+import de.unileipzig.irpact.commons.util.data.DataCollection;
 import de.unileipzig.irpact.commons.util.data.DataType;
 import de.unileipzig.irpact.commons.util.data.LinkedDataCollection;
 import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.spatial.distribution2.SelectAndGroupFilter;
+import de.unileipzig.irpact.core.spatial.distribution2.SelectFilter;
+import de.unileipzig.irpact.core.spatial.distribution2.SpatialDataFilter;
 import de.unileipzig.irpact.core.spatial.twodim.BasicPoint2D;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -103,7 +108,8 @@ public final class SpatialUtil {
             String name,
             Table<SpatialAttribute> input,
             UnivariateDoubleDistribution xSupplier,
-            UnivariateDoubleDistribution ySupplier) {
+            UnivariateDoubleDistribution ySupplier,
+            Supplier<? extends Collection<SpatialInformation>> supplier) {
         List<SpatialInformation> infos = input.listTable()
                 .stream()
                 .map(row -> {
@@ -114,14 +120,15 @@ public final class SpatialUtil {
                     return p;
                 })
                 .collect(Collectors.toList());
-        return mapToPoint2D(name, infos);
+        return mapToPoint2D(name, infos, supplier);
     }
 
     public static SpatialDataCollection mapToPoint2D(
             String name,
             Table<SpatialAttribute> input,
             String xKey,
-            String yKey) {
+            String yKey,
+            Supplier<? extends Collection<SpatialInformation>> supplier) {
         List<SpatialInformation> infos = input.listTable()
                 .stream()
                 .map(row -> {
@@ -132,18 +139,97 @@ public final class SpatialUtil {
                     return p;
                 })
                 .collect(Collectors.toList());
-        return mapToPoint2D(name, infos);
+        return mapToPoint2D(name, infos, supplier);
     }
 
     protected static SpatialDataCollection mapToPoint2D(
             String name,
-            List<SpatialInformation> infos) {
-        LinkedDataCollection<SpatialInformation> dataColl = new LinkedDataCollection<>(ArrayList::new);
+            List<SpatialInformation> infos,
+            Supplier<? extends Collection<SpatialInformation>> supplier) {
+        LinkedDataCollection<SpatialInformation> dataColl = new LinkedDataCollection<>(supplier);
         dataColl.addAll(infos);
         BasicSpatialDataCollection spatialData = new BasicSpatialDataCollection();
         spatialData.setName(name);
         spatialData.setData(dataColl);
         return spatialData;
+    }
+
+    public static Map<String, SpatialDataFilter> createFilters(
+            SpatialDataCollection data,
+            String selectKey) {
+        List<String> distinctValues = data.getData()
+                .stream()
+                .map(info -> {
+                    SpatialAttribute attr = info.getAttribute(selectKey);
+                    if(attr == null) {
+                        throw new NoSuchElementException("missing '" + selectKey + "'");
+                    }
+                    return attr.asValueAttribute().getValueAsString();
+                })
+                .distinct()
+                .collect(Collectors.toList());
+        Map<String, SpatialDataFilter> filters = new HashMap<>();
+        for(String selectValue: distinctValues) {
+            SelectFilter filter = new SelectFilter(selectKey, selectValue);
+            filters.put(selectValue, filter);
+        }
+        return filters;
+    }
+
+    public static Map<String, SpatialDataFilter> createFilters(
+            SpatialDataCollection data,
+            String selectKey,
+            String groupingKey) {
+        Set<String> selectValues = new LinkedHashSet<>();
+        Set<String> groupingValues = new LinkedHashSet<>();
+
+        for(SpatialInformation info: data.getData()) {
+            SpatialAttribute selAttr = info.getAttribute(selectKey);
+            if(selAttr == null) {
+                throw new NoSuchElementException("missing '" + selectKey + "'");
+            }
+
+            SpatialAttribute grpAttr = info.getAttribute(groupingKey);
+            if(grpAttr == null) {
+                throw new NoSuchElementException("missing '" + groupingKey + "'");
+            }
+
+            selectValues.add(selAttr.asValueAttribute().getValueAsString());
+            groupingValues.add(grpAttr.asValueAttribute().getValueAsString());
+        }
+
+        Map<String, SpatialDataFilter> filters = new HashMap<>();
+        for(String selectValue: selectValues) {
+            for(String groupingValue: groupingValues) {
+                SelectAndGroupFilter filter = new SelectAndGroupFilter(selectKey, selectValue, groupingKey, groupingValue);
+                filters.put(filter.getName(), filter);
+            }
+        }
+        return filters;
+    }
+
+    public static Map<String, SpatialDataFilter> createFilters(
+            SpatialDataCollection data,
+            String selectKey,
+            String selectValue,
+            String groupingKey) {
+        List<String> distinctValues = data.getData()
+                .stream()
+                .map(info -> {
+                    SpatialAttribute attr = info.getAttribute(groupingKey);
+                    if(attr == null) {
+                        throw new NoSuchElementException("missing '" + groupingKey + "'");
+                    }
+                    return attr.asValueAttribute().getValueAsString();
+                })
+                .distinct()
+                .collect(Collectors.toList());
+        Map<String, SpatialDataFilter> filters = new HashMap<>();
+        for(String groupingValue: distinctValues) {
+            SelectAndGroupFilter filter = new SelectAndGroupFilter(selectKey, selectValue, groupingKey, groupingValue);
+            filters.put(groupingValue, filter);
+        }
+        return filters;
     }
 
     public static Map<String, List<SpatialInformation>> groupingBy(Collection<SpatialInformation> input, String attrName) {

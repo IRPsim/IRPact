@@ -65,6 +65,14 @@ public class LinkedDataCollection<E> implements DataCollection<E> {
         return useLock && lock != null;
     }
 
+    public Collection<Filter<? super E>> getFilters() {
+        return views.keySet();
+    }
+
+    public LinkedView<E> getView(Filter<? super E> filter) {
+        return views.get(filter);
+    }
+
     @Override
     public void clear() {
         elements.clear();
@@ -124,7 +132,6 @@ public class LinkedDataCollection<E> implements DataCollection<E> {
 
     @Override
     public boolean remove(E element) {
-        System.out.println("HAS: " + element + " ? " + elements.contains(element));
         if(elements.remove(element)) {
             for(LinkedView<E> v: views.values()) {
                 v.remove0(element);

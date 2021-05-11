@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.misc.logfile.sort;
+package de.unileipzig.irpact.util.logfile.sort;
 
 /**
  * @author Daniel Abitz

@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.misc.logfile.filters;
+package de.unileipzig.irpact.util.logfile.filters;
 
 /**
  * @author Daniel Abitz

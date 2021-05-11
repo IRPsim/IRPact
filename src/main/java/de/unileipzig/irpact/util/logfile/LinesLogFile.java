@@ -1,6 +1,6 @@
-package de.unileipzig.irpact.misc.logfile;
+package de.unileipzig.irpact.util.logfile;
 
-import de.unileipzig.irpact.misc.logfile.modify.LogFileLineModifier;
+import de.unileipzig.irpact.util.logfile.modify.LogFileLineModifier;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
