@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialDoubleAttribute;
 import de.unileipzig.irpact.commons.util.ShareCalculator;
 import de.unileipzig.irpact.commons.util.data.DataType;
+import de.unileipzig.irpact.commons.util.data.LinkedDataCollection;
 import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.spatial.twodim.BasicPoint2D;
@@ -96,6 +97,53 @@ public final class SpatialUtil {
                     return p;
                 })
                 .collect(Collectors.toList());
+    }
+
+    public static SpatialDataCollection mapToPoint2D(
+            String name,
+            Table<SpatialAttribute> input,
+            UnivariateDoubleDistribution xSupplier,
+            UnivariateDoubleDistribution ySupplier) {
+        List<SpatialInformation> infos = input.listTable()
+                .stream()
+                .map(row -> {
+                    double x = xSupplier.drawDoubleValue();
+                    double y = ySupplier.drawDoubleValue();
+                    BasicPoint2D p = new BasicPoint2D(x, y);
+                    p.addAllAttributes(row);
+                    return p;
+                })
+                .collect(Collectors.toList());
+        return mapToPoint2D(name, infos);
+    }
+
+    public static SpatialDataCollection mapToPoint2D(
+            String name,
+            Table<SpatialAttribute> input,
+            String xKey,
+            String yKey) {
+        List<SpatialInformation> infos = input.listTable()
+                .stream()
+                .map(row -> {
+                    double x = secureGet(row, xKey).getDoubleValue();
+                    double y = secureGet(row, yKey).getDoubleValue();
+                    BasicPoint2D p = new BasicPoint2D(x, y);
+                    p.addAllAttributes(row);
+                    return p;
+                })
+                .collect(Collectors.toList());
+        return mapToPoint2D(name, infos);
+    }
+
+    protected static SpatialDataCollection mapToPoint2D(
+            String name,
+            List<SpatialInformation> infos) {
+        LinkedDataCollection<SpatialInformation> dataColl = new LinkedDataCollection<>(ArrayList::new);
+        dataColl.addAll(infos);
+        BasicSpatialDataCollection spatialData = new BasicSpatialDataCollection();
+        spatialData.setName(name);
+        spatialData.setData(dataColl);
+        return spatialData;
     }
 
     public static Map<String, List<SpatialInformation>> groupingBy(Collection<SpatialInformation> input, String attrName) {
