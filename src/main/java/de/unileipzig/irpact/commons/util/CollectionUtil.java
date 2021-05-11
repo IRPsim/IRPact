@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.commons.util;
 
-import de.unileipzig.irpact.commons.util.data.WeightedData;
-
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collector;
@@ -313,19 +311,5 @@ public final class CollectionUtil {
             throw new NullPointerException(Objects.toString(key));
         }
         return value;
-    }
-
-    public static <T, K> List<T> weightedSort(
-            List<T> input,
-            Function<? super T, ? extends K> classifier,
-            List<T> output) {
-        WeightedData<K> wclasses = new WeightedData<>();
-        for(T data: input) {
-            K k = classifier.apply(data);
-            wclasses.update(k, 1.0);
-        }
-
-
-        return output;
     }
 }

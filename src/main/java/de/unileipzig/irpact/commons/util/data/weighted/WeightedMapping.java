@@ -14,6 +14,8 @@ public interface WeightedMapping<T> {
 
     WeightedMapping<T> copyWithout(T toRemove);
 
+    void clear();
+
     Collection<T> elements();
 
     boolean isEmpty();
@@ -27,6 +29,14 @@ public interface WeightedMapping<T> {
     double getWeight(T target);
 
     boolean remove(T target);
+
+    default boolean removeAll(Collection<? extends T> targets) {
+        boolean changed = false;
+        for(T t: targets) {
+            changed |= remove(t);
+        }
+        return changed;
+    }
 
     double totalWeight();
 

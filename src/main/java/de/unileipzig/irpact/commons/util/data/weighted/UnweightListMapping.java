@@ -66,6 +66,11 @@ public class UnweightListMapping<T> implements WeightedMapping<T> {
     }
 
     @Override
+    public void clear() {
+        values.clear();
+    }
+
+    @Override
     public boolean isEmpty() {
         return values.isEmpty();
     }
@@ -93,6 +98,11 @@ public class UnweightListMapping<T> implements WeightedMapping<T> {
     @Override
     public boolean remove(T target) {
         return values.remove(target);
+    }
+
+    @Override
+    public boolean removeAll(Collection<? extends T> targets) {
+        return values.removeAll(targets);
     }
 
     public void add(T target) {

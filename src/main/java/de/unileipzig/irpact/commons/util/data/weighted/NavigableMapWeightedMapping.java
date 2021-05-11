@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.commons.util.data.weighted;
 
 import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.develop.XXXXXXXXX;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -10,7 +9,6 @@ import java.util.function.Supplier;
  * @param <T>
  * @author Daniel Abitz
  */
-@XXXXXXXXX("TESTEN")
 public class NavigableMapWeightedMapping<T> implements WeightedMapping<T> {
 
     protected Supplier<? extends NavigableMap<Double, T>> mapSupplier;
@@ -37,6 +35,11 @@ public class NavigableMapWeightedMapping<T> implements WeightedMapping<T> {
     }
 
     @Override
+    public String toString() {
+        return mapping.toString();
+    }
+
+    @Override
     public NavigableMapWeightedMapping<T> copy() {
         Map<T, Double> copy = new LinkedHashMap<>(weightMap);
         return createCopy(copy);
@@ -54,6 +57,13 @@ public class NavigableMapWeightedMapping<T> implements WeightedMapping<T> {
         copy.weightMap = map;
         copy.rebuildMapping();
         return copy;
+    }
+
+    @Override
+    public void clear() {
+        weightMap.clear();
+        mapping.clear();
+        totalWeight = 0;
     }
 
     @Override
@@ -101,12 +111,28 @@ public class NavigableMapWeightedMapping<T> implements WeightedMapping<T> {
         }
     }
 
-    @XXXXXXXXX("!!!! problem beim reset von weightMap")
+    @Override
+    public boolean removeAll(Collection<? extends T> targets) {
+        boolean changed = false;
+        for(T target: targets) {
+            if(has(target)) {
+                weightMap.remove(target);
+                changed = true;
+            }
+        }
+
+        if(changed) {
+            rebuildMapping();
+        }
+        return changed;
+    }
+
     protected void rebuildMapping() {
         totalWeight = 0;
         mapping.clear();
         for(Map.Entry<T, Double> entry: weightMap.entrySet()) {
-            set(entry.getKey(), entry.getValue()); //!!!! wegen dem set und weigtMap.set
+            totalWeight += entry.getValue();
+            mapping.put(totalWeight, entry.getKey());
         }
     }
 
@@ -153,11 +179,11 @@ public class NavigableMapWeightedMapping<T> implements WeightedMapping<T> {
         }
         checkNotEmpty();
         double rndDraw = rnd.nextDouble(totalWeight());
-        return higherValueOrLast(rndDraw);
+        return getWeightedRandom(rndDraw);
     }
 
-    protected T higherValueOrLast(double key) {
-        Map.Entry<Double, T> drawn = mapping.higherEntry(key);
+    protected T getWeightedRandom(double rndDrawn) {
+        Map.Entry<Double, T> drawn = mapping.higherEntry(rndDrawn);
         return drawn.getValue();
     }
 }

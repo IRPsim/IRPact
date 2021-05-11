@@ -141,6 +141,6 @@ class NavigableMapWeightedMappingTest {
     void testX() {
         NavigableMapWeightedMapping<String> abc = new NavigableMapWeightedMapping<>();
         abc.set("a", 1);
-        assertEquals("a", abc.higherValueOrLast(1.0));
+        assertEquals("a", abc.getWeightedRandom(1.0));
     }
 }
