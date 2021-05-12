@@ -303,6 +303,12 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         return nextAgentId;
     }
 
+    protected long getNextAttentionOrder() {
+        return environment.getAgents()
+                .getAttentionOrderManager()
+                .nextId();
+    }
+
     @Override
     public ProxyConsumerAgent deriveAgent() {
         SpatialInformation spatialInformation = getSpatialDistribution().drawValue();
@@ -312,6 +318,7 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         agent.setEnvironment(getEnvironment());
         agent.setInformationAuthority(getInformationAuthority());
         agent.setMaxNumberOfActions(getMaxNumberOfActions());
+        agent.setActingOrder(getNextAttentionOrder());
         agent.addAllAttributes(deriveAttributes());
         agent.addAllProductRelatedAttribute(deriveProductRelatedAttributes());
         agent.setSpatialInformation(spatialInformation);

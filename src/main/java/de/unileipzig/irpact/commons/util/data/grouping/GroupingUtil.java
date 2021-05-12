@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.util.StringUtil;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -47,9 +48,14 @@ public final class GroupingUtil {
         for(int ia = 0; ia < allAKeys.size(); ia++) {
             A a = allAKeys.get(ia);
             for(int jb = 0; jb < allBKeys.size(); jb++) {
-                B b = allBKeys.get(jb);
-                List<X> list = get(grouping, a, b);
-                String entry = reduceFunction.apply(list);
+                String entry;
+                if(grouping == null) {
+                    entry = reduceFunction.apply(Collections.emptyList());
+                } else {
+                    B b = allBKeys.get(jb);
+                    List<X> list = get(grouping, a, b);
+                    entry = reduceFunction.apply(list);
+                }
                 out[ia][jb] = entry;
             }
         }

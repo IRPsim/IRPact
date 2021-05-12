@@ -130,6 +130,11 @@ public class TimeModelAgent implements TimeModelService, TestAgent, SimulationAg
         throw new RuntimeException();
     }
 
+    @Override
+    public long getActingOrder() {
+        throw new RuntimeException();
+    }
+
     @OnEnd
     protected void onEnd() {
         log("onEnd");

@@ -43,6 +43,7 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putInt(object.getMaxNumberOfActions());
+        data.putLong(object.getActingOrder());
 
         manager.prepare(object.getGroup());
         manager.prepare(object.getSpatialInformation());
@@ -90,6 +91,7 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
         ProxyConsumerAgent object = new ProxyConsumerAgent();
         object.setName(data.getText());
         object.setMaxNumberOfActions(data.getInt());
+        object.setActingOrder(data.getLong());
         return object;
     }
 

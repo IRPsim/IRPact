@@ -184,6 +184,13 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     )
     private boolean skipArgValidation;
 
+    @CommandLine.Option(
+            names = { "--noPersist" },
+            description = "...",
+            hidden = true
+    )
+    private boolean noPersist;
+
     //=========================
     //data
     //=========================
@@ -240,6 +247,10 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     //=========================
     //options
     //=========================
+
+    public boolean isNoPersist() {
+        return noPersist;
+    }
 
     public boolean isPrintHelp() {
         return printHelp;

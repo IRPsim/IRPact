@@ -1,7 +1,15 @@
 package de.unileipzig.irpact.io.param.output;
 
+import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
+
+import java.lang.invoke.MethodHandles;
+
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
 
 /**
  * @author Daniel Abitz
@@ -9,45 +17,96 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 @Definition
 public class OutAdoptionResult {
 
-    //cag_year
+    private static final MethodHandles.Lookup L = MethodHandles.lookup();
+    public static Class<?> thisClass() {
+        return L.lookupClass();
+    }
+    public static String thisName() {
+        return thisClass().getSimpleName();
+    }
+
+    public static void initRes(TreeAnnotationResource res) {
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+        addEntry(res, thisClass());
+        addEntry(res, thisClass(), "cag");
+        addEntry(res, thisClass(), "adoptionsThisYear");
+        addEntry(res, thisClass(), "adoptionsCumulativ");
+        addEntry(res, thisClass(), "adoptionShareThisYear");
+        addEntry(res, thisClass(), "adoptionShareCumulativ");
+    }
+
+    private static final String PREFIX = "Result";
+
     public String _name;
 
     @FieldDefinition
-    public int adoptions;
+    public InConsumerAgentGroup[] cag;
 
     @FieldDefinition
-    public double adoptionShare;
+    public int adoptionsThisYear;
+
+    @FieldDefinition
+    public int adoptionsCumulativ;
+
+    @FieldDefinition
+    public double adoptionShareThisYear;
+
+    @FieldDefinition
+    public double adoptionShareCumulativ;
 
     public OutAdoptionResult() {
-    }
-
-    public OutAdoptionResult(String name) {
-        this._name = name;
-    }
-
-    public OutAdoptionResult(String name, int adoptions, double share) {
-        this._name = name;
-        this.adoptions = adoptions;
-        this.adoptionShare = share;
     }
 
     public String getName() {
         return _name;
     }
 
-    public int getAdoptions() {
-        return adoptions;
+    public void setName(String name) {
+        this._name = name;
     }
 
-    public void setAdoptions(int adoptions) {
-        this.adoptions = adoptions;
+    public void setName(InConsumerAgentGroup cag) {
+        setName(PREFIX + cag.getName());
     }
 
-    public double getShare() {
-        return adoptionShare;
+    public void setConsumerAgentGroup(InConsumerAgentGroup cag) {
+        this.cag = new InConsumerAgentGroup[]{cag};
     }
 
-    public void setShare(double adoptionShare) {
-        this.adoptionShare = adoptionShare;
+    public InConsumerAgentGroup getConsumerAgentGroup() throws ParsingException {
+        return ParamUtil.getInstance(cag, "cag");
+    }
+
+    public void setAdoptionsThisYear(int adoptionsThisYear) {
+        this.adoptionsThisYear = adoptionsThisYear;
+    }
+
+    public int getAdoptionsThisYear() {
+        return adoptionsThisYear;
+    }
+
+    public void setAdoptionsCumulativ(int adoptionsCumulativ) {
+        this.adoptionsCumulativ = adoptionsCumulativ;
+    }
+
+    public int getAdoptionsCumulativ() {
+        return adoptionsCumulativ;
+    }
+
+    public void setAdoptionShareThisYear(double adoptionShareThisYear) {
+        this.adoptionShareThisYear = adoptionShareThisYear;
+    }
+
+    public double getAdoptionShareThisYear() {
+        return adoptionShareThisYear;
+    }
+
+    public void setAdoptionShareCumulativ(double adoptionShareCumulativ) {
+        this.adoptionShareCumulativ = adoptionShareCumulativ;
+    }
+
+    public double getAdoptionShareCumulativ() {
+        return adoptionShareCumulativ;
     }
 }

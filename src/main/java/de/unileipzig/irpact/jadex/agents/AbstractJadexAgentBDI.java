@@ -66,6 +66,7 @@ public abstract class AbstractJadexAgentBDI extends AbstractAgentBase {
 
     protected final IComponentStep<Void> LOOP_STEP = this::loopStep;
     protected IFuture<Void> loopStep(IInternalAccess access) {
+        pulse();
         onLoopAction();
         scheduleNextLoopStep();
         return IFuture.DONE;

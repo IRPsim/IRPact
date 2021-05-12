@@ -312,11 +312,20 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
 
     private void initalizeInitialProductInterest(ConsumerAgent ca, Product fp) {
         double interest = RAProcessPlan.getInitialProductInterest(ca, fp);
+        if(interest > 0) {
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set awareness for consumer agent '{}' because initial interest value {} for product '{}'", ca.getName(), interest, fp.getName());
+            ca.makeAware(fp);
+        }
         ca.updateInterest(fp, interest);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "consumer agent '{}' has initial interest value {} for product '{}'", ca.getName(), interest, fp.getName());
     }
 
     private void initalizeInitialProductAwareness(ConsumerAgent ca, Product fp) {
+        if(ca.isAware(fp)) {
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "consumer agent '{}' already aware", ca.getName());
+            return;
+        }
+
         double chance = RAProcessPlan.getInitialProductAwareness(ca, fp);
         double draw = rnd.nextDouble();
         boolean isAware = draw < chance;

@@ -11,6 +11,11 @@ import java.util.concurrent.TimeUnit;
 public interface SystemAgent extends Agent {
 
     @Override
+    default long getActingOrder() {
+        throw new SystemAgentException();
+    }
+
+    @Override
     default int getMaxNumberOfActions() {
         throw new SystemAgentException();
     }

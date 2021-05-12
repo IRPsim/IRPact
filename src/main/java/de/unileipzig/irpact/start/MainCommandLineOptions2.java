@@ -132,6 +132,12 @@ public final class MainCommandLineOptions2 extends AbstractCommandLineOptions {
     )
     private boolean skipArgValidation;
 
+    @CommandLine.Option(
+            names = { "--noPersist" },
+            description = "Disables data persistence."
+    )
+    private boolean noPersist;
+
     //=========================
     //sub calls
     //=========================

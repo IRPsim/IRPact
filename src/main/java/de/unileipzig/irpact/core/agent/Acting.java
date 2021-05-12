@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.agent;
 
-import de.unileipzig.irpact.develop.PotentialProblem;
+import de.unileipzig.irpact.commons.Nameable;
 
 import java.util.concurrent.TimeUnit;
 
@@ -13,6 +13,8 @@ import java.util.concurrent.TimeUnit;
 public interface Acting {
 
     int getMaxNumberOfActions();
+
+    long getActingOrder();
 
     void allowAttention();
 
@@ -42,21 +44,40 @@ public interface Acting {
         TARGET_OCCUPIED,
         SELF_OCCUPIED;
 
-        @PotentialProblem("endlos-lock, falls beim self.attention ein fehler auftritt?")
+        //Ansatz fuer dual-locks -> nutze eindeutige Lock-Reihenfolge
+        //https://stackoverflow.com/questions/9555413/acquiring-multiple-locks-atomically-in-java
         private static AttentionResult aquireDoubleSidedAttention(Acting self, Acting target, boolean dataAccess) {
-            if(target.tryAquireAttention()) {
-                if(self.tryAquireAttention()) {
+            if(self.getActingOrder() == target.getActingOrder()) {
+                throw new IllegalStateException("same acting order");
+            }
+
+            final Acting first;
+            final Acting second;
+            if(self.getActingOrder() < target.getActingOrder()) {
+                first = self;
+                second = target;
+            } else {
+                first = target;
+                second = self;
+            }
+
+            if(first.tryAquireAttention()) {
+                if(second.tryAquireAttention()) {
                     if(dataAccess) {
-                        self.aquireDataAccess(); //data lock
-                        target.aquireDataAccess(); //data lock
+                        first.aquireDataAccess(); //data lock
+                        second.aquireDataAccess(); //data lock
                     }
                     return SUCCESS;
                 } else {
-                    target.releaseAttention();
-                    return SELF_OCCUPIED;
+                    first.releaseAttention();
+                    return first == self
+                            ? SELF_OCCUPIED
+                            : TARGET_OCCUPIED;
                 }
             } else {
-                return TARGET_OCCUPIED;
+                return first == self
+                        ? SELF_OCCUPIED
+                        : TARGET_OCCUPIED;
             }
         }
 
@@ -79,6 +100,7 @@ public interface Acting {
         return AttentionResult.aquireDoubleSidedAttention(self, target, false);
     }
 
+    //Schreiben, dass bei SUCCESS die Locks noch vorhanden sind
     static AttentionResult aquireDoubleSidedAttentionAndDataAccess(Acting self, Acting target) {
         return AttentionResult.aquireDoubleSidedAttention(self, target, true);
     }

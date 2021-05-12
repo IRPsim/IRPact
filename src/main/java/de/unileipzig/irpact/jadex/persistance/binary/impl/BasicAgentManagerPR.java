@@ -36,6 +36,7 @@ public class BasicAgentManagerPR extends BinaryPRBase<BasicAgentManager> {
     @Override
     protected BinaryJsonData doInitalizePersist(BasicAgentManager object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
+        data.putLong(object.getAttentionOrderManager().lastId());
 
         manager.prepareAll(object.getConsumerAgentGroups());
         manager.prepare(object.getConsumerAgentGroupAffinityMapping());
@@ -53,10 +54,11 @@ public class BasicAgentManagerPR extends BinaryPRBase<BasicAgentManager> {
     //restore
     //=========================
 
-    @SuppressWarnings("UnnecessaryLocalVariable")
     @Override
     protected BasicAgentManager doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         BasicAgentManager object = new BasicAgentManager();
+        object.getAttentionOrderManager().reset(data.getLong());
+
         return object;
     }
 

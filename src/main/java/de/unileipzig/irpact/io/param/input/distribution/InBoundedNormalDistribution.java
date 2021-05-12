@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.io.param.input.distribution;
 
-import de.unileipzig.irpact.commons.distribution.NormalDistribution;
+import de.unileipzig.irpact.commons.distribution.BoundedNormalDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -22,7 +22,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InNormalDistribution implements InUnivariateDoubleDistribution {
+public class InBoundedNormalDistribution implements InUnivariateDoubleDistribution {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -38,9 +38,11 @@ public class InNormalDistribution implements InUnivariateDoubleDistribution {
         putClassPath(res, thisClass(), DISTRIBUTIONS, thisName());
         addEntry(res, thisClass(), "standardDeviation");
         addEntry(res, thisClass(), "mean");
+        addEntry(res, thisClass(), "lowerBound");
+        addEntry(res, thisClass(), "upperBound");
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InNormalDistribution.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(InBoundedNormalDistribution.class);
 
     public String _name;
 
@@ -50,25 +52,35 @@ public class InNormalDistribution implements InUnivariateDoubleDistribution {
     @FieldDefinition
     public double mean;
 
-    public InNormalDistribution() {
+    @FieldDefinition
+    public double lowerBound;
+
+    @FieldDefinition
+    public double upperBound;
+
+    public InBoundedNormalDistribution() {
     }
 
-    public InNormalDistribution(String name, double standardDeviation, double mean) {
+    public InBoundedNormalDistribution(String name, double standardDeviation, double mean, double lowerBound, double upperBound) {
         setName(name);
         setStandardDeviation(standardDeviation);
         setMean(mean);
+        setLowerBound(lowerBound);
+        setUpperBound(upperBound);
     }
 
     @Override
-    public InNormalDistribution copy(CopyCache cache) {
+    public InBoundedNormalDistribution copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InNormalDistribution newCopy(CopyCache cache) {
-        InNormalDistribution copy = new InNormalDistribution();
+    public InBoundedNormalDistribution newCopy(CopyCache cache) {
+        InBoundedNormalDistribution copy = new InBoundedNormalDistribution();
         copy._name = _name;
         copy.standardDeviation = standardDeviation;
         copy.mean = mean;
+        copy.lowerBound = lowerBound;
+        copy.upperBound = upperBound;
         return copy;
     }
 
@@ -97,15 +109,33 @@ public class InNormalDistribution implements InUnivariateDoubleDistribution {
         this.mean = mean;
     }
 
+    public double getLowerBound() {
+        return lowerBound;
+    }
+
+    public void setLowerBound(double lowerBound) {
+        this.lowerBound = lowerBound;
+    }
+
+    public double getUpperBound() {
+        return upperBound;
+    }
+
+    public void setUpperBound(double upperBound) {
+        this.upperBound = upperBound;
+    }
+
     @Override
-    public Object parse(InputParser parser) throws ParsingException {
-        NormalDistribution dist = new NormalDistribution();
+    public BoundedNormalDistribution parse(InputParser parser) throws ParsingException {
+        BoundedNormalDistribution dist = new BoundedNormalDistribution();
         dist.setName(getName());
         Rnd rnd = parser.deriveRnd();
         dist.setRandom(rnd);
         dist.setStandardDeviation(getStandardDeviation());
         dist.setMean(getMean());
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "NormalDistribution '{}' uses seed: {}", getName(), rnd.getInitialSeed());
+        dist.setUpperBound(getUpperBound());
+        dist.setLowerBound(getLowerBound());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "BoundedNormalDistribution '{}' uses seed: {}", getName(), rnd.getInitialSeed());
         return dist;
     }
 }

@@ -1,11 +1,15 @@
 package de.unileipzig.irpact.commons.util;
 
+import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.develop.Todo;
+
 import java.util.NoSuchElementException;
 
 /**
  * @author Daniel Abitz
  */
-public class IdManager {
+@Todo("schnoener implementieren, siehe auskommentierte sachen")
+public class IdManager implements ChecksumComparable {
 
     private long startId;
     private long nextId;
@@ -24,6 +28,19 @@ public class IdManager {
         reset();
     }
 
+//    public void restore(long startId, long nextId) {
+//        this.startId = startId;
+//        this.nextId = nextId;
+//    }
+//
+//    public long getStartIdForPersist() {
+//        return startId;
+//    }
+//
+//    public long getNextIdForPersist() {
+//        return nextId;
+//    }
+
     public long lastId() {
         if(nextId == startId) {
             throw new NoSuchElementException();
@@ -38,5 +55,10 @@ public class IdManager {
             throw new IllegalStateException("id cycle");
         }
         return next;
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.getChecksum(nextId);
     }
 }

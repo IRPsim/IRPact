@@ -22,7 +22,7 @@ public class RAModelData implements ChecksumComparable {
     public static final int DEFAULT_ADOPTER_POINTS = 3;
     public static final int DEFAULT_INTERESTED_POINTS = 2;
     public static final int DEFAULT_AWARE_POINTS = 1;
-    public static final int DEFAULT_UNKNOWN_POINTS = 3;
+    public static final int DEFAULT_UNKNOWN_POINTS = 0;
 
     protected Map<Integer, NPVMatrix> npData;
 

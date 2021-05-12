@@ -527,7 +527,11 @@ public class IRPact implements IRPActAccess {
     }
 
     private void applyPersistenceData(OutRoot outRoot) throws Exception {
-        environment.getPersistenceModul().store(environment, outRoot);
+        if(CL_OPTIONS.isNoPersist()) {
+            LOGGER.trace(IRPSection.GENERAL, "skip persistence");
+        } else {
+            environment.getPersistenceModul().store(environment, outRoot);
+        }
     }
 
     private AnnualData<OutRoot> createOutputData(OutRoot outRoot) {
@@ -557,7 +561,7 @@ public class IRPact implements IRPActAccess {
     }
 
     private void printLoggingOutput() {
-        PVactResultLogging logging = new PVactResultLogging(CL_OPTIONS, environment);
+        PVactResultLogging logging = new PVactResultLogging(CL_OPTIONS, environment, true);
         logging.execute();
     }
 

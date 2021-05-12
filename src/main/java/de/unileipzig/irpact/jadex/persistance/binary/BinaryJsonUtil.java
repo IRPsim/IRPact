@@ -49,6 +49,7 @@ final class BinaryJsonUtil {
         ensureRegister(manager, BasicVersionPR.INSTANCE);
         ensureRegister(manager, BernoulliDistributionPR.INSTANCE);
         ensureRegister(manager, BooleanDistributionPR.INSTANCE);
+        ensureRegister(manager, BoundedNormalDistributionPR.INSTANCE);
         ensureRegister(manager, CeilingTimeAdvanceFunctionPR.INSTANCE);
         ensureRegister(manager, CompleteGraphTopologyPR.INSTANCE);
         ensureRegister(manager, ConstantUnivariateDoubleDistributionPR.INSTANCE);

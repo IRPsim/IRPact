@@ -36,7 +36,7 @@ public class BasicSocialNetwork implements SocialNetwork {
     }
 
     public void initDefaultGraph() {
-        BasicSocialGraph socialGraph = new BasicSocialGraph(SupportedGraphStructure.getDefault());
+        BasicSocialGraph socialGraph = new BasicSocialGraph(SupportedGraphStructure.FAST_DIRECTED_MULTI_GRAPH2_CONCURRENT);
         setGraph(socialGraph);
     }
 

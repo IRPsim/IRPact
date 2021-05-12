@@ -57,8 +57,15 @@ public class InBernoulliDistribution implements InUnivariateDoubleDistribution {
     public InBernoulliDistribution() {
     }
 
-    public InBernoulliDistribution(String name) {
-        this._name = name;
+    public InBernoulliDistribution(String name, double p) {
+        this(name, p, 1, 0);
+    }
+
+    public InBernoulliDistribution(String name, double p, double trueValue, double falseValue) {
+        setName(name);
+        setP(p);
+        setTrueValue(trueValue);
+        setFalseValue(falseValue);
     }
 
     @Override

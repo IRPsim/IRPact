@@ -38,8 +38,8 @@ public class InUniformUnivariateDoubleDistribution implements InUnivariateDouble
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), DISTRIBUTIONS, thisName());
-        addEntry(res, thisClass(), "lowerBoundInt");
-        addEntry(res, thisClass(), "upperBoundInt");
+        addEntry(res, thisClass(), "lowerBound");
+        addEntry(res, thisClass(), "upperBound");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InUniformUnivariateDoubleDistribution.class);
@@ -47,18 +47,18 @@ public class InUniformUnivariateDoubleDistribution implements InUnivariateDouble
     public String _name;
 
     @FieldDefinition
-    public double lowerBoundInt;
+    public double lowerBound;
 
     @FieldDefinition
-    public double upperBoundInt;
+    public double upperBound;
 
     public InUniformUnivariateDoubleDistribution() {
     }
 
-    public InUniformUnivariateDoubleDistribution(String name, int lowerBoundInt, int upperBoundInt) {
+    public InUniformUnivariateDoubleDistribution(String name, int lowerBound, int upperBoundInt) {
         this._name = name;
-        this.lowerBoundInt = lowerBoundInt;
-        this.upperBoundInt = upperBoundInt;
+        this.lowerBound = lowerBound;
+        this.upperBound = upperBoundInt;
     }
 
     @Override
@@ -69,8 +69,8 @@ public class InUniformUnivariateDoubleDistribution implements InUnivariateDouble
     public InUniformUnivariateDoubleDistribution newCopy(CopyCache cache) {
         InUniformUnivariateDoubleDistribution copy = new InUniformUnivariateDoubleDistribution();
         copy._name = _name;
-        copy.lowerBoundInt = lowerBoundInt;
-        copy.upperBoundInt = upperBoundInt;
+        copy.lowerBound = lowerBound;
+        copy.upperBound = upperBound;
         return copy;
     }
 
@@ -80,11 +80,11 @@ public class InUniformUnivariateDoubleDistribution implements InUnivariateDouble
     }
 
     public double getLowerBound() {
-        return lowerBoundInt;
+        return lowerBound;
     }
 
     public double getUpperBound() {
-        return upperBoundInt;
+        return upperBound;
     }
 
     @Override

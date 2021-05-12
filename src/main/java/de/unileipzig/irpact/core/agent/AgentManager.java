@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.agent;
 
+import de.unileipzig.irpact.commons.util.IdManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
@@ -19,6 +20,8 @@ public interface AgentManager extends InitalizablePart {
     //=========================
     //general
     //=========================
+
+    IdManager getAttentionOrderManager();
 
     Collection<ConsumerAgentGroup> getConsumerAgentGroups();
 

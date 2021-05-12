@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.agent;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.util.IdManager;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
@@ -17,6 +18,7 @@ public class BasicAgentManager implements AgentManager {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicAgentManager.class);
 
+    protected final IdManager ATTENTION_ORDER = new IdManager(0L);
     protected SimulationEnvironment environment;
     protected Map<String, ConsumerAgentGroup> consumerAgentGroups;
     protected ConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
@@ -31,9 +33,10 @@ public class BasicAgentManager implements AgentManager {
 
     @Override
     public int getChecksum() {
-        return Objects.hash(
+        return ChecksumComparable.getChecksum(
                 ChecksumComparable.getMapChecksum(consumerAgentGroups),
-                affinityMapping.getChecksum()
+                affinityMapping.getChecksum(),
+                getAttentionOrderManager().lastId()
         );
     }
 
@@ -44,6 +47,11 @@ public class BasicAgentManager implements AgentManager {
     //=========================
     //general
     //=========================
+
+    @Override
+    public IdManager getAttentionOrderManager() {
+        return ATTENTION_ORDER;
+    }
 
     @Override
     public Collection<ConsumerAgentGroup> getConsumerAgentGroups() {

@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * @author Daniel Abitz
  */
-public class BasicUncertaintyAttribute extends BasicConsumerAgentDoubleAttribute {
+public class BasicUncertaintyAttribute extends BasicConsumerAgentDoubleAttribute implements UncertaintyAttribute {
 
     protected boolean autoAdjustment;
     protected double convergence;
@@ -19,10 +19,12 @@ public class BasicUncertaintyAttribute extends BasicConsumerAgentDoubleAttribute
         this.autoAdjustment = autoAdjustment;
     }
 
+    @Override
     public boolean isAutoAdjustment() {
         return autoAdjustment;
     }
 
+    @Override
     public double getUncertainty() {
         return getDoubleValue();
     }
@@ -31,6 +33,7 @@ public class BasicUncertaintyAttribute extends BasicConsumerAgentDoubleAttribute
         setDoubleValue(value);
     }
 
+    @Override
     public double getConvergence() {
         return convergence;
     }

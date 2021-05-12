@@ -351,7 +351,7 @@ public class JadexInputParser implements InputParser {
     }
 
     private void parseSocialGraph(@SuppressWarnings("unused") InRoot root) {
-        debug("[Fixed] use {}", SupportedGraphStructure.getDefault());
+        debug("[Fixed] use {}", SupportedGraphStructure.FAST_DIRECTED_MULTI_GRAPH2_CONCURRENT);
         BasicSocialNetwork network = (BasicSocialNetwork) environment.getNetwork();
         network.initDefaultGraph();
     }

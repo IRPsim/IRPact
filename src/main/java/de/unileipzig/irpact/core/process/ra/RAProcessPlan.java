@@ -326,6 +326,11 @@ public class RAProcessPlan implements ProcessPlan {
                     continue;
 
                 case SUCCESS:
+                    agent.actionPerformed();
+                    targetAgent.actionPerformed();
+                    agent.releaseAttention();
+                    targetAgent.releaseAttention();
+
                     //nur hier haben wir datalock durch aquireAttentionAndDataAccess
                     try {
                         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] start communication ('{}' -> '{}')", agent.getName(), agent.getName(), targetAgent.getName());
@@ -347,11 +352,16 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected void updateInterest(ConsumerAgent targetAgent) {
-        int myPoints = getInterestPoints(agent);
-        int targetPoints = getInterestPoints(targetAgent);
-        updateInterest(agent, targetPoints);
-        updateInterest(targetAgent, myPoints);
-        logInterestUpdate(myPoints, getInterestPoints(agent), targetAgent, targetPoints, getInterestPoints(targetAgent));
+        double myInterest = getInterest(agent);
+        double targetInterest = getInterest(targetAgent);
+
+        double myPointsToAdd = getInterestPoints(agent);
+        double targetPointsToAdd = getInterestPoints(targetAgent);
+
+        updateInterest(agent, targetPointsToAdd);
+        updateInterest(targetAgent, myPointsToAdd);
+
+        logInterestUpdate(myInterest, getInterest(agent), targetAgent, targetInterest, getInterest(targetAgent));
     }
 
     protected void updateCommunicationGraph(SocialGraph graph, SocialGraph.Node target) {
@@ -389,7 +399,9 @@ public class RAProcessPlan implements ProcessPlan {
 
             //remove
             SocialGraph.Node rndTarget = graph.getRandomTarget(node, SocialGraph.Type.COMMUNICATION, rnd);
-            if(rndTarget != null) {
+            if(rndTarget == null) {
+                logGraphUpdateEdgeRemoved(null);
+            } else {
                 ConsumerAgentGroup tarCag = rndTarget.getAgent(ConsumerAgent.class).getGroup();
                 SocialGraph.Edge edge = graph.getEdge(node, rndTarget, SocialGraph.Type.COMMUNICATION);
                 graph.removeEdge(edge);
@@ -412,11 +424,19 @@ public class RAProcessPlan implements ProcessPlan {
                 tarCag = affinities.getWeightedRandom(rnd);
 
                 int currentLinkCount = linkInfo.get(tarCag, SocialGraph.Type.COMMUNICATION);
-                if(tarCag.getNumberOfAgents() == currentLinkCount) {
+                int maxTargetAgents = tarCag.getNumberOfAgents();
+                if(tarCag == agent.getGroup()) {
+                    maxTargetAgents -= 1;
+                }
+
+                LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] tar: {}, currentLinkCount: {}, max: {} (self: {})", agent.getName(), tarCag.getName(), currentLinkCount, maxTargetAgents, getAgent().getGroup() == tarCag);
+
+                if(maxTargetAgents == currentLinkCount) {
                     affinities = affinities.createWithout(tarCag);
                     continue;
                 }
-                int unlinkedInCag = tarCag.getNumberOfAgents() - currentLinkCount;
+
+                int unlinkedInCag = maxTargetAgents - currentLinkCount;
 
                 tarNode = getRandomUnlinked(
                         agent.getSocialGraphNode(),
@@ -462,6 +482,9 @@ public class RAProcessPlan implements ProcessPlan {
         int id = 0;
 
         for(Agent tar: tarCag.getAgents()) {
+            if(tar == agent) {
+                continue;
+            }
             SocialGraph.Node tarNode = tar.getSocialGraphNode();
             if(graph.hasNoEdge(srcNode, tarNode, type)) {
                 if(id == rndId) {
@@ -817,7 +840,7 @@ public class RAProcessPlan implements ProcessPlan {
         return agent.isAware(product);
     }
 
-    protected int getInterestPoints(ConsumerAgent agent) {
+    protected double getInterestPoints(ConsumerAgent agent) {
         if(isAdopter(agent)) {
             return modelData().getAdopterPoints();
         }
@@ -977,8 +1000,8 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected void logInterestUpdate(
-            int myOldPoints, int myNewPoints,
-            Agent target, int targetOldPoints, int targetNewPoints) {
+            double myOldPoints, double myNewPoints,
+            Agent target, double targetOldPoints, double targetNewPoints) {
         boolean logData = getSettings().isLogInterestUpdate();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
@@ -1010,12 +1033,20 @@ public class RAProcessPlan implements ProcessPlan {
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
-        logger.log(
-                section, level,
-                "{} [{}] graph update, edge removed: '{}' -> '{}'",
-                InfoTag.GRAPH_UPDATE, agent.getName(),
-                agent.getName(), target.getName()
-        );
+        if(target == null) {
+            logger.log(
+                    section, level,
+                    "{} [{}] graph not updated, no valid target found",
+                    InfoTag.GRAPH_UPDATE, agent.getName()
+            );
+        } else {
+            logger.log(
+                    section, level,
+                    "{} [{}] graph update, edge removed: '{}' -> '{}'",
+                    InfoTag.GRAPH_UPDATE, agent.getName(),
+                    agent.getName(), target.getName()
+            );
+        }
     }
 
     protected void logRelativeAgreementSuccess(

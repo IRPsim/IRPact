@@ -51,7 +51,13 @@ public abstract class ThresholdInterest<T, U> implements Interest<T> {
     @Override
     public void update(T item, double influence) {
         double current = items.computeIfAbsent(item, _item -> 0.0);
-        items.put(item, Math.max(current + influence, 0.0));
+        double newValue = getValidInterest(item, current + influence);
+        items.put(item, newValue);
+    }
+
+    protected double getValidInterest(T item, double newValue) {
+        double threshold = getThresholdFor(item);
+        return Math.min(threshold, Math.max(newValue, 0.0));
     }
 
     @Override

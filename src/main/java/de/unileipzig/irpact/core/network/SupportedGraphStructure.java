@@ -6,6 +6,9 @@ import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.commons.graph.FastDirectedMultiGraph;
 import de.unileipzig.irpact.commons.graph.FastDirectedMultiGraph2;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
+
 /**
  * @author Daniel Abitz
  */
@@ -26,6 +29,17 @@ public enum SupportedGraphStructure implements ChecksumComparable {
         @Override
         public <V, E, T> FastDirectedMultiGraph2<V, E, T> newInstance() {
             return new FastDirectedMultiGraph2<>();
+        }
+    },
+    FAST_DIRECTED_MULTI_GRAPH2_CONCURRENT(4) {
+        @Override
+        public <V, E, T> FastDirectedMultiGraph2<V, E, T> newInstance() {
+            return new FastDirectedMultiGraph2<>(
+                    () -> Collections.synchronizedMap(new LinkedHashMap<>()),
+                    () -> Collections.synchronizedMap(new LinkedHashMap<>()),
+                    () -> Collections.synchronizedMap(new LinkedHashMap<>()),
+                    t -> Collections.synchronizedMap(new LinkedHashMap<>())
+            );
         }
     };
 
@@ -56,6 +70,6 @@ public enum SupportedGraphStructure implements ChecksumComparable {
     }
 
     public static SupportedGraphStructure getDefault() {
-        return FAST_DIRECTED_MULTI_GRAPH2;
+        return FAST_DIRECTED_MULTI_GRAPH2_CONCURRENT;
     }
 }

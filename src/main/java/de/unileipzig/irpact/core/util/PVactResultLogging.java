@@ -15,6 +15,7 @@ import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -41,12 +42,15 @@ public class PVactResultLogging {
 
     protected MainCommandLineOptions clOptions;
     protected SimulationEnvironment environment;
+    protected boolean useCagNameForMilieu;
 
     public PVactResultLogging(
             MainCommandLineOptions clOptions,
-            SimulationEnvironment environment) {
+            SimulationEnvironment environment,
+            boolean useCagNameForMilieu) {
         this.clOptions = clOptions;
         this.environment = environment;
+        this.useCagNameForMilieu = useCagNameForMilieu;
     }
 
     public void execute() {
@@ -240,8 +244,8 @@ public class PVactResultLogging {
     protected Grouping3<Number, String, String, AdoptionResult> groupAdoptions(String key1, String key2) {
         Grouping3<Number, String, String, AdoptionResult> grouping = new Grouping3<>(
                 r -> r.getProduct().getYear(),
-                r -> r.getAgent().findAttribute(key1).asValueAttribute().getValueAsString(),
-                r -> r.getAgent().findAttribute(key2).asValueAttribute().getValueAsString()
+                r -> getData(r, key1),
+                r -> getData(r, key2)
         );
 
         streamNonInitialResults().forEach(grouping::add);
@@ -252,11 +256,19 @@ public class PVactResultLogging {
     protected Grouping2<Number, String, AdoptionResult> groupAdoptions(String key) {
         Grouping2<Number, String, AdoptionResult> grouping = new Grouping2<>(
                 r -> r.getProduct().getYear(),
-                r -> r.getAgent().findAttribute(key).asValueAttribute().getValueAsString()
+                r -> getData(r, key)
         );
 
         streamNonInitialResults().forEach(grouping::add);
 
         return grouping;
+    }
+
+    protected String getData(AdoptionResult r, String key) {
+        if(useCagNameForMilieu && Objects.equals(key, RAConstants.DOM_MILIEU)) {
+            return r.getAgent().getGroup().getName();
+        } else {
+            return r.getAgent().findAttribute(key).asValueAttribute().getValueAsString();
+        }
     }
 }

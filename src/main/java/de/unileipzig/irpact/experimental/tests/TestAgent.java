@@ -27,6 +27,11 @@ public interface TestAgent extends Agent {
     }
 
     @Override
+    default long getActingOrder() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     default int getMaxNumberOfActions() {
         throw new UnsupportedOperationException();
     }

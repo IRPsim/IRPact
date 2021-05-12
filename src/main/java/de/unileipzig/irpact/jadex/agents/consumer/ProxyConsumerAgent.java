@@ -87,6 +87,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
                     getName(),
                     getGroup().getName(),
                     getInformationAuthority(),
+                    this.getActingOrder(),
                     getMaxNumberOfActions(),
                     getSpatialInformation(),
                     ChecksumComparable.getCollChecksum(getAttributes()),
@@ -115,6 +116,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         logChecksum("name", ChecksumComparable.getChecksum(getName()));
         logChecksum("group name", ChecksumComparable.getChecksum(getGroup().getName()));
         logChecksum("information authority", ChecksumComparable.getChecksum(getInformationAuthority()));
+        logChecksum("attention order", ChecksumComparable.getChecksum(this.getActingOrder()));
         logChecksum("max number of actions", ChecksumComparable.getChecksum(getMaxNumberOfActions()));
         logChecksum("spatial information", ChecksumComparable.getChecksum(getSpatialInformation()));
         logChecksum("attributes", ChecksumComparable.getCollChecksum(getAttributes()));
@@ -300,6 +302,21 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     public void setInformationAuthority(double informationAuthority) {
         checkNotSynced();
         this.informationAuthority = informationAuthority;
+    }
+
+    @Override
+    public void setActingOrder(long actingOrder) {
+        checkNotSynced();
+        this.actingOrder = actingOrder;
+    }
+
+    @Override
+    public long getActingOrder() {
+        if(isSynced()) {
+            return getRealAgent().getActingOrder();
+        } else {
+            return actingOrder;
+        }
     }
 
     @Override

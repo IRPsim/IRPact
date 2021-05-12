@@ -560,6 +560,7 @@ public class InRoot implements RootClass {
 
             InBernoulliDistribution.class,
             InBooleanDistribution.class,
+            InBoundedNormalDistribution.class,
             InConstantUnivariateDistribution.class,
             InFiniteMassPointsDiscreteDistribution.class,
             InMassPoint.class,
@@ -691,6 +692,7 @@ public class InRoot implements RootClass {
             addPathElement(res, InFiniteMassPointsDiscreteDistribution.thisName(), DISTRIBUTIONS);
                 addPathElement(res, InMassPoint.thisName(), InFiniteMassPointsDiscreteDistribution.thisName());
             addPathElement(res, InNormalDistribution.thisName(), DISTRIBUTIONS);
+            addPathElement(res, InBoundedNormalDistribution.thisName(), DISTRIBUTIONS);
             addPathElement(res, InRandomBoundedIntegerDistribution.thisName(), DISTRIBUTIONS);
 
         addPathElement(res, AGENTS, ROOT);

@@ -71,6 +71,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     protected boolean accessibleForActions = false;
     protected int actionsInThisStep = 0;
     protected int maxNumberOfActions;
+    protected long actingOrder;
 
     @Belief
     protected Set<Need> needs = new LinkedHashSet<>();
@@ -160,6 +161,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         environment = (JadexSimulationEnvironment) proxyAgent.getEnvironment();
         informationAuthority = proxyAgent.getInformationAuthority();
         maxNumberOfActions = proxyAgent.getMaxNumberOfActions();
+        actingOrder = proxyAgent.getActingOrder();
         spatialInformation = proxyAgent.getSpatialInformation();
         for(ConsumerAgentAttribute attr: proxyAgent.getAttributes()) {
             attributes.put(attr.getName(), attr);
@@ -357,6 +359,11 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
+    public long getActingOrder() {
+        return actingOrder;
+    }
+
+    @Override
     public JadexSimulationEnvironment getEnvironment() {
         return environment;
     }
@@ -415,6 +422,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
                     ACCESS_LOCK.unlock();
                 }
             }
+
             ACCESS_LOCK.lock();
             if(actionsInThisStep < maxNumberOfActions) {
                 return true;
@@ -546,24 +554,34 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         scheduleLoop();
     }
 
+    protected boolean hasPlans() {
+        return !getPlans().isEmpty();
+    }
+
     @Override
     protected void onLoopAction() {
         //vor allen anderen checks
+        resetOnNewAction();
+
         waitForYearChangeIfRequired();
         log().trace(IRPSection.SIMULATION_AGENT, "[{}] start next action ({})", getName(), now());
 
-        resetOnNewAction();
-
         waitForSynchronisationIfRequired();
+        log().trace(IRPSection.SIMULATION_AGENT, "[{}] post sync", getName());
 
-        for(ProcessPlan plan: getPlans().values())  {
-            executePlan(plan);
+        if(hasPlans()) {
+            for(ProcessPlan plan: getPlans().values())  {
+                executePlan(plan);
+            }
+        } else {
+            allowAttention();
         }
     }
     
     protected void resetOnNewAction() {
         accessibleForActions = false;
         actionsInThisStep = 0;
+        log().trace(IRPSection.SIMULATION_AGENT, "[{}] reset aktion counter", getName());
     }
 
     //=========================
