@@ -5,6 +5,7 @@ import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -15,7 +16,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
  * @author Daniel Abitz
  */
 @Definition
-public class OutAdoptionResult {
+public class OutAdoptionResult implements OutEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -56,6 +57,22 @@ public class OutAdoptionResult {
     public double adoptionShareCumulativ;
 
     public OutAdoptionResult() {
+    }
+
+    @Override
+    public OutAdoptionResult copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public OutAdoptionResult newCopy(CopyCache cache) {
+        OutAdoptionResult copy = new OutAdoptionResult();
+        copy._name = _name;
+        copy.cag = cache.copyArray(cag);
+        copy.adoptionsThisYear = adoptionsThisYear;
+        copy.adoptionsCumulativ = adoptionsCumulativ;
+        copy.adoptionShareThisYear = adoptionShareThisYear;
+        copy.adoptionShareCumulativ = adoptionShareCumulativ;
+        return copy;
     }
 
     public String getName() {

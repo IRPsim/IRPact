@@ -1,8 +1,7 @@
 package de.unileipzig.irpact.io.param.output;
 
-import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.io.param.IOResources;
-import de.unileipzig.irpact.io.param.LocData;
+import de.unileipzig.irpact.io.param.SimpleCopyCache;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -21,37 +20,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.addPathElement;
+
 /**
  * @author Daniel Abitz
  */
 @Definition(root = true)
 public class OutRoot implements RootClass {
-
-    public static final List<ParserInput> LIST = Util.mergedArrayListOf(
-            ParserInput.listOf(Type.OUTPUT,
-                    OutAdoptionResult.class,
-                    OutAnnualData.class,
-                    BinaryPersistData.class
-            ),
-            ParserInput.listOf(Type.REFERENCE,
-                    InConsumerAgentGroup.class
-            )
-    );
-
-    public static final List<ParserInput> WITH_OPTACT = Util.mergedArrayListOf(
-            LIST,
-            ParserInput.listOf(Type.REFERENCE,
-                    Ii.class,
-                    OutCustom.class
-            )
-    );
-
-    public static final List<ParserInput> CLASSES = Util.mergedArrayListOf(
-            WITH_OPTACT,
-            Util.arrayListOf(
-                    ParserInput.newInstance(Type.OUTPUT, OutRoot.class)
-            )
-    );
 
     //=========================
     //IRPact
@@ -70,9 +46,7 @@ public class OutRoot implements RootClass {
     @FieldDefinition
     public OutCustom[] outGrps = new OutCustom[0];
 
-    //=========================
-    //OptAct
-    //=========================
+    //==================================================
 
     public OutRoot() {
     }
@@ -109,15 +83,57 @@ public class OutRoot implements RootClass {
         return new IOResources();
     }
 
+    public OutRoot copy() {
+        SimpleCopyCache cache = new SimpleCopyCache();
+        OutRoot copy = new OutRoot();
+        //act
+        copy.adoptionResults = cache.copyArray(adoptionResults);
+        copy.binaryPersistData = cache.copyArray(binaryPersistData);
+        //optact
+        copy.outGrps = outGrps;
+
+        return copy;
+    }
+
+    //=========================
+    //CLASSES
+    //=========================
+
+    public static final List<ParserInput> LIST = Util.mergedArrayListOf(
+            ParserInput.listOf(Type.OUTPUT,
+                    OutAdoptionResult.class,
+                    OutAnnualAdoptionData.class,
+                    BinaryPersistData.class
+            ),
+            ParserInput.listOf(Type.REFERENCE,
+                    InConsumerAgentGroup.class
+            )
+    );
+
+    public static final List<ParserInput> WITH_OPTACT = Util.mergedArrayListOf(
+            LIST,
+            ParserInput.listOf(Type.REFERENCE,
+                    Ii.class,
+                    OutCustom.class
+            )
+    );
+
+    public static final List<ParserInput> CLASSES = Util.mergedArrayListOf(
+            WITH_OPTACT,
+            ParserInput.listOf(Type.OUTPUT,
+                    OutRoot.class
+            )
+    );
+
     //=========================
     //UI
     //=========================
 
     public static void initRes(TreeAnnotationResource res) {
-        IOResources.Data userData = res.getUserDataAs();
-        MultiCounter counter = userData.getCounter();
-        LocData loc = userData.getData();
+        addPathElement(res, OutAdoptionResult.thisName(), ROOT);
+        addPathElement(res, OutAnnualAdoptionData.thisName(), SPECIAL_SETTINGS);
+    }
 
-
+    public static void applyRes(TreeAnnotationResource res) {
     }
 }

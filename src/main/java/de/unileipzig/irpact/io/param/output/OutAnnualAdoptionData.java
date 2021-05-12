@@ -1,13 +1,11 @@
 package de.unileipzig.irpact.io.param.output;
 
-import de.unileipzig.irpact.io.param.input.InVersion;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Factory;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.MapInfo;
 import de.unileipzig.irptools.util.CopyCache;
-import de.unileipzig.irptools.util.Copyable;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -21,7 +19,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
  * @author Daniel Abitz
  */
 @Definition
-public class OutAnnualData implements OutEntity {
+public class OutAnnualAdoptionData implements OutEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -65,20 +63,20 @@ public class OutAnnualData implements OutEntity {
     @MapInfo(key = InConsumerAgentGroup.class, value = double.class, factory = @Factory(clazz = LinkedHashMap.class))
     public Map<InConsumerAgentGroup, Double> adoptionShareCumulativ = new LinkedHashMap<>();
 
-    public OutAnnualData() {
+    public OutAnnualAdoptionData() {
     }
 
-    public OutAnnualData(int year) {
+    public OutAnnualAdoptionData(int year) {
         setYear(year);
     }
 
     @Override
-    public OutAnnualData copy(CopyCache cache) {
+    public OutAnnualAdoptionData copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public OutAnnualData newCopy(CopyCache cache) {
-        OutAnnualData copy = new OutAnnualData();
+    public OutAnnualAdoptionData newCopy(CopyCache cache) {
+        OutAnnualAdoptionData copy = new OutAnnualAdoptionData();
         copy._name = _name;
         copy.year = year;
         cache.copyMap(adoptionsThisYear, this.adoptionsThisYear);

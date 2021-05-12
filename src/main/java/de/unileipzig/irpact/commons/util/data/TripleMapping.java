@@ -1,83 +1,53 @@
 package de.unileipzig.irpact.commons.util.data;
 
-import de.unileipzig.irpact.commons.util.CollectionUtil;
+import de.unileipzig.irpact.develop.Todo;
 
+import java.util.Iterator;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
- * Simple triple map based on two maps.
- *
  * @author Daniel Abitz
  */
-public class TripleMapping<A, B, C> {
+@Todo("TESTEN iterators")
+public interface TripleMapping<A, B, C> {
 
-    protected Supplier<Map<A, Map<B, C>>> map0Func;
-    protected Function<A, Map<B, C>> map1Func;
-    protected Map<A, Map<B, C>> mapping;
+    C put(A a, B b, C c);
 
-    public TripleMapping() {
-        this(CollectionUtil.newMapSupplier(), CollectionUtil.newMapFunction());
+    C get(A a, B b);
+
+    C get(A a, B b, C defaultValue);
+
+    C remove(A a, B b);
+
+    int size(A a);
+
+    int size();
+
+    Stream<C> streamValues(A a);
+
+    Iterator<A> iteratorA();
+
+    @SuppressWarnings("NullableProblems")
+    default Iterable<A> iterableA() {
+        return this::iteratorA;
     }
 
-    public TripleMapping(
-            Supplier<Map<A, Map<B, C>>> map0Func,
-            Function<A, Map<B, C>> map1Func) {
-        this.map0Func = map0Func;
-        this.map1Func = map1Func;
-        mapping = map0Func.get();
+    Iterator<B> iteratorB(A a);
+
+    default Iterable<B> iterableB(A a) {
+        return () -> iteratorB(a);
     }
 
-    public C put(A a, B b, C c) {
-        Map<B, C> map1 = mapping.computeIfAbsent(a, map1Func);
-        return map1.put(b, c);
+    Iterator<C> iteratorC(A a);
+
+    default Iterable<C> iterableC(A a) {
+        return () -> iteratorC(a);
     }
 
-    public C get(A a, B b) {
-        Map<B, C> map1 = mapping.get(a);
-        return map1 == null
-                ? null
-                : map1.get(b);
-    }
+    Iterator<Map.Entry<B, C>> iteratorBC(A a);
 
-    public C get(A a, B b, C ifNull) {
-        Map<B, C> map1 = mapping.get(a);
-        if(map1 == null) {
-            return ifNull;
-        }
-        C c = map1.get(b);
-        return c == null
-                ? ifNull
-                : c;
-    }
-
-    public C remove(A a, B b) {
-        Map<B, C> map1 = mapping.get(a);
-        return map1 == null
-                ? null
-                : map1.remove(b);
-    }
-
-    public int size(A a) {
-        Map<B, C> map1 = mapping.get(a);
-        return map1 == null
-                ? 0
-                : map1.size();
-    }
-
-    public int size() {
-        return mapping.values()
-                .stream()
-                .mapToInt(Map::size)
-                .sum();
-    }
-
-    public Stream<C> streamValues(A a) {
-        Map<B, C> map1 = mapping.get(a);
-        return map1 == null
-                ? Stream.empty()
-                : map1.values().stream();
+    default Iterable<Map.Entry<B, C>> iterableBC(A a) {
+        return () -> iteratorBC(a);
     }
 }

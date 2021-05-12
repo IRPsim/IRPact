@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons;
 
-import de.unileipzig.irpact.commons.util.data.TripleMapping;
+import de.unileipzig.irpact.commons.util.data.MapBasedTripleMapping;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * @author Daniel Abitz
  */
-class TripleMappingTest {
+class MapBasedTripleMappingTest {
 
     @Test
     void testPutAndGet() {
-        TripleMapping<String, String, Integer> tm = new TripleMapping<>();
+        MapBasedTripleMapping<String, String, Integer> tm = new MapBasedTripleMapping<>();
         tm.put("a", "x", 1);
         assertEquals(1, tm.get("a", "x"));
         assertEquals(2, tm.get("a", "y", 2));
@@ -20,7 +20,7 @@ class TripleMappingTest {
 
     @Test
     void testSize() {
-        TripleMapping<String, String, Integer> tm = new TripleMapping<>();
+        MapBasedTripleMapping<String, String, Integer> tm = new MapBasedTripleMapping<>();
         tm.put("a", "x", 1);
         assertEquals(1, tm.size("a"));
         assertEquals(0, tm.size("b"));

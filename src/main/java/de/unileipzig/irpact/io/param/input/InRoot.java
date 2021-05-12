@@ -535,7 +535,6 @@ public class InRoot implements RootClass {
     //CLASSES
     //=========================
 
-    @Todo("testen, ob alles Klassen geladen werden")
     public static final List<ParserInput> INPUT_WITHOUT_ROOT = ParserInput.listOf(Type.INPUT,
             InAffinityEntry.class,
             InComplexAffinityEntry.class,
@@ -669,7 +668,6 @@ public class InRoot implements RootClass {
     public static void initRes(TreeAnnotationResource res) {
         IOResources.Data userData = res.getUserDataAs();
         MultiCounter counter = userData.getCounter();
-        LocData loc = userData.getData();
 
         addPathElement(res, GENERAL_SETTINGS, ROOT);
                 addPathElement(res, LOGGING, GENERAL_SETTINGS);

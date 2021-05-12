@@ -2,8 +2,9 @@ package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.commons.util.data.TripleMapping;
+import de.unileipzig.irpact.commons.util.data.MapBasedTripleMapping;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
+import de.unileipzig.irpact.commons.util.data.TripleMapping;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -131,7 +132,7 @@ public class BasicSocialGraph implements SocialGraph {
      */
     public static class BasicLinkageInformation implements LinkageInformation {
 
-        private final TripleMapping<Type, Object, Integer> linkCounter = new TripleMapping<>();
+        private final TripleMapping<Type, Object, Integer> linkCounter = new MapBasedTripleMapping<>();
 
         public BasicLinkageInformation() {
         }

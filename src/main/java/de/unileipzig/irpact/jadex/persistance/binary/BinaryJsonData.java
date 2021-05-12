@@ -8,6 +8,7 @@ import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.IRPactBase32;
 import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.data.TripleMapping;
 import de.unileipzig.irptools.util.Util;
 
 import java.io.IOException;
@@ -233,6 +234,17 @@ public final class BinaryJsonData extends PersistableBase {
         }
     }
 
+    public void putLongLongLongMap(Map<Long, Map<Long, Long>> table) {
+        if(isSimulationMode()) return;
+        ObjectNode obj = root.putObject(nextPutId());
+        for(Map.Entry<Long, Map<Long, Long>> entry: table.entrySet()) {
+            ObjectNode srcNode = obj.putObject(Long.toString(entry.getKey()));
+            for(Map.Entry<Long, Long> entry0: entry.getValue().entrySet()) {
+                srcNode.put(Long.toString(entry0.getKey()), entry0.getValue());
+            }
+        }
+    }
+
     public void putLongDoubleMap(Map<Long, Double> map) {
         if(isSimulationMode()) return;
         ObjectNode obj = root.putObject(nextPutId());
@@ -358,6 +370,23 @@ public final class BinaryJsonData extends PersistableBase {
             map.put(srcId, tarId);
         }
         return map;
+    }
+
+    public Map<Long, Map<Long, Long>> getLongLongLongTable() {
+        checkSimulationMode();
+        Map<Long, Map<Long, Long>> table = new LinkedHashMap<>();
+        ObjectNode obj = (ObjectNode) nextNode();
+        for(Map.Entry<String, JsonNode> entry: Util.iterateFields(obj)) {
+            long srcId = Long.parseLong(entry.getKey());
+            ObjectNode srcNode = (ObjectNode) entry.getValue();
+            Map<Long, Long> map = table.computeIfAbsent(srcId, _srcId -> new LinkedHashMap<>());
+            for(Map.Entry<String, JsonNode> srcEntry: Util.iterateFields(srcNode)) {
+                long tarId = Long.parseLong(srcEntry.getKey());
+                long value = srcEntry.getValue().longValue();
+                map.put(tarId, value);
+            }
+        }
+        return table;
     }
 
     public Map<Long, Double> getLongDoubleMap() {
@@ -492,6 +521,42 @@ public final class BinaryJsonData extends PersistableBase {
         return idMap;
     }
 
+    public <A, B, C> Map<Long, Map<Long, Long>> mapToLongLongLongMap(
+            TripleMapping<A, B, C> mapping,
+            ToLongFunction<A> aToLong,
+            ToLongFunction<B> bToLong,
+            ToLongFunction<C> cToLong) {
+        Map<Long, Map<Long, Long>> idMap = new LinkedHashMap<>();
+        for(A a: mapping.iterableA()) {
+            long aId = aToLong.applyAsLong(a);
+            Map<Long, Long> map0 = idMap.computeIfAbsent(aId, _aId -> new LinkedHashMap<>());
+            for(Map.Entry<B, C> bc: mapping.iterableBC(a)) {
+                long bId = bToLong.applyAsLong(bc.getKey());
+                long cId = cToLong.applyAsLong(bc.getValue());
+                map0.put(bId, cId);
+            }
+        }
+        return idMap;
+    }
+
+    public <A, B, C> Map<Long, Map<Long, Double>> mapToLongLongLongMap(
+            TripleMapping<A, B, C> mapping,
+            ToLongFunction<A> aToLong,
+            ToLongFunction<B> bToLong,
+            ToDoubleFunction<C> cToLong) {
+        Map<Long, Map<Long, Double>> idMap = new LinkedHashMap<>();
+        for(A a: mapping.iterableA()) {
+            long aId = aToLong.applyAsLong(a);
+            Map<Long, Double> map0 = idMap.computeIfAbsent(aId, _aId -> new LinkedHashMap<>());
+            for(Map.Entry<B, C> bc: mapping.iterableBC(a)) {
+                long bId = bToLong.applyAsLong(bc.getKey());
+                double cValue = cToLong.applyAsDouble(bc.getValue());
+                map0.put(bId, cValue);
+            }
+        }
+        return idMap;
+    }
+
     public static <R> LongFunction<R> ensureGet(RestoreManager manager) throws UncheckedRestoreException {
         return uid -> {
             try {
@@ -558,5 +623,39 @@ public final class BinaryJsonData extends PersistableBase {
             }
             target.put(key, value);
         }
+    }
+
+    public <A, B, C> TripleMapping<A, B, C> mapToLongLongLongMap(
+            Map<Long, Map<Long, Long>> idMapping,
+            LongFunction<A> longToA,
+            LongFunction<B> longToB,
+            LongFunction<C> longToC,
+            TripleMapping<A, B, C> target) {
+        for(Long aId: idMapping.keySet()) {
+            A a = longToA.apply(aId);
+            for(Map.Entry<Long, Long> bcIds: idMapping.get(aId).entrySet()) {
+                B b = longToB.apply(bcIds.getKey());
+                C c = longToC.apply(bcIds.getValue());
+                target.put(a, b, c);
+            }
+        }
+        return target;
+    }
+
+    public <A, B, C> TripleMapping<A, B, C> mapToLongLongDoubleMap(
+            Map<Long, Map<Long, Double>> idMapping,
+            LongFunction<A> longToA,
+            LongFunction<B> longToB,
+            DoubleFunction<C> longToC,
+            TripleMapping<A, B, C> target) {
+        for(Long aId: idMapping.keySet()) {
+            A a = longToA.apply(aId);
+            for(Map.Entry<Long, Double> bcIds: idMapping.get(aId).entrySet()) {
+                B b = longToB.apply(bcIds.getKey());
+                C c = longToC.apply(bcIds.getValue());
+                target.put(a, b, c);
+            }
+        }
+        return target;
     }
 }
