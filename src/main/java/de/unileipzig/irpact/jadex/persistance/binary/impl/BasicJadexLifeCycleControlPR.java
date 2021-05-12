@@ -2,11 +2,9 @@ package de.unileipzig.irpact.jadex.persistance.binary.impl;
 
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.develop.TodoException;
-import de.unileipzig.irpact.develop.XXXXXXXXX;
+import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
-import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.BasicTimestamp;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -62,24 +60,21 @@ public class BasicJadexLifeCycleControlPR extends BinaryPRBase<BasicJadexLifeCyc
         return new BasicJadexLifeCycleControl();
     }
 
-    @XXXXXXXXX
     @Override
     protected void doSetupRestore(BinaryJsonData data, BasicJadexLifeCycleControl object, RestoreManager manager) throws RestoreException {
         object.setEnvironment(manager.ensureGetInstanceOf(JadexSimulationEnvironment.class));
 
-        if(true) throw new TodoException();
-//        BasicJadexSimulationEnvironment initial = manager.getInitialInstance();
-//        setupKillSwitch(initial, object);
-//
-//        long epochMilli = data.getLong();
-//        if(epochMilli != BinaryJsonData.NOTHING_ID) {
-//            object.setCurrent(new BasicTimestamp(epochMilli));
-//        }
-//        object.setControlAgent(manager.ensureGet(data.getLong()));
+        long epochMilli = data.getLong();
+        if(epochMilli != BinaryJsonData.NOTHING_ID) {
+            object.setCurrent(new BasicTimestamp(epochMilli));
+        }
+        object.setControlAgent(manager.ensureGet(data.getLong()));
     }
 
-    private void setupKillSwitch(BasicJadexSimulationEnvironment initialEnv, BasicJadexLifeCycleControl restored) {
-        BasicJadexLifeCycleControl initial = (BasicJadexLifeCycleControl) initialEnv.getLiveCycleControl();
-        restored.setKillSwitchTimeout(initial.getKillSwitchTimeout());
+    @Override
+    protected void doFinalizeRestore(BinaryJsonData data, BasicJadexLifeCycleControl object, RestoreManager manager) {
+        InGeneral general = restoreHelper.getInRoot()
+                .getGeneral();
+        general.applyKillSwitch(object);
     }
 }

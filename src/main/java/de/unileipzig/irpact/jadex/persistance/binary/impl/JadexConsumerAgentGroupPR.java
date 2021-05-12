@@ -3,14 +3,10 @@ package de.unileipzig.irpact.jadex.persistance.binary.impl;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
-import de.unileipzig.irpact.develop.TodoException;
-import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -97,46 +93,13 @@ public class JadexConsumerAgentGroupPR extends BinaryPRBase<JadexConsumerAgentGr
     protected void doSetupRestore(BinaryJsonData data, JadexConsumerAgentGroup object, RestoreManager manager) throws RestoreException {
         object.setEnvironment(manager.ensureGetInstanceOf(SimulationEnvironment.class));
 
-        SpatialDistribution spatialDistribution = restoreSpatialDistribution(data, object, manager);
-        object.setSpatialDistribution(spatialDistribution);
-
+        object.setSpatialDistribution(manager.ensureGet(data.getLong()));
         object.addAllGroupAttributes(manager.ensureGetAll(data.getLongArray(), ConsumerAgentGroupAttribute[]::new));
         object.addAllProductRelatedGroupAttribute(manager.ensureGetAll(data.getLongArray(), ConsumerAgentProductRelatedGroupAttribute[]::new));
         object.setAwarenessSupplyScheme(manager.ensureGet(data.getLong()));
         object.setInterestSupplyScheme(manager.ensureGet(data.getLong()));
         object.setProductFindingScheme(manager.ensureGet(data.getLong()));
         object.setProcessFindingScheme(manager.ensureGet(data.getLong()));
-    }
-
-    @XXXXXXXXX
-    private JadexConsumerAgentGroup getOriginal(
-            JadexConsumerAgentGroup object,
-            RestoreManager manager) {
-        throw new TodoException();
-//        SimulationEnvironment originalEnvironment = manager.getInitialInstance();
-//        ConsumerAgentGroup originalCag = originalEnvironment.getAgents().getConsumerAgentGroup(object.getName());
-//        return (JadexConsumerAgentGroup) originalCag;
-    }
-
-    private SpatialDistribution restoreSpatialDistribution(
-            BinaryJsonData data,
-            JadexConsumerAgentGroup object,
-            RestoreManager manager) throws RestoreException {
-        JadexConsumerAgentGroup original = getOriginal(object, manager);
-        if(original == null) {
-            throw new RestoreException("original group '" + object.getName() + "' not found");
-        }
-
-        SpatialDistribution originalDist = original.getSpatialDistribution();
-        SpatialDistribution restoredDist = manager.ensureGet(data.getLong());
-
-        if(originalDist.isShareble(restoredDist)) {
-            originalDist.addComplexDataTo(restoredDist);
-        } else {
-            throw new RestoreException("distribution mismatch: " + originalDist.getClass() + " != " + restoredDist.getClass());
-        }
-
-        return restoredDist;
     }
 
     @Override

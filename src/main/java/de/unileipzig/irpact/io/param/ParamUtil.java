@@ -8,7 +8,7 @@ import de.unileipzig.irpact.io.param.input.InEntity;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
@@ -168,6 +168,21 @@ public final class ParamUtil {
                 : arr.length;
     }
 
+    public static <T extends InEntity> T getEntityByName(T[] entities, String name) {
+        return getEntityByName(entities, name, null);
+    }
+
+    public static <T extends InEntity> T getEntityByName(T[] entities, String name, T defaultEntity) {
+        if(entities == null) {
+            return defaultEntity;
+        }
+        for(T entity: entities) {
+            if(Objects.equals(name, entity.getName())) {
+                return entity;
+            }
+        }
+        return defaultEntity;
+    }
 
     //=========================
     //TreeAnnotationResource

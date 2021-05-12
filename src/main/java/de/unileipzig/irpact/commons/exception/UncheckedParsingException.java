@@ -5,10 +5,6 @@ package de.unileipzig.irpact.commons.exception;
  */
 public class UncheckedParsingException extends IRPactRuntimeException {
 
-    public UncheckedParsingException(String msg) {
-        super(new ParsingException(msg));
-    }
-
     public UncheckedParsingException(ParsingException cause) {
         super(cause);
     }

@@ -4,22 +4,17 @@ import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
-import de.unileipzig.irpact.core.agent.BasicAgentManager;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.simulation.BasicSettings;
-import de.unileipzig.irpact.core.simulation.Settings;
-import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.core.simulation.Version;
 import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.develop.XXXXXXXXX;
+import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-@XXXXXXXXX("SIEHE UNTEN")
 public class BasicSettingsPR extends BinaryPRBase<BasicSettings> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicSettingsPR.class);
@@ -49,7 +44,6 @@ public class BasicSettingsPR extends BinaryPRBase<BasicSettings> {
         return data;
     }
 
-    @XXXXXXXXX
     @Override
     protected void doSetupPersist(BasicSettings object, BinaryJsonData data, PersistManager manager) throws PersistException {
         throw new TodoException();
@@ -72,15 +66,20 @@ public class BasicSettingsPR extends BinaryPRBase<BasicSettings> {
     protected void doSetupRestore(BinaryJsonData data, BasicSettings object, RestoreManager manager) throws RestoreException {
     }
 
-//    private void updateSettings(XSimulationEnvironment initial, SimulationEnvironment restored) {
-//        Settings initialSettings = initial.getSettings();
-//        Settings restoredSettings = restored.getSettings();
-//
-//        restoredSettings.setLastSimulationYear(initialSettings.getLastSimulationYear());
-//    }
-//
-//    private void applyCommandLineToEnvironment() {
-//        Settings settings = environment.getSettings();
-//        settings.apply(CL_OPTIONS);
-//    }
+    @XXXXXXXXX("schauen, ob das mit den Jahren noch hinhaut (also ende Jahr aus letztem Lauf und dieser Lauf")
+    @Override
+    protected void doFinalizeRestore(BinaryJsonData data, BasicSettings object, RestoreManager manager) {
+        InGeneral general = restoreHelper.getInRoot()
+                .getGeneral();
+        general.applyToSettings(object);
+
+        object.apply(restoreHelper.getOptions());
+
+        restorePopulationSizes(object);
+    }
+
+    @XXXXXXXXX("schauen, wie man das am besten hinbekommt")
+    private void restorePopulationSizes(BasicSettings object) {
+        throw new TodoException();
+    }
 }

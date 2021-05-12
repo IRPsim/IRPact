@@ -436,15 +436,6 @@ public class InRoot implements RootClass {
     //IRPACT
     //=========================
 
-    private static <T> Stream<T> streamArray(T[] array, Predicate<? super T> filter) {
-        if(array == null) {
-            return Stream.empty();
-        } else {
-            return Arrays.stream(array)
-                    .filter(filter);
-        }
-    }
-
     public InConsumerAgentGroup findConsumerAgentGroup(InConsumerAgentGroupAttribute attribute) throws ParsingException {
         if(consumerAgentGroups == null) {
             throw new ParsingException("no cags");
@@ -484,20 +475,20 @@ public class InRoot implements RootClass {
         throw new ParsingException("missing cag '" + name + "'");
     }
 
-    public InProductGroup findProductGroup(String name) {
-        if(productGroups == null) {
-            return null;
-        }
-        for(InProductGroup pg: productGroups) {
-            if(Objects.equals(pg.getName(), name)) {
-                return pg;
-            }
-        }
-        return null;
+    public InConsumerAgentGroup getConsumerAgentGroup(String name) {
+        return ParamUtil.getEntityByName(consumerAgentGroups, name);
+    }
+
+    public InProductGroup getProductGroup(String name) {
+        return ParamUtil.getEntityByName(productGroups, name);
     }
 
     public boolean hasBinaryPersistData() {
         return binaryPersistData != null && binaryPersistData.length > 0;
+    }
+
+    public InProcessModel getProcessModel(String name) {
+        return ParamUtil.getEntityByName(processModels, name);
     }
 
     //=========================

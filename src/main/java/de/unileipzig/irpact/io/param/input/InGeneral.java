@@ -291,16 +291,24 @@ public class InGeneral implements Copyable {
 
     private void parseLifeCycleControl(InputParser parser) {
         BasicJadexLifeCycleControl lifeCycleControl = (BasicJadexLifeCycleControl) parser.getEnvironment().getLiveCycleControl();
+        applyKillSwitch(lifeCycleControl);
+
         BasicSettings initData = (BasicSettings) parser.getEnvironment().getSettings();
+        applyToSettings(initData);
+        LOGGER.info(IRPSection.INITIALIZATION_PARAMETER, "last simulation year: {}", lastSimulationYear);
+    }
+
+    public void applyKillSwitch(BasicJadexLifeCycleControl lifeCycleControl) {
         if(timeout < 1L) {
             LOGGER.info(IRPSection.INITIALIZATION_PARAMETER, "timeout disabled");
         } else {
             LOGGER.info(IRPSection.INITIALIZATION_PARAMETER, "timeout: {}", timeout);
         }
         lifeCycleControl.setKillSwitchTimeout(timeout);
+    }
 
-        initData.setFirstSimulationYear(firstSimulationYear);
-        initData.setLastSimulationYear(lastSimulationYear);
-        LOGGER.info(IRPSection.INITIALIZATION_PARAMETER, "last simulation year: {}", lastSimulationYear);
+    public void applyToSettings(BasicSettings settings) {
+        settings.setFirstSimulationYear(firstSimulationYear);
+        settings.setLastSimulationYear(lastSimulationYear);
     }
 }

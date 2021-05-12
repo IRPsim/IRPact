@@ -77,7 +77,7 @@ public class InNameSplitProductGroupAttribute implements InIndependentProductGro
 
     @Override
     public InProductGroup getProductGroup(InputParser parser) throws ParsingException {
-        return parser.getRoot().findProductGroup(getProductGroupName());
+        return parser.getRoot().getProductGroup(getProductGroupName());
     }
 
     @Override

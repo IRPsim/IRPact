@@ -286,6 +286,10 @@ public class InRAProcessModel implements InProcessModel {
         this.uncertaintyGroupAttributes = uncertaintyGroupAttributes;
     }
 
+    public NPVXlsxData getNPVData(InputParser parser) throws ParsingException {
+        return parser.parseEntityTo(getPvFile());
+    }
+
     @Override
     public Object parse(InputParser parser) throws ParsingException {
         RAModelData data = new RAModelData();
@@ -324,7 +328,7 @@ public class InRAProcessModel implements InProcessModel {
 
         if(hasPvFile()) {
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "load pv file '{}'" , getPvFile().getName());
-            NPVXlsxData xlsxData = parser.parseEntityTo(getPvFile());
+            NPVXlsxData xlsxData = getNPVData(parser);
             model.setNpvData(xlsxData);
         } else {
             LOGGER.trace("no pv file found");

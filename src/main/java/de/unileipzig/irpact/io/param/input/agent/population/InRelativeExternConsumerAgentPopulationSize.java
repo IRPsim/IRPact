@@ -236,10 +236,6 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
         return cags;
     }
 
-    public static void x() {
-
-    }
-
     public static <T> Map<T, Integer> calculateShares(
             List<T> cags,
             String selector,

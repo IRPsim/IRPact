@@ -8,8 +8,4 @@ public class UncheckedException extends RuntimeException {
     public UncheckedException(Throwable t) {
         super(t);
     }
-
-    public UncheckedException(String msg, Throwable t) {
-        super(msg, t);
-    }
 }

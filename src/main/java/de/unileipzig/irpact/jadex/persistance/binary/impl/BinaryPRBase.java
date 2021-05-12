@@ -123,11 +123,15 @@ public abstract class BinaryPRBase<T> implements BinaryPersister<T>, BinaryResto
             doFinalizeRestore(data, object, manager);
         } catch (UncheckedRestoreException e) {
             throw e.getCause();
+        } catch (RestoreException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RestoreException(e);
         }
     }
 
     //ueberschreiben, falls benoetigt
-    protected void doFinalizeRestore(BinaryJsonData data, T object, RestoreManager manager) throws RestoreException {
+    protected void doFinalizeRestore(BinaryJsonData data, T object, RestoreManager manager) throws Exception {
     }
 
     @Override

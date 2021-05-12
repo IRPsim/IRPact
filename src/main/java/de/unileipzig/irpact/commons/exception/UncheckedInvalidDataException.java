@@ -5,10 +5,6 @@ package de.unileipzig.irpact.commons.exception;
  */
 public class UncheckedInvalidDataException extends IRPactRuntimeException {
 
-    public UncheckedInvalidDataException(String msg) {
-        super(new ParsingException(msg));
-    }
-
     public UncheckedInvalidDataException(InvalidDataException cause) {
         super(cause);
     }
