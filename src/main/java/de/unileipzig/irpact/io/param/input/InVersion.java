@@ -5,6 +5,7 @@ import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -44,6 +45,17 @@ public class InVersion implements InEntity {
 
     public InVersion(String verion) {
         this._name = verion;
+    }
+
+    @Override
+    public InVersion copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InVersion newCopy(CopyCache cache) {
+        InVersion copy = new InVersion();
+        copy._name = _name;
+        return copy;
     }
 
     public static InVersion currentVersion() {

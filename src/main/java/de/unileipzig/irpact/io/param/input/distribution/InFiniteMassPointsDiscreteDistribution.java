@@ -10,6 +10,7 @@ import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -54,6 +55,18 @@ public class InFiniteMassPointsDiscreteDistribution implements InUnivariateDoubl
     public InFiniteMassPointsDiscreteDistribution(String name, Collection<? extends InMassPoint> massPoints) {
         setName(name);
         setMassPoints(massPoints);
+    }
+
+    @Override
+    public InFiniteMassPointsDiscreteDistribution copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InFiniteMassPointsDiscreteDistribution newCopy(CopyCache cache) {
+        InFiniteMassPointsDiscreteDistribution copy = new InFiniteMassPointsDiscreteDistribution();
+        copy._name = _name;
+        copy.massPoints = cache.copyArray(massPoints);
+        return copy;
     }
 
     @Override

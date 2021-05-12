@@ -15,6 +15,7 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -141,6 +142,33 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         a1 = dist;
         a5 = dist;
         a6 = dist;
+    }
+
+    @Override
+    public InPVactConsumerAgentGroup copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InPVactConsumerAgentGroup newCopy(CopyCache cache) {
+        InPVactConsumerAgentGroup copy = new InPVactConsumerAgentGroup();
+        copy._name = _name;
+        copy.noveltySeeking = cache.copyArray(noveltySeeking);
+        copy.dependentJudgmentMaking = cache.copyArray(dependentJudgmentMaking);
+        copy.environmentalConcern = cache.copyArray(environmentalConcern);
+        copy.interestThreshold = cache.copyArray(interestThreshold);
+        copy.financialThreshold = cache.copyArray(financialThreshold);
+        copy.adoptionThreshold = cache.copyArray(adoptionThreshold);
+        copy.communication = cache.copyArray(communication);
+        copy.rewire = cache.copyArray(rewire);
+        copy.initialAdopter = cache.copyArray(initialAdopter);
+        copy.rateOfConvergence = cache.copyArray(rateOfConvergence);
+        copy.initialProductInterest = cache.copyArray(initialProductInterest);
+        copy.initialProductAwareness = cache.copyArray(initialProductAwareness);
+        copy.constructionRate = cache.copyArray(constructionRate);
+        copy.renovationRate = cache.copyArray(renovationRate);
+        copy.spatialDistribution = cache.copyArray(spatialDistribution);
+        copy.dummyAnnuals = cache.copyArray(dummyAnnuals);
+        return copy;
     }
 
     @Override

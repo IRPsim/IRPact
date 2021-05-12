@@ -5,12 +5,13 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.product.attribute.BasicProductDoubleGroupAttribute;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -62,6 +63,19 @@ public class InBasicProductGroupAttribute implements InDependentProductGroupAttr
         this._name = name;
         setAttributeNameInstance(attributeName);
         setDistribution(distribution);
+    }
+
+    @Override
+    public InBasicProductGroupAttribute copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InBasicProductGroupAttribute newCopy(CopyCache cache) {
+        InBasicProductGroupAttribute copy = new InBasicProductGroupAttribute();
+        copy._name = _name;
+        copy.attrName = cache.copyArray(attrName);
+        copy.dist = cache.copyArray(dist);
+        return copy;
     }
 
     @Override

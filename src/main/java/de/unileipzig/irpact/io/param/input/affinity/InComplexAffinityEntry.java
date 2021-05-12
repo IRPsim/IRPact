@@ -6,6 +6,7 @@ import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -73,6 +74,20 @@ public class InComplexAffinityEntry implements InAffinityEntry {
             }
         }
         return list.toArray(new InComplexAffinityEntry[0]);
+    }
+
+    @Override
+    public InComplexAffinityEntry copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InComplexAffinityEntry newCopy(CopyCache cache) {
+        InComplexAffinityEntry copy = new InComplexAffinityEntry();
+        copy._name = _name;
+        copy.srcCag = cache.copyArray(srcCag);
+        copy.tarCag = cache.copyArray(tarCag);
+        copy.affinityValue = affinityValue;
+        return copy;
     }
 
     @Override

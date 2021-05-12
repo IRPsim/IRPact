@@ -8,6 +8,7 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -54,6 +55,19 @@ public class InBooleanDistribution implements InUnivariateDoubleDistribution {
 
     public InBooleanDistribution(String name) {
         this._name = name;
+    }
+
+    @Override
+    public InBooleanDistribution copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InBooleanDistribution newCopy(CopyCache cache) {
+        InBooleanDistribution copy = new InBooleanDistribution();
+        copy._name = _name;
+        copy.trueValue = trueValue;
+        copy.falseValue = falseValue;
+        return copy;
     }
 
     public void setName(String name) {

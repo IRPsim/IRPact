@@ -14,6 +14,7 @@ import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -73,6 +74,21 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         this.distanceEvaluator = new InDistanceEvaluator[]{evaluator};
         this.numberOfTies = numberOfTies;
         this.initialWeight = initialWeight;
+    }
+
+    @Override
+    public InFreeNetworkTopology copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InFreeNetworkTopology newCopy(CopyCache cache) {
+        InFreeNetworkTopology copy = new InFreeNetworkTopology();
+        copy._name = _name;
+        copy.distanceEvaluator = cache.copyArray(distanceEvaluator);
+        copy.numberOfTies = cache.copyArray(numberOfTies);
+        copy.initialWeight = initialWeight;
+        copy.allowLessEdges = allowLessEdges;
+        return copy;
     }
 
     @Override

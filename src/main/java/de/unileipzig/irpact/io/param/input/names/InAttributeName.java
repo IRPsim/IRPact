@@ -1,11 +1,12 @@
-package de.unileipzig.irpact.io.param.input;
+package de.unileipzig.irpact.io.param.input.names;
 
+import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
-import java.util.Objects;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
 import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
@@ -14,7 +15,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InAttributeName implements InEntity {
+public class InAttributeName implements InName {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -43,6 +44,17 @@ public class InAttributeName implements InEntity {
         this._name = name;
     }
 
+    @Override
+    public InAttributeName copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InAttributeName newCopy(CopyCache cache) {
+        InAttributeName copy = new InAttributeName();
+        copy._name = _name;
+        return copy;
+    }
+
     public String getName() {
         return _name;
     }
@@ -50,26 +62,5 @@ public class InAttributeName implements InEntity {
     @Override
     public Object parse(InputParser parser) {
         return this;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof InAttributeName)) return false;
-        InAttributeName that = (InAttributeName) o;
-        return placeholder == that.placeholder && Objects.equals(_name, that._name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(_name, placeholder);
-    }
-
-    @Override
-    public String toString() {
-        return "InAttributeName{" +
-                "_name='" + _name + '\'' +
-                ", placeholder=" + placeholder +
-                '}';
     }
 }

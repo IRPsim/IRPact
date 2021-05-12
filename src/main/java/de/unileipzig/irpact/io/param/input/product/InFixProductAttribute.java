@@ -9,6 +9,7 @@ import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -54,6 +55,19 @@ public class InFixProductAttribute implements InEntity {
         this._name = name;
         setGroupAttribute(grpAttr);
         this.fixPAvalue = value;
+    }
+
+    @Override
+    public InFixProductAttribute copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InFixProductAttribute newCopy(CopyCache cache) {
+        InFixProductAttribute copy = new InFixProductAttribute();
+        copy._name = _name;
+        copy.refPGA = cache.copyArray(refPGA);
+        copy.fixPAvalue = fixPAvalue;
+        return copy;
     }
 
     @Override

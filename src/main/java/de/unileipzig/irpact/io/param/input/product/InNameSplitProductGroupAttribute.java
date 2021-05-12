@@ -11,6 +11,7 @@ import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -50,6 +51,18 @@ public class InNameSplitProductGroupAttribute implements InIndependentProductGro
     public InUnivariateDoubleDistribution[] dist;
 
     public InNameSplitProductGroupAttribute() {
+    }
+
+    @Override
+    public InNameSplitProductGroupAttribute copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InNameSplitProductGroupAttribute newCopy(CopyCache cache) {
+        InNameSplitProductGroupAttribute copy = new InNameSplitProductGroupAttribute();
+        copy._name = _name;
+        copy.dist = cache.copyArray(dist);
+        return copy;
     }
 
     @Override

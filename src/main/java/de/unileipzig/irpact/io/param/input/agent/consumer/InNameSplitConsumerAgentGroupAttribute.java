@@ -6,13 +6,14 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentDoubleGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -59,6 +60,18 @@ public class InNameSplitConsumerAgentGroupAttribute implements InIndependentCons
             InUnivariateDoubleDistribution distribution) {
         this._name = ParamUtil.concName(cag, attributeName);
         setDistribution(distribution);
+    }
+
+    @Override
+    public InNameSplitConsumerAgentGroupAttribute copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InNameSplitConsumerAgentGroupAttribute newCopy(CopyCache cache) {
+        InNameSplitConsumerAgentGroupAttribute copy = new InNameSplitConsumerAgentGroupAttribute();
+        copy._name = _name;
+        copy.dist = cache.copyArray(dist);
+        return copy;
     }
 
     @Override

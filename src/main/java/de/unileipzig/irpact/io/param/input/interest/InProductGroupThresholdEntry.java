@@ -7,6 +7,7 @@ import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistri
 import de.unileipzig.irpact.io.param.input.product.InProductGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -39,14 +40,27 @@ public class InProductGroupThresholdEntry implements InEntity {
 
     public String _name;
 
-    public InProductGroupThresholdEntry() {
-    }
-
     @FieldDefinition
     public InUnivariateDoubleDistribution[] interestDistribution;
 
     @FieldDefinition
     public InProductGroup[] productGroups;
+
+    public InProductGroupThresholdEntry() {
+    }
+
+    @Override
+    public InProductGroupThresholdEntry copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InProductGroupThresholdEntry newCopy(CopyCache cache) {
+        InProductGroupThresholdEntry copy = new InProductGroupThresholdEntry();
+        copy._name = _name;
+        copy.interestDistribution = cache.copyArray(interestDistribution);
+        copy.productGroups = cache.copyArray(productGroups);
+        return copy;
+    }
 
     @Override
     public String getName() {

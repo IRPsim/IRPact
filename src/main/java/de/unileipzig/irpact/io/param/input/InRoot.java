@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
+import de.unileipzig.irpact.io.param.SimpleCopyCache;
 import de.unileipzig.irpact.io.param.IOResources;
 import de.unileipzig.irpact.io.param.LocData;
 import de.unileipzig.irpact.io.param.ParamUtil;
@@ -22,6 +23,8 @@ import de.unileipzig.irpact.io.param.input.file.InFile;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
+import de.unileipzig.irpact.io.param.input.names.InName;
 import de.unileipzig.irpact.io.param.input.process.InProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.*;
@@ -382,6 +385,53 @@ public class InRoot implements RootClass {
         }
     }
 
+    public InRoot copy() {
+        SimpleCopyCache cache = new SimpleCopyCache();
+        InRoot copy = new InRoot();
+        //general
+        copy.general = cache.copy(general);
+        copy.version = cache.copyArray(version);
+        //affinity
+        copy.affinityEntries = cache.copyArray(affinityEntries);
+        //agent
+        copy.consumerAgentGroups = cache.copyArray(consumerAgentGroups);
+        copy.independentConsumerAgentGroupAttributes = cache.copyArray(independentConsumerAgentGroupAttributes);
+        copy.agentPopulationSizes = cache.copyArray(agentPopulationSizes);
+        //binary
+        copy.visibleBinaryData = cache.copyArray(visibleBinaryData);
+        copy.binaryPersistData = cache.copyArray(binaryPersistData);
+        //network
+        copy.graphTopologySchemes = cache.copyArray(graphTopologySchemes);
+        //process
+        copy.processModels = cache.copyArray(processModels);
+        //product
+        copy.productGroups = cache.copyArray(productGroups);
+        copy.independentProductGroupAttributes = cache.copyArray(independentProductGroupAttributes);
+        copy.fixProducts = cache.copyArray(fixProducts);
+        //spatial
+        copy.spatialModel = cache.copyArray(spatialModel);
+        //time
+        copy.timeModel = cache.copyArray(timeModel);
+        //Graphviz
+        copy.consumerAgentGroupColors = cache.copyArray(consumerAgentGroupColors);
+        copy.layoutAlgorithms = cache.copyArray(layoutAlgorithms);
+        copy.outputFormats = cache.copyArray(outputFormats);
+        copy.colors = cache.copyArray(colors);
+        copy.graphvizGlobal = cache.copy(graphvizGlobal);
+        //optact
+        copy.agentGroups = agentGroups;
+        copy.topologies = topologies;
+        copy.global = global;
+        copy.sectors = sectors;
+        copy.customs = customs;
+        copy.fares = fares;
+        copy.dse = dse;
+        copy.deses = deses;
+        copy.despv = despv;
+
+        return copy;
+    }
+
     //=========================
     //IRPACT
     //=========================
@@ -536,6 +586,9 @@ public class InRoot implements RootClass {
             InProductInterestSupplyScheme.class,
             InProductThresholdInterestSupplyScheme.class,
 
+            InAttributeName.class,
+            InName.class,
+
             InCompleteGraphTopology.class,
             InDistanceEvaluator.class,
             InFreeNetworkTopology.class,
@@ -586,7 +639,6 @@ public class InRoot implements RootClass {
             InTimeModel.class,
             InUnitStepDiscreteTimeModel.class,
 
-            InAttributeName.class,
             InEntity.class,
             InGeneral.class,
             InVersion.class

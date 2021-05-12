@@ -3,6 +3,7 @@ package de.unileipzig.irpact.io.param.input.process.ra;
 import de.unileipzig.irpact.develop.Placeholder;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -39,6 +40,17 @@ public class InAutoUncertaintyGroupAttribute implements InUncertaintyGroupAttrib
     public double placeholderAutoUncert;
 
     public InAutoUncertaintyGroupAttribute() {
+    }
+
+    @Override
+    public InAutoUncertaintyGroupAttribute copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InAutoUncertaintyGroupAttribute newCopy(CopyCache cache) {
+        InAutoUncertaintyGroupAttribute copy = new InAutoUncertaintyGroupAttribute();
+        copy._name = _name;
+        return copy;
     }
 
     @Override

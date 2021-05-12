@@ -9,24 +9,25 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.*;
-import de.unileipzig.irpact.core.spatial.distribution2.SelectAndGroupFilter;
 import de.unileipzig.irpact.core.spatial.distribution2.SpatialDataFilter;
 import de.unileipzig.irpact.core.spatial.distribution2.WeightedDiscreteSpatialDistribution;
+import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
+import de.unileipzig.irptools.util.Copyable;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import static de.unileipzig.irpact.io.param.IOConstants.*;
@@ -93,6 +94,11 @@ public class InCustomFileSelectedGroupedSpatialDistribution2D__2 implements InSp
         setFile(file);
         setSelectKey(selectKey);
         setGroupKey(groupKey);
+    }
+
+    @Override
+    public Copyable copy(CopyCache copyCache) {
+        throw new TodoException();
     }
 
     public void setName(String name) {

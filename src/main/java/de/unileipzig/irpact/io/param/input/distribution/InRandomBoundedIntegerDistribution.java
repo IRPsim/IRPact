@@ -5,9 +5,11 @@ import de.unileipzig.irpact.commons.distribution.RandomBoundedIntegerDistributio
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -21,6 +23,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 /**
  * @author Daniel Abitz
  */
+@Todo("ebenfalls umbennen, zB InIntegerUniformDistribution + dazu gleich noch die InIniformDistribution einbauen")
 @Definition
 public class InRandomBoundedIntegerDistribution implements InUnivariateDoubleDistribution {
 
@@ -57,6 +60,19 @@ public class InRandomBoundedIntegerDistribution implements InUnivariateDoubleDis
         this._name = name;
         this.lowerBoundInt = lowerBoundInt;
         this.upperBoundInt = upperBoundInt;
+    }
+
+    @Override
+    public InRandomBoundedIntegerDistribution copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InRandomBoundedIntegerDistribution newCopy(CopyCache cache) {
+        InRandomBoundedIntegerDistribution copy = new InRandomBoundedIntegerDistribution();
+        copy._name = _name;
+        copy.lowerBoundInt = lowerBoundInt;
+        copy.upperBoundInt = upperBoundInt;
+        return copy;
     }
 
     @Override

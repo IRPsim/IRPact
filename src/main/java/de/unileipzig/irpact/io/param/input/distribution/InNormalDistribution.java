@@ -8,6 +8,7 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -54,6 +55,19 @@ public class InNormalDistribution implements InUnivariateDoubleDistribution {
 
     public InNormalDistribution(String name) {
         this._name = name;
+    }
+
+    @Override
+    public InNormalDistribution copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InNormalDistribution newCopy(CopyCache cache) {
+        InNormalDistribution copy = new InNormalDistribution();
+        copy._name = _name;
+        copy.standardDeviation = standardDeviation;
+        copy.mean = mean;
+        return copy;
     }
 
     public void setName(String name) {

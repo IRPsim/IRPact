@@ -7,6 +7,7 @@ import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.UnitStepDiscreteTimeModel;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -92,6 +93,25 @@ public class InUnitStepDiscreteTimeModel implements InTimeModel {
         this._name = name;
         setAmountOfTime(amountOfTime);
         setUnit(unit);
+    }
+
+    @Override
+    public InUnitStepDiscreteTimeModel copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InUnitStepDiscreteTimeModel newCopy(CopyCache cache) {
+        InUnitStepDiscreteTimeModel copy = new InUnitStepDiscreteTimeModel();
+        copy._name = _name;
+        copy.amountOfTime = amountOfTime;
+        copy.useMs = useMs;
+        copy.useSec = useSec;
+        copy.useMin = useMin;
+        copy.useH = useH;
+        copy.useD = useD;
+        copy.useW = useW;
+        copy.useM = useM;
+        return copy;
     }
 
     @Override

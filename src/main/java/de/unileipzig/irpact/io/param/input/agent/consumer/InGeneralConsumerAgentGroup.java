@@ -15,6 +15,7 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -66,6 +67,21 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
     public InSpatialDistribution[] spatialDistribution;
 
     public InGeneralConsumerAgentGroup() {
+    }
+
+    @Override
+    public InGeneralConsumerAgentGroup copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InGeneralConsumerAgentGroup newCopy(CopyCache cache) {
+        InGeneralConsumerAgentGroup copy = new InGeneralConsumerAgentGroup();
+        copy._name = _name;
+        copy.cagAttributes = cache.copyArray(cagAttributes);
+        copy.cagInterest = cache.copyArray(cagInterest);
+        copy.productFindingSchemes = cache.copyArray(productFindingSchemes);
+        copy.spatialDistribution = cache.copyArray(spatialDistribution);
+        return copy;
     }
 
     @Override

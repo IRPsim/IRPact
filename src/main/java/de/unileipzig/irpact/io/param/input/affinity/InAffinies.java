@@ -1,11 +1,13 @@
 package de.unileipzig.irpact.io.param.input.affinity;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InEntity;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -20,6 +22,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 /**
  * @author Daniel Abitz
  */
+@XXXXXXXXX
 @Todo("einbauen")
 @Definition
 public class InAffinies implements InEntity {
@@ -45,6 +48,18 @@ public class InAffinies implements InEntity {
     public InAffinityEntry[] entries;
 
     public InAffinies() {
+    }
+
+    @Override
+    public InAffinies copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InAffinies newCopy(CopyCache cache) {
+        InAffinies copy = new InAffinies();
+        copy._name = _name;
+        copy.entries = cache.copyArray(entries);
+        return copy;
     }
 
     @Override

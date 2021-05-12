@@ -8,6 +8,7 @@ import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -50,6 +51,17 @@ public class InSpatialTableFile implements InFile {
 
     public InSpatialTableFile(String fileNameWithoutExtension) {
         _name = fileNameWithoutExtension;
+    }
+
+    @Override
+    public InSpatialTableFile copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InSpatialTableFile newCopy(CopyCache cache) {
+        InSpatialTableFile copy = new InSpatialTableFile();
+        copy._name = _name;
+        return copy;
     }
 
     @Override

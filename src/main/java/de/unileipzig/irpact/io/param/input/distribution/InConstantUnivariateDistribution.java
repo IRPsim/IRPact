@@ -3,9 +3,11 @@ package de.unileipzig.irpact.io.param.input.distribution;
 import de.unileipzig.irpact.commons.distribution.ConstantUnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -19,6 +21,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 /**
  * @author Daniel Abitz
  */
+@Todo("umbennen in DiracUnivariateDistribution, das dann auch in die oberflaeche uebernehmen")
 @Definition
 public class InConstantUnivariateDistribution implements InUnivariateDoubleDistribution {
 
@@ -50,6 +53,18 @@ public class InConstantUnivariateDistribution implements InUnivariateDoubleDistr
     public InConstantUnivariateDistribution(String name, double value) {
         this._name = name;
         this.constDistValue = value;
+    }
+
+    @Override
+    public InConstantUnivariateDistribution copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InConstantUnivariateDistribution newCopy(CopyCache cache) {
+        InConstantUnivariateDistribution copy = new InConstantUnivariateDistribution();
+        copy._name = _name;
+        copy.constDistValue = constDistValue;
+        return copy;
     }
 
     @Override

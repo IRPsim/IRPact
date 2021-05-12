@@ -1,8 +1,11 @@
 package de.unileipzig.irpact.io.param.inout.persist.binary;
 
 import de.unileipzig.irpact.commons.util.IRPactBase32;
+import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
+import de.unileipzig.irptools.util.Copyable;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -14,7 +17,8 @@ import java.util.Comparator;
 @Definition(
         transferClass = true
 )
-public class BinaryPersistData {
+@XXXXXXXXX("umleiten auf loc file")
+public class BinaryPersistData implements Copyable {
 
     public static final Comparator<BinaryPersistData> ASCENDING = Comparator.comparingLong(BinaryPersistData::getID);
 
@@ -45,6 +49,18 @@ public class BinaryPersistData {
     public long id;
 
     public BinaryPersistData() {
+    }
+
+    @Override
+    public BinaryPersistData copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public BinaryPersistData newCopy(CopyCache cache) {
+        BinaryPersistData copy = new BinaryPersistData();
+        copy._name = _name;
+        copy.id = id;
+        return copy;
     }
 
     public String getName() {

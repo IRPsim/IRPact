@@ -6,6 +6,7 @@ import de.unileipzig.irpact.io.param.input.InEntity;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -52,6 +53,19 @@ public class InMassPoint implements InEntity {
         this._name = name;
         this.mpValue = value;
         this.mpWeight = weight;
+    }
+
+    @Override
+    public InMassPoint copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InMassPoint newCopy(CopyCache cache) {
+        InMassPoint copy = new InMassPoint();
+        copy._name = _name;
+        copy.mpValue = mpValue;
+        copy.mpWeight = mpWeight;
+        return copy;
     }
 
     public String getName() {

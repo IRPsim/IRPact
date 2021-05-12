@@ -7,6 +7,7 @@ import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -48,6 +49,18 @@ public class InFixProductFindingScheme implements InProductFindingScheme {
     public InFixProductFindingScheme(String name, InFixProduct product) {
         this._name = name;
         setFixProduct(product);
+    }
+
+    @Override
+    public InFixProductFindingScheme copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InFixProductFindingScheme newCopy(CopyCache cache) {
+        InFixProductFindingScheme copy = new InFixProductFindingScheme();
+        copy._name = _name;
+        copy.refFixProduct = cache.copyArray(refFixProduct);
+        return copy;
     }
 
     @Override

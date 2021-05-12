@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.process.filter.DisabledProcessPlanNodeFilterSch
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -50,6 +51,17 @@ public class InDisabledProcessPlanNodeFilterScheme implements InRAProcessPlanNod
 
     public InDisabledProcessPlanNodeFilterScheme(String name) {
         setName(name);
+    }
+
+    @Override
+    public InDisabledProcessPlanNodeFilterScheme copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InDisabledProcessPlanNodeFilterScheme newCopy(CopyCache cache) {
+        InDisabledProcessPlanNodeFilterScheme copy = new InDisabledProcessPlanNodeFilterScheme();
+        copy._name = _name;
+        return copy;
     }
 
     @Override

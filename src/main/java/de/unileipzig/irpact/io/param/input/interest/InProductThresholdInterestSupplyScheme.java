@@ -13,6 +13,7 @@ import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistri
 import de.unileipzig.irpact.io.param.input.product.InProductGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -51,6 +52,18 @@ public class InProductThresholdInterestSupplyScheme implements InProductInterest
     public InProductGroupThresholdEntry[] entries;
 
     public InProductThresholdInterestSupplyScheme() {
+    }
+
+    @Override
+    public InProductThresholdInterestSupplyScheme copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InProductThresholdInterestSupplyScheme newCopy(CopyCache cache) {
+        InProductThresholdInterestSupplyScheme copy = new InProductThresholdInterestSupplyScheme();
+        copy._name = _name;
+        copy.entries = cache.copyArray(entries);
+        return copy;
     }
 
     @Override

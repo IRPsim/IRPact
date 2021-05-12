@@ -2,7 +2,7 @@ package de.unileipzig.irpact.io.spec.impl.process;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.process.ra.InNameBasedUncertaintyWithConvergenceGroupAttribute;

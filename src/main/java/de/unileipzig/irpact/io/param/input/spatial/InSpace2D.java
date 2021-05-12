@@ -6,6 +6,7 @@ import de.unileipzig.irpact.core.spatial.twodim.Space2D;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -65,6 +66,21 @@ public class InSpace2D implements InSpatialModel {
     public InSpace2D(String name, Metric2D metric) {
         this._name = name;
         setMetric(metric);
+    }
+
+    @Override
+    public InSpace2D copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InSpace2D newCopy(CopyCache cache) {
+        InSpace2D copy = new InSpace2D();
+        copy._name = _name;
+        copy.useManhatten = useManhatten;
+        copy.useEuclid = useEuclid;
+        copy.useMaximum = useMaximum;
+        copy.useHaversine = useHaversine;
+        return copy;
     }
 
     @Override

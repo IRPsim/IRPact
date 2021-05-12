@@ -7,6 +7,7 @@ import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -57,6 +58,19 @@ public class InNumberOfTies implements InEntity {
         this._name = name;
         this.cags = cags;
         this.count = count;
+    }
+
+    @Override
+    public InNumberOfTies copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InNumberOfTies newCopy(CopyCache cache) {
+        InNumberOfTies copy = new InNumberOfTies();
+        copy._name = _name;
+        copy.cags = cache.copyArray(cags);
+        copy.count = count;
+        return copy;
     }
 
     @Override

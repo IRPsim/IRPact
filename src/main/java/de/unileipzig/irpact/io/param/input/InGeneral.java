@@ -12,6 +12,8 @@ import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
+import de.unileipzig.irptools.util.Copyable;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -27,7 +29,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
 @Definition(
         global = true
 )
-public class InGeneral {
+public class InGeneral implements Copyable {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -167,6 +169,46 @@ public class InGeneral {
     //=========================
 
     public InGeneral() {
+    }
+
+    @Override
+    public InGeneral copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InGeneral newCopy(CopyCache cache) {
+        InGeneral copy = new InGeneral();
+        copy.seed = seed;
+        copy.timeout = timeout;
+        copy.firstSimulationYear = firstSimulationYear;
+        copy.lastSimulationYear = lastSimulationYear;
+        //flags
+        copy.runPVAct = runPVAct;
+        copy.runOptActDemo = runOptActDemo;
+        //general logging
+        copy.logLevel = logLevel;
+        copy.logAll = logAll;
+        copy.logAllIRPact = logAllIRPact;
+        copy.logAllTools = logAllTools;
+        copy.logInitialization = logInitialization;
+        copy.logSimulation = logSimulation;
+        //data logging
+        copy.logGraphUpdate = logGraphUpdate;
+        copy.logRelativeAgreement = logRelativeAgreement;
+        copy.logInterestUpdate = logInterestUpdate;
+        copy.logShareNetworkLocal = logShareNetworkLocal;
+        copy.logFinancalComponent = logFinancalComponent;
+        copy.logCalculateDecisionMaking = logCalculateDecisionMaking;
+        //result logging
+        copy.logResultGroupedByZip = logResultGroupedByZip;
+        copy.logResultGroupedByMilieu = logResultGroupedByMilieu;
+        copy.logResultGroupedByZipAndMilieu = logResultGroupedByZipAndMilieu;
+        copy.logProductAdoptions = logProductAdoptions;
+        //dev logging
+        copy.logSpecificationConverter = logSpecificationConverter;
+        copy.logJadexSystemOut = logJadexSystemOut;
+
+        return copy;
     }
 
     public void setLogLevel(IRPLevel level) {

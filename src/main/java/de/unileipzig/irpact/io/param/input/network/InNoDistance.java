@@ -6,6 +6,7 @@ import de.unileipzig.irpact.commons.spatial.BasicDistanceEvaluator;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -46,6 +47,17 @@ public class InNoDistance implements InDistanceEvaluator {
 
     public InNoDistance(String name) {
         this._name = name;
+    }
+
+    @Override
+    public InNoDistance copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InNoDistance newCopy(CopyCache cache) {
+        InNoDistance copy = new InNoDistance();
+        copy._name = _name;
+        return copy;
     }
 
     @Override

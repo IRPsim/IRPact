@@ -11,12 +11,13 @@ import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -110,6 +111,23 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
         setMaximumSize(maximumSize);
         setAllowSmallerSize(false);
         setUseMaximumPossibleSize(maximumSize < 0);
+    }
+
+    @Override
+    public InRelativeExternConsumerAgentPopulationSize copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InRelativeExternConsumerAgentPopulationSize newCopy(CopyCache cache) {
+        InRelativeExternConsumerAgentPopulationSize copy = new InRelativeExternConsumerAgentPopulationSize();
+        copy._name = _name;
+        copy.maximumSize = maximumSize;
+        copy.useMaximumPossibleSize = useMaximumPossibleSize;
+        copy.allowSmallerSize = allowSmallerSize;
+        copy.cags = cache.copyArray(cags);
+        copy.file = cache.copyArray(file);
+        copy.selectKey = cache.copyArray(selectKey);
+        return copy;
     }
 
     @Override

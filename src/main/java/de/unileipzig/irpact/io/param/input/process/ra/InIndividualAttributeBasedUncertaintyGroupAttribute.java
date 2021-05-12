@@ -14,6 +14,7 @@ import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAt
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -57,6 +58,19 @@ public class InIndividualAttributeBasedUncertaintyGroupAttribute implements InUn
     public InUnivariateDoubleDistribution[] uncertDist;
 
     public InIndividualAttributeBasedUncertaintyGroupAttribute() {
+    }
+
+    @Override
+    public InIndividualAttributeBasedUncertaintyGroupAttribute copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InIndividualAttributeBasedUncertaintyGroupAttribute newCopy(CopyCache cache) {
+        InIndividualAttributeBasedUncertaintyGroupAttribute copy = new InIndividualAttributeBasedUncertaintyGroupAttribute();
+        copy._name = _name;
+        copy.cagAttrs = cache.copyArray(cagAttrs);
+        copy.uncertDist = cache.copyArray(uncertDist);
+        return copy;
     }
 
     public void setName(String name) {

@@ -6,12 +6,13 @@ import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentAnnu
 import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentDoubleGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.*;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -79,6 +80,21 @@ public class InGeneralConsumerAgentAnnualGroupAttribute implements InDependentCo
             int customYear) {
         this(name, attributeName, distribution);
         setCustomYear(customYear);
+    }
+
+    @Override
+    public InGeneralConsumerAgentAnnualGroupAttribute copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InGeneralConsumerAgentAnnualGroupAttribute newCopy(CopyCache cache) {
+        InGeneralConsumerAgentAnnualGroupAttribute copy = new InGeneralConsumerAgentAnnualGroupAttribute();
+        copy._name = _name;
+        copy.attributeName = cache.copyArray(attributeName);
+        copy.distribution = cache.copyArray(distribution);
+        copy.customYear = customYear;
+        copy.hasCustomYear = hasCustomYear;
+        return copy;
     }
 
     @Override

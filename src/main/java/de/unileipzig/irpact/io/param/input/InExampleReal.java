@@ -13,6 +13,7 @@ import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.param.input.distribution.InConstantUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.network.InNoDistance;

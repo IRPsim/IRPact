@@ -6,6 +6,7 @@ import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -58,6 +59,18 @@ public class InNameSplitAffinityEntry implements InAffinityEntry {
             }
         }
         return entries.toArray(new InNameSplitAffinityEntry[0]);
+    }
+
+    @Override
+    public InNameSplitAffinityEntry copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InNameSplitAffinityEntry newCopy(CopyCache cache) {
+        InNameSplitAffinityEntry copy = new InNameSplitAffinityEntry();
+        copy._name = _name;
+        copy.affinityValue = affinityValue;
+        return copy;
     }
 
     @Override

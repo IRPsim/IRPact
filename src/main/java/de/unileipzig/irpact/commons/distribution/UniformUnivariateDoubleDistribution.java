@@ -4,18 +4,17 @@ import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.util.Rnd;
 
 /**
- * Returns the floor value.
- *
  * @author Daniel Abitz
  */
-public class RandomBoundedIntegerDistribution extends AbstractBoundedUnivariateDoubleDistribution implements BoundedUnivariateDoubleDistribution {
+public class UniformUnivariateDoubleDistribution extends AbstractBoundedUnivariateDoubleDistribution implements BoundedUnivariateDoubleDistribution {
 
+    protected long seed;
     protected Rnd rnd;
 
-    public RandomBoundedIntegerDistribution() {
+    public UniformUnivariateDoubleDistribution() {
     }
 
-    public RandomBoundedIntegerDistribution(String name, double lowerBound, double upperBound, Rnd rnd) {
+    public UniformUnivariateDoubleDistribution(String name, double lowerBound, double upperBound, Rnd rnd) {
         setName(name);
         setLowerBound(lowerBound);
         setUpperBound(upperBound);
@@ -32,7 +31,7 @@ public class RandomBoundedIntegerDistribution extends AbstractBoundedUnivariateD
 
     @Override
     public double drawDoubleValue() {
-        return Math.floor(rnd.nextDouble(lowerBound, upperBound));
+        return rnd.nextDouble(lowerBound, upperBound);
     }
 
     @Override

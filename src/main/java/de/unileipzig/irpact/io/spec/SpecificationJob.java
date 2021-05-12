@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.IRPactJson;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InEntity;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;

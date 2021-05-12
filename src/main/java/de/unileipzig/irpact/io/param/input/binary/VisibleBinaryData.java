@@ -3,8 +3,10 @@ package de.unileipzig.irpact.io.param.input.binary;
 import de.unileipzig.irpact.commons.util.IRPactBase32;
 import de.unileipzig.irpact.commons.util.data.BinaryData;
 import de.unileipzig.irpact.io.param.input.InEntity;
+import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -46,6 +48,18 @@ public class VisibleBinaryData implements InEntity {
     public VisibleBinaryData(String name, long id) {
         setName(name);
         setID(id);
+    }
+
+    @Override
+    public VisibleBinaryData copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public VisibleBinaryData newCopy(CopyCache cache) {
+        VisibleBinaryData copy = new VisibleBinaryData();
+        copy._name = _name;
+        copy.idVisible = idVisible;
+        return copy;
     }
 
     @Override

@@ -6,6 +6,7 @@ import de.unileipzig.irpact.commons.spatial.BasicDistanceEvaluator;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -47,6 +48,17 @@ public class InInverse implements InDistanceEvaluator {
 
     public InInverse(String name) {
         this._name = name;
+    }
+
+    @Override
+    public InInverse copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InInverse newCopy(CopyCache cache) {
+        InInverse copy = new InInverse();
+        copy._name = _name;
+        return copy;
     }
 
     @Override

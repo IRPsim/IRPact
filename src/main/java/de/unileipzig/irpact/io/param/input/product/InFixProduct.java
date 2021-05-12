@@ -10,6 +10,7 @@ import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -59,6 +60,19 @@ public class InFixProduct implements InEntity {
         this._name = name;
         setProductGroup(grp);
         this.fixPAttrs = attrs;
+    }
+
+    @Override
+    public InFixProduct copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InFixProduct newCopy(CopyCache cache) {
+        InFixProduct copy = new InFixProduct();
+        copy._name = _name;
+        copy.refPG = cache.copyArray(refPG);
+        copy.fixPAttrs = cache.copyArray(fixPAttrs);
+        return copy;
     }
 
     @Override

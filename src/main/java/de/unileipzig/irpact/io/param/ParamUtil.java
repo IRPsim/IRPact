@@ -8,6 +8,7 @@ import de.unileipzig.irpact.io.param.input.InEntity;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 /**

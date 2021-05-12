@@ -14,6 +14,7 @@ import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistri
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.network.InCompleteGraphTopology;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;

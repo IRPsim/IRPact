@@ -1,10 +1,11 @@
 package de.unileipzig.irpact.io.param.input.distribution;
 
-import de.unileipzig.irpact.commons.distribution.BernoulliDistribution;
+import de.unileipzig.irpact.commons.distribution.UniformUnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.develop.AddToRoot;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -21,8 +22,9 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 /**
  * @author Daniel Abitz
  */
+@AddToRoot
 @Definition
-public class InBernoulliDistribution implements InUnivariateDoubleDistribution {
+public class InUniformUnivariateDoubleDistribution implements InUnivariateDoubleDistribution {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -36,47 +38,40 @@ public class InBernoulliDistribution implements InUnivariateDoubleDistribution {
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), DISTRIBUTIONS, thisName());
-        addEntry(res, thisClass(), "p");
-        addEntry(res, thisClass(), "trueValue");
-        addEntry(res, thisClass(), "falseValue");
+        addEntry(res, thisClass(), "lowerBoundInt");
+        addEntry(res, thisClass(), "upperBoundInt");
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InBernoulliDistribution.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(InUniformUnivariateDoubleDistribution.class);
 
     public String _name;
 
     @FieldDefinition
-    public double p;
+    public double lowerBoundInt;
 
     @FieldDefinition
-    public double trueValue;
+    public double upperBoundInt;
 
-    @FieldDefinition
-    public double falseValue;
-
-    public InBernoulliDistribution() {
+    public InUniformUnivariateDoubleDistribution() {
     }
 
-    public InBernoulliDistribution(String name) {
+    public InUniformUnivariateDoubleDistribution(String name, int lowerBoundInt, int upperBoundInt) {
         this._name = name;
+        this.lowerBoundInt = lowerBoundInt;
+        this.upperBoundInt = upperBoundInt;
     }
 
     @Override
-    public InBernoulliDistribution copy(CopyCache cache) {
+    public InUniformUnivariateDoubleDistribution copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InBernoulliDistribution newCopy(CopyCache cache) {
-        InBernoulliDistribution copy = new InBernoulliDistribution();
+    public InUniformUnivariateDoubleDistribution newCopy(CopyCache cache) {
+        InUniformUnivariateDoubleDistribution copy = new InUniformUnivariateDoubleDistribution();
         copy._name = _name;
-        copy.p = p;
-        copy.trueValue = trueValue;
-        copy.falseValue = falseValue;
+        copy.lowerBoundInt = lowerBoundInt;
+        copy.upperBoundInt = upperBoundInt;
         return copy;
-    }
-
-    public void setName(String name) {
-        this._name = name;
     }
 
     @Override
@@ -84,40 +79,23 @@ public class InBernoulliDistribution implements InUnivariateDoubleDistribution {
         return _name;
     }
 
-    public double getP() {
-        return p;
+    public double getLowerBound() {
+        return lowerBoundInt;
     }
 
-    public void setP(double p) {
-        this.p = p;
-    }
-
-    public void setTrueValue(double trueValue) {
-        this.trueValue = trueValue;
-    }
-
-    public double getTrueValue() {
-        return trueValue;
-    }
-
-    public void setFalseValue(double falseValue) {
-        this.falseValue = falseValue;
-    }
-
-    public double getFalseValue() {
-        return falseValue;
+    public double getUpperBound() {
+        return upperBoundInt;
     }
 
     @Override
-    public Object parse(InputParser parser) throws ParsingException {
-        BernoulliDistribution dist = new BernoulliDistribution();
+    public UniformUnivariateDoubleDistribution parse(InputParser parser) throws ParsingException {
+        UniformUnivariateDoubleDistribution dist = new UniformUnivariateDoubleDistribution();
         dist.setName(getName());
+        dist.setLowerBound(getLowerBound());
+        dist.setUpperBound(getUpperBound());
         Rnd rnd = parser.deriveRnd();
         dist.setRandom(rnd);
-        dist.setP(getP());
-        dist.setTrueValue(getTrueValue());
-        dist.setFalseValue(getFalseValue());
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "BernoulliDistribution '{}' uses seed: {}", getName(), rnd.getInitialSeed());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "UniformUnivariateDoubleDistribution '{}' uses seed: {}", getName(), rnd.getInitialSeed());
         return dist;
     }
 }

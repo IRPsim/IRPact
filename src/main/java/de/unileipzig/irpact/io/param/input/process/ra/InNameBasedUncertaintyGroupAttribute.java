@@ -8,12 +8,13 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.process.ra.attributes.BasicUncertaintyGroupAttributeSupplier;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -61,6 +62,20 @@ public class InNameBasedUncertaintyGroupAttribute implements InUncertaintyGroupA
     public InUnivariateDoubleDistribution[] uncertDist;
 
     public InNameBasedUncertaintyGroupAttribute() {
+    }
+
+    @Override
+    public InNameBasedUncertaintyGroupAttribute copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InNameBasedUncertaintyGroupAttribute newCopy(CopyCache cache) {
+        InNameBasedUncertaintyGroupAttribute copy = new InNameBasedUncertaintyGroupAttribute();
+        copy._name = _name;
+        copy.cags = cache.copyArray(cags);
+        copy.names = cache.copyArray(names);
+        copy.uncertDist = cache.copyArray(uncertDist);
+        return copy;
     }
 
     public void setName(String name) {

@@ -9,6 +9,7 @@ import de.unileipzig.irpact.develop.PotentialProblem;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -57,6 +58,19 @@ public class InRAProcessPlanMaxDistanceFilterScheme implements InRAProcessPlanNo
         setName(name);
         setMaxDistance(maxDistance);
         setInclusive(inclusive);
+    }
+
+    @Override
+    public InRAProcessPlanMaxDistanceFilterScheme copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InRAProcessPlanMaxDistanceFilterScheme newCopy(CopyCache cache) {
+        InRAProcessPlanMaxDistanceFilterScheme copy = new InRAProcessPlanMaxDistanceFilterScheme();
+        copy._name = _name;
+        copy.maxDistance = maxDistance;
+        copy.inclusive = inclusive;
+        return copy;
     }
 
     @PotentialProblem("teste, ob es andere return null gibt")

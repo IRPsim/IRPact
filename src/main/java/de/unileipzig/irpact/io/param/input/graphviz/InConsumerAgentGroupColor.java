@@ -1,12 +1,15 @@
 package de.unileipzig.irpact.io.param.input.graphviz;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irpact.io.param.IOConstants;
 import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.io.param.input.InEntity;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.graphviz.def.GraphvizColor;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -14,8 +17,9 @@ import java.lang.invoke.MethodHandles;
 /**
  * @author Daniel Abitz
  */
+@XXXXXXXXX("umleiten auf loc file")
 @Definition
-public class InConsumerAgentGroupColor {
+public class InConsumerAgentGroupColor implements InEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -60,6 +64,19 @@ public class InConsumerAgentGroupColor {
         this._name = name;
         this.group = new InConsumerAgentGroup[]{group};
         this.color = new GraphvizColor[]{color};
+    }
+
+    @Override
+    public InConsumerAgentGroupColor copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InConsumerAgentGroupColor newCopy(CopyCache cache) {
+        InConsumerAgentGroupColor copy = new InConsumerAgentGroupColor();
+        copy._name = _name;
+        copy.group = cache.copyArray(group);
+        copy.color = cache.copyArray(color);
+        return copy;
     }
 
     public String getName() {

@@ -14,6 +14,7 @@ import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -65,6 +66,21 @@ public class InPVactUncertaintyGroupAttribute implements InUncertaintyGroupAttri
     public InUnivariateDoubleDistribution[] environmentalConcernUncert;
 
     public InPVactUncertaintyGroupAttribute() {
+    }
+
+    @Override
+    public InPVactUncertaintyGroupAttribute copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InPVactUncertaintyGroupAttribute newCopy(CopyCache cache) {
+        InPVactUncertaintyGroupAttribute copy = new InPVactUncertaintyGroupAttribute();
+        copy._name = _name;
+        copy.cags = cache.copyArray(cags);
+        copy.noveltySeekingUncert = cache.copyArray(noveltySeekingUncert);
+        copy.dependentJudgmentMakingUncert = cache.copyArray(dependentJudgmentMakingUncert);
+        copy.environmentalConcernUncert = cache.copyArray(environmentalConcernUncert);
+        return copy;
     }
 
     public void setName(String name) {

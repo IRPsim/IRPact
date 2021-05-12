@@ -9,12 +9,14 @@ import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -27,6 +29,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 /**
  * @author Daniel Abitz
  */
+@Todo("default values fuer die points in loc-file eintragen")
 @Definition
 public class InRAProcessModel implements InProcessModel {
 
@@ -124,6 +127,28 @@ public class InRAProcessModel implements InProcessModel {
         setNodeFilterScheme(filterScheme);
         setPvFile(pvFile);
         setUncertaintyGroupAttributes(uncertaintyGroupAttributes);
+    }
+
+    @Override
+    public InRAProcessModel copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InRAProcessModel newCopy(CopyCache cache) {
+        InRAProcessModel copy = new InRAProcessModel();
+        copy.a = a;
+        copy.b = b;
+        copy.c = c;
+        copy.d = d;
+        copy.adopterPoints = adopterPoints;
+        copy.interestedPoints = interestedPoints;
+        copy.awarePoints = awarePoints;
+        copy.unknownPoints = unknownPoints;
+        copy.logisticFactor = logisticFactor;
+        copy.nodeFilterScheme = cache.copyArray(nodeFilterScheme);
+        copy.pvFile = cache.copyArray(pvFile);
+        copy.uncertaintyGroupAttributes = cache.copyArray(uncertaintyGroupAttributes);
+        return copy;
     }
 
     @Override

@@ -6,6 +6,7 @@ import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.DiscreteTimeModel;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -49,6 +50,11 @@ public class InDiscreteTimeModel implements InTimeModel {
     public InDiscreteTimeModel(String name, long timePerTickInMs) {
         this._name = name;
         this.timePerTickInMs = timePerTickInMs;
+    }
+
+    @Override
+    public InDiscreteTimeModel copy(CopyCache cache) {
+        throw new UnsupportedOperationException();
     }
 
     @Override

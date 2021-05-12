@@ -8,12 +8,12 @@ import de.unileipzig.irpact.core.process.ra.npv.PVFileLoader;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.DISTRIBUTIONS;
 import static de.unileipzig.irpact.io.param.IOConstants.FILES;
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
 import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
@@ -51,6 +51,17 @@ public class InPVFile implements InFile {
 
     public InPVFile(String fileNameWithoutExtension) {
         _name = fileNameWithoutExtension;
+    }
+
+    @Override
+    public InPVFile copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InPVFile newCopy(CopyCache cache) {
+        InPVFile copy = new InPVFile();
+        copy._name = _name;
+        return copy;
     }
 
     @Override

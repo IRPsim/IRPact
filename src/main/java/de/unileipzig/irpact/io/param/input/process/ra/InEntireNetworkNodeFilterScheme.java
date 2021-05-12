@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.process.filter.EntireNetworkNodeFilterScheme;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -50,6 +51,17 @@ public class InEntireNetworkNodeFilterScheme implements InRAProcessPlanNodeFilte
 
     public InEntireNetworkNodeFilterScheme(String name) {
         setName(name);
+    }
+
+    @Override
+    public InEntireNetworkNodeFilterScheme copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InEntireNetworkNodeFilterScheme newCopy(CopyCache cache) {
+        InEntireNetworkNodeFilterScheme copy = new InEntireNetworkNodeFilterScheme();
+        copy._name = _name;
+        return copy;
     }
 
     @Override

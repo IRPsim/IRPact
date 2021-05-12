@@ -6,6 +6,7 @@ import de.unileipzig.irpact.core.network.topology.UnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -46,6 +47,17 @@ public class InUnlinkedGraphTopology implements InGraphTopologyScheme {
 
     public InUnlinkedGraphTopology(String name) {
         this._name = name;
+    }
+
+    @Override
+    public InUnlinkedGraphTopology copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InUnlinkedGraphTopology newCopy(CopyCache cache) {
+        InUnlinkedGraphTopology copy = new InUnlinkedGraphTopology();
+        copy._name = _name;
+        return copy;
     }
 
     @Override

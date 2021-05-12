@@ -10,6 +10,7 @@ import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -53,6 +54,18 @@ public class InBasicProductGroup implements InProductGroup {
     public InBasicProductGroup(String name, InDependentProductGroupAttribute[] attributes) {
         this._name = name;
         this.pgAttributes = attributes;
+    }
+
+    @Override
+    public InBasicProductGroup copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InBasicProductGroup newCopy(CopyCache cache) {
+        InBasicProductGroup copy = new InBasicProductGroup();
+        copy._name = _name;
+        copy.pgAttributes = cache.copyArray(pgAttributes);
+        return copy;
     }
 
     public String getName() {
