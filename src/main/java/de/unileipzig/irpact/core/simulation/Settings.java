@@ -17,8 +17,6 @@ public interface Settings {
 
     void apply(MainCommandLineOptions clOptions);
 
-    boolean ignorePersistenceCheckResult();
-
     boolean prefereCsv();
 
     //=========================

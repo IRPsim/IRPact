@@ -8,9 +8,9 @@ import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.misc.InitializationStage;
-import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.simulation.*;
 import de.unileipzig.irpact.core.util.PVactResultLogging;
+import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.io.param.output.OutAdoptionResult;
 import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -49,7 +49,6 @@ import jadex.bridge.service.types.clock.IClockService;
 import jadex.bridge.service.types.cms.CreationInfo;
 import jadex.bridge.service.types.simulation.ISimulationService;
 
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -70,6 +69,10 @@ public class IRPact implements IRPActAccess {
     private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
+
+    public static final String CL_NAME = "IRPact";
+    public static final String CL_VERSION = "Version " + VERSION_STRING;
+    public static final String CL_COPY = "(c) 2019-2021";
 
     private static final Map<MainCommandLineOptions, Converter> INPUT_CONVERTS = new WeakHashMap<>();
     private static final Map<MainCommandLineOptions, Converter> OUTPUT_CONVERTS = new WeakHashMap<>();
@@ -116,10 +119,6 @@ public class IRPact implements IRPActAccess {
         }
     }
 
-    private Converter getInputConverter() {
-        return getInputConverter(CL_OPTIONS);
-    }
-
     public static Converter getOutputConverter(MainCommandLineOptions options) {
         if(OUTPUT_CONVERTS.containsKey(options)) {
             return OUTPUT_CONVERTS.get(options);
@@ -130,10 +129,6 @@ public class IRPact implements IRPActAccess {
             OUTPUT_CONVERTS.put(options, converter);
             return converter;
         }
-    }
-
-    private Converter getOutputConverter() {
-        return getOutputConverter(CL_OPTIONS);
     }
 
     public static AnnualEntry<InRoot> convert(MainCommandLineOptions options, ObjectNode rootNode) {
@@ -176,14 +171,6 @@ public class IRPact implements IRPActAccess {
     }
 
     private void start() throws Exception {
-        if(CL_OPTIONS.hasInputOutPath()) {
-            printInput();
-            if(CL_OPTIONS.isNoSimulationAndNoImage()) {
-                LOGGER.info(IRPSection.GENERAL, "no simulation");
-                return;
-            }
-        }
-
         initialize();
 
         preAgentCreation();
@@ -224,13 +211,6 @@ public class IRPact implements IRPActAccess {
         startSimulation();
         waitForTermination();
         postSimulation();
-    }
-
-    private void printInput() throws IOException {
-        LOGGER.trace(IRPSection.GENERAL, "print input file to {} (using {})", CL_OPTIONS.getInputOutPath(), CL_OPTIONS.getInputOutCharset().name());
-        AnnualData<InRoot> inData = new AnnualData<>(inEntry);
-        AnnualFile aFile = inData.serialize(getInputConverter());
-        aFile.store(CL_OPTIONS.getInputOutPath(), CL_OPTIONS.getInputOutCharset());
     }
 
     private void initialize() throws Exception {
@@ -509,25 +489,26 @@ public class IRPact implements IRPActAccess {
         Timestamp end = environment.getTimeModel().endTime();
 
         List<OutAdoptionResult> outResults = new ArrayList<>();
-        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-            OutAdoptionResult outResult = new OutAdoptionResult(cag.getName() + "_" + start.getYear());
-            int adoptions = 0;
-            for(ConsumerAgent ca: cag.getAgents()) {
-                for(AdoptedProduct ap: ca.getAdoptedProducts()) {
-                    if(ap.isInitial() || ap.getTimestamp().isBetween(start, end)) {
-                        adoptions++;
-                    }
-                }
-            }
-            outResult.setAdoptions(adoptions);
-            outResult.setShare((double) adoptions / (double) cag.getNumberOfAgents());
-            outResults.add(outResult);
-        }
+        if(true) throw new TodoException();
+//        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+//            OutAdoptionResult outResult = new OutAdoptionResult(cag.getName() + "_" + start.getYear());
+//            int adoptions = 0;
+//            for(ConsumerAgent ca: cag.getAgents()) {
+//                for(AdoptedProduct ap: ca.getAdoptedProducts()) {
+//                    if(ap.isInitial() || ap.getTimestamp().isBetween(start, end)) {
+//                        adoptions++;
+//                    }
+//                }
+//            }
+//            outResult.setAdoptions(adoptions);
+//            outResult.setShare((double) adoptions / (double) cag.getNumberOfAgents());
+//            outResults.add(outResult);
+//        }
         outRoot.adoptionResults = outResults.toArray(new OutAdoptionResult[0]);
     }
 
     private void applyPersistenceData(OutRoot outRoot) throws Exception {
-        if(CL_OPTIONS.isNoPersist()) {
+        if(CL_OPTIONS.isSkipPersist()) {
             LOGGER.trace(IRPSection.GENERAL, "skip persistence");
         } else {
             environment.getPersistenceModul().store(environment, outRoot);
@@ -542,7 +523,7 @@ public class IRPact implements IRPActAccess {
 
     private void storeOutputData(AnnualData<OutRoot> outData) {
         try {
-            AnnualFile outFile = outData.serialize(getOutputConverter());
+            AnnualFile outFile = outData.serialize(getOutputConverter(CL_OPTIONS));
             outFile.store(CL_OPTIONS.getOutputPath());
         } catch (Throwable t) {
             LOGGER.error("saving output failed", t);

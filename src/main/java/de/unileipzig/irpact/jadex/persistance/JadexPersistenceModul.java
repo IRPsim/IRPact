@@ -137,7 +137,7 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
             LOGGER.info("environment successfully restored");
         } else {
             String msg = "checksum mismatch: restored=" + Integer.toHexString(restoredChecksum) + " != validation=" + Integer.toHexString(validationChecksum);
-            if(environment.getSettings().ignorePersistenceCheckResult()) {
+            if(options.isSkipPersistenceCheck()) {
                 LOGGER.warn("ignore persistence check: {}", msg);
             } else {
                 throw new RestoreException(msg);

@@ -16,7 +16,6 @@ public class BasicSettings implements Settings {
     protected Map<ConsumerAgentGroup, Integer> agentCount;
     protected int firstSimulationYear;
     protected int lastSimulationYear = -1;
-    protected boolean ignorePersistCheck = false;
     protected int run = 1;
     protected int previousLastSimulationYear = -1;
     @AddToParam("InGeneral")
@@ -49,17 +48,7 @@ public class BasicSettings implements Settings {
 
     @Override
     public void apply(MainCommandLineOptions clOptions) {
-        setIgnorePersistenceCheckResult(clOptions.isIgnorePersistenceCheck());
         setPrefereCsv(clOptions.isPrefereCsv());
-    }
-
-    public void setIgnorePersistenceCheckResult(boolean value) {
-        ignorePersistCheck = value;
-    }
-
-    @Override
-    public boolean ignorePersistenceCheckResult() {
-        return ignorePersistCheck;
     }
 
     @Override

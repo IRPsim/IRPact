@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons.util.data;
 
+import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.util.MapSupplier;
 
 import java.util.Collections;
@@ -12,7 +13,7 @@ import java.util.stream.Stream;
  *
  * @author Daniel Abitz
  */
-public class MapBasedTripleMapping<A, B, C> implements TripleMapping<A, B, C> {
+public class MapBasedTripleMapping<A, B, C> implements TripleMapping<A, B, C>, ChecksumComparable {
 
     protected MapSupplier mapSupplier;
     protected Map<A, Map<B, C>> mapping;
@@ -111,5 +112,10 @@ public class MapBasedTripleMapping<A, B, C> implements TripleMapping<A, B, C> {
         return map1 == null
                 ? Collections.emptyIterator()
                 : map1.entrySet().iterator();
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.getMapMapChecksum(mapping);
     }
 }

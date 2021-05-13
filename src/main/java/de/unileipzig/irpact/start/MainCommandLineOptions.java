@@ -2,17 +2,15 @@ package de.unileipzig.irpact.start;
 
 import de.unileipzig.irpact.commons.log.LoggingMessage;
 import de.unileipzig.irpact.commons.util.AbstractCommandLineOptions;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.commons.util.MapResourceBundle;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
-import de.unileipzig.irptools.util.log.IRPLogger;
 import picocli.CommandLine;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ResourceBundle;
 
 /**
  * @author Daniel Abitz
@@ -20,188 +18,237 @@ import java.nio.file.Paths;
 @SuppressWarnings("unused")
 @CommandLine.Command(
         name = "java -jar <IRPact.jar>",
-        version = "IRPact version " + IRPact.VERSION_STRING
+        version = {IRPact.CL_NAME, IRPact.CL_VERSION, IRPact.CL_COPY}
 )
 public class MainCommandLineOptions extends AbstractCommandLineOptions {
+
+    private static ResourceBundle fallback;
+
+    private static synchronized ResourceBundle getFallbackBundle() {
+        if(fallback == null) {
+            MapResourceBundle bundle = new MapResourceBundle();
+
+            bundle.put("printHelp", "Print help.");
+            bundle.put("printVersion", "Print version information.");
+            bundle.put("inputPath", "Set path to input file.");
+            bundle.put("outputPath", "Set path to output file.");
+            bundle.put("imagePath", "Set path to image output file.");
+            bundle.put("noSimulation", "Disable simulation, run initialization only.");
+            bundle.put("checkOutputExistence", "Checks if the output file already exists. If it does, the program will be cancelled. This option is used to ensure that data is not overwritten.");
+
+            bundle.put("useGamsNameTrimming", "Enables (1) or disables (0) gams name trimming. Default value is ${DEFAULT-VALUE}. Change this option only if you know what you are doing.");
+            bundle.put("maxGamsNameLength", "Max length for gams field names. Value -1 disables this option. Max length for gams is 63. Default value is ${DEFAULT-VALUE}. Change this option only if you know what you are doing.");
+            bundle.put("minGamsPartLength", "Min length for gams field name parts (tags). Default value is ${DEFAULT-VALUE}. Change this option only if you know what you are doing.");
+
+            bundle.put("logPath", "Set path to log file and disable console logging.");
+            bundle.put("logConsoleAndFile", "Enable console logging if '--logPath' is set.");
+
+            bundle.put("prefereCsv", "Prefere csv files when loading.");
+            bundle.put("dataDirPath", "Set path to data directory. If not set, the execution directory will be used.");
+            bundle.put("skipPersistenceCheck", "If set, checksum mismatches are ignore during restoration. Use this option only if you know what you are doing.");
+            bundle.put("skipArgValidation", "Disables command line validation. Use this option only if you know what you are doing.");
+            bundle.put("skipPersist", "Disables data persistence.");
+
+            bundle.put("printIrptoolsHelp", "Calls IRPtools help.");
+            bundle.put("callIrptools", "Calls IRPtools, all arguments will be transmitted to IRPtools, IRPact is not called.");
+
+            bundle.put("printUtilitiesHelp", "Calls Utilities help.");
+            bundle.put("callUtilities", "Calls Utilities, all arguments will be transmitted to Utilities, IRPact is not called.");
+
+            bundle.put("testCl", "For testing the command line.");
+
+            fallback = bundle;
+        }
+        return fallback;
+    }
+
+    private static final Path EXEC_DIR = Paths.get(".");
 
     private static final String TRUE1 = "1";
     private static final String FALSE0 = "0";
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(MainCommandLineOptions.class);
+    //=========================
+    //core irpact
+    //=========================
 
     @CommandLine.Option(
             names = { "-?", "-h", "--help" },
-            description = "Print help.",
-            usageHelp = true
+            descriptionKey = "printHelp"
     )
     private boolean printHelp;
 
     @CommandLine.Option(
             names = { "-v", "--version" },
-            description = "Print version information.",
-            versionHelp = true
+            descriptionKey = "printVersion"
     )
     private boolean printVersion;
 
     @CommandLine.Option(
             names = { "-i", "--input" },
-            description = "Set path to input file."
+            descriptionKey = "inputPath",
+            converter = PathConverter.class
     )
-    private String inputFile;
     private Path inputPath;
 
     @CommandLine.Option(
             names = { "-o", "--output" },
-            description = "Set path to output file."
+            descriptionKey = "outputPath",
+            converter = PathConverter.class
     )
-    private String outputFile;
     private Path outputPath;
 
     @CommandLine.Option(
             names = { "--image" },
-            description = "Set path to image output file."
+            descriptionKey = "imagePath",
+            converter = PathConverter.class
     )
-    private String imageFile;
     private Path imagePath;
 
     @CommandLine.Option(
             names = { "--noSimulation" },
-            description = "Disable simulation, run initialization only."
+            descriptionKey = "noSimulation"
     )
     private boolean noSimulation;
 
     @CommandLine.Option(
+            names = { "--checkOutputExistence" },
+            descriptionKey = "checkOutputExistence"
+    )
+    private boolean checkOutputExistence;
+
+    //=========================
+    //converter settings
+    //=========================
+
+    @CommandLine.Option(
             names = { "--useGamsNameTrimming" },
             defaultValue = FALSE0,
-            description = "Enables (1) or disables (0) gams name trimming. Default value is ${DEFAULT-VALUE}. Change this option only if you know what you are doing."
+            descriptionKey = "useGamsNameTrimming"
     )
     private int useGamsNameTrimming;
 
     @CommandLine.Option(
             names = "--maxGamsNameLength",
             defaultValue = DefinitionMapper.IGNORE_NAME_LENGTH_AS_STR,
-            description = "Max length for gams field names. Value -1 disables this option. Max length for gams is 63. Default value is ${DEFAULT-VALUE}. Change this option only if you know what you are doing."
+            descriptionKey = "maxGamsNameLength"
     )
     private int maxGamsNameLength;
 
     @CommandLine.Option(
             names = "--minGamsPartLength",
             defaultValue = DefinitionMapper.MIN_PART_LENGTH_AS_STR,
-            description = "Min length for gams field name parts (tags). Default value is ${DEFAULT-VALUE}. Change this option only if you know what you are doing."
+            descriptionKey = "minGamsPartLength"
     )
     private int minGamsPartLength;
 
-    @CommandLine.Option(
-            names = { "--checkOutputExistence" },
-            description = "Checks if output already exists."
-    )
-    private boolean checkOutputExistence;
+    //=========================
+    //logging
+    //=========================
 
     @CommandLine.Option(
             names = { "--logPath" },
-            description = "Set path to log file and disable console logging."
+            descriptionKey = "logPath",
+            converter = PathConverter.class
     )
-    private String logFile;
     private Path logPath;
 
     @CommandLine.Option(
             names = { "--logConsoleAndFile" },
-            description = "Enable logging to console if '--logPath' is set."
+            descriptionKey = "logConsoleAndFile"
     )
     private boolean logConsoleAndFile;
 
+    //=========================
+    //diverses
+    //=========================
+
+    @Todo
     @CommandLine.Option(
             names = { "--prefereCsv" },
-            description = "Prefere csv files when loading."
+            descriptionKey = "prefereCsv",
+            hidden = true
     )
     private boolean prefereCsv;
 
     @CommandLine.Option(
-            names = { "--irptools" },
-            description = "Enables calling IRPtools, all arguments will be transmitted to IRPtools, IRPact is not called."
-    )
-    private boolean callIRPtools;
-
-    @CommandLine.Option(
-            names = { "--irptoolsUsage" },
-            description = "Calls IRPtools help."
-    )
-    protected boolean printIRPtoolsHelp;
-
-    @CommandLine.Option(
-            names = { "--printInput" },
-            description = "Saves input data to the specified file."
-    )
-    private String inputOutFile;
-    private Path inputOutPath;
-
-    @CommandLine.Option(
-            names = { "--printInputCharset" },
-            description = "Sets the charset for saving the input data."
-    )
-    private String inputOutCharsetName;
-    private Charset inputOutCharset;
-
-    //=========================
-    //hidden
-    //=========================
-
-    @CommandLine.Option(
-            names = { "--paramToSpec" },
-            description = "Converts the parameter input format to the alternative format.",
-            hidden = true
-    )
-    private String specOutputDir;
-    private Path specOutputDirPath;
-
-    @CommandLine.Option(
-            names = { "--specToParam" },
-            description = "Convert the alternative format to the parameter input format.",
-            hidden = true
-    )
-    private String specInputDir;
-    private Path specInputDirPath;
-
-    @CommandLine.Option(
             names = { "--dataDir" },
-            description = "Set path to data directory.",
-            hidden = true
+            descriptionKey = "dataDirPath",
+            converter = PathConverter.class
     )
-    private String dataDir;
     private Path dataDirPath;
 
     @CommandLine.Option(
-            names = { "--ignorePersistenceCheck" },
-            description = "ignore load mismatches",
-            hidden = true
+            names = { "--skipPersistenceCheck" },
+            descriptionKey = "skipPersistenceCheck"
     )
-    private boolean ignorePersistenceCheck;
+    private boolean skipPersistenceCheck;
 
     @CommandLine.Option(
             names = { "--skipArgValidation" },
-            description = "Skips command line validation.",
-            hidden = true
+            descriptionKey = "skipArgValidation"
     )
     private boolean skipArgValidation;
 
     @CommandLine.Option(
-            names = { "--noPersist" },
-            description = "...",
-            hidden = true
+            names = { "--skipPersist" },
+            descriptionKey = "skipPersist"
     )
-    private boolean noPersist;
+    private boolean skipPersist;
 
     //=========================
-    //data
+    //irptools
+    //=========================
+
+    @CommandLine.Option(
+            names = { "--irptoolsUsage" },
+            descriptionKey = "printIrptoolsHelp"
+    )
+    protected boolean printIrptoolsHelp;
+
+    @CommandLine.Option(
+            names = { "--irptools" },
+            descriptionKey = "callIrptools"
+    )
+    private boolean callIrptools;
+
+    //=========================
+    //utilities
+    //=========================
+
+    @CommandLine.Option(
+            names = { "--utilitiesUsage" },
+            descriptionKey = "printUtilitiesHelp"
+    )
+    protected boolean printUtilitiesHelp;
+
+    @CommandLine.Option(
+            names = { "--utilities" },
+            descriptionKey = "callUtilities"
+    )
+    private boolean callUtilities;
+
+    //=========================
+    //develop
+    //=========================
+
+    @CommandLine.Option(
+            names = { "--testCl" },
+            descriptionKey = "testCl",
+            hidden = true
+    )
+    private boolean testCl;
+
+    //=========================
+    //rest
     //=========================
 
     private boolean executed = false;
-    private LoggingMessage executeResult;
+    private LoggingMessage executeResultMessage;
 
     private boolean hasCustomInput = false;
     private boolean hasCallback = false;
 
-    public MainCommandLineOptions(String[] args) {
+    public MainCommandLineOptions(String... args) {
         super(args);
     }
 
@@ -222,14 +269,14 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     }
 
     protected void checkExecuted() {
-        if(isNotPrintHelpOrVersion() && !executed) {
+        if(!executed) {
             throw new IllegalStateException("not executed");
         }
     }
 
-    public int getErrorCode() {
+    public int getExitCode() {
         checkExecuted();
-        return errorCode;
+        return exitCode;
     }
 
     public boolean wasExecuted() {
@@ -237,35 +284,45 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     }
 
     public boolean hasExecuteResultMessage() {
-        return executeResult != null;
+        return executeResultMessage != null;
     }
 
     public LoggingMessage getExecuteResultMessage() {
-        return executeResult;
+        return executeResultMessage;
+    }
+
+    @Override
+    protected ResourceBundle getFallback() {
+        return getFallbackBundle();
     }
 
     //=========================
     //options
     //=========================
 
-    public boolean isNoPersist() {
-        return noPersist;
-    }
-
     public boolean isPrintHelp() {
+        checkExecuted();
         return printHelp;
     }
 
     public boolean isPrintVersion() {
+        checkExecuted();
         return printVersion;
     }
 
-    public boolean isPrintIRPtoolsHelp() {
-        return printIRPtoolsHelp;
+    public boolean isPrintIrptoolsHelp() {
+        checkExecuted();
+        return printIrptoolsHelp;
+    }
+
+    public boolean isPrintUtilitiesHelp() {
+        checkExecuted();
+        return printUtilitiesHelp;
     }
 
     public boolean isPrintHelpOrVersion() {
-        return isPrintHelp() || isPrintVersion() || isPrintIRPtoolsHelp();
+        return isPrintHelp()
+                || isPrintVersion();
     }
 
     public boolean isNotPrintHelpOrVersion() {
@@ -308,10 +365,12 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     }
 
     public boolean logConsoleAndFile() {
+        checkExecuted();
         return logConsoleAndFile;
     }
 
     public boolean isPrefereCsv() {
+        checkExecuted();
         return prefereCsv;
     }
 
@@ -329,101 +388,82 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         return isNoSimulation() && hasNoImagePath();
     }
 
-    public boolean isCallIRPtools() {
-        checkExecuted();
-        return callIRPtools;
+    public boolean hasCustomDataDirPath() {
+        return getDataDirPath() != EXEC_DIR;
     }
-
-    public boolean hasSpecOutputDirPath() {
-        return getSpecOutputDirPath() != null;
-    }
-    public Path getSpecOutputDirPath() {
-        checkExecuted();
-        return specOutputDirPath;
-    }
-
-    public boolean hasSpecInputDirPath() {
-        return getSpecInputDirPath() != null;
-    }
-    public Path getSpecInputDirPath() {
-        checkExecuted();
-        return specInputDirPath;
-    }
-
-    public boolean hasSpecialArgumentForIRPact() {
-        checkExecuted();
-        return hasSpecOutputDirPath()
-                || hasSpecInputDirPath();
-    }
-
     public Path getDataDirPath() {
         checkExecuted();
         return dataDirPath == null
-                ? Paths.get("irpactdata")
+                ? EXEC_DIR
                 : dataDirPath;
     }
 
-    public boolean isIgnorePersistenceCheck() {
-        return ignorePersistenceCheck;
+    public boolean isSkipPersistenceCheck() {
+        checkExecuted();
+        return skipPersistenceCheck;
     }
 
     public int getMaxGamsNameLength() {
+        checkExecuted();
         return maxGamsNameLength;
     }
 
     public int getMinGamsPartLength() {
+        checkExecuted();
         return minGamsPartLength;
     }
 
     public boolean isEnableGamsNameTrimming() {
+        checkExecuted();
         return useGamsNameTrimming == 1;
     }
 
-    public boolean hasInputOutPath() {
-        return inputOutPath != null;
+    public boolean isCallIrptools() {
+        checkExecuted();
+        return callIrptools;
     }
 
-    public Path getInputOutPath() {
-        return inputOutPath;
+    public boolean isCallUtilities() {
+        checkExecuted();
+        return callUtilities;
     }
 
-    public Charset getInputOutCharset() {
-        if(inputOutCharsetName == null) {
-            return StandardCharsets.UTF_8;
-        } else {
-            if(inputOutCharset == null) {
-                inputOutCharset = Charset.forName(inputOutCharsetName);
-            }
-            return inputOutCharset;
-        }
+    public boolean isSkipPersist() {
+        return skipPersist;
+    }
+
+    public boolean isTestCl() {
+        checkExecuted();
+        return testCl;
     }
 
     //=========================
-    //execute
+    //call
     //=========================
 
     @Override
-    public Integer call() {
+    public Integer call() throws Exception {
+        if(executed) {
+            throw new IllegalStateException("already executed");
+        }
         executed = true;
-        setup();
         return validate();
-    }
-
-    private void setup() {
-        inputPath = tryGetPath(inputFile);
-        outputPath = tryGetPath(outputFile);
-        imagePath = tryGetPath(imageFile);
-        logPath = tryGetPath(logFile);
-        specOutputDirPath = tryGetPath(specOutputDir);
-        specInputDirPath = tryGetPath(specInputDir);
-        dataDirPath = tryGetPath(dataDir);
-        inputOutPath = tryGetPath(inputOutFile);
     }
 
     private static Path tryGetPath(String pathStr) {
         return pathStr == null
                 ? null
                 : Paths.get(pathStr);
+    }
+
+    private boolean callSub() {
+        return callIrptools || callUtilities;
+    }
+
+    private boolean cancelValidation() {
+        return skipArgValidation
+                || callSub()
+                || isPrintHelpOrVersion();
     }
 
     @SuppressWarnings("RedundantIfStatement")
@@ -437,118 +477,42 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             return inputOk;
         }
 
-        int outputOk = validateInput();
+        int outputOk = validateOutput();
         if(outputOk != CommandLine.ExitCode.OK) {
             return outputOk;
         }
 
-        int consistencyOk = validateConsistency();
-        if(consistencyOk != CommandLine.ExitCode.OK) {
-            return consistencyOk;
-        }
-
         return CommandLine.ExitCode.OK;
-    }
-
-    private boolean cancelValidation() {
-        return skipArgValidation
-                || printHelp
-                || printVersion
-                || callIRPtools
-                || printIRPtoolsHelp;
     }
 
     private int validateInput() {
-        int specifiedInput = countSpecified(inputPath, specInputDirPath);
-
-        if(hasCustomInput()) {
-            if(specifiedInput == 0b00) {
+        if(hasInputPath()) {
+            if(hasCustomInput()) {
+                executeResultMessage = new LoggingMessage("custom input and file input specified");
+                return CommandLine.ExitCode.USAGE;
+            } else {
+                return CommandLine.ExitCode.OK;
+            }
+        } else {
+            if(hasCustomInput()) {
                 return CommandLine.ExitCode.OK;
             } else {
-                executeResult = new LoggingMessage("custom input and file input specified");
+                executeResultMessage = new LoggingMessage("missing input");
                 return CommandLine.ExitCode.USAGE;
             }
         }
-
-        switch (specifiedInput) {
-            case 0b00:
-                executeResult = new LoggingMessage("missing input");
-                return CommandLine.ExitCode.USAGE;
-
-            case 0b01:
-                if(Files.notExists(inputPath)) {
-                    executeResult = new LoggingMessage("input file '{}' not exists", inputPath);
-                    return CommandLine.ExitCode.USAGE;
-                }
-                if(Files.isDirectory(inputPath)) {
-                    executeResult = new LoggingMessage("input file '{}' is a directory", inputPath);
-                    return CommandLine.ExitCode.USAGE;
-                }
-                break;
-
-            case 0b10:
-                if(Files.notExists(specInputDirPath)) {
-                    executeResult = new LoggingMessage("input file '{}' not exists", specInputDirPath);
-                    return CommandLine.ExitCode.USAGE;
-                }
-                if(Files.isDirectory(specInputDirPath)) {
-                    executeResult = new LoggingMessage("input file '{}' is a directory", specInputDirPath);
-                    return CommandLine.ExitCode.USAGE;
-                }
-                break;
-
-            case 0b11:
-                executeResult = new LoggingMessage("input file '{}' and spec input dir '{}' specified", inputPath, specInputDirPath);
-                return CommandLine.ExitCode.USAGE;
-        }
-
-        return CommandLine.ExitCode.OK;
     }
 
     private int validateOutput() {
-        int specifiedOutput = countSpecified(outputPath, specOutputDirPath);
-        switch (specifiedOutput) {
-            case 0b00:
-                if(hasCallback()) {
-                    return CommandLine.ExitCode.OK;
-                }
-                executeResult = new LoggingMessage("missing output");
+        if(hasOutputPath()) {
+            return CommandLine.ExitCode.OK;
+        } else {
+            if(hasCallback()) {
+                return CommandLine.ExitCode.OK;
+            } else {
+                executeResultMessage = new LoggingMessage("missing output");
                 return CommandLine.ExitCode.USAGE;
-
-            case 0b01:
-                if(checkOutputExistence && Files.exists(outputPath)) {
-                    executeResult = new LoggingMessage("output file '{}' already exists", outputPath);
-                    return CommandLine.ExitCode.USAGE;
-                }
-                if(Files.isDirectory(outputPath)) {
-                    executeResult = new LoggingMessage("output file '{}' is a directory", outputPath);
-                    return CommandLine.ExitCode.USAGE;
-                }
-                break;
-
-            case 0b10:
-                if(!Files.isDirectory(specOutputDirPath)) {
-                    executeResult = new LoggingMessage("output file '{}' is not a directory", specOutputDirPath);
-                    return CommandLine.ExitCode.USAGE;
-                }
-                break;
-
-            case 0b11:
-                executeResult = new LoggingMessage("output file '{}' and spec output dir '{}' specified", outputPath, specOutputDirPath);
-                return CommandLine.ExitCode.USAGE;
+            }
         }
-
-        return CommandLine.ExitCode.OK;
-    }
-
-    private int validateConsistency() {
-        return CommandLine.ExitCode.OK;
-    }
-
-    private static int countSpecified(Object obj0, Object obj1) {
-        int out = 0;
-        if(obj0 != null) out |= 0b01;
-        if(obj1 != null) out |= 0b10;
-        return out;
     }
 }

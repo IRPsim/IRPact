@@ -34,7 +34,13 @@ public class OutRoot implements RootClass {
     //=========================
 
     @FieldDefinition
+    public OutInformation[] informations = new OutInformation[0];
+
+    @FieldDefinition
     public OutAdoptionResult[] adoptionResults = new OutAdoptionResult[0];
+
+    @FieldDefinition
+    public OutAnnualAdoptionData[] annualAdoptionData = new OutAnnualAdoptionData[0];
 
     @FieldDefinition
     public BinaryPersistData[] binaryPersistData = new BinaryPersistData[0];
@@ -49,6 +55,14 @@ public class OutRoot implements RootClass {
     //==================================================
 
     public OutRoot() {
+    }
+
+    public void setInformation(String text) {
+        setInformation(new OutInformation(text));
+    }
+
+    public void setInformation(OutInformation information) {
+        this.informations = new OutInformation[]{information};
     }
 
     public void addHiddenBinaryData(Collection<? extends BinaryPersistData> coll) {
@@ -87,7 +101,9 @@ public class OutRoot implements RootClass {
         SimpleCopyCache cache = new SimpleCopyCache();
         OutRoot copy = new OutRoot();
         //act
+        copy.informations = cache.copyArray(informations);
         copy.adoptionResults = cache.copyArray(adoptionResults);
+        copy.annualAdoptionData = cache.copyArray(annualAdoptionData);
         copy.binaryPersistData = cache.copyArray(binaryPersistData);
         //optact
         copy.outGrps = outGrps;
@@ -103,6 +119,7 @@ public class OutRoot implements RootClass {
             ParserInput.listOf(Type.OUTPUT,
                     OutAdoptionResult.class,
                     OutAnnualAdoptionData.class,
+                    OutInformation.class,
                     BinaryPersistData.class
             ),
             ParserInput.listOf(Type.REFERENCE,
@@ -130,6 +147,7 @@ public class OutRoot implements RootClass {
     //=========================
 
     public static void initRes(TreeAnnotationResource res) {
+        addPathElement(res, OutInformation.thisName(), ROOT);
         addPathElement(res, OutAdoptionResult.thisName(), ROOT);
         addPathElement(res, OutAnnualAdoptionData.thisName(), SPECIAL_SETTINGS);
     }

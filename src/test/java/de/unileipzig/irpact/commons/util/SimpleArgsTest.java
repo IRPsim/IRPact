@@ -7,12 +7,12 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * @author Daniel Abitz
  */
-class ArgsTest {
+class SimpleArgsTest {
 
     @Test
     void testSetAll() {
         String[] argArr = {"--a", "x", "-hallo", "\"welt !\"", "--b", "--c", "abc", "xyz"};
-        Args args = new Args();
+        SimpleArgs args = new SimpleArgs();
         args.parse(argArr);
         assertEquals("x", args.get("--a"));
         assertEquals("welt !", args.get("-hallo"));
@@ -23,7 +23,7 @@ class ArgsTest {
 
     @Test
     void testSet() {
-        Args args = new Args()
+        SimpleArgs args = new SimpleArgs()
                 .set("--a", "x")
                 .set("-hallo", "welt !")
                 .set("--b")
