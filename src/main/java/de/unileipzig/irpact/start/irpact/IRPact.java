@@ -131,6 +131,16 @@ public class IRPact implements IRPActAccess {
         }
     }
 
+    public static AnnualEntry<OutRoot> convertOutput(MainCommandLineOptions options, ObjectNode rootNode) {
+        ContentType contentType = ContentTypeDetector.detect(rootNode);
+        LOGGER.trace(IRPSection.GENERAL, "content type: {}", contentType);
+        return ContentTypeDetector.parseFirstEntry(
+                rootNode,
+                contentType,
+                getOutputConverter(options)
+        );
+    }
+
     public static AnnualEntry<InRoot> convert(MainCommandLineOptions options, ObjectNode rootNode) {
         ContentType contentType = ContentTypeDetector.detect(rootNode);
         LOGGER.trace(IRPSection.GENERAL, "content type: {}", contentType);

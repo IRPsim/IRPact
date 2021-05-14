@@ -10,7 +10,6 @@ import de.unileipzig.irpact.start.utilities.Utilities;
 import de.unileipzig.irptools.io.base.AnnualEntry;
 import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
-import org.slf4j.event.Level;
 import picocli.CommandLine;
 
 import java.io.IOException;
@@ -91,7 +90,7 @@ public final class Start {
         try {
             setupLogging();
             if(options.hasExecuteResultMessage()) {
-                options.getExecuteResultMessage().log(LOGGER, Level.INFO);
+                options.getExecuteResultMessage().trace(LOGGER);
             }
             return true;
         } catch (IOException e) {
@@ -173,10 +172,10 @@ public final class Start {
     private StartResult runUtilities() {
         try {
             if(options.isPrintUtilitiesHelp()) {
-                Utilities.main(new String[]{"-?"});
+                Utilities.run(options, new String[]{"-?"});
             } else {
                 LOGGER.trace(IRPSection.GENERAL, "executing Utilities");
-                Utilities.main(options.getArgs());
+                Utilities.run(options, options.getArgs());
             }
             return new StartResult(options.getExitCode());
         } catch (Throwable t) {

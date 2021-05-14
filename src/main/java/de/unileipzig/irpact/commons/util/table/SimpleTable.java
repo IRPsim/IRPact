@@ -206,6 +206,17 @@ public class SimpleTable<T> implements Table<T> {
         rows.add(newRow);
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public void addRow(T... columnValues) {
+        if(columnValues.length != columnCount()) {
+            throw new IllegalArgumentException("value.length != column count");
+        }
+        List<T> newRow = new ArrayList<>();
+        Collections.addAll(newRow, columnValues);
+        rows.add(newRow);
+    }
+
     @Override
     public void addRows(int count) {
         for(int i = 0; i < count; i++) {

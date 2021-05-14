@@ -26,6 +26,10 @@ public enum IRPSection implements LoggingSection {
      * This option is used for default logging operations.
      */
     GENERAL,
+    /**
+     * This option is used for utilities operations.
+     */
+    UTILITIES,
 
     /**
      * Used throughout the initialization.

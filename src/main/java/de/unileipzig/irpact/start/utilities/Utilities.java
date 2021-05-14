@@ -1,8 +1,33 @@
 package de.unileipzig.irpact.start.utilities;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.csv.CsvPrinter;
+import de.unileipzig.irpact.commons.util.table.SimpleTable;
+import de.unileipzig.irpact.commons.util.table.Table;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.start.Start;
+import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.util.AnnualAdoptionData;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.output.OutAnnualAdoptionData;
+import de.unileipzig.irpact.io.param.output.OutRoot;
+import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
+import de.unileipzig.irpact.start.irpact.IRPact;
+import de.unileipzig.irpact.util.R.ExistingRScript;
+import de.unileipzig.irpact.util.R.R;
+import de.unileipzig.irpact.util.R.RScriptException;
+import de.unileipzig.irptools.io.base.AnnualEntry;
 import de.unileipzig.irptools.util.log.IRPLogger;
+import picocli.CommandLine;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Daniel Abitz
@@ -11,21 +36,26 @@ public class Utilities {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(Utilities.class);
 
-    protected UtilitiesCommandLineOptions options;
+    protected MainCommandLineOptions mainOptions;
+    protected UtilitiesCommandLineOptions utilOptions;
 
-    public Utilities() {
+    public Utilities(
+            MainCommandLineOptions mainOptions,
+            UtilitiesCommandLineOptions utilOptions) {
+        setMainOptions(mainOptions);
+        setUtilitiesOptions(utilOptions);
     }
 
-    public Utilities(UtilitiesCommandLineOptions options) {
-        setOptions(options);
+    public void setMainOptions(MainCommandLineOptions mainOptions) {
+        this.mainOptions = mainOptions;
     }
 
-    public void setOptions(UtilitiesCommandLineOptions options) {
-        this.options = options;
+    public void setUtilitiesOptions(UtilitiesCommandLineOptions utilOptions) {
+        this.utilOptions = utilOptions;
     }
 
-    public void run() {
-        if(options.isPrintCumulativeAdoptions()) {
+    public void run() throws Exception {
+        if(utilOptions.isPrintCumulativeAdoptions()) {
             printCumulativeAdoptions();
         }
     }
@@ -83,15 +113,162 @@ public class Utilities {
     //print cumulative adoptions
     //=========================
 
-    private void printCumulativeAdoptions() {
+    private void printCumulativeAdoptions() throws IOException, RScriptException, InterruptedException {
+        LOGGER.trace(IRPSection.UTILITIES, "task: print cumulative adoptions with R");
 
+        Path tempFile = getTempCsvFile(utilOptions.getROutput());
+        try {
+            printTempCsvFile(tempFile);
+            runRScriptForCumulativeAdoptions(tempFile);
+        } finally {
+            if(Files.exists(tempFile)) {
+                LOGGER.trace(IRPSection.UTILITIES, "delete temp csv file '{}'", tempFile);
+                Files.delete(tempFile);
+            }
+        }
+
+        LOGGER.trace(IRPSection.UTILITIES, "task 'print cumulative adoptions with R' finished");
+    }
+
+    private void printTempCsvFile( Path tempFile) throws IOException {
+        LOGGER.trace(IRPSection.UTILITIES, "convert data to csv");
+        ObjectNode rootNode = parseRInputAsOutRoot();
+        AnnualEntry<OutRoot> outRootEntry = IRPact.convertOutput(mainOptions, rootNode);
+        OutRoot outRoot = outRootEntry.getData();
+        AnnualAdoptionData data = parseWithDummy(outRoot.getAnnualAdoptionData());
+        Table<String> table = toStringTable(data);
+        LOGGER.trace(IRPSection.UTILITIES, "save temp csv file '{}'", tempFile);
+        printCsv(tempFile, table);
+    }
+
+    private void runRScriptForCumulativeAdoptions(Path tempFile) throws IOException, RScriptException, InterruptedException {
+        LOGGER.trace(IRPSection.UTILITIES, "run R");
+        runRScriptWithInputAndOutput(
+                utilOptions.getRExe(),
+                utilOptions.getRScript(),
+                tempFile,
+                utilOptions.getROutput()
+        );
+    }
+
+    private ObjectNode parseRInputAsOutRoot() throws IOException {
+        LOGGER.trace(IRPSection.UTILITIES, "parse r input '{}' as OutRoot", utilOptions.getRInput());
+        return IRPactJson.readJson(utilOptions.getRInput());
+    }
+
+    private static Path getTempCsvFile(Path input) {
+        String fileName = input.getFileName().toString();
+        Path tempFile = input.resolveSibling(fileName + ".temp.csv");
+        LOGGER.trace(IRPSection.UTILITIES, "create temp file '{}'", tempFile);
+        return tempFile;
+    }
+
+    private static AnnualAdoptionData parseWithDummy(OutAnnualAdoptionData... datas) {
+        Map<String, ConsumerAgentGroup> cache = new HashMap<>();
+        AnnualAdoptionData outData = new AnnualAdoptionData();
+        for(OutAnnualAdoptionData data: datas) {
+            for(InConsumerAgentGroup inCag: data.getConsumerAgentGroups()) {
+                JadexConsumerAgentGroup cag = (JadexConsumerAgentGroup) cache.computeIfAbsent(
+                        inCag.getName(),
+                        _name -> {
+                            JadexConsumerAgentGroup _cag = new JadexConsumerAgentGroup();
+                            _cag.setName(_name);
+                            return _cag;
+                        }
+                );
+
+                outData.set(
+                        data.getYear(),
+                        cag,
+                        data.getAdoptionsThisYear(inCag),
+                        data.getAdoptionsCumulativ(inCag),
+                        data.getAdoptionShareThisYear(inCag),
+                        data.getAdoptionShareCumulativ(inCag)
+                );
+            }
+        }
+        return outData;
+    }
+
+    private static Table<String> toStringTable(AnnualAdoptionData data) {
+        SimpleTable<String> table = new SimpleTable<>();
+        table.addColumns("year", "milieu", "adoptions", "adoptionsCumulative", "adoptionsShare", "adoptionsShareCumulative");
+        for(int year: data.getYears()) {
+            for(ConsumerAgentGroup cag: data.getConsumerAgentGroups()) {
+                int adoptions = data.getAdoptionsMap().get(year, cag);
+                int adoptionsCumulative = data.getAdoptionsCumulativMap().get(year, cag);
+                double adoptionsShare = data.getAdoptionsShareMap().get(year, cag);
+                double adoptionsShareCumulative = data.getAdoptionsShareCumulativeMap().get(year, cag);
+
+                table.addRow(
+                        Integer.toString(year),
+                        cag.getName(),
+                        Integer.toString(adoptions),
+                        Integer.toString(adoptionsCumulative),
+                        Double.toString(adoptionsShare),
+                        Double.toString(adoptionsShareCumulative)
+                );
+            }
+        }
+
+        return table;
+    }
+
+    private static void printCsv(Path target, Table<String> table) throws IOException {
+        CsvPrinter<String> printer = new CsvPrinter<>(str -> str);
+        printer.setDelimiter(",");
+        printer.write(target, StandardCharsets.UTF_8, table.getHeader(), table.listTable());
+    }
+
+    private static void runRScriptWithInputAndOutput(
+            Path rExe,
+            Path rScript,
+            Path input,
+            Path output) throws IOException, RScriptException, InterruptedException {
+        runRScriptWithArguments(rExe, rScript, input.toString(), output.toString());
+    }
+
+    private static void runRScriptWithArguments(
+            Path rExe,
+            Path rScript,
+            String... args) throws IOException, RScriptException, InterruptedException {
+        R engine = new R(rExe);
+        ExistingRScript script = new ExistingRScript(rScript);
+        script.addArgs(args);
+        LOGGER.trace(IRPSection.UTILITIES, "run command: {}", script.peekCommand(engine));
+        script.execute(engine);
     }
 
     //=========================
     //start
     //=========================
 
-    public static void main(String[] args) {
+    public static void run(MainCommandLineOptions mainOptions, String[] args) throws Exception {
+        UtilitiesCommandLineOptions utilOptions = new UtilitiesCommandLineOptions(args);
+        int exitCode = utilOptions.parse();
 
+        if(exitCode != CommandLine.ExitCode.OK) {
+            if(utilOptions.hasExecuteResultMessage()) {
+                utilOptions.getExecuteResultMessage().error(LOGGER);
+            }
+            return;
+        }
+
+        if(utilOptions.hasExecuteResultMessage()) {
+            utilOptions.getExecuteResultMessage().trace(LOGGER);
+        }
+
+        if(utilOptions.isPrintHelpOrVersion()) {
+            if(utilOptions.isPrintVersion()) {
+                utilOptions.getCommandLine().printVersionHelp(System.out);
+            }
+            if(utilOptions.isPrintHelp()) {
+                utilOptions.getCommandLine().usage(System.out);
+            }
+            return;
+        }
+
+        Utilities utilities = new Utilities(mainOptions, utilOptions);
+        utilities.run();
     }
 }

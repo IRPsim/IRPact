@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.util.R;
 
-import java.io.IOException;
 import java.nio.file.Path;
 
 /**
@@ -21,10 +20,5 @@ public class ExistingRScript extends AbstractRScript {
     @Override
     protected String printRScriptPath() {
         return "\"" + getRScriptPath() + "\"";
-    }
-
-    @Override
-    public void execute(R engine) throws IOException {
-
     }
 }

@@ -4,11 +4,17 @@ import de.unileipzig.irpact.commons.util.data.MapBasedTripleMapping;
 import de.unileipzig.irpact.commons.util.data.TripleMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
  * @author Daniel Abitz
  */
 public class AnnualAdoptionData {
 
+    protected Set<Integer> years = new LinkedHashSet<>();
+    protected Set<ConsumerAgentGroup> cags = new LinkedHashSet<>();
     protected TripleMapping<Integer, ConsumerAgentGroup, Integer> adoptionsMap = new MapBasedTripleMapping<>();
     protected TripleMapping<Integer, ConsumerAgentGroup, Integer> adoptionsCumulativMap = new MapBasedTripleMapping<>();
     protected TripleMapping<Integer, ConsumerAgentGroup, Double> adoptionsShareMap = new MapBasedTripleMapping<>();
@@ -33,7 +39,18 @@ public class AnnualAdoptionData {
         return adoptionsShareCumulativeMap;
     }
 
+    public Collection<? extends Integer> getYears() {
+        return years;
+    }
+
+    public Collection<? extends ConsumerAgentGroup> getConsumerAgentGroups() {
+        return cags;
+    }
+
     public void update(int year, ConsumerAgentGroup cag, int adoptions, int totalAgents) {
+        years.add(year);
+        cags.add(cag);
+
         adoptionsMap.put(year, cag, adoptions);
 
         int adoptionsCumulativ = adoptionsCumulativMap.get(year, cag, 0);
@@ -44,5 +61,20 @@ public class AnnualAdoptionData {
 
         double adoptionsShareCumulative = adoptionsShareCumulativeMap.get(year, cag, 0.0);
         adoptionsShareCumulativeMap.put(year, cag, adoptionsShareCumulative + share);
+    }
+
+    public void set(
+            int year,
+            ConsumerAgentGroup cag,
+            int adoptions,
+            int adoptionsCumulativ,
+            double adoptionsShare,
+            double adoptionsShareCumulative) {
+        years.add(year);
+        cags.add(cag);
+        adoptionsMap.put(year, cag, adoptions);
+        adoptionsCumulativMap.put(year, cag, adoptionsCumulativ);
+        adoptionsShareMap.put(year, cag, adoptionsShare);
+        adoptionsShareCumulativeMap.put(year, cag, adoptionsShareCumulative);
     }
 }

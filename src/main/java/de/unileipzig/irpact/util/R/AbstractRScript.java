@@ -5,6 +5,7 @@ import de.unileipzig.irptools.util.ProcessResult;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -37,12 +38,15 @@ public abstract class AbstractRScript implements RScript {
         args.add(arg);
     }
 
+    public void addArgs(String... args) {
+        Collections.addAll(this.args, args);
+    }
+
     public List<String> getArgs() {
         return args;
     }
 
-    @Override
-    public void execute(R engine) throws IOException, InterruptedException, RScriptException {
+    private ProcessBuilder builder(R engine) {
         List<String> command = new ArrayList<>();
         command.add(engine.printRPatch());
         command.addAll(options);
@@ -51,6 +55,17 @@ public abstract class AbstractRScript implements RScript {
 
         ProcessBuilder pb = new ProcessBuilder();
         pb.command(command);
+        return pb;
+    }
+
+    public List<String> peekCommand(R engine) {
+        ProcessBuilder pb = builder(engine);
+        return pb.command();
+    }
+
+    @Override
+    public void execute(R engine) throws IOException, InterruptedException, RScriptException {
+        ProcessBuilder pb = builder(engine);
 
         Process process = pb.start();
         ProcessResult result = ProcessResult.waitFor(process);

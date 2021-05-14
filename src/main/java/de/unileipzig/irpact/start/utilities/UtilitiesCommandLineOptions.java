@@ -34,9 +34,10 @@ public final class UtilitiesCommandLineOptions extends AbstractCommandLineOption
             bundle.put("inputOutCharset", "Sets the charset for saving the input data.");
             bundle.put("spec2paramPaths", "Converts the specification format to the parameter format.");
             bundle.put("param2specPaths", "Converts the parameter format to the specification format.");
-            bundle.put("rScriptExe", "Path to RScript.");
-            bundle.put("rInput", "Input file for RScript.");
-            bundle.put("rOutput", "Output file for RScript.");
+            bundle.put("rExe", "Path to R. Type (e.g. R or RScript) depends on selected function.");
+            bundle.put("rScript", "Path to R script file.");
+            bundle.put("rInput", "Input file for R. Type depends on selected function.");
+            bundle.put("rOutput", "Output file for R. Type depends on selected function.");
             bundle.put("printCumulativeAdoptions", "Print cumulative adoptions.");
             bundle.put("milieus", "Milieus to print. Can be used with '--printCumulativeAdoptions'.");
 
@@ -93,12 +94,23 @@ public final class UtilitiesCommandLineOptions extends AbstractCommandLineOption
     )
     private Path[] param2specPaths;
 
+    //=========================
+    //R
+    //=========================
+
     @CommandLine.Option(
-            names = { "--rscript" },
-            descriptionKey = "rScriptExe",
+            names = { "-R" },
+            descriptionKey = "rExe",
             converter = PathConverter.class
     )
-    private Path rScriptExe;
+    private Path rExe;
+
+    @CommandLine.Option(
+            names = { "-rscript" },
+            descriptionKey = "rScript",
+            converter = PathConverter.class
+    )
+    private Path rScript;
 
     @CommandLine.Option(
             names = { "--rinput" },
@@ -186,14 +198,29 @@ public final class UtilitiesCommandLineOptions extends AbstractCommandLineOption
     //getter
     //=========================
 
+    public boolean isPrintHelp() {
+        return printHelp;
+    }
+
+    public boolean isPrintVersion() {
+        return printVersion;
+    }
+
+    public boolean isPrintHelpOrVersion() {
+        return isPrintHelp() || isPrintVersion();
+    }
 
     public Path[] getParam2specPaths() {
         return param2specPaths;
     }
 
-    public Path getRScriptExe() {
+    public Path getRExe() {
         checkExecuted();
-        return rScriptExe;
+        return rExe;
+    }
+
+    public Path getRScript() {
+        return rScript;
     }
 
     public Path getRInput() {
@@ -244,13 +271,18 @@ public final class UtilitiesCommandLineOptions extends AbstractCommandLineOption
     }
 
     private int hasValidRScriptInputAndOutput() {
-        if(rScriptExe == null) {
+        if(rExe == null) {
             executeResultMessage = new LoggingMessage("missing RScript execution path");
             return CommandLine.ExitCode.USAGE;
         }
 
-        if(Files.notExists(rScriptExe)) {
-            executeResultMessage = new LoggingMessage("'{}' not found", rScriptExe);
+        if(Files.notExists(rExe)) {
+            executeResultMessage = new LoggingMessage("'{}' not found", rExe);
+            return CommandLine.ExitCode.USAGE;
+        }
+
+        if(Files.notExists(rScript)) {
+            executeResultMessage = new LoggingMessage("'{}' not found", rScript);
             return CommandLine.ExitCode.USAGE;
         }
 

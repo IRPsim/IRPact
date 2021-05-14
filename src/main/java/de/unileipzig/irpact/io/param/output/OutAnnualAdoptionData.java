@@ -1,6 +1,10 @@
 package de.unileipzig.irpact.io.param.output;
 
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.util.AnnualAdoptionData;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
+import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
+import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Factory;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -9,9 +13,8 @@ import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
+import java.util.function.Function;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
 
@@ -108,6 +111,10 @@ public class OutAnnualAdoptionData implements OutEntity {
         }
     }
 
+    public Collection<? extends InConsumerAgentGroup> getConsumerAgentGroups() {
+        return adoptionsThisYear.keySet();
+    }
+
     public void set(
             InConsumerAgentGroup cag,
             int adoptionsThisYear,
@@ -118,5 +125,62 @@ public class OutAnnualAdoptionData implements OutEntity {
         this.adoptionsCumulativ.put(cag, adoptionsCumulativ);
         this.adoptionShareThisYear.put(cag, adoptionShareThisYear);
         this.adoptionShareCumulativ.put(cag, adoptionShareCumulativ);
+    }
+
+    public int getAdoptionsThisYear(InConsumerAgentGroup cag) {
+        return adoptionsThisYear.get(cag);
+    }
+
+    public int getAdoptionsCumulativ(InConsumerAgentGroup cag) {
+        return adoptionsCumulativ.get(cag);
+    }
+
+    public double getAdoptionShareThisYear(InConsumerAgentGroup cag) {
+        return adoptionShareThisYear.get(cag);
+    }
+
+    public double getAdoptionShareCumulativ(InConsumerAgentGroup cag) {
+        return adoptionShareCumulativ.get(cag);
+    }
+
+    public static AnnualAdoptionData parseWithDummy(OutAnnualAdoptionData... datas) {
+        Function<InConsumerAgentGroup, ConsumerAgentGroup> parserFunc = new Function<InConsumerAgentGroup, ConsumerAgentGroup>() {
+
+            protected final Map<String, ConsumerAgentGroup> cache = new HashMap<>();
+
+            @Override
+            public ConsumerAgentGroup apply(InConsumerAgentGroup in) {
+                if(cache.containsKey(in.getName())) {
+                    return cache.get(in.getName());
+                } else {
+                    JadexConsumerAgentGroup out = new JadexConsumerAgentGroup();
+                    out.setName(in.getName());
+                    cache.put(in.getName(), out);
+                    return out;
+                }
+            }
+        };
+
+        return parse(parserFunc, datas);
+    }
+
+    protected static AnnualAdoptionData parse(
+            Function<? super InConsumerAgentGroup, ? extends ConsumerAgentGroup> parserFunc,
+            OutAnnualAdoptionData... datas) {
+        AnnualAdoptionData outData = new AnnualAdoptionData();
+        for(OutAnnualAdoptionData data: datas) {
+            for(InConsumerAgentGroup inCag: data.getConsumerAgentGroups()) {
+                ConsumerAgentGroup cag = parserFunc.apply(inCag);
+                outData.set(
+                        data.getYear(),
+                        cag,
+                        data.getAdoptionsThisYear(inCag),
+                        data.getAdoptionsCumulativ(inCag),
+                        data.getAdoptionShareThisYear(inCag),
+                        data.getAdoptionShareCumulativ(inCag)
+                );
+            }
+        }
+        return outData;
     }
 }

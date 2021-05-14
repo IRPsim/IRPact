@@ -54,6 +54,9 @@ public interface Table<T> {
 
     void addRow();
 
+    @SuppressWarnings("unchecked")
+    void addRow(T... columnValues) throws IllegalArgumentException;
+
     void addRows(int count);
 
     boolean removeRow(int rowIndex);

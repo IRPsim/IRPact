@@ -65,6 +65,10 @@ public class OutRoot implements RootClass {
         this.informations = new OutInformation[]{information};
     }
 
+    public OutAnnualAdoptionData[] getAnnualAdoptionData() {
+        return annualAdoptionData;
+    }
+
     public void addHiddenBinaryData(Collection<? extends BinaryPersistData> coll) {
         int pos;
         if(binaryPersistData == null) {
