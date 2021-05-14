@@ -2,6 +2,7 @@ package de.unileipzig.irpact.commons.util.data.weighted;
 
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.data.DataCounter;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -138,9 +139,10 @@ class NavigableMapWeightedMappingTest {
     }
 
     @Test
-    void testX() {
+    void testUnreachableValue() {
         NavigableMapWeightedMapping<String> abc = new NavigableMapWeightedMapping<>();
         abc.set("a", 1);
-        assertEquals("a", abc.getWeightedRandom(1.0));
+        assertEquals("a", abc.getWeightedRandom(0.9999));
+        assertThrows(NullPointerException.class, () -> abc.getWeightedRandom(1.0));
     }
 }

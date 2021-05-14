@@ -170,7 +170,7 @@ public class BasicSocialGraph implements SocialGraph {
         }
 
         @Override
-        public int sum(Collection<?> keys, Type type) {
+        public int sum(Iterable<?> keys, Type type) {
             int total = 0;
             for(Object key: keys) {
                 total += get(key, type);
@@ -179,10 +179,12 @@ public class BasicSocialGraph implements SocialGraph {
         }
 
         @Override
-        public int total(Type type) {
-            return linkCounter.streamValues(type)
-                    .mapToInt(v -> v)
-                    .sum();
+        public int sum(Type type) {
+            int total = 0;
+            for(Object key: linkCounter.iterableB(type)) {
+                total += get(key, type);
+            }
+            return total;
         }
     }
 
@@ -335,15 +337,11 @@ public class BasicSocialGraph implements SocialGraph {
 
     @Override
     public boolean addEdge(Node from, Node to, Type type, double weight) {
-        if(GRAPH.hasEdge(from, to, type)) {
-            return false;
-        } else {
-            Edge edge = EDGE_SUPPLIER.apply(type);
-            edge.setSource(from);
-            edge.setTarget(to);
-            edge.setWeight(weight);
-            return GRAPH.addEdge(from, to, type, edge);
-        }
+        Edge edge = EDGE_SUPPLIER.apply(type);
+        edge.setSource(from);
+        edge.setTarget(to);
+        edge.setWeight(weight);
+        return GRAPH.addEdge(from, to, type, edge);
     }
 
     public void addEdgeDirect(BasicEdge edge) {

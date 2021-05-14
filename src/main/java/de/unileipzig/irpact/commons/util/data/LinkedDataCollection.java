@@ -266,9 +266,7 @@ public class LinkedDataCollection<E> implements DataCollection<E> {
             COLL.clear();
         }
         protected void clear0(LinkedView<E> view) {
-            if(view == this) {
-                COLL.clear();
-            } else {
+            if(view != this) {
                 COLL.removeAll(view.COLL);
             }
         }

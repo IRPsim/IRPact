@@ -198,6 +198,10 @@ public final class Rnd implements ChecksumComparable {
         return getRandom(map.values());
     }
 
+    public <K, V> Map.Entry<K, V> getRandomEntry(Map<K, V> map) {
+        return getRandom(map.entrySet());
+    }
+
     public <T> T removeRandom(Collection<? extends T> coll) {
         lock();
         try {

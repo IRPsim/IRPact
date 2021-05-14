@@ -22,16 +22,12 @@ public final class IRPLogging {
     private IRPLogging() {
     }
 
-    public static void disableAll() {
-        Logback.initLogging();
-        Logback.setupConsole();
-        Logback.setLevel(Level.OFF);
+    public static void enableLogging() {
+        FILTER.enable();
     }
 
-    public static void errorOnly() {
-        Logback.initLogging();
-        Logback.setupConsole();
-        Logback.setLevel(Level.ERROR);
+    public static void disableLogging() {
+        FILTER.disable();
     }
 
     public static void initConsole() {
@@ -85,8 +81,13 @@ public final class IRPLogging {
     }
 
     public static void setLevel(IRPLevel level) {
+        Logback.initLogging();
         Logback.setLevel(level.toLogbackLevel());
     }
+
+    //=========================
+    //helper
+    //=========================
 
     /**
      * @author Daniel Abitz
@@ -94,8 +95,17 @@ public final class IRPLogging {
     private static final class GlobalFilter implements LoggingFilter {
 
         private SectionLoggingFilter backed;
+        private boolean enabled = true;
 
         private GlobalFilter() {
+        }
+
+        private void enable() {
+            enabled = true;
+        }
+
+        private void disable() {
+            enabled = false;
         }
 
         private void setBacked(SectionLoggingFilter backed) {
@@ -115,12 +125,12 @@ public final class IRPLogging {
 
         @Override
         public boolean doLogging() {
-            return backed == null || backed.doLogging();
+            return enabled && (backed == null || backed.doLogging());
         }
 
         @Override
         public boolean doLogging(LoggingSection section) {
-            return backed == null || backed.doLogging(section);
+            return enabled && (backed == null || backed.doLogging(section));
         }
     }
 }

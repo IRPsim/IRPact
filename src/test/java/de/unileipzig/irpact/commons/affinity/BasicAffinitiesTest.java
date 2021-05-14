@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons.affinity;
 
 import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.commons.util.data.DataCounter;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -60,5 +61,68 @@ class BasicAffinitiesTest {
         assertTrue(i < 10);
         assertTrue(set.contains("b"));
         assertTrue(set.contains("c"));
+    }
+
+    @Test
+    void testWeightedDraw_25_25_25_25() {
+        BasicAffinities<String> aff = new BasicAffinities<>();
+        aff.setValue("a", 0.25);
+        aff.setValue("b", 0.25);
+        aff.setValue("c", 0.25);
+        aff.setValue("d", 0.25);
+        Rnd rnd = new Rnd(123);
+        DataCounter<String> counter = new DataCounter<>();
+
+        for(int i = 0; i < 100; i++) {
+            String s = aff.getWeightedRandom(rnd);
+            counter.inc(s);
+        }
+
+        assertEquals(0.25, counter.getShare("a"), 0.06);
+        assertEquals(0.25, counter.getShare("b"), 0.06);
+        assertEquals(0.25, counter.getShare("c"), 0.06);
+        assertEquals(0.25, counter.getShare("d"), 0.06);
+    }
+
+    @Test
+    void testWeightedDraw_70_10_10_10() {
+        BasicAffinities<String> aff = new BasicAffinities<>();
+        aff.setValue("a", 0.70);
+        aff.setValue("b", 0.10);
+        aff.setValue("c", 0.10);
+        aff.setValue("d", 0.10);
+        Rnd rnd = new Rnd(123);
+        DataCounter<String> counter = new DataCounter<>();
+
+        for(int i = 0; i < 100; i++) {
+            String s = aff.getWeightedRandom(rnd);
+            counter.inc(s);
+        }
+
+        assertEquals(0.70, counter.getShare("a"), 0.06);
+        assertEquals(0.10, counter.getShare("b"), 0.06);
+        assertEquals(0.10, counter.getShare("c"), 0.06);
+        assertEquals(0.10, counter.getShare("d"), 0.06);
+    }
+
+    @Test
+    void testWeightedDraw_40_30_20_10() {
+        BasicAffinities<String> aff = new BasicAffinities<>();
+        aff.setValue("a", 0.40);
+        aff.setValue("b", 0.30);
+        aff.setValue("c", 0.20);
+        aff.setValue("d", 0.10);
+        Rnd rnd = new Rnd(123);
+        DataCounter<String> counter = new DataCounter<>();
+
+        for(int i = 0; i < 100; i++) {
+            String s = aff.getWeightedRandom(rnd);
+            counter.inc(s);
+        }
+
+        assertEquals(0.40, counter.getShare("a"), 0.06);
+        assertEquals(0.30, counter.getShare("b"), 0.06);
+        assertEquals(0.20, counter.getShare("c"), 0.06);
+        assertEquals(0.10, counter.getShare("d"), 0.06);
     }
 }

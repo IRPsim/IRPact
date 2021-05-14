@@ -40,7 +40,7 @@ public final class CollectionUtil {
         }
     }
 
-    public static <K, V> void sortMap(
+    public static <K, V> void sortMapAfterKey(
             Map<K, V> map,
             Comparator<? super K> keyComparator) {
         List<Map.Entry<K, V>> entryList = new ArrayList<>(map.entrySet());
@@ -48,6 +48,21 @@ public final class CollectionUtil {
             K k1 = o1.getKey();
             K k2 = o2.getKey();
             return keyComparator.compare(k1, k2);
+        });
+        map.clear();
+        for(Map.Entry<K, V> entry: entryList) {
+            map.put(entry.getKey(), entry.getValue());
+        }
+    }
+
+    public static <K, V> void sortMapAfterValue(
+            Map<K, V> map,
+            Comparator<? super V> valueComparator) {
+        List<Map.Entry<K, V>> entryList = new ArrayList<>(map.entrySet());
+        entryList.sort((o1, o2) -> {
+            V v1 = o1.getValue();
+            V v2 = o2.getValue();
+            return valueComparator.compare(v1, v2);
         });
         map.clear();
         for(Map.Entry<K, V> entry: entryList) {

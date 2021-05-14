@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.commons.util.data.weighted;
 
 import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.commons.util.data.Mutable;
+import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.develop.XXXXXXXXX;
 
 import java.util.*;
@@ -10,8 +12,7 @@ import java.util.function.Supplier;
  * @param <T>
  * @author Daniel Abitz
  */
-@XXXXXXXXX("TESTEN")
-public class RemoveOnDrawnNavigableMapWeightedMapping<T> implements WeightedMapping<T> {
+public class RemoveOnDrawNavigableMapWeightedMapping<T> implements WeightedMapping<T> {
 
     protected Supplier<? extends NavigableMap<Double, T>> mapSupplier;
     protected Map<T, Double> weightMap = new LinkedHashMap<>();
@@ -19,11 +20,11 @@ public class RemoveOnDrawnNavigableMapWeightedMapping<T> implements WeightedMapp
     protected double totalWeight = 0;
     protected boolean disableWeights = false;
 
-    public RemoveOnDrawnNavigableMapWeightedMapping() {
+    public RemoveOnDrawNavigableMapWeightedMapping() {
         this(TreeMap::new);
     }
 
-    public RemoveOnDrawnNavigableMapWeightedMapping(Supplier<? extends NavigableMap<Double, T>> mapSupplier) {
+    public RemoveOnDrawNavigableMapWeightedMapping(Supplier<? extends NavigableMap<Double, T>> mapSupplier) {
         this.mapSupplier = mapSupplier;
         this.mapping = mapSupplier.get();
     }
@@ -36,21 +37,27 @@ public class RemoveOnDrawnNavigableMapWeightedMapping<T> implements WeightedMapp
         this.disableWeights = disableWeights;
     }
 
+    public void normalizeThis() {
+        final double totalWeight = totalWeight();
+        weightMap.replaceAll((element, weight) -> weight / totalWeight);
+        rebuildMapping();
+    }
+
     @Override
-    public RemoveOnDrawnNavigableMapWeightedMapping<T> copy() {
+    public RemoveOnDrawNavigableMapWeightedMapping<T> copy() {
         Map<T, Double> copy = new LinkedHashMap<>(weightMap);
         return createCopy(copy);
     }
 
     @Override
-    public RemoveOnDrawnNavigableMapWeightedMapping<T> copyWithout(T toRemove) {
+    public RemoveOnDrawNavigableMapWeightedMapping<T> copyWithout(T toRemove) {
         Map<T, Double> copy = new LinkedHashMap<>(weightMap);
         copy.remove(toRemove);
         return createCopy(copy);
     }
 
-    protected RemoveOnDrawnNavigableMapWeightedMapping<T> createCopy(Map<T, Double> map) {
-        RemoveOnDrawnNavigableMapWeightedMapping<T> copy = new RemoveOnDrawnNavigableMapWeightedMapping<>(mapSupplier);
+    protected RemoveOnDrawNavigableMapWeightedMapping<T> createCopy(Map<T, Double> map) {
+        RemoveOnDrawNavigableMapWeightedMapping<T> copy = new RemoveOnDrawNavigableMapWeightedMapping<>(mapSupplier);
         copy.weightMap = map;
         copy.rebuildMapping();
         return copy;
@@ -90,21 +97,27 @@ public class RemoveOnDrawnNavigableMapWeightedMapping<T> implements WeightedMapp
         }
     }
 
+    protected double getSummedWeight(T target) {
+        double summendWeight = Double.NaN;
+        for(Map.Entry<Double, T> entry: mapping.entrySet()) {
+            if(Objects.equals(target, entry.getValue())) {
+                summendWeight = entry.getKey();
+                break;
+            }
+        }
+        if(Double.isNaN(summendWeight)) {
+            throw new NoSuchElementException();
+        }
+        return summendWeight;
+    }
+
     @Override
     public boolean remove(T target) {
         if(has(target)) {
-            double summendWeight = Double.NaN;
-            for(Map.Entry<Double, T> entry: mapping.entrySet()) {
-                if(Objects.equals(target, entry.getValue())) {
-                    summendWeight = entry.getKey();
-                    break;
-                }
-            }
-            if(Double.isNaN(summendWeight)) {
-                throw new IllegalStateException();
-            }
+            double summendWeight = getSummedWeight(target);
             //Hier ist inklusive true, da summendWeight der exakte Wert fuer T ist.
             T removed = removeAndUpdate(summendWeight, true);
+            //sanity check
             if(target != removed) {
                 throw new IllegalStateException();
             }
@@ -167,7 +180,14 @@ public class RemoveOnDrawnNavigableMapWeightedMapping<T> implements WeightedMapp
     @Override
     public T getRandom(Rnd rnd) {
         checkNotEmpty();
-        return rnd.getRandomValue(mapping);
+        Map.Entry<Double, T> toRemove = rnd.getRandomEntry(mapping);
+        T toRemoveValue = toRemove.getValue();
+        T removedValue = removeAndUpdate(toRemove.getKey(), true);
+        //sanity check
+        if(removedValue != toRemoveValue) {
+            throw new IllegalStateException(removedValue + " != " + toRemoveValue);
+        }
+        return removedValue;
     }
 
     @Override

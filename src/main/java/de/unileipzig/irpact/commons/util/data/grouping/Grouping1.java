@@ -36,7 +36,7 @@ public class Grouping1<A, X> implements Grouping<X> {
     }
 
     public void sortAKeys(Comparator<? super A> comparator) {
-        CollectionUtil.sortMap(grouping, comparator);
+        CollectionUtil.sortMapAfterKey(grouping, comparator);
     }
 
     public void sortElements(Comparator<? super X> comparator) {

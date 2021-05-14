@@ -5,12 +5,11 @@ import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.log.LazyPrinter;
 import de.unileipzig.irpact.commons.spatial.DistanceEvaluator;
-import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.data.DataCounter;
-import de.unileipzig.irpact.commons.util.data.weighted.RemoveOnDrawUnweightListMapping;
-import de.unileipzig.irpact.commons.util.data.weighted.RemoveOnDrawMapBasedWeightedMapping;
-import de.unileipzig.irpact.commons.util.data.weighted.WeightedMapping;
+import de.unileipzig.irpact.commons.util.data.Pair;
+import de.unileipzig.irpact.commons.util.data.weighted.NavigableMapWeightedMapping;
+import de.unileipzig.irpact.commons.util.data.weighted.RemoveOnDrawNavigableMapWeightedMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinities;
@@ -30,6 +29,11 @@ import java.util.*;
 public class FreeNetworkTopology extends NameableBase implements GraphTopologyScheme {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(FreeNetworkTopology.class);
+
+    //for testing
+    protected int gcStep = -1;
+    protected int useCase = 0;
+    //===
 
     protected SocialGraph.Type edgeType;
     protected Map<ConsumerAgentGroup, Integer> edgeCountMap;
@@ -135,28 +139,47 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
     @Override
     public void initalize(SimulationEnvironment environment, SocialGraph graph) throws InitializationException {
         LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "initialize free network graph");
+
+        int step = 0;
+        int added = 0;
         for(SocialGraph.Node node: graph.getNodes()) {
             SocialGraph.LinkageInformation li = graph.getLinkageInformation(node);
             ConsumerAgent ca = node.getAgent(ConsumerAgent.class);
-            Collection<ConsumerAgent> agents = drawTargets(environment, ca, li);
+            Collection<ConsumerAgent> agents = drawTargets(environment, graph, ca, li);
             for(ConsumerAgent targetCa: agents) {
                 LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "add edge: {}->{} ({},{})", ca.getName(), targetCa.getName(), edgeType, initialWeight);
-                graph.addEdge(ca.getSocialGraphNode(), targetCa.getSocialGraphNode(), edgeType, initialWeight);
-                li.inc(targetCa.getGroup(), edgeType);
+                if(!graph.addEdge(ca.getSocialGraphNode(), targetCa.getSocialGraphNode(), edgeType, initialWeight)) {
+                    throw new InitializationException("add failed, edge already exists (FATAL - this should NOT happen)");
+                }
+                added++;
             }
+
+            if(step % 100 == 0) {
+                System.out.println(step + "/" + graph.getNodes().size());
+            }
+            if(gcStep > 0 && step > 0 && step % gcStep == 0) {
+                System.gc();
+            }
+            step++;
         }
         targetCache.clear();
         System.gc();
+        LOGGER.trace("total added: {}", added);
     }
 
     protected Collection<ConsumerAgent> drawTargets(
             SimulationEnvironment environment,
+            SocialGraph graph,
             ConsumerAgent source,
             SocialGraph.LinkageInformation li) throws InitializationException {
         ConsumerAgentGroup sourceCag = source.getGroup();
         ConsumerAgentGroupAffinities sourceAffinities = affinityMapping.get(sourceCag);
         int edgeCount = edgeCountMap.get(sourceCag);
         CagOrder cagOrder = new CagOrder();
+        cagOrder.initalize(
+                environment.getAgents().getConsumerAgentGroups(),
+                li
+        );
         if(!selfReferential) {
             cagOrder.setSkipSelfReferentialGroup(sourceCag);
         }
@@ -167,66 +190,163 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
         List<ConsumerAgent> targetList = new ArrayList<>();
         for(ConsumerAgentGroup targetCag: cagOrder.getLinkCounter().keys()) {
             int targetCount = cagOrder.getLinkCounter().get(targetCag);
-            WeightedMapping<ConsumerAgent> targetWM = calculateDistanceMapping(environment, source, targetCag, targetCount);
-            int i = 0;
-            while(i < targetCount) {
-                ConsumerAgent target = targetWM.getWeightedRandom(rnd);
-                if(!selfReferential && source == target) {
-                    continue;
-                }
-                targetList.add(target);
-                i++;
-            }
+
+            addForTargetCag(
+                    environment,
+                    graph,
+                    source,
+                    targetCag,
+                    cagOrder.hasExistingLinks(targetCag),
+                    targetCount,
+                    targetList
+            );
         }
         return targetList;
     }
 
-    protected WeightedMapping<ConsumerAgent> calculateDistanceMapping(
+    protected void addForTargetCag(
             SimulationEnvironment environment,
+            SocialGraph graph,
             ConsumerAgent source,
             ConsumerAgentGroup targetCag,
-            int targetCount) {
+            boolean hasExistingLinks,
+            int targetCount,
+            List<ConsumerAgent> targetList) {
         if(distanceEvaluator.isDisabled()) {
-            RemoveOnDrawUnweightListMapping<ConsumerAgent> mapping = new RemoveOnDrawUnweightListMapping<>();
-            List<ConsumerAgent> list = getList(targetCag);
-            Set<ConsumerAgent> cache = new HashSet<>();
-            while(cache.size() < targetCount) {
-                ConsumerAgent target = rnd.getRandom(list);
-                if(!selfReferential && source == target) {
-                    continue;
-                }
-                if(cache.add(target)) {
-                    mapping.add(target);
-                }
-            }
-//            //v1
-//            Set<ConsumerAgent> cache = new HashSet<>();
-//            while(cache.size() < targetCount) {
-//                ConsumerAgent target = rnd.getRandom(targetCag.getAgents());
-//                if(!selfReferential && source == target) {
-//                    continue;
-//                }
-//                if(cache.add(target)) {
-//                    mapping.add(target);
-//                }
-//            }
-//            //v2
-//            for(ConsumerAgent target: targetCag.getAgents()) {
-//                mapping.add(target);
-//            }
-//            mapping.shuffle(rnd);
-            mapping.setRemoveFrist(true);
-            return mapping;
+            addForTargetCagWithoutDistance(graph, source, targetCag, hasExistingLinks, targetCount, targetList);
         } else {
-            RemoveOnDrawMapBasedWeightedMapping<ConsumerAgent> mapping = new RemoveOnDrawMapBasedWeightedMapping<>();
-            SpatialModel spatialModel = environment.getSpatialModel();
-            for(ConsumerAgent target: targetCag.getAgents()) {
-                double distance = spatialModel.distance(source.getSpatialInformation(), target.getSpatialInformation());
-                double influence = distanceEvaluator.evaluate(distance);
-                mapping.set(target, influence);
+            switch (useCase) {
+                case 2:
+                    addForTargetCagWithDistanceV2(environment, graph, source, targetCag, hasExistingLinks, targetCount, targetList);
+                    break;
+
+                case 3:
+                    addForTargetCagWithDistanceV3(environment, graph, source, targetCag, hasExistingLinks, targetCount, targetList);
+                    break;
+
+                default:
+                    addForTargetCagWithDistance(environment, graph, source, targetCag, hasExistingLinks, targetCount, targetList);
+                    break;
             }
-            mapping.normalize();
-            return mapping;
+        }
+    }
+
+    protected void addForTargetCagWithoutDistance(
+            SocialGraph graph,
+            ConsumerAgent source,
+            ConsumerAgentGroup targetCag,
+            boolean hasExistingLinks,
+            int targetCount,
+            List<ConsumerAgent> targetList) {
+        List<ConsumerAgent> list = getList(targetCag);
+        Set<ConsumerAgent> distinctCache = new HashSet<>();
+        while(distinctCache.size() < targetCount) {
+            ConsumerAgent target = rnd.getRandom(list);
+            if(!selfReferential && source == target) {
+                continue;
+            }
+            if(hasExistingLinks && graph.hasEdge(source.getSocialGraphNode(), target.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION)) {
+                continue;
+            }
+            if(distinctCache.add(target)) {
+                targetList.add(target);
+            }
+        }
+    }
+
+    protected void addForTargetCagWithDistance(
+            SimulationEnvironment environment,
+            SocialGraph graph,
+            ConsumerAgent source,
+            ConsumerAgentGroup targetCag,
+            boolean hasExistingLinks,
+            int targetCount,
+            List<ConsumerAgent> targetList) {
+        RemoveOnDrawNavigableMapWeightedMapping<ConsumerAgent> mapping = new RemoveOnDrawNavigableMapWeightedMapping<>();
+        SpatialModel spatialModel = environment.getSpatialModel();
+        for(ConsumerAgent target: targetCag.getAgents()) {
+            if(!selfReferential && source == target) {
+                continue;
+            }
+            if(hasExistingLinks && graph.hasEdge(source.getSocialGraphNode(), target.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION)) {
+                continue;
+            }
+            double distance = spatialModel.distance(source.getSpatialInformation(), target.getSpatialInformation());
+            double influence = distanceEvaluator.evaluate(distance);
+            if(influence <= 0.0) {
+                continue;
+            }
+            mapping.set(target, influence);
+        }
+
+        for(int i = 0; i < targetCount; i++) {
+            targetList.add(mapping.getWeightedRandom(rnd));
+        }
+    }
+
+    protected void addForTargetCagWithDistanceV2(
+            SimulationEnvironment environment,
+            SocialGraph graph,
+            ConsumerAgent source,
+            ConsumerAgentGroup targetCag,
+            boolean hasExistingLinks,
+            int targetCount,
+            List<ConsumerAgent> targetList) {
+        NavigableMapWeightedMapping<ConsumerAgent> mapping = new NavigableMapWeightedMapping<>();
+        SpatialModel spatialModel = environment.getSpatialModel();
+        for(ConsumerAgent target: targetCag.getAgents()) {
+            if(!selfReferential && source == target) {
+                continue;
+            }
+            if(hasExistingLinks && graph.hasEdge(source.getSocialGraphNode(), target.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION)) {
+                continue;
+            }
+            double distance = spatialModel.distance(source.getSpatialInformation(), target.getSpatialInformation());
+            double influence = distanceEvaluator.evaluate(distance);
+            if(influence <= 0.0) {
+                continue;
+            }
+            mapping.set(target, influence);
+        }
+
+        Set<ConsumerAgent> distinctCache = new HashSet<>();
+        while(distinctCache.size() < targetCount) {
+            ConsumerAgent target = mapping.getWeightedRandom(rnd);
+            if(distinctCache.add(target)) {
+                targetList.add(target);
+            }
+        }
+    }
+
+    protected void addForTargetCagWithDistanceV3(
+            SimulationEnvironment environment,
+            SocialGraph graph,
+            ConsumerAgent source,
+            ConsumerAgentGroup targetCag,
+            boolean hasExistingLinks,
+            int targetCount,
+            List<ConsumerAgent> targetList) {
+        LinkedList<Pair<ConsumerAgent, Double>> data = new LinkedList<>();
+        SpatialModel spatialModel = environment.getSpatialModel();
+        for(ConsumerAgent target: targetCag.getAgents()) {
+            if(!selfReferential && source == target) {
+                continue;
+            }
+            if(hasExistingLinks && graph.hasEdge(source.getSocialGraphNode(), target.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION)) {
+                continue;
+            }
+            double distance = spatialModel.distance(source.getSpatialInformation(), target.getSpatialInformation());
+            double influence = distanceEvaluator.evaluate(distance);
+            if(influence <= 0.0) {
+                continue;
+            }
+            data.add(new Pair<>(target, influence));
+        }
+
+        data.sort(Map.Entry.comparingByValue());
+
+        for(int i = 0; i < targetCount; i++) {
+            targetList.add(data.removeLast().getKey());
         }
     }
 
@@ -235,21 +355,35 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
      */
     protected static class CagOrder {
 
+        protected DataCounter<ConsumerAgentGroup> existingLinkCounter = new DataCounter<>();
         protected DataCounter<ConsumerAgentGroup> linkCounter = new DataCounter<>();
         protected ConsumerAgentGroup skipSelfReferentialGroup;
 
         protected CagOrder() {
         }
 
+        protected void initalize(
+                Collection<? extends ConsumerAgentGroup> cags,
+                SocialGraph.LinkageInformation li) {
+            for(ConsumerAgentGroup cag: cags) {
+                int current = li.get(cag, SocialGraph.Type.COMMUNICATION);
+                existingLinkCounter.set(cag, current);
+            }
+        }
+
+        protected boolean hasExistingLinks(ConsumerAgentGroup cag) {
+            return existingLinkCounter.get(cag) != 0;
+        }
+
         //Falls diese Gruppe gesetzt ist, wird ein Element uebersprungen, um die Selbstreferenzierung zu verhindern.
-        public void setSkipSelfReferentialGroup(ConsumerAgentGroup skipSelfReferentialGroup) {
+        protected void setSkipSelfReferentialGroup(ConsumerAgentGroup skipSelfReferentialGroup) {
             this.skipSelfReferentialGroup = skipSelfReferentialGroup;
         }
 
         protected boolean isMax(ConsumerAgentGroup cag) {
             int skipSelf = cag == skipSelfReferentialGroup ? 1 : 0;
             int numberOfAgents = cag.getNumberOfAgents() - skipSelf;
-            int current = linkCounter.get(cag);
+            int current = linkCounter.get(cag) + existingLinkCounter.get(cag);
             return current >= numberOfAgents;
         }
 
@@ -260,8 +394,8 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
                 Rnd rnd) throws InitializationException {
             ConsumerAgentGroupAffinities caga = affinities;
             ConsumerAgentGroup target;
-            int found = 0;
-            boolean tryAgain = true;
+            int found = existingLinkCounter.total();
+            boolean tryAgain = found < count;
             while(tryAgain) {
                 target = caga.getWeightedRandom(rnd);
 
@@ -272,11 +406,7 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
                             LOGGER.info("[allowLessAgents] not enough agents, agents found: {}, required: {}", found, count);
                             return;
                         } else {
-                            throw ExceptionUtil.create(
-                                    InitializationException::new,
-                                    "not enough agents, agents found: {}, required: {}",
-                                    found, count
-                            );
+                            throw new InitializationException("not enough agents, agents found: {}, required: {}", found, count);
                         }
                     }
                     tryAgain = true;
@@ -291,7 +421,7 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
         protected void apply(SocialGraph.LinkageInformation li, SocialGraph.Type edgeType) {
             for(ConsumerAgentGroup cag: linkCounter.keys()) {
                 int count = linkCounter.get(cag);
-                li.set(cag, edgeType, count);
+                li.update(cag, edgeType, count);
             }
         }
 

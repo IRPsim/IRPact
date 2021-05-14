@@ -118,4 +118,9 @@ public class MapBasedTripleMapping<A, B, C> implements TripleMapping<A, B, C>, C
     public int getChecksum() {
         return ChecksumComparable.getMapMapChecksum(mapping);
     }
+
+    @Override
+    public String toString() {
+        return mapping.toString();
+    }
 }

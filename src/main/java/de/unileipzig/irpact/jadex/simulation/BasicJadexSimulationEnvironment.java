@@ -3,8 +3,6 @@ package de.unileipzig.irpact.jadex.simulation;
 import de.unileipzig.irpact.commons.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.exception.InitializationException;
-import de.unileipzig.irpact.commons.exception.VersionMismatchException;
-import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.AgentManager;
@@ -267,13 +265,13 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
                     ConsumerAgent ca = cag.deriveAgent();
 
                     if(ca.getSocialGraphNode() != null) {
-                        throw ExceptionUtil.create(InitializationException::new, "agent '{}' already has graph node", ca.getName());
+                        throw new InitializationException("agent '{}' already has graph node", ca.getName());
                     }
                     if(graph.hasNode(ca)) {
-                        throw ExceptionUtil.create(InitializationException::new, "graph node for agent '{}' already exists", ca.getName());
+                        throw new InitializationException("graph node for agent '{}' already exists", ca.getName());
                     }
                     if(!cag.addAgent(ca)) {
-                        throw ExceptionUtil.create(InitializationException::new, "adding agent '{}' failed, name already exists", ca.getName());
+                        throw new InitializationException("adding agent '{}' failed, name already exists", ca.getName());
                     }
 
                     SocialGraph.Node node = graph.addAgentAndGetNode(ca);

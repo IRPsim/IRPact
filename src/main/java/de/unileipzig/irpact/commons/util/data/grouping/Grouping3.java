@@ -100,19 +100,19 @@ public class Grouping3<A, B, C, X> implements Grouping<X> {
     }
 
     public void sortAKeys(Comparator<? super A> comparator) {
-        CollectionUtil.sortMap(grouping, comparator);
+        CollectionUtil.sortMapAfterKey(grouping, comparator);
     }
 
     public void sortBKeys(Comparator<? super B> comparator) {
         for(Map<B, Map<C, List<X>>> bMap: grouping.values()) {
-            CollectionUtil.sortMap(bMap, comparator);
+            CollectionUtil.sortMapAfterKey(bMap, comparator);
         }
     }
 
     public void sortCKeys(Comparator<? super C> comparator) {
         for(Map<B, Map<C, List<X>>> bMap: grouping.values()) {
             for(Map<C, List<X>> cMap: bMap.values()) {
-                CollectionUtil.sortMap(cMap, comparator);
+                CollectionUtil.sortMapAfterKey(cMap, comparator);
             }
         }
     }

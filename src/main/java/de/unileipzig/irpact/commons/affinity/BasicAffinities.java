@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.commons.affinity;
 
 import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.commons.util.data.weighted.BinarySearchWeightedMapping;
+import de.unileipzig.irpact.commons.util.data.weighted.NavigableMapWeightedMapping;
 import de.unileipzig.irpact.commons.util.data.weighted.WeightedMapping;
 
 import java.util.*;
@@ -15,7 +15,7 @@ public class BasicAffinities<T> implements Affinities<T> {
     protected WeightedMapping<T> mapping;
 
     public BasicAffinities() {
-        this(new BinarySearchWeightedMapping<>());
+        this(new NavigableMapWeightedMapping<>());
     }
 
     public BasicAffinities(WeightedMapping<T> mapping) {

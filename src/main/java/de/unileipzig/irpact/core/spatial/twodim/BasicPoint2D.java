@@ -21,6 +21,10 @@ public class BasicPoint2D implements Point2D {
         this(0, 0);
     }
 
+    public BasicPoint2D(double xy) {
+        this(xy, xy);
+    }
+
     public BasicPoint2D(double x, double y) {
         this(new LinkedHashMap<>(), x, y);
     }

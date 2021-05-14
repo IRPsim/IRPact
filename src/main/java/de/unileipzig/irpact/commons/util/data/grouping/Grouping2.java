@@ -73,12 +73,12 @@ public class Grouping2<A, B, X> implements Grouping<X> {
     }
 
     public void sortAKeys(Comparator<? super A> comparator) {
-        CollectionUtil.sortMap(grouping, comparator);
+        CollectionUtil.sortMapAfterKey(grouping, comparator);
     }
 
     public void sortBKeys(Comparator<? super B> comparator) {
         for(Map<B, List<X>> bMap: grouping.values()) {
-            CollectionUtil.sortMap(bMap, comparator);
+            CollectionUtil.sortMapAfterKey(bMap, comparator);
         }
     }
 

@@ -94,9 +94,9 @@ public interface SocialGraph extends ChecksumComparable {
 
         int sum(Object[] keys, Type type);
 
-        int sum(Collection<?> keys, Type type);
+        int sum(Iterable<?> keys, Type type);
 
-        int total(Type type);
+        int sum(Type type);
     }
 
     LinkageInformation getLinkageInformation(Node node);
