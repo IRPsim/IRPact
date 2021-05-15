@@ -15,7 +15,7 @@ import java.nio.file.Path;
  */
 public final class IRPLogging {
 
-    private static final GlobalFilter FILTER = new GlobalFilter();
+    private static final InternalFilter FILTER = new InternalFilter();
 
     private static IRPLogger resultLogger;
 
@@ -92,12 +92,12 @@ public final class IRPLogging {
     /**
      * @author Daniel Abitz
      */
-    private static final class GlobalFilter implements LoggingFilter {
+    private static final class InternalFilter implements LoggingFilter {
 
         private SectionLoggingFilter backed;
         private boolean enabled = true;
 
-        private GlobalFilter() {
+        private InternalFilter() {
         }
 
         private void enable() {
@@ -131,6 +131,358 @@ public final class IRPLogging {
         @Override
         public boolean doLogging(LoggingSection section) {
             return enabled && (backed == null || backed.doLogging(section));
+        }
+    }
+
+    //==================================================
+    //some util stuff
+    //==================================================
+
+    //=========================
+    //info
+    //=========================
+
+    public static void trace(
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String msg) {
+        if(useSection) {
+            logger.trace(section, msg);
+        } else {
+            logger.trace(msg);
+        }
+    }
+
+    public static void trace(
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String format, Object arg) {
+        if(useSection) {
+            logger.trace(section, format, arg);
+        } else {
+            logger.trace(format, arg);
+        }
+    }
+
+    public static void trace(
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String format, Object arg1, Object arg2) {
+        if(useSection) {
+            logger.trace(section, format, arg1, arg2);
+        } else {
+            logger.trace(format, arg1, arg2);
+        }
+    }
+
+    public static void trace(
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String format, Object... args) {
+        if(useSection) {
+            logger.trace(section, format, args);
+        } else {
+            logger.trace(format, args);
+        }
+    }
+
+    //=========================
+    //debug
+    //=========================
+
+    public static void debug(
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String msg) {
+        if(useSection) {
+            logger.debug(section, msg);
+        } else {
+            logger.debug(msg);
+        }
+    }
+
+    public static void debug(
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String format, Object arg) {
+        if(useSection) {
+            logger.debug(section, format, arg);
+        } else {
+            logger.debug(format, arg);
+        }
+    }
+
+    public static void debug(
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String format, Object arg1, Object arg2) {
+        if(useSection) {
+            logger.debug(section, format, arg1, arg2);
+        } else {
+            logger.debug(format, arg1, arg2);
+        }
+    }
+
+    public static void debug(
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String format, Object... args) {
+        if(useSection) {
+            logger.debug(section, format, args);
+        } else {
+            logger.debug(format, args);
+        }
+    }
+
+    //=========================
+    //info
+    //=========================
+
+    public static void info(
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String msg) {
+        if(useSection) {
+            logger.info(section, msg);
+        } else {
+            logger.info(msg);
+        }
+    }
+
+    public static void info(
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String format, Object arg) {
+        if(useSection) {
+            logger.info(section, format, arg);
+        } else {
+            logger.info(format, arg);
+        }
+    }
+
+    public static void info(
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String format, Object arg1, Object arg2) {
+        if(useSection) {
+            logger.info(section, format, arg1, arg2);
+        } else {
+            logger.info(format, arg1, arg2);
+        }
+    }
+
+    public static void info(
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String format, Object... args) {
+        if(useSection) {
+            logger.info(section, format, args);
+        } else {
+            logger.info(format, args);
+        }
+    }
+
+    //=========================
+    //warn
+    //=========================
+
+    public static void warn(
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String msg) {
+        if(useSection) {
+            logger.warn(section, msg);
+        } else {
+            logger.warn(msg);
+        }
+    }
+
+    public static void warn(
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String format, Object arg) {
+        if(useSection) {
+            logger.warn(section, format, arg);
+        } else {
+            logger.warn(format, arg);
+        }
+    }
+
+    public static void warn(
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String format, Object arg1, Object arg2) {
+        if(useSection) {
+            logger.warn(section, format, arg1, arg2);
+        } else {
+            logger.warn(format, arg1, arg2);
+        }
+    }
+
+    public static void warn(
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String format, Object... args) {
+        if(useSection) {
+            logger.warn(section, format, args);
+        } else {
+            logger.warn(format, args);
+        }
+    }
+
+    //=========================
+    //error
+    //=========================
+
+    public static void error(
+            IRPLogger logger,
+            String msg) {
+        logger.error(msg);
+    }
+
+    public static void error(
+            IRPLogger logger,
+            Throwable cause) {
+        logger.error("", cause);
+    }
+
+    public static void error(
+            IRPLogger logger,
+            String msg, Throwable cause) {
+        logger.error(msg, cause);
+    }
+
+    public static void error(
+            IRPLogger logger,
+            String format, Object arg) {
+        logger.error(format, arg);
+    }
+
+    public static void error(
+            IRPLogger logger,
+            String format, Object arg1, Object arg2) {
+        logger.error(format, arg1, arg2);
+    }
+
+    public static void error(
+            IRPLogger logger,
+            String format, Object... args) {
+        logger.error(format, args);
+    }
+
+    //=========================
+    //level
+    //=========================
+
+    public static void log(
+            org.slf4j.event.Level level,
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String msg) {
+        switch (level) {
+            case ERROR:
+                error(logger, msg);
+                break;
+
+            case WARN:
+                warn(logger, section, useSection, msg);
+                break;
+
+            case INFO:
+                info(logger, section, useSection, msg);
+                break;
+
+            case DEBUG:
+                debug(logger, section, useSection, msg);
+                break;
+
+            case TRACE:
+                trace(logger, section, useSection, msg);
+                break;
+        }
+    }
+
+    public static void log(
+            org.slf4j.event.Level level,
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String format, Object arg) {
+        switch (level) {
+            case ERROR:
+                error(logger, format, arg);
+                break;
+
+            case WARN:
+                warn(logger, section, useSection, format, arg);
+                break;
+
+            case INFO:
+                info(logger, section, useSection, format, arg);
+                break;
+
+            case DEBUG:
+                debug(logger, section, useSection, format, arg);
+                break;
+
+            case TRACE:
+                trace(logger, section, useSection, format, arg);
+                break;
+        }
+    }
+
+    public static void log(
+            org.slf4j.event.Level level,
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String format, Object arg1, Object arg2) {
+        switch (level) {
+            case ERROR:
+                error(logger, format, arg1, arg2);
+                break;
+
+            case WARN:
+                warn(logger, section, useSection, format, arg1, arg2);
+                break;
+
+            case INFO:
+                info(logger, section, useSection, format, arg1, arg2);
+                break;
+
+            case DEBUG:
+                debug(logger, section, useSection, format, arg1, arg2);
+                break;
+
+            case TRACE:
+                trace(logger, section, useSection, format, arg1, arg2);
+                break;
+        }
+    }
+
+    public static void log(
+            org.slf4j.event.Level level,
+            IRPLogger logger,
+            IRPSection section, boolean useSection,
+            String format, Object... args) {
+        switch (level) {
+            case ERROR:
+                error(logger, format, args);
+                break;
+
+            case WARN:
+                warn(logger, section, useSection, format, args);
+                break;
+
+            case INFO:
+                info(logger, section, useSection, format, args);
+                break;
+
+            case DEBUG:
+                debug(logger, section, useSection, format, args);
+                break;
+
+            case TRACE:
+                trace(logger, section, useSection, format, args);
+                break;
         }
     }
 }

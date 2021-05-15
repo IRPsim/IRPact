@@ -7,6 +7,7 @@ import org.slf4j.event.Level;
 /**
  * @author Daniel Abitz
  */
+@Deprecated
 public class IRPLoggingMessage extends LoggingMessage {
 
     protected LoggingSection section;

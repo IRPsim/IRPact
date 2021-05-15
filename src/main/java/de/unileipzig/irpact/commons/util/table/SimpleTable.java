@@ -6,6 +6,7 @@ import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
@@ -195,6 +196,14 @@ public class SimpleTable<T> implements Table<T> {
         T oldValue = row.get(columnIndex);
         row.set(columnIndex, value);
         return oldValue;
+    }
+
+    @Override
+    public void updateEntry(int columnIndex, int rowIndex, Function<? super T, ? extends T> func) {
+        List<T> row = rows.get(rowIndex);
+        T oldValue = row.get(columnIndex);
+        T newValue = func.apply(oldValue);
+        row.set(columnIndex, newValue);
     }
 
     @Override

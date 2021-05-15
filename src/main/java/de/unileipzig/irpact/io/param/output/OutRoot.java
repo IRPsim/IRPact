@@ -16,9 +16,11 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.Util;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 import static de.unileipzig.irpact.io.param.IOConstants.*;
 import static de.unileipzig.irpact.io.param.ParamUtil.addPathElement;
@@ -32,9 +34,6 @@ public class OutRoot implements RootClass {
     //=========================
     //IRPact
     //=========================
-
-    @FieldDefinition
-    public OutInformation[] informations = new OutInformation[0];
 
     @FieldDefinition
     public OutAdoptionResult[] adoptionResults = new OutAdoptionResult[0];
@@ -55,14 +54,6 @@ public class OutRoot implements RootClass {
     //==================================================
 
     public OutRoot() {
-    }
-
-    public void setInformation(String text) {
-        setInformation(new OutInformation(text));
-    }
-
-    public void setInformation(OutInformation information) {
-        this.informations = new OutInformation[]{information};
     }
 
     public OutAnnualAdoptionData[] getAnnualAdoptionData() {
@@ -101,11 +92,20 @@ public class OutRoot implements RootClass {
         return new IOResources();
     }
 
+    @Override
+    public AnnotationResource getResource(Path pathToFile) {
+        return new IOResources(pathToFile);
+    }
+
+    @Override
+    public AnnotationResource getResource(Locale locale) {
+        return new IOResources(locale);
+    }
+
     public OutRoot copy() {
         SimpleCopyCache cache = new SimpleCopyCache();
         OutRoot copy = new OutRoot();
         //act
-        copy.informations = cache.copyArray(informations);
         copy.adoptionResults = cache.copyArray(adoptionResults);
         copy.annualAdoptionData = cache.copyArray(annualAdoptionData);
         copy.binaryPersistData = cache.copyArray(binaryPersistData);
@@ -123,7 +123,6 @@ public class OutRoot implements RootClass {
             ParserInput.listOf(Type.OUTPUT,
                     OutAdoptionResult.class,
                     OutAnnualAdoptionData.class,
-                    OutInformation.class,
                     BinaryPersistData.class
             ),
             ParserInput.listOf(Type.REFERENCE,
@@ -151,7 +150,6 @@ public class OutRoot implements RootClass {
     //=========================
 
     public static void initRes(TreeAnnotationResource res) {
-        addPathElement(res, OutInformation.thisName(), ROOT);
         addPathElement(res, OutAdoptionResult.thisName(), ROOT);
         addPathElement(res, OutAnnualAdoptionData.thisName(), SPECIAL_SETTINGS);
     }

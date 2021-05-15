@@ -12,10 +12,10 @@ public final class SectionLoggingFilter implements LoggingFilter {
 
     protected final EnumSet<IRPSection> SECTIONS;
 
+    protected boolean disabled = false;
     protected boolean logAll = false;
-    protected boolean logNothing = false;
-    protected boolean logIfSectionIsNull = false;
-    protected boolean logIfTypeIsUnknown = true;
+    protected boolean logIfSectionIsNull = true;
+    protected boolean logIfTypeIsUnknown = false;
     protected boolean logDefault = true;
 
     public SectionLoggingFilter() {
@@ -26,12 +26,20 @@ public final class SectionLoggingFilter implements LoggingFilter {
         this.SECTIONS = sections;
     }
 
-    public void setLogAll(boolean logAll) {
-        this.logAll = logAll;
+    //=========================
+    // settings
+    //=========================
+
+    public void enable() {
+        this.disabled = false;
     }
 
-    public void setLogNothing(boolean logNothing) {
-        this.logNothing = logNothing;
+    public void disable() {
+        disabled = true;
+    }
+
+    public void setLogAll(boolean logAll) {
+        this.logAll = logAll;
     }
 
     public void setLogIfSectionIsNull(boolean logIfSectionIsNull) {
@@ -45,6 +53,11 @@ public final class SectionLoggingFilter implements LoggingFilter {
     public void setLogDefault(boolean logDefault) {
         this.logDefault = logDefault;
     }
+
+    //=========================
+    // sections
+    //=========================
+
 
     public void add(IRPSection section) {
         SECTIONS.add(section);
@@ -68,18 +81,29 @@ public final class SectionLoggingFilter implements LoggingFilter {
         return SECTIONS;
     }
 
+    //=========================
+    // access
+    //=========================
+
     @Override
     public boolean doLogging() {
+        if(disabled) {
+            return false;
+        }
+        if(logAll) {
+            return true;
+        }
+
         return logDefault;
     }
 
     @Override
     public boolean doLogging(LoggingSection section) {
+        if(disabled) {
+            return false;
+        }
         if(logAll) {
             return true;
-        }
-        if(logNothing) {
-            return false;
         }
         if(section == null) {
             return logIfSectionIsNull;
@@ -90,6 +114,7 @@ public final class SectionLoggingFilter implements LoggingFilter {
         if(section.getType() == ComplexIRPSection.class) {
             return ((ComplexIRPSection) section).test(SECTIONS);
         }
-        return false;
+
+        return logIfTypeIsUnknown;
     }
 }

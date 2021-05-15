@@ -6,6 +6,7 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
+@Deprecated
 public class AppendableLoggingMessage {
 
     private final List<LoggingMessage> parts = new ArrayList<>();

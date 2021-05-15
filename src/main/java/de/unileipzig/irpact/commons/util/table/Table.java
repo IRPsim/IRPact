@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons.util.table;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
@@ -51,6 +52,8 @@ public interface Table<T> {
     T getEntry(int columnIndex, int rowIndex);
 
     T setEntry(int columnIndex, int rowIndex, T value);
+
+    void updateEntry(int columnIndex, int rowIndex, Function<? super T, ? extends T> func);
 
     void addRow();
 

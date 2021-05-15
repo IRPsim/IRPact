@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("SameParameterValue")
 public final class Logback {
 
     //padding ja/nein?
@@ -30,21 +30,23 @@ public final class Logback {
     //ohne thread
     //private static final String PATTERN = "%d{HH:mm:ss.SSS} [%logger{0},%level] %msg%n";
     //mit thread
-    private static final String LOG_PATTERN = "%d{HH:mm:ss.SSS} [%logger{0},%level,%thread] %msg%n";
-    private static final String LOG_SYSTEMOUT = "LOG_SYSTEMOUT";
-    private static final String LOG_SYSTEMERR = "LOG_SYSTEMERR";
-    private static final String LOG_FILE = "LOG_FILE";
-
-    private static final String RESULT = "RESULT";
-    private static final String RESULT_PATTERN = "%msg%n";
-    private static final String RESULT_SYSTEMOUT = "RESULT_SYSTEMOUT";
-    private static final String RESULT_SYSTEMERR = "RESULT_SYSTEMERR";
-    private static final String RESULT_FILE = "RESULT_FILE";
+    private static final String PATTERN = "%d{HH:mm:ss.SSS} [%logger{0},%level,%thread] %msg%n";
+    private static final String SYSTEMOUT_APPENDER_NAME = "LOG_SYSTEMOUT";
+    private static final String SYSTEMERR_APPENDER_NAME = "LOG_SYSTEMERR";
+    private static final String FILE_APPENDER_NAME = "LOG_FILE";
+    private static final String RESULT_LOGGER_NAME = "RESULT";
 
     private static final List<LoggerSetup> SETUPS = new ArrayList<>();
+    private static LoggerSetup setupWithError;
+    private static LoggerSetup setupWithoutError;
 
     private static Logger rootLogger;
     private static Logger resultLogger;
+
+    private static Path lastTarget;
+
+    private static LoggerMode mode = LoggerMode.NONE;
+    private static boolean doFilterError = false;
 
     private Logback() {
     }
@@ -68,51 +70,76 @@ public final class Logback {
         return getContext().getLogger(name);
     }
 
-    private static boolean setupConsoleCalled = false;
     public static void setupConsole() {
         checkInit();
-        if(setupConsoleCalled) {
+        if(mode == LoggerMode.CONSOLE) {
             return;
         }
-
-        setupConsoleCalled = true;
-        setupFileCalled = false;
-        setupConsoleAndFileCalled = false;
+        mode = LoggerMode.CONSOLE;
 
         for(LoggerSetup setup: SETUPS) {
             setup.setupConsole();
         }
     }
 
-    private static boolean setupFileCalled = false;
     public static void setupFile(Path target) {
         checkInit();
-        if(setupFileCalled) {
+        if(mode == LoggerMode.FILE) {
             return;
         }
-
-        setupFileCalled = true;
-        setupConsoleCalled = false;
-        setupConsoleAndFileCalled = false;
+        mode = LoggerMode.FILE;
+        lastTarget = target;
 
         for(LoggerSetup setup: SETUPS) {
             setup.setupFile(target);
         }
     }
 
-    private static boolean setupConsoleAndFileCalled = false;
     public static void setupConsoleAndFile(Path target) {
         checkInit();
-        if(setupConsoleAndFileCalled) {
+        if(mode == LoggerMode.CONSOLE_FILE) {
             return;
         }
-
-        setupConsoleAndFileCalled = true;
-        setupConsoleCalled = false;
-        setupFileCalled = false;
+        mode = LoggerMode.CONSOLE_FILE;
+        lastTarget = target;
 
         for(LoggerSetup setup: SETUPS) {
             setup.setupConsoleAndFile(target);
+        }
+    }
+
+    public static void filterError(boolean doFilter) {
+        checkInit();
+        checkMode();
+
+        if(doFilterError == doFilter) {
+            return;
+        }
+        doFilterError = doFilter;
+
+        if(doFilter) {
+            setupWithError.disable();
+            setupWithoutError.enable();
+        } else {
+            setupWithError.enable();
+            setupWithoutError.disable();
+        }
+
+        LoggerMode currentMode = mode;
+        mode = LoggerMode.NONE;
+
+        switch (currentMode) {
+            case CONSOLE:
+                setupConsole();
+                break;
+
+            case FILE:
+                setupFile(lastTarget);
+                break;
+
+            case CONSOLE_FILE:
+                setupConsoleAndFile(lastTarget);
+                break;
         }
     }
 
@@ -130,13 +157,19 @@ public final class Logback {
 
         initCalled = true;
         initRootLogger();
-        initClearLogger();
+        initResultLogger();
         initSetups();
     }
 
     private static void checkInit() {
         if(!initCalled) {
             throw new IllegalStateException("not initalized");
+        }
+    }
+
+    private static void checkMode() {
+        if(mode == LoggerMode.NONE) {
+            throw new IllegalStateException("no mode initalized");
         }
     }
 
@@ -147,27 +180,37 @@ public final class Logback {
         detachAllAppenders(rootLogger);
     }
 
-    private static void initClearLogger() {
-        resultLogger = getLogger(RESULT);
+    private static void initResultLogger() {
+        resultLogger = getLogger(RESULT_LOGGER_NAME);
         resultLogger.setAdditive(false);
         resultLogger.setLevel(Level.ALL);
         detachAllAppenders(resultLogger);
     }
 
     private static void initSetups() {
-        LoggerSetup rootSetup = new LoggerSetup(
+        setupWithoutError = new LoggerSetup(
                 getRootLogger(),
-                CollectionUtil.arrayListOf(getSystemOutAppender(), getSystemErrAppender()),
+                CollectionUtil.arrayListOf(getSystemOutAppenderWithoutError(), getSystemErrAppender()),
                 CollectionUtil.arrayListOf(getFileAppender())
         );
-        SETUPS.add(rootSetup);
+        setupWithoutError.disable();
+        SETUPS.add(setupWithoutError);
 
-        LoggerSetup clearSetup = new LoggerSetup(
-                getResultLogger(),
-                CollectionUtil.arrayListOf(getSystemOutAppender(), getSystemErrAppender()),
+        setupWithError = new LoggerSetup(
+                getRootLogger(),
+                CollectionUtil.arrayListOf(getSystemOutAppenderWithError(), getSystemErrAppender()),
                 CollectionUtil.arrayListOf(getFileAppender())
         );
-        SETUPS.add(clearSetup);
+        setupWithError.enable();
+        SETUPS.add(setupWithError);
+
+        LoggerSetup setupForResult = new LoggerSetup(
+                getResultLogger(),
+                CollectionUtil.arrayListOf(getSystemOutAppenderWithError(), getSystemErrAppender()),
+                CollectionUtil.arrayListOf(getFileAppender())
+        );
+        setupForResult.enable();
+        SETUPS.add(setupForResult);
     }
 
     private static void setFile(Collection<? extends FileAppender<ILoggingEvent>> appenders, Path path) {
@@ -211,18 +254,26 @@ public final class Logback {
         }
     }
 
-    private static ConsoleAppender<ILoggingEvent> systemOutAppender;
-    private static ConsoleAppender<ILoggingEvent> getSystemOutAppender() {
-        if(systemOutAppender == null) {
-            systemOutAppender = createSystemOutAppender(LOG_SYSTEMOUT, LOG_PATTERN);
+    private static ConsoleAppender<ILoggingEvent> systemOutAppenderWithoutError;
+    private static ConsoleAppender<ILoggingEvent> getSystemOutAppenderWithoutError() {
+        if(systemOutAppenderWithoutError == null) {
+            systemOutAppenderWithoutError = createSystemOutAppender(SYSTEMOUT_APPENDER_NAME, PATTERN, true);
         }
-        return systemOutAppender;
+        return systemOutAppenderWithoutError;
+    }
+
+    private static ConsoleAppender<ILoggingEvent> systemOutAppenderWithError;
+    private static ConsoleAppender<ILoggingEvent> getSystemOutAppenderWithError() {
+        if(systemOutAppenderWithError == null) {
+            systemOutAppenderWithError = createSystemOutAppender(SYSTEMOUT_APPENDER_NAME, PATTERN, false);
+        }
+        return systemOutAppenderWithError;
     }
 
     private static ConsoleAppender<ILoggingEvent> systemErrAppender;
     private static ConsoleAppender<ILoggingEvent> getSystemErrAppender() {
         if(systemErrAppender == null) {
-            systemErrAppender = createSystemErrAppender(LOG_SYSTEMERR, LOG_PATTERN);
+            systemErrAppender = createSystemErrAppender(SYSTEMERR_APPENDER_NAME, PATTERN);
         }
         return systemErrAppender;
     }
@@ -230,36 +281,12 @@ public final class Logback {
     private static FileAppender<ILoggingEvent> fileAppender;
     private static FileAppender<ILoggingEvent> getFileAppender() {
         if(fileAppender == null) {
-            fileAppender = createFileAppender(LOG_FILE, LOG_PATTERN);
+            fileAppender = createFileAppender(FILE_APPENDER_NAME, PATTERN);
         }
         return fileAppender;
     }
 
-    private static ConsoleAppender<ILoggingEvent> clearSystemOutAppender;
-    private static ConsoleAppender<ILoggingEvent> getClearSystemOutAppender() {
-        if(clearSystemOutAppender == null) {
-            clearSystemOutAppender = createSystemOutAppender(RESULT_SYSTEMOUT, RESULT_PATTERN);
-        }
-        return clearSystemOutAppender;
-    }
-
-    private static ConsoleAppender<ILoggingEvent> clearClearSystemErrAppender;
-    private static ConsoleAppender<ILoggingEvent> getClearSystemErrAppender() {
-        if(clearClearSystemErrAppender == null) {
-            clearClearSystemErrAppender = createSystemErrAppender(RESULT_SYSTEMERR, RESULT_PATTERN);
-        }
-        return clearClearSystemErrAppender;
-    }
-
-    private static FileAppender<ILoggingEvent> clearFileAppender;
-    private static FileAppender<ILoggingEvent> getClearFileAppender() {
-        if(clearFileAppender == null) {
-            clearFileAppender = createFileAppender(RESULT_FILE, RESULT_PATTERN);
-        }
-        return clearFileAppender;
-    }
-
-    private static ConsoleAppender<ILoggingEvent> createSystemOutAppender(String name, String pattern) {
+    private static ConsoleAppender<ILoggingEvent> createSystemOutAppender(String name, String pattern, boolean filterError) {
         PatternLayout layout = new PatternLayout();
         layout.setContext(getContext());
         layout.setPattern(pattern);
@@ -270,16 +297,21 @@ public final class Logback {
         encoder.setLayout(layout);
         encoder.start();
 
-        LevelFilter filter = new LevelFilter();
-        filter.setLevel(Level.ERROR);
-        filter.setOnMatch(FilterReply.DENY);
-        filter.setOnMismatch(FilterReply.ACCEPT);
-        filter.start();
+        LevelFilter filter = null;
+        if(filterError) {
+            filter = new LevelFilter();
+            filter.setLevel(Level.ERROR);
+            filter.setOnMatch(FilterReply.DENY);
+            filter.setOnMismatch(FilterReply.ACCEPT);
+            filter.start();
+        }
 
         ConsoleAppender<ILoggingEvent> appender = new ConsoleAppender<>();
         appender.setContext(getContext());
         appender.setTarget("System.out");
-        appender.addFilter(filter);
+        if(filterError) {
+            appender.addFilter(filter);
+        }
         appender.setName(name);
         appender.setEncoder(encoder);
 
@@ -335,12 +367,24 @@ public final class Logback {
     /**
      * @author Daniel Abitz
      */
+    private enum LoggerMode {
+        NONE,
+        CONSOLE,
+        FILE,
+        CONSOLE_FILE
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
     private static final class LoggerSetup {
 
         private final Logger LOGGER;
         private final List<ConsoleAppender<ILoggingEvent>> CONSOLE_APPENDERS;
         private final List<FileAppender<ILoggingEvent>> FILE_APPENDERS;
         private final List<Appender<ILoggingEvent>> ALL_APPENDERS;
+
+        private boolean disabled = true;
 
         private LoggerSetup(
                 Logger logger,
@@ -354,18 +398,33 @@ public final class Logback {
             ALL_APPENDERS.addAll(FILE_APPENDERS);
         }
 
+        private void enable() {
+            disabled = false;
+        }
+
+        private void disable() {
+            disabled = true;
+        }
+
+        private boolean isDisabled() {
+            return disabled;
+        }
+
         private void reset() {
+            if(isDisabled()) return;
             detachAllAppenders(LOGGER);
             stopAppenders(ALL_APPENDERS);
         }
 
         private void setupConsole() {
+            if(isDisabled()) return;
             reset();
             startAppenders(CONSOLE_APPENDERS);
             addAppenders(CONSOLE_APPENDERS, LOGGER);
         }
 
         private void setupFile(Path target) {
+            if(isDisabled()) return;
             reset();
             setFile(FILE_APPENDERS, target);
             startAppenders(FILE_APPENDERS);
@@ -373,6 +432,7 @@ public final class Logback {
         }
 
         private void setupConsoleAndFile(Path target) {
+            if(isDisabled()) return;
             reset();
             setFile(FILE_APPENDERS, target);
             startAppenders(ALL_APPENDERS);

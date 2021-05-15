@@ -8,7 +8,10 @@ import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.misc.InitializationStage;
+import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.simulation.*;
+import de.unileipzig.irpact.core.util.AdoptionResult;
+import de.unileipzig.irpact.core.util.AdoptionResults;
 import de.unileipzig.irpact.core.util.PVactResultLogging;
 import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.io.param.output.OutAdoptionResult;
@@ -495,11 +498,11 @@ public class IRPact implements IRPActAccess {
         outRoot.outGrps = outList.toArray(new OutCustom[0]);
 
         //=====
-        Timestamp start = environment.getTimeModel().startTime();
-        Timestamp end = environment.getTimeModel().endTime();
-
-        List<OutAdoptionResult> outResults = new ArrayList<>();
-        if(true) throw new TodoException();
+        throw new TodoException();
+//        Timestamp start = environment.getTimeModel().startTime();
+//        Timestamp end = environment.getTimeModel().endTime();
+//
+//        List<OutAdoptionResult> outResults = new ArrayList<>();
 //        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
 //            OutAdoptionResult outResult = new OutAdoptionResult(cag.getName() + "_" + start.getYear());
 //            int adoptions = 0;
@@ -514,8 +517,15 @@ public class IRPact implements IRPActAccess {
 //            outResult.setShare((double) adoptions / (double) cag.getNumberOfAgents());
 //            outResults.add(outResult);
 //        }
-        outRoot.adoptionResults = outResults.toArray(new OutAdoptionResult[0]);
+//        outRoot.adoptionResults = outResults.toArray(new OutAdoptionResult[0]);
     }
+
+//    private void collectAdoptionResults() {
+//        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+//
+//
+//        }
+//    }
 
     private void applyPersistenceData(OutRoot outRoot) throws Exception {
         if(CL_OPTIONS.isSkipPersist()) {

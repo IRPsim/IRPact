@@ -7,6 +7,7 @@ import org.slf4j.event.Level;
 /**
  * @author Daniel Abitz
  */
+@Deprecated
 public class LoggingMessage {
 
     protected String message;

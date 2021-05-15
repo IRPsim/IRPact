@@ -37,7 +37,7 @@ public final class Start {
         IRPLogging.initConsole();
         SectionLoggingFilter filter = new SectionLoggingFilter();
         IRPLogging.setFilter(filter);
-        IRPtools.setLoggingFilter(filter);
+        IRPtools.setLoggingFilter(IRPLogging.getFilter());
         IRPSection.addSectionsToTools();
         IRPSection.addAllNonToolsTo(filter);
     }
