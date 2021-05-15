@@ -26,6 +26,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     protected final Map<Long, BinaryJsonData> uidData = new LinkedHashMap<>();
     protected final Map<String, BinaryRestorer<?>> restorerMap = new LinkedHashMap<>();
     protected final RestoreHelper restoreHelper = new RestoreHelper();
+    protected final ClassManager classManager = new ClassManager();
     protected final List<Persistable> persistables = new ArrayList<>();
     protected boolean hasValidationChecksum;
     protected int validationChecksum;
@@ -37,6 +38,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
 
     private void init() {
         BinaryJsonUtil.registerDefaults(this);
+        restoreHelper.setClassManager(classManager);
     }
 
     public void setCommandLineOptions(MainCommandLineOptions options) {
@@ -156,7 +158,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         if(isRestored(data)) {
             return;
         }
-        String type = data.ensureGetType();
+        String type = data.ensureGetType(classManager);
         BinaryRestorer<?> restorer = ensureGetRestorer(type);
         restorer.setRestoreHelper(restoreHelper);
         Object object = restorer.initalizeRestore(data, this);
@@ -166,7 +168,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
 
     protected <T> void setup(Persistable persistable) throws RestoreException {
         BinaryJsonData data = check(persistable);
-        String type = data.ensureGetType();
+        String type = data.ensureGetType(classManager);
         BinaryRestorer<T> restorer = ensureGetRestorer(type);
         restorer.setRestoreHelper(restoreHelper);
         T object = ensureGetObject(data);
@@ -175,7 +177,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
 
     protected <T> void finalize(Persistable persistable) throws RestoreException {
         BinaryJsonData data = check(persistable);
-        String type = data.ensureGetType();
+        String type = data.ensureGetType(classManager);
         BinaryRestorer<T> restorer = ensureGetRestorer(type);
         restorer.setRestoreHelper(restoreHelper);
         T object = ensureGetObject(data);
@@ -184,7 +186,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
 
     protected <T> void validation(Persistable persistable) throws RestoreException {
         BinaryJsonData data = check(persistable);
-        String type = data.ensureGetType();
+        String type = data.ensureGetType(classManager);
         BinaryRestorer<T> restorer = ensureGetRestorer(type);
         restorer.setRestoreHelper(restoreHelper);
         T object = ensureGetObject(data);

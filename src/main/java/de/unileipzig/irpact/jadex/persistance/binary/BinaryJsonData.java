@@ -59,9 +59,14 @@ public final class BinaryJsonData extends PersistableBase {
         return bdata;
     }
 
-    public static BinaryJsonData init(JsonNodeCreator creator, long uid, Class<?> c) {
+    public static BinaryJsonData init(JsonNodeCreator creator, long uid, Class<?> c, ClassManager classManager) {
         BinaryJsonData data = new BinaryJsonData(creator.objectNode());
-        data.init(uid, c);
+        if(classManager.isEnabled()) {
+            long classId = classManager.getId(c);
+            data.init(uid, classId);
+        } else {
+            data.init(uid, c);
+        }
         return data;
     }
 
@@ -80,6 +85,13 @@ public final class BinaryJsonData extends PersistableBase {
         root.put(TYPE_ID_STR, c.getName());
     }
 
+    private void init(long uid, long classId) {
+        if(isSimulationMode()) return;
+        setUID(uid);
+        root.put(UID_ID_STR, uid);
+        root.put(TYPE_ID_STR, classId);
+    }
+
     public long ensureGetUid() {
         checkSimulationMode();
         if(!root.has(UID_ID_STR)) {
@@ -88,9 +100,15 @@ public final class BinaryJsonData extends PersistableBase {
         return root.get(UID_ID_STR).longValue();
     }
 
-    public String ensureGetType() {
+    public String ensureGetType(ClassManager manager) {
         checkSimulationMode();
-        String type = root.get(TYPE_ID_STR).textValue();
+        final String type;
+        if(manager.isEnabled()) {
+            long classId = root.get(TYPE_ID_STR).longValue();
+            type = manager.getClass(classId);
+        } else {
+            type = root.get(TYPE_ID_STR).textValue();
+        }
         if(type == null || type.isEmpty()) {
             throw new NoSuchElementException("missing type");
         }

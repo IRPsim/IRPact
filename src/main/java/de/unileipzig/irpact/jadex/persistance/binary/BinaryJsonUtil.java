@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary;
 
-import de.unileipzig.irpact.jadex.persistance.binary.impl.*;
+import de.unileipzig.irpact.jadex.persistance.binary.data.*;
 
 /**
  * @author Daniel Abitz

@@ -14,6 +14,7 @@ public final class RestoreHelper {
     private MainCommandLineOptions options;
     private InRoot root;
     private InputParser parser;
+    private ClassManager classManager;
 
     public RestoreHelper() {
     }
@@ -54,5 +55,13 @@ public final class RestoreHelper {
             throw new NoSuchElementException("InputParser");
         }
         return parser;
+    }
+
+    public void setClassManager(ClassManager classManager) {
+        this.classManager = classManager;
+    }
+
+    public ClassManager getClassManager() {
+        return classManager;
     }
 }

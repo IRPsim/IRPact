@@ -5,8 +5,10 @@ import de.unileipzig.irpact.commons.log.Logback;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import de.unileipzig.irptools.util.log.LoggingFilter;
 import de.unileipzig.irptools.util.log.LoggingSection;
+import org.slf4j.Logger;
 
 import java.nio.file.Path;
+import java.util.NoSuchElementException;
 
 /**
  * Global logging of IRPact.
@@ -15,7 +17,13 @@ import java.nio.file.Path;
  */
 public final class IRPLogging {
 
+    private static final String RESULT_PATTERN = "{}{}{}{}{}{}{}";
+    public static final String RESULT_START = "===RESULT-START===";
+    public static final String RESULT_END = "===RESULT-END===";
+
     private static final InternalFilter FILTER = new InternalFilter();
+
+    public static String lineSeparator = "\n"; //aenderbar
 
     private static IRPLogger resultLogger;
 
@@ -77,7 +85,11 @@ public final class IRPLogging {
     }
 
     public static SectionLoggingFilter getFilter() {
-        return FILTER.getBacked();
+        SectionLoggingFilter filter = FILTER.getBacked();
+        if(filter == null) {
+            throw new NoSuchElementException();
+        }
+        return filter;
     }
 
     public static void setLevel(IRPLevel level) {
@@ -135,8 +147,26 @@ public final class IRPLogging {
     }
 
     //==================================================
-    //some util stuff
+    //some logging stuff
     //==================================================
+
+    //=========================
+    //result
+    //=========================
+
+    public static void logResult(String resultTag, Object result) {
+        logResult(getResultLogger(), resultTag, result);
+    }
+
+    public static void logResult(Logger logger, String resultTag, Object result) {
+        logger.info(
+                RESULT_PATTERN,
+                resultTag, lineSeparator,
+                RESULT_START, lineSeparator,
+                result, lineSeparator,
+                RESULT_END
+        );
+    }
 
     //=========================
     //info
