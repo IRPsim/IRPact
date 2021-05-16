@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary.data;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;

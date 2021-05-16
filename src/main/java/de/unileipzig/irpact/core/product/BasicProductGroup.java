@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.core.product.attribute.ProductAttribute;
 import de.unileipzig.irpact.core.product.attribute.ProductGroupAttribute;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;

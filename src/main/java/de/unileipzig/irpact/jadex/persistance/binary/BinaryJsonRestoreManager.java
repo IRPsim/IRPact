@@ -9,6 +9,7 @@ import de.unileipzig.irpact.start.MainCommandLineOptions;
 
 import java.util.*;
 import java.util.function.IntFunction;
+import java.util.function.LongFunction;
 
 /**
  * @author Daniel Abitz
@@ -21,6 +22,8 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     public static final String VALIDATION_CHECKSUM = "_VALIDATION_CHECKSUM_";
     public static final String IN_ROOT = "_IN_ROOT_";
     public static final String PARAM = "_PARAM_";
+
+    protected final LongFunction<?> ENSURE_GET = this::uncheckedEnsureGet;
 
     protected final Map<BinaryJsonData, Object> restoredMap = new LinkedHashMap<>();
     protected final Map<Long, BinaryJsonData> uidData = new LinkedHashMap<>();
@@ -234,6 +237,12 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     public <T> T ensureGet(long uid) throws RestoreException {
         BinaryJsonData data = ensureGetData(uid);
         return ensureGetObject(data);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> LongFunction<T> ensureGetFunction() {
+        return (LongFunction<T>) ENSURE_GET;
     }
 
     @Override

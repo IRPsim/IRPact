@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.simulation;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.util.Rnd;

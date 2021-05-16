@@ -1,5 +1,8 @@
 package de.unileipzig.irpact.commons.util.data;
 
+import de.unileipzig.irpact.commons.checksum.Checksums;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumValue;
 import de.unileipzig.irpact.commons.util.MapSupplier;
 
 import java.util.*;
@@ -9,12 +12,15 @@ import java.util.stream.Stream;
 /**
  * @author Daniel Abitz
  */
-public final class VarMap {
+public final class VarMap implements ChecksumComparable {
 
     protected static final Object[] COUNT_DUMMY = new Object[0];
 
+    @ChecksumValue
     protected final Class<?>[] PARAMETERS;
+    @ChecksumValue
     protected final SubMap FIRST;
+    @ChecksumValue
     protected boolean allowNull = true;
 
     public VarMap(int length) {
@@ -131,6 +137,15 @@ public final class VarMap {
 
     public boolean isAllowNull() {
         return allowNull;
+    }
+
+    @Override
+    public int getChecksum() throws UnsupportedOperationException {
+        return Checksums.SMART.getChecksum(
+                PARAMETERS,
+                FIRST,
+                allowNull
+        );
     }
 
     @Override
@@ -340,11 +355,14 @@ public final class VarMap {
     /**
      * @author Daniel Abitz
      */
-    private static final class SubMap {
+    private static final class SubMap implements ChecksumComparable {
 
         private final MapSupplier SUPPLIER;
+        @ChecksumValue
         private final Map<Object, SubMap> MAP;
+        @ChecksumValue
         private final int POS;
+        @ChecksumValue
         private final boolean LAST;
 
         private SubMap(int position, boolean isLast, MapSupplier supplier) {
@@ -518,6 +536,15 @@ public final class VarMap {
             return isLast()
                     ? MAP.keySet().toString()
                     : MAP.toString();
+        }
+
+        @Override
+        public int getChecksum() throws UnsupportedOperationException {
+            return Checksums.SMART.getChecksum(
+                    MAP,
+                    POS,
+                    LAST
+            );
         }
     }
 }

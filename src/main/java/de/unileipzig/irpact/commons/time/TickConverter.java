@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.time;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 
 import java.time.LocalDate;
 import java.time.ZoneId;

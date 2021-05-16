@@ -1,9 +1,8 @@
 package de.unileipzig.irpact.jadex.time;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.time.TimeMode;
 import de.unileipzig.irpact.commons.time.TimeUtil;
-import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.jadex.util.JadexUtil;

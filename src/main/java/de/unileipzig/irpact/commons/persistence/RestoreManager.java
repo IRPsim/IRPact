@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.IntFunction;
+import java.util.function.LongFunction;
 
 /**
  * @author Daniel Abitz
@@ -31,6 +32,16 @@ public interface RestoreManager {
     int getValidationChecksum() throws NoSuchElementException;
 
     <T> T ensureGet(long uid) throws RestoreException;
+
+    default <T> T uncheckedEnsureGet(long uid) throws UncheckedRestoreException {
+        try {
+            return ensureGet(uid);
+        } catch (RestoreException e) {
+            throw e.unchecked();
+        }
+    }
+
+    <T> LongFunction<T> ensureGetFunction();
 
     <T> T[] ensureGetAll(long[] uids, IntFunction<T[]> arrCreator) throws RestoreException;
 

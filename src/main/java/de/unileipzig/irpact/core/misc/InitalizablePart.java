@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.misc;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.develop.Todo;
 

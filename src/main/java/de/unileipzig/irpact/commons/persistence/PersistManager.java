@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons.persistence;
 
 import java.util.*;
+import java.util.function.ToLongFunction;
 
 /**
  * @author Daniel Abitz
@@ -37,6 +38,8 @@ public interface PersistManager {
             throw e.unchecked();
         }
     }
+
+    <T> ToLongFunction<T> ensureGetUIDFunction();
 
     default <T> long[] ensureGetAllUIDs(Collection<? extends T> coll) throws PersistException {
         long[] ids = new long[coll.size()];

@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.time.Timestamp;

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons.persistence;
 
 import java.util.*;
+import java.util.function.ToLongFunction;
 
 /**
  * @author Daniel Abitz
@@ -18,6 +19,8 @@ public class BasicPersistManager implements PersistManager {
             throw new UnsupportedOperationException();
         }
     };
+
+    protected final ToLongFunction<?> ENSURE_GET_UID = this::uncheckedEnsureGetUID;
 
     protected final Map<Holder, Persistable> persistableMap = new LinkedHashMap<>();
     protected final Set<Holder> requiresSetupCache = new LinkedHashSet<>();
@@ -155,6 +158,12 @@ public class BasicPersistManager implements PersistManager {
             throw new PersistException("placeholder found: " + object.getClass());
         }
         return persistable.getUID();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> ToLongFunction<T> ensureGetUIDFunction() {
+        return (ToLongFunction<T>) ENSURE_GET_UID;
     }
 
     /**

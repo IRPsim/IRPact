@@ -1,11 +1,8 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.affinity.BasicAffinities;
 import de.unileipzig.irpact.commons.util.data.weighted.WeightedMapping;
-
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author Daniel Abitz

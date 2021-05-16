@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.attribute;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 
 import java.util.Collection;
 

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons.persistence;
 
 import de.unileipzig.irpact.commons.exception.IRPactException;
+import de.unileipzig.irpact.commons.exception.IRPactRuntimeException;
 
 /**
  * @author Daniel Abitz
@@ -45,5 +46,10 @@ public class RestoreException extends IRPactException {
 
     public RestoreException(Throwable cause, String pattern, Object... args) {
         super(cause, pattern, args);
+    }
+
+    @Override
+    public UncheckedRestoreException unchecked() {
+        return new UncheckedRestoreException(this);
     }
 }

@@ -1,5 +1,6 @@
-package de.unileipzig.irpact.commons;
+package de.unileipzig.irpact.commons.checksum;
 
+import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irptools.util.log.IRPLogger;
 

@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.process.ra.attributes;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;

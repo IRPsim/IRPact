@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.simulation;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.core.log.InfoTag;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.commons.time.Timestamp;

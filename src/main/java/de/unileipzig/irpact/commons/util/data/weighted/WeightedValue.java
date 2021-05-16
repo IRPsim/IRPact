@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.util.data.weighted;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 
 import java.util.Comparator;
 import java.util.Objects;

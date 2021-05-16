@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.network;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.commons.graph.FastDirectedMultiGraph;

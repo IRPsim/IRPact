@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.spatial;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.attribute.AttributeType;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;

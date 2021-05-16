@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.process.ra;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
@@ -29,8 +29,6 @@ import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irptools.util.log.IRPLogger;
-
-import java.util.Objects;
 
 /**
  * @author Daniel Abitz

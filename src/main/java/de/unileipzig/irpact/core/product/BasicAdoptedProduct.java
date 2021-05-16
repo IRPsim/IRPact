@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.need.Need;
 

@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.util.data;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.util.MapSupplier;
 
 import java.util.Collections;

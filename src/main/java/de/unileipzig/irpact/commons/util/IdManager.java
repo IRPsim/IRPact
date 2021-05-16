@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.util;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.develop.Todo;
 
 import java.util.NoSuchElementException;

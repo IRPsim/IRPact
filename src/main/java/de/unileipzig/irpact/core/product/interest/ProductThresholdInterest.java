@@ -1,11 +1,9 @@
 package de.unileipzig.irpact.core.product.interest;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.interest.ThresholdInterest;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
-
-import java.util.Objects;
 
 /**
  * @author Daniel Abitz

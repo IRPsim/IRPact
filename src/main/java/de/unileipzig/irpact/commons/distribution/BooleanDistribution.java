@@ -1,10 +1,8 @@
 package de.unileipzig.irpact.commons.distribution;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.util.Rnd;
-
-import java.util.Objects;
 
 /**
  * @author Daniel Abitz

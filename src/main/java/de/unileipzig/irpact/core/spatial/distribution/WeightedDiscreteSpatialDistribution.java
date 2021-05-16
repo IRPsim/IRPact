@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.spatial.distribution;
 
-import de.unileipzig.irpact.commons.*;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.weighted.BasicWeightedBiMapping;
 import de.unileipzig.irpact.commons.util.weighted.UnmodifiableWeightedBiMapping;

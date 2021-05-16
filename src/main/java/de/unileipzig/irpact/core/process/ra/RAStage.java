@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.process.ra;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 
 /**
  * @author Daniel Abitz

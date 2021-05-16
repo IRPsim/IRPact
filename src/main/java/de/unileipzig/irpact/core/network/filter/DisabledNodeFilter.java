@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.network.filter;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.core.network.SocialGraph;
 

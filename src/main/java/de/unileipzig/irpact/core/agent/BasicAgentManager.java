@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.agent;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.util.IdManager;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;

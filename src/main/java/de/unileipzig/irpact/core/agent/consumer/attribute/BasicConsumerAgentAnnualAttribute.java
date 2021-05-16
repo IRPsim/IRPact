@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.agent.consumer.attribute;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.util.MapSupplier;
 import de.unileipzig.irpact.develop.AddToPersist;

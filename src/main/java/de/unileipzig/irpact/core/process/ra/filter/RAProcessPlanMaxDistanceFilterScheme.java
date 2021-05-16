@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.process.ra.filter;
 
-import de.unileipzig.irpact.commons.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.network.filter.MaxDistanceNodeFilter;
 import de.unileipzig.irpact.core.process.ProcessPlan;

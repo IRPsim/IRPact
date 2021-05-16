@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons;
 
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+
 import java.util.function.Function;
 
 /**
