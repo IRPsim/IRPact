@@ -16,28 +16,6 @@ public final class BinaryPersistBase32 {
     private BinaryPersistBase32() {
     }
 
-    public static String buildId(String x, long id) {
-        String hex = Long.toHexString(id);
-        return x + hex + x;
-    }
-
-    public static long getId(String x, String irp32) {
-        int dataStart = findDataStart(x, irp32);
-        if(dataStart == -1) {
-            throw new IllegalArgumentException();
-        }
-        String hex = irp32.substring(x.length(), dataStart - x.length());
-        return Long.parseLong(hex, 16);
-    }
-
-    public static int findDataStart(String x, String irp32) {
-        int index = irp32.indexOf(x, 1);
-        if(index == -1) {
-            return -1;
-        }
-        return index + x.length();
-    }
-
     public static byte[] encode(byte[] input) {
         byte[] b32 = BASE32.encode(input);
         exchange(b32);

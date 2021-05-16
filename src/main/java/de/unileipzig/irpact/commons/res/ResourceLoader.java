@@ -11,6 +11,8 @@ import java.nio.file.Path;
  */
 public interface ResourceLoader {
 
+    Path getTempPath(String prefix, String suffix);
+
     boolean exists(String fileName);
 
     boolean hasPath(String fileName);

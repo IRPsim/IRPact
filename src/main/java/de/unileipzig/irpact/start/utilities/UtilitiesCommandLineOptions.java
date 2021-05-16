@@ -40,6 +40,7 @@ public final class UtilitiesCommandLineOptions extends AbstractCommandLineOption
             bundle.put("rOutput", "Output file for R. Type depends on selected function.");
             bundle.put("printCumulativeAdoptions", "Print cumulative adoptions.");
             bundle.put("milieus", "Milieus to print. Can be used with '--printCumulativeAdoptions'.");
+            bundle.put("decodeBinaryPaths", "Decode the 'BinaryPersistData'. The first file is the output file of IRPact and the second is the target for the output.");
 
             bundle.put("testCl", "For testing the command line.");
 
@@ -139,6 +140,18 @@ public final class UtilitiesCommandLineOptions extends AbstractCommandLineOption
             split = ","
     )
     private String[] milieus;
+
+    //=========================
+    //BinaryPersist
+    //=========================
+
+    @CommandLine.Option(
+            names = { "--decodeBinaryPersist" },
+            arity = "2",
+            descriptionKey = "decodeBinaryPaths",
+            converter = PathConverter.class
+    )
+    private Path[] decodeBinaryPaths;
 
     //=========================
     //develop
@@ -246,6 +259,14 @@ public final class UtilitiesCommandLineOptions extends AbstractCommandLineOption
     public boolean isTestCl() {
         checkExecuted();
         return testCl;
+    }
+
+    public boolean hasDecodeBinaryPaths() {
+        return decodeBinaryPaths != null && decodeBinaryPaths.length == 2;
+    }
+
+    public Path[] getDecodeBinaryPaths() {
+        return decodeBinaryPaths;
     }
 
     //=========================

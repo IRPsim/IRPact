@@ -240,6 +240,14 @@ public class Utilities {
     }
 
     //=========================
+    //decode binary persist
+    //=========================
+
+    public static void decodeBinaryPersist() {
+
+    }
+
+    //=========================
     //start
     //=========================
 

@@ -30,6 +30,14 @@ public interface PersistManager {
 
     <T> long ensureGetUID(T object) throws PersistException;
 
+    default <T> long uncheckedEnsureGetUID(T object) throws UncheckedPersistException {
+        try {
+            return ensureGetUID(object);
+        } catch (PersistException e) {
+            throw e.unchecked();
+        }
+    }
+
     default <T> long[] ensureGetAllUIDs(Collection<? extends T> coll) throws PersistException {
         long[] ids = new long[coll.size()];
         int index = 0;

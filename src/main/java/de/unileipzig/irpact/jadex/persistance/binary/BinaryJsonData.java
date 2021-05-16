@@ -5,10 +5,9 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeCreator;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.persistence.*;
-import de.unileipzig.irpact.commons.util.ExceptionUtil;
-import de.unileipzig.irpact.commons.util.IRPactBase32;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.*;
 import de.unileipzig.irpact.commons.util.data.TripleMapping;
+import de.unileipzig.irpact.commons.util.data.VarMap;
 import de.unileipzig.irptools.util.Util;
 
 import java.io.IOException;
@@ -41,11 +40,11 @@ public final class BinaryJsonData extends PersistableBase {
     protected boolean simulationMode;
     protected boolean putMode;
 
-    private BinaryJsonData(JsonNodeCreator creator) {
+    public BinaryJsonData(JsonNodeCreator creator) {
         this(creator.objectNode());
     }
 
-    private BinaryJsonData(ObjectNode root) {
+    public BinaryJsonData(ObjectNode root) {
         this.root = root;
         setSimulationMode(false);
         setPutMode();
@@ -163,6 +162,14 @@ public final class BinaryJsonData extends PersistableBase {
             list.add(str);
         }
         return list;
+    }
+
+    private static ObjectNode computeObjectIfAbsent(ObjectNode root, String field) {
+        if(root.has(field)) {
+            return (ObjectNode) root.get(field);
+        } else {
+            return root.putObject(field);
+        }
     }
 
     //=========================
@@ -288,7 +295,7 @@ public final class BinaryJsonData extends PersistableBase {
 
     private void requiresGetMode() {
         if(putMode) {
-            throw new IllegalStateException("get mode");
+            throw new IllegalStateException("put mode");
         }
     }
 
@@ -450,7 +457,7 @@ public final class BinaryJsonData extends PersistableBase {
     }
 
     //=========================
-    //util
+    //set
     //=========================
 
     public static <T> ToLongFunction<T> ensureGetUID(PersistManager manager) {
@@ -575,6 +582,10 @@ public final class BinaryJsonData extends PersistableBase {
         return idMap;
     }
 
+    //=========================
+    //get
+    //=========================
+
     public static <R> LongFunction<R> ensureGet(RestoreManager manager) throws UncheckedRestoreException {
         return uid -> {
             try {
@@ -675,5 +686,205 @@ public final class BinaryJsonData extends PersistableBase {
             }
         }
         return target;
+    }
+
+    //==================================================
+    //v2
+    //==================================================
+
+    public <A> void putCollection(
+            Collection<A> coll,
+            BiConsumer<ArrayNode, A> aApplier) {
+        if(isSimulationMode()) return;
+        ArrayNode arr = root.putArray(nextPutId());
+        for(A a: coll) {
+            aApplier.accept(arr, a);
+        }
+    }
+
+    public <A> void getCollection(
+            IndexFunction<ArrayNode, A> aFunc,
+            Collection<A> out) {
+        checkSimulationMode();
+        ArrayNode arr = (ArrayNode) nextNode();
+        for(int i = 0; i < arr.size(); i++) {
+            A a = aFunc.apply(arr, i);
+            out.add(a);
+        }
+    }
+
+    public <A, B> void putMap(
+            Map<A, B> map,
+            ToLongFunction<A> aToLong,
+            TriConsumer<ObjectNode, String, B> bApplier) {
+        if(isSimulationMode()) return;
+        ObjectNode obj = root.putObject(nextPutId());
+        for(Map.Entry<A, B> entry: map.entrySet()) {
+            long aLong = aToLong.applyAsLong(entry.getKey());
+            bApplier.accept(obj, Long.toString(aLong), entry.getValue());
+        }
+    }
+
+    public <A, B> void getMap(
+            LongFunction<A> longToA,
+            BiFunction<ObjectNode, String, B> bFunc,
+            Map<A, B> out) {
+        checkSimulationMode();
+        ObjectNode obj = (ObjectNode) nextNode();
+        for(String idStr: Util.iterateFieldNames(obj)) {
+            long id = Long.parseLong(idStr);
+            A a = longToA.apply(id);
+            B b = bFunc.apply(obj, idStr);
+            out.put(a, b);
+        }
+    }
+
+    public <A, B, C> void putMapMap(
+            Map<A, Map<B, C>> mapmap,
+            ToLongFunction<A> aToLong,
+            ToLongFunction<B> bToLong,
+            TriConsumer<ObjectNode, String, C> cApplier) {
+        if(isSimulationMode()) return;
+        ObjectNode obj = root.putObject(nextPutId());
+        for(Map.Entry<A, Map<B, C>> entry: mapmap.entrySet()) {
+            long aLong = aToLong.applyAsLong(entry.getKey());
+            ObjectNode srcNode = obj.putObject(Long.toString(aLong));
+            for(Map.Entry<B, C> entry0: entry.getValue().entrySet()) {
+                long bLong = bToLong.applyAsLong(entry0.getKey());
+                cApplier.accept(srcNode, Long.toString(bLong), entry0.getValue());
+            }
+        }
+    }
+
+    public <A, B, C> void getMapMap(
+            LongFunction<A> longToA,
+            LongFunction<B> longToB,
+            BiFunction<ObjectNode, String, C> cFunc,
+            Map<A, Map<B, C>> out,
+            MapSupplier supplier) {
+        checkSimulationMode();
+        ObjectNode obj = (ObjectNode) nextNode();
+        for(Map.Entry<String, JsonNode> entry: Util.iterateFields(obj)) {
+            String aIdStr = entry.getKey();
+            long aId = Long.parseLong(aIdStr);
+            A a = longToA.apply(aId);
+
+            Map<B, C> mapBC = out.computeIfAbsent(a, _a -> supplier.newMap());
+            ObjectNode child = (ObjectNode) entry.getValue();
+            for(String bIdStr: Util.iterateFieldNames(child)) {
+                long bId = Long.parseLong(bIdStr);
+                B b = longToB.apply(bId);
+                C c = cFunc.apply(child, bIdStr);
+                mapBC.put(b, c);
+            }
+        }
+    }
+
+    public <A, B, C> void putTriple(
+            TripleMapping<A, B, C> map,
+            ToLongFunction<A> aToLong,
+            ToLongFunction<B> bToLong,
+            TriConsumer<ObjectNode, String, C> cApplier) {
+        if(isSimulationMode()) return;
+        ObjectNode obj = root.putObject(nextPutId());
+        for(A a: map.iterableA()) {
+            long aLong = aToLong.applyAsLong(a);
+            ObjectNode srcNode = obj.putObject(Long.toString(aLong));
+            for(Map.Entry<B, C> entry0: map.iterableBC(a)) {
+                long bLong = bToLong.applyAsLong(entry0.getKey());
+                cApplier.accept(srcNode, Long.toString(bLong), entry0.getValue());
+            }
+        }
+    }
+
+    public <A, B, C> void getTriple(
+            LongFunction<A> longToA,
+            LongFunction<B> longToB,
+            BiFunction<ObjectNode, String, C> cFunc,
+            TripleMapping<A, B, C> out) {
+        checkSimulationMode();
+        ObjectNode obj = (ObjectNode) nextNode();
+        for(Map.Entry<String, JsonNode> entry: Util.iterateFields(obj)) {
+            String aIdStr = entry.getKey();
+            long aId = Long.parseLong(aIdStr);
+            A a = longToA.apply(aId);
+
+            ObjectNode child = (ObjectNode) entry.getValue();
+            for(String bIdStr: Util.iterateFieldNames(child)) {
+                long bId = Long.parseLong(bIdStr);
+                B b = longToB.apply(bId);
+                C c = cFunc.apply(child, bIdStr);
+                out.put(a, b, c);
+            }
+        }
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public void putVarMap(
+            VarMap varMap,
+            ToLongFunction<?>[] xToLong,
+            TriConsumer<ObjectNode, String, ?> xApplier) {
+        if(isSimulationMode()) return;
+        ObjectNode obj = root.putObject(nextPutId());
+        for(Object[] entry: varMap.iterable()) {
+            ObjectNode node = obj;
+            //total: 0..n-1
+            //0..n-3
+            for(int i = 0; i < entry.length - 2; i++) {
+                Object value = entry[i];
+                ToLongFunction toLongFunction = xToLong[i];
+                long id = toLongFunction.applyAsLong(value);
+                node = computeObjectIfAbsent(node, Long.toString(id));
+            }
+            //n-2 und n-1
+            Object lastKey = entry[entry.length - 2];
+            ToLongFunction lastToLong = xToLong[entry.length - 2];
+            long lastId = lastToLong.applyAsLong(lastKey);
+            Object lastValue = entry[entry.length - 1];
+            ((TriConsumer) xApplier).accept(node, Long.toString(lastId), lastValue);
+        }
+    }
+
+    public void getVarMap(
+            LongFunction<?>[] longToX,
+            BiFunction<ObjectNode, String, ?> xSupplier,
+            VarMap out) {
+        checkSimulationMode();
+        List<Object> temp = new ArrayList<>();
+        ObjectNode obj = (ObjectNode) nextNode();
+        recGetVarMap(obj, 0, longToX, xSupplier, temp, out);
+        temp.clear();
+    }
+
+    protected void recGetVarMap(
+            ObjectNode current,
+            int i,
+            LongFunction<?>[] longToX,
+            BiFunction<ObjectNode, String, ?> xSupplier,
+            List<Object> temp,
+            VarMap out) {
+        for(Map.Entry<String, JsonNode> entry: Util.iterateFields(current)) {
+            String idStr = entry.getKey();
+            long id = Long.parseLong(idStr);
+            Object idValue = longToX[i].apply(id);
+            set(temp, i, idValue);
+
+            JsonNode child = entry.getValue();
+            if(child.isObject()) {
+                ObjectNode objChild = (ObjectNode) child;
+                recGetVarMap(objChild, i + 1, longToX, xSupplier, temp, out);
+            } else {
+                Object lastElement = xSupplier.apply(current, idStr);
+                set(temp, i + 1, lastElement);
+                out.putCollection(temp);
+            }
+        }
+    }
+
+    private static void set(List<Object> list, int i, Object element) {
+        while(list.size() < i + 1) {
+            list.add(null);
+        }
+        list.set(i, element);
     }
 }

@@ -44,18 +44,36 @@ public final class VarMap {
     //=========================
 
     private void validate(Object[] values) {
-        if(values.length != PARAMETERS.length) {
+//        if(values.length != PARAMETERS.length) {
+//            throw new IllegalArgumentException("length != " + numberOfParameters());
+//        }
+//        for(int i = 0; i < values.length; i++) {
+//            Class<?> type = PARAMETERS[i];
+//            Object value = values[i];
+//            if(isAllowNull() && value == null) {
+//                continue;
+//            }
+//            if(!type.isInstance(value)) {
+//                throw new IllegalArgumentException(value + " != " + type);
+//            }
+//        }
+        validate(Arrays.asList(values));
+    }
+
+    private void validate(Collection<?> values) {
+        if(values.size() != PARAMETERS.length) {
             throw new IllegalArgumentException("length != " + numberOfParameters());
         }
-        for(int i = 0; i < values.length; i++) {
+        int i = 0;
+        for(Object value: values) {
             Class<?> type = PARAMETERS[i];
-            Object value = values[i];
             if(isAllowNull() && value == null) {
                 continue;
             }
             if(!type.isInstance(value)) {
                 throw new IllegalArgumentException(value + " != " + type);
             }
+            i++;
         }
     }
 
@@ -165,18 +183,35 @@ public final class VarMap {
         throw new IllegalStateException();
     }
 
-    public void put(Object... values) {
+    public void putArray(Object... values) {
+//        validate(values);
+//        SubMap next = FIRST;
+//        for(int i = 0; i < values.length; i++) {
+//            Object value = values[i];
+//            if(i == values.length - 1) {
+//                //last
+//                next.putLast(value);
+//            } else {
+//                boolean secondToLast = i == values.length - 2;
+//                next = next.putNext(value, secondToLast);
+//            }
+//        }
+        putCollection(Arrays.asList(values));
+    }
+
+    public void putCollection(Collection<?> values) {
         validate(values);
         SubMap next = FIRST;
-        for(int i = 0; i < values.length; i++) {
-            Object value = values[i];
-            if(i == values.length - 1) {
+        int i = 0;
+        for(Object value: values) {
+            if(i == values.size() - 1) {
                 //last
                 next.putLast(value);
             } else {
-                boolean secondToLast = i == values.length - 2;
+                boolean secondToLast = i == values.size() - 2;
                 next = next.putNext(value, secondToLast);
             }
+            i++;
         }
     }
 

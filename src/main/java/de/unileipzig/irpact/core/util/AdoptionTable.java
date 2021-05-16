@@ -49,7 +49,7 @@ public class AdoptionTable {
 
     public void addAll(ConsumerAgent agent) {
         for(AdoptedProduct adoptedProduct: agent.getAdoptedProducts()) {
-            MAP.put(
+            MAP.putArray(
                     adoptedProduct.getYear(),
                     agent.getGroup(),
                     adoptedProduct.getProduct().getGroup(),

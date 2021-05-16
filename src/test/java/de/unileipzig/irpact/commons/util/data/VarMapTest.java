@@ -19,9 +19,9 @@ class VarMapTest {
     void testCount2() {
         VarMap map = new VarMap(Integer.class, String.class);
 
-        map.put(1, "a");
-        map.put(2, "b");
-        map.put(3, "c");
+        map.putArray(1, "a");
+        map.putArray(2, "b");
+        map.putArray(3, "c");
 
         assertEquals(3, map.count());
     }
@@ -30,10 +30,10 @@ class VarMapTest {
     void testCount3() {
         VarMap map = new VarMap(Integer.class, String.class, Boolean.class);
 
-        map.put(1, "a", true);
-        map.put(2, "b", false);
-        map.put(3, "c", true);
-        map.put(3, "c", false);
+        map.putArray(1, "a", true);
+        map.putArray(2, "b", false);
+        map.putArray(3, "c", true);
+        map.putArray(3, "c", false);
 
         assertEquals(4, map.count());
     }
@@ -42,9 +42,9 @@ class VarMapTest {
     void testStream2() {
         VarMap map = new VarMap(Integer.class, String.class);
 
-        map.put(1, "a");
-        map.put(2, "b");
-        map.put(3, "c");
+        map.putArray(1, "a");
+        map.putArray(2, "b");
+        map.putArray(3, "c");
 
         List<List<Object>> list = CollectionUtil.arrayListOf(
                 CollectionUtil.arrayListOf(1, "a"),
@@ -63,10 +63,10 @@ class VarMapTest {
     void testStream3() {
         VarMap map = new VarMap(Integer.class, String.class, Boolean.class);
 
-        map.put(1, "a", true);
-        map.put(2, "b", false);
-        map.put(3, "c", true);
-        map.put(3, "c", false);
+        map.putArray(1, "a", true);
+        map.putArray(2, "b", false);
+        map.putArray(3, "c", true);
+        map.putArray(3, "c", false);
 
         List<List<Object>> list = CollectionUtil.arrayListOf(
                 CollectionUtil.arrayListOf(1, "a", true),
@@ -86,10 +86,10 @@ class VarMapTest {
     void testGet3() {
         VarMap map = new VarMap(Integer.class, String.class, Boolean.class);
 
-        map.put(1, "a", true);
-        map.put(2, "b", false);
-        map.put(3, "c", true);
-        map.put(3, "c", false);
+        map.putArray(1, "a", true);
+        map.putArray(2, "b", false);
+        map.putArray(3, "c", true);
+        map.putArray(3, "c", false);
 
         assertArrayEquals(
                 new Object[]{3, "c", true},
@@ -101,10 +101,10 @@ class VarMapTest {
     void testIterable3() {
         VarMap map = new VarMap(Integer.class, String.class, Boolean.class);
 
-        map.put(1, "a", true);
-        map.put(2, "b", false);
-        map.put(3, "c", true);
-        map.put(4, "d", false);
+        map.putArray(1, "a", true);
+        map.putArray(2, "b", false);
+        map.putArray(3, "c", true);
+        map.putArray(4, "d", false);
 
         List<List<Object>> list = CollectionUtil.arrayListOf(
                 CollectionUtil.arrayListOf(1, "a", true),
@@ -124,10 +124,10 @@ class VarMapTest {
     void testRemoveIndex() {
         VarMap map = new VarMap(Integer.class, String.class, Boolean.class);
 
-        map.put(1, "a", true);
-        map.put(2, "b", false);
-        map.put(3, "c", true);
-        map.put(4, "d", false);
+        map.putArray(1, "a", true);
+        map.putArray(2, "b", false);
+        map.putArray(3, "c", true);
+        map.putArray(4, "d", false);
 
         assertArrayEquals(
                 new Object[]{3, "c", true},
@@ -165,10 +165,10 @@ class VarMapTest {
     void testGetPosition() {
         VarMap map = new VarMap(Integer.class, String.class, Boolean.class);
 
-        map.put(1, "a", true);
-        map.put(2, "b", false);
-        map.put(3, "c", true);
-        map.put(4, "d", false);
+        map.putArray(1, "a", true);
+        map.putArray(2, "b", false);
+        map.putArray(3, "c", true);
+        map.putArray(4, "d", false);
 
         assertEquals(1, map.get(0, 0));
         assertEquals("c", map.getAs(2, 1));
@@ -179,10 +179,10 @@ class VarMapTest {
     void testFilterIndex3() {
         VarMap map = new VarMap(Integer.class, String.class, Boolean.class);
 
-        map.put(1, "a", true);
-        map.put(2, "b", false);
-        map.put(3, "c", true);
-        map.put(3, "c", false);
+        map.putArray(1, "a", true);
+        map.putArray(2, "b", false);
+        map.putArray(3, "c", true);
+        map.putArray(3, "c", false);
 
         List<List<Object>> list = CollectionUtil.arrayListOf(
                 CollectionUtil.arrayListOf(3, "c", true),
@@ -200,10 +200,10 @@ class VarMapTest {
     void testFilterIndex3V2() {
         VarMap map = new VarMap(Integer.class, String.class, Boolean.class);
 
-        map.put(1, "a", true);
-        map.put(2, "b", false);
-        map.put(3, "c", true);
-        map.put(3, "c", false);
+        map.putArray(1, "a", true);
+        map.putArray(2, "b", false);
+        map.putArray(3, "c", true);
+        map.putArray(3, "c", false);
 
         List<List<Object>> list = CollectionUtil.arrayListOf(
                 CollectionUtil.arrayListOf(1, "a", true),
@@ -221,19 +221,19 @@ class VarMapTest {
     void testFilterAll3() {
         VarMap map = new VarMap(Integer.class, String.class, Boolean.class);
 
-        map.put(1, "a", true);
-        map.put(1, "a", false);
-        map.put(1, "c", false);
-        map.put(2, "a", true);
-        map.put(2, "a", false);
-        map.put(2, "b", true);
-        map.put(2, "b", false);
-        map.put(2, "c", true);
-        map.put(2, "c", false);
-        map.put(3, "a", true);
-        map.put(3, "a", false);
-        map.put(3, "c", true);
-        map.put(3, "c", false);
+        map.putArray(1, "a", true);
+        map.putArray(1, "a", false);
+        map.putArray(1, "c", false);
+        map.putArray(2, "a", true);
+        map.putArray(2, "a", false);
+        map.putArray(2, "b", true);
+        map.putArray(2, "b", false);
+        map.putArray(2, "c", true);
+        map.putArray(2, "c", false);
+        map.putArray(3, "a", true);
+        map.putArray(3, "a", false);
+        map.putArray(3, "c", true);
+        map.putArray(3, "c", false);
 
         assertEquals(13, map.count());
 
@@ -256,19 +256,19 @@ class VarMapTest {
     void testStreamIndex() {
         VarMap map = new VarMap(Integer.class, String.class, Boolean.class);
 
-        map.put(1, "a", true);
-        map.put(1, "a", false);
-        map.put(1, "c", false);
-        map.put(2, "a", true);
-        map.put(2, "a", false);
-        map.put(2, "b", true);
-        map.put(2, "b", false);
-        map.put(2, "c", true);
-        map.put(2, "c", false);
-        map.put(3, "a", true);
-        map.put(3, "a", false);
-        map.put(3, "c", true);
-        map.put(3, "c", false);
+        map.putArray(1, "a", true);
+        map.putArray(1, "a", false);
+        map.putArray(1, "c", false);
+        map.putArray(2, "a", true);
+        map.putArray(2, "a", false);
+        map.putArray(2, "b", true);
+        map.putArray(2, "b", false);
+        map.putArray(2, "c", true);
+        map.putArray(2, "c", false);
+        map.putArray(3, "a", true);
+        map.putArray(3, "a", false);
+        map.putArray(3, "c", true);
+        map.putArray(3, "c", false);
 
         assertEquals(7, map.indexStream(1).count());
 
@@ -284,19 +284,19 @@ class VarMapTest {
         VarMap map = new VarMap(Integer.class, String.class, Boolean.class);
         map.setAllowNull(true);
 
-        map.put(1, "a", true);
-        map.put(1, "a", false);
-        map.put(1, "c", false);
-        map.put(2, "a", true);
-        map.put(2, "a", false);
-        map.put(2, "b", true);
-        map.put(2, "b", false);
-        map.put(2, "c", true);
-        map.put(2, "c", false);
-        map.put(3, "a", true);
-        map.put(3, "a", false);
-        map.put(3, "c", true);
-        map.put(3, "c", false);
+        map.putArray(1, "a", true);
+        map.putArray(1, "a", false);
+        map.putArray(1, "c", false);
+        map.putArray(2, "a", true);
+        map.putArray(2, "a", false);
+        map.putArray(2, "b", true);
+        map.putArray(2, "b", false);
+        map.putArray(2, "c", true);
+        map.putArray(2, "c", false);
+        map.putArray(3, "a", true);
+        map.putArray(3, "a", false);
+        map.putArray(3, "c", true);
+        map.putArray(3, "c", false);
 
         assertTrue(map.contains(3, "c", false));
 
@@ -310,19 +310,19 @@ class VarMapTest {
         VarMap map = new VarMap(Integer.class, String.class, Boolean.class);
         map.setAllowNull(true);
 
-        map.put(1, "a", true);
-        map.put(1, "a", false);
-        map.put(1, "c", false);
-        map.put(2, "a", true);
-        map.put(2, "a", false);
-        map.put(2, "b", true);
-        map.put(2, "b", false);
-        map.put(2, "c", true);
-        map.put(2, "c", false);
-        map.put(3, "a", true);
-        map.put(3, "a", false);
-        map.put(3, "c", true);
-        map.put(3, "c", false);
+        map.putArray(1, "a", true);
+        map.putArray(1, "a", false);
+        map.putArray(1, "c", false);
+        map.putArray(2, "a", true);
+        map.putArray(2, "a", false);
+        map.putArray(2, "b", true);
+        map.putArray(2, "b", false);
+        map.putArray(2, "c", true);
+        map.putArray(2, "c", false);
+        map.putArray(3, "a", true);
+        map.putArray(3, "a", false);
+        map.putArray(3, "c", true);
+        map.putArray(3, "c", false);
 
         assertEquals(13, map.count());
 
@@ -371,10 +371,10 @@ class VarMapTest {
     @Test
     void testSingleType() {
         VarMap map = new VarMap(1);
-        map.put("a");
-        map.put("b");
-        map.put("c");
-        map.put("d");
+        map.putArray("a");
+        map.putArray("b");
+        map.putArray("c");
+        map.putArray("d");
 
         assertEquals(4, map.count());
 
@@ -387,19 +387,19 @@ class VarMapTest {
     void testFilteredIndexStream() {
         VarMap map = new VarMap(Integer.class, String.class, Boolean.class);
 
-        map.put(1, "a", true);
-        map.put(1, "a", false);
-        map.put(1, "c", false);
-        map.put(2, "a", true);
-        map.put(2, "a", false);
-        map.put(2, "b", true);
-        map.put(2, "b", false);
-        map.put(2, "c", true);
-        map.put(2, "c", false);
-        map.put(3, "a", true);
-        map.put(3, "a", false);
-        map.put(3, "c", true);
-        map.put(3, "c", false);
+        map.putArray(1, "a", true);
+        map.putArray(1, "a", false);
+        map.putArray(1, "c", false);
+        map.putArray(2, "a", true);
+        map.putArray(2, "a", false);
+        map.putArray(2, "b", true);
+        map.putArray(2, "b", false);
+        map.putArray(2, "c", true);
+        map.putArray(2, "c", false);
+        map.putArray(3, "a", true);
+        map.putArray(3, "a", false);
+        map.putArray(3, "c", true);
+        map.putArray(3, "c", false);
 
         Set<String> set = map.filteredIndexStream(1, str -> !str.equals("b"))
                 .map(o -> (String) o)
@@ -413,19 +413,19 @@ class VarMapTest {
     void testEquals() {
         VarMap map = new VarMap(Integer.class, String.class, Boolean.class);
 
-        map.put(1, "a", true);
-        map.put(1, "a", false);
-        map.put(1, "c", false);
-        map.put(2, "a", true);
-        map.put(2, "a", false);
-        map.put(2, "b", true);
-        map.put(2, "b", false);
-        map.put(2, "c", true);
-        map.put(2, "c", false);
-        map.put(3, "a", true);
-        map.put(3, "a", false);
-        map.put(3, "c", true);
-        map.put(3, "c", false);
+        map.putArray(1, "a", true);
+        map.putArray(1, "a", false);
+        map.putArray(1, "c", false);
+        map.putArray(2, "a", true);
+        map.putArray(2, "a", false);
+        map.putArray(2, "b", true);
+        map.putArray(2, "b", false);
+        map.putArray(2, "c", true);
+        map.putArray(2, "c", false);
+        map.putArray(3, "a", true);
+        map.putArray(3, "a", false);
+        map.putArray(3, "c", true);
+        map.putArray(3, "c", false);
 
         VarMap copy = map.copy();
         assertNotSame(map, copy);
