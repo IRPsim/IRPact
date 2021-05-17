@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.util.AbstractCommandLineOptions;
 import de.unileipzig.irpact.commons.util.MapResourceBundle;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.start.irpact.IRPact;
+import de.unileipzig.irpact.start.irpact.IRPactExecutors;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
 import picocli.CommandLine;
 
@@ -30,10 +31,11 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
 
             bundle.put("printHelp", "Print help.");
             bundle.put("printVersion", "Print version information.");
+            bundle.put("runMode", "The mode in which the program is to be executed. Currently supported are: '0: normal execution', '1: initialization and evaluation, no simulation'. Default value is ${DEFAULT-VALUE}.");
             bundle.put("inputPath", "Set path to input file.");
             bundle.put("outputPath", "Set path to output file.");
-            bundle.put("imagePath", "Set path to image output file.");
-            bundle.put("noSimulation", "Disable simulation, run initialization only.");
+            bundle.put("imagePath", "Set path to image output file. Without '--noSimulation' the post-simulation network is printed.");
+            bundle.put("noSimulation", "Disables everything except initialization. Combined with '--image' the initial network is printed.");
             bundle.put("checkOutputExistence", "Checks if the output file already exists. If it does, the program will be cancelled. This option is used to ensure that data is not overwritten.");
 
             bundle.put("useGamsNameTrimming", "Enables (1) or disables (0) gams name trimming. Default value is ${DEFAULT-VALUE}. Change this option only if you know what you are doing.");
@@ -82,6 +84,13 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             descriptionKey = "printVersion"
     )
     private boolean printVersion;
+
+    @CommandLine.Option(
+            names = { "--mode" },
+            defaultValue = IRPactExecutors.DEFAULT_MODE,
+            descriptionKey = "runMode"
+    )
+    private int runMode;
 
     @CommandLine.Option(
             names = { "-i", "--input" },
@@ -327,6 +336,11 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
 
     public boolean isNotPrintHelpOrVersion() {
         return !isPrintHelpOrVersion();
+    }
+
+    public int getRunMode() {
+        checkExecuted();
+        return runMode;
     }
 
     public boolean hasInputPath() {

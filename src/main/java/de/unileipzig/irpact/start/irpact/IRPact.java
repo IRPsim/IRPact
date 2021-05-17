@@ -4,28 +4,23 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
-import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.misc.InitializationStage;
-import de.unileipzig.irpact.core.product.AdoptedProduct;
-import de.unileipzig.irpact.core.simulation.*;
-import de.unileipzig.irpact.core.util.AdoptionResult;
-import de.unileipzig.irpact.core.util.AdoptionResults;
-import de.unileipzig.irpact.core.util.PVactResultLogging;
-import de.unileipzig.irpact.develop.TodoException;
-import de.unileipzig.irpact.io.param.output.OutAdoptionResult;
-import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.misc.InitializationStage;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.network.SocialGraph;
+import de.unileipzig.irpact.core.simulation.*;
+import de.unileipzig.irpact.core.util.PVactResultLogging;
+import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.io.param.input.GraphvizInputParser;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.JadexInputParser;
 import de.unileipzig.irpact.io.param.output.OutRoot;
+import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.jadex.agents.simulation.ProxySimulationAgent;
 import de.unileipzig.irpact.jadex.persistance.JadexPersistenceModul;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
@@ -57,7 +52,7 @@ import java.util.*;
 /**
  * @author Daniel Abitz
  */
-public class IRPact implements IRPActAccess {
+public final class IRPact implements IRPActAccess {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(IRPact.class);
 
@@ -98,6 +93,10 @@ public class IRPact implements IRPActAccess {
         this.CL_OPTIONS = clOptions;
         this.CALLBACKS.addAll(callbacks);
         this.RESOURCE_LOADER = resourceLoader;
+    }
+
+    public MainCommandLineOptions getOptions() {
+        return CL_OPTIONS;
     }
 
     private static DefinitionMapper createMapper(MainCommandLineOptions options, DefinitionCollection dcoll) {
@@ -167,9 +166,8 @@ public class IRPact implements IRPActAccess {
         environment.getLiveCycleControl().pulse();
     }
 
-    public void start(ObjectNode jsonRoot) throws Exception {
+    public void init(ObjectNode jsonRoot) throws Exception {
         parseInputFile(jsonRoot);
-        start();
     }
 
     private void parseInputFile(ObjectNode jsonRoot) {
@@ -177,56 +175,55 @@ public class IRPact implements IRPActAccess {
         inRoot = inEntry.getData();
     }
 
-    public void start(AnnualEntry<InRoot> entry) throws Exception {
+    public void init(AnnualEntry<InRoot> entry) throws Exception {
         this.inEntry = entry;
         inRoot = entry.getData();
-        start();
     }
 
-    private void start() throws Exception {
-        initialize();
+//    private void start() throws Exception {
+//        initialize();
+//
+//        preAgentCreation();
+//        runPreAgentCreationTasks();
+//        preAgentCreationValidation();
+//
+//        createAgents();
+//
+//        postAgentCreation();
+//        runPostAgentCreationTasks();
+//        postAgentCreationValidation();
+//
+//        runPrePlatformCreationTasks();
+//
+//        if(CL_OPTIONS.isNoSimulation()) {
+//            if(CL_OPTIONS.hasImagePath()) {
+//                LOGGER.info(IRPSection.GENERAL, "create initial network image");
+//                printNetwork();
+//            }
+//            LOGGER.info(IRPSection.GENERAL, "no simulation");
+//            return;
+//        }
+//
+//        createPlatform();
+//        preparePlatform();
+//        setupTimeModel();
+//        createJadexAgents();
+//        try {
+//            waitForCreation();
+//        } catch (InterruptedException e) {
+//            LOGGER.warn(IRPSection.GENERAL, "waiting interrupted", e);
+//            if(environment.getLiveCycleControl().getTerminationState() != LifeCycleControl.TerminationState.NOT) {
+//                environment.getLiveCycleControl().terminateWithError(e);
+//            }
+//            return;
+//        }
+//        setupPreSimulationStart();
+//        startSimulation();
+//        waitForTermination();
+//        postSimulation();
+//    }
 
-        preAgentCreation();
-        runPreAgentCreationTasks();
-        preAgentCreationValidation();
-
-        createAgents();
-
-        postAgentCreation();
-        runPostAgentCreationTasks();
-        postAgentCreationValidation();
-
-        runPrePlatformCreationTasks();
-
-        if(CL_OPTIONS.isNoSimulation()) {
-            if(CL_OPTIONS.hasImagePath()) {
-                LOGGER.info(IRPSection.GENERAL, "create initial network image");
-                printNetwork();
-            }
-            LOGGER.info(IRPSection.GENERAL, "no simulation");
-            return;
-        }
-
-        createPlatform();
-        preparePlatform();
-        setupTimeModel();
-        createJadexAgents();
-        try {
-            waitForCreation();
-        } catch (InterruptedException e) {
-            LOGGER.warn(IRPSection.GENERAL, "waiting interrupted", e);
-            if(environment.getLiveCycleControl().getTerminationState() != LifeCycleControl.TerminationState.NOT) {
-                environment.getLiveCycleControl().terminateWithError(e);
-            }
-            return;
-        }
-        setupPreSimulationStart();
-        startSimulation();
-        waitForTermination();
-        postSimulation();
-    }
-
-    private void initialize() throws Exception {
+    public void initialize() throws Exception {
         if(hasPreviousState()) {
             restorPreviousSimulationEnvironment();
         } else {
@@ -301,54 +298,70 @@ public class IRPact implements IRPActAccess {
         return inRoot.hasBinaryPersistData();
     }
 
-    private void preAgentCreation() throws MissingDataException {
+    public void preAgentCreation() throws MissingDataException {
         LOGGER.info(IRPSection.GENERAL, "run pre-agent creation");
         environment.preAgentCreation();
     }
 
-    private void runPreAgentCreationTasks() {
+    public void runPreAgentCreationTasks() {
         LOGGER.info(IRPSection.GENERAL, "run pre-agent creation tasks");
         environment.getTaskManager().runInitializationStageTasks(InitializationStage.PRE_AGENT_CREATION, environment);
     }
 
-    private void preAgentCreationValidation() throws ValidationException {
+    public void preAgentCreationValidation() throws ValidationException {
         LOGGER.info(IRPSection.GENERAL, "run pre-agent creation validation");
         environment.preAgentCreationValidation();
     }
 
-    private void createAgents() throws InitializationException {
+    public void createAgents() throws InitializationException {
         LOGGER.info(IRPSection.GENERAL, "run create agents");
         environment.createAgents();
     }
 
-    private void postAgentCreation() throws MissingDataException, InitializationException {
+    public void postAgentCreation() throws MissingDataException, InitializationException {
         LOGGER.info(IRPSection.GENERAL, "run post agent creation");
         environment.postAgentCreation();
     }
 
-    private void runPostAgentCreationTasks() {
+    public void runPostAgentCreationTasks() {
         LOGGER.info(IRPSection.GENERAL, "run post-agent creation tasks");
         environment.getTaskManager().runInitializationStageTasks(InitializationStage.POST_AGENT_CREATION, environment);
     }
 
-    private void postAgentCreationValidation() throws ValidationException {
+    public void postAgentCreationValidation() throws ValidationException {
         LOGGER.info(IRPSection.GENERAL, "run post-agent creation validation");
         environment.postAgentCreationValidation();
     }
 
-    private void runPrePlatformCreationTasks() {
+    public void runPrePlatformCreationTasks() {
         LOGGER.info(IRPSection.GENERAL, "run pre-platforn creation tasks");
         environment.getTaskManager().runInitializationStageTasks(InitializationStage.PRE_PLATFORM_CREATION, environment);
     }
 
-    private void printNetwork() throws Exception {
+    public boolean checkNoSimulationFlag() throws Exception {
+        if(CL_OPTIONS.isNoSimulation()) {
+            if(CL_OPTIONS.hasImagePath()) {
+                printInitialNetwork();
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void printInitialNetwork() throws Exception {
+        LOGGER.info(IRPSection.GENERAL, "create initial network image");
+        printNetwork();
+    }
+
+    public void printNetwork() throws Exception {
         graphvizConfiguration.printSocialGraph(
                 environment.getNetwork().getGraph(),
                 SocialGraph.Type.COMMUNICATION
         );
     }
 
-    private void createPlatform() {
+    public void createPlatform() {
         LOGGER.info(IRPSection.GENERAL, "create platform");
 
         IPlatformConfiguration config = PlatformConfigurationHandler.getMinimal();
@@ -368,18 +381,18 @@ public class IRPact implements IRPActAccess {
         environment.getLiveCycleControl().setClockService(clock);
     }
 
-    private void preparePlatform() {
+    public void preparePlatform() {
         LOGGER.info(IRPSection.GENERAL, "prepare platform start");
         environment.getLiveCycleControl().pause();
         pulse();
     }
 
-    private void setupTimeModel() {
+    public void setupTimeModel() {
         LOGGER.info(IRPSection.GENERAL, "setup time model");
         environment.getTimeModel().setupTimeModel();
     }
 
-    private void createJadexAgents() {
+    public void createJadexAgents() {
         LOGGER.info(IRPSection.GENERAL, "create agents");
 
         final int totalNumberOfAgents = 1 //SimulationAgent
@@ -437,23 +450,36 @@ public class IRPact implements IRPActAccess {
         return info;
     }
 
-    private void waitForCreation() throws InterruptedException {
+    public void waitForCreation() throws InterruptedException {
         LOGGER.info(IRPSection.GENERAL, "wait until agent creation is finished...");
         environment.getLiveCycleControl().waitForCreationFinished();
         LOGGER.info(IRPSection.GENERAL, "...  agent creation finished");
     }
 
-    private void setupPreSimulationStart() throws MissingDataException {
+    public boolean secureWaitForCreation() {
+        try {
+            waitForCreation();
+            return true;
+        } catch (InterruptedException e) {
+            LOGGER.warn(IRPSection.GENERAL, "waiting interrupted", e);
+            if(environment.getLiveCycleControl().getTerminationState() != LifeCycleControl.TerminationState.NOT) {
+                environment.getLiveCycleControl().terminateWithError(e);
+            }
+            return false;
+        }
+    }
+
+    public void setupPreSimulationStart() throws MissingDataException {
         LOGGER.info(IRPSection.GENERAL, "pre simulation start environment");
         environment.preSimulationStart();
     }
 
-    private void startSimulation() {
+    public void startSimulation() {
         LOGGER.info(IRPSection.GENERAL, "start simulation");
         environment.getLiveCycleControl().start();
     }
 
-    private void waitForTermination() {
+    public void waitForTermination() {
         LOGGER.info(IRPSection.GENERAL, "wait for termination");
 
         environment.getLiveCycleControl().waitForTermination().get();
@@ -462,7 +488,7 @@ public class IRPact implements IRPActAccess {
         LOGGER.info(IRPSection.GENERAL, "simulation terminated");
     }
 
-    private void postSimulation() throws Exception {
+    public void postSimulation() throws Exception {
         LOGGER.info(IRPSection.GENERAL, "simulation finished");
         if(CL_OPTIONS.hasImagePath()) {
             LOGGER.info(IRPSection.GENERAL, "create network image after simulation finished");

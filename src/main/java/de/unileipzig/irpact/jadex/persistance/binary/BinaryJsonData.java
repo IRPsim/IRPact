@@ -315,6 +315,15 @@ public final class BinaryJsonData extends PersistableBase {
 
     private JsonNode nextNode(boolean allowNull) {
         int id = nextGetId();
+        return get(id, allowNull);
+    }
+
+    private JsonNode peekNode() {
+        requiresGetMode();
+        return get(autoGetId, false);
+    }
+
+    private JsonNode get(int id, boolean allowNull) {
         JsonNode node = validateGet(id);
         if(node == null || node.isMissingNode() || (!allowNull && node.isNull())) {
             String type = node == null
@@ -338,6 +347,11 @@ public final class BinaryJsonData extends PersistableBase {
     public long getLong() {
         checkSimulationMode();
         return nextNode().longValue();
+    }
+
+    public boolean peekNothing() {
+        checkSimulationMode();
+        return peekNode().longValue() == NOTHING_ID;
     }
 
     public double getDouble() {
@@ -689,6 +703,25 @@ public final class BinaryJsonData extends PersistableBase {
     //v2
     //==================================================
 
+    public <A> void putIdValue(
+            A value,
+            ToLongFunction<A> toId) {
+        if(isSimulationMode()) return;
+        long id = toId.applyAsLong(value);
+        putLong(id);
+    }
+
+    public <A> A getIdValue(LongFunction<A> fromId) {
+        checkSimulationMode();
+        long id = getLong();
+        return fromId.apply(id);
+    }
+
+    public <A> void getIdValue(LongFunction<A> fromId, Consumer<A> consumer) {
+        A a = getIdValue(fromId);
+        consumer.accept(a);
+    }
+
     public <A> void putCollection(
             Collection<A> coll,
             BiConsumer<ArrayNode, A> aApplier) {
@@ -707,6 +740,41 @@ public final class BinaryJsonData extends PersistableBase {
         for(int i = 0; i < arr.size(); i++) {
             A a = aFunc.apply(arr, i);
             out.add(a);
+        }
+    }
+
+    public <A> void putIdCollection(
+            Collection<A> coll,
+            ToLongFunction<A> toId) {
+        if(isSimulationMode()) return;
+        ArrayNode arr = validateSet(nextPutId()).addArray();
+        for(A a: coll) {
+            long id = toId.applyAsLong(a);
+            arr.add(id);
+        }
+    }
+
+    public <A> void getIdCollection(
+            LongFunction<A> fromId,
+            Collection<A> out) {
+        checkSimulationMode();
+        ArrayNode arr = (ArrayNode) nextNode();
+        for(int i = 0; i < arr.size(); i++) {
+            long id = arr.get(i).longValue();
+            A a = fromId.apply(id);
+            out.add(a);
+        }
+    }
+
+    public <A> void getIdCollection(
+            LongFunction<A> fromId,
+            Consumer<A> consumer) {
+        checkSimulationMode();
+        ArrayNode arr = (ArrayNode) nextNode();
+        for(int i = 0; i < arr.size(); i++) {
+            long id = arr.get(i).longValue();
+            A a = fromId.apply(id);
+            consumer.accept(a);
         }
     }
 

@@ -80,6 +80,7 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
         BasicJadexSimulationEnvironment environment = new BasicJadexSimulationEnvironment();
         environment.setName("Restored_Environment");
         environment.initDefault();
+        environment.setRestored();
 
         return environment;
     }

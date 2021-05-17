@@ -5,7 +5,6 @@ import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -46,8 +45,8 @@ public class BasicAgentManagerPR extends BinaryPRBase<BasicAgentManager> {
 
     @Override
     protected void doSetupPersist(BasicAgentManager object, BinaryJsonData data, PersistManager manager) throws PersistException {
-        data.putLongArray(manager.ensureGetAllUIDs(object.getConsumerAgentGroups()));
-        data.putLong(manager.ensureGetUID(object.getConsumerAgentGroupAffinityMapping()));
+        data.putIdCollection(object.getConsumerAgentGroups(), manager.ensureGetUIDFunction());
+        data.putIdValue(object.getConsumerAgentGroupAffinityMapping(), manager.ensureGetUIDFunction());
     }
 
     //=========================
@@ -64,10 +63,7 @@ public class BasicAgentManagerPR extends BinaryPRBase<BasicAgentManager> {
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, BasicAgentManager object, RestoreManager manager) throws RestoreException {
-        ConsumerAgentGroup[] cags = manager.ensureGetAll(data.getLongArray(), ConsumerAgentGroup[]::new);
-        for(ConsumerAgentGroup cag: cags) {
-            object.addConsumerAgentGroup(cag);
-        }
-        object.setConsumerAgentGroupAffinityMapping(manager.ensureGet(data.getLong()));
+        data.getIdCollection(manager.ensureGetFunction(), object::addConsumerAgentGroup);
+        object.setConsumerAgentGroupAffinityMapping(data.getIdValue(manager.ensureGetFunction()));
     }
 }

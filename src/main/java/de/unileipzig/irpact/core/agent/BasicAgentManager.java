@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.agent;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.persistence.annotation.ChecksumAndPersistentValue;
 import de.unileipzig.irpact.commons.util.IdManager;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -18,9 +19,13 @@ public class BasicAgentManager implements AgentManager {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicAgentManager.class);
 
+    @ChecksumAndPersistentValue("id")
     protected final IdManager ATTENTION_ORDER = new IdManager(0L);
+
     protected SimulationEnvironment environment;
+    @ChecksumAndPersistentValue("values")
     protected Map<String, ConsumerAgentGroup> consumerAgentGroups;
+    @ChecksumAndPersistentValue
     protected ConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
 
     public BasicAgentManager() {
@@ -74,6 +79,12 @@ public class BasicAgentManager implements AgentManager {
             throw new IllegalArgumentException("group name '" + group.getName() + "' already exists");
         }
         consumerAgentGroups.put(group.getName(), group);
+    }
+
+    public void addAllConsumerAgentGroups(Collection<? extends ConsumerAgentGroup> cags) {
+        for(ConsumerAgentGroup cag: cags) {
+            addConsumerAgentGroup(cag);
+        }
     }
 
     @Override

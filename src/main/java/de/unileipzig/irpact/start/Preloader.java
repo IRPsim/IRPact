@@ -12,6 +12,8 @@ import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.spec.SpecificationConverter;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.irpact.IRPactCallback;
+import de.unileipzig.irpact.start.irpact.IRPactExecutor;
+import de.unileipzig.irpact.start.irpact.IRPactExecutors;
 import de.unileipzig.irpact.start.optact.OptAct;
 import de.unileipzig.irptools.io.ContentType;
 import de.unileipzig.irptools.io.ContentTypeDetector;
@@ -84,6 +86,11 @@ public class Preloader {
         return new IRPact(clOptions, callbacks, resourceLoader);
     }
 
+    private void start(IRPact irpact) throws Exception {
+        IRPactExecutor exec = IRPactExecutors.get(clOptions.getRunMode());
+        exec.execute(irpact);
+    }
+
     private void loadSpec() throws Exception {
         SpecificationConverter converter = new SpecificationConverter();
         InRoot root =  converter.toParam(clOptions.getInputPath());
@@ -93,7 +100,8 @@ public class Preloader {
 
         LOGGER.trace("call IRPact with spec");
         IRPact irpact = createIRPactInstance();
-        irpact.start(entry);
+        irpact.init(entry);
+        start(irpact);
         LOGGER.trace("IRPact finished");
     }
 
@@ -226,7 +234,8 @@ public class Preloader {
     private void callIRPact(ObjectNode root) throws Exception {
         LOGGER.trace("call IRPact with param");
         IRPact irpact = createIRPactInstance();
-        irpact.start(root);
+        irpact.init(root);
+        start(irpact);
         LOGGER.trace("IRPact finished");
     }
 
@@ -238,7 +247,8 @@ public class Preloader {
     private void callIRPact(AnnualEntry<InRoot> root) throws Exception {
         LOGGER.trace("call IRPact with InRoot");
         IRPact irpact = createIRPactInstance();
-        irpact.start(root);
+        irpact.init(root);
+        start(irpact);
         LOGGER.trace("IRPact finished");
     }
 }
