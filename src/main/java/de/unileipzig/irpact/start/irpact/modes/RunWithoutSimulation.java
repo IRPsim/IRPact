@@ -13,6 +13,7 @@ public final class RunWithoutSimulation implements IRPactExecutor {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(RunFully.class);
 
     public static final int ID = 1;
+    public static final String ID_STR = "1";
     public static final RunWithoutSimulation INSTANCE = new RunWithoutSimulation();
 
     public RunWithoutSimulation() {

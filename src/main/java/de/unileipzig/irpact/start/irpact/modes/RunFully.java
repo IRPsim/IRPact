@@ -13,6 +13,7 @@ public final class RunFully implements IRPactExecutor {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(RunFully.class);
 
     public static final int ID = 0;
+    public static final String ID_STR = "0";
     public static final RunFully INSTANCE = new RunFully();
     
     public RunFully() {

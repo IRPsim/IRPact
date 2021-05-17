@@ -1,9 +1,6 @@
 package de.unileipzig.irpact.commons.util.data.weighted;
 
 import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.commons.util.data.Mutable;
-import de.unileipzig.irpact.commons.util.data.MutableDouble;
-import de.unileipzig.irpact.develop.XXXXXXXXX;
 
 import java.util.*;
 import java.util.function.Supplier;

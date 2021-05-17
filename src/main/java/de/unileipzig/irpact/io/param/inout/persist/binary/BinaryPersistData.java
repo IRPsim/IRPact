@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.io.param.inout.persist.binary;
 
 import de.unileipzig.irpact.commons.util.IRPactBase32;
-import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -11,18 +10,18 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.lang.invoke.MethodHandles;
 import java.util.Comparator;
 
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
+
 /**
  * @author Daniel Abitz
  */
 @Definition(
         transferClass = true
 )
-@XXXXXXXXX("umleiten auf loc file")
 public class BinaryPersistData implements Copyable {
 
     public static final Comparator<BinaryPersistData> ASCENDING = Comparator.comparingLong(BinaryPersistData::getID);
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
@@ -31,16 +30,18 @@ public class BinaryPersistData implements Copyable {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.newEntryBuilder()
-                .setGamsHidden(true)
-                .setGamsIdentifier("BinaryPersistData")
-                .setGamsDescription("Binäre Daten für den Transfer zwischen zwei Simulationsschritten.")
-                .store(thisClass());
-        res.newEntryBuilder()
-                .setGamsHidden(true)
-                .setGamsIdentifier("BinaryPersistDataID")
-                .setGamsDescription("Einzigartige ID der Daten.")
-                .store(thisClass(), "idHidden");
+        addEntry(res, thisClass());
+        addEntry(res, thisClass(), "id");
+//        res.newEntryBuilder()
+//                .setGamsHidden(true)
+//                .setGamsIdentifier("BinaryPersistData")
+//                .setGamsDescription("Binäre Daten für den Transfer zwischen zwei Simulationsschritten.")
+//                .store(thisClass());
+//        res.newEntryBuilder()
+//                .setGamsHidden(true)
+//                .setGamsIdentifier("BinaryPersistDataID")
+//                .setGamsDescription("Einzigartige ID der Daten.")
+//                .store(thisClass(), "id");
     }
 
     public String _name;

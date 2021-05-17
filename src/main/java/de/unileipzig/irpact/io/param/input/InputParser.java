@@ -30,6 +30,8 @@ public interface InputParser {
     //mal aendern, dass der parser den typ vorgibt
     <T> T parseRoot(InRoot root) throws ParsingException;
 
+    <T> void parseRootAndUpdate(InRoot root, T instance) throws ParsingException;
+
     Object parseEntity(InEntity input) throws ParsingException;
 
     @SuppressWarnings("unchecked")

@@ -1,5 +1,8 @@
 package de.unileipzig.irpact.core.simulation;
 
+import de.unileipzig.irpact.commons.checksum.ChecksumCalculator;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.persistence.annotation.PersistentValue;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.develop.AddToParam;
@@ -11,13 +14,18 @@ import java.util.stream.IntStream;
 /**
  * @author Daniel Abitz
  */
-public class BasicSettings implements Settings {
+public class BasicSettings implements Settings, ChecksumComparable {
 
     protected Map<ConsumerAgentGroup, Integer> agentCount;
+
     protected int firstSimulationYear;
+    @PersistentValue
     protected int lastSimulationYear = -1;
+    @PersistentValue
     protected int run = 1;
     protected int previousLastSimulationYear = -1;
+    protected boolean continueSimulation = false;
+
     @AddToParam("InGeneral")
     protected boolean prefereCsv = false;
 
@@ -43,6 +51,15 @@ public class BasicSettings implements Settings {
     }
 
     //=========================
+    //checksum
+    //=========================
+
+    @Override
+    public int getChecksum() throws UnsupportedOperationException {
+        return ChecksumCalculator.DEFAULT_NONNULL_CHECKSUM;
+    }
+
+    //=========================
     //general
     //=========================
 
@@ -61,7 +78,7 @@ public class BasicSettings implements Settings {
     }
 
     //=========================
-    //extra persist data
+    //run and previous run
     //=========================
 
     @Override
@@ -76,12 +93,17 @@ public class BasicSettings implements Settings {
 
     @Override
     public void setNumberOfPreviousRuns(int runs) {
-        this.run = Math.max(runs, 0) + 1;
+        this.run = Math.max(runs, 1);
     }
 
     @Override
     public int getCurrentRun() {
         return run;
+    }
+
+    @Override
+    public int getNumberOfPreviousRuns() {
+        return run - 1;
     }
 
     @Override
@@ -95,20 +117,13 @@ public class BasicSettings implements Settings {
     }
 
     @Override
-    public int getActualFirstSimulationYear() {
-        return hasPreviousRun()
-                ? getLastSimulationYearOfPreviousRun() + 1
-                : getFirstSimulationYear();
+    public void setContinueFromPreviousRun(boolean continueSimulation) {
+        this.continueSimulation = continueSimulation;
     }
 
     @Override
-    public int getActualNumberOfSimulationYears() {
-        return Math.max(lastSimulationYear - getActualFirstSimulationYear(), 0) + 1;
-    }
-
-    @Override
-    public boolean hasActualMultipleSimulationYears() {
-        return getActualNumberOfSimulationYears() > 1;
+    public boolean isContinueFromPreviousRun() {
+        return continueSimulation;
     }
 
     //=========================
@@ -132,19 +147,19 @@ public class BasicSettings implements Settings {
 
     @Override
     public int getLastSimulationYear() {
-        return hasMultipleSimulationYears()
-                ? lastSimulationYear
-                : firstSimulationYear;
+        return lastSimulationYear < firstSimulationYear
+                ? firstSimulationYear
+                : lastSimulationYear;
     }
 
     @Override
     public int getNumberOfSimulationYears() {
-        return Math.max(lastSimulationYear - firstSimulationYear, 0) + 1;
+        return Math.max(getLastSimulationYear() - getFirstSimulationYear(), 1);
     }
 
     @Override
     public IntStream streamSimulationYears() {
-        return IntStream.rangeClosed(firstSimulationYear, lastSimulationYear);
+        return IntStream.rangeClosed(firstSimulationYear, getLastSimulationYear());
     }
 
     @Override
@@ -161,6 +176,43 @@ public class BasicSettings implements Settings {
     @Override
     public boolean hasMultipleSimulationYears() {
         return getNumberOfSimulationYears() > 1;
+    }
+
+    //=========================
+    //actuel years
+    //=========================
+
+    @Override
+    public int getActualFirstSimulationYear() {
+        return hasPreviousRun() && isContinueFromPreviousRun()
+                ? getLastSimulationYearOfPreviousRun() + 1
+                : getFirstSimulationYear();
+    }
+
+    @Override
+    public int getActualNumberOfSimulationYears() {
+        return Math.max(getLastSimulationYear() - getActualFirstSimulationYear(), 1);
+    }
+
+    @Override
+    public boolean hasActualMultipleSimulationYears() {
+        return getActualNumberOfSimulationYears() > 1;
+    }
+
+    @Override
+    public IntStream streamActualSimulationYears() {
+        return IntStream.rangeClosed(getActualFirstSimulationYear(), getLastSimulationYear());
+    }
+
+    @Override
+    public int[] getActualSimulationYears() {
+        return streamActualSimulationYears().toArray();
+    }
+
+    @Override
+    public List<Number> listActualYears() {
+        return streamActualSimulationYears().boxed()
+                .collect(Collectors.toList());
     }
 
     //=========================

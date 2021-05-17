@@ -20,7 +20,7 @@ public interface Settings {
     boolean prefereCsv();
 
     //=========================
-    //extra persist data
+    //run and previous run
     //=========================
 
     boolean hasPreviousRun();
@@ -31,15 +31,15 @@ public interface Settings {
 
     int getCurrentRun();
 
+    int getNumberOfPreviousRuns();
+
     void setLastSimulationYearOfPreviousRun(int year);
 
     int getLastSimulationYearOfPreviousRun();
 
-    int getActualFirstSimulationYear();
+    void setContinueFromPreviousRun(boolean continueSimulation);
 
-    int getActualNumberOfSimulationYears();
-
-    boolean hasActualMultipleSimulationYears();
+    boolean isContinueFromPreviousRun();
 
     //=========================
     //time
@@ -62,6 +62,22 @@ public interface Settings {
     List<Number> listYears();
 
     boolean hasMultipleSimulationYears();
+
+    //=========================
+    //actuel years
+    //=========================
+
+    int getActualFirstSimulationYear();
+
+    int getActualNumberOfSimulationYears();
+
+    boolean hasActualMultipleSimulationYears();
+
+    IntStream streamActualSimulationYears();
+
+    int[] getActualSimulationYears();
+
+    List<Number> listActualYears();
 
     //=========================
     //population size

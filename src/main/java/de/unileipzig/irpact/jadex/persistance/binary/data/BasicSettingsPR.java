@@ -66,7 +66,6 @@ public class BasicSettingsPR extends BinaryPRBase<BasicSettings> {
     protected void doSetupRestore(BinaryJsonData data, BasicSettings object, RestoreManager manager) throws RestoreException {
     }
 
-    @XXXXXXXXX("schauen, ob das mit den Jahren noch hinhaut (also ende Jahr aus letztem Lauf und dieser Lauf")
     @Override
     protected void doFinalizeRestore(BinaryJsonData data, BasicSettings object, RestoreManager manager) {
         InGeneral general = restoreHelper.getInRoot()

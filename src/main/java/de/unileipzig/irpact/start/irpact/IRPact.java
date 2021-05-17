@@ -249,16 +249,27 @@ public final class IRPact implements IRPActAccess {
         environment.getSettings().setFirstSimulationYear(year);
     }
 
-    private void applyCommandLineToEnvironment() {
-        Settings settings = environment.getSettings();
-        settings.apply(CL_OPTIONS);
-    }
-
     private void restorPreviousSimulationEnvironment() throws Exception {
         LOGGER.info(IRPSection.GENERAL, "restore previous environment");
         JadexPersistenceModul persistenceModul = new JadexPersistenceModul();
         SimulationEnvironment restoredEnvironment = persistenceModul.restore(CL_OPTIONS, inRoot);
-        this.environment = (JadexSimulationEnvironment) restoredEnvironment;
+        environment = (JadexSimulationEnvironment) restoredEnvironment;
+        updateSimulationEnvironment();
+        applyCommandLineToEnvironment();
+    }
+
+    private void updateSimulationEnvironment() throws ParsingException {
+        int year = inEntry.getConfig().getYear();
+        JadexInputParser parser = new JadexInputParser();
+        parser.setSimulationYear(year);
+        parser.setResourceLoader(RESOURCE_LOADER);
+        parser.parseRootAndUpdate(inRoot, environment);
+        environment.getSettings().setFirstSimulationYear(year);
+    }
+
+    private void applyCommandLineToEnvironment() {
+        Settings settings = environment.getSettings();
+        settings.apply(CL_OPTIONS);
     }
 
     private void createGraphvizConfiguration() throws Exception {
