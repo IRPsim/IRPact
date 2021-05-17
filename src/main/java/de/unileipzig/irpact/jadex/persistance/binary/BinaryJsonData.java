@@ -30,28 +30,21 @@ public final class BinaryJsonData extends PersistableBase {
     private static final int TYPE_ID = 1;
     private static final int FIRST_AUTO_ID = 2;
 
-    private static final String UID_ID_STR = "0";
-    private static final String TYPE_ID_STR = "1";
-
     protected int autoPutId = FIRST_AUTO_ID;
     protected int autoGetId = FIRST_AUTO_ID;
-    protected ObjectNode root;
+    protected ArrayNode root;
 
     protected boolean simulationMode;
     protected boolean putMode;
 
-    public BinaryJsonData(JsonNodeCreator creator) {
-        this(creator.objectNode());
-    }
-
-    public BinaryJsonData(ObjectNode root) {
+    private BinaryJsonData(ArrayNode root) {
         this.root = root;
         setSimulationMode(false);
         setPutMode();
     }
 
     public static BinaryJsonData restore(byte[] data) throws IOException {
-        ObjectNode node = (ObjectNode) IRPactJson.fromBytesWithSmile(data);
+        ArrayNode node = (ArrayNode) IRPactJson.fromBytesWithSmile(data);
         BinaryJsonData bdata = new BinaryJsonData(node);
         long uid = bdata.ensureGetUid();
         bdata.setUID(uid);
@@ -59,8 +52,8 @@ public final class BinaryJsonData extends PersistableBase {
     }
 
     public static BinaryJsonData init(JsonNodeCreator creator, long uid, Class<?> c, ClassManager classManager) {
-        BinaryJsonData data = new BinaryJsonData(creator.objectNode());
-        if(classManager.isEnabled()) {
+        BinaryJsonData data = new BinaryJsonData(creator.arrayNode());
+        if(classManager != null && classManager.isEnabled()) {
             long classId = classManager.getId(c);
             data.init(uid, classId);
         } else {
@@ -77,48 +70,52 @@ public final class BinaryJsonData extends PersistableBase {
         putMode = false;
     }
 
+    private ArrayNode validateSet(int index) {
+        if(root.size() != index) {
+            throw new IllegalStateException("index mismatch: " + root.size() + " != " + index);
+        }
+        return root;
+    }
+
+    private JsonNode validateGet(int index) {
+        if(root.size() < index) {
+            throw new IllegalStateException("index not found");
+        }
+        return root.get(index);
+    }
+
     private void init(long uid, Class<?> c) {
         if(isSimulationMode()) return;
         setUID(uid);
-        root.put(UID_ID_STR, uid);
-        root.put(TYPE_ID_STR, c.getName());
+        validateSet(UID_ID).add(uid);
+        validateSet(TYPE_ID).add(c.getName());
     }
 
     private void init(long uid, long classId) {
         if(isSimulationMode()) return;
         setUID(uid);
-        root.put(UID_ID_STR, uid);
-        root.put(TYPE_ID_STR, classId);
+        validateSet(UID_ID).add(uid);
+        validateSet(TYPE_ID).add(classId);
     }
 
     public long ensureGetUid() {
         checkSimulationMode();
-        if(!root.has(UID_ID_STR)) {
-            throw new NoSuchElementException("missing uid");
-        }
-        return root.get(UID_ID_STR).longValue();
+        return validateGet(UID_ID).longValue();
     }
 
     public String ensureGetType(ClassManager manager) {
         checkSimulationMode();
         final String type;
-        if(manager.isEnabled()) {
-            long classId = root.get(TYPE_ID_STR).longValue();
+        if(manager != null && manager.isEnabled()) {
+            long classId = validateGet(TYPE_ID).longValue();
             type = manager.getClass(classId);
         } else {
-            type = root.get(TYPE_ID_STR).textValue();
+            type = validateGet(TYPE_ID).textValue();
         }
         if(type == null || type.isEmpty()) {
             throw new NoSuchElementException("missing type");
         }
         return type;
-    }
-
-    private static String str(int id) {
-        if(id == UID_ID || id == TYPE_ID) {
-            throw new IllegalArgumentException("illegal id: " + id);
-        }
-        return Integer.toHexString(id);
     }
 
     public byte[] toBytes() throws IOException {
@@ -152,7 +149,7 @@ public final class BinaryJsonData extends PersistableBase {
         }
     }
 
-    public ObjectNode getRoot() {
+    public ArrayNode getRoot() {
         return root;
     }
 
@@ -186,19 +183,19 @@ public final class BinaryJsonData extends PersistableBase {
         autoPutId = FIRST_AUTO_ID;
     }
 
-    private String nextPutId() {
+    private int nextPutId() {
         requiresPutMode();
-        return str(autoPutId++);
+        return autoPutId++;
     }
 
     public void putBoolean(boolean value) {
         if(isSimulationMode()) return;
-        root.put(nextPutId(), value);
+        validateSet(nextPutId()).add(value);
     }
 
     public void putInt(int value) {
         if(isSimulationMode()) return;
-        root.put(nextPutId(), value);
+        validateSet(nextPutId()).add(value);
     }
 
     public void putNothing() {
@@ -208,22 +205,22 @@ public final class BinaryJsonData extends PersistableBase {
 
     public void putLong(long value) {
         if(isSimulationMode()) return;
-        root.put(nextPutId(), value);
+        validateSet(nextPutId()).add(value);
     }
 
     public void putDouble(double value) {
         if(isSimulationMode()) return;
-        root.put(nextPutId(), value);
+        validateSet(nextPutId()).add(value);
     }
 
     public void putText(String value) {
         if(isSimulationMode()) return;
-        root.put(nextPutId(), value);
+        validateSet(nextPutId()).add(value);
     }
 
     public void putLongArray(long[] array) {
         if(isSimulationMode()) return;
-        ArrayNode arr = root.putArray(nextPutId());
+        ArrayNode arr = validateSet(nextPutId()).addArray();
         for(long n: array) {
             arr.add(n);
         }
@@ -231,7 +228,7 @@ public final class BinaryJsonData extends PersistableBase {
 
     public void putLongMultiLongMap(Map<Long, List<Long>> map) {
         if(isSimulationMode()) return;
-        ObjectNode obj = root.putObject(nextPutId());
+        ObjectNode obj = validateSet(nextPutId()).addObject();
         for(Map.Entry<Long, List<Long>> entry: map.entrySet()) {
             ArrayNode arr = obj.putArray(Long.toString(entry.getKey()));
             for(long n: entry.getValue()) {
@@ -242,7 +239,7 @@ public final class BinaryJsonData extends PersistableBase {
 
     public void putLongMultiStringMap(Map<Long, List<String>> map) {
         if(isSimulationMode()) return;
-        ObjectNode obj = root.putObject(nextPutId());
+        ObjectNode obj = validateSet(nextPutId()).addObject();
         for(Map.Entry<Long, List<String>> entry: map.entrySet()) {
             ArrayNode arr = obj.putArray(Long.toString(entry.getKey()));
             for(String n: entry.getValue()) {
@@ -253,7 +250,7 @@ public final class BinaryJsonData extends PersistableBase {
 
     public void putLongLongMap(Map<Long, Long> map) {
         if(isSimulationMode()) return;
-        ObjectNode obj = root.putObject(nextPutId());
+        ObjectNode obj = validateSet(nextPutId()).addObject();
         for(Map.Entry<Long, Long> entry: map.entrySet()) {
             obj.put(Long.toString(entry.getKey()), entry.getValue());
         }
@@ -261,7 +258,7 @@ public final class BinaryJsonData extends PersistableBase {
 
     public void putLongLongLongMap(Map<Long, Map<Long, Long>> table) {
         if(isSimulationMode()) return;
-        ObjectNode obj = root.putObject(nextPutId());
+        ObjectNode obj = validateSet(nextPutId()).addObject();
         for(Map.Entry<Long, Map<Long, Long>> entry: table.entrySet()) {
             ObjectNode srcNode = obj.putObject(Long.toString(entry.getKey()));
             for(Map.Entry<Long, Long> entry0: entry.getValue().entrySet()) {
@@ -272,7 +269,7 @@ public final class BinaryJsonData extends PersistableBase {
 
     public void putLongDoubleMap(Map<Long, Double> map) {
         if(isSimulationMode()) return;
-        ObjectNode obj = root.putObject(nextPutId());
+        ObjectNode obj = validateSet(nextPutId()).addObject();
         for(Map.Entry<Long, Double> entry: map.entrySet()) {
             obj.put(Long.toString(entry.getKey()), entry.getValue());
         }
@@ -280,7 +277,7 @@ public final class BinaryJsonData extends PersistableBase {
 
     public void putLongLongDoubleMap(Map<Long, Map<Long, Double>> table) {
         if(isSimulationMode()) return;
-        ObjectNode obj = root.putObject(nextPutId());
+        ObjectNode obj = validateSet(nextPutId()).addObject();
         for(Map.Entry<Long, Map<Long, Double>> entry: table.entrySet()) {
             ObjectNode srcNode = obj.putObject(Long.toString(entry.getKey()));
             for(Map.Entry<Long, Double> entry0: entry.getValue().entrySet()) {
@@ -303,9 +300,9 @@ public final class BinaryJsonData extends PersistableBase {
         autoGetId = FIRST_AUTO_ID;
     }
 
-    private String nextGetId() {
+    private int nextGetId() {
         requiresGetMode();
-        return str(autoGetId++);
+        return autoGetId++;
     }
 
     private JsonNode nextNode() {
@@ -317,8 +314,8 @@ public final class BinaryJsonData extends PersistableBase {
     }
 
     private JsonNode nextNode(boolean allowNull) {
-        String id = nextGetId();
-        JsonNode node = root.get(id);
+        int id = nextGetId();
+        JsonNode node = validateGet(id);
         if(node == null || node.isMissingNode() || (!allowNull && node.isNull())) {
             String type = node == null
                     ? "null"
@@ -696,7 +693,7 @@ public final class BinaryJsonData extends PersistableBase {
             Collection<A> coll,
             BiConsumer<ArrayNode, A> aApplier) {
         if(isSimulationMode()) return;
-        ArrayNode arr = root.putArray(nextPutId());
+        ArrayNode arr = validateSet(nextPutId()).addArray();
         for(A a: coll) {
             aApplier.accept(arr, a);
         }
@@ -718,7 +715,7 @@ public final class BinaryJsonData extends PersistableBase {
             ToLongFunction<A> aToLong,
             TriConsumer<ObjectNode, String, B> bApplier) {
         if(isSimulationMode()) return;
-        ObjectNode obj = root.putObject(nextPutId());
+        ObjectNode obj = validateSet(nextPutId()).addObject();
         for(Map.Entry<A, B> entry: map.entrySet()) {
             long aLong = aToLong.applyAsLong(entry.getKey());
             bApplier.accept(obj, Long.toString(aLong), entry.getValue());
@@ -745,7 +742,7 @@ public final class BinaryJsonData extends PersistableBase {
             ToLongFunction<B> bToLong,
             TriConsumer<ObjectNode, String, C> cApplier) {
         if(isSimulationMode()) return;
-        ObjectNode obj = root.putObject(nextPutId());
+        ObjectNode obj = validateSet(nextPutId()).addObject();
         for(Map.Entry<A, Map<B, C>> entry: mapmap.entrySet()) {
             long aLong = aToLong.applyAsLong(entry.getKey());
             ObjectNode srcNode = obj.putObject(Long.toString(aLong));
@@ -786,7 +783,7 @@ public final class BinaryJsonData extends PersistableBase {
             ToLongFunction<B> bToLong,
             TriConsumer<ObjectNode, String, C> cApplier) {
         if(isSimulationMode()) return;
-        ObjectNode obj = root.putObject(nextPutId());
+        ObjectNode obj = validateSet(nextPutId()).addObject();
         for(A a: map.iterableA()) {
             long aLong = aToLong.applyAsLong(a);
             ObjectNode srcNode = obj.putObject(Long.toString(aLong));
@@ -825,7 +822,7 @@ public final class BinaryJsonData extends PersistableBase {
             ToLongFunction<?>[] xToLong,
             TriConsumer<ObjectNode, String, ?> xApplier) {
         if(isSimulationMode()) return;
-        ObjectNode obj = root.putObject(nextPutId());
+        ObjectNode obj = validateSet(nextPutId()).addObject();
         for(Object[] entry: varMap.iterable()) {
             ObjectNode node = obj;
             //total: 0..n-1

@@ -39,7 +39,13 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicJadexSimulationEnvironment.class);
 
+    protected Rnd rnd;
+    protected boolean restored = false;
+
     protected Settings settings;
+    protected BinaryTaskManager taskManager;
+    protected PersistenceModul persistenceModul;
+
     protected AgentManager agentManager;
     protected SocialNetwork socialNetwork;
     protected ProcessModelManager processModelManager;
@@ -48,9 +54,6 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     protected JadexTimeModel timeModel;
     protected JadexLifeCycleControl lifeCycleControl;
     protected ResourceLoader resourceLoader;
-    protected BinaryTaskManager taskManager;
-    protected PersistenceModul persistenceModul;
-    protected Rnd rnd;
 
     public BasicJadexSimulationEnvironment() {
     }
@@ -126,6 +129,15 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
 
         setPersistenceModul(persistenceModul);
         persistenceModul.setEnvironment(this);
+    }
+
+    public void setRestored() {
+        restored = true;
+    }
+
+    @Override
+    public boolean isRestored() {
+        return restored;
     }
 
     @Override

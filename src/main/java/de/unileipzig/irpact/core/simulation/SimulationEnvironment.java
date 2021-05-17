@@ -24,6 +24,8 @@ public interface SimulationEnvironment extends Nameable, InitalizablePart {
     //general
     //=========================
 
+    boolean isRestored();
+
     //=========================
     //InitalizablePart extra
     //=========================
