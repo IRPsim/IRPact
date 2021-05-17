@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.log;
 
 import de.unileipzig.irpact.commons.log.AbstractLoggingMessageCollection;
-import de.unileipzig.irpact.commons.log.LoggingMessage2;
+import de.unileipzig.irpact.commons.log.LoggingMessage;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.slf4j.Logger;
 import org.slf4j.event.Level;
@@ -21,8 +21,9 @@ public class IRPLoggingMessageCollection extends AbstractLoggingMessageCollectio
     public IRPLoggingMessageCollection() {
     }
 
-    public void setLazy(boolean doLazy) {
+    public IRPLoggingMessageCollection setLazy(boolean doLazy) {
         this.doLazy = doLazy;
+        return this;
     }
 
     public IRPLoggingMessageCollection setLevel(Level level) {
@@ -72,7 +73,7 @@ public class IRPLoggingMessageCollection extends AbstractLoggingMessageCollectio
     }
 
     @Override
-    public AbstractLoggingMessageCollection append(LoggingMessage2 msg) {
+    public AbstractLoggingMessageCollection append(LoggingMessage msg) {
         parts.add(msg);
         return this;
     }

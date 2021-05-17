@@ -3,7 +3,6 @@ package de.unileipzig.irpact.core.process.ra;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeUtil;
-import de.unileipzig.irpact.commons.log.AppendableLoggingMessage;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.MathUtil;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
@@ -14,6 +13,7 @@ import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttributeUtil;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.IRPLoggingMessageCollection;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.InfoTag;
 import de.unileipzig.irpact.core.need.Need;
@@ -523,9 +523,10 @@ public class RAProcessPlan implements ProcessPlan {
         doSelfActionAndAllowAttention();
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle decision making", agent.getName());
 
-        AppendableLoggingMessage alm = new AppendableLoggingMessage();
+        IRPLoggingMessageCollection alm = new IRPLoggingMessageCollection()
+                .setLazy(true)
+                .setAutoDispose(true);
         alm.append("{} [{}] calculate U", InfoTag.DECISION_MAKING, agent.getName());
-
 
 
         double a = modelData().a();
@@ -1120,11 +1121,10 @@ public class RAProcessPlan implements ProcessPlan {
         );
     }
 
-    protected void logCalculateDecisionMaking(AppendableLoggingMessage mlm) {
+    protected void logCalculateDecisionMaking(IRPLoggingMessageCollection mlm) {
         boolean logData = getSettings().isLogCalculateDecisionMaking();
-        IRPLogger logger = getLogger(logData);
-        IRPSection section = getSection(logData);
-        Level level = getLevel(logData);
-        logger.log(section, level, "{}", mlm.buildLazyMessage(" | "));
+        mlm.setSection(getSection(logData))
+                .setLevel(getLevel(logData))
+                .log(getLogger(logData));
     }
 }

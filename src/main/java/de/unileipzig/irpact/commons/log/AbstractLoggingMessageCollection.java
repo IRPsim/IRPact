@@ -1,22 +1,20 @@
 package de.unileipzig.irpact.commons.log;
 
-import org.slf4j.Logger;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * @author Daniel Abitz
  */
-public abstract class AbstractLoggingMessageCollection implements LoggingMessage2 {
+public abstract class AbstractLoggingMessageCollection implements LoggingMessage {
 
-    protected Collection<LoggingMessage2> parts;
+    protected Collection<LoggingMessage> parts;
 
     public AbstractLoggingMessageCollection() {
         this(new ArrayList<>());
     }
 
-    public AbstractLoggingMessageCollection(Collection<LoggingMessage2> parts) {
+    public AbstractLoggingMessageCollection(Collection<LoggingMessage> parts) {
         this.parts = parts;
     }
 
@@ -24,7 +22,7 @@ public abstract class AbstractLoggingMessageCollection implements LoggingMessage
         parts.clear();
     }
 
-    public abstract AbstractLoggingMessageCollection append(LoggingMessage2 msg);
+    public abstract AbstractLoggingMessageCollection append(LoggingMessage msg);
 
     public abstract AbstractLoggingMessageCollection append(String msg);
 
@@ -36,7 +34,7 @@ public abstract class AbstractLoggingMessageCollection implements LoggingMessage
 
     public String buildMessage(String delimiter) {
         StringBuilder sb = new StringBuilder();
-        for(LoggingMessage2 message: parts) {
+        for(LoggingMessage message: parts) {
             if(sb.length() > 0) {
                 sb.append(delimiter);
             }

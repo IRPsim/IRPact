@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.start;
 
-import de.unileipzig.irpact.commons.log.IRPLoggingMessage;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.IRPLoggingMessage;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.SectionLoggingFilter;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -49,7 +49,7 @@ public final class Start {
             IRPLoggingMessage deletedMsg = null;
             if(hasOldLogFile) {
                 Files.delete(options.getLogPath());
-                deletedMsg = new IRPLoggingMessage(IRPSection.INITIALIZATION_PARAMETER, "old logfile '{}' deleted", options.getLogPath());
+                deletedMsg = new IRPLoggingMessage("old logfile '{}' deleted", options.getLogPath()).setSection(IRPSection.INITIALIZATION_PARAMETER);
             }
 
             if(options.logConsoleAndFile()) {

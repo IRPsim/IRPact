@@ -1,9 +1,9 @@
 package de.unileipzig.irpact.start.utilities;
 
-import de.unileipzig.irpact.commons.log.LoggingMessage;
 import de.unileipzig.irpact.commons.util.AbstractCommandLineOptions;
 import de.unileipzig.irpact.commons.util.Args;
 import de.unileipzig.irpact.commons.util.MapResourceBundle;
+import de.unileipzig.irpact.core.log.IRPLoggingMessage;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import picocli.CommandLine;
 
@@ -169,7 +169,7 @@ public final class UtilitiesCommandLineOptions extends AbstractCommandLineOption
     //=========================
 
     private boolean executed = false;
-    private LoggingMessage executeResultMessage;
+    private IRPLoggingMessage executeResultMessage;
 
     public UtilitiesCommandLineOptions(String... args) {
         super(args);
@@ -198,7 +198,7 @@ public final class UtilitiesCommandLineOptions extends AbstractCommandLineOption
         return executeResultMessage != null;
     }
 
-    public LoggingMessage getExecuteResultMessage() {
+    public IRPLoggingMessage getExecuteResultMessage() {
         return executeResultMessage;
     }
 
@@ -293,32 +293,32 @@ public final class UtilitiesCommandLineOptions extends AbstractCommandLineOption
 
     private int hasValidRScriptInputAndOutput() {
         if(rExe == null) {
-            executeResultMessage = new LoggingMessage("missing RScript execution path");
+            executeResultMessage = new IRPLoggingMessage("missing RScript execution path");
             return CommandLine.ExitCode.USAGE;
         }
 
         if(Files.notExists(rExe)) {
-            executeResultMessage = new LoggingMessage("'{}' not found", rExe);
+            executeResultMessage = new IRPLoggingMessage("'{}' not found", rExe);
             return CommandLine.ExitCode.USAGE;
         }
 
         if(Files.notExists(rScript)) {
-            executeResultMessage = new LoggingMessage("'{}' not found", rScript);
+            executeResultMessage = new IRPLoggingMessage("'{}' not found", rScript);
             return CommandLine.ExitCode.USAGE;
         }
 
         if(rInput == null) {
-            executeResultMessage = new LoggingMessage("missing input for RScript");
+            executeResultMessage = new IRPLoggingMessage("missing input for RScript");
             return CommandLine.ExitCode.USAGE;
         }
 
         if(Files.notExists(rInput)) {
-            executeResultMessage = new LoggingMessage("'{}' not found", rInput);
+            executeResultMessage = new IRPLoggingMessage("'{}' not found", rInput);
             return CommandLine.ExitCode.USAGE;
         }
 
         if(rOutput == null) {
-            executeResultMessage = new LoggingMessage("missing output for RScript");
+            executeResultMessage = new IRPLoggingMessage("missing output for RScript");
             return CommandLine.ExitCode.USAGE;
         }
 

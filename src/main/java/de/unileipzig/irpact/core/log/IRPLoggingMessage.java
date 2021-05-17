@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.log;
 
-import de.unileipzig.irpact.commons.log.LoggingMessage2;
+import de.unileipzig.irpact.commons.log.LoggingMessage;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.slf4j.Logger;
@@ -9,7 +9,7 @@ import org.slf4j.event.Level;
 /**
  * @author Daniel Abitz
  */
-public final class IRPLoggingMessage implements LoggingMessage2 {
+public final class IRPLoggingMessage implements LoggingMessage {
 
     /**
      * @author Daniel Abitz

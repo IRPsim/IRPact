@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.start;
 
-import de.unileipzig.irpact.commons.log.LoggingMessage;
 import de.unileipzig.irpact.commons.util.AbstractCommandLineOptions;
 import de.unileipzig.irpact.commons.util.MapResourceBundle;
+import de.unileipzig.irpact.core.log.IRPLoggingMessage;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.irpact.IRPactExecutors;
@@ -252,7 +252,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     //=========================
 
     private boolean executed = false;
-    private LoggingMessage executeResultMessage;
+    private IRPLoggingMessage executeResultMessage;
 
     private boolean hasCustomInput = false;
     private boolean hasCallback = false;
@@ -296,7 +296,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         return executeResultMessage != null;
     }
 
-    public LoggingMessage getExecuteResultMessage() {
+    public IRPLoggingMessage getExecuteResultMessage() {
         return executeResultMessage;
     }
 
@@ -502,7 +502,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     private int validateInput() {
         if(hasInputPath()) {
             if(hasCustomInput()) {
-                executeResultMessage = new LoggingMessage("custom input and file input specified");
+                executeResultMessage = new IRPLoggingMessage("custom input and file input specified");
                 return CommandLine.ExitCode.USAGE;
             } else {
                 return CommandLine.ExitCode.OK;
@@ -511,7 +511,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             if(hasCustomInput()) {
                 return CommandLine.ExitCode.OK;
             } else {
-                executeResultMessage = new LoggingMessage("missing input");
+                executeResultMessage = new IRPLoggingMessage("missing input");
                 return CommandLine.ExitCode.USAGE;
             }
         }
@@ -524,7 +524,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             if(hasCallback()) {
                 return CommandLine.ExitCode.OK;
             } else {
-                executeResultMessage = new LoggingMessage("missing output");
+                executeResultMessage = new IRPLoggingMessage("missing output");
                 return CommandLine.ExitCode.USAGE;
             }
         }
