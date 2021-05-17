@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons.log;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
 
 /**
@@ -11,6 +12,10 @@ public class LazyPrinter implements LazyToString {
 
     public LazyPrinter(Supplier<? extends CharSequence> supp) {
         this.supp = supp;
+    }
+
+    public static LazyPrinter printArray(Object[] arr) {
+        return new LazyPrinter(() -> Arrays.toString(arr));
     }
 
     public static LazyPrinter of(Supplier<? extends CharSequence> supp) {

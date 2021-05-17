@@ -28,6 +28,9 @@ public final class IRPactJson {
     public static final ObjectMapper JSON = new ObjectMapper();
     public static final YAMLMapper YAML = new YAMLMapper();
 
+    public static final PrettyPrinter PRETTY = Util.prettyPrinter;
+    public static final PrettyPrinter DEFAULT = Util.defaultPrinter;
+
     private IRPactJson() {
     }
 

@@ -11,12 +11,12 @@ public class BasicPersistManager implements PersistManager {
     private static final Persistable PLACEHOLDER = new Persistable() {
         @Override
         public long getUID() {
-            throw new UnsupportedOperationException();
+            throw new PlaceholderException();
         }
 
         @Override
         public String getUIDString() {
-            throw new UnsupportedOperationException();
+            throw new PlaceholderException();
         }
     };
 
@@ -28,11 +28,19 @@ public class BasicPersistManager implements PersistManager {
     protected UIDManager uidManager;
 
     public BasicPersistManager() {
+        initUIDManager();
+    }
+
+    protected void initUIDManager() {
         setUidManager(new SimpleUIDManager(0L));
     }
 
     public void setUidManager(UIDManager uidManager) {
         this.uidManager = uidManager;
+    }
+
+    protected Holder newHolder(Object obj) {
+        return new Holder(obj);
     }
 
     public <T> boolean register(Persister<T> persister) {
@@ -101,6 +109,7 @@ public class BasicPersistManager implements PersistManager {
                 throw new PersistException("entry already exists: " + object.getClass());
             }
             Persister<T> persister = ensureGetPersister(object);
+            setupPersisterForInit(persister);
             Persistable persistable = persister.initalizePersist(object, this);
             if(persistable == null) {
                 throw new PersistException("persistable is null: " + object.getClass());
@@ -112,6 +121,9 @@ public class BasicPersistManager implements PersistManager {
             requiresSetupCache.add(holder);
             //System.out.println("XXXX " + persistable.getUID() + " " + object.getClass()); //TODO
         }
+    }
+
+    protected <T> void setupPersisterForInit(Persister<T> persister) {
     }
 
     private <T> void setup(T object) throws PersistException {
@@ -132,9 +144,13 @@ public class BasicPersistManager implements PersistManager {
             if(persistable == PLACEHOLDER) {
                 throw new PersistException("placeholder found: " + object.getClass());
             }
+            setupPersisterForSetup(persister);
             persister.setupPersist(object, persistable, this);
             requiresSetupCache.remove(holder);
         }
+    }
+
+    protected <T> void setupPersisterForSetup(Persister<T> persister) {
     }
 
     @Override

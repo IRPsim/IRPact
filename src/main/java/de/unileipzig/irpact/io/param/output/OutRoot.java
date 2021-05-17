@@ -1,10 +1,11 @@
 package de.unileipzig.irpact.io.param.output;
 
 import de.unileipzig.irpact.io.param.IOResources;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.SimpleCopyCache;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
-import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.output.agent.OutGeneralConsumerAgentGroup;
 import de.unileipzig.irpact.start.optact.in.Ii;
 import de.unileipzig.irpact.start.optact.out.OutCustom;
 import de.unileipzig.irptools.defstructure.AnnotationResource;
@@ -22,7 +23,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.IOConstants.ROOT;
+import static de.unileipzig.irpact.io.param.IOConstants.SPECIAL_SETTINGS;
 import static de.unileipzig.irpact.io.param.ParamUtil.addPathElement;
 
 /**
@@ -34,6 +36,9 @@ public class OutRoot implements RootClass {
     //=========================
     //IRPact
     //=========================
+
+    @FieldDefinition
+    public OutGeneral general = new OutGeneral();
 
     @FieldDefinition
     public OutAdoptionResult[] adoptionResults = new OutAdoptionResult[0];
@@ -60,7 +65,7 @@ public class OutRoot implements RootClass {
         return annualAdoptionData;
     }
 
-    public void addHiddenBinaryData(Collection<? extends BinaryPersistData> coll) {
+    public void addBinaryPersistData(Collection<? extends BinaryPersistData> coll) {
         int pos;
         if(binaryPersistData == null) {
             pos = 0;
@@ -74,7 +79,7 @@ public class OutRoot implements RootClass {
         }
     }
 
-    public BinaryPersistData[] getHiddenBinaryData() {
+    public BinaryPersistData[] getBinaryPersistData() {
         return binaryPersistData;
     }
 
@@ -121,12 +126,15 @@ public class OutRoot implements RootClass {
 
     public static final List<ParserInput> LIST = Util.mergedArrayListOf(
             ParserInput.listOf(Type.OUTPUT,
+                    OutConsumerAgentGroup.class,
+                    OutGeneralConsumerAgentGroup.class,
+
                     OutAdoptionResult.class,
                     OutAnnualAdoptionData.class,
+                    OutEntity.class,
+                    OutGeneral.class,
+                    //===
                     BinaryPersistData.class
-            ),
-            ParserInput.listOf(Type.REFERENCE,
-                    InConsumerAgentGroup.class
             )
     );
 
@@ -140,10 +148,28 @@ public class OutRoot implements RootClass {
 
     public static final List<ParserInput> CLASSES = Util.mergedArrayListOf(
             WITH_OPTACT,
+            //getInRootAsReference(),
             ParserInput.listOf(Type.OUTPUT,
                     OutRoot.class
             )
     );
+
+//    //Alles rausnehmen, was inout ist und hier bereits definiert wurde und die root/global Komponenten.
+//    private static boolean filterInput(ParserInput pi) {
+//        return pi.getClazz() != BinaryPersistData.class
+//                && pi.getClazz() != InGeneral.class
+//                && pi.getClazz() != Ii.class
+//                && pi.getClazz() != InRoot.class
+//                && pi.getClazz() != SideCustom.class
+//                && pi.getClazz() != GraphvizGlobal.class;
+//    }
+//
+//    private static List<ParserInput> getInRootAsReference() {
+//        return InRoot.CLASSES_WITH_GRAPHVIZ.stream()
+//                .filter(OutRoot::filterInput)
+//                .map(pi -> ParserInput.newInstance(Type.REFERENCE, pi.getClazz()))
+//                .collect(Collectors.toList());
+//    }
 
     //=========================
     //UI

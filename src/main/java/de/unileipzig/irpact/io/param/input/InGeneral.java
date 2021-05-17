@@ -26,9 +26,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
 /**
  * @author Daniel Abitz
  */
-@Definition(
-        global = true
-)
+@Definition(global = true)
 public class InGeneral implements Copyable {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -81,6 +79,7 @@ public class InGeneral implements Copyable {
     @FieldDefinition
     public long timeout;
 
+    //nur fuer interne tests
     public int firstSimulationYear = -1;
 
     @FieldDefinition
@@ -308,7 +307,6 @@ public class InGeneral implements Copyable {
     }
 
     public void applyToSettings(BasicSettings settings) {
-        settings.setFirstSimulationYear(firstSimulationYear);
         settings.setLastSimulationYear(lastSimulationYear);
     }
 }

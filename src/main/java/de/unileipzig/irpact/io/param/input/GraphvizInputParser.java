@@ -90,6 +90,11 @@ public class GraphvizInputParser implements InputParser {
     }
 
     @Override
+    public <T> void parseRootAndUpdate(InRoot root, T instance) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public Object parseEntity(InEntity input) throws ParsingException {
         throw new UnsupportedOperationException();
     }

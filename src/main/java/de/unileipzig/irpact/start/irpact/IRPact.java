@@ -128,6 +128,7 @@ public final class IRPact implements IRPActAccess {
             DefinitionCollection dcoll = AnnotationParser.parse(OutRoot.CLASSES);
             DefinitionMapper dmap = createMapper(options, dcoll);
             Converter converter = new Converter(dmap);
+            converter.setSortNames(false);
             OUTPUT_CONVERTS.put(options, converter);
             return converter;
         }
@@ -240,6 +241,11 @@ public final class IRPact implements IRPActAccess {
         applyCommandLineToEnvironment();
     }
 
+    private void applyCommandLineToEnvironment() {
+        Settings settings = environment.getSettings();
+        settings.apply(CL_OPTIONS);
+    }
+
     private void createSimulationEnvironment() throws ParsingException {
         int year = inEntry.getConfig().getYear();
         JadexInputParser parser = new JadexInputParser();
@@ -251,11 +257,17 @@ public final class IRPact implements IRPActAccess {
 
     private void restorPreviousSimulationEnvironment() throws Exception {
         LOGGER.info(IRPSection.GENERAL, "restore previous environment");
+        int year = inEntry.getConfig().getYear();
+        JadexInputParser parser = new JadexInputParser();
+        parser.setSimulationYear(year);
+        parser.setResourceLoader(RESOURCE_LOADER);
         JadexPersistenceModul persistenceModul = new JadexPersistenceModul();
-        SimulationEnvironment restoredEnvironment = persistenceModul.restore(CL_OPTIONS, inRoot);
-        environment = (JadexSimulationEnvironment) restoredEnvironment;
-        updateSimulationEnvironment();
-        applyCommandLineToEnvironment();
+        environment = (JadexSimulationEnvironment) persistenceModul.restore(
+                CL_OPTIONS,
+                year,
+                parser,
+                inRoot
+        );
     }
 
     private void updateSimulationEnvironment() throws ParsingException {
@@ -265,11 +277,6 @@ public final class IRPact implements IRPActAccess {
         parser.setResourceLoader(RESOURCE_LOADER);
         parser.parseRootAndUpdate(inRoot, environment);
         environment.getSettings().setFirstSimulationYear(year);
-    }
-
-    private void applyCommandLineToEnvironment() {
-        Settings settings = environment.getSettings();
-        settings.apply(CL_OPTIONS);
     }
 
     private void createGraphvizConfiguration() throws Exception {
@@ -404,10 +411,19 @@ public final class IRPact implements IRPActAccess {
     }
 
     public void createJadexAgents() {
+        createJadexAgents(false);
+    }
+
+    public void createOnlyControlJadexAgents() {
+        createJadexAgents(true);
+    }
+
+    private void createJadexAgents(boolean controlAgentsOnly) {
         LOGGER.info(IRPSection.GENERAL, "create agents");
 
-        final int totalNumberOfAgents = 1 //SimulationAgent
-                + environment.getAgents().getTotalNumberOfConsumerAgents();
+        final int totalNumberOfAgents = controlAgentsOnly
+                ? 1
+                : 1 + environment.getAgents().getTotalNumberOfConsumerAgents();
         int agentCount = 0;
 
         LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "total number of agents: {}", totalNumberOfAgents);
@@ -418,6 +434,9 @@ public final class IRPact implements IRPActAccess {
         platform.createComponent(simulationAgentInfo).get();
         pulse();
 
+        if(controlAgentsOnly) {
+            return;
+        }
 
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
             for(ConsumerAgent ca: cag.getAgents()) {
@@ -535,7 +554,7 @@ public final class IRPact implements IRPActAccess {
         outRoot.outGrps = outList.toArray(new OutCustom[0]);
 
         //=====
-        throw new TodoException();
+//        throw new TodoException();
 //        Timestamp start = environment.getTimeModel().startTime();
 //        Timestamp end = environment.getTimeModel().endTime();
 //

@@ -1,46 +1,40 @@
 package de.unileipzig.irpact.jadex.persistance.binary.meta;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeCreator;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.persistence.PersistableBase;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
+import de.unileipzig.irpact.jadex.persistance.JadexPersistable;
 import de.unileipzig.irpact.jadex.persistance.binary.ClassManager;
+import de.unileipzig.irpact.jadex.persistance.binary.io.BinaryPersistJson;
 import de.unileipzig.irptools.util.Util;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
  * @author Daniel Abitz
  */
-public class ClassManagerPR extends PersistableBase {
+public final class ClassManagerPR extends PersistableBase implements JadexPersistable {
 
+    public static final String UID_PREFIX = SettingsPR.UID_PREFIX;
     public static final long UID = 1;
-    public static final String UID_STR = "1";
-    public static final String PREFIX = "y1y";
-    public static final String PREFIX_Y = "y";
 
     protected ObjectNode root;
+    protected ClassManager manager;
 
-    public ClassManagerPR(JsonNodeCreator creator) {
-        this(creator.objectNode());
-    }
-
-    public ClassManagerPR(ObjectNode root) {
+    public ClassManagerPR(ObjectNode root, ClassManager manager) {
         this.root = root;
+        this.manager = manager;
+        setUID(UID);
     }
 
     public ObjectNode getRoot() {
         return root;
     }
 
-    public long getUID() {
-        return UID;
-    }
-
-    public byte[] toBytes() throws IOException {
-        return IRPactJson.toBytesWithSmile(root);
+    protected void updateRoot() {
+        root.removeAll();
+        toJson(manager);
     }
 
     public void toJson(ClassManager classManager) {
@@ -56,5 +50,11 @@ public class ClassManagerPR extends PersistableBase {
             long id = entry.getValue().longValue();
             classManager.set(entry.getKey(), id);
         }
+    }
+
+    @Override
+    public BinaryPersistData toPersistData() {
+        updateRoot();
+        return BinaryPersistJson.toData(root, UID_PREFIX, getUID());
     }
 }

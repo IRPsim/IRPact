@@ -3,6 +3,7 @@ package de.unileipzig.irpact.jadex.persistance.binary.io;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -60,6 +61,17 @@ public final class BinaryPersistJson {
         return index + x.length();
     }
 
+    public static BinaryPersistData toData(JsonNode node, String uidPrefix, long uid) {
+        BinaryPersistData data = new BinaryPersistData();
+        data.setIRPBase32String(print(node, uidPrefix, uid));
+        data.setID(uid);
+        return data;
+    }
+
+    public static String print(JsonNode node, String uidx, long uid) {
+        return print(IRPactJson.SMILE, node, uidx, uid);
+    }
+
     public static String print(ObjectMapper mapper, JsonNode node, String uidx, long uid) {
         return print(new StringBuilder(), mapper, node, uidx, uid);
     }
@@ -78,6 +90,10 @@ public final class BinaryPersistJson {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    public static JsonNode parse(String irp32withId, String uidx) {
+        return parse(IRPactJson.SMILE, irp32withId, uidx);
     }
 
     public static JsonNode parse(ObjectMapper mapper, String irp32withId, String uidx) {

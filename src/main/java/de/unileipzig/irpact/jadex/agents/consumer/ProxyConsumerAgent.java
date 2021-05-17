@@ -3,6 +3,7 @@ package de.unileipzig.irpact.jadex.agents.consumer;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
+import de.unileipzig.irpact.commons.checksum.LoggableChecksum;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.core.agent.ProxyAgent;
@@ -31,9 +32,10 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Daniel Abitz
  */
+@SuppressWarnings("DefaultAnnotationParam")
 @AddToPersist("product related attr")
 @Reference(local = true, remote = true)
-public class ProxyConsumerAgent extends SpatialInformationAgentBase implements ConsumerAgent, ProxyAgent<ConsumerAgent> {
+public class ProxyConsumerAgent extends SpatialInformationAgentBase implements ConsumerAgent, ProxyAgent<ConsumerAgent>, LoggableChecksum {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ProxyConsumerAgent.class);
 
@@ -112,7 +114,8 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         );
     }
 
-    public void deepChecksumCheck() {
+    @Override
+    public void logChecksums() {
         logChecksum("name", ChecksumComparable.getChecksum(getName()));
         logChecksum("group name", ChecksumComparable.getChecksum(getGroup().getName()));
         logChecksum("information authority", ChecksumComparable.getChecksum(getInformationAuthority()));

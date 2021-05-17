@@ -154,7 +154,7 @@ public class BasicSettings implements Settings, ChecksumComparable {
 
     @Override
     public int getNumberOfSimulationYears() {
-        return Math.max(getLastSimulationYear() - getFirstSimulationYear(), 1);
+        return Math.max(getLastSimulationYear() - getFirstSimulationYear(), 0) + 1;
     }
 
     @Override
@@ -191,7 +191,7 @@ public class BasicSettings implements Settings, ChecksumComparable {
 
     @Override
     public int getActualNumberOfSimulationYears() {
-        return Math.max(getLastSimulationYear() - getActualFirstSimulationYear(), 1);
+        return Math.max(getLastSimulationYear() - getActualFirstSimulationYear(), 0) + 1;
     }
 
     @Override

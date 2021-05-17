@@ -14,8 +14,8 @@ public final class ClassManager {
     private final Map<String, Long> class2id = new LinkedHashMap<>();
     private final Map<Long, String> id2class = new LinkedHashMap<>();
     private final IdManager ids = new IdManager(0L);
-    private boolean store = true;
-    private boolean enabled = false;
+    private boolean store;
+    private boolean enabled;
 
     public ClassManager() {
     }

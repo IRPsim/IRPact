@@ -5,11 +5,8 @@ import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
-import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -81,27 +78,6 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
     }
 
     @Override
-    protected void doFinalizeRestore(BinaryJsonData data, RAProcessModel object, RestoreManager manager) throws Exception {
-        setInitialData(object);
-    }
-
-    private void setInitialData(RAProcessModel restoredInstance) throws Exception {
-        InRAProcessModel inModel = (InRAProcessModel) restoreHelper.getInRoot()
-                .getProcessModel(restoredInstance.getName());
-
-        if(inModel == null) {
-            throw new RestoreException("InRAProcessModel '{}' not found", restoredInstance.getName());
-        }
-
-        if(inModel.hasPvFile()) {
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "load pv file '{}'" , inModel.getPvFile().getName());
-            NPVData data = inModel.getNPVData(restoreHelper.getParser());
-            restoredInstance.setNpvData(data);
-        }
-    }
-
-    @Override
-    protected void onChecksumMismatch(BinaryJsonData data, RAProcessModel object, RestoreManager manager) {
-        object.deepHashCode();
+    protected void doFinalizeRestore(BinaryJsonData data, RAProcessModel object, RestoreManager manager) {
     }
 }

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
+import de.unileipzig.irpact.commons.checksum.LoggableChecksum;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
@@ -29,8 +30,9 @@ import java.util.*;
 /**
  * @author Daniel Abitz
  */
+@SuppressWarnings("DefaultAnnotationParam")
 @Reference(local = true, remote = true)
-public class JadexConsumerAgentGroup extends SimulationEntityBase implements ConsumerAgentGroup {
+public class JadexConsumerAgentGroup extends SimulationEntityBase implements ConsumerAgentGroup, LoggableChecksum {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(JadexConsumerAgentGroup.class);
 
@@ -90,7 +92,8 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         );
     }
 
-    public void deepChecksumCheck() {
+    @Override
+    public void logChecksums() {
         logChecksum("name", ChecksumComparable.getChecksum(getName()));
         logChecksum("information authority", ChecksumComparable.getChecksum(getInformationAuthority()));
         logChecksum("next agent id", ChecksumComparable.getChecksum(getNextAgentId()));

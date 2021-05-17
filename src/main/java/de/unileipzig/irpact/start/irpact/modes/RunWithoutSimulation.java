@@ -10,7 +10,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
  */
 public final class RunWithoutSimulation implements IRPactExecutor {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(RunFully.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(RunWithoutSimulation.class);
 
     public static final int ID = 1;
     public static final String ID_STR = "1";
@@ -28,7 +28,6 @@ public final class RunWithoutSimulation implements IRPactExecutor {
     public void execute(IRPact irpact) throws Exception {
         LOGGER.info("execute IRPact without simulation, only initialization and evaluation");
 
-        //Phase 1: initialization
         irpact.initialize();
 
         irpact.preAgentCreation();
@@ -47,7 +46,15 @@ public final class RunWithoutSimulation implements IRPactExecutor {
             return;
         }
 
-        //Phase 3: evaluation
+        irpact.createPlatform();
+        irpact.preparePlatform();
+        irpact.setupTimeModel();
+        irpact.createOnlyControlJadexAgents();
+
+        if(!irpact.secureWaitForCreation()) {
+            return;
+        }
+
         irpact.setupPreSimulationStart();
         irpact.startSimulation();
         irpact.waitForTermination();

@@ -78,8 +78,6 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
 
         data.putLongArray(manager.ensureGetAllUIDs(object.getNeeds()));
         data.putLongLongMap(manager.ensureGetAllUIDs(object.getPlans()));
-
-        object.deepChecksumCheck();
     }
 
     //=========================
@@ -133,10 +131,5 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
             SocialGraph.Node node = graph.addAgentAndGetNode(object);
             object.setSocialGraphNode(node);
         }
-    }
-
-    @Override
-    protected void onChecksumMismatch(BinaryJsonData data, ProxyConsumerAgent object, RestoreManager manager) {
-        object.deepChecksumCheck();
     }
 }

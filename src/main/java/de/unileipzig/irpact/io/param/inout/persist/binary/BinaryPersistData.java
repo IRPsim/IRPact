@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.io.param.inout.persist.binary;
 
-import de.unileipzig.irpact.commons.util.IRPactBase32;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -76,13 +75,11 @@ public class BinaryPersistData implements Copyable {
         return id;
     }
 
-    public void setBytes(byte[] data) {
-        _name = IRPactBase32.encodeToString(data);
+    public void setIRPBase32String(String irp32) {
+        _name = irp32;
     }
 
-    public byte[] getBytes() {
-        return _name == null
-                ? null
-                : IRPactBase32.decodeString(_name);
+    public String getIRPBase32String() {
+        return _name;
     }
 }

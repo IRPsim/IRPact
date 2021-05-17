@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.start.utilities;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.commons.util.csv.CsvPrinter;
 import de.unileipzig.irpact.commons.util.table.SimpleTable;
@@ -9,10 +10,13 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.util.AnnualAdoptionData;
-import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
+import de.unileipzig.irpact.develop.Todo;
+import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.io.param.output.OutAnnualAdoptionData;
 import de.unileipzig.irpact.io.param.output.OutRoot;
+import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
+import de.unileipzig.irpact.jadex.persistance.JadexPersistenceModul;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.util.R.ExistingRScript;
@@ -57,6 +61,9 @@ public class Utilities {
     public void run() throws Exception {
         if(utilOptions.isPrintCumulativeAdoptions()) {
             printCumulativeAdoptions();
+        }
+        if(utilOptions.hasDecodeBinaryPaths()) {
+            decodeBinaryPersist();
         }
     }
 
@@ -130,15 +137,17 @@ public class Utilities {
         LOGGER.trace(IRPSection.UTILITIES, "task 'print cumulative adoptions with R' finished");
     }
 
+    @Todo
     private void printTempCsvFile( Path tempFile) throws IOException {
-        LOGGER.trace(IRPSection.UTILITIES, "convert data to csv");
-        ObjectNode rootNode = parseRInputAsOutRoot();
-        AnnualEntry<OutRoot> outRootEntry = IRPact.convertOutput(mainOptions, rootNode);
-        OutRoot outRoot = outRootEntry.getData();
-        AnnualAdoptionData data = parseWithDummy(outRoot.getAnnualAdoptionData());
-        Table<String> table = toStringTable(data);
-        LOGGER.trace(IRPSection.UTILITIES, "save temp csv file '{}'", tempFile);
-        printCsv(tempFile, table);
+        if(true) throw new TodoException();
+//        LOGGER.trace(IRPSection.UTILITIES, "convert data to csv");
+//        ObjectNode rootNode = parseRInputAsOutRoot();
+//        AnnualEntry<OutRoot> outRootEntry = IRPact.convertOutput(mainOptions, rootNode);
+//        OutRoot outRoot = outRootEntry.getData();
+//        AnnualAdoptionData data = parseWithDummy(outRoot.getAnnualAdoptionData()); TODO
+//        Table<String> table = toStringTable(data);
+//        LOGGER.trace(IRPSection.UTILITIES, "save temp csv file '{}'", tempFile);
+//        printCsv(tempFile, table);
     }
 
     private void runRScriptForCumulativeAdoptions(Path tempFile) throws IOException, RScriptException, InterruptedException {
@@ -167,7 +176,7 @@ public class Utilities {
         Map<String, ConsumerAgentGroup> cache = new HashMap<>();
         AnnualAdoptionData outData = new AnnualAdoptionData();
         for(OutAnnualAdoptionData data: datas) {
-            for(InConsumerAgentGroup inCag: data.getConsumerAgentGroups()) {
+            for(OutConsumerAgentGroup inCag: data.getConsumerAgentGroups()) {
                 JadexConsumerAgentGroup cag = (JadexConsumerAgentGroup) cache.computeIfAbsent(
                         inCag.getName(),
                         _name -> {
@@ -243,8 +252,18 @@ public class Utilities {
     //decode binary persist
     //=========================
 
-    public static void decodeBinaryPersist() {
+    public void decodeBinaryPersist() throws IOException, RestoreException {
+        Path input = utilOptions.getDecodeBinaryPaths()[0];
+        Path output = utilOptions.getDecodeBinaryPaths()[1];
 
+        LOGGER.trace("decode binary persist '{}' -> '{}'", input, output);
+
+        ObjectNode root = IRPactJson.readJson(input);
+        AnnualEntry<OutRoot> entry = IRPact.convertOutput(mainOptions, root);
+
+        JadexPersistenceModul modul = new JadexPersistenceModul();
+        ObjectNode decoded = modul.decode(entry.getData().getBinaryPersistData());
+        IRPactJson.writeJson(decoded, output, IRPactJson.DEFAULT);
     }
 
     //=========================

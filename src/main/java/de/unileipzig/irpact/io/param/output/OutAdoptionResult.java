@@ -2,7 +2,7 @@ package de.unileipzig.irpact.io.param.output;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -42,7 +42,7 @@ public class OutAdoptionResult implements OutEntity {
     public String _name;
 
     @FieldDefinition
-    public InConsumerAgentGroup[] cag;
+    public OutConsumerAgentGroup[] cag;
 
     @FieldDefinition
     public int adoptionsThisYear;
@@ -83,15 +83,15 @@ public class OutAdoptionResult implements OutEntity {
         this._name = name;
     }
 
-    public void setName(InConsumerAgentGroup cag) {
+    public void setName(OutConsumerAgentGroup cag) {
         setName(PREFIX + cag.getName());
     }
 
-    public void setConsumerAgentGroup(InConsumerAgentGroup cag) {
-        this.cag = new InConsumerAgentGroup[]{cag};
+    public void setConsumerAgentGroup(OutConsumerAgentGroup cag) {
+        this.cag = new OutConsumerAgentGroup[]{cag};
     }
 
-    public InConsumerAgentGroup getConsumerAgentGroup() throws ParsingException {
+    public OutConsumerAgentGroup getConsumerAgentGroup() throws ParsingException {
         return ParamUtil.getInstance(cag, "cag");
     }
 

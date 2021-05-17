@@ -6,9 +6,6 @@ import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.simulation.BasicSettings;
-import de.unileipzig.irpact.develop.TodoException;
-import de.unileipzig.irpact.develop.XXXXXXXXX;
-import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -46,7 +43,6 @@ public class BasicSettingsPR extends BinaryPRBase<BasicSettings> {
 
     @Override
     protected void doSetupPersist(BasicSettings object, BinaryJsonData data, PersistManager manager) throws PersistException {
-        throw new TodoException();
     }
 
     //=========================
@@ -68,17 +64,5 @@ public class BasicSettingsPR extends BinaryPRBase<BasicSettings> {
 
     @Override
     protected void doFinalizeRestore(BinaryJsonData data, BasicSettings object, RestoreManager manager) {
-        InGeneral general = restoreHelper.getInRoot()
-                .getGeneral();
-        general.applyToSettings(object);
-
-        object.apply(restoreHelper.getOptions());
-
-        restorePopulationSizes(object);
-    }
-
-    @XXXXXXXXX("schauen, wie man das am besten hinbekommt")
-    private void restorePopulationSizes(BasicSettings object) {
-        throw new TodoException();
     }
 }

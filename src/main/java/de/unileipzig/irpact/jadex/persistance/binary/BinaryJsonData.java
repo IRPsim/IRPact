@@ -8,6 +8,9 @@ import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.util.*;
 import de.unileipzig.irpact.commons.util.data.TripleMapping;
 import de.unileipzig.irpact.commons.util.data.VarMap;
+import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
+import de.unileipzig.irpact.jadex.persistance.JadexPersistable;
+import de.unileipzig.irpact.jadex.persistance.binary.io.BinaryPersistJson;
 import de.unileipzig.irptools.util.Util;
 
 import java.io.IOException;
@@ -20,10 +23,12 @@ import java.util.function.*;
  *
  * @author Daniel Abitz
  */
-public final class BinaryJsonData extends PersistableBase {
+public final class BinaryJsonData extends PersistableBase implements JadexPersistable {
 
     public static ToLongFunction<Integer> INT2LONG = Number::longValue;
     public static LongFunction<Integer> LONG2INT = l -> (int) l;
+
+    public static final String UID_PREFIX = "x";
 
     public static final int NOTHING_ID = -1;
     private static final int UID_ID = 0;
@@ -43,8 +48,8 @@ public final class BinaryJsonData extends PersistableBase {
         setPutMode();
     }
 
-    public static BinaryJsonData restore(byte[] data) throws IOException {
-        ArrayNode node = (ArrayNode) IRPactJson.fromBytesWithSmile(data);
+    public static BinaryJsonData restore(JsonNode restored) throws IOException {
+        ArrayNode node = (ArrayNode) restored;
         BinaryJsonData bdata = new BinaryJsonData(node);
         long uid = bdata.ensureGetUid();
         bdata.setUID(uid);
@@ -60,6 +65,11 @@ public final class BinaryJsonData extends PersistableBase {
             data.init(uid, c);
         }
         return data;
+    }
+
+    @Override
+    public BinaryPersistData toPersistData() {
+        return BinaryPersistJson.toData(root, UID_PREFIX, getUID());
     }
 
     public void setPutMode() {

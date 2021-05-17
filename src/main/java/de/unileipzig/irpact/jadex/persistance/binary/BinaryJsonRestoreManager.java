@@ -1,12 +1,24 @@
 package de.unileipzig.irpact.jadex.persistance.binary;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.Nameable;
+import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.Persistable;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
+import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.jadex.persistance.binary.io.BinaryPersistJson;
+import de.unileipzig.irpact.jadex.persistance.binary.meta.ClassManagerPR;
+import de.unileipzig.irpact.jadex.persistance.binary.meta.SettingsPR;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.function.IntFunction;
 import java.util.function.LongFunction;
@@ -16,6 +28,8 @@ import java.util.function.LongFunction;
  */
 @SuppressWarnings("unused")
 public class BinaryJsonRestoreManager implements RestoreManager {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BinaryJsonRestoreManager.class);
 
     public static final String INITIAL_INSTANCE = "_INITIAL_INSTANCE_";
     public static final String RESTORED_INSTANCE = "_RESTORED_INSTANCE_";
@@ -31,6 +45,8 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     protected final RestoreHelper restoreHelper = new RestoreHelper();
     protected final ClassManager classManager = new ClassManager();
     protected final List<Persistable> persistables = new ArrayList<>();
+    protected SettingsPR settingsPR;
+    protected ClassManagerPR classManagerPR;
     protected boolean hasValidationChecksum;
     protected int validationChecksum;
     protected Object restoredInstance;
@@ -41,7 +57,10 @@ public class BinaryJsonRestoreManager implements RestoreManager {
 
     private void init() {
         BinaryJsonUtil.registerDefaults(this);
+        classManager.disable();
+        classManager.setReadMode();
         restoreHelper.setClassManager(classManager);
+        restoreHelper.setPrintLoggableOnPersist(false);
     }
 
     public void setCommandLineOptions(MainCommandLineOptions options) {
@@ -50,6 +69,14 @@ public class BinaryJsonRestoreManager implements RestoreManager {
 
     public void setInRoot(InRoot root) {
         restoreHelper.setInRoot(root);
+    }
+
+    public void setYear(int year) {
+        restoreHelper.setYear(year);
+    }
+
+    public void setParser(InputParser parser) {
+        restoreHelper.setParser(parser);
     }
 
     public <T> boolean register(BinaryRestorer<T> restorer) {
@@ -151,6 +178,8 @@ public class BinaryJsonRestoreManager implements RestoreManager {
             finalize(persistable);
         }
         //phase 4
+        updateRestoredEnvironment();
+        //phase 5
         for(Persistable persistable: coll) {
             validation(persistable);
         }
@@ -187,6 +216,20 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         restorer.finalizeRestore(data, object, this);
     }
 
+    protected void updateRestoredEnvironment() throws RestoreException {
+        try {
+            SimulationEnvironment env = getRestoredInstance();
+            restoreHelper.getParser().parseRootAndUpdate(
+                    restoreHelper.getInRoot(),
+                    env
+            );
+            env.getSettings().setFirstSimulationYear(restoreHelper.getYear());
+            env.getSettings().apply(restoreHelper.getOptions());
+        } catch (ParsingException e) {
+            throw new RestoreException(e);
+        }
+    }
+
     protected <T> void validation(Persistable persistable) throws RestoreException {
         BinaryJsonData data = check(persistable);
         String type = data.ensureGetType(classManager);
@@ -197,12 +240,16 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     }
 
     protected void clearRestoredInstance() {
-        setRestoredInstance(null);
+        this.restoredInstance = null;
     }
 
     @Override
     public void setRestoredInstance(Object restored) {
-        this.restoredInstance = restored;
+        if(this.restoredInstance == null) {
+            this.restoredInstance = restored;
+        } else {
+            throw new IllegalStateException("restored instance already set");
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -315,6 +362,45 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     //=========================
     //util
     //=========================
+
+    public JsonNode restoreJson(BinaryPersistData data) throws RestoreException {
+        String irp32 = data.getIRPBase32String();
+        if(irp32.startsWith(SettingsPR.UID_PREFIX)) {
+            if(data.getID() == SettingsPR.UID) {
+                return BinaryPersistJson.parse(irp32, SettingsPR.UID_PREFIX);
+            }
+            if(data.getID() == ClassManagerPR.UID) {
+                return BinaryPersistJson.parse(irp32, ClassManagerPR.UID_PREFIX);
+            }
+            throw new RestoreException("unsupported meta id: " + data.getID());
+        } else {
+            return BinaryPersistJson.parse(irp32, BinaryJsonData.UID_PREFIX);
+        }
+    }
+
+    public BinaryJsonData tryRestore(BinaryPersistData data) throws RestoreException, IOException {
+        String irp32 = data.getIRPBase32String();
+        if(irp32.startsWith(SettingsPR.UID_PREFIX)) {
+            if(data.getID() == SettingsPR.UID) {
+                LOGGER.trace("restore Settings");
+                ObjectNode restored = (ObjectNode) BinaryPersistJson.parse(irp32, SettingsPR.UID_PREFIX);
+                settingsPR = new SettingsPR(restored);
+                return null;
+            }
+            if(data.getID() == ClassManagerPR.UID) {
+                LOGGER.trace("restore ClassManager");
+                ObjectNode restored = (ObjectNode) BinaryPersistJson.parse(irp32, ClassManagerPR.UID_PREFIX);
+                classManagerPR = new ClassManagerPR(restored, classManager);
+                classManagerPR.fromJson(classManager);
+                classManager.enable();
+                return null;
+            }
+            throw new RestoreException("unsupported meta id: " + data.getID());
+        } else {
+            JsonNode restored = BinaryPersistJson.parse(irp32, BinaryJsonData.UID_PREFIX);
+            return BinaryJsonData.restore(restored);
+        }
+    }
 
     public static BinaryJsonData check(Persistable persistable) {
         if(persistable instanceof BinaryJsonData) {

@@ -4,12 +4,8 @@ import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.Version;
-import de.unileipzig.irpact.develop.TodoException;
-import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.start.irpact.IRPact;
@@ -78,6 +74,7 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
     @Override
     protected BasicJadexSimulationEnvironment doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
         BasicJadexSimulationEnvironment environment = new BasicJadexSimulationEnvironment();
+        manager.setRestoredInstance(environment);
         environment.setName("Restored_Environment");
         environment.initDefault();
         environment.setRestored();
@@ -97,8 +94,6 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
         object.setTimeModel(manager.ensureGet(data.getLong()));
         object.setLifeCycleControl(manager.ensureGet(data.getLong()));
         object.setSimulationRandom(manager.ensureGet(data.getLong()));
-        //===
-        setupBinaryTaskManager(data, object, manager);
     }
 
     private void validateVersion(BinaryJsonData data, RestoreManager manager) throws RestoreException {
@@ -106,18 +101,6 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
         if(!IRPact.VERSION.supportsInput(version)) {
             throw ExceptionUtil.create(RestoreException::new, "version mismatch: IRPact version '{}' != '{}'", IRPact.VERSION.print(), version.print());
         }
-    }
-
-    @XXXXXXXXX
-    @SuppressWarnings("unused")
-    private void setupBinaryTaskManager(BinaryJsonData data, BasicJadexSimulationEnvironment object, RestoreManager manager) {
-        if(true) throw new TodoException();
-//        BasicJadexSimulationEnvironment initialEnv = manager.getInitialInstance();
-//
-//        BasicBinaryTaskManager initial = (BasicBinaryTaskManager) initialEnv.getTaskManager();
-//        BasicBinaryTaskManager restored = (BasicBinaryTaskManager) object.getTaskManager();
-//
-//        restored.copyFrom(initial);
     }
 
     @Override
@@ -130,32 +113,7 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
         manager.setValidationChecksum(storedHash);
     }
 
-    @XXXXXXXXX
     @Override
-    protected void doFinalizeRestore(BinaryJsonData data, BasicJadexSimulationEnvironment object, RestoreManager manager) throws RestoreException {
-        if(true) throw new TodoException();
-//        manager.setRestoredInstance(object);
-//
-//        replaceConsumerAgentGroupsInSettings(
-//                manager.getInitialInstance(),
-//                manager.getRestoredInstance()
-//        );
-    }
-
-    protected void replaceConsumerAgentGroupsInSettings(
-            BasicJadexSimulationEnvironment initial,
-            BasicJadexSimulationEnvironment restored) throws RestoreException {
-
-        Settings initialSettings = initial.getSettings();
-        Settings restoredSettings = restored.getSettings();
-
-        for(ConsumerAgentGroup initialCag: initial.getAgents().getConsumerAgentGroups()) {
-            ConsumerAgentGroup restoredCag = restored.getAgents().getConsumerAgentGroup(initialCag.getName());
-            if(restoredCag == null) {
-                throw ExceptionUtil.create(RestoreException::new, "restored cag '{}' not found", initialCag.getName());
-            }
-            int initialCount = initialSettings.getInitialNumberOfConsumerAgents(initialCag);
-            restoredSettings.setInitialNumberOfConsumerAgents(restoredCag, initialCount);
-        }
+    protected void doFinalizeRestore(BinaryJsonData data, BasicJadexSimulationEnvironment object, RestoreManager manager) {
     }
 }

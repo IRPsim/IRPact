@@ -2,9 +2,8 @@ package de.unileipzig.irpact.io.param.output;
 
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.util.AnnualAdoptionData;
-import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
-import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Factory;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -51,20 +50,20 @@ public class OutAnnualAdoptionData implements OutEntity {
     public int year;
 
     @FieldDefinition
-    @MapInfo(key = InConsumerAgentGroup.class, value = int.class, factory = @Factory(clazz = LinkedHashMap.class))
-    public Map<InConsumerAgentGroup, Integer> adoptionsThisYear = new LinkedHashMap<>();
+    @MapInfo(key = OutConsumerAgentGroup.class, value = int.class, factory = @Factory(clazz = LinkedHashMap.class))
+    public Map<OutConsumerAgentGroup, Integer> adoptionsThisYear = new LinkedHashMap<>();
 
     @FieldDefinition
-    @MapInfo(key = InConsumerAgentGroup.class, value = int.class, factory = @Factory(clazz = LinkedHashMap.class))
-    public Map<InConsumerAgentGroup, Integer> adoptionsCumulativ = new LinkedHashMap<>();
+    @MapInfo(key = OutConsumerAgentGroup.class, value = int.class, factory = @Factory(clazz = LinkedHashMap.class))
+    public Map<OutConsumerAgentGroup, Integer> adoptionsCumulativ = new LinkedHashMap<>();
 
     @FieldDefinition
-    @MapInfo(key = InConsumerAgentGroup.class, value = double.class, factory = @Factory(clazz = LinkedHashMap.class))
-    public Map<InConsumerAgentGroup, Double> adoptionShareThisYear = new LinkedHashMap<>();
+    @MapInfo(key = OutConsumerAgentGroup.class, value = double.class, factory = @Factory(clazz = LinkedHashMap.class))
+    public Map<OutConsumerAgentGroup, Double> adoptionShareThisYear = new LinkedHashMap<>();
 
     @FieldDefinition
-    @MapInfo(key = InConsumerAgentGroup.class, value = double.class, factory = @Factory(clazz = LinkedHashMap.class))
-    public Map<InConsumerAgentGroup, Double> adoptionShareCumulativ = new LinkedHashMap<>();
+    @MapInfo(key = OutConsumerAgentGroup.class, value = double.class, factory = @Factory(clazz = LinkedHashMap.class))
+    public Map<OutConsumerAgentGroup, Double> adoptionShareCumulativ = new LinkedHashMap<>();
 
     public OutAnnualAdoptionData() {
     }
@@ -111,12 +110,12 @@ public class OutAnnualAdoptionData implements OutEntity {
         }
     }
 
-    public Collection<? extends InConsumerAgentGroup> getConsumerAgentGroups() {
+    public Collection<? extends OutConsumerAgentGroup> getConsumerAgentGroups() {
         return adoptionsThisYear.keySet();
     }
 
     public void set(
-            InConsumerAgentGroup cag,
+            OutConsumerAgentGroup cag,
             int adoptionsThisYear,
             int adoptionsCumulativ,
             double adoptionShareThisYear,
@@ -127,29 +126,29 @@ public class OutAnnualAdoptionData implements OutEntity {
         this.adoptionShareCumulativ.put(cag, adoptionShareCumulativ);
     }
 
-    public int getAdoptionsThisYear(InConsumerAgentGroup cag) {
+    public int getAdoptionsThisYear(OutConsumerAgentGroup cag) {
         return adoptionsThisYear.get(cag);
     }
 
-    public int getAdoptionsCumulativ(InConsumerAgentGroup cag) {
+    public int getAdoptionsCumulativ(OutConsumerAgentGroup cag) {
         return adoptionsCumulativ.get(cag);
     }
 
-    public double getAdoptionShareThisYear(InConsumerAgentGroup cag) {
+    public double getAdoptionShareThisYear(OutConsumerAgentGroup cag) {
         return adoptionShareThisYear.get(cag);
     }
 
-    public double getAdoptionShareCumulativ(InConsumerAgentGroup cag) {
+    public double getAdoptionShareCumulativ(OutConsumerAgentGroup cag) {
         return adoptionShareCumulativ.get(cag);
     }
 
     public static AnnualAdoptionData parseWithDummy(OutAnnualAdoptionData... datas) {
-        Function<InConsumerAgentGroup, ConsumerAgentGroup> parserFunc = new Function<InConsumerAgentGroup, ConsumerAgentGroup>() {
+        Function<OutConsumerAgentGroup, ConsumerAgentGroup> parserFunc = new Function<OutConsumerAgentGroup, ConsumerAgentGroup>() {
 
             protected final Map<String, ConsumerAgentGroup> cache = new HashMap<>();
 
             @Override
-            public ConsumerAgentGroup apply(InConsumerAgentGroup in) {
+            public ConsumerAgentGroup apply(OutConsumerAgentGroup in) {
                 if(cache.containsKey(in.getName())) {
                     return cache.get(in.getName());
                 } else {
@@ -165,11 +164,11 @@ public class OutAnnualAdoptionData implements OutEntity {
     }
 
     protected static AnnualAdoptionData parse(
-            Function<? super InConsumerAgentGroup, ? extends ConsumerAgentGroup> parserFunc,
+            Function<? super OutConsumerAgentGroup, ? extends ConsumerAgentGroup> parserFunc,
             OutAnnualAdoptionData... datas) {
         AnnualAdoptionData outData = new AnnualAdoptionData();
         for(OutAnnualAdoptionData data: datas) {
-            for(InConsumerAgentGroup inCag: data.getConsumerAgentGroups()) {
+            for(OutConsumerAgentGroup inCag: data.getConsumerAgentGroups()) {
                 ConsumerAgentGroup cag = parserFunc.apply(inCag);
                 outData.set(
                         data.getYear(),

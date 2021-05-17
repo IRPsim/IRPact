@@ -8,7 +8,7 @@ import de.unileipzig.irpact.start.irpact.modes.RunFully;
  */
 public final class IRPactExecutors {
 
-    public static final String DEFAULT_MODE = "0";
+    public static final String DEFAULT_MODE = RunFully.ID_STR;
 
     private IRPactExecutors() {
     }

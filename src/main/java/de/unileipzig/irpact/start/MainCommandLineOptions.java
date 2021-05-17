@@ -32,6 +32,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             bundle.put("printHelp", "Print help.");
             bundle.put("printVersion", "Print version information.");
             bundle.put("runMode", "The mode in which the program is to be executed. Currently supported are: '0: normal execution', '1: initialization and evaluation, no simulation'. Default value is ${DEFAULT-VALUE}.");
+            bundle.put("filterError", "If set, errors are logged only to System.err.");
             bundle.put("inputPath", "Set path to input file.");
             bundle.put("outputPath", "Set path to output file.");
             bundle.put("imagePath", "Set path to image output file. Without '--noSimulation' the post-simulation network is printed.");
@@ -86,11 +87,17 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     private boolean printVersion;
 
     @CommandLine.Option(
-            names = { "--mode" },
+            names = { "--irpactMode" },
             defaultValue = IRPactExecutors.DEFAULT_MODE,
             descriptionKey = "runMode"
     )
     private int runMode;
+
+    @CommandLine.Option(
+            names = { "--filterError" },
+            descriptionKey = "filterError"
+    )
+    private boolean filterError;
 
     @CommandLine.Option(
             names = { "-i", "--input" },
@@ -341,6 +348,11 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     public int getRunMode() {
         checkExecuted();
         return runMode;
+    }
+
+    public boolean isFilterError() {
+        checkExecuted();
+        return filterError;
     }
 
     public boolean hasInputPath() {

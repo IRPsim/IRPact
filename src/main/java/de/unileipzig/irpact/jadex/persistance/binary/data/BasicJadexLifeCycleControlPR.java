@@ -2,7 +2,6 @@ package de.unileipzig.irpact.jadex.persistance.binary.data;
 
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
@@ -73,8 +72,5 @@ public class BasicJadexLifeCycleControlPR extends BinaryPRBase<BasicJadexLifeCyc
 
     @Override
     protected void doFinalizeRestore(BinaryJsonData data, BasicJadexLifeCycleControl object, RestoreManager manager) {
-        InGeneral general = restoreHelper.getInRoot()
-                .getGeneral();
-        general.applyKillSwitch(object);
     }
 }

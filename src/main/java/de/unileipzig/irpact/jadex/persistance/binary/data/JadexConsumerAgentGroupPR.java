@@ -101,9 +101,4 @@ public class JadexConsumerAgentGroupPR extends BinaryPRBase<JadexConsumerAgentGr
         object.setProductFindingScheme(manager.ensureGet(data.getLong()));
         object.setProcessFindingScheme(manager.ensureGet(data.getLong()));
     }
-
-    @Override
-    protected void onChecksumMismatch(BinaryJsonData data, JadexConsumerAgentGroup object, RestoreManager manager) {
-        object.deepChecksumCheck();
-    }
 }

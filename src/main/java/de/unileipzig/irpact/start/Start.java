@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.start;
 
+import de.unileipzig.irpact.commons.log.LazyPrinter;
+import de.unileipzig.irpact.commons.log.Logback;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPLoggingMessage;
 import de.unileipzig.irpact.core.log.IRPSection;
@@ -80,6 +82,7 @@ public final class Start {
             String[] args,
             AnnualEntry<InRoot> scenario,
             Collection<? extends IRPactCallback> callbacks) {
+        LOGGER.trace("args: {}", LazyPrinter.printArray(args));
         options = new MainCommandLineOptions(args);
         options.setHasCustomInput(scenario != null);
         options.setHasCallback(callbacks != null && callbacks.size() > 0);
@@ -88,6 +91,9 @@ public final class Start {
 
     private boolean initLogging() {
         try {
+            if(options.isFilterError()) {
+                Logback.filterError(true);
+            }
             setupLogging();
             if(options.hasExecuteResultMessage()) {
                 options.getExecuteResultMessage().trace(LOGGER);
@@ -131,7 +137,7 @@ public final class Start {
     }
 
     private boolean isRunUtilities() {
-        return options.isCallIrptools() || options.isPrintIrptoolsHelp();
+        return options.isCallUtilities() || options.isPrintUtilitiesHelp();
     }
 
     private StartResult run(String[] args) {

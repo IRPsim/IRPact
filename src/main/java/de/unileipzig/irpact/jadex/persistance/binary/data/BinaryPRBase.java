@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.jadex.persistance.binary.data;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.LoggableChecksum;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.util.IRPactJson;
@@ -57,6 +58,10 @@ public abstract class BinaryPRBase<T> implements BinaryPersister<T>, BinaryResto
             BinaryJsonData data = check(persistable);
             doSetupPersist(object, data, manager);
             storeChecksum(object, data);
+
+            if(restoreHelper.isPrintLoggableOnPersist() && object instanceof LoggableChecksum) {
+                ((LoggableChecksum) object).logChecksums();
+            }
         } catch (UncheckedPersistException e) {
             throw e.getCause();
         }
@@ -177,5 +182,8 @@ public abstract class BinaryPRBase<T> implements BinaryPersister<T>, BinaryResto
     }
 
     protected void onChecksumMismatch(BinaryJsonData data, T object, RestoreManager manager) {
+        if(object instanceof LoggableChecksum) {
+            ((LoggableChecksum) object).logChecksums();
+        }
     }
 }

@@ -3,6 +3,7 @@ package de.unileipzig.irpact.core.process.ra;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.attribute.Attribute;
+import de.unileipzig.irpact.commons.checksum.LoggableChecksum;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.time.Timestamp;
@@ -33,7 +34,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 /**
  * @author Daniel Abitz
  */
-public class RAProcessModel extends NameableBase implements ProcessModel {
+public class RAProcessModel extends NameableBase implements ProcessModel, LoggableChecksum {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(RAProcessModel.class);
 
@@ -73,7 +74,8 @@ public class RAProcessModel extends NameableBase implements ProcessModel {
         );
     }
 
-    public void deepHashCode() {
+    @Override
+    public void logChecksums() {
         logHash("name", ChecksumComparable.getChecksum(getName()));
         logHash("model data", ChecksumComparable.getChecksum(modelData));
         logHash("rnd", ChecksumComparable.getChecksum(rnd));
