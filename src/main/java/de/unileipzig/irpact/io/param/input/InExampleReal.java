@@ -5,12 +5,13 @@ import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.simulation.tasks.PredefinedPostAgentCreationTask;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.develop.Todo;
+import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InNameSplitAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulationSize;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
-import de.unileipzig.irpact.io.param.input.distribution.InConstantUnivariateDistribution;
+import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
@@ -68,7 +69,7 @@ public class InExampleReal implements DefaultScenarioFactory {
         InAttributeName PLZ = new InAttributeName(RAConstants.ZIP);
 
         //===
-        InUnivariateDoubleDistribution diraq0 = new InConstantUnivariateDistribution("diraq0", 0);
+        InUnivariateDoubleDistribution diraq0 = new InDiracUnivariateDistribution("diraq0", 0);
 
         InPVactConsumerAgentGroup[] cags = PVactUtil.MILIEUS.stream()
                 .map(name -> {
@@ -174,7 +175,7 @@ public class InExampleReal implements DefaultScenarioFactory {
         //=====
         root.version = new InVersion[]{InVersion.currentVersion()};
         root.general = general;
-        root.affinityEntries = entries;
+        root.setAffinities(new InAffinities("attr", entries));
         root.consumerAgentGroups = cags;
         root.setAgentPopulationSize(populationSize);
         root.graphTopologySchemes = new InGraphTopologyScheme[]{topology};

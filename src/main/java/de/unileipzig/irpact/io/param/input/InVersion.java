@@ -11,6 +11,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.setHidden;
 
 /**
  * Stores the current Version of IRPact.
@@ -33,6 +34,7 @@ public class InVersion implements InIRPactEntity {
     public static void applyRes(TreeAnnotationResource res) {
         addEntry(res, thisClass());
         addEntry(res, thisClass(), "placeholderVersion");
+        setHidden(res, thisClass());
     }
 
     public String _name;

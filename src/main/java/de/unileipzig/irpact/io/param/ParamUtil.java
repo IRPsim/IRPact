@@ -9,6 +9,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -191,7 +192,7 @@ public final class ParamUtil {
     public static void addPathElement(TreeAnnotationResource res, String dataKey, String priorityKey) {
         IOResources.Data userData = res.getUserDataAs();
         MultiCounter counter = userData.getCounter();
-        LocData loc = userData.getData();
+        LocalizationData loc = userData.getData();
 
         TreeAnnotationResource.PathElementBuilder builder = res.newElementBuilder();
         builder = builder.peek(loc.applyPathElementBuilder(dataKey));
@@ -201,9 +202,74 @@ public final class ParamUtil {
         builder.putCache(dataKey);
     }
 
+    public static TreeAnnotationResource.EntryBuilder computeEntryBuilderIfAbsent(TreeAnnotationResource res, Class<?> c) {
+        TreeAnnotationResource.Entry entry = res.getEntry(c);
+        if(entry == null) {
+            TreeAnnotationResource.EntryBuilder builder = res.newEntryBuilder();
+            builder.store(c);
+            return builder;
+        } else {
+            return res.wrapEntryBuilder(entry);
+        }
+    }
+
+    public static TreeAnnotationResource.EntryBuilder computeEntryBuilderIfAbsent(TreeAnnotationResource res, Class<?> c, String field) {
+        TreeAnnotationResource.Entry entry = res.getEntry(c, field);
+        if(entry == null) {
+            TreeAnnotationResource.EntryBuilder builder = res.newEntryBuilder();
+            builder.store(c, field);
+            return builder;
+        } else {
+            return res.wrapEntryBuilder(entry);
+        }
+    }
+
+    public static void apply(
+            TreeAnnotationResource res,
+            Class<?> c,
+            Consumer<? super TreeAnnotationResource.EntryBuilder> consumer) {
+        TreeAnnotationResource.EntryBuilder builder = computeEntryBuilderIfAbsent(res, c);
+        builder.peek(consumer);
+    }
+
+    public static void apply(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String field,
+            Consumer<? super TreeAnnotationResource.EntryBuilder> consumer) {
+        TreeAnnotationResource.EntryBuilder builder = computeEntryBuilderIfAbsent(res, c, field);
+        builder.peek(consumer);
+    }
+
+    public static void setDelta(
+            TreeAnnotationResource res,
+            Class<?> c) {
+        computeEntryBuilderIfAbsent(res, c).setEdnDelta(true);
+    }
+
+    public static void setDelta(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String field) {
+        computeEntryBuilderIfAbsent(res, c, field).setEdnDelta(true);
+    }
+
+    public static void setHidden(
+            TreeAnnotationResource res,
+            Class<?> c) {
+        computeEntryBuilderIfAbsent(res, c).setGamsHidden(true);
+    }
+
+    public static void setHidden(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String field) {
+        computeEntryBuilderIfAbsent(res, c, field).setGamsHidden(true);
+    }
+
     public static void addEntry(TreeAnnotationResource res, Class<?> c) {
         IOResources.Data userData = res.getUserDataAs();
-        LocData loc = userData.getData();
+        LocalizationData loc = userData.getData();
 
         res.newEntryBuilder()
                 .peek(loc.applyEntryBuilder(c))
@@ -212,7 +278,7 @@ public final class ParamUtil {
 
     public static void addEntry(TreeAnnotationResource res, Class<?> c, String field) {
         IOResources.Data userData = res.getUserDataAs();
-        LocData loc = userData.getData();
+        LocalizationData loc = userData.getData();
 
         res.newEntryBuilder()
                 .peek(loc.applyEntryBuilder(c, field))

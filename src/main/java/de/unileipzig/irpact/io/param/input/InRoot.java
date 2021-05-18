@@ -7,7 +7,7 @@ import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.io.param.SimpleCopyCache;
 import de.unileipzig.irpact.io.param.IOResources;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.affinity.InAffinites;
+import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InNameSplitAffinityEntry;
@@ -44,9 +44,9 @@ import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irpact.start.optact.in.*;
 import de.unileipzig.irpact.start.optact.network.IGraphTopology;
 import de.unileipzig.irptools.defstructure.AnnotationResource;
+import de.unileipzig.irptools.defstructure.DefinitionType;
 import de.unileipzig.irptools.defstructure.ParserInput;
 import de.unileipzig.irptools.defstructure.RootClass;
-import de.unileipzig.irptools.defstructure.Type;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.graphviz.LayoutAlgorithm;
@@ -110,23 +110,13 @@ public class InRoot implements RootClass {
     //=========================
 
     @FieldDefinition
-    public InAffinites[] affinities;
+    public InAffinities[] affinities = new InAffinities[0];
 
-    public void setAffinities(InAffinites affinities) {
-        this.affinities = new InAffinites[]{affinities};
+    public void setAffinities(InAffinities affinities) {
+        this.affinities = new InAffinities[]{affinities};
     }
-    public InAffinites getAffinities() throws ParsingException {
+    public InAffinities getAffinities() throws ParsingException {
         return getInstance(affinities, "affinities");
-    }
-
-    @FieldDefinition
-    public InAffinityEntry[] affinityEntries = new InComplexAffinityEntry[0];
-
-    public void setAffinityEntries(InAffinityEntry[] affinityEntries) {
-        this.affinityEntries = affinityEntries;
-    }
-    public InAffinityEntry[] getAffinityEntries() throws ParsingException {
-        return getNonEmptyArray(affinityEntries, "affinitEntries");
     }
 
     //=========================
@@ -399,7 +389,7 @@ public class InRoot implements RootClass {
         copy.general = cache.copy(general);
         copy.version = cache.copyArray(version);
         //affinity
-        copy.affinityEntries = cache.copyArray(affinityEntries);
+        copy.affinities = cache.copyArray(affinities);
         //agent
         copy.consumerAgentGroups = cache.copyArray(consumerAgentGroups);
         copy.independentConsumerAgentGroupAttributes = cache.copyArray(independentConsumerAgentGroupAttributes);
@@ -542,8 +532,8 @@ public class InRoot implements RootClass {
     //CLASSES
     //=========================
 
-    public static final List<ParserInput> INPUT_WITHOUT_ROOT = ParserInput.listOf(Type.INPUT,
-            InAffinites.class,
+    public static final List<ParserInput> INPUT_WITHOUT_ROOT = ParserInput.listOf(DefinitionType.INPUT,
+            InAffinities.class,
             InAffinityEntry.class,
             InComplexAffinityEntry.class,
             InNameSplitAffinityEntry.class,
@@ -568,11 +558,12 @@ public class InRoot implements RootClass {
             InBernoulliDistribution.class,
             InBooleanDistribution.class,
             InBoundedNormalDistribution.class,
-            InConstantUnivariateDistribution.class,
+            InDiracUnivariateDistribution.class,
             InFiniteMassPointsDiscreteDistribution.class,
             InMassPoint.class,
             InNormalDistribution.class,
-            InRandomBoundedIntegerDistribution.class,
+            InBoundedUniformDoubleDistribution.class,
+            InBoundedUniformIntegerDistribution.class,
             InUnivariateDoubleDistribution.class,
 
             InFile.class,
@@ -646,7 +637,7 @@ public class InRoot implements RootClass {
 
     public static final List<ParserInput> INPUT_WITH_ROOT = Util.mergedArrayListOf(
             INPUT_WITHOUT_ROOT,
-            ParserInput.asInput(Type.INPUT,
+            ParserInput.asInput(DefinitionType.INPUT,
                     CollectionUtil.arrayListOf(
                             InRoot.class
                     )
@@ -660,7 +651,7 @@ public class InRoot implements RootClass {
 
     public static final List<ParserInput> CLASSES_WITH_GRAPHVIZ = Util.mergedArrayListOf(
             CLASSES_WITHOUT_GRAPHVIZ,
-            ParserInput.asInput(Type.INPUT,
+            ParserInput.asInput(DefinitionType.INPUT,
                     CollectionUtil.arrayListOf(
                             GraphvizColor.class,
                             GraphvizLayoutAlgorithm.class,
@@ -695,12 +686,13 @@ public class InRoot implements RootClass {
         addPathElement(res, DISTRIBUTIONS, ROOT);
             addPathElement(res, InBernoulliDistribution.thisName(), DISTRIBUTIONS);
             addPathElement(res, InBooleanDistribution.thisName(), DISTRIBUTIONS);
-            addPathElement(res, InConstantUnivariateDistribution.thisName(), DISTRIBUTIONS);
+            addPathElement(res, InDiracUnivariateDistribution.thisName(), DISTRIBUTIONS);
             addPathElement(res, InFiniteMassPointsDiscreteDistribution.thisName(), DISTRIBUTIONS);
                 addPathElement(res, InMassPoint.thisName(), InFiniteMassPointsDiscreteDistribution.thisName());
             addPathElement(res, InNormalDistribution.thisName(), DISTRIBUTIONS);
             addPathElement(res, InBoundedNormalDistribution.thisName(), DISTRIBUTIONS);
-            addPathElement(res, InRandomBoundedIntegerDistribution.thisName(), DISTRIBUTIONS);
+            addPathElement(res, InBoundedUniformDoubleDistribution.thisName(), DISTRIBUTIONS);
+            addPathElement(res, InBoundedUniformIntegerDistribution.thisName(), DISTRIBUTIONS);
 
         addPathElement(res, AGENTS, ROOT);
                 addPathElement(res, CONSUMER, AGENTS);
@@ -713,7 +705,7 @@ public class InRoot implements RootClass {
                                 addPathElement(res, InNameSplitConsumerAgentGroupAttribute.thisName(), CONSUMER_GROUP);
                                 addPathElement(res, InNameSplitConsumerAgentAnnualGroupAttribute.thisName(), CONSUMER_GROUP);
                         addPathElement(res, CONSUMER_AFFINITY, CONSUMER);
-                                addPathElement(res, InAffinites.thisName(), CONSUMER_AFFINITY);
+                                addPathElement(res, InAffinities.thisName(), CONSUMER_AFFINITY);
                                 addPathElement(res, InComplexAffinityEntry.thisName(), CONSUMER_AFFINITY);
                                 addPathElement(res, InNameSplitAffinityEntry.thisName(), CONSUMER_AFFINITY);
                         addPathElement(res, CONSUMER_INTEREST, CONSUMER);

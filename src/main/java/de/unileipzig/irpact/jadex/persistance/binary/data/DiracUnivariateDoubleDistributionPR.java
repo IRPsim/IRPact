@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary.data;
 
-import de.unileipzig.irpact.commons.distribution.ConstantUnivariateDoubleDistribution;
+import de.unileipzig.irpact.commons.distribution.DiracUnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -10,11 +10,11 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 /**
  * @author Daniel Abitz
  */
-public class ConstantUnivariateDoubleDistributionPR extends BinaryPRBase<ConstantUnivariateDoubleDistribution> {
+public class DiracUnivariateDoubleDistributionPR extends BinaryPRBase<DiracUnivariateDoubleDistribution> {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(ConstantUnivariateDoubleDistributionPR.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(DiracUnivariateDoubleDistributionPR.class);
 
-    public static final ConstantUnivariateDoubleDistributionPR INSTANCE = new ConstantUnivariateDoubleDistributionPR();
+    public static final DiracUnivariateDoubleDistributionPR INSTANCE = new DiracUnivariateDoubleDistributionPR();
 
     @Override
     protected IRPLogger log() {
@@ -22,8 +22,8 @@ public class ConstantUnivariateDoubleDistributionPR extends BinaryPRBase<Constan
     }
 
     @Override
-    public Class<ConstantUnivariateDoubleDistribution> getType() {
-        return ConstantUnivariateDoubleDistribution.class;
+    public Class<DiracUnivariateDoubleDistribution> getType() {
+        return DiracUnivariateDoubleDistribution.class;
     }
 
     //=========================
@@ -31,7 +31,7 @@ public class ConstantUnivariateDoubleDistributionPR extends BinaryPRBase<Constan
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(ConstantUnivariateDoubleDistribution object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(DiracUnivariateDoubleDistribution object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putDouble(object.getValue());
@@ -43,8 +43,8 @@ public class ConstantUnivariateDoubleDistributionPR extends BinaryPRBase<Constan
     //=========================
 
     @Override
-    protected ConstantUnivariateDoubleDistribution doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
-        ConstantUnivariateDoubleDistribution object = new ConstantUnivariateDoubleDistribution();
+    protected DiracUnivariateDoubleDistribution doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        DiracUnivariateDoubleDistribution object = new DiracUnivariateDoubleDistribution();
         object.setName(data.getText());
         object.setValue(data.getDouble());
         return object;

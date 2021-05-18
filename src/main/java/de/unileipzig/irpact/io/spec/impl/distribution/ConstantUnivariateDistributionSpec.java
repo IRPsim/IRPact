@@ -2,7 +2,7 @@ package de.unileipzig.irpact.io.spec.impl.distribution;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.io.param.input.distribution.InConstantUnivariateDistribution;
+import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.spec.SpecificationHelper;
 import de.unileipzig.irpact.io.spec.SpecificationJob;
 import de.unileipzig.irpact.io.spec.impl.AbstractSubSpec;
@@ -15,7 +15,7 @@ import static de.unileipzig.irpact.io.spec.SpecificationConstants.*;
 /**
  * @author Daniel Abitz
  */
-public class ConstantUnivariateDistributionSpec extends AbstractSubSpec<InConstantUnivariateDistribution> {
+public class ConstantUnivariateDistributionSpec extends AbstractSubSpec<InDiracUnivariateDistribution> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ConstantUnivariateDistributionSpec.class);
 
@@ -34,12 +34,12 @@ public class ConstantUnivariateDistributionSpec extends AbstractSubSpec<InConsta
 
     @Override
     public boolean isInstance(Object input) {
-        return input instanceof InConstantUnivariateDistribution;
+        return input instanceof InDiracUnivariateDistribution;
     }
 
     @Override
-    protected InConstantUnivariateDistribution[] newArray(int len) {
-        return new InConstantUnivariateDistribution[len];
+    protected InDiracUnivariateDistribution[] newArray(int len) {
+        return new InDiracUnivariateDistribution[len];
     }
 
     @Override
@@ -48,18 +48,18 @@ public class ConstantUnivariateDistributionSpec extends AbstractSubSpec<InConsta
     }
 
     @Override
-    public InConstantUnivariateDistribution[] toParamArray(SpecificationJob job) throws ParsingException {
+    public InDiracUnivariateDistribution[] toParamArray(SpecificationJob job) throws ParsingException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public InConstantUnivariateDistribution toParam(SpecificationHelper rootSpec, SpecificationJob job) throws ParsingException {
+    public InDiracUnivariateDistribution toParam(SpecificationHelper rootSpec, SpecificationJob job) throws ParsingException {
         String name = rootSpec.getText(TAG_name);
         if(job.isCached(name)) {
             return job.getCached(name);
         }
 
-        InConstantUnivariateDistribution distribution = new InConstantUnivariateDistribution(
+        InDiracUnivariateDistribution distribution = new InDiracUnivariateDistribution(
                 name,
                 rootSpec.getDouble(TAG_parameters, TAG_value)
         );
@@ -68,19 +68,19 @@ public class ConstantUnivariateDistributionSpec extends AbstractSubSpec<InConsta
     }
 
     @Override
-    public Class<InConstantUnivariateDistribution> getParamType() {
-        return InConstantUnivariateDistribution.class;
+    public Class<InDiracUnivariateDistribution> getParamType() {
+        return InDiracUnivariateDistribution.class;
     }
 
     @Override
-    public void toSpec(InConstantUnivariateDistribution input, SpecificationJob job) throws ParsingException {
+    public void toSpec(InDiracUnivariateDistribution input, SpecificationJob job) throws ParsingException {
         toSpecIfNotExists(input.getName(), job.getData().getDistributions(), input, job);
     }
 
     @Override
-    protected void create(InConstantUnivariateDistribution input, SpecificationHelper rootSpec, SpecificationJob job) throws ParsingException {
+    protected void create(InDiracUnivariateDistribution input, SpecificationHelper rootSpec, SpecificationJob job) throws ParsingException {
         rootSpec.set(TAG_name, input.getName());
         rootSpec.set(TAG_type, TYPE);
-        rootSpec.set(TAG_parameters, TAG_value, input.getConstDistValue());
+        rootSpec.set(TAG_parameters, TAG_value, input.getValue());
     }
 }

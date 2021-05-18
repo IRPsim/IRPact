@@ -4,12 +4,13 @@ import de.unileipzig.irpact.core.log.IRPLevel;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.simulation.tasks.PredefinedPostAgentCreationTask;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
+import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulationSize;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
-import de.unileipzig.irpact.io.param.input.distribution.InConstantUnivariateDistribution;
+import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
@@ -64,7 +65,7 @@ public class InExample implements DefaultScenarioFactory {
         InAttributeName PLZ = new InAttributeName(RAConstants.ZIP);
 
         //===
-        InUnivariateDoubleDistribution constant0 = new InConstantUnivariateDistribution("constant0", 0);
+        InUnivariateDoubleDistribution constant0 = new InDiracUnivariateDistribution("constant0", 0);
 
         //cag0
         InPVactConsumerAgentGroup cag0 = new InPVactConsumerAgentGroup();
@@ -171,7 +172,7 @@ public class InExample implements DefaultScenarioFactory {
         //=====
         root.version = new InVersion[]{InVersion.currentVersion()};
         root.general = general;
-        root.affinityEntries = new InComplexAffinityEntry[]{cag0_cag0, cag0_cag1, cag1_cag1, cag1_cag0};
+        root.setAffinities(new InAffinities("affs", new InComplexAffinityEntry[]{cag0_cag0, cag0_cag1, cag1_cag1, cag1_cag0}));
         root.consumerAgentGroups = new InConsumerAgentGroup[]{cag0, cag1};
         root.setAgentPopulationSize(populationSize);
         root.graphTopologySchemes = new InGraphTopologyScheme[]{topology};

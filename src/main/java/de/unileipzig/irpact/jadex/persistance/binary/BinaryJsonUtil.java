@@ -50,9 +50,11 @@ final class BinaryJsonUtil {
         ensureRegister(manager, BernoulliDistributionPR.INSTANCE);
         ensureRegister(manager, BooleanDistributionPR.INSTANCE);
         ensureRegister(manager, BoundedNormalDistributionPR.INSTANCE);
+        ensureRegister(manager, BoundedUniformDoubleDistributionPR.INSTANCE);
+        ensureRegister(manager, BoundedUniformIntegerDistributionPR.INSTANCE);
         ensureRegister(manager, CeilingTimeAdvanceFunctionPR.INSTANCE);
         ensureRegister(manager, CompleteGraphTopologyPR.INSTANCE);
-        ensureRegister(manager, ConstantUnivariateDoubleDistributionPR.INSTANCE);
+        ensureRegister(manager, DiracUnivariateDoubleDistributionPR.INSTANCE);
         ensureRegister(manager, DisabledNodeFilterPR.INSTANCE);
         ensureRegister(manager, DisabledProcessPlanNodeFilterSchemePR.INSTANCE);
         ensureRegister(manager, DiscreteSpatialDistributionPR.INSTANCE);
@@ -76,7 +78,6 @@ final class BinaryJsonUtil {
         ensureRegister(manager, ProxySimulationAgentPR.INSTANCE);
         ensureRegister(manager, RADataSupplierPR.INSTANCE);
         ensureRegister(manager, RAModelDataPR.INSTANCE);
-        ensureRegister(manager, RandomBoundedIntegerDistributionPR.INSTANCE);
         ensureRegister(manager, RAProcessModelPR.INSTANCE);
         ensureRegister(manager, RAProcessPlanMaxDistanceFilterSchemePR.INSTANCE);
         ensureRegister(manager, RAProcessPlanPR.INSTANCE);

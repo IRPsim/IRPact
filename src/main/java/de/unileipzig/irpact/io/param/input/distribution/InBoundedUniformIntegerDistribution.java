@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.io.param.input.distribution;
 
 import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.commons.distribution.BooleanDistribution;
+import de.unileipzig.irpact.commons.distribution.BoundedUniformIntegerDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
@@ -14,14 +14,14 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.IOConstants.DISTRIBUTIONS;
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
-public class InBooleanDistribution implements InUnivariateDoubleDistribution {
+public class InBoundedUniformIntegerDistribution implements InUnivariateDoubleDistribution {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -35,42 +35,40 @@ public class InBooleanDistribution implements InUnivariateDoubleDistribution {
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), DISTRIBUTIONS, thisName());
-        addEntry(res, thisClass(), "trueValue");
-        addEntry(res, thisClass(), "falseValue");
+        addEntry(res, thisClass(), "lowerBound");
+        addEntry(res, thisClass(), "upperBound");
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InBooleanDistribution.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(InBoundedUniformIntegerDistribution.class);
 
     public String _name;
 
     @FieldDefinition
-    public double trueValue;
+    public int lowerBound;
 
     @FieldDefinition
-    public double falseValue;
+    public int upperBound;
 
-    public InBooleanDistribution() {
+    public InBoundedUniformIntegerDistribution() {
     }
 
-    public InBooleanDistribution(String name) {
+    public InBoundedUniformIntegerDistribution(String name, int lowerBound, int upperBound) {
         this._name = name;
+        this.lowerBound = lowerBound;
+        this.upperBound = upperBound;
     }
 
     @Override
-    public InBooleanDistribution copy(CopyCache cache) {
+    public InBoundedUniformIntegerDistribution copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InBooleanDistribution newCopy(CopyCache cache) {
-        InBooleanDistribution copy = new InBooleanDistribution();
+    public InBoundedUniformIntegerDistribution newCopy(CopyCache cache) {
+        InBoundedUniformIntegerDistribution copy = new InBoundedUniformIntegerDistribution();
         copy._name = _name;
-        copy.trueValue = trueValue;
-        copy.falseValue = falseValue;
+        copy.lowerBound = lowerBound;
+        copy.upperBound = upperBound;
         return copy;
-    }
-
-    public void setName(String name) {
-        this._name = name;
     }
 
     @Override
@@ -78,31 +76,23 @@ public class InBooleanDistribution implements InUnivariateDoubleDistribution {
         return _name;
     }
 
-    public void setTrueValue(double trueValue) {
-        this.trueValue = trueValue;
+    public int getLowerBound() {
+        return lowerBound;
     }
 
-    public double getTrueValue() {
-        return trueValue;
-    }
-
-    public void setFalseValue(double falseValue) {
-        this.falseValue = falseValue;
-    }
-
-    public double getFalseValue() {
-        return falseValue;
+    public int getUpperBound() {
+        return upperBound;
     }
 
     @Override
-    public Object parse(IRPactInputParser parser) throws ParsingException {
-        BooleanDistribution dist = new BooleanDistribution();
+    public BoundedUniformIntegerDistribution parse(IRPactInputParser parser) throws ParsingException {
+        BoundedUniformIntegerDistribution dist = new BoundedUniformIntegerDistribution();
         dist.setName(getName());
-        dist.setFalseValue(getFalseValue());
-        dist.setTrueValue(getTrueValue());
+        dist.setLowerBound(getLowerBound());
+        dist.setUpperBound(getUpperBound());
         Rnd rnd = parser.deriveRnd();
         dist.setRandom(rnd);
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "BooleanDistribution '{}' uses seed: {}", getName(), rnd.getInitialSeed());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "RandomBoundedIntegerDistribution '{}' uses seed: {}", getName(), rnd.getInitialSeed());
         return dist;
     }
 }

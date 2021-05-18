@@ -135,7 +135,8 @@ public class SpecificationConverter {
         GeneralSpec.INSTANCE.toSpec(root.getGeneral(), job);
         VersionSpec.INSTANCE.toSpec(root.getVersion(), job);
         //affinity
-        AffinityEntrySpec.INSTANCE.toSpec(root.getAffinityEntries(), job);
+        //AffinityEntrySpec.INSTANCE.toSpec(root.getAffinityEntries(), job);
+        if(true) throw new RuntimeException();
         //agent
         ConsumerAgentGroupSpec.INSTANCE.toSpec(root.getConsumerAgentGroups(), job);
         //binary
@@ -176,7 +177,8 @@ public class SpecificationConverter {
         root.setGeneral(GeneralSpec.INSTANCE.toParamArray(job));
         root.setVersion(VersionSpec.INSTANCE.toParamArray(job));
         //affinity
-        root.setAffinityEntries(AffinityEntrySpec.INSTANCE.toParamArray(job));
+        //root.setAffinityEntries(AffinityEntrySpec.INSTANCE.toParamArray(job));
+        if(true) throw new RuntimeException();
         //agent
         root.setConsumerAgentGroups(ConsumerAgentGroupSpec.INSTANCE.toParamArray(job));
         //binary

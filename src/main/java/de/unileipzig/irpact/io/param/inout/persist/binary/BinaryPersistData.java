@@ -31,16 +31,8 @@ public class BinaryPersistData implements Copyable {
     public static void applyRes(TreeAnnotationResource res) {
         addEntry(res, thisClass());
         addEntry(res, thisClass(), "id");
-//        res.newEntryBuilder()
-//                .setGamsHidden(true)
-//                .setGamsIdentifier("BinaryPersistData")
-//                .setGamsDescription("Binäre Daten für den Transfer zwischen zwei Simulationsschritten.")
-//                .store(thisClass());
-//        res.newEntryBuilder()
-//                .setGamsHidden(true)
-//                .setGamsIdentifier("BinaryPersistDataID")
-//                .setGamsDescription("Einzigartige ID der Daten.")
-//                .store(thisClass(), "id");
+        setHidden(res, thisClass());
+        setHidden(res, thisClass(), "id");
     }
 
     public String _name;

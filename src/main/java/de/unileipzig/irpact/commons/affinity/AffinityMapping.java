@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.affinity;
 
-import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.Nameable;
 
 import java.util.Set;
 
@@ -9,7 +9,7 @@ import java.util.Set;
  * @param <T>
  * @author Daniel Abitz
  */
-public interface AffinityMapping<S, T> extends ChecksumComparable {
+public interface AffinityMapping<S, T> extends Nameable {
 
     Set<S> sources();
 

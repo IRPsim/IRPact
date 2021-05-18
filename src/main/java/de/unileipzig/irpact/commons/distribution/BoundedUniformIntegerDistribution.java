@@ -8,14 +8,14 @@ import de.unileipzig.irpact.commons.util.Rnd;
  *
  * @author Daniel Abitz
  */
-public class RandomBoundedIntegerDistribution extends AbstractBoundedUnivariateDoubleDistribution implements BoundedUnivariateDoubleDistribution {
+public class BoundedUniformIntegerDistribution extends AbstractBoundedUnivariateDoubleDistribution implements BoundedUnivariateDoubleDistribution {
 
     protected Rnd rnd;
 
-    public RandomBoundedIntegerDistribution() {
+    public BoundedUniformIntegerDistribution() {
     }
 
-    public RandomBoundedIntegerDistribution(String name, double lowerBound, double upperBound, Rnd rnd) {
+    public BoundedUniformIntegerDistribution(String name, double lowerBound, double upperBound, Rnd rnd) {
         setName(name);
         setLowerBound(lowerBound);
         setUpperBound(upperBound);

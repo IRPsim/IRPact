@@ -7,9 +7,12 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+
 /**
  * @author Daniel Abitz
  */
+@Deprecated
 @Definition(global = true)
 public class OutGeneral implements Copyable {
 
@@ -21,10 +24,10 @@ public class OutGeneral implements Copyable {
         return thisClass().getSimpleName();
     }
 
-
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
+        putClassPath(res, thisClass(), thisName());
     }
 
     public OutGeneral() {

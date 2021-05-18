@@ -6,15 +6,15 @@ import de.unileipzig.irpact.commons.util.Rnd;
 /**
  * @author Daniel Abitz
  */
-public class UniformUnivariateDoubleDistribution extends AbstractBoundedUnivariateDoubleDistribution implements BoundedUnivariateDoubleDistribution {
+public class BoundedUniformDoubleDistribution extends AbstractBoundedUnivariateDoubleDistribution implements BoundedUnivariateDoubleDistribution {
 
     protected long seed;
     protected Rnd rnd;
 
-    public UniformUnivariateDoubleDistribution() {
+    public BoundedUniformDoubleDistribution() {
     }
 
-    public UniformUnivariateDoubleDistribution(String name, double lowerBound, double upperBound, Rnd rnd) {
+    public BoundedUniformDoubleDistribution(String name, double lowerBound, double upperBound, Rnd rnd) {
         setName(name);
         setLowerBound(lowerBound);
         setUpperBound(upperBound);

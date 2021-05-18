@@ -3,6 +3,7 @@ package de.unileipzig.irpact.io.param;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.io.IOException;
@@ -18,23 +19,23 @@ import static de.unileipzig.irpact.io.param.IOConstants.*;
 /**
  * @author Daniel Abitz
  */
-public class LocData {
+public final class LocalizationData {
 
     protected ObjectNode root;
 
-    public LocData(ObjectNode root) {
+    public LocalizationData(ObjectNode root) {
         this.root = root;
     }
 
-    public LocData(Path pathToFile) throws IOException {
+    public LocalizationData(Path pathToFile) throws IOException {
         this(pathToFile, StandardCharsets.UTF_8);
     }
 
-    public LocData(Path pathToFile, Charset charset) throws IOException {
+    public LocalizationData(Path pathToFile, Charset charset) throws IOException {
         this(IRPactJson.read(pathToFile, charset, IRPactJson.YAML));
     }
 
-    public LocData(Reader reader) throws IOException {
+    public LocalizationData(Reader reader) throws IOException {
         this.root = (ObjectNode) IRPactJson.YAML.readTree(reader);
     }
 
@@ -92,7 +93,6 @@ public class LocData {
             setValidString(getGamsUnit(key), builder::setGamsUnit);
             setValidString(getGamsDomain(key), builder::setGamsDomain);
             setValidString(getGamsDefault(key), builder::setGamsDefault);
-            setValidBoolean(getGamsHidden(key), builder::setGamsHidden);
         };
     }
 
@@ -115,12 +115,6 @@ public class LocData {
         }
     }
 
-    private void setValidBoolean(Boolean input, Consumer<? super Boolean> consumer) {
-        if(input != null) {
-            consumer.accept(input);
-        }
-    }
-
     private String getEdnLabel(String key) {
         return getString(key, EDN_LABEL);
     }
@@ -137,10 +131,6 @@ public class LocData {
         return getString(key, GAMS_DESCRIPTION);
     }
 
-    private Boolean getGamsHidden(String key) {
-        return getBoolean(key, GAMS_HIDDEN);
-    }
-
     private String getGamsUnit(String key) {
         return getString(key, GAMS_UNIT);
     }
@@ -151,5 +141,47 @@ public class LocData {
 
     private String getGamsDefault(String key) {
         return getString(key, GAMS_DEFAULT);
+    }
+
+    //=========================
+    //util
+    //=========================
+
+    public static void addPathElement(TreeAnnotationResource res, String dataKey, String priorityKeyForCounter) {
+        IOResources.Data userData = res.getUserDataAs();
+        MultiCounter counter = userData.getCounter();
+        LocalizationData loc = userData.getData();
+
+        TreeAnnotationResource.PathElementBuilder builder = res.newElementBuilder();
+        builder = builder.peek(loc.applyPathElementBuilder(dataKey));
+        if(priorityKeyForCounter != null) {
+            builder = builder.setEdnPriority(counter.getAndInc(priorityKeyForCounter));
+        }
+        builder.putCache(dataKey);
+    }
+
+    public static void addEntry(TreeAnnotationResource res, Class<?> c) {
+        IOResources.Data userData = res.getUserDataAs();
+        LocalizationData loc = userData.getData();
+        ParamUtil.computeEntryBuilderIfAbsent(res, c).peek(loc.applyEntryBuilder(c));
+    }
+
+    public static void addEntry(TreeAnnotationResource res, Class<?> c, String field) {
+        IOResources.Data userData = res.getUserDataAs();
+        LocalizationData loc = userData.getData();
+        ParamUtil.computeEntryBuilderIfAbsent(res, c, field).peek(loc.applyEntryBuilder(c, field));
+    }
+
+    public static void putClassPath(TreeAnnotationResource res, Class<?> c, String... keys) {
+        res.putPath(c, res.getCachedElements(keys));
+    }
+
+    public static void putFieldPath(TreeAnnotationResource res, Class<?> c, String field, String... keys) {
+        res.putPath(c, field, res.getCachedElements(keys));
+    }
+
+    public static void putFieldPathAndAddEntry(TreeAnnotationResource res, Class<?> c, String field, String... keys) {
+        putFieldPath(res, c, field, keys);
+        addEntry(res, c, field);
     }
 }

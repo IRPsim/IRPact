@@ -20,8 +20,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz
@@ -41,6 +40,8 @@ public class InNameSplitConsumerAgentAnnualGroupAttribute implements InIndepende
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_ATTR, thisName());
         addEntry(res, thisClass(), "distribution");
+
+        setDelta(res, thisClass(), "distribution");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());

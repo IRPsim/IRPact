@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary.data;
 
-import de.unileipzig.irpact.commons.distribution.RandomBoundedIntegerDistribution;
+import de.unileipzig.irpact.commons.distribution.BoundedUniformIntegerDistribution;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -10,11 +10,11 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 /**
  * @author Daniel Abitz
  */
-public class RandomBoundedIntegerDistributionPR extends BinaryPRBase<RandomBoundedIntegerDistribution> {
+public class BoundedUniformIntegerDistributionPR extends BinaryPRBase<BoundedUniformIntegerDistribution> {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(RandomBoundedIntegerDistributionPR.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BoundedUniformIntegerDistributionPR.class);
 
-    public static final RandomBoundedIntegerDistributionPR INSTANCE = new RandomBoundedIntegerDistributionPR();
+    public static final BoundedUniformIntegerDistributionPR INSTANCE = new BoundedUniformIntegerDistributionPR();
 
     @Override
     protected IRPLogger log() {
@@ -22,8 +22,8 @@ public class RandomBoundedIntegerDistributionPR extends BinaryPRBase<RandomBound
     }
 
     @Override
-    public Class<RandomBoundedIntegerDistribution> getType() {
-        return RandomBoundedIntegerDistribution.class;
+    public Class<BoundedUniformIntegerDistribution> getType() {
+        return BoundedUniformIntegerDistribution.class;
     }
 
     //=========================
@@ -31,7 +31,7 @@ public class RandomBoundedIntegerDistributionPR extends BinaryPRBase<RandomBound
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(RandomBoundedIntegerDistribution object, PersistManager manager) throws PersistException {
+    protected BinaryJsonData doInitalizePersist(BoundedUniformIntegerDistribution object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putDouble(object.getLowerBound());
@@ -43,7 +43,7 @@ public class RandomBoundedIntegerDistributionPR extends BinaryPRBase<RandomBound
     }
 
     @Override
-    protected void doSetupPersist(RandomBoundedIntegerDistribution object, BinaryJsonData data, PersistManager manager) throws PersistException {
+    protected void doSetupPersist(BoundedUniformIntegerDistribution object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getRandom()));
     }
 
@@ -52,8 +52,8 @@ public class RandomBoundedIntegerDistributionPR extends BinaryPRBase<RandomBound
     //=========================
 
     @Override
-    protected RandomBoundedIntegerDistribution doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
-        RandomBoundedIntegerDistribution object = new RandomBoundedIntegerDistribution();
+    protected BoundedUniformIntegerDistribution doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        BoundedUniformIntegerDistribution object = new BoundedUniformIntegerDistribution();
         object.setName(data.getText());
         object.setLowerBound(data.getDouble());
         object.setUpperBound(data.getDouble());
@@ -61,7 +61,7 @@ public class RandomBoundedIntegerDistributionPR extends BinaryPRBase<RandomBound
     }
 
     @Override
-    protected void doSetupRestore(BinaryJsonData data, RandomBoundedIntegerDistribution object, RestoreManager manager) throws RestoreException {
+    protected void doSetupRestore(BinaryJsonData data, BoundedUniformIntegerDistribution object, RestoreManager manager) throws RestoreException {
         object.setRandom(manager.ensureGet(data.getLong()));
     }
 }

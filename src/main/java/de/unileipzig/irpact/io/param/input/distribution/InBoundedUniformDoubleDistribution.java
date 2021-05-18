@@ -1,11 +1,10 @@
 package de.unileipzig.irpact.io.param.input.distribution;
 
-import de.unileipzig.irpact.commons.distribution.UniformUnivariateDoubleDistribution;
+import de.unileipzig.irpact.commons.distribution.BoundedUniformDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.develop.AddToRoot;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -16,15 +15,13 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.IOConstants.DISTRIBUTIONS;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz
  */
-@AddToRoot
 @Definition
-public class InUniformUnivariateDoubleDistribution implements InUnivariateDoubleDistribution {
+public class InBoundedUniformDoubleDistribution implements InUnivariateDoubleDistribution {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -42,7 +39,7 @@ public class InUniformUnivariateDoubleDistribution implements InUnivariateDouble
         addEntry(res, thisClass(), "upperBound");
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InUniformUnivariateDoubleDistribution.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(InBoundedUniformDoubleDistribution.class);
 
     public String _name;
 
@@ -52,22 +49,22 @@ public class InUniformUnivariateDoubleDistribution implements InUnivariateDouble
     @FieldDefinition
     public double upperBound;
 
-    public InUniformUnivariateDoubleDistribution() {
+    public InBoundedUniformDoubleDistribution() {
     }
 
-    public InUniformUnivariateDoubleDistribution(String name, int lowerBound, int upperBoundInt) {
+    public InBoundedUniformDoubleDistribution(String name, int lowerBound, int upperBoundInt) {
         this._name = name;
         this.lowerBound = lowerBound;
         this.upperBound = upperBoundInt;
     }
 
     @Override
-    public InUniformUnivariateDoubleDistribution copy(CopyCache cache) {
+    public InBoundedUniformDoubleDistribution copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InUniformUnivariateDoubleDistribution newCopy(CopyCache cache) {
-        InUniformUnivariateDoubleDistribution copy = new InUniformUnivariateDoubleDistribution();
+    public InBoundedUniformDoubleDistribution newCopy(CopyCache cache) {
+        InBoundedUniformDoubleDistribution copy = new InBoundedUniformDoubleDistribution();
         copy._name = _name;
         copy.lowerBound = lowerBound;
         copy.upperBound = upperBound;
@@ -88,8 +85,8 @@ public class InUniformUnivariateDoubleDistribution implements InUnivariateDouble
     }
 
     @Override
-    public UniformUnivariateDoubleDistribution parse(IRPactInputParser parser) throws ParsingException {
-        UniformUnivariateDoubleDistribution dist = new UniformUnivariateDoubleDistribution();
+    public BoundedUniformDoubleDistribution parse(IRPactInputParser parser) throws ParsingException {
+        BoundedUniformDoubleDistribution dist = new BoundedUniformDoubleDistribution();
         dist.setName(getName());
         dist.setLowerBound(getLowerBound());
         dist.setUpperBound(getUpperBound());

@@ -29,7 +29,6 @@ import de.unileipzig.irpact.core.simulation.BasicSettings;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.simulation.BinaryTaskManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
-import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InIndependentConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.io.param.input.agent.population.InPopulationSize;
@@ -340,18 +339,8 @@ public class JadexInputParser implements IRPactInputParser {
 
     private void parseConsumerAgentGroupAffinityMapping(InRoot root) throws ParsingException {
         BasicConsumerAgentGroupAffinityMapping mapping = root.getAffinities().parse(this);
-        for(InAffinityEntry entry: root.affinityEntries) {
-            ConsumerAgentGroup srcCag = parseEntityTo(entry.getSrcCag(this));
-            ConsumerAgentGroup tarCag = parseEntityTo(entry.getTarCag(this));
-            double value = entry.getAffinityValue();
-            if(value == 0.0) {
-                debug("skip affinity '{}' -> '{}' with value '{}'", srcCag.getName(), tarCag.getName(), value);
-            } else {
-                mapping.put(srcCag, tarCag, value);
-                debug("added affinity '{}' -> '{}' with value '{}'", srcCag.getName(), tarCag.getName(), value);
-            }
-        }
         environment.getAgents().setConsumerAgentGroupAffinityMapping(mapping);
+        LOGGER.trace("set affinity mapping '{}'", mapping.getName());
     }
 
     private void parseNetwork(InRoot root) throws ParsingException {

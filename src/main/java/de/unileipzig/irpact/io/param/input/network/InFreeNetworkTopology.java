@@ -5,12 +5,14 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.spatial.DistanceEvaluator;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.FreeNetworkTopology;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;
+import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -46,6 +48,7 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         putClassPath(res, thisClass(), NETWORK, TOPOLOGY, thisName());
         addEntry(res, thisClass(), "initialWeight");
         addEntry(res, thisClass(), "distanceEvaluator");
+        addEntry(res, thisClass(), "affinities");
         addEntry(res, thisClass(), "numberOfTies");
         addEntry(res, thisClass(), "allowLessEdges");
     }
@@ -59,6 +62,9 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
 
     @FieldDefinition
     public InNumberOfTies[] numberOfTies;
+
+    @FieldDefinition
+    public InAffinities[] affinities;
 
     @FieldDefinition
     public double initialWeight;
@@ -120,6 +126,14 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         this.numberOfTies = ties;
     }
 
+    public InAffinities getAffinities() throws ParsingException {
+        return ParamUtil.getInstance(affinities, "affinities");
+    }
+
+    public void setAffinities(InAffinities affinities) {
+        this.affinities = new InAffinities[]{affinities};
+    }
+
     public double getInitialWeight() {
         return initialWeight;
     }
@@ -157,13 +171,16 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         }
 
         DistanceEvaluator distEval = parser.parseEntityTo(getDistanceEvaluator());
+
         Rnd rnd = parser.deriveRnd();
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "FreeNetworkTopology '{}' uses seed: {}", getName(), rnd.getInitialSeed());
+
+        ConsumerAgentGroupAffinityMapping affinityMapping = parser.parseEntityTo(getAffinities());
 
         FreeNetworkTopology topology = new FreeNetworkTopology();
         topology.setEdgeType(SocialGraph.Type.COMMUNICATION);
         topology.setName(getName());
-        topology.setAffinityMapping(agentManager.getConsumerAgentGroupAffinityMapping());
+        topology.setAffinityMapping(affinityMapping);
         topology.setDistanceEvaluator(distEval);
         topology.setInitialWeight(getInitialWeight());
         topology.setRnd(rnd);

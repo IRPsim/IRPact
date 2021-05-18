@@ -7,14 +7,14 @@ import java.util.Objects;
 /**
  * @author Daniel Abitz
  */
-public class ConstantUnivariateDoubleDistribution extends NameableBase implements UnivariateDoubleDistribution {
+public class DiracUnivariateDoubleDistribution extends NameableBase implements UnivariateDoubleDistribution {
 
     protected double value;
 
-    public ConstantUnivariateDoubleDistribution() {
+    public DiracUnivariateDoubleDistribution() {
     }
 
-    public ConstantUnivariateDoubleDistribution(String name, double value) {
+    public DiracUnivariateDoubleDistribution(String name, double value) {
         setName(name);
         setValue(value);
     }

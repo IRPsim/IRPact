@@ -345,18 +345,10 @@ public class JadexRestoreUpdater implements IRPactInputParser {
 
     private void parseConsumerAgentGroupAffinityMapping(InRoot root) throws ParsingException {
         BasicConsumerAgentGroupAffinityMapping mapping = root.getAffinities().parse(this);
-        for(InAffinityEntry entry: root.affinityEntries) {
-            ConsumerAgentGroup srcCag = parseEntityTo(entry.getSrcCag(this));
-            ConsumerAgentGroup tarCag = parseEntityTo(entry.getTarCag(this));
-            double value = entry.getAffinityValue();
-            if(value == 0.0) {
-                debug("skip affinity '{}' -> '{}' with value '{}'", srcCag.getName(), tarCag.getName(), value);
-            } else {
-                mapping.put(srcCag, tarCag, value);
-                debug("added affinity '{}' -> '{}' with value '{}'", srcCag.getName(), tarCag.getName(), value);
-            }
+        if(mapping != environment.getAgents().getConsumerAgentGroupAffinityMapping()) {
+            environment.getAgents().setConsumerAgentGroupAffinityMapping(mapping);
+            LOGGER.trace("set affinity mapping '{}'", mapping.getName());
         }
-        environment.getAgents().setConsumerAgentGroupAffinityMapping(mapping);
     }
 
     private void parseNetwork(InRoot root) throws ParsingException {

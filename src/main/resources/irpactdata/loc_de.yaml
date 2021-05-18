@@ -2,6 +2,7 @@
 general_settings:
   edn_label: "Allgemeine Einstellungen"
   edn_description: "todo"
+
 InGeneral_seed:
   gams_identifier: "Zufallsgenerator (seed)"
   gams_description: "Setzt den Seed für den Zufallsgenerator der Simulation. Falls er auf -1 gesetzt wird, wird ein zufälliger Seed generiert."
@@ -163,7 +164,7 @@ InBernoulliDistribution_falseValue:
 
 InBooleanDistribution:
   edn_label: "Boolean"
-  edn_description: "Verteilungsfunktion, welche x oder y zurück gibt. Der Wahrscheinlichkeit ist dabei gleichverteilt."
+  edn_description: "Verteilungsfunktion, welche x oder y zurück gibt. Der Wahrscheinlichkeit ist dabei gleichverteilt. Diese Funktion entspricht einer Bernoulliverteilung mit p = 0,5."
 InBooleanDistribution_trueValue:
   gams_identifier: "x"
   gams_description: "Der Wert, welcher zurückgegeben wird, wenn die Funktion intern 1 (WAHR) ergibt."
@@ -173,11 +174,49 @@ InBooleanDistribution_falseValue:
   gams_description: "Der Wert, welcher zurückgegeben wird, wenn die Funktion intern 0 (FALSCH) ergibt."
   gams_default: "0"
 
-InConstantUnivariateDistribution:
-  edn_label: "Dirac"
+InBoundedNormalDistribution:
+  edn_label: "beschränkte Normalverteilung"
+  edn_description: "Verteilungsfunktionauf Basis der Normalverteilung."
+InBoundedNormalDistribution_standardDeviation:
+  gams_identifier: "Standardabweichung"
+  gams_description: "Die zu nutzende Standardabweichung."
+  gams_default: "1"
+InBoundedNormalDistribution_mean:
+  gams_identifier: "Mittelwert"
+  gams_description: "Der zu nutzende Mittelwert."
+  gams_default: "0"
+InBoundedNormalDistribution_lowerBound:
+  gams_identifier: "Untergrenze (inklusiv)"
+  gams_description: "Legt die Untergrenze fest."
+InBoundedNormalDistribution_upperBound:
+  gams_identifier: "Obergrenze (exklusiv)"
+  gams_description: "Legt die Obergrenze fest."
+
+InBoundedUniformDoubleDistribution:
+  edn_label: "Gleichverteilte ganze Zahlen"
+  edn_description: "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht."
+InBoundedUniformDoubleDistribution_lowerBound:
+  gams_identifier: "Untergrenze (inklusiv)"
+  gams_description: "Legt die Untergrenze fest."
+InBoundedUniformDoubleDistribution_upperBound:
+  gams_identifier: "Obergrenze (exklusiv)"
+  gams_description: "Legt die Obergrenze fest."
+
+InBoundedUniformIntegerDistribution:
+  edn_label: "Gleichverteilte ganze Zahlen"
+  edn_description: "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht."
+InBoundedUniformIntegerDistribution_lowerBound:
+  gams_identifier: "Untergrenze (inklusiv)"
+  gams_description: "Legt die Untergrenze fest."
+InBoundedUniformIntegerDistribution_upperBound:
+  gams_identifier: "Obergrenze (exklusiv)"
+  gams_description: "Legt die Obergrenze fest."
+
+InDiracUnivariateDistribution:
+  edn_label: "Dirac-Verteilung"
   edn_description: "Verteilungsfunktion, welche einen konstanten Wert zurück gibt."
-InConstantUnivariateDistribution_constDistValue:
-  gams_identifier: "Wert"
+InDiracUnivariateDistribution_value:
+  gams_identifier: "x"
   gams_description: "Legt den konstante Rückgabewert fest."
 
 InFiniteMassPointsDiscreteDistribution:
@@ -208,16 +247,6 @@ InNormalDistribution_mean:
   gams_identifier: "Mittelwert"
   gams_description: "Der zu nutzende Mittelwert."
   gams_default: "0"
-
-InRandomBoundedIntegerDistribution:
-  edn_label: "Gleichverteilte ganze Zahlen"
-  edn_description: "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht."
-InRandomBoundedIntegerDistribution_lowerBoundInt:
-  gams_identifier: "Untergrenze (inklusiv)"
-  gams_description: "Legt die Untergrenze fest."
-InRandomBoundedIntegerDistribution_upperBoundInt:
-  gams_identifier: "Obergrenze (exklusiv)"
-  gams_description: "Legt die Obergrenze fest."
 
 agents:
   edn_label: "Agenten"
@@ -306,6 +335,16 @@ InPVactConsumerAgentGroup_spatialDistribution:
   gams_identifier: "spatialDistribution"
   gams_description: "spatialDistribution"
 
+InConsumerAgentGroupColor:
+  edn_label: "Farbe der Konsumergruppen"
+  edn_description: "Ermöglicht die Festlegung der Farben für die Konsumergruppen."
+InConsumerAgentGroupColor_group:
+  gams_identifier: "Konsumergruppe"
+  gams_description: "Die Gruppen, welche die ausgewählte Farbe verwenden soll."
+InConsumerAgentGroupColor_color:
+  gams_identifier: "Farbe"
+  gams_description: "Die für diese Gruppe verwendete Farbe."
+
 consumer_attr:
   edn_label: "Attribute"
   edn_description: "todo"
@@ -335,12 +374,19 @@ InNameSplitConsumerAgentGroupAttribute_dist:
   gams_description: "Legt die Verteilungsfunktion fest, auf deren Basis die Attributwerte gezogen werden."
 
 consumer_affinity:
-  edn_label: "Affinity"
+  edn_label: "Affinitäten"
   edn_description: "Legt die Affinity zwischen den jeweiligen Konsumergruppen fest."
 
+InAffinities:
+  edn_label: "Affinitätenmenge"
+  edn_description: "Legt die Affinity zwischen den jeweiligen Konsumergruppen fest."
+InAffinities_entries:
+  gams_identifier: "Einträge"
+  gams_description: "Die Affinitäte, welche in dieser Menge enthalten sein sollen."
+
 InComplexAffinityEntry:
-  edn_label: "Komplexe Affinity"
-  edn_description: "todo"
+  edn_label: "Affinitätseintrag"
+  edn_description: "Erstellt einen einfachen Affinitätseintag zwischen einer Ausgangs- und einer Zielgruppe."
 InComplexAffinityEntry_srcCag:
   gams_identifier: "Ausgangsgruppe"
   gams_description: "Ausgangsgruppe"
@@ -348,15 +394,15 @@ InComplexAffinityEntry_tarCag:
   gams_identifier: "Zielgruppe"
   gams_description: "Zielgruppe"
 InComplexAffinityEntry_affinityValue:
-  gams_identifier: "Affinity-Wert"
-  gams_description: "Affinity-Wert"
+  gams_identifier: "Wert"
+  gams_description: "Der Affinitätswert der Ausgangsgruppe gegenüber der Zielgruppe."
 
 InNameSplitAffinityEntry:
-  edn_label: "Namensbasierte Affinity"
-  edn_description: "todo"
+  edn_label: "Namensbasierter Affinitätseintrag"
+  edn_description: "Dieser Variante ist eine Alternative zum normalen Affinitätseintrag. Hier werden die Ausgangs- und die Zielgruppe direkt aus dem Namen des Eintrages ermittelt. Es muss somt darauf geachtet werden, dass der Name korrekt definiert wird. Beispiel: Ausgangsgruppe 'A' und Zielgruppe 'B', dann muss der Affinitätseintrag 'A_B' heißen."
 InNameSplitAffinityEntry_affinityValue:
-  gams_identifier: "Affinity-Wert"
-  gams_description: "Affinity-Wert"
+  gams_identifier: "Wert"
+  gams_description: "Der Affinitätswert der Ausgangsgruppe gegenüber der Zielgruppe."
 
 consumer_interest:
   edn_label: "Produktinteresse"
@@ -371,7 +417,7 @@ InProductThresholdInterestSupplyScheme_entries:
 
 InProductGroupThresholdEntry:
   edn_label: "Grenzwertbasierte Einträge"
-  edn_description: "Ermöglicht die Definition von Einträgen für einen grezwertbasierte Interessen."
+  edn_description: "Ermöglicht die Definition von Einträgen für ein grenzwertbasiertes Interesse."
 InProductGroupThresholdEntry_interestDistribution:
   gams_identifier: "Verteilungsfunktion für den Grenzwert"
   gams_description: "Legt die Verteilungsfunktion für den Grenzwert fest."
@@ -448,6 +494,9 @@ InFreeNetworkTopology_initialWeight:
 InFreeNetworkTopology_distanceEvaluator:
   gams_identifier: "Distanzfunktion"
   gams_description: "Legt die zu nutzende Distanzfunktion für den Einfluss des Abstandes fest."
+InFreeNetworkTopology_affinities:
+  gams_identifier: "Affinitäten"
+  gams_description: "Legt die zu nutzende Affinitätenmenge für den sozialen Einfluss fest."
 InFreeNetworkTopology_numberOfTies:
   gams_identifier: "Konsumergruppenspezifische Kantenanzahl"
   gams_description: "Legt die Anzahl defür die jeweiligen Konsumergruppen fest."
@@ -903,7 +952,6 @@ submodule_graphvizdemo:
 InVersion:
   gams_identifier: "IRPact Version"
   gams_description: "Die Version von IRPact, welche bei der Erstellung des Szenarios aktuell war."
-  gams_hidden: true
 InVersion_placeholderVersion:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -916,3 +964,49 @@ InAttributeName:
 InAttributeName_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
+
+
+
+BinaryPersistData:
+  edn_label: "BinaryPersistData"
+  edn_description: "Binäre Daten für den Transfer zwischen zwei Simulationsschritten."
+BinaryPersistData_id:
+  gams_identifier: "BinaryPersistDataID"
+  gams_description: "Einzigartige ID der Daten."
+
+
+
+OutGeneralConsumerAgentGroup:
+  edn_label: "Konsumergruppen"
+  edn_description: "todo"
+OutGeneralConsumerAgentGroup_adoptionsThisYear:
+  gams_identifier: "Adoptionen"
+  gams_description: "todo"
+OutGeneralConsumerAgentGroup_adoptionsCumulativ:
+  gams_identifier: "Adoptionen (kumulativ)"
+  gams_description: "todo"
+OutGeneralConsumerAgentGroup_adoptionShareThisYear:
+  gams_identifier: "Adoptionen (Anteil)"
+  gams_description: "todo"
+OutGeneralConsumerAgentGroup_adoptionShareCumulativ:
+  gams_identifier: "Adoptionen (kumulierter anteil)"
+  gams_description: "todo"
+
+OutAnnualAdoptionData:
+  edn_label: "Jährliche Adoptionen"
+  edn_description: "todo"
+OutAnnualAdoptionData_year:
+  gams_identifier: "Jahr"
+  gams_description: "todo"
+OutAnnualAdoptionData_adoptionsThisYear:
+  gams_identifier: "Adoptionen"
+  gams_description: "todo"
+OutAnnualAdoptionData_adoptionsCumulativ:
+  gams_identifier: "Adoptionen (kumulativ)"
+  gams_description: "todo"
+OutAnnualAdoptionData_adoptionShareThisYear:
+  gams_identifier: "Adoptionen (Anteil)"
+  gams_description: "todo"
+OutAnnualAdoptionData_adoptionShareCumulativ:
+  gams_identifier: "Adoptionen (kumulierter anteil)"
+  gams_description: "todo"

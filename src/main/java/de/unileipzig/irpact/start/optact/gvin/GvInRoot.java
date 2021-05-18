@@ -7,15 +7,14 @@ import de.unileipzig.irpact.start.optact.network.IFreeMultiGraphTopology;
 import de.unileipzig.irpact.start.optact.network.IGraphTopology;
 import de.unileipzig.irpact.start.optact.network.IWattsStrogatzModel;
 import de.unileipzig.irptools.defstructure.DefaultScenarioFactory;
+import de.unileipzig.irptools.defstructure.DefinitionType;
 import de.unileipzig.irptools.defstructure.ParserInput;
 import de.unileipzig.irptools.defstructure.RootClass;
-import de.unileipzig.irptools.defstructure.Type;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.graphviz.LayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.OutputFormat;
 import de.unileipzig.irptools.graphviz.def.*;
-import de.unileipzig.irptools.uiedn.Section;
 import de.unileipzig.irptools.uiedn.Sections;
 import de.unileipzig.irptools.util.DoubleTimeSeries;
 import de.unileipzig.irptools.util.Table;
@@ -36,10 +35,10 @@ import java.util.List;
 public class GvInRoot implements RootClass, DefaultScenarioFactory {
 
     public static final List<ParserInput> CLASSES_WITHOUT_ROOT = Util.arrayListOf(
-            ParserInput.newInstance(Type.INPUT, AgentGroup.class),
-            ParserInput.newInstance(Type.INPUT, IGraphTopology.class),
-            ParserInput.newInstance(Type.INPUT, IWattsStrogatzModel.class),
-            ParserInput.newInstance(Type.INPUT, IFreeMultiGraphTopology.class)
+            ParserInput.newInstance(DefinitionType.INPUT, AgentGroup.class),
+            ParserInput.newInstance(DefinitionType.INPUT, IGraphTopology.class),
+            ParserInput.newInstance(DefinitionType.INPUT, IWattsStrogatzModel.class),
+            ParserInput.newInstance(DefinitionType.INPUT, IFreeMultiGraphTopology.class)
     );
 
     public static final List<ParserInput> CLASSES_WITHOUT_ROOT_AND_GRAPHVIZ = Util.mergedArrayListOf(
@@ -48,7 +47,7 @@ public class GvInRoot implements RootClass, DefaultScenarioFactory {
     );
 
     public static final List<ParserInput> CLASSES = Util.mergedArrayListOf(
-            Util.arrayListOf(ParserInput.newInstance(Type.INPUT, GvInRoot.class)),
+            Util.arrayListOf(ParserInput.newInstance(DefinitionType.INPUT, GvInRoot.class)),
             InRoot.CLASSES_WITHOUT_ROOT,
             GraphvizRoot.CLASSES_WITHOUT_ROOT,
             CLASSES_WITHOUT_ROOT

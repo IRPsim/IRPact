@@ -62,6 +62,7 @@ public final class IOConstants {
 
     public static final String EDN_LABEL = "edn_label";
     public static final String EDN_DESCRIPTION = "edn_description";
+    public static final String EDN_DELTA = "edn_delta";
 
     public static final String GAMS_IDENTIFIER = "gams_identifier";
     public static final String GAMS_DESCRIPTION = "gams_description";

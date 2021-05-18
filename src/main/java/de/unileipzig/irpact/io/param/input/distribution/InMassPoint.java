@@ -11,8 +11,7 @@ import java.lang.invoke.MethodHandles;
 import java.util.Objects;
 
 import static de.unileipzig.irpact.io.param.IOConstants.DISTRIBUTIONS;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz

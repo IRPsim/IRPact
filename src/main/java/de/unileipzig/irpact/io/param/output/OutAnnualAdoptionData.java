@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.function.Function;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 
 /**
  * @author Daniel Abitz
@@ -34,7 +35,7 @@ public class OutAnnualAdoptionData implements OutEntity {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        addEntry(res, thisClass());
+        putClassPath(res, thisClass(), thisName());
         addEntry(res, thisClass(), "year");
         addEntry(res, thisClass(), "adoptionsThisYear");
         addEntry(res, thisClass(), "adoptionsCumulativ");

@@ -2,6 +2,7 @@ package de.unileipzig.irpact.io.param;
 
 import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.in.*;
 import de.unileipzig.irpact.start.optact.network.IFreeMultiGraphTopology;
@@ -21,7 +22,7 @@ import static de.unileipzig.irptools.Constants.*;
 /**
  * @author Daniel Abitz
  */
-public class IOResources extends TreeAnnotationResource {
+public final class IOResources extends TreeAnnotationResource {
 
     /**
      * @author Daniel Abitz
@@ -29,9 +30,9 @@ public class IOResources extends TreeAnnotationResource {
     public static final class Data {
 
         private final MultiCounter COUNTER = new MultiCounter();
-        private final LocData DATA;
+        private final LocalizationData DATA;
 
-        public Data(LocData data) {
+        public Data(LocalizationData data) {
             this.DATA = data;
         }
 
@@ -39,7 +40,7 @@ public class IOResources extends TreeAnnotationResource {
             return COUNTER;
         }
 
-        public LocData getData() {
+        public LocalizationData getData() {
             return DATA;
         }
     }
@@ -57,20 +58,20 @@ public class IOResources extends TreeAnnotationResource {
     }
 
     public IOResources(java.nio.file.Path pathToResource) {
-        LocData locData = loadLocData(pathToResource);
+        LocalizationData locData = loadLocalizationData(pathToResource);
         IOResources.Data userData = new Data(locData);
         setUserData(userData);
         init();
     }
 
     public IOResources(Locale locale) {
-        LocData locData = loadLocData(locale);
+        LocalizationData locData = loadLocalizationData(locale);
         IOResources.Data userData = new Data(locData);
         setUserData(userData);
         init();
     }
 
-    protected static LocData loadLocData(Locale locale) {
+    protected static LocalizationData loadLocalizationData(Locale locale) {
         String langTag = locale.toLanguageTag();
         String fileName = "loc_" + langTag + ".yaml";
         String resName = "irpactdata/" + fileName;
@@ -79,16 +80,16 @@ public class IOResources extends TreeAnnotationResource {
             throw new NoSuchElementException("resource '" + resName + "' not found");
         } else {
             try(Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
-                return new LocData(reader);
+                return new LocalizationData(reader);
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
             }
         }
     }
 
-    protected static LocData loadLocData(java.nio.file.Path pathToFile) {
+    protected static LocalizationData loadLocalizationData(java.nio.file.Path pathToFile) {
         try {
-            return new LocData(pathToFile);
+            return new LocalizationData(pathToFile);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -523,6 +524,7 @@ public class IOResources extends TreeAnnotationResource {
     protected void initAct() {
         try {
             TreeResourceApplier.callAllInputs(InRoot.INPUT_WITH_ROOT, this);
+            TreeResourceApplier.callAllInputs(OutRoot.INPUT_WITH_ROOT, this);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }

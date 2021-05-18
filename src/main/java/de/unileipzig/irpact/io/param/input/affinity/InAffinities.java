@@ -27,7 +27,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InAffinites implements InIRPactEntity {
+public class InAffinities implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -51,16 +51,21 @@ public class InAffinites implements InIRPactEntity {
     @FieldDefinition
     public InAffinityEntry[] entries;
 
-    public InAffinites() {
+    public InAffinities() {
+    }
+
+    public InAffinities(String name, InAffinityEntry[] entries) {
+        setName(name);
+        setEntries(entries);
     }
 
     @Override
-    public InAffinites copy(CopyCache cache) {
+    public InAffinities copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InAffinites newCopy(CopyCache cache) {
-        InAffinites copy = new InAffinites();
+    public InAffinities newCopy(CopyCache cache) {
+        InAffinities copy = new InAffinities();
         copy._name = _name;
         copy.entries = cache.copyArray(entries);
         return copy;
@@ -75,18 +80,6 @@ public class InAffinites implements InIRPactEntity {
         this._name = name;
     }
 
-    public InAffinityEntry findEntry(String srcCag, String tarCag) throws NoSuchElementException, ParsingException {
-        if(entries == null) {
-            throw new NoSuchElementException();
-        }
-        for(InAffinityEntry entry: entries) {
-            if(Objects.equals(srcCag, entry.getSrcCagName()) && Objects.equals(tarCag, entry.getTarCagName())) {
-                return entry;
-            }
-        }
-        throw new NoSuchElementException();
-    }
-
     public void setEntries(Collection<? extends InAffinityEntry> entries) {
         this.entries = entries.toArray(new InAffinityEntry[0]);
     }
@@ -99,12 +92,28 @@ public class InAffinites implements InIRPactEntity {
         return ParamUtil.getNonNullArray(entries, "entries");
     }
 
+    public InAffinityEntry findEntry(String srcCag, String tarCag) throws NoSuchElementException, ParsingException {
+        if(entries == null) {
+            throw new NoSuchElementException();
+        }
+        for(InAffinityEntry entry: entries) {
+            if(Objects.equals(srcCag, entry.getSrcCagName()) && Objects.equals(tarCag, entry.getTarCagName())) {
+                return entry;
+            }
+        }
+        throw new NoSuchElementException();
+    }
+
     @Override
     public BasicConsumerAgentGroupAffinityMapping parse(IRPactInputParser parser) throws ParsingException {
 
-        if(parser.isRestored() && parser.getEnvironment().getAgents().hasConsumerAgentGroupAffinityMapping()) {
+        if(parser.getEnvironment().getAgents().hasConsumerAgentGroupAffinityMapping()) {
             BasicConsumerAgentGroupAffinityMapping mapping = (BasicConsumerAgentGroupAffinityMapping) parser.getEnvironment().getAgents().getConsumerAgentGroupAffinityMapping();
-            return updateRestored(parser, mapping);
+            if(parser.isRestored()) {
+                return updateRestored(parser, mapping);
+            } else {
+                throw new ParsingException("affinity mapping '{}' already exists (try to parse '{}')", mapping.getName(), getName());
+            }
         }
 
         BasicConsumerAgentGroupAffinityMapping affinities = new BasicConsumerAgentGroupAffinityMapping();
@@ -127,8 +136,12 @@ public class InAffinites implements InIRPactEntity {
         return affinities;
     }
 
-    public BasicConsumerAgentGroupAffinityMapping updateRestored(IRPactInputParser parser, BasicConsumerAgentGroupAffinityMapping restored) {
-        LOGGER.trace("affinities already exists");
+    public BasicConsumerAgentGroupAffinityMapping updateRestored(IRPactInputParser parser, BasicConsumerAgentGroupAffinityMapping restored) throws ParsingException {
+        if(Objects.equals(restored.getName(), getName())) {
+            LOGGER.trace("affinity mapping '{}' already exists, skip", getName());
+        } else {
+            throw new ParsingException("Affinity mapping '{}' already exists. No new mapping '{}' is permitted (no delta).");
+        }
         return restored;
     }
 }

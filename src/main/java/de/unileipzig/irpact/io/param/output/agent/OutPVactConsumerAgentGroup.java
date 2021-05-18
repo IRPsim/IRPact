@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.io.param.output.agent;
 
-import de.unileipzig.irpact.io.param.input.agent.consumer.InGeneralConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -14,8 +14,9 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 /**
  * @author Daniel Abitz
  */
-@Definition(copy = InGeneralConsumerAgentGroup.class)
-public class OutGeneralConsumerAgentGroup implements OutConsumerAgentGroup {
+@Deprecated
+@Definition(copy = InPVactConsumerAgentGroup.class)
+public class OutPVactConsumerAgentGroup implements OutConsumerAgentGroup {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -29,27 +30,15 @@ public class OutGeneralConsumerAgentGroup implements OutConsumerAgentGroup {
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), thisName());
-        addEntry(res, thisClass(), "adoptionsThisYear");
-        addEntry(res, thisClass(), "adoptionsCumulativ");
-        addEntry(res, thisClass(), "adoptionShareThisYear");
-        addEntry(res, thisClass(), "adoptionShareCumulativ");
+        addEntry(res, thisClass(), "placeholder");
     }
 
     public String _name;
 
     @FieldDefinition
-    public int adoptionsThisYear;
+    public double placeholder;
 
-    @FieldDefinition
-    public int adoptionsCumulativ;
-
-    @FieldDefinition
-    public double adoptionShareThisYear;
-
-    @FieldDefinition
-    public double adoptionShareCumulativ;
-
-    public OutGeneralConsumerAgentGroup() {
+    public OutPVactConsumerAgentGroup() {
     }
 
     @Override
@@ -62,12 +51,12 @@ public class OutGeneralConsumerAgentGroup implements OutConsumerAgentGroup {
     }
 
     @Override
-    public OutGeneralConsumerAgentGroup copy(CopyCache cache) {
+    public OutPVactConsumerAgentGroup copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public OutGeneralConsumerAgentGroup newCopy(CopyCache cache) {
-        OutGeneralConsumerAgentGroup copy = new OutGeneralConsumerAgentGroup();
+    public OutPVactConsumerAgentGroup newCopy(CopyCache cache) {
+        OutPVactConsumerAgentGroup copy = new OutPVactConsumerAgentGroup();
         copy._name = _name;
 
         return copy;

@@ -138,7 +138,7 @@ public final class IRPact implements IRPActAccess {
         if(OUTPUT_CONVERTS.containsKey(options)) {
             return OUTPUT_CONVERTS.get(options);
         } else {
-            DefinitionCollection dcoll = AnnotationParser.parse(OutRoot.CLASSES);
+            DefinitionCollection dcoll = AnnotationParser.parse(OutRoot.ALL_CLASSES);
             DefinitionMapper dmap = createMapper(options, dcoll);
             Converter converter = new Converter(dmap);
             converter.setSortNames(false);
