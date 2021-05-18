@@ -157,10 +157,10 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
         binaryRestore.register(dataList);
         binaryRestore.restore();
         SimulationEnvironment restoredEnvironment = binaryRestore.getRestoredInstance();
-        binaryRestore.unregisterAll();
-
         int restoredChecksum = restoredEnvironment.getChecksum();
         int validationChecksum = binaryRestore.getValidationChecksum();
+        binaryRestore.unregisterAll();
+
         if(restoredChecksum == validationChecksum) {
             LOGGER.info("environment successfully restored");
         } else {

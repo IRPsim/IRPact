@@ -48,6 +48,10 @@ public class IdManager implements ChecksumComparable {
         return nextId - 1;
     }
 
+    public long peekId() {
+        return nextId;
+    }
+
     public synchronized long nextId() {
         long next = nextId;
         nextId++;

@@ -29,8 +29,4 @@ public interface InEntity<T extends InputParser> extends Copyable {
     default void setup(T parser, Object input) throws ParsingException {
         throw new UnsupportedOperationException();
     }
-
-    default void update(T parser, Object input) throws ParsingException {
-        throw new UnsupportedOperationException();
-    }
 }

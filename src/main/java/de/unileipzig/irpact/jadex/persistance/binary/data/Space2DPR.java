@@ -3,7 +3,6 @@ package de.unileipzig.irpact.jadex.persistance.binary.data;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.spatial.twodim.Space2D;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
@@ -54,6 +53,6 @@ public class Space2DPR extends BinaryPRBase<Space2D> {
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, Space2D object, RestoreManager manager) throws RestoreException {
-        object.setEnvironment(manager.ensureGetInstanceOf(SimulationEnvironment.class));
+        object.setEnvironment(getEnvironment(manager));
     }
 }

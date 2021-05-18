@@ -61,6 +61,7 @@ public class BasicSocialNetworkPR extends BinaryPRBase<BasicSocialNetwork> {
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, BasicSocialNetwork object, RestoreManager manager) throws RestoreException {
+        object.setEnvironment(getEnvironment(manager));
         object.setGraph(manager.ensureGet(data.getLong()));
         object.setGraphTopologyScheme(manager.ensureGet(data.getLong()));
     }

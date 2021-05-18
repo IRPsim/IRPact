@@ -139,6 +139,13 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
     public JadexConsumerAgentGroup parse(IRPactInputParser parser) throws ParsingException {
         AgentManager agentManager = parser.getEnvironment().getAgents();
 
+        if(parser.getEnvironment().isRestored() && agentManager.hasConsumerAgentGroup(getName())) {
+            JadexConsumerAgentGroup jcag = (JadexConsumerAgentGroup) agentManager.getConsumerAgentGroup(getName());
+            return update(parser, jcag);
+        }
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse InGeneralConsumerAgentGroup '{}'", getName());
+
         JadexConsumerAgentGroup jCag = new JadexConsumerAgentGroup();
         jCag.setEnvironment(parser.getEnvironment());
         jCag.setName(getName());
@@ -148,7 +155,6 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
         if(agentManager.hasConsumerAgentGroup(getName())) {
             throw new ParsingException("ConsumerAgentGroup '" + getName() + "' already exists");
         }
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse InGeneralConsumerAgentGroup '{}'", jCag.getName());
 
         if(parser.getRoot().addConsumerAgentGroup(this)) {
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added InGeneralConsumerAgentGroup '{}' to InRoot", getName());
@@ -166,7 +172,7 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
 
         for(InConsumerAgentGroupAttribute inCagAttr: getAttributes()) {
             if(inCagAttr.requiresSetup()) {
-                inCagAttr.setup(parser, this);
+                inCagAttr.setup(parser, jCag);
             } else {
                 ConsumerAgentGroupAttribute cagAttr = parser.parseEntityTo(inCagAttr);
                 if(jCag.hasGroupAttribute(cagAttr.getName())) {
@@ -178,5 +184,23 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
         }
 
         return jCag;
+    }
+
+    public JadexConsumerAgentGroup update(IRPactInputParser parser, JadexConsumerAgentGroup restored) throws ParsingException {
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "update '{}'", restored.getName());
+        for(InConsumerAgentGroupAttribute inCagAttr: getAttributes()) {
+            if(restored.hasGroupAttribute(inCagAttr.getAttributeName())) {
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "cag '{}' already has '{}' -> skip", restored.getName(), inCagAttr.getAttributeName());
+            } else {
+                if(inCagAttr.requiresSetup()) {
+                    inCagAttr.setup(parser, restored);
+                } else {
+                    ConsumerAgentGroupAttribute cagAttr = parser.parseEntityTo(inCagAttr);
+                    LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), inCagAttr.getName(), restored.getName());
+                    restored.addGroupAttribute(cagAttr);
+                }
+            }
+        }
+        return restored;
     }
 }

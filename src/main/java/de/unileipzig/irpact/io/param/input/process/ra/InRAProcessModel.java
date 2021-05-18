@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.process.ProcessModelManager;
 import de.unileipzig.irpact.core.process.filter.DisabledProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
@@ -292,7 +293,12 @@ public class InRAProcessModel implements InProcessModel {
     }
 
     @Override
-    public Object parse(IRPactInputParser parser) throws ParsingException {
+    public RAProcessModel parse(IRPactInputParser parser) throws ParsingException {
+        if(parser.isRestored()) {
+            ProcessModelManager manager = parser.getEnvironment().getProcessModels();
+            RAProcessModel model = (RAProcessModel) manager.getProcessModel(getName());
+            return update(parser, model);
+        }
         RAModelData data = new RAModelData();
         data.setA(getA());
         data.setB(getB());
@@ -327,6 +333,17 @@ public class InRAProcessModel implements InProcessModel {
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "no node filter scheme specified");
         }
 
+        applyPvFile(parser, model);
+
+        return model;
+    }
+
+    public RAProcessModel update(IRPactInputParser parser, RAProcessModel restored) throws ParsingException {
+        applyPvFile(parser, restored);
+        return restored;
+    }
+
+    private void applyPvFile(IRPactInputParser parser, RAProcessModel model) throws ParsingException {
         if(hasPvFile()) {
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "load pv file '{}'" , getPvFile().getName());
             NPVXlsxData xlsxData = getNPVData(parser);
@@ -334,7 +351,5 @@ public class InRAProcessModel implements InProcessModel {
         } else {
             LOGGER.trace("no pv file found");
         }
-
-        return model;
     }
 }

@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.spatial.distribution;
 
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -27,6 +28,15 @@ public abstract class ResettableSpatialDistributionBase extends NameableBase imp
 
     @Override
     public abstract void addComplexDataTo(SpatialDistribution target);
+
+    public void setRequiredNumberOfCalls(int requiredNumberOfCalls) {
+        this.requiredNumberOfCalls = requiredNumberOfCalls;
+    }
+
+    @Todo("BEI ANDEREN NOCH REIN")
+    public int getRequiredNumberOfCalls() {
+        return requiredNumberOfCalls;
+    }
 
     public void call() {
         call(requiredNumberOfCalls);

@@ -6,7 +6,6 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -91,7 +90,7 @@ public class JadexConsumerAgentGroupPR extends BinaryPRBase<JadexConsumerAgentGr
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, JadexConsumerAgentGroup object, RestoreManager manager) throws RestoreException {
-        object.setEnvironment(manager.ensureGetInstanceOf(SimulationEnvironment.class));
+        object.setEnvironment(getEnvironment(manager));
 
         object.setSpatialDistribution(manager.ensureGet(data.getLong()));
         object.addAllGroupAttributes(manager.ensureGetAll(data.getLongArray(), ConsumerAgentGroupAttribute[]::new));

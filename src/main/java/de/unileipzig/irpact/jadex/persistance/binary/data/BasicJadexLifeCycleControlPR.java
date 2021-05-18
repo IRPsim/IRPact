@@ -4,7 +4,6 @@ import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
-import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.BasicTimestamp;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -61,16 +60,12 @@ public class BasicJadexLifeCycleControlPR extends BinaryPRBase<BasicJadexLifeCyc
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, BasicJadexLifeCycleControl object, RestoreManager manager) throws RestoreException {
-        object.setEnvironment(manager.ensureGetInstanceOf(JadexSimulationEnvironment.class));
+        object.setEnvironment(getEnvironment(manager));
 
         long epochMilli = data.getLong();
         if(epochMilli != BinaryJsonData.NOTHING_ID) {
             object.setCurrent(new BasicTimestamp(epochMilli));
         }
         object.setControlAgent(manager.ensureGet(data.getLong()));
-    }
-
-    @Override
-    protected void doFinalizeRestore(BinaryJsonData data, BasicJadexLifeCycleControl object, RestoreManager manager) {
     }
 }

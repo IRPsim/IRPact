@@ -60,6 +60,7 @@ public class BasicProductManagerPR extends BinaryPRBase<BasicProductManager> {
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, BasicProductManager object, RestoreManager manager) throws RestoreException {
+        object.setEnvironment(getEnvironment(manager));
         ProductGroup[] productGroups = manager.ensureGetAll(data.getLongArray(), ProductGroup[]::new);
         for(ProductGroup productGroup: productGroups) {
             object.add(productGroup);

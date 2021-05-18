@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
-import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.affinity.Affinities;
 import de.unileipzig.irpact.commons.affinity.BasicAffinityMapping;
+import de.unileipzig.irpact.commons.checksum.Checksums;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -51,6 +51,6 @@ public class BasicConsumerAgentGroupAffinityMapping
                 srcMap.put(tar.getName(), srcAffi.getValue(tar));
             }
         }
-        return ChecksumComparable.getMapChecksum(helper);
+        return Checksums.SMART.getChecksum(getName(), helper);
     }
 }

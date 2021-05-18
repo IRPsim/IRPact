@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.commons.util.data.Holder;
 import de.unileipzig.irpact.commons.util.data.MutableInt;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
@@ -17,6 +18,7 @@ import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRe
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.InfoTag;
+import de.unileipzig.irpact.core.log.LoggingHelper;
 import de.unileipzig.irpact.core.need.BasicNeed;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
 import de.unileipzig.irpact.core.network.SupportedGraphStructure;
@@ -27,11 +29,10 @@ import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.product.*;
 import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
 import de.unileipzig.irpact.core.simulation.BasicSettings;
-import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.simulation.BinaryTaskManager;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
-import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InIndependentConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.io.param.input.agent.population.InPopulationSize;
@@ -44,10 +45,10 @@ import de.unileipzig.irpact.io.param.input.product.InProductGroup;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
+import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
-import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.Collection;
@@ -61,11 +62,11 @@ import static de.unileipzig.irpact.core.process.ra.RAConstants.*;
  * @author Daniel Abitz
  */
 @SuppressWarnings("SameParameterValue")
-public class JadexRestoreUpdater implements IRPactInputParser {
+public class JadexRestoreUpdater implements IRPactInputParser, LoggingHelper {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(JadexRestoreUpdater.class);
 
-    private final Map<Holder, Object> CACHE = new LinkedHashMap<>();
+    private final Map<Holder<InIRPactEntity>, Object> CACHE = new LinkedHashMap<>();
     private ResourceLoader resourceLoader;
 
     private final MutableInt simulationYear = MutableInt.empty();
@@ -111,7 +112,7 @@ public class JadexRestoreUpdater implements IRPactInputParser {
 
     @Override
     public void cache(InIRPactEntity key, Object value) {
-        Holder holder = new Holder(key);
+        Holder<InIRPactEntity> holder = new Holder<>(key);
         if(!CACHE.containsKey(holder)) {
             CACHE.put(holder, value);
         }
@@ -128,13 +129,13 @@ public class JadexRestoreUpdater implements IRPactInputParser {
 
     @Override
     public boolean isCached(InIRPactEntity key) {
-        Holder holder = new Holder(key);
+        Holder<InIRPactEntity> holder = new Holder<>(key);
         return CACHE.containsKey(holder);
     }
 
     @Override
     public Object getCached(InIRPactEntity key) {
-        Holder holder = new Holder(key);
+        Holder<InIRPactEntity> holder = new Holder<>(key);
         return CACHE.get(holder);
     }
 
@@ -163,8 +164,16 @@ public class JadexRestoreUpdater implements IRPactInputParser {
     }
 
     @Override
+    public void initLoggingOnly(InRoot root) {
+        reset();
+        this.root = root;
+        initLogging(root);
+        reset();
+    }
+
+    @Override
     public Object parseEntity(InIRPactEntity input) throws ParsingException {
-        Holder holder = new Holder(input);
+        Holder<InIRPactEntity> holder = new Holder<>(input);
         if(CACHE.containsKey(holder)) {
             return CACHE.get(holder);
         } else {
@@ -204,20 +213,14 @@ public class JadexRestoreUpdater implements IRPactInputParser {
                 : arr.length;
     }
 
-    private static void debug(String msg) {
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, msg);
+    @Override
+    public IRPLogger getDefaultLogger() {
+        return LOGGER;
     }
 
-    private static void debug(String format, Object arg) {
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, format, arg);
-    }
-
-    private static void debug(String format, Object arg1, Object arg2) {
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, format, arg1, arg2);
-    }
-
-    private static void debug(String format, Object... args) {
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, format, args);
+    @Override
+    public IRPSection getDefaultSection() {
+        return IRPSection.INITIALIZATION_PARAMETER;
     }
 
     //=========================
@@ -225,7 +228,6 @@ public class JadexRestoreUpdater implements IRPactInputParser {
     //=========================
 
     private void doParse(InRoot root) throws ParsingException {
-        checkVersion(root);
         setupGeneral(root);
 
         parseConsumerAgentGroups(root);
@@ -248,57 +250,13 @@ public class JadexRestoreUpdater implements IRPactInputParser {
         runSpecialOperations(root);
     }
 
-
-    private void checkVersion(InRoot root) throws ParsingException {
-        InVersion inVersion = getInstance(root.version, InVersion.class, "missing Version");
-        BasicVersion inputVersion = inVersion.parse(this);
-        if(!IRPact.VERSION.supportsInput(inputVersion)) {
-            throw new ParsingException("version mismatch! IRPact version: '" + IRPact.VERSION + "', input version: '" + inputVersion + "'");
-        }
+    private void initLogging(InRoot root) {
+        root.general.parseLoggingSetup(this);
     }
 
-    private void setupGeneral(InRoot root) throws ParsingException {
-        root.general.setup(this);
-    }
-
-    private void parseProducts(InRoot root) throws ParsingException {
-        int len = len(root.productGroups);
-        debug("InProductGroups: {}", len);
-        if(len == -1) {
-            return;
-        }
-        BasicProductManager productManager = (BasicProductManager) environment.getProducts();
-        for(InProductGroup inPg: root.productGroups) {
-            ProductGroup pg = parseEntityTo(inPg);
-            productManager.add(pg);
-            debug("added ProductGroup '{}'", pg.getName());
-        }
-    }
-
-    private void parseProductGroupAttributes(InRoot root) throws ParsingException {
-        int len = len(root.independentProductGroupAttributes);
-        debug("InConsumerAgentGroupAttribute: {}", len);
-        if(len == -1) {
-            return;
-        }
-
-        for(InIndependentProductGroupAttribute inPgAttr: root.getIndependentProductGroupAttributes()) {
-            inPgAttr.setup(this, null);
-        }
-    }
-
-    private void parseFixProducts(InRoot root) throws ParsingException {
-        int len = len(root.fixProducts);
-        debug("InFixProducts: {}", len);
-        if(len == -1) {
-            return;
-        }
-
-        for(InFixProduct inFix: root.fixProducts) {
-            Product fp = parseEntityTo(inFix);
-            fp.getGroup().addProduct(fp);
-            debug("added product '{}' to group '{}'", fp.getName(), fp.getGroup().getName());
-        }
+    private void setupGeneral(InRoot root) {
+        BasicJadexLifeCycleControl lifeCycleControl = (BasicJadexLifeCycleControl) environment.getLiveCycleControl();
+        root.general.applyKillSwitch(lifeCycleControl);
     }
 
     private void parseConsumerAgentGroups(InRoot root) throws ParsingException {
@@ -312,8 +270,12 @@ public class JadexRestoreUpdater implements IRPactInputParser {
 
         for(InConsumerAgentGroup inCag: root.consumerAgentGroups) {
             ConsumerAgentGroup cag = parseEntityTo(inCag);
-            debug("added ConsumerAgentGroup '{}'", cag.getName());
-            agentManager.addConsumerAgentGroup(cag);
+            if(agentManager.hasConsumerAgentGroup(cag.getName())) {
+                debug("skip ConsumerAgentGroup '{}'", cag.getName());
+            } else {
+                debug("added ConsumerAgentGroup '{}'", cag.getName());
+                agentManager.addConsumerAgentGroup(cag);
+            }
         }
     }
 
@@ -351,20 +313,76 @@ public class JadexRestoreUpdater implements IRPactInputParser {
         }
     }
 
+    private void parseProducts(InRoot root) throws ParsingException {
+        int len = len(root.productGroups);
+        debug("InProductGroups: {}", len);
+        if(len == -1) {
+            return;
+        }
+        BasicProductManager productManager = (BasicProductManager) environment.getProducts();
+        for(InProductGroup inPg: root.productGroups) {
+            ProductGroup pg = parseEntityTo(inPg);
+            if(productManager.has(pg.getName())) {
+                debug("skip ProductGroup '{}'", pg.getName());
+            } else {
+                productManager.add(pg);
+                debug("added ProductGroup '{}'", pg.getName());
+            }
+        }
+    }
+
+    private void parseProductGroupAttributes(InRoot root) throws ParsingException {
+        int len = len(root.independentProductGroupAttributes);
+        debug("InConsumerAgentGroupAttribute: {}", len);
+        if(len == -1) {
+            return;
+        }
+
+        for(InIndependentProductGroupAttribute inPgAttr: root.getIndependentProductGroupAttributes()) {
+            inPgAttr.setup(this, null);
+        }
+    }
+
+    @Todo
+    private void parseFixProducts(InRoot root) throws ParsingException {
+        if(true) return;
+
+        int len = len(root.fixProducts);
+        debug("InFixProducts: {}", len);
+        if(len == -1) {
+            return;
+        }
+
+        for(InFixProduct inFix: root.fixProducts) {
+            Product fp = parseEntityTo(inFix);
+            fp.getGroup().addProduct(fp);
+            debug("added product '{}' to group '{}'", fp.getName(), fp.getGroup().getName());
+        }
+    }
+
+    @Todo
     private void parseNetwork(InRoot root) throws ParsingException {
+        if(true) return;
+
         InGraphTopologyScheme topo = getInstance(root.graphTopologySchemes, InGraphTopologyScheme.class, "missing GraphTopologyScheme");
         GraphTopologyScheme scheme = parseEntityTo(topo);
         environment.getNetwork().setGraphTopologyScheme(scheme);
         debug("set graph topology scheme '{}'", scheme.getName());
     }
 
+    @Todo
     private void parseSocialGraph(@SuppressWarnings("unused") InRoot root) {
+        if(true) return;
+
         debug("[Fixed] use {}", SupportedGraphStructure.FAST_DIRECTED_MULTI_GRAPH2_CONCURRENT);
         BasicSocialNetwork network = (BasicSocialNetwork) environment.getNetwork();
         network.initDefaultGraph();
     }
 
+    @Todo
     private void parseSpatialModel(InRoot root) throws ParsingException {
+        if(true) return;
+
         InSpatialModel inSm = getInstance(root.spatialModel, InSpatialModel.class, "missing spatial model");
         SpatialModel sm = parseEntityTo(inSm);
         environment.setSpatialModel(sm);
@@ -375,11 +393,18 @@ public class JadexRestoreUpdater implements IRPactInputParser {
         InProcessModel inPm = getInstance(root.processModels, InProcessModel.class, "missing process model");
         ProcessModel pm = parseEntityTo(inPm);
         BasicProcessModelManager processModelManager = (BasicProcessModelManager) environment.getProcessModels();
-        processModelManager.addProcessModel(pm);
-        debug("added process model '{}'", pm.getName());
+        if(processModelManager.hasProcessModel(pm.getName())) {
+            debug("skip process model '{}'", pm.getName());
+        } else {
+            processModelManager.addProcessModel(pm);
+            debug("added process model '{}'", pm.getName());
+        }
     }
 
+    @Todo
     private void parseTimeModel(InRoot root) throws ParsingException {
+        if(true) return;
+
         InTimeModel inTm = getInstance(root.timeModel, InTimeModel.class, "missing time model");
         JadexTimeModel tm = parseEntityTo(inTm);
         environment.setTimeModel(tm);
@@ -399,7 +424,10 @@ public class JadexRestoreUpdater implements IRPactInputParser {
         }
     }
 
+    @Todo
     private void runSpecialOperations(InRoot root) throws ParsingException {
+        if(true) return;
+
         if(root.general.runPVAct) {
             initPVact();
         }
@@ -553,33 +581,4 @@ public class JadexRestoreUpdater implements IRPactInputParser {
     //=========================
     //holder
     //=========================
-
-    /**
-     * @author Daniel Abitz
-     */
-    private static final class Holder {
-
-        private final InIRPactEntity entity;
-
-        private Holder(InIRPactEntity entity) {
-            this.entity = entity;
-        }
-
-        public InIRPactEntity getEntity() {
-            return entity;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof Holder)) return false;
-            Holder holder = (Holder) o;
-            return entity == holder.entity;
-        }
-
-        @Override
-        public int hashCode() {
-            return System.identityHashCode(entity);
-        }
-    }
 }

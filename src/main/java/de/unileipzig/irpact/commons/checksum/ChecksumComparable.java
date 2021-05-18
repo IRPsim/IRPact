@@ -259,6 +259,10 @@ public interface ChecksumComparable {
         throw new UnsupportedOperationException("missing checksum: '" + getClass().getName() + "'");
     }
 
+    default String printChecksum() {
+        return Integer.toHexString(getChecksum());
+    }
+
     default void logChecksum() {
         LOGGER0.info("not implemented: {}", getClass().getName());
     }

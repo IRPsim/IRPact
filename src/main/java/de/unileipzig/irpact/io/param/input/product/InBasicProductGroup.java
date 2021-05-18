@@ -79,6 +79,14 @@ public class InBasicProductGroup implements InProductGroup {
     @Override
     public BasicProductGroup parse(IRPactInputParser parser) throws ParsingException {
         BasicProductManager productManager = (BasicProductManager) parser.getEnvironment().getProducts();
+
+        if(parser.isRestored() && productManager.has(getName())) {
+            BasicProductGroup bpg = (BasicProductGroup) productManager.getGroup(getName());
+            return update(parser, bpg);
+        }
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse ProductGroup '{}'", getName());
+
         BasicProductGroup bpg = new BasicProductGroup();
         bpg.setEnvironment(parser.getEnvironment());
         bpg.setName(getName());
@@ -97,5 +105,22 @@ public class InBasicProductGroup implements InProductGroup {
         }
 
         return bpg;
+    }
+
+    public BasicProductGroup update(IRPactInputParser parser, BasicProductGroup restored) throws ParsingException {
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "update ProductGroup '{}'", getName());
+
+        for(InDependentProductGroupAttribute inAttr: getAttributes()) {
+            if(restored.hasGroupAttribute(inAttr.getAttributeName())) {
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "skip existing ProductGroupAttribute '{}' in '{}'", inAttr.getAttributeName(), getName());
+                continue;
+            }
+
+            ProductGroupAttribute attr = parser.parseEntityTo(inAttr);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add ProductGroupAttribute '{}' ('{}') to group '{}'", attr.getName(), inAttr.getName(), restored.getName());
+            restored.addGroupAttribute(attr);
+        }
+
+        return restored;
     }
 }

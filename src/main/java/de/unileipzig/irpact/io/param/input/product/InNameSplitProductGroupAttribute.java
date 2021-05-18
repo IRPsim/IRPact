@@ -100,6 +100,10 @@ public class InNameSplitProductGroupAttribute implements InIndependentProductGro
     public void setup(IRPactInputParser parser, Object input) throws ParsingException {
         InProductGroup inPg = getProductGroup(parser);
         BasicProductGroup pg = parser.parseEntityTo(inPg);
+        if(parser.isRestored() && pg.hasGroupAttribute(getAttributeName())) {
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "skip ProductGroupAttribute '{}' in '{}'", getAttributeName(), pg.getName());
+            return;
+        }
 
         BasicProductDoubleGroupAttribute pgAttr = new BasicProductDoubleGroupAttribute();
         pgAttr.setName(getAttributeName());

@@ -60,6 +60,7 @@ public class BasicProcessModelManagerPR extends BinaryPRBase<BasicProcessModelMa
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, BasicProcessModelManager object, RestoreManager manager) throws RestoreException {
+        object.setEnvironment(getEnvironment(manager));
         ProcessModel[] processModels = manager.ensureGetAll(data.getLongArray(), ProcessModel[]::new);
         for(ProcessModel processModel: processModels) {
             object.addProcessModel(processModel);

@@ -22,6 +22,10 @@ public interface ConsumerAgentGroup extends AgentGroup<ConsumerAgent> {
 
     Collection<ConsumerAgentGroupAttribute> getGroupAttributes();
 
+    default boolean hasAttribute(String name) {
+        return hasGroupAttribute(name) || hasProductRelatedGroupAttribute(name);
+    }
+
     boolean hasGroupAttribute(String name);
 
     default boolean hasGroupAttribute(ConsumerAgentGroupAttribute attribute) {

@@ -3,7 +3,6 @@ package de.unileipzig.irpact.core.agent;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.persistence.annotation.ChecksumAndPersistentValue;
 import de.unileipzig.irpact.commons.util.IdManager;
-import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -26,7 +25,7 @@ public class BasicAgentManager implements AgentManager {
     @ChecksumAndPersistentValue("values")
     protected Map<String, ConsumerAgentGroup> consumerAgentGroups;
     @ChecksumAndPersistentValue
-    protected ConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
+    protected ConsumerAgentGroupAffinityMapping affinityMapping;
 
     public BasicAgentManager() {
         this(new LinkedHashMap<>());
@@ -41,7 +40,7 @@ public class BasicAgentManager implements AgentManager {
         return ChecksumComparable.getChecksum(
                 ChecksumComparable.getMapChecksum(consumerAgentGroups),
                 affinityMapping.getChecksum(),
-                getAttentionOrderManager().lastId()
+                getAttentionOrderManager().peekId()
         );
     }
 

@@ -117,6 +117,7 @@ public class InAffinities implements InIRPactEntity {
         }
 
         BasicConsumerAgentGroupAffinityMapping affinities = new BasicConsumerAgentGroupAffinityMapping();
+        affinities.setName(getName());
 
         for(InAffinityEntry entry: getEntries()) {
             InConsumerAgentGroup srcInCag = entry.getSrcCag(parser);

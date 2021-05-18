@@ -125,6 +125,11 @@ public class InNameSplitConsumerAgentGroupAttribute implements InIndependentCons
             cag = parser.parseEntityTo(inCag);
         }
 
+        if(parser.isRestored() && cag.hasGroupAttribute(getAttributeName())) {
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "cag '{}' already has '{}' -> skip", cag.getName(), getAttributeName());
+            return;
+        }
+
         BasicConsumerAgentDoubleGroupAttribute cagAttr = new BasicConsumerAgentDoubleGroupAttribute();
         cagAttr.setName(getAttributeName());
         cagAttr.setArtificial(false);

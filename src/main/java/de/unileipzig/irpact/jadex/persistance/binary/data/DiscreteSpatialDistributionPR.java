@@ -36,6 +36,7 @@ public class DiscreteSpatialDistributionPR extends BinaryPRBase<DiscreteSpatialD
     protected BinaryJsonData doInitalizePersist(DiscreteSpatialDistribution object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
+        data.putInt(object.getNumberOfCalls());
 
         manager.prepare(object.getRandom());
 
@@ -55,6 +56,8 @@ public class DiscreteSpatialDistributionPR extends BinaryPRBase<DiscreteSpatialD
     protected DiscreteSpatialDistribution doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         DiscreteSpatialDistribution object = new DiscreteSpatialDistribution();
         object.setName(data.getText());
+        object.setRequiredNumberOfCalls(data.getInt());
+
         return object;
     }
 

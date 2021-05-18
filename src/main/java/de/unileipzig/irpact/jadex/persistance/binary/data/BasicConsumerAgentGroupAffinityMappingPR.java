@@ -37,6 +37,7 @@ public class BasicConsumerAgentGroupAffinityMappingPR extends BinaryPRBase<Basic
     @Override
     protected BinaryJsonData doInitalizePersist(BasicConsumerAgentGroupAffinityMapping object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
+        data.putText(object.getName());
 
         for(ConsumerAgentGroup src: object.sources()) {
             manager.prepare(src);
@@ -71,7 +72,10 @@ public class BasicConsumerAgentGroupAffinityMappingPR extends BinaryPRBase<Basic
 
     @Override
     protected BasicConsumerAgentGroupAffinityMapping doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
-        return new BasicConsumerAgentGroupAffinityMapping();
+        BasicConsumerAgentGroupAffinityMapping object = new BasicConsumerAgentGroupAffinityMapping();
+        object.setName(data.getText());
+
+        return object;
     }
 
     @Override
@@ -85,5 +89,6 @@ public class BasicConsumerAgentGroupAffinityMappingPR extends BinaryPRBase<Basic
                 object.put(srcCag, tarCag, value);
             }
         }
+        getAgentManager(manager).setConsumerAgentGroupAffinityMapping(object);
     }
 }

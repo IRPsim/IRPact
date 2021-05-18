@@ -5,10 +5,13 @@ import de.unileipzig.irpact.commons.checksum.LoggableChecksum;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.core.agent.AgentManager;
+import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryPersister;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryRestorer;
 import de.unileipzig.irpact.jadex.persistance.binary.RestoreHelper;
+import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -92,6 +95,14 @@ public abstract class BinaryPRBase<T> implements BinaryPersister<T>, BinaryResto
 
     protected RestoreHelper getRestoreHelper() {
         return restoreHelper;
+    }
+
+    protected JadexSimulationEnvironment getEnvironment(RestoreManager manager) throws RestoreException {
+        return manager.ensureGetInstanceOf(JadexSimulationEnvironment.class);
+    }
+
+    public AgentManager getAgentManager(RestoreManager manager) throws RestoreException {
+        return getEnvironment(manager).getAgents();
     }
 
     @Override

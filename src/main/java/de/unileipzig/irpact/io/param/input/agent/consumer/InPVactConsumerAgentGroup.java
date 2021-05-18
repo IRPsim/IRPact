@@ -306,7 +306,7 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
     public JadexConsumerAgentGroup parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored() && parser.getEnvironment().getAgents().hasConsumerAgentGroup(getName())) {
             JadexConsumerAgentGroup jcag = (JadexConsumerAgentGroup) parser.getEnvironment().getAgents().getConsumerAgentGroup(getName());
-            return updateRestored(parser, jcag);
+            return update(parser, jcag);
         }
 
         AgentManager agentManager = parser.getEnvironment().getAgents();
@@ -335,7 +335,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         return jcag;
     }
 
-    public JadexConsumerAgentGroup updateRestored(IRPactInputParser parser, JadexConsumerAgentGroup restored) throws ParsingException {
+    public JadexConsumerAgentGroup update(IRPactInputParser parser, JadexConsumerAgentGroup restored) throws ParsingException {
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "update '{}'", restored.getName());
+
         addGroupAttributes(parser, restored, true);
         addSupplySchemes(restored, true);
         getSpatialDistribution().setup(parser, restored);
@@ -379,7 +381,7 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
             InUnivariateDoubleDistribution inDist,
             String name,
             boolean restored) throws ParsingException {
-        if(jcag.hasGroupAttribute(name)) {
+        if(jcag.hasAttribute(name)) {
             if(restored) {
                 LOGGER.trace("restored ConsumerAgentGroup '{}' already has ConsumerAgentGroupAttribute '{}'", jcag.getName(), name);
                 return;

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
+import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.commons.checksum.LoggableChecksum;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
@@ -67,20 +68,20 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
 
     @Override
     public int getChecksum() {
-        return ChecksumComparable.getChecksum(
+        return Checksums.SMART.getChecksum(
                 getName(),
                 getInformationAuthority(),
                 getNextAgentId(),
 
                 getSpatialDistribution(),
-                ChecksumComparable.getCollChecksum(getGroupAttributes()),
-                ChecksumComparable.getCollChecksum(getProductRelatedGroupAttributes()),
+                getGroupAttributes(),
+                getProductRelatedGroupAttributes(),
                 getAwarenessSupplyScheme(),
                 getInterestSupplyScheme(),
                 getProductFindingScheme(),
                 getProcessFindingScheme(),
 
-                ChecksumComparable.getCollChecksum(getAgents())
+                getAgents()
         );
     }
 
@@ -94,18 +95,19 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
 
     @Override
     public void logChecksums() {
-        logChecksum("name", ChecksumComparable.getChecksum(getName()));
-        logChecksum("information authority", ChecksumComparable.getChecksum(getInformationAuthority()));
-        logChecksum("next agent id", ChecksumComparable.getChecksum(getNextAgentId()));
+        logChecksum("name", Checksums.SMART.getChecksum(getName()));
+        logChecksum("information authority", Checksums.SMART.getChecksum(getInformationAuthority()));
+        logChecksum("next agent id", Checksums.SMART.getChecksum(getNextAgentId()));
 
-        logChecksum("attributes", ChecksumComparable.getCollChecksum(getGroupAttributes()));
-        logChecksum("product attributes", ChecksumComparable.getCollChecksum(getProductRelatedGroupAttributes()));
-        logChecksum("awareness", ChecksumComparable.getChecksum(getAwarenessSupplyScheme()));
-        logChecksum("interest", ChecksumComparable.getChecksum(getInterestSupplyScheme()));
-        logChecksum("product finding scheme", ChecksumComparable.getChecksum(getProductFindingScheme()));
-        logChecksum("process finding scheme", ChecksumComparable.getChecksum(getProcessFindingScheme()));
+        logChecksum("spatial dist", Checksums.SMART.getChecksum(getSpatialDistribution()));
+        logChecksum("attributes", Checksums.SMART.getChecksum(getGroupAttributes()));
+        logChecksum("product attributes", Checksums.SMART.getChecksum(getProductRelatedGroupAttributes()));
+        logChecksum("awareness", Checksums.SMART.getChecksum(getAwarenessSupplyScheme()));
+        logChecksum("interest", Checksums.SMART.getChecksum(getInterestSupplyScheme()));
+        logChecksum("product finding scheme", Checksums.SMART.getChecksum(getProductFindingScheme()));
+        logChecksum("process finding scheme", Checksums.SMART.getChecksum(getProcessFindingScheme()));
 
-        logChecksum("agents", ChecksumComparable.getCollChecksum(getAgents()));
+        logChecksum("agents", Checksums.SMART.getChecksum(getAgents()));
     }
 
     @Override
@@ -213,6 +215,10 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
 
     public void setSpatialDistribution(SpatialDistribution spatialDistribution) {
         this.spatialDistribution = spatialDistribution;
+    }
+
+    public boolean hasSpatialDistribution() {
+        return spatialDistribution != null;
     }
 
     @Override

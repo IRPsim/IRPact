@@ -61,7 +61,7 @@ public class UnitStepDiscreteTimeModelPR extends BinaryPRBase<UnitStepDiscreteTi
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, UnitStepDiscreteTimeModel object, RestoreManager manager) throws RestoreException {
-        object.setEnvironment(manager.ensureGetInstanceOf(JadexSimulationEnvironment.class));
+        object.setEnvironment(getEnvironment(manager));
         object.setTimeAdvanceFunction(manager.ensureGet(data.getLong()));
     }
 }

@@ -1,11 +1,11 @@
 package de.unileipzig.irpact.io.param.input.agent.consumer;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentAnnualGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentDoubleGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
@@ -171,16 +171,22 @@ public class InNameSplitConsumerAgentAnnualGroupAttribute implements InIndepende
                 : parser.getSimulationYear();
 
         BasicConsumerAgentAnnualGroupAttribute aGrpAttr = (BasicConsumerAgentAnnualGroupAttribute) cag.getGroupAttribute(attributeName);
+
         if(aGrpAttr.hasYear(year)) {
-            throw ExceptionUtil.create(ParsingException::new, "cag '{}' attribute '{}' already has year '{}'", cag.getName(), aGrpAttr.getName(), year);
+            if(parser.isRestored()) {
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "annual attribute '{}' already has year '{}' -> skip", aGrpAttr.getName(), year);
+                return;
+            } else {
+                throw new ParsingException("cag '{}' attribute '{}' already has year '{}'", cag.getName(), aGrpAttr.getName(), year);
+            }
         }
 
         BasicConsumerAgentDoubleGroupAttribute yearAttr = new BasicConsumerAgentDoubleGroupAttribute();
         yearAttr.setName(getName() + "_" + year);
-        yearAttr.setArtificial(true);
+        yearAttr.setArtificial(false);
         yearAttr.setDistribution(parser.parseEntityTo(getDistribution()));
 
-        LOGGER.trace("add '{}' to annual attribute '{}' in cag '{}' for year '{}'", yearAttr.getName(), aGrpAttr.getName(), cag.getName(), year);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add '{}' to annual attribute '{}' in cag '{}' for year '{}'", yearAttr.getName(), aGrpAttr.getName(), cag.getName(), year);
         aGrpAttr.put(parser.getSimulationYear(), yearAttr);
     }
 }

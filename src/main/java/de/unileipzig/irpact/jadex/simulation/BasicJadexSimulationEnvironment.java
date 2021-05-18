@@ -45,7 +45,9 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     protected Settings settings;
     protected BinaryTaskManager taskManager;
     protected PersistenceModul persistenceModul;
+    protected ResourceLoader resourceLoader;
 
+    //components
     protected AgentManager agentManager;
     protected SocialNetwork socialNetwork;
     protected ProcessModelManager processModelManager;
@@ -53,7 +55,6 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     protected SpatialModel spatialModel;
     protected JadexTimeModel timeModel;
     protected JadexLifeCycleControl lifeCycleControl;
-    protected ResourceLoader resourceLoader;
 
     public BasicJadexSimulationEnvironment() {
     }

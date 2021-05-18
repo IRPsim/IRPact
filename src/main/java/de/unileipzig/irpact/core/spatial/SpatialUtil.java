@@ -1,10 +1,10 @@
 package de.unileipzig.irpact.core.spatial;
 
+import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialDoubleAttribute;
 import de.unileipzig.irpact.commons.util.ShareCalculator;
-import de.unileipzig.irpact.commons.util.data.DataCollection;
 import de.unileipzig.irpact.commons.util.data.DataType;
 import de.unileipzig.irpact.commons.util.data.LinkedDataCollection;
 import de.unileipzig.irpact.commons.util.table.Table;
@@ -68,6 +68,12 @@ public final class SpatialUtil {
                 .collect(Collectors.toList());
     }
 
+    private static List<String> collectKeys(List<SpatialAttribute> row) {
+        return row.stream()
+                .map(Nameable::getName)
+                .collect(Collectors.toList());
+    }
+
     private static SpatialDoubleAttribute secureGet(List<SpatialAttribute> row, String key) {
         for(SpatialAttribute attr: row) {
             if(Objects.equals(attr.getName(), key)) {
@@ -77,7 +83,7 @@ public final class SpatialUtil {
                 return (SpatialDoubleAttribute) attr;
             }
         }
-        throw new NoSuchElementException("attribute '" + key + "' not found");
+        throw new NoSuchElementException("attribute '" + key + "' not found (" + collectKeys(row) + ")");
     }
 
     public static List<SpatialInformation> mapToPoint2D(List<List<SpatialAttribute>> input, String xKey, String yKey) {
@@ -277,10 +283,5 @@ public final class SpatialUtil {
                     }
                 });
         return map;
-    }
-
-    public static void xxx(
-            Table<SpatialAttribute> spatialData) {
-
     }
 }

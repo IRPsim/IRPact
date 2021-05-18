@@ -157,6 +157,14 @@ public class JadexInputParser implements IRPactInputParser {
     }
 
     @Override
+    public void initLoggingOnly(InRoot root) {
+        reset();
+        this.root = root;
+        initLogging(root);
+        reset();
+    }
+
+    @Override
     public Object parseEntity(InIRPactEntity input) throws ParsingException {
         Holder holder = new Holder(input);
         if(CACHE.containsKey(holder)) {
@@ -242,6 +250,9 @@ public class JadexInputParser implements IRPactInputParser {
         runSpecialOperations(root);
     }
 
+    private void initLogging(InRoot root) {
+        root.general.parseLoggingSetup(this);
+    }
 
     private void checkVersion(InRoot root) throws ParsingException {
         InVersion inVersion = getInstance(root.version, InVersion.class, "missing Version");

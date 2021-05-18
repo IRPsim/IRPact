@@ -239,6 +239,9 @@ public final class IRPact implements IRPActAccess {
 //    }
 
     public void initialize() throws Exception {
+        initalizeLogging();
+        LOGGER.info(IRPSection.GENERAL, "initialize");
+
         if(hasPreviousState()) {
             restorPreviousSimulationEnvironment();
         } else {
@@ -247,6 +250,11 @@ public final class IRPact implements IRPActAccess {
 
         createGraphvizConfiguration();
         logSimulationInformations();
+    }
+
+    private void initalizeLogging() {
+        JadexInputParser parser = new JadexInputParser();
+        parser.initLoggingOnly(inRoot);
     }
 
     private void initializeNewSimulationEnvironment() throws Exception {

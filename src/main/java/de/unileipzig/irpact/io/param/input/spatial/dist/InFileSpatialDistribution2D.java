@@ -121,6 +121,12 @@ public class InFileSpatialDistribution2D implements InSpatialDistribution {
     public void setup(IRPactInputParser parser, Object input) throws ParsingException {
         JadexConsumerAgentGroup jCag = (JadexConsumerAgentGroup) input;
 
+        if(parser.isRestored() && jCag.hasSpatialDistribution()) {
+            DiscreteSpatialDistribution dist = (DiscreteSpatialDistribution) jCag.getSpatialDistribution();
+            update(parser, dist);
+            return;
+        }
+
         if(parser.isCached(this)) {
             SpatialDistribution dist = (SpatialDistribution) parser.getCached(this);
             jCag.setSpatialDistribution(dist);
@@ -141,5 +147,22 @@ public class InFileSpatialDistribution2D implements InSpatialDistribution {
         dist.addAll(infos);
         parser.cache(this, dist);
         jCag.setSpatialDistribution(dist);
+    }
+
+    public void update(IRPactInputParser parser, DiscreteSpatialDistribution dist) throws ParsingException {
+        if(parser.isCached(this)) {
+            return;
+        }
+
+        String xKey = getXPositionKey().getName();
+        String yKey = getYPositionKey().getName();
+
+        SpatialTableFileContent attrList = parser.parseEntityTo(getAttributeFile());
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList.content().listTable(), xKey, yKey);
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "call distribution '{}' {} times", dist.getName(), dist.getRequiredNumberOfCalls());
+        dist.addAll(infos);
+        dist.call();
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "disttribution '{}' called {} times", dist.getName(), dist.getNumberOfCalls());
     }
 }
