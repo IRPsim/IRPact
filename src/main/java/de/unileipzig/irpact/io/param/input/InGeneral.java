@@ -240,7 +240,9 @@ public class InGeneral implements Copyable {
         parseLifeCycleControl(parser);
     }
 
-    private void parseLoggingSetup(@SuppressWarnings("unused") InputParser parser) {
+    private void parseLoggingSetup(@SuppressWarnings("unused") InputParser p) {
+        IRPactInputParser parser = (IRPactInputParser) p;
+
         IRPLevel level = IRPLevel.get(logLevel);
         if(level == null) {
             LOGGER.warn("invalid log level {}, set level to default ({}) ", logLevel, IRPLevel.getDefault());
@@ -275,7 +277,9 @@ public class InGeneral implements Copyable {
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "logging sections: {}", filter.getSections());
     }
 
-    private void parseSeed(InputParser parser) {
+    private void parseSeed(InputParser p) {
+        IRPactInputParser parser = (IRPactInputParser) p;
+
         BasicJadexSimulationEnvironment env = (BasicJadexSimulationEnvironment) parser.getEnvironment();
         final Rnd rnd;
         if(seed == -1L) {
@@ -288,7 +292,9 @@ public class InGeneral implements Copyable {
         env.setSimulationRandom(rnd);
     }
 
-    private void parseLifeCycleControl(InputParser parser) {
+    private void parseLifeCycleControl(InputParser p) {
+        IRPactInputParser parser = (IRPactInputParser) p;
+
         BasicJadexLifeCycleControl lifeCycleControl = (BasicJadexLifeCycleControl) parser.getEnvironment().getLiveCycleControl();
         applyKillSwitch(lifeCycleControl);
 

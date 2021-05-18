@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.io.param.input.names;
 
-import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -57,10 +56,5 @@ public class InAttributeName implements InName {
 
     public String getName() {
         return _name;
-    }
-
-    @Override
-    public Object parse(InputParser parser) {
-        return this;
     }
 }

@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param.input.spatial;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.spatial.twodim.Space2D;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -146,7 +146,7 @@ public class InSpace2D implements InSpatialModel {
     }
 
     @Override
-    public Space2D parse(InputParser parser) throws ParsingException {
+    public Space2D parse(IRPactInputParser parser) throws ParsingException {
         Space2D space2D = new Space2D();
         space2D.setEnvironment(parser.getEnvironment());
         space2D.setName(getName());

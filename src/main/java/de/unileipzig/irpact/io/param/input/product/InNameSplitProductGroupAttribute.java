@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.product.BasicProductGroup;
 import de.unileipzig.irpact.core.product.attribute.BasicProductDoubleGroupAttribute;
 import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -76,7 +77,8 @@ public class InNameSplitProductGroupAttribute implements InIndependentProductGro
     }
 
     @Override
-    public InProductGroup getProductGroup(InputParser parser) throws ParsingException {
+    public InProductGroup getProductGroup(InputParser p) throws ParsingException {
+        IRPactInputParser parser = (IRPactInputParser) p;
         return parser.getRoot().getProductGroup(getProductGroupName());
     }
 
@@ -95,7 +97,7 @@ public class InNameSplitProductGroupAttribute implements InIndependentProductGro
     }
 
     @Override
-    public void setup(InputParser parser, Object input) throws ParsingException {
+    public void setup(IRPactInputParser parser, Object input) throws ParsingException {
         InProductGroup inPg = getProductGroup(parser);
         BasicProductGroup pg = parser.parseEntityTo(inPg);
 

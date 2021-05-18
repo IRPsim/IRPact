@@ -5,7 +5,7 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -75,7 +75,7 @@ public class InSpatialTableFile implements InFile {
     }
 
     @Override
-    public SpatialTableFileContent parse(InputParser parser) throws ParsingException {
+    public SpatialTableFileContent parse(IRPactInputParser parser) throws ParsingException {
         try {
             String fileName = getFileNameWithoutExtension();
             SpatialTableFileLoader gisLoader = new SpatialTableFileLoader();

@@ -63,5 +63,7 @@ public interface AgentManager extends InitalizablePart {
 
     ConsumerAgentGroupAffinityMapping getConsumerAgentGroupAffinityMapping();
 
+    boolean hasConsumerAgentGroupAffinityMapping();
+
     void setConsumerAgentGroupAffinityMapping(ConsumerAgentGroupAffinityMapping affinityMapping);
 }

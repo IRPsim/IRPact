@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.start.irpact.modes;
 
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.irpact.IRPactExecutor;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -26,7 +27,7 @@ public final class RunFully implements IRPactExecutor {
 
     @Override
     public void execute(IRPact irpact) throws Exception {
-        LOGGER.info("execute IRPact fully");
+        LOGGER.info(IRPSection.GENERAL, "execute IRPact fully");
 
         //Phase 1: initialization
         irpact.initialize();

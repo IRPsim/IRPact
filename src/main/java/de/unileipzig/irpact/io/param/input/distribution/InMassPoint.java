@@ -1,9 +1,7 @@
 package de.unileipzig.irpact.io.param.input.distribution;
 
 import de.unileipzig.irpact.commons.util.data.weighted.WeightedDouble;
-import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.io.param.input.InEntity;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -20,7 +18,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InMassPoint implements InEntity {
+public class InMassPoint implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -82,11 +80,6 @@ public class InMassPoint implements InEntity {
 
     public WeightedDouble toWeightedDouble() {
         return new WeightedDouble(getValue(), getWeight());
-    }
-
-    @Override
-    public Object parse(InputParser parser) throws ParsingException {
-        return this;
     }
 
     @Override

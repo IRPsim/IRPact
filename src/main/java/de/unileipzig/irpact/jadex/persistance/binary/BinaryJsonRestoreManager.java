@@ -12,9 +12,11 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
 import de.unileipzig.irpact.jadex.persistance.binary.io.BinaryPersistJson;
 import de.unileipzig.irpact.jadex.persistance.binary.meta.ClassManagerPR;
 import de.unileipzig.irpact.jadex.persistance.binary.meta.SettingsPR;
+import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -75,8 +77,8 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         restoreHelper.setYear(year);
     }
 
-    public void setParser(InputParser parser) {
-        restoreHelper.setParser(parser);
+    public void setUpdater(JadexRestoreUpdater updater) {
+        restoreHelper.setUpdater(updater);
     }
 
     public <T> boolean register(BinaryRestorer<T> restorer) {
@@ -218,11 +220,10 @@ public class BinaryJsonRestoreManager implements RestoreManager {
 
     protected void updateRestoredEnvironment() throws RestoreException {
         try {
+            JadexRestoreUpdater updater = restoreHelper.getUpdater();
             SimulationEnvironment env = getRestoredInstance();
-            restoreHelper.getParser().parseRootAndUpdate(
-                    restoreHelper.getInRoot(),
-                    env
-            );
+            updater.setEnvironment((BasicJadexSimulationEnvironment) env);
+            env = updater.parseRoot(restoreHelper.getInRoot());
             env.getSettings().setFirstSimulationYear(restoreHelper.getYear());
             env.getSettings().apply(restoreHelper.getOptions());
         } catch (ParsingException e) {

@@ -9,7 +9,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
  * @author Daniel Abitz
  */
 @Definition
-public interface InEntity extends Copyable {
+public interface InEntity<T extends InputParser> extends Copyable {
 
     static void initRes(TreeAnnotationResource res) {
     }
@@ -22,15 +22,15 @@ public interface InEntity extends Copyable {
         return false;
     }
 
-    default Object parse(InputParser parser) throws ParsingException {
+    default Object parse(T parser) throws ParsingException {
         throw new UnsupportedOperationException();
     }
 
-    default void setup(InputParser parser, Object input) throws ParsingException {
+    default void setup(T parser, Object input) throws ParsingException {
         throw new UnsupportedOperationException();
     }
 
-    default void update(InputParser parser, Object input) throws ParsingException {
+    default void update(T parser, Object input) throws ParsingException {
         throw new UnsupportedOperationException();
     }
 }

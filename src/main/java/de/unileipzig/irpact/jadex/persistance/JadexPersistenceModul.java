@@ -12,7 +12,7 @@ import de.unileipzig.irpact.core.persistence.PersistenceModul;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
@@ -72,11 +72,11 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
     public SimulationEnvironment restore(
             MainCommandLineOptions options,
             int year,
-            InputParser parser,
+            JadexRestoreUpdater updater,
             InRoot root) throws Exception {
         switch (getModus()) {
             case BINARY:
-                return restoreBinary(options, year, parser, root);
+                return restoreBinary(options, year, updater, root);
 
             case PARAMETER:
                 throw new UnsupportedOperationException();
@@ -132,7 +132,7 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
     public SimulationEnvironment restoreBinary(
             MainCommandLineOptions options,
             int year,
-            InputParser parser,
+            JadexRestoreUpdater updater,
             InRoot root) throws IOException, RestoreException {
         if(!root.hasBinaryPersistData()) {
             throw new RestoreException("nothing to restore");
@@ -142,7 +142,7 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
         binaryRestore.setCommandLineOptions(options);
         binaryRestore.setInRoot(root);
         binaryRestore.setYear(year);
-        binaryRestore.setParser(parser);
+        binaryRestore.setUpdater(updater);
 
         List<BinaryJsonData> dataList = new ArrayList<>();
         for(BinaryPersistData bpd: root.binaryPersistData) {

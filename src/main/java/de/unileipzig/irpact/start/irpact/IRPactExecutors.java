@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.start.irpact;
 
-import de.unileipzig.irpact.start.irpact.modes.RunWithoutSimulation;
-import de.unileipzig.irpact.start.irpact.modes.RunFully;
+import de.unileipzig.irpact.start.irpact.modes.*;
 
 /**
  * @author Daniel Abitz
@@ -20,6 +19,15 @@ public final class IRPactExecutors {
 
             case RunWithoutSimulation.ID:
                 return RunWithoutSimulation.INSTANCE;
+
+            case TestMode.ID:
+                return TestMode.INSTANCE;
+
+            case PrintInput.ID:
+                return PrintInput.INSTANCE;
+
+            case ThrowError.ID:
+                return ThrowError.INSTANCE;
 
             default:
                 throw new IllegalArgumentException("unsupported id: " + id);

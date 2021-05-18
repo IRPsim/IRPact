@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.io.param.input.InEntity;
+import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -24,7 +24,7 @@ public final class ParamUtil {
     private ParamUtil() {
     }
 
-    public static String concData(InEntity first, InEntity second) {
+    public static String concData(InIRPactEntity first, InIRPactEntity second) {
         return concData(first.getName(), second.getName());
     }
 
@@ -36,7 +36,7 @@ public final class ParamUtil {
         return first + DATA_DELIMITER + second;
     }
 
-    public static String concName(InEntity first, InEntity second) {
+    public static String concName(InIRPactEntity first, InIRPactEntity second) {
         return concName(first.getName(), second.getName());
     }
 
@@ -64,15 +64,15 @@ public final class ParamUtil {
         return parts[part];
     }
 
-    public static <T extends InEntity> Predicate<T> startWithFilter(InEntity e) {
+    public static <T extends InIRPactEntity> Predicate<T> startWithFilter(InIRPactEntity e) {
         return startWithFilter(e.getName());
     }
 
-    public static <T extends InEntity> Predicate<T> startWithFilter(Nameable n) {
+    public static <T extends InIRPactEntity> Predicate<T> startWithFilter(Nameable n) {
         return startWithFilter(n.getName());
     }
 
-    public static <T extends InEntity> Predicate<T> startWithFilter(String name) {
+    public static <T extends InIRPactEntity> Predicate<T> startWithFilter(String name) {
         return n -> {
             if(n == null) {
                 return false;
@@ -168,11 +168,11 @@ public final class ParamUtil {
                 : arr.length;
     }
 
-    public static <T extends InEntity> T getEntityByName(T[] entities, String name) {
+    public static <T extends InIRPactEntity> T getEntityByName(T[] entities, String name) {
         return getEntityByName(entities, name, null);
     }
 
-    public static <T extends InEntity> T getEntityByName(T[] entities, String name, T defaultEntity) {
+    public static <T extends InIRPactEntity> T getEntityByName(T[] entities, String name, T defaultEntity) {
         if(entities == null) {
             return defaultEntity;
         }

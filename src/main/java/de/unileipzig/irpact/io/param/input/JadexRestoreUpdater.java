@@ -1,14 +1,15 @@
 package de.unileipzig.irpact.io.param.input;
 
+import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.commons.util.data.MutableInt;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
-import de.unileipzig.irpact.core.agent.consumer.*;
+import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentProductRelatedGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentDoubleGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
@@ -28,6 +29,7 @@ import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
 import de.unileipzig.irpact.core.simulation.BasicSettings;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.simulation.BinaryTaskManager;
+import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -36,9 +38,9 @@ import de.unileipzig.irpact.io.param.input.agent.population.InPopulationSize;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
+import de.unileipzig.irpact.io.param.input.product.InFixProduct;
 import de.unileipzig.irpact.io.param.input.product.InIndependentProductGroupAttribute;
 import de.unileipzig.irpact.io.param.input.product.InProductGroup;
-import de.unileipzig.irpact.io.param.input.product.InFixProduct;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
@@ -59,9 +61,9 @@ import static de.unileipzig.irpact.core.process.ra.RAConstants.*;
  * @author Daniel Abitz
  */
 @SuppressWarnings("SameParameterValue")
-public class JadexInputParser implements IRPactInputParser {
+public class JadexRestoreUpdater implements IRPactInputParser {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(JadexInputParser.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(JadexRestoreUpdater.class);
 
     private final Map<Holder, Object> CACHE = new LinkedHashMap<>();
     private ResourceLoader resourceLoader;
@@ -70,12 +72,15 @@ public class JadexInputParser implements IRPactInputParser {
     private BasicJadexSimulationEnvironment environment;
     private InRoot root;
 
-    public JadexInputParser() {
+    public JadexRestoreUpdater() {
     }
 
     private void validate() {
         if(resourceLoader == null) {
-            throw new NoSuchElementException("no resource loader");
+            throw new NullPointerException("no resource loader");
+        }
+        if(environment == null) {
+            throw new NoSuchElementException("missing restored enironment");
         }
         if(simulationYear.isEmpty()) {
             throw new NoSuchElementException("missing simulation year");
@@ -84,15 +89,15 @@ public class JadexInputParser implements IRPactInputParser {
 
     private void reset() {
         CACHE.clear();
-
-        environment = new BasicJadexSimulationEnvironment();
-        environment.setName("Initial_Environment");
-        environment.initDefault();
     }
 
     @Override
     public JadexSimulationEnvironment getEnvironment() {
         return environment;
+    }
+
+    public void setEnvironment(BasicJadexSimulationEnvironment environment) {
+        this.environment = environment;
     }
 
     @Override
@@ -149,7 +154,7 @@ public class JadexInputParser implements IRPactInputParser {
     }
 
     @Override
-    public JadexSimulationEnvironment parseRoot(InRoot root) throws ParsingException {
+    public SimulationEnvironment parseRoot(InRoot root) throws ParsingException {
         validate();
         reset();
         this.root = root;

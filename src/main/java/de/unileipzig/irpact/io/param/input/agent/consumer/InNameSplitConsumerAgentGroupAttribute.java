@@ -6,6 +6,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentDoubleGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -88,7 +89,8 @@ public class InNameSplitConsumerAgentGroupAttribute implements InIndependentCons
     }
 
     @Override
-    public InConsumerAgentGroup getConsumerAgentGroup(InputParser parser) throws ParsingException {
+    public InConsumerAgentGroup getConsumerAgentGroup(InputParser p) throws ParsingException {
+        IRPactInputParser parser = (IRPactInputParser) p;
         String name = getConsumerAgentGroupName();
         InRoot root = parser.getRoot();
         return root.findConsumerAgentGroup(name);
@@ -114,7 +116,7 @@ public class InNameSplitConsumerAgentGroupAttribute implements InIndependentCons
     }
 
     @Override
-    public void setup(InputParser parser, Object input) throws ParsingException {
+    public void setup(IRPactInputParser parser, Object input) throws ParsingException {
         final ConsumerAgentGroup cag;
         if(input instanceof ConsumerAgentGroup) {
             cag = (ConsumerAgentGroup) input;

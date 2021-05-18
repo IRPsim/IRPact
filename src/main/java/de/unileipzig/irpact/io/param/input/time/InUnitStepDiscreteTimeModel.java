@@ -2,7 +2,7 @@ package de.unileipzig.irpact.io.param.input.time;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.UnitStepDiscreteTimeModel;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -207,7 +207,7 @@ public class InUnitStepDiscreteTimeModel implements InTimeModel {
     }
 
     @Override
-    public UnitStepDiscreteTimeModel parse(InputParser parser) throws ParsingException {
+    public UnitStepDiscreteTimeModel parse(IRPactInputParser parser) throws ParsingException {
         UnitStepDiscreteTimeModel timeModel = new UnitStepDiscreteTimeModel();
         timeModel.setName(getName());
         timeModel.setEnvironment((JadexSimulationEnvironment) parser.getEnvironment());

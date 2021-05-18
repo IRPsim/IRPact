@@ -224,6 +224,10 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         this.awarenessSupplyScheme = awarenessSupplyScheme;
     }
 
+    public boolean hasAwarenessSupplyScheme() {
+        return awarenessSupplyScheme != null;
+    }
+
     @Override
     public ProductAwarenessSupplyScheme getAwarenessSupplyScheme() {
         return awarenessSupplyScheme;
@@ -231,6 +235,10 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
 
     public void setInterestSupplyScheme(ProductInterestSupplyScheme awarenessSupplyScheme) {
         this.interestsSupplyScheme = awarenessSupplyScheme;
+    }
+
+    public boolean hasInterestSupplyScheme() {
+        return interestsSupplyScheme != null;
     }
 
     @Override

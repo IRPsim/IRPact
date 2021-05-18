@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.product.FixProductFindingScheme;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -81,7 +81,7 @@ public class InFixProductFindingScheme implements InProductFindingScheme {
     }
 
     @Override
-    public Object parse(InputParser parser) throws ParsingException {
+    public Object parse(IRPactInputParser parser) throws ParsingException {
         FixProductFindingScheme scheme = new FixProductFindingScheme();
         scheme.setName(getName());
 

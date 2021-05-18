@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param.input.network;
 import de.unileipzig.irpact.commons.eval.Inverse;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.spatial.BasicDistanceEvaluator;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -71,7 +71,7 @@ public class InInverse implements InDistanceEvaluator {
     }
 
     @Override
-    public BasicDistanceEvaluator parse(InputParser parser) throws ParsingException {
+    public BasicDistanceEvaluator parse(IRPactInputParser parser) throws ParsingException {
         return new BasicDistanceEvaluator(new Inverse());
     }
 

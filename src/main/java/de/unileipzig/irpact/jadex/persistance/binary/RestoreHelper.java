@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.jadex.persistance.binary;
 
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 
 import java.util.NoSuchElementException;
@@ -14,7 +14,7 @@ public final class RestoreHelper {
     private MainCommandLineOptions options;
     private int year;
     private InRoot root;
-    private InputParser parser;
+    private JadexRestoreUpdater updater;
     private ClassManager classManager;
     private boolean printLoggableOnPersist;
 
@@ -24,7 +24,7 @@ public final class RestoreHelper {
     public void clear() {
         options = null;
         root = null;
-        parser = null;
+        updater = null;
         classManager = null;
     }
 
@@ -55,14 +55,14 @@ public final class RestoreHelper {
         return root;
     }
 
-    public void setParser(InputParser parser) {
-        this.parser = parser;
+    public void setUpdater(JadexRestoreUpdater updater) {
+        this.updater = updater;
     }
-    public InputParser getParser() {
-        if(parser == null) {
-            throw new NoSuchElementException("InputParser");
+    public JadexRestoreUpdater getUpdater() {
+        if(updater == null) {
+            throw new NoSuchElementException("JadexRestoreUpdater");
         }
-        return parser;
+        return updater;
     }
 
     public void setClassManager(ClassManager classManager) {

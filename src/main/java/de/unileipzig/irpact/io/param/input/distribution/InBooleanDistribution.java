@@ -5,7 +5,7 @@ import de.unileipzig.irpact.commons.distribution.BooleanDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -96,7 +96,7 @@ public class InBooleanDistribution implements InUnivariateDoubleDistribution {
     }
 
     @Override
-    public Object parse(InputParser parser) throws ParsingException {
+    public Object parse(IRPactInputParser parser) throws ParsingException {
         BooleanDistribution dist = new BooleanDistribution();
         dist.setName(getName());
         dist.setFalseValue(getFalseValue());

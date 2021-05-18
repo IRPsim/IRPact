@@ -3,6 +3,7 @@ package de.unileipzig.irpact.core.persistence;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 
@@ -18,6 +19,6 @@ public interface PersistenceModul {
     SimulationEnvironment restore(
             MainCommandLineOptions options,
             int year,
-            InputParser parser,
+            JadexRestoreUpdater updater,
             InRoot root) throws Exception;
 }

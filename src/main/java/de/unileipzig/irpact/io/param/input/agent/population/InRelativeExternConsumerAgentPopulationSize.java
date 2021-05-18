@@ -11,6 +11,7 @@ import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -192,7 +193,7 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
     }
 
     @Override
-    public void setup(InputParser parser, Object input) throws ParsingException {
+    public void setup(IRPactInputParser parser, Object input) throws ParsingException {
         Settings initData = ParamUtil.castTo(input, Settings.class);
         final List<ConsumerAgentGroup> cags = parseCags(parser);
         checkConsumerAgentGroupExistence(cags, initData);

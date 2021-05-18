@@ -6,7 +6,7 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.develop.AddToRoot;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -88,7 +88,7 @@ public class InUniformUnivariateDoubleDistribution implements InUnivariateDouble
     }
 
     @Override
-    public UniformUnivariateDoubleDistribution parse(InputParser parser) throws ParsingException {
+    public UniformUnivariateDoubleDistribution parse(IRPactInputParser parser) throws ParsingException {
         UniformUnivariateDoubleDistribution dist = new UniformUnivariateDoubleDistribution();
         dist.setName(getName());
         dist.setLowerBound(getLowerBound());

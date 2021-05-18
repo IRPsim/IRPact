@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param.input.network;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.CompleteGraphTopology;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -76,7 +76,7 @@ public class InCompleteGraphTopology implements InGraphTopologyScheme {
     }
 
     @Override
-    public CompleteGraphTopology parse(InputParser parser) throws ParsingException {
+    public CompleteGraphTopology parse(IRPactInputParser parser) throws ParsingException {
         return new CompleteGraphTopology(SocialGraph.Type.COMMUNICATION, getName(), getInitialWeight());
     }
 }

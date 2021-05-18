@@ -6,7 +6,7 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.filter.RAProcessPlanMaxDistanceFilterScheme;
 import de.unileipzig.irpact.develop.PotentialProblem;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -100,7 +100,7 @@ public class InRAProcessPlanMaxDistanceFilterScheme implements InRAProcessPlanNo
     }
 
     @Override
-    public Object parse(InputParser parser) throws ParsingException {
+    public Object parse(IRPactInputParser parser) throws ParsingException {
         if(getMaxDistance() < 0) {
             throw ExceptionUtil.create(ParsingException::new, "max distance {} < 0", getMaxDistance());
         }

@@ -5,7 +5,7 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
 import de.unileipzig.irpact.core.process.ra.npv.PVFileLoader;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -75,7 +75,7 @@ public class InPVFile implements InFile {
     }
 
     @Override
-    public NPVXlsxData parse(InputParser parser) throws ParsingException {
+    public NPVXlsxData parse(IRPactInputParser parser) throws ParsingException {
         try {
             String fileName = getFileNameWithoutExtension();
             PVFileLoader pvLoader = new PVFileLoader();

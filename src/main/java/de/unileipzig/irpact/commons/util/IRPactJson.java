@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.smile.databind.SmileMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import de.unileipzig.irpact.commons.log.LazyPrinter;
+import de.unileipzig.irpact.commons.log.LazyToString;
 import de.unileipzig.irptools.util.Util;
 
 import java.io.BufferedReader;
@@ -44,6 +46,26 @@ public final class IRPactJson {
 
     public static String toString(JsonNode node, ObjectMapper mapper) {
         return Util.printJson(mapper, node);
+    }
+
+    public static String toString(JsonNode node, ObjectMapper mapper, PrettyPrinter printer) {
+        return Util.printJson(mapper, node, printer);
+    }
+
+    public static LazyToString toLazyString(JsonNode node) {
+        return new LazyPrinter(() -> toString(node));
+    }
+
+    public static LazyToString toLazyString(JsonNode node, PrettyPrinter printer) {
+        return new LazyPrinter(() -> toString(node, printer));
+    }
+
+    public static LazyToString toLazyString(JsonNode node, ObjectMapper mapper) {
+        return new LazyPrinter(() -> toString(node, mapper));
+    }
+
+    public static LazyToString toLazyString(JsonNode node, ObjectMapper mapper, PrettyPrinter printer) {
+        return new LazyPrinter(() -> toString(node, mapper, printer));
     }
 
     public static byte[] toBytes(ObjectMapper mapper, JsonNode node) throws IOException {

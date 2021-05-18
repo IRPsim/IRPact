@@ -11,6 +11,7 @@ import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
@@ -291,7 +292,7 @@ public class InRAProcessModel implements InProcessModel {
     }
 
     @Override
-    public Object parse(InputParser parser) throws ParsingException {
+    public Object parse(IRPactInputParser parser) throws ParsingException {
         RAModelData data = new RAModelData();
         data.setA(getA());
         data.setB(getB());

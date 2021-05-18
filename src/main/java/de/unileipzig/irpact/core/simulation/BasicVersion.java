@@ -23,8 +23,8 @@ public final class BasicVersion implements Version {
         set(major, minor, build);
     }
 
-    public void setFunctional(String text) {
-        String[] parts = text.split("_");
+    public void set(String versionText) {
+        String[] parts = versionText.split("_");
         if(parts.length == 3) {
             major = parts[0];
             minor = parts[1];

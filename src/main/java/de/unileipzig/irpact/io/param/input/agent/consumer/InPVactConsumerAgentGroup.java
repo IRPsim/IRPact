@@ -9,6 +9,7 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.product.awareness.ProductBinaryAwarenessSupplyScheme;
 import de.unileipzig.irpact.core.product.interest.ProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
@@ -302,7 +303,11 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
     }
 
     @Override
-    public JadexConsumerAgentGroup parse(InputParser parser) throws ParsingException {
+    public JadexConsumerAgentGroup parse(IRPactInputParser parser) throws ParsingException {
+        if(parser.isRestored() && parser.getEnvironment().getAgents().hasConsumerAgentGroup(getName())) {
+            JadexConsumerAgentGroup jcag = (JadexConsumerAgentGroup) parser.getEnvironment().getAgents().getConsumerAgentGroup(getName());
+            return updateRestored(parser, jcag);
+        }
 
         AgentManager agentManager = parser.getEnvironment().getAgents();
 
@@ -322,42 +327,45 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added JadexConsumerAgentGroup '{}'", jcag.getName());
         }
 
-        addGroupAttribute(parser, jcag, getNoveltySeeking(), NOVELTY_SEEKING);
-        addGroupAttribute(parser, jcag, getDependentJudgmentMaking(), DEPENDENT_JUDGMENT_MAKING);
-        addGroupAttribute(parser, jcag, getEnvironmentalConcern(), ENVIRONMENTAL_CONCERN);
-        addGroupAttribute(parser, jcag, getFinancialThreshold(), FINANCIAL_THRESHOLD);
-        addGroupAttribute(parser, jcag, getAdoptionThreshold(), ADOPTION_THRESHOLD);
-        addGroupAttribute(parser, jcag, getCommunication(), COMMUNICATION_FREQUENCY_SN);
-        addGroupAttribute(parser, jcag, getRewire(), REWIRING_RATE);
-        addGroupAttribute(parser, jcag, getInitialAdopter(), INITIAL_ADOPTER);
-        addGroupAttribute(parser, jcag, getRateOfConvergence(), RATE_OF_CONVERGENCE);
-        addGroupAttribute(parser, jcag, getInitialProductInterest(), INITIAL_PRODUCT_INTEREST);
-        addGroupAttribute(parser, jcag, getInitialProductAwareness(), INITIAL_PRODUCT_AWARENESS);
-        addGroupAttribute(parser, jcag, getInterestThreshold(), INTEREST_THRESHOLD);
-        addGroupAttribute(parser, jcag, getConstructionRate(), CONSTRUCTION_RATE);
-        addGroupAttribute(parser, jcag, getRenovationRate(), RENOVATION_RATE);
-
-        if(a1 != null) addGroupAttribute(parser, jcag, a1, PURCHASE_POWER);
-        if(a5 != null) addGroupAttribute(parser, jcag, a5, SHARE_1_2_HOUSE);
-        if(a6 != null) addGroupAttribute(parser, jcag, a6, HOUSE_OWNER);
-
-        ProductBinaryAwarenessSupplyScheme awarenessSupplyScheme = new ProductBinaryAwarenessSupplyScheme();
-        awarenessSupplyScheme.setName(ParamUtil.concName(jcag.getName(), AWARENESS));
-        jcag.setAwarenessSupplyScheme(awarenessSupplyScheme);
-
-        ProductThresholdInterestSupplyScheme interestSupplyScheme = new ProductThresholdInterestSupplyScheme();
-        interestSupplyScheme.setName(ParamUtil.concName(jcag.getName(), INTEREST));
-        jcag.setInterestSupplyScheme(interestSupplyScheme);
-
+        addGroupAttributes(parser, jcag, false);
+        addSupplySchemes(jcag, false);
         getSpatialDistribution().setup(parser, jcag);
-
         handleCustomAnnual(parser, jcag);
 
         return jcag;
     }
 
-    private void handleCustomAnnual(InputParser parser, JadexConsumerAgentGroup jcag) throws ParsingException {
-        LOGGER.trace("handle dummy annuals: {}", dummyAnnuals == null ? -1 : dummyAnnuals.length);
+    public JadexConsumerAgentGroup updateRestored(IRPactInputParser parser, JadexConsumerAgentGroup restored) throws ParsingException {
+        addGroupAttributes(parser, restored, true);
+        addSupplySchemes(restored, true);
+        getSpatialDistribution().setup(parser, restored);
+        handleCustomAnnual(parser, restored);
+        return restored;
+    }
+
+    private void addGroupAttributes(IRPactInputParser parser, JadexConsumerAgentGroup jcag, boolean restored) throws ParsingException {
+        addGroupAttribute(parser, jcag, getNoveltySeeking(), NOVELTY_SEEKING, restored);
+        addGroupAttribute(parser, jcag, getDependentJudgmentMaking(), DEPENDENT_JUDGMENT_MAKING, restored);
+        addGroupAttribute(parser, jcag, getEnvironmentalConcern(), ENVIRONMENTAL_CONCERN, restored);
+        addGroupAttribute(parser, jcag, getFinancialThreshold(), FINANCIAL_THRESHOLD, restored);
+        addGroupAttribute(parser, jcag, getAdoptionThreshold(), ADOPTION_THRESHOLD, restored);
+        addGroupAttribute(parser, jcag, getCommunication(), COMMUNICATION_FREQUENCY_SN, restored);
+        addGroupAttribute(parser, jcag, getRewire(), REWIRING_RATE, restored);
+        addGroupAttribute(parser, jcag, getInitialAdopter(), INITIAL_ADOPTER, restored);
+        addGroupAttribute(parser, jcag, getRateOfConvergence(), RATE_OF_CONVERGENCE, restored);
+        addGroupAttribute(parser, jcag, getInitialProductInterest(), INITIAL_PRODUCT_INTEREST, restored);
+        addGroupAttribute(parser, jcag, getInitialProductAwareness(), INITIAL_PRODUCT_AWARENESS, restored);
+        addGroupAttribute(parser, jcag, getInterestThreshold(), INTEREST_THRESHOLD, restored);
+        addGroupAttribute(parser, jcag, getConstructionRate(), CONSTRUCTION_RATE, restored);
+        addGroupAttribute(parser, jcag, getRenovationRate(), RENOVATION_RATE, restored);
+
+        if(a1 != null) addGroupAttribute(parser, jcag, a1, PURCHASE_POWER, restored);
+        if(a5 != null) addGroupAttribute(parser, jcag, a5, SHARE_1_2_HOUSE, restored);
+        if(a6 != null) addGroupAttribute(parser, jcag, a6, HOUSE_OWNER, restored);
+    }
+
+    private void handleCustomAnnual(IRPactInputParser parser, JadexConsumerAgentGroup jcag) throws ParsingException {
+        LOGGER.trace("handle annual ConsumerAgentGroupAttributes: {}", dummyAnnuals == null ? -1 : dummyAnnuals.length);
         if(dummyAnnuals != null) {
             for(InGeneralConsumerAgentAnnualGroupAttribute dummyAnnual: dummyAnnuals) {
                 dummyAnnual.setup(parser, jcag);
@@ -369,9 +377,15 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
             InputParser parser,
             JadexConsumerAgentGroup jcag,
             InUnivariateDoubleDistribution inDist,
-            String name) throws ParsingException {
+            String name,
+            boolean restored) throws ParsingException {
         if(jcag.hasGroupAttribute(name)) {
-            throw new ParsingException("ConsumerAgentGroupAttribute '" + name + "' already exists in " + jcag.getName());
+            if(restored) {
+                LOGGER.trace("restored ConsumerAgentGroup '{}' already has ConsumerAgentGroupAttribute '{}'", jcag.getName(), name);
+                return;
+            } else {
+                throw new ParsingException("ConsumerAgentGroupAttribute '" + name + "' already exists in " + jcag.getName());
+            }
         }
 
         UnivariateDoubleDistribution dist = parser.parseEntityTo(inDist);
@@ -392,5 +406,31 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         cagAttr.setDistribution(dist);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), cagAttr.getName(), jcag.getName());
         jcag.addGroupAttribute(cagAttr);
+    }
+
+    private void addSupplySchemes(JadexConsumerAgentGroup jcag, boolean restored) throws ParsingException {
+        if(jcag.hasAwarenessSupplyScheme()) {
+            if(restored) {
+                LOGGER.trace("restored ConsumerAgentGroup '{}' already has an AwarenessSupplyScheme '{}'", jcag.getName(), jcag.getAwarenessSupplyScheme().getName());
+            } else {
+                throw new ParsingException("ConsumerAgentGroup '{}' already has an AwarenessSupplyScheme '{}'", jcag.getName(), jcag.getAwarenessSupplyScheme().getName());
+            }
+        } else {
+            ProductBinaryAwarenessSupplyScheme awarenessSupplyScheme = new ProductBinaryAwarenessSupplyScheme();
+            awarenessSupplyScheme.setName(ParamUtil.concName(jcag.getName(), AWARENESS));
+            jcag.setAwarenessSupplyScheme(awarenessSupplyScheme);
+        }
+
+        if(jcag.hasInterestSupplyScheme()) {
+            if(restored) {
+                LOGGER.trace("restored ConsumerAgentGroup '{}' already has an InterestSupplyScheme '{}'", jcag.getName(), jcag.getAwarenessSupplyScheme().getName());
+            } else {
+                throw new ParsingException("ConsumerAgentGroup '{}' already has an InterestSupplyScheme '{}'", jcag.getName(), jcag.getAwarenessSupplyScheme().getName());
+            }
+        } else {
+            ProductThresholdInterestSupplyScheme interestSupplyScheme = new ProductThresholdInterestSupplyScheme();
+            interestSupplyScheme.setName(ParamUtil.concName(jcag.getName(), INTEREST));
+            jcag.setInterestSupplyScheme(interestSupplyScheme);
+        }
     }
 }

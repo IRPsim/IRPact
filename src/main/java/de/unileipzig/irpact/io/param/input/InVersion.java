@@ -18,7 +18,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
  * @author Daniel Abitz
  */
 @Definition
-public class InVersion implements InEntity {
+public class InVersion implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -76,9 +76,9 @@ public class InVersion implements InEntity {
     }
 
     @Override
-    public BasicVersion parse(InputParser parser) throws ParsingException {
+    public BasicVersion parse(IRPactInputParser parser) throws ParsingException {
         BasicVersion version = new BasicVersion();
-        version.setFunctional(getVersion());
+        version.set(getVersion());
         return version;
     }
 }

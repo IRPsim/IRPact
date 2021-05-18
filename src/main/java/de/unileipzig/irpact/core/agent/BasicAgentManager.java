@@ -93,6 +93,11 @@ public class BasicAgentManager implements AgentManager {
     }
 
     @Override
+    public boolean hasConsumerAgentGroupAffinityMapping() {
+        return affinityMapping != null;
+    }
+
+    @Override
     public ConsumerAgentGroupAffinityMapping getConsumerAgentGroupAffinityMapping() {
         return affinityMapping;
     }

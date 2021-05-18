@@ -10,7 +10,7 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.FreeNetworkTopology;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -137,7 +137,7 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
     }
 
     @Override
-    public Object parse(InputParser parser) throws ParsingException {
+    public Object parse(IRPactInputParser parser) throws ParsingException {
         Map<ConsumerAgentGroup, Integer> edgeCountMap = new LinkedHashMap<>();
         for(InNumberOfTies entry: getNumberOfTies()) {
             for(InConsumerAgentGroup inCag: entry.getConsumerAgentGroups()) {

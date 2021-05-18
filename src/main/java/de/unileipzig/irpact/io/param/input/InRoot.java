@@ -6,8 +6,8 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.io.param.SimpleCopyCache;
 import de.unileipzig.irpact.io.param.IOResources;
-import de.unileipzig.irpact.io.param.LocData;
 import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.io.param.input.affinity.InAffinites;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InNameSplitAffinityEntry;
@@ -43,7 +43,6 @@ import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irpact.start.optact.in.*;
 import de.unileipzig.irpact.start.optact.network.IGraphTopology;
-import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.defstructure.AnnotationResource;
 import de.unileipzig.irptools.defstructure.ParserInput;
 import de.unileipzig.irptools.defstructure.RootClass;
@@ -61,8 +60,6 @@ import de.unileipzig.irptools.util.Util;
 
 import java.nio.file.Path;
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import static de.unileipzig.irpact.io.param.IOConstants.*;
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
@@ -111,6 +108,16 @@ public class InRoot implements RootClass {
     //=========================
     //affinity
     //=========================
+
+    @FieldDefinition
+    public InAffinites[] affinities;
+
+    public void setAffinities(InAffinites affinities) {
+        this.affinities = new InAffinites[]{affinities};
+    }
+    public InAffinites getAffinities() throws ParsingException {
+        return getInstance(affinities, "affinities");
+    }
 
     @FieldDefinition
     public InAffinityEntry[] affinityEntries = new InComplexAffinityEntry[0];
@@ -536,6 +543,7 @@ public class InRoot implements RootClass {
     //=========================
 
     public static final List<ParserInput> INPUT_WITHOUT_ROOT = ParserInput.listOf(Type.INPUT,
+            InAffinites.class,
             InAffinityEntry.class,
             InComplexAffinityEntry.class,
             InNameSplitAffinityEntry.class,
@@ -631,6 +639,7 @@ public class InRoot implements RootClass {
             InUnitStepDiscreteTimeModel.class,
 
             InEntity.class,
+            InIRPactEntity.class,
             InGeneral.class,
             InVersion.class
     );
@@ -696,19 +705,20 @@ public class InRoot implements RootClass {
         addPathElement(res, AGENTS, ROOT);
                 addPathElement(res, CONSUMER, AGENTS);
                         addPathElement(res, CONSUMER_GROUP, CONSUMER);
-                            addPathElement(res, InGeneralConsumerAgentGroup.thisName(), CONSUMER_GROUP);
-                            addPathElement(res, InPVactConsumerAgentGroup.thisName(), CONSUMER_GROUP);
+                                addPathElement(res, InGeneralConsumerAgentGroup.thisName(), CONSUMER_GROUP);
+                                addPathElement(res, InPVactConsumerAgentGroup.thisName(), CONSUMER_GROUP);
                         addPathElement(res, CONSUMER_ATTR, CONSUMER);
-                                    addPathElement(res, InGeneralConsumerAgentGroupAttribute.thisName(), CONSUMER_GROUP);
-                                    addPathElement(res, InGeneralConsumerAgentAnnualGroupAttribute.thisName(), CONSUMER_GROUP);
-                                    addPathElement(res, InNameSplitConsumerAgentGroupAttribute.thisName(), CONSUMER_GROUP);
-                                    addPathElement(res, InNameSplitConsumerAgentAnnualGroupAttribute.thisName(), CONSUMER_GROUP);
+                                addPathElement(res, InGeneralConsumerAgentGroupAttribute.thisName(), CONSUMER_GROUP);
+                                addPathElement(res, InGeneralConsumerAgentAnnualGroupAttribute.thisName(), CONSUMER_GROUP);
+                                addPathElement(res, InNameSplitConsumerAgentGroupAttribute.thisName(), CONSUMER_GROUP);
+                                addPathElement(res, InNameSplitConsumerAgentAnnualGroupAttribute.thisName(), CONSUMER_GROUP);
                         addPathElement(res, CONSUMER_AFFINITY, CONSUMER);
+                                addPathElement(res, InAffinites.thisName(), CONSUMER_AFFINITY);
                                 addPathElement(res, InComplexAffinityEntry.thisName(), CONSUMER_AFFINITY);
                                 addPathElement(res, InNameSplitAffinityEntry.thisName(), CONSUMER_AFFINITY);
                         addPathElement(res, CONSUMER_INTEREST, CONSUMER);
                                 addPathElement(res, InProductThresholdInterestSupplyScheme.thisName(), CONSUMER_INTEREST);
-                                    addPathElement(res, InProductGroupThresholdEntry.thisName(), InProductThresholdInterestSupplyScheme.thisName());
+                                        addPathElement(res, InProductGroupThresholdEntry.thisName(), InProductThresholdInterestSupplyScheme.thisName());
                 addPathElement(res, POPULATION, AGENTS);
                         addPathElement(res, InFixConsumerAgentPopulationSize.thisName(), POPULATION);
                         addPathElement(res, InRelativeExternConsumerAgentPopulationSize.thisName(), POPULATION);

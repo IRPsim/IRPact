@@ -1,9 +1,8 @@
 package de.unileipzig.irpact.io.param.input.network;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.io.param.input.InEntity;
+import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -21,7 +20,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InNumberOfTies implements InEntity {
+public class InNumberOfTies implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -100,10 +99,5 @@ public class InNumberOfTies implements InEntity {
 
     public void setCount(int count) {
         this.count = count;
-    }
-
-    @Override
-    public Object parse(InputParser parser) throws ParsingException {
-        return this;
     }
 }

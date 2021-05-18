@@ -8,7 +8,7 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.interest.ProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.product.InProductGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -84,7 +84,7 @@ public class InProductThresholdInterestSupplyScheme implements InProductInterest
     }
 
     @Override
-    public ProductThresholdInterestSupplyScheme parse(InputParser parser) throws ParsingException {
+    public ProductThresholdInterestSupplyScheme parse(IRPactInputParser parser) throws ParsingException {
         ProductThresholdInterestSupplyScheme interest = new ProductThresholdInterestSupplyScheme();
         interest.setName(getName());
 

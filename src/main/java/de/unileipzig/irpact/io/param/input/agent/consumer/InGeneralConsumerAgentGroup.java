@@ -8,7 +8,7 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
 import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.product.InProductFindingScheme;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
@@ -136,7 +136,7 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
     }
 
     @Override
-    public JadexConsumerAgentGroup parse(InputParser parser) throws ParsingException {
+    public JadexConsumerAgentGroup parse(IRPactInputParser parser) throws ParsingException {
         AgentManager agentManager = parser.getEnvironment().getAgents();
 
         JadexConsumerAgentGroup jCag = new JadexConsumerAgentGroup();

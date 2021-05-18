@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.io.param.input.affinity;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -79,14 +80,16 @@ public class InNameSplitAffinityEntry implements InAffinityEntry {
     }
 
     @Override
-    public InConsumerAgentGroup getSrcCag(InputParser parser) throws ParsingException {
+    public InConsumerAgentGroup getSrcCag(InputParser p) throws ParsingException {
+        IRPactInputParser parser = (IRPactInputParser) p;
         String name = getSrcCagName();
         InRoot root = parser.getRoot();
         return root.findConsumerAgentGroup(name);
     }
 
     @Override
-    public InConsumerAgentGroup getTarCag(InputParser parser) throws ParsingException {
+    public InConsumerAgentGroup getTarCag(InputParser p) throws ParsingException {
+        IRPactInputParser parser = (IRPactInputParser) p;
         String name = getTarCagName();
         InRoot root = parser.getRoot();
         return root.findConsumerAgentGroup(name);

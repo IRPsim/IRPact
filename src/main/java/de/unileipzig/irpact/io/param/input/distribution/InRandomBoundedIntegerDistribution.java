@@ -6,7 +6,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.develop.Todo;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -89,7 +89,7 @@ public class InRandomBoundedIntegerDistribution implements InUnivariateDoubleDis
     }
 
     @Override
-    public RandomBoundedIntegerDistribution parse(InputParser parser) throws ParsingException {
+    public RandomBoundedIntegerDistribution parse(IRPactInputParser parser) throws ParsingException {
         RandomBoundedIntegerDistribution dist = new RandomBoundedIntegerDistribution();
         dist.setName(getName());
         dist.setLowerBound(getLowerBound());

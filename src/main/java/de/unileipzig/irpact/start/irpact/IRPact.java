@@ -15,10 +15,10 @@ import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.*;
 import de.unileipzig.irpact.core.util.PVactResultLogging;
-import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.io.param.input.GraphvizInputParser;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.JadexInputParser;
+import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.jadex.agents.simulation.ProxySimulationAgent;
@@ -79,6 +79,7 @@ public final class IRPact implements IRPActAccess {
     private final MainCommandLineOptions CL_OPTIONS;
     private final ResourceLoader RESOURCE_LOADER;
 
+    private ObjectNode inRootNode;
     private AnnualEntry<InRoot> inEntry;
     private InRoot inRoot;
     private AnnualData<OutRoot> outData;
@@ -97,6 +98,18 @@ public final class IRPact implements IRPActAccess {
 
     public MainCommandLineOptions getOptions() {
         return CL_OPTIONS;
+    }
+
+    public ObjectNode getInRootNode() {
+        return inRootNode;
+    }
+
+    public AnnualEntry<InRoot> getInEntry() {
+        return inEntry;
+    }
+
+    public InRoot getInRoot() {
+        return inRoot;
     }
 
     private static DefinitionMapper createMapper(MainCommandLineOptions options, DefinitionCollection dcoll) {
@@ -172,6 +185,7 @@ public final class IRPact implements IRPActAccess {
     }
 
     private void parseInputFile(ObjectNode jsonRoot) {
+        inRootNode = jsonRoot;
         inEntry = convert(jsonRoot);
         inRoot = inEntry.getData();
     }
@@ -258,25 +272,16 @@ public final class IRPact implements IRPActAccess {
     private void restorPreviousSimulationEnvironment() throws Exception {
         LOGGER.info(IRPSection.GENERAL, "restore previous environment");
         int year = inEntry.getConfig().getYear();
-        JadexInputParser parser = new JadexInputParser();
-        parser.setSimulationYear(year);
-        parser.setResourceLoader(RESOURCE_LOADER);
+        JadexRestoreUpdater updater = new JadexRestoreUpdater();
+        updater.setSimulationYear(year);
+        updater.setResourceLoader(RESOURCE_LOADER);
         JadexPersistenceModul persistenceModul = new JadexPersistenceModul();
         environment = (JadexSimulationEnvironment) persistenceModul.restore(
                 CL_OPTIONS,
                 year,
-                parser,
+                updater,
                 inRoot
         );
-    }
-
-    private void updateSimulationEnvironment() throws ParsingException {
-        int year = inEntry.getConfig().getYear();
-        JadexInputParser parser = new JadexInputParser();
-        parser.setSimulationYear(year);
-        parser.setResourceLoader(RESOURCE_LOADER);
-        parser.parseRootAndUpdate(inRoot, environment);
-        environment.getSettings().setFirstSimulationYear(year);
     }
 
     private void createGraphvizConfiguration() throws Exception {
@@ -528,6 +533,11 @@ public final class IRPact implements IRPActAccess {
         callCallbacks();
         printLoggingOutput();
         finalTask();
+    }
+
+    public void createDummyOutput() throws Exception {
+        LOGGER.info(IRPSection.GENERAL, "create dummy output");
+        throw new UnsupportedOperationException();
     }
 
     private void createOutput() throws Exception {

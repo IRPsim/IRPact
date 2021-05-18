@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.distribution.ConstantUnivariateDoubleDistrib
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.develop.Todo;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -77,7 +78,7 @@ public class InConstantUnivariateDistribution implements InUnivariateDoubleDistr
     }
 
     @Override
-    public ConstantUnivariateDoubleDistribution parse(InputParser parser) throws ParsingException {
+    public ConstantUnivariateDoubleDistribution parse(IRPactInputParser parser) throws ParsingException {
         ConstantUnivariateDoubleDistribution dist = new ConstantUnivariateDoubleDistribution();
         dist.setName(getName());
         dist.setValue(getConstDistValue());

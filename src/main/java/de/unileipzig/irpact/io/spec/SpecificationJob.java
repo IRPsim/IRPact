@@ -8,7 +8,7 @@ import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
-import de.unileipzig.irpact.io.param.input.InEntity;
+import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InNameSplitConsumerAgentGroupAttribute;
@@ -225,12 +225,12 @@ public class SpecificationJob {
         }
     }
 
-    public <T extends InEntity> JsonNode inlineEntity(
+    public <T extends InIRPactEntity> JsonNode inlineEntity(
             T input,
             boolean inline) throws ParsingException {
         return inline(
                 input,
-                InEntity::getName,
+                InIRPactEntity::getName,
                 inline
         );
     }
@@ -279,7 +279,7 @@ public class SpecificationJob {
         return (R) parseInlined(
                 node,
                 UnivariateDoubleDistributionSpec.INSTANCE,
-                InEntity::getName
+                InIRPactEntity::getName
         );
     }
 
@@ -288,7 +288,7 @@ public class SpecificationJob {
         return (R) parseInlined(
                 node,
                 SpatialDistributionSpec.INSTANCE,
-                InEntity::getName
+                InIRPactEntity::getName
         );
     }
 
@@ -297,7 +297,7 @@ public class SpecificationJob {
         return (R) parseInlined(
                 node,
                 ProductFindingSchemeSpec.INSTANCE,
-                InEntity::getName
+                InIRPactEntity::getName
         );
     }
 
@@ -306,7 +306,7 @@ public class SpecificationJob {
         return (R) parseInlined(
                 node,
                 ProductInterestSupplySchemeSpec.INSTANCE,
-                InEntity::getName
+                InIRPactEntity::getName
         );
     }
 
@@ -315,7 +315,7 @@ public class SpecificationJob {
         return (R) parseInlined(
                 node,
                 DistanceEvaluatorSpec.INSTANCE,
-                InEntity::getName
+                InIRPactEntity::getName
         );
     }
 
@@ -335,8 +335,8 @@ public class SpecificationJob {
         return arrNode;
     }
 
-    public <T extends InEntity> ArrayNode inlineEntitiyArray(T[] inputArray, boolean inline) throws ParsingException {
-        return inlineArray(inputArray, InEntity::getName, inline);
+    public <T extends InIRPactEntity> ArrayNode inlineEntitiyArray(T[] inputArray, boolean inline) throws ParsingException {
+        return inlineArray(inputArray, InIRPactEntity::getName, inline);
     }
 
     //=========================
@@ -376,8 +376,8 @@ public class SpecificationJob {
         return inlineArray(inputArray, toString, false);
     }
 
-    public <T extends InEntity> ArrayNode namedEntityArray(T[] inputArray) throws ParsingException {
-        return namedArray(inputArray, InEntity::getName);
+    public <T extends InIRPactEntity> ArrayNode namedEntityArray(T[] inputArray) throws ParsingException {
+        return namedArray(inputArray, InIRPactEntity::getName);
     }
 
     public ArrayNode namedNameSplitConsumerAgentGroupAttributes(InConsumerAgentGroupAttribute[] attrs) throws ParsingException {
