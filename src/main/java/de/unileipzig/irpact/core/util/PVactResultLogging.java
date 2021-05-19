@@ -199,8 +199,7 @@ public class PVactResultLogging {
     protected void printResult(
             String description,
             String text) {
-        IRPLogging.getResultLogger().info(description);
-        IRPLogging.getResultLogger().info(text);
+        IRPLogging.logResult(description, text);
     }
 
     protected void printResult(String text) {

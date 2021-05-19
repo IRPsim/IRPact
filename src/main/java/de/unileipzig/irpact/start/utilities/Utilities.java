@@ -23,6 +23,7 @@ import de.unileipzig.irpact.util.R.ExistingRScript;
 import de.unileipzig.irpact.util.R.R;
 import de.unileipzig.irpact.util.R.RScriptException;
 import de.unileipzig.irptools.io.base.AnnualEntry;
+import de.unileipzig.irptools.util.Util;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import picocli.CommandLine;
 
@@ -127,6 +128,10 @@ public class Utilities {
         try {
             printTempCsvFile(tempFile);
             runRScriptForCumulativeAdoptions(tempFile);
+        } catch (RScriptException e) {
+            String content = Util.readString(tempFile, StandardCharsets.UTF_8);
+            LOGGER.error(content);
+            throw e;
         } finally {
             if(Files.exists(tempFile)) {
                 LOGGER.trace(IRPSection.UTILITIES, "delete temp csv file '{}'", tempFile);
@@ -138,16 +143,15 @@ public class Utilities {
     }
 
     @Todo
-    private void printTempCsvFile( Path tempFile) throws IOException {
-        if(true) throw new TodoException();
-//        LOGGER.trace(IRPSection.UTILITIES, "convert data to csv");
-//        ObjectNode rootNode = parseRInputAsOutRoot();
-//        AnnualEntry<OutRoot> outRootEntry = IRPact.convertOutput(mainOptions, rootNode);
-//        OutRoot outRoot = outRootEntry.getData();
-//        AnnualAdoptionData data = parseWithDummy(outRoot.getAnnualAdoptionData()); TODO
-//        Table<String> table = toStringTable(data);
-//        LOGGER.trace(IRPSection.UTILITIES, "save temp csv file '{}'", tempFile);
-//        printCsv(tempFile, table);
+    private void printTempCsvFile(Path tempFile) throws IOException {
+        LOGGER.trace(IRPSection.UTILITIES, "convert data to csv");
+        ObjectNode rootNode = parseRInputAsOutRoot();
+        AnnualEntry<OutRoot> outRootEntry = IRPact.convertOutput(mainOptions, rootNode);
+        OutRoot outRoot = outRootEntry.getData();
+        AnnualAdoptionData data = parseWithDummy(outRoot.getAnnualAdoptionData());
+        Table<String> table = toStringTable(data);
+        LOGGER.trace(IRPSection.UTILITIES, "save temp csv file '{}'", tempFile);
+        printCsv(tempFile, table);
     }
 
     private void runRScriptForCumulativeAdoptions(Path tempFile) throws IOException, RScriptException, InterruptedException {
@@ -226,6 +230,7 @@ public class Utilities {
     private static void printCsv(Path target, Table<String> table) throws IOException {
         CsvPrinter<String> printer = new CsvPrinter<>(str -> str);
         printer.setDelimiter(",");
+        printer.setPrintFinalEmptyLine(true);
         printer.write(target, StandardCharsets.UTF_8, table.getHeader(), table.listTable());
     }
 
@@ -246,6 +251,9 @@ public class Utilities {
         script.addArgs(args);
         LOGGER.trace(IRPSection.UTILITIES, "run command: {}", script.peekCommand(engine));
         script.execute(engine);
+        if(script.hasWarning()) {
+            LOGGER.warn("R warning:\n{}", script.printWarning());
+        }
     }
 
     //=========================

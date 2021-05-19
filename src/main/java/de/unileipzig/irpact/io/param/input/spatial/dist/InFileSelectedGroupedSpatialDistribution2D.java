@@ -13,7 +13,6 @@ import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
-import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -138,7 +137,7 @@ public class InFileSelectedGroupedSpatialDistribution2D implements InSpatialDist
             String groupingKey,
             Rnd rnd) {
         List<List<SpatialAttribute>> selectedList = SpatialUtil.filter(attrList, selectKey, selectValue);
-        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xKey, yKey, "");
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xKey, yKey, null);
         Map<String, List<SpatialInformation>> groupedInfos = SpatialUtil.groupingBy(infos, groupingKey);
 
         WeightedDiscreteSpatialDistribution dist = new WeightedDiscreteSpatialDistribution();

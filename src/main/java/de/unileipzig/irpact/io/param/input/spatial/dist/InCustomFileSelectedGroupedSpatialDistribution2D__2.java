@@ -7,6 +7,7 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.*;
 import de.unileipzig.irpact.core.spatial.distribution2.SpatialDataFilter;
@@ -16,7 +17,6 @@ import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
-import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
@@ -162,7 +162,7 @@ public class InCustomFileSelectedGroupedSpatialDistribution2D__2 implements InSp
                     tableData,
                     xSupplier,
                     ySupplier,
-                    "",
+                    RAConstants.ID,
                     ArrayList::new
             );
             model.storeData(dataColl);

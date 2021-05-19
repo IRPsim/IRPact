@@ -376,13 +376,34 @@ public class FastDirectedMultiGraph2<V, E, T> implements DirectedMultiGraph<V, E
     }
 
     @Override
+    public Collection<E> getAllEdges() {
+        return getAllEdges(null);
+    }
+
+    @Override
     public Collection<E> getAllEdges(T[] types) {
         List<E> edges = new ArrayList<>();
         getAllEdges(types, edges);
         return edges;
     }
 
+    @Override
+    public Stream<E> streamAllEdges() {
+        return streamAllEdges(null);
+    }
+
+    @Override
+    public Stream<E> streamAllEdges(T[] types) {
+        return edges.values()
+                .stream()
+                .filter(edgeData -> has(edgeData.getType(), types))
+                .map(EdgeData::getEdge);
+    }
+
     protected static <T> boolean has(T type, T[] types) {
+        if(types == null) {
+            return true;
+        }
         for(T t: types) {
             if(t == type) {
                 return true;

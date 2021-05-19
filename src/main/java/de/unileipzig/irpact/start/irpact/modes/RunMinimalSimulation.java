@@ -53,7 +53,7 @@ public final class RunMinimalSimulation implements IRPactExecutor {
         irpact.setupTimeModel();
         irpact.createOnlyControlJadexAgents();
 
-        if(!irpact.secureWaitForCreation()) {
+        if(irpact.secureWaitForCreationFailed()) {
             return;
         }
 

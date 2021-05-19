@@ -2,6 +2,8 @@ package de.unileipzig.irpact.core.network.topology;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.checksum.Checksums;
+import de.unileipzig.irpact.commons.checksum.LoggableChecksum;
 import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.log.LazyPrinter;
 import de.unileipzig.irpact.commons.spatial.DistanceEvaluator;
@@ -19,6 +21,7 @@ import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
+import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
@@ -26,7 +29,7 @@ import java.util.*;
 /**
  * @author Daniel Abitz
  */
-public class FreeNetworkTopology extends NameableBase implements GraphTopologyScheme {
+public class FreeNetworkTopology extends NameableBase implements GraphTopologyScheme, LoggableChecksum {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(FreeNetworkTopology.class);
 
@@ -124,7 +127,7 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
 
     @Override
     public int getChecksum() {
-        return ChecksumComparable.getChecksum(
+        return Checksums.SMART.getChecksum(
                 getName(),
                 getInitialWeight(),
                 getRnd().getChecksum(),
@@ -137,8 +140,30 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
     }
 
     @Override
+    public void logChecksums() {
+        doLog("getName", Checksums.SMART.getChecksum(getName()));
+        doLog("getInitialWeight", Checksums.SMART.getChecksum(getInitialWeight()));
+        doLog("getRnd", Checksums.SMART.getChecksum(getRnd()));
+        doLog("getDistanceEvaluator", Checksums.SMART.getChecksum(getDistanceEvaluator()));
+        doLog("getEdgeType", Checksums.SMART.getChecksum(getEdgeType()));
+        doLog("getAffinityMapping", Checksums.SMART.getChecksum(getAffinityMapping()));
+        doLog("getEdgeCountMap", Checksums.SMART.getChecksum(getEdgeCountMap()));
+        doLog("isSelfReferential", Checksums.SMART.getChecksum(isSelfReferential()));
+    }
+
+    protected void doLog(String msg, int checksum) {
+        LOGGER.trace(IRPSection.GENERAL, "checksum {}: {}", msg, Integer.toHexString(checksum));
+    }
+
+    @XXXXXXXXX
+    @Override
     public void initalize(SimulationEnvironment environment, SocialGraph graph) throws InitializationException {
         LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "initialize free network graph");
+
+        if(environment.isRestored()) {
+            LOGGER.warn("DIRTY FIX");
+            return;
+        }
 
         int step = 0;
         int added = 0;

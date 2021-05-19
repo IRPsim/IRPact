@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.core.spatial.distribution;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.exception.IRPactException;
+import de.unileipzig.irpact.commons.exception.IRPactRuntimeException;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
@@ -20,6 +22,7 @@ public class DiscreteSpatialDistribution extends ResettableSpatialDistributionBa
     protected Set<SpatialInformation> unused;
     protected Set<SpatialInformation> used;
     protected Rnd rnd;
+    public boolean NOCALL = false;
 
     public DiscreteSpatialDistribution() {
         this(new LinkedHashSet<>(), new LinkedHashSet<>());
@@ -101,6 +104,9 @@ public class DiscreteSpatialDistribution extends ResettableSpatialDistributionBa
 
     @Override
     public SpatialInformation drawValue() {
+        if(NOCALL) {
+            throw new IRPactRuntimeException("FIXME");
+        }
         if(unused.isEmpty()) {
             throw new IllegalStateException("set is empty");
         }

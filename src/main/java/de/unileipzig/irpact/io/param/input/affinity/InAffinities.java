@@ -112,6 +112,12 @@ public class InAffinities implements InIRPactEntity {
             if(parser.isRestored()) {
                 return updateRestored(parser, mapping);
             } else {
+                if(parser.isCached(this)) {
+                    Object cachedObj = parser.getCached(this);
+                    if(cachedObj == mapping) {
+                        return mapping;
+                    }
+                }
                 throw new ParsingException("affinity mapping '{}' already exists (try to parse '{}')", mapping.getName(), getName());
             }
         }
@@ -134,6 +140,7 @@ public class InAffinities implements InIRPactEntity {
             }
         }
 
+        parser.cache(this, affinities);
         return affinities;
     }
 

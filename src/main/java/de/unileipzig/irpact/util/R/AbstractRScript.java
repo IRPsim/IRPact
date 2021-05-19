@@ -17,6 +17,9 @@ public abstract class AbstractRScript implements RScript {
     protected final List<String> args = new ArrayList<>();
     protected Charset terminalCharset;
 
+    protected boolean checkForNullDeviceIfError = true;
+    protected String warningMessage;
+
     public AbstractRScript() {
     }
 
@@ -42,6 +45,14 @@ public abstract class AbstractRScript implements RScript {
         Collections.addAll(this.args, args);
     }
 
+    public boolean hasWarning() {
+        return warningMessage != null;
+    }
+
+    public String printWarning() {
+        return warningMessage;
+    }
+
     public List<String> getArgs() {
         return args;
     }
@@ -63,6 +74,12 @@ public abstract class AbstractRScript implements RScript {
         return pb.command();
     }
 
+    protected boolean containsNullDevice(ProcessResult result) {
+        Charset cs = terminalCharset == null ? Charset.defaultCharset() : terminalCharset;
+        String msg = result.forcePrintData(cs);
+        return msg != null && msg.contains("null device");
+    }
+
     @Override
     public void execute(R engine) throws IOException, InterruptedException, RScriptException {
         ProcessBuilder pb = builder(engine);
@@ -71,9 +88,14 @@ public abstract class AbstractRScript implements RScript {
         ProcessResult result = ProcessResult.waitFor(process);
 
         if(result.isError()) {
+
             Charset cs = terminalCharset == null ? Charset.defaultCharset() : terminalCharset;
             String msg = result.printErr(cs);
-            throw new RScriptException(msg);
+            if(checkForNullDeviceIfError && containsNullDevice(result)) {
+                warningMessage = msg;
+            } else {
+                throw new RScriptException(msg);
+            }
         }
     }
 }

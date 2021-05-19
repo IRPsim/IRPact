@@ -1,9 +1,11 @@
 package de.unileipzig.irpact.start.irpact;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.unileipzig.irpact.commons.checksum.ChecksumCalculator;
 import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -13,14 +15,21 @@ import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.network.SocialGraph;
+import de.unileipzig.irpact.core.product.AdoptedProduct;
+import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.simulation.*;
+import de.unileipzig.irpact.core.util.AdoptionAnalyser;
 import de.unileipzig.irpact.core.util.PVactResultLogging;
 import de.unileipzig.irpact.core.util.RunInfo;
 import de.unileipzig.irpact.io.param.input.GraphvizInputParser;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.JadexInputParser;
 import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
+import de.unileipzig.irpact.io.param.output.OutAnnualAdoptionData;
+import de.unileipzig.irpact.io.param.output.OutEntity;
 import de.unileipzig.irpact.io.param.output.OutRoot;
+import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.output.agent.OutGeneralConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.jadex.agents.simulation.ProxySimulationAgent;
 import de.unileipzig.irpact.jadex.persistance.JadexPersistenceModul;
@@ -49,6 +58,7 @@ import jadex.bridge.service.types.cms.CreationInfo;
 import jadex.bridge.service.types.simulation.ISimulationService;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -466,16 +476,16 @@ public final class IRPact implements IRPActAccess {
         LOGGER.info(IRPSection.GENERAL, "...  agent creation finished");
     }
 
-    public boolean secureWaitForCreation() {
+    public boolean secureWaitForCreationFailed() {
         try {
             waitForCreation();
-            return true;
+            return false;
         } catch (InterruptedException e) {
             LOGGER.warn(IRPSection.GENERAL, "waiting interrupted", e);
             if(environment.getLiveCycleControl().getTerminationState() != LifeCycleControl.TerminationState.NOT) {
                 environment.getLiveCycleControl().terminateWithError(e);
             }
-            return false;
+            return true;
         }
     }
 
@@ -499,7 +509,7 @@ public final class IRPact implements IRPActAccess {
     }
 
     public void postSimulation() throws Exception {
-        LOGGER.info(IRPSection.GENERAL, "start post simulation");
+        LOGGER.info(IRPSection.GENERAL, "start post-simulation");
         createNetworkAfterSimulation();
         createOutput();
         callCallbacks();
@@ -508,7 +518,7 @@ public final class IRPact implements IRPActAccess {
     }
 
     public void postSimulationWithDummyOutput() {
-        LOGGER.info(IRPSection.GENERAL, "start dummy post simulation");
+        LOGGER.info(IRPSection.GENERAL, "start dummy post-simulation");
         createDummyOutput();
         callCallbacks();
         finalTask();
@@ -538,7 +548,7 @@ public final class IRPact implements IRPActAccess {
     }
 
     private OutRoot createOutRoot() throws Exception {
-        LOGGER.info(IRPSection.GENERAL, "create output");
+        LOGGER.info(IRPSection.GENERAL, "create OutRoot");
         OutRoot outRoot = new OutRoot();
         applySimulationResult(outRoot);
         applyPersistenceData(outRoot);
@@ -546,6 +556,12 @@ public final class IRPact implements IRPActAccess {
     }
 
     private void applySimulationResult(OutRoot outRoot) {
+        //applyOldOptActData(outRoot);
+        collectAdoptionResults(outRoot);
+    }
+
+    @Deprecated
+    private void applyOldOptActData(OutRoot outRoot) {
         List<OutCustom> outList = new ArrayList<>();
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
             int size = cag.getNumberOfAgents();
@@ -553,36 +569,43 @@ public final class IRPact implements IRPActAccess {
             outList.add(oc);
         }
         outRoot.outGrps = outList.toArray(new OutCustom[0]);
-
-        //=====
-//        throw new TodoException();
-//        Timestamp start = environment.getTimeModel().startTime();
-//        Timestamp end = environment.getTimeModel().endTime();
-//
-//        List<OutAdoptionResult> outResults = new ArrayList<>();
-//        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-//            OutAdoptionResult outResult = new OutAdoptionResult(cag.getName() + "_" + start.getYear());
-//            int adoptions = 0;
-//            for(ConsumerAgent ca: cag.getAgents()) {
-//                for(AdoptedProduct ap: ca.getAdoptedProducts()) {
-//                    if(ap.isInitial() || ap.getTimestamp().isBetween(start, end)) {
-//                        adoptions++;
-//                    }
-//                }
-//            }
-//            outResult.setAdoptions(adoptions);
-//            outResult.setShare((double) adoptions / (double) cag.getNumberOfAgents());
-//            outResults.add(outResult);
-//        }
-//        outRoot.adoptionResults = outResults.toArray(new OutAdoptionResult[0]);
     }
 
-//    private void collectAdoptionResults() {
-//        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-//
-//
-//        }
-//    }
+    private void collectAdoptionResults(OutRoot outRoot) {
+        LOGGER.info(IRPSection.GENERAL, "collect and analyze adoption results");
+
+        AdoptionAnalyser analyser = new AdoptionAnalyser();
+        for(ConsumerAgent agent: environment.getAgents().iterableConsumerAgents()) {
+            for(AdoptedProduct adoptedProduct: agent.getAdoptedProducts()) {
+                if(adoptedProduct.isNotInitial()) {
+                    analyser.add(agent, adoptedProduct);
+                }
+            }
+        }
+
+        int year = environment.getSettings().getActualFirstSimulationYear();
+        ProductGroup pg = CollectionUtil.get(environment.getProducts().getGroups(), 0);
+        Map<ConsumerAgentGroup, OutConsumerAgentGroup> outCags = new LinkedHashMap<>();
+        OutGeneralConsumerAgentGroup.create(
+                environment.getAgents().getConsumerAgentGroups(),
+                year,
+                pg,
+                analyser,
+                outCags
+        );
+        outRoot.setConsumerAgentGroups(outCags.values());
+        LOGGER.trace("out: {}", outCags.values().stream().map(OutEntity::getName).collect(Collectors.toList()));
+
+        List<OutAnnualAdoptionData> annualAdoptionData = new ArrayList<>();
+        OutAnnualAdoptionData.create(
+                environment.getSettings().listActualYears(),
+                outCags,
+                pg,
+                analyser,
+                annualAdoptionData
+        );
+        outRoot.setAnnualAdoptionData(annualAdoptionData);
+    }
 
     private void applyPersistenceData(OutRoot outRoot) throws Exception {
         if(CL_OPTIONS.isSkipPersist()) {
@@ -599,6 +622,7 @@ public final class IRPact implements IRPActAccess {
     }
 
     private void storeOutputData(AnnualData<OutRoot> outData) {
+        LOGGER.info(IRPSection.GENERAL, "store output: {}", getOutputConverter(CL_OPTIONS));
         try {
             AnnualFile outFile = outData.serialize(getOutputConverter(CL_OPTIONS));
             outFile.store(CL_OPTIONS.getOutputPath());

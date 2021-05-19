@@ -254,6 +254,16 @@ public class InGeneral implements Copyable {
         filter.add(logSpecificationConverter, IRPSection.SPECIFICATION_CONVERTER);
         filter.add(logJadexSystemOut, IRPSection.JADEX_SYSTEM_OUT);
 
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "logging sections: {}", filter.getSections());
+    }
+
+    public void setup(IRPactInputParser parser) throws ParsingException {
+        parseInfoAndResultLogging(parser);
+        parseSeed(parser);
+        parseLifeCycleControl(parser);
+    }
+
+    private void parseInfoAndResultLogging(IRPactInputParser parser) {
         Settings initData = parser.getEnvironment().getSettings();
         initData.setLogGraphUpdate(logGraphUpdate);
         initData.setLogRelativeAgreement(logRelativeAgreement);
@@ -266,13 +276,6 @@ public class InGeneral implements Copyable {
         initData.setLogResultGroupedByMilieu(logResultGroupedByMilieu);
         initData.setLogResultGroupedByZipAndMilieu(logResultGroupedByZipAndMilieu);
         initData.setLogProductAdoptions(logProductAdoptions);
-
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "logging sections: {}", filter.getSections());
-    }
-
-    public void setup(IRPactInputParser parser) throws ParsingException {
-        parseSeed(parser);
-        parseLifeCycleControl(parser);
     }
 
     private void parseSeed(IRPactInputParser parser) {

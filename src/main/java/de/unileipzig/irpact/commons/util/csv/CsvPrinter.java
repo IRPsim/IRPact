@@ -20,6 +20,7 @@ public class CsvPrinter<T> {
     protected String quote = "\"";
     protected boolean forceQuote = false;
     protected boolean autoFlush = true;
+    protected boolean printFinalEmptyLine = false;
 
     public CsvPrinter(Function<? super T, ? extends String> toString) {
         this((columnIndex, header, value) -> toString.apply(value));
@@ -67,6 +68,14 @@ public class CsvPrinter<T> {
 
     public boolean isAutoFlush() {
         return autoFlush;
+    }
+
+    public void setPrintFinalEmptyLine(boolean printFinalEmptyLine) {
+        this.printFinalEmptyLine = printFinalEmptyLine;
+    }
+
+    public boolean isPrintFinalEmptyLine() {
+        return printFinalEmptyLine;
     }
 
     protected String quoteIfRequired(String input) {
@@ -122,6 +131,10 @@ public class CsvPrinter<T> {
                 String valueStr = toString.toString(columnIndex++, headerArr, value);
                 writer.write(quoteIfRequired(valueStr));
             }
+        }
+
+        if(printFinalEmptyLine) {
+            writer.write(lineSeparator);
         }
     }
 }

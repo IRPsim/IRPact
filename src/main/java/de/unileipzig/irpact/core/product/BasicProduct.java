@@ -3,12 +3,14 @@ package de.unileipzig.irpact.core.product;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.core.product.attribute.ProductAttribute;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
+import de.unileipzig.irpact.develop.Todo;
 
 import java.util.*;
 
 /**
  * @author Daniel Abitz
  */
+@Todo("derive methode einbauen")
 public class BasicProduct extends SimulationEntityBase implements Product {
 
     protected ProductGroup group;

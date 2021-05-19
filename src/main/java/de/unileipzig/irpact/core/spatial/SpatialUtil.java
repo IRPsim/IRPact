@@ -102,7 +102,6 @@ public final class SpatialUtil {
         return null;
     }
 
-    //TODO
     public static List<SpatialInformation> mapToPoint2D(List<List<SpatialAttribute>> input, String xKey, String yKey, String idKey) {
         return input.stream()
                 .map(row -> {
@@ -119,7 +118,6 @@ public final class SpatialUtil {
                 .collect(Collectors.toList());
     }
 
-    //TODO
     public static List<SpatialInformation> mapToPoint2D(List<List<SpatialAttribute>> input, UnivariateDoubleDistribution xSupplier, UnivariateDoubleDistribution ySupplier, String idKey) {
         return input.stream()
                 .map(row -> {
@@ -136,7 +134,6 @@ public final class SpatialUtil {
                 .collect(Collectors.toList());
     }
 
-    //TODO
     public static SpatialDataCollection mapToPoint2D(
             String name,
             Table<SpatialAttribute> input,

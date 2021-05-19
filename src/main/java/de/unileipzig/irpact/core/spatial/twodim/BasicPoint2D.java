@@ -1,10 +1,11 @@
 package de.unileipzig.irpact.core.spatial.twodim;
 
-import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.attribute.BasicAttributeAccess;
+import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.util.data.MutableInt;
+import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
 import java.util.*;
 
@@ -41,6 +42,11 @@ public class BasicPoint2D implements Point2D {
     @Override
     public boolean hasId() {
         return id.hasValue();
+    }
+
+    @Override
+    public boolean isId(int id) {
+        return getId() == id;
     }
 
     @Override
@@ -135,6 +141,17 @@ public class BasicPoint2D implements Point2D {
 
     @Override
     public int getChecksum() {
-        return Objects.hash(x, y, ChecksumComparable.getCollChecksum(attributes.values()));
+        return Checksums.SMART.getChecksum(x, y, attributes.values());
+    }
+
+    @Override
+    public boolean isEquals(SpatialInformation other) {
+        if (this == other) return true;
+        if (!(other instanceof BasicPoint2D)) return false;
+        BasicPoint2D that = (BasicPoint2D) other;
+        return Double.compare(that.x, x) == 0
+                && Double.compare(that.y, y) == 0
+                && Objects.equals(id, that.id)
+                && Objects.equals(attributes, that.attributes);
     }
 }

@@ -13,7 +13,6 @@ import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;
-import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
@@ -133,7 +132,7 @@ public class InCustomFileSpatialDistribution2D implements InSpatialDistribution 
         UnivariateDoubleDistribution yDist = parser.parseEntityTo(getYPosSupplier());
 
         SpatialTableFileContent attrList = parser.parseEntityTo(getAttributeFile());
-        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList.content().listTable(), xDist, yDist, "");
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList.content().listTable(), xDist, yDist, null);
 
         DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();
         dist.setName(getName());

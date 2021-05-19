@@ -68,6 +68,10 @@ public final class Rnd implements ChecksumComparable {
         }
     }
 
+    public String printInfo() {
+        return "Rnd{" + initialSeed + "}";
+    }
+
     public void enableSync() {
         useLock = true;
     }
@@ -228,5 +232,10 @@ public final class Rnd implements ChecksumComparable {
     @Override
     public int getChecksum() {
         return ChecksumComparable.getChecksum(initialSeed);
+    }
+
+    @Override
+    public String toString() {
+        return printInfo();
     }
 }

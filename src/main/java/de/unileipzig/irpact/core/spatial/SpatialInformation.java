@@ -24,6 +24,12 @@ public interface SpatialInformation extends ChecksumComparable {
 
     boolean hasId();
 
+    boolean isId(int id);
+
+    default boolean hasSameId(SpatialInformation other) {
+        return getId() == other.getId();
+    }
+
     int getId();
 
     AttributeAccess getAttributeAccess();
@@ -39,4 +45,6 @@ public interface SpatialInformation extends ChecksumComparable {
     SpatialInformation emptyCopy();
 
     SpatialInformation fullCopy();
+
+    boolean isEquals(SpatialInformation other);
 }

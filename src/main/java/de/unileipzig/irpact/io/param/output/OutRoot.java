@@ -115,6 +115,14 @@ public class OutRoot implements RootClass {
         return copy;
     }
 
+    public void setConsumerAgentGroups(Collection<? extends OutConsumerAgentGroup> cags) {
+        this.consumerAgentGroups = cags.toArray(new OutConsumerAgentGroup[0]);
+    }
+
+    public void setAnnualAdoptionData(Collection< ? extends OutAnnualAdoptionData> data) {
+        this.annualAdoptionData = data.toArray(new OutAnnualAdoptionData[0]);
+    }
+
     //=========================
     //CLASSES
     //=========================

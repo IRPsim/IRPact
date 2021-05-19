@@ -137,7 +137,7 @@ public class InFileSpatialDistribution2D implements InSpatialDistribution {
         String yKey = getYPositionKey().getName();
 
         SpatialTableFileContent attrList = parser.parseEntityTo(getAttributeFile());
-        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList.content().listTable(), xKey, yKey, "");
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList.content().listTable(), xKey, yKey, null);
 
         DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();
         dist.setName(getName());
@@ -158,11 +158,12 @@ public class InFileSpatialDistribution2D implements InSpatialDistribution {
         String yKey = getYPositionKey().getName();
 
         SpatialTableFileContent attrList = parser.parseEntityTo(getAttributeFile());
-        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList.content().listTable(), xKey, yKey, "");
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList.content().listTable(), xKey, yKey, null);
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "call distribution '{}' {} times", dist.getName(), dist.getRequiredNumberOfCalls());
         dist.addAll(infos);
-        dist.call();
+        //dist.call();
+        dist.NOCALL = true;
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "disttribution '{}' called {} times", dist.getName(), dist.getNumberOfCalls());
     }
 }

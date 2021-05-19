@@ -11,7 +11,7 @@ public interface SpatialDataCollection extends Nameable {
 
     DataCollection<SpatialInformation> getData();
 
-    boolean removeId(int id);
+    boolean remove(SpatialInformation information);
 
     boolean hasFilter(SpatialDataFilter filter);
 

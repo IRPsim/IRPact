@@ -2,6 +2,8 @@ package de.unileipzig.irpact.commons.spatial.attribute;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -60,5 +62,20 @@ public class BasicSpatialStringAttribute
     @Override
     public BasicSpatialStringAttribute asValueAttribute() {
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BasicSpatialStringAttribute)) return false;
+        BasicSpatialStringAttribute that = (BasicSpatialStringAttribute) o;
+        return artificial == that.artificial
+                && Objects.equals(name, that.name)
+                && Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(artificial, name, value);
     }
 }

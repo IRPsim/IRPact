@@ -351,4 +351,12 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
         agent.linkAccess(spatialInformation.getAttributeAccess());
         return agent;
     }
+
+    public ProxyConsumerAgent deriveDummyAgent() {
+        ProxyConsumerAgent agent = new ProxyConsumerAgent();
+        agent.setName(deriveName());
+        agent.setGroup(this);
+        agent.setEnvironment(getEnvironment());
+        return agent;
+    }
 }

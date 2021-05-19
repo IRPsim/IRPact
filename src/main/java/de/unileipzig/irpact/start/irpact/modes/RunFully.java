@@ -55,7 +55,7 @@ public final class RunFully implements IRPactExecutor {
         irpact.setupTimeModel();
         irpact.createJadexAgents();
         
-        if(!irpact.secureWaitForCreation()) {
+        if(irpact.secureWaitForCreationFailed()) {
             return;
         }
 

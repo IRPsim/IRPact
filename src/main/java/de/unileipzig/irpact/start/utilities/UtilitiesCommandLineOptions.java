@@ -107,7 +107,7 @@ public final class UtilitiesCommandLineOptions extends AbstractCommandLineOption
     private Path rExe;
 
     @CommandLine.Option(
-            names = { "-rscript" },
+            names = { "--rscript" },
             descriptionKey = "rScript",
             converter = PathConverter.class
     )

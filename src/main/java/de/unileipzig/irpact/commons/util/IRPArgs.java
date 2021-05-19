@@ -84,4 +84,26 @@ public class IRPArgs extends SimpleArgs {
         setAll("--decodeBinaryPersist", input.toString(), output.toString());
         return this;
     }
+
+    public IRPArgs setPrintCumulativeAdoptionsFor(String... miliues) {
+        set("--printCumulativeAdoptions");
+        setAll("--milieus", miliues);
+        return this;
+    }
+
+    public IRPArgs setRexe(Path path) {
+        set("-R", path.toString());
+        return this;
+    }
+
+    public IRPArgs setRscript(Path path) {
+        set("--rscript", path.toString());
+        return this;
+    }
+
+    public IRPArgs setRInOut(Path in, Path out) {
+        set("--rinput", in.toString());
+        set("--routput", out.toString());
+        return this;
+    }
 }

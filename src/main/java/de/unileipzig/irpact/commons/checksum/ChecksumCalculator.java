@@ -1,11 +1,13 @@
 package de.unileipzig.irpact.commons.checksum;
 
 import de.unileipzig.irpact.commons.Nameable;
+import de.unileipzig.irpact.commons.util.data.MutableInt;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -157,5 +159,21 @@ public abstract class ChecksumCalculator {
             cs += keyChecksum ^ valueChecksum;
         }
         return cs;
+    }
+
+    //=========================
+    // stream
+    //=========================
+
+    public int getUnorderedStreamChecksum(Stream<?> stream) {
+        return getUnorderedStreamChecksum(stream, null);
+    }
+    public <E> int getUnorderedStreamChecksum(Stream<E> stream, Function<? super E, ?> elementMapper) {
+        MutableInt cs = MutableInt.zero();
+        stream.forEach(e -> {
+            Object obj = elementMapper == null ? e : elementMapper.apply(e);
+            cs.update(getChecksum(obj));
+        });
+        return cs.get();
     }
 }

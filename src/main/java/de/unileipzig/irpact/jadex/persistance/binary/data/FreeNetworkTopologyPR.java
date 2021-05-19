@@ -37,6 +37,7 @@ public class FreeNetworkTopologyPR extends BinaryPRBase<FreeNetworkTopology> {
     @Override
     protected BinaryJsonData doInitalizePersist(FreeNetworkTopology object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
+        data.putText(object.getName());
         data.putDouble(object.getInitialWeight());
         data.putInt(object.getEdgeType().id());
         data.putBoolean(object.isSelfReferential());
@@ -74,6 +75,7 @@ public class FreeNetworkTopologyPR extends BinaryPRBase<FreeNetworkTopology> {
     @Override
     protected FreeNetworkTopology doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         FreeNetworkTopology object = new FreeNetworkTopology();
+        object.setName(data.getText());
         object.setInitialWeight(data.getDouble());
         object.setEdgeType(SocialGraph.Type.get(data.getInt()));
         object.setSelfReferential(data.getBoolean());
@@ -83,8 +85,9 @@ public class FreeNetworkTopologyPR extends BinaryPRBase<FreeNetworkTopology> {
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, FreeNetworkTopology object, RestoreManager manager) throws RestoreException {
+        Map<Long, Long> idMap = data.getLongLongMap();
         Map<ConsumerAgentGroup, Integer> countMap = BinaryJsonData.mapFromLongLongMap(
-                data.getLongLongMap(),
+                idMap,
                 BinaryJsonData.ensureGet(manager),
                 BinaryJsonData.LONG2INT
         );

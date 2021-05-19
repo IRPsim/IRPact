@@ -66,7 +66,7 @@ public class InDisabledProcessPlanNodeFilterScheme implements InRAProcessPlanNod
 
     @Override
     public String getName() {
-        return null;
+        return _name;
     }
 
     public void setName(String name) {

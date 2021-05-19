@@ -10,6 +10,7 @@ import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.core.spatial.distribution.DiscreteSpatialDistribution;
 import de.unileipzig.irpact.develop.TodoException;
+import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
@@ -140,8 +141,14 @@ public class InFileSelectedSpatialDistribution2D implements InSpatialDistributio
         }
     }
 
+    @XXXXXXXXX
     @Override
     public void setup(IRPactInputParser parser, Object input) throws ParsingException {
+        if(parser.isRestored()) {
+            LOGGER.warn("DIRTY FIX");
+            return;
+        }
+
         JadexConsumerAgentGroup jCag = (JadexConsumerAgentGroup) input;
 
         String xKey = getXPositionKey().getName();
@@ -149,7 +156,7 @@ public class InFileSelectedSpatialDistribution2D implements InSpatialDistributio
         String selectKey = getSelectKey().getName();
         SpatialTableFileContent attrList = parser.parseEntityTo(getAttributeFile());
         List<List<SpatialAttribute>> selectedList = SpatialUtil.filter(attrList.content().listTable(), selectKey, jCag.getName());
-        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xKey, yKey, "");
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xKey, yKey, null);
 
 
         DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();

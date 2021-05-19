@@ -1,7 +1,10 @@
 package de.unileipzig.irpact.io.param.output;
 
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.product.ProductGroup;
+import de.unileipzig.irpact.core.util.AdoptionAnalyser;
 import de.unileipzig.irpact.core.util.AnnualAdoptionData;
+import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -143,44 +146,40 @@ public class OutAnnualAdoptionData implements OutEntity {
         return adoptionShareCumulativ.get(cag);
     }
 
-    public static AnnualAdoptionData parseWithDummy(OutAnnualAdoptionData... datas) {
-        Function<OutConsumerAgentGroup, ConsumerAgentGroup> parserFunc = new Function<OutConsumerAgentGroup, ConsumerAgentGroup>() {
-
-            protected final Map<String, ConsumerAgentGroup> cache = new HashMap<>();
-
-            @Override
-            public ConsumerAgentGroup apply(OutConsumerAgentGroup in) {
-                if(cache.containsKey(in.getName())) {
-                    return cache.get(in.getName());
-                } else {
-                    JadexConsumerAgentGroup out = new JadexConsumerAgentGroup();
-                    out.setName(in.getName());
-                    cache.put(in.getName(), out);
-                    return out;
-                }
-            }
-        };
-
-        return parse(parserFunc, datas);
+    @Override
+    public String toString() {
+        return "OutAnnualAdoptionData{" +
+                "_name='" + _name + '\'' +
+                ", year=" + year +
+                ", adoptionsThisYear=" + adoptionsThisYear +
+                ", adoptionsCumulativ=" + adoptionsCumulativ +
+                ", adoptionShareThisYear=" + adoptionShareThisYear +
+                ", adoptionShareCumulativ=" + adoptionShareCumulativ +
+                '}';
     }
 
-    protected static AnnualAdoptionData parse(
-            Function<? super OutConsumerAgentGroup, ? extends ConsumerAgentGroup> parserFunc,
-            OutAnnualAdoptionData... datas) {
-        AnnualAdoptionData outData = new AnnualAdoptionData();
-        for(OutAnnualAdoptionData data: datas) {
-            for(OutConsumerAgentGroup inCag: data.getConsumerAgentGroups()) {
-                ConsumerAgentGroup cag = parserFunc.apply(inCag);
-                outData.set(
-                        data.getYear(),
-                        cag,
-                        data.getAdoptionsThisYear(inCag),
-                        data.getAdoptionsCumulativ(inCag),
-                        data.getAdoptionShareThisYear(inCag),
-                        data.getAdoptionShareCumulativ(inCag)
-                );
+    @XXXXXXXXX
+    public static void create(
+            List<Number> years,
+            Map<ConsumerAgentGroup, OutConsumerAgentGroup> outCags,
+            ProductGroup pg,
+            AdoptionAnalyser analyser,
+            List<OutAnnualAdoptionData> out) {
+        Set<Number> y = new TreeSet<>(years);
+        y.addAll(analyser.getYears());
+        for(Number nYear: y) {
+            int year = nYear.intValue();
+            OutAnnualAdoptionData outData = new OutAnnualAdoptionData(year);
+            for(ConsumerAgentGroup cag: outCags.keySet()) {
+                OutConsumerAgentGroup outCag = outCags.get(cag);
+                AdoptionAnalyser.Result result = analyser.result(cag, pg);
+                AdoptionAnalyser.Annual annual = result.get(year);
+                outData.adoptionsThisYear.put(outCag, annual == null ? 0 : annual.getAdoptions());
+                outData.adoptionShareThisYear.put(outCag, annual == null ? 0.0 : annual.getAdoptionShare());
+                outData.adoptionsCumulativ.put(outCag, result.getAdoptions(year));
+                outData.adoptionShareCumulativ.put(outCag, result.getAdoptionShare(year));
             }
+            out.add(outData);
         }
-        return outData;
     }
 }

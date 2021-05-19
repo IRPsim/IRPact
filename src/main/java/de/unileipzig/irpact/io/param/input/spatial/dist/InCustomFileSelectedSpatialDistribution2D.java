@@ -95,7 +95,7 @@ public class InCustomFileSelectedSpatialDistribution2D implements InSpatialDistr
         String selectKey = getSelectKey().getName();
         SpatialTableFileContent attrList = parser.parseEntityTo(getAttributeFile());
         List<List<SpatialAttribute>> selectedList = SpatialUtil.filter(attrList.content().listTable(), selectKey, jCag.getName());
-        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xSupplier, ySupplier, "");
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xSupplier, ySupplier, null);
 
         DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();
         dist.setName(getName());
