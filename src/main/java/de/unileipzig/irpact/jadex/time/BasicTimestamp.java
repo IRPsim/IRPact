@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.jadex.time;
 
 import de.unileipzig.irpact.commons.time.Timestamp;
+import de.unileipzig.irpact.develop.AddToPersist;
 import jadex.bridge.service.annotation.Reference;
 
 import java.time.Instant;
@@ -12,16 +13,19 @@ import java.util.Objects;
 /**
  * @author Daniel Abitz
  */
+@AddToPersist("besser adden mit den werten")
 @Reference(local = true, remote = true)
 public final class BasicTimestamp implements JadexTimestamp {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
     private final ZonedDateTime TIME;
-    private final double simulationTick;
-    private final double normalizedTick;
+    private final double clockTick;
+    private final double tick;
 
-    private String cachedSimpleStr;
+    private String cachedSimple;
+    private String cachedPretty;
+    private String cachedComplex;
 
     public BasicTimestamp(long epochMilli) {
         this(ZonedDateTime.ofInstant(Instant.ofEpochMilli(epochMilli), ZoneId.systemDefault()));
@@ -31,14 +35,14 @@ public final class BasicTimestamp implements JadexTimestamp {
         this(time, Double.NaN, Double.NaN);
     }
 
-    public BasicTimestamp(ZonedDateTime time, double simulationTick, double normalizedTick) {
-        TIME = time;
-        this.simulationTick = simulationTick;
-        this.normalizedTick = normalizedTick;
+    public BasicTimestamp(ZonedDateTime time, double clockTick, double tick) {
+        TIME = Objects.requireNonNull(time, "time");
+        this.clockTick = clockTick;
+        this.tick = tick;
     }
 
     public boolean hasTick() {
-        return !Double.isNaN(normalizedTick);
+        return !Double.isNaN(tick);
     }
 
     @Override
@@ -47,13 +51,13 @@ public final class BasicTimestamp implements JadexTimestamp {
     }
 
     @Override
-    public double getSimulationTick() {
-        return simulationTick;
+    public double getClockTick() {
+        return clockTick;
     }
 
     @Override
-    public double getNormalizedTick() {
-        return normalizedTick;
+    public double getTick() {
+        return tick;
     }
 
     @Override
@@ -63,30 +67,43 @@ public final class BasicTimestamp implements JadexTimestamp {
 
     @Override
     public String printSimple() {
-        if(cachedSimpleStr == null) {
+        if(cachedSimple == null) {
             if(hasTick()) {
-                cachedSimpleStr = "@{"
-                        + normalizedTick
-                        + ", "
-                        + FORMATTER.format(TIME)
-                        + "}";
+                cachedSimple = "Tick(" + tick + ")";
             } else {
-                cachedSimpleStr = "@{"
-                        + FORMATTER.format(TIME)
-                        + "}";
+                cachedSimple = "Time(" + FORMATTER.format(TIME) + ")";
             }
         }
-        return cachedSimpleStr;
+        return cachedSimple;
+    }
+
+    @Override
+    public String printPretty() {
+        if(cachedPretty == null) {
+            if(hasTick()) {
+                cachedPretty = "Tick(" + tick + " | "+ FORMATTER.format(TIME) + ")";
+            } else {
+                cachedPretty = "Time(" + FORMATTER.format(TIME) + ")";
+            }
+        }
+        return cachedPretty;
+    }
+
+    @Override
+    public String printComplex() {
+        if(cachedComplex == null) {
+            if(hasTick()) {
+                cachedComplex = "Tick(" + tick + " [" + clockTick + ", " + FORMATTER.format(TIME) + "])";
+            } else {
+                cachedComplex = "Time(" + FORMATTER.format(TIME) + ")";
+            }
+        }
+        return cachedComplex;
     }
 
     @Override
     public String toString() {
-        return  "TS"
-                + "{"
-                + FORMATTER.format(TIME)
-                + "," + normalizedTick
-                + "," + simulationTick
-                + "}";
+        return printComplex();
     }
 
     @Override
@@ -103,7 +120,7 @@ public final class BasicTimestamp implements JadexTimestamp {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return hashCode();
     }
 }

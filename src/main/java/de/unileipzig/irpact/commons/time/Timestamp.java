@@ -1,17 +1,21 @@
 package de.unileipzig.irpact.commons.time;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 
 import java.time.ZonedDateTime;
 
 /**
  * @author Daniel Abitz
  */
-public interface Timestamp extends Comparable<Timestamp>, IsEquals {
+public interface Timestamp extends Comparable<Timestamp>, ChecksumComparable {
 
     ZonedDateTime getTime();
 
     String printSimple();
+
+    String printPretty();
+
+    String printComplex();
 
     default long getEpochMilli() {
         return getTime().toInstant().toEpochMilli();
@@ -22,7 +26,7 @@ public interface Timestamp extends Comparable<Timestamp>, IsEquals {
     }
 
     default boolean isBetween(Timestamp from, Timestamp to) {
-        return isAfterOrEquals(from) && isBeforeOrEqual(to);
+        return isAfterOrEquals(from) && isBefore(to);
     }
 
     default boolean isAfter(Timestamp other) {

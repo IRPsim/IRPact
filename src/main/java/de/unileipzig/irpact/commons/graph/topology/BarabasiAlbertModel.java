@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons.graph.topology;
 
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.commons.graph.Graph;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -7,7 +8,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 /**
  * @param <V>
@@ -22,7 +22,7 @@ public class BarabasiAlbertModel<V, E, T> extends AbstractMultiGraphTopology<V, 
 
     protected int m;
     protected int m0;
-    protected Random rnd;
+    protected Rnd rnd;
     protected boolean shuffleAtStart;
 
     public BarabasiAlbertModel() {
@@ -36,7 +36,7 @@ public class BarabasiAlbertModel<V, E, T> extends AbstractMultiGraphTopology<V, 
         this.m0 = m0;
     }
 
-    public void setRandom(Random rnd) {
+    public void setRandom(Rnd rnd) {
         this.rnd = rnd;
     }
 
@@ -61,7 +61,7 @@ public class BarabasiAlbertModel<V, E, T> extends AbstractMultiGraphTopology<V, 
     public void initalizeEdges(Graph<V, E> graph) {
         List<V> vList = new ArrayList<>(graph.getVertices());
         if(shuffleAtStart) {
-            Collections.shuffle(vList, rnd);
+            rnd.shuffle(vList);
         }
         final int N = vList.size();
         int E = 0;

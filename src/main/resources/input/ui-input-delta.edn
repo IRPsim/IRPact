@@ -1,6 +1,31 @@
 [
   {
+    :label "Agenten" 
+    :description "todo" 
+    :sections [
+      {
+        :label "Konsumer" 
+        :description "todo" 
+        :sections [
+          {
+            :label "Attribute" 
+            :description "todo" 
+            :sections [
+              {
+                :label "Jahresabhängiges Attribut" 
+                :set "set_InGeneralConsumerAgentAnnualGroupAttribute" 
+                :description "Der Wert (bzw. Verteilungsfunktion) dieser Attribute lässt sich für die jeweiligen Simulationsjahre individuell definieren." 
+                :tags [["link" "InGeneralConsumerAgentAnnualGroupAttribute" "InUnivariateDoubleDistribution" "distribution"]]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  } 
+  {
     :label "Submodule" 
+    :description "todo" 
     :sections [
       {
         :label "OptAct" 

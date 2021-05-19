@@ -49,6 +49,10 @@ public abstract class AbstractAgentBase {
         return getTimeModel().now();
     }
 
+    protected void waitForYearChangeIfRequired() {
+        getEnvironment().getLiveCycleControl().waitForYearChangeIfRequired(getThisAgent());
+    }
+
     protected void waitForSynchronisationIfRequired() {
         getEnvironment().getLiveCycleControl().waitForSynchronisationIfRequired(getThisAgent());
     }
@@ -59,7 +63,7 @@ public abstract class AbstractAgentBase {
 
     protected abstract void scheduleLoop();
 
-    protected abstract void loopAction();
+    protected abstract void onLoopAction();
 
     @OnInit
     protected abstract void onInit();

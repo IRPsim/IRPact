@@ -1,9 +1,8 @@
 package de.unileipzig.irpact.core.network;
 
-import de.unileipzig.irpact.commons.IsEquals;
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.Agent;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,12 +12,12 @@ import java.util.stream.Stream;
 /**
  * @author Daniel Abitz
  */
-public interface SocialGraph extends IsEquals {
+public interface SocialGraph extends ChecksumComparable {
 
     /**
      * @author Daniel Abitz
      */
-    interface Node extends IsEquals {
+    interface Node extends ChecksumComparable {
 
         String getLabel();
 
@@ -32,7 +31,7 @@ public interface SocialGraph extends IsEquals {
     /**
      * @author Daniel Abitz
      */
-    interface Edge extends IsEquals {
+    interface Edge extends ChecksumComparable {
 
         void setSource(Node node);
 
@@ -50,7 +49,7 @@ public interface SocialGraph extends IsEquals {
     /**
      * @author Daniel Abitz
      */
-    enum Type implements IsEquals {
+    enum Type implements ChecksumComparable {
         COMMUNICATION(1);
 
         private final int ID;
@@ -73,7 +72,7 @@ public interface SocialGraph extends IsEquals {
         }
 
         @Override
-        public int getHashCode() {
+        public int getChecksum() {
             return ID;
         }
     }
@@ -95,9 +94,9 @@ public interface SocialGraph extends IsEquals {
 
         int sum(Object[] keys, Type type);
 
-        int sum(Collection<?> keys, Type type);
+        int sum(Iterable<?> keys, Type type);
 
-        int total(Type type);
+        int sum(Type type);
     }
 
     LinkageInformation getLinkageInformation(Node node);
@@ -125,6 +124,8 @@ public interface SocialGraph extends IsEquals {
     Stream<? extends Node> streamNodes();
 
     Stream<? extends Node> streamTargets(Node source, Type type);
+
+    Node getRandomTarget(Node source, Type type, Rnd rnd);
 
     boolean addEdge(Node from, Node to, Type type, double weight);
 

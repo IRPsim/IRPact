@@ -1,22 +1,19 @@
 package de.unileipzig.irpact.commons.affinity;
 
-import de.unileipzig.irpact.commons.IsEquals;
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.util.Rnd;
 
-import java.util.Random;
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * @param <T>
  * @author Daniel Abitz
  */
-public interface Affinities<T> extends IsEquals {
+public interface Affinities<T> extends ChecksumComparable {
 
     Affinities<T> createWithout(T target);
 
-    Set<T> targets();
-
-    Set<T> accessibleTargets();
+    Collection<T> targets();
 
     boolean isEmpty();
 
@@ -24,15 +21,13 @@ public interface Affinities<T> extends IsEquals {
 
     boolean hasValue(T target);
 
+    boolean remove(T target);
+
     double getValue(T target);
 
     void setValue(T target, double value);
 
     double sum();
-
-    T getRandom(Random rnd);
-
-    T getWeightedRandom(Random rnd);
 
     T getRandom(Rnd rnd);
 

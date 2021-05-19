@@ -1,8 +1,11 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
 import de.unileipzig.irpact.core.agent.AgentGroup;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedGroupAttribute;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
+import de.unileipzig.irpact.core.product.awareness.ProductAwarenessSupplyScheme;
 import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
 import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
 
@@ -15,7 +18,13 @@ public interface ConsumerAgentGroup extends AgentGroup<ConsumerAgent> {
 
     double getInformationAuthority();
 
-    Collection<ConsumerAgentGroupAttribute> getAttributes();
+    int getMaxNumberOfActions();
+
+    Collection<ConsumerAgentGroupAttribute> getGroupAttributes();
+
+    default boolean hasAttribute(String name) {
+        return hasGroupAttribute(name) || hasProductRelatedGroupAttribute(name);
+    }
 
     boolean hasGroupAttribute(String name);
 
@@ -27,9 +36,23 @@ public interface ConsumerAgentGroup extends AgentGroup<ConsumerAgent> {
 
     void addGroupAttribute(ConsumerAgentGroupAttribute attribute);
 
+    Collection<ConsumerAgentProductRelatedGroupAttribute> getProductRelatedGroupAttributes();
+
+    boolean hasProductRelatedGroupAttribute(String name);
+
+    default boolean hasProductRelatedGroupAttribute(ConsumerAgentProductRelatedGroupAttribute attribute) {
+        return hasProductRelatedGroupAttribute(attribute.getName());
+    }
+
+    ConsumerAgentProductRelatedGroupAttribute getProductRelatedGroupAttribute(String name);
+
+    void addProductRelatedGroupAttribute(ConsumerAgentProductRelatedGroupAttribute attribute);
+
     SpatialDistribution getSpatialDistribution();
 
-    ProductInterestSupplyScheme getAwarenessSupplyScheme();
+    ProductAwarenessSupplyScheme getAwarenessSupplyScheme();
+
+    ProductInterestSupplyScheme getInterestSupplyScheme();
 
     ConsumerAgent deriveAgent();
 

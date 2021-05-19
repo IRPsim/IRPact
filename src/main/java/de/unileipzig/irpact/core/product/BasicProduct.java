@@ -1,13 +1,16 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.core.product.attribute.ProductAttribute;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
+import de.unileipzig.irpact.develop.Todo;
 
 import java.util.*;
 
 /**
  * @author Daniel Abitz
  */
+@Todo("derive methode einbauen")
 public class BasicProduct extends SimulationEntityBase implements Product {
 
     protected ProductGroup group;
@@ -78,11 +81,16 @@ public class BasicProduct extends SimulationEntityBase implements Product {
     }
 
     @Override
-    public int getHashCode() {
+    public boolean isNotFixed() {
+        return !fixed;
+    }
+
+    @Override
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
                 group.getName(),
-                IsEquals.getCollHashCode(getAttributes())
+                ChecksumComparable.getCollChecksum(getAttributes())
         );
     }
 }

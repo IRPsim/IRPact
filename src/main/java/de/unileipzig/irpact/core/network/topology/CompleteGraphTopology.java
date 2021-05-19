@@ -51,26 +51,31 @@ public class CompleteGraphTopology extends NameableBase implements GraphTopology
     @Override
     public void initalize(SimulationEnvironment environment, SocialGraph graph) {
         LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "initialize complete graph");
+        int added = 0;
         for(SocialGraph.Node src: graph.getNodes()) {
             SocialGraph.LinkageInformation srcLi = graph.getLinkageInformation(src);
             for(SocialGraph.Node tar: graph.getNodes()) {
                 if(src == tar) {
                     continue;
                 }
-                LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "add edge: {}->{} ({},{})", src.getLabel(), tar.getLabel(), edgeType, initialWeight);
-                graph.addEdge(src, tar, edgeType, initialWeight);
 
-                srcLi.inc(tar.getAgent(ConsumerAgent.class).getGroup(), edgeType);
+                if(graph.hasNoEdge(src, tar, edgeType)) {
+                    LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "add edge: {}->{} ({},{})", src.getLabel(), tar.getLabel(), edgeType, initialWeight);
+                    graph.addEdge(src, tar, edgeType, initialWeight);
+                    srcLi.inc(tar.getAgent(ConsumerAgent.class).getGroup(), edgeType);
+                    added++;
+                }
             }
         }
+        LOGGER.trace("total added: {}", added);
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
                 getInitialWeight(),
-                getEdgeType().getHashCode()
+                getEdgeType().getChecksum()
         );
     }
 }

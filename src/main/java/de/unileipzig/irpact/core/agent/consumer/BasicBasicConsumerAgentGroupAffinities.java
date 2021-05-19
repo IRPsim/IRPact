@@ -1,10 +1,8 @@
 package de.unileipzig.irpact.core.agent.consumer;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.affinity.BasicAffinities;
-
-import java.util.Map;
-import java.util.Objects;
+import de.unileipzig.irpact.commons.util.data.weighted.WeightedMapping;
 
 /**
  * @author Daniel Abitz
@@ -15,13 +13,13 @@ public class BasicBasicConsumerAgentGroupAffinities extends BasicAffinities<Cons
         super();
     }
 
-    public BasicBasicConsumerAgentGroupAffinities(Map<ConsumerAgentGroup, Double> values) {
-        super(values);
+    public BasicBasicConsumerAgentGroupAffinities(WeightedMapping<ConsumerAgentGroup> mapping) {
+        super(mapping);
     }
 
     @Override
-    protected BasicBasicConsumerAgentGroupAffinities newInstance() {
-        return new BasicBasicConsumerAgentGroupAffinities();
+    protected BasicBasicConsumerAgentGroupAffinities newInstance(WeightedMapping<ConsumerAgentGroup> copy) {
+        return new BasicBasicConsumerAgentGroupAffinities(copy);
     }
 
     @Override
@@ -30,9 +28,7 @@ public class BasicBasicConsumerAgentGroupAffinities extends BasicAffinities<Cons
     }
 
     @Override
-    public int getHashCode() {
-        return Objects.hash(
-                IsEquals.getMapHashCode(values)
-        );
+    public int getChecksum() {
+        return ChecksumComparable.getCollChecksum(mapping.elements());
     }
 }

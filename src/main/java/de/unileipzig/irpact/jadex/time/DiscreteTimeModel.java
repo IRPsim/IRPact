@@ -1,10 +1,10 @@
 package de.unileipzig.irpact.jadex.time;
 
-import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.time.TickConverter;
 import de.unileipzig.irpact.commons.time.TimeMode;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.IComponentStep;
 import jadex.bridge.IInternalAccess;
@@ -38,46 +38,11 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
     }
 
     @Override
-    public int getHashCode() {
-        //keine ticks hashen, die sind nicht detrministisch
+    public int getChecksum() {
         return Objects.hash(
                 getName()
-//                storedDelta,
-//                storedTimePerTickInMs,
-//                tickModifier,
-//                IsEquals.getHashCode(nowStamp),
-//                IsEquals.getHashCode(startTime),
-//                IsEquals.getHashCode(endTime),
-//                converter.getHashCode()
         );
     }
-
-//    public void setDirect(
-//            int startYear,
-//            long storedDelta,
-//            long storedTimePerTickInMs,
-//            double startTick,
-//            double endTick,
-//            double nowTick,
-//            double tickModifier,
-//            JadexTimestamp nowStamp,
-//            JadexTimestamp startTime,
-//            JadexTimestamp endTime,
-//            double delayTillEnd) {
-//        this.storedDelta = storedDelta;
-//        this.storedTimePerTickInMs = storedTimePerTickInMs;
-//        this.startTick = startTick;
-//        this.endTick = endTick;
-//        this.nowTick = nowTick;
-//        this.tickModifier = tickModifier;
-//        this.nowStamp = nowStamp;
-//        this.startTime = startTime;
-//        this.endTime = endTime;
-//        this.delayTillEnd = delayTillEnd;
-//
-//        converter.init(startYear, storedTimePerTickInMs, ZoneId.systemDefault());
-//        setStartTick(startTick);
-//    }
 
     public double getStartTick() {
         return startTick;
@@ -112,15 +77,15 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
     }
 
     public void setStartYear(int startYear, long timePerTickInMs) {
-        LOGGER.debug("set start year: {}", startYear);
-        LOGGER.debug("set time per tick in ms: {}", timePerTickInMs);
+        LOGGER.trace("set start year: {}", startYear);
+        LOGGER.trace("set time per tick in ms: {}", timePerTickInMs);
         converter.init(startYear, timePerTickInMs, ZoneId.systemDefault());
     }
 
     public void setStartTick(double tick) {
         converter.setStart(tick);
         startTick = tick;
-        setStartTime(new BasicTimestamp(converter.getStartTime(), tick, 0.0));
+        this.startTime = new BasicTimestamp(converter.getStartTime(), tick, 0.0);
     }
 
     public double getTickModifier() {
@@ -149,55 +114,53 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
 
     @Override
     public void setupTimeModel() {
-        LOGGER.debug("setup clock '{}'", IClock.TYPE_EVENT_DRIVEN);
+        LOGGER.trace("setup clock '{}'", IClock.TYPE_EVENT_DRIVEN);
         getSimulationService().setClockType(IClock.TYPE_EVENT_DRIVEN).get();
-        LOGGER.debug("set tick delta: {}", getStoredDelta());
+        LOGGER.trace("set tick delta: {}", getStoredDelta());
         getClockService().setDelta(getStoredDelta());
 
         setupNextYear();
     }
 
-    @Override
     public void setupNextYear() {
         setStartYear(
-                getStartYear(),
+                getFirstSimulationYear(),
                 getStoredTimePerTickInMs()
         );
         setStartTick(getModifiedClockTick());
-        LOGGER.debug("internal simulation start time: {}", startTime());
+        LOGGER.trace("internal simulation start time: {}", startTime());
 
         //endjahr ist inklusiv, hier wird aber exklusiv betrachtet!
-        int yearDelta = getEndYearInclusive() - getStartYear();
+        int yearDelta = getLastSimulationYear() - getFirstSimulationYear();
         JadexTimestamp endStamp = plusYears(startTime(), yearDelta + 1L);
         setEndTime(endStamp);
 
-        LOGGER.debug("internal simulation end time: {}", endTime());
-        LOGGER.debug("end tick: {}", endTick);
-        LOGGER.debug("end delay (ticks): {}", delayTillEnd);
+        LOGGER.trace("internal simulation end time: {}", endTime());
+        LOGGER.trace("end tick: {}", endTick);
+        LOGGER.trace("end delay (ticks): {}", delayTillEnd);
 
         LOGGER.info("decrement tick for init");
-        LOGGER.debug("old 'now': {}", now());
+        LOGGER.trace("old 'now': {}", now());
         decTickModifier();
-        LOGGER.debug("new 'now': {}", now());
+        LOGGER.trace("new 'now': {}", now());
     }
 
     @Override
-    public int getStartYear() {
-        return environment.getInitializationData()
-                .getStartYear();
+    public int getFirstSimulationYear() {
+        return environment.getSettings()
+                .getFirstSimulationYear();
     }
 
     @Override
-    public int getEndYearInclusive() {
-        int start = getStartYear();
-        int end = environment.getInitializationData()
-                .getEndYear();
+    public int getLastSimulationYear() {
+        int start = getFirstSimulationYear();
+        int end = environment.getSettings()
+                .getLastSimulationYear();
         return Math.max(start, end);
     }
 
-    @Override
     public void setEndTime(JadexTimestamp endTime) {
-        super.setEndTime(endTime);
+        this.endTime = endTime;
         delayTillEnd = converter.ticksUntil(startTime.getTime(), endTime.getTime());
         endTick = startTick + delayTillEnd;
     }
@@ -211,6 +174,11 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
         } else {
             return IFuture.DONE;
         }
+    }
+
+    @Override
+    public IFuture<Void> waitUntilEnd(IExecutionFeature exec, IInternalAccess access, IComponentStep<Void> task) {
+        throw new TodoException();
     }
 
     @Override
@@ -287,10 +255,12 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
     }
 
     @Override
-    public boolean isValid(Timestamp ts) {
-        if(startTime == null || endTime == null || ts == null) {
-            return false;
-        }
-        return ts.isAfterOrEquals(startTime) && ts.isBeforeOrEqual(endTime);
+    public boolean hasYearChange() {
+        throw new TodoException();
+    }
+
+    @Override
+    public void performYearChange() {
+        throw new TodoException();
     }
 }

@@ -5,15 +5,15 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
 import de.unileipzig.irpact.core.process.ra.npv.PVFileLoader;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.DISTRIBUTIONS;
 import static de.unileipzig.irpact.io.param.IOConstants.FILES;
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
 import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
@@ -54,6 +54,17 @@ public class InPVFile implements InFile {
     }
 
     @Override
+    public InPVFile copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InPVFile newCopy(CopyCache cache) {
+        InPVFile copy = new InPVFile();
+        copy._name = _name;
+        return copy;
+    }
+
+    @Override
     public String getFileNameWithoutExtension() {
         return _name;
     }
@@ -64,15 +75,15 @@ public class InPVFile implements InFile {
     }
 
     @Override
-    public NPVXlsxData parse(InputParser parser) throws ParsingException {
+    public NPVXlsxData parse(IRPactInputParser parser) throws ParsingException {
         try {
             String fileName = getFileNameWithoutExtension();
             PVFileLoader pvLoader = new PVFileLoader();
             pvLoader.setLoader(parser.getResourceLoader());
             pvLoader.setInputFileName(fileName);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "try load '{}'", fileName);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "try load '{}'", fileName);
             pvLoader.initalize();
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "loading finished");
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "loading finished");
             return pvLoader.getData();
         } catch (Exception e) {
             throw new ParsingException(e);

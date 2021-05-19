@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.misc.graphviz;
 
 import de.unileipzig.irpact.commons.util.IRPactBase32;
+import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
@@ -161,7 +162,7 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
             content = Util.readAll(defIn);
         }
         String b32 = IRPactBase32.encodeToString(content);
-        String splittedB32 = de.unileipzig.irpact.commons.Util.splitLen(b32, LINE_LEN);
+        String splittedB32 = StringUtil.splitLen(b32, LINE_LEN);
         LOGGER.info("dot file content\n{}", splittedB32);
     }
 
@@ -173,14 +174,14 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
 
         Path dotPath = imageOutputPath.resolveSibling(imageOutputPath.getFileName().toString() + ".dot");
         try {
-            LOGGER.debug("store temp-dot file: {}", dotPath);
+            LOGGER.trace("store temp-dot file: {}", dotPath);
             gen.store(dotPath);
 
             if(logDotFile) {
                 logContent(dotPath);
             }
 
-            LOGGER.debug("init dot process");
+            LOGGER.trace("init dot process");
             DotProcess process;
             try {
                 process = new DotProcess()
@@ -195,7 +196,7 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
                 return;
             }
 
-            LOGGER.debug("execute dot process");
+            LOGGER.trace("execute dot process");
             ProcessResult result;
             try {
                 result = process.execute();
@@ -211,7 +212,7 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
             }
 
             if(Files.exists(imageOutputPath)) {
-                LOGGER.debug("image created ({})", imageOutputPath);
+                LOGGER.trace("image created ({})", imageOutputPath);
             } else {
                 LOGGER.error("image not created ({})", imageOutputPath);
             }

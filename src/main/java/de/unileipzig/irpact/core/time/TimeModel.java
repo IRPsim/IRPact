@@ -3,7 +3,7 @@ package de.unileipzig.irpact.core.time;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.time.TimeMode;
 import de.unileipzig.irpact.commons.time.Timestamp;
-import de.unileipzig.irpact.core.misc.Initialization;
+import de.unileipzig.irpact.core.misc.InitalizablePart;
 
 import java.time.Month;
 import java.time.ZonedDateTime;
@@ -11,26 +11,24 @@ import java.time.ZonedDateTime;
 /**
  * @author Daniel Abitz
  */
-public interface TimeModel extends Nameable, Initialization {
+public interface TimeModel extends Nameable, InitalizablePart {
 
     /**
      * Special setup for time model.
      */
     void setupTimeModel();
 
-    void setupNextYear();
-
     TimeMode getMode();
 
     Timestamp convert(ZonedDateTime zdt);
 
-    int getYear();
+    int getCurrentYear();
 
     Timestamp now();
 
-    int getStartYear();
+    int getFirstSimulationYear();
 
-    int getEndYearInclusive();
+    int getLastSimulationYear();
 
     Timestamp startTime();
 
@@ -41,6 +39,10 @@ public interface TimeModel extends Nameable, Initialization {
     boolean isValid(Timestamp ts);
 
     boolean endTimeReached();
+
+    boolean hasYearChange();
+
+    void performYearChange();
 
     //=========================
     //util
@@ -53,6 +55,10 @@ public interface TimeModel extends Nameable, Initialization {
     Timestamp plusDays(Timestamp ts, long days);
 
     Timestamp plusYears(Timestamp ts, long years);
+
+    Timestamp atStartOfYear(int year);
+
+    Timestamp at(int year, long weeks);
 
     Timestamp at(int year, Month month, int day);
 }

@@ -82,9 +82,9 @@ public class ProxySimulationAgent implements SimulationAgent, ProxyAgent<Simulat
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         if(isSynced()) {
-            return getRealAgent().getHashCode();
+            return getRealAgent().getChecksum();
         } else {
             return Objects.hash(getName());
         }

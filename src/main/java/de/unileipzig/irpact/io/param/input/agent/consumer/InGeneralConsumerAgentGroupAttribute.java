@@ -2,15 +2,16 @@ package de.unileipzig.irpact.io.param.input.agent.consumer;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentDoubleGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -65,6 +66,19 @@ public class InGeneralConsumerAgentGroupAttribute implements InDependentConsumer
     }
 
     @Override
+    public InGeneralConsumerAgentGroupAttribute copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InGeneralConsumerAgentGroupAttribute newCopy(CopyCache cache) {
+        InGeneralConsumerAgentGroupAttribute copy = new InGeneralConsumerAgentGroupAttribute();
+        copy._name = _name;
+        copy.attrName = cache.copyArray(attrName);
+        copy.dist = cache.copyArray(dist);
+        return copy;
+    }
+
+    @Override
     public String getName() {
         return _name;
     }
@@ -91,14 +105,15 @@ public class InGeneralConsumerAgentGroupAttribute implements InDependentConsumer
     }
 
     @Override
-    public BasicConsumerAgentGroupAttribute parse(InputParser parser) throws ParsingException {
-        BasicConsumerAgentGroupAttribute cagAttr = new BasicConsumerAgentGroupAttribute();
+    public BasicConsumerAgentDoubleGroupAttribute parse(IRPactInputParser parser) throws ParsingException {
+        BasicConsumerAgentDoubleGroupAttribute cagAttr = new BasicConsumerAgentDoubleGroupAttribute();
         cagAttr.setName(getAttributeName());
+        cagAttr.setArtificial(false);
 
         UnivariateDoubleDistribution dist = parser.parseEntityTo(getDistribution());
         cagAttr.setDistribution(dist);
 
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "created ConsumerAgentGroupAttribute '{}' ('{}')", cagAttr.getName(), getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "created ConsumerAgentGroupAttribute '{}' ('{}')", cagAttr.getName(), getName());
         return cagAttr;
     }
 }

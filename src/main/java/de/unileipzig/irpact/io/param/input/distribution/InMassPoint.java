@@ -1,25 +1,23 @@
 package de.unileipzig.irpact.io.param.input.distribution;
 
-import de.unileipzig.irpact.commons.WeightedDouble;
-import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.io.param.input.InEntity;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.commons.util.data.weighted.WeightedDouble;
+import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
 
 import static de.unileipzig.irpact.io.param.IOConstants.DISTRIBUTIONS;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
-public class InMassPoint implements InEntity {
+public class InMassPoint implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -54,6 +52,19 @@ public class InMassPoint implements InEntity {
         this.mpWeight = weight;
     }
 
+    @Override
+    public InMassPoint copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InMassPoint newCopy(CopyCache cache) {
+        InMassPoint copy = new InMassPoint();
+        copy._name = _name;
+        copy.mpValue = mpValue;
+        copy.mpWeight = mpWeight;
+        return copy;
+    }
+
     public String getName() {
         return _name;
     }
@@ -68,11 +79,6 @@ public class InMassPoint implements InEntity {
 
     public WeightedDouble toWeightedDouble() {
         return new WeightedDouble(getValue(), getWeight());
-    }
-
-    @Override
-    public Object parse(InputParser parser) throws ParsingException {
-        return this;
     }
 
     @Override

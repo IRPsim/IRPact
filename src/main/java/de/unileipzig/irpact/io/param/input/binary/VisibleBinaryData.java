@@ -1,10 +1,11 @@
 package de.unileipzig.irpact.io.param.input.binary;
 
 import de.unileipzig.irpact.commons.util.IRPactBase32;
-import de.unileipzig.irpact.commons.BinaryData;
-import de.unileipzig.irpact.io.param.input.InEntity;
+import de.unileipzig.irpact.commons.util.data.BinaryData;
+import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -17,7 +18,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class VisibleBinaryData implements InEntity {
+public class VisibleBinaryData implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -49,6 +50,18 @@ public class VisibleBinaryData implements InEntity {
     }
 
     @Override
+    public VisibleBinaryData copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public VisibleBinaryData newCopy(CopyCache cache) {
+        VisibleBinaryData copy = new VisibleBinaryData();
+        copy._name = _name;
+        copy.idVisible = idVisible;
+        return copy;
+    }
+
+    @Override
     public String getName() {
         return _name;
     }
@@ -72,7 +85,7 @@ public class VisibleBinaryData implements InEntity {
     public byte[] getBytes() {
         return _name == null
                 ? null
-                : IRPactBase32.decodeString(_name);
+                : IRPactBase32.decode(_name);
     }
 
     private final BinaryData ACCESS = new BinaryAccess();

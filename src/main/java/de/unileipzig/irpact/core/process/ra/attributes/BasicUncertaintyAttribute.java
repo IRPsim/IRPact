@@ -1,14 +1,13 @@
 package de.unileipzig.irpact.core.process.ra.attributes;
 
-import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentAttribute;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentDoubleAttribute;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-public class BasicUncertaintyAttribute extends BasicConsumerAgentAttribute {
+public class BasicUncertaintyAttribute extends BasicConsumerAgentDoubleAttribute implements UncertaintyAttribute {
 
     protected boolean autoAdjustment;
     protected double convergence;
@@ -20,10 +19,12 @@ public class BasicUncertaintyAttribute extends BasicConsumerAgentAttribute {
         this.autoAdjustment = autoAdjustment;
     }
 
+    @Override
     public boolean isAutoAdjustment() {
         return autoAdjustment;
     }
 
+    @Override
     public double getUncertainty() {
         return getDoubleValue();
     }
@@ -32,6 +33,7 @@ public class BasicUncertaintyAttribute extends BasicConsumerAgentAttribute {
         setDoubleValue(value);
     }
 
+    @Override
     public double getConvergence() {
         return convergence;
     }
@@ -41,7 +43,7 @@ public class BasicUncertaintyAttribute extends BasicConsumerAgentAttribute {
     }
 
     @Override
-    public BasicUncertaintyAttribute copyAttribute() {
+    public BasicUncertaintyAttribute copy() {
         BasicUncertaintyAttribute copy = new BasicUncertaintyAttribute();
         copy.setName(getName());
         copy.setGroup(getGroup());
@@ -52,7 +54,7 @@ public class BasicUncertaintyAttribute extends BasicConsumerAgentAttribute {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
                 getGroup().getName(),

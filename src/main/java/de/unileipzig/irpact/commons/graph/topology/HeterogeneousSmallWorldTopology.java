@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.graph.topology;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.graph.Graph;
 
 import java.util.*;
@@ -67,7 +67,7 @@ public class HeterogeneousSmallWorldTopology<V, E, T, VG> extends HeterogeneousR
                         targetGrp = drawWeightedGroupFunction.apply(sourceGrp, rnd);
                         continue;
                     }
-                    V newTarget = CollectionUtil.getRandom(potentialTargets, rnd);
+                    V newTarget = rnd.getRandom(potentialTargets);
                     graph.removeEdge(edge);
                     addEdge(graph, sourceNode, newTarget);
                     break;

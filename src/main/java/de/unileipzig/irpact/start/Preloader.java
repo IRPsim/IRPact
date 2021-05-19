@@ -7,11 +7,13 @@ import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.log.SectionLoggingFilter;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.spec2.SpecificationConverter2;
-import de.unileipzig.irpact.io.spec2.SpecificationData2;
+import de.unileipzig.irpact.io.spec.SpecificationConverter;
+import de.unileipzig.irpact.start.irpact.IRPact;
+import de.unileipzig.irpact.start.irpact.IRPactCallback;
+import de.unileipzig.irpact.start.irpact.IRPactExecutor;
+import de.unileipzig.irpact.start.irpact.IRPactExecutors;
 import de.unileipzig.irpact.start.optact.OptAct;
 import de.unileipzig.irptools.io.ContentType;
 import de.unileipzig.irptools.io.ContentTypeDetector;
@@ -21,12 +23,9 @@ import de.unileipzig.irptools.io.base.DataEntry;
 import de.unileipzig.irptools.io.base.Scalars;
 import de.unileipzig.irptools.io.base.Sets;
 import de.unileipzig.irptools.io.downloaded.DownloadedFile;
-import de.unileipzig.irptools.io.perennial.PerennialData;
 import de.unileipzig.irptools.io.perennial.PerennialFile;
-import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.Iterator;
@@ -44,59 +43,34 @@ public class Preloader {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(Preloader.class);
 
-    private final CommandLineOptions clOptions;
+    private final MainCommandLineOptions clOptions;
     private final Collection<? extends IRPactCallback> callbacks;
     private ResourceLoader resourceLoader;
 
-    public Preloader(CommandLineOptions clOptions, Collection<? extends IRPactCallback> callbacks) {
+    public Preloader(MainCommandLineOptions clOptions, Collection<? extends IRPactCallback> callbacks) {
         this.clOptions = clOptions;
         this.callbacks = callbacks;
     }
 
     public void start() throws Throwable {
         setup();
-        if(clOptions.isCallIRPtools()) {
-            runIRPTools();
-            return;
-        }
-        if(clOptions.hasSpecInputDirPath()) {
-            convertSpecToParam();
-            return;
-        }
         load();
     }
 
-    private void runIRPTools() {
-        LOGGER.info("executing IRPtools");
-        SectionLoggingFilter filter = (SectionLoggingFilter) IRPLogging.getFilter();
-        IRPSection.addAllToolsTo(filter);
-        IRPtools.main(clOptions.getArgs());
-    }
-
     private void setup() {
-        if(clOptions.hasLogPath()) {
-            IRPLogging.initFile(clOptions.getLogPath());
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "log file: {}", clOptions.getLogPath());
-        }
-        if(clOptions.isCallIRPtools()) {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "call IRPtools");
-        }
-        if(clOptions.hasSpecOutputDirPath()) {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "call specification converter");
-        }
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "input file: {}", clOptions.getInputPath());
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "output file: {}", clOptions.getOutputPath());
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "image file: {}", clOptions.getImagePath());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "input file: {}", clOptions.getInputPath());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "output file: {}", clOptions.getOutputPath());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "image file: {}", clOptions.getImagePath());
         if(clOptions.isNoSimulation()) {
-            LOGGER.debug("simulation disabled");
+            LOGGER.trace("simulation disabled");
         } else {
-            LOGGER.debug("simulation enabled");
+            LOGGER.trace("simulation enabled");
         }
 
         BasicResourceLoader loader = new BasicResourceLoader();
         loader.setDir(clOptions.getDataDirPath());
         resourceLoader = loader;
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "data dir: {}", clOptions.getDataDirPath());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "data dir: {}", clOptions.getDataDirPath());
     }
 
     private void load() throws Exception {
@@ -112,48 +86,28 @@ public class Preloader {
         return new IRPact(clOptions, callbacks, resourceLoader);
     }
 
+    private void start(IRPact irpact) throws Exception {
+        IRPactExecutor exec = IRPactExecutors.get(clOptions.getRunMode());
+        exec.execute(irpact);
+    }
+
     private void loadSpec() throws Exception {
-        SpecificationConverter2 converter = new SpecificationConverter2();
-        InRoot root =  converter.toParam(clOptions.getSpecInputDirPath());
+        SpecificationConverter converter = new SpecificationConverter();
+        InRoot root =  converter.toParam(clOptions.getInputPath());
         AnnualEntry<InRoot> entry = new AnnualEntry<>(root, IRPactJson.JSON.createObjectNode());
         entry.getConfig().init();
-        entry.getConfig().setYear(root.general.startYear);
+        entry.getConfig().setYear(root.general.firstSimulationYear);
 
-        LOGGER.debug("call IRPact with spec");
+        LOGGER.trace("call IRPact with spec");
         IRPact irpact = createIRPactInstance();
-        irpact.start(entry);
-        LOGGER.debug("IRPact finished");
+        irpact.init(entry);
+        start(irpact);
+        LOGGER.trace("IRPact finished");
     }
 
     private void loadJson() throws Exception {
         ObjectNode root = IRPactJson.readJson(clOptions.getInputPath());
-        if(clOptions.hasSpecOutputDirPath()) {
-            convertParamToSpec(root);
-            return;
-        }
-
         load(root);
-    }
-
-    private void convertParamToSpec(ObjectNode root) throws Exception {
-        LOGGER.debug("convert parameter to specification");
-        AnnualEntry<InRoot> entry = IRPact.convert(clOptions, root);
-        InRoot inRoot = entry.getData();
-        inRoot.general.startYear = entry.getConfig().getYear(); //!
-        SpecificationConverter2 converter = new SpecificationConverter2();
-        SpecificationData2 data = converter.toSpec(inRoot);
-        data.store(clOptions.getSpecOutputDirPath());
-    }
-
-    private void convertSpecToParam() throws Exception {
-        LOGGER.debug("convert specification to parameter");
-        SpecificationConverter2 converter = new SpecificationConverter2();
-        InRoot root =  converter.toParam(clOptions.getSpecInputDirPath());
-        PerennialData<InRoot> pData = new PerennialData<>();
-        pData.add(root.general.startYear, root);
-        PerennialFile pFile = pData.serialize(IRPact.getInputConverter(clOptions));
-        pFile.store(clOptions.getOutputPath(), StandardCharsets.UTF_8);
-        LOGGER.debug(IRPSection.SPECIFICATION_CONVERTER, "param file stored: '{}'", clOptions.getOutputPath());
     }
 
     private void load(ObjectNode root) throws Exception {
@@ -227,7 +181,7 @@ public class Preloader {
 
     private SubModul detectModulInPerennialFile(PerennialFile file) throws Exception {
         if(file.getYears().size() == 0) {
-            LOGGER.error("years.szie() == 0");
+            LOGGER.error("years.size() == 0");
             return SubModul.UNKNOWN;
         }
         checkVersion(file.getYears().get(0).getSets());
@@ -237,12 +191,12 @@ public class Preloader {
 
     private SubModul detectModulInDownloadedFile(DownloadedFile file) throws Exception {
         if(file.getData().size() == 0) {
-            LOGGER.error("data.szie() == 0");
+            LOGGER.error("data.size() == 0");
             return SubModul.UNKNOWN;
         }
         DataEntry entry0 = file.getData().get(0);
         if(entry0.getYears().size() == 0) {
-            LOGGER.error("years.szie() == 0");
+            LOGGER.error("years.size() == 0");
             return SubModul.UNKNOWN;
         }
         checkVersion(entry0.getYears().get(0).getSets());
@@ -264,7 +218,7 @@ public class Preloader {
             optact = optactNode.booleanValue();
         }
         else {
-            LOGGER.error(" unsupported node tpye: '{}'", optactNode.getNodeType());
+            LOGGER.error("unsupported node tpye: '{}'", optactNode.getNodeType());
             return SubModul.UNKNOWN;
         }
         return optact
@@ -272,15 +226,29 @@ public class Preloader {
                 : SubModul.IRPACT;
     }
 
-    private void callIRPact(ObjectNode root) throws Exception {
-        LOGGER.debug("call IRPact with param");
-        IRPact irpact = createIRPactInstance();
-        irpact.start(root);
-        LOGGER.debug("IRPact finished");
-    }
-
     private void callOptact(ObjectNode root) {
         OptAct optact = new OptAct(clOptions, root);
         optact.start();
+    }
+
+    private void callIRPact(ObjectNode root) throws Exception {
+        LOGGER.trace("call IRPact with param");
+        IRPact irpact = createIRPactInstance();
+        irpact.init(root);
+        start(irpact);
+        LOGGER.trace("IRPact finished");
+    }
+
+    public void start(AnnualEntry<InRoot> root) throws Exception {
+        setup();
+        callIRPact(root);
+    }
+
+    private void callIRPact(AnnualEntry<InRoot> root) throws Exception {
+        LOGGER.trace("call IRPact with InRoot");
+        IRPact irpact = createIRPactInstance();
+        irpact.init(root);
+        start(irpact);
+        LOGGER.trace("IRPact finished");
     }
 }

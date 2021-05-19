@@ -36,7 +36,7 @@ public class SimpleUIDManager implements UIDManager {
     }
 
     @Override
-    public long getUID() {
+    public long nextUID() {
         LOCK.lock();
         try {
             return nextId++;

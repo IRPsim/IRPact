@@ -36,7 +36,7 @@ public class BasicDistanceEvaluator implements DistanceEvaluator, Eval {
     }
 
     @Override
-    public int getHashCode() {
-        return eval.getHashCode();
+    public int getChecksum() {
+        return eval.getChecksum();
     }
 }

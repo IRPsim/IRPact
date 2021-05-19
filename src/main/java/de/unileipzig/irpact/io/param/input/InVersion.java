@@ -2,14 +2,16 @@ package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
-import de.unileipzig.irpact.start.IRPact;
+import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.setHidden;
 
 /**
  * Stores the current Version of IRPact.
@@ -17,7 +19,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
  * @author Daniel Abitz
  */
 @Definition
-public class InVersion implements InEntity {
+public class InVersion implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -32,6 +34,7 @@ public class InVersion implements InEntity {
     public static void applyRes(TreeAnnotationResource res) {
         addEntry(res, thisClass());
         addEntry(res, thisClass(), "placeholderVersion");
+        setHidden(res, thisClass());
     }
 
     public String _name;
@@ -44,6 +47,17 @@ public class InVersion implements InEntity {
 
     public InVersion(String verion) {
         this._name = verion;
+    }
+
+    @Override
+    public InVersion copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InVersion newCopy(CopyCache cache) {
+        InVersion copy = new InVersion();
+        copy._name = _name;
+        return copy;
     }
 
     public static InVersion currentVersion() {
@@ -64,7 +78,9 @@ public class InVersion implements InEntity {
     }
 
     @Override
-    public BasicVersion parse(InputParser parser) throws ParsingException {
-        return new BasicVersion(getVersion());
+    public BasicVersion parse(IRPactInputParser parser) throws ParsingException {
+        BasicVersion version = new BasicVersion();
+        version.set(getVersion());
+        return version;
     }
 }

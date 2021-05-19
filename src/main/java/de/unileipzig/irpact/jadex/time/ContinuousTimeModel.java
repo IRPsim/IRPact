@@ -2,6 +2,7 @@ package de.unileipzig.irpact.jadex.time;
 
 import de.unileipzig.irpact.commons.time.ContinuousConverter;
 import de.unileipzig.irpact.commons.time.TimeMode;
+import de.unileipzig.irpact.develop.TodoException;
 import jadex.bridge.IComponentStep;
 import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IExecutionFeature;
@@ -46,7 +47,7 @@ public class ContinuousTimeModel extends AbstractJadexTimeModel {
 
     public void setStartTime(long timeInMs) {
         converter.setStart(timeInMs);
-        setStartTime(new BasicTimestamp(converter.getStartTime()));
+        this.startTime = new BasicTimestamp(converter.getStartTime());
     }
 
     @Override
@@ -54,14 +55,8 @@ public class ContinuousTimeModel extends AbstractJadexTimeModel {
         throw new RuntimeException("TODO");
     }
 
-    @Override
-    public void setupNextYear() {
-        throw new RuntimeException("TODO");
-    }
-
-    @Override
     public void setEndTime(JadexTimestamp endTime) {
-        super.setEndTime(endTime);
+        this.endTime = endTime;
         delayUntilEnd = converter.timeBetween(startTime.getTime(), endTime.getTime());
     }
 
@@ -78,6 +73,11 @@ public class ContinuousTimeModel extends AbstractJadexTimeModel {
         } else {
             return IFuture.DONE;
         }
+    }
+
+    @Override
+    public IFuture<Void> waitUntilEnd(IExecutionFeature exec, IInternalAccess access, IComponentStep<Void> task) {
+        throw new TodoException();
     }
 
     @Override
@@ -151,12 +151,12 @@ public class ContinuousTimeModel extends AbstractJadexTimeModel {
     }
 
     @Override
-    public int getStartYear() {
+    public int getFirstSimulationYear() {
         throw new RuntimeException("TODO");
     }
 
     @Override
-    public int getEndYearInclusive() {
+    public int getLastSimulationYear() {
         throw new RuntimeException("TODO");
     }
 
@@ -164,5 +164,15 @@ public class ContinuousTimeModel extends AbstractJadexTimeModel {
     public boolean isValid(long delay) {
         delay = Math.max(delay, 0L);
         return delay < delayUntilEnd;
+    }
+
+    @Override
+    public boolean hasYearChange() {
+        throw new TodoException();
+    }
+
+    @Override
+    public void performYearChange() {
+        throw new TodoException();
     }
 }

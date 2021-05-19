@@ -2,19 +2,20 @@ package de.unileipzig.irpact.io.param.input.agent.consumer;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.AgentManager;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
 import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.product.InProductFindingScheme;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -47,7 +48,6 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
         addEntry(res, thisClass(), "cagInterest");
         addEntry(res, thisClass(), "productFindingSchemes");
         addEntry(res, thisClass(), "spatialDistribution");
-        addEntry(res, thisClass(), "informationAuthority");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -66,10 +66,22 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
     @FieldDefinition
     public InSpatialDistribution[] spatialDistribution;
 
-    @FieldDefinition
-    public double informationAuthority;
-
     public InGeneralConsumerAgentGroup() {
+    }
+
+    @Override
+    public InGeneralConsumerAgentGroup copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InGeneralConsumerAgentGroup newCopy(CopyCache cache) {
+        InGeneralConsumerAgentGroup copy = new InGeneralConsumerAgentGroup();
+        copy._name = _name;
+        copy.cagAttributes = cache.copyArray(cagAttributes);
+        copy.cagInterest = cache.copyArray(cagInterest);
+        copy.productFindingSchemes = cache.copyArray(productFindingSchemes);
+        copy.spatialDistribution = cache.copyArray(spatialDistribution);
+        return copy;
     }
 
     @Override
@@ -79,14 +91,6 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
 
     public void setName(String _name) {
         this._name = _name;
-    }
-
-    public double getInformationAuthority() {
-        return informationAuthority;
-    }
-
-    public void setInformationAuthority(double informationAuthority) {
-        this.informationAuthority = informationAuthority;
     }
 
     public InDependentConsumerAgentGroupAttribute[] getAttributes() throws ParsingException {
@@ -126,28 +130,36 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
         return ParamUtil.getInstance(spatialDistribution, "spatialDistribution");
     }
 
+    @Override
     public void setSpatialDistribution(InSpatialDistribution dist) {
         this.spatialDistribution = new InSpatialDistribution[]{dist};
     }
 
     @Override
-    public JadexConsumerAgentGroup parse(InputParser parser) throws ParsingException {
+    public JadexConsumerAgentGroup parse(IRPactInputParser parser) throws ParsingException {
         AgentManager agentManager = parser.getEnvironment().getAgents();
+
+        if(parser.getEnvironment().isRestored() && agentManager.hasConsumerAgentGroup(getName())) {
+            JadexConsumerAgentGroup jcag = (JadexConsumerAgentGroup) agentManager.getConsumerAgentGroup(getName());
+            return update(parser, jcag);
+        }
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse InGeneralConsumerAgentGroup '{}'", getName());
 
         JadexConsumerAgentGroup jCag = new JadexConsumerAgentGroup();
         jCag.setEnvironment(parser.getEnvironment());
         jCag.setName(getName());
-        jCag.setInformationAuthority(getInformationAuthority());
+        jCag.setInformationAuthority(1.0);
+        jCag.setMaxNumberOfActions(1);
 
         if(agentManager.hasConsumerAgentGroup(getName())) {
             throw new ParsingException("ConsumerAgentGroup '" + getName() + "' already exists");
         }
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse InGeneralConsumerAgentGroup '{}'", jCag.getName());
 
         if(parser.getRoot().addConsumerAgentGroup(this)) {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added InGeneralConsumerAgentGroup '{}' to InRoot", getName());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added InGeneralConsumerAgentGroup '{}' to InRoot", getName());
             agentManager.addConsumerAgentGroup(jCag);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added JadexConsumerAgentGroup '{}'", jCag.getName());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added JadexConsumerAgentGroup '{}'", jCag.getName());
         }
 
         ProductInterestSupplyScheme awarenessSupplyScheme = parser.parseEntityTo(getInterest());
@@ -159,14 +171,36 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
         getSpatialDistribution().setup(parser, jCag);
 
         for(InConsumerAgentGroupAttribute inCagAttr: getAttributes()) {
-            ConsumerAgentGroupAttribute cagAttr = parser.parseEntityTo(inCagAttr);
-            if(jCag.hasGroupAttribute(cagAttr.getName())) {
-                throw new ParsingException("ConsumerAgentGroupAttribute '" + cagAttr.getName() + "' already exists in " + jCag.getName());
+            if(inCagAttr.requiresSetup()) {
+                inCagAttr.setup(parser, jCag);
+            } else {
+                ConsumerAgentGroupAttribute cagAttr = parser.parseEntityTo(inCagAttr);
+                if(jCag.hasGroupAttribute(cagAttr.getName())) {
+                    throw new ParsingException("ConsumerAgentGroupAttribute '" + cagAttr.getName() + "' already exists in " + jCag.getName());
+                }
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), inCagAttr.getName(), jCag.getName());
+                jCag.addGroupAttribute(cagAttr);
             }
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "add ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), inCagAttr.getName(), jCag.getName());
-            jCag.addGroupAttribute(cagAttr);
         }
 
         return jCag;
+    }
+
+    public JadexConsumerAgentGroup update(IRPactInputParser parser, JadexConsumerAgentGroup restored) throws ParsingException {
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "update '{}'", restored.getName());
+        for(InConsumerAgentGroupAttribute inCagAttr: getAttributes()) {
+            if(restored.hasGroupAttribute(inCagAttr.getAttributeName())) {
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "cag '{}' already has '{}' -> skip", restored.getName(), inCagAttr.getAttributeName());
+            } else {
+                if(inCagAttr.requiresSetup()) {
+                    inCagAttr.setup(parser, restored);
+                } else {
+                    ConsumerAgentGroupAttribute cagAttr = parser.parseEntityTo(inCagAttr);
+                    LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), inCagAttr.getName(), restored.getName());
+                    restored.addGroupAttribute(cagAttr);
+                }
+            }
+        }
+        return restored;
     }
 }

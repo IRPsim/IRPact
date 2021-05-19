@@ -1,11 +1,12 @@
 package de.unileipzig.irpact.io.param.input.time;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.DiscreteTimeModel;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -18,7 +19,9 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 /**
  * @author Daniel Abitz
  */
-@Definition
+@Definition(
+        ignore = true
+)
 public class InDiscreteTimeModel implements InTimeModel {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -50,6 +53,11 @@ public class InDiscreteTimeModel implements InTimeModel {
     }
 
     @Override
+    public InDiscreteTimeModel copy(CopyCache cache) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public String getName() {
         return _name;
     }
@@ -59,7 +67,7 @@ public class InDiscreteTimeModel implements InTimeModel {
     }
 
     @Override
-    public DiscreteTimeModel parse(InputParser parser) throws ParsingException {
+    public DiscreteTimeModel parse(IRPactInputParser parser) throws ParsingException {
         DiscreteTimeModel timeModel = new DiscreteTimeModel();
         timeModel.setName(getName());
         timeModel.setEnvironment((JadexSimulationEnvironment) parser.getEnvironment());

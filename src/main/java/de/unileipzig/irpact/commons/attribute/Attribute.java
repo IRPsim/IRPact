@@ -1,26 +1,35 @@
 package de.unileipzig.irpact.commons.attribute;
 
-import de.unileipzig.irpact.commons.util.DataType;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.commons.util.data.DataType;
 
 /**
  * @author Daniel Abitz
  */
-@Todo("generischen typ entfernen, typ etc aber beibehalten")
-@Todo("Produktspezifische Attribute einbauen -> ProductGroupSpecificAttributes -> get(String Name): ?Attribut?")
-public interface Attribute<T> extends AttributeBase {
+public interface Attribute extends AttributeBase {
 
-    default Attribute<T> copyAttribute() {
+    boolean isType(AttributeType type);
+
+    default boolean isValueAttribute() {
+        return isType(AttributeType.VALUE);
+    }
+
+    default boolean isValueAttributeWithDataType(DataType dataType) {
+        return isValueAttribute() && asValueAttribute().isDataType(dataType);
+    }
+
+    default boolean isNoValueAttribute() {
+        return !isValueAttribute();
+    }
+
+    default ValueAttribute<?> asValueAttribute() {
         throw new UnsupportedOperationException();
     }
 
-    T getValue();
+    default boolean isRelatedAttribute() {
+        return isType(AttributeType.RELATED);
+    }
 
-    void setValue(T value);
-
-    DataType getType();
-
-    default <R> R as(Class<R> c) {
-        return c.cast(this);
+    default RelatedAttribute<?> asRelatedAttribute() {
+        throw new UnsupportedOperationException();
     }
 }

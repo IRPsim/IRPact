@@ -1,17 +1,13 @@
 package de.unileipzig.irpact.commons.interest;
 
-import de.unileipzig.irpact.commons.IsEquals;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 
 /**
  * @author Daniel Abitz
  */
-public interface Interest<T> extends IsEquals {
+public interface Interest<T> extends ChecksumComparable {
 
     boolean isInterested(T item);
-
-    @Todo("entfernen")
-    boolean isAware(T item);
 
     void update(T item, double influence);
 

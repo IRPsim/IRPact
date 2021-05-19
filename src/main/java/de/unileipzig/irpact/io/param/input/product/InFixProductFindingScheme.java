@@ -4,9 +4,10 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.product.FixProductFindingScheme;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -51,6 +52,18 @@ public class InFixProductFindingScheme implements InProductFindingScheme {
     }
 
     @Override
+    public InFixProductFindingScheme copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InFixProductFindingScheme newCopy(CopyCache cache) {
+        InFixProductFindingScheme copy = new InFixProductFindingScheme();
+        copy._name = _name;
+        copy.refFixProduct = cache.copyArray(refFixProduct);
+        return copy;
+    }
+
+    @Override
     public String getName() {
         return _name;
     }
@@ -68,7 +81,7 @@ public class InFixProductFindingScheme implements InProductFindingScheme {
     }
 
     @Override
-    public Object parse(InputParser parser) throws ParsingException {
+    public Object parse(IRPactInputParser parser) throws ParsingException {
         FixProductFindingScheme scheme = new FixProductFindingScheme();
         scheme.setName(getName());
 

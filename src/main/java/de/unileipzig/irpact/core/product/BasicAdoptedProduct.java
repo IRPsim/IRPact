@@ -1,26 +1,42 @@
 package de.unileipzig.irpact.core.product;
 
+import de.unileipzig.irpact.commons.checksum.Checksums;
+import de.unileipzig.irpact.commons.persistence.annotation.ChecksumAndPersistentValue;
+import de.unileipzig.irpact.commons.persistence.annotation.UsedPersisterRestorer;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.need.Need;
-
-import java.util.Objects;
+import de.unileipzig.irpact.jadex.persistance.binary.data.BasicAdoptedProductPR;
 
 /**
  * @author Daniel Abitz
  */
+@UsedPersisterRestorer(BasicAdoptedProductPR.class)
 public class BasicAdoptedProduct implements AdoptedProduct {
 
+    @ChecksumAndPersistentValue
     protected Need need;
+    @ChecksumAndPersistentValue
     protected Product product;
+    @ChecksumAndPersistentValue("epoch millis")
     protected Timestamp timestamp;
+    @ChecksumAndPersistentValue
+    protected boolean initial;
 
     public BasicAdoptedProduct() {
+    }
+
+    public BasicAdoptedProduct(Product product) {
+        setNeed(null);
+        setProduct(product);
+        setTimestamp(null);
+        setInitial(true);
     }
 
     public BasicAdoptedProduct(Need need, Product product, Timestamp timestamp) {
         setNeed(need);
         setProduct(product);
         setTimestamp(timestamp);
+        setInitial(false);
     }
 
     public void setNeed(Need need) {
@@ -33,6 +49,10 @@ public class BasicAdoptedProduct implements AdoptedProduct {
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public void setInitial(boolean initial) {
+        this.initial = initial;
     }
 
     @Override
@@ -51,7 +71,17 @@ public class BasicAdoptedProduct implements AdoptedProduct {
     }
 
     @Override
-    public int getHashCode() {
-        return Objects.hash(need.getHashCode(), product.getHashCode(), timestamp.getHashCode());
+    public boolean isInitial() {
+        return initial;
+    }
+
+    @Override
+    public int getChecksum() {
+        return Checksums.SMART.getChecksum(
+                need,
+                product,
+                timestamp,
+                initial
+        );
     }
 }

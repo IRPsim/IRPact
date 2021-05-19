@@ -1,11 +1,11 @@
 package de.unileipzig.irpact.commons.awareness;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 
 /**
  * @author Daniel Abitz
  */
-public interface Awareness<T> extends IsEquals {
+public interface Awareness<T> extends ChecksumComparable {
 
     boolean isAware(T item);
 

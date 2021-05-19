@@ -1,14 +1,20 @@
 package de.unileipzig.irpact.jadex.simulation;
 
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.exception.InitializationException;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
+import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.SocialNetwork;
 import de.unileipzig.irpact.core.persistence.PersistenceModul;
 import de.unileipzig.irpact.core.process.BasicProcessModelManager;
@@ -16,24 +22,32 @@ import de.unileipzig.irpact.core.process.ProcessModelManager;
 import de.unileipzig.irpact.core.product.BasicProductManager;
 import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.simulation.*;
+import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.jadex.persistance.JadexPersistenceModul;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
-import de.unileipzig.irpact.start.IRPact;
+import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
-
-import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
+@SuppressWarnings("DefaultAnnotationParam")
 @Reference(local = true, remote = true)
 public class BasicJadexSimulationEnvironment extends NameableBase implements JadexSimulationEnvironment {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicJadexSimulationEnvironment.class);
 
-    protected InitializationData initializationData;
+    protected Rnd rnd;
+    protected boolean restored = false;
+
+    protected Settings settings;
+    protected BinaryTaskManager taskManager;
+    protected PersistenceModul persistenceModul;
+    protected ResourceLoader resourceLoader;
+
+    //components
     protected AgentManager agentManager;
     protected SocialNetwork socialNetwork;
     protected ProcessModelManager processModelManager;
@@ -41,30 +55,50 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     protected SpatialModel spatialModel;
     protected JadexTimeModel timeModel;
     protected JadexLifeCycleControl lifeCycleControl;
-    protected ResourceLoader resourceLoader;
-    protected BinaryTaskManager taskManager;
-    protected PersistenceModul persistenceModul;
-    protected Rnd rnd;
 
     public BasicJadexSimulationEnvironment() {
     }
 
     @Override
-    public int getHashCode() {
-        return Objects.hash(
-                agentManager.getHashCode(),
-                socialNetwork.getHashCode(),
-                processModelManager.getHashCode(),
-                productManager.getHashCode(),
-                spatialModel.getHashCode(),
-                timeModel.getHashCode(),
-                lifeCycleControl.getHashCode(),
-                rnd.getHashCode()
+    public int getChecksum() {
+//        return Objects.hash(
+//                agentManager.getChecksum(),
+//                socialNetwork.getChecksum(),
+//                processModelManager.getChecksum(),
+//                productManager.getChecksum(),
+//                spatialModel.getChecksum(),
+//                timeModel.getChecksum(),
+//                lifeCycleControl.getChecksum(),
+//                rnd.getChecksum()
+//        );
+        return ChecksumComparable.getChecksum(
+                agentManager,
+                socialNetwork,
+                processModelManager,
+                productManager,
+                spatialModel,
+                timeModel,
+                lifeCycleControl,
+                rnd
+        );
+    }
+
+    @Override
+    public void logChecksum() {
+        ChecksumComparable.logChecksums(
+                agentManager,
+                socialNetwork,
+                processModelManager,
+                productManager,
+                spatialModel,
+                timeModel,
+                lifeCycleControl,
+                rnd
         );
     }
 
     public void initDefault() {
-        BasicInitializationData initData = new BasicInitializationData();
+        BasicSettings initData = new BasicSettings();
         BasicAgentManager agentManager = new BasicAgentManager();
         BasicSocialNetwork socialNetwork = new BasicSocialNetwork();
         BasicProcessModelManager processModelManager = new BasicProcessModelManager();
@@ -73,7 +107,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         BasicBinaryTaskManager taskManager = new BasicBinaryTaskManager();
         JadexPersistenceModul persistenceModul = new JadexPersistenceModul();
 
-        setInitializationData(initData);
+        setSettings(initData);
         setResourceLoader(resourceLoader);
 
         setAgentManager(agentManager);
@@ -98,13 +132,22 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         persistenceModul.setEnvironment(this);
     }
 
-    @Override
-    public InitializationData getInitializationData() {
-        return initializationData;
+    public void setRestored() {
+        restored = true;
     }
 
-    public void setInitializationData(InitializationData initializationData) {
-        this.initializationData = initializationData;
+    @Override
+    public boolean isRestored() {
+        return restored;
+    }
+
+    @Override
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
     }
 
     public void setAgentManager(AgentManager agentManager) {
@@ -212,28 +255,6 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     }
 
     @Override
-    public void initialize() throws MissingDataException {
-        agentManager.initialize();
-        socialNetwork.initialize();
-        productManager.initialize();
-        processModelManager.initialize();
-        spatialModel.initialize();
-        timeModel.initialize();
-        lifeCycleControl.initialize();
-    }
-
-    @Override
-    public void validate() throws ValidationException {
-        agentManager.validate();
-        socialNetwork.validate();
-        productManager.validate();
-        processModelManager.validate();
-        spatialModel.validate();
-        timeModel.validate();
-        lifeCycleControl.validate();
-    }
-
-    @Override
     public void preAgentCreation() throws MissingDataException {
         agentManager.preAgentCreation();
         socialNetwork.preAgentCreation();
@@ -245,14 +266,68 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     }
 
     @Override
-    public void postAgentCreation(boolean initialCall) throws MissingDataException {
-        agentManager.postAgentCreation(initialCall);
-        socialNetwork.postAgentCreation(initialCall);
-        productManager.postAgentCreation(initialCall);
-        processModelManager.postAgentCreation(initialCall);
-        spatialModel.postAgentCreation(initialCall);
-        timeModel.postAgentCreation(initialCall);
-        lifeCycleControl.postAgentCreation(initialCall);
+    public void createAgents() throws InitializationException {
+        SocialGraph graph = getNetwork().getGraph();
+        for(ConsumerAgentGroup cag: agentManager.getConsumerAgentGroups()) {
+            int numberOfAgents = settings.getInitialNumberOfConsumerAgents(cag);
+            int currentNumberOfAgents = cag.getNumberOfAgents();
+            int agentsToCreate = Math.max(numberOfAgents - currentNumberOfAgents, 0);
+            if(agentsToCreate > 0) {
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create {} agents for group '{}'", agentsToCreate, cag.getName());
+                for(int i = 0; i < agentsToCreate; i++) {
+                    ConsumerAgent ca = cag.deriveAgent();
+
+                    if(ca.getSocialGraphNode() != null) {
+                        throw new InitializationException("agent '{}' already has graph node", ca.getName());
+                    }
+                    if(graph.hasNode(ca)) {
+                        throw new InitializationException("graph node for agent '{}' already exists", ca.getName());
+                    }
+                    if(!cag.addAgent(ca)) {
+                        throw new InitializationException("adding agent '{}' failed, name already exists", ca.getName());
+                    }
+
+                    SocialGraph.Node node = graph.addAgentAndGetNode(ca);
+                    ca.setSocialGraphNode(node);
+                    LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added agent '{}' (id:{}) to group '{}'", ca.getName(), SpatialInformation.tryGetId(ca.getSpatialInformation()), cag.getName());
+                }
+            } else {
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create no agents for group '{}'", cag.getName());
+            }
+        }
+    }
+
+    @Override
+    public void preAgentCreationValidation() throws ValidationException {
+        agentManager.preAgentCreationValidation();
+        socialNetwork.preAgentCreationValidation();
+        productManager.preAgentCreationValidation();
+        processModelManager.preAgentCreationValidation();
+        spatialModel.preAgentCreationValidation();
+        timeModel.preAgentCreationValidation();
+        lifeCycleControl.preAgentCreationValidation();
+    }
+
+    @Override
+    public void postAgentCreation() throws MissingDataException, InitializationException {
+        agentManager.postAgentCreation();
+        socialNetwork.postAgentCreation();
+        productManager.postAgentCreation();
+        processModelManager.postAgentCreation();
+        spatialModel.postAgentCreation();
+        timeModel.postAgentCreation();
+        lifeCycleControl.postAgentCreation();
+    }
+
+    @Override
+    public void postAgentCreationValidation() throws ValidationException {
+        agentManager.postAgentCreationValidation();
+        socialNetwork.postAgentCreationValidation();
+        productManager.postAgentCreationValidation();
+        processModelManager.postAgentCreationValidation();
+        spatialModel.postAgentCreationValidation();
+        timeModel.postAgentCreationValidation();
+        lifeCycleControl.postAgentCreationValidation();
     }
 
     @Override
@@ -265,7 +340,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         timeModel.preSimulationStart();
         lifeCycleControl.preSimulationStart();
         //==
-        LOGGER.debug("enable sync mode for master rnd");
+        LOGGER.trace("enable sync mode for master rnd");
         rnd.enableSync();
     }
 }

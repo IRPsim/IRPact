@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.core.product.attribute.ProductAttribute;
+import de.unileipzig.irpact.core.product.attribute.ProductGroupAttribute;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
 
 import java.util.*;
@@ -126,12 +128,12 @@ public class BasicProductGroup extends SimulationEntityBase implements ProductGr
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
                 nextProductId,
-                IsEquals.getCollHashCode(getProducts()),
-                IsEquals.getCollHashCode(getGroupAttributes())
+                ChecksumComparable.getCollChecksum(getProducts()),
+                ChecksumComparable.getCollChecksum(getGroupAttributes())
         );
     }
 }

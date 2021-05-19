@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeCreator;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
-import de.unileipzig.irpact.commons.util.DataType;
+import de.unileipzig.irpact.commons.util.data.DataType;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;

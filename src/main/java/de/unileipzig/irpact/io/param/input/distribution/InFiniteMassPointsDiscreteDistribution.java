@@ -1,15 +1,16 @@
 package de.unileipzig.irpact.io.param.input.distribution;
 
-import de.unileipzig.irpact.commons.Rnd;
-import de.unileipzig.irpact.commons.WeightedDouble;
+import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.commons.util.data.weighted.WeightedDouble;
 import de.unileipzig.irpact.commons.distribution.FiniteMassPointsDiscreteDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -57,6 +58,18 @@ public class InFiniteMassPointsDiscreteDistribution implements InUnivariateDoubl
     }
 
     @Override
+    public InFiniteMassPointsDiscreteDistribution copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InFiniteMassPointsDiscreteDistribution newCopy(CopyCache cache) {
+        InFiniteMassPointsDiscreteDistribution copy = new InFiniteMassPointsDiscreteDistribution();
+        copy._name = _name;
+        copy.massPoints = cache.copyArray(massPoints);
+        return copy;
+    }
+
+    @Override
     public String getName() {
         return _name;
     }
@@ -78,7 +91,7 @@ public class InFiniteMassPointsDiscreteDistribution implements InUnivariateDoubl
     }
 
     @Override
-    public FiniteMassPointsDiscreteDistribution parse(InputParser parser) throws ParsingException {
+    public FiniteMassPointsDiscreteDistribution parse(IRPactInputParser parser) throws ParsingException {
         FiniteMassPointsDiscreteDistribution dist = new FiniteMassPointsDiscreteDistribution();
         dist.setName(getName());
 
@@ -89,7 +102,7 @@ public class InFiniteMassPointsDiscreteDistribution implements InUnivariateDoubl
 
         Rnd rnd = parser.deriveRnd();
         dist.setRandom(rnd);
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "FiniteMassPointsDiscreteDistribution '{}' uses seed: {}", getName(), rnd.getInitialSeed());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "FiniteMassPointsDiscreteDistribution '{}' uses seed: {}", getName(), rnd.getInitialSeed());
 
         dist.init();
         return dist;

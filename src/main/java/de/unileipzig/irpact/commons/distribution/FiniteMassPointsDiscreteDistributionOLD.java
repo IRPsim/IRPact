@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.distribution;
 
-import de.unileipzig.irpact.commons.Pair;
+import de.unileipzig.irpact.commons.util.data.Pair;
 
 import java.util.ArrayList;
 import java.util.Comparator;

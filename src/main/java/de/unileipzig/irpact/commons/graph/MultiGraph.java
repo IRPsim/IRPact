@@ -1,5 +1,8 @@
 package de.unileipzig.irpact.commons.graph;
 
+import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.develop.XXXXXXXXX;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +30,8 @@ public interface MultiGraph<V, E, T> extends Graph<V, E> {
 
     Set<V> getAllTargets(V from);
 
+    V getRandomTarget(V from, T type, Rnd rnd);
+
     boolean addEdge(V from, V to, T type, E edge);
 
     E setEdge(V from, V to, T type, E edge);
@@ -41,7 +46,22 @@ public interface MultiGraph<V, E, T> extends Graph<V, E> {
 
     Map<T, E> getEdges(V from, V to);
 
+    @XXXXXXXXX
+    default Collection<E> getAllEdges() {
+        throw new UnsupportedOperationException();
+    }
+
     Collection<E> getAllEdges(T[] types);
+
+    @XXXXXXXXX
+    default Stream<E> streamAllEdges() {
+        throw new UnsupportedOperationException();
+    }
+
+    @XXXXXXXXX
+    default Stream<E> streamAllEdges(T[] types) {
+        throw new UnsupportedOperationException();
+    }
 
     Set<E> getEdges(T type);
 

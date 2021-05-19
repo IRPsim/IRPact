@@ -1,9 +1,11 @@
 package de.unileipzig.irpact.core.spatial.twodim;
 
-import de.unileipzig.irpact.commons.IsEquals;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.attribute.BasicAttributeAccess;
-import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
+import de.unileipzig.irpact.commons.checksum.Checksums;
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
+import de.unileipzig.irpact.commons.util.data.MutableInt;
+import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
 import java.util.*;
 
@@ -13,7 +15,8 @@ import java.util.*;
 public class BasicPoint2D implements Point2D {
 
     protected final AttributeAccess ACCESS;
-    protected Map<String, SpatialAttribute<?>> attributes;
+    protected final MutableInt id = MutableInt.empty();
+    protected Map<String, SpatialAttribute> attributes;
     protected double x;
     protected double y;
 
@@ -21,15 +24,42 @@ public class BasicPoint2D implements Point2D {
         this(0, 0);
     }
 
+    public BasicPoint2D(double xy) {
+        this(xy, xy);
+    }
+
     public BasicPoint2D(double x, double y) {
         this(new LinkedHashMap<>(), x, y);
     }
 
-    public BasicPoint2D(Map<String, SpatialAttribute<?>> attributes, double x, double y) {
+    public BasicPoint2D(Map<String, SpatialAttribute> attributes, double x, double y) {
         this.attributes = attributes;
         this.x = x;
         this.y = y;
         ACCESS = new BasicAttributeAccess(attributes);
+    }
+
+    @Override
+    public boolean hasId() {
+        return id.hasValue();
+    }
+
+    @Override
+    public boolean isId(int id) {
+        return getId() == id;
+    }
+
+    @Override
+    public int getId() {
+        if(hasId()) {
+            return id.get();
+        } else {
+            throw new NoSuchElementException();
+        }
+    }
+
+    public void setId(int id) {
+        this.id.set(id);
     }
 
     @Override
@@ -55,20 +85,20 @@ public class BasicPoint2D implements Point2D {
         return y;
     }
 
-    public void addAllAttributes(Collection<? extends SpatialAttribute<?>> attributes) {
-        for(SpatialAttribute<?> attribute: attributes) {
+    public void addAllAttributes(Collection<? extends SpatialAttribute> attributes) {
+        for(SpatialAttribute attribute: attributes) {
             addAttribute(attribute);
         }
     }
 
-    public void addAllAttributes(SpatialAttribute<?>... attributes) {
-        for(SpatialAttribute<?> attribute: attributes) {
+    public void addAllAttributes(SpatialAttribute... attributes) {
+        for(SpatialAttribute attribute: attributes) {
             addAttribute(attribute);
         }
     }
 
     @Override
-    public void addAttribute(SpatialAttribute<?> attribute) {
+    public void addAttribute(SpatialAttribute attribute) {
         if(attributes.containsKey(attribute.getName())) {
             throw new IllegalArgumentException("name '" + attribute.getName() + "' already exists");
         }
@@ -76,12 +106,12 @@ public class BasicPoint2D implements Point2D {
     }
 
     @Override
-    public Collection<SpatialAttribute<?>> getAttributes() {
+    public Collection<SpatialAttribute> getAttributes() {
         return attributes.values();
     }
 
     @Override
-    public SpatialAttribute<?> getAttribute(String name) {
+    public SpatialAttribute getAttribute(String name) {
         return attributes.get(name);
     }
 
@@ -98,8 +128,8 @@ public class BasicPoint2D implements Point2D {
     @Override
     public BasicPoint2D fullCopy() {
         BasicPoint2D copy = emptyCopy();
-        for(SpatialAttribute<?> attr: getAttributes()) {
-            copy.addAttribute(attr.copyAttribute());
+        for(SpatialAttribute attr: getAttributes()) {
+            copy.addAttribute(attr.copy());
         }
         return copy;
     }
@@ -110,7 +140,18 @@ public class BasicPoint2D implements Point2D {
     }
 
     @Override
-    public int getHashCode() {
-        return Objects.hash(x, y, IsEquals.getCollHashCode(attributes.values()));
+    public int getChecksum() {
+        return Checksums.SMART.getChecksum(x, y, attributes.values());
+    }
+
+    @Override
+    public boolean isEquals(SpatialInformation other) {
+        if (this == other) return true;
+        if (!(other instanceof BasicPoint2D)) return false;
+        BasicPoint2D that = (BasicPoint2D) other;
+        return Double.compare(that.x, x) == 0
+                && Double.compare(that.y, y) == 0
+                && Objects.equals(id, that.id)
+                && Objects.equals(attributes, that.attributes);
     }
 }

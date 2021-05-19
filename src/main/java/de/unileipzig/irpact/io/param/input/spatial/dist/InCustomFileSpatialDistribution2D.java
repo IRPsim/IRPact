@@ -1,22 +1,25 @@
 package de.unileipzig.irpact.io.param.input.spatial.dist;
 
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.distribution.DiscreteSpatialDistribution;
 import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
-import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
+import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
+import de.unileipzig.irptools.util.Copyable;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -78,6 +81,11 @@ public class InCustomFileSpatialDistribution2D implements InSpatialDistribution 
     }
 
     @Override
+    public Copyable copy(CopyCache copyCache) {
+        throw new TodoException();
+    }
+
+    @Override
     public String getName() {
         return _name;
     }
@@ -111,7 +119,7 @@ public class InCustomFileSpatialDistribution2D implements InSpatialDistribution 
     }
 
     @Override
-    public void setup(InputParser parser, Object input) throws ParsingException {
+    public void setup(IRPactInputParser parser, Object input) throws ParsingException {
         JadexConsumerAgentGroup jCag = (JadexConsumerAgentGroup) input;
 
         if(parser.isCached(this)) {
@@ -123,13 +131,13 @@ public class InCustomFileSpatialDistribution2D implements InSpatialDistribution 
         UnivariateDoubleDistribution xDist = parser.parseEntityTo(getXPosSupplier());
         UnivariateDoubleDistribution yDist = parser.parseEntityTo(getYPosSupplier());
 
-        List<List<SpatialAttribute<?>>> attrList = parser.parseEntityTo(getAttributeFile());
-        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList, xDist, yDist);
+        SpatialTableFileContent attrList = parser.parseEntityTo(getAttributeFile());
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList.content().listTable(), xDist, yDist, null);
 
         DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();
         dist.setName(getName());
         Rnd rnd = parser.deriveRnd();
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "InCustomSpatialDistribution2D '{}' uses seed: {}", getName(), rnd.getInitialSeed());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "InCustomSpatialDistribution2D '{}' uses seed: {}", getName(), rnd.getInitialSeed());
         dist.setRandom(rnd);
         dist.addAll(infos);
         parser.cache(this, dist);

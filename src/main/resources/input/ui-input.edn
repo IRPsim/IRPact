@@ -7,7 +7,8 @@
   } 
   {
     :label "Allgemeine Einstellungen" 
-    :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "endYear"]] 
+    :description "todo" 
+    :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "lastSimulationYear"]] 
     :sections [
       {
         :label "Logging" 
@@ -15,18 +16,24 @@
         :sections [
           {
             :label "Allgemeine Loggingoptionen" 
-            :description "Ermöglicht die Einstellung der allgemeinen Loggingoptionen." 
-            :tags [["InGeneral" "logLevel"] ["InGeneral" "logAll"] ["InGeneral" "logAllTools"]]
+            :description "Hier lässt sich das allgemeine Logging von IRPact konfigurieren." 
+            :tags [["InGeneral" "logLevel"] ["InGeneral" "logAll"] ["InGeneral" "logAllIRPact"] ["InGeneral" "logAllTools"] ["InGeneral" "logInitialization"] ["InGeneral" "logSimulation"]]
           } 
           {
-            :label "Spezielle Loggingoptionen" 
-            :description "Ermöglicht es spezielle Loggingoptionen einzustellen." 
-            :tags [["InGeneral" "logToolsCore"] ["InGeneral" "logToolsDefinition"] ["InGeneral" "logInitialization"] ["InGeneral" "logParamInit"] ["InGeneral" "logGraphCreation"] ["InGeneral" "logAgentCreation"] ["InGeneral" "logPlatformCreation"] ["InGeneral" "logSimulationLifecycle"] ["InGeneral" "logSimulationAgent"] ["InGeneral" "logJadexSystemOut"]]
+            :label "Ausgabe von Berechnungen und Informationen" 
+            :description "Hier lassen sich Optionen finden, mit denen Berechnungsschritte oder essenziell Änderungen ausgegeben werden können." 
+            :tags [["InGeneral" "logGraphUpdate"] ["InGeneral" "logRelativeAgreement"] ["InGeneral" "logInterestUpdate"] ["InGeneral" "logShareNetworkLocal"] ["InGeneral" "logFinancalComponent"] ["InGeneral" "logCalculateDecisionMaking"]]
+          } 
+          {
+            :label "Ausgabe von speziellen Ergebnissen" 
+            :description "Diese Optionen ermöglichen die Ausgabe von Ergebnissen in spezieller Form." 
+            :tags [["InGeneral" "logResultGroupedByZip"] ["InGeneral" "logResultGroupedByMilieu"] ["InGeneral" "logResultGroupedByZipAndMilieu"] ["InGeneral" "logProductAdoptions"]]
           }
         ]
       } 
       {
         :label "Spezielle Einstellungen" 
+        :description "Hier lassen sich spezielle Modi aktivieren." 
         :tags [["InGeneral" "runPVAct"] ["InGeneral" "runOptActDemo"]] 
         :sections [
           {
@@ -46,6 +53,7 @@
   } 
   {
     :label "Dateien" 
+    :description "todo" 
     :sections [
       {
         :label "PV Dateien" 
@@ -63,24 +71,25 @@
   } 
   {
     :label "Verteilungsfunktionen" 
+    :description "todo" 
     :sections [
+      {
+        :label "Bernoulliverteilung" 
+        :set "set_InBernoulliDistribution" 
+        :description "Verteilungsfunktion, welche 0 oder 1 zurück gibt." 
+        :tags [["InBernoulliDistribution" "p"] ["InBernoulliDistribution" "trueValue"] ["InBernoulliDistribution" "falseValue"]]
+      } 
       {
         :label "Boolean" 
         :set "set_InBooleanDistribution" 
-        :description "Verteilungsfunktion, welche 0 oder 1 zurück gibt." 
-        :tags [["InBooleanDistribution" "placeholderBooleanDist"]]
+        :description "Verteilungsfunktion, welche x oder y zurück gibt. Der Wahrscheinlichkeit ist dabei gleichverteilt. Diese Funktion entspricht einer Bernoulliverteilung mit p = 0,5." 
+        :tags [["InBooleanDistribution" "trueValue"] ["InBooleanDistribution" "falseValue"]]
       } 
       {
-        :label "Dirac" 
-        :set "set_InConstantUnivariateDistribution" 
+        :label "Dirac-Verteilung" 
+        :set "set_InDiracUnivariateDistribution" 
         :description "Verteilungsfunktion, welche einen konstanten Wert zurück gibt." 
-        :tags [["InConstantUnivariateDistribution" "constDistValue"]]
-      } 
-      {
-        :label "Gleichverteilte ganze Zahlen" 
-        :set "set_InRandomBoundedIntegerDistribution" 
-        :description "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht." 
-        :tags [["InRandomBoundedIntegerDistribution" "lowerBoundInt"] ["InRandomBoundedIntegerDistribution" "upperBoundInt"]]
+        :tags [["InDiracUnivariateDistribution" "value"]]
       } 
       {
         :label "Gewichtete Massepunkte" 
@@ -95,40 +104,71 @@
             :tags [["InMassPoint" "mpValue"] ["InMassPoint" "mpWeight"]]
           }
         ]
+      } 
+      {
+        :label "Normalverteilung" 
+        :set "set_InNormalDistribution" 
+        :description "Verteilungsfunktionauf Basis der Normalverteilung." 
+        :tags [["InNormalDistribution" "standardDeviation"] ["InNormalDistribution" "mean"]]
+      } 
+      {
+        :label "beschränkte Normalverteilung" 
+        :set "set_InBoundedNormalDistribution" 
+        :description "Verteilungsfunktionauf Basis der Normalverteilung." 
+        :tags [["InBoundedNormalDistribution" "standardDeviation"] ["InBoundedNormalDistribution" "mean"] ["InBoundedNormalDistribution" "lowerBound"] ["InBoundedNormalDistribution" "upperBound"]]
+      } 
+      {
+        :label "Gleichverteilte ganze Zahlen" 
+        :set "set_InBoundedUniformIntegerDistribution" 
+        :description "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht." 
+        :tags [["InBoundedUniformDoubleDistribution" "lowerBound"] ["InBoundedUniformDoubleDistribution" "upperBound"] ["InBoundedUniformIntegerDistribution" "lowerBound"] ["InBoundedUniformIntegerDistribution" "upperBound"]]
       }
     ]
   } 
   {
     :label "Agenten" 
+    :description "todo" 
     :sections [
       {
         :label "Konsumer" 
+        :description "todo" 
         :sections [
           {
             :label "Gruppen" 
+            :description "todo" 
             :sections [
               {
                 :label "Allgemeine Gruppen" 
                 :set "set_InGeneralConsumerAgentGroup" 
-                :tags [["link" "InGeneralConsumerAgentGroup" "InDependentConsumerAgentGroupAttribute" "cagAttributes"] ["link" "InGeneralConsumerAgentGroup" "InProductInterestSupplyScheme" "cagInterest"] ["link" "InGeneralConsumerAgentGroup" "InProductFindingScheme" "productFindingSchemes"] ["link" "InGeneralConsumerAgentGroup" "InSpatialDistribution" "spatialDistribution"] ["InGeneralConsumerAgentGroup" "informationAuthority"]]
+                :description "todo" 
+                :tags [["link" "InGeneralConsumerAgentGroup" "InDependentConsumerAgentGroupAttribute" "cagAttributes"] ["link" "InGeneralConsumerAgentGroup" "InProductInterestSupplyScheme" "cagInterest"] ["link" "InGeneralConsumerAgentGroup" "InProductFindingScheme" "productFindingSchemes"] ["link" "InGeneralConsumerAgentGroup" "InSpatialDistribution" "spatialDistribution"]]
               } 
               {
                 :label "PVact Gruppen" 
                 :set "set_InPVactConsumerAgentGroup" 
-                :tags [["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "noveltySeeking"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "dependentJudgmentMaking"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "environmentalConcern"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "interestThreshold"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "financialThreshold"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "adoptionThreshold"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "communication"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "rewire"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "initialAdopter"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "rateOfConvergence"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "initialProductInterest"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "constructionRate"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "renovationRate"] ["link" "InPVactConsumerAgentGroup" "InSpatialDistribution" "spatialDistribution"] ["InPVactConsumerAgentGroup" "informationAuthority"]]
+                :description "todo" 
+                :tags [["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "noveltySeeking"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "dependentJudgmentMaking"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "environmentalConcern"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "interestThreshold"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "financialThreshold"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "adoptionThreshold"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "communication"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "rewire"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "initialAdopter"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "rateOfConvergence"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "initialProductInterest"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "initialProductAwareness"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "constructionRate"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "renovationRate"] ["link" "InPVactConsumerAgentGroup" "InSpatialDistribution" "spatialDistribution"]]
               }
             ]
           } 
           {
             :label "Attribute" 
+            :description "todo" 
             :sections [
               {
-                :label "Allgemeines Attribut" 
+                :label "Allgemeine Attribute" 
                 :set "set_InGeneralConsumerAgentGroupAttribute" 
+                :description "todo" 
                 :tags [["link" "InGeneralConsumerAgentGroupAttribute" "InAttributeName" "attrName"] ["link" "InGeneralConsumerAgentGroupAttribute" "InUnivariateDoubleDistribution" "dist"]]
               } 
               {
-                :label "Namensbasiertes Attribute" 
+                :label "Jahresabhängiges Attribut" 
+                :set "set_InGeneralConsumerAgentAnnualGroupAttribute" 
+                :description "Der Wert (bzw. Verteilungsfunktion) dieser Attribute lässt sich für die jeweiligen Simulationsjahre individuell definieren." 
+                :tags [["link" "InGeneralConsumerAgentAnnualGroupAttribute" "InAttributeName" "attributeName"] ["link" "InGeneralConsumerAgentAnnualGroupAttribute" "InUnivariateDoubleDistribution" "distribution"]]
+              } 
+              {
+                :label "Namensbasierte Attribute" 
                 :set "set_InNameSplitConsumerAgentGroupAttribute" 
                 :description "Dieses Attribut wird über seinen Namen definiert." 
                 :tags [["link" "InNameSplitConsumerAgentGroupAttribute" "InUnivariateDoubleDistribution" "dist"]]
@@ -136,17 +176,25 @@
             ]
           } 
           {
-            :label "Affinity" 
+            :label "Affinitäten" 
             :description "Legt die Affinity zwischen den jeweiligen Konsumergruppen fest." 
             :sections [
               {
-                :label "Komplexe Affinity" 
+                :label "Affinitätenmenge" 
+                :set "set_InAffinities" 
+                :description "Legt die Affinity zwischen den jeweiligen Konsumergruppen fest." 
+                :tags [["link" "InAffinities" "InAffinityEntry" "entries"]]
+              } 
+              {
+                :label "Affinitätseintrag" 
                 :set "set_InComplexAffinityEntry" 
+                :description "Erstellt einen einfachen Affinitätseintag zwischen einer Ausgangs- und einer Zielgruppe." 
                 :tags [["link" "InComplexAffinityEntry" "InConsumerAgentGroup" "srcCag"] ["link" "InComplexAffinityEntry" "InConsumerAgentGroup" "tarCag"] ["InComplexAffinityEntry" "affinityValue"]]
               } 
               {
-                :label "Namensbasierte Affinity" 
+                :label "Namensbasierter Affinitätseintrag" 
                 :set "set_InNameSplitAffinityEntry" 
+                :description "Dieser Variante ist eine Alternative zum normalen Affinitätseintrag. Hier werden die Ausgangs- und die Zielgruppe direkt aus dem Namen des Eintrages ermittelt. Es muss somt darauf geachtet werden, dass der Name korrekt definiert wird. Beispiel: Ausgangsgruppe 'A' und Zielgruppe 'B', dann muss der Affinitätseintrag 'A_B' heißen." 
                 :tags [["InNameSplitAffinityEntry" "affinityValue"]]
               }
             ]
@@ -159,7 +207,15 @@
                 :label "Grenzwertbasiert" 
                 :set "set_InProductThresholdInterestSupplyScheme" 
                 :description "Grenzwertbasierte Interessens-Varianten" 
-                :tags [["link" "InProductThresholdInterestSupplyScheme" "InUnivariateDoubleDistribution" "interestDistribution"]]
+                :tags [["link" "InProductThresholdInterestSupplyScheme" "InProductGroupThresholdEntry" "entries"]] 
+                :sections [
+                  {
+                    :label "Grenzwertbasierte Einträge" 
+                    :set "set_InProductGroupThresholdEntry" 
+                    :description "Ermöglicht die Definition von Einträgen für ein grenzwertbasiertes Interesse." 
+                    :tags [["link" "InProductGroupThresholdEntry" "InUnivariateDoubleDistribution" "interestDistribution"] ["link" "InProductGroupThresholdEntry" "InProductGroup" "productGroups"]]
+                  }
+                ]
               }
             ]
           }
@@ -172,12 +228,14 @@
           {
             :label "Feste Konsumergruppengröße" 
             :set "set_InFixConsumerAgentPopulationSize" 
+            :description "todo" 
             :tags [["InFixConsumerAgentPopulationSize" "size"] ["link" "InFixConsumerAgentPopulationSize" "InConsumerAgentGroup" "cags"]]
           } 
           {
             :label "Dynamische Konsumergruppengröße" 
             :set "set_InRelativeExternConsumerAgentPopulationSize" 
-            :tags [["InRelativeExternConsumerAgentPopulationSize" "totalSize"] ["InRelativeExternConsumerAgentPopulationSize" "useMaximumSize"] ["InRelativeExternConsumerAgentPopulationSize" "considerAllForShares"] ["link" "InRelativeExternConsumerAgentPopulationSize" "InConsumerAgentGroup" "cags"] ["link" "InRelativeExternConsumerAgentPopulationSize" "InSpatialTableFile" "file"] ["link" "InRelativeExternConsumerAgentPopulationSize" "InAttributeName" "selectKey"]]
+            :description "todo" 
+            :tags [["InRelativeExternConsumerAgentPopulationSize" "maximumSize"] ["InRelativeExternConsumerAgentPopulationSize" "useMaximumPossibleSize"] ["InRelativeExternConsumerAgentPopulationSize" "allowSmallerSize"] ["link" "InRelativeExternConsumerAgentPopulationSize" "InConsumerAgentGroup" "cags"] ["link" "InRelativeExternConsumerAgentPopulationSize" "InSpatialTableFile" "file"] ["link" "InRelativeExternConsumerAgentPopulationSize" "InAttributeName" "selectKey"]]
           }
         ]
       }
@@ -185,9 +243,11 @@
   } 
   {
     :label "Netzwerk" 
+    :description "todo" 
     :sections [
       {
         :label "Topologie" 
+        :description "todo" 
         :sections [
           {
             :label "Knotenloser Graph" 
@@ -205,7 +265,7 @@
             :label "Freie Topologie" 
             :set "set_InFreeNetworkTopology" 
             :description "Freie Topologie" 
-            :tags [["link" "InFreeNetworkTopology" "InDistanceEvaluator" "distanceEvaluator"] ["link" "InFreeNetworkTopology" "InNumberOfTies" "numberOfTies"] ["InFreeNetworkTopology" "initialWeight"]] 
+            :tags [["link" "InFreeNetworkTopology" "InDistanceEvaluator" "distanceEvaluator"] ["link" "InFreeNetworkTopology" "InNumberOfTies" "numberOfTies"] ["link" "InFreeNetworkTopology" "InAffinities" "affinities"] ["InFreeNetworkTopology" "initialWeight"] ["InFreeNetworkTopology" "allowLessEdges"]] 
             :sections [
               {
                 :label "Kanten je Konsumergruppe" 
@@ -219,6 +279,7 @@
       } 
       {
         :label "Abstandsfunktion" 
+        :description "todo" 
         :sections [
           {
             :label "Keine Distanzfunktion" 
@@ -291,11 +352,12 @@
   } 
   {
     :label "Prozessmodell" 
+    :description "todo" 
     :sections [
       {
         :label "Relative Agreement" 
         :set "set_InRAProcessModel" 
-        :tags [["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertaintyGroupAttribute" "uncertaintyGroupAttributes"]] 
+        :tags [["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["link" "InRAProcessModel" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertaintyGroupAttribute" "uncertaintyGroupAttributes"]] 
         :sections [
           {
             :label "Unsicherheit" 
@@ -334,14 +396,40 @@
             ]
           }
         ]
+      } 
+      {
+        :label "Netzwerkfilter für Prozesse" 
+        :description "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus." 
+        :sections [
+          {
+            :label "Kein Distanzfilter" 
+            :set "set_InDisabledProcessPlanNodeFilterScheme" 
+            :description "Deaktiviert den Netzwerkfilter für die sichtbaren PV-Anlagen. Die sichtbare Komponente wird somit deaktiviert." 
+            :tags [["InDisabledProcessPlanNodeFilterScheme" "placeholder"]]
+          } 
+          {
+            :label "Gesamtes Netzwerk" 
+            :set "set_InEntireNetworkNodeFilterScheme" 
+            :description "Nutzt das gesamte Netzwerk für die sichtbaren PV-Anlagen." 
+            :tags [["InEntireNetworkNodeFilterScheme" "placeholder"]]
+          } 
+          {
+            :label "PVact" 
+            :set "set_InRAProcessPlanMaxDistanceFilterScheme" 
+            :description "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus." 
+            :tags [["InRAProcessPlanMaxDistanceFilterScheme" "maxDistance"] ["InRAProcessPlanMaxDistanceFilterScheme" "inclusive"]]
+          }
+        ]
       }
     ]
   } 
   {
     :label "Räumliche Modell" 
+    :description "todo" 
     :sections [
       {
         :label "Modell" 
+        :description "todo" 
         :sections [
           {
             :label "Space2D" 
@@ -419,7 +507,7 @@
       {
         :label "Diskret - Millisekunde" 
         :set "set_InUnitStepDiscreteTimeModel" 
-        :tags [["InDiscreteTimeModel" "timePerTickInMs"] ["InUnitStepDiscreteTimeModel" "amountOfTime"] ["InUnitStepDiscreteTimeModel" "useMs"] ["InUnitStepDiscreteTimeModel" "useSec"] ["InUnitStepDiscreteTimeModel" "useMin"] ["InUnitStepDiscreteTimeModel" "useH"] ["InUnitStepDiscreteTimeModel" "useD"] ["InUnitStepDiscreteTimeModel" "useW"] ["InUnitStepDiscreteTimeModel" "useM"]]
+        :tags [["InUnitStepDiscreteTimeModel" "amountOfTime"] ["InUnitStepDiscreteTimeModel" "useMs"] ["InUnitStepDiscreteTimeModel" "useSec"] ["InUnitStepDiscreteTimeModel" "useMin"] ["InUnitStepDiscreteTimeModel" "useH"] ["InUnitStepDiscreteTimeModel" "useD"] ["InUnitStepDiscreteTimeModel" "useW"] ["InUnitStepDiscreteTimeModel" "useM"]]
       }
     ]
   } 
@@ -478,6 +566,7 @@
   } 
   {
     :label "Submodule" 
+    :description "todo" 
     :sections [
       {
         :label "OptAct" 

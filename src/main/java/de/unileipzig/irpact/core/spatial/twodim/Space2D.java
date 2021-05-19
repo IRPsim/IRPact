@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.spatial.twodim;
 
-import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.spatial.AbstractMetricalSpatialModel;
 import de.unileipzig.irpact.core.spatial.Metric;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
@@ -18,14 +17,6 @@ public class Space2D extends AbstractMetricalSpatialModel {
     public Space2D(String name, Metric2D metric) {
         setName(name);
         setMetric(metric);
-    }
-
-    @Override
-    public void initialize() {
-    }
-
-    @Override
-    public void validate() throws ValidationException {
     }
 
     @Override
@@ -48,7 +39,7 @@ public class Space2D extends AbstractMetricalSpatialModel {
     }
 
     @Override
-    public int getHashCode() {
-        return Objects.hash(getName(), getMetric().getHashCode());
+    public int getChecksum() {
+        return Objects.hash(getName(), getMetric().getChecksum());
     }
 }

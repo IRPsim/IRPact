@@ -1,21 +1,24 @@
 package de.unileipzig.irpact.io.param.input.spatial.dist;
 
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
-import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.spatial.distribution.DiscreteSpatialDistribution;
 import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
+import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
+import de.unileipzig.irptools.util.Copyable;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -77,6 +80,11 @@ public class InFileSpatialDistribution2D implements InSpatialDistribution {
     }
 
     @Override
+    public Copyable copy(CopyCache copyCache) {
+        throw new TodoException();
+    }
+
+    @Override
     public String getName() {
         return _name;
     }
@@ -110,8 +118,14 @@ public class InFileSpatialDistribution2D implements InSpatialDistribution {
     }
 
     @Override
-    public void setup(InputParser parser, Object input) throws ParsingException {
+    public void setup(IRPactInputParser parser, Object input) throws ParsingException {
         JadexConsumerAgentGroup jCag = (JadexConsumerAgentGroup) input;
+
+        if(parser.isRestored() && jCag.hasSpatialDistribution()) {
+            DiscreteSpatialDistribution dist = (DiscreteSpatialDistribution) jCag.getSpatialDistribution();
+            update(parser, dist);
+            return;
+        }
 
         if(parser.isCached(this)) {
             SpatialDistribution dist = (SpatialDistribution) parser.getCached(this);
@@ -122,16 +136,34 @@ public class InFileSpatialDistribution2D implements InSpatialDistribution {
         String xKey = getXPositionKey().getName();
         String yKey = getYPositionKey().getName();
 
-        List<List<SpatialAttribute<?>>> attrList = parser.parseEntityTo(getAttributeFile());
-        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList, xKey, yKey);
+        SpatialTableFileContent attrList = parser.parseEntityTo(getAttributeFile());
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList.content().listTable(), xKey, yKey, null);
 
         DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();
         dist.setName(getName());
         Rnd rnd = parser.deriveRnd();
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "InCustomSpatialDistribution2D '{}' uses seed: {}", getName(), rnd.getInitialSeed());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "InCustomSpatialDistribution2D '{}' uses seed: {}", getName(), rnd.getInitialSeed());
         dist.setRandom(rnd);
         dist.addAll(infos);
         parser.cache(this, dist);
         jCag.setSpatialDistribution(dist);
+    }
+
+    public void update(IRPactInputParser parser, DiscreteSpatialDistribution dist) throws ParsingException {
+        if(parser.isCached(this)) {
+            return;
+        }
+
+        String xKey = getXPositionKey().getName();
+        String yKey = getYPositionKey().getName();
+
+        SpatialTableFileContent attrList = parser.parseEntityTo(getAttributeFile());
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(attrList.content().listTable(), xKey, yKey, null);
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "call distribution '{}' {} times", dist.getName(), dist.getRequiredNumberOfCalls());
+        dist.addAll(infos);
+        //dist.call();
+        dist.NOCALL = true;
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "disttribution '{}' called {} times", dist.getName(), dist.getNumberOfCalls());
     }
 }

@@ -3,14 +3,14 @@ package de.unileipzig.irpact.core.simulation;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.Agent;
-import de.unileipzig.irpact.core.misc.Initialization;
+import de.unileipzig.irpact.core.misc.InitalizablePart;
 
 /**
  * Controls the live cycle of the simulation.
  *
  * @author Daniel Abitz
  */
-public interface LifeCycleControl extends Initialization {
+public interface LifeCycleControl extends InitalizablePart {
 
     /**
      * @author Daniel Abitz
@@ -44,6 +44,10 @@ public interface LifeCycleControl extends Initialization {
     //terminate
     //=========================
 
+    void handleNonFatalError(Exception e);
+
+    void handleFatalError(Exception e);
+
     Object terminate();
 
     Object terminateTimeout();
@@ -57,6 +61,11 @@ public interface LifeCycleControl extends Initialization {
     //=========================
 
     boolean registerSyncTask(Timestamp ts, SyncTask task);
+
+    /**
+     * Waits until the synchronisation is finished (if required).
+     */
+    void waitForYearChangeIfRequired(Agent agent);
 
     /**
      * Waits until the synchronisation is finished (if required).

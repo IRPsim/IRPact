@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.commons.graph.topology;
 
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.commons.CollectionUtil;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.graph.Graph;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -42,7 +42,7 @@ public class FastBarabasiAlbertModel<V, E, T> extends BarabasiAlbertModel<V, E, 
     public void initalizeEdges(Graph<V, E> graph) {
         List<V> vList = new ArrayList<>(graph.getVertices());
         if(shuffleAtStart) {
-            Collections.shuffle(vList, rnd);
+            rnd.shuffle(vList);
         }
         final int N = vList.size();
         int E = 0;

@@ -6,13 +6,15 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
+import de.unileipzig.irpact.core.process.ra.attributes.BasicUncertaintyGroupAttributeSupplier;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -62,6 +64,20 @@ public class InNameBasedUncertaintyGroupAttribute implements InUncertaintyGroupA
     public InNameBasedUncertaintyGroupAttribute() {
     }
 
+    @Override
+    public InNameBasedUncertaintyGroupAttribute copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InNameBasedUncertaintyGroupAttribute newCopy(CopyCache cache) {
+        InNameBasedUncertaintyGroupAttribute copy = new InNameBasedUncertaintyGroupAttribute();
+        copy._name = _name;
+        copy.cags = cache.copyArray(cags);
+        copy.names = cache.copyArray(names);
+        copy.uncertDist = cache.copyArray(uncertDist);
+        return copy;
+    }
+
     public void setName(String name) {
         this._name = name;
     }
@@ -72,12 +88,7 @@ public class InNameBasedUncertaintyGroupAttribute implements InUncertaintyGroupA
     }
 
     @Override
-    public Object parse(InputParser parser) throws ParsingException {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setup(InputParser parser, Object input) throws ParsingException {
+    public void setup(IRPactInputParser parser, Object input) throws ParsingException {
         RAProcessModel processModel = (RAProcessModel) input;
 
         UnivariateDoubleDistribution uncert = parser.parseEntityTo(getUncertaintyDistribution());
@@ -87,10 +98,13 @@ public class InNameBasedUncertaintyGroupAttribute implements InUncertaintyGroupA
             for(InAttributeName attrName: getNames()) {
                 processModel.getUncertaintySupplier().add(
                         cag,
-                        attrName.getName(),
-                        uncert
+                        new BasicUncertaintyGroupAttributeSupplier(
+                                getName() + "_" + cag.getName(),
+                                attrName.getName(),
+                                uncert
+                        )
                 );
-                LOGGER.debug(
+                LOGGER.trace(
                         IRPSection.INITIALIZATION_PARAMETER,
                         "add UncertaintySupplier for group '{}', attribute '{}', uncertainity '{}'",
                         cag.getName(),

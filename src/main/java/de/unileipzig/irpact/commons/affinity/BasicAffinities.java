@@ -1,7 +1,8 @@
 package de.unileipzig.irpact.commons.affinity;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.commons.util.data.weighted.NavigableMapWeightedMapping;
+import de.unileipzig.irpact.commons.util.data.weighted.WeightedMapping;
 
 import java.util.*;
 
@@ -11,121 +12,73 @@ import java.util.*;
  */
 public class BasicAffinities<T> implements Affinities<T> {
 
-    protected Map<T, Double> values;
+    protected WeightedMapping<T> mapping;
 
     public BasicAffinities() {
-        this(new LinkedHashMap<>());
+        this(new NavigableMapWeightedMapping<>());
     }
 
-    public BasicAffinities(Map<T, Double> values) {
-        this.values = values;
+    public BasicAffinities(WeightedMapping<T> mapping) {
+        this.mapping = mapping;
     }
 
-    protected BasicAffinities<T> newInstance() {
-        return new BasicAffinities<>();
+    protected BasicAffinities<T> newInstance(WeightedMapping<T> copy) {
+        return new BasicAffinities<>(copy);
     }
 
     @Override
     public Affinities<T> createWithout(T target) {
-        BasicAffinities<T> copy = newInstance();
-        copy.values.putAll(values);
-        copy.values.remove(target);
-        return copy;
+        WeightedMapping<T> copy = mapping.copyWithout(target);
+        return newInstance(copy);
     }
 
     @Override
-    public Set<T> targets() {
-        return values.keySet();
-    }
-
-    @Override
-    public Set<T> accessibleTargets() {
-        return values.entrySet().stream()
-                .filter(e -> e.getValue() > 0.0)
-                .map(Map.Entry::getKey)
-                .collect(CollectionUtil.collectToLinkedSet());
+    public Collection<T> targets() {
+        return mapping.elements();
     }
 
     @Override
     public boolean isEmpty() {
-        return values.isEmpty();
+        return mapping.isEmpty();
     }
 
     @Override
     public int size() {
-        return values.size();
+        return mapping.size();
     }
 
     @Override
     public boolean hasValue(T target) {
-        return values.containsKey(target);
+        return mapping.has(target);
+    }
+
+    @Override
+    public boolean remove(T target) {
+        return mapping.remove(target);
     }
 
     @Override
     public double getValue(T target) {
-        Double v = values.get(target);
-        if(v == null) {
-            throw new NoSuchElementException();
-        }
-        return v;
+        return mapping.getWeight(target);
     }
 
     @Override
     public void setValue(T target, double value) {
-        values.put(target, value);
+        mapping.set(target, value);
     }
 
     @Override
     public double sum() {
-        return values.values()
-                .stream()
-                .mapToDouble(v -> v)
-                .sum();
-    }
-
-    @Override
-    public T getRandom(Random rnd) {
-        return values.isEmpty()
-                ? null
-                : CollectionUtil.getRandom(values.keySet(), rnd);
-    }
-
-    @Override
-    public T getWeightedRandom(Random rnd) {
-        final double sum = sum();
-        final double rndDraw = rnd.nextDouble() * sum;
-        double temp = 0.0;
-        T draw = null;
-        for(Map.Entry<T, Double> entry: values.entrySet()) {
-            temp += entry.getValue();
-            draw = entry.getKey();
-            if(rndDraw < temp) {
-                return draw;
-            }
-        }
-        return draw;
+        return mapping.totalWeight();
     }
 
     @Override
     public T getRandom(Rnd rnd) {
-        return values.isEmpty()
-                ? null
-                : CollectionUtil.getRandom(values.keySet(), rnd);
+        return mapping.getRandom(rnd);
     }
 
     @Override
     public T getWeightedRandom(Rnd rnd) {
-        final double sum = sum();
-        final double rndDraw = rnd.nextDouble() * sum;
-        double temp = 0.0;
-        T draw = null;
-        for(Map.Entry<T, Double> entry: values.entrySet()) {
-            temp += entry.getValue();
-            draw = entry.getKey();
-            if(rndDraw < temp) {
-                return draw;
-            }
-        }
-        return draw;
+        return mapping.getWeightedRandom(rnd);
     }
 }

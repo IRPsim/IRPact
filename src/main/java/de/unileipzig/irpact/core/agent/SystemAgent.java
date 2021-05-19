@@ -1,6 +1,9 @@
 package de.unileipzig.irpact.core.agent;
 
+import de.unileipzig.irpact.commons.exception.SystemAgentException;
 import de.unileipzig.irpact.core.network.SocialGraph;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Daniel Abitz
@@ -8,42 +11,62 @@ import de.unileipzig.irpact.core.network.SocialGraph;
 public interface SystemAgent extends Agent {
 
     @Override
-    default boolean tryAquireAction() {
-        throw new UnsupportedOperationException();
+    default long getActingOrder() {
+        throw new SystemAgentException();
     }
 
     @Override
-    default boolean tryAquireSelf() {
-        throw new UnsupportedOperationException();
+    default int getMaxNumberOfActions() {
+        throw new SystemAgentException();
     }
 
     @Override
-    default void aquireFailed() {
-        throw new UnsupportedOperationException();
+    default void allowAttention() {
+        throw new SystemAgentException();
     }
 
     @Override
-    default void allowAquire() {
-        throw new UnsupportedOperationException();
+    default boolean tryAquireAttention() {
+        throw new SystemAgentException();
     }
 
     @Override
     default void actionPerformed() {
-        throw new UnsupportedOperationException();
+        throw new SystemAgentException();
     }
 
     @Override
-    default void releaseAquire() {
-        throw new UnsupportedOperationException();
+    default void releaseAttention() {
+        throw new SystemAgentException();
+    }
+
+    @Override
+    default void aquireDataAccess() {
+        throw new SystemAgentException();
+    }
+
+    @Override
+    default boolean tryAquireDataAccess() {
+        throw new SystemAgentException();
+    }
+
+    @Override
+    default boolean tryAquireDataAccess(long time, TimeUnit unit) {
+        throw new SystemAgentException();
+    }
+
+    @Override
+    default void releaseDataAccess() {
+        throw new SystemAgentException();
     }
 
     @Override
     default SocialGraph.Node getSocialGraphNode() {
-        throw new UnsupportedOperationException();
+        throw new SystemAgentException();
     }
 
     @Override
     default void setSocialGraphNode(SocialGraph.Node node) {
-        throw new UnsupportedOperationException();
+        throw new SystemAgentException();
     }
 }

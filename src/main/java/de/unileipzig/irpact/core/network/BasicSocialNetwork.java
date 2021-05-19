@@ -1,8 +1,6 @@
 package de.unileipzig.irpact.core.network;
 
-import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
-import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.network.topology.GraphTopologyScheme;
@@ -26,10 +24,10 @@ public class BasicSocialNetwork implements SocialNetwork {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
-                topologyScheme.getHashCode(),
-                graph.getHashCode()
+                topologyScheme.getChecksum(),
+                graph.getChecksum()
         );
     }
 
@@ -38,7 +36,7 @@ public class BasicSocialNetwork implements SocialNetwork {
     }
 
     public void initDefaultGraph() {
-        BasicSocialGraph socialGraph = new BasicSocialGraph(SupportedGraphStructure.DIRECTED_ADJACENCY_LIST_MULTI_GRAPH);
+        BasicSocialGraph socialGraph = new BasicSocialGraph(SupportedGraphStructure.FAST_DIRECTED_MULTI_GRAPH2_CONCURRENT);
         setGraph(socialGraph);
     }
 
@@ -61,25 +59,11 @@ public class BasicSocialNetwork implements SocialNetwork {
     }
 
     @Override
-    public void initialize() {
-        environment.getAgents()
-                .streamConsumerAgents()
-                .forEach(this::addNode);
-    }
-
-    protected void addNode(ConsumerAgent agent) {
-        SocialGraph.Node node = getGraph().addAgentAndGetNode(agent);
-        agent.setSocialGraphNode(node);
-        LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "added node: {}", agent.getName());
-    }
-
-    @Override
-    public void postAgentCreation(boolean initialCall) {
-        if(initialCall) {
-            topologyScheme.initalize(
-                    environment,
-                    getGraph()
-            );
-        }
+    public void postAgentCreation() throws InitializationException {
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "initalize graph using topology '{}'", topologyScheme.getName());
+        topologyScheme.initalize(
+                environment,
+                getGraph()
+        );
     }
 }

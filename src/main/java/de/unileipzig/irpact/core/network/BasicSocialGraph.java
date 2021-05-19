@@ -1,10 +1,14 @@
 package de.unileipzig.irpact.core.network;
 
-import de.unileipzig.irpact.commons.IsEquals;
-import de.unileipzig.irpact.commons.TripleMapping;
+import de.unileipzig.irpact.commons.checksum.Checksums;
+import de.unileipzig.irpact.commons.checksum.LoggableChecksum;
+import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.commons.util.data.MapBasedTripleMapping;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
+import de.unileipzig.irpact.commons.util.data.TripleMapping;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
@@ -14,7 +18,7 @@ import java.util.stream.Stream;
 /**
  * @author Daniel Abitz
  */
-public class BasicSocialGraph implements SocialGraph {
+public class BasicSocialGraph implements SocialGraph, LoggableChecksum {
 
     /**
      * @author Daniel Abitz
@@ -58,8 +62,8 @@ public class BasicSocialGraph implements SocialGraph {
         }
 
         @Override
-        public int getHashCode() {
-            return agent.getHashCode();
+        public int getChecksum() {
+            return agent.getChecksum();
         }
     }
 
@@ -115,13 +119,23 @@ public class BasicSocialGraph implements SocialGraph {
         }
 
         @Override
-        public int getHashCode() {
-            return Objects.hash(
-                    getSource().getHashCode(),
-                    getTarget().getHashCode(),
+        public int getChecksum() {
+            return Checksums.SMART.getChecksum(
+                    getSource(),
+                    getTarget(),
                     getWeight(),
-                    getType().getHashCode()
+                    getType()
             );
+        }
+
+        @Override
+        public String toString() {
+            return "BasicEdge{" +
+                    "source=" + source +
+                    ", target=" + target +
+                    ", type=" + type +
+                    ", weight=" + weight +
+                    '}';
         }
     }
 
@@ -130,7 +144,7 @@ public class BasicSocialGraph implements SocialGraph {
      */
     public static class BasicLinkageInformation implements LinkageInformation {
 
-        private final TripleMapping<Type, Object, Integer> linkCounter = new TripleMapping<>();
+        private final TripleMapping<Type, Object, Integer> linkCounter = new MapBasedTripleMapping<>();
 
         public BasicLinkageInformation() {
         }
@@ -168,7 +182,7 @@ public class BasicSocialGraph implements SocialGraph {
         }
 
         @Override
-        public int sum(Collection<?> keys, Type type) {
+        public int sum(Iterable<?> keys, Type type) {
             int total = 0;
             for(Object key: keys) {
                 total += get(key, type);
@@ -177,10 +191,12 @@ public class BasicSocialGraph implements SocialGraph {
         }
 
         @Override
-        public int total(Type type) {
-            return linkCounter.streamValues(type)
-                    .mapToInt(v -> v)
-                    .sum();
+        public int sum(Type type) {
+            int total = 0;
+            for(Object key: linkCounter.iterableB(type)) {
+                total += get(key, type);
+            }
+            return total;
         }
     }
 
@@ -224,12 +240,19 @@ public class BasicSocialGraph implements SocialGraph {
     }
 
     @Override
-    public int getHashCode() {
-        return Objects.hash(
-                getStructure().getHashCode(),
-                IsEquals.getCollHashCode(getAllAgents()),
-                IsEquals.getCollHashCode(getAllEdges())
+    public int getChecksum() {
+        return Checksums.SMART.getChecksum(
+                getStructure(),
+                getAllAgents(),
+                Checksums.SMART.getUnorderedStreamChecksum(streamAllEdges())
         );
+    }
+
+    @Override
+    public void logChecksums() {
+        LOGGER.trace(IRPSection.GENERAL, "checksum @ getStructure: {}", Integer.toHexString(Checksums.SMART.getChecksum(getStructure())));
+        LOGGER.trace(IRPSection.GENERAL, "checksum @ getAllAgents: {}", Integer.toHexString(Checksums.SMART.getChecksum(getAllAgents())));
+        LOGGER.trace(IRPSection.GENERAL, "checksum @ getAllEdges: {}", Integer.toHexString(Checksums.SMART.getUnorderedStreamChecksum(streamAllEdges())));
     }
 
     public SupportedGraphStructure getStructure() {
@@ -241,7 +264,11 @@ public class BasicSocialGraph implements SocialGraph {
     }
 
     public Collection<Edge> getAllEdges() {
-        return GRAPH.getAllEdges(Type.values());
+        return GRAPH.getAllEdges();
+    }
+
+    public Stream<Edge> streamAllEdges() {
+        return GRAPH.streamAllEdges();
     }
 
     @Override
@@ -327,16 +354,17 @@ public class BasicSocialGraph implements SocialGraph {
     }
 
     @Override
+    public Node getRandomTarget(Node source, Type type, Rnd rnd) {
+        return GRAPH.getRandomTarget(source, type, rnd);
+    }
+
+    @Override
     public boolean addEdge(Node from, Node to, Type type, double weight) {
-        if(GRAPH.hasEdge(from, to, type)) {
-            return false;
-        } else {
-            Edge edge = EDGE_SUPPLIER.apply(type);
-            edge.setSource(from);
-            edge.setTarget(to);
-            edge.setWeight(weight);
-            return GRAPH.addEdge(from, to, type, edge);
-        }
+        Edge edge = EDGE_SUPPLIER.apply(type);
+        edge.setSource(from);
+        edge.setTarget(to);
+        edge.setWeight(weight);
+        return GRAPH.addEdge(from, to, type, edge);
     }
 
     public void addEdgeDirect(BasicEdge edge) {

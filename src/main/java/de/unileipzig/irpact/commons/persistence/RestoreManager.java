@@ -1,37 +1,53 @@
 package de.unileipzig.irpact.commons.persistence;
 
-import de.unileipzig.irpact.commons.exception.RestoreException;
-
 import java.util.Collection;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.IntFunction;
-import java.util.stream.Stream;
+import java.util.function.LongFunction;
 
 /**
  * @author Daniel Abitz
  */
 public interface RestoreManager {
 
-    void restore(Collection<? extends Persistable> coll) throws RestoreException;
+    void unregisterAll();
 
-    void setInitialInstance(Object initial);
+    void register(Persistable persistable);
 
-    <T> T getInitialInstance();
+    void register(Collection<? extends Persistable> coll);
+
+    void restore() throws RestoreException;
+
+//    void setInitialInstance(Object initial);
+//
+//    <T> T getInitialInstance();
 
     void setRestoredInstance(Object restored);
 
-    <T> T getRestoredInstance();
+    <T> T getRestoredInstance() throws NoSuchElementException;
 
-    void setValidationHash(int hash);
+    void setValidationChecksum(int checksum);
 
-    int getValidationHash();
+    int getValidationChecksum() throws NoSuchElementException;
 
-    <T> T ensureGet(long uid) throws NoSuchElementException;
+    <T> T ensureGet(long uid) throws RestoreException;
 
-    <T> T[] ensureGetAll(long[] uids, IntFunction<T[]> arrCreator) throws NoSuchElementException;
+    default <T> T uncheckedEnsureGet(long uid) throws UncheckedRestoreException {
+        try {
+            return ensureGet(uid);
+        } catch (RestoreException e) {
+            throw e.unchecked();
+        }
+    }
 
-    <K, V> Map<K, V> ensureGetAll(Map<Long, Long> idMap) throws NoSuchElementException;
+    <T> LongFunction<T> ensureGetFunction();
+
+    <T> T[] ensureGetAll(long[] uids, IntFunction<T[]> arrCreator) throws RestoreException;
+
+    <T> boolean ensureGetAll(long[] uids, Collection<? super T> target) throws RestoreException;
+
+    <K, V> Map<K, V> ensureGetAll(Map<Long, Long> idMap) throws RestoreException;
 
     /**
      * Search for the exact class (c == x.getClass)
@@ -39,9 +55,9 @@ public interface RestoreManager {
      * @param c class of the searched instance
      * @param <T> type of the searched instance
      * @return found instance
-     * @throws NoSuchElementException If no instance was found.
+     * @throws RestoreException If no instance was found.
      */
-    <T> T ensureGetSameClass(Class<T> c) throws NoSuchElementException;
+    <T> T ensureGetSameClass(Class<T> c) throws RestoreException;
 
     /**
      * Search for the instance with {@link Class#isInstance(Object)}.
@@ -49,9 +65,9 @@ public interface RestoreManager {
      * @param c class of the searched instance
      * @param <T> type of the searched instance
      * @return found instance
-     * @throws NoSuchElementException If no instance was found.
+     * @throws RestoreException If no instance was found.
      */
-    <T> T ensureGetInstanceOf(Class<T> c) throws NoSuchElementException;
+    <T> T ensureGetInstanceOf(Class<T> c) throws RestoreException;
 
-    <T> T ensureGetByName(String name) throws NoSuchElementException;
+    <T> T ensureGetByName(String name) throws RestoreException;
 }

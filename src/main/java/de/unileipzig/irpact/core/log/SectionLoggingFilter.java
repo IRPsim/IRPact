@@ -8,20 +8,14 @@ import java.util.*;
 /**
  * @author Daniel Abitz
  */
-/*
- * Dieser Filter arbeitet mit Bereichen. Ein Bereich kann geloggt werden oder auch nicht.
- *
- * - Die Level-Beschraenkungen des Loggers selber gelten weiterhin. Dieser Filter ist fuer die reine
- * Informationsausgabe gedacht und konzipiert.
- * - Das Error-Level kann nicht gefiltert werden.
- */
 public final class SectionLoggingFilter implements LoggingFilter {
 
-    protected EnumSet<IRPSection> sections;
+    protected final EnumSet<IRPSection> SECTIONS;
+
+    protected boolean disabled = false;
     protected boolean logAll = false;
-    protected boolean logNothing = false;
-    protected boolean logIfSectionIsNull = false;
-    protected boolean logIfTypeIsUnknown = true;
+    protected boolean logIfSectionIsNull = true;
+    protected boolean logIfTypeIsUnknown = false;
     protected boolean logDefault = true;
 
     public SectionLoggingFilter() {
@@ -29,15 +23,23 @@ public final class SectionLoggingFilter implements LoggingFilter {
     }
 
     public SectionLoggingFilter(EnumSet<IRPSection> sections) {
-        this.sections = sections;
+        this.SECTIONS = sections;
+    }
+
+    //=========================
+    // settings
+    //=========================
+
+    public void enable() {
+        this.disabled = false;
+    }
+
+    public void disable() {
+        disabled = true;
     }
 
     public void setLogAll(boolean logAll) {
         this.logAll = logAll;
-    }
-
-    public void setLogNothing(boolean logNothing) {
-        this.logNothing = logNothing;
     }
 
     public void setLogIfSectionIsNull(boolean logIfSectionIsNull) {
@@ -52,39 +54,67 @@ public final class SectionLoggingFilter implements LoggingFilter {
         this.logDefault = logDefault;
     }
 
+    //=========================
+    // sections
+    //=========================
+
+
     public void add(IRPSection section) {
-        sections.add(section);
+        SECTIONS.add(section);
+    }
+
+    public void add(boolean add, IRPSection section) {
+        if(add) {
+            add(section);
+        }
     }
 
     public boolean remove(IRPSection section) {
-        return sections.remove(section);
+        return SECTIONS.remove(section);
     }
 
     public boolean has(IRPSection section) {
-        return sections.contains(section);
+        return SECTIONS.contains(section);
     }
 
     public Set<IRPSection> getSections() {
-        return sections;
+        return SECTIONS;
     }
+
+    //=========================
+    // access
+    //=========================
 
     @Override
     public boolean doLogging() {
+        if(disabled) {
+            return false;
+        }
+        if(logAll) {
+            return true;
+        }
+
         return logDefault;
     }
 
     @Override
     public boolean doLogging(LoggingSection section) {
+        if(disabled) {
+            return false;
+        }
         if(logAll) {
             return true;
-        }
-        if(logNothing) {
-            return false;
         }
         if(section == null) {
             return logIfSectionIsNull;
         }
-        return section.getClass() == IRPSection.class
-                && has((IRPSection) section);
+        if(section.getType() == IRPSection.class) {
+            return has((IRPSection) section);
+        }
+        if(section.getType() == ComplexIRPSection.class) {
+            return ((ComplexIRPSection) section).test(SECTIONS);
+        }
+
+        return logIfTypeIsUnknown;
     }
 }

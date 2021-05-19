@@ -1,11 +1,11 @@
 package de.unileipzig.irpact.core.process.ra.attributes;
 
-import de.unileipzig.irpact.commons.IsEquals;
-import de.unileipzig.irpact.commons.Nameable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentDoubleGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -20,112 +20,104 @@ public class BasicUncertaintyGroupAttributeSupplier extends NameableBase impleme
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicUncertaintyGroupAttributeSupplier.class);
 
-    protected Map<ConsumerAgentGroup, List<String>> attrNames;
-    protected Map<ConsumerAgentGroup, List<UnivariateDoubleDistribution>> uncertDists;
-    protected Map<ConsumerAgentGroup, List<UnivariateDoubleDistribution>> convDists;
+    protected String attrName;
+    protected UnivariateDoubleDistribution uncertDist;
+    protected UnivariateDoubleDistribution convDist;
 
     public BasicUncertaintyGroupAttributeSupplier() {
-        this(null);
-    }
-
-    public BasicUncertaintyGroupAttributeSupplier(String name) {
-        this(name, new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>());
+        this(null, null, null);
     }
 
     public BasicUncertaintyGroupAttributeSupplier(
             String name,
-            Map<ConsumerAgentGroup, List<String>> attrNames,
-            Map<ConsumerAgentGroup, List<UnivariateDoubleDistribution>> uncertDists,
-            Map<ConsumerAgentGroup, List<UnivariateDoubleDistribution>> convDists) {
-        setName(name);
-        this.attrNames = attrNames;
-        this.uncertDists = uncertDists;
-        this.convDists = convDists;
-    }
-
-    @Override
-    public void add(
-            ConsumerAgentGroup cag,
             String attrName,
             UnivariateDoubleDistribution uncertDist) {
-        add(cag, attrName, uncertDist, null);
+        this(name, attrName, uncertDist, null);
     }
 
-    @Override
-    public void add(
-            ConsumerAgentGroup cag,
+    public BasicUncertaintyGroupAttributeSupplier(
+            String name,
             String attrName,
             UnivariateDoubleDistribution uncertDist,
             UnivariateDoubleDistribution convDist) {
-        List<String> names = attrNames.computeIfAbsent(cag, _cag -> new ArrayList<>());
-        List<UnivariateDoubleDistribution> uncerts = uncertDists.computeIfAbsent(cag, _cag -> new ArrayList<>());
-        List<UnivariateDoubleDistribution> convs = convDists.computeIfAbsent(cag, _cag -> new ArrayList<>());
-
-        names.add(attrName);
-        uncerts.add(uncertDist);
-        convs.add(convDist);
+        setName(name);
+        this.attrName = attrName;
+        this.uncertDist = uncertDist;
+        this.convDist = convDist;
     }
 
-    public Collection<ConsumerAgentGroup> getConsumerAgentGroups() {
-        return attrNames.keySet();
+    public void setAttributeName(String attrName) {
+        this.attrName = attrName;
     }
 
-    public List<String> getAttributeNames(ConsumerAgentGroup cag) {
-        return attrNames.get(cag);
+    public String getAttributeName() {
+        return attrName;
     }
 
-    public List<UnivariateDoubleDistribution> getUncertaintyeDistributions(ConsumerAgentGroup cag) {
-        return uncertDists.get(cag);
+    public void setUncertaintyDistribution(UnivariateDoubleDistribution uncertDist) {
+        this.uncertDist = uncertDist;
     }
 
-    public List<UnivariateDoubleDistribution> getConvergenceeDistributions(ConsumerAgentGroup cag) {
-        return convDists.get(cag);
+    public UnivariateDoubleDistribution getUncertaintyDistribution() {
+        return uncertDist;
+    }
+
+    public void setConvergenceDistribution(UnivariateDoubleDistribution convDist) {
+        this.convDist = convDist;
+    }
+
+    public UnivariateDoubleDistribution getConvergenceDistribution() {
+        return convDist;
+    }
+
+    public boolean hasConvergenceDistribution() {
+        return convDist != null;
     }
 
     @Override
-    public void applyTo(ConsumerAgentGroup cag) {
-        List<String> names = attrNames.computeIfAbsent(cag, _cag -> new ArrayList<>());
-        List<UnivariateDoubleDistribution> uncerts = uncertDists.computeIfAbsent(cag, _cag -> new ArrayList<>());
-        List<UnivariateDoubleDistribution> convs = convDists.computeIfAbsent(cag, _cag -> new ArrayList<>());
-
-        for(int i = 0; i < names.size(); i++) {
-            String name = names.get(i);
-            String uncertName = RAConstants.getUncertaintyAttributeName(name);
-            if(cag.hasGroupAttribute(uncertName)) {
-                LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "cag '{}' already has '{}'", cag.getName(), uncertName);
-                continue;
-            }
-
-            UnivariateDoubleDistribution uncert = uncerts.get(i);
-            UnivariateDoubleDistribution conv = convs.get(i);
-
-            UncertaintyGroupAttribute cagAttr = createAttribute(cag, uncertName, uncert, conv, false);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "add uncertainty attribute '{}' for '{}->{}'", cagAttr, cag.getName(), cagAttr.getName());
-            cag.addGroupAttribute(cagAttr);
-        }
+    public boolean hasGroupAttribute(ConsumerAgentGroup cag) {
+        String uncertName = RAConstants.getUncertaintyAttributeName(attrName);
+        return cag.hasGroupAttribute(uncertName);
     }
 
-    protected UncertaintyGroupAttribute createAttribute(
+    @Override
+    public void addGroupAttributeTo(ConsumerAgentGroup cag) {
+        String uncertName = RAConstants.getUncertaintyAttributeName(attrName);
+        if(cag.hasGroupAttribute(uncertName)) {
+            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "cag '{}' already has '{}'", cag.getName(), uncertName);
+            return;
+        }
+
+        UncertaintyGroupAttribute cagAttr = createAttribute(cag, uncertName, uncertDist, convDist, false);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add uncertainty attribute '{}' for '{}->{}'", cagAttr.getName(), cag.getName(), cagAttr.getName());
+        cag.addGroupAttribute(cagAttr);
+    }
+
+    protected static UncertaintyGroupAttribute createAttribute(
             ConsumerAgentGroup cag,
             String attrName,
             UnivariateDoubleDistribution uncert,
             UnivariateDoubleDistribution conv,
             @SuppressWarnings("SameParameterValue") boolean autoAdjust) {
         if(conv == null) {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "create uncertainty '{}' with linked convergence '{}->{}'", uncert.getName(), cag.getName(), RAConstants.RATE_OF_CONVERGENCE);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create uncertainty '{}' with linked convergence '{}->{}'", uncert.getName(), cag.getName(), RAConstants.RATE_OF_CONVERGENCE);
             ConsumerAgentGroupAttribute cagConv = cag.getGroupAttribute(RAConstants.RATE_OF_CONVERGENCE);
             if(cagConv == null) {
                 throw new NoSuchElementException("cag '" + cag.getName() + "' has no '" + RAConstants.RATE_OF_CONVERGENCE + "'");
             }
+            if(!cagConv.is(ConsumerAgentDoubleGroupAttribute.class)) {
+                throw new IllegalArgumentException("cag '" + cag.getName() + "' does not supports distributions.");
+            }
+            ConsumerAgentDoubleGroupAttribute cagConfD = cagConv.as(ConsumerAgentDoubleGroupAttribute.class);
 
             LinkedUncertaintyGroupAttribute cagAttr = new LinkedUncertaintyGroupAttribute();
             cagAttr.setName(attrName);
             cagAttr.setUncertainty(uncert);
-            cagAttr.setConvergence(cagConv);
+            cagAttr.setConvergence(cagConfD);
             cagAttr.setAutoAdjustment(autoAdjust);
             return cagAttr;
         } else {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "create uncertainty '{}' with convergence '{}'", uncert.getName(), conv.getName());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create uncertainty '{}' with convergence '{}'", uncert.getName(), conv.getName());
             UncertaintyWithConvergenceGroupAttribute cagAttr = new UncertaintyWithConvergenceGroupAttribute();
             cagAttr.setName(attrName);
             cagAttr.setUncertainty(uncert);
@@ -136,12 +128,12 @@ public class BasicUncertaintyGroupAttributeSupplier extends NameableBase impleme
     }
 
     @Override
-    public int getHashCode() {
-        return Objects.hash(
+    public int getChecksum() {
+        return ChecksumComparable.getChecksum(
                 getName(),
-                IsEquals.getMapCollHashCodeWithMappedKey(attrNames, Nameable::getName),
-                IsEquals.getMapCollHashCodeWithMappedKey(uncertDists, Nameable::getName),
-                IsEquals.getMapCollHashCodeWithMappedKey(convDists, Nameable::getName)
+                attrName,
+                uncertDist,
+                convDist
         );
     }
 }

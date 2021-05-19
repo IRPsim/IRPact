@@ -4,12 +4,13 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.product.BasicProduct;
 import de.unileipzig.irpact.core.product.BasicProductGroup;
-import de.unileipzig.irpact.core.product.ProductAttribute;
-import de.unileipzig.irpact.io.param.input.InEntity;
+import de.unileipzig.irpact.core.product.attribute.ProductAttribute;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
+import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -24,7 +25,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InFixProduct implements InEntity {
+public class InFixProduct implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -62,6 +63,19 @@ public class InFixProduct implements InEntity {
     }
 
     @Override
+    public InFixProduct copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InFixProduct newCopy(CopyCache cache) {
+        InFixProduct copy = new InFixProduct();
+        copy._name = _name;
+        copy.refPG = cache.copyArray(refPG);
+        copy.fixPAttrs = cache.copyArray(fixPAttrs);
+        return copy;
+    }
+
+    @Override
     public String getName() {
         return _name;
     }
@@ -87,7 +101,7 @@ public class InFixProduct implements InEntity {
     }
 
     @Override
-    public BasicProduct parse(InputParser parser) throws ParsingException {
+    public BasicProduct parse(IRPactInputParser parser) throws ParsingException {
         BasicProduct bp = new BasicProduct();
         bp.setEnvironment(parser.getEnvironment());
         bp.setFixed(true);

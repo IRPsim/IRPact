@@ -1,0 +1,674 @@
+package de.unileipzig.irpact.start.irpact;
+
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.unileipzig.irpact.commons.exception.InitializationException;
+import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.commons.res.ResourceLoader;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.misc.InitializationStage;
+import de.unileipzig.irpact.core.misc.MissingDataException;
+import de.unileipzig.irpact.core.misc.ValidationException;
+import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
+import de.unileipzig.irpact.core.network.SocialGraph;
+import de.unileipzig.irpact.core.product.AdoptedProduct;
+import de.unileipzig.irpact.core.product.ProductGroup;
+import de.unileipzig.irpact.core.simulation.*;
+import de.unileipzig.irpact.core.util.AdoptionAnalyser;
+import de.unileipzig.irpact.core.util.PVactResultLogging;
+import de.unileipzig.irpact.core.util.RunInfo;
+import de.unileipzig.irpact.io.param.input.GraphvizInputParser;
+import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.input.JadexInputParser;
+import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
+import de.unileipzig.irpact.io.param.output.OutAnnualAdoptionData;
+import de.unileipzig.irpact.io.param.output.OutEntity;
+import de.unileipzig.irpact.io.param.output.OutRoot;
+import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.output.agent.OutGeneralConsumerAgentGroup;
+import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
+import de.unileipzig.irpact.jadex.agents.simulation.ProxySimulationAgent;
+import de.unileipzig.irpact.jadex.persistance.JadexPersistenceModul;
+import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
+import de.unileipzig.irpact.jadex.util.JadexSystemOut;
+import de.unileipzig.irpact.jadex.util.JadexUtil;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
+import de.unileipzig.irpact.start.optact.out.OutCustom;
+import de.unileipzig.irptools.defstructure.AnnotationParser;
+import de.unileipzig.irptools.defstructure.Converter;
+import de.unileipzig.irptools.defstructure.DefinitionCollection;
+import de.unileipzig.irptools.defstructure.DefinitionMapper;
+import de.unileipzig.irptools.io.ContentType;
+import de.unileipzig.irptools.io.ContentTypeDetector;
+import de.unileipzig.irptools.io.annual.AnnualData;
+import de.unileipzig.irptools.io.annual.AnnualFile;
+import de.unileipzig.irptools.io.base.AnnualEntry;
+import de.unileipzig.irptools.start.IRPtools;
+import de.unileipzig.irptools.util.log.IRPLogger;
+import jadex.base.IPlatformConfiguration;
+import jadex.base.PlatformConfigurationHandler;
+import jadex.base.Starter;
+import jadex.bridge.IExternalAccess;
+import jadex.bridge.service.types.clock.IClockService;
+import jadex.bridge.service.types.cms.CreationInfo;
+import jadex.bridge.service.types.simulation.ISimulationService;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * @author Daniel Abitz
+ */
+public final class IRPact implements IRPActAccess {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(IRPact.class);
+
+    public static final String PROXY = "PROXY";
+
+    private static final String SIMULATION_AGENT = "de.unileipzig.irpact.jadex.agents.simulation.JadexSimulationAgentBDI.class";
+    private static final String CONSUMER_AGENT = "de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentBDI.class";
+    private static final String SIMULATION_AGENT_NAME = "IRPact_Simulation_Agent";
+
+    private static final String MAJOR_STRING = "0";
+    private static final String MINOR_STRING = "0";
+    private static final String BUILD_STRING = "0";
+    public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
+    public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
+
+    public static final String CL_NAME = "IRPact";
+    public static final String CL_VERSION = "Version " + VERSION_STRING;
+    public static final String CL_COPY = "(c) 2019-2021";
+
+    private static final Map<MainCommandLineOptions, Converter> INPUT_CONVERTS = new WeakHashMap<>();
+    private static final Map<MainCommandLineOptions, Converter> OUTPUT_CONVERTS = new WeakHashMap<>();
+
+    private final List<IRPactCallback> CALLBACKS = new ArrayList<>();
+    private final MainCommandLineOptions CL_OPTIONS;
+    private final ResourceLoader RESOURCE_LOADER;
+    private final RunInfo INFO = new RunInfo();
+
+    private ObjectNode inRootNode;
+    private AnnualEntry<InRoot> inEntry;
+    private InRoot inRoot;
+    private AnnualData<OutRoot> outData;
+    private JadexSimulationEnvironment environment;
+    private GraphvizConfiguration graphvizConfiguration;
+    private IExternalAccess platform;
+
+    public IRPact(
+            MainCommandLineOptions clOptions,
+            Collection<? extends IRPactCallback> callbacks,
+            ResourceLoader resourceLoader) {
+        this.CL_OPTIONS = clOptions;
+        this.CALLBACKS.addAll(callbacks);
+        this.RESOURCE_LOADER = resourceLoader;
+    }
+
+    public void notifyStart() {
+        INFO.setStartTime();
+    }
+
+    public void notifyEnd() {
+        INFO.setEndTime();
+    }
+
+    public MainCommandLineOptions getOptions() {
+        return CL_OPTIONS;
+    }
+
+    public ObjectNode getInRootNode() {
+        return inRootNode;
+    }
+
+    public AnnualEntry<InRoot> getInEntry() {
+        return inEntry;
+    }
+
+    public InRoot getInRoot() {
+        return inRoot;
+    }
+
+    private static DefinitionMapper createMapper(MainCommandLineOptions options, DefinitionCollection dcoll) {
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "setup definition mapper: autoTrim={}, maxNameLength={}, minPartLength={}", options.isEnableGamsNameTrimming(), options.getMaxGamsNameLength(), options.getMinGamsPartLength());
+        DefinitionMapper mapper = new DefinitionMapper(dcoll, false);
+        mapper.setAutoTrimName(options.isEnableGamsNameTrimming());
+        mapper.setMaxNameLength(options.getMaxGamsNameLength());
+        mapper.setMinPartLength(options.getMinGamsPartLength());
+        mapper.init();
+        return mapper;
+    }
+
+    public static Converter getInputConverter(MainCommandLineOptions options) {
+        if(INPUT_CONVERTS.containsKey(options)) {
+            return INPUT_CONVERTS.get(options);
+        } else {
+            DefinitionCollection dcoll = AnnotationParser.parse(InRoot.CLASSES_WITH_GRAPHVIZ);
+            DefinitionMapper dmap = createMapper(options, dcoll);
+            Converter converter = new Converter(dmap);
+            INPUT_CONVERTS.put(options, converter);
+            return converter;
+        }
+    }
+
+    public static Converter getOutputConverter(MainCommandLineOptions options) {
+        if(OUTPUT_CONVERTS.containsKey(options)) {
+            return OUTPUT_CONVERTS.get(options);
+        } else {
+            DefinitionCollection dcoll = AnnotationParser.parse(OutRoot.ALL_CLASSES);
+            DefinitionMapper dmap = createMapper(options, dcoll);
+            Converter converter = new Converter(dmap);
+            converter.setSortNames(false);
+            OUTPUT_CONVERTS.put(options, converter);
+            return converter;
+        }
+    }
+
+    public static AnnualEntry<OutRoot> convertOutput(MainCommandLineOptions options, ObjectNode rootNode) {
+        ContentType contentType = ContentTypeDetector.detect(rootNode);
+        LOGGER.trace(IRPSection.GENERAL, "content type: {}", contentType);
+        return ContentTypeDetector.parseFirstEntry(
+                rootNode,
+                contentType,
+                getOutputConverter(options)
+        );
+    }
+
+    public static AnnualEntry<InRoot> convert(MainCommandLineOptions options, ObjectNode rootNode) {
+        ContentType contentType = ContentTypeDetector.detect(rootNode);
+        LOGGER.trace(IRPSection.GENERAL, "content type: {}", contentType);
+        return ContentTypeDetector.parseFirstEntry(
+                rootNode,
+                contentType,
+                getInputConverter(options)
+        );
+    }
+
+    private AnnualEntry<InRoot> convert(ObjectNode rootNode) {
+        return convert(CL_OPTIONS, rootNode);
+    }
+
+    public static void clearConverterCache() {
+        INPUT_CONVERTS.clear();
+        OUTPUT_CONVERTS.clear();
+    }
+
+    private void pulse() {
+        environment.getLiveCycleControl().pulse();
+    }
+
+    public void init(ObjectNode jsonRoot) throws Exception {
+        parseInputFile(jsonRoot);
+    }
+
+    private void parseInputFile(ObjectNode jsonRoot) {
+        inRootNode = jsonRoot;
+        inEntry = convert(jsonRoot);
+        inRoot = inEntry.getData();
+    }
+
+    public void init(AnnualEntry<InRoot> entry) throws Exception {
+        this.inEntry = entry;
+        inRoot = entry.getData();
+    }
+
+    public void initialize() throws Exception {
+        initalizeLogging();
+        LOGGER.info(IRPSection.GENERAL, "initialize");
+
+        if(hasPreviousState()) {
+            restorPreviousSimulationEnvironment();
+        } else {
+            initializeNewSimulationEnvironment();
+        }
+
+        createGraphvizConfiguration();
+        logSimulationInformations();
+    }
+
+    private void initalizeLogging() {
+        JadexInputParser parser = new JadexInputParser();
+        parser.initLoggingOnly(inRoot);
+    }
+
+    private void initializeNewSimulationEnvironment() throws Exception {
+        LOGGER.info(IRPSection.GENERAL, "create new environment");
+        createSimulationEnvironment();
+        applyCommandLineToEnvironment();
+    }
+
+    private void applyCommandLineToEnvironment() {
+        Settings settings = environment.getSettings();
+        settings.apply(CL_OPTIONS);
+    }
+
+    private void createSimulationEnvironment() throws ParsingException {
+        int year = inEntry.getConfig().getYear();
+        JadexInputParser parser = new JadexInputParser();
+        parser.setSimulationYear(year);
+        parser.setResourceLoader(RESOURCE_LOADER);
+        environment = parser.parseRoot(inRoot);
+        environment.getSettings().setFirstSimulationYear(year);
+    }
+
+    private void restorPreviousSimulationEnvironment() throws Exception {
+        LOGGER.info(IRPSection.GENERAL, "restore previous environment");
+        int year = inEntry.getConfig().getYear();
+        JadexRestoreUpdater updater = new JadexRestoreUpdater();
+        updater.setSimulationYear(year);
+        updater.setResourceLoader(RESOURCE_LOADER);
+        JadexPersistenceModul persistenceModul = new JadexPersistenceModul();
+        environment = (JadexSimulationEnvironment) persistenceModul.restore(
+                CL_OPTIONS,
+                year,
+                updater,
+                inRoot
+        );
+    }
+
+    private void createGraphvizConfiguration() throws Exception {
+        if(!CL_OPTIONS.hasImagePath()) {
+            return;
+        }
+        LOGGER.info(IRPSection.GENERAL, "valid image path, setup graphviz");
+        GraphvizInputParser parser = new GraphvizInputParser();
+        parser.setEnvironment(environment);
+        parser.setImageOutputPath(CL_OPTIONS.getImagePath());
+        graphvizConfiguration = parser.parseRoot(inRoot);
+    }
+
+    private void logSimulationInformations() {
+        Settings settings = environment.getSettings();
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "run: {} (first run: {})", settings.getCurrentRun(), settings.isFirstRun());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "last simulation year of previous run: {}", settings.getLastSimulationYearOfPreviousRun());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "first simulation year: {} (actual: {})", settings.getFirstSimulationYear(), settings.getActualFirstSimulationYear());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "last simulation year: {}", settings.getLastSimulationYear());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "number of simulation years: {} (actuel: {})", settings.getNumberOfSimulationYears(), settings.getActualNumberOfSimulationYears());
+
+        if(settings.hasActualMultipleSimulationYears()) {
+            LOGGER.info(
+                    IRPSection.GENERAL,
+                    "simulation will run from {} to {} ({} years)",
+                    settings.getActualFirstSimulationYear(),
+                    settings.getLastSimulationYear(),
+                    settings.getActualNumberOfSimulationYears()
+            );
+        } else {
+            LOGGER.info(IRPSection.GENERAL, "simulation will run for year {}", settings.getFirstSimulationYear());
+        }
+    }
+
+    private boolean hasPreviousState() {
+        return inRoot.hasBinaryPersistData();
+    }
+
+    public void preAgentCreation() throws MissingDataException {
+        LOGGER.info(IRPSection.GENERAL, "run pre-agent creation");
+        environment.preAgentCreation();
+    }
+
+    public void runPreAgentCreationTasks() {
+        LOGGER.info(IRPSection.GENERAL, "run pre-agent creation tasks");
+        environment.getTaskManager().runInitializationStageTasks(InitializationStage.PRE_AGENT_CREATION, environment);
+    }
+
+    public void preAgentCreationValidation() throws ValidationException {
+        LOGGER.info(IRPSection.GENERAL, "run pre-agent creation validation");
+        environment.preAgentCreationValidation();
+    }
+
+    public void createAgents() throws InitializationException {
+        LOGGER.info(IRPSection.GENERAL, "run create agents");
+        environment.createAgents();
+    }
+
+    public void postAgentCreation() throws MissingDataException, InitializationException {
+        LOGGER.info(IRPSection.GENERAL, "run post agent creation");
+        environment.postAgentCreation();
+    }
+
+    public void runPostAgentCreationTasks() {
+        LOGGER.info(IRPSection.GENERAL, "run post-agent creation tasks");
+        environment.getTaskManager().runInitializationStageTasks(InitializationStage.POST_AGENT_CREATION, environment);
+    }
+
+    public void postAgentCreationValidation() throws ValidationException {
+        LOGGER.info(IRPSection.GENERAL, "run post-agent creation validation");
+        environment.postAgentCreationValidation();
+    }
+
+    public void runPrePlatformCreationTasks() {
+        LOGGER.info(IRPSection.GENERAL, "run pre-platforn creation tasks");
+        environment.getTaskManager().runInitializationStageTasks(InitializationStage.PRE_PLATFORM_CREATION, environment);
+    }
+
+    public boolean checkNoSimulationFlag() throws Exception {
+        if(CL_OPTIONS.isNoSimulation()) {
+            if(CL_OPTIONS.hasImagePath()) {
+                printInitialNetwork();
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void printInitialNetwork() throws Exception {
+        LOGGER.info(IRPSection.GENERAL, "create initial network image");
+        printNetwork();
+    }
+
+    public void printNetwork() throws Exception {
+        graphvizConfiguration.printSocialGraph(
+                environment.getNetwork().getGraph(),
+                SocialGraph.Type.COMMUNICATION
+        );
+    }
+
+    public void createPlatform() {
+        LOGGER.info(IRPSection.GENERAL, "create platform");
+
+        IPlatformConfiguration config = PlatformConfigurationHandler.getMinimal();
+        config.setValue("kernel_component", true);
+        config.setValue("kernel_bdi", true);
+        config.setDefaultTimeout(-1L);
+        platform = Starter.createPlatform(config)
+                .get();
+        environment.getLiveCycleControl().setPlatform(platform);
+        environment.getLiveCycleControl().startKillSwitch();
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "get ISimulationService");
+        ISimulationService simulationService = JadexUtil.getSimulationService(platform);
+        LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "get IClockService");
+        IClockService clock = simulationService.getClockService();
+        environment.getLiveCycleControl().setSimulationService(simulationService);
+        environment.getLiveCycleControl().setClockService(clock);
+    }
+
+    public void preparePlatform() {
+        LOGGER.info(IRPSection.GENERAL, "prepare platform start");
+        environment.getLiveCycleControl().pause();
+        pulse();
+    }
+
+    public void setupTimeModel() {
+        LOGGER.info(IRPSection.GENERAL, "setup time model");
+        environment.getTimeModel().setupTimeModel();
+    }
+
+    public void createJadexAgents() {
+        createJadexAgents(false);
+    }
+
+    public void createOnlyControlJadexAgents() {
+        createJadexAgents(true);
+    }
+
+    private void createJadexAgents(boolean controlAgentsOnly) {
+        LOGGER.info(IRPSection.GENERAL, "create agents");
+
+        final int totalNumberOfAgents = controlAgentsOnly
+                ? 1
+                : 1 + environment.getAgents().getTotalNumberOfConsumerAgents();
+        int agentCount = 0;
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "total number of agents: {}", totalNumberOfAgents);
+        environment.getLiveCycleControl().setTotalNumberOfAgents(totalNumberOfAgents);
+
+        CreationInfo simulationAgentInfo = createSimulationAgentInfo(createProxySimulationAgent());
+        LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "create simulation agent '{}' ({}/{})", SIMULATION_AGENT_NAME, ++agentCount, totalNumberOfAgents);
+        platform.createComponent(simulationAgentInfo).get();
+        pulse();
+
+        if(controlAgentsOnly) {
+            return;
+        }
+
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            for(ConsumerAgent ca: cag.getAgents()) {
+                LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "create jadex agent '{}' ({}/{})", ca.getName(), ++agentCount, totalNumberOfAgents);
+                ProxyConsumerAgent data = createConsumerAgentInitializationData(ca);
+                CreationInfo info = createConsumerAgentInfo(data);
+                platform.createComponent(info).get();
+                pulse();
+            }
+        }
+    }
+
+    private ProxySimulationAgent createProxySimulationAgent() {
+        ProxySimulationAgent agent = new ProxySimulationAgent();
+        agent.setName(SIMULATION_AGENT_NAME);
+        agent.setEnvironment(environment);
+        return agent;
+    }
+
+    private ProxyConsumerAgent createConsumerAgentInitializationData(ConsumerAgent agent) {
+        if(agent instanceof ProxyConsumerAgent) {
+            return (ProxyConsumerAgent) agent;
+        } else {
+            throw new IllegalArgumentException("requires ProxyConsumerAgent, found: " + agent.getClass().getName());
+        }
+    }
+
+    private static CreationInfo createSimulationAgentInfo(ProxySimulationAgent proxy) {
+        CreationInfo info = new CreationInfo();
+        info.setName(proxy.getName());
+        info.setFilename(SIMULATION_AGENT);
+        info.addArgument(PROXY, proxy);
+        return info;
+    }
+
+    private static CreationInfo createConsumerAgentInfo(ProxyConsumerAgent proxy) {
+        CreationInfo info = new CreationInfo();
+        info.setName(proxy.getName());
+        info.setFilename(CONSUMER_AGENT);
+        info.addArgument(PROXY, proxy);
+        return info;
+    }
+
+    public void waitForCreation() throws InterruptedException {
+        LOGGER.info(IRPSection.GENERAL, "wait until agent creation is finished...");
+        environment.getLiveCycleControl().waitForCreationFinished();
+        LOGGER.info(IRPSection.GENERAL, "...  agent creation finished");
+    }
+
+    public boolean secureWaitForCreationFailed() {
+        try {
+            waitForCreation();
+            return false;
+        } catch (InterruptedException e) {
+            LOGGER.warn(IRPSection.GENERAL, "waiting interrupted", e);
+            if(environment.getLiveCycleControl().getTerminationState() != LifeCycleControl.TerminationState.NOT) {
+                environment.getLiveCycleControl().terminateWithError(e);
+            }
+            return true;
+        }
+    }
+
+    public void setupPreSimulationStart() throws MissingDataException {
+        LOGGER.info(IRPSection.GENERAL, "pre simulation start environment");
+        environment.preSimulationStart();
+    }
+
+    public void startSimulation() {
+        LOGGER.info(IRPSection.GENERAL, "start simulation");
+        environment.getLiveCycleControl().start();
+    }
+
+    public void waitForTermination() {
+        LOGGER.info(IRPSection.GENERAL, "wait for termination");
+
+        environment.getLiveCycleControl().waitForTermination().get();
+        JadexSystemOut.reset();
+
+        LOGGER.info(IRPSection.GENERAL, "simulation terminated");
+    }
+
+    public void postSimulation() throws Exception {
+        LOGGER.info(IRPSection.GENERAL, "start post-simulation");
+        createNetworkAfterSimulation();
+        createOutput();
+        callCallbacks();
+        printResults();
+        finalTask();
+    }
+
+    public void postSimulationWithDummyOutput() {
+        LOGGER.info(IRPSection.GENERAL, "start dummy post-simulation");
+        createDummyOutput();
+        callCallbacks();
+        finalTask();
+    }
+
+    private void createDummyOutput() {
+        LOGGER.info(IRPSection.GENERAL, "create dummy output");
+        throw new UnsupportedOperationException();
+    }
+
+    private void createOutput() throws Exception {
+        LOGGER.info(IRPSection.GENERAL, "create output");
+        OutRoot outRoot = createOutRoot();
+        outData = createOutputData(outRoot);
+        storeOutputData(outData);
+    }
+
+    private void createNetworkAfterSimulation() {
+        if(CL_OPTIONS.hasImagePath()) {
+            LOGGER.info(IRPSection.GENERAL, "create network image after finished simulation");
+            try {
+                printNetwork();
+            } catch (Throwable t) {
+                LOGGER.error("creating network image after finished simulation failed, continue post simulation process", t);
+            }
+        }
+    }
+
+    private OutRoot createOutRoot() throws Exception {
+        LOGGER.info(IRPSection.GENERAL, "create OutRoot");
+        OutRoot outRoot = new OutRoot();
+        applySimulationResult(outRoot);
+        applyPersistenceData(outRoot);
+        return outRoot;
+    }
+
+    private void applySimulationResult(OutRoot outRoot) {
+        //applyOldOptActData(outRoot);
+        collectAdoptionResults(outRoot);
+    }
+
+    @Deprecated
+    private void applyOldOptActData(OutRoot outRoot) {
+        List<OutCustom> outList = new ArrayList<>();
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            int size = cag.getNumberOfAgents();
+            OutCustom oc = new OutCustom(cag.getName(), size);
+            outList.add(oc);
+        }
+        outRoot.outGrps = outList.toArray(new OutCustom[0]);
+    }
+
+    private void collectAdoptionResults(OutRoot outRoot) {
+        LOGGER.info(IRPSection.GENERAL, "collect and analyze adoption results");
+
+        AdoptionAnalyser analyser = new AdoptionAnalyser();
+        for(ConsumerAgent agent: environment.getAgents().iterableConsumerAgents()) {
+            for(AdoptedProduct adoptedProduct: agent.getAdoptedProducts()) {
+                if(adoptedProduct.isNotInitial()) {
+                    analyser.add(agent, adoptedProduct);
+                }
+            }
+        }
+
+        int year = environment.getSettings().getActualFirstSimulationYear();
+        ProductGroup pg = CollectionUtil.get(environment.getProducts().getGroups(), 0);
+        Map<ConsumerAgentGroup, OutConsumerAgentGroup> outCags = new LinkedHashMap<>();
+        OutGeneralConsumerAgentGroup.create(
+                environment.getAgents().getConsumerAgentGroups(),
+                year,
+                pg,
+                analyser,
+                outCags
+        );
+        outRoot.setConsumerAgentGroups(outCags.values());
+        LOGGER.trace("out: {}", outCags.values().stream().map(OutEntity::getName).collect(Collectors.toList()));
+
+        List<OutAnnualAdoptionData> annualAdoptionData = new ArrayList<>();
+        OutAnnualAdoptionData.create(
+                environment.getSettings().listActualYears(),
+                outCags,
+                pg,
+                analyser,
+                annualAdoptionData
+        );
+        outRoot.setAnnualAdoptionData(annualAdoptionData);
+    }
+
+    private void applyPersistenceData(OutRoot outRoot) throws Exception {
+        if(CL_OPTIONS.isSkipPersist()) {
+            LOGGER.trace(IRPSection.GENERAL, "skip persistence");
+        } else {
+            environment.getPersistenceModul().store(environment, outRoot);
+        }
+    }
+
+    private AnnualData<OutRoot> createOutputData(OutRoot outRoot) {
+        AnnualData<OutRoot> outData = new AnnualData<>(outRoot);
+        outData.getConfig().copyFrom(inEntry.getConfig());
+        return outData;
+    }
+
+    private void storeOutputData(AnnualData<OutRoot> outData) {
+        LOGGER.info(IRPSection.GENERAL, "store output: {}", getOutputConverter(CL_OPTIONS));
+        try {
+            AnnualFile outFile = outData.serialize(getOutputConverter(CL_OPTIONS));
+            outFile.store(CL_OPTIONS.getOutputPath());
+        } catch (Throwable t) {
+            LOGGER.error("saving output failed", t);
+        }
+    }
+
+    private void callCallbacks() {
+        LOGGER.info(IRPSection.GENERAL, "call {} callbacks", CALLBACKS.size());
+        for(IRPactCallback callback: CALLBACKS) {
+            try {
+                callback.onFinished(this);
+            } catch (Exception e) {
+                LOGGER.error("on running callback '" + callback.getName() + "'", e);
+            }
+        }
+    }
+
+    private void printResults() {
+        PVactResultLogging logging = new PVactResultLogging(CL_OPTIONS, environment, true);
+        logging.execute();
+    }
+
+    private void finalTask() {
+        IRPLogging.removeFilter();
+        IRPtools.setLoggingFilter(null);
+        clearConverterCache();
+        LOGGER.info(IRPSection.GENERAL, "simulation finished");
+    }
+
+    //=========================
+    //IRPactAccess
+    //=========================
+
+    @Override
+    public MainCommandLineOptions getCommandLineOptions() {
+        return CL_OPTIONS;
+    }
+
+    @Override
+    public AnnualEntry<InRoot> getInput() {
+        return inEntry;
+    }
+
+    @Override
+    public AnnualData<OutRoot> getOutput() {
+        return outData;
+    }
+}

@@ -3,16 +3,16 @@ package de.unileipzig.irpact.io.param.input.file;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
-import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
-import java.util.List;
 
 import static de.unileipzig.irpact.io.param.IOConstants.FILES;
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
@@ -54,6 +54,17 @@ public class InSpatialTableFile implements InFile {
     }
 
     @Override
+    public InSpatialTableFile copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InSpatialTableFile newCopy(CopyCache cache) {
+        InSpatialTableFile copy = new InSpatialTableFile();
+        copy._name = _name;
+        return copy;
+    }
+
+    @Override
     public String getFileNameWithoutExtension() {
         return _name;
     }
@@ -64,16 +75,16 @@ public class InSpatialTableFile implements InFile {
     }
 
     @Override
-    public  List<List<SpatialAttribute<?>>> parse(InputParser parser) throws ParsingException {
+    public SpatialTableFileContent parse(IRPactInputParser parser) throws ParsingException {
         try {
             String fileName = getFileNameWithoutExtension();
             SpatialTableFileLoader gisLoader = new SpatialTableFileLoader();
             gisLoader.setLoader(parser.getResourceLoader());
             gisLoader.setInputFileName(fileName);
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "try load '{}'", fileName);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "try load '{}'", fileName);
             gisLoader.initalize();
-            List<List<SpatialAttribute<?>>> spatialData = gisLoader.getAllAttributes();
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "loaded '{}' entries", spatialData.size());
+            SpatialTableFileContent spatialData = gisLoader.getAllAttributes();
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "loaded '{}' entries", spatialData.size());
             return spatialData;
         } catch (Exception e) {
             throw new ParsingException(e);

@@ -1,8 +1,15 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.commons.IsEquals;
-import de.unileipzig.irpact.core.misc.ValidationException;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.core.agent.AgentManager;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.process.ProcessModel;
+import de.unileipzig.irpact.core.process.ProcessModelManager;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
 
@@ -11,8 +18,10 @@ import java.util.*;
  */
 public class BasicProductManager implements ProductManager {
 
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicProductManager.class);
+
+    private final Map<String, ProductGroup> products;
     private SimulationEnvironment environment;
-    private Map<String, ProductGroup> products;
 
     public BasicProductManager() {
         this(new LinkedHashMap<>());
@@ -27,18 +36,36 @@ public class BasicProductManager implements ProductManager {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
-                IsEquals.getCollHashCode(getGroups())
+                ChecksumComparable.getCollChecksum(getGroups())
         );
     }
 
     @Override
-    public void initialize() {
+    public void postAgentCreation() {
+        for(ProductGroup pg: getGroups()) {
+            for(Product fp : pg.getProducts()) {
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "make product '{}' known in simulation", fp.getName());
+                makeKnownInSimulation(fp);
+            }
+        }
     }
 
     @Override
-    public void validate() throws ValidationException {
+    public void makeKnownInSimulation(Product product) {
+        AgentManager agentManager = environment.getAgents();
+
+        for(ConsumerAgentGroup cag: agentManager.getConsumerAgentGroups()) {
+            for(ConsumerAgent ca: cag.getAgents()) {
+                ca.updateProductRelatedAttributes(product);
+            }
+        }
+
+        ProcessModelManager processModelManager = environment.getProcessModels();
+        for(ProcessModel processModel: processModelManager.getProcessModels()) {
+            processModel.handleNewProduct(product);
+        }
     }
 
     public boolean has(String name) {

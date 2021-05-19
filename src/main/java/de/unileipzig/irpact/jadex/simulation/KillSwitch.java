@@ -56,13 +56,13 @@ public class KillSwitch implements Runnable {
     public void finished() {
         finished = true;
         killThread.interrupt();
-        LOGGER.debug("KillSwitch finished");
+        LOGGER.trace("KillSwitch finished");
     }
 
     @SuppressWarnings("BusyWait")
     @Override
     public void run() {
-        LOGGER.debug("Start KillSwitch with " + timeout + "ms.");
+        LOGGER.trace("Start KillSwitch with " + timeout + "ms.");
         while(running && !finished) {
             running = false;
             try {
@@ -72,7 +72,7 @@ public class KillSwitch implements Runnable {
             }
         }
         if(finished) {
-            LOGGER.debug("KillSwitch disabled");
+            LOGGER.trace("KillSwitch disabled");
         } else {
             LOGGER.warn("TIMEOUT - Simulation will be terminated!");
             control.terminateTimeout();

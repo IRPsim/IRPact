@@ -3,6 +3,8 @@ package de.unileipzig.irpact.core.agent.consumer;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.time.Timestamp;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedAttribute;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.process.ProcessPlan;
@@ -10,6 +12,7 @@ import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.agent.SpatialInformationAgent;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
+import de.unileipzig.irpact.core.product.awareness.ProductAwareness;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
 
 import java.util.Collection;
@@ -30,6 +33,34 @@ public interface ConsumerAgent extends SpatialInformationAgent {
 
     void addAttribute(ConsumerAgentAttribute attribute);
 
+    Collection<ConsumerAgentProductRelatedAttribute> getProductRelatedAttributes();
+
+    boolean hasProductRelatedAttribute(String name);
+
+    default boolean hasProductRelatedAttribute(ConsumerAgentProductRelatedAttribute attribute) {
+        return hasProductRelatedAttribute(attribute.getName());
+    }
+
+    ConsumerAgentProductRelatedAttribute getProductRelatedAttribute(String name);
+
+    void addProductRelatedAttribute(ConsumerAgentProductRelatedAttribute attribute);
+
+    void updateProductRelatedAttributes(Product newProduct);
+
+    boolean isAware(Product product);
+
+    void makeAware(Product product);
+
+    ProductAwareness getProductAwareness();
+
+    boolean isInterested(Product product);
+
+    double getInterest(Product product);
+
+    void updateInterest(Product product, double value);
+
+    void makeInterested(Product product);
+
     ProductInterest getProductInterest();
 
     Collection<AdoptedProduct> getAdoptedProducts();
@@ -38,17 +69,21 @@ public interface ConsumerAgent extends SpatialInformationAgent {
 
     void addAdoptedProduct(AdoptedProduct adoptedProduct);
 
-    void adopt(Need need, Product product);
+    void adoptInitial(Product product);
 
-    void adoptAt(Need need, Product product, Timestamp stamp);
+    void adopt(Need need, Product product, Timestamp stamp);
 
     boolean linkAccess(AttributeAccess attributeAccess);
 
     boolean unlinkAccess(AttributeAccess attributeAccess);
 
-    Attribute<?> findAttribute(String name);
+    boolean hasAnyAttribute(String name);
+
+    Attribute findAttribute(String name);
 
     Collection<Need> getNeeds();
+
+    boolean hasNeed(Need need);
 
     void addNeed(Need need);
 

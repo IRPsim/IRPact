@@ -1,9 +1,9 @@
 package de.unileipzig.irpact.start.optact.in;
 
 import de.unileipzig.irptools.defstructure.DefaultScenarioFactory;
+import de.unileipzig.irptools.defstructure.DefinitionType;
 import de.unileipzig.irptools.defstructure.ParserInput;
 import de.unileipzig.irptools.defstructure.RootClass;
-import de.unileipzig.irptools.defstructure.Type;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.DoubleTimeSeries;
@@ -22,25 +22,25 @@ import java.util.List;
 public class InRoot implements RootClass, DefaultScenarioFactory {
 
     public static final List<ParserInput> CLASSES_WITHOUT_ROOT = Util.arrayListOf(
-            ParserInput.newInstance(Type.INPUT, Ii.class),
-            ParserInput.newInstance(Type.INPUT, InGlobal.class),
-            ParserInput.newInstance(Type.INPUT, LoadDS.class),
-            ParserInput.newInstance(Type.INPUT, LoadDSE.class),
-            ParserInput.newInstance(Type.INPUT, LoadDSLOA.class),
-            ParserInput.newInstance(Type.INPUT, Pss.class),
-            ParserInput.newInstance(Type.INPUT, Sector.class),
-            ParserInput.newInstance(Type.INPUT, Side.class),
-            ParserInput.newInstance(Type.INPUT, SideCustom.class),
-            ParserInput.newInstance(Type.INPUT, SideFares.class),
-            ParserInput.newInstance(Type.INPUT, TechDEGEN.class),
-            ParserInput.newInstance(Type.INPUT, TechDES.class),
-            ParserInput.newInstance(Type.INPUT, TechDESES.class),
-            ParserInput.newInstance(Type.INPUT, TechDESPV.class),
-            ParserInput.newInstance(Type.INPUT, TechDESTO.class)
+            ParserInput.newInstance(DefinitionType.INPUT, Ii.class),
+            ParserInput.newInstance(DefinitionType.INPUT, InGlobal.class),
+            ParserInput.newInstance(DefinitionType.INPUT, LoadDS.class),
+            ParserInput.newInstance(DefinitionType.INPUT, LoadDSE.class),
+            ParserInput.newInstance(DefinitionType.INPUT, LoadDSLOA.class),
+            ParserInput.newInstance(DefinitionType.INPUT, Pss.class),
+            ParserInput.newInstance(DefinitionType.INPUT, Sector.class),
+            ParserInput.newInstance(DefinitionType.INPUT, Side.class),
+            ParserInput.newInstance(DefinitionType.INPUT, SideCustom.class),
+            ParserInput.newInstance(DefinitionType.INPUT, SideFares.class),
+            ParserInput.newInstance(DefinitionType.INPUT, TechDEGEN.class),
+            ParserInput.newInstance(DefinitionType.INPUT, TechDES.class),
+            ParserInput.newInstance(DefinitionType.INPUT, TechDESES.class),
+            ParserInput.newInstance(DefinitionType.INPUT, TechDESPV.class),
+            ParserInput.newInstance(DefinitionType.INPUT, TechDESTO.class)
     );
 
     public static final List<ParserInput> CLASSES = Util.mergedArrayListOf(
-            Util.arrayListOf(ParserInput.newInstance(Type.INPUT, InRoot.class)),
+            Util.arrayListOf(ParserInput.newInstance(DefinitionType.INPUT, InRoot.class)),
             CLASSES_WITHOUT_ROOT
     );
 

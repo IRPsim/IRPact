@@ -1,6 +1,9 @@
 package de.unileipzig.irpact.core.spatial.distribution;
 
-import de.unileipzig.irpact.commons.*;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.commons.util.weighted.BasicWeightedBiMapping;
+import de.unileipzig.irpact.commons.util.weighted.UnmodifiableWeightedBiMapping;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
 import java.util.*;
@@ -12,18 +15,18 @@ public class WeightedDiscreteSpatialDistribution extends ResettableSpatialDistri
 
     protected static final String X = "x";
 
-    protected BasicWeightedMapping<String, String, Number> weightedMapping;
-    protected UnmodifiableWeightedMapping<String, String, Number> unmodWeightedMapping;
+    protected BasicWeightedBiMapping<String, String, Number> weightedMapping;
+    protected UnmodifiableWeightedBiMapping<String, String, Number> unmodWeightedMapping;
     protected Map<String, Collection<SpatialInformation>> unused;
     protected Map<String, Collection<SpatialInformation>> used;
     protected Rnd rnd;
 
     public WeightedDiscreteSpatialDistribution() {
-        this(new BasicWeightedMapping<>(), new LinkedHashMap<>(), new LinkedHashMap<>());
+        this(new BasicWeightedBiMapping<>(), new LinkedHashMap<>(), new LinkedHashMap<>());
     }
 
     public WeightedDiscreteSpatialDistribution(
-            BasicWeightedMapping<String, String, Number> weightedMapping,
+            BasicWeightedBiMapping<String, String, Number> weightedMapping,
             Map<String, Collection<SpatialInformation>> unused,
             Map<String, Collection<SpatialInformation>> used) {
         this.weightedMapping = weightedMapping;
@@ -66,7 +69,7 @@ public class WeightedDiscreteSpatialDistribution extends ResettableSpatialDistri
         for(Map.Entry<String, Collection<SpatialInformation>> entry: unused.entrySet()) {
             weightedMapping.put(X, entry.getKey(), entry.getValue().size());
         }
-        unmodWeightedMapping = new UnmodifiableWeightedMapping<>(weightedMapping);
+        unmodWeightedMapping = new UnmodifiableWeightedBiMapping<>(weightedMapping);
         unmodWeightedMapping.makeImmutable();
         call();
     }
@@ -74,7 +77,7 @@ public class WeightedDiscreteSpatialDistribution extends ResettableSpatialDistri
     protected void removeAndReweight(String key) {
         unused.remove(key);
         weightedMapping.remove(X, key);
-        unmodWeightedMapping = new UnmodifiableWeightedMapping<>(weightedMapping);
+        unmodWeightedMapping = new UnmodifiableWeightedBiMapping<>(weightedMapping);
         unmodWeightedMapping.makeImmutable();
     }
 
@@ -86,11 +89,11 @@ public class WeightedDiscreteSpatialDistribution extends ResettableSpatialDistri
         return rnd;
     }
 
-    public BasicWeightedMapping<String, String, Number> getWeightedMapping() {
+    public BasicWeightedBiMapping<String, String, Number> getWeightedMapping() {
         return weightedMapping;
     }
 
-    public UnmodifiableWeightedMapping<String, String, Number> getUnmodifiableWeightedMapping() {
+    public UnmodifiableWeightedBiMapping<String, String, Number> getUnmodifiableWeightedMapping() {
         return unmodWeightedMapping;
     }
 
@@ -133,7 +136,7 @@ public class WeightedDiscreteSpatialDistribution extends ResettableSpatialDistri
         if(unusedInfos == null || unusedInfos.isEmpty()) {
             throw new IllegalStateException("set '" + key + "' is empty");
         }
-        SpatialInformation info = CollectionUtil.removeRandom(unusedInfos, rnd.getRandom());
+        SpatialInformation info = rnd.removeRandom(unusedInfos);
         Collection<SpatialInformation> usedInfos = used.computeIfAbsent(key, _key -> new ArrayList<>());
         usedInfos.add(info);
         if(unusedInfos.isEmpty()) {
@@ -150,17 +153,17 @@ public class WeightedDiscreteSpatialDistribution extends ResettableSpatialDistri
             throw new IllegalStateException("empty");
         }
 
-        String key = unmodWeightedMapping.getWeightedRandom(X, rnd.getRandom());
+        String key = unmodWeightedMapping.getWeightedRandom(X, rnd);
         return drawValue(key);
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
-                getRandom().getHashCode(),
-                IsEquals.getCollCollHashCode(unused.values()),
-                IsEquals.getCollCollHashCode(used.values())
+                getRandom().getChecksum(),
+                ChecksumComparable.getCollCollChecksum(unused.values()),
+                ChecksumComparable.getCollCollChecksum(used.values())
         );
     }
 }

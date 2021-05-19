@@ -5,8 +5,12 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.smile.databind.SmileMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import de.unileipzig.irpact.commons.log.LazyPrinter;
+import de.unileipzig.irpact.commons.log.LazyToString;
 import de.unileipzig.irptools.util.Util;
 
 import java.io.BufferedReader;
@@ -28,6 +32,9 @@ public final class IRPactJson {
     public static final ObjectMapper JSON = new ObjectMapper();
     public static final YAMLMapper YAML = new YAMLMapper();
 
+    public static final PrettyPrinter PRETTY = Util.prettyPrinter;
+    public static final PrettyPrinter DEFAULT = Util.defaultPrinter;
+
     private IRPactJson() {
     }
 
@@ -41,6 +48,26 @@ public final class IRPactJson {
 
     public static String toString(JsonNode node, ObjectMapper mapper) {
         return Util.printJson(mapper, node);
+    }
+
+    public static String toString(JsonNode node, ObjectMapper mapper, PrettyPrinter printer) {
+        return Util.printJson(mapper, node, printer);
+    }
+
+    public static LazyToString toLazyString(JsonNode node) {
+        return new LazyPrinter(() -> toString(node));
+    }
+
+    public static LazyToString toLazyString(JsonNode node, PrettyPrinter printer) {
+        return new LazyPrinter(() -> toString(node, printer));
+    }
+
+    public static LazyToString toLazyString(JsonNode node, ObjectMapper mapper) {
+        return new LazyPrinter(() -> toString(node, mapper));
+    }
+
+    public static LazyToString toLazyString(JsonNode node, ObjectMapper mapper, PrettyPrinter printer) {
+        return new LazyPrinter(() -> toString(node, mapper, printer));
     }
 
     public static byte[] toBytes(ObjectMapper mapper, JsonNode node) throws IOException {
@@ -159,5 +186,31 @@ public final class IRPactJson {
             return false;
         }
         return Objects.equals(node.textValue(), value);
+    }
+
+    public static ObjectNode computeObjectIfAbsent(ObjectNode root, String fieldName) {
+        JsonNode node = root.get(fieldName);
+        if(node == null) {
+            return root.putObject(fieldName);
+        } else {
+            if(node.isObject()) {
+                return (ObjectNode) node;
+            } else {
+                throw new IllegalArgumentException("no object node: " + node.getNodeType());
+            }
+        }
+    }
+
+    public static ArrayNode computeArrayIfAbsent(ObjectNode root, String fieldName) {
+        JsonNode node = root.get(fieldName);
+        if(node == null) {
+            return root.putArray(fieldName);
+        } else {
+            if(node.isArray()) {
+                return (ArrayNode) node;
+            } else {
+                throw new IllegalArgumentException("no array node: " + node.getNodeType());
+            }
+        }
     }
 }

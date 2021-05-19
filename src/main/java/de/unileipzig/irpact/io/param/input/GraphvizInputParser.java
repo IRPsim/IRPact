@@ -1,8 +1,6 @@
 package de.unileipzig.irpact.io.param.input;
 
-import de.unileipzig.irpact.commons.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.commons.res.ResourceLoader;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
@@ -40,50 +38,29 @@ public class GraphvizInputParser implements InputParser {
     }
 
     @Override
-    public void cache(InEntity key, Object value) {
+    public void cache(InIRPactEntity key, Object value) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean isCached(InEntity key) {
+    public boolean isCached(InIRPactEntity key) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Object getCached(InEntity key) {
+    public Object getCached(InIRPactEntity key) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public ResourceLoader getResourceLoader() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public SimulationEnvironment getEnvironment() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Rnd deriveRnd() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public InRoot getRoot() {
-        return root;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T parseRoot(InRoot root) throws ParsingException {
+    public GraphvizConfiguration parseRoot(InRoot root) throws ParsingException {
         this.root = root;
         ParsingJob job = new ParsingJob(environment, imageOutputPath, root);
-        return (T) job.run();
+        return job.run();
     }
 
     @Override
-    public Object parseEntity(InEntity input) throws ParsingException {
+    public Object parseEntity(InIRPactEntity input) throws ParsingException {
         throw new UnsupportedOperationException();
     }
 
@@ -108,15 +85,15 @@ public class GraphvizInputParser implements InputParser {
         }
 
         private static void log(String msg) {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, msg);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, msg);
         }
 
         private static void log(String pattern, Object arg) {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, pattern, arg);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, pattern, arg);
         }
 
         private static void log(String pattern, Object arg1, Object arg2) {
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, pattern, arg1, arg2);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, pattern, arg1, arg2);
         }
 
         private GraphvizConfiguration run() throws ParsingException {

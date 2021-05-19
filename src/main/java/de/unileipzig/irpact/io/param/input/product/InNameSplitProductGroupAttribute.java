@@ -5,12 +5,14 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.product.BasicProductGroup;
-import de.unileipzig.irpact.core.product.BasicProductGroupAttribute;
+import de.unileipzig.irpact.core.product.attribute.BasicProductDoubleGroupAttribute;
 import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -53,6 +55,18 @@ public class InNameSplitProductGroupAttribute implements InIndependentProductGro
     }
 
     @Override
+    public InNameSplitProductGroupAttribute copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InNameSplitProductGroupAttribute newCopy(CopyCache cache) {
+        InNameSplitProductGroupAttribute copy = new InNameSplitProductGroupAttribute();
+        copy._name = _name;
+        copy.dist = cache.copyArray(dist);
+        return copy;
+    }
+
+    @Override
     public String getName() {
         return _name;
     }
@@ -63,8 +77,9 @@ public class InNameSplitProductGroupAttribute implements InIndependentProductGro
     }
 
     @Override
-    public InProductGroup getProductGroup(InputParser parser) throws ParsingException {
-        return parser.getRoot().findProductGroup(getProductGroupName());
+    public InProductGroup getProductGroup(InputParser p) throws ParsingException {
+        IRPactInputParser parser = (IRPactInputParser) p;
+        return parser.getRoot().getProductGroup(getProductGroupName());
     }
 
     @Override
@@ -82,12 +97,17 @@ public class InNameSplitProductGroupAttribute implements InIndependentProductGro
     }
 
     @Override
-    public void setup(InputParser parser, Object input) throws ParsingException {
+    public void setup(IRPactInputParser parser, Object input) throws ParsingException {
         InProductGroup inPg = getProductGroup(parser);
         BasicProductGroup pg = parser.parseEntityTo(inPg);
+        if(parser.isRestored() && pg.hasGroupAttribute(getAttributeName())) {
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "skip ProductGroupAttribute '{}' in '{}'", getAttributeName(), pg.getName());
+            return;
+        }
 
-        BasicProductGroupAttribute pgAttr = new BasicProductGroupAttribute();
+        BasicProductDoubleGroupAttribute pgAttr = new BasicProductDoubleGroupAttribute();
         pgAttr.setName(getAttributeName());
+        pgAttr.setArtificial(false);
 
         if(pg.hasGroupAttribute(pgAttr)) {
             throw new ParsingException("ProductGroupAttribute '" + pgAttr.getName() + "' already exists in '" + pg.getName() + "'");
@@ -97,6 +117,6 @@ public class InNameSplitProductGroupAttribute implements InIndependentProductGro
         pgAttr.setDistribution(dist);
 
         pg.addGroupAttribute(pgAttr);
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added ProductGroupAttribute '{}' ('{}') to group '{}'", pgAttr.getName(), getName(), pg.getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added ProductGroupAttribute '{}' ('{}') to group '{}'", pgAttr.getName(), getName(), pg.getName());
     }
 }

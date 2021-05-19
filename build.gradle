@@ -34,6 +34,7 @@ ext {
     jadexDistVersion = '4.0.187' //'4.0.171'
     logbackVersion = '1.2.3'
     apachePoiVersion = '5.0.0'
+    x = '1'
 }
 
 dependencies {
@@ -61,6 +62,7 @@ dependencies {
     implementation "ch.qos.logback:logback-core:$logbackVersion"
 
     implementation "org.geotools:gt-shapefile:23.2"
+    implementation "org.geotools:gt-epsg-hsql:23.2"
 
     implementation "us.bpsm:edn-java:0.6.0"
 
@@ -76,6 +78,9 @@ dependencies {
 
     //custom
     implementation files('customlibs/IRPtools-1.0-SNAPSHOT.jar')
+
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    implementation 'org.citygml4j:citygml4j:2.11.3'
 }
 
 //==================================================

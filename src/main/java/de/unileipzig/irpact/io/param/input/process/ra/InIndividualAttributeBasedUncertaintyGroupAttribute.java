@@ -6,13 +6,15 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
+import de.unileipzig.irpact.core.process.ra.attributes.BasicUncertaintyGroupAttributeSupplier;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -29,7 +31,6 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 @Definition
 public class InIndividualAttributeBasedUncertaintyGroupAttribute implements InUncertaintyGroupAttribute {
 
-    //damit ich bei copy&paste nie mehr vergesse die Klasse anzupassen :)
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
@@ -59,6 +60,19 @@ public class InIndividualAttributeBasedUncertaintyGroupAttribute implements InUn
     public InIndividualAttributeBasedUncertaintyGroupAttribute() {
     }
 
+    @Override
+    public InIndividualAttributeBasedUncertaintyGroupAttribute copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InIndividualAttributeBasedUncertaintyGroupAttribute newCopy(CopyCache cache) {
+        InIndividualAttributeBasedUncertaintyGroupAttribute copy = new InIndividualAttributeBasedUncertaintyGroupAttribute();
+        copy._name = _name;
+        copy.cagAttrs = cache.copyArray(cagAttrs);
+        copy.uncertDist = cache.copyArray(uncertDist);
+        return copy;
+    }
+
     public void setName(String name) {
         this._name = name;
     }
@@ -69,12 +83,7 @@ public class InIndividualAttributeBasedUncertaintyGroupAttribute implements InUn
     }
 
     @Override
-    public Object parse(InputParser parser) throws ParsingException {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setup(InputParser parser, Object input) throws ParsingException {
+    public void setup(IRPactInputParser parser, Object input) throws ParsingException {
         RAProcessModel processModel = (RAProcessModel) input;
 
         UnivariateDoubleDistribution uncert = parser.parseEntityTo(getUncertaintyDistribution());
@@ -86,10 +95,13 @@ public class InIndividualAttributeBasedUncertaintyGroupAttribute implements InUn
 
             processModel.getUncertaintySupplier().add(
                     cag,
-                    attrName,
-                    uncert
+                    new BasicUncertaintyGroupAttributeSupplier(
+                            getName() + "_" + cag.getName(),
+                            attrName,
+                            uncert
+                    )
             );
-            LOGGER.debug(
+            LOGGER.trace(
                     IRPSection.INITIALIZATION_PARAMETER,
                     "add UncertaintySupplier for group '{}', attribute '{}', uncertainity '{}'",
                     cag.getName(),

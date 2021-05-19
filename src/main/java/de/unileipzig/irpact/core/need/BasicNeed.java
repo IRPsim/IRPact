@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.need;
 
 import de.unileipzig.irpact.commons.NameableBase;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.develop.Todo;
 
 import java.util.Objects;
 
@@ -19,7 +19,7 @@ public class BasicNeed extends NameableBase implements Need {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hashCode(getName());
     }
 

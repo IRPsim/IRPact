@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.product;
 
-import de.unileipzig.irpact.core.misc.Initialization;
+import de.unileipzig.irpact.core.misc.InitalizablePart;
 
 import java.util.Collection;
 import java.util.stream.Stream;
@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 /**
  * @author Daniel Abitz
  */
-public interface ProductManager extends Initialization {
+public interface ProductManager extends InitalizablePart {
 
     Collection<ProductGroup> getGroups();
 
@@ -17,4 +17,11 @@ public interface ProductManager extends Initialization {
     }
 
     ProductGroup getGroup(String name);
+
+    default Stream<Product> streamProducts() {
+        return getGroups().stream()
+                .flatMap(g -> g.getProducts().stream());
+    }
+
+    void makeKnownInSimulation(Product product);
 }

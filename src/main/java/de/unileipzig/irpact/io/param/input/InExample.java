@@ -2,29 +2,32 @@ package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.core.log.IRPLevel;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.simulation.tasks.PredefinedSimulationTask;
+import de.unileipzig.irpact.core.simulation.tasks.PredefinedPostAgentCreationTask;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
+import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulationSize;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
-import de.unileipzig.irpact.io.param.input.distribution.InConstantUnivariateDistribution;
+import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.network.InCompleteGraphTopology;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.InPVactUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
+import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.InUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSelectedGroupedSpatialDistribution2D;
-import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSpatialDistribution2D;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
+import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.in.*;
 import de.unileipzig.irpact.start.optact.network.IFreeMultiGraphTopology;
@@ -39,6 +42,7 @@ import de.unileipzig.irptools.util.DoubleTimeSeries;
 import de.unileipzig.irptools.util.Table;
 
 import java.awt.*;
+import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -61,18 +65,16 @@ public class InExample implements DefaultScenarioFactory {
         InAttributeName PLZ = new InAttributeName(RAConstants.ZIP);
 
         //===
-        InUnivariateDoubleDistribution constant0 = new InConstantUnivariateDistribution("constant0", 0);
+        InUnivariateDoubleDistribution constant0 = new InDiracUnivariateDistribution("constant0", 0);
 
         //cag0
         InPVactConsumerAgentGroup cag0 = new InPVactConsumerAgentGroup();
         cag0.setName("TRA");
-        cag0.setInformationAuthority(1);
         cag0.setForAll(constant0);
 
         //cag1
         InPVactConsumerAgentGroup cag1 = new InPVactConsumerAgentGroup();
         cag1.setName("BUM");
-        cag1.setInformationAuthority(1);
         cag1.setForAll(constant0);
 
         //Population
@@ -90,7 +92,7 @@ public class InExample implements DefaultScenarioFactory {
         //InUnlinkedGraphTopology topology = new InUnlinkedGraphTopology("unlinked");
         InCompleteGraphTopology topology = new InCompleteGraphTopology("complete", 1.0);
 
-        InPVFile pvFile = new InPVFile("BarwertrechnerMini_ES");
+        InPVFile pvFile = new InPVFile("Barwertrechner");
 
         InPVactUncertaintyGroupAttribute uncert = new InPVactUncertaintyGroupAttribute();
         uncert.setName("PVact_Uncert");
@@ -105,18 +107,17 @@ public class InExample implements DefaultScenarioFactory {
                 0.25, 0.25, 0.25, 0.25,
                 3, 2, 1, 0,
                 1.0,
+                new InRAProcessPlanMaxDistanceFilterScheme("RA_maxFilter", 100, true),
                 pvFile,
                 new InUncertaintyGroupAttribute[]{uncert}
         );
 
-        InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210225");
-        InCustomFileSelectedGroupedSpatialDistribution2D spaDist = new InCustomFileSelectedGroupedSpatialDistribution2D(
+        InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210322");
+        InCustomFileSpatialDistribution2D spaDist = new InCustomFileSpatialDistribution2D(
                 "testdist",
                 constant0,
                 constant0,
-                tableFile,
-                Mic_Dominantes_Milieu,
-                PLZ
+                tableFile
         );
         cag0.setSpatialDistribution(spaDist);
         cag1.setSpatialDistribution(spaDist);
@@ -124,26 +125,26 @@ public class InExample implements DefaultScenarioFactory {
         InSpace2D space2D = new InSpace2D("Space2D", Metric2D.EUCLIDEAN);
 
         //time
-        InDiscreteTimeModel timeModel = new InDiscreteTimeModel("Discrete", 604800000L);
+        InUnitStepDiscreteTimeModel timeModel = new InUnitStepDiscreteTimeModel("DiscreteUnitStep", 1, ChronoUnit.WEEKS);
 
         //general
         InGeneral general = new InGeneral();
         general.seed = 42;
-        general.timeout = TimeUnit.MINUTES.toMillis(5);
-        general.runOptActDemo = true;
+        general.timeout = TimeUnit.MINUTES.toMillis(1);
+        general.runOptActDemo = false;
         general.runPVAct = true;
         general.logLevel = IRPLevel.ALL.getLevelId();
-        general.logAll = true;
-        general.logAllTools = true;
+        general.logAllIRPact = true;
+        general.enableAllDataLogging();
 
         //=====
         InRoot root = new InRoot();
         initOptAct(root);
         initGV(root);
 
-        PredefinedSimulationTask task = new PredefinedSimulationTask();
+        PredefinedPostAgentCreationTask task = new PredefinedPostAgentCreationTask();
         task.setInfo("INC");
-        task.setTask(PredefinedSimulationTask.ADD_ONE_AGENT_TO_EVERY_GROUP);
+        task.setTask(PredefinedPostAgentCreationTask.ADD_ONE_AGENT_TO_EVERY_GROUP);
         VisibleBinaryData vbd = new VisibleBinaryData();
         vbd.setID(task.getID());
         vbd.setBytes(task.getBytes());
@@ -171,7 +172,7 @@ public class InExample implements DefaultScenarioFactory {
         //=====
         root.version = new InVersion[]{InVersion.currentVersion()};
         root.general = general;
-        root.affinityEntries = new InComplexAffinityEntry[]{cag0_cag0, cag0_cag1, cag1_cag1, cag1_cag0};
+        root.setAffinities(new InAffinities("affs", new InComplexAffinityEntry[]{cag0_cag0, cag0_cag1, cag1_cag1, cag1_cag0}));
         root.consumerAgentGroups = new InConsumerAgentGroup[]{cag0, cag1};
         root.setAgentPopulationSize(populationSize);
         root.graphTopologySchemes = new InGraphTopologyScheme[]{topology};

@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.graph;
 
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.util.Rnd;
 
 import java.util.*;
 import java.util.function.Function;
@@ -283,6 +283,15 @@ public class FastDirectedMultiGraph2<V, E, T> implements DirectedMultiGraph<V, E
     }
 
     @Override
+    public V getRandomTarget(V from, T type, Rnd rnd) {
+        VertexData<V, E, T> data = vertices.get(from);
+        if(data == null) {
+            return null;
+        }
+        return data.getRandomTarget(type, rnd);
+    }
+
+    @Override
     public boolean addEdge(V from, V to, T type, E edge) {
         if(hasEdge(edge) || hasEdge(from, to, type)) {
             return false;
@@ -367,13 +376,34 @@ public class FastDirectedMultiGraph2<V, E, T> implements DirectedMultiGraph<V, E
     }
 
     @Override
+    public Collection<E> getAllEdges() {
+        return getAllEdges(null);
+    }
+
+    @Override
     public Collection<E> getAllEdges(T[] types) {
         List<E> edges = new ArrayList<>();
         getAllEdges(types, edges);
         return edges;
     }
 
+    @Override
+    public Stream<E> streamAllEdges() {
+        return streamAllEdges(null);
+    }
+
+    @Override
+    public Stream<E> streamAllEdges(T[] types) {
+        return edges.values()
+                .stream()
+                .filter(edgeData -> has(edgeData.getType(), types))
+                .map(EdgeData::getEdge);
+    }
+
     protected static <T> boolean has(T type, T[] types) {
+        if(types == null) {
+            return true;
+        }
         for(T t: types) {
             if(t == type) {
                 return true;

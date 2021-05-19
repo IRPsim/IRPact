@@ -4,42 +4,68 @@ import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.LoggingSection;
 
 /**
+ * Logging sections used in IRPact.
+ *
  * @author Daniel Abitz
  */
 public enum IRPSection implements LoggingSection {
-    /*
-     * Used for IRPTools.
+    /**
+     * For logging in IRPTools.
      */
     TOOLS_CORE,
+    /**
+     * For logging in IRPTools.
+     */
     TOOLS_DEFINITION,
+    /**
+     * For logging in IRPTools.
+     */
     TOOLS_UTIL,
 
-    /*
-     * Used in the initialization process.
-     * Set via input parameters.
+    /**
+     * This option is used for default logging operations.
+     */
+    GENERAL,
+    /**
+     * This option is used for utilities operations.
+     */
+    UTILITIES,
+
+    /**
+     * Used throughout the initialization.
      */
     INITIALIZATION_PARAMETER,
-    INITIALIZATION_AGENT,
+    /**
+     * Used in topologies.
+     */
     INITIALIZATION_NETWORK,
+    /**
+     * Used during platform creation.
+     */
     INITIALIZATION_PLATFORM,
 
-    /*
-     *
+    /**
+     * Used in all life cycle operations.
      */
-    SIMULATION_LICECYCLE,
+    SIMULATION_LIFECYCLE,
+    /**
+     * Used in agent operations during simulation.
+     */
     SIMULATION_AGENT,
-    SIMULATION_AGENT_COMMUNICATION,
-    SIMULATION_AGENT_REWIRE,
+    /**
+     * Used in process model during simulation.
+     */
+    SIMULATION_PROCESS,
 
     /*
      *
      */
     SPECIFICATION_CONVERTER,
 
-    /*
-     *
+    /**
+     * Used to log intern jadex informations.
      */
-    JADEX_SYSTEM_OUT
+    JADEX_SYSTEM_OUT,
     ;
 
     @Override
@@ -47,9 +73,19 @@ public enum IRPSection implements LoggingSection {
         return IRPSection.class;
     }
 
+    public IRPSection orGeneral(boolean useGeneral) {
+        return useGeneral ? GENERAL : this;
+    }
+
     public static void addAllNonToolsTo(SectionLoggingFilter filter) {
         addAllTo(filter);
         removeAllToolsFrom(filter);
+    }
+
+    public static void addAllNonToolsTo(boolean add, SectionLoggingFilter filter) {
+        if(add) {
+            addAllNonToolsTo(filter);
+        }
     }
 
     public static void addAllTo(SectionLoggingFilter filter) {
@@ -58,9 +94,31 @@ public enum IRPSection implements LoggingSection {
         }
     }
 
+    public static void addAllTo(boolean add, SectionLoggingFilter filter) {
+        if(add) {
+            addAllTo(filter);
+        }
+    }
+
     public static void removeAllFrom(SectionLoggingFilter filter) {
         for(IRPSection section: values()) {
             filter.remove(section);
+        }
+    }
+
+    public static void addInitialization(boolean add, SectionLoggingFilter filter) {
+        if(add) {
+            filter.add(INITIALIZATION_PARAMETER);
+            filter.add(INITIALIZATION_PLATFORM);
+            filter.add(INITIALIZATION_NETWORK);
+        }
+    }
+
+    public static void addSimulation(boolean add, SectionLoggingFilter filter) {
+        if(add) {
+            filter.add(SIMULATION_LIFECYCLE);
+            filter.add(SIMULATION_AGENT);
+            filter.add(SIMULATION_PROCESS);
         }
     }
 
@@ -74,6 +132,12 @@ public enum IRPSection implements LoggingSection {
         filter.add(TOOLS_CORE);
         filter.add(TOOLS_DEFINITION);
         filter.add(TOOLS_UTIL);
+    }
+
+    public static void addAllToolsTo(boolean add, SectionLoggingFilter filter) {
+        if(add) {
+            addAllToolsTo(filter);
+        }
     }
 
     public static void removeAllToolsFrom(SectionLoggingFilter filter) {

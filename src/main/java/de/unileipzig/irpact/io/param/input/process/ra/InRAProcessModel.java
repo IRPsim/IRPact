@@ -1,18 +1,24 @@
 package de.unileipzig.irpact.io.param.input.process.ra;
 
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.process.ProcessModelManager;
+import de.unileipzig.irpact.core.process.filter.DisabledProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -25,6 +31,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 /**
  * @author Daniel Abitz
  */
+@Todo("default values fuer die points in loc-file eintragen")
 @Definition
 public class InRAProcessModel implements InProcessModel {
 
@@ -53,6 +60,7 @@ public class InRAProcessModel implements InProcessModel {
 
         addEntry(res, thisClass(), "logisticFactor");
 
+        addEntry(res, thisClass(), "nodeFilterScheme");
         addEntry(res, thisClass(), "pvFile");
         addEntry(res, thisClass(), "uncertaintyGroupAttributes");
     }
@@ -89,6 +97,9 @@ public class InRAProcessModel implements InProcessModel {
     public double logisticFactor;
 
     @FieldDefinition
+    public InRAProcessPlanNodeFilterScheme[] nodeFilterScheme;
+
+    @FieldDefinition
     public InPVFile[] pvFile;
 
     @FieldDefinition
@@ -102,6 +113,7 @@ public class InRAProcessModel implements InProcessModel {
             double a, double b, double c, double d,
             int adopterPoints, int interestedPoints, int awarePoints, int unknownPoints,
             double logisticFactor,
+            InRAProcessPlanNodeFilterScheme filterScheme,
             InPVFile pvFile,
             InUncertaintyGroupAttribute[] uncertaintyGroupAttributes) {
         this._name = name;
@@ -114,8 +126,31 @@ public class InRAProcessModel implements InProcessModel {
         this.awarePoints = awarePoints;
         this.unknownPoints = unknownPoints;
         this.logisticFactor = logisticFactor;
+        setNodeFilterScheme(filterScheme);
         setPvFile(pvFile);
-        this.uncertaintyGroupAttributes = uncertaintyGroupAttributes;
+        setUncertaintyGroupAttributes(uncertaintyGroupAttributes);
+    }
+
+    @Override
+    public InRAProcessModel copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InRAProcessModel newCopy(CopyCache cache) {
+        InRAProcessModel copy = new InRAProcessModel();
+        copy.a = a;
+        copy.b = b;
+        copy.c = c;
+        copy.d = d;
+        copy.adopterPoints = adopterPoints;
+        copy.interestedPoints = interestedPoints;
+        copy.awarePoints = awarePoints;
+        copy.unknownPoints = unknownPoints;
+        copy.logisticFactor = logisticFactor;
+        copy.nodeFilterScheme = cache.copyArray(nodeFilterScheme);
+        copy.pvFile = cache.copyArray(pvFile);
+        copy.uncertaintyGroupAttributes = cache.copyArray(uncertaintyGroupAttributes);
+        return copy;
     }
 
     @Override
@@ -125,6 +160,13 @@ public class InRAProcessModel implements InProcessModel {
 
     public void setName(String name) {
         this._name = name;
+    }
+
+    public void setABCD(double value) {
+        setA(value);
+        setB(value);
+        setC(value);
+        setD(value);
     }
 
     public double getA() {
@@ -157,6 +199,13 @@ public class InRAProcessModel implements InProcessModel {
 
     public void setD(double d) {
         this.d = d;
+    }
+
+    public void setDefaultPoints() {
+        setAdopterPoints(RAModelData.DEFAULT_ADOPTER_POINTS);
+        setInterestedPoints(RAModelData.DEFAULT_INTERESTED_POINTS);
+        setAwarePoints(RAModelData.DEFAULT_AWARE_POINTS);
+        setUnknownPoints(RAModelData.DEFAULT_UNKNOWN_POINTS);
     }
 
     public int getAdopterPoints() {
@@ -199,6 +248,26 @@ public class InRAProcessModel implements InProcessModel {
         this.logisticFactor = logisticFactor;
     }
 
+    public boolean hasNodeFilterScheme() {
+        return ParamUtil.len(nodeFilterScheme) > 0;
+    }
+
+    public InRAProcessPlanNodeFilterScheme getNodeFilterScheme() throws ParsingException {
+        return ParamUtil.getInstance(nodeFilterScheme, "nodeFilterScheme");
+    }
+
+    public void setNodeFilterScheme(InRAProcessPlanNodeFilterScheme nodeFilterScheme) {
+        if(nodeFilterScheme == null) {
+            this.nodeFilterScheme = new InRAProcessPlanNodeFilterScheme[0];
+        } else {
+            this.nodeFilterScheme = new InRAProcessPlanNodeFilterScheme[]{nodeFilterScheme};
+        }
+    }
+
+    public boolean hasPvFile() {
+        return pvFile != null && pvFile.length > 0;
+    }
+
     public InPVFile getPvFile() throws ParsingException {
         return ParamUtil.getInstance(pvFile, "PvFile");
     }
@@ -211,12 +280,25 @@ public class InRAProcessModel implements InProcessModel {
         return uncertaintyGroupAttributes;
     }
 
+    public void setUncertaintyGroupAttribute(InUncertaintyGroupAttribute uncertaintyGroupAttribute) {
+        this.uncertaintyGroupAttributes = new InUncertaintyGroupAttribute[]{uncertaintyGroupAttribute};
+    }
+
     public void setUncertaintyGroupAttributes(InUncertaintyGroupAttribute[] uncertaintyGroupAttributes) {
         this.uncertaintyGroupAttributes = uncertaintyGroupAttributes;
     }
 
+    public NPVXlsxData getNPVData(InputParser parser) throws ParsingException {
+        return parser.parseEntityTo(getPvFile());
+    }
+
     @Override
-    public Object parse(InputParser parser) throws ParsingException {
+    public RAProcessModel parse(IRPactInputParser parser) throws ParsingException {
+        if(parser.isRestored()) {
+            ProcessModelManager manager = parser.getEnvironment().getProcessModels();
+            RAProcessModel model = (RAProcessModel) manager.getProcessModel(getName());
+            return update(parser, model);
+        }
         RAModelData data = new RAModelData();
         data.setA(getA());
         data.setB(getB());
@@ -229,7 +311,7 @@ public class InRAProcessModel implements InProcessModel {
         data.setLogisticFactor(getLogisticFactor());
 
         Rnd rnd = parser.deriveRnd();
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "RAProcessModel '{}' uses seed: {}", getName(), rnd.getInitialSeed());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "RAProcessModel '{}' uses seed: {}", getName(), rnd.getInitialSeed());
 
         RAProcessModel model = new RAProcessModel();
         model.setName(getName());
@@ -241,9 +323,33 @@ public class InRAProcessModel implements InProcessModel {
             inUncert.setup(parser, model);
         }
 
-        NPVXlsxData xlsxData = parser.parseEntityTo(getPvFile());
-        model.setNpvData(xlsxData);
+        if(hasNodeFilterScheme()) {
+            InRAProcessPlanNodeFilterScheme inFilterScheme = getNodeFilterScheme();
+            ProcessPlanNodeFilterScheme filterScheme = parser.parseEntityTo(inFilterScheme);
+            model.setNodeFilterScheme(filterScheme);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set node filter scheme '{}'", filterScheme.getName());
+        } else {
+            model.setNodeFilterScheme(DisabledProcessPlanNodeFilterScheme.INSTANCE);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "no node filter scheme specified");
+        }
+
+        applyPvFile(parser, model);
 
         return model;
+    }
+
+    public RAProcessModel update(IRPactInputParser parser, RAProcessModel restored) throws ParsingException {
+        applyPvFile(parser, restored);
+        return restored;
+    }
+
+    private void applyPvFile(IRPactInputParser parser, RAProcessModel model) throws ParsingException {
+        if(hasPvFile()) {
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "load pv file '{}'" , getPvFile().getName());
+            NPVXlsxData xlsxData = getNPVData(parser);
+            model.setNpvData(xlsxData);
+        } else {
+            LOGGER.trace("no pv file found");
+        }
     }
 }

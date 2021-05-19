@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.spatial.distribution;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDistribution;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.develop.Todo;
 
 /**
  * @author Daniel Abitz

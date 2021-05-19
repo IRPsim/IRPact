@@ -6,13 +6,15 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
+import de.unileipzig.irpact.core.process.ra.attributes.BasicUncertaintyGroupAttributeSupplier;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -62,6 +64,20 @@ public class InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute 
     public InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute() {
     }
 
+    @Override
+    public InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute newCopy(CopyCache cache) {
+        InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute copy = new InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute();
+        copy._name = _name;
+        copy.cagAttrs = cache.copyArray(cagAttrs);
+        copy.uncertDist = cache.copyArray(uncertDist);
+        copy.convergenceDist = cache.copyArray(convergenceDist);
+        return copy;
+    }
+
     public void setName(String name) {
         this._name = name;
     }
@@ -72,12 +88,7 @@ public class InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute 
     }
 
     @Override
-    public Object parse(InputParser parser) throws ParsingException {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setup(InputParser parser, Object input) throws ParsingException {
+    public void setup(IRPactInputParser parser, Object input) throws ParsingException {
         RAProcessModel processModel = (RAProcessModel) input;
 
         UnivariateDoubleDistribution uncert = parser.parseEntityTo(getUncertaintyDistribution());
@@ -90,11 +101,14 @@ public class InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute 
 
             processModel.getUncertaintySupplier().add(
                     cag,
-                    attrName,
-                    uncert,
-                    conv
+                    new BasicUncertaintyGroupAttributeSupplier(
+                            getName() + "_" + cag.getName(),
+                            attrName,
+                            uncert,
+                            conv
+                    )
             );
-            LOGGER.debug(
+            LOGGER.trace(
                     IRPSection.INITIALIZATION_PARAMETER,
                     "add UncertaintySupplier for group '{}', attribute '{}', uncertainity '{}', convergence '{}'",
                     cag.getName(),

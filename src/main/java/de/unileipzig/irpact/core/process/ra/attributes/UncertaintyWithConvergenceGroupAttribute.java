@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.core.process.ra.attributes;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
-import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentDoubleGroupAttribute;
+import de.unileipzig.irpact.develop.Todo;
 
 import java.util.Objects;
 
@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 @Todo("PR adden")
 @Todo("Spec adden")
-public class UncertaintyWithConvergenceGroupAttribute extends BasicConsumerAgentGroupAttribute implements UncertaintyGroupAttribute {
+public class UncertaintyWithConvergenceGroupAttribute extends BasicConsumerAgentDoubleGroupAttribute implements UncertaintyGroupAttribute {
 
     protected boolean autoAdjustment;
     protected UnivariateDoubleDistribution convergence;
@@ -28,7 +28,7 @@ public class UncertaintyWithConvergenceGroupAttribute extends BasicConsumerAgent
     }
 
     public UnivariateDoubleDistribution getUncertainty() {
-        return getValue();
+        return getDistribution();
     }
 
     public void setUncertainty(UnivariateDoubleDistribution distribution) {
@@ -44,7 +44,7 @@ public class UncertaintyWithConvergenceGroupAttribute extends BasicConsumerAgent
     }
 
     @Override
-    public UncertaintyWithConvergenceGroupAttribute copyAttribute() {
+    public UncertaintyWithConvergenceGroupAttribute copy() {
         UncertaintyWithConvergenceGroupAttribute copy = new UncertaintyWithConvergenceGroupAttribute();
         copy.setName(getName());
         copy.setUncertainty(getUncertainty().copyDistribution());
@@ -76,11 +76,11 @@ public class UncertaintyWithConvergenceGroupAttribute extends BasicConsumerAgent
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
-                getUncertainty().getHashCode(),
-                getConvergence().getHashCode()
+                getUncertainty().getChecksum(),
+                getConvergence().getChecksum()
         );
     }
 }

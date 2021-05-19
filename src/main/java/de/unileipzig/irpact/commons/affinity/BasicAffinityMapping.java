@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons.affinity;
 
+import de.unileipzig.irpact.commons.NameableBase;
+
 import java.util.*;
 
 /**
@@ -7,7 +9,7 @@ import java.util.*;
  * @param <T>
  * @author Daniel Abitz
  */
-public class BasicAffinityMapping<S, T> implements AffinityMapping<S, T> {
+public class BasicAffinityMapping<S, T> extends NameableBase implements AffinityMapping<S, T> {
 
     protected Map<S, Affinities<T>> mapping;
 

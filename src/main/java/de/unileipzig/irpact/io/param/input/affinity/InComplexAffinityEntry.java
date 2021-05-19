@@ -6,9 +6,12 @@ import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
+import java.util.List;
 
 import static de.unileipzig.irpact.io.param.IOConstants.*;
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
@@ -55,6 +58,36 @@ public class InComplexAffinityEntry implements InAffinityEntry {
         setSrcCag(src);
         setTarCag(tar);
         setAffinityValue(value);
+    }
+
+    public static InComplexAffinityEntry[] buildAll(InConsumerAgentGroup[] grps, double value) {
+        List<InComplexAffinityEntry> list = new ArrayList<>();
+        for(InConsumerAgentGroup src: grps) {
+            for(InConsumerAgentGroup tar: grps) {
+                InComplexAffinityEntry entry = new InComplexAffinityEntry(
+                        ParamUtil.concData(src, tar),
+                        src,
+                        tar,
+                        value
+                );
+                list.add(entry);
+            }
+        }
+        return list.toArray(new InComplexAffinityEntry[0]);
+    }
+
+    @Override
+    public InComplexAffinityEntry copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InComplexAffinityEntry newCopy(CopyCache cache) {
+        InComplexAffinityEntry copy = new InComplexAffinityEntry();
+        copy._name = _name;
+        copy.srcCag = cache.copyArray(srcCag);
+        copy.tarCag = cache.copyArray(tarCag);
+        copy.affinityValue = affinityValue;
+        return copy;
     }
 
     @Override
@@ -105,10 +138,5 @@ public class InComplexAffinityEntry implements InAffinityEntry {
     @Override
     public double getAffinityValue() {
         return affinityValue;
-    }
-
-    @Override
-    public Object parse(InputParser parser) throws ParsingException {
-        return this;
     }
 }

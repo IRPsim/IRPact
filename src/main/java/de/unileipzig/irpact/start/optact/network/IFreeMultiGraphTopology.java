@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.start.optact.network;
 
-import de.unileipzig.irpact.commons.Util;
+import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.experimental.deprecated.input2.InputResource;
 import de.unileipzig.irpact.commons.graph.topology.FreeMultiGraphTopology;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Edn;
@@ -13,34 +14,34 @@ import java.util.Random;
  * @author Daniel Abitz
  */
 @Definition(
-//        edn = @Edn(
-//                label = {InputResource.IFREEMULTIGRAPHTOPOLOGY_LABEL},
-//                priorities = {InputResource.IFREEMULTIGRAPHTOPOLOGY_PRIORITIES},
-//                description = {InputResource.IFREEMULTIGRAPHTOPOLOGY_DESCRIPTION}
-//        )
+        edn = @Edn(
+                label = {InputResource.IFREEMULTIGRAPHTOPOLOGY_LABEL},
+                priorities = {InputResource.IFREEMULTIGRAPHTOPOLOGY_PRIORITIES},
+                description = {InputResource.IFREEMULTIGRAPHTOPOLOGY_DESCRIPTION}
+        )
 )
 public class IFreeMultiGraphTopology implements IGraphTopology {
 
     public String _name;
 
     @FieldDefinition(
-//            gams = @GamsParameter(
-//                    description = InputResource.IFREEMULTIGRAPHTOPOLOGY_FTEDGECOUNT
-//            )
+            gams = @GamsParameter(
+                    description = InputResource.IFREEMULTIGRAPHTOPOLOGY_FTEDGECOUNT
+            )
     )
     public int ftEdgeCount;
 
     @FieldDefinition(
-//            gams = @GamsParameter(
-//                    description = InputResource.IFREEMULTIGRAPHTOPOLOGY_FTSELFREFERENTIAL
-//            )
+            gams = @GamsParameter(
+                    description = InputResource.IFREEMULTIGRAPHTOPOLOGY_FTSELFREFERENTIAL
+            )
     )
     public boolean ftSelfReferential;
 
     @FieldDefinition(
-//            gams = @GamsParameter(
-//                    description = InputResource.IFREEMULTIGRAPHTOPOLOGY_FTSEED
-//            )
+            gams = @GamsParameter(
+                    description = InputResource.IFREEMULTIGRAPHTOPOLOGY_FTSEED
+            )
     )
     public long ftSeed;
 
@@ -64,7 +65,7 @@ public class IFreeMultiGraphTopology implements IGraphTopology {
         FreeMultiGraphTopology<V, E, ?> ft = new FreeMultiGraphTopology<>();
         ft.setEdgeCount(ftEdgeCount);
         ft.setSelfReferential(ftSelfReferential);
-        long seed = Util.getRandomSeedIf0(ftSeed);
+        long seed = Rnd.nextLongGlobalIfEquals(ftSeed, Rnd.USE_RANDOM_SEED);
         ft.setRandom(new Random(seed));
         return ft;
     }

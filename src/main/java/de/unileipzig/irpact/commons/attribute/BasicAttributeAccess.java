@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.attribute;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 
 import java.util.Collection;
 import java.util.Map;
@@ -10,9 +10,9 @@ import java.util.Map;
  */
 public class BasicAttributeAccess implements AttributeAccess {
 
-    protected Map<? extends String, ? extends Attribute<?>> attributes;
+    protected Map<? extends String, ? extends Attribute> attributes;
 
-    public BasicAttributeAccess(Map<? extends String, ? extends Attribute<?>> attributes) {
+    public BasicAttributeAccess(Map<? extends String, ? extends Attribute> attributes) {
         this.attributes = attributes;
     }
 
@@ -22,17 +22,17 @@ public class BasicAttributeAccess implements AttributeAccess {
     }
 
     @Override
-    public Attribute<?> getAttribute(String name) {
+    public Attribute getAttribute(String name) {
         return attributes.get(name);
     }
 
     @Override
-    public Collection<? extends Attribute<?>> getAttributes() {
+    public Collection<? extends Attribute> getAttributes() {
         return attributes.values();
     }
 
     @Override
-    public int getHashCode() {
-        return IsEquals.getCollHashCode(getAttributes());
+    public int getChecksum() {
+        return ChecksumComparable.getCollChecksum(getAttributes());
     }
 }

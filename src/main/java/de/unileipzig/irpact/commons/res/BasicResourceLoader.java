@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.commons.res;
 
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.util.R.R;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.InputStream;
@@ -15,6 +17,12 @@ import java.nio.file.Paths;
 public class BasicResourceLoader implements ResourceLoader {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicResourceLoader.class);
+
+    private static final Rnd RND = new Rnd();
+
+    static {
+        RND.enableSync();
+    }
 
     //Intellij-Tests-Only!
     protected String resDir2 = "src/main/resources/irpacttempdata/";
@@ -41,6 +49,23 @@ public class BasicResourceLoader implements ResourceLoader {
     }
 
     @Override
+    public Path getTempPath(String prefix, String suffix) {
+        return getTempPath(dir, prefix, suffix);
+    }
+
+    public static Path getTempPath(Path dir, String prefix, String suffix) {
+        Path tempPath;
+        if(prefix == null) prefix = "";
+        if(suffix == null) suffix = "";
+        do {
+            long n = RND.nextLong();
+            String name = prefix + Long.toUnsignedString(n, 16) + suffix;
+            tempPath = dir.resolve(name);
+        } while (Files.exists(tempPath));
+        return tempPath;
+    }
+
+    @Override
     public boolean exists(String fileName) {
         return hasPath(fileName) || hasResource(fileName);
     }
@@ -57,7 +82,7 @@ public class BasicResourceLoader implements ResourceLoader {
     public boolean hasPath(String fileName) {
         Path path = resolve(fileName);
         boolean has = Files.exists(path);
-        LOGGER.debug("has path '{}': {}", path, has);
+        LOGGER.trace("has path '{}': {}", path, has);
         return has;
     }
 
@@ -80,7 +105,7 @@ public class BasicResourceLoader implements ResourceLoader {
     @Override
     public boolean hasResource(String fileName) {
         boolean has = getResource(fileName) != null;
-        LOGGER.debug("has resource '{}': {}", fileName, has);
+        LOGGER.trace("has resource '{}': {}", fileName, has);
         return has;
     }
 

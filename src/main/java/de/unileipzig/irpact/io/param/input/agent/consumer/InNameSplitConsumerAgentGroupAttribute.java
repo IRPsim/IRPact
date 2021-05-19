@@ -2,17 +2,19 @@ package de.unileipzig.irpact.io.param.input.agent.consumer;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentDoubleGroupAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -62,6 +64,18 @@ public class InNameSplitConsumerAgentGroupAttribute implements InIndependentCons
     }
 
     @Override
+    public InNameSplitConsumerAgentGroupAttribute copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InNameSplitConsumerAgentGroupAttribute newCopy(CopyCache cache) {
+        InNameSplitConsumerAgentGroupAttribute copy = new InNameSplitConsumerAgentGroupAttribute();
+        copy._name = _name;
+        copy.dist = cache.copyArray(dist);
+        return copy;
+    }
+
+    @Override
     public String getName() {
         return _name;
     }
@@ -75,7 +89,8 @@ public class InNameSplitConsumerAgentGroupAttribute implements InIndependentCons
     }
 
     @Override
-    public InConsumerAgentGroup getConsumerAgentGroup(InputParser parser) throws ParsingException {
+    public InConsumerAgentGroup getConsumerAgentGroup(InputParser p) throws ParsingException {
+        IRPactInputParser parser = (IRPactInputParser) p;
         String name = getConsumerAgentGroupName();
         InRoot root = parser.getRoot();
         return root.findConsumerAgentGroup(name);
@@ -101,12 +116,23 @@ public class InNameSplitConsumerAgentGroupAttribute implements InIndependentCons
     }
 
     @Override
-    public void setup(InputParser parser, Object input) throws ParsingException {
-        InConsumerAgentGroup inCag = getConsumerAgentGroup(parser);
-        ConsumerAgentGroup cag = parser.parseEntityTo(inCag);
+    public void setup(IRPactInputParser parser, Object input) throws ParsingException {
+        final ConsumerAgentGroup cag;
+        if(input instanceof ConsumerAgentGroup) {
+            cag = (ConsumerAgentGroup) input;
+        } else {
+            InConsumerAgentGroup inCag = getConsumerAgentGroup(parser);
+            cag = parser.parseEntityTo(inCag);
+        }
 
-        BasicConsumerAgentGroupAttribute cagAttr = new BasicConsumerAgentGroupAttribute();
+        if(parser.isRestored() && cag.hasGroupAttribute(getAttributeName())) {
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "cag '{}' already has '{}' -> skip", cag.getName(), getAttributeName());
+            return;
+        }
+
+        BasicConsumerAgentDoubleGroupAttribute cagAttr = new BasicConsumerAgentDoubleGroupAttribute();
         cagAttr.setName(getAttributeName());
+        cagAttr.setArtificial(false);
 
         if(cag.hasGroupAttribute(cagAttr)) {
             throw new ParsingException("ConsumerAgentGroupAttribute '" + cagAttr.getName() + "' already exists in '" + cag.getName() + "'");
@@ -116,6 +142,6 @@ public class InNameSplitConsumerAgentGroupAttribute implements InIndependentCons
         cagAttr.setDistribution(dist);
 
         cag.addGroupAttribute(cagAttr);
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "added ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), getName(), cag.getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), getName(), cag.getName());
     }
 }

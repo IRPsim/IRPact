@@ -1,14 +1,18 @@
 package de.unileipzig.irpact.core.network;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.commons.graph.FastDirectedMultiGraph;
+import de.unileipzig.irpact.commons.graph.FastDirectedMultiGraph2;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
 
 /**
  * @author Daniel Abitz
  */
-public enum SupportedGraphStructure implements IsEquals {
+public enum SupportedGraphStructure implements ChecksumComparable {
     DIRECTED_ADJACENCY_LIST_MULTI_GRAPH(1) {
         @Override
         public <V, E, T> DirectedAdjacencyListMultiGraph<V, E, T> newInstance() {
@@ -19,6 +23,23 @@ public enum SupportedGraphStructure implements IsEquals {
         @Override
         public <V, E, T> FastDirectedMultiGraph<V, E, T> newInstance() {
             return new FastDirectedMultiGraph<>();
+        }
+    },
+    FAST_DIRECTED_MULTI_GRAPH2(3) {
+        @Override
+        public <V, E, T> FastDirectedMultiGraph2<V, E, T> newInstance() {
+            return new FastDirectedMultiGraph2<>();
+        }
+    },
+    FAST_DIRECTED_MULTI_GRAPH2_CONCURRENT(4) {
+        @Override
+        public <V, E, T> FastDirectedMultiGraph2<V, E, T> newInstance() {
+            return new FastDirectedMultiGraph2<>(
+                    () -> Collections.synchronizedMap(new LinkedHashMap<>()),
+                    () -> Collections.synchronizedMap(new LinkedHashMap<>()),
+                    () -> Collections.synchronizedMap(new LinkedHashMap<>()),
+                    t -> Collections.synchronizedMap(new LinkedHashMap<>())
+            );
         }
     };
 
@@ -33,7 +54,7 @@ public enum SupportedGraphStructure implements IsEquals {
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return ID;
     }
 
@@ -46,5 +67,9 @@ public enum SupportedGraphStructure implements IsEquals {
             }
         }
         throw new IllegalArgumentException("unknown id: " + id);
+    }
+
+    public static SupportedGraphStructure getDefault() {
+        return FAST_DIRECTED_MULTI_GRAPH2_CONCURRENT;
     }
 }

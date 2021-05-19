@@ -1,13 +1,15 @@
 package de.unileipzig.irpact.io.param;
 
-import de.unileipzig.irpact.commons.MultiCounter;
+import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.io.param.input.InEntity;
+import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -18,12 +20,12 @@ public final class ParamUtil {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ParamUtil.class);
 
     public static final String DATA_DELIMITER = "_";
-    public static final String NAME_DELIMITER = "__";
+    public static final String NAME_DELIMITER = "_";
 
     private ParamUtil() {
     }
 
-    public static String concData(InEntity first, InEntity second) {
+    public static String concData(InIRPactEntity first, InIRPactEntity second) {
         return concData(first.getName(), second.getName());
     }
 
@@ -35,7 +37,7 @@ public final class ParamUtil {
         return first + DATA_DELIMITER + second;
     }
 
-    public static String concName(InEntity first, InEntity second) {
+    public static String concName(InIRPactEntity first, InIRPactEntity second) {
         return concName(first.getName(), second.getName());
     }
 
@@ -63,15 +65,15 @@ public final class ParamUtil {
         return parts[part];
     }
 
-    public static <T extends InEntity> Predicate<T> startWithFilter(InEntity e) {
+    public static <T extends InIRPactEntity> Predicate<T> startWithFilter(InIRPactEntity e) {
         return startWithFilter(e.getName());
     }
 
-    public static <T extends InEntity> Predicate<T> startWithFilter(Nameable n) {
+    public static <T extends InIRPactEntity> Predicate<T> startWithFilter(Nameable n) {
         return startWithFilter(n.getName());
     }
 
-    public static <T extends InEntity> Predicate<T> startWithFilter(String name) {
+    public static <T extends InIRPactEntity> Predicate<T> startWithFilter(String name) {
         return n -> {
             if(n == null) {
                 return false;
@@ -167,6 +169,21 @@ public final class ParamUtil {
                 : arr.length;
     }
 
+    public static <T extends InIRPactEntity> T getEntityByName(T[] entities, String name) {
+        return getEntityByName(entities, name, null);
+    }
+
+    public static <T extends InIRPactEntity> T getEntityByName(T[] entities, String name, T defaultEntity) {
+        if(entities == null) {
+            return defaultEntity;
+        }
+        for(T entity: entities) {
+            if(Objects.equals(name, entity.getName())) {
+                return entity;
+            }
+        }
+        return defaultEntity;
+    }
 
     //=========================
     //TreeAnnotationResource
@@ -175,7 +192,7 @@ public final class ParamUtil {
     public static void addPathElement(TreeAnnotationResource res, String dataKey, String priorityKey) {
         IOResources.Data userData = res.getUserDataAs();
         MultiCounter counter = userData.getCounter();
-        LocData loc = userData.getData();
+        LocalizationData loc = userData.getData();
 
         TreeAnnotationResource.PathElementBuilder builder = res.newElementBuilder();
         builder = builder.peek(loc.applyPathElementBuilder(dataKey));
@@ -185,9 +202,74 @@ public final class ParamUtil {
         builder.putCache(dataKey);
     }
 
+    public static TreeAnnotationResource.EntryBuilder computeEntryBuilderIfAbsent(TreeAnnotationResource res, Class<?> c) {
+        TreeAnnotationResource.Entry entry = res.getEntry(c);
+        if(entry == null) {
+            TreeAnnotationResource.EntryBuilder builder = res.newEntryBuilder();
+            builder.store(c);
+            return builder;
+        } else {
+            return res.wrapEntryBuilder(entry);
+        }
+    }
+
+    public static TreeAnnotationResource.EntryBuilder computeEntryBuilderIfAbsent(TreeAnnotationResource res, Class<?> c, String field) {
+        TreeAnnotationResource.Entry entry = res.getEntry(c, field);
+        if(entry == null) {
+            TreeAnnotationResource.EntryBuilder builder = res.newEntryBuilder();
+            builder.store(c, field);
+            return builder;
+        } else {
+            return res.wrapEntryBuilder(entry);
+        }
+    }
+
+    public static void apply(
+            TreeAnnotationResource res,
+            Class<?> c,
+            Consumer<? super TreeAnnotationResource.EntryBuilder> consumer) {
+        TreeAnnotationResource.EntryBuilder builder = computeEntryBuilderIfAbsent(res, c);
+        builder.peek(consumer);
+    }
+
+    public static void apply(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String field,
+            Consumer<? super TreeAnnotationResource.EntryBuilder> consumer) {
+        TreeAnnotationResource.EntryBuilder builder = computeEntryBuilderIfAbsent(res, c, field);
+        builder.peek(consumer);
+    }
+
+    public static void setDelta(
+            TreeAnnotationResource res,
+            Class<?> c) {
+        computeEntryBuilderIfAbsent(res, c).setEdnDelta(true);
+    }
+
+    public static void setDelta(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String field) {
+        computeEntryBuilderIfAbsent(res, c, field).setEdnDelta(true);
+    }
+
+    public static void setHidden(
+            TreeAnnotationResource res,
+            Class<?> c) {
+        computeEntryBuilderIfAbsent(res, c).setGamsHidden(true);
+    }
+
+    public static void setHidden(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String field) {
+        computeEntryBuilderIfAbsent(res, c, field).setGamsHidden(true);
+    }
+
     public static void addEntry(TreeAnnotationResource res, Class<?> c) {
         IOResources.Data userData = res.getUserDataAs();
-        LocData loc = userData.getData();
+        LocalizationData loc = userData.getData();
 
         res.newEntryBuilder()
                 .peek(loc.applyEntryBuilder(c))
@@ -196,7 +278,7 @@ public final class ParamUtil {
 
     public static void addEntry(TreeAnnotationResource res, Class<?> c, String field) {
         IOResources.Data userData = res.getUserDataAs();
-        LocData loc = userData.getData();
+        LocalizationData loc = userData.getData();
 
         res.newEntryBuilder()
                 .peek(loc.applyEntryBuilder(c, field))

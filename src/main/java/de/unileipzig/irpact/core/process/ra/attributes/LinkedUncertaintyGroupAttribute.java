@@ -1,19 +1,18 @@
 package de.unileipzig.irpact.core.process.ra.attributes;
 
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
-import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.util.Todo;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentDoubleGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentDoubleGroupAttribute;
 
 import java.util.Objects;
 
 /**
  * @author Daniel Abitz
  */
-public class LinkedUncertaintyGroupAttribute extends BasicConsumerAgentGroupAttribute implements UncertaintyGroupAttribute {
+public class LinkedUncertaintyGroupAttribute extends BasicConsumerAgentDoubleGroupAttribute implements UncertaintyGroupAttribute {
 
     protected boolean autoAdjustment;
-    protected ConsumerAgentGroupAttribute convergence;
+    protected ConsumerAgentDoubleGroupAttribute convergence;
 
     public LinkedUncertaintyGroupAttribute() {
     }
@@ -27,23 +26,23 @@ public class LinkedUncertaintyGroupAttribute extends BasicConsumerAgentGroupAttr
     }
 
     public UnivariateDoubleDistribution getUncertainty() {
-        return getValue();
+        return getDistribution();
     }
 
     public void setUncertainty(UnivariateDoubleDistribution distribution) {
         setDistribution(distribution);
     }
 
-    public void setConvergence(ConsumerAgentGroupAttribute convergence) {
+    public void setConvergence(ConsumerAgentDoubleGroupAttribute convergence) {
         this.convergence = convergence;
     }
 
-    public ConsumerAgentGroupAttribute getConvergence() {
+    public ConsumerAgentDoubleGroupAttribute getConvergence() {
         return convergence;
     }
 
     @Override
-    public LinkedUncertaintyGroupAttribute copyAttribute() {
+    public LinkedUncertaintyGroupAttribute copy() {
         LinkedUncertaintyGroupAttribute copy = new LinkedUncertaintyGroupAttribute();
         copy.setName(getName());
         copy.setUncertainty(getUncertainty().copyDistribution());
@@ -75,11 +74,11 @@ public class LinkedUncertaintyGroupAttribute extends BasicConsumerAgentGroupAttr
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
-                getUncertainty().getHashCode(),
-                getConvergence().getHashCode()
+                getUncertainty().getChecksum(),
+                getConvergence().getChecksum()
         );
     }
 }

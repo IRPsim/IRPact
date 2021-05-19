@@ -4,12 +4,13 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.simulation.InitializationData;
+import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -55,6 +56,25 @@ public class InFixConsumerAgentPopulationSize implements InPopulationSize {
     public InFixConsumerAgentPopulationSize() {
     }
 
+    public InFixConsumerAgentPopulationSize(String name, InConsumerAgentGroup cag, int size) {
+        setName(name);
+        setConsumerAgentGroup(cag);
+        setSize(size);
+    }
+
+    @Override
+    public InFixConsumerAgentPopulationSize copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InFixConsumerAgentPopulationSize newCopy(CopyCache cache) {
+        InFixConsumerAgentPopulationSize copy = new InFixConsumerAgentPopulationSize();
+        copy._name = _name;
+        copy.size = size;
+        copy.cags = cache.copyArray(cags);
+        return copy;
+    }
+
     @Override
     public String getName() {
         return _name;
@@ -76,6 +96,10 @@ public class InFixConsumerAgentPopulationSize implements InPopulationSize {
         return ParamUtil.getNonEmptyArray(cags, "consumerAgentGroups");
     }
 
+    public void setConsumerAgentGroup(InConsumerAgentGroup cag) {
+        this.cags = new InConsumerAgentGroup[]{cag};
+    }
+
     public void setConsumerAgentGroups(InConsumerAgentGroup[] cags) {
         this.cags = cags;
     }
@@ -85,14 +109,14 @@ public class InFixConsumerAgentPopulationSize implements InPopulationSize {
     }
 
     @Override
-    public void setup(InputParser parser, Object input) throws ParsingException {
-        InitializationData initData = ParamUtil.castTo(input, InitializationData.class);
+    public void setup(IRPactInputParser parser, Object input) throws ParsingException {
+        Settings initData = ParamUtil.castTo(input, Settings.class);
         for(InConsumerAgentGroup inCag: getConsumerAgentGroups()) {
             ConsumerAgentGroup cag = parser.parseEntityTo(inCag);
             if(initData.hasInitialNumberOfConsumerAgents(cag)) {
                 throw new ParsingException("cag '" + cag.getName() + "' already has a population size: " + initData.getInitialNumberOfConsumerAgents(cag) + " (try to set: " + size + ")");
             }
-            LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "set initial number of consumer agents '{}': {}", cag.getName(), size);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set initial number of consumer agents '{}': {}", cag.getName(), size);
             initData.setInitialNumberOfConsumerAgents(cag, size);
         }
     }

@@ -1,36 +1,41 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
+import de.unileipzig.irpact.commons.checksum.LoggableChecksum;
 import de.unileipzig.irpact.commons.time.Timestamp;
+import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.core.agent.ProxyAgent;
 import de.unileipzig.irpact.core.agent.SpatialInformationAgentBase;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.agent.consumer.*;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.process.ProcessPlan;
-import de.unileipzig.irpact.core.product.AdoptedProduct;
-import de.unileipzig.irpact.core.product.BasicAdoptedProduct;
-import de.unileipzig.irpact.core.product.Product;
-import de.unileipzig.irpact.core.product.ProductFindingScheme;
+import de.unileipzig.irpact.core.product.*;
+import de.unileipzig.irpact.core.product.awareness.ProductAwareness;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.develop.AddToPersist;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Daniel Abitz
  */
+@SuppressWarnings("DefaultAnnotationParam")
+@AddToPersist("product related attr")
 @Reference(local = true, remote = true)
-public class ProxyConsumerAgent extends SpatialInformationAgentBase implements ConsumerAgent, ProxyAgent<ConsumerAgent> {
+public class ProxyConsumerAgent extends SpatialInformationAgentBase implements ConsumerAgent, ProxyAgent<ConsumerAgent>, LoggableChecksum {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ProxyConsumerAgent.class);
 
@@ -39,8 +44,10 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     protected ConsumerAgentGroup group;
     protected SocialGraph.Node node;
     protected Map<String, ConsumerAgentAttribute> attributes;
+    protected Map<String, ConsumerAgentProductRelatedAttribute> productRelatedAttributes;
+    protected ProductAwareness awareness;
     protected ProductInterest interest;
-    protected Set<AdoptedProduct> adoptedProducts;
+    protected Map<Product, AdoptedProduct> adoptedProducts;
     protected ProductFindingScheme productFindingScheme;
     protected ProcessFindingScheme processFindingScheme;
     protected Set<Need> needs;
@@ -50,7 +57,8 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     public ProxyConsumerAgent() {
         this(
                 new LinkedHashMap<>(),
-                new LinkedHashSet<>(),
+                new LinkedHashMap<>(),
+                new LinkedHashMap<>(),
                 new LinkedHashSet<>(),
                 new LinkedHashMap<>(),
                 new LinkedHashSet<>()
@@ -59,11 +67,13 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
 
     public ProxyConsumerAgent(
             Map<String, ConsumerAgentAttribute> attributes,
-            Set<AdoptedProduct> adoptedProducts,
+            Map<String, ConsumerAgentProductRelatedAttribute> productRelatedAttributes,
+            Map<Product, AdoptedProduct> adoptedProducts,
             Set<Need> needs,
             Map<Need, ProcessPlan> plans,
             Set<AttributeAccess> externAttributes) {
         this.attributes = attributes;
+        this.productRelatedAttributes = productRelatedAttributes;
         this.adoptedProducts = adoptedProducts;
         this.needs = needs;
         this.plans = plans;
@@ -71,48 +81,57 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         if(isSynced()) {
-            return getRealAgent().getHashCode();
+            return getRealAgent().getChecksum();
         } else {
-            return Objects.hash(
+            return ChecksumComparable.getChecksum(
                     getName(),
                     getGroup().getName(),
                     getInformationAuthority(),
-                    getSpatialInformation().getHashCode(),
-                    IsEquals.getCollHashCode(getAttributes()),
-                    getProductInterest().getHashCode(),
-                    IsEquals.getCollHashCode(getAdoptedProducts()),
-                    getProductFindingScheme().getHashCode(),
-                    getProcessFindingScheme().getHashCode(),
-                    IsEquals.getCollHashCode(getNeeds()),
-                    IsEquals.getMapHashCode(getPlans()),
-                    IsEquals.getCollHashCode(getExternAttributes())
+                    this.getActingOrder(),
+                    getMaxNumberOfActions(),
+                    getSpatialInformation(),
+                    ChecksumComparable.getCollChecksum(getAttributes()),
+                    ChecksumComparable.getCollChecksum(getProductRelatedAttributes()),
+                    getProductAwareness(),
+                    getProductInterest(),
+                    ChecksumComparable.getCollChecksum(getAdoptedProducts()),
+                    getProductFindingScheme(),
+                    getProcessFindingScheme(),
+                    ChecksumComparable.getCollChecksum(getNeeds()),
+                    ChecksumComparable.getMapChecksum(getPlans()),
+                    ChecksumComparable.getCollChecksum(getExternAttributes())
             );
         }
     }
 
-    private static void logHash(String msg, int storedHash) {
+    private static void logChecksum(String msg, int storedHash) {
         LOGGER.warn(
-                "hash @ '{}': stored={}",
+                "checksum @ '{}': stored={}",
                 msg,
                 Integer.toHexString(storedHash)
         );
     }
 
-    public void deepHashCheck() {
-        logHash("name", IsEquals.getHashCode(getName()));
-        logHash("group name", IsEquals.getHashCode(getGroup().getName()));
-        logHash("information authority", IsEquals.getHashCode(getInformationAuthority()));
-        logHash("spatial information", IsEquals.getHashCode(getSpatialInformation()));
-        logHash("attributes", IsEquals.getCollHashCode(getAttributes()));
-        logHash("interest", IsEquals.getHashCode(getProductInterest()));
-        logHash("adopted products", IsEquals.getCollHashCode(getAdoptedProducts()));
-        logHash("product finding scheme", IsEquals.getHashCode(getProductFindingScheme()));
-        logHash("process finding scheme", IsEquals.getHashCode(getProcessFindingScheme()));
-        logHash("needs", IsEquals.getCollHashCode(getNeeds()));
-        logHash("plans", IsEquals.getMapHashCode(getPlans()));
-        logHash("external attributes", IsEquals.getCollHashCode(getExternAttributes()));
+    @Override
+    public void logChecksums() {
+        logChecksum("name", ChecksumComparable.getChecksum(getName()));
+        logChecksum("group name", ChecksumComparable.getChecksum(getGroup().getName()));
+        logChecksum("information authority", ChecksumComparable.getChecksum(getInformationAuthority()));
+        logChecksum("attention order", ChecksumComparable.getChecksum(this.getActingOrder()));
+        logChecksum("max number of actions", ChecksumComparable.getChecksum(getMaxNumberOfActions()));
+        logChecksum("spatial information", ChecksumComparable.getChecksum(getSpatialInformation()));
+        logChecksum("attributes", ChecksumComparable.getCollChecksum(getAttributes()));
+        logChecksum("product attributes", ChecksumComparable.getCollChecksum(getProductRelatedAttributes()));
+        logChecksum("awareness", ChecksumComparable.getChecksum(getProductAwareness()));
+        logChecksum("interest", ChecksumComparable.getChecksum(getProductInterest()));
+        logChecksum("adopted products", ChecksumComparable.getCollChecksum(getAdoptedProducts()));
+        logChecksum("product finding scheme", ChecksumComparable.getChecksum(getProductFindingScheme()));
+        logChecksum("process finding scheme", ChecksumComparable.getChecksum(getProcessFindingScheme()));
+        logChecksum("needs", ChecksumComparable.getCollChecksum(getNeeds()));
+        logChecksum("plans", ChecksumComparable.getMapChecksum(getPlans()));
+        logChecksum("external attributes", ChecksumComparable.getCollChecksum(getExternAttributes()));
     }
 
     @Override
@@ -136,6 +155,8 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         group = null;
         node = null;
         attributes.clear();
+        productRelatedAttributes.clear();
+        awareness = null;
         interest = null;
         adoptedProducts.clear();
         productFindingScheme = null;
@@ -151,20 +172,29 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         if(this.realAgent != realAgent) {
             throw new IllegalArgumentException("synced to another agent");
         }
+        LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] unsync", realAgent.getName());
         this.realAgent = null;
         reset(realAgent);
     }
 
     protected void reset(ConsumerAgent realAgent) {
-        group = realAgent.getGroup();
-        node = realAgent.getSocialGraphNode();
-        addAllAttributes(realAgent.getAttributes());
-        interest = realAgent.getProductInterest();
-        adoptedProducts.addAll(realAgent.getAdoptedProducts());
-        productFindingScheme = realAgent.getProductFindingScheme();
-        processFindingScheme = realAgent.getProcessFindingScheme();
-        needs.addAll(realAgent.getNeeds());
-        addAllPlans(realAgent.getPlans());
+        try {
+            group = realAgent.getGroup();
+            node = realAgent.getSocialGraphNode();
+            addAllAttributes(realAgent.getAttributes());
+            addAllProductRelatedAttribute(realAgent.getProductRelatedAttributes());
+            awareness = realAgent.getProductAwareness();
+            interest = realAgent.getProductInterest();
+            addAllAdoptedProducts(realAgent.getAdoptedProducts());
+            productFindingScheme = realAgent.getProductFindingScheme();
+            processFindingScheme = realAgent.getProcessFindingScheme();
+            needs.addAll(realAgent.getNeeds());
+            addAllPlans(realAgent.getPlans());
+
+        } catch (Throwable t) {
+            System.out.println("ERROR @ " + realAgent.getName() + " " + t.getClass() + " -> " + t.getMessage());
+            t.printStackTrace();
+        }
     }
 
     @Override
@@ -185,27 +215,15 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     @Override
-    public boolean tryAquireAction() {
+    public void allowAttention() {
         checkSynced();
-        return getRealAgent().tryAquireAction();
+        getRealAgent().allowAttention();
     }
 
     @Override
-    public boolean tryAquireSelf() {
+    public boolean tryAquireAttention() {
         checkSynced();
-        return getRealAgent().tryAquireSelf();
-    }
-
-    @Override
-    public void allowAquire() {
-        checkSynced();
-        getRealAgent().allowAquire();
-    }
-
-    @Override
-    public void aquireFailed() {
-        checkSynced();
-        getRealAgent().aquireFailed();
+        return getRealAgent().tryAquireAttention();
     }
 
     @Override
@@ -215,9 +233,33 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     @Override
-    public void releaseAquire() {
+    public void releaseAttention() {
         checkSynced();
-        getRealAgent().releaseAquire();
+        getRealAgent().releaseAttention();
+    }
+
+    @Override
+    public void aquireDataAccess() {
+        checkSynced();
+        getRealAgent().aquireDataAccess();
+    }
+
+    @Override
+    public boolean tryAquireDataAccess() {
+        checkSynced();
+        return getRealAgent().tryAquireDataAccess();
+    }
+
+    @Override
+    public boolean tryAquireDataAccess(long time, TimeUnit unit) throws InterruptedException {
+        checkSynced();
+        return getRealAgent().tryAquireDataAccess(time, unit);
+    }
+
+    @Override
+    public void releaseDataAccess() {
+        checkSynced();
+        getRealAgent().releaseDataAccess();
     }
 
     @Override
@@ -263,6 +305,36 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     public void setInformationAuthority(double informationAuthority) {
         checkNotSynced();
         this.informationAuthority = informationAuthority;
+    }
+
+    @Override
+    public void setActingOrder(long actingOrder) {
+        checkNotSynced();
+        this.actingOrder = actingOrder;
+    }
+
+    @Override
+    public long getActingOrder() {
+        if(isSynced()) {
+            return getRealAgent().getActingOrder();
+        } else {
+            return actingOrder;
+        }
+    }
+
+    @Override
+    public int getMaxNumberOfActions() {
+        if(isSynced()) {
+            return getRealAgent().getMaxNumberOfActions();
+        } else {
+            return maxNumberOfActions;
+        }
+    }
+
+    @Override
+    public void setMaxNumberOfActions(int maxNumberOfActions) {
+        checkNotSynced();
+        this.maxNumberOfActions = maxNumberOfActions;
     }
 
     @Override
@@ -365,6 +437,137 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     @Override
+    public Collection<ConsumerAgentProductRelatedAttribute> getProductRelatedAttributes() {
+        if(isSynced()) {
+            return getRealAgent().getProductRelatedAttributes();
+        } else {
+            return productRelatedAttributes.values();
+        }
+    }
+
+    @Override
+    public boolean hasProductRelatedAttribute(String name) {
+        if(isSynced()) {
+            return getRealAgent().hasProductRelatedAttribute(name);
+        } else {
+            return productRelatedAttributes.containsKey(name);
+        }
+    }
+
+    @Override
+    public ConsumerAgentProductRelatedAttribute getProductRelatedAttribute(String name) {
+        if(isSynced()) {
+            return getRealAgent().getProductRelatedAttribute(name);
+        } else {
+            return productRelatedAttributes.get(name);
+        }
+    }
+
+    @Override
+    public void addProductRelatedAttribute(ConsumerAgentProductRelatedAttribute attribute) {
+        if(hasProductRelatedAttribute(attribute)) {
+            throw ExceptionUtil.create(IllegalArgumentException::new, "attribute '{}' already exists", attribute.getName());
+        }
+        productRelatedAttributes.put(attribute.getName(), attribute);
+    }
+
+    public void addAllProductRelatedAttribute(ConsumerAgentProductRelatedAttribute... attributes) {
+        addAllProductRelatedAttribute(Arrays.asList(attributes));
+    }
+
+    public void addAllProductRelatedAttribute(Collection<? extends ConsumerAgentProductRelatedAttribute> attributes) {
+        for(ConsumerAgentProductRelatedAttribute attr: attributes) {
+            addProductRelatedAttribute(attr);
+        }
+    }
+
+    @Override
+    public void updateProductRelatedAttributes(Product newProduct) {
+        if(isSynced()) {
+            getRealAgent().updateProductRelatedAttributes(newProduct);
+        } else {
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "update product related attributes in agent '{}' for product '{}'", getName(), newProduct.getName());
+            for(ConsumerAgentProductRelatedAttribute relatedAttribute: getProductRelatedAttributes()) {
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "update attribute '{}' in agent '{}' for product '{}'", relatedAttribute.getName(), getName(), newProduct.getName());
+                relatedAttribute.getGroup().deriveUpdate(newProduct, relatedAttribute);
+            }
+        }
+    }
+
+    @Override
+    public boolean isAware(Product product) {
+        if(isSynced()) {
+            return getRealAgent().isAware(product);
+        } else {
+            return awareness.isAware(product);
+        }
+    }
+
+    @Override
+    public void makeAware(Product product) {
+        if(isSynced()) {
+            getRealAgent().makeAware(product);
+        } else {
+            awareness.makeAware(product);
+        }
+    }
+
+    @Override
+    public boolean isInterested(Product product) {
+        if(isSynced()) {
+            return getRealAgent().isInterested(product);
+        } else {
+            return interest.isInterested(product);
+        }
+    }
+
+    @Override
+    public double getInterest(Product product) {
+        if(isSynced()) {
+            return getRealAgent().getInterest(product);
+        } else {
+            return interest.getValue(product);
+        }
+    }
+
+    @Override
+    public void updateInterest(Product product, double value) {
+        if(isSynced()) {
+            getRealAgent().updateInterest(product, value);
+        } else {
+            if(value != 0 && !isAware(product)) {
+                throw ExceptionUtil.create(IllegalArgumentException::new, "'{}' is not aware of '{}'", getName(), product.getName());
+            }
+            interest.update(product, value);
+        }
+    }
+
+    @Override
+    public void makeInterested(Product product) {
+        if(isSynced()) {
+            getRealAgent().makeInterested(product);
+        } else {
+            if(!isAware(product)) {
+                throw ExceptionUtil.create(IllegalArgumentException::new, "'{}' is not aware of '{}'", getName(), product.getName());
+            }
+            interest.makeInterested(product);
+        }
+    }
+
+    @Override
+    public ProductAwareness getProductAwareness() {
+        if(isSynced()) {
+            return getRealAgent().getProductAwareness();
+        } else {
+            return awareness;
+        }
+    }
+
+    public void setProductAwareness(ProductAwareness awareness) {
+        this.awareness = awareness;
+    }
+
+    @Override
     public ProductInterest getProductInterest() {
         if(isSynced()) {
             return getRealAgent().getProductInterest();
@@ -373,7 +576,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         }
     }
 
-    public void setProductAwareness(ProductInterest awareness) {
+    public void setProductInterest(ProductInterest awareness) {
         this.interest = awareness;
     }
 
@@ -382,7 +585,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         if(isSynced()) {
             return getRealAgent().getAdoptedProducts();
         } else {
-            return adoptedProducts;
+            return adoptedProducts.values();
         }
     }
 
@@ -391,12 +594,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         if(isSynced()) {
             return getRealAgent().hasAdopted(product);
         } else {
-            for(AdoptedProduct ap: adoptedProducts) {
-                if(ap.getProduct() == product) {
-                    return true;
-                }
-            }
-            return false;
+            return adoptedProducts.containsKey(product);
         }
     }
 
@@ -411,28 +609,33 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         if(isSynced()) {
             getRealAgent().addAdoptedProduct(adoptedProduct);
         } else {
-            adoptedProducts.add(adoptedProduct);
+            adoptedProducts.put(adoptedProduct.getProduct(), adoptedProduct);
         }
     }
 
     @Override
-    public void adopt(Need need, Product product) {
+    public void adoptInitial(Product product) {
         if(isSynced()) {
-            getRealAgent().adopt(need, product);
+            getRealAgent().adoptInitial(product);
         } else {
-            Timestamp now = environment.getTimeModel().now();
-            BasicAdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, now);
-            adoptedProducts.add(adoptedProduct);
+            BasicAdoptedProduct adoptedProduct = new BasicAdoptedProduct(product);
+            adoptedProducts.put(adoptedProduct.getProduct(), adoptedProduct);
         }
     }
 
     @Override
-    public void adoptAt(Need need, Product product, Timestamp stamp) {
+    public void adopt(Need need, Product product, Timestamp stamp) {
         if(isSynced()) {
-            getRealAgent().adoptAt(need, product, stamp);
+            getRealAgent().adopt(need, product, stamp);
         } else {
             BasicAdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, stamp);
-            adoptedProducts.add(adoptedProduct);
+            adoptedProducts.put(adoptedProduct.getProduct(), adoptedProduct);
+        }
+    }
+
+    public void addAllAdoptedProducts(Collection<? extends AdoptedProduct> adoptedProducts) {
+        for(AdoptedProduct adoptedProduct: adoptedProducts) {
+            this.adoptedProducts.put(adoptedProduct.getProduct(), adoptedProduct);
         }
     }
 
@@ -451,7 +654,11 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
 
     @Override
     public ProcessFindingScheme getProcessFindingScheme() {
-        return processFindingScheme;
+        if(isSynced()) {
+            return getRealAgent().getProcessFindingScheme();
+        } else {
+            return processFindingScheme;
+        }
     }
 
     public void setProcessFindingScheme(ProcessFindingScheme processFindingScheme) {
@@ -464,6 +671,15 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
             return getRealAgent().getNeeds();
         } else {
             return needs;
+        }
+    }
+
+    @Override
+    public boolean hasNeed(Need need) {
+        if(isSynced()) {
+            return getRealAgent().hasNeed(need);
+        } else {
+            return needs.contains(need);
         }
     }
 
@@ -512,11 +728,28 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     @Override
-    public Attribute<?> findAttribute(String name) {
+    public boolean hasAnyAttribute(String name) {
+        if(isSynced()) {
+            return getRealAgent().hasAnyAttribute(name);
+        } else {
+            if(hasAttribute(name)) {
+                return true;
+            }
+            for(AttributeAccess attributeAccess: externAttributes) {
+                if(attributeAccess.hasAttribute(name)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    @Override
+    public Attribute findAttribute(String name) {
         if(isSynced()) {
             return getRealAgent().findAttribute(name);
         } else {
-            ConsumerAgentAttribute attr = getAttribute(name);
+            Attribute attr = getAttribute(name);
             if(attr != null) {
                 return attr;
             }

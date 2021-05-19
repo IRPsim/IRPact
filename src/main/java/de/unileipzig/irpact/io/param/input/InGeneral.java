@@ -1,16 +1,19 @@
 package de.unileipzig.irpact.io.param.input;
 
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLevel;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.log.SectionLoggingFilter;
-import de.unileipzig.irpact.core.simulation.BasicInitializationData;
+import de.unileipzig.irpact.core.simulation.BasicSettings;
+import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
+import de.unileipzig.irptools.util.Copyable;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -23,10 +26,8 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
 /**
  * @author Daniel Abitz
  */
-@Definition(
-        global = true
-)
-public class InGeneral {
+@Definition(global = true)
+public class InGeneral implements Copyable {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -43,22 +44,26 @@ public class InGeneral {
 
         addEntry(res, thisClass(), "seed");
         addEntry(res, thisClass(), "timeout");
-        addEntry(res, thisClass(), "endYear");
+        addEntry(res, thisClass(), "lastSimulationYear");
 
         putFieldPathAndAddEntry(res, thisClass(), "logLevel", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
         putFieldPathAndAddEntry(res, thisClass(), "logAll", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
+        putFieldPathAndAddEntry(res, thisClass(), "logAllIRPact", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
         putFieldPathAndAddEntry(res, thisClass(), "logAllTools", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
+        putFieldPathAndAddEntry(res, thisClass(), "logInitialization", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
+        putFieldPathAndAddEntry(res, thisClass(), "logSimulation", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
 
-        putFieldPathAndAddEntry(res, thisClass(), "logToolsCore", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logToolsDefinition", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logInitialization", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logParamInit", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logGraphCreation", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logAgentCreation", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logPlatformCreation", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logSimulationLifecycle", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logSimulationAgent", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
-        putFieldPathAndAddEntry(res, thisClass(), "logJadexSystemOut", GENERAL_SETTINGS, LOGGING, LOGGING_SPECIFIC);
+        putFieldPathAndAddEntry(res, thisClass(), "logGraphUpdate", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+        putFieldPathAndAddEntry(res, thisClass(), "logRelativeAgreement", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+        putFieldPathAndAddEntry(res, thisClass(), "logInterestUpdate", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+        putFieldPathAndAddEntry(res, thisClass(), "logShareNetworkLocal", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+        putFieldPathAndAddEntry(res, thisClass(), "logFinancalComponent", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+        putFieldPathAndAddEntry(res, thisClass(), "logCalculateDecisionMaking", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+
+        putFieldPathAndAddEntry(res, thisClass(), "logResultGroupedByZip", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
+        putFieldPathAndAddEntry(res, thisClass(), "logResultGroupedByMilieu", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
+        putFieldPathAndAddEntry(res, thisClass(), "logResultGroupedByZipAndMilieu", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
+        putFieldPathAndAddEntry(res, thisClass(), "logProductAdoptions", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
 
         putFieldPathAndAddEntry(res, thisClass(), "runOptActDemo", GENERAL_SETTINGS, SPECIAL_SETTINGS);
         putFieldPathAndAddEntry(res, thisClass(), "runPVAct", GENERAL_SETTINGS, SPECIAL_SETTINGS);
@@ -74,11 +79,11 @@ public class InGeneral {
     @FieldDefinition
     public long timeout;
 
-    //fuer den anderen Spec
-    public int startYear = -1;
+    //nur fuer interne tests
+    public int firstSimulationYear = -1;
 
     @FieldDefinition
-    public int endYear;
+    public int lastSimulationYear;
 
     //=========================
     //flags
@@ -101,33 +106,61 @@ public class InGeneral {
     public boolean logAll;
 
     @FieldDefinition
-    public boolean logAllTools;
+    public boolean logAllIRPact;
 
-    //=========================
-    //specific logging
-    //=========================
     @FieldDefinition
-    public boolean logToolsCore;
-    @FieldDefinition
-    public boolean logToolsDefinition;
+    public boolean logAllTools;
 
     @FieldDefinition
     public boolean logInitialization;
-    @FieldDefinition
-    public boolean logParamInit;
-    @FieldDefinition
-    public boolean logGraphCreation;
-    @FieldDefinition
-    public boolean logAgentCreation;
-    @FieldDefinition
-    public boolean logPlatformCreation;
 
     @FieldDefinition
-    public boolean logSimulationLifecycle;
-    @FieldDefinition
-    public boolean logSimulationAgent;
+    public boolean logSimulation;
+
+    //=========================
+    //data logging
+    //=========================
 
     @FieldDefinition
+    public boolean logGraphUpdate;
+
+    @FieldDefinition
+    public boolean logRelativeAgreement;
+
+    @FieldDefinition
+    public boolean logInterestUpdate;
+
+    @FieldDefinition
+    public boolean logShareNetworkLocal;
+
+    @FieldDefinition
+    public boolean logFinancalComponent;
+
+    @FieldDefinition
+    public boolean logCalculateDecisionMaking;
+
+    //=========================
+    //result logging
+    //=========================
+
+    @FieldDefinition
+    public boolean logResultGroupedByZip;
+
+    @FieldDefinition
+    public boolean logResultGroupedByMilieu;
+
+    @FieldDefinition
+    public boolean logResultGroupedByZipAndMilieu;
+
+    @FieldDefinition
+    public boolean logProductAdoptions;
+
+    //=========================
+    //dev logging
+    //=========================
+
+    public boolean logSpecificationConverter;
+
     public boolean logJadexSystemOut;
 
     //=========================
@@ -135,6 +168,46 @@ public class InGeneral {
     //=========================
 
     public InGeneral() {
+    }
+
+    @Override
+    public InGeneral copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InGeneral newCopy(CopyCache cache) {
+        InGeneral copy = new InGeneral();
+        copy.seed = seed;
+        copy.timeout = timeout;
+        copy.firstSimulationYear = firstSimulationYear;
+        copy.lastSimulationYear = lastSimulationYear;
+        //flags
+        copy.runPVAct = runPVAct;
+        copy.runOptActDemo = runOptActDemo;
+        //general logging
+        copy.logLevel = logLevel;
+        copy.logAll = logAll;
+        copy.logAllIRPact = logAllIRPact;
+        copy.logAllTools = logAllTools;
+        copy.logInitialization = logInitialization;
+        copy.logSimulation = logSimulation;
+        //data logging
+        copy.logGraphUpdate = logGraphUpdate;
+        copy.logRelativeAgreement = logRelativeAgreement;
+        copy.logInterestUpdate = logInterestUpdate;
+        copy.logShareNetworkLocal = logShareNetworkLocal;
+        copy.logFinancalComponent = logFinancalComponent;
+        copy.logCalculateDecisionMaking = logCalculateDecisionMaking;
+        //result logging
+        copy.logResultGroupedByZip = logResultGroupedByZip;
+        copy.logResultGroupedByMilieu = logResultGroupedByMilieu;
+        copy.logResultGroupedByZipAndMilieu = logResultGroupedByZipAndMilieu;
+        copy.logProductAdoptions = logProductAdoptions;
+        //dev logging
+        copy.logSpecificationConverter = logSpecificationConverter;
+        copy.logJadexSystemOut = logJadexSystemOut;
+
+        return copy;
     }
 
     public void setLogLevel(IRPLevel level) {
@@ -145,13 +218,24 @@ public class InGeneral {
         this.timeout = unit.toMillis(duration);
     }
 
-    public void setup(InputParser parser) throws ParsingException {
-        parseLoggingSetup(parser);
-        parseSeed(parser);
-        parseLifeCycleControl(parser);
+    public void enableAllDataLogging() {
+        logGraphUpdate = true;
+        logRelativeAgreement = true;
+        logInterestUpdate = true;
+        logShareNetworkLocal = true;
+        logFinancalComponent = true;
+        logCalculateDecisionMaking = true;
     }
 
-    private void parseLoggingSetup(@SuppressWarnings("unused") InputParser parser) {
+    public void enableAllResultLogging() {
+        logResultGroupedByZip = true;
+        logResultGroupedByMilieu = true;
+        logResultGroupedByZipAndMilieu = true;
+        logProductAdoptions = true;
+    }
+
+    public void parseLoggingSetup(@SuppressWarnings("unused") IRPactInputParser parser) {
+
         IRPLevel level = IRPLevel.get(logLevel);
         if(level == null) {
             LOGGER.warn("invalid log level {}, set level to default ({}) ", logLevel, IRPLevel.getDefault());
@@ -159,34 +243,42 @@ public class InGeneral {
         }
         IRPLogging.setLevel(level);
 
-        SectionLoggingFilter filter = (SectionLoggingFilter) IRPLogging.getFilter();
+        SectionLoggingFilter filter = IRPLogging.getFilter();
         IRPSection.removeAllFrom(filter);
+        IRPSection.addAllTo(logAll, filter);
+        IRPSection.addAllNonToolsTo(logAllIRPact, filter);
+        IRPSection.addAllToolsTo(logAllTools, filter);
+        IRPSection.addInitialization(logInitialization, filter);
+        IRPSection.addSimulation(logSimulation, filter);
 
-        if(logAll) {
-            IRPSection.addAllNonToolsTo(filter);
-            if(logAllTools) IRPSection.addAllToolsTo(filter);
-            return;
-        }
+        filter.add(logSpecificationConverter, IRPSection.SPECIFICATION_CONVERTER);
+        filter.add(logJadexSystemOut, IRPSection.JADEX_SYSTEM_OUT);
 
-        if(logAllTools) {
-            IRPSection.addAllToolsTo(filter);
-        } else {
-            if(logToolsCore) filter.add(IRPSection.TOOLS_CORE);
-            if(logToolsDefinition) filter.add(IRPSection.TOOLS_DEFINITION);
-        }
-
-        if(logParamInit) filter.add(IRPSection.INITIALIZATION_PARAMETER);
-        if(logAgentCreation) filter.add(IRPSection.INITIALIZATION_AGENT);
-        if(logGraphCreation) filter.add(IRPSection.INITIALIZATION_NETWORK);
-        if(logPlatformCreation) filter.add(IRPSection.INITIALIZATION_PLATFORM);
-
-        if(logSimulationLifecycle) filter.add(IRPSection.SIMULATION_LICECYCLE);
-        if(logSimulationAgent) filter.add(IRPSection.SIMULATION_AGENT);
-
-        if(logJadexSystemOut) filter.add(IRPSection.JADEX_SYSTEM_OUT);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "logging sections: {}", filter.getSections());
     }
 
-    private void parseSeed(InputParser parser) {
+    public void setup(IRPactInputParser parser) throws ParsingException {
+        parseInfoAndResultLogging(parser);
+        parseSeed(parser);
+        parseLifeCycleControl(parser);
+    }
+
+    private void parseInfoAndResultLogging(IRPactInputParser parser) {
+        Settings initData = parser.getEnvironment().getSettings();
+        initData.setLogGraphUpdate(logGraphUpdate);
+        initData.setLogRelativeAgreement(logRelativeAgreement);
+        initData.setLogInterestUpdate(logInterestUpdate);
+        initData.setLogShareNetworkLocale(logShareNetworkLocal);
+        initData.setLogFinancialComponent(logFinancalComponent);
+        initData.setLogCalculateDecisionMaking(logCalculateDecisionMaking);
+
+        initData.setLogResultGroupedByZip(logResultGroupedByZip);
+        initData.setLogResultGroupedByMilieu(logResultGroupedByMilieu);
+        initData.setLogResultGroupedByZipAndMilieu(logResultGroupedByZipAndMilieu);
+        initData.setLogProductAdoptions(logProductAdoptions);
+    }
+
+    private void parseSeed(IRPactInputParser parser) {
         BasicJadexSimulationEnvironment env = (BasicJadexSimulationEnvironment) parser.getEnvironment();
         final Rnd rnd;
         if(seed == -1L) {
@@ -199,18 +291,25 @@ public class InGeneral {
         env.setSimulationRandom(rnd);
     }
 
-    private void parseLifeCycleControl(InputParser parser) {
+    private void parseLifeCycleControl(IRPactInputParser parser) {
         BasicJadexLifeCycleControl lifeCycleControl = (BasicJadexLifeCycleControl) parser.getEnvironment().getLiveCycleControl();
-        BasicInitializationData initData = (BasicInitializationData) parser.getEnvironment().getInitializationData();
+        applyKillSwitch(lifeCycleControl);
+
+        BasicSettings initData = (BasicSettings) parser.getEnvironment().getSettings();
+        applyToSettings(initData);
+        LOGGER.info(IRPSection.INITIALIZATION_PARAMETER, "last simulation year: {}", lastSimulationYear);
+    }
+
+    public void applyKillSwitch(BasicJadexLifeCycleControl lifeCycleControl) {
         if(timeout < 1L) {
             LOGGER.info(IRPSection.INITIALIZATION_PARAMETER, "timeout disabled");
         } else {
             LOGGER.info(IRPSection.INITIALIZATION_PARAMETER, "timeout: {}", timeout);
         }
         lifeCycleControl.setKillSwitchTimeout(timeout);
+    }
 
-        initData.setStartYear(startYear);
-        initData.setEndYear(endYear);
-        LOGGER.info(IRPSection.INITIALIZATION_PARAMETER, "custom endyear: {}", endYear);
+    public void applyToSettings(BasicSettings settings) {
+        settings.setLastSimulationYear(lastSimulationYear);
     }
 }

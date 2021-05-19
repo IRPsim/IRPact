@@ -1,9 +1,13 @@
 package de.unileipzig.irpact.jadex.agents.consumer;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.time.Timestamp;
+import de.unileipzig.irpact.commons.util.ExceptionUtil;
+import de.unileipzig.irpact.core.agent.consumer.*;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedAttribute;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.need.Need;
@@ -11,33 +15,24 @@ import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
-import de.unileipzig.irpact.core.product.AdoptedProduct;
-import de.unileipzig.irpact.core.product.BasicAdoptedProduct;
-import de.unileipzig.irpact.core.product.ProductFindingScheme;
+import de.unileipzig.irpact.core.product.*;
+import de.unileipzig.irpact.core.product.awareness.ProductAwareness;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
 import de.unileipzig.irpact.jadex.agents.AbstractJadexAgentBDI;
 import de.unileipzig.irpact.jadex.agents.simulation.SimulationService;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
-import de.unileipzig.irpact.jadex.time.JadexTimestamp;
-import de.unileipzig.irpact.jadex.util.JadexUtil2;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentAttribute;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.jadex.util.JadexUtil;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
-import de.unileipzig.irpact.start.IRPact;
+import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bdiv3.annotation.Belief;
-import jadex.bdiv3.annotation.Goal;
-import jadex.bdiv3.annotation.Plan;
-import jadex.bdiv3.annotation.Trigger;
-import jadex.bdiv3.runtime.impl.PlanFailureException;
 import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.RequiredService;
 import jadex.micro.annotation.RequiredServices;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -60,20 +55,23 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     protected SpatialInformation spatialInformation;
     protected SimulationService simulationService;
     protected Map<String, ConsumerAgentAttribute> attributes = new LinkedHashMap<>();
+    protected Map<String, ConsumerAgentProductRelatedAttribute> productRelatedAttributes = new LinkedHashMap<>();
     protected double informationAuthority;
     protected SocialGraph.Node node;
-    protected ProductInterest productAwareness;
-    protected Set<AdoptedProduct> adoptedProducts = new LinkedHashSet<>();
+    protected ProductAwareness productAwareness;
+    protected ProductInterest productInterest;
+    protected Map<Product, AdoptedProduct> adoptedProducts = new LinkedHashMap<>();
     protected ProductFindingScheme productFindingScheme;
     protected ProcessFindingScheme processFindingScheme;
     protected Set<AttributeAccess> externAttributes = new LinkedHashSet<>();
 
-    protected final Lock LOCK = new ReentrantLock();
-    protected final Condition PRE_CON = LOCK.newCondition();
-    protected Timestamp currentStamp = null;
-    protected boolean execPlanInit = true;
+    protected final Lock DATA_LOCK = new ReentrantLock();
+    protected final Lock ACCESS_LOCK = new ReentrantLock();
+    protected final Condition WAIT_FOR_ACCESSIBILITY = ACCESS_LOCK.newCondition();
+    protected boolean accessibleForActions = false;
     protected int actionsInThisStep = 0;
-    protected int maxActions = 1; //!!!
+    protected int maxNumberOfActions;
+    protected long actingOrder;
 
     @Belief
     protected Set<Need> needs = new LinkedHashSet<>();
@@ -104,9 +102,9 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     protected void searchSimulationService() {
-        JadexUtil2.searchPlatformServices(reqFeature, SimulationService.class, result -> {
+        JadexUtil.searchPlatformServices(reqFeature, SimulationService.class, result -> {
             if(simulationService == null) {
-                log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] SimulationService found", getName());
+                log().trace(IRPSection.INITIALIZATION_PLATFORM, "[{}] SimulationService found", getName());
                 simulationService = result;
                 setupAgent();
             }
@@ -126,19 +124,19 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     protected void onInit() {
         initData();
-        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] init", getName());
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] init ({})", getName(), now());
         searchSimulationService();
     }
 
     @Override
     protected void onStart() {
-        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] start", getName());
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] start ({})", getName(), now());
         scheduleFirstAction();
     }
 
     @Override
     protected void onEnd() {
-        log().trace(IRPSection.INITIALIZATION_AGENT, "[{}] end", getName());
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] end ({})", getName(), now());
         proxyAgent.unsync(this);
     }
 
@@ -158,19 +156,28 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     protected void initData() {
         proxyAgent = getProxy();
         name = proxyAgent.getName();
+        node = proxyAgent.getSocialGraphNode();
         group = (JadexConsumerAgentGroup) proxyAgent.getGroup();
         environment = (JadexSimulationEnvironment) proxyAgent.getEnvironment();
         informationAuthority = proxyAgent.getInformationAuthority();
+        maxNumberOfActions = proxyAgent.getMaxNumberOfActions();
+        actingOrder = proxyAgent.getActingOrder();
         spatialInformation = proxyAgent.getSpatialInformation();
         for(ConsumerAgentAttribute attr: proxyAgent.getAttributes()) {
             attributes.put(attr.getName(), attr);
         }
-        productAwareness = proxyAgent.getProductInterest();
-        adoptedProducts.addAll(proxyAgent.getAdoptedProducts());
+        for(ConsumerAgentProductRelatedAttribute attr: proxyAgent.getProductRelatedAttributes()) {
+            productRelatedAttributes.put(attr.getName(), attr);
+        }
+        productAwareness = proxyAgent.getProductAwareness();
+        productInterest = proxyAgent.getProductInterest();
+        for(AdoptedProduct adoptedProduct: proxyAgent.getAdoptedProducts()) {
+            adoptedProducts.put(adoptedProduct.getProduct(), adoptedProduct);
+        }
         processFindingScheme = proxyAgent.getProcessFindingScheme();
         productFindingScheme = proxyAgent.getProductFindingScheme();
-        addAllNeeds(proxyAgent.getNeeds()); //!
-        plans.putAll(proxyAgent.getPlans()); //!
+        addAllInitialNeeds(proxyAgent.getNeeds()); //!
+        addAllPlans(proxyAgent.getPlans()); //!
         externAttributes.addAll(proxyAgent.getExternAttributes());
 
         proxyAgent.sync(getRealAgent());
@@ -191,30 +198,34 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         return needs;
     }
 
-    protected void addAllNeeds(Collection<Need> needs) {
-        for(Need need: needs) {
-            addNeed(need);
-        }
+    @Override
+    public boolean hasNeed(Need need) {
+        return needs.contains(need);
     }
 
     @Override
     public void addNeed(Need need) {
+        if(hasNeed(need)) {
+            return;
+        }
+
         needs.add(need);
-        handleNewNeed(need);
+        handleNewNeed(need, false);
     }
 
-    protected void handleNewNeed(Need need) {
-        Product product = productFindingScheme.findProduct(getThisAgent(), need);
-        if(product == null) {
+    protected void addAllInitialNeeds(Collection<Need> needs) {
+        for(Need need: needs) {
+            addInitialNeed(need);
+        }
+    }
+
+    protected void addInitialNeed(Need need) {
+        if(hasNeed(need)) {
             return;
         }
-        ProcessModel model = processFindingScheme.findModel(product);
-        if(model == null) {
-            return;
-        }
-        ProcessPlan plan = model.newPlan(getThisAgent(), need, product);
-        addPlan(need, plan);
-        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] added plan for need='{}' and product='{}'", getName(), need.getName(), product.getName());
+
+        needs.add(need);
+        handleNewNeed(need, true);
     }
 
     protected void addAllPlans(Map<Need, ProcessPlan> plans) {
@@ -255,7 +266,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     public void addAttribute(ConsumerAgentAttribute attribute) {
         if(attributes.containsKey(attribute.getName())) {
-            throw new IllegalArgumentException("attribute '" + attribute.getName() + "' already exists");
+            throw ExceptionUtil.create(IllegalArgumentException::new, "attribute '{}' already exists", attribute.getName());
         } else {
             attributes.put(attribute.getName(), attribute);
         }
@@ -267,13 +278,89 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public ProductInterest getProductInterest() {
+    public Collection<ConsumerAgentProductRelatedAttribute> getProductRelatedAttributes() {
+        return productRelatedAttributes.values();
+    }
+
+    @Override
+    public boolean hasProductRelatedAttribute(String name) {
+        return productRelatedAttributes.containsKey(name);
+    }
+
+    @Override
+    public ConsumerAgentProductRelatedAttribute getProductRelatedAttribute(String name) {
+        return productRelatedAttributes.get(name);
+    }
+
+    @Override
+    public void addProductRelatedAttribute(ConsumerAgentProductRelatedAttribute attribute) {
+        if(hasProductRelatedAttribute(attribute)) {
+            throw ExceptionUtil.create(IllegalArgumentException::new, "attribute '{}' already exists", attribute.getName());
+        }
+        productRelatedAttributes.put(attribute.getName(), attribute);
+    }
+
+    @Override
+    public void updateProductRelatedAttributes(Product newProduct) {
+        ProductGroup productGroup = newProduct.getGroup();
+        for(ConsumerAgentProductRelatedAttribute relatedAttribute: getProductRelatedAttributes()) {
+            relatedAttribute.getGroup().deriveUpdate(newProduct, relatedAttribute);
+        }
+    }
+
+    @Override
+    public ProductAwareness getProductAwareness() {
         return productAwareness;
+    }
+
+    @Override
+    public boolean isAware(Product product) {
+        return productAwareness.isAware(product);
+    }
+
+    @Override
+    public void makeAware(Product product) {
+        productAwareness.makeAware(product);
+    }
+
+    @Override
+    public boolean isInterested(Product product) {
+        return productInterest.isInterested(product);
+    }
+
+    @Override
+    public double getInterest(Product product) {
+        return productInterest.getValue(product);
+    }
+
+    @Override
+    public void updateInterest(Product product, double value) {
+        productInterest.update(product, value);
+    }
+
+    @Override
+    public void makeInterested(Product product) {
+        productInterest.makeInterested(product);
+    }
+
+    @Override
+    public ProductInterest getProductInterest() {
+        return productInterest;
     }
 
     @Override
     public double getInformationAuthority() {
         return informationAuthority;
+    }
+
+    @Override
+    public int getMaxNumberOfActions() {
+        return maxNumberOfActions;
+    }
+
+    @Override
+    public long getActingOrder() {
+        return actingOrder;
     }
 
     @Override
@@ -292,87 +379,60 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public int getHashCode() {
+    public int getChecksum() {
         return Objects.hash(
                 getName(),
                 getGroup().getName(),
                 getInformationAuthority(),
-                getSpatialInformation().getHashCode(),
-                IsEquals.getCollHashCode(getAttributes()),
-                getProductInterest().getHashCode(),
-                IsEquals.getCollHashCode(getAdoptedProducts()),
-                getProductFindingScheme().getHashCode(),
-                getProcessFindingScheme().getHashCode(),
-                IsEquals.getCollHashCode(getNeeds()),
-                IsEquals.getMapHashCode(getPlans()),
-                IsEquals.getCollHashCode(externAttributes)
+                getSpatialInformation().getChecksum(),
+                ChecksumComparable.getCollChecksum(getAttributes()),
+                getProductInterest().getChecksum(),
+                ChecksumComparable.getCollChecksum(getAdoptedProducts()),
+                getProductFindingScheme().getChecksum(),
+                getProcessFindingScheme().getChecksum(),
+                ChecksumComparable.getCollChecksum(getNeeds()),
+                ChecksumComparable.getMapChecksum(getPlans()),
+                ChecksumComparable.getCollChecksum(externAttributes)
         );
     }
 
     @Override
-    public boolean tryAquireAction() {
-        if(actionsInThisStep > 0) {
-            //Warte bis Agent mit der pre-Phase zu Ende ist
-            while(execPlanInit) {
-                LOCK.lock();
-                try {
-                    try {
-                        PRE_CON.await();
-                    } catch (InterruptedException e) {
-                        //ignore
-                    }
-                } finally {
-                    LOCK.unlock();
-                }
+    public void allowAttention() {
+        if(!accessibleForActions) {
+            accessibleForActions = true;
+            ACCESS_LOCK.lock();
+            try {
+                WAIT_FOR_ACCESSIBILITY.signalAll();
+            } finally {
+                ACCESS_LOCK.unlock();
             }
-            if(actionsInThisStep == 0) {
-                return false;
-            }
-            //Der Erste bekommt das Lock
-            if(LOCK.tryLock()) {
-                if(actionsInThisStep > 0) {
-                    return true;
-                } else {
-                    //unlock, falls fehlschlag
-                    LOCK.unlock();
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        } else {
-            return false;
         }
     }
 
     @Override
-    public boolean tryAquireSelf() {
-        if(LOCK.tryLock()) {
-            if(actionsInThisStep > 0) {
+    public boolean tryAquireAttention() {
+        if(actionsInThisStep < maxNumberOfActions) {
+            while(!accessibleForActions) {
+                ACCESS_LOCK.lock();
+                try {
+                    WAIT_FOR_ACCESSIBILITY.await();
+                } catch (InterruptedException e) {
+                    //ignore
+                } finally {
+                    ACCESS_LOCK.unlock();
+                }
+            }
+
+            ACCESS_LOCK.lock();
+            if(actionsInThisStep < maxNumberOfActions) {
                 return true;
             } else {
-                LOCK.unlock();
+                ACCESS_LOCK.unlock();
                 return false;
             }
         } else {
             return false;
         }
-    }
-
-    @Override
-    public void allowAquire() {
-        execPlanInit = false;
-        LOCK.lock();
-        try {
-            PRE_CON.signalAll();
-        } finally {
-            LOCK.unlock();
-        }
-    }
-
-    @Override
-    public void aquireFailed() {
-        LOCK.unlock();
     }
 
     @Override
@@ -381,8 +441,28 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public void releaseAquire() {
-        LOCK.unlock();
+    public void releaseAttention() {
+        ACCESS_LOCK.unlock();
+    }
+
+    @Override
+    public void aquireDataAccess() {
+        DATA_LOCK.lock();
+    }
+
+    @Override
+    public boolean tryAquireDataAccess() {
+        return DATA_LOCK.tryLock();
+    }
+
+    @Override
+    public boolean tryAquireDataAccess(long time, TimeUnit unit) throws InterruptedException {
+        return DATA_LOCK.tryLock(time, unit);
+    }
+
+    @Override
+    public void releaseDataAccess() {
+        DATA_LOCK.unlock();
     }
 
     @Override
@@ -391,33 +471,33 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public Set<AdoptedProduct> getAdoptedProducts() {
-        return adoptedProducts;
+    public Collection<AdoptedProduct> getAdoptedProducts() {
+        return adoptedProducts.values();
     }
 
     @Override
     public boolean hasAdopted(Product product) {
-        for(AdoptedProduct ap: adoptedProducts) {
-            if(ap.getProduct() == product) {
-                return true;
-            }
-        }
-        return false;
+        return adoptedProducts.containsKey(product);
+    }
+
+    protected boolean hasInitialAdopted(Product product) {
+        AdoptedProduct adoptedProduct = adoptedProducts.get(product);
+        return adoptedProduct != null && adoptedProduct.isInitial();
     }
 
     @Override
     public void addAdoptedProduct(AdoptedProduct adoptedProduct) {
-        adoptedProducts.add(adoptedProduct);
+        adoptedProducts.put(adoptedProduct.getProduct(), adoptedProduct);
     }
 
     @Override
-    public void adopt(Need need, Product product) {
-        JadexTimestamp now = environment.getTimeModel().now();
-        adoptAt(need, product, now);
+    public void adoptInitial(Product product) {
+        AdoptedProduct adoptedProduct = new BasicAdoptedProduct(product);
+        addAdoptedProduct(adoptedProduct);
     }
 
     @Override
-    public void adoptAt(Need need, Product product, Timestamp stamp) {
+    public void adopt(Need need, Product product, Timestamp stamp) {
         if(needs.contains(need)) {
             AdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, stamp);
             needs.remove(need);
@@ -440,8 +520,21 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public Attribute<?> findAttribute(String name) {
-        ConsumerAgentAttribute attr = getAttribute(name);
+    public boolean hasAnyAttribute(String name) {
+        if(hasAttribute(name)) {
+            return true;
+        }
+        for(AttributeAccess attributeAccess: externAttributes) {
+            if(attributeAccess.hasAttribute(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Attribute findAttribute(String name) {
+        Attribute attr = getAttribute(name);
         if(attr != null) {
             return attr;
         }
@@ -456,97 +549,147 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     protected void firstAction() {
         //bdiFeature.dispatchTopLevelGoal(new ProcessExecutionGoal(null, null));
-        log().debug("[{}] start loop", getName());
+        log().trace(IRPSection.SIMULATION_AGENT, "[{}] start loop ({})", getName(), now());
+        onLoopAction();
         scheduleLoop();
     }
 
+    protected boolean hasPlans() {
+        return !getPlans().isEmpty();
+    }
+
     @Override
-    protected void loopAction() {
-        log().trace(IRPSection.SIMULATION_AGENT, "[{}] loop @ {}", getName(), now());
+    protected void onLoopAction() {
+        //vor allen anderen checks
+        resetOnNewAction();
 
-        //log().trace(IRPSection.SIMULATION_AGENT, "[{}] pre sync @ {}", getName(), now());
+        waitForYearChangeIfRequired();
+        log().trace(IRPSection.SIMULATION_AGENT, "[{}] start next action ({})", getName(), now());
+
         waitForSynchronisationIfRequired();
-        //log().trace(IRPSection.SIMULATION_AGENT, "[{}] post sync @ {}", getName(), now());
+        log().trace(IRPSection.SIMULATION_AGENT, "[{}] post sync", getName());
 
-        for(ProcessPlan plan: getPlans().values())  {
-            plan.execute();
+        if(hasPlans()) {
+            for(ProcessPlan plan: getPlans().values())  {
+                executePlan(plan);
+            }
+        } else {
+            allowAttention();
         }
+    }
+    
+    protected void resetOnNewAction() {
+        accessibleForActions = false;
+        actionsInThisStep = 0;
+        log().trace(IRPSection.SIMULATION_AGENT, "[{}] reset aktion counter", getName());
     }
 
     //=========================
     //new need
     //=========================
 
-    @Goal
-    public class FindProcessForNeedGoal {
+//    @Goal
+//    public class FindProcessForNeedGoal {
+//
+//        protected Need need;
+//
+//        public FindProcessForNeedGoal(Need need) {
+//            this.need = need;
+//        }
+//
+//        public Need getNeed() {
+//            return need;
+//        }
+//    }
+//
+//    @Plan(trigger = @Trigger(goals = FindProcessForNeedGoal.class))
+//    protected void handleNewNeed(FindProcessForNeedGoal goal) throws PlanFailureException {
+//        Need need = goal.getNeed();
+//        Product product = productFindingScheme.findProduct(getThisAgent(), need);
+//        if(product == null) {
+//            throw new PlanFailureException();
+//        }
+//        ProcessModel model = processFindingScheme.findModel(product);
+//        if(model == null) {
+//            throw new PlanFailureException();
+//        }
+//        ProcessPlan plan = model.newPlan(getThisAgent(), need, product);
+//        plans.put(need, plan);
+//        bdiFeature.dispatchTopLevelGoal(new ProcessExecutionGoal(need, plan));
+//    }
 
-        protected Need need;
-
-        public FindProcessForNeedGoal(Need need) {
-            this.need = need;
-        }
-
-        public Need getNeed() {
-            return need;
-        }
-    }
-
-    @Plan(trigger = @Trigger(goals = FindProcessForNeedGoal.class))
-    protected void handleNewNeed(FindProcessForNeedGoal goal) throws PlanFailureException {
-        Need need = goal.getNeed();
+    protected void handleNewNeed(Need need, boolean initial) {
         Product product = productFindingScheme.findProduct(getThisAgent(), need);
         if(product == null) {
-            throw new PlanFailureException();
+            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] no product found for need '{}'", getName(), need.getName());
+            return;
         }
+        if(hasInitialAdopted(product)) {
+            needs.remove(need);
+            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] product='{}' initally adoped", getName(), product.getName());
+            return;
+        }
+
         ProcessModel model = processFindingScheme.findModel(product);
         if(model == null) {
-            throw new PlanFailureException();
+            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] no process model found for product '{}'", getName(), product.getName());
+            return;
         }
+
         ProcessPlan plan = model.newPlan(getThisAgent(), need, product);
-        plans.put(need, plan);
-        bdiFeature.dispatchTopLevelGoal(new ProcessExecutionGoal(need, plan));
+        if(plan == null) {
+            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] no process plan found for product '{}' and need '{}'", getName(), product.getName(), need.getName());
+            return;
+        }
+
+        addPlan(need, plan);
+        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] added plan for need='{}' and product='{}'", getName(), need.getName(), product.getName());
     }
 
     //=========================
     //new plan
     //=========================
 
-    //@Goal(excludemode = MProcessableElement.ExcludeMode.WhenSucceeded, retry = true, retrydelay = 1)
-    @Goal
-    public class ProcessExecutionGoal {
-
-        protected Need need;
-        protected ProcessPlan plan;
-
-        public ProcessExecutionGoal(Need need, ProcessPlan plan) {
-            this.need = need;
-            this.plan = plan;
-        }
-
-        public Need getNeed() {
-            return need;
-        }
-
-        public ProcessPlan getPlan() {
-            return plan;
-        }
-    }
-
-    @Plan(trigger = @Trigger(goals = ProcessExecutionGoal.class))
-    protected void handleProcessExecution(ProcessExecutionGoal goal) {
-        log().debug("[{}] @ {} ({})", getName(), now(), System.identityHashCode(now()));
-        log().debug("[{}] pre sync", getName());
-        waitForSynchronisationIfRequired();
-        log().debug("[{}] post sync", getName());
-//        ProcessPlan plan = goal.getPlan();
-//        ProcessPlanResult result = plan.execute();
-//        switch(result) {
-//            case ADOPTED:
-//                break;
+//    //@Goal(excludemode = MProcessableElement.ExcludeMode.WhenSucceeded, retry = true, retrydelay = 1)
+//    @Goal
+//    public class ProcessExecutionGoal {
 //
-//            case IN_PROCESS:
-//            default:
-//                throw new PlanFailureException();
+//        protected Need need;
+//        protected ProcessPlan plan;
+//
+//        public ProcessExecutionGoal(Need need, ProcessPlan plan) {
+//            this.need = need;
+//            this.plan = plan;
 //        }
+//
+//        public Need getNeed() {
+//            return need;
+//        }
+//
+//        public ProcessPlan getPlan() {
+//            return plan;
+//        }
+//    }
+//
+//    @Plan(trigger = @Trigger(goals = ProcessExecutionGoal.class))
+//    protected void handleProcessExecution(ProcessExecutionGoal goal) {
+//        log().trace("[{}] @ {} ({})", getName(), now(), System.identityHashCode(now()));
+//        log().trace("[{}] pre sync", getName());
+//        waitForSynchronisationIfRequired();
+//        log().trace("[{}] post sync", getName());
+////        ProcessPlan plan = goal.getPlan();
+////        ProcessPlanResult result = plan.execute();
+////        switch(result) {
+////            case ADOPTED:
+////                break;
+////
+////            case IN_PROCESS:
+////            default:
+////                throw new PlanFailureException();
+////        }
+//    }
+
+    protected void executePlan(ProcessPlan plan) {
+        plan.execute();
     }
 }

@@ -6,7 +6,7 @@ import de.unileipzig.irpact.commons.graph.topology.AbstractMultiGraphTopology;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.start.CommandLineOptions;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.in.SideCustom;
 import de.unileipzig.irpact.start.optact.out.OutCustom;
@@ -43,10 +43,10 @@ public class OptAct {
 
     private static final IRPLogger logger = IRPLogging.getLogger(OptAct.class);
 
-    private final CommandLineOptions clOptions;
+    private final MainCommandLineOptions clOptions;
     private final ObjectNode inRoot;
 
-    public OptAct(CommandLineOptions clOptions, ObjectNode inRoot) {
+    public OptAct(MainCommandLineOptions clOptions, ObjectNode inRoot) {
         this.clOptions = clOptions;
         this.inRoot = inRoot;
     }
@@ -189,10 +189,10 @@ public class OptAct {
         Path imagePath = clOptions.getImagePath();
         Path dotPath = imagePath.resolveSibling(imagePath.getFileName().toString() + ".dot");
         try {
-            logger.debug("store temp-dot file: {}", dotPath);
+            logger.trace("store temp-dot file: {}", dotPath);
             gen.store(dotPath);
 
-            logger.debug("init dot process");
+            logger.trace("init dot process");
             DotProcess process;
             try {
                 process = new DotProcess()
@@ -207,7 +207,7 @@ public class OptAct {
                 return;
             }
 
-            logger.debug("execute dot process");
+            logger.trace("execute dot process");
 
             ProcessResult result;
             try {
@@ -224,7 +224,7 @@ public class OptAct {
             }
 
             if(Files.exists(imagePath)) {
-                logger.debug("image created ({})", imagePath);
+                logger.trace("image created ({})", imagePath);
             } else {
                 logger.error("image not created ({})", imagePath);
             }

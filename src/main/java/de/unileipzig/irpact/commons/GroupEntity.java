@@ -3,7 +3,7 @@ package de.unileipzig.irpact.commons;
 /**
  * @author Daniel Abitz
  */
-public interface GroupEntity<T> {
+public interface GroupEntity<G> {
 
-    T getGroup();
+    G getGroup();
 }

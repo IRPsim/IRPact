@@ -1,8 +1,12 @@
 package de.unileipzig.irpact.core.spatial.distribution;
 
-import de.unileipzig.irpact.commons.CollectionUtil;
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.exception.IRPactException;
+import de.unileipzig.irpact.commons.exception.IRPactRuntimeException;
+import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -13,9 +17,12 @@ import java.util.Set;
  */
 public class DiscreteSpatialDistribution extends ResettableSpatialDistributionBase {
 
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(DiscreteSpatialDistribution.class);
+
     protected Set<SpatialInformation> unused;
     protected Set<SpatialInformation> used;
     protected Rnd rnd;
+    public boolean NOCALL = false;
 
     public DiscreteSpatialDistribution() {
         this(new LinkedHashSet<>(), new LinkedHashSet<>());
@@ -55,6 +62,14 @@ public class DiscreteSpatialDistribution extends ResettableSpatialDistributionBa
         call();
     }
 
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.getChecksum(
+                getName(),
+                getRandom()
+        );
+    }
+
     public Set<SpatialInformation> getUnused() {
         return unused;
     }
@@ -89,10 +104,13 @@ public class DiscreteSpatialDistribution extends ResettableSpatialDistributionBa
 
     @Override
     public SpatialInformation drawValue() {
+        if(NOCALL) {
+            throw new IRPactRuntimeException("FIXME");
+        }
         if(unused.isEmpty()) {
             throw new IllegalStateException("set is empty");
         }
-        SpatialInformation info = CollectionUtil.removeRandom(unused, rnd.getRandom());
+        SpatialInformation info = rnd.removeRandom(unused);
         used.add(info);
         numberOfCalls++;
         return info;

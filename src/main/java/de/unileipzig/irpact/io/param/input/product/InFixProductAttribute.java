@@ -1,13 +1,14 @@
 package de.unileipzig.irpact.io.param.input.product;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.product.ProductAttribute;
-import de.unileipzig.irpact.core.product.ProductGroupAttribute;
-import de.unileipzig.irpact.io.param.input.InEntity;
+import de.unileipzig.irpact.core.product.attribute.ProductAttribute;
+import de.unileipzig.irpact.core.product.attribute.ProductDoubleGroupAttribute;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
+import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
@@ -20,7 +21,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InFixProductAttribute implements InEntity {
+public class InFixProductAttribute implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -53,6 +54,19 @@ public class InFixProductAttribute implements InEntity {
         this._name = name;
         setGroupAttribute(grpAttr);
         this.fixPAvalue = value;
+    }
+
+    @Override
+    public InFixProductAttribute copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InFixProductAttribute newCopy(CopyCache cache) {
+        InFixProductAttribute copy = new InFixProductAttribute();
+        copy._name = _name;
+        copy.refPGA = cache.copyArray(refPGA);
+        copy.fixPAvalue = fixPAvalue;
+        return copy;
     }
 
     @Override
@@ -89,8 +103,8 @@ public class InFixProductAttribute implements InEntity {
     }
 
     @Override
-    public ProductAttribute parse(InputParser parser) throws ParsingException {
-        ProductGroupAttribute pgAttr = parser.parseEntityTo(getGroupAttribute());
+    public ProductAttribute parse(IRPactInputParser parser) throws ParsingException {
+        ProductDoubleGroupAttribute pgAttr = parser.parseEntityTo(getGroupAttribute());
         return pgAttr.derive(getName(), getValue());
     }
 }

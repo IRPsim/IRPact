@@ -1,20 +1,24 @@
 package de.unileipzig.irpact.io.param.input.spatial.dist;
 
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.core.spatial.distribution.WeightedDiscreteSpatialDistribution;
-import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
+import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
+import de.unileipzig.irptools.util.Copyable;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -89,6 +93,11 @@ public class InFileSelectedGroupedSpatialDistribution2D implements InSpatialDist
         setGroupKey(groupKey);
     }
 
+    @Override
+    public Copyable copy(CopyCache copyCache) {
+        throw new TodoException();
+    }
+
     public void setName(String name) {
         this._name = name;
     }
@@ -120,15 +129,15 @@ public class InFileSelectedGroupedSpatialDistribution2D implements InSpatialDist
 
     public static WeightedDiscreteSpatialDistribution createInstance(
             String name,
-            List<List<SpatialAttribute<?>>> attrList,
+            List<List<SpatialAttribute>> attrList,
             String xKey,
             String yKey,
             String selectKey,
             String selectValue,
             String groupingKey,
             Rnd rnd) {
-        List<List<SpatialAttribute<?>>> selectedList = SpatialUtil.filter(attrList, selectKey, selectValue);
-        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xKey, yKey);
+        List<List<SpatialAttribute>> selectedList = SpatialUtil.filter(attrList, selectKey, selectValue);
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xKey, yKey, null);
         Map<String, List<SpatialInformation>> groupedInfos = SpatialUtil.groupingBy(infos, groupingKey);
 
         WeightedDiscreteSpatialDistribution dist = new WeightedDiscreteSpatialDistribution();
@@ -142,20 +151,20 @@ public class InFileSelectedGroupedSpatialDistribution2D implements InSpatialDist
     }
 
     @Override
-    public void setup(InputParser parser, Object input) throws ParsingException {
+    public void setup(IRPactInputParser parser, Object input) throws ParsingException {
         JadexConsumerAgentGroup jCag = (JadexConsumerAgentGroup) input;
 
         String xKey = getXPositionKey().getName();
         String yKey = getYPositionKey().getName();
         String selectKey = getSelectKey().getName();
         String groupingKey = getGroupKey().getName();
-        List<List<SpatialAttribute<?>>> attrList = parser.parseEntityTo(getFile());
+        SpatialTableFileContent attrList = parser.parseEntityTo(getFile());
         Rnd rnd = parser.deriveRnd();
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "InCustomSelectedSpatialDistribution2D '{}' uses seed: {}", getName(), rnd.getInitialSeed());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "InCustomSelectedSpatialDistribution2D '{}' uses seed: {}", getName(), rnd.getInitialSeed());
 
         WeightedDiscreteSpatialDistribution dist = createInstance(
                 getName(),
-                attrList,
+                attrList.content().listTable(),
                 xKey,
                 yKey,
                 selectKey,

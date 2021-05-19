@@ -1,5 +1,8 @@
 package de.unileipzig.irpact.commons.graph;
 
+import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.develop.TodoException;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -164,6 +167,11 @@ public class DirectedAdjacencyListMultiGraph<V, E, T> implements DirectedMultiGr
     public Set<V> getAllTargets(V vertex) {
         Map<V, Map<T, E>> map0 = adjacencyMap.get(vertex);
         return map0 == null ? Collections.emptySet() : map0.keySet();
+    }
+
+    @Override
+    public V getRandomTarget(V from, T type, Rnd rnd) {
+        throw new TodoException();
     }
 
     @Override

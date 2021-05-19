@@ -1,6 +1,8 @@
 ---
 general_settings:
   edn_label: "Allgemeine Einstellungen"
+  edn_description: "todo"
+
 InGeneral_seed:
   gams_identifier: "Zufallsgenerator (seed)"
   gams_description: "Setzt den Seed für den Zufallsgenerator der Simulation. Falls er auf -1 gesetzt wird, wird ein zufälliger Seed generiert."
@@ -8,9 +10,9 @@ InGeneral_timeout:
   gams_identifier: "Timeout"
   gams_description: "Setzt den Timeout der Simulation in Millisekunden. Diese Einstellung dient dazu die Simulation zu beenden, falls sie unerwartet abstürzt. Im Laufe der Simulation wird der Timeout unentwegt zurück gesetzt. Sollte es zu einem unerwarteten Fehler kommen und die Rücksetzung ausbleiben, wird die Simulation abgebrochen und beendet. Werte kleiner 1 deaktivieren den Timeout vollständig."
   gams_unit: "[ms]"
-InGeneral_endYear:
-  gams_identifier: "[Testoption] Endjahr der Simulation"
-  gams_description: "Setzt das finale Jahr der Simulation. Wichtig: Der Wert ist inklusiv. Es wird dabei immer mindestens ein Jahr simuliert, auch wenn der Wert kleiner ist als das des Ausgangsjahres."
+InGeneral_lastSimulationYear:
+  gams_identifier: "[Spezialoption] Letzte zu simulierende Jahr"
+  gams_description: "([Wichtig] Diese Option darf nur bei puren IRPact-Aufrufen (keine Modellkopplungen) genutzt werden, da sonst die Zeitkonsistenz verletzt wird!) Setzt das letzte zu simulierende Jahr der Simulation. Es wird dabei immer mindestens ein Jahr simuliert. Sollte der Wert also kleiner sein als das Ausgangsjahr, so wird dennoch das Ausgangsjahr simuliert. Beispiel: Ist das Ausgangsjahr = 2010 und letzte Simulationsjahr = 2013, dann werden die Jahre 2010, 2011, 2012 und 2013 simuliert."
 
 logging:
   edn_label: "Logging"
@@ -18,66 +20,83 @@ logging:
 
 logging_general:
   edn_label: "Allgemeine Loggingoptionen"
-  edn_description: "Ermöglicht die Einstellung der allgemeinen Loggingoptionen."
+  edn_description: "Hier lässt sich das allgemeine Logging von IRPact konfigurieren."
 InGeneral_logLevel:
   gams_identifier: "Logging-Level"
   gams_description: "Setzt das zu nutzende Logging-Level in IRPact, folgende Werte werden unterstützt: 0 = OFF, 1 = TRACE, 2 = DEBUG, 3 = INFO, 4 = WARN, 5 = ERROR, 6 = ALL. Das Level ist der Hauptfilter für alle log-Operationen."
   gams_domain: "[0,6]"
 InGeneral_logAll:
   gams_identifier: "Alles loggen?"
-  gams_description: "[SPAM] Ob alles geloggt werden soll. Falls ja, überschreibt diese Option alles."
+  gams_description: "Aktiviert alle log-Operationen in allen Komponenten."
+  gams_domain: "[0|1]"
+InGeneral_logAllIRPact:
+  gams_identifier: "IRPact loggen?"
+  gams_description: "Aktiviert alle log-Operationen von IRPact."
   gams_domain: "[0|1]"
 InGeneral_logAllTools:
-  gams_identifier: "Tools-Bibliothek loggen?"
-  gams_description: "[SPAM] Ob alle Aufrufe der Tools-Bibliothek geloggt werden sollen."
-  gams_domain: "[0|1]"
-
-logging_specific:
-  edn_label: "Spezielle Loggingoptionen"
-  edn_description: "Ermöglicht es spezielle Loggingoptionen einzustellen."
-InGeneral_logToolsCore:
-  gams_identifier: "logToolsCore"
-  gams_description: "[SPAM] logToolsCore"
-  gams_domain: "[0|1]"
-InGeneral_logToolsDefinition:
-  gams_identifier: "logToolsDefinition"
-  gams_description: "[SPAM] logToolsDefinition"
+  gams_identifier: "IRPtools-Bibliothek loggen?"
+  gams_description: "Aktiviert alle log-Operationen von IRPtools."
   gams_domain: "[0|1]"
 InGeneral_logInitialization:
-  gams_identifier: "logInitialization"
-  gams_description: "logInitialization"
+  gams_identifier: "Initialisierung loggen?"
+  gams_description: "Aktiviert das Logging des Initialisierungsprozesses. Dieser umfasst alles vom Start bis zum eigentlichen Start der Simulation."
   gams_domain: "[0|1]"
-InGeneral_logParamInit:
-  gams_identifier: "logParamInit"
-  gams_description: "[SPAM] logParamInit"
+InGeneral_logSimulation:
+  gams_identifier: "Simulationsprozess loggen?"
+  gams_description: "Aktiviert das Logging des Simulationsprozesses."
   gams_domain: "[0|1]"
-InGeneral_logGraphCreation:
-  gams_identifier: "logGraphCreation"
-  gams_description: "[SPAM] logGraphCreation"
+
+logging_data:
+  edn_label: "Ausgabe von Berechnungen und Informationen"
+  edn_description: "Hier lassen sich Optionen finden, mit denen Berechnungsschritte oder essenziell Änderungen ausgegeben werden können."
+InGeneral_logGraphUpdate:
+  gams_identifier: "Gibt die Graphänderungen aus [GU]"
+  gams_description: "Gibt an, ob die Graphänderungen ausgegeben werden sollen."
   gams_domain: "[0|1]"
-InGeneral_logAgentCreation:
-  gams_identifier: "logAgentCreation"
-  gams_description: "[SPAM] logAgentCreation"
+InGeneral_logRelativeAgreement:
+  gams_identifier: "Gibt die 'relative agreement' Werte aus [RA]"
+  gams_description: "Gibt an, ob die Werte vom relative agreement Algorithmus ausgegeben werden sollen."
   gams_domain: "[0|1]"
-InGeneral_logPlatformCreation:
-  gams_identifier: "logPlatformCreation"
-  gams_description: "[SPAM] logPlatformCreation"
+InGeneral_logInterestUpdate:
+  gams_identifier: "Gibt Änderungen beim Produktinteresse aus [IU]"
+  gams_description: "Gibt an, ob Änderungen des Produktinteresses ausgegeben werden sollen."
   gams_domain: "[0|1]"
-InGeneral_logSimulationLifecycle:
-  gams_identifier: "logSimulationLifecycle"
-  gams_description: "[SPAM] logSimulationLifecycle"
+InGeneral_logShareNetworkLocal:
+  gams_identifier: "Gibt die globalen und lokalen Anteile aus [SNL]"
+  gams_description: "Gibt an, ob die globalen und lokalen Adopteranteile ausgegeben werden sollen."
   gams_domain: "[0|1]"
-InGeneral_logSimulationAgent:
-  gams_identifier: "logSimulationAgent"
-  gams_description: "[SPAM] logSimulationAgent"
+InGeneral_logFinancalComponent:
+  gams_identifier: "Gibt die finanzielle Komponente aus [FC]"
+  gams_description: "Gibt an, ob die Berechnung der finanziellen Komponente ausgegen werden soll."
   gams_domain: "[0|1]"
-InGeneral_logJadexSystemOut:
-  gams_identifier: "logJadexSystemOut"
-  gams_description: "[SPAM] logJadexSystemOut"
+InGeneral_logCalculateDecisionMaking:
+  gams_identifier: "Gibt die Berechnungen beim decision making aus [DM]"
+  gams_description: "Gibt an, ob die Berechnung beim decision making ausgegen werden sollen."
+  gams_domain: "[0|1]"
+
+logging_result:
+  edn_label: "Ausgabe von speziellen Ergebnissen"
+  edn_description: "Diese Optionen ermöglichen die Ausgabe von Ergebnissen in spezieller Form."
+InGeneral_logResultGroupedByZip:
+  gams_identifier: "Ergebnisausgabe nach PLZ"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus."
+  gams_domain: "[0|1]"
+InGeneral_logResultGroupedByMilieu:
+  gams_identifier: "Ergebnisausgabe nach Milieu"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem Milieu aus."
+  gams_domain: "[0|1]"
+InGeneral_logResultGroupedByZipAndMilieu:
+  gams_identifier: "Ergebnisausgabe nach PLZ und Milieu"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ und dem Milieu (in dieser Reihenfolge) aus."
+  gams_domain: "[0|1]"
+InGeneral_logProductAdoptions:
+  gams_identifier: "Ausgabe Adoptionszeitpunkte"
+  gams_description: "Gibt alle Adoptionen mit ihren Zeitpunkten aus."
   gams_domain: "[0|1]"
 
 special_settings:
   edn_label: "Spezielle Einstellungen"
+  edn_description: "Hier lassen sich spezielle Modi aktivieren."
 InGeneral_runOptActDemo:
   gams_identifier: "[Testoption] optact-Testmodell ausführen"
   gams_description: "Falls gesetzt, wird die optact-Demo gestartet. Anderenfalls wird IRPact gestartet."
@@ -99,11 +118,13 @@ VisibleBinaryData_idVisible:
 
 names:
   edn_label: "Namen"
+  edn_description: "todo"
 
 
 
 files:
   edn_label: "Dateien"
+  edn_description: "todo"
 
 InPVFile:
   edn_label: "PV Dateien"
@@ -123,19 +144,79 @@ InSpatialTableFile_placeholderInSpatialFile:
 
 distributions:
   edn_label: "Verteilungsfunktionen"
+  edn_description: "todo"
+
+InBernoulliDistribution:
+  edn_label: "Bernoulliverteilung"
+  edn_description: "Verteilungsfunktion, welche 0 oder 1 zurück gibt."
+InBernoulliDistribution_p:
+  gams_identifier: "p"
+  gams_description: "Wahrscheinlichkeit p"
+  gams_domain: "[0,1]"
+InBernoulliDistribution_trueValue:
+  gams_identifier: "x"
+  gams_description: "Dieser Wert wird mit der Wahrscheinlichkeit p zurück gegeben."
+  gams_default: "1"
+InBernoulliDistribution_falseValue:
+  gams_identifier: "y"
+  gams_description: "Dieser Wert wird mit der Wahrscheinlichkeit 1-p zurück gegeben."
+  gams_default: "0"
 
 InBooleanDistribution:
   edn_label: "Boolean"
-  edn_description: "Verteilungsfunktion, welche 0 oder 1 zurück gibt."
-InBooleanDistribution_placeholderBooleanDist:
-  gams_identifier: "---"
-  gams_description: "Ungenutzter Platzhalter"
+  edn_description: "Verteilungsfunktion, welche x oder y zurück gibt. Der Wahrscheinlichkeit ist dabei gleichverteilt. Diese Funktion entspricht einer Bernoulliverteilung mit p = 0,5."
+InBooleanDistribution_trueValue:
+  gams_identifier: "x"
+  gams_description: "Der Wert, welcher zurückgegeben wird, wenn die Funktion intern 1 (WAHR) ergibt."
+  gams_default: "1"
+InBooleanDistribution_falseValue:
+  gams_identifier: "y"
+  gams_description: "Der Wert, welcher zurückgegeben wird, wenn die Funktion intern 0 (FALSCH) ergibt."
+  gams_default: "0"
 
-InConstantUnivariateDistribution:
-  edn_label: "Dirac"
+InBoundedNormalDistribution:
+  edn_label: "beschränkte Normalverteilung"
+  edn_description: "Verteilungsfunktionauf Basis der Normalverteilung."
+InBoundedNormalDistribution_standardDeviation:
+  gams_identifier: "Standardabweichung"
+  gams_description: "Die zu nutzende Standardabweichung."
+  gams_default: "1"
+InBoundedNormalDistribution_mean:
+  gams_identifier: "Mittelwert"
+  gams_description: "Der zu nutzende Mittelwert."
+  gams_default: "0"
+InBoundedNormalDistribution_lowerBound:
+  gams_identifier: "Untergrenze (inklusiv)"
+  gams_description: "Legt die Untergrenze fest."
+InBoundedNormalDistribution_upperBound:
+  gams_identifier: "Obergrenze (exklusiv)"
+  gams_description: "Legt die Obergrenze fest."
+
+InBoundedUniformDoubleDistribution:
+  edn_label: "Gleichverteilte ganze Zahlen"
+  edn_description: "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht."
+InBoundedUniformDoubleDistribution_lowerBound:
+  gams_identifier: "Untergrenze (inklusiv)"
+  gams_description: "Legt die Untergrenze fest."
+InBoundedUniformDoubleDistribution_upperBound:
+  gams_identifier: "Obergrenze (exklusiv)"
+  gams_description: "Legt die Obergrenze fest."
+
+InBoundedUniformIntegerDistribution:
+  edn_label: "Gleichverteilte ganze Zahlen"
+  edn_description: "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht."
+InBoundedUniformIntegerDistribution_lowerBound:
+  gams_identifier: "Untergrenze (inklusiv)"
+  gams_description: "Legt die Untergrenze fest."
+InBoundedUniformIntegerDistribution_upperBound:
+  gams_identifier: "Obergrenze (exklusiv)"
+  gams_description: "Legt die Obergrenze fest."
+
+InDiracUnivariateDistribution:
+  edn_label: "Dirac-Verteilung"
   edn_description: "Verteilungsfunktion, welche einen konstanten Wert zurück gibt."
-InConstantUnivariateDistribution_constDistValue:
-  gams_identifier: "Wert"
+InDiracUnivariateDistribution_value:
+  gams_identifier: "x"
   gams_description: "Legt den konstante Rückgabewert fest."
 
 InFiniteMassPointsDiscreteDistribution:
@@ -155,30 +236,46 @@ InMassPoint_mpWeight:
   gams_identifier: "Wichtung des Punktes"
   gams_description: "Legt die Wichtung des Punktes fest."
 
-InRandomBoundedIntegerDistribution:
-  edn_label: "Gleichverteilte ganze Zahlen"
-  edn_description: "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht."
-InRandomBoundedIntegerDistribution_lowerBoundInt:
-  gams_identifier: "Untergrenze (inklusiv)"
-  gams_description: "Legt die Untergrenze fest."
-InRandomBoundedIntegerDistribution_upperBoundInt:
-  gams_identifier: "Obergrenze (exklusiv)"
-  gams_description: "Legt die Obergrenze fest."
+InNormalDistribution:
+  edn_label: "Normalverteilung"
+  edn_description: "Verteilungsfunktionauf Basis der Normalverteilung."
+InNormalDistribution_standardDeviation:
+  gams_identifier: "Standardabweichung"
+  gams_description: "Die zu nutzende Standardabweichung."
+  gams_default: "1"
+InNormalDistribution_mean:
+  gams_identifier: "Mittelwert"
+  gams_description: "Der zu nutzende Mittelwert."
+  gams_default: "0"
 
 agents:
   edn_label: "Agenten"
+  edn_description: "todo"
 
 consumer:
   edn_label: "Konsumer"
+  edn_description: "todo"
 
 consumer_group:
   edn_label: "Gruppen"
+  edn_description: "todo"
+
+InGeneralConsumerAgentAnnualGroupAttribute:
+  edn_label: "Jahresabhängiges Attribut"
+  edn_description: "Der Wert (bzw. Verteilungsfunktion) dieser Attribute lässt sich für die jeweiligen Simulationsjahre individuell definieren."
+InGeneralConsumerAgentAnnualGroupAttribute_attributeName:
+  gams_identifier: "Attributname"
+  gams_description: "Name des Attributes für das Gruppenattribut."
+InGeneralConsumerAgentAnnualGroupAttribute_distribution:
+  gams_identifier: "Verteilungsfunktion"
+  gams_description: "Legt die zu nutzende Verteilungsfunktion fest."
 
 InGeneralConsumerAgentGroup:
   edn_label: "Allgemeine Gruppen"
+  edn_description: "todo"
 InGeneralConsumerAgentGroup_cagAttributes:
   gams_identifier: "Gruppenattribute"
-  gams_description: "Zu dieser Gruppe gehörende Attribute."
+  gams_description: "Zu dieser Gruppe gehörendes Attribut."
 InGeneralConsumerAgentGroup_cagInterest:
   gams_identifier: "Interessensschema"
   gams_description: "Legt das Interessensschema fest."
@@ -188,12 +285,10 @@ InGeneralConsumerAgentGroup_productFindingSchemes:
 InGeneralConsumerAgentGroup_spatialDistribution:
   gams_identifier: "Räumliche Verteilungsfunktion"
   gams_description: "Legt die Verteilungsfunktion für diese Gruppe fest"
-InGeneralConsumerAgentGroup_informationAuthority:
-  gams_identifier: "[ungenutzt] informationAuthority"
-  gams_description: "informationAuthority"
 
 InPVactConsumerAgentGroup:
   edn_label: "PVact Gruppen"
+  edn_description: "todo"
 InPVactConsumerAgentGroup_noveltySeeking:
   gams_identifier: "noveltySeeking"
   gams_description: "noveltySeeking"
@@ -227,6 +322,9 @@ InPVactConsumerAgentGroup_rateOfConvergence:
 InPVactConsumerAgentGroup_initialProductInterest:
   gams_identifier: "initialProductInterest"
   gams_description: "initialProductInterest"
+InPVactConsumerAgentGroup_initialProductAwareness:
+  gams_identifier: "initialProductAwareness"
+  gams_description: "initialProductAwareness"
 InPVactConsumerAgentGroup_constructionRate:
   gams_identifier: "constructionRate"
   gams_description: "constructionRate"
@@ -236,16 +334,24 @@ InPVactConsumerAgentGroup_renovationRate:
 InPVactConsumerAgentGroup_spatialDistribution:
   gams_identifier: "spatialDistribution"
   gams_description: "spatialDistribution"
-InPVactConsumerAgentGroup_informationAuthority:
-  gams_identifier: "informationAuthority"
-  gams_description: "informationAuthority"
+
+InConsumerAgentGroupColor:
+  edn_label: "Farbe der Konsumergruppen"
+  edn_description: "Ermöglicht die Festlegung der Farben für die Konsumergruppen."
+InConsumerAgentGroupColor_group:
+  gams_identifier: "Konsumergruppe"
+  gams_description: "Die Gruppen, welche die ausgewählte Farbe verwenden soll."
+InConsumerAgentGroupColor_color:
+  gams_identifier: "Farbe"
+  gams_description: "Die für diese Gruppe verwendete Farbe."
 
 consumer_attr:
   edn_label: "Attribute"
+  edn_description: "todo"
 
 InGeneralConsumerAgentGroupAttribute:
-  edn_label: "Allgemeines Attribut"
-  edn_description: ""
+  edn_label: "Allgemeine Attribute"
+  edn_description: "todo"
 InGeneralConsumerAgentGroupAttribute_attrName:
   gams_identifier: "Attributname"
   gams_description: "Name des Attributes für das Gruppenattribut."
@@ -253,19 +359,34 @@ InGeneralConsumerAgentGroupAttribute_dist:
   gams_identifier: "Verteilungsfunktion"
   gams_description: "Legt die zu nutzende Verteilungsfunktion fest."
 
+InNameSplitConsumerAgentAnnualGroupAttribute:
+  edn_label: "Namensbasierte und jahresabhängige Attribute"
+  edn_description: "Der Wert (bzw. Verteilungsfunktion) dieser Attribute lässt sich für die jeweiligen Simulationsjahre individuell definieren."
+InNameSplitConsumerAgentAnnualGroupAttribute_distribution:
+  gams_identifier: "Verteilungsfunktion"
+  gams_description: "Legt die Verteilungsfunktion fest, auf deren Basis die Attributwerte gezogen werden."
+
 InNameSplitConsumerAgentGroupAttribute:
-  edn_label: "Namensbasiertes Attribute"
+  edn_label: "Namensbasierte Attribute"
   edn_description: "Dieses Attribut wird über seinen Namen definiert."
 InNameSplitConsumerAgentGroupAttribute_dist:
   gams_identifier: "Verteilungsfunktion"
   gams_description: "Legt die Verteilungsfunktion fest, auf deren Basis die Attributwerte gezogen werden."
 
 consumer_affinity:
-  edn_label: "Affinity"
+  edn_label: "Affinitäten"
   edn_description: "Legt die Affinity zwischen den jeweiligen Konsumergruppen fest."
 
+InAffinities:
+  edn_label: "Affinitätenmenge"
+  edn_description: "Legt die Affinity zwischen den jeweiligen Konsumergruppen fest."
+InAffinities_entries:
+  gams_identifier: "Einträge"
+  gams_description: "Die Affinitäte, welche in dieser Menge enthalten sein sollen."
+
 InComplexAffinityEntry:
-  edn_label: "Komplexe Affinity"
+  edn_label: "Affinitätseintrag"
+  edn_description: "Erstellt einen einfachen Affinitätseintag zwischen einer Ausgangs- und einer Zielgruppe."
 InComplexAffinityEntry_srcCag:
   gams_identifier: "Ausgangsgruppe"
   gams_description: "Ausgangsgruppe"
@@ -273,14 +394,15 @@ InComplexAffinityEntry_tarCag:
   gams_identifier: "Zielgruppe"
   gams_description: "Zielgruppe"
 InComplexAffinityEntry_affinityValue:
-  gams_identifier: "Affinity-Wert"
-  gams_description: "Affinity-Wert"
+  gams_identifier: "Wert"
+  gams_description: "Der Affinitätswert der Ausgangsgruppe gegenüber der Zielgruppe."
 
 InNameSplitAffinityEntry:
-  edn_label: "Namensbasierte Affinity"
+  edn_label: "Namensbasierter Affinitätseintrag"
+  edn_description: "Dieser Variante ist eine Alternative zum normalen Affinitätseintrag. Hier werden die Ausgangs- und die Zielgruppe direkt aus dem Namen des Eintrages ermittelt. Es muss somt darauf geachtet werden, dass der Name korrekt definiert wird. Beispiel: Ausgangsgruppe 'A' und Zielgruppe 'B', dann muss der Affinitätseintrag 'A_B' heißen."
 InNameSplitAffinityEntry_affinityValue:
-  gams_identifier: "Affinity-Wert"
-  gams_description: "Affinity-Wert"
+  gams_identifier: "Wert"
+  gams_description: "Der Affinitätswert der Ausgangsgruppe gegenüber der Zielgruppe."
 
 consumer_interest:
   edn_label: "Produktinteresse"
@@ -289,9 +411,19 @@ consumer_interest:
 InProductThresholdInterestSupplyScheme:
   edn_label: "Grenzwertbasiert"
   edn_description: "Grenzwertbasierte Interessens-Varianten"
-InProductThresholdInterestSupplyScheme_interestDistribution:
-  gams_identifier: "Grenzwert"
-  gams_description: "Grenzwert ab dem das Produkt von Interesse ist."
+InProductThresholdInterestSupplyScheme_entries:
+  gams_identifier: "Einträge"
+  gams_description: "Grenzwerte ab dem Produkte der zugehörigen Produktgruppen von Interesse werden."
+
+InProductGroupThresholdEntry:
+  edn_label: "Grenzwertbasierte Einträge"
+  edn_description: "Ermöglicht die Definition von Einträgen für ein grenzwertbasiertes Interesse."
+InProductGroupThresholdEntry_interestDistribution:
+  gams_identifier: "Verteilungsfunktion für den Grenzwert"
+  gams_description: "Legt die Verteilungsfunktion für den Grenzwert fest."
+InProductGroupThresholdEntry_productGroups:
+  gams_identifier: "Produktgruppen"
+  gams_description: "Legt die Produktgruppen fest, zu denen der definierte Grenzwert gehören soll."
 
 population:
   edn_label: "Population"
@@ -299,7 +431,7 @@ population:
 
 InFixConsumerAgentPopulationSize:
   edn_label: "Feste Konsumergruppengröße"
-  edn_description: ""
+  edn_description: "todo"
 InFixConsumerAgentPopulationSize_size:
   gams_identifier: "Anzahl der Agenten"
   gams_description: "Legt die Anzahl der Agenten bzw. die Populationsgröße für diese Konsumergruppe fest."
@@ -309,16 +441,16 @@ InFixConsumerAgentPopulationSize_cags:
 
 InRelativeExternConsumerAgentPopulationSize:
   edn_label: "Dynamische Konsumergruppengröße"
-  edn_description: ""
-InRelativeExternConsumerAgentPopulationSize_totalSize:
-  gams_identifier: "Anzahl der Agenten"
-  gams_description: "Legt gesamte Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls die maximal mögliche Anzahl genutzt werden soll, wird dieser Wert ignoriert."
-InRelativeExternConsumerAgentPopulationSize_useMaximumSize:
+  edn_description: "todo"
+InRelativeExternConsumerAgentPopulationSize_maximumSize:
+  gams_identifier: "Maximale Anzahl der Agenten"
+  gams_description: "Legt die maximale Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls die maximal mögliche Anzahl genutzt werden soll, wird dieser Wert ignoriert."
+InRelativeExternConsumerAgentPopulationSize_useMaximumPossibleSize:
   gams_identifier: "Maximal mögliche Population nutzen?"
-  gams_description: "Legt fest, ob die gesamte Populationsgröße aus der Datei berechnet werden soll."
-InRelativeExternConsumerAgentPopulationSize_considerAllForShares:
-  gams_identifier: "Alle Konsumergruppenfür die Anteilsberechnung berücksichtigen?"
-  gams_description: "Legt fest, ob alle Gruppen aus der Datei für die Berechnung der Anteile genutzt werden sollen oder nur die hier spezifizierten."
+  gams_description: "Legt fest, ob die gesamte Populationsgröße aus der Datei verwendet werden soll."
+InRelativeExternConsumerAgentPopulationSize_allowSmallerSize:
+  gams_identifier: "Kleinere Populationen erlauben?"
+  gams_description: "Legt fest, ob kleinere Population zulässig sind. Falls zum Beispiel die maximale Anzahl auf 10.000 gesetzt wird, die Datei aber nur 1.000 Agenten erlaubt, werden nur 1.000 verwendet. Falls diese Option deaktiviert ist, wird in diesem Fall ein Fehler geworfen."
 InRelativeExternConsumerAgentPopulationSize_cags:
   gams_identifier: "Konsumergruppen"
   gams_description: "Legt die Konsumergruppen fest, welche berücksichtigt werden sollen."
@@ -327,15 +459,17 @@ InRelativeExternConsumerAgentPopulationSize_file:
   gams_description: "Tabellarische Eingabedatei, aus der die Informationen gelesen werden sollen."
 InRelativeExternConsumerAgentPopulationSize_selectKey:
   gams_identifier: "Auswahlschlüssel"
-  gams_description: "Schlüssel, nachdem die Datei gefiltert wird. Wichtig: Der Daten in der Datei müssen dem Konsumergruppennamen entsprechen."
+  gams_description: "Schlüssel, nachdem die Datei gefiltert wird. Wichtig: Der entsprechenden Daten in der Datei müssen dem Konsumergruppennamen entsprechen."
 
 
 
 network:
   edn_label: "Netzwerk"
+  edn_description: "todo"
 
 topology:
   edn_label: "Topologie"
+  edn_description: "todo"
 
 InUnlinkedGraphTopology:
   edn_label: "Knotenloser Graph"
@@ -360,9 +494,15 @@ InFreeNetworkTopology_initialWeight:
 InFreeNetworkTopology_distanceEvaluator:
   gams_identifier: "Distanzfunktion"
   gams_description: "Legt die zu nutzende Distanzfunktion für den Einfluss des Abstandes fest."
+InFreeNetworkTopology_affinities:
+  gams_identifier: "Affinitäten"
+  gams_description: "Legt die zu nutzende Affinitätenmenge für den sozialen Einfluss fest."
 InFreeNetworkTopology_numberOfTies:
   gams_identifier: "Konsumergruppenspezifische Kantenanzahl"
   gams_description: "Legt die Anzahl defür die jeweiligen Konsumergruppen fest."
+InFreeNetworkTopology_allowLessEdges:
+  gams_identifier: "Weniger Kanten erlauben?"
+  gams_description: "Erlaubt es auch weniger Kanten als gewünscht zu nutzen. Sollten zum Beispiel 10 Kanten gewünscht sein je Knoten, aber für einen bestimmten Knoten nur 5 möglich sein, so werden nur 5 verwendet. Falls diese Option deaktiviert ist, wird ein Fehler geworfen."
 
 InNumberOfTies:
   edn_label: "Kanten je Konsumergruppe"
@@ -376,6 +516,7 @@ InNumberOfTies_cags:
 
 dist_func:
   edn_label: "Abstandsfunktion"
+  edn_description: "todo"
 
 InNoDistance:
   edn_label: "Keine Distanzfunktion"
@@ -464,6 +605,7 @@ InFixProductFindingScheme_refFixProduct:
 
 process_model:
   edn_label: "Prozessmodell"
+  edn_description: "todo"
 
 InRAProcessModel:
   edn_label: "Relative Agreement"
@@ -494,6 +636,9 @@ InRAProcessModel_unknownPoints:
 InRAProcessModel_logisticFactor:
   gams_identifier: "Einflussfaktor der logistischen Funktion"
   gams_description: "Legt den Einflussfaktor 'a' der logistischen Funktion fest: logistic(a * -x)."
+InRAProcessModel_nodeFilterScheme:
+  gams_identifier: "Netzwerkfilter für räumliche Sicht"
+  gams_description: "Legt den Filter fest, um 'sichtbare' Haushalte zu identifizieren."
 InRAProcessModel_pvFile:
   gams_identifier: "PV-Datei"
   gams_description: "Legt die zu nutzende PV-Datei fest."
@@ -509,6 +654,20 @@ InAutoUncertaintyGroupAttribute:
   edn_label: "Automatisch"
   edn_description: "Bestimmt die Unsicherheit automatisch. Achtung: Diese Variante wird aktuell noch nicht unterstützt."
 InAutoUncertaintyGroupAttribute_placeholderAutoUncert:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+InDisabledProcessPlanNodeFilterScheme:
+  edn_label: "Kein Distanzfilter"
+  edn_description: "Deaktiviert den Netzwerkfilter für die sichtbaren PV-Anlagen. Die sichtbare Komponente wird somit deaktiviert."
+InDisabledProcessPlanNodeFilterScheme_placeholder:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+InEntireNetworkNodeFilterScheme:
+  edn_label: "Gesamtes Netzwerk"
+  edn_description: "Nutzt das gesamte Netzwerk für die sichtbaren PV-Anlagen."
+InEntireNetworkNodeFilterScheme_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
 
@@ -580,13 +739,28 @@ InPVactUncertaintyGroupAttribute_cags:
   gams_identifier: "Konsumergruppe"
   gams_description: "Bestimmt die Konsumergruppe, deren Attribute mit dieser Unsicherheit behandelt werden sollen."
 
+process_filter:
+  edn_label: "Netzwerkfilter für Prozesse"
+  edn_description: "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus."
+
+InRAProcessPlanMaxDistanceFilterScheme:
+  edn_label: "PVact"
+  edn_description: "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus."
+InRAProcessPlanMaxDistanceFilterScheme_maxDistance:
+  gams_identifier: "Maximale Entfernung"
+  gams_description: "Legt die maximale Entfernung fest. Die Einheit richtet sich sowohl nach den Ausgangsdaten als auch der verwendeten Metric im räumlichen Modell."
+InRAProcessPlanMaxDistanceFilterScheme_inclusive:
+  gams_identifier: "Grenzwert inklusive?"
+  gams_description: "Legt fest, ob der Grenzwert inklusiv (<=) oder exklusiv (<) ist."
 
 
 spatial:
   edn_label: "Räumliche Modell"
+  edn_description: "todo"
 
 spatial_model:
   edn_label: "Modell"
+  edn_description: "todo"
 
 InSpace2D:
   edn_label: "Space2D"
@@ -768,15 +942,16 @@ graphviz_agent_color_mapping:
 
 submodule:
   edn_label: "Submodule"
+  edn_description: "todo"
 submodule_graphvizdemo:
   edn_label: "Graphvizdemo"
+  edn_description: "todo"
 
 
 
 InVersion:
   gams_identifier: "IRPact Version"
   gams_description: "Die Version von IRPact, welche bei der Erstellung des Szenarios aktuell war."
-  gams_hidden: true
 InVersion_placeholderVersion:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -789,3 +964,49 @@ InAttributeName:
 InAttributeName_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
+
+
+
+BinaryPersistData:
+  edn_label: "BinaryPersistData"
+  edn_description: "Binäre Daten für den Transfer zwischen zwei Simulationsschritten."
+BinaryPersistData_id:
+  gams_identifier: "BinaryPersistDataID"
+  gams_description: "Einzigartige ID der Daten."
+
+
+
+OutGeneralConsumerAgentGroup:
+  edn_label: "Konsumergruppen"
+  edn_description: "todo"
+OutGeneralConsumerAgentGroup_adoptionsThisYear:
+  gams_identifier: "Adoptionen"
+  gams_description: "todo"
+OutGeneralConsumerAgentGroup_adoptionsCumulativ:
+  gams_identifier: "Adoptionen (kumulativ)"
+  gams_description: "todo"
+OutGeneralConsumerAgentGroup_adoptionShareThisYear:
+  gams_identifier: "Adoptionen (Anteil)"
+  gams_description: "todo"
+OutGeneralConsumerAgentGroup_adoptionShareCumulativ:
+  gams_identifier: "Adoptionen (kumulierter anteil)"
+  gams_description: "todo"
+
+OutAnnualAdoptionData:
+  edn_label: "Jährliche Adoptionen"
+  edn_description: "todo"
+OutAnnualAdoptionData_year:
+  gams_identifier: "Jahr"
+  gams_description: "todo"
+OutAnnualAdoptionData_adoptionsThisYear:
+  gams_identifier: "Adoptionen"
+  gams_description: "todo"
+OutAnnualAdoptionData_adoptionsCumulativ:
+  gams_identifier: "Adoptionen (kumulativ)"
+  gams_description: "todo"
+OutAnnualAdoptionData_adoptionShareThisYear:
+  gams_identifier: "Adoptionen (Anteil)"
+  gams_description: "todo"
+OutAnnualAdoptionData_adoptionShareCumulativ:
+  gams_identifier: "Adoptionen (kumulierter anteil)"
+  gams_description: "todo"

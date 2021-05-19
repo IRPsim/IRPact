@@ -1,30 +1,34 @@
 package de.unileipzig.irpact.commons.distribution;
 
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
-import de.unileipzig.irpact.commons.Rnd;
-import de.unileipzig.irpact.util.Todo;
-
-import java.util.Objects;
+import de.unileipzig.irpact.commons.util.Rnd;
 
 /**
- * Bernoulli: P(X=1) = p and P(X=0) = 1-p
+ * Bernoulli: P(X=trueValue) = p and P(X=falseValue) = 1-p
  *
  * @author Daniel Abitz
  */
-@Todo("spec + persi adden")
 public class BernoulliDistribution extends NameableBase implements UnivariateDoubleDistribution {
 
-    protected long seed;
     protected Rnd rnd;
     protected double p;
+    protected double trueValue;
+    protected double falseValue;
 
     public BernoulliDistribution() {
     }
 
     public BernoulliDistribution(String name, Rnd rnd, double p) {
+        this(name, rnd, p, 1, 0);
+    }
+
+    public BernoulliDistribution(String name, Rnd rnd, double p, double trueValue, double falseValue) {
         setName(name);
         setRandom(rnd);
         setP(p);
+        setTrueValue(trueValue);
+        setFalseValue(falseValue);
     }
 
     public void setRandom(Rnd rnd) {
@@ -43,13 +47,35 @@ public class BernoulliDistribution extends NameableBase implements UnivariateDou
         return p;
     }
 
-    @Override
-    public double drawDoubleValue() {
-        return rnd.nextDouble() < p ? 1.0 : 0.0;
+    public void setTrueValue(double trueValue) {
+        this.trueValue = trueValue;
+    }
+
+    public double getTrueValue() {
+        return trueValue;
+    }
+
+    public void setFalseValue(double falseValue) {
+        this.falseValue = falseValue;
+    }
+
+    public double getFalseValue() {
+        return falseValue;
     }
 
     @Override
-    public int getHashCode() {
-        return Objects.hash(name, seed, rnd.getHashCode(), p);
+    public double drawDoubleValue() {
+        return rnd.nextDouble() < p ? trueValue : falseValue;
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.getChecksum(
+                name,
+                rnd.getChecksum(),
+                p,
+                trueValue,
+                falseValue
+        );
     }
 }

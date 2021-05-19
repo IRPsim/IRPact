@@ -1,11 +1,20 @@
+* - identifier: InAffinities
+* - type: String
+SET set_InAffinities(set_InIRPactEntity,set_InEntity)
+
+* - description: Die Affinitäte, welche in dieser Menge enthalten sein sollen.
+* - identifier: Einträge
+* - type: Boolean
+PARAMETER par_link_InAffinities_InAffinityEntry_entries(set_InAffinities,set_InAffinityEntry)
+
 * - identifier: InAffinityEntry
 * - hidden: 1
 * - type: String
-SET set_InAffinityEntry(set_InEntity)
+SET set_InAffinityEntry(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InComplexAffinityEntry
 * - type: String
-SET set_InComplexAffinityEntry(set_InAffinityEntry,set_InEntity)
+SET set_InComplexAffinityEntry(set_InAffinityEntry,set_InIRPactEntity,set_InEntity)
 
 * - description: Ausgangsgruppe
 * - identifier: Ausgangsgruppe
@@ -17,40 +26,54 @@ PARAMETER par_link_InComplexAffinityEntry_InConsumerAgentGroup_srcCag(set_InComp
 * - type: Boolean
 PARAMETER par_link_InComplexAffinityEntry_InConsumerAgentGroup_tarCag(set_InComplexAffinityEntry,set_InConsumerAgentGroup)
 
-* - description: Affinity-Wert
-* - identifier: Affinity-Wert
+* - description: Der Affinitätswert der Ausgangsgruppe gegenüber der Zielgruppe.
+* - identifier: Wert
 * - type: Float
 PARAMETER par_InComplexAffinityEntry_affinityValue(set_InComplexAffinityEntry)
 
 * - identifier: InNameSplitAffinityEntry
 * - type: String
-SET set_InNameSplitAffinityEntry(set_InAffinityEntry,set_InEntity)
+SET set_InNameSplitAffinityEntry(set_InAffinityEntry,set_InIRPactEntity,set_InEntity)
 
-* - description: Affinity-Wert
-* - identifier: Affinity-Wert
+* - description: Der Affinitätswert der Ausgangsgruppe gegenüber der Zielgruppe.
+* - identifier: Wert
 * - type: Float
 PARAMETER par_InNameSplitAffinityEntry_affinityValue(set_InNameSplitAffinityEntry)
 
 * - identifier: InConsumerAgentGroup
 * - hidden: 1
 * - type: String
-SET set_InConsumerAgentGroup(set_InEntity)
+SET set_InConsumerAgentGroup(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InConsumerAgentGroupAttribute
 * - hidden: 1
 * - type: String
-SET set_InConsumerAgentGroupAttribute(set_InEntity)
+SET set_InConsumerAgentGroupAttribute(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InDependentConsumerAgentGroupAttribute
 * - hidden: 1
 * - type: String
-SET set_InDependentConsumerAgentGroupAttribute(set_InConsumerAgentGroupAttribute,set_InEntity)
+SET set_InDependentConsumerAgentGroupAttribute(set_InConsumerAgentGroupAttribute,set_InIRPactEntity,set_InEntity)
+
+* - identifier: InGeneralConsumerAgentAnnualGroupAttribute
+* - type: String
+SET set_InGeneralConsumerAgentAnnualGroupAttribute(set_InDependentConsumerAgentGroupAttribute,set_InConsumerAgentGroupAttribute,set_InIRPactEntity,set_InEntity)
+
+* - description: Name des Attributes für das Gruppenattribut.
+* - identifier: Attributname
+* - type: Boolean
+PARAMETER par_link_InGeneralConsumerAgentAnnualGroupAttribute_InAttributeName_attributeName(set_InGeneralConsumerAgentAnnualGroupAttribute,set_InAttributeName)
+
+* - description: Legt die zu nutzende Verteilungsfunktion fest.
+* - identifier: Verteilungsfunktion
+* - type: Boolean
+PARAMETER par_link_InGeneralConsumerAgentAnnualGroupAttribute_InUnivariateDoubleDistribution_distribution(set_InGeneralConsumerAgentAnnualGroupAttribute,set_InUnivariateDoubleDistribution)
 
 * - identifier: InGeneralConsumerAgentGroup
 * - type: String
-SET set_InGeneralConsumerAgentGroup(set_InConsumerAgentGroup,set_InEntity)
+SET set_InGeneralConsumerAgentGroup(set_InConsumerAgentGroup,set_InIRPactEntity,set_InEntity)
 
-* - description: Zu dieser Gruppe gehörende Attribute.
+* - description: Zu dieser Gruppe gehörendes Attribut.
 * - identifier: Gruppenattribute
 * - type: Boolean
 PARAMETER par_link_InGeneralConsumerAgentGroup_InDependentConsumerAgentGroupAttribute_cagAttributes(set_InGeneralConsumerAgentGroup,set_InDependentConsumerAgentGroupAttribute)
@@ -70,14 +93,9 @@ PARAMETER par_link_InGeneralConsumerAgentGroup_InProductFindingScheme_productFin
 * - type: Boolean
 PARAMETER par_link_InGeneralConsumerAgentGroup_InSpatialDistribution_spatialDistribution(set_InGeneralConsumerAgentGroup,set_InSpatialDistribution)
 
-* - description: informationAuthority
-* - identifier: [ungenutzt] informationAuthority
-* - type: Float
-PARAMETER par_InGeneralConsumerAgentGroup_informationAuthority(set_InGeneralConsumerAgentGroup)
-
 * - identifier: InGeneralConsumerAgentGroupAttribute
 * - type: String
-SET set_InGeneralConsumerAgentGroupAttribute(set_InDependentConsumerAgentGroupAttribute,set_InConsumerAgentGroupAttribute,set_InEntity)
+SET set_InGeneralConsumerAgentGroupAttribute(set_InDependentConsumerAgentGroupAttribute,set_InConsumerAgentGroupAttribute,set_InIRPactEntity,set_InEntity)
 
 * - description: Name des Attributes für das Gruppenattribut.
 * - identifier: Attributname
@@ -92,11 +110,11 @@ PARAMETER par_link_InGeneralConsumerAgentGroupAttribute_InUnivariateDoubleDistri
 * - identifier: InIndependentConsumerAgentGroupAttribute
 * - hidden: 1
 * - type: String
-SET set_InIndependentConsumerAgentGroupAttribute(set_InConsumerAgentGroupAttribute,set_InEntity)
+SET set_InIndependentConsumerAgentGroupAttribute(set_InConsumerAgentGroupAttribute,set_InIRPactEntity,set_InEntity)
 
 * - identifier: InNameSplitConsumerAgentGroupAttribute
 * - type: String
-SET set_InNameSplitConsumerAgentGroupAttribute(set_InIndependentConsumerAgentGroupAttribute,set_InConsumerAgentGroupAttribute,set_InEntity)
+SET set_InNameSplitConsumerAgentGroupAttribute(set_InIndependentConsumerAgentGroupAttribute,set_InConsumerAgentGroupAttribute,set_InIRPactEntity,set_InEntity)
 
 * - description: Legt die Verteilungsfunktion fest, auf deren Basis die Attributwerte gezogen werden.
 * - identifier: Verteilungsfunktion
@@ -105,7 +123,7 @@ PARAMETER par_link_InNameSplitConsumerAgentGroupAttribute_InUnivariateDoubleDist
 
 * - identifier: InPVactConsumerAgentGroup
 * - type: String
-SET set_InPVactConsumerAgentGroup(set_InConsumerAgentGroup,set_InEntity)
+SET set_InPVactConsumerAgentGroup(set_InConsumerAgentGroup,set_InIRPactEntity,set_InEntity)
 
 * - description: noveltySeeking
 * - identifier: noveltySeeking
@@ -152,18 +170,27 @@ PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_rewi
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_initialAdopter(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
+* - description: rateOfConvergence
 * - identifier: rateOfConvergence
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_rateOfConvergence(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
+* - description: initialProductInterest
 * - identifier: initialProductInterest
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_initialProductInterest(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
+* - description: initialProductAwareness
+* - identifier: initialProductAwareness
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_initialProductAwareness(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
+
+* - description: constructionRate
 * - identifier: constructionRate
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_constructionRate(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
+* - description: renovationRate
 * - identifier: renovationRate
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_renovationRate(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
@@ -173,14 +200,9 @@ PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_reno
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InSpatialDistribution_spatialDistribution(set_InPVactConsumerAgentGroup,set_InSpatialDistribution)
 
-* - description: informationAuthority
-* - identifier: informationAuthority
-* - type: Float
-PARAMETER par_InPVactConsumerAgentGroup_informationAuthority(set_InPVactConsumerAgentGroup)
-
 * - identifier: InFixConsumerAgentPopulationSize
 * - type: String
-SET set_InFixConsumerAgentPopulationSize(set_InPopulationSize,set_InEntity)
+SET set_InFixConsumerAgentPopulationSize(set_InPopulationSize,set_InIRPactEntity,set_InEntity)
 
 * - description: Legt die Anzahl der Agenten bzw. die Populationsgröße für diese Konsumergruppe fest.
 * - identifier: Anzahl der Agenten
@@ -195,26 +217,26 @@ PARAMETER par_link_InFixConsumerAgentPopulationSize_InConsumerAgentGroup_cags(se
 * - identifier: InPopulationSize
 * - hidden: 1
 * - type: String
-SET set_InPopulationSize(set_InEntity)
+SET set_InPopulationSize(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InRelativeExternConsumerAgentPopulationSize
 * - type: String
-SET set_InRelativeExternConsumerAgentPopulationSize(set_InPopulationSize,set_InEntity)
+SET set_InRelativeExternConsumerAgentPopulationSize(set_InPopulationSize,set_InIRPactEntity,set_InEntity)
 
-* - description: Legt gesamte Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls die maximal mögliche Anzahl genutzt werden soll, wird dieser Wert ignoriert.
-* - identifier: Anzahl der Agenten
+* - description: Legt die maximale Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls die maximal mögliche Anzahl genutzt werden soll, wird dieser Wert ignoriert.
+* - identifier: Maximale Anzahl der Agenten
 * - type: Integer
-PARAMETER par_InRelativeExternConsumerAgentPopulationSize_totalSize(set_InRelativeExternConsumerAgentPopulationSize)
+PARAMETER par_InRelativeExternConsumerAgentPopulationSize_maximumSize(set_InRelativeExternConsumerAgentPopulationSize)
 
-* - description: Legt fest, ob die gesamte Populationsgröße aus der Datei berechnet werden soll.
+* - description: Legt fest, ob die gesamte Populationsgröße aus der Datei verwendet werden soll.
 * - identifier: Maximal mögliche Population nutzen?
 * - type: Boolean
-PARAMETER par_InRelativeExternConsumerAgentPopulationSize_useMaximumSize(set_InRelativeExternConsumerAgentPopulationSize)
+PARAMETER par_InRelativeExternConsumerAgentPopulationSize_useMaximumPossibleSize(set_InRelativeExternConsumerAgentPopulationSize)
 
-* - description: Legt fest, ob alle Gruppen aus der Datei für die Berechnung der Anteile genutzt werden sollen oder nur die hier spezifizierten.
-* - identifier: Alle Konsumergruppenfür die Anteilsberechnung berücksichtigen?
+* - description: Legt fest, ob kleinere Population zulässig sind. Falls zum Beispiel die maximale Anzahl auf 10.000 gesetzt wird, die Datei aber nur 1.000 Agenten erlaubt, werden nur 1.000 verwendet. Falls diese Option deaktiviert ist, wird in diesem Fall ein Fehler geworfen.
+* - identifier: Kleinere Populationen erlauben?
 * - type: Boolean
-PARAMETER par_InRelativeExternConsumerAgentPopulationSize_considerAllForShares(set_InRelativeExternConsumerAgentPopulationSize)
+PARAMETER par_InRelativeExternConsumerAgentPopulationSize_allowSmallerSize(set_InRelativeExternConsumerAgentPopulationSize)
 
 * - description: Legt die Konsumergruppen fest, welche berücksichtigt werden sollen.
 * - identifier: Konsumergruppen
@@ -226,7 +248,7 @@ PARAMETER par_link_InRelativeExternConsumerAgentPopulationSize_InConsumerAgentGr
 * - type: Boolean
 PARAMETER par_link_InRelativeExternConsumerAgentPopulationSize_InSpatialTableFile_file(set_InRelativeExternConsumerAgentPopulationSize,set_InSpatialTableFile)
 
-* - description: Schlüssel, nachdem die Datei gefiltert wird. Wichtig: Der Daten in der Datei müssen dem Konsumergruppennamen entsprechen.
+* - description: Schlüssel, nachdem die Datei gefiltert wird. Wichtig: Der entsprechenden Daten in der Datei müssen dem Konsumergruppennamen entsprechen.
 * - identifier: Auswahlschlüssel
 * - type: Boolean
 PARAMETER par_link_InRelativeExternConsumerAgentPopulationSize_InAttributeName_selectKey(set_InRelativeExternConsumerAgentPopulationSize,set_InAttributeName)
@@ -234,44 +256,100 @@ PARAMETER par_link_InRelativeExternConsumerAgentPopulationSize_InAttributeName_s
 * - description: Binäre Daten für diverse Funktionalitäten
 * - identifier: Binäre Daten
 * - type: String
-SET set_VisibleBinaryData(set_InEntity)
+SET set_VisibleBinaryData(set_InIRPactEntity,set_InEntity)
 
 * - description: Spezielle ID der Daten, Verwendungszweck und Funktionsweise ist von den Daten selber abhängig.
 * - identifier: ID
 * - type: Integer
 PARAMETER par_VisibleBinaryData_idVisible(set_VisibleBinaryData)
 
-* - description: Binäre Daten für den Transfer zwischen zwei Simulationsschritten.
 * - hidden: 1
 * - identifier: BinaryPersistData
 * - type: String
 SET set_BinaryPersistData(*)
 
-* - identifier: id
+* - description: Einzigartige ID der Daten.
+* - hidden: 1
+* - identifier: BinaryPersistDataID
 * - type: Integer
 PARAMETER par_BinaryPersistData_id(set_BinaryPersistData)
 
+* - identifier: InBernoulliDistribution
+* - type: String
+SET set_InBernoulliDistribution(set_InUnivariateDoubleDistribution,set_InIRPactEntity,set_InEntity)
+
+* - domain: [0,1]
+* - description: Wahrscheinlichkeit p
+* - identifier: p
+* - type: Float
+PARAMETER par_InBernoulliDistribution_p(set_InBernoulliDistribution)
+
+* - default: 1
+* - description: Dieser Wert wird mit der Wahrscheinlichkeit p zurück gegeben.
+* - identifier: x
+* - type: Float
+PARAMETER par_InBernoulliDistribution_trueValue(set_InBernoulliDistribution)
+
+* - default: 0
+* - description: Dieser Wert wird mit der Wahrscheinlichkeit 1-p zurück gegeben.
+* - identifier: y
+* - type: Float
+PARAMETER par_InBernoulliDistribution_falseValue(set_InBernoulliDistribution)
+
 * - identifier: InBooleanDistribution
 * - type: String
-SET set_InBooleanDistribution(set_InUnivariateDoubleDistribution,set_InEntity)
+SET set_InBooleanDistribution(set_InUnivariateDoubleDistribution,set_InIRPactEntity,set_InEntity)
 
-* - description: Ungenutzter Platzhalter
-* - identifier: ---
-* - type: Integer
-PARAMETER par_InBooleanDistribution_placeholderBooleanDist(set_InBooleanDistribution)
+* - default: 1
+* - description: Der Wert, welcher zurückgegeben wird, wenn die Funktion intern 1 (WAHR) ergibt.
+* - identifier: x
+* - type: Float
+PARAMETER par_InBooleanDistribution_trueValue(set_InBooleanDistribution)
 
-* - identifier: InConstantUnivariateDistribution
+* - default: 0
+* - description: Der Wert, welcher zurückgegeben wird, wenn die Funktion intern 0 (FALSCH) ergibt.
+* - identifier: y
+* - type: Float
+PARAMETER par_InBooleanDistribution_falseValue(set_InBooleanDistribution)
+
+* - identifier: InBoundedNormalDistribution
 * - type: String
-SET set_InConstantUnivariateDistribution(set_InUnivariateDoubleDistribution,set_InEntity)
+SET set_InBoundedNormalDistribution(set_InUnivariateDoubleDistribution,set_InIRPactEntity,set_InEntity)
+
+* - default: 1
+* - description: Die zu nutzende Standardabweichung.
+* - identifier: Standardabweichung
+* - type: Float
+PARAMETER par_InBoundedNormalDistribution_standardDeviation(set_InBoundedNormalDistribution)
+
+* - default: 0
+* - description: Der zu nutzende Mittelwert.
+* - identifier: Mittelwert
+* - type: Float
+PARAMETER par_InBoundedNormalDistribution_mean(set_InBoundedNormalDistribution)
+
+* - description: Legt die Untergrenze fest.
+* - identifier: Untergrenze (inklusiv)
+* - type: Float
+PARAMETER par_InBoundedNormalDistribution_lowerBound(set_InBoundedNormalDistribution)
+
+* - description: Legt die Obergrenze fest.
+* - identifier: Obergrenze (exklusiv)
+* - type: Float
+PARAMETER par_InBoundedNormalDistribution_upperBound(set_InBoundedNormalDistribution)
+
+* - identifier: InDiracUnivariateDistribution
+* - type: String
+SET set_InDiracUnivariateDistribution(set_InUnivariateDoubleDistribution,set_InIRPactEntity,set_InEntity)
 
 * - description: Legt den konstante Rückgabewert fest.
-* - identifier: Wert
+* - identifier: x
 * - type: Float
-PARAMETER par_InConstantUnivariateDistribution_constDistValue(set_InConstantUnivariateDistribution)
+PARAMETER par_InDiracUnivariateDistribution_value(set_InDiracUnivariateDistribution)
 
 * - identifier: InFiniteMassPointsDiscreteDistribution
 * - type: String
-SET set_InFiniteMassPointsDiscreteDistribution(set_InUnivariateDoubleDistribution,set_InEntity)
+SET set_InFiniteMassPointsDiscreteDistribution(set_InUnivariateDoubleDistribution,set_InIRPactEntity,set_InEntity)
 
 * - description: Legt die zu nutzenden Massepunkte fest.
 * - identifier: Massepunkte
@@ -280,7 +358,7 @@ PARAMETER par_link_InFiniteMassPointsDiscreteDistribution_InMassPoint_massPoints
 
 * - identifier: InMassPoint
 * - type: String
-SET set_InMassPoint(set_InEntity)
+SET set_InMassPoint(set_InIRPactEntity,set_InEntity)
 
 * - description: Legt den Wert des Punktes fest.
 * - identifier: Wert des Punktes
@@ -292,33 +370,63 @@ PARAMETER par_InMassPoint_mpValue(set_InMassPoint)
 * - type: Float
 PARAMETER par_InMassPoint_mpWeight(set_InMassPoint)
 
-* - identifier: InRandomBoundedIntegerDistribution
+* - identifier: InNormalDistribution
 * - type: String
-SET set_InRandomBoundedIntegerDistribution(set_InUnivariateDoubleDistribution,set_InEntity)
+SET set_InNormalDistribution(set_InUnivariateDoubleDistribution,set_InIRPactEntity,set_InEntity)
+
+* - default: 1
+* - description: Die zu nutzende Standardabweichung.
+* - identifier: Standardabweichung
+* - type: Float
+PARAMETER par_InNormalDistribution_standardDeviation(set_InNormalDistribution)
+
+* - default: 0
+* - description: Der zu nutzende Mittelwert.
+* - identifier: Mittelwert
+* - type: Float
+PARAMETER par_InNormalDistribution_mean(set_InNormalDistribution)
+
+* - identifier: InBoundedUniformDoubleDistribution
+* - type: String
+SET set_InBoundedUniformDoubleDistribution(set_InUnivariateDoubleDistribution,set_InIRPactEntity,set_InEntity)
+
+* - description: Legt die Untergrenze fest.
+* - identifier: Untergrenze (inklusiv)
+* - type: Float
+PARAMETER par_InBoundedUniformDoubleDistribution_lowerBound(set_InBoundedUniformDoubleDistribution)
+
+* - description: Legt die Obergrenze fest.
+* - identifier: Obergrenze (exklusiv)
+* - type: Float
+PARAMETER par_InBoundedUniformDoubleDistribution_upperBound(set_InBoundedUniformDoubleDistribution)
+
+* - identifier: InBoundedUniformIntegerDistribution
+* - type: String
+SET set_InBoundedUniformIntegerDistribution(set_InUnivariateDoubleDistribution,set_InIRPactEntity,set_InEntity)
 
 * - description: Legt die Untergrenze fest.
 * - identifier: Untergrenze (inklusiv)
 * - type: Integer
-PARAMETER par_InRandomBoundedIntegerDistribution_lowerBoundInt(set_InRandomBoundedIntegerDistribution)
+PARAMETER par_InBoundedUniformIntegerDistribution_lowerBound(set_InBoundedUniformIntegerDistribution)
 
 * - description: Legt die Obergrenze fest.
 * - identifier: Obergrenze (exklusiv)
 * - type: Integer
-PARAMETER par_InRandomBoundedIntegerDistribution_upperBoundInt(set_InRandomBoundedIntegerDistribution)
+PARAMETER par_InBoundedUniformIntegerDistribution_upperBound(set_InBoundedUniformIntegerDistribution)
 
 * - identifier: InUnivariateDoubleDistribution
 * - hidden: 1
 * - type: String
-SET set_InUnivariateDoubleDistribution(set_InEntity)
+SET set_InUnivariateDoubleDistribution(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InFile
 * - hidden: 1
 * - type: String
-SET set_InFile(set_InEntity)
+SET set_InFile(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InPVFile
 * - type: String
-SET set_InPVFile(set_InFile,set_InEntity)
+SET set_InPVFile(set_InFile,set_InIRPactEntity,set_InEntity)
 
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
@@ -327,7 +435,7 @@ PARAMETER par_InPVFile_placeholderPVFile(set_InPVFile)
 
 * - identifier: InSpatialTableFile
 * - type: String
-SET set_InSpatialTableFile(set_InFile,set_InEntity)
+SET set_InSpatialTableFile(set_InFile,set_InIRPactEntity,set_InEntity)
 
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
@@ -336,35 +444,63 @@ PARAMETER par_InSpatialTableFile_placeholderInSpatialFile(set_InSpatialTableFile
 
 * - identifier: InConsumerAgentGroupColor
 * - type: String
-SET set_InConsumerAgentGroupColor(*)
+SET set_InConsumerAgentGroupColor(set_InIRPactEntity,set_InEntity)
 
-* - description: Legt die Gruppe fest
+* - description: Die Gruppen, welche die ausgewählte Farbe verwenden soll.
 * - identifier: Konsumergruppe
 * - type: Boolean
 PARAMETER par_link_InConsumerAgentGroupColor_InConsumerAgentGroup_group(set_InConsumerAgentGroupColor,set_InConsumerAgentGroup)
 
-* - description: Legt die Farbe fest
+* - description: Die für diese Gruppe verwendete Farbe.
 * - identifier: Farbe
 * - type: Boolean
 PARAMETER par_link_InConsumerAgentGroupColor_GraphvizColor_color(set_InConsumerAgentGroupColor,set_GraphvizColor)
 
+* - identifier: InProductGroupThresholdEntry
+* - type: String
+SET set_InProductGroupThresholdEntry(set_InIRPactEntity,set_InEntity)
+
+* - description: Legt die Verteilungsfunktion für den Grenzwert fest.
+* - identifier: Verteilungsfunktion für den Grenzwert
+* - type: Boolean
+PARAMETER par_link_InProductGroupThresholdEntry_InUnivariateDoubleDistribution_interestDistribution(set_InProductGroupThresholdEntry,set_InUnivariateDoubleDistribution)
+
+* - description: Legt die Produktgruppen fest, zu denen der definierte Grenzwert gehören soll.
+* - identifier: Produktgruppen
+* - type: Boolean
+PARAMETER par_link_InProductGroupThresholdEntry_InProductGroup_productGroups(set_InProductGroupThresholdEntry,set_InProductGroup)
+
 * - identifier: InProductInterestSupplyScheme
 * - hidden: 1
 * - type: String
-SET set_InProductInterestSupplyScheme(set_InEntity)
+SET set_InProductInterestSupplyScheme(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InProductThresholdInterestSupplyScheme
 * - type: String
-SET set_InProductThresholdInterestSupplyScheme(set_InProductInterestSupplyScheme,set_InEntity)
+SET set_InProductThresholdInterestSupplyScheme(set_InProductInterestSupplyScheme,set_InIRPactEntity,set_InEntity)
 
-* - description: Grenzwert ab dem das Produkt von Interesse ist.
-* - identifier: Grenzwert
+* - description: Grenzwerte ab dem Produkte der zugehörigen Produktgruppen von Interesse werden.
+* - identifier: Einträge
 * - type: Boolean
-PARAMETER par_link_InProductThresholdInterestSupplyScheme_InUnivariateDoubleDistribution_interestDistribution(set_InProductThresholdInterestSupplyScheme,set_InUnivariateDoubleDistribution)
+PARAMETER par_link_InProductThresholdInterestSupplyScheme_InProductGroupThresholdEntry_entries(set_InProductThresholdInterestSupplyScheme,set_InProductGroupThresholdEntry)
+
+* - identifier: InAttributeName
+* - type: String
+SET set_InAttributeName(set_InName,set_InIRPactEntity,set_InEntity)
+
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
+* - type: Integer
+PARAMETER par_InAttributeName_placeholder(set_InAttributeName)
+
+* - identifier: InName
+* - hidden: 1
+* - type: String
+SET set_InName(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InCompleteGraphTopology
 * - type: String
-SET set_InCompleteGraphTopology(set_InGraphTopologyScheme,set_InEntity)
+SET set_InCompleteGraphTopology(set_InGraphTopologyScheme,set_InIRPactEntity,set_InEntity)
 
 * - description: Legt das initiale Gewicht der Kanten fest.
 * - identifier: Initiales Kantengewicht
@@ -374,35 +510,45 @@ PARAMETER par_InCompleteGraphTopology_initialWeight(set_InCompleteGraphTopology)
 * - identifier: InDistanceEvaluator
 * - hidden: 1
 * - type: String
-SET set_InDistanceEvaluator(set_InEntity)
+SET set_InDistanceEvaluator(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InFreeNetworkTopology
 * - type: String
-SET set_InFreeNetworkTopology(set_InGraphTopologyScheme,set_InEntity)
+SET set_InFreeNetworkTopology(set_InGraphTopologyScheme,set_InIRPactEntity,set_InEntity)
 
 * - description: Legt die zu nutzende Distanzfunktion für den Einfluss des Abstandes fest.
 * - identifier: Distanzfunktion
 * - type: Boolean
 PARAMETER par_link_InFreeNetworkTopology_InDistanceEvaluator_distanceEvaluator(set_InFreeNetworkTopology,set_InDistanceEvaluator)
 
-* - description: Knotenanzahl
-* - identifier: Knotenanzahl je KG
+* - description: Legt die Anzahl defür die jeweiligen Konsumergruppen fest.
+* - identifier: Konsumergruppenspezifische Kantenanzahl
 * - type: Boolean
 PARAMETER par_link_InFreeNetworkTopology_InNumberOfTies_numberOfTies(set_InFreeNetworkTopology,set_InNumberOfTies)
+
+* - description: Legt die zu nutzende Affinitätenmenge für den sozialen Einfluss fest.
+* - identifier: Affinitäten
+* - type: Boolean
+PARAMETER par_link_InFreeNetworkTopology_InAffinities_affinities(set_InFreeNetworkTopology,set_InAffinities)
 
 * - description: Legt das initiale Gewicht der Kanten fest.
 * - identifier: Initiales Kantengewicht
 * - type: Float
 PARAMETER par_InFreeNetworkTopology_initialWeight(set_InFreeNetworkTopology)
 
+* - description: Erlaubt es auch weniger Kanten als gewünscht zu nutzen. Sollten zum Beispiel 10 Kanten gewünscht sein je Knoten, aber für einen bestimmten Knoten nur 5 möglich sein, so werden nur 5 verwendet. Falls diese Option deaktiviert ist, wird ein Fehler geworfen.
+* - identifier: Weniger Kanten erlauben?
+* - type: Boolean
+PARAMETER par_InFreeNetworkTopology_allowLessEdges(set_InFreeNetworkTopology)
+
 * - identifier: InGraphTopologyScheme
 * - hidden: 1
 * - type: String
-SET set_InGraphTopologyScheme(set_InEntity)
+SET set_InGraphTopologyScheme(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InInverse
 * - type: String
-SET set_InInverse(set_InDistanceEvaluator,set_InEntity)
+SET set_InInverse(set_InDistanceEvaluator,set_InIRPactEntity,set_InEntity)
 
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
@@ -411,7 +557,7 @@ PARAMETER par_InInverse_placeholderInverse(set_InInverse)
 
 * - identifier: InNoDistance
 * - type: String
-SET set_InNoDistance(set_InDistanceEvaluator,set_InEntity)
+SET set_InNoDistance(set_InDistanceEvaluator,set_InIRPactEntity,set_InEntity)
 
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
@@ -420,7 +566,7 @@ PARAMETER par_InNoDistance_placeholderNoDistance(set_InNoDistance)
 
 * - identifier: InNumberOfTies
 * - type: String
-SET set_InNumberOfTies(set_InEntity)
+SET set_InNumberOfTies(set_InIRPactEntity,set_InEntity)
 
 * - description: Bestimmt die Konsumergruppen, welche diese Anzahl Kanten aufweisen sollen.
 * - identifier: Konsumergruppen
@@ -434,7 +580,7 @@ PARAMETER par_InNumberOfTies_count(set_InNumberOfTies)
 
 * - identifier: InUnlinkedGraphTopology
 * - type: String
-SET set_InUnlinkedGraphTopology(set_InGraphTopologyScheme,set_InEntity)
+SET set_InUnlinkedGraphTopology(set_InGraphTopologyScheme,set_InIRPactEntity,set_InEntity)
 
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
@@ -443,16 +589,34 @@ PARAMETER par_InUnlinkedGraphTopology_placeholderUnlinked(set_InUnlinkedGraphTop
 
 * - identifier: InAutoUncertaintyGroupAttribute
 * - type: String
-SET set_InAutoUncertaintyGroupAttribute(set_InUncertaintyGroupAttribute,set_InEntity)
+SET set_InAutoUncertaintyGroupAttribute(set_InUncertaintyGroupAttribute,set_InIRPactEntity,set_InEntity)
 
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
 * - type: Float
 PARAMETER par_InAutoUncertaintyGroupAttribute_placeholderAutoUncert(set_InAutoUncertaintyGroupAttribute)
 
+* - identifier: InDisabledProcessPlanNodeFilterScheme
+* - type: String
+SET set_InDisabledProcessPlanNodeFilterScheme(set_InRAProcessPlanNodeFilterScheme,set_InProcessPlanNodeFilterScheme,set_InIRPactEntity,set_InEntity)
+
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
+* - type: Float
+PARAMETER par_InDisabledProcessPlanNodeFilterScheme_placeholder(set_InDisabledProcessPlanNodeFilterScheme)
+
+* - identifier: InEntireNetworkNodeFilterScheme
+* - type: String
+SET set_InEntireNetworkNodeFilterScheme(set_InRAProcessPlanNodeFilterScheme,set_InProcessPlanNodeFilterScheme,set_InIRPactEntity,set_InEntity)
+
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
+* - type: Float
+PARAMETER par_InEntireNetworkNodeFilterScheme_placeholder(set_InEntireNetworkNodeFilterScheme)
+
 * - identifier: InIndividualAttributeBasedUncertaintyGroupAttribute
 * - type: String
-SET set_InIndividualAttributeBasedUncertaintyGroupAttribute(set_InUncertaintyGroupAttribute,set_InEntity)
+SET set_InIndividualAttributeBasedUncertaintyGroupAttribute(set_InUncertaintyGroupAttribute,set_InIRPactEntity,set_InEntity)
 
 * - description: Bestimmt die Konsumergruppenattribute, welche mit dieser Unsicherheit behandelt werden sollen.
 * - identifier: Konsumergruppenattribute
@@ -466,7 +630,7 @@ PARAMETER par_link_InIndividualAttributeBasedUncertaintyGroupAttribute_InUnivari
 
 * - identifier: InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute
 * - type: String
-SET set_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute(set_InUncertaintyGroupAttribute,set_InEntity)
+SET set_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute(set_InUncertaintyGroupAttribute,set_InIRPactEntity,set_InEntity)
 
 * - description: Bestimmt die Konsumergruppenattribute, welche mit dieser Unsicherheit behandelt werden sollen.
 * - identifier: Konsumergruppenattribute
@@ -485,7 +649,7 @@ PARAMETER par_link_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttr
 
 * - identifier: InNameBasedUncertaintyGroupAttribute
 * - type: String
-SET set_InNameBasedUncertaintyGroupAttribute(set_InUncertaintyGroupAttribute,set_InEntity)
+SET set_InNameBasedUncertaintyGroupAttribute(set_InUncertaintyGroupAttribute,set_InIRPactEntity,set_InEntity)
 
 * - description: Bestimmt die Konsumergruppe, deren Attribute mit dieser Unsicherheit behandelt werden sollen.
 * - identifier: Konsumergruppe
@@ -504,7 +668,7 @@ PARAMETER par_link_InNameBasedUncertaintyGroupAttribute_InUnivariateDoubleDistri
 
 * - identifier: InNameBasedUncertaintyWithConvergenceGroupAttribute
 * - type: String
-SET set_InNameBasedUncertaintyWithConvergenceGroupAttribute(set_InUncertaintyGroupAttribute,set_InEntity)
+SET set_InNameBasedUncertaintyWithConvergenceGroupAttribute(set_InUncertaintyGroupAttribute,set_InIRPactEntity,set_InEntity)
 
 * - description: Bestimmt die Konsumergruppe, deren Attribute mit dieser Unsicherheit behandelt werden sollen.
 * - identifier: Konsumergruppe
@@ -528,7 +692,7 @@ PARAMETER par_link_InNameBasedUncertaintyWithConvergenceGroupAttribute_InUnivari
 
 * - identifier: InPVactUncertaintyGroupAttribute
 * - type: String
-SET set_InPVactUncertaintyGroupAttribute(set_InUncertaintyGroupAttribute,set_InEntity)
+SET set_InPVactUncertaintyGroupAttribute(set_InUncertaintyGroupAttribute,set_InIRPactEntity,set_InEntity)
 
 * - description: Bestimmt die Konsumergruppe, deren Attribute mit dieser Unsicherheit behandelt werden sollen.
 * - identifier: Konsumergruppe
@@ -552,7 +716,7 @@ PARAMETER par_link_InPVactUncertaintyGroupAttribute_InUnivariateDoubleDistributi
 
 * - identifier: InRAProcessModel
 * - type: String
-SET set_InRAProcessModel(set_InProcessModel,set_InEntity)
+SET set_InRAProcessModel(set_InProcessModel,set_InIRPactEntity,set_InEntity)
 
 * - description: Legt den Einfluss der finanziellen Komponente fest.
 * - identifier: Einfluss finanzielle Komponente (a)
@@ -599,6 +763,11 @@ PARAMETER par_InRAProcessModel_unknownPoints(set_InRAProcessModel)
 * - type: Float
 PARAMETER par_InRAProcessModel_logisticFactor(set_InRAProcessModel)
 
+* - description: Legt den Filter fest, um 'sichtbare' Haushalte zu identifizieren.
+* - identifier: Netzwerkfilter für räumliche Sicht
+* - type: Boolean
+PARAMETER par_link_InRAProcessModel_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InRAProcessModel,set_InRAProcessPlanNodeFilterScheme)
+
 * - description: Legt die zu nutzende PV-Datei fest.
 * - identifier: PV-Datei
 * - type: Boolean
@@ -609,19 +778,43 @@ PARAMETER par_link_InRAProcessModel_InPVFile_pvFile(set_InRAProcessModel,set_InP
 * - type: Boolean
 PARAMETER par_link_InRAProcessModel_InUncertaintyGroupAttribute_uncertaintyGroupAttributes(set_InRAProcessModel,set_InUncertaintyGroupAttribute)
 
+* - identifier: InRAProcessPlanMaxDistanceFilterScheme
+* - type: String
+SET set_InRAProcessPlanMaxDistanceFilterScheme(set_InRAProcessPlanNodeFilterScheme,set_InProcessPlanNodeFilterScheme,set_InIRPactEntity,set_InEntity)
+
+* - description: Legt die maximale Entfernung fest. Die Einheit richtet sich sowohl nach den Ausgangsdaten als auch der verwendeten Metric im räumlichen Modell.
+* - identifier: Maximale Entfernung
+* - type: Float
+PARAMETER par_InRAProcessPlanMaxDistanceFilterScheme_maxDistance(set_InRAProcessPlanMaxDistanceFilterScheme)
+
+* - description: Legt fest, ob der Grenzwert inklusiv (<=) oder exklusiv (<) ist.
+* - identifier: Grenzwert inklusive?
+* - type: Boolean
+PARAMETER par_InRAProcessPlanMaxDistanceFilterScheme_inclusive(set_InRAProcessPlanMaxDistanceFilterScheme)
+
+* - identifier: InRAProcessPlanNodeFilterScheme
+* - hidden: 1
+* - type: String
+SET set_InRAProcessPlanNodeFilterScheme(set_InProcessPlanNodeFilterScheme,set_InIRPactEntity,set_InEntity)
+
 * - identifier: InUncertaintyGroupAttribute
 * - hidden: 1
 * - type: String
-SET set_InUncertaintyGroupAttribute(set_InEntity)
+SET set_InUncertaintyGroupAttribute(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InProcessModel
 * - hidden: 1
 * - type: String
-SET set_InProcessModel(set_InEntity)
+SET set_InProcessModel(set_InIRPactEntity,set_InEntity)
+
+* - identifier: InProcessPlanNodeFilterScheme
+* - hidden: 1
+* - type: String
+SET set_InProcessPlanNodeFilterScheme(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InBasicProductGroup
 * - type: String
-SET set_InBasicProductGroup(set_InProductGroup,set_InEntity)
+SET set_InBasicProductGroup(set_InProductGroup,set_InIRPactEntity,set_InEntity)
 
 * - description: Bestimmt die Attribute für diese Gruppe.
 * - identifier: Attribute
@@ -630,7 +823,7 @@ PARAMETER par_link_InBasicProductGroup_InDependentProductGroupAttribute_pgAttrib
 
 * - identifier: InBasicProductGroupAttribute
 * - type: String
-SET set_InBasicProductGroupAttribute(set_InDependentProductGroupAttribute,set_InProductGroupAttribute,set_InEntity)
+SET set_InBasicProductGroupAttribute(set_InDependentProductGroupAttribute,set_InProductGroupAttribute,set_InIRPactEntity,set_InEntity)
 
 * - description: Legt die Attributnamen fest.
 * - identifier: Attributname
@@ -645,11 +838,11 @@ PARAMETER par_link_InBasicProductGroupAttribute_InUnivariateDoubleDistribution_d
 * - identifier: InDependentProductGroupAttribute
 * - hidden: 1
 * - type: String
-SET set_InDependentProductGroupAttribute(set_InProductGroupAttribute,set_InEntity)
+SET set_InDependentProductGroupAttribute(set_InProductGroupAttribute,set_InIRPactEntity,set_InEntity)
 
 * - identifier: InFixProduct
 * - type: String
-SET set_InFixProduct(set_InEntity)
+SET set_InFixProduct(set_InIRPactEntity,set_InEntity)
 
 * - description: Legt die Produktgruppe fest, zu der dieses Produkt gehören soll.
 * - identifier: Produktgruppe
@@ -663,7 +856,7 @@ PARAMETER par_link_InFixProduct_InFixProductAttribute_fixPAttrs(set_InFixProduct
 
 * - identifier: InFixProductAttribute
 * - type: String
-SET set_InFixProductAttribute(set_InEntity)
+SET set_InFixProductAttribute(set_InIRPactEntity,set_InEntity)
 
 * - description: Legt das Produktgruppenattribut fest, zu dem dieses Produkt gehören soll.
 * - identifier: Produktgruppenattribut
@@ -677,7 +870,7 @@ PARAMETER par_InFixProductAttribute_fixPAvalue(set_InFixProductAttribute)
 
 * - identifier: InFixProductFindingScheme
 * - type: String
-SET set_InFixProductFindingScheme(set_InProductFindingScheme,set_InEntity)
+SET set_InFixProductFindingScheme(set_InProductFindingScheme,set_InIRPactEntity,set_InEntity)
 
 * - description: Legt das Fixprodukt fest, welches von diesem Schema verwendet werden soll.
 * - identifier: Fixprodukt
@@ -687,11 +880,11 @@ PARAMETER par_link_InFixProductFindingScheme_InFixProduct_refFixProduct(set_InFi
 * - identifier: InIndependentProductGroupAttribute
 * - hidden: 1
 * - type: String
-SET set_InIndependentProductGroupAttribute(set_InProductGroupAttribute,set_InEntity)
+SET set_InIndependentProductGroupAttribute(set_InProductGroupAttribute,set_InIRPactEntity,set_InEntity)
 
 * - identifier: InNameSplitProductGroupAttribute
 * - type: String
-SET set_InNameSplitProductGroupAttribute(set_InIndependentProductGroupAttribute,set_InProductGroupAttribute,set_InEntity)
+SET set_InNameSplitProductGroupAttribute(set_InIndependentProductGroupAttribute,set_InProductGroupAttribute,set_InIRPactEntity,set_InEntity)
 
 * - description: Legt die Verteilungsfunktion fest, auf deren Basis die Attributwerte gezogen werden.
 * - identifier: Verteilungsfunktion
@@ -701,21 +894,21 @@ PARAMETER par_link_InNameSplitProductGroupAttribute_InUnivariateDoubleDistributi
 * - identifier: InProductFindingScheme
 * - hidden: 1
 * - type: String
-SET set_InProductFindingScheme(set_InEntity)
+SET set_InProductFindingScheme(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InProductGroup
 * - hidden: 1
 * - type: String
-SET set_InProductGroup(set_InEntity)
+SET set_InProductGroup(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InProductGroupAttribute
 * - hidden: 1
 * - type: String
-SET set_InProductGroupAttribute(set_InEntity)
+SET set_InProductGroupAttribute(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InCustomFileSelectedGroupedSpatialDistribution2D
 * - type: String
-SET set_InCustomFileSelectedGroupedSpatialDistribution2D(set_InSpatialDistribution,set_InEntity)
+SET set_InCustomFileSelectedGroupedSpatialDistribution2D(set_InSpatialDistribution,set_InIRPactEntity,set_InEntity)
 
 * - description: Legt die Verteilungsfunktion fest, welche die X-Position bestimmt.
 * - identifier: X-Position
@@ -743,7 +936,7 @@ PARAMETER par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InAttributeN
 
 * - identifier: InCustomFileSelectedSpatialDistribution2D
 * - type: String
-SET set_InCustomFileSelectedSpatialDistribution2D(set_InSpatialDistribution,set_InEntity)
+SET set_InCustomFileSelectedSpatialDistribution2D(set_InSpatialDistribution,set_InIRPactEntity,set_InEntity)
 
 * - description: Legt die Verteilungsfunktion fest, welche die X-Position bestimmt.
 * - identifier: X-Position
@@ -767,7 +960,7 @@ PARAMETER par_link_InCustomFileSelectedSpatialDistribution2D_InAttributeName_sel
 
 * - identifier: InCustomFileSpatialDistribution2D
 * - type: String
-SET set_InCustomFileSpatialDistribution2D(set_InSpatialDistribution,set_InEntity)
+SET set_InCustomFileSpatialDistribution2D(set_InSpatialDistribution,set_InIRPactEntity,set_InEntity)
 
 * - description: Legt die Verteilungsfunktion fest, welche die X-Position bestimmt.
 * - identifier: X-Position
@@ -786,7 +979,7 @@ PARAMETER par_link_InCustomFileSpatialDistribution2D_InSpatialTableFile_attrFile
 
 * - identifier: InFileSelectedGroupedSpatialDistribution2D
 * - type: String
-SET set_InFileSelectedGroupedSpatialDistribution2D(set_InSpatialDistribution,set_InEntity)
+SET set_InFileSelectedGroupedSpatialDistribution2D(set_InSpatialDistribution,set_InIRPactEntity,set_InEntity)
 
 * - description: Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname).
 * - identifier: X-Schlüssel
@@ -814,7 +1007,7 @@ PARAMETER par_link_InFileSelectedGroupedSpatialDistribution2D_InAttributeName_gr
 
 * - identifier: InFileSelectedSpatialDistribution2D
 * - type: String
-SET set_InFileSelectedSpatialDistribution2D(set_InSpatialDistribution,set_InEntity)
+SET set_InFileSelectedSpatialDistribution2D(set_InSpatialDistribution,set_InIRPactEntity,set_InEntity)
 
 * - description: Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname).
 * - identifier: X-Schlüssel
@@ -838,7 +1031,7 @@ PARAMETER par_link_InFileSelectedSpatialDistribution2D_InAttributeName_selectKey
 
 * - identifier: InFileSpatialDistribution2D
 * - type: String
-SET set_InFileSpatialDistribution2D(set_InSpatialDistribution,set_InEntity)
+SET set_InFileSpatialDistribution2D(set_InSpatialDistribution,set_InIRPactEntity,set_InEntity)
 
 * - description: Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname).
 * - identifier: X-Schlüssel
@@ -858,11 +1051,11 @@ PARAMETER par_link_InFileSpatialDistribution2D_InSpatialTableFile_attrFile(set_I
 * - identifier: InSpatialDistribution
 * - hidden: 1
 * - type: String
-SET set_InSpatialDistribution(set_InEntity)
+SET set_InSpatialDistribution(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InSpace2D
 * - type: String
-SET set_InSpace2D(set_InSpatialModel,set_InEntity)
+SET set_InSpace2D(set_InSpatialModel,set_InIRPactEntity,set_InEntity)
 
 * - description: Nutzt die Manhattenmetrik für die Berechnung der Abstände.
 * - identifier: Manhattenmetrik
@@ -887,26 +1080,16 @@ PARAMETER par_InSpace2D_useHaversine(set_InSpace2D)
 * - identifier: InSpatialModel
 * - hidden: 1
 * - type: String
-SET set_InSpatialModel(set_InEntity)
-
-* - identifier: InDiscreteTimeModel
-* - type: String
-SET set_InDiscreteTimeModel(set_InTimeModel,set_InEntity)
-
-* - description: Legt die Zeit fest, welche pro diskreten Schritt vergeht. Der Wert muss in Millisekunden angegeben werden.
-* - identifier: Zeit pro Schritt
-* - unit: [ms]
-* - type: Integer
-PARAMETER par_InDiscreteTimeModel_timePerTickInMs(set_InDiscreteTimeModel)
+SET set_InSpatialModel(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InTimeModel
 * - hidden: 1
 * - type: String
-SET set_InTimeModel(set_InEntity)
+SET set_InTimeModel(set_InIRPactEntity,set_InEntity)
 
 * - identifier: InUnitStepDiscreteTimeModel
 * - type: String
-SET set_InUnitStepDiscreteTimeModel(set_InTimeModel,set_InEntity)
+SET set_InUnitStepDiscreteTimeModel(set_InTimeModel,set_InIRPactEntity,set_InEntity)
 
 * - description: Legt die Zeitdauer fest, welche pro diskreten Schritt vergeht.
 * - identifier: Zeitdauer
@@ -948,19 +1131,15 @@ PARAMETER par_InUnitStepDiscreteTimeModel_useW(set_InUnitStepDiscreteTimeModel)
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useM(set_InUnitStepDiscreteTimeModel)
 
-* - identifier: InAttributeName
-* - type: String
-SET set_InAttributeName(set_InEntity)
-
-* - description: Ungenutzter Platzhalter
-* - identifier: ---
-* - type: Integer
-PARAMETER par_InAttributeName_placeholder(set_InAttributeName)
-
 * - identifier: InEntity
 * - hidden: 1
 * - type: String
 SET set_InEntity(*)
+
+* - identifier: InIRPactEntity
+* - hidden: 1
+* - type: String
+SET set_InIRPactEntity(set_InEntity)
 
 * - description: Setzt den Seed für den Zufallsgenerator der Simulation. Falls er auf -1 gesetzt wird, wird ein zufälliger Seed generiert.
 * - identifier: Zufallsgenerator (seed)
@@ -973,10 +1152,10 @@ SCALAR sca_InGeneral_seed
 * - type: Integer
 SCALAR sca_InGeneral_timeout
 
-* - description: Setzt das finale Jahr der Simulation. Wichtig: Der Wert ist inklusiv. Es wird dabei immer mindestens ein Jahr simuliert, auch wenn der Wert kleiner ist als das des Ausgangsjahres.
-* - identifier: [Testoption] Endjahr der Simulation
+* - description: ([Wichtig] Diese Option darf nur bei puren IRPact-Aufrufen (keine Modellkopplungen) genutzt werden, da sonst die Zeitkonsistenz verletzt wird!) Setzt das letzte zu simulierende Jahr der Simulation. Es wird dabei immer mindestens ein Jahr simuliert. Sollte der Wert also kleiner sein als das Ausgangsjahr, so wird dennoch das Ausgangsjahr simuliert. Beispiel: Ist das Ausgangsjahr = 2010 und letzte Simulationsjahr = 2013, dann werden die Jahre 2010, 2011, 2012 und 2013 simuliert.
+* - identifier: [Spezialoption] Letzte zu simulierende Jahr
 * - type: Integer
-SCALAR sca_InGeneral_endYear
+SCALAR sca_InGeneral_lastSimulationYear
 
 * - domain: [0|1]
 * - description: Falls gesetzt, werden automatisch spezielle Einstellungen für PVact bei der Initialisierung ergänzt. Dies betrifft aktuell Produkte und die Prozessmodellzuordnung.
@@ -997,82 +1176,100 @@ SCALAR sca_InGeneral_runOptActDemo
 SCALAR sca_InGeneral_logLevel
 
 * - domain: [0|1]
-* - description: [SPAM] Ob alles geloggt werden soll. Falls ja, überschreibt diese Option alles.
+* - description: Aktiviert alle log-Operationen in allen Komponenten.
 * - identifier: Alles loggen?
 * - type: Boolean
 SCALAR sca_InGeneral_logAll
 
 * - domain: [0|1]
-* - description: [SPAM] Ob alle Aufrufe der Tools-Bibliothek geloggt werden sollen.
-* - identifier: Tools-Bibliothek loggen?
+* - description: Aktiviert alle log-Operationen von IRPact.
+* - identifier: IRPact loggen?
+* - type: Boolean
+SCALAR sca_InGeneral_logAllIRPact
+
+* - domain: [0|1]
+* - description: Aktiviert alle log-Operationen von IRPtools.
+* - identifier: IRPtools-Bibliothek loggen?
 * - type: Boolean
 SCALAR sca_InGeneral_logAllTools
 
 * - domain: [0|1]
-* - description: [SPAM] logToolsCore
-* - identifier: logToolsCore
-* - type: Boolean
-SCALAR sca_InGeneral_logToolsCore
-
-* - domain: [0|1]
-* - description: [SPAM] logToolsDefinition
-* - identifier: logToolsDefinition
-* - type: Boolean
-SCALAR sca_InGeneral_logToolsDefinition
-
-* - domain: [0|1]
-* - description: logInitialization
-* - identifier: logInitialization
+* - description: Aktiviert das Logging des Initialisierungsprozesses. Dieser umfasst alles vom Start bis zum eigentlichen Start der Simulation.
+* - identifier: Initialisierung loggen?
 * - type: Boolean
 SCALAR sca_InGeneral_logInitialization
 
 * - domain: [0|1]
-* - description: [SPAM] logParamInit
-* - identifier: logParamInit
+* - description: Aktiviert das Logging des Simulationsprozesses.
+* - identifier: Simulationsprozess loggen?
 * - type: Boolean
-SCALAR sca_InGeneral_logParamInit
+SCALAR sca_InGeneral_logSimulation
 
 * - domain: [0|1]
-* - description: [SPAM] logGraphCreation
-* - identifier: logGraphCreation
+* - description: Gibt an, ob die Graphänderungen ausgegeben werden sollen.
+* - identifier: Gibt die Graphänderungen aus [GU]
 * - type: Boolean
-SCALAR sca_InGeneral_logGraphCreation
+SCALAR sca_InGeneral_logGraphUpdate
 
 * - domain: [0|1]
-* - description: [SPAM] logAgentCreation
-* - identifier: logAgentCreation
+* - description: Gibt an, ob die Werte vom relative agreement Algorithmus ausgegeben werden sollen.
+* - identifier: Gibt die 'relative agreement' Werte aus [RA]
 * - type: Boolean
-SCALAR sca_InGeneral_logAgentCreation
+SCALAR sca_InGeneral_logRelativeAgreement
 
 * - domain: [0|1]
-* - description: [SPAM] logPlatformCreation
-* - identifier: logPlatformCreation
+* - description: Gibt an, ob Änderungen des Produktinteresses ausgegeben werden sollen.
+* - identifier: Gibt Änderungen beim Produktinteresse aus [IU]
 * - type: Boolean
-SCALAR sca_InGeneral_logPlatformCreation
+SCALAR sca_InGeneral_logInterestUpdate
 
 * - domain: [0|1]
-* - description: [SPAM] logSimulationLifecycle
-* - identifier: logSimulationLifecycle
+* - description: Gibt an, ob die globalen und lokalen Adopteranteile ausgegeben werden sollen.
+* - identifier: Gibt die globalen und lokalen Anteile aus [SNL]
 * - type: Boolean
-SCALAR sca_InGeneral_logSimulationLifecycle
+SCALAR sca_InGeneral_logShareNetworkLocal
 
 * - domain: [0|1]
-* - description: [SPAM] logSimulationAgent
-* - identifier: logSimulationAgent
+* - description: Gibt an, ob die Berechnung der finanziellen Komponente ausgegen werden soll.
+* - identifier: Gibt die finanzielle Komponente aus [FC]
 * - type: Boolean
-SCALAR sca_InGeneral_logSimulationAgent
+SCALAR sca_InGeneral_logFinancalComponent
 
 * - domain: [0|1]
-* - description: [SPAM] logJadexSystemOut
-* - identifier: logJadexSystemOut
+* - description: Gibt an, ob die Berechnung beim decision making ausgegen werden sollen.
+* - identifier: Gibt die Berechnungen beim decision making aus [DM]
 * - type: Boolean
-SCALAR sca_InGeneral_logJadexSystemOut
+SCALAR sca_InGeneral_logCalculateDecisionMaking
+
+* - domain: [0|1]
+* - description: Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus.
+* - identifier: Ergebnisausgabe nach PLZ
+* - type: Boolean
+SCALAR sca_InGeneral_logResultGroupedByZip
+
+* - domain: [0|1]
+* - description: Gibt die Adoptionsergebnisse gruppiert nach dem Milieu aus.
+* - identifier: Ergebnisausgabe nach Milieu
+* - type: Boolean
+SCALAR sca_InGeneral_logResultGroupedByMilieu
+
+* - domain: [0|1]
+* - description: Gibt die Adoptionsergebnisse gruppiert nach der PLZ und dem Milieu (in dieser Reihenfolge) aus.
+* - identifier: Ergebnisausgabe nach PLZ und Milieu
+* - type: Boolean
+SCALAR sca_InGeneral_logResultGroupedByZipAndMilieu
+
+* - domain: [0|1]
+* - description: Gibt alle Adoptionen mit ihren Zeitpunkten aus.
+* - identifier: Ausgabe Adoptionszeitpunkte
+* - type: Boolean
+SCALAR sca_InGeneral_logProductAdoptions
 
 * - description: Die Version von IRPact, welche bei der Erstellung des Szenarios aktuell war.
 * - hidden: 1
 * - identifier: IRPact Version
 * - type: String
-SET set_InVersion(set_InEntity)
+SET set_InVersion(set_InIRPactEntity,set_InEntity)
 
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
@@ -1267,18 +1464,22 @@ SET set_IGraphTopology(*)
 * - type: String
 SET set_IWattsStrogatzModel(set_IGraphTopology)
 
+* - description: IWattsStrogatzModel_wsmK
 * - identifier: wsmK
 * - type: Integer
 PARAMETER par_IWattsStrogatzModel_wsmK(set_IWattsStrogatzModel)
 
+* - description: IWattsStrogatzModel_wsmBeta
 * - identifier: wsmBeta
 * - type: Float
 PARAMETER par_IWattsStrogatzModel_wsmBeta(set_IWattsStrogatzModel)
 
+* - description: IWattsStrogatzModel_wsmSelfReferential
 * - identifier: wsmSelfReferential
 * - type: Boolean
 PARAMETER par_IWattsStrogatzModel_wsmSelfReferential(set_IWattsStrogatzModel)
 
+* - description: IWattsStrogatzModel_wsmSeed
 * - identifier: wsmSeed
 * - type: Integer
 PARAMETER par_IWattsStrogatzModel_wsmSeed(set_IWattsStrogatzModel)
@@ -1292,14 +1493,17 @@ PARAMETER par_IWattsStrogatzModel_wsmUseThis(set_IWattsStrogatzModel)
 * - type: String
 SET set_IFreeMultiGraphTopology(set_IGraphTopology)
 
+* - description: IFreeMultiGraphTopology_ftEdgeCount
 * - identifier: ftEdgeCount
 * - type: Integer
 PARAMETER par_IFreeMultiGraphTopology_ftEdgeCount(set_IFreeMultiGraphTopology)
 
+* - description: IFreeMultiGraphTopology_ftSelfReferential
 * - identifier: ftSelfReferential
 * - type: Boolean
 PARAMETER par_IFreeMultiGraphTopology_ftSelfReferential(set_IFreeMultiGraphTopology)
 
+* - description: IFreeMultiGraphTopology_ftSeed
 * - identifier: ftSeed
 * - type: Integer
 PARAMETER par_IFreeMultiGraphTopology_ftSeed(set_IFreeMultiGraphTopology)

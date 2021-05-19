@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.eval;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 
 /**
  * @author Daniel Abitz
@@ -16,7 +16,7 @@ public class NoDistance implements Eval {
     }
 
     @Override
-    public int getHashCode() {
-        return IsEquals.DEFAULT_HASH;
+    public int getChecksum() {
+        return ChecksumComparable.NONNULL_CHECKSUM;
     }
 }

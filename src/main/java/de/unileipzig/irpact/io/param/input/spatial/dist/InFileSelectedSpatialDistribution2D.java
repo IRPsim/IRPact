@@ -1,20 +1,27 @@
 package de.unileipzig.irpact.io.param.input.spatial.dist;
 
-import de.unileipzig.irpact.commons.Rnd;
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
-import de.unileipzig.irpact.core.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.spatial.distribution.DiscreteSpatialDistribution;
+import de.unileipzig.irpact.develop.TodoException;
+import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InAttributeName;
+import de.unileipzig.irpact.io.param.input.IRPactInputParser;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.util.CopyCache;
+import de.unileipzig.irptools.util.Copyable;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -69,29 +76,31 @@ public class InFileSelectedSpatialDistribution2D implements InSpatialDistributio
     public InFileSelectedSpatialDistribution2D() {
     }
 
+    public InFileSelectedSpatialDistribution2D(
+            String name,
+            InAttributeName xPositionKey,
+            InAttributeName yPositionKey,
+            InSpatialTableFile file,
+            InAttributeName selectKey) {
+        setName(name);
+        setXPositionKey(xPositionKey);
+        setYPositionKey(yPositionKey);
+        setAttributeFile(file);
+        setSelectKey(selectKey);
+    }
+
+    @Override
+    public Copyable copy(CopyCache copyCache) {
+        throw new TodoException();
+    }
+
     @Override
     public String getName() {
         return _name;
     }
 
-    @Override
-    public void setup(InputParser parser, Object input) throws ParsingException {
-        JadexConsumerAgentGroup jCag = (JadexConsumerAgentGroup) input;
-
-        String xKey = getXPositionKey().getName();
-        String yKey = getYPositionKey().getName();
-        String selectKey = getSelectKey().getName();
-        List<List<SpatialAttribute<?>>> attrList = parser.parseEntityTo(getAttributeFile());
-        List<List<SpatialAttribute<?>>> selectedList = SpatialUtil.filter(attrList, selectKey, jCag.getName());
-        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xKey, yKey);
-
-        DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();
-        dist.setName(getName());
-        Rnd rnd = parser.deriveRnd();
-        LOGGER.debug(IRPSection.INITIALIZATION_PARAMETER, "InCustomSelectedSpatialDistribution2D '{}' uses seed: {}", getName(), rnd.getInitialSeed());
-        dist.setRandom(rnd);
-        dist.addAll(infos);
-        jCag.setSpatialDistribution(dist);
+    public void setName(String name) {
+        this._name = name;
     }
 
     public void setXPositionKey(InAttributeName xPositionKey) {
@@ -114,7 +123,50 @@ public class InFileSelectedSpatialDistribution2D implements InSpatialDistributio
         return ParamUtil.getInstance(attrFile, "AttributeFile");
     }
 
+    public void setAttributeFile(InSpatialTableFile attrFile) {
+        this.attrFile = new InSpatialTableFile[]{attrFile};
+    }
+
     public InAttributeName getSelectKey() throws ParsingException {
         return ParamUtil.getInstance(selectKey, "SelectKey");
+    }
+
+    public void setSelectKey(InAttributeName selectKey) {
+        this.selectKey = new InAttributeName[]{selectKey};
+    }
+
+    public void setToAll(InConsumerAgentGroup... cags) {
+        for(InConsumerAgentGroup cag: cags) {
+            cag.setSpatialDistribution(this);
+        }
+    }
+
+    @XXXXXXXXX
+    @Override
+    public void setup(IRPactInputParser parser, Object input) throws ParsingException {
+        if(parser.isRestored()) {
+            LOGGER.warn("DIRTY FIX");
+            return;
+        }
+
+        JadexConsumerAgentGroup jCag = (JadexConsumerAgentGroup) input;
+
+        String xKey = getXPositionKey().getName();
+        String yKey = getYPositionKey().getName();
+        String selectKey = getSelectKey().getName();
+        SpatialTableFileContent attrList = parser.parseEntityTo(getAttributeFile());
+        List<List<SpatialAttribute>> selectedList = SpatialUtil.filter(attrList.content().listTable(), selectKey, jCag.getName());
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xKey, yKey, null);
+
+
+        DiscreteSpatialDistribution dist = new DiscreteSpatialDistribution();
+        dist.setName(ParamUtil.concData(jCag.getName(), getName()));
+        Rnd rnd = parser.deriveRnd();
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "InFileSelectedSpatialDistribution2D '{}' uses seed: {}", dist.getName(), rnd.getInitialSeed());
+        dist.setRandom(rnd);
+        dist.addAll(infos);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "InFileSelectedSpatialDistribution2D '{}' has '{}' entries", dist.getName(), infos.size());
+        jCag.setSpatialDistribution(dist);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "InFileSelectedSpatialDistribution2D '{}' is linked to cag '{}'", dist.getName(), jCag.getName());
     }
 }

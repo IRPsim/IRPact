@@ -1,11 +1,11 @@
 package de.unileipzig.irpact.commons.spatial;
 
-import de.unileipzig.irpact.commons.IsEquals;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 
 /**
  * @author Daniel Abitz
  */
-public interface DistanceEvaluator extends IsEquals {
+public interface DistanceEvaluator extends ChecksumComparable {
 
     boolean isDisabled();
 

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons.graph.topology;
 
 import de.unileipzig.irpact.commons.graph.Graph;
+import de.unileipzig.irpact.commons.util.Rnd;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -16,10 +17,10 @@ import java.util.function.Function;
 public class HeterogeneousRegularMultiGraphTopology<V, E, T, VG> extends AbstractMultiGraphTopology<V, E, T> {
 
     protected Function<? super V, ? extends VG> getGroupFunction;
-    protected BiFunction<? super VG, ? super Random, ? extends VG> drawWeightedGroupFunction;
+    protected BiFunction<? super VG, ? super Rnd, ? extends VG> drawWeightedGroupFunction;
     protected Map<VG, Integer> grpZMapping;
     protected boolean isSelfReferential;
-    protected Random rnd;
+    protected Rnd rnd;
 
     public HeterogeneousRegularMultiGraphTopology() {
     }
@@ -28,7 +29,7 @@ public class HeterogeneousRegularMultiGraphTopology<V, E, T, VG> extends Abstrac
         this.getGroupFunction = getGroupFunction;
     }
 
-    public void setDrawWeightedGroupFunction(BiFunction<? super VG, ? super Random, ? extends VG> drawWeightedGroupFunction) {
+    public void setDrawWeightedGroupFunction(BiFunction<? super VG, ? super Rnd, ? extends VG> drawWeightedGroupFunction) {
         this.drawWeightedGroupFunction = drawWeightedGroupFunction;
     }
 
@@ -40,7 +41,7 @@ public class HeterogeneousRegularMultiGraphTopology<V, E, T, VG> extends Abstrac
         isSelfReferential = selfReferential;
     }
 
-    public void setRandom(Random rnd) {
+    public void setRandom(Rnd rnd) {
         this.rnd = rnd;
     }
 
@@ -105,12 +106,12 @@ public class HeterogeneousRegularMultiGraphTopology<V, E, T, VG> extends Abstrac
             front.add(node);
         }
 
-        protected void init(Random rnd) {
+        protected void init(Rnd rnd) {
             shuffle(rnd);
         }
 
-        protected void shuffle(Random rnd) {
-            Collections.shuffle(front, rnd);
+        protected void shuffle(Rnd rnd) {
+            rnd.shuffle(front);
         }
 
         protected V peek() {
@@ -122,7 +123,7 @@ public class HeterogeneousRegularMultiGraphTopology<V, E, T, VG> extends Abstrac
             front.addLast(next);
         }
 
-        protected V next(Random rnd) {
+        protected V next(Rnd rnd) {
             V next = front.removeFirst();
             back.addLast(next);
             if(front.isEmpty()) {
