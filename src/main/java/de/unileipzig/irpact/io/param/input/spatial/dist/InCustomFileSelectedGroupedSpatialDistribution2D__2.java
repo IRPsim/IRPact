@@ -162,6 +162,7 @@ public class InCustomFileSelectedGroupedSpatialDistribution2D__2 implements InSp
                     tableData,
                     xSupplier,
                     ySupplier,
+                    "",
                     ArrayList::new
             );
             model.storeData(dataColl);

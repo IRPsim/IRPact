@@ -22,6 +22,10 @@ public interface SpatialInformation extends ChecksumComparable {
         }
     }
 
+    boolean hasId();
+
+    int getId();
+
     AttributeAccess getAttributeAccess();
 
     Collection<SpatialAttribute> getAttributes();

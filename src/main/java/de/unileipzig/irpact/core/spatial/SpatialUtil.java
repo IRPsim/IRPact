@@ -86,35 +86,63 @@ public final class SpatialUtil {
         throw new NoSuchElementException("attribute '" + key + "' not found (" + collectKeys(row) + ")");
     }
 
-    public static List<SpatialInformation> mapToPoint2D(List<List<SpatialAttribute>> input, String xKey, String yKey) {
+    private static SpatialDoubleAttribute tryGet(List<SpatialAttribute> row, String key) {
+        if(key == null) {
+            return null;
+        }
+        for(SpatialAttribute attr: row) {
+            if(Objects.equals(attr.getName(), key)) {
+                if(attr.isValueAttributeWithDataType(DataType.DOUBLE)) {
+                    return (SpatialDoubleAttribute) attr;
+                } else {
+                    return null;
+                }
+            }
+        }
+        return null;
+    }
+
+    //TODO
+    public static List<SpatialInformation> mapToPoint2D(List<List<SpatialAttribute>> input, String xKey, String yKey, String idKey) {
         return input.stream()
                 .map(row -> {
                     double x = secureGet(row, xKey).getDoubleValue();
                     double y = secureGet(row, yKey).getDoubleValue();
                     BasicPoint2D p = new BasicPoint2D(x, y);
                     p.addAllAttributes(row);
+                    SpatialAttribute idAttr = tryGet(row, idKey);
+                    if(idAttr != null) {
+                        p.setId(idAttr.asValueAttribute().getIntValue());
+                    }
                     return p;
                 })
                 .collect(Collectors.toList());
     }
 
-    public static List<SpatialInformation> mapToPoint2D(List<List<SpatialAttribute>> input, UnivariateDoubleDistribution xSupplier, UnivariateDoubleDistribution ySupplier) {
+    //TODO
+    public static List<SpatialInformation> mapToPoint2D(List<List<SpatialAttribute>> input, UnivariateDoubleDistribution xSupplier, UnivariateDoubleDistribution ySupplier, String idKey) {
         return input.stream()
                 .map(row -> {
                     double x = xSupplier.drawDoubleValue();
                     double y = ySupplier.drawDoubleValue();
                     BasicPoint2D p = new BasicPoint2D(x, y);
                     p.addAllAttributes(row);
+                    SpatialAttribute idAttr = tryGet(row, idKey);
+                    if(idAttr != null) {
+                        p.setId(idAttr.asValueAttribute().getIntValue());
+                    }
                     return p;
                 })
                 .collect(Collectors.toList());
     }
 
+    //TODO
     public static SpatialDataCollection mapToPoint2D(
             String name,
             Table<SpatialAttribute> input,
             UnivariateDoubleDistribution xSupplier,
             UnivariateDoubleDistribution ySupplier,
+            String idKey,
             Supplier<? extends Collection<SpatialInformation>> supplier) {
         List<SpatialInformation> infos = input.listTable()
                 .stream()
@@ -123,6 +151,10 @@ public final class SpatialUtil {
                     double y = ySupplier.drawDoubleValue();
                     BasicPoint2D p = new BasicPoint2D(x, y);
                     p.addAllAttributes(row);
+                    SpatialAttribute idAttr = tryGet(row, idKey);
+                    if(idAttr != null) {
+                        p.setId(idAttr.asValueAttribute().getIntValue());
+                    }
                     return p;
                 })
                 .collect(Collectors.toList());
@@ -134,6 +166,7 @@ public final class SpatialUtil {
             Table<SpatialAttribute> input,
             String xKey,
             String yKey,
+            String idKey,
             Supplier<? extends Collection<SpatialInformation>> supplier) {
         List<SpatialInformation> infos = input.listTable()
                 .stream()
@@ -142,6 +175,10 @@ public final class SpatialUtil {
                     double y = secureGet(row, yKey).getDoubleValue();
                     BasicPoint2D p = new BasicPoint2D(x, y);
                     p.addAllAttributes(row);
+                    SpatialAttribute idAttr = tryGet(row, idKey);
+                    if(idAttr != null) {
+                        p.setId(idAttr.asValueAttribute().getIntValue());
+                    }
                     return p;
                 })
                 .collect(Collectors.toList());

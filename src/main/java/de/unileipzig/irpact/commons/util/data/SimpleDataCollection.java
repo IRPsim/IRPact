@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.IntFunction;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -180,6 +181,30 @@ public class SimpleDataCollection<E> implements DataCollection<E> {
             E element = get(filter, index);
             elements.remove(element);
             return element;
+        }
+    }
+
+    @Override
+    public E removeFirst(Predicate<? super E> filter) {
+        for(E e: elements) {
+            if(filter.test(e)) {
+                remove(e);
+                return e;
+            }
+        }
+        return null;
+    }
+    public E removeFirst(Filter<? super E> filter, Predicate<? super E> removeFilter) {
+        if(filter == null) {
+            return removeFirst(removeFilter);
+        } else {
+            for(E e: elements) {
+                if(filter.test(e) && removeFilter.test(e)) {
+                    remove(e);
+                    return e;
+                }
+            }
+            return null;
         }
     }
 
@@ -426,6 +451,11 @@ public class SimpleDataCollection<E> implements DataCollection<E> {
         @Override
         public E remove(int index) {
             return getCollection().remove(getFilter(), index);
+        }
+
+        @Override
+        public E removeFirst(Predicate<? super E> filter) {
+            return getCollection().removeFirst(getFilter(), filter);
         }
 
         @Override

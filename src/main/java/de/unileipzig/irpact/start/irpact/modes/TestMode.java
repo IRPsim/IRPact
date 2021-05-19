@@ -15,7 +15,7 @@ public final class TestMode implements IRPactExecutor {
 
     public static final int ID = 100;
     public static final String ID_STR = "100";
-    public static final RunWithoutSimulation INSTANCE = new RunWithoutSimulation();
+    public static final RunMinimalSimulation INSTANCE = new RunMinimalSimulation();
 
     @Override
     public int id() {
@@ -26,6 +26,6 @@ public final class TestMode implements IRPactExecutor {
     public void execute(IRPact irpact) throws Exception {
         LOGGER.info(IRPSection.GENERAL, "execute TestMode");
 
-        irpact.createDummyOutput();
+        irpact.postSimulationWithDummyOutput();
     }
 }

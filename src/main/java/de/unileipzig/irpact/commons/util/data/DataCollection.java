@@ -27,11 +27,14 @@ public interface DataCollection<E> extends Iterable<E> {
 
     boolean add(E element);
 
+    @SuppressWarnings("unchecked")
     boolean addAll(E... elements);
 
     boolean addAll(Collection<? extends E> elements);
 
     boolean remove(E element);
+
+    E removeFirst(Predicate<? super E> filter);
 
     E remove(int index);
 

@@ -15,6 +15,7 @@ import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.*;
 import de.unileipzig.irpact.core.util.PVactResultLogging;
+import de.unileipzig.irpact.core.util.RunInfo;
 import de.unileipzig.irpact.io.param.input.GraphvizInputParser;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.JadexInputParser;
@@ -78,6 +79,7 @@ public final class IRPact implements IRPActAccess {
     private final List<IRPactCallback> CALLBACKS = new ArrayList<>();
     private final MainCommandLineOptions CL_OPTIONS;
     private final ResourceLoader RESOURCE_LOADER;
+    private final RunInfo INFO = new RunInfo();
 
     private ObjectNode inRootNode;
     private AnnualEntry<InRoot> inEntry;
@@ -94,6 +96,14 @@ public final class IRPact implements IRPActAccess {
         this.CL_OPTIONS = clOptions;
         this.CALLBACKS.addAll(callbacks);
         this.RESOURCE_LOADER = resourceLoader;
+    }
+
+    public void notifyStart() {
+        INFO.setStartTime();
+    }
+
+    public void notifyEnd() {
+        INFO.setEndTime();
     }
 
     public MainCommandLineOptions getOptions() {
@@ -194,49 +204,6 @@ public final class IRPact implements IRPActAccess {
         this.inEntry = entry;
         inRoot = entry.getData();
     }
-
-//    private void start() throws Exception {
-//        initialize();
-//
-//        preAgentCreation();
-//        runPreAgentCreationTasks();
-//        preAgentCreationValidation();
-//
-//        createAgents();
-//
-//        postAgentCreation();
-//        runPostAgentCreationTasks();
-//        postAgentCreationValidation();
-//
-//        runPrePlatformCreationTasks();
-//
-//        if(CL_OPTIONS.isNoSimulation()) {
-//            if(CL_OPTIONS.hasImagePath()) {
-//                LOGGER.info(IRPSection.GENERAL, "create initial network image");
-//                printNetwork();
-//            }
-//            LOGGER.info(IRPSection.GENERAL, "no simulation");
-//            return;
-//        }
-//
-//        createPlatform();
-//        preparePlatform();
-//        setupTimeModel();
-//        createJadexAgents();
-//        try {
-//            waitForCreation();
-//        } catch (InterruptedException e) {
-//            LOGGER.warn(IRPSection.GENERAL, "waiting interrupted", e);
-//            if(environment.getLiveCycleControl().getTerminationState() != LifeCycleControl.TerminationState.NOT) {
-//                environment.getLiveCycleControl().terminateWithError(e);
-//            }
-//            return;
-//        }
-//        setupPreSimulationStart();
-//        startSimulation();
-//        waitForTermination();
-//        postSimulation();
-//    }
 
     public void initialize() throws Exception {
         initalizeLogging();
@@ -532,26 +499,42 @@ public final class IRPact implements IRPActAccess {
     }
 
     public void postSimulation() throws Exception {
-        LOGGER.info(IRPSection.GENERAL, "simulation finished");
-        if(CL_OPTIONS.hasImagePath()) {
-            LOGGER.info(IRPSection.GENERAL, "create network image after simulation finished");
-            printNetwork();
-        }
+        LOGGER.info(IRPSection.GENERAL, "start post simulation");
+        createNetworkAfterSimulation();
         createOutput();
         callCallbacks();
-        printLoggingOutput();
+        printResults();
         finalTask();
     }
 
-    public void createDummyOutput() throws Exception {
+    public void postSimulationWithDummyOutput() {
+        LOGGER.info(IRPSection.GENERAL, "start dummy post simulation");
+        createDummyOutput();
+        callCallbacks();
+        finalTask();
+    }
+
+    private void createDummyOutput() {
         LOGGER.info(IRPSection.GENERAL, "create dummy output");
         throw new UnsupportedOperationException();
     }
 
     private void createOutput() throws Exception {
+        LOGGER.info(IRPSection.GENERAL, "create output");
         OutRoot outRoot = createOutRoot();
         outData = createOutputData(outRoot);
         storeOutputData(outData);
+    }
+
+    private void createNetworkAfterSimulation() {
+        if(CL_OPTIONS.hasImagePath()) {
+            LOGGER.info(IRPSection.GENERAL, "create network image after finished simulation");
+            try {
+                printNetwork();
+            } catch (Throwable t) {
+                LOGGER.error("creating network image after finished simulation failed, continue post simulation process", t);
+            }
+        }
     }
 
     private OutRoot createOutRoot() throws Exception {
@@ -635,7 +618,7 @@ public final class IRPact implements IRPActAccess {
         }
     }
 
-    private void printLoggingOutput() {
+    private void printResults() {
         PVactResultLogging logging = new PVactResultLogging(CL_OPTIONS, environment, true);
         logging.execute();
     }

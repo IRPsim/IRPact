@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.IntFunction;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -128,6 +129,23 @@ public class LinkedDataCollection<E> implements DataCollection<E> {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public E removeFirst(Predicate<? super E> filter) {
+        int i = 0;
+        for(E e: elements) {
+            if(filter.test(e)) {
+                if(elements instanceof RandomAccess) {
+                    remove(i);
+                } else {
+                    remove(e);
+                }
+                return  e;
+            }
+            i++;
+        }
+        return null;
     }
 
     @Override
@@ -325,6 +343,17 @@ public class LinkedDataCollection<E> implements DataCollection<E> {
             if(FILTER.test(element)) {
                 COLL.remove(element);
             }
+        }
+
+        @Override
+        public E removeFirst(Predicate<? super E> filter) {
+            for(E e: COLL) {
+                if(filter.test(e)) {
+                    remove(e);
+                    return e;
+                }
+            }
+            return null;
         }
 
         @Override

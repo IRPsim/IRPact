@@ -11,11 +11,10 @@ import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
 import de.unileipzig.irpact.jadex.persistance.binary.io.BinaryPersistJson;
 import de.unileipzig.irpact.jadex.persistance.binary.meta.ClassManagerPR;
-import de.unileipzig.irpact.jadex.persistance.binary.meta.SettingsPR;
+import de.unileipzig.irpact.jadex.persistance.binary.meta.MetaPR;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -47,7 +46,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     protected final RestoreHelper restoreHelper = new RestoreHelper();
     protected final ClassManager classManager = new ClassManager();
     protected final List<Persistable> persistables = new ArrayList<>();
-    protected SettingsPR settingsPR;
+    protected MetaPR settingsPR;
     protected ClassManagerPR classManagerPR;
     protected boolean hasValidationChecksum;
     protected int validationChecksum;
@@ -366,9 +365,9 @@ public class BinaryJsonRestoreManager implements RestoreManager {
 
     public JsonNode restoreJson(BinaryPersistData data) throws RestoreException {
         String irp32 = data.getIRPBase32String();
-        if(irp32.startsWith(SettingsPR.UID_PREFIX)) {
-            if(data.getID() == SettingsPR.UID) {
-                return BinaryPersistJson.parse(irp32, SettingsPR.UID_PREFIX);
+        if(irp32.startsWith(MetaPR.UID_PREFIX)) {
+            if(data.getID() == MetaPR.UID) {
+                return BinaryPersistJson.parse(irp32, MetaPR.UID_PREFIX);
             }
             if(data.getID() == ClassManagerPR.UID) {
                 return BinaryPersistJson.parse(irp32, ClassManagerPR.UID_PREFIX);
@@ -381,11 +380,11 @@ public class BinaryJsonRestoreManager implements RestoreManager {
 
     public BinaryJsonData tryRestore(BinaryPersistData data) throws RestoreException, IOException {
         String irp32 = data.getIRPBase32String();
-        if(irp32.startsWith(SettingsPR.UID_PREFIX)) {
-            if(data.getID() == SettingsPR.UID) {
+        if(irp32.startsWith(MetaPR.UID_PREFIX)) {
+            if(data.getID() == MetaPR.UID) {
                 LOGGER.trace("restore Settings");
-                ObjectNode restored = (ObjectNode) BinaryPersistJson.parse(irp32, SettingsPR.UID_PREFIX);
-                settingsPR = new SettingsPR(restored);
+                ObjectNode restored = (ObjectNode) BinaryPersistJson.parse(irp32, MetaPR.UID_PREFIX);
+                settingsPR = new MetaPR(restored);
                 return null;
             }
             if(data.getID() == ClassManagerPR.UID) {

@@ -4,11 +4,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.irpact.IRPactExecutor;
 import de.unileipzig.irptools.defstructure.Converter;
-import de.unileipzig.irptools.io.base.AnnualEntry;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -20,7 +18,7 @@ public final class PrintInput implements IRPactExecutor {
 
     public static final int ID = 110;
     public static final String ID_STR = "110";
-    public static final RunWithoutSimulation INSTANCE = new RunWithoutSimulation();
+    public static final RunMinimalSimulation INSTANCE = new RunMinimalSimulation();
 
     @Override
     public int id() {
@@ -42,6 +40,6 @@ public final class PrintInput implements IRPactExecutor {
 
         IRPLogging.logResult("[PrintInput]", IRPactJson.toLazyString(inRootNode, IRPactJson.DEFAULT));
 
-        irpact.createDummyOutput();
+        irpact.postSimulationWithDummyOutput();
     }
 }

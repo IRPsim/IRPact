@@ -85,7 +85,7 @@ public class VisibleBinaryData implements InIRPactEntity {
     public byte[] getBytes() {
         return _name == null
                 ? null
-                : IRPactBase32.decodeString(_name);
+                : IRPactBase32.decode(_name);
     }
 
     private final BinaryData ACCESS = new BinaryAccess();

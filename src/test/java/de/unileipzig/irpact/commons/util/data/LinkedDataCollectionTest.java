@@ -199,4 +199,30 @@ class LinkedDataCollectionTest {
 
         assertDoesNotThrow((Executable) t::join);
     }
+
+    @Test
+    void testRemoveFirst() {
+        LinkedDataCollection<String> coll = new LinkedDataCollection<>();
+        assertTrue(coll.addAll("aa", "ab", "ba", "bb"));
+        LinkedDataCollection.LinkedView<String> aStart = coll.createView(str -> str.startsWith("a"));
+        LinkedDataCollection.LinkedView<String> bEnd = coll.createView(str -> str.endsWith("b"));
+
+        assertTrue(aStart.contains("aa"));
+        assertTrue(bEnd.contains("bb"));
+
+        assertEquals("aa", aStart.removeFirst(str -> str.endsWith("a")));
+        assertEquals("bb", bEnd.removeFirst(str -> str.startsWith("b")));
+
+        assertFalse(aStart.contains("aa"));
+        assertFalse(bEnd.contains("bb"));
+
+        assertEquals(CollectionUtil.arrayListOf("ab", "ba"), coll.toList());
+        assertEquals(CollectionUtil.arrayListOf("ab"), aStart.toList());
+        assertEquals(CollectionUtil.arrayListOf("ab"), bEnd.toList());
+
+        assertEquals("ab", coll.removeFirst("ab"::equals));
+        assertEquals(CollectionUtil.arrayListOf("ba"), coll.toList());
+        assertTrue(aStart.isEmpty());
+        assertTrue(bEnd.isEmpty());
+    }
 }

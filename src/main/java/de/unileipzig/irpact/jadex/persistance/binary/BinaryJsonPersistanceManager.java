@@ -4,9 +4,10 @@ import de.unileipzig.irpact.commons.persistence.BasicPersistManager;
 import de.unileipzig.irpact.commons.persistence.Persister;
 import de.unileipzig.irpact.commons.persistence.SimpleUIDManager;
 import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.core.util.RunInfo;
 import de.unileipzig.irpact.jadex.persistance.binary.data.BinaryPRBase;
 import de.unileipzig.irpact.jadex.persistance.binary.meta.ClassManagerPR;
-import de.unileipzig.irpact.jadex.persistance.binary.meta.SettingsPR;
+import de.unileipzig.irpact.jadex.persistance.binary.meta.MetaPR;
 
 /**
  * @author Daniel Abitz
@@ -18,6 +19,11 @@ public class BinaryJsonPersistanceManager extends BasicPersistManager {
     protected final Object settingsDummy = new Object();
     protected final RestoreHelper restoreHelper = new RestoreHelper();
     protected final ClassManager classManager = new ClassManager();
+
+    protected Holder metaHolder;
+    protected MetaPR metaPR;
+    protected Holder classManagerHolder;
+    protected ClassManagerPR classManagerPR;
 
     public BinaryJsonPersistanceManager() {
         init();
@@ -36,13 +42,17 @@ public class BinaryJsonPersistanceManager extends BasicPersistManager {
         restoreHelper.setClassManager(classManager);
         restoreHelper.setPrintLoggableOnPersist(false);
 
-        Holder settingsHolder = newHolder(settingsDummy);
-        SettingsPR settingsPR = new SettingsPR(IRPactJson.SMILE.createObjectNode());
-        persistableMap.put(settingsHolder, settingsPR);
+        metaHolder = newHolder(settingsDummy);
+        metaPR = new MetaPR(IRPactJson.SMILE.createObjectNode());
+        persistableMap.put(metaHolder, metaPR);
 
-        Holder classManagerHolder = newHolder(classManager);
-        ClassManagerPR classManagerPR = new ClassManagerPR(IRPactJson.SMILE.createObjectNode(), classManager);
+        classManagerHolder = newHolder(classManager);
+        classManagerPR = new ClassManagerPR(IRPactJson.SMILE.createObjectNode(), classManager);
         persistableMap.put(classManagerHolder, classManagerPR);
+    }
+
+    public void init(RunInfo info) {
+        metaPR.addRunInfo(info);
     }
 
     @Override

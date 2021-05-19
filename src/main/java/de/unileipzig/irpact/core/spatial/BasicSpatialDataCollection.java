@@ -27,6 +27,11 @@ public class BasicSpatialDataCollection extends NameableBase implements SpatialD
     }
 
     @Override
+    public boolean removeId(int id) {
+        return data.removeFirst(info -> info.hasId() && info.getId() == id) != null;
+    }
+
+    @Override
     public boolean hasFilter(SpatialDataFilter filter) {
         for(DataCollection.Filter<? super SpatialInformation> f: data.getFilters()) {
             SpatialDataFilter sdf = (SpatialDataFilter) f;

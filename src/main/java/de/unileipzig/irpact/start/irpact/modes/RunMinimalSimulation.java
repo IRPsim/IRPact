@@ -9,15 +9,15 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 /**
  * @author Daniel Abitz
  */
-public final class RunWithoutSimulation implements IRPactExecutor {
+public final class RunMinimalSimulation implements IRPactExecutor {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(RunWithoutSimulation.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(RunMinimalSimulation.class);
 
     public static final int ID = 1;
     public static final String ID_STR = "1";
-    public static final RunWithoutSimulation INSTANCE = new RunWithoutSimulation();
+    public static final RunMinimalSimulation INSTANCE = new RunMinimalSimulation();
 
-    public RunWithoutSimulation() {
+    public RunMinimalSimulation() {
     }
 
     @Override
@@ -27,8 +27,9 @@ public final class RunWithoutSimulation implements IRPactExecutor {
 
     @Override
     public void execute(IRPact irpact) throws Exception {
-        LOGGER.info(IRPSection.GENERAL, "execute IRPact without simulation, only initialization and evaluation");
+        LOGGER.info(IRPSection.GENERAL, "execute IRPact with minimal simulation (only system agents)");
 
+        //Phase 1: initialization
         irpact.initialize();
 
         irpact.preAgentCreation();
@@ -59,6 +60,9 @@ public final class RunWithoutSimulation implements IRPactExecutor {
         irpact.setupPreSimulationStart();
         irpact.startSimulation();
         irpact.waitForTermination();
+
+        //Phase 3: evaluation
+        irpact.notifyEnd();
         irpact.postSimulation();
     }
 }

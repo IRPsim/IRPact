@@ -95,9 +95,6 @@ public final class Start {
                 Logback.filterError(true);
             }
             setupLogging();
-            if(options.hasExecuteResultMessage()) {
-                options.getExecuteResultMessage().trace(LOGGER);
-            }
             return true;
         } catch (IOException e) {
             LOGGER.error("setup logging failed, start canceled", e);
@@ -108,14 +105,18 @@ public final class Start {
 
     private boolean validateOptions() {
         int exitCode = options.getExitCode();
-        if(exitCode != CommandLine.ExitCode.OK) {
+        if(exitCode == CommandLine.ExitCode.OK) {
+            if(options.hasExecuteResultMessage()) {
+                options.getExecuteResultMessage().trace(LOGGER);
+            }
+            return true;
+        } else {
             if(options.hasExecuteResultMessage()) {
                 options.getExecuteResultMessage().error(LOGGER);
             }
             result = new StartResult(exitCode);
             return false;
         }
-        return true;
     }
 
     private boolean isHelpOrVersion() {

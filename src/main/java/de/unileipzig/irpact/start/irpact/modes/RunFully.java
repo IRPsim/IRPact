@@ -29,6 +29,8 @@ public final class RunFully implements IRPactExecutor {
     public void execute(IRPact irpact) throws Exception {
         LOGGER.info(IRPSection.GENERAL, "execute IRPact fully");
 
+        irpact.notifyStart();
+
         //Phase 1: initialization
         irpact.initialize();
 
@@ -48,7 +50,6 @@ public final class RunFully implements IRPactExecutor {
             return;
         }
 
-        //Phase 2: simulation
         irpact.createPlatform();
         irpact.preparePlatform();
         irpact.setupTimeModel();
@@ -58,10 +59,12 @@ public final class RunFully implements IRPactExecutor {
             return;
         }
 
-        //Phase 3: evaluation
         irpact.setupPreSimulationStart();
         irpact.startSimulation();
         irpact.waitForTermination();
+
+        //Phase 3: evaluation
+        irpact.notifyEnd();
         irpact.postSimulation();
     }
 }

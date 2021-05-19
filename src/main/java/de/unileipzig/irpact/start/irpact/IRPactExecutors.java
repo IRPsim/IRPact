@@ -17,8 +17,8 @@ public final class IRPactExecutors {
             case RunFully.ID:
                 return RunFully.INSTANCE;
 
-            case RunWithoutSimulation.ID:
-                return RunWithoutSimulation.INSTANCE;
+            case RunMinimalSimulation.ID:
+                return RunMinimalSimulation.INSTANCE;
 
             case TestMode.ID:
                 return TestMode.INSTANCE;

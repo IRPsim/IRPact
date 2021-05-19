@@ -138,7 +138,7 @@ public class InFileSelectedGroupedSpatialDistribution2D implements InSpatialDist
             String groupingKey,
             Rnd rnd) {
         List<List<SpatialAttribute>> selectedList = SpatialUtil.filter(attrList, selectKey, selectValue);
-        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xKey, yKey);
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xKey, yKey, "");
         Map<String, List<SpatialInformation>> groupedInfos = SpatialUtil.groupingBy(infos, groupingKey);
 
         WeightedDiscreteSpatialDistribution dist = new WeightedDiscreteSpatialDistribution();

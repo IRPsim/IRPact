@@ -140,7 +140,7 @@ public class InCustomFileSelectedGroupedSpatialDistribution2D implements InSpati
             String groupingKey,
             Rnd rnd) {
         List<List<SpatialAttribute>> selectedList = SpatialUtil.filter(attrList, selectKey, selectValue);
-        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xSupplier, ySupplier);
+        List<SpatialInformation> infos = SpatialUtil.mapToPoint2D(selectedList, xSupplier, ySupplier, "");
         Map<String, List<SpatialInformation>> groupedInfos = SpatialUtil.groupingBy(infos, groupingKey);
 
         WeightedDiscreteSpatialDistribution dist = new WeightedDiscreteSpatialDistribution();

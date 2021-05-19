@@ -31,7 +31,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
 
             bundle.put("printHelp", "Print help.");
             bundle.put("printVersion", "Print version information.");
-            bundle.put("runMode", "The mode in which the program is to be executed. Currently supported are: '0: normal execution', '1: initialization and evaluation, no simulation'. Default value is ${DEFAULT-VALUE}.");
+            bundle.put("runMode", "The mode in which the program is to be executed. Default value is ${DEFAULT-VALUE}. Currently supported are: '0: normal execution', '1: minimal simulation (only system agents)'. '100: test mode (creates dummy output)', '666: error mode (guaranteed exception)'");
             bundle.put("filterError", "If set, errors are logged only to System.err.");
             bundle.put("inputPath", "Set path to input file.");
             bundle.put("outputPath", "Set path to output file.");
@@ -75,7 +75,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     //=========================
 
     @CommandLine.Option(
-            names = { "-?", "-h", "--help" },
+            names = { "-?", "-h", "--help", "--irpactUsage" },
             descriptionKey = "printHelp"
     )
     private boolean printHelp;
@@ -182,7 +182,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     @CommandLine.Option(
             names = { "--prefereCsv" },
             descriptionKey = "prefereCsv",
-            hidden = true
+            hidden = true //aktuell noch nicht richtig implementiert
     )
     private boolean prefereCsv;
 
@@ -482,13 +482,16 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
                 : Paths.get(pathStr);
     }
 
-    private boolean callSub() {
-        return callIrptools || callUtilities;
+    private boolean isCallSub() {
+        return isPrintUtilitiesHelp()
+                || isCallUtilities()
+                || isPrintIrptoolsHelp()
+                || isCallIrptools();
     }
 
     private boolean cancelValidation() {
         return skipArgValidation
-                || callSub()
+                || isCallSub()
                 || isPrintHelpOrVersion();
     }
 

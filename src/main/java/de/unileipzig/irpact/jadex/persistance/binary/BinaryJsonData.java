@@ -14,7 +14,6 @@ import de.unileipzig.irpact.jadex.persistance.binary.io.BinaryPersistJson;
 import de.unileipzig.irptools.util.Util;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.*;
 import java.util.function.*;
 
@@ -133,12 +132,8 @@ public final class BinaryJsonData extends PersistableBase implements JadexPersis
         return IRPactJson.toBytesWithSmile(root);
     }
 
-    public String printBytes() {
-        try {
-            return IRPactBase32.encodeToString(toBytes());
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public String printBytes(String prefix) {
+        return BinaryPersistJson.print(getRoot(), prefix, getUID());
     }
 
     public String printMinimalJson() {

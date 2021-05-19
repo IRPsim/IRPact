@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.attribute.BasicAttributeAccess;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
+import de.unileipzig.irpact.commons.util.data.MutableInt;
 
 import java.util.*;
 
@@ -13,6 +14,7 @@ import java.util.*;
 public class BasicPoint2D implements Point2D {
 
     protected final AttributeAccess ACCESS;
+    protected final MutableInt id = MutableInt.empty();
     protected Map<String, SpatialAttribute> attributes;
     protected double x;
     protected double y;
@@ -34,6 +36,24 @@ public class BasicPoint2D implements Point2D {
         this.x = x;
         this.y = y;
         ACCESS = new BasicAttributeAccess(attributes);
+    }
+
+    @Override
+    public boolean hasId() {
+        return id.hasValue();
+    }
+
+    @Override
+    public int getId() {
+        if(hasId()) {
+            return id.get();
+        } else {
+            throw new NoSuchElementException();
+        }
+    }
+
+    public void setId(int id) {
+        this.id.set(id);
     }
 
     @Override

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.smile.databind.SmileMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import de.unileipzig.irpact.commons.log.LazyPrinter;
@@ -184,5 +186,31 @@ public final class IRPactJson {
             return false;
         }
         return Objects.equals(node.textValue(), value);
+    }
+
+    public static ObjectNode computeObjectIfAbsent(ObjectNode root, String fieldName) {
+        JsonNode node = root.get(fieldName);
+        if(node == null) {
+            return root.putObject(fieldName);
+        } else {
+            if(node.isObject()) {
+                return (ObjectNode) node;
+            } else {
+                throw new IllegalArgumentException("no object node: " + node.getNodeType());
+            }
+        }
+    }
+
+    public static ArrayNode computeArrayIfAbsent(ObjectNode root, String fieldName) {
+        JsonNode node = root.get(fieldName);
+        if(node == null) {
+            return root.putArray(fieldName);
+        } else {
+            if(node.isArray()) {
+                return (ArrayNode) node;
+            } else {
+                throw new IllegalArgumentException("no array node: " + node.getNodeType());
+            }
+        }
     }
 }

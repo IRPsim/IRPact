@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class ClassManagerPR extends PersistableBase implements JadexPersistable {
 
-    public static final String UID_PREFIX = SettingsPR.UID_PREFIX;
+    public static final String UID_PREFIX = MetaPR.UID_PREFIX;
     public static final long UID = 1;
 
     protected ObjectNode root;
@@ -30,6 +30,10 @@ public final class ClassManagerPR extends PersistableBase implements JadexPersis
 
     public ObjectNode getRoot() {
         return root;
+    }
+
+    public ClassManager getManager() {
+        return manager;
     }
 
     protected void updateRoot() {
