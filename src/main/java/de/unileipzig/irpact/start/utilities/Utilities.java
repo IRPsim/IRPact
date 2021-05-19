@@ -82,11 +82,11 @@ public class Utilities {
             }
         }
 
-    private void printInput() throws IOException {
-        LOGGER.trace(IRPSection.GENERAL, "print input file to {} (using {})", CL_OPTIONS.getInputOutPath(), CL_OPTIONS.getInputOutCharset().name());
-        AnnualData<InRoot> inData = new AnnualData<>(inEntry);
-        AnnualFile aFile = inData.serialize(getInputConverter());
-        aFile.store(CL_OPTIONS.getInputOutPath(), CL_OPTIONS.getInputOutCharset());
+    private void printIn() throws IOException {
+        AnnualData<InRoot> data = new AnnualData<>(inEntry);
+        AnnualFile file = data.serialize(getInputConverter(CL_OPTIONS));
+        file.store(Paths.get("temp.json"));
+        if(true) throw new RuntimeException();
     }
      */
 
