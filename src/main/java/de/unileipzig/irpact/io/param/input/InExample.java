@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.io.param.input;
 
-import de.unileipzig.irpact.core.log.IRPLevel;
+import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.simulation.tasks.PredefinedPostAgentCreationTask;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;

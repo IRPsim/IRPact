@@ -58,6 +58,50 @@ SET set_OutEntity(*)
 * - type: Integer
 PARAMETER par_out_BinaryPersistData_id(set_BinaryPersistData)
 
+* - identifier: OutZipYearAdoptionWithNameSplit
+* - type: String
+SET set_OutZipYearAdoptionWithNameSplit(*)
+
+* - identifier: adoptions
+* - type: Integer
+PARAMETER par_out_OutZipYearAdoptionWithNameSplit_adoptions(set_OutZipYearAdoptionWithNameSplit)
+
+* - identifier: OutZipYearAdoption
+* - type: String
+SET set_OutZipYearAdoption(*)
+
+* - identifier: adoptions
+* - type: Integer
+PARAMETER par_out_OutZipYearAdoption_adoptions(set_OutZipYearAdoption)
+
+* - identifier: OutZipYearAdoptionLink
+* - type: String
+SET set_OutZipYearAdoptionLink(*)
+
+* - identifier: years
+* - type: Boolean
+PARAMETER par_out_link_OutZipYearAdoptionLink_OutYear_years(set_OutZipYearAdoptionLink,set_OutYear)
+
+* - identifier: zips
+* - type: Boolean
+PARAMETER par_out_link_OutZipYearAdoptionLink_OutZip_zips(set_OutZipYearAdoptionLink,set_OutZip)
+
+* - identifier: adoptions
+* - type: Boolean
+PARAMETER par_out_link_OutZipYearAdoptionLink_OutZipYearAdoption_adoptions(set_OutZipYearAdoptionLink,set_OutZipYearAdoption)
+
+* - identifier: OutYear
+* - type: String
+SET set_OutYear(*)
+
+* - identifier: year
+* - type: Integer
+PARAMETER par_out_OutYear_year(set_OutYear)
+
+* - identifier: OutZip
+* - type: String
+SET set_OutZip(*)
+
 * - description: Neue Anzahl der Kunden
 * - identifier: OUTKGA
 * - type: Integer

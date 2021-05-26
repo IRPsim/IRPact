@@ -2,7 +2,7 @@ package de.unileipzig.irpact.jadex.persistance.binary.data;
 
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.agent.Agent;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.network.BasicSocialGraph;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;

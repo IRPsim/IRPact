@@ -9,8 +9,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.smile.databind.SmileMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import de.unileipzig.irpact.commons.log.LazyPrinter;
-import de.unileipzig.irpact.commons.log.LazyToString;
+import de.unileipzig.irpact.commons.logging.LazyPrinter;
+import de.unileipzig.irpact.commons.logging.LazyToString;
 import de.unileipzig.irptools.util.Util;
 
 import java.io.BufferedReader;

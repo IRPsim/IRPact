@@ -8,4 +8,6 @@ import de.unileipzig.irpact.develop.Todo;
  * @author Daniel Abitz
  */
 public interface SpatialDistribution extends UnivariateDistribution<SpatialInformation> {
+
+    boolean setUsed(SpatialInformation information);
 }

@@ -2,7 +2,7 @@ package de.unileipzig.irpact.io.param.input.distribution;
 
 import de.unileipzig.irpact.commons.distribution.DiracUnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;

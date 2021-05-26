@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.attribute.BasicAttributeAccess;
 import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
-import de.unileipzig.irpact.commons.util.data.MutableInt;
+import de.unileipzig.irpact.commons.util.data.MutableLong;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
 import java.util.*;
@@ -15,7 +15,7 @@ import java.util.*;
 public class BasicPoint2D implements Point2D {
 
     protected final AttributeAccess ACCESS;
-    protected final MutableInt id = MutableInt.empty();
+    protected final MutableLong id = MutableLong.empty();
     protected Map<String, SpatialAttribute> attributes;
     protected double x;
     protected double y;
@@ -32,6 +32,11 @@ public class BasicPoint2D implements Point2D {
         this(new LinkedHashMap<>(), x, y);
     }
 
+    public BasicPoint2D(long id, double x, double y) {
+        this(new LinkedHashMap<>(), x, y);
+        setId(id);
+    }
+
     public BasicPoint2D(Map<String, SpatialAttribute> attributes, double x, double y) {
         this.attributes = attributes;
         this.x = x;
@@ -45,12 +50,12 @@ public class BasicPoint2D implements Point2D {
     }
 
     @Override
-    public boolean isId(int id) {
+    public boolean isId(long id) {
         return getId() == id;
     }
 
     @Override
-    public int getId() {
+    public long getId() {
         if(hasId()) {
             return id.get();
         } else {
@@ -58,7 +63,7 @@ public class BasicPoint2D implements Point2D {
         }
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id.set(id);
     }
 

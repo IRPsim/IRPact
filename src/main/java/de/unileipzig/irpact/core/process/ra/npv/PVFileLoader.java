@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.core.process.ra.npv;
 
-import de.unileipzig.irpact.commons.res.ResourceLoader;
+import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.util.xlsx.XlsxUtil;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -58,17 +58,17 @@ public class PVFileLoader {
         }
 
         String xlsxFile = inputFileName + ".xlsx";
-        if(loader.hasPath(xlsxFile)) {
-            Path xlsxPath = loader.get(xlsxFile);
+        if(loader.hasExternal(xlsxFile)) {
+            Path xlsxPath = loader.getExternal(xlsxFile);
             LOGGER.trace("load xlsx file '{}'", xlsxPath);
             try(InputStream in = Files.newInputStream(xlsxPath)) {
                 data = parseXlsx(in);
             }
             return;
         }
-        if(loader.hasResource(xlsxFile)) {
+        if(loader.hasInternal(xlsxFile)) {
             LOGGER.trace("load xlsx resource '{}'", xlsxFile);
-            try(InputStream in = loader.getResourceAsStream(xlsxFile)) {
+            try(InputStream in = loader.getInternalAsStream(xlsxFile)) {
                 data = parseXlsx(in);
             }
             return;

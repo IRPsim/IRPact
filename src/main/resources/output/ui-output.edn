@@ -1,5 +1,25 @@
 [
   {
+    :label "set_OutZipYearAdoptionWithNameSplit" 
+    :set "set_OutZipYearAdoptionWithNameSplit" 
+    :tags [["OutZipYearAdoptionWithNameSplit" "adoptions"]]
+  } 
+  {
+    :label "set_OutZipYearAdoption" 
+    :set "set_OutZipYearAdoption" 
+    :tags [["OutZipYearAdoption" "adoptions"]]
+  } 
+  {
+    :label "set_OutZipYearAdoptionLink" 
+    :set "set_OutZipYearAdoptionLink" 
+    :tags [["link" "OutZipYearAdoptionLink" "OutYear" "years"] ["link" "OutZipYearAdoptionLink" "OutZip" "zips"] ["link" "OutZipYearAdoptionLink" "OutZipYearAdoption" "adoptions"]]
+  } 
+  {
+    :label "set_OutYear" 
+    :set "set_OutYear" 
+    :tags [["OutYear" "year"]]
+  } 
+  {
     :label "Sets" 
     :description "Hier sind Sets." 
     :sections [

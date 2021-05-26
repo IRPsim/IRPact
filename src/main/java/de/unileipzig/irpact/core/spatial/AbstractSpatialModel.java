@@ -1,16 +1,20 @@
 package de.unileipzig.irpact.core.spatial;
 
+import de.unileipzig.irpact.commons.util.IdManager;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.LongSupplier;
 
 /**
  * @author Daniel Abitz
  */
 public abstract class AbstractSpatialModel extends SimulationEntityBase implements SpatialModel {
 
+    protected final LongSupplier NEXT_ID = this::nextId;
     protected Map<String, SpatialDataCollection> spatialData;
+    protected IdManager idManager = new IdManager(0L);
 
     public AbstractSpatialModel() {
         this(new HashMap<>());
@@ -18,6 +22,10 @@ public abstract class AbstractSpatialModel extends SimulationEntityBase implemen
 
     public AbstractSpatialModel(Map<String, SpatialDataCollection> spatialData) {
         this.spatialData = spatialData;
+    }
+
+    public IdManager getIdManager() {
+        return idManager;
     }
 
     @Override
@@ -33,5 +41,15 @@ public abstract class AbstractSpatialModel extends SimulationEntityBase implemen
     @Override
     public void storeData(SpatialDataCollection data) {
         spatialData.put(data.getName(), data);
+    }
+
+    @Override
+    public long nextId() {
+        return idManager.nextId();
+    }
+
+    @Override
+    public LongSupplier supplyNextId() {
+        return NEXT_ID;
     }
 }

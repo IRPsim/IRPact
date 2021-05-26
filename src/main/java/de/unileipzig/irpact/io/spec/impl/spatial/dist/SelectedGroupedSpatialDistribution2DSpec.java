@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.io.spec.impl.spatial.dist;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileSelectedGroupedSpatialDistribution2D;
 import de.unileipzig.irpact.io.spec.SpecificationHelper;
 import de.unileipzig.irpact.io.spec.SpecificationJob;

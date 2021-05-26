@@ -26,15 +26,24 @@ public final class Rnd implements ChecksumComparable {
      * Creates an instance with a random initial seed.
      */
     public Rnd() {
-        this(nextLongGlobal());
+        this(false);
+    }
+
+    public Rnd(boolean sync) {
+        this(nextLongGlobal(), sync);
     }
 
     public Rnd(long initialSeed) {
-        setInitialSeed(initialSeed);
+        this(initialSeed, false);
     }
 
-    private Rnd(Void v) {
-        rnd = null;
+    public Rnd(long initialSeed, boolean sync) {
+        setInitialSeed(initialSeed);
+        if(sync) {
+            enableSync();
+        } else {
+            disableSync();
+        }
     }
 
     public static synchronized long nextLongGlobal() {
@@ -47,18 +56,9 @@ public final class Rnd implements ChecksumComparable {
                 : input;
     }
 
-    /**
-     * Creates an instance without a random.
-     *
-     * @return created instance
-     */
-    public static Rnd empty() {
-        return new Rnd(null);
-    }
-
     protected void lock() {
         if(useLock) {
-            LOCK.lock();;
+            LOCK.lock();
         }
     }
 

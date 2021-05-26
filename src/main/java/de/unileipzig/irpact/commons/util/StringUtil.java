@@ -24,13 +24,13 @@ public final class StringUtil {
         return LINE_SEPARATOR;
     }
 
-    public static String concat(String delimiter, String... parts) {
+    public static String concat(String delimiter, Object... parts) {
         return concat(delimiter, Arrays.asList(parts));
     }
 
-    public static String concat(String delimiter, Collection<? extends String> parts) {
+    public static String concat(String delimiter, Collection<?> parts) {
         StringBuilder sb = new StringBuilder();
-        for(String part: parts) {
+        for(Object part: parts) {
             if(sb.length() > 0) {
                 sb.append(delimiter);
             }

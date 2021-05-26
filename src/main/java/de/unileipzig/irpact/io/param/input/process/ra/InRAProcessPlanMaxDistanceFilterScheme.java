@@ -2,8 +2,8 @@ package de.unileipzig.irpact.io.param.input.process.ra;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.filter.RAProcessPlanMaxDistanceFilterScheme;
 import de.unileipzig.irpact.develop.PotentialProblem;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;

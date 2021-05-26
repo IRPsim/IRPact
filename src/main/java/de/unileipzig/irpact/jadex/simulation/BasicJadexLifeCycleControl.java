@@ -1,12 +1,12 @@
 package de.unileipzig.irpact.jadex.simulation;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
-import de.unileipzig.irpact.core.log.InfoTag;
+import de.unileipzig.irpact.core.logging.InfoTag;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.Agent;
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.simulation.tasks.Task;
 import de.unileipzig.irpact.jadex.agents.simulation.SimulationAgent;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
@@ -28,6 +28,7 @@ import java.util.function.Function;
 /**
  * @author Daniel Abitz
  */
+@SuppressWarnings("DefaultAnnotationParam")
 @Reference(local = true, remote = true)
 public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
 
@@ -36,6 +37,13 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
 
     protected final Lock SYNC_LOCK = new ReentrantLock();
     protected final NavigableMap<Timestamp, Set<SyncTask>> syncTasks = new TreeMap<>(Comparable::compareTo);
+
+    protected final Lock LAST_SYNC_LOCK = new ReentrantLock();
+    protected final NavigableMap<Timestamp, Set<SyncTask>> lastSyncTasks = new TreeMap<>(Comparable::compareTo);
+    protected CountDownLatch lastLatch;
+
+    protected final Set<SyncTask> newYearTasks = new TreeSet<>(Task.PRIORITY_COMPARATOR);
+    protected final Set<SyncTask> lastYearTasks = new TreeSet<>(Task.PRIORITY_COMPARATOR);
 
     protected CountDownLatch startSynchronizer;
     protected int totalNumberOfAgents;
@@ -90,6 +98,10 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
 
     public void setCurrent(Timestamp current) {
         this.current = current;
+    }
+
+    public int getTotalNumberOfAgents() {
+        return totalNumberOfAgents;
     }
 
     @Override
@@ -251,11 +263,24 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
     }
 
     @Override
-    public boolean registerSyncTask(Timestamp ts, SyncTask task) {
+    public boolean registerSyncTaskAsFirstAction(Timestamp ts, SyncTask task) {
         if(isValid(ts)) {
             Set<SyncTask> taskList = syncTasks.computeIfAbsent(ts, SET_CREATOR);
             taskList.add(task);
-            LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "add sync task '{}' at '{}' (total = {})", task.getName(), ts, countSyncTasks());
+            LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "add 'run first' sync task '{}' at '{}' (total = {})", task.getName(), ts, countSyncTasks());
+            return true;
+        } else {
+            LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "ignore invalid timestamp ({})", ts);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean registerSyncTaskAsLastAction(Timestamp ts, SyncTask task) {
+        if(isValid(ts)) {
+            Set<SyncTask> taskList = lastSyncTasks.computeIfAbsent(ts, SET_CREATOR);
+            taskList.add(task);
+            LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "add 'run last' sync task '{}' at '{}' (total = {})", task.getName(), ts, countSyncTasks());
             return true;
         } else {
             LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "ignore invalid timestamp ({})", ts);
@@ -274,7 +299,7 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
         try {
             if(timeModel.hasYearChange()) {
                 LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] perform year change", agent.getName());
-                timeModel.performYearChange();
+                timeModel.performYearChange(lastYearTasks, newYearTasks);
             }
         } finally {
             SYNC_LOCK.unlock();
@@ -282,7 +307,7 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
     }
 
     @Override
-    public void waitForSynchronisationIfRequired(Agent agent) {
+    public void waitForSynchronisationAtStartIfRequired(Agent agent) {
         if(syncTasks.isEmpty()) {
             return;
         }
@@ -297,23 +322,80 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
                 NavigableMap<Timestamp, Set<SyncTask>> tasks = syncTasks.headMap(now, true);
                 LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "[{} @ {}] check for sync tasks: {}", agent.getName(), now, count(tasks));
                 if(!tasks.isEmpty()) {
-                    List<Timestamp> toRemove = new ArrayList<>();
                     for(Map.Entry<Timestamp, Set<SyncTask>> entry: tasks.entrySet()) {
-                        toRemove.add(entry.getKey());
                         for(SyncTask task: entry.getValue()) {
-                            LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] execute sync task '{}' at '{}'", agent.getName(), task.getName(), entry.getKey());
+                            LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] execute 'first' sync task '{}' at '{}'", agent.getName(), task.getName(), entry.getKey());
                             task.run();
                         }
                     }
-                    for(Timestamp ts: toRemove) {
-                        syncTasks.remove(ts);
-                    }
+                    tasks.clear();
                 }
                 current = now;
             } finally {
                 SYNC_LOCK.unlock();
             }
         }
+    }
+
+    public void waitForSynchronisationAtEndIfRequired(Agent agent) {
+        if(lastSyncTasks.isEmpty()) {
+            return;
+        }
+
+        Timestamp now = now();
+        NavigableMap<Timestamp, Set<SyncTask>> tasks = syncTasks.headMap(now, true);
+        if(tasks.isEmpty()) {
+            return;
+        }
+
+        CountDownLatch latch = getLatch();
+
+        boolean isLast;
+        LAST_SYNC_LOCK.lock();
+        try {
+            //lock noetig?
+            isLast = latch.getCount() == 1L;
+        } finally {
+            LAST_SYNC_LOCK.unlock();
+        }
+
+        if(isLast) {
+            for(Map.Entry<Timestamp, Set<SyncTask>> entry: tasks.entrySet()) {
+                for(SyncTask task: entry.getValue()) {
+                    LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] execute 'last' sync task' '{}' at '{}'", agent.getName(), task.getName(), entry.getKey());
+                    task.run();
+                }
+            }
+        }
+
+        latch.countDown();
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            terminateWithError(e);
+        }
+
+        if(isLast) {
+            resetLatch();
+        }
+    }
+
+    protected CountDownLatch getLatch() {
+        if(lastLatch == null) {
+            LAST_SYNC_LOCK.lock();
+            try {
+                if(lastLatch == null) {
+                    resetLatch();
+                }
+            } finally {
+                LAST_SYNC_LOCK.unlock();
+            }
+        }
+        return lastLatch;
+    }
+
+    protected void resetLatch() {
+        lastLatch = new CountDownLatch(getTotalNumberOfAgents());
     }
 
     protected static int count(NavigableMap<Timestamp, Set<SyncTask>> tasks) {

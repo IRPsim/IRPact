@@ -26,6 +26,11 @@ public final class TimeUtil {
         return of(year, Month.JANUARY, 1);
     }
 
+    public static ZonedDateTime endOfYear(int year) {
+        ZonedDateTime zdt = startOfYear(year + 1);
+        return zdt.minusNanos(1);
+    }
+
     public static ZonedDateTime of(int year, long weeks) {
         ZonedDateTime zdt = startOfYear(year);
         return zdt.plusWeeks(weeks);

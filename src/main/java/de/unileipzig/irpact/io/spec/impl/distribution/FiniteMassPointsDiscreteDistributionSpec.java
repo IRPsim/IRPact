@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.io.spec.impl.distribution;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.io.param.input.distribution.InFiniteMassPointsDiscreteDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InMassPoint;
 import de.unileipzig.irpact.io.spec.SpecificationHelper;

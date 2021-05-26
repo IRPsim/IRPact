@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.spatial;
 
-import de.unileipzig.irpact.commons.res.ResourceLoader;
+import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.spatial.attribute.BasicSpatialDoubleAttribute;
 import de.unileipzig.irpact.commons.spatial.attribute.BasicSpatialStringAttribute;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
@@ -8,7 +8,7 @@ import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.commons.util.xlsx.CellValueConverter;
 import de.unileipzig.irpact.commons.util.xlsx.XlsxSheetParser;
 import de.unileipzig.irpact.commons.util.xlsx.XlsxTable;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.apache.poi.common.usermodel.fonts.FontCharset;
@@ -91,17 +91,17 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
 //        }
 
         String xlsxFile = inputFileName + ".xlsx";
-        if(loader.hasPath(xlsxFile)) {
-            Path xlsxPath = loader.get(xlsxFile);
+        if(loader.hasExternal(xlsxFile)) {
+            Path xlsxPath = loader.getExternal(xlsxFile);
             LOGGER.trace("load xlsx file '{}'", xlsxPath);
             try(InputStream in = Files.newInputStream(xlsxPath)) {
                 data = parseXlsx(in);
             }
             return;
         }
-        if(loader.hasResource(xlsxFile)) {
+        if(loader.hasInternal(xlsxFile)) {
             LOGGER.trace("load xlsx resource '{}'", xlsxFile);
-            try(InputStream in = loader.getResourceAsStream(xlsxFile)) {
+            try(InputStream in = loader.getInternalAsStream(xlsxFile)) {
                 data = parseXlsx(in);
             }
             return;

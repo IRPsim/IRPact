@@ -32,7 +32,7 @@
       "sca_InGeneral_logResultGroupedByZipAndMilieu" : 0,
       "sca_InGeneral_logShareNetworkLocal" : 1,
       "sca_InGeneral_logSimulation" : 0,
-      "sca_InGeneral_runOptActDemo" : 1,
+      "sca_InGeneral_runOptActDemo" : 0,
       "sca_InGeneral_runPVAct" : 1,
       "sca_InGeneral_seed" : 42,
       "sca_InGeneral_timeout" : 60000,

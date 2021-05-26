@@ -6,6 +6,7 @@ import de.unileipzig.irpact.io.param.SimpleCopyCache;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.output.agent.OutGeneralConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.output.outtest.*;
 import de.unileipzig.irpact.start.optact.out.OutCustom;
 import de.unileipzig.irptools.defstructure.AnnotationResource;
 import de.unileipzig.irptools.defstructure.DefinitionType;
@@ -43,6 +44,12 @@ public class OutRoot implements RootClass {
 
     @FieldDefinition
     public BinaryPersistData[] binaryPersistData = new BinaryPersistData[0];
+
+    @FieldDefinition
+    public OutZipYearAdoptionWithNameSplit[] outv1 = new OutZipYearAdoptionWithNameSplit[0];
+
+    @FieldDefinition
+    public OutZipYearAdoptionLink[] outv2 = new OutZipYearAdoptionLink[0];
 
     //=========================
     //OptAct
@@ -135,7 +142,13 @@ public class OutRoot implements RootClass {
                     OutAnnualAdoptionData.class,
                     OutEntity.class,
                     //===
-                    BinaryPersistData.class
+                    BinaryPersistData.class,
+                    //===
+                    OutZipYearAdoptionWithNameSplit.class,
+                    OutZipYearAdoption.class,
+                    OutZipYearAdoptionLink.class,
+                    OutYear.class,
+                    OutZip.class
             )
     );
 

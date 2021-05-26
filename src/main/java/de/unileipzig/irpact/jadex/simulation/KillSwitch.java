@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.simulation;
 
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.simulation.LifeCycleControl;
 import de.unileipzig.irptools.util.log.IRPLogger;
 

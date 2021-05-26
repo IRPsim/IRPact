@@ -3,8 +3,6 @@ package de.unileipzig.irpact.core.spatial;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.util.data.DataCollection;
 import de.unileipzig.irpact.commons.util.data.LinkedDataCollection;
-import de.unileipzig.irpact.core.spatial.distribution2.SpatialDataFilter;
-import de.unileipzig.irpact.develop.Todo;
 
 import java.util.Objects;
 
@@ -18,6 +16,10 @@ public class BasicSpatialDataCollection extends NameableBase implements SpatialD
     public BasicSpatialDataCollection() {
     }
 
+    public BasicSpatialDataCollection(LinkedDataCollection<SpatialInformation> data) {
+        setData(data);
+    }
+
     public void setData(LinkedDataCollection<SpatialInformation> data) {
         this.data = data;
     }
@@ -27,18 +29,13 @@ public class BasicSpatialDataCollection extends NameableBase implements SpatialD
         return data;
     }
 
-    @Todo("validate equals")
     @Override
     public boolean remove(SpatialInformation information) {
-        if(information.hasId()) {
-            //noinspection unused
-            SpatialInformation removed = removeId0(information);
-            return true;
-        } else {
-            //noinspection unused
-            SpatialInformation removed = remove0(information);
-            return true;
-        }
+        final SpatialInformation removed = information.hasId()
+                ? removeId0(information)
+                : remove0(information);
+        //sanity equals check?
+        return removed != null;
     }
 
     private SpatialInformation removeId0(SpatialInformation info) {

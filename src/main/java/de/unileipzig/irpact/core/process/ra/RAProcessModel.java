@@ -15,8 +15,8 @@ import de.unileipzig.irpact.core.agent.consumer.attribute.BasicMultiConsumerAgen
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAnnualGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.MultiConsumerAgentGroupAttributeSupplier;
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.need.Need;
@@ -270,12 +270,14 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
             Timestamp tsJan = environment.getTimeModel().atStartOfYear(y);
             SyncTask taskJan = createNewYearTask(getName() + "_NewYear_" + y);
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create new year task '{}'", taskJan.getName());
-            environment.getLiveCycleControl().registerSyncTask(tsJan, taskJan);
+            environment.getLiveCycleControl().registerSyncTaskAsFirstAction(tsJan, taskJan);
 
             Timestamp tsWeek27 = environment.getTimeModel().at(y, WEEK27);
             SyncTask taskWeek27 = createWeek27Task(getName() + "_MidYear_" + y);
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "created mid year task (27th week) '{}'", taskJan.getName());
-            environment.getLiveCycleControl().registerSyncTask(tsWeek27, taskWeek27);
+            environment.getLiveCycleControl().registerSyncTaskAsFirstAction(tsWeek27, taskWeek27);
+
+
         }
     }
 
@@ -381,6 +383,20 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
                         }
                     }
                 }
+            }
+        };
+    }
+
+    private SyncTask createLastActionOfYearTask(String name) {
+        return new SyncTask() {
+            @Override
+            public String getName() {
+                return name;
+            }
+
+            @Override
+            public void run() {
+                LOGGER.trace(IRPSection.SIMULATION_PROCESS, "run 'createLastActionOfYearTask'");
             }
         };
     }

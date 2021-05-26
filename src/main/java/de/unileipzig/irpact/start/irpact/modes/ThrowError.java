@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.start.irpact.modes;
 
 import de.unileipzig.irpact.commons.exception.IRPactException;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.irpact.IRPactExecutor;
 import de.unileipzig.irptools.util.log.IRPLogger;

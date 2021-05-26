@@ -5,7 +5,7 @@ import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRe
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentValueAttribute;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.BasicSocialGraph;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;

@@ -3,8 +3,10 @@ package de.unileipzig.irpact.jadex.time;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.time.TimeMode;
 import de.unileipzig.irpact.commons.time.TimeUtil;
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.commons.time.Timestamp;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.IComponentStep;
@@ -16,6 +18,7 @@ import jadex.commons.future.IFuture;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 /**
  * @author Daniel Abitz
@@ -33,6 +36,9 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
     protected double startClockTick;
     protected double endClockTick;
     protected double ticksTillEnd;
+    protected double tickModifier = 0;
+
+    protected boolean endTimeReached = false;
 
     protected double nowClockTick;
     protected JadexTimestamp nowStamp;
@@ -99,8 +105,10 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
     }
 
     @Override
-    public void performYearChange() {
+    public void performYearChange(Set<SyncTask> lastYearTasks, Set<SyncTask> newYearTasks) {
         LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "perform year change");
+
+        performTasksForLastYear(lastYearTasks);
 
         ZonedDateTime nowDate = unmodifiedNowDate();
         ZonedDateTime modified = modify(nowDate);
@@ -113,7 +121,46 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
 
         resetNow();
 
-        LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "using new date modifer: {} -> {}", nowDate, modify(nowDate));
+        ZonedDateTime newDate = modify(nowDate);
+        LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "using new date modifer: {} -> {}", nowDate, newDate);
+
+        currentYearForValidation = newDate.getYear();
+        LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "set currentYearForValidation = {}", currentYearForValidation);
+
+        if(!endTimeReached()) {
+            performTasksForNewYear(newYearTasks);
+        }
+    }
+
+    protected void performTasksForLastYear(Set<SyncTask> lastYearTasks) {
+        if(lastYearTasks.isEmpty()) {
+            LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "no tasks for ending year {}", currentYearForValidation);
+            return;
+        }
+
+        LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "perform '{}' tasks for ending year {}", lastYearTasks.size(), currentYearForValidation);
+
+        LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "starting the time machine...");
+        Timestamp now0 = now();
+
+        resetNow();
+        tickModifier--;
+        Timestamp now1 = now();
+        LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "to the past: {} -> {}", now0, now1);
+
+        resetNow();
+        tickModifier++;
+        Timestamp now2 = now();
+        LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "back to the future: {} -> {}", now1, now2);
+    }
+
+    protected void performTasksForNewYear(Set<SyncTask> newYearTasks) {
+        if(newYearTasks.isEmpty()) {
+            LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "no tasks for starting year {}", currentYearForValidation);
+            return;
+        }
+
+        LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "perform '{}' tasks for new year {}", newYearTasks.size(), currentYearForValidation);
     }
 
     @Override
@@ -238,7 +285,7 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
             return nowStamp;
         }
         nowClockTick = clockTick;
-        double tick = clockTick - referenceClockTick;
+        double tick = clockTick - referenceClockTick + tickModifier;
         nowStamp = new BasicTimestamp(
                 modify(tickToTime(tick)),
                 clockTick,
@@ -259,6 +306,16 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
     public boolean isValid(long delay) {
         long delay0 = Math.max(delay, 0L);
         return getClockTick() + delay0 < endClockTick;
+    }
+
+    @Override
+    public boolean endTimeReached() {
+        if(endTimeReached) {
+            return true;
+        } else {
+            endTimeReached = super.endTimeReached();
+            return endTimeReached;
+        }
     }
 
     /**
