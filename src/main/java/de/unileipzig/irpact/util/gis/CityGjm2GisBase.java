@@ -2,7 +2,6 @@ package de.unileipzig.irpact.util.gis;
 
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.data.Pair;
-import de.unileipzig.irpact.core.log.IRPLogging;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.citygml4j.CityGMLContext;
 import org.citygml4j.builder.jaxb.CityGMLBuilder;
@@ -28,7 +27,6 @@ import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.MultiPolygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

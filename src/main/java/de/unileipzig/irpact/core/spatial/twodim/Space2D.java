@@ -1,10 +1,9 @@
 package de.unileipzig.irpact.core.spatial.twodim;
 
+import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.core.spatial.AbstractMetricalSpatialModel;
 import de.unileipzig.irpact.core.spatial.Metric;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
-
-import java.util.Objects;
 
 /**
  * @author Daniel Abitz
@@ -40,6 +39,10 @@ public class Space2D extends AbstractMetricalSpatialModel {
 
     @Override
     public int getChecksum() {
-        return Objects.hash(getName(), getMetric().getChecksum());
+        return Checksums.SMART.getChecksum(
+                getName(),
+                getMetric().getChecksum(),
+                getIdManager()
+        );
     }
 }

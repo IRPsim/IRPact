@@ -2,10 +2,10 @@ package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.log.IRPLevel;
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.log.SectionLoggingFilter;
+import de.unileipzig.irpact.core.logging.IRPLevel;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.logging.SectionLoggingFilter;
 import de.unileipzig.irpact.core.simulation.BasicSettings;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;

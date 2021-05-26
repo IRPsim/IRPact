@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.experimental.tests.stepWithDelay.timeDriven;
 
 import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
-import de.unileipzig.irpact.commons.log.Logback;
+import de.unileipzig.irpact.commons.logging.Logback;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;

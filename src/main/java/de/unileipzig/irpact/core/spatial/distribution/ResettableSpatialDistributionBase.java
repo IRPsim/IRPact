@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.spatial.distribution;
 
 import de.unileipzig.irpact.commons.NameableBase;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 

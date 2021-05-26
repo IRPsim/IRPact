@@ -1,10 +1,9 @@
 package de.unileipzig.irpact.core.spatial.distribution;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
-import de.unileipzig.irpact.commons.exception.IRPactException;
 import de.unileipzig.irpact.commons.exception.IRPactRuntimeException;
 import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irptools.util.log.IRPLogger;
 

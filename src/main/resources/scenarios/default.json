@@ -15,24 +15,27 @@
     "scalars" : {
       "sca_GraphvizGlobal_fixedNeatoPosition" : 0,
       "sca_GraphvizGlobal_scaleFactor" : 0.0,
-      "sca_InGeneral_endYear" : 0,
-      "sca_InGeneral_logAgentCreation" : 0,
-      "sca_InGeneral_logAll" : 1,
-      "sca_InGeneral_logAllTools" : 1,
-      "sca_InGeneral_logGraphCreation" : 0,
+      "sca_InGeneral_lastSimulationYear" : 0,
+      "sca_InGeneral_logAll" : 0,
+      "sca_InGeneral_logAllIRPact" : 1,
+      "sca_InGeneral_logAllTools" : 0,
+      "sca_InGeneral_logCalculateDecisionMaking" : 1,
+      "sca_InGeneral_logFinancalComponent" : 1,
+      "sca_InGeneral_logGraphUpdate" : 1,
       "sca_InGeneral_logInitialization" : 0,
-      "sca_InGeneral_logJadexSystemOut" : 0,
+      "sca_InGeneral_logInterestUpdate" : 1,
       "sca_InGeneral_logLevel" : 6,
-      "sca_InGeneral_logParamInit" : 0,
-      "sca_InGeneral_logPlatformCreation" : 0,
-      "sca_InGeneral_logSimulationAgent" : 0,
-      "sca_InGeneral_logSimulationLifecycle" : 0,
-      "sca_InGeneral_logToolsCore" : 0,
-      "sca_InGeneral_logToolsDefinition" : 0,
-      "sca_InGeneral_runOptActDemo" : 1,
+      "sca_InGeneral_logProductAdoptions" : 0,
+      "sca_InGeneral_logRelativeAgreement" : 1,
+      "sca_InGeneral_logResultGroupedByMilieu" : 0,
+      "sca_InGeneral_logResultGroupedByZip" : 0,
+      "sca_InGeneral_logResultGroupedByZipAndMilieu" : 0,
+      "sca_InGeneral_logShareNetworkLocal" : 1,
+      "sca_InGeneral_logSimulation" : 0,
+      "sca_InGeneral_runOptActDemo" : 0,
       "sca_InGeneral_runPVAct" : 1,
       "sca_InGeneral_seed" : 42,
-      "sca_InGeneral_timeout" : 300000,
+      "sca_InGeneral_timeout" : 60000,
       "sca_Tax_PS_vat" : 0.19,
       "sca_X_MS_CH_country" : 0,
       "sca_X_MS_DE_country" : 1
@@ -112,24 +115,24 @@
         "WSM1" : { }
       },
       "set_ii" : { },
+      "set_InAffinities" : {
+        "affs" : { }
+      },
       "set_InAffinityEntry" : {
         "BUM_BUM" : { },
         "BUM_TRA" : { },
         "TRA_BUM" : { },
         "TRA_TRA" : { }
       },
-      "set_InAttributeName" : {
-        "Milieu_Dom" : {
-          "par_InAttributeName_placeholder" : 0
-        },
-        "PLZ" : {
-          "par_InAttributeName_placeholder" : 0
-        }
-      },
+      "set_InAttributeName" : { },
       "set_InAutoUncertaintyGroupAttribute" : { },
       "set_InBasicProductGroup" : { },
       "set_InBasicProductGroupAttribute" : { },
+      "set_InBernoulliDistribution" : { },
       "set_InBooleanDistribution" : { },
+      "set_InBoundedNormalDistribution" : { },
+      "set_InBoundedUniformDoubleDistribution" : { },
+      "set_InBoundedUniformIntegerDistribution" : { },
       "set_InCompleteGraphTopology" : {
         "complete" : {
           "par_InCompleteGraphTopology_initialWeight" : 1.0
@@ -149,11 +152,6 @@
           "par_InComplexAffinityEntry_affinityValue" : 0.7
         }
       },
-      "set_InConstantUnivariateDistribution" : {
-        "constant0" : {
-          "par_InConstantUnivariateDistribution_constDistValue" : 0.0
-        }
-      },
       "set_InConsumerAgentGroup" : {
         "BUM" : { },
         "TRA" : { }
@@ -163,44 +161,48 @@
         "BUM_color" : { },
         "TRA_color" : { }
       },
-      "set_InCustomFileSelectedGroupedSpatialDistribution2D" : {
+      "set_InCustomFileSelectedGroupedSpatialDistribution2D" : { },
+      "set_InCustomFileSelectedSpatialDistribution2D" : { },
+      "set_InCustomFileSpatialDistribution2D" : {
         "testdist" : { }
       },
-      "set_InCustomFileSelectedSpatialDistribution2D" : { },
-      "set_InCustomFileSpatialDistribution2D" : { },
       "set_InDependentConsumerAgentGroupAttribute" : { },
       "set_InDependentProductGroupAttribute" : { },
-      "set_InDiscreteTimeModel" : {
-        "Discrete" : {
-          "par_InDiscreteTimeModel_timePerTickInMs" : 604800000
+      "set_InDiracUnivariateDistribution" : {
+        "constant0" : {
+          "par_InDiracUnivariateDistribution_value" : 0.0
         }
       },
+      "set_InDisabledProcessPlanNodeFilterScheme" : { },
       "set_InDistanceEvaluator" : { },
+      "set_InEntireNetworkNodeFilterScheme" : { },
       "set_InEntity" : {
+        "0_0_0" : { },
         "78KGK0FQG1I281KFG1KK4IAE8E079H7R" : { },
-        "BarwertrechnerMini_ES" : { },
+        "affs" : { },
+        "Barwertrechner" : { },
         "BUM" : { },
         "BUM_BUM" : { },
+        "BUM_color" : { },
         "BUM_TRA" : { },
         "complete" : { },
         "constant0" : { },
-        "Datensatz_210225" : { },
-        "Discrete" : { },
-        "Milieu_Dom" : { },
-        "PLZ" : { },
+        "Datensatz_210322" : { },
+        "DiscreteUnitStep" : { },
         "PopSize" : { },
         "PVact_Uncert" : { },
         "RA" : { },
+        "RA_maxFilter" : { },
         "Space2D" : { },
         "testdist" : { },
         "TRA" : { },
         "TRA_BUM" : { },
-        "TRA_TRA" : { },
-        "v0_0_0" : { }
+        "TRA_color" : { },
+        "TRA_TRA" : { }
       },
       "set_InFile" : {
-        "BarwertrechnerMini_ES" : { },
-        "Datensatz_210225" : { }
+        "Barwertrechner" : { },
+        "Datensatz_210322" : { }
       },
       "set_InFileSelectedGroupedSpatialDistribution2D" : { },
       "set_InFileSelectedSpatialDistribution2D" : { },
@@ -215,6 +217,7 @@
       "set_InFixProductAttribute" : { },
       "set_InFixProductFindingScheme" : { },
       "set_InFreeNetworkTopology" : { },
+      "set_InGeneralConsumerAgentAnnualGroupAttribute" : { },
       "set_InGeneralConsumerAgentGroup" : { },
       "set_InGeneralConsumerAgentGroupAttribute" : { },
       "set_InGraphTopologyScheme" : {
@@ -225,13 +228,39 @@
       "set_InIndividualAttributeBasedUncertaintyGroupAttribute" : { },
       "set_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute" : { },
       "set_InInverse" : { },
+      "set_InIRPactEntity" : {
+        "0_0_0" : { },
+        "78KGK0FQG1I281KFG1KK4IAE8E079H7R" : { },
+        "affs" : { },
+        "Barwertrechner" : { },
+        "BUM" : { },
+        "BUM_BUM" : { },
+        "BUM_color" : { },
+        "BUM_TRA" : { },
+        "complete" : { },
+        "constant0" : { },
+        "Datensatz_210322" : { },
+        "DiscreteUnitStep" : { },
+        "PopSize" : { },
+        "PVact_Uncert" : { },
+        "RA" : { },
+        "RA_maxFilter" : { },
+        "Space2D" : { },
+        "testdist" : { },
+        "TRA" : { },
+        "TRA_BUM" : { },
+        "TRA_color" : { },
+        "TRA_TRA" : { }
+      },
       "set_InMassPoint" : { },
+      "set_InName" : { },
       "set_InNameBasedUncertaintyGroupAttribute" : { },
       "set_InNameBasedUncertaintyWithConvergenceGroupAttribute" : { },
       "set_InNameSplitAffinityEntry" : { },
       "set_InNameSplitConsumerAgentGroupAttribute" : { },
       "set_InNameSplitProductGroupAttribute" : { },
       "set_InNoDistance" : { },
+      "set_InNormalDistribution" : { },
       "set_InNumberOfTies" : { },
       "set_InPopulationSize" : {
         "PopSize" : { }
@@ -239,28 +268,27 @@
       "set_InProcessModel" : {
         "RA" : { }
       },
+      "set_InProcessPlanNodeFilterScheme" : {
+        "RA_maxFilter" : { }
+      },
       "set_InProductFindingScheme" : { },
       "set_InProductGroup" : { },
       "set_InProductGroupAttribute" : { },
+      "set_InProductGroupThresholdEntry" : { },
       "set_InProductInterestSupplyScheme" : { },
       "set_InProductThresholdInterestSupplyScheme" : { },
       "set_InPVactConsumerAgentGroup" : {
-        "BUM" : {
-          "par_InPVactConsumerAgentGroup_informationAuthority" : 1.0
-        },
-        "TRA" : {
-          "par_InPVactConsumerAgentGroup_informationAuthority" : 1.0
-        }
+        "BUM" : { },
+        "TRA" : { }
       },
       "set_InPVactUncertaintyGroupAttribute" : {
         "PVact_Uncert" : { }
       },
       "set_InPVFile" : {
-        "BarwertrechnerMini_ES" : {
+        "Barwertrechner" : {
           "par_InPVFile_placeholderPVFile" : 0.0
         }
       },
-      "set_InRandomBoundedIntegerDistribution" : { },
       "set_InRAProcessModel" : {
         "RA" : {
           "par_InRAProcessModel_a" : 0.25,
@@ -273,6 +301,15 @@
           "par_InRAProcessModel_unknownPoints" : 0,
           "par_InRAProcessModel_logisticFactor" : 1.0
         }
+      },
+      "set_InRAProcessPlanMaxDistanceFilterScheme" : {
+        "RA_maxFilter" : {
+          "par_InRAProcessPlanMaxDistanceFilterScheme_maxDistance" : 100.0,
+          "par_InRAProcessPlanMaxDistanceFilterScheme_inclusive" : 1
+        }
+      },
+      "set_InRAProcessPlanNodeFilterScheme" : {
+        "RA_maxFilter" : { }
       },
       "set_InRelativeExternConsumerAgentPopulationSize" : { },
       "set_InSpace2D" : {
@@ -290,23 +327,34 @@
         "Space2D" : { }
       },
       "set_InSpatialTableFile" : {
-        "Datensatz_210225" : {
+        "Datensatz_210322" : {
           "par_InSpatialTableFile_placeholderInSpatialFile" : 0.0
         }
       },
       "set_InTimeModel" : {
-        "Discrete" : { }
+        "DiscreteUnitStep" : { }
       },
       "set_InUncertaintyGroupAttribute" : {
         "PVact_Uncert" : { }
       },
-      "set_InUnitStepDiscreteTimeModel" : { },
+      "set_InUnitStepDiscreteTimeModel" : {
+        "DiscreteUnitStep" : {
+          "par_InUnitStepDiscreteTimeModel_amountOfTime" : 1,
+          "par_InUnitStepDiscreteTimeModel_useMs" : 0,
+          "par_InUnitStepDiscreteTimeModel_useSec" : 0,
+          "par_InUnitStepDiscreteTimeModel_useMin" : 0,
+          "par_InUnitStepDiscreteTimeModel_useH" : 0,
+          "par_InUnitStepDiscreteTimeModel_useD" : 0,
+          "par_InUnitStepDiscreteTimeModel_useW" : 1,
+          "par_InUnitStepDiscreteTimeModel_useM" : 0
+        }
+      },
       "set_InUnivariateDoubleDistribution" : {
         "constant0" : { }
       },
       "set_InUnlinkedGraphTopology" : { },
       "set_InVersion" : {
-        "v0_0_0" : {
+        "0_0_0" : {
           "par_InVersion_placeholderVersion" : 0
         }
       },
@@ -444,6 +492,14 @@
           "RED" : 0.0
         }
       },
+      "par_link_InAffinities_InAffinityEntry_entries" : {
+        "affs" : {
+          "BUM_BUM" : 1.0,
+          "BUM_TRA" : 1.0,
+          "TRA_BUM" : 1.0,
+          "TRA_TRA" : 1.0
+        }
+      },
       "par_link_InBasicProductGroup_InDependentProductGroupAttribute_pgAttributes" : { },
       "par_link_InBasicProductGroupAttribute_InAttributeName_attrName" : { },
       "par_link_InBasicProductGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
@@ -507,40 +563,30 @@
           "TRA" : 1.0
         }
       },
-      "par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InAttributeName_groupKey" : {
-        "testdist" : {
-          "Milieu_Dom" : 0.0,
-          "PLZ" : 1.0
-        }
-      },
-      "par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InAttributeName_selectKey" : {
-        "testdist" : {
-          "Milieu_Dom" : 1.0,
-          "PLZ" : 0.0
-        }
-      },
-      "par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InSpatialTableFile_file" : {
-        "testdist" : {
-          "Datensatz_210225" : 1.0
-        }
-      },
-      "par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InUnivariateDoubleDistribution_xPosSupplier" : {
-        "testdist" : {
-          "constant0" : 1.0
-        }
-      },
-      "par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InUnivariateDoubleDistribution_yPosSupplier" : {
-        "testdist" : {
-          "constant0" : 1.0
-        }
-      },
+      "par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InAttributeName_groupKey" : { },
+      "par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InAttributeName_selectKey" : { },
+      "par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InSpatialTableFile_file" : { },
+      "par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InUnivariateDoubleDistribution_xPosSupplier" : { },
+      "par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InUnivariateDoubleDistribution_yPosSupplier" : { },
       "par_link_InCustomFileSelectedSpatialDistribution2D_InAttributeName_selectKey" : { },
       "par_link_InCustomFileSelectedSpatialDistribution2D_InSpatialTableFile_attrFile" : { },
       "par_link_InCustomFileSelectedSpatialDistribution2D_InUnivariateDoubleDistribution_xPosSupplier" : { },
       "par_link_InCustomFileSelectedSpatialDistribution2D_InUnivariateDoubleDistribution_yPosSupplier" : { },
-      "par_link_InCustomFileSpatialDistribution2D_InSpatialTableFile_attrFile" : { },
-      "par_link_InCustomFileSpatialDistribution2D_InUnivariateDoubleDistribution_xPosSupplier" : { },
-      "par_link_InCustomFileSpatialDistribution2D_InUnivariateDoubleDistribution_yPosSupplier" : { },
+      "par_link_InCustomFileSpatialDistribution2D_InSpatialTableFile_attrFile" : {
+        "testdist" : {
+          "Datensatz_210322" : 1.0
+        }
+      },
+      "par_link_InCustomFileSpatialDistribution2D_InUnivariateDoubleDistribution_xPosSupplier" : {
+        "testdist" : {
+          "constant0" : 1.0
+        }
+      },
+      "par_link_InCustomFileSpatialDistribution2D_InUnivariateDoubleDistribution_yPosSupplier" : {
+        "testdist" : {
+          "constant0" : 1.0
+        }
+      },
       "par_link_InFileSelectedGroupedSpatialDistribution2D_InAttributeName_groupKey" : { },
       "par_link_InFileSelectedGroupedSpatialDistribution2D_InAttributeName_selectKey" : { },
       "par_link_InFileSelectedGroupedSpatialDistribution2D_InAttributeName_xPositionKey" : { },
@@ -564,8 +610,11 @@
       "par_link_InFixProduct_InProductGroup_refPG" : { },
       "par_link_InFixProductAttribute_InProductGroupAttribute_refPGA" : { },
       "par_link_InFixProductFindingScheme_InFixProduct_refFixProduct" : { },
+      "par_link_InFreeNetworkTopology_InAffinities_affinities" : { },
       "par_link_InFreeNetworkTopology_InDistanceEvaluator_distanceEvaluator" : { },
       "par_link_InFreeNetworkTopology_InNumberOfTies_numberOfTies" : { },
+      "par_link_InGeneralConsumerAgentAnnualGroupAttribute_InAttributeName_attributeName" : { },
+      "par_link_InGeneralConsumerAgentAnnualGroupAttribute_InUnivariateDoubleDistribution_distribution" : { },
       "par_link_InGeneralConsumerAgentGroup_InDependentConsumerAgentGroupAttribute_cagAttributes" : { },
       "par_link_InGeneralConsumerAgentGroup_InProductFindingScheme_productFindingSchemes" : { },
       "par_link_InGeneralConsumerAgentGroup_InProductInterestSupplyScheme_cagInterest" : { },
@@ -587,7 +636,9 @@
       "par_link_InNameSplitConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
       "par_link_InNameSplitProductGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
       "par_link_InNumberOfTies_InConsumerAgentGroup_cags" : { },
-      "par_link_InProductThresholdInterestSupplyScheme_InUnivariateDoubleDistribution_interestDistribution" : { },
+      "par_link_InProductGroupThresholdEntry_InProductGroup_productGroups" : { },
+      "par_link_InProductGroupThresholdEntry_InUnivariateDoubleDistribution_interestDistribution" : { },
+      "par_link_InProductThresholdInterestSupplyScheme_InProductGroupThresholdEntry_entries" : { },
       "par_link_InPVactConsumerAgentGroup_InSpatialDistribution_spatialDistribution" : {
         "BUM" : {
           "testdist" : 1.0
@@ -645,6 +696,14 @@
         }
       },
       "par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_initialAdopter" : {
+        "BUM" : {
+          "constant0" : 1.0
+        },
+        "TRA" : {
+          "constant0" : 1.0
+        }
+      },
+      "par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_initialProductAwareness" : {
         "BUM" : {
           "constant0" : 1.0
         },
@@ -723,7 +782,12 @@
       },
       "par_link_InRAProcessModel_InPVFile_pvFile" : {
         "RA" : {
-          "BarwertrechnerMini_ES" : 1.0
+          "Barwertrechner" : 1.0
+        }
+      },
+      "par_link_InRAProcessModel_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : {
+        "RA" : {
+          "RA_maxFilter" : 1.0
         }
       },
       "par_link_InRAProcessModel_InUncertaintyGroupAttribute_uncertaintyGroupAttributes" : {

@@ -3,7 +3,7 @@ package de.unileipzig.irpact.start.utilities;
 import de.unileipzig.irpact.commons.util.AbstractCommandLineOptions;
 import de.unileipzig.irpact.commons.util.Args;
 import de.unileipzig.irpact.commons.util.MapResourceBundle;
-import de.unileipzig.irpact.core.log.IRPLoggingMessage;
+import de.unileipzig.irpact.core.logging.IRPLoggingMessage;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import picocli.CommandLine;
 

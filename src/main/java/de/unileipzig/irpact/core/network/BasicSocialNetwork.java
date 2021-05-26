@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.commons.exception.InitializationException;
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.network.topology.GraphTopologyScheme;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;

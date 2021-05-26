@@ -2,11 +2,11 @@ package de.unileipzig.irpact.start;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.commons.res.BasicResourceLoader;
-import de.unileipzig.irpact.commons.res.ResourceLoader;
+import de.unileipzig.irpact.commons.resource.BasicResourceLoader;
+import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.util.IRPactJson;
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.spec.SpecificationConverter;
@@ -68,7 +68,7 @@ public class Preloader {
         }
 
         BasicResourceLoader loader = new BasicResourceLoader();
-        loader.setDir(clOptions.getDataDirPath());
+        loader.setExternalPath(clOptions.getDataDirPath());
         resourceLoader = loader;
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "data dir: {}", clOptions.getDataDirPath());
     }

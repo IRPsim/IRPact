@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.graph.topology;
 
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.commons.graph.Graph;
 import de.unileipzig.irptools.util.log.IRPLogger;
 

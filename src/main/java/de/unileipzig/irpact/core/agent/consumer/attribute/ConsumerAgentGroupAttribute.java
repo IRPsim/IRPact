@@ -15,7 +15,15 @@ public interface ConsumerAgentGroupAttribute extends GroupAttribute, DirectDeriv
         return false;
     }
 
+    default boolean isStringGroupAttribute() {
+        return false;
+    }
+
     default ConsumerAgentDoubleGroupAttribute asDoubleGroupAttribute() {
+        throw new UnsupportedOperationException();
+    }
+
+    default ConsumerAgentStringGroupAttribute asStringGroupAttribute() {
         throw new UnsupportedOperationException();
     }
 

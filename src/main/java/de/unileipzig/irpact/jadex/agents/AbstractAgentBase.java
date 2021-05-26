@@ -53,8 +53,12 @@ public abstract class AbstractAgentBase {
         getEnvironment().getLiveCycleControl().waitForYearChangeIfRequired(getThisAgent());
     }
 
-    protected void waitForSynchronisationIfRequired() {
-        getEnvironment().getLiveCycleControl().waitForSynchronisationIfRequired(getThisAgent());
+    protected void waitForSynchronisationAtStartIfRequired() {
+        getEnvironment().getLiveCycleControl().waitForSynchronisationAtStartIfRequired(getThisAgent());
+    }
+
+    protected void waitForSynchronisationAtEndIfRequired() {
+        getEnvironment().getLiveCycleControl().waitForSynchronisationAtEndIfRequired(getThisAgent());
     }
 
     protected abstract void scheduleFirstAction();

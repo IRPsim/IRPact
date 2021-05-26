@@ -5,7 +5,7 @@ import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedGroupAttribute;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;

@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param.input.affinity;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;

@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param;
 import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;

@@ -8,8 +8,8 @@ import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedAttribute;
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
@@ -564,10 +564,10 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         resetOnNewAction();
 
         waitForYearChangeIfRequired();
-        log().trace(IRPSection.SIMULATION_AGENT, "[{}] start next action ({})", getName(), now());
 
-        waitForSynchronisationIfRequired();
-        log().trace(IRPSection.SIMULATION_AGENT, "[{}] post sync", getName());
+        log().trace(IRPSection.SIMULATION_AGENT, "[{}] start next action ({})", getName(), now());
+        waitForSynchronisationAtStartIfRequired();
+        log().trace(IRPSection.SIMULATION_AGENT, "[{}] post first sync", getName());
 
         if(hasPlans()) {
             for(ProcessPlan plan: getPlans().values())  {
@@ -576,6 +576,10 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         } else {
             allowAttention();
         }
+
+        log().trace(IRPSection.SIMULATION_AGENT, "[{}] end action ({})", getName(), now());
+        waitForSynchronisationAtEndIfRequired();
+        log().trace(IRPSection.SIMULATION_AGENT, "[{}] post end sync", getName());
     }
     
     protected void resetOnNewAction() {

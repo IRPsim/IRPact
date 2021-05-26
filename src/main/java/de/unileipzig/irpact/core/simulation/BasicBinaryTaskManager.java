@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.simulation;
 
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.misc.InitializationStage;
 import de.unileipzig.irpact.core.simulation.tasks.*;
 import de.unileipzig.irpact.commons.util.data.BinaryData;

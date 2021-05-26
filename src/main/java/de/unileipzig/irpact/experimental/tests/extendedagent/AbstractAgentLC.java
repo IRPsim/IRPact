@@ -4,14 +4,9 @@ import jadex.bdiv3.BDIAgentFactory;
 import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IArgumentsResultsFeature;
 import jadex.bridge.component.IExecutionFeature;
-import jadex.bridge.service.annotation.OnEnd;
-import jadex.bridge.service.annotation.OnInit;
-import jadex.bridge.service.annotation.OnStart;
 import jadex.bridge.service.component.IRequiredServicesFeature;
 import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.AgentFeature;
-
-import java.time.LocalTime;
 
 /**
  * @author Daniel Abitz

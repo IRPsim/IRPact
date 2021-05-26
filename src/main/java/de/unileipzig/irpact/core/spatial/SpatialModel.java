@@ -3,6 +3,8 @@ package de.unileipzig.irpact.core.spatial;
 import de.unileipzig.irpact.core.misc.InitalizablePart;
 import de.unileipzig.irpact.core.simulation.SimulationEntity;
 
+import java.util.function.LongSupplier;
+
 /**
  * @author Daniel Abitz
  */
@@ -23,4 +25,12 @@ public interface SpatialModel extends SimulationEntity, InitalizablePart {
     SpatialDataCollection getData(String name);
 
     void storeData(SpatialDataCollection data);
+
+    //=========================
+    // id
+    //=========================
+
+    long nextId();
+
+    LongSupplier supplyNextId();
 }

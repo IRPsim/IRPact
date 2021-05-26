@@ -2,8 +2,8 @@ package de.unileipzig.irpact.start.irpact.modes;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.util.IRPactJson;
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.irpact.IRPactExecutor;
 import de.unileipzig.irptools.defstructure.Converter;

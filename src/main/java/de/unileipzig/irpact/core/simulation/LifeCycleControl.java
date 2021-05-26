@@ -60,7 +60,9 @@ public interface LifeCycleControl extends InitalizablePart {
     //sync
     //=========================
 
-    boolean registerSyncTask(Timestamp ts, SyncTask task);
+    boolean registerSyncTaskAsFirstAction(Timestamp ts, SyncTask task);
+
+    boolean registerSyncTaskAsLastAction(Timestamp ts, SyncTask task);
 
     /**
      * Waits until the synchronisation is finished (if required).
@@ -69,6 +71,15 @@ public interface LifeCycleControl extends InitalizablePart {
 
     /**
      * Waits until the synchronisation is finished (if required).
+     *
+     * @param agent current agent
      */
-    void waitForSynchronisationIfRequired(Agent agent);
+    void waitForSynchronisationAtStartIfRequired(Agent agent);
+
+    /**
+     * Waits until the synchronisation is finished (if required).
+     *
+     * @param agent current agent
+     */
+    void waitForSynchronisationAtEndIfRequired(Agent agent);
 }

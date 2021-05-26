@@ -1,11 +1,11 @@
 package de.unileipzig.irpact.start;
 
-import de.unileipzig.irpact.commons.log.LazyPrinter;
-import de.unileipzig.irpact.commons.log.Logback;
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPLoggingMessage;
-import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.log.SectionLoggingFilter;
+import de.unileipzig.irpact.commons.logging.LazyPrinter;
+import de.unileipzig.irpact.commons.logging.Logback;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLoggingMessage;
+import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.logging.SectionLoggingFilter;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.start.irpact.IRPactCallback;
 import de.unileipzig.irpact.start.utilities.Utilities;

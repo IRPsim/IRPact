@@ -19,9 +19,9 @@ class BasicPoint2DTest {
         BasicPoint2D p3 = new BasicPoint2D(1, 2);
         p3.setId(1);
 
-        assertEquals(p0, p1);
-        assertNotEquals(p0, p2);
-        assertNotEquals(p0, p3);
+        assertTrue(p0.isEquals(p1));
+        assertFalse(p0.isEquals(p2));
+        assertFalse(p0.isEquals(p3));
     }
 
     @Test

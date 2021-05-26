@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.io.spec.impl.spatial;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.spec.SpecificationHelper;

@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.commons.res.ResourceLoader;
+import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
@@ -15,10 +15,10 @@ import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentProd
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentDoubleGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedGroupAttribute;
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.log.InfoTag;
-import de.unileipzig.irpact.core.log.LoggingHelper;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.logging.InfoTag;
+import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.need.BasicNeed;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
 import de.unileipzig.irpact.core.network.SupportedGraphStructure;

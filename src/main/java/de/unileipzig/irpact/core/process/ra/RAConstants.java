@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.core.process.ra;
 
+import de.unileipzig.irpact.core.spatial.PrintIdAndAttribute;
+import de.unileipzig.irpact.core.spatial.SpatialInformationPrinter;
 import de.unileipzig.irpact.io.param.ParamUtil;
 
 /**
@@ -65,4 +67,6 @@ public final class RAConstants {
     public static String getUncertaintyAttributeName(String name) {
         return ParamUtil.concData(name, UNCERTAINTY_SUFFIX);
     }
+
+    public static final SpatialInformationPrinter PRINTER = new PrintIdAndAttribute("gid", "lid", ID);
 }

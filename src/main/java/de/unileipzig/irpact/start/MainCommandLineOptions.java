@@ -1,8 +1,9 @@
 package de.unileipzig.irpact.start;
 
+import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.util.AbstractCommandLineOptions;
 import de.unileipzig.irpact.commons.util.MapResourceBundle;
-import de.unileipzig.irpact.core.log.IRPLoggingMessage;
+import de.unileipzig.irpact.core.logging.IRPLoggingMessage;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.irpact.IRPactExecutors;
@@ -64,8 +65,6 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         }
         return fallback;
     }
-
-    private static final Path EXEC_DIR = Paths.get(".");
 
     private static final String TRUE1 = "1";
     private static final String FALSE0 = "0";
@@ -415,12 +414,12 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     }
 
     public boolean hasCustomDataDirPath() {
-        return getDataDirPath() != EXEC_DIR;
+        return getDataDirPath() != ResourceLoader.EXTERN_RESOURCES_PATH;
     }
     public Path getDataDirPath() {
         checkExecuted();
         return dataDirPath == null
-                ? EXEC_DIR
+                ? ResourceLoader.EXTERN_RESOURCES_PATH
                 : dataDirPath;
     }
 

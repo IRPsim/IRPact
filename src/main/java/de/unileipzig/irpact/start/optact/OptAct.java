@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
 import de.unileipzig.irpact.commons.graph.topology.AbstractMultiGraphTopology;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;

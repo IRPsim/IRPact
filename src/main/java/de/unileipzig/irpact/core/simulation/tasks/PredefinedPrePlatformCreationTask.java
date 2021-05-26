@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.process.ra.RAProcessPlan;

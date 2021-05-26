@@ -12,8 +12,8 @@ import java.util.function.Consumer;
 public final class MutableInt extends Number implements ChecksumComparable {
 
     protected final Consumer<?> INC_CONSUMER = obj -> inc();
-    protected int value;
     protected boolean hasValue;
+    protected int value;
 
     public MutableInt() {
         clear();
@@ -82,6 +82,12 @@ public final class MutableInt extends Number implements ChecksumComparable {
     public int get() {
         requiresValue();
         return value;
+    }
+
+    public int getAndSet(int newValue) {
+        int current = get();
+        set(newValue);
+        return current;
     }
 
     public void add(int delta) {
@@ -181,11 +187,9 @@ public final class MutableInt extends Number implements ChecksumComparable {
 
     @Override
     public String toString() {
-        if(hasValue()) {
-            return Integer.toString(value);
-        } else {
-            return "MutableInt.empty";
-        }
+        return hasValue()
+                ? "MutableInt(" + value + ")"
+                : "MutableInt.empty";
     }
 
     @Override

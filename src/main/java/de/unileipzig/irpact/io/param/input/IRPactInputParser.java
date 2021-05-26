@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.commons.res.ResourceLoader;
+import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 

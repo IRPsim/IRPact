@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.jadex.agents;
 
-import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
 import jadex.bdiv3.features.IBDIAgentFeature;
 import jadex.bridge.IComponentStep;

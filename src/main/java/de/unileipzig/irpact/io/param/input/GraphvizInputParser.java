@@ -2,8 +2,8 @@ package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.misc.graphviz.BasicGraphvizConfiguration;
 import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;

@@ -1,19 +1,23 @@
 [
   {
-    :label "Agentennetzwerk" 
-    :icon "fa fa-spinner" 
-    :description "Agentennetzwerk in IRPact" 
-    :image "agentGraph"
+    :label "set_OutZipYearAdoptionWithNameSplit" 
+    :set "set_OutZipYearAdoptionWithNameSplit" 
+    :tags [["OutZipYearAdoptionWithNameSplit" "adoptions"]]
   } 
   {
-    :label "set_OutAdoptionResult" 
-    :set "set_OutAdoptionResult" 
-    :tags [["OutAdoptionResult" "adoptions"] ["OutAdoptionResult" "adoptionShare"]]
+    :label "set_OutZipYearAdoption" 
+    :set "set_OutZipYearAdoption" 
+    :tags [["OutZipYearAdoption" "adoptions"]]
   } 
   {
-    :label "set_BinaryPersistData" 
-    :set "set_BinaryPersistData" 
-    :tags [["BinaryPersistData" "id"]]
+    :label "set_OutZipYearAdoptionLink" 
+    :set "set_OutZipYearAdoptionLink" 
+    :tags [["link" "OutZipYearAdoptionLink" "OutYear" "years"] ["link" "OutZipYearAdoptionLink" "OutZip" "zips"] ["link" "OutZipYearAdoptionLink" "OutZipYearAdoption" "adoptions"]]
+  } 
+  {
+    :label "set_OutYear" 
+    :set "set_OutYear" 
+    :tags [["OutYear" "year"]]
   } 
   {
     :label "Sets" 
@@ -26,5 +30,17 @@
         :tags [["S" "DS"] ["IuOSonnentankNetzversorgung" "Summe"]]
       }
     ]
+  } 
+  {
+    :label "Konsumergruppen" 
+    :set "set_InGeneralConsumerAgentGroup" 
+    :description "todo" 
+    :tags [["InGeneralConsumerAgentGroup" "adoptionsThisYear"] ["InGeneralConsumerAgentGroup" "adoptionsCumulativ"] ["InGeneralConsumerAgentGroup" "adoptionShareThisYear"] ["InGeneralConsumerAgentGroup" "adoptionShareCumulativ"]]
+  } 
+  {
+    :label "Jährliche Adoptionen" 
+    :set "set_OutAnnualAdoptionData" 
+    :description "todo" 
+    :tags [["OutAnnualAdoptionData" "year"] ["map" "OutAnnualAdoptionData" "InConsumerAgentGroup" "adoptionsThisYear"] ["map" "OutAnnualAdoptionData" "InConsumerAgentGroup" "adoptionsCumulativ"] ["map" "OutAnnualAdoptionData" "InConsumerAgentGroup" "adoptionShareThisYear"] ["map" "OutAnnualAdoptionData" "InConsumerAgentGroup" "adoptionShareCumulativ"]]
   }
 ]

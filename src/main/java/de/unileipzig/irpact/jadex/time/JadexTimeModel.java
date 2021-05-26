@@ -75,6 +75,12 @@ public interface JadexTimeModel extends TimeModel {
     }
 
     @Override
+    default Timestamp atEndOfYear(int year) {
+        ZonedDateTime zdt = TimeUtil.endOfYear(year);
+        return convert(zdt);
+    }
+
+    @Override
     default Timestamp at(int year, long weeks) {
         ZonedDateTime zdt = TimeUtil.of(year, weeks);
         return convert(zdt);

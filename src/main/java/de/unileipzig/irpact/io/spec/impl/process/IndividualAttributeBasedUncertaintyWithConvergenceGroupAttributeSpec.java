@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.io.spec.impl.process;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.process.ra.InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute;

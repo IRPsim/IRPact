@@ -2,8 +2,8 @@ package de.unileipzig.irpact.core.util;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.checksum.Checksums;
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.time.Instant;

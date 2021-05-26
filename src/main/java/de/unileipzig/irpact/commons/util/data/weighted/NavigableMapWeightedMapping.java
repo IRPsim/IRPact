@@ -76,6 +76,10 @@ public class NavigableMapWeightedMapping<T> implements WeightedMapping<T> {
         return mapping.isEmpty();
     }
 
+    public boolean isSingleton() {
+        return mapping.size() == 1;
+    }
+
     @Override
     public int size() {
         return mapping.size();
@@ -166,9 +170,16 @@ public class NavigableMapWeightedMapping<T> implements WeightedMapping<T> {
         }
     }
 
+    protected T getSingleton() {
+        return mapping.firstEntry().getValue();
+    }
+
     @Override
     public T getRandom(Rnd rnd) {
         checkNotEmpty();
+        if(isSingleton()) {
+            return getSingleton();
+        }
         return rnd.getRandomValue(mapping);
     }
 
@@ -178,6 +189,9 @@ public class NavigableMapWeightedMapping<T> implements WeightedMapping<T> {
             return getRandom(rnd);
         }
         checkNotEmpty();
+        if(isSingleton()) {
+            return getSingleton();
+        }
         double rndDraw = rnd.nextDouble(totalWeight());
         return getWeightedRandom(rndDraw);
     }

@@ -5,7 +5,7 @@ import de.unileipzig.irpact.commons.persistence.annotation.ChecksumAndPersistent
 import de.unileipzig.irpact.commons.util.IdManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 

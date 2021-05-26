@@ -2,7 +2,7 @@ package de.unileipzig.irpact.util.gis;
 
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.data.Pair;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.citygml4j.model.citygml.building.Building;
 import org.citygml4j.model.citygml.core.CityObjectMember;

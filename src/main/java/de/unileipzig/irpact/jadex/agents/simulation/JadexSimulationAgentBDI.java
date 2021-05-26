@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.jadex.agents.simulation;
 
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.jadex.agents.AbstractJadexAgentBDI;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
@@ -114,6 +114,7 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     protected IFuture<Void> onEnd(IInternalAccess ia) {
         JadexTimeModel timeModel = environment.getTimeModel();
         log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] onEnd: {} ({})", getName(), timeModel.now(), timeModel.endTimeReached());
+        environment.getLiveCycleControl().waitForYearChangeIfRequired(this);
         environment.getLiveCycleControl().terminate();
         return IFuture.DONE;
     }

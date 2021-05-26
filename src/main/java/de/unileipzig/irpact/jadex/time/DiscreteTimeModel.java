@@ -2,8 +2,8 @@ package de.unileipzig.irpact.jadex.time;
 
 import de.unileipzig.irpact.commons.time.TickConverter;
 import de.unileipzig.irpact.commons.time.TimeMode;
-import de.unileipzig.irpact.commons.time.Timestamp;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.IComponentStep;
@@ -15,6 +15,7 @@ import jadex.commons.future.IFuture;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Daniel Abitz
@@ -260,7 +261,7 @@ public class DiscreteTimeModel extends AbstractJadexTimeModel {
     }
 
     @Override
-    public void performYearChange() {
+    public void performYearChange(Set<SyncTask> lastYearTasks, Set<SyncTask> newYearTasks) {
         throw new TodoException();
     }
 }

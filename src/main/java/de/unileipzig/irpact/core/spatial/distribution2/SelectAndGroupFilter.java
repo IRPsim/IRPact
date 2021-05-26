@@ -3,6 +3,7 @@ package de.unileipzig.irpact.core.spatial.distribution2;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.util.StringUtil;
+import de.unileipzig.irpact.core.spatial.SpatialDataFilter;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
 import java.util.Objects;
@@ -24,6 +25,9 @@ public class SelectAndGroupFilter extends NameableBase implements SpatialDataFil
         this.selectValue = selectValue;
         this.groupingKey = groupingKey;
         this.groupingValue = groupingValue;
+    }
+
+    public void buildName() {
         setName(StringUtil.concat("_", selectKey, selectValue, groupingKey, groupingValue));
     }
 

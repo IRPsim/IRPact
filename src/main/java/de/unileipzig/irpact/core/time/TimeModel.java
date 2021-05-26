@@ -4,9 +4,11 @@ import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.time.TimeMode;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.misc.InitalizablePart;
+import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 
 import java.time.Month;
 import java.time.ZonedDateTime;
+import java.util.Set;
 
 /**
  * @author Daniel Abitz
@@ -42,7 +44,7 @@ public interface TimeModel extends Nameable, InitalizablePart {
 
     boolean hasYearChange();
 
-    void performYearChange();
+    void performYearChange(Set<SyncTask> lastYearTasks, Set<SyncTask> newYearTasks);
 
     //=========================
     //util
@@ -57,6 +59,8 @@ public interface TimeModel extends Nameable, InitalizablePart {
     Timestamp plusYears(Timestamp ts, long years);
 
     Timestamp atStartOfYear(int year);
+
+    Timestamp atEndOfYear(int year);
 
     Timestamp at(int year, long weeks);
 

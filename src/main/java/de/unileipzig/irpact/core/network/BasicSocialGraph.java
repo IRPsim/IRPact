@@ -7,8 +7,8 @@ import de.unileipzig.irpact.commons.util.data.MapBasedTripleMapping;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
 import de.unileipzig.irpact.commons.util.data.TripleMapping;
 import de.unileipzig.irpact.core.agent.Agent;
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;

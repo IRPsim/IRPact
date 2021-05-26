@@ -3,12 +3,12 @@ package de.unileipzig.irpact.start.irpact;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.commons.res.ResourceLoader;
+import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPSection;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.misc.InitializationStage;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
@@ -16,7 +16,10 @@ import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.product.ProductGroup;
-import de.unileipzig.irpact.core.simulation.*;
+import de.unileipzig.irpact.core.simulation.BasicVersion;
+import de.unileipzig.irpact.core.simulation.LifeCycleControl;
+import de.unileipzig.irpact.core.simulation.Settings;
+import de.unileipzig.irpact.core.simulation.Version;
 import de.unileipzig.irpact.core.util.AdoptionAnalyser;
 import de.unileipzig.irpact.core.util.PVactResultLogging;
 import de.unileipzig.irpact.core.util.RunInfo;
@@ -132,11 +135,14 @@ public final class IRPact implements IRPActAccess {
     }
 
     private static DefinitionMapper createMapper(MainCommandLineOptions options, DefinitionCollection dcoll) {
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "setup definition mapper: autoTrim={}, maxNameLength={}, minPartLength={}", options.isEnableGamsNameTrimming(), options.getMaxGamsNameLength(), options.getMinGamsPartLength());
+        if(options != null) {
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "setup definition mapper: autoTrim={}, maxNameLength={}, minPartLength={}", options.isEnableGamsNameTrimming(), options.getMaxGamsNameLength(), options.getMinGamsPartLength());
+        }
+
         DefinitionMapper mapper = new DefinitionMapper(dcoll, false);
-        mapper.setAutoTrimName(options.isEnableGamsNameTrimming());
-        mapper.setMaxNameLength(options.getMaxGamsNameLength());
-        mapper.setMinPartLength(options.getMinGamsPartLength());
+        mapper.setAutoTrimName(options != null && options.isEnableGamsNameTrimming());
+        mapper.setMaxNameLength(options == null ? -1 : options.getMaxGamsNameLength());
+        mapper.setMinPartLength(options == null ? 1 : options.getMinGamsPartLength());
         mapper.init();
         return mapper;
     }
@@ -427,9 +433,17 @@ public final class IRPact implements IRPActAccess {
             return;
         }
 
+        long consumerAgentCount = 0;
+        final long totalConsumerAgentCount = environment.getAgents().getTotalNumberOfConsumerAgents();
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
             for(ConsumerAgent ca: cag.getAgents()) {
-                LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "create jadex agent '{}' ({}/{})", ca.getName(), ++agentCount, totalNumberOfAgents);
+                LOGGER.trace(
+                        IRPSection.INITIALIZATION_PLATFORM,
+                        "create consumer agent '{}' ({}/{} | {}/{})",
+                        ca.getName(),
+                        ++consumerAgentCount, totalConsumerAgentCount,
+                        ++agentCount, totalNumberOfAgents
+                );
                 ProxyConsumerAgent data = createConsumerAgentInitializationData(ca);
                 CreationInfo info = createConsumerAgentInfo(data);
                 platform.createComponent(info).get();

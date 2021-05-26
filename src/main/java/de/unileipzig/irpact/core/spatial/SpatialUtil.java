@@ -8,15 +8,15 @@ import de.unileipzig.irpact.commons.util.ShareCalculator;
 import de.unileipzig.irpact.commons.util.data.DataType;
 import de.unileipzig.irpact.commons.util.data.LinkedDataCollection;
 import de.unileipzig.irpact.commons.util.table.Table;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.spatial.distribution2.SelectAndGroupFilter;
 import de.unileipzig.irpact.core.spatial.distribution2.SelectFilter;
-import de.unileipzig.irpact.core.spatial.distribution2.SpatialDataFilter;
 import de.unileipzig.irpact.core.spatial.twodim.BasicPoint2D;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.LongSupplier;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -102,6 +102,7 @@ public final class SpatialUtil {
         return null;
     }
 
+    @Deprecated
     public static List<SpatialInformation> mapToPoint2D(List<List<SpatialAttribute>> input, String xKey, String yKey, String idKey) {
         return input.stream()
                 .map(row -> {
@@ -118,6 +119,7 @@ public final class SpatialUtil {
                 .collect(Collectors.toList());
     }
 
+    @Deprecated
     public static List<SpatialInformation> mapToPoint2D(List<List<SpatialAttribute>> input, UnivariateDoubleDistribution xSupplier, UnivariateDoubleDistribution ySupplier, String idKey) {
         return input.stream()
                 .map(row -> {
@@ -139,19 +141,16 @@ public final class SpatialUtil {
             Table<SpatialAttribute> input,
             UnivariateDoubleDistribution xSupplier,
             UnivariateDoubleDistribution ySupplier,
-            String idKey,
+            LongSupplier idSupplier,
             Supplier<? extends Collection<SpatialInformation>> supplier) {
         List<SpatialInformation> infos = input.listTable()
                 .stream()
                 .map(row -> {
                     double x = xSupplier.drawDoubleValue();
                     double y = ySupplier.drawDoubleValue();
-                    BasicPoint2D p = new BasicPoint2D(x, y);
+                    long id = idSupplier.getAsLong();
+                    BasicPoint2D p = new BasicPoint2D(id, x, y);
                     p.addAllAttributes(row);
-                    SpatialAttribute idAttr = tryGet(row, idKey);
-                    if(idAttr != null) {
-                        p.setId(idAttr.asValueAttribute().getIntValue());
-                    }
                     return p;
                 })
                 .collect(Collectors.toList());
@@ -163,19 +162,16 @@ public final class SpatialUtil {
             Table<SpatialAttribute> input,
             String xKey,
             String yKey,
-            String idKey,
+            LongSupplier idSupplier,
             Supplier<? extends Collection<SpatialInformation>> supplier) {
         List<SpatialInformation> infos = input.listTable()
                 .stream()
                 .map(row -> {
                     double x = secureGet(row, xKey).getDoubleValue();
                     double y = secureGet(row, yKey).getDoubleValue();
-                    BasicPoint2D p = new BasicPoint2D(x, y);
+                    long id = idSupplier.getAsLong();
+                    BasicPoint2D p = new BasicPoint2D(id, x, y);
                     p.addAllAttributes(row);
-                    SpatialAttribute idAttr = tryGet(row, idKey);
-                    if(idAttr != null) {
-                        p.setId(idAttr.asValueAttribute().getIntValue());
-                    }
                     return p;
                 })
                 .collect(Collectors.toList());
@@ -242,6 +238,7 @@ public final class SpatialUtil {
         for(String selectValue: selectValues) {
             for(String groupingValue: groupingValues) {
                 SelectAndGroupFilter filter = new SelectAndGroupFilter(selectKey, selectValue, groupingKey, groupingValue);
+                filter.buildName();
                 filters.put(filter.getName(), filter);
             }
         }
@@ -267,7 +264,25 @@ public final class SpatialUtil {
         Map<String, SpatialDataFilter> filters = new HashMap<>();
         for(String groupingValue: distinctValues) {
             SelectAndGroupFilter filter = new SelectAndGroupFilter(selectKey, selectValue, groupingKey, groupingValue);
+            filter.buildName();
             filters.put(groupingValue, filter);
+        }
+        return filters;
+    }
+
+    public static Map<String, SpatialDataFilter> createFilters(
+            String selectKey, Collection<String> selectValues,
+            String groupingKey, Collection<String> groupingValues) {
+        Map<String, SpatialDataFilter> filters = new HashMap<>();
+        for(String selectValue: selectValues) {
+            for(String groupingValue: groupingValues) {
+                SelectAndGroupFilter filter = new SelectAndGroupFilter(selectKey, selectValue, groupingKey, groupingValue);
+                filter.buildName();
+                if(filters.containsKey(filter.getName())) {
+                    throw new IllegalArgumentException("filter '" + filter.getName() + "' already exists");
+                }
+                filters.put(filter.getName(), filter);
+            }
         }
         return filters;
     }
@@ -317,5 +332,27 @@ public final class SpatialUtil {
                     }
                 });
         return map;
+    }
+
+    public static int tryGet(SpatialInformation information, String attrName, int defaultValue) {
+        if(information == null) {
+            return defaultValue;
+        }
+        SpatialAttribute attr = information.getAttribute(attrName);
+        if(attr == null || attr.isNoValueAttribute()) {
+            return defaultValue;
+        } else {
+            if(attr.asValueAttribute().isDataType(DataType.DOUBLE)) {
+                return attr.asValueAttribute().getIntValue();
+            } else {
+                return defaultValue;
+            }
+        }
+    }
+
+    public static long tryGetId(SpatialInformation information) {
+        return information == null
+                ? -1L
+                : information.getId();
     }
 }

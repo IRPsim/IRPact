@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.util.*;
 import de.unileipzig.irpact.commons.util.data.TripleMapping;
-import de.unileipzig.irpact.commons.util.data.VarMap;
+import de.unileipzig.irpact.commons.util.data.VarCollection;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.jadex.persistance.JadexPersistable;
 import de.unileipzig.irpact.jadex.persistance.binary.io.BinaryPersistJson;
@@ -891,12 +891,12 @@ public final class BinaryJsonData extends PersistableBase implements JadexPersis
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public void putVarMap(
-            VarMap varMap,
+            VarCollection varColl,
             ToLongFunction<?>[] xToLong,
             TriConsumer<ObjectNode, String, ?> xApplier) {
         if(isSimulationMode()) return;
         ObjectNode obj = validateSet(nextPutId()).addObject();
-        for(Object[] entry: varMap.iterable()) {
+        for(Object[] entry: varColl.iterable()) {
             ObjectNode node = obj;
             //total: 0..n-1
             //0..n-3
@@ -918,7 +918,7 @@ public final class BinaryJsonData extends PersistableBase implements JadexPersis
     public void getVarMap(
             LongFunction<?>[] longToX,
             BiFunction<ObjectNode, String, ?> xSupplier,
-            VarMap out) {
+            VarCollection out) {
         checkSimulationMode();
         List<Object> temp = new ArrayList<>();
         ObjectNode obj = (ObjectNode) nextNode();
@@ -932,7 +932,7 @@ public final class BinaryJsonData extends PersistableBase implements JadexPersis
             LongFunction<?>[] longToX,
             BiFunction<ObjectNode, String, ?> xSupplier,
             List<Object> temp,
-            VarMap out) {
+            VarCollection out) {
         for(Map.Entry<String, JsonNode> entry: Util.iterateFields(current)) {
             String idStr = entry.getKey();
             long id = Long.parseLong(idStr);
@@ -946,7 +946,7 @@ public final class BinaryJsonData extends PersistableBase implements JadexPersis
             } else {
                 Object lastElement = xSupplier.apply(current, idStr);
                 set(temp, i + 1, lastElement);
-                out.putCollection(temp);
+                out.add(temp);
             }
         }
     }

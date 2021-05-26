@@ -2,7 +2,7 @@ package de.unileipzig.irpact.jadex.persistance.binary.data;
 
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.spatial.twodim.Space2D;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
@@ -36,6 +36,7 @@ public class Space2DPR extends BinaryPRBase<Space2D> {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putInt(object.getMetric().id());
+        data.putLong(object.getIdManager().peekId());
         return data;
     }
 
@@ -48,6 +49,7 @@ public class Space2DPR extends BinaryPRBase<Space2D> {
         Space2D object = new Space2D();
         object.setName(data.getText());
         object.setMetric(Metric2D.get(data.getInt()));
+        object.getIdManager().reset(data.getLong());
         return object;
     }
 

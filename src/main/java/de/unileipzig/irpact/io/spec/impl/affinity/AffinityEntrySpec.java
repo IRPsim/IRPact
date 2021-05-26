@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.io.spec.impl.affinity;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.log.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;

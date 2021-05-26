@@ -5,12 +5,11 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.table.Table;
-import de.unileipzig.irpact.core.log.IRPLogging;
-import de.unileipzig.irpact.core.log.IRPSection;
-import de.unileipzig.irpact.core.process.ra.RAConstants;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.*;
-import de.unileipzig.irpact.core.spatial.distribution2.SpatialDataFilter;
+import de.unileipzig.irpact.core.spatial.SpatialDataFilter;
 import de.unileipzig.irpact.core.spatial.distribution2.WeightedDiscreteSpatialDistribution;
 import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.develop.XXXXXXXXX;
@@ -142,8 +141,9 @@ public class InCustomFileSelectedGroupedSpatialDistribution2D__2 implements InSp
 
         WeightedDiscreteSpatialDistribution dist = new WeightedDiscreteSpatialDistribution();
         dist.setName(name + "_" + selectValue);
+        dist.setSpatialData(data);
         dist.setRandom(rnd);
-        dist.addFilters(data, filters);
+        dist.addFilters(filters.values());
         return dist;
     }
 
@@ -162,7 +162,7 @@ public class InCustomFileSelectedGroupedSpatialDistribution2D__2 implements InSp
                     tableData,
                     xSupplier,
                     ySupplier,
-                    RAConstants.ID,
+                    model.supplyNextId(),
                     ArrayList::new
             );
             model.storeData(dataColl);

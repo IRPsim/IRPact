@@ -1,11 +1,8 @@
 package de.unileipzig.irpact.core.spatial.distribution2;
 
 import de.unileipzig.irpact.commons.NameableBase;
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
-import de.unileipzig.irpact.commons.util.StringUtil;
+import de.unileipzig.irpact.core.spatial.SpatialDataFilter;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
-
-import java.util.Objects;
 
 /**
  * @author Daniel Abitz
