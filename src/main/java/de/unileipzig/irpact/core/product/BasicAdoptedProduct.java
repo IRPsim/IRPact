@@ -26,6 +26,7 @@ public class BasicAdoptedProduct implements AdoptedProduct {
     protected boolean initial;
 
     public BasicAdoptedProduct() {
+        setPhase(AdoptionPhase.UNKNOWN);
     }
 
     public BasicAdoptedProduct(Product product) {
@@ -33,6 +34,7 @@ public class BasicAdoptedProduct implements AdoptedProduct {
         setProduct(product);
         setTimestamp(null);
         setInitial(true);
+        setPhase(AdoptionPhase.UNKNOWN);
     }
 
     public BasicAdoptedProduct(Need need, Product product, Timestamp timestamp) {
@@ -40,6 +42,7 @@ public class BasicAdoptedProduct implements AdoptedProduct {
         setProduct(product);
         setTimestamp(timestamp);
         setInitial(false);
+        setPhase(AdoptionPhase.UNKNOWN);
     }
 
     public void setNeed(Need need) {

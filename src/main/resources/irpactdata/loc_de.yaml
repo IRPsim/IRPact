@@ -975,19 +975,19 @@ BinaryPersistData_id:
   gams_description: "Einzigartige ID der Daten."
 
 
-RealOutConsumerAgentGroup:
+OutConsumerAgentGroup:
   edn_label: "Adoptionen der Konsumergruppen"
   edn_description: "todo"
-RealOutConsumerAgentGroup_adoptionsThisPeriod:
+OutConsumerAgentGroup_adoptionsThisPeriod:
   gams_identifier: "Adoptionen"
   gams_description: "todo"
-RealOutConsumerAgentGroup_initialAdoptionsThisPeriod:
+OutConsumerAgentGroup_initialAdoptionsThisPeriod:
   gams_identifier: "initiale Adoptionen"
   gams_description: "todo"
-RealOutConsumerAgentGroup_adoptionsCumulative:
+OutConsumerAgentGroup_adoptionsCumulative:
   gams_identifier: "kumulierte Adoptionen"
   gams_description: "todo"
-RealOutConsumerAgentGroup_initialAdoptionsCumulative:
+OutConsumerAgentGroup_initialAdoptionsCumulative:
   gams_identifier: "kumulierte initiale Adoptionen"
   gams_description: "todo"
 

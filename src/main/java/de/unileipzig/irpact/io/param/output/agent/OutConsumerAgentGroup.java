@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.io.param.output.agent;
 
-import de.unileipzig.irpact.io.param.outputtemplate.OutConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.output.OutIRPactEntity;
+import de.unileipzig.irptools.defstructure.DefinitionType;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -15,8 +15,8 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 /**
  * @author Daniel Abitz
  */
-@Definition(copy = OutConsumerAgentGroup.class)
-public class RealOutConsumerAgentGroup implements OutIRPactEntity {
+@Definition(template = DefinitionType.OUTPUT)
+public class OutConsumerAgentGroup implements OutIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -50,7 +50,7 @@ public class RealOutConsumerAgentGroup implements OutIRPactEntity {
     @FieldDefinition
     public int initialAdoptionsCumulative;
 
-    public RealOutConsumerAgentGroup() {
+    public OutConsumerAgentGroup() {
     }
 
     public void setName(String name) {
@@ -95,12 +95,12 @@ public class RealOutConsumerAgentGroup implements OutIRPactEntity {
     }
 
     @Override
-    public RealOutConsumerAgentGroup copy(CopyCache cache) {
+    public OutConsumerAgentGroup copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public RealOutConsumerAgentGroup newCopy(CopyCache cache) {
-        RealOutConsumerAgentGroup copy = new RealOutConsumerAgentGroup();
+    public OutConsumerAgentGroup newCopy(CopyCache cache) {
+        OutConsumerAgentGroup copy = new OutConsumerAgentGroup();
         copy._name = _name;
         copy.adoptionsThisPeriod = adoptionsThisPeriod;
         copy.initialAdoptionsThisPeriod = initialAdoptionsThisPeriod;

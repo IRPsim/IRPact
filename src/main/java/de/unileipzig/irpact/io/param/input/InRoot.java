@@ -39,7 +39,7 @@ import de.unileipzig.irpact.io.param.input.product.*;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
-import de.unileipzig.irpact.io.param.outputtemplate.OutConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irpact.start.optact.in.*;
@@ -637,10 +637,17 @@ public class InRoot implements RootClass {
             INPUT_WITHOUT_TEMPLATES,
             ParserInput.listOf(DefinitionType.INPUT,
                     OutConsumerAgentGroup.class
-                    )
+            )
     );
 
     public static final List<ParserInput> INPUT_WITH_ROOT = ParserInput.merge(
+            INPUT_WITHOUT_TEMPLATES,
+            ParserInput.listOf(DefinitionType.INPUT,
+                    InRoot.class
+            )
+    );
+
+    public static final List<ParserInput> INPUT_WITH_TEMPLATE_AND_ROOT = ParserInput.merge(
             INPUT_WITH_TEMPLATES,
             ParserInput.listOf(DefinitionType.INPUT,
                     InRoot.class
@@ -648,7 +655,7 @@ public class InRoot implements RootClass {
     );
 
     public static final List<ParserInput> INPUT_WITHOUT_GRAPHVIZ = ParserInput.merge(
-            INPUT_WITH_ROOT,
+            INPUT_WITH_TEMPLATE_AND_ROOT,
             GvInRoot.CLASSES_WITHOUT_ROOT_AND_GRAPHVIZ
     );
 

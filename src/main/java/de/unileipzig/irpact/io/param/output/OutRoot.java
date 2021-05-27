@@ -4,7 +4,7 @@ import de.unileipzig.irpact.io.param.IOResources;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.SimpleCopyCache;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
-import de.unileipzig.irpact.io.param.output.agent.RealOutConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
 import de.unileipzig.irpact.start.optact.out.OutCustom;
 import de.unileipzig.irptools.defstructure.AnnotationResource;
 import de.unileipzig.irptools.defstructure.DefinitionType;
@@ -13,7 +13,6 @@ import de.unileipzig.irptools.defstructure.RootClass;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
-import de.unileipzig.irptools.util.Util;
 
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -35,7 +34,7 @@ public class OutRoot implements RootClass {
     //=========================
 
     @FieldDefinition
-    public RealOutConsumerAgentGroup[] outConsumerAgentGroups = new RealOutConsumerAgentGroup[0];
+    public OutConsumerAgentGroup[] outConsumerAgentGroups = new OutConsumerAgentGroup[0];
 
     @FieldDefinition
     public BinaryPersistData[] binaryPersistData = new BinaryPersistData[0];
@@ -114,22 +113,22 @@ public class OutRoot implements RootClass {
     //CLASSES
     //=========================
 
-    public static final List<ParserInput> INPUT_WITHOUT_ROOT = Util.mergedArrayListOf(
+    public static final List<ParserInput> INPUT_WITHOUT_ROOT = ParserInput.merge(
             ParserInput.listOf(DefinitionType.OUTPUT,
-                    RealOutConsumerAgentGroup.class,
+                    OutConsumerAgentGroup.class,
                     //===
                     BinaryPersistData.class
             )
     );
 
-    public static final List<ParserInput> INPUT_WITH_ROOT = Util.mergedArrayListOf(
+    public static final List<ParserInput> INPUT_WITH_ROOT = ParserInput.merge(
             INPUT_WITHOUT_ROOT,
             ParserInput.listOf(DefinitionType.OUTPUT,
                     OutRoot.class
             )
     );
 
-    public static final List<ParserInput> ALL_CLASSES = Util.mergedArrayListOf(
+    public static final List<ParserInput> ALL_CLASSES = ParserInput.merge(
             INPUT_WITH_ROOT,
             de.unileipzig.irpact.start.optact.out.OutRoot.CLASSES_WITHOUT_ROOT
     );
@@ -139,7 +138,7 @@ public class OutRoot implements RootClass {
     //=========================
 
     public static void initRes(TreeAnnotationResource res) {
-        addPathElement(res, RealOutConsumerAgentGroup.thisName(), ROOT);
+        addPathElement(res, OutConsumerAgentGroup.thisName(), ROOT);
     }
 
     public static void applyRes(TreeAnnotationResource res) {
