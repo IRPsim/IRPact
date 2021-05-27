@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.io.param.output.agent;
+package de.unileipzig.irpact.io.param.output.xDEP;
 
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;

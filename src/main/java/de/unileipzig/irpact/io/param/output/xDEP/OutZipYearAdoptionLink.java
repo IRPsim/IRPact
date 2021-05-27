@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.io.param.output.outtest;
+package de.unileipzig.irpact.io.param.output.xDEP;
 
 import de.unileipzig.irpact.commons.util.data.VarCollection;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -13,6 +13,7 @@ import java.util.Map;
 /**
  * @author Daniel Abitz
  */
+@Deprecated
 @Definition
 public class OutZipYearAdoptionLink {
 

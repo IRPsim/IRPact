@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.io.param.output.agent;
+package de.unileipzig.irpact.io.param.output.xDEP;
 
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.product.ProductGroup;
@@ -19,6 +19,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 /**
  * @author Daniel Abitz
  */
+@Deprecated
 @Definition(copy = InGeneralConsumerAgentGroup.class)
 public class OutGeneralConsumerAgentGroup implements OutConsumerAgentGroup {
 

@@ -63,7 +63,7 @@ public class OptAct {
     }
 
     private Converter createInputConverter() {
-        DefinitionCollection dcoll = AnnotationParser.parse(InRoot.CLASSES_WITH_GRAPHVIZ);
+        DefinitionCollection dcoll = AnnotationParser.parse(InRoot.INPUT_WITH_GRAPHVIZ);
         DefinitionMapper dmap = new DefinitionMapper(dcoll);
         return new Converter(dmap);
     }

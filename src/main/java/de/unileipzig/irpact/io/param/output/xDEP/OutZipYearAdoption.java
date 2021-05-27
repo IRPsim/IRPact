@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.io.param.output.outtest;
+package de.unileipzig.irpact.io.param.output.xDEP;
 
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -9,8 +9,9 @@ import java.lang.invoke.MethodHandles;
 /**
  * @author Daniel Abitz
  */
+@Deprecated
 @Definition
-public class OutZip {
+public class OutZipYearAdoption {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -27,21 +28,30 @@ public class OutZip {
 
     public String _name;
 
-//    @FieldDefinition
-//    public double placeholder;
+    @FieldDefinition
+    public int adoptions;
 
-    public OutZip() {
+    public OutZipYearAdoption() {
     }
 
-    public OutZip(String name) {
-        setName(name);
+    public OutZipYearAdoption(int adoptions) {
+        setName("a" + adoptions);
+        setAdoptions(adoptions);
     }
 
     public void setName(String name) {
-        this._name = "z" + name;
+        this._name = name;
     }
 
     public String getName() {
         return _name;
+    }
+
+    public void setAdoptions(int adoptions) {
+        this.adoptions = adoptions;
+    }
+
+    public int getAdoptions() {
+        return adoptions;
     }
 }

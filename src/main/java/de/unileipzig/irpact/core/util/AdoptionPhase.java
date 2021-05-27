@@ -8,9 +8,10 @@ import de.unileipzig.irpact.commons.checksum.Checksums;
  */
 public enum AdoptionPhase implements ChecksumComparable {
     UNKNOWN(-1),
-    START_MID(0),
-    MID_END(1),
-    END_START(2);
+    INITIAL(0),
+    START_MID(1),
+    MID_END(2),
+    END_START(3);
 
     private final int ID;
 
@@ -36,10 +37,12 @@ public enum AdoptionPhase implements ChecksumComparable {
             case -1:
                 return UNKNOWN;
             case 0:
-                return START_MID;
+                return INITIAL;
             case 1:
-                return MID_END;
+                return START_MID;
             case 2:
+                return MID_END;
+            case 3:
                 return END_START;
             default:
                 throw new IllegalArgumentException("unknown id: " + id);

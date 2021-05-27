@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
-import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -14,24 +13,17 @@ import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.network.SocialGraph;
-import de.unileipzig.irpact.core.product.AdoptedProduct;
-import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.simulation.LifeCycleControl;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.Version;
-import de.unileipzig.irpact.core.util.AdoptionAnalyser;
 import de.unileipzig.irpact.core.util.PVactResultLogging;
 import de.unileipzig.irpact.core.util.RunInfo;
 import de.unileipzig.irpact.io.param.input.GraphvizInputParser;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.JadexInputParser;
 import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
-import de.unileipzig.irpact.io.param.output.OutAnnualAdoptionData;
-import de.unileipzig.irpact.io.param.output.OutEntity;
 import de.unileipzig.irpact.io.param.output.OutRoot;
-import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
-import de.unileipzig.irpact.io.param.output.agent.OutGeneralConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.jadex.agents.simulation.ProxySimulationAgent;
 import de.unileipzig.irpact.jadex.persistance.JadexPersistenceModul;
@@ -60,7 +52,6 @@ import jadex.bridge.service.types.cms.CreationInfo;
 import jadex.bridge.service.types.simulation.ISimulationService;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -151,7 +142,7 @@ public final class IRPact implements IRPActAccess {
         if(INPUT_CONVERTS.containsKey(options)) {
             return INPUT_CONVERTS.get(options);
         } else {
-            DefinitionCollection dcoll = AnnotationParser.parse(InRoot.CLASSES_WITH_GRAPHVIZ);
+            DefinitionCollection dcoll = AnnotationParser.parse(InRoot.INPUT_WITH_GRAPHVIZ);
             DefinitionMapper dmap = createMapper(options, dcoll);
             Converter converter = new Converter(dmap);
             INPUT_CONVERTS.put(options, converter);
@@ -584,40 +575,41 @@ public final class IRPact implements IRPActAccess {
         outRoot.outGrps = outList.toArray(new OutCustom[0]);
     }
 
+    @Deprecated
     private void collectAdoptionResults(OutRoot outRoot) {
         LOGGER.info(IRPSection.GENERAL, "collect and analyze adoption results");
 
-        AdoptionAnalyser analyser = new AdoptionAnalyser();
-        for(ConsumerAgent agent: environment.getAgents().iterableConsumerAgents()) {
-            for(AdoptedProduct adoptedProduct: agent.getAdoptedProducts()) {
-                if(adoptedProduct.isNotInitial()) {
-                    analyser.add(agent, adoptedProduct);
-                }
-            }
-        }
-
-        int year = environment.getSettings().getActualFirstSimulationYear();
-        ProductGroup pg = CollectionUtil.get(environment.getProducts().getGroups(), 0);
-        Map<ConsumerAgentGroup, OutConsumerAgentGroup> outCags = new LinkedHashMap<>();
-        OutGeneralConsumerAgentGroup.create(
-                environment.getAgents().getConsumerAgentGroups(),
-                year,
-                pg,
-                analyser,
-                outCags
-        );
-        outRoot.setConsumerAgentGroups(outCags.values());
-        LOGGER.trace("out: {}", outCags.values().stream().map(OutEntity::getName).collect(Collectors.toList()));
-
-        List<OutAnnualAdoptionData> annualAdoptionData = new ArrayList<>();
-        OutAnnualAdoptionData.create(
-                environment.getSettings().listActualYears(),
-                outCags,
-                pg,
-                analyser,
-                annualAdoptionData
-        );
-        outRoot.setAnnualAdoptionData(annualAdoptionData);
+//        AdoptionAnalyser analyser = new AdoptionAnalyser();
+//        for(ConsumerAgent agent: environment.getAgents().iterableConsumerAgents()) {
+//            for(AdoptedProduct adoptedProduct: agent.getAdoptedProducts()) {
+//                if(adoptedProduct.isNotInitial()) {
+//                    analyser.add(agent, adoptedProduct);
+//                }
+//            }
+//        }
+//
+//        int year = environment.getSettings().getActualFirstSimulationYear();
+//        ProductGroup pg = CollectionUtil.get(environment.getProducts().getGroups(), 0);
+//        Map<ConsumerAgentGroup, OutConsumerAgentGroup> outCags = new LinkedHashMap<>();
+//        OutGeneralConsumerAgentGroup.create(
+//                environment.getAgents().getConsumerAgentGroups(),
+//                year,
+//                pg,
+//                analyser,
+//                outCags
+//        );
+//        outRoot.setConsumerAgentGroups(outCags.values());
+//        LOGGER.trace("out: {}", outCags.values().stream().map(OutEntity::getName).collect(Collectors.toList()));
+//
+//        List<OutAnnualAdoptionData> annualAdoptionData = new ArrayList<>();
+//        OutAnnualAdoptionData.create(
+//                environment.getSettings().listActualYears(),
+//                outCags,
+//                pg,
+//                analyser,
+//                annualAdoptionData
+//        );
+//        outRoot.setAnnualAdoptionData(annualAdoptionData);
     }
 
     private void applyPersistenceData(OutRoot outRoot) throws Exception {

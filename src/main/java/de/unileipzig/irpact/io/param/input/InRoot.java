@@ -39,6 +39,7 @@ import de.unileipzig.irpact.io.param.input.product.*;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
+import de.unileipzig.irpact.io.param.outputtemplate.OutConsumerAgentGroup;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irpact.start.optact.in.*;
@@ -56,7 +57,6 @@ import de.unileipzig.irptools.uiedn.Section;
 import de.unileipzig.irptools.uiedn.Sections;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.UiEdn;
-import de.unileipzig.irptools.util.Util;
 
 import java.nio.file.Path;
 import java.util.*;
@@ -351,7 +351,7 @@ public class InRoot implements RootClass {
 
     @Override
     public Collection<? extends ParserInput> getInput() {
-        return CLASSES_WITH_GRAPHVIZ;
+        return INPUT_WITH_GRAPHVIZ;
     }
 
     @Override
@@ -532,7 +532,7 @@ public class InRoot implements RootClass {
     //CLASSES
     //=========================
 
-    public static final List<ParserInput> INPUT_WITHOUT_ROOT = ParserInput.listOf(DefinitionType.INPUT,
+    public static final List<ParserInput> INPUT_WITHOUT_TEMPLATES = ParserInput.listOf(DefinitionType.INPUT,
             InAffinities.class,
             InAffinityEntry.class,
             InComplexAffinityEntry.class,
@@ -629,35 +629,36 @@ public class InRoot implements RootClass {
             InTimeModel.class,
             InUnitStepDiscreteTimeModel.class,
 
-            InEntity.class,
-            InIRPactEntity.class,
             InGeneral.class,
             InVersion.class
     );
 
-    public static final List<ParserInput> INPUT_WITH_ROOT = Util.mergedArrayListOf(
-            INPUT_WITHOUT_ROOT,
-            ParserInput.asInput(DefinitionType.INPUT,
-                    CollectionUtil.arrayListOf(
-                            InRoot.class
+    public static final List<ParserInput> INPUT_WITH_TEMPLATES = ParserInput.merge(
+            INPUT_WITHOUT_TEMPLATES,
+            ParserInput.listOf(DefinitionType.INPUT,
+                    OutConsumerAgentGroup.class
                     )
+    );
+
+    public static final List<ParserInput> INPUT_WITH_ROOT = ParserInput.merge(
+            INPUT_WITH_TEMPLATES,
+            ParserInput.listOf(DefinitionType.INPUT,
+                    InRoot.class
             )
     );
 
-    public static final List<ParserInput> CLASSES_WITHOUT_GRAPHVIZ = Util.mergedArrayListOf(
+    public static final List<ParserInput> INPUT_WITHOUT_GRAPHVIZ = ParserInput.merge(
             INPUT_WITH_ROOT,
             GvInRoot.CLASSES_WITHOUT_ROOT_AND_GRAPHVIZ
     );
 
-    public static final List<ParserInput> CLASSES_WITH_GRAPHVIZ = Util.mergedArrayListOf(
-            CLASSES_WITHOUT_GRAPHVIZ,
-            ParserInput.asInput(DefinitionType.INPUT,
-                    CollectionUtil.arrayListOf(
-                            GraphvizColor.class,
-                            GraphvizLayoutAlgorithm.class,
-                            GraphvizOutputFormat.class,
-                            GraphvizGlobal.class
-                    )
+    public static final List<ParserInput> INPUT_WITH_GRAPHVIZ = ParserInput.merge(
+            INPUT_WITHOUT_GRAPHVIZ,
+            ParserInput.listOf(DefinitionType.INPUT,
+                    GraphvizColor.class,
+                    GraphvizLayoutAlgorithm.class,
+                    GraphvizOutputFormat.class,
+                    GraphvizGlobal.class
             )
     );
 

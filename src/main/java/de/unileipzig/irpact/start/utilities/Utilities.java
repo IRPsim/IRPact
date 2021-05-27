@@ -11,9 +11,11 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.util.AnnualAdoptionData;
 import de.unileipzig.irpact.develop.Todo;
-import de.unileipzig.irpact.io.param.output.OutAnnualAdoptionData;
+import de.unileipzig.irpact.develop.TodoException;
+import de.unileipzig.irpact.develop.XXXXXXXXX;
+import de.unileipzig.irpact.io.param.output.xDEP.OutAnnualAdoptionData;
 import de.unileipzig.irpact.io.param.output.OutRoot;
-import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.output.xDEP.OutConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.persistance.JadexPersistenceModul;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
@@ -141,16 +143,18 @@ public class Utilities {
         LOGGER.trace(IRPSection.UTILITIES, "task 'print cumulative adoptions with R' finished");
     }
 
+    @XXXXXXXXX
     @Todo
     private void printTempCsvFile(Path tempFile) throws IOException {
         LOGGER.trace(IRPSection.UTILITIES, "convert data to csv");
-        ObjectNode rootNode = parseRInputAsOutRoot();
-        AnnualEntry<OutRoot> outRootEntry = IRPact.convertOutput(mainOptions, rootNode);
-        OutRoot outRoot = outRootEntry.getData();
-        AnnualAdoptionData data = parseWithDummy(outRoot.getAnnualAdoptionData());
-        Table<String> table = toStringTable(data);
-        LOGGER.trace(IRPSection.UTILITIES, "save temp csv file '{}'", tempFile);
-        printCsv(tempFile, table);
+        if(true) throw new TodoException();
+//        ObjectNode rootNode = parseRInputAsOutRoot();
+//        AnnualEntry<OutRoot> outRootEntry = IRPact.convertOutput(mainOptions, rootNode);
+//        OutRoot outRoot = outRootEntry.getData();
+//        AnnualAdoptionData data = parseWithDummy(outRoot.getAnnualAdoptionData());
+//        Table<String> table = toStringTable(data);
+//        LOGGER.trace(IRPSection.UTILITIES, "save temp csv file '{}'", tempFile);
+//        printCsv(tempFile, table);
     }
 
     private void runRScriptForCumulativeAdoptions(Path tempFile) throws IOException, RScriptException, InterruptedException {

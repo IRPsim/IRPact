@@ -48,7 +48,7 @@
   {
     :label "Namen" 
     :set "set_InAttributeName" 
-    :description "Verteilungsfunktion, welche 0 oder 1 zurück gibt." 
+    :description "todo" 
     :tags [["InAttributeName" "placeholder"]]
   } 
   {

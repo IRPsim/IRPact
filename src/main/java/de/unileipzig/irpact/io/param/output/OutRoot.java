@@ -4,9 +4,7 @@ import de.unileipzig.irpact.io.param.IOResources;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.SimpleCopyCache;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
-import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
-import de.unileipzig.irpact.io.param.output.agent.OutGeneralConsumerAgentGroup;
-import de.unileipzig.irpact.io.param.output.outtest.*;
+import de.unileipzig.irpact.io.param.output.agent.RealOutConsumerAgentGroup;
 import de.unileipzig.irpact.start.optact.out.OutCustom;
 import de.unileipzig.irptools.defstructure.AnnotationResource;
 import de.unileipzig.irptools.defstructure.DefinitionType;
@@ -37,19 +35,10 @@ public class OutRoot implements RootClass {
     //=========================
 
     @FieldDefinition
-    public OutConsumerAgentGroup[] consumerAgentGroups = new OutConsumerAgentGroup[0];
-
-    @FieldDefinition
-    public OutAnnualAdoptionData[] annualAdoptionData = new OutAnnualAdoptionData[0];
+    public RealOutConsumerAgentGroup[] outConsumerAgentGroups = new RealOutConsumerAgentGroup[0];
 
     @FieldDefinition
     public BinaryPersistData[] binaryPersistData = new BinaryPersistData[0];
-
-    @FieldDefinition
-    public OutZipYearAdoptionWithNameSplit[] outv1 = new OutZipYearAdoptionWithNameSplit[0];
-
-    @FieldDefinition
-    public OutZipYearAdoptionLink[] outv2 = new OutZipYearAdoptionLink[0];
 
     //=========================
     //OptAct
@@ -61,10 +50,6 @@ public class OutRoot implements RootClass {
     //==================================================
 
     public OutRoot() {
-    }
-
-    public OutAnnualAdoptionData[] getAnnualAdoptionData() {
-        return annualAdoptionData;
     }
 
     public void addBinaryPersistData(Collection<? extends BinaryPersistData> coll) {
@@ -88,6 +73,10 @@ public class OutRoot implements RootClass {
     public int getHiddenBinaryDataLength() {
         return ParamUtil.len(binaryPersistData);
     }
+
+    //=========================
+    //
+    //=========================
 
     @Override
     public Collection<? extends ParserInput> getInput() {
@@ -113,21 +102,12 @@ public class OutRoot implements RootClass {
         SimpleCopyCache cache = new SimpleCopyCache();
         OutRoot copy = new OutRoot();
         //act
-        copy.consumerAgentGroups = cache.copyArray(consumerAgentGroups);
-        copy.annualAdoptionData = cache.copyArray(annualAdoptionData);
+        copy.outConsumerAgentGroups = cache.copyArray(outConsumerAgentGroups);
         copy.binaryPersistData = cache.copyArray(binaryPersistData);
         //optact
         copy.outGrps = outGrps;
 
         return copy;
-    }
-
-    public void setConsumerAgentGroups(Collection<? extends OutConsumerAgentGroup> cags) {
-        this.consumerAgentGroups = cags.toArray(new OutConsumerAgentGroup[0]);
-    }
-
-    public void setAnnualAdoptionData(Collection< ? extends OutAnnualAdoptionData> data) {
-        this.annualAdoptionData = data.toArray(new OutAnnualAdoptionData[0]);
     }
 
     //=========================
@@ -136,19 +116,9 @@ public class OutRoot implements RootClass {
 
     public static final List<ParserInput> INPUT_WITHOUT_ROOT = Util.mergedArrayListOf(
             ParserInput.listOf(DefinitionType.OUTPUT,
-                    OutConsumerAgentGroup.class,
-                    OutGeneralConsumerAgentGroup.class,
-
-                    OutAnnualAdoptionData.class,
-                    OutEntity.class,
+                    RealOutConsumerAgentGroup.class,
                     //===
-                    BinaryPersistData.class,
-                    //===
-                    OutZipYearAdoptionWithNameSplit.class,
-                    OutZipYearAdoption.class,
-                    OutZipYearAdoptionLink.class,
-                    OutYear.class,
-                    OutZip.class
+                    BinaryPersistData.class
             )
     );
 
@@ -169,8 +139,7 @@ public class OutRoot implements RootClass {
     //=========================
 
     public static void initRes(TreeAnnotationResource res) {
-        addPathElement(res, OutGeneralConsumerAgentGroup.thisName(), ROOT);
-        addPathElement(res, OutAnnualAdoptionData.thisName(), ROOT);
+        addPathElement(res, RealOutConsumerAgentGroup.thisName(), ROOT);
     }
 
     public static void applyRes(TreeAnnotationResource res) {
