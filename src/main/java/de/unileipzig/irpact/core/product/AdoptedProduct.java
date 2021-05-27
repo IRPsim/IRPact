@@ -3,6 +3,7 @@ package de.unileipzig.irpact.core.product;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.need.Need;
+import de.unileipzig.irpact.core.util.AdoptionPhase;
 
 /**
  * Combines the adopted product with the satisfied need and the timestamp of the adoption.
@@ -16,6 +17,8 @@ public interface AdoptedProduct extends ChecksumComparable {
     Product getProduct();
 
     Timestamp getTimestamp();
+
+    AdoptionPhase getPhase();
 
     default int getYear() {
         return isInitial() ? -1 : getTimestamp().getYear();

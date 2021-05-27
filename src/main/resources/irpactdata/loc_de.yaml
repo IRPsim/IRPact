@@ -960,7 +960,7 @@ InVersion_placeholderVersion:
 
 InAttributeName:
   edn_label: "Namen"
-  edn_description: "Verteilungsfunktion, welche 0 oder 1 zurück gibt."
+  edn_description: "todo"
 InAttributeName_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"

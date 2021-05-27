@@ -3,6 +3,7 @@ package de.unileipzig.irpact.jadex.persistance.binary.data;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.product.BasicAdoptedProduct;
+import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.time.BasicTimestamp;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -34,6 +35,7 @@ public class BasicAdoptedProductPR extends BinaryPRBase<BasicAdoptedProduct> {
     protected BinaryJsonData doInitalizePersist(BasicAdoptedProduct object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putBoolean(object.isInitial());
+        data.putInt(object.getPhase().getId());
 
         if(object.isInitial()) {
             data.putNothing();
@@ -65,6 +67,7 @@ public class BasicAdoptedProductPR extends BinaryPRBase<BasicAdoptedProduct> {
     protected BasicAdoptedProduct doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
         BasicAdoptedProduct object = new BasicAdoptedProduct();
         object.setInitial(data.getBoolean());
+        object.setPhase(AdoptionPhase.get(data.getInt()));
         return object;
     }
 

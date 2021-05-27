@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.persistence.annotation.ChecksumAndPersistent
 import de.unileipzig.irpact.commons.persistence.annotation.UsedPersisterRestorer;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.need.Need;
+import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.jadex.persistance.binary.data.BasicAdoptedProductPR;
 
 /**
@@ -19,6 +20,8 @@ public class BasicAdoptedProduct implements AdoptedProduct {
     protected Product product;
     @ChecksumAndPersistentValue("epoch millis")
     protected Timestamp timestamp;
+    @ChecksumAndPersistentValue
+    protected AdoptionPhase phase;
     @ChecksumAndPersistentValue
     protected boolean initial;
 
@@ -51,6 +54,10 @@ public class BasicAdoptedProduct implements AdoptedProduct {
         this.timestamp = timestamp;
     }
 
+    public void setPhase(AdoptionPhase phase) {
+        this.phase = phase;
+    }
+
     public void setInitial(boolean initial) {
         this.initial = initial;
     }
@@ -71,6 +78,11 @@ public class BasicAdoptedProduct implements AdoptedProduct {
     }
 
     @Override
+    public AdoptionPhase getPhase() {
+        return phase;
+    }
+
+    @Override
     public boolean isInitial() {
         return initial;
     }
@@ -81,6 +93,7 @@ public class BasicAdoptedProduct implements AdoptedProduct {
                 need,
                 product,
                 timestamp,
+                phase,
                 initial
         );
     }

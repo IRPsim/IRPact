@@ -69,6 +69,10 @@ public abstract class ChecksumCalculator {
     //general
     //=========================
 
+    public int getChecksum(int value) {
+        return Integer.hashCode(value);
+    }
+
     public int getChecksum(long value) {
         return Long.hashCode(value);
     }
