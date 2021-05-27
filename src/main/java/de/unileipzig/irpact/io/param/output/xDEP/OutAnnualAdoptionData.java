@@ -1,12 +1,10 @@
-package de.unileipzig.irpact.io.param.output;
+package de.unileipzig.irpact.io.param.output.xDEP;
 
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.util.AdoptionAnalyser;
-import de.unileipzig.irpact.core.util.AnnualAdoptionData;
 import de.unileipzig.irpact.develop.XXXXXXXXX;
-import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
-import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.output.OutEntity;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Factory;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -16,7 +14,6 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 import java.util.*;
-import java.util.function.Function;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
 import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
@@ -24,6 +21,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 /**
  * @author Daniel Abitz
  */
+@Deprecated
 @Definition
 public class OutAnnualAdoptionData implements OutEntity {
 

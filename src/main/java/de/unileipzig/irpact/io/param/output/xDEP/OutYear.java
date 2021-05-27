@@ -1,20 +1,17 @@
-package de.unileipzig.irpact.io.param.output;
+package de.unileipzig.irpact.io.param.output.xDEP;
 
 import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.util.CopyCache;
-import de.unileipzig.irptools.util.Copyable;
+import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
-
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 
 /**
  * @author Daniel Abitz
  */
 @Deprecated
-@Definition(global = true)
-public class OutGeneral implements Copyable {
+@Definition
+public class OutYear {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -27,18 +24,30 @@ public class OutGeneral implements Copyable {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), thisName());
     }
 
-    public OutGeneral() {
+    public String _name;
+
+    @FieldDefinition
+    public int year;
+
+    public OutYear() {
     }
 
-    @Override
-    public OutGeneral copy(CopyCache cache) {
-        return cache.copyIfAbsent(this, this::newCopy);
+    public OutYear(int year) {
+        setName(year);
+        this.year = year;
     }
 
-    public OutGeneral newCopy(CopyCache cache) {
-        return new OutGeneral();
+    public void setName(String name) {
+        this._name = "y" + name;
+    }
+
+    public void setName(int year) {
+        setName(Integer.toString(year));
+    }
+
+    public String getName() {
+        return _name;
     }
 }

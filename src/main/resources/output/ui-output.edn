@@ -1,25 +1,5 @@
 [
   {
-    :label "set_OutZipYearAdoptionWithNameSplit" 
-    :set "set_OutZipYearAdoptionWithNameSplit" 
-    :tags [["OutZipYearAdoptionWithNameSplit" "adoptions"]]
-  } 
-  {
-    :label "set_OutZipYearAdoption" 
-    :set "set_OutZipYearAdoption" 
-    :tags [["OutZipYearAdoption" "adoptions"]]
-  } 
-  {
-    :label "set_OutZipYearAdoptionLink" 
-    :set "set_OutZipYearAdoptionLink" 
-    :tags [["link" "OutZipYearAdoptionLink" "OutYear" "years"] ["link" "OutZipYearAdoptionLink" "OutZip" "zips"] ["link" "OutZipYearAdoptionLink" "OutZipYearAdoption" "adoptions"]]
-  } 
-  {
-    :label "set_OutYear" 
-    :set "set_OutYear" 
-    :tags [["OutYear" "year"]]
-  } 
-  {
     :label "Sets" 
     :description "Hier sind Sets." 
     :sections [
@@ -32,15 +12,9 @@
     ]
   } 
   {
-    :label "Konsumergruppen" 
-    :set "set_InGeneralConsumerAgentGroup" 
+    :label "Adoptionen der Konsumergruppen" 
+    :set "set_OutConsumerAgentGroup" 
     :description "todo" 
-    :tags [["InGeneralConsumerAgentGroup" "adoptionsThisYear"] ["InGeneralConsumerAgentGroup" "adoptionsCumulativ"] ["InGeneralConsumerAgentGroup" "adoptionShareThisYear"] ["InGeneralConsumerAgentGroup" "adoptionShareCumulativ"]]
-  } 
-  {
-    :label "Jährliche Adoptionen" 
-    :set "set_OutAnnualAdoptionData" 
-    :description "todo" 
-    :tags [["OutAnnualAdoptionData" "year"] ["map" "OutAnnualAdoptionData" "InConsumerAgentGroup" "adoptionsThisYear"] ["map" "OutAnnualAdoptionData" "InConsumerAgentGroup" "adoptionsCumulativ"] ["map" "OutAnnualAdoptionData" "InConsumerAgentGroup" "adoptionShareThisYear"] ["map" "OutAnnualAdoptionData" "InConsumerAgentGroup" "adoptionShareCumulativ"]]
+    :tags [["OutConsumerAgentGroup" "adoptionsThisPeriod"] ["OutConsumerAgentGroup" "initialAdoptionsThisPeriod"] ["OutConsumerAgentGroup" "adoptionsCumulative"] ["OutConsumerAgentGroup" "initialAdoptionsCumulative"]]
   }
 ]

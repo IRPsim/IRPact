@@ -960,7 +960,7 @@ InVersion_placeholderVersion:
 
 InAttributeName:
   edn_label: "Namen"
-  edn_description: "Verteilungsfunktion, welche 0 oder 1 zurück gibt."
+  edn_description: "todo"
 InAttributeName_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -975,7 +975,24 @@ BinaryPersistData_id:
   gams_description: "Einzigartige ID der Daten."
 
 
+RealOutConsumerAgentGroup:
+  edn_label: "Adoptionen der Konsumergruppen"
+  edn_description: "todo"
+RealOutConsumerAgentGroup_adoptionsThisPeriod:
+  gams_identifier: "Adoptionen"
+  gams_description: "todo"
+RealOutConsumerAgentGroup_initialAdoptionsThisPeriod:
+  gams_identifier: "initiale Adoptionen"
+  gams_description: "todo"
+RealOutConsumerAgentGroup_adoptionsCumulative:
+  gams_identifier: "kumulierte Adoptionen"
+  gams_description: "todo"
+RealOutConsumerAgentGroup_initialAdoptionsCumulative:
+  gams_identifier: "kumulierte initiale Adoptionen"
+  gams_description: "todo"
 
+
+#DEPRECATED
 OutGeneralConsumerAgentGroup:
   edn_label: "Konsumergruppen"
   edn_description: "todo"
@@ -992,6 +1009,7 @@ OutGeneralConsumerAgentGroup_adoptionShareCumulativ:
   gams_identifier: "Adoptionen (kumulierter anteil)"
   gams_description: "todo"
 
+#DEPRECATED
 OutAnnualAdoptionData:
   edn_label: "Jährliche Adoptionen"
   edn_description: "todo"

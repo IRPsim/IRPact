@@ -14,9 +14,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
 /**
  * @author Daniel Abitz
  */
-@Definition(
-        transferClass = true
-)
+@Definition(transferClass = true)
 public class BinaryPersistData implements Copyable {
 
     public static final Comparator<BinaryPersistData> ASCENDING = Comparator.comparingLong(BinaryPersistData::getID);
