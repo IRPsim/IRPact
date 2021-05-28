@@ -26,23 +26,22 @@ public class BasicAdoptedProduct implements AdoptedProduct {
     protected boolean initial;
 
     public BasicAdoptedProduct() {
-        setPhase(AdoptionPhase.UNKNOWN);
+        this(null, null, null, AdoptionPhase.UNKNOWN);
     }
 
     public BasicAdoptedProduct(Product product) {
-        setNeed(null);
-        setProduct(product);
-        setTimestamp(null);
-        setInitial(true);
-        setPhase(AdoptionPhase.UNKNOWN);
+        this(null, product, null, AdoptionPhase.INITIAL);
     }
 
     public BasicAdoptedProduct(Need need, Product product, Timestamp timestamp) {
+        this(need, product, timestamp, AdoptionPhase.UNKNOWN);
+    }
+
+    public BasicAdoptedProduct(Need need, Product product, Timestamp timestamp, AdoptionPhase phase) {
         setNeed(need);
         setProduct(product);
         setTimestamp(timestamp);
-        setInitial(false);
-        setPhase(AdoptionPhase.UNKNOWN);
+        setPhase(phase);
     }
 
     public void setNeed(Need need) {
@@ -59,10 +58,6 @@ public class BasicAdoptedProduct implements AdoptedProduct {
 
     public void setPhase(AdoptionPhase phase) {
         this.phase = phase;
-    }
-
-    public void setInitial(boolean initial) {
-        this.initial = initial;
     }
 
     @Override
@@ -87,7 +82,7 @@ public class BasicAdoptedProduct implements AdoptedProduct {
 
     @Override
     public boolean isInitial() {
-        return initial;
+        return phase == AdoptionPhase.INITIAL;
     }
 
     @Override

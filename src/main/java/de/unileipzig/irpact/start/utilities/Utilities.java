@@ -233,8 +233,7 @@ public class Utilities {
     private static void printCsv(Path target, Table<String> table) throws IOException {
         CsvPrinter<String> printer = new CsvPrinter<>(str -> str);
         printer.setDelimiter(",");
-        printer.setPrintFinalEmptyLine(true);
-        printer.write(target, StandardCharsets.UTF_8, table.getHeader(), table.listTable());
+        printer.write(target, StandardCharsets.UTF_8, table.getHeaderAsArray(), table.listTable());
     }
 
     private static void runRScriptWithInputAndOutput(

@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 public class SimpleTable<T> implements Table<T> {
 
     protected List<String> columns = new ArrayList<>();
+    protected String[] columnsArray;
     protected List<List<T>> rows = new ArrayList<>();
     protected T nullValue = null;
 
@@ -65,6 +66,14 @@ public class SimpleTable<T> implements Table<T> {
     @Override
     public List<String> getHeader() {
         return columns;
+    }
+
+    @Override
+    public String[] getHeaderAsArray() {
+        if(columnsArray == null || columnsArray.length != columns.size()) {
+            columnsArray = columns.toArray(new String[0]);
+        }
+        return columnsArray;
     }
 
     @Override

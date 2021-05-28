@@ -1,9 +1,10 @@
-package de.unileipzig.irpact.core.util.result;
+package de.unileipzig.irpact.core.util.result.adoptions;
 
 import de.unileipzig.irpact.commons.util.data.VarCollection;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.core.util.result.ResultProcessor;
 
 import java.util.Iterator;
 import java.util.stream.Stream;
@@ -24,6 +25,10 @@ public interface AdoptionAnalyser extends ResultProcessor {
     }
 
     void add(AdoptionInfo info);
+
+    default void add(ConsumerAgent agent, AdoptedProduct product) {
+        add(new BasicAdoptionInfo(agent, product));
+    }
 
     default void addAll(Iterable<? extends AdoptionInfo> infos) {
         for(AdoptionInfo info: infos) {

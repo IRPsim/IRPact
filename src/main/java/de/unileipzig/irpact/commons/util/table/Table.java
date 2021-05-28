@@ -15,6 +15,8 @@ public interface Table<T> {
 
     List<String> getHeader();
 
+    String[] getHeaderAsArray();
+
     int columnCount();
 
     String columnName(int columnIndex);
