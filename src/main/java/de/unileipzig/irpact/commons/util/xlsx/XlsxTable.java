@@ -39,7 +39,7 @@ public class XlsxTable<T> extends SimpleTable<T> {
     }
 
     public String printCsv(CsvPrinter<T> printer) {
-        return printer.toString(getHeader(), listTable());
+        return printer.toString(getHeaderAsArray(), listTable());
     }
 
     @Override

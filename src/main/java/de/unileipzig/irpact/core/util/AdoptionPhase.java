@@ -3,6 +3,9 @@ package de.unileipzig.irpact.core.util;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.checksum.Checksums;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author Daniel Abitz
  */
@@ -12,6 +15,8 @@ public enum AdoptionPhase implements ChecksumComparable {
     START_MID(1),
     MID_END(2),
     END_START(3);
+
+    public static final List<AdoptionPhase> VALID_PHASES = Arrays.asList(INITIAL, START_MID, MID_END, END_START);
 
     private final int ID;
 

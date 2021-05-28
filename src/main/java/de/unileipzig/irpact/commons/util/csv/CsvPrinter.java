@@ -6,7 +6,6 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -14,20 +13,33 @@ import java.util.function.Function;
  */
 public class CsvPrinter<T> {
 
-    protected CsvValuePrinter<? super T> toString;
+    protected CsvValuePrinter<? super T> valuePrinter;
     protected String lineSeparator = StringUtil.lineSeparator();
     protected String delimiter = ";";
     protected String quote = "\"";
     protected boolean forceQuote = false;
     protected boolean autoFlush = true;
-    protected boolean printFinalEmptyLine = false;
+
+    protected Writer writer;
+    protected String[] header;
+
+    public CsvPrinter() {
+    }
 
     public CsvPrinter(Function<? super T, ? extends String> toString) {
         this((columnIndex, header, value) -> toString.apply(value));
     }
 
-    public CsvPrinter(CsvValuePrinter<? super T> toString) {
-        this.toString = toString;
+    public CsvPrinter(CsvValuePrinter<? super T> valuePrinter) {
+        setValuePrinter(valuePrinter);
+    }
+
+    public void setValuePrinter(CsvValuePrinter<? super T> valuePrinter) {
+        this.valuePrinter = valuePrinter;
+    }
+
+    public CsvValuePrinter<? super T> getValuePrinter() {
+        return valuePrinter;
     }
 
     public void setLineSeparator(String lineSeparator) {
@@ -70,14 +82,6 @@ public class CsvPrinter<T> {
         return autoFlush;
     }
 
-    public void setPrintFinalEmptyLine(boolean printFinalEmptyLine) {
-        this.printFinalEmptyLine = printFinalEmptyLine;
-    }
-
-    public boolean isPrintFinalEmptyLine() {
-        return printFinalEmptyLine;
-    }
-
     protected String quoteIfRequired(String input) {
         if(forceQuote || input.contains(delimiter)) {
             return quote + input + quote;
@@ -92,7 +96,7 @@ public class CsvPrinter<T> {
         }
     }
 
-    public String toString(List<String> header, List<List<T>> rows) {
+    public String toString(String[] header, Iterable<? extends Iterable<? extends T>> rows) {
         try {
             StringWriter sw = new StringWriter();
             write(sw, header, rows);
@@ -102,13 +106,45 @@ public class CsvPrinter<T> {
         }
     }
 
-    public void write(Path path, Charset charset, List<String> header, List<List<T>> rows) throws IOException {
+    public void write(Path path, Charset charset, String[] header, Iterable<? extends Iterable<? extends T>> rows) throws IOException {
         try(BufferedWriter writer = Files.newBufferedWriter(path, charset)) {
             write(writer, header, rows);
         }
     }
 
-    public void write(Writer writer, List<String> header, List<List<T>> rows) throws IOException {
+    public void write(Writer writer, String[] header, Iterable<? extends Iterable<? extends T>> rows) throws IOException {
+        setWriter(writer);
+        setHeader(header);
+        writeHeader();
+        appendRows(rows);
+        setHeader(null);
+        setWriter(null);
+    }
+
+    public void setWriter(Writer writer) {
+        this.writer = writer;
+    }
+
+    public Writer getWriter() {
+        return writer;
+    }
+
+    public <W extends Writer> W getWriterAs(Class<W> c) {
+        return c.cast(writer);
+    }
+
+    public void setHeader(String[] header) {
+        this.header = header;
+    }
+
+    public void writeHeader(String[] header) throws IOException {
+        String[] current = this.header;
+        setHeader(header);
+        writeHeader();
+        setHeader(current);
+    }
+
+    public void writeHeader() throws IOException {
         boolean first = true;
         for(String h: header) {
             if(!first) {
@@ -117,24 +153,32 @@ public class CsvPrinter<T> {
             first = false;
             writer.write(quoteIfRequired(h));
         }
+        writer.write(lineSeparator);
+        flushIfRequired(writer);
+    }
 
-        String[] headerArr = header.toArray(new String[0]);;
-        for(List<T> row: rows) {
-            writer.write(lineSeparator);
-            first = true;
-            int columnIndex = 0;
-            for(T value: row) {
-                if(!first) {
-                    writer.write(delimiter);
-                }
-                first = false;
-                String valueStr = toString.toString(columnIndex++, headerArr, value);
-                writer.write(quoteIfRequired(valueStr));
+    public void appendRows(Iterable<? extends Iterable<? extends T>> rows) throws IOException {
+        for(Iterable<? extends T> row: rows) {
+            appendRow(row);
+        }
+    }
+
+    public void appendRow(Iterable<? extends T> row) throws IOException {
+        if(valuePrinter == null) {
+            throw new NullPointerException("valuePrinter");
+        }
+
+        boolean first = true;
+        int columnIndex = 0;
+        for(T value: row) {
+            if(!first) {
+                writer.write(delimiter);
             }
+            first = false;
+            String valueStr = valuePrinter.toString(columnIndex++, header, value);
+            writer.write(quoteIfRequired(valueStr));
         }
-
-        if(printFinalEmptyLine) {
-            writer.write(lineSeparator);
-        }
+        writer.write(lineSeparator);
+        flushIfRequired(writer);
     }
 }

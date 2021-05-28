@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.util.result;
+package de.unileipzig.irpact.core.util.result.adoptions;
 
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
