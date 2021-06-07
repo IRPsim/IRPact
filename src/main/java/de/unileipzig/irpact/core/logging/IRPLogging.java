@@ -20,12 +20,12 @@ public final class IRPLogging {
     public static final String RESULT_START = "===RESULT-START===";
     public static final String RESULT_END = "===RESULT-END===";
 
-    private static final LoggingManager MANAGER = newManager();
+    private static final LoggingController CONTROLLER = newManager();
 
-    private static LoggingManager newManager() {
-        BasicLoggingManager manager = new BasicLoggingManager();
+    private static LoggingController newManager() {
+        BasicLoggingController manager = new BasicLoggingController();
         manager.init();
-        manager.setLevel(Level.ALL);
+        manager.setLevel(IRPLevel.getDefault().toLogbackLevel());
         manager.setFilterError(true);
         manager.setPath(null);
         manager.writeToConsole();
@@ -41,30 +41,34 @@ public final class IRPLogging {
     private IRPLogging() {
     }
 
+    public static LoggingController getController() {
+        return CONTROLLER;
+    }
+
     public static void setFilterError(boolean filterError) {
-        MANAGER.setFilterError(filterError);
+        CONTROLLER.setFilterError(filterError);
     }
 
     public static void writeToConsole() {
-        MANAGER.writeToConsole();
+        CONTROLLER.writeToConsole();
     }
 
     public static void writeToFile(Path target) {
-        MANAGER.setPath(target);
-        MANAGER.writeToFile();
+        CONTROLLER.setPath(target);
+        CONTROLLER.writeToFile();
     }
 
     public static void writeToConsoleAndFile(Path target) {
-        MANAGER.setPath(target);
-        MANAGER.writeToConsoleAndFile();
+        CONTROLLER.setPath(target);
+        CONTROLLER.writeToConsoleAndFile();
     }
 
     public static void setLevel(IRPLevel level) {
-        MANAGER.setLevel(level.toLogbackLevel());
+        CONTROLLER.setLevel(level.toLogbackLevel());
     }
 
     public static void setLevel(Level level) {
-        MANAGER.setLevel(level);
+        CONTROLLER.setLevel(level);
     }
 
     public static IRPLogger getLogger(Class<?> c) {
@@ -79,7 +83,7 @@ public final class IRPLogging {
     }
     private static synchronized void initResultLogger() {
         if(resultLogger == null) {
-            resultLogger = new IRPLogger(FILTER, MANAGER.getResultLogger());
+            resultLogger = new IRPLogger(FILTER, CONTROLLER.getResultLogger());
         }
     }
 

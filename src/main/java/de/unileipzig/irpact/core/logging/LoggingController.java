@@ -8,7 +8,7 @@ import java.nio.file.Path;
 /**
  * @author Daniel Abitz
  */
-public interface LoggingManager {
+public interface LoggingController {
 
     //=========================
     // loggers

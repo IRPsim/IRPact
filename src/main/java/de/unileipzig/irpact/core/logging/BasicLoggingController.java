@@ -15,7 +15,7 @@ import java.nio.file.Path;
 /**
  * @author Daniel Abitz
  */
-public class BasicLoggingManager implements LoggingManager {
+public class BasicLoggingController implements LoggingController {
 
     private static final String CLEAR_PATTERN = "%msg%n";
     private static final String CLEAR_PATTERN_WITHOUT_BREAK = "%msg";
@@ -36,7 +36,7 @@ public class BasicLoggingManager implements LoggingManager {
 
     protected boolean usesFile = false;
 
-    public BasicLoggingManager() {
+    public BasicLoggingController() {
     }
 
     public void init() {
