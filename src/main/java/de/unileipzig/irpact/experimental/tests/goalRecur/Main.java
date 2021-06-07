@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.experimental.tests.goalRecur;
 
 import de.unileipzig.irpact.commons.concurrent.ConcurrentUtil;
-import de.unileipzig.irpact.commons.logging.Logback;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
@@ -37,7 +37,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Logback.setupConsole();
+        IRPLogging.writeToConsole();
         LOGGER.trace("TEST");
 
         IPlatformConfiguration config = PlatformConfigurationHandler.getMinimal();

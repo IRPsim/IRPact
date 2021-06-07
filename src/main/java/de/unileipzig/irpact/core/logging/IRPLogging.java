@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.core.logging;
 
 import ch.qos.logback.classic.Level;
-import de.unileipzig.irpact.commons.logging.Logback;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import de.unileipzig.irptools.util.log.LoggingFilter;
 import de.unileipzig.irptools.util.log.LoggingSection;
@@ -21,6 +20,18 @@ public final class IRPLogging {
     public static final String RESULT_START = "===RESULT-START===";
     public static final String RESULT_END = "===RESULT-END===";
 
+    private static final LoggingManager MANAGER = newManager();
+
+    private static LoggingManager newManager() {
+        BasicLoggingManager manager = new BasicLoggingManager();
+        manager.init();
+        manager.setLevel(Level.ALL);
+        manager.setFilterError(true);
+        manager.setPath(null);
+        manager.writeToConsole();
+        return manager;
+    }
+
     private static final InternalFilter FILTER = new InternalFilter();
 
     public static String lineSeparator = "\n"; //aenderbar
@@ -30,30 +41,30 @@ public final class IRPLogging {
     private IRPLogging() {
     }
 
-    public static void enableLogging() {
-        FILTER.enable();
+    public static void setFilterError(boolean filterError) {
+        MANAGER.setFilterError(filterError);
     }
 
-    public static void disableLogging() {
-        FILTER.disable();
+    public static void writeToConsole() {
+        MANAGER.writeToConsole();
     }
 
-    public static void initConsole() {
-        Logback.initLogging();
-        Logback.setupConsole();
-        Logback.setLevel(Level.ALL);
+    public static void writeToFile(Path target) {
+        MANAGER.setPath(target);
+        MANAGER.writeToFile();
     }
 
-    public static void initFile(Path target) {
-        Logback.initLogging();
-        Logback.setupFile(target);
-        Logback.setLevel(Level.ALL);
+    public static void writeToConsoleAndFile(Path target) {
+        MANAGER.setPath(target);
+        MANAGER.writeToConsoleAndFile();
     }
 
-    public static void initConsoleAndFile(Path target) {
-        Logback.initLogging();
-        Logback.setupConsoleAndFile(target);
-        Logback.setLevel(Level.ALL);
+    public static void setLevel(IRPLevel level) {
+        MANAGER.setLevel(level.toLogbackLevel());
+    }
+
+    public static void setLevel(Level level) {
+        MANAGER.setLevel(level);
     }
 
     public static IRPLogger getLogger(Class<?> c) {
@@ -68,8 +79,16 @@ public final class IRPLogging {
     }
     private static synchronized void initResultLogger() {
         if(resultLogger == null) {
-            resultLogger = new IRPLogger(FILTER, Logback.getResultLogger());
+            resultLogger = new IRPLogger(FILTER, MANAGER.getResultLogger());
         }
+    }
+
+    public static void enableLogging() {
+        FILTER.enable();
+    }
+
+    public static void disableLogging() {
+        FILTER.disable();
     }
 
     public static void setFilter(SectionLoggingFilter filter) {
@@ -90,11 +109,6 @@ public final class IRPLogging {
             throw new NoSuchElementException();
         }
         return filter;
-    }
-
-    public static void setLevel(IRPLevel level) {
-        Logback.initLogging();
-        Logback.setLevel(level.toLogbackLevel());
     }
 
     //=========================
