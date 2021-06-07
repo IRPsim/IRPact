@@ -85,9 +85,13 @@ public class BasicLoggingController implements LoggingController {
     //=========================
 
     @Override
-    public void setLevel(Level level) {
-        rootLogger.setLevel(level);
-        resultLogger.setLevel(level);
+    public void setRootLevel(IRPLevel level) {
+        rootLogger.setLevel(level.toLogbackLevel());
+    }
+
+    @Override
+    public void setResultLevel(IRPLevel level) {
+        resultLogger.setLevel(level.toLogbackLevel());
     }
 
     @Override

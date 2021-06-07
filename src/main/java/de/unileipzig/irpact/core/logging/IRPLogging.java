@@ -1,11 +1,14 @@
 package de.unileipzig.irpact.core.logging;
 
-import ch.qos.logback.classic.Level;
+import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import de.unileipzig.irptools.util.log.LoggingFilter;
 import de.unileipzig.irptools.util.log.LoggingSection;
 import org.slf4j.Logger;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.NoSuchElementException;
 
@@ -25,7 +28,8 @@ public final class IRPLogging {
     private static LoggingController newManager() {
         BasicLoggingController manager = new BasicLoggingController();
         manager.init();
-        manager.setLevel(IRPLevel.getDefault().toLogbackLevel());
+        manager.setRootLevel(IRPLevel.getDefault());
+        manager.setResultLevel(IRPLevel.ALL);
         manager.setFilterError(true);
         manager.setPath(null);
         manager.writeToConsole();
@@ -64,11 +68,7 @@ public final class IRPLogging {
     }
 
     public static void setLevel(IRPLevel level) {
-        CONTROLLER.setLevel(level.toLogbackLevel());
-    }
-
-    public static void setLevel(Level level) {
-        CONTROLLER.setLevel(level);
+        CONTROLLER.setRootLevel(level);
     }
 
     public static IRPLogger getLogger(Class<?> c) {
@@ -184,6 +184,66 @@ public final class IRPLogging {
                 result, lineSeparator,
                 RESULT_END
         );
+    }
+
+    private static String buildTag(String tag, boolean start) {
+        if(tag == null || StringUtil.isBlank(tag)) {
+            tag = "RESULT";
+        }
+        return start
+                ? "===START-" + tag + "==="
+                : "===END-" + tag + "===";
+    }
+
+    public static void startResult(String tag, boolean autoLinebreak) {
+        getResultLogger().info(buildTag(tag, true));
+        if(autoLinebreak) {
+            getController().enableClearMode();
+        } else {
+            getController().enableWriteMode();
+        }
+    }
+
+    public static void resultWrite(String str) {
+        getResultLogger().info(str);
+    }
+
+    public static void resultWriteln(String str) {
+        resultWrite(str);
+        resultNewLine();
+    }
+
+    public static void resultNewLine() {
+        getResultLogger().info(StringUtil.lineSeparator());
+    }
+
+    public static void resultWrite(Reader reader) throws UncheckedIOException {
+        resultWrite(reader, 8192);
+    }
+
+    public static void resultWrite(Reader reader, int bufferSize) throws UncheckedIOException {
+        try {
+            resultWrite0(reader, bufferSize);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private static void resultWrite0(Reader reader, int bufferSize) throws IOException {
+        char[] cbuf = new char[bufferSize];
+        int l;
+        do {
+            l = reader.read(cbuf);
+            if(l > 0) {
+                String temp = new String(cbuf, 0, l);
+                getResultLogger().info(temp);
+            }
+        } while(l != -1);
+    }
+
+    public static void finishResult(String tag) {
+        getController().enableInformationMode();
+        getResultLogger().info(buildTag(tag, false));
     }
 
     //=========================

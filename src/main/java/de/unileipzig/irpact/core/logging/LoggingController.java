@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.logging;
 
-import ch.qos.logback.classic.Level;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
@@ -28,7 +27,9 @@ public interface LoggingController {
 
     void setFilterError(boolean filterError);
 
-    void setLevel(Level level);
+    void setRootLevel(IRPLevel level);
+
+    void setResultLevel(IRPLevel level);
 
     //=========================
     // modes
