@@ -14,6 +14,7 @@ import de.unileipzig.irpact.core.agent.SpatialInformationAgent;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
 import de.unileipzig.irpact.core.product.awareness.ProductAwareness;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
+import de.unileipzig.irpact.core.util.AdoptionPhase;
 
 import java.util.Collection;
 import java.util.Map;
@@ -71,7 +72,7 @@ public interface ConsumerAgent extends SpatialInformationAgent {
 
     void adoptInitial(Product product);
 
-    void adopt(Need need, Product product, Timestamp stamp);
+    void adopt(Need need, Product product, Timestamp stamp, AdoptionPhase phase);
 
     boolean linkAccess(AttributeAccess attributeAccess);
 

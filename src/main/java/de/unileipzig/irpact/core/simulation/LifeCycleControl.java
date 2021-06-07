@@ -64,6 +64,10 @@ public interface LifeCycleControl extends InitalizablePart {
 
     boolean registerSyncTaskAsLastAction(Timestamp ts, SyncTask task);
 
+    boolean registerSyncTaskAsFirstAnnualAction(SyncTask task);
+
+    boolean registerSyncTaskAsLastAnnualAction(SyncTask task);
+
     /**
      * Waits until the synchronisation is finished (if required).
      */

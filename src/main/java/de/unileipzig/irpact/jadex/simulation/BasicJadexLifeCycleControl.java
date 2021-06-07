@@ -289,6 +289,16 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
     }
 
     @Override
+    public boolean registerSyncTaskAsFirstAnnualAction(SyncTask task) {
+        return newYearTasks.add(task);
+    }
+
+    @Override
+    public boolean registerSyncTaskAsLastAnnualAction(SyncTask task) {
+        return lastYearTasks.add(task);
+    }
+
+    @Override
     public void waitForYearChangeIfRequired(Agent agent) {
         JadexTimeModel timeModel = environment.getTimeModel();
         if(!timeModel.hasYearChange()) {

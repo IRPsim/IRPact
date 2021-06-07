@@ -29,14 +29,6 @@ public class BasicAdoptedProduct implements AdoptedProduct {
         this(null, null, null, AdoptionPhase.UNKNOWN);
     }
 
-    public BasicAdoptedProduct(Product product) {
-        this(null, product, null, AdoptionPhase.INITIAL);
-    }
-
-    public BasicAdoptedProduct(Need need, Product product, Timestamp timestamp) {
-        this(need, product, timestamp, AdoptionPhase.UNKNOWN);
-    }
-
     public BasicAdoptedProduct(Need need, Product product, Timestamp timestamp, AdoptionPhase phase) {
         setNeed(need);
         setProduct(product);

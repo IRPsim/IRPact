@@ -18,6 +18,7 @@ import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.product.*;
 import de.unileipzig.irpact.core.product.awareness.ProductAwareness;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
+import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.jadex.agents.AbstractJadexAgentBDI;
 import de.unileipzig.irpact.jadex.agents.simulation.SimulationService;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
@@ -492,14 +493,14 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
 
     @Override
     public void adoptInitial(Product product) {
-        AdoptedProduct adoptedProduct = new BasicAdoptedProduct(product);
+        AdoptedProduct adoptedProduct = new BasicAdoptedProduct(null, product, null, AdoptionPhase.INITIAL);
         addAdoptedProduct(adoptedProduct);
     }
 
     @Override
-    public void adopt(Need need, Product product, Timestamp stamp) {
+    public void adopt(Need need, Product product, Timestamp stamp, AdoptionPhase phase) {
         if(needs.contains(need)) {
-            AdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, stamp);
+            AdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, stamp, phase);
             needs.remove(need);
             plans.remove(need);
             addAdoptedProduct(adoptedProduct);

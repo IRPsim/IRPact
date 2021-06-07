@@ -31,6 +31,9 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Daniel Abitz
  */
@@ -52,6 +55,9 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
     protected NPVCalculator npvCalculator;
     protected RAModelData modelData;
     protected Rnd rnd;
+
+    protected Map<Integer, Timestamp> week27Map = new HashMap<>();
+    protected boolean isYearChange = false;
 
     public RAProcessModel() {
     }
@@ -266,19 +272,48 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         int lastYear = environment.getTimeModel().getLastSimulationYear();
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create syncronisation tasks for process model '{}' ", getName());
-        for(int y = firstYear; y <= lastYear; y++) {
-            Timestamp tsJan = environment.getTimeModel().atStartOfYear(y);
-            SyncTask taskJan = createNewYearTask(getName() + "_NewYear_" + y);
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create new year task '{}'", taskJan.getName());
-            environment.getLiveCycleControl().registerSyncTaskAsFirstAction(tsJan, taskJan);
 
+        SyncTask firstAnnualTask = createStartOfYearTask(getName() + "_FirstAnnual");
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create first annual task '{}'", firstAnnualTask.getName());
+        environment.getLiveCycleControl().registerSyncTaskAsFirstAnnualAction(firstAnnualTask);
+
+        SyncTask lastAnnualTask = createEndOfYearTask(getName() + "_LastAnnual");
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "create last annual task '{}'", lastAnnualTask.getName());
+        environment.getLiveCycleControl().registerSyncTaskAsLastAnnualAction(lastAnnualTask);
+
+        for(int y = firstYear; y <= lastYear; y++) {
             Timestamp tsWeek27 = environment.getTimeModel().at(y, WEEK27);
             SyncTask taskWeek27 = createWeek27Task(getName() + "_MidYear_" + y);
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "created mid year task (27th week) '{}'", taskJan.getName());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "created mid year task (27th week) '{}'", taskWeek27.getName());
             environment.getLiveCycleControl().registerSyncTaskAsFirstAction(tsWeek27, taskWeek27);
-
-
         }
+    }
+
+    public boolean isYearChange() {
+        return isYearChange;
+    }
+
+    public boolean isBeforeWeek27(Timestamp ts) {
+        Timestamp currentYearWeek27 = getCurrentWeek27(ts);
+        return ts.isBefore(currentYearWeek27);
+    }
+
+    private Timestamp getCurrentWeek27(Timestamp ts) {
+        Timestamp w27 = week27Map.get(ts.getYear());
+        if(w27 == null) {
+            return syncGetCurrentWeek27(ts);
+        } else {
+            return w27;
+        }
+    }
+
+    private synchronized Timestamp syncGetCurrentWeek27(Timestamp ts) {
+        Timestamp w27 = week27Map.get(ts.getYear());
+        if(w27 == null) {
+            w27 = environment.getTimeModel().at(ts.getYear(), WEEK27);
+            week27Map.put(ts.getYear(), w27);
+        }
+        return w27;
     }
 
     @Override
@@ -337,7 +372,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         }
     }
 
-    private SyncTask createNewYearTask(String name) {
+    private SyncTask createStartOfYearTask(String name) {
         return new SyncTask() {
             @Override
             public String getName() {
@@ -353,7 +388,32 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
                         for(ProcessPlan plan: ca.getPlans().values()) {
                             if(plan.isModel(RAProcessModel.this)) {
                                 RAProcessPlan raPlan = (RAProcessPlan) plan;
-                                raPlan.adjustParametersOnNewYear();
+                                raPlan.runAdjustmentAtStartOfYear();
+                            }
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    private SyncTask createEndOfYearTask(String name) {
+        return new SyncTask() {
+            @Override
+            public String getName() {
+                return name;
+            }
+
+            @Override
+            public void run() {
+                LOGGER.trace(IRPSection.SIMULATION_PROCESS, "run 'createNewYearTask'");
+
+                for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+                    for(ConsumerAgent ca: cag.getAgents()) {
+                        for(ProcessPlan plan: ca.getPlans().values()) {
+                            if(plan.isModel(RAProcessModel.this)) {
+                                RAProcessPlan raPlan = (RAProcessPlan) plan;
+                                raPlan.runEvaluationAtEndOfYear();
                             }
                         }
                     }
@@ -378,25 +438,11 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
                         for(ProcessPlan plan: ca.getPlans().values()) {
                             if(plan.isModel(RAProcessModel.this)) {
                                 RAProcessPlan raPlan = (RAProcessPlan) plan;
-                                raPlan.updateConstructionAndRenovation();
+                                raPlan.runUpdateAtMidOfYear();
                             }
                         }
                     }
                 }
-            }
-        };
-    }
-
-    private SyncTask createLastActionOfYearTask(String name) {
-        return new SyncTask() {
-            @Override
-            public String getName() {
-                return name;
-            }
-
-            @Override
-            public void run() {
-                LOGGER.trace(IRPSection.SIMULATION_PROCESS, "run 'createLastActionOfYearTask'");
             }
         };
     }
