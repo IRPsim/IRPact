@@ -105,6 +105,9 @@ public class InRoot implements RootClass {
         return getInstance(version, "version");
     }
 
+    @FieldDefinition
+    public InAboutPlaceholder[] aboutPlaceholders = new InAboutPlaceholder[0];
+
     //=========================
     //affinity
     //=========================
@@ -629,6 +632,7 @@ public class InRoot implements RootClass {
             InTimeModel.class,
             InUnitStepDiscreteTimeModel.class,
 
+            InAboutPlaceholder.class,
             InGeneral.class,
             InVersion.class
     );
@@ -685,6 +689,7 @@ public class InRoot implements RootClass {
                         addPathElement(res, LOGGING_SCRIPT, LOGGING);
                 addPathElement(res, SPECIAL_SETTINGS, GENERAL_SETTINGS);
                     addPathElement(res, VisibleBinaryData.thisName(), SPECIAL_SETTINGS);
+                addPathElement(res, ABOUT, GENERAL_SETTINGS);
 
         addPathElement(res, InAttributeName.thisName(), ROOT);
 

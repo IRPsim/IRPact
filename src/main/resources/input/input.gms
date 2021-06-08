@@ -1131,6 +1131,15 @@ PARAMETER par_InUnitStepDiscreteTimeModel_useW(set_InUnitStepDiscreteTimeModel)
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useM(set_InUnitStepDiscreteTimeModel)
 
+* - identifier: InAboutPlaceholder
+* - type: String
+SET set_InAboutPlaceholder(*)
+
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
+* - type: Integer
+PARAMETER par_InAboutPlaceholder_placeholder(set_InAboutPlaceholder)
+
 * - description: Setzt den Seed für den Zufallsgenerator der Simulation. Falls er auf -1 gesetzt wird, wird ein zufälliger Seed generiert.
 * - identifier: Zufallsgenerator (seed)
 * - type: Integer

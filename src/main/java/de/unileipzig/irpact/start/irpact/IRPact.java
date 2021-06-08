@@ -69,9 +69,10 @@ public final class IRPact implements IRPActAccess {
     private static final String CONSUMER_AGENT = "de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentBDI.class";
     private static final String SIMULATION_AGENT_NAME = "IRPact_Simulation_Agent";
 
+    //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "0";
     private static final String MINOR_STRING = "0";
-    private static final String BUILD_STRING = "0";
+    private static final String BUILD_STRING = "1";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
