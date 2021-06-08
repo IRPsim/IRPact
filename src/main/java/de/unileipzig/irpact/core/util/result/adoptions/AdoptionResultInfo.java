@@ -6,11 +6,11 @@ import java.util.function.Supplier;
 /**
  * @author Daniel Abitz
  */
-public final class AdoptionData {
+public final class AdoptionResultInfo {
 
-    static final Supplier<AdoptionData> ZERO = () -> new AdoptionData(0, 0);
-    static final AdoptionData ONE = new AdoptionData(1, 1);
-    static BinaryOperator<AdoptionData> ADD_CUMULATIVE = (a1, a2) -> {
+    static final Supplier<AdoptionResultInfo> ZERO = () -> new AdoptionResultInfo(0, 0);
+    static final AdoptionResultInfo ONE = new AdoptionResultInfo(1, 1);
+    static BinaryOperator<AdoptionResultInfo> ADD_CUMULATIVE = (a1, a2) -> {
         if(a1 == ONE) {
             a2.incCumulative();
             return a2;
@@ -21,7 +21,7 @@ public final class AdoptionData {
         }
         throw new IllegalStateException("requires ONE instance");
     };
-    static BinaryOperator<AdoptionData> ADD_BOTH = (a1, a2) -> {
+    static BinaryOperator<AdoptionResultInfo> ADD_BOTH = (a1, a2) -> {
         if(a1 == ONE) {
             a2.inc();
             a2.incCumulative();
@@ -38,7 +38,7 @@ public final class AdoptionData {
     protected int value;
     protected int cumulativeValue;
 
-    public AdoptionData(int value, int cumulativeValue) {
+    public AdoptionResultInfo(int value, int cumulativeValue) {
         this.value = value;
         this.cumulativeValue = cumulativeValue;
     }
@@ -79,7 +79,7 @@ public final class AdoptionData {
 
     @Override
     public String toString() {
-        return "AdoptionData{" +
+        return "AdoptionResultInfo{" +
                 "value=" + value +
                 ", cumulativeValue=" + cumulativeValue +
                 '}';

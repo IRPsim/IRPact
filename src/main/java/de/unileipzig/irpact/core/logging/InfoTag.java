@@ -18,6 +18,9 @@ public final class InfoTag {
     public static final String FINANCAL_COMPONENT = "[FC]";
     public static final String DECISION_MAKING = "[DM]";
 
+    //result logging
+    public static final String RESULT_EXACT_ADOPTIONS = "ALL_ADOPTIONS";
+
     private InfoTag() {
     }
 }

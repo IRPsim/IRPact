@@ -208,6 +208,18 @@ public final class IRPLogging {
         getResultLogger().info(str);
     }
 
+    public static void resultWrite(String format, Object arg) {
+        getResultLogger().info(format, arg);
+    }
+
+    public static void resultWrite(String format, Object arg1, Object arg2) {
+        getResultLogger().info(format, arg1, arg2);
+    }
+
+    public static void resultWrite(String format, Object... args) {
+        getResultLogger().info(format, args);
+    }
+
     public static void resultWriteln(String str) {
         resultWrite(str);
         resultNewLine();
@@ -215,6 +227,10 @@ public final class IRPLogging {
 
     public static void resultNewLine() {
         getResultLogger().info(StringUtil.lineSeparator());
+    }
+
+    public static void resultSeparator() {
+        getResultLogger().info("=========================");
     }
 
     public static void resultWrite(Reader reader) throws UncheckedIOException {

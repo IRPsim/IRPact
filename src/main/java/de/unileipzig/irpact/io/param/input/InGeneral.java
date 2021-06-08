@@ -155,6 +155,9 @@ public class InGeneral implements Copyable {
     @FieldDefinition
     public boolean logProductAdoptions;
 
+    @FieldDefinition
+    public boolean logAllAdoptions;
+
     //=========================
     //dev logging
     //=========================

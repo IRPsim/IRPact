@@ -11,13 +11,14 @@ import java.util.function.Function;
 /**
  * @author Daniel Abitz
  */
-public class CAYearZipPhase extends AbstractCAYear2<String, AdoptionPhase> {
+public class AnnualCumulativeAdoptionsZipPhase extends AbstractAnnualCumulativeAdoptions2<String, AdoptionPhase> {
 
     public static final int INDEX_ZIP = INDEX_FIRST_VALUE;
     public static final int INDEX_PHASE = INDEX_SECOND_VALUE;
 
     public static final CsvValuePrinter<Object> VALUE_PRINTER = buildValuePrinter(Enum::name);
     public static final CsvValuePrinter<Object> CUMULATIVE_VALUE_PRINTER = buildCumulativeValuePrinter(Enum::name);
+    public static final CsvValuePrinter<Object> VALUE_AND_CUMULATIVE_VALUE_PRINTER = buildValueAndCumulativeValuePrinter(Enum::name);
 
     public static CsvValuePrinter<Object> buildValuePrinter(Function<? super AdoptionPhase, ? extends String> phasePrinter) {
         if(phasePrinter == null) {
@@ -37,7 +38,7 @@ public class CAYearZipPhase extends AbstractCAYear2<String, AdoptionPhase> {
                     return phasePrinter.apply(((AdoptionPhase) value));
 
                 case INDEX_ADOPTIONS:
-                    return ((AdoptionData) value).printValue();
+                    return ((AdoptionResultInfo) value).printValue();
 
                 default:
                     throw new IllegalArgumentException("unsupported index: " + columnIndex);
@@ -63,7 +64,36 @@ public class CAYearZipPhase extends AbstractCAYear2<String, AdoptionPhase> {
                     return phasePrinter.apply(((AdoptionPhase) value));
 
                 case INDEX_ADOPTIONS:
-                    return ((AdoptionData) value).printCumulativeValue();
+                    return ((AdoptionResultInfo) value).printCumulativeValue();
+
+                default:
+                    throw new IllegalArgumentException("unsupported index: " + columnIndex);
+            }
+        };
+    }
+
+    public static CsvValuePrinter<Object> buildValueAndCumulativeValuePrinter(Function<? super AdoptionPhase, ? extends String> phasePrinter) {
+        if(phasePrinter == null) {
+            throw new NullPointerException("phasePrinter");
+        }
+
+        return (columnIndex, header, value) -> {
+            if(value == null) {
+                throw new NullPointerException("value at index '" + columnIndex + "' is null");
+            }
+            switch (columnIndex) {
+                case INDEX_YEAR:
+                case INDEX_ZIP:
+                    return value.toString();
+
+                case INDEX_PHASE:
+                    return phasePrinter.apply(((AdoptionPhase) value));
+
+                case INDEX_ADOPTIONS:
+                    return ((AdoptionResultInfo) value).printValue();
+
+                case INDEX_ADOPTIONS2:
+                    return ((AdoptionResultInfo) value).printCumulativeValue();
 
                 default:
                     throw new IllegalArgumentException("unsupported index: " + columnIndex);
@@ -77,10 +107,9 @@ public class CAYearZipPhase extends AbstractCAYear2<String, AdoptionPhase> {
 
     protected String zipKey;
 
-    public CAYearZipPhase() {
+    public AnnualCumulativeAdoptionsZipPhase() {
         super();
         setZipKey(RAConstants.ZIP);
-        setCsvHeader(new String[]{"year", "zip", "phase", "adoptions"});
     }
 
     @Override
@@ -102,11 +131,21 @@ public class CAYearZipPhase extends AbstractCAYear2<String, AdoptionPhase> {
     }
 
     public void initCsvPrinterForValue(CsvPrinter<Object> printer) {
+        printBoth = false;
         printer.setValuePrinter(VALUE_PRINTER);
+        setCsvHeader(new String[]{"year", "zip", "phase", "adoptions"});
     }
 
     public void initCsvPrinterForCumulativeValue(CsvPrinter<Object> printer) {
+        printBoth = false;
         printer.setValuePrinter(CUMULATIVE_VALUE_PRINTER);
+        setCsvHeader(new String[]{"year", "zip", "phase", "adoptionsCumulative"});
+    }
+
+    public void initCsvPrinterForValueAndCumulativeValue(CsvPrinter<Object> printer) {
+        printBoth = true;
+        printer.setValuePrinter(VALUE_AND_CUMULATIVE_VALUE_PRINTER);
+        setCsvHeader(new String[]{"year", "zip", "phase", "adoptions", "adoptionsCumulative"});
     }
 
     @Override
@@ -115,13 +154,18 @@ public class CAYearZipPhase extends AbstractCAYear2<String, AdoptionPhase> {
     }
 
     @Override
-    protected void add(boolean currentYear, int year, AdoptionInfo info) {
+    public String printHeader(CsvPrinter<?> printer) {
+        return printer.printHeader(csvHeader);
+    }
+
+    @Override
+    protected void add(boolean currentYear, int year, AdoptionEntry info) {
         data.varUpdate(
-                AdoptionData.ZERO, currentYear ? AdoptionData.ADD_BOTH : AdoptionData.ADD_CUMULATIVE,
+                AdoptionResultInfo.ZERO, currentYear ? AdoptionResultInfo.ADD_BOTH : AdoptionResultInfo.ADD_CUMULATIVE,
                 year,
                 findString(info, getZipKey()),
                 info.getPhase(),
-                AdoptionData.ONE
+                AdoptionResultInfo.ONE
         );
     }
 }

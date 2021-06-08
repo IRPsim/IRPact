@@ -77,22 +77,7 @@ InGeneral_logCalculateDecisionMaking:
 logging_result:
   edn_label: "Ausgabe von speziellen Ergebnissen"
   edn_description: "Diese Optionen ermöglichen die Ausgabe von Ergebnissen in spezieller Form."
-InGeneral_logResultGroupedByZip:
-  gams_identifier: "Ergebnisausgabe nach PLZ"
-  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus."
-  gams_domain: "[0|1]"
-InGeneral_logResultGroupedByMilieu:
-  gams_identifier: "Ergebnisausgabe nach Milieu"
-  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem Milieu aus."
-  gams_domain: "[0|1]"
-InGeneral_logResultGroupedByZipAndMilieu:
-  gams_identifier: "Ergebnisausgabe nach PLZ und Milieu"
-  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ und dem Milieu (in dieser Reihenfolge) aus."
-  gams_domain: "[0|1]"
-InGeneral_logProductAdoptions:
-  gams_identifier: "Ausgabe Adoptionszeitpunkte"
-  gams_description: "Gibt alle Adoptionen mit ihren Zeitpunkten aus."
-  gams_domain: "[0|1]"
+xx xxasd : asd : asd
 
 special_settings:
   edn_label: "Spezielle Einstellungen"
