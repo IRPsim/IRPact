@@ -61,6 +61,11 @@ public enum IRPSection implements LoggingSection {
     SIMULATION_PROCESS,
 
     /**
+     * Used to log result printing.
+     */
+    RESULT,
+
+    /**
      * ...
      */
     SPECIFICATION_CONVERTER,

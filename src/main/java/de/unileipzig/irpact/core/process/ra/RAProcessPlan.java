@@ -26,6 +26,7 @@ import de.unileipzig.irpact.core.process.ra.attributes.UncertaintyAttribute;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.develop.PotentialProblem;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -190,14 +191,22 @@ public class RAProcessPlan implements ProcessPlan {
     //phases
     //=========================
 
-    protected void adjustParametersOnNewYear() {
+    protected void runAdjustmentAtStartOfYear() {
         if(currentStage == RAStage.IMPEDED) {
-            currentStage = RAStage.DECISION_MAKING;
             LOGGER.trace(IRPSection.SIMULATION_PROCESS, "reset process stage '{}' to '{}' for agent '{}'", RAStage.IMPEDED, RAStage.DECISION_MAKING, agent.getName());
+            currentStage = RAStage.DECISION_MAKING;
         }
     }
 
-    protected void updateConstructionAndRenovation() {
+    protected void runEvaluationAtEndOfYear() {
+        if(currentStage == RAStage.IMPEDED) {
+            LOGGER.trace(IRPSection.SIMULATION_PROCESS, "reset process stage '{}' to '{}' for agent '{}'", RAStage.IMPEDED, RAStage.DECISION_MAKING, agent.getName());
+            currentStage = RAStage.DECISION_MAKING;
+            handleDecisionMaking();
+        }
+    }
+
+    protected void runUpdateAtMidOfYear() {
         double renovationRate = getRenovationRate(agent);
         double renovationDraw = rnd.nextDouble();
         boolean doRenovation = renovationDraw < renovationRate;
@@ -592,7 +601,8 @@ public class RAProcessPlan implements ProcessPlan {
             updateStage(RAStage.IMPEDED);
             return ProcessPlanResult.IMPEDED;
         } else {
-            agent.adopt(need, product, now());
+            Timestamp now = now();
+            agent.adopt(need, product, now, determinePhase(now));
             updateStage(RAStage.ADOPTED);
             return ProcessPlanResult.ADOPTED;
         }
@@ -609,6 +619,18 @@ public class RAProcessPlan implements ProcessPlan {
     protected void updateStage(RAStage nextStage) {
         logStageUpdate(nextStage);
         currentStage = nextStage;
+    }
+
+    protected AdoptionPhase determinePhase(Timestamp ts) {
+        if(model.isYearChange()) {
+            return AdoptionPhase.END_START;
+        } else {
+            if(model.isBeforeWeek27(ts)) {
+                return AdoptionPhase.START_MID;
+            } else {
+                return AdoptionPhase.MID_END;
+            }
+        }
     }
 
     protected static double getDouble(ConsumerAgent agent, String attrName) {

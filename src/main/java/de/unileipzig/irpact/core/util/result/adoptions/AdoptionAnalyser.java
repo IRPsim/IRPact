@@ -18,31 +18,31 @@ public interface AdoptionAnalyser extends ResultProcessor {
     default void apply(SimulationEnvironment environment) {
         for(ConsumerAgent agent: environment.getAgents().iterableConsumerAgents()) {
             for(AdoptedProduct product: agent.getAdoptedProducts()) {
-                BasicAdoptionInfo info = new BasicAdoptionInfo(agent, product);
+                BasicAdoptionEntry info = new BasicAdoptionEntry(agent, product);
                 add(info);
             }
         }
     }
 
-    void add(AdoptionInfo info);
+    void add(AdoptionEntry info);
 
     default void add(ConsumerAgent agent, AdoptedProduct product) {
-        add(new BasicAdoptionInfo(agent, product));
+        add(new BasicAdoptionEntry(agent, product));
     }
 
-    default void addAll(Iterable<? extends AdoptionInfo> infos) {
-        for(AdoptionInfo info: infos) {
+    default void addAll(Iterable<? extends AdoptionEntry> infos) {
+        for(AdoptionEntry info: infos) {
             add(info);
         }
     }
 
-    default void addAll(Iterator<? extends AdoptionInfo> infos) {
+    default void addAll(Iterator<? extends AdoptionEntry> infos) {
         while(infos.hasNext()) {
             add(infos.next());
         }
     }
 
-    default void addAll(Stream<? extends AdoptionInfo> infos) {
+    default void addAll(Stream<? extends AdoptionEntry> infos) {
         infos.forEach(this::add);
     }
 

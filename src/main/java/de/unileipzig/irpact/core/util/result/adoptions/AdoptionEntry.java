@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.util.v2;
+package de.unileipzig.irpact.core.util.result.adoptions;
 
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
@@ -7,11 +7,12 @@ import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
+import de.unileipzig.irpact.core.util.AdoptionPhase;
 
 /**
  * @author Daniel Abitz
  */
-public interface AdoptionInfo {
+public interface AdoptionEntry {
 
     ConsumerAgent getAgent();
 
@@ -39,5 +40,9 @@ public interface AdoptionInfo {
 
     default Need getNeed() {
         return getAdoptedProduct().getNeed();
+    }
+
+    default AdoptionPhase getPhase() {
+        return getAdoptedProduct().getPhase();
     }
 }

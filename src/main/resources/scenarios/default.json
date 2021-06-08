@@ -25,15 +25,18 @@
       "sca_InGeneral_logInitialization" : 0,
       "sca_InGeneral_logInterestUpdate" : 1,
       "sca_InGeneral_logLevel" : 6,
-      "sca_InGeneral_logProductAdoptions" : 0,
       "sca_InGeneral_logRelativeAgreement" : 1,
-      "sca_InGeneral_logResultGroupedByMilieu" : 0,
-      "sca_InGeneral_logResultGroupedByZip" : 0,
-      "sca_InGeneral_logResultGroupedByZipAndMilieu" : 0,
+      "sca_InGeneral_logResultAdoptionsAll" : 1,
+      "sca_InGeneral_logResultAdoptionsZip" : 1,
+      "sca_InGeneral_logResultAdoptionsZipPhase" : 1,
+      "sca_InGeneral_logScriptAdoptionsZip" : 0,
+      "sca_InGeneral_logScriptAdoptionsZipPhase" : 0,
       "sca_InGeneral_logShareNetworkLocal" : 1,
       "sca_InGeneral_logSimulation" : 0,
+      "sca_InGeneral_runMode" : -1,
       "sca_InGeneral_runOptActDemo" : 0,
       "sca_InGeneral_runPVAct" : 1,
+      "sca_InGeneral_scenarioMode" : -1,
       "sca_InGeneral_seed" : 42,
       "sca_InGeneral_timeout" : 60000,
       "sca_Tax_PS_vat" : 0.19,
@@ -389,11 +392,7 @@
       "set_tech_DESTO" : {
         "tech_ES1" : { }
       },
-      "set_VisibleBinaryData" : {
-        "78KGK0FQG1I281KFG1KK4IAE8E079H7R" : {
-          "par_VisibleBinaryData_idVisible" : -200
-        }
-      }
+      "set_VisibleBinaryData" : { }
     },
     "timeseries" : {
       "par_C_MS_E" : "0"

@@ -37,6 +37,21 @@ public enum AdoptionPhase implements ChecksumComparable {
         return this != UNKNOWN;
     }
 
+    public boolean isInvalid() {
+        return this == UNKNOWN;
+    }
+
+    public AdoptionPhase requiresValid() {
+        if(isInvalid()) {
+            throw new IllegalStateException("invalid");
+        }
+        return this;
+    }
+
+    public boolean isInitial() {
+        return this == INITIAL;
+    }
+
     public static AdoptionPhase get(int id) {
         switch (id) {
             case -1:

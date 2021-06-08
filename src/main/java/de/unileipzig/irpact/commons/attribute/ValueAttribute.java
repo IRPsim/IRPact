@@ -66,6 +66,14 @@ public interface ValueAttribute<V> extends Attribute {
         throw new UnsupportedOperationException();
     }
 
+    default long getLongValue() {
+        throw new UnsupportedOperationException();
+    }
+
+    default void setLongValue(long value) {
+        throw new UnsupportedOperationException();
+    }
+
     default double getDoubleValue() {
         throw new UnsupportedOperationException();
     }

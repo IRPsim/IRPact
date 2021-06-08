@@ -1159,6 +1159,16 @@ SCALAR sca_InGeneral_runPVAct
 * - type: Boolean
 SCALAR sca_InGeneral_runOptActDemo
 
+* - description: todo
+* - identifier: Ausführungsmodus
+* - type: Integer
+SCALAR sca_InGeneral_runMode
+
+* - description: todo
+* - identifier: Spezialszenario
+* - type: Integer
+SCALAR sca_InGeneral_scenarioMode
+
 * - domain: [0,6]
 * - description: Setzt das zu nutzende Logging-Level in IRPact, folgende Werte werden unterstützt: 0 = OFF, 1 = TRACE, 2 = DEBUG, 3 = INFO, 4 = WARN, 5 = ERROR, 6 = ALL. Das Level ist der Hauptfilter für alle log-Operationen.
 * - identifier: Logging-Level
@@ -1233,27 +1243,33 @@ SCALAR sca_InGeneral_logCalculateDecisionMaking
 
 * - domain: [0|1]
 * - description: Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus.
-* - identifier: Ergebnisausgabe nach PLZ
+* - identifier: Adoptionen nach PLZ
 * - type: Boolean
-SCALAR sca_InGeneral_logResultGroupedByZip
+SCALAR sca_InGeneral_logResultAdoptionsZip
 
 * - domain: [0|1]
-* - description: Gibt die Adoptionsergebnisse gruppiert nach dem Milieu aus.
-* - identifier: Ergebnisausgabe nach Milieu
+* - description: Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus.
+* - identifier: kumulierte Adoptionen nach PLZ und Phase
 * - type: Boolean
-SCALAR sca_InGeneral_logResultGroupedByMilieu
+SCALAR sca_InGeneral_logResultAdoptionsZipPhase
 
 * - domain: [0|1]
-* - description: Gibt die Adoptionsergebnisse gruppiert nach der PLZ und dem Milieu (in dieser Reihenfolge) aus.
-* - identifier: Ergebnisausgabe nach PLZ und Milieu
+* - description: Gibt zu jedem Agenten alle Adoptionsinformationen aus. Nichtadopter werden ebenfalls ausgegeben.
+* - identifier: Komplettausgabe
 * - type: Boolean
-SCALAR sca_InGeneral_logResultGroupedByZipAndMilieu
+SCALAR sca_InGeneral_logResultAdoptionsAll
 
 * - domain: [0|1]
-* - description: Gibt alle Adoptionen mit ihren Zeitpunkten aus.
-* - identifier: Ausgabe Adoptionszeitpunkte
+* - description: Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus. Zusätzlich wird das Script für eine line chart ausgegeben.
+* - identifier: Adoptionen nach PLZ (line)
 * - type: Boolean
-SCALAR sca_InGeneral_logProductAdoptions
+SCALAR sca_InGeneral_logScriptAdoptionsZip
+
+* - domain: [0|1]
+* - description: Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus. Zusätzlich wird das Skript für eine bar chart ausgegeben.
+* - identifier: kumulierte Adoptionen nach PLZ und Phase (stacked bar)
+* - type: Boolean
+SCALAR sca_InGeneral_logScriptAdoptionsZipPhase
 
 * - description: Die Version von IRPact, welche bei der Erstellung des Szenarios aktuell war.
 * - hidden: 1

@@ -17,13 +17,17 @@ import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.simulation.LifeCycleControl;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.Version;
-import de.unileipzig.irpact.core.util.PVactResultLogging;
-import de.unileipzig.irpact.core.util.RunInfo;
+import de.unileipzig.irpact.core.util.BasicMetaData;
+import de.unileipzig.irpact.core.util.MetaData;
+import de.unileipzig.irpact.core.util.result.ResultManager;
+import de.unileipzig.irpact.core.util.result.adoptions.AdoptionResultInfo;
+import de.unileipzig.irpact.core.util.result.adoptions.AnnualCumulativeAdoptionsForOutput;
 import de.unileipzig.irpact.io.param.input.GraphvizInputParser;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.JadexInputParser;
 import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
 import de.unileipzig.irpact.io.param.output.OutRoot;
+import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.jadex.agents.simulation.ProxySimulationAgent;
 import de.unileipzig.irpact.jadex.persistance.JadexPersistenceModul;
@@ -31,7 +35,6 @@ import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.util.JadexSystemOut;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
-import de.unileipzig.irpact.start.optact.out.OutCustom;
 import de.unileipzig.irptools.defstructure.AnnotationParser;
 import de.unileipzig.irptools.defstructure.Converter;
 import de.unileipzig.irptools.defstructure.DefinitionCollection;
@@ -82,7 +85,7 @@ public final class IRPact implements IRPActAccess {
     private final List<IRPactCallback> CALLBACKS = new ArrayList<>();
     private final MainCommandLineOptions CL_OPTIONS;
     private final ResourceLoader RESOURCE_LOADER;
-    private final RunInfo INFO = new RunInfo();
+    private final MetaData META_DATA = new BasicMetaData();
 
     private ObjectNode inRootNode;
     private AnnualEntry<InRoot> inEntry;
@@ -102,11 +105,13 @@ public final class IRPact implements IRPActAccess {
     }
 
     public void notifyStart() {
-        INFO.setStartTime();
+        META_DATA.getCurrentRunInfo().setStartTime();
+        LOGGER.trace(IRPSection.GENERAL, "set start time: {}", META_DATA.getCurrentRunInfo().getStartTime());
     }
 
     public void notifyEnd() {
-        INFO.setEndTime();
+        META_DATA.getCurrentRunInfo().setEndTime();
+        LOGGER.trace(IRPSection.GENERAL, "set end time: {}", META_DATA.getCurrentRunInfo().getEndTime());
     }
 
     public MainCommandLineOptions getOptions() {
@@ -123,6 +128,10 @@ public final class IRPact implements IRPActAccess {
 
     public InRoot getInRoot() {
         return inRoot;
+    }
+
+    public MetaData getMetaData() {
+        return META_DATA;
     }
 
     private static DefinitionMapper createMapper(MainCommandLineOptions options, DefinitionCollection dcoll) {
@@ -221,6 +230,8 @@ public final class IRPact implements IRPActAccess {
             initializeNewSimulationEnvironment();
         }
 
+        META_DATA.apply(environment.getSettings());
+
         createGraphvizConfiguration();
         logSimulationInformations();
     }
@@ -232,6 +243,7 @@ public final class IRPact implements IRPActAccess {
 
     private void initializeNewSimulationEnvironment() throws Exception {
         LOGGER.info(IRPSection.GENERAL, "create new environment");
+        META_DATA.init();
         createSimulationEnvironment();
         applyCommandLineToEnvironment();
     }
@@ -258,6 +270,7 @@ public final class IRPact implements IRPActAccess {
         updater.setResourceLoader(RESOURCE_LOADER);
         JadexPersistenceModul persistenceModul = new JadexPersistenceModul();
         environment = (JadexSimulationEnvironment) persistenceModul.restore(
+                META_DATA,
                 CL_OPTIONS,
                 year,
                 updater,
@@ -560,63 +573,35 @@ public final class IRPact implements IRPActAccess {
     }
 
     private void applySimulationResult(OutRoot outRoot) {
-        //applyOldOptActData(outRoot);
-        collectAdoptionResults(outRoot);
-    }
+        AnnualCumulativeAdoptionsForOutput analyzer = new AnnualCumulativeAdoptionsForOutput();
+        analyzer.setYears(environment.getSettings().listActualYears());
+        analyzer.init(environment.getAgents().listAllConsumerAgentGroupNames(), Arrays.asList(true, false));
+        analyzer.apply(environment);
 
-    @Deprecated
-    private void applyOldOptActData(OutRoot outRoot) {
-        List<OutCustom> outList = new ArrayList<>();
-        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-            int size = cag.getNumberOfAgents();
-            OutCustom oc = new OutCustom(cag.getName(), size);
-            outList.add(oc);
+        Map<String, OutConsumerAgentGroup> cache = new LinkedHashMap<>();
+        for(Object[] entry: analyzer.getData().iterable()) {
+            String name = entry[1] + "_" + entry[0];
+            OutConsumerAgentGroup cag = cache.computeIfAbsent(name, OutConsumerAgentGroup::new);
+            boolean initial = (Boolean) entry[2];
+            AdoptionResultInfo resultInfo = (AdoptionResultInfo) entry[3];
+            if(initial) {
+                cag.setInitialAdoptionsThisPeriod(resultInfo.getValue());
+                cag.setInitialAdoptionsCumulative(resultInfo.getCumulativeValue());
+            } else {
+                cag.setAdoptionsThisPeriod(resultInfo.getValue());
+                cag.setAdoptionsCumulative(resultInfo.getCumulativeValue());
+            }
         }
-        outRoot.outGrps = outList.toArray(new OutCustom[0]);
-    }
 
-    @Deprecated
-    private void collectAdoptionResults(OutRoot outRoot) {
-        LOGGER.info(IRPSection.GENERAL, "collect and analyze adoption results");
-
-//        AdoptionAnalyser analyser = new AdoptionAnalyser();
-//        for(ConsumerAgent agent: environment.getAgents().iterableConsumerAgents()) {
-//            for(AdoptedProduct adoptedProduct: agent.getAdoptedProducts()) {
-//                if(adoptedProduct.isNotInitial()) {
-//                    analyser.add(agent, adoptedProduct);
-//                }
-//            }
-//        }
-//
-//        int year = environment.getSettings().getActualFirstSimulationYear();
-//        ProductGroup pg = CollectionUtil.get(environment.getProducts().getGroups(), 0);
-//        Map<ConsumerAgentGroup, OutConsumerAgentGroup> outCags = new LinkedHashMap<>();
-//        OutGeneralConsumerAgentGroup.create(
-//                environment.getAgents().getConsumerAgentGroups(),
-//                year,
-//                pg,
-//                analyser,
-//                outCags
-//        );
-//        outRoot.setConsumerAgentGroups(outCags.values());
-//        LOGGER.trace("out: {}", outCags.values().stream().map(OutEntity::getName).collect(Collectors.toList()));
-//
-//        List<OutAnnualAdoptionData> annualAdoptionData = new ArrayList<>();
-//        OutAnnualAdoptionData.create(
-//                environment.getSettings().listActualYears(),
-//                outCags,
-//                pg,
-//                analyser,
-//                annualAdoptionData
-//        );
-//        outRoot.setAnnualAdoptionData(annualAdoptionData);
+        outRoot.outConsumerAgentGroups = cache.values().toArray(new OutConsumerAgentGroup[0]);
+        LOGGER.trace(IRPSection.RESULT, "added {} entries to 'outConsumerAgentGroups'", cache.size());
     }
 
     private void applyPersistenceData(OutRoot outRoot) throws Exception {
         if(CL_OPTIONS.isSkipPersist()) {
             LOGGER.trace(IRPSection.GENERAL, "skip persistence");
         } else {
-            environment.getPersistenceModul().store(environment, outRoot);
+            environment.getPersistenceModul().store(META_DATA, environment, outRoot);
         }
     }
 
@@ -648,8 +633,8 @@ public final class IRPact implements IRPActAccess {
     }
 
     private void printResults() {
-        PVactResultLogging logging = new PVactResultLogging(CL_OPTIONS, environment, true);
-        logging.execute();
+        ResultManager manager = new ResultManager(META_DATA, CL_OPTIONS, environment);
+        manager.execute();
     }
 
     private void finalTask() {

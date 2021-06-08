@@ -65,6 +65,16 @@ public interface DoubleAttribute extends ValueAttribute<Number> {
     }
 
     @Override
+    default long getLongValue() {
+        return (long) getDoubleValue();
+    }
+
+    @Override
+    default void setLongValue(long value) {
+        setDoubleValue(value);
+    }
+
+    @Override
     default String getValueAsString() {
         return Double.toString(getDoubleValue());
     }

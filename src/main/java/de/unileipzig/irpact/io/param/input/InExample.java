@@ -4,6 +4,7 @@ import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.simulation.tasks.PredefinedPostAgentCreationTask;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -58,6 +59,7 @@ public class InExample implements DefaultScenarioFactory {
         return createExample();
     }
 
+    @Todo("TASK TESTEN")
     @SuppressWarnings("unused")
     public static InRoot createExample() {
         //===
@@ -136,19 +138,20 @@ public class InExample implements DefaultScenarioFactory {
         general.logLevel = IRPLevel.ALL.getLevelId();
         general.logAllIRPact = true;
         general.enableAllDataLogging();
+        general.enableAllResultLogging();
 
         //=====
         InRoot root = new InRoot();
         initOptAct(root);
         initGV(root);
 
-        PredefinedPostAgentCreationTask task = new PredefinedPostAgentCreationTask();
-        task.setInfo("INC");
-        task.setTask(PredefinedPostAgentCreationTask.ADD_ONE_AGENT_TO_EVERY_GROUP);
-        VisibleBinaryData vbd = new VisibleBinaryData();
-        vbd.setID(task.getID());
-        vbd.setBytes(task.getBytes());
-        root.visibleBinaryData = new VisibleBinaryData[]{vbd};
+//        PredefinedPostAgentCreationTask task = new PredefinedPostAgentCreationTask();
+//        task.setInfo("INC");
+//        task.setTask(PredefinedPostAgentCreationTask.ADD_ONE_AGENT_TO_EVERY_GROUP);
+//        VisibleBinaryData vbd = new VisibleBinaryData();
+//        vbd.setID(task.getID());
+//        vbd.setBytes(task.getBytes());
+//        root.visibleBinaryData = new VisibleBinaryData[]{vbd};
 
         //graphviz
         GraphvizColor gc1 = GraphvizColor.RED;

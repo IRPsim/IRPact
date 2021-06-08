@@ -1,12 +1,14 @@
 package de.unileipzig.irpact.core.logging;
 
-import ch.qos.logback.classic.Level;
-import de.unileipzig.irpact.commons.logging.Logback;
+import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import de.unileipzig.irptools.util.log.LoggingFilter;
 import de.unileipzig.irptools.util.log.LoggingSection;
 import org.slf4j.Logger;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.NoSuchElementException;
 
@@ -21,6 +23,19 @@ public final class IRPLogging {
     public static final String RESULT_START = "===RESULT-START===";
     public static final String RESULT_END = "===RESULT-END===";
 
+    private static final LoggingController CONTROLLER = newManager();
+
+    private static LoggingController newManager() {
+        BasicLoggingController manager = new BasicLoggingController();
+        manager.init();
+        manager.setRootLevel(IRPLevel.getDefault());
+        manager.setResultLevel(IRPLevel.ALL);
+        manager.setFilterError(true);
+        manager.setPath(null);
+        manager.writeToConsole();
+        return manager;
+    }
+
     private static final InternalFilter FILTER = new InternalFilter();
 
     public static String lineSeparator = "\n"; //aenderbar
@@ -30,30 +45,30 @@ public final class IRPLogging {
     private IRPLogging() {
     }
 
-    public static void enableLogging() {
-        FILTER.enable();
+    public static LoggingController getController() {
+        return CONTROLLER;
     }
 
-    public static void disableLogging() {
-        FILTER.disable();
+    public static void setFilterError(boolean filterError) {
+        CONTROLLER.setFilterError(filterError);
     }
 
-    public static void initConsole() {
-        Logback.initLogging();
-        Logback.setupConsole();
-        Logback.setLevel(Level.ALL);
+    public static void writeToConsole() {
+        CONTROLLER.writeToConsole();
     }
 
-    public static void initFile(Path target) {
-        Logback.initLogging();
-        Logback.setupFile(target);
-        Logback.setLevel(Level.ALL);
+    public static void writeToFile(Path target) {
+        CONTROLLER.setPath(target);
+        CONTROLLER.writeToFile();
     }
 
-    public static void initConsoleAndFile(Path target) {
-        Logback.initLogging();
-        Logback.setupConsoleAndFile(target);
-        Logback.setLevel(Level.ALL);
+    public static void writeToConsoleAndFile(Path target) {
+        CONTROLLER.setPath(target);
+        CONTROLLER.writeToConsoleAndFile();
+    }
+
+    public static void setLevel(IRPLevel level) {
+        CONTROLLER.setRootLevel(level);
     }
 
     public static IRPLogger getLogger(Class<?> c) {
@@ -68,8 +83,16 @@ public final class IRPLogging {
     }
     private static synchronized void initResultLogger() {
         if(resultLogger == null) {
-            resultLogger = new IRPLogger(FILTER, Logback.getResultLogger());
+            resultLogger = new IRPLogger(FILTER, CONTROLLER.getResultLogger());
         }
+    }
+
+    public static void enableLogging() {
+        FILTER.enable();
+    }
+
+    public static void disableLogging() {
+        FILTER.disable();
     }
 
     public static void setFilter(SectionLoggingFilter filter) {
@@ -90,11 +113,6 @@ public final class IRPLogging {
             throw new NoSuchElementException();
         }
         return filter;
-    }
-
-    public static void setLevel(IRPLevel level) {
-        Logback.initLogging();
-        Logback.setLevel(level.toLogbackLevel());
     }
 
     //=========================
@@ -166,6 +184,82 @@ public final class IRPLogging {
                 result, lineSeparator,
                 RESULT_END
         );
+    }
+
+    private static String buildTag(String tag, boolean start) {
+        if(tag == null || StringUtil.isBlank(tag)) {
+            tag = "RESULT";
+        }
+        return start
+                ? "===START-" + tag + "==="
+                : "===END-" + tag + "===";
+    }
+
+    public static void startResult(String tag, boolean autoLinebreak) {
+        getResultLogger().info(buildTag(tag, true));
+        if(autoLinebreak) {
+            getController().enableClearMode();
+        } else {
+            getController().enableWriteMode();
+        }
+    }
+
+    public static void resultWrite(String str) {
+        getResultLogger().info(str);
+    }
+
+    public static void resultWrite(String format, Object arg) {
+        getResultLogger().info(format, arg);
+    }
+
+    public static void resultWrite(String format, Object arg1, Object arg2) {
+        getResultLogger().info(format, arg1, arg2);
+    }
+
+    public static void resultWrite(String format, Object... args) {
+        getResultLogger().info(format, args);
+    }
+
+    public static void resultWriteln(String str) {
+        resultWrite(str);
+        resultNewLine();
+    }
+
+    public static void resultNewLine() {
+        getResultLogger().info(StringUtil.lineSeparator());
+    }
+
+    public static void resultSeparator() {
+        getResultLogger().info("=========================");
+    }
+
+    public static void resultWrite(Reader reader) throws UncheckedIOException {
+        resultWrite(reader, 8192);
+    }
+
+    public static void resultWrite(Reader reader, int bufferSize) throws UncheckedIOException {
+        try {
+            resultWrite0(reader, bufferSize);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private static void resultWrite0(Reader reader, int bufferSize) throws IOException {
+        char[] cbuf = new char[bufferSize];
+        int l;
+        do {
+            l = reader.read(cbuf);
+            if(l > 0) {
+                String temp = new String(cbuf, 0, l);
+                getResultLogger().info(temp);
+            }
+        } while(l != -1);
+    }
+
+    public static void finishResult(String tag) {
+        getController().enableInformationMode();
+        getResultLogger().info(buildTag(tag, false));
     }
 
     //=========================

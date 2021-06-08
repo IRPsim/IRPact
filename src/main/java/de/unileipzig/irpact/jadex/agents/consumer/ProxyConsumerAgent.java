@@ -22,6 +22,7 @@ import de.unileipzig.irpact.core.product.awareness.ProductAwareness;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.develop.AddToPersist;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
@@ -618,17 +619,17 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         if(isSynced()) {
             getRealAgent().adoptInitial(product);
         } else {
-            BasicAdoptedProduct adoptedProduct = new BasicAdoptedProduct(product);
+            BasicAdoptedProduct adoptedProduct = new BasicAdoptedProduct(null, product, null, AdoptionPhase.INITIAL);
             adoptedProducts.put(adoptedProduct.getProduct(), adoptedProduct);
         }
     }
 
     @Override
-    public void adopt(Need need, Product product, Timestamp stamp) {
+    public void adopt(Need need, Product product, Timestamp stamp, AdoptionPhase phase) {
         if(isSynced()) {
-            getRealAgent().adopt(need, product, stamp);
+            getRealAgent().adopt(need, product, stamp, phase);
         } else {
-            BasicAdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, stamp);
+            BasicAdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, stamp, phase);
             adoptedProducts.put(adoptedProduct.getProduct(), adoptedProduct);
         }
     }

@@ -24,6 +24,17 @@ public final class StringUtil {
         return LINE_SEPARATOR;
     }
 
+    public static boolean isBlank(String str) {
+        char c;
+        for(int i = 0; i < str.length(); i++) {
+            c = str.charAt(i);
+            if(c != ' ' && c != '\t' && !Character.isWhitespace(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static String concat(String delimiter, Object... parts) {
         return concat(delimiter, Arrays.asList(parts));
     }

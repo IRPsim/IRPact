@@ -36,10 +36,14 @@ public class BasicSettings implements Settings, ChecksumComparable {
     protected boolean logFinancalComponent = false;
     protected boolean logCalculateAdoption = false;
 
-    protected boolean logResultGroupedByZipAndMilieu = false;
-    protected boolean logResultGroupedByZip = false;
-    protected boolean logResultGroupedByMilieu = false;
-    protected boolean logProductAdoptions = false;
+    protected boolean logResultAdoptionsZip = false;
+    protected boolean logResultAdoptionsZipPhase = false;
+    protected boolean logResultAdoptionsAll = false;
+
+    protected boolean logScriptAdoptionsZip = false;
+    protected boolean logScriptAdoptionsZipPhase = false;
+
+
 
     public BasicSettings() {
         this(new LinkedHashMap<>());
@@ -168,7 +172,7 @@ public class BasicSettings implements Settings, ChecksumComparable {
     }
 
     @Override
-    public List<Number> listYears() {
+    public List<Integer> listYears() {
         return streamSimulationYears().boxed()
                 .collect(Collectors.toList());
     }
@@ -210,7 +214,7 @@ public class BasicSettings implements Settings, ChecksumComparable {
     }
 
     @Override
-    public List<Number> listActualYears() {
+    public List<Integer> listActualYears() {
         return streamActualSimulationYears().boxed()
                 .collect(Collectors.toList());
     }
@@ -301,38 +305,56 @@ public class BasicSettings implements Settings, ChecksumComparable {
     //=========================
 
     @Override
-    public void setLogResultGroupedByZipAndMilieu(boolean log) {
-        this.logResultGroupedByZipAndMilieu = log;
-    }
-    @Override
-    public boolean isLogResultGroupedByZipAndMilieu() {
-        return logResultGroupedByZipAndMilieu;
+    public void setLogResultAdoptionsZip(boolean log) {
+        logResultAdoptionsZip = log;
     }
 
     @Override
-    public void setLogResultGroupedByZip(boolean log) {
-        this.logResultGroupedByZip = log;
-    }
-    @Override
-    public boolean isLogResultGroupedByZip() {
-        return logResultGroupedByZip;
+    public boolean isLogResultAdoptionsZip() {
+        return logResultAdoptionsZip;
     }
 
     @Override
-    public void setLogResultGroupedByMilieu(boolean log) {
-        this.logResultGroupedByMilieu = log;
-    }
-    @Override
-    public boolean isLogResultGroupedByMilieu() {
-        return logResultGroupedByMilieu;
+    public void setLogResultAdoptionsZipPhase(boolean log) {
+        logResultAdoptionsZipPhase = log;
     }
 
     @Override
-    public void setLogProductAdoptions(boolean log) {
-        this.logProductAdoptions = log;
+    public boolean isLogResultAdoptionsZipPhase() {
+        return logResultAdoptionsZipPhase;
     }
+
     @Override
-    public boolean isLogProductAdoptions() {
-        return logProductAdoptions;
+    public void setLogResultAdoptionsAll(boolean log) {
+        logResultAdoptionsAll = log;
+    }
+
+    @Override
+    public boolean isLogResultAdoptionsAll() {
+        return logResultAdoptionsAll;
+    }
+
+    //=========================
+    //script + data logging
+    //=========================
+
+    @Override
+    public void setLogScriptAdoptionsZip(boolean log) {
+        logScriptAdoptionsZip = log;
+    }
+
+    @Override
+    public boolean isLogScriptAdoptionsZip() {
+        return logScriptAdoptionsZip;
+    }
+
+    @Override
+    public void setLogScriptAdoptionsZipPhase(boolean log) {
+        logScriptAdoptionsZipPhase = log;
+    }
+
+    @Override
+    public boolean isLogScriptAdoptionsZipPhase() {
+        return logScriptAdoptionsZipPhase;
     }
 }

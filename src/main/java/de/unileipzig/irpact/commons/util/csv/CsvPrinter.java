@@ -121,6 +121,10 @@ public class CsvPrinter<T> {
         setWriter(null);
     }
 
+    public void writeToString() {
+        setWriter(new StringWriter());
+    }
+
     public void setWriter(Writer writer) {
         this.writer = writer;
     }
@@ -137,14 +141,22 @@ public class CsvPrinter<T> {
         this.header = header;
     }
 
+    public void writeHeader() throws IOException {
+        writeHeader(writer, true);
+    }
+
     public void writeHeader(String[] header) throws IOException {
+        writeHeader(writer, header, true);
+    }
+
+    protected void writeHeader(Writer writer, String[] header, boolean newline) throws IOException {
         String[] current = this.header;
         setHeader(header);
-        writeHeader();
+        writeHeader(writer, newline);
         setHeader(current);
     }
 
-    public void writeHeader() throws IOException {
+    protected void writeHeader(Writer writer, boolean newline) throws IOException {
         boolean first = true;
         for(String h: header) {
             if(!first) {
@@ -153,8 +165,30 @@ public class CsvPrinter<T> {
             first = false;
             writer.write(quoteIfRequired(h));
         }
-        writer.write(lineSeparator);
+        if(newline) {
+            writer.write(lineSeparator);
+        }
         flushIfRequired(writer);
+    }
+
+    public String printHeader() {
+        try {
+            StringWriter sw = new StringWriter();
+            writeHeader(sw, false);
+            return sw.toString();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    public String printHeader(String[] header) {
+        try {
+            StringWriter sw = new StringWriter();
+            writeHeader(sw, header, false);
+            return sw.toString();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     public void appendRows(Iterable<? extends Iterable<? extends T>> rows) throws IOException {
@@ -164,6 +198,20 @@ public class CsvPrinter<T> {
     }
 
     public void appendRow(Iterable<? extends T> row) throws IOException {
+        appendRow(writer, row, true);
+    }
+
+    public String printRow(Iterable<? extends T> row) {
+        try {
+            StringWriter sw = new StringWriter();
+            appendRow(sw, row, false);
+            return sw.toString();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    protected void appendRow(Writer writer, Iterable<? extends T> row, boolean newline) throws IOException {
         if(valuePrinter == null) {
             throw new NullPointerException("valuePrinter");
         }
@@ -178,7 +226,9 @@ public class CsvPrinter<T> {
             String valueStr = valuePrinter.toString(columnIndex++, header, value);
             writer.write(quoteIfRequired(valueStr));
         }
-        writer.write(lineSeparator);
+        if(newline) {
+            writer.write(lineSeparator);
+        }
         flushIfRequired(writer);
     }
 }

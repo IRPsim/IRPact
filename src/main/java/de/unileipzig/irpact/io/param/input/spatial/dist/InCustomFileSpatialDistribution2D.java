@@ -11,6 +11,7 @@ import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.develop.TodoException;
+import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
@@ -118,8 +119,14 @@ public class InCustomFileSpatialDistribution2D implements InSpatialDistribution 
         this.attrFile = new InSpatialTableFile[]{attrFile};
     }
 
+    @XXXXXXXXX
     @Override
     public void setup(IRPactInputParser parser, Object input) throws ParsingException {
+        if(parser.isRestored()) {
+            LOGGER.warn("DIRTY FIX");
+            return;
+        }
+
         JadexConsumerAgentGroup jCag = (JadexConsumerAgentGroup) input;
 
         if(parser.isCached(this)) {

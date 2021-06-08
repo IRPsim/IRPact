@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons.util;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.Checksums;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -231,7 +232,7 @@ public final class Rnd implements ChecksumComparable {
 
     @Override
     public int getChecksum() {
-        return ChecksumComparable.getChecksum(initialSeed);
+        return Checksums.SMART.getChecksum(initialSeed);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.agent;
 
+import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.util.IdManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -9,7 +10,9 @@ import de.unileipzig.irpact.develop.Todo;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -26,6 +29,12 @@ public interface AgentManager extends InitalizablePart {
     IdManager getAttentionOrderManager();
 
     Collection<ConsumerAgentGroup> getConsumerAgentGroups();
+
+    default List<String> listAllConsumerAgentGroupNames() {
+        return getConsumerAgentGroups().stream()
+                .map(Nameable::getName)
+                .collect(Collectors.toList());
+    }
 
     boolean hasConsumerAgentGroup(String name);
 

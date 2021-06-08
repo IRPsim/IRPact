@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.util.v2;
+package de.unileipzig.irpact.core.util.result.adoptions;
 
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
@@ -6,12 +6,12 @@ import de.unileipzig.irpact.core.product.AdoptedProduct;
 /**
  * @author Daniel Abitz
  */
-public class BasicAdoptionInfo implements AdoptionInfo {
+public class BasicAdoptionEntry implements AdoptionEntry {
 
     protected ConsumerAgent agent;
     protected AdoptedProduct product;
 
-    public BasicAdoptionInfo(ConsumerAgent agent, AdoptedProduct product) {
+    public BasicAdoptionEntry(ConsumerAgent agent, AdoptedProduct product) {
         this.agent = agent;
         this.product = product;
     }

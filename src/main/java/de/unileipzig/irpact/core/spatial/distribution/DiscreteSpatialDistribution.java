@@ -109,7 +109,7 @@ public class DiscreteSpatialDistribution extends ResettableSpatialDistributionBa
         if(unused.isEmpty()) {
             throw new IllegalStateException("set is empty");
         }
-        SpatialInformation info = rnd.removeRandom(unused);
+        SpatialInformation info = getRandom().removeRandom(unused);
         used.add(info);
         numberOfCalls++;
         return info;

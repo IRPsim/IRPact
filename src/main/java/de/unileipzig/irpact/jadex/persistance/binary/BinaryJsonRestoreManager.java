@@ -9,6 +9,7 @@ import de.unileipzig.irpact.commons.persistence.Persistable;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
@@ -46,7 +47,7 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     protected final RestoreHelper restoreHelper = new RestoreHelper();
     protected final ClassManager classManager = new ClassManager();
     protected final List<Persistable> persistables = new ArrayList<>();
-    protected MetaPR settingsPR;
+    protected MetaPR metaPR;
     protected ClassManagerPR classManagerPR;
     protected boolean hasValidationChecksum;
     protected int validationChecksum;
@@ -153,6 +154,12 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     @Override
     public void restore() throws RestoreException {
         restore(persistables);
+    }
+
+    @Override
+    public void restore(MetaData metaData) throws RestoreException {
+        metaPR.parseRoot();
+        metaPR.restore(metaData);
     }
 
     protected void restore(Collection<? extends Persistable> coll) throws RestoreException {
@@ -382,9 +389,9 @@ public class BinaryJsonRestoreManager implements RestoreManager {
         String irp32 = data.getIRPBase32String();
         if(irp32.startsWith(MetaPR.UID_PREFIX)) {
             if(data.getID() == MetaPR.UID) {
-                LOGGER.trace("restore Settings");
+                LOGGER.trace("restore MetaData");
                 ObjectNode restored = (ObjectNode) BinaryPersistJson.parse(irp32, MetaPR.UID_PREFIX);
-                settingsPR = new MetaPR(restored);
+                metaPR = new MetaPR(restored);
                 return null;
             }
             if(data.getID() == ClassManagerPR.UID) {

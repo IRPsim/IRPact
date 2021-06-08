@@ -1,0 +1,154 @@
+package de.unileipzig.irpact.core.util.result;
+
+import de.unileipzig.irpact.commons.attribute.Attribute;
+import de.unileipzig.irpact.commons.util.csv.CsvPrinter;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.logging.LoggingHelper;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
+import de.unileipzig.irpact.core.simulation.Settings;
+import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.core.util.AdoptionPhase;
+import de.unileipzig.irpact.core.util.MetaData;
+import de.unileipzig.irpact.core.util.result.adoptions.AbstractAdoptionAnalyser;
+import de.unileipzig.irpact.core.util.result.adoptions.AnnualCumulativeAdoptionsZip;
+import de.unileipzig.irpact.core.util.result.adoptions.AnnualCumulativeAdoptionsZipPhase;
+import de.unileipzig.irpact.core.util.result.adoptions.ExactAdoptionPrinter;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
+import de.unileipzig.irptools.util.log.IRPLogger;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+/**
+ * @author Daniel Abitz
+ */
+public class ResultManager implements LoggingHelper {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(ResultManager.class);
+
+    protected MetaData metaData;
+    protected MainCommandLineOptions clOptions;
+    protected SimulationEnvironment environment;
+
+    public ResultManager(
+            MetaData metaData,
+            MainCommandLineOptions clOptions,
+            SimulationEnvironment environment) {
+        this.metaData = metaData;
+        this.clOptions = clOptions;
+        this.environment = environment;
+    }
+
+    protected Settings getSettings() {
+        return environment.getSettings();
+    }
+
+    protected List<Integer> getAllSimulationYears() {
+        int firstYear = metaData.getOldestRunInfo().getActualFirstSimulationYear();
+        int lastYear = metaData.getCurrentRunInfo().getLastSimulationYear();
+        return IntStream.rangeClosed(firstYear, lastYear)
+                .boxed()
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public IRPLogger getDefaultLogger() {
+        return LOGGER;
+    }
+
+    @Override
+    public IRPSection getDefaultSection() {
+        return IRPSection.RESULT;
+    }
+
+    public void execute() {
+        handleResultLogging();
+        handleScriptLogging();
+    }
+
+    protected void handleResultLogging() {
+        trace("isLogResultAdoptionsZip: {}", getSettings().isLogResultAdoptionsZip());
+        if(getSettings().isLogResultAdoptionsZip()) {
+            logResultAdoptionsZip();
+        }
+
+        trace("isLogResultAdoptionsZipPhase: {}", getSettings().isLogResultAdoptionsZipPhase());
+        if(getSettings().isLogResultAdoptionsZipPhase()) {
+            logResultAdoptionsZipPhase();
+        }
+
+        trace("isLogResultAdoptionsAll: {}", getSettings().isLogResultAdoptionsAll());
+        if(getSettings().isLogResultAdoptionsAll()) {
+            logResultAdoptionsAll();
+        }
+    }
+
+    protected List<String> getAllZips(String key) {
+        return environment.getAgents().streamConsumerAgents()
+                .filter(agent -> agent.hasAnyAttribute(key))
+                .map(agent -> {
+                    Attribute attr = agent.findAttribute(key);
+                    return attr.asValueAttribute().getValueAsString();
+                })
+                .collect(Collectors.toList());
+    }
+
+    protected void print(String infoTag, CsvPrinter<Object> printer, AbstractAdoptionAnalyser analyser) {
+        IRPLogging.startResult(infoTag, true);
+        IRPLogging.resultWrite(analyser.printHeader(printer));
+        analyser.printEntries(printer, IRPLogging::resultWrite);
+        IRPLogging.finishResult(infoTag);
+        IRPLogging.resultWrite("entries written: {}", analyser.getData().count());
+    }
+
+    protected void logResultAdoptionsZip() {
+        CsvPrinter<Object> printer = new CsvPrinter<>();
+        AnnualCumulativeAdoptionsZip analyser = new AnnualCumulativeAdoptionsZip();
+        analyser.setZipKey(RAConstants.ZIP);
+        analyser.setYears(getAllSimulationYears());
+        analyser.init(getAllZips(analyser.getZipKey()));
+        analyser.initCsvPrinterForValueAndCumulativeValue(printer);
+        analyser.apply(environment);
+
+        print("TEMP0", printer, analyser);
+    }
+
+    protected void logResultAdoptionsZipPhase() {
+        CsvPrinter<Object> printer = new CsvPrinter<>();
+        AnnualCumulativeAdoptionsZipPhase analyser = new AnnualCumulativeAdoptionsZipPhase();
+        analyser.setZipKey(RAConstants.ZIP);
+        analyser.setYears(getAllSimulationYears());
+        analyser.init(getAllZips(analyser.getZipKey()), AdoptionPhase.VALID_PHASES);
+        analyser.initCsvPrinterForValueAndCumulativeValue(printer);
+        analyser.apply(environment);
+
+        print("TEMP1", printer, analyser);
+    }
+
+    protected void logResultAdoptionsAll() {
+        ExactAdoptionPrinter printer = new ExactAdoptionPrinter();
+        printer.apply(environment);
+    }
+
+    protected void handleScriptLogging() {
+        trace("isLogScriptAdoptionsZip: {}", getSettings().isLogScriptAdoptionsZip());
+        if(getSettings().isLogScriptAdoptionsZip()) {
+            logScriptAdoptionsZip();
+        }
+
+        trace("isLogScriptAdoptionsZipPhase: {}", getSettings().isLogScriptAdoptionsZipPhase());
+        if(getSettings().isLogScriptAdoptionsZipPhase()) {
+            logScriptAdoptionsZipPhase();
+        }
+    }
+
+    protected void logScriptAdoptionsZip() {
+        trace("logScriptAdoptionsZip: TODO");
+    }
+
+    protected void logScriptAdoptionsZipPhase() {
+        trace("logScriptAdoptionsZipPhase: TODO");
+    }
+}

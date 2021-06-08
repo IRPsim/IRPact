@@ -10,6 +10,7 @@ import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.persistence.PersistenceModul;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
@@ -54,10 +55,10 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
     }
 
     @Override
-    public void store(SimulationEnvironment environment, OutRoot root) throws Exception {
+    public void store(MetaData metaData, SimulationEnvironment environment, OutRoot root) throws Exception {
         switch (getModus()) {
             case BINARY:
-                storeBinary(environment, root);
+                storeBinary(metaData, environment, root);
                 break;
 
             case PARAMETER:
@@ -70,13 +71,14 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
 
     @Override
     public SimulationEnvironment restore(
+            MetaData metaData,
             MainCommandLineOptions options,
             int year,
             JadexRestoreUpdater updater,
             InRoot root) throws Exception {
         switch (getModus()) {
             case BINARY:
-                return restoreBinary(options, year, updater, root);
+                return restoreBinary(metaData, options, year, updater, root);
 
             case PARAMETER:
                 throw new UnsupportedOperationException();
@@ -112,9 +114,10 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
     private final BinaryJsonRestoreManager binaryRestore = new BinaryJsonRestoreManager();
 
     private void storeBinary(
+            MetaData metaData,
             SimulationEnvironment environment,
             OutRoot root) throws PersistException {
-        binaryPersist.persist(environment);
+        binaryPersist.persist(metaData, environment);
         Collection<Persistable> persistables = binaryPersist.getPersistables();
         Set<BinaryPersistData> sortedDataList = new TreeSet<>(BinaryPersistData.ASCENDING);
         for(Persistable persistable: persistables) {
@@ -130,6 +133,7 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
     }
 
     public SimulationEnvironment restoreBinary(
+            MetaData metaData,
             MainCommandLineOptions options,
             int year,
             JadexRestoreUpdater updater,
@@ -156,6 +160,7 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
 
         binaryRestore.register(dataList);
         binaryRestore.restore();
+        binaryRestore.restore(metaData);
         SimulationEnvironment restoredEnvironment = binaryRestore.getRestoredInstance();
         int restoredChecksum = restoredEnvironment.getChecksum();
         int validationChecksum = binaryRestore.getValidationChecksum();

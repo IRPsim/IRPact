@@ -682,6 +682,7 @@ public class InRoot implements RootClass {
                         addPathElement(res, LOGGING_GENERAL, LOGGING);
                         addPathElement(res, LOGGING_DATA, LOGGING);
                         addPathElement(res, LOGGING_RESULT, LOGGING);
+                        addPathElement(res, LOGGING_SCRIPT, LOGGING);
                 addPathElement(res, SPECIAL_SETTINGS, GENERAL_SETTINGS);
                     addPathElement(res, VisibleBinaryData.thisName(), SPECIAL_SETTINGS);
 

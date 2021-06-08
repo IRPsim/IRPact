@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.start;
 
 import de.unileipzig.irpact.commons.logging.LazyPrinter;
-import de.unileipzig.irpact.commons.logging.Logback;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPLoggingMessage;
 import de.unileipzig.irpact.core.logging.IRPSection;
@@ -36,7 +35,7 @@ public final class Start {
     }
 
     private static void prepareLogging() {
-        IRPLogging.initConsole();
+        IRPLogging.writeToConsole();
         SectionLoggingFilter filter = new SectionLoggingFilter();
         IRPLogging.setFilter(filter);
         IRPtools.setLoggingFilter(IRPLogging.getFilter());
@@ -55,7 +54,7 @@ public final class Start {
             }
 
             if(options.logConsoleAndFile()) {
-                IRPLogging.initConsoleAndFile(options.getLogPath());
+                IRPLogging.writeToConsoleAndFile(options.getLogPath());
                 if(deletedMsg != null) {
                     deletedMsg.trace(LOGGER);
                 }
@@ -63,7 +62,7 @@ public final class Start {
                     LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "log to console and file '{}'", options.getLogPath());
                 }
             } else {
-                IRPLogging.initFile(options.getLogPath());
+                IRPLogging.writeToFile(options.getLogPath());
                 if(deletedMsg != null) {
                     deletedMsg.trace(LOGGER);
                 }
@@ -91,9 +90,7 @@ public final class Start {
 
     private boolean initLogging() {
         try {
-            if(options.isFilterError()) {
-                Logback.filterError(true);
-            }
+            IRPLogging.setFilterError(options.isFilterError());
             setupLogging();
             return true;
         } catch (IOException e) {

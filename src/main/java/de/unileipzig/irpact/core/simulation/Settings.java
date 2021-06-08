@@ -59,7 +59,7 @@ public interface Settings {
 
     int[] getSimulationYears();
 
-    List<Number> listYears();
+    List<Integer> listYears();
 
     boolean hasMultipleSimulationYears();
 
@@ -77,7 +77,7 @@ public interface Settings {
 
     int[] getActualSimulationYears();
 
-    List<Number> listActualYears();
+    List<Integer> listActualYears();
 
     //=========================
     //population size
@@ -115,15 +115,22 @@ public interface Settings {
     //result logging
     //=========================
 
-    void setLogResultGroupedByZipAndMilieu(boolean log);
-    boolean isLogResultGroupedByZipAndMilieu();
+    void setLogResultAdoptionsZip(boolean log);
+    boolean isLogResultAdoptionsZip();
 
-    void setLogResultGroupedByZip(boolean log);
-    boolean isLogResultGroupedByZip();
+    void setLogResultAdoptionsZipPhase(boolean log);
+    boolean isLogResultAdoptionsZipPhase();
 
-    void setLogResultGroupedByMilieu(boolean log);
-    boolean isLogResultGroupedByMilieu();
+    void setLogResultAdoptionsAll(boolean log);
+    boolean isLogResultAdoptionsAll();
 
-    void setLogProductAdoptions(boolean log);
-    boolean isLogProductAdoptions();
+    //=========================
+    //script logging
+    //=========================
+
+    void setLogScriptAdoptionsZip(boolean log);
+    boolean isLogScriptAdoptionsZip();
+
+    void setLogScriptAdoptionsZipPhase(boolean log);
+    boolean isLogScriptAdoptionsZipPhase();
 }

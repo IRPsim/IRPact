@@ -60,13 +60,17 @@ public class InGeneral implements Copyable {
         putFieldPathAndAddEntry(res, thisClass(), "logFinancalComponent", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
         putFieldPathAndAddEntry(res, thisClass(), "logCalculateDecisionMaking", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
 
-        putFieldPathAndAddEntry(res, thisClass(), "logResultGroupedByZip", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
-        putFieldPathAndAddEntry(res, thisClass(), "logResultGroupedByMilieu", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
-        putFieldPathAndAddEntry(res, thisClass(), "logResultGroupedByZipAndMilieu", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
-        putFieldPathAndAddEntry(res, thisClass(), "logProductAdoptions", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
+        putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsZip", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
+        putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsZipPhase", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
+        putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsAll", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
+
+        putFieldPathAndAddEntry(res, thisClass(), "logScriptAdoptionsZip", GENERAL_SETTINGS, LOGGING, LOGGING_SCRIPT);
+        putFieldPathAndAddEntry(res, thisClass(), "logScriptAdoptionsZipPhase", GENERAL_SETTINGS, LOGGING, LOGGING_SCRIPT);
 
         putFieldPathAndAddEntry(res, thisClass(), "runOptActDemo", GENERAL_SETTINGS, SPECIAL_SETTINGS);
         putFieldPathAndAddEntry(res, thisClass(), "runPVAct", GENERAL_SETTINGS, SPECIAL_SETTINGS);
+        putFieldPathAndAddEntry(res, thisClass(), "runMode", GENERAL_SETTINGS, SPECIAL_SETTINGS);
+        putFieldPathAndAddEntry(res, thisClass(), "scenarioMode", GENERAL_SETTINGS, SPECIAL_SETTINGS);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -86,7 +90,7 @@ public class InGeneral implements Copyable {
     public int lastSimulationYear;
 
     //=========================
-    //flags
+    //special
     //=========================
 
     @FieldDefinition
@@ -94,6 +98,12 @@ public class InGeneral implements Copyable {
 
     @FieldDefinition
     public boolean runOptActDemo;
+
+    @FieldDefinition
+    public int runMode = -1;
+
+    @FieldDefinition
+    public int scenarioMode = -1;
 
     //=========================
     //general logging
@@ -144,16 +154,23 @@ public class InGeneral implements Copyable {
     //=========================
 
     @FieldDefinition
-    public boolean logResultGroupedByZip;
+    public boolean logResultAdoptionsZip;
 
     @FieldDefinition
-    public boolean logResultGroupedByMilieu;
+    public boolean logResultAdoptionsZipPhase;
 
     @FieldDefinition
-    public boolean logResultGroupedByZipAndMilieu;
+    public boolean logResultAdoptionsAll;
+
+    //=========================
+    //script + data logging
+    //=========================
 
     @FieldDefinition
-    public boolean logProductAdoptions;
+    public boolean logScriptAdoptionsZip;
+
+    @FieldDefinition
+    public boolean logScriptAdoptionsZipPhase;
 
     //=========================
     //dev logging
@@ -199,15 +216,33 @@ public class InGeneral implements Copyable {
         copy.logFinancalComponent = logFinancalComponent;
         copy.logCalculateDecisionMaking = logCalculateDecisionMaking;
         //result logging
-        copy.logResultGroupedByZip = logResultGroupedByZip;
-        copy.logResultGroupedByMilieu = logResultGroupedByMilieu;
-        copy.logResultGroupedByZipAndMilieu = logResultGroupedByZipAndMilieu;
-        copy.logProductAdoptions = logProductAdoptions;
+        copy.logResultAdoptionsZip = logResultAdoptionsZip;
+        copy.logResultAdoptionsZipPhase = logResultAdoptionsZipPhase;
+        copy.logResultAdoptionsAll = logResultAdoptionsAll;
+        //script + data logging
+        copy.logScriptAdoptionsZip = logScriptAdoptionsZip;
+        copy.logScriptAdoptionsZipPhase = logScriptAdoptionsZipPhase;
         //dev logging
         copy.logSpecificationConverter = logSpecificationConverter;
         copy.logJadexSystemOut = logJadexSystemOut;
 
         return copy;
+    }
+
+    public void setRunMode(int runMode) {
+        this.runMode = runMode;
+    }
+
+    public int getRunMode() {
+        return runMode;
+    }
+
+    public void setScenarioMode(int scenarioMode) {
+        this.scenarioMode = scenarioMode;
+    }
+
+    public int getScenarioMode() {
+        return scenarioMode;
     }
 
     public void setLogLevel(IRPLevel level) {
@@ -228,10 +263,14 @@ public class InGeneral implements Copyable {
     }
 
     public void enableAllResultLogging() {
-        logResultGroupedByZip = true;
-        logResultGroupedByMilieu = true;
-        logResultGroupedByZipAndMilieu = true;
-        logProductAdoptions = true;
+        logResultAdoptionsZip = true;
+        logResultAdoptionsZipPhase = true;
+        logResultAdoptionsAll = true;
+    }
+
+    public void enableAllScriptLogging() {
+        logScriptAdoptionsZip = true;
+        logScriptAdoptionsZipPhase = true;
     }
 
     public void parseLoggingSetup(@SuppressWarnings("unused") IRPactInputParser parser) {
@@ -258,24 +297,25 @@ public class InGeneral implements Copyable {
     }
 
     public void setup(IRPactInputParser parser) throws ParsingException {
-        parseInfoAndResultLogging(parser);
+        parseSettings(parser.getEnvironment().getSettings());
         parseSeed(parser);
         parseLifeCycleControl(parser);
     }
 
-    private void parseInfoAndResultLogging(IRPactInputParser parser) {
-        Settings initData = parser.getEnvironment().getSettings();
-        initData.setLogGraphUpdate(logGraphUpdate);
-        initData.setLogRelativeAgreement(logRelativeAgreement);
-        initData.setLogInterestUpdate(logInterestUpdate);
-        initData.setLogShareNetworkLocale(logShareNetworkLocal);
-        initData.setLogFinancialComponent(logFinancalComponent);
-        initData.setLogCalculateDecisionMaking(logCalculateDecisionMaking);
+    public void parseSettings(Settings settings) {
+        settings.setLogGraphUpdate(logGraphUpdate);
+        settings.setLogRelativeAgreement(logRelativeAgreement);
+        settings.setLogInterestUpdate(logInterestUpdate);
+        settings.setLogShareNetworkLocale(logShareNetworkLocal);
+        settings.setLogFinancialComponent(logFinancalComponent);
+        settings.setLogCalculateDecisionMaking(logCalculateDecisionMaking);
 
-        initData.setLogResultGroupedByZip(logResultGroupedByZip);
-        initData.setLogResultGroupedByMilieu(logResultGroupedByMilieu);
-        initData.setLogResultGroupedByZipAndMilieu(logResultGroupedByZipAndMilieu);
-        initData.setLogProductAdoptions(logProductAdoptions);
+        settings.setLogResultAdoptionsZip(logResultAdoptionsZip);
+        settings.setLogResultAdoptionsZipPhase(logResultAdoptionsZipPhase);
+        settings.setLogResultAdoptionsAll(logResultAdoptionsAll);
+
+        settings.setLogScriptAdoptionsZip(logScriptAdoptionsZip);
+        settings.setLogScriptAdoptionsZipPhase(logScriptAdoptionsZipPhase);
     }
 
     private void parseSeed(IRPactInputParser parser) {
