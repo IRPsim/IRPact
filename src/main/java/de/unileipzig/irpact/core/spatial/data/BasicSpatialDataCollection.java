@@ -1,8 +1,9 @@
-package de.unileipzig.irpact.core.spatial;
+package de.unileipzig.irpact.core.spatial.data;
 
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.util.data.DataCollection;
 import de.unileipzig.irpact.commons.util.data.LinkedDataCollection;
+import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
 import java.util.Objects;
 

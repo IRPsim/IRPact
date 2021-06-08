@@ -3,6 +3,8 @@ package de.unileipzig.irpact.core.spatial.distribution2;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.spatial.*;
+import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;
+import de.unileipzig.irpact.core.spatial.data.SpatialDataFilter;
 import de.unileipzig.irpact.xxx.IRPactMock;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -32,6 +34,15 @@ class WeightedDiscreteSpatialDistributionTest {
     }
 
     @Test
+    void testFilters() {
+        Map<String, SpatialDataFilter> filters = SpatialUtil.createFilters(
+                "milieu", Collections.singletonList("a"),
+                "zip", Arrays.asList("x", "y", "z")
+        );
+        System.out.println(filters.keySet());
+    }
+
+    @Test
     void testIt() {
         Function<Rnd, Collection<SpatialAttribute>> milieusAndZip = IRPactMock.mockTwoStringAttributes(
                 "milieu", Collections.singletonList("a"),
@@ -46,7 +57,5 @@ class WeightedDiscreteSpatialDistributionTest {
         dist.setSpatialData(dataColl);
         dist.addFilters(filters.values());
         dist.rebuildWeightedMapping(true);
-
-
     }
 }

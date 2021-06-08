@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.spatial;
 
 import de.unileipzig.irpact.commons.util.IdManager;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
+import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;
 
 import java.util.HashMap;
 import java.util.Map;

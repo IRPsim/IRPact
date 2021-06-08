@@ -3,8 +3,8 @@ package de.unileipzig.irpact.core.spatial.distribution2;
 import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.commons.util.data.DataCollection;
 import de.unileipzig.irpact.commons.util.data.weighted.WeightedDataSupplier;
-import de.unileipzig.irpact.core.spatial.SpatialDataCollection;
-import de.unileipzig.irpact.core.spatial.SpatialDataFilter;
+import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;
+import de.unileipzig.irpact.core.spatial.data.SpatialDataFilter;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
 import java.util.Collection;

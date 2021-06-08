@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.spatial;
 
 import de.unileipzig.irpact.core.misc.InitalizablePart;
 import de.unileipzig.irpact.core.simulation.SimulationEntity;
+import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;
 
 import java.util.function.LongSupplier;
 

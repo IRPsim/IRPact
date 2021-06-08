@@ -15,7 +15,7 @@ public final class ThrowError implements IRPactExecutor {
 
     public static final int ID = 666;
     public static final String ID_STR = "666";
-    public static final RunMinimalSimulation INSTANCE = new RunMinimalSimulation();
+    public static final ThrowError INSTANCE = new ThrowError();
 
     @Override
     public int id() {

@@ -33,7 +33,7 @@
       "sca_InGeneral_logScriptAdoptionsZipPhase" : 0,
       "sca_InGeneral_logShareNetworkLocal" : 1,
       "sca_InGeneral_logSimulation" : 0,
-      "sca_InGeneral_runMode" : -1,
+      "sca_InGeneral_runMode" : 100,
       "sca_InGeneral_runOptActDemo" : 0,
       "sca_InGeneral_runPVAct" : 1,
       "sca_InGeneral_scenarioMode" : -1,
@@ -310,7 +310,7 @@
       },
       "set_InUnlinkedGraphTopology" : { },
       "set_InVersion" : {
-        "0_0_1" : {
+        "0_0_2" : {
           "par_InVersion_placeholderVersion" : 0
         }
       },

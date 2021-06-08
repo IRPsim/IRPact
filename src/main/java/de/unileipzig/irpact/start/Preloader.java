@@ -7,6 +7,7 @@ import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.util.IRPactJson;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.spec.SpecificationConverter;
@@ -87,7 +88,13 @@ public class Preloader {
     }
 
     private void start(IRPact irpact) throws Exception {
-        IRPactExecutor exec = IRPactExecutors.get(clOptions.getRunMode());
+        int runMode = irpact.getInRoot().general.runMode;
+        IRPactExecutor exec;
+        if(IRPactExecutors.has(runMode)) {
+            exec = IRPactExecutors.get(runMode);
+        } else {
+            exec = IRPactExecutors.get(clOptions.getRunMode());
+        }
         exec.execute(irpact);
     }
 
