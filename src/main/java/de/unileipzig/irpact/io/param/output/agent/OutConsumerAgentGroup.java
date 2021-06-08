@@ -53,6 +53,10 @@ public class OutConsumerAgentGroup implements OutIRPactEntity {
     public OutConsumerAgentGroup() {
     }
 
+    public OutConsumerAgentGroup(String name) {
+        setName(name);
+    }
+
     public void setName(String name) {
         this._name = name;
     }

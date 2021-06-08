@@ -14,10 +14,12 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -56,26 +58,26 @@ public class PVactResultLogging {
     public void execute() {
         Settings settings = environment.getSettings();
 
-        LOGGER.trace("isLogResultGroupedByZip: {}", settings.isLogResultGroupedByZip());
-        LOGGER.trace("isLogResultGroupedByMilieu: {}", settings.isLogResultGroupedByMilieu());
-        LOGGER.trace("isLogResultGroupedByZipAndMilieu: {}", settings.isLogResultGroupedByZipAndMilieu());
-        LOGGER.trace("isLogProductAdoptions: {}", settings.isLogProductAdoptions());
-
-        if(settings.isLogResultGroupedByZip()) {
-            logResultGroupedByZip();
-        }
-
-        if(settings.isLogResultGroupedByMilieu()) {
-            logResultGroupedByMilieu();
-        }
-
-        if(settings.isLogResultGroupedByZipAndMilieu()) {
-            logResultGroupedByZipAndMilieu();
-        }
-
-        if(settings.isLogProductAdoptions()) {
-            logProductAdoptions();
-        }
+//        LOGGER.trace("isLogResultGroupedByZip: {}", settings.isLogResultGroupedByZip());
+//        LOGGER.trace("isLogResultGroupedByMilieu: {}", settings.isLogResultGroupedByMilieu());
+//        LOGGER.trace("isLogResultGroupedByZipAndMilieu: {}", settings.isLogResultGroupedByZipAndMilieu());
+//        LOGGER.trace("isLogProductAdoptions: {}", settings.isLogProductAdoptions());
+//
+//        if(settings.isLogResultGroupedByZip()) {
+//            logResultGroupedByZip();
+//        }
+//
+//        if(settings.isLogResultGroupedByMilieu()) {
+//            logResultGroupedByMilieu();
+//        }
+//
+//        if(settings.isLogResultGroupedByZipAndMilieu()) {
+//            logResultGroupedByZipAndMilieu();
+//        }
+//
+//        if(settings.isLogProductAdoptions()) {
+//            logProductAdoptions();
+//        }
     }
 
     protected void logResultGroupedByZip() {
@@ -117,7 +119,7 @@ public class PVactResultLogging {
             return;
         }
 
-        List<Number> years = environment.getSettings().listYears();
+        List<Number> years = new ArrayList<>(environment.getSettings().listYears());
         List<String> zips = g.listSecondComponents();
 
         String[][] rawData = GroupingUtil.toRawTable(
@@ -155,7 +157,7 @@ public class PVactResultLogging {
             return;
         }
 
-        List<Number> years = environment.getSettings().listYears();
+        List<Number> years = new ArrayList<>(environment.getSettings().listYears());
         List<String> k1 = g.listSecondComponents();
         List<String> k2 = g.listThirdComponents();
 

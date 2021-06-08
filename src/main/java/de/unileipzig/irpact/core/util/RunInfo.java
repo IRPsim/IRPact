@@ -9,18 +9,33 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Comparator;
 
 /**
  * @author Daniel Abitz
  */
 public final class RunInfo implements ChecksumComparable {
 
+    public static final Comparator<RunInfo> COMPARE_ID = Comparator.comparingInt(RunInfo::getId);
+
     private static final IRPLogger LOGGER = IRPLogging.getLogger(RunInfo.class);
 
+    private int id = -1;
     private ZonedDateTime startTime;
     private ZonedDateTime endTime;
+    private int firstSimulationYear;
+    private int actualFirstSimulationYear;
+    private int lastSimulationYear;
 
     public RunInfo() {
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setStartTime() {
@@ -65,8 +80,32 @@ public final class RunInfo implements ChecksumComparable {
         return endTime.toInstant().toEpochMilli();
     }
 
+    public int getFirstSimulationYear() {
+        return firstSimulationYear;
+    }
+
+    public void setFirstSimulationYear(int firstSimulationYear) {
+        this.firstSimulationYear = firstSimulationYear;
+    }
+
+    public int getActualFirstSimulationYear() {
+        return actualFirstSimulationYear;
+    }
+
+    public void setActualFirstSimulationYear(int actualFirstSimulationYear) {
+        this.actualFirstSimulationYear = actualFirstSimulationYear;
+    }
+
+    public int getLastSimulationYear() {
+        return lastSimulationYear;
+    }
+
+    public void setLastSimulationYear(int lastSimulationYear) {
+        this.lastSimulationYear = lastSimulationYear;
+    }
+
     @Override
-    public int getChecksum() throws UnsupportedOperationException {
-        return Checksums.SMART.getChecksum(startTime, endTime);
+    public int getChecksum() {
+        return Checksums.SMART.getChecksum(id, startTime, endTime, firstSimulationYear, lastSimulationYear);
     }
 }

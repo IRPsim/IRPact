@@ -75,9 +75,32 @@ InGeneral_logCalculateDecisionMaking:
   gams_domain: "[0|1]"
 
 logging_result:
-  edn_label: "Ausgabe von speziellen Ergebnissen"
+  edn_label: "Ausgabe von Ergebnissen"
   edn_description: "Diese Optionen ermöglichen die Ausgabe von Ergebnissen in spezieller Form."
-xx xxasd : asd : asd
+InGeneral_logResultAdoptionsZip:
+  gams_identifier: "Adoptionen nach PLZ"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus."
+  gams_domain: "[0|1]"
+InGeneral_logResultAdoptionsZipPhase:
+  gams_identifier: "kumulierte Adoptionen nach PLZ und Phase"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus."
+  gams_domain: "[0|1]"
+InGeneral_logResultAdoptionsAll:
+  gams_identifier: "Komplettausgabe"
+  gams_description: "Gibt zu jedem Agenten alle Adoptionsinformationen aus. Nichtadopter werden ebenfalls ausgegeben."
+  gams_domain: "[0|1]"
+
+logging_script:
+  edn_label: "Ausgabe von Skripten und Daten"
+  edn_description: "Diese Optionen ermöglichen die Ausgabe von Ergebnissen in spezieller Form. Neben den Daten werden auch Skripte mit ausgegeben."
+InGeneral_logScriptAdoptionsZip:
+  gams_identifier: "Adoptionen nach PLZ (line)"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus. Zusätzlich wird das Script für eine line chart ausgegeben."
+  gams_domain: "[0|1]"
+InGeneral_logScriptAdoptionsZipPhase:
+  gams_identifier: "kumulierte Adoptionen nach PLZ und Phase (stacked bar)"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus. Zusätzlich wird das Skript für eine bar chart ausgegeben."
+  gams_domain: "[0|1]"
 
 special_settings:
   edn_label: "Spezielle Einstellungen"
@@ -90,6 +113,12 @@ InGeneral_runPVAct:
   gams_identifier: "PVact"
   gams_description: "Falls gesetzt, werden automatisch spezielle Einstellungen für PVact bei der Initialisierung ergänzt. Dies betrifft aktuell Produkte und die Prozessmodellzuordnung."
   gams_domain: "[0|1]"
+InGeneral_runMode:
+  gams_identifier: "Ausführungsmodus"
+  gams_description: "todo"
+InGeneral_scenarioMode:
+  gams_identifier: "Spezialszenario"
+  gams_description: "todo"
 
 VisibleBinaryData:
   edn_label: "Binäre Daten"

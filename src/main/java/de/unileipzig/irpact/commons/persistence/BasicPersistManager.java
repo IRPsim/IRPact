@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons.persistence;
 
+import de.unileipzig.irpact.core.util.MetaData;
+
 import java.util.*;
 import java.util.function.ToLongFunction;
 
@@ -84,7 +86,8 @@ public class BasicPersistManager implements PersistManager {
     }
 
     @Override
-    public <T> void persist(T object) throws PersistException {
+    public <T> void persist(MetaData metaData, T object) throws PersistException {
+        handle(metaData);
         prepare(object);
         setup(object);
         finalizePersist();
@@ -98,6 +101,10 @@ public class BasicPersistManager implements PersistManager {
             }
             temp.clear();
         } while (requiresSetupCache.size() > 0);
+    }
+
+    @Override
+    public void handle(MetaData metaData) throws PersistException {
     }
 
     @Override

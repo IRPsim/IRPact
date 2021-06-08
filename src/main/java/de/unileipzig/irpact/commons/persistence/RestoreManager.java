@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons.persistence;
 
+import de.unileipzig.irpact.core.util.MetaData;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -19,9 +21,7 @@ public interface RestoreManager {
 
     void restore() throws RestoreException;
 
-//    void setInitialInstance(Object initial);
-//
-//    <T> T getInitialInstance();
+    void restore(MetaData metaData) throws RestoreException;
 
     void setRestoredInstance(Object restored);
 

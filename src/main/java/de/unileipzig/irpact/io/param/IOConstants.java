@@ -16,6 +16,7 @@ public final class IOConstants {
     public static final String LOGGING_GENERAL = "logging_general";
     public static final String LOGGING_DATA = "logging_data";
     public static final String LOGGING_RESULT = "logging_result";
+    public static final String LOGGING_SCRIPT = "logging_script";
     public static final String SPECIAL_SETTINGS = "special_settings";
 
     public static final String FILES = "files";

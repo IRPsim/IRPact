@@ -1,9 +1,11 @@
 package de.unileipzig.irpact.jadex.persistance.binary;
 
 import de.unileipzig.irpact.commons.persistence.BasicPersistManager;
+import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.Persister;
 import de.unileipzig.irpact.commons.persistence.SimpleUIDManager;
 import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.core.util.RunInfo;
 import de.unileipzig.irpact.jadex.persistance.binary.data.BinaryPRBase;
 import de.unileipzig.irpact.jadex.persistance.binary.meta.ClassManagerPR;
@@ -51,8 +53,9 @@ public class BinaryJsonPersistanceManager extends BasicPersistManager {
         persistableMap.put(classManagerHolder, classManagerPR);
     }
 
-    public void init(RunInfo info) {
-        metaPR.addRunInfo(info);
+    @Override
+    public void handle(MetaData metaData) throws PersistException {
+        metaPR.store(metaData);
     }
 
     @Override

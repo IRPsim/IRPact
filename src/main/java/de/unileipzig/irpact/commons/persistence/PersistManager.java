@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons.persistence;
 
+import de.unileipzig.irpact.core.util.MetaData;
+
 import java.util.*;
 import java.util.function.ToLongFunction;
 
@@ -8,11 +10,13 @@ import java.util.function.ToLongFunction;
  */
 public interface PersistManager {
 
-    <T> void persist(T object) throws PersistException;
+    <T> void persist(MetaData metaData, T object) throws PersistException;
 
     long newUID();
 
     Collection<Persistable> getPersistables();
+
+    void handle(MetaData metaData) throws PersistException;
 
     <T> void prepare(T object) throws PersistException;
 
