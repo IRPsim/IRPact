@@ -29,8 +29,8 @@
       "sca_InGeneral_logResultAdoptionsAll" : 1,
       "sca_InGeneral_logResultAdoptionsZip" : 1,
       "sca_InGeneral_logResultAdoptionsZipPhase" : 1,
-      "sca_InGeneral_logScriptAdoptionsZip" : 0,
-      "sca_InGeneral_logScriptAdoptionsZipPhase" : 0,
+      "sca_InGeneral_logScriptAdoptionsZip" : 1,
+      "sca_InGeneral_logScriptAdoptionsZipPhase" : 1,
       "sca_InGeneral_logShareNetworkLocal" : 1,
       "sca_InGeneral_logSimulation" : 0,
       "sca_InGeneral_runMode" : 100,
@@ -310,7 +310,7 @@
       },
       "set_InUnlinkedGraphTopology" : { },
       "set_InVersion" : {
-        "0_0_2" : {
+        "0_0_3" : {
           "par_InVersion_placeholderVersion" : 0
         }
       },
