@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.spatial.distribution2;
 
 import de.unileipzig.irpact.commons.NameableBase;
-import de.unileipzig.irpact.core.spatial.SpatialDataFilter;
+import de.unileipzig.irpact.core.spatial.data.SpatialDataFilter;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
 /**

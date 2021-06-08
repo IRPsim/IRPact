@@ -15,7 +15,7 @@ public final class TestMode implements IRPactExecutor {
 
     public static final int ID = 100;
     public static final String ID_STR = "100";
-    public static final RunMinimalSimulation INSTANCE = new RunMinimalSimulation();
+    public static final TestMode INSTANCE = new TestMode();
 
     @Override
     public int id() {

@@ -18,7 +18,7 @@ public final class PrintInput implements IRPactExecutor {
 
     public static final int ID = 110;
     public static final String ID_STR = "110";
-    public static final RunMinimalSimulation INSTANCE = new RunMinimalSimulation();
+    public static final PrintInput INSTANCE = new PrintInput();
 
     @Override
     public int id() {

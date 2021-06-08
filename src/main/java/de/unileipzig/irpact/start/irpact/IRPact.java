@@ -72,7 +72,7 @@ public final class IRPact implements IRPActAccess {
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "0";
     private static final String MINOR_STRING = "0";
-    private static final String BUILD_STRING = "1";
+    private static final String BUILD_STRING = "2";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -544,7 +544,15 @@ public final class IRPact implements IRPActAccess {
 
     private void createDummyOutput() {
         LOGGER.info(IRPSection.GENERAL, "create dummy output");
-        throw new UnsupportedOperationException();
+        OutRoot outRoot = new OutRoot();
+        OutConsumerAgentGroup outCag = new OutConsumerAgentGroup("DUMMY");
+        outCag.setAdoptionsThisPeriod(-1);
+        outCag.setAdoptionsCumulative(-1);
+        outCag.setInitialAdoptionsThisPeriod(-1);
+        outCag.setInitialAdoptionsCumulative(-1);
+        outRoot.outConsumerAgentGroups = new OutConsumerAgentGroup[]{outCag};
+        outData = createOutputData(outRoot);
+        storeOutputData(outData);
     }
 
     private void createOutput() throws Exception {

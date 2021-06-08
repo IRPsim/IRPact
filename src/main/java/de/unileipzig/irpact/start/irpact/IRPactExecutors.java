@@ -12,7 +12,7 @@ public final class IRPactExecutors {
     private IRPactExecutors() {
     }
 
-    public static IRPactExecutor get(int id) {
+    private static IRPactExecutor get0(int id) {
         switch (id) {
             case RunFully.ID:
                 return RunFully.INSTANCE;
@@ -30,7 +30,19 @@ public final class IRPactExecutors {
                 return ThrowError.INSTANCE;
 
             default:
-                throw new IllegalArgumentException("unsupported id: " + id);
+                return null;
         }
-    };
+    }
+
+    public static boolean has(int id) {
+        return get0(id) != null;
+    }
+
+    public static IRPactExecutor get(int id) {
+        IRPactExecutor exec = get0(id);
+        if(exec == null) {
+            throw new IllegalArgumentException("unsupported id: " + id);
+        }
+        return exec;
+    }
 }
