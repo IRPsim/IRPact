@@ -128,6 +128,13 @@ VisibleBinaryData_idVisible:
   gams_identifier: "ID"
   gams_description: "Spezielle ID der Daten, Verwendungszweck und Funktionsweise ist von den Daten selber abhängig."
 
+about:
+  edn_label: "Über IRPact"
+  edn_description: "IRPact v0.0.1"
+InAboutPlaceholder_placeholder:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
 
 
 names:
