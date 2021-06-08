@@ -1,8 +1,10 @@
 package de.unileipzig.irpact.core.util.result.adoptions;
 
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.InfoTag;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
@@ -71,8 +73,18 @@ public class ExactAdoptionPrinter implements ResultProcessor {
 
     protected static long getSpatialInformationId(ConsumerAgent agent) {
         SpatialInformation information = agent.getSpatialInformation();
-        return information == null
-                ? -1L
-                : information.getId();
+        if(information == null) {
+            return -2;
+        }
+        if(information.hasId()) {
+            return information.getId();
+        } else {
+            SpatialAttribute attr = information.getAttribute(RAConstants.ID);
+            if(attr == null) {
+                return -1;
+            } else {
+                return attr.asValueAttribute().getLongValue();
+            }
+        }
     }
 }

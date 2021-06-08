@@ -289,6 +289,10 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         }
     }
 
+    private void setYearChange(boolean isYearChange) {
+        this.isYearChange = isYearChange;
+    }
+
     public boolean isYearChange() {
         return isYearChange;
     }
@@ -381,7 +385,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
 
             @Override
             public void run() {
-                LOGGER.trace(IRPSection.SIMULATION_PROCESS, "run 'createNewYearTask'");
+                LOGGER.trace(IRPSection.SIMULATION_PROCESS, "run 'createStartOfYearTask'");
 
                 for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
                     for(ConsumerAgent ca: cag.getAgents()) {
@@ -406,8 +410,9 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
 
             @Override
             public void run() {
-                LOGGER.trace(IRPSection.SIMULATION_PROCESS, "run 'createNewYearTask'");
+                LOGGER.trace(IRPSection.SIMULATION_PROCESS, "run 'createEndOfYearTask'");
 
+                setYearChange(true);
                 for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
                     for(ConsumerAgent ca: cag.getAgents()) {
                         for(ProcessPlan plan: ca.getPlans().values()) {
@@ -418,6 +423,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
                         }
                     }
                 }
+                setYearChange(false);
             }
         };
     }
@@ -431,7 +437,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
 
             @Override
             public void run() {
-                LOGGER.trace(IRPSection.SIMULATION_PROCESS, "run 'createConstructionRenovationSyncTask'");
+                LOGGER.trace(IRPSection.SIMULATION_PROCESS, "run 'createWeek27Task'");
 
                 for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
                     for(ConsumerAgent ca: cag.getAgents()) {

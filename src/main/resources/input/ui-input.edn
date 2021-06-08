@@ -25,16 +25,21 @@
             :tags [["InGeneral" "logGraphUpdate"] ["InGeneral" "logRelativeAgreement"] ["InGeneral" "logInterestUpdate"] ["InGeneral" "logShareNetworkLocal"] ["InGeneral" "logFinancalComponent"] ["InGeneral" "logCalculateDecisionMaking"]]
           } 
           {
-            :label "Ausgabe von speziellen Ergebnissen" 
+            :label "Ausgabe von Ergebnissen" 
             :description "Diese Optionen ermöglichen die Ausgabe von Ergebnissen in spezieller Form." 
-            :tags [["InGeneral" "logResultGroupedByZip"] ["InGeneral" "logResultGroupedByMilieu"] ["InGeneral" "logResultGroupedByZipAndMilieu"] ["InGeneral" "logProductAdoptions"]]
+            :tags [["InGeneral" "logResultAdoptionsZip"] ["InGeneral" "logResultAdoptionsZipPhase"] ["InGeneral" "logResultAdoptionsAll"]]
+          } 
+          {
+            :label "Ausgabe von Skripten und Daten" 
+            :description "Diese Optionen ermöglichen die Ausgabe von Ergebnissen in spezieller Form. Neben den Daten werden auch Skripte mit ausgegeben." 
+            :tags [["InGeneral" "logScriptAdoptionsZip"] ["InGeneral" "logScriptAdoptionsZipPhase"]]
           }
         ]
       } 
       {
         :label "Spezielle Einstellungen" 
         :description "Hier lassen sich spezielle Modi aktivieren." 
-        :tags [["InGeneral" "runPVAct"] ["InGeneral" "runOptActDemo"]] 
+        :tags [["InGeneral" "runPVAct"] ["InGeneral" "runOptActDemo"] ["InGeneral" "runMode"] ["InGeneral" "scenarioMode"]] 
         :sections [
           {
             :label "Binäre Daten" 

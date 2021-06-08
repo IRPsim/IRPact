@@ -297,26 +297,25 @@ public class InGeneral implements Copyable {
     }
 
     public void setup(IRPactInputParser parser) throws ParsingException {
-        parseInfoAndResultLogging(parser);
+        parseSettings(parser.getEnvironment().getSettings());
         parseSeed(parser);
         parseLifeCycleControl(parser);
     }
 
-    private void parseInfoAndResultLogging(IRPactInputParser parser) {
-        Settings initData = parser.getEnvironment().getSettings();
-        initData.setLogGraphUpdate(logGraphUpdate);
-        initData.setLogRelativeAgreement(logRelativeAgreement);
-        initData.setLogInterestUpdate(logInterestUpdate);
-        initData.setLogShareNetworkLocale(logShareNetworkLocal);
-        initData.setLogFinancialComponent(logFinancalComponent);
-        initData.setLogCalculateDecisionMaking(logCalculateDecisionMaking);
+    public void parseSettings(Settings settings) {
+        settings.setLogGraphUpdate(logGraphUpdate);
+        settings.setLogRelativeAgreement(logRelativeAgreement);
+        settings.setLogInterestUpdate(logInterestUpdate);
+        settings.setLogShareNetworkLocale(logShareNetworkLocal);
+        settings.setLogFinancialComponent(logFinancalComponent);
+        settings.setLogCalculateDecisionMaking(logCalculateDecisionMaking);
 
-        initData.setLogResultAdoptionsZip(logResultAdoptionsZip);
-        initData.setLogResultAdoptionsZipPhase(logResultAdoptionsZipPhase);
-        initData.setLogResultAdoptionsAll(logResultAdoptionsAll);
+        settings.setLogResultAdoptionsZip(logResultAdoptionsZip);
+        settings.setLogResultAdoptionsZipPhase(logResultAdoptionsZipPhase);
+        settings.setLogResultAdoptionsAll(logResultAdoptionsAll);
 
-        initData.setLogScriptAdoptionsZip(logScriptAdoptionsZip);
-        initData.setLogScriptAdoptionsZipPhase(logScriptAdoptionsZipPhase);
+        settings.setLogScriptAdoptionsZip(logScriptAdoptionsZip);
+        settings.setLogScriptAdoptionsZipPhase(logScriptAdoptionsZipPhase);
     }
 
     private void parseSeed(IRPactInputParser parser) {

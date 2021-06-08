@@ -27,7 +27,6 @@ import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
-import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.develop.PotentialProblem;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -193,19 +192,21 @@ public class RAProcessPlan implements ProcessPlan {
     //=========================
 
     protected void runAdjustmentAtStartOfYear() {
-        Dev.throwException();
         if(currentStage == RAStage.IMPEDED) {
-            currentStage = RAStage.DECISION_MAKING;
             LOGGER.trace(IRPSection.SIMULATION_PROCESS, "reset process stage '{}' to '{}' for agent '{}'", RAStage.IMPEDED, RAStage.DECISION_MAKING, agent.getName());
+            currentStage = RAStage.DECISION_MAKING;
         }
     }
 
     protected void runEvaluationAtEndOfYear() {
-        Dev.throwException();
+        if(currentStage == RAStage.IMPEDED) {
+            LOGGER.trace(IRPSection.SIMULATION_PROCESS, "reset process stage '{}' to '{}' for agent '{}'", RAStage.IMPEDED, RAStage.DECISION_MAKING, agent.getName());
+            currentStage = RAStage.DECISION_MAKING;
+            handleDecisionMaking();
+        }
     }
 
     protected void runUpdateAtMidOfYear() {
-        Dev.throwException();
         double renovationRate = getRenovationRate(agent);
         double renovationDraw = rnd.nextDouble();
         boolean doRenovation = renovationDraw < renovationRate;

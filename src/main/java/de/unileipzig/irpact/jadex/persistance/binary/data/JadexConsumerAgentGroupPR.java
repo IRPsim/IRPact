@@ -73,6 +73,8 @@ public class JadexConsumerAgentGroupPR extends BinaryPRBase<JadexConsumerAgentGr
             caCount++;
         }
         log().trace("stores {} agents", caCount);
+
+        //object.logChecksums();
     }
 
     //=========================

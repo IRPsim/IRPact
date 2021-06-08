@@ -20,6 +20,7 @@ import de.unileipzig.irpact.core.simulation.Version;
 import de.unileipzig.irpact.core.util.BasicMetaData;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.core.util.result.ResultManager;
+import de.unileipzig.irpact.core.util.result.adoptions.AdoptionResultInfo;
 import de.unileipzig.irpact.core.util.result.adoptions.AnnualCumulativeAdoptionsForOutput;
 import de.unileipzig.irpact.io.param.input.GraphvizInputParser;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -105,10 +106,12 @@ public final class IRPact implements IRPActAccess {
 
     public void notifyStart() {
         META_DATA.getCurrentRunInfo().setStartTime();
+        LOGGER.trace(IRPSection.GENERAL, "set start time: {}", META_DATA.getCurrentRunInfo().getStartTime());
     }
 
     public void notifyEnd() {
         META_DATA.getCurrentRunInfo().setEndTime();
+        LOGGER.trace(IRPSection.GENERAL, "set end time: {}", META_DATA.getCurrentRunInfo().getEndTime());
     }
 
     public MainCommandLineOptions getOptions() {
@@ -580,14 +583,13 @@ public final class IRPact implements IRPActAccess {
             String name = entry[1] + "_" + entry[0];
             OutConsumerAgentGroup cag = cache.computeIfAbsent(name, OutConsumerAgentGroup::new);
             boolean initial = (Boolean) entry[2];
-            int adoptions = (Integer) entry[3];
-            int adoptionsCumulatic = (Integer) entry[4];
+            AdoptionResultInfo resultInfo = (AdoptionResultInfo) entry[3];
             if(initial) {
-                cag.setInitialAdoptionsThisPeriod(adoptions);
-                cag.setInitialAdoptionsCumulative(adoptionsCumulatic);
+                cag.setInitialAdoptionsThisPeriod(resultInfo.getValue());
+                cag.setInitialAdoptionsCumulative(resultInfo.getCumulativeValue());
             } else {
-                cag.setAdoptionsThisPeriod(adoptions);
-                cag.setAdoptionsCumulative(adoptionsCumulatic);
+                cag.setAdoptionsThisPeriod(resultInfo.getValue());
+                cag.setAdoptionsCumulative(resultInfo.getCumulativeValue());
             }
         }
 
