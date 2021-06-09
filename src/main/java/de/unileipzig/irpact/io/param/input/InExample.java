@@ -236,10 +236,11 @@ public class InExample implements DefaultScenarioFactory {
         root.graphvizGlobal.scaleFactor = 0.0;
     }
 
+    @Todo("default rausgenommen")
     private static void initOptAct(InRoot root) {
-        SideFares SMS = new SideFares("SMS");
-        SideFares NS = new SideFares("NS");
-        SideFares PS = new SideFares("PS");
+//        SideFares SMS = new SideFares("SMS");
+//        SideFares NS = new SideFares("NS");
+//        SideFares PS = new SideFares("PS");
 
         LoadDSE loadE1 = new LoadDSE("load_E1");
         loadE1.ldse = new DoubleTimeSeries("0");
@@ -263,12 +264,12 @@ public class InExample implements DefaultScenarioFactory {
         global.de = true;
         global.ch = false;
         global.energy = Table.newLinked();
-        global.energy.put(SMS, loadE1, new DoubleTimeSeries("0"));
-        global.energy.put(NS, loadE1, new DoubleTimeSeries("0"));
-        global.energy.put(PS, loadE1, new DoubleTimeSeries("0"));
-        global.energy.put(SMS, loadE2, new DoubleTimeSeries("0"));
-        global.energy.put(NS, loadE2, new DoubleTimeSeries("0"));
-        global.energy.put(PS, loadE2, new DoubleTimeSeries("0"));
+//        global.energy.put(SMS, loadE1, new DoubleTimeSeries("0"));
+//        global.energy.put(NS, loadE1, new DoubleTimeSeries("0"));
+//        global.energy.put(PS, loadE1, new DoubleTimeSeries("0"));
+//        global.energy.put(SMS, loadE2, new DoubleTimeSeries("0"));
+//        global.energy.put(NS, loadE2, new DoubleTimeSeries("0"));
+//        global.energy.put(PS, loadE2, new DoubleTimeSeries("0"));
         global.marktpreis = new DoubleTimeSeries("0");
         global.zuweisung = Table.newLinked();
         global.zuweisung.put(E, loadE1, 0.0);
@@ -277,7 +278,7 @@ public class InExample implements DefaultScenarioFactory {
         root.global = global;
         root.sectors = new Sector[] {E};
         root.customs = new SideCustom[] {grp1, grp2};
-        root.fares = new SideFares[] {SMS, NS, PS};
+//        root.fares = new SideFares[] {SMS, NS, PS};
         root.dse = new LoadDSE[] {loadE1, loadE2};
         root.deses = new TechDESES[]{techES1};
         root.despv = new TechDESPV[]{techPV1};

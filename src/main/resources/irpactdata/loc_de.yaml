@@ -130,7 +130,7 @@ VisibleBinaryData_idVisible:
 
 about:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.0.3"
+  edn_description: "IRPact v0.0.4"
 InAboutPlaceholder_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
