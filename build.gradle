@@ -119,7 +119,6 @@ dependencies {
     //custom
     implementation files('customlibs/IRPtools-1.0-SNAPSHOT.jar')
 
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     implementation 'org.citygml4j:citygml4j:2.11.3'
 }
 
@@ -128,6 +127,7 @@ dependencies {
 //==================================================
 
 task buildUberJar(type: Jar) {
+    archiveAppendix.set('demo')
     archiveClassifier.set('uber')
     manifest {
         attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
@@ -137,7 +137,7 @@ task buildUberJar(type: Jar) {
             it.isDirectory() ? it : zipTree(it)
         }
     } with jar
-    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
 }
 
 task buildStandardJar(type: Jar) {
