@@ -18,8 +18,7 @@ public interface AdoptionAnalyser extends ResultProcessor {
     default void apply(SimulationEnvironment environment) {
         for(ConsumerAgent agent: environment.getAgents().iterableConsumerAgents()) {
             for(AdoptedProduct product: agent.getAdoptedProducts()) {
-                BasicAdoptionEntry info = new BasicAdoptionEntry(agent, product);
-                add(info);
+                add(agent, product);
             }
         }
     }

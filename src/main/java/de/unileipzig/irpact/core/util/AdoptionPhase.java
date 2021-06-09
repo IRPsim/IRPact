@@ -17,6 +17,7 @@ public enum AdoptionPhase implements ChecksumComparable {
     END_START(3);
 
     public static final List<AdoptionPhase> VALID_PHASES = Arrays.asList(INITIAL, START_MID, MID_END, END_START);
+    public static final List<AdoptionPhase> NON_INITIAL = Arrays.asList(START_MID, MID_END, END_START);
 
     private final int ID;
 
