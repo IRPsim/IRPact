@@ -10,11 +10,12 @@ import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.core.util.MetaData;
-import de.unileipzig.irpact.core.util.result.adoptions.AbstractAdoptionAnalyser;
-import de.unileipzig.irpact.core.util.result.adoptions.AnnualCumulativeAdoptionsZip;
-import de.unileipzig.irpact.core.util.result.adoptions.AnnualCumulativeAdoptionsZipPhase;
-import de.unileipzig.irpact.core.util.result.adoptions.ExactAdoptionPrinter;
+import de.unileipzig.irpact.core.util.result.adoptions.*;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
+import de.unileipzig.irpact.util.R.sbuilder.Element;
+import de.unileipzig.irpact.util.R.sbuilder.RScriptBuilder;
+import de.unileipzig.irpact.util.R.sbuilder.RScriptFactory;
+import de.unileipzig.irpact.util.R.sbuilder.StringSettings;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.List;
@@ -27,6 +28,8 @@ import java.util.stream.IntStream;
 public class ResultManager implements LoggingHelper {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ResultManager.class);
+
+    protected static final StringSettings STRING_SETTINGS = new StringSettings();
 
     protected MetaData metaData;
     protected MainCommandLineOptions clOptions;
@@ -103,6 +106,12 @@ public class ResultManager implements LoggingHelper {
         IRPLogging.resultWrite("entries written: {}", analyser.getData().count());
     }
 
+    protected void print(String infoTag, String text) {
+        IRPLogging.startResult(infoTag, true);
+        IRPLogging.resultWrite(text);
+        IRPLogging.finishResult(infoTag);
+    }
+
     protected void logResultAdoptionsZip() {
         CsvPrinter<Object> printer = new CsvPrinter<>();
         AnnualCumulativeAdoptionsZip analyser = new AnnualCumulativeAdoptionsZip();
@@ -145,10 +154,41 @@ public class ResultManager implements LoggingHelper {
     }
 
     protected void logScriptAdoptionsZip() {
-        trace("logScriptAdoptionsZip: TODO");
+        RScriptBuilder builder = RScriptFactory.lineChart0(
+                "year", "adoptions", "zip",
+                9, 6, Element.INCH, 600,
+                "Jahre", "Adoptionen", "PLZ"
+        );
+        builder.setSettings(STRING_SETTINGS);
+        print("TEMP3", builder.print());
+
+        CsvPrinter<Object> printer = new CsvPrinter<>();
+        AnnualCumulativeAdoptionsZip analyser = new AnnualCumulativeAdoptionsZip();
+        analyser.setZipKey(RAConstants.ZIP);
+        analyser.setYears(getAllSimulationYears());
+        analyser.init(getAllZips(analyser.getZipKey()));
+        analyser.initCsvPrinterForValue(printer);
+        analyser.apply(environment);
+
+        print("TEMP4", printer, analyser);
     }
 
     protected void logScriptAdoptionsZipPhase() {
-        trace("logScriptAdoptionsZipPhase: TODO");
+        RScriptBuilder builder = RScriptFactory.stackedBarChart0(
+                "year", "adoptionsCumulative", "phase",
+                9, 6, Element.INCH, 600,
+                "Jahre", "Adoptionen (kumulativ)", "Adoptionsphase"
+        );
+        builder.setSettings(STRING_SETTINGS);
+        print("TEMP5", builder.print());
+
+        CsvPrinter<Object> printer = new CsvPrinter<>();
+        AnnualCumulativeAdoptionsPhase analyser = new AnnualCumulativeAdoptionsPhase();
+        analyser.setYears(getAllSimulationYears());
+        analyser.init(AdoptionPhase.VALID_PHASES);
+        analyser.initCsvPrinterForCumulativeValue(printer);
+        analyser.apply(environment);
+
+        print("TEMP6", printer, analyser);
     }
 }

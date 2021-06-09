@@ -1386,12 +1386,6 @@ SET set_sector(*)
 * - type: String
 SET set_side(*)
 
-* - description: Stromsparte je Kundengruppe
-* - identifier: SK
-* - unit: [EUR]
-* - type: Float
-PARAMETER par_IuO_ESector_CustSide(set_ii,set_side)
-
 * - description: Kundengruppe in IRPact
 * - identifier: KG
 * - type: String
@@ -1409,7 +1403,12 @@ PARAMETER par_S_DS(set_side_cust)
 * - type: Integer
 PARAMETER par_kg_modifier(set_side_cust)
 
-* - default: SMS, NS, PS
+* - description: Stromsparte je Kundengruppe
+* - identifier: SK
+* - unit: [EUR]
+* - type: Float
+PARAMETER par_IuO_ESector_CustSide(set_ii,set_side_cust)
+
 * - description: Tarifteilnehmer
 * - hidden: 1
 * - identifier: Tarifteilnehmer

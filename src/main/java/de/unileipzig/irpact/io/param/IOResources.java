@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.io.param;
 
 import de.unileipzig.irpact.commons.util.MultiCounter;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
@@ -242,6 +243,7 @@ public final class IOResources extends TreeAnnotationResource {
     protected Path TechDESPV_Path;
     protected Entry TechDESPV_a_Entry;
 
+    @Todo("default entfernt")
     protected void initOptActPart2() {
         Ii_Entry = newEntry();
         Ii_Entry.set(GENERAL_NAME, "ii");
@@ -447,7 +449,7 @@ public final class IOResources extends TreeAnnotationResource {
         SideFares_Entry.set(GENERAL_NAME, "side_fares");
         SideFares_Entry.set(GAMS_DESCRIPTION, "Tarifteilnehmer");
         SideFares_Entry.set(GAMS_IDENTIFIER, "Tarifteilnehmer");
-        SideFares_Entry.set(GAMS_DEFAULT, "SMS, NS, PS");
+        //SideFares_Entry.set(GAMS_DEFAULT, "SMS, NS, PS"); TODO
         SideFares_Entry.set(GAMS_HIDDEN, TRUE1);
         putEntry(SideFares.class, SideFares_Entry);
         //===

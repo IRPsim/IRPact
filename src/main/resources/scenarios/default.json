@@ -29,11 +29,11 @@
       "sca_InGeneral_logResultAdoptionsAll" : 1,
       "sca_InGeneral_logResultAdoptionsZip" : 1,
       "sca_InGeneral_logResultAdoptionsZipPhase" : 1,
-      "sca_InGeneral_logScriptAdoptionsZip" : 0,
-      "sca_InGeneral_logScriptAdoptionsZipPhase" : 0,
+      "sca_InGeneral_logScriptAdoptionsZip" : 1,
+      "sca_InGeneral_logScriptAdoptionsZipPhase" : 1,
       "sca_InGeneral_logShareNetworkLocal" : 1,
       "sca_InGeneral_logSimulation" : 0,
-      "sca_InGeneral_runMode" : 100,
+      "sca_InGeneral_runMode" : -1,
       "sca_InGeneral_runOptActDemo" : 0,
       "sca_InGeneral_runPVAct" : 1,
       "sca_InGeneral_scenarioMode" : -1,
@@ -310,7 +310,7 @@
       },
       "set_InUnlinkedGraphTopology" : { },
       "set_InVersion" : {
-        "0_0_2" : {
+        "0_0_4" : {
           "par_InVersion_placeholderVersion" : 0
         }
       },
@@ -350,11 +350,8 @@
         "E" : { }
       },
       "set_side" : {
-        "NS" : { },
         "p1" : { },
-        "p2" : { },
-        "PS" : { },
-        "SMS" : { }
+        "p2" : { }
       },
       "set_side_cust" : {
         "p1" : {
@@ -368,11 +365,7 @@
           "par_IuO_ESector_CustSide" : "0"
         }
       },
-      "set_side_fares" : {
-        "NS" : { },
-        "PS" : { },
-        "SMS" : { }
-      },
+      "set_side_fares" : { },
       "set_tech_DEGEN" : {
         "tech_PV1" : { }
       },
@@ -399,26 +392,7 @@
       "par_C_MS_E" : "0"
     },
     "tables" : {
-      "par_F_E_EGrid_energy" : {
-        "NS" : {
-          "load_E1" : "0",
-          "load_E2" : "0",
-          "tech_ES1" : "0",
-          "tech_PV1" : "0"
-        },
-        "PS" : {
-          "load_E1" : "0",
-          "load_E2" : "0",
-          "tech_ES1" : "0",
-          "tech_PV1" : "0"
-        },
-        "SMS" : {
-          "load_E1" : "0",
-          "load_E2" : "0",
-          "tech_ES1" : "0",
-          "tech_PV1" : "0"
-        }
-      },
+      "par_F_E_EGrid_energy" : { },
       "par_link_AgentGroup_GraphvizColor_agentColor" : {
         "Gruppe1" : {
           "BLUE" : 0.0,

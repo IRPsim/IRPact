@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'eclipse'
+    id 'idea'
 }
 
 group 'de.unileipzig.irpact'
@@ -25,6 +26,44 @@ test {
 }
 
 //==================================================
+// sourcesets
+//==================================================
+
+sourceSets {
+    toymodel {
+        java {
+            srcDir 'src/toymodel/java'
+        }
+        resources {
+            srcDir 'src/toymodel/resources'
+        }
+        compileClasspath += sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.runtimeClasspath
+    }
+}
+
+configurations {
+    toymodelImplementation.extendsFrom(testImplementation)
+    toymodelRuntimeOnly.extendsFrom(testRuntimeOnly)
+}
+
+task toymodel(type: Test) {
+    description = "Run IRPact toy-models"
+    group = "verification"
+    testClassesDirs = sourceSets.toymodel.output.classesDirs
+    classpath = sourceSets.toymodel.runtimeClasspath
+
+    useJUnitPlatform()
+}
+
+idea {
+    module {
+        testSourceDirs += project.sourceSets.toymodel.java.srcDirs
+        testSourceDirs += project.sourceSets.toymodel.resources.srcDirs
+    }
+}
+
+//==================================================
 //dependencies
 //==================================================
 
@@ -34,15 +73,16 @@ ext {
     jadexDistVersion = '4.0.187' //'4.0.171'
     logbackVersion = '1.2.3'
     apachePoiVersion = '5.0.0'
-    x = '1'
 }
 
 dependencies {
     testCompileOnly "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
+    testCompileOnly "org.apiguardian:apiguardian-api:1.0.0"
+    toymodelCompileOnly "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
+    toymodelCompileOnly "org.apiguardian:apiguardian-api:1.0.0"
     runtimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
     runtimeOnly "org.junit.vintage:junit-vintage-engine:$junitJupiterVersion"
     runtimeOnly "org.junit.platform:junit-platform-launcher:1.4.2"
-    testCompileOnly "org.apiguardian:apiguardian-api:1.0.0"
 
     //implementation "org.activecomponents.jadex:jadex-distribution-standard:$jadexDistVersion"
     implementation "org.activecomponents.jadex:jadex-distribution-minimal:$jadexDistVersion"
