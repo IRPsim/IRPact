@@ -55,7 +55,7 @@ public class Ggsave extends Component {
     }
 
     public void setUnits(String units) {
-        setIgnoreQuote(UNITS, units);
+        setForceQuote(UNITS, units);
     }
     public String getUnits() {
         return getString(UNITS);

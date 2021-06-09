@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
  */
 public final class RScriptFactory {
 
+    private static final String SEP = ";";
+
     private RScriptFactory() {
     }
 
@@ -34,7 +36,7 @@ public final class RScriptFactory {
         ReadDotCsv csv = new ReadDotCsv("inputdata");
         csv.setFileName(args.getNamedIndex(1));
         csv.setHeader(true);
-        csv.setSep(",");
+        csv.setSep(SEP);
         csv.setColClasses(Element.NUMERIC, Element.CHARACTER, Element.NUMERIC);
 
         Ggplot plot = new Ggplot();
@@ -94,7 +96,7 @@ public final class RScriptFactory {
         ReadDotCsv csv = new ReadDotCsv("inputdata");
         csv.setFileName(args.getNamedIndex(1));
         csv.setHeader(true);
-        csv.setSep(",");
+        csv.setSep(SEP);
         csv.setColClasses(Element.NUMERIC, Element.NUMERIC, Element.CHARACTER, Element.CHARACTER);
 
         Ggplot plot = new Ggplot();
@@ -153,7 +155,7 @@ public final class RScriptFactory {
         ReadDotCsv csv = new ReadDotCsv("inputdata");
         csv.setFileName(args.getNamedIndex(1));
         csv.setHeader(true);
-        csv.setSep(",");
+        csv.setSep(SEP);
         csv.setColClasses(Element.NUMERIC, Element.NUMERIC, Element.CHARACTER, Element.CHARACTER);
 
         Ggplot plot = new Ggplot();
@@ -218,8 +220,8 @@ public final class RScriptFactory {
         ReadDotCsv csv = new ReadDotCsv("inputdata");
         csv.setFileName(args.getNamedIndex(1));
         csv.setHeader(true);
-        csv.setSep(",");
-        csv.setColClasses(Element.NUMERIC, Element.CHARACTER, Element.CHARACTER);
+        csv.setSep(SEP);
+        csv.setColClasses(Element.NUMERIC, Element.CHARACTER, Element.NUMERIC);
 
         Ggplot plot = new Ggplot();
         plot.setData(csv.getReturnName());

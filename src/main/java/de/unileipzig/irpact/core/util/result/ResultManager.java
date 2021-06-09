@@ -2,10 +2,12 @@ package de.unileipzig.irpact.core.util.result;
 
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.util.csv.CsvPrinter;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
+import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
@@ -185,9 +187,15 @@ public class ResultManager implements LoggingHelper {
         CsvPrinter<Object> printer = new CsvPrinter<>();
         AnnualCumulativeAdoptionsPhase analyser = new AnnualCumulativeAdoptionsPhase();
         analyser.setYears(getAllSimulationYears());
-        analyser.init(AdoptionPhase.VALID_PHASES);
+        analyser.init(AdoptionPhase.NON_INITIAL);
         analyser.initCsvPrinterForCumulativeValue(printer);
-        analyser.apply(environment);
+        for(ConsumerAgent ca: environment.getAgents().iterableConsumerAgents()) {
+            for(AdoptedProduct product: ca.getAdoptedProducts()) {
+                if(product.isNotInitial()) {
+                    analyser.add(ca, product);
+                }
+            }
+        }
 
         print("TEMP6", printer, analyser);
     }
