@@ -14,10 +14,10 @@ import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.core.util.result.adoptions.*;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
-import de.unileipzig.irpact.util.R.sbuilder.Element;
-import de.unileipzig.irpact.util.R.sbuilder.RScriptBuilder;
-import de.unileipzig.irpact.util.R.sbuilder.RScriptFactory;
-import de.unileipzig.irpact.util.R.sbuilder.StringSettings;
+import de.unileipzig.irpact.util.R.builder.Element;
+import de.unileipzig.irpact.util.R.builder.RScriptBuilder;
+import de.unileipzig.irpact.util.R.builder.RScriptFactory;
+import de.unileipzig.irpact.util.R.builder.StringSettings;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.List;

@@ -14,6 +14,7 @@ import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.Copyable;
+import de.unileipzig.irptools.util.DoubleTimeSeries;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -88,6 +89,16 @@ public class InGeneral implements Copyable {
 
     @FieldDefinition
     public int lastSimulationYear;
+
+    //=========================
+    //IRPopt
+    //=========================
+
+    @FieldDefinition(name = "a")
+    public int a;
+
+    @FieldDefinition(name = "delta_ii")
+    public double deltaii;
 
     //=========================
     //special
