@@ -22,7 +22,7 @@ import java.util.List;
 public class InRoot implements RootClass, DefaultScenarioFactory {
 
     public static final List<ParserInput> CLASSES_WITHOUT_ROOT = Util.arrayListOf(
-            ParserInput.newInstance(DefinitionType.INPUT, Ii.class),
+            //ParserInput.newInstance(DefinitionType.INPUT, Ii.class),
             ParserInput.newInstance(DefinitionType.INPUT, InGlobal.class),
             ParserInput.newInstance(DefinitionType.INPUT, LoadDS.class),
             ParserInput.newInstance(DefinitionType.INPUT, LoadDSE.class),

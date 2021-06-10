@@ -23,6 +23,7 @@ import de.unileipzig.irpact.io.param.input.file.InFile;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
+import de.unileipzig.irpact.io.param.irpopt.*;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.names.InName;
 import de.unileipzig.irpact.io.param.input.process.InProcessPlanNodeFilterScheme;
@@ -637,8 +638,21 @@ public class InRoot implements RootClass {
             InVersion.class
     );
 
+    public static final List<ParserInput> IRPOPT = ParserInput.listOf(DefinitionType.INPUT,
+            A.class,
+            ATotal.class,
+            Ii.class,
+            Ii0.class,
+            Jj.class,
+            OptInitial.class,
+            OptSteps.class,
+            OptStore.class,
+            T.class
+    );
+
     public static final List<ParserInput> INPUT_WITH_TEMPLATES = ParserInput.merge(
             INPUT_WITHOUT_TEMPLATES,
+            IRPOPT,
             ParserInput.listOf(DefinitionType.INPUT,
                     OutConsumerAgentGroup.class
             )
@@ -646,6 +660,7 @@ public class InRoot implements RootClass {
 
     public static final List<ParserInput> INPUT_WITH_ROOT = ParserInput.merge(
             INPUT_WITHOUT_TEMPLATES,
+            IRPOPT,
             ParserInput.listOf(DefinitionType.INPUT,
                     InRoot.class
             )

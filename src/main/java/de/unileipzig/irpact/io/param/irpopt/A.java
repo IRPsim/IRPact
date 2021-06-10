@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.io.param.input.irpopt;
+package de.unileipzig.irpact.io.param.irpopt;
 
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irptools.Constants;
@@ -11,15 +11,15 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
  * @author Daniel Abitz
  */
 @Definition(
-        name = "a_total",
+        name = "a",
         gams = @Gams(
-                description = "Einlesen der zu optimierenden Jahre",
+                description = "Einlesen des zu optimierenden Jahres",
                 identifier = "Jahreszahl",
                 type = Constants.GAMS_INT,
                 hidden = Constants.TRUE1
         )
 )
-public class ATotal implements InIRPactEntity {
+public class A implements InIRPactEntity {
 
     public static void initRes(TreeAnnotationResource res) {
     }
@@ -28,22 +28,20 @@ public class ATotal implements InIRPactEntity {
 
     public String _name;
 
-    public ATotal() {
+    public A() {
     }
 
     @Override
     public String getName() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public ATotal copy(CopyCache cache) {
+    public A copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public ATotal newCopy(CopyCache cache) {
-        ATotal copy = new ATotal();
-        copy._name = _name;
-        return copy;
+    public A newCopy(CopyCache cache) {
+        return new A();
     }
 }
