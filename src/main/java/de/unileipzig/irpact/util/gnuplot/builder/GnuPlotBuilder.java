@@ -207,7 +207,13 @@ public class GnuPlotBuilder {
     }
 
     public void setLegendOutsideRightTop() {
-        buildSet("key outside right top vertical Left reverse noenhanced autotitle columnhead box lt black linewidth 1.0 dashtype solid");
+        //buildSet("key outside right top vertical Left reverse noenhanced autotitle columnhead box lt black linewidth 1.0 dashtype solid");
+        buildSet("key outside right top vertical Left");
+    }
+
+    public void setLegendOutsideRightTop(String label) {
+        //buildSet("key outside right top vertical Left reverse noenhanced autotitle columnhead box lt black linewidth 1.0 dashtype solid title ", quote(label));
+        buildSet("key outside right top vertical Left title ", quote(label));
     }
 
     public void printUnknown() {

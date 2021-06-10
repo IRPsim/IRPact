@@ -29,6 +29,7 @@ public final class GnuPlotFactory {
             case USAGE_ARG2:
                 return "usage: gnuplot -c <script name> <input file> <output file>";
 
+            case NO_USAGE:
             default:
                 return null;
         }
@@ -240,25 +241,25 @@ public final class GnuPlotFactory {
     //=========================
 
     public static GnuPlotBuilder stackedBarChart0(
-            String title, String xlab, String ylab,
+            String title, String xlab, String ylab, String hlab,
             String sep) {
-        return stackedBarChart0(title, xlab, ylab, GnuPlotBuilder.arg(1), sep, GnuPlotBuilder.arg(2), USAGE_ARG2);
+        return stackedBarChart0(title, xlab, ylab, hlab, GnuPlotBuilder.arg(1), sep, GnuPlotBuilder.arg(2), USAGE_ARG2);
     }
 
     public static GnuPlotBuilder stackedBarChart0(
-            String title, String xlab, String ylab,
+            String title, String xlab, String ylab, String hlab,
             Path input, String sep, Path output) {
-        return stackedBarChart0(title, xlab, ylab, GnuPlotBuilder.quote(input), sep, GnuPlotBuilder.quote(output), USAGE_ARG0);
+        return stackedBarChart0(title, xlab, ylab, hlab, GnuPlotBuilder.quote(input), sep, GnuPlotBuilder.quote(output), USAGE_ARG0);
     }
 
     public static GnuPlotBuilder stackedBarChart0(
-            String title, String xlab, String ylab,
+            String title, String xlab, String ylab, String hlab,
             String rawInput, String sep, String rawOutput) {
-        return stackedBarChart0(title, xlab, ylab, rawInput, sep, rawOutput, NO_USAGE);
+        return stackedBarChart0(title, xlab, ylab, hlab, rawInput, sep, rawOutput, NO_USAGE);
     }
 
     public static GnuPlotBuilder stackedBarChart0(
-            String title, String xlab, String ylab,
+            String title, String xlab, String ylab, String hlab,
             String rawInput, String sep, String rawOutput,
             int usageFlag) {
         GnuPlotBuilder builder = newBuilder();
@@ -270,7 +271,8 @@ public final class GnuPlotFactory {
         builder.setStyleHistrogramRowStacked();
         builder.setFillSolid();
         builder.setBoxWidthAbsolute(0.8);
-        builder.setLegendOutsideRightTop();
+        if(hlab == null) builder.setLegendOutsideRightTop();
+        else builder.setLegendOutsideRightTop(hlab);
         builder.addComment("===labels===");
         if(title != null) builder.setTitle(title);
         if(xlab != null) builder.setXLabel(xlab);

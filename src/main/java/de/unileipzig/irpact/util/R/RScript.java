@@ -1,11 +1,9 @@
 package de.unileipzig.irpact.util.R;
 
-import java.io.IOException;
+import de.unileipzig.irpact.util.script.Script;
 
 /**
  * @author Daniel Abitz
  */
-public interface RScript {
-
-    void execute(R engine) throws IOException, InterruptedException, RScriptException;
+public interface RScript extends Script<RscriptEngine> {
 }

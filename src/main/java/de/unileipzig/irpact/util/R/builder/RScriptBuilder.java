@@ -1,7 +1,12 @@
 package de.unileipzig.irpact.util.R.builder;
 
+import de.unileipzig.irpact.util.R.RFileScript;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +19,7 @@ public class RScriptBuilder {
 
     protected StringSettings settings;
     protected List<Element> elements = new ArrayList<>();
-    protected boolean autoNewLine = false;
+    protected boolean autoNewLine = true;
 
     public RScriptBuilder() {
         this(null);
@@ -85,5 +90,24 @@ public class RScriptBuilder {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    public RFileScript build() {
+        try {
+            return build(null, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    public RFileScript build(Path scriptPath, Charset charset) throws IOException {
+        RFileScript script = new RFileScript();
+        script.setText(print());
+        script.setPath(scriptPath);
+        script.setCharset(charset);
+        if(scriptPath != null) {
+            script.store();
+        }
+        return script;
     }
 }

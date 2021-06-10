@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.util.gnuplot;
+package de.unileipzig.irpact.util.R;
 
 import de.unileipzig.irpact.util.script.Engine;
 
@@ -7,15 +7,15 @@ import java.nio.file.Path;
 /**
  * @author Daniel Abitz
  */
-public final class GnuPlot implements Engine {
+public final class RscriptEngine implements Engine {
 
     private final String execCmd;
 
-    public GnuPlot() {
-        this.execCmd = "gnuplot";
+    public RscriptEngine() {
+        this.execCmd = "Rscript";
     }
 
-    public GnuPlot(Path gnuPlotPath) {
+    public RscriptEngine(Path gnuPlotPath) {
         this.execCmd = "\"" + gnuPlotPath + "\"";
     }
 

@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.util.gnuplot;
+package de.unileipzig.irpact.util.R;
 
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
 import de.unileipzig.irpact.util.script.ProcessBasedFileScript;
@@ -10,17 +10,17 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
-public class GnuPlotFileScript extends ProcessBasedFileScript<GnuPlotEngine> implements GnuPlotScript {
+public class RFileScript extends ProcessBasedFileScript<RscriptEngine> implements RScript {
 
-    public GnuPlotFileScript() {
+    public RFileScript() {
         super();
     }
 
-    public GnuPlotFileScript(String text) {
+    public RFileScript(String text) {
         super(text);
     }
 
-    public GnuPlotFileScript(Path path, Charset charset) {
+    public RFileScript(Path path, Charset charset) {
         super(path, charset);
     }
 
@@ -30,15 +30,19 @@ public class GnuPlotFileScript extends ProcessBasedFileScript<GnuPlotEngine> imp
 
     @Override
     protected boolean isOnlyWarning(String errMsg) {
-        return errMsg != null && errMsg.contains("WARNING");
+        if(errMsg == null) {
+            return false;
+        }
+        String errMsg2 = errMsg.toLowerCase();
+        if(errMsg2.contains("null device")) {
+            return true;
+        }
+        return errMsg2.contains("warn") && !(errMsg2.contains("error") || errMsg2.contains("fehler"));
     }
 
     @Override
-    protected void addCommands(GnuPlotEngine engine, List<String> commands) {
+    protected void addCommands(RscriptEngine engine, List<String> commands) {
         commands.add(engine.printCommand());
-        if(args.size() > 0) {
-            commands.add("-c");
-        }
         commands.add(printPath());
         commands.addAll(args);
     }
