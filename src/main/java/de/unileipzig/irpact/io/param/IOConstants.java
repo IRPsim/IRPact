@@ -17,6 +17,10 @@ public final class IOConstants {
     public static final String LOGGING_DATA = "logging_data";
     public static final String LOGGING_RESULT = "logging_result";
     public static final String LOGGING_SCRIPT = "logging_script";
+    public static final String IMAGE = "image";
+    public static final String IMAGE_GENERIC = "image_generic";
+    public static final String IMAGE_GNUPLOT = "image_gnuplot";
+    public static final String IMAGE_R = "image_r";
     public static final String SPECIAL_SETTINGS = "special_settings";
     public static final String ABOUT = "about";
 

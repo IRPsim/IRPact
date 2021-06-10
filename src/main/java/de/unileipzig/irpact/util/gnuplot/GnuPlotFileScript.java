@@ -24,6 +24,7 @@ public class GnuPlotFileScript extends ProcessBasedFileScript<GnuPlotEngine> imp
         super(path, charset);
     }
 
+    @Override
     public void addPathArgument(Path path) {
         addArgument(GnuPlotBuilder.print(path));
     }

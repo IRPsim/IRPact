@@ -80,25 +80,4 @@ public class InDiracUnivariateDistribution implements InUnivariateDoubleDistribu
         dist.setValue(getValue());
         return dist;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof InDiracUnivariateDistribution)) return false;
-        InDiracUnivariateDistribution that = (InDiracUnivariateDistribution) o;
-        return Double.compare(that.value, value) == 0 && Objects.equals(_name, that._name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(_name, value);
-    }
-
-    @Override
-    public String toString() {
-        return "InConstantUnivariateDistribution{" +
-                "_name='" + _name + '\'' +
-                ", constDistValue=" + value +
-                '}';
-    }
 }

@@ -26,6 +26,6 @@ public final class TestMode implements IRPactExecutor {
     public void execute(IRPact irpact) throws Exception {
         LOGGER.info(IRPSection.GENERAL, "execute TestMode");
 
-        irpact.postSimulationWithDummyOutput();
+        irpact.postSimulationWithDummyOutput("DUMMY_TestMode");
     }
 }

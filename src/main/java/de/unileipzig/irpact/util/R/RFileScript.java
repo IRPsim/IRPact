@@ -24,6 +24,7 @@ public class RFileScript extends ProcessBasedFileScript<RscriptEngine> implement
         super(path, charset);
     }
 
+    @Override
     public void addPathArgument(Path path) {
         addArgument(GnuPlotBuilder.print(path));
     }

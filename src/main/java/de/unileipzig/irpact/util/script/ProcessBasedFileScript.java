@@ -40,6 +40,10 @@ public abstract class ProcessBasedFileScript<E extends Engine> extends FileScrip
         args.add(arg);
     }
 
+    public void addPathArgument(Path arg) {
+        addArgument(arg.toString());
+    }
+
     protected void addCommands(E engine, List<String> commands) {
         commands.add(engine.printCommand());
         commands.addAll(getArguments());
