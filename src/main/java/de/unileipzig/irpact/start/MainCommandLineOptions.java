@@ -24,8 +24,6 @@ import java.util.ResourceBundle;
 )
 public class MainCommandLineOptions extends AbstractCommandLineOptions {
 
-    private static final String DOWNLOAD_DIR_NAME = "TODO";
-
     private static ResourceBundle fallback;
 
     private static synchronized ResourceBundle getFallbackBundle() {
@@ -39,7 +37,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             bundle.put("inputPath", "Set path to input file.");
             bundle.put("outputPath", "Set path to output file.");
             bundle.put("outputDir", "Set path to output directory. If not set, the output file directory is used.");
-            bundle.put("outputDownloadDir", "Set path to download directory. If not set, the '" + DOWNLOAD_DIR_NAME + "' directory in the output directory is used.");
+            bundle.put("outputDownloadDir", "Set path to download directory. If not set, the '" + IRPact.DOWNLOAD_DIR_NAME + "' directory in the output directory is used.");
             bundle.put("imagePath", "Set path to image output file. Without '--noSimulation' the post-simulation network is printed.");
             bundle.put("noSimulation", "Disables everything except initialization. Combined with '--image' the initial network is printed.");
             bundle.put("checkOutputExistence", "Checks if the output file already exists. If it does, the program will be cancelled. This option is used to ensure that data is not overwritten.");
@@ -397,10 +395,10 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         }
     }
 
-    public Path getOutputDownloadDir() {
+    public Path getDownloadDir() {
         checkExecuted();
         if(outputDownloadDir == null) {
-            return getOutputDir().resolve(DOWNLOAD_DIR_NAME);
+            return getOutputDir().resolve(IRPact.DOWNLOAD_DIR_NAME);
         } else {
             return outputDownloadDir;
         }
@@ -526,6 +524,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
 
     private boolean cancelValidation() {
         return skipArgValidation
+                || isTestCl()
                 || isCallSub()
                 || isPrintHelpOrVersion();
     }

@@ -23,6 +23,8 @@ public final class ParamUtil {
     public static final String DATA_DELIMITER = "_";
     public static final String NAME_DELIMITER = "_";
 
+    public static final String BOOLEAN_DOMAIN = "[0|1]";
+
     private ParamUtil() {
     }
 

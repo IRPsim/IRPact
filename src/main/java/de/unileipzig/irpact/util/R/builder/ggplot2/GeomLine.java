@@ -27,6 +27,23 @@ public class GeomLine extends Component {
         return getString(DATA);
     }
 
+    public void setSize(String size) {
+        setIgnoreQuote(SIZE, size);
+    }
+    public void setSize(int size) {
+        setSize(Integer.toString(size));
+    }
+    public void setSize(double size) {
+        setSize(Double.toString(size));
+    }
+
+    public void setLineType(String type) {
+        setForceQuote(LINETYPE, type);
+    }
+    public String getLineType() {
+        return getString(LINETYPE);
+    }
+
     @Override
     protected boolean hasData() {
         return true;

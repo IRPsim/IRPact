@@ -1,10 +1,12 @@
 package de.unileipzig.irpact.core.util.result;
 
 import de.unileipzig.irpact.commons.attribute.Attribute;
+import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.csv.CsvPrinter;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.logging.InfoTag;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
@@ -12,14 +14,28 @@ import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.core.util.MetaData;
+import de.unileipzig.irpact.core.util.img.BasicRealAdoptionData;
+import de.unileipzig.irpact.core.util.img.DataMapper;
+import de.unileipzig.irpact.core.util.img.GnuPlotImageScriptTask;
+import de.unileipzig.irpact.core.util.img.RImageScriptTask;
 import de.unileipzig.irpact.core.util.result.adoptions.*;
+import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.input.image.InOutputImage;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
-import de.unileipzig.irpact.util.R.builder.Element;
+import de.unileipzig.irpact.util.R.RFileScript;
+import de.unileipzig.irpact.util.R.RscriptEngine;
 import de.unileipzig.irpact.util.R.builder.RScriptBuilder;
 import de.unileipzig.irpact.util.R.builder.RScriptFactory;
-import de.unileipzig.irpact.util.R.builder.StringSettings;
+import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
+import de.unileipzig.irpact.util.gnuplot.GnuPlotFileScript;
+import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
+import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotFactory;
+import de.unileipzig.irpact.util.script.BuilderSettings;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -31,31 +47,30 @@ public class ResultManager implements LoggingHelper {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ResultManager.class);
 
-    protected static final StringSettings STRING_SETTINGS = new StringSettings();
+    protected static final de.unileipzig.irpact.util.R.builder.StringSettings R_STRING_SETTINGS
+            = new de.unileipzig.irpact.util.R.builder.StringSettings();
+    protected static final de.unileipzig.irpact.util.gnuplot.builder.StringSettings GNUPLOT_STRING_SETTINGS
+            = new de.unileipzig.irpact.util.gnuplot.builder.StringSettings();
+
+    protected static final BasicRealAdoptionData PLACEHOLDER_REAL_DATA = new BasicRealAdoptionData(0);
+
+    protected String csvDelimiter = ";";
+    protected int lineWidth = 1;
 
     protected MetaData metaData;
     protected MainCommandLineOptions clOptions;
+    protected InRoot inRoot;
     protected SimulationEnvironment environment;
 
     public ResultManager(
             MetaData metaData,
             MainCommandLineOptions clOptions,
+            InRoot inRoot,
             SimulationEnvironment environment) {
         this.metaData = metaData;
         this.clOptions = clOptions;
+        this.inRoot = inRoot;
         this.environment = environment;
-    }
-
-    protected Settings getSettings() {
-        return environment.getSettings();
-    }
-
-    protected List<Integer> getAllSimulationYears() {
-        int firstYear = metaData.getOldestRunInfo().getActualFirstSimulationYear();
-        int lastYear = metaData.getCurrentRunInfo().getLastSimulationYear();
-        return IntStream.rangeClosed(firstYear, lastYear)
-                .boxed()
-                .collect(Collectors.toList());
     }
 
     @Override
@@ -71,9 +86,22 @@ public class ResultManager implements LoggingHelper {
     public void execute() {
         handleResultLogging();
         handleScriptLogging();
+        handleImageCreation();
     }
 
+    //=========================
+    //result
+    //=========================
+
     protected void handleResultLogging() {
+        try {
+            handleResultLogging0();
+        } catch (Throwable t) {
+            error("error when running 'handleResultLogging'", t);
+        }
+    }
+
+    protected void handleResultLogging0() {
         trace("isLogResultAdoptionsZip: {}", getSettings().isLogResultAdoptionsZip());
         if(getSettings().isLogResultAdoptionsZip()) {
             logResultAdoptionsZip();
@@ -90,14 +118,28 @@ public class ResultManager implements LoggingHelper {
         }
     }
 
-    protected List<String> getAllZips(String key) {
-        return environment.getAgents().streamConsumerAgents()
-                .filter(agent -> agent.hasAnyAttribute(key))
-                .map(agent -> {
-                    Attribute attr = agent.findAttribute(key);
-                    return attr.asValueAttribute().getValueAsString();
-                })
-                .collect(Collectors.toList());
+    protected void logResultAdoptionsZip() {
+        CsvPrinter<Object> printer = new CsvPrinter<>();
+        AnnualCumulativeAdoptionsZip analyser = analyseCumulativeAdoptionsZip(true);
+        analyser.initCsvPrinterForValueAndCumulativeValue(printer);
+        print(InfoTag.RESULT_ZIP_ADOPTIONS, printer, analyser);
+    }
+
+    protected void logResultAdoptionsZipPhase() {
+        CsvPrinter<Object> printer = new CsvPrinter<>();
+        AnnualCumulativeAdoptionsZipPhase analyser = new AnnualCumulativeAdoptionsZipPhase();
+        analyser.setZipKey(RAConstants.ZIP);
+        analyser.setYears(getAllSimulationYears());
+        analyser.init(getAllZips(analyser.getZipKey()), AdoptionPhase.VALID_PHASES);
+        analyser.initCsvPrinterForValueAndCumulativeValue(printer);
+        analyser.apply(environment);
+
+        print(InfoTag.RESULT_ZIP_PHASE_ADOPTIONS, printer, analyser);
+    }
+
+    protected void logResultAdoptionsAll() {
+        ExactAdoptionPrinter printer = new ExactAdoptionPrinter();
+        printer.apply(environment);
     }
 
     protected void print(String infoTag, CsvPrinter<Object> printer, AbstractAdoptionAnalyser analyser) {
@@ -114,36 +156,19 @@ public class ResultManager implements LoggingHelper {
         IRPLogging.finishResult(infoTag);
     }
 
-    protected void logResultAdoptionsZip() {
-        CsvPrinter<Object> printer = new CsvPrinter<>();
-        AnnualCumulativeAdoptionsZip analyser = new AnnualCumulativeAdoptionsZip();
-        analyser.setZipKey(RAConstants.ZIP);
-        analyser.setYears(getAllSimulationYears());
-        analyser.init(getAllZips(analyser.getZipKey()));
-        analyser.initCsvPrinterForValueAndCumulativeValue(printer);
-        analyser.apply(environment);
-
-        print("TEMP0", printer, analyser);
-    }
-
-    protected void logResultAdoptionsZipPhase() {
-        CsvPrinter<Object> printer = new CsvPrinter<>();
-        AnnualCumulativeAdoptionsZipPhase analyser = new AnnualCumulativeAdoptionsZipPhase();
-        analyser.setZipKey(RAConstants.ZIP);
-        analyser.setYears(getAllSimulationYears());
-        analyser.init(getAllZips(analyser.getZipKey()), AdoptionPhase.VALID_PHASES);
-        analyser.initCsvPrinterForValueAndCumulativeValue(printer);
-        analyser.apply(environment);
-
-        print("TEMP1", printer, analyser);
-    }
-
-    protected void logResultAdoptionsAll() {
-        ExactAdoptionPrinter printer = new ExactAdoptionPrinter();
-        printer.apply(environment);
-    }
+    //=========================
+    //script - wird wohl entfernt
+    //=========================
 
     protected void handleScriptLogging() {
+        try {
+            handleScriptLogging0();
+        } catch (Throwable t) {
+            error("error when running 'handleScriptLogging0'", t);
+        }
+    }
+
+    protected void handleScriptLogging0() {
         trace("isLogScriptAdoptionsZip: {}", getSettings().isLogScriptAdoptionsZip());
         if(getSettings().isLogScriptAdoptionsZip()) {
             logScriptAdoptionsZip();
@@ -156,39 +181,232 @@ public class ResultManager implements LoggingHelper {
     }
 
     protected void logScriptAdoptionsZip() {
-        RScriptBuilder builder = RScriptFactory.lineChart0(
-                "year", "adoptions", "zip",
-                9, 6, Element.INCH, 600,
-                "Jahre", "Adoptionen", "PLZ"
-        );
-        builder.setSettings(STRING_SETTINGS);
-        print("TEMP3", builder.print());
+        RScriptBuilder builder = RScriptFactory.lineChart0(createBuilderSettingsForZipLineChart());
+        builder.setSettings(R_STRING_SETTINGS);
+        print(InfoTag.SCRIPT_ZIP_ADOPTIONS, builder.print());
 
         CsvPrinter<Object> printer = new CsvPrinter<>();
+        printer.setDelimiter(csvDelimiter);
+        AnnualCumulativeAdoptionsZip analyser = analyseCumulativeAdoptionsZip(false);
+        analyser.initCsvPrinterForValue(printer);
+
+        print(InfoTag.SCRIPT_ZIP_ADOPTIONS_DATA, printer, analyser);
+    }
+
+    protected void logScriptAdoptionsZipPhase() {
+        RScriptBuilder builder = RScriptFactory.stackedBarChart0(createBuilderSettingsForPhaseStackedBar());
+        builder.setSettings(R_STRING_SETTINGS);
+        print(InfoTag.SCRIPT_ZIP_PHASE_ADOPTIONS, builder.print());
+
+        CsvPrinter<Object> printer = new CsvPrinter<>();
+        AnnualCumulativeAdoptionsPhase analyser = analyseCumulativeAdoptionsPhase(false);
+        analyser.initCsvPrinterForCumulativeValue(printer);
+
+        print(InfoTag.SCRIPT_ZIP_PHASE_ADOPTIONS_DATA, printer, analyser);
+    }
+
+    //=========================
+    //image
+    //=========================
+
+    protected void handleImageCreation() {
+        try {
+            handleImageCreation0();
+        } catch (Throwable t) {
+            error("error when running 'handleImageCreation0'", t);
+        }
+    }
+
+    protected void handleImageCreation0() throws ParsingException, IOException {
+        if(inRoot.hasImages()) {
+            for(InOutputImage image: inRoot.getImages()) {
+                switch (image.getEngine()) {
+                    case InOutputImage.ENGINE_GNUPLOT:
+                        handleGnuPlotImage(image);
+                        break;
+
+                    case InOutputImage.ENGINE_R:
+                        handleRImage(image);
+                        break;
+
+                    default:
+                        info("unknown engine: '{}'", image.getEngine());
+                }
+            }
+        }
+    }
+
+    protected void handleGnuPlotImage(InOutputImage image) throws IOException {
+        GnuPlotBuilder builder = getGnuPlotBuilder(image.getMode());
+        if(builder == null) {
+            return;
+        }
+        List<List<String>> data = createGnuPlotData(image.getMode());
+        if(data == null) {
+            return;
+        }
+
+        builder.setSettings(GNUPLOT_STRING_SETTINGS);
+        GnuPlotFileScript fileScript = builder.build();
+        GnuPlotImageScriptTask task = new GnuPlotImageScriptTask(image.isStoreScript(), image.isStoreData(), image.isStoreImage());
+        task.setupCsvAndPng(getTargetDir(), image.getBaseFileName());
+        task.setDelimiter(csvDelimiter);
+        task.run(
+                getGnuPlotEngine(),
+                data,
+                fileScript
+        );
+    }
+
+    protected GnuPlotBuilder getGnuPlotBuilder(int mode) {
+        switch (mode) {
+            case InOutputImage.MODE_ADOPTION_LINECHART:
+                return GnuPlotFactory.lineChart0(
+                        "J\u00e4hrliche Adoptionen nach PLZ", "Jahre", "Adoptionen", csvDelimiter
+                );
+
+            case InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART:
+                return GnuPlotFactory.interactionLineChart0(
+                        "J\u00e4hrliche Adoptionen nach PLZ im Vergleich", "Jahre", "Adoptionen",
+                        csvDelimiter, lineWidth,
+                        null, null, null, null
+                );
+
+            case InOutputImage.MODE_ADOPTION_PHASE_BARCHART:
+                return GnuPlotFactory.stackedBarChart0(
+                        "J\u00e4hrliche kumulierten Adoptionen nach Adoptionsphase", "Jahre", "Adoptionen (kumuliert)", "Adoptionsphasen",
+                        csvDelimiter
+                );
+
+            case InOutputImage.MODE_NOTHING:
+                info("no mode selected ({})", mode);
+                return null;
+
+            default:
+                info("unknown mode: '{}'", mode);
+                return null;
+        }
+    }
+
+    protected void handleRImage(InOutputImage image) throws IOException {
+        RScriptBuilder builder = getRScriptBuilder(image.getMode());
+        if(builder == null) {
+            return;
+        }
+        List<List<String>> data = createRPlotData(image.getMode());
+        if(data == null) {
+            return;
+        }
+
+        RFileScript fileScript = builder.build();
+        RImageScriptTask task = new RImageScriptTask(image.isStoreScript(), image.isStoreData(), image.isStoreImage());
+        task.setupCsvAndPng(getTargetDir(), image.getBaseFileName());
+        task.setDelimiter(csvDelimiter);
+        task.run(
+                getRscriptEngine(),
+                data,
+                fileScript
+        );
+    }
+
+    protected RScriptBuilder getRScriptBuilder(int mode) {
+        switch (mode) {
+            case InOutputImage.MODE_ADOPTION_LINECHART:
+                return RScriptFactory.lineChart0(createBuilderSettingsForZipLineChart());
+
+            case InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART:
+                return RScriptFactory.interactionLineChart1(createBuilderSettingsForInteractionZipLineChart());
+
+            case InOutputImage.MODE_ADOPTION_PHASE_BARCHART:
+                return RScriptFactory.stackedBarChart0(createBuilderSettingsForPhaseStackedBar());
+
+            case InOutputImage.MODE_NOTHING:
+                info("no mode selected ({})", mode);
+                return null;
+
+            default:
+                info("unknown mode: '{}'", mode);
+                return null;
+        }
+    }
+
+    //=========================
+    //util
+    //=========================
+
+    protected Settings getSettings() {
+        return environment.getSettings();
+    }
+
+    protected Path getTargetDir() throws IOException {
+        Path targetDir = clOptions.getDownloadDir();
+        if(Files.notExists(targetDir)) {
+            Files.createDirectories(targetDir);
+        } else {
+            if(!Files.isDirectory(targetDir)) {
+                throw new IOException("no directoy: " + targetDir);
+            }
+        }
+        return targetDir;
+    }
+
+    protected List<String> zips;
+    protected List<String> getAllZips(String key) {
+        if(zips == null) {
+            zips = environment.getAgents().streamConsumerAgents()
+                    .filter(agent -> agent.hasAnyAttribute(key))
+                    .map(agent -> {
+                        Attribute attr = agent.findAttribute(key);
+                        return attr.asValueAttribute().getValueAsString();
+                    })
+                    .collect(Collectors.toList());
+        }
+        return zips;
+    }
+
+    protected List<Integer> years;
+    protected List<Integer> getAllSimulationYears() {
+        if(years == null) {
+            int firstYear = metaData.getOldestRunInfo().getActualFirstSimulationYear();
+            int lastYear = metaData.getCurrentRunInfo().getLastSimulationYear();
+            years = IntStream.rangeClosed(firstYear, lastYear)
+                    .boxed()
+                    .collect(Collectors.toList());
+        }
+        return years;
+    }
+
+    protected GnuPlotEngine gnuPlotEngine;
+    protected GnuPlotEngine getGnuPlotEngine() {
+        if(gnuPlotEngine == null) {
+            gnuPlotEngine = new GnuPlotEngine();
+        }
+        return gnuPlotEngine;
+    }
+
+    protected RscriptEngine rscriptEngine;
+    protected RscriptEngine getRscriptEngine() {
+        if(rscriptEngine == null) {
+            rscriptEngine = new RscriptEngine();
+        }
+        return rscriptEngine;
+    }
+
+    protected AnnualCumulativeAdoptionsZip analyseCumulativeAdoptionsZip(boolean printBoth) {
         AnnualCumulativeAdoptionsZip analyser = new AnnualCumulativeAdoptionsZip();
         analyser.setZipKey(RAConstants.ZIP);
         analyser.setYears(getAllSimulationYears());
         analyser.init(getAllZips(analyser.getZipKey()));
-        analyser.initCsvPrinterForValue(printer);
+        analyser.setPrintBoth(printBoth);
         analyser.apply(environment);
-
-        print("TEMP4", printer, analyser);
+        return analyser;
     }
 
-    protected void logScriptAdoptionsZipPhase() {
-        RScriptBuilder builder = RScriptFactory.stackedBarChart0(
-                "year", "adoptionsCumulative", "phase",
-                9, 6, Element.INCH, 600,
-                "Jahre", "Adoptionen (kumulativ)", "Adoptionsphase"
-        );
-        builder.setSettings(STRING_SETTINGS);
-        print("TEMP5", builder.print());
-
-        CsvPrinter<Object> printer = new CsvPrinter<>();
+    protected AnnualCumulativeAdoptionsPhase analyseCumulativeAdoptionsPhase(boolean printBoth) {
         AnnualCumulativeAdoptionsPhase analyser = new AnnualCumulativeAdoptionsPhase();
         analyser.setYears(getAllSimulationYears());
         analyser.init(AdoptionPhase.NON_INITIAL);
-        analyser.initCsvPrinterForCumulativeValue(printer);
+        analyser.setPrintBoth(printBoth);
         for(ConsumerAgent ca: environment.getAgents().iterableConsumerAgents()) {
             for(AdoptedProduct product: ca.getAdoptedProducts()) {
                 if(product.isNotInitial()) {
@@ -196,7 +414,76 @@ public class ResultManager implements LoggingHelper {
                 }
             }
         }
+        return analyser;
+    }
 
-        print("TEMP6", printer, analyser);
+    protected List<List<String>> createGnuPlotData(int mode) {
+        switch (mode) {
+            case InOutputImage.MODE_ADOPTION_LINECHART:
+                return DataMapper.toGnuPlotData(analyseCumulativeAdoptionsZip(false));
+
+            case InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART:
+                return DataMapper.toGnuPlotDataWithRealData(analyseCumulativeAdoptionsZip(false), PLACEHOLDER_REAL_DATA);
+
+            case InOutputImage.MODE_ADOPTION_PHASE_BARCHART:
+                return DataMapper.toGnuPlotDataWithCumulativeValue(analyseCumulativeAdoptionsPhase(false), Enum::name);
+
+            case InOutputImage.MODE_NOTHING:
+                info("no mode selected ({})", mode);
+                return null;
+
+            default:
+                info("unknown mode: '{}'", mode);
+                return null;
+        }
+    }
+
+    protected List<List<String>> createRPlotData(int mode) {
+        switch (mode) {
+            case InOutputImage.MODE_ADOPTION_LINECHART:
+                return DataMapper.toRData(analyseCumulativeAdoptionsZip(false));
+
+            case InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART:
+                return DataMapper.toRDataWithRealData(analyseCumulativeAdoptionsZip(false), PLACEHOLDER_REAL_DATA);
+
+            case InOutputImage.MODE_ADOPTION_PHASE_BARCHART:
+                return DataMapper.toRDataWithCumulativeValue(analyseCumulativeAdoptionsPhase(false), Enum::name);
+
+            case InOutputImage.MODE_NOTHING:
+                info("no mode selected ({})", mode);
+                return null;
+
+            default:
+                info("unknown mode: '{}'", mode);
+                return null;
+        }
+    }
+
+    protected BuilderSettings createBuilderSettingsForZipLineChart() {
+        return new BuilderSettings()
+                .setXArg("year").setXLab("Jahre")
+                .setYArg("adoptions").setYLab("Adoptionen")
+                .setGrpArg("zip").setGrpLab("PLZ")
+                .setSep(csvDelimiter)
+                .setUseArgsFlag(true).setUsageFlag(BuilderSettings.USAGE_ARG2);
+    }
+
+    protected BuilderSettings createBuilderSettingsForInteractionZipLineChart() {
+        return new BuilderSettings()
+                        .setXArg("year").setXLab("Jahre")
+                        .setYArg("adoptions").setYLab("Adoptionen")
+                        .setGrpArg("zip").setGrpLab("PLZ")
+                        .setDistinctArg("real").setDistinctLab("Reale Daten")
+                        .setSep(csvDelimiter)
+                        .setUseArgsFlag(true).setUsageFlag(BuilderSettings.USAGE_ARG2);
+    }
+
+    protected BuilderSettings createBuilderSettingsForPhaseStackedBar() {
+        return new BuilderSettings()
+                .setXArg("year").setXLab("Jahre")
+                .setYArg("adoptionsCumulative").setYLab("Adoptionen (kumuliert)")
+                .setFillArg("phase").setFillLab("Adoptionsphasen")
+                .setSep(csvDelimiter)
+                .setUseArgsFlag(true).setUsageFlag(BuilderSettings.USAGE_ARG2);
     }
 }

@@ -29,6 +29,7 @@ public interface Element {
     String POSITION = "position";
     String STAT = "stat";
     String VALUES = "values";
+    String SIZE = "size";
 
     String NUMERIC = "numeric";
     String CHARACTER = "character";

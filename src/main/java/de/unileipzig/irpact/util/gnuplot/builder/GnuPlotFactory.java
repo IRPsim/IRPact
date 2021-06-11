@@ -171,11 +171,11 @@ public final class GnuPlotFactory {
         return builder;
     }
 
-    public static GnuPlotBuilder specialLineChart1(
+    public static GnuPlotBuilder interactionLineChart0(
             String title, String xlab, String ylab,
             String sep, int linewidth,
             Object xmin, Object xmax, Object ymin, Object ymax) {
-        return specialLineChart1(
+        return interactionLineChart0(
                 title, xlab, ylab,
                 GnuPlotBuilder.arg(1), sep, GnuPlotBuilder.arg(2), linewidth,
                 xmin, xmax, ymin, ymax,
@@ -183,11 +183,11 @@ public final class GnuPlotFactory {
         );
     }
 
-    public static GnuPlotBuilder specialLineChart1(
+    public static GnuPlotBuilder interactionLineChart0(
             String title, String xlab, String ylab,
             Path input, String sep, Path output, int linewidth,
             Object xmin, Object xmax, Object ymin, Object ymax) {
-        return specialLineChart1(
+        return interactionLineChart0(
                 title, xlab, ylab,
                 GnuPlotBuilder.quote(input), sep, GnuPlotBuilder.quote(output), linewidth,
                 xmin, xmax, ymin, ymax,
@@ -195,11 +195,11 @@ public final class GnuPlotFactory {
         );
     }
 
-    public static GnuPlotBuilder specialLineChart1(
+    public static GnuPlotBuilder interactionLineChart0(
             String title, String xlab, String ylab,
             String rawInput, String sep, String rawOutput, int linewidth,
             Object xmin, Object xmax, Object ymin, Object ymax) {
-        return specialLineChart1(
+        return interactionLineChart0(
                 title, xlab, ylab,
                 rawInput, sep, rawOutput, linewidth,
                 xmin, xmax, ymin, ymax,
@@ -207,7 +207,7 @@ public final class GnuPlotFactory {
         );
     }
 
-    public static GnuPlotBuilder specialLineChart1(
+    public static GnuPlotBuilder interactionLineChart0(
             String title, String xlab, String ylab,
             String rawInput, String sep, String rawOutput, int linewidth,
             Object xmin, Object xmax, Object ymin, Object ymax,
