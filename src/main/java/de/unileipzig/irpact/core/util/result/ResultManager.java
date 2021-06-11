@@ -24,8 +24,10 @@ import de.unileipzig.irpact.io.param.input.image.InOutputImage;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.util.R.RFileScript;
 import de.unileipzig.irpact.util.R.RscriptEngine;
+import de.unileipzig.irpact.util.R.builder.Element;
 import de.unileipzig.irpact.util.R.builder.RScriptBuilder;
 import de.unileipzig.irpact.util.R.builder.RScriptFactory;
+import de.unileipzig.irpact.util.R.builder.ggplot2.Theme;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotFileScript;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
@@ -36,6 +38,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -54,6 +57,9 @@ public class ResultManager implements LoggingHelper {
 
     protected static final BasicRealAdoptionData PLACEHOLDER_REAL_DATA = new BasicRealAdoptionData(0);
 
+    protected static final String RPLOTS_PDF = "Rplots.pdf";
+
+    protected String encoding = Element.UTF8;
     protected String csvDelimiter = ";";
     protected int lineWidth = 1;
 
@@ -87,6 +93,28 @@ public class ResultManager implements LoggingHelper {
         handleResultLogging();
         handleScriptLogging();
         handleImageCreation();
+        cleanUp();
+    }
+
+    protected void cleanUp() {
+        deleteRplotsPdf();
+    }
+
+    protected void deleteRplotsPdf() {
+        delete(Paths.get(RPLOTS_PDF));
+        delete(clOptions.getOutputDir().resolve(RPLOTS_PDF));
+        delete(clOptions.getDownloadDir().resolve(RPLOTS_PDF));
+    }
+
+    private static void delete(Path path) {
+        try {
+            if(Files.exists(path)) {
+                Files.deleteIfExists(path);
+                LOGGER.trace(IRPSection.RESULT, "deleted: '{}'", path);
+            }
+        } catch (IOException e) {
+            LOGGER.error("deleting '" + path + "' failed", e);
+        }
     }
 
     //=========================
@@ -247,6 +275,8 @@ public class ResultManager implements LoggingHelper {
             return;
         }
 
+        trace("handle '{}': storeData={}, storeScript={}, storeImage={}", image.getBaseFileName(), image.isStoreData(), image.isStoreScript(), image.isStoreImage());
+
         GnuPlotBuilder builder = getGnuPlotBuilder(image.getMode());
         if(builder == null) {
             return;
@@ -271,7 +301,7 @@ public class ResultManager implements LoggingHelper {
     protected GnuPlotBuilder getGnuPlotBuilder(int mode) {
         switch (mode) {
             case InOutputImage.MODE_ADOPTION_LINECHART:
-                return GnuPlotFactory.lineChart1(createBuilderSettingsForZipLineChart());
+                return GnuPlotFactory.lineChart0(createBuilderSettingsForZipLineChart());
 
             case InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART:
                 return GnuPlotFactory.interactionLineChart0(createBuilderSettingsForInteractionZipLineChart());
@@ -294,6 +324,8 @@ public class ResultManager implements LoggingHelper {
             info("R not usable, skip '{}'", image.getBaseFileName());
             return;
         }
+
+        trace("handle '{}': storeData={}, storeScript={}, storeImage={}", image.getBaseFileName(), image.isStoreData(), image.isStoreScript(), image.isStoreImage());
 
         RScriptBuilder builder = getRScriptBuilder(image.getMode());
         if(builder == null) {
@@ -318,13 +350,13 @@ public class ResultManager implements LoggingHelper {
     protected RScriptBuilder getRScriptBuilder(int mode) {
         switch (mode) {
             case InOutputImage.MODE_ADOPTION_LINECHART:
-                return RScriptFactory.lineChart0(createBuilderSettingsForZipLineChart());
+                return RScriptFactory.lineChart0(createBuilderSettingsForZipLineChart().setScaleXContinuousBreaks(getYearBreaksForPrettyR()));
 
             case InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART:
-                return RScriptFactory.interactionLineChart1(createBuilderSettingsForInteractionZipLineChart());
+                return RScriptFactory.interactionLineChart0(createBuilderSettingsForInteractionZipLineChart().setScaleXContinuousBreaks(getYearBreaksForPrettyR()));
 
             case InOutputImage.MODE_ADOPTION_PHASE_BARCHART:
-                return RScriptFactory.stackedBarChart0(createBuilderSettingsForPhaseStackedBar());
+                return RScriptFactory.stackedBarChart0(createBuilderSettingsForPhaseStackedBar().setScaleXContinuousBreaks(getYearBreaksForPrettyR()));
 
             case InOutputImage.MODE_NOTHING:
                 info("no mode selected ({})", mode);
@@ -380,6 +412,16 @@ public class ResultManager implements LoggingHelper {
                     .collect(Collectors.toList());
         }
         return years;
+    }
+
+    protected String[] yearBreaks;
+    protected String[] getYearBreaksForPrettyR() {
+        if(yearBreaks == null) {
+            yearBreaks = getAllSimulationYears().stream()
+                    .map(Object::toString)
+                    .toArray(String[]::new);
+        }
+        return yearBreaks;
     }
 
     protected GnuPlotEngine gnuPlotEngine;
@@ -443,13 +485,13 @@ public class ResultManager implements LoggingHelper {
     protected List<List<String>> createGnuPlotData(int mode) {
         switch (mode) {
             case InOutputImage.MODE_ADOPTION_LINECHART:
-                return DataMapper.toGnuPlotData(analyseCumulativeAdoptionsZip(false));
+                return DataMapper.toGnuPlotData(analyseCumulativeAdoptionsZip(false), DataMapper.GNUPLOT_ESCAPE);
 
             case InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART:
-                return DataMapper.toGnuPlotDataWithRealData(analyseCumulativeAdoptionsZip(false), PLACEHOLDER_REAL_DATA);
+                return DataMapper.toGnuPlotDataWithRealData(analyseCumulativeAdoptionsZip(false), PLACEHOLDER_REAL_DATA, DataMapper.GNUPLOT_ESCAPE);
 
             case InOutputImage.MODE_ADOPTION_PHASE_BARCHART:
-                return DataMapper.toGnuPlotDataWithCumulativeValue(analyseCumulativeAdoptionsPhase(false), Enum::name);
+                return DataMapper.toGnuPlotDataWithCumulativeValue(analyseCumulativeAdoptionsPhase(false), Enum::name, DataMapper.GNUPLOT_ESCAPE);
 
             case InOutputImage.MODE_NOTHING:
                 info("no mode selected ({})", mode);
@@ -464,13 +506,13 @@ public class ResultManager implements LoggingHelper {
     protected List<List<String>> createRPlotData(int mode) {
         switch (mode) {
             case InOutputImage.MODE_ADOPTION_LINECHART:
-                return DataMapper.toRData(analyseCumulativeAdoptionsZip(false));
+                return DataMapper.toRData(analyseCumulativeAdoptionsZip(false), DataMapper.IDENTITY);
 
             case InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART:
-                return DataMapper.toRDataWithRealData(analyseCumulativeAdoptionsZip(false), PLACEHOLDER_REAL_DATA);
+                return DataMapper.toRDataWithRealData(analyseCumulativeAdoptionsZip(false), PLACEHOLDER_REAL_DATA, DataMapper.IDENTITY);
 
             case InOutputImage.MODE_ADOPTION_PHASE_BARCHART:
-                return DataMapper.toRDataWithCumulativeValue(analyseCumulativeAdoptionsPhase(false), Enum::name);
+                return DataMapper.toRDataWithCumulativeValue(analyseCumulativeAdoptionsPhase(false), Enum::name, DataMapper.IDENTITY);
 
             case InOutputImage.MODE_NOTHING:
                 info("no mode selected ({})", mode);
@@ -484,34 +526,61 @@ public class ResultManager implements LoggingHelper {
 
     protected BuilderSettings createBuilderSettingsForZipLineChart() {
         return new BuilderSettings()
+                //general
+                .setTitle("J\u00e4hrlichen Adoptionen in Bezug auf die Postleitzahlgebiete")
                 .setXArg("year").setXLab("Jahre")
                 .setYArg("adoptions").setYLab("Adoptionen")
                 .setGrpArg("zip").setGrpLab("PLZ")
                 .setSep(csvDelimiter)
                 .setLineWidth(lineWidth)
+                .setUseArgsFlag(true)
+                .setUsageFlag(BuilderSettings.USAGE_ARG2)
+                .setCenterTitle(true)
+                //R
+                .setEncoding(encoding)
+                .setColClasses(Element.NUMERIC, Element.CHARACTER, Element.NUMERIC)
+                //gnuplot
                 .setXYRangeWildCard()
-                .setUseArgsFlag(true).setUsageFlag(BuilderSettings.USAGE_ARG2);
+                ;
     }
 
     protected BuilderSettings createBuilderSettingsForInteractionZipLineChart() {
         return new BuilderSettings()
+                //general
+                .setTitle("J\u00e4hrlichen Adoptionen in Bezug auf die Postleitzahlgebiete \\n im Vergleich zu realen Daten")
                 .setXArg("year").setXLab("Jahre")
                 .setYArg("adoptions").setYLab("Adoptionen")
                 .setGrpArg("zip").setGrpLab("PLZ")
                 .setDistinctArg("real").setDistinctLab("Reale Daten")
                 .setSep(csvDelimiter)
                 .setLineWidth(lineWidth)
+                .setUseArgsFlag(true)
+                .setUsageFlag(BuilderSettings.USAGE_ARG2)
+                .setCenterTitle(true)
+                //R
+                .setEncoding(encoding)
+                .setColClasses(Element.NUMERIC, Element.CHARACTER, Element.NUMERIC, Element.CHARACTER)
+                //gnuplot
                 .setXYRangeWildCard()
-                .setUseArgsFlag(true).setUsageFlag(BuilderSettings.USAGE_ARG2);
+                ;
     }
 
     protected BuilderSettings createBuilderSettingsForPhaseStackedBar() {
         return new BuilderSettings()
+                //general
+                .setTitle("J\u00e4hrlich kumulierten Adoptionen in Bezug auf die Adoptionsphasen")
                 .setXArg("year").setXLab("Jahre")
                 .setYArg("adoptionsCumulative").setYLab("Adoptionen (kumuliert)")
                 .setFillArg("phase").setFillLab("Adoptionsphasen")
                 .setSep(csvDelimiter)
                 .setBoxWidthAbsolute(0.8)
-                .setUseArgsFlag(true).setUsageFlag(BuilderSettings.USAGE_ARG2);
+                .setUseArgsFlag(true)
+                .setUsageFlag(BuilderSettings.USAGE_ARG2)
+                .setCenterTitle(true)
+                //R
+                .setEncoding(encoding)
+                .setColClasses(Element.NUMERIC, Element.CHARACTER, Element.NUMERIC)
+                //gnuplot
+                ;
     }
 }

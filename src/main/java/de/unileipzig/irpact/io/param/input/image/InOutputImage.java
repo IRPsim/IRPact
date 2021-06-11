@@ -17,12 +17,12 @@ public interface InOutputImage extends InIRPactEntity {
     int MODE_ADOPTION_PHASE_BARCHART = 3;
     Object[] DEFAULT_MODES = {IRPact.IMAGE_ANNUAL_ADOPTIONS, IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS};
 
-    int ENGINE_R = 1;
-    int ENGINE_GNUPLOT = 2;
+    int ENGINE_GNUPLOT = 1;
+    int ENGINE_R = 2;
     Object[] DEFAULT_ENGINE = {ENGINE_GNUPLOT};
 
     static String printEngineDomain() {
-        return "[" + ENGINE_R + ", " + ENGINE_GNUPLOT + "]";
+        return "[" + ENGINE_GNUPLOT + ", " + ENGINE_R + "]";
     }
 
     static String printModeDomain() {

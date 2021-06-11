@@ -18,6 +18,11 @@ public class Library implements Element {
     }
 
     @Override
+    public boolean isPrintable() {
+        return true;
+    }
+
+    @Override
     public boolean print(StringSettings settings, Appendable target) throws IOException {
         target.append("library(");
         target.append(lib);

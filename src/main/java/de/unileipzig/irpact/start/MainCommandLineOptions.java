@@ -39,7 +39,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             bundle.put("inputPath", "Set path to input file.");
             bundle.put("outputPath", "Set path to output file.");
             bundle.put("outputDir", "Set path to output directory. If not set, the output file directory is used.");
-            bundle.put("outputDownloadDir", "Set path to download directory. If not set, the '" + IRPact.DOWNLOAD_DIR_NAME + "' directory in the output directory is used.");
+            bundle.put("downloadDir", "Set path to download directory. If not set, the '" + IRPact.DOWNLOAD_DIR_NAME + "' directory in the output directory is used.");
             bundle.put("imagePath", "Set path to image output file. Without '--noSimulation' the post-simulation network is printed.");
             bundle.put("noSimulation", "Disables everything except initialization. Combined with '--image' the initial network is printed.");
             bundle.put("checkOutputExistence", "Checks if the output file already exists. If it does, the program will be cancelled. This option is used to ensure that data is not overwritten.");
@@ -128,10 +128,10 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
 
     @CommandLine.Option(
             names = { "--downloadDir" },
-            descriptionKey = "outputDownloadDir",
+            descriptionKey = "downloadDir",
             converter = PathConverter.class
     )
-    private Path outputDownloadDir;
+    private Path downloadDir;
 
     @CommandLine.Option(
             names = { "--image" },
@@ -346,6 +346,11 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         return getFallbackBundle();
     }
 
+    public void printVersionAndHelp() {
+        getCommandLine().printVersionHelp(System.out);
+        getCommandLine().usage(System.out);
+    }
+
     //=========================
     //options
     //=========================
@@ -416,10 +421,10 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
 
     public Path getDownloadDir() {
         checkExecuted();
-        if(outputDownloadDir == null) {
+        if(downloadDir == null) {
             return getOutputDir().resolve(IRPact.DOWNLOAD_DIR_NAME);
         } else {
-            return outputDownloadDir;
+            return downloadDir;
         }
     }
 

@@ -31,6 +31,11 @@ public abstract class Component implements Element {
         return false;
     }
 
+    @Override
+    public boolean isPrintable() {
+        return hasData();
+    }
+
     protected boolean appendData(StringSettings settings, Appendable target) throws IOException {
         boolean added = false;
         boolean first = true;

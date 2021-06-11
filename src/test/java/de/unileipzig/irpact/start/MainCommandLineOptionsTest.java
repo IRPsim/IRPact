@@ -19,15 +19,9 @@ class MainCommandLineOptionsTest {
     @Test
     @Disabled
     void testPrintHelp() {
-        MainCommandLineOptions cl = new MainCommandLineOptions("-?");
+        MainCommandLineOptions cl = new MainCommandLineOptions("-v?");
         cl.parse();
-    }
-
-    @Test
-    @Disabled
-    void testPrintVersion() {
-        MainCommandLineOptions cl = new MainCommandLineOptions("-v");
-        cl.parse();
+        cl.printVersionAndHelp();
     }
 
     @Test

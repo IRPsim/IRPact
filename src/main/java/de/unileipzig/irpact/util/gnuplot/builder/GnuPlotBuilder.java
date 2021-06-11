@@ -51,6 +51,10 @@ public class GnuPlotBuilder {
         return quote(print(path));
     }
 
+    public static String escapeUnderscore(String input) {
+        return input.replace("_", "\\\\\\_");
+    }
+
     public static String min(Object a, Object b, boolean parentheses) {
         String text = a + " < " + b + " ? " + a + " : " + b;
         if(parentheses) {

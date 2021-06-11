@@ -118,6 +118,28 @@ public final class BuilderSettings {
         return getIntOr("usageflag", NO_USAGE);
     }
 
+    public BuilderSettings setEscapeSpecialCharacters(boolean escape) {
+        if(escape) {
+            return set("escapespecialcharacters", null);
+        } else {
+            return remove("escapespecialcharacters");
+        }
+    }
+    public boolean escapeSpecialCharacters() {
+        return has("escapespecialcharacters");
+    }
+
+    public BuilderSettings setCenterTitle(boolean center) {
+        if(center) {
+            return set("centertitle", null);
+        } else {
+            return remove("centertitle");
+        }
+    }
+    public boolean centerTitle() {
+        return has("centertitle");
+    }
+
     //=========================
     //intern
     //=========================
@@ -356,5 +378,39 @@ public final class BuilderSettings {
 
     public BuilderSettings setXYRangeWildCard() {
         return setXMin(GnuPlotBuilder.WILDCARD).setXMax(GnuPlotBuilder.WILDCARD).setYMin(GnuPlotBuilder.WILDCARD).setYMax(GnuPlotBuilder.WILDCARD);
+    }
+
+    public BuilderSettings setEncoding(String encoding) {
+        return set("encoding", encoding);
+    }
+    public String getEncoding() {
+        return getAs("encoding");
+    }
+    public boolean hasEncoding() {
+        return has("encoding");
+    }
+
+    public BuilderSettings setColClasses(String... classes) {
+        return set("colclasses", classes);
+    }
+    public String[] getColClasses() {
+        return getAs("colclasses");
+    }
+    public boolean hasColClasses() {
+        return has("colclasses");
+    }
+
+    public BuilderSettings setScaleXContinuousBreaks(String... breaks) {
+        if(breaks == null || breaks.length == 0) {
+            return remove("scalexcontinuousbreaks");
+        } else {
+            return set("scalexcontinuousbreaks", breaks);
+        }
+    }
+    public String[] getScaleXContinuousBreaks() {
+        return getAs("scalexcontinuousbreaks");
+    }
+    public boolean hasScaleXContinuousBreaks() {
+        return has("scalexcontinuousbreaks");
     }
 }

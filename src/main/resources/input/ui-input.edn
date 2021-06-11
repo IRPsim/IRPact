@@ -37,6 +37,30 @@
         ]
       } 
       {
+        :label "Ergebnisvisualisierung" 
+        :description "Hier kann die Ergebnisvisualisierung konfiguriert werden. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird zum Beispiel eine Visualisierung mittels gnuplot und dem Namen 'Ergebnis' definiert, werden folgende drei Dateien erstellt: Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild). Es kann zusätzlich individuell eingestellt werden, welche Dateien gespeichert und zum Download angeboten werden können." 
+        :sections [
+          {
+            :label "Benutzerdefiniert" 
+            :set "set_InGenericOutputImage" 
+            :description "Hier kann für die Bilderzeugung das entsprechende Programm mittels 'Visualisierungsprogramm' individuell eingestellt werden. Der Bezeichner wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem für gnuplot Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild) erstellt. Für R werden Ergebnis.csv (Daten), Ergebnis.R (Skript) und Ergebnis.png (Bild) erstellt" 
+            :tags [["InGenericOutputImage" "engine"] ["InGenericOutputImage" "mode"] ["InGenericOutputImage" "storeScript"] ["InGenericOutputImage" "storeData"] ["InGenericOutputImage" "storeImage"]]
+          } 
+          {
+            :label "gnuplot" 
+            :set "set_InGnuPlotOutputImage" 
+            :description "Die hier definierten Bilder werden mittels gnuplot erstellt. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild) erstellt." 
+            :tags [["InGnuPlotOutputImage" "mode"] ["InGnuPlotOutputImage" "storeScript"] ["InGnuPlotOutputImage" "storeData"] ["InGnuPlotOutputImage" "storeImage"]]
+          } 
+          {
+            :label "R" 
+            :set "set_InROutputImage" 
+            :description "Die hier definierten Bilder werden mittels R erstellt. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem Ergebnis.csv (Daten), Ergebnis.R (Skript) und Ergebnis.png (Bild) erstellt." 
+            :tags [["InROutputImage" "mode"] ["InROutputImage" "storeScript"] ["InROutputImage" "storeData"] ["InROutputImage" "storeImage"]]
+          }
+        ]
+      } 
+      {
         :label "Spezielle Einstellungen" 
         :description "Hier lassen sich spezielle Modi aktivieren." 
         :tags [["InGeneral" "runPVAct"] ["InGeneral" "runOptActDemo"] ["InGeneral" "runMode"] ["InGeneral" "scenarioMode"]] 
@@ -51,7 +75,7 @@
       {
         :label "Über IRPact" 
         :set "set_InAboutPlaceholder" 
-        :description "IRPact v0.0.7" 
+        :description "IRPact v0.1.2" 
         :tags [["InAboutPlaceholder" "placeholder"]]
       }
     ]

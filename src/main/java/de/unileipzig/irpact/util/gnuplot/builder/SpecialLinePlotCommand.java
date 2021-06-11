@@ -8,7 +8,7 @@ import java.text.MessageFormat;
  */
 public class SpecialLinePlotCommand extends PlotCommand {
 
-    protected static final String PATTERN = "{0} u 2:xtic(1) ti col linewidth {1}, for [i=3:*] '' u i ti col linewidth {1}";
+    protected static final String PATTERN = "{0} u 2:xtic(1) ti col linewidth {1}, for [i=3:*] '''' u i ti col linewidth {1}";
     protected String data;
     protected int linewidth;
 

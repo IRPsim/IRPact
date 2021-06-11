@@ -37,7 +37,9 @@ public class VersionSpec extends AbstractSpec<InVersion> {
 
     @Override
     public InVersion toParam(SpecificationHelper rootSpec, SpecificationJob job) throws ParsingException {
-        return new InVersion(rootSpec.getText(TAG_version));
+        InVersion version = new InVersion();
+        version.setVersion(rootSpec.getText(TAG_version));
+        return version;
     }
 
     @Override
