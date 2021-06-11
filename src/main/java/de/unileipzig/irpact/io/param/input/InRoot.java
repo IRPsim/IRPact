@@ -15,6 +15,10 @@ import de.unileipzig.irpact.io.param.input.agent.consumer.*;
 import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulationSize;
 import de.unileipzig.irpact.io.param.input.agent.population.InPopulationSize;
 import de.unileipzig.irpact.io.param.input.agent.population.InRelativeExternConsumerAgentPopulationSize;
+import de.unileipzig.irpact.io.param.input.image.InGenericOutputImage;
+import de.unileipzig.irpact.io.param.input.image.InGnuPlotOutputImage;
+import de.unileipzig.irpact.io.param.input.image.InOutputImage;
+import de.unileipzig.irpact.io.param.input.image.InROutputImage;
 import de.unileipzig.irpact.io.param.input.interest.InProductGroupThresholdEntry;
 import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
@@ -23,6 +27,7 @@ import de.unileipzig.irpact.io.param.input.file.InFile;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
+import de.unileipzig.irpact.io.param.irpopt.*;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.names.InName;
 import de.unileipzig.irpact.io.param.input.process.InProcessPlanNodeFilterScheme;
@@ -40,6 +45,7 @@ import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
+import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
 import de.unileipzig.irpact.start.optact.in.*;
@@ -378,7 +384,7 @@ public class InRoot implements RootClass {
             Section imageSection = new Section();
             imageSection.setPriority(-1);
             imageSection.setLabel("Agentennetzwerk");
-            imageSection.setImage("agentGraph");
+            imageSection.setImage(IRPact.IMAGE_AGENTGRAPH);
             imageSection.setDescription("Agentennetzwerk in IRPact");
             imageSection.setIcon("fa fa-spinner");
             sections.add(imageSection);
@@ -573,6 +579,11 @@ public class InRoot implements RootClass {
             InPVFile.class,
             InSpatialTableFile.class,
 
+//            InGenericOutputImage.class,
+//            InGnuPlotOutputImage.class,
+//            InOutputImage.class,
+//            InROutputImage.class,
+
             InConsumerAgentGroupColor.class,
 
             InProductGroupThresholdEntry.class,
@@ -637,8 +648,21 @@ public class InRoot implements RootClass {
             InVersion.class
     );
 
+    public static final List<ParserInput> IRPOPT = ParserInput.listOf(DefinitionType.INPUT,
+            A.class,
+            ATotal.class,
+            Ii.class,
+            Ii0.class,
+            Jj.class,
+            OptInitial.class,
+            OptSteps.class,
+            OptStore.class,
+            T.class
+    );
+
     public static final List<ParserInput> INPUT_WITH_TEMPLATES = ParserInput.merge(
             INPUT_WITHOUT_TEMPLATES,
+            IRPOPT,
             ParserInput.listOf(DefinitionType.INPUT,
                     OutConsumerAgentGroup.class
             )
@@ -646,6 +670,7 @@ public class InRoot implements RootClass {
 
     public static final List<ParserInput> INPUT_WITH_ROOT = ParserInput.merge(
             INPUT_WITHOUT_TEMPLATES,
+            IRPOPT,
             ParserInput.listOf(DefinitionType.INPUT,
                     InRoot.class
             )
@@ -687,6 +712,10 @@ public class InRoot implements RootClass {
                         addPathElement(res, LOGGING_DATA, LOGGING);
                         addPathElement(res, LOGGING_RESULT, LOGGING);
                         addPathElement(res, LOGGING_SCRIPT, LOGGING);
+//                addPathElement(res, IMAGE, GENERAL_SETTINGS);
+//                        addPathElement(res, InGenericOutputImage.thisName(), IMAGE);
+//                        addPathElement(res, InGnuPlotOutputImage.thisName(), IMAGE);
+//                        addPathElement(res, InROutputImage.thisName(), IMAGE);
                 addPathElement(res, SPECIAL_SETTINGS, GENERAL_SETTINGS);
                     addPathElement(res, VisibleBinaryData.thisName(), SPECIAL_SETTINGS);
                 addPathElement(res, ABOUT, GENERAL_SETTINGS);

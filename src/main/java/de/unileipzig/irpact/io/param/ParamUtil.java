@@ -3,6 +3,7 @@ package de.unileipzig.irpact.io.param;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.MultiCounter;
+import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -265,6 +266,25 @@ public final class ParamUtil {
             Class<?> c,
             String field) {
         computeEntryBuilderIfAbsent(res, c, field).setGamsHidden(true);
+    }
+
+    public static void setDefault(
+            TreeAnnotationResource res,
+            Class<?> c,
+            Object[] defaults) {
+        if(defaults != null && defaults.length > 0) {
+            computeEntryBuilderIfAbsent(res, c).setGamsDefault(StringUtil.concat(", ", defaults));
+        }
+    }
+
+    public static void setDefault(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String field,
+            Object[] defaults) {
+        if(defaults != null && defaults.length > 0) {
+            computeEntryBuilderIfAbsent(res, c, field).setGamsDefault(StringUtil.concat(", ", defaults));
+        }
     }
 
     public static void addEntry(TreeAnnotationResource res, Class<?> c) {

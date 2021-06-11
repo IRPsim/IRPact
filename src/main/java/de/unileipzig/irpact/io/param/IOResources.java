@@ -3,6 +3,7 @@ package de.unileipzig.irpact.io.param;
 import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.irpopt.Ii;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.in.*;
@@ -245,13 +246,13 @@ public final class IOResources extends TreeAnnotationResource {
 
     @Todo("default entfernt")
     protected void initOptActPart2() {
-        Ii_Entry = newEntry();
-        Ii_Entry.set(GENERAL_NAME, "ii");
-        Ii_Entry.set(GAMS_DESCRIPTION, "Simulationshorizont");
-        Ii_Entry.set(GAMS_IDENTIFIER, "SH");
-        Ii_Entry.set(GAMS_HIDDEN, TRUE1);
-        Ii_Entry.set(GAMS_TYPE, GAMS_TIMESERIES);
-        putEntry(Ii.class, Ii_Entry);
+//        Ii_Entry = newEntry();
+//        Ii_Entry.set(GENERAL_NAME, "ii");
+//        Ii_Entry.set(GAMS_DESCRIPTION, "Simulationshorizont");
+//        Ii_Entry.set(GAMS_IDENTIFIER, "SH");
+//        Ii_Entry.set(GAMS_HIDDEN, TRUE1);
+//        Ii_Entry.set(GAMS_TYPE, GAMS_TIMESERIES);
+//        putEntry(Ii.class, Ii_Entry);
         //===
         OptAct_Element = newElement();
         OptAct_Element.set(EDN_LABEL, "OptAct");

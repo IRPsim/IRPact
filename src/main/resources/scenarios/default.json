@@ -13,6 +13,8 @@
       "interpolated" : false
     },
     "scalars" : {
+      "sca_a" : 0,
+      "sca_delta_ii" : 0.0,
       "sca_GraphvizGlobal_fixedNeatoPosition" : 0,
       "sca_GraphvizGlobal_scaleFactor" : 0.0,
       "sca_InGeneral_lastSimulationYear" : 0,
@@ -44,6 +46,8 @@
       "sca_X_MS_DE_country" : 1
     },
     "sets" : {
+      "set_a" : { },
+      "set_a_total" : { },
       "set_AgentGroup" : {
         "Gruppe1" : {
           "par_AgentGroup_numberOfAgents" : 10
@@ -118,6 +122,7 @@
         "WSM1" : { }
       },
       "set_ii" : { },
+      "set_ii_0" : { },
       "set_InAboutPlaceholder" : { },
       "set_InAffinities" : {
         "affs" : { }
@@ -310,7 +315,7 @@
       },
       "set_InUnlinkedGraphTopology" : { },
       "set_InVersion" : {
-        "0_0_4" : {
+        "0_0_6" : {
           "par_InVersion_placeholderVersion" : 0
         }
       },
@@ -323,6 +328,7 @@
           "par_IWattsStrogatzModel_wsmUseThis" : 1
         }
       },
+      "set_jj" : { },
       "set_load_DS" : {
         "load_E1" : { },
         "load_E2" : { }
@@ -339,6 +345,9 @@
         "load_E1" : { },
         "load_E2" : { }
       },
+      "set_optinitial" : { },
+      "set_optsteps" : { },
+      "set_optstore" : { },
       "set_OutConsumerAgentGroup" : { },
       "set_pss" : {
         "load_E1" : { },
@@ -366,6 +375,7 @@
         }
       },
       "set_side_fares" : { },
+      "set_t" : { },
       "set_tech_DEGEN" : {
         "tech_PV1" : { }
       },

@@ -40,6 +40,6 @@ public final class PrintInput implements IRPactExecutor {
 
         IRPLogging.logResult("[PrintInput]", IRPactJson.toLazyString(inRootNode, IRPactJson.DEFAULT));
 
-        irpact.postSimulationWithDummyOutput();
+        irpact.postSimulationWithDummyOutput("DUMMY_PrintInput");
     }
 }

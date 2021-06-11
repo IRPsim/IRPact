@@ -10,10 +10,13 @@ import de.unileipzig.irpact.core.simulation.BasicSettings;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
+import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.defstructure.annotation.GamsParameter;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.Copyable;
+import de.unileipzig.irptools.util.DoubleTimeSeries;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -88,6 +91,32 @@ public class InGeneral implements Copyable {
 
     @FieldDefinition
     public int lastSimulationYear;
+
+    //=========================
+    //IRPopt
+    //=========================
+
+    @FieldDefinition(
+            name = "a",
+            gams = @GamsParameter(
+                    description = "Einlesen des zu optimierenden Jahres",
+                    identifier = "Jahreszahl",
+                    hidden = Constants.TRUE1
+            )
+    )
+    public int a;
+
+    @FieldDefinition(
+            name = "delta_ii",
+            gams = @GamsParameter(
+                    description = "Einlesen der Zeitschrittlänge der Simulationszeitreihen (bezogen auf eine Stunde Bsp. 15 Min = 0.25)",
+                    identifier = "Zeitschrittl\u00e4nge",
+                    domain = "(0,)",
+                    defaultValue = "0.25",
+                    hidden = Constants.TRUE1
+            )
+    )
+    public double deltaii;
 
     //=========================
     //special

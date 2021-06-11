@@ -1156,6 +1156,20 @@ SCALAR sca_InGeneral_timeout
 * - type: Integer
 SCALAR sca_InGeneral_lastSimulationYear
 
+* - description: Einlesen des zu optimierenden Jahres
+* - hidden: 1
+* - identifier: Jahreszahl
+* - type: Integer
+SCALAR sca_a
+
+* - default: 0.25
+* - domain: (0,)
+* - description: Einlesen der Zeitschrittlänge der Simulationszeitreihen (bezogen auf eine Stunde Bsp. 15 Min = 0.25)
+* - hidden: 1
+* - identifier: Zeitschrittlänge
+* - type: Float
+SCALAR sca_delta_ii
+
 * - domain: [0|1]
 * - description: Falls gesetzt, werden automatisch spezielle Einstellungen für PVact bei der Initialisierung ergänzt. Dies betrifft aktuell Produkte und die Prozessmodellzuordnung.
 * - identifier: PVact
@@ -1291,15 +1305,63 @@ SET set_InVersion(*)
 * - type: Integer
 PARAMETER par_InVersion_placeholderVersion(set_InVersion)
 
+* - description: Einlesen des zu optimierenden Jahres
+* - hidden: 1
+* - identifier: Jahreszahl
+* - type: Integer
+SET set_a(*)
+
+* - description: Einlesen der zu optimierenden Jahre
+* - hidden: 1
+* - identifier: Jahreszahl
+* - type: Integer
+SET set_a_total(*)
+
+* - description: Einlesen des Optimierungshorizonts
+* - hidden: 1
+* - identifier: Simulationshorizont
+* - type: TimeSeries
+SET set_ii(set_ii_0)
+
+* - description: Einlesen des Optimierungshorizonts
+* - hidden: 1
+* - identifier: Simulationshorizont
+* - type: TimeSeries
+SET set_ii_0(*)
+
+* - description: Einlesen der Monate
+* - hidden: 1
+* - identifier: Monate
+* - type: String
+SET set_jj(*)
+
+* - description: Einlesen des Initialisierungszeitpunkt des Optimierungshorizonts
+* - hidden: 1
+* - identifier: Initialisierungszeitpunkt des Optimierungshorizonts
+* - type: String
+SET set_optinitial(set_optstore)
+
+* - description: Einlesen des Optimierungszeitpunkte
+* - hidden: 1
+* - identifier: Speicherhorizont
+* - type: String
+SET set_optsteps(set_ii)
+
+* - description: Einlesen des Speicherhorizonts
+* - hidden: 1
+* - identifier: Speicherhorizont
+* - type: TimeSeries
+SET set_optstore(set_ii)
+
+* - description: Einlesen des Optimierungshorizonts
+* - hidden: 1
+* - identifier: Simulationshorizont
+* - type: TimeSeries
+SET set_t(set_ii)
+
 * - identifier: OutConsumerAgentGroup
 * - type: String
 SET set_OutConsumerAgentGroup(*)
-
-* - description: Simulationshorizont
-* - hidden: 1
-* - identifier: SH
-* - type: TimeSeries
-SET set_ii(*)
 
 * - description: Mehrwertsteuer
 * - identifier: MWST

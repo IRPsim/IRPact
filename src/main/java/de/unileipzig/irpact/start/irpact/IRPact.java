@@ -72,13 +72,18 @@ public final class IRPact implements IRPActAccess {
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "0";
     private static final String MINOR_STRING = "0";
-    private static final String BUILD_STRING = "4";
+    private static final String BUILD_STRING = "6";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
     public static final String CL_NAME = "IRPact";
     public static final String CL_VERSION = "Version " + VERSION_STRING;
     public static final String CL_COPY = "(c) 2019-2021";
+
+    public static final String IMAGE_AGENTGRAPH = "agentGraph";
+    public static final String IMAGE_ANNUAL_ADOPTIONS = "AnnualAdoptions";
+    public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS = "ComparedAnnualAdoptions";
+    public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS = "AnnualCumulativeAdoptions";
 
     private static final Map<MainCommandLineOptions, Converter> INPUT_CONVERTS = new WeakHashMap<>();
     private static final Map<MainCommandLineOptions, Converter> OUTPUT_CONVERTS = new WeakHashMap<>();
@@ -535,17 +540,17 @@ public final class IRPact implements IRPActAccess {
         finalTask();
     }
 
-    public void postSimulationWithDummyOutput() {
+    public void postSimulationWithDummyOutput(String dummyName) {
         LOGGER.info(IRPSection.GENERAL, "start dummy post-simulation");
-        createDummyOutput();
+        createDummyOutput(dummyName);
         callCallbacks();
         finalTask();
     }
 
-    private void createDummyOutput() {
+    private void createDummyOutput(String dummyName) {
         LOGGER.info(IRPSection.GENERAL, "create dummy output");
         OutRoot outRoot = new OutRoot();
-        OutConsumerAgentGroup outCag = new OutConsumerAgentGroup("DUMMY");
+        OutConsumerAgentGroup outCag = new OutConsumerAgentGroup(dummyName);
         outCag.setAdoptionsThisPeriod(-1);
         outCag.setAdoptionsCumulative(-1);
         outCag.setInitialAdoptionsThisPeriod(-1);

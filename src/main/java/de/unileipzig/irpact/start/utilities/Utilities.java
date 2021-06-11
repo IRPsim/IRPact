@@ -10,6 +10,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.util.AnnualAdoptionData;
+import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.develop.XXXXXXXXX;
@@ -20,9 +21,7 @@ import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.persistance.JadexPersistenceModul;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.start.irpact.IRPact;
-import de.unileipzig.irpact.util.R.ExistingRScript;
-import de.unileipzig.irpact.util.R.R;
-import de.unileipzig.irpact.util.R.RScriptException;
+import de.unileipzig.irpact.util.script.ScriptException;
 import de.unileipzig.irptools.io.base.AnnualEntry;
 import de.unileipzig.irptools.util.Util;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -122,32 +121,34 @@ public class Utilities {
     //print cumulative adoptions
     //=========================
 
-    private void printCumulativeAdoptions() throws IOException, RScriptException, InterruptedException {
+    @XXXXXXXXX
+    private void printCumulativeAdoptions() throws IOException, ScriptException, InterruptedException {
         LOGGER.trace(IRPSection.UTILITIES, "task: print cumulative adoptions with R");
+        Dev.throwException();
 
-        Path tempFile = getTempCsvFile(utilOptions.getROutput());
-        try {
-            printTempCsvFile(tempFile);
-            runRScriptForCumulativeAdoptions(tempFile);
-        } catch (RScriptException e) {
-            String content = Util.readString(tempFile, StandardCharsets.UTF_8);
-            LOGGER.error(content);
-            throw e;
-        } finally {
-            if(Files.exists(tempFile)) {
-                LOGGER.trace(IRPSection.UTILITIES, "delete temp csv file '{}'", tempFile);
-                Files.delete(tempFile);
-            }
-        }
-
-        LOGGER.trace(IRPSection.UTILITIES, "task 'print cumulative adoptions with R' finished");
+//        Path tempFile = getTempCsvFile(utilOptions.getROutput());
+//        try {
+//            printTempCsvFile(tempFile);
+//            runRScriptForCumulativeAdoptions(tempFile);
+//        } catch (RScriptException e) {
+//            String content = Util.readString(tempFile, StandardCharsets.UTF_8);
+//            LOGGER.error(content);
+//            throw e;
+//        } finally {
+//            if(Files.exists(tempFile)) {
+//                LOGGER.trace(IRPSection.UTILITIES, "delete temp csv file '{}'", tempFile);
+//                Files.delete(tempFile);
+//            }
+//        }
+//
+//        LOGGER.trace(IRPSection.UTILITIES, "task 'print cumulative adoptions with R' finished");
     }
 
     @XXXXXXXXX
     @Todo
     private void printTempCsvFile(Path tempFile) throws IOException {
         LOGGER.trace(IRPSection.UTILITIES, "convert data to csv");
-        if(true) throw new TodoException();
+        Dev.throwException();
 //        ObjectNode rootNode = parseRInputAsOutRoot();
 //        AnnualEntry<OutRoot> outRootEntry = IRPact.convertOutput(mainOptions, rootNode);
 //        OutRoot outRoot = outRootEntry.getData();
@@ -157,7 +158,7 @@ public class Utilities {
 //        printCsv(tempFile, table);
     }
 
-    private void runRScriptForCumulativeAdoptions(Path tempFile) throws IOException, RScriptException, InterruptedException {
+    private void runRScriptForCumulativeAdoptions(Path tempFile) throws IOException, ScriptException, InterruptedException {
         LOGGER.trace(IRPSection.UTILITIES, "run R");
         runRScriptWithInputAndOutput(
                 utilOptions.getRExe(),
@@ -240,22 +241,24 @@ public class Utilities {
             Path rExe,
             Path rScript,
             Path input,
-            Path output) throws IOException, RScriptException, InterruptedException {
+            Path output) throws IOException, ScriptException, InterruptedException {
         runRScriptWithArguments(rExe, rScript, input.toString(), output.toString());
     }
 
+    @XXXXXXXXX
     private static void runRScriptWithArguments(
             Path rExe,
             Path rScript,
-            String... args) throws IOException, RScriptException, InterruptedException {
-        R engine = new R(rExe);
-        ExistingRScript script = new ExistingRScript(rScript);
-        script.addArgs(args);
-        LOGGER.trace(IRPSection.UTILITIES, "run command: {}", script.peekCommand(engine));
-        script.execute(engine);
-        if(script.hasWarning()) {
-            LOGGER.warn("R warning:\n{}", script.printWarning());
-        }
+            String... args) throws IOException, ScriptException, InterruptedException {
+        Dev.throwException();
+//        R engine = new R(rExe);
+//        ExistingRScript script = new ExistingRScript(rScript);
+//        script.addArgs(args);
+//        LOGGER.trace(IRPSection.UTILITIES, "run command: {}", script.peekCommand(engine));
+//        script.execute(engine);
+//        if(script.hasWarning()) {
+//            LOGGER.warn("R warning:\n{}", script.printWarning());
+//        }
     }
 
     //=========================
