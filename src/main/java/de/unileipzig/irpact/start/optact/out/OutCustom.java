@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.start.optact.out;
 
-import de.unileipzig.irpact.start.optact.in.SideCustom;
+import de.unileipzig.irpact.io.param.irpopt.SideCustom;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GamsParameter;

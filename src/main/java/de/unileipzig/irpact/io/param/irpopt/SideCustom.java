@@ -1,8 +1,10 @@
-package de.unileipzig.irpact.start.optact.in;
+package de.unileipzig.irpact.io.param.irpopt;
 
-import de.unileipzig.irpact.io.param.irpopt.Ii;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.defstructure.annotation.*;
+import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.DoubleTimeSeries;
+import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 /**
  * @author Daniel Abitz
@@ -10,16 +12,18 @@ import de.unileipzig.irptools.util.DoubleTimeSeries;
 @Definition(
         name = "side_cust",
         gams = @Gams(
-                description = "Kundengruppe in IRPact",
-                identifier = "KG"
-        ),
-        edn = @Edn(
-                label = "Sets/Kundengruppen",
-                description = {"Hier sind Sets.", "Hier sind Kundengruppen."}
+                description = "Kundengruppe",
+                identifier = "Kundengruppe"
         )
 )
 public class SideCustom extends Side {
 
+    public static void initRes(TreeAnnotationResource res) {
+    }
+    public static void applyRes(TreeAnnotationResource res) {
+    }
+
+    @Todo("ENTFERNEN")
     @FieldDefinition(
             name = "S_DS",
             gams = @GamsParameter(
@@ -30,6 +34,7 @@ public class SideCustom extends Side {
     )
     public int number;
 
+    @Todo("ENTFERNEN")
     @FieldDefinition(
             name = "kg_modifier",
             gams = @GamsParameter(
@@ -40,6 +45,7 @@ public class SideCustom extends Side {
     )
     public int delta;
 
+    @Todo("ENTFERNEN")
     @FieldDefinition(
             name = "IuO_ESector_CustSide",
             timeSeries = Ii.class,
@@ -59,5 +65,14 @@ public class SideCustom extends Side {
         this.timeStuff = timeStuff;
         this.number = number;
         this.delta = delta;
+    }
+
+    @Override
+    public SideCustom copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public SideCustom newCopy(CopyCache cache) {
+        return new SideCustom();
     }
 }

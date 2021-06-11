@@ -1317,6 +1317,11 @@ SET set_a(*)
 * - type: Integer
 SET set_a_total(*)
 
+* - description: Bitte geben Sie hier das absolute jährliche Wachstum der Kundengruppe an
+* - identifier: Absolutes Wachstum der Kundengruppe pro Jahr
+* - type: Float
+PARAMETER par_S_DS_growth_absolute(set_a_total,set_side_cust)
+
 * - description: Einlesen des Optimierungshorizonts
 * - hidden: 1
 * - identifier: Simulationshorizont
@@ -1352,6 +1357,35 @@ SET set_optsteps(set_ii)
 * - identifier: Speicherhorizont
 * - type: TimeSeries
 SET set_optstore(set_ii)
+
+* - description: Marktteilnehmer
+* - hidden: 1
+* - identifier: MT
+* - type: String
+SET set_side(*)
+
+* - description: Kundengruppe
+* - identifier: Kundengruppe
+* - type: String
+SET set_side_cust(set_side)
+
+* - default: 10
+* - description: Anzahl der Kunden
+* - identifier: KGA
+* - type: Integer
+PARAMETER par_S_DS(set_side_cust)
+
+* - default: 5
+* - description: Erhöht die Anzahl der Kunden in der Gruppe um den gewünschten Wert.
+* - identifier: KGAM
+* - type: Integer
+PARAMETER par_kg_modifier(set_side_cust)
+
+* - description: Stromsparte je Kundengruppe
+* - identifier: SK
+* - unit: [EUR]
+* - type: Float
+PARAMETER par_IuO_ESector_CustSide(set_ii,set_side_cust)
 
 * - description: Einlesen des Optimierungshorizonts
 * - hidden: 1
@@ -1441,35 +1475,6 @@ SET set_pss(*)
 * - identifier: Energiesektor
 * - type: String
 SET set_sector(*)
-
-* - description: Marktteilnehmer
-* - hidden: 1
-* - identifier: MT
-* - type: String
-SET set_side(*)
-
-* - description: Kundengruppe in IRPact
-* - identifier: KG
-* - type: String
-SET set_side_cust(set_side)
-
-* - default: 10
-* - description: Anzahl der Kunden
-* - identifier: KGA
-* - type: Integer
-PARAMETER par_S_DS(set_side_cust)
-
-* - default: 5
-* - description: Erhöht die Anzahl der Kunden in der Gruppe um den gewünschten Wert.
-* - identifier: KGAM
-* - type: Integer
-PARAMETER par_kg_modifier(set_side_cust)
-
-* - description: Stromsparte je Kundengruppe
-* - identifier: SK
-* - unit: [EUR]
-* - type: Float
-PARAMETER par_IuO_ESector_CustSide(set_ii,set_side_cust)
 
 * - description: Tarifteilnehmer
 * - hidden: 1

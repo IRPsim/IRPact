@@ -27,6 +27,7 @@ import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSpatialDistribution2D;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
+import de.unileipzig.irpact.io.param.irpopt.SideCustom;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.in.*;
 import de.unileipzig.irpact.start.optact.network.IFreeMultiGraphTopology;

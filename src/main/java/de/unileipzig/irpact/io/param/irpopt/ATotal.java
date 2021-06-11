@@ -2,10 +2,12 @@ package de.unileipzig.irpact.io.param.irpopt;
 
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irptools.Constants;
-import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.Gams;
+import de.unileipzig.irptools.defstructure.annotation.*;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Daniel Abitz
@@ -27,6 +29,16 @@ public class ATotal implements InIRPactEntity {
     }
 
     public String _name;
+
+    @FieldDefinition(
+            name = "S_DS_growth_absolute",
+            gams = @GamsParameter(
+                    description = "Bitte geben Sie hier das absolute j\u00e4hrliche Wachstum der Kundengruppe an",
+                    identifier = "Absolutes Wachstum der Kundengruppe pro Jahr"
+            )
+    )
+    @MapInfo(key = SideCustom.class, value = double.class, factory = @Factory(clazz = HashMap.class))
+    public Map<SideCustom, Double> growthAbsolute = new HashMap<>();
 
     public ATotal() {
     }

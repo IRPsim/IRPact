@@ -82,6 +82,37 @@ public class InRoot implements RootClass {
     public static final InRoot INSTANCE = new InRoot();
 
     //=========================
+    //IRPopt
+    //=========================
+
+    @FieldDefinition
+    public A[] a = new A[0];
+
+    @FieldDefinition
+    public ATotal[] aTotal = new ATotal[0];
+
+    @FieldDefinition
+    public Ii[] ii = new Ii[0];
+
+    @FieldDefinition
+    public Ii0[] ii0 = new Ii0[0];
+
+    @FieldDefinition
+    public Jj[] jj = new Jj[0];
+
+    @FieldDefinition
+    public OptInitial[] optInitial = new OptInitial[0];
+
+    @FieldDefinition
+    public OptSteps[] optSteps = new OptSteps[0];
+
+    @FieldDefinition
+    public OptStore[] optStore = new OptStore[0];
+
+    @FieldDefinition
+    public T[] t = new T[0];
+
+    //=========================
     //general
     //=========================
 
@@ -176,6 +207,27 @@ public class InRoot implements RootClass {
     public InPopulationSize[] getAgentPopulationSizes() throws ParsingException {
         return getNonNullArray(agentPopulationSizes, "agentPopulationSizes");
     }
+
+    //=========================
+    //image
+    //=========================
+
+    //TODO
+//    @FieldDefinition
+//    public InOutputImage[] images = new InOutputImage[0];
+//
+//    public boolean hasImages() {
+//        return images != null && images.length > 0;
+//    }
+//    public InOutputImage[] getImages() throws ParsingException {
+//        return getNonNullArray(images, "images");
+//    }
+//    public void setImages(InOutputImage[] images) {
+//        this.images = images;
+//    }
+//    public void setImages(Collection<? extends InOutputImage> images) {
+//        this.images = images.toArray(new InOutputImage[0]);
+//    }
 
     //=========================
     //binary
@@ -579,6 +631,7 @@ public class InRoot implements RootClass {
             InPVFile.class,
             InSpatialTableFile.class,
 
+//            TODO
 //            InGenericOutputImage.class,
 //            InGnuPlotOutputImage.class,
 //            InOutputImage.class,
@@ -657,6 +710,8 @@ public class InRoot implements RootClass {
             OptInitial.class,
             OptSteps.class,
             OptStore.class,
+            Side.class,
+            SideCustom.class,
             T.class
     );
 
@@ -702,6 +757,7 @@ public class InRoot implements RootClass {
     //UI
     //=========================
 
+    //TODO
     public static void initRes(TreeAnnotationResource res) {
         IOResources.Data userData = res.getUserDataAs();
         MultiCounter counter = userData.getCounter();
