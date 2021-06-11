@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.start.optact.in;
 
+import de.unileipzig.irpact.io.param.irpopt.Side;
+import de.unileipzig.irpact.io.param.irpopt.SideCustom;
 import de.unileipzig.irptools.defstructure.DefaultScenarioFactory;
 import de.unileipzig.irptools.defstructure.DefinitionType;
 import de.unileipzig.irptools.defstructure.ParserInput;
@@ -29,8 +31,6 @@ public class InRoot implements RootClass, DefaultScenarioFactory {
             ParserInput.newInstance(DefinitionType.INPUT, LoadDSLOA.class),
             ParserInput.newInstance(DefinitionType.INPUT, Pss.class),
             ParserInput.newInstance(DefinitionType.INPUT, Sector.class),
-            ParserInput.newInstance(DefinitionType.INPUT, Side.class),
-            ParserInput.newInstance(DefinitionType.INPUT, SideCustom.class),
             ParserInput.newInstance(DefinitionType.INPUT, SideFares.class),
             ParserInput.newInstance(DefinitionType.INPUT, TechDEGEN.class),
             ParserInput.newInstance(DefinitionType.INPUT, TechDES.class),

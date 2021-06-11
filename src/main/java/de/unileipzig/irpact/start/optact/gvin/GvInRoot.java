@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.start.optact.gvin;
 
+import de.unileipzig.irpact.io.param.irpopt.SideCustom;
 import de.unileipzig.irpact.start.optact.OptActRes;
 import de.unileipzig.irpact.start.optact.in.*;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;

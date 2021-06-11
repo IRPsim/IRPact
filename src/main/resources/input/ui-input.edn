@@ -51,7 +51,7 @@
       {
         :label "Über IRPact" 
         :set "set_InAboutPlaceholder" 
-        :description "IRPact v0.0.6" 
+        :description "IRPact v0.0.7" 
         :tags [["InAboutPlaceholder" "placeholder"]]
       }
     ]
@@ -584,6 +584,36 @@
         :description "Modul mit Testparametern für die Kopplung." 
         :sections [
           {
+            :label "Set" 
+            :description "Hier sind Sets." 
+            :sections [
+              {
+                :label "Kundengruppen" 
+                :set "set_side_cust" 
+                :description "Hier sind Kundengruppen." 
+                :tags [["S" "DS"] ["kg" "modifier"] ["IuO" "ESector" "CustSide"]]
+              } 
+              {
+                :label "Strom-Verbrauchertechnologie" 
+                :set "set_load_DS_E" 
+                :description "Hier sind Strom-Verbrauchertechnologie" 
+                :tags [["L" "DS" "E"]]
+              } 
+              {
+                :label "Stromspeicher" 
+                :set "set_tech_DES_ES" 
+                :description "Hier sind Stromspeicher." 
+                :tags [["Inc" "PS" "ES"]]
+              } 
+              {
+                :label "PV" 
+                :set "set_tech_DES_PV" 
+                :description "Hier sind PV." 
+                :tags [["A" "DES" "PV"]]
+              }
+            ]
+          } 
+          {
             :label "Skalare und einfache Zeitreihen" 
             :description "Hier sind die skalaren Werte und einfache Zeitreihen" 
             :sections [
@@ -614,36 +644,6 @@
                 :set "set_load_DS_E" 
                 :description "Hier stehen Zeitreihen als Tables-Einträge." 
                 :tags [["F" "E" "EGrid" "energy"]]
-              }
-            ]
-          } 
-          {
-            :label "Set" 
-            :description "Hier sind Sets." 
-            :sections [
-              {
-                :label "Strom-Verbrauchertechnologie" 
-                :set "set_load_DS_E" 
-                :description "Hier sind Strom-Verbrauchertechnologie" 
-                :tags [["L" "DS" "E"]]
-              } 
-              {
-                :label "Kundengruppen" 
-                :set "set_side_cust" 
-                :description "Hier sind Kundengruppen." 
-                :tags [["S" "DS"] ["kg" "modifier"] ["IuO" "ESector" "CustSide"]]
-              } 
-              {
-                :label "Stromspeicher" 
-                :set "set_tech_DES_ES" 
-                :description "Hier sind Stromspeicher." 
-                :tags [["Inc" "PS" "ES"]]
-              } 
-              {
-                :label "PV" 
-                :set "set_tech_DES_PV" 
-                :description "Hier sind PV." 
-                :tags [["A" "DES" "PV"]]
               }
             ]
           } 

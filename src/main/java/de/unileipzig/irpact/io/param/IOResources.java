@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param;
 import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.irpopt.Ii;
+import de.unileipzig.irpact.io.param.irpopt.SideCustom;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.in.*;
@@ -405,18 +405,18 @@ public final class IOResources extends TreeAnnotationResource {
         Sector_Entry.set(GAMS_DEFAULT, "E");
         putEntry(Sector.class, Sector_Entry);
         //===
-        Side_Entry = newEntry();
-        Side_Entry.set(GENERAL_NAME, "side");
-        Side_Entry.set(GAMS_DESCRIPTION, "Marktteilnehmer");
-        Side_Entry.set(GAMS_IDENTIFIER, "MT");
-        Side_Entry.set(GAMS_HIDDEN, TRUE1);
-        putEntry(Side.class, Side_Entry);
+//        Side_Entry = newEntry();
+//        Side_Entry.set(GENERAL_NAME, "side");
+//        Side_Entry.set(GAMS_DESCRIPTION, "Marktteilnehmer");
+//        Side_Entry.set(GAMS_IDENTIFIER, "MT");
+//        Side_Entry.set(GAMS_HIDDEN, TRUE1);
+//        putEntry(Side.class, Side_Entry);
         //===
-        SideCustom_Entry = newEntry();
-        SideCustom_Entry.set(GENERAL_NAME, "side_cust");
-        SideCustom_Entry.set(GAMS_DESCRIPTION, "Kundengruppe in IRPact");
-        SideCustom_Entry.set(GAMS_IDENTIFIER, "KG");
-        putEntry(SideCustom.class, SideCustom_Entry);
+//        SideCustom_Entry = newEntry();
+//        SideCustom_Entry.set(GENERAL_NAME, "side_cust");
+//        SideCustom_Entry.set(GAMS_DESCRIPTION, "Kundengruppe in IRPact");
+//        SideCustom_Entry.set(GAMS_IDENTIFIER, "KG");
+//        putEntry(SideCustom.class, SideCustom_Entry);
 
         Set_Kundengruppen_Element = newElement();
         Set_Kundengruppen_Element.set(EDN_LABEL, "Kundengruppen");

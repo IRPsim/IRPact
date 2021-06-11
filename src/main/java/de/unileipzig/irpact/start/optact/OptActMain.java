@@ -3,7 +3,7 @@ package de.unileipzig.irpact.start.optact;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.gvin.GvInRoot;
-import de.unileipzig.irpact.start.optact.in.SideCustom;
+import de.unileipzig.irpact.io.param.irpopt.SideCustom;
 import de.unileipzig.irpact.start.optact.out.OutCustom;
 import de.unileipzig.irpact.start.optact.out.OutRoot;
 import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;

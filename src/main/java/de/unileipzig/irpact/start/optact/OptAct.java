@@ -8,7 +8,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
-import de.unileipzig.irpact.start.optact.in.SideCustom;
+import de.unileipzig.irpact.io.param.irpopt.SideCustom;
 import de.unileipzig.irpact.start.optact.out.OutCustom;
 import de.unileipzig.irpact.start.optact.out.OutRoot;
 import de.unileipzig.irptools.defstructure.AnnotationParser;
