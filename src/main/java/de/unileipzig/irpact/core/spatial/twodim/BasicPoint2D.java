@@ -63,7 +63,11 @@ public class BasicPoint2D implements Point2D {
         }
     }
 
-    public void setId(long id) {
+    @Override
+    public void setId(long id) throws IllegalStateException {
+        if(hasId()) {
+            throw new IllegalStateException();
+        }
         this.id.set(id);
     }
 

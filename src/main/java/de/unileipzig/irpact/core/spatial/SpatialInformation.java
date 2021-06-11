@@ -22,6 +22,8 @@ public interface SpatialInformation extends ChecksumComparable {
         }
     }
 
+    void setId(long id) throws IllegalStateException;
+
     boolean hasId();
 
     boolean isId(long id);
