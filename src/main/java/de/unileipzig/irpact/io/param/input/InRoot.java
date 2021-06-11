@@ -110,6 +110,12 @@ public class InRoot implements RootClass {
     public OptStore[] optStore = new OptStore[0];
 
     @FieldDefinition
+    public Side[] side = new Side[0];
+
+    @FieldDefinition
+    public SideCustom[] sideCustom = new SideCustom[0];
+
+    @FieldDefinition
     public T[] t = new T[0];
 
     //=========================
