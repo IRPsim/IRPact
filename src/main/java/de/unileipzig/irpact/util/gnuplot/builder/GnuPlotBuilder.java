@@ -264,6 +264,10 @@ public class GnuPlotBuilder {
         add(new PlotCommand(data + " u 2:xtic(1) ti col, for [i=3:*] '' u i ti col"));
     }
 
+    public void plotRawRowBasedDataWithColumn1AsLabel(String data, int linewidth) {
+        add(new PlotCommand(data + " u 2:xtic(1) ti col linewidth " + linewidth + ", for [i=3:*] '' u i ti col linewidth " + linewidth));
+    }
+
     public void plotSpecialLinePlot(String data, int linewidth) {
         plotRawSpecialLinePlot(quote(data), linewidth);
     }

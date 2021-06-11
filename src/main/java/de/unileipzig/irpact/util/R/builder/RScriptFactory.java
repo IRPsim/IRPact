@@ -62,7 +62,7 @@ public final class RScriptFactory {
         Library lib = new Library("ggplot2");
 
         ReadDotCsv csv = new ReadDotCsv("inputdata");
-        csv.setFileName(settings.useArgsFlag() ? args.getNamedIndex(1) : settings.nonNull().getInputFile());
+        csv.setFileName(settings.useArgsFlag() ? args.getNamedIndex(1) : settings.nonNull().getInputFile().toString());
         csv.setHeader(true);
         csv.setSep(settings.nonNull().getSep());
         csv.setColClasses(Element.NUMERIC, Element.NUMERIC, Element.CHARACTER);
@@ -84,7 +84,7 @@ public final class RScriptFactory {
         labs.setColour(settings.nonNull().getGrpLab());
 
         Ggsave save = new Ggsave();
-        save.setFileName(settings.useArgsFlag() ? args.getNamedIndex(2) : settings.nonNull().getOutputFile());
+        save.setFileName(settings.useArgsFlag() ? args.getNamedIndex(2) : settings.nonNull().getOutputFile().toString());
         if(settings.hasWidht()) save.setWidth(settings.nonNull().getWidht());
         if(settings.hasHeight()) save.setHeight(settings.nonNull().getHeight());
         if(settings.hasUnits()) save.setUnits(settings.nonNull().getUnits());
@@ -122,7 +122,7 @@ public final class RScriptFactory {
         Library lib = new Library("ggplot2");
 
         ReadDotCsv csv = new ReadDotCsv("inputdata");
-        csv.setFileName(settings.useArgsFlag() ? args.getNamedIndex(1) : settings.nonNull().getInputFile());
+        csv.setFileName(settings.useArgsFlag() ? args.getNamedIndex(1) : settings.nonNull().getInputFile().toString());
         csv.setHeader(true);
         csv.setSep(settings.nonNull().getSep());
         csv.setColClasses(Element.NUMERIC, Element.NUMERIC, Element.CHARACTER, Element.CHARACTER);
@@ -150,7 +150,7 @@ public final class RScriptFactory {
         }
 
         Ggsave save = new Ggsave();
-        save.setFileName(settings.useArgsFlag() ? args.getNamedIndex(2) : settings.nonNull().getOutputFile());
+        save.setFileName(settings.useArgsFlag() ? args.getNamedIndex(2) : settings.nonNull().getOutputFile().toString());
         if(settings.hasWidht()) save.setWidth(settings.nonNull().getWidht());
         if(settings.hasHeight()) save.setHeight(settings.nonNull().getHeight());
         if(settings.hasUnits()) save.setUnits(settings.nonNull().getUnits());
@@ -188,7 +188,7 @@ public final class RScriptFactory {
         Library lib = new Library("ggplot2");
 
         ReadDotCsv csv = new ReadDotCsv("inputdata");
-        csv.setFileName(settings.useArgsFlag() ? args.getNamedIndex(1) : settings.nonNull().getInputFile());
+        csv.setFileName(settings.useArgsFlag() ? args.getNamedIndex(1) : settings.nonNull().getInputFile().toString());
         csv.setHeader(true);
         csv.setSep(settings.nonNull().getSep());
         csv.setColClasses(Element.NUMERIC, Element.CHARACTER, Element.NUMERIC);
@@ -209,7 +209,7 @@ public final class RScriptFactory {
         labs.setFill(settings.nonNull().getFillLab());
 
         Ggsave save = new Ggsave();
-        save.setFileName(settings.useArgsFlag() ? args.getNamedIndex(2) : settings.nonNull().getOutputFile());
+        save.setFileName(settings.useArgsFlag() ? args.getNamedIndex(2) : settings.nonNull().getOutputFile().toString());
         if(settings.hasWidht()) save.setWidth(settings.nonNull().getWidht());
         if(settings.hasHeight()) save.setHeight(settings.nonNull().getHeight());
         if(settings.hasUnits()) save.setUnits(settings.nonNull().getUnits());

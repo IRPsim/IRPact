@@ -1,5 +1,8 @@
 package de.unileipzig.irpact.util.script;
 
+import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
+
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,6 +87,11 @@ public final class BuilderSettings {
         return (R) value;
     }
 
+    public <R> R getAsOr(String key, R other) {
+        R value = getAs(key);
+        return value == null ? other : value;
+    }
+
     public boolean has(String key) {
         return data.containsKey(key);
     }
@@ -114,17 +122,17 @@ public final class BuilderSettings {
     //intern
     //=========================
 
-    public BuilderSettings setInputFile(String text) {
-        return set("inputfile", text);
+    public BuilderSettings setInputFile(Path path) {
+        return set("inputfile", path);
     }
-    public String getInputFile() {
+    public Path getInputFile() {
         return getAs("inputfile");
     }
 
-    public BuilderSettings setOutputFile(String text) {
-        return set("outputfile", text);
+    public BuilderSettings setOutputFile(Path path) {
+        return set("outputfile", path);
     }
-    public String getOutputFile() {
+    public Path getOutputFile() {
         return getAs("outputfile");
     }
 
@@ -222,6 +230,9 @@ public final class BuilderSettings {
     public String getLineWidth() {
         return getAs("linewidth");
     }
+    public int getLineWidthInt() {
+        return Integer.parseInt(getAsOr("linewidth", "1"));
+    }
     public boolean hasLineWidth() {
         return has("linewidth");
     }
@@ -266,6 +277,9 @@ public final class BuilderSettings {
     public String getTitle() {
         return getAs("title");
     }
+    public boolean hasTitle() {
+        return has("title");
+    }
 
     public BuilderSettings setXLab(String text) {
         return set("xlab", text);
@@ -287,6 +301,9 @@ public final class BuilderSettings {
     public String getFillLab() {
         return getAs("filllab");
     }
+    public boolean hasFillLab() {
+        return has("filllab");
+    }
 
     public BuilderSettings setGrpLab(String text) {
         return set("grplab", text);
@@ -300,5 +317,44 @@ public final class BuilderSettings {
     }
     public String getDistinctLab() {
         return getAs("distinctlab");
+    }
+
+    public BuilderSettings setBoxWidthAbsolute(double value) {
+        return set("boxwidthabsolute", value);
+    }
+    public double getBoxWidthAbsolute() {
+        return getDoubleOr("boxwidthabsolute", 1.0);
+    }
+
+    public BuilderSettings setXMin(Object value) {
+        return set("xmin", value);
+    }
+    public Object getXMin() {
+        return getAs("xmin");
+    }
+
+    public BuilderSettings setXMax(Object value) {
+        return set("xmax", value);
+    }
+    public Object getXMax() {
+        return getAs("xmax");
+    }
+
+    public BuilderSettings setYMin(Object value) {
+        return set("ymin", value);
+    }
+    public Object getYMin() {
+        return getAs("ymin");
+    }
+
+    public BuilderSettings setYMax(Object value) {
+        return set("ymax", value);
+    }
+    public Object getYMax() {
+        return getAs("ymax");
+    }
+
+    public BuilderSettings setXYRangeWildCard() {
+        return setXMin(GnuPlotBuilder.WILDCARD).setXMax(GnuPlotBuilder.WILDCARD).setYMin(GnuPlotBuilder.WILDCARD).setYMax(GnuPlotBuilder.WILDCARD);
     }
 }

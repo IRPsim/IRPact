@@ -261,22 +261,13 @@ public class ResultManager implements LoggingHelper {
     protected GnuPlotBuilder getGnuPlotBuilder(int mode) {
         switch (mode) {
             case InOutputImage.MODE_ADOPTION_LINECHART:
-                return GnuPlotFactory.lineChart0(
-                        "J\u00e4hrliche Adoptionen nach PLZ", "Jahre", "Adoptionen", csvDelimiter
-                );
+                return GnuPlotFactory.lineChart1(createBuilderSettingsForZipLineChart());
 
             case InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART:
-                return GnuPlotFactory.interactionLineChart0(
-                        "J\u00e4hrliche Adoptionen nach PLZ im Vergleich", "Jahre", "Adoptionen",
-                        csvDelimiter, lineWidth,
-                        null, null, null, null
-                );
+                return GnuPlotFactory.interactionLineChart0(createBuilderSettingsForInteractionZipLineChart());
 
             case InOutputImage.MODE_ADOPTION_PHASE_BARCHART:
-                return GnuPlotFactory.stackedBarChart0(
-                        "J\u00e4hrliche kumulierten Adoptionen nach Adoptionsphase", "Jahre", "Adoptionen (kumuliert)", "Adoptionsphasen",
-                        csvDelimiter
-                );
+                return GnuPlotFactory.stackedBarChart0(createBuilderSettingsForPhaseStackedBar());
 
             case InOutputImage.MODE_NOTHING:
                 info("no mode selected ({})", mode);
@@ -465,17 +456,21 @@ public class ResultManager implements LoggingHelper {
                 .setYArg("adoptions").setYLab("Adoptionen")
                 .setGrpArg("zip").setGrpLab("PLZ")
                 .setSep(csvDelimiter)
+                .setLineWidth(lineWidth)
+                .setXYRangeWildCard()
                 .setUseArgsFlag(true).setUsageFlag(BuilderSettings.USAGE_ARG2);
     }
 
     protected BuilderSettings createBuilderSettingsForInteractionZipLineChart() {
         return new BuilderSettings()
-                        .setXArg("year").setXLab("Jahre")
-                        .setYArg("adoptions").setYLab("Adoptionen")
-                        .setGrpArg("zip").setGrpLab("PLZ")
-                        .setDistinctArg("real").setDistinctLab("Reale Daten")
-                        .setSep(csvDelimiter)
-                        .setUseArgsFlag(true).setUsageFlag(BuilderSettings.USAGE_ARG2);
+                .setXArg("year").setXLab("Jahre")
+                .setYArg("adoptions").setYLab("Adoptionen")
+                .setGrpArg("zip").setGrpLab("PLZ")
+                .setDistinctArg("real").setDistinctLab("Reale Daten")
+                .setSep(csvDelimiter)
+                .setLineWidth(lineWidth)
+                .setXYRangeWildCard()
+                .setUseArgsFlag(true).setUsageFlag(BuilderSettings.USAGE_ARG2);
     }
 
     protected BuilderSettings createBuilderSettingsForPhaseStackedBar() {
@@ -484,6 +479,7 @@ public class ResultManager implements LoggingHelper {
                 .setYArg("adoptionsCumulative").setYLab("Adoptionen (kumuliert)")
                 .setFillArg("phase").setFillLab("Adoptionsphasen")
                 .setSep(csvDelimiter)
+                .setBoxWidthAbsolute(0.8)
                 .setUseArgsFlag(true).setUsageFlag(BuilderSettings.USAGE_ARG2);
     }
 }
