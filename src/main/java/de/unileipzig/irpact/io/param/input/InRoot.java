@@ -17,6 +17,7 @@ import de.unileipzig.irpact.io.param.input.agent.population.InPopulationSize;
 import de.unileipzig.irpact.io.param.input.agent.population.InRelativeExternConsumerAgentPopulationSize;
 import de.unileipzig.irpact.io.param.input.image.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.input.image.InGnuPlotOutputImage;
+import de.unileipzig.irpact.io.param.input.image.InOutputImage;
 import de.unileipzig.irpact.io.param.input.image.InROutputImage;
 import de.unileipzig.irpact.io.param.input.interest.InProductGroupThresholdEntry;
 import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
@@ -578,6 +579,11 @@ public class InRoot implements RootClass {
             InPVFile.class,
             InSpatialTableFile.class,
 
+//            InGenericOutputImage.class,
+//            InGnuPlotOutputImage.class,
+//            InOutputImage.class,
+//            InROutputImage.class,
+
             InConsumerAgentGroupColor.class,
 
             InProductGroupThresholdEntry.class,
@@ -706,10 +712,10 @@ public class InRoot implements RootClass {
                         addPathElement(res, LOGGING_DATA, LOGGING);
                         addPathElement(res, LOGGING_RESULT, LOGGING);
                         addPathElement(res, LOGGING_SCRIPT, LOGGING);
-                addPathElement(res, IMAGE, GENERAL_SETTINGS);
-                        addPathElement(res, InGenericOutputImage.thisName(), IMAGE);
-                        addPathElement(res, InGnuPlotOutputImage.thisName(), IMAGE);
-                        addPathElement(res, InROutputImage.thisName(), IMAGE);
+//                addPathElement(res, IMAGE, GENERAL_SETTINGS);
+//                        addPathElement(res, InGenericOutputImage.thisName(), IMAGE);
+//                        addPathElement(res, InGnuPlotOutputImage.thisName(), IMAGE);
+//                        addPathElement(res, InROutputImage.thisName(), IMAGE);
                 addPathElement(res, SPECIAL_SETTINGS, GENERAL_SETTINGS);
                     addPathElement(res, VisibleBinaryData.thisName(), SPECIAL_SETTINGS);
                 addPathElement(res, ABOUT, GENERAL_SETTINGS);

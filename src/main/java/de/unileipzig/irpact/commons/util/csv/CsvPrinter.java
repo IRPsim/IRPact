@@ -6,12 +6,15 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.function.Function;
 
 /**
  * @author Daniel Abitz
  */
 public class CsvPrinter<T> {
+
+    public static CsvValuePrinter<String> STRING_IDENTITY = (columnIndex, header, value) -> value;
 
     protected CsvValuePrinter<? super T> valuePrinter;
     protected String lineSeparator = StringUtil.lineSeparator();
@@ -145,6 +148,10 @@ public class CsvPrinter<T> {
         writeHeader(writer, true);
     }
 
+    public void writeHeader(Collection<? extends String> header) throws IOException {
+        writeHeader(header.toArray(new String[0]));
+    }
+
     public void writeHeader(String[] header) throws IOException {
         writeHeader(writer, header, true);
     }
@@ -181,6 +188,10 @@ public class CsvPrinter<T> {
         }
     }
 
+    public String printHeader(Collection<? extends String> header) {
+        return printHeader(header.toArray(new String[0]));
+    }
+
     public String printHeader(String[] header) {
         try {
             StringWriter sw = new StringWriter();
@@ -194,6 +205,14 @@ public class CsvPrinter<T> {
     public void appendRows(Iterable<? extends Iterable<? extends T>> rows) throws IOException {
         for(Iterable<? extends T> row: rows) {
             appendRow(row);
+        }
+    }
+
+    public void appendRowUnchecked(Iterable<? extends T> row) throws UncheckedIOException {
+        try {
+            appendRow(row);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 

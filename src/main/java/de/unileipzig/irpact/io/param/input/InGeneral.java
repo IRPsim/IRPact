@@ -111,6 +111,8 @@ public class InGeneral implements Copyable {
             gams = @GamsParameter(
                     description = "Einlesen der Zeitschrittlänge der Simulationszeitreihen (bezogen auf eine Stunde Bsp. 15 Min = 0.25)",
                     identifier = "Zeitschrittl\u00e4nge",
+                    domain = "(0,)",
+                    defaultValue = "0.25",
                     hidden = Constants.TRUE1
             )
     )

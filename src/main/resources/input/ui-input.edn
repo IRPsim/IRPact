@@ -51,7 +51,7 @@
       {
         :label "Über IRPact" 
         :set "set_InAboutPlaceholder" 
-        :description "IRPact v0.0.4" 
+        :description "IRPact v0.0.6" 
         :tags [["InAboutPlaceholder" "placeholder"]]
       }
     ]
