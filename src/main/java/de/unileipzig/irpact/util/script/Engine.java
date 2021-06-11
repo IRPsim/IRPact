@@ -6,4 +6,10 @@ package de.unileipzig.irpact.util.script;
 public interface Engine {
 
     String printCommand();
+
+    default boolean isUsable() {
+        return isUsable(false);
+    }
+
+    boolean isUsable(boolean tryAgain);
 }

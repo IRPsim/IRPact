@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.commons.util;
 
-import de.unileipzig.irpact.start.MainCommandLineOptions;
-
 import java.nio.file.Path;
 
 /**
@@ -104,6 +102,16 @@ public class IRPArgs extends SimpleArgs {
     public IRPArgs setRInOut(Path in, Path out) {
         set("--rinput", in.toString());
         set("--routput", out.toString());
+        return this;
+    }
+
+    public IRPArgs setGnuPlotCommand(Path path) {
+        set("--gnuplotCommand", path.toString());
+        return this;
+    }
+
+    public IRPArgs setRscriptCommand(Path path) {
+        set("--rscriptCommand", path.toString());
         return this;
     }
 }

@@ -42,9 +42,27 @@ public interface InOutputImage extends InIRPactEntity {
 
     int getMode();
 
+    default void enableAll() {
+        setEnableAll(true);
+    }
+
+    default void disableAll() {
+        setEnableAll(false);
+    }
+
+    void setEnableAll(boolean enableAll);
+
     boolean isStoreImage();
 
     boolean isStoreData();
 
     boolean isStoreScript();
+
+    default boolean isEnabled() {
+        return isStoreData() || isStoreData() || isStoreScript();
+    }
+
+    default boolean isDisabled() {
+        return !isEnabled();
+    }
 }

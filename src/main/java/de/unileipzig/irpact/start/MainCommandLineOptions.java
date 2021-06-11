@@ -7,6 +7,8 @@ import de.unileipzig.irpact.core.logging.IRPLoggingMessage;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.irpact.IRPactExecutors;
+import de.unileipzig.irpact.util.R.RscriptEngine;
+import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
 import picocli.CommandLine;
 
@@ -41,6 +43,9 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             bundle.put("imagePath", "Set path to image output file. Without '--noSimulation' the post-simulation network is printed.");
             bundle.put("noSimulation", "Disables everything except initialization. Combined with '--image' the initial network is printed.");
             bundle.put("checkOutputExistence", "Checks if the output file already exists. If it does, the program will be cancelled. This option is used to ensure that data is not overwritten.");
+
+            bundle.put("gnuplotCommand", "Path or command for gnuplot. Default value is '${DEFAULT-VALUE}'");
+            bundle.put("rscriptCommand", "Path or command for Rscript. Default value is '${DEFAULT-VALUE}'");
 
             bundle.put("useGamsNameTrimming", "Enables (1) or disables (0) gams name trimming. Default value is ${DEFAULT-VALUE}. Change this option only if you know what you are doing.");
             bundle.put("maxGamsNameLength", "Max length for gams field names. Value -1 disables this option. Max length for gams is 63. Default value is ${DEFAULT-VALUE}. Change this option only if you know what you are doing.");
@@ -146,6 +151,20 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             descriptionKey = "checkOutputExistence"
     )
     private boolean checkOutputExistence;
+
+    @CommandLine.Option(
+            names = { "--gnuplotCommand" },
+            defaultValue = GnuPlotEngine.DEFAULT_COMMAND,
+            descriptionKey = "gnuplotCommand"
+    )
+    private String gnuplotCommand;
+
+    @CommandLine.Option(
+            names = { "--rscriptCommand" },
+            defaultValue = RscriptEngine.DEFAULT_COMMAND,
+            descriptionKey = "rscriptCommand"
+    )
+    private String rscriptCommand;
 
     //=========================
     //converter settings
@@ -402,6 +421,18 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         } else {
             return outputDownloadDir;
         }
+    }
+
+    public String getGnuplotCommand() {
+        return gnuplotCommand == null
+                ? GnuPlotEngine.DEFAULT_COMMAND
+                : gnuplotCommand;
+    }
+
+    public String getRscriptCommand() {
+        return rscriptCommand == null
+                ? RscriptEngine.DEFAULT_COMMAND
+                : rscriptCommand;
     }
 
     public boolean hasNoImagePath() {

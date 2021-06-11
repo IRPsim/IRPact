@@ -66,7 +66,7 @@ public class InGenericOutputImage implements InOutputImage {
     public InGenericOutputImage() {
     }
 
-    protected InGenericOutputImage(String name, int engine, int mode) {
+    public InGenericOutputImage(String name, int engine, int mode) {
         setName(name);
         setEngine(engine);
         setMode(mode);
@@ -91,10 +91,11 @@ public class InGenericOutputImage implements InOutputImage {
         return copy;
     }
 
-    public void enableAll() {
-        storeImage = true;
-        storeScript = true;
-        storeData = true;
+    @Override
+    public void setEnableAll(boolean enableAll) {
+        storeImage = enableAll;
+        storeScript = enableAll;
+        storeData = enableAll;
     }
 
     public void setName(String name) {

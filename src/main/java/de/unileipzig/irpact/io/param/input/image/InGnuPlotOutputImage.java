@@ -53,6 +53,14 @@ public class InGnuPlotOutputImage implements InOutputImage {
     public InGnuPlotOutputImage() {
     }
 
+    public InGnuPlotOutputImage(String name, int mode) {
+        setName(name);
+        setMode(mode);
+        setStoreImage(true);
+        setStoreData(false);
+        setStoreScript(false);
+    }
+
     @Override
     public InGnuPlotOutputImage copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
@@ -68,10 +76,11 @@ public class InGnuPlotOutputImage implements InOutputImage {
         return copy;
     }
 
-    public void enableAll() {
-        storeImage = true;
-        storeScript = true;
-        storeData = true;
+    @Override
+    public void setEnableAll(boolean enableAll) {
+        storeImage = enableAll;
+        storeScript = enableAll;
+        storeData = enableAll;
     }
 
     public void setName(String name) {

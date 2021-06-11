@@ -54,6 +54,14 @@ public class InROutputImage implements InOutputImage {
     public InROutputImage() {
     }
 
+    public InROutputImage(String name, int mode) {
+        setName(name);
+        setMode(mode);
+        setStoreImage(true);
+        setStoreData(false);
+        setStoreScript(false);
+    }
+
     @Override
     public InROutputImage copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
@@ -69,10 +77,11 @@ public class InROutputImage implements InOutputImage {
         return copy;
     }
 
-    public void enableAll() {
-        storeImage = true;
-        storeScript = true;
-        storeData = true;
+    @Override
+    public void setEnableAll(boolean enableAll) {
+        storeImage = enableAll;
+        storeScript = enableAll;
+        storeData = enableAll;
     }
 
     public void setName(String name) {

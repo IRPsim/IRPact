@@ -220,6 +220,11 @@ public class ResultManager implements LoggingHelper {
     protected void handleImageCreation0() throws ParsingException, IOException {
         if(inRoot.hasImages()) {
             for(InOutputImage image: inRoot.getImages()) {
+                if(image.isDisabled()) {
+                    trace("skip disabled image '{}'", image.getBaseFileName());
+                    continue;
+                }
+
                 switch (image.getEngine()) {
                     case InOutputImage.ENGINE_GNUPLOT:
                         handleGnuPlotImage(image);
@@ -237,6 +242,11 @@ public class ResultManager implements LoggingHelper {
     }
 
     protected void handleGnuPlotImage(InOutputImage image) throws IOException {
+        if(isGnuPlotNotUsable()) {
+            info("gnuplot not usable, skip '{}'", image.getBaseFileName());
+            return;
+        }
+
         GnuPlotBuilder builder = getGnuPlotBuilder(image.getMode());
         if(builder == null) {
             return;
@@ -280,6 +290,11 @@ public class ResultManager implements LoggingHelper {
     }
 
     protected void handleRImage(InOutputImage image) throws IOException {
+        if(isRNotUsable()) {
+            info("R not usable, skip '{}'", image.getBaseFileName());
+            return;
+        }
+
         RScriptBuilder builder = getRScriptBuilder(image.getMode());
         if(builder == null) {
             return;
@@ -370,17 +385,34 @@ public class ResultManager implements LoggingHelper {
     protected GnuPlotEngine gnuPlotEngine;
     protected GnuPlotEngine getGnuPlotEngine() {
         if(gnuPlotEngine == null) {
-            gnuPlotEngine = new GnuPlotEngine();
+            gnuPlotEngine = new GnuPlotEngine(clOptions.getGnuplotCommand());
+            debug("use gnuplot engine '{}'", gnuPlotEngine.printCommand());
         }
         return gnuPlotEngine;
+    }
+
+    protected boolean isGnuPlotUsable() {
+        return getGnuPlotEngine().isUsable();
+    }
+    protected boolean isGnuPlotNotUsable() {
+        return !isGnuPlotUsable();
     }
 
     protected RscriptEngine rscriptEngine;
     protected RscriptEngine getRscriptEngine() {
         if(rscriptEngine == null) {
-            rscriptEngine = new RscriptEngine();
+            rscriptEngine = new RscriptEngine(clOptions.getRscriptCommand());
+            debug("use Rscript engine '{}'", rscriptEngine.printCommand());
         }
         return rscriptEngine;
+    }
+
+    protected boolean isRUsable() {
+        return getRscriptEngine().isUsable();
+    }
+
+    protected boolean isRNotUsable() {
+        return !isRUsable();
     }
 
     protected AnnualCumulativeAdoptionsZip analyseCumulativeAdoptionsZip(boolean printBoth) {
