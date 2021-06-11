@@ -35,8 +35,10 @@ public class InGenericOutputImage implements InOutputImage {
         addEntry(res, thisClass(), "storeData");
         addEntry(res, thisClass(), "storeImage");
 
-        setDefault(res, thisClass(), new Object[]{IRPact.IMAGE_ANNUAL_ADOPTIONS, IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS});
-        setDefault(res, thisClass(), "engine", new Object[]{ENGINE_GNUPLOT});
+        setDefault(res, thisClass(), DEFAULT_MODES);
+        setDefault(res, thisClass(), "engine", DEFAULT_ENGINE);
+        setDomain(res, thisClass(), "engine", InOutputImage.printEngineDomain());
+        setDomain(res, thisClass(), "mode", InOutputImage.printModeDomain());
     }
 
     public static final InGenericOutputImage ANNUAL_ADOPTIONS = new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS, ENGINE_GNUPLOT, MODE_ADOPTION_LINECHART);

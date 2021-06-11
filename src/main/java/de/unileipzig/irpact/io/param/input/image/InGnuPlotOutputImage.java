@@ -32,6 +32,8 @@ public class InGnuPlotOutputImage implements InOutputImage {
         addEntry(res, thisClass(), "storeScript");
         addEntry(res, thisClass(), "storeData");
         addEntry(res, thisClass(), "storeImage");
+
+        setDomain(res, thisClass(), "mode", InOutputImage.printModeDomain());
     }
 
     public String _name;

@@ -287,6 +287,16 @@ public final class ParamUtil {
         }
     }
 
+    public static void setDomain(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String field,
+            String domain) {
+        if(domain != null) {
+            computeEntryBuilderIfAbsent(res, c, field).setGamsDomain(domain);
+        }
+    }
+
     public static void addEntry(TreeAnnotationResource res, Class<?> c) {
         IOResources.Data userData = res.getUserDataAs();
         LocalizationData loc = userData.getData();
