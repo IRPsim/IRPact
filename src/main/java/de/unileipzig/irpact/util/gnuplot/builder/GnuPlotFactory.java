@@ -64,7 +64,7 @@ public final class GnuPlotFactory {
         builder.addComment("===plot===");
         builder.setDataFileSeparator(settings.nonNull().getSep());
         builder.printUnknown();
-        builder.plotRawRowBasedDataWithColumn1AsLabel(settings.useArgsFlag() ? GnuPlotBuilder.arg(1) : GnuPlotBuilder.quote(settings.getInputFile()), settings.allowNull().getLineWidthInt());
+        builder.plotRawSpecialLinePlot(settings.useArgsFlag() ? GnuPlotBuilder.arg(1) : GnuPlotBuilder.quote(settings.getInputFile()), settings.allowNull().getLineWidthInt());
         builder.addComment("===output===");
         builder.printPngCairo();
         builder.setRawOutput(settings.useArgsFlag() ? GnuPlotBuilder.arg(2) : GnuPlotBuilder.quote(settings.getOutputFile()));
@@ -89,7 +89,7 @@ public final class GnuPlotFactory {
         builder.addComment("===plot===");
         builder.setDataFileSeparator(settings.nonNull().getSep());
         builder.printUnknown();
-        builder.plotRawSpecialLinePlot(settings.useArgsFlag() ? GnuPlotBuilder.arg(1) : GnuPlotBuilder.quote(settings.getInputFile()), settings.allowNull().getLineWidthInt());
+        builder.plotRawSpecialInteractionLinePlot(settings.useArgsFlag() ? GnuPlotBuilder.arg(1) : GnuPlotBuilder.quote(settings.getInputFile()), settings.allowNull().getLineWidthInt());
         builder.addComment("===output===");
         builder.printPngCairo();
         builder.setRawOutput(settings.useArgsFlag() ? GnuPlotBuilder.arg(2) : GnuPlotBuilder.quote(settings.getOutputFile()));
@@ -124,7 +124,7 @@ public final class GnuPlotFactory {
         builder.setRawOutput(settings.useArgsFlag() ? GnuPlotBuilder.arg(2) : GnuPlotBuilder.quote(settings.getOutputFile()));
         builder.addComment("===plot===");
         builder.setDataFileSeparator(settings.nonNull().getSep());
-        builder.plotRawRowBasedDataWithColumn1AsLabel(settings.useArgsFlag() ? GnuPlotBuilder.arg(1) : GnuPlotBuilder.quote(settings.getInputFile()));
+        builder.plotRawSpecialLinePlot(settings.useArgsFlag() ? GnuPlotBuilder.arg(1) : GnuPlotBuilder.quote(settings.getInputFile()));
         return builder;
     }
 }

@@ -252,32 +252,32 @@ public class GnuPlotBuilder {
         buildSet("datafile", "separator", quote(separator));
     }
 
-    public void plotRowBasedDataWithColumn1AsLabel(String data) {
-        plotRawRowBasedDataWithColumn1AsLabel(quote(data));
+    public void plotSpecialLinePlot(String data) {
+        plotRawSpecialLinePlot(quote(data));
     }
 
-    public void plotArgRowBasedDataWithColumn1AsLabel(int i) {
-        plotRawRowBasedDataWithColumn1AsLabel(arg(i));
+    public void plotArgSpecialLinePlot(int i) {
+        plotRawSpecialLinePlot(arg(i));
     }
 
-    public void plotRawRowBasedDataWithColumn1AsLabel(String data) {
-        add(new PlotCommand(data + " u 2:xtic(1) ti col, for [i=3:*] '' u i ti col"));
-    }
-
-    public void plotRawRowBasedDataWithColumn1AsLabel(String data, int linewidth) {
-        add(new PlotCommand(data + " u 2:xtic(1) ti col linewidth " + linewidth + ", for [i=3:*] '' u i ti col linewidth " + linewidth));
-    }
-
-    public void plotSpecialLinePlot(String data, int linewidth) {
-        plotRawSpecialLinePlot(quote(data), linewidth);
-    }
-
-    public void plotArgSpecialLinePlot(int i, int linewidth) {
-        plotRawSpecialLinePlot(arg(i), linewidth);
+    public void plotRawSpecialLinePlot(String data) {
+        plotRawSpecialLinePlot(data, 1);
     }
 
     public void plotRawSpecialLinePlot(String data, int linewidth) {
         add(new SpecialLinePlotCommand(data, linewidth));
+    }
+
+    public void plotSpecialInteractionLinePlot(String data, int linewidth) {
+        plotRawSpecialInteractionLinePlot(quote(data), linewidth);
+    }
+
+    public void plotArgSpecialInteractionLinePlot(int i, int linewidth) {
+        plotRawSpecialInteractionLinePlot(arg(i), linewidth);
+    }
+
+    public void plotRawSpecialInteractionLinePlot(String data, int linewidth) {
+        add(new SpecialInteractionLinePlotCommand(data, linewidth));
     }
 
     public void setXRange(Object min, Object max) {
