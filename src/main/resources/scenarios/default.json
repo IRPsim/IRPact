@@ -17,7 +17,7 @@
       "sca_delta_ii" : 0.0,
       "sca_GraphvizGlobal_fixedNeatoPosition" : 0,
       "sca_GraphvizGlobal_scaleFactor" : 0.0,
-      "sca_InGeneral_lastSimulationYear" : 0,
+      "sca_InGeneral_lastSimulationYear" : 2016,
       "sca_InGeneral_logAll" : 0,
       "sca_InGeneral_logAllIRPact" : 1,
       "sca_InGeneral_logAllTools" : 0,
@@ -209,55 +209,55 @@
         "AnnualAdoptions" : {
           "par_InGenericOutputImage_engine" : 1,
           "par_InGenericOutputImage_mode" : 1,
-          "par_InGenericOutputImage_storeScript" : 0,
-          "par_InGenericOutputImage_storeData" : 0,
-          "par_InGenericOutputImage_storeImage" : 0,
+          "par_InGenericOutputImage_storeScript" : 1,
+          "par_InGenericOutputImage_storeData" : 1,
+          "par_InGenericOutputImage_storeImage" : 1,
           "par_InGenericOutputImage_linewidth" : 1.0
         },
         "AnnualCumulativeAdoptions" : {
           "par_InGenericOutputImage_engine" : 1,
           "par_InGenericOutputImage_mode" : 3,
-          "par_InGenericOutputImage_storeScript" : 0,
-          "par_InGenericOutputImage_storeData" : 0,
-          "par_InGenericOutputImage_storeImage" : 0,
+          "par_InGenericOutputImage_storeScript" : 1,
+          "par_InGenericOutputImage_storeData" : 1,
+          "par_InGenericOutputImage_storeImage" : 1,
           "par_InGenericOutputImage_linewidth" : 1.0
         },
         "ComparedAnnualAdoptions" : {
           "par_InGenericOutputImage_engine" : 1,
           "par_InGenericOutputImage_mode" : 2,
-          "par_InGenericOutputImage_storeScript" : 0,
-          "par_InGenericOutputImage_storeData" : 0,
-          "par_InGenericOutputImage_storeImage" : 0,
+          "par_InGenericOutputImage_storeScript" : 1,
+          "par_InGenericOutputImage_storeData" : 1,
+          "par_InGenericOutputImage_storeImage" : 1,
           "par_InGenericOutputImage_linewidth" : 1.0
         }
       },
       "set_InGnuPlotOutputImage" : {
         "gnutest0" : {
           "par_InGnuPlotOutputImage_mode" : 0,
-          "par_InGnuPlotOutputImage_storeScript" : 0,
-          "par_InGnuPlotOutputImage_storeData" : 0,
-          "par_InGnuPlotOutputImage_storeImage" : 0,
+          "par_InGnuPlotOutputImage_storeScript" : 1,
+          "par_InGnuPlotOutputImage_storeData" : 1,
+          "par_InGnuPlotOutputImage_storeImage" : 1,
           "par_InGnuPlotOutputImage_linewidth" : 1.0
         },
         "gnutest1" : {
           "par_InGnuPlotOutputImage_mode" : 1,
-          "par_InGnuPlotOutputImage_storeScript" : 0,
-          "par_InGnuPlotOutputImage_storeData" : 0,
-          "par_InGnuPlotOutputImage_storeImage" : 0,
+          "par_InGnuPlotOutputImage_storeScript" : 1,
+          "par_InGnuPlotOutputImage_storeData" : 1,
+          "par_InGnuPlotOutputImage_storeImage" : 1,
           "par_InGnuPlotOutputImage_linewidth" : 1.0
         },
         "gnutest2" : {
           "par_InGnuPlotOutputImage_mode" : 2,
-          "par_InGnuPlotOutputImage_storeScript" : 0,
-          "par_InGnuPlotOutputImage_storeData" : 0,
-          "par_InGnuPlotOutputImage_storeImage" : 0,
+          "par_InGnuPlotOutputImage_storeScript" : 1,
+          "par_InGnuPlotOutputImage_storeData" : 1,
+          "par_InGnuPlotOutputImage_storeImage" : 1,
           "par_InGnuPlotOutputImage_linewidth" : 1.0
         },
         "gnutest3" : {
           "par_InGnuPlotOutputImage_mode" : 3,
-          "par_InGnuPlotOutputImage_storeScript" : 0,
-          "par_InGnuPlotOutputImage_storeData" : 0,
-          "par_InGnuPlotOutputImage_storeImage" : 0,
+          "par_InGnuPlotOutputImage_storeScript" : 1,
+          "par_InGnuPlotOutputImage_storeData" : 1,
+          "par_InGnuPlotOutputImage_storeImage" : 1,
           "par_InGnuPlotOutputImage_linewidth" : 1.0
         }
       },
@@ -345,30 +345,30 @@
       "set_InROutputImage" : {
         "rtest0" : {
           "par_InROutputImage_mode" : 0,
-          "par_InROutputImage_storeScript" : 0,
-          "par_InROutputImage_storeData" : 0,
-          "par_InROutputImage_storeImage" : 0,
+          "par_InROutputImage_storeScript" : 1,
+          "par_InROutputImage_storeData" : 1,
+          "par_InROutputImage_storeImage" : 1,
           "par_InROutputImage_linewidth" : 1.0
         },
         "rtest1" : {
           "par_InROutputImage_mode" : 1,
-          "par_InROutputImage_storeScript" : 0,
-          "par_InROutputImage_storeData" : 0,
-          "par_InROutputImage_storeImage" : 0,
+          "par_InROutputImage_storeScript" : 1,
+          "par_InROutputImage_storeData" : 1,
+          "par_InROutputImage_storeImage" : 1,
           "par_InROutputImage_linewidth" : 1.0
         },
         "rtest2" : {
           "par_InROutputImage_mode" : 2,
-          "par_InROutputImage_storeScript" : 0,
-          "par_InROutputImage_storeData" : 0,
-          "par_InROutputImage_storeImage" : 0,
+          "par_InROutputImage_storeScript" : 1,
+          "par_InROutputImage_storeData" : 1,
+          "par_InROutputImage_storeImage" : 1,
           "par_InROutputImage_linewidth" : 1.0
         },
         "rtest3" : {
           "par_InROutputImage_mode" : 3,
-          "par_InROutputImage_storeScript" : 0,
-          "par_InROutputImage_storeData" : 0,
-          "par_InROutputImage_storeImage" : 0,
+          "par_InROutputImage_storeScript" : 1,
+          "par_InROutputImage_storeData" : 1,
+          "par_InROutputImage_storeImage" : 1,
           "par_InROutputImage_linewidth" : 1.0
         }
       },

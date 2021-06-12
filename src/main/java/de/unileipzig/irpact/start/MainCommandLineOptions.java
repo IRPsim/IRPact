@@ -14,6 +14,7 @@ import picocli.CommandLine;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -44,8 +45,8 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             bundle.put("noSimulation", "Disables everything except initialization. Combined with '--image' the initial network is printed.");
             bundle.put("checkOutputExistence", "Checks if the output file already exists. If it does, the program will be cancelled. This option is used to ensure that data is not overwritten.");
 
-            bundle.put("gnuplotCommand", "Path or command for gnuplot. Default value is '${DEFAULT-VALUE}'");
-            bundle.put("rscriptCommand", "Path or command for Rscript. Default value is '${DEFAULT-VALUE}'");
+            bundle.put("gnuplotCommand", "Path or command for gnuplot. Default value is '${DEFAULT-VALUE}'.");
+            bundle.put("rscriptCommand", "Path or command for Rscript. Default value is '${DEFAULT-VALUE}'.");
 
             bundle.put("useGamsNameTrimming", "Enables (1) or disables (0) gams name trimming. Default value is ${DEFAULT-VALUE}. Change this option only if you know what you are doing.");
             bundle.put("maxGamsNameLength", "Max length for gams field names. Value -1 disables this option. Max length for gams is 63. Default value is ${DEFAULT-VALUE}. Change this option only if you know what you are doing.");
@@ -59,6 +60,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             bundle.put("skipPersistenceCheck", "If set, checksum mismatches are ignore during restoration. Use this option only if you know what you are doing.");
             bundle.put("skipArgValidation", "Disables command line validation. Use this option only if you know what you are doing.");
             bundle.put("skipPersist", "Disables data persistence.");
+            bundle.put("languageTag", "Used language. Default value is '${DEFAULT-VALUE}'. Currently supported: 'de'");
 
             bundle.put("printIrptoolsHelp", "Calls IRPtools help.");
             bundle.put("callIrptools", "Calls IRPtools, all arguments will be transmitted to IRPtools, IRPact is not called.");
@@ -244,6 +246,13 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             descriptionKey = "skipPersist"
     )
     private boolean skipPersist;
+
+    @CommandLine.Option(
+            names = { "--language" },
+            defaultValue = "de",
+            descriptionKey = "languageTag"
+    )
+    private String languageTag;
 
     //=========================
     //irptools
@@ -530,6 +539,20 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     public boolean isTestCl() {
         checkExecuted();
         return testCl;
+    }
+
+    public String getLanguageTag() {
+        checkExecuted();
+        return languageTag;
+    }
+
+    public Locale getLocale(Locale ifNotFound) {
+        String tag = getLanguageTag();
+        try {
+            return Locale.forLanguageTag(tag);
+        } catch (Exception e) {
+            return ifNotFound;
+        }
     }
 
     //=========================

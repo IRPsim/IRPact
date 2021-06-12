@@ -156,9 +156,13 @@ public final class RScriptFactory {
         if(settings.hasScaleXContinuousBreaks()) scaleXContinuous.setBreaks(settings.nonNull().getScaleXContinuousBreaks());
 
         ScaleLinetypeManual scaleLinetypes = new ScaleLinetypeManual();
-        if(settings.hasFirstLinetype() || settings.hasSecondLinetype()) {
-            scaleLinetypes.setValues(settings.nonNull().getFirstLinetype(), settings.nonNull().getSecondLinetype());
-        }
+        scaleLinetypes.setTwoNamend(
+                settings.nonNull().getDistinct0Label(),
+                "solid",
+                settings.nonNull().getDistinct1Label(),
+                "dotted"
+
+        );
 
         Theme theme = new Theme();
         if(settings.centerTitle()) theme.setPlotTitleHjust(0.5);

@@ -252,8 +252,8 @@ public final class BuilderSettings {
     public String getLineWidth() {
         return getAs("linewidth");
     }
-    public int getLineWidthInt() {
-        return Integer.parseInt(getAsOr("linewidth", "1"));
+    public double getLineWidthDouble() {
+        return Double.parseDouble(getAsOr("linewidth", "1.0"));
     }
     public boolean hasLineWidth() {
         return has("linewidth");
@@ -332,6 +332,9 @@ public final class BuilderSettings {
     }
     public String getGrpLab() {
         return getAs("grplab");
+    }
+    public boolean hasGrpLab() {
+        return has("grplab");
     }
 
     public BuilderSettings setDistinctLab(String text) {
@@ -412,5 +415,19 @@ public final class BuilderSettings {
     }
     public boolean hasScaleXContinuousBreaks() {
         return has("scalexcontinuousbreaks");
+    }
+
+    public BuilderSettings setDistinct0Label(String label) {
+        return set("dashtype0label", label);
+    }
+    public String getDistinct0Label() {
+        return getAs("dashtype0label");
+    }
+
+    public BuilderSettings setDistinct1Label(String label) {
+        return set("dashtype1label", label);
+    }
+    public String getDistinct1Label() {
+        return getAs("dashtype1label");
     }
 }

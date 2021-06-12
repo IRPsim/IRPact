@@ -13,8 +13,10 @@ import java.util.function.Function;
  */
 public final class DataMapper {
 
-    public static final Function<? super String, ? extends String> IDENTITY = str -> str;
-    public static final Function<? super String, ? extends String> GNUPLOT_ESCAPE = str -> str.replace("_", "\\\\\\_");
+    public static final Function<? super String, ? extends String> R_ESCAPE = str ->
+            str;
+    public static final Function<? super String, ? extends String> GNUPLOT_ESCAPE = str ->
+            str.replace("_", "\\\\\\_");
 
     private DataMapper() {
     }
@@ -49,6 +51,7 @@ public final class DataMapper {
     public static List<List<String>> toRDataWithRealData(
             AnnualCumulativeAdoptionsZip analyser,
             RealAdoptionData realData,
+            String noStr, String yesStr,
             Function<? super String, ? extends String> strMapper) {
         List<List<String>> csvData = new ArrayList<>();
         csvData.add(Arrays.asList(
@@ -66,14 +69,14 @@ public final class DataMapper {
                     strMapper.apply(Integer.toString(year)),
                     strMapper.apply(zip),
                     strMapper.apply(result.printValue()),
-                    strMapper.apply("no")
+                    strMapper.apply(noStr)
             ));
 
             csvData.add(Arrays.asList(
                     strMapper.apply(Integer.toString(year)),
                     strMapper.apply(zip),
                     strMapper.apply(Integer.toString(realData.get(year, zip))),
-                    strMapper.apply("yes")
+                    strMapper.apply(yesStr)
             ));
         }
         return csvData;
@@ -158,10 +161,9 @@ public final class DataMapper {
         List<String> header = new ArrayList<>();
         header.add(strMapper.apply("years"));
         for(String zip: zipData.keySet()) {
-            header.add(strMapper.apply(zip + "-S"));
+            header.add(strMapper.apply(zip));
             header.add(strMapper.apply(zip + "-R"));
         }
-        header.addAll(zipData.keySet());
         csvData.add(header);
         for(Integer year: years) {
             List<String> row = new ArrayList<>();

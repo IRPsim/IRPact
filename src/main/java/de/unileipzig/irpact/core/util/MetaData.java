@@ -1,8 +1,10 @@
 package de.unileipzig.irpact.core.util;
 
+import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.core.simulation.Settings;
 
 import java.util.Collection;
+import java.util.Locale;
 
 /**
  * @author Daniel Abitz
@@ -20,4 +22,8 @@ public interface MetaData {
     RunInfo getOldestRunInfo();
 
     RunInfo getCurrentRunInfo();
+
+    Locale getLocale();
+
+    ResourceLoader getLoader();
 }

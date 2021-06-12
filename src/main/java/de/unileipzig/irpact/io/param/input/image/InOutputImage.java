@@ -58,6 +58,8 @@ public interface InOutputImage extends InIRPactEntity {
 
     boolean isStoreScript();
 
+    double getLinewidth();
+
     default boolean isEnabled() {
         return isStoreData() || isStoreData() || isStoreScript();
     }
