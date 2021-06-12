@@ -33,6 +33,10 @@ public class InROutputImage implements InOutputImage {
         addEntry(res, thisClass(), "storeScript");
         addEntry(res, thisClass(), "storeData");
         addEntry(res, thisClass(), "storeImage");
+
+        setDefault(res, thisClass(), "linewidth", new Object[]{1});
+        setDomain(res, thisClass(), "mode", InOutputImage.printModeDomain());
+        setDomain(res, thisClass(), "linewidth", "(0,)");
     }
 
     public String _name;
@@ -49,7 +53,19 @@ public class InROutputImage implements InOutputImage {
     @FieldDefinition
     public boolean storeImage = false;
 
+    @FieldDefinition
+    public double linewidth = 1;
+
     public InROutputImage() {
+    }
+
+    public InROutputImage(String name, int mode) {
+        setName(name);
+        setMode(mode);
+        setStoreImage(true);
+        setStoreData(false);
+        setStoreScript(false);
+        setLinewidth(1);
     }
 
     @Override
@@ -64,13 +80,15 @@ public class InROutputImage implements InOutputImage {
         copy.storeData = storeData;
         copy.storeScript = storeScript;
         copy.storeImage = storeImage;
+        copy.linewidth = linewidth;
         return copy;
     }
 
-    public void enableAll() {
-        storeImage = true;
-        storeScript = true;
-        storeData = true;
+    @Override
+    public void setEnableAll(boolean enableAll) {
+        storeImage = enableAll;
+        storeScript = enableAll;
+        storeData = enableAll;
     }
 
     public void setName(String name) {
@@ -117,5 +135,13 @@ public class InROutputImage implements InOutputImage {
 
     public boolean isStoreScript() {
         return storeScript;
+    }
+
+    public double getLinewidth() {
+        return linewidth;
+    }
+
+    public void setLinewidth(double linewidth) {
+        this.linewidth = linewidth;
     }
 }

@@ -442,6 +442,113 @@ SET set_InSpatialTableFile(set_InFile)
 * - type: Float
 PARAMETER par_InSpatialTableFile_placeholderInSpatialFile(set_InSpatialTableFile)
 
+* - default: AnnualAdoptions, ComparedAnnualAdoptions, AnnualCumulativeAdoptions
+* - identifier: InGenericOutputImage
+* - type: String
+SET set_InGenericOutputImage(set_InOutputImage)
+
+* - default: 1
+* - domain: [1, 2]
+* - description: Bestimmt das Programm, mit dem die Bilder erzeugt werden sollen. IRPact unterstützt folgende Programme: R (1) und gnuplot (2).
+* - identifier: Visualisierungsprogramm
+* - type: Integer
+PARAMETER par_InGenericOutputImage_engine(set_InGenericOutputImage)
+
+* - domain: [0, 3]
+* - description: Gibt an, welche Daten visualisiert werden sollen. Aktuell unterstützt: 
+* - identifier: Datenvisualisierung (Name noch anpassen)
+* - type: Integer
+PARAMETER par_InGenericOutputImage_mode(set_InGenericOutputImage)
+
+* - description: Speichert auf Wunsch das Skript für die Bilderzeugung.
+* - identifier: Skript speichern?
+* - type: Boolean
+PARAMETER par_InGenericOutputImage_storeScript(set_InGenericOutputImage)
+
+* - description: Speichert auf Wunsch die Daten für die Bilderzeugung.
+* - identifier: Daten speichern?
+* - type: Boolean
+PARAMETER par_InGenericOutputImage_storeData(set_InGenericOutputImage)
+
+* - description: Erzeugt und speichert auf Wunsch das erzeugte Bild.
+* - identifier: Bild speichern?
+* - type: Boolean
+PARAMETER par_InGenericOutputImage_storeImage(set_InGenericOutputImage)
+
+* - default: 1
+* - domain: (0,)
+* - description: Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss.
+* - identifier: Linienstärke
+* - type: Float
+PARAMETER par_InGenericOutputImage_linewidth(set_InGenericOutputImage)
+
+* - identifier: InGnuPlotOutputImage
+* - type: String
+SET set_InGnuPlotOutputImage(set_InOutputImage)
+
+* - domain: [0, 3]
+* - description: Gibt an, welche Daten visualisiert werden sollen.
+* - identifier: Datenvisualisierung (Name noch anpassen)
+* - type: Integer
+PARAMETER par_InGnuPlotOutputImage_mode(set_InGnuPlotOutputImage)
+
+* - description: Speichert auf Wunsch das Skript für die Bilderzeugung.
+* - identifier: Skript speichern?
+* - type: Boolean
+PARAMETER par_InGnuPlotOutputImage_storeScript(set_InGnuPlotOutputImage)
+
+* - description: Speichert auf Wunsch die Daten für die Bilderzeugung.
+* - identifier: Daten speichern?
+* - type: Boolean
+PARAMETER par_InGnuPlotOutputImage_storeData(set_InGnuPlotOutputImage)
+
+* - description: Erzeugt und speichert auf Wunsch das erzeugte Bild.
+* - identifier: Bild speichern?
+* - type: Boolean
+PARAMETER par_InGnuPlotOutputImage_storeImage(set_InGnuPlotOutputImage)
+
+* - default: 1
+* - domain: (0,)
+* - identifier: linewidth
+* - type: Float
+PARAMETER par_InGnuPlotOutputImage_linewidth(set_InGnuPlotOutputImage)
+
+* - identifier: InOutputImage
+* - hidden: 1
+* - type: String
+SET set_InOutputImage(*)
+
+* - identifier: InROutputImage
+* - type: String
+SET set_InROutputImage(set_InOutputImage)
+
+* - domain: [0, 3]
+* - description: Gibt an, welche Daten visualisiert werden sollen.
+* - identifier: Datenvisualisierung (Name noch anpassen)
+* - type: Integer
+PARAMETER par_InROutputImage_mode(set_InROutputImage)
+
+* - description: Speichert auf Wunsch das Skript für die Bilderzeugung.
+* - identifier: Skript speichern?
+* - type: Boolean
+PARAMETER par_InROutputImage_storeScript(set_InROutputImage)
+
+* - description: Speichert auf Wunsch die Daten für die Bilderzeugung.
+* - identifier: Daten speichern?
+* - type: Boolean
+PARAMETER par_InROutputImage_storeData(set_InROutputImage)
+
+* - description: Erzeugt und speichert auf Wunsch das erzeugte Bild.
+* - identifier: Bild speichern?
+* - type: Boolean
+PARAMETER par_InROutputImage_storeImage(set_InROutputImage)
+
+* - default: 1
+* - domain: (0,)
+* - identifier: linewidth
+* - type: Float
+PARAMETER par_InROutputImage_linewidth(set_InROutputImage)
+
 * - identifier: InConsumerAgentGroupColor
 * - type: String
 SET set_InConsumerAgentGroupColor(*)

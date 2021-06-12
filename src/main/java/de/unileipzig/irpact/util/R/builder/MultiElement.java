@@ -25,6 +25,16 @@ public class MultiElement implements Element {
     }
 
     @Override
+    public boolean isPrintable() {
+        for(Element element: elements) {
+            if(element.isPrintable()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public boolean print(StringSettings settings, Appendable target) throws IOException {
         if(elements.isEmpty()) {
             return false;
@@ -32,6 +42,10 @@ public class MultiElement implements Element {
 
         boolean printed = false;
         for(Element element: elements) {
+            if(!element.isPrintable()) {
+                continue;
+            }
+
             if(printed) {
                 target.append(settings.getElementLinker());
             }

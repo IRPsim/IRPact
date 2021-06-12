@@ -27,6 +27,14 @@ public abstract class AbstractCumulativeAdoptionAnalyser extends AbstractAdoptio
         this.years = years;
     }
 
+    public void setPrintBoth(boolean printBoth) {
+        this.printBoth = printBoth;
+    }
+
+    public boolean isPrintBoth() {
+        return printBoth;
+    }
+
     @Override
     protected List<Object> arrayToList(Object[] arr) {
         if(printBoth) {

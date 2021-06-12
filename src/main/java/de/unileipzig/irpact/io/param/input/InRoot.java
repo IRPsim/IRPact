@@ -218,22 +218,21 @@ public class InRoot implements RootClass {
     //image
     //=========================
 
-    //TODO
-//    @FieldDefinition
-//    public InOutputImage[] images = new InOutputImage[0];
-//
-//    public boolean hasImages() {
-//        return images != null && images.length > 0;
-//    }
-//    public InOutputImage[] getImages() throws ParsingException {
-//        return getNonNullArray(images, "images");
-//    }
-//    public void setImages(InOutputImage[] images) {
-//        this.images = images;
-//    }
-//    public void setImages(Collection<? extends InOutputImage> images) {
-//        this.images = images.toArray(new InOutputImage[0]);
-//    }
+    @FieldDefinition
+    public InOutputImage[] images = new InOutputImage[0];
+
+    public boolean hasImages() {
+        return images != null && images.length > 0;
+    }
+    public InOutputImage[] getImages() throws ParsingException {
+        return getNonNullArray(images, "images");
+    }
+    public void setImages(InOutputImage[] images) {
+        this.images = images;
+    }
+    public void setImages(Collection<? extends InOutputImage> images) {
+        this.images = images.toArray(new InOutputImage[0]);
+    }
 
     //=========================
     //binary
@@ -637,11 +636,10 @@ public class InRoot implements RootClass {
             InPVFile.class,
             InSpatialTableFile.class,
 
-//            TODO
-//            InGenericOutputImage.class,
-//            InGnuPlotOutputImage.class,
-//            InOutputImage.class,
-//            InROutputImage.class,
+            InGenericOutputImage.class,
+            InGnuPlotOutputImage.class,
+            InOutputImage.class,
+            InROutputImage.class,
 
             InConsumerAgentGroupColor.class,
 
@@ -763,7 +761,6 @@ public class InRoot implements RootClass {
     //UI
     //=========================
 
-    //TODO
     public static void initRes(TreeAnnotationResource res) {
         IOResources.Data userData = res.getUserDataAs();
         MultiCounter counter = userData.getCounter();
@@ -774,10 +771,10 @@ public class InRoot implements RootClass {
                         addPathElement(res, LOGGING_DATA, LOGGING);
                         addPathElement(res, LOGGING_RESULT, LOGGING);
                         addPathElement(res, LOGGING_SCRIPT, LOGGING);
-//                addPathElement(res, IMAGE, GENERAL_SETTINGS);
-//                        addPathElement(res, InGenericOutputImage.thisName(), IMAGE);
-//                        addPathElement(res, InGnuPlotOutputImage.thisName(), IMAGE);
-//                        addPathElement(res, InROutputImage.thisName(), IMAGE);
+                addPathElement(res, IMAGE, GENERAL_SETTINGS);
+                        addPathElement(res, InGenericOutputImage.thisName(), IMAGE);
+                        addPathElement(res, InGnuPlotOutputImage.thisName(), IMAGE);
+                        addPathElement(res, InROutputImage.thisName(), IMAGE);
                 addPathElement(res, SPECIAL_SETTINGS, GENERAL_SETTINGS);
                     addPathElement(res, VisibleBinaryData.thisName(), SPECIAL_SETTINGS);
                 addPathElement(res, ABOUT, GENERAL_SETTINGS);

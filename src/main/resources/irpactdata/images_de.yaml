@@ -1,0 +1,48 @@
+---
+#########################
+# Deutsche Lokalisierung für die Plots.
+# Die Zuweisung basiert auf dem Wert der Datenvisualisierung (mode).
+#########################
+# nothing
+0:
+# line plot - zip
+1:
+  title: "Jährlichen Adoptionen in Bezug auf die Postleitzahlgebiete"
+  xarg: "year"
+  yarg: "adoptions"
+  grparg: "zip"
+  xlab: "Jahre"
+  ylab: "Adoptionen"
+  grplab: "PLZ"
+  sep: ";"
+  encoding: "UTF-8"
+
+# line plot - zip with real data
+2:
+  title: |
+    Jährlichen Adoptionen in Bezug auf die Postleitzahlgebiete
+    im Vergleich zu realen Daten
+  xarg: "year"
+  yarg: "adoptions"
+  grparg: "zip"
+  distinctarg: "real"
+  xlab: "Jahre"
+  ylab: "Adoptionen"
+  grplab: "PLZ"
+  #distrinctlab wird nur in R genutzt
+  #https://stackoverflow.com/questions/41049785/gnuplot-custom-legend-with-two-different-specs/41051836
+  distinctlab: "Reale Daten"
+  sep: ";"
+  encoding: "UTF-8"
+
+# stacked bar chart - phase
+3:
+  title: "Jährlich kumulierte Adoptionen in Bezug auf die Adoptionsphasen"
+  xarg: "year"
+  yarg: "adoptionsCumulative"
+  fillarg: "phase"
+  xlab: "Jahre"
+  ylab: "Adoptionen (kumuliert)"
+  filllab: "Adoptionsphase"
+  sep: ";"
+  encoding: "UTF-8"

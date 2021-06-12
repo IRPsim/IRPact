@@ -34,9 +34,14 @@ public class InGenericOutputImage implements InOutputImage {
         addEntry(res, thisClass(), "storeScript");
         addEntry(res, thisClass(), "storeData");
         addEntry(res, thisClass(), "storeImage");
+        addEntry(res, thisClass(), "linewidth");
 
-        setDefault(res, thisClass(), new Object[]{IRPact.IMAGE_ANNUAL_ADOPTIONS, IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS});
-        setDefault(res, thisClass(), "engine", new Object[]{ENGINE_GNUPLOT});
+        setDefault(res, thisClass(), DEFAULT_MODES);
+        setDefault(res, thisClass(), "engine", DEFAULT_ENGINE);
+        setDefault(res, thisClass(), "linewidth", new Object[]{1});
+        setDomain(res, thisClass(), "engine", InOutputImage.printEngineDomain());
+        setDomain(res, thisClass(), "mode", InOutputImage.printModeDomain());
+        setDomain(res, thisClass(), "linewidth", "(0,)");
     }
 
     public static final InGenericOutputImage ANNUAL_ADOPTIONS = new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS, ENGINE_GNUPLOT, MODE_ADOPTION_LINECHART);
@@ -61,16 +66,20 @@ public class InGenericOutputImage implements InOutputImage {
     @FieldDefinition
     public boolean storeImage = false;
 
+    @FieldDefinition
+    public double linewidth = 1;
+
     public InGenericOutputImage() {
     }
 
-    protected InGenericOutputImage(String name, int engine, int mode) {
+    public InGenericOutputImage(String name, int engine, int mode) {
         setName(name);
         setEngine(engine);
         setMode(mode);
         setStoreImage(true);
         setStoreData(false);
         setStoreScript(false);
+        setLinewidth(1);
     }
 
     @Override
@@ -86,13 +95,15 @@ public class InGenericOutputImage implements InOutputImage {
         copy.storeData = storeData;
         copy.storeScript = storeScript;
         copy.storeImage = storeImage;
+        copy.linewidth = linewidth;
         return copy;
     }
 
-    public void enableAll() {
-        storeImage = true;
-        storeScript = true;
-        storeData = true;
+    @Override
+    public void setEnableAll(boolean enableAll) {
+        storeImage = enableAll;
+        storeScript = enableAll;
+        storeData = enableAll;
     }
 
     public void setName(String name) {
@@ -143,5 +154,13 @@ public class InGenericOutputImage implements InOutputImage {
 
     public boolean isStoreScript() {
         return storeScript;
+    }
+
+    public double getLinewidth() {
+        return linewidth;
+    }
+
+    public void setLinewidth(double linewidth) {
+        this.linewidth = linewidth;
     }
 }

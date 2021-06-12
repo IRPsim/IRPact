@@ -36,6 +36,11 @@ public class ArrayElement implements Element {
     }
 
     @Override
+    public boolean isPrintable() {
+        return true;
+    }
+
+    @Override
     public boolean print(StringSettings settings, Appendable target) throws IOException {
         target.append("c(");
         for(int i = 0; i < elements.length; i++) {

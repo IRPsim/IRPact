@@ -45,6 +45,11 @@ public class Args implements Element {
     }
 
     @Override
+    public boolean isPrintable() {
+        return true;
+    }
+
+    @Override
     public boolean print(StringSettings settings, Appendable target) throws IOException {
         target.append(returnName);
         target.append(settings.getEqualSign());

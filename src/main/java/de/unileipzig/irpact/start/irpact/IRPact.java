@@ -71,8 +71,8 @@ public final class IRPact implements IRPActAccess {
 
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "0";
-    private static final String MINOR_STRING = "0";
-    private static final String BUILD_STRING = "7";
+    private static final String MINOR_STRING = "1";
+    private static final String BUILD_STRING = "3";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -84,6 +84,8 @@ public final class IRPact implements IRPActAccess {
     public static final String IMAGE_ANNUAL_ADOPTIONS = "AnnualAdoptions";
     public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS = "ComparedAnnualAdoptions";
     public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS = "AnnualCumulativeAdoptions";
+
+    public static final String DOWNLOAD_DIR_NAME = "TODO";
 
     private static final Map<MainCommandLineOptions, Converter> INPUT_CONVERTS = new WeakHashMap<>();
     private static final Map<MainCommandLineOptions, Converter> OUTPUT_CONVERTS = new WeakHashMap<>();
@@ -647,7 +649,7 @@ public final class IRPact implements IRPActAccess {
     }
 
     private void printResults() {
-        ResultManager manager = new ResultManager(META_DATA, CL_OPTIONS, environment);
+        ResultManager manager = new ResultManager(META_DATA, CL_OPTIONS, inRoot, environment);
         manager.execute();
     }
 

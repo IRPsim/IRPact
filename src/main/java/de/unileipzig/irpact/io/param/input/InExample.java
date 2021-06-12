@@ -14,6 +14,10 @@ import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistri
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
+import de.unileipzig.irpact.io.param.input.image.InGenericOutputImage;
+import de.unileipzig.irpact.io.param.input.image.InGnuPlotOutputImage;
+import de.unileipzig.irpact.io.param.input.image.InOutputImage;
+import de.unileipzig.irpact.io.param.input.image.InROutputImage;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.network.InCompleteGraphTopology;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
@@ -43,6 +47,9 @@ import de.unileipzig.irptools.util.Table;
 
 import java.awt.*;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -125,6 +132,19 @@ public class InExample implements DefaultScenarioFactory {
 
         InSpace2D space2D = new InSpace2D("Space2D", Metric2D.EUCLIDEAN);
 
+        //images
+        List<InOutputImage> images = new ArrayList<>();
+        Collections.addAll(images, InGenericOutputImage.DEFAULTS);
+        images.add(new InGnuPlotOutputImage("gnutest0", InOutputImage.MODE_NOTHING));
+        images.add(new InGnuPlotOutputImage("gnutest1", InOutputImage.MODE_ADOPTION_LINECHART));
+        images.add(new InGnuPlotOutputImage("gnutest2", InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART));
+        images.add(new InGnuPlotOutputImage("gnutest3", InOutputImage.MODE_ADOPTION_PHASE_BARCHART));
+        images.add(new InROutputImage("rtest0", InOutputImage.MODE_NOTHING));
+        images.add(new InROutputImage("rtest1", InOutputImage.MODE_ADOPTION_LINECHART));
+        images.add(new InROutputImage("rtest2", InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART));
+        images.add(new InROutputImage("rtest3", InOutputImage.MODE_ADOPTION_PHASE_BARCHART));
+        images.forEach(InOutputImage::disableAll);
+
         //time
         InUnitStepDiscreteTimeModel timeModel = new InUnitStepDiscreteTimeModel("DiscreteUnitStep", 1, ChronoUnit.WEEKS);
 
@@ -182,6 +202,7 @@ public class InExample implements DefaultScenarioFactory {
         root.processModels = new InProcessModel[]{processModel};
         root.spatialModel = new InSpatialModel[]{space2D};
         root.timeModel = new InTimeModel[]{timeModel};
+        root.setImages(images);
 
         return root;
     }

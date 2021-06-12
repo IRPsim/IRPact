@@ -1,4 +1,7 @@
 ---
+#########################
+# Deutsche Lokalisierung für die gesamte Benutzeroberfläche
+#########################
 general_settings:
   edn_label: "Allgemeine Einstellungen"
   edn_description: "todo"
@@ -102,6 +105,72 @@ InGeneral_logScriptAdoptionsZipPhase:
   gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus. Zusätzlich wird das Skript für eine bar chart ausgegeben."
   gams_domain: "[0|1]"
 
+
+image:
+  edn_label: "Ergebnisvisualisierung"
+  edn_description: "Hier kann die Ergebnisvisualisierung konfiguriert werden. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird zum Beispiel eine Visualisierung mittels gnuplot und dem Namen 'Ergebnis' definiert, werden folgende drei Dateien erstellt: Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild). Es kann zusätzlich individuell eingestellt werden, welche Dateien gespeichert und zum Download angeboten werden können."
+
+InGenericOutputImage:
+  edn_label: "Benutzerdefiniert"
+  edn_description: "Hier kann für die Bilderzeugung das entsprechende Programm mittels 'Visualisierungsprogramm' individuell eingestellt werden. Der Bezeichner wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem für gnuplot Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild) erstellt. Für R werden Ergebnis.csv (Daten), Ergebnis.R (Skript) und Ergebnis.png (Bild) erstellt"
+InGenericOutputImage_engine:
+  gams_identifier: "Visualisierungsprogramm"
+  gams_description: "Bestimmt das Programm, mit dem die Bilder erzeugt werden sollen. IRPact unterstützt folgende Programme: R (1) und gnuplot (2)."
+InGenericOutputImage_mode:
+  gams_identifier: "Datenvisualisierung (Name noch anpassen)"
+  gams_description: "Gibt an, welche Daten visualisiert werden sollen. Aktuell unterstützt: "
+InGenericOutputImage_storeScript:
+  gams_identifier: "Skript speichern?"
+  gams_description: "Speichert auf Wunsch das Skript für die Bilderzeugung."
+InGenericOutputImage_storeData:
+  gams_identifier: "Daten speichern?"
+  gams_description: "Speichert auf Wunsch die Daten für die Bilderzeugung."
+InGenericOutputImage_storeImage:
+  gams_identifier: "Bild speichern?"
+  gams_description: "Erzeugt und speichert auf Wunsch das erzeugte Bild."
+InGenericOutputImage_linewidth:
+  gams_identifier: "Linienstärke"
+  gams_description: "Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss."
+
+InGnuPlotOutputImage:
+  edn_label: "gnuplot"
+  edn_description: "Die hier definierten Bilder werden mittels gnuplot erstellt. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild) erstellt."
+InGnuPlotOutputImage_mode:
+  gams_identifier: "Datenvisualisierung (Name noch anpassen)"
+  gams_description: "Gibt an, welche Daten visualisiert werden sollen."
+InGnuPlotOutputImage_storeScript:
+  gams_identifier: "Skript speichern?"
+  gams_description: "Speichert auf Wunsch das Skript für die Bilderzeugung."
+InGnuPlotOutputImage_storeData:
+  gams_identifier: "Daten speichern?"
+  gams_description: "Speichert auf Wunsch die Daten für die Bilderzeugung."
+InGnuPlotOutputImage_storeImage:
+  gams_identifier: "Bild speichern?"
+  gams_description: "Erzeugt und speichert auf Wunsch das erzeugte Bild."
+InGnuPlotOutputImage_linewidth:
+  gams_identifier: "Linienstärke"
+  gams_description: "Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss."
+
+InROutputImage:
+  edn_label: "R"
+  edn_description: "Die hier definierten Bilder werden mittels R erstellt. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem Ergebnis.csv (Daten), Ergebnis.R (Skript) und Ergebnis.png (Bild) erstellt."
+InROutputImage_mode:
+  gams_identifier: "Datenvisualisierung (Name noch anpassen)"
+  gams_description: "Gibt an, welche Daten visualisiert werden sollen."
+InROutputImage_storeScript:
+  gams_identifier: "Skript speichern?"
+  gams_description: "Speichert auf Wunsch das Skript für die Bilderzeugung."
+InROutputImage_storeData:
+  gams_identifier: "Daten speichern?"
+  gams_description: "Speichert auf Wunsch die Daten für die Bilderzeugung."
+InROutputImage_storeImage:
+  gams_identifier: "Bild speichern?"
+  gams_description: "Erzeugt und speichert auf Wunsch das erzeugte Bild."
+InROutputImage_linewidth:
+  gams_identifier: "Linienstärke"
+  gams_description: "Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss."
+
+
 special_settings:
   edn_label: "Spezielle Einstellungen"
   edn_description: "Hier lassen sich spezielle Modi aktivieren."
@@ -130,7 +199,7 @@ VisibleBinaryData_idVisible:
 
 about:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.0.7"
+  edn_description: "IRPact v0.1.3"
 InAboutPlaceholder_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"

@@ -26,6 +26,11 @@ public class StringElement implements Element {
     }
 
     @Override
+    public boolean isPrintable() {
+        return true;
+    }
+
+    @Override
     public boolean print(StringSettings settings, Appendable target) throws IOException {
         if(ignoreQuote) {
             target.append(value);

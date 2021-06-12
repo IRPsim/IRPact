@@ -45,10 +45,6 @@ public class InVersion implements InIRPactEntity {
     public InVersion() {
     }
 
-    public InVersion(String verion) {
-        this._name = verion;
-    }
-
     @Override
     public InVersion copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
@@ -61,7 +57,9 @@ public class InVersion implements InIRPactEntity {
     }
 
     public static InVersion currentVersion() {
-        return new InVersion(IRPact.VERSION_STRING);
+        InVersion current = new InVersion();
+        current.setVersion(IRPact.VERSION_STRING);
+        return current;
     }
 
     public static InVersion[] currentVersionAsArray() {
@@ -73,8 +71,26 @@ public class InVersion implements InIRPactEntity {
         return _name;
     }
 
+    public void setName(String name) {
+        this._name = name;
+    }
+
+    public void setVersion(String version) {
+        this._name = version.startsWith("v")
+                ? version
+                : "v" + version;
+    }
+
     public String getVersion() {
-        return _name;
+        if(_name == null) {
+            return null;
+        } else {
+            if(_name.startsWith("v")) {
+                return _name.substring(1);
+            } else {
+                return _name;
+            }
+        }
     }
 
     @Override

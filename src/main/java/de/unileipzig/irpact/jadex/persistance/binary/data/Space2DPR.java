@@ -36,7 +36,6 @@ public class Space2DPR extends BinaryPRBase<Space2D> {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putInt(object.getMetric().id());
-        data.putLong(object.getIdManager().peekId());
         return data;
     }
 
@@ -49,7 +48,6 @@ public class Space2DPR extends BinaryPRBase<Space2D> {
         Space2D object = new Space2D();
         object.setName(data.getText());
         object.setMetric(Metric2D.get(data.getInt()));
-        object.getIdManager().reset(data.getLong());
         return object;
     }
 

@@ -59,6 +59,11 @@ public class BasicSpatialDataCollection extends NameableBase implements SpatialD
     }
 
     @Override
+    public DataCollection.View<SpatialInformation> getUnfilteredView() {
+        return data.asView();
+    }
+
+    @Override
     public DataCollection.View<SpatialInformation> getView(SpatialDataFilter filter) {
         return data.getView(filter);
     }

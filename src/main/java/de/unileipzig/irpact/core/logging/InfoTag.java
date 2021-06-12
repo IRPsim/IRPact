@@ -19,7 +19,15 @@ public final class InfoTag {
     public static final String DECISION_MAKING = "[DM]";
 
     //result logging
+    public static final String RESULT_ZIP_ADOPTIONS = "ZIP_ADOPTIONS";
+    public static final String RESULT_ZIP_PHASE_ADOPTIONS = "ZIP_PHASE_ADOPTIONS";
     public static final String RESULT_EXACT_ADOPTIONS = "ALL_ADOPTIONS";
+
+    //script logging
+    public static final String SCRIPT_ZIP_ADOPTIONS = "ZIP_SCRIPT";
+    public static final String SCRIPT_ZIP_ADOPTIONS_DATA = "ZIP_SCRIPT_DATA";
+    public static final String SCRIPT_ZIP_PHASE_ADOPTIONS = "ZIP_PHASE_SCRIPT";
+    public static final String SCRIPT_ZIP_PHASE_ADOPTIONS_DATA = "ZIP_PHASE_SCRIPT_DATA";
 
     private InfoTag() {
     }

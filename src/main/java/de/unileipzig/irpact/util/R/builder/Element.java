@@ -12,6 +12,7 @@ public interface Element {
     //Constants
     //=========================
 
+    String TITLE = "title";
     String X = "x";
     String Y = "y";
     String GROUP = "group";
@@ -29,11 +30,17 @@ public interface Element {
     String POSITION = "position";
     String STAT = "stat";
     String VALUES = "values";
+    String SIZE = "size";
+    String ENCODING = "encoding";
+    String BREAKS = "breaks";
+    String PLOT_TITLE = "plot.title";
 
     String NUMERIC = "numeric";
     String CHARACTER = "character";
     String STACK = "stack";
     String IDENTITY = "identity";
+
+    String UTF8 = "UTF-8";
 
     String TWODASH = "twodash";
     String SOLID = "solid";
@@ -46,8 +53,18 @@ public interface Element {
     String INCH = "in";
 
     //=========================
+    //helper
+    //=========================
+
+    static String iconv(String text, String encoding) {
+        return "iconv(\"" + text + "\", \"" + encoding + "\")";
+    }
+
+    //=========================
     //Element
     //=========================
+
+    boolean isPrintable();
 
     boolean print(StringSettings settings, Appendable target) throws IOException;
 

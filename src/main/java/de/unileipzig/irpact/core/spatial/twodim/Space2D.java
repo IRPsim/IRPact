@@ -41,8 +41,7 @@ public class Space2D extends AbstractMetricalSpatialModel {
     public int getChecksum() {
         return Checksums.SMART.getChecksum(
                 getName(),
-                getMetric().getChecksum(),
-                getIdManager()
+                getMetric().getChecksum()
         );
     }
 }
