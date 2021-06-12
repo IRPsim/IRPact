@@ -153,6 +153,20 @@ public final class ParamUtil {
         return getInstance(arr, onMissing(name), onTooMany(name, arr));
     }
 
+    public static <T> T getInstanceOr(
+            T[] arr,
+            T ifMissing,
+            String msgTooMany) throws ParsingException {
+        if(arr == null || arr.length == 0) {
+            return ifMissing;
+        }
+        if(arr.length == 1) {
+            return arr[0];
+        } else {
+            throw new ParsingException(msgTooMany);
+        }
+    }
+
     public static <T> T getInstance(
             T[] arr,
             String msgMissing,
@@ -160,10 +174,11 @@ public final class ParamUtil {
         if(arr == null || arr.length == 0) {
             throw new ParsingException(msgMissing);
         }
-        if(arr.length > 1) {
+        if(arr.length == 1) {
+            return arr[0];
+        } else {
             throw new ParsingException(msgTooMany);
         }
-        return arr[0];
     }
 
     public static int len(Object[] arr) {

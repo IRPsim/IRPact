@@ -14,7 +14,7 @@ import java.util.Collection;
 /**
  * @author Daniel Abitz
  */
-public abstract class AbstractFileBasedSpatialInformationSupplier
+public abstract class AbstractSpatialInformationSupplier
         extends WeightedDataSupplier<String, SpatialInformation>
         implements SpatialDistribution {
 
@@ -23,7 +23,7 @@ public abstract class AbstractFileBasedSpatialInformationSupplier
     @ChecksumValue
     protected SpatialDataCollection spatialDataCollection;
 
-    public AbstractFileBasedSpatialInformationSupplier() {
+    public AbstractSpatialInformationSupplier() {
         super();
         setRemoveOnDraw(true);
     }
@@ -61,19 +61,24 @@ public abstract class AbstractFileBasedSpatialInformationSupplier
         return idManager;
     }
 
-    public void useAll() {
-        SpatialDataFilter filter = Unfiltered.DEFAULT_INSTANCE;
-        if(hasView(filter.getName())) {
-            throw new IllegalArgumentException("view '" + filter.getName() + "' already exists");
+    public void addUnfiltered() {
+        if(hasView(Unfiltered.DEFAULT_INSTANCE.getName())) {
+            throw new IllegalArgumentException("view '" + Unfiltered.DEFAULT_INSTANCE.getName() + "' already exists");
         }
-        DataCollection.View<SpatialInformation> view = spatialDataCollection.addIfAbsent(filter);
-        putView(filter.getName(), view);
+        DataCollection.View<SpatialInformation> view = spatialDataCollection.getUnfilteredView();
+        putView(Unfiltered.DEFAULT_INSTANCE.getName(), view);
     }
 
     public void addFilter(SpatialDataFilter filter) {
+        if(filter == null) {
+            addUnfiltered();
+            return;
+        }
+
         if(hasView(filter.getName())) {
             throw new IllegalArgumentException("view '" + filter.getName() + "' already exists");
         }
+
         DataCollection.View<SpatialInformation> view = spatialDataCollection.addIfAbsent(filter);
         putView(filter.getName(), view);
     }

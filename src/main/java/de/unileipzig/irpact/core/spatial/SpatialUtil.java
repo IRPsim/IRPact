@@ -4,18 +4,15 @@ import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialDoubleAttribute;
-import de.unileipzig.irpact.commons.util.ShareCalculator;
 import de.unileipzig.irpact.commons.util.data.DataType;
 import de.unileipzig.irpact.commons.util.data.LinkedDataCollection;
 import de.unileipzig.irpact.commons.util.table.Table;
-import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.spatial.data.BasicSpatialDataCollection;
 import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;
 import de.unileipzig.irpact.core.spatial.data.SpatialDataFilter;
 import de.unileipzig.irpact.core.spatial.distribution2.SelectAndGroupFilter;
 import de.unileipzig.irpact.core.spatial.distribution2.SelectFilter;
 import de.unileipzig.irpact.core.spatial.twodim.BasicPoint2D;
-import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
 import java.util.function.Function;
@@ -28,8 +25,6 @@ import java.util.stream.Collectors;
  * @author Daniel Abitz
  */
 public final class SpatialUtil {
-
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(SpatialUtil.class);
 
     public static Predicate<List<SpatialAttribute>> filterAttribute(String attrName, String value) {
         return row -> {
@@ -77,7 +72,11 @@ public final class SpatialUtil {
                 .collect(Collectors.toList());
     }
 
-    private static SpatialDoubleAttribute secureGet(List<SpatialAttribute> row, String key) {
+    public static SpatialDoubleAttribute secureGet(List<SpatialAttribute> row, String key) {
+        if(key == null) {
+            throw new NullPointerException("key is null");
+        }
+
         for(SpatialAttribute attr: row) {
             if(Objects.equals(attr.getName(), key)) {
                 if(!attr.isValueAttributeWithDataType(DataType.DOUBLE)) {
@@ -86,24 +85,29 @@ public final class SpatialUtil {
                 return (SpatialDoubleAttribute) attr;
             }
         }
+
         throw new NoSuchElementException("attribute '" + key + "' not found (" + collectKeys(row) + ")");
     }
 
-    private static SpatialDoubleAttribute tryGet(List<SpatialAttribute> row, String key) {
+    public static SpatialDoubleAttribute getOr(List<SpatialAttribute> row, String key, SpatialDoubleAttribute ifMissing) {
         if(key == null) {
-            return null;
+            return ifMissing;
         }
         for(SpatialAttribute attr: row) {
             if(Objects.equals(attr.getName(), key)) {
                 if(attr.isValueAttributeWithDataType(DataType.DOUBLE)) {
                     return (SpatialDoubleAttribute) attr;
                 } else {
-                    return null;
+                    return ifMissing;
                 }
             }
         }
-        return null;
+        return ifMissing;
     }
+
+    //=========================
+    //REMOVE
+    //=========================
 
     @Deprecated
     public static List<SpatialInformation> mapToPoint2D(List<List<SpatialAttribute>> input, String xKey, String yKey, String idKey) {
@@ -113,7 +117,7 @@ public final class SpatialUtil {
                     double y = secureGet(row, yKey).getDoubleValue();
                     BasicPoint2D p = new BasicPoint2D(x, y);
                     p.addAllAttributes(row);
-                    SpatialAttribute idAttr = tryGet(row, idKey);
+                    SpatialAttribute idAttr = getOr(row, idKey, null);
                     if(idAttr != null) {
                         p.setId(idAttr.asValueAttribute().getIntValue());
                     }
@@ -130,7 +134,7 @@ public final class SpatialUtil {
                     double y = ySupplier.drawDoubleValue();
                     BasicPoint2D p = new BasicPoint2D(x, y);
                     p.addAllAttributes(row);
-                    SpatialAttribute idAttr = tryGet(row, idKey);
+                    SpatialAttribute idAttr = getOr(row, idKey, null);
                     if(idAttr != null) {
                         p.setId(idAttr.asValueAttribute().getIntValue());
                     }
@@ -139,27 +143,7 @@ public final class SpatialUtil {
                 .collect(Collectors.toList());
     }
 
-    public static SpatialDataCollection mapToPoint2D(
-            String name,
-            Table<SpatialAttribute> input,
-            UnivariateDoubleDistribution xSupplier,
-            UnivariateDoubleDistribution ySupplier,
-            LongSupplier idSupplier,
-            Supplier<? extends Collection<SpatialInformation>> supplier) {
-        List<SpatialInformation> infos = input.listTable()
-                .stream()
-                .map(row -> {
-                    double x = xSupplier.drawDoubleValue();
-                    double y = ySupplier.drawDoubleValue();
-                    long id = idSupplier.getAsLong();
-                    BasicPoint2D p = new BasicPoint2D(id, x, y);
-                    p.addAllAttributes(row);
-                    return p;
-                })
-                .collect(Collectors.toList());
-        return mapToPoint2D(name, infos, supplier);
-    }
-
+    @Deprecated
     public static SpatialDataCollection mapToPoint2D(
             String name,
             Table<SpatialAttribute> input,
@@ -181,6 +165,7 @@ public final class SpatialUtil {
         return mapToPoint2D(name, infos, supplier);
     }
 
+    @Deprecated
     protected static SpatialDataCollection mapToPoint2D(
             String name,
             List<SpatialInformation> infos,
@@ -193,29 +178,132 @@ public final class SpatialUtil {
         return spatialData;
     }
 
-    public static Map<String, SpatialDataFilter> createFilters(
+    @Deprecated
+    public static Map<String, List<SpatialInformation>> groupingBy(Collection<SpatialInformation> input, String attrName) {
+        return input.stream()
+                .collect(Collectors.groupingBy(info -> {
+                    SpatialAttribute attr = info.getAttribute(attrName);
+                    if(attr == null) {
+                        throw new IllegalArgumentException("missing '" + attrName + "'");
+                    }
+                    return attr.asValueAttribute().getValueAsString();
+                }));
+    }
+
+    @Deprecated
+    public static Map<String, Integer> filterAndCountAll(List<List<SpatialAttribute>> input, String attrName, Collection<String> keys) {
+        Map<String, Integer> map = new HashMap<>();
+        input.stream()
+                .map(selectAttribute(attrName))
+                .forEach(k -> {
+                    if(keys == null || keys.contains(k)) {
+                        int current = map.computeIfAbsent(k, _k -> 0);
+                        map.put(k, current + 1);
+                    }
+                });
+        return map;
+    }
+
+    @Deprecated
+    public static int tryGet(SpatialInformation information, String attrName, int defaultValue) {
+        if(information == null) {
+            return defaultValue;
+        }
+        SpatialAttribute attr = information.getAttribute(attrName);
+        if(attr == null || attr.isNoValueAttribute()) {
+            return defaultValue;
+        } else {
+            if(attr.asValueAttribute().isDataType(DataType.DOUBLE)) {
+                return attr.asValueAttribute().getIntValue();
+            } else {
+                return defaultValue;
+            }
+        }
+    }
+
+    @Deprecated
+    public static long tryGetId(SpatialInformation information) {
+        return information == null
+                ? -1L
+                : information.getId();
+    }
+
+    //=========================
+    //v2
+    //=========================
+
+    public static SpatialDataCollection mapToPoint2DIfAbsent_2(
+            String name,
+            SpatialModel model,
+            Table<SpatialAttribute> input,
+            String xKey,
+            String yKey,
+            String idKey) {
+        if(model.hasData(name)) {
+            return model.getData(name);
+        } else {
+            SpatialDataCollection data = mapToPoint2D_2(name, input, xKey, yKey, idKey);
+            model.storeData(data);
+            return data;
+        }
+    }
+
+    public static SpatialDataCollection mapToPoint2D_2(
+            String name,
+            Table<SpatialAttribute> input,
+            String xKey,
+            String yKey,
+            String idKey) {
+        LinkedDataCollection<SpatialInformation> dataColl = new LinkedDataCollection<>(ArrayList::new);
+
+        input.listTable()
+                .stream()
+                .map(row -> {
+                    double x = secureGet(row, xKey).getDoubleValue();
+                    double y = secureGet(row, yKey).getDoubleValue();
+                    BasicPoint2D p = new BasicPoint2D(x, y);
+                    SpatialDoubleAttribute idAttr = getOr(row, idKey, null);
+                    if(idAttr != null) {
+                        long id = idAttr.getLongValue();
+                        p.setId(id);
+                    }
+                    p.addAllAttributes(row);
+                    return p;
+                })
+                .forEach(dataColl::add);
+
+        BasicSpatialDataCollection spatialData = new BasicSpatialDataCollection();
+        spatialData.setName(name);
+        spatialData.setData(dataColl);
+
+        return spatialData;
+    }
+
+    public static List<SpatialDataFilter> createFilters_2(
             SpatialDataCollection data,
-            String selectKey) {
-        List<String> distinctValues = data.getData()
+            String selectKey,
+            String selectValue,
+            String groupingKey) {
+        Set<String> groupingValues = new LinkedHashSet<>();
+
+        data.getData()
                 .stream()
                 .map(info -> {
-                    SpatialAttribute attr = info.getAttribute(selectKey);
+                    SpatialAttribute attr = info.getAttribute(groupingKey);
                     if(attr == null) {
-                        throw new NoSuchElementException("missing '" + selectKey + "'");
+                        throw new NoSuchElementException("missing '" + groupingKey + "'");
                     }
                     return attr.asValueAttribute().getValueAsString();
                 })
-                .distinct()
-                .collect(Collectors.toList());
-        Map<String, SpatialDataFilter> filters = new HashMap<>();
-        for(String selectValue: distinctValues) {
-            SelectFilter filter = new SelectFilter(selectKey, selectValue);
-            filters.put(selectValue, filter);
-        }
-        return filters;
+                .forEach(groupingValues::add);
+
+        return createFilters_2(
+                selectKey, Collections.singleton(selectValue),
+                groupingKey, groupingValues
+        );
     }
 
-    public static Map<String, SpatialDataFilter> createFilters(
+    public static List<SpatialDataFilter> createFilters_2(
             SpatialDataCollection data,
             String selectKey,
             String groupingKey) {
@@ -237,46 +325,14 @@ public final class SpatialUtil {
             groupingValues.add(grpAttr.asValueAttribute().getValueAsString());
         }
 
-        Map<String, SpatialDataFilter> filters = new HashMap<>();
-        for(String selectValue: selectValues) {
-            for(String groupingValue: groupingValues) {
-                SelectAndGroupFilter filter = new SelectAndGroupFilter(selectKey, selectValue, groupingKey, groupingValue);
-                filter.buildName();
-                filters.put(filter.getName(), filter);
-            }
-        }
-        return filters;
+        return createFilters_2(selectKey, selectValues, groupingKey, groupingValues);
     }
 
-    public static Map<String, SpatialDataFilter> createFilters(
-            SpatialDataCollection data,
-            String selectKey,
-            String selectValue,
-            String groupingKey) {
-        List<String> distinctValues = data.getData()
-                .stream()
-                .map(info -> {
-                    SpatialAttribute attr = info.getAttribute(groupingKey);
-                    if(attr == null) {
-                        throw new NoSuchElementException("missing '" + groupingKey + "'");
-                    }
-                    return attr.asValueAttribute().getValueAsString();
-                })
-                .distinct()
-                .collect(Collectors.toList());
-        Map<String, SpatialDataFilter> filters = new HashMap<>();
-        for(String groupingValue: distinctValues) {
-            SelectAndGroupFilter filter = new SelectAndGroupFilter(selectKey, selectValue, groupingKey, groupingValue);
-            filter.buildName();
-            filters.put(groupingValue, filter);
-        }
-        return filters;
-    }
-
-    public static Map<String, SpatialDataFilter> createFilters(
+    public static List<SpatialDataFilter> createFilters_2(
             String selectKey, Collection<String> selectValues,
             String groupingKey, Collection<String> groupingValues) {
         Map<String, SpatialDataFilter> filters = new HashMap<>();
+
         for(String selectValue: selectValues) {
             for(String groupingValue: groupingValues) {
                 SelectAndGroupFilter filter = new SelectAndGroupFilter(selectKey, selectValue, groupingKey, groupingValue);
@@ -287,75 +343,30 @@ public final class SpatialUtil {
                 filters.put(filter.getName(), filter);
             }
         }
-        return filters;
+
+        return new ArrayList<>(filters.values());
     }
 
-    public static Map<String, List<SpatialInformation>> groupingBy(Collection<SpatialInformation> input, String attrName) {
-        return input.stream()
-                .collect(Collectors.groupingBy(info -> {
-                    SpatialAttribute attr = info.getAttribute(attrName);
-                    if(attr == null) {
-                        throw new IllegalArgumentException("missing '" + attrName + "'");
-                    }
-                    return attr.asValueAttribute().getValueAsString();
-                }));
+    public static List<SpatialDataFilter> createFilters_2(
+            String selectKey,
+            String selectValue) {
+        return createFilters_2(selectKey, Collections.singleton(selectValue));
     }
 
-    public static SpatialAttribute get(Collection<? extends SpatialAttribute> coll, String name) {
-        for(SpatialAttribute attr: coll) {
-            if(Objects.equals(attr.getName(), name)) {
-                return attr;
+    public static List<SpatialDataFilter> createFilters_2(
+            String selectKey,
+            Collection<String> selectValues) {
+        Map<String, SpatialDataFilter> filters = new HashMap<>();
+
+        for(String selectValue: selectValues) {
+            SelectFilter filter = new SelectFilter(selectKey, selectValue);
+            filter.buildName();
+            if(filters.containsKey(filter.getName())) {
+                throw new IllegalArgumentException("filter '" + filter.getName() + "' already exists");
             }
+            filters.put(filter.getName(), filter);
         }
-        return null;
-    }
 
-    public static <T> void filterAndCount(
-            List<List<SpatialAttribute>> input,
-            String attrName,
-            ShareCalculator<T> share,
-            Function<? super String, ? extends T> mapper) {
-        input.forEach(list -> {
-            SpatialAttribute attr = get(list, attrName);
-            if(attr == null) throw new NullPointerException(attrName);
-            String value = attr.asValueAttribute().getValueAsString();
-            T t = mapper.apply(value);
-            share.updateSize(t, 1);
-        });
-    }
-
-    public static Map<String, Integer> filterAndCountAll(List<List<SpatialAttribute>> input, String attrName, Collection<String> keys) {
-        Map<String, Integer> map = new HashMap<>();
-        input.stream()
-                .map(selectAttribute(attrName))
-                .forEach(k -> {
-                    if(keys == null || keys.contains(k)) {
-                        int current = map.computeIfAbsent(k, _k -> 0);
-                        map.put(k, current + 1);
-                    }
-                });
-        return map;
-    }
-
-    public static int tryGet(SpatialInformation information, String attrName, int defaultValue) {
-        if(information == null) {
-            return defaultValue;
-        }
-        SpatialAttribute attr = information.getAttribute(attrName);
-        if(attr == null || attr.isNoValueAttribute()) {
-            return defaultValue;
-        } else {
-            if(attr.asValueAttribute().isDataType(DataType.DOUBLE)) {
-                return attr.asValueAttribute().getIntValue();
-            } else {
-                return defaultValue;
-            }
-        }
-    }
-
-    public static long tryGetId(SpatialInformation information) {
-        return information == null
-                ? -1L
-                : information.getId();
+        return new ArrayList<>(filters.values());
     }
 }

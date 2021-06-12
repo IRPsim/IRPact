@@ -15,6 +15,8 @@ public interface SpatialDataCollection extends Nameable {
 
     boolean hasFilter(SpatialDataFilter filter);
 
+    DataCollection.View<SpatialInformation> getUnfilteredView();
+
     DataCollection.View<SpatialInformation> getView(SpatialDataFilter filter);
 
     DataCollection.View<SpatialInformation> addFilter(SpatialDataFilter filter);

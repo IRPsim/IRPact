@@ -26,12 +26,4 @@ public interface SpatialModel extends SimulationEntity, InitalizablePart {
     SpatialDataCollection getData(String name);
 
     void storeData(SpatialDataCollection data);
-
-    //=========================
-    // id
-    //=========================
-
-    long nextId();
-
-    LongSupplier supplyNextId();
 }

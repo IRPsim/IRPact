@@ -2,6 +2,7 @@ package de.unileipzig.irpact.commons.util.data;
 
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.develop.Todo;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -210,6 +211,7 @@ public class LinkedDataCollection<E> implements DataCollection<E> {
         return elements.toArray(arrCreator.apply(size()));
     }
 
+    @Todo("optimieren, damit keine kopie genutzt wird")
     @Override
     public LinkedView<E> asView() {
         return createView(null);

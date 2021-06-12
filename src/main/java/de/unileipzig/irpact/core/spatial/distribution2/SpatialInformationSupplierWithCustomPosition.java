@@ -9,14 +9,14 @@ import de.unileipzig.irpact.core.spatial.SpatialInformation;
 /**
  * @author Daniel Abitz
  */
-public class FileBasedSpatialInformationSupplierWithCustomPosition extends AbstractFileBasedSpatialInformationSupplier {
+public class SpatialInformationSupplierWithCustomPosition extends AbstractSpatialInformationSupplier {
 
     protected UnivariateDoubleDistribution xPosition;
     protected UnivariateDoubleDistribution yPosition;
     protected String xKey;
     protected String yKey;
 
-    public FileBasedSpatialInformationSupplierWithCustomPosition() {
+    public SpatialInformationSupplierWithCustomPosition() {
     }
 
     public void setXPosition(UnivariateDoubleDistribution xPosition) {

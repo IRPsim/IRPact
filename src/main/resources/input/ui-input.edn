@@ -44,19 +44,19 @@
             :label "Benutzerdefiniert" 
             :set "set_InGenericOutputImage" 
             :description "Hier kann für die Bilderzeugung das entsprechende Programm mittels 'Visualisierungsprogramm' individuell eingestellt werden. Der Bezeichner wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem für gnuplot Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild) erstellt. Für R werden Ergebnis.csv (Daten), Ergebnis.R (Skript) und Ergebnis.png (Bild) erstellt" 
-            :tags [["InGenericOutputImage" "engine"] ["InGenericOutputImage" "mode"] ["InGenericOutputImage" "storeScript"] ["InGenericOutputImage" "storeData"] ["InGenericOutputImage" "storeImage"]]
+            :tags [["InGenericOutputImage" "engine"] ["InGenericOutputImage" "mode"] ["InGenericOutputImage" "storeScript"] ["InGenericOutputImage" "storeData"] ["InGenericOutputImage" "storeImage"] ["InGenericOutputImage" "linewidth"]]
           } 
           {
             :label "gnuplot" 
             :set "set_InGnuPlotOutputImage" 
             :description "Die hier definierten Bilder werden mittels gnuplot erstellt. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild) erstellt." 
-            :tags [["InGnuPlotOutputImage" "mode"] ["InGnuPlotOutputImage" "storeScript"] ["InGnuPlotOutputImage" "storeData"] ["InGnuPlotOutputImage" "storeImage"]]
+            :tags [["InGnuPlotOutputImage" "mode"] ["InGnuPlotOutputImage" "storeScript"] ["InGnuPlotOutputImage" "storeData"] ["InGnuPlotOutputImage" "storeImage"] ["InGnuPlotOutputImage" "linewidth"]]
           } 
           {
             :label "R" 
             :set "set_InROutputImage" 
             :description "Die hier definierten Bilder werden mittels R erstellt. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem Ergebnis.csv (Daten), Ergebnis.R (Skript) und Ergebnis.png (Bild) erstellt." 
-            :tags [["InROutputImage" "mode"] ["InROutputImage" "storeScript"] ["InROutputImage" "storeData"] ["InROutputImage" "storeImage"]]
+            :tags [["InROutputImage" "mode"] ["InROutputImage" "storeScript"] ["InROutputImage" "storeData"] ["InROutputImage" "storeImage"] ["InROutputImage" "linewidth"]]
           }
         ]
       } 
@@ -75,7 +75,7 @@
       {
         :label "Über IRPact" 
         :set "set_InAboutPlaceholder" 
-        :description "IRPact v0.1.2" 
+        :description "IRPact v0.1.3" 
         :tags [["InAboutPlaceholder" "placeholder"]]
       }
     ]

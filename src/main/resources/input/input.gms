@@ -475,6 +475,13 @@ PARAMETER par_InGenericOutputImage_storeData(set_InGenericOutputImage)
 * - type: Boolean
 PARAMETER par_InGenericOutputImage_storeImage(set_InGenericOutputImage)
 
+* - default: 1
+* - domain: (0,)
+* - description: Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss.
+* - identifier: Linienstärke
+* - type: Float
+PARAMETER par_InGenericOutputImage_linewidth(set_InGenericOutputImage)
+
 * - identifier: InGnuPlotOutputImage
 * - type: String
 SET set_InGnuPlotOutputImage(set_InOutputImage)
@@ -499,6 +506,12 @@ PARAMETER par_InGnuPlotOutputImage_storeData(set_InGnuPlotOutputImage)
 * - identifier: Bild speichern?
 * - type: Boolean
 PARAMETER par_InGnuPlotOutputImage_storeImage(set_InGnuPlotOutputImage)
+
+* - default: 1
+* - domain: (0,)
+* - identifier: linewidth
+* - type: Float
+PARAMETER par_InGnuPlotOutputImage_linewidth(set_InGnuPlotOutputImage)
 
 * - identifier: InOutputImage
 * - hidden: 1
@@ -529,6 +542,12 @@ PARAMETER par_InROutputImage_storeData(set_InROutputImage)
 * - identifier: Bild speichern?
 * - type: Boolean
 PARAMETER par_InROutputImage_storeImage(set_InROutputImage)
+
+* - default: 1
+* - domain: (0,)
+* - identifier: linewidth
+* - type: Float
+PARAMETER par_InROutputImage_linewidth(set_InROutputImage)
 
 * - identifier: InConsumerAgentGroupColor
 * - type: String

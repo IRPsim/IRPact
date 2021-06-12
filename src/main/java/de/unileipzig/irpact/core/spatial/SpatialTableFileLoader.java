@@ -63,7 +63,7 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
         if(data == null) {
             throw new IllegalStateException("not initalized");
         }
-        return new SpatialTableFileContent(data);
+        return new SpatialTableFileContent(inputFileName, data);
     }
 
     private void parse() throws IOException, InvalidFormatException {

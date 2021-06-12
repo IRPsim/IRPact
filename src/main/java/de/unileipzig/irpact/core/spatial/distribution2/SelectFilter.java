@@ -19,6 +19,9 @@ public class SelectFilter extends NameableBase implements SpatialDataFilter {
     public SelectFilter(String selectKey, String selectValue) {
         this.selectKey = selectKey;
         this.selectValue = selectValue;
+    }
+
+    public void buildName() {
         setName(StringUtil.concat("_", selectKey, selectValue));
     }
 
