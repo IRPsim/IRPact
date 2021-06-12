@@ -13,10 +13,7 @@ import de.unileipzig.irpact.commons.logging.LazyPrinter;
 import de.unileipzig.irpact.commons.logging.LazyToString;
 import de.unileipzig.irptools.util.Util;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -104,6 +101,13 @@ public final class IRPactJson {
 
     public static <T extends JsonNode> T readJson(Path source, Charset charset) throws IOException {
         return read(source, charset, JSON);
+    }
+
+    public static <T extends JsonNode> T read(InputStream in, ObjectMapper mapper) throws IOException {
+        try(JsonParser par = mapper.getFactory().createParser(in)) {
+            par.disable(JsonParser.Feature.AUTO_CLOSE_SOURCE);
+            return par.readValueAsTree();
+        }
     }
 
     public static <T extends JsonNode> T read(Path source, Charset charset, ObjectMapper mapper) throws IOException {

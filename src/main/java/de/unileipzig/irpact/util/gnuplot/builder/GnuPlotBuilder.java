@@ -272,18 +272,6 @@ public class GnuPlotBuilder {
         add(new SpecialLinePlotCommand(data, linewidth));
     }
 
-    public void plotSpecialInteractionLinePlot(String data, int linewidth) {
-        plotRawSpecialInteractionLinePlot(quote(data), linewidth);
-    }
-
-    public void plotArgSpecialInteractionLinePlot(int i, int linewidth) {
-        plotRawSpecialInteractionLinePlot(arg(i), linewidth);
-    }
-
-    public void plotRawSpecialInteractionLinePlot(String data, int linewidth) {
-        add(new SpecialInteractionLinePlotCommand(data, linewidth));
-    }
-
     public void setXRange(Object min, Object max) {
         buildSet("xrange", "[" + min + ":" + max + "]");
     }

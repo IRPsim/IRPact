@@ -13,7 +13,7 @@ import java.util.Locale;
  */
 public interface ResourceLoader {
 
-    String INTERN_RESOURCES = "irpacttempdata";
+    String INTERN_RESOURCES = "irpactdata";
     String EXTERN_RESOURCES = "irpactdata";
     Path EXTERN_RESOURCES_PATH = Paths.get(EXTERN_RESOURCES);
 
@@ -46,30 +46,30 @@ public interface ResourceLoader {
     //=========================
 
     default boolean existsLocalized(String baseName, Locale locale, String extension) {
-        return exists(Util.buildName(baseName, locale, extension));
+        return exists(LocaleUtil.buildName(baseName, locale, extension));
     }
 
     default boolean hasLocalizedExternal(String baseName, Locale locale, String extension) {
-        return hasExternal(Util.buildName(baseName, locale, extension));
+        return hasExternal(LocaleUtil.buildName(baseName, locale, extension));
     }
 
     default Path getLocalizedExternal(String baseName, Locale locale, String extension) {
-        return getExternal(Util.buildName(baseName, locale, extension));
+        return getExternal(LocaleUtil.buildName(baseName, locale, extension));
     }
 
     default InputStream getLocalizedExternalAsStream(String baseName, Locale locale, String extension) {
-        return getExternalAsStream(Util.buildName(baseName, locale, extension));
+        return getExternalAsStream(LocaleUtil.buildName(baseName, locale, extension));
     }
 
     default boolean hasLocalizedInternal(String baseName, Locale locale, String extension) {
-        return hasInternal(Util.buildName(baseName, locale, extension));
+        return hasInternal(LocaleUtil.buildName(baseName, locale, extension));
     }
 
     default URL getLocalizedInternal(String baseName, Locale locale, String extension) {
-        return getInternal(Util.buildName(baseName, locale, extension));
+        return getInternal(LocaleUtil.buildName(baseName, locale, extension));
     }
 
     default InputStream getLocalizedInternalAsStream(String baseName, Locale locale, String extension) {
-        return getInternalAsStream(Util.buildName(baseName, locale, extension));
+        return getInternalAsStream(LocaleUtil.buildName(baseName, locale, extension));
     }
 }

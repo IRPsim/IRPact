@@ -546,12 +546,12 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         return languageTag;
     }
 
-    public Locale tryGetLocale() {
+    public Locale getLocale(Locale ifNotFound) {
         String tag = getLanguageTag();
         try {
             return Locale.forLanguageTag(tag);
         } catch (Exception e) {
-            return null;
+            return ifNotFound;
         }
     }
 

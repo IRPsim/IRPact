@@ -143,7 +143,7 @@ public class InExample implements DefaultScenarioFactory {
         images.add(new InROutputImage("rtest1", InOutputImage.MODE_ADOPTION_LINECHART));
         images.add(new InROutputImage("rtest2", InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART));
         images.add(new InROutputImage("rtest3", InOutputImage.MODE_ADOPTION_PHASE_BARCHART));
-        images.forEach(InOutputImage::disableAll);
+        images.forEach(InOutputImage::enableAll);
 
         //time
         InUnitStepDiscreteTimeModel timeModel = new InUnitStepDiscreteTimeModel("DiscreteUnitStep", 1, ChronoUnit.WEEKS);

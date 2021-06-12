@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.commons.loc;
+package de.unileipzig.irpact.commons.locale;
 
 import java.util.Locale;
 import java.util.Set;

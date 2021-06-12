@@ -1,13 +1,13 @@
----
 #########################
 # Deutsche Lokalisierung für die Plots.
 # Die Zuweisung basiert auf dem Wert der Datenvisualisierung (mode).
 #########################
+---
 # nothing
 0:
 # line plot - zip
 1:
-  title: "Jährlichen Adoptionen in Bezug auf die Postleitzahlgebiete"
+  title: "Jährliche Adoptionen in Bezug auf die Postleitzahlgebiete"
   xarg: "year"
   yarg: "adoptions"
   grparg: "zip"
@@ -19,8 +19,8 @@
 
 # line plot - zip with real data
 2:
-  title: |
-    Jährlichen Adoptionen in Bezug auf die Postleitzahlgebiete
+  title: |-
+    Jährliche Adoptionen in Bezug auf die Postleitzahlgebiete
     im Vergleich zu realen Daten
   xarg: "year"
   yarg: "adoptions"
@@ -29,9 +29,9 @@
   xlab: "Jahre"
   ylab: "Adoptionen"
   grplab: "PLZ"
-  #distrinctlab wird nur in R genutzt
-  #https://stackoverflow.com/questions/41049785/gnuplot-custom-legend-with-two-different-specs/41051836
   distinctlab: "Reale Daten"
+  distinct0lab: "nein"
+  distinct1lab: "ja"
   sep: ";"
   encoding: "UTF-8"
 

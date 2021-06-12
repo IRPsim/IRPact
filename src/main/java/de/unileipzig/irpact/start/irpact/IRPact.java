@@ -92,8 +92,7 @@ public final class IRPact implements IRPActAccess {
 
     private final List<IRPactCallback> CALLBACKS = new ArrayList<>();
     private final MainCommandLineOptions CL_OPTIONS;
-    private final ResourceLoader RESOURCE_LOADER;
-    private final MetaData META_DATA = new BasicMetaData();
+    private final BasicMetaData META_DATA = new BasicMetaData();
 
     private ObjectNode inRootNode;
     private AnnualEntry<InRoot> inEntry;
@@ -109,7 +108,11 @@ public final class IRPact implements IRPActAccess {
             ResourceLoader resourceLoader) {
         this.CL_OPTIONS = clOptions;
         this.CALLBACKS.addAll(callbacks);
-        this.RESOURCE_LOADER = resourceLoader;
+
+        META_DATA.setLocale(CL_OPTIONS.getLocale(Locale.GERMAN));
+        META_DATA.setLoader(resourceLoader);
+
+        LOGGER.trace(IRPSection.GENERAL, "using locale: '{}'" , META_DATA.getLocale().toLanguageTag());
     }
 
     public void notifyStart() {
@@ -265,7 +268,7 @@ public final class IRPact implements IRPActAccess {
         int year = inEntry.getConfig().getYear();
         JadexInputParser parser = new JadexInputParser();
         parser.setSimulationYear(year);
-        parser.setResourceLoader(RESOURCE_LOADER);
+        parser.setResourceLoader(META_DATA.getLoader());
         environment = parser.parseRoot(inRoot);
         environment.getSettings().setFirstSimulationYear(year);
     }
@@ -275,7 +278,7 @@ public final class IRPact implements IRPActAccess {
         int year = inEntry.getConfig().getYear();
         JadexRestoreUpdater updater = new JadexRestoreUpdater();
         updater.setSimulationYear(year);
-        updater.setResourceLoader(RESOURCE_LOADER);
+        updater.setResourceLoader(META_DATA.getLoader());
         JadexPersistenceModul persistenceModul = new JadexPersistenceModul();
         environment = (JadexSimulationEnvironment) persistenceModul.restore(
                 META_DATA,

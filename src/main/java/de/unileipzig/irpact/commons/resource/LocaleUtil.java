@@ -5,12 +5,12 @@ import java.util.Locale;
 /**
  * @author Daniel Abitz
  */
-final class Util {
+public final class LocaleUtil {
 
-    private Util() {
+    private LocaleUtil() {
     }
 
-    static String buildName(String baseName, Locale locale, String extension) {
+    public static String buildName(String baseName, Locale locale, String extension) {
         if(locale == null || locale == Locale.ROOT) {
             return baseName + "." + extension;
         } else {
