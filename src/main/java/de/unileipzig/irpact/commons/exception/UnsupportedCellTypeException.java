@@ -3,7 +3,7 @@ package de.unileipzig.irpact.commons.exception;
 /**
  * @author Daniel Abitz
  */
-public class UnsupportedCellTypeException extends IRPactRuntimeException {
+public class UnsupportedCellTypeException extends ParsingException {
 
     public UnsupportedCellTypeException() {
         super();

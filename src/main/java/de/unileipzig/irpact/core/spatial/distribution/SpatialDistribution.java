@@ -22,4 +22,12 @@ public interface SpatialDistribution extends UnivariateDistribution<SpatialInfor
      */
     default void addComplexDataTo(SpatialDistribution target) {
     }
+
+    //=========================
+    //v2
+    //=========================
+
+    default boolean setUsed(SpatialInformation information) {
+        throw new UnsupportedOperationException();
+    }
 }

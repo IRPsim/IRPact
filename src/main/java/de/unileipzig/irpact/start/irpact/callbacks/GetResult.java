@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.start.irpact.callbacks;
 
 import de.unileipzig.irpact.commons.NameableBase;
-import de.unileipzig.irpact.commons.util.data.Pair;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.output.OutRoot;
@@ -13,19 +12,16 @@ import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.annual.AnnualFile;
 import de.unileipzig.irptools.io.base.AnnualEntry;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
 /**
  * @author Daniel Abitz
  */
-public class CreateNextInput extends NameableBase implements IRPactCallback {
+public class GetResult extends NameableBase implements IRPactCallback {
 
     protected AnnualEntry<InRoot> in;
     protected AnnualData<OutRoot> out;
     protected MainCommandLineOptions cmd;
 
-    public CreateNextInput(String name) {
+    public GetResult(String name) {
         setName(name);
     }
 
@@ -48,38 +44,26 @@ public class CreateNextInput extends NameableBase implements IRPactCallback {
         }
     }
 
-    public AnnualData<InRoot> createForNextYear() {
+    public MainCommandLineOptions getCommandLineOptions() {
         checkState();
-        int currentYear = in.getConfig().getYear();
-        return createFor(currentYear + 1);
+        return cmd;
     }
 
-    @Todo("copy richtig einbauen")
-    public AnnualData<InRoot> createFor(int year) {
+    public AnnualEntry<InRoot> getInEntry() {
         checkState();
-        InRoot copy = in.getData(); //hier
-        copy.binaryPersistData = out.getData().getBinaryPersistData(); //hier
-
-        AnnualData<InRoot> nextRoot = new AnnualData<>(copy);
-        nextRoot.getConfig().copyFrom(in.getConfig());
-        nextRoot.getConfig().setYear(year);
-        return nextRoot;
+        return in;
     }
 
-    public Pair<AnnualData<InRoot>, AnnualFile> createAndStore(int year, Path target) throws IOException {
-        checkState();
-        AnnualData<InRoot> data = createFor(year);
-        AnnualFile file = toFile(data);
-        store(target, file);
-        return new Pair<>(data, file);
+    public InRoot getInRoot() {
+        return getInEntry().getData();
     }
 
-    public AnnualFile toFile(AnnualData<InRoot> data) {
+    public AnnualData<OutRoot> getOutData() {
         checkState();
-        return data.serialize(IRPact.getInputConverter(cmd));
+        return out;
     }
 
-    public void store(Path target, AnnualFile file) throws IOException {
-        file.store(target);
+    public OutRoot getOutRoot() {
+        return getOutData().getData();
     }
 }
