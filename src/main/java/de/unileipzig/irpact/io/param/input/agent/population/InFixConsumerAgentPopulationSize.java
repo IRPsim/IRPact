@@ -2,9 +2,9 @@ package de.unileipzig.irpact.io.param.input.agent.population;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.agent.population.AgentPopulation;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -110,14 +110,14 @@ public class InFixConsumerAgentPopulationSize implements InPopulationSize {
 
     @Override
     public void setup(IRPactInputParser parser, Object input) throws ParsingException {
-        Settings initData = ParamUtil.castTo(input, Settings.class);
+        AgentPopulation initData = parser.getEnvironment().getAgents().getInitialAgentPopulation();
         for(InConsumerAgentGroup inCag: getConsumerAgentGroups()) {
             ConsumerAgentGroup cag = parser.parseEntityTo(inCag);
-            if(initData.hasInitialNumberOfConsumerAgents(cag)) {
-                throw new ParsingException("cag '" + cag.getName() + "' already has a population size: " + initData.getInitialNumberOfConsumerAgents(cag) + " (try to set: " + size + ")");
+            if(initData.has(cag)) {
+                throw new ParsingException("cag '" + cag.getName() + "' already has a population size: " + initData.get(cag) + " (try to set: " + size + ")");
             }
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set initial number of consumer agents '{}': {}", cag.getName(), size);
-            initData.setInitialNumberOfConsumerAgents(cag, size);
+            initData.set(cag, size);
         }
     }
 }

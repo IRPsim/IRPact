@@ -9,6 +9,7 @@ import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.agent.population.AgentPopulation;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.misc.MissingDataException;
@@ -268,8 +269,9 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     @Override
     public void createAgents() throws InitializationException {
         SocialGraph graph = getNetwork().getGraph();
+        AgentPopulation population = agentManager.getInitialAgentPopulation();
         for(ConsumerAgentGroup cag: agentManager.getConsumerAgentGroups()) {
-            int numberOfAgents = settings.getInitialNumberOfConsumerAgents(cag);
+            int numberOfAgents = population.get(cag);
             int currentNumberOfAgents = cag.getNumberOfAgents();
             int agentsToCreate = Math.max(numberOfAgents - currentNumberOfAgents, 0);
             if(agentsToCreate > 0) {

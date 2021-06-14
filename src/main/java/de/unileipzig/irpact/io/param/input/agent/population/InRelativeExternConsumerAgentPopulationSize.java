@@ -1,13 +1,11 @@
 package de.unileipzig.irpact.io.param.input.agent.population;
 
-import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
-import de.unileipzig.irpact.commons.util.ExceptionUtil;
-import de.unileipzig.irpact.commons.util.ShareCalculator;
+import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.agent.population.AgentPopulation;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.io.param.ParamUtil;
@@ -24,8 +22,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 import java.util.*;
-import java.util.function.Function;
-import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
 
 import static de.unileipzig.irpact.io.param.IOConstants.AGENTS;
 import static de.unileipzig.irpact.io.param.IOConstants.POPULATION;
@@ -50,26 +47,26 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), AGENTS, POPULATION, thisName());
-        addEntry(res, thisClass(), "maximumSize");
-        addEntry(res, thisClass(), "useMaximumPossibleSize");
-        addEntry(res, thisClass(), "allowSmallerSize");
+        addEntry(res, thisClass(), "desiredSize");
+        addEntry(res, thisClass(), "useAll");
+        addEntry(res, thisClass(), "requiresDesiredTotalSize");
         addEntry(res, thisClass(), "cags");
         addEntry(res, thisClass(), "file");
         addEntry(res, thisClass(), "selectKey");
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(InRelativeExternConsumerAgentPopulationSize.class);
 
     public String _name;
 
     @FieldDefinition
-    public int maximumSize;
+    public int desiredSize;
 
     @FieldDefinition
-    public boolean useMaximumPossibleSize;
+    public boolean useAll;
 
     @FieldDefinition
-    public boolean allowSmallerSize;
+    public boolean requiresDesiredTotalSize;
 
     @FieldDefinition
     public InConsumerAgentGroup[] cags;
@@ -83,37 +80,6 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
     public InRelativeExternConsumerAgentPopulationSize() {
     }
 
-    public InRelativeExternConsumerAgentPopulationSize(
-            String name,
-            InConsumerAgentGroup[] cags,
-            InSpatialTableFile file,
-            InAttributeName selectKey) {
-        setName(name);
-        setConsumerAgentGroups(cags);
-        setFile(file);
-        setSelectKey(selectKey);
-
-        setMaximumSize(-1);
-        setAllowSmallerSize(false);
-        setUseMaximumPossibleSize(true);
-    }
-
-    public InRelativeExternConsumerAgentPopulationSize(
-            String name,
-            InConsumerAgentGroup[] cags,
-            InSpatialTableFile file,
-            InAttributeName selectKey,
-            int maximumSize) {
-        setName(name);
-        setConsumerAgentGroups(cags);
-        setFile(file);
-        setSelectKey(selectKey);
-
-        setMaximumSize(maximumSize);
-        setAllowSmallerSize(false);
-        setUseMaximumPossibleSize(maximumSize < 0);
-    }
-
     @Override
     public InRelativeExternConsumerAgentPopulationSize copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
@@ -122,9 +88,8 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
     public InRelativeExternConsumerAgentPopulationSize newCopy(CopyCache cache) {
         InRelativeExternConsumerAgentPopulationSize copy = new InRelativeExternConsumerAgentPopulationSize();
         copy._name = _name;
-        copy.maximumSize = maximumSize;
-        copy.useMaximumPossibleSize = useMaximumPossibleSize;
-        copy.allowSmallerSize = allowSmallerSize;
+        copy.desiredSize = desiredSize;
+        copy.requiresDesiredTotalSize = requiresDesiredTotalSize;
         copy.cags = cache.copyArray(cags);
         copy.file = cache.copyArray(file);
         copy.selectKey = cache.copyArray(selectKey);
@@ -140,28 +105,28 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
         this._name = name;
     }
 
-    public int getMaximumSize() {
-        return maximumSize;
+    public void setDesiredSize(int desiredSize) {
+        this.desiredSize = desiredSize;
     }
 
-    public void setMaximumSize(int maximumSize) {
-        this.maximumSize = maximumSize;
+    public int getDesiredSize() {
+        return desiredSize;
     }
 
-    public void setUseMaximumPossibleSize(boolean useMaximumPossibleSize) {
-        this.useMaximumPossibleSize = useMaximumPossibleSize;
+    public void setRequiresDesiredTotalSize(boolean requiresDesiredTotalSize) {
+        this.requiresDesiredTotalSize = requiresDesiredTotalSize;
     }
 
-    public boolean isUseMaximumPossibleSize() {
-        return useMaximumPossibleSize;
+    public boolean isRequiresDesiredTotalSize() {
+        return requiresDesiredTotalSize;
     }
 
-    public void setAllowSmallerSize(boolean allowSmallerSize) {
-        this.allowSmallerSize = allowSmallerSize;
+    public void setUseAll(boolean useAll) {
+        this.useAll = useAll;
     }
 
-    public boolean isAllowSmallerSize() {
-        return allowSmallerSize;
+    public boolean isUseAll() {
+        return useAll;
     }
 
     public InConsumerAgentGroup[] getConsumerAgentGroups() throws ParsingException {
@@ -194,38 +159,29 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
 
     @Override
     public void setup(IRPactInputParser parser, Object input) throws ParsingException {
-        Settings initData = ParamUtil.castTo(input, Settings.class);
-        final List<ConsumerAgentGroup> cags = parseCags(parser);
-        checkConsumerAgentGroupExistence(cags, initData);
+        List<ConsumerAgentGroup> cags = parseCags(parser);
+        List<String> cagNames = cags.stream().map(Nameable::getName).collect(Collectors.toList());
+        String selectKey = getSelectKey().getName();
+        SpatialTableFileContent fileContent = parser.parseEntityTo(getFile());
 
-        final SpatialTableFileContent attrList = parser.parseEntityTo(getFile());
-        final String selector = getSelectKey().getName();
-
-        Map<ConsumerAgentGroup, Integer> proportionalSizes = calculateShares(
-                cags,
-                selector,
-                attrList.content().listTable(),
-                getMaximumSize(),
-                isAllowSmallerSize(),
-                isUseMaximumPossibleSize(),
-                ConsumerAgentGroup::getName,
-                true
+        Map<String, Integer> sizes = SpatialUtil.calculateSizes(
+                fileContent.content(),
+                selectKey,
+                cagNames,
+                isUseAll() ? -1 : getDesiredSize(),
+                isRequiresDesiredTotalSize()
         );
 
-        for(Map.Entry<ConsumerAgentGroup, Integer> propotionalEntry: proportionalSizes.entrySet()) {
-            ConsumerAgentGroup cag = propotionalEntry.getKey();
-            int propotionalSize = propotionalEntry.getValue();
-            initData.setInitialNumberOfConsumerAgents(cag, propotionalSize);
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set initial number of agents for cag '{}': {}", cag.getName(), propotionalSize);
-        }
-    }
-
-    protected void checkConsumerAgentGroupExistence(List<ConsumerAgentGroup> cags, Settings initData) throws ParsingException {
-        for(ConsumerAgentGroup cag: cags) {
-            if(initData.hasInitialNumberOfConsumerAgents(cag)) {
-                throw new ParsingException("cag '" + cag.getName() + "' already has a population size: " + initData.getInitialNumberOfConsumerAgents(cag) + " (try to set: " + maximumSize + ")");
+        AgentPopulation population = parser.getEnvironment().getAgents().getInitialAgentPopulation();
+        for(Map.Entry<String, Integer> entry: sizes.entrySet()) {
+            ConsumerAgentGroup cag = getCag(entry.getKey(), cags);
+            if(population.has(cag)) {
+                throw new ParsingException("cag '{}' already has size {} (try to set {})", cag.getName(), population.get(cag), entry.getValue());
             }
+            population.set(cag, entry.getValue());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set initial size for cag '{}': {}", cag.getName(), entry.getValue());
         }
+
     }
 
     protected List<ConsumerAgentGroup> parseCags(InputParser parser) throws ParsingException {
@@ -237,131 +193,12 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
         return cags;
     }
 
-    public static <T> Map<T, Integer> calculateShares(
-            List<T> cags,
-            String selector,
-            List<List<SpatialAttribute>> attrList,
-            int maximumSize,
-            boolean allowSmallerSize,
-            boolean useMaximumPossibleSize,
-            Function<T, String> toString,
-            boolean doLogging) throws ParsingException {
-
-        ShareCalculator<T> shareCalculator = new ShareCalculator<>();
-
-        parseIndividualSizes(
-                cags,
-                shareCalculator,
-                cag -> SpatialUtil.filterAndCount(attrList, selector, toString.apply(cag)),
-                toString,
-                doLogging
-        );
-
-        if(useMaximumPossibleSize) {
-            if(doLogging) LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "use all sizes");
-            Map<T, Integer> cagSizes = new HashMap<>();
-            for(T cag: cags) {
-                cagSizes.put(cag, shareCalculator.getSize(cag));
-            }
-            return cagSizes;
-        }
-
-        calculateShares(
-                cags,
-                shareCalculator,
-                toString,
-                doLogging
-        );
-
-        int parsedTotalSize = shareCalculator.sumSizes();
-        if(useMaximumPossibleSize) {
-            if(doLogging) LOGGER.warn("use maximum possible size {}", parsedTotalSize);
-            maximumSize = parsedTotalSize;
-        } else {
-            if(parsedTotalSize < maximumSize) {
-                if(allowSmallerSize) {
-                    if(doLogging) LOGGER.warn("parsed total size ({}) < maximum size ({}), set maximum size to {}", parsedTotalSize, maximumSize, parsedTotalSize);
-                    maximumSize = parsedTotalSize;
-                } else {
-                    throw ExceptionUtil.create(ParsingException::new, "requested maximum size is to large: maximum size ({}) > possible size ({})", maximumSize, parsedTotalSize);
-                }
+    protected static ConsumerAgentGroup getCag(String name, Collection<? extends ConsumerAgentGroup> cags) {
+        for(ConsumerAgentGroup cag: cags) {
+            if(name.equals(cag.getName())) {
+                return cag;
             }
         }
-
-        return calculateProportionalSizes(
-                cags,
-                maximumSize,
-                shareCalculator,
-                doLogging
-        );
-    }
-
-    protected static <T> void parseIndividualSizes(
-            List<T> cags,
-            ShareCalculator<T> shareCalculator,
-            ToIntFunction<T> sizeOfCag,
-            Function<T, String> toString,
-            boolean doLogging) {
-        for(T cag: cags) {
-            int cagSize = sizeOfCag.applyAsInt(cag);
-            shareCalculator.setSize(cag, cagSize);
-            if(doLogging) LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parsed size for cag '{}': {}", toString.apply(cag), cagSize);
-        }
-    }
-
-    protected static <T> void calculateShares(
-            List<T> cags,
-            ShareCalculator<T> shareCalculator,
-            Function<? super T, ? extends String> toString,
-            boolean doLogging) {
-        shareCalculator.calculateShares();
-        for(T cag: cags) {
-            double share = shareCalculator.getShare(cag);
-            if(doLogging) LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "size share for cag '{}': {}", toString.apply(cag), share);
-        }
-    }
-
-    protected static <T> Map<T, Integer> calculateProportionalSizes(
-            List<T> cags,
-            int totalSize,
-            ShareCalculator<T> shareCalculator,
-            boolean doLogging) throws ParsingException {
-        Map<T, Integer> cagSizes = new HashMap<>();
-        for(T cag: cags) {
-            int cagSize = shareCalculator.getProportionalSize(cag, totalSize);
-            cagSizes.put(cag, cagSize);
-        }
-        repairRoundingErrors(cagSizes, totalSize, shareCalculator, doLogging);
-        return cagSizes;
-    }
-
-    protected static <T> void repairRoundingErrors(
-            Map<T, Integer> cagSizes,
-            int totalSize,
-            ShareCalculator<T> shareCalculator,
-            boolean doLogging) throws ParsingException {
-        int totalCagSize = cagSizes.values().stream()
-                .mapToInt(v -> v)
-                .sum();
-        int difference = totalSize - totalCagSize;
-        if(doLogging) LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "difference between totalSize and totalCagSize: {}", difference);
-        if(difference < 0) {
-            //Das (sollte) ist unmoeglich sein!
-            throw new ParsingException("something went terribly wrong");
-        }
-        if(difference > 0) {
-            if(doLogging) LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "repair rounding errors");
-            T largestGroup = shareCalculator.getKeyWithLargestShare();
-            int currentSize = cagSizes.get(largestGroup);
-            cagSizes.put(largestGroup, currentSize + difference);
-
-            int newTotalSize = cagSizes.values().stream()
-                    .mapToInt(v -> v)
-                    .sum();
-            if(newTotalSize != totalSize) {
-                //Das (sollte) ist unmoeglich sein!
-                throw new ParsingException("something went terribly wrong");
-            }
-        }
+        throw new NoSuchElementException("cag: " + name);
     }
 }

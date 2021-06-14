@@ -25,6 +25,9 @@ public abstract class AbstractImageScriptTask extends NameableBase {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(AbstractImageScriptTask.class);
 
+    protected static final String SUFFIX_DATA = "-data";
+    protected static final String SUFFIX_SCRIPT = "-script";
+
     public static final String CSV = "csv";
     public static final String PNG = "png";
 
@@ -73,8 +76,8 @@ public abstract class AbstractImageScriptTask extends NameableBase {
             Path dir, String baseName,
             String scriptExtension, String dataExtension, String imageExtension) {
         setName(baseName);
-        scriptPath = dir.resolve(baseName + "." + scriptExtension);
-        dataPath = dir.resolve(baseName + "." + dataExtension);
+        scriptPath = dir.resolve(baseName + SUFFIX_SCRIPT + "." + scriptExtension);
+        dataPath = dir.resolve(baseName + SUFFIX_DATA + "." + dataExtension);
         imagePath = dir.resolve(baseName + "." + imageExtension);
     }
 

@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.util.IdManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
+import de.unileipzig.irpact.core.agent.population.AgentPopulation;
 import de.unileipzig.irpact.core.misc.InitalizablePart;
 import de.unileipzig.irpact.develop.Todo;
 
@@ -75,4 +76,10 @@ public interface AgentManager extends InitalizablePart {
     boolean hasConsumerAgentGroupAffinityMapping();
 
     void setConsumerAgentGroupAffinityMapping(ConsumerAgentGroupAffinityMapping affinityMapping);
+
+    //=========================
+    //Population
+    //=========================
+
+    AgentPopulation getInitialAgentPopulation();
 }

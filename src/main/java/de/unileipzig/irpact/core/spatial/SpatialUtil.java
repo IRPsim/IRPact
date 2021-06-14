@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialDoubleAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialStringAttribute;
 import de.unileipzig.irpact.commons.util.data.DataType;
 import de.unileipzig.irpact.commons.util.data.LinkedDataCollection;
 import de.unileipzig.irpact.commons.util.table.Table;
@@ -89,6 +90,23 @@ public final class SpatialUtil {
         throw new NoSuchElementException("attribute '" + key + "' not found (" + collectKeys(row) + ")");
     }
 
+    public static SpatialStringAttribute secureGetString(List<SpatialAttribute> row, String key) {
+        if(key == null) {
+            throw new NullPointerException("key is null");
+        }
+
+        for(SpatialAttribute attr: row) {
+            if(Objects.equals(attr.getName(), key)) {
+                if(!attr.isValueAttributeWithDataType(DataType.STRING)) {
+                    throw new IllegalArgumentException("attribute '" + key + "' is no double");
+                }
+                return (SpatialStringAttribute) attr;
+            }
+        }
+
+        throw new NoSuchElementException("attribute '" + key + "' not found (" + collectKeys(row) + ")");
+    }
+
     public static SpatialDoubleAttribute getOr(List<SpatialAttribute> row, String key, SpatialDoubleAttribute ifMissing) {
         if(key == null) {
             return ifMissing;
@@ -97,6 +115,22 @@ public final class SpatialUtil {
             if(Objects.equals(attr.getName(), key)) {
                 if(attr.isValueAttributeWithDataType(DataType.DOUBLE)) {
                     return (SpatialDoubleAttribute) attr;
+                } else {
+                    return ifMissing;
+                }
+            }
+        }
+        return ifMissing;
+    }
+
+    public static SpatialStringAttribute getStringOr(List<SpatialAttribute> row, String key, SpatialStringAttribute ifMissing) {
+        if(key == null) {
+            return ifMissing;
+        }
+        for(SpatialAttribute attr: row) {
+            if(Objects.equals(attr.getName(), key)) {
+                if(attr.isValueAttributeWithDataType(DataType.STRING)) {
+                    return (SpatialStringAttribute) attr;
                 } else {
                     return ifMissing;
                 }
@@ -231,6 +265,17 @@ public final class SpatialUtil {
     //=========================
     //v2
     //=========================
+
+    public static Set<String> collectAll(Table<SpatialAttribute> input, String key) {
+        return input.listTable()
+                .stream()
+                .map(row -> {
+                    SpatialStringAttribute attribute = getStringOr(row, key, null);
+                    return attribute == null ? null : attribute.getStringValue();
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+    }
 
     public static SpatialDataCollection mapToPoint2DIfAbsent_2(
             String name,
@@ -368,5 +413,67 @@ public final class SpatialUtil {
         }
 
         return new ArrayList<>(filters.values());
+    }
+
+    public static int sum(Map<?, Integer> map) {
+        return map.values().stream().mapToInt(i -> i).sum();
+    }
+
+    public static String findLargest(Map<String, Integer> map) {
+        if(map.isEmpty()) {
+            throw new IllegalArgumentException("empty map");
+        }
+
+        String largest = null;
+        int largestSize = Integer.MIN_VALUE;
+        for(Map.Entry<String, Integer> entry: map.entrySet()) {
+            if(largestSize < entry.getValue()) {
+                largest = entry.getKey();
+                largestSize = entry.getValue();
+            }
+        }
+        return largest;
+    }
+
+    public static Map<String, Integer> calculateSizes(
+            Table<SpatialAttribute> data,
+            String selectKey,
+            Collection<? extends String> validKeys,
+            int desiredTotalSize,
+            boolean requiresDesiredTotalSize) {
+
+        Map<String, Integer> initialSizes = new HashMap<>();
+        data.listTable().forEach(row -> {
+                    String selectValue = secureGetString(row, selectKey).getStringValue();
+                    Integer current = initialSizes.computeIfAbsent(selectValue, _secectValue -> 0);
+                    initialSizes.put(selectValue, current + 1);
+                });
+
+        Map<String, Integer> validSizes = new HashMap<>(initialSizes);
+        if(validKeys != null) {
+            validSizes.keySet().retainAll(validKeys);
+        }
+        final int sumValid = sum(validSizes);
+
+        if(desiredTotalSize > sumValid && requiresDesiredTotalSize) {
+            throw new IllegalArgumentException("not enoug data: " + sumValid + " < " + desiredTotalSize);
+        }
+
+        if(desiredTotalSize < 0 || desiredTotalSize >= sumValid) {
+            return validSizes;
+        }
+
+        validSizes.replaceAll((_key, _size) -> {
+            double share = (double) _size / (double) sumValid;
+            return (int) (share * desiredTotalSize);
+        });
+
+        if(sum(validSizes) < desiredTotalSize) {
+            int delta = desiredTotalSize - sum(validSizes);
+            String largestKey = findLargest(validSizes);
+            validSizes.put(largestKey, validSizes.get(largestKey) + delta);
+        }
+
+        return validSizes;
     }
 }

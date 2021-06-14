@@ -532,15 +532,15 @@ InFixConsumerAgentPopulationSize_cags:
 InRelativeExternConsumerAgentPopulationSize:
   edn_label: "Dynamische Konsumergruppengröße"
   edn_description: "todo"
-InRelativeExternConsumerAgentPopulationSize_maximumSize:
-  gams_identifier: "Maximale Anzahl der Agenten"
-  gams_description: "Legt die maximale Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls die maximal mögliche Anzahl genutzt werden soll, wird dieser Wert ignoriert."
+InRelativeExternConsumerAgentPopulationSize_desiredSize:
+  gams_identifier: "Gewünschte Anzahl der Agenten"
+  gams_description: "Legt die maximale Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls der Wert kleiner 0 ist, wird die maximal mögliche Anzahl verwendet."
 InRelativeExternConsumerAgentPopulationSize_useMaximumPossibleSize:
-  gams_identifier: "Maximal mögliche Population nutzen?"
-  gams_description: "Legt fest, ob die gesamte Populationsgröße aus der Datei verwendet werden soll."
-InRelativeExternConsumerAgentPopulationSize_allowSmallerSize:
-  gams_identifier: "Kleinere Populationen erlauben?"
-  gams_description: "Legt fest, ob kleinere Population zulässig sind. Falls zum Beispiel die maximale Anzahl auf 10.000 gesetzt wird, die Datei aber nur 1.000 Agenten erlaubt, werden nur 1.000 verwendet. Falls diese Option deaktiviert ist, wird in diesem Fall ein Fehler geworfen."
+  gams_identifier: "Maximal mögliche Anzahl nutzen?"
+  gams_description: "Legt fest, ob die gesamte Populationsgröße aus der Datei verwendet werden soll. Falls diese Funktion gesetzt ist, wird die gewünschte Anzahl der Agenten ignoriert."
+InRelativeExternConsumerAgentPopulationSize_requiresDesiredTotalSize:
+  gams_identifier: "Populationsgröße erzwingen?"
+  gams_description: "Falls diese Funktion aktiviert ist, muss die gewünschte Anzahl Agenten existieren. Ist zum Beispiel eine Population von 10000 gewünscht, aber die Datei enthält nur 1000 Agenten, so wird ein Fehler geworfen. Falls die Funktion deaktiviert ist, wird die Population im Notfall angepasst."
 InRelativeExternConsumerAgentPopulationSize_cags:
   gams_identifier: "Konsumergruppen"
   gams_description: "Legt die Konsumergruppen fest, welche berücksichtigt werden sollen."
@@ -549,7 +549,7 @@ InRelativeExternConsumerAgentPopulationSize_file:
   gams_description: "Tabellarische Eingabedatei, aus der die Informationen gelesen werden sollen."
 InRelativeExternConsumerAgentPopulationSize_selectKey:
   gams_identifier: "Auswahlschlüssel"
-  gams_description: "Schlüssel, nachdem die Datei gefiltert wird. Wichtig: Der entsprechenden Daten in der Datei müssen dem Konsumergruppennamen entsprechen."
+  gams_description: "Schlüssel, nachdem die Datei gefiltert wird. Wichtig: Die entsprechenden Daten in der Datei müssen dem Konsumergruppennamen entsprechen."
 
 
 

@@ -11,6 +11,7 @@ import de.unileipzig.irpact.core.spatial.data.SpatialDataFilter;
 import de.unileipzig.irpact.core.spatial.distribution.SpatialDistribution;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * @author Daniel Abitz
@@ -67,7 +68,7 @@ public abstract class AbstractSpatialInformationSupplier
             throw new IllegalArgumentException("view '" + Unfiltered.DEFAULT_INSTANCE.getName() + "' already exists");
         }
         DataCollection.View<SpatialInformation> view = spatialDataCollection.getUnfilteredView();
-        putView(Unfiltered.DEFAULT_INSTANCE.getName(), view);
+        putView(Unfiltered.DEFAULT_INSTANCE.getName(), view, view.size());
     }
 
     public void addFilter(SpatialDataFilter filter) {
@@ -81,7 +82,7 @@ public abstract class AbstractSpatialInformationSupplier
         }
 
         DataCollection.View<SpatialInformation> view = spatialDataCollection.addIfAbsent(filter);
-        putView(filter.getName(), view);
+        putView(filter.getName(), view, view.size());
     }
 
     public void addFilters(Collection<? extends SpatialDataFilter> filters) {
@@ -94,6 +95,18 @@ public abstract class AbstractSpatialInformationSupplier
         if(!drawnValue.hasId()) {
             drawnValue.setId(idManager.nextId());
         }
+    }
+
+    public Set<String> getFilterNames() {
+        return views.keySet();
+    }
+
+    public Collection<DataCollection.View<SpatialInformation>> getViews() {
+        return views.values();
+    }
+
+    public DataCollection.View<SpatialInformation> getView(String name) {
+        return views.get(name);
     }
 
     @Override

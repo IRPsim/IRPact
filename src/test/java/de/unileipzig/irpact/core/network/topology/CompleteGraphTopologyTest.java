@@ -52,8 +52,8 @@ class CompleteGraphTopologyTest {
         B.setInterestSupplyScheme(new ProductThresholdInterestSupplyScheme("B_int"));
         agentManager.addConsumerAgentGroup(B);
 
-        env.getSettings().setInitialNumberOfConsumerAgents(A, 10);
-        env.getSettings().setInitialNumberOfConsumerAgents(B, 10);
+        env.getAgents().getInitialAgentPopulation().set(A, 10);
+        env.getAgents().getInitialAgentPopulation().set(B, 10);
 
         BasicConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
         affinityMapping.putForAll(agentManager.getConsumerAgentGroups(), 1);
@@ -110,8 +110,8 @@ class CompleteGraphTopologyTest {
         agentManager.addConsumerAgentGroup(B);
 
         int total = 20;
-        env.getSettings().setInitialNumberOfConsumerAgents(A, total / 2);
-        env.getSettings().setInitialNumberOfConsumerAgents(B, total / 2);
+        env.getAgents().getInitialAgentPopulation().set(A, total / 2);
+        env.getAgents().getInitialAgentPopulation().set(B, total / 2);
 
         BasicConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
         affinityMapping.putForAll(agentManager.getConsumerAgentGroups(), 1);

@@ -59,7 +59,7 @@ public class WeightedDiscreteSpatialDistribution
             throw new IllegalArgumentException("view '" + filter.getName() + "' already exists");
         }
         DataCollection.View<SpatialInformation> view = spatialDataCollection.addIfAbsent(filter);
-        putView(filter.getName(), view);
+        putView(filter.getName(), view, view.size());
     }
 
     public void addFilter(SpatialDataFilter filter) {
@@ -67,7 +67,7 @@ public class WeightedDiscreteSpatialDistribution
             throw new IllegalArgumentException("view '" + filter.getName() + "' already exists");
         }
         DataCollection.View<SpatialInformation> view = spatialDataCollection.addIfAbsent(filter);
-        putView(filter.getName(), view);
+        putView(filter.getName(), view, view.size());
     }
 
     public void addFilters(Collection<? extends SpatialDataFilter> filters) {

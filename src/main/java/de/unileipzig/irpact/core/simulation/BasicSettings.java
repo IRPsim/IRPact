@@ -3,7 +3,6 @@ package de.unileipzig.irpact.core.simulation;
 import de.unileipzig.irpact.commons.checksum.ChecksumCalculator;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.persistence.annotation.PersistentValue;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.develop.AddToParam;
 
@@ -15,8 +14,6 @@ import java.util.stream.IntStream;
  * @author Daniel Abitz
  */
 public class BasicSettings implements Settings, ChecksumComparable {
-
-    protected Map<ConsumerAgentGroup, Integer> agentCount;
 
     protected int firstSimulationYear;
     @PersistentValue
@@ -43,15 +40,7 @@ public class BasicSettings implements Settings, ChecksumComparable {
     protected boolean logScriptAdoptionsZip = false;
     protected boolean logScriptAdoptionsZipPhase = false;
 
-
-
     public BasicSettings() {
-        this(new LinkedHashMap<>());
-    }
-
-    public BasicSettings(
-            Map<ConsumerAgentGroup, Integer> agentCount) {
-        this.agentCount = agentCount;
     }
 
     //=========================
@@ -217,29 +206,6 @@ public class BasicSettings implements Settings, ChecksumComparable {
     public List<Integer> listActualYears() {
         return streamActualSimulationYears().boxed()
                 .collect(Collectors.toList());
-    }
-
-    //=========================
-    //population size
-    //=========================
-
-    @Override
-    public boolean hasInitialNumberOfConsumerAgents(ConsumerAgentGroup group) {
-        return agentCount.containsKey(group);
-    }
-
-    @Override
-    public void setInitialNumberOfConsumerAgents(ConsumerAgentGroup group, int size) {
-        agentCount.put(group, size);
-    }
-
-    @Override
-    public int getInitialNumberOfConsumerAgents(ConsumerAgentGroup group) {
-        Integer count = agentCount.get(group);
-        if(count == null) {
-            throw new NoSuchElementException(group.getName());
-        }
-        return count;
     }
 
     //=========================

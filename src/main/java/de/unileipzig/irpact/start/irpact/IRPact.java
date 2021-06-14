@@ -85,7 +85,7 @@ public final class IRPact implements IRPActAccess {
     public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS = "ComparedAnnualAdoptions";
     public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS = "AnnualCumulativeAdoptions";
 
-    public static final String DOWNLOAD_DIR_NAME = "downloads";
+    public static final String DOWNLOAD_DIR_NAME = "images";
 
     private static final Map<MainCommandLineOptions, Converter> INPUT_CONVERTS = new WeakHashMap<>();
     private static final Map<MainCommandLineOptions, Converter> OUTPUT_CONVERTS = new WeakHashMap<>();
