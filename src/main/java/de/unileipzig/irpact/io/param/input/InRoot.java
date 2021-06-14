@@ -686,12 +686,9 @@ public class InRoot implements RootClass {
             InProductGroup.class,
             InProductGroupAttribute.class,
 
-            InCustomFileSelectedGroupedSpatialDistribution2D.class,
-            InCustomFileSelectedSpatialDistribution2D.class,
-            InCustomFileSpatialDistribution2D.class,
-            InFileSelectedGroupedSpatialDistribution2D.class,
-            InFileSelectedSpatialDistribution2D.class,
-            InFileSpatialDistribution2D.class,
+            InFileBasedSelectGroupSpatialInformationSupplier__2.class,
+            InFileBasedSelectSpatialInformationSupplier__2.class,
+            InFileBasedSpatialInformationSupplier__2.class,
             InSpatialDistribution.class,
             InSpace2D.class,
             InSpatialModel.class,
@@ -857,14 +854,11 @@ public class InRoot implements RootClass {
                         addPathElement(res, InSpace2D.thisName(), SPATIAL_MODEL);
                 addPathElement(res, SPATIAL_MODEL_DIST, SPATIAL);
                         addPathElement(res, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST);
-                                addPathElement(res, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS, SPATIAL_MODEL_DIST_FILE);
-                                        addPathElement(res, InCustomFileSpatialDistribution2D.thisName(), SPATIAL_MODEL_DIST_FILE_CUSTOMPOS);
-                                        addPathElement(res, InCustomFileSelectedSpatialDistribution2D.thisName(), SPATIAL_MODEL_DIST_FILE_CUSTOMPOS);
-                                        addPathElement(res, InCustomFileSelectedGroupedSpatialDistribution2D.thisName(), SPATIAL_MODEL_DIST_FILE_CUSTOMPOS);
+                                //addPathElement(res, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS, SPATIAL_MODEL_DIST_FILE);
                                 addPathElement(res, SPATIAL_MODEL_DIST_FILE_FILEPOS, SPATIAL_MODEL_DIST_FILE);
-                                        addPathElement(res, InFileSpatialDistribution2D.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-                                        addPathElement(res, InFileSelectedSpatialDistribution2D.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-                                        addPathElement(res, InFileSelectedGroupedSpatialDistribution2D.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
+                                        addPathElement(res, InFileBasedSpatialInformationSupplier__2.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
+                                        addPathElement(res, InFileBasedSelectSpatialInformationSupplier__2.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
+                                        addPathElement(res, InFileBasedSelectGroupSpatialInformationSupplier__2.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
 
         addPathElement(res, TIME, ROOT);
                 addPathElement(res, InDiscreteTimeModel.thisName(), TIME);

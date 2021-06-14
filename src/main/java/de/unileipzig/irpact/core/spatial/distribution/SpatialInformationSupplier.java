@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.spatial.distribution2;
+package de.unileipzig.irpact.core.spatial.distribution;
 
 /**
  * @author Daniel Abitz

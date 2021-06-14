@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.spatial.distribution2;
+package de.unileipzig.irpact.core.spatial.distribution;
 
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;

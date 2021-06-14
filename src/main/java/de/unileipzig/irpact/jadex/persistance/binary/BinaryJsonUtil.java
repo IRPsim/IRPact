@@ -57,7 +57,6 @@ final class BinaryJsonUtil {
         ensureRegister(manager, DiracUnivariateDoubleDistributionPR.INSTANCE);
         ensureRegister(manager, DisabledNodeFilterPR.INSTANCE);
         ensureRegister(manager, DisabledProcessPlanNodeFilterSchemePR.INSTANCE);
-        ensureRegister(manager, DiscreteSpatialDistributionPR.INSTANCE);
         ensureRegister(manager, DiscreteTimeModelPR.INSTANCE);
         ensureRegister(manager, EntireNetworkNodeFilterPR.INSTANCE);
         ensureRegister(manager, EntireNetworkNodeFilterSchemePR.INSTANCE);
@@ -84,10 +83,10 @@ final class BinaryJsonUtil {
         ensureRegister(manager, RndPR.INSTANCE);
         ensureRegister(manager, Space2DPR.INSTANCE);
         ensureRegister(manager, SpatialDoubleAttributeBasePR.INSTANCE);
+        ensureRegister(manager, SpatialInformationSupplierPR.INSTANCE);
         ensureRegister(manager, SpatialStringAttributeBasePR.INSTANCE);
         ensureRegister(manager, UnitStepDiscreteTimeModelPR.INSTANCE);
         ensureRegister(manager, UnlinkedGraphTopologyPR.INSTANCE);
-        ensureRegister(manager, WeightedDiscreteSpatialDistributionPR.INSTANCE);
     }
 
     private static void ensureRegister(Object manager, Object impl) {

@@ -1,169 +1,86 @@
 package de.unileipzig.irpact.core.spatial.distribution;
 
-import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
-import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.commons.util.weighted.BasicWeightedBiMapping;
-import de.unileipzig.irpact.commons.util.weighted.UnmodifiableWeightedBiMapping;
+import de.unileipzig.irpact.commons.checksum.Checksums;
+import de.unileipzig.irpact.commons.util.data.DataCollection;
+import de.unileipzig.irpact.commons.util.data.weighted.WeightedDataSupplier;
+import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;
+import de.unileipzig.irpact.core.spatial.data.SpatialDataFilter;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 
-import java.util.*;
+import java.util.Collection;
 
 /**
  * @author Daniel Abitz
  */
-public class WeightedDiscreteSpatialDistribution extends ResettableSpatialDistributionBase {
+public class WeightedDiscreteSpatialDistribution
+        extends WeightedDataSupplier<String, SpatialInformation>
+        implements SpatialDistribution {
 
-    protected static final String X = "x";
-
-    protected BasicWeightedBiMapping<String, String, Number> weightedMapping;
-    protected UnmodifiableWeightedBiMapping<String, String, Number> unmodWeightedMapping;
-    protected Map<String, Collection<SpatialInformation>> unused;
-    protected Map<String, Collection<SpatialInformation>> used;
-    protected Rnd rnd;
+    protected SpatialDataCollection spatialDataCollection;
 
     public WeightedDiscreteSpatialDistribution() {
-        this(new BasicWeightedBiMapping<>(), new LinkedHashMap<>(), new LinkedHashMap<>());
+        super();
+        setRemoveOnDraw(true);
     }
 
-    public WeightedDiscreteSpatialDistribution(
-            BasicWeightedBiMapping<String, String, Number> weightedMapping,
-            Map<String, Collection<SpatialInformation>> unused,
-            Map<String, Collection<SpatialInformation>> used) {
-        this.weightedMapping = weightedMapping;
-        this.unused = unused;
-        this.used = used;
+    public void setSpatialData(SpatialDataCollection spatialDataCollection) {
+        this.spatialDataCollection = spatialDataCollection;
+        this.data = spatialDataCollection.getData();
     }
 
-    @Override
-    public void reset() {
-        numberOfCalls = 0;
-        weightedMapping.clear();
-        unmodWeightedMapping = null;
-        unused.clear();
-        used.clear();
+    public SpatialDataCollection getSpatialData() {
+        return spatialDataCollection;
     }
 
     @Override
-    public boolean isShareble(SpatialDistribution target) {
-        return target instanceof WeightedDiscreteSpatialDistribution;
+    public void rebuildWeightedMapping(boolean skipEmptyViews) {
+        super.rebuildWeightedMapping(skipEmptyViews);
     }
 
     @Override
-    public void addComplexDataTo(SpatialDistribution target) {
-        if(target instanceof WeightedDiscreteSpatialDistribution) {
-            WeightedDiscreteSpatialDistribution targetDist = (WeightedDiscreteSpatialDistribution) target;
-            targetDist.getUnused().putAll(getUnused());
-            targetDist.getUsed().putAll(getUsed());
-        } else {
-            throw new IllegalArgumentException("requires " + getClass().getName());
-        }
-    }
-
-    public void add(String key, Collection<SpatialInformation> informations) {
-        unused.put(key, informations);
+    public void setData(DataCollection<SpatialInformation> data) {
+        throw new UnsupportedOperationException("use setSpatialDataCollection");
     }
 
     @Override
-    public void initalize() {
-        numberOfCalls = 0;
-        for(Map.Entry<String, Collection<SpatialInformation>> entry: unused.entrySet()) {
-            weightedMapping.put(X, entry.getKey(), entry.getValue().size());
-        }
-        unmodWeightedMapping = new UnmodifiableWeightedBiMapping<>(weightedMapping);
-        unmodWeightedMapping.makeImmutable();
-        call();
-    }
-
-    protected void removeAndReweight(String key) {
-        unused.remove(key);
-        weightedMapping.remove(X, key);
-        unmodWeightedMapping = new UnmodifiableWeightedBiMapping<>(weightedMapping);
-        unmodWeightedMapping.makeImmutable();
-    }
-
-    public void setRandom(Rnd rnd) {
-        this.rnd = rnd;
-    }
-
-    public Rnd getRandom() {
-        return rnd;
-    }
-
-    public BasicWeightedBiMapping<String, String, Number> getWeightedMapping() {
-        return weightedMapping;
-    }
-
-    public UnmodifiableWeightedBiMapping<String, String, Number> getUnmodifiableWeightedMapping() {
-        return unmodWeightedMapping;
-    }
-
-    public Map<String, Collection<SpatialInformation>> getUsed() {
-        return used;
-    }
-
-    public Map<String, Collection<SpatialInformation>> getUnused() {
-        return unused;
-    }
-
-    public int getNumberOfCalls() {
-        return numberOfCalls;
-    }
-
-    public void setRequiredNumberOfCalls(int requiredNumberOfCalls) {
-        this.requiredNumberOfCalls = requiredNumberOfCalls;
-    }
-
-    public int countUnusedEntries() {
-        return unused.values()
-                .stream()
-                .mapToInt(Collection::size)
-                .sum();
-    }
-
-    public int countUsedEntries() {
-        return used.values()
-                .stream()
-                .mapToInt(Collection::size)
-                .sum();
-    }
-
-    public SpatialInformation drawValue(String key) {
-        if(unused.isEmpty()) {
-            throw new IllegalStateException("empty");
-        }
-
-        Collection<SpatialInformation> unusedInfos = unused.get(key);
-        if(unusedInfos == null || unusedInfos.isEmpty()) {
-            throw new IllegalStateException("set '" + key + "' is empty");
-        }
-        SpatialInformation info = rnd.removeRandom(unusedInfos);
-        Collection<SpatialInformation> usedInfos = used.computeIfAbsent(key, _key -> new ArrayList<>());
-        usedInfos.add(info);
-        if(unusedInfos.isEmpty()) {
-            removeAndReweight(key);
-        }
-
-        numberOfCalls++;
-        return info;
+    public void set(String key, DataCollection.Filter<? super SpatialInformation> filter) {
+        throw new UnsupportedOperationException("use addFilter");
     }
 
     @Override
-    public SpatialInformation drawValue() {
-        if(unused.isEmpty()) {
-            throw new IllegalStateException("empty");
-        }
+    public boolean setUsed(SpatialInformation information) {
+        return spatialDataCollection.remove(information);
+    }
 
-        String key = unmodWeightedMapping.getWeightedRandom(X, rnd);
-        return drawValue(key);
+    public void useAll() {
+        SpatialDataFilter filter = Unfiltered.DEFAULT_INSTANCE;
+        if(hasView(filter.getName())) {
+            throw new IllegalArgumentException("view '" + filter.getName() + "' already exists");
+        }
+        DataCollection.View<SpatialInformation> view = spatialDataCollection.addIfAbsent(filter);
+        putView(filter.getName(), view, view.size());
+    }
+
+    public void addFilter(SpatialDataFilter filter) {
+        if(hasView(filter.getName())) {
+            throw new IllegalArgumentException("view '" + filter.getName() + "' already exists");
+        }
+        DataCollection.View<SpatialInformation> view = spatialDataCollection.addIfAbsent(filter);
+        putView(filter.getName(), view, view.size());
+    }
+
+    public void addFilters(Collection<? extends SpatialDataFilter> filters) {
+        for(SpatialDataFilter filter: filters) {
+            addFilter(filter);
+        }
     }
 
     @Override
-    public int getChecksum() {
-        return Objects.hash(
-                getName(),
-                getRandom().getChecksum(),
-                ChecksumComparable.getCollCollChecksum(unused.values()),
-                ChecksumComparable.getCollCollChecksum(used.values())
+    public int getChecksum() throws UnsupportedOperationException {
+        return Checksums.SMART.getChecksum(
+                spatialDataCollection,
+                rnd,
+                removeOnDraw
         );
     }
 }

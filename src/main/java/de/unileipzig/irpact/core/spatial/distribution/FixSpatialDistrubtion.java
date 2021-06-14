@@ -30,4 +30,9 @@ public class FixSpatialDistrubtion extends NameableBase implements SpatialDistri
         }
         return fixed;
     }
+
+    @Override
+    public boolean setUsed(SpatialInformation information) {
+        return true;
+    }
 }

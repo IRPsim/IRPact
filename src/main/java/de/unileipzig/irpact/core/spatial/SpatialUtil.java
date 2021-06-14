@@ -11,8 +11,8 @@ import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.core.spatial.data.BasicSpatialDataCollection;
 import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;
 import de.unileipzig.irpact.core.spatial.data.SpatialDataFilter;
-import de.unileipzig.irpact.core.spatial.distribution2.SelectAndGroupFilter;
-import de.unileipzig.irpact.core.spatial.distribution2.SelectFilter;
+import de.unileipzig.irpact.core.spatial.distribution.SelectAndGroupFilter;
+import de.unileipzig.irpact.core.spatial.distribution.SelectFilter;
 import de.unileipzig.irpact.core.spatial.twodim.BasicPoint2D;
 
 import java.util.*;

@@ -21,8 +21,8 @@ public class SpatialDistributionSpec extends AbstractSuperSpec<InSpatialDistribu
     public static final SpatialDistributionSpec INSTANCE = new SpatialDistributionSpec();
 
     private static final List<AbstractSubSpec<? extends InSpatialDistribution>> MODELS = createModels(
-            CustomSelectedGroupedSpatialDistribution2DSpec.INSTANCE,
-            SelectedGroupedSpatialDistribution2DSpec.INSTANCE
+//            CustomSelectedGroupedSpatialDistribution2DSpec.INSTANCE,
+//            SelectedGroupedSpatialDistribution2DSpec.INSTANCE
     );
 
     @Override

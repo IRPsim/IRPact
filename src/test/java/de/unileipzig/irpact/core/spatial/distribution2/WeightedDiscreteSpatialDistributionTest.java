@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.spatial.*;
 import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;
 import de.unileipzig.irpact.core.spatial.data.SpatialDataFilter;
+import de.unileipzig.irpact.core.spatial.distribution.WeightedDiscreteSpatialDistribution;
 import de.unileipzig.irpact.xxx.IRPactMock;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

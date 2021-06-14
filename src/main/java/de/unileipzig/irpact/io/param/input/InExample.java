@@ -28,7 +28,7 @@ import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistance
 import de.unileipzig.irpact.io.param.input.process.ra.InUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InCustomFileSpatialDistribution2D;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedSpatialInformationSupplier__2;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.irpopt.SideCustom;
@@ -121,12 +121,12 @@ public class InExample implements DefaultScenarioFactory {
         );
 
         InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210322");
-        InCustomFileSpatialDistribution2D spaDist = new InCustomFileSpatialDistribution2D(
-                "testdist",
-                constant0,
-                constant0,
-                tableFile
-        );
+        InFileBasedSpatialInformationSupplier__2 spaDist = new InFileBasedSpatialInformationSupplier__2();
+        spaDist.setName("testdist");
+        spaDist.setXPositionKey(new InAttributeName(RAConstants.X_CENT));
+        spaDist.setYPositionKey(new InAttributeName(RAConstants.Y_CENT));
+        spaDist.setIdKey(new InAttributeName(RAConstants.ID));
+        spaDist.setFile(tableFile);
         cag0.setSpatialDistribution(spaDist);
         cag1.setSpatialDistribution(spaDist);
 
