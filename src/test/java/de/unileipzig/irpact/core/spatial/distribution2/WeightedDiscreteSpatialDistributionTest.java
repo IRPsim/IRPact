@@ -34,7 +34,7 @@ class WeightedDiscreteSpatialDistributionTest {
     @Disabled
     @Test
     void testFilters() {
-        List<SpatialDataFilter> filters = SpatialUtil.createFilters_2(
+        List<SpatialDataFilter> filters = SpatialUtil.createFilters(
                 "milieu", Collections.singletonList("a"),
                 "zip", Arrays.asList("x", "y", "z")
         );
@@ -49,7 +49,7 @@ class WeightedDiscreteSpatialDistributionTest {
         );
         Supplier<SpatialInformation> supplier = IRPactMock.mockSpatialInformation2D(new Rnd(123), milieusAndZip);
         SpatialDataCollection dataColl = IRPactMock.mockSpatialDataCollection(supplier, 20);
-        List<SpatialDataFilter> filters = SpatialUtil.createFilters_2("milieu", Collections.singletonList("a"), "zip", Arrays.asList("x", "y", "z"));
+        List<SpatialDataFilter> filters = SpatialUtil.createFilters("milieu", Collections.singletonList("a"), "zip", Arrays.asList("x", "y", "z"));
         filters.forEach(f -> System.out.println(f.getName()));
         assertEquals(3, filters.size());
         WeightedDiscreteSpatialDistribution dist = new WeightedDiscreteSpatialDistribution();

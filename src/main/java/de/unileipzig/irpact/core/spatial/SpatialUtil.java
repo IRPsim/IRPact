@@ -324,7 +324,7 @@ public final class SpatialUtil {
         return spatialData;
     }
 
-    public static List<SpatialDataFilter> createFilters_2(
+    public static List<SpatialDataFilter> createFilters(
             SpatialDataCollection data,
             String selectKey,
             String selectValue,
@@ -342,13 +342,13 @@ public final class SpatialUtil {
                 })
                 .forEach(groupingValues::add);
 
-        return createFilters_2(
+        return createFilters(
                 selectKey, Collections.singleton(selectValue),
                 groupingKey, groupingValues
         );
     }
 
-    public static List<SpatialDataFilter> createFilters_2(
+    public static List<SpatialDataFilter> createFilters(
             SpatialDataCollection data,
             String selectKey,
             String groupingKey) {
@@ -370,10 +370,10 @@ public final class SpatialUtil {
             groupingValues.add(grpAttr.asValueAttribute().getValueAsString());
         }
 
-        return createFilters_2(selectKey, selectValues, groupingKey, groupingValues);
+        return createFilters(selectKey, selectValues, groupingKey, groupingValues);
     }
 
-    public static List<SpatialDataFilter> createFilters_2(
+    public static List<SpatialDataFilter> createFilters(
             String selectKey, Collection<String> selectValues,
             String groupingKey, Collection<String> groupingValues) {
         Map<String, SpatialDataFilter> filters = new HashMap<>();
@@ -392,13 +392,13 @@ public final class SpatialUtil {
         return new ArrayList<>(filters.values());
     }
 
-    public static List<SpatialDataFilter> createFilters_2(
+    public static List<SpatialDataFilter> createFilters(
             String selectKey,
             String selectValue) {
-        return createFilters_2(selectKey, Collections.singleton(selectValue));
+        return createFilters(selectKey, Collections.singleton(selectValue));
     }
 
-    public static List<SpatialDataFilter> createFilters_2(
+    public static List<SpatialDataFilter> createFilters(
             String selectKey,
             Collection<String> selectValues) {
         Map<String, SpatialDataFilter> filters = new HashMap<>();

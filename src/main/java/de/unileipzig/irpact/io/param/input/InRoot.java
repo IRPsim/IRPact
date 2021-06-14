@@ -12,9 +12,10 @@ import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InNameSplitAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.*;
-import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulationSize;
-import de.unileipzig.irpact.io.param.input.agent.population.InPopulationSize;
-import de.unileipzig.irpact.io.param.input.agent.population.InRelativeExternConsumerAgentPopulationSize;
+import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactConsumerAgentPopulation;
+import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulation;
+import de.unileipzig.irpact.io.param.input.agent.population.InAgentPopulation;
+import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.image.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.input.image.InGnuPlotOutputImage;
 import de.unileipzig.irpact.io.param.input.image.InOutputImage;
@@ -202,15 +203,15 @@ public class InRoot implements RootClass {
     }
 
     @FieldDefinition
-    public InPopulationSize[] agentPopulationSizes = new InPopulationSize[0];
+    public InAgentPopulation[] agentPopulationSizes = new InAgentPopulation[0];
 
-    public void setAgentPopulationSize(InPopulationSize agentPopulationSize) {
-        this.agentPopulationSizes = new InPopulationSize[]{agentPopulationSize};
+    public void setAgentPopulationSize(InAgentPopulation agentPopulationSize) {
+        this.agentPopulationSizes = new InAgentPopulation[]{agentPopulationSize};
     }
-    public void setAgentPopulationSizes(InPopulationSize[] agentPopulationSizes) {
+    public void setAgentPopulationSizes(InAgentPopulation[] agentPopulationSizes) {
         this.agentPopulationSizes = agentPopulationSizes;
     }
-    public InPopulationSize[] getAgentPopulationSizes() throws ParsingException {
+    public InAgentPopulation[] getAgentPopulationSizes() throws ParsingException {
         return getNonNullArray(agentPopulationSizes, "agentPopulationSizes");
     }
 
@@ -614,9 +615,10 @@ public class InRoot implements RootClass {
             InNameSplitConsumerAgentAnnualGroupAttribute.class,
             InNameSplitConsumerAgentGroupAttribute.class,
             InPVactConsumerAgentGroup.class,
-            InFixConsumerAgentPopulationSize.class,
-            InPopulationSize.class,
-            InRelativeExternConsumerAgentPopulationSize.class,
+            InFixConsumerAgentPopulation.class,
+            InAgentPopulation.class,
+            InFileBasedConsumerAgentPopulation.class,
+            InFileBasedPVactConsumerAgentPopulation.class,
 
             VisibleBinaryData.class,
             BinaryPersistData.class, //special
@@ -686,9 +688,11 @@ public class InRoot implements RootClass {
             InProductGroup.class,
             InProductGroupAttribute.class,
 
-            InFileBasedSelectGroupSpatialInformationSupplier__2.class,
-            InFileBasedSelectSpatialInformationSupplier__2.class,
-            InFileBasedSpatialInformationSupplier__2.class,
+            InFileBasedPVactMilieuSupplier.class,
+            InFileBasedPVactMilieuZipSupplier.class,
+            InFileBasedSelectGroupSpatialInformationSupplier.class,
+            InFileBasedSelectSpatialInformationSupplier.class,
+            InFileBasedSpatialInformationSupplier.class,
             InSpatialDistribution.class,
             InSpace2D.class,
             InSpatialModel.class,
@@ -811,8 +815,9 @@ public class InRoot implements RootClass {
                                 addPathElement(res, InProductThresholdInterestSupplyScheme.thisName(), CONSUMER_INTEREST);
                                         addPathElement(res, InProductGroupThresholdEntry.thisName(), InProductThresholdInterestSupplyScheme.thisName());
                 addPathElement(res, POPULATION, AGENTS);
-                        addPathElement(res, InFixConsumerAgentPopulationSize.thisName(), POPULATION);
-                        addPathElement(res, InRelativeExternConsumerAgentPopulationSize.thisName(), POPULATION);
+                        addPathElement(res, InFixConsumerAgentPopulation.thisName(), POPULATION);
+                        addPathElement(res, InFileBasedConsumerAgentPopulation.thisName(), POPULATION);
+                        addPathElement(res, InFileBasedPVactConsumerAgentPopulation.thisName(), POPULATION);
 
         addPathElement(res, NETWORK, ROOT);
                 addPathElement(res, TOPOLOGY, NETWORK);
@@ -856,9 +861,11 @@ public class InRoot implements RootClass {
                         addPathElement(res, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST);
                                 //addPathElement(res, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS, SPATIAL_MODEL_DIST_FILE);
                                 addPathElement(res, SPATIAL_MODEL_DIST_FILE_FILEPOS, SPATIAL_MODEL_DIST_FILE);
-                                        addPathElement(res, InFileBasedSpatialInformationSupplier__2.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-                                        addPathElement(res, InFileBasedSelectSpatialInformationSupplier__2.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-                                        addPathElement(res, InFileBasedSelectGroupSpatialInformationSupplier__2.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
+                                        addPathElement(res, InFileBasedSpatialInformationSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
+                                        addPathElement(res, InFileBasedSelectSpatialInformationSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
+                                        addPathElement(res, InFileBasedSelectGroupSpatialInformationSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
+                                        addPathElement(res, InFileBasedPVactMilieuSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
+                                        addPathElement(res, InFileBasedPVactMilieuZipSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
 
         addPathElement(res, TIME, ROOT);
                 addPathElement(res, InDiscreteTimeModel.thisName(), TIME);

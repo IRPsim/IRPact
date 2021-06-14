@@ -7,10 +7,7 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;
-import de.unileipzig.irpact.core.spatial.data.SpatialDataFilter;
 import de.unileipzig.irpact.core.spatial.distribution.SpatialInformationSupplier;
-import de.unileipzig.irpact.develop.Dev;
-import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
@@ -19,12 +16,10 @@ import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
-import de.unileipzig.irptools.util.Copyable;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
-import java.util.List;
 import java.util.Objects;
 
 import static de.unileipzig.irpact.io.param.IOConstants.*;
@@ -35,7 +30,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InFileBasedSelectGroupSpatialInformationSupplier__2 implements InSpatialDistribution {
+public class InFileBasedSpatialInformationSupplier implements InSpatialDistribution {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -53,8 +48,6 @@ public class InFileBasedSelectGroupSpatialInformationSupplier__2 implements InSp
         addEntry(res, thisClass(), "yPositionKey");
         addEntry(res, thisClass(), "idKey");
         addEntry(res, thisClass(), "attrFile");
-        addEntry(res, thisClass(), "selectKey");
-        addEntry(res, thisClass(), "groupKey");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -73,18 +66,22 @@ public class InFileBasedSelectGroupSpatialInformationSupplier__2 implements InSp
     @FieldDefinition
     public InSpatialTableFile[] file;
 
-    @FieldDefinition
-    public InAttributeName[] selectKey;
-
-    @FieldDefinition
-    public InAttributeName[] groupKey;
-
-    public InFileBasedSelectGroupSpatialInformationSupplier__2() {
+    public InFileBasedSpatialInformationSupplier() {
     }
 
     @Override
-    public Copyable copy(CopyCache copyCache) {
-        throw new TodoException();
+    public InFileBasedSpatialInformationSupplier copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InFileBasedSpatialInformationSupplier newCopy(CopyCache cache) {
+        InFileBasedSpatialInformationSupplier copy = new InFileBasedSpatialInformationSupplier();
+        copy._name = _name;
+        copy.xPositionKey = cache.copyArray(xPositionKey);
+        copy.yPositionKey = cache.copyArray(yPositionKey);
+        copy.idKey = cache.copyArray(idKey);
+        copy.file = cache.copyArray(file);
+        return copy;
     }
 
     public void setName(String name) {
@@ -132,22 +129,6 @@ public class InFileBasedSelectGroupSpatialInformationSupplier__2 implements InSp
         return ParamUtil.getInstance(file, "File");
     }
 
-    public void setSelectKey(InAttributeName selectKey) {
-        this.selectKey = new InAttributeName[]{selectKey};
-    }
-
-    public InAttributeName getSelectKey() throws ParsingException {
-        return ParamUtil.getInstance(selectKey, "SelectKey");
-    }
-
-    public void setGroupKey(InAttributeName groupKey) {
-        this.groupKey = new InAttributeName[]{groupKey};
-    }
-
-    public InAttributeName getGroupKey() throws ParsingException {
-        return ParamUtil.getInstance(groupKey, "GroupKey");
-    }
-
     @Override
     public void setup(IRPactInputParser parser, Object input) throws ParsingException {
         JadexConsumerAgentGroup jCag = (JadexConsumerAgentGroup) input;
@@ -178,8 +159,6 @@ public class InFileBasedSelectGroupSpatialInformationSupplier__2 implements InSp
         String xKey = getXPositionKey().getName();
         String yKey = getYPositionKey().getName();
         String idKey = getIdKeyName();
-        String selectKey = getSelectKey().getName();
-        String groupingKey = getGroupKey().getName();
         SpatialTableFileContent fileContent = parser.parseEntityTo(getFile());
         Rnd rnd = parser.deriveRnd();
 
@@ -195,43 +174,29 @@ public class InFileBasedSelectGroupSpatialInformationSupplier__2 implements InSp
                 idKey
         );
 
-        SpatialInformationSupplier supplier = createForSelectValue(
+        SpatialInformationSupplier supplier = create(
                 getName(),
                 dataColl,
-                selectKey,
-                jCag.getName(),
-                groupingKey,
                 rnd
         );
 
-        //jCag.setSpatialDistribution(supplier);
+        jCag.setSpatialDistribution(supplier);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set '{}' to cag '{}'", supplier.getName(), jCag.getName());
-        Dev.throwException();
     }
 
     //=========================
     //util
     //=========================
 
-    //creates instance for special selectValue
-    public static SpatialInformationSupplier createForSelectValue(
+    public static SpatialInformationSupplier create(
             String name,
             SpatialDataCollection data,
-            String selectKey,
-            String selectValue,
-            String groupingKey,
             Rnd rnd) {
-        List<SpatialDataFilter> filters = SpatialUtil.createFilters_2(
-                data,
-                selectKey,
-                selectValue,
-                groupingKey
-        );
         SpatialInformationSupplier supplier = new SpatialInformationSupplier();
         supplier.setName(name);
         supplier.setSpatialData(data);
         supplier.setRandom(rnd);
-        supplier.addFilters(filters);
+        supplier.addUnfiltered();
         return supplier;
     }
 }

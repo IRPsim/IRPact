@@ -4,21 +4,18 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;
 import de.unileipzig.irpact.core.spatial.distribution.SpatialInformationSupplier;
-import de.unileipzig.irpact.develop.Dev;
-import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
-import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
-import de.unileipzig.irptools.util.Copyable;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -33,7 +30,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InFileBasedSpatialInformationSupplier__2 implements InSpatialDistribution {
+public class InFileBasedPVactMilieuSupplier implements InSpatialDistribution {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -47,9 +44,6 @@ public class InFileBasedSpatialInformationSupplier__2 implements InSpatialDistri
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), SPATIAL, SPATIAL_MODEL_DIST, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS, thisName());
-        addEntry(res, thisClass(), "xPositionKey");
-        addEntry(res, thisClass(), "yPositionKey");
-        addEntry(res, thisClass(), "idKey");
         addEntry(res, thisClass(), "attrFile");
     }
 
@@ -58,23 +52,21 @@ public class InFileBasedSpatialInformationSupplier__2 implements InSpatialDistri
     public String _name;
 
     @FieldDefinition
-    public InAttributeName[] xPositionKey;
-
-    @FieldDefinition
-    public InAttributeName[] yPositionKey;
-
-    @FieldDefinition
-    public InAttributeName[] idKey;
-
-    @FieldDefinition
     public InSpatialTableFile[] file;
 
-    public InFileBasedSpatialInformationSupplier__2() {
+    public InFileBasedPVactMilieuSupplier() {
     }
 
     @Override
-    public Copyable copy(CopyCache copyCache) {
-        throw new TodoException();
+    public InFileBasedPVactMilieuSupplier copy(CopyCache cache) {
+        return cache.copyIfAbsent(this, this::newCopy);
+    }
+
+    public InFileBasedPVactMilieuSupplier newCopy(CopyCache cache) {
+        InFileBasedPVactMilieuSupplier copy = new InFileBasedPVactMilieuSupplier();
+        copy._name = _name;
+        copy.file = cache.copyArray(file);
+        return copy;
     }
 
     public void setName(String name) {
@@ -84,34 +76,6 @@ public class InFileBasedSpatialInformationSupplier__2 implements InSpatialDistri
     @Override
     public String getName() {
         return _name;
-    }
-
-    public void setXPositionKey(InAttributeName xPositionKey) {
-        this.xPositionKey = new InAttributeName[]{xPositionKey};
-    }
-
-    public InAttributeName getXPositionKey() throws ParsingException {
-        return ParamUtil.getInstance(xPositionKey, "XPositionKey");
-    }
-
-    public void setYPositionKey(InAttributeName yPositionKey) {
-        this.yPositionKey = new InAttributeName[]{yPositionKey};
-    }
-
-    public InAttributeName getYPositionKey() throws ParsingException {
-        return ParamUtil.getInstance(yPositionKey, "YPositionKey");
-    }
-
-    public void setIdKey(InAttributeName idKey) {
-        this.idKey = new InAttributeName[]{idKey};
-    }
-
-    public InAttributeName getIdKey() throws ParsingException {
-        return ParamUtil.getInstanceOr(idKey, null, "idKey");
-    }
-    protected String getIdKeyName() throws ParsingException {
-        InAttributeName attrName = getIdKey();
-        return attrName == null ? null : attrName.getName();
     }
 
     public void setFile(InSpatialTableFile file) {
@@ -149,9 +113,6 @@ public class InFileBasedSpatialInformationSupplier__2 implements InSpatialDistri
         }
 
         //raw data
-        String xKey = getXPositionKey().getName();
-        String yKey = getYPositionKey().getName();
-        String idKey = getIdKeyName();
         SpatialTableFileContent fileContent = parser.parseEntityTo(getFile());
         Rnd rnd = parser.deriveRnd();
 
@@ -162,35 +123,20 @@ public class InFileBasedSpatialInformationSupplier__2 implements InSpatialDistri
                 fileContent.getName(),
                 parser.getEnvironment().getSpatialModel(),
                 fileContent.content(),
-                xKey,
-                yKey,
-                idKey
+                RAConstants.X_CENT,
+                RAConstants.Y_CENT,
+                RAConstants.ID
         );
 
-        SpatialInformationSupplier supplier = create(
+        SpatialInformationSupplier supplier = InFileBasedSelectSpatialInformationSupplier.createForSelectValue(
                 getName(),
                 dataColl,
+                RAConstants.DOM_MILIEU,
+                jCag.getName(),
                 rnd
         );
 
-        //jCag.setSpatialDistribution(supplier);
+        jCag.setSpatialDistribution(supplier);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set '{}' to cag '{}'", supplier.getName(), jCag.getName());
-        Dev.throwException();
-    }
-
-    //=========================
-    //util
-    //=========================
-
-    public static SpatialInformationSupplier create(
-            String name,
-            SpatialDataCollection data,
-            Rnd rnd) {
-        SpatialInformationSupplier supplier = new SpatialInformationSupplier();
-        supplier.setName(name);
-        supplier.setSpatialData(data);
-        supplier.setRandom(rnd);
-        supplier.addUnfiltered();
-        return supplier;
     }
 }

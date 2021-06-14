@@ -33,7 +33,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InRelativeExternConsumerAgentPopulationSize implements InPopulationSize {
+public class InFileBasedConsumerAgentPopulation implements InAgentPopulation {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -55,7 +55,7 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
         addEntry(res, thisClass(), "selectKey");
     }
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(InRelativeExternConsumerAgentPopulationSize.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(InFileBasedConsumerAgentPopulation.class);
 
     public String _name;
 
@@ -77,16 +77,16 @@ public class InRelativeExternConsumerAgentPopulationSize implements InPopulation
     @FieldDefinition
     public InAttributeName[] selectKey;
 
-    public InRelativeExternConsumerAgentPopulationSize() {
+    public InFileBasedConsumerAgentPopulation() {
     }
 
     @Override
-    public InRelativeExternConsumerAgentPopulationSize copy(CopyCache cache) {
+    public InFileBasedConsumerAgentPopulation copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InRelativeExternConsumerAgentPopulationSize newCopy(CopyCache cache) {
-        InRelativeExternConsumerAgentPopulationSize copy = new InRelativeExternConsumerAgentPopulationSize();
+    public InFileBasedConsumerAgentPopulation newCopy(CopyCache cache) {
+        InFileBasedConsumerAgentPopulation copy = new InFileBasedConsumerAgentPopulation();
         copy._name = _name;
         copy.desiredSize = desiredSize;
         copy.requiresDesiredTotalSize = requiresDesiredTotalSize;

@@ -35,7 +35,7 @@ import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InIndependentConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.io.param.input.agent.population.InPopulationSize;
+import de.unileipzig.irpact.io.param.input.agent.population.InAgentPopulation;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
@@ -289,7 +289,7 @@ public class JadexRestoreUpdater implements IRPactInputParser, LoggingHelper {
 
         BasicSettings initData = (BasicSettings) environment.getSettings();
 
-        for(InPopulationSize popSize: root.getAgentPopulationSizes()) {
+        for(InAgentPopulation popSize: root.getAgentPopulationSizes()) {
             popSize.setup(this, initData);
         }
     }

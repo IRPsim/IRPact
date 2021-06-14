@@ -8,7 +8,7 @@ import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
-import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulationSize;
+import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
@@ -28,7 +28,7 @@ import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistance
 import de.unileipzig.irpact.io.param.input.process.ra.InUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedSpatialInformationSupplier__2;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedSpatialInformationSupplier;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.irpopt.SideCustom;
@@ -86,7 +86,7 @@ public class InExample implements DefaultScenarioFactory {
         cag1.setForAll(constant0);
 
         //Population
-        InFixConsumerAgentPopulationSize populationSize = new InFixConsumerAgentPopulationSize();
+        InFixConsumerAgentPopulation populationSize = new InFixConsumerAgentPopulation();
         populationSize.setName("PopSize");
         populationSize.setSize(1);
         populationSize.setConsumerAgentGroups(new InConsumerAgentGroup[]{cag0, cag1});
@@ -121,7 +121,7 @@ public class InExample implements DefaultScenarioFactory {
         );
 
         InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210322");
-        InFileBasedSpatialInformationSupplier__2 spaDist = new InFileBasedSpatialInformationSupplier__2();
+        InFileBasedSpatialInformationSupplier spaDist = new InFileBasedSpatialInformationSupplier();
         spaDist.setName("testdist");
         spaDist.setXPositionKey(new InAttributeName(RAConstants.X_CENT));
         spaDist.setYPositionKey(new InAttributeName(RAConstants.Y_CENT));

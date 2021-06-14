@@ -25,7 +25,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InFixConsumerAgentPopulationSize implements InPopulationSize {
+public class InFixConsumerAgentPopulation implements InAgentPopulation {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -53,22 +53,22 @@ public class InFixConsumerAgentPopulationSize implements InPopulationSize {
     @FieldDefinition
     public InConsumerAgentGroup[] cags;
 
-    public InFixConsumerAgentPopulationSize() {
+    public InFixConsumerAgentPopulation() {
     }
 
-    public InFixConsumerAgentPopulationSize(String name, InConsumerAgentGroup cag, int size) {
+    public InFixConsumerAgentPopulation(String name, InConsumerAgentGroup cag, int size) {
         setName(name);
         setConsumerAgentGroup(cag);
         setSize(size);
     }
 
     @Override
-    public InFixConsumerAgentPopulationSize copy(CopyCache cache) {
+    public InFixConsumerAgentPopulation copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InFixConsumerAgentPopulationSize newCopy(CopyCache cache) {
-        InFixConsumerAgentPopulationSize copy = new InFixConsumerAgentPopulationSize();
+    public InFixConsumerAgentPopulation newCopy(CopyCache cache) {
+        InFixConsumerAgentPopulation copy = new InFixConsumerAgentPopulation();
         copy._name = _name;
         copy.size = size;
         copy.cags = cache.copyArray(cags);
