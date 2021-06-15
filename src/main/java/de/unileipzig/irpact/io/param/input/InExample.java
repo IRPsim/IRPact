@@ -28,6 +28,7 @@ import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistance
 import de.unileipzig.irpact.io.param.input.process.ra.InUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuZipSupplier;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedSpatialInformationSupplier;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
@@ -68,6 +69,141 @@ public class InExample implements DefaultScenarioFactory {
     @Todo("TASK TESTEN")
     @SuppressWarnings("unused")
     public static InRoot createExample() {
+        //===
+        InUnivariateDoubleDistribution constant0 = new InDiracUnivariateDistribution("constant0", 0);
+
+        //cag0
+        InPVactConsumerAgentGroup cag0 = new InPVactConsumerAgentGroup();
+        cag0.setName("TRA");
+        cag0.setForAll(constant0);
+
+        //cag1
+        InPVactConsumerAgentGroup cag1 = new InPVactConsumerAgentGroup();
+        cag1.setName("BUM");
+        cag1.setForAll(constant0);
+
+        //Population
+        InFixConsumerAgentPopulation populationSize = new InFixConsumerAgentPopulation();
+        populationSize.setName("PopSize");
+        populationSize.setSize(1);
+        populationSize.setConsumerAgentGroups(new InConsumerAgentGroup[]{cag0, cag1});
+
+        //affinity
+        InComplexAffinityEntry cag0_cag0 = new InComplexAffinityEntry(cag0.getName() + "_" + cag0.getName(), cag0, cag0, 0.7);
+        InComplexAffinityEntry cag0_cag1 = new InComplexAffinityEntry(cag0.getName() + "_" + cag1.getName(), cag0, cag1, 0.3);
+        InComplexAffinityEntry cag1_cag1 = new InComplexAffinityEntry(cag1.getName() + "_" + cag1.getName(), cag1, cag1, 0.9);
+        InComplexAffinityEntry cag1_cag0 = new InComplexAffinityEntry(cag1.getName() + "_" + cag0.getName(), cag1, cag0, 0.1);
+
+        //InUnlinkedGraphTopology topology = new InUnlinkedGraphTopology("unlinked");
+        InCompleteGraphTopology topology = new InCompleteGraphTopology("complete", 1.0);
+
+        InPVFile pvFile = new InPVFile("Barwertrechner");
+
+        InPVactUncertaintyGroupAttribute uncert = new InPVactUncertaintyGroupAttribute();
+        uncert.setName("PVact_Uncert");
+        uncert.setGroups(new InConsumerAgentGroup[]{cag0, cag1});
+        uncert.setNoveltySeekingUncertainty(constant0);
+        uncert.setDependentJudgmentMakingUncertainty(constant0);
+        uncert.setEnvironmentalConcernUncertainty(constant0);
+
+        //process
+        InRAProcessModel processModel = new InRAProcessModel(
+                "RA",
+                0.25, 0.25, 0.25, 0.25,
+                3, 2, 1, 0,
+                1.0,
+                new InRAProcessPlanMaxDistanceFilterScheme("RA_maxFilter", 100, true),
+                pvFile,
+                new InUncertaintyGroupAttribute[]{uncert}
+        );
+
+        InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210322");
+        InFileBasedPVactMilieuZipSupplier spaDist = new InFileBasedPVactMilieuZipSupplier();
+        spaDist.setName("testdist");
+        spaDist.setFile(tableFile);
+        cag0.setSpatialDistribution(spaDist);
+        cag1.setSpatialDistribution(spaDist);
+
+        InSpace2D space2D = new InSpace2D("Space2D", Metric2D.EUCLIDEAN);
+
+        //images
+        List<InOutputImage> images = new ArrayList<>();
+        Collections.addAll(images, InGenericOutputImage.DEFAULTS);
+        images.add(new InGnuPlotOutputImage("gnutest0", InOutputImage.MODE_NOTHING));
+        images.add(new InGnuPlotOutputImage("gnutest1", InOutputImage.MODE_ADOPTION_LINECHART));
+        images.add(new InGnuPlotOutputImage("gnutest2", InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART));
+        images.add(new InGnuPlotOutputImage("gnutest3", InOutputImage.MODE_ADOPTION_PHASE_BARCHART));
+        images.add(new InROutputImage("rtest0", InOutputImage.MODE_NOTHING));
+        images.add(new InROutputImage("rtest1", InOutputImage.MODE_ADOPTION_LINECHART));
+        images.add(new InROutputImage("rtest2", InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART));
+        images.add(new InROutputImage("rtest3", InOutputImage.MODE_ADOPTION_PHASE_BARCHART));
+        images.forEach(InOutputImage::disableAll);
+
+        //time
+        InUnitStepDiscreteTimeModel timeModel = new InUnitStepDiscreteTimeModel("DiscreteUnitStep", 1, ChronoUnit.WEEKS);
+
+        //general
+        InGeneral general = new InGeneral();
+        general.seed = 42;
+        general.timeout = TimeUnit.MINUTES.toMillis(1);
+        general.runOptActDemo = false;
+        general.runPVAct = true;
+        general.logLevel = IRPLevel.ALL.getLevelId();
+        general.logAllIRPact = true;
+        general.enableAllDataLogging();
+        general.enableAllResultLogging();
+        general.enableAllScriptLogging();
+
+        //=====
+        InRoot root = new InRoot();
+        initOptAct(root);
+        initGV(root);
+
+//        PredefinedPostAgentCreationTask task = new PredefinedPostAgentCreationTask();
+//        task.setInfo("INC");
+//        task.setTask(PredefinedPostAgentCreationTask.ADD_ONE_AGENT_TO_EVERY_GROUP);
+//        VisibleBinaryData vbd = new VisibleBinaryData();
+//        vbd.setID(task.getID());
+//        vbd.setBytes(task.getBytes());
+//        root.visibleBinaryData = new VisibleBinaryData[]{vbd};
+
+        //graphviz
+        GraphvizColor gc1 = GraphvizColor.RED;
+        GraphvizColor gc2 = GraphvizColor.GREEN;
+        root.colors = new GraphvizColor[]{gc1, gc2};
+
+        InConsumerAgentGroupColor cag0Color = new InConsumerAgentGroupColor(cag0.getName() + "_color", cag0, gc1);
+        InConsumerAgentGroupColor cag1Color = new InConsumerAgentGroupColor(cag1.getName() + "_color", cag1, gc2);
+        root.setConsumerAgentGroupColors(new InConsumerAgentGroupColor[]{cag0Color, cag1Color});
+
+        GraphvizLayoutAlgorithm.DOT.useLayout = false;
+        GraphvizLayoutAlgorithm.CIRCO.useLayout = true;
+        root.layoutAlgorithms = GraphvizLayoutAlgorithm.DEFAULTS;
+        GraphvizOutputFormat.PNG.useFormat = true;
+        root.outputFormats = new GraphvizOutputFormat[] { GraphvizOutputFormat.PNG };
+
+        root.graphvizGlobal = new GraphvizGlobal();
+        root.graphvizGlobal.fixedNeatoPosition = false;
+        root.graphvizGlobal.scaleFactor = 0.0;
+
+        //=====
+        root.version = new InVersion[]{InVersion.currentVersion()};
+        root.general = general;
+        root.setAffinities(new InAffinities("affs", new InComplexAffinityEntry[]{cag0_cag0, cag0_cag1, cag1_cag1, cag1_cag0}));
+        root.consumerAgentGroups = new InConsumerAgentGroup[]{cag0, cag1};
+        root.setAgentPopulationSize(populationSize);
+        root.graphTopologySchemes = new InGraphTopologyScheme[]{topology};
+        root.processModels = new InProcessModel[]{processModel};
+        root.spatialModel = new InSpatialModel[]{space2D};
+        root.timeModel = new InTimeModel[]{timeModel};
+        root.setImages(images);
+
+        return root;
+    }
+
+    @Todo("TASK TESTEN")
+    @SuppressWarnings("unused")
+    public static InRoot createExample_OLD() {
         //===
         InAttributeName Mic_Dominantes_Milieu = new InAttributeName(RAConstants.DOM_MILIEU);
         InAttributeName PLZ = new InAttributeName(RAConstants.ZIP);

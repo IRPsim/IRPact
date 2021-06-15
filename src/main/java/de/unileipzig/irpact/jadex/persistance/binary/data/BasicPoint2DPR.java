@@ -37,6 +37,13 @@ public class BasicPoint2DPR extends BinaryPRBase<BasicPoint2D> {
         data.putDouble(object.getX());
         data.putDouble(object.getY());
 
+        data.putBoolean(object.hasId());
+        if(object.hasId()) {
+            data.putLong(object.getId());
+        } else {
+            data.putNothing();
+        }
+
         manager.prepareAll(object.getAttributes());
 
         return data;
@@ -56,6 +63,13 @@ public class BasicPoint2DPR extends BinaryPRBase<BasicPoint2D> {
         BasicPoint2D object = new BasicPoint2D();
         object.setX(data.getDouble());
         object.setY(data.getDouble());
+
+        boolean hasId = data.getBoolean();
+        long id = data.getLong();
+        if(hasId) {
+            object.setId(id);
+        }
+
         return object;
     }
 

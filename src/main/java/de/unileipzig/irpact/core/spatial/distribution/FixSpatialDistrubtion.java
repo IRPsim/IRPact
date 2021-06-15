@@ -36,3 +36,6 @@ public class FixSpatialDistrubtion extends NameableBase implements SpatialDistri
         return true;
     }
 }
+
+//    SCHAUEN WAS SICH NOCH PV-ACT MAESSIG VEREINFACHEN LAESST
+//        + vllt das PVact-flag aendern und als Option bei Settings einbauen

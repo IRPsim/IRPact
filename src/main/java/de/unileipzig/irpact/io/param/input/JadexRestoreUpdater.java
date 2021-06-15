@@ -98,6 +98,9 @@ public class JadexRestoreUpdater implements IRPactInputParser, LoggingHelper {
     }
 
     public void setEnvironment(BasicJadexSimulationEnvironment environment) {
+        if(this.environment != null) {
+            throw new IllegalArgumentException("environment already set");
+        }
         this.environment = environment;
     }
 
@@ -230,6 +233,8 @@ public class JadexRestoreUpdater implements IRPactInputParser, LoggingHelper {
     private void doParse(InRoot root) throws ParsingException {
         setupGeneral(root);
 
+        parseSpatialModel(root);
+
         parseConsumerAgentGroups(root);
         parseConsumerAgentGroupAttributes(root);
         parseConsumerAgentGroupAffinityMapping(root);
@@ -240,8 +245,6 @@ public class JadexRestoreUpdater implements IRPactInputParser, LoggingHelper {
         parseFixProducts(root);
         parseNetwork(root);
         parseSocialGraph(root);
-
-        parseSpatialModel(root);
         parseProcessModel(root);
         parseTimeModel(root);
 

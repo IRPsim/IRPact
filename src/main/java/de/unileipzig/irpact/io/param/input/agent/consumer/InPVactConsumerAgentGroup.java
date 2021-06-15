@@ -293,6 +293,7 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         this.renovationRate = new InUnivariateDoubleDistribution[]{renovationRate};
     }
 
+    @Override
     public InSpatialDistribution getSpatialDistribution() throws ParsingException {
         return ParamUtil.getInstance(spatialDistribution, "spatialDistribution");
     }

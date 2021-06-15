@@ -230,6 +230,8 @@ public class JadexInputParser implements IRPactInputParser {
         checkVersion(root);
         setupGeneral(root);
 
+        parseSpatialModel(root);
+
         parseConsumerAgentGroups(root);
         parseConsumerAgentGroupAttributes(root);
         parseConsumerAgentGroupAffinityMapping(root);
@@ -241,7 +243,6 @@ public class JadexInputParser implements IRPactInputParser {
         parseNetwork(root);
         parseSocialGraph(root);
 
-        parseSpatialModel(root);
         parseProcessModel(root);
         parseTimeModel(root);
 

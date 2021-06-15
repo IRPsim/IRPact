@@ -1,11 +1,15 @@
 package de.unileipzig.irpact.jadex.persistance.binary.data;
 
+import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;
 import de.unileipzig.irpact.core.spatial.distribution.SpatialInformationSupplier;
+import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistributionWithCollection;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -65,5 +69,24 @@ public class SpatialInformationSupplierPR extends BinaryPRBase<SpatialInformatio
     @Override
     protected void doSetupRestore(BinaryJsonData data, SpatialInformationSupplier object, RestoreManager manager) throws RestoreException {
         object.setRandom(manager.ensureGet(data.getLong()));
+
+        tryLoadSpatialData(object);
+    }
+
+    protected void tryLoadSpatialData(SpatialInformationSupplier object) throws RestoreException {
+        try {
+            InRoot root = getRestoreHelper().getInRoot();
+            LOGGER.trace("try to find spatial distribution '{}'", object.getName());
+            InSpatialDistributionWithCollection distribution = root.getSpatialDistribution(InSpatialDistributionWithCollection.class, object.getName());
+            if(distribution == null) {
+                throw new RestoreException("distribution '{}' not found", object.getName());
+            }
+
+            LOGGER.trace("loading spatial data '{}'", distribution.getFile().getName());
+            SpatialDataCollection dataColl = distribution.parseCollection(getRestoreHelper().getUpdater());
+            object.setSpatialData(dataColl);
+        } catch (ParsingException e) {
+            throw new RestoreException(e);
+        }
     }
 }

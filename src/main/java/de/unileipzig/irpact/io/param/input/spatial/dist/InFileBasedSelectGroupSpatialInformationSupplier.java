@@ -32,7 +32,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InFileBasedSelectGroupSpatialInformationSupplier implements InSpatialDistribution {
+public class InFileBasedSelectGroupSpatialInformationSupplier implements InSpatialDistributionWithCollection {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -45,7 +45,7 @@ public class InFileBasedSelectGroupSpatialInformationSupplier implements InSpati
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), SPATIAL, SPATIAL_MODEL_DIST, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS, thisName());
+        putClassPath(res, thisClass(), SPATIAL, SPATIAL_MODEL_DIST, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST_FILE_FILEPOS, thisName());
         addEntry(res, thisClass(), "xPositionKey");
         addEntry(res, thisClass(), "yPositionKey");
         addEntry(res, thisClass(), "idKey");
@@ -137,6 +137,7 @@ public class InFileBasedSelectGroupSpatialInformationSupplier implements InSpati
         this.file = new InSpatialTableFile[]{file};
     }
 
+    @Override
     public InSpatialTableFile getFile() throws ParsingException {
         return ParamUtil.getInstance(file, "File");
     }
@@ -184,25 +185,14 @@ public class InFileBasedSelectGroupSpatialInformationSupplier implements InSpati
         }
 
         //raw data
-        String xKey = getXPositionKey().getName();
-        String yKey = getYPositionKey().getName();
-        String idKey = getIdKeyName();
         String selectKey = getSelectKey().getName();
         String groupingKey = getGroupKey().getName();
-        SpatialTableFileContent fileContent = parser.parseEntityTo(getFile());
         Rnd rnd = parser.deriveRnd();
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} '{}' uses seed: {}", thisName(), getName(), rnd.getInitialSeed());
 
         //next step
-        SpatialDataCollection dataColl = SpatialUtil.mapToPoint2DIfAbsent_2(
-                fileContent.getName(),
-                parser.getEnvironment().getSpatialModel(),
-                fileContent.content(),
-                xKey,
-                yKey,
-                idKey
-        );
+        SpatialDataCollection dataColl = parseCollection(parser);
 
         SpatialInformationSupplier supplier = createForSelectValue(
                 getName(),
@@ -215,6 +205,22 @@ public class InFileBasedSelectGroupSpatialInformationSupplier implements InSpati
 
         jCag.setSpatialDistribution(supplier);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set '{}' to cag '{}'", supplier.getName(), jCag.getName());
+    }
+
+    @Override
+    public SpatialDataCollection parseCollection(IRPactInputParser parser) throws ParsingException {
+        SpatialTableFileContent fileContent = parser.parseEntityTo(getFile());
+        String xKey = getXPositionKey().getName();
+        String yKey = getYPositionKey().getName();
+        String idKey = getIdKeyName();
+        return SpatialUtil.mapToPoint2DIfAbsent_2(
+                fileContent.getName(),
+                parser.getEnvironment().getSpatialModel(),
+                fileContent.content(),
+                xKey,
+                yKey,
+                idKey
+        );
     }
 
     //=========================

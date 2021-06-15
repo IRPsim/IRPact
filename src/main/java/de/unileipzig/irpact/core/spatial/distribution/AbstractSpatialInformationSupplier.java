@@ -118,7 +118,7 @@ public abstract class AbstractSpatialInformationSupplier
     @Override
     public int getChecksum() {
         return Checksums.SMART.getChecksum(
-                spatialDataCollection,
+                spatialDataCollection.getData().size(),
                 rnd,
                 removeOnDraw,
                 idManager

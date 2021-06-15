@@ -199,7 +199,7 @@ VisibleBinaryData_idVisible:
 
 about:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.1.3"
+  edn_description: "IRPact v0.2.2"
 InAboutPlaceholder_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -519,37 +519,56 @@ population:
   edn_label: "Population"
   edn_description: "Legt die Agentenpopulation fest."
 
-InFixConsumerAgentPopulationSize:
+InFixConsumerAgentPopulation:
   edn_label: "Feste Konsumergruppengröße"
   edn_description: "todo"
-InFixConsumerAgentPopulationSize_size:
+InFixConsumerAgentPopulation_size:
   gams_identifier: "Anzahl der Agenten"
   gams_description: "Legt die Anzahl der Agenten bzw. die Populationsgröße für diese Konsumergruppe fest."
-InFixConsumerAgentPopulationSize_cags:
+InFixConsumerAgentPopulation_cags:
   gams_identifier: "Konsumergruppen"
   gams_description: "Legt die Konsumergruppen fest, welche diese Populationsgröße haben sollen."
 
-InRelativeExternConsumerAgentPopulationSize:
+InFileBasedConsumerAgentPopulation:
   edn_label: "Dynamische Konsumergruppengröße"
   edn_description: "todo"
-InRelativeExternConsumerAgentPopulationSize_desiredSize:
+InFileBasedConsumerAgentPopulation_desiredSize:
   gams_identifier: "Gewünschte Anzahl der Agenten"
   gams_description: "Legt die maximale Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls der Wert kleiner 0 ist, wird die maximal mögliche Anzahl verwendet."
-InRelativeExternConsumerAgentPopulationSize_useMaximumPossibleSize:
+InFileBasedConsumerAgentPopulation_useAll:
   gams_identifier: "Maximal mögliche Anzahl nutzen?"
   gams_description: "Legt fest, ob die gesamte Populationsgröße aus der Datei verwendet werden soll. Falls diese Funktion gesetzt ist, wird die gewünschte Anzahl der Agenten ignoriert."
-InRelativeExternConsumerAgentPopulationSize_requiresDesiredTotalSize:
+InFileBasedConsumerAgentPopulation_requiresDesiredTotalSize:
   gams_identifier: "Populationsgröße erzwingen?"
   gams_description: "Falls diese Funktion aktiviert ist, muss die gewünschte Anzahl Agenten existieren. Ist zum Beispiel eine Population von 10000 gewünscht, aber die Datei enthält nur 1000 Agenten, so wird ein Fehler geworfen. Falls die Funktion deaktiviert ist, wird die Population im Notfall angepasst."
-InRelativeExternConsumerAgentPopulationSize_cags:
+InFileBasedConsumerAgentPopulation_cags:
   gams_identifier: "Konsumergruppen"
   gams_description: "Legt die Konsumergruppen fest, welche berücksichtigt werden sollen."
-InRelativeExternConsumerAgentPopulationSize_file:
+InFileBasedConsumerAgentPopulation_file:
   gams_identifier: "Tabellarische Datei"
   gams_description: "Tabellarische Eingabedatei, aus der die Informationen gelesen werden sollen."
-InRelativeExternConsumerAgentPopulationSize_selectKey:
+InFileBasedConsumerAgentPopulation_selectKey:
   gams_identifier: "Auswahlschlüssel"
   gams_description: "Schlüssel, nachdem die Datei gefiltert wird. Wichtig: Die entsprechenden Daten in der Datei müssen dem Konsumergruppennamen entsprechen."
+
+InFileBasedPVactConsumerAgentPopulation:
+  edn_label: "Dynamische Konsumergruppengröße"
+  edn_description: "todo"
+InFileBasedPVactConsumerAgentPopulation_desiredSize:
+  gams_identifier: "Gewünschte Anzahl der Agenten"
+  gams_description: "Legt die maximale Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls der Wert kleiner 0 ist, wird die maximal mögliche Anzahl verwendet."
+InFileBasedPVactConsumerAgentPopulation_useAll:
+  gams_identifier: "Maximal mögliche Anzahl nutzen?"
+  gams_description: "Legt fest, ob die gesamte Populationsgröße aus der Datei verwendet werden soll. Falls diese Funktion gesetzt ist, wird die gewünschte Anzahl der Agenten ignoriert."
+InFileBasedPVactConsumerAgentPopulation_requiresDesiredTotalSize:
+  gams_identifier: "Populationsgröße erzwingen?"
+  gams_description: "Falls diese Funktion aktiviert ist, muss die gewünschte Anzahl Agenten existieren. Ist zum Beispiel eine Population von 10000 gewünscht, aber die Datei enthält nur 1000 Agenten, so wird ein Fehler geworfen. Falls die Funktion deaktiviert ist, wird die Population im Notfall angepasst."
+InFileBasedPVactConsumerAgentPopulation_cags:
+  gams_identifier: "Konsumergruppen"
+  gams_description: "Legt die Konsumergruppen fest, welche berücksichtigt werden sollen."
+InFileBasedPVactConsumerAgentPopulation_file:
+  gams_identifier: "Tabellarische Datei"
+  gams_description: "Tabellarische Eingabedatei, aus der die Informationen gelesen werden sollen."
 
 
 
@@ -876,109 +895,80 @@ spatial_model_dist_file:
   edn_label: "Dateibezogen"
   edn_description: "Ermöglicht es räumliche Verteilungsfunktionen zu definieren, deren Daten aus Dateien geladen werden."
 
-spatial_model_dist_file_custompos:
-  edn_label: "Benutzerdefinierte Positionen"
-  edn_description: "Ermöglicht es räumliche Verteilungsfunktionen zu definieren, deren Daten aus Dateien geladen werden. Die Positionen können dabei separat definiert werden."
-
-InCustomFileSpatialDistribution2D:
-  edn_label: "Milieuunabhängig"
-  edn_description: "Milieuunabhängig"
-InCustomFileSpatialDistribution2D_xPosSupplier:
-  gams_identifier: "X-Position"
-  gams_description: "Legt die Verteilungsfunktion fest, welche die X-Position bestimmt."
-InCustomFileSpatialDistribution2D_yPosSupplier:
-  gams_identifier: "Y-Position"
-  gams_description: "Legt die Verteilungsfunktion fest, welche die Y-Position bestimmt."
-InCustomFileSpatialDistribution2D_attrFile:
-  gams_identifier: "Tabellarische Datei"
-  gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
-
-InCustomFileSelectedSpatialDistribution2D:
-  edn_label: "Milieuabhängig"
-  edn_description: "Milieuabhängig"
-InCustomFileSelectedSpatialDistribution2D_xPosSupplier:
-  gams_identifier: "X-Position"
-  gams_description: "Legt die Verteilungsfunktion fest, welche die X-Position bestimmt."
-InCustomFileSelectedSpatialDistribution2D_yPosSupplier:
-  gams_identifier: "Y-Position"
-  gams_description: "Legt die Verteilungsfunktion fest, welche die Y-Position bestimmt."
-InCustomFileSelectedSpatialDistribution2D_attrFile:
-  gams_identifier: "Tabellarische Datei"
-  gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
-InCustomFileSelectedSpatialDistribution2D_selectKey:
-  gams_identifier: "Auswahlschlüssel"
-  gams_description: "Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname)."
-
-InCustomFileSelectedGroupedSpatialDistribution2D:
-  edn_label: "Milieuabhängig und gewichtet"
-  edn_description: "Milieuabhängig und gewichtet"
-InCustomFileSelectedGroupedSpatialDistribution2D_xPosSupplier:
-  gams_identifier: "X-Position"
-  gams_description: "Legt die Verteilungsfunktion fest, welche die X-Position bestimmt."
-InCustomFileSelectedGroupedSpatialDistribution2D_yPosSupplier:
-  gams_identifier: "Y-Position"
-  gams_description: "Legt die Verteilungsfunktion fest, welche die Y-Position bestimmt."
-InCustomFileSelectedGroupedSpatialDistribution2D_attrFile:
-  gams_identifier: "Tabellarische Datei"
-  gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
-InCustomFileSelectedGroupedSpatialDistribution2D_selectKey:
-  gams_identifier: "Auswahlschlüssel"
-  gams_description: "Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname)."
-InCustomFileSelectedGroupedSpatialDistribution2D_groupKey:
-  gams_identifier: "Gruppierungsschlüssel"
-  gams_description: "Bestimmt den Schlüssel für die Gruppierung und Wichtung anhand der tabellarischen Datei (Spaltenname)."
-
 spatial_model_dist_file_filepos:
   edn_label: "Gelesene Positionen"
   edn_description: "Ermöglicht es räumliche Verteilungsfunktionen zu definieren, deren Daten aus Dateien geladen werden. Die Positionen werden dabei ebenfalls aus den Dateien gelesen."
 
-InFileSpatialDistribution2D:
-  edn_label: "Milieuunabhängig"
-  edn_description: "Milieuunabhängig"
-InFileSpatialDistribution2D_xPositionKey:
+InFileBasedSpatialInformationSupplier:
+  edn_label: "Unzugeordnet"
+  edn_description: "Die Daten werden ohne weitere Berücksichtigungen verwendet."
+InFileBasedSpatialInformationSupplier_xPositionKey:
   gams_identifier: "X-Schlüssel"
   gams_description: "Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname)."
-InFileSpatialDistribution2D_yPositionKey:
+InFileBasedSpatialInformationSupplier_yPositionKey:
   gams_identifier: "Y-Schlüssel"
   gams_description: "Bestimmt den Schlüssel für die Auswahl der Y-Position in der tabellarischen Datei (Spaltenname)."
-InFileSpatialDistribution2D_attrFile:
+InFileBasedSpatialInformationSupplier_idKey:
+  gams_identifier: "ID-Schlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Auswahl der ID in der tabellarischen Datei (Spaltenname)."
+InFileBasedSpatialInformationSupplier_attrFile:
   gams_identifier: "Tabellarische Datei"
   gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
 
-InFileSelectedSpatialDistribution2D:
-  edn_label: "Milieuabhängig"
-  edn_description: "Milieuabhängig"
-InFileSelectedSpatialDistribution2D_attrFile:
+InFileBasedSelectSpatialInformationSupplier:
+  edn_label: "Zugeordnet"
+  edn_description: "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet verwendet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen."
+InFileBasedSelectSpatialInformationSupplier_attrFile:
   gams_identifier: "Tabellarische Datei"
   gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
-InFileSelectedSpatialDistribution2D_xPositionKey:
+InFileBasedSelectSpatialInformationSupplier_xPositionKey:
   gams_identifier: "X-Schlüssel"
   gams_description: "Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname)."
-InFileSelectedSpatialDistribution2D_yPositionKey:
+InFileBasedSelectSpatialInformationSupplier_yPositionKey:
   gams_identifier: "Y-Schlüssel"
   gams_description: "Bestimmt den Schlüssel für die Auswahl der Y-Position in der tabellarischen Datei (Spaltenname)."
-InFileSelectedSpatialDistribution2D_selectKey:
+InFileBasedSelectSpatialInformationSupplier_idKey:
+  gams_identifier: "ID-Schlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Auswahl der ID in der tabellarischen Datei (Spaltenname)."
+InFileBasedSelectSpatialInformationSupplier_selectKey:
   gams_identifier: "Auswahlschlüssel"
-  gams_description: "Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname)."
+  gams_description: "Bestimmt den Schlüssel für die Auswahl der Information in der tabellarischen Datei (Spaltenname)."
 
-InFileSelectedGroupedSpatialDistribution2D:
-  edn_label: "Milieuabhängig und gewichtet"
-  edn_description: "Milieuabhängig und gewichtet"
-InFileSelectedGroupedSpatialDistribution2D_attrFile:
+InFileBasedSelectGroupSpatialInformationSupplier:
+  edn_label: "Zugeordnet und gruppiert"
+  edn_description: "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet verwendet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen. Zusätzlich wird ein Gruppierungsattribut genutzt, um die Daten zu wichten."
+InFileBasedSelectGroupSpatialInformationSupplier_attrFile:
   gams_identifier: "Tabellarische Datei"
   gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
-InFileSelectedGroupedSpatialDistribution2D_xPositionKey:
+InFileBasedSelectGroupSpatialInformationSupplier_xPositionKey:
   gams_identifier: "X-Schlüssel"
   gams_description: "Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname)."
-InFileSelectedGroupedSpatialDistribution2D_yPositionKey:
+InFileBasedSelectGroupSpatialInformationSupplier_yPositionKey:
   gams_identifier: "Y-Schlüssel"
   gams_description: "Bestimmt den Schlüssel für die Auswahl der Y-Position in der tabellarischen Datei (Spaltenname)."
-InFileSelectedGroupedSpatialDistribution2D_selectKey:
+InFileBasedSelectGroupSpatialInformationSupplier_idKey:
+  gams_identifier: "ID-Schlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Auswahl der ID in der tabellarischen Datei (Spaltenname)."
+InFileBasedSelectGroupSpatialInformationSupplier_selectKey:
   gams_identifier: "Auswahlschlüssel"
   gams_description: "Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname)."
-InFileSelectedGroupedSpatialDistribution2D_groupKey:
+InFileBasedSelectGroupSpatialInformationSupplier_groupKey:
   gams_identifier: "Gruppierungsschlüssel"
   gams_description: "Bestimmt den Schlüssel für die Gruppierung und Wichtung anhand der tabellarischen Datei (Spaltenname)."
+
+InFileBasedPVactMilieuSupplier:
+  edn_label: "PVact - Milieu"
+  edn_description: "Die Daten werden, basierend auf dem Milieu, zugeordnet verwendet."
+InFileBasedPVactMilieuSupplier_attrFile:
+  gams_identifier: "Tabellarische Datei"
+  gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
+
+InFileBasedPVactMilieuZipSupplier:
+  edn_label: "PVact - Milieu und PLZ"
+  edn_description: "Die Daten werden, basierend auf dem Milieu, zugeordnet verwendet. Zusätzlich wird die PLZ für die Wichtung verwendet."
+InFileBasedPVactMilieuZipSupplier_attrFile:
+  gams_identifier: "Tabellarische Datei"
+  gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
 
 
 
@@ -1081,6 +1071,9 @@ OutConsumerAgentGroup_initialAdoptionsCumulative:
   gams_identifier: "kumulierte initiale Adoptionen"
   gams_description: "todo"
 
+#=========================
+#DEPRECATED
+#=========================
 
 #DEPRECATED
 OutGeneralConsumerAgentGroup:
@@ -1118,3 +1111,61 @@ OutAnnualAdoptionData_adoptionShareThisYear:
 OutAnnualAdoptionData_adoptionShareCumulativ:
   gams_identifier: "Adoptionen (kumulierter anteil)"
   gams_description: "todo"
+
+
+
+#DEPRECATED
+spatial_model_dist_file_custompos:
+  edn_label: "Benutzerdefinierte Positionen"
+  edn_description: "Ermöglicht es räumliche Verteilungsfunktionen zu definieren, deren Daten aus Dateien geladen werden. Die Positionen können dabei separat definiert werden."
+
+#DEPRECATED
+InCustomFileSpatialDistribution2D:
+  edn_label: "Milieuunabhängig"
+  edn_description: "Milieuunabhängig"
+InCustomFileSpatialDistribution2D_xPosSupplier:
+  gams_identifier: "X-Position"
+  gams_description: "Legt die Verteilungsfunktion fest, welche die X-Position bestimmt."
+InCustomFileSpatialDistribution2D_yPosSupplier:
+  gams_identifier: "Y-Position"
+  gams_description: "Legt die Verteilungsfunktion fest, welche die Y-Position bestimmt."
+InCustomFileSpatialDistribution2D_attrFile:
+  gams_identifier: "Tabellarische Datei"
+  gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
+
+#DEPRECATED
+InCustomFileSelectedSpatialDistribution2D:
+  edn_label: "Milieuabhängig"
+  edn_description: "Milieuabhängig"
+InCustomFileSelectedSpatialDistribution2D_xPosSupplier:
+  gams_identifier: "X-Position"
+  gams_description: "Legt die Verteilungsfunktion fest, welche die X-Position bestimmt."
+InCustomFileSelectedSpatialDistribution2D_yPosSupplier:
+  gams_identifier: "Y-Position"
+  gams_description: "Legt die Verteilungsfunktion fest, welche die Y-Position bestimmt."
+InCustomFileSelectedSpatialDistribution2D_attrFile:
+  gams_identifier: "Tabellarische Datei"
+  gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
+InCustomFileSelectedSpatialDistribution2D_selectKey:
+  gams_identifier: "Auswahlschlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname)."
+
+#DEPRECATED
+InCustomFileSelectedGroupedSpatialDistribution2D:
+  edn_label: "Milieuabhängig und gewichtet"
+  edn_description: "Milieuabhängig und gewichtet"
+InCustomFileSelectedGroupedSpatialDistribution2D_xPosSupplier:
+  gams_identifier: "X-Position"
+  gams_description: "Legt die Verteilungsfunktion fest, welche die X-Position bestimmt."
+InCustomFileSelectedGroupedSpatialDistribution2D_yPosSupplier:
+  gams_identifier: "Y-Position"
+  gams_description: "Legt die Verteilungsfunktion fest, welche die Y-Position bestimmt."
+InCustomFileSelectedGroupedSpatialDistribution2D_attrFile:
+  gams_identifier: "Tabellarische Datei"
+  gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
+InCustomFileSelectedGroupedSpatialDistribution2D_selectKey:
+  gams_identifier: "Auswahlschlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname)."
+InCustomFileSelectedGroupedSpatialDistribution2D_groupKey:
+  gams_identifier: "Gruppierungsschlüssel"
+  gams_description: "Bestimmt den Schlüssel für die Gruppierung und Wichtung anhand der tabellarischen Datei (Spaltenname)."

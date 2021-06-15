@@ -595,6 +595,11 @@ class FreeNetworkTopologyTest {
             public String getName() {
                 return "XXXX";
             }
+
+            @Override
+            public boolean setUsed(SpatialInformation information) {
+                return true;
+            }
         };
 
         BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
@@ -683,6 +688,11 @@ class FreeNetworkTopologyTest {
             @Override
             public String getName() {
                 return "XXXX";
+            }
+
+            @Override
+            public boolean setUsed(SpatialInformation information) {
+                return true;
             }
         };
 

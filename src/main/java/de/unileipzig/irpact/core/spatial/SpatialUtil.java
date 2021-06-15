@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.core.spatial;
 
 import de.unileipzig.irpact.commons.Nameable;
-import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialDoubleAttribute;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialStringAttribute;
@@ -161,23 +160,6 @@ public final class SpatialUtil {
     }
 
     @Deprecated
-    public static List<SpatialInformation> mapToPoint2D(List<List<SpatialAttribute>> input, UnivariateDoubleDistribution xSupplier, UnivariateDoubleDistribution ySupplier, String idKey) {
-        return input.stream()
-                .map(row -> {
-                    double x = xSupplier.drawDoubleValue();
-                    double y = ySupplier.drawDoubleValue();
-                    BasicPoint2D p = new BasicPoint2D(x, y);
-                    p.addAllAttributes(row);
-                    SpatialAttribute idAttr = getOr(row, idKey, null);
-                    if(idAttr != null) {
-                        p.setId(idAttr.asValueAttribute().getIntValue());
-                    }
-                    return p;
-                })
-                .collect(Collectors.toList());
-    }
-
-    @Deprecated
     public static SpatialDataCollection mapToPoint2D(
             String name,
             Table<SpatialAttribute> input,
@@ -222,20 +204,6 @@ public final class SpatialUtil {
                     }
                     return attr.asValueAttribute().getValueAsString();
                 }));
-    }
-
-    @Deprecated
-    public static Map<String, Integer> filterAndCountAll(List<List<SpatialAttribute>> input, String attrName, Collection<String> keys) {
-        Map<String, Integer> map = new HashMap<>();
-        input.stream()
-                .map(selectAttribute(attrName))
-                .forEach(k -> {
-                    if(keys == null || keys.contains(k)) {
-                        int current = map.computeIfAbsent(k, _k -> 0);
-                        map.put(k, current + 1);
-                    }
-                });
-        return map;
     }
 
     @Deprecated

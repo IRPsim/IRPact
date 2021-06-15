@@ -40,7 +40,7 @@ public final class Start {
         IRPLogging.setFilter(filter);
         IRPtools.setLoggingFilter(IRPLogging.getFilter());
         IRPSection.addSectionsToTools();
-        IRPSection.addAllNonToolsTo(filter);
+        IRPSection.addAllTo(filter);
     }
 
     private void setupLogging() throws IOException {

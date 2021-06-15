@@ -200,58 +200,87 @@ PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_reno
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InSpatialDistribution_spatialDistribution(set_InPVactConsumerAgentGroup,set_InSpatialDistribution)
 
-* - identifier: InFixConsumerAgentPopulationSize
+* - identifier: InFixConsumerAgentPopulation
 * - type: String
-SET set_InFixConsumerAgentPopulationSize(set_InPopulationSize)
+SET set_InFixConsumerAgentPopulation(set_InAgentPopulation)
 
 * - description: Legt die Anzahl der Agenten bzw. die Populationsgröße für diese Konsumergruppe fest.
 * - identifier: Anzahl der Agenten
 * - type: Integer
-PARAMETER par_InFixConsumerAgentPopulationSize_size(set_InFixConsumerAgentPopulationSize)
+PARAMETER par_InFixConsumerAgentPopulation_size(set_InFixConsumerAgentPopulation)
 
 * - description: Legt die Konsumergruppen fest, welche diese Populationsgröße haben sollen.
 * - identifier: Konsumergruppen
 * - type: Boolean
-PARAMETER par_link_InFixConsumerAgentPopulationSize_InConsumerAgentGroup_cags(set_InFixConsumerAgentPopulationSize,set_InConsumerAgentGroup)
+PARAMETER par_link_InFixConsumerAgentPopulation_InConsumerAgentGroup_cags(set_InFixConsumerAgentPopulation,set_InConsumerAgentGroup)
 
-* - identifier: InPopulationSize
+* - identifier: InAgentPopulation
 * - hidden: 1
 * - type: String
-SET set_InPopulationSize(*)
+SET set_InAgentPopulation(*)
 
-* - identifier: InRelativeExternConsumerAgentPopulationSize
+* - identifier: InFileBasedConsumerAgentPopulation
 * - type: String
-SET set_InRelativeExternConsumerAgentPopulationSize(set_InPopulationSize)
+SET set_InFileBasedConsumerAgentPopulation(set_InAgentPopulation)
 
-* - description: Legt die maximale Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls die maximal mögliche Anzahl genutzt werden soll, wird dieser Wert ignoriert.
-* - identifier: Maximale Anzahl der Agenten
+* - description: Legt die maximale Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls der Wert kleiner 0 ist, wird die maximal mögliche Anzahl verwendet.
+* - identifier: Gewünschte Anzahl der Agenten
 * - type: Integer
-PARAMETER par_InRelativeExternConsumerAgentPopulationSize_maximumSize(set_InRelativeExternConsumerAgentPopulationSize)
+PARAMETER par_InFileBasedConsumerAgentPopulation_desiredSize(set_InFileBasedConsumerAgentPopulation)
 
-* - description: Legt fest, ob die gesamte Populationsgröße aus der Datei verwendet werden soll.
-* - identifier: Maximal mögliche Population nutzen?
+* - description: Legt fest, ob die gesamte Populationsgröße aus der Datei verwendet werden soll. Falls diese Funktion gesetzt ist, wird die gewünschte Anzahl der Agenten ignoriert.
+* - identifier: Maximal mögliche Anzahl nutzen?
 * - type: Boolean
-PARAMETER par_InRelativeExternConsumerAgentPopulationSize_useMaximumPossibleSize(set_InRelativeExternConsumerAgentPopulationSize)
+PARAMETER par_InFileBasedConsumerAgentPopulation_useAll(set_InFileBasedConsumerAgentPopulation)
 
-* - description: Legt fest, ob kleinere Population zulässig sind. Falls zum Beispiel die maximale Anzahl auf 10.000 gesetzt wird, die Datei aber nur 1.000 Agenten erlaubt, werden nur 1.000 verwendet. Falls diese Option deaktiviert ist, wird in diesem Fall ein Fehler geworfen.
-* - identifier: Kleinere Populationen erlauben?
+* - description: Falls diese Funktion aktiviert ist, muss die gewünschte Anzahl Agenten existieren. Ist zum Beispiel eine Population von 10000 gewünscht, aber die Datei enthält nur 1000 Agenten, so wird ein Fehler geworfen. Falls die Funktion deaktiviert ist, wird die Population im Notfall angepasst.
+* - identifier: Populationsgröße erzwingen?
 * - type: Boolean
-PARAMETER par_InRelativeExternConsumerAgentPopulationSize_allowSmallerSize(set_InRelativeExternConsumerAgentPopulationSize)
+PARAMETER par_InFileBasedConsumerAgentPopulation_requiresDesiredTotalSize(set_InFileBasedConsumerAgentPopulation)
 
 * - description: Legt die Konsumergruppen fest, welche berücksichtigt werden sollen.
 * - identifier: Konsumergruppen
 * - type: Boolean
-PARAMETER par_link_InRelativeExternConsumerAgentPopulationSize_InConsumerAgentGroup_cags(set_InRelativeExternConsumerAgentPopulationSize,set_InConsumerAgentGroup)
+PARAMETER par_link_InFileBasedConsumerAgentPopulation_InConsumerAgentGroup_cags(set_InFileBasedConsumerAgentPopulation,set_InConsumerAgentGroup)
 
 * - description: Tabellarische Eingabedatei, aus der die Informationen gelesen werden sollen.
 * - identifier: Tabellarische Datei
 * - type: Boolean
-PARAMETER par_link_InRelativeExternConsumerAgentPopulationSize_InSpatialTableFile_file(set_InRelativeExternConsumerAgentPopulationSize,set_InSpatialTableFile)
+PARAMETER par_link_InFileBasedConsumerAgentPopulation_InSpatialTableFile_file(set_InFileBasedConsumerAgentPopulation,set_InSpatialTableFile)
 
-* - description: Schlüssel, nachdem die Datei gefiltert wird. Wichtig: Der entsprechenden Daten in der Datei müssen dem Konsumergruppennamen entsprechen.
+* - description: Schlüssel, nachdem die Datei gefiltert wird. Wichtig: Die entsprechenden Daten in der Datei müssen dem Konsumergruppennamen entsprechen.
 * - identifier: Auswahlschlüssel
 * - type: Boolean
-PARAMETER par_link_InRelativeExternConsumerAgentPopulationSize_InAttributeName_selectKey(set_InRelativeExternConsumerAgentPopulationSize,set_InAttributeName)
+PARAMETER par_link_InFileBasedConsumerAgentPopulation_InAttributeName_selectKey(set_InFileBasedConsumerAgentPopulation,set_InAttributeName)
+
+* - identifier: InFileBasedPVactConsumerAgentPopulation
+* - type: String
+SET set_InFileBasedPVactConsumerAgentPopulation(set_InAgentPopulation)
+
+* - description: Legt die maximale Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls der Wert kleiner 0 ist, wird die maximal mögliche Anzahl verwendet.
+* - identifier: Gewünschte Anzahl der Agenten
+* - type: Integer
+PARAMETER par_InFileBasedPVactConsumerAgentPopulation_desiredSize(set_InFileBasedPVactConsumerAgentPopulation)
+
+* - description: Legt fest, ob die gesamte Populationsgröße aus der Datei verwendet werden soll. Falls diese Funktion gesetzt ist, wird die gewünschte Anzahl der Agenten ignoriert.
+* - identifier: Maximal mögliche Anzahl nutzen?
+* - type: Boolean
+PARAMETER par_InFileBasedPVactConsumerAgentPopulation_useAll(set_InFileBasedPVactConsumerAgentPopulation)
+
+* - description: Falls diese Funktion aktiviert ist, muss die gewünschte Anzahl Agenten existieren. Ist zum Beispiel eine Population von 10000 gewünscht, aber die Datei enthält nur 1000 Agenten, so wird ein Fehler geworfen. Falls die Funktion deaktiviert ist, wird die Population im Notfall angepasst.
+* - identifier: Populationsgröße erzwingen?
+* - type: Boolean
+PARAMETER par_InFileBasedPVactConsumerAgentPopulation_requiresDesiredTotalSize(set_InFileBasedPVactConsumerAgentPopulation)
+
+* - description: Legt die Konsumergruppen fest, welche berücksichtigt werden sollen.
+* - identifier: Konsumergruppen
+* - type: Boolean
+PARAMETER par_link_InFileBasedPVactConsumerAgentPopulation_InConsumerAgentGroup_cags(set_InFileBasedPVactConsumerAgentPopulation,set_InConsumerAgentGroup)
+
+* - description: Tabellarische Eingabedatei, aus der die Informationen gelesen werden sollen.
+* - identifier: Tabellarische Datei
+* - type: Boolean
+PARAMETER par_link_InFileBasedPVactConsumerAgentPopulation_InSpatialTableFile_file(set_InFileBasedPVactConsumerAgentPopulation,set_InSpatialTableFile)
 
 * - description: Binäre Daten für diverse Funktionalitäten
 * - identifier: Binäre Daten
@@ -1013,152 +1042,115 @@ SET set_InProductGroup(*)
 * - type: String
 SET set_InProductGroupAttribute(*)
 
-* - identifier: InCustomFileSelectedGroupedSpatialDistribution2D
+* - identifier: InFileBasedPVactMilieuSupplier
 * - type: String
-SET set_InCustomFileSelectedGroupedSpatialDistribution2D(set_InSpatialDistribution)
-
-* - description: Legt die Verteilungsfunktion fest, welche die X-Position bestimmt.
-* - identifier: X-Position
-* - type: Boolean
-PARAMETER par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InUnivariateDoubleDistribution_xPosSupplier(set_InCustomFileSelectedGroupedSpatialDistribution2D,set_InUnivariateDoubleDistribution)
-
-* - description: Legt die Verteilungsfunktion fest, welche die Y-Position bestimmt.
-* - identifier: Y-Position
-* - type: Boolean
-PARAMETER par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InUnivariateDoubleDistribution_yPosSupplier(set_InCustomFileSelectedGroupedSpatialDistribution2D,set_InUnivariateDoubleDistribution)
+SET set_InFileBasedPVactMilieuSupplier(set_InSpatialDistributionWithCollection,set_InSpatialDistribution)
 
 * - identifier: file
 * - type: Boolean
-PARAMETER par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InSpatialTableFile_file(set_InCustomFileSelectedGroupedSpatialDistribution2D,set_InSpatialTableFile)
+PARAMETER par_link_InFileBasedPVactMilieuSupplier_InSpatialTableFile_file(set_InFileBasedPVactMilieuSupplier,set_InSpatialTableFile)
+
+* - identifier: InFileBasedPVactMilieuZipSupplier
+* - type: String
+SET set_InFileBasedPVactMilieuZipSupplier(set_InSpatialDistributionWithCollection,set_InSpatialDistribution)
+
+* - identifier: file
+* - type: Boolean
+PARAMETER par_link_InFileBasedPVactMilieuZipSupplier_InSpatialTableFile_file(set_InFileBasedPVactMilieuZipSupplier,set_InSpatialTableFile)
+
+* - identifier: InFileBasedSelectGroupSpatialInformationSupplier
+* - type: String
+SET set_InFileBasedSelectGroupSpatialInformationSupplier(set_InSpatialDistributionWithCollection,set_InSpatialDistribution)
+
+* - description: Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname).
+* - identifier: X-Schlüssel
+* - type: Boolean
+PARAMETER par_link_InFileBasedSelectGroupSpatialInformationSupplier_InAttributeName_xPositionKey(set_InFileBasedSelectGroupSpatialInformationSupplier,set_InAttributeName)
+
+* - description: Bestimmt den Schlüssel für die Auswahl der Y-Position in der tabellarischen Datei (Spaltenname).
+* - identifier: Y-Schlüssel
+* - type: Boolean
+PARAMETER par_link_InFileBasedSelectGroupSpatialInformationSupplier_InAttributeName_yPositionKey(set_InFileBasedSelectGroupSpatialInformationSupplier,set_InAttributeName)
+
+* - description: Bestimmt den Schlüssel für die Auswahl der ID in der tabellarischen Datei (Spaltenname).
+* - identifier: ID-Schlüssel
+* - type: Boolean
+PARAMETER par_link_InFileBasedSelectGroupSpatialInformationSupplier_InAttributeName_idKey(set_InFileBasedSelectGroupSpatialInformationSupplier,set_InAttributeName)
+
+* - identifier: file
+* - type: Boolean
+PARAMETER par_link_InFileBasedSelectGroupSpatialInformationSupplier_InSpatialTableFile_file(set_InFileBasedSelectGroupSpatialInformationSupplier,set_InSpatialTableFile)
 
 * - description: Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname).
 * - identifier: Auswahlschlüssel
 * - type: Boolean
-PARAMETER par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InAttributeName_selectKey(set_InCustomFileSelectedGroupedSpatialDistribution2D,set_InAttributeName)
+PARAMETER par_link_InFileBasedSelectGroupSpatialInformationSupplier_InAttributeName_selectKey(set_InFileBasedSelectGroupSpatialInformationSupplier,set_InAttributeName)
 
 * - description: Bestimmt den Schlüssel für die Gruppierung und Wichtung anhand der tabellarischen Datei (Spaltenname).
 * - identifier: Gruppierungsschlüssel
 * - type: Boolean
-PARAMETER par_link_InCustomFileSelectedGroupedSpatialDistribution2D_InAttributeName_groupKey(set_InCustomFileSelectedGroupedSpatialDistribution2D,set_InAttributeName)
+PARAMETER par_link_InFileBasedSelectGroupSpatialInformationSupplier_InAttributeName_groupKey(set_InFileBasedSelectGroupSpatialInformationSupplier,set_InAttributeName)
 
-* - identifier: InCustomFileSelectedSpatialDistribution2D
+* - identifier: InFileBasedSelectSpatialInformationSupplier
 * - type: String
-SET set_InCustomFileSelectedSpatialDistribution2D(set_InSpatialDistribution)
-
-* - description: Legt die Verteilungsfunktion fest, welche die X-Position bestimmt.
-* - identifier: X-Position
-* - type: Boolean
-PARAMETER par_link_InCustomFileSelectedSpatialDistribution2D_InUnivariateDoubleDistribution_xPosSupplier(set_InCustomFileSelectedSpatialDistribution2D,set_InUnivariateDoubleDistribution)
-
-* - description: Legt die Verteilungsfunktion fest, welche die Y-Position bestimmt.
-* - identifier: Y-Position
-* - type: Boolean
-PARAMETER par_link_InCustomFileSelectedSpatialDistribution2D_InUnivariateDoubleDistribution_yPosSupplier(set_InCustomFileSelectedSpatialDistribution2D,set_InUnivariateDoubleDistribution)
-
-* - description: Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen.
-* - identifier: Tabellarische Datei
-* - type: Boolean
-PARAMETER par_link_InCustomFileSelectedSpatialDistribution2D_InSpatialTableFile_attrFile(set_InCustomFileSelectedSpatialDistribution2D,set_InSpatialTableFile)
-
-* - description: Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname).
-* - identifier: Auswahlschlüssel
-* - type: Boolean
-PARAMETER par_link_InCustomFileSelectedSpatialDistribution2D_InAttributeName_selectKey(set_InCustomFileSelectedSpatialDistribution2D,set_InAttributeName)
-
-* - identifier: InCustomFileSpatialDistribution2D
-* - type: String
-SET set_InCustomFileSpatialDistribution2D(set_InSpatialDistribution)
-
-* - description: Legt die Verteilungsfunktion fest, welche die X-Position bestimmt.
-* - identifier: X-Position
-* - type: Boolean
-PARAMETER par_link_InCustomFileSpatialDistribution2D_InUnivariateDoubleDistribution_xPosSupplier(set_InCustomFileSpatialDistribution2D,set_InUnivariateDoubleDistribution)
-
-* - description: Legt die Verteilungsfunktion fest, welche die Y-Position bestimmt.
-* - identifier: Y-Position
-* - type: Boolean
-PARAMETER par_link_InCustomFileSpatialDistribution2D_InUnivariateDoubleDistribution_yPosSupplier(set_InCustomFileSpatialDistribution2D,set_InUnivariateDoubleDistribution)
-
-* - description: Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen.
-* - identifier: Tabellarische Datei
-* - type: Boolean
-PARAMETER par_link_InCustomFileSpatialDistribution2D_InSpatialTableFile_attrFile(set_InCustomFileSpatialDistribution2D,set_InSpatialTableFile)
-
-* - identifier: InFileSelectedGroupedSpatialDistribution2D
-* - type: String
-SET set_InFileSelectedGroupedSpatialDistribution2D(set_InSpatialDistribution)
+SET set_InFileBasedSelectSpatialInformationSupplier(set_InSpatialDistributionWithCollection,set_InSpatialDistribution)
 
 * - description: Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname).
 * - identifier: X-Schlüssel
 * - type: Boolean
-PARAMETER par_link_InFileSelectedGroupedSpatialDistribution2D_InAttributeName_xPositionKey(set_InFileSelectedGroupedSpatialDistribution2D,set_InAttributeName)
+PARAMETER par_link_InFileBasedSelectSpatialInformationSupplier_InAttributeName_xPositionKey(set_InFileBasedSelectSpatialInformationSupplier,set_InAttributeName)
 
 * - description: Bestimmt den Schlüssel für die Auswahl der Y-Position in der tabellarischen Datei (Spaltenname).
 * - identifier: Y-Schlüssel
 * - type: Boolean
-PARAMETER par_link_InFileSelectedGroupedSpatialDistribution2D_InAttributeName_yPositionKey(set_InFileSelectedGroupedSpatialDistribution2D,set_InAttributeName)
+PARAMETER par_link_InFileBasedSelectSpatialInformationSupplier_InAttributeName_yPositionKey(set_InFileBasedSelectSpatialInformationSupplier,set_InAttributeName)
+
+* - description: Bestimmt den Schlüssel für die Auswahl der ID in der tabellarischen Datei (Spaltenname).
+* - identifier: ID-Schlüssel
+* - type: Boolean
+PARAMETER par_link_InFileBasedSelectSpatialInformationSupplier_InAttributeName_idKey(set_InFileBasedSelectSpatialInformationSupplier,set_InAttributeName)
 
 * - identifier: file
 * - type: Boolean
-PARAMETER par_link_InFileSelectedGroupedSpatialDistribution2D_InSpatialTableFile_file(set_InFileSelectedGroupedSpatialDistribution2D,set_InSpatialTableFile)
+PARAMETER par_link_InFileBasedSelectSpatialInformationSupplier_InSpatialTableFile_file(set_InFileBasedSelectSpatialInformationSupplier,set_InSpatialTableFile)
 
-* - description: Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname).
+* - description: Bestimmt den Schlüssel für die Auswahl der Information in der tabellarischen Datei (Spaltenname).
 * - identifier: Auswahlschlüssel
 * - type: Boolean
-PARAMETER par_link_InFileSelectedGroupedSpatialDistribution2D_InAttributeName_selectKey(set_InFileSelectedGroupedSpatialDistribution2D,set_InAttributeName)
+PARAMETER par_link_InFileBasedSelectSpatialInformationSupplier_InAttributeName_selectKey(set_InFileBasedSelectSpatialInformationSupplier,set_InAttributeName)
 
-* - description: Bestimmt den Schlüssel für die Gruppierung und Wichtung anhand der tabellarischen Datei (Spaltenname).
-* - identifier: Gruppierungsschlüssel
-* - type: Boolean
-PARAMETER par_link_InFileSelectedGroupedSpatialDistribution2D_InAttributeName_groupKey(set_InFileSelectedGroupedSpatialDistribution2D,set_InAttributeName)
-
-* - identifier: InFileSelectedSpatialDistribution2D
+* - identifier: InFileBasedSpatialInformationSupplier
 * - type: String
-SET set_InFileSelectedSpatialDistribution2D(set_InSpatialDistribution)
+SET set_InFileBasedSpatialInformationSupplier(set_InSpatialDistributionWithCollection,set_InSpatialDistribution)
 
 * - description: Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname).
 * - identifier: X-Schlüssel
 * - type: Boolean
-PARAMETER par_link_InFileSelectedSpatialDistribution2D_InAttributeName_xPositionKey(set_InFileSelectedSpatialDistribution2D,set_InAttributeName)
+PARAMETER par_link_InFileBasedSpatialInformationSupplier_InAttributeName_xPositionKey(set_InFileBasedSpatialInformationSupplier,set_InAttributeName)
 
 * - description: Bestimmt den Schlüssel für die Auswahl der Y-Position in der tabellarischen Datei (Spaltenname).
 * - identifier: Y-Schlüssel
 * - type: Boolean
-PARAMETER par_link_InFileSelectedSpatialDistribution2D_InAttributeName_yPositionKey(set_InFileSelectedSpatialDistribution2D,set_InAttributeName)
+PARAMETER par_link_InFileBasedSpatialInformationSupplier_InAttributeName_yPositionKey(set_InFileBasedSpatialInformationSupplier,set_InAttributeName)
 
-* - description: Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen.
-* - identifier: Tabellarische Datei
+* - description: Bestimmt den Schlüssel für die Auswahl der ID in der tabellarischen Datei (Spaltenname).
+* - identifier: ID-Schlüssel
 * - type: Boolean
-PARAMETER par_link_InFileSelectedSpatialDistribution2D_InSpatialTableFile_attrFile(set_InFileSelectedSpatialDistribution2D,set_InSpatialTableFile)
+PARAMETER par_link_InFileBasedSpatialInformationSupplier_InAttributeName_idKey(set_InFileBasedSpatialInformationSupplier,set_InAttributeName)
 
-* - description: Bestimmt den Schlüssel für die Auswahl der Milieuinformation in der tabellarischen Datei (Spaltenname).
-* - identifier: Auswahlschlüssel
+* - identifier: file
 * - type: Boolean
-PARAMETER par_link_InFileSelectedSpatialDistribution2D_InAttributeName_selectKey(set_InFileSelectedSpatialDistribution2D,set_InAttributeName)
-
-* - identifier: InFileSpatialDistribution2D
-* - type: String
-SET set_InFileSpatialDistribution2D(set_InSpatialDistribution)
-
-* - description: Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname).
-* - identifier: X-Schlüssel
-* - type: Boolean
-PARAMETER par_link_InFileSpatialDistribution2D_InAttributeName_xPositionKey(set_InFileSpatialDistribution2D,set_InAttributeName)
-
-* - description: Bestimmt den Schlüssel für die Auswahl der Y-Position in der tabellarischen Datei (Spaltenname).
-* - identifier: Y-Schlüssel
-* - type: Boolean
-PARAMETER par_link_InFileSpatialDistribution2D_InAttributeName_yPositionKey(set_InFileSpatialDistribution2D,set_InAttributeName)
-
-* - description: Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen.
-* - identifier: Tabellarische Datei
-* - type: Boolean
-PARAMETER par_link_InFileSpatialDistribution2D_InSpatialTableFile_attrFile(set_InFileSpatialDistribution2D,set_InSpatialTableFile)
+PARAMETER par_link_InFileBasedSpatialInformationSupplier_InSpatialTableFile_file(set_InFileBasedSpatialInformationSupplier,set_InSpatialTableFile)
 
 * - identifier: InSpatialDistribution
 * - hidden: 1
 * - type: String
 SET set_InSpatialDistribution(*)
+
+* - identifier: InSpatialDistributionWithCollection
+* - hidden: 1
+* - type: String
+SET set_InSpatialDistributionWithCollection(set_InSpatialDistribution)
 
 * - identifier: InSpace2D
 * - type: String

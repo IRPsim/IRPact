@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.start.irpact;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.exception.ParsingException;
@@ -22,10 +23,7 @@ import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.core.util.result.ResultManager;
 import de.unileipzig.irpact.core.util.result.adoptions.AdoptionResultInfo;
 import de.unileipzig.irpact.core.util.result.adoptions.AnnualCumulativeAdoptionsForOutput;
-import de.unileipzig.irpact.io.param.input.GraphvizInputParser;
-import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.JadexInputParser;
-import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
+import de.unileipzig.irpact.io.param.input.*;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
@@ -44,6 +42,8 @@ import de.unileipzig.irptools.io.ContentTypeDetector;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.annual.AnnualFile;
 import de.unileipzig.irptools.io.base.AnnualEntry;
+import de.unileipzig.irptools.io.downloaded.DownloadedFile;
+import de.unileipzig.irptools.io.perennial.PerennialFile;
 import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.base.IPlatformConfiguration;
@@ -71,8 +71,8 @@ public final class IRPact implements IRPActAccess {
 
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "0";
-    private static final String MINOR_STRING = "1";
-    private static final String BUILD_STRING = "3";
+    private static final String MINOR_STRING = "2";
+    private static final String BUILD_STRING = "2";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -165,6 +165,7 @@ public final class IRPact implements IRPActAccess {
             DefinitionCollection dcoll = AnnotationParser.parse(InRoot.INPUT_WITH_GRAPHVIZ);
             DefinitionMapper dmap = createMapper(options, dcoll);
             Converter converter = new Converter(dmap);
+            converter.setAddOnlyRemainingSetsToRoot(false);
             INPUT_CONVERTS.put(options, converter);
             return converter;
         }
@@ -204,7 +205,30 @@ public final class IRPact implements IRPActAccess {
     }
 
     private AnnualEntry<InRoot> convert(ObjectNode rootNode) {
+        peekLoggingOptionsForIRPtools(rootNode);
         return convert(CL_OPTIONS, rootNode);
+    }
+
+    protected void peekLoggingOptionsForIRPtools(ObjectNode rootNode) {
+        JsonNode logToolsNode = ContentTypeDetector.scalars(rootNode, InGeneral.SCA_INGENERAL_LOGALLTOOLS);
+        peekLoggingOptionsForIRPtools(
+                logToolsNode != null
+                && logToolsNode.isNumber()
+                && logToolsNode.intValue() == 1
+        );
+    }
+
+    protected void peekLoggingOptionsForIRPtools(AnnualEntry<InRoot> entry) {
+        peekLoggingOptionsForIRPtools(entry.getData().general.logAllTools);
+    }
+
+    protected void peekLoggingOptionsForIRPtools(boolean enableToolsLogging) {
+        LOGGER.trace(IRPSection.GENERAL, "enable IRPtools logging: {}", enableToolsLogging);
+        if(enableToolsLogging) {
+            IRPSection.addAllToolsTo(IRPLogging.getFilter());
+        } else {
+            IRPSection.removeAllToolsFrom(IRPLogging.getFilter());
+        }
     }
 
     public static void clearConverterCache() {
@@ -228,6 +252,7 @@ public final class IRPact implements IRPActAccess {
 
     public void init(AnnualEntry<InRoot> entry) throws Exception {
         this.inEntry = entry;
+        peekLoggingOptionsForIRPtools(entry);
         inRoot = entry.getData();
     }
 

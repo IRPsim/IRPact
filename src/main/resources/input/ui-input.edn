@@ -75,7 +75,7 @@
       {
         :label "Über IRPact" 
         :set "set_InAboutPlaceholder" 
-        :description "IRPact v0.1.3" 
+        :description "IRPact v0.2.2" 
         :tags [["InAboutPlaceholder" "placeholder"]]
       }
     ]
@@ -262,15 +262,15 @@
         :sections [
           {
             :label "Feste Konsumergruppengröße" 
-            :set "set_InFixConsumerAgentPopulationSize" 
+            :set "set_InFixConsumerAgentPopulation" 
             :description "todo" 
-            :tags [["InFixConsumerAgentPopulationSize" "size"] ["link" "InFixConsumerAgentPopulationSize" "InConsumerAgentGroup" "cags"]]
+            :tags [["InFixConsumerAgentPopulation" "size"] ["link" "InFixConsumerAgentPopulation" "InConsumerAgentGroup" "cags"]]
           } 
           {
             :label "Dynamische Konsumergruppengröße" 
-            :set "set_InRelativeExternConsumerAgentPopulationSize" 
+            :set "set_InFileBasedPVactConsumerAgentPopulation" 
             :description "todo" 
-            :tags [["InRelativeExternConsumerAgentPopulationSize" "maximumSize"] ["InRelativeExternConsumerAgentPopulationSize" "useMaximumPossibleSize"] ["InRelativeExternConsumerAgentPopulationSize" "allowSmallerSize"] ["link" "InRelativeExternConsumerAgentPopulationSize" "InConsumerAgentGroup" "cags"] ["link" "InRelativeExternConsumerAgentPopulationSize" "InSpatialTableFile" "file"] ["link" "InRelativeExternConsumerAgentPopulationSize" "InAttributeName" "selectKey"]]
+            :tags [["InFileBasedConsumerAgentPopulation" "desiredSize"] ["InFileBasedConsumerAgentPopulation" "useAll"] ["InFileBasedConsumerAgentPopulation" "requiresDesiredTotalSize"] ["link" "InFileBasedConsumerAgentPopulation" "InConsumerAgentGroup" "cags"] ["link" "InFileBasedConsumerAgentPopulation" "InSpatialTableFile" "file"] ["link" "InFileBasedConsumerAgentPopulation" "InAttributeName" "selectKey"] ["InFileBasedPVactConsumerAgentPopulation" "desiredSize"] ["InFileBasedPVactConsumerAgentPopulation" "useAll"] ["InFileBasedPVactConsumerAgentPopulation" "requiresDesiredTotalSize"] ["link" "InFileBasedPVactConsumerAgentPopulation" "InConsumerAgentGroup" "cags"] ["link" "InFileBasedPVactConsumerAgentPopulation" "InSpatialTableFile" "file"]]
           }
         ]
       }
@@ -483,50 +483,38 @@
             :description "Ermöglicht es räumliche Verteilungsfunktionen zu definieren, deren Daten aus Dateien geladen werden." 
             :sections [
               {
-                :label "Benutzerdefinierte Positionen" 
-                :description "Ermöglicht es räumliche Verteilungsfunktionen zu definieren, deren Daten aus Dateien geladen werden. Die Positionen können dabei separat definiert werden." 
-                :sections [
-                  {
-                    :label "Milieuunabhängig" 
-                    :set "set_InCustomFileSpatialDistribution2D" 
-                    :description "Milieuunabhängig" 
-                    :tags [["link" "InCustomFileSpatialDistribution2D" "InUnivariateDoubleDistribution" "xPosSupplier"] ["link" "InCustomFileSpatialDistribution2D" "InUnivariateDoubleDistribution" "yPosSupplier"] ["link" "InCustomFileSpatialDistribution2D" "InSpatialTableFile" "attrFile"]]
-                  } 
-                  {
-                    :label "Milieuabhängig" 
-                    :set "set_InCustomFileSelectedSpatialDistribution2D" 
-                    :description "Milieuabhängig" 
-                    :tags [["link" "InCustomFileSelectedSpatialDistribution2D" "InUnivariateDoubleDistribution" "xPosSupplier"] ["link" "InCustomFileSelectedSpatialDistribution2D" "InUnivariateDoubleDistribution" "yPosSupplier"] ["link" "InCustomFileSelectedSpatialDistribution2D" "InSpatialTableFile" "attrFile"] ["link" "InCustomFileSelectedSpatialDistribution2D" "InAttributeName" "selectKey"]]
-                  } 
-                  {
-                    :label "Milieuabhängig und gewichtet" 
-                    :set "set_InCustomFileSelectedGroupedSpatialDistribution2D" 
-                    :description "Milieuabhängig und gewichtet" 
-                    :tags [["link" "InCustomFileSelectedGroupedSpatialDistribution2D" "InUnivariateDoubleDistribution" "xPosSupplier"] ["link" "InCustomFileSelectedGroupedSpatialDistribution2D" "InUnivariateDoubleDistribution" "yPosSupplier"] ["link" "InCustomFileSelectedGroupedSpatialDistribution2D" "InSpatialTableFile" "file"] ["link" "InCustomFileSelectedGroupedSpatialDistribution2D" "InAttributeName" "selectKey"] ["link" "InCustomFileSelectedGroupedSpatialDistribution2D" "InAttributeName" "groupKey"]]
-                  }
-                ]
-              } 
-              {
                 :label "Gelesene Positionen" 
                 :description "Ermöglicht es räumliche Verteilungsfunktionen zu definieren, deren Daten aus Dateien geladen werden. Die Positionen werden dabei ebenfalls aus den Dateien gelesen." 
                 :sections [
                   {
-                    :label "Milieuunabhängig" 
-                    :set "set_InFileSpatialDistribution2D" 
-                    :description "Milieuunabhängig" 
-                    :tags [["link" "InFileSpatialDistribution2D" "InAttributeName" "xPositionKey"] ["link" "InFileSpatialDistribution2D" "InAttributeName" "yPositionKey"] ["link" "InFileSpatialDistribution2D" "InSpatialTableFile" "attrFile"]]
+                    :label "Unzugeordnet" 
+                    :set "set_InFileBasedSpatialInformationSupplier" 
+                    :description "Die Daten werden ohne weitere Berücksichtigungen verwendet." 
+                    :tags [["link" "InFileBasedSpatialInformationSupplier" "InAttributeName" "xPositionKey"] ["link" "InFileBasedSpatialInformationSupplier" "InAttributeName" "yPositionKey"] ["link" "InFileBasedSpatialInformationSupplier" "InAttributeName" "idKey"] ["link" "InFileBasedSpatialInformationSupplier" "InSpatialTableFile" "file"]]
                   } 
                   {
-                    :label "Milieuabhängig" 
-                    :set "set_InFileSelectedSpatialDistribution2D" 
-                    :description "Milieuabhängig" 
-                    :tags [["link" "InFileSelectedSpatialDistribution2D" "InAttributeName" "xPositionKey"] ["link" "InFileSelectedSpatialDistribution2D" "InAttributeName" "yPositionKey"] ["link" "InFileSelectedSpatialDistribution2D" "InSpatialTableFile" "attrFile"] ["link" "InFileSelectedSpatialDistribution2D" "InAttributeName" "selectKey"]]
+                    :label "Zugeordnet" 
+                    :set "set_InFileBasedSelectSpatialInformationSupplier" 
+                    :description "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet verwendet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen." 
+                    :tags [["link" "InFileBasedSelectSpatialInformationSupplier" "InAttributeName" "xPositionKey"] ["link" "InFileBasedSelectSpatialInformationSupplier" "InAttributeName" "yPositionKey"] ["link" "InFileBasedSelectSpatialInformationSupplier" "InAttributeName" "idKey"] ["link" "InFileBasedSelectSpatialInformationSupplier" "InSpatialTableFile" "file"] ["link" "InFileBasedSelectSpatialInformationSupplier" "InAttributeName" "selectKey"]]
                   } 
                   {
-                    :label "Milieuabhängig und gewichtet" 
-                    :set "set_InFileSelectedGroupedSpatialDistribution2D" 
-                    :description "Milieuabhängig und gewichtet" 
-                    :tags [["link" "InFileSelectedGroupedSpatialDistribution2D" "InAttributeName" "xPositionKey"] ["link" "InFileSelectedGroupedSpatialDistribution2D" "InAttributeName" "yPositionKey"] ["link" "InFileSelectedGroupedSpatialDistribution2D" "InSpatialTableFile" "file"] ["link" "InFileSelectedGroupedSpatialDistribution2D" "InAttributeName" "selectKey"] ["link" "InFileSelectedGroupedSpatialDistribution2D" "InAttributeName" "groupKey"]]
+                    :label "Zugeordnet und gruppiert" 
+                    :set "set_InFileBasedSelectGroupSpatialInformationSupplier" 
+                    :description "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet verwendet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen. Zusätzlich wird ein Gruppierungsattribut genutzt, um die Daten zu wichten." 
+                    :tags [["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InAttributeName" "xPositionKey"] ["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InAttributeName" "yPositionKey"] ["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InAttributeName" "idKey"] ["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InSpatialTableFile" "file"] ["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InAttributeName" "selectKey"] ["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InAttributeName" "groupKey"]]
+                  } 
+                  {
+                    :label "PVact - Milieu" 
+                    :set "set_InFileBasedPVactMilieuSupplier" 
+                    :description "Die Daten werden, basierend auf dem Milieu, zugeordnet verwendet." 
+                    :tags [["link" "InFileBasedPVactMilieuSupplier" "InSpatialTableFile" "file"]]
+                  } 
+                  {
+                    :label "PVact - Milieu und PLZ" 
+                    :set "set_InFileBasedPVactMilieuZipSupplier" 
+                    :description "Die Daten werden, basierend auf dem Milieu, zugeordnet verwendet. Zusätzlich wird die PLZ für die Wichtung verwendet." 
+                    :tags [["link" "InFileBasedPVactMilieuZipSupplier" "InSpatialTableFile" "file"]]
                   }
                 ]
               }

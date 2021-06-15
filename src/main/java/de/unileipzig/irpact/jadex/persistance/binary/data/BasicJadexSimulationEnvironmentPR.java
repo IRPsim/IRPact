@@ -75,6 +75,8 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
     protected BasicJadexSimulationEnvironment doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
         BasicJadexSimulationEnvironment environment = new BasicJadexSimulationEnvironment();
         manager.setRestoredInstance(environment);
+        getRestoreHelper().getUpdater().setEnvironment(environment);
+
         environment.setName("Restored_Environment");
         environment.initDefault();
         environment.setRestored();

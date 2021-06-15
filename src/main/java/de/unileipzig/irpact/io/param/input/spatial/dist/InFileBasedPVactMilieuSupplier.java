@@ -30,7 +30,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InFileBasedPVactMilieuSupplier implements InSpatialDistribution {
+public class InFileBasedPVactMilieuSupplier implements InSpatialDistributionWithCollection {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -43,7 +43,7 @@ public class InFileBasedPVactMilieuSupplier implements InSpatialDistribution {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), SPATIAL, SPATIAL_MODEL_DIST, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS, thisName());
+        putClassPath(res, thisClass(), SPATIAL, SPATIAL_MODEL_DIST, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST_FILE_FILEPOS, thisName());
         addEntry(res, thisClass(), "attrFile");
     }
 
@@ -82,6 +82,7 @@ public class InFileBasedPVactMilieuSupplier implements InSpatialDistribution {
         this.file = new InSpatialTableFile[]{file};
     }
 
+    @Override
     public InSpatialTableFile getFile() throws ParsingException {
         return ParamUtil.getInstance(file, "File");
     }
@@ -113,20 +114,12 @@ public class InFileBasedPVactMilieuSupplier implements InSpatialDistribution {
         }
 
         //raw data
-        SpatialTableFileContent fileContent = parser.parseEntityTo(getFile());
         Rnd rnd = parser.deriveRnd();
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} '{}' uses seed: {}", thisName(), getName(), rnd.getInitialSeed());
 
         //next step
-        SpatialDataCollection dataColl = SpatialUtil.mapToPoint2DIfAbsent_2(
-                fileContent.getName(),
-                parser.getEnvironment().getSpatialModel(),
-                fileContent.content(),
-                RAConstants.X_CENT,
-                RAConstants.Y_CENT,
-                RAConstants.ID
-        );
+        SpatialDataCollection dataColl = parseCollection(parser);
 
         SpatialInformationSupplier supplier = InFileBasedSelectSpatialInformationSupplier.createForSelectValue(
                 getName(),
@@ -138,5 +131,18 @@ public class InFileBasedPVactMilieuSupplier implements InSpatialDistribution {
 
         jCag.setSpatialDistribution(supplier);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set '{}' to cag '{}'", supplier.getName(), jCag.getName());
+    }
+
+    @Override
+    public SpatialDataCollection parseCollection(IRPactInputParser parser) throws ParsingException {
+        SpatialTableFileContent fileContent = parser.parseEntityTo(getFile());
+        return SpatialUtil.mapToPoint2DIfAbsent_2(
+                fileContent.getName(),
+                parser.getEnvironment().getSpatialModel(),
+                fileContent.content(),
+                RAConstants.X_CENT,
+                RAConstants.Y_CENT,
+                RAConstants.ID
+        );
     }
 }

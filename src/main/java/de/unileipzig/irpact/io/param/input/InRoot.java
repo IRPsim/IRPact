@@ -338,6 +338,9 @@ public class InRoot implements RootClass {
         return getInstance(spatialModel, "spatialModel");
     }
 
+    @FieldDefinition
+    public InSpatialDistribution[] spatialDistributions = new InSpatialDistribution[0];
+
     //=========================
     //time
     //=========================
@@ -555,6 +558,33 @@ public class InRoot implements RootClass {
         return ParamUtil.getEntityByName(processModels, name);
     }
 
+    public InSpatialDistribution getSpatialDistribution(String name) throws ParsingException {
+        return getSpatialDistribution(InSpatialDistribution.class, name);
+    }
+
+    public <R extends InSpatialDistribution> R getSpatialDistribution(Class<R> clazz, String name) throws ParsingException {
+        if(spatialDistributions == null || spatialDistributions.length == 0) {
+            return null;
+        }
+        for(InSpatialDistribution dist: spatialDistributions) {
+            if(Objects.equals(dist.getName(), name) && clazz.isInstance(dist)) {
+                return clazz.cast(dist);
+            }
+        }
+
+        if(consumerAgentGroups == null || consumerAgentGroups.length == 0) {
+            return null;
+        }
+        for(InConsumerAgentGroup cag: consumerAgentGroups) {
+            InSpatialDistribution dist = cag.getSpatialDistribution();
+            if(Objects.equals(dist.getName(), name) && clazz.isInstance(dist)) {
+                return clazz.cast(dist);
+            }
+        }
+
+        return null;
+    }
+
     //=========================
     //OPTACT
     //=========================
@@ -694,6 +724,7 @@ public class InRoot implements RootClass {
             InFileBasedSelectSpatialInformationSupplier.class,
             InFileBasedSpatialInformationSupplier.class,
             InSpatialDistribution.class,
+            InSpatialDistributionWithCollection.class,
             InSpace2D.class,
             InSpatialModel.class,
 
