@@ -75,7 +75,7 @@
       {
         :label "Über IRPact" 
         :set "set_InAboutPlaceholder" 
-        :description "IRPact v0.2.2" 
+        :description "IRPact v0.2.3" 
         :tags [["InAboutPlaceholder" "placeholder"]]
       }
     ]
@@ -499,7 +499,7 @@
                     :tags [["link" "InFileBasedSelectSpatialInformationSupplier" "InAttributeName" "xPositionKey"] ["link" "InFileBasedSelectSpatialInformationSupplier" "InAttributeName" "yPositionKey"] ["link" "InFileBasedSelectSpatialInformationSupplier" "InAttributeName" "idKey"] ["link" "InFileBasedSelectSpatialInformationSupplier" "InSpatialTableFile" "file"] ["link" "InFileBasedSelectSpatialInformationSupplier" "InAttributeName" "selectKey"]]
                   } 
                   {
-                    :label "Zugeordnet und gruppiert" 
+                    :label "Zugeordnet und gewichtet" 
                     :set "set_InFileBasedSelectGroupSpatialInformationSupplier" 
                     :description "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet verwendet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen. Zusätzlich wird ein Gruppierungsattribut genutzt, um die Daten zu wichten." 
                     :tags [["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InAttributeName" "xPositionKey"] ["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InAttributeName" "yPositionKey"] ["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InAttributeName" "idKey"] ["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InSpatialTableFile" "file"] ["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InAttributeName" "selectKey"] ["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InAttributeName" "groupKey"]]
@@ -526,10 +526,12 @@
   } 
   {
     :label "Zeitliche Modell" 
+    :description "todo" 
     :sections [
       {
-        :label "Diskret - Millisekunde" 
+        :label "Diskret" 
         :set "set_InUnitStepDiscreteTimeModel" 
+        :description "todo" 
         :tags [["InUnitStepDiscreteTimeModel" "amountOfTime"] ["InUnitStepDiscreteTimeModel" "useMs"] ["InUnitStepDiscreteTimeModel" "useSec"] ["InUnitStepDiscreteTimeModel" "useMin"] ["InUnitStepDiscreteTimeModel" "useH"] ["InUnitStepDiscreteTimeModel" "useD"] ["InUnitStepDiscreteTimeModel" "useW"] ["InUnitStepDiscreteTimeModel" "useM"]]
       }
     ]

@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -38,6 +39,11 @@ public class InBernoulliDistribution implements InUnivariateDoubleDistribution {
         addEntry(res, thisClass(), "p");
         addEntry(res, thisClass(), "trueValue");
         addEntry(res, thisClass(), "falseValue");
+
+        setDomain(res, thisClass(), "p", BOOLEAN_DOMAIN);
+
+        setDefault(res, thisClass(), "trueValue", new Object[] {"1"});
+        setDefault(res, thisClass(), "falseValue", new Object[] {"0"});
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InBernoulliDistribution.class);

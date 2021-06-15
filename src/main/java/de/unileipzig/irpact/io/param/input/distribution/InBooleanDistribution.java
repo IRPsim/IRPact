@@ -37,6 +37,9 @@ public class InBooleanDistribution implements InUnivariateDoubleDistribution {
         putClassPath(res, thisClass(), DISTRIBUTIONS, thisName());
         addEntry(res, thisClass(), "trueValue");
         addEntry(res, thisClass(), "falseValue");
+
+        setDefault(res, thisClass(), "trueValue", new Object[] {"1"});
+        setDefault(res, thisClass(), "falseValue", new Object[] {"0"});
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InBooleanDistribution.class);

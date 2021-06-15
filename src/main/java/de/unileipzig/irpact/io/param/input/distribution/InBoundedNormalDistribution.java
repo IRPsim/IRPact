@@ -39,6 +39,9 @@ public class InBoundedNormalDistribution implements InUnivariateDoubleDistributi
         addEntry(res, thisClass(), "mean");
         addEntry(res, thisClass(), "lowerBound");
         addEntry(res, thisClass(), "upperBound");
+
+        setDefault(res, thisClass(), "standardDeviation", new Object[] {"1"});
+        setDefault(res, thisClass(), "mean", new Object[] {"0"});
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InBoundedNormalDistribution.class);
