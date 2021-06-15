@@ -126,6 +126,7 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
         productFindingSchemes = new InProductFindingScheme[]{scheme};
     }
 
+    @Override
     public InSpatialDistribution getSpatialDistribution() throws ParsingException {
         return ParamUtil.getInstance(spatialDistribution, "spatialDistribution");
     }

@@ -24,8 +24,6 @@ import de.unileipzig.irpact.io.spec.impl.process.*;
 import de.unileipzig.irpact.io.spec.impl.product.*;
 import de.unileipzig.irpact.io.spec.impl.spatial.Space2DSpec;
 import de.unileipzig.irpact.io.spec.impl.spatial.SpatialModelSpec;
-import de.unileipzig.irpact.io.spec.impl.spatial.dist.CustomSelectedGroupedSpatialDistribution2DSpec;
-import de.unileipzig.irpact.io.spec.impl.spatial.dist.SelectedGroupedSpatialDistribution2DSpec;
 import de.unileipzig.irpact.io.spec.impl.time.DiscreteTimeModelSpec;
 import de.unileipzig.irpact.io.spec.impl.time.TimeModelSpec;
 
@@ -96,8 +94,8 @@ public class SpecificationConverter {
         securePut(ProductInterestSupplySchemeSpec.INSTANCE);
         securePut(ProductThresholdInterestSupplySchemeSpec.INSTANCE);
         //spatial
-        securePut(CustomSelectedGroupedSpatialDistribution2DSpec.INSTANCE);
-        securePut(SelectedGroupedSpatialDistribution2DSpec.INSTANCE);
+//        securePut(CustomSelectedGroupedSpatialDistribution2DSpec.INSTANCE);
+//        securePut(SelectedGroupedSpatialDistribution2DSpec.INSTANCE);
         securePut(SpatialTableFileSpec.INSTANCE);
         securePut(Space2DSpec.INSTANCE);
         securePut(SpatialModelSpec.INSTANCE);

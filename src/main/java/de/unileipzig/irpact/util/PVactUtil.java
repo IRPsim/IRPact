@@ -5,7 +5,7 @@ import de.unileipzig.irpact.commons.spatial.attribute.BasicSpatialStringAttribut
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.StringUtil;
-import de.unileipzig.irpact.commons.util.csv.CsvPartConverter;
+import de.unileipzig.irpact.commons.util.csv.CsvValueConverter;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
@@ -25,8 +25,8 @@ public class PVactUtil {
     );
 
     @SuppressWarnings("DuplicateBranchesInSwitch")
-    public static final CsvPartConverter<SpatialAttribute> CSV_CONVERTER = (columnIndex, header, value) -> {
-        String headerEntry = header[columnIndex];
+    public static final CsvValueConverter<SpatialAttribute> CSV_CONVERTER = (header, columnIndex, value) -> {
+        String headerEntry = header.getLabel(columnIndex);
         switch (headerEntry) {
             case RAConstants.ID:
                 return new BasicSpatialDoubleAttribute(headerEntry, StringUtil.parseDoubleWithComma(value));

@@ -79,6 +79,7 @@ public class InGeneral implements Copyable {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public static final String RUN_OPTACT_DEMO_PARAM_NAME = "sca_InGeneral_runOptActDemo";
+    public static final String SCA_INGENERAL_LOGALLTOOLS = "sca_InGeneral_logAllTools";
 
     @FieldDefinition
     public long seed;

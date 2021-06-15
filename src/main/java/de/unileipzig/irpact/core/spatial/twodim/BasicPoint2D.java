@@ -145,7 +145,9 @@ public class BasicPoint2D implements Point2D {
 
     @Override
     public String toString() {
-        return "Point2D[" + x + "," + y + "]";
+        return hasId()
+                ? "Point2D[" + getId() + "," + x + "," + y + "]"
+                : "Point2D[" + x + "," + y + "]";
     }
 
     @Override

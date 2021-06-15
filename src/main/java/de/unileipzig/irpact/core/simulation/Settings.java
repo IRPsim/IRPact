@@ -80,16 +80,6 @@ public interface Settings {
     List<Integer> listActualYears();
 
     //=========================
-    //population size
-    //=========================
-
-    boolean hasInitialNumberOfConsumerAgents(ConsumerAgentGroup group);
-
-    void setInitialNumberOfConsumerAgents(ConsumerAgentGroup group, int size);
-
-    int getInitialNumberOfConsumerAgents(ConsumerAgentGroup group);
-
-    //=========================
     //data logging
     //=========================
 

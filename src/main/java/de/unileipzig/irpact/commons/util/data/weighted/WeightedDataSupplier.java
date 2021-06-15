@@ -20,19 +20,22 @@ public class WeightedDataSupplier<T, R> extends NameableBase implements Distribu
     protected DataCollection<R> data;
     protected Map<T, DataCollection.View<R>> views;
     protected WeightedMapping<T> mapping;
+    protected Set<T> emptyViewKeys;
     protected Rnd rnd;
     protected boolean removeOnDraw = false;
 
     public WeightedDataSupplier() {
-        this(new NavigableMapWeightedMapping<>(), new LinkedHashMap<>());
+        this(new NavigableMapWeightedMapping<>(), new HashSet<>(), new LinkedHashMap<>());
     }
 
-    public WeightedDataSupplier(WeightedMapping<T> mapping, Map<T, DataCollection.View<R>> views) {
+    public WeightedDataSupplier(WeightedMapping<T> mapping, Set<T> emptyViewKeys, Map<T, DataCollection.View<R>> views) {
         this.mapping = mapping;
+        this.emptyViewKeys = emptyViewKeys;
         this.views = views;
     }
 
     protected void rebuildWeightedMapping(boolean skipEmptyViews) {
+        emptyViewKeys.clear();
         mapping.clear();
         for(Map.Entry<T, DataCollection.View<R>> entry: views.entrySet()) {
             DataCollection.View<R> view = entry.getValue();
@@ -44,17 +47,16 @@ public class WeightedDataSupplier<T, R> extends NameableBase implements Distribu
     }
 
     protected void checkForChange() {
-        List<T> toRemove = new ArrayList<>();
-        for(Map.Entry<T, DataCollection.View<R>> entry: views.entrySet()) {
-            if(entry.getValue().isEmpty()) {
-                toRemove.add(entry.getKey());
-            }
-        }
-
-        for(T t: toRemove) {
-            views.remove(t);
-        }
-        mapping.removeAll(toRemove);
+        views.entrySet()
+                .removeIf(entry -> {
+                    if(entry.getValue().isEmpty()) {
+                        mapping.remove(entry.getKey());
+                        emptyViewKeys.add(entry.getKey());
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
     }
 
     public void setRemoveOnDraw(boolean removeOnDraw) {
@@ -87,16 +89,16 @@ public class WeightedDataSupplier<T, R> extends NameableBase implements Distribu
         }
 
         DataCollection.View<R> view = data.createView(filter);
-        views.put(key, view);
-        mapping.set(key, view.size());
+        putView(key, view, view.size());
     }
 
-    protected boolean hasView(T key) {
-        return views.containsKey(key);
-    }
-
-    protected void putView(T key, DataCollection.View<R> view) {
-        views.put(key, view);
+    protected void putView(T key, DataCollection.View<R> view, double weight) {
+        if(weight == 0.0) {
+            emptyViewKeys.add(key);
+        } else {
+            views.put(key, view);
+            mapping.set(key, weight);
+        }
     }
 
     public void used(R element) throws IllegalArgumentException {
@@ -116,6 +118,23 @@ public class WeightedDataSupplier<T, R> extends NameableBase implements Distribu
         return views.isEmpty();
     }
 
+    public boolean hasView(T key) {
+        return views.containsKey(key);
+    }
+
+    public boolean isEmpty(T key) {
+        DataCollection.View<R> view = views.get(key);
+        if(view == null) {
+            if(mapping.has(key)) {
+                return true;
+            } else {
+                throw new NoSuchElementException("no view: " + key);
+            }
+        } else {
+            return view.isEmpty();
+        }
+    }
+
     @Override
     public R drawValue() {
         if(isEmpty()) {
@@ -123,7 +142,23 @@ public class WeightedDataSupplier<T, R> extends NameableBase implements Distribu
         }
 
         T key = mapping.getWeightedRandom(rnd);
+        return drawValue(key);
+    }
+
+    public R drawValue(T key) {
+        if(isEmpty()) {
+            throw new IllegalStateException("empty");
+        }
+
         DataCollection.View<R> view = views.get(key);
+        if(view == null) {
+            if(emptyViewKeys.contains(key)) {
+                throw new IllegalStateException("empty view: " + key);
+            } else {
+                throw new NoSuchElementException("key not found: " + key);
+            }
+        }
+
         if(removeOnDraw) {
             return view.removeRandom(rnd);
         } else {

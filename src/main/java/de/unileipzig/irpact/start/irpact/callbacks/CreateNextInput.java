@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.start.irpact.callbacks;
 
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.util.data.Pair;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.output.OutRoot;
@@ -11,6 +12,9 @@ import de.unileipzig.irpact.start.irpact.IRPactCallback;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.annual.AnnualFile;
 import de.unileipzig.irptools.io.base.AnnualEntry;
+
+import java.io.IOException;
+import java.nio.file.Path;
 
 /**
  * @author Daniel Abitz
@@ -62,8 +66,20 @@ public class CreateNextInput extends NameableBase implements IRPactCallback {
         return nextRoot;
     }
 
+    public Pair<AnnualData<InRoot>, AnnualFile> createAndStore(int year, Path target) throws IOException {
+        checkState();
+        AnnualData<InRoot> data = createFor(year);
+        AnnualFile file = toFile(data);
+        store(target, file);
+        return new Pair<>(data, file);
+    }
+
     public AnnualFile toFile(AnnualData<InRoot> data) {
         checkState();
         return data.serialize(IRPact.getInputConverter(cmd));
+    }
+
+    public void store(Path target, AnnualFile file) throws IOException {
+        file.store(target);
     }
 }

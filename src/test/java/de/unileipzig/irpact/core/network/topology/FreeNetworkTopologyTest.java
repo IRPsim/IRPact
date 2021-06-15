@@ -71,9 +71,9 @@ class FreeNetworkTopologyTest {
         C.setInterestSupplyScheme(new ProductThresholdInterestSupplyScheme("C_int"));
         agentManager.addConsumerAgentGroup(C);
 
-        env.getSettings().setInitialNumberOfConsumerAgents(A, 4);
-        env.getSettings().setInitialNumberOfConsumerAgents(B, 5);
-        env.getSettings().setInitialNumberOfConsumerAgents(C, 6);
+        env.getAgents().getInitialAgentPopulation().set(A, 4);
+        env.getAgents().getInitialAgentPopulation().set(B, 5);
+        env.getAgents().getInitialAgentPopulation().set(C, 6);
 
         BasicConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
         affinityMapping.put(A, A, 1);
@@ -394,9 +394,9 @@ class FreeNetworkTopologyTest {
         C.setInterestSupplyScheme(new ProductThresholdInterestSupplyScheme("C_int"));
         agentManager.addConsumerAgentGroup(C);
 
-        env.getSettings().setInitialNumberOfConsumerAgents(A, 4);
-        env.getSettings().setInitialNumberOfConsumerAgents(B, 5);
-        env.getSettings().setInitialNumberOfConsumerAgents(C, 5);
+        env.getAgents().getInitialAgentPopulation().set(A, 4);
+        env.getAgents().getInitialAgentPopulation().set(B, 5);
+        env.getAgents().getInitialAgentPopulation().set(C, 5);
 
         BasicConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
         affinityMapping.put(A, A, 1);
@@ -463,9 +463,9 @@ class FreeNetworkTopologyTest {
         C.setInterestSupplyScheme(new ProductThresholdInterestSupplyScheme("C_int"));
         agentManager.addConsumerAgentGroup(C);
 
-        env.getSettings().setInitialNumberOfConsumerAgents(A, 4);
-        env.getSettings().setInitialNumberOfConsumerAgents(B, 5);
-        env.getSettings().setInitialNumberOfConsumerAgents(C, 5);
+        env.getAgents().getInitialAgentPopulation().set(A, 4);
+        env.getAgents().getInitialAgentPopulation().set(B, 5);
+        env.getAgents().getInitialAgentPopulation().set(C, 5);
 
         BasicConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
         affinityMapping.put(A, A, 1);
@@ -532,9 +532,9 @@ class FreeNetworkTopologyTest {
         C.setInterestSupplyScheme(new ProductThresholdInterestSupplyScheme("C_int"));
         agentManager.addConsumerAgentGroup(C);
 
-        env.getSettings().setInitialNumberOfConsumerAgents(A, 4);
-        env.getSettings().setInitialNumberOfConsumerAgents(B, 5);
-        env.getSettings().setInitialNumberOfConsumerAgents(C, 6);
+        env.getAgents().getInitialAgentPopulation().set(A, 4);
+        env.getAgents().getInitialAgentPopulation().set(B, 5);
+        env.getAgents().getInitialAgentPopulation().set(C, 6);
 
         BasicConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
         affinityMapping.put(A, A, 0.5);
@@ -595,6 +595,11 @@ class FreeNetworkTopologyTest {
             public String getName() {
                 return "XXXX";
             }
+
+            @Override
+            public boolean setUsed(SpatialInformation information) {
+                return true;
+            }
         };
 
         BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
@@ -612,7 +617,7 @@ class FreeNetworkTopologyTest {
         A.setInterestSupplyScheme(new ProductThresholdInterestSupplyScheme("A_int"));
         agentManager.addConsumerAgentGroup(A);
 
-        env.getSettings().setInitialNumberOfConsumerAgents(A, 100);
+        env.getAgents().getInitialAgentPopulation().set(A, 100);
 
         BasicConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
         affinityMapping.putForAll(agentManager.getConsumerAgentGroups(), 1);
@@ -684,6 +689,11 @@ class FreeNetworkTopologyTest {
             public String getName() {
                 return "XXXX";
             }
+
+            @Override
+            public boolean setUsed(SpatialInformation information) {
+                return true;
+            }
         };
 
         BasicJadexSimulationEnvironment env = new BasicJadexSimulationEnvironment();
@@ -701,7 +711,7 @@ class FreeNetworkTopologyTest {
         A.setInterestSupplyScheme(new ProductThresholdInterestSupplyScheme("A_int"));
         agentManager.addConsumerAgentGroup(A);
 
-        env.getSettings().setInitialNumberOfConsumerAgents(A, 20000);
+        env.getAgents().getInitialAgentPopulation().set(A, 20000);
 
         BasicConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
         affinityMapping.putForAll(agentManager.getConsumerAgentGroups(), 1);
@@ -753,7 +763,7 @@ class FreeNetworkTopologyTest {
         A.setInterestSupplyScheme(new ProductThresholdInterestSupplyScheme("A_int"));
         agentManager.addConsumerAgentGroup(A);
 
-        env.getSettings().setInitialNumberOfConsumerAgents(A, 50000);
+        env.getAgents().getInitialAgentPopulation().set(A, 50000);
 
         BasicConsumerAgentGroupAffinityMapping affinityMapping = new BasicConsumerAgentGroupAffinityMapping();
         affinityMapping.putForAll(agentManager.getConsumerAgentGroups(), 1);

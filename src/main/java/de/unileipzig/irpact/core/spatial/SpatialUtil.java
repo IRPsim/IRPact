@@ -1,17 +1,17 @@
 package de.unileipzig.irpact.core.spatial;
 
 import de.unileipzig.irpact.commons.Nameable;
-import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialDoubleAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialStringAttribute;
 import de.unileipzig.irpact.commons.util.data.DataType;
 import de.unileipzig.irpact.commons.util.data.LinkedDataCollection;
 import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.core.spatial.data.BasicSpatialDataCollection;
 import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;
 import de.unileipzig.irpact.core.spatial.data.SpatialDataFilter;
-import de.unileipzig.irpact.core.spatial.distribution2.SelectAndGroupFilter;
-import de.unileipzig.irpact.core.spatial.distribution2.SelectFilter;
+import de.unileipzig.irpact.core.spatial.distribution.SelectAndGroupFilter;
+import de.unileipzig.irpact.core.spatial.distribution.SelectFilter;
 import de.unileipzig.irpact.core.spatial.twodim.BasicPoint2D;
 
 import java.util.*;
@@ -89,6 +89,23 @@ public final class SpatialUtil {
         throw new NoSuchElementException("attribute '" + key + "' not found (" + collectKeys(row) + ")");
     }
 
+    public static SpatialStringAttribute secureGetString(List<SpatialAttribute> row, String key) {
+        if(key == null) {
+            throw new NullPointerException("key is null");
+        }
+
+        for(SpatialAttribute attr: row) {
+            if(Objects.equals(attr.getName(), key)) {
+                if(!attr.isValueAttributeWithDataType(DataType.STRING)) {
+                    throw new IllegalArgumentException("attribute '" + key + "' is no double");
+                }
+                return (SpatialStringAttribute) attr;
+            }
+        }
+
+        throw new NoSuchElementException("attribute '" + key + "' not found (" + collectKeys(row) + ")");
+    }
+
     public static SpatialDoubleAttribute getOr(List<SpatialAttribute> row, String key, SpatialDoubleAttribute ifMissing) {
         if(key == null) {
             return ifMissing;
@@ -97,6 +114,22 @@ public final class SpatialUtil {
             if(Objects.equals(attr.getName(), key)) {
                 if(attr.isValueAttributeWithDataType(DataType.DOUBLE)) {
                     return (SpatialDoubleAttribute) attr;
+                } else {
+                    return ifMissing;
+                }
+            }
+        }
+        return ifMissing;
+    }
+
+    public static SpatialStringAttribute getStringOr(List<SpatialAttribute> row, String key, SpatialStringAttribute ifMissing) {
+        if(key == null) {
+            return ifMissing;
+        }
+        for(SpatialAttribute attr: row) {
+            if(Objects.equals(attr.getName(), key)) {
+                if(attr.isValueAttributeWithDataType(DataType.STRING)) {
+                    return (SpatialStringAttribute) attr;
                 } else {
                     return ifMissing;
                 }
@@ -115,23 +148,6 @@ public final class SpatialUtil {
                 .map(row -> {
                     double x = secureGet(row, xKey).getDoubleValue();
                     double y = secureGet(row, yKey).getDoubleValue();
-                    BasicPoint2D p = new BasicPoint2D(x, y);
-                    p.addAllAttributes(row);
-                    SpatialAttribute idAttr = getOr(row, idKey, null);
-                    if(idAttr != null) {
-                        p.setId(idAttr.asValueAttribute().getIntValue());
-                    }
-                    return p;
-                })
-                .collect(Collectors.toList());
-    }
-
-    @Deprecated
-    public static List<SpatialInformation> mapToPoint2D(List<List<SpatialAttribute>> input, UnivariateDoubleDistribution xSupplier, UnivariateDoubleDistribution ySupplier, String idKey) {
-        return input.stream()
-                .map(row -> {
-                    double x = xSupplier.drawDoubleValue();
-                    double y = ySupplier.drawDoubleValue();
                     BasicPoint2D p = new BasicPoint2D(x, y);
                     p.addAllAttributes(row);
                     SpatialAttribute idAttr = getOr(row, idKey, null);
@@ -191,20 +207,6 @@ public final class SpatialUtil {
     }
 
     @Deprecated
-    public static Map<String, Integer> filterAndCountAll(List<List<SpatialAttribute>> input, String attrName, Collection<String> keys) {
-        Map<String, Integer> map = new HashMap<>();
-        input.stream()
-                .map(selectAttribute(attrName))
-                .forEach(k -> {
-                    if(keys == null || keys.contains(k)) {
-                        int current = map.computeIfAbsent(k, _k -> 0);
-                        map.put(k, current + 1);
-                    }
-                });
-        return map;
-    }
-
-    @Deprecated
     public static int tryGet(SpatialInformation information, String attrName, int defaultValue) {
         if(information == null) {
             return defaultValue;
@@ -231,6 +233,17 @@ public final class SpatialUtil {
     //=========================
     //v2
     //=========================
+
+    public static Set<String> collectAll(Table<SpatialAttribute> input, String key) {
+        return input.listTable()
+                .stream()
+                .map(row -> {
+                    SpatialStringAttribute attribute = getStringOr(row, key, null);
+                    return attribute == null ? null : attribute.getStringValue();
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+    }
 
     public static SpatialDataCollection mapToPoint2DIfAbsent_2(
             String name,
@@ -279,7 +292,7 @@ public final class SpatialUtil {
         return spatialData;
     }
 
-    public static List<SpatialDataFilter> createFilters_2(
+    public static List<SpatialDataFilter> createFilters(
             SpatialDataCollection data,
             String selectKey,
             String selectValue,
@@ -297,13 +310,13 @@ public final class SpatialUtil {
                 })
                 .forEach(groupingValues::add);
 
-        return createFilters_2(
+        return createFilters(
                 selectKey, Collections.singleton(selectValue),
                 groupingKey, groupingValues
         );
     }
 
-    public static List<SpatialDataFilter> createFilters_2(
+    public static List<SpatialDataFilter> createFilters(
             SpatialDataCollection data,
             String selectKey,
             String groupingKey) {
@@ -325,10 +338,10 @@ public final class SpatialUtil {
             groupingValues.add(grpAttr.asValueAttribute().getValueAsString());
         }
 
-        return createFilters_2(selectKey, selectValues, groupingKey, groupingValues);
+        return createFilters(selectKey, selectValues, groupingKey, groupingValues);
     }
 
-    public static List<SpatialDataFilter> createFilters_2(
+    public static List<SpatialDataFilter> createFilters(
             String selectKey, Collection<String> selectValues,
             String groupingKey, Collection<String> groupingValues) {
         Map<String, SpatialDataFilter> filters = new HashMap<>();
@@ -347,13 +360,13 @@ public final class SpatialUtil {
         return new ArrayList<>(filters.values());
     }
 
-    public static List<SpatialDataFilter> createFilters_2(
+    public static List<SpatialDataFilter> createFilters(
             String selectKey,
             String selectValue) {
-        return createFilters_2(selectKey, Collections.singleton(selectValue));
+        return createFilters(selectKey, Collections.singleton(selectValue));
     }
 
-    public static List<SpatialDataFilter> createFilters_2(
+    public static List<SpatialDataFilter> createFilters(
             String selectKey,
             Collection<String> selectValues) {
         Map<String, SpatialDataFilter> filters = new HashMap<>();
@@ -368,5 +381,67 @@ public final class SpatialUtil {
         }
 
         return new ArrayList<>(filters.values());
+    }
+
+    public static int sum(Map<?, Integer> map) {
+        return map.values().stream().mapToInt(i -> i).sum();
+    }
+
+    public static String findLargest(Map<String, Integer> map) {
+        if(map.isEmpty()) {
+            throw new IllegalArgumentException("empty map");
+        }
+
+        String largest = null;
+        int largestSize = Integer.MIN_VALUE;
+        for(Map.Entry<String, Integer> entry: map.entrySet()) {
+            if(largestSize < entry.getValue()) {
+                largest = entry.getKey();
+                largestSize = entry.getValue();
+            }
+        }
+        return largest;
+    }
+
+    public static Map<String, Integer> calculateSizes(
+            Table<SpatialAttribute> data,
+            String selectKey,
+            Collection<? extends String> validKeys,
+            int desiredTotalSize,
+            boolean requiresDesiredTotalSize) {
+
+        Map<String, Integer> initialSizes = new HashMap<>();
+        data.listTable().forEach(row -> {
+                    String selectValue = secureGetString(row, selectKey).getStringValue();
+                    Integer current = initialSizes.computeIfAbsent(selectValue, _secectValue -> 0);
+                    initialSizes.put(selectValue, current + 1);
+                });
+
+        Map<String, Integer> validSizes = new HashMap<>(initialSizes);
+        if(validKeys != null) {
+            validSizes.keySet().retainAll(validKeys);
+        }
+        final int sumValid = sum(validSizes);
+
+        if(desiredTotalSize > sumValid && requiresDesiredTotalSize) {
+            throw new IllegalArgumentException("not enoug data: " + sumValid + " < " + desiredTotalSize);
+        }
+
+        if(desiredTotalSize < 0 || desiredTotalSize >= sumValid) {
+            return validSizes;
+        }
+
+        validSizes.replaceAll((_key, _size) -> {
+            double share = (double) _size / (double) sumValid;
+            return (int) (share * desiredTotalSize);
+        });
+
+        if(sum(validSizes) < desiredTotalSize) {
+            int delta = desiredTotalSize - sum(validSizes);
+            String largestKey = findLargest(validSizes);
+            validSizes.put(largestKey, validSizes.get(largestKey) + delta);
+        }
+
+        return validSizes;
     }
 }

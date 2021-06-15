@@ -31,7 +31,7 @@ import de.unileipzig.irpact.core.simulation.BinaryTaskManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InIndependentConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.io.param.input.agent.population.InPopulationSize;
+import de.unileipzig.irpact.io.param.input.agent.population.InAgentPopulation;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
@@ -230,6 +230,8 @@ public class JadexInputParser implements IRPactInputParser {
         checkVersion(root);
         setupGeneral(root);
 
+        parseSpatialModel(root);
+
         parseConsumerAgentGroups(root);
         parseConsumerAgentGroupAttributes(root);
         parseConsumerAgentGroupAffinityMapping(root);
@@ -241,7 +243,6 @@ public class JadexInputParser implements IRPactInputParser {
         parseNetwork(root);
         parseSocialGraph(root);
 
-        parseSpatialModel(root);
         parseProcessModel(root);
         parseTimeModel(root);
 
@@ -331,7 +332,7 @@ public class JadexInputParser implements IRPactInputParser {
 
         BasicSettings initData = (BasicSettings) environment.getSettings();
 
-        for(InPopulationSize popSize: root.getAgentPopulationSizes()) {
+        for(InAgentPopulation popSize: root.getAgentPopulationSizes()) {
             popSize.setup(this, initData);
         }
     }

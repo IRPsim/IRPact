@@ -131,5 +131,9 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
             SocialGraph.Node node = graph.addAgentAndGetNode(object);
             object.setSocialGraphNode(node);
         }
+        //spatial
+        if(!object.getGroup().getSpatialDistribution().setUsed(object.getSpatialInformation())) {
+            throw new RestoreException("[{}] failed to set spatial information '{}' as used", object.getName(), object.getSpatialInformation());
+        }
     }
 }

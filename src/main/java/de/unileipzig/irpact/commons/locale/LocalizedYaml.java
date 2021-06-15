@@ -11,14 +11,6 @@ import java.util.Set;
  */
 public class LocalizedYaml implements LocalizedData {
 
-//    -> zwei title
-//    https://stackoverflow.com/questions/58156935/multiple-key-title-and-splitting-of-legends-in-gnuplot
-//
-//    -> split
-//  https://stackoverflow.com/questions/41049785/gnuplot-custom-legend-with-two-different-specs/41051836
-//
-//    -> split v2
-//    https://stackoverflow.com/questions/26831102/how-to-split-the-key-in-gnuplot/26832659
     protected Set<Locale> supported;
     protected JsonNode root;
 

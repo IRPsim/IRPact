@@ -227,9 +227,10 @@ public class BinaryJsonRestoreManager implements RestoreManager {
     protected void updateRestoredEnvironment() throws RestoreException {
         try {
             JadexRestoreUpdater updater = restoreHelper.getUpdater();
-            SimulationEnvironment env = getRestoredInstance();
-            updater.setEnvironment((BasicJadexSimulationEnvironment) env);
-            env = updater.parseRoot(restoreHelper.getInRoot());
+            if(updater.getEnvironment() != getRestoredInstance()) {
+                throw new RestoreException("environment mismatch");
+            }
+            SimulationEnvironment env = updater.parseRoot(restoreHelper.getInRoot());
             env.getSettings().setFirstSimulationYear(restoreHelper.getYear());
             env.getSettings().apply(restoreHelper.getOptions());
         } catch (ParsingException e) {

@@ -5,6 +5,8 @@ import de.unileipzig.irpact.commons.persistence.annotation.ChecksumAndPersistent
 import de.unileipzig.irpact.commons.util.IdManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
+import de.unileipzig.irpact.core.agent.population.AgentPopulation;
+import de.unileipzig.irpact.core.agent.population.BasicAgentPopulation;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -20,6 +22,8 @@ public class BasicAgentManager implements AgentManager {
 
     @ChecksumAndPersistentValue("id")
     protected final IdManager ATTENTION_ORDER = new IdManager(0L);
+    @ChecksumAndPersistentValue
+    protected final AgentPopulation INITIAL_POPULATION = new BasicAgentPopulation();
 
     protected SimulationEnvironment environment;
     @ChecksumAndPersistentValue("values")
@@ -40,7 +44,8 @@ public class BasicAgentManager implements AgentManager {
         return ChecksumComparable.getChecksum(
                 ChecksumComparable.getMapChecksum(consumerAgentGroups),
                 affinityMapping.getChecksum(),
-                getAttentionOrderManager().peekId()
+                getAttentionOrderManager().peekId(),
+                INITIAL_POPULATION
         );
     }
 
@@ -106,5 +111,14 @@ public class BasicAgentManager implements AgentManager {
         return getConsumerAgentGroups().stream()
                 .mapToInt(AgentGroup::getNumberOfAgents)
                 .sum();
+    }
+
+    //=========================
+    //population
+    //=========================
+
+    @Override
+    public AgentPopulation getInitialAgentPopulation() {
+        return INITIAL_POPULATION;
     }
 }
