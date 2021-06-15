@@ -250,7 +250,7 @@ public class InExample implements DefaultScenarioFactory {
                 "RA",
                 0.25, 0.25, 0.25, 0.25,
                 3, 2, 1, 0,
-                1.0,
+                RAConstants.DEFAULT_LOGISTIC_FACTOR,
                 new InRAProcessPlanMaxDistanceFilterScheme("RA_maxFilter", 100, true),
                 pvFile,
                 new InUncertaintyGroupAttribute[]{uncert}

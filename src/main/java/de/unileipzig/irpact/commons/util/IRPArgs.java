@@ -34,6 +34,18 @@ public class IRPArgs extends SimpleArgs {
         return this;
     }
 
+    @Override
+    public IRPArgs set(String option) throws IllegalArgumentException {
+        super.set(option);
+        return this;
+    }
+
+    @Override
+    public IRPArgs set(String option, String arg) throws IllegalArgumentException {
+        super.set(option, arg);
+        return this;
+    }
+
     public IRPArgs setLogPath(Path path) {
         set("--logPath", path.toString());
         remove("--logConsoleAndFile");

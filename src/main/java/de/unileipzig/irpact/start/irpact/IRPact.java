@@ -42,8 +42,6 @@ import de.unileipzig.irptools.io.ContentTypeDetector;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.annual.AnnualFile;
 import de.unileipzig.irptools.io.base.AnnualEntry;
-import de.unileipzig.irptools.io.downloaded.DownloadedFile;
-import de.unileipzig.irptools.io.perennial.PerennialFile;
 import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.base.IPlatformConfiguration;
@@ -72,7 +70,7 @@ public final class IRPact implements IRPActAccess {
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "0";
     private static final String MINOR_STRING = "2";
-    private static final String BUILD_STRING = "2";
+    private static final String BUILD_STRING = "3";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 

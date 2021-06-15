@@ -199,7 +199,7 @@ VisibleBinaryData_idVisible:
 
 about:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.2.2"
+  edn_description: "IRPact v0.2.3"
 InAboutPlaceholder_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -242,15 +242,12 @@ InBernoulliDistribution:
 InBernoulliDistribution_p:
   gams_identifier: "p"
   gams_description: "Wahrscheinlichkeit p"
-  gams_domain: "[0,1]"
 InBernoulliDistribution_trueValue:
   gams_identifier: "x"
   gams_description: "Dieser Wert wird mit der Wahrscheinlichkeit p zurück gegeben."
-  gams_default: "1"
 InBernoulliDistribution_falseValue:
   gams_identifier: "y"
   gams_description: "Dieser Wert wird mit der Wahrscheinlichkeit 1-p zurück gegeben."
-  gams_default: "0"
 
 InBooleanDistribution:
   edn_label: "Boolean"
@@ -258,11 +255,9 @@ InBooleanDistribution:
 InBooleanDistribution_trueValue:
   gams_identifier: "x"
   gams_description: "Der Wert, welcher zurückgegeben wird, wenn die Funktion intern 1 (WAHR) ergibt."
-  gams_default: "1"
 InBooleanDistribution_falseValue:
   gams_identifier: "y"
   gams_description: "Der Wert, welcher zurückgegeben wird, wenn die Funktion intern 0 (FALSCH) ergibt."
-  gams_default: "0"
 
 InBoundedNormalDistribution:
   edn_label: "beschränkte Normalverteilung"
@@ -270,11 +265,9 @@ InBoundedNormalDistribution:
 InBoundedNormalDistribution_standardDeviation:
   gams_identifier: "Standardabweichung"
   gams_description: "Die zu nutzende Standardabweichung."
-  gams_default: "1"
 InBoundedNormalDistribution_mean:
   gams_identifier: "Mittelwert"
   gams_description: "Der zu nutzende Mittelwert."
-  gams_default: "0"
 InBoundedNormalDistribution_lowerBound:
   gams_identifier: "Untergrenze (inklusiv)"
   gams_description: "Legt die Untergrenze fest."
@@ -332,11 +325,9 @@ InNormalDistribution:
 InNormalDistribution_standardDeviation:
   gams_identifier: "Standardabweichung"
   gams_description: "Die zu nutzende Standardabweichung."
-  gams_default: "1"
 InNormalDistribution_mean:
   gams_identifier: "Mittelwert"
   gams_description: "Der zu nutzende Mittelwert."
-  gams_default: "0"
 
 agents:
   edn_label: "Agenten"
@@ -380,50 +371,50 @@ InPVactConsumerAgentGroup:
   edn_label: "PVact Gruppen"
   edn_description: "todo"
 InPVactConsumerAgentGroup_noveltySeeking:
-  gams_identifier: "noveltySeeking"
-  gams_description: "noveltySeeking"
+  gams_identifier: "novelty seeking"
+  gams_description: "todo"
 InPVactConsumerAgentGroup_dependentJudgmentMaking:
-  gams_identifier: "dependentJudgmentMaking"
-  gams_description: "dependentJudgmentMaking"
+  gams_identifier: "dependent judgment making"
+  gams_description: "todo"
 InPVactConsumerAgentGroup_environmentalConcern:
-  gams_identifier: "environmentalConcern"
-  gams_description: "environmentalConcern"
+  gams_identifier: "environmental concern"
+  gams_description: "todo"
 InPVactConsumerAgentGroup_interestThreshold:
-  gams_identifier: "interestThreshold"
-  gams_description: "interestThreshold"
+  gams_identifier: "interest threshold"
+  gams_description: "todo"
 InPVactConsumerAgentGroup_financialThreshold:
-  gams_identifier: "financialThreshold"
-  gams_description: "financialThreshold"
+  gams_identifier: "financial threshold"
+  gams_description: "todo"
 InPVactConsumerAgentGroup_adoptionThreshold:
-  gams_identifier: "adoptionThreshold"
-  gams_description: "adoptionThreshold"
+  gams_identifier: "adoption threshold"
+  gams_description: "todo"
 InPVactConsumerAgentGroup_communication:
   gams_identifier: "communication"
-  gams_description: "communication"
+  gams_description: "todo"
 InPVactConsumerAgentGroup_rewire:
   gams_identifier: "rewire"
-  gams_description: "rewire"
+  gams_description: "todo"
 InPVactConsumerAgentGroup_initialAdopter:
-  gams_identifier: "initialAdopter"
-  gams_description: "initialAdopter"
+  gams_identifier: "initial adopter"
+  gams_description: "todo"
 InPVactConsumerAgentGroup_rateOfConvergence:
-  gams_identifier: "rateOfConvergence"
-  gams_description: "rateOfConvergence"
+  gams_identifier: "rate of cnvergence"
+  gams_description: "todo"
 InPVactConsumerAgentGroup_initialProductInterest:
-  gams_identifier: "initialProductInterest"
-  gams_description: "initialProductInterest"
+  gams_identifier: "initial product interest"
+  gams_description: "todo"
 InPVactConsumerAgentGroup_initialProductAwareness:
-  gams_identifier: "initialProductAwareness"
-  gams_description: "initialProductAwareness"
+  gams_identifier: "initial product awareness"
+  gams_description: "todo"
 InPVactConsumerAgentGroup_constructionRate:
-  gams_identifier: "constructionRate"
-  gams_description: "constructionRate"
+  gams_identifier: "construction rate"
+  gams_description: "todo"
 InPVactConsumerAgentGroup_renovationRate:
-  gams_identifier: "renovationRate"
-  gams_description: "renovationRate"
+  gams_identifier: "renovation rate"
+  gams_description: "todo"
 InPVactConsumerAgentGroup_spatialDistribution:
-  gams_identifier: "spatialDistribution"
-  gams_description: "spatialDistribution"
+  gams_identifier: "spatial distribution"
+  gams_description: "todo"
 
 InConsumerAgentGroupColor:
   edn_label: "Farbe der Konsumergruppen"
@@ -935,7 +926,7 @@ InFileBasedSelectSpatialInformationSupplier_selectKey:
   gams_description: "Bestimmt den Schlüssel für die Auswahl der Information in der tabellarischen Datei (Spaltenname)."
 
 InFileBasedSelectGroupSpatialInformationSupplier:
-  edn_label: "Zugeordnet und gruppiert"
+  edn_label: "Zugeordnet und gewichtet"
   edn_description: "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet verwendet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen. Zusätzlich wird ein Gruppierungsattribut genutzt, um die Daten zu wichten."
 InFileBasedSelectGroupSpatialInformationSupplier_attrFile:
   gams_identifier: "Tabellarische Datei"
@@ -974,19 +965,11 @@ InFileBasedPVactMilieuZipSupplier_attrFile:
 
 time:
   edn_label: "Zeitliche Modell"
-  edn_description: ""
-
-InDiscreteTimeModel:
-  edn_label: "Diskret - Millisekunde"
-  edn_description: ""
-InDiscreteTimeModel_timePerTickInMs:
-  gams_identifier: "Zeit pro Schritt"
-  gams_description: "Legt die Zeit fest, welche pro diskreten Schritt vergeht. Der Wert muss in Millisekunden angegeben werden."
-  gams_unit: "[ms]"
+  edn_description: "todo"
 
 InUnitStepDiscreteTimeModel:
-  edn_label: "Diskret - Millisekunde"
-  edn_description: ""
+  edn_label: "Diskret"
+  edn_description: "todo"
 InUnitStepDiscreteTimeModel_amountOfTime:
   gams_identifier: "Zeitdauer"
   gams_description: "Legt die Zeitdauer fest, welche pro diskreten Schritt vergeht."
@@ -1074,6 +1057,15 @@ OutConsumerAgentGroup_initialAdoptionsCumulative:
 #=========================
 #DEPRECATED
 #=========================
+
+#DEPRECATED
+InDiscreteTimeModel:
+  edn_label: "Diskret - Millisekunde"
+  edn_description: ""
+InDiscreteTimeModel_timePerTickInMs:
+  gams_identifier: "Zeit pro Schritt"
+  gams_description: "Legt die Zeit fest, welche pro diskreten Schritt vergeht. Der Wert muss in Millisekunden angegeben werden."
+  gams_unit: "[ms]"
 
 #DEPRECATED
 OutGeneralConsumerAgentGroup:

@@ -125,78 +125,78 @@ PARAMETER par_link_InNameSplitConsumerAgentGroupAttribute_InUnivariateDoubleDist
 * - type: String
 SET set_InPVactConsumerAgentGroup(set_InConsumerAgentGroup)
 
-* - description: noveltySeeking
-* - identifier: noveltySeeking
+* - description: todo
+* - identifier: novelty seeking
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_noveltySeeking(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
-* - description: dependentJudgmentMaking
-* - identifier: dependentJudgmentMaking
+* - description: todo
+* - identifier: dependent judgment making
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_dependentJudgmentMaking(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
-* - description: environmentalConcern
-* - identifier: environmentalConcern
+* - description: todo
+* - identifier: environmental concern
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_environmentalConcern(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
-* - description: interestThreshold
-* - identifier: interestThreshold
+* - description: todo
+* - identifier: interest threshold
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_interestThreshold(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
-* - description: financialThreshold
-* - identifier: financialThreshold
+* - description: todo
+* - identifier: financial threshold
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_financialThreshold(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
-* - description: adoptionThreshold
-* - identifier: adoptionThreshold
+* - description: todo
+* - identifier: adoption threshold
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_adoptionThreshold(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
-* - description: communication
+* - description: todo
 * - identifier: communication
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_communication(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
-* - description: rewire
+* - description: todo
 * - identifier: rewire
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_rewire(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
-* - description: initialAdopter
-* - identifier: initialAdopter
+* - description: todo
+* - identifier: initial adopter
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_initialAdopter(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
-* - description: rateOfConvergence
-* - identifier: rateOfConvergence
+* - description: todo
+* - identifier: rate of cnvergence
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_rateOfConvergence(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
-* - description: initialProductInterest
-* - identifier: initialProductInterest
+* - description: todo
+* - identifier: initial product interest
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_initialProductInterest(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
-* - description: initialProductAwareness
-* - identifier: initialProductAwareness
+* - description: todo
+* - identifier: initial product awareness
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_initialProductAwareness(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
-* - description: constructionRate
-* - identifier: constructionRate
+* - description: todo
+* - identifier: construction rate
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_constructionRate(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
-* - description: renovationRate
-* - identifier: renovationRate
+* - description: todo
+* - identifier: renovation rate
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_renovationRate(set_InPVactConsumerAgentGroup,set_InUnivariateDoubleDistribution)
 
-* - description: spatialDistribution
-* - identifier: spatialDistribution
+* - description: todo
+* - identifier: spatial distribution
 * - type: Boolean
 PARAMETER par_link_InPVactConsumerAgentGroup_InSpatialDistribution_spatialDistribution(set_InPVactConsumerAgentGroup,set_InSpatialDistribution)
 
@@ -307,7 +307,7 @@ PARAMETER par_BinaryPersistData_id(set_BinaryPersistData)
 * - type: String
 SET set_InBernoulliDistribution(set_InUnivariateDoubleDistribution)
 
-* - domain: [0,1]
+* - domain: [0|1]
 * - description: Wahrscheinlichkeit p
 * - identifier: p
 * - type: Float

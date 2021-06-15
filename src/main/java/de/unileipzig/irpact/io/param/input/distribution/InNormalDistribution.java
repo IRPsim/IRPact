@@ -37,6 +37,9 @@ public class InNormalDistribution implements InUnivariateDoubleDistribution {
         putClassPath(res, thisClass(), DISTRIBUTIONS, thisName());
         addEntry(res, thisClass(), "standardDeviation");
         addEntry(res, thisClass(), "mean");
+
+        setDefault(res, thisClass(), "standardDeviation", new Object[] {"1"});
+        setDefault(res, thisClass(), "mean", new Object[] {"0"});
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InNormalDistribution.class);
