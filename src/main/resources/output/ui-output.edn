@@ -2,8 +2,7 @@
   {
     :label "Bilder" 
     :icon "fa fa-spinner" 
-    :description "Test für Bildanzeige" 
-    :image "agentGraph" 
+    :description "Test für Bildanzeige"
     :sections [
       {
         :label "Bild 1" 

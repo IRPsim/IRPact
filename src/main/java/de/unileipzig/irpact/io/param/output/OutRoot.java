@@ -154,7 +154,6 @@ public class OutRoot implements RootClass {
             Section imageSection = new Section();
             imageSection.setPriority(-1);
             imageSection.setLabel("Bilder");
-            imageSection.setImage(IRPact.IMAGE_AGENTGRAPH);
             imageSection.setDescription("Test für Bildanzeige");
             imageSection.setIcon("fa fa-spinner");
 
