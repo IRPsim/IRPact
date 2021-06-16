@@ -59,6 +59,13 @@ public class SimpleTable<T> implements Table<T> {
         this.rows = rows;
     }
 
+    @Override
+    public SimpleTable<T> emptyCopyWithSameHeader() {
+        SimpleTable<T> copy = new SimpleTable<>();
+        copy.addColumns(getHeaderAsArray());
+        return copy;
+    }
+
     //=========================
     //column
     //=========================
@@ -226,13 +233,37 @@ public class SimpleTable<T> implements Table<T> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void addRow(T... columnValues) {
+    public final void addRow(T... columnValues) {
         if(columnValues.length != columnCount()) {
             throw new IllegalArgumentException("value.length != column count");
         }
         List<T> newRow = new ArrayList<>();
         Collections.addAll(newRow, columnValues);
         rows.add(newRow);
+    }
+
+    @Override
+    public void addRow(Collection<? extends T> columnValues) throws IllegalArgumentException {
+        if(columnValues.size() != columnCount()) {
+            throw new IllegalArgumentException("value.length != column count");
+        }
+        List<T> newRow = new ArrayList<>(columnValues);
+        rows.add(newRow);
+    }
+
+    @Override
+    public void addRows(Collection<? extends Collection<? extends T>> rows) throws IllegalArgumentException {
+        int i = 0;
+        for(Collection<? extends T> row: rows) {
+            if(row.size() != columnCount()) {
+                throw new IllegalArgumentException("value.length != column count at row " + i);
+            }
+            i++;
+        }
+
+        for(Collection<? extends T> row: rows) {
+            addRow(row);
+        }
     }
 
     @Override

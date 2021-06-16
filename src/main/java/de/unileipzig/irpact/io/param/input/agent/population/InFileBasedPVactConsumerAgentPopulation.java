@@ -108,7 +108,7 @@ public class InFileBasedPVactConsumerAgentPopulation implements InAgentPopulatio
         return desiredSize;
     }
 
-    public void setRequiresDesiredTotalSize(boolean requiresDesiredTotalSize) {
+    public void setRequiresDesiredSize(boolean requiresDesiredTotalSize) {
         this.requiresDesiredTotalSize = requiresDesiredTotalSize;
     }
 

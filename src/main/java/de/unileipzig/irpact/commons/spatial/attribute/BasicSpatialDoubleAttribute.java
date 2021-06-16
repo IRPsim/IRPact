@@ -16,6 +16,16 @@ public class BasicSpatialDoubleAttribute
     public BasicSpatialDoubleAttribute() {
     }
 
+    public BasicSpatialDoubleAttribute(String name, boolean value) {
+        setName(name);
+        setBooleanValue(value);
+    }
+
+    public BasicSpatialDoubleAttribute(String name, long value) {
+        setName(name);
+        setLongValue(value);
+    }
+
     public BasicSpatialDoubleAttribute(String name, double value) {
         setName(name);
         setDoubleValue(value);

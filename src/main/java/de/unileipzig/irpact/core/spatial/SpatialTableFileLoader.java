@@ -5,14 +5,21 @@ import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.spatial.attribute.BasicSpatialDoubleAttribute;
 import de.unileipzig.irpact.commons.spatial.attribute.BasicSpatialStringAttribute;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
+import de.unileipzig.irpact.commons.util.StringUtil;
+import de.unileipzig.irpact.commons.util.csv.CsvParser;
+import de.unileipzig.irpact.commons.util.csv.CsvValueConverter;
 import de.unileipzig.irpact.commons.util.data.DataType;
 import de.unileipzig.irpact.commons.util.io.Header;
+import de.unileipzig.irpact.commons.util.io.SimpleHeader;
+import de.unileipzig.irpact.commons.util.table.SimpleTable;
 import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.commons.util.xlsx.CellValueConverter;
 import de.unileipzig.irpact.commons.util.xlsx.XlsxSheetParser;
+import de.unileipzig.irpact.commons.util.xlsx.XlsxSheetWriter;
 import de.unileipzig.irpact.commons.util.xlsx.XlsxTable;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.misc.MissingDataException;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.apache.poi.common.usermodel.fonts.FontCharset;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -20,11 +27,14 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Daniel Abitz
@@ -60,6 +70,63 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
         @Override
         public Number convert(Header header, int columnIndex, SpatialAttribute value) {
             return value.asValueAttribute().getDoubleValue();
+        }
+    };
+
+    @SuppressWarnings("DuplicateBranchesInSwitch")
+    public static final CsvValueConverter<SpatialAttribute> CSV_STR2ATTR = (header, columnIndex, value) -> {
+        String headerEntry = header.getLabel(columnIndex);
+        switch (headerEntry) {
+            case RAConstants.ID:
+                return new BasicSpatialDoubleAttribute(headerEntry, StringUtil.parseDoubleWithComma(value));
+
+            case RAConstants.ADDRESS:
+                return new BasicSpatialStringAttribute(headerEntry, value);
+
+            case RAConstants.ZIP:
+                return new BasicSpatialStringAttribute(headerEntry, value);
+
+            case RAConstants.HOUSE_OWNER_STR:
+                return new BasicSpatialStringAttribute(headerEntry, value);
+
+            case RAConstants.HOUSE_OWNER:
+                return new BasicSpatialDoubleAttribute(headerEntry, StringUtil.parseDoubleWithComma(value));
+
+            case RAConstants.SHARE_1_2_HOUSE_COUNT:
+                return new BasicSpatialDoubleAttribute(headerEntry, StringUtil.parseDoubleWithComma(value));
+
+            case RAConstants.SHARE_1_2_HOUSE:
+                return new BasicSpatialDoubleAttribute(headerEntry, StringUtil.parseDoubleWithComma(value));
+
+            case RAConstants.ORIENTATION:
+                return new BasicSpatialDoubleAttribute(headerEntry, StringUtil.parseDoubleWithComma(value));
+
+            case RAConstants.SLOPE:
+                return new BasicSpatialDoubleAttribute(headerEntry, StringUtil.parseDoubleWithComma(value));
+
+            case RAConstants.PURCHASE_POWER:
+                return new BasicSpatialDoubleAttribute(headerEntry, StringUtil.parseDoubleWithComma(value));
+
+            case RAConstants.PURCHASE_POWER_EUR:
+                return new BasicSpatialDoubleAttribute(headerEntry, StringUtil.parseDoubleWithComma(value));
+
+            case RAConstants.PURCHASE_POWER_EUR_ADDR:
+                return new BasicSpatialDoubleAttribute(headerEntry, StringUtil.parseDoubleWithComma(value));
+
+            case RAConstants.DOM_MILIEU:
+                return new BasicSpatialStringAttribute(headerEntry, value);
+
+            case RAConstants.AREA:
+                return new BasicSpatialDoubleAttribute(headerEntry, StringUtil.parseDoubleWithComma(value));
+
+            case RAConstants.X_CENT:
+                return new BasicSpatialDoubleAttribute(headerEntry, StringUtil.parseDoubleWithComma(value));
+
+            case RAConstants.Y_CENT:
+                return new BasicSpatialDoubleAttribute(headerEntry, StringUtil.parseDoubleWithComma(value));
+
+            default:
+                throw new IllegalArgumentException("unknown header: " + headerEntry);
         }
     };
 
@@ -131,14 +198,14 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
             Path csvPath = loader.getExternal(csvFile);
             LOGGER.trace("load xlsx file '{}'", csvPath);
             try(InputStream in = Files.newInputStream(csvPath)) {
-                data = parseXlsx(in);
+                data = parseCsv(in);
             }
             return true;
         }
         if(loader.hasInternal(csvFile)) {
             LOGGER.trace("load xlsx resource '{}'", csvFile);
             try(InputStream in = loader.getInternalAsStream(csvFile)) {
-                data = parseXlsx(in);
+                data = parseCsv(in);
             }
             return true;
         }
@@ -169,12 +236,36 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
     //csv
     //=========================
 
-    private static Table<SpatialAttribute> parseCsv(InputStream in) {
-        throw new UnsupportedOperationException();
+    public static Table<SpatialAttribute> parseCsv(Path path) throws IOException {
+        return parseCsv(path, StandardCharsets.UTF_8);
     }
 
-    private static Table<SpatialAttribute> parseCsv(Path path) {
-        throw new UnsupportedOperationException();
+    public static Table<SpatialAttribute> parseCsv(Path path, Charset charset) throws IOException {
+        try(BufferedReader reader = Files.newBufferedReader(path, charset)) {
+            return parseCsv(reader);
+        }
+    }
+
+    public static Table<SpatialAttribute> parseCsv(InputStream in) throws IOException {
+        return parseCsv(in, StandardCharsets.UTF_8);
+    }
+
+    public static Table<SpatialAttribute> parseCsv(InputStream in, Charset charset) throws IOException {
+        return parseCsv(new BufferedReader(new InputStreamReader(in, charset)));
+    }
+
+    public static Table<SpatialAttribute> parseCsv(BufferedReader reader) throws IOException {
+        CsvParser<SpatialAttribute> parser = new CsvParser<>();
+        parser.setReader(reader);
+        parser.setNumberOfInfoRows(1);
+        parser.setConverter(CSV_STR2ATTR);
+        parser.setRowSupplier(ArrayList::new);
+        List<List<SpatialAttribute>> data = parser.parseToList(reader);
+        Header header = parser.getHeader();
+
+        SimpleTable<SpatialAttribute> table = new SimpleTable<>();
+        table.set(header.toArray(), data);
+        return table;
     }
 
     //=========================
@@ -206,5 +297,12 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
         table.load(parser, sheet);
 
         return table;
+    }
+
+    public static void writeXlsx(Path target, String sheetName, String info, Table<SpatialAttribute> data) throws IOException {
+        XlsxSheetWriter<SpatialAttribute> writer = new XlsxSheetWriter<>();
+        writer.setNumericConverter(ATTR2NUM);
+        writer.setTextConverter(ATTR2STR);
+        writer.write(target, sheetName, Collections.singleton(info), new SimpleHeader(data.getHeader()), data.listTable());
     }
 }

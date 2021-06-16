@@ -127,7 +127,6 @@ dependencies {
 //==================================================
 
 task buildUberJar(type: Jar) {
-    archiveAppendix.set('demo')
     archiveClassifier.set('uber')
     manifest {
         attributes 'Main-class': 'de.unileipzig.irpact.start.Start'

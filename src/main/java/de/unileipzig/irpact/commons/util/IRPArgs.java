@@ -85,6 +85,24 @@ public class IRPArgs extends SimpleArgs {
         return this;
     }
 
+    public IRPArgs setOutputDir(Path path) {
+        if(path == null) {
+            remove("--outputDir");
+        } else {
+            set("--outputDir", path.toString());
+        }
+        return this;
+    }
+
+    public IRPArgs setDownloadDir(Path path) {
+        if(path == null) {
+            remove("--downloadDir");
+        } else {
+            set("--downloadDir", path.toString());
+        }
+        return this;
+    }
+
     public IRPArgs setUtilities() {
         set("--utilities");
         return this;
