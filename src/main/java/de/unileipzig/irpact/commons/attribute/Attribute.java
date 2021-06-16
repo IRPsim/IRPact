@@ -32,4 +32,12 @@ public interface Attribute extends AttributeBase {
     default RelatedAttribute<?> asRelatedAttribute() {
         throw new UnsupportedOperationException();
     }
+
+    default boolean isAnnualAttribute() {
+        return isType(AttributeType.ANNUAL);
+    }
+
+    default AnnualAttribute asAnnualAttribute() {
+        throw new UnsupportedOperationException();
+    }
 }

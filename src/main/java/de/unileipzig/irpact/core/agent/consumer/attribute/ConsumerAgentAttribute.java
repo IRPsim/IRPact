@@ -16,6 +16,7 @@ public interface ConsumerAgentAttribute extends GroupEntityAttribute<ConsumerAge
     @Override
     ConsumerAgentRelatedAttribute<?> asRelatedAttribute();
 
+    @Override
     default ConsumerAgentAnnualAttribute asAnnualAttribute() {
         throw new UnsupportedOperationException();
     }

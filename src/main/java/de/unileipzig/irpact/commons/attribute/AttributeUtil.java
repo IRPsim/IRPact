@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons.attribute;
 
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
+import de.unileipzig.irpact.commons.util.StringUtil;
 
 import java.util.NoSuchElementException;
 
@@ -83,6 +84,98 @@ public class AttributeUtil {
             attribute.asValueAttribute().setBooleanValue(value);
         } else {
             throw ExceptionUtil.create(IllegalArgumentException::new, "attribute '{}' has no boolean value", name);
+        }
+    }
+
+    //==================================================
+    //simplified annual
+    //==================================================
+
+    public static int getInt(Attribute attribute, String name, int year) {
+        if(attribute == null) {
+            throw new NoSuchElementException(StringUtil.format("attribute '{}' not found", name));
+        }
+
+        if(attribute.isAnnualAttribute()) {
+            Attribute attr = attribute.asAnnualAttribute().getAttribute(year);
+            if(attr == null) {
+                throw new NoSuchElementException(StringUtil.format("annual attribute '{}' for year '{}' not found", name, year));
+            }
+            else if(attr.isValueAttribute()) {
+                return attr.asValueAttribute().getIntValue(); //!
+            } else {
+                throw new IllegalArgumentException(StringUtil.format("annual attribute '{}' for year '{}' has no int: {}", name, year, attr.getClass().getSimpleName()));
+            }
+        } else if(attribute.isValueAttribute()) {
+            return attribute.asValueAttribute().getIntValue(); //!
+        } else {
+            throw new IllegalArgumentException(StringUtil.format("attribute '{}' has no int: {}", name, year, attribute.getClass().getSimpleName()));
+        }
+    }
+
+    public static long getLong(Attribute attribute, String name, int year) {
+        if(attribute == null) {
+            throw new NoSuchElementException(StringUtil.format("attribute '{}' not found", name));
+        }
+
+        if(attribute.isAnnualAttribute()) {
+            Attribute attr = attribute.asAnnualAttribute().getAttribute(year);
+            if(attr == null) {
+                throw new NoSuchElementException(StringUtil.format("annual attribute '{}' for year '{}' not found", name, year));
+            }
+            else if(attr.isValueAttribute()) {
+                return attr.asValueAttribute().getLongValue(); //!
+            } else {
+                throw new IllegalArgumentException(StringUtil.format("annual attribute '{}' for year '{}' has no int: {}", name, year, attr.getClass().getSimpleName()));
+            }
+        } else if(attribute.isValueAttribute()) {
+            return attribute.asValueAttribute().getLongValue(); //!
+        } else {
+            throw new IllegalArgumentException(StringUtil.format("attribute '{}' has no int: {}", name, year, attribute.getClass().getSimpleName()));
+        }
+    }
+
+    public static double getDouble(Attribute attribute, String name, int year) {
+        if(attribute == null) {
+            throw new NoSuchElementException(StringUtil.format("attribute '{}' not found", name));
+        }
+
+        if(attribute.isAnnualAttribute()) {
+            Attribute attr = attribute.asAnnualAttribute().getAttribute(year);
+            if(attr == null) {
+                throw new NoSuchElementException(StringUtil.format("annual attribute '{}' for year '{}' not found", name, year));
+            }
+            else if(attr.isValueAttribute()) {
+                return attr.asValueAttribute().getDoubleValue(); //!
+            } else {
+                throw new IllegalArgumentException(StringUtil.format("annual attribute '{}' for year '{}' has no int: {}", name, year, attr.getClass().getSimpleName()));
+            }
+        } else if(attribute.isValueAttribute()) {
+            return attribute.asValueAttribute().getDoubleValue(); //!
+        } else {
+            throw new IllegalArgumentException(StringUtil.format("attribute '{}' has no int: {}", name, year, attribute.getClass().getSimpleName()));
+        }
+    }
+
+    public static String getString(Attribute attribute, String name, int year) {
+        if(attribute == null) {
+            throw new NoSuchElementException(StringUtil.format("attribute '{}' not found", name));
+        }
+
+        if(attribute.isAnnualAttribute()) {
+            Attribute attr = attribute.asAnnualAttribute().getAttribute(year);
+            if(attr == null) {
+                throw new NoSuchElementException(StringUtil.format("annual attribute '{}' for year '{}' not found", name, year));
+            }
+            else if(attr.isValueAttribute()) {
+                return attr.asValueAttribute().getStringValue(); //!
+            } else {
+                throw new IllegalArgumentException(StringUtil.format("annual attribute '{}' for year '{}' has no int: {}", name, year, attr.getClass().getSimpleName()));
+            }
+        } else if(attribute.isValueAttribute()) {
+            return attribute.asValueAttribute().getStringValue(); //!
+        } else {
+            throw new IllegalArgumentException(StringUtil.format("attribute '{}' has no int: {}", name, year, attribute.getClass().getSimpleName()));
         }
     }
 }

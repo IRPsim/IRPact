@@ -10,6 +10,12 @@ import java.util.stream.Stream;
 public interface Table<T> {
 
     //=========================
+    //util
+    //=========================
+
+    Table<T> emptyCopyWithSameHeader();
+
+    //=========================
     //column
     //=========================
 
@@ -61,6 +67,10 @@ public interface Table<T> {
 
     @SuppressWarnings("unchecked")
     void addRow(T... columnValues) throws IllegalArgumentException;
+
+    void addRow(Collection<? extends T> columnValues) throws IllegalArgumentException;
+
+    void addRows(Collection<? extends Collection<? extends T>> rows) throws IllegalArgumentException;
 
     void addRows(int count);
 

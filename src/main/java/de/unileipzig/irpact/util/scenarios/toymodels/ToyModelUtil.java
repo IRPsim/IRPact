@@ -1,25 +1,21 @@
-package de.unileipzig.irpact.scenarios.toymodels;
+package de.unileipzig.irpact.util.scenarios.toymodels;
 
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
+import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.base.AnnualEntry;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.function.BiConsumer;
 
 /**
  * @author Daniel Abitz
  */
 public final class ToyModelUtil {
 
-    protected static final Map<String, InAttributeName> NAMES = new HashMap<>();
+    public static final BiConsumer<InRoot, OutRoot> IGNORE = (inRoot, outRoot) -> {};
 
     private ToyModelUtil() {
-    }
-
-    public static InAttributeName getAttribute(String name) {
-        return NAMES.computeIfAbsent(name, InAttributeName::new);
     }
 
     public static AnnualData<InRoot> buildData(InRoot root) {

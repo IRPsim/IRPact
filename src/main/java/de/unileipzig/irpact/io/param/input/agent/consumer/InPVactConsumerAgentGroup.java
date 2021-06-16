@@ -139,7 +139,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         setInitialProductInterest(dist);
         setConstructionRate(dist);
         setRenovationRate(dist);
+    }
 
+    public void setForAllSpecial(InUnivariateDoubleDistribution dist) {
         a1 = dist;
         a5 = dist;
         a6 = dist;

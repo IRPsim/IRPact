@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons.util.csv;
 
 import de.unileipzig.irpact.commons.util.data.MutableBoolean;
+import de.unileipzig.irpact.commons.util.io.Header;
 import de.unileipzig.irpact.commons.util.io.SimpleHeader;
 
 import java.io.BufferedReader;
@@ -70,6 +71,10 @@ public class CsvParser<T> {
 
     public void setRowConsumer(Consumer<? super List<T>> rowConsumer) {
         this.rowConsumer = rowConsumer;
+    }
+
+    public Header getHeader() {
+        return header;
     }
 
     //=========================

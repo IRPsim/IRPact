@@ -44,7 +44,8 @@ public interface AnnualAttribute extends RelatedAttribute<Number> {
         return this;
     }
 
-    //=========================
-    //special
-    //=========================
+    @Override
+    default AnnualAttribute asAnnualAttribute() {
+        return this;
+    }
 }

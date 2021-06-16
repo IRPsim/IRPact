@@ -26,6 +26,15 @@ import java.util.stream.Collectors;
  */
 public final class SpatialUtil {
 
+    public static List<List<SpatialAttribute>> drawRandom(List<List<SpatialAttribute>> input, int count, Random rnd) {
+        List<List<SpatialAttribute>> output = new ArrayList<>(input);
+        Collections.shuffle(output, rnd);
+        if(count < output.size()) {
+            output.subList(count, output.size()).clear();
+        }
+        return output;
+    }
+
     public static Predicate<List<SpatialAttribute>> filterAttribute(String attrName, String value) {
         return row -> {
             for(SpatialAttribute attr: row) {
@@ -70,6 +79,20 @@ public final class SpatialUtil {
         return row.stream()
                 .map(Nameable::getName)
                 .collect(Collectors.toList());
+    }
+
+    public static double replaceDouble(List<SpatialAttribute> row, String key, double newValue) {
+        SpatialDoubleAttribute attr = secureGet(row, key);
+        double oldValue = attr.getDoubleValue();
+        attr.setDoubleValue(newValue);
+        return oldValue;
+    }
+
+    public static String replaceString(List<SpatialAttribute> row, String key, String newValue) {
+        SpatialStringAttribute attr = secureGetString(row, key);
+        String oldValue = attr.getStringValue();
+        attr.setStringValue(newValue);
+        return oldValue;
     }
 
     public static SpatialDoubleAttribute secureGet(List<SpatialAttribute> row, String key) {
