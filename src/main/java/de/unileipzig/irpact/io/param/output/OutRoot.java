@@ -5,6 +5,7 @@ import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.SimpleCopyCache;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
+import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.optact.out.OutCustom;
 import de.unileipzig.irptools.defstructure.AnnotationResource;
 import de.unileipzig.irptools.defstructure.DefinitionType;
@@ -12,7 +13,10 @@ import de.unileipzig.irptools.defstructure.ParserInput;
 import de.unileipzig.irptools.defstructure.RootClass;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.uiedn.Section;
+import de.unileipzig.irptools.uiedn.Sections;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
+import de.unileipzig.irptools.util.UiEdn;
 
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -142,5 +146,42 @@ public class OutRoot implements RootClass {
     }
 
     public static void applyRes(TreeAnnotationResource res) {
+    }
+
+    @Override
+    public void peekEdn(Sections sections, UiEdn ednType) {
+        if(ednType == UiEdn.OUTPUT) {
+            Section imageSection = new Section();
+            imageSection.setPriority(-1);
+            imageSection.setLabel("Bilder");
+            imageSection.setImage(IRPact.IMAGE_AGENTGRAPH);
+            imageSection.setDescription("Test für Bildanzeige");
+            imageSection.setIcon("fa fa-spinner");
+
+            Sections imageSections = imageSection.getSections();
+            Section image1 = new Section();
+            image1.setPriority(1);
+            image1.setLabel("Bild 1");
+            image1.setIcon("fa fa-spinner");
+            image1.setImage("Bild1.png");
+            image1.setDescription("Test Bild 1");
+
+            Section image2 = new Section();
+            image2.setPriority(2);
+            image2.setLabel("Bild 2");
+            image2.setIcon("fa fa-spinner");
+            image2.setImage("Bild2.png");
+            image2.setDescription("Test Bild 2");
+
+            Section image3 = new Section();
+            image3.setPriority(3);
+            image3.setLabel("Bild 3");
+            image3.setIcon("fa fa-spinner");
+            image3.setImage("Bild3.png");
+            image3.setDescription("Test Bild 3");
+
+            imageSections.addAll(image1, image2, image3);
+            sections.add(imageSection);
+        }
     }
 }
