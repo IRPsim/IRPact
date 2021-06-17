@@ -4,9 +4,8 @@ import de.unileipzig.irpact.commons.persistence.BasicPersistManager;
 import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.Persister;
 import de.unileipzig.irpact.commons.persistence.SimpleUIDManager;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.util.MetaData;
-import de.unileipzig.irpact.core.util.RunInfo;
 import de.unileipzig.irpact.jadex.persistance.binary.data.BinaryPRBase;
 import de.unileipzig.irpact.jadex.persistance.binary.meta.ClassManagerPR;
 import de.unileipzig.irpact.jadex.persistance.binary.meta.MetaPR;
@@ -45,11 +44,11 @@ public class BinaryJsonPersistanceManager extends BasicPersistManager {
         restoreHelper.setPrintLoggableOnPersist(false);
 
         metaHolder = newHolder(settingsDummy);
-        metaPR = new MetaPR(IRPactJson.SMILE.createObjectNode());
+        metaPR = new MetaPR(JsonUtil.SMILE.createObjectNode());
         persistableMap.put(metaHolder, metaPR);
 
         classManagerHolder = newHolder(classManager);
-        classManagerPR = new ClassManagerPR(IRPactJson.SMILE.createObjectNode(), classManager);
+        classManagerPR = new ClassManagerPR(JsonUtil.SMILE.createObjectNode(), classManager);
         persistableMap.put(classManagerHolder, classManagerPR);
     }
 

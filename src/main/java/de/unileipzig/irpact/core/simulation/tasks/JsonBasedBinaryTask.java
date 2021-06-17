@@ -3,7 +3,7 @@ package de.unileipzig.irpact.core.simulation.tasks;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.NameableBase;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -41,7 +41,7 @@ public abstract class JsonBasedBinaryTask extends NameableBase implements Binary
     @Override
     public byte[] getBytes() {
         try {
-            return IRPactJson.toBytesWithSmile(root);
+            return JsonUtil.toBytesWithSmile(root);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

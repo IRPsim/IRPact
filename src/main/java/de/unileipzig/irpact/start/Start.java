@@ -8,7 +8,7 @@ import de.unileipzig.irpact.core.logging.SectionLoggingFilter;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.start.irpact.IRPactCallback;
 import de.unileipzig.irpact.start.utilities.Utilities;
-import de.unileipzig.irptools.io.base.AnnualEntry;
+import de.unileipzig.irptools.io.base.data.AnnualEntry;
 import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import picocli.CommandLine;

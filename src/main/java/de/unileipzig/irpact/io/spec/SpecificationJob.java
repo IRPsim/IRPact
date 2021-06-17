@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeCreator;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -44,7 +44,7 @@ import java.util.function.IntFunction;
 public class SpecificationJob {
 
     protected final MultiCounter counter = new MultiCounter();
-    protected JsonNodeCreator creator = IRPactJson.JSON.getNodeFactory();
+    protected JsonNodeCreator creator = JsonUtil.JSON.getNodeFactory();
     protected SpecificationCache cache;
     protected SpecificationData data;
     protected SpecificationConverter converter;

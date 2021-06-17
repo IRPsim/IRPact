@@ -6,7 +6,7 @@ import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.Persistable;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.persistence.PersistenceModul;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -189,7 +189,7 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
             }
             sortedNodes.put(uid, restoreJson);
         }
-        ObjectNode out = IRPactJson.JSON.createObjectNode();
+        ObjectNode out = JsonUtil.JSON.createObjectNode();
         for(Map.Entry<Long, JsonNode> entry: sortedNodes.entrySet()) {
             out.set(Long.toString(entry.getKey()), entry.getValue());
         }

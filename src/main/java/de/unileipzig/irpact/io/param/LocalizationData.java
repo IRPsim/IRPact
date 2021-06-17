@@ -2,7 +2,7 @@ package de.unileipzig.irpact.io.param;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
@@ -32,11 +32,11 @@ public final class LocalizationData {
     }
 
     public LocalizationData(Path pathToFile, Charset charset) throws IOException {
-        this(IRPactJson.read(pathToFile, charset, IRPactJson.YAML));
+        this(JsonUtil.read(pathToFile, charset, JsonUtil.YAML));
     }
 
     public LocalizationData(Reader reader) throws IOException {
-        this.root = (ObjectNode) IRPactJson.YAML.readTree(reader);
+        this.root = (ObjectNode) JsonUtil.YAML.readTree(reader);
     }
 
     public String getString(String key, String tag) {

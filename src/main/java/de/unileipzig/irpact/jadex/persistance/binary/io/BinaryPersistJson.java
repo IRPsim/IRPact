@@ -3,7 +3,7 @@ package de.unileipzig.irpact.jadex.persistance.binary.io;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.unileipzig.irpact.commons.util.IRPactBase32;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 
 import java.io.IOException;
@@ -69,7 +69,7 @@ public final class BinaryPersistJson {
     }
 
     public static String print(JsonNode node, String prefix) {
-        return print(IRPactJson.SMILE, node, prefix);
+        return print(JsonUtil.SMILE, node, prefix);
     }
 
     public static String print(ObjectMapper mapper, JsonNode node, String prefix) {
@@ -79,7 +79,7 @@ public final class BinaryPersistJson {
     //<prefix><base32>
     public static String print(StringBuilder builder, ObjectMapper mapper, JsonNode node, String prefix) {
         try {
-            byte[] nodeBytes = IRPactJson.toBytes(mapper, node);
+            byte[] nodeBytes = JsonUtil.toBytes(mapper, node);
             String irp32 = IRPactBase32.encodeToString(nodeBytes);
             builder.setLength(0);
             builder.append(prefix);
@@ -91,7 +91,7 @@ public final class BinaryPersistJson {
     }
 
     public static String print(JsonNode node, String uidx, long uid) {
-        return print(IRPactJson.SMILE, node, uidx, uid);
+        return print(JsonUtil.SMILE, node, uidx, uid);
     }
 
     public static String print(ObjectMapper mapper, JsonNode node, String uidx, long uid) {
@@ -101,7 +101,7 @@ public final class BinaryPersistJson {
     //<uidx><uid><uidx><base32>
     public static String print(StringBuilder builder, ObjectMapper mapper, JsonNode node, String uidx, long uid) {
         try {
-            byte[] nodeBytes = IRPactJson.toBytes(mapper, node);
+            byte[] nodeBytes = JsonUtil.toBytes(mapper, node);
             String irp32 = IRPactBase32.encodeToString(nodeBytes);
             builder.setLength(0);
             builder.append(uidx);
@@ -115,14 +115,14 @@ public final class BinaryPersistJson {
     }
 
     public static JsonNode parse(String irp32withId, String uidx) {
-        return parse(IRPactJson.SMILE, irp32withId, uidx);
+        return parse(JsonUtil.SMILE, irp32withId, uidx);
     }
 
     public static JsonNode parse(ObjectMapper mapper, String irp32withId, String uidx) {
         try {
             String irp32 = getData(uidx, irp32withId);
             byte[] decodedBytes = IRPactBase32.decode(irp32);
-            return IRPactJson.fromBytes(mapper, decodedBytes);
+            return JsonUtil.fromBytes(mapper, decodedBytes);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -136,7 +136,7 @@ public final class BinaryPersistJson {
             int partLength,
             Collection<? super String> out) {
         try {
-            byte[] nodeBytes = IRPactJson.toBytes(mapper, node);
+            byte[] nodeBytes = JsonUtil.toBytes(mapper, node);
             String irp32 = IRPactBase32.encodeToString(nodeBytes);
             int i = 0;
             int len;
@@ -177,7 +177,7 @@ public final class BinaryPersistJson {
         byte[] decoded = IRPactBase32.decode(irp32);
 
         try {
-            return IRPactJson.fromBytes(mapper, decoded);
+            return JsonUtil.fromBytes(mapper, decoded);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

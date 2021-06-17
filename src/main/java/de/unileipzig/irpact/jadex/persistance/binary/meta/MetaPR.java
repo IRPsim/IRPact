@@ -3,7 +3,7 @@ package de.unileipzig.irpact.jadex.persistance.binary.meta;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.persistence.PersistableBase;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.core.util.RunInfo;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
@@ -73,7 +73,7 @@ public final class MetaPR extends PersistableBase implements JadexPersistable {
     }
 
     private void putRuns() {
-        ArrayNode runs = IRPactJson.computeArrayIfAbsent(root, "runs");
+        ArrayNode runs = JsonUtil.computeArrayIfAbsent(root, "runs");
         for(RunInfo info: infos) {
             ArrayNode entry = runs.addArray();
             entry.add(info.getId());

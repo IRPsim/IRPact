@@ -135,4 +135,24 @@ public final class StringUtil {
         String str = Double.toString(value);
         return str.replace('.', ',');
     }
+
+    public static String escapeQuote(String input, String escape) {
+        String escaped = escape + "\"";
+        return input.replace("\"", escaped);
+    }
+
+    public static String restoreQuote(String input, String escape) {
+        String escaped = escape + "\"";
+        return input.replace("\"", escaped);
+    }
+
+    public static String escapeNewLine(String input, String escape) {
+        String escaped = escape + "n";
+        return input.replace("\n", escaped);
+    }
+
+    public static String restoreNewLine(String input, String escape) {
+        String escaped = escape + "n";
+        return input.replace(escaped, "\n");
+    }
 }

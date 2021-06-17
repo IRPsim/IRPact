@@ -41,7 +41,7 @@ import de.unileipzig.irptools.io.ContentType;
 import de.unileipzig.irptools.io.ContentTypeDetector;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.annual.AnnualFile;
-import de.unileipzig.irptools.io.base.AnnualEntry;
+import de.unileipzig.irptools.io.base.data.AnnualEntry;
 import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.base.IPlatformConfiguration;

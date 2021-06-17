@@ -1,10 +1,9 @@
 package de.unileipzig.irpact.util.scenarios.toymodels;
 
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irptools.io.annual.AnnualData;
-import de.unileipzig.irptools.io.base.AnnualEntry;
+import de.unileipzig.irptools.io.base.data.AnnualEntry;
 
 import java.util.function.BiConsumer;
 

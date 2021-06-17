@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.simulation.tasks;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -20,13 +20,13 @@ public class PredefinedPreAgentCreationTask extends PredefinedBinaryTask impleme
     public static final int HELLO_WORLD = 1;
 
     public PredefinedPreAgentCreationTask() {
-        super(IRPactJson.SMILE.createObjectNode());
+        super(JsonUtil.SMILE.createObjectNode());
         setInfo(NO_INFO);
         setTask(NO_TASK);
     }
 
     public PredefinedPreAgentCreationTask(byte[] content) throws IOException {
-        super((ObjectNode) IRPactJson.fromBytesWithSmile(content));
+        super((ObjectNode) JsonUtil.fromBytesWithSmile(content));
     }
 
     @Override

@@ -3,6 +3,7 @@ package de.unileipzig.irpact.commons.util;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.PrettyPrinter;
+import com.fasterxml.jackson.core.util.MinimalPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -23,7 +24,7 @@ import java.util.Objects;
 /**
  * @author Daniel Abitz
  */
-public final class IRPactJson {
+public final class JsonUtil {
 
     public static final SmileMapper SMILE = new SmileMapper();
     public static final ObjectMapper JSON = new ObjectMapper();
@@ -31,20 +32,29 @@ public final class IRPactJson {
 
     public static final PrettyPrinter PRETTY = Util.prettyPrinter;
     public static final PrettyPrinter DEFAULT = Util.defaultPrinter;
+    public static final PrettyPrinter MINIMAL = new MinimalPrettyPrinter("");
 
-    private IRPactJson() {
+    private JsonUtil() {
+    }
+
+    public static String toMinimalString(JsonNode node) {
+        return toString(node, MINIMAL);
+    }
+
+    public static String toPrettyString(JsonNode node) {
+        return toString(node, PRETTY);
     }
 
     public static String toString(JsonNode node) {
-        return Util.printJson(node);
+        return toString(node, DEFAULT);
     }
 
     public static String toString(JsonNode node, PrettyPrinter printer) {
-        return Util.printJson(node, printer);
+        return toString(node, JSON, printer);
     }
 
     public static String toString(JsonNode node, ObjectMapper mapper) {
-        return Util.printJson(mapper, node);
+        return toString(node, mapper, DEFAULT);
     }
 
     public static String toString(JsonNode node, ObjectMapper mapper, PrettyPrinter printer) {

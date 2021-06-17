@@ -5,7 +5,7 @@ import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.util.scenarios.toymodels.ToyModelUtil;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.irpact.IRPactScenario;
-import de.unileipzig.irptools.io.base.AnnualEntry;
+import de.unileipzig.irptools.io.base.data.AnnualEntry;
 import de.unileipzig.irptools.io.perennial.PerennialData;
 import de.unileipzig.irptools.io.perennial.PerennialFile;
 

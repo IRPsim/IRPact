@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.resource.LocaleUtil;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.commons.util.csv.CsvPrinter;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -653,7 +653,7 @@ public class ResultManager implements LoggingHelper {
             return false;
         }
         try {
-            ObjectNode root = IRPactJson.read(in, IRPactJson.YAML);
+            ObjectNode root = JsonUtil.read(in, JsonUtil.YAML);
             LocalizedImageYaml localizedImage = new LocalizedImageYaml(metaData.getLocale(), root);
             localizedImage.setEscapeSpecialCharacters(true);
             this.localizedImage = localizedImage;
@@ -664,7 +664,7 @@ public class ResultManager implements LoggingHelper {
     }
 
     protected static LocalizedImage getDefaultLocalizedImage() {
-        LocalizedImageYaml data = new LocalizedImageYaml(Locale.GERMAN, IRPactJson.YAML.createObjectNode());
+        LocalizedImageYaml data = new LocalizedImageYaml(Locale.GERMAN, JsonUtil.YAML.createObjectNode());
         data.setEscapeSpecialCharacters(true);
         //0
         //nichts

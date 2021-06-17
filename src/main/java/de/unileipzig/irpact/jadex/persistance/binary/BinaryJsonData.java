@@ -129,7 +129,7 @@ public final class BinaryJsonData extends PersistableBase implements JadexPersis
 
     public byte[] toBytes() throws IOException {
         checkSimulationMode();
-        return IRPactJson.toBytesWithSmile(root);
+        return JsonUtil.toBytesWithSmile(root);
     }
 
     public String printBytes(String prefix) {

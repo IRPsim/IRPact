@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.checksum.LoggableChecksum;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryPersister;
@@ -26,7 +26,7 @@ public abstract class BinaryPRBase<T> implements BinaryPersister<T>, BinaryResto
     }
 
     protected BinaryJsonData initDataWithClass(Class<?> c, PersistManager manager) {
-        BinaryJsonData data = BinaryJsonData.init(IRPactJson.SMILE.getNodeFactory(), manager.newUID(), c, getRestoreHelper().getClassManager());
+        BinaryJsonData data = BinaryJsonData.init(JsonUtil.SMILE.getNodeFactory(), manager.newUID(), c, getRestoreHelper().getClassManager());
         data.setPutMode();
         return data;
     }

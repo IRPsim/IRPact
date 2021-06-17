@@ -12,7 +12,7 @@ import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.util.scenarios.AbstractScenario;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.start.irpact.callbacks.GetResult;
-import de.unileipzig.irptools.io.base.AnnualEntry;
+import de.unileipzig.irptools.io.base.data.AnnualEntry;
 
 import java.nio.file.Path;
 import java.util.HashMap;

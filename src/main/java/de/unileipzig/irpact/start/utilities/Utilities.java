@@ -2,7 +2,7 @@ package de.unileipzig.irpact.start.utilities;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.commons.util.csv.CsvPrinter;
 import de.unileipzig.irpact.commons.util.table.SimpleTable;
 import de.unileipzig.irpact.commons.util.table.Table;
@@ -12,7 +12,6 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.util.AnnualAdoptionData;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.develop.Todo;
-import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.develop.XXXXXXXXX;
 import de.unileipzig.irpact.io.param.output.xDEP.OutAnnualAdoptionData;
 import de.unileipzig.irpact.io.param.output.OutRoot;
@@ -22,14 +21,12 @@ import de.unileipzig.irpact.jadex.persistance.JadexPersistenceModul;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.util.script.ScriptException;
-import de.unileipzig.irptools.io.base.AnnualEntry;
-import de.unileipzig.irptools.util.Util;
+import de.unileipzig.irptools.io.base.data.AnnualEntry;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import picocli.CommandLine;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -170,7 +167,7 @@ public class Utilities {
 
     private ObjectNode parseRInputAsOutRoot() throws IOException {
         LOGGER.trace(IRPSection.UTILITIES, "parse r input '{}' as OutRoot", utilOptions.getRInput());
-        return IRPactJson.readJson(utilOptions.getRInput());
+        return JsonUtil.readJson(utilOptions.getRInput());
     }
 
     private static Path getTempCsvFile(Path input) {
@@ -271,12 +268,12 @@ public class Utilities {
 
         LOGGER.trace("decode binary persist '{}' -> '{}'", input, output);
 
-        ObjectNode root = IRPactJson.readJson(input);
+        ObjectNode root = JsonUtil.readJson(input);
         AnnualEntry<OutRoot> entry = IRPact.convertOutput(mainOptions, root);
 
         JadexPersistenceModul modul = new JadexPersistenceModul();
         ObjectNode decoded = modul.decode(entry.getData().getBinaryPersistData());
-        IRPactJson.writeJson(decoded, output, IRPactJson.DEFAULT);
+        JsonUtil.writeJson(decoded, output, JsonUtil.DEFAULT);
     }
 
     //=========================
