@@ -107,6 +107,9 @@ public class Curl {
     public Curl PUT() {
         return request("PUT");
     }
+    public Curl DELETE() {
+        return request("DELETE");
+    }
 
     public Curl header(String value) {
         return addOption("-H", value);

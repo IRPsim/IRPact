@@ -17,6 +17,12 @@ public final class FileUtil {
     private FileUtil() {
     }
 
+    public static Path createTempFile(Path dir, String prefix, String suffix) throws IOException {
+        return dir == null
+                ? Files.createTempFile(prefix, suffix)
+                : Files.createTempFile(dir, prefix, suffix);
+    }
+
     public static void deleteIfExists(Path... paths) throws IOException {
         List<IOException> failes = new ArrayList<>();
         for(Path path: paths) {

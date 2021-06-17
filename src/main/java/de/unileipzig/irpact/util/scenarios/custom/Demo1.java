@@ -58,7 +58,7 @@ public class Demo1 extends AbstractScenario {
     }
 
     @Override
-    public InRoot createInRoot() {
+    public List<InRoot> createInRoots() {
         InPVFile pvFile = new InPVFile("Barwertrechner");
         InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210322");
 
@@ -199,7 +199,7 @@ public class Demo1 extends AbstractScenario {
         root.graphvizGlobal.fixedNeatoPosition = false;
         root.graphvizGlobal.scaleFactor = 0.0;
 
-        return root;
+        return Collections.singletonList(root);
     }
 
     @Override

@@ -2,6 +2,7 @@ package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.commons.util.data.MutableInt;
 import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
@@ -89,6 +90,17 @@ public class InGeneral implements Copyable {
 
     //nur fuer interne tests
     public int firstSimulationYear = -1;
+
+    private final MutableInt firstSimulationYear0 = MutableInt.empty();
+    public boolean hasFirstSimulationYear() {
+        return firstSimulationYear0.hasValue();
+    }
+    public int getFirstSimulationYear() {
+        return firstSimulationYear0.get();
+    }
+    public void setFirstSimulationYear(int year) {
+        firstSimulationYear0.set(year);
+    }
 
     @FieldDefinition
     public int lastSimulationYear;

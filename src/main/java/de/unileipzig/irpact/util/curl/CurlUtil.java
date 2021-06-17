@@ -63,4 +63,33 @@ public final class CurlUtil {
             }
         }
     }
+
+    public static int execute(
+            Curl curl,
+            Path outPath,
+            Path errPath,
+            Charset charset) throws IOException, InterruptedException, CurlException {
+        return execute(curl, outPath, errPath, charset, true);
+    }
+
+    public static int execute(
+            Curl curl,
+            Path outPath,
+            Path errPath,
+            Charset charset,
+            boolean deleteFiles) throws IOException, InterruptedException, CurlException {
+        int result = curl.execute(outPath, errPath);
+        try {
+            if(Files.exists(errPath) && Files.size(errPath) > 0L) {
+                String content = FileUtil.readString(errPath, charset);
+                throw new CurlException(content);
+            } else {
+                return result;
+            }
+        } finally {
+            if(deleteFiles) {
+                FileUtil.deleteIfExists(outPath, errPath);
+            }
+        }
+    }
 }

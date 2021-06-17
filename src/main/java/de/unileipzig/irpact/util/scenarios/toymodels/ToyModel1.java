@@ -3,7 +3,6 @@ package de.unileipzig.irpact.util.scenarios.toymodels;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.util.table.Table;
-import de.unileipzig.irpact.commons.util.xlsx.XlsxSheetWriter;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
@@ -100,7 +99,7 @@ public class ToyModel1 extends AbstractToyModel {
     }
 
     @Override
-    public InRoot createInRoot() {
+    public List<InRoot> createInRoots() {
         InPVactConsumerAgentGroup A = createAgentGroup("A");
         A.setInitialProductAwareness(dirac1);                     //D1
 

@@ -35,12 +35,7 @@ public final class Start {
     }
 
     private static void prepareLogging() {
-        IRPLogging.writeToConsole();
-        SectionLoggingFilter filter = new SectionLoggingFilter();
-        IRPLogging.setFilter(filter);
-        IRPtools.setLoggingFilter(IRPLogging.getFilter());
-        IRPSection.addSectionsToTools();
-        IRPSection.addAllTo(filter);
+        IRPLogging.initalize();
     }
 
     private void setupLogging() throws IOException {
