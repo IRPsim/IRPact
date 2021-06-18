@@ -311,6 +311,14 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         super(args);
     }
 
+    public MainCommandLineOptions copy() {
+        MainCommandLineOptions copy = new MainCommandLineOptions(getArgsCopy());
+        copy.setHasCustomInput(hasCustomInput());
+        copy.setHasCallback(hasCallback());
+        copy.parse();
+        return copy;
+    }
+
     public void setHasCustomInput(boolean hasCustomInput) {
         this.hasCustomInput = hasCustomInput;
     }
@@ -410,6 +418,9 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         checkExecuted();
         return inputPath;
     }
+    public String getInputPathFileName() {
+        return getInputPath().getFileName().toString();
+    }
 
     public boolean hasOutputPath() {
         return getOutputPath() != null;
@@ -417,6 +428,10 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     public Path getOutputPath() {
         checkExecuted();
         return outputPath;
+    }
+    public void setOutputPath(Path outputPath) {
+        checkExecuted();
+        this.outputPath = outputPath;
     }
 
     public Path getOutputDir() {
@@ -466,6 +481,10 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     public Path getLogPath() {
         checkExecuted();
         return logPath;
+    }
+    public void setLogPath(Path logPath) {
+        checkExecuted();
+        this.logPath = logPath;
     }
 
     public boolean logConsoleAndFile() {

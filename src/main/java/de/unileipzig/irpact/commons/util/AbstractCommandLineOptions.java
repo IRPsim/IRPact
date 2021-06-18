@@ -5,10 +5,7 @@ import picocli.CommandLine;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.NoSuchElementException;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.Callable;
 
 /**
@@ -93,5 +90,9 @@ public abstract class AbstractCommandLineOptions implements Callable<Integer> {
 
     public String[] getArgs() {
         return ARGS;
+    }
+
+    public String[] getArgsCopy() {
+        return Arrays.copyOf(ARGS, ARGS.length);
     }
 }

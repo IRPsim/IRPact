@@ -17,6 +17,40 @@ public final class FileUtil {
     private FileUtil() {
     }
 
+    public static Path changeFileName(Path path, String prefix, String suffix) {
+        if(prefix == null) prefix = "";
+        if(suffix == null) suffix = "";
+        String fileName = getFileName(path);
+        String extension = getExtension(path);
+        return extension == null
+                ? path.resolveSibling(prefix + fileName + suffix)
+                : path.resolveSibling(prefix + fileName + suffix + "." + extension);
+    }
+
+    public static String getExtension(Path path) {
+        if(path == null) {
+            throw new NullPointerException("path is null");
+        }
+
+        String fileNameStr = path.getFileName().toString();
+        int dotIndex = fileNameStr.lastIndexOf('.');
+        return dotIndex == -1
+                ? null
+                : fileNameStr.substring(dotIndex + 1);
+    }
+
+    public static String getFileName(Path path) {
+        if(path == null) {
+            throw new NullPointerException("path is null");
+        }
+
+        String fileNameStr = path.getFileName().toString();
+        int dotIndex = fileNameStr.lastIndexOf('.');
+        return dotIndex == -1
+                ? fileNameStr
+                : fileNameStr.substring(0, dotIndex);
+    }
+
     public static Path createTempFile(Path dir, String prefix, String suffix) throws IOException {
         return dir == null
                 ? Files.createTempFile(prefix, suffix)

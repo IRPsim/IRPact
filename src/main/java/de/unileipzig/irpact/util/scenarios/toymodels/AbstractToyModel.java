@@ -9,9 +9,9 @@ import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.output.OutRoot;
+import de.unileipzig.irpact.start.irpact.callbacks.GetInputAndOutput;
 import de.unileipzig.irpact.util.scenarios.AbstractScenario;
 import de.unileipzig.irpact.start.Start;
-import de.unileipzig.irpact.start.irpact.callbacks.GetResult;
 import de.unileipzig.irptools.io.base.data.AnnualEntry;
 
 import java.nio.file.Path;
@@ -115,7 +115,7 @@ public abstract class AbstractToyModel extends AbstractScenario {
 
     @Override
     protected void run(IRPArgs args, AnnualEntry<InRoot> entry) throws Throwable {
-        GetResult callback = new GetResult("result_" + getName());
+        GetInputAndOutput callback = new GetInputAndOutput("result_" + getName());
         Start.start(args.toArray(), entry, callback);
         resultConsumer.accept(callback.getInRoot(), callback.getOutRoot());
     }

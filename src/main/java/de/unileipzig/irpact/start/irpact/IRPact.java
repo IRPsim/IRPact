@@ -238,8 +238,16 @@ public final class IRPact implements IRPActAccess {
         environment.getLiveCycleControl().pulse();
     }
 
+    @Deprecated
     public void init(ObjectNode jsonRoot) throws Exception {
         parseInputFile(jsonRoot);
+    }
+
+    public void init(ObjectNode jsonRoot, AnnualEntry<InRoot> entry) throws Exception {
+        this.inRootNode = jsonRoot;
+        this.inEntry = entry;
+        this.inRoot = entry.getData();
+        peekLoggingOptionsForIRPtools(entry);
     }
 
     private void parseInputFile(ObjectNode jsonRoot) {

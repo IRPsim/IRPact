@@ -78,6 +78,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
 @Definition(root = true)
 public class InRoot implements RootClass {
 
+    public static final String CONFIG_YEAR = "year";
     public static final String SET_VERSION = "set_InVersion";
 
     public static final InRoot INSTANCE = new InRoot();
@@ -144,6 +145,9 @@ public class InRoot implements RootClass {
     }
     public void setVersion(InVersion[] version) {
         this.version = version;
+    }
+    public boolean hasVersion() {
+        return version != null && version.length > 0;
     }
     public InVersion getVersion() throws ParsingException {
         return getInstance(version, "version");

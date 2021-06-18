@@ -42,11 +42,16 @@ public final class IRPLogging {
     public static String lineSeparator = "\n"; //aenderbar
 
     private static IRPLogger resultLogger;
+    private static boolean initalized = false;
 
     private IRPLogging() {
     }
 
     public static void initalize() {
+        if(initalized) {
+            return;
+        }
+        initalized = true;
         if(!hasFilter()) {
             setFilter(new SectionLoggingFilter());
         }

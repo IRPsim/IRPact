@@ -19,7 +19,7 @@ import de.unileipzig.irptools.io.ContentType;
 import de.unileipzig.irptools.io.ContentTypeDetector;
 import de.unileipzig.irptools.io.annual.AnnualFile;
 import de.unileipzig.irptools.io.base.data.AnnualEntry;
-import de.unileipzig.irptools.io.base.file.DataEntry;
+import de.unileipzig.irptools.io.base.file.DataEntry0;
 import de.unileipzig.irptools.io.base.file.Scalars;
 import de.unileipzig.irptools.io.base.file.Sets;
 import de.unileipzig.irptools.io.downloaded.DownloadedFile;
@@ -200,7 +200,7 @@ public class Preloader {
             LOGGER.error("data.size() == 0");
             return SubModul.UNKNOWN;
         }
-        DataEntry entry0 = file.getData().get(0);
+        DataEntry0 entry0 = file.getData().get(0);
         if(entry0.getYears().size() == 0) {
             LOGGER.error("years.size() == 0");
             return SubModul.UNKNOWN;
@@ -211,9 +211,9 @@ public class Preloader {
     }
 
     private SubModul detectModul(Scalars scalars) {
-        JsonNode optactNode = scalars.getNode(InGeneral.RUN_OPTACT_DEMO_PARAM_NAME);
+        JsonNode optactNode = scalars.getNode(InGeneral.SCA_INGENERAL_RUNOPTACTDEMO);
         if(optactNode == null) {
-            LOGGER.error("'{}' not found", InGeneral.RUN_OPTACT_DEMO_PARAM_NAME);
+            LOGGER.error("'{}' not found", InGeneral.SCA_INGENERAL_RUNOPTACTDEMO);
             return SubModul.UNKNOWN;
         }
         boolean optact;

@@ -12,13 +12,13 @@ import de.unileipzig.irptools.io.base.data.AnnualEntry;
 /**
  * @author Daniel Abitz
  */
-public class GetResult extends NameableBase implements IRPactCallback {
+public class GetInputAndOutput extends NameableBase implements IRPactCallback {
 
     protected AnnualEntry<InRoot> in;
     protected AnnualData<OutRoot> out;
     protected MainCommandLineOptions cmd;
 
-    public GetResult(String name) {
+    public GetInputAndOutput(String name) {
         setName(name);
     }
 

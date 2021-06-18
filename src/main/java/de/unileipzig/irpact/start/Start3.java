@@ -2,7 +2,6 @@ package de.unileipzig.irpact.start;
 
 import de.unileipzig.irpact.commons.logging.LazyPrinter;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.logging.IRPLoggingMessage;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.SectionLoggingFilter;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -14,7 +13,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import picocli.CommandLine;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.*;
 
 /**
@@ -22,14 +20,14 @@ import java.util.*;
  *
  * @author Daniel Abitz
  */
-public final class Start {
+public final class Start3 {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(Start.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(Start3.class);
 
     private MainCommandLineOptions options;
     private Result result;
 
-    private Start() {
+    private Start3() {
     }
 
     private static void prepareLogging() {
@@ -37,40 +35,7 @@ public final class Start {
     }
 
     private void setupLogging() throws IOException {
-        setupLogging(options);
-    }
-
-    static void setupLogging(MainCommandLineOptions options) throws IOException {
-        if(options.logToFile()) {
-            boolean hasOldLogFile = Files.exists(options.getLogPath());
-            IRPLoggingMessage deletedMsg = null;
-            if(hasOldLogFile) {
-                Files.delete(options.getLogPath());
-                deletedMsg = new IRPLoggingMessage("old logfile '{}' deleted", options.getLogPath()).setSection(IRPSection.INITIALIZATION_PARAMETER);
-            }
-
-            if(options.logConsoleAndFile()) {
-                IRPLogging.writeToConsoleAndFile(options.getLogPath());
-                if(deletedMsg != null) {
-                    deletedMsg.trace(LOGGER);
-                }
-                if(options.isNotPrintHelpOrVersion()) {
-                    LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "log to console and file '{}'", options.getLogPath());
-                }
-            } else {
-                IRPLogging.writeToFile(options.getLogPath());
-                if(deletedMsg != null) {
-                    deletedMsg.trace(LOGGER);
-                }
-                if(options.isNotPrintHelpOrVersion()) {
-                    LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "log to file '{}'", options.getLogPath());
-                }
-            }
-        } else {
-            if(options.isNotPrintHelpOrVersion()) {
-                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "log to console");
-            }
-        }
+        Preloader3.setupLogging(options);
     }
 
     private void parseArgs(
@@ -238,7 +203,7 @@ public final class Start {
             String[] args,
             AnnualEntry<InRoot> scenario,
             Collection<? extends IRPactCallback> callbacks) throws Throwable {
-        Start start = new Start();
+        Start3 start = new Start3();
         Result result = start.run(args, scenario, callbacks);
         if(result.getCause() != null) {
             throw result.getCause();
@@ -250,7 +215,7 @@ public final class Start {
     }
 
     public static void main(String[] args) {
-        Start start = new Start();
+        Start3 start = new Start3();
         Result result = start.run(args);
         System.exit(result.getExitCode());
     }
@@ -258,10 +223,6 @@ public final class Start {
     //=========================
     //helper
     //=========================
-
-    public static final class Input2 {
-
-    }
 
     /**
      * @author Daniel Abitz
@@ -271,10 +232,6 @@ public final class Start {
         private final String[] args;
         private final AnnualEntry<InRoot> scenario;
         private final Collection<? extends IRPactCallback> callbacks;
-
-        public Input(String[] args) {
-            this(args, null, Collections.emptyList());
-        }
 
         public Input(String[] args, AnnualEntry<InRoot> scenario, Collection<? extends IRPactCallback> callbacks) {
             this.args = args;
@@ -286,8 +243,8 @@ public final class Start {
             return args;
         }
 
-        public boolean hasScenario() {
-            return scenario != null;
+        public InRoot getScenarioData() {
+            return scenario.getData();
         }
 
         public AnnualEntry<InRoot> getScenario() {

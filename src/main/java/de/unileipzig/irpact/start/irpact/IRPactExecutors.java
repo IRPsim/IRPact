@@ -38,6 +38,10 @@ public final class IRPactExecutors {
         return get0(id) != null;
     }
 
+    public static boolean hasNot(int id) {
+        return !has(id);
+    }
+
     public static IRPactExecutor get(int id) {
         IRPactExecutor exec = get0(id);
         if(exec == null) {
