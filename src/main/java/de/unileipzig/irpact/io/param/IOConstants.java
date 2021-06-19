@@ -61,6 +61,7 @@ public final class IOConstants {
     public static final String SUBMODULE = "submodule";
     public static final String SUBMODULE_GRAPHVIZDEMO = "submodule_graphvizdemo";
 
+    public static final String TEST = "test";
 
 
     public static final String EDN_LABEL = "edn_label";

@@ -5,9 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.unileipzig.irpact.commons.util.FileUtil;
 import de.unileipzig.irpact.commons.util.JsonUtil;
-import de.unileipzig.irpact.util.curl.Curl;
-import de.unileipzig.irpact.util.curl.CurlException;
-import de.unileipzig.irptools.util.ProcessResult;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

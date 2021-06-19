@@ -57,15 +57,22 @@ public final class FileUtil {
                 : Files.createTempFile(dir, prefix, suffix);
     }
 
-    public static void deleteIfExists(Path... paths) throws IOException {
+    public static boolean deleteIfExists(Path... paths) throws IOException {
+        boolean changed = false;
+
         List<IOException> failes = new ArrayList<>();
         for(Path path: paths) {
+            if(path == null) {
+                continue;
+            }
+
             try {
-                Files.deleteIfExists(path);
+                changed |= Files.deleteIfExists(path);
             } catch (IOException e) {
                 failes.add(e);
             }
         }
+
         if(failes.size() > 0) {
             IOException master = new IOException("failed to delete " + failes.size() + " files");
             for(IOException e: failes) {
@@ -73,6 +80,8 @@ public final class FileUtil {
             }
             throw master;
         }
+
+        return changed;
     }
 
     public static String readString(Path input, Charset charset) throws IOException {

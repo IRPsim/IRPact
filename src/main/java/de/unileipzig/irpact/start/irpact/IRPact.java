@@ -85,6 +85,8 @@ public final class IRPact implements IRPActAccess {
 
     public static final String DOWNLOAD_DIR_NAME = "images";
 
+    public static final int MODELDEFINITION = 3;
+
     private static final Map<MainCommandLineOptions, Converter> INPUT_CONVERTS = new WeakHashMap<>();
     private static final Map<MainCommandLineOptions, Converter> OUTPUT_CONVERTS = new WeakHashMap<>();
 

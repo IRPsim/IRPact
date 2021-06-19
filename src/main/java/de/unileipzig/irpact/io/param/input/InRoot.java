@@ -913,6 +913,9 @@ public class InRoot implements RootClass {
 
         addPathElement(res, SUBMODULE, ROOT);
                 addPathElement(res, SUBMODULE_GRAPHVIZDEMO, SUBMODULE);
+
+        addPathElement(res, TEST, ROOT);
+                addPathElement(res, InTestData.thisName(), TEST);
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.getCachedElement("OPTACT").setParent(res.getCachedElement(SUBMODULE));
