@@ -4,10 +4,12 @@ import de.unileipzig.irpact.commons.logging.LazyPrinter;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.SectionLoggingFilter;
+import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.start.irpact.IRPactCallback;
 import de.unileipzig.irpact.start.utilities.Utilities;
 import de.unileipzig.irptools.io.base.data.AnnualEntry;
+import de.unileipzig.irptools.io.perennial.PerennialData;
 import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import picocli.CommandLine;
@@ -40,7 +42,7 @@ public final class Start3 {
 
     private void parseArgs(
             String[] args,
-            AnnualEntry<InRoot> scenario,
+            PerennialData<InRoot> scenario,
             Collection<? extends IRPactCallback> callbacks) {
         LOGGER.trace("args: {}", LazyPrinter.printArray(args));
         options = new MainCommandLineOptions(args);
@@ -105,7 +107,7 @@ public final class Start3 {
 
     private Result run(
             String[] args,
-            AnnualEntry<InRoot> scenario,
+            PerennialData<InRoot> scenario,
             Collection<? extends IRPactCallback> callbacks) {
         prepareLogging();
         parseArgs(args, scenario, callbacks);
@@ -150,14 +152,15 @@ public final class Start3 {
     }
 
     private Result runPreloader(
-            AnnualEntry<InRoot> scenario,
+            PerennialData<InRoot> scenario,
             Collection<? extends IRPactCallback> callbacks) {
         Preloader loader = new Preloader(options, callbacks);
         try {
             if(scenario == null) {
                 loader.start();
             } else {
-                loader.start(scenario);
+                //loader.start(scenario);
+                Dev.throwException();
             }
             LOGGER.trace(IRPSection.GENERAL, "Start finished");
             return new Result(CommandLine.ExitCode.OK);
@@ -170,15 +173,6 @@ public final class Start3 {
     //=========================
     //starter
     //=========================
-
-    public static int start(
-            Collection<? extends Input> inputs) {
-        for(Input input: inputs) {
-            List<IRPactCallback> callbacks = new ArrayList<>(input.getCallbacks());
-
-        }
-        return -1;
-    }
 
     public static int start(
             String[] args,
@@ -194,14 +188,14 @@ public final class Start3 {
 
     public static int start(
             String[] args,
-            AnnualEntry<InRoot> scenario,
+            PerennialData<InRoot> scenario,
             IRPactCallback... callbacks) throws Throwable {
         return start(args, scenario, Arrays.asList(callbacks));
     }
 
     public static int start(
             String[] args,
-            AnnualEntry<InRoot> scenario,
+            PerennialData<InRoot> scenario,
             Collection<? extends IRPactCallback> callbacks) throws Throwable {
         Start3 start = new Start3();
         Result result = start.run(args, scenario, callbacks);

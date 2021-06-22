@@ -5,13 +5,16 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.unileipzig.irpact.commons.util.FileUtil;
 import de.unileipzig.irpact.commons.util.JsonUtil;
+import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.util.curl.Curl;
 import de.unileipzig.irpact.util.curl.CurlException;
 import de.unileipzig.irpact.util.irpsim.swagger.scenario.PutResult;
-import de.unileipzig.irpact.util.irpsim.swagger.scenario.Scenario;
+import de.unileipzig.irpact.util.irpsim.swagger.scenario.ValidScenario;
 import de.unileipzig.irpact.util.irpsim.swagger.scenario.ScenarioData;
 import de.unileipzig.irpact.util.irpsim.swagger.scenario.ScenarioMetaData;
-import de.unileipzig.irptools.io.data.DataFile;
+import de.unileipzig.irpact.util.irpsim.swagger.simulation.SimulationState;
+import de.unileipzig.irpact.util.scenarios.Scenario;
+import de.unileipzig.irptools.io.swagger.UploadableSwaggerFile;
 import de.unileipzig.irptools.util.Util;
 
 import java.io.IOException;
@@ -66,6 +69,14 @@ public final class Swagger {
     }
     public int getModeldefinition() {
         return modeldefinition;
+    }
+
+    private int defaulModelIndex = -1;
+    public void setDefaulModelIndex(int defaulModelIndex) {
+        this.defaulModelIndex = defaulModelIndex;
+    }
+    public int getDefaulModelIndex() {
+        return defaulModelIndex;
     }
 
     private String user;
@@ -217,12 +228,15 @@ public final class Swagger {
     public String getGetScenariosUrl() {
         return getScenariosUrl;
     }
+    public String buildGetScenariosUrl(int modeldefinition) {
+        return StringUtil.format(getGetScenariosUrl(), modeldefinition);
+    }
 
     public List<ScenarioMetaData> getAllScenarios() throws IOException, CurlException, InterruptedException {
         Curl curl = new Curl()
                 .silent()
                 .showError()
-                .target(getGetScenariosUrl())
+                .target(buildGetScenariosUrl(getModeldefinition()))
                 .GET()
                 .acceptJson()
                 .user(getUser(), getPassword());
@@ -240,7 +254,7 @@ public final class Swagger {
         Curl curl = new Curl()
                 .silent()
                 .showError()
-                .target(getGetScenariosUrl())
+                .target(buildGetScenariosUrl(getModeldefinition()))
                 .GET()
                 .acceptJson()
                 .output(target)
@@ -261,7 +275,7 @@ public final class Swagger {
         return getScenarioUrl;
     }
     public String buildGetScenarioUrl(int id) {
-        return getScenarioUrl + id;
+        return StringUtil.format(getGetScenarioUrl(), id);
     }
 
     public ScenarioData getScenarioData(ScenarioMetaData metaData) throws CurlException, IOException, InterruptedException {
@@ -294,9 +308,9 @@ public final class Swagger {
         return execute(curl);
     }
 
-    public Scenario getScenario(ScenarioMetaData metaData) throws CurlException, IOException, InterruptedException {
+    public ValidScenario getScenario(ScenarioMetaData metaData) throws CurlException, IOException, InterruptedException {
         ScenarioData data = getScenarioData(metaData);
-        return new Scenario(metaData, data);
+        return new ValidScenario(metaData, data);
     }
 
     //==========
@@ -311,7 +325,7 @@ public final class Swagger {
         return deleteScenarioUrl;
     }
     public String buildDeleteScenarioUrl(int id) {
-        return deleteScenarioUrl + id;
+        return StringUtil.format(getDeleteScenarioUrl(), id);
     }
 
     public int deleteScenario(ScenarioMetaData metaData) throws CurlException, IOException, InterruptedException {
@@ -357,11 +371,22 @@ public final class Swagger {
         return new PutResult(result);
     }
 
-    public PutResult storeScenario(DataFile data) throws IOException, CurlException, InterruptedException {
+    public PutResult storeScenario(UploadableSwaggerFile data) throws IOException, CurlException, InterruptedException {
         Path dataTemp = null;
         try {
             dataTemp = createTempFile();
             JsonUtil.writeJson(data.root(), dataTemp, JsonUtil.MINIMAL);
+            return storeScenario(dataTemp);
+        } finally {
+            FileUtil.deleteIfExists(dataTemp);
+        }
+    }
+
+    public PutResult storeScenario(Scenario scenario) throws IOException, CurlException, InterruptedException {
+        Path dataTemp = null;
+        try {
+            dataTemp = createTempFile();
+            scenario.storeUploadableTo(dataTemp, false);
             return storeScenario(dataTemp);
         } finally {
             FileUtil.deleteIfExists(dataTemp);
@@ -380,7 +405,7 @@ public final class Swagger {
         return putScenarioIdUrl;
     }
     public String buildPutScenarioIdUrl(int id) {
-        return putScenarioIdUrl + id;
+        return StringUtil.format(getPutScenarioIdUrl(), id);
     }
 
     public PutResult replaceScenario(int id, Path replacement) throws CurlException, IOException, InterruptedException {
@@ -398,7 +423,7 @@ public final class Swagger {
         return new PutResult(result);
     }
 
-    public PutResult replaceScenario(int id, DataFile replacement) throws IOException, CurlException, InterruptedException {
+    public PutResult replaceScenario(int id, UploadableSwaggerFile replacement) throws IOException, CurlException, InterruptedException {
         Path dataTemp = null;
         try {
             dataTemp = createTempFile();
@@ -409,5 +434,200 @@ public final class Swagger {
         }
     }
 
+    //==================================================
+    //simulation
+    //==================================================
 
+    //==========
+    //GET /simulations/states
+    //==========
+
+    private String getSimulationStatesUrl;
+    public void setGetSimulationStatesUrl(String getSimulationStatesUrl) {
+        this.getSimulationStatesUrl = getSimulationStatesUrl;
+    }
+    public String getGetSimulationStatesUrl() {
+        return getSimulationStatesUrl;
+    }
+    public String buildGetSimulationStatesUrl(int id) {
+        return StringUtil.format(getGetSimulationStatesUrl(), id);
+    }
+
+    public List<SimulationState> getAllSimulationStates() throws IOException, CurlException, InterruptedException {
+        Curl curl = new Curl()
+                .silent()
+                .showError()
+                .target(buildGetSimulationStatesUrl(getModeldefinition()))
+                .GET()
+                .acceptJson()
+                .user(getUser(), getPassword());
+
+        JsonNode root = executeToJson(curl);
+        List<SimulationState> list = new ArrayList<>();
+        for(JsonNode entryNode: Util.iterateElements(root)) {
+            SimulationState entry = new SimulationState(entryNode);
+            list.add(entry);
+        }
+        return list;
+    }
+
+    public int storeAllSimulationStates(Path target) throws CurlException, IOException, InterruptedException {
+        Curl curl = new Curl()
+                .silent()
+                .showError()
+                .target(buildGetSimulationStatesUrl(getModeldefinition()))
+                .GET()
+                .acceptJson()
+                .output(target)
+                .user(getUser(), getPassword());
+
+        return execute(curl);
+    }
+
+    //==========
+    //GET /simulations/{simulationid}/{year}/{modelindex}/gdxresultfile
+    //==========
+
+    private String getGdxresultfileUrl;
+    public void setGetGdxresultfileUrl(String getSimulationStatesUrl) {
+        this.getSimulationStatesUrl = getSimulationStatesUrl;
+    }
+    public String getGetGdxresultfileUrl() {
+        return getSimulationStatesUrl;
+    }
+    public String buildGetGdxresultfileUrl(int simulationId, int yearIndex, int modelIndex) {
+        return StringUtil.format(getGetGdxresultfileUrl(), simulationId, yearIndex, modelIndex);
+    }
+
+    public JsonNode getGdxresultfileAsJson(int simulationId, int yearIndex) throws CurlException, IOException, InterruptedException {
+        return getGdxresultfileAsJson(simulationId, yearIndex, getDefaulModelIndex());
+    }
+    public JsonNode getGdxresultfileAsJson(int simulationId, int yearIndex, int modelIndex) throws CurlException, IOException, InterruptedException {
+        Curl curl = new Curl()
+                .silent()
+                .showError()
+                .target(buildGetGdxresultfileUrl(simulationId, yearIndex, modelIndex))
+                .GET()
+                .acceptOctetStream()
+                .user(getUser(), getPassword());
+
+        return executeToJson(curl);
+    }
+
+    public int storeGdxresultfile(int simulationId, int yearIndex, Path target) throws CurlException, IOException, InterruptedException {
+        return storeGdxresultfile(simulationId, yearIndex, getDefaulModelIndex(), target);
+    }
+    public int storeGdxresultfile(int simulationId, int yearIndex, int modelIndex, Path target) throws CurlException, IOException, InterruptedException {
+        Curl curl = new Curl()
+                .silent()
+                .showError()
+                .target(buildGetGdxresultfileUrl(simulationId, yearIndex, modelIndex))
+                .GET()
+                .acceptOctetStream()
+                .output(target)
+                .user(getUser(), getPassword());
+
+        return execute(curl);
+    }
+
+    //==========
+    //GET /simulations/{simulationid}/{year}/{modelindex}/lstfile
+    //==========
+
+    private String getLstfileUrl;
+    public void setGetLstfileUrl(String getLstfileUrl) {
+        this.getLstfileUrl = getLstfileUrl;
+    }
+    public String getGetLstfileUrl() {
+        return getLstfileUrl;
+    }
+    public String buildGetLstfileUrl(int simulationId, int yearIndex, int modelIndex) {
+        return StringUtil.format(getGetLstfileUrl(), simulationId, yearIndex, modelIndex);
+    }
+
+    public int storeLogfile(int simulationId, int yearIndex, Path target) throws CurlException, IOException, InterruptedException {
+        return storeLstfile(simulationId, yearIndex, target);
+    }
+    public int storeLogfile(int simulationId, int yearIndex, int modelIndex, Path target) throws CurlException, IOException, InterruptedException {
+        return storeLstfile(simulationId, yearIndex, modelIndex, target);
+    }
+    public int storeLstfile(int simulationId, int yearIndex, Path target) throws CurlException, IOException, InterruptedException {
+        return storeGdxresultfile(simulationId, yearIndex, getDefaulModelIndex(), target);
+    }
+    public int storeLstfile(int simulationId, int yearIndex, int modelIndex, Path target) throws CurlException, IOException, InterruptedException {
+        Curl curl = new Curl()
+                .silent()
+                .showError()
+                .target(buildGetLstfileUrl(simulationId, yearIndex, modelIndex))
+                .GET()
+                .acceptPlainText()
+                .output(target)
+                .user(getUser(), getPassword());
+
+        return execute(curl);
+    }
+
+    //==========
+    //DEV
+    //GET /simulations/{simulationid}/{year}/{modelindex}/{imagename}
+    //==========
+
+    private String getImageUrl;
+    public void setGetImageUrl(String getImageUrl) {
+        this.getImageUrl = getImageUrl;
+    }
+    public String getGetImageUrl() {
+        return getImageUrl;
+    }
+    public String buildGetImageUrl(int simulationId, int yearIndex, int modelIndex, String imageName) {
+        return StringUtil.format(getGetImageUrl(), simulationId, yearIndex, modelIndex, imageName);
+    }
+
+    public int storeImage(int simulationId, int yearIndex, String imageName, Path target) throws CurlException, IOException, InterruptedException {
+        return storeImage(simulationId, yearIndex, getDefaulModelIndex(), imageName, target);
+    }
+    public int storeImage(int simulationId, int yearIndex, int modelIndex, String imageName, Path target) throws CurlException, IOException, InterruptedException {
+        Curl curl = new Curl()
+                .silent()
+                .showError()
+                .target(buildGetImageUrl(simulationId, yearIndex, modelIndex, imageName))
+                .GET()
+                .acceptPng()
+                .output(target)
+                .user(getUser(), getPassword());
+
+        return execute(curl);
+    }
+
+    //==========
+    //DEV
+    //GET /simulations/{simulationid}/{year}/{modelindex}/bulkImages
+    //==========
+
+    private String getBulkImagesUrl;
+    public void setGetBulkImagesUrl(String getBulkImagesUrl) {
+        this.getBulkImagesUrl = getBulkImagesUrl;
+    }
+    public String getGetBulkImagesUrl() {
+        return getBulkImagesUrl;
+    }
+    public String buildGetBulkImagesUrl(int simulationId, int yearIndex, int modelIndex) {
+        return StringUtil.format(getGetBulkImagesUrl(), simulationId, yearIndex, modelIndex);
+    }
+
+    public int storeImages(int simulationId, int yearIndex, Path target) throws CurlException, IOException, InterruptedException {
+        return storeImages(simulationId, yearIndex, getDefaulModelIndex(), target);
+    }
+    public int storeImages(int simulationId, int yearIndex, int modelIndex, Path target) throws CurlException, IOException, InterruptedException {
+        Curl curl = new Curl()
+                .silent()
+                .showError()
+                .target(buildGetBulkImagesUrl(simulationId, yearIndex, modelIndex))
+                .GET()
+                .acceptOctetStream()
+                .output(target)
+                .user(getUser(), getPassword());
+
+        return execute(curl);
+    }
 }

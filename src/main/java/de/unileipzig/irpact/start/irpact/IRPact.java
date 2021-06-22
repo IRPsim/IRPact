@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.start.irpact;
 
+import com.fasterxml.jackson.core.JsonPointer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.exception.InitializationException;
@@ -33,6 +34,7 @@ import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.util.JadexSystemOut;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
+import de.unileipzig.irpact.start.Preloader3;
 import de.unileipzig.irptools.defstructure.AnnotationParser;
 import de.unileipzig.irptools.defstructure.Converter;
 import de.unileipzig.irptools.defstructure.DefinitionCollection;
@@ -210,7 +212,8 @@ public final class IRPact implements IRPActAccess {
     }
 
     protected void peekLoggingOptionsForIRPtools(ObjectNode rootNode) {
-        JsonNode logToolsNode = ContentTypeDetector.scalars(rootNode, InGeneral.SCA_INGENERAL_LOGALLTOOLS);
+        JsonPointer ptr = Preloader3.scalarsPointer(ContentTypeDetector.detect(rootNode), InGeneral.SCA_INGENERAL_LOGALLTOOLS);
+        JsonNode logToolsNode = rootNode.at(ptr);
         peekLoggingOptionsForIRPtools(
                 logToolsNode != null
                 && logToolsNode.isNumber()

@@ -95,6 +95,7 @@ public class InGeneral implements Copyable {
     public long timeout;
 
     //nur fuer interne tests
+    @Deprecated
     public int firstSimulationYear = -1;
 
     private final MutableInt firstSimulationYear0 = MutableInt.empty();

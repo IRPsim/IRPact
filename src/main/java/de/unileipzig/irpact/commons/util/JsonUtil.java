@@ -194,6 +194,18 @@ public final class JsonUtil {
         }
     }
 
+    public static boolean getBoolean(JsonNode parent, String key, boolean ifNotValid) {
+        return getBoolean(parent.get(key), ifNotValid);
+    }
+
+    public static boolean getBoolean(JsonNode node, boolean ifNotValid) {
+        if(node != null && node.isNumber()) {
+            return node.booleanValue();
+        } else {
+            return ifNotValid;
+        }
+    }
+
     public static boolean hasText(JsonNode parent, String key, String value) {
         JsonNode node = parent.get(key);
         if(node == null || !node.isTextual()) {

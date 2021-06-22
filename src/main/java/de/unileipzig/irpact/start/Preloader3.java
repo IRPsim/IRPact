@@ -19,16 +19,17 @@ import de.unileipzig.irpact.start.irpact.IRPactExecutor;
 import de.unileipzig.irpact.start.irpact.IRPactExecutors;
 import de.unileipzig.irpact.start.irpact.callbacks.GetOutput;
 import de.unileipzig.irpact.start.optact.OptAct;
+import de.unileipzig.irptools.io.ContentType;
 import de.unileipzig.irptools.io.ContentTypeDetector;
 import de.unileipzig.irptools.io.IRPData;
 import de.unileipzig.irptools.io.IRPFile;
 import de.unileipzig.irptools.io.annual.AnnualFile;
 import de.unileipzig.irptools.io.base.data.AnnualEntry;
 import de.unileipzig.irptools.io.base.file.Config;
-import de.unileipzig.irptools.io.data.DataFile;
 import de.unileipzig.irptools.io.downloaded.DownloadedFile;
-import de.unileipzig.irptools.io.model.ModelsFile;
 import de.unileipzig.irptools.io.perennial.PerennialFile;
+import de.unileipzig.irptools.io.swagger.DownloadedSwaggerFile;
+import de.unileipzig.irptools.io.swagger.UploadableSwaggerFile;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.slf4j.event.Level;
 
@@ -102,11 +103,19 @@ public class Preloader3 {
     }
 
     public static JsonPointer scalarsPointer(IRPFile validFile, String name) {
-        return scalarsPointer(validFile, VALID_INDEX, name);
+        return scalarsPointer(validFile.getType(), name);
     }
 
     public static JsonPointer scalarsPointer(IRPFile validFile, int index, String name) {
-        switch(validFile.getType()) {
+        return scalarsPointer(validFile.getType(), index, name);
+    }
+
+    public static JsonPointer scalarsPointer(ContentType type, String name) {
+        return scalarsPointer(type, VALID_INDEX, name);
+    }
+
+    public static JsonPointer scalarsPointer(ContentType type, int index, String name) {
+        switch(type) {
             case ANNUAL:
                 return AnnualFile.scalars(name);
 
@@ -116,11 +125,11 @@ public class Preloader3 {
             case DOWNLOADED:
                 return DownloadedFile.scalars(VALID_INDEX, index, name);
 
-            case MODEL:
-                return ModelsFile.scalars(VALID_INDEX, index, name);
+            case DOWNLOADED_SWAGGER:
+                return DownloadedSwaggerFile.scalars(VALID_INDEX, index, name);
 
-            case DATA:
-                return DataFile.scalars(VALID_INDEX, index, name);
+            case UPLOADABLE_SWAGGER:
+                return UploadableSwaggerFile.scalars(VALID_INDEX, index, name);
 
             case EMPTY:
                 throw new IllegalArgumentException("empty file");
@@ -129,26 +138,38 @@ public class Preloader3 {
                 throw new IllegalArgumentException("unknown file type");
 
             default:
-                throw new IllegalArgumentException("unsupported file type: " + validFile.getType());
+                throw new IllegalArgumentException("unsupported file type: " + type);
         }
     }
 
     public static JsonPointer setsPointer(IRPFile validFile, String name) {
-        switch(validFile.getType()) {
+        return setsPointer(validFile.getType(), name);
+    }
+
+    public static JsonPointer setsPointer(IRPFile validFile, int index, String name) {
+        return setsPointer(validFile.getType(), index, name);
+    }
+
+    public static JsonPointer setsPointer(ContentType type, String name) {
+        return setsPointer(type, VALID_INDEX, name);
+    }
+
+    public static JsonPointer setsPointer(ContentType type, int index, String name) {
+        switch(type) {
             case ANNUAL:
                 return AnnualFile.sets(name);
 
             case PERENNIAL:
-                return PerennialFile.sets(name);
+                return PerennialFile.sets(index, name);
 
             case DOWNLOADED:
-                return DownloadedFile.sets(name);
+                return DownloadedFile.sets(VALID_INDEX, index, name);
 
-            case MODEL:
-                return ModelsFile.sets(name);
+            case DOWNLOADED_SWAGGER:
+                return DownloadedSwaggerFile.sets(VALID_INDEX, index, name);
 
-            case DATA:
-                return DataFile.sets(name);
+            case UPLOADABLE_SWAGGER:
+                return UploadableSwaggerFile.sets(VALID_INDEX, index, name);
 
             case EMPTY:
                 throw new IllegalArgumentException("empty file");
@@ -157,7 +178,7 @@ public class Preloader3 {
                 throw new IllegalArgumentException("unknown file type");
 
             default:
-                throw new IllegalArgumentException("unsupported file type: " + validFile.getType());
+                throw new IllegalArgumentException("unsupported file type: " + type);
         }
     }
 
@@ -175,13 +196,13 @@ public class Preloader3 {
                 DownloadedFile downloadedFile = (DownloadedFile) validFile;
                 return downloadedFile.getData().get(VALID_INDEX).getYears().get(index).getConfig();
 
-            case MODEL:
-                ModelsFile modelsFile = (ModelsFile) validFile;
+            case DOWNLOADED_SWAGGER:
+                DownloadedSwaggerFile modelsFile = (DownloadedSwaggerFile) validFile;
                 return modelsFile.getModels().get(VALID_INDEX).getYears().get(index).getConfig();
 
-            case DATA:
-                DataFile dataFile = (DataFile) validFile;
-                return dataFile.getModels().get(VALID_INDEX).getYears().get(index).getConfig();
+            case UPLOADABLE_SWAGGER:
+                UploadableSwaggerFile dataFile = (UploadableSwaggerFile) validFile;
+                return dataFile.getData().getModels().get(VALID_INDEX).getYears().get(index).getConfig();
 
             case EMPTY:
                 throw new IllegalArgumentException("empty file");
@@ -208,13 +229,13 @@ public class Preloader3 {
                 DownloadedFile downloadedFile = (DownloadedFile) validFile;
                 return downloadedFile.getData().get(VALID_INDEX).getYears().get(index).root();
 
-            case MODEL:
-                ModelsFile modelsFile = (ModelsFile) validFile;
+            case DOWNLOADED_SWAGGER:
+                DownloadedSwaggerFile modelsFile = (DownloadedSwaggerFile) validFile;
                 return modelsFile.getModels().get(VALID_INDEX).getYears().get(index).root();
 
-            case DATA:
-                DataFile dataFile = (DataFile) validFile;
-                return dataFile.getModels().get(VALID_INDEX).getYears().get(index).root();
+            case UPLOADABLE_SWAGGER:
+                UploadableSwaggerFile dataFile = (UploadableSwaggerFile) validFile;
+                return dataFile.getData().getModels().get(VALID_INDEX).getYears().get(index).root();
 
             case EMPTY:
                 throw new IllegalArgumentException("empty file");
@@ -454,17 +475,17 @@ public class Preloader3 {
                 }
                 break;
 
-            case MODEL:
-                ModelsFile mf = (ModelsFile) file;
+            case DOWNLOADED_SWAGGER:
+                DownloadedSwaggerFile mf = (DownloadedSwaggerFile) file;
                 if(mf.getModels().size() != 1) {
                     throw new IRPactIllegalArgumentException("file '{}': illegal number of \"models\" entries: {}", fileName, mf.getModels().size());
                 }
                 break;
 
-            case DATA:
-                DataFile dataf = (DataFile) file;
-                if(dataf.getModels().size() != 1) {
-                    throw new IRPactIllegalArgumentException("file '{}': illegal number of \"models\" entries: {}", fileName, dataf.getModels().size());
+            case UPLOADABLE_SWAGGER:
+                UploadableSwaggerFile dataf = (UploadableSwaggerFile) file;
+                if(dataf.getData().getModels().size() != 1) {
+                    throw new IRPactIllegalArgumentException("file '{}': illegal number of \"models\" entries: {}", fileName, dataf.getData().getModels().size());
                 }
                 break;
 

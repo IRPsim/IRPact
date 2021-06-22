@@ -115,7 +115,16 @@ public class Curl {
         return addOption("-H", value);
     }
     public Curl acceptJson() {
-        return header("accept: application/json");
+        return header("Accept: application/json");
+    }
+    public Curl acceptOctetStream() {
+        return header("Accept: application/octet-stream");
+    }
+    public Curl acceptPlainText() {
+        return header("Accept: text/plain");
+    }
+    public Curl acceptPng() {
+        return header("Accept: image/png");
     }
     public Curl contentTypeJson() {
         return header("Content-Type: application/json");

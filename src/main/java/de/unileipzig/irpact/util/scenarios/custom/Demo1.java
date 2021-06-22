@@ -39,6 +39,7 @@ import de.unileipzig.irptools.graphviz.def.GraphvizGlobal;
 import de.unileipzig.irptools.graphviz.def.GraphvizLayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.def.GraphvizOutputFormat;
 import de.unileipzig.irptools.io.base.data.AnnualEntry;
+import de.unileipzig.irptools.io.perennial.PerennialData;
 
 import java.awt.*;
 import java.time.temporal.ChronoUnit;
@@ -55,6 +56,16 @@ public class Demo1 extends AbstractScenario {
     @Override
     public String getName() {
         return "Demo1";
+    }
+
+    @Override
+    protected String getCreator() {
+        return null;
+    }
+
+    @Override
+    protected String getDescription() {
+        return null;
     }
 
     @Override
@@ -203,7 +214,7 @@ public class Demo1 extends AbstractScenario {
     }
 
     @Override
-    protected void run(IRPArgs args, AnnualEntry<InRoot> entry) throws Throwable {
+    protected void run(IRPArgs args, PerennialData<InRoot> data) throws Throwable {
 
     }
 }

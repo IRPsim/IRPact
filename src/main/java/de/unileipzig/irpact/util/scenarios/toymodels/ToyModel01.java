@@ -6,14 +6,30 @@ import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
+import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.input.InVersion;
+import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
+import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
+import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
+import de.unileipzig.irpact.io.param.input.process.InProcessModel;
+import de.unileipzig.irpact.io.param.input.process.ra.InPVactUncertaintyGroupAttribute;
+import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
+import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
+import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
+import de.unileipzig.irpact.io.param.input.time.InTimeModel;
+import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiConsumer;
@@ -21,19 +37,25 @@ import java.util.function.BiConsumer;
 /**
  * @author Daniel Abitz
  */
-public class ToyModel1 extends AbstractToyModel {
+public class ToyModel01 extends AbstractToyModel {
+
+    public static final int SIZE_A = 10;
+    public static final int SIZE_K = 10;
 
     protected InDiracUnivariateDistribution dirac0 = new InDiracUnivariateDistribution("dirac0", 0);
     protected InDiracUnivariateDistribution dirac07 = new InDiracUnivariateDistribution("dirac07", 0.7);
     protected InDiracUnivariateDistribution dirac1 = new InDiracUnivariateDistribution("dirac1", 1);
 
-    public ToyModel1(BiConsumer<InRoot, OutRoot> resultConsumer) {
-        super(resultConsumer);
+    public ToyModel01(String name, BiConsumer<InRoot, OutRoot> resultConsumer) {
+        this(name, null, null, resultConsumer);
     }
 
-    @Override
-    public String getName() {
-        return "Toymodel_1";
+    public ToyModel01(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
+        super(resultConsumer);
+        setName(name);
+        setCreator(creator);
+        setDescription(description);
+        setTotalAgents(SIZE_A + SIZE_K);
     }
 
     public List<List<SpatialAttribute>> buildData(
@@ -41,15 +63,20 @@ public class ToyModel1 extends AbstractToyModel {
             int sizeOfA, int sizeOfK,
             Random rnd) {
         List<List<SpatialAttribute>> output = SpatialUtil.drawRandom(input, sizeOfA + sizeOfK, rnd);
+        int from = 0;
+        int to = 0;
         //A
-        for(int i = 0; i < sizeOfA; i++) {
+        to += sizeOfA;
+        for(int i = from; i < to; i++) {
             List<SpatialAttribute> row = output.get(i);
             SpatialUtil.replaceDouble(row, RAConstants.PURCHASE_POWER, dirac1.getValue());  //A1
             SpatialUtil.replaceDouble(row, RAConstants.SHARE_1_2_HOUSE, dirac1.getValue()); //A5
             SpatialUtil.replaceDouble(row, RAConstants.HOUSE_OWNER, dirac1.getValue());     //A6
         }
         //K
-        for(int i = sizeOfK; i < sizeOfA + sizeOfK; i++) {
+        from += sizeOfA;
+        to += sizeOfK;
+        for(int i = from; i < to; i++) {
             List<SpatialAttribute> row = output.get(i);
             SpatialUtil.replaceDouble(row, RAConstants.PURCHASE_POWER, dirac0.getValue());  //A1
             SpatialUtil.replaceDouble(row, RAConstants.SHARE_1_2_HOUSE, dirac1.getValue()); //A5
@@ -100,12 +127,46 @@ public class ToyModel1 extends AbstractToyModel {
 
     @Override
     public List<InRoot> createInRoots() {
+        InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
+
         InPVactConsumerAgentGroup A = createAgentGroup("A");
         A.setInitialProductAwareness(dirac1);                     //D1
+        A.setSpatialDistribution(spatialDist);
 
         InPVactConsumerAgentGroup K = createAgentGroup("K");
         K.setInitialProductAwareness(dirac0);                     //D1
+        K.setSpatialDistribution(spatialDist);
 
-        return null;
+        InAffinities affinities = createZeroAffinities("affinities", A, K);
+
+        InFileBasedPVactConsumerAgentPopulation population = createPopulation("Pop", getTotalAgents(), A, K);
+
+        InUnlinkedGraphTopology topology = new InUnlinkedGraphTopology("Topo");
+
+        InUnitStepDiscreteTimeModel timeModel = createOneWeekTimeModel("Time");
+
+        InPVactUncertaintyGroupAttribute uncertainty = createDefaultUnvertainty("uncert", dirac0, A, K);
+
+        InRAProcessModel processModel = createDefaultProcessModel("Process", uncertainty);
+
+        InSpace2D space2D = createSpace2D("Space2D");
+
+        //=====
+        InGeneral general = createGeneralPart();
+        general.setFirstSimulationYear(2015);
+        general.lastSimulationYear = 2015;
+
+        InRoot root = new InRoot();
+        root.version = new InVersion[]{InVersion.currentVersion()};
+        root.general = general;
+        root.setAffinities(affinities);
+        root.setConsumerAgentGroups(new InConsumerAgentGroup[]{A, K});
+        root.setAgentPopulationSize(population);
+        root.graphTopologySchemes = new InGraphTopologyScheme[]{topology};
+        root.processModels = new InProcessModel[]{processModel};
+        root.spatialModel = new InSpatialModel[]{space2D};
+        root.timeModel = new InTimeModel[]{timeModel};
+
+        return Collections.singletonList(root);
     }
 }
