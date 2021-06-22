@@ -10,6 +10,9 @@ public abstract class AbstractBoundedUnivariateDoubleDistribution extends Nameab
     protected double lowerBound;
     protected double upperBound;
 
+    protected boolean lowerBoundInclusive = true;
+    protected boolean upperBoundInclusive = false;
+
     public void setLowerBound(double lowerBound) {
         this.lowerBound = lowerBound;
     }
@@ -26,5 +29,23 @@ public abstract class AbstractBoundedUnivariateDoubleDistribution extends Nameab
     @Override
     public double getUpperBound() {
         return upperBound;
+    }
+
+    public void setLowerBoundInclusive(boolean lowerBoundInclusive) {
+        this.lowerBoundInclusive = lowerBoundInclusive;
+    }
+
+    @Override
+    public boolean isLowerBoundInclusive() {
+        return lowerBoundInclusive;
+    }
+
+    public void setUpperBoundInclusive(boolean upperBoundInclusive) {
+        this.upperBoundInclusive = upperBoundInclusive;
+    }
+
+    @Override
+    public boolean isUpperBoundInclusive() {
+        return upperBoundInclusive;
     }
 }

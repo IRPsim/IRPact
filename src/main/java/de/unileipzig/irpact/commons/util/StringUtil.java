@@ -131,6 +131,24 @@ public final class StringUtil {
         return Double.parseDouble(valueWithDot);
     }
 
+    public static int parseInt(String input) {
+        if(input == null) throw new NullPointerException();
+        if(input.contains(".")) {
+            return (int) Double.parseDouble(input);
+        } else {
+            return Integer.parseInt(input);
+        }
+    }
+
+    public static long parseLong(String input) {
+        if(input == null) throw new NullPointerException();
+        if(input.contains(".")) {
+            return (long) Double.parseDouble(input);
+        } else {
+            return Long.parseLong(input);
+        }
+    }
+
     public static String printDoubleWithComma(double value) {
         String str = Double.toString(value);
         return str.replace('.', ',');

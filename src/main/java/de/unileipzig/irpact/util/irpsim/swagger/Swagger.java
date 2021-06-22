@@ -630,4 +630,36 @@ public final class Swagger {
 
         return execute(curl);
     }
+
+    //==========
+    //DEV
+    //POST /simulations/{simulationid}/{year}/{modelindex}/bulkImages
+    //==========
+
+//    private String getBulkImagesUrl;
+//    public void setGetBulkImagesUrl(String getBulkImagesUrl) {
+//        this.getBulkImagesUrl = getBulkImagesUrl;
+//    }
+//    public String getGetBulkImagesUrl() {
+//        return getBulkImagesUrl;
+//    }
+//    public String buildGetBulkImagesUrl(int simulationId, int yearIndex, int modelIndex) {
+//        return StringUtil.format(getGetBulkImagesUrl(), simulationId, yearIndex, modelIndex);
+//    }
+//
+//    public int storeImages(int simulationId, int yearIndex, Path target) throws CurlException, IOException, InterruptedException {
+//        return storeImages(simulationId, yearIndex, getDefaulModelIndex(), target);
+//    }
+//    public int storeImages(int simulationId, int yearIndex, int modelIndex, Path target) throws CurlException, IOException, InterruptedException {
+//        Curl curl = new Curl()
+//                .silent()
+//                .showError()
+//                .target(buildGetBulkImagesUrl(simulationId, yearIndex, modelIndex))
+//                .GET()
+//                .acceptOctetStream()
+//                .output(target)
+//                .user(getUser(), getPassword());
+//
+//        return execute(curl);
+//    }
 }

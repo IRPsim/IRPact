@@ -39,6 +39,7 @@ public class XlsxSheetParser<T> {
     protected SimpleHeader header;
     protected CellValueConverter<Number, T> numericConverter;
     protected CellValueConverter<String, T> textConverter;
+    protected CellValueConverter<Void, T> emptyConverter;
     protected Supplier<? extends List<T>> rowSupplier;
     protected Consumer<? super List<T>> rowConsumer;
 
@@ -71,6 +72,10 @@ public class XlsxSheetParser<T> {
         this.textConverter = textConverter;
     }
 
+    public void setEmptyConverter(CellValueConverter<Void, T> emptyConverter) {
+        this.emptyConverter = emptyConverter;
+    }
+
     public void setSheet(XSSFSheet sheet) {
         this.sheet = sheet;
     }
@@ -93,6 +98,12 @@ public class XlsxSheetParser<T> {
         return list;
     }
 
+    public List<List<T>> parse(Path input, String sheetName) throws ParsingException, IOException, InvalidFormatException {
+        List<List<T>> list = new ArrayList<>();
+        collect(input, sheetName, list);
+        return list;
+    }
+
     public List<List<T>> parse(XSSFSheet sheet) throws ParsingException, IOException, InvalidFormatException {
         List<List<T>> list = new ArrayList<>();
         collect(sheet, list);
@@ -102,6 +113,12 @@ public class XlsxSheetParser<T> {
     public boolean collect(Path input, int sheetIndex, Collection<? super List<T>> target) throws ParsingException, IOException, InvalidFormatException {
         try(XSSFWorkbook book = new XSSFWorkbook(input.toFile())) {
             return collect(book.getSheetAt(sheetIndex), target);
+        }
+    }
+
+    public boolean collect(Path input, String sheetName, Collection<? super List<T>> target) throws ParsingException, IOException, InvalidFormatException {
+        try(XSSFWorkbook book = new XSSFWorkbook(input.toFile())) {
+            return collect(book.getSheet(sheetName), target);
         }
     }
 
@@ -139,8 +156,22 @@ public class XlsxSheetParser<T> {
         header = (SimpleHeader) parseHeader(headerRow);
     }
 
+    protected static <T> void set(List<T> list, int index, T value) {
+        if(index < list.size()) {
+            list.set(index, value);
+        } else {
+            list.add(value);
+        }
+    }
+
     protected boolean handleRow(Row row) throws ParsingException {
         List<T> rowData = rowSupplier.get();
+
+        for(int i = 0; i < header.length(); i++) {
+            T empty = emptyConverter.convert(header, i, null);
+            rowData.add(empty);
+        }
+
         Iterator<Cell> cellIter = row.cellIterator();
         while(cellIter.hasNext()) {
             Cell cell = cellIter.next();
@@ -163,7 +194,7 @@ public class XlsxSheetParser<T> {
                         throw new ParsingException(e);
                     }
                     T numEntry = numericConverter.convert(header, columnIndex, numValue);
-                    rowData.add(numEntry);
+                    rowData.set(columnIndex, numEntry);
                     break;
 
                 case STRING:
@@ -173,7 +204,7 @@ public class XlsxSheetParser<T> {
 
                     String strValue = cell.getStringCellValue();
                     T strEntry = textConverter.convert(header, columnIndex, strValue);
-                    rowData.add(strEntry);
+                    rowData.set(columnIndex, strEntry);
                     break;
 
                 case BLANK:
@@ -190,7 +221,7 @@ public class XlsxSheetParser<T> {
 
                         String blankValue = cell.getStringCellValue();
                         T blankEntry = textConverter.convert(header, columnIndex, blankValue);
-                        rowData.add(blankEntry);
+                        rowData.set(columnIndex, blankEntry);
                         break;
                     }
 
@@ -284,7 +315,7 @@ public class XlsxSheetParser<T> {
             switch (cell.getCellType()) {
                 case STRING:
                     String label = cell.getStringCellValue();
-                    header.add(label);
+                    header.set(cell.getColumnIndex(), label, "");
                     break;
 
                 case BLANK:

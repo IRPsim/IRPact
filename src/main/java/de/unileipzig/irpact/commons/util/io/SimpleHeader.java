@@ -28,6 +28,17 @@ public class SimpleHeader implements Header {
         header.add(label);
     }
 
+    public void set(int index, String label) {
+        header.set(index, label);
+    }
+
+    public void set(int index, String label, String fill) {
+        while(header.size() <= index) {
+            header.add(fill);
+        }
+        set(index, label);
+    }
+
     public List<String> get() {
         return header;
     }
