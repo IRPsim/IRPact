@@ -107,6 +107,7 @@ public class InGeneral implements Copyable {
     }
     public void setFirstSimulationYear(int year) {
         firstSimulationYear0.set(year);
+        firstSimulationYear = year; //legacy
     }
 
     @FieldDefinition

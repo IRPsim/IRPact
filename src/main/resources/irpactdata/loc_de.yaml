@@ -238,7 +238,7 @@ distributions:
 
 InBernoulliDistribution:
   edn_label: "Bernoulliverteilung"
-  edn_description: "Verteilungsfunktion, welche 0 oder 1 zurück gibt."
+  edn_description: "Auf Bernoulli basierende Verteilungsfunktion, welche mit Wahrscheinlichkeit p x oder (1-p) y zurück gibt."
 InBernoulliDistribution_p:
   gams_identifier: "p"
   gams_description: "Wahrscheinlichkeit p"
@@ -260,8 +260,8 @@ InBooleanDistribution_falseValue:
   gams_description: "Der Wert, welcher zurückgegeben wird, wenn die Funktion intern 0 (FALSCH) ergibt."
 
 InBoundedNormalDistribution:
-  edn_label: "beschränkte Normalverteilung"
-  edn_description: "Verteilungsfunktionauf Basis der Normalverteilung."
+  edn_label: "Beschränkte Normalverteilung"
+  edn_description: "Verteilungsfunktion, welche auf der Normalverteilung basiert und nach oben und unten beschränkt ist. "
 InBoundedNormalDistribution_standardDeviation:
   gams_identifier: "Standardabweichung"
   gams_description: "Die zu nutzende Standardabweichung."
@@ -272,7 +272,7 @@ InBoundedNormalDistribution_lowerBound:
   gams_identifier: "Untergrenze (inklusiv)"
   gams_description: "Legt die Untergrenze fest."
 InBoundedNormalDistribution_upperBound:
-  gams_identifier: "Obergrenze (exklusiv)"
+  gams_identifier: "Obergrenze (inklusiv)"
   gams_description: "Legt die Obergrenze fest."
 
 InBoundedUniformDoubleDistribution:
@@ -975,25 +975,25 @@ InUnitStepDiscreteTimeModel_amountOfTime:
   gams_description: "Legt die Zeitdauer fest, welche pro diskreten Schritt vergeht."
 InUnitStepDiscreteTimeModel_useMs:
   gams_identifier: "Millisekunden"
-  gams_description: "Verwendet Millisekunden alsEinheit für die Zeitdauer."
+  gams_description: "Verwendet Millisekunden als Einheit für die Zeitdauer."
 InUnitStepDiscreteTimeModel_useSec:
   gams_identifier: "Sekunden"
-  gams_description: "Verwendet Sekunden alsEinheit für die Zeitdauer."
+  gams_description: "Verwendet Sekunden als Einheit für die Zeitdauer."
 InUnitStepDiscreteTimeModel_useMin:
   gams_identifier: "Minuten"
-  gams_description: "Verwendet Minuten alsEinheit für die Zeitdauer."
+  gams_description: "Verwendet Minuten als Einheit für die Zeitdauer."
 InUnitStepDiscreteTimeModel_useH:
   gams_identifier: "Stunden"
-  gams_description: "Verwendet Stunden alsEinheit für die Zeitdauer."
+  gams_description: "Verwendet Stunden als Einheit für die Zeitdauer."
 InUnitStepDiscreteTimeModel_useD:
   gams_identifier: "Tage"
-  gams_description: "Verwendet Tage alsEinheit für die Zeitdauer."
+  gams_description: "Verwendet Tage als Einheit für die Zeitdauer."
 InUnitStepDiscreteTimeModel_useW:
   gams_identifier: "Wochen"
-  gams_description: "Verwendet Wochen alsEinheit für die Zeitdauer."
+  gams_description: "Verwendet Wochen als Einheit für die Zeitdauer."
 InUnitStepDiscreteTimeModel_useM:
   gams_identifier: "Monate"
-  gams_description: "Verwendet Monate alsEinheit für die Zeitdauer."
+  gams_description: "Verwendet Monate als Einheit für die Zeitdauer."
 
 
 

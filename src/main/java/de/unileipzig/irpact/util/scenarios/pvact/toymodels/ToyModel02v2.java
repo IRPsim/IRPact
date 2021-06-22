@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.util.scenarios.toymodels;
+package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
@@ -51,10 +51,7 @@ public class ToyModel02v2 extends AbstractToyModel {
     }
 
     public ToyModel02v2(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
-        super(resultConsumer);
-        setName(name);
-        setCreator(creator);
-        setDescription(description);
+        super(name, creator, description, resultConsumer);
     }
 
     public List<List<SpatialAttribute>> buildData(

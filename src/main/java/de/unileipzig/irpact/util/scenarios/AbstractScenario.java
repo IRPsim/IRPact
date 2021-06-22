@@ -3,7 +3,10 @@ package de.unileipzig.irpact.util.scenarios;
 import de.unileipzig.irpact.commons.util.IRPArgs;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.start.Start;
+import de.unileipzig.irpact.start.Start3;
 import de.unileipzig.irpact.start.irpact.IRPact;
+import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.perennial.PerennialData;
 import de.unileipzig.irptools.io.swagger.UploadableSwaggerData;
 import de.unileipzig.irptools.io.swagger.UploadableSwaggerFile;
@@ -19,10 +22,42 @@ import java.util.List;
  */
 public abstract class AbstractScenario implements Scenario {
 
-    public AbstractScenario() {
+    protected String name;
+    protected String creator;
+    protected String description;
+
+    protected Path logPath;
+    protected Path outputDir;
+    protected Path downloadDir;
+    protected Path outputPath;
+
+    public AbstractScenario(
+            String name,
+            String creator,
+            String description) {
+        this(name, creator, description, null, null, null);
+    }
+
+    public AbstractScenario(
+            String name,
+            String creator,
+            String description,
+            Path logPath,
+            Path outputDir,
+            Path downloadDir) {
+        setName(name);
+        setCreator(creator);
+        setDescription(description);
+        setLogPath(logPath);
+        setOutputDir(outputDir);
+        setDownloadDir(downloadDir);
     }
 
     protected void updateArgs(IRPArgs args) {
+        if(logPath != null) args.setLogPathWithConsole(logPath);
+        if(outputDir != null) args.setOutputDir(outputDir);
+        if(downloadDir != null) args.setDownloadDir(downloadDir);
+        if(outputPath != null) args.setOutput(outputPath);
     }
 
     public abstract List<InRoot> createInRoots();
@@ -31,7 +66,9 @@ public abstract class AbstractScenario implements Scenario {
     //for running
     //=========================
 
-    protected abstract void run(IRPArgs args, PerennialData<InRoot> data) throws Throwable;
+    protected void run(IRPArgs args, PerennialData<InRoot> data) throws Throwable {
+        Start3.start(args.toArray(), data);
+    }
 
     public void run() throws Throwable {
         IRPArgs args = new IRPArgs();
@@ -49,15 +86,78 @@ public abstract class AbstractScenario implements Scenario {
         run(args, data);
     }
 
+    public void runLegacy() throws Throwable {
+        IRPArgs args = new IRPArgs();
+        updateArgs(args);
+        List<InRoot> roots = createInRoots();
+        if(roots.size() != 1) {
+            throw new IllegalArgumentException("legacy does not supports multiple years");
+        }
+        InRoot root = roots.get(0);
+        AnnualData<InRoot> data = new AnnualData<>(root);
+        data.getConfig().setYear(root.getGeneral().getFirstSimulationYear());
+        Start.start(args.toArray(), data.get());
+    }
+
     //=========================
     //for swagger
     //=========================
 
-    protected abstract String getName();
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    protected abstract String getCreator();
+    public String getName() {
+        return name;
+    }
 
-    protected abstract String getDescription();
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setLogPath(Path logPath) {
+        this.logPath = logPath;
+    }
+
+    public Path getLogPath() {
+        return logPath;
+    }
+
+    public void setOutputDir(Path outputDir) {
+        this.outputDir = outputDir;
+    }
+
+    public Path getOutputDir() {
+        return outputDir;
+    }
+
+    public void setDownloadDir(Path downloadDir) {
+        this.downloadDir = downloadDir;
+    }
+
+    public Path getDownloadDir() {
+        return downloadDir;
+    }
+
+    public void setOutputPath(Path outputPath) {
+        this.outputPath = outputPath;
+    }
+
+    public Path getOutputPath() {
+        return outputPath;
+    }
 
     protected void validateInitialYear(List<InRoot> inRoots) {
         for(InRoot inRoot: inRoots) {

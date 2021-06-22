@@ -42,6 +42,7 @@ import de.unileipzig.irptools.io.base.data.AnnualEntry;
 import de.unileipzig.irptools.io.perennial.PerennialData;
 
 import java.awt.*;
+import java.nio.file.Path;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,19 +54,17 @@ import java.util.concurrent.TimeUnit;
  */
 public class Demo1 extends AbstractScenario {
 
+    public Demo1(String name, String creator, String description) {
+        super(name, creator, description);
+    }
+
+    public Demo1(String name, String creator, String description, Path logPath, Path outputDir, Path downloadDir) {
+        super(name, creator, description, logPath, outputDir, downloadDir);
+    }
+
     @Override
     public String getName() {
         return "Demo1";
-    }
-
-    @Override
-    protected String getCreator() {
-        return null;
-    }
-
-    @Override
-    protected String getDescription() {
-        return null;
     }
 
     @Override
