@@ -125,6 +125,15 @@ public final class Rnd implements ChecksumComparable {
         }
     }
 
+    public void nextBytes(byte[] bytes) {
+        lock();
+        try {
+            rnd.nextBytes(bytes);
+        } finally {
+            unlock();
+        }
+    }
+
     public int nextInt() {
         lock();
         try {
@@ -151,6 +160,15 @@ public final class Rnd implements ChecksumComparable {
         lock();
         try {
             return rnd.nextLong();
+        } finally {
+            unlock();
+        }
+    }
+
+    public float nextFloat() {
+        lock();
+        try {
+            return rnd.nextFloat();
         } finally {
             unlock();
         }

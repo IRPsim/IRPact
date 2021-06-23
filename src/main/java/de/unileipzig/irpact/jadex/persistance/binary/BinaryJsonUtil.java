@@ -85,6 +85,7 @@ final class BinaryJsonUtil {
         ensureRegister(manager, SpatialDoubleAttributeBasePR.INSTANCE);
         ensureRegister(manager, SpatialInformationSupplierPR.INSTANCE);
         ensureRegister(manager, SpatialStringAttributeBasePR.INSTANCE);
+        ensureRegister(manager, TruncatedNormalDistributionPR.INSTANCE);
         ensureRegister(manager, UnitStepDiscreteTimeModelPR.INSTANCE);
         ensureRegister(manager, UnlinkedGraphTopologyPR.INSTANCE);
     }

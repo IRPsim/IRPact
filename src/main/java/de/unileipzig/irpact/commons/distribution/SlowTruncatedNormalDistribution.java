@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.distribution;
 
-import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.commons.util.Rnd;
 
 /**
@@ -8,7 +8,7 @@ import de.unileipzig.irpact.commons.util.Rnd;
  *
  * @author Daniel Abitz
  */
-public class SlowTruncatedNormalDistribution extends AbstractBoundedUnivariateDoubleDistribution implements UnivariateDoubleDistribution {
+public class SlowTruncatedNormalDistribution extends AbstractBoundedUnivariateDoubleDistribution {
 
     protected Rnd rnd;
     protected double mean;
@@ -62,33 +62,26 @@ public class SlowTruncatedNormalDistribution extends AbstractBoundedUnivariateDo
         return mean;
     }
 
-    @SuppressWarnings("RedundantIfStatement")
-    private boolean isNotInRange(double drawnValue) {
-        if(lowerBoundInclusive && drawnValue < lowerBound) return true;
-        if(!lowerBoundInclusive && drawnValue <= lowerBound) return true;
-        if(upperBoundInclusive && drawnValue > upperBound) return true;
-        if(!upperBoundInclusive && drawnValue >= upperBound) return true;
-        return false;
-    }
-
     @Override
     public double drawDoubleValue() {
         double drawnValue;
         do {
             drawnValue = rnd.nextGaussian(standardDeviation, mean);
-        } while(isNotInRange(drawnValue));
+        } while(isOutOfRange(drawnValue));
         return drawnValue;
     }
 
     @Override
     public int getChecksum() {
-        return ChecksumComparable.getChecksum(
+        return Checksums.SMART.getChecksum(
                 name,
-                rnd.getChecksum(),
+                rnd,
                 standardDeviation,
                 mean,
                 lowerBound,
-                upperBound
+                upperBound,
+                lowerBoundInclusive,
+                upperBoundInclusive
         );
     }
 }

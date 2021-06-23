@@ -24,8 +24,14 @@ public final class ParamUtil {
     public static final String NAME_DELIMITER = "_";
 
     public static final String BOOLEAN_DOMAIN = "[0|1]";
+    public static final Object[] VALUE_TRUE = {"1"};
+    public static final Object[] VALUE_FALSE = {"0"};
 
     private ParamUtil() {
+    }
+
+    public static Object[] varargs(Object... arr) {
+        return arr;
     }
 
     public static String concData(InIRPactEntity first, InIRPactEntity second) {

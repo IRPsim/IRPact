@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons.distribution;
 
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.util.DoubleRange;
 
 /**
  * @author Daniel Abitz
@@ -15,6 +16,14 @@ public abstract class AbstractBoundedUnivariateDoubleDistribution extends Nameab
 
     public void setLowerBound(double lowerBound) {
         this.lowerBound = lowerBound;
+    }
+
+    protected boolean isInRange(double drawnValue) {
+        return DoubleRange.isInRange(drawnValue, getLowerBound(), isLowerBoundInclusive(), getUpperBound(), isUpperBoundInclusive());
+    }
+
+    protected boolean isOutOfRange(double drawnValue) {
+        return DoubleRange.isOutOfRange(drawnValue, getLowerBound(), isLowerBoundInclusive(), getUpperBound(), isUpperBoundInclusive());
     }
 
     @Override
