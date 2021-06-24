@@ -9,19 +9,9 @@ import java.util.Objects;
  */
 public class BasicUncertaintyAttribute extends BasicConsumerAgentDoubleAttribute implements UncertaintyAttribute {
 
-    protected boolean autoAdjustment;
     protected double convergence;
 
     public BasicUncertaintyAttribute() {
-    }
-
-    public void setAutoAdjustment(boolean autoAdjustment) {
-        this.autoAdjustment = autoAdjustment;
-    }
-
-    @Override
-    public boolean isAutoAdjustment() {
-        return autoAdjustment;
     }
 
     @Override
@@ -49,7 +39,6 @@ public class BasicUncertaintyAttribute extends BasicConsumerAgentDoubleAttribute
         copy.setGroup(getGroup());
         copy.setUncertainity(getUncertainty());
         copy.setConvergence(getConvergence());
-        copy.setAutoAdjustment(isAutoAdjustment());
         return copy;
     }
 

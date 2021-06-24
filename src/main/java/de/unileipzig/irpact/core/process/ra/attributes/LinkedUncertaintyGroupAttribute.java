@@ -57,7 +57,6 @@ public class LinkedUncertaintyGroupAttribute extends BasicConsumerAgentDoubleGro
         attr.setGroup(this);
         attr.setUncertainity(uncertainty);
         attr.setConvergence(convergence);
-        attr.setAutoAdjustment(isAutoAdjustment());
         return attr;
     }
 

@@ -13,18 +13,9 @@ import java.util.Objects;
 @Todo("Spec adden")
 public class UncertaintyWithConvergenceGroupAttribute extends BasicConsumerAgentDoubleGroupAttribute implements UncertaintyGroupAttribute {
 
-    protected boolean autoAdjustment;
     protected UnivariateDoubleDistribution convergence;
 
     public UncertaintyWithConvergenceGroupAttribute() {
-    }
-
-    public void setAutoAdjustment(boolean autoAdjustment) {
-        this.autoAdjustment = autoAdjustment;
-    }
-
-    public boolean isAutoAdjustment() {
-        return autoAdjustment;
     }
 
     public UnivariateDoubleDistribution getUncertainty() {
@@ -49,7 +40,6 @@ public class UncertaintyWithConvergenceGroupAttribute extends BasicConsumerAgent
         copy.setName(getName());
         copy.setUncertainty(getUncertainty().copyDistribution());
         copy.setConvergence(getConvergence().copyDistribution());
-        copy.setAutoAdjustment(isAutoAdjustment());
         return copy;
     }
 
@@ -59,7 +49,6 @@ public class UncertaintyWithConvergenceGroupAttribute extends BasicConsumerAgent
         attr.setGroup(this);
         attr.setUncertainity(uncertainty);
         attr.setConvergence(convergence);
-        attr.setAutoAdjustment(isAutoAdjustment());
         return attr;
     }
 

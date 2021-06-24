@@ -23,6 +23,7 @@ import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.process.ra.attributes.UncertaintyAttribute;
+import de.unileipzig.irpact.core.process.ra.attributes3.Uncertainty;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -57,6 +58,7 @@ public class RAProcessPlan implements ProcessPlan {
     protected Rnd rnd;
     protected RAProcessModel model;
     protected NodeFilter networkFilter;
+    protected Uncertainty uncertainty;
     protected boolean underRenovation = false;
     protected boolean underConstruction = false;
 
@@ -71,13 +73,15 @@ public class RAProcessPlan implements ProcessPlan {
             Rnd rnd,
             ConsumerAgent agent,
             Need need,
-            Product product) {
+            Product product,
+            Uncertainty uncertainty) {
         setEnvironment(environment);
         setModel(model);
         setRnd(rnd);
         setAgent(agent);
         setNeed(need);
         setProduct(product);
+        setUncertainty(uncertainty);
         init();
     }
 
@@ -94,7 +98,8 @@ public class RAProcessPlan implements ProcessPlan {
                 ChecksumComparable.getNameChecksum(getAgent()),
                 getRnd(),
                 ChecksumComparable.getNameChecksum(getModel()),
-                getNetworkFilter()
+                getNetworkFilter(),
+                getUncertainty()
         );
     }
 
@@ -171,6 +176,14 @@ public class RAProcessPlan implements ProcessPlan {
 
     public double getLogisticFactor() {
         return modelData().getLogisticFactor();
+    }
+
+    public void setUncertainty(Uncertainty uncertainty) {
+        this.uncertainty = uncertainty;
+    }
+
+    public Uncertainty getUncertainty() {
+        return uncertainty;
     }
 
     @Override

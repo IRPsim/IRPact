@@ -1,11 +1,14 @@
 package de.unileipzig.irpact.commons.util.data;
 
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.Checksums;
+
 import java.util.function.Consumer;
 
 /**
  * @author Daniel Abitz
  */
-public final class MutableDouble extends Number {
+public final class MutableDouble extends Number implements ChecksumComparable {
 
     protected final Consumer<?> INC_CONSUMER = obj -> inc();
     protected double value;
@@ -128,5 +131,10 @@ public final class MutableDouble extends Number {
     @Override
     public String toString() {
         return Double.toString(value);
+    }
+
+    @Override
+    public int getChecksum() {
+        return Checksums.SMART.getChecksum(value);
     }
 }

@@ -10,8 +10,6 @@ import de.unileipzig.irpact.develop.Todo;
 @Todo("Spec adden")
 public interface UncertaintyAttribute extends ConsumerAgentDoubleAttribute {
 
-    boolean isAutoAdjustment();
-
     double getUncertainty();
 
     double getConvergence();

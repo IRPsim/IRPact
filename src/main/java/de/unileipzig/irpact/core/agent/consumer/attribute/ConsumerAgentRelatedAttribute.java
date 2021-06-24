@@ -8,11 +8,6 @@ import de.unileipzig.irpact.commons.attribute.RelatedAttribute;
 public interface ConsumerAgentRelatedAttribute<R> extends ConsumerAgentAttribute, RelatedAttribute<R> {
 
     @Override
-    default ConsumerAgentValueAttribute<?> asValueAttribute() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     default ConsumerAgentRelatedAttribute<R> asRelatedAttribute() {
         return this;
     }

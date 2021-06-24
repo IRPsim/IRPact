@@ -17,10 +17,12 @@ public class TruncatedNormalDistribution
 
     protected String name;
 
+    protected final NormalDistribution normal;
     protected double mu;
     protected double sigma;
     protected double a;
     protected double b;
+    protected boolean changed = true;
 
     protected double mean;
     protected double variance;
@@ -28,10 +30,9 @@ public class TruncatedNormalDistribution
     protected double Z;
     protected double PhiAlpha;
 
-    protected NormalDistribution normal;
-
     public TruncatedNormalDistribution() {
         super(new RndGen(null));
+        this.normal = new NormalDistribution(getRandomGenerator(), 0, 1);
     }
 
     public TruncatedNormalDistribution(
@@ -50,6 +51,7 @@ public class TruncatedNormalDistribution
             double a,
             double b) {
         super(gen);
+        this.normal = new NormalDistribution(getRandomGenerator(), 0, 1);
         this.mu = mu;
         this.sigma = sigma;
         this.a = a;
@@ -83,8 +85,6 @@ public class TruncatedNormalDistribution
             throw new NullPointerException("missing random instance");
         }
 
-        this.normal = new NormalDistribution(getRandomGenerator(), mu, sigma);
-
         double alpha = (a - mu) / sigma;
         double beta = (b - mu) / sigma;
         double phiAlpha = normal.density(alpha);
@@ -102,11 +102,11 @@ public class TruncatedNormalDistribution
     }
 
     public boolean isInitalized() {
-        return normal != null;
+        return !changed;
     }
 
     public boolean isNotInitalized() {
-        return normal == null;
+        return changed;
     }
 
     protected void checkInitalized() {
@@ -116,7 +116,7 @@ public class TruncatedNormalDistribution
     }
 
     protected void resetInitalized() {
-        normal = null;
+        changed = true;
     }
 
     protected double xi(double x) {

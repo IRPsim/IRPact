@@ -16,6 +16,7 @@ import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InputParser;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertainty;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -104,6 +105,9 @@ public class InRAProcessModel implements InProcessModel {
 
     @FieldDefinition
     public InUncertaintyGroupAttribute[] uncertaintyGroupAttributes = new InUncertaintyGroupAttribute[0];
+
+    @FieldDefinition
+    public InUncertainty[] uncertainties;
 
     public InRAProcessModel() {
     }
@@ -288,6 +292,14 @@ public class InRAProcessModel implements InProcessModel {
         this.uncertaintyGroupAttributes = uncertaintyGroupAttributes;
     }
 
+    public void setUncertainties(InUncertainty[] uncertainties) {
+        this.uncertainties = uncertainties;
+    }
+
+    public InUncertainty[] getUncertainties() {
+        return uncertainties;
+    }
+
     public NPVXlsxData getNPVData(InputParser parser) throws ParsingException {
         return parser.parseEntityTo(getPvFile());
     }
@@ -321,6 +333,10 @@ public class InRAProcessModel implements InProcessModel {
 
         for(InUncertaintyGroupAttribute inUncert: getUncertaintyGroupAttributes()) {
             inUncert.setup(parser, model);
+        }
+
+        for(InUncertainty uncertainty: getUncertainties()) {
+            uncertainty.setup(parser, model);
         }
 
         if(hasNodeFilterScheme()) {

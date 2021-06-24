@@ -23,6 +23,9 @@ import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.process.ra.attributes3.BasicUncertaintyManager;
+import de.unileipzig.irpact.core.process.ra.attributes3.Uncertainty;
+import de.unileipzig.irpact.core.process.ra.attributes3.UncertaintyManager;
 import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
@@ -48,6 +51,9 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
     protected SimulationEnvironment environment;
 
     protected MultiConsumerAgentGroupAttributeSupplier uncertaintySupplier = new BasicMultiConsumerAgentGroupAttributeSupplier();
+
+    protected UncertaintyManager uncertaintyManager = new BasicUncertaintyManager();
+    protected Map<ConsumerAgent, Uncertainty> uncertaintyCache = new HashMap<>();
 
     protected ProcessPlanNodeFilterScheme nodeFilterScheme;
 
@@ -118,6 +124,10 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
 
     public MultiConsumerAgentGroupAttributeSupplier getUncertaintySupplier() {
         return uncertaintySupplier;
+    }
+
+    public UncertaintyManager getUncertaintyManager() {
+        return uncertaintyManager;
     }
 
     public void setUncertaintySupplier(MultiConsumerAgentGroupAttributeSupplier uncertaintySupplier) {
@@ -453,11 +463,32 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         };
     }
 
-    @Override
-    public ProcessPlan newPlan(Agent agent, Need need, Product product) {
-        ConsumerAgent cAgent = cast(agent);
-        Rnd rnd = environment.getSimulationRandom().deriveInstance();
-        return new RAProcessPlan(environment, this, rnd, cAgent, need, product);
+    private void initUncertainty() {
+        uncertaintyManager.initalize();
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            for(ConsumerAgent ca : cag.getAgents()) {
+                Uncertainty uncertainty = uncertaintyManager.createFor(ca);
+                uncertaintyCache.put(ca, uncertainty);
+            }
+        }
+    }
+
+    private synchronized Uncertainty getUncertainty(ConsumerAgent ca) {
+        Uncertainty uncertainty = uncertaintyCache.get(ca);
+        if(uncertainty == null) {
+            return syncGetUncertainty(ca);
+        } else {
+            return uncertainty;
+        }
+    }
+
+    private synchronized Uncertainty syncGetUncertainty(ConsumerAgent ca) {
+        Uncertainty uncertainty = uncertaintyCache.get(ca);
+        if(uncertainty == null) {
+            uncertainty = uncertaintyManager.createFor(ca);
+            uncertaintyCache.put(ca, uncertainty);
+        }
+        return uncertainty;
     }
 
     protected static ConsumerAgent cast(Agent agent) {
@@ -466,6 +497,14 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         } else {
             throw new IllegalArgumentException("requires ConsumerAgent");
         }
+    }
+
+    @Override
+    public ProcessPlan newPlan(Agent agent, Need need, Product product) {
+        ConsumerAgent cAgent = cast(agent);
+        Uncertainty uncertainty = getUncertainty(cAgent);
+        Rnd rnd = environment.getSimulationRandom().deriveInstance();
+        return new RAProcessPlan(environment, this, rnd, cAgent, need, product, uncertainty);
     }
 
     //=========================

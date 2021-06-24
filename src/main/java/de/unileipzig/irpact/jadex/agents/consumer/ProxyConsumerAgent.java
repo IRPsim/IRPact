@@ -3,6 +3,7 @@ package de.unileipzig.irpact.jadex.agents.consumer;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
+import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.commons.checksum.LoggableChecksum;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
@@ -86,7 +87,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         if(isSynced()) {
             return getRealAgent().getChecksum();
         } else {
-            return ChecksumComparable.getChecksum(
+            return Checksums.SMART.getChecksum(
                     getName(),
                     getGroup().getName(),
                     getInformationAuthority(),
@@ -191,10 +192,8 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
             processFindingScheme = realAgent.getProcessFindingScheme();
             needs.addAll(realAgent.getNeeds());
             addAllPlans(realAgent.getPlans());
-
         } catch (Throwable t) {
-            System.out.println("ERROR @ " + realAgent.getName() + " " + t.getClass() + " -> " + t.getMessage());
-            t.printStackTrace();
+            LOGGER.error("reset failed for agent '" + getName() + "'", t);
         }
     }
 

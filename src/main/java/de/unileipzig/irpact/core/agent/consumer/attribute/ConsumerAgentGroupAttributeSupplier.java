@@ -8,6 +8,8 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
  */
 public interface ConsumerAgentGroupAttributeSupplier extends Nameable {
 
+    boolean isSupported(ConsumerAgentGroup cag);
+
     boolean hasGroupAttribute(ConsumerAgentGroup cag);
 
     void addGroupAttributeTo(ConsumerAgentGroup cag);

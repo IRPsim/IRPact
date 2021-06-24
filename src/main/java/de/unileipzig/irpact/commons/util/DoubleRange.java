@@ -1,10 +1,13 @@
 package de.unileipzig.irpact.commons.util;
 
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.checksum.Checksums;
+import de.unileipzig.irpact.develop.AddToPersist;
 
 /**
  * @author Daniel Abitz
  */
+@AddToPersist
 public class DoubleRange extends NameableBase {
 
     protected double lowerBound;
@@ -72,5 +75,15 @@ public class DoubleRange extends NameableBase {
 
     public boolean isUpperBoundInclusive() {
         return upperBoundInclusive;
+    }
+
+    @Override
+    public int getChecksum() throws UnsupportedOperationException {
+        return Checksums.SMART.getChecksum(
+                lowerBound,
+                upperBound,
+                lowerBoundInclusive,
+                upperBoundInclusive
+        );
     }
 }

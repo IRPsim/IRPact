@@ -75,6 +75,11 @@ public class BasicUncertaintyGroupAttributeSupplier extends NameableBase impleme
     }
 
     @Override
+    public boolean isSupported(ConsumerAgentGroup cag) {
+        return true;
+    }
+
+    @Override
     public boolean hasGroupAttribute(ConsumerAgentGroup cag) {
         String uncertName = RAConstants.getUncertaintyAttributeName(attrName);
         return cag.hasGroupAttribute(uncertName);
@@ -122,7 +127,6 @@ public class BasicUncertaintyGroupAttributeSupplier extends NameableBase impleme
             cagAttr.setName(attrName);
             cagAttr.setUncertainty(uncert);
             cagAttr.setConvergence(conv);
-            cagAttr.setAutoAdjustment(autoAdjust);
             return cagAttr;
         }
     }

@@ -45,13 +45,29 @@ class TruncatedNormalDistributionTest {
     }
 
     @Test
-    void testRange42() {
+    void testRange42Range23() {
         TruncatedNormalDistribution tnd = new TruncatedNormalDistribution(
                 new Rnd(42),
                 0,
                 1,
                 2,
                 3
+        );
+        for(int i = 0; i < 10; i++) {
+            double s = tnd.sample();
+            assertTrue(tnd.getLowerBound() <= s);
+            assertTrue(s <= tnd.getUpperBound());
+        }
+    }
+
+    @Test
+    void testRange42Range05() {
+        TruncatedNormalDistribution tnd = new TruncatedNormalDistribution(
+                new Rnd(42),
+                0,
+                1,
+                -5,
+                0
         );
         for(int i = 0; i < 10; i++) {
             double s = tnd.sample();
