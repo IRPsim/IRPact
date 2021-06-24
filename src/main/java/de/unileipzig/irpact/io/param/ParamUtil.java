@@ -24,10 +24,16 @@ public final class ParamUtil {
     public static final String NAME_DELIMITER = "_";
 
     public static final String BOOLEAN_DOMAIN = "[0|1]";
+    public static final String CLOSED_0_1_DOMAIN = "[0,1]";
+    public static final String GEQ0_DOMAIN = "[0,)";
     public static final Object[] VALUE_TRUE = {"1"};
     public static final Object[] VALUE_FALSE = {"0"};
 
     private ParamUtil() {
+    }
+
+    public static Object[] varargs(Object singleton) {
+        return new Object[]{singleton};
     }
 
     public static Object[] varargs(Object... arr) {

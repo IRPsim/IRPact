@@ -7,13 +7,11 @@ import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-@Todo("persist aktualisieren bzw alles reinhauen was fehlt")
 public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(RAProcessModelPR.class);
@@ -38,10 +36,12 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
     protected BinaryJsonData doInitalizePersist(RAProcessModel object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
+        data.putDouble(object.getSpeedOfConvergence());
 
         manager.prepare(object.getModelData());
         manager.prepare(object.getRnd());
-        manager.prepare(object.getUncertaintySupplier());
+        manager.prepare(object.getUncertaintyManager());
+        manager.prepare(object.getRelativeAgreementAlgorithm());
         manager.prepare(object.getNodeFilterScheme());
 
         return data;
@@ -51,7 +51,8 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
     protected void doSetupPersist(RAProcessModel object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getModelData()));
         data.putLong(manager.ensureGetUID(object.getRnd()));
-        data.putLong(manager.ensureGetUID(object.getUncertaintySupplier()));
+        data.putLong(manager.ensureGetUID(object.getUncertaintyManager()));
+        data.putLong(manager.ensureGetUID(object.getRelativeAgreementAlgorithm()));
         data.putLong(manager.ensureGetUID(object.getNodeFilterScheme()));
     }
 
@@ -63,6 +64,8 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
     protected RAProcessModel doInitalizeRestore(BinaryJsonData data, RestoreManager manager) {
         RAProcessModel object = new RAProcessModel();
         object.setName(data.getText());
+        object.setSpeedOfConvergence(data.getDouble());
+
         return object;
     }
 
@@ -72,7 +75,7 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
 
         object.setModelData(manager.ensureGet(data.getLong()));
         object.setRnd(manager.ensureGet(data.getLong()));
-        object.setUncertaintySupplier(manager.ensureGet(data.getLong()));
-        object.setNodeFilterScheme(manager.ensureGet(data.getLong()));
+        object.setUncertaintyManager(manager.ensureGet(data.getLong()));
+        object.setRelativeAgreementAlgorithm(manager.ensureGet(data.getLong()));
     }
 }

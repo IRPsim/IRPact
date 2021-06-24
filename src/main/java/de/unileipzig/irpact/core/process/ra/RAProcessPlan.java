@@ -22,8 +22,8 @@ import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
-import de.unileipzig.irpact.core.process.ra.attributes.UncertaintyAttribute;
-import de.unileipzig.irpact.core.process.ra.attributes3.Uncertainty;
+import de.unileipzig.irpact.core.process.ra.alg.RelativeAgreementAlgorithm;
+import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -184,6 +184,10 @@ public class RAProcessPlan implements ProcessPlan {
 
     public Uncertainty getUncertainty() {
         return uncertainty;
+    }
+
+    public RelativeAgreementAlgorithm getRelativeAgreementAlgorithm() {
+        return getModel().getRelativeAgreementAlgorithm();
     }
 
     @Override
@@ -938,72 +942,30 @@ public class RAProcessPlan implements ProcessPlan {
         logShareOfAdopterInSocialNetworkAndLocalArea(totalGlobal, adopterGlobal, global, totalLocal, adopterLocal, local);
     }
 
+    @Todo
     protected void applyRelativeAgreement(ConsumerAgent target) {
         applyRelativeAgreement(target, RAConstants.NOVELTY_SEEKING);
         applyRelativeAgreement(target, RAConstants.DEPENDENT_JUDGMENT_MAKING);
         applyRelativeAgreement(target, RAConstants.ENVIRONMENTAL_CONCERN);
     }
 
+    @Todo
     protected void applyRelativeAgreement(ConsumerAgent target, String attrName) {
-        ConsumerAgentAttribute o1Attr = agent.getAttribute(attrName);
-        UncertaintyAttribute u1Attr = (UncertaintyAttribute) agent.getAttribute(RAConstants.getUncertaintyAttributeName(attrName));
-        ConsumerAgentAttribute o2Attr = target.getAttribute(attrName);
-        UncertaintyAttribute u2Attr = (UncertaintyAttribute) target.getAttribute(RAConstants.getUncertaintyAttributeName(attrName));
-        applyRelativeAgreement(agent, target, attrName, o1Attr, u1Attr, o2Attr, u2Attr);
-    }
-
-    protected void applyRelativeAgreement(
-            Agent a1, Agent a2, String attribute,
-            ConsumerAgentAttribute o1Attr,
-            UncertaintyAttribute u1Attr,
-            ConsumerAgentAttribute o2Attr,
-            UncertaintyAttribute u2Attr) {
-        //anmerkung: werte extrahieren um keine ueberschreibungen zu erhalten
-        double o1 = AttributeUtil.getDoubleValue(o1Attr);
-        double u1 = u1Attr.getUncertainty();
-        double m1 = u1Attr.getConvergence();
-        double o2 = AttributeUtil.getDoubleValue(o2Attr);
-        double u2 = u2Attr.getUncertainty();
-        double m2 = u2Attr.getConvergence();
-        //1 beeinflusst 2
-        applyRelativeAgreement(a1, a2, attribute, o1, u1, o2, u2, o2Attr, u2Attr, m2);
-        //2 beeinflusst 1
-        applyRelativeAgreement(a2, a1, attribute, o2, u2, o1, u1, o1Attr, u1Attr, m1);
-    }
-
-    /**
-     * Calculates the realtive agreement betwenn agent i and j, where i influences j and updates j.
-     *
-     * @param ai name of agent i
-     * @param aj name of agent j
-     * @param attribute attribute name
-     * @param oi opinion of i
-     * @param ui uncertainty of i
-     * @param oj opinion of j
-     * @param uj uncertainty of j
-     * @param ojAttr corresponding parameter to store the opinion of j
-     * @param ujAttr corresponding parameter to store the uncertainty of j
-     * @param m convergence parameter
-     */
-    protected void applyRelativeAgreement(
-            Agent ai, Agent aj, String attribute,
-            double oi,
-            double ui,
-            double oj,
-            double uj,
-            ConsumerAgentAttribute ojAttr,
-            ConsumerAgentAttribute ujAttr,
-            double m) {
-        double hij = Math.min(oi + ui, oj + uj) - Math.max(oi - ui, oj - uj);
-        if(hij > ui) {
-            double ra = hij / ui - 1.0;
-            double newOj = oj + m * ra * (oi - oj);
-            double newUj = uj + m * ra * (ui - uj);
-            AttributeUtil.setDoubleValue(ojAttr, newOj);
-            AttributeUtil.setDoubleValue(ujAttr, newUj);
-            logRelativeAgreementSuccess(ai.getName(), aj.getName(), attribute, oi, ui, oj, uj, m, hij, ra, newOj, newUj);
+        ConsumerAgentAttribute opinionThis = agent.getAttribute(attrName);
+        Uncertainty uncertaintyThis = getUncertainty();
+        ConsumerAgentAttribute opinionTarget = target.getAttribute(attrName);
+        Uncertainty uncertaintyTarget = getModel().getUncertainty(target);
+        if(uncertaintyTarget == null) {
+            LOGGER.warn(IRPSection.SIMULATION_PROCESS, "agent '{}' has no uncertainty - skip", target.getName());
         } else {
-            logRelativeAgreementFailed(ai.getName(), aj.getName(), attribute, oi, ui, oj, uj, hij);
+            getRelativeAgreementAlgorithm().apply(
+                    getAgent().getName(),
+                    opinionThis,
+                    uncertaintyThis,
+                    target.getName(),
+                    opinionTarget,
+                    uncertaintyTarget
+            );
         }
     }
 

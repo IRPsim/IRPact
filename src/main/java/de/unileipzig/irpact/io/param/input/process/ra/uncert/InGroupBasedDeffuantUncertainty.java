@@ -5,8 +5,8 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
-import de.unileipzig.irpact.core.process.ra.attributes3.GroupBasedDeffuantUncertaintyData;
-import de.unileipzig.irpact.core.process.ra.attributes3.GroupBasedDeffuantUncertaintySupplier;
+import de.unileipzig.irpact.core.process.ra.uncert.GroupBasedDeffuantUncertaintyData;
+import de.unileipzig.irpact.core.process.ra.uncert.GroupBasedDeffuantUncertaintySupplier;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -43,9 +43,6 @@ public class InGroupBasedDeffuantUncertainty implements InUncertainty {
     public String _name;
 
     @FieldDefinition
-    public double convergence;
-
-    @FieldDefinition
     public double extremistParameter;
 
     @FieldDefinition
@@ -76,14 +73,6 @@ public class InGroupBasedDeffuantUncertainty implements InUncertainty {
 
     public void setName(String name) {
         this._name = name;
-    }
-
-    public void setConvergence(double convergence) {
-        this.convergence = convergence;
-    }
-
-    public double getConvergence() {
-        return convergence;
     }
 
     public void setExtremistParameter(double extremistParameter) {
@@ -187,7 +176,7 @@ public class InGroupBasedDeffuantUncertainty implements InUncertainty {
             supplier.setName(getName() + "_" + cag.getName() + "_" + "_supplier");
             supplier.setConsumerAgentGroup(cag);
             supplier.setData(data);
-            supplier.setConvergence(getConvergence());
+            supplier.setSpeedOfConvergence(model.getSpeedOfConvergence());
 
             if(model.getUncertaintyManager().register(supplier)) {
                 LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added supplier '{}' to model '{}'", supplier.getName(), model.getName());

@@ -86,4 +86,13 @@ public class DoubleRange extends NameableBase {
                 upperBoundInclusive
         );
     }
+
+    @Override
+    public String toString() {
+        return (isLowerBoundInclusive() ? "[" : "(") +
+                getLowerBound() +
+                ", " +
+                getUpperBound() +
+                (isUpperBoundInclusive() ? "]" : ")");
+    }
 }

@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.process.ra.attributes3;
+package de.unileipzig.irpact.core.process.ra.uncert;
 
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.checksum.Checksums;
@@ -9,10 +9,10 @@ import de.unileipzig.irpact.develop.AddToPersist;
  * @author Daniel Abitz
  */
 @AddToPersist
-public class DeffuantUncertainty extends NameableBase implements Uncertainty{
+public class DeffuantUncertainty extends NameableBase implements Uncertainty {
 
     protected DeffuantUncertaintyData data;
-    protected double convergence;
+    protected double speedOfConvergence;
 
     public DeffuantUncertainty() {
     }
@@ -23,17 +23,25 @@ public class DeffuantUncertainty extends NameableBase implements Uncertainty{
     }
 
     @Override
+    public void updateUncertainty(ConsumerAgentAttribute attribute, double value) {
+    }
+
+    @Override
     public double getUncertainty(ConsumerAgentAttribute attribute) {
         return data.getUncertainty(attribute);
     }
 
     @Override
-    public double getConvergence(ConsumerAgentAttribute attribute) {
-        return convergence;
+    public double getSpeedOfConvergence(ConsumerAgentAttribute attribute) {
+        return speedOfConvergence;
     }
 
-    public void setConvergence(double convergence) {
-        this.convergence = convergence;
+    public void setSpeedOfConvergence(double speedOfConvergence) {
+        this.speedOfConvergence = speedOfConvergence;
+    }
+
+    public double getSpeedOfConvergence() {
+        return speedOfConvergence;
     }
 
     public void setData(DeffuantUncertaintyData data) {
@@ -49,7 +57,7 @@ public class DeffuantUncertainty extends NameableBase implements Uncertainty{
         return Checksums.SMART.getChecksum(
                 name,
                 data,
-                convergence
+                speedOfConvergence
         );
     }
 }

@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.process.ra.attributes3;
+package de.unileipzig.irpact.core.process.ra.uncert;
 
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.checksum.Checksums;
@@ -22,6 +22,14 @@ public class BasicUncertaintyManager extends NameableBase implements Uncertainty
 
     public BasicUncertaintyManager(Set<UncertaintySupplier> suppliers) {
         this.suppliers = suppliers;
+    }
+
+    public void setSuppliers(Set<UncertaintySupplier> suppliers) {
+        this.suppliers = suppliers;
+    }
+
+    public Set<UncertaintySupplier> getSuppliers() {
+        return suppliers;
     }
 
     @Override

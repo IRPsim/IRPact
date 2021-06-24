@@ -19,6 +19,7 @@ final class BinaryJsonUtil {
     }
 
     private static void ensureRegisterDefaults(Object manager) {
+        ensureRegister(manager, AttitudeGapRelativeAgreementAlgorithmPR.INSTANCE);
         ensureRegister(manager, BasicAdoptedProductPR.INSTANCE);
         ensureRegister(manager, BasicAgentManagerPR.INSTANCE);
         ensureRegister(manager, BasicConsumerAgentAnnualAttributePR.INSTANCE);
@@ -29,6 +30,8 @@ final class BinaryJsonUtil {
         ensureRegister(manager, BasicConsumerAgentProductRelatedAttributePR.INSTANCE);
         ensureRegister(manager, BasicConsumerAgentProductRelatedGroupAttributePR.INSTANCE);
         ensureRegister(manager, BasicDistanceEvaluatorPR.INSTANCE);
+        ensureRegister(manager, BasicDoubleRangePR.INSTANCE);
+        ensureRegister(manager, BasicUncertaintyManagerPR.INSTANCE);
         ensureRegister(manager, BasicEdgePR.INSTANCE);
         ensureRegister(manager, BasicJadexLifeCycleControlPR.INSTANCE);
         ensureRegister(manager, BasicJadexSimulationEnvironmentPR.INSTANCE);
@@ -44,8 +47,6 @@ final class BinaryJsonUtil {
         ensureRegister(manager, BasicSettingsPR.INSTANCE);
         ensureRegister(manager, BasicSocialGraphPR.INSTANCE);
         ensureRegister(manager, BasicSocialNetworkPR.INSTANCE);
-        ensureRegister(manager, BasicUncertaintyAttributePR.INSTANCE);
-        ensureRegister(manager, BasicUncertaintyGroupAttributeSupplierPR.INSTANCE);
         ensureRegister(manager, BasicVersionPR.INSTANCE);
         ensureRegister(manager, BernoulliDistributionPR.INSTANCE);
         ensureRegister(manager, BooleanDistributionPR.INSTANCE);
@@ -54,6 +55,7 @@ final class BinaryJsonUtil {
         ensureRegister(manager, BoundedUniformIntegerDistributionPR.INSTANCE);
         ensureRegister(manager, CeilingTimeAdvanceFunctionPR.INSTANCE);
         ensureRegister(manager, CompleteGraphTopologyPR.INSTANCE);
+        ensureRegister(manager, DeffuantUncertaintyPR.INSTANCE);
         ensureRegister(manager, DiracUnivariateDoubleDistributionPR.INSTANCE);
         ensureRegister(manager, DisabledNodeFilterPR.INSTANCE);
         ensureRegister(manager, DisabledProcessPlanNodeFilterSchemePR.INSTANCE);
@@ -63,9 +65,12 @@ final class BinaryJsonUtil {
         ensureRegister(manager, FixProcessModelFindingSchemePR.INSTANCE);
         ensureRegister(manager, FixProductFindingSchemePR.INSTANCE);
         ensureRegister(manager, FreeNetworkTopologyPR.INSTANCE);
+        ensureRegister(manager, GlobalDeffuantUncertaintyDataPR.INSTANCE);
+        ensureRegister(manager, GlobalDeffuantUncertaintySupplierPR.INSTANCE);
+        ensureRegister(manager, GroupBasedDeffuantUncertaintyDataPR.INSTANCE);
+        ensureRegister(manager, GroupBasedDeffuantUncertaintySupplierPR.INSTANCE);
         ensureRegister(manager, InversePR.INSTANCE);
         ensureRegister(manager, JadexConsumerAgentGroupPR.INSTANCE);
-        ensureRegister(manager, LinkedUncertaintyGroupAttributePR.INSTANCE);
         ensureRegister(manager, MaxDistanceNodeFilterPR.INSTANCE);
         ensureRegister(manager, NoDistancePR.INSTANCE);
         ensureRegister(manager, NormalDistributionPR.INSTANCE);

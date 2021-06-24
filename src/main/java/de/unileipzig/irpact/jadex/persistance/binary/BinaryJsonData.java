@@ -748,6 +748,25 @@ public final class BinaryJsonData extends PersistableBase implements JadexPersis
         }
     }
 
+    public void putTextCollection(
+            Collection<? extends CharSequence> coll) {
+        if(isSimulationMode()) return;
+        ArrayNode arr = validateSet(nextPutId()).addArray();
+        for(CharSequence a: coll) {
+            arr.add(a.toString());
+        }
+    }
+
+    public void getTextCollection(
+            Collection<? super String> out) {
+        checkSimulationMode();
+        ArrayNode arr = (ArrayNode) nextNode();
+        for(int i = 0; i < arr.size(); i++) {
+            String a = arr.get(i).textValue();
+            out.add(a);
+        }
+    }
+
     public <A> void putIdCollection(
             Collection<A> coll,
             ToLongFunction<A> toId) {
@@ -806,6 +825,30 @@ public final class BinaryJsonData extends PersistableBase implements JadexPersis
             A a = longToA.apply(id);
             B b = bFunc.apply(obj, idStr);
             out.put(a, b);
+        }
+    }
+
+    public <B> void putIdMapWithStringKey(
+            Map<? extends CharSequence, B> map,
+            ToLongFunction<B> toId) {
+        if(isSimulationMode()) return;
+        ObjectNode obj = validateSet(nextPutId()).addObject();
+        for(Map.Entry<? extends CharSequence, B> entry: map.entrySet()) {
+            String aKey = entry.getKey().toString();
+            long bId = toId.applyAsLong(entry.getValue());
+            obj.put(aKey, bId);
+        }
+    }
+
+    public <B> void getIdMapWithStringKey(
+            LongFunction<B> fromId,
+            Map<String, B> out) {
+        checkSimulationMode();
+        ObjectNode obj = (ObjectNode) nextNode();
+        for(String strKey: Util.iterateFieldNames(obj)) {
+            long bId = obj.get(strKey).longValue();
+            B b = fromId.apply(bId);
+            out.put(strKey, b);
         }
     }
 

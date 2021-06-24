@@ -38,7 +38,6 @@ import de.unileipzig.irptools.graphviz.def.GraphvizColor;
 import de.unileipzig.irptools.graphviz.def.GraphvizGlobal;
 import de.unileipzig.irptools.graphviz.def.GraphvizLayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.def.GraphvizOutputFormat;
-import de.unileipzig.irptools.io.base.data.AnnualEntry;
 import de.unileipzig.irptools.io.perennial.PerennialData;
 
 import java.awt.*;

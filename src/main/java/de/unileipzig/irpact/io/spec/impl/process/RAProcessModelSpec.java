@@ -3,7 +3,6 @@ package de.unileipzig.irpact.io.spec.impl.process;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.InUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.spec.SpecificationHelper;
 import de.unileipzig.irpact.io.spec.SpecificationJob;
 import de.unileipzig.irpact.io.spec.impl.AbstractSubSpec;
@@ -74,8 +73,8 @@ public class RAProcessModelSpec extends AbstractSubSpec<InRAProcessModel> {
         topo.setPvFile(job.findFile(rootSpec.getText(TAG_parameters, TAG_file)));
         topo.setLogisticFactor(rootSpec.getDouble(TAG_parameters, TAG_logisticFactor));
 
-        InUncertaintyGroupAttribute[] uncertAttrs = job.parseInlinedUncertaintyGroupAttributes(rootSpec.getNode(TAG_parameters, TAG_uncertainties));
-        topo.setUncertaintyGroupAttributes(uncertAttrs);
+//        InUncertaintyGroupAttribute[] uncertAttrs = job.parseInlinedUncertaintyGroupAttributes(rootSpec.getNode(TAG_parameters, TAG_uncertainties));
+//        topo.setUncertaintyGroupAttributes(uncertAttrs);
 
         job.cache(name, topo);
         return topo;
@@ -107,6 +106,6 @@ public class RAProcessModelSpec extends AbstractSubSpec<InRAProcessModel> {
         rootSpec.set(TAG_parameters, TAG_file, input.getPvFile().getName());
         rootSpec.set(TAG_parameters, TAG_logisticFactor, input.getLogisticFactor());
 
-        rootSpec.set(TAG_parameters, TAG_uncertainties, job.inlineEntitiyArray(input.getUncertaintyGroupAttributes(), true));
+//        rootSpec.set(TAG_parameters, TAG_uncertainties, job.inlineEntitiyArray(input.getUncertaintyGroupAttributes(), true));
     }
 }

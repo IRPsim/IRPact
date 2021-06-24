@@ -45,6 +45,7 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
         manager.prepare(object.getRnd());
         manager.prepare(object.getModel());
         manager.prepare(object.getNetworkFilter());
+        manager.prepare(object.getUncertainty());
 
         return data;
     }
@@ -57,6 +58,7 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
         data.putLong(manager.ensureGetUID(object.getRnd()));
         data.putLong(manager.ensureGetUID(object.getModel()));
         data.putLong(manager.ensureGetUID(object.getNetworkFilter()));
+        data.putLong(manager.ensureGetUID(object.getUncertainty()));
     }
 
     //=========================
@@ -84,10 +86,12 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
         object.setRnd(manager.ensureGet(data.getLong()));
         object.setModel(manager.ensureGet(data.getLong()));
         object.setNetworkFilter(manager.ensureGet(data.getLong()));
+        object.setUncertainty(manager.ensureGet(data.getLong()));
     }
 
     @Override
     protected void doFinalizeRestore(BinaryJsonData data, RAProcessPlan object, RestoreManager manager) {
         object.init();
+        object.getModel().registerUncertainty(object.getAgent(), object.getUncertainty(), false, false);
     }
 }

@@ -10,6 +10,11 @@ import de.unileipzig.irpact.io.param.ParamUtil;
 public final class RAConstants {
 
     public static final double DEFAULT_LOGISTIC_FACTOR = 1.0 / 8.0;
+    public static final double DEFAULT_SPEED_OF_CONVERGENCE = 0.5;
+    public static final double DEFAULT_ATTIDUTE_GAB = 1.75;
+    public static final double DEFAULT_NEUTRAL_CHANCE = 0.5;
+    public static final double DEFAULT_CONVERGENCE_CHANCE = 0.25;
+    public static final double DEFAULT_DIVERGENCE_CHANCE = 0.25;
 
     //Agent
     public static final String NOVELTY_SEEKING = "novelty_seeking";                   //A2
@@ -56,7 +61,6 @@ public final class RAConstants {
     public static final String PRIVATE = "PRIVAT";
 
     public static final String UNCERTAINTY_SUFFIX = "uncertainty";
-
     public static final String RATE_OF_CONVERGENCE = "rate_of_convergence";
 
     public static final String AWARENESS = "awareness";

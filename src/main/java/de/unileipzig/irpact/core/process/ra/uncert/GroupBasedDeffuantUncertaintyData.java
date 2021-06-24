@@ -1,10 +1,10 @@
-package de.unileipzig.irpact.core.process.ra.attributes3;
+package de.unileipzig.irpact.core.process.ra.uncert;
 
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.commons.util.DoubleRange;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
-import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.develop.AddToPersist;
 
 import java.util.*;
@@ -13,24 +13,22 @@ import java.util.*;
  * @author Daniel Abitz
  */
 @AddToPersist
-public class GlobalDeffuantUncertaintyData extends NameableBase implements DeffuantUncertaintyData {
+public class GroupBasedDeffuantUncertaintyData extends NameableBase implements DeffuantUncertaintyData {
 
     protected Map<String, DoubleRange> ranges;
-    protected Set<String> attributeNames;
-    protected SimulationEnvironment environment;
+    protected ConsumerAgentGroup cag;
     protected double extremistParameter;
     protected double extremistUncertainty;
     protected double moderateUncertainty;
     protected boolean lowerBoundInclusive;
     protected boolean upperBoundInclusive;
 
-    public GlobalDeffuantUncertaintyData() {
-        this(new HashMap<>(), new LinkedHashSet<>());
+    public GroupBasedDeffuantUncertaintyData() {
+        this(new HashMap<>());
     }
 
-    public GlobalDeffuantUncertaintyData(Map<String, DoubleRange> ranges, Set<String> attributeNames) {
+    public GroupBasedDeffuantUncertaintyData(Map<String, DoubleRange> ranges) {
         this.ranges = ranges;
-        this.attributeNames = attributeNames;
     }
 
     @Override
@@ -55,6 +53,7 @@ public class GlobalDeffuantUncertaintyData extends NameableBase implements Deffu
 
     @Override
     public void update() {
+        Set<String> attributeNames = new LinkedHashSet<>(ranges.keySet());
         for(String attributeName: attributeNames) {
             put(attributeName);
         }
@@ -65,7 +64,7 @@ public class GlobalDeffuantUncertaintyData extends NameableBase implements Deffu
             return;
         }
 
-        double[] sortedValues = environment.getAgents().streamConsumerAgents()
+        double[] sortedValues = cag.streamAgents()
                 .map(ca -> ca.getAttribute(attributeName))
                 .mapToDouble(attr -> attr.asValueAttribute().getDoubleValue())
                 .sorted()
@@ -83,7 +82,6 @@ public class GlobalDeffuantUncertaintyData extends NameableBase implements Deffu
         range.setUpperBoundInclusive(upperBoundInclusive);
 
         ranges.put(attributeName, range);
-        attributeNames.add(attributeName);
     }
 
     public boolean isDisabled() {
@@ -134,28 +132,28 @@ public class GlobalDeffuantUncertaintyData extends NameableBase implements Deffu
         return ranges;
     }
 
-    public Set<String> getAttributeNames() {
-        return attributeNames;
-    }
-
     public boolean addAttributeName(String name) {
-        return attributeNames.add(name);
+        if(ranges.containsKey(name)) {
+            return false;
+        } else {
+            ranges.put(name, null);
+            return true;
+        }
     }
 
-    public void setEnvironment(SimulationEnvironment environment) {
-        this.environment = environment;
+    public void setConsumerAgentGroup(ConsumerAgentGroup cag) {
+        this.cag = cag;
     }
 
-    public SimulationEnvironment getEnvironment() {
-        return environment;
+    public ConsumerAgentGroup getConsumerAgentGroup() {
+        return cag;
     }
 
     @Override
     public int getChecksum() throws UnsupportedOperationException {
         return Checksums.SMART.getChecksum(
                 ranges,
-                Checksums.SMART.getNamedChecksum(environment),
-                attributeNames,
+                Checksums.SMART.getNamedChecksum(cag),
                 extremistParameter,
                 extremistUncertainty,
                 moderateUncertainty,

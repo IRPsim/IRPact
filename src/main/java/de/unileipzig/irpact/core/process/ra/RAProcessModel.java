@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.checksum.LoggableChecksum;
+import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.time.Timestamp;
@@ -11,10 +12,8 @@ import de.unileipzig.irpact.commons.util.data.DataType;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.consumer.*;
-import de.unileipzig.irpact.core.agent.consumer.attribute.BasicMultiConsumerAgentGroupAttributeSupplier;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAnnualGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.MultiConsumerAgentGroupAttributeSupplier;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.misc.MissingDataException;
@@ -23,9 +22,10 @@ import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
-import de.unileipzig.irpact.core.process.ra.attributes3.BasicUncertaintyManager;
-import de.unileipzig.irpact.core.process.ra.attributes3.Uncertainty;
-import de.unileipzig.irpact.core.process.ra.attributes3.UncertaintyManager;
+import de.unileipzig.irpact.core.process.ra.alg.RelativeAgreementAlgorithm;
+import de.unileipzig.irpact.core.process.ra.uncert.BasicUncertaintyManager;
+import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
+import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyManager;
 import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
@@ -50,8 +50,8 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
 
     protected SimulationEnvironment environment;
 
-    protected MultiConsumerAgentGroupAttributeSupplier uncertaintySupplier = new BasicMultiConsumerAgentGroupAttributeSupplier();
-
+    protected RelativeAgreementAlgorithm raAlgorithm;
+    protected double speedOfConvergence;
     protected UncertaintyManager uncertaintyManager = new BasicUncertaintyManager();
     protected Map<ConsumerAgent, Uncertainty> uncertaintyCache = new HashMap<>();
 
@@ -74,7 +74,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
                 getName(),
                 modelData,
                 rnd,
-                uncertaintySupplier
+                uncertaintyManager
         );
     }
 
@@ -91,7 +91,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         logHash("name", ChecksumComparable.getChecksum(getName()));
         logHash("model data", ChecksumComparable.getChecksum(modelData));
         logHash("rnd", ChecksumComparable.getChecksum(rnd));
-        logHash("uncertainty supplier", ChecksumComparable.getChecksum(uncertaintySupplier));
+        logHash("uncertainty manager", ChecksumComparable.getChecksum(uncertaintyManager));
     }
 
     public void setEnvironment(SimulationEnvironment environment) {
@@ -122,16 +122,28 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         this.npvData = npvData;
     }
 
-    public MultiConsumerAgentGroupAttributeSupplier getUncertaintySupplier() {
-        return uncertaintySupplier;
+    public void setSpeedOfConvergence(double speedOfConvergence) {
+        this.speedOfConvergence = speedOfConvergence;
+    }
+
+    public double getSpeedOfConvergence() {
+        return speedOfConvergence;
+    }
+
+    public void setRelativeAgreementAlgorithm(RelativeAgreementAlgorithm raAlgorithm) {
+        this.raAlgorithm = raAlgorithm;
+    }
+
+    public RelativeAgreementAlgorithm getRelativeAgreementAlgorithm() {
+        return raAlgorithm;
     }
 
     public UncertaintyManager getUncertaintyManager() {
         return uncertaintyManager;
     }
 
-    public void setUncertaintySupplier(MultiConsumerAgentGroupAttributeSupplier uncertaintySupplier) {
-        this.uncertaintySupplier = uncertaintySupplier;
+    public void setUncertaintyManager(UncertaintyManager uncertaintyManager) {
+        this.uncertaintyManager = uncertaintyManager;
     }
 
     public void setNodeFilterScheme(ProcessPlanNodeFilterScheme nodeFilterScheme) {
@@ -147,8 +159,6 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         if(npvData != null) {
             initNPVMatrixWithFile();
         }
-
-        addMissingGroupAttributesToCags();
     }
 
     private void initNPVMatrixWithFile() {
@@ -166,12 +176,6 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
             NPVMatrix matrix = new NPVMatrix();
             matrix.calculate(npvCalculator, y);
             modelData.put(y, matrix);
-        }
-    }
-
-    private void addMissingGroupAttributesToCags() {
-        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-            uncertaintySupplier.addAllGroupAttributesTo(cag);
         }
     }
 
@@ -236,6 +240,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
     @Override
     public void postAgentCreationValidation() throws ValidationException {
         checkAttributes();
+        initUncertainty();
     }
 
     private void checkAttributes() throws ValidationException {
@@ -265,6 +270,16 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         Attribute attr = ca.findAttribute(name);
         if(attr.isNoValueAttribute() || attr.asValueAttribute().isNoDataType(DataType.DOUBLE)) {
             throw ExceptionUtil.create(ValidationException::new, "consumer agent '{}' has no double-attribute '{}'", name);
+        }
+    }
+
+    private void initUncertainty() {
+        uncertaintyManager.initalize();
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            for(ConsumerAgent ca : cag.getAgents()) {
+                Uncertainty uncertainty = uncertaintyManager.createFor(ca);
+                registerUncertainty(ca, uncertainty, false, environment.isRestored());
+            }
         }
     }
 
@@ -463,30 +478,36 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         };
     }
 
-    private void initUncertainty() {
-        uncertaintyManager.initalize();
-        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-            for(ConsumerAgent ca : cag.getAgents()) {
-                Uncertainty uncertainty = uncertaintyManager.createFor(ca);
-                uncertaintyCache.put(ca, uncertainty);
-            }
+    public void registerUncertainty(ConsumerAgent ca, Uncertainty uncertainty, boolean overwrite, boolean allowExisting) {
+        if(!allowExisting && uncertaintyCache.containsKey(ca)) {
+            throw new IRPactIllegalArgumentException("uncertainty for agent '{}' already exists", ca.getName());
         }
+
+        if(!overwrite && uncertaintyCache.containsKey(ca)) {
+            return;
+        }
+
+        uncertaintyCache.put(ca, uncertainty);
     }
 
-    private synchronized Uncertainty getUncertainty(ConsumerAgent ca) {
+    protected Uncertainty getUncertainty(ConsumerAgent ca) {
+        return uncertaintyCache.get(ca);
+    }
+
+    private synchronized Uncertainty getUncertainty0(ConsumerAgent ca) {
         Uncertainty uncertainty = uncertaintyCache.get(ca);
         if(uncertainty == null) {
-            return syncGetUncertainty(ca);
+            return syncGetUncertainty0(ca);
         } else {
             return uncertainty;
         }
     }
 
-    private synchronized Uncertainty syncGetUncertainty(ConsumerAgent ca) {
+    private synchronized Uncertainty syncGetUncertainty0(ConsumerAgent ca) {
         Uncertainty uncertainty = uncertaintyCache.get(ca);
         if(uncertainty == null) {
             uncertainty = uncertaintyManager.createFor(ca);
-            uncertaintyCache.put(ca, uncertainty);
+            registerUncertainty(ca, uncertainty, true, false);
         }
         return uncertainty;
     }
@@ -502,7 +523,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
     @Override
     public ProcessPlan newPlan(Agent agent, Need need, Product product) {
         ConsumerAgent cAgent = cast(agent);
-        Uncertainty uncertainty = getUncertainty(cAgent);
+        Uncertainty uncertainty = getUncertainty0(cAgent);
         Rnd rnd = environment.getSimulationRandom().deriveInstance();
         return new RAProcessPlan(environment, this, rnd, cAgent, need, product, uncertainty);
     }

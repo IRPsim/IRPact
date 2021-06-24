@@ -5,8 +5,8 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
-import de.unileipzig.irpact.core.process.ra.attributes3.GlobalDeffuantUncertaintySupplier;
-import de.unileipzig.irpact.core.process.ra.attributes3.GlobalDeffuantUncertaintyData;
+import de.unileipzig.irpact.core.process.ra.uncert.GlobalDeffuantUncertaintySupplier;
+import de.unileipzig.irpact.core.process.ra.uncert.GlobalDeffuantUncertaintyData;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -43,9 +43,6 @@ public class InGlobalDeffuantUncertainty implements InUncertainty {
     public String _name;
 
     @FieldDefinition
-    public double convergence;
-
-    @FieldDefinition
     public double extremistParameter;
 
     @FieldDefinition
@@ -76,14 +73,6 @@ public class InGlobalDeffuantUncertainty implements InUncertainty {
 
     public void setName(String name) {
         this._name = name;
-    }
-
-    public void setConvergence(double convergence) {
-        this.convergence = convergence;
-    }
-
-    public double getConvergence() {
-        return convergence;
     }
 
     public void setExtremistParameter(double extremistParameter) {
@@ -181,7 +170,7 @@ public class InGlobalDeffuantUncertainty implements InUncertainty {
         GlobalDeffuantUncertaintySupplier supplier = new GlobalDeffuantUncertaintySupplier();
         supplier.setName(getName() + "_supplier");
         supplier.setData(data);
-        supplier.setConvergence(getConvergence());
+        supplier.setSpeedOfConvergence(model.getSpeedOfConvergence());
 
         for(InAttributeName attrName: getAttributeNames()) {
             data.addAttributeName(attrName.getName());

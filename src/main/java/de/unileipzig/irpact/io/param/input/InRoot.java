@@ -28,6 +28,9 @@ import de.unileipzig.irpact.io.param.input.file.InFile;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InGlobalDeffuantUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InGroupBasedDeffuantUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertainty;
 import de.unileipzig.irpact.io.param.irpopt.*;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.names.InName;
@@ -697,18 +700,15 @@ public class InRoot implements RootClass {
             InNumberOfTies.class,
             InUnlinkedGraphTopology.class,
 
-            InAutoUncertaintyGroupAttribute.class,
+            InGlobalDeffuantUncertainty.class,
+            InGroupBasedDeffuantUncertainty.class,
+            InUncertainty.class,
+
             InDisabledProcessPlanNodeFilterScheme.class,
             InEntireNetworkNodeFilterScheme.class,
-            InIndividualAttributeBasedUncertaintyGroupAttribute.class,
-            InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute.class,
-            InNameBasedUncertaintyGroupAttribute.class,
-            InNameBasedUncertaintyWithConvergenceGroupAttribute.class,
-            InPVactUncertaintyGroupAttribute.class,
             InRAProcessModel.class,
             InRAProcessPlanMaxDistanceFilterScheme.class,
             InRAProcessPlanNodeFilterScheme.class,
-            InUncertaintyGroupAttribute.class,
             InProcessModel.class,
             InProcessPlanNodeFilterScheme.class,
 
@@ -882,12 +882,8 @@ public class InRoot implements RootClass {
         addPathElement(res, PROCESS_MODEL, ROOT);
                 addPathElement(res, InRAProcessModel.thisName(), PROCESS_MODEL);
                         addPathElement(res, PROCESS_MODEL_RA_UNCERT, InRAProcessModel.thisName());
-                                addPathElement(res, InAutoUncertaintyGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
-                                addPathElement(res, InIndividualAttributeBasedUncertaintyGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
-                                addPathElement(res, InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
-                                addPathElement(res, InNameBasedUncertaintyGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
-                                addPathElement(res, InNameBasedUncertaintyWithConvergenceGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
-                                addPathElement(res, InPVactUncertaintyGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
+                                addPathElement(res, InGlobalDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
+                                addPathElement(res, InGroupBasedDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
                 addPathElement(res, PROCESS_FILTER, PROCESS_MODEL);
                         addPathElement(res, InDisabledProcessPlanNodeFilterScheme.thisName(), PROCESS_FILTER);
                         addPathElement(res, InEntireNetworkNodeFilterScheme.thisName(), PROCESS_FILTER);

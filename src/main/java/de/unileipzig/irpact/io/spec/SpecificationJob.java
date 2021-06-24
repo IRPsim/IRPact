@@ -16,7 +16,6 @@ import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistri
 import de.unileipzig.irpact.io.param.input.file.InFile;
 import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.network.InDistanceEvaluator;
-import de.unileipzig.irpact.io.param.input.process.ra.InUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.param.input.product.InProductGroup;
 import de.unileipzig.irpact.io.param.input.product.InFixProduct;
 import de.unileipzig.irpact.io.param.input.product.InProductFindingScheme;
@@ -25,7 +24,6 @@ import de.unileipzig.irpact.io.spec.impl.agent.consumer.ConsumerAgentGroupSpec;
 import de.unileipzig.irpact.io.spec.impl.distance.DistanceEvaluatorSpec;
 import de.unileipzig.irpact.io.spec.impl.distribution.UnivariateDoubleDistributionSpec;
 import de.unileipzig.irpact.io.spec.impl.file.FilesSpec;
-import de.unileipzig.irpact.io.spec.impl.process.UncertaintyGroupAttributeSpec;
 import de.unileipzig.irpact.io.spec.impl.product.FixProductSpec;
 import de.unileipzig.irpact.io.spec.impl.product.ProductFindingSchemeSpec;
 import de.unileipzig.irpact.io.spec.impl.product.ProductGroupSpec;
@@ -355,15 +353,6 @@ public class SpecificationJob {
             arr[i] = obj;
         }
         return arr;
-    }
-
-    public InUncertaintyGroupAttribute[] parseInlinedUncertaintyGroupAttributes(JsonNode node) throws ParsingException {
-        return parseInlinedArray(
-                node,
-                UncertaintyGroupAttributeSpec.INSTANCE,
-                InUncertaintyGroupAttribute::getName,
-                InUncertaintyGroupAttribute[]::new
-        );
     }
 
     //=========================
