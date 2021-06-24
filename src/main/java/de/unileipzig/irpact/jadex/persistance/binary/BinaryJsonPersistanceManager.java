@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.persistance.binary;
 
+import de.unileipzig.irpact.commons.exception.IRPactException;
 import de.unileipzig.irpact.commons.persistence.BasicPersistManager;
 import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.Persister;
@@ -25,6 +26,7 @@ public class BinaryJsonPersistanceManager extends BasicPersistManager {
     protected MetaPR metaPR;
     protected Holder classManagerHolder;
     protected ClassManagerPR classManagerPR;
+    protected boolean useGeneric = false;
 
     public BinaryJsonPersistanceManager() {
         init();
@@ -91,5 +93,33 @@ public class BinaryJsonPersistanceManager extends BasicPersistManager {
 
     public <T> void ensureRegister(BinaryPersister<T> persister) {
         super.ensureRegister(persister);
+    }
+
+    protected <T> GenericPR<T> createGeneric(Class<T> c) throws PersistException {
+        if(GenericPR.persistWith(c, this)) {
+            try {
+                GenericPR<T> persister = new GenericPR<>(c);
+                ensureRegister(persister);
+                return persister;
+            } catch (IRPactException e) {
+                throw new PersistException(e);
+            }
+        } else {
+            throw new PersistException("missing persister for class '" + c + "'");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected <T> BinaryPersister<T> ensureGetPersister(T obj) throws PersistException {
+        BinaryPersister<T> persister = (BinaryPersister<T>) persisterMap.get(obj.getClass());
+        if(persister == null) {
+            if(useGeneric) {
+                persister = (BinaryPersister<T>) createGeneric(obj.getClass());
+            } else {
+                throw new PersistException("missing persister for class '" + obj.getClass() + "'");
+            }
+        }
+        return persister;
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.exception.IRPactException;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.Persistable;
@@ -17,7 +18,6 @@ import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
 import de.unileipzig.irpact.jadex.persistance.binary.io.BinaryPersistJson;
 import de.unileipzig.irpact.jadex.persistance.binary.meta.ClassManagerPR;
 import de.unileipzig.irpact.jadex.persistance.binary.meta.MetaPR;
-import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -53,6 +53,7 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
     protected boolean hasValidationChecksum;
     protected int validationChecksum;
     protected Object restoredInstance;
+    protected boolean useGenericPR = false;
 
     public BinaryJsonRestoreManager() {
         init();
@@ -91,6 +92,22 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private <T> GenericPR<T> createGeneric(String type) throws RestoreException {
+        try {
+            Class<T> c = (Class<T>) Class.forName(type);
+            if(GenericPR.restoreWith(c, this)) {
+                GenericPR<T> restorer = new GenericPR<>(c);
+                ensureRegister(restorer);
+                return restorer;
+            } else {
+                throw new RestoreException("missing restorer for '" + type + "'");
+            }
+        } catch (ClassNotFoundException | IRPactException e) {
+            throw new RestoreException(e);
+        }
+    }
+
     public <T> void ensureRegister(BinaryRestorer<T> restorer) {
         if(!register(restorer)) {
             throw new IllegalArgumentException("class '" + restorer.getType().getName() + "' already exists");
@@ -123,10 +140,14 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
     }
 
     @SuppressWarnings("unchecked")
-    protected <T> BinaryRestorer<T> ensureGetRestorer(String type) {
+    protected <T> BinaryRestorer<T> ensureGetRestorer(String type) throws RestoreException {
         BinaryRestorer<T> restorer = (BinaryRestorer<T>) restorerMap.get(type);
         if(restorer == null) {
-            throw new NoSuchElementException("missing restorer for '" + type + "'");
+            if(useGenericPR) {
+                restorer = createGeneric(type);
+            } else {
+                throw new NoSuchElementException("missing restorer for '" + type + "'");
+            }
         }
         return restorer;
     }

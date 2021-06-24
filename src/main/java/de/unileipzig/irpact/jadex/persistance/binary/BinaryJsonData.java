@@ -804,25 +804,24 @@ public final class BinaryJsonData extends PersistableBase implements JadexPersis
 
     public <A, B> void putMap(
             Map<A, B> map,
-            ToLongFunction<A> aToLong,
+            Function<A, ? extends String> aToStr,
             TriConsumer<ObjectNode, String, B> bApplier) {
         if(isSimulationMode()) return;
         ObjectNode obj = validateSet(nextPutId()).addObject();
         for(Map.Entry<A, B> entry: map.entrySet()) {
-            long aLong = aToLong.applyAsLong(entry.getKey());
-            bApplier.accept(obj, Long.toString(aLong), entry.getValue());
+            String aStr = aToStr.apply(entry.getKey());
+            bApplier.accept(obj, aStr, entry.getValue());
         }
     }
 
     public <A, B> void getMap(
-            LongFunction<A> longToA,
+            Function<? super String, A> strToA,
             BiFunction<ObjectNode, String, B> bFunc,
             Map<A, B> out) {
         checkSimulationMode();
         ObjectNode obj = (ObjectNode) nextNode();
         for(String idStr: Util.iterateFieldNames(obj)) {
-            long id = Long.parseLong(idStr);
-            A a = longToA.apply(id);
+            A a = strToA.apply(idStr);
             B b = bFunc.apply(obj, idStr);
             out.put(a, b);
         }
@@ -854,40 +853,38 @@ public final class BinaryJsonData extends PersistableBase implements JadexPersis
 
     public <A, B, C> void putMapMap(
             Map<A, Map<B, C>> mapmap,
-            ToLongFunction<A> aToLong,
-            ToLongFunction<B> bToLong,
+            Function<A, ? extends String> aToStr,
+            Function<B, ? extends String> bToStr,
             TriConsumer<ObjectNode, String, C> cApplier) {
         if(isSimulationMode()) return;
         ObjectNode obj = validateSet(nextPutId()).addObject();
         for(Map.Entry<A, Map<B, C>> entry: mapmap.entrySet()) {
-            long aLong = aToLong.applyAsLong(entry.getKey());
-            ObjectNode srcNode = obj.putObject(Long.toString(aLong));
+            String aStr = aToStr.apply(entry.getKey());
+            ObjectNode srcNode = obj.putObject(aStr);
             for(Map.Entry<B, C> entry0: entry.getValue().entrySet()) {
-                long bLong = bToLong.applyAsLong(entry0.getKey());
-                cApplier.accept(srcNode, Long.toString(bLong), entry0.getValue());
+                String bStr = bToStr.apply(entry0.getKey());
+                cApplier.accept(srcNode, bStr, entry0.getValue());
             }
         }
     }
 
     public <A, B, C> void getMapMap(
-            LongFunction<A> longToA,
-            LongFunction<B> longToB,
+            Function<? super String, A> strToA,
+            Function<? super String, B> strToB,
             BiFunction<ObjectNode, String, C> cFunc,
             Map<A, Map<B, C>> out,
             MapSupplier supplier) {
         checkSimulationMode();
         ObjectNode obj = (ObjectNode) nextNode();
         for(Map.Entry<String, JsonNode> entry: Util.iterateFields(obj)) {
-            String aIdStr = entry.getKey();
-            long aId = Long.parseLong(aIdStr);
-            A a = longToA.apply(aId);
+            String aStr = entry.getKey();
+            A a = strToA.apply(aStr);
 
             Map<B, C> mapBC = out.computeIfAbsent(a, _a -> supplier.newMap());
             ObjectNode child = (ObjectNode) entry.getValue();
-            for(String bIdStr: Util.iterateFieldNames(child)) {
-                long bId = Long.parseLong(bIdStr);
-                B b = longToB.apply(bId);
-                C c = cFunc.apply(child, bIdStr);
+            for(String bStr: Util.iterateFieldNames(child)) {
+                B b = strToB.apply(bStr);
+                C c = cFunc.apply(child, bStr);
                 mapBC.put(b, c);
             }
         }

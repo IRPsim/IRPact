@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.jadex.persistance.binary.annotation;
 
+import de.unileipzig.irpact.jadex.persistance.binary.GenericPR;
+
 import java.lang.annotation.*;
 
 /**
