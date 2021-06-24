@@ -6,8 +6,8 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
-import de.unileipzig.irpact.core.process.ra.uncert.GlobalDeffuantUncertaintySupplier;
 import de.unileipzig.irpact.core.process.ra.uncert.GlobalDeffuantUncertaintyData;
+import de.unileipzig.irpact.core.process.ra.uncert.GlobalDeffuantUncertaintySupplier;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -23,13 +23,12 @@ import java.lang.invoke.MethodHandles;
 import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_MODEL;
 import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_MODEL_RA_UNCERT;
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.VALUE_FALSE;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
-public class InGlobalDeffuantUncertainty implements InUncertainty {
+public class InPVactGlobalDeffuantUncertainty implements InUncertainty {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -81,10 +80,7 @@ public class InGlobalDeffuantUncertainty implements InUncertainty {
     @FieldDefinition
     public InConsumerAgentGroup[] cags;
 
-    @FieldDefinition
-    public InAttributeName[] attributeNames;
-
-    public InGlobalDeffuantUncertainty() {
+    public InPVactGlobalDeffuantUncertainty() {
     }
 
     @Override
@@ -144,14 +140,6 @@ public class InGlobalDeffuantUncertainty implements InUncertainty {
         return upperBoundInclusive;
     }
 
-    public void setAttributeNames(InAttributeName[] attributeNames) {
-        this.attributeNames = attributeNames;
-    }
-
-    public InAttributeName[] getAttributeNames() throws ParsingException {
-        return ParamUtil.getNonEmptyArray(attributeNames, "attributeNames");
-    }
-
     public void setConsumerAgentGroups(InConsumerAgentGroup[] cags) {
         this.cags = cags;
     }
@@ -161,12 +149,12 @@ public class InGlobalDeffuantUncertainty implements InUncertainty {
     }
 
     @Override
-    public InGlobalDeffuantUncertainty copy(CopyCache cache) {
+    public InPVactGlobalDeffuantUncertainty copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InGlobalDeffuantUncertainty newCopy(CopyCache cache) {
-        InGlobalDeffuantUncertainty copy = new InGlobalDeffuantUncertainty();
+    public InPVactGlobalDeffuantUncertainty newCopy(CopyCache cache) {
+        InPVactGlobalDeffuantUncertainty copy = new InPVactGlobalDeffuantUncertainty();
         copy._name = _name;
         copy.extremistParameter = extremistParameter;
         copy.extremistUncertainty = extremistUncertainty;
@@ -174,7 +162,6 @@ public class InGlobalDeffuantUncertainty implements InUncertainty {
         copy.lowerBoundInclusive = lowerBoundInclusive;
         copy.upperBoundInclusive = upperBoundInclusive;
         copy.cags = cache.copyArray(cags);
-        copy.attributeNames = cache.copyArray(attributeNames);
         return copy;
     }
 
@@ -201,8 +188,8 @@ public class InGlobalDeffuantUncertainty implements InUncertainty {
         supplier.setData(data);
         supplier.setSpeedOfConvergence(model.getSpeedOfConvergence());
 
-        for(InAttributeName attrName: getAttributeNames()) {
-            data.addAttributeName(attrName.getName());
+        for(String attrName: RAConstants.UNCERTAINTY_ATTRIBUTES) {
+            data.addAttributeName(attrName);
         }
 
         for(InConsumerAgentGroup inCag: getConsumerAgentGroups()) {

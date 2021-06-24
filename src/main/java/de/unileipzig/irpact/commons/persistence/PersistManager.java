@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons.persistence;
 
+import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.core.util.MetaData;
 
 import java.util.*;
@@ -8,7 +9,7 @@ import java.util.function.ToLongFunction;
 /**
  * @author Daniel Abitz
  */
-public interface PersistManager {
+public interface PersistManager extends Nameable {
 
     <T> void persist(MetaData metaData, T object) throws PersistException;
 

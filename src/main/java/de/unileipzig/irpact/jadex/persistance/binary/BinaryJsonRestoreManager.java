@@ -3,6 +3,7 @@ package de.unileipzig.irpact.jadex.persistance.binary;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.Nameable;
+import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.Persistable;
@@ -29,7 +30,7 @@ import java.util.function.LongFunction;
  * @author Daniel Abitz
  */
 @SuppressWarnings("unused")
-public class BinaryJsonRestoreManager implements RestoreManager {
+public class BinaryJsonRestoreManager extends NameableBase implements RestoreManager {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BinaryJsonRestoreManager.class);
 

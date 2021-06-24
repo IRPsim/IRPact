@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.process.ra.uncert.GroupBasedDeffuantUncertaintyData;
 import de.unileipzig.irpact.core.process.ra.uncert.GroupBasedDeffuantUncertaintySupplier;
@@ -18,6 +19,10 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
+
+import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_MODEL;
+import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_MODEL_RA_UNCERT;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz
@@ -36,6 +41,20 @@ public class InGroupBasedDeffuantUncertainty implements InUncertainty {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
+        putClassPath(res, thisClass(), PROCESS_MODEL, PROCESS_MODEL_RA_UNCERT, thisName());
+
+        addEntry(res, thisClass(), "extremistParameter");
+        addEntry(res, thisClass(), "extremistUncertainty");
+        addEntry(res, thisClass(), "moderateUncertainty");
+        addEntry(res, thisClass(), "lowerBoundInclusive");
+        addEntry(res, thisClass(), "upperBoundInclusive");
+        addEntry(res, thisClass(), "cags");
+
+        setDefault(res, thisClass(), "extremistParameter", VALUE_NEG_ONE);
+        setDefault(res, thisClass(), "extremistUncertainty", varargs(RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY));
+        setDefault(res, thisClass(), "moderateUncertainty", varargs(RAConstants.DEFAULT_MODERATE_UNCERTAINTY));
+        setDefault(res, thisClass(), "lowerBoundInclusive", VALUE_FALSE);
+        setDefault(res, thisClass(), "upperBoundInclusive", VALUE_FALSE);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -73,6 +92,14 @@ public class InGroupBasedDeffuantUncertainty implements InUncertainty {
 
     public void setName(String name) {
         this._name = name;
+    }
+
+    public void setDefaultValues() {
+        setExtremistParameter(-1);
+        setExtremistUncertainty(RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY);
+        setModerateUncertainty(RAConstants.DEFAULT_MODERATE_UNCERTAINTY);
+        setLowerBoundInclusive(false);
+        setUpperBoundInclusive(false);
     }
 
     public void setExtremistParameter(double extremistParameter) {

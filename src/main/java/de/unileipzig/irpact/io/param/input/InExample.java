@@ -24,6 +24,7 @@ import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuZipSupplier;
@@ -97,23 +98,18 @@ public class InExample implements DefaultScenarioFactory {
 
         InPVFile pvFile = new InPVFile("Barwertrechner");
 
-        InPVactUncertaintyGroupAttribute uncert = new InPVactUncertaintyGroupAttribute();
-        uncert.setName("PVact_Uncert");
-        uncert.setGroups(new InConsumerAgentGroup[]{cag0, cag1});
-        uncert.setNoveltySeekingUncertainty(constant0);
-        uncert.setDependentJudgmentMakingUncertainty(constant0);
-        uncert.setEnvironmentalConcernUncertainty(constant0);
-
         //process
-        InRAProcessModel processModel = new InRAProcessModel(
-                "RA",
-                0.25, 0.25, 0.25, 0.25,
-                3, 2, 1, 0,
-                1.0,
-                new InRAProcessPlanMaxDistanceFilterScheme("RA_maxFilter", 100, true),
-                pvFile,
-                new InUncertaintyGroupAttribute[]{uncert}
-        );
+        InPVactGroupBasedDeffuantUncertainty uncertainty = new InPVactGroupBasedDeffuantUncertainty();
+        uncertainty.setName("UNCERT");
+        uncertainty.setDefaultValues();
+        uncertainty.setConsumerAgentGroups(new InConsumerAgentGroup[]{cag0, cag1});
+
+        InRAProcessModel processModel = new InRAProcessModel();
+        processModel.setName("RA");
+        processModel.setDefaultValues();
+        processModel.setNodeFilterScheme(new InRAProcessPlanMaxDistanceFilterScheme("RA_maxFilter", 100, true));
+        processModel.setPvFile(pvFile);
+        processModel.setUncertainty(uncertainty);
 
         InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210322");
         InFileBasedPVactMilieuZipSupplier spaDist = new InFileBasedPVactMilieuZipSupplier();
@@ -236,23 +232,18 @@ public class InExample implements DefaultScenarioFactory {
 
         InPVFile pvFile = new InPVFile("Barwertrechner");
 
-        InPVactUncertaintyGroupAttribute uncert = new InPVactUncertaintyGroupAttribute();
-        uncert.setName("PVact_Uncert");
-        uncert.setGroups(new InConsumerAgentGroup[]{cag0, cag1});
-        uncert.setNoveltySeekingUncertainty(constant0);
-        uncert.setDependentJudgmentMakingUncertainty(constant0);
-        uncert.setEnvironmentalConcernUncertainty(constant0);
-
         //process
-        InRAProcessModel processModel = new InRAProcessModel(
-                "RA",
-                0.25, 0.25, 0.25, 0.25,
-                3, 2, 1, 0,
-                RAConstants.DEFAULT_LOGISTIC_FACTOR,
-                new InRAProcessPlanMaxDistanceFilterScheme("RA_maxFilter", 100, true),
-                pvFile,
-                new InUncertaintyGroupAttribute[]{uncert}
-        );
+        InPVactGroupBasedDeffuantUncertainty uncertainty = new InPVactGroupBasedDeffuantUncertainty();
+        uncertainty.setName("UNCERT");
+        uncertainty.setDefaultValues();
+        uncertainty.setConsumerAgentGroups(new InConsumerAgentGroup[]{cag0, cag1});
+
+        InRAProcessModel processModel = new InRAProcessModel();
+        processModel.setName("RA");
+        processModel.setDefaultValues();
+        processModel.setNodeFilterScheme(new InRAProcessPlanMaxDistanceFilterScheme("RA_maxFilter", 100, true));
+        processModel.setPvFile(pvFile);
+        processModel.setUncertainty(uncertainty);
 
         InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210322");
         InFileBasedSpatialInformationSupplier spaDist = new InFileBasedSpatialInformationSupplier();

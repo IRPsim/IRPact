@@ -15,6 +15,8 @@ public final class RAConstants {
     public static final double DEFAULT_NEUTRAL_CHANCE = 0.5;
     public static final double DEFAULT_CONVERGENCE_CHANCE = 0.25;
     public static final double DEFAULT_DIVERGENCE_CHANCE = 0.25;
+    public static final double DEFAULT_MODERATE_UNCERTAINTY = 1.4;
+    public static final double DEFAULT_EXTREMIST_UNCERTAINTY = 0.35;
 
     //Agent
     public static final String NOVELTY_SEEKING = "novelty_seeking";                   //A2
@@ -71,6 +73,8 @@ public final class RAConstants {
     public static String getUncertaintyAttributeName(String name) {
         return ParamUtil.concData(name, UNCERTAINTY_SUFFIX);
     }
+
+    public static String[] UNCERTAINTY_ATTRIBUTES = { NOVELTY_SEEKING, DEPENDENT_JUDGMENT_MAKING, ENVIRONMENTAL_CONCERN };
 
     public static final SpatialInformationPrinter PRINTER = new PrintIdAndAttribute("gid", "lid", ID);
 }

@@ -28,9 +28,7 @@ import de.unileipzig.irpact.io.param.input.file.InFile;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InGlobalDeffuantUncertainty;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InGroupBasedDeffuantUncertainty;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.*;
 import de.unileipzig.irpact.io.param.irpopt.*;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.names.InName;
@@ -702,6 +700,8 @@ public class InRoot implements RootClass {
 
             InGlobalDeffuantUncertainty.class,
             InGroupBasedDeffuantUncertainty.class,
+            InPVactGlobalDeffuantUncertainty.class,
+            InPVactGroupBasedDeffuantUncertainty.class,
             InUncertainty.class,
 
             InDisabledProcessPlanNodeFilterScheme.class,
@@ -883,7 +883,9 @@ public class InRoot implements RootClass {
                 addPathElement(res, InRAProcessModel.thisName(), PROCESS_MODEL);
                         addPathElement(res, PROCESS_MODEL_RA_UNCERT, InRAProcessModel.thisName());
                                 addPathElement(res, InGlobalDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
+                                addPathElement(res, InPVactGlobalDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
                                 addPathElement(res, InGroupBasedDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
+                                addPathElement(res, InPVactGroupBasedDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
                 addPathElement(res, PROCESS_FILTER, PROCESS_MODEL);
                         addPathElement(res, InDisabledProcessPlanNodeFilterScheme.thisName(), PROCESS_FILTER);
                         addPathElement(res, InEntireNetworkNodeFilterScheme.thisName(), PROCESS_FILTER);

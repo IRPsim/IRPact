@@ -205,6 +205,20 @@ public class InRAProcessModel implements InProcessModel {
         this._name = name;
     }
 
+    public void setDefaultValues() {
+        setABCD(0.25);
+        setAdopterPoints(RAModelData.DEFAULT_ADOPTER_POINTS);
+        setInterestedPoints(RAModelData.DEFAULT_INTERESTED_POINTS);
+        setAwarePoints(RAModelData.DEFAULT_AWARE_POINTS);
+        setUnknownPoints(RAModelData.DEFAULT_UNKNOWN_POINTS);
+        setLogisticFactor(RAConstants.DEFAULT_LOGISTIC_FACTOR);
+        setSpeedOfConvergence(RAConstants.DEFAULT_SPEED_OF_CONVERGENCE);
+        setAttitudeGab(RAConstants.DEFAULT_ATTIDUTE_GAB);
+        setChanceNeutral(RAConstants.DEFAULT_NEUTRAL_CHANCE);
+        setChanceConvergence(RAConstants.DEFAULT_CONVERGENCE_CHANCE);
+        setChanceDivergence(RAConstants.DEFAULT_DIVERGENCE_CHANCE);
+    }
+
     public void setABCD(double value) {
         setA(value);
         setB(value);
@@ -357,6 +371,10 @@ public class InRAProcessModel implements InProcessModel {
 
     public void setPvFile(InPVFile pvFile) {
         this.pvFile = new InPVFile[]{pvFile};
+    }
+
+    public void setUncertainty(InUncertainty uncertainty) {
+        this.uncertainties = new InUncertainty[]{uncertainty};
     }
 
     public void setUncertainties(InUncertainty[] uncertainties) {

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons.persistence;
 
+import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.core.util.MetaData;
 
 import java.util.*;
@@ -8,7 +9,7 @@ import java.util.function.ToLongFunction;
 /**
  * @author Daniel Abitz
  */
-public class BasicPersistManager implements PersistManager {
+public class BasicPersistManager extends NameableBase implements PersistManager {
 
     private static final Persistable PLACEHOLDER = new Persistable() {
         @Override
