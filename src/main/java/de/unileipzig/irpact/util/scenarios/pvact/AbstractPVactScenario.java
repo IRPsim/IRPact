@@ -8,13 +8,12 @@ import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactConsumerAgentPopulation;
-import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
-import de.unileipzig.irpact.io.param.input.process.ra.InPVactUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.InUncertaintyGroupAttribute;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
@@ -107,22 +106,22 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return general;
     }
 
-    public InPVactUncertaintyGroupAttribute createDefaultUnvertainty(String name, InUnivariateDoubleDistribution dist, InConsumerAgentGroup... cags) {
-        InPVactUncertaintyGroupAttribute uncertainty = new InPVactUncertaintyGroupAttribute();
+    public InPVactGroupBasedDeffuantUncertainty createDefaultUnvertainty(String name, InConsumerAgentGroup... cags) {
+        InPVactGroupBasedDeffuantUncertainty uncertainty = new InPVactGroupBasedDeffuantUncertainty();
         uncertainty.setName(name);
-        uncertainty.setGroups(cags);
-        uncertainty.setForAll(dist);
+        uncertainty.setDefaultValues();
+        uncertainty.setConsumerAgentGroups(cags);
         return uncertainty;
     }
 
-    public InRAProcessModel createDefaultProcessModel(String name, InUncertaintyGroupAttribute uncertainty) {
+    public InRAProcessModel createDefaultProcessModel(String name, InUncertainty uncertainty, double speedOfConvergence) {
         InRAProcessModel processModel = new InRAProcessModel();
         processModel.setName(name);
-        processModel.setABCD(0.25);
-        processModel.setDefaultPoints();
-        processModel.setLogisticFactor(1.0 / 8.0);
-        processModel.setUncertaintyGroupAttribute(uncertainty);
+        processModel.setDefaultValues();
+        processModel.setNodeFilterScheme(null);
         processModel.setPvFile(getPVFile());
+        processModel.setUncertainty(uncertainty);
+        processModel.setSpeedOfConvergence(speedOfConvergence);
         return processModel;
     }
 

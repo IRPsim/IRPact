@@ -99,6 +99,8 @@ public class TruncatedNormalDistribution
         this.variance = sigma*sigma * (1 + temp0 - temp1*temp1);
 
         this.Z = normal.cumulativeProbability(beta) - normal.cumulativeProbability(alpha);
+
+        changed = false;
     }
 
     public boolean isInitalized() {

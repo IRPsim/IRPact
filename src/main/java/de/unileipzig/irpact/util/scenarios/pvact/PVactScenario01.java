@@ -10,8 +10,8 @@ import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistrib
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.InPVactUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
@@ -96,9 +96,9 @@ public class PVactScenario01 extends AbstractPVactScenario {
 
         InUnitStepDiscreteTimeModel timeModel = createOneWeekTimeModel("Time");
 
-        InPVactUncertaintyGroupAttribute uncertainty = createDefaultUnvertainty("uncert", dirac0, cags);
+        InPVactGroupBasedDeffuantUncertainty uncertainty = createDefaultUnvertainty("uncert", cags);
 
-        InRAProcessModel processModel = createDefaultProcessModel("Process", uncertainty);
+        InRAProcessModel processModel = createDefaultProcessModel("Process", uncertainty, 0.0);
 
         InSpace2D space2D = createSpace2D("Space2D");
 

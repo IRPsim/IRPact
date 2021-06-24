@@ -2,7 +2,6 @@ package de.unileipzig.irpact.util.scenarios.custom;
 
 import de.unileipzig.irpact.commons.util.IRPArgs;
 import de.unileipzig.irpact.core.logging.IRPLevel;
-import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -26,8 +25,8 @@ import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.network.InNoDistance;
 import de.unileipzig.irpact.io.param.input.network.InNumberOfTies;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.InPVactUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuZipSupplier;
@@ -133,18 +132,18 @@ public class Demo1 extends AbstractScenario {
         timeModel.setAmountOfTime(1);
         timeModel.setUnit(ChronoUnit.WEEKS);
 
-        InPVactUncertaintyGroupAttribute uncert = new InPVactUncertaintyGroupAttribute();
-        uncert.setName("Uncert");
-        uncert.setGroups(new InConsumerAgentGroup[]{BUM, G, PRA});
-        uncert.setForAll(diraq0);
+        InPVactGroupBasedDeffuantUncertainty uncertainty = new InPVactGroupBasedDeffuantUncertainty();
+        uncertainty.setName("UNCERT");
+        uncertainty.setDefaultValues();
+        uncertainty.setConsumerAgentGroups(new InConsumerAgentGroup[]{BUM, G, PRA});
 
         InRAProcessModel processModel = new InRAProcessModel();
-        processModel.setName("RA_ProcessModel");
-        processModel.setABCD(0.25);
-        processModel.setDefaultPoints();
-        processModel.setLogisticFactor(RAConstants.DEFAULT_LOGISTIC_FACTOR);
-        processModel.setUncertaintyGroupAttribute(uncert);
+        processModel.setName("RA");
+        processModel.setDefaultValues();
+        processModel.setNodeFilterScheme(null);
         processModel.setPvFile(pvFile);
+        processModel.setUncertainty(uncertainty);
+        processModel.setSpeedOfConvergence(0.0);
 
         InSpace2D space2D = new InSpace2D("Space2D", Metric2D.HAVERSINE_KM);
 

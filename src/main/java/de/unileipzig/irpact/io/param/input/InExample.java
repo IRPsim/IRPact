@@ -110,6 +110,7 @@ public class InExample implements DefaultScenarioFactory {
         processModel.setNodeFilterScheme(new InRAProcessPlanMaxDistanceFilterScheme("RA_maxFilter", 100, true));
         processModel.setPvFile(pvFile);
         processModel.setUncertainty(uncertainty);
+        processModel.setSpeedOfConvergence(0.0);
 
         InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210322");
         InFileBasedPVactMilieuZipSupplier spaDist = new InFileBasedPVactMilieuZipSupplier();
@@ -244,6 +245,7 @@ public class InExample implements DefaultScenarioFactory {
         processModel.setNodeFilterScheme(new InRAProcessPlanMaxDistanceFilterScheme("RA_maxFilter", 100, true));
         processModel.setPvFile(pvFile);
         processModel.setUncertainty(uncertainty);
+        processModel.setSpeedOfConvergence(0.0);
 
         InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210322");
         InFileBasedSpatialInformationSupplier spaDist = new InFileBasedSpatialInformationSupplier();

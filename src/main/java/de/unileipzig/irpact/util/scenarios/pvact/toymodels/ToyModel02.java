@@ -17,8 +17,8 @@ import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistrib
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.InPVactUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
@@ -160,9 +160,9 @@ public class ToyModel02 extends AbstractToyModel {
 
         InUnitStepDiscreteTimeModel timeModel = createOneWeekTimeModel("Time");
 
-        InPVactUncertaintyGroupAttribute uncertainty = createDefaultUnvertainty("uncert", dirac0, A, K1, K2, K3);
+        InPVactGroupBasedDeffuantUncertainty uncertainty = createDefaultUnvertainty("uncert", A, K1, K2, K3);
 
-        InRAProcessModel processModel = createDefaultProcessModel("Process", uncertainty);
+        InRAProcessModel processModel = createDefaultProcessModel("Process", uncertainty, 0.0);
 
         InSpace2D space2D = createSpace2D("Space2D");
 
