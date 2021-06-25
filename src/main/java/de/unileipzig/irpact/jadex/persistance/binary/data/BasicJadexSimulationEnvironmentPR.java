@@ -6,7 +6,7 @@ import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.simulation.Version;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
+import de.unileipzig.irpact.core.persistence.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;

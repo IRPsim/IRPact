@@ -8,7 +8,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.attribute.BasicMultiConsumerAgentGroupAttributeSupplier;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttributeSupplier;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
+import de.unileipzig.irpact.core.persistence.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.ArrayList;

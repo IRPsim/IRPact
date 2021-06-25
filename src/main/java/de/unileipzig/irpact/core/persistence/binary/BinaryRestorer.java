@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.jadex.persistance.binary;
+package de.unileipzig.irpact.core.persistence.binary;
 
 import de.unileipzig.irpact.commons.persistence.Restorer;
 

@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.jadex.persistance.binary.annotation;
+package de.unileipzig.irpact.core.persistence.binary.annotation;
 
 import java.lang.annotation.*;
 
@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CollectionBinaryPersisters {
+public @interface PrimitiveBinaryPersisters {
 
-    CollectionBinaryPersist[] value();
+    PrimitiveBinaryPersist[] value();
 }

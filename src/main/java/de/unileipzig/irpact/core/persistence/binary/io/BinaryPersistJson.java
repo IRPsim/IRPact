@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.jadex.persistance.binary.io;
+package de.unileipzig.irpact.core.persistence.binary.io;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

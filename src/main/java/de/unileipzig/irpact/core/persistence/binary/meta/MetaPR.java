@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.jadex.persistance.binary.meta;
+package de.unileipzig.irpact.core.persistence.binary.meta;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -8,7 +8,7 @@ import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.core.util.RunInfo;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.jadex.persistance.JadexPersistable;
-import de.unileipzig.irpact.jadex.persistance.binary.io.BinaryPersistJson;
+import de.unileipzig.irpact.core.persistence.binary.io.BinaryPersistJson;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -11,13 +11,15 @@ import java.util.function.ToLongFunction;
  */
 public interface PersistManager extends Nameable {
 
+    void persist(MetaData metaData) throws PersistException;
+
+    <T> void persist(T object) throws PersistException;
+
     <T> void persist(MetaData metaData, T object) throws PersistException;
 
     long newUID();
 
     Collection<Persistable> getPersistables();
-
-    void handle(MetaData metaData) throws PersistException;
 
     <T> void prepare(T object) throws PersistException;
 

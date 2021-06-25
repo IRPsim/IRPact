@@ -11,7 +11,7 @@ import de.unileipzig.irpact.core.network.BasicSocialGraph;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
+import de.unileipzig.irpact.core.persistence.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 

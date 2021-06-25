@@ -10,7 +10,7 @@ import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;
 import de.unileipzig.irpact.core.spatial.distribution.SpatialInformationSupplier;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistributionWithCollection;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
+import de.unileipzig.irpact.core.persistence.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**

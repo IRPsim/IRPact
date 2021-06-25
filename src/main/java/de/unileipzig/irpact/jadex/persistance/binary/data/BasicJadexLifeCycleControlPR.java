@@ -2,7 +2,7 @@ package de.unileipzig.irpact.jadex.persistance.binary.data;
 
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
+import de.unileipzig.irpact.core.persistence.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.time.BasicTimestamp;
 import de.unileipzig.irptools.util.log.IRPLogger;

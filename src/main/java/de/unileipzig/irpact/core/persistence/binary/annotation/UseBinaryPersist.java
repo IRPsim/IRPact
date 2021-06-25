@@ -1,6 +1,6 @@
-package de.unileipzig.irpact.jadex.persistance.binary.annotation;
+package de.unileipzig.irpact.core.persistence.binary.annotation;
 
-import de.unileipzig.irpact.jadex.persistance.binary.GenericPR;
+import de.unileipzig.irpact.core.persistence.binary.GenericPR;
 
 import java.lang.annotation.*;
 
@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  */
 @Inherited
 @Documented
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Repeatable(UseBinaryPersisters.class)
 public @interface UseBinaryPersist {

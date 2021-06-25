@@ -6,10 +6,10 @@ import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.agent.AgentManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryPersister;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryRestorer;
-import de.unileipzig.irpact.jadex.persistance.binary.RestoreHelper;
+import de.unileipzig.irpact.core.persistence.binary.BinaryJsonData;
+import de.unileipzig.irpact.core.persistence.binary.BinaryPersister;
+import de.unileipzig.irpact.core.persistence.binary.BinaryRestorer;
+import de.unileipzig.irpact.core.persistence.binary.RestoreHelper;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 

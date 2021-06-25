@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.jadex.persistance.binary;
+package de.unileipzig.irpact.core.persistence.binary;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -12,7 +12,7 @@ import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.MapSupplier;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.jadex.persistance.binary.annotation.*;
+import de.unileipzig.irpact.core.persistence.binary.annotation.*;
 import de.unileipzig.irpact.jadex.persistance.binary.data.BinaryPRBase;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -50,6 +51,26 @@ public class GenericPR<T> extends BinaryPRBase<T> {
     @Override
     protected IRPLogger log() {
         return LOGGER;
+    }
+
+    public List<PrimitiveMultiEntry> getPrimitiveEntries() {
+        return primitiveEntries;
+    }
+
+    public List<NonPrimitiveMultiEntry> getNonPrimitiveEntries() {
+        return nonPrimitiveEntries;
+    }
+
+    public List<CollectionMultiEntry> getCollectionMultiEntries() {
+        return collectionMultiEntries;
+    }
+
+    public List<MapMultiEntry> getMapMultiEntries() {
+        return mapMultiEntries;
+    }
+
+    public List<MapMapMultiEntry> getMapMapMultiEntries() {
+        return mapMapMultiEntries;
     }
 
     //==================================================
@@ -443,16 +464,16 @@ public class GenericPR<T> extends BinaryPRBase<T> {
 
     public static void validate(PrimitiveBinaryPersist annotation, Class<?> c, Field annotatedField) throws IRPactException {
         if(isNotPrimitive(annotatedField)) {
-            throw new IRPactException("field '{}#{}' is not primitive, type: {}", c.getName(), annotatedField.getName(), annotatedField.getDeclaringClass().getName());
+            throw new IRPactException("field '{}#{}' is not primitive, type: {}", c.getName(), annotatedField.getName(), annotatedField.getType().getName());
         }
 
         String setter = isValid(annotation.setter()) ? annotation.setter() : getSetterName(annotatedField);
-        if(!hasSetMethod(c, setter, annotatedField.getDeclaringClass())) {
+        if(!hasSetMethod(c, setter, annotatedField.getType())) {
             throw new IRPactException("setter '{}' not found for {}#{}", setter, c.getName(), annotatedField.getName());
         }
 
         String getter = isValid(annotation.getter()) ? annotation.getter() : getGetterName(annotatedField);
-        if(!hasGetMethod(c, getter, annotatedField.getDeclaringClass())) {
+        if(!hasGetMethod(c, getter, annotatedField.getType())) {
             throw new IRPactException("getter '{}' not found for {}#{}", getter, c.getName(), annotatedField.getName());
         }
     }
@@ -469,16 +490,16 @@ public class GenericPR<T> extends BinaryPRBase<T> {
 
     public static void validate(NonPrimitiveBinaryPersist annotation, Class<?> c, Field annotatedField) throws IRPactException {
         if(isPrimitive(annotatedField)) {
-            throw new IRPactException("field '{}#{}' is primitive, type: {}", c.getName(), annotatedField.getName(), annotatedField.getDeclaringClass().getName());
+            throw new IRPactException("field '{}#{}' is primitive, type: {}", c.getName(), annotatedField.getName(), annotatedField.getType().getName());
         }
 
         String setter = isValid(annotation.setter()) ? annotation.setter() : getSetterName(annotatedField);
-        if(!hasSetMethod(c, setter, annotatedField.getDeclaringClass())) {
+        if(!hasSetMethod(c, setter, annotatedField.getType())) {
             throw new IRPactException("setter '{}' not found for {}#{}", setter, c.getName(), annotatedField.getName());
         }
 
         String getter = isValid(annotation.getter()) ? annotation.getter() : getGetterName(annotatedField);
-        if(!hasGetMethod(c, getter, annotatedField.getDeclaringClass())) {
+        if(!hasGetMethod(c, getter, annotatedField.getType())) {
             throw new IRPactException("getter '{}' not found for {}#{}", getter, c.getName(), annotatedField.getName());
         }
     }
@@ -495,11 +516,11 @@ public class GenericPR<T> extends BinaryPRBase<T> {
 
     public static void validate(CollectionBinaryPersist annotation, Class<?> c, Field annotatedField) throws IRPactException {
         if(isPrimitive(annotatedField)) {
-            throw new IRPactException("field '{}#{}' is primitive, type: {}", c.getName(), annotatedField.getName(), annotatedField.getDeclaringClass().getName());
+            throw new IRPactException("field '{}#{}' is primitive, type: {}", c.getName(), annotatedField.getName(), annotatedField.getType().getName());
         }
 
         String getter = isValid(annotation.getter()) ? annotation.getter() : getGetterName(annotatedField);
-        if(!hasGetMethod(c, getter, annotatedField.getDeclaringClass())) {
+        if(!hasGetMethod(c, getter, annotatedField.getType())) {
             throw new IRPactException("getter '{}' not found for {}#{}", getter, c.getName(), annotatedField.getName());
         }
     }
@@ -516,11 +537,11 @@ public class GenericPR<T> extends BinaryPRBase<T> {
 
     public static void validate(MapBinaryPersist annotation, Class<?> c, Field annotatedField) throws IRPactException {
         if(isPrimitive(annotatedField)) {
-            throw new IRPactException("field '{}#{}' is primitive, type: {}", c.getName(), annotatedField.getName(), annotatedField.getDeclaringClass().getName());
+            throw new IRPactException("field '{}#{}' is primitive, type: {}", c.getName(), annotatedField.getName(), annotatedField.getType().getName());
         }
 
         String getter = isValid(annotation.getter()) ? annotation.getter() : getGetterName(annotatedField);
-        if(!hasGetMethod(c, getter, annotatedField.getDeclaringClass())) {
+        if(!hasGetMethod(c, getter, annotatedField.getType())) {
             throw new IRPactException("getter '{}' not found for {}#{}", getter, c.getName(), annotatedField.getName());
         }
     }
@@ -537,11 +558,11 @@ public class GenericPR<T> extends BinaryPRBase<T> {
 
     public static void validate(MapMapBinaryPersist annotation, Class<?> c, Field annotatedField) throws IRPactException {
         if(isPrimitive(annotatedField)) {
-            throw new IRPactException("field '{}#{}' is primitive, type: {}", c.getName(), annotatedField.getName(), annotatedField.getDeclaringClass().getName());
+            throw new IRPactException("field '{}#{}' is primitive, type: {}", c.getName(), annotatedField.getName(), annotatedField.getType().getName());
         }
 
         String getter = isValid(annotation.getter()) ? annotation.getter() : getGetterName(annotatedField);
-        if(!hasGetMethod(c, getter, annotatedField.getDeclaringClass())) {
+        if(!hasGetMethod(c, getter, annotatedField.getType())) {
             throw new IRPactException("getter '{}' not found for {}#{}", getter, c.getName(), annotatedField.getName());
         }
     }
@@ -559,10 +580,19 @@ public class GenericPR<T> extends BinaryPRBase<T> {
     }
 
     protected void initalizeFields() throws NoSuchMethodException {
-        for(Field field: getType().getFields()) {
+        for(Field field: getType().getDeclaredFields()) {
             if(field.isAnnotationPresent(PrimitiveBinaryPersisters.class)) {
+                System.out.println("XXX");
                 PrimitiveBinaryPersisters annotation = field.getDeclaredAnnotation(PrimitiveBinaryPersisters.class);
                 PrimitiveMultiEntry multiEntry = handle(annotation, field);
+                primitiveEntries.add(multiEntry);
+            }
+            else if(field.isAnnotationPresent(PrimitiveBinaryPersist.class)) {
+                System.out.println("YYY");
+                PrimitiveBinaryPersist annotation = field.getDeclaredAnnotation(PrimitiveBinaryPersist.class);
+                PrimitiveEntry entry = handle(annotation, field);
+                PrimitiveMultiEntryImpl multiEntry = new PrimitiveMultiEntryImpl();
+                multiEntry.add(entry);
                 primitiveEntries.add(multiEntry);
             }
             else if(field.isAnnotationPresent(NonPrimitiveBinaryPersisters.class)) {
@@ -570,9 +600,23 @@ public class GenericPR<T> extends BinaryPRBase<T> {
                 NonPrimitiveMultiEntry multiEntry = handle(annotation, field);
                 nonPrimitiveEntries.add(multiEntry);
             }
+            else if(field.isAnnotationPresent(NonPrimitiveBinaryPersist.class)) {
+                NonPrimitiveBinaryPersist annotation = field.getDeclaredAnnotation(NonPrimitiveBinaryPersist.class);
+                NonPrimitiveEntry entry = handle(annotation, field);
+                NonPrimitiveMultiEntryImpl multiEntry = new NonPrimitiveMultiEntryImpl();
+                multiEntry.add(entry);
+                nonPrimitiveEntries.add(multiEntry);
+            }
             else if(field.isAnnotationPresent(CollectionBinaryPersisters.class)) {
                 CollectionBinaryPersisters annotation = field.getDeclaredAnnotation(CollectionBinaryPersisters.class);
                 CollectionMultiEntry multiEntry = handle(annotation, field);
+                collectionMultiEntries.add(multiEntry);
+            }
+            else if(field.isAnnotationPresent(CollectionBinaryPersist.class)) {
+                CollectionBinaryPersist annotation = field.getDeclaredAnnotation(CollectionBinaryPersist.class);
+                CollectionEntry entry = handle(annotation, field);
+                CollectionMultiEntryImpl multiEntry = new CollectionMultiEntryImpl();
+                multiEntry.add(entry);
                 collectionMultiEntries.add(multiEntry);
             }
             else if(field.isAnnotationPresent(MapBinaryPersisters.class)) {
@@ -580,9 +624,23 @@ public class GenericPR<T> extends BinaryPRBase<T> {
                 MapMultiEntry multiEntry = handle(annotation, field);
                 mapMultiEntries.add(multiEntry);
             }
+            else if(field.isAnnotationPresent(MapBinaryPersist.class)) {
+                MapBinaryPersist annotation = field.getDeclaredAnnotation(MapBinaryPersist.class);
+                MapEntry entry = handle(annotation, field);
+                MapMultiEntryImpl multiEntry = new MapMultiEntryImpl();
+                multiEntry.add(entry);
+                mapMultiEntries.add(multiEntry);
+            }
             else if(field.isAnnotationPresent(MapMapBinaryPersisters.class)) {
                 MapMapBinaryPersisters annotation = field.getDeclaredAnnotation(MapMapBinaryPersisters.class);
                 MapMapMultiEntry multiEntry = handle(annotation, field);
+                mapMapMultiEntries.add(multiEntry);
+            }
+            else if(field.isAnnotationPresent(MapMapBinaryPersist.class)) {
+                MapMapBinaryPersist annotation = field.getDeclaredAnnotation(MapMapBinaryPersist.class);
+                MapMapEntry entry = handle(annotation, field);
+                MapMapMultiEntryImpl multiEntry = new MapMapMultiEntryImpl();
+                multiEntry.add(entry);
                 mapMapMultiEntries.add(multiEntry);
             }
         }
@@ -607,7 +665,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         entry.setGetter(getter);
 
         String setterName = isValid(annotation.setter()) ? annotation.setter() : getSetterName(annotatedField);
-        Method setter = getType().getDeclaredMethod(setterName, annotatedField.getDeclaringClass());
+        Method setter = getType().getDeclaredMethod(setterName, annotatedField.getType());
         entry.setSetter(setter);
 
         return entry;
@@ -632,7 +690,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         entry.setGetter(getter);
 
         String setterName = isValid(annotation.setter()) ? annotation.setter() : getSetterName(annotatedField);
-        Method setter = getType().getDeclaredMethod(setterName, annotatedField.getDeclaringClass());
+        Method setter = getType().getDeclaredMethod(setterName, annotatedField.getType());
         entry.setSetter(setter);
 
         return entry;
@@ -1071,59 +1129,68 @@ public class GenericPR<T> extends BinaryPRBase<T> {
     //entry
     //==================================================
 
+    //=========================
+    //multi
+    //=========================
+
     /**
      * @author Daniel Abitz
      */
     @SuppressWarnings("unused")
-    public interface MultiEntry {
+    public interface MultiEntry<T extends Entry> extends Iterable<T> {
 
-        Entry getForPersist(String name);
+        T getForPersist(String name);
 
-        Entry getForRestore(String name);
+        T getForRestore(String name);
+
+        Stream<T> stream();
     }
 
     /**
      * @author Daniel Abitz
      */
-    protected static class MultiEntryImpl<T extends Entry> implements MultiEntry {
+    protected static class MultiEntryImpl<T extends Entry> implements MultiEntry<T>, Iterable<T> {
 
-        protected final List<T> entries = new ArrayList<>();
+        protected final Map<String, List<T>> persisters = new HashMap<>();
+        protected final Map<String, List<T>> restorers = new HashMap<>();
 
         protected void add(T entry) {
-            entries.add(entry);
+            persisters.computeIfAbsent(entry.getPersisterName(), _name -> new ArrayList<>()).add(entry);
+            restorers.computeIfAbsent(entry.getRestorername(), _name -> new ArrayList<>()).add(entry);
         }
 
         @Override
         public T getForPersist(String name) {
-            for(T entry: entries) {
-                if(isIgnoreOrEquals(entry.getPersisterName(), name)) {
-                    return entry;
-                }
-            }
-            return null;
+            List<T> list = persisters.get(name);
+            return list == null || list.isEmpty()
+                    ? null
+                    : list.get(0);
         }
 
         @Override
         public T getForRestore(String name) {
-            for(T entry: entries) {
-                if(isIgnoreOrEquals(entry.getRestorername(), name)) {
-                    return entry;
-                }
-            }
-            return null;
+            List<T> list = restorers.get(name);
+            return list == null || list.isEmpty()
+                    ? null
+                    : list.get(0);
+        }
+
+        @Override
+        public Iterator<T> iterator() {
+            return stream().iterator();
+        }
+
+        public Stream<T> stream() {
+            return persisters.values()
+                    .stream()
+                    .flatMap(Collection::stream);
         }
     }
 
     /**
      * @author Daniel Abitz
      */
-    public interface PrimitiveMultiEntry extends MultiEntry {
-
-        @Override
-        PrimitiveEntry getForPersist(String name);
-
-        @Override
-        PrimitiveEntry getForRestore(String name);
+    public interface PrimitiveMultiEntry extends MultiEntry<PrimitiveEntry> {
     }
 
     /**
@@ -1135,13 +1202,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
     /**
      * @author Daniel Abitz
      */
-    public interface NonPrimitiveMultiEntry extends MultiEntry {
-
-        @Override
-        NonPrimitiveEntry getForPersist(String name);
-
-        @Override
-        NonPrimitiveEntry getForRestore(String name);
+    public interface NonPrimitiveMultiEntry extends MultiEntry<NonPrimitiveEntry> {
     }
 
     /**
@@ -1153,13 +1214,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
     /**
      * @author Daniel Abitz
      */
-    public interface CollectionMultiEntry extends MultiEntry {
-
-        @Override
-        CollectionEntry getForPersist(String name);
-
-        @Override
-        CollectionEntry getForRestore(String name);
+    public interface CollectionMultiEntry extends MultiEntry<CollectionEntry> {
     }
 
     /**
@@ -1171,13 +1226,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
     /**
      * @author Daniel Abitz
      */
-    public interface MapMultiEntry extends MultiEntry {
-
-        @Override
-        MapEntry getForPersist(String name);
-
-        @Override
-        MapEntry getForRestore(String name);
+    public interface MapMultiEntry extends MultiEntry<MapEntry> {
     }
 
     /**
@@ -1189,13 +1238,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
     /**
      * @author Daniel Abitz
      */
-    public interface MapMapMultiEntry extends MultiEntry {
-
-        @Override
-        MapMapEntry getForPersist(String name);
-
-        @Override
-        MapMapEntry getForRestore(String name);
+    public interface MapMapMultiEntry extends MultiEntry<MapMapEntry> {
     }
 
     /**
@@ -1203,6 +1246,10 @@ public class GenericPR<T> extends BinaryPRBase<T> {
      */
     protected static class MapMapMultiEntryImpl extends MultiEntryImpl<MapMapEntry> implements MapMapMultiEntry {
     }
+
+    //=========================
+    //single
+    //=========================
 
     /**
      * @author Daniel Abitz
@@ -1275,6 +1322,16 @@ public class GenericPR<T> extends BinaryPRBase<T> {
      * @author Daniel Abitz
      */
     protected static class PrimitiveEntryImpl extends EntryImpl implements PrimitiveEntry {
+
+        @Override
+        public String toString() {
+            return "PrimitiveEntryImpl{" +
+                    "persisterName='" + persisterName + '\'' +
+                    ", restorerName='" + restorerName + '\'' +
+                    ", getter=" + getter +
+                    ", setter=" + setter +
+                    '}';
+        }
     }
 
     /**
@@ -1287,6 +1344,16 @@ public class GenericPR<T> extends BinaryPRBase<T> {
      * @author Daniel Abitz
      */
     protected static class NonPrimitiveEntryImpl extends EntryImpl implements NonPrimitiveEntry {
+
+        @Override
+        public String toString() {
+            return "NonPrimitiveEntryImpl{" +
+                    "persisterName='" + persisterName + '\'' +
+                    ", restorerName='" + restorerName + '\'' +
+                    ", getter=" + getter +
+                    ", setter=" + setter +
+                    '}';
+        }
     }
 
     /**
@@ -1311,6 +1378,16 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         @Override
         public MappingMode mode() {
             return mode;
+        }
+
+        @Override
+        public String toString() {
+            return "CollectionEntryImpl{" +
+                    "persisterName='" + persisterName + '\'' +
+                    ", restorerName='" + restorerName + '\'' +
+                    ", getter=" + getter +
+                    ", mode=" + mode +
+                    '}';
         }
     }
 
@@ -1348,6 +1425,17 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         @Override
         public MappingMode valueMode() {
             return valueMode;
+        }
+
+        @Override
+        public String toString() {
+            return "MapEntryImpl{" +
+                    "persisterName='" + persisterName + '\'' +
+                    ", restorerName='" + restorerName + '\'' +
+                    ", getter=" + getter +
+                    ", keyMode=" + keyMode +
+                    ", valueMode=" + valueMode +
+                    '}';
         }
     }
 
@@ -1409,6 +1497,19 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         @Override
         public MapSupplier supplier() {
             return supplier;
+        }
+
+        @Override
+        public String toString() {
+            return "MapMapEntryImpl{" +
+                    "persisterName='" + persisterName + '\'' +
+                    ", restorerName='" + restorerName + '\'' +
+                    ", getter=" + getter +
+                    ", firstMode=" + firstMode +
+                    ", secondMode=" + secondMode +
+                    ", thirdMode=" + thirdMode +
+                    ", supplier=" + supplier +
+                    '}';
         }
     }
 }

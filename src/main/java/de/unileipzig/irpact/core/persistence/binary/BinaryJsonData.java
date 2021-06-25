@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.jadex.persistance.binary;
+package de.unileipzig.irpact.core.persistence.binary;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -10,7 +10,7 @@ import de.unileipzig.irpact.commons.util.data.TripleMapping;
 import de.unileipzig.irpact.commons.util.data.VarCollection;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.jadex.persistance.JadexPersistable;
-import de.unileipzig.irpact.jadex.persistance.binary.io.BinaryPersistJson;
+import de.unileipzig.irpact.core.persistence.binary.io.BinaryPersistJson;
 import de.unileipzig.irptools.util.Util;
 
 import java.io.IOException;

@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.product.BasicAdoptedProduct;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
+import de.unileipzig.irpact.core.persistence.binary.BinaryJsonData;
 import de.unileipzig.irpact.jadex.time.BasicTimestamp;
 import de.unileipzig.irptools.util.log.IRPLogger;
 

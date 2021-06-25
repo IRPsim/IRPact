@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.jadex.persistance.binary.annotation;
+package de.unileipzig.irpact.core.persistence.binary.annotation;
 
 import java.lang.annotation.*;
 

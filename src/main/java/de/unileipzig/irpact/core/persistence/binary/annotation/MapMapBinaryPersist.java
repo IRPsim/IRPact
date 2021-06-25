@@ -1,7 +1,7 @@
-package de.unileipzig.irpact.jadex.persistance.binary.annotation;
+package de.unileipzig.irpact.core.persistence.binary.annotation;
 
 import de.unileipzig.irpact.commons.util.MapSupplier;
-import de.unileipzig.irpact.jadex.persistance.binary.GenericPR;
+import de.unileipzig.irpact.core.persistence.binary.GenericPR;
 
 import java.lang.annotation.*;
 

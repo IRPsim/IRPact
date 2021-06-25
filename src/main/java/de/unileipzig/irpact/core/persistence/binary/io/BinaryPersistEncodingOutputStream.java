@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.jadex.persistance.binary.io;
+package de.unileipzig.irpact.core.persistence.binary.io;
 
 import de.unileipzig.irpact.commons.util.IRPactBase32;
 import org.apache.commons.codec.binary.BaseNCodecOutputStream;

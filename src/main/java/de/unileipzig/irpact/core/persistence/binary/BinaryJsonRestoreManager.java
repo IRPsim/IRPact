@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.jadex.persistance.binary;
+package de.unileipzig.irpact.core.persistence.binary;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -15,9 +15,9 @@ import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
-import de.unileipzig.irpact.jadex.persistance.binary.io.BinaryPersistJson;
-import de.unileipzig.irpact.jadex.persistance.binary.meta.ClassManagerPR;
-import de.unileipzig.irpact.jadex.persistance.binary.meta.MetaPR;
+import de.unileipzig.irpact.core.persistence.binary.io.BinaryPersistJson;
+import de.unileipzig.irpact.core.persistence.binary.meta.ClassManagerPR;
+import de.unileipzig.irpact.core.persistence.binary.meta.MetaPR;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
 

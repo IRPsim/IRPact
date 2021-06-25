@@ -15,9 +15,9 @@ import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
 import de.unileipzig.irpact.io.param.output.OutRoot;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonData;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.jadex.persistance.binary.BinaryJsonRestoreManager;
+import de.unileipzig.irpact.core.persistence.binary.BinaryJsonData;
+import de.unileipzig.irpact.core.persistence.binary.BinaryJsonPersistanceManager;
+import de.unileipzig.irpact.core.persistence.binary.BinaryJsonRestoreManager;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
