@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.persistence.binaryjson.annotation;
 
+import de.unileipzig.irpact.commons.util.ListSupplier;
 import de.unileipzig.irpact.core.persistence.binaryjson.GenericPR;
 
 import java.lang.annotation.*;
@@ -20,5 +21,5 @@ public @interface PersistCollection {
 
     String getter() default GenericPR.IGNORE;
 
-    MappingMode mode() default MappingMode.UNDEFINED;
+    MappingMode mode();
 }

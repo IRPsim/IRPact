@@ -8,9 +8,7 @@ import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
-import de.unileipzig.irpact.commons.util.CollectionUtil;
-import de.unileipzig.irpact.commons.util.MapSupplier;
-import de.unileipzig.irpact.commons.util.StringUtil;
+import de.unileipzig.irpact.commons.util.*;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.persistence.binaryjson.annotation.*;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -38,6 +36,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
     protected final List<PrimitiveMultiEntry> primitiveEntries = new ArrayList<>();
     protected final List<NonPrimitiveMultiEntry> nonPrimitiveEntries = new ArrayList<>();
     protected final List<CollectionMultiEntry> collectionMultiEntries = new ArrayList<>();
+    protected final List<MappableCollectionMultiEntry> mappableCollectionMultiEntries = new ArrayList<>();
     protected final List<MapMultiEntry> mapMultiEntries = new ArrayList<>();
     protected final List<MapMapMultiEntry> mapMapMultiEntries = new ArrayList<>();
 
@@ -67,6 +66,10 @@ public class GenericPR<T> extends BinaryPRBase<T> {
 
     public List<CollectionMultiEntry> getCollectionMultiEntries() {
         return collectionMultiEntries;
+    }
+
+    public List<MappableCollectionMultiEntry> getMappableCollectionMultiEntries() {
+        return mappableCollectionMultiEntries;
     }
 
     public List<MapMultiEntry> getMapMultiEntries() {
@@ -401,6 +404,10 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         return IGNORE.equals(input) || Objects.equals(input, other);
     }
 
+    public static boolean isValidType(Class<?> c) {
+        return c != IGNORE.class;
+    }
+
     public static String getGetterName(Field field) {
         return "get" + StringUtil.firstLetterToUpperCase(field.getName());
     }
@@ -529,6 +536,12 @@ public class GenericPR<T> extends BinaryPRBase<T> {
                     validate(annotation, c, field);
                 }
             }
+            else if(isAnyAnnotationPresent(field, PersistMappableCollection.class, PersistMappableCollections.class)) {
+                List<PersistMappableCollection> annotations = getAnnotations(field, PersistMappableCollection.class, PersistMappableCollections.class, PersistMappableCollections::value);
+                for(PersistMappableCollection annotation: annotations) {
+                    validate(annotation, c, field);
+                }
+            }
             else if(isAnyAnnotationPresent(field, PersistMap.class, PersistMaps.class)) {
                 List<PersistMap> annotations = getAnnotations(field, PersistMap.class, PersistMaps.class, PersistMaps::value);
                 for(PersistMap annotation: annotations) {
@@ -583,6 +596,24 @@ public class GenericPR<T> extends BinaryPRBase<T> {
 
         String getter = isValid(annotation.getter()) ? annotation.getter() : getGetterName(annotatedField);
         if(!hasGetMethod(c, getter, annotatedField.getType())) {
+            throw new IRPactException("getter '{}' not found for {}#{}", getter, c.getName(), annotatedField.getName());
+        }
+    }
+
+    public static void validate(PersistMappableCollection annotation, Class<?> c, Field annotatedField) throws IRPactException {
+        if(isPrimitive(annotatedField)) {
+            throw new IRPactException("field '{}#{}' is primitive, type: {}", c.getName(), annotatedField.getName(), annotatedField.getType().getName());
+        }
+
+        Class<?> type = isValidType(annotation.type()) ? annotation.type() : annotatedField.getType();
+
+        String setter = isValid(annotation.setter()) ? annotation.setter() : getSetterName(annotatedField);
+        if(!hasSetMethod(c, setter, type)) {
+            throw new IRPactException("setter '{}' not found for {}#{}", setter, c.getName(), annotatedField.getName());
+        }
+
+        String getter = isValid(annotation.getter()) ? annotation.getter() : getGetterName(annotatedField);
+        if(!hasGetMethod(c, getter, type)) {
             throw new IRPactException("getter '{}' not found for {}#{}", getter, c.getName(), annotatedField.getName());
         }
     }
@@ -651,6 +682,15 @@ public class GenericPR<T> extends BinaryPRBase<T> {
                 }
                 collectionMultiEntries.add(multiEntry);
             }
+            else if(isAnyAnnotationPresent(field, PersistMappableCollection.class, PersistMappableCollections.class)) {
+                List<PersistMappableCollection> annotations = getAnnotations(field, PersistMappableCollection.class, PersistMappableCollections.class, PersistMappableCollections::value);
+                MappableCollectionMultiEntryImpl multiEntry = new MappableCollectionMultiEntryImpl();
+                for(PersistMappableCollection annotation: annotations) {
+                    MappableCollectionEntry entry = handle(annotation, field);
+                    multiEntry.add(entry);
+                }
+                mappableCollectionMultiEntries.add(multiEntry);
+            }
             else if(isAnyAnnotationPresent(field, PersistMap.class, PersistMaps.class)) {
                 List<PersistMap> annotations = getAnnotations(field, PersistMap.class, PersistMaps.class, PersistMaps::value);
                 MapMultiEntryImpl multiEntry = new MapMultiEntryImpl();
@@ -715,6 +755,26 @@ public class GenericPR<T> extends BinaryPRBase<T> {
 
         entry.setSetter(null);
         entry.setMode(annotation.mode());
+
+        return entry;
+    }
+
+    protected MappableCollectionEntry handle(PersistMappableCollection annotation, Field annotatedField) throws NoSuchMethodException {
+        MappableCollectionEntryImpl entry = new MappableCollectionEntryImpl();
+        entry.setPersisterName(annotation.persisterName());
+        entry.setRestorerName(annotation.restorerName());
+
+        String getterName = isValid(annotation.getter()) ? annotation.getter() : getGetterName(annotatedField);
+        Method getter = getType().getDeclaredMethod(getterName);
+        entry.setGetter(getter);
+
+        Class<?> type = isValidType(annotation.type()) ? annotation.type() : annotatedField.getType();
+        String setterName = isValid(annotation.setter()) ? annotation.setter() : getSetterName(annotatedField);
+        Method setter = getType().getDeclaredMethod(setterName, type);
+        entry.setSetter(setter);
+
+        entry.setMode(annotation.mode());
+        entry.setSupplier(annotation.supplier());
 
         return entry;
     }
@@ -796,6 +856,10 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         }
     }
 
+    protected static void prepareMappableCollection(PersistManager manager, Method getter, Object ref, MappingMode mode) throws InvocationTargetException, IllegalAccessException, PersistException {
+        prepareCollection(manager, getter, ref, mode);
+    }
+
     protected static void putCollection(PersistManager manager, BinaryJsonData data, Method getter, Object ref, MappingMode mode) throws InvocationTargetException, IllegalAccessException {
         Collection<?> coll = (Collection<?>) getter.invoke(ref);
         AddToArrayNode task = getTasks().getAddToArrayNode(mode);
@@ -807,6 +871,10 @@ public class GenericPR<T> extends BinaryPRBase<T> {
                     (arr, obj) -> task.handle(manager, arr, obj)
             );
         }
+    }
+
+    protected static void putMappableCollection(PersistManager manager, BinaryJsonData data, Method getter, Object ref, MappingMode mode) throws InvocationTargetException, IllegalAccessException {
+        putCollection(manager, data, getter, ref, mode);
     }
 
     protected static void prepareMap(PersistManager manager, Method getter, Object ref, MappingMode keyMode, MappingMode valueMode) throws InvocationTargetException, IllegalAccessException, PersistException {
@@ -915,6 +983,13 @@ public class GenericPR<T> extends BinaryPRBase<T> {
                 }
             }
 
+            for(MappableCollectionMultiEntry multiEntry: mappableCollectionMultiEntries) {
+                MappableCollectionEntry entry = multiEntry.getForPersist(manager.getName());
+                if(entry != null) {
+                    prepareMappableCollection(manager, entry.getter(), object, entry.mode());
+                }
+            }
+
             for(MapMultiEntry multiEntry: mapMultiEntries) {
                 MapEntry entry = multiEntry.getForPersist(manager.getName());
                 if(entry != null) {
@@ -949,6 +1024,13 @@ public class GenericPR<T> extends BinaryPRBase<T> {
                 CollectionEntry entry = multiEntry.getForPersist(manager.getName());
                 if(entry != null) {
                     putCollection(manager, data, entry.getter(), object, entry.mode());
+                }
+            }
+
+            for(MappableCollectionMultiEntry multiEntry: mappableCollectionMultiEntries) {
+                MappableCollectionEntry entry = multiEntry.getForPersist(manager.getName());
+                if(entry != null) {
+                    putMappableCollection(manager, data, entry.getter(), object, entry.mode());
                 }
             }
 
@@ -1006,16 +1088,31 @@ public class GenericPR<T> extends BinaryPRBase<T> {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected static void getCollection(RestoreManager manager, BinaryJsonData data, Method getter, Object ref, MappingMode mode) throws InvocationTargetException, IllegalAccessException {
-        Collection coll = (Collection) getter.invoke(ref);
         GetFromArrayNode task = getTasks().getGetFromArrayNode(mode);
         if(task == null) {
             throw new IllegalArgumentException("unsupported mode: " + mode);
         }
 
+        Collection coll = (Collection) getter.invoke(ref);
         data.getCollection(
                 (arr, index) -> task.handle(manager, arr, index),
                 coll
         );
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    protected static void getMappableCollection(RestoreManager manager, BinaryJsonData data, Method setter, Object ref, MappingMode mode, CollectionSupplier supplier) throws InvocationTargetException, IllegalAccessException {
+        GetFromArrayNode task = getTasks().getGetFromArrayNode(mode);
+        if(task == null) {
+            throw new IllegalArgumentException("unsupported mode: " + mode);
+        }
+
+        Collection coll = supplier.newCollection();
+        data.getCollection(
+                (arr, index) -> task.handle(manager, arr, index),
+                coll
+        );
+        setter.invoke(ref, coll);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -1097,6 +1194,13 @@ public class GenericPR<T> extends BinaryPRBase<T> {
                     CollectionEntry entry = multiEntry.getForRestore(manager.getName());
                     if(entry != null) {
                         getCollection(manager, data, entry.getter(), object, entry.mode());
+                    }
+                }
+
+                for(MappableCollectionMultiEntry multiEntry: mappableCollectionMultiEntries) {
+                    MappableCollectionEntry entry = multiEntry.getForRestore(manager.getName());
+                    if(entry != null) {
+                        getMappableCollection(manager, data, entry.setter(), object, entry.mode(), entry.supplier());
                     }
                 }
 
@@ -1229,6 +1333,18 @@ public class GenericPR<T> extends BinaryPRBase<T> {
      * @author Daniel Abitz
      */
     protected static class CollectionMultiEntryImpl extends MultiEntryImpl<CollectionEntry> implements CollectionMultiEntry {
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    public interface MappableCollectionMultiEntry extends MultiEntry<MappableCollectionEntry> {
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    protected static class MappableCollectionMultiEntryImpl extends MultiEntryImpl<MappableCollectionEntry> implements MappableCollectionMultiEntry {
     }
 
     /**
@@ -1398,6 +1514,55 @@ public class GenericPR<T> extends BinaryPRBase<T> {
                     ", restorerName='" + restorerName + '\'' +
                     ", getter=" + getter +
                     ", mode=" + mode +
+                    '}';
+        }
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    public interface MappableCollectionEntry extends Entry {
+
+        MappingMode mode();
+
+        CollectionSupplier supplier();
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    protected static class MappableCollectionEntryImpl extends EntryImpl implements MappableCollectionEntry {
+
+        protected MappingMode mode;
+        protected CollectionSupplier supplier;
+
+        protected void setMode(MappingMode mode) {
+            this.mode = mode;
+        }
+
+        @Override
+        public MappingMode mode() {
+            return mode;
+        }
+
+        public void setSupplier(CollectionSupplier supplier) {
+            this.supplier = supplier;
+        }
+
+        @Override
+        public CollectionSupplier supplier() {
+            return supplier;
+        }
+
+        @Override
+        public String toString() {
+            return "CollectionEntryImpl{" +
+                    "persisterName='" + persisterName + '\'' +
+                    ", restorerName='" + restorerName + '\'' +
+                    ", getter=" + getter +
+                    ", setter=" + setter +
+                    ", mode=" + mode +
+                    ", supplier=" + supplier +
                     '}';
         }
     }

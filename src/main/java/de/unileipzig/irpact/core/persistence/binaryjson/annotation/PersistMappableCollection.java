@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.persistence.binaryjson.annotation;
 
+import de.unileipzig.irpact.commons.util.CollectionSupplier;
 import de.unileipzig.irpact.core.persistence.binaryjson.GenericPR;
 
 import java.lang.annotation.*;
@@ -11,8 +12,8 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Repeatable(PersistMaps.class)
-public @interface PersistMap {
+@Repeatable(PersistMappableCollections.class)
+public @interface PersistMappableCollection {
 
     String persisterName() default GenericPR.IGNORE;
 
@@ -20,7 +21,11 @@ public @interface PersistMap {
 
     String getter() default GenericPR.IGNORE;
 
-    MappingMode keyMode();
+    String setter() default GenericPR.IGNORE;
 
-    MappingMode valueMode();
+    Class<?> type() default IGNORE.class;
+
+    MappingMode mode();
+
+    CollectionSupplier supplier() default CollectionSupplier.ARRAY;
 }

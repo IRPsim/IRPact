@@ -21,11 +21,11 @@ public @interface PersistMapMap {
 
     String getter() default GenericPR.IGNORE;
 
-    MappingMode firstMode() default MappingMode.UNDEFINED;
+    MappingMode firstMode();
 
-    MappingMode secondMode() default MappingMode.UNDEFINED;
+    MappingMode secondMode();
 
-    MappingMode thirdMode() default MappingMode.UNDEFINED;
+    MappingMode thirdMode();
 
     MapSupplier supplier() default MapSupplier.LINKED;
 }
