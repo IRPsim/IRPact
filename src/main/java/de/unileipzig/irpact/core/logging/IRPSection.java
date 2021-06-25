@@ -61,6 +61,15 @@ public enum IRPSection implements LoggingSection {
     SIMULATION_PROCESS,
 
     /**
+     * Used to log perist operations.
+     */
+    PERSIST,
+    /**
+     * Used to log restore operations.
+     */
+    RESTORE,
+
+    /**
      * Used to log result printing.
      */
     RESULT,

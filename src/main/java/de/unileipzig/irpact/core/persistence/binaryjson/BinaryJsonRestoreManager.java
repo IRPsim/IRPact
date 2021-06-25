@@ -10,6 +10,7 @@ import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.Persistable;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.start.IRPactRestoreUpdater;
 import de.unileipzig.irpact.core.util.MetaData;
@@ -52,8 +53,9 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
     protected ClassManagerPR classManagerPR;
     protected boolean hasValidationChecksum;
     protected int validationChecksum;
-    protected Object restoredInstance;
-    protected boolean useGenericPR = false;
+    protected Object restoredRootInstance;
+    protected boolean useGeneric = false;
+    protected boolean forceRootInstance = true;
 
     public BinaryJsonRestoreManager() {
         init();
@@ -65,6 +67,26 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
         classManager.setReadMode();
         restoreHelper.setClassManager(classManager);
         restoreHelper.setPrintLoggableOnPersist(false);
+    }
+
+    public void enableGeneric() {
+        this.useGeneric = true;
+    }
+
+    public void disableGeneric() {
+        this.useGeneric = false;
+    }
+
+    public boolean isGenericEnabled() {
+        return useGeneric;
+    }
+
+    public void setForceRootInstance(boolean forceRootInstance) {
+        this.forceRootInstance = forceRootInstance;
+    }
+
+    public boolean isForceRootInstance() {
+        return forceRootInstance;
     }
 
     public void setCommandLineOptions(MainCommandLineOptions options) {
@@ -95,8 +117,10 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
     @SuppressWarnings("unchecked")
     private <T> GenericPR<T> createGeneric(String type) throws RestoreException {
         try {
+            LOGGER.trace(IRPSection.PERSIST, "search class '{}' for generic PR-handler", type);
             Class<T> c = (Class<T>) Class.forName(type);
             if(GenericPR.restoreWith(c, this)) {
+                LOGGER.trace(IRPSection.PERSIST, "create generic PR-handler for '{}'", c.getName());
                 GenericPR<T> restorer = new GenericPR<>(c);
                 ensureRegister(restorer);
                 return restorer;
@@ -143,7 +167,7 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
     protected <T> BinaryRestorer<T> ensureGetRestorer(String type) throws RestoreException {
         BinaryRestorer<T> restorer = (BinaryRestorer<T>) restorerMap.get(type);
         if(restorer == null) {
-            if(useGenericPR) {
+            if(useGeneric) {
                 restorer = createGeneric(type);
             } else {
                 throw new NoSuchElementException("missing restorer for '" + type + "'");
@@ -159,13 +183,20 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
         uidData.clear();
         restoredMap.clear();
         restoreHelper.clear();
-        clearRestoredInstance();
+        clearRestoredRootInstance();
         clearValidationChecksum();
     }
 
     @Override
     public void register(Persistable persistable) {
         persistables.add(persistable);
+    }
+
+    public void register(BinaryPersistData data) throws RestoreException, IOException {
+        BinaryJsonData bjd = toPersistable(data);
+        if(bjd != null) {
+            register(bjd);
+        }
     }
 
     @Override
@@ -192,7 +223,7 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
             throw new RestoreException("persistables is empty");
         }
 
-        clearRestoredInstance();
+        clearRestoredRootInstance();
         clearValidationChecksum();
 
         //phase 1
@@ -208,7 +239,9 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
             finalize(persistable);
         }
         //phase 4
-        updateRestoredEnvironment();
+        if(isForceRootInstance() || hasRestoredRootInstance()) {
+            updateRestoredEnvironment();
+        }
         //phase 5
         for(Persistable persistable: coll) {
             validation(persistable);
@@ -249,7 +282,7 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
     protected void updateRestoredEnvironment() throws RestoreException {
         try {
             IRPactRestoreUpdater updater = restoreHelper.getUpdater();
-            if(updater.getEnvironment() != getRestoredInstance()) {
+            if(updater.getEnvironment() != getRestoredRootInstance()) {
                 throw new RestoreException("environment mismatch");
             }
             SimulationEnvironment env = updater.parseRoot(restoreHelper.getInRoot());
@@ -269,14 +302,14 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
         restorer.validateRestore(data, object, this);
     }
 
-    protected void clearRestoredInstance() {
-        this.restoredInstance = null;
+    protected void clearRestoredRootInstance() {
+        this.restoredRootInstance = null;
     }
 
     @Override
-    public void setRestoredInstance(Object restored) {
-        if(this.restoredInstance == null) {
-            this.restoredInstance = restored;
+    public void setRestoredRootInstance(Object restored) {
+        if(this.restoredRootInstance == null) {
+            this.restoredRootInstance = restored;
         } else {
             throw new IllegalStateException("restored instance already set");
         }
@@ -284,11 +317,20 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getRestoredInstance() throws NoSuchElementException {
-        if(restoredInstance == null) {
+    public <T> T getRestoredRootInstance() throws NoSuchElementException {
+        if(restoredRootInstance == null) {
             throw new NoSuchElementException();
         }
-        return (T) restoredInstance;
+        return (T) restoredRootInstance;
+    }
+
+    public boolean hasRestoredRootInstance() {
+        return restoredRootInstance != null;
+    }
+
+    @Override
+    public Collection<Object> getRestoredInstances() {
+        return restoredMap.values();
     }
 
     private void clearValidationChecksum() {
@@ -408,7 +450,39 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
         }
     }
 
-    public BinaryJsonData tryRestore(BinaryPersistData data) throws RestoreException, IOException {
+    public boolean isMeta(BinaryPersistData data) {
+        String irp32 = data.getIRPBase32String();
+        return irp32.startsWith(MetaPR.UID_PREFIX) && data.getID() == MetaPR.UID;
+    }
+
+    public void restoreMeta(BinaryPersistData data) {
+        String irp32 = data.getIRPBase32String();
+        restoreMeta(irp32);
+    }
+
+    protected void restoreMeta(String irp32) {
+        ObjectNode restored = (ObjectNode) BinaryPersistJson.parse(irp32, MetaPR.UID_PREFIX);
+        metaPR = new MetaPR(restored);
+    }
+
+    public boolean isClassManager(BinaryPersistData data) {
+        String irp32 = data.getIRPBase32String();
+        return irp32.startsWith(MetaPR.UID_PREFIX) && data.getID() == ClassManagerPR.UID;
+    }
+
+    public void restoreClassManager(BinaryPersistData data) {
+        String irp32 = data.getIRPBase32String();
+        restoreClassManager(irp32);
+    }
+
+    protected void restoreClassManager(String irp32) {
+        ObjectNode restored = (ObjectNode) BinaryPersistJson.parse(irp32, ClassManagerPR.UID_PREFIX);
+        classManagerPR = new ClassManagerPR(restored, classManager);
+        classManagerPR.fromJson(classManager);
+        classManager.enable();
+    }
+
+    public BinaryJsonData toPersistable(BinaryPersistData data) throws RestoreException, IOException {
         String irp32 = data.getIRPBase32String();
         if(irp32.startsWith(MetaPR.UID_PREFIX)) {
             if(data.getID() == MetaPR.UID) {
@@ -428,7 +502,9 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
             throw new RestoreException("unsupported meta id: " + data.getID());
         } else {
             JsonNode restored = BinaryPersistJson.parse(irp32, BinaryJsonData.UID_PREFIX);
-            return BinaryJsonData.restore(restored);
+            BinaryJsonData bjd = BinaryJsonData.restore(restored);
+            bjd.setGetMode();
+            return bjd;
         }
     }
 

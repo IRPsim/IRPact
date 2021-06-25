@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MapMapBinaryPersisters {
+public @interface PersistCollections {
 
-    MapMapBinaryPersist[] value();
+    PersistCollection[] value();
 }

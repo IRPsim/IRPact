@@ -148,20 +148,19 @@ public class BasicPersistenceModul extends NameableBase implements PersistenceMo
         binaryRestore.setYear(year);
         binaryRestore.setUpdater(updater);
 
-        List<BinaryJsonData> dataList = new ArrayList<>();
+        List<BinaryJsonData> persistables = new ArrayList<>();
         for(BinaryPersistData bpd: root.binaryPersistData) {
-            BinaryJsonData data = binaryRestore.tryRestore(bpd);
+            BinaryJsonData data = binaryRestore.toPersistable(bpd);
             if(data == null) {
                 continue;
             }
-            data.setGetMode();
-            dataList.add(data);
+            persistables.add(data);
         }
 
-        binaryRestore.register(dataList);
+        binaryRestore.register(persistables);
         binaryRestore.restore();
         binaryRestore.restore(metaData);
-        SimulationEnvironment restoredEnvironment = binaryRestore.getRestoredInstance();
+        SimulationEnvironment restoredEnvironment = binaryRestore.getRestoredRootInstance();
         int restoredChecksum = restoredEnvironment.getChecksum();
         int validationChecksum = binaryRestore.getValidationChecksum();
         binaryRestore.unregisterAll();

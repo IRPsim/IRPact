@@ -7,9 +7,9 @@ import java.lang.annotation.*;
  */
 @Inherited
 @Documented
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CollectionBinaryPersisters {
+public @interface BinaryPersisters {
 
-    CollectionBinaryPersist[] value();
+    BinaryPersist[] value();
 }

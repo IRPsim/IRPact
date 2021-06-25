@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface NonPrimitiveBinaryPersisters {
+public @interface PersistMapMaps {
 
-    NonPrimitiveBinaryPersist[] value();
+    PersistMapMap[] value();
 }

@@ -9,12 +9,16 @@ import java.lang.annotation.*;
  */
 @Inherited
 @Documented
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Repeatable(UseBinaryPersisters.class)
-public @interface UseBinaryPersist {
+@Repeatable(PersistPrimitives.class)
+public @interface PersistPrimitive {
 
     String persisterName() default GenericPR.IGNORE;
 
     String restorerName() default GenericPR.IGNORE;
+
+    String setter() default GenericPR.IGNORE;
+
+    String getter() default GenericPR.IGNORE;
 }

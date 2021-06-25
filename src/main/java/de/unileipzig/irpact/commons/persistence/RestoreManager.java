@@ -24,9 +24,11 @@ public interface RestoreManager extends Nameable {
 
     void restore(MetaData metaData) throws RestoreException;
 
-    void setRestoredInstance(Object restored);
+    void setRestoredRootInstance(Object restored);
 
-    <T> T getRestoredInstance() throws NoSuchElementException;
+    <T> T getRestoredRootInstance() throws NoSuchElementException;
+
+    Collection<Object> getRestoredInstances();
 
     void setValidationChecksum(int checksum);
 

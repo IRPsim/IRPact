@@ -212,6 +212,11 @@ public final class BinaryJsonData extends PersistableBase implements BinaryJsonP
         putLong(NOTHING_ID);
     }
 
+    public void putNull() {
+        if(isSimulationMode()) return;
+        validateSet(nextPutId()).addNull();
+    }
+
     public void putLong(long value) {
         if(isSimulationMode()) return;
         validateSet(nextPutId()).add(value);
@@ -223,6 +228,12 @@ public final class BinaryJsonData extends PersistableBase implements BinaryJsonP
     }
 
     public void putText(String value) {
+        if(isSimulationMode()) return;
+        if(value == null) throw new NullPointerException("value");
+        validateSet(nextPutId()).add(value);
+    }
+
+    public void putNullableText(String value) {
         if(isSimulationMode()) return;
         validateSet(nextPutId()).add(value);
     }
@@ -318,7 +329,7 @@ public final class BinaryJsonData extends PersistableBase implements BinaryJsonP
         return nextNode(false);
     }
 
-    private JsonNode nextNodeAllowNull() {
+    private JsonNode nextNullableNode() {
         return nextNode(true);
     }
 
@@ -329,12 +340,12 @@ public final class BinaryJsonData extends PersistableBase implements BinaryJsonP
 
     private JsonNode peekNode() {
         requiresGetMode();
-        return get(autoGetId, false);
+        return get(autoGetId, true);
     }
 
-    private JsonNode get(int id, boolean allowNull) {
+    private JsonNode get(int id, boolean allowNullNode) {
         JsonNode node = validateGet(id);
-        if(node == null || node.isMissingNode() || (!allowNull && node.isNull())) {
+        if(node == null || node.isMissingNode() || (!allowNullNode && node.isNull())) {
             String type = node == null
                     ? "null"
                     : node.getNodeType().toString();
@@ -363,6 +374,43 @@ public final class BinaryJsonData extends PersistableBase implements BinaryJsonP
         return peekNode().longValue() == NOTHING_ID;
     }
 
+    public boolean peekAndSkipIfNothing() {
+        checkSimulationMode();
+        if(peekNothing()) {
+            skipNode();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean peekNull() {
+        checkSimulationMode();
+        return peekNode().isNull();
+    }
+
+    public boolean peekAndSkipIfNull() {
+        checkSimulationMode();
+        if(peekNull()) {
+            skipNode();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void skipNode() {
+        checkSimulationMode();
+        nextNullableNode();
+    }
+
+    public void skipNodes(int count) {
+        checkSimulationMode();
+        for(int i = 0; i < count; i++) {
+            skipNode();
+        }
+    }
+
     public double getDouble() {
         checkSimulationMode();
         return nextNode().doubleValue();
@@ -375,7 +423,7 @@ public final class BinaryJsonData extends PersistableBase implements BinaryJsonP
 
     public String getTextOrNull() {
         checkSimulationMode();
-        return nextNodeAllowNull().textValue();
+        return nextNullableNode().textValue();
     }
 
     public long[] getLongArray() {

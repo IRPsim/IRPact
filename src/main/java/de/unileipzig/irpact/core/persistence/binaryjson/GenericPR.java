@@ -15,10 +15,13 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.persistence.binaryjson.annotation.*;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
@@ -29,6 +32,8 @@ public class GenericPR<T> extends BinaryPRBase<T> {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(GenericPR.class);
 
     private final Class<T> c;
+
+    protected static final Object[] NULL = new Object[] {null};
 
     protected final List<PrimitiveMultiEntry> primitiveEntries = new ArrayList<>();
     protected final List<NonPrimitiveMultiEntry> nonPrimitiveEntries = new ArrayList<>();
@@ -94,7 +99,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         m.registerPutPrimitiveIntoData(Long.class, (data, getter, ref) -> data.putLong((Long) getter.invoke(ref)));
         m.registerPutPrimitiveIntoData(double.class, (data, getter, ref) -> data.putDouble((double) getter.invoke(ref)));
         m.registerPutPrimitiveIntoData(Double.class, (data, getter, ref) -> data.putDouble((Long) getter.invoke(ref)));
-        m.registerPutPrimitiveIntoData(String.class, (data, getter, ref) -> data.putText((String) getter.invoke(ref)));
+        m.registerPutPrimitiveIntoData(String.class, (data, getter, ref) -> data.putNullableText((String) getter.invoke(ref)));
 
         //GetPrimitiveFromData
         m.registerGetPrimitiveFromData(boolean.class, (data, setter, ref) -> setter.invoke(ref, data.getBoolean()));
@@ -105,7 +110,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         m.registerGetPrimitiveFromData(Long.class, (data, setter, ref) -> setter.invoke(ref, data.getLong()));
         m.registerGetPrimitiveFromData(Double.class, (data, setter, ref) -> setter.invoke(ref, data.getDouble()));
         m.registerGetPrimitiveFromData(Double.class, (data, setter, ref) -> setter.invoke(ref, data.getDouble()));
-        m.registerGetPrimitiveFromData(String.class, (data, setter, ref) -> setter.invoke(ref, data.getText()));
+        m.registerGetPrimitiveFromData(String.class, (data, setter, ref) -> setter.invoke(ref, data.getTextOrNull()));
 
         //ToStringKey
         m.registerToStringKey(MappingMode.ID, (manager, key) -> Long.toString(manager.uncheckedEnsureGetUID(key)));
@@ -124,7 +129,13 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         m.registerFromStringKey(MappingMode.STRING, (manager, key) -> key);
 
         //AddPrimitiveToArrayNode
-        m.registerAddToArrayNode(MappingMode.ID, (manager, arr, value) -> arr.add(manager.uncheckedEnsureGetUID(value)));
+        m.registerAddToArrayNode(MappingMode.ID, (manager, arr, value) -> {
+            if(value == null) {
+                arr.addNull();
+            } else {
+                arr.add(manager.uncheckedEnsureGetUID(value));
+            }
+        });
         m.registerAddToArrayNode(MappingMode.BOOLEAN, (manager, arr, value) -> arr.add((Boolean) value));
         m.registerAddToArrayNode(MappingMode.INT, (manager, arr, value) -> arr.add((Integer) value));
         m.registerAddToArrayNode(MappingMode.LONG, (manager, arr, value) -> arr.add((Long) value));
@@ -132,7 +143,13 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         m.registerAddToArrayNode(MappingMode.STRING, (manager, arr, value) -> arr.add((String) value));
 
         //GetFromArrayNode
-        m.registerGetFromArrayNode(MappingMode.ID, (manager, arr, index) -> manager.uncheckedEnsureGet(arr.get(index).longValue()));
+        m.registerGetFromArrayNode(MappingMode.ID, (manager, arr, index) -> {
+            if(arr.get(index).isNull()) {
+                return null;
+            } else {
+                return manager.uncheckedEnsureGet(arr.get(index).longValue());
+            }
+        });
         m.registerGetFromArrayNode(MappingMode.BOOLEAN, (manager, arr, index) -> arr.get(index).booleanValue());
         m.registerGetFromArrayNode(MappingMode.INT, (manager, arr, index) -> arr.get(index).booleanValue());
         m.registerGetFromArrayNode(MappingMode.LONG, (manager, arr, index) -> arr.get(index).longValue());
@@ -140,7 +157,13 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         m.registerGetFromArrayNode(MappingMode.STRING, (manager, arr, index) -> arr.get(index).textValue());
 
         //PutPrimitiveIntoObjectNode
-        m.registerPutIntoObjectNode(MappingMode.ID, (manager, obj, key, value) -> obj.put(key, manager.uncheckedEnsureGetUID(value)));
+        m.registerPutIntoObjectNode(MappingMode.ID, (manager, obj, key, value) -> {
+            if(value == null) {
+                obj.putNull(key);
+            } else {
+                obj.put(key, manager.uncheckedEnsureGetUID(value));
+            }
+        });
         m.registerPutIntoObjectNode(MappingMode.BOOLEAN, (manager, obj, key, value) -> obj.put(key, (Boolean) value));
         m.registerPutIntoObjectNode(MappingMode.INT, (manager, obj, key, value) -> obj.put(key, (Integer) value));
         m.registerPutIntoObjectNode(MappingMode.LONG, (manager, obj, key, value) -> obj.put(key, (Long) value));
@@ -148,7 +171,13 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         m.registerPutIntoObjectNode(MappingMode.STRING, (manager, obj, key, value) -> obj.put(key, (String) value));
 
         //GetFromObjectNode
-        m.registerGetFromObjectNode(MappingMode.ID, (manager, obj, key) -> manager.uncheckedEnsureGet(obj.get(key).longValue()));
+        m.registerGetFromObjectNode(MappingMode.ID, (manager, obj, key) -> {
+            if(obj.get(key).isNull()) {
+                return null;
+            } else {
+                return manager.uncheckedEnsureGet(obj.get(key).longValue());
+            }
+        });
         m.registerGetFromObjectNode(MappingMode.BOOLEAN, (manager, obj, key) -> obj.get(key).booleanValue());
         m.registerGetFromObjectNode(MappingMode.INT, (manager, obj, key) -> obj.get(key).intValue());
         m.registerGetFromObjectNode(MappingMode.LONG, (manager, obj, key) -> obj.get(key).longValue());
@@ -400,6 +429,52 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         }
     }
 
+    public static <S extends Annotation, M extends Annotation> boolean isAnyAnnotationPresent(
+            Class<?> c,
+            Class<S> singleClass,
+            Class<M> multiClass) {
+        return c.isAnnotationPresent(singleClass) || c.isAnnotationPresent(multiClass);
+    }
+
+    public static <S extends Annotation, M extends Annotation> List<S> getAnnotations(
+            Class<?> c,
+            Class<S> singleAnnotation,
+            Class<M> multiAnnotation, Function<? super M, ? extends S[]> extractSingles) {
+        if(c.isAnnotationPresent(singleAnnotation)) {
+            S single = c.getDeclaredAnnotation(singleAnnotation);
+            return Collections.singletonList(single);
+        }
+        if(c.isAnnotationPresent(multiAnnotation)) {
+            M multi = c.getDeclaredAnnotation(multiAnnotation);
+            S[] singles = extractSingles.apply(multi);
+            return Arrays.asList(singles);
+        }
+        return Collections.emptyList();
+    }
+
+    public static <S extends Annotation, M extends Annotation> boolean isAnyAnnotationPresent(
+            AccessibleObject obj,
+            Class<S> singleClass,
+            Class<M> multiClass) {
+        return obj.isAnnotationPresent(singleClass) || obj.isAnnotationPresent(multiClass);
+    }
+
+    public static <S extends Annotation, M extends Annotation> List<S> getAnnotations(
+            AccessibleObject obj,
+            Class<S> singleAnnotation,
+            Class<M> multiAnnotation, Function<? super M, ? extends S[]> extractSingles) {
+        if(obj.isAnnotationPresent(singleAnnotation)) {
+            S single = obj.getDeclaredAnnotation(singleAnnotation);
+            return Collections.singletonList(single);
+        }
+        if(obj.isAnnotationPresent(multiAnnotation)) {
+            M multi = obj.getDeclaredAnnotation(multiAnnotation);
+            S[] singles = extractSingles.apply(multi);
+            return Arrays.asList(singles);
+        }
+        return Collections.emptyList();
+    }
+
     //=========================
     //general
     //=========================
@@ -413,9 +488,13 @@ public class GenericPR<T> extends BinaryPRBase<T> {
     }
 
     private static boolean handleWith(Class<?> c, PersistManager persistManager, RestoreManager restoreManager) {
-        if(c.isAnnotationPresent(UseBinaryPersisters.class)) {
-            UseBinaryPersisters annotations = c.getDeclaredAnnotation(UseBinaryPersisters.class);
-            for(UseBinaryPersist annotation: annotations.value()) {
+        if(isAnyAnnotationPresent(c, BinaryPersist.class, BinaryPersisters.class)) {
+            List<BinaryPersist> annotations = getAnnotations(c, BinaryPersist.class, BinaryPersisters.class, BinaryPersisters::value);
+            for(BinaryPersist annotation: annotations) {
+                if(!annotation.enabled()) {
+                    continue;
+                }
+
                 if(persistManager == null) {
                     if(isIgnoreOrEquals(annotation.restorerName(), restoreManager.getName())) {
                         return true;
@@ -432,36 +511,40 @@ public class GenericPR<T> extends BinaryPRBase<T> {
 
     public static void validate(Class<?> c) throws IRPactException {
         for(Field field: c.getFields()) {
-            if(field.isAnnotationPresent(PrimitiveBinaryPersisters.class)) {
-                PrimitiveBinaryPersisters annotation = field.getDeclaredAnnotation(PrimitiveBinaryPersisters.class);
-                validate(annotation, c, field);
+            if(isAnyAnnotationPresent(field, PersistPrimitive.class, PersistPrimitives.class)) {
+                List<PersistPrimitive> annotations = getAnnotations(field, PersistPrimitive.class, PersistPrimitives.class, PersistPrimitives::value);
+                for(PersistPrimitive annotation: annotations) {
+                    validate(annotation, c, field);
+                }
             }
-            else if(field.isAnnotationPresent(NonPrimitiveBinaryPersisters.class)) {
-                NonPrimitiveBinaryPersisters annotation = field.getDeclaredAnnotation(NonPrimitiveBinaryPersisters.class);
-                validate(annotation, c, field);
+            else if(isAnyAnnotationPresent(field, PersistNonPrimitive.class, PersistNonPrimitives.class)) {
+                List<PersistNonPrimitive> annotations = getAnnotations(field, PersistNonPrimitive.class, PersistNonPrimitives.class, PersistNonPrimitives::value);
+                for(PersistNonPrimitive annotation: annotations) {
+                    validate(annotation, c, field);
+                }
             }
-            else if(field.isAnnotationPresent(CollectionBinaryPersisters.class)) {
-                CollectionBinaryPersisters annotation = field.getDeclaredAnnotation(CollectionBinaryPersisters.class);
-                validate(annotation, c, field);
+            else if(isAnyAnnotationPresent(field, PersistCollection.class, PersistCollections.class)) {
+                List<PersistCollection> annotations = getAnnotations(field, PersistCollection.class, PersistCollections.class, PersistCollections::value);
+                for(PersistCollection annotation: annotations) {
+                    validate(annotation, c, field);
+                }
             }
-            else if(field.isAnnotationPresent(MapBinaryPersisters.class)) {
-                MapBinaryPersisters annotation = field.getDeclaredAnnotation(MapBinaryPersisters.class);
-                validate(annotation, c, field);
+            else if(isAnyAnnotationPresent(field, PersistMap.class, PersistMaps.class)) {
+                List<PersistMap> annotations = getAnnotations(field, PersistMap.class, PersistMaps.class, PersistMaps::value);
+                for(PersistMap annotation: annotations) {
+                    validate(annotation, c, field);
+                }
+            }
+            else if(isAnyAnnotationPresent(field, PersistMapMap.class, PersistMapMaps.class)) {
+                List<PersistMapMap> annotations = getAnnotations(field, PersistMapMap.class, PersistMapMaps.class, PersistMapMaps::value);
+                for(PersistMapMap annotation: annotations) {
+                    validate(annotation, c, field);
+                }
             }
         }
     }
 
-    //=========================
-    //PrimitiveBinaryPersist
-    //=========================
-
-    public static void validate(PrimitiveBinaryPersisters annotations, Class<?> c, Field annotatedField) throws IRPactException {
-        for(PrimitiveBinaryPersist annotation: annotations.value()) {
-            validate(annotation, c, annotatedField);
-        }
-    }
-
-    public static void validate(PrimitiveBinaryPersist annotation, Class<?> c, Field annotatedField) throws IRPactException {
+    public static void validate(PersistPrimitive annotation, Class<?> c, Field annotatedField) throws IRPactException {
         if(isNotPrimitive(annotatedField)) {
             throw new IRPactException("field '{}#{}' is not primitive, type: {}", c.getName(), annotatedField.getName(), annotatedField.getType().getName());
         }
@@ -477,17 +560,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         }
     }
 
-    //=========================
-    //NonPrimitiveBinaryPersisters
-    //=========================
-
-    public static void validate(NonPrimitiveBinaryPersisters annotations, Class<?> c, Field annotatedField) throws IRPactException {
-        for(NonPrimitiveBinaryPersist annotation: annotations.value()) {
-            validate(annotation, c, annotatedField);
-        }
-    }
-
-    public static void validate(NonPrimitiveBinaryPersist annotation, Class<?> c, Field annotatedField) throws IRPactException {
+    public static void validate(PersistNonPrimitive annotation, Class<?> c, Field annotatedField) throws IRPactException {
         if(isPrimitive(annotatedField)) {
             throw new IRPactException("field '{}#{}' is primitive, type: {}", c.getName(), annotatedField.getName(), annotatedField.getType().getName());
         }
@@ -503,17 +576,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         }
     }
 
-    //=========================
-    //CollectionBinaryPersisters
-    //=========================
-
-    public static void validate(CollectionBinaryPersisters annotations, Class<?> c, Field annotatedField) throws IRPactException {
-        for(CollectionBinaryPersist annotation: annotations.value()) {
-            validate(annotation, c, annotatedField);
-        }
-    }
-
-    public static void validate(CollectionBinaryPersist annotation, Class<?> c, Field annotatedField) throws IRPactException {
+    public static void validate(PersistCollection annotation, Class<?> c, Field annotatedField) throws IRPactException {
         if(isPrimitive(annotatedField)) {
             throw new IRPactException("field '{}#{}' is primitive, type: {}", c.getName(), annotatedField.getName(), annotatedField.getType().getName());
         }
@@ -524,17 +587,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         }
     }
 
-    //=========================
-    //MapBinaryPersisters
-    //=========================
-
-    public static void validate(MapBinaryPersisters annotations, Class<?> c, Field annotatedField) throws IRPactException {
-        for(MapBinaryPersist annotation: annotations.value()) {
-            validate(annotation, c, annotatedField);
-        }
-    }
-
-    public static void validate(MapBinaryPersist annotation, Class<?> c, Field annotatedField) throws IRPactException {
+    public static void validate(PersistMap annotation, Class<?> c, Field annotatedField) throws IRPactException {
         if(isPrimitive(annotatedField)) {
             throw new IRPactException("field '{}#{}' is primitive, type: {}", c.getName(), annotatedField.getName(), annotatedField.getType().getName());
         }
@@ -545,17 +598,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         }
     }
 
-    //=========================
-    //MapMapBinaryPersisters
-    //=========================
-
-    public static void validate(MapMapBinaryPersisters annotations, Class<?> c, Field annotatedField) throws IRPactException {
-        for(MapMapBinaryPersist annotation: annotations.value()) {
-            validate(annotation, c, annotatedField);
-        }
-    }
-
-    public static void validate(MapMapBinaryPersist annotation, Class<?> c, Field annotatedField) throws IRPactException {
+    public static void validate(PersistMapMap annotation, Class<?> c, Field annotatedField) throws IRPactException {
         if(isPrimitive(annotatedField)) {
             throw new IRPactException("field '{}#{}' is primitive, type: {}", c.getName(), annotatedField.getName(), annotatedField.getType().getName());
         }
@@ -580,81 +623,56 @@ public class GenericPR<T> extends BinaryPRBase<T> {
 
     protected void initalizeFields() throws NoSuchMethodException {
         for(Field field: getType().getDeclaredFields()) {
-            if(field.isAnnotationPresent(PrimitiveBinaryPersisters.class)) {
-                System.out.println("XXX");
-                PrimitiveBinaryPersisters annotation = field.getDeclaredAnnotation(PrimitiveBinaryPersisters.class);
-                PrimitiveMultiEntry multiEntry = handle(annotation, field);
-                primitiveEntries.add(multiEntry);
-            }
-            else if(field.isAnnotationPresent(PrimitiveBinaryPersist.class)) {
-                System.out.println("YYY");
-                PrimitiveBinaryPersist annotation = field.getDeclaredAnnotation(PrimitiveBinaryPersist.class);
-                PrimitiveEntry entry = handle(annotation, field);
+
+            if(isAnyAnnotationPresent(field, PersistPrimitive.class, PersistPrimitives.class)) {
+                List<PersistPrimitive> annotations = getAnnotations(field, PersistPrimitive.class, PersistPrimitives.class, PersistPrimitives::value);
                 PrimitiveMultiEntryImpl multiEntry = new PrimitiveMultiEntryImpl();
-                multiEntry.add(entry);
+                for(PersistPrimitive annotation: annotations) {
+                    PrimitiveEntry entry = handle(annotation, field);
+                    multiEntry.add(entry);
+                }
                 primitiveEntries.add(multiEntry);
             }
-            else if(field.isAnnotationPresent(NonPrimitiveBinaryPersisters.class)) {
-                NonPrimitiveBinaryPersisters annotation = field.getDeclaredAnnotation(NonPrimitiveBinaryPersisters.class);
-                NonPrimitiveMultiEntry multiEntry = handle(annotation, field);
-                nonPrimitiveEntries.add(multiEntry);
-            }
-            else if(field.isAnnotationPresent(NonPrimitiveBinaryPersist.class)) {
-                NonPrimitiveBinaryPersist annotation = field.getDeclaredAnnotation(NonPrimitiveBinaryPersist.class);
-                NonPrimitiveEntry entry = handle(annotation, field);
+            else if(isAnyAnnotationPresent(field, PersistNonPrimitive.class, PersistNonPrimitives.class)) {
+                List<PersistNonPrimitive> annotations = getAnnotations(field, PersistNonPrimitive.class, PersistNonPrimitives.class, PersistNonPrimitives::value);
                 NonPrimitiveMultiEntryImpl multiEntry = new NonPrimitiveMultiEntryImpl();
-                multiEntry.add(entry);
+                for(PersistNonPrimitive annotation: annotations) {
+                    NonPrimitiveEntry entry = handle(annotation, field);
+                    multiEntry.add(entry);
+                }
                 nonPrimitiveEntries.add(multiEntry);
             }
-            else if(field.isAnnotationPresent(CollectionBinaryPersisters.class)) {
-                CollectionBinaryPersisters annotation = field.getDeclaredAnnotation(CollectionBinaryPersisters.class);
-                CollectionMultiEntry multiEntry = handle(annotation, field);
-                collectionMultiEntries.add(multiEntry);
-            }
-            else if(field.isAnnotationPresent(CollectionBinaryPersist.class)) {
-                CollectionBinaryPersist annotation = field.getDeclaredAnnotation(CollectionBinaryPersist.class);
-                CollectionEntry entry = handle(annotation, field);
+            else if(isAnyAnnotationPresent(field, PersistCollection.class, PersistCollections.class)) {
+                List<PersistCollection> annotations = getAnnotations(field, PersistCollection.class, PersistCollections.class, PersistCollections::value);
                 CollectionMultiEntryImpl multiEntry = new CollectionMultiEntryImpl();
-                multiEntry.add(entry);
+                for(PersistCollection annotation: annotations) {
+                    CollectionEntry entry = handle(annotation, field);
+                    multiEntry.add(entry);
+                }
                 collectionMultiEntries.add(multiEntry);
             }
-            else if(field.isAnnotationPresent(MapBinaryPersisters.class)) {
-                MapBinaryPersisters annotation = field.getDeclaredAnnotation(MapBinaryPersisters.class);
-                MapMultiEntry multiEntry = handle(annotation, field);
-                mapMultiEntries.add(multiEntry);
-            }
-            else if(field.isAnnotationPresent(MapBinaryPersist.class)) {
-                MapBinaryPersist annotation = field.getDeclaredAnnotation(MapBinaryPersist.class);
-                MapEntry entry = handle(annotation, field);
+            else if(isAnyAnnotationPresent(field, PersistMap.class, PersistMaps.class)) {
+                List<PersistMap> annotations = getAnnotations(field, PersistMap.class, PersistMaps.class, PersistMaps::value);
                 MapMultiEntryImpl multiEntry = new MapMultiEntryImpl();
-                multiEntry.add(entry);
+                for(PersistMap annotation: annotations) {
+                    MapEntry entry = handle(annotation, field);
+                    multiEntry.add(entry);
+                }
                 mapMultiEntries.add(multiEntry);
             }
-            else if(field.isAnnotationPresent(MapMapBinaryPersisters.class)) {
-                MapMapBinaryPersisters annotation = field.getDeclaredAnnotation(MapMapBinaryPersisters.class);
-                MapMapMultiEntry multiEntry = handle(annotation, field);
-                mapMapMultiEntries.add(multiEntry);
-            }
-            else if(field.isAnnotationPresent(MapMapBinaryPersist.class)) {
-                MapMapBinaryPersist annotation = field.getDeclaredAnnotation(MapMapBinaryPersist.class);
-                MapMapEntry entry = handle(annotation, field);
+            else if(isAnyAnnotationPresent(field, PersistMapMap.class, PersistMapMaps.class)) {
+                List<PersistMapMap> annotations = getAnnotations(field, PersistMapMap.class, PersistMapMaps.class, PersistMapMaps::value);
                 MapMapMultiEntryImpl multiEntry = new MapMapMultiEntryImpl();
-                multiEntry.add(entry);
+                for(PersistMapMap annotation: annotations) {
+                    MapMapEntry entry = handle(annotation, field);
+                    multiEntry.add(entry);
+                }
                 mapMapMultiEntries.add(multiEntry);
             }
         }
     }
 
-    protected PrimitiveMultiEntry handle(PrimitiveBinaryPersisters annotions, Field annotatedField) throws NoSuchMethodException {
-        PrimitiveMultiEntryImpl multiEntry = new PrimitiveMultiEntryImpl();
-        for(PrimitiveBinaryPersist annotation: annotions.value()) {
-            PrimitiveEntry entry = handle(annotation, annotatedField);
-            multiEntry.add(entry);
-        }
-        return multiEntry;
-    }
-
-    protected PrimitiveEntry handle(PrimitiveBinaryPersist annotation, Field annotatedField) throws NoSuchMethodException {
+    protected PrimitiveEntry handle(PersistPrimitive annotation, Field annotatedField) throws NoSuchMethodException {
         PrimitiveEntryImpl entry = new PrimitiveEntryImpl();
         entry.setPersisterName(annotation.persisterName());
         entry.setRestorerName(annotation.restorerName());
@@ -670,16 +688,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         return entry;
     }
 
-    protected NonPrimitiveMultiEntry handle(NonPrimitiveBinaryPersisters annotions, Field annotatedField) throws NoSuchMethodException {
-        NonPrimitiveMultiEntryImpl multiEntry = new NonPrimitiveMultiEntryImpl();
-        for(NonPrimitiveBinaryPersist annotation: annotions.value()) {
-            NonPrimitiveEntry entry = handle(annotation, annotatedField);
-            multiEntry.add(entry);
-        }
-        return multiEntry;
-    }
-
-    protected NonPrimitiveEntry handle(NonPrimitiveBinaryPersist annotation, Field annotatedField) throws NoSuchMethodException {
+    protected NonPrimitiveEntry handle(PersistNonPrimitive annotation, Field annotatedField) throws NoSuchMethodException {
         NonPrimitiveEntryImpl entry = new NonPrimitiveEntryImpl();
         entry.setPersisterName(annotation.persisterName());
         entry.setRestorerName(annotation.restorerName());
@@ -695,16 +704,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         return entry;
     }
 
-    protected CollectionMultiEntry handle(CollectionBinaryPersisters annotions, Field annotatedField) throws NoSuchMethodException {
-        CollectionMultiEntryImpl multiEntry = new CollectionMultiEntryImpl();
-        for(CollectionBinaryPersist annotation: annotions.value()) {
-            CollectionEntry entry = handle(annotation, annotatedField);
-            multiEntry.add(entry);
-        }
-        return multiEntry;
-    }
-
-    protected CollectionEntry handle(CollectionBinaryPersist annotation, Field annotatedField) throws NoSuchMethodException {
+    protected CollectionEntry handle(PersistCollection annotation, Field annotatedField) throws NoSuchMethodException {
         CollectionEntryImpl entry = new CollectionEntryImpl();
         entry.setPersisterName(annotation.persisterName());
         entry.setRestorerName(annotation.restorerName());
@@ -719,16 +719,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         return entry;
     }
 
-    protected MapMultiEntry handle(MapBinaryPersisters annotions, Field annotatedField) throws NoSuchMethodException {
-        MapMultiEntryImpl multiEntry = new MapMultiEntryImpl();
-        for(MapBinaryPersist annotation: annotions.value()) {
-            MapEntry entry = handle(annotation, annotatedField);
-            multiEntry.add(entry);
-        }
-        return multiEntry;
-    }
-
-    protected MapEntry handle(MapBinaryPersist annotation, Field annotatedField) throws NoSuchMethodException {
+    protected MapEntry handle(PersistMap annotation, Field annotatedField) throws NoSuchMethodException {
         MapEntryImpl entry = new MapEntryImpl();
         entry.setPersisterName(annotation.persisterName());
         entry.setRestorerName(annotation.restorerName());
@@ -744,16 +735,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         return entry;
     }
 
-    protected MapMapMultiEntry handle(MapMapBinaryPersisters annotions, Field annotatedField) throws NoSuchMethodException {
-        MapMapMultiEntryImpl multiEntry = new MapMapMultiEntryImpl();
-        for(MapMapBinaryPersist annotation: annotions.value()) {
-            MapMapEntry entry = handle(annotation, annotatedField);
-            multiEntry.add(entry);
-        }
-        return multiEntry;
-    }
-
-    protected MapMapEntry handle(MapMapBinaryPersist annotation, Field annotatedField) throws NoSuchMethodException {
+    protected MapMapEntry handle(PersistMapMap annotation, Field annotatedField) throws NoSuchMethodException {
         MapMapEntryImpl entry = new MapMapEntryImpl();
         entry.setPersisterName(annotation.persisterName());
         entry.setRestorerName(annotation.restorerName());
@@ -785,22 +767,31 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         }
     }
 
+    protected static void prepare(PersistManager manager, Object value) throws PersistException {
+        if(value != null) {
+            manager.prepare(value);
+        }
+    }
+
     protected static void prepareNonPrimitive(PersistManager manager, Method getter, Object ref) throws InvocationTargetException, IllegalAccessException, PersistException {
         Object result = getter.invoke(ref);
-        manager.prepare(result);
+        prepare(manager, result);
     }
 
     protected static void putNonPrimitive(PersistManager manager, BinaryJsonData data, Method getter, Object ref) throws PersistException, InvocationTargetException, IllegalAccessException {
         Object result = getter.invoke(ref);
-        long id = manager.ensureGetUID(result);
-        data.putLong(id);
+        if(result == null) {
+            data.putNull();
+        } else {
+            data.putLong(manager.ensureGetUID(result));
+        }
     }
 
     protected static void prepareCollection(PersistManager manager, Method getter, Object ref, MappingMode mode) throws InvocationTargetException, IllegalAccessException, PersistException {
         if(mode == MappingMode.ID) {
             Collection<?> coll = (Collection<?>) getter.invoke(ref);
             for(Object entry: coll) {
-                manager.prepare(entry);
+                prepare(manager, entry);
             }
         }
     }
@@ -822,11 +813,11 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         Map<?,?> map = (Map<?,?>) getter.invoke(ref);
         for(Map.Entry<?, ?> entry: map.entrySet()) {
             if(keyMode == MappingMode.ID) {
-                manager.prepare(entry.getKey());
+                prepare(manager, entry.getKey());
             }
 
             if(valueMode == MappingMode.ID) {
-                manager.prepare(entry.getValue());
+                prepare(manager, entry.getValue());
             }
         }
     }
@@ -854,16 +845,16 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         Map<?, Map<?, ?>> map = (Map<?, Map<?, ?>>) getter.invoke(ref);
         for(Map.Entry<?, Map<?, ?>> entry: map.entrySet()) {
             if(firstMode == MappingMode.ID) {
-                manager.prepare(entry.getKey());
+                prepare(manager, entry.getKey());
             }
 
             for(Map.Entry<?, ?> entry1: entry.getValue().entrySet()) {
                 if(secondMode == MappingMode.ID) {
-                    manager.prepare(entry1.getKey());
+                    prepare(manager, entry1.getKey());
                 }
 
                 if(thirdMode == MappingMode.ID) {
-                    manager.prepare(entry1.getValue());
+                    prepare(manager, entry1.getValue());
                 }
             }
         }
@@ -1004,9 +995,13 @@ public class GenericPR<T> extends BinaryPRBase<T> {
     }
 
     protected static void getNonPrimitive(RestoreManager manager, BinaryJsonData data, Method setter, Object ref) throws InvocationTargetException, IllegalAccessException, RestoreException {
-        long id = data.getLong();
-        Object obj = manager.ensureGet(id);
-        setter.invoke(ref, obj);
+        if(data.peekAndSkipIfNull()) {
+            long id = data.getLong();
+            Object obj = manager.ensureGet(id);
+            setter.invoke(ref, obj);
+        } else {
+            setter.invoke(ref, NULL);
+        }
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -1101,21 +1096,21 @@ public class GenericPR<T> extends BinaryPRBase<T> {
                 for(CollectionMultiEntry multiEntry: collectionMultiEntries) {
                     CollectionEntry entry = multiEntry.getForRestore(manager.getName());
                     if(entry != null) {
-                        getCollection(manager, data, entry.setter(), object, entry.mode());
+                        getCollection(manager, data, entry.getter(), object, entry.mode());
                     }
                 }
 
                 for(MapMultiEntry multiEntry: mapMultiEntries) {
                     MapEntry entry = multiEntry.getForRestore(manager.getName());
                     if(entry != null) {
-                        getMap(manager, data, entry.setter(), object, entry.keyMode(), entry.valueMode());
+                        getMap(manager, data, entry.getter(), object, entry.keyMode(), entry.valueMode());
                     }
                 }
 
                 for(MapMapMultiEntry multiEntry: mapMapMultiEntries) {
                     MapMapEntry entry = multiEntry.getForRestore(manager.getName());
                     if(entry != null) {
-                        getMapMap(manager, data, entry.setter(), object, entry.firstMode(), entry.secondMode(), entry.thirdMode(), entry.supplier());
+                        getMapMap(manager, data, entry.getter(), object, entry.firstMode(), entry.secondMode(), entry.thirdMode(), entry.supplier());
                     }
                 }
 
@@ -1158,9 +1153,23 @@ public class GenericPR<T> extends BinaryPRBase<T> {
             restorers.computeIfAbsent(entry.getRestorername(), _name -> new ArrayList<>()).add(entry);
         }
 
+        protected T getDefaultPersister() {
+            List<T> list = persisters.get(IGNORE);
+            return list == null || list.isEmpty()
+                    ? null
+                    : list.get(0);
+        }
+
         @Override
         public T getForPersist(String name) {
             List<T> list = persisters.get(name);
+            return list == null || list.isEmpty()
+                    ? getDefaultPersister()
+                    : list.get(0);
+        }
+
+        protected T getDefaultRestorer() {
+            List<T> list = restorers.get(IGNORE);
             return list == null || list.isEmpty()
                     ? null
                     : list.get(0);
@@ -1170,7 +1179,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
         public T getForRestore(String name) {
             List<T> list = restorers.get(name);
             return list == null || list.isEmpty()
-                    ? null
+                    ? getDefaultRestorer()
                     : list.get(0);
         }
 
@@ -1307,6 +1316,9 @@ public class GenericPR<T> extends BinaryPRBase<T> {
 
         @Override
         public Method setter() {
+            if(setter == null) {
+                throw new UnsupportedOperationException("setter not supported");
+            }
             return setter;
         }
     }

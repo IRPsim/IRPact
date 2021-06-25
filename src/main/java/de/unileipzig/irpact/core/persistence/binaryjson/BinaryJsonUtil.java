@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.persistence.binaryjson;
 
-import de.unileipzig.irpact.jadex.persistance.binary.data.*;
 import de.unileipzig.irpact.jadex.persistance.binaryjson.data.*;
 
 /**

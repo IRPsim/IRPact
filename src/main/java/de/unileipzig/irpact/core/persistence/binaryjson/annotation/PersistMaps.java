@@ -7,9 +7,9 @@ import java.lang.annotation.*;
  */
 @Inherited
 @Documented
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UseBinaryPersisters {
+public @interface PersistMaps {
 
-    UseBinaryPersist[] value();
+    PersistMap[] value();
 }

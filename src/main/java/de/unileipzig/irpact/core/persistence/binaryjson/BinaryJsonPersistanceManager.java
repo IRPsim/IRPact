@@ -4,9 +4,12 @@ import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.exception.IRPactException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.util.JsonUtil;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.core.persistence.binaryjson.meta.ClassManagerPR;
 import de.unileipzig.irpact.core.persistence.binaryjson.meta.MetaPR;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
 import java.util.function.ToLongFunction;
@@ -27,6 +30,8 @@ public class BinaryJsonPersistanceManager  extends NameableBase implements Persi
             throw new PlaceholderException();
         }
     };
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BinaryJsonPersistanceManager.class);
 
     protected static final long FIRST_UID = 2L;
     protected final ToLongFunction<?> ENSURE_GET_UID = this::uncheckedEnsureGetUID;
@@ -64,6 +69,18 @@ public class BinaryJsonPersistanceManager  extends NameableBase implements Persi
         classManagerHolder = newHolder(classManager);
         classManagerPR = new ClassManagerPR(JsonUtil.SMILE.createObjectNode(), classManager);
         persistableMap.put(classManagerHolder, classManagerPR);
+    }
+
+    public void enableGeneric() {
+        this.useGeneric = true;
+    }
+
+    public void disableGeneric() {
+        this.useGeneric = false;
+    }
+
+    public boolean isGenericEnabled() {
+        return useGeneric;
     }
 
     public void setUidManager(UIDManager uidManager) {
@@ -211,6 +228,7 @@ public class BinaryJsonPersistanceManager  extends NameableBase implements Persi
     protected <T> GenericPR<T> createGeneric(Class<T> c) throws PersistException {
         if(GenericPR.persistWith(c, this)) {
             try {
+                LOGGER.trace(IRPSection.PERSIST, "create generic PR-handler for '{}'", c.getName());
                 GenericPR<T> persister = new GenericPR<>(c);
                 ensureRegister(persister);
                 return persister;

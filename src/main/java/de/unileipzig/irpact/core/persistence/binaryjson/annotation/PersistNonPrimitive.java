@@ -11,8 +11,8 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Repeatable(PrimitiveBinaryPersisters.class)
-public @interface PrimitiveBinaryPersist {
+@Repeatable(PersistNonPrimitives.class)
+public @interface PersistNonPrimitive {
 
     String persisterName() default GenericPR.IGNORE;
 
