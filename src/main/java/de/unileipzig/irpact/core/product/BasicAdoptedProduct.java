@@ -6,7 +6,7 @@ import de.unileipzig.irpact.commons.persistence.annotation.UsedPersisterRestorer
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
-import de.unileipzig.irpact.jadex.persistance.binary.data.BasicAdoptedProductPR;
+import de.unileipzig.irpact.jadex.persistance.binaryjson.data.BasicAdoptedProductPR;
 
 /**
  * @author Daniel Abitz

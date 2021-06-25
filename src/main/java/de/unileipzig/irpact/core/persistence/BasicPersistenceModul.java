@@ -8,16 +8,16 @@ import de.unileipzig.irpact.commons.persistence.Persistable;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.persistence.binary.BinaryPersistable;
+import de.unileipzig.irpact.core.persistence.binaryjson.BinaryJsonPersistable;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.start.IRPactRestoreUpdater;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.output.OutRoot;
-import de.unileipzig.irpact.core.persistence.binary.BinaryJsonData;
-import de.unileipzig.irpact.core.persistence.binary.BinaryJsonPersistanceManager;
-import de.unileipzig.irpact.core.persistence.binary.BinaryJsonRestoreManager;
+import de.unileipzig.irpact.core.persistence.binaryjson.BinaryJsonData;
+import de.unileipzig.irpact.core.persistence.binaryjson.BinaryJsonPersistanceManager;
+import de.unileipzig.irpact.core.persistence.binaryjson.BinaryJsonRestoreManager;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -121,7 +121,7 @@ public class BasicPersistenceModul extends NameableBase implements PersistenceMo
         Collection<Persistable> persistables = binaryPersist.getPersistables();
         Set<BinaryPersistData> sortedDataList = new TreeSet<>(BinaryPersistData.ASCENDING);
         for(Persistable persistable: persistables) {
-            BinaryPersistable binaryPersistable = (BinaryPersistable) persistable;
+            BinaryJsonPersistable binaryPersistable = (BinaryJsonPersistable) persistable;
             BinaryPersistData data = binaryPersistable.toPersistData();
             if(!sortedDataList.add(data)) {
                 throw new PersistException("uid " + data.getID() + "already exists");
