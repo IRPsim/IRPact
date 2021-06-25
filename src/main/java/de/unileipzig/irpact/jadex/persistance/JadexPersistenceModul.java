@@ -10,10 +10,10 @@ import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.persistence.PersistenceModul;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.core.start.IRPactRestoreUpdater;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.core.persistence.binary.BinaryJsonData;
 import de.unileipzig.irpact.core.persistence.binary.BinaryJsonPersistanceManager;
@@ -74,7 +74,7 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
             MetaData metaData,
             MainCommandLineOptions options,
             int year,
-            JadexRestoreUpdater updater,
+            IRPactRestoreUpdater updater,
             InRoot root) throws Exception {
         switch (getModus()) {
             case BINARY:
@@ -136,7 +136,7 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
             MetaData metaData,
             MainCommandLineOptions options,
             int year,
-            JadexRestoreUpdater updater,
+            IRPactRestoreUpdater updater,
             InRoot root) throws IOException, RestoreException {
         if(!root.hasBinaryPersistData()) {
             throw new RestoreException("nothing to restore");

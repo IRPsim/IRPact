@@ -5,7 +5,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.product.BasicProduct;
 import de.unileipzig.irpact.core.product.BasicProductGroup;
 import de.unileipzig.irpact.core.product.attribute.ProductAttribute;
-import de.unileipzig.irpact.io.param.input.IRPactInputParser;
+import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irptools.defstructure.annotation.Definition;

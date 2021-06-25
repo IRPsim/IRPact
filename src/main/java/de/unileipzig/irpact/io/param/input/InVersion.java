@@ -2,6 +2,7 @@ package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
+import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;

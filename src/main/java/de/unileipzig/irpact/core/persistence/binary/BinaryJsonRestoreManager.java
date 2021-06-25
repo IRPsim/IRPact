@@ -11,10 +11,10 @@ import de.unileipzig.irpact.commons.persistence.Persistable;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.core.start.IRPactRestoreUpdater;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
 import de.unileipzig.irpact.core.persistence.binary.io.BinaryPersistJson;
 import de.unileipzig.irpact.core.persistence.binary.meta.ClassManagerPR;
 import de.unileipzig.irpact.core.persistence.binary.meta.MetaPR;
@@ -79,7 +79,7 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
         restoreHelper.setYear(year);
     }
 
-    public void setUpdater(JadexRestoreUpdater updater) {
+    public void setUpdater(IRPactRestoreUpdater updater) {
         restoreHelper.setUpdater(updater);
     }
 
@@ -248,7 +248,7 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
 
     protected void updateRestoredEnvironment() throws RestoreException {
         try {
-            JadexRestoreUpdater updater = restoreHelper.getUpdater();
+            IRPactRestoreUpdater updater = restoreHelper.getUpdater();
             if(updater.getEnvironment() != getRestoredInstance()) {
                 throw new RestoreException("environment mismatch");
             }

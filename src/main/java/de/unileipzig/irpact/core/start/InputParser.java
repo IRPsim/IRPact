@@ -1,18 +1,28 @@
-package de.unileipzig.irpact.io.param.input;
+package de.unileipzig.irpact.core.start;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.io.param.input.InIRPactEntity;
+import de.unileipzig.irpact.io.param.input.InRoot;
 
 /**
  * @author Daniel Abitz
  */
 public interface InputParser {
 
+    //=========================
+    //caching
+    //=========================
+
     void cache(InIRPactEntity key, Object value);
 
     boolean isCached(InIRPactEntity key);
 
     Object getCached(InIRPactEntity key);
+
+    //=========================
+    //parse
+    //=========================
 
     //mal aendern, dass der parser den typ vorgibt
     Object parseRoot(InRoot root) throws ParsingException;
@@ -32,6 +42,10 @@ public interface InputParser {
             throw new ParsingException("class mismatch: " + ParamUtil.printClass(obj) + " != " + ParamUtil.printClass(outClass));
         }
     }
+
+    //=========================
+    //cleanup
+    //=========================
 
     void dispose();
 }

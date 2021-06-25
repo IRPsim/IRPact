@@ -10,7 +10,7 @@ import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;
 import de.unileipzig.irpact.core.spatial.distribution.SpatialInformationSupplier;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.IRPactInputParser;
+import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;

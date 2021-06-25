@@ -81,6 +81,7 @@ public class InRoot implements RootClass {
 
     public static final String CONFIG_YEAR = "year";
     public static final String SET_VERSION = "set_InVersion";
+    public static final String SET_BINARY_PERSIST_DATA = "set_BinaryPersistData";
 
     public static final InRoot INSTANCE = new InRoot();
 

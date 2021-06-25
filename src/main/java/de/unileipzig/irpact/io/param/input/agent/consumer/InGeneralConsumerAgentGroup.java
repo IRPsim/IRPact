@@ -8,7 +8,7 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
 import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.IRPactInputParser;
+import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.product.InProductFindingScheme;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;

@@ -9,7 +9,7 @@ import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.process.ra.uncert.GlobalDeffuantUncertaintySupplier;
 import de.unileipzig.irpact.core.process.ra.uncert.GlobalDeffuantUncertaintyData;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.IRPactInputParser;
+import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irptools.defstructure.annotation.Definition;

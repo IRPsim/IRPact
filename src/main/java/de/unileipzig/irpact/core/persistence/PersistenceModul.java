@@ -1,10 +1,9 @@
 package de.unileipzig.irpact.core.persistence;
 
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.core.start.IRPactRestoreUpdater;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.InputParser;
-import de.unileipzig.irpact.io.param.input.JadexRestoreUpdater;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 
@@ -22,6 +21,6 @@ public interface PersistenceModul {
             MetaData metaData,
             MainCommandLineOptions options,
             int year,
-            JadexRestoreUpdater updater,
+            IRPactRestoreUpdater updater,
             InRoot root) throws Exception;
 }

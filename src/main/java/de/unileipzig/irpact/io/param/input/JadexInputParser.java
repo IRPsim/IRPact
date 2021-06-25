@@ -29,6 +29,7 @@ import de.unileipzig.irpact.core.simulation.BasicSettings;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.simulation.BinaryTaskManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
+import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InIndependentConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.io.param.input.agent.population.InAgentPopulation;

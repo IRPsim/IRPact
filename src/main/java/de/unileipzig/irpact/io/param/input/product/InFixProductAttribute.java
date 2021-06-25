@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param.input.product;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.product.attribute.ProductAttribute;
 import de.unileipzig.irpact.core.product.attribute.ProductDoubleGroupAttribute;
-import de.unileipzig.irpact.io.param.input.IRPactInputParser;
+import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irptools.defstructure.annotation.Definition;

@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.misc.graphviz.BasicGraphvizConfiguration;
 import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
 import de.unileipzig.irptools.graphviz.def.GraphvizColor;
 import de.unileipzig.irptools.graphviz.def.GraphvizLayoutAlgorithm;

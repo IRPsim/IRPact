@@ -8,7 +8,7 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.interest.ProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.IRPactInputParser;
+import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.product.InProductGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;

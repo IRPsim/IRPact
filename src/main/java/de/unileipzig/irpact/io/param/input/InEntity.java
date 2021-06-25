@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irptools.util.Copyable;
 
 /**

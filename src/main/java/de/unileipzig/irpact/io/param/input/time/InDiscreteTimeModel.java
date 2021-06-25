@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.io.param.input.time;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.io.param.input.IRPactInputParser;
+import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.DiscreteTimeModel;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
