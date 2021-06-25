@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.persistence.binary.BinaryPRBase;
 import de.unileipzig.irpact.core.simulation.BasicSettings;
 import de.unileipzig.irpact.core.persistence.binary.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;

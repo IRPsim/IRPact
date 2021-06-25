@@ -29,7 +29,7 @@ import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.jadex.agents.simulation.ProxySimulationAgent;
-import de.unileipzig.irpact.jadex.persistance.JadexPersistenceModul;
+import de.unileipzig.irpact.core.persistence.BasicPersistenceModul;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.util.JadexSystemOut;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
@@ -160,7 +160,15 @@ public final class IRPact implements IRPActAccess {
         return mapper;
     }
 
+    public static Converter getInputConverter() {
+        return getInputConverter(null);
+    }
+
     public static Converter getInputConverter(MainCommandLineOptions options) {
+        return getInputConverter(options, options != null);
+    }
+
+    public static Converter getInputConverter(MainCommandLineOptions options, boolean cache) {
         if(INPUT_CONVERTS.containsKey(options)) {
             return INPUT_CONVERTS.get(options);
         } else {
@@ -168,12 +176,22 @@ public final class IRPact implements IRPActAccess {
             DefinitionMapper dmap = createMapper(options, dcoll);
             Converter converter = new Converter(dmap);
             converter.setAddOnlyRemainingSetsToRoot(false);
-            INPUT_CONVERTS.put(options, converter);
+            if(cache) {
+                INPUT_CONVERTS.put(options, converter);
+            }
             return converter;
         }
     }
 
+    public static Converter getOutputConverter() {
+        return getOutputConverter(null);
+    }
+
     public static Converter getOutputConverter(MainCommandLineOptions options) {
+        return getOutputConverter(options, options != null);
+    }
+
+    public static Converter getOutputConverter(MainCommandLineOptions options, boolean cache) {
         if(OUTPUT_CONVERTS.containsKey(options)) {
             return OUTPUT_CONVERTS.get(options);
         } else {
@@ -181,7 +199,9 @@ public final class IRPact implements IRPActAccess {
             DefinitionMapper dmap = createMapper(options, dcoll);
             Converter converter = new Converter(dmap);
             converter.setSortNames(false);
-            OUTPUT_CONVERTS.put(options, converter);
+            if(cache) {
+                OUTPUT_CONVERTS.put(options, converter);
+            }
             return converter;
         }
     }
@@ -315,7 +335,7 @@ public final class IRPact implements IRPActAccess {
         JadexRestoreUpdater updater = new JadexRestoreUpdater();
         updater.setSimulationYear(year);
         updater.setResourceLoader(META_DATA.getLoader());
-        JadexPersistenceModul persistenceModul = new JadexPersistenceModul();
+        BasicPersistenceModul persistenceModul = new BasicPersistenceModul();
         environment = (JadexSimulationEnvironment) persistenceModul.restore(
                 META_DATA,
                 CL_OPTIONS,

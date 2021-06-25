@@ -156,7 +156,7 @@ public class Demo1 extends AbstractScenario {
         general.logAllIRPact = true;
         general.enableAllDataLogging();
         general.enableAllResultLogging();
-        general.firstSimulationYear = 2015;
+        general.setFirstSimulationYear(2015);
         general.lastSimulationYear = 2015;
 
         //images

@@ -17,7 +17,7 @@ import de.unileipzig.irpact.io.param.output.xDEP.OutAnnualAdoptionData;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.io.param.output.xDEP.OutConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
-import de.unileipzig.irpact.jadex.persistance.JadexPersistenceModul;
+import de.unileipzig.irpact.core.persistence.BasicPersistenceModul;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.util.script.ScriptException;
@@ -271,7 +271,7 @@ public class Utilities {
         ObjectNode root = JsonUtil.readJson(input);
         AnnualEntry<OutRoot> entry = IRPact.convertOutput(mainOptions, root);
 
-        JadexPersistenceModul modul = new JadexPersistenceModul();
+        BasicPersistenceModul modul = new BasicPersistenceModul();
         ObjectNode decoded = modul.decode(entry.getData().getBinaryPersistData());
         JsonUtil.writeJson(decoded, output, JsonUtil.DEFAULT);
     }

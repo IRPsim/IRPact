@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentDoubleGroupAttribute;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.persistence.binary.BinaryJsonData;
+import de.unileipzig.irpact.core.persistence.binary.BinaryPRBase;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**

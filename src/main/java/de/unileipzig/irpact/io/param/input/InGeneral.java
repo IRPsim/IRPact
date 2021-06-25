@@ -95,9 +95,6 @@ public class InGeneral implements Copyable {
     public long timeout;
 
     //nur fuer interne tests
-    @Deprecated
-    public int firstSimulationYear = -1;
-
     private final MutableInt firstSimulationYear0 = MutableInt.empty();
     public boolean hasFirstSimulationYear() {
         return firstSimulationYear0.hasValue();
@@ -107,7 +104,6 @@ public class InGeneral implements Copyable {
     }
     public void setFirstSimulationYear(int year) {
         firstSimulationYear0.set(year);
-        firstSimulationYear = year; //legacy
     }
 
     @FieldDefinition
@@ -246,7 +242,7 @@ public class InGeneral implements Copyable {
         InGeneral copy = new InGeneral();
         copy.seed = seed;
         copy.timeout = timeout;
-        copy.firstSimulationYear = firstSimulationYear;
+        copy.setFirstSimulationYear(getFirstSimulationYear());
         copy.lastSimulationYear = lastSimulationYear;
         //flags
         copy.runPVAct = runPVAct;

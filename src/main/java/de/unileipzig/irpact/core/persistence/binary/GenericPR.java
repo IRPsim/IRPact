@@ -13,7 +13,6 @@ import de.unileipzig.irpact.commons.util.MapSupplier;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.persistence.binary.annotation.*;
-import de.unileipzig.irpact.jadex.persistance.binary.data.BinaryPRBase;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.reflect.Field;

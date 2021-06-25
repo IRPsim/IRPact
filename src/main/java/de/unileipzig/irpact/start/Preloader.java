@@ -102,7 +102,7 @@ public class Preloader {
         InRoot root =  converter.toParam(clOptions.getInputPath());
         AnnualEntry<InRoot> entry = new AnnualEntry<>(root, JsonUtil.JSON.createObjectNode());
         entry.getConfig().init();
-        entry.getConfig().setYear(root.general.firstSimulationYear);
+        entry.getConfig().setYear(root.general.getFirstSimulationYear());
 
         LOGGER.trace("call IRPact with spec");
         IRPact irpact = createIRPactInstance();

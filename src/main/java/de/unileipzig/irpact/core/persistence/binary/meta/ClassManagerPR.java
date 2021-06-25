@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.persistence.PersistableBase;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
-import de.unileipzig.irpact.jadex.persistance.JadexPersistable;
+import de.unileipzig.irpact.core.persistence.binary.BinaryPersistable;
 import de.unileipzig.irpact.core.persistence.binary.ClassManager;
 import de.unileipzig.irpact.core.persistence.binary.io.BinaryPersistJson;
 import de.unileipzig.irptools.util.Util;
@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * @author Daniel Abitz
  */
-public final class ClassManagerPR extends PersistableBase implements JadexPersistable {
+public final class ClassManagerPR extends PersistableBase implements BinaryPersistable {
 
     public static final String UID_PREFIX = MetaPR.UID_PREFIX;
     public static final long UID = 1;

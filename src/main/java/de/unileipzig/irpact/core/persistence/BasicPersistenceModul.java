@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.jadex.persistance;
+package de.unileipzig.irpact.core.persistence;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -8,7 +8,7 @@ import de.unileipzig.irpact.commons.persistence.Persistable;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.persistence.PersistenceModul;
+import de.unileipzig.irpact.core.persistence.binary.BinaryPersistable;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.start.IRPactRestoreUpdater;
 import de.unileipzig.irpact.core.util.MetaData;
@@ -27,15 +27,15 @@ import java.util.*;
 /**
  * @author Daniel Abitz
  */
-public class JadexPersistenceModul extends NameableBase implements PersistenceModul {
+public class BasicPersistenceModul extends NameableBase implements PersistenceModul {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(JadexPersistenceModul.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicPersistenceModul.class);
 
     protected Modus modus;
 
     protected SimulationEnvironment environment;
 
-    public JadexPersistenceModul() {
+    public BasicPersistenceModul() {
         setModus(Modus.BINARY);
     }
 
@@ -121,8 +121,8 @@ public class JadexPersistenceModul extends NameableBase implements PersistenceMo
         Collection<Persistable> persistables = binaryPersist.getPersistables();
         Set<BinaryPersistData> sortedDataList = new TreeSet<>(BinaryPersistData.ASCENDING);
         for(Persistable persistable: persistables) {
-            JadexPersistable jadexPersistable = (JadexPersistable) persistable;
-            BinaryPersistData data = jadexPersistable.toPersistData();
+            BinaryPersistable binaryPersistable = (BinaryPersistable) persistable;
+            BinaryPersistData data = binaryPersistable.toPersistData();
             if(!sortedDataList.add(data)) {
                 throw new PersistException("uid " + data.getID() + "already exists");
             }

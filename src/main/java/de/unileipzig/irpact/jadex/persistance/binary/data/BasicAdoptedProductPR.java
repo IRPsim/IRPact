@@ -2,6 +2,7 @@ package de.unileipzig.irpact.jadex.persistance.binary.data;
 
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.persistence.binary.BinaryPRBase;
 import de.unileipzig.irpact.core.product.BasicAdoptedProduct;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.core.persistence.binary.BinaryJsonData;

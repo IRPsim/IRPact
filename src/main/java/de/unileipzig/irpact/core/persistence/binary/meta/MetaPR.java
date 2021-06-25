@@ -7,7 +7,7 @@ import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.core.util.RunInfo;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
-import de.unileipzig.irpact.jadex.persistance.JadexPersistable;
+import de.unileipzig.irpact.core.persistence.binary.BinaryPersistable;
 import de.unileipzig.irpact.core.persistence.binary.io.BinaryPersistJson;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
-public final class MetaPR extends PersistableBase implements JadexPersistable {
+public final class MetaPR extends PersistableBase implements BinaryPersistable {
 
     public static final String UID_PREFIX = "y";
     public static final long UID = 0;

@@ -6,6 +6,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.network.BasicSocialGraph;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.persistence.binary.BinaryJsonData;
+import de.unileipzig.irpact.core.persistence.binary.BinaryPRBase;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**

@@ -9,7 +9,6 @@ import de.unileipzig.irpact.commons.util.*;
 import de.unileipzig.irpact.commons.util.data.TripleMapping;
 import de.unileipzig.irpact.commons.util.data.VarCollection;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
-import de.unileipzig.irpact.jadex.persistance.JadexPersistable;
 import de.unileipzig.irpact.core.persistence.binary.io.BinaryPersistJson;
 import de.unileipzig.irptools.util.Util;
 
@@ -22,7 +21,7 @@ import java.util.function.*;
  *
  * @author Daniel Abitz
  */
-public final class BinaryJsonData extends PersistableBase implements JadexPersistable {
+public final class BinaryJsonData extends PersistableBase implements BinaryPersistable {
 
     public static ToLongFunction<Integer> INT2LONG = Number::longValue;
     public static LongFunction<Integer> LONG2INT = l -> (int) l;

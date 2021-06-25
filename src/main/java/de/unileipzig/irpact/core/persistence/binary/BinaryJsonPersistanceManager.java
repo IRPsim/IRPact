@@ -5,7 +5,6 @@ import de.unileipzig.irpact.commons.exception.IRPactException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.util.MetaData;
-import de.unileipzig.irpact.jadex.persistance.binary.data.BinaryPRBase;
 import de.unileipzig.irpact.core.persistence.binary.meta.ClassManagerPR;
 import de.unileipzig.irpact.core.persistence.binary.meta.MetaPR;
 
@@ -32,7 +31,7 @@ public class BinaryJsonPersistanceManager  extends NameableBase implements Persi
     protected static final long FIRST_UID = 2L;
     protected final ToLongFunction<?> ENSURE_GET_UID = this::uncheckedEnsureGetUID;
 
-    protected final Object settingsDummy = new Object();
+    protected final Object metaDummy = new Object();
     protected final RestoreHelper restoreHelper = new RestoreHelper();
     protected final ClassManager classManager = new ClassManager();
     protected final Map<Holder, Persistable> persistableMap = new LinkedHashMap<>();
@@ -58,7 +57,7 @@ public class BinaryJsonPersistanceManager  extends NameableBase implements Persi
         restoreHelper.setClassManager(classManager);
         restoreHelper.setPrintLoggableOnPersist(false);
 
-        metaHolder = newHolder(settingsDummy);
+        metaHolder = newHolder(metaDummy);
         metaPR = new MetaPR(JsonUtil.SMILE.createObjectNode());
         persistableMap.put(metaHolder, metaPR);
 

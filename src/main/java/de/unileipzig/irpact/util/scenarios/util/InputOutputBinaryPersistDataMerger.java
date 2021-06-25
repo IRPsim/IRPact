@@ -61,7 +61,7 @@ public class InputOutputBinaryPersistDataMerger implements ScenarioFileMerger {
             throw new IllegalArgumentException("supportes only files with one entry, output contains: " + outputFile.numberOfEntries());
         }
 
-        JsonPointer ptrToInputSets = mergedFile.sets(mergedFile.buildDefaultIndices(0), "");
+        JsonPointer ptrToInputSets = mergedFile.sets(mergedFile.buildDefaultIndices(0));
         JsonPointer ptrToOutputBinaryData = outputFile.sets(outputFile.buildDefaultIndices(0), InRoot.SET_BINARY_PERSIST_DATA);
 
         ObjectNode inputSets = (ObjectNode) mergedFile.root().at(ptrToInputSets);
