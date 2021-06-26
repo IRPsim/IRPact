@@ -14,6 +14,10 @@ public class PutResult extends Base {
         super(root);
     }
 
+    public boolean hasId() {
+        return getId() != -1;
+    }
+
     public int getId() {
         return JsonUtil.getInt(root, "id", -1);
     }
@@ -21,6 +25,11 @@ public class PutResult extends Base {
     @Override
     public ObjectNode getRootAsObject() {
         return super.getRootAsObject();
+    }
+
+    @Override
+    protected String printPrefix() {
+        return "Scenario";
     }
 
     @Override

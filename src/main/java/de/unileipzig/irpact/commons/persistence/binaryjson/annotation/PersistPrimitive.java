@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.persistence.binaryjson.annotation;
+package de.unileipzig.irpact.commons.persistence.binaryjson.annotation;
 
 import de.unileipzig.irpact.core.persistence.binaryjson.GenericPR;
 
@@ -9,14 +9,16 @@ import java.lang.annotation.*;
  */
 @Inherited
 @Documented
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Repeatable(BinaryPersisters.class)
-public @interface BinaryPersist {
+@Repeatable(PersistPrimitives.class)
+public @interface PersistPrimitive {
 
     String persisterName() default GenericPR.IGNORE;
 
     String restorerName() default GenericPR.IGNORE;
 
-    boolean enabled() default true;
+    String setter() default GenericPR.IGNORE;
+
+    String getter() default GenericPR.IGNORE;
 }

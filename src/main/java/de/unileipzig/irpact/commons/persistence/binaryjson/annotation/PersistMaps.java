@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.persistence.binaryjson.annotation;
+package de.unileipzig.irpact.commons.persistence.binaryjson.annotation;
 
 import java.lang.annotation.*;
 
@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PersistMapMaps {
+public @interface PersistMaps {
 
-    PersistMapMap[] value();
+    PersistMap[] value();
 }

@@ -11,6 +11,8 @@ import java.util.Collection;
  */
 public interface AttributeAccess extends ChecksumComparable {
 
+    Object getOwner();
+
     boolean hasAttribute(String name);
 
     Attribute getAttribute(String name);

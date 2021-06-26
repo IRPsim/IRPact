@@ -41,7 +41,7 @@ public class BasicPoint2D implements Point2D {
         this.attributes = attributes;
         this.x = x;
         this.y = y;
-        ACCESS = new BasicAttributeAccess(attributes);
+        ACCESS = new BasicAttributeAccess(this, attributes);
     }
 
     @Override

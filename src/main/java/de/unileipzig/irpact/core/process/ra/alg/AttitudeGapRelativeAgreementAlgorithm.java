@@ -4,7 +4,11 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.data.weighted.NavigableMapWeightedMapping;
 import de.unileipzig.irpact.commons.util.data.weighted.WeightedMapping;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
+import de.unileipzig.irptools.util.log.IRPLogger;
+import org.slf4j.event.Level;
 
 /**
  * @author Daniel Abitz
@@ -19,6 +23,8 @@ public class AttitudeGapRelativeAgreementAlgorithm extends AbstractRelativeAgree
         CONVERGENCE,
         DIVERGENCE
     }
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(AttitudeGapRelativeAgreementAlgorithm.class);
 
     protected WeightedMapping<Mode> mapping = new NavigableMapWeightedMapping<>();
     protected Rnd rnd;
@@ -99,10 +105,28 @@ public class AttitudeGapRelativeAgreementAlgorithm extends AbstractRelativeAgree
         double o2 = opinion2.asValueAttribute().getDoubleValue();
         double u2 = uncertainty2.getUncertainty(opinion2);
 
+        IRPLogger logger = getLogger(loggingDisabled(), isLogData(), LOGGER);
+        IRPSection section = getSection(isLogData());
+        Level level = getLevel(isLogData());
+
         //1 influences 2
-        boolean influenced2 = DefaultRelativeAgreementAlgorithm.apply(isLogData(), m2, name1, o1, u1, name2, o2, u2, opinion2, uncertainty2, reverse);
+        boolean influenced2 = BasicRelativeAgreementAlgorithm.apply(
+                logger, section, level,
+                m2,
+                name1, o1, u1,
+                name2, o2, u2,
+                opinion2, uncertainty2,
+                reverse
+        );
         //2 influences 1
-        boolean influenced1 = DefaultRelativeAgreementAlgorithm.apply(isLogData(), m1, name2, o2, u2, name1, o1, u1, opinion1, uncertainty1, reverse);
+        boolean influenced1 = BasicRelativeAgreementAlgorithm.apply(
+                logger, section, level,
+                m1,
+                name2, o2, u2,
+                name1, o1, u1,
+                opinion1, uncertainty1,
+                reverse
+        );
 
         return influenced2 || influenced1;
     }

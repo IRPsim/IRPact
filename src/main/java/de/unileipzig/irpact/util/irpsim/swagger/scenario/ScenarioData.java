@@ -9,8 +9,19 @@ import de.unileipzig.irpact.util.irpsim.swagger.Base;
  */
 public class ScenarioData extends Base {
 
-    public ScenarioData(JsonNode root) {
+    protected int id;
+
+    public ScenarioData(JsonNode root, int id) {
         super(root);
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getIdString() {
+        return Integer.toString(id);
     }
 
     @Override

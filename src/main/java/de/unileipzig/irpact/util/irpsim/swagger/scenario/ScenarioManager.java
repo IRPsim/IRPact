@@ -16,13 +16,13 @@ import java.util.Objects;
 public class ScenarioManager {
 
     protected final Swagger swagger;
-    protected final ScenarioMetaDataCache cache;
+    protected final ScenarioMetaDataCollection cache;
 
     public ScenarioManager(Swagger swagger) {
-        this(swagger, new ScenarioMetaDataCache());
+        this(swagger, new ScenarioMetaDataCollection());
     }
 
-    public ScenarioManager(Swagger swagger, ScenarioMetaDataCache cache) {
+    public ScenarioManager(Swagger swagger, ScenarioMetaDataCollection cache) {
         this.swagger = swagger;
         this.cache = cache;
     }
@@ -31,7 +31,7 @@ public class ScenarioManager {
         return swagger;
     }
 
-    public ScenarioMetaDataCache getCache() {
+    public ScenarioMetaDataCollection getCache() {
         return cache;
     }
 

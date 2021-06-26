@@ -16,10 +16,18 @@ public interface InEntity<T extends InputParser> extends Copyable {
     }
 
     default Object parse(T parser) throws ParsingException {
-        throw new UnsupportedOperationException();
+        if(requiresSetup()) {
+            throw new IllegalStateException("requires setup");
+        } else {
+            throw new UnsupportedOperationException();
+        }
     }
 
     default void setup(T parser, Object input) throws ParsingException {
-        throw new UnsupportedOperationException();
+        if(requiresSetup()) {
+            throw new UnsupportedOperationException();
+        } else {
+            throw new IllegalStateException("requires parse");
+        }
     }
 }

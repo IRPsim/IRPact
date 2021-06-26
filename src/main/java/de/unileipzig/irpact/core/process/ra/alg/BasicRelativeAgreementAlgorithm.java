@@ -12,11 +12,11 @@ import org.slf4j.event.Level;
 /**
  * @author Daniel Abitz
  */
-public class DefaultRelativeAgreementAlgorithm extends AbstractRelativeAgreementAlgorithm {
+public class BasicRelativeAgreementAlgorithm extends AbstractRelativeAgreementAlgorithm {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(DefaultRelativeAgreementAlgorithm.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicRelativeAgreementAlgorithm.class);
 
-    public DefaultRelativeAgreementAlgorithm() {
+    public BasicRelativeAgreementAlgorithm() {
     }
 
     @Override
@@ -34,38 +34,54 @@ public class DefaultRelativeAgreementAlgorithm extends AbstractRelativeAgreement
         double o2 = opinion2.asValueAttribute().getDoubleValue();
         double u2 = uncertainty2.getUncertainty(opinion2);
 
+        IRPLogger logger = getLogger(loggingDisabled(), isLogData(), LOGGER);
+        IRPSection section = getSection(isLogData());
+        Level level = getLevel(isLogData());
+
         //1 influences 2
-        boolean influenced2 = apply(isLogData(), m2, name1, o1, u1, name2, o2, u2, opinion2, uncertainty2);
+        boolean influenced2 = apply(
+                logger, section, level,
+                m2,
+                name1, o1, u1,
+                name2, o2, u2,
+                opinion2, uncertainty2
+        );
         //2 influences 1
-        boolean influenced1 = apply(isLogData(), m1, name2, o2, u2, name1, o1, u1, opinion1, uncertainty1);
+        boolean influenced1 = apply(
+                logger, section, level,
+                m1,
+                name2, o2, u2,
+                name1, o1, u1,
+                opinion1, uncertainty1
+        );
 
         return influenced2 || influenced1;
     }
 
     //=========================
-    //util
+    //static
     //=========================
 
     public static boolean applyReverse(
-            boolean logData,
+            IRPLogger logger, IRPSection section, Level level,
             double mj,
             String namei, double oi, double ui,
             String namej, double oj, double uj,
             ConsumerAgentAttribute ojAttr, Uncertainty ujAttr) {
-        return apply(logData, mj, namei, oi, ui, namej, oj, uj, ojAttr, ujAttr, true);
+        return apply(logger, section, level, mj, namei, oi, ui, namej, oj, uj, ojAttr, ujAttr, true);
     }
 
     public static boolean apply(
-            boolean logData,
+            IRPLogger logger, IRPSection section, Level level,
             double mj,
             String namei, double oi, double ui,
             String namej, double oj, double uj,
             ConsumerAgentAttribute ojAttr, Uncertainty ujAttr) {
-        return apply(logData, mj, namei, oi, ui, namej, oj, uj, ojAttr, ujAttr, false);
+        return apply(logger, section, level, mj, namei, oi, ui, namej, oj, uj, ojAttr, ujAttr, false);
     }
 
     public static boolean apply(
-            boolean logData,
+            IRPLogger logger, IRPSection section, Level level,
             double mj,
             String namei, double oi, double ui,
             String namej, double oj, double uj,
@@ -91,38 +107,23 @@ public class DefaultRelativeAgreementAlgorithm extends AbstractRelativeAgreement
             AttributeUtil.setDoubleValue(ojAttr, newOj);
             ujAttr.updateUncertainty(ojAttr, newUj);
 
-            logRelativeAgreementSuccess(logData, reverse, namei, namej, ojAttr.getName(), oi, ui, oj, uj, mj, hij, ra, newOj, newUj);
+            logRelativeAgreementSuccess(logger, section, level, reverse, namei, namej, ojAttr.getName(), oi, ui, oj, uj, mj, hij, ra, newOj, newUj);
             return true;
         } else {
-            logRelativeAgreementFailed(logData, reverse, namei, namej, ojAttr.getName(), oi, ui, oj, uj, hij);
+            logRelativeAgreementFailed(logger, section, level, reverse, namei, namej, ojAttr.getName(), oi, ui, oj, uj, hij);
             return false;
         }
     }
 
-    protected static IRPLogger getLogger(boolean logData) {
-        return logData
-                ? IRPLogging.getResultLogger()
-                : LOGGER;
-    }
-
-    protected static IRPSection getSection(boolean logData) {
-        return IRPSection.SIMULATION_PROCESS.orGeneral(logData);
-    }
-
-    protected static Level getLevel(boolean logData) {
-        return logData
-                ? Level.INFO
-                : Level.TRACE;
-    }
-
     protected static void logRelativeAgreementSuccess(
-            boolean logData, boolean reversed,
+            IRPLogger logger, IRPSection section, Level level,
+            boolean reversed,
             String ai, String aj, String attribute,
             double xi, double ui, double xj, double uj, double m,
             double hij, double ra, double newXj, double newUj) {
-        IRPLogger logger = getLogger(logData);
-        IRPSection section = getSection(logData);
-        Level level = getLevel(logData);
+        if(logger == null) {
+            return;
+        }
         logger.log(section, level,
                 "{} [{}] (reversed={}) relative agreement between i='{}' and j='{}' for '{}' success (hij={} > ui={}) | xi={}, ui={}, xj={}, uj={} | hij = {} = Math.min({} + {}, {} + {}) - Math.max({} - {}, {} - {}) | ra = {} = {} / {} - 1.0 | newXj = {} = {} + {} * {} * ({} - {}) | newUj = {} = {} + {} * {} * ({} - {})",
                 InfoTag.RELATIVE_AGREEMENT, ai, reversed, ai, aj, attribute, hij, ui,
@@ -135,12 +136,13 @@ public class DefaultRelativeAgreementAlgorithm extends AbstractRelativeAgreement
     }
 
     protected static void logRelativeAgreementFailed(
-            boolean logData, boolean reversed,
+            IRPLogger logger, IRPSection section, Level level,
+            boolean reversed,
             String ai, String aj, String attribute,
             double xi, double ui, double xj, double uj, double hij) {
-        IRPLogger logger = getLogger(logData);
-        IRPSection section = getSection(logData);
-        Level level = getLevel(logData);
+        if(logger == null) {
+            return;
+        }
         logger.log(section, level,
                 "{} [{}] (reversed={}) relative agreement between i='{}' and j='{}' for '{}' failed (hij={} <= ui={})) | xi={}, ui={}, xj={}, uj={} | hij = {} = Math.min({} + {}, {} + {}) - Math.max({} - {}, {} - {})",
                 InfoTag.RELATIVE_AGREEMENT, ai, reversed, ai, aj, attribute, hij, ui,

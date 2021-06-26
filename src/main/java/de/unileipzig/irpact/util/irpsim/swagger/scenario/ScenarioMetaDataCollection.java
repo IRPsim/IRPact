@@ -17,21 +17,25 @@ import java.util.stream.Stream;
 /**
  * @author Daniel Abitz
  */
-public class ScenarioMetaDataCache implements Iterable<ScenarioMetaData> {
+public class ScenarioMetaDataCollection implements Iterable<ScenarioMetaData> {
 
     protected final Map<Integer, ScenarioMetaData> cache = new TreeMap<>();
     protected final ObjectMapper mapper;
 
-    public ScenarioMetaDataCache() {
+    public ScenarioMetaDataCollection() {
         this(JsonUtil.JSON);
     }
 
-    public ScenarioMetaDataCache(ObjectMapper mapper) {
+    public ScenarioMetaDataCollection(ObjectMapper mapper) {
         this.mapper = mapper;
     }
 
     public boolean hasId(ScenarioMetaData metaData) {
         return cache.containsKey(metaData.getId());
+    }
+
+    public boolean hasScenario(int id) {
+        return cache.containsKey(id);
     }
 
     public void validate(ScenarioMetaData metaData) throws IllegalArgumentException {

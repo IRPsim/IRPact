@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.persistence.binaryjson.annotation;
+package de.unileipzig.irpact.commons.persistence.binaryjson.annotation;
 
 import de.unileipzig.irpact.core.persistence.binaryjson.GenericPR;
 
@@ -11,8 +11,8 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Repeatable(PersistPrimitives.class)
-public @interface PersistPrimitive {
+@Repeatable(PersistNonPrimitives.class)
+public @interface PersistNonPrimitive {
 
     String persisterName() default GenericPR.IGNORE;
 

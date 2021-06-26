@@ -25,6 +25,10 @@ public interface ConsumerAgentAttribute extends GroupEntityAttribute<ConsumerAge
         throw new UnsupportedOperationException();
     }
 
+    default boolean isProductRelatedAttribute() {
+        return false;
+    }
+
     default ConsumerAgentProductRelatedAttribute asProductRelatedAttribute() {
         throw new UnsupportedOperationException();
     }

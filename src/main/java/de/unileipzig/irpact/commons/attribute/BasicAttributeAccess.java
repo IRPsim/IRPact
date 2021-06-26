@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons.attribute;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.Checksums;
 
 import java.util.Collection;
 import java.util.Map;
@@ -10,10 +11,17 @@ import java.util.Map;
  */
 public class BasicAttributeAccess implements AttributeAccess {
 
+    protected Object owner;
     protected Map<? extends String, ? extends Attribute> attributes;
 
-    public BasicAttributeAccess(Map<? extends String, ? extends Attribute> attributes) {
+    public BasicAttributeAccess(Object owner, Map<? extends String, ? extends Attribute> attributes) {
         this.attributes = attributes;
+        this.owner = owner;
+    }
+
+    @Override
+    public Object getOwner() {
+        return owner;
     }
 
     @Override
@@ -33,6 +41,6 @@ public class BasicAttributeAccess implements AttributeAccess {
 
     @Override
     public int getChecksum() {
-        return ChecksumComparable.getCollChecksum(getAttributes());
+        return Checksums.SMART.getChecksum(attributes);
     }
 }

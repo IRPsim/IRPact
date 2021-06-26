@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.persistence.binaryjson.annotation;
+package de.unileipzig.irpact.commons.persistence.binaryjson.annotation;
 
 import java.lang.annotation.*;
 

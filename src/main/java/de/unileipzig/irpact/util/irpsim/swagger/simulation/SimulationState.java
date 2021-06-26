@@ -3,10 +3,13 @@ package de.unileipzig.irpact.util.irpsim.swagger.simulation;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.unileipzig.irpact.commons.time.TimeUtil;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.util.irpsim.swagger.Base;
 
+import java.time.ZonedDateTime;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
@@ -19,6 +22,10 @@ public class SimulationState extends Base {
     public static final String STATE_FINISHEDERROR = "FINISHEDERROR";
     public static final String STATE_UNDEFINED = "UNDEFINED";
 
+    public static final int DEFAULT_MODEL_INDEX = 0;
+
+    protected int modelIndex = DEFAULT_MODEL_INDEX;
+
     public SimulationState(JsonNode root) {
         super(root);
     }
@@ -29,11 +36,24 @@ public class SimulationState extends Base {
     }
 
     @Override
+    protected String printPrefix() {
+        return "SimulationState";
+    }
+
+    @Override
     public String toString() {
         return "SimulationState{" +
                 "id=" + getId() +
                 ", state=" + getState() +
                 '}';
+    }
+
+    public void setModelIndex(int modelIndex) {
+        this.modelIndex = modelIndex;
+    }
+
+    public int getModelIndex() {
+        return modelIndex;
     }
 
     //=========================
@@ -52,20 +72,62 @@ public class SimulationState extends Base {
         return JsonUtil.getBoolean(root, "error", false);
     }
 
+    public boolean isSuccessful() {
+        return JsonUtil.getBoolean(root, "error", false);
+    }
+
     public String getState() {
         return JsonUtil.getText(root, "state", STATE_UNDEFINED);
+    }
+
+    public boolean isFinished() {
+        String state = getState();
+        switch (state) {
+            case STATE_FINISHED:
+            case STATE_FINISHEDERROR:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    public boolean isNotFinished() {
+        return !isFinished();
+    }
+
+    public String getStateDescription() {
+        return JsonUtil.getText(root, "stateDesc", null);
+    }
+
+    protected static Optional<ZonedDateTime> msToTime(long ms) {
+        return ms == Long.MIN_VALUE
+                ? Optional.empty()
+                : Optional.of(TimeUtil.msToTime(ms));
     }
 
     public long getCreation() {
         return JsonUtil.getLong(root, "creation", Long.MIN_VALUE);
     }
 
+    public Optional<ZonedDateTime> getCreationTime() {
+        return msToTime(getCreation());
+    }
+
     public long getStart() {
         return JsonUtil.getLong(root, "start", Long.MIN_VALUE);
     }
 
+    public Optional<ZonedDateTime> getStartTime() {
+        return msToTime(getStart());
+    }
+
     public long getEnd() {
         return JsonUtil.getLong(root, "end", Long.MIN_VALUE);
+    }
+
+    public Optional<ZonedDateTime> getEndTime() {
+        return msToTime(getEnd());
     }
 
     protected Description description;
@@ -85,17 +147,35 @@ public class SimulationState extends Base {
         return arr == null ? 0 : arr.size();
     }
 
+    public int getFirstYearIndex() {
+        return numberOfYearStates() > 0 ? 0 : -1;
+    }
+
+    public int getLastYearIndex() {
+        return numberOfYearStates() - 1;
+    }
+
     public int[] getYearStatesIndexArray() {
-        return IntStream.range(0, numberOfYearStates()).toArray();
+        return IntStream.rangeClosed(getFirstYearIndex(), getLastYearIndex()).toArray();
     }
 
     public YearState getYearState(int index) {
         JsonNode arr = root.get("yearStates");
-        if(arr == null || index < 0 || index >= arr.size()) {
+        if(arr == null) {
+            return null;
+        }
+        if(index < 0 || index >= arr.size()) {
             throw new IndexOutOfBoundsException();
         }
         JsonNode child = arr.get(index);
         return new YearState(child);
+    }
+
+    public int getYear(int index) {
+        YearState state = getYearState(index);
+        return state == null
+                ? -1
+                : state.getYear();
     }
 
     public YearState getFirstYearState() {
@@ -138,6 +218,13 @@ public class SimulationState extends Base {
             return JsonUtil.getText(root, "supportiveYears", null);
         }
 
+        public String[] splitSupportiveYears() {
+            String years = getSupportiveYears();
+            return years == null
+                    ? null
+                    : years.split(";");
+        }
+
         public String getBusinessModelDescription() {
             return JsonUtil.getText(root, "businessModelDescription", null);
         }
@@ -172,24 +259,65 @@ public class SimulationState extends Base {
         public int getYear() {
             return JsonUtil.getInt(root, "year", Integer.MIN_VALUE);
         }
+
+        public long getStart() {
+            return JsonUtil.getLong(root, "start", Long.MIN_VALUE);
+        }
+
+        public JsonNode getMessagesNode() {
+            return root.get("messages");
+        }
+
+        public JsonNode getStateNode() {
+            return root.get("state");
+        }
     }
 
     //=========================
     //filter
     //=========================
 
+    public static Predicate<SimulationState> finished() {
+        return SimulationState::isFinished;
+    }
+
+    public static Predicate<SimulationState> successfully() {
+        return SimulationState::isSuccessful;
+    }
+
+    public static Predicate<SimulationState> error() {
+        return SimulationState::isError;
+    }
+
+    public static Predicate<SimulationState> filterCreationTime(Predicate<? super ZonedDateTime> filter) {
+        return state -> {
+            if(state == null) return false;
+            Optional<ZonedDateTime> time = state.getCreationTime();
+            return time.isPresent() && filter.test(time.get());
+        };
+    }
+
+    public static Predicate<SimulationState> filterCreateTimeSameDay(ZonedDateTime time) {
+        return filterCreationTime(stateTime -> stateTime.toLocalDate().equals(time.toLocalDate()));
+    }
+
+    public static Predicate<SimulationState> filterCreator(Predicate<? super String> filter) {
+        return state -> state != null && filter.test(state.getDescription().getCreator());
+    }
+
     public static Predicate<SimulationState> filterCreator(String creator) {
-        return state -> Objects.equals(state.getDescription().getCreator(), creator);
+        return filterCreator(modelCreator -> Objects.equals(modelCreator, creator));
+    }
+
+    public static Predicate<SimulationState> filterModelDescription(Predicate<? super String> filter) {
+        return state -> state != null && filter.test(state.getDescription().getBusinessModelDescription());
     }
 
     public static Predicate<SimulationState> filterModelDescription(String description) {
-        return state -> Objects.equals(state.getDescription().getBusinessModelDescription(), description);
+        return filterModelDescription(modelDescription -> Objects.equals(modelDescription, description));
     }
 
     public static Predicate<SimulationState> filterModelDescriptionStartsWith(String prefix) {
-        return state -> {
-            String desc = state.getDescription().getBusinessModelDescription();
-            return desc != null && desc.startsWith(prefix);
-        };
+        return filterModelDescription(modelDescription -> modelDescription != null && modelDescription.startsWith(prefix));
     }
 }

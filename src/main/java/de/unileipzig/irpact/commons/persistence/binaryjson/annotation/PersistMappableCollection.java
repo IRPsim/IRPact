@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.persistence.binaryjson.annotation;
+package de.unileipzig.irpact.commons.persistence.binaryjson.annotation;
 
 import de.unileipzig.irpact.commons.util.CollectionSupplier;
 import de.unileipzig.irpact.core.persistence.binaryjson.GenericPR;

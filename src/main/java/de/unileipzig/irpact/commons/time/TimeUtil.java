@@ -1,9 +1,6 @@
 package de.unileipzig.irpact.commons.time;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 /**
  * @author Daniel Abitz
@@ -14,12 +11,24 @@ public final class TimeUtil {
 
     private TimeUtil() {
     }
+
     public static void setZone(ZoneId zone) {
         TimeUtil.zone = zone;
     }
 
     public static ZoneId getZone() {
         return zone;
+    }
+
+    public static ZonedDateTime msToTime(long epochMilli) {
+        return ZonedDateTime.ofInstant(
+                Instant.ofEpochMilli(epochMilli),
+                getZone()
+        );
+    }
+
+    public static long timeToMs(ZonedDateTime time) {
+        return time.toInstant().toEpochMilli();
     }
 
     public static ZonedDateTime startOfYear(int year) {

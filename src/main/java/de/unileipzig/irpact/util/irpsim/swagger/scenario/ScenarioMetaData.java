@@ -66,6 +66,10 @@ public class ScenarioMetaData extends Base {
         return JsonUtil.getBoolean(root, "deletable", false);
     }
 
+    public boolean isNotDeletable() {
+        return !JsonUtil.getBoolean(root, "deletable", true);
+    }
+
     public long getDate() {
         return JsonUtil.getLong(root, "date", -1L);
     }
@@ -88,8 +92,13 @@ public class ScenarioMetaData extends Base {
     }
 
     @Override
+    protected String printPrefix() {
+        return "ScenarioMetaData";
+    }
+
+    @Override
     public String toString() {
-        return "Scenario{" +
+        return "ScenarioMetaData{" +
                 "id=" + getId() +
                 '}';
     }

@@ -8,9 +8,9 @@ import de.unileipzig.irpact.commons.persistence.PersistException;
 import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
+import de.unileipzig.irpact.commons.persistence.binaryjson.annotation.*;
 import de.unileipzig.irpact.commons.util.*;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.persistence.binaryjson.annotation.*;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.annotation.Annotation;
@@ -405,7 +405,7 @@ public class GenericPR<T> extends BinaryPRBase<T> {
     }
 
     public static boolean isValidType(Class<?> c) {
-        return c != IGNORE.class;
+        return c != de.unileipzig.irpact.commons.persistence.binaryjson.annotation.IGNORE.class;
     }
 
     public static String getGetterName(Field field) {
