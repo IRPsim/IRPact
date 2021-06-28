@@ -903,6 +903,31 @@ public final class BinaryJsonData extends PersistableBase implements BinaryJsonP
         }
     }
 
+    public <B> void putNullableIdMapWithStringKey(
+            Map<? extends CharSequence, B> map,
+            ToLongFunction<B> toId) {
+        if(isSimulationMode()) return;
+        ObjectNode obj = validateSet(nextPutId()).addObject();
+        for(Map.Entry<? extends CharSequence, B> entry: map.entrySet()) {
+            String aKey = entry.getKey().toString();
+            B value = entry.getValue();
+            long bId = value == null ? NOTHING_ID : toId.applyAsLong(value);
+            obj.put(aKey, bId);
+        }
+    }
+
+    public <B> void getNullableIdMapWithStringKey(
+            LongFunction<B> fromId,
+            Map<String, B> out) {
+        checkSimulationMode();
+        ObjectNode obj = (ObjectNode) nextNode();
+        for(String strKey: Util.iterateFieldNames(obj)) {
+            long bId = obj.get(strKey).longValue();
+            B b = bId == NOTHING_ID ? null : fromId.apply(bId);
+            out.put(strKey, b);
+        }
+    }
+
     public <A, B, C> void putMapMap(
             Map<A, Map<B, C>> mapmap,
             Function<A, ? extends String> aToStr,

@@ -1,17 +1,18 @@
 package de.unileipzig.irpact.core.process.ra;
 
-import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.attribute.Attribute;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.checksum.LoggableChecksum;
 import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
+import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.data.DataType;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.AgentManager;
-import de.unileipzig.irpact.core.agent.consumer.*;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAnnualGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -23,15 +24,18 @@ import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.core.process.ra.alg.RelativeAgreementAlgorithm;
-import de.unileipzig.irpact.core.process.ra.uncert.BasicUncertaintyManager;
-import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
-import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyManager;
 import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
+import de.unileipzig.irpact.core.process.ra.uncert.BasicUncertaintyManager;
+import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
+import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyManager;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
+import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.core.util.AttributeHelper;
+import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.HashMap;
@@ -48,6 +52,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
 
     protected static boolean globalRAProcessInitCalled = false;
 
+    protected final AttributeHelper ATTR_HELPER = new AttributeHelper();
     protected SimulationEnvironment environment;
 
     protected RelativeAgreementAlgorithm raAlgorithm;
@@ -94,12 +99,18 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         logHash("uncertainty manager", ChecksumComparable.getChecksum(uncertaintyManager));
     }
 
+    public AttributeHelper getAttributeHelper() {
+        return ATTR_HELPER;
+    }
+
     public void setEnvironment(SimulationEnvironment environment) {
         this.environment = environment;
+        ATTR_HELPER.setEnvironment(environment);
     }
 
     public void setModelData(RAModelData modelData) {
         this.modelData = modelData;
+        modelData.setAttributeHelper(ATTR_HELPER);
     }
 
     public RAModelData getModelData() {
@@ -367,7 +378,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
     }
 
     private void initalizeInitialAdopter(ConsumerAgent ca, Product fp) {
-        double chance = RAProcessPlan.getInitialAdopter(ca, fp);
+        double chance = getInitialAdopter(ca, fp);
         double draw = rnd.nextDouble();
         boolean isAdopter = draw < chance;
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "Is consumer agent '{}' initial adopter of product '{}'? {} ({} < {})", ca.getName(), fp.getName(), isAdopter, draw, chance);
@@ -377,7 +388,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
     }
 
     private void initalizeInitialProductInterest(ConsumerAgent ca, Product fp) {
-        double interest = RAProcessPlan.getInitialProductInterest(ca, fp);
+        double interest = getInitialProductInterest(ca, fp);
         if(interest > 0) {
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set awareness for consumer agent '{}' because initial interest value {} for product '{}'", ca.getName(), interest, fp.getName());
             ca.makeAware(fp);
@@ -392,7 +403,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
             return;
         }
 
-        double chance = RAProcessPlan.getInitialProductAwareness(ca, fp);
+        double chance = getInitialProductAwareness(ca, fp);
         double draw = rnd.nextDouble();
         boolean isAware = draw < chance;
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "is consumer agent '{}' initial aware of product '{}'? {} ({} < {})", ca.getName(), fp.getName(), isAware, draw, chance);
@@ -528,7 +539,109 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         return new RAProcessPlan(environment, this, rnd, cAgent, need, product, uncertainty);
     }
 
+    //==================================================
+    //attributes
+    //==================================================
+
+    protected static double getFinancialThreshold(
+            ConsumerAgent agent,
+            AttributeHelper helper) {
+//        double pp = getPurchasePower(agent);
+//        double ns = getNoveltySeeking(agent);
+//        return pp;
+        return helper.findDoubleValue(agent, RAConstants.PURCHASE_POWER);
+    }
+
     //=========================
-    //util
+    //find
     //=========================
+
+    protected long getId(ConsumerAgent agent) {
+        SpatialInformation info = agent.getSpatialInformation();
+        if(info.hasId()) {
+            return info.getId();
+        } else {
+            return ATTR_HELPER.findLongValue(agent, RAConstants.ID);
+        }
+    }
+
+    protected double getFinancialThreshold(ConsumerAgent agent) {
+        return getFinancialThreshold(agent, ATTR_HELPER);
+    }
+
+    protected double getPurchasePower(ConsumerAgent agent) {
+        return ATTR_HELPER.findDoubleValue(agent, RAConstants.PURCHASE_POWER);
+    }
+
+    protected boolean isShareOf1Or2FamilyHouse(ConsumerAgent agent) {
+        return ATTR_HELPER.findBooleanValue(agent, RAConstants.SHARE_1_2_HOUSE);
+    }
+
+    protected void setShareOf1Or2FamilyHouse(ConsumerAgent agent, boolean value) {
+        ATTR_HELPER.findAndSetBooleanValue(agent, RAConstants.SHARE_1_2_HOUSE, value);
+    }
+
+    protected boolean isHouseOwner(ConsumerAgent agent) {
+        return ATTR_HELPER.findBooleanValue(agent, RAConstants.HOUSE_OWNER);
+    }
+
+    protected void setHouseOwner(ConsumerAgent agent, boolean value) {
+        ATTR_HELPER.findAndSetBooleanValue(agent, RAConstants.HOUSE_OWNER, value);
+    }
+
+    //=========================
+    //value
+    //=========================
+
+    protected double getCommunicationFrequencySN(ConsumerAgent agent) {
+        return ATTR_HELPER.getDoubleValue(agent, RAConstants.COMMUNICATION_FREQUENCY_SN);
+    }
+
+    protected double getRewiringRate(ConsumerAgent agent) {
+        return ATTR_HELPER.getDoubleValue(agent, RAConstants.REWIRING_RATE);
+    }
+
+    protected double getNoveltySeeking(ConsumerAgent agent) {
+        return ATTR_HELPER.getDoubleValue(agent, RAConstants.NOVELTY_SEEKING);
+    }
+
+    protected double getDependentJudgmentMaking(ConsumerAgent agent) {
+        return ATTR_HELPER.getDoubleValue(agent, RAConstants.DEPENDENT_JUDGMENT_MAKING);
+    }
+
+    protected double getEnvironmentalConcern(ConsumerAgent agent) {
+        return ATTR_HELPER.getDoubleValue(agent, RAConstants.ENVIRONMENTAL_CONCERN);
+    }
+
+    protected double getConstructionRate(ConsumerAgent agent) {
+        return ATTR_HELPER.getDoubleValue(agent, RAConstants.CONSTRUCTION_RATE);
+    }
+
+    protected double getRenovationRate(ConsumerAgent agent) {
+        return ATTR_HELPER.getDoubleValue(agent, RAConstants.RENOVATION_RATE);
+    }
+
+    //=========================
+    //product
+    //=========================
+
+    protected double getFinancialThreshold(ConsumerAgent agent, Product product) {
+        return ATTR_HELPER.getDoubleValue(agent, product, RAConstants.FINANCIAL_THRESHOLD);
+    }
+
+    protected double getAdoptionThreshold(ConsumerAgent agent, Product product) {
+        return ATTR_HELPER.getDoubleValue(agent, product, RAConstants.ADOPTION_THRESHOLD);
+    }
+
+    protected double getInitialProductAwareness(ConsumerAgent agent, Product product) {
+        return ATTR_HELPER.getDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_AWARENESS);
+    }
+
+    protected double getInitialProductInterest(ConsumerAgent agent, Product product) {
+        return ATTR_HELPER.getDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_INTEREST);
+    }
+
+    protected double getInitialAdopter(ConsumerAgent agent, Product product) {
+        return ATTR_HELPER.getDoubleValue(agent, product, RAConstants.INITIAL_ADOPTER);
+    }
 }

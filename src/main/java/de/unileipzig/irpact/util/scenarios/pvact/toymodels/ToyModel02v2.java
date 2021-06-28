@@ -8,7 +8,7 @@ import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.InVersion;
+import de.unileipzig.irpact.io.param.input.InScenarioVersion;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
@@ -175,7 +175,7 @@ public class ToyModel02v2 extends AbstractToyModel {
         general.lastSimulationYear = 2015;
 
         InRoot root = new InRoot();
-        root.version = new InVersion[]{InVersion.currentVersion()};
+        root.version = new InScenarioVersion[]{InScenarioVersion.currentVersion()};
         root.general = general;
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(new InConsumerAgentGroup[]{A, K1, K2, K3});

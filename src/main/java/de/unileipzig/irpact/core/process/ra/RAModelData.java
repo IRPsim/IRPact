@@ -1,13 +1,10 @@
 package de.unileipzig.irpact.core.process.ra;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
-import de.unileipzig.irpact.commons.attribute.Attribute;
-import de.unileipzig.irpact.commons.attribute.AttributeUtil;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAnnualAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
+import de.unileipzig.irpact.core.util.AttributeHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +20,8 @@ public class RAModelData implements ChecksumComparable {
     public static final int DEFAULT_INTERESTED_POINTS = 2;
     public static final int DEFAULT_AWARE_POINTS = 1;
     public static final int DEFAULT_UNKNOWN_POINTS = 0;
+
+    protected AttributeHelper attributeHelper;
 
     protected Map<Integer, NPVMatrix> npData;
 
@@ -44,6 +43,10 @@ public class RAModelData implements ChecksumComparable {
 
     public RAModelData(Map<Integer, NPVMatrix> npData) {
         this.npData = npData;
+    }
+
+    public void setAttributeHelper(AttributeHelper attributeHelper) {
+        this.attributeHelper = attributeHelper;
     }
 
     @Override
@@ -94,11 +97,7 @@ public class RAModelData implements ChecksumComparable {
     public double NPV(ConsumerAgent agent, int year) {
         NPVMatrix matrix = npData.get(year);
         if(matrix == null) {
-            ConsumerAgentAnnualAttribute aAttr = agent.getAttribute(RAConstants.NET_PRESENT_VALUE)
-                    .asAnnualAttribute();
-            ConsumerAgentAttribute attr = aAttr.getAttribute(year);
-            return attr.asValueAttribute()
-                    .getDoubleValue();
+            return getNPV(agent);
         } else {
             int N = getN(agent);
             int A = getA(agent);
@@ -130,7 +129,7 @@ public class RAModelData implements ChecksumComparable {
             MutableDouble total = MutableDouble.zero();
             double sum = agents.mapToDouble(ca -> {
                 total.inc();
-                return RAProcessPlan.getFinancialThresholdAgent(ca);
+                return getFinancialThreshold(ca);
             }).sum();
             double result = sum / total.get();
             avgFT.set(result);
@@ -142,17 +141,20 @@ public class RAModelData implements ChecksumComparable {
         this.logisticFactor = logisticFactor;
     }
 
-    protected static int getN(ConsumerAgent agent) {
-        return getIntValue(agent, RAConstants.SLOPE);
+    protected double getFinancialThreshold(ConsumerAgent agent) {
+        return RAProcessModel.getFinancialThreshold(agent, attributeHelper);
     }
 
-    protected static int getA(ConsumerAgent agent) {
-        return getIntValue(agent, RAConstants.ORIENTATION);
+    protected double getNPV(ConsumerAgent agent) {
+        return attributeHelper.getDoubleValue(agent, RAConstants.NET_PRESENT_VALUE);
     }
 
-    protected static int getIntValue(ConsumerAgent agent, String attrName) {
-        Attribute attr = agent.findAttribute(attrName);
-        return AttributeUtil.getIntValue(attr, attrName);
+    protected int getN(ConsumerAgent agent) {
+        return attributeHelper.findIntValue(agent, RAConstants.SLOPE);
+    }
+
+    protected int getA(ConsumerAgent agent) {
+        return attributeHelper.findIntValue(agent, RAConstants.ORIENTATION);
     }
 
     public double a() {

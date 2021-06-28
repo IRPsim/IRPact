@@ -2,7 +2,7 @@ package de.unileipzig.irpact.util.scenarios.pvact;
 
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.InVersion;
+import de.unileipzig.irpact.io.param.input.InScenarioVersion;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactConsumerAgentPopulation;
@@ -108,7 +108,7 @@ public class PVactScenario01 extends AbstractPVactScenario {
         general.lastSimulationYear = 2015;
 
         InRoot root = new InRoot();
-        root.version = new InVersion[]{InVersion.currentVersion()};
+        root.version = new InScenarioVersion[]{InScenarioVersion.currentVersion()};
         root.general = general;
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(cags);

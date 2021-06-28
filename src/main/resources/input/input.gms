@@ -363,9 +363,37 @@ PARAMETER par_InBoundedNormalDistribution_mean(set_InBoundedNormalDistribution)
 PARAMETER par_InBoundedNormalDistribution_lowerBound(set_InBoundedNormalDistribution)
 
 * - description: Legt die Obergrenze fest.
-* - identifier: Obergrenze (exklusiv)
+* - identifier: Obergrenze (inklusiv)
 * - type: Float
 PARAMETER par_InBoundedNormalDistribution_upperBound(set_InBoundedNormalDistribution)
+
+* - identifier: InBoundedUniformDoubleDistribution
+* - type: String
+SET set_InBoundedUniformDoubleDistribution(set_InUnivariateDoubleDistribution)
+
+* - description: Legt die Untergrenze fest.
+* - identifier: Untergrenze (inklusiv)
+* - type: Float
+PARAMETER par_InBoundedUniformDoubleDistribution_lowerBound(set_InBoundedUniformDoubleDistribution)
+
+* - description: Legt die Obergrenze fest.
+* - identifier: Obergrenze (exklusiv)
+* - type: Float
+PARAMETER par_InBoundedUniformDoubleDistribution_upperBound(set_InBoundedUniformDoubleDistribution)
+
+* - identifier: InBoundedUniformIntegerDistribution
+* - type: String
+SET set_InBoundedUniformIntegerDistribution(set_InUnivariateDoubleDistribution)
+
+* - description: Legt die Untergrenze fest.
+* - identifier: Untergrenze (inklusiv)
+* - type: Integer
+PARAMETER par_InBoundedUniformIntegerDistribution_lowerBound(set_InBoundedUniformIntegerDistribution)
+
+* - description: Legt die Obergrenze fest.
+* - identifier: Obergrenze (exklusiv)
+* - type: Integer
+PARAMETER par_InBoundedUniformIntegerDistribution_upperBound(set_InBoundedUniformIntegerDistribution)
 
 * - identifier: InDiracUnivariateDistribution
 * - type: String
@@ -415,33 +443,33 @@ PARAMETER par_InNormalDistribution_standardDeviation(set_InNormalDistribution)
 * - type: Float
 PARAMETER par_InNormalDistribution_mean(set_InNormalDistribution)
 
-* - identifier: InBoundedUniformDoubleDistribution
+* - identifier: InTruncatedNormalDistribution
 * - type: String
-SET set_InBoundedUniformDoubleDistribution(set_InUnivariateDoubleDistribution)
+SET set_InTruncatedNormalDistribution(set_InUnivariateDoubleDistribution)
 
-* - description: Legt die Untergrenze fest.
-* - identifier: Untergrenze (inklusiv)
+* - default: 1
+* - description: Die Standardabweichung der Normalverteilung.
+* - identifier: Standardabweichung
 * - type: Float
-PARAMETER par_InBoundedUniformDoubleDistribution_lowerBound(set_InBoundedUniformDoubleDistribution)
+PARAMETER par_InTruncatedNormalDistribution_standardDeviation(set_InTruncatedNormalDistribution)
 
-* - description: Legt die Obergrenze fest.
-* - identifier: Obergrenze (exklusiv)
+* - default: 0
+* - description: Der Mittelwert der Normalverteilung.
+* - identifier: Mittelwert
 * - type: Float
-PARAMETER par_InBoundedUniformDoubleDistribution_upperBound(set_InBoundedUniformDoubleDistribution)
+PARAMETER par_InTruncatedNormalDistribution_mean(set_InTruncatedNormalDistribution)
 
-* - identifier: InBoundedUniformIntegerDistribution
-* - type: String
-SET set_InBoundedUniformIntegerDistribution(set_InUnivariateDoubleDistribution)
+* - default: -1
+* - description: Untere Grenze des Bereiches für die gültigen Werte.
+* - identifier: Untere Grenze
+* - type: Float
+PARAMETER par_InTruncatedNormalDistribution_lowerBound(set_InTruncatedNormalDistribution)
 
-* - description: Legt die Untergrenze fest.
-* - identifier: Untergrenze (inklusiv)
-* - type: Integer
-PARAMETER par_InBoundedUniformIntegerDistribution_lowerBound(set_InBoundedUniformIntegerDistribution)
-
-* - description: Legt die Obergrenze fest.
-* - identifier: Obergrenze (exklusiv)
-* - type: Integer
-PARAMETER par_InBoundedUniformIntegerDistribution_upperBound(set_InBoundedUniformIntegerDistribution)
+* - default: 1
+* - description: Obere Grenze des Bereiches für die gültigen Werte.
+* - identifier: Obere Grenze
+* - type: Float
+PARAMETER par_InTruncatedNormalDistribution_upperBound(set_InTruncatedNormalDistribution)
 
 * - identifier: InUnivariateDoubleDistribution
 * - hidden: 1
@@ -723,14 +751,176 @@ SET set_InUnlinkedGraphTopology(set_InGraphTopologyScheme)
 * - type: Float
 PARAMETER par_InUnlinkedGraphTopology_placeholderUnlinked(set_InUnlinkedGraphTopology)
 
-* - identifier: InAutoUncertaintyGroupAttribute
+* - identifier: InGlobalDeffuantUncertainty
 * - type: String
-SET set_InAutoUncertaintyGroupAttribute(set_InUncertaintyGroupAttribute)
+SET set_InGlobalDeffuantUncertainty(set_InUncertainty)
 
-* - description: Ungenutzter Platzhalter
-* - identifier: ---
+* - default: -1
+* - description: Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten.
+* - identifier: Extremistenparameter
 * - type: Float
-PARAMETER par_InAutoUncertaintyGroupAttribute_placeholderAutoUncert(set_InAutoUncertaintyGroupAttribute)
+PARAMETER par_InGlobalDeffuantUncertainty_extremistParameter(set_InGlobalDeffuantUncertainty)
+
+* - default: 0.35
+* - description: Legt den Wert der Unsicherheit für Extremisten fest.
+* - identifier: Unsicherheit der Extremisten
+* - type: Float
+PARAMETER par_InGlobalDeffuantUncertainty_extremistUncertainty(set_InGlobalDeffuantUncertainty)
+
+* - default: 1.4
+* - description: Legt den Wert der Unsicherheit für Moderate fest.
+* - identifier: Unsicherheit der Moderaten
+* - type: Float
+PARAMETER par_InGlobalDeffuantUncertainty_moderateUncertainty(set_InGlobalDeffuantUncertainty)
+
+* - default: 0
+* - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
+* - identifier: Untere Grenze inklusive?
+* - type: Boolean
+PARAMETER par_InGlobalDeffuantUncertainty_lowerBoundInclusive(set_InGlobalDeffuantUncertainty)
+
+* - default: 0
+* - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
+* - identifier: Obere Grenze inklusive?
+* - type: Boolean
+PARAMETER par_InGlobalDeffuantUncertainty_upperBoundInclusive(set_InGlobalDeffuantUncertainty)
+
+* - description: Legt die Agentengruppen fest, auf deren Basis die Unsicherheit berechnet werden soll.
+* - identifier: Betrachtete Agentengruppen
+* - type: Boolean
+PARAMETER par_link_InGlobalDeffuantUncertainty_InConsumerAgentGroup_cags(set_InGlobalDeffuantUncertainty,set_InConsumerAgentGroup)
+
+* - description: Legt die Attribute fest, die mit dieser Unsicherheit verbunden werden sollen.
+* - identifier: Betrachtete Attribute
+* - type: Boolean
+PARAMETER par_link_InGlobalDeffuantUncertainty_InAttributeName_attributeNames(set_InGlobalDeffuantUncertainty,set_InAttributeName)
+
+* - identifier: InGroupBasedDeffuantUncertainty
+* - type: String
+SET set_InGroupBasedDeffuantUncertainty(set_InUncertainty)
+
+* - default: -1
+* - description: Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten.
+* - identifier: Extremistenparameter
+* - type: Float
+PARAMETER par_InGroupBasedDeffuantUncertainty_extremistParameter(set_InGroupBasedDeffuantUncertainty)
+
+* - default: 0.35
+* - description: Legt den Wert der Unsicherheit für Extremisten fest.
+* - identifier: Unsicherheit der Extremisten
+* - type: Float
+PARAMETER par_InGroupBasedDeffuantUncertainty_extremistUncertainty(set_InGroupBasedDeffuantUncertainty)
+
+* - default: 1.4
+* - description: Legt den Wert der Unsicherheit für Moderate fest.
+* - identifier: Unsicherheit der Moderaten
+* - type: Float
+PARAMETER par_InGroupBasedDeffuantUncertainty_moderateUncertainty(set_InGroupBasedDeffuantUncertainty)
+
+* - default: 0
+* - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
+* - identifier: Untere Grenze inklusive?
+* - type: Boolean
+PARAMETER par_InGroupBasedDeffuantUncertainty_lowerBoundInclusive(set_InGroupBasedDeffuantUncertainty)
+
+* - default: 0
+* - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
+* - identifier: Obere Grenze inklusive?
+* - type: Boolean
+PARAMETER par_InGroupBasedDeffuantUncertainty_upperBoundInclusive(set_InGroupBasedDeffuantUncertainty)
+
+* - description: Legt die Agentengruppe fest, auf deren Basis die Unsicherheit berechnet werden soll.
+* - identifier: Betrachtete Agentengruppen
+* - type: Boolean
+PARAMETER par_link_InGroupBasedDeffuantUncertainty_InConsumerAgentGroup_cags(set_InGroupBasedDeffuantUncertainty,set_InConsumerAgentGroup)
+
+* - description: Legt die Attribute fest, die mit dieser Unsicherheit verbunden werden sollen.
+* - identifier: Betrachtete Attribute
+* - type: Boolean
+PARAMETER par_link_InGroupBasedDeffuantUncertainty_InAttributeName_attributeNames(set_InGroupBasedDeffuantUncertainty,set_InAttributeName)
+
+* - identifier: InPVactGlobalDeffuantUncertainty
+* - type: String
+SET set_InPVactGlobalDeffuantUncertainty(set_InUncertainty)
+
+* - default: -1
+* - description: Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten.
+* - identifier: Extremistenparameter
+* - type: Float
+PARAMETER par_InPVactGlobalDeffuantUncertainty_extremistParameter(set_InPVactGlobalDeffuantUncertainty)
+
+* - default: 0.35
+* - description: Legt den Wert der Unsicherheit für Extremisten fest.
+* - identifier: Unsicherheit der Extremisten
+* - type: Float
+PARAMETER par_InPVactGlobalDeffuantUncertainty_extremistUncertainty(set_InPVactGlobalDeffuantUncertainty)
+
+* - default: 1.4
+* - description: Legt den Wert der Unsicherheit für Moderate fest.
+* - identifier: Unsicherheit der Moderaten
+* - type: Float
+PARAMETER par_InPVactGlobalDeffuantUncertainty_moderateUncertainty(set_InPVactGlobalDeffuantUncertainty)
+
+* - default: 0
+* - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
+* - identifier: Untere Grenze inklusive?
+* - type: Boolean
+PARAMETER par_InPVactGlobalDeffuantUncertainty_lowerBoundInclusive(set_InPVactGlobalDeffuantUncertainty)
+
+* - default: 0
+* - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
+* - identifier: Obere Grenze inklusive?
+* - type: Boolean
+PARAMETER par_InPVactGlobalDeffuantUncertainty_upperBoundInclusive(set_InPVactGlobalDeffuantUncertainty)
+
+* - description: Legt die Agentengruppe fest, auf deren Basis die Unsicherheit berechnet werden soll.
+* - identifier: Betrachtete Agentengruppen
+* - type: Boolean
+PARAMETER par_link_InPVactGlobalDeffuantUncertainty_InConsumerAgentGroup_cags(set_InPVactGlobalDeffuantUncertainty,set_InConsumerAgentGroup)
+
+* - identifier: InPVactGroupBasedDeffuantUncertainty
+* - type: String
+SET set_InPVactGroupBasedDeffuantUncertainty(set_InUncertainty)
+
+* - default: -1
+* - description: Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten.
+* - identifier: Extremistenparameter
+* - type: Float
+PARAMETER par_InPVactGroupBasedDeffuantUncertainty_extremistParameter(set_InPVactGroupBasedDeffuantUncertainty)
+
+* - default: 0.35
+* - description: Legt den Wert der Unsicherheit für Extremisten fest.
+* - identifier: Unsicherheit der Extremisten
+* - type: Float
+PARAMETER par_InPVactGroupBasedDeffuantUncertainty_extremistUncertainty(set_InPVactGroupBasedDeffuantUncertainty)
+
+* - default: 1.4
+* - description: Legt den Wert der Unsicherheit für Moderate fest.
+* - identifier: Unsicherheit der Moderaten
+* - type: Float
+PARAMETER par_InPVactGroupBasedDeffuantUncertainty_moderateUncertainty(set_InPVactGroupBasedDeffuantUncertainty)
+
+* - default: 0
+* - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
+* - identifier: Untere Grenze inklusive?
+* - type: Boolean
+PARAMETER par_InPVactGroupBasedDeffuantUncertainty_lowerBoundInclusive(set_InPVactGroupBasedDeffuantUncertainty)
+
+* - default: 0
+* - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
+* - identifier: Obere Grenze inklusive?
+* - type: Boolean
+PARAMETER par_InPVactGroupBasedDeffuantUncertainty_upperBoundInclusive(set_InPVactGroupBasedDeffuantUncertainty)
+
+* - description: Legt die Agentengruppe fest, auf deren Basis die Unsicherheit berechnet werden soll.
+* - identifier: Betrachtete Agentengruppen
+* - type: Boolean
+PARAMETER par_link_InPVactGroupBasedDeffuantUncertainty_InConsumerAgentGroup_cags(set_InPVactGroupBasedDeffuantUncertainty,set_InConsumerAgentGroup)
+
+* - identifier: InUncertainty
+* - hidden: 1
+* - type: String
+SET set_InUncertainty(*)
 
 * - identifier: InDisabledProcessPlanNodeFilterScheme
 * - type: String
@@ -750,154 +940,96 @@ SET set_InEntireNetworkNodeFilterScheme(set_InRAProcessPlanNodeFilterScheme,set_
 * - type: Float
 PARAMETER par_InEntireNetworkNodeFilterScheme_placeholder(set_InEntireNetworkNodeFilterScheme)
 
-* - identifier: InIndividualAttributeBasedUncertaintyGroupAttribute
-* - type: String
-SET set_InIndividualAttributeBasedUncertaintyGroupAttribute(set_InUncertaintyGroupAttribute)
-
-* - description: Bestimmt die Konsumergruppenattribute, welche mit dieser Unsicherheit behandelt werden sollen.
-* - identifier: Konsumergruppenattribute
-* - type: Boolean
-PARAMETER par_link_InIndividualAttributeBasedUncertaintyGroupAttribute_InConsumerAgentGroupAttribute_cagAttrs(set_InIndividualAttributeBasedUncertaintyGroupAttribute,set_InConsumerAgentGroupAttribute)
-
-* - description: Legt die zu nutzende Verteilungsfunktion fest.
-* - identifier: Verteilungsfunktion
-* - type: Boolean
-PARAMETER par_link_InIndividualAttributeBasedUncertaintyGroupAttribute_InUnivariateDoubleDistribution_uncertDist(set_InIndividualAttributeBasedUncertaintyGroupAttribute,set_InUnivariateDoubleDistribution)
-
-* - identifier: InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute
-* - type: String
-SET set_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute(set_InUncertaintyGroupAttribute)
-
-* - description: Bestimmt die Konsumergruppenattribute, welche mit dieser Unsicherheit behandelt werden sollen.
-* - identifier: Konsumergruppenattribute
-* - type: Boolean
-PARAMETER par_link_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute_InConsumerAgentGroupAttribute_cagAttrs(set_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute,set_InConsumerAgentGroupAttribute)
-
-* - description: Legt die zu nutzende Verteilungsfunktion fest.
-* - identifier: Verteilungsfunktion
-* - type: Boolean
-PARAMETER par_link_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute_InUnivariateDoubleDistribution_uncertDist(set_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute,set_InUnivariateDoubleDistribution)
-
-* - description: Legt die Verteilungsfunktion für die Konvergenz fest.
-* - identifier: Konvergenzfunktion
-* - type: Boolean
-PARAMETER par_link_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute_InUnivariateDoubleDistribution_convergenceDist(set_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute,set_InUnivariateDoubleDistribution)
-
-* - identifier: InNameBasedUncertaintyGroupAttribute
-* - type: String
-SET set_InNameBasedUncertaintyGroupAttribute(set_InUncertaintyGroupAttribute)
-
-* - description: Bestimmt die Konsumergruppe, deren Attribute mit dieser Unsicherheit behandelt werden sollen.
-* - identifier: Konsumergruppe
-* - type: Boolean
-PARAMETER par_link_InNameBasedUncertaintyGroupAttribute_InConsumerAgentGroup_cags(set_InNameBasedUncertaintyGroupAttribute,set_InConsumerAgentGroup)
-
-* - description: Legt die Attributnamen fest, welche mit dieser Unsicherheit behandelt werden sollen.
-* - identifier: Attributnamen
-* - type: Boolean
-PARAMETER par_link_InNameBasedUncertaintyGroupAttribute_InAttributeName_names(set_InNameBasedUncertaintyGroupAttribute,set_InAttributeName)
-
-* - description: Legt die zu nutzende Verteilungsfunktion fest.
-* - identifier: Verteilungsfunktion
-* - type: Boolean
-PARAMETER par_link_InNameBasedUncertaintyGroupAttribute_InUnivariateDoubleDistribution_uncertDist(set_InNameBasedUncertaintyGroupAttribute,set_InUnivariateDoubleDistribution)
-
-* - identifier: InNameBasedUncertaintyWithConvergenceGroupAttribute
-* - type: String
-SET set_InNameBasedUncertaintyWithConvergenceGroupAttribute(set_InUncertaintyGroupAttribute)
-
-* - description: Bestimmt die Konsumergruppe, deren Attribute mit dieser Unsicherheit behandelt werden sollen.
-* - identifier: Konsumergruppe
-* - type: Boolean
-PARAMETER par_link_InNameBasedUncertaintyWithConvergenceGroupAttribute_InConsumerAgentGroup_cags(set_InNameBasedUncertaintyWithConvergenceGroupAttribute,set_InConsumerAgentGroup)
-
-* - description: Legt die Attributnamen fest, welche mit dieser Unsicherheit behandelt werden sollen.
-* - identifier: Attributnamen
-* - type: Boolean
-PARAMETER par_link_InNameBasedUncertaintyWithConvergenceGroupAttribute_InAttributeName_names(set_InNameBasedUncertaintyWithConvergenceGroupAttribute,set_InAttributeName)
-
-* - description: Legt die zu nutzende Verteilungsfunktion fest.
-* - identifier: Verteilungsfunktion
-* - type: Boolean
-PARAMETER par_link_InNameBasedUncertaintyWithConvergenceGroupAttribute_InUnivariateDoubleDistribution_uncertDist(set_InNameBasedUncertaintyWithConvergenceGroupAttribute,set_InUnivariateDoubleDistribution)
-
-* - description: Legt die Verteilungsfunktion für die Konvergenz fest.
-* - identifier: Konvergenzfunktion
-* - type: Boolean
-PARAMETER par_link_InNameBasedUncertaintyWithConvergenceGroupAttribute_InUnivariateDoubleDistribution_convergenceDist(set_InNameBasedUncertaintyWithConvergenceGroupAttribute,set_InUnivariateDoubleDistribution)
-
-* - identifier: InPVactUncertaintyGroupAttribute
-* - type: String
-SET set_InPVactUncertaintyGroupAttribute(set_InUncertaintyGroupAttribute)
-
-* - description: Bestimmt die Konsumergruppe, deren Attribute mit dieser Unsicherheit behandelt werden sollen.
-* - identifier: Konsumergruppe
-* - type: Boolean
-PARAMETER par_link_InPVactUncertaintyGroupAttribute_InConsumerAgentGroup_cags(set_InPVactUncertaintyGroupAttribute,set_InConsumerAgentGroup)
-
-* - description: Legt die zu nutzende Verteilungsfunktion für novelty seeking fest.
-* - identifier: novelty seeking
-* - type: Boolean
-PARAMETER par_link_InPVactUncertaintyGroupAttribute_InUnivariateDoubleDistribution_noveltySeekingUncert(set_InPVactUncertaintyGroupAttribute,set_InUnivariateDoubleDistribution)
-
-* - description: Legt die zu nutzende Verteilungsfunktion für dependent judgment making fest.
-* - identifier: dependent judgment making
-* - type: Boolean
-PARAMETER par_link_InPVactUncertaintyGroupAttribute_InUnivariateDoubleDistribution_dependentJudgmentMakingUncert(set_InPVactUncertaintyGroupAttribute,set_InUnivariateDoubleDistribution)
-
-* - description: Legt die zu nutzende Verteilungsfunktion für environmental concern fest.
-* - identifier: environmental concern
-* - type: Boolean
-PARAMETER par_link_InPVactUncertaintyGroupAttribute_InUnivariateDoubleDistribution_environmentalConcernUncert(set_InPVactUncertaintyGroupAttribute,set_InUnivariateDoubleDistribution)
-
 * - identifier: InRAProcessModel
 * - type: String
 SET set_InRAProcessModel(set_InProcessModel)
 
+* - default: 0.25
 * - description: Legt den Einfluss der finanziellen Komponente fest.
 * - identifier: Einfluss finanzielle Komponente (a)
 * - type: Float
 PARAMETER par_InRAProcessModel_a(set_InRAProcessModel)
 
+* - default: 0.25
 * - description: Legt den Einfluss der novelty Komponente fest.
 * - identifier: Einfluss novelty Komponente (b)
 * - type: Float
 PARAMETER par_InRAProcessModel_b(set_InRAProcessModel)
 
+* - default: 0.25
 * - description: Legt den Umwelteinfluss fest.
 * - identifier: Umwelteinfluss (c)
 * - type: Float
 PARAMETER par_InRAProcessModel_c(set_InRAProcessModel)
 
+* - default: 0.25
 * - description: Legt den Einfluss der sozialen Komponente fest.
 * - identifier: Einfluss soziale Komponente (d)
 * - type: Float
 PARAMETER par_InRAProcessModel_d(set_InRAProcessModel)
 
+* - default: 3
 * - description: Legt den Einfluss für die Kommunikation mit Adoptern fest.
 * - identifier: Einfluss der Kommunikation mit Adoptern
 * - type: Integer
 PARAMETER par_InRAProcessModel_adopterPoints(set_InRAProcessModel)
 
+* - default: 2
 * - description: Legt den Einfluss für die Kommunikation mit Interessenten fest.
 * - identifier: Einfluss der Kommunikation mit Interessenten
 * - type: Integer
 PARAMETER par_InRAProcessModel_interestedPoints(set_InRAProcessModel)
 
+* - default: 1
 * - description: Legt den Einfluss für die Kommunikation mit Bewussten fest.
 * - identifier: Einfluss der Kommunikation mit Bewussten
 * - type: Integer
 PARAMETER par_InRAProcessModel_awarePoints(set_InRAProcessModel)
 
+* - default: 0
 * - description: Legt den Einfluss für die Kommunikation mit Unwissenden fest.
 * - identifier: Einfluss der Kommunikation mit Unwissenden
 * - type: Integer
 PARAMETER par_InRAProcessModel_unknownPoints(set_InRAProcessModel)
 
+* - default: 0.125
 * - description: Legt den Einflussfaktor 'a' der logistischen Funktion fest: logistic(a * -x).
 * - identifier: Einflussfaktor der logistischen Funktion
 * - type: Float
 PARAMETER par_InRAProcessModel_logisticFactor(set_InRAProcessModel)
+
+* - default: 0.5
+* - description: speed of convergence
+* - identifier: speed of convergence
+* - type: Float
+PARAMETER par_InRAProcessModel_speedOfConvergence(set_InRAProcessModel)
+
+* - default: 1.75
+* - description: attritude gab
+* - identifier: attritude gab
+* - type: Float
+PARAMETER par_InRAProcessModel_attitudeGab(set_InRAProcessModel)
+
+* - default: 0.5
+* - domain: [0,1]
+* - description: Wahrscheinlichkeit für einen neutralen Ausgang.
+* - identifier: Wahrscheinlichkeit Neutral
+* - type: Float
+PARAMETER par_InRAProcessModel_chanceNeutral(set_InRAProcessModel)
+
+* - default: 0.25
+* - domain: [0,1]
+* - description: Wahrscheinlichkeit, dass der normale relative agreement algorithm genutzt wird.
+* - identifier: Wahrscheinlichkeit Konvergenz
+* - type: Float
+PARAMETER par_InRAProcessModel_chanceConvergence(set_InRAProcessModel)
+
+* - default: 0.25
+* - domain: [0,1]
+* - description: Wahrscheinlichkeit, dass der reverse relative agreement algorithm genutzt wird.
+* - identifier: Wahrscheinlichkeit Divergenz
+* - type: Float
+PARAMETER par_InRAProcessModel_chanceDivergence(set_InRAProcessModel)
 
 * - description: Legt den Filter fest, um 'sichtbare' Haushalte zu identifizieren.
 * - identifier: Netzwerkfilter für räumliche Sicht
@@ -909,10 +1041,10 @@ PARAMETER par_link_InRAProcessModel_InRAProcessPlanNodeFilterScheme_nodeFilterSc
 * - type: Boolean
 PARAMETER par_link_InRAProcessModel_InPVFile_pvFile(set_InRAProcessModel,set_InPVFile)
 
-* - description: Bestimmt die Unsicherheiten, welche von diesem Modell verwendet werden.
+* - description: Bestimmt die Unsicherheiten, welche von diesem Modell verwendet werden. (todo)
 * - identifier: Unsicherheiten
 * - type: Boolean
-PARAMETER par_link_InRAProcessModel_InUncertaintyGroupAttribute_uncertaintyGroupAttributes(set_InRAProcessModel,set_InUncertaintyGroupAttribute)
+PARAMETER par_link_InRAProcessModel_InUncertainty_uncertainties(set_InRAProcessModel,set_InUncertainty)
 
 * - identifier: InRAProcessPlanMaxDistanceFilterScheme
 * - type: String
@@ -932,11 +1064,6 @@ PARAMETER par_InRAProcessPlanMaxDistanceFilterScheme_inclusive(set_InRAProcessPl
 * - hidden: 1
 * - type: String
 SET set_InRAProcessPlanNodeFilterScheme(set_InProcessPlanNodeFilterScheme)
-
-* - identifier: InUncertaintyGroupAttribute
-* - hidden: 1
-* - type: String
-SET set_InUncertaintyGroupAttribute(*)
 
 * - identifier: InProcessModel
 * - hidden: 1
@@ -1195,49 +1322,40 @@ SET set_InUnitStepDiscreteTimeModel(set_InTimeModel)
 * - type: Integer
 PARAMETER par_InUnitStepDiscreteTimeModel_amountOfTime(set_InUnitStepDiscreteTimeModel)
 
-* - description: Verwendet Millisekunden alsEinheit für die Zeitdauer.
+* - description: Verwendet Millisekunden als Einheit für die Zeitdauer.
 * - identifier: Millisekunden
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useMs(set_InUnitStepDiscreteTimeModel)
 
-* - description: Verwendet Sekunden alsEinheit für die Zeitdauer.
+* - description: Verwendet Sekunden als Einheit für die Zeitdauer.
 * - identifier: Sekunden
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useSec(set_InUnitStepDiscreteTimeModel)
 
-* - description: Verwendet Minuten alsEinheit für die Zeitdauer.
+* - description: Verwendet Minuten als Einheit für die Zeitdauer.
 * - identifier: Minuten
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useMin(set_InUnitStepDiscreteTimeModel)
 
-* - description: Verwendet Stunden alsEinheit für die Zeitdauer.
+* - description: Verwendet Stunden als Einheit für die Zeitdauer.
 * - identifier: Stunden
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useH(set_InUnitStepDiscreteTimeModel)
 
-* - description: Verwendet Tage alsEinheit für die Zeitdauer.
+* - description: Verwendet Tage als Einheit für die Zeitdauer.
 * - identifier: Tage
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useD(set_InUnitStepDiscreteTimeModel)
 
-* - description: Verwendet Wochen alsEinheit für die Zeitdauer.
+* - description: Verwendet Wochen als Einheit für die Zeitdauer.
 * - identifier: Wochen
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useW(set_InUnitStepDiscreteTimeModel)
 
-* - description: Verwendet Monate alsEinheit für die Zeitdauer.
+* - description: Verwendet Monate als Einheit für die Zeitdauer.
 * - identifier: Monate
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useM(set_InUnitStepDiscreteTimeModel)
-
-* - identifier: InAboutPlaceholder
-* - type: String
-SET set_InAboutPlaceholder(*)
-
-* - description: Ungenutzter Platzhalter
-* - identifier: ---
-* - type: Integer
-PARAMETER par_InAboutPlaceholder_placeholder(set_InAboutPlaceholder)
 
 * - description: Setzt den Seed für den Zufallsgenerator der Simulation. Falls er auf -1 gesetzt wird, wird ein zufälliger Seed generiert.
 * - identifier: Zufallsgenerator (seed)
@@ -1393,16 +1511,46 @@ SCALAR sca_InGeneral_logScriptAdoptionsZip
 * - type: Boolean
 SCALAR sca_InGeneral_logScriptAdoptionsZipPhase
 
-* - description: Die Version von IRPact, welche bei der Erstellung des Szenarios aktuell war.
-* - hidden: 1
-* - identifier: IRPact Version
+* - identifier: InInformation
 * - type: String
-SET set_InVersion(*)
+SET set_InInformation(*)
+
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
+* - type: Float
+PARAMETER par_InInformation_placeholder(set_InInformation)
+
+* - identifier: InIRPactVersionPlaceholder
+* - type: String
+SET set_InIRPactVersionPlaceholder(*)
 
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
 * - type: Integer
-PARAMETER par_InVersion_placeholderVersion(set_InVersion)
+PARAMETER par_InIRPactVersionPlaceholder_placeholder(set_InIRPactVersionPlaceholder)
+
+* - identifier: InScenarioVersion
+* - type: String
+SET set_InScenarioVersion(*)
+
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
+* - type: Integer
+PARAMETER par_InScenarioVersion_placeholder(set_InScenarioVersion)
+
+* - identifier: InTestData
+* - type: String
+SET set_InTestData(*)
+
+* - description: Testwert 1
+* - identifier: Testwert 1
+* - type: Float
+PARAMETER par_InTestData_testValue1(set_InTestData)
+
+* - description: Testwert 2
+* - identifier: Testwert 2
+* - type: Float
+PARAMETER par_InTestData_testValue2(set_InTestData)
 
 * - description: Einlesen des zu optimierenden Jahres
 * - hidden: 1
@@ -1491,6 +1639,10 @@ PARAMETER par_IuO_ESector_CustSide(set_ii,set_side_cust)
 * - identifier: Simulationshorizont
 * - type: TimeSeries
 SET set_t(set_ii)
+
+* - identifier: OutInformation
+* - type: String
+SET set_OutInformation(*)
 
 * - identifier: OutConsumerAgentGroup
 * - type: String

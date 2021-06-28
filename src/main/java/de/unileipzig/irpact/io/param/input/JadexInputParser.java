@@ -257,7 +257,7 @@ public class JadexInputParser implements IRPactInputParser {
     }
 
     private void checkVersion(InRoot root) throws ParsingException {
-        InVersion inVersion = getInstance(root.version, InVersion.class, "missing Version");
+        InScenarioVersion inVersion = getInstance(root.version, InScenarioVersion.class, "missing Version");
         BasicVersion inputVersion = inVersion.parse(this);
         if(!IRPact.VERSION.supportsInput(inputVersion)) {
             throw new ParsingException("version mismatch! IRPact version: '" + IRPact.VERSION + "', input version: '" + inputVersion + "'");

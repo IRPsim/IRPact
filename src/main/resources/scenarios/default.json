@@ -1,5 +1,11 @@
 {
-  "description" : { },
+  "description" : {
+    "supportiveYears" : null,
+    "businessModelDescription" : null,
+    "investmentCustomerSide" : null,
+    "parameterAttention" : null,
+    "creator" : null
+  },
   "years" : [ {
     "config" : {
       "simulationlength" : 35040,
@@ -123,7 +129,6 @@
       },
       "set_ii" : { },
       "set_ii_0" : { },
-      "set_InAboutPlaceholder" : { },
       "set_InAffinities" : {
         "affs" : { }
       },
@@ -137,7 +142,6 @@
         "PopSize" : { }
       },
       "set_InAttributeName" : { },
-      "set_InAutoUncertaintyGroupAttribute" : { },
       "set_InBasicProductGroup" : { },
       "set_InBasicProductGroupAttribute" : { },
       "set_InBernoulliDistribution" : { },
@@ -235,6 +239,7 @@
           "par_InGenericOutputImage_linewidth" : 1.0
         }
       },
+      "set_InGlobalDeffuantUncertainty" : { },
       "set_InGnuPlotOutputImage" : {
         "gnutest0" : {
           "par_InGnuPlotOutputImage_mode" : 0,
@@ -268,15 +273,14 @@
       "set_InGraphTopologyScheme" : {
         "complete" : { }
       },
+      "set_InGroupBasedDeffuantUncertainty" : { },
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
-      "set_InIndividualAttributeBasedUncertaintyGroupAttribute" : { },
-      "set_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute" : { },
+      "set_InInformation" : { },
       "set_InInverse" : { },
+      "set_InIRPactVersionPlaceholder" : { },
       "set_InMassPoint" : { },
       "set_InName" : { },
-      "set_InNameBasedUncertaintyGroupAttribute" : { },
-      "set_InNameBasedUncertaintyWithConvergenceGroupAttribute" : { },
       "set_InNameSplitAffinityEntry" : { },
       "set_InNameSplitConsumerAgentGroupAttribute" : { },
       "set_InNameSplitProductGroupAttribute" : { },
@@ -312,8 +316,15 @@
         "BUM" : { },
         "TRA" : { }
       },
-      "set_InPVactUncertaintyGroupAttribute" : {
-        "PVact_Uncert" : { }
+      "set_InPVactGlobalDeffuantUncertainty" : { },
+      "set_InPVactGroupBasedDeffuantUncertainty" : {
+        "UNCERT" : {
+          "par_InPVactGroupBasedDeffuantUncertainty_extremistParameter" : -1.0,
+          "par_InPVactGroupBasedDeffuantUncertainty_extremistUncertainty" : 0.35,
+          "par_InPVactGroupBasedDeffuantUncertainty_moderateUncertainty" : 1.4,
+          "par_InPVactGroupBasedDeffuantUncertainty_lowerBoundInclusive" : 0,
+          "par_InPVactGroupBasedDeffuantUncertainty_upperBoundInclusive" : 0
+        }
       },
       "set_InPVFile" : {
         "Barwertrechner" : {
@@ -330,7 +341,12 @@
           "par_InRAProcessModel_interestedPoints" : 2,
           "par_InRAProcessModel_awarePoints" : 1,
           "par_InRAProcessModel_unknownPoints" : 0,
-          "par_InRAProcessModel_logisticFactor" : 1.0
+          "par_InRAProcessModel_logisticFactor" : 0.125,
+          "par_InRAProcessModel_speedOfConvergence" : 0.0,
+          "par_InRAProcessModel_attitudeGab" : 1.75,
+          "par_InRAProcessModel_chanceNeutral" : 0.5,
+          "par_InRAProcessModel_chanceConvergence" : 0.25,
+          "par_InRAProcessModel_chanceDivergence" : 0.25
         }
       },
       "set_InRAProcessPlanMaxDistanceFilterScheme" : {
@@ -372,6 +388,11 @@
           "par_InROutputImage_linewidth" : 1.0
         }
       },
+      "set_InScenarioVersion" : {
+        "v0_3_0" : {
+          "par_InScenarioVersion_placeholder" : 0
+        }
+      },
       "set_InSpace2D" : {
         "Space2D" : {
           "par_InSpace2D_useManhatten" : 0,
@@ -394,11 +415,13 @@
           "par_InSpatialTableFile_placeholderInSpatialFile" : 0.0
         }
       },
+      "set_InTestData" : { },
       "set_InTimeModel" : {
         "DiscreteUnitStep" : { }
       },
-      "set_InUncertaintyGroupAttribute" : {
-        "PVact_Uncert" : { }
+      "set_InTruncatedNormalDistribution" : { },
+      "set_InUncertainty" : {
+        "UNCERT" : { }
       },
       "set_InUnitStepDiscreteTimeModel" : {
         "DiscreteUnitStep" : {
@@ -416,11 +439,6 @@
         "constant0" : { }
       },
       "set_InUnlinkedGraphTopology" : { },
-      "set_InVersion" : {
-        "v0_2_3" : {
-          "par_InVersion_placeholderVersion" : 0
-        }
-      },
       "set_IWattsStrogatzModel" : {
         "WSM1" : {
           "par_IWattsStrogatzModel_wsmK" : 4,
@@ -451,6 +469,7 @@
       "set_optsteps" : { },
       "set_optstore" : { },
       "set_OutConsumerAgentGroup" : { },
+      "set_OutInformation" : { },
       "set_pss" : {
         "load_E1" : { },
         "load_E2" : { },
@@ -650,18 +669,10 @@
       "par_link_InGeneralConsumerAgentGroup_InSpatialDistribution_spatialDistribution" : { },
       "par_link_InGeneralConsumerAgentGroupAttribute_InAttributeName_attrName" : { },
       "par_link_InGeneralConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
-      "par_link_InIndividualAttributeBasedUncertaintyGroupAttribute_InConsumerAgentGroupAttribute_cagAttrs" : { },
-      "par_link_InIndividualAttributeBasedUncertaintyGroupAttribute_InUnivariateDoubleDistribution_uncertDist" : { },
-      "par_link_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute_InConsumerAgentGroupAttribute_cagAttrs" : { },
-      "par_link_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute_InUnivariateDoubleDistribution_convergenceDist" : { },
-      "par_link_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute_InUnivariateDoubleDistribution_uncertDist" : { },
-      "par_link_InNameBasedUncertaintyGroupAttribute_InAttributeName_names" : { },
-      "par_link_InNameBasedUncertaintyGroupAttribute_InConsumerAgentGroup_cags" : { },
-      "par_link_InNameBasedUncertaintyGroupAttribute_InUnivariateDoubleDistribution_uncertDist" : { },
-      "par_link_InNameBasedUncertaintyWithConvergenceGroupAttribute_InAttributeName_names" : { },
-      "par_link_InNameBasedUncertaintyWithConvergenceGroupAttribute_InConsumerAgentGroup_cags" : { },
-      "par_link_InNameBasedUncertaintyWithConvergenceGroupAttribute_InUnivariateDoubleDistribution_convergenceDist" : { },
-      "par_link_InNameBasedUncertaintyWithConvergenceGroupAttribute_InUnivariateDoubleDistribution_uncertDist" : { },
+      "par_link_InGlobalDeffuantUncertainty_InAttributeName_attributeNames" : { },
+      "par_link_InGlobalDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
+      "par_link_InGroupBasedDeffuantUncertainty_InAttributeName_attributeNames" : { },
+      "par_link_InGroupBasedDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
       "par_link_InNameSplitConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
       "par_link_InNameSplitProductGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
       "par_link_InNumberOfTies_InConsumerAgentGroup_cags" : { },
@@ -788,25 +799,11 @@
           "constant0" : 1.0
         }
       },
-      "par_link_InPVactUncertaintyGroupAttribute_InConsumerAgentGroup_cags" : {
-        "PVact_Uncert" : {
+      "par_link_InPVactGlobalDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
+      "par_link_InPVactGroupBasedDeffuantUncertainty_InConsumerAgentGroup_cags" : {
+        "UNCERT" : {
           "BUM" : 1.0,
           "TRA" : 1.0
-        }
-      },
-      "par_link_InPVactUncertaintyGroupAttribute_InUnivariateDoubleDistribution_dependentJudgmentMakingUncert" : {
-        "PVact_Uncert" : {
-          "constant0" : 1.0
-        }
-      },
-      "par_link_InPVactUncertaintyGroupAttribute_InUnivariateDoubleDistribution_environmentalConcernUncert" : {
-        "PVact_Uncert" : {
-          "constant0" : 1.0
-        }
-      },
-      "par_link_InPVactUncertaintyGroupAttribute_InUnivariateDoubleDistribution_noveltySeekingUncert" : {
-        "PVact_Uncert" : {
-          "constant0" : 1.0
         }
       },
       "par_link_InRAProcessModel_InPVFile_pvFile" : {
@@ -819,9 +816,9 @@
           "RA_maxFilter" : 1.0
         }
       },
-      "par_link_InRAProcessModel_InUncertaintyGroupAttribute_uncertaintyGroupAttributes" : {
+      "par_link_InRAProcessModel_InUncertainty_uncertainties" : {
         "RA" : {
-          "PVact_Uncert" : 1.0
+          "UNCERT" : 1.0
         }
       },
       "par_S_DS_growth_absolute" : { },
@@ -834,6 +831,10 @@
         }
       }
     },
-    "postprocessing" : { }
+    "postprocessing" : {
+      "scalars" : { },
+      "sets" : { },
+      "tables" : { }
+    }
   } ]
 }

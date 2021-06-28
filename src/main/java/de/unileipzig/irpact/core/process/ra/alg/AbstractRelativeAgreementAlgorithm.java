@@ -13,6 +13,7 @@ public abstract class AbstractRelativeAgreementAlgorithm extends SimulationEntit
 
     protected boolean logDataFallback;
     protected boolean disableLogging = false;
+    protected int currentYearFallback;
 
     public AbstractRelativeAgreementAlgorithm() {
     }
@@ -33,6 +34,20 @@ public abstract class AbstractRelativeAgreementAlgorithm extends SimulationEntit
         return logData
                 ? Level.INFO
                 : Level.TRACE;
+    }
+
+    protected int currentYear() {
+        return environment == null
+                ? currentYearFallback
+                : environment.getTimeModel().getCurrentYear();
+    }
+
+    public void setCurrentYearFallback(int currentYearFallback) {
+        this.currentYearFallback = currentYearFallback;
+    }
+
+    public int getCurrentYearFallback() {
+        return currentYearFallback;
     }
 
     public void setDisableLogging(boolean disableLogging) {

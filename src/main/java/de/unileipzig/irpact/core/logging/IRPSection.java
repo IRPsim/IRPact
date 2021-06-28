@@ -119,6 +119,12 @@ public enum IRPSection implements LoggingSection {
         IRPtools.setUtilSection(TOOLS_UTIL);
     }
 
+    public static void removeSectionsFromTools() {
+        IRPtools.setToolsSection(null);
+        IRPtools.setDefinitionSection(null);
+        IRPtools.setUtilSection(null);
+    }
+
     //=========================
     // add
     //=========================

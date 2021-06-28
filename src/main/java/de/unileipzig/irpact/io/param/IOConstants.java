@@ -11,6 +11,10 @@ public final class IOConstants {
 
     public static final String ROOT = "ROOT";
 
+    public static final String INFORMATIONS = "informations";
+    public static final String INFORMATIONS_OUT = "informations_out";
+    public static final String ABOUT_IRPACT = "about_irpact";
+
     public static final String GENERAL_SETTINGS = "general_settings";
     public static final String LOGGING = "logging";
     public static final String LOGGING_GENERAL = "logging_general";
@@ -19,7 +23,6 @@ public final class IOConstants {
     public static final String LOGGING_SCRIPT = "logging_script";
     public static final String IMAGE = "image";
     public static final String SPECIAL_SETTINGS = "special_settings";
-    public static final String ABOUT = "about";
 
     public static final String FILES = "files";
 
@@ -61,7 +64,8 @@ public final class IOConstants {
     public static final String SUBMODULE = "submodule";
     public static final String SUBMODULE_GRAPHVIZDEMO = "submodule_graphvizdemo";
 
-    public static final String TEST = "test";
+    public static final String DEV = "dev";
+    public static final String TEST = "test_data";
 
 
     public static final String EDN_LABEL = "edn_label";

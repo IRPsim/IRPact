@@ -33,6 +33,16 @@ public final class ParamUtil {
     private ParamUtil() {
     }
 
+    public static String getClassNameWithoutClassSuffix(Class<?> c) {
+        String name = c.getSimpleName();
+        int dot = name.lastIndexOf('.');
+        if(dot == -1) {
+            return name;
+        } else {
+            return name.substring(0, dot);
+        }
+    }
+
     public static Object[] varargs(Object singleton) {
         return new Object[]{singleton};
     }

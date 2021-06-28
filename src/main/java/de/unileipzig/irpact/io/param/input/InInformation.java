@@ -7,15 +7,15 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.DEV;
-import static de.unileipzig.irpact.io.param.IOConstants.TEST;
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
-public class InTestData implements InIRPactEntity {
+public class InInformation implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -28,20 +28,16 @@ public class InTestData implements InIRPactEntity {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), DEV, TEST, thisName());
-        addEntry(res, thisClass(), "testValue1");
-        addEntry(res, thisClass(), "testValue2");
+        putClassPath(res, thisClass(), INFORMATIONS, thisName());
+        addEntry(res, thisClass(), "placeholder");
     }
 
     public String _name;
 
     @FieldDefinition
-    public double testValue1;
+    public double placeholder;
 
-    @FieldDefinition
-    public double testValue2;
-
-    public InTestData() {
+    public InInformation() {
     }
 
     @Override
@@ -53,32 +49,15 @@ public class InTestData implements InIRPactEntity {
         this._name = name;
     }
 
-    public double getTestValue1() {
-        return testValue1;
-    }
-
-    public void setTestValue1(double testValue1) {
-        this.testValue1 = testValue1;
-    }
-
-    public double getTestValue2() {
-        return testValue2;
-    }
-
-    public void setTestValue2(double testValue2) {
-        this.testValue2 = testValue2;
-    }
-
     @Override
-    public InTestData copy(CopyCache cache) {
+    public InInformation copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InTestData newCopy(CopyCache cache) {
-        InTestData copy = new InTestData();
+    public InInformation newCopy(CopyCache cache) {
+        InInformation copy = new InInformation();
         copy._name = _name;
-        copy.testValue1 = testValue1;
-        copy.testValue2 = testValue2;
+        copy.placeholder = placeholder;
         return copy;
     }
 }

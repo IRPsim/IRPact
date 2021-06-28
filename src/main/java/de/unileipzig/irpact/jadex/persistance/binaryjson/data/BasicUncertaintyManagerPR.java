@@ -36,7 +36,7 @@ public class BasicUncertaintyManagerPR extends BinaryPRBase<BasicUncertaintyMana
     @Override
     protected BinaryJsonData doInitalizePersist(BasicUncertaintyManager object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
-        data.putText(object.getName());
+        data.putNullableText(object.getName());
 
         manager.prepareAll(object.getSuppliers());
 
@@ -55,7 +55,7 @@ public class BasicUncertaintyManagerPR extends BinaryPRBase<BasicUncertaintyMana
     @Override
     protected BasicUncertaintyManager doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         BasicUncertaintyManager object = new BasicUncertaintyManager();
-        object.setName(data.getText());
+        object.setName(data.getTextOrNull());
 
         return object;
     }

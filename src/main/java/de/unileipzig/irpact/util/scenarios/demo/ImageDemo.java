@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.util.scenarios;
+package de.unileipzig.irpact.util.scenarios.demo;
 
 import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
@@ -19,7 +19,6 @@ import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.input.image.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.input.image.InGnuPlotOutputImage;
 import de.unileipzig.irpact.io.param.input.image.InOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InROutputImage;
 import de.unileipzig.irpact.io.param.input.network.InCompleteGraphTopology;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
@@ -31,7 +30,7 @@ import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuZipSupplier;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
-import de.unileipzig.irptools.defstructure.DefaultScenarioFactory;
+import de.unileipzig.irpact.util.scenarios.AbstractScenario;
 import de.unileipzig.irptools.graphviz.def.GraphvizColor;
 import de.unileipzig.irptools.graphviz.def.GraphvizGlobal;
 import de.unileipzig.irptools.graphviz.def.GraphvizLayoutAlgorithm;
@@ -47,14 +46,19 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Daniel Abitz
  */
-public class DefaultScenario extends AbstractScenario implements DefaultScenarioFactory {
+public class ImageDemo extends AbstractScenario {
 
-    public DefaultScenario(String name, String creator, String description) {
+    public ImageDemo(String name, String creator, String description) {
         super(name, creator, description);
     }
 
-    public DefaultScenario(String name, String creator, String description, Path logPath, Path outputDir, Path downloadDir) {
+    public ImageDemo(String name, String creator, String description, Path logPath, Path outputDir, Path downloadDir) {
         super(name, creator, description, logPath, outputDir, downloadDir);
+    }
+
+    @Override
+    public String getName() {
+        return "Demo1";
     }
 
     @Override
@@ -115,15 +119,10 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
         //images
         List<InOutputImage> images = new ArrayList<>();
         Collections.addAll(images, InGenericOutputImage.DEFAULTS);
-        images.add(new InGnuPlotOutputImage("gnutest0", InOutputImage.MODE_NOTHING));
-        images.add(new InGnuPlotOutputImage("gnutest1", InOutputImage.MODE_ADOPTION_LINECHART));
-        images.add(new InGnuPlotOutputImage("gnutest2", InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART));
-        images.add(new InGnuPlotOutputImage("gnutest3", InOutputImage.MODE_ADOPTION_PHASE_BARCHART));
-        images.add(new InROutputImage("rtest0", InOutputImage.MODE_NOTHING));
-        images.add(new InROutputImage("rtest1", InOutputImage.MODE_ADOPTION_LINECHART));
-        images.add(new InROutputImage("rtest2", InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART));
-        images.add(new InROutputImage("rtest3", InOutputImage.MODE_ADOPTION_PHASE_BARCHART));
         images.forEach(InOutputImage::disableAll);
+        images.add(new InGnuPlotOutputImage("Bild1", InOutputImage.MODE_ADOPTION_LINECHART, true));
+        images.add(new InGnuPlotOutputImage("Bild2", InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART, true));
+        images.add(new InGnuPlotOutputImage("Bild3", InOutputImage.MODE_ADOPTION_PHASE_BARCHART, true));
 
         //time
         InUnitStepDiscreteTimeModel timeModel = new InUnitStepDiscreteTimeModel("DiscreteUnitStep", 1, ChronoUnit.WEEKS);
@@ -186,10 +185,5 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
         root.setImages(images);
 
         return Collections.singletonList(root);
-    }
-
-    @Override
-    public InRoot createDefaultScenario() {
-        return createInRoots().get(0);
     }
 }

@@ -11,6 +11,14 @@ public class BasicConsumerAgentDoubleAttribute
 
     protected double value;
 
+    public BasicConsumerAgentDoubleAttribute() {
+    }
+
+    public BasicConsumerAgentDoubleAttribute(String name, double value) {
+        setName(name);
+        setDoubleValue(value);
+    }
+
     @Override
     public BasicConsumerAgentDoubleAttribute copy() {
         BasicConsumerAgentDoubleAttribute copy = new BasicConsumerAgentDoubleAttribute();

@@ -1,11 +1,12 @@
 package de.unileipzig.irpact.core.process.ra.alg;
 
-import de.unileipzig.irpact.commons.attribute.AttributeUtil;
+import de.unileipzig.irpact.commons.checksum.ChecksumCalculator;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.InfoTag;
 import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
+import de.unileipzig.irpact.core.util.AttributeHelper;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.slf4j.event.Level;
 
@@ -17,6 +18,11 @@ public class BasicRelativeAgreementAlgorithm extends AbstractRelativeAgreementAl
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicRelativeAgreementAlgorithm.class);
 
     public BasicRelativeAgreementAlgorithm() {
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumCalculator.DEFAULT_NONNULL_CHECKSUM;
     }
 
     @Override
@@ -41,6 +47,7 @@ public class BasicRelativeAgreementAlgorithm extends AbstractRelativeAgreementAl
         //1 influences 2
         boolean influenced2 = apply(
                 logger, section, level,
+                currentYear(),
                 m2,
                 name1, o1, u1,
                 name2, o2, u2,
@@ -49,6 +56,7 @@ public class BasicRelativeAgreementAlgorithm extends AbstractRelativeAgreementAl
         //2 influences 1
         boolean influenced1 = apply(
                 logger, section, level,
+                currentYear(),
                 m1,
                 name2, o2, u2,
                 name1, o1, u1,
@@ -64,24 +72,27 @@ public class BasicRelativeAgreementAlgorithm extends AbstractRelativeAgreementAl
 
     public static boolean applyReverse(
             IRPLogger logger, IRPSection section, Level level,
+            int currentYear,
             double mj,
             String namei, double oi, double ui,
             String namej, double oj, double uj,
             ConsumerAgentAttribute ojAttr, Uncertainty ujAttr) {
-        return apply(logger, section, level, mj, namei, oi, ui, namej, oj, uj, ojAttr, ujAttr, true);
+        return apply(logger, section, level, currentYear, mj, namei, oi, ui, namej, oj, uj, ojAttr, ujAttr, true);
     }
 
     public static boolean apply(
             IRPLogger logger, IRPSection section, Level level,
+            int currentYear,
             double mj,
             String namei, double oi, double ui,
             String namej, double oj, double uj,
             ConsumerAgentAttribute ojAttr, Uncertainty ujAttr) {
-        return apply(logger, section, level, mj, namei, oi, ui, namej, oj, uj, ojAttr, ujAttr, false);
+        return apply(logger, section, level, currentYear, mj, namei, oi, ui, namej, oj, uj, ojAttr, ujAttr, false);
     }
 
     public static boolean apply(
             IRPLogger logger, IRPSection section, Level level,
+            int currentYear,
             double mj,
             String namei, double oi, double ui,
             String namej, double oj, double uj,
@@ -104,7 +115,7 @@ public class BasicRelativeAgreementAlgorithm extends AbstractRelativeAgreementAl
                     ? uj - tempUj
                     : uj + tempUj;
 
-            AttributeUtil.setDoubleValue(ojAttr, newOj);
+            AttributeHelper.setDoubleValue(currentYear, ojAttr, newOj);
             ujAttr.updateUncertainty(ojAttr, newUj);
 
             logRelativeAgreementSuccess(logger, section, level, reverse, namei, namej, ojAttr.getName(), oi, ui, oj, uj, mj, hij, ra, newOj, newUj);

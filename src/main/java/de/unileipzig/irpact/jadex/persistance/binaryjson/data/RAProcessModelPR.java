@@ -78,5 +78,6 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
         object.setRnd(manager.ensureGet(data.getLong()));
         object.setUncertaintyManager(manager.ensureGet(data.getLong()));
         object.setRelativeAgreementAlgorithm(manager.ensureGet(data.getLong()));
+        object.setNodeFilterScheme(manager.ensureGet(data.getLong()));
     }
 }

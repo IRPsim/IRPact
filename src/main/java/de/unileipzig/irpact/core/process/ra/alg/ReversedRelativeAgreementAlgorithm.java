@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.process.ra.alg;
 
+import de.unileipzig.irpact.commons.checksum.ChecksumCalculator;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
@@ -15,6 +16,11 @@ public class ReversedRelativeAgreementAlgorithm extends AbstractRelativeAgreemen
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ReversedRelativeAgreementAlgorithm.class);
 
     public ReversedRelativeAgreementAlgorithm() {
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumCalculator.DEFAULT_NONNULL_CHECKSUM;
     }
 
     @Override
@@ -39,6 +45,7 @@ public class ReversedRelativeAgreementAlgorithm extends AbstractRelativeAgreemen
         //1 influences 2
         boolean influenced2 = BasicRelativeAgreementAlgorithm.applyReverse(
                 logger, section, level,
+                currentYear(),
                 m2,
                 name1, o1, u1,
                 name2, o2, u2,
@@ -47,6 +54,7 @@ public class ReversedRelativeAgreementAlgorithm extends AbstractRelativeAgreemen
         //2 influences 1
         boolean influenced1 = BasicRelativeAgreementAlgorithm.applyReverse(
                 logger, section, level,
+                currentYear(),
                 m1,
                 name2, o2, u2,
                 name1, o1, u1,

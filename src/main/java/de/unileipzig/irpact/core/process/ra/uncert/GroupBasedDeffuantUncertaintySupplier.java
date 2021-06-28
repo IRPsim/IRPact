@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.process.ra.uncert;
 
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.develop.AddToPersist;
@@ -68,5 +69,16 @@ public class GroupBasedDeffuantUncertaintySupplier extends NameableBase implemen
         uncertainty.setName(getName() + "_x");
         uncertainty.setData(data);
         uncertainty.setSpeedOfConvergence(speedOfConvergence);
+    }
+
+    @Override
+    public int getChecksum() {
+        return Checksums.SMART.getChecksum(
+                getName(),
+                getSpeedOfConvergence(),
+                getData(),
+                getUncertainty(),
+                Checksums.SMART.getNamedChecksum(getConsumerAgentGroup())
+        );
     }
 }

@@ -44,7 +44,7 @@ public class GlobalDeffuantUncertaintyDataPR extends BinaryPRBase<GlobalDeffuant
         data.putBoolean(object.isUpperBoundInclusive());
 
         manager.prepare(object.getEnvironment());
-        manager.prepareAll(object.getRanges().values());
+        manager.nullablePrepareAll(object.getRanges().values());
 
         return data;
     }
@@ -52,7 +52,7 @@ public class GlobalDeffuantUncertaintyDataPR extends BinaryPRBase<GlobalDeffuant
     @Override
     protected void doSetupPersist(GlobalDeffuantUncertaintyData object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getEnvironment()));
-        data.putIdMapWithStringKey(object.getRanges(), manager.ensureGetUIDFunction());
+        data.putNullableIdMapWithStringKey(object.getRanges(), manager.ensureGetUIDFunction());
     }
 
     //=========================
@@ -75,6 +75,6 @@ public class GlobalDeffuantUncertaintyDataPR extends BinaryPRBase<GlobalDeffuant
     @Override
     protected void doSetupRestore(BinaryJsonData data, GlobalDeffuantUncertaintyData object, RestoreManager manager) throws RestoreException {
         object.setEnvironment(manager.ensureGet(data.getLong()));
-        data.getIdMapWithStringKey(manager.ensureGetFunction(), object.getRanges());
+        data.getNullableIdMapWithStringKey(manager.ensureGetFunction(), object.getRanges());
     }
 }

@@ -1,8 +1,6 @@
 package de.unileipzig.irpact.core.process.ra;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
-import de.unileipzig.irpact.commons.attribute.Attribute;
-import de.unileipzig.irpact.commons.attribute.AttributeUtil;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.MathUtil;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
@@ -11,7 +9,6 @@ import de.unileipzig.irpact.core.agent.Acting;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttributeUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPLoggingMessageCollection;
 import de.unileipzig.irpact.core.logging.IRPSection;
@@ -105,6 +102,8 @@ public class RAProcessPlan implements ProcessPlan {
 
     @Todo("haesslich")
     public void init() {
+        if(model == null) System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        if(model.getNodeFilterScheme() == null) System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         networkFilter = model.getNodeFilterScheme()
                 .createFilter(this);
     }
@@ -554,7 +553,6 @@ public class RAProcessPlan implements ProcessPlan {
                 .setAutoDispose(true);
         alm.append("{} [{}] calculate U", InfoTag.DECISION_MAKING, agent.getName());
 
-
         double a = modelData().a();
         double b = modelData().b();
         double c = modelData().c();
@@ -565,9 +563,8 @@ public class RAProcessPlan implements ProcessPlan {
         if(a != 0.0) {
             double financial = getFinancialComponent();
             double financialThreshold = getFinancialThreshold(agent, product);
-            boolean noFinancial = financial < financialThreshold;
             //check D3 reached
-            if(noFinancial) {
+            if(financial < financialThreshold) {
                 alm.append("financial component < financial threshold ({} < {}) = {}", financial, financialThreshold, true);
                 logCalculateDecisionMaking(alm);
 
@@ -650,11 +647,6 @@ public class RAProcessPlan implements ProcessPlan {
         }
     }
 
-    protected static double getDouble(ConsumerAgent agent, String attrName) {
-        Attribute attr = agent.findAttribute(attrName);
-        return AttributeUtil.getDoubleValue(attr, attrName);
-    }
-
     protected RAModelData modelData() {
         return model.getModelData();
     }
@@ -712,11 +704,8 @@ public class RAProcessPlan implements ProcessPlan {
         return comp;
     }
 
-    protected static double getFinancialThresholdAgent(ConsumerAgent agent) {
-//        double pp = getPurchasePower(agent);
-//        double ns = getNoveltySeeking(agent);
-//        return pp;
-        return getPurchasePower(agent);
+    protected double getFinancialThresholdAgent(ConsumerAgent agent) {
+        return getModel().getFinancialThreshold(agent);
     }
 
     protected double getAverageFinancialThresholdAgent() {
@@ -743,86 +732,74 @@ public class RAProcessPlan implements ProcessPlan {
         return modelData().avgNPV(environment.getAgents().streamConsumerAgents(), year);
     }
 
-    protected static double getFinancialThreshold(ConsumerAgent agent, Product product) {
-        return ConsumerAgentAttributeUtil.getRelatedDoubleValue(agent, product, RAConstants.FINANCIAL_THRESHOLD);
+    protected double getFinancialThreshold(ConsumerAgent agent, Product product) {
+        return getModel().getFinancialThreshold(agent, product);
     }
 
-    protected static double getAdoptionThreshold(ConsumerAgent agent, Product product) {
-        return ConsumerAgentAttributeUtil.getRelatedDoubleValue(agent, product, RAConstants.ADOPTION_THRESHOLD);
+    protected double getAdoptionThreshold(ConsumerAgent agent, Product product) {
+        return getModel().getAdoptionThreshold(agent, product);
     }
 
-    protected static double getInitialProductAwareness(ConsumerAgent agent, Product product) {
-        return ConsumerAgentAttributeUtil.getRelatedDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_AWARENESS);
+    protected double getInitialProductAwareness(ConsumerAgent agent, Product product) {
+        return getModel().getInitialProductAwareness(agent, product);
     }
 
-    protected static double getInitialProductInterest(ConsumerAgent agent, Product product) {
-        return ConsumerAgentAttributeUtil.getRelatedDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_INTEREST);
+    protected double getInitialProductInterest(ConsumerAgent agent, Product product) {
+        return getModel().getInitialProductInterest(agent, product);
     }
 
-    protected static double getInitialAdopter(ConsumerAgent agent, Product product) {
-        return ConsumerAgentAttributeUtil.getRelatedDoubleValue(agent, product, RAConstants.INITIAL_ADOPTER);
+    protected double getInitialAdopter(ConsumerAgent agent, Product product) {
+        return getModel().getInitialAdopter(agent, product);
     }
 
-    protected static double getCommunicationFrequencySN(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.COMMUNICATION_FREQUENCY_SN);
-        return AttributeUtil.getDoubleValue(attr, RAConstants.COMMUNICATION_FREQUENCY_SN);
+    protected double getCommunicationFrequencySN(ConsumerAgent agent) {
+        return getModel().getCommunicationFrequencySN(agent);
     }
 
-    protected static double getRewiringRate(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.REWIRING_RATE);
-        return AttributeUtil.getDoubleValue(attr, RAConstants.REWIRING_RATE);
+    protected double getRewiringRate(ConsumerAgent agent) {
+        return getModel().getRewiringRate(agent);
     }
 
-    protected static int getId(ConsumerAgent agent) {
-        Attribute attr = agent.findAttribute(RAConstants.ID);
-        return AttributeUtil.getIntValue(attr, RAConstants.ID);
+    protected long getId(ConsumerAgent agent) {
+        return getModel().getId(agent);
     }
 
-    protected static double getPurchasePower(ConsumerAgent agent) {
-        Attribute attr = agent.findAttribute(RAConstants.PURCHASE_POWER);
-        return AttributeUtil.getDoubleValue(attr, RAConstants.PURCHASE_POWER);
+    protected double getPurchasePower(ConsumerAgent agent) {
+        return getModel().getPurchasePower(agent);
     }
 
-    protected static double getNoveltySeeking(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.NOVELTY_SEEKING);
-        return AttributeUtil.getDoubleValue(attr, RAConstants.NOVELTY_SEEKING);
+    protected double getNoveltySeeking(ConsumerAgent agent) {
+        return getModel().getNoveltySeeking(agent);
     }
 
-    protected static double getDependentJudgmentMaking(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.DEPENDENT_JUDGMENT_MAKING);
-        return AttributeUtil.getDoubleValue(attr, RAConstants.DEPENDENT_JUDGMENT_MAKING);
+    protected double getDependentJudgmentMaking(ConsumerAgent agent) {
+        return getModel().getDependentJudgmentMaking(agent);
     }
 
-    protected static double getEnvironmentalConcern(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.ENVIRONMENTAL_CONCERN);
-        return AttributeUtil.getDoubleValue(attr, RAConstants.ENVIRONMENTAL_CONCERN);
+    protected double getEnvironmentalConcern(ConsumerAgent agent) {
+        return getModel().getEnvironmentalConcern(agent);
     }
 
-    protected static boolean isShareOf1Or2FamilyHouse(ConsumerAgent agent) {
-        Attribute attr = agent.findAttribute(RAConstants.SHARE_1_2_HOUSE);
-        return AttributeUtil.getBooleanValue(attr, RAConstants.SHARE_1_2_HOUSE);
+    protected boolean isShareOf1Or2FamilyHouse(ConsumerAgent agent) {
+        return getModel().isShareOf1Or2FamilyHouse(agent);
     }
 
     @SuppressWarnings("SameParameterValue")
-    protected static void setShareOf1Or2FamilyHouse(ConsumerAgent agent, boolean value) {
-        Attribute attr = agent.findAttribute(RAConstants.SHARE_1_2_HOUSE);
-        AttributeUtil.setBoolean(attr, value, RAConstants.SHARE_1_2_HOUSE);
+    protected void setShareOf1Or2FamilyHouse(ConsumerAgent agent, boolean value) {
+        getModel().setShareOf1Or2FamilyHouse(agent, value);
     }
 
-    protected static boolean isHouseOwner(ConsumerAgent agent) {
-        Attribute attr = agent.findAttribute(RAConstants.HOUSE_OWNER);
-        return AttributeUtil.getBooleanValue(attr, RAConstants.HOUSE_OWNER);
+    protected boolean isHouseOwner(ConsumerAgent agent) {
+        return getModel().isHouseOwner(agent);
     }
 
     @SuppressWarnings("SameParameterValue")
-    protected static void setHouseOwner(ConsumerAgent agent, boolean value) {
-        Attribute attr = agent.findAttribute(RAConstants.HOUSE_OWNER);
-        AttributeUtil.setBoolean(attr, value, RAConstants.HOUSE_OWNER);
+    protected void setHouseOwner(ConsumerAgent agent, boolean value) {
+        getModel().setHouseOwner(agent, value);
     }
 
-    protected static double getConstructionRate(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.CONSTRUCTION_RATE);
-        return AttributeUtil.getDoubleValue(attr, RAConstants.CONSTRUCTION_RATE);
+    protected double getConstructionRate(ConsumerAgent agent) {
+        return getModel().getConstructionRate(agent);
     }
 
     public boolean isUnderConstruction() {
@@ -833,7 +810,7 @@ public class RAProcessPlan implements ProcessPlan {
         this.underConstruction = value;
     }
 
-    protected static void applyUnderConstruction(ConsumerAgent agent) {
+    protected void applyUnderConstruction(ConsumerAgent agent) {
         boolean isShare = isShareOf1Or2FamilyHouse(agent);
         boolean isOwner = isHouseOwner(agent);
         setShareOf1Or2FamilyHouse(agent, true);
@@ -847,9 +824,8 @@ public class RAProcessPlan implements ProcessPlan {
         }
     }
 
-    protected static double getRenovationRate(ConsumerAgent agent) {
-        ConsumerAgentAttribute attr = agent.getAttribute(RAConstants.RENOVATION_RATE);
-        return AttributeUtil.getDoubleValue(attr, RAConstants.RENOVATION_RATE);
+    protected double getRenovationRate(ConsumerAgent agent) {
+        return getModel().getRenovationRate(agent);
     }
 
     public boolean isUnderRenovation() {

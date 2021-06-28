@@ -39,6 +39,8 @@ public class AttitudeGapRelativeAgreementAlgorithmPR extends BinaryPRBase<Attitu
         data.putText(object.getName());
         data.putDouble(object.getAttitudeGap());
         data.putBoolean(object.isLogDataFallback());
+        data.putBoolean(object.loggingDisabled());
+        data.putInt(object.getCurrentYearFallback());
         data.putDouble(object.getWeight(AttitudeGapRelativeAgreementAlgorithm.Mode.NEUTRAL));
         data.putDouble(object.getWeight(AttitudeGapRelativeAgreementAlgorithm.Mode.CONVERGENCE));
         data.putDouble(object.getWeight(AttitudeGapRelativeAgreementAlgorithm.Mode.DIVERGENCE));
@@ -65,6 +67,8 @@ public class AttitudeGapRelativeAgreementAlgorithmPR extends BinaryPRBase<Attitu
         object.setName(data.getText());
         object.setAttitudeGap(data.getDouble());
         object.setLogDataFallback(data.getBoolean());
+        object.setDisableLogging(data.getBoolean());
+        object.setCurrentYearFallback(data.getInt());
         object.setWeightes(data.getDouble(), data.getDouble(), data.getDouble());
 
         return object;

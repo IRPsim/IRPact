@@ -1,11 +1,10 @@
 package de.unileipzig.irpact.util.scenarios.custom;
 
-import de.unileipzig.irpact.commons.util.IRPArgs;
 import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.InVersion;
+import de.unileipzig.irpact.io.param.input.InScenarioVersion;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InNameSplitAffinityEntry;
@@ -37,7 +36,6 @@ import de.unileipzig.irptools.graphviz.def.GraphvizColor;
 import de.unileipzig.irptools.graphviz.def.GraphvizGlobal;
 import de.unileipzig.irptools.graphviz.def.GraphvizLayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.def.GraphvizOutputFormat;
-import de.unileipzig.irptools.io.perennial.PerennialData;
 
 import java.awt.*;
 import java.nio.file.Path;
@@ -174,7 +172,7 @@ public class Demo1 extends AbstractScenario {
 
         //=====
         InRoot root = new InRoot();
-        root.version = new InVersion[]{InVersion.currentVersion()};
+        root.version = new InScenarioVersion[]{InScenarioVersion.currentVersion()};
         root.general = general;
         root.setAffinities(affinities);
         root.consumerAgentGroups = new InConsumerAgentGroup[]{BUM, G, PRA};
@@ -208,10 +206,5 @@ public class Demo1 extends AbstractScenario {
         root.graphvizGlobal.scaleFactor = 0.0;
 
         return Collections.singletonList(root);
-    }
-
-    @Override
-    protected void run(IRPArgs args, PerennialData<InRoot> data) throws Throwable {
-
     }
 }

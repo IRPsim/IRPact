@@ -61,6 +61,19 @@ public final class IRPLogging {
         IRPSection.addAllTo(getFilter());
     }
 
+    public static void terminate() {
+        if(!initalized) {
+            return;
+        }
+        initalized = false;
+        if(hasFilter()) {
+            IRPSection.removeAllFrom(getFilter());
+            removeFilter();
+        }
+        IRPtools.setLoggingFilter(null);
+        IRPSection.removeSectionsFromTools();
+    }
+
     public static void disableTools() {
         IRPSection.removeAllToolsFrom(getFilter());
     }

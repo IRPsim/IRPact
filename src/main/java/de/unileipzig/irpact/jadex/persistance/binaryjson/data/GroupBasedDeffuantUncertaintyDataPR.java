@@ -44,7 +44,7 @@ public class GroupBasedDeffuantUncertaintyDataPR extends BinaryPRBase<GroupBased
         data.putBoolean(object.isUpperBoundInclusive());
 
         manager.prepare(object.getConsumerAgentGroup());
-        manager.prepareAll(object.getRanges().values());
+        manager.nullablePrepareAll(object.getRanges().values());
 
         return data;
     }
@@ -52,7 +52,7 @@ public class GroupBasedDeffuantUncertaintyDataPR extends BinaryPRBase<GroupBased
     @Override
     protected void doSetupPersist(GroupBasedDeffuantUncertaintyData object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getConsumerAgentGroup()));
-        data.putIdMapWithStringKey(object.getRanges(), manager.ensureGetUIDFunction());
+        data.putNullableIdMapWithStringKey(object.getRanges(), manager.ensureGetUIDFunction());
     }
 
     //=========================
@@ -75,6 +75,6 @@ public class GroupBasedDeffuantUncertaintyDataPR extends BinaryPRBase<GroupBased
     @Override
     protected void doSetupRestore(BinaryJsonData data, GroupBasedDeffuantUncertaintyData object, RestoreManager manager) throws RestoreException {
         object.setConsumerAgentGroup(manager.ensureGet(data.getLong()));
-        data.getIdMapWithStringKey(manager.ensureGetFunction(), object.getRanges());
+        data.getNullableIdMapWithStringKey(manager.ensureGetFunction(), object.getRanges());
     }
 }

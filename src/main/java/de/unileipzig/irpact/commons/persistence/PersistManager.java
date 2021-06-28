@@ -29,6 +29,14 @@ public interface PersistManager extends Nameable {
         }
     }
 
+    default void nullablePrepareAll(Collection<?> coll) throws PersistException {
+        for(Object object: coll) {
+            if(object != null) {
+                prepare(object);
+            }
+        }
+    }
+
     default void prepareAll(Map<?, ?> map) throws PersistException {
         for(Map.Entry<?, ?> entry: map.entrySet()) {
             prepare(entry.getKey());

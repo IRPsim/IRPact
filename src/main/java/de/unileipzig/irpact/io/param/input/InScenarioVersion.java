@@ -3,7 +3,10 @@ package de.unileipzig.irpact.io.param.input;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.experimental.eval.Constant;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.start.irpact.IRPact;
+import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -11,16 +14,17 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.unileipzig.irpact.io.param.IOConstants.*;
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.setHidden;
+import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 
 /**
- * Stores the current Version of IRPact.
+ * Stores the version of IRPact for which this scenario was created.
  *
  * @author Daniel Abitz
  */
 @Definition
-public class InVersion implements InIRPactEntity {
+public class InScenarioVersion implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -33,38 +37,42 @@ public class InVersion implements InIRPactEntity {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
+        putClassPath(res, thisClass(), INFORMATIONS, thisName());
         addEntry(res, thisClass());
-        addEntry(res, thisClass(), "placeholderVersion");
-        setHidden(res, thisClass());
+        addEntry(res, thisClass(), "placeholder");
+    }
+
+    public static String deriveSetName() {
+        return Constants.SET + ParamUtil.getClassNameWithoutClassSuffix(thisClass());
     }
 
     public String _name;
 
     @FieldDefinition
-    public int placeholderVersion;
+    public int placeholder;
 
-    public InVersion() {
+    public InScenarioVersion() {
     }
 
     @Override
-    public InVersion copy(CopyCache cache) {
+    public InScenarioVersion copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InVersion newCopy(CopyCache cache) {
-        InVersion copy = new InVersion();
+    public InScenarioVersion newCopy(CopyCache cache) {
+        InScenarioVersion copy = new InScenarioVersion();
         copy._name = _name;
         return copy;
     }
 
-    public static InVersion currentVersion() {
-        InVersion current = new InVersion();
+    public static InScenarioVersion currentVersion() {
+        InScenarioVersion current = new InScenarioVersion();
         current.setVersion(IRPact.VERSION_STRING);
         return current;
     }
 
-    public static InVersion[] currentVersionAsArray() {
-        return new InVersion[] {currentVersion()};
+    public static InScenarioVersion[] currentVersionAsArray() {
+        return new InScenarioVersion[] {currentVersion()};
     }
 
     @Override

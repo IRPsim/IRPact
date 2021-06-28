@@ -182,7 +182,7 @@ public class InExample implements DefaultScenarioFactory {
         root.graphvizGlobal.scaleFactor = 0.0;
 
         //=====
-        root.version = new InVersion[]{InVersion.currentVersion()};
+        root.version = new InScenarioVersion[]{InScenarioVersion.currentVersion()};
         root.general = general;
         root.setAffinities(new InAffinities("affs", new InComplexAffinityEntry[]{cag0_cag0, cag0_cag1, cag1_cag1, cag1_cag0}));
         root.consumerAgentGroups = new InConsumerAgentGroup[]{cag0, cag1};
@@ -320,7 +320,7 @@ public class InExample implements DefaultScenarioFactory {
         root.graphvizGlobal.scaleFactor = 0.0;
 
         //=====
-        root.version = new InVersion[]{InVersion.currentVersion()};
+        root.version = new InScenarioVersion[]{InScenarioVersion.currentVersion()};
         root.general = general;
         root.setAffinities(new InAffinities("affs", new InComplexAffinityEntry[]{cag0_cag0, cag0_cag1, cag1_cag1, cag1_cag0}));
         root.consumerAgentGroups = new InConsumerAgentGroup[]{cag0, cag1};
@@ -357,7 +357,7 @@ public class InExample implements DefaultScenarioFactory {
         return model;
     }
 
-    private static void initGV(de.unileipzig.irpact.io.param.input.InRoot root) {
+    public static void initGV(de.unileipzig.irpact.io.param.input.InRoot root) {
         GraphvizColor gc1 = GraphvizColor.RED;
         GraphvizColor gc2 = GraphvizColor.GREEN;
         GraphvizColor gc3 = new GraphvizColor("BLUE", Color.BLUE);
@@ -386,7 +386,7 @@ public class InExample implements DefaultScenarioFactory {
     }
 
     @Todo("default rausgenommen")
-    private static void initOptAct(InRoot root) {
+    public static void initOptAct(InRoot root) {
 //        SideFares SMS = new SideFares("SMS");
 //        SideFares NS = new SideFares("NS");
 //        SideFares PS = new SideFares("PS");

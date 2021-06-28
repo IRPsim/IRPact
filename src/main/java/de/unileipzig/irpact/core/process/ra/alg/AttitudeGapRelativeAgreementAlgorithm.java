@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.process.ra.alg;
 
+import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.data.weighted.NavigableMapWeightedMapping;
 import de.unileipzig.irpact.commons.util.data.weighted.WeightedMapping;
@@ -62,6 +63,19 @@ public class AttitudeGapRelativeAgreementAlgorithm extends AbstractRelativeAgree
     }
 
     @Override
+    public int getChecksum() {
+        return Checksums.SMART.getChecksum(
+                getName(),
+                getAttitudeGap(),
+                isLogDataFallback(),
+                getWeight(Mode.NEUTRAL),
+                getWeight(Mode.CONVERGENCE),
+                getWeight(Mode.DIVERGENCE),
+                getRandom()
+        );
+    }
+
+    @Override
     public boolean apply(
             String name1,
             ConsumerAgentAttribute opinion1,
@@ -112,6 +126,7 @@ public class AttitudeGapRelativeAgreementAlgorithm extends AbstractRelativeAgree
         //1 influences 2
         boolean influenced2 = BasicRelativeAgreementAlgorithm.apply(
                 logger, section, level,
+                currentYear(),
                 m2,
                 name1, o1, u1,
                 name2, o2, u2,
@@ -121,6 +136,7 @@ public class AttitudeGapRelativeAgreementAlgorithm extends AbstractRelativeAgree
         //2 influences 1
         boolean influenced1 = BasicRelativeAgreementAlgorithm.apply(
                 logger, section, level,
+                currentYear(),
                 m1,
                 name2, o2, u2,
                 name1, o1, u1,
