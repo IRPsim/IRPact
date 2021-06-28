@@ -143,6 +143,11 @@ public final class JsonSwaggerSuite implements SwaggerSuite {
     }
 
     @Override
+    public Collection<ScenarioMetaData> getMetaData() {
+        return metaDataCache.getMetaData();
+    }
+
+    @Override
     public void localeLoad() throws IOException {
         LOGGER.trace("load locale meta data: {}", metaDataPath);
         metaDataCache.parse(metaDataPath, metaDataCharset);
@@ -265,6 +270,8 @@ public final class JsonSwaggerSuite implements SwaggerSuite {
         commitOverwriteScenarios();
         commitDeleteScenarios();
         commitAddScenarios();
+
+        remoteLoadScenarioMetaData();
     }
     protected void tryCommit() throws CurlException, IOException, InterruptedException {
         if(autoCommit) {
@@ -296,8 +303,8 @@ public final class JsonSwaggerSuite implements SwaggerSuite {
     protected void commitDeleteScenarios() throws CurlException, IOException, InterruptedException {
         for(Integer id: deleteScenarios) {
             LOGGER.trace("delete id {}", id);
-            swagger.deleteScenario(id);
-            LOGGER.trace("deleted");
+            int result = swagger.deleteScenario(id);
+            LOGGER.trace("deleted: {}", result);
         }
 
         deleteScenarios.clear();
@@ -314,10 +321,7 @@ public final class JsonSwaggerSuite implements SwaggerSuite {
         for(Path scenarioPath: tempFiles.keySet()) {
             LOGGER.trace("upload scenario {}", scenarioPath);
             PutResult result = swagger.storeScenario(scenarioPath);
-            LOGGER.trace("uploaded, id = {}", result.getId());
-            if(!result.hasId()) {
-                LOGGER.error("{}", result.getRootAsObject());
-            }
+            LOGGER.trace("uploaded: {}", result.print());
         }
     }
 

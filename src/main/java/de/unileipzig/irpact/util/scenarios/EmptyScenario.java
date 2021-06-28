@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.util.scenarios;
 
+import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
 
 import java.nio.file.Path;
@@ -22,6 +23,8 @@ public class EmptyScenario extends AbstractScenario {
     @Override
     public List<InRoot> createInRoots() {
         InRoot root = new InRoot();
+        root.general = new InGeneral();
+        root.general.setFirstSimulationYear(DEFAULT_INITIAL_YEAR);
         return Collections.singletonList(root);
     }
 }

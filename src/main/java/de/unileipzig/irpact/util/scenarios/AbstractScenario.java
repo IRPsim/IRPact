@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.util.scenarios;
 
+import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
 import de.unileipzig.irpact.commons.util.IRPArgs;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -8,6 +9,7 @@ import de.unileipzig.irpact.start.Start3;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.perennial.PerennialData;
+import de.unileipzig.irptools.io.perennial.PerennialFile;
 import de.unileipzig.irptools.io.swagger.UploadableSwaggerData;
 import de.unileipzig.irptools.io.swagger.UploadableSwaggerFile;
 
@@ -21,6 +23,8 @@ import java.util.List;
  * @author Daniel Abitz
  */
 public abstract class AbstractScenario implements Scenario {
+
+    public static final int DEFAULT_INITIAL_YEAR = 2015;
 
     protected String name;
     protected String creator;
@@ -74,7 +78,7 @@ public abstract class AbstractScenario implements Scenario {
         IRPArgs args = new IRPArgs();
         updateArgs(args);
         List<InRoot> roots = createInRoots();
-        validateInitialYear(roots);
+        validate(roots);
         PerennialData<InRoot> data = new PerennialData<>();
         for(InRoot root: roots) {
             if(root == null) {
@@ -159,10 +163,11 @@ public abstract class AbstractScenario implements Scenario {
         return outputPath;
     }
 
-    protected void validateInitialYear(List<InRoot> inRoots) {
+    protected void validate(List<InRoot> inRoots) {
         for(InRoot inRoot: inRoots) {
+            //exiting first simulation year
             if(inRoot != null && !inRoot.general.hasFirstSimulationYear()) {
-                throw new IllegalArgumentException("missing initial year");
+                throw new IRPactIllegalArgumentException("missing initial year (name '{}')", getName());
             }
         }
     }
@@ -175,7 +180,7 @@ public abstract class AbstractScenario implements Scenario {
     @Override
     public void storeUploadableTo(Path target, Charset charset, boolean pretty) throws IOException {
         List<InRoot> roots = createInRoots();
-        validateInitialYear(roots);
+        validate(roots);
         UploadableSwaggerData<InRoot> data = new UploadableSwaggerData<>();
         data.setName(getName());
         data.setCreator(getCreator());
@@ -187,7 +192,28 @@ public abstract class AbstractScenario implements Scenario {
                 data.add(IRPact.MODELDEFINITION, root.general.getFirstSimulationYear(), root);
             }
         }
-        UploadableSwaggerFile file = data.serialize(IRPact.getInputConverter(null));
+        UploadableSwaggerFile file = data.serialize(IRPact.getInputConverter());
+        JsonUtil.writeJson(file.root(), target, charset, pretty ? JsonUtil.DEFAULT : JsonUtil.MINIMAL);
+    }
+
+    @Override
+    public void storeRunnableTo(Path target, boolean pretty) throws IOException {
+        storeRunnableTo(target, StandardCharsets.UTF_8, pretty);
+    }
+
+    @Override
+    public void storeRunnableTo(Path target, Charset charset, boolean pretty) throws IOException {
+        List<InRoot> roots = createInRoots();
+        validate(roots);
+        PerennialData<InRoot> data = new PerennialData<>();
+        for(InRoot root: roots) {
+            if(root == null) {
+                data.addNull();
+            } else {
+                data.add(root.general.getFirstSimulationYear(), root);
+            }
+        }
+        PerennialFile file = data.serialize(IRPact.getInputConverter());
         JsonUtil.writeJson(file.root(), target, charset, pretty ? JsonUtil.DEFAULT : JsonUtil.MINIMAL);
     }
 }

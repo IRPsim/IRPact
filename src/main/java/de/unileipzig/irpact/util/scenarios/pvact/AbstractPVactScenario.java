@@ -59,12 +59,20 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
     public void setPvDataName(String pvDataName) {
         this.pvDataName = pvDataName;
     }
+    public AbstractPVactScenario withPvDataName(String pvDataName) {
+        setPvDataName(pvDataName);
+        return this;
+    }
 
     public String getSpatialFileName() {
         return spatialDataName;
     }
     public void setSpatialDataName(String spatialDataName) {
         this.spatialDataName = spatialDataName;
+    }
+    public AbstractPVactScenario withSpatialDataName(String spatialDataName) {
+        setSpatialDataName(spatialDataName);
+        return this;
     }
 
     protected InPVFile pvFile;

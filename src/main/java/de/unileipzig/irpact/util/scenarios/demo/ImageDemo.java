@@ -57,11 +57,6 @@ public class ImageDemo extends AbstractScenario {
     }
 
     @Override
-    public String getName() {
-        return "Demo1";
-    }
-
-    @Override
     public List<InRoot> createInRoots() {
         //===
         InUnivariateDoubleDistribution constant0 = new InDiracUnivariateDistribution("dirac0", 0);

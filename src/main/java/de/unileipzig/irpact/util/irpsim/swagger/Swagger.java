@@ -8,10 +8,7 @@ import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.util.curl.Curl;
 import de.unileipzig.irpact.util.curl.CurlException;
-import de.unileipzig.irpact.util.irpsim.swagger.scenario.PutResult;
-import de.unileipzig.irpact.util.irpsim.swagger.scenario.ValidScenario;
-import de.unileipzig.irpact.util.irpsim.swagger.scenario.ScenarioData;
-import de.unileipzig.irpact.util.irpsim.swagger.scenario.ScenarioMetaData;
+import de.unileipzig.irpact.util.irpsim.swagger.scenario.*;
 import de.unileipzig.irpact.util.irpsim.swagger.simulation.SimulationState;
 import de.unileipzig.irpact.util.scenarios.Scenario;
 import de.unileipzig.irptools.io.swagger.UploadableSwaggerFile;
@@ -336,8 +333,8 @@ public final class Swagger {
         Curl curl = new Curl()
                 .silent()
                 .showError()
-                .target(buildGetScenarioUrl(id))
-                .GET()
+                .target(buildDeleteScenarioUrl(id))
+                .DELETE()
                 .acceptJson()
                 .user(getUser(), getPassword());
 

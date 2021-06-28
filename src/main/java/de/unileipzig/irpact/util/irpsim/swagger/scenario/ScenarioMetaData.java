@@ -5,8 +5,12 @@ import com.fasterxml.jackson.databind.node.JsonNodeCreator;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.util.irpsim.swagger.Base;
+import de.unileipzig.irpact.util.scenarios.AbstractScenario;
+import de.unileipzig.irpact.util.scenarios.Scenario;
 
-import java.util.Objects;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.Collector;
 
 /**
  * @author Daniel Abitz
@@ -101,5 +105,65 @@ public class ScenarioMetaData extends Base {
         return "ScenarioMetaData{" +
                 "id=" + getId() +
                 '}';
+    }
+
+    //=========================
+    //filter
+    //=========================
+
+    private static final ToIdArray INSTANCE = new ToIdArray();
+
+    public static Collector<ScenarioMetaData, ?, int[]> toIdArray() {
+        return INSTANCE;
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    protected static class ToIdArray implements Collector<ScenarioMetaData, List<ScenarioMetaData>, int[]> {
+
+        @Override
+        public Supplier<List<ScenarioMetaData>> supplier() {
+            return ArrayList::new;
+        }
+
+        @Override
+        public BiConsumer<List<ScenarioMetaData>, ScenarioMetaData> accumulator() {
+            return List::add;
+        }
+
+        @Override
+        public BinaryOperator<List<ScenarioMetaData>> combiner() {
+            return (left, right) -> {
+                left.addAll(right);
+                return left;
+            };
+        }
+
+        @Override
+        public Function<List<ScenarioMetaData>, int[]> finisher() {
+            return states -> states.stream()
+                    .mapToInt(ScenarioMetaData::getId)
+                    .toArray();
+        }
+
+        @Override
+        public Set<Characteristics> characteristics() {
+            return Collections.emptySet();
+        }
+    }
+
+    public static Predicate<ScenarioMetaData> filterCreator(Predicate<? super String> filter) {
+        return state -> state != null && filter.test(state.getCreator());
+    }
+
+    public static Predicate<ScenarioMetaData> filterCreator(String creator) {
+        return filterCreator(modelCreator -> Objects.equals(modelCreator, creator));
+    }
+
+    public static BiPredicate<AbstractScenario, ScenarioMetaData> filterNameCreatorDescription() {
+        return (scenario, metaData) -> Objects.equals(scenario.getName(), metaData.getName())
+                && Objects.equals(scenario.getCreator(), metaData.getCreator())
+                && Objects.equals(scenario.getDescription(), metaData.getDescription());
     }
 }

@@ -102,6 +102,10 @@ public class ScenarioMetaDataCollection implements Iterable<ScenarioMetaData> {
         JsonUtil.write(root, target, charset, JsonUtil.DEFAULT, mapper);
     }
 
+    public Collection<ScenarioMetaData> getMetaData() {
+        return cache.values();
+    }
+
     @Override
     public Iterator<ScenarioMetaData> iterator() {
         return cache.values().iterator();
