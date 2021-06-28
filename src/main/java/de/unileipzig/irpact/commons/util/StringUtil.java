@@ -20,6 +20,11 @@ public final class StringUtil {
     private StringUtil() {
     }
 
+    public static String firstLetterToUpperCase(String input) {
+        if(input == null || input.isEmpty()) return input;
+        return input.substring(0, 1).toUpperCase() + input.substring(1);
+    }
+
     public static String lineSeparator() {
         return LINE_SEPARATOR;
     }
@@ -131,8 +136,46 @@ public final class StringUtil {
         return Double.parseDouble(valueWithDot);
     }
 
+    public static int parseInt(String input) {
+        if(input == null) throw new NullPointerException();
+        if(input.contains(".")) {
+            return (int) Double.parseDouble(input);
+        } else {
+            return Integer.parseInt(input);
+        }
+    }
+
+    public static long parseLong(String input) {
+        if(input == null) throw new NullPointerException();
+        if(input.contains(".")) {
+            return (long) Double.parseDouble(input);
+        } else {
+            return Long.parseLong(input);
+        }
+    }
+
     public static String printDoubleWithComma(double value) {
         String str = Double.toString(value);
         return str.replace('.', ',');
+    }
+
+    public static String escapeQuote(String input, String escape) {
+        String escaped = escape + "\"";
+        return input.replace("\"", escaped);
+    }
+
+    public static String restoreQuote(String input, String escape) {
+        String escaped = escape + "\"";
+        return input.replace("\"", escaped);
+    }
+
+    public static String escapeNewLine(String input, String escape) {
+        String escaped = escape + "n";
+        return input.replace("\n", escaped);
+    }
+
+    public static String restoreNewLine(String input, String escape) {
+        String escaped = escape + "n";
+        return input.replace(escaped, "\n");
     }
 }

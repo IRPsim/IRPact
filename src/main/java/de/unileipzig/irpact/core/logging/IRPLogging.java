@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.logging;
 
 import de.unileipzig.irpact.commons.util.StringUtil;
+import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import de.unileipzig.irptools.util.log.LoggingFilter;
 import de.unileipzig.irptools.util.log.LoggingSection;
@@ -41,8 +42,44 @@ public final class IRPLogging {
     public static String lineSeparator = "\n"; //aenderbar
 
     private static IRPLogger resultLogger;
+    private static boolean initalized = false;
 
     private IRPLogging() {
+    }
+
+    public static void initalize() {
+        if(initalized) {
+            return;
+        }
+        initalized = true;
+        if(!hasFilter()) {
+            setFilter(new SectionLoggingFilter());
+        }
+        IRPtools.setLoggingFilter(getFilter());
+        writeToConsole();
+        IRPSection.addSectionsToTools();
+        IRPSection.addAllTo(getFilter());
+    }
+
+    public static void terminate() {
+        if(!initalized) {
+            return;
+        }
+        initalized = false;
+        if(hasFilter()) {
+            IRPSection.removeAllFrom(getFilter());
+            removeFilter();
+        }
+        IRPtools.setLoggingFilter(null);
+        IRPSection.removeSectionsFromTools();
+    }
+
+    public static void disableTools() {
+        IRPSection.removeAllToolsFrom(getFilter());
+    }
+
+    public static void enableTools() {
+        IRPSection.addAllToolsTo(getFilter());
     }
 
     public static LoggingController getController() {

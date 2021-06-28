@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.simulation.tasks;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -25,13 +25,13 @@ public class PredefinedPostAgentCreationTask extends PredefinedBinaryTask implem
     public static final int ADD_ONE_AGENT_TO_EVERY_GROUP = 2;
 
     public PredefinedPostAgentCreationTask() {
-        super(IRPactJson.SMILE.createObjectNode());
+        super(JsonUtil.SMILE.createObjectNode());
         setInfo(NO_INFO);
         setTask(NO_TASK);
     }
 
     public PredefinedPostAgentCreationTask(byte[] content) throws IOException {
-        super((ObjectNode) IRPactJson.fromBytesWithSmile(content));
+        super((ObjectNode) JsonUtil.fromBytesWithSmile(content));
     }
 
     @Override

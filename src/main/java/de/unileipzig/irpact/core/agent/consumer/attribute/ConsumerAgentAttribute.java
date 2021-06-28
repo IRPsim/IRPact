@@ -11,14 +11,22 @@ public interface ConsumerAgentAttribute extends GroupEntityAttribute<ConsumerAge
     ConsumerAgentAttribute copy();
 
     @Override
-    ConsumerAgentValueAttribute<?> asValueAttribute();
+    default ConsumerAgentValueAttribute<?> asValueAttribute() {
+        throw new UnsupportedOperationException();
+    }
 
     @Override
-    ConsumerAgentRelatedAttribute<?> asRelatedAttribute();
+    default ConsumerAgentRelatedAttribute<?> asRelatedAttribute() {
+        throw new UnsupportedOperationException();
+    }
 
     @Override
     default ConsumerAgentAnnualAttribute asAnnualAttribute() {
         throw new UnsupportedOperationException();
+    }
+
+    default boolean isProductRelatedAttribute() {
+        return false;
     }
 
     default ConsumerAgentProductRelatedAttribute asProductRelatedAttribute() {

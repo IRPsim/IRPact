@@ -8,4 +8,8 @@ public interface BoundedUnivariateDoubleDistribution extends UnivariateDoubleDis
     double getLowerBound();
 
     double getUpperBound();
+
+    boolean isLowerBoundInclusive();
+
+    boolean isUpperBoundInclusive();
 }

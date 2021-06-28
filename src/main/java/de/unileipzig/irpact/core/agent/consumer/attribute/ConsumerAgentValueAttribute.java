@@ -9,9 +9,4 @@ public interface ConsumerAgentValueAttribute<V> extends ConsumerAgentAttribute, 
 
     @Override
     ConsumerAgentValueAttribute<V> asValueAttribute();
-
-    @Override
-    default ConsumerAgentRelatedAttribute<?> asRelatedAttribute() {
-        throw new UnsupportedOperationException();
-    }
 }

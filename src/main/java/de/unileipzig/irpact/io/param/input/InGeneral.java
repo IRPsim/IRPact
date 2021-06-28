@@ -2,12 +2,14 @@ package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.commons.util.data.MutableInt;
 import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.SectionLoggingFilter;
 import de.unileipzig.irpact.core.simulation.BasicSettings;
 import de.unileipzig.irpact.core.simulation.Settings;
+import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irptools.Constants;
@@ -16,7 +18,6 @@ import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GamsParameter;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.Copyable;
-import de.unileipzig.irptools.util.DoubleTimeSeries;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -78,8 +79,14 @@ public class InGeneral implements Copyable {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public static final String RUN_OPTACT_DEMO_PARAM_NAME = "sca_InGeneral_runOptActDemo";
+    public static final String SCA_INGENERAL_RUNOPTACTDEMO = "sca_InGeneral_runOptActDemo";
+
+    public static final String SCA_INGENERAL_LOGLEVEL = "sca_InGeneral_logLevel";
+    public static final String SCA_INGENERAL_LOGALL = "sca_InGeneral_logAll";
+    public static final String SCA_INGENERAL_LOGALLIRPACT = "sca_InGeneral_logAllIRPact";
     public static final String SCA_INGENERAL_LOGALLTOOLS = "sca_InGeneral_logAllTools";
+    public static final String SCA_INGENERAL_LOGINITIALIZATION = "sca_InGeneral_logInitialization";
+    public static final String SCA_INGENERAL_LOGSIMULATION = "sca_InGeneral_logSimulation";
 
     @FieldDefinition
     public long seed;
@@ -88,7 +95,16 @@ public class InGeneral implements Copyable {
     public long timeout;
 
     //nur fuer interne tests
-    public int firstSimulationYear = -1;
+    private final MutableInt firstSimulationYear0 = MutableInt.empty();
+    public boolean hasFirstSimulationYear() {
+        return firstSimulationYear0.hasValue();
+    }
+    public int getFirstSimulationYear() {
+        return firstSimulationYear0.get();
+    }
+    public void setFirstSimulationYear(int year) {
+        firstSimulationYear0.set(year);
+    }
 
     @FieldDefinition
     public int lastSimulationYear;
@@ -226,7 +242,7 @@ public class InGeneral implements Copyable {
         InGeneral copy = new InGeneral();
         copy.seed = seed;
         copy.timeout = timeout;
-        copy.firstSimulationYear = firstSimulationYear;
+        copy.setFirstSimulationYear(getFirstSimulationYear());
         copy.lastSimulationYear = lastSimulationYear;
         //flags
         copy.runPVAct = runPVAct;

@@ -197,12 +197,32 @@ VisibleBinaryData_idVisible:
   gams_identifier: "ID"
   gams_description: "Spezielle ID der Daten, Verwendungszweck und Funktionsweise ist von den Daten selber abhängig."
 
-about:
+
+informations:
+  edn_label: "Informationen"
+  edn_description: "Informationen über IRPact und das Szenario"
+
+about_irpact:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.2.3"
-InAboutPlaceholder_placeholder:
+  edn_description: "IRPact v0.3.0"
+InIRPactVersionPlaceholder_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
+
+InScenarioVersion:
+  edn_label: "Über das Szenario"
+  edn_description: "Die Version von IRPact, für welche das Szenario erstellt wurde."
+InScenarioVersion_placeholder:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+InInformation:
+  edn_label: "Weitere Informationen"
+  edn_description: "Weitere Informationen über das Szenario."
+InInformation_placeholder:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
 
 
 
@@ -238,7 +258,7 @@ distributions:
 
 InBernoulliDistribution:
   edn_label: "Bernoulliverteilung"
-  edn_description: "Verteilungsfunktion, welche 0 oder 1 zurück gibt."
+  edn_description: "Auf Bernoulli basierende Verteilungsfunktion, welche mit Wahrscheinlichkeit p x oder (1-p) y zurück gibt."
 InBernoulliDistribution_p:
   gams_identifier: "p"
   gams_description: "Wahrscheinlichkeit p"
@@ -260,8 +280,8 @@ InBooleanDistribution_falseValue:
   gams_description: "Der Wert, welcher zurückgegeben wird, wenn die Funktion intern 0 (FALSCH) ergibt."
 
 InBoundedNormalDistribution:
-  edn_label: "beschränkte Normalverteilung"
-  edn_description: "Verteilungsfunktionauf Basis der Normalverteilung."
+  edn_label: "Beschränkte Normalverteilung"
+  edn_description: "Verteilungsfunktion, welche auf der Normalverteilung basiert und nach oben und unten beschränkt ist. "
 InBoundedNormalDistribution_standardDeviation:
   gams_identifier: "Standardabweichung"
   gams_description: "Die zu nutzende Standardabweichung."
@@ -272,7 +292,7 @@ InBoundedNormalDistribution_lowerBound:
   gams_identifier: "Untergrenze (inklusiv)"
   gams_description: "Legt die Untergrenze fest."
 InBoundedNormalDistribution_upperBound:
-  gams_identifier: "Obergrenze (exklusiv)"
+  gams_identifier: "Obergrenze (inklusiv)"
   gams_description: "Legt die Obergrenze fest."
 
 InBoundedUniformDoubleDistribution:
@@ -321,13 +341,51 @@ InMassPoint_mpWeight:
 
 InNormalDistribution:
   edn_label: "Normalverteilung"
-  edn_description: "Verteilungsfunktionauf Basis der Normalverteilung."
+  edn_description: "Verteilungsfunktion auf Basis der Normalverteilung."
 InNormalDistribution_standardDeviation:
   gams_identifier: "Standardabweichung"
   gams_description: "Die zu nutzende Standardabweichung."
 InNormalDistribution_mean:
   gams_identifier: "Mittelwert"
   gams_description: "Der zu nutzende Mittelwert."
+
+InSlowTruncatedNormalDistribution:
+  edn_label: "Bernoulliverteilung"
+  edn_description: "Auf Bernoulli basierende Verteilungsfunktion, welche mit Wahrscheinlichkeit p x oder (1-p) y zurück gibt."
+InSlowTruncatedNormalDistribution_standardDeviation:
+  gams_identifier: "Standardabweichung"
+  gams_description: "todo"
+InSlowTruncatedNormalDistribution_mean:
+  gams_identifier: "Mittelwert"
+  gams_description: "todo"
+InSlowTruncatedNormalDistribution_lowerBound:
+  gams_identifier: "Untere Grenze"
+  gams_description: "todo"
+InSlowTruncatedNormalDistribution_lowerBoundInclusive:
+  gams_identifier: "Untere Grenze inklusive?"
+  gams_description: "todo"
+InSlowTruncatedNormalDistribution_upperBound:
+  gams_identifier: "Obere Grenze"
+  gams_description: "todo"
+InSlowTruncatedNormalDistribution_upperBoundInclusive:
+  gams_identifier: "Obere Grenze inklusive?"
+  gams_description: "todo"
+
+InTruncatedNormalDistribution:
+  edn_label: "Abgeschnittene Normalverteilung"
+  edn_description: "Verteilungsfunktion auf Basis der abgeschnittenen Normalverteilung (truncated normal distribution)."
+InTruncatedNormalDistribution_standardDeviation:
+  gams_identifier: "Standardabweichung"
+  gams_description: "Die Standardabweichung der Normalverteilung."
+InTruncatedNormalDistribution_mean:
+  gams_identifier: "Mittelwert"
+  gams_description: "Der Mittelwert der Normalverteilung."
+InTruncatedNormalDistribution_lowerBound:
+  gams_identifier: "Untere Grenze"
+  gams_description: "Untere Grenze des Bereiches für die gültigen Werte."
+InTruncatedNormalDistribution_upperBound:
+  gams_identifier: "Obere Grenze"
+  gams_description: "Obere Grenze des Bereiches für die gültigen Werte."
 
 agents:
   edn_label: "Agenten"
@@ -736,15 +794,30 @@ InRAProcessModel_unknownPoints:
 InRAProcessModel_logisticFactor:
   gams_identifier: "Einflussfaktor der logistischen Funktion"
   gams_description: "Legt den Einflussfaktor 'a' der logistischen Funktion fest: logistic(a * -x)."
+InRAProcessModel_speedOfConvergence:
+  gams_identifier: "speed of convergence"
+  gams_description: "speed of convergence"
+InRAProcessModel_attitudeGab:
+  gams_identifier: "attritude gab"
+  gams_description: "attritude gab"
+InRAProcessModel_chanceNeutral:
+  gams_identifier: "Wahrscheinlichkeit Neutral"
+  gams_description: "Wahrscheinlichkeit für einen neutralen Ausgang."
+InRAProcessModel_chanceConvergence:
+  gams_identifier: "Wahrscheinlichkeit Konvergenz"
+  gams_description: "Wahrscheinlichkeit, dass der normale relative agreement algorithm genutzt wird."
+InRAProcessModel_chanceDivergence:
+  gams_identifier: "Wahrscheinlichkeit Divergenz"
+  gams_description: "Wahrscheinlichkeit, dass der reverse relative agreement algorithm genutzt wird."
 InRAProcessModel_nodeFilterScheme:
   gams_identifier: "Netzwerkfilter für räumliche Sicht"
   gams_description: "Legt den Filter fest, um 'sichtbare' Haushalte zu identifizieren."
 InRAProcessModel_pvFile:
   gams_identifier: "PV-Datei"
   gams_description: "Legt die zu nutzende PV-Datei fest."
-InRAProcessModel_uncertaintyGroupAttributes:
+InRAProcessModel_uncertainties:
   gams_identifier: "Unsicherheiten"
-  gams_description: "Bestimmt die Unsicherheiten, welche von diesem Modell verwendet werden."
+  gams_description: "Bestimmt die Unsicherheiten, welche von diesem Modell verwendet werden. (todo)"
 
 process_model_ra_uncert:
   edn_label: "Unsicherheit"
@@ -852,6 +925,103 @@ InRAProcessPlanMaxDistanceFilterScheme_maxDistance:
 InRAProcessPlanMaxDistanceFilterScheme_inclusive:
   gams_identifier: "Grenzwert inklusive?"
   gams_description: "Legt fest, ob der Grenzwert inklusiv (<=) oder exklusiv (<) ist."
+
+InGlobalDeffuantUncertainty:
+  edn_label: "Unsicherheit basierend auf allen Agenten"
+  edn_description: "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen."
+InGlobalDeffuantUncertainty_extremistParameter:
+  gams_identifier: "Extremistenparameter"
+  gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
+InGlobalDeffuantUncertainty_extremistUncertainty:
+  gams_identifier: "Unsicherheit der Extremisten"
+  gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
+InGlobalDeffuantUncertainty_moderateUncertainty:
+  gams_identifier: "Unsicherheit der Moderaten"
+  gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
+InGlobalDeffuantUncertainty_lowerBoundInclusive:
+  gams_identifier: "Untere Grenze inklusive?"
+  gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
+InGlobalDeffuantUncertainty_upperBoundInclusive:
+  gams_identifier: "Obere Grenze inklusive?"
+  gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
+InGlobalDeffuantUncertainty_cags:
+  gams_identifier: "Betrachtete Agentengruppen"
+  gams_description: "Legt die Agentengruppen fest, auf deren Basis die Unsicherheit berechnet werden soll."
+InGlobalDeffuantUncertainty_attributeNames:
+  gams_identifier: "Betrachtete Attribute"
+  gams_description: "Legt die Attribute fest, die mit dieser Unsicherheit verbunden werden sollen."
+
+InGroupBasedDeffuantUncertainty:
+  edn_label: "Unsicherheit basierend auf individuellen Agentengruppen"
+  edn_description: "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe."
+InGroupBasedDeffuantUncertainty_extremistParameter:
+  gams_identifier: "Extremistenparameter"
+  gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
+InGroupBasedDeffuantUncertainty_extremistUncertainty:
+  gams_identifier: "Unsicherheit der Extremisten"
+  gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
+InGroupBasedDeffuantUncertainty_moderateUncertainty:
+  gams_identifier: "Unsicherheit der Moderaten"
+  gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
+InGroupBasedDeffuantUncertainty_lowerBoundInclusive:
+  gams_identifier: "Untere Grenze inklusive?"
+  gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
+InGroupBasedDeffuantUncertainty_upperBoundInclusive:
+  gams_identifier: "Obere Grenze inklusive?"
+  gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
+InGroupBasedDeffuantUncertainty_cags:
+  gams_identifier: "Betrachtete Agentengruppen"
+  gams_description: "Legt die Agentengruppe fest, auf deren Basis die Unsicherheit berechnet werden soll."
+InGroupBasedDeffuantUncertainty_attributeNames:
+  gams_identifier: "Betrachtete Attribute"
+  gams_description: "Legt die Attribute fest, die mit dieser Unsicherheit verbunden werden sollen."
+
+InPVactGlobalDeffuantUncertainty:
+  edn_label: "Unsicherheit basierend auf allen PVact-Agenten"
+  edn_description: "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben."
+InPVactGlobalDeffuantUncertainty_extremistParameter:
+  gams_identifier: "Extremistenparameter"
+  gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
+InPVactGlobalDeffuantUncertainty_extremistUncertainty:
+  gams_identifier: "Unsicherheit der Extremisten"
+  gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
+InPVactGlobalDeffuantUncertainty_moderateUncertainty:
+  gams_identifier: "Unsicherheit der Moderaten"
+  gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
+InPVactGlobalDeffuantUncertainty_lowerBoundInclusive:
+  gams_identifier: "Untere Grenze inklusive?"
+  gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
+InPVactGlobalDeffuantUncertainty_upperBoundInclusive:
+  gams_identifier: "Obere Grenze inklusive?"
+  gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
+InPVactGlobalDeffuantUncertainty_cags:
+  gams_identifier: "Betrachtete Agentengruppen"
+  gams_description: "Legt die Agentengruppe fest, auf deren Basis die Unsicherheit berechnet werden soll."
+
+InPVactGroupBasedDeffuantUncertainty:
+  edn_label: "Unsicherheit basierend auf individuellen PVact-Agentengruppen"
+  edn_description: "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben."
+InPVactGroupBasedDeffuantUncertainty_extremistParameter:
+  gams_identifier: "Extremistenparameter"
+  gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
+InPVactGroupBasedDeffuantUncertainty_extremistUncertainty:
+  gams_identifier: "Unsicherheit der Extremisten"
+  gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
+InPVactGroupBasedDeffuantUncertainty_moderateUncertainty:
+  gams_identifier: "Unsicherheit der Moderaten"
+  gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
+InPVactGroupBasedDeffuantUncertainty_lowerBoundInclusive:
+  gams_identifier: "Untere Grenze inklusive?"
+  gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
+InPVactGroupBasedDeffuantUncertainty_upperBoundInclusive:
+  gams_identifier: "Obere Grenze inklusive?"
+  gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
+InPVactGroupBasedDeffuantUncertainty_cags:
+  gams_identifier: "Betrachtete Agentengruppen"
+  gams_description: "Legt die Agentengruppe fest, auf deren Basis die Unsicherheit berechnet werden soll."
+InPVactGroupBasedDeffuantUncertainty_attributeNames:
+  gams_identifier: "Betrachtete Attribute"
+  gams_description: "Legt die Attribute fest, die mit dieser Unsicherheit verbunden werden sollen."
 
 
 spatial:
@@ -975,25 +1145,25 @@ InUnitStepDiscreteTimeModel_amountOfTime:
   gams_description: "Legt die Zeitdauer fest, welche pro diskreten Schritt vergeht."
 InUnitStepDiscreteTimeModel_useMs:
   gams_identifier: "Millisekunden"
-  gams_description: "Verwendet Millisekunden alsEinheit für die Zeitdauer."
+  gams_description: "Verwendet Millisekunden als Einheit für die Zeitdauer."
 InUnitStepDiscreteTimeModel_useSec:
   gams_identifier: "Sekunden"
-  gams_description: "Verwendet Sekunden alsEinheit für die Zeitdauer."
+  gams_description: "Verwendet Sekunden als Einheit für die Zeitdauer."
 InUnitStepDiscreteTimeModel_useMin:
   gams_identifier: "Minuten"
-  gams_description: "Verwendet Minuten alsEinheit für die Zeitdauer."
+  gams_description: "Verwendet Minuten als Einheit für die Zeitdauer."
 InUnitStepDiscreteTimeModel_useH:
   gams_identifier: "Stunden"
-  gams_description: "Verwendet Stunden alsEinheit für die Zeitdauer."
+  gams_description: "Verwendet Stunden als Einheit für die Zeitdauer."
 InUnitStepDiscreteTimeModel_useD:
   gams_identifier: "Tage"
-  gams_description: "Verwendet Tage alsEinheit für die Zeitdauer."
+  gams_description: "Verwendet Tage als Einheit für die Zeitdauer."
 InUnitStepDiscreteTimeModel_useW:
   gams_identifier: "Wochen"
-  gams_description: "Verwendet Wochen alsEinheit für die Zeitdauer."
+  gams_description: "Verwendet Wochen als Einheit für die Zeitdauer."
 InUnitStepDiscreteTimeModel_useM:
   gams_identifier: "Monate"
-  gams_description: "Verwendet Monate alsEinheit für die Zeitdauer."
+  gams_description: "Verwendet Monate als Einheit für die Zeitdauer."
 
 
 
@@ -1009,16 +1179,6 @@ submodule:
 submodule_graphvizdemo:
   edn_label: "Graphvizdemo"
   edn_description: "todo"
-
-
-
-InVersion:
-  gams_identifier: "IRPact Version"
-  gams_description: "Die Version von IRPact, welche bei der Erstellung des Szenarios aktuell war."
-InVersion_placeholderVersion:
-  gams_identifier: "---"
-  gams_description: "Ungenutzter Platzhalter"
-
 
 
 InAttributeName:
@@ -1038,6 +1198,17 @@ BinaryPersistData_id:
   gams_description: "Einzigartige ID der Daten."
 
 
+informations_out:
+  edn_label: "Informationen"
+  edn_description: "Informationen über die Ausgabe bzw. das Ergebnis"
+
+OutInformation:
+  edn_label: "Ergebnisinformationen"
+  edn_description: "Weitere Informationen über das Ergebnis."
+OutInformation_placeholder:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
 OutConsumerAgentGroup:
   edn_label: "Adoptionen der Konsumergruppen"
   edn_description: "todo"
@@ -1053,6 +1224,25 @@ OutConsumerAgentGroup_adoptionsCumulative:
 OutConsumerAgentGroup_initialAdoptionsCumulative:
   gams_identifier: "kumulierte initiale Adoptionen"
   gams_description: "todo"
+
+dev:
+  edn_label: "Develop"
+  edn_description: "Testoptionen"
+
+test_data:
+  edn_label: "Testdaten"
+  edn_description: "Testdaten"
+
+InTestData:
+  edn_label: "Einfache Testdaten"
+  edn_description: "Testdaten"
+InTestData_testValue1:
+  gams_identifier: "Testwert 1"
+  gams_description: "Testwert 1"
+InTestData_testValue2:
+  gams_identifier: "Testwert 2"
+  gams_description: "Testwert 2"
+
 
 #=========================
 #DEPRECATED

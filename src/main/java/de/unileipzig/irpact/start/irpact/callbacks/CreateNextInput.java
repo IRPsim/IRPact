@@ -11,7 +11,7 @@ import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.irpact.IRPactCallback;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.annual.AnnualFile;
-import de.unileipzig.irptools.io.base.AnnualEntry;
+import de.unileipzig.irptools.io.base.data.AnnualEntry;
 
 import java.io.IOException;
 import java.nio.file.Path;

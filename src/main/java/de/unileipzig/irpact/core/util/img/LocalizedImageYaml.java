@@ -3,7 +3,7 @@ package de.unileipzig.irpact.core.util.img;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.locale.LocalizedYaml;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 
 import java.util.Locale;
 
@@ -66,7 +66,7 @@ public class LocalizedImageYaml extends LocalizedYaml implements LocalizedImage 
 
     public void set(int mode, String key, String value) {
         String modeStr = mode2str(mode);
-        ObjectNode modeNode = IRPactJson.computeObjectIfAbsent((ObjectNode) getRoot(), modeStr);
+        ObjectNode modeNode = JsonUtil.computeObjectIfAbsent((ObjectNode) getRoot(), modeStr);
         modeNode.put(key, value);
     }
 

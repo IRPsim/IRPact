@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.product.BasicProductGroup;
 import de.unileipzig.irpact.core.product.BasicProductManager;
 import de.unileipzig.irpact.core.product.attribute.ProductGroupAttribute;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.IRPactInputParser;
+import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;

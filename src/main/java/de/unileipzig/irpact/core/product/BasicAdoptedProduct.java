@@ -1,28 +1,19 @@
 package de.unileipzig.irpact.core.product;
 
 import de.unileipzig.irpact.commons.checksum.Checksums;
-import de.unileipzig.irpact.commons.persistence.annotation.ChecksumAndPersistentValue;
-import de.unileipzig.irpact.commons.persistence.annotation.UsedPersisterRestorer;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
-import de.unileipzig.irpact.jadex.persistance.binary.data.BasicAdoptedProductPR;
 
 /**
  * @author Daniel Abitz
  */
-@UsedPersisterRestorer(BasicAdoptedProductPR.class)
 public class BasicAdoptedProduct implements AdoptedProduct {
 
-    @ChecksumAndPersistentValue
     protected Need need;
-    @ChecksumAndPersistentValue
     protected Product product;
-    @ChecksumAndPersistentValue("epoch millis")
     protected Timestamp timestamp;
-    @ChecksumAndPersistentValue
     protected AdoptionPhase phase;
-    @ChecksumAndPersistentValue
     protected boolean initial;
 
     public BasicAdoptedProduct() {

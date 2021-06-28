@@ -1,9 +1,11 @@
 package de.unileipzig.irpact.commons.resource;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
 import java.util.Locale;
 
 /**
@@ -22,6 +24,8 @@ public interface ResourceLoader {
     //=========================
 
     Path getTempPath(String prefix, String suffix);
+
+    Path createTempPath(String prefix, String suffix, FileAttribute<?>... attrs) throws IOException;
 
     //=========================
     //general

@@ -25,14 +25,26 @@
     ]
   } 
   {
-    :label "set_side_cust" 
-    :set "set_side_cust" 
-    :tags [["S" "DS"] ["IuOSonnentankNetzversorgung" "Summe"]]
+    :label "Informationen" 
+    :description "Informationen über die Ausgabe bzw. das Ergebnis" 
+    :sections [
+      {
+        :label "Ergebnisinformationen" 
+        :set "set_OutInformation" 
+        :description "Weitere Informationen über das Ergebnis." 
+        :tags [["OutInformation" "placeholder"]]
+      }
+    ]
   } 
   {
     :label "Adoptionen der Konsumergruppen" 
     :set "set_OutConsumerAgentGroup" 
     :description "todo" 
     :tags [["OutConsumerAgentGroup" "adoptionsThisPeriod"] ["OutConsumerAgentGroup" "initialAdoptionsThisPeriod"] ["OutConsumerAgentGroup" "adoptionsCumulative"] ["OutConsumerAgentGroup" "initialAdoptionsCumulative"]]
+  } 
+  {
+    :label "set_side_cust" 
+    :set "set_side_cust" 
+    :tags [["S" "DS"] ["IuOSonnentankNetzversorgung" "Summe"]]
   }
 ]

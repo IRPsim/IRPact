@@ -24,8 +24,31 @@ public final class ParamUtil {
     public static final String NAME_DELIMITER = "_";
 
     public static final String BOOLEAN_DOMAIN = "[0|1]";
+    public static final String CLOSED_0_1_DOMAIN = "[0,1]";
+    public static final String GEQ0_DOMAIN = "[0,)";
+    public static final Object[] VALUE_TRUE = {"1"};
+    public static final Object[] VALUE_FALSE = {"0"};
+    public static final Object[] VALUE_NEG_ONE = {"-1"};
 
     private ParamUtil() {
+    }
+
+    public static String getClassNameWithoutClassSuffix(Class<?> c) {
+        String name = c.getSimpleName();
+        int dot = name.lastIndexOf('.');
+        if(dot == -1) {
+            return name;
+        } else {
+            return name.substring(0, dot);
+        }
+    }
+
+    public static Object[] varargs(Object singleton) {
+        return new Object[]{singleton};
+    }
+
+    public static Object[] varargs(Object... arr) {
+        return arr;
     }
 
     public static String concData(InIRPactEntity first, InIRPactEntity second) {

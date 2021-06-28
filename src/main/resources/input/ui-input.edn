@@ -6,6 +6,30 @@
     :image "agentGraph"
   } 
   {
+    :label "Informationen" 
+    :description "Informationen über IRPact und das Szenario" 
+    :sections [
+      {
+        :label "Über IRPact" 
+        :set "set_InIRPactVersionPlaceholder" 
+        :description "IRPact v0.3.0" 
+        :tags [["InIRPactVersionPlaceholder" "placeholder"]]
+      } 
+      {
+        :label "Über das Szenario" 
+        :set "set_InScenarioVersion" 
+        :description "Die Version von IRPact, für welche das Szenario erstellt wurde." 
+        :tags [["InScenarioVersion" "placeholder"]]
+      } 
+      {
+        :label "Weitere Informationen" 
+        :set "set_InInformation" 
+        :description "Weitere Informationen über das Szenario." 
+        :tags [["InInformation" "placeholder"]]
+      }
+    ]
+  } 
+  {
     :label "Allgemeine Einstellungen" 
     :description "todo" 
     :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "lastSimulationYear"]] 
@@ -71,12 +95,6 @@
             :tags [["VisibleBinaryData" "idVisible"]]
           }
         ]
-      } 
-      {
-        :label "Über IRPact" 
-        :set "set_InAboutPlaceholder" 
-        :description "IRPact v0.2.3" 
-        :tags [["InAboutPlaceholder" "placeholder"]]
       }
     ]
   } 
@@ -111,7 +129,7 @@
       {
         :label "Bernoulliverteilung" 
         :set "set_InBernoulliDistribution" 
-        :description "Verteilungsfunktion, welche 0 oder 1 zurück gibt." 
+        :description "Auf Bernoulli basierende Verteilungsfunktion, welche mit Wahrscheinlichkeit p x oder (1-p) y zurück gibt." 
         :tags [["InBernoulliDistribution" "p"] ["InBernoulliDistribution" "trueValue"] ["InBernoulliDistribution" "falseValue"]]
       } 
       {
@@ -143,14 +161,20 @@
       {
         :label "Normalverteilung" 
         :set "set_InNormalDistribution" 
-        :description "Verteilungsfunktionauf Basis der Normalverteilung." 
+        :description "Verteilungsfunktion auf Basis der Normalverteilung." 
         :tags [["InNormalDistribution" "standardDeviation"] ["InNormalDistribution" "mean"]]
       } 
       {
-        :label "beschränkte Normalverteilung" 
+        :label "Beschränkte Normalverteilung" 
         :set "set_InBoundedNormalDistribution" 
-        :description "Verteilungsfunktionauf Basis der Normalverteilung." 
+        :description "Verteilungsfunktion, welche auf der Normalverteilung basiert und nach oben und unten beschränkt ist. " 
         :tags [["InBoundedNormalDistribution" "standardDeviation"] ["InBoundedNormalDistribution" "mean"] ["InBoundedNormalDistribution" "lowerBound"] ["InBoundedNormalDistribution" "upperBound"]]
+      } 
+      {
+        :label "Abgeschnittene Normalverteilung" 
+        :set "set_InTruncatedNormalDistribution" 
+        :description "Verteilungsfunktion auf Basis der abgeschnittenen Normalverteilung (truncated normal distribution)." 
+        :tags [["InTruncatedNormalDistribution" "standardDeviation"] ["InTruncatedNormalDistribution" "mean"] ["InTruncatedNormalDistribution" "lowerBound"] ["InTruncatedNormalDistribution" "upperBound"]]
       } 
       {
         :label "Gleichverteilte ganze Zahlen" 
@@ -390,47 +414,39 @@
     :description "todo" 
     :sections [
       {
-        :label "Relative Agreement" 
-        :set "set_InRAProcessModel" 
-        :tags [["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["link" "InRAProcessModel" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertaintyGroupAttribute" "uncertaintyGroupAttributes"]] 
+        :label "Unsicherheit" 
+        :description "Ermöglicht es die Unsicherheit für Attribute zu bestimmen, welche durch den 'relative agreement' Algorithmus beeinflusst werden." 
         :sections [
           {
-            :label "Unsicherheit" 
-            :description "Ermöglicht es die Unsicherheit für Attribute zu bestimmen, welche durch den 'relative agreement' Algorithmus beeinflusst werden." 
-            :sections [
-              {
-                :label "Automatisch" 
-                :set "set_InAutoUncertaintyGroupAttribute" 
-                :description "Bestimmt die Unsicherheit automatisch. Achtung: Diese Variante wird aktuell noch nicht unterstützt." 
-                :tags [["InAutoUncertaintyGroupAttribute" "placeholderAutoUncert"]]
-              } 
-              {
-                :label "Attributbezogen" 
-                :set "set_InIndividualAttributeBasedUncertaintyGroupAttribute" 
-                :description "Ermöglicht die Festlegung der Unsicherheit für spezielle Konsumergruppenattribute." 
-                :tags [["link" "InIndividualAttributeBasedUncertaintyGroupAttribute" "InConsumerAgentGroupAttribute" "cagAttrs"] ["link" "InIndividualAttributeBasedUncertaintyGroupAttribute" "InUnivariateDoubleDistribution" "uncertDist"]]
-              } 
-              {
-                :label "Attributbezogen mit Konvergenz" 
-                :set "set_InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute" 
-                :description "Ermöglicht die Festlegung der Unsicherheit für spezielle Konsumergruppenattribute. Diese Variante ermöglicht auch die Festlegung der Konvergenz." 
-                :tags [["link" "InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute" "InConsumerAgentGroupAttribute" "cagAttrs"] ["link" "InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute" "InUnivariateDoubleDistribution" "uncertDist"] ["link" "InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute" "InUnivariateDoubleDistribution" "convergenceDist"]]
-              } 
-              {
-                :label "Gruppenbezogen" 
-                :set "set_InNameBasedUncertaintyWithConvergenceGroupAttribute" 
-                :description "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen und ausgewählte Attribute." 
-                :tags [["link" "InNameBasedUncertaintyGroupAttribute" "InConsumerAgentGroup" "cags"] ["link" "InNameBasedUncertaintyGroupAttribute" "InAttributeName" "names"] ["link" "InNameBasedUncertaintyGroupAttribute" "InUnivariateDoubleDistribution" "uncertDist"] ["link" "InNameBasedUncertaintyWithConvergenceGroupAttribute" "InConsumerAgentGroup" "cags"] ["link" "InNameBasedUncertaintyWithConvergenceGroupAttribute" "InAttributeName" "names"] ["link" "InNameBasedUncertaintyWithConvergenceGroupAttribute" "InUnivariateDoubleDistribution" "uncertDist"] ["link" "InNameBasedUncertaintyWithConvergenceGroupAttribute" "InUnivariateDoubleDistribution" "convergenceDist"]]
-              } 
-              {
-                :label "PVact" 
-                :set "set_InPVactUncertaintyGroupAttribute" 
-                :description "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus." 
-                :tags [["link" "InPVactUncertaintyGroupAttribute" "InConsumerAgentGroup" "cags"] ["link" "InPVactUncertaintyGroupAttribute" "InUnivariateDoubleDistribution" "noveltySeekingUncert"] ["link" "InPVactUncertaintyGroupAttribute" "InUnivariateDoubleDistribution" "dependentJudgmentMakingUncert"] ["link" "InPVactUncertaintyGroupAttribute" "InUnivariateDoubleDistribution" "environmentalConcernUncert"]]
-              }
-            ]
+            :label "Unsicherheit basierend auf allen Agenten" 
+            :set "set_InGlobalDeffuantUncertainty" 
+            :description "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen." 
+            :tags [["InGlobalDeffuantUncertainty" "extremistParameter"] ["InGlobalDeffuantUncertainty" "extremistUncertainty"] ["InGlobalDeffuantUncertainty" "moderateUncertainty"] ["InGlobalDeffuantUncertainty" "lowerBoundInclusive"] ["InGlobalDeffuantUncertainty" "upperBoundInclusive"] ["link" "InGlobalDeffuantUncertainty" "InConsumerAgentGroup" "cags"] ["link" "InGlobalDeffuantUncertainty" "InAttributeName" "attributeNames"]]
+          } 
+          {
+            :label "Unsicherheit basierend auf allen PVact-Agenten" 
+            :set "set_InPVactGlobalDeffuantUncertainty" 
+            :description "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben." 
+            :tags [["InPVactGlobalDeffuantUncertainty" "extremistParameter"] ["InPVactGlobalDeffuantUncertainty" "extremistUncertainty"] ["InPVactGlobalDeffuantUncertainty" "moderateUncertainty"] ["InPVactGlobalDeffuantUncertainty" "lowerBoundInclusive"] ["InPVactGlobalDeffuantUncertainty" "upperBoundInclusive"] ["link" "InPVactGlobalDeffuantUncertainty" "InConsumerAgentGroup" "cags"]]
+          } 
+          {
+            :label "Unsicherheit basierend auf individuellen Agentengruppen" 
+            :set "set_InGroupBasedDeffuantUncertainty" 
+            :description "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe." 
+            :tags [["InGroupBasedDeffuantUncertainty" "extremistParameter"] ["InGroupBasedDeffuantUncertainty" "extremistUncertainty"] ["InGroupBasedDeffuantUncertainty" "moderateUncertainty"] ["InGroupBasedDeffuantUncertainty" "lowerBoundInclusive"] ["InGroupBasedDeffuantUncertainty" "upperBoundInclusive"] ["link" "InGroupBasedDeffuantUncertainty" "InConsumerAgentGroup" "cags"] ["link" "InGroupBasedDeffuantUncertainty" "InAttributeName" "attributeNames"]]
+          } 
+          {
+            :label "Unsicherheit basierend auf individuellen PVact-Agentengruppen" 
+            :set "set_InPVactGroupBasedDeffuantUncertainty" 
+            :description "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben." 
+            :tags [["InPVactGroupBasedDeffuantUncertainty" "extremistParameter"] ["InPVactGroupBasedDeffuantUncertainty" "extremistUncertainty"] ["InPVactGroupBasedDeffuantUncertainty" "moderateUncertainty"] ["InPVactGroupBasedDeffuantUncertainty" "lowerBoundInclusive"] ["InPVactGroupBasedDeffuantUncertainty" "upperBoundInclusive"] ["link" "InPVactGroupBasedDeffuantUncertainty" "InConsumerAgentGroup" "cags"]]
           }
         ]
+      } 
+      {
+        :label "Relative Agreement" 
+        :set "set_InRAProcessModel" 
+        :tags [["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["InRAProcessModel" "speedOfConvergence"] ["InRAProcessModel" "attitudeGab"] ["InRAProcessModel" "chanceNeutral"] ["InRAProcessModel" "chanceConvergence"] ["InRAProcessModel" "chanceDivergence"] ["link" "InRAProcessModel" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertainty" "uncertainties"]]
       } 
       {
         :label "Netzwerkfilter für Prozesse" 
@@ -666,6 +682,24 @@
             :set "set_AgentGroup" 
             :description "Agentengruppe, welche im Graphen dargestellt werden sollen." 
             :tags [["AgentGroup" "numberOfAgents"] ["link" "AgentGroup" "GraphvizColor" "agentColor"]]
+          }
+        ]
+      }
+    ]
+  } 
+  {
+    :label "Develop" 
+    :description "Testoptionen" 
+    :sections [
+      {
+        :label "Testdaten" 
+        :description "Testdaten" 
+        :sections [
+          {
+            :label "Einfache Testdaten" 
+            :set "set_InTestData" 
+            :description "Testdaten" 
+            :tags [["InTestData" "testValue1"] ["InTestData" "testValue2"]]
           }
         ]
       }

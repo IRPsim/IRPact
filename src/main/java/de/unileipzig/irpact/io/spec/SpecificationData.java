@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.spec;
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irptools.util.Util;
@@ -45,7 +45,7 @@ public class SpecificationData {
     protected final Map<String, DirEntry> dirEntries = new HashMap<>();
 
     public SpecificationData() {
-        this(IRPactJson.JSON);
+        this(JsonUtil.JSON);
     }
 
     public SpecificationData(ObjectMapper mapper) {
@@ -138,7 +138,7 @@ public class SpecificationData {
     private void loadFile(String dirKey, Path file) throws IOException {
         String fileName = file.getFileName().toString();
         String fileNameWithoutJson = removeJson(fileName);
-        ObjectNode root = IRPactJson.readJson(file, StandardCharsets.UTF_8);
+        ObjectNode root = JsonUtil.readJson(file, StandardCharsets.UTF_8);
 
         if(Objects.equals(dirKey, DIR_NONE)) {
             FileEntry entry = fileEntries.get(fileName);
@@ -162,7 +162,7 @@ public class SpecificationData {
     //=========================
 
     public void store(Path dir) throws IOException {
-        store(dir, IRPactJson.JSON, Util.defaultPrinter, true);
+        store(dir, JsonUtil.JSON, Util.defaultPrinter, true);
     }
 
     public void store(Path dir, ObjectMapper mapper, PrettyPrinter printer, boolean skipIfEmpty) throws IOException {
@@ -281,7 +281,7 @@ public class SpecificationData {
 
             Path path = dir.resolve(getFileName());
             LOGGER.trace(IRPSection.SPECIFICATION_CONVERTER, "write '{}'", path);
-            IRPactJson.write(
+            JsonUtil.write(
                     root,
                     path,
                     StandardCharsets.UTF_8,
@@ -343,7 +343,7 @@ public class SpecificationData {
             for(Map.Entry<String, ObjectNode> entry: getAll().entrySet()) {
                 Path path = thisDir.resolve(toJson(entry.getKey()));
                 LOGGER.trace(IRPSection.SPECIFICATION_CONVERTER, "write '{}'", path);
-                IRPactJson.write(
+                JsonUtil.write(
                         entry.getValue(),
                         path,
                         StandardCharsets.UTF_8,

@@ -28,6 +28,7 @@ import de.unileipzig.irpact.io.param.input.file.InFile;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.*;
 import de.unileipzig.irpact.io.param.irpopt.*;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.names.InName;
@@ -45,6 +46,7 @@ import de.unileipzig.irpact.io.param.input.product.*;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
+import de.unileipzig.irpact.io.param.output.OutInformation;
 import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
@@ -78,7 +80,9 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
 @Definition(root = true)
 public class InRoot implements RootClass {
 
-    public static final String SET_VERSION = "set_InVersion";
+    public static final String CONFIG_YEAR = "year";
+    public static final String SET_VERSION = InScenarioVersion.deriveSetName();
+    public static final String SET_BINARY_PERSIST_DATA = BinaryPersistData.deriveSetName();
 
     public static final InRoot INSTANCE = new InRoot();
 
@@ -120,6 +124,13 @@ public class InRoot implements RootClass {
     public T[] t = new T[0];
 
     //=========================
+    //test
+    //=========================
+
+    @FieldDefinition
+    public InTestData[] testData = new InTestData[0];
+
+    //=========================
     //general
     //=========================
 
@@ -137,20 +148,26 @@ public class InRoot implements RootClass {
     }
 
     @FieldDefinition
-    public InVersion[] version = new InVersion[]{InVersion.currentVersion()};
+    public InScenarioVersion[] version = new InScenarioVersion[]{InScenarioVersion.currentVersion()};
 
-    public void setVersion(InVersion version) {
-        this.version = new InVersion[]{version};
+    public void setVersion(InScenarioVersion version) {
+        this.version = new InScenarioVersion[]{version};
     }
-    public void setVersion(InVersion[] version) {
+    public void setVersion(InScenarioVersion[] version) {
         this.version = version;
     }
-    public InVersion getVersion() throws ParsingException {
+    public boolean hasVersion() {
+        return version != null && version.length > 0;
+    }
+    public InScenarioVersion getVersion() throws ParsingException {
         return getInstance(version, "version");
     }
 
     @FieldDefinition
-    public InAboutPlaceholder[] aboutPlaceholders = new InAboutPlaceholder[0];
+    public InIRPactVersionPlaceholder[] aboutPlaceholders = new InIRPactVersionPlaceholder[0];
+
+    @FieldDefinition
+    public InInformation[] informations = new InInformation[0];
 
     //=========================
     //affinity
@@ -458,6 +475,7 @@ public class InRoot implements RootClass {
         //general
         copy.general = cache.copy(general);
         copy.version = cache.copyArray(version);
+        copy.informations = cache.copyArray(informations);
         //affinity
         copy.affinities = cache.copyArray(affinities);
         //agent
@@ -495,6 +513,8 @@ public class InRoot implements RootClass {
         copy.dse = dse;
         copy.deses = deses;
         copy.despv = despv;
+        //test
+        copy.testData = cache.copyArray(testData);
 
         return copy;
     }
@@ -656,12 +676,14 @@ public class InRoot implements RootClass {
             InBernoulliDistribution.class,
             InBooleanDistribution.class,
             InBoundedNormalDistribution.class,
+            InBoundedUniformDoubleDistribution.class,
+            InBoundedUniformIntegerDistribution.class,
             InDiracUnivariateDistribution.class,
             InFiniteMassPointsDiscreteDistribution.class,
             InMassPoint.class,
             InNormalDistribution.class,
-            InBoundedUniformDoubleDistribution.class,
-            InBoundedUniformIntegerDistribution.class,
+            InSlowTruncatedNormalDistribution.class,
+            InTruncatedNormalDistribution.class,
             InUnivariateDoubleDistribution.class,
 
             InFile.class,
@@ -691,18 +713,17 @@ public class InRoot implements RootClass {
             InNumberOfTies.class,
             InUnlinkedGraphTopology.class,
 
-            InAutoUncertaintyGroupAttribute.class,
+            InGlobalDeffuantUncertainty.class,
+            InGroupBasedDeffuantUncertainty.class,
+            InPVactGlobalDeffuantUncertainty.class,
+            InPVactGroupBasedDeffuantUncertainty.class,
+            InUncertainty.class,
+
             InDisabledProcessPlanNodeFilterScheme.class,
             InEntireNetworkNodeFilterScheme.class,
-            InIndividualAttributeBasedUncertaintyGroupAttribute.class,
-            InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute.class,
-            InNameBasedUncertaintyGroupAttribute.class,
-            InNameBasedUncertaintyWithConvergenceGroupAttribute.class,
-            InPVactUncertaintyGroupAttribute.class,
             InRAProcessModel.class,
             InRAProcessPlanMaxDistanceFilterScheme.class,
             InRAProcessPlanNodeFilterScheme.class,
-            InUncertaintyGroupAttribute.class,
             InProcessModel.class,
             InProcessPlanNodeFilterScheme.class,
 
@@ -732,9 +753,11 @@ public class InRoot implements RootClass {
             InTimeModel.class,
             InUnitStepDiscreteTimeModel.class,
 
-            InAboutPlaceholder.class,
             InGeneral.class,
-            InVersion.class
+            InInformation.class,
+            InIRPactVersionPlaceholder.class,
+            InScenarioVersion.class,
+            InTestData.class
     );
 
     public static final List<ParserInput> IRPOPT = ParserInput.listOf(DefinitionType.INPUT,
@@ -755,6 +778,7 @@ public class InRoot implements RootClass {
             INPUT_WITHOUT_TEMPLATES,
             IRPOPT,
             ParserInput.listOf(DefinitionType.INPUT,
+                    OutInformation.class,
                     OutConsumerAgentGroup.class
             )
     );
@@ -797,6 +821,11 @@ public class InRoot implements RootClass {
         IOResources.Data userData = res.getUserDataAs();
         MultiCounter counter = userData.getCounter();
 
+        addPathElement(res, INFORMATIONS, ROOT);
+                addPathElement(res, ABOUT_IRPACT, INFORMATIONS);
+                addPathElement(res, InScenarioVersion.thisName(), INFORMATIONS);
+                addPathElement(res, InInformation.thisName(), INFORMATIONS);
+
         addPathElement(res, GENERAL_SETTINGS, ROOT);
                 addPathElement(res, LOGGING, GENERAL_SETTINGS);
                         addPathElement(res, LOGGING_GENERAL, LOGGING);
@@ -808,8 +837,7 @@ public class InRoot implements RootClass {
                         addPathElement(res, InGnuPlotOutputImage.thisName(), IMAGE);
                         addPathElement(res, InROutputImage.thisName(), IMAGE);
                 addPathElement(res, SPECIAL_SETTINGS, GENERAL_SETTINGS);
-                    addPathElement(res, VisibleBinaryData.thisName(), SPECIAL_SETTINGS);
-                addPathElement(res, ABOUT, GENERAL_SETTINGS);
+                        addPathElement(res, VisibleBinaryData.thisName(), SPECIAL_SETTINGS);
 
         addPathElement(res, InAttributeName.thisName(), ROOT);
 
@@ -825,6 +853,8 @@ public class InRoot implements RootClass {
                 addPathElement(res, InMassPoint.thisName(), InFiniteMassPointsDiscreteDistribution.thisName());
             addPathElement(res, InNormalDistribution.thisName(), DISTRIBUTIONS);
             addPathElement(res, InBoundedNormalDistribution.thisName(), DISTRIBUTIONS);
+            addPathElement(res, InSlowTruncatedNormalDistribution.thisName(), DISTRIBUTIONS);
+            addPathElement(res, InTruncatedNormalDistribution.thisName(), DISTRIBUTIONS);
             addPathElement(res, InBoundedUniformDoubleDistribution.thisName(), DISTRIBUTIONS);
             addPathElement(res, InBoundedUniformIntegerDistribution.thisName(), DISTRIBUTIONS);
 
@@ -874,12 +904,10 @@ public class InRoot implements RootClass {
         addPathElement(res, PROCESS_MODEL, ROOT);
                 addPathElement(res, InRAProcessModel.thisName(), PROCESS_MODEL);
                         addPathElement(res, PROCESS_MODEL_RA_UNCERT, InRAProcessModel.thisName());
-                                addPathElement(res, InAutoUncertaintyGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
-                                addPathElement(res, InIndividualAttributeBasedUncertaintyGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
-                                addPathElement(res, InIndividualAttributeBasedUncertaintyWithConvergenceGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
-                                addPathElement(res, InNameBasedUncertaintyGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
-                                addPathElement(res, InNameBasedUncertaintyWithConvergenceGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
-                                addPathElement(res, InPVactUncertaintyGroupAttribute.thisName(), PROCESS_MODEL_RA_UNCERT);
+                                addPathElement(res, InGlobalDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
+                                addPathElement(res, InPVactGlobalDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
+                                addPathElement(res, InGroupBasedDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
+                                addPathElement(res, InPVactGroupBasedDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
                 addPathElement(res, PROCESS_FILTER, PROCESS_MODEL);
                         addPathElement(res, InDisabledProcessPlanNodeFilterScheme.thisName(), PROCESS_FILTER);
                         addPathElement(res, InEntireNetworkNodeFilterScheme.thisName(), PROCESS_FILTER);
@@ -909,6 +937,10 @@ public class InRoot implements RootClass {
 
         addPathElement(res, SUBMODULE, ROOT);
                 addPathElement(res, SUBMODULE_GRAPHVIZDEMO, SUBMODULE);
+
+        addPathElement(res, DEV, ROOT);
+                addPathElement(res, TEST, DEV);
+                        addPathElement(res, InTestData.thisName(), TEST);
     }
     public static void applyRes(TreeAnnotationResource res) {
         res.getCachedElement("OPTACT").setParent(res.getCachedElement(SUBMODULE));

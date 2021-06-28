@@ -47,6 +47,8 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
             (header, columnIndex, value) -> new BasicSpatialStringAttribute(header.getLabel(columnIndex), value);
     public static final CellValueConverter<Number, SpatialAttribute> NUM2ATTR =
             (header, columnIndex, value) -> new BasicSpatialDoubleAttribute(header.getLabel(columnIndex), value.doubleValue());
+    public static final CellValueConverter<Void, SpatialAttribute> EMPTY2ATTR =
+            (header, columnIndex, value) -> null;
 
     public static final CellValueConverter<SpatialAttribute, String> ATTR2STR = new CellValueConverter<SpatialAttribute, String>() {
 
@@ -291,6 +293,7 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
         XlsxSheetParser<SpatialAttribute> parser = new XlsxSheetParser<>();
         parser.setTextConverter(STR2ATTR);
         parser.setNumericConverter(NUM2ATTR);
+        parser.setEmptyConverter(EMPTY2ATTR);
         parser.setNumberOfInfoRows(1);
 
         XlsxTable<SpatialAttribute> table = new XlsxTable<>();

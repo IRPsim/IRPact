@@ -25,7 +25,7 @@ import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.simulation.*;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
-import de.unileipzig.irpact.jadex.persistance.JadexPersistenceModul;
+import de.unileipzig.irpact.core.persistence.BasicPersistenceModul;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -106,7 +106,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         BasicProductManager productManager = new BasicProductManager();
         BasicJadexLifeCycleControl lifeCycleControl = new BasicJadexLifeCycleControl();
         BasicBinaryTaskManager taskManager = new BasicBinaryTaskManager();
-        JadexPersistenceModul persistenceModul = new JadexPersistenceModul();
+        BasicPersistenceModul persistenceModul = new BasicPersistenceModul();
 
         setSettings(initData);
         setResourceLoader(resourceLoader);

@@ -2,7 +2,6 @@ package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumCalculator;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
-import de.unileipzig.irpact.commons.persistence.annotation.PersistentValue;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.develop.AddToParam;
 
@@ -16,9 +15,7 @@ import java.util.stream.IntStream;
 public class BasicSettings implements Settings, ChecksumComparable {
 
     protected int firstSimulationYear;
-    @PersistentValue
     protected int lastSimulationYear = -1;
-    @PersistentValue
     protected int run = 1;
     protected int previousLastSimulationYear = -1;
     protected boolean continueSimulation = false;

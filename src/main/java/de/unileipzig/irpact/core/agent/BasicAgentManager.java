@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.core.agent;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
-import de.unileipzig.irpact.commons.persistence.annotation.ChecksumAndPersistentValue;
 import de.unileipzig.irpact.commons.util.IdManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
@@ -20,15 +19,11 @@ public class BasicAgentManager implements AgentManager {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicAgentManager.class);
 
-    @ChecksumAndPersistentValue("id")
     protected final IdManager ATTENTION_ORDER = new IdManager(0L);
-    @ChecksumAndPersistentValue
     protected final AgentPopulation INITIAL_POPULATION = new BasicAgentPopulation();
 
     protected SimulationEnvironment environment;
-    @ChecksumAndPersistentValue("values")
     protected Map<String, ConsumerAgentGroup> consumerAgentGroups;
-    @ChecksumAndPersistentValue
     protected ConsumerAgentGroupAffinityMapping affinityMapping;
 
     public BasicAgentManager() {

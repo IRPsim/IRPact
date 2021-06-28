@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons.persistence;
 
+import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.core.util.MetaData;
 
 import java.util.Collection;
@@ -11,7 +12,7 @@ import java.util.function.LongFunction;
 /**
  * @author Daniel Abitz
  */
-public interface RestoreManager {
+public interface RestoreManager extends Nameable {
 
     void unregisterAll();
 
@@ -23,9 +24,11 @@ public interface RestoreManager {
 
     void restore(MetaData metaData) throws RestoreException;
 
-    void setRestoredInstance(Object restored);
+    void setRestoredRootInstance(Object restored);
 
-    <T> T getRestoredInstance() throws NoSuchElementException;
+    <T> T getRestoredRootInstance() throws NoSuchElementException;
+
+    Collection<Object> getRestoredInstances();
 
     void setValidationChecksum(int checksum);
 

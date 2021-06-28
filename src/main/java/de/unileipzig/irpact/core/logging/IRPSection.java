@@ -61,6 +61,15 @@ public enum IRPSection implements LoggingSection {
     SIMULATION_PROCESS,
 
     /**
+     * Used to log perist operations.
+     */
+    PERSIST,
+    /**
+     * Used to log restore operations.
+     */
+    RESTORE,
+
+    /**
      * Used to log result printing.
      */
     RESULT,
@@ -108,6 +117,12 @@ public enum IRPSection implements LoggingSection {
         IRPtools.setToolsSection(TOOLS_CORE);
         IRPtools.setDefinitionSection(TOOLS_DEFINITION);
         IRPtools.setUtilSection(TOOLS_UTIL);
+    }
+
+    public static void removeSectionsFromTools() {
+        IRPtools.setToolsSection(null);
+        IRPtools.setDefinitionSection(null);
+        IRPtools.setUtilSection(null);
     }
 
     //=========================

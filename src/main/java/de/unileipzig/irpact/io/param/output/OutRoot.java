@@ -1,11 +1,11 @@
 package de.unileipzig.irpact.io.param.output;
 
+import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.io.param.IOResources;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.SimpleCopyCache;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
-import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.optact.out.OutCustom;
 import de.unileipzig.irptools.defstructure.AnnotationResource;
 import de.unileipzig.irptools.defstructure.DefinitionType;
@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
+import static de.unileipzig.irpact.io.param.IOConstants.INFORMATIONS_OUT;
 import static de.unileipzig.irpact.io.param.IOConstants.ROOT;
 import static de.unileipzig.irpact.io.param.ParamUtil.addPathElement;
 
@@ -36,6 +37,9 @@ public class OutRoot implements RootClass {
     //=========================
     //IRPact
     //=========================
+
+    @FieldDefinition
+    public OutInformation[] informations = new OutInformation[0];
 
     @FieldDefinition
     public OutConsumerAgentGroup[] outConsumerAgentGroups = new OutConsumerAgentGroup[0];
@@ -119,6 +123,7 @@ public class OutRoot implements RootClass {
 
     public static final List<ParserInput> INPUT_WITHOUT_ROOT = ParserInput.merge(
             ParserInput.listOf(DefinitionType.OUTPUT,
+                    OutInformation.class,
                     OutConsumerAgentGroup.class,
                     //===
                     BinaryPersistData.class
@@ -141,7 +146,14 @@ public class OutRoot implements RootClass {
     //UI
     //=========================
 
+    @SuppressWarnings("unused")
     public static void initRes(TreeAnnotationResource res) {
+        IOResources.Data userData = res.getUserDataAs();
+        MultiCounter counter = userData.getCounter();
+
+        addPathElement(res, INFORMATIONS_OUT, ROOT);
+                addPathElement(res, OutInformation.thisName(), INFORMATIONS_OUT);
+
         addPathElement(res, OutConsumerAgentGroup.thisName(), ROOT);
     }
 
@@ -154,7 +166,6 @@ public class OutRoot implements RootClass {
             Section imageSection = new Section();
             imageSection.setPriority(-1);
             imageSection.setLabel("Bilder");
-            imageSection.setImage(IRPact.IMAGE_AGENTGRAPH);
             imageSection.setDescription("Test für Bildanzeige");
             imageSection.setIcon("fa fa-spinner");
 
@@ -182,6 +193,13 @@ public class OutRoot implements RootClass {
 
             imageSections.addAll(image1, image2, image3);
             sections.add(imageSection);
+
+            handleOptAct(sections);
         }
+    }
+
+    protected void handleOptAct(Sections sections) {
+        Section section = sections.findByLabel("set_side_cust");
+        section.setPriority(100);
     }
 }

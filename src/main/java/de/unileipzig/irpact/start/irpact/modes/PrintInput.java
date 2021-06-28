@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.start.irpact.modes;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.start.irpact.IRPact;
@@ -38,7 +38,7 @@ public final class PrintInput implements IRPactExecutor {
             LOGGER.info(IRPSection.GENERAL, "input json found");
         }
 
-        IRPLogging.logResult("[PrintInput]", IRPactJson.toLazyString(inRootNode, IRPactJson.DEFAULT));
+        IRPLogging.logResult("[PrintInput]", JsonUtil.toLazyString(inRootNode, JsonUtil.DEFAULT));
 
         irpact.postSimulationWithDummyOutput("DUMMY_PrintInput");
     }

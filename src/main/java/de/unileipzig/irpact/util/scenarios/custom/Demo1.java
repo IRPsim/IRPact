@@ -1,12 +1,10 @@
 package de.unileipzig.irpact.util.scenarios.custom;
 
-import de.unileipzig.irpact.commons.util.IRPArgs;
 import de.unileipzig.irpact.core.logging.IRPLevel;
-import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.InVersion;
+import de.unileipzig.irpact.io.param.input.InScenarioVersion;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InNameSplitAffinityEntry;
@@ -26,8 +24,8 @@ import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.network.InNoDistance;
 import de.unileipzig.irpact.io.param.input.network.InNumberOfTies;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.InPVactUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuZipSupplier;
@@ -38,9 +36,9 @@ import de.unileipzig.irptools.graphviz.def.GraphvizColor;
 import de.unileipzig.irptools.graphviz.def.GraphvizGlobal;
 import de.unileipzig.irptools.graphviz.def.GraphvizLayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.def.GraphvizOutputFormat;
-import de.unileipzig.irptools.io.base.AnnualEntry;
 
 import java.awt.*;
+import java.nio.file.Path;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,13 +50,21 @@ import java.util.concurrent.TimeUnit;
  */
 public class Demo1 extends AbstractScenario {
 
+    public Demo1(String name, String creator, String description) {
+        super(name, creator, description);
+    }
+
+    public Demo1(String name, String creator, String description, Path logPath, Path outputDir, Path downloadDir) {
+        super(name, creator, description, logPath, outputDir, downloadDir);
+    }
+
     @Override
     public String getName() {
         return "Demo1";
     }
 
     @Override
-    public InRoot createInRoot() {
+    public List<InRoot> createInRoots() {
         InPVFile pvFile = new InPVFile("Barwertrechner");
         InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210322");
 
@@ -124,18 +130,18 @@ public class Demo1 extends AbstractScenario {
         timeModel.setAmountOfTime(1);
         timeModel.setUnit(ChronoUnit.WEEKS);
 
-        InPVactUncertaintyGroupAttribute uncert = new InPVactUncertaintyGroupAttribute();
-        uncert.setName("Uncert");
-        uncert.setGroups(new InConsumerAgentGroup[]{BUM, G, PRA});
-        uncert.setForAll(diraq0);
+        InPVactGroupBasedDeffuantUncertainty uncertainty = new InPVactGroupBasedDeffuantUncertainty();
+        uncertainty.setName("UNCERT");
+        uncertainty.setDefaultValues();
+        uncertainty.setConsumerAgentGroups(new InConsumerAgentGroup[]{BUM, G, PRA});
 
         InRAProcessModel processModel = new InRAProcessModel();
-        processModel.setName("RA_ProcessModel");
-        processModel.setABCD(0.25);
-        processModel.setDefaultPoints();
-        processModel.setLogisticFactor(RAConstants.DEFAULT_LOGISTIC_FACTOR);
-        processModel.setUncertaintyGroupAttribute(uncert);
+        processModel.setName("RA");
+        processModel.setDefaultValues();
+        processModel.setNodeFilterScheme(null);
         processModel.setPvFile(pvFile);
+        processModel.setUncertainty(uncertainty);
+        processModel.setSpeedOfConvergence(0.0);
 
         InSpace2D space2D = new InSpace2D("Space2D", Metric2D.HAVERSINE_KM);
 
@@ -148,7 +154,7 @@ public class Demo1 extends AbstractScenario {
         general.logAllIRPact = true;
         general.enableAllDataLogging();
         general.enableAllResultLogging();
-        general.firstSimulationYear = 2015;
+        general.setFirstSimulationYear(2015);
         general.lastSimulationYear = 2015;
 
         //images
@@ -166,7 +172,7 @@ public class Demo1 extends AbstractScenario {
 
         //=====
         InRoot root = new InRoot();
-        root.version = new InVersion[]{InVersion.currentVersion()};
+        root.version = new InScenarioVersion[]{InScenarioVersion.currentVersion()};
         root.general = general;
         root.setAffinities(affinities);
         root.consumerAgentGroups = new InConsumerAgentGroup[]{BUM, G, PRA};
@@ -199,11 +205,6 @@ public class Demo1 extends AbstractScenario {
         root.graphvizGlobal.fixedNeatoPosition = false;
         root.graphvizGlobal.scaleFactor = 0.0;
 
-        return root;
-    }
-
-    @Override
-    protected void run(IRPArgs args, AnnualEntry<InRoot> entry) throws Throwable {
-
+        return Collections.singletonList(root);
     }
 }

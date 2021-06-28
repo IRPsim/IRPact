@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.start.irpact;
 
+import com.fasterxml.jackson.core.JsonPointer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.exception.InitializationException;
@@ -28,11 +29,12 @@ import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
 import de.unileipzig.irpact.jadex.agents.simulation.ProxySimulationAgent;
-import de.unileipzig.irpact.jadex.persistance.JadexPersistenceModul;
+import de.unileipzig.irpact.core.persistence.BasicPersistenceModul;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.util.JadexSystemOut;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
+import de.unileipzig.irpact.start.Preloader3;
 import de.unileipzig.irptools.defstructure.AnnotationParser;
 import de.unileipzig.irptools.defstructure.Converter;
 import de.unileipzig.irptools.defstructure.DefinitionCollection;
@@ -41,7 +43,7 @@ import de.unileipzig.irptools.io.ContentType;
 import de.unileipzig.irptools.io.ContentTypeDetector;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.annual.AnnualFile;
-import de.unileipzig.irptools.io.base.AnnualEntry;
+import de.unileipzig.irptools.io.base.data.AnnualEntry;
 import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.base.IPlatformConfiguration;
@@ -69,8 +71,8 @@ public final class IRPact implements IRPActAccess {
 
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "0";
-    private static final String MINOR_STRING = "2";
-    private static final String BUILD_STRING = "3";
+    private static final String MINOR_STRING = "3";
+    private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -84,6 +86,8 @@ public final class IRPact implements IRPActAccess {
     public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS = "AnnualCumulativeAdoptions";
 
     public static final String DOWNLOAD_DIR_NAME = "images";
+
+    public static final int MODELDEFINITION = 3;
 
     private static final Map<MainCommandLineOptions, Converter> INPUT_CONVERTS = new WeakHashMap<>();
     private static final Map<MainCommandLineOptions, Converter> OUTPUT_CONVERTS = new WeakHashMap<>();
@@ -156,7 +160,15 @@ public final class IRPact implements IRPActAccess {
         return mapper;
     }
 
+    public static Converter getInputConverter() {
+        return getInputConverter(null);
+    }
+
     public static Converter getInputConverter(MainCommandLineOptions options) {
+        return getInputConverter(options, options != null);
+    }
+
+    public static Converter getInputConverter(MainCommandLineOptions options, boolean cache) {
         if(INPUT_CONVERTS.containsKey(options)) {
             return INPUT_CONVERTS.get(options);
         } else {
@@ -164,12 +176,22 @@ public final class IRPact implements IRPActAccess {
             DefinitionMapper dmap = createMapper(options, dcoll);
             Converter converter = new Converter(dmap);
             converter.setAddOnlyRemainingSetsToRoot(false);
-            INPUT_CONVERTS.put(options, converter);
+            if(cache) {
+                INPUT_CONVERTS.put(options, converter);
+            }
             return converter;
         }
     }
 
+    public static Converter getOutputConverter() {
+        return getOutputConverter(null);
+    }
+
     public static Converter getOutputConverter(MainCommandLineOptions options) {
+        return getOutputConverter(options, options != null);
+    }
+
+    public static Converter getOutputConverter(MainCommandLineOptions options, boolean cache) {
         if(OUTPUT_CONVERTS.containsKey(options)) {
             return OUTPUT_CONVERTS.get(options);
         } else {
@@ -177,7 +199,9 @@ public final class IRPact implements IRPActAccess {
             DefinitionMapper dmap = createMapper(options, dcoll);
             Converter converter = new Converter(dmap);
             converter.setSortNames(false);
-            OUTPUT_CONVERTS.put(options, converter);
+            if(cache) {
+                OUTPUT_CONVERTS.put(options, converter);
+            }
             return converter;
         }
     }
@@ -208,7 +232,8 @@ public final class IRPact implements IRPActAccess {
     }
 
     protected void peekLoggingOptionsForIRPtools(ObjectNode rootNode) {
-        JsonNode logToolsNode = ContentTypeDetector.scalars(rootNode, InGeneral.SCA_INGENERAL_LOGALLTOOLS);
+        JsonPointer ptr = Preloader3.scalarsPointer(ContentTypeDetector.detect(rootNode), InGeneral.SCA_INGENERAL_LOGALLTOOLS);
+        JsonNode logToolsNode = rootNode.at(ptr);
         peekLoggingOptionsForIRPtools(
                 logToolsNode != null
                 && logToolsNode.isNumber()
@@ -238,8 +263,16 @@ public final class IRPact implements IRPActAccess {
         environment.getLiveCycleControl().pulse();
     }
 
+    @Deprecated
     public void init(ObjectNode jsonRoot) throws Exception {
         parseInputFile(jsonRoot);
+    }
+
+    public void init(ObjectNode jsonRoot, AnnualEntry<InRoot> entry) throws Exception {
+        this.inRootNode = jsonRoot;
+        this.inEntry = entry;
+        this.inRoot = entry.getData();
+        peekLoggingOptionsForIRPtools(entry);
     }
 
     private void parseInputFile(ObjectNode jsonRoot) {
@@ -302,7 +335,7 @@ public final class IRPact implements IRPActAccess {
         JadexRestoreUpdater updater = new JadexRestoreUpdater();
         updater.setSimulationYear(year);
         updater.setResourceLoader(META_DATA.getLoader());
-        JadexPersistenceModul persistenceModul = new JadexPersistenceModul();
+        BasicPersistenceModul persistenceModul = new BasicPersistenceModul();
         environment = (JadexSimulationEnvironment) persistenceModul.restore(
                 META_DATA,
                 CL_OPTIONS,
@@ -680,8 +713,7 @@ public final class IRPact implements IRPActAccess {
     }
 
     private void finalTask() {
-        IRPLogging.removeFilter();
-        IRPtools.setLoggingFilter(null);
+        IRPLogging.terminate();
         clearConverterCache();
         LOGGER.info(IRPSection.GENERAL, "simulation finished");
     }

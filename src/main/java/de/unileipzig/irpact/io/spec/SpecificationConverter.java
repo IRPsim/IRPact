@@ -79,13 +79,13 @@ public class SpecificationConverter {
         securePut(GraphTopologySpec.INSTANCE);
         securePut(UnlinkedGraphTopologySpec.INSTANCE);
         //process
-        securePut(IndividualAttributeBasedUncertaintyGroupAttributeSpec.INSTANCE);
-        securePut(IndividualAttributeBasedUncertaintyGroupAttributeSpec.INSTANCE);
-        securePut(NameBasedUncertaintyGroupAttributeSpec.INSTANCE);
-        securePut(NameBasedUncertaintyWithConvergenceGroupAttributeSpec.INSTANCE);
+//        securePut(IndividualAttributeBasedUncertaintyGroupAttributeSpec.INSTANCE);
+//        securePut(IndividualAttributeBasedUncertaintyGroupAttributeSpec.INSTANCE);
+//        securePut(NameBasedUncertaintyGroupAttributeSpec.INSTANCE);
+//        securePut(NameBasedUncertaintyWithConvergenceGroupAttributeSpec.INSTANCE);
         securePut(ProcessModelSpec.INSTANCE);
         securePut(RAProcessModelSpec.INSTANCE);
-        securePut(UncertaintyGroupAttributeSpec.INSTANCE);
+//        securePut(UncertaintyGroupAttributeSpec.INSTANCE);
         //product
         securePut(FixProductFindingSchemeSpec.INSTANCE);
         securePut(FixProductSpec.INSTANCE);

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.resource.BasicResourceLoader;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.io.param.input.InGeneral;
@@ -18,10 +18,10 @@ import de.unileipzig.irpact.start.optact.OptAct;
 import de.unileipzig.irptools.io.ContentType;
 import de.unileipzig.irptools.io.ContentTypeDetector;
 import de.unileipzig.irptools.io.annual.AnnualFile;
-import de.unileipzig.irptools.io.base.AnnualEntry;
-import de.unileipzig.irptools.io.base.DataEntry;
-import de.unileipzig.irptools.io.base.Scalars;
-import de.unileipzig.irptools.io.base.Sets;
+import de.unileipzig.irptools.io.base.data.AnnualEntry;
+import de.unileipzig.irptools.io.base.file.DataElementWithYears;
+import de.unileipzig.irptools.io.base.file.Scalars;
+import de.unileipzig.irptools.io.base.file.Sets;
 import de.unileipzig.irptools.io.downloaded.DownloadedFile;
 import de.unileipzig.irptools.io.perennial.PerennialFile;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -100,9 +100,9 @@ public class Preloader {
     private void loadSpec() throws Exception {
         SpecificationConverter converter = new SpecificationConverter();
         InRoot root =  converter.toParam(clOptions.getInputPath());
-        AnnualEntry<InRoot> entry = new AnnualEntry<>(root, IRPactJson.JSON.createObjectNode());
+        AnnualEntry<InRoot> entry = new AnnualEntry<>(root, JsonUtil.JSON.createObjectNode());
         entry.getConfig().init();
-        entry.getConfig().setYear(root.general.firstSimulationYear);
+        entry.getConfig().setYear(root.general.getFirstSimulationYear());
 
         LOGGER.trace("call IRPact with spec");
         IRPact irpact = createIRPactInstance();
@@ -112,7 +112,7 @@ public class Preloader {
     }
 
     private void loadJson() throws Exception {
-        ObjectNode root = IRPactJson.readJson(clOptions.getInputPath());
+        ObjectNode root = JsonUtil.readJson(clOptions.getInputPath());
         load(root);
     }
 
@@ -200,7 +200,7 @@ public class Preloader {
             LOGGER.error("data.size() == 0");
             return SubModul.UNKNOWN;
         }
-        DataEntry entry0 = file.getData().get(0);
+        DataElementWithYears entry0 = file.getData().get(0);
         if(entry0.getYears().size() == 0) {
             LOGGER.error("years.size() == 0");
             return SubModul.UNKNOWN;
@@ -211,9 +211,9 @@ public class Preloader {
     }
 
     private SubModul detectModul(Scalars scalars) {
-        JsonNode optactNode = scalars.getNode(InGeneral.RUN_OPTACT_DEMO_PARAM_NAME);
+        JsonNode optactNode = scalars.getNode(InGeneral.SCA_INGENERAL_RUNOPTACTDEMO);
         if(optactNode == null) {
-            LOGGER.error("'{}' not found", InGeneral.RUN_OPTACT_DEMO_PARAM_NAME);
+            LOGGER.error("'{}' not found", InGeneral.SCA_INGENERAL_RUNOPTACTDEMO);
             return SubModul.UNKNOWN;
         }
         boolean optact;

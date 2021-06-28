@@ -40,7 +40,7 @@ public class GeneralSpec extends AbstractSpec<InGeneral> {
         InGeneral general = new InGeneral();
         general.seed = rootSpec.getLong(TAG_seed);
         general.timeout = rootSpec.getLong(TAG_timeout);
-        general.firstSimulationYear = rootSpec.getInt(TAG_startYear);
+        general.setFirstSimulationYear(rootSpec.getInt(TAG_startYear));
         general.lastSimulationYear = rootSpec.getInt(TAG_endYear);
         general.logLevel = rootSpec.getInt(TAG_logLevel);
         general.logAll = rootSpec.getIntAsBoolean(TAG_logAll);
@@ -63,7 +63,7 @@ public class GeneralSpec extends AbstractSpec<InGeneral> {
         rootSpec.set(TAG_timeout, input.timeout);
         rootSpec.set(TAG_logLevel, input.logLevel);
         rootSpec.setAsInt(TAG_logAll, input.logAll);
-        rootSpec.set(TAG_startYear, input.firstSimulationYear);
+        rootSpec.set(TAG_startYear, input.getFirstSimulationYear());
         rootSpec.set(TAG_endYear, input.lastSimulationYear);
     }
 }

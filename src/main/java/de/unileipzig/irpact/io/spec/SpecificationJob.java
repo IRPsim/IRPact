@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeCreator;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -16,7 +16,6 @@ import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistri
 import de.unileipzig.irpact.io.param.input.file.InFile;
 import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.network.InDistanceEvaluator;
-import de.unileipzig.irpact.io.param.input.process.ra.InUncertaintyGroupAttribute;
 import de.unileipzig.irpact.io.param.input.product.InProductGroup;
 import de.unileipzig.irpact.io.param.input.product.InFixProduct;
 import de.unileipzig.irpact.io.param.input.product.InProductFindingScheme;
@@ -25,7 +24,6 @@ import de.unileipzig.irpact.io.spec.impl.agent.consumer.ConsumerAgentGroupSpec;
 import de.unileipzig.irpact.io.spec.impl.distance.DistanceEvaluatorSpec;
 import de.unileipzig.irpact.io.spec.impl.distribution.UnivariateDoubleDistributionSpec;
 import de.unileipzig.irpact.io.spec.impl.file.FilesSpec;
-import de.unileipzig.irpact.io.spec.impl.process.UncertaintyGroupAttributeSpec;
 import de.unileipzig.irpact.io.spec.impl.product.FixProductSpec;
 import de.unileipzig.irpact.io.spec.impl.product.ProductFindingSchemeSpec;
 import de.unileipzig.irpact.io.spec.impl.product.ProductGroupSpec;
@@ -44,7 +42,7 @@ import java.util.function.IntFunction;
 public class SpecificationJob {
 
     protected final MultiCounter counter = new MultiCounter();
-    protected JsonNodeCreator creator = IRPactJson.JSON.getNodeFactory();
+    protected JsonNodeCreator creator = JsonUtil.JSON.getNodeFactory();
     protected SpecificationCache cache;
     protected SpecificationData data;
     protected SpecificationConverter converter;
@@ -355,15 +353,6 @@ public class SpecificationJob {
             arr[i] = obj;
         }
         return arr;
-    }
-
-    public InUncertaintyGroupAttribute[] parseInlinedUncertaintyGroupAttributes(JsonNode node) throws ParsingException {
-        return parseInlinedArray(
-                node,
-                UncertaintyGroupAttributeSpec.INSTANCE,
-                InUncertaintyGroupAttribute::getName,
-                InUncertaintyGroupAttribute[]::new
-        );
     }
 
     //=========================

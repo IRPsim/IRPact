@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.simulation.tasks;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
-import de.unileipzig.irpact.commons.util.IRPactJson;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -26,13 +26,13 @@ public class PredefinedPrePlatformCreationTask extends PredefinedBinaryTask impl
     public static final int FINANCIAL_COMPONENT = 2;
 
     public PredefinedPrePlatformCreationTask() {
-        super(IRPactJson.SMILE.createObjectNode());
+        super(JsonUtil.SMILE.createObjectNode());
         setInfo(NO_INFO);
         setTask(NO_TASK);
     }
 
     public PredefinedPrePlatformCreationTask(byte[] content) throws IOException {
-        super((ObjectNode) IRPactJson.fromBytesWithSmile(content));
+        super((ObjectNode) JsonUtil.fromBytesWithSmile(content));
     }
 
     @Override

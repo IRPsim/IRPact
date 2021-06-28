@@ -16,6 +16,11 @@ public interface ConsumerAgentProductRelatedAttribute extends ConsumerAgentRelat
     }
 
     @Override
+    default boolean isProductRelatedAttribute() {
+        return true;
+    }
+
+    @Override
     default ConsumerAgentProductRelatedAttribute asProductRelatedAttribute() {
         return this;
     }

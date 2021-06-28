@@ -5,14 +5,14 @@ package de.unileipzig.irpact.commons.util.data;
  */
 public class Holder<T> {
 
-    private final T entity;
+    private final T ENTITY;
 
     public Holder(T entity) {
-        this.entity = entity;
+        this.ENTITY = entity;
     }
 
     public T getEntity() {
-        return entity;
+        return ENTITY;
     }
 
     @Override
@@ -20,11 +20,11 @@ public class Holder<T> {
         if(this == o) return true;
         if(!(o instanceof Holder)) return false;
         Holder<?> holder = (Holder<?>) o;
-        return entity == holder.entity;
+        return ENTITY == holder.ENTITY;
     }
 
     @Override
     public int hashCode() {
-        return System.identityHashCode(entity);
+        return System.identityHashCode(ENTITY);
     }
 }

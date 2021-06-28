@@ -32,6 +32,7 @@ import de.unileipzig.irpact.core.simulation.BasicSettings;
 import de.unileipzig.irpact.core.simulation.BinaryTaskManager;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
+import de.unileipzig.irpact.core.start.IRPactRestoreUpdater;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InIndependentConsumerAgentGroupAttribute;
@@ -62,7 +63,7 @@ import static de.unileipzig.irpact.core.process.ra.RAConstants.*;
  * @author Daniel Abitz
  */
 @SuppressWarnings("SameParameterValue")
-public class JadexRestoreUpdater implements IRPactInputParser, LoggingHelper {
+public class JadexRestoreUpdater implements IRPactRestoreUpdater, LoggingHelper {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(JadexRestoreUpdater.class);
 
@@ -97,11 +98,16 @@ public class JadexRestoreUpdater implements IRPactInputParser, LoggingHelper {
         return environment;
     }
 
-    public void setEnvironment(BasicJadexSimulationEnvironment environment) {
+    @Override
+    public void setEnvironment(SimulationEnvironment environment) {
         if(this.environment != null) {
             throw new IllegalArgumentException("environment already set");
         }
-        this.environment = environment;
+        if(environment instanceof BasicJadexSimulationEnvironment) {
+            this.environment = (BasicJadexSimulationEnvironment) environment;
+        } else {
+            throw new IllegalArgumentException("currently only '" + BasicJadexSimulationEnvironment.class + "' is supported");
+        }
     }
 
     @Override

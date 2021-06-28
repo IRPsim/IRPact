@@ -12,6 +12,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
 
 /**
  * @author Daniel Abitz
@@ -51,6 +52,11 @@ public class BasicResourceLoader implements ResourceLoader {
     @Override
     public Path getTempPath(String prefix, String suffix) {
         return getTempPath(externalPath, prefix, suffix);
+    }
+
+    @Override
+    public Path createTempPath(String prefix, String suffix, FileAttribute<?>... attrs) throws IOException {
+        return Files.createTempFile(externalPath, prefix, suffix, attrs);
     }
 
     public static Path getTempPath(Path dir, String prefix, String suffix) {

@@ -67,6 +67,13 @@ public class InGnuPlotOutputImage implements InOutputImage {
         setLinewidth(1);
     }
 
+    public InGnuPlotOutputImage(String name, int mode, boolean enableAll) {
+        setName(name);
+        setMode(mode);
+        setEnableAll(enableAll);
+        setLinewidth(1);
+    }
+
     @Override
     public InGnuPlotOutputImage copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

@@ -8,16 +8,14 @@ import de.unileipzig.irpact.core.logging.SectionLoggingFilter;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.start.irpact.IRPactCallback;
 import de.unileipzig.irpact.start.utilities.Utilities;
-import de.unileipzig.irptools.io.base.AnnualEntry;
+import de.unileipzig.irptools.io.base.data.AnnualEntry;
 import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import picocli.CommandLine;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 /**
  * Starts IRPact.
@@ -29,23 +27,21 @@ public final class Start {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(Start.class);
 
     private MainCommandLineOptions options;
-    private StartResult result;
+    private Result result;
 
     private Start() {
     }
 
     private static void prepareLogging() {
-        IRPLogging.writeToConsole();
-        SectionLoggingFilter filter = new SectionLoggingFilter();
-        IRPLogging.setFilter(filter);
-        IRPtools.setLoggingFilter(IRPLogging.getFilter());
-        IRPSection.addSectionsToTools();
-        IRPSection.addAllTo(filter);
+        IRPLogging.initalize();
     }
 
     private void setupLogging() throws IOException {
-        if(options.logToFile()) {
+        setupLogging(options);
+    }
 
+    static void setupLogging(MainCommandLineOptions options) throws IOException {
+        if(options.logToFile()) {
             boolean hasOldLogFile = Files.exists(options.getLogPath());
             IRPLoggingMessage deletedMsg = null;
             if(hasOldLogFile) {
@@ -95,7 +91,7 @@ public final class Start {
             return true;
         } catch (IOException e) {
             LOGGER.error("setup logging failed, start canceled", e);
-            result = new StartResult(CommandLine.ExitCode.SOFTWARE, e);
+            result = new Result(CommandLine.ExitCode.SOFTWARE, e);
             return false;
         }
     }
@@ -111,7 +107,7 @@ public final class Start {
             if(options.hasExecuteResultMessage()) {
                 options.getExecuteResultMessage().error(LOGGER);
             }
-            result = new StartResult(exitCode);
+            result = new Result(exitCode);
             return false;
         }
     }
@@ -124,7 +120,7 @@ public final class Start {
             options.getCommandLine().usage(System.out);
         }
         if(options.isPrintHelpOrVersion()) {
-            result = new StartResult(options.getExitCode());
+            result = new Result(options.getExitCode());
             return true;
         }
         return false;
@@ -138,11 +134,11 @@ public final class Start {
         return options.isCallUtilities() || options.isPrintUtilitiesHelp();
     }
 
-    private StartResult run(String[] args) {
+    private Result run(String[] args) {
         return run(args, null, Collections.emptyList());
     }
 
-    private StartResult run(
+    private Result run(
             String[] args,
             AnnualEntry<InRoot> scenario,
             Collection<? extends IRPactCallback> callbacks) {
@@ -156,7 +152,7 @@ public final class Start {
         return runPreloader(scenario, callbacks);
     }
 
-    private StartResult runIRPtools() {
+    private Result runIRPtools() {
         try {
             if(options.isPrintIrptoolsHelp()) {
                 IRPtools.main(new String[]{"-?"});
@@ -166,14 +162,14 @@ public final class Start {
                 IRPSection.addAllToolsTo(filter);
                 IRPtools.main(options.getArgs());
             }
-            return new StartResult(options.getExitCode());
+            return new Result(options.getExitCode());
         } catch (Throwable t) {
             LOGGER.error("Running IRPtools failed with unknown exception.", t);
-            return new StartResult(options.getExitCode(), t);
+            return new Result(options.getExitCode(), t);
         }
     }
 
-    private StartResult runUtilities() {
+    private Result runUtilities() {
         try {
             if(options.isPrintUtilitiesHelp()) {
                 Utilities.run(options, new String[]{"-?"});
@@ -181,14 +177,14 @@ public final class Start {
                 LOGGER.trace(IRPSection.GENERAL, "executing Utilities");
                 Utilities.run(options, options.getArgs());
             }
-            return new StartResult(options.getExitCode());
+            return new Result(options.getExitCode());
         } catch (Throwable t) {
             LOGGER.error("Running Utilities failed with unknown exception.", t);
-            return new StartResult(options.getExitCode(), t);
+            return new Result(options.getExitCode(), t);
         }
     }
 
-    private StartResult runPreloader(
+    private Result runPreloader(
             AnnualEntry<InRoot> scenario,
             Collection<? extends IRPactCallback> callbacks) {
         Preloader loader = new Preloader(options, callbacks);
@@ -199,16 +195,25 @@ public final class Start {
                 loader.start(scenario);
             }
             LOGGER.trace(IRPSection.GENERAL, "Start finished");
-            return new StartResult(CommandLine.ExitCode.OK);
+            return new Result(CommandLine.ExitCode.OK);
         } catch (Throwable t) {
             LOGGER.error("Start failed with uncaught exception", t);
-            return new StartResult(CommandLine.ExitCode.SOFTWARE, t);
+            return new Result(CommandLine.ExitCode.SOFTWARE, t);
         }
     }
 
     //=========================
     //starter
     //=========================
+
+    public static int start(
+            Collection<? extends Input> inputs) {
+        for(Input input: inputs) {
+            List<IRPactCallback> callbacks = new ArrayList<>(input.getCallbacks());
+
+        }
+        return -1;
+    }
 
     public static int start(
             String[] args,
@@ -234,7 +239,7 @@ public final class Start {
             AnnualEntry<InRoot> scenario,
             Collection<? extends IRPactCallback> callbacks) throws Throwable {
         Start start = new Start();
-        StartResult result = start.run(args, scenario, callbacks);
+        Result result = start.run(args, scenario, callbacks);
         if(result.getCause() != null) {
             throw result.getCause();
         }
@@ -246,7 +251,7 @@ public final class Start {
 
     public static void main(String[] args) {
         Start start = new Start();
-        StartResult result = start.run(args);
+        Result result = start.run(args);
         System.exit(result.getExitCode());
     }
 
@@ -254,19 +259,59 @@ public final class Start {
     //helper
     //=========================
 
+    public static final class Input2 {
+
+    }
+
     /**
      * @author Daniel Abitz
      */
-    public static final class StartResult {
+    public static final class Input {
+
+        private final String[] args;
+        private final AnnualEntry<InRoot> scenario;
+        private final Collection<? extends IRPactCallback> callbacks;
+
+        public Input(String[] args) {
+            this(args, null, Collections.emptyList());
+        }
+
+        public Input(String[] args, AnnualEntry<InRoot> scenario, Collection<? extends IRPactCallback> callbacks) {
+            this.args = args;
+            this.scenario = scenario;
+            this.callbacks = callbacks;
+        }
+
+        public String[] getArgs() {
+            return args;
+        }
+
+        public boolean hasScenario() {
+            return scenario != null;
+        }
+
+        public AnnualEntry<InRoot> getScenario() {
+            return scenario;
+        }
+
+        public Collection<? extends IRPactCallback> getCallbacks() {
+            return callbacks;
+        }
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    public static final class Result {
 
         private final int EXIT_CODE;
         private final Throwable CAUSE;
 
-        public StartResult(int exitCode) {
+        public Result(int exitCode) {
             this(exitCode, null);
         }
 
-        public StartResult(int exitCode, Throwable cause) {
+        public Result(int exitCode, Throwable cause) {
             this.EXIT_CODE = exitCode;
             this.CAUSE = cause;
         }

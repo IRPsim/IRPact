@@ -1,8 +1,12 @@
 package de.unileipzig.irpact.commons.util;
 
 import java.io.IOException;
+import java.io.Reader;
+import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -11,6 +15,89 @@ import java.util.Objects;
 public final class FileUtil {
 
     private FileUtil() {
+    }
+
+    public static Path changeFileName(Path path, String prefix, String suffix) {
+        if(prefix == null) prefix = "";
+        if(suffix == null) suffix = "";
+        String fileName = getFileName(path);
+        String extension = getExtension(path);
+        return extension == null
+                ? path.resolveSibling(prefix + fileName + suffix)
+                : path.resolveSibling(prefix + fileName + suffix + "." + extension);
+    }
+
+    public static String getExtension(Path path) {
+        if(path == null) {
+            throw new NullPointerException("path is null");
+        }
+
+        String fileNameStr = path.getFileName().toString();
+        int dotIndex = fileNameStr.lastIndexOf('.');
+        return dotIndex == -1
+                ? null
+                : fileNameStr.substring(dotIndex + 1);
+    }
+
+    public static String getFileName(Path path) {
+        if(path == null) {
+            throw new NullPointerException("path is null");
+        }
+
+        String fileNameStr = path.getFileName().toString();
+        int dotIndex = fileNameStr.lastIndexOf('.');
+        return dotIndex == -1
+                ? fileNameStr
+                : fileNameStr.substring(0, dotIndex);
+    }
+
+    public static Path createTempFile(Path dir, String prefix, String suffix) throws IOException {
+        return dir == null
+                ? Files.createTempFile(prefix, suffix)
+                : Files.createTempFile(dir, prefix, suffix);
+    }
+
+    public static boolean deleteIfExists(Path... paths) throws IOException {
+        boolean changed = false;
+
+        List<IOException> failes = new ArrayList<>();
+        for(Path path: paths) {
+            if(path == null) {
+                continue;
+            }
+
+            try {
+                changed |= Files.deleteIfExists(path);
+            } catch (IOException e) {
+                failes.add(e);
+            }
+        }
+
+        if(failes.size() > 0) {
+            IOException master = new IOException("failed to delete " + failes.size() + " files");
+            for(IOException e: failes) {
+                master.addSuppressed(e);
+            }
+            throw master;
+        }
+
+        return changed;
+    }
+
+    public static String readString(Path input, Charset charset) throws IOException {
+        long size = Files.size(input);
+        if(size > Integer.MAX_VALUE - 8) {
+            throw new IllegalArgumentException("file too big: " + size);
+        }
+        StringBuilder sb = new StringBuilder((int) size);
+        char[] cbuf = new char[8192];
+        int len;
+        try(Reader reader = Files.newBufferedReader(input, charset)) {
+            while((len = reader.read(cbuf)) >= 0) {
+                sb.append(cbuf, 0, len);
+            }
+        }
+        return sb.toString();
     }
 
     public static boolean deleteDirIfExists(Path dir) throws IOException {

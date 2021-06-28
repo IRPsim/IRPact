@@ -7,15 +7,17 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ProcessModelManager;
 import de.unileipzig.irpact.core.process.filter.DisabledProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
-import de.unileipzig.irpact.develop.Todo;
+import de.unileipzig.irpact.core.process.ra.alg.AttitudeGapRelativeAgreementAlgorithm;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.IRPactInputParser;
-import de.unileipzig.irpact.io.param.input.InputParser;
+import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertainty;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -25,13 +27,11 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_MODEL;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz
  */
-@Todo("default values fuer die points in loc-file eintragen")
 @Definition
 public class InRAProcessModel implements InProcessModel {
 
@@ -52,17 +52,40 @@ public class InRAProcessModel implements InProcessModel {
         addEntry(res, thisClass(), "b");
         addEntry(res, thisClass(), "c");
         addEntry(res, thisClass(), "d");
-
         addEntry(res, thisClass(), "adopterPoints");
         addEntry(res, thisClass(), "interestedPoints");
         addEntry(res, thisClass(), "awarePoints");
         addEntry(res, thisClass(), "unknownPoints");
-
         addEntry(res, thisClass(), "logisticFactor");
-
+        addEntry(res, thisClass(), "speedOfConvergence");
+        addEntry(res, thisClass(), "attitudeGab");
+        addEntry(res, thisClass(), "chanceNeutral");
+        addEntry(res, thisClass(), "chanceConvergence");
+        addEntry(res, thisClass(), "chanceDivergence");
         addEntry(res, thisClass(), "nodeFilterScheme");
         addEntry(res, thisClass(), "pvFile");
-        addEntry(res, thisClass(), "uncertaintyGroupAttributes");
+        addEntry(res, thisClass(), "uncertainties");
+
+
+        setDomain(res, thisClass(), "chanceNeutral", CLOSED_0_1_DOMAIN);
+        setDomain(res, thisClass(), "chanceConvergence", CLOSED_0_1_DOMAIN);
+        setDomain(res, thisClass(), "chanceDivergence", CLOSED_0_1_DOMAIN);
+
+
+        setDefault(res, thisClass(), "a", varargs(0.25));
+        setDefault(res, thisClass(), "b", varargs(0.25));
+        setDefault(res, thisClass(), "c", varargs(0.25));
+        setDefault(res, thisClass(), "d", varargs(0.25));
+        setDefault(res, thisClass(), "adopterPoints", varargs(RAModelData.DEFAULT_ADOPTER_POINTS));
+        setDefault(res, thisClass(), "interestedPoints", varargs(RAModelData.DEFAULT_INTERESTED_POINTS));
+        setDefault(res, thisClass(), "awarePoints", varargs(RAModelData.DEFAULT_AWARE_POINTS));
+        setDefault(res, thisClass(), "unknownPoints", varargs(RAModelData.DEFAULT_UNKNOWN_POINTS));
+        setDefault(res, thisClass(), "logisticFactor", varargs(RAConstants.DEFAULT_LOGISTIC_FACTOR));
+        setDefault(res, thisClass(), "speedOfConvergence", varargs(RAConstants.DEFAULT_SPEED_OF_CONVERGENCE));
+        setDefault(res, thisClass(), "attitudeGab", varargs(RAConstants.DEFAULT_ATTIDUTE_GAB));
+        setDefault(res, thisClass(), "chanceNeutral", varargs(RAConstants.DEFAULT_NEUTRAL_CHANCE));
+        setDefault(res, thisClass(), "chanceConvergence", varargs(RAConstants.DEFAULT_CONVERGENCE_CHANCE));
+        setDefault(res, thisClass(), "chanceDivergence", varargs(RAConstants.DEFAULT_DIVERGENCE_CHANCE));
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -82,19 +105,34 @@ public class InRAProcessModel implements InProcessModel {
     public double d;
 
     @FieldDefinition
-    public int adopterPoints = 3;
+    public int adopterPoints;
 
     @FieldDefinition
-    public int interestedPoints = 2;
+    public int interestedPoints;
 
     @FieldDefinition
-    public int awarePoints = 1;
+    public int awarePoints;
 
     @FieldDefinition
-    public int unknownPoints = 0;
+    public int unknownPoints;
 
     @FieldDefinition
     public double logisticFactor;
+
+    @FieldDefinition
+    public double speedOfConvergence;
+
+    @FieldDefinition
+    public double attitudeGab;
+
+    @FieldDefinition
+    public double chanceNeutral;
+
+    @FieldDefinition
+    public double chanceConvergence;
+
+    @FieldDefinition
+    public double chanceDivergence;
 
     @FieldDefinition
     public InRAProcessPlanNodeFilterScheme[] nodeFilterScheme;
@@ -103,7 +141,7 @@ public class InRAProcessModel implements InProcessModel {
     public InPVFile[] pvFile;
 
     @FieldDefinition
-    public InUncertaintyGroupAttribute[] uncertaintyGroupAttributes = new InUncertaintyGroupAttribute[0];
+    public InUncertainty[] uncertainties;
 
     public InRAProcessModel() {
     }
@@ -115,7 +153,7 @@ public class InRAProcessModel implements InProcessModel {
             double logisticFactor,
             InRAProcessPlanNodeFilterScheme filterScheme,
             InPVFile pvFile,
-            InUncertaintyGroupAttribute[] uncertaintyGroupAttributes) {
+            InUncertainty[] uncertainties) {
         this._name = name;
         this.a = a;
         this.b = b;
@@ -128,7 +166,7 @@ public class InRAProcessModel implements InProcessModel {
         this.logisticFactor = logisticFactor;
         setNodeFilterScheme(filterScheme);
         setPvFile(pvFile);
-        setUncertaintyGroupAttributes(uncertaintyGroupAttributes);
+        setUncertainties(uncertainties);
     }
 
     @Override
@@ -147,9 +185,14 @@ public class InRAProcessModel implements InProcessModel {
         copy.awarePoints = awarePoints;
         copy.unknownPoints = unknownPoints;
         copy.logisticFactor = logisticFactor;
+        copy.speedOfConvergence = speedOfConvergence;
+        copy.chanceNeutral = chanceNeutral;
+        copy.chanceConvergence = chanceConvergence;
+        copy.chanceDivergence = chanceDivergence;
+        copy.attitudeGab = attitudeGab;
         copy.nodeFilterScheme = cache.copyArray(nodeFilterScheme);
         copy.pvFile = cache.copyArray(pvFile);
-        copy.uncertaintyGroupAttributes = cache.copyArray(uncertaintyGroupAttributes);
+        copy.uncertainties = cache.copyArray(uncertainties);
         return copy;
     }
 
@@ -160,6 +203,20 @@ public class InRAProcessModel implements InProcessModel {
 
     public void setName(String name) {
         this._name = name;
+    }
+
+    public void setDefaultValues() {
+        setABCD(0.25);
+        setAdopterPoints(RAModelData.DEFAULT_ADOPTER_POINTS);
+        setInterestedPoints(RAModelData.DEFAULT_INTERESTED_POINTS);
+        setAwarePoints(RAModelData.DEFAULT_AWARE_POINTS);
+        setUnknownPoints(RAModelData.DEFAULT_UNKNOWN_POINTS);
+        setLogisticFactor(RAConstants.DEFAULT_LOGISTIC_FACTOR);
+        setSpeedOfConvergence(RAConstants.DEFAULT_SPEED_OF_CONVERGENCE);
+        setAttitudeGab(RAConstants.DEFAULT_ATTIDUTE_GAB);
+        setChanceNeutral(RAConstants.DEFAULT_NEUTRAL_CHANCE);
+        setChanceConvergence(RAConstants.DEFAULT_CONVERGENCE_CHANCE);
+        setChanceDivergence(RAConstants.DEFAULT_DIVERGENCE_CHANCE);
     }
 
     public void setABCD(double value) {
@@ -248,6 +305,46 @@ public class InRAProcessModel implements InProcessModel {
         this.logisticFactor = logisticFactor;
     }
 
+    public void setSpeedOfConvergence(double speedOfConvergence) {
+        this.speedOfConvergence = speedOfConvergence;
+    }
+
+    public double getSpeedOfConvergence() {
+        return speedOfConvergence;
+    }
+
+    public void setChanceNeutral(double chanceNeutral) {
+        this.chanceNeutral = chanceNeutral;
+    }
+
+    public double getChanceNeutral() {
+        return chanceNeutral;
+    }
+
+    public void setChanceConvergence(double chanceConvergence) {
+        this.chanceConvergence = chanceConvergence;
+    }
+
+    public double getChanceConvergence() {
+        return chanceConvergence;
+    }
+
+    public void setChanceDivergence(double chanceDivergence) {
+        this.chanceDivergence = chanceDivergence;
+    }
+
+    public double getChanceDivergence() {
+        return chanceDivergence;
+    }
+
+    public void setAttitudeGab(double attitudeGab) {
+        this.attitudeGab = attitudeGab;
+    }
+
+    public double getAttitudeGab() {
+        return attitudeGab;
+    }
+
     public boolean hasNodeFilterScheme() {
         return ParamUtil.len(nodeFilterScheme) > 0;
     }
@@ -276,16 +373,16 @@ public class InRAProcessModel implements InProcessModel {
         this.pvFile = new InPVFile[]{pvFile};
     }
 
-    public InUncertaintyGroupAttribute[] getUncertaintyGroupAttributes() {
-        return uncertaintyGroupAttributes;
+    public void setUncertainty(InUncertainty uncertainty) {
+        this.uncertainties = new InUncertainty[]{uncertainty};
     }
 
-    public void setUncertaintyGroupAttribute(InUncertaintyGroupAttribute uncertaintyGroupAttribute) {
-        this.uncertaintyGroupAttributes = new InUncertaintyGroupAttribute[]{uncertaintyGroupAttribute};
+    public void setUncertainties(InUncertainty[] uncertainties) {
+        this.uncertainties = uncertainties;
     }
 
-    public void setUncertaintyGroupAttributes(InUncertaintyGroupAttribute[] uncertaintyGroupAttributes) {
-        this.uncertaintyGroupAttributes = uncertaintyGroupAttributes;
+    public InUncertainty[] getUncertainties() {
+        return uncertainties;
     }
 
     public NPVXlsxData getNPVData(InputParser parser) throws ParsingException {
@@ -318,9 +415,10 @@ public class InRAProcessModel implements InProcessModel {
         model.setEnvironment(parser.getEnvironment());
         model.setModelData(data);
         model.setRnd(rnd);
+        model.setSpeedOfConvergence(getSpeedOfConvergence());
 
-        for(InUncertaintyGroupAttribute inUncert: getUncertaintyGroupAttributes()) {
-            inUncert.setup(parser, model);
+        for(InUncertainty uncertainty: getUncertainties()) {
+            uncertainty.setup(parser, model);
         }
 
         if(hasNodeFilterScheme()) {
@@ -334,6 +432,17 @@ public class InRAProcessModel implements InProcessModel {
         }
 
         applyPvFile(parser, model);
+
+        AttitudeGapRelativeAgreementAlgorithm algorithm = new AttitudeGapRelativeAgreementAlgorithm();
+        algorithm.setName(model.getName() + "_RA");
+        algorithm.setEnvironment(parser.getEnvironment());
+        Rnd raRnd = parser.deriveRnd();
+        algorithm.setRandom(raRnd);
+        algorithm.setAttitudeGap(getAttitudeGab());
+        algorithm.setWeightes(getChanceNeutral(), getChanceConvergence(), getChanceDivergence());
+        algorithm.setLogDataFallback(false);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "AttitudeGapRelativeAgreementAlgorithm '{}' uses seed: {}", algorithm.getName(), raRnd.getInitialSeed());
+        model.setRelativeAgreementAlgorithm(algorithm);
 
         return model;
     }

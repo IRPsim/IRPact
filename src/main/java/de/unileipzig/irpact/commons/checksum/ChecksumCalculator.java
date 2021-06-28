@@ -24,14 +24,6 @@ public abstract class ChecksumCalculator {
     }
 
     //=========================
-    //util
-    //=========================
-
-    public static int getDefaultChecksum(int modifier) {
-        return PRIM + modifier;
-    }
-
-    //=========================
     //logging
     //=========================
 

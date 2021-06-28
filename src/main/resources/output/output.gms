@@ -1,3 +1,8 @@
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
+* - type: Float
+PARAMETER par_out_OutInformation_placeholder(set_OutInformation)
+
 * - description: todo
 * - identifier: Adoptionen
 * - type: Integer

@@ -1,10 +1,7 @@
 package de.unileipzig.irpact.commons.checksum;
 
-import de.unileipzig.irpact.commons.Nameable;
-
 import java.util.Collection;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * {@link #getChecksum(Object)} checks for collection or map and uses {@link #getCollectionChecksum(Collection)} or
@@ -15,9 +12,14 @@ import java.util.function.Function;
 public class SmartChecksumCalculator extends ChecksumCalculator {
 
     public static final SmartChecksumCalculator INSTANCE = new SmartChecksumCalculator();
-    private static final Function<? super Nameable, ?> GET_NAMED_CHECKSUM = INSTANCE::getNamedChecksum;
 
     public SmartChecksumCalculator() {
+    }
+
+    public int getSystemChecksum(Object value) {
+        return value == null
+                ? ChecksumCalculator.NUll_CHECKSUM
+                : System.identityHashCode(value);
     }
 
     @Override
@@ -35,9 +37,5 @@ public class SmartChecksumCalculator extends ChecksumCalculator {
             return getMapChecksum((Map<?, ?>) value);
         }
         return value.hashCode();
-    }
-
-    public static <T extends Nameable> Function<? super T, ?> getNamedChecksumFunction() {
-        return GET_NAMED_CHECKSUM;
     }
 }

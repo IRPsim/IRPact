@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.io.param.inout.persist.binary;
 
+import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -31,6 +33,10 @@ public class BinaryPersistData implements Copyable {
         addEntry(res, thisClass(), "id");
         setHidden(res, thisClass());
         setHidden(res, thisClass(), "id");
+    }
+
+    public static String deriveSetName() {
+        return Constants.SET + ParamUtil.getClassNameWithoutClassSuffix(thisClass());
     }
 
     public String _name;
