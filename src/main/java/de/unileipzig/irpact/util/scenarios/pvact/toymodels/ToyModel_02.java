@@ -6,9 +6,7 @@ import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
-import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.InScenarioVersion;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
@@ -37,21 +35,23 @@ import java.util.function.BiConsumer;
 /**
  * @author Daniel Abitz
  */
-public class ToyModel02v2 extends AbstractToyModel {
+public class ToyModel_02 extends AbstractToyModel {
 
-    public static final String NAME = "Toymodel 2 - Machbarkeit v2";
+    public static final int REVISION = 1;
+
+    public static final int SIZE_A = 10;
+    public static final int SIZE_K1 = 10;
+    public static final int SIZE_K2 = 10;
+    public static final int SIZE_K3 = 10;
 
     protected InDiracUnivariateDistribution dirac0 = new InDiracUnivariateDistribution("dirac0", 0);
-    protected InDiracUnivariateDistribution dirac03 = new InDiracUnivariateDistribution("dirac03", 0.3);
     protected InDiracUnivariateDistribution dirac07 = new InDiracUnivariateDistribution("dirac07", 0.7);
     protected InDiracUnivariateDistribution dirac1 = new InDiracUnivariateDistribution("dirac1", 1);
 
-    public ToyModel02v2(String name, BiConsumer<InRoot, OutRoot> resultConsumer) {
-        this(name, null, null, resultConsumer);
-    }
-
-    public ToyModel02v2(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
+    public ToyModel_02(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(name, creator, description, resultConsumer);
+        setRevision(REVISION);
+        setTotalAgents(SIZE_A + SIZE_K1 + SIZE_K2 + SIZE_K3);
     }
 
     public List<List<SpatialAttribute>> buildData(
@@ -76,7 +76,7 @@ public class ToyModel02v2 extends AbstractToyModel {
             List<SpatialAttribute> row = output.get(i);
             SpatialUtil.replaceDouble(row, RAConstants.PURCHASE_POWER, dirac1.getValue());  //A1
             SpatialUtil.replaceDouble(row, RAConstants.SHARE_1_2_HOUSE, dirac1.getValue()); //A5
-            SpatialUtil.replaceDouble(row, RAConstants.HOUSE_OWNER, dirac1.getValue());     //A6
+            SpatialUtil.replaceDouble(row, RAConstants.HOUSE_OWNER, dirac0.getValue());     //A6
         }
         //K2
         from += sizeOfK1;
@@ -84,7 +84,7 @@ public class ToyModel02v2 extends AbstractToyModel {
         for(int i = from; i < to; i++) {
             List<SpatialAttribute> row = output.get(i);
             SpatialUtil.replaceDouble(row, RAConstants.PURCHASE_POWER, dirac1.getValue());  //A1
-            SpatialUtil.replaceDouble(row, RAConstants.SHARE_1_2_HOUSE, dirac1.getValue()); //A5
+            SpatialUtil.replaceDouble(row, RAConstants.SHARE_1_2_HOUSE, dirac0.getValue()); //A5
             SpatialUtil.replaceDouble(row, RAConstants.HOUSE_OWNER, dirac1.getValue());     //A6
         }
         //K3
@@ -93,8 +93,8 @@ public class ToyModel02v2 extends AbstractToyModel {
         for(int i = from; i < to; i++) {
             List<SpatialAttribute> row = output.get(i);
             SpatialUtil.replaceDouble(row, RAConstants.PURCHASE_POWER, dirac1.getValue());  //A1
-            SpatialUtil.replaceDouble(row, RAConstants.SHARE_1_2_HOUSE, dirac1.getValue()); //A5
-            SpatialUtil.replaceDouble(row, RAConstants.HOUSE_OWNER, dirac1.getValue());     //A6
+            SpatialUtil.replaceDouble(row, RAConstants.SHARE_1_2_HOUSE, dirac0.getValue()); //A5
+            SpatialUtil.replaceDouble(row, RAConstants.HOUSE_OWNER, dirac0.getValue());     //A6
         }
 
         return output;
@@ -131,7 +131,7 @@ public class ToyModel02v2 extends AbstractToyModel {
 
         grp.setInitialProductAwareness(dirac1);                   //D1
         grp.setInterestThreshold(dirac0);                         //D2
-        grp.setFinancialThreshold(dirac03);                       //D3
+        grp.setFinancialThreshold(dirac07);                       //D3
         grp.setAdoptionThreshold(dirac07);                        //D4
         grp.setInitialAdopter(dirac0);                            //D5
         grp.setInitialProductInterest(dirac1);                    //D6
@@ -170,13 +170,8 @@ public class ToyModel02v2 extends AbstractToyModel {
         InSpace2D space2D = createSpace2D("Space2D");
 
         //=====
-        InGeneral general = createGeneralPart();
-        general.setFirstSimulationYear(2015);
-        general.lastSimulationYear = 2015;
-
-        InRoot root = new InRoot();
-        root.version = new InScenarioVersion[]{InScenarioVersion.currentVersion()};
-        root.general = general;
+        InRoot root = createRootWithInformations();
+        root.general.lastSimulationYear = DEFAULT_INITIAL_YEAR;
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(new InConsumerAgentGroup[]{A, K1, K2, K3});
         root.setAgentPopulationSize(population);

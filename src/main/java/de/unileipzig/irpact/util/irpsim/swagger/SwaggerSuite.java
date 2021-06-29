@@ -2,6 +2,7 @@ package de.unileipzig.irpact.util.irpsim.swagger;
 
 import de.unileipzig.irpact.util.curl.CurlException;
 import de.unileipzig.irpact.util.irpsim.swagger.scenario.ScenarioMetaData;
+import de.unileipzig.irpact.util.irpsim.swagger.simulation.SimulationState;
 import de.unileipzig.irpact.util.scenarios.Scenario;
 
 import java.io.IOException;
@@ -24,22 +25,22 @@ public interface SwaggerSuite {
     //util
     //==========
 
+    default <S extends Scenario> int findId(S scenario, BiPredicate<? super S, ? super ScenarioMetaData> filter) {
+        for(ScenarioMetaData metaData: getMetaData()) {
+            if(filter.test(scenario, metaData)) {
+                return metaData.getId();
+            }
+        }
+        return -1;
+    }
+
     default <S extends Scenario> void findAllIds(
             Collection<? extends S> scenarios,
             BiPredicate<? super S, ? super ScenarioMetaData> filter,
             Map<S, Integer> out) {
         for(S scenario: scenarios) {
-            boolean metaDataNotFound = true;
-            for(ScenarioMetaData metaData: getMetaData()) {
-                if(filter.test(scenario, metaData)) {
-                    out.put(scenario, metaData.getId());
-                    metaDataNotFound = false;
-                    break;
-                }
-            }
-            if(metaDataNotFound) {
-                out.put(scenario, -1);
-            }
+            int id = findId(scenario, filter);
+            out.put(scenario, id);
         }
     }
 
@@ -109,5 +110,27 @@ public interface SwaggerSuite {
     //Simulation
     //=========================
 
+    GenericResult startSimulation(Scenario scenario) throws IOException, CurlException, InterruptedException;
 
+    //==========
+    //locale
+    //==========
+
+    Stream<SimulationState> streamStates();
+
+    Collection<SimulationState> getStates();
+
+    void localeLoadStates() throws IOException;
+
+    void localeStoreStates() throws IOException;
+
+    void localeClearStates();
+
+    void backupLocaleStates() throws IOException;
+
+    //==========
+    //remote
+    //==========
+
+    void remoteLoadSimulationStates() throws IOException, CurlException, InterruptedException;
 }

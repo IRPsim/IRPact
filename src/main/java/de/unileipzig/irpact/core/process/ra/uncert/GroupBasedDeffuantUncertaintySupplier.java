@@ -4,12 +4,10 @@ import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.develop.AddToPersist;
 
 /**
  * @author Daniel Abitz
  */
-@AddToPersist
 public class GroupBasedDeffuantUncertaintySupplier extends NameableBase implements UncertaintySupplier {
 
     protected GroupBasedDeffuantUncertaintyData data;

@@ -31,6 +31,11 @@ public class SimulationState extends Base {
     }
 
     @Override
+    public JsonNode getRoot() {
+        return super.getRoot();
+    }
+
+    @Override
     public ObjectNode getRootAsObject() {
         return super.getRootAsObject();
     }
@@ -62,6 +67,10 @@ public class SimulationState extends Base {
 
     public int getId() {
         return JsonUtil.getInt(root, "id", -1);
+    }
+
+    public String getIdString() {
+        return Integer.toString(getId());
     }
 
     public boolean isRunning() {

@@ -161,6 +161,10 @@ public class ScenarioMetaData extends Base {
         return filterCreator(modelCreator -> Objects.equals(modelCreator, creator));
     }
 
+    public static Predicate<ScenarioMetaData> filterName(Predicate<? super String> filter) {
+        return state -> state != null && filter.test(state.getName());
+    }
+
     public static BiPredicate<AbstractScenario, ScenarioMetaData> filterNameCreatorDescription() {
         return (scenario, metaData) -> Objects.equals(scenario.getName(), metaData.getName())
                 && Objects.equals(scenario.getCreator(), metaData.getCreator())

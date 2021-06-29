@@ -3,7 +3,6 @@ package de.unileipzig.irpact.core.process.ra.uncert;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.develop.AddToPersist;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -11,7 +10,6 @@ import java.util.Set;
 /**
  * @author Daniel Abitz
  */
-@AddToPersist
 public class GlobalDeffuantUncertaintySupplier extends NameableBase implements UncertaintySupplier {
 
     protected GlobalDeffuantUncertaintyData data;

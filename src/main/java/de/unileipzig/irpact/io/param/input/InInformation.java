@@ -40,6 +40,10 @@ public class InInformation implements InIRPactEntity {
     public InInformation() {
     }
 
+    public InInformation(String text) {
+        setName(text);
+    }
+
     @Override
     public String getName() {
         return _name;

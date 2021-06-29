@@ -5,7 +5,6 @@ import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.io.param.input.InExample;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.InScenarioVersion;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -36,7 +35,6 @@ import de.unileipzig.irptools.graphviz.def.GraphvizGlobal;
 import de.unileipzig.irptools.graphviz.def.GraphvizLayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.def.GraphvizOutputFormat;
 
-import java.nio.file.Path;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,12 +46,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class ImageDemo extends AbstractScenario {
 
+    public static final int REVISION = 1;
+
     public ImageDemo(String name, String creator, String description) {
         super(name, creator, description);
-    }
-
-    public ImageDemo(String name, String creator, String description, Path logPath, Path outputDir, Path downloadDir) {
-        super(name, creator, description, logPath, outputDir, downloadDir);
+        setRevision(REVISION);
     }
 
     @Override
@@ -136,7 +133,7 @@ public class ImageDemo extends AbstractScenario {
         general.setFirstSimulationYear(2015);
 
         //=====
-        InRoot root = new InRoot();
+        InRoot root = createRootWithInformations();
         InExample.initOptAct(root);
         InExample.initGV(root);
 
@@ -168,7 +165,6 @@ public class ImageDemo extends AbstractScenario {
         root.graphvizGlobal.scaleFactor = 0.0;
 
         //=====
-        root.version = new InScenarioVersion[]{InScenarioVersion.currentVersion()};
         root.general = general;
         root.setAffinities(new InAffinities("affs", new InComplexAffinityEntry[]{cag0_cag0, cag0_cag1, cag1_cag1, cag1_cag0}));
         root.consumerAgentGroups = new InConsumerAgentGroup[]{cag0, cag1};

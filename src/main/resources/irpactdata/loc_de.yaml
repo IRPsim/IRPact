@@ -798,8 +798,8 @@ InRAProcessModel_speedOfConvergence:
   gams_identifier: "speed of convergence"
   gams_description: "speed of convergence"
 InRAProcessModel_attitudeGab:
-  gams_identifier: "attritude gab"
-  gams_description: "attritude gab"
+  gams_identifier: "attitude gab"
+  gams_description: "attitude gab"
 InRAProcessModel_chanceNeutral:
   gams_identifier: "Wahrscheinlichkeit Neutral"
   gams_description: "Wahrscheinlichkeit für einen neutralen Ausgang."
@@ -817,7 +817,7 @@ InRAProcessModel_pvFile:
   gams_description: "Legt die zu nutzende PV-Datei fest."
 InRAProcessModel_uncertainties:
   gams_identifier: "Unsicherheiten"
-  gams_description: "Bestimmt die Unsicherheiten, welche von diesem Modell verwendet werden. (todo)"
+  gams_description: "Legt die Unsicherheiten, welche von diesem Modell verwendet werden sollen."
 
 process_model_ra_uncert:
   edn_label: "Unsicherheit"

@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.io.param.input;
 
+import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.EdnParameter;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -35,10 +37,18 @@ public class InTestData implements InIRPactEntity {
 
     public String _name;
 
-    @FieldDefinition
+    @FieldDefinition(
+            edn = @EdnParameter(
+                    delta = Constants.TRUE1
+            )
+    )
     public double testValue1;
 
-    @FieldDefinition
+    @FieldDefinition(
+            edn = @EdnParameter(
+                    delta = Constants.TRUE1
+            )
+    )
     public double testValue2;
 
     public InTestData() {

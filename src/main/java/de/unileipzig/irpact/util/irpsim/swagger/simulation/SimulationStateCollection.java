@@ -1,9 +1,17 @@
 package de.unileipzig.irpact.util.irpsim.swagger.simulation;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
 import de.unileipzig.irpact.commons.util.JsonUtil;
+import de.unileipzig.irptools.util.Util;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collector;
@@ -24,6 +32,35 @@ public class SimulationStateCollection implements Iterable<SimulationState> {
 
     public SimulationStateCollection(ObjectMapper mapper) {
         this.mapper = mapper;
+    }
+
+    public void clear() {
+        states.clear();
+    }
+
+    public void parse(Path source) throws IOException {
+        parse(source, StandardCharsets.UTF_8);
+    }
+
+    public void parse(Path source, Charset charset) throws IOException {
+        ArrayNode root = JsonUtil.read(source, charset, mapper);
+        if(root == null) return;
+        for(JsonNode entry: Util.iterateElements(root)) {
+            SimulationState state = new SimulationState(entry);
+            put(state);
+        }
+    }
+
+    public void store(Path target) throws IOException {
+        store(target, StandardCharsets.UTF_8);
+    }
+
+    public void store(Path target, Charset charset) throws IOException {
+        ObjectNode root = mapper.createObjectNode();
+        for(SimulationState data: states.values()) {
+            root.set(data.getIdString(), data.getRootAsObject());
+        }
+        JsonUtil.write(root, target, charset, JsonUtil.DEFAULT, mapper);
     }
 
     public boolean hasSimulationState(int id) {
@@ -62,6 +99,10 @@ public class SimulationStateCollection implements Iterable<SimulationState> {
     public int[] filterIds(Predicate<? super SimulationState> filter) {
         return stream().filter(filter)
                 .collect(toIdArray());
+    }
+
+    public Collection<SimulationState> getStates() {
+        return states.values();
     }
 
     @Override
