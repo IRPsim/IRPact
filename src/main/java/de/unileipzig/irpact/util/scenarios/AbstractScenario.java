@@ -3,13 +3,18 @@ package de.unileipzig.irpact.util.scenarios;
 import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
 import de.unileipzig.irpact.commons.util.IRPArgs;
 import de.unileipzig.irpact.commons.util.JsonUtil;
+import de.unileipzig.irpact.io.param.input.InGeneral;
+import de.unileipzig.irpact.io.param.input.InInformation;
 import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.input.InScenarioVersion;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.start.Start3;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.perennial.PerennialData;
 import de.unileipzig.irptools.io.perennial.PerennialFile;
+import de.unileipzig.irptools.io.swagger.DownloadedSwaggerData;
+import de.unileipzig.irptools.io.swagger.DownloadedSwaggerFile;
 import de.unileipzig.irptools.io.swagger.UploadableSwaggerData;
 import de.unileipzig.irptools.io.swagger.UploadableSwaggerFile;
 
@@ -29,32 +34,28 @@ public abstract class AbstractScenario implements Scenario {
     protected String name;
     protected String creator;
     protected String description;
+    protected String businessModelDescription;
+    protected String investmentCustomerSide;
+    protected String parameterAttention;
+
+    protected int revision = 0;
 
     protected Path logPath;
     protected Path outputDir;
     protected Path downloadDir;
     protected Path outputPath;
 
-    public AbstractScenario(
-            String name,
-            String creator,
-            String description) {
-        this(name, creator, description, null, null, null);
+    public AbstractScenario() {
+        this(null, null, null);
     }
 
     public AbstractScenario(
             String name,
             String creator,
-            String description,
-            Path logPath,
-            Path outputDir,
-            Path downloadDir) {
+            String description) {
         setName(name);
         setCreator(creator);
         setDescription(description);
-        setLogPath(logPath);
-        setOutputDir(outputDir);
-        setDownloadDir(downloadDir);
     }
 
     protected void updateArgs(IRPArgs args) {
@@ -131,6 +132,30 @@ public abstract class AbstractScenario implements Scenario {
         return description;
     }
 
+    public void setBusinessModelDescription(String businessModelDescription) {
+        this.businessModelDescription = businessModelDescription;
+    }
+
+    public String getBusinessModelDescription() {
+        return businessModelDescription;
+    }
+
+    public void setInvestmentCustomerSide(String investmentCustomerSide) {
+        this.investmentCustomerSide = investmentCustomerSide;
+    }
+
+    public String getInvestmentCustomerSide() {
+        return investmentCustomerSide;
+    }
+
+    public void setParameterAttention(String parameterAttention) {
+        this.parameterAttention = parameterAttention;
+    }
+
+    public String getParameterAttention() {
+        return parameterAttention;
+    }
+
     public void setLogPath(Path logPath) {
         this.logPath = logPath;
     }
@@ -170,6 +195,32 @@ public abstract class AbstractScenario implements Scenario {
                 throw new IRPactIllegalArgumentException("missing initial year (name '{}')", getName());
             }
         }
+    }
+
+    public int getRevision() {
+        return revision;
+    }
+
+    public void setRevision(int revision) {
+        this.revision = revision;
+    }
+
+    public AbstractScenario withRevision(int revision) {
+        setRevision(revision);
+        return this;
+    }
+
+    public InRoot createRootWithInformations() {
+        InRoot root = new InRoot();
+        root.addInformation(getRevisionInformation());
+        root.setVersion(InScenarioVersion.currentVersion());
+        root.general = new InGeneral();
+        root.general.setFirstSimulationYear(DEFAULT_INITIAL_YEAR);
+        return root;
+    }
+
+    public InInformation getRevisionInformation() {
+        return new InInformation("revision_" + getRevision());
     }
 
     @Override
@@ -214,6 +265,33 @@ public abstract class AbstractScenario implements Scenario {
             }
         }
         PerennialFile file = data.serialize(IRPact.getInputConverter());
+        JsonUtil.writeJson(file.root(), target, charset, pretty ? JsonUtil.DEFAULT : JsonUtil.MINIMAL);
+    }
+
+    @Override
+    public void storePostableTo(Path target, boolean pretty) throws IOException {
+        storePostableTo(target, StandardCharsets.UTF_8, pretty);
+    }
+
+    @Override
+    public void storePostableTo(Path target, Charset charset, boolean pretty) throws IOException {
+        List<InRoot> roots = createInRoots();
+        validate(roots);
+        DownloadedSwaggerData<InRoot> data = new DownloadedSwaggerData<>();
+        data.getDescription().reset();
+        data.getDescription().setBusinessModelDescription(getBusinessModelDescription());
+        data.getDescription().setInvestmentCustomerSide(getInvestmentCustomerSide());
+        data.getDescription().setParameterAttention(getParameterAttention());
+        data.getDescription().setCreator(getCreator());
+        for(InRoot root: roots) {
+            if(root == null) {
+                data.addNull(IRPact.MODELDEFINITION);
+            } else {
+                data.add(IRPact.MODELDEFINITION, root.general.getFirstSimulationYear(), root);
+            }
+        }
+        DownloadedSwaggerFile file = data.serialize(IRPact.getInputConverter());
+        file.getDescription().copyFrom(data.getDescription());
         JsonUtil.writeJson(file.root(), target, charset, pretty ? JsonUtil.DEFAULT : JsonUtil.MINIMAL);
     }
 }

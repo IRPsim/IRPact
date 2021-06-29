@@ -169,6 +169,16 @@ public class InRoot implements RootClass {
     @FieldDefinition
     public InInformation[] informations = new InInformation[0];
 
+    public InInformation[] getInformations() {
+        return informations;
+    }
+    public void setInformations(InInformation[] informations) {
+        this.informations = informations;
+    }
+    public void addInformation(InInformation inInformation) {
+        informations = ParamUtil.add(informations, inInformation);
+    }
+
     //=========================
     //affinity
     //=========================

@@ -10,6 +10,7 @@ import de.unileipzig.irpact.util.irpsim.swagger.scenario.PutResult;
 import de.unileipzig.irpact.util.irpsim.swagger.scenario.ScenarioMetaData;
 import de.unileipzig.irpact.util.irpsim.swagger.scenario.ScenarioMetaDataCollection;
 import de.unileipzig.irpact.util.irpsim.swagger.simulation.SimulationState;
+import de.unileipzig.irpact.util.irpsim.swagger.simulation.SimulationStateCollection;
 import de.unileipzig.irpact.util.scenarios.Scenario;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -25,6 +26,7 @@ import java.util.stream.Stream;
 /**
  * @author Daniel Abitz
  */
+@SuppressWarnings("unused")
 public final class JsonSwaggerSuite implements SwaggerSuite {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(JsonSwaggerSuite.class);
@@ -34,6 +36,9 @@ public final class JsonSwaggerSuite implements SwaggerSuite {
     protected final ScenarioMetaDataCollection metaDataCache = new ScenarioMetaDataCollection();
     protected Path metaDataPath;
     protected Charset metaDataCharset = StandardCharsets.UTF_8;
+    protected final SimulationStateCollection stateCollection = new SimulationStateCollection();
+    protected Path statePath;
+    protected Charset stateCharset = StandardCharsets.UTF_8;
 
     protected Charset dataCharset = StandardCharsets.UTF_8;
     protected Path backupDir;
@@ -45,9 +50,14 @@ public final class JsonSwaggerSuite implements SwaggerSuite {
     protected final Set<Integer> deleteScenarios = new TreeSet<>();
     protected final List<Scenario> addScenarios = new ArrayList<>();
 
-    public JsonSwaggerSuite(Swagger swagger, Path metaDataPath, Path backupDir) {
+    public JsonSwaggerSuite(
+            Swagger swagger,
+            Path metaDataPath,
+            Path statePath,
+            Path backupDir) {
         this.swagger = swagger;
         setMetaDataPath(metaDataPath);
+        setStatePath(statePath);
         setBackupDir(backupDir);
     }
 
@@ -69,6 +79,22 @@ public final class JsonSwaggerSuite implements SwaggerSuite {
 
     public Path getMetaDataPath() {
         return metaDataPath;
+    }
+
+    public void setStateCharset(Charset stateCharset) {
+        this.stateCharset = stateCharset;
+    }
+
+    public Charset getStateCharset() {
+        return stateCharset;
+    }
+
+    public void setStatePath(Path statePath) {
+        this.statePath = statePath;
+    }
+
+    public Path getStatePath() {
+        return statePath;
     }
 
     public void setAutoBackup(boolean autoBackup) {
@@ -98,6 +124,10 @@ public final class JsonSwaggerSuite implements SwaggerSuite {
     //=========================
     //util
     //=========================
+
+    protected Path createTempFile() throws IOException {
+        return swagger.createTempFile();
+    }
 
     protected Path createBackupPath(Path input, long timestamp) {
         String suffix = "-backup-" + timestamp;
@@ -342,5 +372,71 @@ public final class JsonSwaggerSuite implements SwaggerSuite {
         return createSubDir(dir, Integer.toString(year));
     }
 
+    @Override
+    public GenericResult startSimulation(Scenario scenario) throws IOException, CurlException, InterruptedException {
+        return swagger.startSimulation(scenario);
+    }
 
+    //==========
+    //locale
+    //==========
+
+    @Override
+    public Stream<SimulationState> streamStates() {
+        return stateCollection.stream();
+    }
+
+    @Override
+    public Collection<SimulationState> getStates() {
+        return stateCollection.getStates();
+    }
+
+    @Override
+    public void localeLoadStates() throws IOException {
+        LOGGER.trace("load states: {}", statePath);
+        stateCollection.parse(statePath, stateCharset);
+        LOGGER.trace("load finished");
+    }
+
+    @Override
+    public void localeStoreStates() throws IOException {
+        LOGGER.trace("store states: {}", statePath);
+        stateCollection.store(statePath, stateCharset);
+        LOGGER.trace("store finished");
+    }
+
+    @Override
+    public void localeClearStates() {
+        stateCollection.clear();
+    }
+
+    @Override
+    public void backupLocaleStates() throws IOException {
+        long now = System.currentTimeMillis();
+        Path metaBackupPath = createBackupPath(statePath, now);
+
+        LOGGER.trace("create states backup: {}", metaBackupPath);
+        stateCollection.store(metaBackupPath, stateCharset);
+        LOGGER.trace("backup finished");
+    }
+
+    //==========
+    //remote
+    //==========
+
+    @Override
+    public void remoteLoadSimulationStates() throws IOException, CurlException, InterruptedException {
+        if(autoBackup) {
+            backupLocaleStates();
+        }
+
+        LOGGER.trace("load all simulation states");
+        swagger.storeAllSimulationStates(statePath);
+        LOGGER.trace("stored: {}", statePath);
+        changePrettyPrinter(statePath, stateCharset, loadRemotePrettyPrinter);
+        LOGGER.trace("formatting changed");
+
+        stateCollection.clear();
+        stateCollection.parse(metaDataPath, metaDataCharset);
+    }
 }

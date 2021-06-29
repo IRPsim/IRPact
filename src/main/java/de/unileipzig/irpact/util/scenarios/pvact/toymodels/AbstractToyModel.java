@@ -21,23 +21,17 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
 
     protected BiConsumer<InRoot, OutRoot> resultConsumer;
 
-    public AbstractToyModel(
-            String name,
-            String creator,
-            String description,
-            BiConsumer<InRoot, OutRoot> resultConsumer) {
-        this(name, creator, description, null, null, null, resultConsumer);
+    public AbstractToyModel(BiConsumer<InRoot, OutRoot> resultConsumer) {
+        super();
+        this.resultConsumer = Objects.requireNonNull(resultConsumer);
     }
 
     public AbstractToyModel(
             String name,
             String creator,
             String description,
-            Path logPath,
-            Path outputDir,
-            Path downloadDir,
             BiConsumer<InRoot, OutRoot> resultConsumer) {
-        super(name, creator, description, logPath, outputDir, downloadDir);
+        super(name, creator, description);
         this.resultConsumer = Objects.requireNonNull(resultConsumer);
     }
 

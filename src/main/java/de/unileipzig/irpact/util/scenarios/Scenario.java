@@ -16,4 +16,8 @@ public interface Scenario {
     void storeRunnableTo(Path target, boolean pretty) throws IOException;
 
     void storeRunnableTo(Path target, Charset charset, boolean pretty) throws IOException;
+
+    void storePostableTo(Path target, boolean pretty) throws IOException;
+
+    void storePostableTo(Path target, Charset charset, boolean pretty) throws IOException;
 }

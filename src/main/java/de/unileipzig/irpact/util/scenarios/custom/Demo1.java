@@ -38,7 +38,6 @@ import de.unileipzig.irptools.graphviz.def.GraphvizLayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.def.GraphvizOutputFormat;
 
 import java.awt.*;
-import java.nio.file.Path;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,10 +51,6 @@ public class Demo1 extends AbstractScenario {
 
     public Demo1(String name, String creator, String description) {
         super(name, creator, description);
-    }
-
-    public Demo1(String name, String creator, String description, Path logPath, Path outputDir, Path downloadDir) {
-        super(name, creator, description, logPath, outputDir, downloadDir);
     }
 
     @Override

@@ -11,6 +11,7 @@ import de.unileipzig.irpact.util.curl.CurlException;
 import de.unileipzig.irpact.util.irpsim.swagger.scenario.*;
 import de.unileipzig.irpact.util.irpsim.swagger.simulation.SimulationState;
 import de.unileipzig.irpact.util.scenarios.Scenario;
+import de.unileipzig.irptools.io.swagger.DownloadedSwaggerFile;
 import de.unileipzig.irptools.io.swagger.UploadableSwaggerFile;
 import de.unileipzig.irptools.util.Util;
 
@@ -368,17 +369,6 @@ public final class Swagger {
         return new PutResult(result);
     }
 
-    public PutResult storeScenario(UploadableSwaggerFile data) throws IOException, CurlException, InterruptedException {
-        Path dataTemp = null;
-        try {
-            dataTemp = createTempFile();
-            JsonUtil.writeJson(data.root(), dataTemp, JsonUtil.MINIMAL);
-            return storeScenario(dataTemp);
-        } finally {
-            FileUtil.deleteIfExists(dataTemp);
-        }
-    }
-
     public PutResult storeScenario(Scenario scenario) throws IOException, CurlException, InterruptedException {
         Path dataTemp = null;
         try {
@@ -420,20 +410,47 @@ public final class Swagger {
         return new PutResult(result);
     }
 
-    public PutResult replaceScenario(int id, UploadableSwaggerFile replacement) throws IOException, CurlException, InterruptedException {
+    //==================================================
+    //simulation
+    //==================================================
+
+    //==========
+    //POST /simulations
+    //==========
+
+    private String postSimulationUrl;
+    public void setPostSimulationUrl(String postSimulationUrl) {
+        this.postSimulationUrl = postSimulationUrl;
+    }
+    public String getPostSimulationUrl() {
+        return postSimulationUrl;
+    }
+
+    public GenericResult startSimulation(Path source) throws CurlException, IOException, InterruptedException {
+        Curl curl = new Curl()
+                .silent()
+                .showError()
+                .target(getPostSimulationUrl())
+                .POST()
+                .contentTypeJson()
+                .acceptJson()
+                .fileContent(source)
+                .user(getUser(), getPassword());
+
+        JsonNode result = executeToJson(curl);
+        return new GenericResult(result);
+    }
+
+    public GenericResult startSimulation(Scenario scenario) throws IOException, CurlException, InterruptedException {
         Path dataTemp = null;
         try {
             dataTemp = createTempFile();
-            JsonUtil.writeJson(replacement.root(), dataTemp, JsonUtil.MINIMAL);
-            return replaceScenario(id, dataTemp);
+            scenario.storePostableTo(dataTemp, false);
+            return startSimulation(dataTemp);
         } finally {
             FileUtil.deleteIfExists(dataTemp);
         }
     }
-
-    //==================================================
-    //simulation
-    //==================================================
 
     //==========
     //GET /simulations/states
@@ -486,11 +503,11 @@ public final class Swagger {
     //==========
 
     private String getGdxresultfileUrl;
-    public void setGetGdxresultfileUrl(String getSimulationStatesUrl) {
-        this.getSimulationStatesUrl = getSimulationStatesUrl;
+    public void setGetGdxresultfileUrl(String getGdxresultfileUrl) {
+        this.getGdxresultfileUrl = getGdxresultfileUrl;
     }
     public String getGetGdxresultfileUrl() {
-        return getSimulationStatesUrl;
+        return getGdxresultfileUrl;
     }
     public String buildGetGdxresultfileUrl(int simulationId, int yearIndex, int modelIndex) {
         return StringUtil.format(getGetGdxresultfileUrl(), simulationId, yearIndex, modelIndex);
@@ -565,7 +582,6 @@ public final class Swagger {
     }
 
     //==========
-    //DEV
     //GET /simulations/{simulationid}/{year}/{modelindex}/{imagename}
     //==========
 
@@ -597,7 +613,6 @@ public final class Swagger {
     }
 
     //==========
-    //DEV
     //GET /simulations/{simulationid}/{year}/{modelindex}/bulkImages
     //==========
 
@@ -626,5 +641,36 @@ public final class Swagger {
                 .user(getUser(), getPassword());
 
         return execute(curl);
+    }
+
+    //==========
+    //GET /simulations/{simulationid}/{year}/{modelindex}/bulkImagesExists
+    //==========
+
+    private String getBulkImagesExistsUrl;
+    public void setGetBulkImagesExistsUrl(String getBulkImagesExistsUrl) {
+        this.getBulkImagesExistsUrl = getBulkImagesExistsUrl;
+    }
+    public String getGetBulkImagesExistsUrl() {
+        return getBulkImagesExistsUrl;
+    }
+    public String buildGetBulkImagesExistsUrl(int simulationId, int yearIndex, int modelIndex) {
+        return StringUtil.format(getGetBulkImagesExistsUrl(), simulationId, yearIndex, modelIndex);
+    }
+
+    public GenericResult hasImages(int simulationId, int yearIndex) throws CurlException, IOException, InterruptedException {
+        return hasImages(simulationId, yearIndex, getDefaulModelIndex());
+    }
+    public GenericResult hasImages(int simulationId, int yearIndex, int modelIndex) throws CurlException, IOException, InterruptedException {
+        Curl curl = new Curl()
+                .silent()
+                .showError()
+                .target(buildGetBulkImagesExistsUrl(simulationId, yearIndex, modelIndex))
+                .GET()
+                .acceptJson()
+                .user(getUser(), getPassword());
+
+        JsonNode result = executeToJson(curl);
+        return new GenericResult(result);
     }
 }

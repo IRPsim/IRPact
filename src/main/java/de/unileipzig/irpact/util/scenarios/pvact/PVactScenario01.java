@@ -2,7 +2,6 @@ package de.unileipzig.irpact.util.scenarios.pvact;
 
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.InScenarioVersion;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactConsumerAgentPopulation;
@@ -19,7 +18,6 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 
-import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,15 +26,13 @@ import java.util.List;
  */
 public class PVactScenario01 extends AbstractPVactScenario {
 
+    public static final int REVISION = 1;
+
     protected InDiracUnivariateDistribution dirac0 = new InDiracUnivariateDistribution("dirac0", 0);
 
     public PVactScenario01(String name, String creator, String description) {
         super(name, creator, description);
-        setTotalAgents(100);
-    }
-
-    public PVactScenario01(String name, String creator, String description, Path logPath, Path outputDir, Path downloadDir) {
-        super(name, creator, description, logPath, outputDir, downloadDir);
+        setRevision(REVISION);
         setTotalAgents(100);
     }
 
@@ -107,8 +103,7 @@ public class PVactScenario01 extends AbstractPVactScenario {
         general.setFirstSimulationYear(2015);
         general.lastSimulationYear = 2015;
 
-        InRoot root = new InRoot();
-        root.version = new InScenarioVersion[]{InScenarioVersion.currentVersion()};
+        InRoot root = createRootWithInformations();
         root.general = general;
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(cags);

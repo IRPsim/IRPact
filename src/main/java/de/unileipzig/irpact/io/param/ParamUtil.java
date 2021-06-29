@@ -9,6 +9,7 @@ import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -31,6 +32,12 @@ public final class ParamUtil {
     public static final Object[] VALUE_NEG_ONE = {"-1"};
 
     private ParamUtil() {
+    }
+
+    public static <T> T[] add(T[] arr, T value) {
+        T[] newArr = Arrays.copyOf(arr, arr.length + 1);
+        newArr[arr.length] = value;
+        return newArr;
     }
 
     public static String getClassNameWithoutClassSuffix(Class<?> c) {

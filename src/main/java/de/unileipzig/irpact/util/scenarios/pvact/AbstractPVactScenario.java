@@ -37,12 +37,12 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
 
     protected int totalAgents = -1;
 
-    public AbstractPVactScenario(String name, String creator, String description) {
-        super(name, creator, description);
+    public AbstractPVactScenario() {
+        super();
     }
 
-    public AbstractPVactScenario(String name, String creator, String description, Path logPath, Path outputDir, Path downloadDir) {
-        super(name, creator, description, logPath, outputDir, downloadDir);
+    public AbstractPVactScenario(String name, String creator, String description) {
+        super(name, creator, description);
     }
 
     public void setTotalAgents(int totalAgents) {
@@ -162,6 +162,10 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
             supplier.setDesiredSize(agents);
         }
         return supplier;
+    }
+
+    public InComplexAffinityEntry createAffinityEntry(String prefix, InConsumerAgentGroup a, InConsumerAgentGroup b, double value) {
+        return new InComplexAffinityEntry(prefix + "_" + a.getName() + "_" + b.getName(), a, b, value);
     }
 
     public InAffinities createAffinities(String name, InAffinityEntry... entries) {

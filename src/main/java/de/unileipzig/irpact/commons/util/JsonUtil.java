@@ -19,6 +19,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 /**
@@ -35,6 +36,23 @@ public final class JsonUtil {
     public static final PrettyPrinter MINIMAL = new MinimalPrettyPrinter("");
 
     private JsonUtil() {
+    }
+
+    public static void applyPrettyPrinter(Path input, PrettyPrinter printer) throws IOException {
+        applyPrettyPrinter(input, StandardCharsets.UTF_8, printer);
+    }
+
+    public static void applyPrettyPrinter(Path input, Charset charset, PrettyPrinter printer) throws IOException {
+        Path dir = input.getParent();
+        Path temp = null;
+        try {
+            temp = Files.createTempFile(dir, "", "");
+            JsonNode node = readJson(input, charset);
+            writeJson(node, temp, charset, printer);
+            Files.move(temp, input, StandardCopyOption.REPLACE_EXISTING);
+        } finally {
+            FileUtil.deleteIfExists(temp);
+        }
     }
 
     public static String toMinimalString(JsonNode node) {
