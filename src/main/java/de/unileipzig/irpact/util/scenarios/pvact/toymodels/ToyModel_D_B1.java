@@ -6,9 +6,7 @@ import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
-import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.InScenarioVersion;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
@@ -23,6 +21,7 @@ import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDe
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.output.OutRoot;
@@ -59,12 +58,15 @@ public class ToyModel_D_B1 extends AbstractToyModel {
 
     public ToyModel_D_B1(BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(resultConsumer);
-        setRevision(REVISION);
-        setTotalAgents(SIZE_S + SIZE_P + SIZE_M + SIZE_L);
+        init();
     }
 
     public ToyModel_D_B1(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(name, creator, description, resultConsumer);
+        init();
+    }
+
+    protected void init() {
         setRevision(REVISION);
         setTotalAgents(SIZE_S + SIZE_P + SIZE_M + SIZE_L);
     }
@@ -130,7 +132,7 @@ public class ToyModel_D_B1 extends AbstractToyModel {
         SpatialTableFileLoader.writeXlsx(xlsxOutput, "Data", "Daten fuer " + getName(), outputData);
     }
 
-    protected InPVactConsumerAgentGroup createAgentGroup(String name) {
+    protected InPVactConsumerAgentGroup createAgentGroup(String name, InSpatialDistribution distribution) {
         InPVactConsumerAgentGroup grp = new InPVactConsumerAgentGroup();
         grp.setName(name);
 
@@ -155,6 +157,10 @@ public class ToyModel_D_B1 extends AbstractToyModel {
         grp.setInitialAdopter(dirac0);                            //D5
         grp.setInitialProductInterest(dirac1);                    //D6
 
+        if(distribution != null) {
+            grp.setSpatialDistribution(distribution);
+        }
+
         return grp;
     }
 
@@ -162,23 +168,19 @@ public class ToyModel_D_B1 extends AbstractToyModel {
     public List<InRoot> createInRoots() {
         InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
 
-        InPVactConsumerAgentGroup S = createAgentGroup("S");
-        S.setSpatialDistribution(spatialDist);
+        InPVactConsumerAgentGroup S = createAgentGroup("S", spatialDist);
         S.setInitialProductAwareness(bernoulli1);
         S.setInitialAdopter(bernoulli1);
 
-        InPVactConsumerAgentGroup P = createAgentGroup("P");
-        P.setSpatialDistribution(spatialDist);
+        InPVactConsumerAgentGroup P = createAgentGroup("P", spatialDist);
         P.setInitialProductAwareness(bernoulli07);
         P.setInitialAdopter(bernoulli07);
 
-        InPVactConsumerAgentGroup M = createAgentGroup("M");
-        M.setSpatialDistribution(spatialDist);
+        InPVactConsumerAgentGroup M = createAgentGroup("M", spatialDist);
         M.setInitialProductAwareness(bernoulli03);
         M.setInitialAdopter(bernoulli03);
 
-        InPVactConsumerAgentGroup L = createAgentGroup("L");
-        L.setSpatialDistribution(spatialDist);
+        InPVactConsumerAgentGroup L = createAgentGroup("L", spatialDist);
         L.setInitialProductAwareness(bernoulli01);
         L.setInitialAdopter(bernoulli01);
 

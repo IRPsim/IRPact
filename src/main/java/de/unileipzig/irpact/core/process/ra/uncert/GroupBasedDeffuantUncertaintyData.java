@@ -5,14 +5,12 @@ import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.commons.util.DoubleRange;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
-import de.unileipzig.irpact.develop.AddToPersist;
 
 import java.util.*;
 
 /**
  * @author Daniel Abitz
  */
-@AddToPersist
 public class GroupBasedDeffuantUncertaintyData extends NameableBase implements DeffuantUncertaintyData {
 
     protected Map<String, DoubleRange> ranges;
