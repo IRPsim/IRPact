@@ -347,6 +347,16 @@ public final class ParamUtil {
         }
     }
 
+    public static void setDefault(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String[] fields,
+            Object[] defaults) {
+        for(String field: fields) {
+            setDefault(res, c, field, defaults);
+        }
+    }
+
     public static void setRules(
             TreeAnnotationResource res,
             Class<?> c,
