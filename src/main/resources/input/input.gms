@@ -512,8 +512,8 @@ SET set_InGenericOutputImage(set_InOutputImage)
 PARAMETER par_InGenericOutputImage_engine(set_InGenericOutputImage)
 
 * - domain: [0, 3]
-* - description: Gibt an, welche Daten visualisiert werden sollen. Aktuell unterstützt: 
-* - identifier: Datenvisualisierung (Name noch anpassen)
+* - description: Gibt an, welche Daten visualisiert werden sollen. Aktuell unterstützt: nichts (0), jährlichen Adoptionen nach PLZ (1), jährlichen Adoptionen nach PLZ im Vergleich zu realen Daten (1), kumulierte jährliche Adoptionen nach Phase (3).
+* - identifier: Zu visualisierende Daten
 * - type: Integer
 PARAMETER par_InGenericOutputImage_mode(set_InGenericOutputImage)
 
@@ -1005,8 +1005,8 @@ PARAMETER par_InRAProcessModel_logisticFactor(set_InRAProcessModel)
 PARAMETER par_InRAProcessModel_speedOfConvergence(set_InRAProcessModel)
 
 * - default: 1.75
-* - description: attritude gab
-* - identifier: attritude gab
+* - description: attitude gab
+* - identifier: attitude gab
 * - type: Float
 PARAMETER par_InRAProcessModel_attitudeGab(set_InRAProcessModel)
 
@@ -1041,7 +1041,7 @@ PARAMETER par_link_InRAProcessModel_InRAProcessPlanNodeFilterScheme_nodeFilterSc
 * - type: Boolean
 PARAMETER par_link_InRAProcessModel_InPVFile_pvFile(set_InRAProcessModel,set_InPVFile)
 
-* - description: Bestimmt die Unsicherheiten, welche von diesem Modell verwendet werden. (todo)
+* - description: Legt die Unsicherheiten, welche von diesem Modell verwendet werden sollen.
 * - identifier: Unsicherheiten
 * - type: Boolean
 PARAMETER par_link_InRAProcessModel_InUncertainty_uncertainties(set_InRAProcessModel,set_InUncertainty)
@@ -1298,6 +1298,7 @@ PARAMETER par_InSpace2D_useEuclid(set_InSpace2D)
 * - type: Boolean
 PARAMETER par_InSpace2D_useMaximum(set_InSpace2D)
 
+* - default: 1
 * - description: Nutzt die Haversine-Formel für die Berechnung der Entfernungen. Die Berechnungen finden auf Kilometerbasis statt.
 * - identifier: Haversine (km)
 * - type: Boolean
@@ -1317,6 +1318,8 @@ SET set_InTimeModel(*)
 * - type: String
 SET set_InUnitStepDiscreteTimeModel(set_InTimeModel)
 
+* - default: 1
+* - domain: (0,)
 * - description: Legt die Zeitdauer fest, welche pro diskreten Schritt vergeht.
 * - identifier: Zeitdauer
 * - type: Integer
@@ -1347,6 +1350,7 @@ PARAMETER par_InUnitStepDiscreteTimeModel_useH(set_InUnitStepDiscreteTimeModel)
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useD(set_InUnitStepDiscreteTimeModel)
 
+* - default: 1
 * - description: Verwendet Wochen als Einheit für die Zeitdauer.
 * - identifier: Wochen
 * - type: Boolean
@@ -1551,6 +1555,189 @@ PARAMETER par_InTestData_testValue1(set_InTestData)
 * - identifier: Testwert 2
 * - type: Float
 PARAMETER par_InTestData_testValue2(set_InTestData)
+
+* - default: 1
+* - description: value01
+* - identifier: value01
+* - rule: IF (par_InTestData_value01 == 1, par_InTestData_value02 = 0)
+* - rule: IF (par_InTestData_value01 == 0, par_InTestData_value02 = 1)
+* - type: Boolean
+PARAMETER par_InTestData_value01(set_InTestData)
+
+* - description: value02
+* - identifier: value02
+* - rule: IF (par_InTestData_value02 == 1, par_InTestData_value01 = 0)
+* - rule: IF (par_InTestData_value02 == 0, par_InTestData_value02 = 1)
+* - rule: IF (par_InTestData_value02 == 0, par_InTestData_value01 = 0)
+* - type: Boolean
+PARAMETER par_InTestData_value02(set_InTestData)
+
+* - default: 1
+* - description: value11
+* - identifier: value11
+* - rule: IF (par_InTestData_value11 == 1, par_InTestData_value12 = 0)
+* - rule: IF (par_InTestData_value11 == 1, par_InTestData_value13 = 0)
+* - rule: IF (par_InTestData_value11 == 1, par_InTestData_value14 = 0)
+* - rule: IF (par_InTestData_value11 == 0, par_InTestData_value14 = 1)
+* - rule: IF (par_InTestData_value11 == 0, par_InTestData_value12 = 0)
+* - rule: IF (par_InTestData_value11 == 0, par_InTestData_value13 = 0)
+* - type: Boolean
+PARAMETER par_InTestData_value11(set_InTestData)
+
+* - description: value12
+* - identifier: value12
+* - rule: IF (par_InTestData_value12 == 1, par_InTestData_value11 = 0)
+* - rule: IF (par_InTestData_value12 == 1, par_InTestData_value13 = 0)
+* - rule: IF (par_InTestData_value12 == 1, par_InTestData_value14 = 0)
+* - rule: IF (par_InTestData_value12 == 0, par_InTestData_value14 = 1)
+* - rule: IF (par_InTestData_value12 == 0, par_InTestData_value11 = 0)
+* - rule: IF (par_InTestData_value12 == 0, par_InTestData_value13 = 0)
+* - type: Boolean
+PARAMETER par_InTestData_value12(set_InTestData)
+
+* - description: value13
+* - identifier: value13
+* - rule: IF (par_InTestData_value13 == 1, par_InTestData_value11 = 0)
+* - rule: IF (par_InTestData_value13 == 1, par_InTestData_value12 = 0)
+* - rule: IF (par_InTestData_value13 == 1, par_InTestData_value14 = 0)
+* - rule: IF (par_InTestData_value13 == 0, par_InTestData_value14 = 1)
+* - rule: IF (par_InTestData_value13 == 0, par_InTestData_value11 = 0)
+* - rule: IF (par_InTestData_value13 == 0, par_InTestData_value12 = 0)
+* - type: Boolean
+PARAMETER par_InTestData_value13(set_InTestData)
+
+* - description: value14
+* - identifier: value14
+* - rule: IF (par_InTestData_value14 == 1, par_InTestData_value11 = 0)
+* - rule: IF (par_InTestData_value14 == 1, par_InTestData_value12 = 0)
+* - rule: IF (par_InTestData_value14 == 1, par_InTestData_value13 = 0)
+* - rule: IF (par_InTestData_value14 == 0, par_InTestData_value14 = 1)
+* - rule: IF (par_InTestData_value14 == 0, par_InTestData_value11 = 0)
+* - rule: IF (par_InTestData_value14 == 0, par_InTestData_value12 = 0)
+* - rule: IF (par_InTestData_value14 == 0, par_InTestData_value13 = 0)
+* - type: Boolean
+PARAMETER par_InTestData_value14(set_InTestData)
+
+* - default: 1
+* - description: value21
+* - identifier: value21
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value26 = 0)
+* - type: Boolean
+PARAMETER par_InTestData_value21(set_InTestData)
+
+* - description: value22
+* - identifier: value22
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value26 = 0)
+* - type: Boolean
+PARAMETER par_InTestData_value22(set_InTestData)
+
+* - description: value23
+* - identifier: value23
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value26 = 0)
+* - type: Boolean
+PARAMETER par_InTestData_value23(set_InTestData)
+
+* - description: value24
+* - identifier: value24
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value26 = 0)
+* - type: Boolean
+PARAMETER par_InTestData_value24(set_InTestData)
+
+* - description: value25
+* - identifier: value25
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value26 = 0)
+* - type: Boolean
+PARAMETER par_InTestData_value25(set_InTestData)
+
+* - description: value26
+* - identifier: value26
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value25 = 0)
+* - type: Boolean
+PARAMETER par_InTestData_value26(set_InTestData)
+
+* - description: value27
+* - identifier: value27
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value26 = 0)
+* - type: Boolean
+PARAMETER par_InTestData_value27(set_InTestData)
 
 * - description: Einlesen des zu optimierenden Jahres
 * - hidden: 1

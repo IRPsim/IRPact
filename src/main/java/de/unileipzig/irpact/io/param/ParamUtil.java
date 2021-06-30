@@ -6,13 +6,17 @@ import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
+import de.unileipzig.irptools.Constants;
+import de.unileipzig.irptools.util.RuleBuilder;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
 /**
  * @author Daniel Abitz
@@ -27,6 +31,7 @@ public final class ParamUtil {
     public static final String BOOLEAN_DOMAIN = "[0|1]";
     public static final String CLOSED_0_1_DOMAIN = "[0,1]";
     public static final String GEQ0_DOMAIN = "[0,)";
+    public static final String GE0_DOMAIN = "(0,)";
     public static final Object[] VALUE_TRUE = {"1"};
     public static final Object[] VALUE_FALSE = {"0"};
     public static final Object[] VALUE_NEG_ONE = {"-1"};
@@ -48,6 +53,14 @@ public final class ParamUtil {
         } else {
             return name.substring(0, dot);
         }
+    }
+
+    public static String buildDefaultPar(Class<?> c, String field) {
+        return Constants.PAR + getClassNameWithoutClassSuffix(c) + "_" + field;
+    }
+
+    public static UnaryOperator<String> buildDefaultParOperator(Class<?> c) {
+        return field -> buildDefaultPar(c, field);
     }
 
     public static Object[] varargs(Object singleton) {
@@ -331,6 +344,38 @@ public final class ParamUtil {
             Object[] defaults) {
         if(defaults != null && defaults.length > 0) {
             computeEntryBuilderIfAbsent(res, c, field).setGamsDefault(StringUtil.concat(", ", defaults));
+        }
+    }
+
+    public static void setDefault(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String[] fields,
+            Object[] defaults) {
+        for(String field: fields) {
+            setDefault(res, c, field, defaults);
+        }
+    }
+
+    public static void setRules(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String field,
+            String[] rules) {
+        if(rules != null && rules.length > 0) {
+            computeEntryBuilderIfAbsent(res, c, field).setGamsRules(rules);
+        }
+    }
+
+    public static void setRules(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String[] fields,
+            RuleBuilder builder,
+            UnaryOperator<String> field2par) {
+        for(String field: fields) {
+            String par = field2par.apply(field);
+            setRules(res, c, field, builder.buildFor(par));
         }
     }
 

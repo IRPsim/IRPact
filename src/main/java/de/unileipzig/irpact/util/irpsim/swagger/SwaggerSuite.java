@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
@@ -116,6 +117,15 @@ public interface SwaggerSuite {
     //locale
     //==========
 
+    default int findStateId(Predicate<? super SimulationState> filter) {
+        for(SimulationState state: getStates()) {
+            if(filter.test(state)) {
+                return state.getId();
+            }
+        }
+        return -1;
+    }
+
     Stream<SimulationState> streamStates();
 
     Collection<SimulationState> getStates();
@@ -133,4 +143,10 @@ public interface SwaggerSuite {
     //==========
 
     void remoteLoadSimulationStates() throws IOException, CurlException, InterruptedException;
+
+    void downloadOutput(int id, Path target) throws CurlException, IOException, InterruptedException;
+
+    boolean hasZip(int id) throws CurlException, IOException, InterruptedException;
+
+    void downloadZip(int id, Path target) throws CurlException, IOException, InterruptedException;
 }

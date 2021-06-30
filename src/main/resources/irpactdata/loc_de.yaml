@@ -117,8 +117,8 @@ InGenericOutputImage_engine:
   gams_identifier: "Visualisierungsprogramm"
   gams_description: "Bestimmt das Programm, mit dem die Bilder erzeugt werden sollen. IRPact unterstützt folgende Programme: R (1) und gnuplot (2)."
 InGenericOutputImage_mode:
-  gams_identifier: "Datenvisualisierung (Name noch anpassen)"
-  gams_description: "Gibt an, welche Daten visualisiert werden sollen. Aktuell unterstützt: "
+  gams_identifier: "Zu visualisierende Daten"
+  gams_description: "Gibt an, welche Daten visualisiert werden sollen. Aktuell unterstützt: nichts (0), jährlichen Adoptionen nach PLZ (1), jährlichen Adoptionen nach PLZ im Vergleich zu realen Daten (1), kumulierte jährliche Adoptionen nach Phase (3)."
 InGenericOutputImage_storeScript:
   gams_identifier: "Skript speichern?"
   gams_description: "Speichert auf Wunsch das Skript für die Bilderzeugung."
@@ -204,7 +204,7 @@ informations:
 
 about_irpact:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.3.0"
+  edn_description: "IRPact v0.3.1"
 InIRPactVersionPlaceholder_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -570,7 +570,7 @@ population:
 
 InFixConsumerAgentPopulation:
   edn_label: "Feste Konsumergruppengröße"
-  edn_description: "todo"
+  edn_description: "Erstellt eine Population mit festen Größen für die einzelnen Agentengruppen."
 InFixConsumerAgentPopulation_size:
   gams_identifier: "Anzahl der Agenten"
   gams_description: "Legt die Anzahl der Agenten bzw. die Populationsgröße für diese Konsumergruppe fest."
@@ -579,8 +579,8 @@ InFixConsumerAgentPopulation_cags:
   gams_description: "Legt die Konsumergruppen fest, welche diese Populationsgröße haben sollen."
 
 InFileBasedConsumerAgentPopulation:
-  edn_label: "Dynamische Konsumergruppengröße"
-  edn_description: "todo"
+  edn_label: "Dateibasierte dynamische Konsumergruppengröße"
+  edn_description: "Erstellt eine Population basierend auf einer Eingabedatei."
 InFileBasedConsumerAgentPopulation_desiredSize:
   gams_identifier: "Gewünschte Anzahl der Agenten"
   gams_description: "Legt die maximale Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls der Wert kleiner 0 ist, wird die maximal mögliche Anzahl verwendet."
@@ -601,8 +601,8 @@ InFileBasedConsumerAgentPopulation_selectKey:
   gams_description: "Schlüssel, nachdem die Datei gefiltert wird. Wichtig: Die entsprechenden Daten in der Datei müssen dem Konsumergruppennamen entsprechen."
 
 InFileBasedPVactConsumerAgentPopulation:
-  edn_label: "Dynamische Konsumergruppengröße"
-  edn_description: "todo"
+  edn_label: "Dateibasierte dynamische Konsumergruppengröße für PVact"
+  edn_description: "Erstellt eine Population basierend auf einer Eingabedatei. Die Agentengruppen werden dabei automatisch mit den Milieus in Relation gesetzt."
 InFileBasedPVactConsumerAgentPopulation_desiredSize:
   gams_identifier: "Gewünschte Anzahl der Agenten"
   gams_description: "Legt die maximale Populationsgröße für alle hier verwendeten Konsumergruppen fest. Falls der Wert kleiner 0 ist, wird die maximal mögliche Anzahl verwendet."
@@ -917,7 +917,7 @@ process_filter:
   edn_description: "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus."
 
 InRAProcessPlanMaxDistanceFilterScheme:
-  edn_label: "PVact"
+  edn_label: "Maximale Distnz (PVact)"
   edn_description: "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus."
 InRAProcessPlanMaxDistanceFilterScheme_maxDistance:
   gams_identifier: "Maximale Entfernung"
@@ -1078,7 +1078,7 @@ InFileBasedSpatialInformationSupplier_attrFile:
 
 InFileBasedSelectSpatialInformationSupplier:
   edn_label: "Zugeordnet"
-  edn_description: "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet verwendet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen."
+  edn_description: "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen."
 InFileBasedSelectSpatialInformationSupplier_attrFile:
   gams_identifier: "Tabellarische Datei"
   gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
@@ -1097,7 +1097,7 @@ InFileBasedSelectSpatialInformationSupplier_selectKey:
 
 InFileBasedSelectGroupSpatialInformationSupplier:
   edn_label: "Zugeordnet und gewichtet"
-  edn_description: "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet verwendet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen. Zusätzlich wird ein Gruppierungsattribut genutzt, um die Daten zu wichten."
+  edn_description: "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen. Zusätzlich wird ein Gruppierungsattribut genutzt, um die Daten zu wichten."
 InFileBasedSelectGroupSpatialInformationSupplier_attrFile:
   gams_identifier: "Tabellarische Datei"
   gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
@@ -1119,14 +1119,14 @@ InFileBasedSelectGroupSpatialInformationSupplier_groupKey:
 
 InFileBasedPVactMilieuSupplier:
   edn_label: "PVact - Milieu"
-  edn_description: "Die Daten werden, basierend auf dem Milieu, zugeordnet verwendet."
+  edn_description: "Die Daten werden, basierend auf dem Milieu, zugeordnet."
 InFileBasedPVactMilieuSupplier_attrFile:
   gams_identifier: "Tabellarische Datei"
   gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
 
 InFileBasedPVactMilieuZipSupplier:
   edn_label: "PVact - Milieu und PLZ"
-  edn_description: "Die Daten werden, basierend auf dem Milieu, zugeordnet verwendet. Zusätzlich wird die PLZ für die Wichtung verwendet."
+  edn_description: "Die Daten werden, basierend auf dem Milieu, zugeordnet. Zusätzlich wird die PLZ für die Wichtung verwendet."
 InFileBasedPVactMilieuZipSupplier_attrFile:
   gams_identifier: "Tabellarische Datei"
   gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
@@ -1139,7 +1139,7 @@ time:
 
 InUnitStepDiscreteTimeModel:
   edn_label: "Diskret"
-  edn_description: "todo"
+  edn_description: "Stellt das diskreze Zeitmodell ein. Dabei ist zu beachten, dass nur eine Zeiteinheit ausgewählt werden darf."
 InUnitStepDiscreteTimeModel_amountOfTime:
   gams_identifier: "Zeitdauer"
   gams_description: "Legt die Zeitdauer fest, welche pro diskreten Schritt vergeht."
@@ -1242,6 +1242,45 @@ InTestData_testValue1:
 InTestData_testValue2:
   gams_identifier: "Testwert 2"
   gams_description: "Testwert 2"
+InTestData_value01:
+  gams_identifier: "value01"
+  gams_description: "value01"
+InTestData_value02:
+  gams_identifier: "value02"
+  gams_description: "value02"
+InTestData_value11:
+  gams_identifier: "value11"
+  gams_description: "value11"
+InTestData_value12:
+  gams_identifier: "value12"
+  gams_description: "value12"
+InTestData_value13:
+  gams_identifier: "value13"
+  gams_description: "value13"
+InTestData_value14:
+  gams_identifier: "value14"
+  gams_description: "value14"
+InTestData_value21:
+  gams_identifier: "value21"
+  gams_description: "value21"
+InTestData_value22:
+  gams_identifier: "value22"
+  gams_description: "value22"
+InTestData_value23:
+  gams_identifier: "value23"
+  gams_description: "value23"
+InTestData_value24:
+  gams_identifier: "value24"
+  gams_description: "value24"
+InTestData_value25:
+  gams_identifier: "value25"
+  gams_description: "value25"
+InTestData_value26:
+  gams_identifier: "value26"
+  gams_description: "value26"
+InTestData_value27:
+  gams_identifier: "value27"
+  gams_description: "value27"
 
 
 #=========================

@@ -46,5 +46,23 @@
         ]
       }
     ]
+  } 
+  {
+    :label "Develop" 
+    :description "Testoptionen" 
+    :sections [
+      {
+        :label "Testdaten" 
+        :description "Testdaten" 
+        :sections [
+          {
+            :label "Einfache Testdaten" 
+            :set "set_InTestData" 
+            :description "Testdaten" 
+            :tags [["InTestData" "testValue1"] ["InTestData" "testValue2"]]
+          }
+        ]
+      }
+    ]
   }
 ]

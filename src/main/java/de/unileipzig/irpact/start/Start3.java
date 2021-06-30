@@ -208,10 +208,14 @@ public final class Start3 {
         return result.getExitCode();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Throwable {
         Start3 start = new Start3();
         Result result = start.run(args);
-        System.exit(result.getExitCode());
+        if(result.isFailure() && result.hasCause()) {
+            throw result.getCause();
+        } else {
+            System.exit(result.getExitCode());
+        }
     }
 
     //=========================
@@ -277,6 +281,10 @@ public final class Start3 {
 
         public boolean isFailure() {
             return !isOk();
+        }
+
+        public boolean hasCause() {
+            return CAUSE != null;
         }
 
         public Throwable getCause() {
