@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.experimental.tests.timeModelWithController;
 
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.experimental.tests.TestAgent;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.jadex.time.JadexTimestamp;
@@ -122,5 +123,10 @@ public class TestAgentBDI implements TestAgent {
     @Override
     public void releaseDataAccess() {
 
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.unsupportedChecksum(getClass());
     }
 }

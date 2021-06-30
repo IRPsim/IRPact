@@ -3,10 +3,8 @@
 # Die Zuweisung basiert auf dem Wert der Datenvisualisierung (mode).
 #########################
 ---
-# nothing
-0:
 # line plot - zip
-1:
+ANNUAL_ZIP:
   title: "Jährliche Adoptionen in Bezug auf die Postleitzahlgebiete"
   xarg: "year"
   yarg: "adoptions"
@@ -18,7 +16,7 @@
   encoding: "UTF-8"
 
 # line plot - zip with real data
-2:
+COMPARED_ANNUAL_ZIP:
   title: |-
     Jährliche Adoptionen in Bezug auf die Postleitzahlgebiete
     im Vergleich zu realen Daten
@@ -36,7 +34,7 @@
   encoding: "UTF-8"
 
 # stacked bar chart - phase
-3:
+CUMULATIVE_ANNUAL_PHASE:
   title: "Jährlich kumulierte Adoptionen in Bezug auf die Adoptionsphasen"
   xarg: "year"
   yarg: "adoptionsCumulative"

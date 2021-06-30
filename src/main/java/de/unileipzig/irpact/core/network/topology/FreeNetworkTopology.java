@@ -179,9 +179,6 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
                 added++;
             }
 
-            if(step % 100 == 0) {
-                System.out.println(step + "/" + graph.getNodes().size());
-            }
             if(gcStep > 0 && step > 0 && step % gcStep == 0) {
                 System.gc();
             }

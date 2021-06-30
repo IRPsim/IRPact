@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons.affinity;
 
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.data.weighted.NavigableMapWeightedMapping;
 import de.unileipzig.irpact.commons.util.data.weighted.WeightedMapping;
@@ -80,5 +81,10 @@ public class BasicAffinities<T> implements Affinities<T> {
     @Override
     public T getWeightedRandom(Rnd rnd) {
         return mapping.getWeightedRandom(rnd);
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.unsupportedChecksum(getClass());
     }
 }

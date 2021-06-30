@@ -1,7 +1,9 @@
 package de.unileipzig.irpact.commons.distribution;
 
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.data.weighted.WeightedDouble;
+import de.unileipzig.irpact.develop.AddToPersist;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
+@AddToPersist("CHECKSUM UEBERARBEITEN")
 public class FiniteMassPointsDiscreteDistribution extends AbstractBoundedUnivariateDoubleDistribution {
 
     protected List<WeightedDouble> massPoints;
@@ -86,5 +89,10 @@ public class FiniteMassPointsDiscreteDistribution extends AbstractBoundedUnivari
             }
         }
         return lastValue;
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.unsupportedChecksum(getClass());
     }
 }

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons.util.data.weighted;
 
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.distribution.Distribution;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.data.DataCollection;
@@ -164,5 +165,10 @@ public class WeightedDataSupplier<T, R> extends NameableBase implements Distribu
         } else {
             return view.getRandom(rnd);
         }
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.unsupportedChecksum(getClass());
     }
 }

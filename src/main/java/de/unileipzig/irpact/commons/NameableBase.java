@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons;
 
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+
 /**
  * @author Daniel Abitz
  */
@@ -21,5 +23,10 @@ public class NameableBase implements Nameable {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.unsupportedChecksum(getClass());
     }
 }

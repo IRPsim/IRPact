@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.experimental.tests.timeModelWithController;
 
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.experimental.tests.TestAgent;
@@ -158,5 +159,10 @@ public class TimeModelAgent implements TimeModelService, TestAgent, SimulationAg
     @Override
     public SimulationEnvironment getEnvironment() {
         return null;
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.unsupportedChecksum(getClass());
     }
 }

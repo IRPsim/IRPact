@@ -6,7 +6,7 @@ import de.unileipzig.irptools.defstructure.annotation.EdnParameter;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
-import de.unileipzig.irptools.util.XorRuleBuilder;
+import de.unileipzig.irptools.util.XorWithDefaultRuleBuilder;
 
 import java.lang.invoke.MethodHandles;
 
@@ -20,9 +20,9 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
 @Definition
 public class InTestData implements InIRPactEntity {
 
-    protected static final XorRuleBuilder builder0 = new XorRuleBuilder();
-    protected static final XorRuleBuilder builder1 = new XorRuleBuilder();
-    protected static final XorRuleBuilder builder2 = new XorRuleBuilder();
+    protected static final XorWithDefaultRuleBuilder builder0 = new XorWithDefaultRuleBuilder();
+    protected static final XorWithDefaultRuleBuilder builder1 = new XorWithDefaultRuleBuilder();
+    protected static final XorWithDefaultRuleBuilder builder2 = new XorWithDefaultRuleBuilder();
 
     static {
         builder0.addKeys("par_InTestData_value01", "par_InTestData_value02");
@@ -70,9 +70,9 @@ public class InTestData implements InIRPactEntity {
         setDefault(res, thisClass(), "value11", VALUE_TRUE);
         setDefault(res, thisClass(), "value21", VALUE_TRUE);
 
-        setRules(res, thisClass(), new String[]{"value01", "value02"}, builder0, buildDefaultParOperator(thisClass()));
-        setRules(res, thisClass(), new String[]{"value11", "value12", "value13", "value14"}, builder1, buildDefaultParOperator(thisClass()));
-        setRules(res, thisClass(), new String[]{"value21", "value22", "value23", "value24", "value25", "value26", "value27"}, builder2, buildDefaultParOperator(thisClass()));
+        setRules(res, thisClass(), new String[]{"value01", "value02"}, builder0, buildDefaultParameterNameOperator(thisClass()));
+        setRules(res, thisClass(), new String[]{"value11", "value12", "value13", "value14"}, builder1, buildDefaultParameterNameOperator(thisClass()));
+        setRules(res, thisClass(), new String[]{"value21", "value22", "value23", "value24", "value25", "value26", "value27"}, builder2, buildDefaultParameterNameOperator(thisClass()));
     }
 
     public String _name;

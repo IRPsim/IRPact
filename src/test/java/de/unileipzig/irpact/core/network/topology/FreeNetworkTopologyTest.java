@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.network.topology;
 
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.eval.NoDistance;
 import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.spatial.BasicDistanceEvaluator;
@@ -571,6 +572,11 @@ class FreeNetworkTopologyTest {
 
         DistanceEvaluator eval = new DistanceEvaluator() {
             @Override
+            public int getChecksum() {
+                return ChecksumComparable.DEFAULT_NONNULL_CHECKSUM;
+            }
+
+            @Override
             public boolean isDisabled() {
                 return false;
             }
@@ -585,6 +591,10 @@ class FreeNetworkTopologyTest {
         SpatialDistribution customSpatialDist = new SpatialDistribution() {
 
             private double xy = 0;
+            @Override
+            public int getChecksum() {
+                return ChecksumComparable.DEFAULT_NONNULL_CHECKSUM;
+            }
 
             @Override
             public SpatialInformation drawValue() {
@@ -665,6 +675,11 @@ class FreeNetworkTopologyTest {
 
         DistanceEvaluator eval = new DistanceEvaluator() {
             @Override
+            public int getChecksum() {
+                return ChecksumComparable.DEFAULT_NONNULL_CHECKSUM;
+            }
+
+            @Override
             public boolean isDisabled() {
                 return false;
             }
@@ -679,6 +694,11 @@ class FreeNetworkTopologyTest {
         SpatialDistribution customSpatialDist = new SpatialDistribution() {
 
             private double xy = 0;
+
+            @Override
+            public int getChecksum() {
+                return ChecksumComparable.DEFAULT_NONNULL_CHECKSUM;
+            }
 
             @Override
             public SpatialInformation drawValue() {

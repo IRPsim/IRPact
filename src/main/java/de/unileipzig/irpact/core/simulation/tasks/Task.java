@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.simulation.tasks;
 
 import de.unileipzig.irpact.commons.Nameable;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 
 import java.util.Comparator;
 
@@ -18,5 +19,10 @@ public interface Task extends Nameable {
 
     default int priority() {
         return DEFAULT_PRIORITY;
+    }
+
+    @Override
+    default int getChecksum() {
+        return ChecksumComparable.unsupportedChecksum(getClass());
     }
 }

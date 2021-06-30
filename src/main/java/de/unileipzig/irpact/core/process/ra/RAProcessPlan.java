@@ -102,8 +102,6 @@ public class RAProcessPlan implements ProcessPlan {
 
     @Todo("haesslich")
     public void init() {
-        if(model == null) System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-        if(model.getNodeFilterScheme() == null) System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         networkFilter = model.getNodeFilterScheme()
                 .createFilter(this);
     }

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons.affinity;
 
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 
 import java.util.*;
 
@@ -64,5 +65,10 @@ public class BasicAffinityMapping<S, T> extends NameableBase implements Affinity
     @Override
     public void put(S source, Affinities<T> affinities) {
         mapping.put(source, affinities);
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.unsupportedChecksum(getClass());
     }
 }

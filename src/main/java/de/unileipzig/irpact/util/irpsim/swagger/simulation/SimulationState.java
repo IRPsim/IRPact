@@ -18,6 +18,7 @@ import java.util.stream.IntStream;
  */
 public class SimulationState extends Base {
 
+    public static final String STATE_ABORTED = "ABORTED";
     public static final String STATE_FINISHED = "FINISHED";
     public static final String STATE_FINISHEDERROR = "FINISHEDERROR";
     public static final String STATE_UNDEFINED = "UNDEFINED";
@@ -99,6 +100,10 @@ public class SimulationState extends Base {
             default:
                 return false;
         }
+    }
+
+    public boolean isAborted() {
+        return STATE_ABORTED.equals(getState());
     }
 
     public boolean isNotFinished() {

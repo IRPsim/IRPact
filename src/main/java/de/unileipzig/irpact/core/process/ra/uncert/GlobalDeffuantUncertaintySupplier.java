@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.core.process.ra.uncert;
 
+import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 
@@ -23,6 +25,16 @@ public class GlobalDeffuantUncertaintySupplier extends NameableBase implements U
 
     public GlobalDeffuantUncertaintySupplier(Set<ConsumerAgentGroup> cags) {
         this.cags = cags;
+    }
+
+    @Override
+    public int getChecksum() {
+        return Checksums.SMART.getChecksum(
+                data,
+                speedOfConvergence,
+                Checksums.SMART.getSetChecksum(cags, Nameable::getName),
+                uncertainty
+        );
     }
 
     @Override

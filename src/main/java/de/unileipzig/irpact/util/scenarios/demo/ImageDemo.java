@@ -2,6 +2,7 @@ package de.unileipzig.irpact.util.scenarios.demo;
 
 import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
+import de.unileipzig.irpact.core.util.img.DataToVisualize;
 import de.unileipzig.irpact.io.param.input.InExample;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -112,9 +113,9 @@ public class ImageDemo extends AbstractScenario {
         List<InOutputImage> images = new ArrayList<>();
         Collections.addAll(images, InGenericOutputImage.DEFAULTS);
         images.forEach(InOutputImage::disableAll);
-        images.add(new InGnuPlotOutputImage("Bild1", InOutputImage.MODE_ADOPTION_LINECHART, true));
-        images.add(new InGnuPlotOutputImage("Bild2", InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART, true));
-        images.add(new InGnuPlotOutputImage("Bild3", InOutputImage.MODE_ADOPTION_PHASE_BARCHART, true));
+        images.add(new InGnuPlotOutputImage("Bild1", DataToVisualize.ANNUAL_ZIP, true));
+        images.add(new InGnuPlotOutputImage("Bild2", DataToVisualize.COMPARED_ANNUAL_ZIP, true));
+        images.add(new InGnuPlotOutputImage("Bild3", DataToVisualize.COMPARED_ANNUAL_ZIP, true));
 
         //time
         InUnitStepDiscreteTimeModel timeModel = new InUnitStepDiscreteTimeModel("DiscreteUnitStep", 1, ChronoUnit.WEEKS);

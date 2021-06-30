@@ -5,10 +5,12 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.UnitStepDiscreteTimeModel;
+import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
+import de.unileipzig.irptools.util.XorWithoutUnselectRuleBuilder;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
@@ -33,6 +35,12 @@ public class InUnitStepDiscreteTimeModel implements InTimeModel {
         return thisClass().getSimpleName();
     }
 
+    protected static final String[] timeUnitFieldNames = {"useMs", "useSec", "useMin", "useH", "useD", "useW", "useM"};
+    protected static final XorWithoutUnselectRuleBuilder timeUnitBuilder = new XorWithoutUnselectRuleBuilder()
+            .withTrueValue(Constants.TRUE1)
+            .withFalseValue(Constants.FALSE0)
+            .withKeys(timeUnitFieldNames);
+
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
@@ -46,23 +54,15 @@ public class InUnitStepDiscreteTimeModel implements InTimeModel {
         addEntry(res, thisClass(), "useW");
         addEntry(res, thisClass(), "useM");
 
-        setDomain(res, thisClass(), "amountOfTime", GE0_DOMAIN);
+        setDomain(res, thisClass(), "amountOfTime", G0_DOMAIN);
 
         setDefault(res, thisClass(), "amountOfTime", varargs(1));
         setDefault(res, thisClass(), "useW", VALUE_TRUE);
+
+        setRules(res, thisClass(), timeUnitFieldNames, timeUnitBuilder, buildDefaultParameterNameOperator(thisClass()));
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
-
-    private static final ChronoUnit[] UNITS = {
-            ChronoUnit.MILLIS,
-            ChronoUnit.SECONDS,
-            ChronoUnit.MINUTES,
-            ChronoUnit.HOURS,
-            ChronoUnit.DAYS,
-            ChronoUnit.WEEKS,
-            ChronoUnit.MONTHS
-    };
 
     public String _name;
 
@@ -138,24 +138,17 @@ public class InUnitStepDiscreteTimeModel implements InTimeModel {
         return amountOfTime;
     }
 
-    private boolean[] buildFlagArray() {
-        return new boolean[]{useMs, useSec, useMin, useH, useD, useW, useM};
-    }
-
-    private List<ChronoUnit> getUnits() {
-        List<ChronoUnit> list = new ArrayList<>();
-        boolean[] flagArr = buildFlagArray();
-        for(int i = 0; i < flagArr.length; i++) {
-            if(flagArr[i]) {
-                list.add(UNITS[i]);
-            }
-        }
-        return list;
-    }
-
     public ChronoUnit getUnit() throws ParsingException {
-        List<ChronoUnit> units = getUnits();
-        switch (units.size()) {
+        List<ChronoUnit> units = new ArrayList<>();
+        if(useMs) units.add(ChronoUnit.MILLIS);
+        if(useSec) units.add(ChronoUnit.SECONDS);
+        if(useMin) units.add(ChronoUnit.MINUTES);
+        if(useH) units.add(ChronoUnit.HOURS);
+        if(useD) units.add(ChronoUnit.DAYS);
+        if(useW) units.add(ChronoUnit.WEEKS);
+        if(useM) units.add(ChronoUnit.MONTHS);
+
+        switch(units.size()) {
             case 0:
                 throw new ParsingException("Missing time unit");
 

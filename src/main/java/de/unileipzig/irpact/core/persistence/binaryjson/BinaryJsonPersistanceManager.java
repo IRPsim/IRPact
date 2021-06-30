@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.persistence.binaryjson;
 
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.exception.IRPactException;
 import de.unileipzig.irpact.commons.persistence.*;
 import de.unileipzig.irpact.commons.util.JsonUtil;
@@ -69,6 +70,11 @@ public class BinaryJsonPersistanceManager  extends NameableBase implements Persi
         classManagerHolder = newHolder(classManager);
         classManagerPR = new ClassManagerPR(JsonUtil.SMILE.createObjectNode(), classManager);
         persistableMap.put(classManagerHolder, classManagerPR);
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.unsupportedChecksum(getClass());
     }
 
     public void enableGeneric() {
