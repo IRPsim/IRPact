@@ -252,15 +252,22 @@ public final class Start {
     public static void main(String[] args) {
         Start start = new Start();
         Result result = start.run(args);
-        System.exit(result.getExitCode());
+        if(result.isFailure() && result.hasCause()) {
+            throw new StartException(result.getCause());
+        } else {
+            System.exit(result.getExitCode());
+        }
     }
 
     //=========================
     //helper
     //=========================
 
-    public static final class Input2 {
+    public static final class StartException extends RuntimeException {
 
+        public StartException(Throwable cause) {
+            super(cause);
+        }
     }
 
     /**
@@ -326,6 +333,10 @@ public final class Start {
 
         public boolean isFailure() {
             return !isOk();
+        }
+
+        public boolean hasCause() {
+            return CAUSE != null;
         }
 
         public Throwable getCause() {

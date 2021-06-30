@@ -17,8 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static de.unileipzig.irpact.io.param.IOConstants.TIME;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz
@@ -46,6 +45,11 @@ public class InUnitStepDiscreteTimeModel implements InTimeModel {
         addEntry(res, thisClass(), "useD");
         addEntry(res, thisClass(), "useW");
         addEntry(res, thisClass(), "useM");
+
+        setDomain(res, thisClass(), "amountOfTime", GE0_DOMAIN);
+
+        setDefault(res, thisClass(), "amountOfTime", varargs(1));
+        setDefault(res, thisClass(), "useW", VALUE_TRUE);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());

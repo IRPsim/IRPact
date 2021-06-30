@@ -34,6 +34,18 @@ public class GenericResult extends Base {
         return -1;
     }
 
+    public boolean isBoolean() {
+        return root != null && root.isBoolean();
+    }
+
+    public boolean isFalse() {
+        return isBoolean() && !root.booleanValue();
+    }
+
+    public boolean isTrue() {
+        return isBoolean() && root.booleanValue();
+    }
+
     public boolean hasMessages() {
         return root != null && root.has("messages");
     }
@@ -96,5 +108,14 @@ public class GenericResult extends Base {
     @Override
     protected String printPrefix() {
         return "GenericResult";
+    }
+
+    @Override
+    public String print() {
+        if(isBoolean()) {
+            return printPrefix() + "#" + JsonUtil.toMinimalString(root);
+        } else {
+            return super.print();
+        }
     }
 }

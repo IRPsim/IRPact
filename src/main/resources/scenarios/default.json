@@ -1,10 +1,10 @@
 {
   "description" : {
-    "supportiveYears" : null,
     "businessModelDescription" : null,
     "investmentCustomerSide" : null,
     "parameterAttention" : null,
-    "creator" : null
+    "creator" : null,
+    "supportiveYears" : null
   },
   "years" : [ {
     "config" : {
@@ -389,7 +389,7 @@
         }
       },
       "set_InScenarioVersion" : {
-        "v0_3_0" : {
+        "v0_3_1" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },

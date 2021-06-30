@@ -14,8 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz
@@ -40,6 +39,8 @@ public class InSpace2D implements InSpatialModel {
         addEntry(res, thisClass(), "useEuclid");
         addEntry(res, thisClass(), "useMaximum");
         addEntry(res, thisClass(), "useHaversine");
+
+        setDefault(res, thisClass(), "useHaversine", VALUE_TRUE);
     }
 
     private static final Metric2D[] METRICS = new Metric2D[] {

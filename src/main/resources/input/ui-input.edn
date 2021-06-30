@@ -12,7 +12,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersionPlaceholder" 
-        :description "IRPact v0.3.0" 
+        :description "IRPact v0.3.1" 
         :tags [["InIRPactVersionPlaceholder" "placeholder"]]
       } 
       {
@@ -287,14 +287,20 @@
           {
             :label "Feste Konsumergruppengröße" 
             :set "set_InFixConsumerAgentPopulation" 
-            :description "todo" 
+            :description "Erstellt eine Population mit festen Größen für die einzelnen Agentengruppen." 
             :tags [["InFixConsumerAgentPopulation" "size"] ["link" "InFixConsumerAgentPopulation" "InConsumerAgentGroup" "cags"]]
           } 
           {
-            :label "Dynamische Konsumergruppengröße" 
+            :label "Dateibasierte dynamische Konsumergruppengröße" 
+            :set "set_InFileBasedConsumerAgentPopulation" 
+            :description "Erstellt eine Population basierend auf einer Eingabedatei." 
+            :tags [["InFileBasedConsumerAgentPopulation" "desiredSize"] ["InFileBasedConsumerAgentPopulation" "useAll"] ["InFileBasedConsumerAgentPopulation" "requiresDesiredTotalSize"] ["link" "InFileBasedConsumerAgentPopulation" "InConsumerAgentGroup" "cags"] ["link" "InFileBasedConsumerAgentPopulation" "InSpatialTableFile" "file"] ["link" "InFileBasedConsumerAgentPopulation" "InAttributeName" "selectKey"]]
+          } 
+          {
+            :label "Dateibasierte dynamische Konsumergruppengröße für PVact" 
             :set "set_InFileBasedPVactConsumerAgentPopulation" 
-            :description "todo" 
-            :tags [["InFileBasedConsumerAgentPopulation" "desiredSize"] ["InFileBasedConsumerAgentPopulation" "useAll"] ["InFileBasedConsumerAgentPopulation" "requiresDesiredTotalSize"] ["link" "InFileBasedConsumerAgentPopulation" "InConsumerAgentGroup" "cags"] ["link" "InFileBasedConsumerAgentPopulation" "InSpatialTableFile" "file"] ["link" "InFileBasedConsumerAgentPopulation" "InAttributeName" "selectKey"] ["InFileBasedPVactConsumerAgentPopulation" "desiredSize"] ["InFileBasedPVactConsumerAgentPopulation" "useAll"] ["InFileBasedPVactConsumerAgentPopulation" "requiresDesiredTotalSize"] ["link" "InFileBasedPVactConsumerAgentPopulation" "InConsumerAgentGroup" "cags"] ["link" "InFileBasedPVactConsumerAgentPopulation" "InSpatialTableFile" "file"]]
+            :description "Erstellt eine Population basierend auf einer Eingabedatei. Die Agentengruppen werden dabei automatisch mit den Milieus in Relation gesetzt." 
+            :tags [["InFileBasedPVactConsumerAgentPopulation" "desiredSize"] ["InFileBasedPVactConsumerAgentPopulation" "useAll"] ["InFileBasedPVactConsumerAgentPopulation" "requiresDesiredTotalSize"] ["link" "InFileBasedPVactConsumerAgentPopulation" "InConsumerAgentGroup" "cags"] ["link" "InFileBasedPVactConsumerAgentPopulation" "InSpatialTableFile" "file"]]
           }
         ]
       }
@@ -465,7 +471,7 @@
             :tags [["InEntireNetworkNodeFilterScheme" "placeholder"]]
           } 
           {
-            :label "PVact" 
+            :label "Maximale Distnz (PVact)" 
             :set "set_InRAProcessPlanMaxDistanceFilterScheme" 
             :description "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus." 
             :tags [["InRAProcessPlanMaxDistanceFilterScheme" "maxDistance"] ["InRAProcessPlanMaxDistanceFilterScheme" "inclusive"]]
@@ -511,25 +517,25 @@
                   {
                     :label "Zugeordnet" 
                     :set "set_InFileBasedSelectSpatialInformationSupplier" 
-                    :description "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet verwendet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen." 
+                    :description "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen." 
                     :tags [["link" "InFileBasedSelectSpatialInformationSupplier" "InAttributeName" "xPositionKey"] ["link" "InFileBasedSelectSpatialInformationSupplier" "InAttributeName" "yPositionKey"] ["link" "InFileBasedSelectSpatialInformationSupplier" "InAttributeName" "idKey"] ["link" "InFileBasedSelectSpatialInformationSupplier" "InSpatialTableFile" "file"] ["link" "InFileBasedSelectSpatialInformationSupplier" "InAttributeName" "selectKey"]]
                   } 
                   {
                     :label "Zugeordnet und gewichtet" 
                     :set "set_InFileBasedSelectGroupSpatialInformationSupplier" 
-                    :description "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet verwendet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen. Zusätzlich wird ein Gruppierungsattribut genutzt, um die Daten zu wichten." 
+                    :description "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen. Zusätzlich wird ein Gruppierungsattribut genutzt, um die Daten zu wichten." 
                     :tags [["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InAttributeName" "xPositionKey"] ["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InAttributeName" "yPositionKey"] ["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InAttributeName" "idKey"] ["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InSpatialTableFile" "file"] ["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InAttributeName" "selectKey"] ["link" "InFileBasedSelectGroupSpatialInformationSupplier" "InAttributeName" "groupKey"]]
                   } 
                   {
                     :label "PVact - Milieu" 
                     :set "set_InFileBasedPVactMilieuSupplier" 
-                    :description "Die Daten werden, basierend auf dem Milieu, zugeordnet verwendet." 
+                    :description "Die Daten werden, basierend auf dem Milieu, zugeordnet." 
                     :tags [["link" "InFileBasedPVactMilieuSupplier" "InSpatialTableFile" "file"]]
                   } 
                   {
                     :label "PVact - Milieu und PLZ" 
                     :set "set_InFileBasedPVactMilieuZipSupplier" 
-                    :description "Die Daten werden, basierend auf dem Milieu, zugeordnet verwendet. Zusätzlich wird die PLZ für die Wichtung verwendet." 
+                    :description "Die Daten werden, basierend auf dem Milieu, zugeordnet. Zusätzlich wird die PLZ für die Wichtung verwendet." 
                     :tags [["link" "InFileBasedPVactMilieuZipSupplier" "InSpatialTableFile" "file"]]
                   }
                 ]
@@ -547,7 +553,7 @@
       {
         :label "Diskret" 
         :set "set_InUnitStepDiscreteTimeModel" 
-        :description "todo" 
+        :description "Stellt das diskreze Zeitmodell ein. Dabei ist zu beachten, dass nur eine Zeiteinheit ausgewählt werden darf." 
         :tags [["InUnitStepDiscreteTimeModel" "amountOfTime"] ["InUnitStepDiscreteTimeModel" "useMs"] ["InUnitStepDiscreteTimeModel" "useSec"] ["InUnitStepDiscreteTimeModel" "useMin"] ["InUnitStepDiscreteTimeModel" "useH"] ["InUnitStepDiscreteTimeModel" "useD"] ["InUnitStepDiscreteTimeModel" "useW"] ["InUnitStepDiscreteTimeModel" "useM"]]
       }
     ]
@@ -699,7 +705,7 @@
             :label "Einfache Testdaten" 
             :set "set_InTestData" 
             :description "Testdaten" 
-            :tags [["InTestData" "testValue1"] ["InTestData" "testValue2"]]
+            :tags [["InTestData" "testValue1"] ["InTestData" "testValue2"] ["InTestData" "value01"] ["InTestData" "value02"] ["InTestData" "value11"] ["InTestData" "value12"] ["InTestData" "value13"] ["InTestData" "value14"] ["InTestData" "value21"] ["InTestData" "value22"] ["InTestData" "value23"] ["InTestData" "value24"] ["InTestData" "value25"] ["InTestData" "value26"] ["InTestData" "value27"]]
           }
         ]
       }

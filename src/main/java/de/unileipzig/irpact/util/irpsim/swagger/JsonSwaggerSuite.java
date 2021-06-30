@@ -2,6 +2,7 @@ package de.unileipzig.irpact.util.irpsim.swagger;
 
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
+import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
 import de.unileipzig.irpact.commons.util.FileUtil;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -44,7 +45,7 @@ public final class JsonSwaggerSuite implements SwaggerSuite {
     protected Path backupDir;
     protected boolean autoBackup = true;
     protected boolean autoCommit = false;
-    protected PrettyPrinter loadRemotePrettyPrinter = JsonUtil.DEFAULT;
+    protected PrettyPrinter printer = JsonUtil.DEFAULT;
 
     protected final Map<Integer, Scenario> overwriteScenarios = new TreeMap<>();
     protected final Set<Integer> deleteScenarios = new TreeSet<>();
@@ -229,7 +230,7 @@ public final class JsonSwaggerSuite implements SwaggerSuite {
         LOGGER.trace("load all scenario meta data");
         swagger.storeAllScenarios(metaDataPath);
         LOGGER.trace("stored: {}", metaDataPath);
-        changePrettyPrinter(metaDataPath, metaDataCharset, loadRemotePrettyPrinter);
+        changePrettyPrinter(metaDataPath, metaDataCharset, printer);
         LOGGER.trace("formatting changed");
 
         metaDataCache.clear();
@@ -258,7 +259,7 @@ public final class JsonSwaggerSuite implements SwaggerSuite {
             LOGGER.trace("loading scenario {} ({})", id, outPath);
             swagger.storeScenarioData(outPath, id);
             LOGGER.trace("scenario stored");
-            changePrettyPrinter(outPath, dataCharset, loadRemotePrettyPrinter);
+            changePrettyPrinter(outPath, dataCharset, printer);
             LOGGER.trace("formatting changed");
         }
     }
@@ -433,10 +434,68 @@ public final class JsonSwaggerSuite implements SwaggerSuite {
         LOGGER.trace("load all simulation states");
         swagger.storeAllSimulationStates(statePath);
         LOGGER.trace("stored: {}", statePath);
-        changePrettyPrinter(statePath, stateCharset, loadRemotePrettyPrinter);
+        changePrettyPrinter(statePath, stateCharset, printer);
         LOGGER.trace("formatting changed");
 
         stateCollection.clear();
-        stateCollection.parse(metaDataPath, metaDataCharset);
+        stateCollection.parse(statePath, stateCharset);
+    }
+
+    @Override
+    public void downloadOutput(int id, Path target) throws CurlException, IOException, InterruptedException {
+        SimulationState state = stateCollection.get(id);
+        if(state == null) {
+            throw new IRPactIllegalArgumentException("state with id '{}' not found", id);
+        }
+
+        LOGGER.trace("download gdx result file for: {}/{}/{}", state.getId(), state.getLastYearIndex(), state.getModelIndex());
+        swagger.storeGdxresultfile(
+                state.getId(),
+                state.getLastYearIndex(),
+                state.getModelIndex(),
+                target
+        );
+        LOGGER.trace("saved to: {}", target);
+        changePrettyPrinter(target, dataCharset, printer);
+    }
+
+    @Override
+    public boolean hasZip(int id) throws CurlException, IOException, InterruptedException {
+        SimulationState state = stateCollection.get(id);
+        if(state == null) {
+            throw new IRPactIllegalArgumentException("state with id '{}' not found", id);
+        }
+
+        LOGGER.trace("has zip for: {}/{}/{}", state.getId(), state.getLastYearIndex(), state.getModelIndex());
+        GenericResult result = swagger.hasImages(
+                state.getId(),
+                state.getLastYearIndex(),
+                state.getModelIndex()
+        );
+        LOGGER.trace("result: {}", result.print());
+
+        if(result.isError()) {
+            throw new CurlException(result.getErrorMessage());
+        } else {
+            return result.isTrue();
+        }
+    }
+
+    @Override
+    public void downloadZip(int id, Path target) throws CurlException, IOException, InterruptedException {
+        SimulationState state = stateCollection.get(id);
+        if(state == null) {
+            throw new IRPactIllegalArgumentException("state with id '{}' not found", id);
+        }
+
+        LOGGER.trace("download zip for: {}/{}/{}", state.getId(), state.getLastYearIndex(), state.getModelIndex());
+        swagger.storeImages(
+                state.getId(),
+                state.getLastYearIndex(),
+                state.getModelIndex(),
+                target
+        );
+        LOGGER.trace("saved to: {}", target);
+        changePrettyPrinter(target, dataCharset, printer);
     }
 }
