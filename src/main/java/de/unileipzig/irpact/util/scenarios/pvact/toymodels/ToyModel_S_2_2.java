@@ -1,10 +1,7 @@
 package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 
-import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
-import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -25,10 +22,7 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSu
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.output.OutRoot;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -37,24 +31,39 @@ import java.util.function.BiConsumer;
 /**
  * @author Daniel Abitz
  */
-public class ToyModel_02v2 extends AbstractToyModel {
+public class ToyModel_S_2_2 extends AbstractToyModel {
 
-    public static final String NAME = "Toymodel 2 - Machbarkeit v2";
+    public static final int REVISION = 1;
+
+    public static final int SIZE_A = 10;
+    public static final int SIZE_K1 = 10;
+    public static final int SIZE_K2 = 10;
+    public static final int SIZE_K3 = 10;
 
     protected InDiracUnivariateDistribution dirac0 = new InDiracUnivariateDistribution("dirac0", 0);
     protected InDiracUnivariateDistribution dirac03 = new InDiracUnivariateDistribution("dirac03", 0.3);
     protected InDiracUnivariateDistribution dirac07 = new InDiracUnivariateDistribution("dirac07", 0.7);
     protected InDiracUnivariateDistribution dirac1 = new InDiracUnivariateDistribution("dirac1", 1);
 
-    public ToyModel_02v2(String name, BiConsumer<InRoot, OutRoot> resultConsumer) {
-        this(name, null, null, resultConsumer);
-    }
+    protected int sizeA = SIZE_A;
+    protected int sizeK1 = SIZE_K1;
+    protected int sizeK2 = SIZE_K2;
+    protected int sizeK3 = SIZE_K3;
 
-    public ToyModel_02v2(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
+    public ToyModel_S_2_2(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(name, creator, description, resultConsumer);
+        setRevision(REVISION);
+        setTotalAgents(SIZE_A + SIZE_K1 + SIZE_K2 + SIZE_K3);
     }
 
-    public List<List<SpatialAttribute>> buildData(
+    @Override
+    protected List<List<SpatialAttribute>> createTestData(
+            List<List<SpatialAttribute>> input,
+            Random random) {
+        return createTestData(input, sizeA, sizeK1, sizeK2, sizeK3, random);
+    }
+
+    public List<List<SpatialAttribute>> createTestData(
             List<List<SpatialAttribute>> input,
             int sizeOfA, int sizeOfK1, int sizeOfK2, int sizeOfK3,
             Random rnd) {
@@ -65,6 +74,7 @@ public class ToyModel_02v2 extends AbstractToyModel {
         to += sizeOfA;
         for(int i = from; i < to; i++) {
             List<SpatialAttribute> row = output.get(i);
+            SpatialUtil.replaceString(row, RAConstants.DOM_MILIEU, "A");
             SpatialUtil.replaceDouble(row, RAConstants.PURCHASE_POWER, dirac1.getValue());  //A1
             SpatialUtil.replaceDouble(row, RAConstants.SHARE_1_2_HOUSE, dirac1.getValue()); //A5
             SpatialUtil.replaceDouble(row, RAConstants.HOUSE_OWNER, dirac1.getValue());     //A6
@@ -74,6 +84,7 @@ public class ToyModel_02v2 extends AbstractToyModel {
         to += sizeOfK1;
         for(int i = from; i < to; i++) {
             List<SpatialAttribute> row = output.get(i);
+            SpatialUtil.replaceString(row, RAConstants.DOM_MILIEU, "K1");
             SpatialUtil.replaceDouble(row, RAConstants.PURCHASE_POWER, dirac1.getValue());  //A1
             SpatialUtil.replaceDouble(row, RAConstants.SHARE_1_2_HOUSE, dirac1.getValue()); //A5
             SpatialUtil.replaceDouble(row, RAConstants.HOUSE_OWNER, dirac1.getValue());     //A6
@@ -83,6 +94,7 @@ public class ToyModel_02v2 extends AbstractToyModel {
         to += sizeOfK2;
         for(int i = from; i < to; i++) {
             List<SpatialAttribute> row = output.get(i);
+            SpatialUtil.replaceString(row, RAConstants.DOM_MILIEU, "K2");
             SpatialUtil.replaceDouble(row, RAConstants.PURCHASE_POWER, dirac1.getValue());  //A1
             SpatialUtil.replaceDouble(row, RAConstants.SHARE_1_2_HOUSE, dirac1.getValue()); //A5
             SpatialUtil.replaceDouble(row, RAConstants.HOUSE_OWNER, dirac1.getValue());     //A6
@@ -92,23 +104,13 @@ public class ToyModel_02v2 extends AbstractToyModel {
         to += sizeOfK3;
         for(int i = from; i < to; i++) {
             List<SpatialAttribute> row = output.get(i);
+            SpatialUtil.replaceString(row, RAConstants.DOM_MILIEU, "K3");
             SpatialUtil.replaceDouble(row, RAConstants.PURCHASE_POWER, dirac1.getValue());  //A1
             SpatialUtil.replaceDouble(row, RAConstants.SHARE_1_2_HOUSE, dirac1.getValue()); //A5
             SpatialUtil.replaceDouble(row, RAConstants.HOUSE_OWNER, dirac1.getValue());     //A6
         }
 
         return output;
-    }
-
-    public void buildData(
-            Path xlsxInput, Path xlsxOutput,
-            int sizeOfA, int sizeOfK1, int sizeOfK2, int sizeOfK3,
-            Random rnd) throws ParsingException, IOException, InvalidFormatException {
-        Table<SpatialAttribute> inputData = SpatialTableFileLoader.parseXlsx(xlsxInput);
-        List<List<SpatialAttribute>> outputList = buildData(inputData.listTable(), sizeOfA, sizeOfK1, sizeOfK2, sizeOfK3, rnd);
-        Table<SpatialAttribute> outputData = inputData.emptyCopyWithSameHeader();
-        outputData.addRows(outputList);
-        SpatialTableFileLoader.writeXlsx(xlsxOutput, "Data", "Daten fuer " + getName(), outputData);
     }
 
     protected InPVactConsumerAgentGroup createAgentGroup(String name) {

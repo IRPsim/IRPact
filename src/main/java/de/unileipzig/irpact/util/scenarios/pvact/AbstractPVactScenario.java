@@ -7,20 +7,27 @@ import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactConsumerAgentPopulation;
+import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
+import de.unileipzig.irpact.io.param.input.network.InDistanceEvaluator;
+import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
+import de.unileipzig.irpact.io.param.input.network.InNoDistance;
+import de.unileipzig.irpact.io.param.input.network.InNumberOfTies;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.util.scenarios.AbstractScenario;
 
-import java.nio.file.Path;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -29,6 +36,9 @@ import java.util.concurrent.TimeUnit;
  * @author Daniel Abitz
  */
 public abstract class AbstractPVactScenario extends AbstractScenario {
+
+    protected final InDiracUnivariateDistribution dirac0 = new InDiracUnivariateDistribution("dirac0", 0);
+    protected final InDiracUnivariateDistribution dirac1 = new InDiracUnivariateDistribution("dirac1", 1);
 
     protected Map<String, InAttributeName> nameCache = new HashMap<>();
 
@@ -148,6 +158,21 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return supplier;
     }
 
+    public InFreeNetworkTopology createFreeTopology(
+            String name,
+            InAffinities affinities,
+            InConsumerAgentGroup[] cags,
+            int numberOfEdges) {
+        InFreeNetworkTopology topology = new InFreeNetworkTopology();
+        topology.setName(name);
+        topology.setAffinities(affinities);
+        topology.setNumberOfTies(new InNumberOfTies(name + "_ties", cags, numberOfEdges));
+        topology.setDistanceEvaluator(new InNoDistance("NoDist"));
+        topology.setInitialWeight(1);
+        topology.setAllowLessEdges(false);
+        return topology;
+    }
+
     public InFileBasedPVactConsumerAgentPopulation createPopulation(String name, int agents, InConsumerAgentGroup... cags) {
         InFileBasedPVactConsumerAgentPopulation supplier = new InFileBasedPVactConsumerAgentPopulation();
         supplier.setName(name);
@@ -178,5 +203,63 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
     public InAffinities createZeroAffinities(String name, InConsumerAgentGroup... cags) {
         InComplexAffinityEntry[] entries = InComplexAffinityEntry.buildAll(cags, 0);
         return createAffinities(name, entries);
+    }
+
+    public InAffinities createAffinities(String name, InAffinityEntry[]... entries) {
+        InAffinityEntry[] flatEntries = Arrays.stream(entries)
+                .flatMap(Arrays::stream)
+                .toArray(InAffinityEntry[]::new);
+        return createAffinities(name, flatEntries);
+    }
+
+    public InAffinityEntry[] createEntries(String prefix, InConsumerAgentGroup from, InConsumerAgentGroup[] targets, double[] values) {
+        InAffinityEntry[] entries = new InAffinityEntry[targets.length];
+        for(int i = 0; i < entries.length; i++) {
+            InConsumerAgentGroup to = targets[i];
+            InComplexAffinityEntry entry = new InComplexAffinityEntry();
+            String name = prefix == null || prefix.isEmpty()
+                    ? from.getName() + "_" + to.getName()
+                    : prefix + "_" + from.getName() + "_" + to.getName();
+            entry.setName(name);
+            entry.setSrcCag(from);
+            entry.setTarCag(to);
+            entry.setAffinityValue(values[i]);
+        }
+        return entries;
+    }
+
+    public InPVactConsumerAgentGroup createNullAgent(String name) {
+        return createNullAgent(name, null);
+    }
+
+    public InPVactConsumerAgentGroup createNullAgent(String name, InSpatialDistribution distribution) {
+        InPVactConsumerAgentGroup grp = new InPVactConsumerAgentGroup();
+        grp.setName(name);
+        if(distribution != null) {
+            grp.setSpatialDistribution(distribution);
+        }
+
+        //A1 in file
+        grp.setNoveltySeeking(dirac0);                            //A2
+        grp.setDependentJudgmentMaking(dirac0);                   //A3
+        grp.setEnvironmentalConcern(dirac0);                      //A4
+        //A5 in file
+        //A6 in file
+        grp.setConstructionRate(dirac0);                          //A7
+        grp.setRenovationRate(dirac0);                            //A8
+
+        grp.setRewire(dirac0);                                    //B6
+
+        grp.setCommunication(dirac0);                             //C1
+        grp.setRateOfConvergence(dirac0);                         //C3
+
+        grp.setInitialProductAwareness(dirac0);                     //D1
+        grp.setInterestThreshold(dirac0);                         //D2
+        grp.setFinancialThreshold(dirac0);                       //D3
+        grp.setAdoptionThreshold(dirac0);                        //D4
+        grp.setInitialAdopter(dirac0);                            //D5
+        grp.setInitialProductInterest(dirac0);                    //D6
+
+        return grp;
     }
 }

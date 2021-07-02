@@ -82,7 +82,7 @@ public class InRAProcessModel implements InProcessModel {
         setDefault(res, thisClass(), "unknownPoints", varargs(RAModelData.DEFAULT_UNKNOWN_POINTS));
         setDefault(res, thisClass(), "logisticFactor", varargs(RAConstants.DEFAULT_LOGISTIC_FACTOR));
         setDefault(res, thisClass(), "speedOfConvergence", varargs(RAConstants.DEFAULT_SPEED_OF_CONVERGENCE));
-        setDefault(res, thisClass(), "attitudeGab", varargs(RAConstants.DEFAULT_ATTIDUTE_GAB));
+        setDefault(res, thisClass(), "attitudeGab", varargs(RAConstants.DEFAULT_ATTIDUTE_GAP));
         setDefault(res, thisClass(), "chanceNeutral", varargs(RAConstants.DEFAULT_NEUTRAL_CHANCE));
         setDefault(res, thisClass(), "chanceConvergence", varargs(RAConstants.DEFAULT_CONVERGENCE_CHANCE));
         setDefault(res, thisClass(), "chanceDivergence", varargs(RAConstants.DEFAULT_DIVERGENCE_CHANCE));
@@ -213,7 +213,7 @@ public class InRAProcessModel implements InProcessModel {
         setUnknownPoints(RAModelData.DEFAULT_UNKNOWN_POINTS);
         setLogisticFactor(RAConstants.DEFAULT_LOGISTIC_FACTOR);
         setSpeedOfConvergence(RAConstants.DEFAULT_SPEED_OF_CONVERGENCE);
-        setAttitudeGab(RAConstants.DEFAULT_ATTIDUTE_GAB);
+        setAttitudeGap(RAConstants.DEFAULT_ATTIDUTE_GAP);
         setChanceNeutral(RAConstants.DEFAULT_NEUTRAL_CHANCE);
         setChanceConvergence(RAConstants.DEFAULT_CONVERGENCE_CHANCE);
         setChanceDivergence(RAConstants.DEFAULT_DIVERGENCE_CHANCE);
@@ -337,7 +337,7 @@ public class InRAProcessModel implements InProcessModel {
         return chanceDivergence;
     }
 
-    public void setAttitudeGab(double attitudeGab) {
+    public void setAttitudeGap(double attitudeGab) {
         this.attitudeGab = attitudeGab;
     }
 

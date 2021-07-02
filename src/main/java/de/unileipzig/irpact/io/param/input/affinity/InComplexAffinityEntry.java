@@ -95,6 +95,10 @@ public class InComplexAffinityEntry implements InAffinityEntry {
         return _name;
     }
 
+    public void setName(String name) {
+        this._name = name;
+    }
+
     public void setSrcCag(InConsumerAgentGroup srcCag) {
         this.srcCag = new InConsumerAgentGroup[]{srcCag};
     }

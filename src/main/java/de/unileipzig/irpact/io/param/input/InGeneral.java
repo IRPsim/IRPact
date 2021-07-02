@@ -94,7 +94,7 @@ public class InGeneral implements Copyable {
     @FieldDefinition
     public long timeout;
 
-    //nur fuer interne tests
+    //internal only
     private final MutableInt firstSimulationYear0 = MutableInt.empty();
     public boolean hasFirstSimulationYear() {
         return firstSimulationYear0.hasValue();
@@ -108,6 +108,9 @@ public class InGeneral implements Copyable {
 
     @FieldDefinition
     public int lastSimulationYear;
+    public void setFirstSimulationYearAsLast() {
+        lastSimulationYear = getFirstSimulationYear();
+    }
 
     //=========================
     //IRPopt
