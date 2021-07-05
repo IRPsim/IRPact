@@ -73,7 +73,11 @@ public class BasicSocialGraphPR extends BinaryPRBase<BasicSocialGraph> {
 
     @Override
     protected BasicSocialGraph doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
-        SupportedGraphStructure structure = SupportedGraphStructure.get(data.getInt());
+        int id = data.getInt();
+        SupportedGraphStructure structure = SupportedGraphStructure.get(id);
+        if(structure.isUnknown()) {
+            throw new RestoreException("unknown graph structure: " + id);
+        }
         return new BasicSocialGraph(structure);
     }
 }
