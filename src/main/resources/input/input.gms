@@ -505,28 +505,69 @@ PARAMETER par_InSpatialTableFile_placeholderInSpatialFile(set_InSpatialTableFile
 SET set_InGenericOutputImage(set_InOutputImage)
 
 * - default: 1
-* - domain: [1, 2]
-* - description: Bestimmt das Programm, mit dem die Bilder erzeugt werden sollen. IRPact unterstützt folgende Programme: R (1) und gnuplot (2).
-* - identifier: Visualisierungsprogramm
-* - type: Integer
-PARAMETER par_InGenericOutputImage_engine(set_InGenericOutputImage)
+* - description: Erzeugt das Bild mittels gnuplot.
+* - identifier: Programm: gnuplot
+* - rule: IF (par_InGenericOutputImage_useGnuplot == 1, par_InGenericOutputImage_useR = 0)
+* - rule: IF (par_InGenericOutputImage_useGnuplot == 0, par_InGenericOutputImage_useGnuplot = 1)
+* - rule: IF (par_InGenericOutputImage_useGnuplot == 0, par_InGenericOutputImage_useR = 0)
+* - type: Boolean
+PARAMETER par_InGenericOutputImage_useGnuplot(set_InGenericOutputImage)
 
-* - domain: [0, 3]
-* - description: Gibt an, welche Daten visualisiert werden sollen. Aktuell unterstützt: nichts (0), jährlichen Adoptionen nach PLZ (1), jährlichen Adoptionen nach PLZ im Vergleich zu realen Daten (1), kumulierte jährliche Adoptionen nach Phase (3).
-* - identifier: Zu visualisierende Daten
-* - type: Integer
-PARAMETER par_InGenericOutputImage_mode(set_InGenericOutputImage)
+* - default: 0
+* - description: Erzeugt das Bild mittels R.
+* - identifier: Programm: R
+* - rule: IF (par_InGenericOutputImage_useR == 1, par_InGenericOutputImage_useGnuplot = 0)
+* - rule: IF (par_InGenericOutputImage_useR == 0, par_InGenericOutputImage_useGnuplot = 0)
+* - rule: IF (par_InGenericOutputImage_useR == 0, par_InGenericOutputImage_useR = 1)
+* - type: Boolean
+PARAMETER par_InGenericOutputImage_useR(set_InGenericOutputImage)
 
+* - default: 1
+* - description: Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar.
+* - identifier: Darstellung: jährliche Adoptionen (PLZ)
+* - rule: IF (par_InGenericOutputImage_annualZip == 1, par_InGenericOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGenericOutputImage_annualZip == 1, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGenericOutputImage_annualZip == 0, par_InGenericOutputImage_annualZip = 1)
+* - rule: IF (par_InGenericOutputImage_annualZip == 0, par_InGenericOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGenericOutputImage_annualZip == 0, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
+* - type: Boolean
+PARAMETER par_InGenericOutputImage_annualZip(set_InGenericOutputImage)
+
+* - default: 0
+* - description: Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt.
+* - identifier: Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)
+* - rule: IF (par_InGenericOutputImage_annualZipWithReal == 1, par_InGenericOutputImage_annualZip = 0)
+* - rule: IF (par_InGenericOutputImage_annualZipWithReal == 1, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGenericOutputImage_annualZipWithReal == 0, par_InGenericOutputImage_annualZip = 0)
+* - rule: IF (par_InGenericOutputImage_annualZipWithReal == 0, par_InGenericOutputImage_annualZipWithReal = 1)
+* - rule: IF (par_InGenericOutputImage_annualZipWithReal == 0, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
+* - type: Boolean
+PARAMETER par_InGenericOutputImage_annualZipWithReal(set_InGenericOutputImage)
+
+* - default: 0
+* - description: Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar.
+* - identifier: Darstellung: kumulierte jährliche Adoptionen (Phase)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 1, par_InGenericOutputImage_annualZip = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 1, par_InGenericOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 0, par_InGenericOutputImage_annualZip = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 0, par_InGenericOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 0, par_InGenericOutputImage_cumulativeAnnualPhase = 1)
+* - type: Boolean
+PARAMETER par_InGenericOutputImage_cumulativeAnnualPhase(set_InGenericOutputImage)
+
+* - default: 0
 * - description: Speichert auf Wunsch das Skript für die Bilderzeugung.
 * - identifier: Skript speichern?
 * - type: Boolean
 PARAMETER par_InGenericOutputImage_storeScript(set_InGenericOutputImage)
 
+* - default: 0
 * - description: Speichert auf Wunsch die Daten für die Bilderzeugung.
 * - identifier: Daten speichern?
 * - type: Boolean
 PARAMETER par_InGenericOutputImage_storeData(set_InGenericOutputImage)
 
+* - default: 1
 * - description: Erzeugt und speichert auf Wunsch das erzeugte Bild.
 * - identifier: Bild speichern?
 * - type: Boolean
@@ -543,22 +584,52 @@ PARAMETER par_InGenericOutputImage_linewidth(set_InGenericOutputImage)
 * - type: String
 SET set_InGnuPlotOutputImage(set_InOutputImage)
 
-* - domain: [0, 3]
-* - description: Gibt an, welche Daten visualisiert werden sollen.
-* - identifier: Datenvisualisierung (Name noch anpassen)
-* - type: Integer
-PARAMETER par_InGnuPlotOutputImage_mode(set_InGnuPlotOutputImage)
+* - default: 1
+* - description: Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar.
+* - identifier: Darstellung: jährliche Adoptionen (PLZ)
+* - rule: IF (par_InGnuPlotOutputImage_annualZip == 1, par_InGnuPlotOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZip == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZip == 0, par_InGnuPlotOutputImage_annualZip = 1)
+* - rule: IF (par_InGnuPlotOutputImage_annualZip == 0, par_InGnuPlotOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZip == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
+* - type: Boolean
+PARAMETER par_InGnuPlotOutputImage_annualZip(set_InGnuPlotOutputImage)
 
+* - default: 0
+* - description: Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt.
+* - identifier: Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)
+* - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 1, par_InGnuPlotOutputImage_annualZip = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 0, par_InGnuPlotOutputImage_annualZip = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 0, par_InGnuPlotOutputImage_annualZipWithReal = 1)
+* - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
+* - type: Boolean
+PARAMETER par_InGnuPlotOutputImage_annualZipWithReal(set_InGnuPlotOutputImage)
+
+* - default: 0
+* - description: Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar.
+* - identifier: Darstellung: kumulierte jährliche Adoptionen (Phase)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 1, par_InGnuPlotOutputImage_annualZip = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 1, par_InGnuPlotOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 0, par_InGnuPlotOutputImage_annualZip = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 0, par_InGnuPlotOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 1)
+* - type: Boolean
+PARAMETER par_InGnuPlotOutputImage_cumulativeAnnualPhase(set_InGnuPlotOutputImage)
+
+* - default: 0
 * - description: Speichert auf Wunsch das Skript für die Bilderzeugung.
 * - identifier: Skript speichern?
 * - type: Boolean
 PARAMETER par_InGnuPlotOutputImage_storeScript(set_InGnuPlotOutputImage)
 
+* - default: 0
 * - description: Speichert auf Wunsch die Daten für die Bilderzeugung.
 * - identifier: Daten speichern?
 * - type: Boolean
 PARAMETER par_InGnuPlotOutputImage_storeData(set_InGnuPlotOutputImage)
 
+* - default: 1
 * - description: Erzeugt und speichert auf Wunsch das erzeugte Bild.
 * - identifier: Bild speichern?
 * - type: Boolean
@@ -566,7 +637,8 @@ PARAMETER par_InGnuPlotOutputImage_storeImage(set_InGnuPlotOutputImage)
 
 * - default: 1
 * - domain: (0,)
-* - identifier: linewidth
+* - description: Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss.
+* - identifier: Linienstärke
 * - type: Float
 PARAMETER par_InGnuPlotOutputImage_linewidth(set_InGnuPlotOutputImage)
 
@@ -579,22 +651,52 @@ SET set_InOutputImage(*)
 * - type: String
 SET set_InROutputImage(set_InOutputImage)
 
-* - domain: [0, 3]
-* - description: Gibt an, welche Daten visualisiert werden sollen.
-* - identifier: Datenvisualisierung (Name noch anpassen)
-* - type: Integer
-PARAMETER par_InROutputImage_mode(set_InROutputImage)
+* - default: 1
+* - description: Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar.
+* - identifier: Darstellung: jährliche Adoptionen (PLZ)
+* - rule: IF (par_InROutputImage_annualZip == 1, par_InROutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InROutputImage_annualZip == 1, par_InROutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InROutputImage_annualZip == 0, par_InROutputImage_annualZip = 1)
+* - rule: IF (par_InROutputImage_annualZip == 0, par_InROutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InROutputImage_annualZip == 0, par_InROutputImage_cumulativeAnnualPhase = 0)
+* - type: Boolean
+PARAMETER par_InROutputImage_annualZip(set_InROutputImage)
 
+* - default: 0
+* - description: Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt.
+* - identifier: Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)
+* - rule: IF (par_InROutputImage_annualZipWithReal == 1, par_InROutputImage_annualZip = 0)
+* - rule: IF (par_InROutputImage_annualZipWithReal == 1, par_InROutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InROutputImage_annualZipWithReal == 0, par_InROutputImage_annualZip = 0)
+* - rule: IF (par_InROutputImage_annualZipWithReal == 0, par_InROutputImage_annualZipWithReal = 1)
+* - rule: IF (par_InROutputImage_annualZipWithReal == 0, par_InROutputImage_cumulativeAnnualPhase = 0)
+* - type: Boolean
+PARAMETER par_InROutputImage_annualZipWithReal(set_InROutputImage)
+
+* - default: 0
+* - description: Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar.
+* - identifier: Darstellung: kumulierte jährliche Adoptionen (Phase)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 1, par_InROutputImage_annualZip = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 1, par_InROutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 0, par_InROutputImage_annualZip = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 0, par_InROutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 0, par_InROutputImage_cumulativeAnnualPhase = 1)
+* - type: Boolean
+PARAMETER par_InROutputImage_cumulativeAnnualPhase(set_InROutputImage)
+
+* - default: 0
 * - description: Speichert auf Wunsch das Skript für die Bilderzeugung.
 * - identifier: Skript speichern?
 * - type: Boolean
 PARAMETER par_InROutputImage_storeScript(set_InROutputImage)
 
+* - default: 0
 * - description: Speichert auf Wunsch die Daten für die Bilderzeugung.
 * - identifier: Daten speichern?
 * - type: Boolean
 PARAMETER par_InROutputImage_storeData(set_InROutputImage)
 
+* - default: 1
 * - description: Erzeugt und speichert auf Wunsch das erzeugte Bild.
 * - identifier: Bild speichern?
 * - type: Boolean
@@ -602,7 +704,8 @@ PARAMETER par_InROutputImage_storeImage(set_InROutputImage)
 
 * - default: 1
 * - domain: (0,)
-* - identifier: linewidth
+* - description: Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss.
+* - identifier: Linienstärke
 * - type: Float
 PARAMETER par_InROutputImage_linewidth(set_InROutputImage)
 
@@ -1327,37 +1430,128 @@ PARAMETER par_InUnitStepDiscreteTimeModel_amountOfTime(set_InUnitStepDiscreteTim
 
 * - description: Verwendet Millisekunden als Einheit für die Zeitdauer.
 * - identifier: Millisekunden
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMs == 1, par_InUnitStepDiscreteTimeModel_useSec = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMs == 1, par_InUnitStepDiscreteTimeModel_useMin = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMs == 1, par_InUnitStepDiscreteTimeModel_useH = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMs == 1, par_InUnitStepDiscreteTimeModel_useD = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMs == 1, par_InUnitStepDiscreteTimeModel_useW = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMs == 1, par_InUnitStepDiscreteTimeModel_useM = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMs == 0, par_InUnitStepDiscreteTimeModel_useMs = 1)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMs == 0, par_InUnitStepDiscreteTimeModel_useSec = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMs == 0, par_InUnitStepDiscreteTimeModel_useMin = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMs == 0, par_InUnitStepDiscreteTimeModel_useH = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMs == 0, par_InUnitStepDiscreteTimeModel_useD = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMs == 0, par_InUnitStepDiscreteTimeModel_useW = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMs == 0, par_InUnitStepDiscreteTimeModel_useM = 0)
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useMs(set_InUnitStepDiscreteTimeModel)
 
 * - description: Verwendet Sekunden als Einheit für die Zeitdauer.
 * - identifier: Sekunden
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useSec == 1, par_InUnitStepDiscreteTimeModel_useMs = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useSec == 1, par_InUnitStepDiscreteTimeModel_useMin = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useSec == 1, par_InUnitStepDiscreteTimeModel_useH = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useSec == 1, par_InUnitStepDiscreteTimeModel_useD = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useSec == 1, par_InUnitStepDiscreteTimeModel_useW = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useSec == 1, par_InUnitStepDiscreteTimeModel_useM = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useSec == 0, par_InUnitStepDiscreteTimeModel_useMs = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useSec == 0, par_InUnitStepDiscreteTimeModel_useSec = 1)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useSec == 0, par_InUnitStepDiscreteTimeModel_useMin = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useSec == 0, par_InUnitStepDiscreteTimeModel_useH = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useSec == 0, par_InUnitStepDiscreteTimeModel_useD = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useSec == 0, par_InUnitStepDiscreteTimeModel_useW = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useSec == 0, par_InUnitStepDiscreteTimeModel_useM = 0)
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useSec(set_InUnitStepDiscreteTimeModel)
 
 * - description: Verwendet Minuten als Einheit für die Zeitdauer.
 * - identifier: Minuten
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMin == 1, par_InUnitStepDiscreteTimeModel_useMs = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMin == 1, par_InUnitStepDiscreteTimeModel_useSec = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMin == 1, par_InUnitStepDiscreteTimeModel_useH = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMin == 1, par_InUnitStepDiscreteTimeModel_useD = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMin == 1, par_InUnitStepDiscreteTimeModel_useW = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMin == 1, par_InUnitStepDiscreteTimeModel_useM = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMin == 0, par_InUnitStepDiscreteTimeModel_useMs = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMin == 0, par_InUnitStepDiscreteTimeModel_useSec = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMin == 0, par_InUnitStepDiscreteTimeModel_useMin = 1)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMin == 0, par_InUnitStepDiscreteTimeModel_useH = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMin == 0, par_InUnitStepDiscreteTimeModel_useD = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMin == 0, par_InUnitStepDiscreteTimeModel_useW = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useMin == 0, par_InUnitStepDiscreteTimeModel_useM = 0)
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useMin(set_InUnitStepDiscreteTimeModel)
 
 * - description: Verwendet Stunden als Einheit für die Zeitdauer.
 * - identifier: Stunden
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useH == 1, par_InUnitStepDiscreteTimeModel_useMs = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useH == 1, par_InUnitStepDiscreteTimeModel_useSec = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useH == 1, par_InUnitStepDiscreteTimeModel_useMin = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useH == 1, par_InUnitStepDiscreteTimeModel_useD = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useH == 1, par_InUnitStepDiscreteTimeModel_useW = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useH == 1, par_InUnitStepDiscreteTimeModel_useM = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useH == 0, par_InUnitStepDiscreteTimeModel_useMs = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useH == 0, par_InUnitStepDiscreteTimeModel_useSec = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useH == 0, par_InUnitStepDiscreteTimeModel_useMin = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useH == 0, par_InUnitStepDiscreteTimeModel_useH = 1)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useH == 0, par_InUnitStepDiscreteTimeModel_useD = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useH == 0, par_InUnitStepDiscreteTimeModel_useW = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useH == 0, par_InUnitStepDiscreteTimeModel_useM = 0)
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useH(set_InUnitStepDiscreteTimeModel)
 
 * - description: Verwendet Tage als Einheit für die Zeitdauer.
 * - identifier: Tage
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useD == 1, par_InUnitStepDiscreteTimeModel_useMs = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useD == 1, par_InUnitStepDiscreteTimeModel_useSec = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useD == 1, par_InUnitStepDiscreteTimeModel_useMin = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useD == 1, par_InUnitStepDiscreteTimeModel_useH = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useD == 1, par_InUnitStepDiscreteTimeModel_useW = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useD == 1, par_InUnitStepDiscreteTimeModel_useM = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useD == 0, par_InUnitStepDiscreteTimeModel_useMs = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useD == 0, par_InUnitStepDiscreteTimeModel_useSec = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useD == 0, par_InUnitStepDiscreteTimeModel_useMin = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useD == 0, par_InUnitStepDiscreteTimeModel_useH = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useD == 0, par_InUnitStepDiscreteTimeModel_useD = 1)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useD == 0, par_InUnitStepDiscreteTimeModel_useW = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useD == 0, par_InUnitStepDiscreteTimeModel_useM = 0)
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useD(set_InUnitStepDiscreteTimeModel)
 
 * - default: 1
 * - description: Verwendet Wochen als Einheit für die Zeitdauer.
 * - identifier: Wochen
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useW == 1, par_InUnitStepDiscreteTimeModel_useMs = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useW == 1, par_InUnitStepDiscreteTimeModel_useSec = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useW == 1, par_InUnitStepDiscreteTimeModel_useMin = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useW == 1, par_InUnitStepDiscreteTimeModel_useH = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useW == 1, par_InUnitStepDiscreteTimeModel_useD = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useW == 1, par_InUnitStepDiscreteTimeModel_useM = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useW == 0, par_InUnitStepDiscreteTimeModel_useMs = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useW == 0, par_InUnitStepDiscreteTimeModel_useSec = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useW == 0, par_InUnitStepDiscreteTimeModel_useMin = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useW == 0, par_InUnitStepDiscreteTimeModel_useH = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useW == 0, par_InUnitStepDiscreteTimeModel_useD = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useW == 0, par_InUnitStepDiscreteTimeModel_useW = 1)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useW == 0, par_InUnitStepDiscreteTimeModel_useM = 0)
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useW(set_InUnitStepDiscreteTimeModel)
 
 * - description: Verwendet Monate als Einheit für die Zeitdauer.
 * - identifier: Monate
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useM == 1, par_InUnitStepDiscreteTimeModel_useMs = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useM == 1, par_InUnitStepDiscreteTimeModel_useSec = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useM == 1, par_InUnitStepDiscreteTimeModel_useMin = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useM == 1, par_InUnitStepDiscreteTimeModel_useH = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useM == 1, par_InUnitStepDiscreteTimeModel_useD = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useM == 1, par_InUnitStepDiscreteTimeModel_useW = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useM == 0, par_InUnitStepDiscreteTimeModel_useMs = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useM == 0, par_InUnitStepDiscreteTimeModel_useSec = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useM == 0, par_InUnitStepDiscreteTimeModel_useMin = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useM == 0, par_InUnitStepDiscreteTimeModel_useH = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useM == 0, par_InUnitStepDiscreteTimeModel_useD = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useM == 0, par_InUnitStepDiscreteTimeModel_useW = 0)
+* - rule: IF (par_InUnitStepDiscreteTimeModel_useM == 0, par_InUnitStepDiscreteTimeModel_useM = 1)
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useM(set_InUnitStepDiscreteTimeModel)
 
@@ -1412,6 +1606,11 @@ SCALAR sca_InGeneral_runMode
 * - identifier: Spezialszenario
 * - type: Integer
 SCALAR sca_InGeneral_scenarioMode
+
+* - description: todo
+* - identifier: Kopiere Log
+* - type: Boolean
+SCALAR sca_InGeneral_copyLogIfPossible
 
 * - domain: [0,6]
 * - description: Setzt das zu nutzende Logging-Level in IRPact, folgende Werte werden unterstützt: 0 = OFF, 1 = TRACE, 2 = DEBUG, 3 = INFO, 4 = WARN, 5 = ERROR, 6 = ALL. Das Level ist der Hauptfilter für alle log-Operationen.
@@ -1557,185 +1756,190 @@ PARAMETER par_InTestData_testValue1(set_InTestData)
 PARAMETER par_InTestData_testValue2(set_InTestData)
 
 * - default: 1
-* - description: value01
-* - identifier: value01
+* - description: xor test
+* - identifier: g0 v0
 * - rule: IF (par_InTestData_value01 == 1, par_InTestData_value02 = 0)
 * - rule: IF (par_InTestData_value01 == 0, par_InTestData_value02 = 1)
 * - type: Boolean
 PARAMETER par_InTestData_value01(set_InTestData)
 
-* - description: value02
-* - identifier: value02
+* - description: xor test
+* - identifier: g0 v1
 * - rule: IF (par_InTestData_value02 == 1, par_InTestData_value01 = 0)
-* - rule: IF (par_InTestData_value02 == 0, par_InTestData_value02 = 1)
-* - rule: IF (par_InTestData_value02 == 0, par_InTestData_value01 = 0)
+* - rule: IF (par_InTestData_value02 == 0, par_InTestData_value01 = 1)
 * - type: Boolean
 PARAMETER par_InTestData_value02(set_InTestData)
 
 * - default: 1
-* - description: value11
-* - identifier: value11
+* - description: default
+* - identifier: g1 v0 (default)
 * - rule: IF (par_InTestData_value11 == 1, par_InTestData_value12 = 0)
 * - rule: IF (par_InTestData_value11 == 1, par_InTestData_value13 = 0)
 * - rule: IF (par_InTestData_value11 == 1, par_InTestData_value14 = 0)
-* - rule: IF (par_InTestData_value11 == 0, par_InTestData_value14 = 1)
+* - rule: IF (par_InTestData_value11 == 0, par_InTestData_value11 = 1)
 * - rule: IF (par_InTestData_value11 == 0, par_InTestData_value12 = 0)
 * - rule: IF (par_InTestData_value11 == 0, par_InTestData_value13 = 0)
+* - rule: IF (par_InTestData_value11 == 0, par_InTestData_value14 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value11(set_InTestData)
 
-* - description: value12
-* - identifier: value12
+* - description: default
+* - identifier: g1 v1
 * - rule: IF (par_InTestData_value12 == 1, par_InTestData_value11 = 0)
 * - rule: IF (par_InTestData_value12 == 1, par_InTestData_value13 = 0)
 * - rule: IF (par_InTestData_value12 == 1, par_InTestData_value14 = 0)
-* - rule: IF (par_InTestData_value12 == 0, par_InTestData_value14 = 1)
-* - rule: IF (par_InTestData_value12 == 0, par_InTestData_value11 = 0)
+* - rule: IF (par_InTestData_value12 == 0, par_InTestData_value11 = 1)
 * - rule: IF (par_InTestData_value12 == 0, par_InTestData_value13 = 0)
+* - rule: IF (par_InTestData_value12 == 0, par_InTestData_value14 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value12(set_InTestData)
 
-* - description: value13
-* - identifier: value13
+* - description: default
+* - identifier: g1 v2
 * - rule: IF (par_InTestData_value13 == 1, par_InTestData_value11 = 0)
 * - rule: IF (par_InTestData_value13 == 1, par_InTestData_value12 = 0)
 * - rule: IF (par_InTestData_value13 == 1, par_InTestData_value14 = 0)
-* - rule: IF (par_InTestData_value13 == 0, par_InTestData_value14 = 1)
-* - rule: IF (par_InTestData_value13 == 0, par_InTestData_value11 = 0)
+* - rule: IF (par_InTestData_value13 == 0, par_InTestData_value11 = 1)
 * - rule: IF (par_InTestData_value13 == 0, par_InTestData_value12 = 0)
+* - rule: IF (par_InTestData_value13 == 0, par_InTestData_value14 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value13(set_InTestData)
 
-* - description: value14
-* - identifier: value14
+* - description: default
+* - identifier: g1 v3
 * - rule: IF (par_InTestData_value14 == 1, par_InTestData_value11 = 0)
 * - rule: IF (par_InTestData_value14 == 1, par_InTestData_value12 = 0)
 * - rule: IF (par_InTestData_value14 == 1, par_InTestData_value13 = 0)
-* - rule: IF (par_InTestData_value14 == 0, par_InTestData_value14 = 1)
-* - rule: IF (par_InTestData_value14 == 0, par_InTestData_value11 = 0)
+* - rule: IF (par_InTestData_value14 == 0, par_InTestData_value11 = 1)
 * - rule: IF (par_InTestData_value14 == 0, par_InTestData_value12 = 0)
 * - rule: IF (par_InTestData_value14 == 0, par_InTestData_value13 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value14(set_InTestData)
 
 * - default: 1
-* - description: value21
-* - identifier: value21
+* - description: unselectable
+* - identifier: g2 v0
 * - rule: IF (par_InTestData_value21 == 1, par_InTestData_value22 = 0)
 * - rule: IF (par_InTestData_value21 == 1, par_InTestData_value23 = 0)
 * - rule: IF (par_InTestData_value21 == 1, par_InTestData_value24 = 0)
 * - rule: IF (par_InTestData_value21 == 1, par_InTestData_value25 = 0)
 * - rule: IF (par_InTestData_value21 == 1, par_InTestData_value26 = 0)
 * - rule: IF (par_InTestData_value21 == 1, par_InTestData_value27 = 0)
-* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value21 = 1)
 * - rule: IF (par_InTestData_value21 == 0, par_InTestData_value22 = 0)
 * - rule: IF (par_InTestData_value21 == 0, par_InTestData_value23 = 0)
 * - rule: IF (par_InTestData_value21 == 0, par_InTestData_value24 = 0)
 * - rule: IF (par_InTestData_value21 == 0, par_InTestData_value25 = 0)
 * - rule: IF (par_InTestData_value21 == 0, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value27 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value21(set_InTestData)
 
-* - description: value22
-* - identifier: value22
+* - description: unselectable
+* - identifier: g2 v1
 * - rule: IF (par_InTestData_value22 == 1, par_InTestData_value21 = 0)
 * - rule: IF (par_InTestData_value22 == 1, par_InTestData_value23 = 0)
 * - rule: IF (par_InTestData_value22 == 1, par_InTestData_value24 = 0)
 * - rule: IF (par_InTestData_value22 == 1, par_InTestData_value25 = 0)
 * - rule: IF (par_InTestData_value22 == 1, par_InTestData_value26 = 0)
 * - rule: IF (par_InTestData_value22 == 1, par_InTestData_value27 = 0)
-* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value27 = 1)
 * - rule: IF (par_InTestData_value22 == 0, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value22 = 1)
 * - rule: IF (par_InTestData_value22 == 0, par_InTestData_value23 = 0)
 * - rule: IF (par_InTestData_value22 == 0, par_InTestData_value24 = 0)
 * - rule: IF (par_InTestData_value22 == 0, par_InTestData_value25 = 0)
 * - rule: IF (par_InTestData_value22 == 0, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value27 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value22(set_InTestData)
 
-* - description: value23
-* - identifier: value23
+* - description: unselectable
+* - identifier: g2 v2
 * - rule: IF (par_InTestData_value23 == 1, par_InTestData_value21 = 0)
 * - rule: IF (par_InTestData_value23 == 1, par_InTestData_value22 = 0)
 * - rule: IF (par_InTestData_value23 == 1, par_InTestData_value24 = 0)
 * - rule: IF (par_InTestData_value23 == 1, par_InTestData_value25 = 0)
 * - rule: IF (par_InTestData_value23 == 1, par_InTestData_value26 = 0)
 * - rule: IF (par_InTestData_value23 == 1, par_InTestData_value27 = 0)
-* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value27 = 1)
 * - rule: IF (par_InTestData_value23 == 0, par_InTestData_value21 = 0)
 * - rule: IF (par_InTestData_value23 == 0, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value23 = 1)
 * - rule: IF (par_InTestData_value23 == 0, par_InTestData_value24 = 0)
 * - rule: IF (par_InTestData_value23 == 0, par_InTestData_value25 = 0)
 * - rule: IF (par_InTestData_value23 == 0, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value27 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value23(set_InTestData)
 
-* - description: value24
-* - identifier: value24
+* - description: unselectable
+* - identifier: g2 v3
 * - rule: IF (par_InTestData_value24 == 1, par_InTestData_value21 = 0)
 * - rule: IF (par_InTestData_value24 == 1, par_InTestData_value22 = 0)
 * - rule: IF (par_InTestData_value24 == 1, par_InTestData_value23 = 0)
 * - rule: IF (par_InTestData_value24 == 1, par_InTestData_value25 = 0)
 * - rule: IF (par_InTestData_value24 == 1, par_InTestData_value26 = 0)
 * - rule: IF (par_InTestData_value24 == 1, par_InTestData_value27 = 0)
-* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value27 = 1)
 * - rule: IF (par_InTestData_value24 == 0, par_InTestData_value21 = 0)
 * - rule: IF (par_InTestData_value24 == 0, par_InTestData_value22 = 0)
 * - rule: IF (par_InTestData_value24 == 0, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value24 = 1)
 * - rule: IF (par_InTestData_value24 == 0, par_InTestData_value25 = 0)
 * - rule: IF (par_InTestData_value24 == 0, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value27 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value24(set_InTestData)
 
-* - description: value25
-* - identifier: value25
+* - description: unselectable
+* - identifier: g2 v4
 * - rule: IF (par_InTestData_value25 == 1, par_InTestData_value21 = 0)
 * - rule: IF (par_InTestData_value25 == 1, par_InTestData_value22 = 0)
 * - rule: IF (par_InTestData_value25 == 1, par_InTestData_value23 = 0)
 * - rule: IF (par_InTestData_value25 == 1, par_InTestData_value24 = 0)
 * - rule: IF (par_InTestData_value25 == 1, par_InTestData_value26 = 0)
 * - rule: IF (par_InTestData_value25 == 1, par_InTestData_value27 = 0)
-* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value27 = 1)
 * - rule: IF (par_InTestData_value25 == 0, par_InTestData_value21 = 0)
 * - rule: IF (par_InTestData_value25 == 0, par_InTestData_value22 = 0)
 * - rule: IF (par_InTestData_value25 == 0, par_InTestData_value23 = 0)
 * - rule: IF (par_InTestData_value25 == 0, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value25 = 1)
 * - rule: IF (par_InTestData_value25 == 0, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value27 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value25(set_InTestData)
 
-* - description: value26
-* - identifier: value26
+* - description: unselectable
+* - identifier: g2 v5
 * - rule: IF (par_InTestData_value26 == 1, par_InTestData_value21 = 0)
 * - rule: IF (par_InTestData_value26 == 1, par_InTestData_value22 = 0)
 * - rule: IF (par_InTestData_value26 == 1, par_InTestData_value23 = 0)
 * - rule: IF (par_InTestData_value26 == 1, par_InTestData_value24 = 0)
 * - rule: IF (par_InTestData_value26 == 1, par_InTestData_value25 = 0)
 * - rule: IF (par_InTestData_value26 == 1, par_InTestData_value27 = 0)
-* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value27 = 1)
 * - rule: IF (par_InTestData_value26 == 0, par_InTestData_value21 = 0)
 * - rule: IF (par_InTestData_value26 == 0, par_InTestData_value22 = 0)
 * - rule: IF (par_InTestData_value26 == 0, par_InTestData_value23 = 0)
 * - rule: IF (par_InTestData_value26 == 0, par_InTestData_value24 = 0)
 * - rule: IF (par_InTestData_value26 == 0, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value26 = 1)
+* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value27 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value26(set_InTestData)
 
-* - description: value27
-* - identifier: value27
+* - description: unselectable
+* - identifier: g2 v6
 * - rule: IF (par_InTestData_value27 == 1, par_InTestData_value21 = 0)
 * - rule: IF (par_InTestData_value27 == 1, par_InTestData_value22 = 0)
 * - rule: IF (par_InTestData_value27 == 1, par_InTestData_value23 = 0)
 * - rule: IF (par_InTestData_value27 == 1, par_InTestData_value24 = 0)
 * - rule: IF (par_InTestData_value27 == 1, par_InTestData_value25 = 0)
 * - rule: IF (par_InTestData_value27 == 1, par_InTestData_value26 = 0)
-* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value27 = 1)
 * - rule: IF (par_InTestData_value27 == 0, par_InTestData_value21 = 0)
 * - rule: IF (par_InTestData_value27 == 0, par_InTestData_value22 = 0)
 * - rule: IF (par_InTestData_value27 == 0, par_InTestData_value23 = 0)
 * - rule: IF (par_InTestData_value27 == 0, par_InTestData_value24 = 0)
 * - rule: IF (par_InTestData_value27 == 0, par_InTestData_value25 = 0)
 * - rule: IF (par_InTestData_value27 == 0, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value27 = 1)
 * - type: Boolean
 PARAMETER par_InTestData_value27(set_InTestData)
 

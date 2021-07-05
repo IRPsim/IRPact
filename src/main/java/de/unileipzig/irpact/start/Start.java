@@ -194,7 +194,6 @@ public final class Start {
             } else {
                 loader.start(scenario);
             }
-            LOGGER.trace(IRPSection.GENERAL, "Start finished");
             return new Result(CommandLine.ExitCode.OK);
         } catch (Throwable t) {
             LOGGER.error("Start failed with uncaught exception", t);

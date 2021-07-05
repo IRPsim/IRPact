@@ -113,12 +113,21 @@ image:
 InGenericOutputImage:
   edn_label: "Benutzerdefiniert"
   edn_description: "Hier kann für die Bilderzeugung das entsprechende Programm mittels 'Visualisierungsprogramm' individuell eingestellt werden. Der Bezeichner wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem für gnuplot Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild) erstellt. Für R werden Ergebnis.csv (Daten), Ergebnis.R (Skript) und Ergebnis.png (Bild) erstellt"
-InGenericOutputImage_engine:
-  gams_identifier: "Visualisierungsprogramm"
-  gams_description: "Bestimmt das Programm, mit dem die Bilder erzeugt werden sollen. IRPact unterstützt folgende Programme: R (1) und gnuplot (2)."
-InGenericOutputImage_mode:
-  gams_identifier: "Zu visualisierende Daten"
-  gams_description: "Gibt an, welche Daten visualisiert werden sollen. Aktuell unterstützt: nichts (0), jährlichen Adoptionen nach PLZ (1), jährlichen Adoptionen nach PLZ im Vergleich zu realen Daten (1), kumulierte jährliche Adoptionen nach Phase (3)."
+InGenericOutputImage_useGnuplot:
+  gams_identifier: "Programm: gnuplot"
+  gams_description: "Erzeugt das Bild mittels gnuplot."
+InGenericOutputImage_useR:
+  gams_identifier: "Programm: R"
+  gams_description: "Erzeugt das Bild mittels R."
+InGenericOutputImage_annualZip:
+  gams_identifier: "Darstellung: jährliche Adoptionen (PLZ)"
+  gams_description: "Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar."
+InGenericOutputImage_annualZipWithReal:
+  gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)"
+  gams_description: "Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
+InGenericOutputImage_cumulativeAnnualPhase:
+  gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase)"
+  gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar."
 InGenericOutputImage_storeScript:
   gams_identifier: "Skript speichern?"
   gams_description: "Speichert auf Wunsch das Skript für die Bilderzeugung."
@@ -135,9 +144,15 @@ InGenericOutputImage_linewidth:
 InGnuPlotOutputImage:
   edn_label: "gnuplot"
   edn_description: "Die hier definierten Bilder werden mittels gnuplot erstellt. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild) erstellt."
-InGnuPlotOutputImage_mode:
-  gams_identifier: "Datenvisualisierung (Name noch anpassen)"
-  gams_description: "Gibt an, welche Daten visualisiert werden sollen."
+InGnuPlotOutputImage_annualZip:
+  gams_identifier: "Darstellung: jährliche Adoptionen (PLZ)"
+  gams_description: "Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar."
+InGnuPlotOutputImage_annualZipWithReal:
+  gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)"
+  gams_description: "Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
+InGnuPlotOutputImage_cumulativeAnnualPhase:
+  gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase)"
+  gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar."
 InGnuPlotOutputImage_storeScript:
   gams_identifier: "Skript speichern?"
   gams_description: "Speichert auf Wunsch das Skript für die Bilderzeugung."
@@ -154,9 +169,15 @@ InGnuPlotOutputImage_linewidth:
 InROutputImage:
   edn_label: "R"
   edn_description: "Die hier definierten Bilder werden mittels R erstellt. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem Ergebnis.csv (Daten), Ergebnis.R (Skript) und Ergebnis.png (Bild) erstellt."
-InROutputImage_mode:
-  gams_identifier: "Datenvisualisierung (Name noch anpassen)"
-  gams_description: "Gibt an, welche Daten visualisiert werden sollen."
+InROutputImage_annualZip:
+  gams_identifier: "Darstellung: jährliche Adoptionen (PLZ)"
+  gams_description: "Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar."
+InROutputImage_annualZipWithReal:
+  gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)"
+  gams_description: "Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
+InROutputImage_cumulativeAnnualPhase:
+  gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase)"
+  gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar."
 InROutputImage_storeScript:
   gams_identifier: "Skript speichern?"
   gams_description: "Speichert auf Wunsch das Skript für die Bilderzeugung."
@@ -187,6 +208,9 @@ InGeneral_runMode:
   gams_description: "todo"
 InGeneral_scenarioMode:
   gams_identifier: "Spezialszenario"
+  gams_description: "todo"
+InGeneral_copyLogIfPossible:
+  gams_identifier: "Kopiere Log"
   gams_description: "todo"
 
 VisibleBinaryData:
@@ -1243,44 +1267,44 @@ InTestData_testValue2:
   gams_identifier: "Testwert 2"
   gams_description: "Testwert 2"
 InTestData_value01:
-  gams_identifier: "value01"
-  gams_description: "value01"
+  gams_identifier: "g0 v0"
+  gams_description: "xor test"
 InTestData_value02:
-  gams_identifier: "value02"
-  gams_description: "value02"
+  gams_identifier: "g0 v1"
+  gams_description: "xor test"
 InTestData_value11:
-  gams_identifier: "value11"
-  gams_description: "value11"
+  gams_identifier: "g1 v0 (default)"
+  gams_description: "default"
 InTestData_value12:
-  gams_identifier: "value12"
-  gams_description: "value12"
+  gams_identifier: "g1 v1"
+  gams_description: "default"
 InTestData_value13:
-  gams_identifier: "value13"
-  gams_description: "value13"
+  gams_identifier: "g1 v2"
+  gams_description: "default"
 InTestData_value14:
-  gams_identifier: "value14"
-  gams_description: "value14"
+  gams_identifier: "g1 v3"
+  gams_description: "default"
 InTestData_value21:
-  gams_identifier: "value21"
-  gams_description: "value21"
+  gams_identifier: "g2 v0"
+  gams_description: "unselectable"
 InTestData_value22:
-  gams_identifier: "value22"
-  gams_description: "value22"
+  gams_identifier: "g2 v1"
+  gams_description: "unselectable"
 InTestData_value23:
-  gams_identifier: "value23"
-  gams_description: "value23"
+  gams_identifier: "g2 v2"
+  gams_description: "unselectable"
 InTestData_value24:
-  gams_identifier: "value24"
-  gams_description: "value24"
+  gams_identifier: "g2 v3"
+  gams_description: "unselectable"
 InTestData_value25:
-  gams_identifier: "value25"
-  gams_description: "value25"
+  gams_identifier: "g2 v4"
+  gams_description: "unselectable"
 InTestData_value26:
-  gams_identifier: "value26"
-  gams_description: "value26"
+  gams_identifier: "g2 v5"
+  gams_description: "unselectable"
 InTestData_value27:
-  gams_identifier: "value27"
-  gams_description: "value27"
+  gams_identifier: "g2 v6"
+  gams_description: "unselectable"
 
 
 #=========================
@@ -1390,3 +1414,22 @@ InCustomFileSelectedGroupedSpatialDistribution2D_selectKey:
 InCustomFileSelectedGroupedSpatialDistribution2D_groupKey:
   gams_identifier: "Gruppierungsschlüssel"
   gams_description: "Bestimmt den Schlüssel für die Gruppierung und Wichtung anhand der tabellarischen Datei (Spaltenname)."
+
+#deprecated
+InGenericOutputImage_engine:
+  gams_identifier: "Visualisierungsprogramm"
+  gams_description: "Bestimmt das Programm, mit dem die Bilder erzeugt werden sollen. IRPact unterstützt folgende Programme: R (1) und gnuplot (2)."
+#deprecated
+InGenericOutputImage_mode:
+  gams_identifier: "Zu visualisierende Daten"
+  gams_description: "Gibt an, welche Daten visualisiert werden sollen. Aktuell unterstützt: nichts (0), jährlichen Adoptionen nach PLZ (1), jährlichen Adoptionen nach PLZ im Vergleich zu realen Daten (1), kumulierte jährliche Adoptionen nach Phase (3)."
+
+#deprecated
+InGnuPlotOutputImage_mode:
+  gams_identifier: "Datenvisualisierung (Name noch anpassen)"
+  gams_description: "Gibt an, welche Daten visualisiert werden sollen."
+
+#deprecated
+InROutputImage_mode:
+  gams_identifier: "Datenvisualisierung (Name noch anpassen)"
+  gams_description: "Gibt an, welche Daten visualisiert werden sollen."

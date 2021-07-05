@@ -3,7 +3,6 @@ package de.unileipzig.irpact.io.param.input.image;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.util.img.DataToVisualize;
 import de.unileipzig.irpact.core.util.img.SupportedEngine;
-import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -44,7 +43,7 @@ public class InROutputImage implements InOutputImage {
 
         setDomain(res, thisClass(), "linewidth", G0_DOMAIN);
 
-        setRules(res, thisClass(), dataToVisualize, dataToVisualizeBuilder, buildDefaultParameterNameOperator(thisClass()));
+        setRules(res, thisClass(), dataToVisualize, dataToVisualizeBuilder.withKeyModifier(buildDefaultParameterNameOperator(thisClass())));
     }
 
     public String _name;

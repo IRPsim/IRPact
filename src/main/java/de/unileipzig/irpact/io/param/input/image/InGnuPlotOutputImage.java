@@ -43,7 +43,7 @@ public class InGnuPlotOutputImage implements InOutputImage {
 
         setDomain(res, thisClass(), "linewidth", "(0,)");
 
-        setRules(res, thisClass(), dataToVisualize, dataToVisualizeBuilder, buildDefaultParameterNameOperator(thisClass()));
+        setRules(res, thisClass(), dataToVisualize, dataToVisualizeBuilder.withKeyModifier(buildDefaultParameterNameOperator(thisClass())));
     }
 
     public String _name;

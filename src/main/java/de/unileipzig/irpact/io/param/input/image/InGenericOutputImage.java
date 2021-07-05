@@ -34,6 +34,7 @@ public class InGenericOutputImage implements InOutputImage {
 
     protected static final String[] engineFieldNames = {"useGnuplot", "useR"};
     protected static final XorWithoutUnselectRuleBuilder engineBuilder = new XorWithoutUnselectRuleBuilder()
+            .withKeyModifier(buildDefaultParameterNameOperator(thisClass()))
             .withTrueValue(Constants.TRUE1)
             .withFalseValue(Constants.FALSE0)
             .withKeys(engineFieldNames);
@@ -56,8 +57,8 @@ public class InGenericOutputImage implements InOutputImage {
 
         setDomain(res, thisClass(), "linewidth", G0_DOMAIN);
 
-        setRules(res, thisClass(), engineFieldNames, engineBuilder, buildDefaultParameterNameOperator(thisClass()));
-        setRules(res, thisClass(), dataToVisualize, dataToVisualizeBuilder, buildDefaultParameterNameOperator(thisClass()));
+        setRules(res, thisClass(), engineFieldNames, engineBuilder);
+        setRules(res, thisClass(), dataToVisualize, dataToVisualizeBuilder.withKeyModifier(buildDefaultParameterNameOperator(thisClass())));
     }
 
     public static final InGenericOutputImage ANNUAL_ADOPTIONS = new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS);

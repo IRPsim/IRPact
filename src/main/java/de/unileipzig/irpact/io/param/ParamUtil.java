@@ -370,11 +370,9 @@ public final class ParamUtil {
             TreeAnnotationResource res,
             Class<?> c,
             String[] fields,
-            RuleBuilder builder,
-            UnaryOperator<String> field2par) {
+            RuleBuilder builder) {
         for(String field: fields) {
-            String par = field2par.apply(field);
-            setRules(res, c, field, builder.buildFor(par));
+            setRules(res, c, field, builder.buildFor(field));
         }
     }
 

@@ -37,6 +37,7 @@ public class InUnitStepDiscreteTimeModel implements InTimeModel {
 
     protected static final String[] timeUnitFieldNames = {"useMs", "useSec", "useMin", "useH", "useD", "useW", "useM"};
     protected static final XorWithoutUnselectRuleBuilder timeUnitBuilder = new XorWithoutUnselectRuleBuilder()
+            .withKeyModifier(buildDefaultParameterNameOperator(thisClass()))
             .withTrueValue(Constants.TRUE1)
             .withFalseValue(Constants.FALSE0)
             .withKeys(timeUnitFieldNames);
@@ -59,7 +60,7 @@ public class InUnitStepDiscreteTimeModel implements InTimeModel {
         setDefault(res, thisClass(), "amountOfTime", varargs(1));
         setDefault(res, thisClass(), "useW", VALUE_TRUE);
 
-        setRules(res, thisClass(), timeUnitFieldNames, timeUnitBuilder, buildDefaultParameterNameOperator(thisClass()));
+        setRules(res, thisClass(), timeUnitFieldNames, timeUnitBuilder);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());

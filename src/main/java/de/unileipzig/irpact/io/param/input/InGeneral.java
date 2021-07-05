@@ -75,6 +75,7 @@ public class InGeneral implements Copyable {
         putFieldPathAndAddEntry(res, thisClass(), "runPVAct", GENERAL_SETTINGS, SPECIAL_SETTINGS);
         putFieldPathAndAddEntry(res, thisClass(), "runMode", GENERAL_SETTINGS, SPECIAL_SETTINGS);
         putFieldPathAndAddEntry(res, thisClass(), "scenarioMode", GENERAL_SETTINGS, SPECIAL_SETTINGS);
+        putFieldPathAndAddEntry(res, thisClass(), "copyLogIfPossible", GENERAL_SETTINGS, SPECIAL_SETTINGS);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -153,6 +154,15 @@ public class InGeneral implements Copyable {
 
     @FieldDefinition
     public int scenarioMode = -1;
+
+    @FieldDefinition
+    public boolean copyLogIfPossible = false;
+    public void setCopyLogIfPossible(boolean copyLogIfPossible) {
+        this.copyLogIfPossible = copyLogIfPossible;
+    }
+    public boolean isCopyLogIfPossible() {
+        return copyLogIfPossible;
+    }
 
     //=========================
     //general logging
