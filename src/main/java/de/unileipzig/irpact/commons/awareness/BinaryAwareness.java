@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons.awareness;
 
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -35,5 +37,10 @@ public class BinaryAwareness<T, U> implements Awareness<T> {
     @Override
     public void forget(T item) {
         items.remove(item);
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.unsupportedChecksum(getClass());
     }
 }

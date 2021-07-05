@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.core.process.ra.alg;
 
-import de.unileipzig.irpact.commons.checksum.ChecksumCalculator;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
@@ -20,7 +20,7 @@ public class ReversedRelativeAgreementAlgorithm extends AbstractRelativeAgreemen
 
     @Override
     public int getChecksum() {
-        return ChecksumCalculator.DEFAULT_NONNULL_CHECKSUM;
+        return ChecksumComparable.DEFAULT_NONNULL_CHECKSUM;
     }
 
     @Override

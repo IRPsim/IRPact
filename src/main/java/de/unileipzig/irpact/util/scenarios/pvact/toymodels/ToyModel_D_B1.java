@@ -1,10 +1,7 @@
 package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 
-import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
-import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
@@ -25,10 +22,7 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.output.OutRoot;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -52,9 +46,14 @@ public class ToyModel_D_B1 extends AbstractToyModel {
     protected InDiracUnivariateDistribution dirac100 = new InDiracUnivariateDistribution("dirac100", 100);
 
     protected InBernoulliDistribution bernoulli1 = new InBernoulliDistribution("bernoulli1", 1);
-    protected InBernoulliDistribution bernoulli01 = new InBernoulliDistribution("bernoulli01", 0.1);
-    protected InBernoulliDistribution bernoulli03 = new InBernoulliDistribution("bernoulli03", 0.3);
     protected InBernoulliDistribution bernoulli07 = new InBernoulliDistribution("bernoulli07", 0.7);
+    protected InBernoulliDistribution bernoulli03 = new InBernoulliDistribution("bernoulli03", 0.3);
+    protected InBernoulliDistribution bernoulli001 = new InBernoulliDistribution("bernoulli001", 0.01);
+
+    protected int sizeS = SIZE_S;
+    protected int sizeP = SIZE_P;
+    protected int sizeM = SIZE_M;
+    protected int sizeL = SIZE_L;
 
     public ToyModel_D_B1(BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(resultConsumer);
@@ -71,7 +70,14 @@ public class ToyModel_D_B1 extends AbstractToyModel {
         setTotalAgents(SIZE_S + SIZE_P + SIZE_M + SIZE_L);
     }
 
-    public List<List<SpatialAttribute>> buildData(
+    @Override
+    protected List<List<SpatialAttribute>> createTestData(
+            List<List<SpatialAttribute>> input,
+            Random random) {
+        return createTestData(input, sizeS, sizeP, sizeM, sizeL, random);
+    }
+
+    public List<List<SpatialAttribute>> createTestData(
             List<List<SpatialAttribute>> input,
             int sizeOfS, int sizeOfP, int sizeOfM, int sizeOfL,
             Random rnd) {
@@ -119,17 +125,6 @@ public class ToyModel_D_B1 extends AbstractToyModel {
         }
 
         return output;
-    }
-
-    public void buildData(
-            Path xlsxInput, Path xlsxOutput,
-            int sizeOfS, int sizeOfP, int sizeOfM, int sizeOfL,
-            Random rnd) throws ParsingException, IOException, InvalidFormatException {
-        Table<SpatialAttribute> inputData = SpatialTableFileLoader.parseXlsx(xlsxInput);
-        List<List<SpatialAttribute>> outputList = buildData(inputData.listTable(), sizeOfS, sizeOfP, sizeOfM, sizeOfL, rnd);
-        Table<SpatialAttribute> outputData = inputData.emptyCopyWithSameHeader();
-        outputData.addRows(outputList);
-        SpatialTableFileLoader.writeXlsx(xlsxOutput, "Data", "Daten fuer " + getName(), outputData);
     }
 
     protected InPVactConsumerAgentGroup createAgentGroup(String name, InSpatialDistribution distribution) {
@@ -181,8 +176,8 @@ public class ToyModel_D_B1 extends AbstractToyModel {
         M.setInitialAdopter(bernoulli03);
 
         InPVactConsumerAgentGroup L = createAgentGroup("L", spatialDist);
-        L.setInitialProductAwareness(bernoulli01);
-        L.setInitialAdopter(bernoulli01);
+        L.setInitialProductAwareness(bernoulli001);
+        L.setInitialAdopter(bernoulli001);
 
         String prefix = "aff";
         InAffinities affinities = createAffinities("affinities",

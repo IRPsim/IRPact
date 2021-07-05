@@ -242,7 +242,6 @@ public class Preloader {
         IRPact irpact = createIRPactInstance();
         irpact.init(root);
         start(irpact);
-        LOGGER.trace("IRPact finished");
     }
 
     public void start(AnnualEntry<InRoot> root) throws Exception {
@@ -255,6 +254,5 @@ public class Preloader {
         IRPact irpact = createIRPactInstance();
         irpact.init(root);
         start(irpact);
-        LOGGER.trace("IRPact finished");
     }
 }

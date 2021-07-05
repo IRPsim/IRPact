@@ -4,9 +4,7 @@ import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.EdnParameter;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
-import de.unileipzig.irptools.util.CopyCache;
-import de.unileipzig.irptools.util.TreeAnnotationResource;
-import de.unileipzig.irptools.util.XorRuleBuilder;
+import de.unileipzig.irptools.util.*;
 
 import java.lang.invoke.MethodHandles;
 
@@ -20,21 +18,6 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
 @Definition
 public class InTestData implements InIRPactEntity {
 
-    protected static final XorRuleBuilder builder0 = new XorRuleBuilder();
-    protected static final XorRuleBuilder builder1 = new XorRuleBuilder();
-    protected static final XorRuleBuilder builder2 = new XorRuleBuilder();
-
-    static {
-        builder0.addKeys("par_InTestData_value01", "par_InTestData_value02");
-        builder0.setDefaultKey("par_InTestData_value02");
-
-        builder1.addKeys("par_InTestData_value11", "par_InTestData_value12", "par_InTestData_value13", "par_InTestData_value14");
-        builder1.setDefaultKey("par_InTestData_value14");
-
-        builder2.addKeys("par_InTestData_value21", "par_InTestData_value22", "par_InTestData_value23", "par_InTestData_value24", "par_InTestData_value25", "par_InTestData_value26", "par_InTestData_value27");
-        builder2.setDefaultKey("par_InTestData_value27");
-    }
-
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
@@ -42,6 +25,21 @@ public class InTestData implements InIRPactEntity {
     public static String thisName() {
         return thisClass().getSimpleName();
     }
+
+    protected static final String[] value0grp = {"value01", "value02"};
+    protected static final String[] value1grp = {"value11", "value12", "value13", "value14"};
+    protected static final String[] value2grp = {"value21", "value22", "value23", "value24", "value25", "value26", "value27"};
+
+    protected static final Xor2RuleBuilder builder0 = new Xor2RuleBuilder()
+            .withKeyModifier(buildDefaultParameterNameOperator(thisClass()))
+            .withKeys(value0grp[0], value0grp[1]);
+    protected static final XorWithDefaultRuleBuilder builder1 = new XorWithDefaultRuleBuilder()
+            .withKeyModifier(buildDefaultParameterNameOperator(thisClass()))
+            .withKeys(value1grp)
+            .withDefaultKey(value1grp[0]);
+    protected static final XorWithoutUnselectRuleBuilder builder2 = new XorWithoutUnselectRuleBuilder()
+            .withKeyModifier(buildDefaultParameterNameOperator(thisClass()))
+            .withKeys(value2grp);
 
     public static void initRes(TreeAnnotationResource res) {
     }
@@ -70,9 +68,9 @@ public class InTestData implements InIRPactEntity {
         setDefault(res, thisClass(), "value11", VALUE_TRUE);
         setDefault(res, thisClass(), "value21", VALUE_TRUE);
 
-        setRules(res, thisClass(), new String[]{"value01", "value02"}, builder0, buildDefaultParOperator(thisClass()));
-        setRules(res, thisClass(), new String[]{"value11", "value12", "value13", "value14"}, builder1, buildDefaultParOperator(thisClass()));
-        setRules(res, thisClass(), new String[]{"value21", "value22", "value23", "value24", "value25", "value26", "value27"}, builder2, buildDefaultParOperator(thisClass()));
+        setRules(res, thisClass(), value0grp, builder0);
+        setRules(res, thisClass(), value1grp, builder1);
+        setRules(res, thisClass(), value2grp, builder2);
     }
 
     public String _name;

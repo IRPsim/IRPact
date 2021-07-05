@@ -18,7 +18,7 @@ public class DefaultChecksumCalculator extends ChecksumCalculator {
     @Override
     public int getChecksum(Object value) {
         if(value == null) {
-            return NUll_CHECKSUM;
+            return ChecksumComparable.NULL_CHECKSUM;
         }
         if(value instanceof ChecksumComparable) {
             return ((ChecksumComparable) value).getChecksum();

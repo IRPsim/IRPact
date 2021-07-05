@@ -12,9 +12,9 @@
             :description "todo" 
             :sections [
               {
-                :label "Jahresabh√§ngiges Attribut" 
+                :label "Jahresabh‰ngiges Attribut" 
                 :set "set_InGeneralConsumerAgentAnnualGroupAttribute" 
-                :description "Der Wert (bzw. Verteilungsfunktion) dieser Attribute l√§sst sich f√ºr die jeweiligen Simulationsjahre individuell definieren." 
+                :description "Der Wert (bzw. Verteilungsfunktion) dieser Attribute l‰sst sich f¸r die jeweiligen Simulationsjahre individuell definieren." 
                 :tags [["link" "InGeneralConsumerAgentAnnualGroupAttribute" "InUnivariateDoubleDistribution" "distribution"]]
               }
             ]
@@ -29,16 +29,16 @@
     :sections [
       {
         :label "OptAct" 
-        :description "Modul mit Testparametern f√ºr die Kopplung." 
+        :description "Modul mit Testparametern f¸r die Kopplung." 
         :sections [
           {
             :label "Link" 
-            :description "Hier stehen Tables-Eintr√§ge." 
+            :description "Hier stehen Tables-Eintr‰ge." 
             :sections [
               {
                 :label "TableWithTimeSeries" 
                 :set "set_load_DS_E" 
-                :description "Hier stehen Zeitreihen als Tables-Eintr√§ge." 
+                :description "Hier stehen Zeitreihen als Tables-Eintr‰ge." 
                 :tags [["F" "E" "EGrid" "energy"]]
               }
             ]

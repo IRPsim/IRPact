@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.simulation;
 
-import de.unileipzig.irpact.commons.checksum.ChecksumCalculator;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.develop.AddToParam;
@@ -45,8 +44,8 @@ public class BasicSettings implements Settings, ChecksumComparable {
     //=========================
 
     @Override
-    public int getChecksum() throws UnsupportedOperationException {
-        return ChecksumCalculator.DEFAULT_NONNULL_CHECKSUM;
+    public int getChecksum() {
+        return ChecksumComparable.DEFAULT_NONNULL_CHECKSUM;
     }
 
     //=========================

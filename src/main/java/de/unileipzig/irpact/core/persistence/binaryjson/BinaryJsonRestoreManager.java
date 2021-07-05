@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.exception.IRPactException;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
@@ -67,6 +68,11 @@ public class BinaryJsonRestoreManager extends NameableBase implements RestoreMan
         classManager.setReadMode();
         restoreHelper.setClassManager(classManager);
         restoreHelper.setPrintLoggableOnPersist(false);
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.unsupportedChecksum(getClass());
     }
 
     public void enableGeneric() {

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.agent;
 
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
 
 import java.util.Set;
@@ -18,5 +19,10 @@ public class AgentGroupBase<T extends Agent> extends SimulationEntityBase implem
     @Override
     public Set<T> getAgents() {
         return agents;
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.unsupportedChecksum(getClass());
     }
 }

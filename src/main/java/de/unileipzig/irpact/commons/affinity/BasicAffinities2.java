@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons.affinity;
 
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 
@@ -120,5 +121,10 @@ public class BasicAffinities2<T> implements Affinities<T> {
             throw new NoSuchElementException();
         }
         return draw;
+    }
+
+    @Override
+    public int getChecksum() {
+        return ChecksumComparable.unsupportedChecksum(getClass());
     }
 }

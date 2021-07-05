@@ -29,7 +29,7 @@ import java.util.List;
  */
 public abstract class AbstractScenario implements Scenario {
 
-    public static final int DEFAULT_INITIAL_YEAR = 2015;
+    public static final int DEFAULT_INITIAL_YEAR = 2010;
 
     protected String name;
     protected String creator;

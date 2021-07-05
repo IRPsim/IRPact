@@ -77,7 +77,6 @@ public final class Start {
             String[] args,
             AnnualEntry<InRoot> scenario,
             Collection<? extends IRPactCallback> callbacks) {
-        LOGGER.trace("args: {}", LazyPrinter.printArray(args));
         options = new MainCommandLineOptions(args);
         options.setHasCustomInput(scenario != null);
         options.setHasCallback(callbacks != null && callbacks.size() > 0);
@@ -145,6 +144,7 @@ public final class Start {
         prepareLogging();
         parseArgs(args, scenario, callbacks);
         if(!initLogging()) return result;
+        LOGGER.trace("args: {}", LazyPrinter.printArray(args));
         if(!validateOptions()) return result;
         if(isHelpOrVersion()) return result;
         if(isRunIRPtools()) return runIRPtools();
@@ -194,7 +194,6 @@ public final class Start {
             } else {
                 loader.start(scenario);
             }
-            LOGGER.trace(IRPSection.GENERAL, "Start finished");
             return new Result(CommandLine.ExitCode.OK);
         } catch (Throwable t) {
             LOGGER.error("Start failed with uncaught exception", t);

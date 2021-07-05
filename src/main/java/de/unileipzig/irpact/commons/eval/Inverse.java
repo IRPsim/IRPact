@@ -17,6 +17,6 @@ public class Inverse implements Eval {
 
     @Override
     public int getChecksum() {
-        return ChecksumComparable.NONNULL_CHECKSUM;
+        return ChecksumComparable.DEFAULT_NONNULL_CHECKSUM;
     }
 }

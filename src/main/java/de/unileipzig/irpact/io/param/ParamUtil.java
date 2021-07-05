@@ -14,7 +14,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
@@ -31,7 +30,7 @@ public final class ParamUtil {
     public static final String BOOLEAN_DOMAIN = "[0|1]";
     public static final String CLOSED_0_1_DOMAIN = "[0,1]";
     public static final String GEQ0_DOMAIN = "[0,)";
-    public static final String GE0_DOMAIN = "(0,)";
+    public static final String G0_DOMAIN = "(0,)";
     public static final Object[] VALUE_TRUE = {"1"};
     public static final Object[] VALUE_FALSE = {"0"};
     public static final Object[] VALUE_NEG_ONE = {"-1"};
@@ -55,12 +54,12 @@ public final class ParamUtil {
         }
     }
 
-    public static String buildDefaultPar(Class<?> c, String field) {
+    public static String buildDefaultParameterName(Class<?> c, String field) {
         return Constants.PAR + getClassNameWithoutClassSuffix(c) + "_" + field;
     }
 
-    public static UnaryOperator<String> buildDefaultParOperator(Class<?> c) {
-        return field -> buildDefaultPar(c, field);
+    public static UnaryOperator<String> buildDefaultParameterNameOperator(Class<?> c) {
+        return field -> buildDefaultParameterName(c, field);
     }
 
     public static Object[] varargs(Object singleton) {
@@ -371,11 +370,9 @@ public final class ParamUtil {
             TreeAnnotationResource res,
             Class<?> c,
             String[] fields,
-            RuleBuilder builder,
-            UnaryOperator<String> field2par) {
+            RuleBuilder builder) {
         for(String field: fields) {
-            String par = field2par.apply(field);
-            setRules(res, c, field, builder.buildFor(par));
+            setRules(res, c, field, builder.buildFor(field));
         }
     }
 
@@ -405,6 +402,11 @@ public final class ParamUtil {
         res.newEntryBuilder()
                 .peek(loc.applyEntryBuilder(c, field))
                 .store(c, field);
+    }
+
+    public static void addEntryWithDefault(TreeAnnotationResource res, Class<?> c, String field, Object[] defaults) {
+        addEntry(res, c, field);
+        setDefault(res, c, field, defaults);
     }
 
     public static void putClassPath(TreeAnnotationResource res, Class<?> c, String... keys) {

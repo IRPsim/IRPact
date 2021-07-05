@@ -1,12 +1,16 @@
 package de.unileipzig.irpact.io.param.input.image;
 
-import de.unileipzig.irpact.develop.Dev;
+import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.core.util.img.DataToVisualize;
+import de.unileipzig.irpact.core.util.img.SupportedEngine;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
+import java.util.List;
 
 import static de.unileipzig.irpact.io.param.IOConstants.*;
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
@@ -29,20 +33,29 @@ public class InROutputImage implements InOutputImage {
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), GENERAL_SETTINGS, IMAGE, thisName());
-        addEntry(res, thisClass(), "mode");
-        addEntry(res, thisClass(), "storeScript");
-        addEntry(res, thisClass(), "storeData");
-        addEntry(res, thisClass(), "storeImage");
+        addEntryWithDefault(res, thisClass(), "annualZip", VALUE_TRUE);
+        addEntryWithDefault(res, thisClass(), "annualZipWithReal", VALUE_FALSE);
+        addEntryWithDefault(res, thisClass(), "cumulativeAnnualPhase", VALUE_FALSE);
+        addEntryWithDefault(res, thisClass(), "storeScript", VALUE_FALSE);
+        addEntryWithDefault(res, thisClass(), "storeData", VALUE_FALSE);
+        addEntryWithDefault(res, thisClass(), "storeImage", VALUE_TRUE);
+        addEntryWithDefault(res, thisClass(), "linewidth", varargs(1));
 
-        setDefault(res, thisClass(), "linewidth", new Object[]{1});
-        setDomain(res, thisClass(), "mode", InOutputImage.printModeDomain());
-        setDomain(res, thisClass(), "linewidth", "(0,)");
+        setDomain(res, thisClass(), "linewidth", G0_DOMAIN);
+
+        setRules(res, thisClass(), dataToVisualize, dataToVisualizeBuilder.withKeyModifier(buildDefaultParameterNameOperator(thisClass())));
     }
 
     public String _name;
 
     @FieldDefinition
-    public int mode = MODE_NOTHING;
+    public boolean annualZip = true;
+
+    @FieldDefinition
+    public boolean annualZipWithReal = false;
+
+    @FieldDefinition
+    public boolean cumulativeAnnualPhase = false;
 
     @FieldDefinition
     public boolean storeScript = false;
@@ -51,7 +64,7 @@ public class InROutputImage implements InOutputImage {
     public boolean storeData = false;
 
     @FieldDefinition
-    public boolean storeImage = false;
+    public boolean storeImage = true;
 
     @FieldDefinition
     public double linewidth = 1;
@@ -59,7 +72,11 @@ public class InROutputImage implements InOutputImage {
     public InROutputImage() {
     }
 
-    public InROutputImage(String name, int mode) {
+    public InROutputImage(String name) {
+        this(name, DataToVisualize.ANNUAL_ZIP);
+    }
+
+    public InROutputImage(String name, DataToVisualize mode) {
         setName(name);
         setMode(mode);
         setStoreImage(true);
@@ -76,7 +93,9 @@ public class InROutputImage implements InOutputImage {
     public InROutputImage newCopy(CopyCache cache) {
         InROutputImage copy = new InROutputImage();
         copy._name = _name;
-        copy.mode = mode;
+        copy.annualZip = annualZip;
+        copy.annualZipWithReal = annualZipWithReal;
+        copy.cumulativeAnnualPhase = cumulativeAnnualPhase;
         copy.storeData = storeData;
         copy.storeScript = storeScript;
         copy.storeImage = storeImage;
@@ -101,16 +120,50 @@ public class InROutputImage implements InOutputImage {
     }
 
     @Override
-    public int getEngine() {
-        return ENGINE_R;
+    public SupportedEngine getEngine() {
+        return SupportedEngine.R;
     }
 
-    public void setMode(int mode) {
-        this.mode = mode;
+    public void setMode(DataToVisualize mode) {
+        annualZip = false;
+        annualZipWithReal = false;
+        cumulativeAnnualPhase = false;
+
+        switch(mode) {
+            case ANNUAL_ZIP:
+                annualZip = true;
+                break;
+
+            case COMPARED_ANNUAL_ZIP:
+                annualZipWithReal = true;
+                break;
+
+            case CUMULATIVE_ANNUAL_PHASE:
+                cumulativeAnnualPhase = true;
+                break;
+
+            default:
+                throw new IllegalArgumentException("unsupported mode: " + mode);
+        }
     }
 
-    public int getMode() {
-        return mode;
+    @Override
+    public DataToVisualize getMode() throws ParsingException {
+        List<DataToVisualize> modes = new ArrayList<>();
+        if(annualZip) modes.add(DataToVisualize.ANNUAL_ZIP);
+        if(annualZipWithReal) modes.add(DataToVisualize.COMPARED_ANNUAL_ZIP);
+        if(cumulativeAnnualPhase) modes.add(DataToVisualize.COMPARED_ANNUAL_ZIP);
+
+        switch(modes.size()) {
+            case 0:
+                throw new ParsingException("Missing time unit");
+
+            case 1:
+                return modes.get(0);
+
+            default:
+                throw new ParsingException("Multiple modes: " + modes);
+        }
     }
 
     public void setStoreImage(boolean storeImage) {

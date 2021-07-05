@@ -7,33 +7,33 @@ import de.unileipzig.irpact.commons.locale.LocalizedData;
  */
 public interface LocalizedImage extends LocalizedData {
 
-    String getSep(int mode);
+    String getSep(DataToVisualize mode);
 
-    String getEncoding(int mode);
+    String getEncoding(DataToVisualize mode);
 
-    String getTitle(int mode);
+    String getTitle(DataToVisualize mode);
 
-    String getXArg(int mode);
+    String getXArg(DataToVisualize mode);
 
-    String getYArg(int mode);
+    String getYArg(DataToVisualize mode);
 
-    String getGrpArg(int mode);
+    String getGrpArg(DataToVisualize mode);
 
-    String getDistinctArg(int mode);
+    String getDistinctArg(DataToVisualize mode);
 
-    String getFillArg(int mode);
+    String getFillArg(DataToVisualize mode);
 
-    String getXLab(int mode);
+    String getXLab(DataToVisualize mode);
 
-    String getYLab(int mode);
+    String getYLab(DataToVisualize mode);
 
-    String getGrpLab(int mode);
+    String getGrpLab(DataToVisualize mode);
 
-    String getDistinctLab(int mode);
+    String getDistinctLab(DataToVisualize mode);
 
-    String getDistinct0Lab(int mode);
+    String getDistinct0Lab(DataToVisualize mode);
 
-    String getDistinct1Lab(int mode);
+    String getDistinct1Lab(DataToVisualize mode);
 
-    String getFillLab(int mode);
+    String getFillLab(DataToVisualize mode);
 }

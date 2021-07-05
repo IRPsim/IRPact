@@ -44,7 +44,6 @@ import de.unileipzig.irptools.io.ContentTypeDetector;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.annual.AnnualFile;
 import de.unileipzig.irptools.io.base.data.AnnualEntry;
-import de.unileipzig.irptools.start.IRPtools;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.base.IPlatformConfiguration;
 import jadex.base.PlatformConfigurationHandler;
@@ -54,6 +53,10 @@ import jadex.bridge.service.types.clock.IClockService;
 import jadex.bridge.service.types.cms.CreationInfo;
 import jadex.bridge.service.types.simulation.ISimulationService;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 /**
@@ -713,9 +716,22 @@ public final class IRPact implements IRPActAccess {
     }
 
     private void finalTask() {
+        LOGGER.info(IRPSection.GENERAL, "simulation finished");
+        copyLogIfPossible();;
         IRPLogging.terminate();
         clearConverterCache();
-        LOGGER.info(IRPSection.GENERAL, "simulation finished");
+    }
+
+    private void copyLogIfPossible() {
+        try {
+            if(CL_OPTIONS.logToFile() && inRoot.getGeneral().isCopyLogIfPossible()) {
+                Path logFile = CL_OPTIONS.getLogPath();
+                Path copyTarget = CL_OPTIONS.getDownloadDir().resolve(logFile.getFileName() + ".copy");
+                Files.copy(logFile, copyTarget, StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (IOException e) {
+            LOGGER.error("copy log if possible failed", e);
+        }
     }
 
     //=========================

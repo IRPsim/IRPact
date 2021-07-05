@@ -16,8 +16,6 @@ public abstract class ChecksumCalculator {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ChecksumCalculator.class);
 
-    public static final int NUll_CHECKSUM = 0;
-    public static final int DEFAULT_NONNULL_CHECKSUM = 31;
     private static final int PRIM = 31;
 
     public ChecksumCalculator() {
@@ -77,7 +75,7 @@ public abstract class ChecksumCalculator {
 
     public int getChecksum(Object... values) {
         if(values == null) {
-            return NUll_CHECKSUM;
+            return ChecksumComparable.DEFAULT_NONNULL_CHECKSUM;
         }
         int cs = 1;
         for(Object obj: values) {
@@ -88,10 +86,10 @@ public abstract class ChecksumCalculator {
 
     public int getNamedChecksum(Nameable nameable) {
         if(nameable == null) {
-            return NUll_CHECKSUM;
+            return ChecksumComparable.DEFAULT_NONNULL_CHECKSUM;
         }
         if(nameable.getName() == null) {
-            return NUll_CHECKSUM;
+            return ChecksumComparable.DEFAULT_NONNULL_CHECKSUM;
         }
         return nameable.getName().hashCode();
     }

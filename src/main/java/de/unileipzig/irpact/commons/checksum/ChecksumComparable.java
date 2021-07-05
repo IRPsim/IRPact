@@ -17,42 +17,7 @@ public interface ChecksumComparable {
     IRPLogger LOGGER0 = IRPLogging.getLogger(ChecksumComparable.class);
 
     int NULL_CHECKSUM = 0;
-    int NONNULL_CHECKSUM = 31;
-
-    static boolean sameChecksum(Object a, Object b) {
-        if(a instanceof ChecksumComparable) {
-            return ((ChecksumComparable) a).sameChecksum(b);
-        } else {
-            return Objects.equals(a, b);
-        }
-    }
-
-    static boolean sameChecksum(
-            Object a0, Object b0,
-            Object a1, Object b1) {
-        return sameChecksum(a0, b0)
-                && sameChecksum(a1, b1);
-    }
-
-    static boolean sameChecksum(
-            Object a0, Object b0,
-            Object a1, Object b1,
-            Object a2, Object b2) {
-        return sameChecksum(a0, b0)
-                && sameChecksum(a1, b1)
-                && sameChecksum(a2, b2);
-    }
-
-    static boolean sameChecksum(
-            Object a0, Object b0,
-            Object a1, Object b1,
-            Object a2, Object b2,
-            Object a3, Object b3) {
-        return sameChecksum(a0, b0)
-                && sameChecksum(a1, b1)
-                && sameChecksum(a2, b2)
-                && sameChecksum(a3, b3);
-    }
+    int DEFAULT_NONNULL_CHECKSUM = 31;
 
     static int getCollChecksum(Collection<?> coll) {
         if(coll instanceof Set) {
@@ -255,25 +220,12 @@ public interface ChecksumComparable {
     //
     //=========================
 
-    default int getChecksum() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("missing checksum: '" + getClass().getName() + "'");
+    static int unsupportedChecksum(Class<?> c) {
+        throw new UnsupportedOperationException("missing checksum: '" + c.getName() + "'");
     }
 
-    default String printChecksum() {
-        return Integer.toHexString(getChecksum());
-    }
+    int getChecksum();
 
     default void logChecksum() {
-        LOGGER0.info("not implemented: {}", getClass().getName());
-    }
-
-    default boolean sameChecksum(Object obj) {
-        if(obj == this) return true;
-        if(obj == null) return false;
-        if(obj.getClass() == getClass()) {
-            ChecksumComparable other = (ChecksumComparable) obj;
-            return getChecksum() == other.getChecksum();
-        }
-        return false;
     }
 }

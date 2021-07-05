@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.process.ra.uncert;
 
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
 
 /**
@@ -50,5 +51,10 @@ public class BasicUncertainty extends NameableBase implements Uncertainty {
 
     public void setSpeedOfConvergence(double speedOfConvergence) {
         this.speedOfConvergence = speedOfConvergence;
+    }
+
+    @Override
+    public int getChecksum() {
+        return Checksums.SMART.getChecksum(name, uncertainty, speedOfConvergence);
     }
 }

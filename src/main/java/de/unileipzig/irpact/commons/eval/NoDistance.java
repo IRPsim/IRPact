@@ -17,6 +17,6 @@ public class NoDistance implements Eval {
 
     @Override
     public int getChecksum() {
-        return ChecksumComparable.NONNULL_CHECKSUM;
+        return ChecksumComparable.DEFAULT_NONNULL_CHECKSUM;
     }
 }

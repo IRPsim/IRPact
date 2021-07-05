@@ -18,14 +18,14 @@ public class SmartChecksumCalculator extends ChecksumCalculator {
 
     public int getSystemChecksum(Object value) {
         return value == null
-                ? ChecksumCalculator.NUll_CHECKSUM
+                ? ChecksumComparable.NULL_CHECKSUM
                 : System.identityHashCode(value);
     }
 
     @Override
     public int getChecksum(Object value) {
         if(value == null) {
-            return NUll_CHECKSUM;
+            return ChecksumComparable.NULL_CHECKSUM;
         }
         if(value instanceof ChecksumComparable) {
             return ((ChecksumComparable) value).getChecksum();

@@ -3,6 +3,7 @@ package de.unileipzig.irpact.io.param.input;
 import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
+import de.unileipzig.irpact.core.util.img.DataToVisualize;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
@@ -124,14 +125,12 @@ public class InExample implements DefaultScenarioFactory {
         //images
         List<InOutputImage> images = new ArrayList<>();
         Collections.addAll(images, InGenericOutputImage.DEFAULTS);
-        images.add(new InGnuPlotOutputImage("gnutest0", InOutputImage.MODE_NOTHING));
-        images.add(new InGnuPlotOutputImage("gnutest1", InOutputImage.MODE_ADOPTION_LINECHART));
-        images.add(new InGnuPlotOutputImage("gnutest2", InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART));
-        images.add(new InGnuPlotOutputImage("gnutest3", InOutputImage.MODE_ADOPTION_PHASE_BARCHART));
-        images.add(new InROutputImage("rtest0", InOutputImage.MODE_NOTHING));
-        images.add(new InROutputImage("rtest1", InOutputImage.MODE_ADOPTION_LINECHART));
-        images.add(new InROutputImage("rtest2", InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART));
-        images.add(new InROutputImage("rtest3", InOutputImage.MODE_ADOPTION_PHASE_BARCHART));
+        images.add(new InGnuPlotOutputImage("gnutest1", DataToVisualize.ANNUAL_ZIP));
+        images.add(new InGnuPlotOutputImage("gnutest2", DataToVisualize.COMPARED_ANNUAL_ZIP));
+        images.add(new InGnuPlotOutputImage("gnutest3", DataToVisualize.CUMULATIVE_ANNUAL_PHASE));
+        images.add(new InROutputImage("rtest1", DataToVisualize.ANNUAL_ZIP));
+        images.add(new InROutputImage("rtest2", DataToVisualize.COMPARED_ANNUAL_ZIP));
+        images.add(new InROutputImage("rtest3", DataToVisualize.CUMULATIVE_ANNUAL_PHASE));
         images.forEach(InOutputImage::disableAll);
 
         //time
@@ -262,14 +261,12 @@ public class InExample implements DefaultScenarioFactory {
         //images
         List<InOutputImage> images = new ArrayList<>();
         Collections.addAll(images, InGenericOutputImage.DEFAULTS);
-        images.add(new InGnuPlotOutputImage("gnutest0", InOutputImage.MODE_NOTHING));
-        images.add(new InGnuPlotOutputImage("gnutest1", InOutputImage.MODE_ADOPTION_LINECHART));
-        images.add(new InGnuPlotOutputImage("gnutest2", InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART));
-        images.add(new InGnuPlotOutputImage("gnutest3", InOutputImage.MODE_ADOPTION_PHASE_BARCHART));
-        images.add(new InROutputImage("rtest0", InOutputImage.MODE_NOTHING));
-        images.add(new InROutputImage("rtest1", InOutputImage.MODE_ADOPTION_LINECHART));
-        images.add(new InROutputImage("rtest2", InOutputImage.MODE_ADOPTION_INTERACTION_LINECHART));
-        images.add(new InROutputImage("rtest3", InOutputImage.MODE_ADOPTION_PHASE_BARCHART));
+        images.add(new InGnuPlotOutputImage("gnutest1", DataToVisualize.ANNUAL_ZIP));
+        images.add(new InGnuPlotOutputImage("gnutest2", DataToVisualize.COMPARED_ANNUAL_ZIP));
+        images.add(new InGnuPlotOutputImage("gnutest3", DataToVisualize.CUMULATIVE_ANNUAL_PHASE));
+        images.add(new InROutputImage("rtest1", DataToVisualize.ANNUAL_ZIP));
+        images.add(new InROutputImage("rtest2", DataToVisualize.COMPARED_ANNUAL_ZIP));
+        images.add(new InROutputImage("rtest3", DataToVisualize.CUMULATIVE_ANNUAL_PHASE));
         images.forEach(InOutputImage::disableAll);
 
         //time

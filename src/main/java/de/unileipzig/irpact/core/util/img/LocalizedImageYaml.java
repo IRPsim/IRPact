@@ -26,24 +26,8 @@ public class LocalizedImageYaml extends LocalizedYaml implements LocalizedImage 
         return escapeSpecialCharacters;
     }
 
-    protected static String mode2str(int mode) {
-        switch (mode) {
-            case 0:
-                return "0";
-            case 1:
-                return "1";
-            case 2:
-                return "2";
-            case 3:
-                return "3";
-            default:
-                return Integer.toString(mode);
-        }
-    }
-
-    public String get(int mode, String key) {
-        String modeStr = mode2str(mode);
-        JsonNode modeNode = getRoot().get(modeStr);
+    public String get(DataToVisualize mode, String key) {
+        JsonNode modeNode = getRoot().get(mode.name());
         if(modeNode == null) {
             return null;
         }
@@ -64,144 +48,143 @@ public class LocalizedImageYaml extends LocalizedYaml implements LocalizedImage 
         }
     }
 
-    public void set(int mode, String key, String value) {
-        String modeStr = mode2str(mode);
-        ObjectNode modeNode = JsonUtil.computeObjectIfAbsent((ObjectNode) getRoot(), modeStr);
+    public void set(DataToVisualize mode, String key, String value) {
+        ObjectNode modeNode = JsonUtil.computeObjectIfAbsent((ObjectNode) getRoot(), mode.name());
         modeNode.put(key, value);
     }
 
     @Override
-    public String getSep(int mode) {
+    public String getSep(DataToVisualize mode) {
         return get(mode, "sep");
     }
 
-    public void setSep(int mode, String value) {
+    public void setSep(DataToVisualize mode, String value) {
         set(mode, "sep", value);
     }
 
     @Override
-    public String getEncoding(int mode) {
+    public String getEncoding(DataToVisualize mode) {
         return get(mode, "encoding");
     }
 
-    public void setEncoding(int mode, String value) {
+    public void setEncoding(DataToVisualize mode, String value) {
         set(mode, "encoding", value);
     }
 
     @Override
-    public String getTitle(int mode) {
+    public String getTitle(DataToVisualize mode) {
         return get(mode, "title");
     }
 
-    public void setTitle(int mode, String value) {
+    public void setTitle(DataToVisualize mode, String value) {
         set(mode, "title", value);
     }
 
     @Override
-    public String getXArg(int mode) {
+    public String getXArg(DataToVisualize mode) {
         return get(mode, "xarg");
     }
 
-    public void setXArg(int mode, String value) {
+    public void setXArg(DataToVisualize mode, String value) {
         set(mode, "xarg", value);
     }
 
     @Override
-    public String getYArg(int mode) {
+    public String getYArg(DataToVisualize mode) {
         return get(mode, "yarg");
     }
 
-    public void setYArg(int mode, String value) {
+    public void setYArg(DataToVisualize mode, String value) {
         set(mode, "yarg", value);
     }
 
     @Override
-    public String getGrpArg(int mode) {
+    public String getGrpArg(DataToVisualize mode) {
         return get(mode, "grparg");
     }
 
-    public void setGrpArg(int mode, String value) {
+    public void setGrpArg(DataToVisualize mode, String value) {
         set(mode, "grparg", value);
     }
 
     @Override
-    public String getDistinctArg(int mode) {
+    public String getDistinctArg(DataToVisualize mode) {
         return get(mode, "distinctarg");
     }
 
-    public void setDistinctArg(int mode, String value) {
+    public void setDistinctArg(DataToVisualize mode, String value) {
         set(mode, "distinctarg", value);
     }
 
     @Override
-    public String getFillArg(int mode) {
+    public String getFillArg(DataToVisualize mode) {
         return get(mode, "fillarg");
     }
 
-    public void setFillArg(int mode, String value) {
+    public void setFillArg(DataToVisualize mode, String value) {
         set(mode, "fillarg", value);
     }
 
     @Override
-    public String getXLab(int mode) {
+    public String getXLab(DataToVisualize mode) {
         return get(mode, "xlab");
     }
 
-    public void setXLab(int mode, String value) {
+    public void setXLab(DataToVisualize mode, String value) {
         set(mode, "xlab", value);
     }
 
     @Override
-    public String getYLab(int mode) {
+    public String getYLab(DataToVisualize mode) {
         return get(mode, "ylab");
     }
 
-    public void setYLab(int mode, String value) {
+    public void setYLab(DataToVisualize mode, String value) {
         set(mode, "ylab", value);
     }
 
     @Override
-    public String getGrpLab(int mode) {
+    public String getGrpLab(DataToVisualize mode) {
         return get(mode, "grplab");
     }
 
-    public void setGrpLab(int mode, String value) {
+    public void setGrpLab(DataToVisualize mode, String value) {
         set(mode, "grplab", value);
     }
 
     @Override
-    public String getDistinctLab(int mode) {
+    public String getDistinctLab(DataToVisualize mode) {
         return get(mode, "distinctlab");
     }
 
-    public void setDistinctLab(int mode, String value) {
+    public void setDistinctLab(DataToVisualize mode, String value) {
         set(mode, "distinctlab", value);
     }
 
     @Override
-    public String getDistinct0Lab(int mode) {
+    public String getDistinct0Lab(DataToVisualize mode) {
         return get(mode, "distinct0lab");
     }
 
-    public void setDistinct0Lab(int mode, String value) {
+    public void setDistinct0Lab(DataToVisualize mode, String value) {
         set(mode, "distinct0lab", value);
     }
 
     @Override
-    public String getDistinct1Lab(int mode) {
+    public String getDistinct1Lab(DataToVisualize mode) {
         return get(mode, "distinct1lab");
     }
 
-    public void setDistinct1Lab(int mode, String value) {
+    public void setDistinct1Lab(DataToVisualize mode, String value) {
         set(mode, "distinct1lab", value);
     }
 
     @Override
-    public String getFillLab(int mode) {
+    public String getFillLab(DataToVisualize mode) {
         return get(mode, "filllab");
     }
 
-    public void setFillLab(int mode, String value) {
+    public void setFillLab(DataToVisualize mode, String value) {
         set(mode, "filllab", value);
     }
 }

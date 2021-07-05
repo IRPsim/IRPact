@@ -11,7 +11,7 @@ public final class RAConstants {
 
     public static final double DEFAULT_LOGISTIC_FACTOR = 1.0 / 8.0;
     public static final double DEFAULT_SPEED_OF_CONVERGENCE = 0.5;
-    public static final double DEFAULT_ATTIDUTE_GAB = 1.75;
+    public static final double DEFAULT_ATTIDUTE_GAP = 1.75;
     public static final double DEFAULT_NEUTRAL_CHANCE = 0.5;
     public static final double DEFAULT_CONVERGENCE_CHANCE = 0.25;
     public static final double DEFAULT_DIVERGENCE_CHANCE = 0.25;
