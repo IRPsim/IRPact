@@ -25,7 +25,6 @@ import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
-import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.develop.PotentialProblem;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -880,11 +879,10 @@ public class RAProcessPlan implements ProcessPlan {
         MutableDouble totalLocal = MutableDouble.zero();
         MutableDouble adopterLocal = MutableDouble.zero();
 
-        //TODO hier nur die agenten beruecksichtigen, welche zu dem gehen oder von ihm weg
-        Dev.throwException();
         environment.getNetwork().getGraph()
-                .streamTargets(agent.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION)
+                .streamSourcesAndTargets(agent.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION)
                 .filter(IS_CONSUMER)
+                .distinct()
                 .forEach(globalNode -> {
                     totalGlobal.inc();
                     if(globalNode.getAgent(ConsumerAgent.class).hasAdopted(getProduct())) {
