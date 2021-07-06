@@ -142,7 +142,6 @@ public final class Start {
             AnnualEntry<InRoot> scenario,
             Collection<? extends IRPactCallback> callbacks) {
         prepareLogging();
-        LOGGER.trace("args: {}", LazyPrinter.printArray(args)); //TODO
         parseArgs(args, scenario, callbacks);
         if(!initLogging()) return result;
         LOGGER.trace("args: {}", LazyPrinter.printArray(args));
