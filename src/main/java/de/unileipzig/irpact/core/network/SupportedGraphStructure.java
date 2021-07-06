@@ -1,44 +1,39 @@
 package de.unileipzig.irpact.core.network;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
-import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
 import de.unileipzig.irpact.commons.graph.DirectedMultiGraph;
-import de.unileipzig.irpact.commons.graph.FastDirectedMultiGraph;
-import de.unileipzig.irpact.commons.graph.FastDirectedMultiGraph2;
-
-import java.util.Collections;
-import java.util.LinkedHashMap;
+import de.unileipzig.irpact.commons.graph.CachedDirectedMultiGraph;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
 
 /**
  * @author Daniel Abitz
  */
 public enum SupportedGraphStructure implements ChecksumComparable {
-    DIRECTED_ADJACENCY_LIST_MULTI_GRAPH(1) {
+    UNKNOWN(0) {
         @Override
-        public <V, E, T> DirectedAdjacencyListMultiGraph<V, E, T> newInstance() {
-            return new DirectedAdjacencyListMultiGraph<>();
+        public <V, E, T> DirectedMultiGraph<V, E, T> newInstance() {
+            throw new UnsupportedOperationException("unknown structure");
         }
     },
-    FAST_DIRECTED_MULTI_GRAPH(2) {
+    CACHED_DIRECTED_MULTI_GRAPH(3) {
         @Override
-        public <V, E, T> FastDirectedMultiGraph<V, E, T> newInstance() {
-            return new FastDirectedMultiGraph<>();
+        public <V, E, T> CachedDirectedMultiGraph<V, E, T> newInstance() {
+            return new CachedDirectedMultiGraph<>(
+                    CollectionUtil.linkedHashMapSupplier(),
+                    CollectionUtil.linkedHashMapSupplier(),
+                    CollectionUtil.linkedHashMapSupplier(),
+                    CollectionUtil.linkedHashMapFunction()
+            );
         }
     },
-    FAST_DIRECTED_MULTI_GRAPH2(3) {
+    CONCURRENT_CACHED_DIRECTED_MULTI_GRAPH(4) {
         @Override
-        public <V, E, T> FastDirectedMultiGraph2<V, E, T> newInstance() {
-            return new FastDirectedMultiGraph2<>();
-        }
-    },
-    FAST_DIRECTED_MULTI_GRAPH2_CONCURRENT(4) {
-        @Override
-        public <V, E, T> FastDirectedMultiGraph2<V, E, T> newInstance() {
-            return new FastDirectedMultiGraph2<>(
-                    () -> Collections.synchronizedMap(new LinkedHashMap<>()),
-                    () -> Collections.synchronizedMap(new LinkedHashMap<>()),
-                    () -> Collections.synchronizedMap(new LinkedHashMap<>()),
-                    t -> Collections.synchronizedMap(new LinkedHashMap<>())
+        public <V, E, T> CachedDirectedMultiGraph<V, E, T> newInstance() {
+            return new CachedDirectedMultiGraph<>(
+                    CollectionUtil.concurrentLinkedHashMapSupplier(),
+                    CollectionUtil.concurrentLinkedHashMapSupplier(),
+                    CollectionUtil.concurrentLinkedHashMapSupplier(),
+                    CollectionUtil.concurrentLinkedHashMapFunction()
             );
         }
     };
@@ -58,6 +53,10 @@ public enum SupportedGraphStructure implements ChecksumComparable {
         return ID;
     }
 
+    public boolean isUnknown() {
+        return this == UNKNOWN;
+    }
+
     public abstract <V, E, T> DirectedMultiGraph<V, E, T> newInstance();
 
     public static SupportedGraphStructure get(int id) {
@@ -66,10 +65,10 @@ public enum SupportedGraphStructure implements ChecksumComparable {
                 return v;
             }
         }
-        throw new IllegalArgumentException("unknown id: " + id);
+        return UNKNOWN;
     }
 
     public static SupportedGraphStructure getDefault() {
-        return FAST_DIRECTED_MULTI_GRAPH2_CONCURRENT;
+        return CONCURRENT_CACHED_DIRECTED_MULTI_GRAPH;
     }
 }

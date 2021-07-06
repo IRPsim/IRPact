@@ -13,6 +13,30 @@ public final class CollectionUtil {
     private CollectionUtil() {
     }
 
+    private static final Supplier<Map<?, ?>> CONC_HASHMAP_SUPP = () -> Collections.synchronizedMap(new LinkedHashMap<>());
+    @SuppressWarnings("unchecked")
+    public static <K, V, M extends Map<K, V>> Supplier<M> concurrentLinkedHashMapSupplier() {
+        return (Supplier<M>) CONC_HASHMAP_SUPP;
+    }
+
+    private static final Function<?, Map<?, ?>> CONC_HASHMAP_FUNC = t -> Collections.synchronizedMap(new LinkedHashMap<>());
+    @SuppressWarnings("unchecked")
+    public static <I, K, V, M extends Map<K, V>> Function<I, M> concurrentLinkedHashMapFunction() {
+        return (Function<I, M>) CONC_HASHMAP_FUNC;
+    }
+
+    private static final Supplier<Map<?, ?>> HASHMAP_SUPP = LinkedHashMap::new;
+    @SuppressWarnings("unchecked")
+    public static <K, V, M extends Map<K, V>> Supplier<M> linkedHashMapSupplier() {
+        return (Supplier<M>) HASHMAP_SUPP;
+    }
+
+    private static final Function<?, Map<?, ?>> HASHMAP_FUNC = t -> new LinkedHashMap<>();
+    @SuppressWarnings("unchecked")
+    public static <I, K, V, M extends Map<K, V>> Function<I, M> linkedHashMapFunction() {
+        return (Function<I, M>) HASHMAP_FUNC;
+    }
+
     public static List<Object> listAll(Map<?, ?> map) {
         List<Object> objs = new ArrayList<>();
         for(Map.Entry<?, ?> entry: map.entrySet()) {

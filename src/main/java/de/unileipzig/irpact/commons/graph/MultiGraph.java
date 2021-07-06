@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.commons.graph;
 
 import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.develop.XXXXXXXXX;
 
 import java.util.Collection;
 import java.util.Map;
@@ -22,6 +21,10 @@ public interface MultiGraph<V, E, T> extends Graph<V, E> {
 
     int degree(V vertex, T type);
 
+    //=========================
+    // targets
+    //=========================
+
     Set<V> getTargets(V from, T type);
 
     boolean getTargets(V from, T type, Collection<? super V> targets);
@@ -31,6 +34,34 @@ public interface MultiGraph<V, E, T> extends Graph<V, E> {
     Set<V> getAllTargets(V from);
 
     V getRandomTarget(V from, T type, Rnd rnd);
+
+    //=========================
+    // sources
+    //=========================
+
+    Set<V> getSources(V to, T type);
+
+    boolean getSources(V to, T type, Collection<? super V> sources);
+
+    Stream<V> streamSources(V to, T type);
+
+    Set<V> getAllSources(V to);
+
+    //=========================
+    // sources and targets
+    //=========================
+
+    Set<V> getSourcesAndTargets(V fromOrTo, T type);
+
+    boolean getSourcesAndTargets(V fromOrTo, T type, Collection<? super V> sourcesAndTargets);
+
+    Stream<V> streamSourcesAndTargets(V fromOrTo, T type);
+
+    Set<V> getAllSourcesAndTargets(V fromOrTo);
+
+    //=========================
+    // edges
+    //=========================
 
     boolean addEdge(V from, V to, T type, E edge);
 
@@ -46,22 +77,13 @@ public interface MultiGraph<V, E, T> extends Graph<V, E> {
 
     Map<T, E> getEdges(V from, V to);
 
-    @XXXXXXXXX
-    default Collection<E> getAllEdges() {
-        throw new UnsupportedOperationException();
-    }
+    Collection<E> getAllEdges();
 
     Collection<E> getAllEdges(T[] types);
 
-    @XXXXXXXXX
-    default Stream<E> streamAllEdges() {
-        throw new UnsupportedOperationException();
-    }
+    Stream<E> streamAllEdges();
 
-    @XXXXXXXXX
-    default Stream<E> streamAllEdges(T[] types) {
-        throw new UnsupportedOperationException();
-    }
+    Stream<E> streamAllEdges(T[] types);
 
     Set<E> getEdges(T type);
 

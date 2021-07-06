@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.start.optact;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.commons.graph.DirectedAdjacencyListMultiGraph;
+import de.unileipzig.irpact.commons.graph.CachedDirectedMultiGraph;
 import de.unileipzig.irpact.commons.graph.topology.AbstractMultiGraphTopology;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -140,7 +140,7 @@ public class OptAct {
             return;
         }
 
-        DirectedAdjacencyListMultiGraph<Node, Link, String> g = new DirectedAdjacencyListMultiGraph<>();
+        CachedDirectedMultiGraph<Node, Link, String> g = new CachedDirectedMultiGraph<>();
         for(AgentGroup grp: root.agentGroups) {
             logger.trace("Gruppe: '{}', Agenten: {}", grp._name, grp.numberOfAgents);
             for(int i = 0; i < grp.numberOfAgents; i++) {

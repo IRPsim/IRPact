@@ -8,13 +8,15 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
+ * This implementation stores incoming and outgoing edges for fast retrieval.
+ *
  * @param <V>
  * @param <E>
  * @param <T>
  * @author Daniel Abitz
  */
 @SuppressWarnings({"UnusedReturnValue", "unused"})
-public class FastDirectedMultiGraph2<V, E, T> implements DirectedMultiGraph<V, E, T> {
+public class CachedDirectedMultiGraph<V, E, T> implements DirectedMultiGraph<V, E, T> {
 
     protected Supplier<? extends Map<V, VertexData<V, E, T>>> verticiesSupplier;
     protected Supplier<? extends Map<E, EdgeData<V, E, T>>> edgesSupplier;
@@ -24,9 +26,9 @@ public class FastDirectedMultiGraph2<V, E, T> implements DirectedMultiGraph<V, E
     protected Map<V, VertexData<V, E, T>> vertices;
     protected Map<E, EdgeData<V, E, T>> edges;
 
-    protected boolean validate;
+    protected boolean validate = false;
 
-    public FastDirectedMultiGraph2() {
+    public CachedDirectedMultiGraph() {
         this(
                 LinkedHashMap::new,
                 LinkedHashMap::new,
@@ -35,7 +37,7 @@ public class FastDirectedMultiGraph2<V, E, T> implements DirectedMultiGraph<V, E
         );
     }
 
-    public FastDirectedMultiGraph2(
+    public CachedDirectedMultiGraph(
             Supplier<? extends Map<V, VertexData<V, E, T>>> verticiesSupplier,
             Supplier<? extends Map<E, EdgeData<V, E, T>>> edgesSupplier,
             Supplier<? extends Map<T, Map<V, E>>> vertexMapSupplier,
@@ -234,6 +236,10 @@ public class FastDirectedMultiGraph2<V, E, T> implements DirectedMultiGraph<V, E
         return data.degree(type);
     }
 
+    //=========================
+    // targets
+    //=========================
+
     @Override
     public Set<V> getTargets(V from, T type) {
         if(hasVertex(from)) {
@@ -290,6 +296,114 @@ public class FastDirectedMultiGraph2<V, E, T> implements DirectedMultiGraph<V, E
         }
         return data.getRandomTarget(type, rnd);
     }
+
+    //=========================
+    // sources
+    //=========================
+
+    @Override
+    public Set<V> getSources(V to, T type) {
+        if(hasVertex(to)) {
+            Set<V> targets = new LinkedHashSet<>();
+            getSources(to, type, targets);
+            return targets;
+        } else {
+            return Collections.emptySet();
+        }
+    }
+
+    @Override
+    public boolean getSources(V to, T type, Collection<? super V> sources) {
+        VertexData<V, E, T> data = vertices.get(to);
+        if(data == null) {
+            return false;
+        }
+        return data.getSources(type, sources);
+    }
+
+    @Override
+    public Stream<V> streamSources(V to, T type) {
+        VertexData<V, E, T> data = vertices.get(to);
+        if(data == null) {
+            return Stream.empty();
+        }
+        return data.streamSources(type);
+    }
+
+    @Override
+    public Set<V> getAllSources(V to) {
+        if(hasVertex(to)) {
+            Set<V> sources = new LinkedHashSet<>();
+            getAllSources(to, sources);
+            return sources;
+        } else {
+            return Collections.emptySet();
+        }
+    }
+
+    public boolean getAllSources(V from, Collection<? super V> sources) {
+        VertexData<V, E, T> data = vertices.get(from);
+        if(data == null) {
+            return false;
+        }
+        return data.getAllSources(sources);
+    }
+
+    //=========================
+    // sources and targets
+    //=========================
+
+    @Override
+    public Set<V> getSourcesAndTargets(V fromOrTo, T type) {
+        if(hasVertex(fromOrTo)) {
+            Set<V> targets = new LinkedHashSet<>();
+            getSourcesAndTargets(fromOrTo, type, targets);
+            return targets;
+        } else {
+            return Collections.emptySet();
+        }
+    }
+
+    @Override
+    public boolean getSourcesAndTargets(V fromOrTo, T type, Collection<? super V> sourcesAndTargets) {
+        VertexData<V, E, T> data = vertices.get(fromOrTo);
+        if(data == null) {
+            return false;
+        }
+        return data.getSourcesAndTargets(type, sourcesAndTargets);
+    }
+
+    @Override
+    public Stream<V> streamSourcesAndTargets(V fromOrTo, T type) {
+        VertexData<V, E, T> data = vertices.get(fromOrTo);
+        if(data == null) {
+            return Stream.empty();
+        }
+        return data.streamSourcesAndTargets(type);
+    }
+
+    @Override
+    public Set<V> getAllSourcesAndTargets(V fromOrTo) {
+        if(hasVertex(fromOrTo)) {
+            Set<V> sourcesAndTargets = new LinkedHashSet<>();
+            getAllSourcesAndTargets(fromOrTo, sourcesAndTargets);
+            return sourcesAndTargets;
+        } else {
+            return Collections.emptySet();
+        }
+    }
+
+    public boolean getAllSourcesAndTargets(V fromOrTo, Collection<? super V> sourcesAndTargets) {
+        VertexData<V, E, T> data = vertices.get(fromOrTo);
+        if(data == null) {
+            return false;
+        }
+        return data.getAllSourcesAndTargets(sourcesAndTargets);
+    }
+
+    //=========================
+    // edges
+    //=========================
 
     @Override
     public boolean addEdge(V from, V to, T type, E edge) {
@@ -457,6 +571,10 @@ public class FastDirectedMultiGraph2<V, E, T> implements DirectedMultiGraph<V, E
         return toData.streamEdgesToThis(type);
     }
 
+    //=========================
+    // helper
+    //=========================
+
     /**
      * @param <V>
      * @param <E>
@@ -621,6 +739,18 @@ public class FastDirectedMultiGraph2<V, E, T> implements DirectedMultiGraph<V, E
             return fromMap.keySet().stream();
         }
 
+        @SuppressWarnings("ConstantConditions")
+        protected boolean getSourcesAndTargets(T type, Collection<? super V> sourcesAndTargets) {
+            boolean changed = false;
+            changed |= getSources(type, sourcesAndTargets);
+            changed |= getTargets(type, sourcesAndTargets);
+            return changed;
+        }
+
+        protected Stream<V> streamSourcesAndTargets(T type) {
+            return Stream.concat(streamTargets(type), streamSources(type));
+        }
+
         protected Stream<E> streamEdgesFromThis(T type) {
             Map<V, E> toMap = outEdges.get(type);
             if(toMap == null) return Stream.empty();
@@ -638,6 +768,22 @@ public class FastDirectedMultiGraph2<V, E, T> implements DirectedMultiGraph<V, E
             for(Map<V, E> toMap: outEdges.values()) {
                 changed |= targets.addAll(toMap.keySet());
             }
+            return changed;
+        }
+
+        protected boolean getAllSources(Collection<? super V> sources) {
+            boolean changed = false;
+            for(Map<V, E> fromMap: inEdges.values()) {
+                changed |= sources.addAll(fromMap.keySet());
+            }
+            return changed;
+        }
+
+        @SuppressWarnings("ConstantConditions")
+        protected boolean getAllSourcesAndTargets(Collection<? super V> sourcesAndTargets) {
+            boolean changed = false;
+            changed |= getAllSources(sourcesAndTargets);
+            changed |= getAllTargets(sourcesAndTargets);
             return changed;
         }
 

@@ -125,6 +125,10 @@ public interface SocialGraph extends ChecksumComparable {
 
     Stream<? extends Node> streamTargets(Node source, Type type);
 
+    Stream<? extends Node> streamSources(Node target, Type type);
+
+    Stream<? extends Node> streamSourcesAndTargets(Node sourceAndTarget, Type type);
+
     Node getRandomTarget(Node source, Type type, Rnd rnd);
 
     boolean addEdge(Node from, Node to, Type type, double weight);

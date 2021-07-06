@@ -354,6 +354,16 @@ public class BasicSocialGraph implements SocialGraph, LoggableChecksum {
     }
 
     @Override
+    public Stream<? extends Node> streamSources(Node target, Type type) {
+        return GRAPH.streamSources(target, type);
+    }
+
+    @Override
+    public Stream<? extends Node> streamSourcesAndTargets(Node sourceAndTarget, Type type) {
+        return GRAPH.streamSourcesAndTargets(sourceAndTarget, type);
+    }
+
+    @Override
     public Node getRandomTarget(Node source, Type type, Rnd rnd) {
         return GRAPH.getRandomTarget(source, type, rnd);
     }

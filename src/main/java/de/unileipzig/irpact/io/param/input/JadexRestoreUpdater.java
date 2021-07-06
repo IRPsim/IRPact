@@ -384,7 +384,7 @@ public class JadexRestoreUpdater implements IRPactRestoreUpdater, LoggingHelper 
     private void parseSocialGraph(@SuppressWarnings("unused") InRoot root) {
         if(true) return;
 
-        debug("[Fixed] use {}", SupportedGraphStructure.FAST_DIRECTED_MULTI_GRAPH2_CONCURRENT);
+        debug("[Fixed] use {}", SupportedGraphStructure.CONCURRENT_CACHED_DIRECTED_MULTI_GRAPH);
         BasicSocialNetwork network = (BasicSocialNetwork) environment.getNetwork();
         network.initDefaultGraph();
     }

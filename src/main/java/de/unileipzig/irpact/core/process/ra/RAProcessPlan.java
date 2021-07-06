@@ -880,8 +880,9 @@ public class RAProcessPlan implements ProcessPlan {
         MutableDouble adopterLocal = MutableDouble.zero();
 
         environment.getNetwork().getGraph()
-                .streamTargets(agent.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION)
+                .streamSourcesAndTargets(agent.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION)
                 .filter(IS_CONSUMER)
+                .distinct()
                 .forEach(globalNode -> {
                     totalGlobal.inc();
                     if(globalNode.getAgent(ConsumerAgent.class).hasAdopted(getProduct())) {
