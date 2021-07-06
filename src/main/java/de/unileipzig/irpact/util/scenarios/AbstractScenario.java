@@ -3,6 +3,7 @@ package de.unileipzig.irpact.util.scenarios;
 import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
 import de.unileipzig.irpact.commons.util.IRPArgs;
 import de.unileipzig.irpact.commons.util.JsonUtil;
+import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InInformation;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -23,6 +24,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
  * @author Daniel Abitz
@@ -46,7 +49,8 @@ public abstract class AbstractScenario implements Scenario {
     protected Path outputPath;
     protected Path dataDir;
 
-    protected int simulationDelta = 1;
+    protected int numberOfSimulationYears = 1;
+    protected Consumer<? super InGeneral> loggerSetup;
 
     public AbstractScenario() {
         this(null, null, null);
@@ -118,12 +122,12 @@ public abstract class AbstractScenario implements Scenario {
     //for swagger
     //=========================
 
-    public void setSimulationDelta(int simulationDelta) {
-        this.simulationDelta = Math.max(1, simulationDelta);
+    public void setNumberOfSimulationYears(int numberOfSimulationYears) {
+        this.numberOfSimulationYears = Math.max(1, numberOfSimulationYears);
     }
 
-    public int getSimulationDelta() {
-        return simulationDelta;
+    public int getNumberOfSimulationYears() {
+        return numberOfSimulationYears;
     }
 
     public void setName(String name) {
@@ -236,14 +240,38 @@ public abstract class AbstractScenario implements Scenario {
         return this;
     }
 
+    public void setLoggerSetup(Consumer<? super InGeneral> loggerSetup) {
+        this.loggerSetup = loggerSetup;
+    }
+
+    public void logAll() {
+        setLoggerSetup(general -> {
+            general.setLogLevel(IRPLevel.ALL);
+            general.logAll = true;
+        });
+    }
+
+    public Consumer<? super InGeneral> getLoggerSetup() {
+        return loggerSetup;
+    }
+
     public InRoot createRootWithInformations() {
         InRoot root = new InRoot();
         root.addInformation(getRevisionInformation());
         root.setVersion(InScenarioVersion.currentVersion());
         root.general = new InGeneral();
+        root.getGeneral().setSeed(42L);
+        root.getGeneral().setTimeout(1, TimeUnit.MINUTES);
         root.getGeneral().setFirstSimulationYear(DEFAULT_INITIAL_YEAR);
-        root.getGeneral().setLastSimulationYear(root.getGeneral().getFirstSimulationYear() + simulationDelta - 1);
+        root.getGeneral().setLastSimulationYear(root.getGeneral().getFirstSimulationYear() + numberOfSimulationYears - 1);
+        setupGeneral(root.getGeneral());
         return root;
+    }
+
+    public void setupGeneral(InGeneral general) {
+        if(loggerSetup != null) {
+            loggerSetup.accept(general);
+        }
     }
 
     public InInformation getRevisionInformation() {

@@ -318,6 +318,10 @@ public class InGeneral implements Copyable {
         this.timeout = unit.toMillis(duration);
     }
 
+    public void setSeed(long seed) {
+        this.seed = seed;
+    }
+
     public void enableAllDataLogging() {
         logGraphUpdate = true;
         logRelativeAgreement = true;

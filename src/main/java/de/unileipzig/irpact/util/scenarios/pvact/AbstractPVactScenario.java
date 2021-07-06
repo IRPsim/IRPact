@@ -4,7 +4,6 @@ import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.util.img.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InGeneral;
-import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
@@ -16,7 +15,6 @@ import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.image.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
-import de.unileipzig.irpact.io.param.input.network.InDistanceEvaluator;
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.network.InNoDistance;
 import de.unileipzig.irpact.io.param.input.network.InNumberOfTies;
@@ -50,6 +48,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
     protected String pvDataName;
 
     protected int totalAgents = -1;
+    protected boolean runPvAct = true;
 
     public AbstractPVactScenario() {
         super();
@@ -57,6 +56,14 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
 
     public AbstractPVactScenario(String name, String creator, String description) {
         super(name, creator, description);
+    }
+
+    public void setRunPvAct(boolean runPvAct) {
+        this.runPvAct = runPvAct;
+    }
+
+    public boolean isRunPvAct() {
+        return runPvAct;
     }
 
     public void setTotalAgents(int totalAgents) {
@@ -126,6 +133,13 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         general.setFirstSimulationYear(2015);
         general.lastSimulationYear = 2015;
         return general;
+    }
+
+    @Override
+    public void setupGeneral(InGeneral general) {
+        super.setupGeneral(general);
+        general.runPVAct = runPvAct;
+        general.runOptActDemo = false;
     }
 
     public InGenericOutputImage[] createDefaultImages() {
