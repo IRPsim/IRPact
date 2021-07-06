@@ -261,10 +261,14 @@ public abstract class AbstractScenario implements Scenario {
         root.general = new InGeneral();
         root.getGeneral().setFirstSimulationYear(DEFAULT_INITIAL_YEAR);
         root.getGeneral().setLastSimulationYear(root.getGeneral().getFirstSimulationYear() + simulationDelta - 1);
-        if(generalSetup != null) {
-            generalSetup.accept(root.getGeneral());
-        }
+        setupGeneral(root.getGeneral());
         return root;
+    }
+
+    public void setupGeneral(InGeneral general) {
+        if(generalSetup != null) {
+            generalSetup.accept(general);
+        }
     }
 
     public InInformation getRevisionInformation() {
