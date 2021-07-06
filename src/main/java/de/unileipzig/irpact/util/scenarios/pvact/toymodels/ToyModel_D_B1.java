@@ -10,16 +10,13 @@ import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGr
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.distribution.InBernoulliDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
-import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
-import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
-import de.unileipzig.irpact.io.param.input.process.InProcessModel;
+import de.unileipzig.irpact.io.param.input.image.InGenericOutputImage;
+import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
-import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
-import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 
@@ -179,6 +176,8 @@ public class ToyModel_D_B1 extends AbstractToyModel {
         L.setInitialProductAwareness(bernoulli001);
         L.setInitialAdopter(bernoulli001);
 
+        InConsumerAgentGroup[] cags = {S, P, M, L};
+
         String prefix = "aff";
         InAffinities affinities = createAffinities("affinities",
                 createAffinityEntry(prefix, S, S, 0.0),
@@ -202,13 +201,18 @@ public class ToyModel_D_B1 extends AbstractToyModel {
                 createAffinityEntry(prefix, L, L, 0.8)
         );
 
-        InFileBasedPVactConsumerAgentPopulation population = createPopulation("Pop", getTotalAgents(), S, P, M, L);
+        InFileBasedPVactConsumerAgentPopulation population = createPopulation("Pop", getTotalAgents(), cags);
 
-        InUnlinkedGraphTopology topology = new InUnlinkedGraphTopology("Topo");
+        InFreeNetworkTopology topology = createFreeTopology(
+                "Topo",
+                affinities,
+                cags,
+                5
+        );
 
         InUnitStepDiscreteTimeModel timeModel = createOneWeekTimeModel("Time");
 
-        InPVactGroupBasedDeffuantUncertainty uncertainty = createDefaultUnvertainty("uncert", S, P, M, L);
+        InPVactGlobalDeffuantUncertainty uncertainty = createGlobalUnvertainty("uncert", cags);
 
         InRAProcessModel processModel = createDefaultProcessModel("Process", uncertainty, 0.0);
         processModel.setABCD(0);
@@ -216,16 +220,18 @@ public class ToyModel_D_B1 extends AbstractToyModel {
 
         InSpace2D space2D = createSpace2D("Space2D");
 
+        InGenericOutputImage[] defaultImages = createDefaultImages();
+
         //=====
         InRoot root = createRootWithInformations();
-        root.general.lastSimulationYear = DEFAULT_INITIAL_YEAR;
         root.setAffinities(affinities);
-        root.setConsumerAgentGroups(new InConsumerAgentGroup[]{S, P, M, L});
+        root.setConsumerAgentGroups(cags);
         root.setAgentPopulationSize(population);
-        root.graphTopologySchemes = new InGraphTopologyScheme[]{topology};
-        root.processModels = new InProcessModel[]{processModel};
-        root.spatialModel = new InSpatialModel[]{space2D};
-        root.timeModel = new InTimeModel[]{timeModel};
+        root.setGraphTopologyScheme(topology);
+        root.setProcessModel(processModel);
+        root.setSpatialModel(space2D);
+        root.setTimeModel(timeModel);
+        root.setImages(defaultImages);
 
         return Collections.singletonList(root);
     }

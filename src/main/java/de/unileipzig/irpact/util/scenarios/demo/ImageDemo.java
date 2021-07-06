@@ -111,7 +111,7 @@ public class ImageDemo extends AbstractScenario {
 
         //images
         List<InOutputImage> images = new ArrayList<>();
-        Collections.addAll(images, InGenericOutputImage.DEFAULTS);
+        Collections.addAll(images, InGenericOutputImage.createDefaultImages());
         images.forEach(InOutputImage::disableAll);
         images.add(new InGnuPlotOutputImage("Bild1", DataToVisualize.ANNUAL_ZIP, true));
         images.add(new InGnuPlotOutputImage("Bild2", DataToVisualize.COMPARED_ANNUAL_ZIP, true));

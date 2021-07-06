@@ -155,7 +155,7 @@ public class Demo1 extends AbstractScenario {
 
         //images
         List<InOutputImage> images = new ArrayList<>();
-        Collections.addAll(images, InGenericOutputImage.DEFAULTS);
+        Collections.addAll(images, InGenericOutputImage.createDefaultImages());
         images.add(new InGnuPlotOutputImage("gnutest1", DataToVisualize.ANNUAL_ZIP));
         images.add(new InGnuPlotOutputImage("gnutest2", DataToVisualize.COMPARED_ANNUAL_ZIP));
         images.add(new InGnuPlotOutputImage("gnutest3", DataToVisualize.CUMULATIVE_ANNUAL_PHASE));

@@ -2,7 +2,9 @@ package de.unileipzig.irpact.util.scenarios.pvact;
 
 import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
+import de.unileipzig.irpact.core.util.img.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InGeneral;
+import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
@@ -12,12 +14,14 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactCons
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
+import de.unileipzig.irpact.io.param.input.image.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.network.InDistanceEvaluator;
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.network.InNoDistance;
 import de.unileipzig.irpact.io.param.input.network.InNumberOfTies;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
@@ -124,8 +128,23 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return general;
     }
 
+    public InGenericOutputImage[] createDefaultImages() {
+        InGenericOutputImage[] defaults = InGenericOutputImage.createDefaultImages();
+        InGenericOutputImage.setEnableAll(true, defaults);
+        InGenericOutputImage.setEngine(SupportedEngine.GNUPLOT, defaults);
+        return defaults;
+    }
+
     public InPVactGroupBasedDeffuantUncertainty createDefaultUnvertainty(String name, InConsumerAgentGroup... cags) {
         InPVactGroupBasedDeffuantUncertainty uncertainty = new InPVactGroupBasedDeffuantUncertainty();
+        uncertainty.setName(name);
+        uncertainty.setDefaultValues();
+        uncertainty.setConsumerAgentGroups(cags);
+        return uncertainty;
+    }
+
+    public InPVactGlobalDeffuantUncertainty createGlobalUnvertainty(String name, InConsumerAgentGroup... cags) {
+        InPVactGlobalDeffuantUncertainty uncertainty = new InPVactGlobalDeffuantUncertainty();
         uncertainty.setName(name);
         uncertainty.setDefaultValues();
         uncertainty.setConsumerAgentGroups(cags);

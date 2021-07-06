@@ -31,9 +31,8 @@ public class GlobalDeffuantUncertaintyData extends NameableBase implements Deffu
 
     @Override
     public double getUncertainty(ConsumerAgentAttribute attribute) {
-        if(isDisabled()) {
-            return moderateUncertainty;
-        }
+        if(isAllModerate()) return moderateUncertainty;
+        if(isAllExtremist()) return extremistUncertainty;
 
         DoubleRange range = ranges.get(attribute.getName());
         if(range == null) {
@@ -82,12 +81,20 @@ public class GlobalDeffuantUncertaintyData extends NameableBase implements Deffu
         ranges.put(attributeName, range);
     }
 
+    public boolean isAllModerate() {
+        return extremistParameter == 0.0;
+    }
+
+    public boolean isAllExtremist() {
+        return extremistParameter == 1.0;
+    }
+
     public boolean isDisabled() {
-        return extremistParameter == -1.0;
+        return isAllModerate() || isAllExtremist();
     }
 
     public void setExtremistParameter(double extremistParameter) {
-        this.extremistParameter = extremistParameter < 0 ? -1.0 : extremistParameter;
+        this.extremistParameter = Math.max(0, Math.min(1, extremistParameter));
     }
 
     public double getExtremistParameter() {

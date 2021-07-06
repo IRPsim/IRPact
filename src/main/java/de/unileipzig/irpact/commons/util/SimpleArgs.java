@@ -233,4 +233,9 @@ public class SimpleArgs implements Args {
         List<String> list = toList();
         return list.toArray(new String[0]);
     }
+
+    @Override
+    public String toString() {
+        return toList().toString();
+    }
 }

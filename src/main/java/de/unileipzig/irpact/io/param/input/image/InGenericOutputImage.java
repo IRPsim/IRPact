@@ -61,10 +61,33 @@ public class InGenericOutputImage implements InOutputImage {
         setRules(res, thisClass(), dataToVisualize, dataToVisualizeBuilder.withKeyModifier(buildDefaultParameterNameOperator(thisClass())));
     }
 
-    public static final InGenericOutputImage ANNUAL_ADOPTIONS = new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS);
-    public static final InGenericOutputImage COMPARED_ANNUAL_ADOPTIONS = new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS);
-    public static final InGenericOutputImage ANNUAL_CUMULATIVE_ADOPTIONS = new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS);
-    public static final InGenericOutputImage[] DEFAULTS = { ANNUAL_ADOPTIONS, COMPARED_ANNUAL_ADOPTIONS, ANNUAL_CUMULATIVE_ADOPTIONS };
+    //=========================
+    //defaults
+    //=========================
+
+    public static InGenericOutputImage[] createDefaultImages() {
+        return new InGenericOutputImage[] {
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS),
+                new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS),
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS)
+        };
+    }
+
+    public static void setEnableAll(boolean enableAll, InGenericOutputImage... images) {
+        for(InGenericOutputImage image: images) {
+            image.setEnableAll(enableAll);
+        }
+    }
+
+    public static void setEngine(SupportedEngine engine, InGenericOutputImage... images) {
+        for(InGenericOutputImage image: images) {
+            image.setEngine(engine);
+        }
+    }
+
+    //=========================
+    //...
+    //=========================
 
     public String _name;
 

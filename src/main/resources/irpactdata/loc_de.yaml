@@ -821,9 +821,9 @@ InRAProcessModel_logisticFactor:
 InRAProcessModel_speedOfConvergence:
   gams_identifier: "speed of convergence"
   gams_description: "speed of convergence"
-InRAProcessModel_attitudeGab:
-  gams_identifier: "attitude gab"
-  gams_description: "attitude gab"
+InRAProcessModel_attitudeGap:
+  gams_identifier: "attitude gap"
+  gams_description: "attitude gap"
 InRAProcessModel_chanceNeutral:
   gams_identifier: "Wahrscheinlichkeit Neutral"
   gams_description: "Wahrscheinlichkeit für einen neutralen Ausgang."
