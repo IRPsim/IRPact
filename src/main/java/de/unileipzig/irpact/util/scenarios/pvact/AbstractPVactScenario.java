@@ -48,7 +48,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
     protected String pvDataName;
 
     protected int totalAgents = -1;
-    protected boolean runPvAct = true;
+    protected boolean runPvAct = false;
 
     public AbstractPVactScenario() {
         super();

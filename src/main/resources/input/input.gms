@@ -947,6 +947,7 @@ PARAMETER par_link_InGroupBasedDeffuantUncertainty_InAttributeName_attributeName
 SET set_InPVactGlobalDeffuantUncertainty(set_InUncertainty)
 
 * - default: -1
+* - domain: [0,1]
 * - description: Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten.
 * - identifier: Extremistenparameter
 * - type: Float
@@ -1108,10 +1109,10 @@ PARAMETER par_InRAProcessModel_logisticFactor(set_InRAProcessModel)
 PARAMETER par_InRAProcessModel_speedOfConvergence(set_InRAProcessModel)
 
 * - default: 1.75
-* - description: attitude gab
-* - identifier: attitude gab
+* - description: attitude gap
+* - identifier: attitude gap
 * - type: Float
-PARAMETER par_InRAProcessModel_attitudeGab(set_InRAProcessModel)
+PARAMETER par_InRAProcessModel_attitudeGap(set_InRAProcessModel)
 
 * - default: 0.5
 * - domain: [0,1]
