@@ -3,6 +3,7 @@ package de.unileipzig.irpact.util.scenarios;
 import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
 import de.unileipzig.irpact.commons.util.IRPArgs;
 import de.unileipzig.irpact.commons.util.JsonUtil;
+import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InInformation;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -23,6 +24,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author Daniel Abitz
@@ -47,6 +49,7 @@ public abstract class AbstractScenario implements Scenario {
     protected Path dataDir;
 
     protected int simulationDelta = 1;
+    protected Consumer<? super InGeneral> generalSetup;
 
     public AbstractScenario() {
         this(null, null, null);
@@ -119,7 +122,7 @@ public abstract class AbstractScenario implements Scenario {
     //=========================
 
     public void setSimulationDelta(int simulationDelta) {
-        this.simulationDelta = Math.max(1, simulationDelta);
+        this.simulationDelta = Math.max(0, Math.min(1, simulationDelta));
     }
 
     public int getSimulationDelta() {
@@ -236,6 +239,21 @@ public abstract class AbstractScenario implements Scenario {
         return this;
     }
 
+    public void setGeneralSetup(Consumer<? super InGeneral> generalSetup) {
+        this.generalSetup = generalSetup;
+    }
+
+    public void logAll() {
+        setGeneralSetup(general -> {
+            general.setLogLevel(IRPLevel.ALL);
+            general.logAll = true;
+        });
+    }
+
+    public Consumer<? super InGeneral> getGeneralSetup() {
+        return generalSetup;
+    }
+
     public InRoot createRootWithInformations() {
         InRoot root = new InRoot();
         root.addInformation(getRevisionInformation());
@@ -243,6 +261,9 @@ public abstract class AbstractScenario implements Scenario {
         root.general = new InGeneral();
         root.getGeneral().setFirstSimulationYear(DEFAULT_INITIAL_YEAR);
         root.getGeneral().setLastSimulationYear(root.getGeneral().getFirstSimulationYear() + simulationDelta - 1);
+        if(generalSetup != null) {
+            generalSetup.accept(root.getGeneral());
+        }
         return root;
     }
 

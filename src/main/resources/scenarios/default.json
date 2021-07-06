@@ -350,7 +350,7 @@
           "par_InRAProcessModel_unknownPoints" : 0,
           "par_InRAProcessModel_logisticFactor" : 0.125,
           "par_InRAProcessModel_speedOfConvergence" : 0.0,
-          "par_InRAProcessModel_attitudeGab" : 1.75,
+          "par_InRAProcessModel_attitudeGap" : 1.75,
           "par_InRAProcessModel_chanceNeutral" : 0.5,
           "par_InRAProcessModel_chanceConvergence" : 0.25,
           "par_InRAProcessModel_chanceDivergence" : 0.25
@@ -395,7 +395,7 @@
         }
       },
       "set_InScenarioVersion" : {
-        "v0_3_1" : {
+        "v0_3_2" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },

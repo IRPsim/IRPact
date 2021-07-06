@@ -228,7 +228,7 @@ informations:
 
 about_irpact:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.3.1"
+  edn_description: "IRPact v0.3.2"
 InIRPactVersionPlaceholder_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
