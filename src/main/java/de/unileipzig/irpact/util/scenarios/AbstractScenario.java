@@ -44,6 +44,9 @@ public abstract class AbstractScenario implements Scenario {
     protected Path outputDir;
     protected Path downloadDir;
     protected Path outputPath;
+    protected Path dataDir;
+
+    protected int simulationDelta = 1;
 
     public AbstractScenario() {
         this(null, null, null);
@@ -63,6 +66,7 @@ public abstract class AbstractScenario implements Scenario {
         if(outputDir != null) args.setOutputDir(outputDir);
         if(downloadDir != null) args.setDownloadDir(downloadDir);
         if(outputPath != null) args.setOutput(outputPath);
+        if(dataDir != null) args.setDataDir(dataDir);
     }
 
     public abstract List<InRoot> createInRoots();
@@ -104,9 +108,23 @@ public abstract class AbstractScenario implements Scenario {
         Start.start(args.toArray(), data.get());
     }
 
+    public String printArgs() {
+        IRPArgs args = new IRPArgs();
+        updateArgs(args);
+        return args.toString();
+    }
+
     //=========================
     //for swagger
     //=========================
+
+    public void setSimulationDelta(int simulationDelta) {
+        this.simulationDelta = Math.max(1, simulationDelta);
+    }
+
+    public int getSimulationDelta() {
+        return simulationDelta;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -188,6 +206,14 @@ public abstract class AbstractScenario implements Scenario {
         return outputPath;
     }
 
+    public void setDataDir(Path dataDir) {
+        this.dataDir = dataDir;
+    }
+
+    public Path getDataDir() {
+        return dataDir;
+    }
+
     protected void validate(List<InRoot> inRoots) {
         for(InRoot inRoot: inRoots) {
             //exiting first simulation year
@@ -215,7 +241,8 @@ public abstract class AbstractScenario implements Scenario {
         root.addInformation(getRevisionInformation());
         root.setVersion(InScenarioVersion.currentVersion());
         root.general = new InGeneral();
-        root.general.setFirstSimulationYear(DEFAULT_INITIAL_YEAR);
+        root.getGeneral().setFirstSimulationYear(DEFAULT_INITIAL_YEAR);
+        root.getGeneral().setLastSimulationYear(root.getGeneral().getFirstSimulationYear() + simulationDelta - 1);
         return root;
     }
 

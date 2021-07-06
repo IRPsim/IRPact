@@ -58,7 +58,7 @@ public class InRAProcessModel implements InProcessModel {
         addEntry(res, thisClass(), "unknownPoints");
         addEntry(res, thisClass(), "logisticFactor");
         addEntry(res, thisClass(), "speedOfConvergence");
-        addEntry(res, thisClass(), "attitudeGab");
+        addEntry(res, thisClass(), "attitudeGap");
         addEntry(res, thisClass(), "chanceNeutral");
         addEntry(res, thisClass(), "chanceConvergence");
         addEntry(res, thisClass(), "chanceDivergence");
@@ -82,7 +82,7 @@ public class InRAProcessModel implements InProcessModel {
         setDefault(res, thisClass(), "unknownPoints", varargs(RAModelData.DEFAULT_UNKNOWN_POINTS));
         setDefault(res, thisClass(), "logisticFactor", varargs(RAConstants.DEFAULT_LOGISTIC_FACTOR));
         setDefault(res, thisClass(), "speedOfConvergence", varargs(RAConstants.DEFAULT_SPEED_OF_CONVERGENCE));
-        setDefault(res, thisClass(), "attitudeGab", varargs(RAConstants.DEFAULT_ATTIDUTE_GAP));
+        setDefault(res, thisClass(), "attitudeGap", varargs(RAConstants.DEFAULT_ATTIDUTE_GAP));
         setDefault(res, thisClass(), "chanceNeutral", varargs(RAConstants.DEFAULT_NEUTRAL_CHANCE));
         setDefault(res, thisClass(), "chanceConvergence", varargs(RAConstants.DEFAULT_CONVERGENCE_CHANCE));
         setDefault(res, thisClass(), "chanceDivergence", varargs(RAConstants.DEFAULT_DIVERGENCE_CHANCE));
@@ -123,7 +123,7 @@ public class InRAProcessModel implements InProcessModel {
     public double speedOfConvergence;
 
     @FieldDefinition
-    public double attitudeGab;
+    public double attitudeGap;
 
     @FieldDefinition
     public double chanceNeutral;
@@ -189,7 +189,7 @@ public class InRAProcessModel implements InProcessModel {
         copy.chanceNeutral = chanceNeutral;
         copy.chanceConvergence = chanceConvergence;
         copy.chanceDivergence = chanceDivergence;
-        copy.attitudeGab = attitudeGab;
+        copy.attitudeGap = attitudeGap;
         copy.nodeFilterScheme = cache.copyArray(nodeFilterScheme);
         copy.pvFile = cache.copyArray(pvFile);
         copy.uncertainties = cache.copyArray(uncertainties);
@@ -337,12 +337,12 @@ public class InRAProcessModel implements InProcessModel {
         return chanceDivergence;
     }
 
-    public void setAttitudeGap(double attitudeGab) {
-        this.attitudeGab = attitudeGab;
+    public void setAttitudeGap(double attitudeGap) {
+        this.attitudeGap = attitudeGap;
     }
 
-    public double getAttitudeGab() {
-        return attitudeGab;
+    public double getAttitudeGap() {
+        return attitudeGap;
     }
 
     public boolean hasNodeFilterScheme() {
@@ -438,7 +438,7 @@ public class InRAProcessModel implements InProcessModel {
         algorithm.setEnvironment(parser.getEnvironment());
         Rnd raRnd = parser.deriveRnd();
         algorithm.setRandom(raRnd);
-        algorithm.setAttitudeGap(getAttitudeGab());
+        algorithm.setAttitudeGap(getAttitudeGap());
         algorithm.setWeightes(getChanceNeutral(), getChanceConvergence(), getChanceDivergence());
         algorithm.setLogDataFallback(false);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "AttitudeGapRelativeAgreementAlgorithm '{}' uses seed: {}", algorithm.getName(), raRnd.getInitialSeed());

@@ -112,6 +112,12 @@ public class InGeneral implements Copyable {
     public void setFirstSimulationYearAsLast() {
         lastSimulationYear = getFirstSimulationYear();
     }
+    public void setLastSimulationYear(int lastSimulationYear) {
+        this.lastSimulationYear = lastSimulationYear;
+    }
+    public int getLastSimulationYear() {
+        return lastSimulationYear;
+    }
 
     //=========================
     //IRPopt
