@@ -69,11 +69,11 @@ idea {
 
 ext {
     junitJupiterVersion = '5.7.2'
-    jacksonVersion = '2.10.2'
+    jacksonVersion = '2.12.2'
     jadexDistVersion = '4.0.241' //'4.0.187'
     logbackVersion = '1.2.3'
     apachePoiVersion = '5.0.0'
-    geotoolsVersion = '23.2'
+    geotoolsVersion = '25.1'
 }
 
 dependencies {
@@ -95,9 +95,9 @@ dependencies {
     implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion"
     implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-smile:$jacksonVersion"
 
-    implementation "info.picocli:picocli:4.2.0"
+    implementation "info.picocli:picocli:4.6.1"
 
-    implementation "org.slf4j:slf4j-api:1.7.30"
+    implementation "org.slf4j:slf4j-api:1.7.31"
 
     implementation "ch.qos.logback:logback-classic:$logbackVersion"
     implementation "ch.qos.logback:logback-core:$logbackVersion"
