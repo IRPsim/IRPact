@@ -220,7 +220,7 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
     @Override
     public IFuture<Map<String, Object>> terminate() {
         LOGGER.info("terminate");
-        killSwitch.finished();
+        killSwitch.terminate();
         prepareTermination();
         state = TerminationState.NORMAL;
         return platform.killComponent();
@@ -237,7 +237,7 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
     @Override
     public IFuture<Map<String, Object>> terminateWithError(Exception e) {
         LOGGER.info("terminate with error");
-        killSwitch.finished();
+        killSwitch.terminate();
         prepareTermination();
         state = TerminationState.ERROR;
         return platform.killComponent(e);

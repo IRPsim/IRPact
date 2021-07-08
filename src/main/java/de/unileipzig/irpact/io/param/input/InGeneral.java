@@ -19,9 +19,12 @@ import de.unileipzig.irptools.defstructure.annotation.GamsParameter;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.Copyable;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
+import de.unileipzig.irptools.util.XorWithoutUnselectRuleBuilder;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static de.unileipzig.irpact.io.param.IOConstants.*;
@@ -41,15 +44,36 @@ public class InGeneral implements Copyable {
         return thisClass().getSimpleName();
     }
 
+    protected static final String[] timeUnitFieldNames = {"timeoutUseMs", "timeoutUseSec", "timeoutUseMin"};
+    protected static final XorWithoutUnselectRuleBuilder timeUnitBuilder = new XorWithoutUnselectRuleBuilder()
+            .withKeyModifier(buildDefaultParameterNameOperator(thisClass()))
+            .withTrueValue(Constants.TRUE1)
+            .withFalseValue(Constants.FALSE0)
+            .withKeys(timeUnitFieldNames);
+
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
+        //general
         putClassPath(res, thisClass(), GENERAL_SETTINGS);
 
         addEntry(res, thisClass(), "seed");
         addEntry(res, thisClass(), "timeout");
+        addEntry(res, thisClass(), "timeoutUseMs");
+        addEntry(res, thisClass(), "timeoutUseSec");
+        addEntry(res, thisClass(), "timeoutUseMin");
         addEntry(res, thisClass(), "lastSimulationYear");
 
+        setDomain(res, thisClass(), "timout", GEQ0_DOMAIN);
+
+        setDefault(res, thisClass(), "seed", varargs(42));
+        setDefault(res, thisClass(), "timeout", varargs(1));
+        setDefault(res, thisClass(), new String[]{"timeoutUseMs", "timeoutUseSec"}, VALUE_FALSE);
+        setDefault(res, thisClass(), "timeoutUseMin", VALUE_TRUE);
+
+        setRules(res, thisClass(), timeUnitFieldNames, timeUnitBuilder);
+
+        //logging general
         putFieldPathAndAddEntry(res, thisClass(), "logLevel", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
         putFieldPathAndAddEntry(res, thisClass(), "logAll", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
         putFieldPathAndAddEntry(res, thisClass(), "logAllIRPact", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
@@ -57,6 +81,7 @@ public class InGeneral implements Copyable {
         putFieldPathAndAddEntry(res, thisClass(), "logInitialization", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
         putFieldPathAndAddEntry(res, thisClass(), "logSimulation", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
 
+        //logging data
         putFieldPathAndAddEntry(res, thisClass(), "logGraphUpdate", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
         putFieldPathAndAddEntry(res, thisClass(), "logRelativeAgreement", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
         putFieldPathAndAddEntry(res, thisClass(), "logInterestUpdate", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
@@ -64,13 +89,16 @@ public class InGeneral implements Copyable {
         putFieldPathAndAddEntry(res, thisClass(), "logFinancalComponent", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
         putFieldPathAndAddEntry(res, thisClass(), "logCalculateDecisionMaking", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
 
+        //logging result
         putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsZip", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
         putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsZipPhase", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
         putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsAll", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
 
+        //logging script
         putFieldPathAndAddEntry(res, thisClass(), "logScriptAdoptionsZip", GENERAL_SETTINGS, LOGGING, LOGGING_SCRIPT);
         putFieldPathAndAddEntry(res, thisClass(), "logScriptAdoptionsZipPhase", GENERAL_SETTINGS, LOGGING, LOGGING_SCRIPT);
 
+        //special
         putFieldPathAndAddEntry(res, thisClass(), "runOptActDemo", GENERAL_SETTINGS, SPECIAL_SETTINGS);
         putFieldPathAndAddEntry(res, thisClass(), "runPVAct", GENERAL_SETTINGS, SPECIAL_SETTINGS);
         putFieldPathAndAddEntry(res, thisClass(), "runMode", GENERAL_SETTINGS, SPECIAL_SETTINGS);
@@ -90,10 +118,61 @@ public class InGeneral implements Copyable {
     public static final String SCA_INGENERAL_LOGSIMULATION = "sca_InGeneral_logSimulation";
 
     @FieldDefinition
-    public long seed;
+    public long seed = 42L;
+    public void setSeed(long seed) {
+        this.seed = seed;
+    }
+    public long getSeed() {
+        return seed;
+    }
 
     @FieldDefinition
-    public long timeout;
+    public long timeout = 1;
+    public void setTimeout(long timeout) {
+        this.timeout = timeout;
+    }
+    public long getTimeout() {
+        return timeout;
+    }
+
+    @FieldDefinition
+    public boolean timeoutUseMs = false;
+    @FieldDefinition
+    public boolean timeoutUseSec = false;
+    @FieldDefinition
+    public boolean timeoutUseMin = true;
+    public TimeUnit getTimeoutUnit() throws ParsingException {
+        List<TimeUnit> units = new ArrayList<>();
+        if(timeoutUseMs) units.add(TimeUnit.MILLISECONDS);
+        if(timeoutUseSec) units.add(TimeUnit.SECONDS);
+        if(timeoutUseMin) units.add(TimeUnit.MINUTES);
+        switch(units.size()) {
+            case 0:
+                throw new ParsingException("Missing time unit");
+            case 1:
+                return units.get(0);
+            default:
+                throw new ParsingException("Multiple time units set: " + units);
+        }
+    }
+    public void setTimeoutUnit(TimeUnit unit) {
+        timeoutUseMs = false;
+        timeoutUseSec = false;
+        timeoutUseMin = false;
+        switch (unit) {
+            case MILLISECONDS:
+                timeoutUseMs = true;
+                break;
+            case SECONDS:
+                timeoutUseSec = true;
+                break;
+            case MINUTES:
+                timeoutUseMin = true;
+                break;
+            default:
+                throw new IllegalArgumentException("unsupported unit: " + unit);
+        }
+    }
 
     //internal only
     private final MutableInt firstSimulationYear0 = MutableInt.empty();
