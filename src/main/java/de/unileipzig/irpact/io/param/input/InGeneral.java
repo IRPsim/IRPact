@@ -475,7 +475,7 @@ public class InGeneral implements Copyable {
         env.setSimulationRandom(rnd);
     }
 
-    private void parseLifeCycleControl(IRPactInputParser parser) {
+    private void parseLifeCycleControl(IRPactInputParser parser) throws ParsingException {
         BasicJadexLifeCycleControl lifeCycleControl = (BasicJadexLifeCycleControl) parser.getEnvironment().getLiveCycleControl();
         applyKillSwitch(lifeCycleControl);
 
@@ -484,13 +484,13 @@ public class InGeneral implements Copyable {
         LOGGER.info(IRPSection.INITIALIZATION_PARAMETER, "last simulation year: {}", lastSimulationYear);
     }
 
-    public void applyKillSwitch(BasicJadexLifeCycleControl lifeCycleControl) {
-        if(timeout < 1L) {
+    public void applyKillSwitch(BasicJadexLifeCycleControl lifeCycleControl) throws ParsingException {
+        if(getTimeout() < 1L) {
             LOGGER.info(IRPSection.INITIALIZATION_PARAMETER, "timeout disabled");
         } else {
-            LOGGER.info(IRPSection.INITIALIZATION_PARAMETER, "timeout: {}", timeout);
+            LOGGER.info(IRPSection.INITIALIZATION_PARAMETER, "timeout: {} {}", getTimeout(), getTimeoutUnit());
         }
-        lifeCycleControl.setKillSwitchTimeout(timeout);
+        lifeCycleControl.setKillSwitchTimeout(getTimeout(), getTimeoutUnit());
     }
 
     public void applyToSettings(BasicSettings settings) {

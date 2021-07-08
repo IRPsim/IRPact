@@ -21,6 +21,7 @@ import jadex.commons.future.IFuture;
 
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
@@ -140,8 +141,8 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
         totalNumberOfAgents = count;
     }
 
-    public void setKillSwitchTimeout(long timeout) {
-        killSwitch.setTimeout(timeout);
+    public void setKillSwitchTimeout(long timeout, TimeUnit unit) {
+        killSwitch.setTimeout(timeout, unit);
     }
 
     public long getKillSwitchTimeout() {
