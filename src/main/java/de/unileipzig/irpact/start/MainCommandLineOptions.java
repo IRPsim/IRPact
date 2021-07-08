@@ -12,6 +12,8 @@ import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
 import picocli.CommandLine;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
@@ -450,6 +452,16 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         } else {
             return downloadDir;
         }
+    }
+    public Path getCreatedDownloadDir() throws IOException {
+        Path downloadDir = getDownloadDir();
+        if(Files.notExists(downloadDir)) {
+            Files.createDirectories(downloadDir);
+        }
+        else if(!Files.isDirectory(downloadDir)) {
+            throw new IOException("no directoy: " + downloadDir);
+        }
+        return downloadDir;
     }
 
     public String getGnuplotCommand() {

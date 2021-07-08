@@ -251,6 +251,7 @@ public class ResultManager implements LoggingHelper {
     protected void handleImageCreation0() throws ParsingException, IOException {
         if(inRoot.hasImages()) {
             for(InOutputImage image: inRoot.getImages()) {
+                trace("image '{}': data={}, script={}, image={}, enabled={}", image.getBaseFileName(), image.isStoreData(), image.isStoreScript(), image.isStoreImage(), image.isEnabled());
                 if(image.isDisabled()) {
                     trace("skip disabled image '{}'", image.getBaseFileName());
                     continue;
@@ -372,15 +373,7 @@ public class ResultManager implements LoggingHelper {
     }
 
     protected Path getTargetDir() throws IOException {
-        Path targetDir = clOptions.getDownloadDir();
-        if(Files.notExists(targetDir)) {
-            Files.createDirectories(targetDir);
-        } else {
-            if(!Files.isDirectory(targetDir)) {
-                throw new IOException("no directoy: " + targetDir);
-            }
-        }
-        return targetDir;
+        return clOptions.getCreatedDownloadDir();
     }
 
     protected List<String> zips;

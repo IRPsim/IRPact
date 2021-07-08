@@ -193,7 +193,7 @@ public class InGenericOutputImage implements InOutputImage {
 
         switch(engines.size()) {
             case 0:
-                throw new ParsingException("Missing time unit");
+                throw new ParsingException("Missing engine");
 
             case 1:
                 return engines.get(0);
@@ -235,7 +235,7 @@ public class InGenericOutputImage implements InOutputImage {
 
         switch(modes.size()) {
             case 0:
-                throw new ParsingException("Missing time unit");
+                throw new ParsingException("Missing mode");
 
             case 1:
                 return modes.get(0);

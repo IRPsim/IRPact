@@ -189,6 +189,10 @@ public final class ParamUtil {
         return arr;
     }
 
+    public static boolean isNotNullAndNotEmpty(Object[] arr) {
+        return arr != null && arr.length > 0;
+    }
+
     public static <T> T getInstance(
             T[] arr,
             String name) throws ParsingException {

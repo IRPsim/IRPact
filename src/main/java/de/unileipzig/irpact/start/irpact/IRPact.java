@@ -724,9 +724,9 @@ public final class IRPact implements IRPActAccess {
 
     private void copyLogIfPossible() {
         try {
-            if(CL_OPTIONS.logToFile() && inRoot.getGeneral().isCopyLogIfPossible()) {
+            if(CL_OPTIONS.logToFile() && inRoot.getGeneral().copyLogIfPossible()) {
                 Path logFile = CL_OPTIONS.getLogPath();
-                Path copyTarget = CL_OPTIONS.getDownloadDir().resolve(logFile.getFileName() + ".copy");
+                Path copyTarget = CL_OPTIONS.getCreatedDownloadDir().resolve(logFile.getFileName() + ".copy");
                 Files.copy(logFile, copyTarget, StandardCopyOption.REPLACE_EXISTING);
             }
         } catch (IOException e) {

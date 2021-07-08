@@ -54,9 +54,13 @@ public class KillSwitch implements Runnable {
     }
 
     public void finished() {
-        finished = true;
-        killThread.interrupt();
-        LOGGER.trace("KillSwitch finished");
+        if(killThread == null) {
+            LOGGER.trace("KillSwitch not started or disabled");
+        } else {
+            finished = true;
+            killThread.interrupt();
+            LOGGER.trace("KillSwitch finished");
+        }
     }
 
     @SuppressWarnings("BusyWait")

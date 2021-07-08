@@ -47,11 +47,16 @@ public abstract class AbstractCumulativeAdoptionAnalyser extends AbstractAdoptio
     }
 
     @Override
-    public void add(AdoptionEntry info) {
-        for(Integer year: years) {
-            if(year >= info.getYear()) {
-                add(year == info.getYear(), year, info);
+    public boolean add(AdoptionEntry info) {
+        if(info.getAdoptedProduct().isInitial()) {
+            return false;
+        } else {
+            for(Integer year: years) {
+                if(year >= info.getYear()) {
+                    add(year == info.getYear(), year, info);
+                }
             }
+            return true;
         }
     }
 

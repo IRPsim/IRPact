@@ -23,7 +23,7 @@ public interface AdoptionAnalyser extends ResultProcessor {
         }
     }
 
-    void add(AdoptionEntry info);
+    boolean add(AdoptionEntry info);
 
     default void add(ConsumerAgent agent, AdoptedProduct product) {
         add(new BasicAdoptionEntry(agent, product));

@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.simulation;
 
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 
 import java.util.List;

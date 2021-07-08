@@ -1065,11 +1065,17 @@ InSpace2D_useManhatten:
 InSpace2D_useEuclid:
   gams_identifier: "Euklidische Metrik"
   gams_description: "Nutzt die euklidische Metrik für die Berechnung der Abstände."
+InSpace2D_useEuclid2:
+  gams_identifier: "Euklidische Metrik (quadratisch)"
+  gams_description: "Nutzt die quadratische euklidische Metrik für die Berechnung der Abstände. Im Vergleich zur normalen euklidischen Distanz sqrt((x2 - x1)^2 * (y2 - y1)^2) wird hier die Wurzel weggelassen und der Abstand mittels (x2 - x1)^2 * (y2 - y1)^2 berechnet."
 InSpace2D_useMaximum:
   gams_identifier: "Maximumsmetrik"
   gams_description: "Nutzt die Maximumsmetrik für die Berechnung der Abstände."
-InSpace2D_useHaversine:
-  gams_identifier: "Haversine (km)"
+InSpace2D_useHaversineM:
+  gams_identifier: "Haversine (Meter)"
+  gams_description: "Nutzt die Haversine-Formel für die Berechnung der Entfernungen. Die Berechnungen finden auf Meterbasis statt."
+InSpace2D_useHaversineKM:
+  gams_identifier: "Haversine (Kilometer)"
   gams_description: "Nutzt die Haversine-Formel für die Berechnung der Entfernungen. Die Berechnungen finden auf Kilometerbasis statt."
 
 spatial_model_dist:

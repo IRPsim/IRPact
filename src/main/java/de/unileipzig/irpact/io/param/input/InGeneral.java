@@ -166,7 +166,7 @@ public class InGeneral implements Copyable {
     public void setCopyLogIfPossible(boolean copyLogIfPossible) {
         this.copyLogIfPossible = copyLogIfPossible;
     }
-    public boolean isCopyLogIfPossible() {
+    public boolean copyLogIfPossible() {
         return copyLogIfPossible;
     }
 
