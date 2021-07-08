@@ -234,9 +234,10 @@ informations:
   edn_label: "Informationen"
   edn_description: "Informationen über IRPact und das Szenario"
 
+#dran denken: Version auch in IRPact.json aendern
 about_irpact:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.3.2"
+  edn_description: "IRPact v0.4.0"
 InIRPactVersionPlaceholder_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
