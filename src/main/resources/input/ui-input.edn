@@ -12,7 +12,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersionPlaceholder" 
-        :description "IRPact v0.3.2" 
+        :description "IRPact v0.4.0" 
         :tags [["InIRPactVersionPlaceholder" "placeholder"]]
       } 
       {
@@ -32,7 +32,7 @@
   {
     :label "Allgemeine Einstellungen" 
     :description "todo" 
-    :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "lastSimulationYear"]] 
+    :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "timeoutUseMs"] ["InGeneral" "timeoutUseSec"] ["InGeneral" "timeoutUseMin"] ["InGeneral" "lastSimulationYear"]] 
     :sections [
       {
         :label "Logging" 
@@ -330,7 +330,7 @@
             :label "Freie Topologie" 
             :set "set_InFreeNetworkTopology" 
             :description "Freie Topologie" 
-            :tags [["link" "InFreeNetworkTopology" "InDistanceEvaluator" "distanceEvaluator"] ["link" "InFreeNetworkTopology" "InNumberOfTies" "numberOfTies"] ["link" "InFreeNetworkTopology" "InAffinities" "affinities"] ["InFreeNetworkTopology" "initialWeight"] ["InFreeNetworkTopology" "allowLessEdges"]] 
+            :tags [["link" "InFreeNetworkTopology" "InDistanceEvaluator" "distanceEvaluator"] ["link" "InFreeNetworkTopology" "InNumberOfTies" "numberOfTies"] ["link" "InFreeNetworkTopology" "InAffinities" "affinities"] ["InFreeNetworkTopology" "allowLessEdges"]] 
             :sections [
               {
                 :label "Kanten je Konsumergruppe" 
@@ -492,7 +492,7 @@
             :label "Space2D" 
             :set "set_InSpace2D" 
             :description "Nutzt ein 2D-Modell mit der gewünschten Metrik." 
-            :tags [["InSpace2D" "useManhatten"] ["InSpace2D" "useEuclid"] ["InSpace2D" "useMaximum"] ["InSpace2D" "useHaversine"]]
+            :tags [["InSpace2D" "useManhatten"] ["InSpace2D" "useEuclid"] ["InSpace2D" "useEuclid2"] ["InSpace2D" "useMaximum"] ["InSpace2D" "useHaversineM"] ["InSpace2D" "useHaversineKM"]]
           }
         ]
       } 
@@ -531,12 +531,6 @@
                     :set "set_InFileBasedPVactMilieuSupplier" 
                     :description "Die Daten werden, basierend auf dem Milieu, zugeordnet." 
                     :tags [["link" "InFileBasedPVactMilieuSupplier" "InSpatialTableFile" "file"]]
-                  } 
-                  {
-                    :label "PVact - Milieu und PLZ" 
-                    :set "set_InFileBasedPVactMilieuZipSupplier" 
-                    :description "Die Daten werden, basierend auf dem Milieu, zugeordnet. Zusätzlich wird die PLZ für die Wichtung verwendet." 
-                    :tags [["link" "InFileBasedPVactMilieuZipSupplier" "InSpatialTableFile" "file"]]
                   }
                 ]
               }

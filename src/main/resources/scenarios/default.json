@@ -48,6 +48,9 @@
       "sca_InGeneral_scenarioMode" : -1,
       "sca_InGeneral_seed" : 42,
       "sca_InGeneral_timeout" : 60000,
+      "sca_InGeneral_timeoutUseMin" : 1,
+      "sca_InGeneral_timeoutUseMs" : 0,
+      "sca_InGeneral_timeoutUseSec" : 0,
       "sca_Tax_PS_vat" : 0.19,
       "sca_X_MS_CH_country" : 0,
       "sca_X_MS_DE_country" : 1
@@ -194,8 +197,7 @@
       },
       "set_InFileBasedConsumerAgentPopulation" : { },
       "set_InFileBasedPVactConsumerAgentPopulation" : { },
-      "set_InFileBasedPVactMilieuSupplier" : { },
-      "set_InFileBasedPVactMilieuZipSupplier" : {
+      "set_InFileBasedPVactMilieuSupplier" : {
         "testdist" : { }
       },
       "set_InFileBasedSelectGroupSpatialInformationSupplier" : { },
@@ -395,7 +397,7 @@
         }
       },
       "set_InScenarioVersion" : {
-        "v0_3_2" : {
+        "v0_4_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
@@ -403,8 +405,10 @@
         "Space2D" : {
           "par_InSpace2D_useManhatten" : 0,
           "par_InSpace2D_useEuclid" : 1,
+          "par_InSpace2D_useEuclid2" : 0,
           "par_InSpace2D_useMaximum" : 0,
-          "par_InSpace2D_useHaversine" : 0
+          "par_InSpace2D_useHaversineM" : 0,
+          "par_InSpace2D_useHaversineKM" : 0
         }
       },
       "set_InSpatialDistribution" : {
@@ -632,8 +636,7 @@
       "par_link_InFileBasedConsumerAgentPopulation_InSpatialTableFile_file" : { },
       "par_link_InFileBasedPVactConsumerAgentPopulation_InConsumerAgentGroup_cags" : { },
       "par_link_InFileBasedPVactConsumerAgentPopulation_InSpatialTableFile_file" : { },
-      "par_link_InFileBasedPVactMilieuSupplier_InSpatialTableFile_file" : { },
-      "par_link_InFileBasedPVactMilieuZipSupplier_InSpatialTableFile_file" : {
+      "par_link_InFileBasedPVactMilieuSupplier_InSpatialTableFile_file" : {
         "testdist" : {
           "Datensatz_210322" : 1.0
         }
