@@ -13,9 +13,9 @@ sourceCompatibility = 1.8
 repositories {
     //geotools als erstes, sonst werden libs nicht gefunden...
     maven { url "https://repo.osgeo.org/repository/release/" }
-    //maven { url "http://download.java.net/maven/2" }
+    //maven { url "https://download.java.net/maven/2" }
 
-    maven { url "https://nexus.actoron.com/content/repositories/oss-nightlies" }
+    //maven { url "https://nexus.actoron.com/content/repositories/oss-nightlies" }
 
     mavenCentral()
     //jcenter()
@@ -70,10 +70,11 @@ idea {
 ext {
     junitJupiterVersion = '5.7.2'
     jacksonVersion = '2.10.2'
-    jadexDistVersion = '4.0.187' //'4.0.171'
+    jadexDistVersion = '4.0.241' //'4.0.241' '4.0.187'
     logbackVersion = '1.2.3'
     apachePoiVersion = '5.0.0'
     geotoolsVersion = '23.2'
+    x = '4'
 }
 
 dependencies {
@@ -127,18 +128,18 @@ dependencies {
 //jar
 //==================================================
 
-task buildUberJar(type: Jar) {
-    archiveClassifier.set('uber')
-    manifest {
-        attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
-    }
-    from {
-        configurations.runtimeClasspath.collect {
-            it.isDirectory() ? it : zipTree(it)
-        }
-    } with jar
-    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
-}
+//task buildUberJar(type: Jar) {
+//    archiveClassifier.set('uber')
+//    manifest {
+//        attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
+//    }
+//    from {
+//        configurations.runtimeClasspath.collect {
+//            it.isDirectory() ? it : zipTree(it)
+//        }
+//    } with jar
+//    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+//}
 
 task buildStandardJar(type: Jar) {
     from sourceSets.main.output
@@ -148,6 +149,6 @@ task buildStandardJar(type: Jar) {
 }
 
 artifacts {
-    archives buildUberJar
+//    archives buildUberJar
     archives buildStandardJar
 }

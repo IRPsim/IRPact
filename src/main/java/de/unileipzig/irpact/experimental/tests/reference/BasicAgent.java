@@ -117,6 +117,10 @@ public class BasicAgent {
                         }
 
                         @Override
+                        public void maxResultCountAvailable(int max) {
+                        }
+
+                        @Override
                         public void exceptionOccurred(Exception exception) {
                         }
 

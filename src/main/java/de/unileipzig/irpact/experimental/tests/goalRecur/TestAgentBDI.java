@@ -4,7 +4,6 @@ import de.unileipzig.irpact.jadex.util.JadexUtil;
 import jadex.bdiv3.BDIAgentFactory;
 import jadex.bdiv3.annotation.*;
 import jadex.bdiv3.features.IBDIAgentFeature;
-import jadex.bdiv3.model.MProcessableElement;
 import jadex.bdiv3.runtime.impl.PlanFailureException;
 import jadex.bridge.IInternalAccess;
 import jadex.bridge.component.IArgumentsResultsFeature;
@@ -102,7 +101,7 @@ public class TestAgentBDI {
     //stuff
     //=========================
 
-    @Goal(excludemode = MProcessableElement.ExcludeMode.WhenSucceeded, retrydelay = 1)
+    @Goal(excludemode = ExcludeMode.WhenSucceeded, retrydelay = 1)
     public class SimpleGoal {
 
         protected int counter;
