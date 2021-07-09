@@ -356,6 +356,7 @@ public final class IRPact implements IRPActAccess {
         LOGGER.info(IRPSection.GENERAL, "valid image path, setup graphviz");
         GraphvizInputParser parser = new GraphvizInputParser();
         parser.setEnvironment(environment);
+        parser.setDownloadDir(CL_OPTIONS.getDownloadDirOrNull());
         parser.setImageOutputPath(CL_OPTIONS.getImagePath());
         graphvizConfiguration = parser.parseRoot(inRoot);
     }

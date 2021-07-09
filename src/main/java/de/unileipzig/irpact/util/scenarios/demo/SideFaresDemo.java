@@ -156,16 +156,6 @@ public class SideFaresDemo extends AbstractScenario {
         InConsumerAgentGroupColor cag1Color = new InConsumerAgentGroupColor(cag1.getName() + "_color", cag1, gc2);
         root.setConsumerAgentGroupColors(new InConsumerAgentGroupColor[]{cag0Color, cag1Color});
 
-        GraphvizLayoutAlgorithm.DOT.useLayout = false;
-        GraphvizLayoutAlgorithm.CIRCO.useLayout = true;
-        root.layoutAlgorithms = GraphvizLayoutAlgorithm.DEFAULTS;
-        GraphvizOutputFormat.PNG.useFormat = true;
-        root.outputFormats = new GraphvizOutputFormat[] { GraphvizOutputFormat.PNG };
-
-        root.graphvizGlobal = new GraphvizGlobal();
-        root.graphvizGlobal.fixedNeatoPosition = false;
-        root.graphvizGlobal.scaleFactor = 0.0;
-
         //=====
         root.general = general;
         root.setAffinities(new InAffinities("affs", new InComplexAffinityEntry[]{cag0_cag0, cag0_cag1, cag1_cag1, cag1_cag0}));

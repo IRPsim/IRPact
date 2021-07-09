@@ -36,13 +36,11 @@ import de.unileipzig.irpact.io.param.irpopt.SideCustom;
 import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.in.*;
 import de.unileipzig.irpact.start.optact.network.IFreeMultiGraphTopology;
-import de.unileipzig.irpact.start.optact.network.IGraphTopology;
 import de.unileipzig.irpact.start.optact.network.IWattsStrogatzModel;
 import de.unileipzig.irptools.defstructure.DefaultScenarioFactory;
+import de.unileipzig.irptools.graphviz.StandardLayoutAlgorithm;
+import de.unileipzig.irptools.graphviz.StandardOutputFormat;
 import de.unileipzig.irptools.graphviz.def.GraphvizColor;
-import de.unileipzig.irptools.graphviz.def.GraphvizGlobal;
-import de.unileipzig.irptools.graphviz.def.GraphvizLayoutAlgorithm;
-import de.unileipzig.irptools.graphviz.def.GraphvizOutputFormat;
 import de.unileipzig.irptools.util.DoubleTimeSeries;
 import de.unileipzig.irptools.util.Table;
 
@@ -170,15 +168,11 @@ public class InExample implements DefaultScenarioFactory {
         InConsumerAgentGroupColor cag1Color = new InConsumerAgentGroupColor(cag1.getName() + "_color", cag1, gc2);
         root.setConsumerAgentGroupColors(new InConsumerAgentGroupColor[]{cag0Color, cag1Color});
 
-        GraphvizLayoutAlgorithm.DOT.useLayout = false;
-        GraphvizLayoutAlgorithm.CIRCO.useLayout = true;
-        root.layoutAlgorithms = GraphvizLayoutAlgorithm.DEFAULTS;
-        GraphvizOutputFormat.PNG.useFormat = true;
-        root.outputFormats = new GraphvizOutputFormat[] { GraphvizOutputFormat.PNG };
-
-        root.graphvizGlobal = new GraphvizGlobal();
-        root.graphvizGlobal.fixedNeatoPosition = false;
-        root.graphvizGlobal.scaleFactor = 0.0;
+        root.getGraphvizGeneral().setLayoutAlgorithm(StandardLayoutAlgorithm.FDP);
+        root.getGraphvizGeneral().setOutputFormat(StandardOutputFormat.PNG);
+        root.getGraphvizGeneral().setFixedNeatoPosition(false);
+        root.getGraphvizGeneral().setStoreDotFile(false);
+        root.getGraphvizGeneral().setScaleFactor(0);
 
         //=====
         root.version = new InScenarioVersion[]{InScenarioVersion.currentVersion()};
@@ -306,15 +300,11 @@ public class InExample implements DefaultScenarioFactory {
         InConsumerAgentGroupColor cag1Color = new InConsumerAgentGroupColor(cag1.getName() + "_color", cag1, gc2);
         root.setConsumerAgentGroupColors(new InConsumerAgentGroupColor[]{cag0Color, cag1Color});
 
-        GraphvizLayoutAlgorithm.DOT.useLayout = false;
-        GraphvizLayoutAlgorithm.CIRCO.useLayout = true;
-        root.layoutAlgorithms = GraphvizLayoutAlgorithm.DEFAULTS;
-        GraphvizOutputFormat.PNG.useFormat = true;
-        root.outputFormats = new GraphvizOutputFormat[] { GraphvizOutputFormat.PNG };
-
-        root.graphvizGlobal = new GraphvizGlobal();
-        root.graphvizGlobal.fixedNeatoPosition = false;
-        root.graphvizGlobal.scaleFactor = 0.0;
+        root.getGraphvizGeneral().setLayoutAlgorithm(StandardLayoutAlgorithm.FDP);
+        root.getGraphvizGeneral().setOutputFormat(StandardOutputFormat.PNG);
+        root.getGraphvizGeneral().setFixedNeatoPosition(false);
+        root.getGraphvizGeneral().setStoreDotFile(false);
+        root.getGraphvizGeneral().setScaleFactor(0);
 
         //=====
         root.version = new InScenarioVersion[]{InScenarioVersion.currentVersion()};
@@ -367,19 +357,11 @@ public class InExample implements DefaultScenarioFactory {
         AgentGroup ag4 = new AgentGroup("Gruppe4", 25, gc4);
         root.agentGroups = new AgentGroup[]{ag1, ag2, ag3, ag4};
 
-        GraphvizLayoutAlgorithm.DOT.useLayout = false;
-        GraphvizLayoutAlgorithm.CIRCO.useLayout = true;
-        root.layoutAlgorithms = GraphvizLayoutAlgorithm.DEFAULTS;
-        GraphvizOutputFormat.PNG.useFormat = true;
-        root.outputFormats = new GraphvizOutputFormat[] { GraphvizOutputFormat.PNG };
-        root.topologies = new IGraphTopology[] {
-                createWattsStrogatzModel("WSM1", 4, 0.0, 42, true),
-                createFreeMultiGraphTopology("FREE1", 3, 24, false)
-        };
-
-        root.graphvizGlobal = new GraphvizGlobal();
-        root.graphvizGlobal.fixedNeatoPosition = false;
-        root.graphvizGlobal.scaleFactor = 0.0;
+        root.getGraphvizGeneral().setLayoutAlgorithm(StandardLayoutAlgorithm.FDP);
+        root.getGraphvizGeneral().setOutputFormat(StandardOutputFormat.PNG);
+        root.getGraphvizGeneral().setFixedNeatoPosition(false);
+        root.getGraphvizGeneral().setStoreDotFile(false);
+        root.getGraphvizGeneral().setScaleFactor(0);
     }
 
     @Todo("default rausgenommen")

@@ -33,6 +33,8 @@ public final class ParamUtil {
     public static final String G0_DOMAIN = "(0,)";
     public static final Object[] VALUE_TRUE = {"1"};
     public static final Object[] VALUE_FALSE = {"0"};
+    public static final Object[] VALUE_ONE = {"1"};
+    public static final Object[] VALUE_ZERO = {"0"};
     public static final Object[] VALUE_NEG_ONE = {"-1"};
 
     private ParamUtil() {

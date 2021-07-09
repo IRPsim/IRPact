@@ -35,6 +35,7 @@ public class InConsumerAgentGroupColor implements InIRPactEntity {
         addEntry(res, thisClass(), "group");
         addEntry(res, thisClass(), "color");
 
+        //TODO remove
 //        res.putPath(
 //                thisClass(),
 //                res.getCachedElement(GRAPHVIZ),
@@ -85,11 +86,20 @@ public class InConsumerAgentGroupColor implements InIRPactEntity {
     public String getName() {
         return _name;
     }
+    public void setName(String name) {
+        this._name = name;
+    }
 
+    public void setGroup(InConsumerAgentGroup group) {
+        this.group = new InConsumerAgentGroup[]{group};
+    }
     public InConsumerAgentGroup getGroup() throws ParsingException {
         return getInstance(group, "Group");
     }
 
+    public void setColor(GraphvizColor color) {
+        this.color = new GraphvizColor[]{color};
+    }
     public GraphvizColor getColor() throws ParsingException {
         return getInstance(color, "Color");
     }

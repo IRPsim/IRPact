@@ -54,6 +54,7 @@ public class InGraphvizGeneral implements Copyable {
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.GRAPHVIZ_GENERAL);
+        addEntry(res, thisClass(), "storeDotFile");
         addEntry(res, thisClass(), "scaleFactor");
         addEntry(res, thisClass(), "fixedNeatoPosition");
         addEntry(res, thisClass(), "outputFormatPNG");
@@ -64,7 +65,8 @@ public class InGraphvizGeneral implements Copyable {
         addEntry(res, thisClass(), "layoutAlgTWOPI");
         addEntry(res, thisClass(), "layoutAlgCIRCO");
 
-        setDefault(res, thisClass(), "scaleFactor", varargs(0));
+        setDefault(res, thisClass(), "storeDotFile", VALUE_FALSE);
+        setDefault(res, thisClass(), "scaleFactor", VALUE_ZERO);
         setDefault(res, thisClass(), "fixedNeatoPosition", VALUE_FALSE);
         setDefault(res, thisClass(), outputFormatFieldNames, VALUE_FALSE);
         setDefault(res, thisClass(), "outputFormatPNG", VALUE_TRUE);
@@ -78,6 +80,9 @@ public class InGraphvizGeneral implements Copyable {
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
+
+    @FieldDefinition
+    public boolean storeDotFile = false;
 
     @FieldDefinition
     public double scaleFactor = 0;
@@ -116,6 +121,7 @@ public class InGraphvizGeneral implements Copyable {
 
     public InGraphvizGeneral newCopy(CopyCache cache) {
         InGraphvizGeneral copy = new InGraphvizGeneral();
+        copy.storeDotFile = storeDotFile;
         copy.fixedNeatoPosition = fixedNeatoPosition;
         copy.scaleFactor = scaleFactor;
         copy.outputFormatPNG = outputFormatPNG;
@@ -126,6 +132,14 @@ public class InGraphvizGeneral implements Copyable {
         copy.layoutAlgTWOPI = layoutAlgTWOPI;
         copy.layoutAlgCIRCO = layoutAlgCIRCO;
         return copy;
+    }
+
+    public void setStoreDotFile(boolean storeDotFile) {
+        this.storeDotFile = storeDotFile;
+    }
+
+    public boolean isStoreDotFile() {
+        return storeDotFile;
     }
 
     public void setFixedNeatoPosition(boolean fixedNeatoPosition) {

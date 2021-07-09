@@ -34,9 +34,6 @@ import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.util.scenarios.AbstractScenario;
 import de.unileipzig.irptools.graphviz.def.GraphvizColor;
-import de.unileipzig.irptools.graphviz.def.GraphvizGlobal;
-import de.unileipzig.irptools.graphviz.def.GraphvizLayoutAlgorithm;
-import de.unileipzig.irptools.graphviz.def.GraphvizOutputFormat;
 
 import java.awt.*;
 import java.time.temporal.ChronoUnit;
@@ -187,17 +184,6 @@ public class Demo1 extends AbstractScenario {
                 new InConsumerAgentGroupColor("G_color", G, gc2),
                 new InConsumerAgentGroupColor("PRA_color", PRA, gc3)
         });
-
-        GraphvizLayoutAlgorithm.DOT.useLayout = false;
-        GraphvizLayoutAlgorithm.FDP.useLayout = true;
-        GraphvizLayoutAlgorithm.CIRCO.useLayout = false;
-        root.layoutAlgorithms = GraphvizLayoutAlgorithm.DEFAULTS;
-        GraphvizOutputFormat.PNG.useFormat = true;
-        root.outputFormats = new GraphvizOutputFormat[] { GraphvizOutputFormat.PNG };
-
-        root.graphvizGlobal = new GraphvizGlobal();
-        root.graphvizGlobal.fixedNeatoPosition = false;
-        root.graphvizGlobal.scaleFactor = 0.0;
 
         return Collections.singletonList(root);
     }

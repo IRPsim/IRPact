@@ -46,7 +46,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.addPathElement;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz
@@ -194,6 +194,10 @@ public class InRootUI {
     }
 
     public static void applyRes(TreeAnnotationResource res) {
+        putClassPath(res, GraphvizColor.class, InRootUI.GRAPHVIZ_COLOR);
+        addEntry(res, GraphvizColor.class, "rgba");
+
+        //optact rest
         res.getCachedElement("OPTACT").setParent(res.getCachedElement(SUBMODULE.getLast()));
         res.getCachedElement("AgentGroup_Element").setParent(res.getCachedElement("OPTACT"));
     }
