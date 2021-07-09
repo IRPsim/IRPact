@@ -237,7 +237,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 about_irpact:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.4.0"
+  edn_description: "IRPact v0.4.1"
 InIRPactVersionPlaceholder_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"

@@ -8,6 +8,7 @@ import de.unileipzig.irpact.util.scenarios.Scenario;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -17,6 +18,16 @@ import java.util.stream.Stream;
  * @author Daniel Abitz
  */
 public interface SwaggerSuite {
+
+    int INVALID_ID = -1;
+
+    static boolean isInvalid(int id) {
+        return id == INVALID_ID;
+    }
+
+    static boolean isValid(int id) {
+        return id != INVALID_ID;
+    }
 
     //=========================
     //Scenarios
@@ -32,17 +43,25 @@ public interface SwaggerSuite {
                 return metaData.getId();
             }
         }
-        return -1;
+        return INVALID_ID;
     }
 
     default <S extends Scenario> void findAllIds(
-            Collection<? extends S> scenarios,
+            Iterable<? extends S> scenarios,
             BiPredicate<? super S, ? super ScenarioMetaData> filter,
             Map<S, Integer> out) {
         for(S scenario: scenarios) {
             int id = findId(scenario, filter);
             out.put(scenario, id);
         }
+    }
+
+    default <S extends Scenario> Map<S, Integer> findAllIds(
+            Iterable<? extends S> scenarios,
+            BiPredicate<? super S, ? super ScenarioMetaData> filter) {
+        Map<S, Integer> map = new HashMap<>();
+        findAllIds(scenarios, filter, map);
+        return map;
     }
 
     //==========
@@ -95,6 +114,11 @@ public interface SwaggerSuite {
         return changed;
     }
 
+    default boolean deleteAllScenarios(Predicate<? super ScenarioMetaData> filter) throws CurlException, IOException, InterruptedException {
+        int[] ids = streamMetaData().filter(filter).collect(ScenarioMetaData.toIdArray());
+        return deleteAllScenarios(ids);
+    }
+
     boolean overwriteScenario(int id, Scenario scenario) throws CurlException, IOException, InterruptedException;
 
     default boolean overwriteAllScenarios(Map<? extends Scenario, ? extends Integer> scenarios) throws CurlException, IOException, InterruptedException {
@@ -103,6 +127,29 @@ public interface SwaggerSuite {
             changed |= overwriteScenario(entry.getValue(), entry.getKey());
         }
         return changed;
+    }
+
+    default <S extends Scenario> boolean addIfAbsent(S scenario, BiPredicate<? super S, ? super ScenarioMetaData> filter) throws CurlException, IOException, InterruptedException {
+        int id = findId(scenario, filter);
+        if(isInvalid(id)) {
+            addScenario(scenario);
+            return true;
+        } else {
+            overwriteScenario(id, scenario);
+            return false;
+        }
+    }
+
+    default <S extends Scenario> void addIfAbsent(S[] scenarios, BiPredicate<? super S, ? super ScenarioMetaData> filter) throws CurlException, IOException, InterruptedException {
+        for(S scenario: scenarios) {
+            addIfAbsent(scenario, filter);
+        }
+    }
+
+    default <S extends Scenario> void addIfAbsent(Iterable<? extends S> scenarios, BiPredicate<? super S, ? super ScenarioMetaData> filter) throws CurlException, IOException, InterruptedException {
+        for(S scenario: scenarios) {
+            addIfAbsent(scenario, filter);
+        }
     }
 
     void commit() throws IOException, CurlException, InterruptedException;
@@ -123,7 +170,7 @@ public interface SwaggerSuite {
                 return state.getId();
             }
         }
-        return -1;
+        return INVALID_ID;
     }
 
     Stream<SimulationState> streamStates();
