@@ -74,6 +74,10 @@ public class KillSwitch implements Runnable {
         this.control = control;
     }
 
+    public LifeCycleControl getControl() {
+        return control;
+    }
+
     public long getCycles() {
         return cycles;
     }
@@ -144,6 +148,15 @@ public class KillSwitch implements Runnable {
         }
     }
 
+    protected void handleTimeout() {
+        LifeCycleControl control = getControl();
+        if(control != null) {
+            control.terminateTimeout();
+        } else {
+            LOGGER.warn("no life cycle control found");
+        }
+    }
+
     protected void cleanUpRun(long cycles) {
         LOGGER.trace("clean up (cycles={})", cycles);
         this.cycles = cycles;
@@ -174,12 +187,14 @@ public class KillSwitch implements Runnable {
         LOGGER.trace("start with {} {}.", timeout, unit);
         long cycles = 0L;
         boolean expired = false;
+        boolean finished = false;
         boolean interrupted = false;
-        while(KEEP_RUNNING.getAndSet(false) && !interrupted) {
+        while(KEEP_RUNNING.getAndSet(false) && !interrupted && !finished) {
             cycles++;
             LOCK.lock();
             try {
-                expired = !COND.await(timeout, unit);
+                finished = COND.await(timeout, unit);
+                expired = !finished;
             } catch (InterruptedException e) {
                 if(isAllowInterrupt()) {
                     interrupted = true;
@@ -193,7 +208,7 @@ public class KillSwitch implements Runnable {
         try {
             if(expired || interrupted) {
                 LOGGER.warn("{} - simulation will be terminated!", getInfo(expired, interrupted));
-                //control.terminateTimeout();
+                handleTimeout();
             } else {
                 LOGGER.trace("terminated");
             }
