@@ -62,6 +62,14 @@ public final class ParamUtil {
         return field -> buildDefaultParameterName(c, field);
     }
 
+    public static String buildDefaultScalarName(Class<?> c, String field) {
+        return Constants.SCA + getClassNameWithoutClassSuffix(c) + "_" + field;
+    }
+
+    public static UnaryOperator<String> buildDefaultScalarNameOperator(Class<?> c) {
+        return field -> buildDefaultScalarName(c, field);
+    }
+
     public static Object[] varargs(Object singleton) {
         return new Object[]{singleton};
     }
@@ -266,6 +274,14 @@ public final class ParamUtil {
         builder.putCache(dataKey);
     }
 
+    public static void addPathElement(TreeAnnotationResource res, EdnPath path, String priorityKeyForLastElement) {
+        addPathElement(res, path.getLast(), priorityKeyForLastElement);
+    }
+
+    public static void addPathElement(TreeAnnotationResource res, EdnPath path) {
+        addPathElement(res, path.getLast(), path.getSecondToLast());
+    }
+
     public static TreeAnnotationResource.EntryBuilder computeEntryBuilderIfAbsent(TreeAnnotationResource res, Class<?> c) {
         TreeAnnotationResource.Entry entry = res.getEntry(c);
         if(entry == null) {
@@ -415,6 +431,10 @@ public final class ParamUtil {
 
     public static void putClassPath(TreeAnnotationResource res, Class<?> c, String... keys) {
         res.putPath(c, res.getCachedElements(keys));
+    }
+
+    public static void putClassPath(TreeAnnotationResource res, Class<?> c, EdnPath path) {
+        putClassPath(res, c, path.toArrayWithoutRoot());
     }
 
     public static void putFieldPath(TreeAnnotationResource res, Class<?> c, String field, String... keys) {

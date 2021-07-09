@@ -27,6 +27,22 @@ public final class RunFully implements IRPactExecutor {
 
     @Override
     public void execute(IRPact irpact) throws Exception {
+        if(irpact == null) {
+            throw new NullPointerException("IRPact instance is null");
+        }
+
+        try {
+            execute0(irpact);
+        } catch (Exception e) {
+            if(irpact.shouldCreateDummyOutputWithErrorMessage()) {
+                irpact.postSimulationWithDummyOutputAndErrorMessage(e);
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    protected void execute0(IRPact irpact) throws Exception {
         LOGGER.info(IRPSection.GENERAL, "execute IRPact fully");
 
         irpact.notifyStart();
@@ -54,7 +70,7 @@ public final class RunFully implements IRPactExecutor {
         irpact.preparePlatform();
         irpact.setupTimeModel();
         irpact.createJadexAgents();
-        
+
         if(irpact.secureWaitForCreationFailed()) {
             return;
         }

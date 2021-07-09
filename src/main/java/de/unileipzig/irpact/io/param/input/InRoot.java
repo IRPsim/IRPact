@@ -4,9 +4,7 @@ import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
-import de.unileipzig.irpact.io.param.SimpleCopyCache;
-import de.unileipzig.irpact.io.param.IOResources;
-import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.io.param.*;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
@@ -164,7 +162,7 @@ public class InRoot implements RootClass {
     }
 
     @FieldDefinition
-    public InIRPactVersionPlaceholder[] aboutPlaceholders = new InIRPactVersionPlaceholder[0];
+    public InIRPactVersion[] aboutPlaceholders = new InIRPactVersion[0];
 
     @FieldDefinition
     public InInformation[] informations = new InInformation[0];
@@ -765,7 +763,7 @@ public class InRoot implements RootClass {
 
             InGeneral.class,
             InInformation.class,
-            InIRPactVersionPlaceholder.class,
+            InIRPactVersion.class,
             InScenarioVersion.class,
             InTestData.class
     );

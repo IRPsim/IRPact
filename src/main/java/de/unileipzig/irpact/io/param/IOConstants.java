@@ -59,6 +59,7 @@ public final class IOConstants {
     public static final String TIME = "time";
 
     public static final String GRAPHVIZ = "graphviz";
+    public static final String GRAPHVIZ_GENERAL = "graphviz_general";
     public static final String GRAPHVIZ_AGENT_COLOR_MAPPING = "graphviz_agent_color_mapping";
 
     public static final String SUBMODULE = "submodule";

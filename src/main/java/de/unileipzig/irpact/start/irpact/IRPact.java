@@ -24,6 +24,7 @@ import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.core.util.result.ResultManager;
 import de.unileipzig.irpact.core.util.result.adoptions.AdoptionResultInfo;
 import de.unileipzig.irpact.core.util.result.adoptions.AnnualCumulativeAdoptionsForOutput;
+import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.*;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
@@ -595,6 +596,10 @@ public final class IRPact implements IRPActAccess {
         LOGGER.info(IRPSection.GENERAL, "simulation terminated");
     }
 
+    public boolean shouldCreateDummyOutputWithErrorMessage() {
+        return inRoot != null && inRoot.getGeneral().shouldPassErrorMessageToOutput();
+    }
+
     public void postSimulation() throws Exception {
         LOGGER.info(IRPSection.GENERAL, "start post-simulation");
         createNetworkAfterSimulation();
@@ -609,6 +614,11 @@ public final class IRPact implements IRPActAccess {
         createDummyOutput(dummyName);
         callCallbacks();
         finalTask();
+    }
+
+    public void postSimulationWithDummyOutputAndErrorMessage(Exception e) {
+        LOGGER.info(IRPSection.GENERAL, "start post-simulation with error ({})", e.getMessage());
+        Dev.throwException();
     }
 
     private void createDummyOutput(String dummyName) {
@@ -724,7 +734,7 @@ public final class IRPact implements IRPActAccess {
 
     private void copyLogIfPossible() {
         try {
-            if(CL_OPTIONS.logToFile() && inRoot.getGeneral().copyLogIfPossible()) {
+            if(CL_OPTIONS.logToFile() && inRoot.getGeneral().doCopyLogIfPossible()) {
                 Path logFile = CL_OPTIONS.getLogPath();
                 Path copyTarget = CL_OPTIONS.getCreatedDownloadDir().resolve(logFile.getFileName() + ".copy");
                 Files.copy(logFile, copyTarget, StandardCopyOption.REPLACE_EXISTING);

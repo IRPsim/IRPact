@@ -47,12 +47,20 @@ public final class JsonUtil {
         Path temp = null;
         try {
             temp = Files.createTempFile(dir, "", "");
-            JsonNode node = readJson(input, charset);
-            writeJson(node, temp, charset, printer);
+            applyPrettyPrinter(input, charset, printer, temp);
             Files.move(temp, input, StandardCopyOption.REPLACE_EXISTING);
         } finally {
             FileUtil.deleteIfExists(temp);
         }
+    }
+
+    public static void applyPrettyPrinter(Path input, PrettyPrinter printer, Path output) throws IOException {
+        applyPrettyPrinter(input, StandardCharsets.UTF_8, printer, output);
+    }
+
+    public static void applyPrettyPrinter(Path input, Charset charset, PrettyPrinter printer, Path output) throws IOException {
+        JsonNode node = readJson(input, charset);
+        writeJson(node, output, charset, printer);
     }
 
     public static String toMinimalString(JsonNode node) {

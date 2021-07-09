@@ -46,7 +46,7 @@ public class InGeneral implements Copyable {
 
     protected static final String[] timeUnitFieldNames = {"timeoutUseMs", "timeoutUseSec", "timeoutUseMin"};
     protected static final XorWithoutUnselectRuleBuilder timeUnitBuilder = new XorWithoutUnselectRuleBuilder()
-            .withKeyModifier(buildDefaultParameterNameOperator(thisClass()))
+            .withKeyModifier(buildDefaultScalarNameOperator(thisClass()))
             .withTrueValue(Constants.TRUE1)
             .withFalseValue(Constants.FALSE0)
             .withKeys(timeUnitFieldNames);
@@ -104,6 +104,7 @@ public class InGeneral implements Copyable {
         putFieldPathAndAddEntry(res, thisClass(), "runMode", GENERAL_SETTINGS, SPECIAL_SETTINGS);
         putFieldPathAndAddEntry(res, thisClass(), "scenarioMode", GENERAL_SETTINGS, SPECIAL_SETTINGS);
         putFieldPathAndAddEntry(res, thisClass(), "copyLogIfPossible", GENERAL_SETTINGS, SPECIAL_SETTINGS);
+        putFieldPathAndAddEntry(res, thisClass(), "passErrorMessageToOutput", GENERAL_SETTINGS, SPECIAL_SETTINGS);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -241,11 +242,20 @@ public class InGeneral implements Copyable {
     public int scenarioMode = -1;
 
     @FieldDefinition
+    public boolean passErrorMessageToOutput = false;
+    public void setPassErrorMessageToOutput(boolean passErrorMessageToOutput) {
+        this.passErrorMessageToOutput = passErrorMessageToOutput;
+    }
+    public boolean shouldPassErrorMessageToOutput() {
+        return passErrorMessageToOutput;
+    }
+
+    @FieldDefinition
     public boolean copyLogIfPossible = false;
     public void setCopyLogIfPossible(boolean copyLogIfPossible) {
         this.copyLogIfPossible = copyLogIfPossible;
     }
-    public boolean copyLogIfPossible() {
+    public boolean doCopyLogIfPossible() {
         return copyLogIfPossible;
     }
 

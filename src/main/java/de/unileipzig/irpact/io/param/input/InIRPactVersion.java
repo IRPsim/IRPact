@@ -14,7 +14,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
  * @author Daniel Abitz
  */
 @Definition
-public class InIRPactVersionPlaceholder implements InIRPactEntity {
+public class InIRPactVersion implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -36,7 +36,7 @@ public class InIRPactVersionPlaceholder implements InIRPactEntity {
     @FieldDefinition
     public int placeholder;
 
-    public InIRPactVersionPlaceholder() {
+    public InIRPactVersion() {
     }
 
     @Override
@@ -45,12 +45,12 @@ public class InIRPactVersionPlaceholder implements InIRPactEntity {
     }
 
     @Override
-    public InIRPactVersionPlaceholder copy(CopyCache cache) {
+    public InIRPactVersion copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InIRPactVersionPlaceholder newCopy(CopyCache cache) {
-        InIRPactVersionPlaceholder copy = new InIRPactVersionPlaceholder();
+    public InIRPactVersion newCopy(CopyCache cache) {
+        InIRPactVersion copy = new InIRPactVersion();
         copy._name = _name;
         return copy;
     }
