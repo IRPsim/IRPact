@@ -1,9 +1,0 @@
-[
-  {
-    :label "Ergebnis - Produktadaptionen" 
-    :icon "fa fa-map-marker" 
-    :description "Gibt die Anzahl der Adaptionen fuer die Agentengruppe in diesem Jahr an."
-    :set "set_AgentGroup"
-    :tags [["table"]]
-  }
-]

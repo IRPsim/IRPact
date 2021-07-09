@@ -11,8 +11,16 @@ InGeneral_seed:
   gams_description: "Setzt den Seed für den Zufallsgenerator der Simulation. Falls er auf -1 gesetzt wird, wird ein zufälliger Seed generiert."
 InGeneral_timeout:
   gams_identifier: "Timeout"
-  gams_description: "Setzt den Timeout der Simulation in Millisekunden. Diese Einstellung dient dazu die Simulation zu beenden, falls sie unerwartet abstürzt. Im Laufe der Simulation wird der Timeout unentwegt zurück gesetzt. Sollte es zu einem unerwarteten Fehler kommen und die Rücksetzung ausbleiben, wird die Simulation abgebrochen und beendet. Werte kleiner 1 deaktivieren den Timeout vollständig."
-  gams_unit: "[ms]"
+  gams_description: "Setzt den Timeout der Simulation. Diese Einstellung dient dazu die Simulation zu beenden, falls sie unerwartet abstürzt. Wird der Timeout auf 0 gesetzt, wird die Funktion deaktiviert. Es wird empfohlen den Standardwert eingestellt zu lassen."
+InGeneral_timeoutUseMs:
+  gams_identifier: "Timeout in Millisekunden"
+  gams_description: "Die Länge des Timeouts wird in Millisekunden angegeben."
+InGeneral_timeoutUseSec:
+  gams_identifier: "Timeout in Sekunden"
+  gams_description: "Die Länge des Timeouts wird in Sekunden angegeben."
+InGeneral_timeoutUseMin:
+  gams_identifier: "Timeout in Minuten"
+  gams_description: "Die Länge des Timeouts wird in Minuten angegeben."
 InGeneral_lastSimulationYear:
   gams_identifier: "[Spezialoption] Letzte zu simulierende Jahr"
   gams_description: "([Wichtig] Diese Option darf nur bei puren IRPact-Aufrufen (keine Modellkopplungen) genutzt werden, da sonst die Zeitkonsistenz verletzt wird!) Setzt das letzte zu simulierende Jahr der Simulation. Es wird dabei immer mindestens ein Jahr simuliert. Sollte der Wert also kleiner sein als das Ausgangsjahr, so wird dennoch das Ausgangsjahr simuliert. Beispiel: Ist das Ausgangsjahr = 2010 und letzte Simulationsjahr = 2013, dann werden die Jahre 2010, 2011, 2012 und 2013 simuliert."
@@ -226,9 +234,10 @@ informations:
   edn_label: "Informationen"
   edn_description: "Informationen über IRPact und das Szenario"
 
+#dran denken: Version auch in IRPact.json aendern
 about_irpact:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.3.2"
+  edn_description: "IRPact v0.4.1"
 InIRPactVersionPlaceholder_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -1065,11 +1074,17 @@ InSpace2D_useManhatten:
 InSpace2D_useEuclid:
   gams_identifier: "Euklidische Metrik"
   gams_description: "Nutzt die euklidische Metrik für die Berechnung der Abstände."
+InSpace2D_useEuclid2:
+  gams_identifier: "Euklidische Metrik (quadratisch)"
+  gams_description: "Nutzt die quadratische euklidische Metrik für die Berechnung der Abstände. Im Vergleich zur normalen euklidischen Distanz sqrt((x2 - x1)^2 * (y2 - y1)^2) wird hier die Wurzel weggelassen und der Abstand mittels (x2 - x1)^2 * (y2 - y1)^2 berechnet."
 InSpace2D_useMaximum:
   gams_identifier: "Maximumsmetrik"
   gams_description: "Nutzt die Maximumsmetrik für die Berechnung der Abstände."
-InSpace2D_useHaversine:
-  gams_identifier: "Haversine (km)"
+InSpace2D_useHaversineM:
+  gams_identifier: "Haversine (Meter)"
+  gams_description: "Nutzt die Haversine-Formel für die Berechnung der Entfernungen. Die Berechnungen finden auf Meterbasis statt."
+InSpace2D_useHaversineKM:
+  gams_identifier: "Haversine (Kilometer)"
   gams_description: "Nutzt die Haversine-Formel für die Berechnung der Entfernungen. Die Berechnungen finden auf Kilometerbasis statt."
 
 spatial_model_dist:

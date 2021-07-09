@@ -29,7 +29,7 @@ import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuZipSupplier;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.util.scenarios.AbstractScenario;
@@ -66,7 +66,7 @@ public class Demo1 extends AbstractScenario {
 
         InDiracUnivariateDistribution diraq0 = new InDiracUnivariateDistribution("dirac0", 0);
 
-        InFileBasedPVactMilieuZipSupplier spatialDist = new InFileBasedPVactMilieuZipSupplier();
+        InFileBasedPVactMilieuSupplier spatialDist = new InFileBasedPVactMilieuSupplier();
         spatialDist.setName("SpaDis");
         spatialDist.setFile(tableFile);
 

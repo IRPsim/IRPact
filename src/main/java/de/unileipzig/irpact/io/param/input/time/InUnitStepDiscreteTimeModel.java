@@ -58,6 +58,7 @@ public class InUnitStepDiscreteTimeModel implements InTimeModel {
         setDomain(res, thisClass(), "amountOfTime", G0_DOMAIN);
 
         setDefault(res, thisClass(), "amountOfTime", varargs(1));
+        setDefault(res, thisClass(), new String[]{"useMs", "useSec", "useMin", "useH", "useD", "useM"}, VALUE_FALSE);
         setDefault(res, thisClass(), "useW", VALUE_TRUE);
 
         setRules(res, thisClass(), timeUnitFieldNames, timeUnitBuilder);

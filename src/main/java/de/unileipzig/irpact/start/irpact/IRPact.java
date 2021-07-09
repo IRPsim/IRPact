@@ -74,8 +74,8 @@ public final class IRPact implements IRPActAccess {
 
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "0";
-    private static final String MINOR_STRING = "3";
-    private static final String BUILD_STRING = "2";
+    private static final String MINOR_STRING = "4";
+    private static final String BUILD_STRING = "1";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -724,9 +724,9 @@ public final class IRPact implements IRPActAccess {
 
     private void copyLogIfPossible() {
         try {
-            if(CL_OPTIONS.logToFile() && inRoot.getGeneral().isCopyLogIfPossible()) {
+            if(CL_OPTIONS.logToFile() && inRoot.getGeneral().copyLogIfPossible()) {
                 Path logFile = CL_OPTIONS.getLogPath();
-                Path copyTarget = CL_OPTIONS.getDownloadDir().resolve(logFile.getFileName() + ".copy");
+                Path copyTarget = CL_OPTIONS.getCreatedDownloadDir().resolve(logFile.getFileName() + ".copy");
                 Files.copy(logFile, copyTarget, StandardCopyOption.REPLACE_EXISTING);
             }
         } catch (IOException e) {

@@ -13,12 +13,12 @@ sourceCompatibility = 1.8
 repositories {
     //geotools als erstes, sonst werden libs nicht gefunden...
     maven { url "https://repo.osgeo.org/repository/release/" }
-    maven { url "http://download.java.net/maven/2" }
+    //maven { url "https://download.java.net/maven/2" }
 
-    maven { url "https://nexus.actoron.com/content/repositories/oss-nightlies" }
+    //maven { url "https://nexus.actoron.com/content/repositories/oss-nightlies" }
 
     mavenCentral()
-    jcenter()
+    //jcenter()
 }
 
 test {
@@ -68,21 +68,22 @@ idea {
 //==================================================
 
 ext {
-    junitJupiterVersion = '5.4.2'
-    jacksonVersion = '2.10.2'
-    jadexDistVersion = '4.0.187' //'4.0.171'
+    junitJupiterVersion = '5.7.2'
+    jacksonVersion = '2.12.2'
+    jadexDistVersion = '4.0.241' //'4.0.187'
     logbackVersion = '1.2.3'
     apachePoiVersion = '5.0.0'
+    geotoolsVersion = '25.1'
 }
 
 dependencies {
     testCompileOnly "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
-    testCompileOnly "org.apiguardian:apiguardian-api:1.0.0"
+    //testCompileOnly "org.apiguardian:apiguardian-api:1.0.0"
     toymodelCompileOnly "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
-    toymodelCompileOnly "org.apiguardian:apiguardian-api:1.0.0"
+    //toymodelCompileOnly "org.apiguardian:apiguardian-api:1.0.0"
     runtimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
-    runtimeOnly "org.junit.vintage:junit-vintage-engine:$junitJupiterVersion"
-    runtimeOnly "org.junit.platform:junit-platform-launcher:1.4.2"
+    //runtimeOnly "org.junit.vintage:junit-vintage-engine:$junitJupiterVersion"
+    //runtimeOnly "org.junit.platform:junit-platform-launcher:1.4.2"
 
     //implementation "org.activecomponents.jadex:jadex-distribution-standard:$jadexDistVersion"
     implementation "org.activecomponents.jadex:jadex-distribution-minimal:$jadexDistVersion"
@@ -94,15 +95,15 @@ dependencies {
     implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion"
     implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-smile:$jacksonVersion"
 
-    implementation "info.picocli:picocli:4.2.0"
+    implementation "info.picocli:picocli:4.6.1"
 
-    implementation "org.slf4j:slf4j-api:1.7.30"
+    implementation "org.slf4j:slf4j-api:1.7.31"
 
     implementation "ch.qos.logback:logback-classic:$logbackVersion"
     implementation "ch.qos.logback:logback-core:$logbackVersion"
 
-    implementation "org.geotools:gt-shapefile:23.2"
-    implementation "org.geotools:gt-epsg-hsql:23.2"
+    implementation "org.geotools:gt-shapefile:$geotoolsVersion"
+    implementation "org.geotools:gt-epsg-hsql:$geotoolsVersion"
 
     implementation "us.bpsm:edn-java:0.6.0"
 
@@ -126,23 +127,52 @@ dependencies {
 //jar
 //==================================================
 
-task buildUberJar(type: Jar) {
-    archiveClassifier.set('uber')
+//deprecated gradle 6.0 - wird spaeter entfernt
+//task buildUberJar(type: Jar) {
+//    archiveClassifier.set('uber')
+//    manifest {
+//        attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
+//    }
+//    from {
+//        configurations.runtimeClasspath.collect {
+//            it.isDirectory() ? it : zipTree(it)
+//        }
+//    } with jar
+//    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+//}
+
+tasks.register('buildUberJar', Jar) {
+    group = 'build'
+    archiveClassifier = 'uber'
+    from sourceSets.main.output
+    dependsOn configurations.runtimeClasspath
     manifest {
-        attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
+        attributes('Main-class': 'de.unileipzig.irpact.start.Start')
     }
     from {
         configurations.runtimeClasspath.collect {
             it.isDirectory() ? it : zipTree(it)
         }
     } with jar
+    duplicatesStrategy = 'include'
     exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
 }
 
-task buildStandardJar(type: Jar) {
+//deprecated gradle 6.0 - wird spaeter entfernt
+//task buildStandardJar(type: Jar) {
+//    from sourceSets.main.output
+//    manifest {
+//        attributes('Main-class': 'de.unileipzig.irpact.start.Start')
+//    }
+//}
+
+tasks.register('buildStandardJar', Jar) {
+//task buildStandardJar(type: Jar) {
+    group = 'build'
     from sourceSets.main.output
+    dependsOn configurations.runtimeClasspath
     manifest {
-        attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
+        attributes('Main-class': 'de.unileipzig.irpact.start.Start')
     }
 }
 

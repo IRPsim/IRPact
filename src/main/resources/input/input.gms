@@ -799,6 +799,7 @@ PARAMETER par_link_InFreeNetworkTopology_InNumberOfTies_numberOfTies(set_InFreeN
 PARAMETER par_link_InFreeNetworkTopology_InAffinities_affinities(set_InFreeNetworkTopology,set_InAffinities)
 
 * - description: Legt das initiale Gewicht der Kanten fest.
+* - hidden: 1
 * - identifier: Initiales Kantengewicht
 * - type: Float
 PARAMETER par_InFreeNetworkTopology_initialWeight(set_InFreeNetworkTopology)
@@ -1281,14 +1282,6 @@ SET set_InFileBasedPVactMilieuSupplier(set_InSpatialDistributionWithCollection,s
 * - type: Boolean
 PARAMETER par_link_InFileBasedPVactMilieuSupplier_InSpatialTableFile_file(set_InFileBasedPVactMilieuSupplier,set_InSpatialTableFile)
 
-* - identifier: InFileBasedPVactMilieuZipSupplier
-* - type: String
-SET set_InFileBasedPVactMilieuZipSupplier(set_InSpatialDistributionWithCollection,set_InSpatialDistribution)
-
-* - identifier: file
-* - type: Boolean
-PARAMETER par_link_InFileBasedPVactMilieuZipSupplier_InSpatialTableFile_file(set_InFileBasedPVactMilieuZipSupplier,set_InSpatialTableFile)
-
 * - identifier: InFileBasedSelectGroupSpatialInformationSupplier
 * - type: String
 SET set_InFileBasedSelectGroupSpatialInformationSupplier(set_InSpatialDistributionWithCollection,set_InSpatialDistribution)
@@ -1387,26 +1380,107 @@ SET set_InSpatialDistributionWithCollection(set_InSpatialDistribution)
 * - type: String
 SET set_InSpace2D(set_InSpatialModel)
 
+* - default: 0
 * - description: Nutzt die Manhattenmetrik für die Berechnung der Abstände.
 * - identifier: Manhattenmetrik
+* - rule: IF (par_InSpace2D_useManhatten == 1, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 1, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 1, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 1, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 1, par_InSpace2D_useHaversineKM = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useManhatten = 1)
+* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useHaversineKM = 0)
 * - type: Boolean
 PARAMETER par_InSpace2D_useManhatten(set_InSpace2D)
 
+* - default: 0
 * - description: Nutzt die euklidische Metrik für die Berechnung der Abstände.
 * - identifier: Euklidische Metrik
+* - rule: IF (par_InSpace2D_useEuclid == 1, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 1, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 1, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 1, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 1, par_InSpace2D_useHaversineKM = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useEuclid = 1)
+* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useHaversineKM = 0)
 * - type: Boolean
 PARAMETER par_InSpace2D_useEuclid(set_InSpace2D)
 
+* - default: 0
+* - description: Nutzt die quadratische euklidische Metrik für die Berechnung der Abstände. Im Vergleich zur normalen euklidischen Distanz sqrt((x2 - x1)^2 * (y2 - y1)^2) wird hier die Wurzel weggelassen und der Abstand mittels (x2 - x1)^2 * (y2 - y1)^2 berechnet.
+* - identifier: Euklidische Metrik (quadratisch)
+* - rule: IF (par_InSpace2D_useEuclid2 == 1, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 1, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 1, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 1, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 1, par_InSpace2D_useHaversineKM = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useEuclid2 = 1)
+* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useHaversineKM = 0)
+* - type: Boolean
+PARAMETER par_InSpace2D_useEuclid2(set_InSpace2D)
+
+* - default: 0
 * - description: Nutzt die Maximumsmetrik für die Berechnung der Abstände.
 * - identifier: Maximumsmetrik
+* - rule: IF (par_InSpace2D_useMaximum == 1, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 1, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 1, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 1, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 1, par_InSpace2D_useHaversineKM = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useMaximum = 1)
+* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useHaversineKM = 0)
 * - type: Boolean
 PARAMETER par_InSpace2D_useMaximum(set_InSpace2D)
 
+* - default: 0
+* - description: Nutzt die Haversine-Formel für die Berechnung der Entfernungen. Die Berechnungen finden auf Meterbasis statt.
+* - identifier: Haversine (Meter)
+* - rule: IF (par_InSpace2D_useHaversineM == 1, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 1, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 1, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 1, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 1, par_InSpace2D_useHaversineKM = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useHaversineM = 1)
+* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useHaversineKM = 0)
+* - type: Boolean
+PARAMETER par_InSpace2D_useHaversineM(set_InSpace2D)
+
 * - default: 1
 * - description: Nutzt die Haversine-Formel für die Berechnung der Entfernungen. Die Berechnungen finden auf Kilometerbasis statt.
-* - identifier: Haversine (km)
+* - identifier: Haversine (Kilometer)
+* - rule: IF (par_InSpace2D_useHaversineKM == 1, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 1, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 1, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 1, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 1, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useHaversineKM = 1)
 * - type: Boolean
-PARAMETER par_InSpace2D_useHaversine(set_InSpace2D)
+PARAMETER par_InSpace2D_useHaversineKM(set_InSpace2D)
 
 * - identifier: InSpatialModel
 * - hidden: 1
@@ -1429,6 +1503,7 @@ SET set_InUnitStepDiscreteTimeModel(set_InTimeModel)
 * - type: Integer
 PARAMETER par_InUnitStepDiscreteTimeModel_amountOfTime(set_InUnitStepDiscreteTimeModel)
 
+* - default: 0
 * - description: Verwendet Millisekunden als Einheit für die Zeitdauer.
 * - identifier: Millisekunden
 * - rule: IF (par_InUnitStepDiscreteTimeModel_useMs == 1, par_InUnitStepDiscreteTimeModel_useSec = 0)
@@ -1447,6 +1522,7 @@ PARAMETER par_InUnitStepDiscreteTimeModel_amountOfTime(set_InUnitStepDiscreteTim
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useMs(set_InUnitStepDiscreteTimeModel)
 
+* - default: 0
 * - description: Verwendet Sekunden als Einheit für die Zeitdauer.
 * - identifier: Sekunden
 * - rule: IF (par_InUnitStepDiscreteTimeModel_useSec == 1, par_InUnitStepDiscreteTimeModel_useMs = 0)
@@ -1465,6 +1541,7 @@ PARAMETER par_InUnitStepDiscreteTimeModel_useMs(set_InUnitStepDiscreteTimeModel)
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useSec(set_InUnitStepDiscreteTimeModel)
 
+* - default: 0
 * - description: Verwendet Minuten als Einheit für die Zeitdauer.
 * - identifier: Minuten
 * - rule: IF (par_InUnitStepDiscreteTimeModel_useMin == 1, par_InUnitStepDiscreteTimeModel_useMs = 0)
@@ -1483,6 +1560,7 @@ PARAMETER par_InUnitStepDiscreteTimeModel_useSec(set_InUnitStepDiscreteTimeModel
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useMin(set_InUnitStepDiscreteTimeModel)
 
+* - default: 0
 * - description: Verwendet Stunden als Einheit für die Zeitdauer.
 * - identifier: Stunden
 * - rule: IF (par_InUnitStepDiscreteTimeModel_useH == 1, par_InUnitStepDiscreteTimeModel_useMs = 0)
@@ -1501,6 +1579,7 @@ PARAMETER par_InUnitStepDiscreteTimeModel_useMin(set_InUnitStepDiscreteTimeModel
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useH(set_InUnitStepDiscreteTimeModel)
 
+* - default: 0
 * - description: Verwendet Tage als Einheit für die Zeitdauer.
 * - identifier: Tage
 * - rule: IF (par_InUnitStepDiscreteTimeModel_useD == 1, par_InUnitStepDiscreteTimeModel_useMs = 0)
@@ -1538,6 +1617,7 @@ PARAMETER par_InUnitStepDiscreteTimeModel_useD(set_InUnitStepDiscreteTimeModel)
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useW(set_InUnitStepDiscreteTimeModel)
 
+* - default: 0
 * - description: Verwendet Monate als Einheit für die Zeitdauer.
 * - identifier: Monate
 * - rule: IF (par_InUnitStepDiscreteTimeModel_useM == 1, par_InUnitStepDiscreteTimeModel_useMs = 0)
@@ -1556,16 +1636,50 @@ PARAMETER par_InUnitStepDiscreteTimeModel_useW(set_InUnitStepDiscreteTimeModel)
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useM(set_InUnitStepDiscreteTimeModel)
 
+* - default: 42
 * - description: Setzt den Seed für den Zufallsgenerator der Simulation. Falls er auf -1 gesetzt wird, wird ein zufälliger Seed generiert.
 * - identifier: Zufallsgenerator (seed)
 * - type: Integer
 SCALAR sca_InGeneral_seed
 
-* - description: Setzt den Timeout der Simulation in Millisekunden. Diese Einstellung dient dazu die Simulation zu beenden, falls sie unerwartet abstürzt. Im Laufe der Simulation wird der Timeout unentwegt zurück gesetzt. Sollte es zu einem unerwarteten Fehler kommen und die Rücksetzung ausbleiben, wird die Simulation abgebrochen und beendet. Werte kleiner 1 deaktivieren den Timeout vollständig.
+* - default: 1
+* - description: Setzt den Timeout der Simulation. Diese Einstellung dient dazu die Simulation zu beenden, falls sie unerwartet abstürzt. Wird der Timeout auf 0 gesetzt, wird die Funktion deaktiviert. Es wird empfohlen den Standardwert eingestellt zu lassen.
 * - identifier: Timeout
-* - unit: [ms]
 * - type: Integer
 SCALAR sca_InGeneral_timeout
+
+* - default: 0
+* - description: Die Länge des Timeouts wird in Millisekunden angegeben.
+* - identifier: Timeout in Millisekunden
+* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseSec = 0)
+* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseMin = 0)
+* - rule: IF (par_InGeneral_timeoutUseMs == 0, par_InGeneral_timeoutUseMs = 1)
+* - rule: IF (par_InGeneral_timeoutUseMs == 0, par_InGeneral_timeoutUseSec = 0)
+* - rule: IF (par_InGeneral_timeoutUseMs == 0, par_InGeneral_timeoutUseMin = 0)
+* - type: Boolean
+SCALAR sca_InGeneral_timeoutUseMs
+
+* - default: 0
+* - description: Die Länge des Timeouts wird in Sekunden angegeben.
+* - identifier: Timeout in Sekunden
+* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseMs = 0)
+* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseMin = 0)
+* - rule: IF (par_InGeneral_timeoutUseSec == 0, par_InGeneral_timeoutUseMs = 0)
+* - rule: IF (par_InGeneral_timeoutUseSec == 0, par_InGeneral_timeoutUseSec = 1)
+* - rule: IF (par_InGeneral_timeoutUseSec == 0, par_InGeneral_timeoutUseMin = 0)
+* - type: Boolean
+SCALAR sca_InGeneral_timeoutUseSec
+
+* - default: 1
+* - description: Die Länge des Timeouts wird in Minuten angegeben.
+* - identifier: Timeout in Minuten
+* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseMs = 0)
+* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseSec = 0)
+* - rule: IF (par_InGeneral_timeoutUseMin == 0, par_InGeneral_timeoutUseMs = 0)
+* - rule: IF (par_InGeneral_timeoutUseMin == 0, par_InGeneral_timeoutUseSec = 0)
+* - rule: IF (par_InGeneral_timeoutUseMin == 0, par_InGeneral_timeoutUseMin = 1)
+* - type: Boolean
+SCALAR sca_InGeneral_timeoutUseMin
 
 * - description: ([Wichtig] Diese Option darf nur bei puren IRPact-Aufrufen (keine Modellkopplungen) genutzt werden, da sonst die Zeitkonsistenz verletzt wird!) Setzt das letzte zu simulierende Jahr der Simulation. Es wird dabei immer mindestens ein Jahr simuliert. Sollte der Wert also kleiner sein als das Ausgangsjahr, so wird dennoch das Ausgangsjahr simuliert. Beispiel: Ist das Ausgangsjahr = 2010 und letzte Simulationsjahr = 2013, dann werden die Jahre 2010, 2011, 2012 und 2013 simuliert.
 * - identifier: [Spezialoption] Letzte zu simulierende Jahr

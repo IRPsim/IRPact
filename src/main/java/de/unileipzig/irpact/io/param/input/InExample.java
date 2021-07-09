@@ -28,7 +28,7 @@ import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistance
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
-import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuZipSupplier;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedSpatialInformationSupplier;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
@@ -114,7 +114,7 @@ public class InExample implements DefaultScenarioFactory {
         processModel.setSpeedOfConvergence(0.0);
 
         InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210322");
-        InFileBasedPVactMilieuZipSupplier spaDist = new InFileBasedPVactMilieuZipSupplier();
+        InFileBasedPVactMilieuSupplier spaDist = new InFileBasedPVactMilieuSupplier();
         spaDist.setName("testdist");
         spaDist.setFile(tableFile);
         cag0.setSpatialDistribution(spaDist);

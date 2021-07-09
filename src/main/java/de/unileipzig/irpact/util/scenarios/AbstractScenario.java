@@ -24,6 +24,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
@@ -50,6 +51,7 @@ public abstract class AbstractScenario implements Scenario {
 
     protected int simulationDelta = 1;
     protected Consumer<? super InGeneral> generalSetup;
+    protected Consumer<? super List<InRoot>> postsetupTask;
 
     public AbstractScenario() {
         this(null, null, null);
@@ -74,6 +76,13 @@ public abstract class AbstractScenario implements Scenario {
 
     public abstract List<InRoot> createInRoots();
 
+    protected List<InRoot> createSetupAndValidateRoots() {
+        List<InRoot> roots = createInRoots();
+        postsetupRoot(roots);
+        validate(roots);
+        return roots;
+    }
+
     //=========================
     //for running
     //=========================
@@ -85,8 +94,7 @@ public abstract class AbstractScenario implements Scenario {
     public void run() throws Throwable {
         IRPArgs args = new IRPArgs();
         updateArgs(args);
-        List<InRoot> roots = createInRoots();
-        validate(roots);
+        List<InRoot> roots = createSetupAndValidateRoots();
         PerennialData<InRoot> data = new PerennialData<>();
         for(InRoot root: roots) {
             if(root == null) {
@@ -101,7 +109,7 @@ public abstract class AbstractScenario implements Scenario {
     public void runLegacy() throws Throwable {
         IRPArgs args = new IRPArgs();
         updateArgs(args);
-        List<InRoot> roots = createInRoots();
+        List<InRoot> roots = createSetupAndValidateRoots();
         if(roots.size() != 1) {
             throw new IllegalArgumentException("legacy does not supports multiple years");
         }
@@ -122,7 +130,7 @@ public abstract class AbstractScenario implements Scenario {
     //=========================
 
     public void setSimulationDelta(int simulationDelta) {
-        this.simulationDelta = Math.max(0, Math.min(1, simulationDelta));
+        this.simulationDelta = simulationDelta;
     }
 
     public int getSimulationDelta() {
@@ -226,6 +234,20 @@ public abstract class AbstractScenario implements Scenario {
         }
     }
 
+    private void postsetupRoot(List<InRoot> inRoots) {
+        if(postsetupTask != null) {
+            postsetupTask.accept(inRoots);
+        }
+    }
+
+    public void setPostsetupTask(Consumer<? super List<InRoot>> postsetupTask) {
+        this.postsetupTask = postsetupTask;
+    }
+
+    public Consumer<? super List<InRoot>> getPostsetupTask() {
+        return postsetupTask;
+    }
+
     public int getRevision() {
         return revision;
     }
@@ -259,6 +281,7 @@ public abstract class AbstractScenario implements Scenario {
         root.addInformation(getRevisionInformation());
         root.setVersion(InScenarioVersion.currentVersion());
         root.general = new InGeneral();
+        root.getGeneral().setTimeout(1, TimeUnit.MINUTES);
         root.getGeneral().setFirstSimulationYear(DEFAULT_INITIAL_YEAR);
         root.getGeneral().setLastSimulationYear(root.getGeneral().getFirstSimulationYear() + simulationDelta - 1);
         setupGeneral(root.getGeneral());
@@ -282,8 +305,7 @@ public abstract class AbstractScenario implements Scenario {
 
     @Override
     public void storeUploadableTo(Path target, Charset charset, boolean pretty) throws IOException {
-        List<InRoot> roots = createInRoots();
-        validate(roots);
+        List<InRoot> roots = createSetupAndValidateRoots();
         UploadableSwaggerData<InRoot> data = new UploadableSwaggerData<>();
         data.setName(getName());
         data.setCreator(getCreator());
@@ -306,8 +328,7 @@ public abstract class AbstractScenario implements Scenario {
 
     @Override
     public void storeRunnableTo(Path target, Charset charset, boolean pretty) throws IOException {
-        List<InRoot> roots = createInRoots();
-        validate(roots);
+        List<InRoot> roots = createSetupAndValidateRoots();
         PerennialData<InRoot> data = new PerennialData<>();
         for(InRoot root: roots) {
             if(root == null) {
@@ -327,8 +348,7 @@ public abstract class AbstractScenario implements Scenario {
 
     @Override
     public void storePostableTo(Path target, Charset charset, boolean pretty) throws IOException {
-        List<InRoot> roots = createInRoots();
-        validate(roots);
+        List<InRoot> roots = createSetupAndValidateRoots();
         DownloadedSwaggerData<InRoot> data = new DownloadedSwaggerData<>();
         data.getDescription().reset();
         data.getDescription().setBusinessModelDescription(getBusinessModelDescription());

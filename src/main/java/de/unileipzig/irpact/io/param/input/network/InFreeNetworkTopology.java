@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.io.param.input.network;
 
+import de.unileipzig.irpact.commons.eval.NoDistance;
+import de.unileipzig.irpact.commons.spatial.BasicDistanceEvaluator;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.spatial.DistanceEvaluator;
@@ -25,8 +27,7 @@ import java.util.*;
 
 import static de.unileipzig.irpact.io.param.IOConstants.NETWORK;
 import static de.unileipzig.irpact.io.param.IOConstants.TOPOLOGY;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz
@@ -51,6 +52,8 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         addEntry(res, thisClass(), "affinities");
         addEntry(res, thisClass(), "numberOfTies");
         addEntry(res, thisClass(), "allowLessEdges");
+
+        setHidden(res, thisClass(), "initialWeight");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -106,6 +109,9 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         this._name = name;
     }
 
+    public boolean hasDistanceEvaluator() {
+        return ParamUtil.isNotNullAndNotEmpty(distanceEvaluator);
+    }
     public InDistanceEvaluator getDistanceEvaluator() throws ParsingException {
         return ParamUtil.getInstance(distanceEvaluator, "distanceEvaluator");
     }
@@ -170,7 +176,13 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
             throw new ParsingException(cagSet.size() + " NumberOfTies-ConsumerGroup(s) missing");
         }
 
-        DistanceEvaluator distEval = parser.parseEntityTo(getDistanceEvaluator());
+        DistanceEvaluator distEval;
+        if(hasDistanceEvaluator()) {
+            distEval = parser.parseEntityTo(getDistanceEvaluator());
+        } else {
+            distEval = new BasicDistanceEvaluator(new NoDistance());
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "use default no distance for '{}'", getName());
+        }
 
         Rnd rnd = parser.deriveRnd();
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "FreeNetworkTopology '{}' uses seed: {}", getName(), rnd.getInitialSeed());
