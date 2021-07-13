@@ -155,8 +155,13 @@ public final class JsonSwaggerSuite implements SwaggerSuite {
 
     protected void changePrettyPrinter(Path input, Charset charset, PrettyPrinter printer) throws IOException {
         Path temp = swagger.createTempFile();
-        JsonNode root = JsonUtil.readJson(input, charset);
-        JsonUtil.writeJson(root, temp, charset, printer);
+        try {
+            JsonNode root = JsonUtil.readJson(input, charset);
+            JsonUtil.writeJson(root, temp, charset, printer);
+        } catch (IOException e) {
+            LOGGER.error("changing pretty printer failed, file content:\n{}", FileUtil.tryReadString(input, charset));
+            throw e;
+        }
         Files.move(temp, input, StandardCopyOption.REPLACE_EXISTING);
     }
 
