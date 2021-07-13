@@ -2,7 +2,7 @@ package de.unileipzig.irpact.util.scenarios;
 
 import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
-import de.unileipzig.irpact.core.util.img.DataToVisualize;
+import de.unileipzig.irpact.core.postprocessing.image.DataToVisualize;
 import de.unileipzig.irpact.io.param.input.InExample;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -15,11 +15,11 @@ import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistrib
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
-import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
-import de.unileipzig.irpact.io.param.input.image.InGenericOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InGnuPlotOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InROutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InGnuPlotOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InROutputImage;
 import de.unileipzig.irpact.io.param.input.network.InCompleteGraphTopology;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
@@ -32,10 +32,6 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSu
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irptools.defstructure.DefaultScenarioFactory;
-import de.unileipzig.irptools.graphviz.def.GraphvizColor;
-import de.unileipzig.irptools.graphviz.def.GraphvizGlobal;
-import de.unileipzig.irptools.graphviz.def.GraphvizLayoutAlgorithm;
-import de.unileipzig.irptools.graphviz.def.GraphvizOutputFormat;
 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -134,7 +130,7 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
         general.timeout = TimeUnit.MINUTES.toMillis(1);
         general.runOptActDemo = false;
         general.runPVAct = true;
-        general.logLevel = IRPLevel.ALL.getLevelId();
+        general.setLogLevel(IRPLevel.ALL);
         general.logAllIRPact = true;
         general.enableAllDataLogging();
         general.enableAllResultLogging();
@@ -155,23 +151,9 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
 //        root.visibleBinaryData = new VisibleBinaryData[]{vbd};
 
         //graphviz
-        GraphvizColor gc1 = GraphvizColor.RED;
-        GraphvizColor gc2 = GraphvizColor.GREEN;
-        root.colors = new GraphvizColor[]{gc1, gc2};
-
-        InConsumerAgentGroupColor cag0Color = new InConsumerAgentGroupColor(cag0.getName() + "_color", cag0, gc1);
-        InConsumerAgentGroupColor cag1Color = new InConsumerAgentGroupColor(cag1.getName() + "_color", cag1, gc2);
+        InConsumerAgentGroupColor cag0Color = InConsumerAgentGroupColor.RED.derive(cag0);
+        InConsumerAgentGroupColor cag1Color = InConsumerAgentGroupColor.GREEN.derive(cag1);
         root.setConsumerAgentGroupColors(new InConsumerAgentGroupColor[]{cag0Color, cag1Color});
-
-        GraphvizLayoutAlgorithm.DOT.useLayout = false;
-        GraphvizLayoutAlgorithm.CIRCO.useLayout = true;
-        root.layoutAlgorithms = GraphvizLayoutAlgorithm.DEFAULTS;
-        GraphvizOutputFormat.PNG.useFormat = true;
-        root.outputFormats = new GraphvizOutputFormat[] { GraphvizOutputFormat.PNG };
-
-        root.graphvizGlobal = new GraphvizGlobal();
-        root.graphvizGlobal.fixedNeatoPosition = false;
-        root.graphvizGlobal.scaleFactor = 0.0;
 
         //=====
         root.general = general;

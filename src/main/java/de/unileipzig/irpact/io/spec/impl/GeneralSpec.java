@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.io.spec.impl;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.spec.SpecificationHelper;
@@ -42,7 +43,7 @@ public class GeneralSpec extends AbstractSpec<InGeneral> {
         general.timeout = rootSpec.getLong(TAG_timeout);
         general.setFirstSimulationYear(rootSpec.getInt(TAG_startYear));
         general.lastSimulationYear = rootSpec.getInt(TAG_endYear);
-        general.logLevel = rootSpec.getInt(TAG_logLevel);
+        general.setLogLevel(IRPLevel.get(rootSpec.getInt(TAG_logLevel)));
         general.logAll = rootSpec.getIntAsBoolean(TAG_logAll);
         return general;
     }
@@ -61,7 +62,7 @@ public class GeneralSpec extends AbstractSpec<InGeneral> {
     protected void create(InGeneral input, SpecificationHelper rootSpec, SpecificationJob job) throws ParsingException {
         rootSpec.set(TAG_seed, input.seed);
         rootSpec.set(TAG_timeout, input.timeout);
-        rootSpec.set(TAG_logLevel, input.logLevel);
+        rootSpec.set(TAG_logLevel, input.getLogLevel().getLevelId());
         rootSpec.setAsInt(TAG_logAll, input.logAll);
         rootSpec.set(TAG_startYear, input.getFirstSimulationYear());
         rootSpec.set(TAG_endYear, input.lastSimulationYear);

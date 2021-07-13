@@ -13,7 +13,7 @@ import de.unileipzig.irpact.io.spec.SpecificationConverter;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.irpact.IRPactCallback;
 import de.unileipzig.irpact.start.irpact.IRPactExecutor;
-import de.unileipzig.irpact.start.irpact.IRPactExecutors;
+import de.unileipzig.irpact.start.irpact.executors.IRPactExecutors;
 import de.unileipzig.irpact.start.optact.OptAct;
 import de.unileipzig.irptools.io.ContentType;
 import de.unileipzig.irptools.io.ContentTypeDetector;
@@ -89,10 +89,10 @@ public class Preloader {
     private void start(IRPact irpact) throws Exception {
         int runMode = irpact.getInRoot().general.runMode;
         IRPactExecutor exec;
-        if(IRPactExecutors.has(runMode)) {
-            exec = IRPactExecutors.get(runMode);
+        if(IRPactExecutors.isRegistered(runMode)) {
+            exec = IRPactExecutors.find(runMode);
         } else {
-            exec = IRPactExecutors.get(clOptions.getRunMode());
+            exec = IRPactExecutors.find(clOptions.getRunMode());
         }
         exec.execute(irpact);
     }

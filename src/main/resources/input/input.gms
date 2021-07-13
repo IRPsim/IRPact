@@ -709,20 +709,6 @@ PARAMETER par_InROutputImage_storeImage(set_InROutputImage)
 * - type: Float
 PARAMETER par_InROutputImage_linewidth(set_InROutputImage)
 
-* - identifier: InConsumerAgentGroupColor
-* - type: String
-SET set_InConsumerAgentGroupColor(*)
-
-* - description: Die Gruppen, welche die ausgewählte Farbe verwenden soll.
-* - identifier: Konsumergruppe
-* - type: Boolean
-PARAMETER par_link_InConsumerAgentGroupColor_InConsumerAgentGroup_group(set_InConsumerAgentGroupColor,set_InConsumerAgentGroup)
-
-* - description: Die für diese Gruppe verwendete Farbe.
-* - identifier: Farbe
-* - type: Boolean
-PARAMETER par_link_InConsumerAgentGroupColor_GraphvizColor_color(set_InConsumerAgentGroupColor,set_GraphvizColor)
-
 * - identifier: InProductGroupThresholdEntry
 * - type: String
 SET set_InProductGroupThresholdEntry(*)
@@ -1636,6 +1622,154 @@ PARAMETER par_InUnitStepDiscreteTimeModel_useW(set_InUnitStepDiscreteTimeModel)
 * - type: Boolean
 PARAMETER par_InUnitStepDiscreteTimeModel_useM(set_InUnitStepDiscreteTimeModel)
 
+* - default: 0
+* - description: Falls aktiviert, wird das Netzwerk am Ende der Simulation gespeichert.
+* - identifier: Netzwerk speichern?
+* - type: Boolean
+SCALAR sca_InGraphvizGeneral_storeEndImage
+
+* - default: 0
+* - description: Ermöglicht das Speichern der dot-Datei.
+* - identifier: dot-Datei speichern?
+* - type: Boolean
+SCALAR sca_InGraphvizGeneral_storeDotFile
+
+* - default: 0
+* - domain: [0,)
+* - description: Definiert den Skalierungsfaktor.
+* - identifier: Skalierungsfaktor
+* - type: Float
+SCALAR sca_InGraphvizGeneral_scaleFactor
+
+* - default: 0
+* - description: Falls aktiviert, werden die realen Agentenpositionen genutzt.
+* - identifier: Positionen fixieren? (NEATO)
+* - type: Boolean
+SCALAR sca_InGraphvizGeneral_fixedNeatoPosition
+
+* - default: 1
+* - description: Erstellt die Bilder als png.
+* - identifier: Ausgabeformat: PNG
+* - rule: IF (sca_InGraphvizGeneral_outputFormatPNG == 0, sca_InGraphvizGeneral_outputFormatPNG = 1)
+* - type: Boolean
+SCALAR sca_InGraphvizGeneral_outputFormatPNG
+
+* - default: 0
+* - description: Nutzt das DOT Layout.
+* - identifier: Layout: DOT
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 1, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 1, sca_InGraphvizGeneral_layoutAlgFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 1, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 1, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 1, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 0, sca_InGraphvizGeneral_layoutAlgDOT = 1)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 0, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 0, sca_InGraphvizGeneral_layoutAlgFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 0, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 0, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 0, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
+* - type: Boolean
+SCALAR sca_InGraphvizGeneral_layoutAlgDOT
+
+* - default: 0
+* - description: Nutzt das NEATO Layout.
+* - identifier: Layout: NEATO
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 1, sca_InGraphvizGeneral_layoutAlgDOT = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 1, sca_InGraphvizGeneral_layoutAlgFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 1, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 1, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 1, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 0, sca_InGraphvizGeneral_layoutAlgDOT = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 0, sca_InGraphvizGeneral_layoutAlgNEATO = 1)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 0, sca_InGraphvizGeneral_layoutAlgFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 0, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 0, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 0, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
+* - type: Boolean
+SCALAR sca_InGraphvizGeneral_layoutAlgNEATO
+
+* - default: 1
+* - description: Nutzt das FDP Layout.
+* - identifier: Layout: FDP
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 1, sca_InGraphvizGeneral_layoutAlgDOT = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 1, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 1, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 1, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 1, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 0, sca_InGraphvizGeneral_layoutAlgDOT = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 0, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 0, sca_InGraphvizGeneral_layoutAlgFDP = 1)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 0, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 0, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 0, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
+* - type: Boolean
+SCALAR sca_InGraphvizGeneral_layoutAlgFDP
+
+* - default: 0
+* - description: Nutzt das SFDP Layout.
+* - identifier: Layout: SFDP
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 1, sca_InGraphvizGeneral_layoutAlgDOT = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 1, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 1, sca_InGraphvizGeneral_layoutAlgFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 1, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 1, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 0, sca_InGraphvizGeneral_layoutAlgDOT = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 0, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 0, sca_InGraphvizGeneral_layoutAlgFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 0, sca_InGraphvizGeneral_layoutAlgSFDP = 1)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 0, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 0, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
+* - type: Boolean
+SCALAR sca_InGraphvizGeneral_layoutAlgSFDP
+
+* - default: 0
+* - description: Nutzt das TWOPI Layout.
+* - identifier: Layout: TWOPI
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 1, sca_InGraphvizGeneral_layoutAlgDOT = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 1, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 1, sca_InGraphvizGeneral_layoutAlgFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 1, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 1, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 0, sca_InGraphvizGeneral_layoutAlgDOT = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 0, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 0, sca_InGraphvizGeneral_layoutAlgFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 0, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 0, sca_InGraphvizGeneral_layoutAlgTWOPI = 1)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 0, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
+* - type: Boolean
+SCALAR sca_InGraphvizGeneral_layoutAlgTWOPI
+
+* - default: 0
+* - description: Nutzt das CIRCO Layout.
+* - identifier: Layout: CIRCO
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 1, sca_InGraphvizGeneral_layoutAlgDOT = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 1, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 1, sca_InGraphvizGeneral_layoutAlgFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 1, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 1, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 0, sca_InGraphvizGeneral_layoutAlgDOT = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 0, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 0, sca_InGraphvizGeneral_layoutAlgFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 0, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 0, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
+* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 0, sca_InGraphvizGeneral_layoutAlgCIRCO = 1)
+* - type: Boolean
+SCALAR sca_InGraphvizGeneral_layoutAlgCIRCO
+
+* - identifier: InConsumerAgentGroupColor
+* - type: String
+SET set_InConsumerAgentGroupColor(*)
+
+* - description: Die zu nutzende Farbe für die Gruppen. Für die Farbe muss der dezimal-kodierte rgba-Wert genutzt werden.
+* - identifier: Farbe (rgba)
+* - type: Integer
+PARAMETER par_InConsumerAgentGroupColor_rgba(set_InConsumerAgentGroupColor)
+
+* - description: Die Gruppen, welche die ausgewählte Farbe verwenden sollen.
+* - identifier: Konsumergruppen
+* - type: Boolean
+PARAMETER par_link_InConsumerAgentGroupColor_InConsumerAgentGroup_groups(set_InConsumerAgentGroupColor,set_InConsumerAgentGroup)
+
 * - default: 42
 * - description: Setzt den Seed für den Zufallsgenerator der Simulation. Falls er auf -1 gesetzt wird, wird ein zufälliger Seed generiert.
 * - identifier: Zufallsgenerator (seed)
@@ -1649,35 +1783,38 @@ SCALAR sca_InGeneral_seed
 SCALAR sca_InGeneral_timeout
 
 * - default: 0
+* - domain: [0|1]
 * - description: Die Länge des Timeouts wird in Millisekunden angegeben.
 * - identifier: Timeout in Millisekunden
-* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseSec = 0)
-* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseMin = 0)
-* - rule: IF (par_InGeneral_timeoutUseMs == 0, par_InGeneral_timeoutUseMs = 1)
-* - rule: IF (par_InGeneral_timeoutUseMs == 0, par_InGeneral_timeoutUseSec = 0)
-* - rule: IF (par_InGeneral_timeoutUseMs == 0, par_InGeneral_timeoutUseMin = 0)
+* - rule: IF (sca_InGeneral_timeoutUseMs == 1, sca_InGeneral_timeoutUseSec = 0)
+* - rule: IF (sca_InGeneral_timeoutUseMs == 1, sca_InGeneral_timeoutUseMin = 0)
+* - rule: IF (sca_InGeneral_timeoutUseMs == 0, sca_InGeneral_timeoutUseMs = 1)
+* - rule: IF (sca_InGeneral_timeoutUseMs == 0, sca_InGeneral_timeoutUseSec = 0)
+* - rule: IF (sca_InGeneral_timeoutUseMs == 0, sca_InGeneral_timeoutUseMin = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_timeoutUseMs
 
 * - default: 0
+* - domain: [0|1]
 * - description: Die Länge des Timeouts wird in Sekunden angegeben.
 * - identifier: Timeout in Sekunden
-* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseMs = 0)
-* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseMin = 0)
-* - rule: IF (par_InGeneral_timeoutUseSec == 0, par_InGeneral_timeoutUseMs = 0)
-* - rule: IF (par_InGeneral_timeoutUseSec == 0, par_InGeneral_timeoutUseSec = 1)
-* - rule: IF (par_InGeneral_timeoutUseSec == 0, par_InGeneral_timeoutUseMin = 0)
+* - rule: IF (sca_InGeneral_timeoutUseSec == 1, sca_InGeneral_timeoutUseMs = 0)
+* - rule: IF (sca_InGeneral_timeoutUseSec == 1, sca_InGeneral_timeoutUseMin = 0)
+* - rule: IF (sca_InGeneral_timeoutUseSec == 0, sca_InGeneral_timeoutUseMs = 0)
+* - rule: IF (sca_InGeneral_timeoutUseSec == 0, sca_InGeneral_timeoutUseSec = 1)
+* - rule: IF (sca_InGeneral_timeoutUseSec == 0, sca_InGeneral_timeoutUseMin = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_timeoutUseSec
 
 * - default: 1
+* - domain: [0|1]
 * - description: Die Länge des Timeouts wird in Minuten angegeben.
 * - identifier: Timeout in Minuten
-* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseMs = 0)
-* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseSec = 0)
-* - rule: IF (par_InGeneral_timeoutUseMin == 0, par_InGeneral_timeoutUseMs = 0)
-* - rule: IF (par_InGeneral_timeoutUseMin == 0, par_InGeneral_timeoutUseSec = 0)
-* - rule: IF (par_InGeneral_timeoutUseMin == 0, par_InGeneral_timeoutUseMin = 1)
+* - rule: IF (sca_InGeneral_timeoutUseMin == 1, sca_InGeneral_timeoutUseMs = 0)
+* - rule: IF (sca_InGeneral_timeoutUseMin == 1, sca_InGeneral_timeoutUseSec = 0)
+* - rule: IF (sca_InGeneral_timeoutUseMin == 0, sca_InGeneral_timeoutUseMs = 0)
+* - rule: IF (sca_InGeneral_timeoutUseMin == 0, sca_InGeneral_timeoutUseSec = 0)
+* - rule: IF (sca_InGeneral_timeoutUseMin == 0, sca_InGeneral_timeoutUseMin = 1)
 * - type: Boolean
 SCALAR sca_InGeneral_timeoutUseMin
 
@@ -1722,80 +1859,214 @@ SCALAR sca_InGeneral_runMode
 * - type: Integer
 SCALAR sca_InGeneral_scenarioMode
 
+* - domain: [0|1]
+* - description: todo
+* - identifier: Leite Error in Output
+* - type: Boolean
+SCALAR sca_InGeneral_passErrorMessageToOutput
+
+* - domain: [0|1]
 * - description: todo
 * - identifier: Kopiere Log
 * - type: Boolean
 SCALAR sca_InGeneral_copyLogIfPossible
 
-* - domain: [0,6]
-* - description: Setzt das zu nutzende Logging-Level in IRPact, folgende Werte werden unterstützt: 0 = OFF, 1 = TRACE, 2 = DEBUG, 3 = INFO, 4 = WARN, 5 = ERROR, 6 = ALL. Das Level ist der Hauptfilter für alle log-Operationen.
-* - identifier: Logging-Level
-* - type: Integer
-SCALAR sca_InGeneral_logLevel
+* - default: 0
+* - domain: [0|1]
+* - description: Setzt das Logginglevel auf OFF. Achtung: Damit wird das komplette Logging deaktiviert inklusive potentieller Fehlermeldungen.
+* - identifier: Level: OFF
+* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelOff = 1)
+* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelAll = 0)
+* - type: Boolean
+SCALAR sca_InGeneral_levelOff
 
+* - default: 0
+* - domain: [0|1]
+* - description: Setzt das Logginglevel auf TRACE.
+* - identifier: Level: TRACE
+* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelTrace = 1)
+* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelAll = 0)
+* - type: Boolean
+SCALAR sca_InGeneral_levelTrace
+
+* - default: 0
+* - domain: [0|1]
+* - description: Setzt das Logginglevel auf DEBUG.
+* - identifier: Level: DEBUG
+* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelDebug = 1)
+* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelAll = 0)
+* - type: Boolean
+SCALAR sca_InGeneral_levelDebug
+
+* - default: 1
+* - domain: [0|1]
+* - description: Setzt das Logginglevel auf INFO.
+* - identifier: Level: INFO
+* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelInfo = 1)
+* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelAll = 0)
+* - type: Boolean
+SCALAR sca_InGeneral_levelInfo
+
+* - default: 0
+* - domain: [0|1]
+* - description: Setzt das Logginglevel auf WARN.
+* - identifier: Level: WARN
+* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelWarn = 1)
+* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelAll = 0)
+* - type: Boolean
+SCALAR sca_InGeneral_levelWarn
+
+* - default: 0
+* - domain: [0|1]
+* - description: Setzt das Logginglevel auf ERROR.
+* - identifier: Level: ERROR
+* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelError = 1)
+* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelAll = 0)
+* - type: Boolean
+SCALAR sca_InGeneral_levelError
+
+* - default: 0
+* - domain: [0|1]
+* - description: Setzt das Logginglevel auf ALL.
+* - identifier: Level: ALL
+* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelAll = 1)
+* - type: Boolean
+SCALAR sca_InGeneral_levelAll
+
+* - default: 0
 * - domain: [0|1]
 * - description: Aktiviert alle log-Operationen in allen Komponenten.
 * - identifier: Alles loggen?
 * - type: Boolean
 SCALAR sca_InGeneral_logAll
 
+* - default: 0
 * - domain: [0|1]
 * - description: Aktiviert alle log-Operationen von IRPact.
 * - identifier: IRPact loggen?
 * - type: Boolean
 SCALAR sca_InGeneral_logAllIRPact
 
+* - default: 0
 * - domain: [0|1]
 * - description: Aktiviert alle log-Operationen von IRPtools.
 * - identifier: IRPtools-Bibliothek loggen?
 * - type: Boolean
 SCALAR sca_InGeneral_logAllTools
 
+* - default: 0
 * - domain: [0|1]
 * - description: Aktiviert das Logging des Initialisierungsprozesses. Dieser umfasst alles vom Start bis zum eigentlichen Start der Simulation.
 * - identifier: Initialisierung loggen?
 * - type: Boolean
 SCALAR sca_InGeneral_logInitialization
 
+* - default: 0
 * - domain: [0|1]
 * - description: Aktiviert das Logging des Simulationsprozesses.
 * - identifier: Simulationsprozess loggen?
 * - type: Boolean
 SCALAR sca_InGeneral_logSimulation
 
-* - domain: [0|1]
-* - description: Gibt an, ob die Graphänderungen ausgegeben werden sollen.
-* - identifier: Gibt die Graphänderungen aus [GU]
+* - identifier: logGraphUpdate
 * - type: Boolean
 SCALAR sca_InGeneral_logGraphUpdate
 
-* - domain: [0|1]
-* - description: Gibt an, ob die Werte vom relative agreement Algorithmus ausgegeben werden sollen.
-* - identifier: Gibt die 'relative agreement' Werte aus [RA]
+* - identifier: logRelativeAgreement
 * - type: Boolean
 SCALAR sca_InGeneral_logRelativeAgreement
 
-* - domain: [0|1]
-* - description: Gibt an, ob Änderungen des Produktinteresses ausgegeben werden sollen.
-* - identifier: Gibt Änderungen beim Produktinteresse aus [IU]
+* - identifier: logInterestUpdate
 * - type: Boolean
 SCALAR sca_InGeneral_logInterestUpdate
 
-* - domain: [0|1]
-* - description: Gibt an, ob die globalen und lokalen Adopteranteile ausgegeben werden sollen.
-* - identifier: Gibt die globalen und lokalen Anteile aus [SNL]
+* - identifier: logShareNetworkLocal
 * - type: Boolean
 SCALAR sca_InGeneral_logShareNetworkLocal
 
-* - domain: [0|1]
-* - description: Gibt an, ob die Berechnung der finanziellen Komponente ausgegen werden soll.
-* - identifier: Gibt die finanzielle Komponente aus [FC]
+* - identifier: logFinancalComponent
 * - type: Boolean
 SCALAR sca_InGeneral_logFinancalComponent
 
-* - domain: [0|1]
-* - description: Gibt an, ob die Berechnung beim decision making ausgegen werden sollen.
-* - identifier: Gibt die Berechnungen beim decision making aus [DM]
+* - identifier: logCalculateDecisionMaking
 * - type: Boolean
 SCALAR sca_InGeneral_logCalculateDecisionMaking
 
@@ -1817,15 +2088,11 @@ SCALAR sca_InGeneral_logResultAdoptionsZipPhase
 * - type: Boolean
 SCALAR sca_InGeneral_logResultAdoptionsAll
 
-* - domain: [0|1]
-* - description: Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus. Zusätzlich wird das Script für eine line chart ausgegeben.
-* - identifier: Adoptionen nach PLZ (line)
+* - identifier: logScriptAdoptionsZip
 * - type: Boolean
 SCALAR sca_InGeneral_logScriptAdoptionsZip
 
-* - domain: [0|1]
-* - description: Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus. Zusätzlich wird das Skript für eine bar chart ausgegeben.
-* - identifier: kumulierte Adoptionen nach PLZ und Phase (stacked bar)
+* - identifier: logScriptAdoptionsZipPhase
 * - type: Boolean
 SCALAR sca_InGeneral_logScriptAdoptionsZipPhase
 
@@ -1838,14 +2105,14 @@ SET set_InInformation(*)
 * - type: Float
 PARAMETER par_InInformation_placeholder(set_InInformation)
 
-* - identifier: InIRPactVersionPlaceholder
+* - identifier: InIRPactVersion
 * - type: String
-SET set_InIRPactVersionPlaceholder(*)
+SET set_InIRPactVersion(*)
 
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
 * - type: Integer
-PARAMETER par_InIRPactVersionPlaceholder_placeholder(set_InIRPactVersionPlaceholder)
+PARAMETER par_InIRPactVersion_placeholder(set_InIRPactVersion)
 
 * - identifier: InScenarioVersion
 * - type: String
@@ -2363,43 +2630,3 @@ SET set_GraphvizColor(*)
 * - identifier: RGBA-Wert
 * - type: Integer
 PARAMETER par_GraphvizColor_rgba(set_GraphvizColor)
-
-* - identifier: GraphvizLayoutAlgorithm
-* - type: String
-SET set_GraphvizLayoutAlgorithm(*)
-
-* - default: -1
-* - description: -1: eigenes Layout, 0: DOT, 1: NEATO, 2: FDP, 3: SFDP, 4: TWOPI, 5: CIRCO
-* - identifier: Layout-ID
-* - type: Integer
-PARAMETER par_GraphvizLayoutAlgorithm_layoutId(set_GraphvizLayoutAlgorithm)
-
-* - description: Verwendet dieses Layout.
-* - identifier: Layout nutzen?
-* - type: Boolean
-PARAMETER par_GraphvizLayoutAlgorithm_useLayout(set_GraphvizLayoutAlgorithm)
-
-* - identifier: GraphvizOutputFormat
-* - type: String
-SET set_GraphvizOutputFormat(*)
-
-* - default: -1
-* - description: -1: eigenes Format, 0: PNG, 1: SVG
-* - identifier: Format-ID
-* - type: Integer
-PARAMETER par_GraphvizOutputFormat_formatId(set_GraphvizOutputFormat)
-
-* - description: Verwendet dieses Ausgabeformat.
-* - identifier: Format nutzen?
-* - type: Boolean
-PARAMETER par_GraphvizOutputFormat_useFormat(set_GraphvizOutputFormat)
-
-* - description: Fixiert die Positionen fuer das neato-Layout (-n).
-* - identifier: Knotenpositionen fixieren?
-* - type: Boolean
-SCALAR sca_GraphvizGlobal_fixedNeatoPosition
-
-* - description: Legt den Skalierungsfaktor fest (-s). Der Wert 0 deaktiviert ihn.
-* - identifier: Skalierungsfaktor
-* - type: Float
-SCALAR sca_GraphvizGlobal_scaleFactor

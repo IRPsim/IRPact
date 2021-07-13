@@ -26,7 +26,7 @@ import java.util.Locale;
 
 import static de.unileipzig.irpact.io.param.IOConstants.INFORMATIONS_OUT;
 import static de.unileipzig.irpact.io.param.IOConstants.ROOT;
-import static de.unileipzig.irpact.io.param.ParamUtil.addPathElement;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz
@@ -40,25 +40,21 @@ public class OutRoot implements RootClass {
 
     @FieldDefinition
     public OutInformation[] informations = new OutInformation[0];
+    public void setInformations(OutInformation[] informations) {
+        this.informations = informations;
+    }
+    public void addInformations(OutInformation[] informations) {
+        this.informations = addAll(this.informations, informations);
+    }
+    public OutInformation[] getInformations() {
+        return informations;
+    }
 
     @FieldDefinition
     public OutConsumerAgentGroup[] outConsumerAgentGroups = new OutConsumerAgentGroup[0];
 
     @FieldDefinition
     public BinaryPersistData[] binaryPersistData = new BinaryPersistData[0];
-
-    //=========================
-    //OptAct
-    //=========================
-
-    @FieldDefinition
-    public OutCustom[] outGrps = new OutCustom[0];
-
-    //==================================================
-
-    public OutRoot() {
-    }
-
     public void addBinaryPersistData(Collection<? extends BinaryPersistData> coll) {
         int pos;
         if(binaryPersistData == null) {
@@ -72,13 +68,23 @@ public class OutRoot implements RootClass {
             binaryPersistData[pos++] = hbd;
         }
     }
-
     public BinaryPersistData[] getBinaryPersistData() {
         return binaryPersistData;
     }
-
     public int getHiddenBinaryDataLength() {
         return ParamUtil.len(binaryPersistData);
+    }
+
+    //=========================
+    //OptAct
+    //=========================
+
+    @FieldDefinition
+    public OutCustom[] outGrps = new OutCustom[0];
+
+    //==================================================
+
+    public OutRoot() {
     }
 
     //=========================
@@ -109,6 +115,7 @@ public class OutRoot implements RootClass {
         SimpleCopyCache cache = new SimpleCopyCache();
         OutRoot copy = new OutRoot();
         //act
+        copy.informations = cache.copyArray(informations);
         copy.outConsumerAgentGroups = cache.copyArray(outConsumerAgentGroups);
         copy.binaryPersistData = cache.copyArray(binaryPersistData);
         //optact

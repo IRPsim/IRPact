@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.core.misc.graphviz;
 
-import de.unileipzig.irpact.commons.util.IRPactBase32;
-import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -10,21 +8,19 @@ import de.unileipzig.irptools.graphviz.DotProcess;
 import de.unileipzig.irptools.graphviz.GraphvizGenerator;
 import de.unileipzig.irptools.graphviz.LayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.OutputFormat;
-import de.unileipzig.irptools.graphviz.def.GraphvizColor;
 import de.unileipzig.irptools.util.ProcessResult;
 import de.unileipzig.irptools.util.Util;
 import de.unileipzig.irptools.util.log.IRPLogger;
+import guru.nidi.graphviz.attribute.Color;
 import guru.nidi.graphviz.attribute.Shape;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.zip.DeflaterInputStream;
 
 /**
  * @author Daniel Abitz
@@ -33,20 +29,20 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicGraphvizConfiguration.class);
 
-    protected static final int LINE_LEN = 76;
-
-    protected Map<ConsumerAgentGroup, GraphvizColor> colorMapping;
+    protected Map<ConsumerAgentGroup, Color> colorMapping;
     protected LayoutAlgorithm layoutAlgorithm;
     protected OutputFormat outputFormat;
+    protected Path downloadDir;
     protected Path imageOutputPath;
-    protected boolean logDotFile = true;
-    protected boolean logEncoded = false;
+    protected boolean storeDotFile;
+    protected boolean fixedNeatoPosition;
+    protected double scaleFactor;
 
     public BasicGraphvizConfiguration() {
         this(new HashMap<>());
     }
 
-    public BasicGraphvizConfiguration(Map<ConsumerAgentGroup, GraphvizColor> colorMapping) {
+    public BasicGraphvizConfiguration(Map<ConsumerAgentGroup, Color> colorMapping) {
         this.colorMapping = colorMapping;
     }
 
@@ -70,11 +66,11 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         return colorMapping.containsKey(cag);
     }
 
-    public void putColor(ConsumerAgentGroup cag, GraphvizColor color) {
+    public void putColor(ConsumerAgentGroup cag, Color color) {
         colorMapping.put(cag, color);
     }
 
-    public GraphvizColor getColor(ConsumerAgentGroup cag) {
+    public Color getColor(ConsumerAgentGroup cag) {
         return colorMapping.get(cag);
     }
 
@@ -84,6 +80,38 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
 
     public Path getImageOutputPath() {
         return imageOutputPath;
+    }
+
+    public void setStoreDotFile(boolean storeDotFile) {
+        this.storeDotFile = storeDotFile;
+    }
+
+    public boolean isStoreDotFile() {
+        return storeDotFile;
+    }
+
+    public void setScaleFactor(double scaleFactor) {
+        this.scaleFactor = scaleFactor;
+    }
+
+    public double getScaleFactor() {
+        return scaleFactor;
+    }
+
+    public void setFixedNeatoPosition(boolean fixedNeatoPosition) {
+        this.fixedNeatoPosition = fixedNeatoPosition;
+    }
+
+    public boolean isFixedNeatoPosition() {
+        return fixedNeatoPosition;
+    }
+
+    public void setDownloadDir(Path downloadDir) {
+        this.downloadDir = downloadDir;
+    }
+
+    public Path getDownloadDir() {
+        return downloadDir;
     }
 
     private static GraphvizGenerator<SocialGraph.Node, SocialGraph.Edge> newGenerator() {
@@ -98,12 +126,12 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         return (node, graphvisNode) -> {
             ConsumerAgent ca = node.getAgent(ConsumerAgent.class);
             ConsumerAgentGroup cag = ca.getGroup();
-            GraphvizColor color = getColor(cag);
+            Color color = getColor(cag);
             if(color == null) {
-                LOGGER.info("no color set for ConsumerAgentGroup '{}', using black", cag.getName());
-                color = GraphvizColor.BLACK;
+                LOGGER.info("no color set for ConsumerAgentGroup '{}', using black for node", cag.getName());
+                color = Color.BLACK;
             }
-            graphvisNode.add(color.toGraphvizColor());
+            graphvisNode.add(color);
         };
     }
 
@@ -112,12 +140,12 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
             SocialGraph.Node source = edge.getSource();
             ConsumerAgent ca = source.getAgent(ConsumerAgent.class);
             ConsumerAgentGroup cag = ca.getGroup();
-            GraphvizColor color = getColor(cag);
+            Color color = getColor(cag);
             if(color == null) {
-                LOGGER.info("no color set for ConsumerAgentGroup '{}', using black", cag.getName());
-                color = GraphvizColor.BLACK;
+                LOGGER.info("no color set for ConsumerAgentGroup '{}', using black for links", cag.getName());
+                color = Color.BLACK;
             }
-            graphvizLink.add(color.toGraphvizColor());
+            graphvizLink.add(color);
         };
     }
 
@@ -142,28 +170,17 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         gen.setNodeShape(Shape.POINT);
     }
 
-    private void logContent(Path file) throws IOException {
-        if(logEncoded) {
-            logContentEncoded(file);
+    private void storeDotFile(Path temp) throws IOException {
+        if(downloadDir == null) {
+            LOGGER.warn("no download dir set, delete '{}': {}", temp.getFileName(), Files.deleteIfExists(temp));
         } else {
-            logContentClear(file);
+            if(Files.notExists(downloadDir)) {
+                Files.createDirectories(downloadDir);
+            }
+            Path target = downloadDir.resolve("AgentNetwork.dot");
+            Files.move(temp, target, StandardCopyOption.REPLACE_EXISTING);
+            LOGGER.trace("dot file stored: {}", target);
         }
-    }
-
-    private void logContentClear(Path file) throws IOException {
-        String content = Util.readString(file, StandardCharsets.UTF_8);
-        LOGGER.info("dot file content\n{}", content);
-    }
-
-    private void logContentEncoded(Path file) throws IOException {
-        byte[] content;
-        try(InputStream in = Files.newInputStream(file);
-            DeflaterInputStream defIn = new DeflaterInputStream(in)) {
-            content = Util.readAll(defIn);
-        }
-        String b32 = IRPactBase32.encodeToString(content);
-        String splittedB32 = StringUtil.splitLen(b32, LINE_LEN);
-        LOGGER.info("dot file content\n{}", splittedB32);
     }
 
     @Override
@@ -177,10 +194,6 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
             LOGGER.trace("store temp-dot file: {}", dotPath);
             gen.store(dotPath);
 
-            if(logDotFile) {
-                logContent(dotPath);
-            }
-
             LOGGER.trace("init dot process");
             DotProcess process;
             try {
@@ -189,6 +202,8 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
                         .setOutputFile(imageOutputPath)
                         .setLayout(layoutAlgorithm)
                         .setFormat(outputFormat)
+                        .setScale(scaleFactor)
+                        .enableNeatoPos(fixedNeatoPosition)
                         .peek(dp -> LOGGER.trace("cmd: {}", Arrays.toString(dp.buildCommand())))
                         .validate();
             } catch (Exception e) {
@@ -218,8 +233,10 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
             }
 
         } finally {
-            if(Files.deleteIfExists(dotPath)) {
-                LOGGER.trace("temp-dot file deleted: {}", dotPath);
+            if(isStoreDotFile()) {
+                storeDotFile(dotPath);
+            } else {
+                LOGGER.trace("temp-dot file ({}) deleted: {}", dotPath, Files.deleteIfExists(dotPath));
             }
         }
     }

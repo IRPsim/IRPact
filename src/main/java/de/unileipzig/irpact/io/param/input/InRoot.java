@@ -1,12 +1,11 @@
 package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.commons.util.CollectionUtil;
-import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
-import de.unileipzig.irpact.io.param.SimpleCopyCache;
-import de.unileipzig.irpact.io.param.IOResources;
-import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.develop.Todo;
+import de.unileipzig.irpact.io.param.*;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
@@ -16,17 +15,18 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactCons
 import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.agent.population.InAgentPopulation;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedConsumerAgentPopulation;
-import de.unileipzig.irpact.io.param.input.image.InGenericOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InGnuPlotOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InROutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.network.InGraphvizGeneral;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InGnuPlotOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InROutputImage;
 import de.unileipzig.irpact.io.param.input.interest.InProductGroupThresholdEntry;
 import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.param.input.file.InFile;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
-import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
+import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.*;
 import de.unileipzig.irpact.io.param.irpopt.*;
@@ -61,16 +61,18 @@ import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.graphviz.LayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.OutputFormat;
+import de.unileipzig.irptools.graphviz.StandardLayoutAlgorithm;
+import de.unileipzig.irptools.graphviz.StandardOutputFormat;
 import de.unileipzig.irptools.graphviz.def.*;
 import de.unileipzig.irptools.uiedn.Section;
 import de.unileipzig.irptools.uiedn.Sections;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.UiEdn;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.nio.file.Path;
 import java.util.*;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
@@ -85,6 +87,8 @@ public class InRoot implements RootClass {
     public static final String SET_BINARY_PERSIST_DATA = BinaryPersistData.deriveSetName();
 
     public static final InRoot INSTANCE = new InRoot();
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(InRoot.class);
 
     //=========================
     //IRPopt
@@ -164,7 +168,7 @@ public class InRoot implements RootClass {
     }
 
     @FieldDefinition
-    public InIRPactVersionPlaceholder[] aboutPlaceholders = new InIRPactVersionPlaceholder[0];
+    public InIRPactVersion[] aboutPlaceholders = new InIRPactVersion[0];
 
     @FieldDefinition
     public InInformation[] informations = new InInformation[0];
@@ -389,8 +393,26 @@ public class InRoot implements RootClass {
     //=========================
 
     @FieldDefinition
-    public InConsumerAgentGroupColor[] consumerAgentGroupColors = new InConsumerAgentGroupColor[0];
+    public InGraphvizGeneral graphvizGeneral = new InGraphvizGeneral();
+    public void setGraphvizGeneral(InGraphvizGeneral graphvizGeneral) {
+        this.graphvizGeneral = graphvizGeneral;
+    }
+    public InGraphvizGeneral getGraphvizGeneral() {
+        return graphvizGeneral;
+    }
 
+    //wird nicht mehr unterstuetzt
+    @Deprecated
+    public GraphvizColor[] colors = new GraphvizColor[0];
+    public GraphvizColor[] getColors() {
+        return colors;
+    }
+    public void setColors(GraphvizColor[] colors) {
+        this.colors = colors;
+    }
+
+    @FieldDefinition
+    public InConsumerAgentGroupColor[] consumerAgentGroupColors = new InConsumerAgentGroupColor[0];
     public void setConsumerAgentGroupColors(InConsumerAgentGroupColor[] consumerAgentGroupColors) {
         this.consumerAgentGroupColors = consumerAgentGroupColors;
     }
@@ -398,27 +420,31 @@ public class InRoot implements RootClass {
         return ParamUtil.getNonNullArray(consumerAgentGroupColors, "consumerAgentGroupColors");
     }
 
-    @FieldDefinition
-    public GraphvizLayoutAlgorithm[] layoutAlgorithms = new GraphvizLayoutAlgorithm[0];
-
-    @FieldDefinition
-    public GraphvizOutputFormat[] outputFormats = new GraphvizOutputFormat[0];
-
-    @FieldDefinition
-    public GraphvizColor[] colors = new GraphvizColor[0];
-
-    @FieldDefinition
-    public GraphvizGlobal graphvizGlobal = new GraphvizGlobal();
-
     //=========================
     //OPTACT
     //=========================
 
     @FieldDefinition
     public AgentGroup[] agentGroups = new AgentGroup[0];
+    public GraphvizColor getColor(String agentName) {
+        for(AgentGroup grp: agentGroups) {
+            if(agentName.startsWith(grp._name)) {
+                return grp.agentColor;
+            }
+        }
+        return null;
+    }
 
     @FieldDefinition
     public IGraphTopology[] topologies = new IGraphTopology[0];
+    public <N, E> GraphTopology<N, E> getTopology() {
+        for(IGraphTopology topology: topologies) {
+            if(topology.use()) {
+                return topology.createInstance();
+            }
+        }
+        return null;
+    }
 
     @FieldDefinition()
     public InGlobal global = new InGlobal();
@@ -440,6 +466,16 @@ public class InRoot implements RootClass {
 
     @FieldDefinition
     public TechDESPV[] despv = new TechDESPV[0];
+
+    public OutputFormat getOutputFormat() {
+        LOGGER.warn("USES DEFAULT");
+        return StandardOutputFormat.PNG;
+    }
+
+    public LayoutAlgorithm getLayoutAlgorithm() {
+        LOGGER.warn("USES DEFAULT");
+        return StandardLayoutAlgorithm.FDP;
+    }
 
     //==================================================
 
@@ -508,11 +544,9 @@ public class InRoot implements RootClass {
         //time
         copy.timeModel = cache.copyArray(timeModel);
         //Graphviz
-        copy.consumerAgentGroupColors = cache.copyArray(consumerAgentGroupColors);
-        copy.layoutAlgorithms = cache.copyArray(layoutAlgorithms);
-        copy.outputFormats = cache.copyArray(outputFormats);
+        copy.graphvizGeneral = cache.copy(graphvizGeneral);
         copy.colors = cache.copyArray(colors);
-        copy.graphvizGlobal = cache.copy(graphvizGlobal);
+        copy.consumerAgentGroupColors = cache.copyArray(consumerAgentGroupColors);
         //optact
         copy.agentGroups = agentGroups;
         copy.topologies = topologies;
@@ -616,46 +650,6 @@ public class InRoot implements RootClass {
     }
 
     //=========================
-    //OPTACT
-    //=========================
-
-    public GraphvizColor getColor(String agentName) {
-        for(AgentGroup grp: agentGroups) {
-            if(agentName.startsWith(grp._name)) {
-                return grp.agentColor;
-            }
-        }
-        return null;
-    }
-
-    public OutputFormat getOutputFormat() {
-        for(GraphvizOutputFormat f: outputFormats) {
-            if(f.useFormat) {
-                return f.toOutputFormat();
-            }
-        }
-        return null;
-    }
-
-    public LayoutAlgorithm getLayoutAlgorithm() {
-        for(GraphvizLayoutAlgorithm a: layoutAlgorithms) {
-            if(a.useLayout) {
-                return a.toLayoutAlgorithm();
-            }
-        }
-        return null;
-    }
-
-    public <N, E> GraphTopology<N, E> getTopology() {
-        for(IGraphTopology topology: topologies) {
-            if(topology.use()) {
-                return topology.createInstance();
-            }
-        }
-        return null;
-    }
-
-    //=========================
     //CLASSES
     //=========================
 
@@ -704,8 +698,6 @@ public class InRoot implements RootClass {
             InGnuPlotOutputImage.class,
             InOutputImage.class,
             InROutputImage.class,
-
-            InConsumerAgentGroupColor.class,
 
             InProductGroupThresholdEntry.class,
             InProductInterestSupplyScheme.class,
@@ -763,9 +755,12 @@ public class InRoot implements RootClass {
             InTimeModel.class,
             InUnitStepDiscreteTimeModel.class,
 
+            InGraphvizGeneral.class,
+            InConsumerAgentGroupColor.class,
+
             InGeneral.class,
             InInformation.class,
-            InIRPactVersionPlaceholder.class,
+            InIRPactVersion.class,
             InScenarioVersion.class,
             InTestData.class
     );
@@ -813,13 +808,11 @@ public class InRoot implements RootClass {
             GvInRoot.CLASSES_WITHOUT_ROOT_AND_GRAPHVIZ
     );
 
+    @Todo("GraphvizColor irgendwann mal rauswerfen")
     public static final List<ParserInput> INPUT_WITH_GRAPHVIZ = ParserInput.merge(
             INPUT_WITHOUT_GRAPHVIZ,
             ParserInput.listOf(DefinitionType.INPUT,
-                    GraphvizColor.class,
-                    GraphvizLayoutAlgorithm.class,
-                    GraphvizOutputFormat.class,
-                    GraphvizGlobal.class
+                    GraphvizColor.class
             )
     );
 
@@ -828,132 +821,136 @@ public class InRoot implements RootClass {
     //=========================
 
     public static void initRes(TreeAnnotationResource res) {
-        IOResources.Data userData = res.getUserDataAs();
-        MultiCounter counter = userData.getCounter();
-
-        addPathElement(res, INFORMATIONS, ROOT);
-                addPathElement(res, ABOUT_IRPACT, INFORMATIONS);
-                addPathElement(res, InScenarioVersion.thisName(), INFORMATIONS);
-                addPathElement(res, InInformation.thisName(), INFORMATIONS);
-
-        addPathElement(res, GENERAL_SETTINGS, ROOT);
-                addPathElement(res, LOGGING, GENERAL_SETTINGS);
-                        addPathElement(res, LOGGING_GENERAL, LOGGING);
-                        addPathElement(res, LOGGING_DATA, LOGGING);
-                        addPathElement(res, LOGGING_RESULT, LOGGING);
-                        addPathElement(res, LOGGING_SCRIPT, LOGGING);
-                addPathElement(res, IMAGE, GENERAL_SETTINGS);
-                        addPathElement(res, InGenericOutputImage.thisName(), IMAGE);
-                        addPathElement(res, InGnuPlotOutputImage.thisName(), IMAGE);
-                        addPathElement(res, InROutputImage.thisName(), IMAGE);
-                addPathElement(res, SPECIAL_SETTINGS, GENERAL_SETTINGS);
-                        addPathElement(res, VisibleBinaryData.thisName(), SPECIAL_SETTINGS);
-
-        addPathElement(res, InAttributeName.thisName(), ROOT);
-
-        addPathElement(res, FILES, ROOT);
-            addPathElement(res, InPVFile.thisName(), FILES);
-            addPathElement(res, InSpatialTableFile.thisName(), FILES);
-
-        addPathElement(res, DISTRIBUTIONS, ROOT);
-            addPathElement(res, InBernoulliDistribution.thisName(), DISTRIBUTIONS);
-            addPathElement(res, InBooleanDistribution.thisName(), DISTRIBUTIONS);
-            addPathElement(res, InDiracUnivariateDistribution.thisName(), DISTRIBUTIONS);
-            addPathElement(res, InFiniteMassPointsDiscreteDistribution.thisName(), DISTRIBUTIONS);
-                addPathElement(res, InMassPoint.thisName(), InFiniteMassPointsDiscreteDistribution.thisName());
-            addPathElement(res, InNormalDistribution.thisName(), DISTRIBUTIONS);
-            addPathElement(res, InBoundedNormalDistribution.thisName(), DISTRIBUTIONS);
-            addPathElement(res, InSlowTruncatedNormalDistribution.thisName(), DISTRIBUTIONS);
-            addPathElement(res, InTruncatedNormalDistribution.thisName(), DISTRIBUTIONS);
-            addPathElement(res, InBoundedUniformDoubleDistribution.thisName(), DISTRIBUTIONS);
-            addPathElement(res, InBoundedUniformIntegerDistribution.thisName(), DISTRIBUTIONS);
-
-        addPathElement(res, AGENTS, ROOT);
-                addPathElement(res, CONSUMER, AGENTS);
-                        addPathElement(res, CONSUMER_GROUP, CONSUMER);
-                                addPathElement(res, InGeneralConsumerAgentGroup.thisName(), CONSUMER_GROUP);
-                                addPathElement(res, InPVactConsumerAgentGroup.thisName(), CONSUMER_GROUP);
-                        addPathElement(res, CONSUMER_ATTR, CONSUMER);
-                                addPathElement(res, InGeneralConsumerAgentGroupAttribute.thisName(), CONSUMER_GROUP);
-                                addPathElement(res, InGeneralConsumerAgentAnnualGroupAttribute.thisName(), CONSUMER_GROUP);
-                                addPathElement(res, InNameSplitConsumerAgentGroupAttribute.thisName(), CONSUMER_GROUP);
-                                addPathElement(res, InNameSplitConsumerAgentAnnualGroupAttribute.thisName(), CONSUMER_GROUP);
-                        addPathElement(res, CONSUMER_AFFINITY, CONSUMER);
-                                addPathElement(res, InAffinities.thisName(), CONSUMER_AFFINITY);
-                                addPathElement(res, InComplexAffinityEntry.thisName(), CONSUMER_AFFINITY);
-                                addPathElement(res, InNameSplitAffinityEntry.thisName(), CONSUMER_AFFINITY);
-                        addPathElement(res, CONSUMER_INTEREST, CONSUMER);
-                                addPathElement(res, InProductThresholdInterestSupplyScheme.thisName(), CONSUMER_INTEREST);
-                                        addPathElement(res, InProductGroupThresholdEntry.thisName(), InProductThresholdInterestSupplyScheme.thisName());
-                addPathElement(res, POPULATION, AGENTS);
-                        addPathElement(res, InFixConsumerAgentPopulation.thisName(), POPULATION);
-                        addPathElement(res, InFileBasedConsumerAgentPopulation.thisName(), POPULATION);
-                        addPathElement(res, InFileBasedPVactConsumerAgentPopulation.thisName(), POPULATION);
-
-        addPathElement(res, NETWORK, ROOT);
-                addPathElement(res, TOPOLOGY, NETWORK);
-                        addPathElement(res, InUnlinkedGraphTopology.thisName(), TOPOLOGY);
-                        addPathElement(res, InCompleteGraphTopology.thisName(), TOPOLOGY);
-                        addPathElement(res, InFreeNetworkTopology.thisName(), TOPOLOGY);
-                                addPathElement(res, InNumberOfTies.thisName(), InFreeNetworkTopology.thisName());
-                addPathElement(res, DIST_FUNC, NETWORK);
-                        addPathElement(res, InNoDistance.thisName(), DIST_FUNC);
-                        addPathElement(res, InInverse.thisName(), DIST_FUNC);
-
-        addPathElement(res, PRODUCTS, ROOT);
-                addPathElement(res, PRODUCTS_GROUP, PRODUCTS);
-                        addPathElement(res, InBasicProductGroup.thisName(), PRODUCTS_GROUP);
-                addPathElement(res, PRODUCTS_ATTR, PRODUCTS);
-                        addPathElement(res, InBasicProductGroupAttribute.thisName(), PRODUCTS_ATTR);
-                        addPathElement(res, InNameSplitProductGroupAttribute.thisName(), PRODUCTS_ATTR);
-                addPathElement(res, InFixProduct.thisName(), PRODUCTS);
-                addPathElement(res, InFixProductAttribute.thisName(), PRODUCTS);
-                addPathElement(res, PRODUCTS_FINDING_SCHEME, PRODUCTS);
-                        addPathElement(res, InFixProductFindingScheme.thisName(), PRODUCTS_FINDING_SCHEME);
-
-        addPathElement(res, PROCESS_MODEL, ROOT);
-                addPathElement(res, InRAProcessModel.thisName(), PROCESS_MODEL);
-                        addPathElement(res, PROCESS_MODEL_RA_UNCERT, InRAProcessModel.thisName());
-                                addPathElement(res, InGlobalDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
-                                addPathElement(res, InPVactGlobalDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
-                                addPathElement(res, InGroupBasedDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
-                                addPathElement(res, InPVactGroupBasedDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
-                addPathElement(res, PROCESS_FILTER, PROCESS_MODEL);
-                        addPathElement(res, InDisabledProcessPlanNodeFilterScheme.thisName(), PROCESS_FILTER);
-                        addPathElement(res, InEntireNetworkNodeFilterScheme.thisName(), PROCESS_FILTER);
-                        addPathElement(res, InRAProcessPlanMaxDistanceFilterScheme.thisName(), PROCESS_FILTER);
-
-        addPathElement(res, SPATIAL, ROOT);
-                addPathElement(res, SPATIAL_MODEL, SPATIAL);
-                        addPathElement(res, InSpace2D.thisName(), SPATIAL_MODEL);
-                addPathElement(res, SPATIAL_MODEL_DIST, SPATIAL);
-                        addPathElement(res, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST);
-                                //addPathElement(res, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS, SPATIAL_MODEL_DIST_FILE);
-                                addPathElement(res, SPATIAL_MODEL_DIST_FILE_FILEPOS, SPATIAL_MODEL_DIST_FILE);
-                                        addPathElement(res, InFileBasedSpatialInformationSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-                                        addPathElement(res, InFileBasedSelectSpatialInformationSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-                                        addPathElement(res, InFileBasedSelectGroupSpatialInformationSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-                                        addPathElement(res, InFileBasedPVactMilieuSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-                                        addPathElement(res, InFileBasedPVactMilieuZipSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-
-        addPathElement(res, TIME, ROOT);
-                addPathElement(res, InDiscreteTimeModel.thisName(), TIME);
-                addPathElement(res, InUnitStepDiscreteTimeModel.thisName(), TIME);
-
-        res.wrapElementBuilder(res.getCachedElement(GRAPHVIZ))
-                .setEdnPriority(counter.getAndInc(ROOT));
-
-                addPathElement(res, GRAPHVIZ_AGENT_COLOR_MAPPING, GRAPHVIZ);
-
-        addPathElement(res, SUBMODULE, ROOT);
-                addPathElement(res, SUBMODULE_GRAPHVIZDEMO, SUBMODULE);
-
-        addPathElement(res, DEV, ROOT);
-                addPathElement(res, TEST, DEV);
-                        addPathElement(res, InTestData.thisName(), TEST);
+        InRootUI.initRes(res);
+        //TODO remove
+//        IOResources.Data userData = res.getUserDataAs();
+//        MultiCounter counter = userData.getCounter();
+//
+//        addPathElement(res, INFORMATIONS, ROOT);
+//                addPathElement(res, ABOUT_IRPACT, INFORMATIONS);
+//                addPathElement(res, InScenarioVersion.thisName(), INFORMATIONS);
+//                addPathElement(res, InInformation.thisName(), INFORMATIONS);
+//
+//        addPathElement(res, GENERAL_SETTINGS, ROOT);
+//                addPathElement(res, LOGGING, GENERAL_SETTINGS);
+//                        addPathElement(res, LOGGING_GENERAL, LOGGING);
+//                        addPathElement(res, LOGGING_DATA, LOGGING);
+//                        addPathElement(res, LOGGING_RESULT, LOGGING);
+//                        addPathElement(res, LOGGING_SCRIPT, LOGGING);
+//                addPathElement(res, IMAGE, GENERAL_SETTINGS);
+//                        addPathElement(res, InGenericOutputImage.thisName(), IMAGE);
+//                        addPathElement(res, InGnuPlotOutputImage.thisName(), IMAGE);
+//                        addPathElement(res, InROutputImage.thisName(), IMAGE);
+//                addPathElement(res, SPECIAL_SETTINGS, GENERAL_SETTINGS);
+//                        addPathElement(res, VisibleBinaryData.thisName(), SPECIAL_SETTINGS);
+//
+//        addPathElement(res, InAttributeName.thisName(), ROOT);
+//
+//        addPathElement(res, FILES, ROOT);
+//            addPathElement(res, InPVFile.thisName(), FILES);
+//            addPathElement(res, InSpatialTableFile.thisName(), FILES);
+//
+//        addPathElement(res, DISTRIBUTIONS, ROOT);
+//            addPathElement(res, InBernoulliDistribution.thisName(), DISTRIBUTIONS);
+//            addPathElement(res, InBooleanDistribution.thisName(), DISTRIBUTIONS);
+//            addPathElement(res, InDiracUnivariateDistribution.thisName(), DISTRIBUTIONS);
+//            addPathElement(res, InFiniteMassPointsDiscreteDistribution.thisName(), DISTRIBUTIONS);
+//                addPathElement(res, InMassPoint.thisName(), InFiniteMassPointsDiscreteDistribution.thisName());
+//            addPathElement(res, InNormalDistribution.thisName(), DISTRIBUTIONS);
+//            addPathElement(res, InBoundedNormalDistribution.thisName(), DISTRIBUTIONS);
+//            addPathElement(res, InSlowTruncatedNormalDistribution.thisName(), DISTRIBUTIONS);
+//            addPathElement(res, InTruncatedNormalDistribution.thisName(), DISTRIBUTIONS);
+//            addPathElement(res, InBoundedUniformDoubleDistribution.thisName(), DISTRIBUTIONS);
+//            addPathElement(res, InBoundedUniformIntegerDistribution.thisName(), DISTRIBUTIONS);
+//
+//        addPathElement(res, AGENTS, ROOT);
+//                addPathElement(res, CONSUMER, AGENTS);
+//                        addPathElement(res, CONSUMER_GROUP, CONSUMER);
+//                                addPathElement(res, InGeneralConsumerAgentGroup.thisName(), CONSUMER_GROUP);
+//                                addPathElement(res, InPVactConsumerAgentGroup.thisName(), CONSUMER_GROUP);
+//                        addPathElement(res, CONSUMER_ATTR, CONSUMER);
+//                                addPathElement(res, InGeneralConsumerAgentGroupAttribute.thisName(), CONSUMER_GROUP);
+//                                addPathElement(res, InGeneralConsumerAgentAnnualGroupAttribute.thisName(), CONSUMER_GROUP);
+//                                addPathElement(res, InNameSplitConsumerAgentGroupAttribute.thisName(), CONSUMER_GROUP);
+//                                addPathElement(res, InNameSplitConsumerAgentAnnualGroupAttribute.thisName(), CONSUMER_GROUP);
+//                        addPathElement(res, CONSUMER_AFFINITY, CONSUMER);
+//                                addPathElement(res, InAffinities.thisName(), CONSUMER_AFFINITY);
+//                                addPathElement(res, InComplexAffinityEntry.thisName(), CONSUMER_AFFINITY);
+//                                addPathElement(res, InNameSplitAffinityEntry.thisName(), CONSUMER_AFFINITY);
+//                        addPathElement(res, CONSUMER_INTEREST, CONSUMER);
+//                                addPathElement(res, InProductThresholdInterestSupplyScheme.thisName(), CONSUMER_INTEREST);
+//                                        addPathElement(res, InProductGroupThresholdEntry.thisName(), InProductThresholdInterestSupplyScheme.thisName());
+//                addPathElement(res, POPULATION, AGENTS);
+//                        addPathElement(res, InFixConsumerAgentPopulation.thisName(), POPULATION);
+//                        addPathElement(res, InFileBasedConsumerAgentPopulation.thisName(), POPULATION);
+//                        addPathElement(res, InFileBasedPVactConsumerAgentPopulation.thisName(), POPULATION);
+//
+//        addPathElement(res, NETWORK, ROOT);
+//                addPathElement(res, TOPOLOGY, NETWORK);
+//                        addPathElement(res, InUnlinkedGraphTopology.thisName(), TOPOLOGY);
+//                        addPathElement(res, InCompleteGraphTopology.thisName(), TOPOLOGY);
+//                        addPathElement(res, InFreeNetworkTopology.thisName(), TOPOLOGY);
+//                                addPathElement(res, InNumberOfTies.thisName(), InFreeNetworkTopology.thisName());
+//                addPathElement(res, DIST_FUNC, NETWORK);
+//                        addPathElement(res, InNoDistance.thisName(), DIST_FUNC);
+//                        addPathElement(res, InInverse.thisName(), DIST_FUNC);
+//
+//        addPathElement(res, PRODUCTS, ROOT);
+//                addPathElement(res, PRODUCTS_GROUP, PRODUCTS);
+//                        addPathElement(res, InBasicProductGroup.thisName(), PRODUCTS_GROUP);
+//                addPathElement(res, PRODUCTS_ATTR, PRODUCTS);
+//                        addPathElement(res, InBasicProductGroupAttribute.thisName(), PRODUCTS_ATTR);
+//                        addPathElement(res, InNameSplitProductGroupAttribute.thisName(), PRODUCTS_ATTR);
+//                addPathElement(res, InFixProduct.thisName(), PRODUCTS);
+//                addPathElement(res, InFixProductAttribute.thisName(), PRODUCTS);
+//                addPathElement(res, PRODUCTS_FINDING_SCHEME, PRODUCTS);
+//                        addPathElement(res, InFixProductFindingScheme.thisName(), PRODUCTS_FINDING_SCHEME);
+//
+//        addPathElement(res, PROCESS_MODEL, ROOT);
+//                addPathElement(res, InRAProcessModel.thisName(), PROCESS_MODEL);
+//                        addPathElement(res, PROCESS_MODEL_RA_UNCERT, InRAProcessModel.thisName());
+//                                addPathElement(res, InGlobalDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
+//                                addPathElement(res, InPVactGlobalDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
+//                                addPathElement(res, InGroupBasedDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
+//                                addPathElement(res, InPVactGroupBasedDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
+//                addPathElement(res, PROCESS_FILTER, PROCESS_MODEL);
+//                        addPathElement(res, InDisabledProcessPlanNodeFilterScheme.thisName(), PROCESS_FILTER);
+//                        addPathElement(res, InEntireNetworkNodeFilterScheme.thisName(), PROCESS_FILTER);
+//                        addPathElement(res, InRAProcessPlanMaxDistanceFilterScheme.thisName(), PROCESS_FILTER);
+//
+//        addPathElement(res, SPATIAL, ROOT);
+//                addPathElement(res, SPATIAL_MODEL, SPATIAL);
+//                        addPathElement(res, InSpace2D.thisName(), SPATIAL_MODEL);
+//                addPathElement(res, SPATIAL_MODEL_DIST, SPATIAL);
+//                        addPathElement(res, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST);
+//                                //addPathElement(res, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS, SPATIAL_MODEL_DIST_FILE);
+//                                addPathElement(res, SPATIAL_MODEL_DIST_FILE_FILEPOS, SPATIAL_MODEL_DIST_FILE);
+//                                        addPathElement(res, InFileBasedSpatialInformationSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
+//                                        addPathElement(res, InFileBasedSelectSpatialInformationSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
+//                                        addPathElement(res, InFileBasedSelectGroupSpatialInformationSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
+//                                        addPathElement(res, InFileBasedPVactMilieuSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
+//                                        addPathElement(res, InFileBasedPVactMilieuZipSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
+//
+//        addPathElement(res, TIME, ROOT);
+//                addPathElement(res, InDiscreteTimeModel.thisName(), TIME);
+//                addPathElement(res, InUnitStepDiscreteTimeModel.thisName(), TIME);
+//
+//        res.wrapElementBuilder(res.getCachedElement(GRAPHVIZ))
+//                .setEdnPriority(counter.getAndInc(ROOT));
+//
+//                addPathElement(res, GRAPHVIZ_AGENT_COLOR_MAPPING, GRAPHVIZ);
+//
+//        addPathElement(res, SUBMODULE, ROOT);
+//                addPathElement(res, SUBMODULE_GRAPHVIZDEMO, SUBMODULE);
+//
+//        addPathElement(res, DEV, ROOT);
+//                addPathElement(res, TEST, DEV);
+//                        addPathElement(res, InTestData.thisName(), TEST);
     }
     public static void applyRes(TreeAnnotationResource res) {
-        res.getCachedElement("OPTACT").setParent(res.getCachedElement(SUBMODULE));
-        res.getCachedElement("AgentGroup_Element").setParent(res.getCachedElement("OPTACT"));
+        InRootUI.applyRes(res);
+        //TODO remove
+//        res.getCachedElement("OPTACT").setParent(res.getCachedElement(SUBMODULE));
+//        res.getCachedElement("AgentGroup_Element").setParent(res.getCachedElement("OPTACT"));
     }
 }

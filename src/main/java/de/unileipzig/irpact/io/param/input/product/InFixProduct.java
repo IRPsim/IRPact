@@ -8,6 +8,7 @@ import de.unileipzig.irpact.core.product.attribute.ProductAttribute;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -38,7 +39,7 @@ public class InFixProduct implements InIRPactEntity {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), PRODUCTS, thisName());
+        putClassPath(res, thisClass(), InRootUI.PRODUCTS_FIX);
         addEntry(res, thisClass(), "refPG");
         addEntry(res, thisClass(), "fixPAttrs");
     }

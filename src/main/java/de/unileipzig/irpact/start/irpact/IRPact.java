@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
+import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -22,9 +23,10 @@ import de.unileipzig.irpact.core.simulation.Version;
 import de.unileipzig.irpact.core.util.BasicMetaData;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.core.util.result.ResultManager;
-import de.unileipzig.irpact.core.util.result.adoptions.AdoptionResultInfo;
-import de.unileipzig.irpact.core.util.result.adoptions.AnnualCumulativeAdoptionsForOutput;
+import de.unileipzig.irpact.core.postprocessing.data.adoptions.AdoptionResultInfo;
+import de.unileipzig.irpact.core.postprocessing.data.adoptions.AnnualCumulativeAdoptionsForOutput;
 import de.unileipzig.irpact.io.param.input.*;
+import de.unileipzig.irpact.io.param.output.OutInformation;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
@@ -74,8 +76,8 @@ public final class IRPact implements IRPActAccess {
 
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "0";
-    private static final String MINOR_STRING = "4";
-    private static final String BUILD_STRING = "1";
+    private static final String MINOR_STRING = "5";
+    private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -306,7 +308,7 @@ public final class IRPact implements IRPActAccess {
         logSimulationInformations();
     }
 
-    private void initalizeLogging() {
+    private void initalizeLogging() throws ParsingException {
         JadexInputParser parser = new JadexInputParser();
         parser.initLoggingOnly(inRoot);
     }
@@ -355,6 +357,7 @@ public final class IRPact implements IRPActAccess {
         LOGGER.info(IRPSection.GENERAL, "valid image path, setup graphviz");
         GraphvizInputParser parser = new GraphvizInputParser();
         parser.setEnvironment(environment);
+        parser.setDownloadDir(CL_OPTIONS.getDownloadDirOrNull());
         parser.setImageOutputPath(CL_OPTIONS.getImagePath());
         graphvizConfiguration = parser.parseRoot(inRoot);
     }
@@ -595,6 +598,10 @@ public final class IRPact implements IRPActAccess {
         LOGGER.info(IRPSection.GENERAL, "simulation terminated");
     }
 
+    public boolean shouldCreateDummyOutputWithErrorMessage() {
+        return inRoot != null && inRoot.getGeneral().shouldPassErrorMessageToOutput();
+    }
+
     public void postSimulation() throws Exception {
         LOGGER.info(IRPSection.GENERAL, "start post-simulation");
         createNetworkAfterSimulation();
@@ -604,15 +611,29 @@ public final class IRPact implements IRPActAccess {
         finalTask();
     }
 
-    public void postSimulationWithDummyOutput(String dummyName) {
+    public void postSimulationWithDummyOutput() {
         LOGGER.info(IRPSection.GENERAL, "start dummy post-simulation");
-        createDummyOutput(dummyName);
+        outData = createDummyOutputData("DUMMY_OUTPUT", null);
+        storeOutputData(outData);
         callCallbacks();
         finalTask();
     }
 
-    private void createDummyOutput(String dummyName) {
-        LOGGER.info(IRPSection.GENERAL, "create dummy output");
+    public void postSimulationWithDummyOutputAndErrorMessage(Exception e) {
+        LOGGER.info(IRPSection.GENERAL, "start post-simulation with error ({})", e.getMessage());
+
+        String errorClass = e.getClass().getSimpleName();
+        String errorMsg = StringUtil.replaceSpace(e.getMessage(), "_");
+        String fullMsg = errorClass + "__" + errorMsg;
+        OutInformation[] errorInfo = {new OutInformation(fullMsg)};
+
+        outData = createDummyOutputData("ERROR_OUTPUT", errorInfo);
+        storeOutputData(outData);
+        callCallbacks();
+        finalTask();
+    }
+
+    private AnnualData<OutRoot> createDummyOutputData(String dummyName, OutInformation[] informations) {
         OutRoot outRoot = new OutRoot();
         OutConsumerAgentGroup outCag = new OutConsumerAgentGroup(dummyName);
         outCag.setAdoptionsThisPeriod(-1);
@@ -620,8 +641,8 @@ public final class IRPact implements IRPActAccess {
         outCag.setInitialAdoptionsThisPeriod(-1);
         outCag.setInitialAdoptionsCumulative(-1);
         outRoot.outConsumerAgentGroups = new OutConsumerAgentGroup[]{outCag};
-        outData = createOutputData(outRoot);
-        storeOutputData(outData);
+        outRoot.addInformations(informations);
+        return createOutputData(outRoot);
     }
 
     private void createOutput() throws Exception {
@@ -724,7 +745,7 @@ public final class IRPact implements IRPActAccess {
 
     private void copyLogIfPossible() {
         try {
-            if(CL_OPTIONS.logToFile() && inRoot.getGeneral().copyLogIfPossible()) {
+            if(CL_OPTIONS.logToFile() && inRoot.getGeneral().doCopyLogIfPossible()) {
                 Path logFile = CL_OPTIONS.getLogPath();
                 Path copyTarget = CL_OPTIONS.getCreatedDownloadDir().resolve(logFile.getFileName() + ".copy");
                 Files.copy(logFile, copyTarget, StandardCopyOption.REPLACE_EXISTING);

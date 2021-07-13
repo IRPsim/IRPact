@@ -8,9 +8,13 @@ import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InInformation;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.InScenarioVersion;
+import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
+import de.unileipzig.irpact.io.param.input.visualisation.network.InGraphvizGeneral;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.start.Start3;
 import de.unileipzig.irpact.start.irpact.IRPact;
+import de.unileipzig.irptools.graphviz.StandardLayoutAlgorithm;
+import de.unileipzig.irptools.graphviz.StandardOutputFormat;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.perennial.PerennialData;
 import de.unileipzig.irptools.io.perennial.PerennialFile;
@@ -280,11 +284,16 @@ public abstract class AbstractScenario implements Scenario {
         InRoot root = new InRoot();
         root.addInformation(getRevisionInformation());
         root.setVersion(InScenarioVersion.currentVersion());
-        root.general = new InGeneral();
+
+        root.setGeneral(new InGeneral());
         root.getGeneral().setTimeout(1, TimeUnit.MINUTES);
         root.getGeneral().setFirstSimulationYear(DEFAULT_INITIAL_YEAR);
         root.getGeneral().setLastSimulationYear(root.getGeneral().getFirstSimulationYear() + simulationDelta - 1);
         setupGeneral(root.getGeneral());
+
+        root.setGraphvizGeneral(new InGraphvizGeneral());
+        setupGraphvizGeneral(root.getGraphvizGeneral());
+        root.setConsumerAgentGroupColors(InConsumerAgentGroupColor.ALL);
         return root;
     }
 
@@ -292,6 +301,14 @@ public abstract class AbstractScenario implements Scenario {
         if(generalSetup != null) {
             generalSetup.accept(general);
         }
+    }
+
+    public void setupGraphvizGeneral(InGraphvizGeneral general) {
+        general.setScaleFactor(0);
+        general.setStoreDotFile(false);
+        general.setFixedNeatoPosition(false);
+        general.setOutputFormat(StandardOutputFormat.PNG);
+        general.setLayoutAlgorithm(StandardLayoutAlgorithm.FDP);
     }
 
     public InInformation getRevisionInformation() {

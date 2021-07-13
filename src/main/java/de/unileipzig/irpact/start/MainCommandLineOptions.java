@@ -6,7 +6,7 @@ import de.unileipzig.irpact.commons.util.MapResourceBundle;
 import de.unileipzig.irpact.core.logging.IRPLoggingMessage;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.start.irpact.IRPact;
-import de.unileipzig.irpact.start.irpact.IRPactExecutors;
+import de.unileipzig.irpact.start.irpact.executors.IRPactExecutors;
 import de.unileipzig.irpact.util.R.RscriptEngine;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
@@ -444,11 +444,33 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             return outputDir;
         }
     }
+    public Path getOutputDirOrNull() {
+        checkExecuted();
+        if(outputDir == null) {
+            Path outputPath = getOutputPath();
+            return outputPath == null
+                    ? null
+                    : outputPath.getParent();
+        } else {
+            return outputDir;
+        }
+    }
 
     public Path getDownloadDir() {
         checkExecuted();
         if(downloadDir == null) {
             return getOutputDir().resolve(IRPact.DOWNLOAD_DIR_NAME);
+        } else {
+            return downloadDir;
+        }
+    }
+    public Path getDownloadDirOrNull() {
+        checkExecuted();
+        if(downloadDir == null) {
+            Path outputDir = getOutputDirOrNull();
+            return outputDir == null
+                    ? null
+                    : outputDir.resolve(IRPact.DOWNLOAD_DIR_NAME);
         } else {
             return downloadDir;
         }
@@ -660,7 +682,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         if(hasOutputPath()) {
             return CommandLine.ExitCode.OK;
         } else {
-            if(hasCallback()) {
+            if(hasCallback() || isNoSimulation()) {
                 return CommandLine.ExitCode.OK;
             } else {
                 executeResultMessage = new IRPLoggingMessage("missing output");

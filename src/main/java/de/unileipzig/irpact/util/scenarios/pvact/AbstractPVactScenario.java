@@ -2,7 +2,7 @@ package de.unileipzig.irpact.util.scenarios.pvact;
 
 import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
-import de.unileipzig.irpact.core.util.img.SupportedEngine;
+import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
@@ -13,7 +13,7 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactCons
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
-import de.unileipzig.irpact.io.param.input.image.InGenericOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.network.InNoDistance;
@@ -126,7 +126,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         general.timeout = TimeUnit.MINUTES.toMillis(1);
         general.runOptActDemo = false;
         general.runPVAct = true;
-        general.logLevel = IRPLevel.ALL.getLevelId();
+        general.setLogLevel(IRPLevel.INFO);
         general.logAllIRPact = true;
         general.enableAllDataLogging();
         general.enableAllResultLogging();

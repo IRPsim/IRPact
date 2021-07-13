@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons.util.table;
 
+import de.unileipzig.irpact.commons.util.io.Header;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -18,6 +20,8 @@ public interface Table<T> {
     //=========================
     //column
     //=========================
+
+    Header getHeaderInstance();
 
     List<String> getHeader();
 

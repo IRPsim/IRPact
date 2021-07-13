@@ -33,6 +33,8 @@ public final class ParamUtil {
     public static final String G0_DOMAIN = "(0,)";
     public static final Object[] VALUE_TRUE = {"1"};
     public static final Object[] VALUE_FALSE = {"0"};
+    public static final Object[] VALUE_ONE = {"1"};
+    public static final Object[] VALUE_ZERO = {"0"};
     public static final Object[] VALUE_NEG_ONE = {"-1"};
 
     private ParamUtil() {
@@ -42,6 +44,16 @@ public final class ParamUtil {
         T[] newArr = Arrays.copyOf(arr, arr.length + 1);
         newArr[arr.length] = value;
         return newArr;
+    }
+
+    public static <T> T[] addAll(T[] target, T[] values) {
+        if(values == null || values.length == 0) {
+            return target;
+        } else {
+            T[] newArr = Arrays.copyOf(target, target.length + values.length);
+            System.arraycopy(values, 0, newArr, target.length, values.length);
+            return newArr;
+        }
     }
 
     public static String getClassNameWithoutClassSuffix(Class<?> c) {
@@ -60,6 +72,14 @@ public final class ParamUtil {
 
     public static UnaryOperator<String> buildDefaultParameterNameOperator(Class<?> c) {
         return field -> buildDefaultParameterName(c, field);
+    }
+
+    public static String buildDefaultScalarName(Class<?> c, String field) {
+        return Constants.SCA + getClassNameWithoutClassSuffix(c) + "_" + field;
+    }
+
+    public static UnaryOperator<String> buildDefaultScalarNameOperator(Class<?> c) {
+        return field -> buildDefaultScalarName(c, field);
     }
 
     public static Object[] varargs(Object singleton) {
@@ -266,6 +286,14 @@ public final class ParamUtil {
         builder.putCache(dataKey);
     }
 
+    public static void addPathElement(TreeAnnotationResource res, EdnPath path, String priorityKeyForLastElement) {
+        addPathElement(res, path.getLast(), priorityKeyForLastElement);
+    }
+
+    public static void addPathElement(TreeAnnotationResource res, EdnPath path) {
+        addPathElement(res, path.getLast(), path.getSecondToLast());
+    }
+
     public static TreeAnnotationResource.EntryBuilder computeEntryBuilderIfAbsent(TreeAnnotationResource res, Class<?> c) {
         TreeAnnotationResource.Entry entry = res.getEntry(c);
         if(entry == null) {
@@ -390,6 +418,16 @@ public final class ParamUtil {
         }
     }
 
+    public static void setDomain(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String[] fields,
+            String domain) {
+        for(String field: fields) {
+            setDomain(res, c, field, domain);
+        }
+    }
+
     public static void addEntry(TreeAnnotationResource res, Class<?> c) {
         IOResources.Data userData = res.getUserDataAs();
         LocalizationData loc = userData.getData();
@@ -417,12 +455,25 @@ public final class ParamUtil {
         res.putPath(c, res.getCachedElements(keys));
     }
 
+    public static void putClassPath(TreeAnnotationResource res, Class<?> c, EdnPath path) {
+        putClassPath(res, c, path.toArrayWithoutRoot());
+    }
+
     public static void putFieldPath(TreeAnnotationResource res, Class<?> c, String field, String... keys) {
         res.putPath(c, field, res.getCachedElements(keys));
     }
 
+    public static void putFieldPath(TreeAnnotationResource res, Class<?> c, String field, EdnPath path) {
+        putFieldPath(res, c, field, path.toArrayWithoutRoot());
+    }
+
     public static void putFieldPathAndAddEntry(TreeAnnotationResource res, Class<?> c, String field, String... keys) {
         putFieldPath(res, c, field, keys);
+        addEntry(res, c, field);
+    }
+
+    public static void putFieldPathAndAddEntry(TreeAnnotationResource res, Class<?> c, String field, EdnPath path) {
+        putFieldPath(res, c, field, path);
         addEntry(res, c, field);
     }
 }

@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param.input;
 import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
-import de.unileipzig.irpact.core.util.img.DataToVisualize;
+import de.unileipzig.irpact.core.postprocessing.image.DataToVisualize;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
@@ -14,11 +14,11 @@ import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistrib
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
-import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
-import de.unileipzig.irpact.io.param.input.image.InGenericOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InGnuPlotOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InROutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InGnuPlotOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InROutputImage;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.network.InCompleteGraphTopology;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
@@ -33,20 +33,15 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedSpatialInform
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.irpopt.SideCustom;
-import de.unileipzig.irpact.start.optact.gvin.AgentGroup;
 import de.unileipzig.irpact.start.optact.in.*;
 import de.unileipzig.irpact.start.optact.network.IFreeMultiGraphTopology;
-import de.unileipzig.irpact.start.optact.network.IGraphTopology;
 import de.unileipzig.irpact.start.optact.network.IWattsStrogatzModel;
 import de.unileipzig.irptools.defstructure.DefaultScenarioFactory;
-import de.unileipzig.irptools.graphviz.def.GraphvizColor;
-import de.unileipzig.irptools.graphviz.def.GraphvizGlobal;
-import de.unileipzig.irptools.graphviz.def.GraphvizLayoutAlgorithm;
-import de.unileipzig.irptools.graphviz.def.GraphvizOutputFormat;
+import de.unileipzig.irptools.graphviz.StandardLayoutAlgorithm;
+import de.unileipzig.irptools.graphviz.StandardOutputFormat;
 import de.unileipzig.irptools.util.DoubleTimeSeries;
 import de.unileipzig.irptools.util.Table;
 
-import java.awt.*;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -142,7 +137,7 @@ public class InExample implements DefaultScenarioFactory {
         general.timeout = TimeUnit.MINUTES.toMillis(1);
         general.runOptActDemo = false;
         general.runPVAct = true;
-        general.logLevel = IRPLevel.ALL.getLevelId();
+        general.setLogLevel(IRPLevel.ALL);
         general.logAllIRPact = true;
         general.enableAllDataLogging();
         general.enableAllResultLogging();
@@ -162,23 +157,15 @@ public class InExample implements DefaultScenarioFactory {
 //        root.visibleBinaryData = new VisibleBinaryData[]{vbd};
 
         //graphviz
-        GraphvizColor gc1 = GraphvizColor.RED;
-        GraphvizColor gc2 = GraphvizColor.GREEN;
-        root.colors = new GraphvizColor[]{gc1, gc2};
-
-        InConsumerAgentGroupColor cag0Color = new InConsumerAgentGroupColor(cag0.getName() + "_color", cag0, gc1);
-        InConsumerAgentGroupColor cag1Color = new InConsumerAgentGroupColor(cag1.getName() + "_color", cag1, gc2);
+        InConsumerAgentGroupColor cag0Color = InConsumerAgentGroupColor.RED.derive(cag0);
+        InConsumerAgentGroupColor cag1Color = InConsumerAgentGroupColor.GREEN.derive(cag1);
         root.setConsumerAgentGroupColors(new InConsumerAgentGroupColor[]{cag0Color, cag1Color});
 
-        GraphvizLayoutAlgorithm.DOT.useLayout = false;
-        GraphvizLayoutAlgorithm.CIRCO.useLayout = true;
-        root.layoutAlgorithms = GraphvizLayoutAlgorithm.DEFAULTS;
-        GraphvizOutputFormat.PNG.useFormat = true;
-        root.outputFormats = new GraphvizOutputFormat[] { GraphvizOutputFormat.PNG };
-
-        root.graphvizGlobal = new GraphvizGlobal();
-        root.graphvizGlobal.fixedNeatoPosition = false;
-        root.graphvizGlobal.scaleFactor = 0.0;
+        root.getGraphvizGeneral().setLayoutAlgorithm(StandardLayoutAlgorithm.FDP);
+        root.getGraphvizGeneral().setOutputFormat(StandardOutputFormat.PNG);
+        root.getGraphvizGeneral().setFixedNeatoPosition(false);
+        root.getGraphvizGeneral().setStoreDotFile(false);
+        root.getGraphvizGeneral().setScaleFactor(0);
 
         //=====
         root.version = new InScenarioVersion[]{InScenarioVersion.currentVersion()};
@@ -278,7 +265,7 @@ public class InExample implements DefaultScenarioFactory {
         general.timeout = TimeUnit.MINUTES.toMillis(1);
         general.runOptActDemo = false;
         general.runPVAct = true;
-        general.logLevel = IRPLevel.ALL.getLevelId();
+        general.setLogLevel(IRPLevel.ALL);
         general.logAllIRPact = true;
         general.enableAllDataLogging();
         general.enableAllResultLogging();
@@ -298,23 +285,15 @@ public class InExample implements DefaultScenarioFactory {
 //        root.visibleBinaryData = new VisibleBinaryData[]{vbd};
 
         //graphviz
-        GraphvizColor gc1 = GraphvizColor.RED;
-        GraphvizColor gc2 = GraphvizColor.GREEN;
-        root.colors = new GraphvizColor[]{gc1, gc2};
-
-        InConsumerAgentGroupColor cag0Color = new InConsumerAgentGroupColor(cag0.getName() + "_color", cag0, gc1);
-        InConsumerAgentGroupColor cag1Color = new InConsumerAgentGroupColor(cag1.getName() + "_color", cag1, gc2);
+        InConsumerAgentGroupColor cag0Color = InConsumerAgentGroupColor.RED.derive(cag0);
+        InConsumerAgentGroupColor cag1Color = InConsumerAgentGroupColor.GREEN.derive(cag1);
         root.setConsumerAgentGroupColors(new InConsumerAgentGroupColor[]{cag0Color, cag1Color});
 
-        GraphvizLayoutAlgorithm.DOT.useLayout = false;
-        GraphvizLayoutAlgorithm.CIRCO.useLayout = true;
-        root.layoutAlgorithms = GraphvizLayoutAlgorithm.DEFAULTS;
-        GraphvizOutputFormat.PNG.useFormat = true;
-        root.outputFormats = new GraphvizOutputFormat[] { GraphvizOutputFormat.PNG };
-
-        root.graphvizGlobal = new GraphvizGlobal();
-        root.graphvizGlobal.fixedNeatoPosition = false;
-        root.graphvizGlobal.scaleFactor = 0.0;
+        root.getGraphvizGeneral().setLayoutAlgorithm(StandardLayoutAlgorithm.FDP);
+        root.getGraphvizGeneral().setOutputFormat(StandardOutputFormat.PNG);
+        root.getGraphvizGeneral().setFixedNeatoPosition(false);
+        root.getGraphvizGeneral().setStoreDotFile(false);
+        root.getGraphvizGeneral().setScaleFactor(0);
 
         //=====
         root.version = new InScenarioVersion[]{InScenarioVersion.currentVersion()};
@@ -355,31 +334,23 @@ public class InExample implements DefaultScenarioFactory {
     }
 
     public static void initGV(de.unileipzig.irpact.io.param.input.InRoot root) {
-        GraphvizColor gc1 = GraphvizColor.RED;
-        GraphvizColor gc2 = GraphvizColor.GREEN;
-        GraphvizColor gc3 = new GraphvizColor("BLUE", Color.BLUE);
-        GraphvizColor gc4 = GraphvizColor.PINK;
-        root.colors = new GraphvizColor[]{gc1, gc2, gc3, gc4};
+//        GraphvizColor gc1 = GraphvizColor.RED;
+//        GraphvizColor gc2 = GraphvizColor.GREEN;
+//        GraphvizColor gc3 = new GraphvizColor("BLUE", Color.BLUE);
+//        GraphvizColor gc4 = GraphvizColor.PINK;
+//        root.colors = new GraphvizColor[]{gc1, gc2, gc3, gc4};
+//
+//        AgentGroup ag1 = new AgentGroup("Gruppe1", 10, gc1);
+//        AgentGroup ag2 = new AgentGroup("Gruppe2", 15, gc2);
+//        AgentGroup ag3 = new AgentGroup("Gruppe3", 20, gc3);
+//        AgentGroup ag4 = new AgentGroup("Gruppe4", 25, gc4);
+//        root.agentGroups = new AgentGroup[]{ag1, ag2, ag3, ag4};
 
-        AgentGroup ag1 = new AgentGroup("Gruppe1", 10, gc1);
-        AgentGroup ag2 = new AgentGroup("Gruppe2", 15, gc2);
-        AgentGroup ag3 = new AgentGroup("Gruppe3", 20, gc3);
-        AgentGroup ag4 = new AgentGroup("Gruppe4", 25, gc4);
-        root.agentGroups = new AgentGroup[]{ag1, ag2, ag3, ag4};
-
-        GraphvizLayoutAlgorithm.DOT.useLayout = false;
-        GraphvizLayoutAlgorithm.CIRCO.useLayout = true;
-        root.layoutAlgorithms = GraphvizLayoutAlgorithm.DEFAULTS;
-        GraphvizOutputFormat.PNG.useFormat = true;
-        root.outputFormats = new GraphvizOutputFormat[] { GraphvizOutputFormat.PNG };
-        root.topologies = new IGraphTopology[] {
-                createWattsStrogatzModel("WSM1", 4, 0.0, 42, true),
-                createFreeMultiGraphTopology("FREE1", 3, 24, false)
-        };
-
-        root.graphvizGlobal = new GraphvizGlobal();
-        root.graphvizGlobal.fixedNeatoPosition = false;
-        root.graphvizGlobal.scaleFactor = 0.0;
+        root.getGraphvizGeneral().setLayoutAlgorithm(StandardLayoutAlgorithm.FDP);
+        root.getGraphvizGeneral().setOutputFormat(StandardOutputFormat.PNG);
+        root.getGraphvizGeneral().setFixedNeatoPosition(false);
+        root.getGraphvizGeneral().setStoreDotFile(false);
+        root.getGraphvizGeneral().setScaleFactor(0);
     }
 
     @Todo("default rausgenommen")
