@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ImageDemo extends AbstractScenario {
 
-    public static final int REVISION = 1;
+    public static final int REVISION = 2;
 
     public ImageDemo(String name, String creator, String description) {
         super(name, creator, description);
@@ -111,7 +111,7 @@ public class ImageDemo extends AbstractScenario {
         images.forEach(InOutputImage::disableAll);
         images.add(new InGnuPlotOutputImage("Bild1", DataToVisualize.ANNUAL_ZIP, true));
         images.add(new InGnuPlotOutputImage("Bild2", DataToVisualize.COMPARED_ANNUAL_ZIP, true));
-        images.add(new InGnuPlotOutputImage("Bild3", DataToVisualize.COMPARED_ANNUAL_ZIP, true));
+        images.add(new InGnuPlotOutputImage("Bild3", DataToVisualize.CUMULATIVE_ANNUAL_PHASE, true));
 
         //time
         InUnitStepDiscreteTimeModel timeModel = new InUnitStepDiscreteTimeModel("DiscreteUnitStep", 1, ChronoUnit.WEEKS);
