@@ -44,7 +44,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ImageDemo extends AbstractScenario {
 
-    public static final int REVISION = 2;
+    public static final int REVISION = 3;
 
     public ImageDemo(String name, String creator, String description) {
         super(name, creator, description);
