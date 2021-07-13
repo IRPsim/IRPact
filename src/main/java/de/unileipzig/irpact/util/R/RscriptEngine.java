@@ -19,7 +19,7 @@ public final class RscriptEngine implements Engine {
 
     private final String execCmd;
     protected Boolean usable = null;
-    protected String version = "NULL";
+    protected String version = null;
 
     public RscriptEngine() {
         this.execCmd = DEFAULT_COMMAND;
@@ -42,6 +42,9 @@ public final class RscriptEngine implements Engine {
 
     @Override
     public String printVersion() {
+        if(version == null) {
+            isUsable();
+        }
         return version;
     }
 

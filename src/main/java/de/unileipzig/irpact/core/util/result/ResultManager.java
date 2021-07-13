@@ -417,7 +417,7 @@ public class ResultManager implements LoggingHelper {
         if(gnuPlotEngine == null) {
             gnuPlotEngine = new GnuPlotEngine(clOptions.getGnuplotCommand());
             debug("use gnuplot engine '{}'", gnuPlotEngine.printCommand());
-            debug("gnuplot version: ", gnuPlotEngine.printVersion());
+            debug("gnuplot version: {}", gnuPlotEngine.printVersion());
         }
         return gnuPlotEngine;
     }

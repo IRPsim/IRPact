@@ -7,6 +7,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 /**
  * @author Daniel Abitz
@@ -19,7 +20,7 @@ public final class GnuPlotEngine implements Engine {
 
     private final String execCmd;
     protected Boolean usable = null;
-    protected String version = "NULL";
+    protected String version = null;
 
     public GnuPlotEngine() {
         this.execCmd = DEFAULT_COMMAND;
@@ -42,6 +43,9 @@ public final class GnuPlotEngine implements Engine {
 
     @Override
     public String printVersion() {
+        if(version == null) {
+            isUsable();
+        }
         return version;
     }
 
