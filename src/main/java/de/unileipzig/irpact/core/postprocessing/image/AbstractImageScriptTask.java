@@ -188,7 +188,7 @@ public abstract class AbstractImageScriptTask extends NameableBase {
 
     private static void cleanUp(boolean storeFlag, Path path) {
         if(storeFlag) {
-            LOGGER.trace(IRPSection.RESULT, "store '{}'", path);
+            LOGGER.trace(IRPSection.RESULT, "stored '{}' (exists={})", path, Files.exists(path));
         } else {
             delete(path);
         }

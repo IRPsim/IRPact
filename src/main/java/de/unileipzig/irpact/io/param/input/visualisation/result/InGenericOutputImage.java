@@ -231,7 +231,7 @@ public class InGenericOutputImage implements InOutputImage {
         List<DataToVisualize> modes = new ArrayList<>();
         if(annualZip) modes.add(DataToVisualize.ANNUAL_ZIP);
         if(annualZipWithReal) modes.add(DataToVisualize.COMPARED_ANNUAL_ZIP);
-        if(cumulativeAnnualPhase) modes.add(DataToVisualize.COMPARED_ANNUAL_ZIP);
+        if(cumulativeAnnualPhase) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE);
 
         switch(modes.size()) {
             case 0:

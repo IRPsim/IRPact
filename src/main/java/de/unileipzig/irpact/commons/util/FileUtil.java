@@ -100,6 +100,14 @@ public final class FileUtil {
         return sb.toString();
     }
 
+    public static String tryReadString(Path input, Charset charset) {
+        try {
+            return readString(input, charset);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
     public static boolean deleteDirIfExists(Path dir) throws IOException {
         if(Files.exists(dir)) {
             if(Files.isDirectory(dir)) {

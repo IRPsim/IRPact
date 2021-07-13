@@ -76,6 +76,20 @@ public class IRPArgs extends SimpleArgs {
         return this;
     }
 
+    public IRPArgs setImage(Path path) {
+        if(path == null) {
+            remove("--image");
+        } else {
+            set("--image", path.toString());
+        }
+        return this;
+    }
+
+    public IRPArgs setNoSimulation() {
+        set("--noSimulation");
+        return this;
+    }
+
     public IRPArgs setDataDir(Path path) {
         if(path == null) {
             remove("--dataDir");

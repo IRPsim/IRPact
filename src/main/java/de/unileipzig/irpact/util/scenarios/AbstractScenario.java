@@ -52,6 +52,10 @@ public abstract class AbstractScenario implements Scenario {
     protected Path downloadDir;
     protected Path outputPath;
     protected Path dataDir;
+    protected Path imagePath;
+    protected Path gnuplotCommand;
+    protected Path rCommand;
+    protected boolean noSimulation;
 
     protected int simulationDelta = 1;
     protected Consumer<? super InGeneral> generalSetup;
@@ -76,6 +80,10 @@ public abstract class AbstractScenario implements Scenario {
         if(downloadDir != null) args.setDownloadDir(downloadDir);
         if(outputPath != null) args.setOutput(outputPath);
         if(dataDir != null) args.setDataDir(dataDir);
+        if(imagePath != null) args.setImage(imagePath);
+        if(noSimulation) args.setNoSimulation();
+        if(gnuplotCommand != null) args.setGnuPlotCommand(gnuplotCommand);
+        if(rCommand != null) args.setRscriptCommand(rCommand);
     }
 
     public abstract List<InRoot> createInRoots();
@@ -227,6 +235,38 @@ public abstract class AbstractScenario implements Scenario {
 
     public Path getDataDir() {
         return dataDir;
+    }
+
+    public void setImagePath(Path imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public Path getImagePath() {
+        return imagePath;
+    }
+
+    public void setNoSimulation(boolean noSimulation) {
+        this.noSimulation = noSimulation;
+    }
+
+    public boolean isNoSimulation() {
+        return noSimulation;
+    }
+
+    public void setGnuplotCommand(Path gnuplotCommand) {
+        this.gnuplotCommand = gnuplotCommand;
+    }
+
+    public Path getGnuplotCommand() {
+        return gnuplotCommand;
+    }
+
+    public void setRCommand(Path rCommand) {
+        this.rCommand = rCommand;
+    }
+
+    public Path getRCommand() {
+        return rCommand;
     }
 
     protected void validate(List<InRoot> inRoots) {
