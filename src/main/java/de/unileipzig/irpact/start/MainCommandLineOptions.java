@@ -682,7 +682,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         if(hasOutputPath()) {
             return CommandLine.ExitCode.OK;
         } else {
-            if(hasCallback()) {
+            if(hasCallback() || isNoSimulation()) {
                 return CommandLine.ExitCode.OK;
             } else {
                 executeResultMessage = new IRPLoggingMessage("missing output");
