@@ -417,6 +417,7 @@ public class ResultManager implements LoggingHelper {
         if(gnuPlotEngine == null) {
             gnuPlotEngine = new GnuPlotEngine(clOptions.getGnuplotCommand());
             debug("use gnuplot engine '{}'", gnuPlotEngine.printCommand());
+            debug("gnuplot version: ", gnuPlotEngine.printVersion());
         }
         return gnuPlotEngine;
     }
@@ -433,6 +434,7 @@ public class ResultManager implements LoggingHelper {
         if(rscriptEngine == null) {
             rscriptEngine = new RscriptEngine(clOptions.getRscriptCommand());
             debug("use Rscript engine '{}'", rscriptEngine.printCommand());
+            debug("R version: {}", rscriptEngine.printVersion());
         }
         return rscriptEngine;
     }
