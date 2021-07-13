@@ -4,15 +4,17 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.misc.graphviz.BasicGraphvizConfiguration;
 import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.start.InputParser;
-import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
 import de.unileipzig.irptools.graphviz.LayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.OutputFormat;
-import de.unileipzig.irptools.graphviz.def.GraphvizColor;
 import de.unileipzig.irptools.util.log.IRPLogger;
+import guru.nidi.graphviz.attribute.Color;
 
 import java.nio.file.Path;
 
@@ -77,7 +79,7 @@ public class GraphvizInputParser implements InputParser {
     /**
      * @author Daniel Abitz
      */
-    private static class ParsingJob {
+    private static class ParsingJob implements LoggingHelper {
 
         private final InRoot root;
         private final SimulationEnvironment environment;
@@ -85,23 +87,25 @@ public class GraphvizInputParser implements InputParser {
         private final Path imageOutputPath;
         private final BasicGraphvizConfiguration configuration = new BasicGraphvizConfiguration();
 
-        private ParsingJob(SimulationEnvironment environment, Path downloadDir, Path imageOutputPath, InRoot root) {
+        private ParsingJob(
+                SimulationEnvironment environment,
+                Path downloadDir,
+                Path imageOutputPath,
+                InRoot root) {
             this.environment = environment;
             this.downloadDir = downloadDir;
             this.imageOutputPath = imageOutputPath;
             this.root = root;
         }
 
-        private static void log(String msg) {
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, msg);
+        @Override
+        public IRPLogger getDefaultLogger() {
+            return LOGGER;
         }
 
-        private static void log(String pattern, Object arg) {
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, pattern, arg);
-        }
-
-        private static void log(String pattern, Object arg1, Object arg2) {
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, pattern, arg1, arg2);
+        @Override
+        public IRPSection getDefaultSection() {
+            return IRPSection.INITIALIZATION_PARAMETER;
         }
 
         private GraphvizConfiguration run() throws ParsingException {
@@ -121,30 +125,57 @@ public class GraphvizInputParser implements InputParser {
         }
 
         private void parseColors() throws ParsingException {
-            log("parse Colors");
+            trace("parse Colors");
             for(InConsumerAgentGroupColor grpColor: root.getConsumerAgentGroupColors()) {
-                ConsumerAgentGroup cag = environment.getAgents().getConsumerAgentGroup(grpColor.getGroup().getName());
-                if(cag == null) {
-                    throw new IllegalArgumentException("ConsumerGroup '" + grpColor.getGroup().getName() + "' not found");
+                if(grpColor.hasConsumerAgentGroups()) {
+                    for(InConsumerAgentGroup inCag: grpColor.getGroups()) {
+                        ConsumerAgentGroup cag = toCag(inCag);
+                        Color color = getColor(inCag, cag);
+                        trace("set color '{}' for cag '{}", color.value, cag.getName());
+                        configuration.putColor(cag, color);
+                    }
                 }
-                GraphvizColor color = grpColor.getColor();
-
-                log("set color '{}' for agent group '{}'", color.getColorCode(), cag.getName());
-                configuration.putColor(cag, color);
             }
         }
 
+        private ConsumerAgentGroup toCag(InConsumerAgentGroup inCag) throws ParsingException {
+            ConsumerAgentGroup cag = environment.getAgents()
+                    .getConsumerAgentGroup(inCag.getName());
+            if(cag == null) {
+                throw new ParsingException("cag '{}' not found", inCag.getName());
+            }
+            return cag;
+        }
+
+        private Color getColor(InConsumerAgentGroup inCag, ConsumerAgentGroup cag) throws ParsingException {
+            Color color = null;
+            for(InConsumerAgentGroupColor grpColor: root.getConsumerAgentGroupColors()) {
+                if(grpColor.hasConsumerAgentGroup(inCag)) {
+                    if(color == null) {
+                        color = grpColor.toGraphvizColor();
+                    } else {
+                        throw new ParsingException("cag '{}' already has a color (current={}, new={})", cag.getName(), color.value, grpColor.toGraphvizColor().value);
+                    }
+                }
+            }
+            if(color == null) {
+                info("no color set for ConsumerAgentGroup '{}', using black", inCag.getName());
+                color = Color.BLACK;
+            }
+            return color;
+        }
+
         private void parseLayoutAlgorithm() throws ParsingException {
-            log("parse LayoutAlgorithm");
+            trace("parse LayoutAlgorithm");
             LayoutAlgorithm algorithm = root.getGraphvizGeneral().getLayoutAlgorithm();
-            log("use layout {}", algorithm.print());
+            trace("use layout {}", algorithm.print());
             configuration.setLayoutAlgorithm(algorithm);
         }
 
         private void parseOutputFormat() throws ParsingException {
-            log("parse OutputFormat");
+            trace("parse OutputFormat");
             OutputFormat format = root.getGraphvizGeneral().getOutputFormat();
-            log("use layout {}", format.print());
+            trace("use layout {}", format.print());
             configuration.setOutputFormat(format);
         }
     }

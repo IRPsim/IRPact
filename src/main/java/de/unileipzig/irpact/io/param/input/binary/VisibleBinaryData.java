@@ -3,6 +3,7 @@ package de.unileipzig.irpact.io.param.input.binary;
 import de.unileipzig.irpact.commons.util.IRPactBase32;
 import de.unileipzig.irpact.commons.util.data.BinaryData;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
+import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -10,7 +11,6 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
 import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 
@@ -31,7 +31,7 @@ public class VisibleBinaryData implements InIRPactEntity {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), GENERAL_SETTINGS, SPECIAL_SETTINGS, thisName());
+        putClassPath(res, thisClass(), InRootUI.SETT_SPECIAL_BIN);
         addEntry(res, thisClass());
         addEntry(res, thisClass(), "idVisible");
     }

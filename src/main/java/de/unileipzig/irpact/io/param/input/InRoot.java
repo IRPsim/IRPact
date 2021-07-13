@@ -1,10 +1,10 @@
 package de.unileipzig.irpact.io.param.input;
 
-import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.*;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
@@ -15,18 +15,18 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactCons
 import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.agent.population.InAgentPopulation;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedConsumerAgentPopulation;
-import de.unileipzig.irpact.io.param.input.graphviz.InGraphvizGeneral;
-import de.unileipzig.irpact.io.param.input.image.InGenericOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InGnuPlotOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InROutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.network.InGraphvizGeneral;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InGnuPlotOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InROutputImage;
 import de.unileipzig.irpact.io.param.input.interest.InProductGroupThresholdEntry;
 import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.param.input.file.InFile;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
-import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
+import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.*;
 import de.unileipzig.irpact.io.param.irpopt.*;
@@ -401,7 +401,8 @@ public class InRoot implements RootClass {
         return graphvizGeneral;
     }
 
-    @FieldDefinition
+    //wird nicht mehr unterstuetzt
+    @Deprecated
     public GraphvizColor[] colors = new GraphvizColor[0];
     public GraphvizColor[] getColors() {
         return colors;
@@ -414,24 +415,6 @@ public class InRoot implements RootClass {
     public InConsumerAgentGroupColor[] consumerAgentGroupColors = new InConsumerAgentGroupColor[0];
     public void setConsumerAgentGroupColors(InConsumerAgentGroupColor[] consumerAgentGroupColors) {
         this.consumerAgentGroupColors = consumerAgentGroupColors;
-    }
-    public void buildConsumerAgentGroupColors(InConsumerAgentGroup[] cags, GraphvizColor[] colors, boolean cycle) {
-        if(colors.length < cags.length && !cycle) {
-            throw new IRPactIllegalArgumentException("not enough colors: {} < {}", colors.length, cags.length);
-        }
-
-        InConsumerAgentGroupColor[] cagColors = new InConsumerAgentGroupColor[cags.length];
-        for(int i = 0; i < cags.length; i++) {
-            InConsumerAgentGroup cag = cags[i];
-            GraphvizColor color = colors[i % colors.length];
-
-            InConsumerAgentGroupColor cagColor = new InConsumerAgentGroupColor();
-            cagColor.setName(cag.getName() + "_color");
-            cagColor.setGroup(cag);
-            cagColor.setColor(color);
-            cagColors[i] = cagColor;
-        }
-        setConsumerAgentGroupColors(cagColors);
     }
     public InConsumerAgentGroupColor[] getConsumerAgentGroupColors() throws ParsingException {
         return ParamUtil.getNonNullArray(consumerAgentGroupColors, "consumerAgentGroupColors");
@@ -772,6 +755,9 @@ public class InRoot implements RootClass {
             InTimeModel.class,
             InUnitStepDiscreteTimeModel.class,
 
+            InGraphvizGeneral.class,
+            InConsumerAgentGroupColor.class,
+
             InGeneral.class,
             InInformation.class,
             InIRPactVersion.class,
@@ -822,12 +808,11 @@ public class InRoot implements RootClass {
             GvInRoot.CLASSES_WITHOUT_ROOT_AND_GRAPHVIZ
     );
 
+    @Todo("GraphvizColor irgendwann mal rauswerfen")
     public static final List<ParserInput> INPUT_WITH_GRAPHVIZ = ParserInput.merge(
             INPUT_WITHOUT_GRAPHVIZ,
             ParserInput.listOf(DefinitionType.INPUT,
-                    InGraphvizGeneral.class,
-                    GraphvizColor.class,
-                    InConsumerAgentGroupColor.class
+                    GraphvizColor.class
             )
     );
 

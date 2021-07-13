@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.exception.IRPactException;
 import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
+import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.logging.LoggingMessage;
 import de.unileipzig.irpact.commons.resource.BasicResourceLoader;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
@@ -336,21 +337,15 @@ public class Preloader3 {
         LOGGER.trace(IRPSection.GENERAL, "logSimulation={}", logSimulation);
     }
 
-    public static void applyLoggingSettings(InRoot root, SectionLoggingFilter filter) {
-        int logLevel = root.getGeneral().logLevel;
+    public static void applyLoggingSettings(InRoot root, SectionLoggingFilter filter) throws ParsingException {
+        IRPLevel logLevel = root.getGeneral().getLogLevel();
+        IRPLogging.setLevel(logLevel);
 
         boolean logAll = root.getGeneral().logAll;
         boolean logAllIRPact = root.getGeneral().logAllIRPact;
         boolean logAllTools = root.getGeneral().logAllTools;
         boolean logInitialization = root.getGeneral().logInitialization;
         boolean logSimulation = root.getGeneral().logSimulation;
-
-        IRPLevel level = IRPLevel.get(logLevel);
-        if(level == null) {
-            LOGGER.warn(IRPSection.GENERAL, "invalid log level {}, set level to default ({}) ", logLevel, IRPLevel.getDefault());
-            level = IRPLevel.getDefault();
-        }
-        IRPLogging.setLevel(level);
 
         IRPSection.removeAllFrom(filter);
         IRPSection.addAllTo(logAll, filter);

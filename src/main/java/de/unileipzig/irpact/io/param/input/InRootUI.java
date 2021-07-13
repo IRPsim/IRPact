@@ -16,10 +16,11 @@ import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.param.input.distribution.*;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
-import de.unileipzig.irpact.io.param.input.graphviz.InGraphvizGeneral;
-import de.unileipzig.irpact.io.param.input.image.InGenericOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InGnuPlotOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InROutputImage;
+import de.unileipzig.irpact.io.param.input.product.*;
+import de.unileipzig.irpact.io.param.input.visualisation.network.InGraphvizGeneral;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InGnuPlotOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InROutputImage;
 import de.unileipzig.irpact.io.param.input.interest.InProductGroupThresholdEntry;
 import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
@@ -32,15 +33,10 @@ import de.unileipzig.irpact.io.param.input.process.ra.uncert.InGlobalDeffuantUnc
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InGroupBasedDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
-import de.unileipzig.irpact.io.param.input.product.InBasicProductGroup;
-import de.unileipzig.irpact.io.param.input.product.InBasicProductGroupAttribute;
-import de.unileipzig.irpact.io.param.input.product.InFixProductFindingScheme;
-import de.unileipzig.irpact.io.param.input.product.InNameSplitProductGroupAttribute;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.*;
 import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
-import de.unileipzig.irptools.graphviz.def.GraphvizColor;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.util.ArrayList;
@@ -62,18 +58,28 @@ public class InRootUI {
     public static final EdnPath INFO_ABOUTSCENARIO = INFO.resolve(InScenarioVersion.thisName()).addTo(PATHS);
     public static final EdnPath INFO_INFO = INFO.resolve(InInformation.thisName()).addTo(PATHS);
 
-    public static final EdnPath GENSETT = ROOT.resolve(IOConstants.GENERAL_SETTINGS).addTo(PATHS);
-    public static final EdnPath GENSETT_LOG = GENSETT.resolve(IOConstants.LOGGING).addTo(PATHS);
-    public static final EdnPath GENSETT_LOG_GENERAL = GENSETT_LOG.resolve(IOConstants.LOGGING_GENERAL).addTo(PATHS);
-    public static final EdnPath GENSETT_LOG_DATA = GENSETT_LOG.resolve(IOConstants.LOGGING_DATA).addTo(PATHS);
-    public static final EdnPath GENSETT_LOG_RESULT = GENSETT_LOG.resolve(IOConstants.LOGGING_RESULT).addTo(PATHS);
-    public static final EdnPath GENSETT_LOG_SCRIPT = GENSETT_LOG.resolve(IOConstants.LOGGING_SCRIPT).addTo(PATHS);
-    public static final EdnPath GENSETT_IMG = GENSETT.resolve(IOConstants.IMAGE).addTo(PATHS);
-    public static final EdnPath GENSETT_IMG_GENERIC = GENSETT_IMG.resolve(InGenericOutputImage.thisName()).addTo(PATHS);
-    public static final EdnPath GENSETT_IMG_GNU = GENSETT_IMG.resolve(InGnuPlotOutputImage.thisName()).addTo(PATHS);
-    public static final EdnPath GENSETT_IMG_R = GENSETT_IMG.resolve(InROutputImage.thisName()).addTo(PATHS);
-    public static final EdnPath GENSETT_SPECIAL = GENSETT.resolve(IOConstants.SPECIAL_SETTINGS).addTo(PATHS);
-    public static final EdnPath GENSETT_SPECIAL_BIN = GENSETT_SPECIAL.resolve(VisibleBinaryData.thisName()).addTo(PATHS);
+    public static final EdnPath SETT = ROOT.resolve(IOConstants.SETTINGS).addTo(PATHS);
+    public static final EdnPath SETT_GENERAL = SETT.resolve(IOConstants.GENERAL_SETTINGS).addTo(PATHS);
+    public static final EdnPath SETT_GENERAL_LOG = SETT_GENERAL.resolve(IOConstants.LOGGING).addTo(PATHS);
+    public static final EdnPath SETT_SPECIAL = SETT.resolve(IOConstants.SPECIAL_SETTINGS).addTo(PATHS);
+    public static final EdnPath SETT_SPECIAL_BIN = SETT_SPECIAL.resolve(VisibleBinaryData.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_VISURESULT = SETT.resolve(IOConstants.RESULT_VISUALISATION).addTo(PATHS);
+    public static final EdnPath SETT_VISURESULT_GENERIC = SETT_VISURESULT.resolve(InGenericOutputImage.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_VISURESULT_GNU = SETT_VISURESULT.resolve(InGnuPlotOutputImage.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_VISURESULT_R = SETT_VISURESULT.resolve(InROutputImage.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_VISUNETWORK = SETT.resolve(IOConstants.NETWORK_VISUALISATION).addTo(PATHS);
+    public static final EdnPath SETT_VISUNETWORK_GENERAL = SETT_VISUNETWORK.resolve(InGraphvizGeneral.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_VISUNETWORK_AGENTCOLOR = SETT_VISUNETWORK.resolve(IOConstants.GRAPHVIZ_AGENT_COLOR_MAPPING).addTo(PATHS);
+    public static final EdnPath SETT_DATAOUTPUT = SETT.resolve(IOConstants.DATA_OUTPUT).addTo(PATHS);
+
+//    public static final EdnPath GENSETT = ROOT.resolve(IOConstants.GENERAL_SETTINGS).addTo(PATHS);
+//    public static final EdnPath GENSETT_LOG = GENSETT.resolve(IOConstants.LOGGING).addTo(PATHS);
+//    public static final EdnPath GENSETT_LOG_GENERAL = GENSETT_LOG.resolve(IOConstants.LOGGING_GENERAL).addTo(PATHS);
+//    public static final EdnPath GENSETT_LOG_DATA = GENSETT_LOG.resolve(IOConstants.LOGGING_DATA).addTo(PATHS);
+//    public static final EdnPath GENSETT_LOG_RESULT = GENSETT_LOG.resolve(IOConstants.LOGGING_RESULT).addTo(PATHS);
+//    public static final EdnPath GENSETT_LOG_SCRIPT = GENSETT_LOG.resolve(IOConstants.LOGGING_SCRIPT).addTo(PATHS);
+//    public static final EdnPath GENSETT_IMG = GENSETT.resolve(IOConstants.IMAGE).addTo(PATHS);
+//    public static final EdnPath GENSETT_SPECIAL = GENSETT.resolve(IOConstants.SPECIAL_SETTINGS).addTo(PATHS);
 
     public static final EdnPath ATTRNAMES = ROOT.resolve(InAttributeName.thisName()).addTo(PATHS);
 
@@ -111,7 +117,7 @@ public class InRootUI {
     public static final EdnPath AGENTS_CONSUMER_INTEREST = AGENTS_CONSUMER.resolve(IOConstants.CONSUMER_INTEREST).addTo(PATHS);
     public static final EdnPath AGENTS_CONSUMER_INTEREST_THRESHOLD = AGENTS_CONSUMER_INTEREST.resolve(InProductThresholdInterestSupplyScheme.thisName()).addTo(PATHS);
     public static final EdnPath AGENTS_CONSUMER_INTEREST_THRESHOLD_ENTRY = AGENTS_CONSUMER_INTEREST_THRESHOLD.resolve(InProductGroupThresholdEntry.thisName()).addTo(PATHS);
-    public static final EdnPath AGENTS_POP = AGENTS.resolve(IOConstants.CONSUMER).addTo(PATHS);
+    public static final EdnPath AGENTS_POP = AGENTS.resolve(IOConstants.POPULATION).addTo(PATHS);
     public static final EdnPath AGENTS_POP_FIX = AGENTS_POP.resolve(InFixConsumerAgentPopulation.thisName()).addTo(PATHS);
     public static final EdnPath AGENTS_POP_FILE = AGENTS_POP.resolve(InFileBasedConsumerAgentPopulation.thisName()).addTo(PATHS);
     public static final EdnPath AGENTS_POP_FILEPVACT = AGENTS_POP.resolve(InFileBasedPVactConsumerAgentPopulation.thisName()).addTo(PATHS);
@@ -132,6 +138,8 @@ public class InRootUI {
     public static final EdnPath PRODUCTS_ATTR = PRODUCTS.resolve(IOConstants.PRODUCTS_ATTR).addTo(PATHS);
     public static final EdnPath PRODUCTS_ATTR_BASIC = PRODUCTS_ATTR.resolve(InBasicProductGroupAttribute.thisName()).addTo(PATHS);
     public static final EdnPath PRODUCTS_ATTR_SPLIT = PRODUCTS_ATTR.resolve(InNameSplitProductGroupAttribute.thisName()).addTo(PATHS);
+    public static final EdnPath PRODUCTS_FIX = PRODUCTS.resolve(InFixProduct.thisName()).addTo(PATHS);
+    public static final EdnPath PRODUCTS_FIXATTR = PRODUCTS.resolve(InFixProductAttribute.thisName()).addTo(PATHS);
     public static final EdnPath PRODUCTS_FINDSCHE = PRODUCTS.resolve(IOConstants.PRODUCTS_FINDING_SCHEME).addTo(PATHS);
     public static final EdnPath PRODUCTS_FINDSCHE_FIX = PRODUCTS_FINDSCHE.resolve(InFixProductFindingScheme.thisName()).addTo(PATHS);
 
@@ -163,11 +171,6 @@ public class InRootUI {
     public static final EdnPath TIME_DISCRET = TIME.resolve(InDiscreteTimeModel.thisName()).addTo(PATHS);
     public static final EdnPath TIME_UNITDISCRET = TIME.resolve(InUnitStepDiscreteTimeModel.thisName()).addTo(PATHS);
 
-    public static final EdnPath GRAPHVIZ = ROOT.resolve(IOConstants.GRAPHVIZ).addTo(PATHS);
-    public static final EdnPath GRAPHVIZ_GENERAL = GRAPHVIZ.resolve(InGraphvizGeneral.thisName()).addTo(PATHS);
-    public static final EdnPath GRAPHVIZ_COLOR = GRAPHVIZ.resolve(GraphvizColor.class.getSimpleName()).addTo(PATHS);
-    public static final EdnPath GRAPHVIZ_AGENTCOLOR = GRAPHVIZ.resolve(IOConstants.GRAPHVIZ_AGENT_COLOR_MAPPING).addTo(PATHS);
-
     public static EdnPath SUBMODULE = ROOT.resolve(IOConstants.SUBMODULE).addTo(PATHS);
     public static EdnPath SUBMODULE_GV = SUBMODULE.resolve(IOConstants.SUBMODULE_GRAPHVIZDEMO).addTo(PATHS);
 
@@ -194,11 +197,9 @@ public class InRootUI {
     }
 
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, GraphvizColor.class, InRootUI.GRAPHVIZ_COLOR);
-        addEntry(res, GraphvizColor.class, "rgba");
-
         //optact rest
         res.getCachedElement("OPTACT").setParent(res.getCachedElement(SUBMODULE.getLast()));
         res.getCachedElement("AgentGroup_Element").setParent(res.getCachedElement("OPTACT"));
+        res.getCachedElement(IOConstants.GRAPHVIZ).setParent(res.getCachedElement("OPTACT"));
     }
 }

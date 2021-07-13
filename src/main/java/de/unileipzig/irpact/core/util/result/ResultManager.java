@@ -11,16 +11,16 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.InfoTag;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
+import de.unileipzig.irpact.core.postprocessing.data.adoptions.*;
+import de.unileipzig.irpact.core.postprocessing.image.*;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.core.util.MetaData;
-import de.unileipzig.irpact.core.util.img.*;
-import de.unileipzig.irpact.core.util.result.adoptions.*;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.image.InOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.util.R.RFileScript;
 import de.unileipzig.irpact.util.R.RscriptEngine;
@@ -64,7 +64,7 @@ public class ResultManager implements LoggingHelper {
 
     protected static String defaultSep = ";";
     protected static double defaultLinewidth = 1.0;
-    protected LocalizedImage localizedImage;
+    protected LocalizedImageData localizedImageData;
 
     protected MetaData metaData;
     protected MainCommandLineOptions clOptions;
@@ -515,7 +515,7 @@ public class ResultManager implements LoggingHelper {
         }
     }
 
-    protected static BuilderSettings createBuilderSettingsForZipLineChart(InOutputImage image, LocalizedImage localized) {
+    protected static BuilderSettings createBuilderSettingsForZipLineChart(InOutputImage image, LocalizedImageData localized) {
         return new BuilderSettings()
                 //general
                 .setTitle(localized.getTitle(DataToVisualize.ANNUAL_ZIP))
@@ -538,7 +538,7 @@ public class ResultManager implements LoggingHelper {
                 ;
     }
 
-    protected static BuilderSettings createBuilderSettingsForInteractionZipLineChart(InOutputImage image, LocalizedImage localized) {
+    protected static BuilderSettings createBuilderSettingsForInteractionZipLineChart(InOutputImage image, LocalizedImageData localized) {
         return new BuilderSettings()
                 //general
                 .setTitle(localized.getTitle(DataToVisualize.COMPARED_ANNUAL_ZIP))
@@ -565,7 +565,7 @@ public class ResultManager implements LoggingHelper {
                 ;
     }
 
-    protected static BuilderSettings createBuilderSettingsForPhaseStackedBar(InOutputImage image, LocalizedImage localized) {
+    protected static BuilderSettings createBuilderSettingsForPhaseStackedBar(InOutputImage image, LocalizedImageData localized) {
         return new BuilderSettings()
                 //general
                 .setTitle(localized.getTitle(DataToVisualize.CUMULATIVE_ANNUAL_PHASE))
@@ -587,22 +587,22 @@ public class ResultManager implements LoggingHelper {
                 ;
     }
 
-    protected LocalizedImage getLocalizedImage() {
-        if(localizedImage == null) {
+    protected LocalizedImageData getLocalizedImage() {
+        if(localizedImageData == null) {
             try {
                 if(tryLoadExternal()) {
-                    return localizedImage;
+                    return localizedImageData;
                 }
                 if(tryLoadInternal()) {
-                    return localizedImage;
+                    return localizedImageData;
                 }
                 warn("'{}' not found, use fallback", LocaleUtil.buildName(IMAGES_BASENAME, metaData.getLocale(), IMAGES_EXTENSION));
             } catch (Exception e) {
                 warn("loading '{}' failed, use fallback", LocaleUtil.buildName(IMAGES_BASENAME, metaData.getLocale(), IMAGES_EXTENSION));
             }
-            localizedImage = getDefaultLocalizedImage();
+            localizedImageData = getDefaultLocalizedImage();
         }
-        return localizedImage;
+        return localizedImageData;
     }
 
     protected boolean tryLoadExternal() throws IOException {
@@ -631,17 +631,17 @@ public class ResultManager implements LoggingHelper {
         }
         try {
             ObjectNode root = JsonUtil.read(in, JsonUtil.YAML);
-            LocalizedImageYaml localizedImage = new LocalizedImageYaml(metaData.getLocale(), root);
+            LocalizedImageDataYaml localizedImage = new LocalizedImageDataYaml(metaData.getLocale(), root);
             localizedImage.setEscapeSpecialCharacters(true);
-            this.localizedImage = localizedImage;
+            this.localizedImageData = localizedImage;
             return true;
         } finally {
             in.close();
         }
     }
 
-    protected static LocalizedImage getDefaultLocalizedImage() {
-        LocalizedImageYaml data = new LocalizedImageYaml(Locale.GERMAN, JsonUtil.YAML.createObjectNode());
+    protected static LocalizedImageData getDefaultLocalizedImage() {
+        LocalizedImageDataYaml data = new LocalizedImageDataYaml(Locale.GERMAN, JsonUtil.YAML.createObjectNode());
         data.setEscapeSpecialCharacters(true);
         //0
         //nichts

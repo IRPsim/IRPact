@@ -22,8 +22,8 @@ import de.unileipzig.irpact.core.simulation.Version;
 import de.unileipzig.irpact.core.util.BasicMetaData;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.core.util.result.ResultManager;
-import de.unileipzig.irpact.core.util.result.adoptions.AdoptionResultInfo;
-import de.unileipzig.irpact.core.util.result.adoptions.AnnualCumulativeAdoptionsForOutput;
+import de.unileipzig.irpact.core.postprocessing.data.adoptions.AdoptionResultInfo;
+import de.unileipzig.irpact.core.postprocessing.data.adoptions.AnnualCumulativeAdoptionsForOutput;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.*;
 import de.unileipzig.irpact.io.param.output.OutRoot;
@@ -307,7 +307,7 @@ public final class IRPact implements IRPActAccess {
         logSimulationInformations();
     }
 
-    private void initalizeLogging() {
+    private void initalizeLogging() throws ParsingException {
         JadexInputParser parser = new JadexInputParser();
         parser.initLoggingOnly(inRoot);
     }

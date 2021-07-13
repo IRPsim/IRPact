@@ -27,7 +27,7 @@ public class InIRPactVersion implements InIRPactEntity {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), INFORMATIONS, ABOUT_IRPACT);
+        putClassPath(res, thisClass(), InRootUI.INFO_ABOUTIRPACT);
         addEntry(res, thisClass(), "placeholder");
     }
 

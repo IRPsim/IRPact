@@ -45,11 +45,20 @@ public class InGeneral implements Copyable {
     }
 
     protected static final String[] timeUnitFieldNames = {"timeoutUseMs", "timeoutUseSec", "timeoutUseMin"};
+    protected static final String[] timeUnitFieldNamesWithoutDefault = {"timeoutUseMs", "timeoutUseSec"};
     protected static final XorWithoutUnselectRuleBuilder timeUnitBuilder = new XorWithoutUnselectRuleBuilder()
             .withKeyModifier(buildDefaultScalarNameOperator(thisClass()))
             .withTrueValue(Constants.TRUE1)
             .withFalseValue(Constants.FALSE0)
             .withKeys(timeUnitFieldNames);
+
+    protected static final String[] logLevelFieldNames = {"levelOff", "levelTrace", "levelDebug", "levelInfo", "levelWarn", "levelError", "levelAll"};
+    protected static final String[] logLevelFieldNamesWithoutDefault = {"levelOff", "levelTrace", "levelDebug", "levelWarn", "levelError", "levelAll"};
+    protected static final XorWithoutUnselectRuleBuilder logLevelBuilder = new XorWithoutUnselectRuleBuilder()
+            .withKeyModifier(buildDefaultScalarNameOperator(thisClass()))
+            .withTrueValue(Constants.TRUE1)
+            .withFalseValue(Constants.FALSE0)
+            .withKeys(logLevelFieldNames);
 
     public static void initRes(TreeAnnotationResource res) {
     }
@@ -65,46 +74,83 @@ public class InGeneral implements Copyable {
         addEntry(res, thisClass(), "lastSimulationYear");
 
         setDomain(res, thisClass(), "timout", GEQ0_DOMAIN);
+        setDomain(res, thisClass(), timeUnitFieldNames, BOOLEAN_DOMAIN);
 
         setDefault(res, thisClass(), "seed", varargs(42));
         setDefault(res, thisClass(), "timeout", varargs(1));
-        setDefault(res, thisClass(), new String[]{"timeoutUseMs", "timeoutUseSec"}, VALUE_FALSE);
+        setDefault(res, thisClass(), timeUnitFieldNamesWithoutDefault, VALUE_FALSE);
         setDefault(res, thisClass(), "timeoutUseMin", VALUE_TRUE);
 
         setRules(res, thisClass(), timeUnitFieldNames, timeUnitBuilder);
 
-        //logging general
-        putFieldPathAndAddEntry(res, thisClass(), "logLevel", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
-        putFieldPathAndAddEntry(res, thisClass(), "logAll", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
-        putFieldPathAndAddEntry(res, thisClass(), "logAllIRPact", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
-        putFieldPathAndAddEntry(res, thisClass(), "logAllTools", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
-        putFieldPathAndAddEntry(res, thisClass(), "logInitialization", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
-        putFieldPathAndAddEntry(res, thisClass(), "logSimulation", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
+        //logging
+        putFieldPathAndAddEntry(res, thisClass(), "levelOff", InRootUI.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "levelTrace", InRootUI.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "levelDebug", InRootUI.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "levelInfo", InRootUI.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "levelWarn", InRootUI.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "levelError", InRootUI.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "levelAll", InRootUI.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "logAll", InRootUI.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "logAllIRPact", InRootUI.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "logAllTools", InRootUI.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "logInitialization", InRootUI.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "logSimulation", InRootUI.SETT_GENERAL_LOG);
 
-        //logging data
-        putFieldPathAndAddEntry(res, thisClass(), "logGraphUpdate", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
-        putFieldPathAndAddEntry(res, thisClass(), "logRelativeAgreement", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
-        putFieldPathAndAddEntry(res, thisClass(), "logInterestUpdate", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
-        putFieldPathAndAddEntry(res, thisClass(), "logShareNetworkLocal", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
-        putFieldPathAndAddEntry(res, thisClass(), "logFinancalComponent", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
-        putFieldPathAndAddEntry(res, thisClass(), "logCalculateDecisionMaking", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+        setDomain(res, thisClass(), logLevelFieldNames, BOOLEAN_DOMAIN);
+        setDomain(res, thisClass(), "logAll", BOOLEAN_DOMAIN);
+        setDomain(res, thisClass(), "logAllIRPact", BOOLEAN_DOMAIN);
+        setDomain(res, thisClass(), "logAllTools", BOOLEAN_DOMAIN);
+        setDomain(res, thisClass(), "logInitialization", BOOLEAN_DOMAIN);
+        setDomain(res, thisClass(), "logSimulation", BOOLEAN_DOMAIN);
 
-        //logging result
-        putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsZip", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
-        putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsZipPhase", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
-        putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsAll", GENERAL_SETTINGS, LOGGING, LOGGING_RESULT);
+        setDefault(res, thisClass(), logLevelFieldNamesWithoutDefault, VALUE_FALSE);
+        setDefault(res, thisClass(), "levelInfo", VALUE_TRUE);
+        setDefault(res, thisClass(), "logAll", VALUE_FALSE);
+        setDefault(res, thisClass(), "logAllIRPact", VALUE_FALSE);
+        setDefault(res, thisClass(), "logAllTools", VALUE_FALSE);
+        setDefault(res, thisClass(), "logInitialization", VALUE_FALSE);
+        setDefault(res, thisClass(), "logSimulation", VALUE_FALSE);
 
-        //logging script
-        putFieldPathAndAddEntry(res, thisClass(), "logScriptAdoptionsZip", GENERAL_SETTINGS, LOGGING, LOGGING_SCRIPT);
-        putFieldPathAndAddEntry(res, thisClass(), "logScriptAdoptionsZipPhase", GENERAL_SETTINGS, LOGGING, LOGGING_SCRIPT);
+        setRules(res, thisClass(), logLevelFieldNames, logLevelBuilder);
 
         //special
-        putFieldPathAndAddEntry(res, thisClass(), "runOptActDemo", GENERAL_SETTINGS, SPECIAL_SETTINGS);
-        putFieldPathAndAddEntry(res, thisClass(), "runPVAct", GENERAL_SETTINGS, SPECIAL_SETTINGS);
-        putFieldPathAndAddEntry(res, thisClass(), "runMode", GENERAL_SETTINGS, SPECIAL_SETTINGS);
-        putFieldPathAndAddEntry(res, thisClass(), "scenarioMode", GENERAL_SETTINGS, SPECIAL_SETTINGS);
-        putFieldPathAndAddEntry(res, thisClass(), "copyLogIfPossible", GENERAL_SETTINGS, SPECIAL_SETTINGS);
-        putFieldPathAndAddEntry(res, thisClass(), "passErrorMessageToOutput", GENERAL_SETTINGS, SPECIAL_SETTINGS);
+        putFieldPathAndAddEntry(res, thisClass(), "runOptActDemo", InRootUI.SETT_SPECIAL);
+        putFieldPathAndAddEntry(res, thisClass(), "runPVAct", InRootUI.SETT_SPECIAL);
+        putFieldPathAndAddEntry(res, thisClass(), "runMode", InRootUI.SETT_SPECIAL);
+        putFieldPathAndAddEntry(res, thisClass(), "scenarioMode", InRootUI.SETT_SPECIAL);
+        putFieldPathAndAddEntry(res, thisClass(), "copyLogIfPossible", InRootUI.SETT_SPECIAL);
+        putFieldPathAndAddEntry(res, thisClass(), "passErrorMessageToOutput", InRootUI.SETT_SPECIAL);
+
+        setDomain(res, thisClass(), "runOptActDemo", BOOLEAN_DOMAIN);
+        setDomain(res, thisClass(), "runPVAct", BOOLEAN_DOMAIN);
+        setDomain(res, thisClass(), "copyLogIfPossible", BOOLEAN_DOMAIN);
+        setDomain(res, thisClass(), "passErrorMessageToOutput", BOOLEAN_DOMAIN);
+
+        //data
+        putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsZip", InRootUI.SETT_DATAOUTPUT);
+        putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsZipPhase", InRootUI.SETT_DATAOUTPUT);
+        putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsAll", InRootUI.SETT_DATAOUTPUT);
+
+        setDomain(res, thisClass(), "logResultAdoptionsZip", BOOLEAN_DOMAIN);
+        setDomain(res, thisClass(), "logResultAdoptionsZipPhase", BOOLEAN_DOMAIN);
+        setDomain(res, thisClass(), "logResultAdoptionsAll", BOOLEAN_DOMAIN);
+
+        //logging general
+//        putFieldPathAndAddEntry(res, thisClass(), "logLevel", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
+
+        //logging data
+//        putFieldPathAndAddEntry(res, thisClass(), "logGraphUpdate", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+//        putFieldPathAndAddEntry(res, thisClass(), "logRelativeAgreement", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+//        putFieldPathAndAddEntry(res, thisClass(), "logInterestUpdate", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+//        putFieldPathAndAddEntry(res, thisClass(), "logShareNetworkLocal", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+//        putFieldPathAndAddEntry(res, thisClass(), "logFinancalComponent", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+//        putFieldPathAndAddEntry(res, thisClass(), "logCalculateDecisionMaking", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
+
+        //logging script
+//        putFieldPathAndAddEntry(res, thisClass(), "logScriptAdoptionsZip", GENERAL_SETTINGS, LOGGING, LOGGING_SCRIPT);
+//        putFieldPathAndAddEntry(res, thisClass(), "logScriptAdoptionsZipPhase", GENERAL_SETTINGS, LOGGING, LOGGING_SCRIPT);
+
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -134,6 +180,10 @@ public class InGeneral implements Copyable {
     }
     public long getTimeout() {
         return timeout;
+    }
+    public void setTimeout(long duration, TimeUnit unit) {
+        setTimeout(duration);
+        setTimeoutUnit(unit);
     }
 
     @FieldDefinition
@@ -264,7 +314,79 @@ public class InGeneral implements Copyable {
     //=========================
 
     @FieldDefinition
-    public int logLevel;
+    public boolean levelOff;
+    @FieldDefinition
+    public boolean levelTrace;
+    @FieldDefinition
+    public boolean levelDebug;
+    @FieldDefinition
+    public boolean levelInfo;
+    @FieldDefinition
+    public boolean levelWarn;
+    @FieldDefinition
+    public boolean levelError;
+    @FieldDefinition
+    public boolean levelAll;
+
+    public IRPLevel getLogLevel() throws ParsingException {
+        List<IRPLevel> levels = new ArrayList<>();
+        if(levelOff) levels.add(IRPLevel.OFF);
+        if(levelTrace) levels.add(IRPLevel.TRACE);
+        if(levelDebug) levels.add(IRPLevel.DEBUG);
+        if(levelInfo) levels.add(IRPLevel.INFO);
+        if(levelWarn) levels.add(IRPLevel.WARN);
+        if(levelError) levels.add(IRPLevel.ERROR);
+        if(levelAll) levels.add(IRPLevel.ALL);
+        switch(levels.size()) {
+            case 0:
+                throw new ParsingException("Missing level");
+            case 1:
+                return levels.get(0);
+            default:
+                throw new ParsingException("Multiple levels: " + levels);
+        }
+    }
+
+    public void setLogLevel(IRPLevel level) {
+        if(level == null) {
+            throw new NullPointerException("level");
+        }
+
+        levelOff = false;
+        levelTrace = false;
+        levelDebug = false;
+        levelInfo = false;
+        levelWarn = false;
+        levelError = false;
+        levelAll = false;
+        switch (level) {
+            case OFF:
+                levelOff = true;
+                break;
+            case TRACE:
+                levelTrace = true;
+                break;
+            case DEBUG:
+                levelDebug = true;
+                break;
+            case INFO:
+                levelInfo = true;
+                break;
+            case WARN:
+                levelWarn = true;
+                break;
+            case ERROR:
+                levelError = true;
+                break;
+            case ALL:
+                levelAll = true;
+                break;
+            default:
+                throw new IllegalArgumentException("unsupported level: " + level);
+        }
+    }
+
+
 
     @FieldDefinition
     public boolean logAll;
@@ -350,13 +472,22 @@ public class InGeneral implements Copyable {
         InGeneral copy = new InGeneral();
         copy.seed = seed;
         copy.timeout = timeout;
+        copy.timeoutUseMs = timeoutUseMs;
+        copy.timeoutUseSec = timeoutUseSec;
+        copy.timeoutUseMin = timeoutUseMin;
         copy.setFirstSimulationYear(getFirstSimulationYear());
         copy.lastSimulationYear = lastSimulationYear;
         //flags
         copy.runPVAct = runPVAct;
         copy.runOptActDemo = runOptActDemo;
         //general logging
-        copy.logLevel = logLevel;
+        copy.levelOff = levelOff;
+        copy.levelTrace = levelTrace;
+        copy.levelDebug = levelDebug;
+        copy.levelInfo = levelInfo;
+        copy.levelWarn = levelWarn;
+        copy.levelError = levelError;
+        copy.levelAll = levelAll;
         copy.logAll = logAll;
         copy.logAllIRPact = logAllIRPact;
         copy.logAllTools = logAllTools;
@@ -399,14 +530,6 @@ public class InGeneral implements Copyable {
         return scenarioMode;
     }
 
-    public void setLogLevel(IRPLevel level) {
-        this.logLevel = level.getLevelId();
-    }
-
-    public void setTimeout(long duration, TimeUnit unit) {
-        this.timeout = unit.toMillis(duration);
-    }
-
     public void enableAllDataLogging() {
         logGraphUpdate = true;
         logRelativeAgreement = true;
@@ -427,14 +550,8 @@ public class InGeneral implements Copyable {
         logScriptAdoptionsZipPhase = true;
     }
 
-    public void parseLoggingSetup(@SuppressWarnings("unused") IRPactInputParser parser) {
-
-        IRPLevel level = IRPLevel.get(logLevel);
-        if(level == null) {
-            LOGGER.warn("invalid log level {}, set level to default ({}) ", logLevel, IRPLevel.getDefault());
-            level = IRPLevel.getDefault();
-        }
-        IRPLogging.setLevel(level);
+    public void parseLoggingSetup(@SuppressWarnings("unused") IRPactInputParser parser) throws ParsingException {
+        IRPLogging.setLevel(getLogLevel());
 
         SectionLoggingFilter filter = IRPLogging.getFilter();
         IRPSection.removeAllFrom(filter);

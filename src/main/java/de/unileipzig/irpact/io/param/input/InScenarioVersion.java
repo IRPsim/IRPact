@@ -37,7 +37,7 @@ public class InScenarioVersion implements InIRPactEntity {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), INFORMATIONS, thisName());
+        putClassPath(res, thisClass(), InRootUI.INFO_ABOUTSCENARIO);
         addEntry(res, thisClass());
         addEntry(res, thisClass(), "placeholder");
     }

@@ -8,10 +8,10 @@ import de.unileipzig.irptools.graphviz.DotProcess;
 import de.unileipzig.irptools.graphviz.GraphvizGenerator;
 import de.unileipzig.irptools.graphviz.LayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.OutputFormat;
-import de.unileipzig.irptools.graphviz.def.GraphvizColor;
 import de.unileipzig.irptools.util.ProcessResult;
 import de.unileipzig.irptools.util.Util;
 import de.unileipzig.irptools.util.log.IRPLogger;
+import guru.nidi.graphviz.attribute.Color;
 import guru.nidi.graphviz.attribute.Shape;
 
 import java.io.IOException;
@@ -29,9 +29,7 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicGraphvizConfiguration.class);
 
-    protected static final int LINE_LEN = 76;
-
-    protected Map<ConsumerAgentGroup, GraphvizColor> colorMapping;
+    protected Map<ConsumerAgentGroup, Color> colorMapping;
     protected LayoutAlgorithm layoutAlgorithm;
     protected OutputFormat outputFormat;
     protected Path downloadDir;
@@ -44,7 +42,7 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         this(new HashMap<>());
     }
 
-    public BasicGraphvizConfiguration(Map<ConsumerAgentGroup, GraphvizColor> colorMapping) {
+    public BasicGraphvizConfiguration(Map<ConsumerAgentGroup, Color> colorMapping) {
         this.colorMapping = colorMapping;
     }
 
@@ -68,11 +66,11 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         return colorMapping.containsKey(cag);
     }
 
-    public void putColor(ConsumerAgentGroup cag, GraphvizColor color) {
+    public void putColor(ConsumerAgentGroup cag, Color color) {
         colorMapping.put(cag, color);
     }
 
-    public GraphvizColor getColor(ConsumerAgentGroup cag) {
+    public Color getColor(ConsumerAgentGroup cag) {
         return colorMapping.get(cag);
     }
 
@@ -128,12 +126,12 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         return (node, graphvisNode) -> {
             ConsumerAgent ca = node.getAgent(ConsumerAgent.class);
             ConsumerAgentGroup cag = ca.getGroup();
-            GraphvizColor color = getColor(cag);
+            Color color = getColor(cag);
             if(color == null) {
-                LOGGER.info("no color set for ConsumerAgentGroup '{}', using black", cag.getName());
-                color = GraphvizColor.BLACK;
+                LOGGER.info("no color set for ConsumerAgentGroup '{}', using black for node", cag.getName());
+                color = Color.BLACK;
             }
-            graphvisNode.add(color.toGraphvizColor());
+            graphvisNode.add(color);
         };
     }
 
@@ -142,12 +140,12 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
             SocialGraph.Node source = edge.getSource();
             ConsumerAgent ca = source.getAgent(ConsumerAgent.class);
             ConsumerAgentGroup cag = ca.getGroup();
-            GraphvizColor color = getColor(cag);
+            Color color = getColor(cag);
             if(color == null) {
-                LOGGER.info("no color set for ConsumerAgentGroup '{}', using black", cag.getName());
-                color = GraphvizColor.BLACK;
+                LOGGER.info("no color set for ConsumerAgentGroup '{}', using black for links", cag.getName());
+                color = Color.BLACK;
             }
-            graphvizLink.add(color.toGraphvizColor());
+            graphvizLink.add(color);
         };
     }
 

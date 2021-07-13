@@ -13,16 +13,14 @@ public final class IOConstants {
 
     public static final String INFORMATIONS = "informations";
     public static final String INFORMATIONS_OUT = "informations_out";
-    public static final String ABOUT_IRPACT = "about_irpact";
 
+    public static final String SETTINGS = "settings";
     public static final String GENERAL_SETTINGS = "general_settings";
     public static final String LOGGING = "logging";
-    public static final String LOGGING_GENERAL = "logging_general";
-    public static final String LOGGING_DATA = "logging_data";
-    public static final String LOGGING_RESULT = "logging_result";
-    public static final String LOGGING_SCRIPT = "logging_script";
-    public static final String IMAGE = "image";
     public static final String SPECIAL_SETTINGS = "special_settings";
+    public static final String RESULT_VISUALISATION = "result_visualisation";
+    public static final String NETWORK_VISUALISATION = "network_visualisation";
+    public static final String DATA_OUTPUT = "data_output";
 
     public static final String FILES = "files";
 

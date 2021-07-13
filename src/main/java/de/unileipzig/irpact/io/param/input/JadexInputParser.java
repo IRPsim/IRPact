@@ -158,7 +158,7 @@ public class JadexInputParser implements IRPactInputParser {
     }
 
     @Override
-    public void initLoggingOnly(InRoot root) {
+    public void initLoggingOnly(InRoot root) throws ParsingException {
         reset();
         this.root = root;
         initLogging(root);
@@ -252,7 +252,7 @@ public class JadexInputParser implements IRPactInputParser {
         runSpecialOperations(root);
     }
 
-    private void initLogging(InRoot root) {
+    private void initLogging(InRoot root) throws ParsingException {
         root.general.parseLoggingSetup(this);
     }
 

@@ -178,4 +178,8 @@ public final class StringUtil {
         String escaped = escape + "n";
         return input.replace(escaped, "\n");
     }
+
+    public static String replaceSpace(String input, String replacement) {
+        return input.replace(" ", replacement);
+    }
 }

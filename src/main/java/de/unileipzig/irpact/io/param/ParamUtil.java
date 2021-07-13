@@ -408,6 +408,16 @@ public final class ParamUtil {
         }
     }
 
+    public static void setDomain(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String[] fields,
+            String domain) {
+        for(String field: fields) {
+            setDomain(res, c, field, domain);
+        }
+    }
+
     public static void addEntry(TreeAnnotationResource res, Class<?> c) {
         IOResources.Data userData = res.getUserDataAs();
         LocalizationData loc = userData.getData();
@@ -443,8 +453,17 @@ public final class ParamUtil {
         res.putPath(c, field, res.getCachedElements(keys));
     }
 
+    public static void putFieldPath(TreeAnnotationResource res, Class<?> c, String field, EdnPath path) {
+        putFieldPath(res, c, field, path.toArrayWithoutRoot());
+    }
+
     public static void putFieldPathAndAddEntry(TreeAnnotationResource res, Class<?> c, String field, String... keys) {
         putFieldPath(res, c, field, keys);
+        addEntry(res, c, field);
+    }
+
+    public static void putFieldPathAndAddEntry(TreeAnnotationResource res, Class<?> c, String field, EdnPath path) {
+        putFieldPath(res, c, field, path);
         addEntry(res, c, field);
     }
 }

@@ -11,9 +11,9 @@
     :sections [
       {
         :label "Über IRPact" 
-        :set "set_InIRPactVersionPlaceholder" 
+        :set "set_InIRPactVersion" 
         :description "IRPact v0.4.1" 
-        :tags [["InIRPactVersionPlaceholder" "placeholder"]]
+        :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
         :label "Über das Szenario" 
@@ -30,33 +30,30 @@
     ]
   } 
   {
-    :label "Allgemeine Einstellungen" 
+    :label "Einstellungen" 
     :description "todo" 
-    :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "timeoutUseMs"] ["InGeneral" "timeoutUseSec"] ["InGeneral" "timeoutUseMin"] ["InGeneral" "lastSimulationYear"]] 
     :sections [
       {
-        :label "Logging" 
-        :description "Einstellungen für das Logging und die Ausgabe von Informationen und Daten. Unabhängig von den individuellen Logging-Einstellungen werden wichtige Informationen weiterhin geloggt. Diese können nur mittels dem Logging-Level deaktiviert werden (nicht empfohlen)." 
+        :label "Allgemeine Einstellungen" 
+        :description "todo" 
+        :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "timeoutUseMs"] ["InGeneral" "timeoutUseSec"] ["InGeneral" "timeoutUseMin"] ["InGeneral" "lastSimulationYear"] ["InGeneral" "logGraphUpdate"] ["InGeneral" "logRelativeAgreement"] ["InGeneral" "logInterestUpdate"] ["InGeneral" "logShareNetworkLocal"] ["InGeneral" "logFinancalComponent"] ["InGeneral" "logCalculateDecisionMaking"] ["InGeneral" "logScriptAdoptionsZip"] ["InGeneral" "logScriptAdoptionsZipPhase"]] 
         :sections [
           {
-            :label "Allgemeine Loggingoptionen" 
-            :description "Hier lässt sich das allgemeine Logging von IRPact konfigurieren." 
-            :tags [["InGeneral" "logLevel"] ["InGeneral" "logAll"] ["InGeneral" "logAllIRPact"] ["InGeneral" "logAllTools"] ["InGeneral" "logInitialization"] ["InGeneral" "logSimulation"]]
-          } 
+            :label "Logging" 
+            :description "Einstellungen für das Logging und die Ausgabe von Informationen und Daten. Unabhängig von den individuellen Logging-Einstellungen werden wichtige Informationen weiterhin geloggt. Diese können nur mittels dem Logging-Level deaktiviert werden (nicht empfohlen)." 
+            :tags [["InGeneral" "levelOff"] ["InGeneral" "levelTrace"] ["InGeneral" "levelDebug"] ["InGeneral" "levelInfo"] ["InGeneral" "levelWarn"] ["InGeneral" "levelError"] ["InGeneral" "levelAll"] ["InGeneral" "logAll"] ["InGeneral" "logAllIRPact"] ["InGeneral" "logAllTools"] ["InGeneral" "logInitialization"] ["InGeneral" "logSimulation"]]
+          }
+        ]
+      } 
+      {
+        :label "Spezielle Einstellungen" 
+        :description "Hier lassen sich spezielle Modi aktivieren." 
+        :tags [["InGeneral" "runPVAct"] ["InGeneral" "runOptActDemo"] ["InGeneral" "runMode"] ["InGeneral" "scenarioMode"] ["InGeneral" "passErrorMessageToOutput"] ["InGeneral" "copyLogIfPossible"]] 
+        :sections [
           {
-            :label "Ausgabe von Berechnungen und Informationen" 
-            :description "Hier lassen sich Optionen finden, mit denen Berechnungsschritte oder essenziell Änderungen ausgegeben werden können." 
-            :tags [["InGeneral" "logGraphUpdate"] ["InGeneral" "logRelativeAgreement"] ["InGeneral" "logInterestUpdate"] ["InGeneral" "logShareNetworkLocal"] ["InGeneral" "logFinancalComponent"] ["InGeneral" "logCalculateDecisionMaking"]]
-          } 
-          {
-            :label "Ausgabe von Ergebnissen" 
-            :description "Diese Optionen ermöglichen die Ausgabe von Ergebnissen in spezieller Form." 
-            :tags [["InGeneral" "logResultAdoptionsZip"] ["InGeneral" "logResultAdoptionsZipPhase"] ["InGeneral" "logResultAdoptionsAll"]]
-          } 
-          {
-            :label "Ausgabe von Skripten und Daten" 
-            :description "Diese Optionen ermöglichen die Ausgabe von Ergebnissen in spezieller Form. Neben den Daten werden auch Skripte mit ausgegeben." 
-            :tags [["InGeneral" "logScriptAdoptionsZip"] ["InGeneral" "logScriptAdoptionsZipPhase"]]
+            :label "Binäre Daten" 
+            :set "set_VisibleBinaryData" 
+            :tags [["VisibleBinaryData" "idVisible"]]
           }
         ]
       } 
@@ -85,16 +82,26 @@
         ]
       } 
       {
-        :label "Spezielle Einstellungen" 
-        :description "Hier lassen sich spezielle Modi aktivieren." 
-        :tags [["InGeneral" "runPVAct"] ["InGeneral" "runOptActDemo"] ["InGeneral" "runMode"] ["InGeneral" "scenarioMode"] ["InGeneral" "copyLogIfPossible"]] 
+        :label "Netzwerkvisualisierung" 
+        :description "Hier kann die Netzwerkvisualisierung konfiguriert werden." 
         :sections [
           {
-            :label "Binäre Daten" 
-            :set "set_VisibleBinaryData" 
-            :tags [["VisibleBinaryData" "idVisible"]]
+            :label "Einstellungen" 
+            :description "Ermöglicht die allgemeine Konfiguration von Graphviz für die Netzwerkvisualisierung." 
+            :tags [["InGraphvizGeneral" "storeEndImage"] ["InGraphvizGeneral" "storeDotFile"] ["InGraphvizGeneral" "scaleFactor"] ["InGraphvizGeneral" "fixedNeatoPosition"] ["InGraphvizGeneral" "outputFormatPNG"] ["InGraphvizGeneral" "layoutAlgDOT"] ["InGraphvizGeneral" "layoutAlgNEATO"] ["InGraphvizGeneral" "layoutAlgFDP"] ["InGraphvizGeneral" "layoutAlgSFDP"] ["InGraphvizGeneral" "layoutAlgTWOPI"] ["InGraphvizGeneral" "layoutAlgCIRCO"]]
+          } 
+          {
+            :label "Agentengruppe-Farben-Mapping" 
+            :set "set_InConsumerAgentGroupColor" 
+            :description "Agentengruppe, welche im Graphen dargestellt werden sollen." 
+            :tags [["InConsumerAgentGroupColor" "rgba"] ["link" "InConsumerAgentGroupColor" "InConsumerAgentGroup" "groups"]]
           }
         ]
+      } 
+      {
+        :label "Datenausgabe" 
+        :description "Hier kann die Datenausgabe konfiguriert werden." 
+        :tags [["InGeneral" "logResultAdoptionsZip"] ["InGeneral" "logResultAdoptionsZipPhase"] ["InGeneral" "logResultAdoptionsAll"]]
       }
     ]
   } 
@@ -553,59 +560,6 @@
     ]
   } 
   {
-    :label "Graphviz" 
-    :description "Graphviz Einstellungen" 
-    :sections [
-      {
-        :label "Agentengruppe-Farben-Mapping" 
-        :set "set_InConsumerAgentGroupColor" 
-        :description "Agentengruppe, welche im Graphen dargestellt werden sollen." 
-        :tags [["link" "InConsumerAgentGroupColor" "InConsumerAgentGroup" "group"] ["link" "InConsumerAgentGroupColor" "GraphvizColor" "color"]]
-      } 
-      {
-        :label "Topologie" 
-        :description "unterstützte Topologien" 
-        :sections [
-          {
-            :label "Watts-Strogatz-Model" 
-            :set "set_IWattsStrogatzModel" 
-            :description "Watts-Strogatz-Model" 
-            :tags [["IWattsStrogatzModel" "wsmK"] ["IWattsStrogatzModel" "wsmBeta"] ["IWattsStrogatzModel" "wsmSelfReferential"] ["IWattsStrogatzModel" "wsmSeed"] ["IWattsStrogatzModel" "wsmUseThis"]]
-          } 
-          {
-            :label "Freie Topologie" 
-            :set "set_IFreeMultiGraphTopology" 
-            :description "Freie Topologie" 
-            :tags [["IFreeMultiGraphTopology" "ftEdgeCount"] ["IFreeMultiGraphTopology" "ftSelfReferential"] ["IFreeMultiGraphTopology" "ftSeed"] ["IFreeMultiGraphTopology" "ftUseThis"]]
-          }
-        ]
-      } 
-      {
-        :label "Farben" 
-        :set "set_GraphvizColor" 
-        :description "Farben, welche von Graphviz bei der Grapherstellung genutzt werden sollen." 
-        :tags [["GraphvizColor" "rgba"]]
-      } 
-      {
-        :label "Layout-Algorithmen" 
-        :set "set_GraphvizLayoutAlgorithm" 
-        :description "LayoutAlgorithm Einstellungen. Ueber den Namen kann ein eigenes Layout definiert werden (muss von Graphviz unterstuetzt werden). Wichtig: Falls ein eigenes Layout genutzt wird, muss id auf -1 gesetzt werden." 
-        :tags [["GraphvizLayoutAlgorithm" "layoutId"] ["GraphvizLayoutAlgorithm" "useLayout"]]
-      } 
-      {
-        :label "Ausgabeformate" 
-        :set "set_GraphvizOutputFormat" 
-        :description "OutputFormat Einstellungen. Ueber den Namen kann ein eigenes Format definiert werden. Der Syntax dafuer ist format[:renderer[:formatter]] (z.B. png:cairo:gd erzeugt ein png mit dem Caitro Renderer und der GD Library als Formatter). Wichtig: Falls ein eigenes Format genutzt wird, muss id auf -1 gesetzt werden." 
-        :tags [["GraphvizOutputFormat" "formatId"] ["GraphvizOutputFormat" "useFormat"]]
-      } 
-      {
-        :label "Allgemeine Einstellungen" 
-        :description "Allgemeine Einstellungen fuer Graphviz." 
-        :tags [["GraphvizGlobal" "fixedNeatoPosition"] ["GraphvizGlobal" "scaleFactor"]]
-      }
-    ]
-  } 
-  {
     :label "Submodule" 
     :description "todo" 
     :sections [
@@ -682,6 +636,36 @@
             :set "set_AgentGroup" 
             :description "Agentengruppe, welche im Graphen dargestellt werden sollen." 
             :tags [["AgentGroup" "numberOfAgents"] ["link" "AgentGroup" "GraphvizColor" "agentColor"]]
+          } 
+          {
+            :label "Graphviz" 
+            :description "Graphviz Einstellungen" 
+            :sections [
+              {
+                :label "Topologie" 
+                :description "unterstützte Topologien" 
+                :sections [
+                  {
+                    :label "Watts-Strogatz-Model" 
+                    :set "set_IWattsStrogatzModel" 
+                    :description "Watts-Strogatz-Model" 
+                    :tags [["IWattsStrogatzModel" "wsmK"] ["IWattsStrogatzModel" "wsmBeta"] ["IWattsStrogatzModel" "wsmSelfReferential"] ["IWattsStrogatzModel" "wsmSeed"] ["IWattsStrogatzModel" "wsmUseThis"]]
+                  } 
+                  {
+                    :label "Freie Topologie" 
+                    :set "set_IFreeMultiGraphTopology" 
+                    :description "Freie Topologie" 
+                    :tags [["IFreeMultiGraphTopology" "ftEdgeCount"] ["IFreeMultiGraphTopology" "ftSelfReferential"] ["IFreeMultiGraphTopology" "ftSeed"] ["IFreeMultiGraphTopology" "ftUseThis"]]
+                  }
+                ]
+              } 
+              {
+                :label "Farben" 
+                :set "set_GraphvizColor" 
+                :description "Farben, welche von Graphviz bei der Grapherstellung genutzt werden sollen." 
+                :tags [["GraphvizColor" "rgba"]]
+              }
+            ]
           }
         ]
       }

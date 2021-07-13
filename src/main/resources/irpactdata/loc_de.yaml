@@ -2,6 +2,10 @@
 #########################
 # Deutsche Lokalisierung für die gesamte Benutzeroberfläche
 #########################
+settings:
+  edn_label: "Einstellungen"
+  edn_description: "todo"
+
 general_settings:
   edn_label: "Allgemeine Einstellungen"
   edn_description: "todo"
@@ -32,89 +36,76 @@ logging:
 logging_general:
   edn_label: "Allgemeine Loggingoptionen"
   edn_description: "Hier lässt sich das allgemeine Logging von IRPact konfigurieren."
-InGeneral_logLevel:
-  gams_identifier: "Logging-Level"
-  gams_description: "Setzt das zu nutzende Logging-Level in IRPact, folgende Werte werden unterstützt: 0 = OFF, 1 = TRACE, 2 = DEBUG, 3 = INFO, 4 = WARN, 5 = ERROR, 6 = ALL. Das Level ist der Hauptfilter für alle log-Operationen."
-  gams_domain: "[0,6]"
+InGeneral_levelOff:
+  gams_identifier: "Level: OFF"
+  gams_description: "Setzt das Logginglevel auf OFF."
+InGeneral_levelTrace:
+  gams_identifier: "Level: TRACE"
+  gams_description: "Setzt das Logginglevel auf TRACE."
+InGeneral_levelDebug:
+  gams_identifier: "Level: DEBUG"
+  gams_description: "Setzt das Logginglevel auf DEBUG."
+InGeneral_levelInfo:
+  gams_identifier: "Level: INFO"
+  gams_description: "Setzt das Logginglevel auf INFO."
+InGeneral_levelWarn:
+  gams_identifier: "Level: WARN"
+  gams_description: "Setzt das Logginglevel auf WARN."
+InGeneral_levelError:
+  gams_identifier: "Level: ERROR"
+  gams_description: "Setzt das Logginglevel auf ERROR."
+InGeneral_levelAll:
+  gams_identifier: "Level: ALL"
+  gams_description: "Setzt das Logginglevel auf ALL."
 InGeneral_logAll:
   gams_identifier: "Alles loggen?"
   gams_description: "Aktiviert alle log-Operationen in allen Komponenten."
-  gams_domain: "[0|1]"
 InGeneral_logAllIRPact:
   gams_identifier: "IRPact loggen?"
   gams_description: "Aktiviert alle log-Operationen von IRPact."
-  gams_domain: "[0|1]"
 InGeneral_logAllTools:
   gams_identifier: "IRPtools-Bibliothek loggen?"
   gams_description: "Aktiviert alle log-Operationen von IRPtools."
-  gams_domain: "[0|1]"
 InGeneral_logInitialization:
   gams_identifier: "Initialisierung loggen?"
   gams_description: "Aktiviert das Logging des Initialisierungsprozesses. Dieser umfasst alles vom Start bis zum eigentlichen Start der Simulation."
-  gams_domain: "[0|1]"
 InGeneral_logSimulation:
   gams_identifier: "Simulationsprozess loggen?"
   gams_description: "Aktiviert das Logging des Simulationsprozesses."
-  gams_domain: "[0|1]"
-
-logging_data:
-  edn_label: "Ausgabe von Berechnungen und Informationen"
-  edn_description: "Hier lassen sich Optionen finden, mit denen Berechnungsschritte oder essenziell Änderungen ausgegeben werden können."
-InGeneral_logGraphUpdate:
-  gams_identifier: "Gibt die Graphänderungen aus [GU]"
-  gams_description: "Gibt an, ob die Graphänderungen ausgegeben werden sollen."
-  gams_domain: "[0|1]"
-InGeneral_logRelativeAgreement:
-  gams_identifier: "Gibt die 'relative agreement' Werte aus [RA]"
-  gams_description: "Gibt an, ob die Werte vom relative agreement Algorithmus ausgegeben werden sollen."
-  gams_domain: "[0|1]"
-InGeneral_logInterestUpdate:
-  gams_identifier: "Gibt Änderungen beim Produktinteresse aus [IU]"
-  gams_description: "Gibt an, ob Änderungen des Produktinteresses ausgegeben werden sollen."
-  gams_domain: "[0|1]"
-InGeneral_logShareNetworkLocal:
-  gams_identifier: "Gibt die globalen und lokalen Anteile aus [SNL]"
-  gams_description: "Gibt an, ob die globalen und lokalen Adopteranteile ausgegeben werden sollen."
-  gams_domain: "[0|1]"
-InGeneral_logFinancalComponent:
-  gams_identifier: "Gibt die finanzielle Komponente aus [FC]"
-  gams_description: "Gibt an, ob die Berechnung der finanziellen Komponente ausgegen werden soll."
-  gams_domain: "[0|1]"
-InGeneral_logCalculateDecisionMaking:
-  gams_identifier: "Gibt die Berechnungen beim decision making aus [DM]"
-  gams_description: "Gibt an, ob die Berechnung beim decision making ausgegen werden sollen."
-  gams_domain: "[0|1]"
-
-logging_result:
-  edn_label: "Ausgabe von Ergebnissen"
-  edn_description: "Diese Optionen ermöglichen die Ausgabe von Ergebnissen in spezieller Form."
-InGeneral_logResultAdoptionsZip:
-  gams_identifier: "Adoptionen nach PLZ"
-  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus."
-  gams_domain: "[0|1]"
-InGeneral_logResultAdoptionsZipPhase:
-  gams_identifier: "kumulierte Adoptionen nach PLZ und Phase"
-  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus."
-  gams_domain: "[0|1]"
-InGeneral_logResultAdoptionsAll:
-  gams_identifier: "Komplettausgabe"
-  gams_description: "Gibt zu jedem Agenten alle Adoptionsinformationen aus. Nichtadopter werden ebenfalls ausgegeben."
-  gams_domain: "[0|1]"
-
-logging_script:
-  edn_label: "Ausgabe von Skripten und Daten"
-  edn_description: "Diese Optionen ermöglichen die Ausgabe von Ergebnissen in spezieller Form. Neben den Daten werden auch Skripte mit ausgegeben."
-InGeneral_logScriptAdoptionsZip:
-  gams_identifier: "Adoptionen nach PLZ (line)"
-  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus. Zusätzlich wird das Script für eine line chart ausgegeben."
-  gams_domain: "[0|1]"
-InGeneral_logScriptAdoptionsZipPhase:
-  gams_identifier: "kumulierte Adoptionen nach PLZ und Phase (stacked bar)"
-  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus. Zusätzlich wird das Skript für eine bar chart ausgegeben."
-  gams_domain: "[0|1]"
 
 
-image:
+special_settings:
+  edn_label: "Spezielle Einstellungen"
+  edn_description: "Hier lassen sich spezielle Modi aktivieren."
+InGeneral_runOptActDemo:
+  gams_identifier: "[Testoption] optact-Testmodell ausführen"
+  gams_description: "Falls gesetzt, wird die optact-Demo gestartet. Anderenfalls wird IRPact gestartet."
+InGeneral_runPVAct:
+  gams_identifier: "PVact"
+  gams_description: "Falls gesetzt, werden automatisch spezielle Einstellungen für PVact bei der Initialisierung ergänzt. Dies betrifft aktuell Produkte und die Prozessmodellzuordnung."
+InGeneral_runMode:
+  gams_identifier: "Ausführungsmodus"
+  gams_description: "todo"
+InGeneral_scenarioMode:
+  gams_identifier: "Spezialszenario"
+  gams_description: "todo"
+InGeneral_copyLogIfPossible:
+  gams_identifier: "Kopiere Log"
+  gams_description: "todo"
+InGeneral_passErrorMessageToOutput:
+  gams_identifier: "Leite Error in Output"
+  gams_description: "todo"
+
+VisibleBinaryData:
+  edn_label: "Binäre Daten"
+  gams_identifier: "Binäre Daten"
+  gams_description: "Binäre Daten für diverse Funktionalitäten"
+VisibleBinaryData_idVisible:
+  gams_identifier: "ID"
+  gams_description: "Spezielle ID der Daten, Verwendungszweck und Funktionsweise ist von den Daten selber abhängig."
+
+
+result_visualisation:
   edn_label: "Ergebnisvisualisierung"
   edn_description: "Hier kann die Ergebnisvisualisierung konfiguriert werden. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird zum Beispiel eine Visualisierung mittels gnuplot und dem Namen 'Ergebnis' definiert, werden folgende drei Dateien erstellt: Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild). Es kann zusätzlich individuell eingestellt werden, welche Dateien gespeichert und zum Download angeboten werden können."
 
@@ -200,34 +191,70 @@ InROutputImage_linewidth:
   gams_description: "Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss."
 
 
-special_settings:
-  edn_label: "Spezielle Einstellungen"
-  edn_description: "Hier lassen sich spezielle Modi aktivieren."
-InGeneral_runOptActDemo:
-  gams_identifier: "[Testoption] optact-Testmodell ausführen"
-  gams_description: "Falls gesetzt, wird die optact-Demo gestartet. Anderenfalls wird IRPact gestartet."
-  gams_domain: "[0|1]"
-InGeneral_runPVAct:
-  gams_identifier: "PVact"
-  gams_description: "Falls gesetzt, werden automatisch spezielle Einstellungen für PVact bei der Initialisierung ergänzt. Dies betrifft aktuell Produkte und die Prozessmodellzuordnung."
-  gams_domain: "[0|1]"
-InGeneral_runMode:
-  gams_identifier: "Ausführungsmodus"
-  gams_description: "todo"
-InGeneral_scenarioMode:
-  gams_identifier: "Spezialszenario"
-  gams_description: "todo"
-InGeneral_copyLogIfPossible:
-  gams_identifier: "Kopiere Log"
-  gams_description: "todo"
+network_visualisation:
+  edn_label: "Netzwerkvisualisierung"
+  edn_description: "Hier kann die Netzwerkvisualisierung konfiguriert werden."
 
-VisibleBinaryData:
-  edn_label: "Binäre Daten"
-  gams_identifier: "Binäre Daten"
-  gams_description: "Binäre Daten für diverse Funktionalitäten"
-VisibleBinaryData_idVisible:
-  gams_identifier: "ID"
-  gams_description: "Spezielle ID der Daten, Verwendungszweck und Funktionsweise ist von den Daten selber abhängig."
+InGraphvizGeneral:
+  edn_label: "Einstellungen"
+  edn_description: "Ermöglicht die allgemeine Konfiguration von Graphviz für die Netzwerkvisualisierung."
+InGraphvizGeneral_storeEndImage:
+  gams_identifier: "Netzwerk speichern?"
+  gams_description: "Falls aktiviert, wird das Netzwerk am Ende der Simulation gespeichert."
+InGraphvizGeneral_storeDotFile:
+  gams_identifier: "dot-Datei speichern?"
+  gams_description: "Ermöglicht das Speichern der dot-Datei."
+InGraphvizGeneral_scaleFactor:
+  gams_identifier: "Skalierungsfaktor"
+  gams_description: "Definiert den Skalierungsfaktor."
+InGraphvizGeneral_fixedNeatoPosition:
+  gams_identifier: "Positionen fixieren? (NEATO)"
+  gams_description: "Falls aktiviert, werden die realen Agentenpositionen genutzt."
+InGraphvizGeneral_outputFormatPNG:
+  gams_identifier: "Ausgabeformat: PNG"
+  gams_description: "Erstellt die Bilder als png."
+InGraphvizGeneral_layoutAlgDOT:
+  gams_identifier: "Layout: DOT"
+  gams_description: "Nutzt das DOT Layout."
+InGraphvizGeneral_layoutAlgNEATO:
+  gams_identifier: "Layout: NEATO"
+  gams_description: "Nutzt das NEATO Layout."
+InGraphvizGeneral_layoutAlgFDP:
+  gams_identifier: "Layout: FDP"
+  gams_description: "Nutzt das FDP Layout."
+InGraphvizGeneral_layoutAlgSFDP:
+  gams_identifier: "Layout: SFDP"
+  gams_description: "Nutzt das SFDP Layout."
+InGraphvizGeneral_layoutAlgTWOPI:
+  gams_identifier: "Layout: TWOPI"
+  gams_description: "Nutzt das TWOPI Layout."
+InGraphvizGeneral_layoutAlgCIRCO:
+  gams_identifier: "Layout: CIRCO"
+  gams_description: "Nutzt das CIRCO Layout."
+
+InConsumerAgentGroupColor:
+  edn_label: "Farben der Konsumergruppen"
+  edn_description: "Ermöglicht die Festlegung der Farben für die Konsumergruppen."
+InConsumerAgentGroupColor_rgba:
+  gams_identifier: "Farbe (rgba)"
+  gams_description: "Die zu nutzende Farbe für die Gruppen. Für die Farbe muss der dezimal-kodierte rgba-Wert genutzt werden."
+InConsumerAgentGroupColor_groups:
+  gams_identifier: "Konsumergruppen"
+  gams_description: "Die Gruppen, welche die ausgewählte Farbe verwenden sollen."
+
+
+data_output:
+  edn_label: "Datenausgabe"
+  edn_description: "Hier kann die Datenausgabe konfiguriert werden."
+InGeneral_logResultAdoptionsZip:
+  gams_identifier: "Adoptionen nach PLZ"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus."
+InGeneral_logResultAdoptionsZipPhase:
+  gams_identifier: "kumulierte Adoptionen nach PLZ und Phase"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus."
+InGeneral_logResultAdoptionsAll:
+  gams_identifier: "Komplettausgabe"
+  gams_description: "Gibt zu jedem Agenten alle Adoptionsinformationen aus. Nichtadopter werden ebenfalls ausgegeben."
 
 
 informations:
@@ -507,15 +534,6 @@ InPVactConsumerAgentGroup_spatialDistribution:
   gams_identifier: "spatial distribution"
   gams_description: "todo"
 
-InConsumerAgentGroupColor:
-  edn_label: "Farbe der Konsumergruppen"
-  edn_description: "Ermöglicht die Festlegung der Farben für die Konsumergruppen."
-InConsumerAgentGroupColor_group:
-  gams_identifier: "Konsumergruppe"
-  gams_description: "Die Gruppen, welche die ausgewählte Farbe verwenden soll."
-InConsumerAgentGroupColor_color:
-  gams_identifier: "Farbe"
-  gams_description: "Die für diese Gruppe verwendete Farbe."
 
 consumer_attr:
   edn_label: "Attribute"
@@ -1326,6 +1344,7 @@ InTestData_value27:
 #DEPRECATED
 #=========================
 
+
 #DEPRECATED
 InDiscreteTimeModel:
   edn_label: "Diskret - Millisekunde"
@@ -1448,3 +1467,45 @@ InGnuPlotOutputImage_mode:
 InROutputImage_mode:
   gams_identifier: "Datenvisualisierung (Name noch anpassen)"
   gams_description: "Gibt an, welche Daten visualisiert werden sollen."
+
+#deprecated
+logging_data:
+  edn_label: "Ausgabe von Berechnungen und Informationen"
+  edn_description: "Hier lassen sich Optionen finden, mit denen Berechnungsschritte oder essenziell Änderungen ausgegeben werden können."
+InGeneral_logGraphUpdate:
+  gams_identifier: "Gibt die Graphänderungen aus [GU]"
+  gams_description: "Gibt an, ob die Graphänderungen ausgegeben werden sollen."
+  gams_domain: "[0|1]"
+InGeneral_logRelativeAgreement:
+  gams_identifier: "Gibt die 'relative agreement' Werte aus [RA]"
+  gams_description: "Gibt an, ob die Werte vom relative agreement Algorithmus ausgegeben werden sollen."
+  gams_domain: "[0|1]"
+InGeneral_logInterestUpdate:
+  gams_identifier: "Gibt Änderungen beim Produktinteresse aus [IU]"
+  gams_description: "Gibt an, ob Änderungen des Produktinteresses ausgegeben werden sollen."
+  gams_domain: "[0|1]"
+InGeneral_logShareNetworkLocal:
+  gams_identifier: "Gibt die globalen und lokalen Anteile aus [SNL]"
+  gams_description: "Gibt an, ob die globalen und lokalen Adopteranteile ausgegeben werden sollen."
+  gams_domain: "[0|1]"
+InGeneral_logFinancalComponent:
+  gams_identifier: "Gibt die finanzielle Komponente aus [FC]"
+  gams_description: "Gibt an, ob die Berechnung der finanziellen Komponente ausgegen werden soll."
+  gams_domain: "[0|1]"
+InGeneral_logCalculateDecisionMaking:
+  gams_identifier: "Gibt die Berechnungen beim decision making aus [DM]"
+  gams_description: "Gibt an, ob die Berechnung beim decision making ausgegen werden sollen."
+  gams_domain: "[0|1]"
+
+#deprecated
+logging_script:
+  edn_label: "Ausgabe von Skripten und Daten"
+  edn_description: "Diese Optionen ermöglichen die Ausgabe von Ergebnissen in spezieller Form. Neben den Daten werden auch Skripte mit ausgegeben."
+InGeneral_logScriptAdoptionsZip:
+  gams_identifier: "Adoptionen nach PLZ (line)"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus. Zusätzlich wird das Script für eine line chart ausgegeben."
+  gams_domain: "[0|1]"
+InGeneral_logScriptAdoptionsZipPhase:
+  gams_identifier: "kumulierte Adoptionen nach PLZ und Phase (stacked bar)"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus. Zusätzlich wird das Skript für eine bar chart ausgegeben."
+  gams_domain: "[0|1]"

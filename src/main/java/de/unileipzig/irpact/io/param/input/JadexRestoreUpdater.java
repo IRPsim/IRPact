@@ -173,7 +173,7 @@ public class JadexRestoreUpdater implements IRPactRestoreUpdater, LoggingHelper 
     }
 
     @Override
-    public void initLoggingOnly(InRoot root) {
+    public void initLoggingOnly(InRoot root) throws ParsingException {
         reset();
         this.root = root;
         initLogging(root);
@@ -259,7 +259,7 @@ public class JadexRestoreUpdater implements IRPactRestoreUpdater, LoggingHelper 
         runSpecialOperations(root);
     }
 
-    private void initLogging(InRoot root) {
+    private void initLogging(InRoot root) throws ParsingException {
         root.general.parseLoggingSetup(this);
     }
 

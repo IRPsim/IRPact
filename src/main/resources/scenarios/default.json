@@ -21,10 +21,15 @@
     "scalars" : {
       "sca_a" : 0,
       "sca_delta_ii" : 0.0,
-      "sca_GraphvizGlobal_fixedNeatoPosition" : 0,
-      "sca_GraphvizGlobal_scaleFactor" : 0.0,
       "sca_InGeneral_copyLogIfPossible" : 0,
       "sca_InGeneral_lastSimulationYear" : 0,
+      "sca_InGeneral_levelAll" : 1,
+      "sca_InGeneral_levelDebug" : 0,
+      "sca_InGeneral_levelError" : 0,
+      "sca_InGeneral_levelInfo" : 0,
+      "sca_InGeneral_levelOff" : 0,
+      "sca_InGeneral_levelTrace" : 0,
+      "sca_InGeneral_levelWarn" : 0,
       "sca_InGeneral_logAll" : 0,
       "sca_InGeneral_logAllIRPact" : 1,
       "sca_InGeneral_logAllTools" : 0,
@@ -33,7 +38,6 @@
       "sca_InGeneral_logGraphUpdate" : 1,
       "sca_InGeneral_logInitialization" : 0,
       "sca_InGeneral_logInterestUpdate" : 1,
-      "sca_InGeneral_logLevel" : 6,
       "sca_InGeneral_logRelativeAgreement" : 1,
       "sca_InGeneral_logResultAdoptionsAll" : 1,
       "sca_InGeneral_logResultAdoptionsZip" : 1,
@@ -42,6 +46,7 @@
       "sca_InGeneral_logScriptAdoptionsZipPhase" : 1,
       "sca_InGeneral_logShareNetworkLocal" : 1,
       "sca_InGeneral_logSimulation" : 0,
+      "sca_InGeneral_passErrorMessageToOutput" : 0,
       "sca_InGeneral_runMode" : -1,
       "sca_InGeneral_runOptActDemo" : 0,
       "sca_InGeneral_runPVAct" : 1,
@@ -51,6 +56,17 @@
       "sca_InGeneral_timeoutUseMin" : 1,
       "sca_InGeneral_timeoutUseMs" : 0,
       "sca_InGeneral_timeoutUseSec" : 0,
+      "sca_InGraphvizGeneral_fixedNeatoPosition" : 0,
+      "sca_InGraphvizGeneral_layoutAlgCIRCO" : 0,
+      "sca_InGraphvizGeneral_layoutAlgDOT" : 0,
+      "sca_InGraphvizGeneral_layoutAlgFDP" : 1,
+      "sca_InGraphvizGeneral_layoutAlgNEATO" : 0,
+      "sca_InGraphvizGeneral_layoutAlgSFDP" : 0,
+      "sca_InGraphvizGeneral_layoutAlgTWOPI" : 0,
+      "sca_InGraphvizGeneral_outputFormatPNG" : 1,
+      "sca_InGraphvizGeneral_scaleFactor" : 0.0,
+      "sca_InGraphvizGeneral_storeDotFile" : 0,
+      "sca_InGraphvizGeneral_storeEndImage" : 0,
       "sca_Tax_PS_vat" : 0.19,
       "sca_X_MS_CH_country" : 0,
       "sca_X_MS_DE_country" : 1
@@ -58,79 +74,11 @@
     "sets" : {
       "set_a" : { },
       "set_a_total" : { },
-      "set_AgentGroup" : {
-        "Gruppe1" : {
-          "par_AgentGroup_numberOfAgents" : 10
-        },
-        "Gruppe2" : {
-          "par_AgentGroup_numberOfAgents" : 15
-        },
-        "Gruppe3" : {
-          "par_AgentGroup_numberOfAgents" : 20
-        },
-        "Gruppe4" : {
-          "par_AgentGroup_numberOfAgents" : 25
-        }
-      },
+      "set_AgentGroup" : { },
       "set_BinaryPersistData" : { },
-      "set_GraphvizColor" : {
-        "BLUE" : {
-          "par_GraphvizColor_rgba" : 4278190335
-        },
-        "GREEN" : {
-          "par_GraphvizColor_rgba" : 4278255360
-        },
-        "PINK" : {
-          "par_GraphvizColor_rgba" : 4294946735
-        },
-        "RED" : {
-          "par_GraphvizColor_rgba" : 4294901760
-        }
-      },
-      "set_GraphvizLayoutAlgorithm" : {
-        "circo" : {
-          "par_GraphvizLayoutAlgorithm_layoutId" : 5,
-          "par_GraphvizLayoutAlgorithm_useLayout" : 1
-        },
-        "dot" : {
-          "par_GraphvizLayoutAlgorithm_layoutId" : 0,
-          "par_GraphvizLayoutAlgorithm_useLayout" : 0
-        },
-        "fdp" : {
-          "par_GraphvizLayoutAlgorithm_layoutId" : 2,
-          "par_GraphvizLayoutAlgorithm_useLayout" : 0
-        },
-        "neato" : {
-          "par_GraphvizLayoutAlgorithm_layoutId" : 1,
-          "par_GraphvizLayoutAlgorithm_useLayout" : 0
-        },
-        "sfdp" : {
-          "par_GraphvizLayoutAlgorithm_layoutId" : 3,
-          "par_GraphvizLayoutAlgorithm_useLayout" : 0
-        },
-        "twopi" : {
-          "par_GraphvizLayoutAlgorithm_layoutId" : 4,
-          "par_GraphvizLayoutAlgorithm_useLayout" : 0
-        }
-      },
-      "set_GraphvizOutputFormat" : {
-        "png" : {
-          "par_GraphvizOutputFormat_formatId" : 0,
-          "par_GraphvizOutputFormat_useFormat" : 1
-        }
-      },
-      "set_IFreeMultiGraphTopology" : {
-        "FREE1" : {
-          "par_IFreeMultiGraphTopology_ftEdgeCount" : 3,
-          "par_IFreeMultiGraphTopology_ftSelfReferential" : 0,
-          "par_IFreeMultiGraphTopology_ftSeed" : 24,
-          "par_IFreeMultiGraphTopology_ftUseThis" : 0
-        }
-      },
-      "set_IGraphTopology" : {
-        "FREE1" : { },
-        "WSM1" : { }
-      },
+      "set_GraphvizColor" : { },
+      "set_IFreeMultiGraphTopology" : { },
+      "set_IGraphTopology" : { },
       "set_ii" : { },
       "set_ii_0" : { },
       "set_InAffinities" : {
@@ -178,8 +126,12 @@
       },
       "set_InConsumerAgentGroupAttribute" : { },
       "set_InConsumerAgentGroupColor" : {
-        "BUM_color" : { },
-        "TRA_color" : { }
+        "GREEN" : {
+          "par_InConsumerAgentGroupColor_rgba" : 4278255360
+        },
+        "RED" : {
+          "par_InConsumerAgentGroupColor_rgba" : 4294901760
+        }
       },
       "set_InDependentConsumerAgentGroupAttribute" : { },
       "set_InDependentProductGroupAttribute" : { },
@@ -289,7 +241,7 @@
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : { },
       "set_InInverse" : { },
-      "set_InIRPactVersionPlaceholder" : { },
+      "set_InIRPactVersion" : { },
       "set_InMassPoint" : { },
       "set_InName" : { },
       "set_InNameSplitAffinityEntry" : { },
@@ -449,15 +401,7 @@
         "constant0" : { }
       },
       "set_InUnlinkedGraphTopology" : { },
-      "set_IWattsStrogatzModel" : {
-        "WSM1" : {
-          "par_IWattsStrogatzModel_wsmK" : 4,
-          "par_IWattsStrogatzModel_wsmBeta" : 0.0,
-          "par_IWattsStrogatzModel_wsmSelfReferential" : 0,
-          "par_IWattsStrogatzModel_wsmSeed" : 42,
-          "par_IWattsStrogatzModel_wsmUseThis" : 1
-        }
-      },
+      "set_IWattsStrogatzModel" : { },
       "set_jj" : { },
       "set_load_DS" : {
         "load_E1" : { },
@@ -534,32 +478,7 @@
     },
     "tables" : {
       "par_F_E_EGrid_energy" : { },
-      "par_link_AgentGroup_GraphvizColor_agentColor" : {
-        "Gruppe1" : {
-          "BLUE" : 0.0,
-          "GREEN" : 0.0,
-          "PINK" : 0.0,
-          "RED" : 1.0
-        },
-        "Gruppe2" : {
-          "BLUE" : 0.0,
-          "GREEN" : 1.0,
-          "PINK" : 0.0,
-          "RED" : 0.0
-        },
-        "Gruppe3" : {
-          "BLUE" : 1.0,
-          "GREEN" : 0.0,
-          "PINK" : 0.0,
-          "RED" : 0.0
-        },
-        "Gruppe4" : {
-          "BLUE" : 0.0,
-          "GREEN" : 0.0,
-          "PINK" : 1.0,
-          "RED" : 0.0
-        }
-      },
+      "par_link_AgentGroup_GraphvizColor_agentColor" : { },
       "par_link_InAffinities_InAffinityEntry_entries" : {
         "affs" : {
           "BUM_BUM" : 1.0,
@@ -607,26 +526,12 @@
           "TRA" : 1.0
         }
       },
-      "par_link_InConsumerAgentGroupColor_GraphvizColor_color" : {
-        "BUM_color" : {
-          "BLUE" : 0.0,
-          "GREEN" : 1.0,
-          "PINK" : 0.0,
-          "RED" : 0.0
-        },
-        "TRA_color" : {
-          "BLUE" : 0.0,
-          "GREEN" : 0.0,
-          "PINK" : 0.0,
-          "RED" : 1.0
-        }
-      },
-      "par_link_InConsumerAgentGroupColor_InConsumerAgentGroup_group" : {
-        "BUM_color" : {
+      "par_link_InConsumerAgentGroupColor_InConsumerAgentGroup_groups" : {
+        "GREEN" : {
           "BUM" : 1.0,
           "TRA" : 0.0
         },
-        "TRA_color" : {
+        "RED" : {
           "BUM" : 0.0,
           "TRA" : 1.0
         }

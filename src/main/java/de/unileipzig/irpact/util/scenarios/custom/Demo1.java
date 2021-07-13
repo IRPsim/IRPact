@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.util.scenarios.custom;
 
 import de.unileipzig.irpact.core.logging.IRPLevel;
+import de.unileipzig.irpact.core.postprocessing.image.DataToVisualize;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
-import de.unileipzig.irpact.core.util.img.DataToVisualize;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.InScenarioVersion;
@@ -15,11 +15,11 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactCons
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
-import de.unileipzig.irpact.io.param.input.graphviz.InConsumerAgentGroupColor;
-import de.unileipzig.irpact.io.param.input.image.InGenericOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InGnuPlotOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InOutputImage;
-import de.unileipzig.irpact.io.param.input.image.InROutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InGnuPlotOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InROutputImage;
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.network.InNoDistance;
@@ -33,9 +33,7 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSu
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.util.scenarios.AbstractScenario;
-import de.unileipzig.irptools.graphviz.def.GraphvizColor;
 
-import java.awt.*;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -143,7 +141,7 @@ public class Demo1 extends AbstractScenario {
         general.timeout = TimeUnit.MINUTES.toMillis(1);
         general.runOptActDemo = false;
         general.runPVAct = true;
-        general.logLevel = IRPLevel.ALL.getLevelId();
+        general.setLogLevel(IRPLevel.ALL);
         general.logAllIRPact = true;
         general.enableAllDataLogging();
         general.enableAllResultLogging();
@@ -175,14 +173,10 @@ public class Demo1 extends AbstractScenario {
         root.setImages(images);
 
         //=====
-        GraphvizColor gc1 = GraphvizColor.RED;
-        GraphvizColor gc2 = GraphvizColor.GREEN;
-        GraphvizColor gc3 = new GraphvizColor("BLUE", Color.BLUE);
-        root.colors = new GraphvizColor[]{gc1, gc2, gc3};
         root.setConsumerAgentGroupColors(new InConsumerAgentGroupColor[]{
-                new InConsumerAgentGroupColor("BUM_color", BUM, gc1),
-                new InConsumerAgentGroupColor("G_color", G, gc2),
-                new InConsumerAgentGroupColor("PRA_color", PRA, gc3)
+                InConsumerAgentGroupColor.RED.derive(BUM),
+                InConsumerAgentGroupColor.GREEN.derive(G),
+                InConsumerAgentGroupColor.BLUE.derive(PRA)
         });
 
         return Collections.singletonList(root);

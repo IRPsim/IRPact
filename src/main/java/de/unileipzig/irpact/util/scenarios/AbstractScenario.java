@@ -8,13 +8,13 @@ import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InInformation;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.InScenarioVersion;
-import de.unileipzig.irpact.io.param.input.graphviz.InGraphvizGeneral;
+import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
+import de.unileipzig.irpact.io.param.input.visualisation.network.InGraphvizGeneral;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.start.Start3;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.graphviz.StandardLayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.StandardOutputFormat;
-import de.unileipzig.irptools.graphviz.def.GraphvizColor;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.perennial.PerennialData;
 import de.unileipzig.irptools.io.perennial.PerennialFile;
@@ -293,7 +293,7 @@ public abstract class AbstractScenario implements Scenario {
 
         root.setGraphvizGeneral(new InGraphvizGeneral());
         setupGraphvizGeneral(root.getGraphvizGeneral());
-        root.setColors(GraphvizColor.ALL);
+        root.setConsumerAgentGroupColors(InConsumerAgentGroupColor.ALL);
         return root;
     }
 
