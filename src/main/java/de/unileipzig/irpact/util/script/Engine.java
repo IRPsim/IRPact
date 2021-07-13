@@ -7,6 +7,8 @@ public interface Engine {
 
     String printCommand();
 
+    String printVersion();
+
     default boolean isUsable() {
         return isUsable(false);
     }

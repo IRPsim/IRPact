@@ -1,10 +1,11 @@
 package de.unileipzig.irpact.util.R;
 
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
 import de.unileipzig.irpact.util.script.Engine;
+import de.unileipzig.irptools.util.ProcessResult;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 /**
@@ -18,6 +19,7 @@ public final class RscriptEngine implements Engine {
 
     private final String execCmd;
     protected Boolean usable = null;
+    protected String version = "NULL";
 
     public RscriptEngine() {
         this.execCmd = DEFAULT_COMMAND;
@@ -39,6 +41,11 @@ public final class RscriptEngine implements Engine {
     }
 
     @Override
+    public String printVersion() {
+        return version;
+    }
+
+    @Override
     public boolean isUsable(boolean tryAgain) {
         if(tryAgain || usable == null) {
             usable = callVersion();
@@ -51,10 +58,12 @@ public final class RscriptEngine implements Engine {
             ProcessBuilder builder = new ProcessBuilder();
             builder.command(printCommand(), "--version");
             Process process = builder.start();
-            process.waitFor();
+            ProcessResult result = ProcessResult.waitFor(process);
+            version = result.printData(StandardCharsets.UTF_8);
             return true;
         } catch (Throwable t) {
             LOGGER.warn("engine '{}' not found (error message: '{}')", printCommand(), t.getMessage());
+            version = "INVALID";
             return false;
         }
     }
