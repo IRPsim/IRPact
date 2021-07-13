@@ -12,7 +12,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v0.4.1" 
+        :description "IRPact v0.5.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -31,16 +31,16 @@
   } 
   {
     :label "Einstellungen" 
-    :description "todo" 
+    :description "Einstellungen von IRPact" 
     :sections [
       {
         :label "Allgemeine Einstellungen" 
-        :description "todo" 
+        :description "Allgemeine Einstellungen von IRPact" 
         :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "timeoutUseMs"] ["InGeneral" "timeoutUseSec"] ["InGeneral" "timeoutUseMin"] ["InGeneral" "lastSimulationYear"] ["InGeneral" "logGraphUpdate"] ["InGeneral" "logRelativeAgreement"] ["InGeneral" "logInterestUpdate"] ["InGeneral" "logShareNetworkLocal"] ["InGeneral" "logFinancalComponent"] ["InGeneral" "logCalculateDecisionMaking"] ["InGeneral" "logScriptAdoptionsZip"] ["InGeneral" "logScriptAdoptionsZipPhase"]] 
         :sections [
           {
             :label "Logging" 
-            :description "Einstellungen für das Logging und die Ausgabe von Informationen und Daten. Unabhängig von den individuellen Logging-Einstellungen werden wichtige Informationen weiterhin geloggt. Diese können nur mittels dem Logging-Level deaktiviert werden (nicht empfohlen)." 
+            :description "Einstellungen für das Logging." 
             :tags [["InGeneral" "levelOff"] ["InGeneral" "levelTrace"] ["InGeneral" "levelDebug"] ["InGeneral" "levelInfo"] ["InGeneral" "levelWarn"] ["InGeneral" "levelError"] ["InGeneral" "levelAll"] ["InGeneral" "logAll"] ["InGeneral" "logAllIRPact"] ["InGeneral" "logAllTools"] ["InGeneral" "logInitialization"] ["InGeneral" "logSimulation"]]
           }
         ]
@@ -108,12 +108,12 @@
   {
     :label "Namen" 
     :set "set_InAttributeName" 
-    :description "todo" 
+    :description "Ermöglicht die Definition von Namen. Namen können für verschiedene Optionen genutzt werden, wie zum Beispiel die Bestimmung von Tabellenspalten oder als gemeinsame Basis von Eigenschaften (Attribute). (Anmerkung: Namen dienen als Ersatz für textbasierte Parameter.)" 
     :tags [["InAttributeName" "placeholder"]]
   } 
   {
     :label "Dateien" 
-    :description "todo" 
+    :description "Ermöglicht die Festlegung von Eingabedateien." 
     :sections [
       {
         :label "PV Dateien" 
@@ -131,7 +131,7 @@
   } 
   {
     :label "Verteilungsfunktionen" 
-    :description "todo" 
+    :description "Ermöglicht die Erstellung verschiedenster Verteilungsfunktionen." 
     :sections [
       {
         :label "Bernoulliverteilung" 
@@ -193,38 +193,38 @@
   } 
   {
     :label "Agenten" 
-    :description "todo" 
+    :description "Ermöglicht die Erstellung unterschiedlicher Akteure in IRPact." 
     :sections [
       {
         :label "Konsumer" 
-        :description "todo" 
+        :description "Ermöglicht die Erstellung von Konsumern." 
         :sections [
           {
             :label "Gruppen" 
-            :description "todo" 
+            :description "Definiert Konsumergruppen" 
             :sections [
               {
                 :label "Allgemeine Gruppen" 
                 :set "set_InGeneralConsumerAgentGroup" 
-                :description "todo" 
+                :description "Erstellt eine allgemeine Konsumergruppe." 
                 :tags [["link" "InGeneralConsumerAgentGroup" "InDependentConsumerAgentGroupAttribute" "cagAttributes"] ["link" "InGeneralConsumerAgentGroup" "InProductInterestSupplyScheme" "cagInterest"] ["link" "InGeneralConsumerAgentGroup" "InProductFindingScheme" "productFindingSchemes"] ["link" "InGeneralConsumerAgentGroup" "InSpatialDistribution" "spatialDistribution"]]
               } 
               {
                 :label "PVact Gruppen" 
                 :set "set_InPVactConsumerAgentGroup" 
-                :description "todo" 
+                :description "Erstellt eine spezielle Konsumergruppe für PVact. Diese sind durch ihre fest vorgegebenen Attribute gekennzeichnet." 
                 :tags [["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "noveltySeeking"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "dependentJudgmentMaking"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "environmentalConcern"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "interestThreshold"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "financialThreshold"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "adoptionThreshold"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "communication"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "rewire"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "initialAdopter"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "rateOfConvergence"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "initialProductInterest"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "initialProductAwareness"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "constructionRate"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "renovationRate"] ["link" "InPVactConsumerAgentGroup" "InSpatialDistribution" "spatialDistribution"]]
               }
             ]
           } 
           {
             :label "Attribute" 
-            :description "todo" 
+            :description "Definiert die Attribute von Agenten." 
             :sections [
               {
                 :label "Allgemeine Attribute" 
                 :set "set_InGeneralConsumerAgentGroupAttribute" 
-                :description "todo" 
+                :description "Definiert allgemeine Attribute" 
                 :tags [["link" "InGeneralConsumerAgentGroupAttribute" "InAttributeName" "attrName"] ["link" "InGeneralConsumerAgentGroupAttribute" "InUnivariateDoubleDistribution" "dist"]]
               } 
               {
@@ -315,11 +315,11 @@
   } 
   {
     :label "Netzwerk" 
-    :description "todo" 
+    :description "Definiert das Netzwerk in IRPact. Aktuell darf nur ein einziges Netzwerk definiert werden." 
     :sections [
       {
         :label "Topologie" 
-        :description "todo" 
+        :description "Definiert die Netzwerktopologie in IRPact." 
         :sections [
           {
             :label "Knotenloser Graph" 
@@ -351,7 +351,7 @@
       } 
       {
         :label "Abstandsfunktion" 
-        :description "todo" 
+        :description "Definiert die Abstandsfunktion für das Netzwerk, um den räumlichen Einfluss bei der Netzwerkbildung mit einfließen zu lassen." 
         :sections [
           {
             :label "Keine Distanzfunktion" 
@@ -424,7 +424,7 @@
   } 
   {
     :label "Prozessmodell" 
-    :description "todo" 
+    :description "Definiert das Prozessmodell in IRPact. Aktuell darf nur ein Modell existieren." 
     :sections [
       {
         :label "Unsicherheit" 
@@ -489,11 +489,11 @@
   } 
   {
     :label "Räumliche Modell" 
-    :description "todo" 
+    :description "Definiert das räumliche Modell und zugehörige Komponenten." 
     :sections [
       {
         :label "Modell" 
-        :description "todo" 
+        :description "Definiert das räumliche Modell." 
         :sections [
           {
             :label "Space2D" 
@@ -549,7 +549,7 @@
   } 
   {
     :label "Zeitliche Modell" 
-    :description "todo" 
+    :description "Definiert das zeitliche Modell. Es muss immer genau ein Modell definiert sein." 
     :sections [
       {
         :label "Diskret" 
@@ -561,7 +561,7 @@
   } 
   {
     :label "Submodule" 
-    :description "todo" 
+    :description "Einstellungen für Submodule" 
     :sections [
       {
         :label "OptAct" 

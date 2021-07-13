@@ -1,15 +1,15 @@
 [
   {
     :label "Agenten" 
-    :description "todo" 
+    :description "Ermöglicht die Erstellung unterschiedlicher Akteure in IRPact." 
     :sections [
       {
         :label "Konsumer" 
-        :description "todo" 
+        :description "Ermöglicht die Erstellung von Konsumern." 
         :sections [
           {
             :label "Attribute" 
-            :description "todo" 
+            :description "Definiert die Attribute von Agenten." 
             :sections [
               {
                 :label "Jahresabhängiges Attribut" 
@@ -25,7 +25,7 @@
   } 
   {
     :label "Submodule" 
-    :description "todo" 
+    :description "Einstellungen für Submodule" 
     :sections [
       {
         :label "OptAct" 

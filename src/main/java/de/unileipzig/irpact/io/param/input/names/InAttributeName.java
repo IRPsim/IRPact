@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.io.param.input.names;
 
+import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -27,7 +28,7 @@ public class InAttributeName implements InName {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), thisName());
+        putClassPath(res, thisClass(), InRootUI.ATTRNAMES);
         addEntry(res, thisClass(), "placeholder");
     }
 

@@ -1873,7 +1873,7 @@ SCALAR sca_InGeneral_copyLogIfPossible
 
 * - default: 0
 * - domain: [0|1]
-* - description: Setzt das Logginglevel auf OFF.
+* - description: Setzt das Logginglevel auf OFF. Achtung: Damit wird das komplette Logging deaktiviert inklusive potentieller Fehlermeldungen.
 * - identifier: Level: OFF
 * - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelTrace = 0)
 * - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelDebug = 0)

@@ -4,11 +4,11 @@
 #########################
 settings:
   edn_label: "Einstellungen"
-  edn_description: "todo"
+  edn_description: "Einstellungen von IRPact"
 
 general_settings:
   edn_label: "Allgemeine Einstellungen"
-  edn_description: "todo"
+  edn_description: "Allgemeine Einstellungen von IRPact"
 
 InGeneral_seed:
   gams_identifier: "Zufallsgenerator (seed)"
@@ -31,14 +31,14 @@ InGeneral_lastSimulationYear:
 
 logging:
   edn_label: "Logging"
-  edn_description: "Einstellungen für das Logging und die Ausgabe von Informationen und Daten. Unabhängig von den individuellen Logging-Einstellungen werden wichtige Informationen weiterhin geloggt. Diese können nur mittels dem Logging-Level deaktiviert werden (nicht empfohlen)."
+  edn_description: "Einstellungen für das Logging."
 
 logging_general:
   edn_label: "Allgemeine Loggingoptionen"
   edn_description: "Hier lässt sich das allgemeine Logging von IRPact konfigurieren."
 InGeneral_levelOff:
   gams_identifier: "Level: OFF"
-  gams_description: "Setzt das Logginglevel auf OFF."
+  gams_description: "Setzt das Logginglevel auf OFF. Achtung: Damit wird das komplette Logging deaktiviert inklusive potentieller Fehlermeldungen."
 InGeneral_levelTrace:
   gams_identifier: "Level: TRACE"
   gams_description: "Setzt das Logginglevel auf TRACE."
@@ -264,7 +264,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.4.1"
+  edn_description: "IRPact v0.5.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -284,17 +284,9 @@ InInformation_placeholder:
   gams_description: "Ungenutzter Platzhalter"
 
 
-
-
-names:
-  edn_label: "Namen"
-  edn_description: "todo"
-
-
-
 files:
   edn_label: "Dateien"
-  edn_description: "todo"
+  edn_description: "Ermöglicht die Festlegung von Eingabedateien."
 
 InPVFile:
   edn_label: "PV Dateien"
@@ -314,7 +306,7 @@ InSpatialTableFile_placeholderInSpatialFile:
 
 distributions:
   edn_label: "Verteilungsfunktionen"
-  edn_description: "todo"
+  edn_description: "Ermöglicht die Erstellung verschiedenster Verteilungsfunktionen."
 
 InBernoulliDistribution:
   edn_label: "Bernoulliverteilung"
@@ -414,22 +406,22 @@ InSlowTruncatedNormalDistribution:
   edn_description: "Auf Bernoulli basierende Verteilungsfunktion, welche mit Wahrscheinlichkeit p x oder (1-p) y zurück gibt."
 InSlowTruncatedNormalDistribution_standardDeviation:
   gams_identifier: "Standardabweichung"
-  gams_description: "todo"
+  gams_description: "Legt die Standardabweichung fest."
 InSlowTruncatedNormalDistribution_mean:
   gams_identifier: "Mittelwert"
-  gams_description: "todo"
+  gams_description: "Legt den Mittelwert fest."
 InSlowTruncatedNormalDistribution_lowerBound:
   gams_identifier: "Untere Grenze"
-  gams_description: "todo"
+  gams_description: "Legt die untere Grenze fest."
 InSlowTruncatedNormalDistribution_lowerBoundInclusive:
   gams_identifier: "Untere Grenze inklusive?"
-  gams_description: "todo"
+  gams_description: "Gibt an, ob die untere Grenze inklusive sein soll."
 InSlowTruncatedNormalDistribution_upperBound:
   gams_identifier: "Obere Grenze"
-  gams_description: "todo"
+  gams_description: "Legt die obere Grenze fest."
 InSlowTruncatedNormalDistribution_upperBoundInclusive:
   gams_identifier: "Obere Grenze inklusive?"
-  gams_description: "todo"
+  gams_description: "Gibt an, ob die obere Grenze inklusive sein soll."
 
 InTruncatedNormalDistribution:
   edn_label: "Abgeschnittene Normalverteilung"
@@ -449,15 +441,15 @@ InTruncatedNormalDistribution_upperBound:
 
 agents:
   edn_label: "Agenten"
-  edn_description: "todo"
+  edn_description: "Ermöglicht die Erstellung unterschiedlicher Akteure in IRPact."
 
 consumer:
   edn_label: "Konsumer"
-  edn_description: "todo"
+  edn_description: "Ermöglicht die Erstellung von Konsumern."
 
 consumer_group:
   edn_label: "Gruppen"
-  edn_description: "todo"
+  edn_description: "Definiert Konsumergruppen"
 
 InGeneralConsumerAgentAnnualGroupAttribute:
   edn_label: "Jahresabhängiges Attribut"
@@ -471,7 +463,7 @@ InGeneralConsumerAgentAnnualGroupAttribute_distribution:
 
 InGeneralConsumerAgentGroup:
   edn_label: "Allgemeine Gruppen"
-  edn_description: "todo"
+  edn_description: "Erstellt eine allgemeine Konsumergruppe."
 InGeneralConsumerAgentGroup_cagAttributes:
   gams_identifier: "Gruppenattribute"
   gams_description: "Zu dieser Gruppe gehörendes Attribut."
@@ -487,7 +479,7 @@ InGeneralConsumerAgentGroup_spatialDistribution:
 
 InPVactConsumerAgentGroup:
   edn_label: "PVact Gruppen"
-  edn_description: "todo"
+  edn_description: "Erstellt eine spezielle Konsumergruppe für PVact. Diese sind durch ihre fest vorgegebenen Attribute gekennzeichnet."
 InPVactConsumerAgentGroup_noveltySeeking:
   gams_identifier: "novelty seeking"
   gams_description: "todo"
@@ -537,11 +529,11 @@ InPVactConsumerAgentGroup_spatialDistribution:
 
 consumer_attr:
   edn_label: "Attribute"
-  edn_description: "todo"
+  edn_description: "Definiert die Attribute von Agenten."
 
 InGeneralConsumerAgentGroupAttribute:
   edn_label: "Allgemeine Attribute"
-  edn_description: "todo"
+  edn_description: "Definiert allgemeine Attribute"
 InGeneralConsumerAgentGroupAttribute_attrName:
   gams_identifier: "Attributname"
   gams_description: "Name des Attributes für das Gruppenattribut."
@@ -674,11 +666,11 @@ InFileBasedPVactConsumerAgentPopulation_file:
 
 network:
   edn_label: "Netzwerk"
-  edn_description: "todo"
+  edn_description: "Definiert das Netzwerk in IRPact. Aktuell darf nur ein einziges Netzwerk definiert werden."
 
 topology:
   edn_label: "Topologie"
-  edn_description: "todo"
+  edn_description: "Definiert die Netzwerktopologie in IRPact."
 
 InUnlinkedGraphTopology:
   edn_label: "Knotenloser Graph"
@@ -725,7 +717,7 @@ InNumberOfTies_cags:
 
 dist_func:
   edn_label: "Abstandsfunktion"
-  edn_description: "todo"
+  edn_description: "Definiert die Abstandsfunktion für das Netzwerk, um den räumlichen Einfluss bei der Netzwerkbildung mit einfließen zu lassen."
 
 InNoDistance:
   edn_label: "Keine Distanzfunktion"
@@ -814,7 +806,7 @@ InFixProductFindingScheme_refFixProduct:
 
 process_model:
   edn_label: "Prozessmodell"
-  edn_description: "todo"
+  edn_description: "Definiert das Prozessmodell in IRPact. Aktuell darf nur ein Modell existieren."
 
 InRAProcessModel:
   edn_label: "Relative Agreement"
@@ -1077,11 +1069,11 @@ InPVactGroupBasedDeffuantUncertainty_attributeNames:
 
 spatial:
   edn_label: "Räumliche Modell"
-  edn_description: "todo"
+  edn_description: "Definiert das räumliche Modell und zugehörige Komponenten."
 
 spatial_model:
   edn_label: "Modell"
-  edn_description: "todo"
+  edn_description: "Definiert das räumliche Modell."
 
 InSpace2D:
   edn_label: "Space2D"
@@ -1192,7 +1184,7 @@ InFileBasedPVactMilieuZipSupplier_attrFile:
 
 time:
   edn_label: "Zeitliche Modell"
-  edn_description: "todo"
+  edn_description: "Definiert das zeitliche Modell. Es muss immer genau ein Modell definiert sein."
 
 InUnitStepDiscreteTimeModel:
   edn_label: "Diskret"
@@ -1232,15 +1224,15 @@ graphviz_agent_color_mapping:
 
 submodule:
   edn_label: "Submodule"
-  edn_description: "todo"
+  edn_description: "Einstellungen für Submodule"
 submodule_graphvizdemo:
   edn_label: "Graphvizdemo"
-  edn_description: "todo"
+  edn_description: "Einstellungen der Graphvizdemo"
 
 
 InAttributeName:
   edn_label: "Namen"
-  edn_description: "todo"
+  edn_description: "Ermöglicht die Definition von Namen. Namen können für verschiedene Optionen genutzt werden, wie zum Beispiel die Bestimmung von Tabellenspalten oder als gemeinsame Basis von Eigenschaften (Attribute). (Anmerkung: Namen dienen als Ersatz für textbasierte Parameter.)"
 InAttributeName_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -1509,3 +1501,8 @@ InGeneral_logScriptAdoptionsZipPhase:
   gams_identifier: "kumulierte Adoptionen nach PLZ und Phase (stacked bar)"
   gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus. Zusätzlich wird das Skript für eine bar chart ausgegeben."
   gams_domain: "[0|1]"
+
+#deprecated
+names:
+  edn_label: "Namen"
+  edn_description: "(DEPRECATED) Ermöglicht die Definition von Namen. Namen können für verschiedene Optionen genutzt werden, wie zum Beispiel die Bestimmung von Tabellenspalten oder als gemeinsame Basis von Eigenschaften (Attribute). (Anmerkung: Namen dienen als Ersatz für textbasierte Parameter.)"
