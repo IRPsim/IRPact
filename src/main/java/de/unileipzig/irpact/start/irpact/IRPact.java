@@ -351,14 +351,8 @@ public final class IRPact implements IRPActAccess {
     }
 
     private void createGraphvizConfiguration() throws Exception {
-        if(!CL_OPTIONS.hasImagePath()) {
-            return;
-        }
-        LOGGER.info(IRPSection.GENERAL, "valid image path, setup graphviz");
         GraphvizInputParser parser = new GraphvizInputParser();
         parser.setEnvironment(environment);
-        parser.setDownloadDir(CL_OPTIONS.getDownloadDirOrNull());
-        parser.setImageOutputPath(CL_OPTIONS.getImagePath());
         graphvizConfiguration = parser.parseRoot(inRoot);
     }
 
@@ -441,13 +435,11 @@ public final class IRPact implements IRPActAccess {
 
     public void printInitialNetwork() throws Exception {
         LOGGER.info(IRPSection.GENERAL, "create initial network image");
-        printNetwork();
-    }
-
-    public void printNetwork() throws Exception {
         graphvizConfiguration.printSocialGraph(
                 environment.getNetwork().getGraph(),
-                SocialGraph.Type.COMMUNICATION
+                SocialGraph.Type.COMMUNICATION,
+                CL_OPTIONS.getImagePath(),
+                null
         );
     }
 
@@ -653,10 +645,23 @@ public final class IRPact implements IRPActAccess {
     }
 
     private void createNetworkAfterSimulation() {
-        if(CL_OPTIONS.hasImagePath()) {
-            LOGGER.info(IRPSection.GENERAL, "create network image after finished simulation");
+        boolean create = inRoot.getGraphvizGeneral().isStoreEndImage();
+        LOGGER.info(IRPSection.GENERAL, "create network image after finished simulation: {}", create);
+        if(create) {
+            boolean storeDot = inRoot.getGraphvizGeneral().isStoreDotFile();
+            LOGGER.info(IRPSection.GENERAL, "store dot file: {}", storeDot);
             try {
-                printNetwork();
+                Path networkImagePath = CL_OPTIONS.getCreatedDownloadDir().resolve("Agentennetzwerk.png");
+                Path networkDotPath = storeDot
+                        ? networkImagePath.resolveSibling("Agentennetzwerk.dot")
+                        : null;
+
+                graphvizConfiguration.printSocialGraph(
+                        environment.getNetwork().getGraph(),
+                        SocialGraph.Type.COMMUNICATION,
+                        networkImagePath,
+                        networkDotPath
+                );
             } catch (Throwable t) {
                 LOGGER.error("creating network image after finished simulation failed, continue post simulation process", t);
             }

@@ -9,15 +9,14 @@ import de.unileipzig.irptools.graphviz.GraphvizGenerator;
 import de.unileipzig.irptools.graphviz.LayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.OutputFormat;
 import de.unileipzig.irptools.util.ProcessResult;
-import de.unileipzig.irptools.util.Util;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import guru.nidi.graphviz.attribute.Color;
 import guru.nidi.graphviz.attribute.Shape;
 
-import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,11 +31,9 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
     protected Map<ConsumerAgentGroup, Color> colorMapping;
     protected LayoutAlgorithm layoutAlgorithm;
     protected OutputFormat outputFormat;
-    protected Path downloadDir;
-    protected Path imageOutputPath;
-    protected boolean storeDotFile;
     protected boolean fixedNeatoPosition;
     protected double scaleFactor;
+    protected Charset terminalCharset = StandardCharsets.UTF_8;
 
     public BasicGraphvizConfiguration() {
         this(new HashMap<>());
@@ -74,22 +71,6 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         return colorMapping.get(cag);
     }
 
-    public void setImageOutputPath(Path imageOutputPath) {
-        this.imageOutputPath = imageOutputPath;
-    }
-
-    public Path getImageOutputPath() {
-        return imageOutputPath;
-    }
-
-    public void setStoreDotFile(boolean storeDotFile) {
-        this.storeDotFile = storeDotFile;
-    }
-
-    public boolean isStoreDotFile() {
-        return storeDotFile;
-    }
-
     public void setScaleFactor(double scaleFactor) {
         this.scaleFactor = scaleFactor;
     }
@@ -106,12 +87,12 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         return fixedNeatoPosition;
     }
 
-    public void setDownloadDir(Path downloadDir) {
-        this.downloadDir = downloadDir;
+    public void setTerminalCharset(Charset terminalCharset) {
+        this.terminalCharset = terminalCharset;
     }
 
-    public Path getDownloadDir() {
-        return downloadDir;
+    public Charset getTerminalCharset() {
+        return terminalCharset;
     }
 
     private static GraphvizGenerator<SocialGraph.Node, SocialGraph.Edge> newGenerator() {
@@ -170,36 +151,36 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         gen.setNodeShape(Shape.POINT);
     }
 
-    private void storeDotFile(Path temp) throws IOException {
-        if(downloadDir == null) {
-            LOGGER.warn("no download dir set, delete '{}': {}", temp.getFileName(), Files.deleteIfExists(temp));
+    protected Path createTempDotPathIfNull(Path inputDotPath, Path outputFile) {
+        if(inputDotPath == null) {
+            return outputFile.resolve(outputFile.getFileName().toString() + ".dot");
         } else {
-            if(Files.notExists(downloadDir)) {
-                Files.createDirectories(downloadDir);
-            }
-            Path target = downloadDir.resolve("AgentNetwork.dot");
-            Files.move(temp, target, StandardCopyOption.REPLACE_EXISTING);
-            LOGGER.trace("dot file stored: {}", target);
+            return inputDotPath;
         }
     }
 
     @Override
-    public void printSocialGraph(SocialGraph graph, SocialGraph.Type edgeType) throws Exception {
+    public void printSocialGraph(
+            SocialGraph graph,
+            SocialGraph.Type edgeType,
+            Path outputFile,
+            Path dotFile) throws Exception {
         GraphvizGenerator<SocialGraph.Node, SocialGraph.Edge> gen = createGenerator();
         applySocialNetwork(gen, graph, edgeType);
         setupGenerator(gen);
 
-        Path dotPath = imageOutputPath.resolveSibling(imageOutputPath.getFileName().toString() + ".dot");
+        boolean isTempDotFile = dotFile == null;
+        Path usedDotFile = createTempDotPathIfNull(dotFile, outputFile);
         try {
-            LOGGER.trace("store temp-dot file: {}", dotPath);
-            gen.store(dotPath);
+            LOGGER.trace("store dot file (temp={}): {}", isTempDotFile, usedDotFile);
+            gen.store(usedDotFile);
 
             LOGGER.trace("init dot process");
             DotProcess process;
             try {
                 process = new DotProcess()
-                        .setInputFile(dotPath)
-                        .setOutputFile(imageOutputPath)
+                        .setInputFile(usedDotFile)
+                        .setOutputFile(outputFile)
                         .setLayout(layoutAlgorithm)
                         .setFormat(outputFormat)
                         .setScale(scaleFactor)
@@ -221,22 +202,22 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
             }
 
             if(result.isOk()) {
-                LOGGER.trace("OK {}", result.printData(Util.IBM850()));
+                LOGGER.trace("OK {}", result.printData(terminalCharset));
             } else {
-                LOGGER.error("ERR {}", result.printErr(Util.IBM850()));
+                LOGGER.error("ERR {}", result.printErr(terminalCharset));
             }
 
-            if(Files.exists(imageOutputPath)) {
-                LOGGER.trace("image created ({})", imageOutputPath);
+            if(Files.exists(outputFile)) {
+                LOGGER.trace("image created ({})", outputFile);
             } else {
-                LOGGER.error("image not created ({})", imageOutputPath);
+                LOGGER.error("image not created ({})", outputFile);
             }
 
         } finally {
-            if(isStoreDotFile()) {
-                storeDotFile(dotPath);
+            if(isTempDotFile) {
+                LOGGER.trace("temp-dot file ({}) deleted: {}", usedDotFile, Files.deleteIfExists(usedDotFile));
             } else {
-                LOGGER.trace("temp-dot file ({}) deleted: {}", dotPath, Files.deleteIfExists(dotPath));
+                LOGGER.trace("keep dot file: {}", usedDotFile);
             }
         }
     }

@@ -31,6 +31,7 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSu
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.util.scenarios.AbstractScenario;
+import de.unileipzig.irptools.util.Util;
 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -146,6 +147,10 @@ public class ImageDemo extends AbstractScenario {
         InConsumerAgentGroupColor cag0Color = InConsumerAgentGroupColor.RED.derive(cag0);
         InConsumerAgentGroupColor cag1Color = InConsumerAgentGroupColor.GREEN.derive(cag1);
         root.setConsumerAgentGroupColors(new InConsumerAgentGroupColor[]{cag0Color, cag1Color});
+
+        root.getGraphvizGeneral().setStoreEndImage(true);
+        root.getGraphvizGeneral().setStoreDotFile(true);
+        root.getGraphvizGeneral().setTerminalCharset(Util.IBM850());
 
         //=====
         root.general = general;

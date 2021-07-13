@@ -9,11 +9,9 @@ import java.nio.file.Path;
  */
 public interface GraphvizConfiguration {
 
-    void printSocialGraph(SocialGraph graph, SocialGraph.Type edgeType) throws Exception;
-
-//    void printSocialGraph(
-//            SocialGraph graph,
-//            SocialGraph.Type edgeType,
-//            Path outputFile,
-//            Path dotFile) throws Exception;
+    void printSocialGraph(
+            SocialGraph graph,
+            SocialGraph.Type edgeType,
+            Path outputFile,
+            Path dotFile) throws Exception;
 }

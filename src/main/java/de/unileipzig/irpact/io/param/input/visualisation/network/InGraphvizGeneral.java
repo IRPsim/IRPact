@@ -17,6 +17,8 @@ import de.unileipzig.irptools.util.XorWithoutUnselectRuleBuilder;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -117,6 +119,15 @@ public class InGraphvizGeneral implements Copyable {
     @FieldDefinition
     public boolean layoutAlgCIRCO = false;
 
+    //helper
+    protected Charset terminalCharset = StandardCharsets.UTF_8;
+    public Charset getTerminalCharset() {
+        return terminalCharset;
+    }
+    public void setTerminalCharset(Charset terminalCharset) {
+        this.terminalCharset = terminalCharset;
+    }
+
     public InGraphvizGeneral() {
     }
 
@@ -138,6 +149,7 @@ public class InGraphvizGeneral implements Copyable {
         copy.layoutAlgSFDP = layoutAlgSFDP;
         copy.layoutAlgTWOPI = layoutAlgTWOPI;
         copy.layoutAlgCIRCO = layoutAlgCIRCO;
+        copy.terminalCharset = terminalCharset;
         return copy;
     }
 

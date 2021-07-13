@@ -16,8 +16,6 @@ import de.unileipzig.irptools.graphviz.OutputFormat;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import guru.nidi.graphviz.attribute.Color;
 
-import java.nio.file.Path;
-
 /**
  * @author Daniel Abitz
  */
@@ -26,8 +24,6 @@ public class GraphvizInputParser implements InputParser {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(GraphvizInputParser.class);
 
     protected SimulationEnvironment environment;
-    protected Path downloadDir;
-    protected Path imageOutputPath;
     protected InRoot root;
 
     public GraphvizInputParser() {
@@ -35,14 +31,6 @@ public class GraphvizInputParser implements InputParser {
 
     public void setEnvironment(SimulationEnvironment environment) {
         this.environment = environment;
-    }
-
-    public void setDownloadDir(Path downloadDir) {
-        this.downloadDir = downloadDir;
-    }
-
-    public void setImageOutputPath(Path imageOutputPath) {
-        this.imageOutputPath = imageOutputPath;
     }
 
     @Override
@@ -63,7 +51,7 @@ public class GraphvizInputParser implements InputParser {
     @Override
     public GraphvizConfiguration parseRoot(InRoot root) throws ParsingException {
         this.root = root;
-        ParsingJob job = new ParsingJob(environment, downloadDir, imageOutputPath, root);
+        ParsingJob job = new ParsingJob(environment, root);
         return job.run();
     }
 
@@ -83,18 +71,12 @@ public class GraphvizInputParser implements InputParser {
 
         private final InRoot root;
         private final SimulationEnvironment environment;
-        private final Path downloadDir;
-        private final Path imageOutputPath;
         private final BasicGraphvizConfiguration configuration = new BasicGraphvizConfiguration();
 
         private ParsingJob(
                 SimulationEnvironment environment,
-                Path downloadDir,
-                Path imageOutputPath,
                 InRoot root) {
             this.environment = environment;
-            this.downloadDir = downloadDir;
-            this.imageOutputPath = imageOutputPath;
             this.root = root;
         }
 
@@ -113,15 +95,13 @@ public class GraphvizInputParser implements InputParser {
             parseColors();
             parseLayoutAlgorithm();
             parseOutputFormat();
-            configuration.setImageOutputPath(imageOutputPath);
             return configuration;
         }
 
         private void parseGeneral() {
-            configuration.setDownloadDir(downloadDir);
             configuration.setFixedNeatoPosition(root.getGraphvizGeneral().isFixedNeatoPosition());
             configuration.setScaleFactor(root.getGraphvizGeneral().getScaleFactor());
-            configuration.setStoreDotFile(root.getGraphvizGeneral().isStoreDotFile());
+            configuration.setTerminalCharset(root.getGraphvizGeneral().getTerminalCharset());
         }
 
         private void parseColors() throws ParsingException {
