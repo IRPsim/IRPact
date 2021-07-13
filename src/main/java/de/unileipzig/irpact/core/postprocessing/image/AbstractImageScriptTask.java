@@ -146,6 +146,9 @@ public abstract class AbstractImageScriptTask extends NameableBase {
         try {
             script.execute(engine);
             LOGGER.trace(IRPSection.RESULT, "executed script, image: {}", getImagePath());
+            if(script.hasWarnMessage()) {
+                LOGGER.warn(IRPSection.RESULT, "script warning:\n{}", script.getWarnMessage());
+            }
             return true;
         } catch (IOException | InterruptedException | ScriptException e) {
             LOGGER.error(printName() + " executing script failed", e);
