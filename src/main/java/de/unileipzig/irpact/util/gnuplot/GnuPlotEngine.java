@@ -19,7 +19,7 @@ public final class GnuPlotEngine implements Engine {
 
     private final String execCmd;
     protected Boolean usable = null;
-    protected String version = "NOT CALLED";
+    protected String version = "NULL";
 
     public GnuPlotEngine() {
         this.execCmd = DEFAULT_COMMAND;

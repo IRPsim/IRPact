@@ -19,7 +19,7 @@ public final class RscriptEngine implements Engine {
 
     private final String execCmd;
     protected Boolean usable = null;
-    protected String version = "NOT CALLED";
+    protected String version = "NULL";
 
     public RscriptEngine() {
         this.execCmd = DEFAULT_COMMAND;
