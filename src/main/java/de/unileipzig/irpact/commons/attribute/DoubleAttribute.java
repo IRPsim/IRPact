@@ -75,6 +75,12 @@ public interface DoubleAttribute extends ValueAttribute<Number> {
     }
 
     @Override
+    double getDoubleValue();
+
+    @Override
+    void setDoubleValue(double value);
+
+    @Override
     default String getValueAsString() {
         return Double.toString(getDoubleValue());
     }

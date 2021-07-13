@@ -40,8 +40,21 @@ public class DataProcessor extends PostProcessor {
     }
 
     protected void execute0() {
+        trace("isLogResultAdoptionsZip: {}", getSettings().isLogResultAdoptionsZip());
+
+        trace("isLogResultAdoptionsZipPhase: {}", getSettings().isLogResultAdoptionsZipPhase());
+
+        trace("isLogResultAdoptionsAll: {}", getSettings().isLogResultAdoptionsAll());
     }
 
     protected void cleanUp() {
     }
+
+    //=========================
+    //out
+    //=========================
+
+    //=========================
+    //util
+    //=========================
 }

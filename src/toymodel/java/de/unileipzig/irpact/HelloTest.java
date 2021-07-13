@@ -17,9 +17,4 @@ class HelloTest {
         assertEquals("a", a);
         assertEquals("b", b);
     }
-
-//    @Test
-//    void iWillFail() {
-//        fail();
-//    }
 }

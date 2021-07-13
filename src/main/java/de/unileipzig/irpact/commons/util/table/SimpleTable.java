@@ -2,6 +2,8 @@ package de.unileipzig.irpact.commons.util.table;
 
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
+import de.unileipzig.irpact.commons.util.io.Header;
+import de.unileipzig.irpact.commons.util.io.SimpleHeader;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -69,6 +71,11 @@ public class SimpleTable<T> implements Table<T> {
     //=========================
     //column
     //=========================
+
+    @Override
+    public Header getHeaderInstance() {
+        return new SimpleHeader(getHeader());
+    }
 
     @Override
     public List<String> getHeader() {

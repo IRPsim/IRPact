@@ -347,14 +347,6 @@ public class ImageProcessor extends PostProcessor {
     //util
     //=========================
 
-    protected Settings getSettings() {
-        return environment.getSettings();
-    }
-
-    protected Path getTargetDir() throws IOException {
-        return clOptions.getCreatedDownloadDir();
-    }
-
     protected List<String> zips;
     protected List<String> getAllZips(String key) {
         if(zips == null) {
