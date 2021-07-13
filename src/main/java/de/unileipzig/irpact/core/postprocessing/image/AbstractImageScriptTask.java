@@ -113,6 +113,7 @@ public abstract class AbstractImageScriptTask extends NameableBase {
 
     protected void writeScript0(FileScript<?> script) throws IOException {
         script.store(getScriptPath(), charset);
+        LOGGER.trace("created script: {}", getScriptPath());
     }
 
     public boolean writeCsvData(List<List<String>> dataWithHeader) {
@@ -135,6 +136,7 @@ public abstract class AbstractImageScriptTask extends NameableBase {
                 printer.appendRow(dataWithHeader.get(i));
             }
         }
+        LOGGER.trace(IRPSection.RESULT, "created data: {}", getDataPath());
     }
 
     public <E extends Engine> boolean execute(E engine, ProcessBasedFileScript<E> script) {
@@ -143,6 +145,7 @@ public abstract class AbstractImageScriptTask extends NameableBase {
         script.addPathArgument(getImagePath());
         try {
             script.execute(engine);
+            LOGGER.trace(IRPSection.RESULT, "executed script, image: {}", getImagePath());
             return true;
         } catch (IOException | InterruptedException | ScriptException e) {
             LOGGER.error(printName() + " executing script failed", e);
@@ -171,10 +174,9 @@ public abstract class AbstractImageScriptTask extends NameableBase {
 
     private static void delete(Path path) {
         try {
-            if(Files.exists(path)) {
-                Files.deleteIfExists(path);
-                LOGGER.trace(IRPSection.RESULT, "deleted: '{}'", path);
-            }
+            boolean exists = Files.exists(path);
+            boolean deleted = Files.deleteIfExists(path);
+            LOGGER.trace(IRPSection.RESULT, "deleted: '{}' (exists={}, deleted={})", path, exists, deleted);
         } catch (IOException e) {
             LOGGER.error("deleting '" + path + "' failed", e);
         }
