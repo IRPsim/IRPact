@@ -72,15 +72,6 @@ public class InRootUI {
     public static final EdnPath SETT_VISUNETWORK_AGENTCOLOR = SETT_VISUNETWORK.resolve(IOConstants.GRAPHVIZ_AGENT_COLOR_MAPPING).addTo(PATHS);
     public static final EdnPath SETT_DATAOUTPUT = SETT.resolve(IOConstants.DATA_OUTPUT).addTo(PATHS);
 
-//    public static final EdnPath GENSETT = ROOT.resolve(IOConstants.GENERAL_SETTINGS).addTo(PATHS);
-//    public static final EdnPath GENSETT_LOG = GENSETT.resolve(IOConstants.LOGGING).addTo(PATHS);
-//    public static final EdnPath GENSETT_LOG_GENERAL = GENSETT_LOG.resolve(IOConstants.LOGGING_GENERAL).addTo(PATHS);
-//    public static final EdnPath GENSETT_LOG_DATA = GENSETT_LOG.resolve(IOConstants.LOGGING_DATA).addTo(PATHS);
-//    public static final EdnPath GENSETT_LOG_RESULT = GENSETT_LOG.resolve(IOConstants.LOGGING_RESULT).addTo(PATHS);
-//    public static final EdnPath GENSETT_LOG_SCRIPT = GENSETT_LOG.resolve(IOConstants.LOGGING_SCRIPT).addTo(PATHS);
-//    public static final EdnPath GENSETT_IMG = GENSETT.resolve(IOConstants.IMAGE).addTo(PATHS);
-//    public static final EdnPath GENSETT_SPECIAL = GENSETT.resolve(IOConstants.SPECIAL_SETTINGS).addTo(PATHS);
-
     public static final EdnPath ATTRNAMES = ROOT.resolve(InAttributeName.thisName()).addTo(PATHS);
 
     public static final EdnPath FILES = ROOT.resolve(IOConstants.FILES).addTo(PATHS);

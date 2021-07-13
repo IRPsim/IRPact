@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.start.irpact.modes;
+package de.unileipzig.irpact.start.irpact.executors;
 
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
@@ -9,15 +9,15 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 /**
  * @author Daniel Abitz
  */
-public final class RunFully implements IRPactExecutor {
+public final class RunMinimalSimulation implements IRPactExecutor {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(RunFully.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(RunMinimalSimulation.class);
 
-    public static final int ID = 0;
-    public static final String ID_STR = "0";
-    public static final RunFully INSTANCE = new RunFully();
-    
-    public RunFully() {
+    public static final int ID = 1;
+    public static final String ID_STR = "1";
+    public static final RunMinimalSimulation INSTANCE = new RunMinimalSimulation();
+
+    public RunMinimalSimulation() {
     }
 
     @Override
@@ -27,25 +27,7 @@ public final class RunFully implements IRPactExecutor {
 
     @Override
     public void execute(IRPact irpact) throws Exception {
-        if(irpact == null) {
-            throw new NullPointerException("IRPact instance is null");
-        }
-
-        try {
-            execute0(irpact);
-        } catch (Exception e) {
-            if(irpact.shouldCreateDummyOutputWithErrorMessage()) {
-                irpact.postSimulationWithDummyOutputAndErrorMessage(e);
-            } else {
-                throw e;
-            }
-        }
-    }
-
-    protected void execute0(IRPact irpact) throws Exception {
-        LOGGER.info(IRPSection.GENERAL, "execute IRPact fully");
-
-        irpact.notifyStart();
+        LOGGER.info(IRPSection.GENERAL, "execute IRPact with minimal simulation (only system agents)");
 
         //Phase 1: initialization
         irpact.initialize();
@@ -69,7 +51,7 @@ public final class RunFully implements IRPactExecutor {
         irpact.createPlatform();
         irpact.preparePlatform();
         irpact.setupTimeModel();
-        irpact.createJadexAgents();
+        irpact.createOnlyControlJadexAgents();
 
         if(irpact.secureWaitForCreationFailed()) {
             return;

@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.start.irpact.modes;
+package de.unileipzig.irpact.start.irpact.executors;
 
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
@@ -26,6 +26,6 @@ public final class TestMode implements IRPactExecutor {
     public void execute(IRPact irpact) throws Exception {
         LOGGER.info(IRPSection.GENERAL, "execute TestMode");
 
-        irpact.postSimulationWithDummyOutput("DUMMY_TestMode");
+        irpact.postSimulationWithDummyOutput();
     }
 }

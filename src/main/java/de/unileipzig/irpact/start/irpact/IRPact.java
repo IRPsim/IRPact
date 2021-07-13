@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
+import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -24,8 +25,8 @@ import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.core.util.result.ResultManager;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions.AdoptionResultInfo;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions.AnnualCumulativeAdoptionsForOutput;
-import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.*;
+import de.unileipzig.irpact.io.param.output.OutInformation;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
@@ -610,20 +611,29 @@ public final class IRPact implements IRPActAccess {
         finalTask();
     }
 
-    public void postSimulationWithDummyOutput(String dummyName) {
+    public void postSimulationWithDummyOutput() {
         LOGGER.info(IRPSection.GENERAL, "start dummy post-simulation");
-        createDummyOutput(dummyName);
+        outData = createDummyOutputData("DUMMY_OUTPUT", null);
+        storeOutputData(outData);
         callCallbacks();
         finalTask();
     }
 
     public void postSimulationWithDummyOutputAndErrorMessage(Exception e) {
         LOGGER.info(IRPSection.GENERAL, "start post-simulation with error ({})", e.getMessage());
-        Dev.throwException();
+
+        String errorClass = e.getClass().getSimpleName();
+        String errorMsg = StringUtil.replaceSpace(e.getMessage(), "_");
+        String fullMsg = errorClass + "__" + errorMsg;
+        OutInformation[] errorInfo = {new OutInformation(fullMsg)};
+
+        outData = createDummyOutputData("ERROR_OUTPUT", errorInfo);
+        storeOutputData(outData);
+        callCallbacks();
+        finalTask();
     }
 
-    private void createDummyOutput(String dummyName) {
-        LOGGER.info(IRPSection.GENERAL, "create dummy output");
+    private AnnualData<OutRoot> createDummyOutputData(String dummyName, OutInformation[] informations) {
         OutRoot outRoot = new OutRoot();
         OutConsumerAgentGroup outCag = new OutConsumerAgentGroup(dummyName);
         outCag.setAdoptionsThisPeriod(-1);
@@ -631,8 +641,8 @@ public final class IRPact implements IRPActAccess {
         outCag.setInitialAdoptionsThisPeriod(-1);
         outCag.setInitialAdoptionsCumulative(-1);
         outRoot.outConsumerAgentGroups = new OutConsumerAgentGroup[]{outCag};
-        outData = createOutputData(outRoot);
-        storeOutputData(outData);
+        outRoot.addInformations(informations);
+        return createOutputData(outRoot);
     }
 
     private void createOutput() throws Exception {

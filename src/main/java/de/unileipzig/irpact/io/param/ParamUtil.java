@@ -46,6 +46,16 @@ public final class ParamUtil {
         return newArr;
     }
 
+    public static <T> T[] addAll(T[] target, T[] values) {
+        if(values == null || values.length == 0) {
+            return target;
+        } else {
+            T[] newArr = Arrays.copyOf(target, target.length + values.length);
+            System.arraycopy(values, 0, newArr, target.length, values.length);
+            return newArr;
+        }
+    }
+
     public static String getClassNameWithoutClassSuffix(Class<?> c) {
         String name = c.getSimpleName();
         int dot = name.lastIndexOf('.');

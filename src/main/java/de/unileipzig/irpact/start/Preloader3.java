@@ -17,7 +17,7 @@ import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.irpact.IRPactCallback;
 import de.unileipzig.irpact.start.irpact.IRPactExecutor;
-import de.unileipzig.irpact.start.irpact.IRPactExecutors;
+import de.unileipzig.irpact.start.irpact.executors.IRPactExecutors;
 import de.unileipzig.irpact.start.irpact.callbacks.GetOutput;
 import de.unileipzig.irpact.start.optact.OptAct;
 import de.unileipzig.irptools.io.ContentType;
@@ -594,12 +594,12 @@ public class Preloader3 {
         irpact.init(jsonRoot, entry);
 
         int runMode = entry.getData().getGeneral().getRunMode();
-        if(IRPactExecutors.hasNot(runMode)) {
+        if(IRPactExecutors.isNotRegistered(runMode)) {
             runMode = clOpt.getRunMode();
         }
 
         LOGGER.trace(IRPSection.GENERAL, "call IRPact (current={}, total={}, mode={})", current, total, runMode);
-        IRPactExecutor exec = IRPactExecutors.get(runMode);
+        IRPactExecutor exec = IRPactExecutors.find(runMode);
         exec.execute(irpact);
 
         return outputCallback == null
@@ -655,12 +655,12 @@ public class Preloader3 {
         irpact.init(input.getScenario());
 
         int runMode = input.getScenario().getData().getGeneral().getRunMode();
-        if(IRPactExecutors.hasNot(runMode)) {
+        if(IRPactExecutors.isNotRegistered(runMode)) {
             runMode = clOpt.getRunMode();
         }
 
         LOGGER.trace(IRPSection.GENERAL, "call IRPact (current={}, total={}, mode={})", current, total, runMode);
-        IRPactExecutor exec = IRPactExecutors.get(runMode);
+        IRPactExecutor exec = IRPactExecutors.find(runMode);
         exec.execute(irpact);
 
         return outputCallback == null

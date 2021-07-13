@@ -42,6 +42,10 @@ public class OutInformation implements InIRPactEntity {
     public OutInformation() {
     }
 
+    public OutInformation(String name) {
+        setName(name);
+    }
+
     @Override
     public String getName() {
         return _name;

@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.start.irpact.modes;
+package de.unileipzig.irpact.start.irpact.executors;
 
 import de.unileipzig.irpact.commons.exception.IRPactException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -24,7 +24,19 @@ public final class ThrowError implements IRPactExecutor {
 
     @Override
     public void execute(IRPact irpact) throws Exception {
-        LOGGER.info("execute ThrowError");
-        throw new IRPactException();
+        if(irpact == null) {
+            throw new NullPointerException("IRPact instance is null");
+        }
+
+        try {
+            LOGGER.info("execute ThrowError");
+            throw new IRPactException("forced exception");
+        } catch (Exception e) {
+            if(irpact.shouldCreateDummyOutputWithErrorMessage()) {
+                irpact.postSimulationWithDummyOutputAndErrorMessage(e);
+            } else {
+                throw e;
+            }
+        }
     }
 }

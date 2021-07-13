@@ -6,7 +6,7 @@ import de.unileipzig.irpact.commons.util.MapResourceBundle;
 import de.unileipzig.irpact.core.logging.IRPLoggingMessage;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.start.irpact.IRPact;
-import de.unileipzig.irpact.start.irpact.IRPactExecutors;
+import de.unileipzig.irpact.start.irpact.executors.IRPactExecutors;
 import de.unileipzig.irpact.util.R.RscriptEngine;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;

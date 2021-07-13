@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.start.irpact.modes;
+package de.unileipzig.irpact.start.irpact.executors;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.util.JsonUtil;
@@ -40,6 +40,6 @@ public final class PrintInput implements IRPactExecutor {
 
         IRPLogging.logResult("[PrintInput]", JsonUtil.toLazyString(inRootNode, JsonUtil.DEFAULT));
 
-        irpact.postSimulationWithDummyOutput("DUMMY_PrintInput");
+        irpact.postSimulationWithDummyOutput();
     }
 }
