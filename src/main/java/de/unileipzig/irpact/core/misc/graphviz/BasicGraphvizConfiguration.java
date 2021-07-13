@@ -153,7 +153,7 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
 
     protected Path createTempDotPathIfNull(Path inputDotPath, Path outputFile) {
         if(inputDotPath == null) {
-            return outputFile.resolve(outputFile.getFileName().toString() + ".dot");
+            return outputFile.resolveSibling(outputFile.getFileName().toString() + ".dot");
         } else {
             return inputDotPath;
         }
