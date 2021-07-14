@@ -51,6 +51,7 @@ public final class RunFully implements IRPactExecutor {
 
             irpact.runPrePlatformCreationTasks();
 
+            irpact.printInitialNetwork();
             if(irpact.checkNoSimulationFlag()) {
                 return;
             }

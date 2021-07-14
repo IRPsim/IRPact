@@ -111,8 +111,9 @@ public class ImageDemo extends AbstractScenario {
         Collections.addAll(images, InGenericOutputImage.createDefaultImages());
         images.forEach(InOutputImage::disableAll);
         images.add(new InGnuPlotOutputImage("Bild1", DataToVisualize.ANNUAL_ZIP, true));
-        images.add(new InGnuPlotOutputImage("Bild2", DataToVisualize.COMPARED_ANNUAL_ZIP, true));
+        images.add(new InGnuPlotOutputImage("Bild2", DataToVisualize.CUMULATIVE_ANNUAL_PHASE, true));
         images.add(new InGnuPlotOutputImage("Bild3", DataToVisualize.CUMULATIVE_ANNUAL_PHASE, true));
+        images.add(new InGnuPlotOutputImage("Bild4", DataToVisualize.COMPARED_ANNUAL_ZIP, true));
 
         //time
         InUnitStepDiscreteTimeModel timeModel = new InUnitStepDiscreteTimeModel("DiscreteUnitStep", 1, ChronoUnit.WEEKS);

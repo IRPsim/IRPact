@@ -423,25 +423,21 @@ public final class IRPact implements IRPActAccess {
         environment.getTaskManager().runInitializationStageTasks(InitializationStage.PRE_PLATFORM_CREATION, environment);
     }
 
-    public boolean checkNoSimulationFlag() throws Exception {
-        if(CL_OPTIONS.isNoSimulation()) {
-            if(CL_OPTIONS.hasImagePath()) {
-                printInitialNetwork();
-            }
-            return true;
-        } else {
-            return false;
+    public void printInitialNetwork() throws Exception {
+        LOGGER.info(IRPSection.GENERAL, "create initial network image: {}", CL_OPTIONS.hasImagePath());
+        if(CL_OPTIONS.hasImagePath()) {
+            LOGGER.trace(IRPSection.GENERAL, "initial image path: {}", CL_OPTIONS.getImagePath());
+            graphvizConfiguration.printSocialGraph(
+                    environment.getNetwork().getGraph(),
+                    SocialGraph.Type.COMMUNICATION,
+                    CL_OPTIONS.getImagePath(),
+                    null
+            );
         }
     }
 
-    public void printInitialNetwork() throws Exception {
-        LOGGER.info(IRPSection.GENERAL, "create initial network image");
-        graphvizConfiguration.printSocialGraph(
-                environment.getNetwork().getGraph(),
-                SocialGraph.Type.COMMUNICATION,
-                CL_OPTIONS.getImagePath(),
-                null
-        );
+    public boolean checkNoSimulationFlag() {
+        return CL_OPTIONS.isNoSimulation();
     }
 
     public void createPlatform() {
