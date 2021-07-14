@@ -34,6 +34,7 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
     protected boolean fixedNeatoPosition;
     protected double scaleFactor;
     protected Charset terminalCharset = StandardCharsets.UTF_8;
+    protected boolean setDefaultSize = true;
 
     public BasicGraphvizConfiguration() {
         this(new HashMap<>());
@@ -149,6 +150,9 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         gen.configureLinks(getLinkConfiguration());
         gen.setHideNodeLabels(true);
         gen.setNodeShape(Shape.POINT);
+        if(setDefaultSize) {
+            gen.setPixelSizePreferred(800, 800);
+        }
     }
 
     protected Path createTempDotPathIfNull(Path inputDotPath, Path outputFile) {

@@ -508,7 +508,7 @@ public class InRoot implements RootClass {
             Section imageSection = new Section();
             imageSection.setPriority(-1);
             imageSection.setLabel("Agentennetzwerk");
-            imageSection.setImage(IRPact.IMAGE_AGENTGRAPH);
+            imageSection.setImage(IRPact.IMAGE_AGENTGRAPH_INPUT);
             imageSection.setDescription("Agentennetzwerk in IRPact");
             imageSection.setIcon("fa fa-spinner");
             sections.add(imageSection);

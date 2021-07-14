@@ -1,5 +1,11 @@
 [
   {
+    :label "Agentennetzwerk" 
+    :icon "fa fa-spinner" 
+    :description "Agentennetzwerk in IRPact zum Ende der Simulation" 
+    :image "Agentennetzwerk"
+  } 
+  {
     :label "Bilder" 
     :icon "fa fa-spinner" 
     :description "Test für Bildanzeige" 
