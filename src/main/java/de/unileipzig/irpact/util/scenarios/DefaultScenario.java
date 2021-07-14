@@ -138,7 +138,7 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
         general.setFirstSimulationYear(2015);
 
         //=====
-        InRoot root = createRootWithInformations();
+        InRoot root = createRootWithInformationsWithFullLogging();
         InExample.initOptAct(root);
         InExample.initGV(root);
 

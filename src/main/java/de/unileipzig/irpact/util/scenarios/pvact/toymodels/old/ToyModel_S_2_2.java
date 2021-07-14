@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
+package de.unileipzig.irpact.util.scenarios.pvact.toymodels.old;
 
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -22,6 +22,7 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSu
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.output.OutRoot;
+import de.unileipzig.irpact.util.scenarios.pvact.toymodels.AbstractToyModel;
 
 import java.util.Collections;
 import java.util.List;

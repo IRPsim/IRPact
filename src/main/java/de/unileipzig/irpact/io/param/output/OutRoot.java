@@ -171,7 +171,6 @@ public class OutRoot implements RootClass {
     @Override
     public void peekEdn(Sections sections, UiEdn ednType) {
         if(ednType == UiEdn.OUTPUT) {
-            sections.add(buildNetworkImageSection(-2));
             sections.add(buildImageSection(-1));
             handleOptAct(sections);
         }
@@ -181,45 +180,61 @@ public class OutRoot implements RootClass {
     protected Section buildImageSection(int priority) {
         Section imageSection = new Section();
         imageSection.setPriority(priority);
-        imageSection.setLabel("Bilder");
-        imageSection.setDescription("Test für Bildanzeige");
-        imageSection.setIcon("fa fa-spinner");
-
-        Sections imageSections = imageSection.getSections();
-        Section image1 = new Section();
-        image1.setPriority(1);
-        image1.setLabel("Bild 1");
-        image1.setIcon("fa fa-spinner");
-        image1.setImage("Bild1.png");
-        image1.setDescription("Test Bild 1");
-
-        Section image2 = new Section();
-        image2.setPriority(2);
-        image2.setLabel("Bild 2");
-        image2.setIcon("fa fa-spinner");
-        image2.setImage("Bild2.png");
-        image2.setDescription("Test Bild 2");
-
-        Section image3 = new Section();
-        image3.setPriority(3);
-        image3.setLabel("Bild 3");
-        image3.setIcon("fa fa-spinner");
-        image3.setImage("Bild3.png");
-        image3.setDescription("Test Bild 3");
-
-        imageSections.addAll(image1, image2, image3);
+        imageSection.setLabel("Ergebnisvisualisierungen");
+        imageSection.setDescription("Visualisierung von verschiedenen Ergebnissen aus IRPact.");
+        imageSection.setIcon(IRPact.ICON_IMAGES);
+        imageSection.getSections().addAll(
+                buildNetworkImageSection(1),
+                buildAdoptionSection(2)
+        );
         return imageSection;
     }
 
     @SuppressWarnings("SameParameterValue")
     protected Section buildNetworkImageSection(int priority) {
-        Section imageSection = new Section();
-        imageSection.setPriority(priority);
-        imageSection.setLabel("Agentennetzwerk");
-        imageSection.setImage(IRPact.IMAGE_AGENTGRAPH_OUTPUT);
-        imageSection.setDescription("Agentennetzwerk in IRPact zum Ende der Simulation");
-        imageSection.setIcon("fa fa-spinner");
-        return imageSection;
+        Section networkSection = new Section();
+        networkSection.setPriority(priority);
+        networkSection.setLabel("Finales Agentennetzwerk");
+        networkSection.setImage(IRPact.IMAGE_AGENTGRAPH_OUTPUT_PNG);
+        networkSection.setDescription("Agentennetzwerk von IRPact zum Ende der Simulation");
+        networkSection.setIcon(IRPact.ICON_IMAGE);
+        return networkSection;
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    protected Section buildAdoptionSection(int priority) {
+        Section adoptionSection = new Section();
+        adoptionSection.setPriority(priority);
+        adoptionSection.setLabel("Visualisierung der Adoptionen");
+        adoptionSection.setDescription("Darstellung der Adoptionen im Simulationszeitraum nach unterschiedlichen Kriterien.");
+        adoptionSection.setIcon(IRPact.ICON_IMAGES);
+
+        Sections adoptionSections = adoptionSection.getSections();
+
+        Section image1 = new Section();
+        image1.setPriority(1);
+        image1.setLabel("Jährliche Adoptionen (PLZ)");
+        image1.setIcon(IRPact.ICON_IMAGE);
+        image1.setImage(IRPact.IMAGE_ANNUAL_ADOPTIONS_PNG);
+        image1.setDescription("Zeigt die jährlichen Adoptionen für die einzelnen Postleitzahlen.");
+
+        Section image2 = new Section();
+        image2.setPriority(2);
+        image2.setLabel("Jährliche Adoptionen im Vergleich (PLZ)");
+        image2.setIcon(IRPact.ICON_IMAGE);
+        image2.setImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS_PNG);
+        image2.setDescription("Zeigt die jährlichen Adoptionen für die einzelnen Postleitzahlen im Vergleich zu realen Daten.");
+
+        Section image3 = new Section();
+        image3.setPriority(3);
+        image3.setLabel("Jährliche Adoptionen (Phase)");
+        image3.setIcon(IRPact.ICON_IMAGE);
+        image3.setImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS_PNG);
+        image3.setDescription("Zeigt die kumulierten jährlichen Adoptionen für die verschiedenen Adoptionsphasen.");
+
+        adoptionSections.addAll(image1, image2, image3);
+
+        return adoptionSection;
     }
 
     protected void handleOptAct(Sections sections) {

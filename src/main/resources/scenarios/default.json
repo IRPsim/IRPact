@@ -52,21 +52,18 @@
       "sca_InGeneral_runPVAct" : 1,
       "sca_InGeneral_scenarioMode" : -1,
       "sca_InGeneral_seed" : 42,
+      "sca_InGeneral_skipPersist" : 0,
       "sca_InGeneral_timeout" : 60000,
       "sca_InGeneral_timeoutUseMin" : 1,
       "sca_InGeneral_timeoutUseMs" : 0,
       "sca_InGeneral_timeoutUseSec" : 0,
-      "sca_InGraphvizGeneral_fixedNeatoPosition" : 0,
-      "sca_InGraphvizGeneral_layoutAlgCIRCO" : 0,
-      "sca_InGraphvizGeneral_layoutAlgDOT" : 0,
-      "sca_InGraphvizGeneral_layoutAlgFDP" : 1,
-      "sca_InGraphvizGeneral_layoutAlgNEATO" : 0,
-      "sca_InGraphvizGeneral_layoutAlgSFDP" : 0,
-      "sca_InGraphvizGeneral_layoutAlgTWOPI" : 0,
-      "sca_InGraphvizGeneral_outputFormatPNG" : 1,
-      "sca_InGraphvizGeneral_scaleFactor" : 0.0,
+      "sca_InGraphvizGeneral_freeLayout" : 0,
+      "sca_InGraphvizGeneral_positionBasedLayout" : 1,
+      "sca_InGraphvizGeneral_preferredImageHeight" : 1000.0,
+      "sca_InGraphvizGeneral_preferredImageWidth" : 1000.0,
       "sca_InGraphvizGeneral_storeDotFile" : 0,
       "sca_InGraphvizGeneral_storeEndImage" : 0,
+      "sca_InGraphvizGeneral_useDefaultPositionIfMissing" : 0,
       "sca_Tax_PS_vat" : 0.19,
       "sca_X_MS_CH_country" : 0,
       "sca_X_MS_DE_country" : 1
@@ -169,7 +166,7 @@
       "set_InGeneralConsumerAgentGroup" : { },
       "set_InGeneralConsumerAgentGroupAttribute" : { },
       "set_InGenericOutputImage" : {
-        "AnnualAdoptions" : {
+        "JaehrlicheAdoptionenPhase" : {
           "par_InGenericOutputImage_useGnuplot" : 1,
           "par_InGenericOutputImage_useR" : 0,
           "par_InGenericOutputImage_annualZip" : 1,
@@ -180,7 +177,7 @@
           "par_InGenericOutputImage_storeImage" : 0,
           "par_InGenericOutputImage_linewidth" : 1.0
         },
-        "AnnualCumulativeAdoptions" : {
+        "JaehrlicheAdoptionenPLZ" : {
           "par_InGenericOutputImage_useGnuplot" : 1,
           "par_InGenericOutputImage_useR" : 0,
           "par_InGenericOutputImage_annualZip" : 1,
@@ -191,7 +188,7 @@
           "par_InGenericOutputImage_storeImage" : 0,
           "par_InGenericOutputImage_linewidth" : 1.0
         },
-        "ComparedAnnualAdoptions" : {
+        "JaehrlicheAdoptionenPLZVergleich" : {
           "par_InGenericOutputImage_useGnuplot" : 1,
           "par_InGenericOutputImage_useR" : 0,
           "par_InGenericOutputImage_annualZip" : 1,
@@ -251,12 +248,12 @@
       "set_InNormalDistribution" : { },
       "set_InNumberOfTies" : { },
       "set_InOutputImage" : {
-        "AnnualAdoptions" : { },
-        "AnnualCumulativeAdoptions" : { },
-        "ComparedAnnualAdoptions" : { },
         "gnutest1" : { },
         "gnutest2" : { },
         "gnutest3" : { },
+        "JaehrlicheAdoptionenPhase" : { },
+        "JaehrlicheAdoptionenPLZ" : { },
+        "JaehrlicheAdoptionenPLZVergleich" : { },
         "rtest1" : { },
         "rtest2" : { },
         "rtest3" : { }
@@ -349,7 +346,7 @@
         }
       },
       "set_InScenarioVersion" : {
-        "v0_5_5" : {
+        "v0_6_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },

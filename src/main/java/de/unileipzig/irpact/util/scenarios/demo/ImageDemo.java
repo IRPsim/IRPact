@@ -44,7 +44,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ImageDemo extends AbstractScenario {
 
-    public static final int REVISION = 3;
+    public static final int REVISION = 4;
 
     public ImageDemo(String name, String creator, String description) {
         super(name, creator, description);
@@ -109,11 +109,10 @@ public class ImageDemo extends AbstractScenario {
         //images
         List<InOutputImage> images = new ArrayList<>();
         Collections.addAll(images, InGenericOutputImage.createDefaultImages());
-        images.forEach(InOutputImage::disableAll);
+        images.forEach(InOutputImage::enableAll);
         images.add(new InGnuPlotOutputImage("Bild1", DataToVisualize.ANNUAL_ZIP, true));
-        images.add(new InGnuPlotOutputImage("Bild2", DataToVisualize.CUMULATIVE_ANNUAL_PHASE, true));
+        images.add(new InGnuPlotOutputImage("Bild2", DataToVisualize.COMPARED_ANNUAL_ZIP, true));
         images.add(new InGnuPlotOutputImage("Bild3", DataToVisualize.CUMULATIVE_ANNUAL_PHASE, true));
-        images.add(new InGnuPlotOutputImage("Bild4", DataToVisualize.COMPARED_ANNUAL_ZIP, true));
 
         //time
         InUnitStepDiscreteTimeModel timeModel = new InUnitStepDiscreteTimeModel("DiscreteUnitStep", 1, ChronoUnit.WEEKS);
@@ -132,7 +131,7 @@ public class ImageDemo extends AbstractScenario {
         general.setFirstSimulationYear(2015);
 
         //=====
-        InRoot root = createRootWithInformations();
+        InRoot root = createRootWithInformationsWithFullLogging();
         InExample.initOptAct(root);
         InExample.initGV(root);
 

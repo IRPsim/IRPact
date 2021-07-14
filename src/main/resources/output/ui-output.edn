@@ -1,32 +1,39 @@
 [
   {
-    :label "Agentennetzwerk" 
-    :icon "fa fa-spinner" 
-    :description "Agentennetzwerk in IRPact zum Ende der Simulation" 
-    :image "Agentennetzwerk"
-  } 
-  {
-    :label "Bilder" 
-    :icon "fa fa-spinner" 
-    :description "Test für Bildanzeige" 
+    :label "Ergebnisvisualisierungen" 
+    :icon "fa fa-plus-square" 
+    :description "Visualisierung von verschiedenen Ergebnissen aus IRPact." 
     :sections [
       {
-        :label "Bild 1" 
-        :icon "fa fa-spinner" 
-        :description "Test Bild 1" 
-        :image "Bild1.png"
+        :label "Finales Agentennetzwerk" 
+        :icon "fa fa-file-image-o" 
+        :description "Agentennetzwerk von IRPact zum Ende der Simulation" 
+        :image "Agentennetzwerk.png"
       } 
       {
-        :label "Bild 2" 
-        :icon "fa fa-spinner" 
-        :description "Test Bild 2" 
-        :image "Bild2.png"
-      } 
-      {
-        :label "Bild 3" 
-        :icon "fa fa-spinner" 
-        :description "Test Bild 3" 
-        :image "Bild3.png"
+        :label "Visualisierung der Adoptionen" 
+        :icon "fa fa-plus-square" 
+        :description "Darstellung der Adoptionen im Simulationszeitraum nach unterschiedlichen Kriterien." 
+        :sections [
+          {
+            :label "Jährliche Adoptionen (PLZ)" 
+            :icon "fa fa-file-image-o" 
+            :description "Zeigt die jährlichen Adoptionen für die einzelnen Postleitzahlen." 
+            :image "JaehrlicheAdoptionenPLZ.png"
+          } 
+          {
+            :label "Jährliche Adoptionen im Vergleich (PLZ)" 
+            :icon "fa fa-file-image-o" 
+            :description "Zeigt die jährlichen Adoptionen für die einzelnen Postleitzahlen im Vergleich zu realen Daten." 
+            :image "JaehrlicheAdoptionenPLZVergleich.png"
+          } 
+          {
+            :label "Jährliche Adoptionen (Phase)" 
+            :icon "fa fa-file-image-o" 
+            :description "Zeigt die kumulierten jährlichen Adoptionen für die verschiedenen Adoptionsphasen." 
+            :image "JaehrlicheAdoptionenPhase.png"
+          }
+        ]
       }
     ]
   } 

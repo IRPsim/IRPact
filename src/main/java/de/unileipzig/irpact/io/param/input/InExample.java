@@ -38,7 +38,6 @@ import de.unileipzig.irpact.start.optact.network.IFreeMultiGraphTopology;
 import de.unileipzig.irpact.start.optact.network.IWattsStrogatzModel;
 import de.unileipzig.irptools.defstructure.DefaultScenarioFactory;
 import de.unileipzig.irptools.graphviz.StandardLayoutAlgorithm;
-import de.unileipzig.irptools.graphviz.StandardOutputFormat;
 import de.unileipzig.irptools.util.DoubleTimeSeries;
 import de.unileipzig.irptools.util.Table;
 
@@ -161,11 +160,8 @@ public class InExample implements DefaultScenarioFactory {
         InConsumerAgentGroupColor cag1Color = InConsumerAgentGroupColor.GREEN.derive(cag1);
         root.setConsumerAgentGroupColors(new InConsumerAgentGroupColor[]{cag0Color, cag1Color});
 
-        root.getGraphvizGeneral().setLayoutAlgorithm(StandardLayoutAlgorithm.FDP);
-        root.getGraphvizGeneral().setOutputFormat(StandardOutputFormat.PNG);
-        root.getGraphvizGeneral().setFixedNeatoPosition(false);
+        root.getGraphvizGeneral().setLayoutAlgorithm(StandardLayoutAlgorithm.NEATO);
         root.getGraphvizGeneral().setStoreDotFile(false);
-        root.getGraphvizGeneral().setScaleFactor(0);
 
         //=====
         root.version = new InScenarioVersion[]{InScenarioVersion.currentVersion()};
@@ -289,11 +285,8 @@ public class InExample implements DefaultScenarioFactory {
         InConsumerAgentGroupColor cag1Color = InConsumerAgentGroupColor.GREEN.derive(cag1);
         root.setConsumerAgentGroupColors(new InConsumerAgentGroupColor[]{cag0Color, cag1Color});
 
-        root.getGraphvizGeneral().setLayoutAlgorithm(StandardLayoutAlgorithm.FDP);
-        root.getGraphvizGeneral().setOutputFormat(StandardOutputFormat.PNG);
-        root.getGraphvizGeneral().setFixedNeatoPosition(false);
+        root.getGraphvizGeneral().setLayoutAlgorithm(StandardLayoutAlgorithm.NEATO);
         root.getGraphvizGeneral().setStoreDotFile(false);
-        root.getGraphvizGeneral().setScaleFactor(0);
 
         //=====
         root.version = new InScenarioVersion[]{InScenarioVersion.currentVersion()};
@@ -346,11 +339,8 @@ public class InExample implements DefaultScenarioFactory {
 //        AgentGroup ag4 = new AgentGroup("Gruppe4", 25, gc4);
 //        root.agentGroups = new AgentGroup[]{ag1, ag2, ag3, ag4};
 
-        root.getGraphvizGeneral().setLayoutAlgorithm(StandardLayoutAlgorithm.FDP);
-        root.getGraphvizGeneral().setOutputFormat(StandardOutputFormat.PNG);
-        root.getGraphvizGeneral().setFixedNeatoPosition(false);
+        root.getGraphvizGeneral().setLayoutAlgorithm(StandardLayoutAlgorithm.NEATO);
         root.getGraphvizGeneral().setStoreDotFile(false);
-        root.getGraphvizGeneral().setScaleFactor(0);
     }
 
     @Todo("default rausgenommen")

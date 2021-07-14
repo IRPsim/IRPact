@@ -12,7 +12,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v0.5.5" 
+        :description "IRPact v0.6.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -48,7 +48,7 @@
       {
         :label "Spezielle Einstellungen" 
         :description "Hier lassen sich spezielle Modi aktivieren." 
-        :tags [["InGeneral" "runPVAct"] ["InGeneral" "runOptActDemo"] ["InGeneral" "runMode"] ["InGeneral" "scenarioMode"] ["InGeneral" "passErrorMessageToOutput"] ["InGeneral" "copyLogIfPossible"]] 
+        :tags [["InGeneral" "runPVAct"] ["InGeneral" "runOptActDemo"] ["InGeneral" "runMode"] ["InGeneral" "scenarioMode"] ["InGeneral" "passErrorMessageToOutput"] ["InGeneral" "copyLogIfPossible"] ["InGeneral" "skipPersist"]] 
         :sections [
           {
             :label "Binäre Daten" 
@@ -88,7 +88,7 @@
           {
             :label "Einstellungen" 
             :description "Ermöglicht die allgemeine Konfiguration von Graphviz für die Netzwerkvisualisierung." 
-            :tags [["InGraphvizGeneral" "storeEndImage"] ["InGraphvizGeneral" "storeDotFile"] ["InGraphvizGeneral" "scaleFactor"] ["InGraphvizGeneral" "fixedNeatoPosition"] ["InGraphvizGeneral" "outputFormatPNG"] ["InGraphvizGeneral" "layoutAlgDOT"] ["InGraphvizGeneral" "layoutAlgNEATO"] ["InGraphvizGeneral" "layoutAlgFDP"] ["InGraphvizGeneral" "layoutAlgSFDP"] ["InGraphvizGeneral" "layoutAlgTWOPI"] ["InGraphvizGeneral" "layoutAlgCIRCO"]]
+            :tags [["InGraphvizGeneral" "storeEndImage"] ["InGraphvizGeneral" "storeDotFile"] ["InGraphvizGeneral" "preferredImageWidth"] ["InGraphvizGeneral" "preferredImageHeight"] ["InGraphvizGeneral" "positionBasedLayout"] ["InGraphvizGeneral" "freeLayout"] ["InGraphvizGeneral" "useDefaultPositionIfMissing"]]
           } 
           {
             :label "Agentengruppe-Farben-Mapping" 

@@ -44,6 +44,10 @@ public class BasicPoint2D implements Point2D {
         ACCESS = new BasicAttributeAccess(this, attributes);
     }
 
+    public BasicPoint2D reverse() {
+        return new BasicPoint2D(getY(), getX());
+    }
+
     @Override
     public boolean hasId() {
         return id.hasValue();

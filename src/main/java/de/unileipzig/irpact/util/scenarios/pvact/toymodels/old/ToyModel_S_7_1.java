@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
+package de.unileipzig.irpact.util.scenarios.pvact.toymodels.old;
 
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -21,6 +21,7 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.output.OutRoot;
+import de.unileipzig.irpact.util.scenarios.pvact.toymodels.AbstractToyModel;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.function.BiConsumer;
 /**
  * @author Daniel Abitz
  */
-public class ToyModel_S_7_2 extends AbstractToyModel {
+public class ToyModel_S_7_1 extends AbstractToyModel {
 
     public static final int REVISION = 1;
 
@@ -46,7 +47,7 @@ public class ToyModel_S_7_2 extends AbstractToyModel {
     protected int sizeK = SIZE_K;
     protected int sizeH = SIZE_H;
 
-    public ToyModel_S_7_2(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
+    public ToyModel_S_7_1(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(name, creator, description, resultConsumer);
         setRevision(REVISION);
         setTotalAgents(SIZE_S + SIZE_A + SIZE_K + SIZE_H);
@@ -129,28 +130,22 @@ public class ToyModel_S_7_2 extends AbstractToyModel {
 
     @Override
     public List<InRoot> createInRoots() {
-        if(true) throw new RuntimeException("kaputt");
-
         InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
 
         InPVactConsumerAgentGroup S = createAgentGroup("S", spatialDist);
-        S.setNoveltySeeking(dirac1);                        //A2
         S.setDependentJudgmentMaking(dirac1);               //A3
         S.setInitialAdopter(dirac1);                        //D5
 
 
         InPVactConsumerAgentGroup A = createAgentGroup("A", spatialDist);
-        A.setNoveltySeeking(dirac1);                        //A2
         A.setDependentJudgmentMaking(dirac1);               //A3
         A.setInitialAdopter(dirac0);                        //D5
 
         InPVactConsumerAgentGroup K = createAgentGroup("K", spatialDist);
-        K.setNoveltySeeking(dirac1);                        //A2
         K.setDependentJudgmentMaking(dirac0);               //A3
         K.setInitialAdopter(dirac0);                        //D5
 
         InPVactConsumerAgentGroup H = createAgentGroup("H", spatialDist);
-        H.setNoveltySeeking(dirac1);                        //A2
         H.setDependentJudgmentMaking(dirac0);               //A3
         H.setInitialAdopter(dirac0);                        //D5
 
@@ -178,14 +173,14 @@ public class ToyModel_S_7_2 extends AbstractToyModel {
 
         InRAProcessModel processModel = createDefaultProcessModel("Process", uncertainty, 0.0);
         processModel.setA(0.5);
-        processModel.setB(0.5);
+        processModel.setB(0);
         processModel.setC(0);
-        processModel.setD(0);
+        processModel.setD(0.5);
 
         InSpace2D space2D = createSpace2D("Space2D");
 
         //=====
-        InRoot root = createRootWithInformations();
+        InRoot root = createRootWithInformationsWithFullLogging();
         root.general.lastSimulationYear = DEFAULT_INITIAL_YEAR;
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(cags);

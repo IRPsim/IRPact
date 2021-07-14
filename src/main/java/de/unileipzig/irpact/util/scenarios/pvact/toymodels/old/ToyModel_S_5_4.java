@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
+package de.unileipzig.irpact.util.scenarios.pvact.toymodels.old;
 
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -9,10 +9,11 @@ import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
+import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
-import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
+import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
@@ -21,6 +22,7 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.output.OutRoot;
+import de.unileipzig.irpact.util.scenarios.pvact.toymodels.AbstractToyModel;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,20 +32,33 @@ import java.util.function.BiConsumer;
 /**
  * @author Daniel Abitz
  */
-public class ToyModel_S_3 extends AbstractToyModel {
+public class ToyModel_S_5_4 extends AbstractToyModel {
 
     public static final int REVISION = 0;
 
+    public static final int SIZE_S = 10;
     public static final int SIZE_A = 10;
     public static final int SIZE_K = 10;
 
+    protected InDiracUnivariateDistribution dirac075 = new InDiracUnivariateDistribution("dirac075", 0.75);
+    protected InDiracUnivariateDistribution dirac08 = new InDiracUnivariateDistribution("dirac08", 0.8);
+
+    protected int sizeS = SIZE_S;
     protected int sizeA = SIZE_A;
     protected int sizeK = SIZE_K;
 
-    public ToyModel_S_3(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
+    public ToyModel_S_5_4(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(name, creator, description, resultConsumer);
         setRevision(REVISION);
-        setTotalAgents(SIZE_A + SIZE_K);
+        setTotalAgents(SIZE_S + SIZE_A + SIZE_K);
+    }
+
+    public void setSizeS(int sizeS) {
+        this.sizeS = sizeS;
+    }
+
+    public int getSizeS() {
+        return sizeS;
     }
 
     public void setSizeA(int sizeA) {
@@ -66,17 +81,27 @@ public class ToyModel_S_3 extends AbstractToyModel {
     protected List<List<SpatialAttribute>> createTestData(
             List<List<SpatialAttribute>> input,
             Random random) {
-        return createTestData(input, sizeA, sizeK, random);
+        return createTestData(input, sizeS, sizeA, sizeK, random);
     }
 
     public List<List<SpatialAttribute>> createTestData(
             List<List<SpatialAttribute>> input,
-            int sizeOfA, int sizeOfK,
+            int sizeOfS, int sizeOfA, int sizeOfK,
             Random rnd) {
-        List<List<SpatialAttribute>> output = SpatialUtil.drawRandom(input, sizeOfA + sizeOfK, rnd);
+        List<List<SpatialAttribute>> output = SpatialUtil.drawRandom(input, sizeOfS + sizeOfA + sizeOfK, rnd);
         int from = 0;
         int to = 0;
         //A
+        to += sizeOfS;
+        for(int i = from; i < to; i++) {
+            List<SpatialAttribute> row = output.get(i);
+            SpatialUtil.replaceString(row, RAConstants.DOM_MILIEU, "S");
+            SpatialUtil.replaceDouble(row, RAConstants.PURCHASE_POWER, dirac1.getValue());  //A1
+            SpatialUtil.replaceDouble(row, RAConstants.SHARE_1_2_HOUSE, dirac1.getValue()); //A5
+            SpatialUtil.replaceDouble(row, RAConstants.HOUSE_OWNER, dirac1.getValue());     //A6
+        }
+        //A
+        from += sizeOfS;
         to += sizeOfA;
         for(int i = from; i < to; i++) {
             List<SpatialAttribute> row = output.get(i);
@@ -104,8 +129,8 @@ public class ToyModel_S_3 extends AbstractToyModel {
         grp.setName(name);
 
         //A1 in file
-        grp.setDependentJudgmentMaking(dirac1);                   //A3
-        grp.setEnvironmentalConcern(dirac1);                      //A4
+        grp.setNoveltySeeking(dirac1);                            //A2
+        grp.setEnvironmentalConcern(dirac1);                   //A3
         //A5 in file
         //A6 in file
 
@@ -119,34 +144,52 @@ public class ToyModel_S_3 extends AbstractToyModel {
     public List<InRoot> createInRoots() {
         InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
 
+        InPVactConsumerAgentGroup S = createAgentGroup("S", spatialDist);
+        S.setInitialAdopter(dirac1);                     //D5
+        S.setDependentJudgmentMaking(dirac1);            //A3
+
         InPVactConsumerAgentGroup A = createAgentGroup("A", spatialDist);
-        A.setNoveltySeeking(dirac1);                     //A2
+        A.setInitialAdopter(dirac0);                     //D5
+        A.setDependentJudgmentMaking(dirac08);            //A3
 
         InPVactConsumerAgentGroup K = createAgentGroup("K", spatialDist);
-        K.setNoveltySeeking(dirac0);                     //A2
+        K.setInitialAdopter(dirac0);                     //D5
+        K.setDependentJudgmentMaking(dirac075);            //A3
 
-        InAffinities affinities = createZeroAffinities("affinities", A, K);
+        InConsumerAgentGroup[] cags = {S, A, K};
 
-        InFileBasedPVactConsumerAgentPopulation population = createPopulation("Pop", getTotalAgents(), A, K);
+        InAffinities affinities = createAffinities("affinities",
+                createEntries("", S, cags, new double[]{1, 0, 0}),
+                createEntries("", A, cags, new double[]{0.5, 0.5, 0}),
+                createEntries("", K, cags, new double[]{0.4, 0, 0.6})
+        );
 
-        InUnlinkedGraphTopology topology = new InUnlinkedGraphTopology("Topo");
+        InFileBasedPVactConsumerAgentPopulation population = createPopulation("Pop", getTotalAgents(), cags);
+
+        InFreeNetworkTopology topology = createFreeTopology(
+                "Topo",
+                affinities,
+                cags,
+                5
+        );
 
         InUnitStepDiscreteTimeModel timeModel = createOneWeekTimeModel("Time");
 
-        InPVactGroupBasedDeffuantUncertainty uncertainty = createDefaultUnvertainty("uncert", A, K);
+        InPVactGroupBasedDeffuantUncertainty uncertainty = createDefaultUnvertainty("uncert", cags);
 
-        InRAProcessModel processModel = createDefaultProcessModel("Process", uncertainty, 0.0);
+        InRAProcessModel processModel = createDefaultProcessModel("Process", uncertainty, 0);
         processModel.setABCD(0);
-        processModel.setC(1);
+        processModel.setD(1);
+        processModel.setNodeFilterScheme(new InRAProcessPlanMaxDistanceFilterScheme("MaxDist", 50, true));
 
         InSpace2D space2D = createSpace2D("Space2D");
 
         //=====
 
-        InRoot root = createRootWithInformations();
+        InRoot root = createRootWithInformationsWithFullLogging();
         root.general.setFirstSimulationYearAsLast();
         root.setAffinities(affinities);
-        root.setConsumerAgentGroups(new InConsumerAgentGroup[]{A, K});
+        root.setConsumerAgentGroups(cags);
         root.setAgentPopulationSize(population);
         root.graphTopologySchemes = new InGraphTopologyScheme[]{topology};
         root.processModels = new InProcessModel[]{processModel};

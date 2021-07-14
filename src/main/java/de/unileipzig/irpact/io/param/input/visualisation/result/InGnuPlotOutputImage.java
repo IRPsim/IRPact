@@ -33,15 +33,13 @@ public class InGnuPlotOutputImage implements InOutputImage {
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.SETT_VISURESULT_GNU);
-        addEntryWithDefault(res, thisClass(), "annualZip", VALUE_TRUE);
-        addEntryWithDefault(res, thisClass(), "annualZipWithReal", VALUE_FALSE);
-        addEntryWithDefault(res, thisClass(), "cumulativeAnnualPhase", VALUE_FALSE);
-        addEntryWithDefault(res, thisClass(), "storeScript", VALUE_FALSE);
-        addEntryWithDefault(res, thisClass(), "storeData", VALUE_FALSE);
-        addEntryWithDefault(res, thisClass(), "storeImage", VALUE_TRUE);
-        addEntryWithDefault(res, thisClass(), "linewidth", varargs(1));
-
-        setDomain(res, thisClass(), "linewidth", "(0,)");
+        addEntryWithDefaultAndDomain(res, thisClass(), "annualZip", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "annualZipWithReal", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "cumulativeAnnualPhase", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "storeScript", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "storeData", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "storeImage", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "linewidth", VALUE_ONE, DOMAIN_G0);
 
         setRules(res, thisClass(), dataToVisualize, dataToVisualizeBuilder.withKeyModifier(buildDefaultParameterNameOperator(thisClass())));
     }

@@ -103,7 +103,7 @@ public class PVactScenario01 extends AbstractPVactScenario {
         general.setFirstSimulationYear(2015);
         general.lastSimulationYear = 2015;
 
-        InRoot root = createRootWithInformations();
+        InRoot root = createRootWithInformationsWithFullLogging();
         root.general = general;
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(cags);

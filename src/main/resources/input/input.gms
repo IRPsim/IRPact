@@ -499,12 +499,13 @@ SET set_InSpatialTableFile(set_InFile)
 * - type: Float
 PARAMETER par_InSpatialTableFile_placeholderInSpatialFile(set_InSpatialTableFile)
 
-* - default: AnnualAdoptions, ComparedAnnualAdoptions, AnnualCumulativeAdoptions
+* - default: JaehrlicheAdoptionenPLZ, JaehrlicheAdoptionenPLZVergleich, JaehrlicheAdoptionenPhase
 * - identifier: InGenericOutputImage
 * - type: String
 SET set_InGenericOutputImage(set_InOutputImage)
 
 * - default: 1
+* - domain: [0|1]
 * - description: Erzeugt das Bild mittels gnuplot.
 * - identifier: Programm: gnuplot
 * - rule: IF (par_InGenericOutputImage_useGnuplot == 1, par_InGenericOutputImage_useR = 0)
@@ -514,6 +515,7 @@ SET set_InGenericOutputImage(set_InOutputImage)
 PARAMETER par_InGenericOutputImage_useGnuplot(set_InGenericOutputImage)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Erzeugt das Bild mittels R.
 * - identifier: Programm: R
 * - rule: IF (par_InGenericOutputImage_useR == 1, par_InGenericOutputImage_useGnuplot = 0)
@@ -523,6 +525,7 @@ PARAMETER par_InGenericOutputImage_useGnuplot(set_InGenericOutputImage)
 PARAMETER par_InGenericOutputImage_useR(set_InGenericOutputImage)
 
 * - default: 1
+* - domain: [0|1]
 * - description: Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar.
 * - identifier: Darstellung: jährliche Adoptionen (PLZ)
 * - rule: IF (par_InGenericOutputImage_annualZip == 1, par_InGenericOutputImage_annualZipWithReal = 0)
@@ -534,6 +537,7 @@ PARAMETER par_InGenericOutputImage_useR(set_InGenericOutputImage)
 PARAMETER par_InGenericOutputImage_annualZip(set_InGenericOutputImage)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt.
 * - identifier: Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)
 * - rule: IF (par_InGenericOutputImage_annualZipWithReal == 1, par_InGenericOutputImage_annualZip = 0)
@@ -545,6 +549,7 @@ PARAMETER par_InGenericOutputImage_annualZip(set_InGenericOutputImage)
 PARAMETER par_InGenericOutputImage_annualZipWithReal(set_InGenericOutputImage)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar.
 * - identifier: Darstellung: kumulierte jährliche Adoptionen (Phase)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 1, par_InGenericOutputImage_annualZip = 0)
@@ -556,18 +561,21 @@ PARAMETER par_InGenericOutputImage_annualZipWithReal(set_InGenericOutputImage)
 PARAMETER par_InGenericOutputImage_cumulativeAnnualPhase(set_InGenericOutputImage)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Speichert auf Wunsch das Skript für die Bilderzeugung.
 * - identifier: Skript speichern?
 * - type: Boolean
 PARAMETER par_InGenericOutputImage_storeScript(set_InGenericOutputImage)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Speichert auf Wunsch die Daten für die Bilderzeugung.
 * - identifier: Daten speichern?
 * - type: Boolean
 PARAMETER par_InGenericOutputImage_storeData(set_InGenericOutputImage)
 
 * - default: 1
+* - domain: [0|1]
 * - description: Erzeugt und speichert auf Wunsch das erzeugte Bild.
 * - identifier: Bild speichern?
 * - type: Boolean
@@ -585,6 +593,7 @@ PARAMETER par_InGenericOutputImage_linewidth(set_InGenericOutputImage)
 SET set_InGnuPlotOutputImage(set_InOutputImage)
 
 * - default: 1
+* - domain: [0|1]
 * - description: Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar.
 * - identifier: Darstellung: jährliche Adoptionen (PLZ)
 * - rule: IF (par_InGnuPlotOutputImage_annualZip == 1, par_InGnuPlotOutputImage_annualZipWithReal = 0)
@@ -596,6 +605,7 @@ SET set_InGnuPlotOutputImage(set_InOutputImage)
 PARAMETER par_InGnuPlotOutputImage_annualZip(set_InGnuPlotOutputImage)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt.
 * - identifier: Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)
 * - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 1, par_InGnuPlotOutputImage_annualZip = 0)
@@ -607,6 +617,7 @@ PARAMETER par_InGnuPlotOutputImage_annualZip(set_InGnuPlotOutputImage)
 PARAMETER par_InGnuPlotOutputImage_annualZipWithReal(set_InGnuPlotOutputImage)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar.
 * - identifier: Darstellung: kumulierte jährliche Adoptionen (Phase)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 1, par_InGnuPlotOutputImage_annualZip = 0)
@@ -618,18 +629,21 @@ PARAMETER par_InGnuPlotOutputImage_annualZipWithReal(set_InGnuPlotOutputImage)
 PARAMETER par_InGnuPlotOutputImage_cumulativeAnnualPhase(set_InGnuPlotOutputImage)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Speichert auf Wunsch das Skript für die Bilderzeugung.
 * - identifier: Skript speichern?
 * - type: Boolean
 PARAMETER par_InGnuPlotOutputImage_storeScript(set_InGnuPlotOutputImage)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Speichert auf Wunsch die Daten für die Bilderzeugung.
 * - identifier: Daten speichern?
 * - type: Boolean
 PARAMETER par_InGnuPlotOutputImage_storeData(set_InGnuPlotOutputImage)
 
 * - default: 1
+* - domain: [0|1]
 * - description: Erzeugt und speichert auf Wunsch das erzeugte Bild.
 * - identifier: Bild speichern?
 * - type: Boolean
@@ -652,6 +666,7 @@ SET set_InOutputImage(*)
 SET set_InROutputImage(set_InOutputImage)
 
 * - default: 1
+* - domain: [0|1]
 * - description: Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar.
 * - identifier: Darstellung: jährliche Adoptionen (PLZ)
 * - rule: IF (par_InROutputImage_annualZip == 1, par_InROutputImage_annualZipWithReal = 0)
@@ -663,6 +678,7 @@ SET set_InROutputImage(set_InOutputImage)
 PARAMETER par_InROutputImage_annualZip(set_InROutputImage)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt.
 * - identifier: Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)
 * - rule: IF (par_InROutputImage_annualZipWithReal == 1, par_InROutputImage_annualZip = 0)
@@ -674,6 +690,7 @@ PARAMETER par_InROutputImage_annualZip(set_InROutputImage)
 PARAMETER par_InROutputImage_annualZipWithReal(set_InROutputImage)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar.
 * - identifier: Darstellung: kumulierte jährliche Adoptionen (Phase)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 1, par_InROutputImage_annualZip = 0)
@@ -685,18 +702,21 @@ PARAMETER par_InROutputImage_annualZipWithReal(set_InROutputImage)
 PARAMETER par_InROutputImage_cumulativeAnnualPhase(set_InROutputImage)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Speichert auf Wunsch das Skript für die Bilderzeugung.
 * - identifier: Skript speichern?
 * - type: Boolean
 PARAMETER par_InROutputImage_storeScript(set_InROutputImage)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Speichert auf Wunsch die Daten für die Bilderzeugung.
 * - identifier: Daten speichern?
 * - type: Boolean
 PARAMETER par_InROutputImage_storeData(set_InROutputImage)
 
 * - default: 1
+* - domain: [0|1]
 * - description: Erzeugt und speichert auf Wunsch das erzeugte Bild.
 * - identifier: Bild speichern?
 * - type: Boolean
@@ -1623,138 +1643,61 @@ PARAMETER par_InUnitStepDiscreteTimeModel_useW(set_InUnitStepDiscreteTimeModel)
 PARAMETER par_InUnitStepDiscreteTimeModel_useM(set_InUnitStepDiscreteTimeModel)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Falls aktiviert, wird das Netzwerk am Ende der Simulation gespeichert.
-* - identifier: Netzwerk speichern?
+* - identifier: Finales Netzwerk speichern?
 * - type: Boolean
 SCALAR sca_InGraphvizGeneral_storeEndImage
 
 * - default: 0
-* - description: Ermöglicht das Speichern der dot-Datei.
-* - identifier: dot-Datei speichern?
+* - domain: [0|1]
+* - description: Ermöglicht das Speichern der dot-Datei. Diese Datei enthält die Konstruktionsinformationen des Netzwerkes.
+* - identifier: Finale dot-Datei speichern?
 * - type: Boolean
 SCALAR sca_InGraphvizGeneral_storeDotFile
 
-* - default: 0
+* - default: 1000
 * - domain: [0,)
-* - description: Definiert den Skalierungsfaktor.
-* - identifier: Skalierungsfaktor
+* - description: Definiert den Bildbreite für die Netzwerkbilder. Falls der Wert 0 ist, bestimmt Graphviz die optimale Bildgröße automatisch.
+* - identifier: Bevorzugte Bildbreite
+* - unit: [Pixel]
 * - type: Float
-SCALAR sca_InGraphvizGeneral_scaleFactor
+SCALAR sca_InGraphvizGeneral_preferredImageWidth
 
-* - default: 0
-* - description: Falls aktiviert, werden die realen Agentenpositionen genutzt.
-* - identifier: Positionen fixieren? (NEATO)
-* - type: Boolean
-SCALAR sca_InGraphvizGeneral_fixedNeatoPosition
-
-* - default: 1
-* - description: Erstellt die Bilder als png.
-* - identifier: Ausgabeformat: PNG
-* - rule: IF (sca_InGraphvizGeneral_outputFormatPNG == 0, sca_InGraphvizGeneral_outputFormatPNG = 1)
-* - type: Boolean
-SCALAR sca_InGraphvizGeneral_outputFormatPNG
-
-* - default: 0
-* - description: Nutzt das DOT Layout.
-* - identifier: Layout: DOT
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 1, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 1, sca_InGraphvizGeneral_layoutAlgFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 1, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 1, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 1, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 0, sca_InGraphvizGeneral_layoutAlgDOT = 1)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 0, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 0, sca_InGraphvizGeneral_layoutAlgFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 0, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 0, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgDOT == 0, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
-* - type: Boolean
-SCALAR sca_InGraphvizGeneral_layoutAlgDOT
-
-* - default: 0
-* - description: Nutzt das NEATO Layout.
-* - identifier: Layout: NEATO
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 1, sca_InGraphvizGeneral_layoutAlgDOT = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 1, sca_InGraphvizGeneral_layoutAlgFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 1, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 1, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 1, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 0, sca_InGraphvizGeneral_layoutAlgDOT = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 0, sca_InGraphvizGeneral_layoutAlgNEATO = 1)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 0, sca_InGraphvizGeneral_layoutAlgFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 0, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 0, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgNEATO == 0, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
-* - type: Boolean
-SCALAR sca_InGraphvizGeneral_layoutAlgNEATO
+* - default: 1000
+* - domain: [0,)
+* - description: Definiert den Bildhöhe für die Netzwerkbilder. Falls der Wert 0 ist, bestimmt Graphviz die optimale Bildgröße automatisch.
+* - identifier: Bevorzugte Bildhöhe
+* - unit: [Pixel]
+* - type: Float
+SCALAR sca_InGraphvizGeneral_preferredImageHeight
 
 * - default: 1
-* - description: Nutzt das FDP Layout.
-* - identifier: Layout: FDP
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 1, sca_InGraphvizGeneral_layoutAlgDOT = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 1, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 1, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 1, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 1, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 0, sca_InGraphvizGeneral_layoutAlgDOT = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 0, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 0, sca_InGraphvizGeneral_layoutAlgFDP = 1)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 0, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 0, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgFDP == 0, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
+* - domain: [0|1]
+* - description: Nutzt für die Grapherzeugung ein positionsbasiertes Layout. Das genaue Layout ist NEATO kombiniert mit -n. Dieses Layout setzt vorraus, dass die Agenten eine Position besitzen. Zusätzlich benötigt es auch eine eingestellte Bildgröße. Falls diese fehlt, wird ein (ca.) 1000x1000 Pixel großes Bild erzeugt.
+* - identifier: Positionsbasiertes Layout
+* - rule: IF (sca_InGraphvizGeneral_positionBasedLayout == 1, sca_InGraphvizGeneral_freeLayout = 0)
+* - rule: IF (sca_InGraphvizGeneral_positionBasedLayout == 0, sca_InGraphvizGeneral_positionBasedLayout = 1)
+* - rule: IF (sca_InGraphvizGeneral_positionBasedLayout == 0, sca_InGraphvizGeneral_freeLayout = 0)
 * - type: Boolean
-SCALAR sca_InGraphvizGeneral_layoutAlgFDP
+SCALAR sca_InGraphvizGeneral_positionBasedLayout
 
 * - default: 0
-* - description: Nutzt das SFDP Layout.
-* - identifier: Layout: SFDP
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 1, sca_InGraphvizGeneral_layoutAlgDOT = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 1, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 1, sca_InGraphvizGeneral_layoutAlgFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 1, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 1, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 0, sca_InGraphvizGeneral_layoutAlgDOT = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 0, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 0, sca_InGraphvizGeneral_layoutAlgFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 0, sca_InGraphvizGeneral_layoutAlgSFDP = 1)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 0, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgSFDP == 0, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
+* - domain: [0|1]
+* - description: Nutzt für die Grapherzeugung ein kräftebasierentes Layout. Das genaue Layout ist SFDP mit der overlap-Option prism.
+* - identifier: Freies Layout
+* - rule: IF (sca_InGraphvizGeneral_freeLayout == 1, sca_InGraphvizGeneral_positionBasedLayout = 0)
+* - rule: IF (sca_InGraphvizGeneral_freeLayout == 0, sca_InGraphvizGeneral_positionBasedLayout = 0)
+* - rule: IF (sca_InGraphvizGeneral_freeLayout == 0, sca_InGraphvizGeneral_freeLayout = 1)
 * - type: Boolean
-SCALAR sca_InGraphvizGeneral_layoutAlgSFDP
+SCALAR sca_InGraphvizGeneral_freeLayout
 
 * - default: 0
-* - description: Nutzt das TWOPI Layout.
-* - identifier: Layout: TWOPI
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 1, sca_InGraphvizGeneral_layoutAlgDOT = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 1, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 1, sca_InGraphvizGeneral_layoutAlgFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 1, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 1, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 0, sca_InGraphvizGeneral_layoutAlgDOT = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 0, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 0, sca_InGraphvizGeneral_layoutAlgFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 0, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 0, sca_InGraphvizGeneral_layoutAlgTWOPI = 1)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgTWOPI == 0, sca_InGraphvizGeneral_layoutAlgCIRCO = 0)
+* - domain: [0|1]
+* - description: Diese Option erlaubt die Nutzung des positionbasierten Layouts ohne gültige Positionen. Agenten ohne Position wird der Punkt (0,0) zugeordnet.
+* - identifier: Erlaube fehlende Positionen
 * - type: Boolean
-SCALAR sca_InGraphvizGeneral_layoutAlgTWOPI
-
-* - default: 0
-* - description: Nutzt das CIRCO Layout.
-* - identifier: Layout: CIRCO
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 1, sca_InGraphvizGeneral_layoutAlgDOT = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 1, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 1, sca_InGraphvizGeneral_layoutAlgFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 1, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 1, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 0, sca_InGraphvizGeneral_layoutAlgDOT = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 0, sca_InGraphvizGeneral_layoutAlgNEATO = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 0, sca_InGraphvizGeneral_layoutAlgFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 0, sca_InGraphvizGeneral_layoutAlgSFDP = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 0, sca_InGraphvizGeneral_layoutAlgTWOPI = 0)
-* - rule: IF (sca_InGraphvizGeneral_layoutAlgCIRCO == 0, sca_InGraphvizGeneral_layoutAlgCIRCO = 1)
-* - type: Boolean
-SCALAR sca_InGraphvizGeneral_layoutAlgCIRCO
+SCALAR sca_InGraphvizGeneral_useDefaultPositionIfMissing
 
 * - identifier: InConsumerAgentGroupColor
 * - type: String
@@ -1837,39 +1780,52 @@ SCALAR sca_a
 * - type: Float
 SCALAR sca_delta_ii
 
+* - default: 0
 * - domain: [0|1]
 * - description: Falls gesetzt, werden automatisch spezielle Einstellungen für PVact bei der Initialisierung ergänzt. Dies betrifft aktuell Produkte und die Prozessmodellzuordnung.
 * - identifier: PVact
 * - type: Boolean
 SCALAR sca_InGeneral_runPVAct
 
+* - default: 0
 * - domain: [0|1]
 * - description: Falls gesetzt, wird die optact-Demo gestartet. Anderenfalls wird IRPact gestartet.
 * - identifier: [Testoption] optact-Testmodell ausführen
 * - type: Boolean
 SCALAR sca_InGeneral_runOptActDemo
 
+* - default: -1
 * - description: todo
 * - identifier: Ausführungsmodus
 * - type: Integer
 SCALAR sca_InGeneral_runMode
 
+* - default: -1
 * - description: todo
 * - identifier: Spezialszenario
 * - type: Integer
 SCALAR sca_InGeneral_scenarioMode
 
+* - default: 0
 * - domain: [0|1]
 * - description: todo
 * - identifier: Leite Error in Output
 * - type: Boolean
 SCALAR sca_InGeneral_passErrorMessageToOutput
 
+* - default: 0
 * - domain: [0|1]
 * - description: todo
 * - identifier: Kopiere Log
 * - type: Boolean
 SCALAR sca_InGeneral_copyLogIfPossible
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: Deaktiviere Persistierung
+* - type: Boolean
+SCALAR sca_InGeneral_skipPersist
 
 * - default: 0
 * - domain: [0|1]

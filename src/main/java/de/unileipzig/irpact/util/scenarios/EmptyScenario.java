@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.util.scenarios;
 
-import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
 
 import java.util.Collections;
@@ -20,7 +19,7 @@ public class EmptyScenario extends AbstractScenario {
 
     @Override
     public List<InRoot> createInRoots() {
-        InRoot root = createRootWithInformations();
+        InRoot root = createRootWithInformationsWithFullLogging();
         return Collections.singletonList(root);
     }
 }

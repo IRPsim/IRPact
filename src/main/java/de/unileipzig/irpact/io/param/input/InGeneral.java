@@ -73,8 +73,8 @@ public class InGeneral implements Copyable {
         addEntry(res, thisClass(), "timeoutUseMin");
         addEntry(res, thisClass(), "lastSimulationYear");
 
-        setDomain(res, thisClass(), "timout", GEQ0_DOMAIN);
-        setDomain(res, thisClass(), timeUnitFieldNames, BOOLEAN_DOMAIN);
+        setDomain(res, thisClass(), "timout", DOMAIN_GEQ0);
+        setDomain(res, thisClass(), timeUnitFieldNames, DOMAIN_BOOLEAN);
 
         setDefault(res, thisClass(), "seed", varargs(42));
         setDefault(res, thisClass(), "timeout", varargs(1));
@@ -97,12 +97,12 @@ public class InGeneral implements Copyable {
         putFieldPathAndAddEntry(res, thisClass(), "logInitialization", InRootUI.SETT_GENERAL_LOG);
         putFieldPathAndAddEntry(res, thisClass(), "logSimulation", InRootUI.SETT_GENERAL_LOG);
 
-        setDomain(res, thisClass(), logLevelFieldNames, BOOLEAN_DOMAIN);
-        setDomain(res, thisClass(), "logAll", BOOLEAN_DOMAIN);
-        setDomain(res, thisClass(), "logAllIRPact", BOOLEAN_DOMAIN);
-        setDomain(res, thisClass(), "logAllTools", BOOLEAN_DOMAIN);
-        setDomain(res, thisClass(), "logInitialization", BOOLEAN_DOMAIN);
-        setDomain(res, thisClass(), "logSimulation", BOOLEAN_DOMAIN);
+        setDomain(res, thisClass(), logLevelFieldNames, DOMAIN_BOOLEAN);
+        setDomain(res, thisClass(), "logAll", DOMAIN_BOOLEAN);
+        setDomain(res, thisClass(), "logAllIRPact", DOMAIN_BOOLEAN);
+        setDomain(res, thisClass(), "logAllTools", DOMAIN_BOOLEAN);
+        setDomain(res, thisClass(), "logInitialization", DOMAIN_BOOLEAN);
+        setDomain(res, thisClass(), "logSimulation", DOMAIN_BOOLEAN);
 
         setDefault(res, thisClass(), logLevelFieldNamesWithoutDefault, VALUE_FALSE);
         setDefault(res, thisClass(), "levelInfo", VALUE_TRUE);
@@ -121,20 +121,30 @@ public class InGeneral implements Copyable {
         putFieldPathAndAddEntry(res, thisClass(), "scenarioMode", InRootUI.SETT_SPECIAL);
         putFieldPathAndAddEntry(res, thisClass(), "copyLogIfPossible", InRootUI.SETT_SPECIAL);
         putFieldPathAndAddEntry(res, thisClass(), "passErrorMessageToOutput", InRootUI.SETT_SPECIAL);
+        putFieldPathAndAddEntry(res, thisClass(), "skipPersist", InRootUI.SETT_SPECIAL);
 
-        setDomain(res, thisClass(), "runOptActDemo", BOOLEAN_DOMAIN);
-        setDomain(res, thisClass(), "runPVAct", BOOLEAN_DOMAIN);
-        setDomain(res, thisClass(), "copyLogIfPossible", BOOLEAN_DOMAIN);
-        setDomain(res, thisClass(), "passErrorMessageToOutput", BOOLEAN_DOMAIN);
+        setDefault(res, thisClass(), "runOptActDemo", VALUE_FALSE);
+        setDefault(res, thisClass(), "runPVAct", VALUE_FALSE);
+        setDefault(res, thisClass(), "runMode", VALUE_NEG_ONE);
+        setDefault(res, thisClass(), "scenarioMode", VALUE_NEG_ONE);
+        setDefault(res, thisClass(), "copyLogIfPossible", VALUE_FALSE);
+        setDefault(res, thisClass(), "passErrorMessageToOutput", VALUE_FALSE);
+        setDefault(res, thisClass(), "skipPersist", VALUE_FALSE);
+
+        setDomain(res, thisClass(), "runOptActDemo", DOMAIN_BOOLEAN);
+        setDomain(res, thisClass(), "runPVAct", DOMAIN_BOOLEAN);
+        setDomain(res, thisClass(), "copyLogIfPossible", DOMAIN_BOOLEAN);
+        setDomain(res, thisClass(), "passErrorMessageToOutput", DOMAIN_BOOLEAN);
+        setDomain(res, thisClass(), "skipPersist", DOMAIN_BOOLEAN);
 
         //data
         putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsZip", InRootUI.SETT_DATAOUTPUT);
         putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsZipPhase", InRootUI.SETT_DATAOUTPUT);
         putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsAll", InRootUI.SETT_DATAOUTPUT);
 
-        setDomain(res, thisClass(), "logResultAdoptionsZip", BOOLEAN_DOMAIN);
-        setDomain(res, thisClass(), "logResultAdoptionsZipPhase", BOOLEAN_DOMAIN);
-        setDomain(res, thisClass(), "logResultAdoptionsAll", BOOLEAN_DOMAIN);
+        setDomain(res, thisClass(), "logResultAdoptionsZip", DOMAIN_BOOLEAN);
+        setDomain(res, thisClass(), "logResultAdoptionsZipPhase", DOMAIN_BOOLEAN);
+        setDomain(res, thisClass(), "logResultAdoptionsAll", DOMAIN_BOOLEAN);
 
         //logging general
 //        putFieldPathAndAddEntry(res, thisClass(), "logLevel", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
@@ -307,6 +317,15 @@ public class InGeneral implements Copyable {
     }
     public boolean doCopyLogIfPossible() {
         return copyLogIfPossible;
+    }
+
+    @FieldDefinition
+    public boolean skipPersist = false;
+    public void setSkipPersist(boolean skipPersist) {
+        this.skipPersist = skipPersist;
+    }
+    public boolean isSkipPersist() {
+        return skipPersist;
     }
 
     //=========================

@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.commons.geo.LatLng2XY;
+import de.unileipzig.irpact.commons.util.PositionMapper;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
@@ -8,9 +10,14 @@ import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.misc.graphviz.BasicGraphvizConfiguration;
 import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.core.spatial.AbstractMetricalSpatialModel;
+import de.unileipzig.irpact.core.spatial.Metric;
+import de.unileipzig.irpact.core.spatial.SpatialModel;
+import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
+import de.unileipzig.irpact.io.param.input.visualisation.network.InGraphvizGeneral;
 import de.unileipzig.irptools.graphviz.LayoutAlgorithm;
 import de.unileipzig.irptools.graphviz.OutputFormat;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -99,9 +106,31 @@ public class GraphvizInputParser implements InputParser {
         }
 
         private void parseGeneral() {
-            configuration.setFixedNeatoPosition(root.getGraphvizGeneral().isFixedNeatoPosition());
-            configuration.setScaleFactor(root.getGraphvizGeneral().getScaleFactor());
-            configuration.setTerminalCharset(root.getGraphvizGeneral().getTerminalCharset());
+            InGraphvizGeneral general = root.getGraphvizGeneral();
+            configuration.setFixedNeatoPosition(general.isFixedNeatoPosition());
+            configuration.setTerminalCharset(general.getTerminalCharset());
+            configuration.setPreferredHeight(general.getPreferredImageHeight());
+            configuration.setPreferredWidth(general.getPreferredImageWidth());
+            configuration.setUseDefaultPositionIfMissing(general.isUseDefaultPositionIfMissing());
+            configuration.setPositionMapper(getPositionMapper());
+        }
+
+        private PositionMapper getPositionMapper() {
+            SpatialModel model = environment.getSpatialModel();
+            if(model instanceof AbstractMetricalSpatialModel) {
+                AbstractMetricalSpatialModel metricModel = (AbstractMetricalSpatialModel) model;
+                Metric metric = metricModel.getMetric();
+                if(metric == Metric2D.HAVERSINE_KM) {
+                    LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "using LatLng2XY with km");
+                    return new LatLng2XY(true);
+                }
+                if(metric == Metric2D.HAVERSINE_M) {
+                    LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "using LatLng2XY with m");
+                    return new LatLng2XY(false);
+                }
+            }
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "using no position mapper");
+            return null;
         }
 
         private void parseColors() throws ParsingException {
