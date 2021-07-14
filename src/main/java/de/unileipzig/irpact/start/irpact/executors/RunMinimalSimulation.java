@@ -44,6 +44,7 @@ public final class RunMinimalSimulation implements IRPactExecutor {
 
         irpact.runPrePlatformCreationTasks();
 
+        irpact.printInitialNetwork();
         if(irpact.checkNoSimulationFlag()) {
             return;
         }

@@ -63,7 +63,7 @@ public final class GnuPlotFactory {
         builder.addComment("type: line chart v0");
         addUsageComment(builder, settings.allowNull().getUsageFlag());
         builder.addComment("===style===");
-        builder.setStyleDataLines();
+        builder.setStyleDataLinesPoints();
         builder.addComment("===labels===");
         if(settings.hasTitle()) builder.setTitle(getString(settings, settings.nonNull().getTitle()));
         builder.setXLabel(getString(settings, settings.nonNull().getXLab()));
@@ -99,7 +99,7 @@ public final class GnuPlotFactory {
         builder.addComment("type: special line chart v0");
         addUsageComment(builder, settings.allowNull().getUsageFlag());
         builder.addComment("===style===");
-        builder.setStyleDataLines();
+        builder.setStyleDataLinesPoints();
         builder.setLegendOutsideRightTop();
         builder.addComment("===labels===");
         if(settings.hasTitle()) builder.setTitle(getString(settings, settings.nonNull().getTitle()));
