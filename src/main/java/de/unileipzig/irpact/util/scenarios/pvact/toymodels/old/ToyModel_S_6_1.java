@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
+package de.unileipzig.irpact.util.scenarios.pvact.toymodels.old;
 
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -21,6 +21,7 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.output.OutRoot;
+import de.unileipzig.irpact.util.scenarios.pvact.toymodels.AbstractToyModel;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,20 +31,20 @@ import java.util.function.BiConsumer;
 /**
  * @author Daniel Abitz
  */
-public class ToyModel_S_10_2 extends AbstractToyModel {
+public class ToyModel_S_6_1 extends AbstractToyModel {
 
     public static final int REVISION = 0;
 
     public static final int SIZE_A = 10;
     public static final int SIZE_K = 10;
 
-    protected InDiracUnivariateDistribution dirac02 = new InDiracUnivariateDistribution("dirac02", 0.2);
+    protected InDiracUnivariateDistribution dirac06 = new InDiracUnivariateDistribution("dirac06", 0.6);
     protected InDiracUnivariateDistribution dirac07 = new InDiracUnivariateDistribution("dirac07", 0.7);
 
     protected int sizeA = SIZE_A;
     protected int sizeK = SIZE_K;
 
-    public ToyModel_S_10_2(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
+    public ToyModel_S_6_1(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(name, creator, description, resultConsumer);
         setRevision(REVISION);
         setTotalAgents(SIZE_A + SIZE_K);
@@ -115,10 +116,10 @@ public class ToyModel_S_10_2 extends AbstractToyModel {
         //A5 in file
         //A6 in file
 
-        grp.setInitialProductAwareness(dirac02);                  //D1
         grp.setInterestThreshold(dirac1);                         //D2
         grp.setFinancialThreshold(dirac07);                       //D3
-        grp.setAdoptionThreshold(dirac07);                        //D4
+        grp.setAdoptionThreshold(dirac06);                        //D4
+        grp.setInitialProductInterest(dirac1);                    //D6
 
         return grp;
     }
@@ -128,19 +129,12 @@ public class ToyModel_S_10_2 extends AbstractToyModel {
         InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
 
         InPVactConsumerAgentGroup A = createAgentGroup("A", spatialDist);
-        A.setCommunication(dirac1);             //C1
 
         InPVactConsumerAgentGroup K = createAgentGroup("K", spatialDist);
-        K.setCommunication(dirac0);             //C1
 
-        InConsumerAgentGroup[] cags = {A, K};
+        InAffinities affinities = createZeroAffinities("affinities", A, K);
 
-        InAffinities affinities = createAffinities("affinities",
-                createEntries("", A, cags, new double[]{1, 0}),
-                createEntries("", K, cags, new double[]{0, 1})
-        );
-
-        InFileBasedPVactConsumerAgentPopulation population = createPopulation("Pop", getTotalAgents(), cags);
+        InFileBasedPVactConsumerAgentPopulation population = createPopulation("Pop", getTotalAgents(), A, K);
 
         InFreeNetworkTopology topology = createFreeTopology(
                 "Topo",
@@ -151,11 +145,11 @@ public class ToyModel_S_10_2 extends AbstractToyModel {
 
         InUnitStepDiscreteTimeModel timeModel = createOneWeekTimeModel("Time");
 
-        InPVactGroupBasedDeffuantUncertainty uncertainty = createDefaultUnvertainty("uncert", cags);
+        InPVactGroupBasedDeffuantUncertainty uncertainty = createDefaultUnvertainty("uncert", A, K);
 
         InRAProcessModel processModel = createDefaultProcessModel("Process", uncertainty, 0.0);
         processModel.setABCD(0);
-        processModel.setB(1);
+        processModel.setA(1);
 
         InSpace2D space2D = createSpace2D("Space2D");
 
@@ -164,7 +158,7 @@ public class ToyModel_S_10_2 extends AbstractToyModel {
         InRoot root = createRootWithInformations();
         root.general.setFirstSimulationYearAsLast();
         root.setAffinities(affinities);
-        root.setConsumerAgentGroups(cags);
+        root.setConsumerAgentGroups(new InConsumerAgentGroup[]{A, K});
         root.setAgentPopulationSize(population);
         root.graphTopologySchemes = new InGraphTopologyScheme[]{topology};
         root.processModels = new InProcessModel[]{processModel};

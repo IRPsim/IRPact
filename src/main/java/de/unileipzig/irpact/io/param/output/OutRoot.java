@@ -216,7 +216,7 @@ public class OutRoot implements RootClass {
         Section imageSection = new Section();
         imageSection.setPriority(priority);
         imageSection.setLabel("Agentennetzwerk");
-        imageSection.setImage(IRPact.IMAGE_AGENTGRAPH_OUTPUT);
+        imageSection.setImage(IRPact.IMAGE_AGENTGRAPH_OUTPUT_PNG);
         imageSection.setDescription("Agentennetzwerk in IRPact zum Ende der Simulation");
         imageSection.setIcon("fa fa-spinner");
         return imageSection;

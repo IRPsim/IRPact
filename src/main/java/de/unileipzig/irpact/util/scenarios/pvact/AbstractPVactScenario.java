@@ -165,6 +165,17 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return uncertainty;
     }
 
+    public InPVactGlobalDeffuantUncertainty createGlobalUnvertainty(String name, double extremParam, double extremUncert, double moderateUncert, InConsumerAgentGroup... cags) {
+        InPVactGlobalDeffuantUncertainty uncertainty = new InPVactGlobalDeffuantUncertainty();
+        uncertainty.setName(name);
+        uncertainty.setDefaultValues();
+        uncertainty.setConsumerAgentGroups(cags);
+        uncertainty.setExtremistParameter(extremParam);
+        uncertainty.setExtremistUncertainty(extremUncert);
+        uncertainty.setModerateUncertainty(moderateUncert);
+        return uncertainty;
+    }
+
     public InRAProcessModel createDefaultProcessModel(String name, InUncertainty uncertainty, double speedOfConvergence) {
         InRAProcessModel processModel = new InRAProcessModel();
         processModel.setName(name);
@@ -257,6 +268,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
             entry.setSrcCag(from);
             entry.setTarCag(to);
             entry.setAffinityValue(values[i]);
+            entries[i] = entry;
         }
         return entries;
     }

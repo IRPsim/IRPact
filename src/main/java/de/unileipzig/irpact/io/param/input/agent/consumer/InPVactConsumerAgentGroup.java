@@ -190,6 +190,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
     public void setNoveltySeeking(InUnivariateDoubleDistribution noveltySeeking) {
         this.noveltySeeking = new InUnivariateDoubleDistribution[]{noveltySeeking};
     }
+    public void setA2(InUnivariateDoubleDistribution noveltySeeking) {
+        setNoveltySeeking(noveltySeeking);
+    }
 
     public InUnivariateDoubleDistribution getDependentJudgmentMaking() throws ParsingException {
         return ParamUtil.getInstance(dependentJudgmentMaking, "independentJudgmentMaking");
@@ -197,6 +200,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
     public void setDependentJudgmentMaking(InUnivariateDoubleDistribution dependentJudgmentMaking) {
         this.dependentJudgmentMaking = new InUnivariateDoubleDistribution[]{dependentJudgmentMaking};
+    }
+    public void setA3(InUnivariateDoubleDistribution dependentJudgmentMaking) {
+        setDependentJudgmentMaking(dependentJudgmentMaking);
     }
 
     public InUnivariateDoubleDistribution getEnvironmentalConcern() throws ParsingException {
@@ -206,6 +212,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
     public void setEnvironmentalConcern(InUnivariateDoubleDistribution environmentalConcern) {
         this.environmentalConcern = new InUnivariateDoubleDistribution[]{environmentalConcern};
     }
+    public void setA4(InUnivariateDoubleDistribution environmentalConcern) {
+        setEnvironmentalConcern(environmentalConcern);
+    }
 
     public InUnivariateDoubleDistribution getInterestThreshold() throws ParsingException {
         return ParamUtil.getInstance(interestThreshold, "interestThreshold");
@@ -213,6 +222,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
     public void setInterestThreshold(InUnivariateDoubleDistribution interestThreshold) {
         this.interestThreshold = new InUnivariateDoubleDistribution[]{interestThreshold};
+    }
+    public void setD2(InUnivariateDoubleDistribution interestThreshold) {
+        setInterestThreshold(interestThreshold);
     }
 
     public InUnivariateDoubleDistribution getFinancialThreshold() throws ParsingException {
@@ -222,6 +234,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
     public void setFinancialThreshold(InUnivariateDoubleDistribution financialThreshold) {
         this.financialThreshold = new InUnivariateDoubleDistribution[]{financialThreshold};
     }
+    public void setD3(InUnivariateDoubleDistribution financialThreshold) {
+        setFinancialThreshold(financialThreshold);
+    }
 
     public InUnivariateDoubleDistribution getAdoptionThreshold() throws ParsingException {
         return ParamUtil.getInstance(adoptionThreshold, "adoptionThreshold");
@@ -229,6 +244,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
     public void setAdoptionThreshold(InUnivariateDoubleDistribution adoptionThreshold) {
         this.adoptionThreshold = new InUnivariateDoubleDistribution[]{adoptionThreshold};
+    }
+    public void setD4(InUnivariateDoubleDistribution adoptionThreshold) {
+        setAdoptionThreshold(adoptionThreshold);
     }
 
     public InUnivariateDoubleDistribution getCommunication() throws ParsingException {
@@ -238,6 +256,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
     public void setCommunication(InUnivariateDoubleDistribution communication) {
         this.communication = new InUnivariateDoubleDistribution[]{communication};
     }
+    public void setC1(InUnivariateDoubleDistribution communication) {
+        setCommunication(communication);
+    }
 
     public InUnivariateDoubleDistribution getRewire() throws ParsingException {
         return ParamUtil.getInstance(rewire, "rewire");
@@ -245,6 +266,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
     public void setRewire(InUnivariateDoubleDistribution rewire) {
         this.rewire = new InUnivariateDoubleDistribution[]{rewire};
+    }
+    public void setB6(InUnivariateDoubleDistribution rewire) {
+        setRewire(rewire);
     }
 
     public InUnivariateDoubleDistribution getInitialAdopter() throws ParsingException {
@@ -254,6 +278,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
     public void setInitialAdopter(InUnivariateDoubleDistribution initialAdopter) {
         this.initialAdopter = new InUnivariateDoubleDistribution[]{initialAdopter};
     }
+    public void setD5(InUnivariateDoubleDistribution initialAdopter) {
+        setInitialAdopter(initialAdopter);
+    }
 
     public InUnivariateDoubleDistribution getRateOfConvergence() throws ParsingException {
         return ParamUtil.getInstance(rateOfConvergence, "rateOfConvergence");
@@ -261,6 +288,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
     public void setRateOfConvergence(InUnivariateDoubleDistribution rateOfConvergence) {
         this.rateOfConvergence = new InUnivariateDoubleDistribution[]{rateOfConvergence};
+    }
+    public void setC3(InUnivariateDoubleDistribution rateOfConvergence) {
+        setRateOfConvergence(rateOfConvergence);
     }
 
     public InUnivariateDoubleDistribution getInitialProductInterest() throws ParsingException {
@@ -270,6 +300,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
     public void setInitialProductInterest(InUnivariateDoubleDistribution initialProductInterest) {
         this.initialProductInterest = new InUnivariateDoubleDistribution[]{initialProductInterest};
     }
+    public void setD6(InUnivariateDoubleDistribution initialProductInterest) {
+        setInitialProductInterest(initialProductInterest);
+    }
 
     public InUnivariateDoubleDistribution getInitialProductAwareness() throws ParsingException {
         return ParamUtil.getInstance(initialProductAwareness, "initialProductAwareness");
@@ -277,6 +310,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
     public void setInitialProductAwareness(InUnivariateDoubleDistribution initialProductAwareness) {
         this.initialProductAwareness = new InUnivariateDoubleDistribution[]{initialProductAwareness};
+    }
+    public void setD1(InUnivariateDoubleDistribution initialProductAwareness) {
+        setInitialProductAwareness(initialProductAwareness);
     }
 
     public InUnivariateDoubleDistribution getConstructionRate() throws ParsingException {
@@ -286,6 +322,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
     public void setConstructionRate(InUnivariateDoubleDistribution constructionRate) {
         this.constructionRate = new InUnivariateDoubleDistribution[]{constructionRate};
     }
+    public void setA7(InUnivariateDoubleDistribution constructionRate) {
+        setConstructionRate(constructionRate);
+    }
 
     public InUnivariateDoubleDistribution getRenovationRate() throws ParsingException {
         return ParamUtil.getInstance(renovationRate, "renovationRate");
@@ -293,6 +332,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
     public void setRenovationRate(InUnivariateDoubleDistribution renovationRate) {
         this.renovationRate = new InUnivariateDoubleDistribution[]{renovationRate};
+    }
+    public void setA8(InUnivariateDoubleDistribution renovationRate) {
+        setRenovationRate(renovationRate);
     }
 
     @Override

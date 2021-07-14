@@ -10,6 +10,7 @@ import de.unileipzig.irpact.core.logging.SectionLoggingFilter;
 import de.unileipzig.irpact.core.simulation.BasicSettings;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irptools.Constants;
@@ -307,6 +308,15 @@ public class InGeneral implements Copyable {
     }
     public boolean doCopyLogIfPossible() {
         return copyLogIfPossible;
+    }
+
+    @Todo("add FildDefinition")
+    public boolean skipPersist = false;
+    public void setSkipPersist(boolean skipPersist) {
+        this.skipPersist = skipPersist;
+    }
+    public boolean isSkipPersist() {
+        return skipPersist;
     }
 
     //=========================

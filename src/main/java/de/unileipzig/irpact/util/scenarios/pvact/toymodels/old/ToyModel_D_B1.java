@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
+package de.unileipzig.irpact.util.scenarios.pvact.toymodels.old;
 
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -10,6 +10,7 @@ import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGr
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.distribution.InBernoulliDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertainty;
@@ -17,8 +18,8 @@ import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
-import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.output.OutRoot;
+import de.unileipzig.irpact.util.scenarios.pvact.toymodels.AbstractToyModel;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,32 +31,27 @@ import java.util.function.BiConsumer;
  */
 public class ToyModel_D_B1 extends AbstractToyModel {
 
-    public static final int REVISION = 1;
+    public static final int REVISION = 0;
 
     public static final int SIZE_S = 100;
     public static final int SIZE_P = 300;
     public static final int SIZE_M = 1600;
     public static final int SIZE_L = 500;
-    public static final int SIZE_K = 100;
 
     protected InDiracUnivariateDistribution dirac0 = new InDiracUnivariateDistribution("dirac0", 0);
     protected InDiracUnivariateDistribution dirac049 = new InDiracUnivariateDistribution("dirac049", 0.49);
     protected InDiracUnivariateDistribution dirac1 = new InDiracUnivariateDistribution("dirac1", 1);
     protected InDiracUnivariateDistribution dirac100 = new InDiracUnivariateDistribution("dirac100", 100);
 
-    protected InBernoulliDistribution bernoulli0 = new InBernoulliDistribution("bernoulli0", 0);
-    protected InBernoulliDistribution bernoulli001 = new InBernoulliDistribution("bernoulli001", 0.01);
-    protected InBernoulliDistribution bernoulli003 = new InBernoulliDistribution("bernoulli003", 0.03);
-    protected InBernoulliDistribution bernoulli005 = new InBernoulliDistribution("bernoulli005", 0.05);
-    protected InBernoulliDistribution bernoulli01 = new InBernoulliDistribution("bernoulli01", 0.1);
-    protected InBernoulliDistribution bernoulli015 = new InBernoulliDistribution("bernoulli015", 0.15);
     protected InBernoulliDistribution bernoulli1 = new InBernoulliDistribution("bernoulli1", 1);
+    protected InBernoulliDistribution bernoulli07 = new InBernoulliDistribution("bernoulli07", 0.7);
+    protected InBernoulliDistribution bernoulli03 = new InBernoulliDistribution("bernoulli03", 0.3);
+    protected InBernoulliDistribution bernoulli001 = new InBernoulliDistribution("bernoulli001", 0.01);
 
     protected int sizeS = SIZE_S;
     protected int sizeP = SIZE_P;
     protected int sizeM = SIZE_M;
     protected int sizeL = SIZE_L;
-    protected int sizeK = SIZE_K;
 
     public ToyModel_D_B1(BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(resultConsumer);
@@ -69,24 +65,24 @@ public class ToyModel_D_B1 extends AbstractToyModel {
 
     protected void init() {
         setRevision(REVISION);
-        setTotalAgents(sizeS + sizeP + sizeM + sizeL + sizeK);
+        setTotalAgents(SIZE_S + SIZE_P + SIZE_M + SIZE_L);
     }
 
     @Override
     protected List<List<SpatialAttribute>> createTestData(
             List<List<SpatialAttribute>> input,
             Random random) {
-        return createTestData(input, sizeS, sizeP, sizeM, sizeL, sizeK, random);
+        return createTestData(input, sizeS, sizeP, sizeM, sizeL, random);
     }
 
     public List<List<SpatialAttribute>> createTestData(
             List<List<SpatialAttribute>> input,
-            int sizeOfS, int sizeOfP, int sizeOfM, int sizeOfL, int sizeOfK,
+            int sizeOfS, int sizeOfP, int sizeOfM, int sizeOfL,
             Random rnd) {
-        List<List<SpatialAttribute>> output = SpatialUtil.drawRandom(input, sizeOfS + sizeOfP + sizeOfM + sizeOfL + sizeOfK, rnd);
+        List<List<SpatialAttribute>> output = SpatialUtil.drawRandom(input, sizeOfS + sizeOfP + sizeOfM + sizeOfL, rnd);
         int from = 0;
         int to = 0;
-        //S
+        //A
         to += sizeOfS;
         for(int i = from; i < to; i++) {
             List<SpatialAttribute> row = output.get(i);
@@ -95,7 +91,7 @@ public class ToyModel_D_B1 extends AbstractToyModel {
             SpatialUtil.replaceDouble(row, RAConstants.SHARE_1_2_HOUSE, dirac1.getValue()); //A5
             SpatialUtil.replaceDouble(row, RAConstants.HOUSE_OWNER, dirac0.getValue());     //A6
         }
-        //P
+        //K1
         from += sizeOfS;
         to += sizeOfP;
         for(int i = from; i < to; i++) {
@@ -105,7 +101,7 @@ public class ToyModel_D_B1 extends AbstractToyModel {
             SpatialUtil.replaceDouble(row, RAConstants.SHARE_1_2_HOUSE, dirac1.getValue()); //A5
             SpatialUtil.replaceDouble(row, RAConstants.HOUSE_OWNER, dirac0.getValue());     //A6
         }
-        //M
+        //K2
         from += sizeOfP;
         to += sizeOfM;
         for(int i = from; i < to; i++) {
@@ -115,22 +111,12 @@ public class ToyModel_D_B1 extends AbstractToyModel {
             SpatialUtil.replaceDouble(row, RAConstants.SHARE_1_2_HOUSE, dirac1.getValue()); //A5
             SpatialUtil.replaceDouble(row, RAConstants.HOUSE_OWNER, dirac0.getValue());     //A6
         }
-        //L
+        //K3
         from += sizeOfM;
         to += sizeOfL;
         for(int i = from; i < to; i++) {
             List<SpatialAttribute> row = output.get(i);
             SpatialUtil.replaceString(row, RAConstants.DOM_MILIEU, "L");
-            SpatialUtil.replaceDouble(row, RAConstants.PURCHASE_POWER, dirac100.getValue());  //A1
-            SpatialUtil.replaceDouble(row, RAConstants.SHARE_1_2_HOUSE, dirac1.getValue()); //A5
-            SpatialUtil.replaceDouble(row, RAConstants.HOUSE_OWNER, dirac0.getValue());     //A6
-        }
-        //K
-        from += sizeOfL;
-        to += sizeOfK;
-        for(int i = from; i < to; i++) {
-            List<SpatialAttribute> row = output.get(i);
-            SpatialUtil.replaceString(row, RAConstants.DOM_MILIEU, "K");
             SpatialUtil.replaceDouble(row, RAConstants.PURCHASE_POWER, dirac100.getValue());  //A1
             SpatialUtil.replaceDouble(row, RAConstants.SHARE_1_2_HOUSE, dirac1.getValue()); //A5
             SpatialUtil.replaceDouble(row, RAConstants.HOUSE_OWNER, dirac0.getValue());     //A6
@@ -144,25 +130,25 @@ public class ToyModel_D_B1 extends AbstractToyModel {
         grp.setName(name);
 
         //A1 in file
-        grp.setA2(dirac1);
-        grp.setA3(dirac0);
-        grp.setA4(dirac0);
+        grp.setNoveltySeeking(dirac1);                            //A2
+        grp.setDependentJudgmentMaking(dirac0);                   //A3
+        grp.setEnvironmentalConcern(dirac0);                      //A4
         //A5 in file
         //A6 in file
-        grp.setA7(dirac0);
-        grp.setA8(dirac0);
+        grp.setConstructionRate(dirac0);                          //A7
+        grp.setRenovationRate(dirac0);                            //A8
 
-        grp.setB6(dirac0);
+        grp.setRewire(dirac0);                                    //B6
 
-        grp.setC1(dirac0);
-        grp.setC3(dirac0);
+        grp.setCommunication(dirac0);                             //C1
+        grp.setRateOfConvergence(dirac0);                         //C3
 
-        grp.setD1(dirac1);
-        grp.setD2(dirac1);
-        grp.setD3(dirac049);
-        grp.setD4(dirac049);
-        grp.setD5(dirac0);
-        grp.setD6(dirac1);
+        grp.setInitialProductAwareness(dirac1);                   //D1
+        grp.setInterestThreshold(dirac1);                         //D2
+        grp.setFinancialThreshold(dirac049);                       //D3
+        grp.setAdoptionThreshold(dirac049);                        //D4
+        grp.setInitialAdopter(dirac0);                            //D5
+        grp.setInitialProductInterest(dirac1);                    //D6
 
         if(distribution != null) {
             grp.setSpatialDistribution(distribution);
@@ -171,41 +157,49 @@ public class ToyModel_D_B1 extends AbstractToyModel {
         return grp;
     }
 
-    public InRoot createInRoot() {
-        return createInRoot(DEFAULT_INITIAL_YEAR);
-    }
-
-    public InRoot createInRoot(int year) {
+    @Override
+    public List<InRoot> createInRoots() {
         InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
 
         InPVactConsumerAgentGroup S = createAgentGroup("S", spatialDist);
-        S.setD1(bernoulli1);
-        S.setD5(bernoulli0);
+        S.setInitialProductAwareness(bernoulli1);
+        S.setInitialAdopter(bernoulli1);
 
         InPVactConsumerAgentGroup P = createAgentGroup("P", spatialDist);
-        P.setD1(bernoulli015);
-        P.setD5(bernoulli01);
+        P.setInitialProductAwareness(bernoulli07);
+        P.setInitialAdopter(bernoulli07);
 
         InPVactConsumerAgentGroup M = createAgentGroup("M", spatialDist);
-        M.setD1(bernoulli005);
-        M.setD5(bernoulli003);
+        M.setInitialProductAwareness(bernoulli03);
+        M.setInitialAdopter(bernoulli03);
 
         InPVactConsumerAgentGroup L = createAgentGroup("L", spatialDist);
-        L.setD1(bernoulli001);
-        L.setD5(bernoulli001);
+        L.setInitialProductAwareness(bernoulli001);
+        L.setInitialAdopter(bernoulli001);
 
-        InPVactConsumerAgentGroup K = createAgentGroup("K", spatialDist);
-        K.setD1(bernoulli0);
-        K.setD5(bernoulli0);
+        InConsumerAgentGroup[] cags = {S, P, M, L};
 
-        InConsumerAgentGroup[] cags = {S, P, M, L, K};
-
+        String prefix = "aff";
         InAffinities affinities = createAffinities("affinities",
-                createEntries("affi", S, cags, new double[]{0, 0.8, 0.15, 0.05, 0}),
-                createEntries("affi", P, cags, new double[]{0, 0.7, 0.25, 0.05, 0}),
-                createEntries("affi", M, cags, new double[]{0, 0.3, 0.6, 0.1, 0}),
-                createEntries("affi", L, cags, new double[]{0, 0.05, 0.15, 0.8, 0}),
-                createEntries("affi", K, cags, new double[]{0, 0.0, 0.0, 0.0, 1})
+                createAffinityEntry(prefix, S, S, 0.0),
+                createAffinityEntry(prefix, S, P, 0.8),
+                createAffinityEntry(prefix, S, M, 0.15),
+                createAffinityEntry(prefix, S, L, 0.05),
+
+                createAffinityEntry(prefix, P, S, 0.0),
+                createAffinityEntry(prefix, P, P, 0.7),
+                createAffinityEntry(prefix, P, M, 0.25),
+                createAffinityEntry(prefix, P, L, 0.05),
+
+                createAffinityEntry(prefix, M, S, 0.0),
+                createAffinityEntry(prefix, M, P, 0.3),
+                createAffinityEntry(prefix, M, M, 0.6),
+                createAffinityEntry(prefix, M, L, 0.1),
+
+                createAffinityEntry(prefix, L, S, 0.0),
+                createAffinityEntry(prefix, L, P, 0.05),
+                createAffinityEntry(prefix, L, M, 0.15),
+                createAffinityEntry(prefix, L, L, 0.8)
         );
 
         InFileBasedPVactConsumerAgentPopulation population = createPopulation("Pop", getTotalAgents(), cags);
@@ -231,7 +225,6 @@ public class ToyModel_D_B1 extends AbstractToyModel {
 
         //=====
         InRoot root = createRootWithInformations();
-        root.getGeneral().setFirstSimulationYear(year);
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(cags);
         root.setAgentPopulationSize(population);
@@ -241,11 +234,6 @@ public class ToyModel_D_B1 extends AbstractToyModel {
         root.setTimeModel(timeModel);
         root.setImages(defaultImages);
 
-        return root;
-    }
-
-    @Override
-    public List<InRoot> createInRoots() {
-        return Collections.singletonList(createInRoot());
+        return Collections.singletonList(root);
     }
 }

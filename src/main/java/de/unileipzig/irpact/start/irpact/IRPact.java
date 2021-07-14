@@ -87,6 +87,8 @@ public final class IRPact implements IRPActAccess {
 
     public static final String IMAGE_AGENTGRAPH_INPUT = "agentGraph";
     public static final String IMAGE_AGENTGRAPH_OUTPUT = "Agentennetzwerk";
+    public static final String IMAGE_AGENTGRAPH_OUTPUT_PNG = IMAGE_AGENTGRAPH_OUTPUT + ".png";
+    public static final String IMAGE_AGENTGRAPH_OUTPUT_DOT = IMAGE_AGENTGRAPH_OUTPUT + ".dot";
     public static final String IMAGE_ANNUAL_ADOPTIONS = "AnnualAdoptions";
     public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS = "ComparedAnnualAdoptions";
     public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS = "AnnualCumulativeAdoptions";
@@ -648,9 +650,9 @@ public final class IRPact implements IRPActAccess {
             boolean storeDot = inRoot.getGraphvizGeneral().isStoreDotFile();
             LOGGER.trace(IRPSection.GENERAL, "store dot file: {}", storeDot);
             try {
-                Path networkImagePath = CL_OPTIONS.getCreatedDownloadDir().resolve(IMAGE_AGENTGRAPH_OUTPUT + ".png");
+                Path networkImagePath = CL_OPTIONS.getCreatedDownloadDir().resolve(IMAGE_AGENTGRAPH_OUTPUT_PNG);
                 Path networkDotPath = storeDot
-                        ? networkImagePath.resolveSibling(IMAGE_AGENTGRAPH_OUTPUT + ".dot")
+                        ? networkImagePath.resolveSibling(IMAGE_AGENTGRAPH_OUTPUT_DOT)
                         : null;
 
                 LOGGER.trace(IRPSection.GENERAL, "store network image: {}", networkImagePath);
@@ -704,9 +706,11 @@ public final class IRPact implements IRPActAccess {
     }
 
     private void applyPersistenceData(OutRoot outRoot) throws Exception {
-        if(CL_OPTIONS.isSkipPersist()) {
-            LOGGER.trace(IRPSection.GENERAL, "skip persistence");
-        } else {
+        boolean cmdSkipPersist = CL_OPTIONS.isSkipPersist();
+        boolean paramSkipPersist = inRoot.getGeneral().isSkipPersist();
+        boolean skipPersist = cmdSkipPersist || paramSkipPersist;
+        LOGGER.trace(IRPSection.GENERAL, "skip persistence: {} (cmd={}, param={}))", skipPersist, cmdSkipPersist, paramSkipPersist);
+        if(!skipPersist) {
             environment.getPersistenceModul().store(META_DATA, environment, outRoot);
         }
     }

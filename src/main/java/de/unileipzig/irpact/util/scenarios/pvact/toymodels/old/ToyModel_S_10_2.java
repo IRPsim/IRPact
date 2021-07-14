@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
+package de.unileipzig.irpact.util.scenarios.pvact.toymodels.old;
 
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -21,6 +21,7 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.output.OutRoot;
+import de.unileipzig.irpact.util.scenarios.pvact.toymodels.AbstractToyModel;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.function.BiConsumer;
 /**
  * @author Daniel Abitz
  */
-public class ToyModel_S_10_1 extends AbstractToyModel {
+public class ToyModel_S_10_2 extends AbstractToyModel {
 
     public static final int REVISION = 0;
 
@@ -43,7 +44,7 @@ public class ToyModel_S_10_1 extends AbstractToyModel {
     protected int sizeA = SIZE_A;
     protected int sizeK = SIZE_K;
 
-    public ToyModel_S_10_1(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
+    public ToyModel_S_10_2(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(name, creator, description, resultConsumer);
         setRevision(REVISION);
         setTotalAgents(SIZE_A + SIZE_K);
@@ -115,8 +116,7 @@ public class ToyModel_S_10_1 extends AbstractToyModel {
         //A5 in file
         //A6 in file
 
-        grp.setCommunication(dirac1);                             //C1
-
+        grp.setInitialProductAwareness(dirac02);                  //D1
         grp.setInterestThreshold(dirac1);                         //D2
         grp.setFinancialThreshold(dirac07);                       //D3
         grp.setAdoptionThreshold(dirac07);                        //D4
@@ -129,10 +129,10 @@ public class ToyModel_S_10_1 extends AbstractToyModel {
         InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
 
         InPVactConsumerAgentGroup A = createAgentGroup("A", spatialDist);
-        A.setInitialProductAwareness(dirac02);
+        A.setCommunication(dirac1);             //C1
 
         InPVactConsumerAgentGroup K = createAgentGroup("K", spatialDist);
-        K.setInitialProductAwareness(dirac0);
+        K.setCommunication(dirac0);             //C1
 
         InConsumerAgentGroup[] cags = {A, K};
 

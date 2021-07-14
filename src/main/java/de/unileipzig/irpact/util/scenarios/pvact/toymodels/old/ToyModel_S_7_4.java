@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
+package de.unileipzig.irpact.util.scenarios.pvact.toymodels.old;
 
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -21,6 +21,7 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.output.OutRoot;
+import de.unileipzig.irpact.util.scenarios.pvact.toymodels.AbstractToyModel;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.function.BiConsumer;
 /**
  * @author Daniel Abitz
  */
-public class ToyModel_S_7_5 extends AbstractToyModel {
+public class ToyModel_S_7_4 extends AbstractToyModel {
 
     public static final int REVISION = 1;
 
@@ -46,7 +47,7 @@ public class ToyModel_S_7_5 extends AbstractToyModel {
     protected int sizeK = SIZE_K;
     protected int sizeH = SIZE_H;
 
-    public ToyModel_S_7_5(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
+    public ToyModel_S_7_4(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(name, creator, description, resultConsumer);
         setRevision(REVISION);
         setTotalAgents(SIZE_S + SIZE_A + SIZE_K + SIZE_H);
@@ -117,7 +118,7 @@ public class ToyModel_S_7_5 extends AbstractToyModel {
         InPVactConsumerAgentGroup grp = createNullAgent(name, distribution);
 
         //A1 in file
-        grp.setNoveltySeeking(dirac1);                            //A2
+        grp.setEnvironmentalConcern(dirac1);                      //A4
         //A5 in file
         //A6 in file
 
@@ -173,8 +174,8 @@ public class ToyModel_S_7_5 extends AbstractToyModel {
 
         InRAProcessModel processModel = createDefaultProcessModel("Process", uncertainty, 0.0);
         processModel.setA(1.0 / 3.0);
-        processModel.setB(1.0 / 3.0);
-        processModel.setC(0);
+        processModel.setB(0);
+        processModel.setC(1.0 / 3.0);
         processModel.setD(1.0 / 3.0);
 
         InSpace2D space2D = createSpace2D("Space2D");
