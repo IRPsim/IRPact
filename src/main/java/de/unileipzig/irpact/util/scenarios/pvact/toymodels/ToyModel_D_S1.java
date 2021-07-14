@@ -189,7 +189,7 @@ public class ToyModel_D_S1 extends AbstractToyModel {
         InGenericOutputImage[] defaultImages = createDefaultImages();
 
         //=====
-        InRoot root = createRootWithInformations();
+        InRoot root = createRootWithInformationsWithFullLogging();
         root.getGeneral().setFirstSimulationYear(year);
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(cags);

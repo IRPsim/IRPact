@@ -11,7 +11,6 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactCons
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
-import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
@@ -155,7 +154,7 @@ public class ToyModel_S_6_3 extends AbstractToyModel {
 
         //=====
 
-        InRoot root = createRootWithInformations();
+        InRoot root = createRootWithInformationsWithFullLogging();
         root.general.setFirstSimulationYearAsLast();
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(new InConsumerAgentGroup[]{A, K});

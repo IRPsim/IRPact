@@ -20,7 +20,6 @@ import java.lang.invoke.MethodHandles;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
@@ -39,49 +38,29 @@ public class InGraphvizGeneral implements Copyable {
         return thisClass().getSimpleName();
     }
 
-    protected static final String[] outputFormatFieldNames = {"outputFormatPNG"};
-    protected static final XorWithoutUnselectRuleBuilder outputFormatBuilder = new XorWithoutUnselectRuleBuilder()
+    protected static final String[] improvedLayoutFieldNames = {"positionBasedLayout", "freeLayout"};
+    protected static final XorWithoutUnselectRuleBuilder improvedLayoutBuilder = new XorWithoutUnselectRuleBuilder()
             .withKeyModifier(buildDefaultScalarNameOperator(thisClass()))
             .withTrueValue(Constants.TRUE1)
             .withFalseValue(Constants.FALSE0)
-            .withKeys(outputFormatFieldNames);
-
-    protected static final String[] layoutAlgorithmFieldNames = {"layoutAlgDOT", "layoutAlgNEATO", "layoutAlgFDP", "layoutAlgSFDP", "layoutAlgTWOPI", "layoutAlgCIRCO"};
-    protected static final XorWithoutUnselectRuleBuilder layoutAlgorithmBuilder = new XorWithoutUnselectRuleBuilder()
-            .withKeyModifier(buildDefaultScalarNameOperator(thisClass()))
-            .withTrueValue(Constants.TRUE1)
-            .withFalseValue(Constants.FALSE0)
-            .withKeys(layoutAlgorithmFieldNames);
+            .withKeys(improvedLayoutFieldNames);
 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.SETT_VISUNETWORK_GENERAL);
-        addEntry(res, thisClass(), "storeEndImage");
-        addEntry(res, thisClass(), "storeDotFile");
-        addEntry(res, thisClass(), "scaleFactor");
-        addEntry(res, thisClass(), "fixedNeatoPosition");
-        addEntry(res, thisClass(), "outputFormatPNG");
-        addEntry(res, thisClass(), "layoutAlgDOT");
-        addEntry(res, thisClass(), "layoutAlgNEATO");
-        addEntry(res, thisClass(), "layoutAlgFDP");
-        addEntry(res, thisClass(), "layoutAlgSFDP");
-        addEntry(res, thisClass(), "layoutAlgTWOPI");
-        addEntry(res, thisClass(), "layoutAlgCIRCO");
+        addEntryWithDefaultAndDomain(res, thisClass(), "storeEndImage", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "storeDotFile", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "preferredImageWidth", VALUE_1000, DOMAIN_GEQ0);
+        addEntryWithDefaultAndDomain(res, thisClass(), "preferredImageHeight", VALUE_1000, DOMAIN_GEQ0);
+        addEntryWithDefaultAndDomain(res, thisClass(), "positionBasedLayout", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "freeLayout", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "useDefaultPositionIfMissing", VALUE_FALSE, DOMAIN_BOOLEAN);
 
-        setDefault(res, thisClass(), "storeEndImage", VALUE_FALSE);
-        setDefault(res, thisClass(), "storeDotFile", VALUE_FALSE);
-        setDefault(res, thisClass(), "scaleFactor", VALUE_ZERO);
-        setDefault(res, thisClass(), "fixedNeatoPosition", VALUE_FALSE);
-        setDefault(res, thisClass(), outputFormatFieldNames, VALUE_FALSE);
-        setDefault(res, thisClass(), "outputFormatPNG", VALUE_TRUE);
-        setDefault(res, thisClass(), layoutAlgorithmFieldNames, VALUE_FALSE);
-        setDefault(res, thisClass(), "layoutAlgFDP", VALUE_TRUE);
+        setRules(res, thisClass(), improvedLayoutFieldNames, improvedLayoutBuilder);
 
-        setRules(res, thisClass(), outputFormatFieldNames, outputFormatBuilder);
-        setRules(res, thisClass(), layoutAlgorithmFieldNames, layoutAlgorithmBuilder);
-
-        setDomain(res, thisClass(), "scaleFactor", GEQ0_DOMAIN);
+        setUnit(res, thisClass(), "preferredImageWidth", UNIT_PIXEL);
+        setUnit(res, thisClass(), "preferredImageHeight", UNIT_PIXEL);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -93,31 +72,19 @@ public class InGraphvizGeneral implements Copyable {
     public boolean storeDotFile = false;
 
     @FieldDefinition
-    public double scaleFactor = 0;
+    public double preferredImageWidth = 1000;
 
     @FieldDefinition
-    public boolean fixedNeatoPosition = false;
+    public double preferredImageHeight = 1000;
 
     @FieldDefinition
-    public boolean outputFormatPNG = true;
+    public boolean positionBasedLayout = true;
 
     @FieldDefinition
-    public boolean layoutAlgDOT = false;
+    public boolean freeLayout = false;
 
     @FieldDefinition
-    public boolean layoutAlgNEATO = false;
-
-    @FieldDefinition
-    public boolean layoutAlgFDP = true;
-
-    @FieldDefinition
-    public boolean layoutAlgSFDP = false;
-
-    @FieldDefinition
-    public boolean layoutAlgTWOPI = false;
-
-    @FieldDefinition
-    public boolean layoutAlgCIRCO = false;
+    public boolean useDefaultPositionIfMissing = false;
 
     //helper
     protected Charset terminalCharset = StandardCharsets.UTF_8;
@@ -126,6 +93,15 @@ public class InGraphvizGeneral implements Copyable {
     }
     public void setTerminalCharset(Charset terminalCharset) {
         this.terminalCharset = terminalCharset;
+    }
+
+    //helper
+    protected boolean preferSfdp = true;
+    public void setPreferSfdp(boolean preferSfdp) {
+        this.preferSfdp = preferSfdp;
+    }
+    public boolean isPreferSfdp() {
+        return preferSfdp;
     }
 
     public InGraphvizGeneral() {
@@ -140,15 +116,11 @@ public class InGraphvizGeneral implements Copyable {
         InGraphvizGeneral copy = new InGraphvizGeneral();
         copy.storeEndImage = storeEndImage;
         copy.storeDotFile = storeDotFile;
-        copy.fixedNeatoPosition = fixedNeatoPosition;
-        copy.scaleFactor = scaleFactor;
-        copy.outputFormatPNG = outputFormatPNG;
-        copy.layoutAlgDOT = layoutAlgDOT;
-        copy.layoutAlgNEATO = layoutAlgNEATO;
-        copy.layoutAlgFDP = layoutAlgFDP;
-        copy.layoutAlgSFDP = layoutAlgSFDP;
-        copy.layoutAlgTWOPI = layoutAlgTWOPI;
-        copy.layoutAlgCIRCO = layoutAlgCIRCO;
+        copy.preferredImageWidth = preferredImageWidth;
+        copy.preferredImageHeight = preferredImageHeight;
+        copy.positionBasedLayout = positionBasedLayout;
+        copy.freeLayout = freeLayout;
+        copy.useDefaultPositionIfMissing = useDefaultPositionIfMissing;
         copy.terminalCharset = terminalCharset;
         return copy;
     }
@@ -169,56 +141,51 @@ public class InGraphvizGeneral implements Copyable {
         return storeDotFile;
     }
 
-    public void setFixedNeatoPosition(boolean fixedNeatoPosition) {
-        this.fixedNeatoPosition = fixedNeatoPosition;
-    }
-
     public boolean isFixedNeatoPosition() {
-        return fixedNeatoPosition;
+        return positionBasedLayout;
     }
 
-    public void setScaleFactor(double scaleFactor) {
-        this.scaleFactor = scaleFactor;
+    public OutputFormat getOutputFormat() {
+        return StandardOutputFormat.PNG;
     }
 
-    public double getScaleFactor() {
-        return scaleFactor;
+    public void setPreferredImageHeight(double preferredImageHeight) {
+        this.preferredImageHeight = Math.max(0, preferredImageHeight);
     }
 
-    public OutputFormat getOutputFormat() throws ParsingException {
-        List<OutputFormat> formats = new ArrayList<>();
-        if(outputFormatPNG) formats.add(StandardOutputFormat.PNG);
-
-        switch(formats.size()) {
-            case 0:
-                throw new ParsingException("Missing formats");
-
-            case 1:
-                return formats.get(0);
-
-            default:
-                throw new ParsingException("Multiple formats: " + formats);
-        }
+    public double getPreferredImageHeight() {
+        return preferredImageHeight;
     }
 
-    public void setOutputFormat(OutputFormat format) {
-        outputFormatPNG = false;
+    public void setPreferredImageWidth(double preferredImageWidth) {
+        this.preferredImageWidth = Math.max(0, preferredImageWidth);
+    }
 
-        if(format == StandardOutputFormat.PNG) {
-            outputFormatPNG = true;
-        } else {
-            throw new IllegalArgumentException("unsupported format: " + format);
-        }
+    public double getPreferredImageWidth() {
+        return preferredImageWidth;
+    }
+
+    public void setPreferredImageSize(double width, double height) {
+        setPreferredImageWidth(width);
+        setPreferredImageHeight(height);
+    }
+
+    public void setPreferredImageSize(double size) {
+        setPreferredImageSize(size, size);
+    }
+
+    public void setUseDefaultPositionIfMissing(boolean useDefaultPositionIfMissing) {
+        this.useDefaultPositionIfMissing = useDefaultPositionIfMissing;
+    }
+
+    public boolean isUseDefaultPositionIfMissing() {
+        return useDefaultPositionIfMissing;
     }
 
     public LayoutAlgorithm getLayoutAlgorithm() throws ParsingException {
         List<LayoutAlgorithm> algorithms = new ArrayList<>();
-        if(layoutAlgDOT) algorithms.add(StandardLayoutAlgorithm.DOT);
-        if(layoutAlgNEATO) algorithms.add(StandardLayoutAlgorithm.NEATO);
-        if(layoutAlgFDP) algorithms.add(StandardLayoutAlgorithm.FDP);
-        if(layoutAlgSFDP) algorithms.add(StandardLayoutAlgorithm.SFDP);
-        if(layoutAlgTWOPI) algorithms.add(StandardLayoutAlgorithm.TWOPI);
-        if(layoutAlgCIRCO) algorithms.add(StandardLayoutAlgorithm.CIRCO);
+        if(positionBasedLayout) algorithms.add(StandardLayoutAlgorithm.NEATO);
+        if(freeLayout) algorithms.add(preferSfdp ? StandardLayoutAlgorithm.SFDP : StandardLayoutAlgorithm.FDP);
 
         switch(algorithms.size()) {
             case 0:
@@ -232,34 +199,24 @@ public class InGraphvizGeneral implements Copyable {
         }
     }
 
+    public void setLayoutAlgorithm(boolean positionBased) {
+        this.positionBasedLayout = positionBased;
+        this.freeLayout = !positionBased;
+    }
+
     public void setLayoutAlgorithm(LayoutAlgorithm algorithm) {
-        layoutAlgDOT = false;
-        layoutAlgNEATO = false;
-        layoutAlgFDP = false;
-        layoutAlgSFDP = false;
-        layoutAlgTWOPI = false;
-        layoutAlgCIRCO = false;
+        positionBasedLayout = false;
+        freeLayout = false;
 
         if(algorithm instanceof StandardLayoutAlgorithm) {
             StandardLayoutAlgorithm salg = (StandardLayoutAlgorithm) algorithm;
             switch(salg) {
-                case DOT:
-                    layoutAlgDOT = true;
-                    break;
                 case NEATO:
-                    layoutAlgNEATO = true;
+                    positionBasedLayout = true;
                     break;
                 case FDP:
-                    layoutAlgFDP = true;
-                    break;
                 case SFDP:
-                    layoutAlgSFDP = true;
-                    break;
-                case TWOPI:
-                    layoutAlgTWOPI = true;
-                    break;
-                case CIRCO:
-                    layoutAlgCIRCO = true;
+                    freeLayout = true;
                     break;
                 default:
                     throw new IllegalArgumentException("unsupported standard algorithm: " + algorithm);

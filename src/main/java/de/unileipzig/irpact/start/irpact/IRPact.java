@@ -76,8 +76,8 @@ public final class IRPact implements IRPActAccess {
 
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "0";
-    private static final String MINOR_STRING = "5";
-    private static final String BUILD_STRING = "5";
+    private static final String MINOR_STRING = "6";
+    private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -85,13 +85,23 @@ public final class IRPact implements IRPActAccess {
     public static final String CL_VERSION = "Version " + VERSION_STRING;
     public static final String CL_COPY = "(c) 2019-2021";
 
+    public static final String ICON_IMAGES = "fa fa-plus-square";
+    public static final String ICON_IMAGE = "fa fa-file-image-o";
+
     public static final String IMAGE_AGENTGRAPH_INPUT = "agentGraph";
+
     public static final String IMAGE_AGENTGRAPH_OUTPUT = "Agentennetzwerk";
     public static final String IMAGE_AGENTGRAPH_OUTPUT_PNG = IMAGE_AGENTGRAPH_OUTPUT + ".png";
     public static final String IMAGE_AGENTGRAPH_OUTPUT_DOT = IMAGE_AGENTGRAPH_OUTPUT + ".dot";
-    public static final String IMAGE_ANNUAL_ADOPTIONS = "AnnualAdoptions";
-    public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS = "ComparedAnnualAdoptions";
-    public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS = "AnnualCumulativeAdoptions";
+
+    public static final String IMAGE_ANNUAL_ADOPTIONS = "JaehrlicheAdoptionenPLZ";
+    public static final String IMAGE_ANNUAL_ADOPTIONS_PNG = IMAGE_ANNUAL_ADOPTIONS + ".png";
+
+    public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS = "JaehrlicheAdoptionenPLZVergleich";
+    public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS_PNG = IMAGE_COMPARED_ANNUAL_ADOPTIONS + ".png";
+
+    public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS = "JaehrlicheAdoptionenPhase";
+    public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS_PNG = IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS + ".png";
 
     public static final String DOWNLOAD_DIR_NAME = "images";
 

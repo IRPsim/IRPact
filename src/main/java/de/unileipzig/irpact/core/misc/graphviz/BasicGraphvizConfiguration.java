@@ -1,23 +1,25 @@
 package de.unileipzig.irpact.core.misc.graphviz;
 
+import de.unileipzig.irpact.commons.util.PositionMapper;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.network.SocialGraph;
-import de.unileipzig.irptools.graphviz.DotProcess;
-import de.unileipzig.irptools.graphviz.GraphvizGenerator;
-import de.unileipzig.irptools.graphviz.LayoutAlgorithm;
-import de.unileipzig.irptools.graphviz.OutputFormat;
+import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.core.spatial.twodim.Point2D;
+import de.unileipzig.irptools.graphviz.*;
 import de.unileipzig.irptools.util.ProcessResult;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import guru.nidi.graphviz.attribute.Color;
 import guru.nidi.graphviz.attribute.Shape;
+import guru.nidi.graphviz.model.MutableNode;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,14 +29,18 @@ import java.util.Map;
 public class BasicGraphvizConfiguration implements GraphvizConfiguration {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicGraphvizConfiguration.class);
+    protected static final double DEFAULT_PREFERRED_WIDTH = 1000;
+    protected static final double DEFAULT_PREFERRED_HEIGHT = 1000;
 
     protected Map<ConsumerAgentGroup, Color> colorMapping;
     protected LayoutAlgorithm layoutAlgorithm;
     protected OutputFormat outputFormat;
     protected boolean fixedNeatoPosition;
-    protected double scaleFactor;
     protected Charset terminalCharset = StandardCharsets.UTF_8;
-    protected boolean setDefaultSize = true;
+    protected double preferredWidth;
+    protected double preferredHeight;
+    protected boolean useDefaultPositionIfMissing = false;
+    protected PositionMapper positionMapper;
 
     public BasicGraphvizConfiguration() {
         this(new HashMap<>());
@@ -72,14 +78,6 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         return colorMapping.get(cag);
     }
 
-    public void setScaleFactor(double scaleFactor) {
-        this.scaleFactor = scaleFactor;
-    }
-
-    public double getScaleFactor() {
-        return scaleFactor;
-    }
-
     public void setFixedNeatoPosition(boolean fixedNeatoPosition) {
         this.fixedNeatoPosition = fixedNeatoPosition;
     }
@@ -88,12 +86,64 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         return fixedNeatoPosition;
     }
 
+    protected boolean isFdpOrSfdp() {
+        return layoutAlgorithm == StandardLayoutAlgorithm.FDP || layoutAlgorithm == StandardLayoutAlgorithm.SFDP;
+    }
+
     public void setTerminalCharset(Charset terminalCharset) {
         this.terminalCharset = terminalCharset;
     }
 
     public Charset getTerminalCharset() {
         return terminalCharset;
+    }
+
+    public void setPreferredHeight(double preferredHeight) {
+        this.preferredHeight = preferredHeight;
+    }
+
+    public double getPreferredHeight() {
+        return preferredHeight;
+    }
+
+    public double getPreferredHeightOrDefault() {
+        return preferredHeight == 0 ? DEFAULT_PREFERRED_HEIGHT : preferredHeight;
+    }
+
+    public void setPreferredWidth(double preferredWidth) {
+        this.preferredWidth = preferredWidth;
+    }
+
+    public double getPreferredWidth() {
+        return preferredWidth;
+    }
+
+    public double getPreferredWidthOrDefault() {
+        return preferredWidth == 0 ? DEFAULT_PREFERRED_WIDTH : preferredWidth;
+    }
+
+    public boolean hasPreferredSize() {
+        return preferredWidth > 0 && preferredHeight > 0;
+    }
+
+    public void setUseDefaultPositionIfMissing(boolean useDefaultPositionIfMissing) {
+        this.useDefaultPositionIfMissing = useDefaultPositionIfMissing;
+    }
+
+    public boolean isUseDefaultPositionIfMissing() {
+        return useDefaultPositionIfMissing;
+    }
+
+    public void setPositionMapper(PositionMapper positionMapper) {
+        this.positionMapper = positionMapper;
+    }
+
+    public PositionMapper getPositionMapper() {
+        return positionMapper;
+    }
+
+    public boolean hasPositionMapper() {
+        return positionMapper != null;
     }
 
     private static GraphvizGenerator<SocialGraph.Node, SocialGraph.Edge> newGenerator() {
@@ -114,7 +164,41 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
                 color = Color.BLACK;
             }
             graphvisNode.add(color);
+            if(isFixedNeatoPosition()) {
+                setPosition(graphvisNode, ca);
+            }
         };
+    }
+
+    private void setPosition(MutableNode node, ConsumerAgent agent) {
+        SpatialInformation information = agent.getSpatialInformation();
+        if(information == null) {
+            if(useDefaultPositionIfMissing) {
+                LOGGER.warn("agent '{}' has no position, using default position (0,0)", agent.getName());
+                setPosition(node, 0, 0);
+            } else {
+                throw new IllegalStateException("position based layout selected, but no position for agent '" + agent.getName() + "'");
+            }
+        }
+        else if(information instanceof Point2D) {
+            Point2D p2D = (Point2D) information;
+            setPosition(node, mapX(p2D.getX()), mapY(p2D.getY()));
+        }
+        else {
+            throw new IllegalStateException("position is not 2D: " + information.getClass());
+        }
+    }
+
+    private double mapX(double x) {
+        return hasPositionMapper() ? positionMapper.mapX(x) : x;
+    }
+
+    private double mapY(double y) {
+        return hasPositionMapper() ? positionMapper.mapY(y) : y;
+    }
+
+    private static void setPosition(MutableNode node, double x, double y) {
+        node.add("pos", x + "," + y);
     }
 
     private GraphvizGenerator.LinkConfigurator<SocialGraph.Edge> getLinkConfiguration() {
@@ -141,8 +225,26 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
             GraphvizGenerator<SocialGraph.Node, SocialGraph.Edge> gen,
             SocialGraph graph,
             SocialGraph.Type edgeType) {
+        updatePositionMapper(graph.getNodes());
         gen.addAllNodes(graph.getNodes());
         gen.addAllLinks(graph.getEdges(edgeType));
+    }
+
+    private void updatePositionMapper(Collection<? extends SocialGraph.Node> nodes) {
+        if(hasPositionMapper()) {
+            positionMapper.reset();
+            positionMapper.setBoundingBox(0, 0, getPreferredWidthOrDefault(), getPreferredHeightOrDefault());
+            for(SocialGraph.Node node: nodes) {
+                ConsumerAgent ca = node.getAgent(ConsumerAgent.class);
+                SpatialInformation information = ca.getSpatialInformation();
+                if(information instanceof Point2D) {
+                    Point2D p2d = (Point2D) information;
+                    positionMapper.update(p2d.getX(), p2d.getY());
+                } else {
+                    LOGGER.warn("skip unsupported information (agent={}, information={})", ca.getName(), information);
+                }
+            }
+        }
     }
 
     private void setupGenerator(GraphvizGenerator<SocialGraph.Node, SocialGraph.Edge> gen) {
@@ -150,8 +252,11 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         gen.configureLinks(getLinkConfiguration());
         gen.setHideNodeLabels(true);
         gen.setNodeShape(Shape.POINT);
-        if(setDefaultSize) {
-            gen.setPixelSizePreferred(800, 800);
+        if(isFdpOrSfdp()) {
+            gen.setOverlap(StandardOverlap.PRISM);
+        }
+        if(hasPreferredSize()) {
+            gen.setPixelSizePreferred(getPreferredWidth(), getPreferredHeight());
         }
     }
 
@@ -179,6 +284,13 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
             LOGGER.trace("store dot file (temp={}): {}", isTempDotFile, usedDotFile);
             gen.store(usedDotFile);
 
+//            TESTZWECKE
+//            if(true) {
+//                Path xxx = usedDotFile.resolveSibling("YYYYYY.dot");
+//                Files.copy(usedDotFile, xxx);
+//                throw new RuntimeException("KILL ME");
+//            }
+
             LOGGER.trace("init dot process");
             DotProcess process;
             try {
@@ -187,7 +299,6 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
                         .setOutputFile(outputFile)
                         .setLayout(layoutAlgorithm)
                         .setFormat(outputFormat)
-                        .setScale(scaleFactor)
                         .enableNeatoPos(fixedNeatoPosition)
                         .peek(dp -> LOGGER.trace("cmd: {}", Arrays.toString(dp.buildCommand())))
                         .validate();

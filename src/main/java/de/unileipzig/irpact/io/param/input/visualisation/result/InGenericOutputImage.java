@@ -43,19 +43,17 @@ public class InGenericOutputImage implements InOutputImage {
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.SETT_VISURESULT_GENERIC);
-        addEntryWithDefault(res, thisClass(), "useGnuplot", VALUE_TRUE);
-        addEntryWithDefault(res, thisClass(), "useR", VALUE_FALSE);
-        addEntryWithDefault(res, thisClass(), "annualZip", VALUE_TRUE);
-        addEntryWithDefault(res, thisClass(), "annualZipWithReal", VALUE_FALSE);
-        addEntryWithDefault(res, thisClass(), "cumulativeAnnualPhase", VALUE_FALSE);
-        addEntryWithDefault(res, thisClass(), "storeScript", VALUE_FALSE);
-        addEntryWithDefault(res, thisClass(), "storeData", VALUE_FALSE);
-        addEntryWithDefault(res, thisClass(), "storeImage", VALUE_TRUE);
-        addEntryWithDefault(res, thisClass(), "linewidth", varargs(1));
+        addEntryWithDefaultAndDomain(res, thisClass(), "useGnuplot", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "useR", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "annualZip", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "annualZipWithReal", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "cumulativeAnnualPhase", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "storeScript", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "storeData", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "storeImage", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "linewidth", VALUE_ONE, DOMAIN_G0);
 
         setDefault(res, thisClass(), varargs(IRPact.IMAGE_ANNUAL_ADOPTIONS, IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS));
-
-        setDomain(res, thisClass(), "linewidth", G0_DOMAIN);
 
         setRules(res, thisClass(), engineFieldNames, engineBuilder);
         setRules(res, thisClass(), dataToVisualize, dataToVisualizeBuilder.withKeyModifier(buildDefaultParameterNameOperator(thisClass())));

@@ -67,9 +67,9 @@ public class InRAProcessModel implements InProcessModel {
         addEntry(res, thisClass(), "uncertainties");
 
 
-        setDomain(res, thisClass(), "chanceNeutral", CLOSED_0_1_DOMAIN);
-        setDomain(res, thisClass(), "chanceConvergence", CLOSED_0_1_DOMAIN);
-        setDomain(res, thisClass(), "chanceDivergence", CLOSED_0_1_DOMAIN);
+        setDomain(res, thisClass(), "chanceNeutral", DOMAIN_CLOSED_0_1);
+        setDomain(res, thisClass(), "chanceConvergence", DOMAIN_CLOSED_0_1);
+        setDomain(res, thisClass(), "chanceDivergence", DOMAIN_CLOSED_0_1);
 
 
         setDefault(res, thisClass(), "a", varargs(0.25));

@@ -8,7 +8,6 @@ import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactConsumerAgentPopulation;
-import de.unileipzig.irpact.io.param.input.distribution.InBernoulliDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
@@ -240,7 +239,7 @@ public class ToyModel_D_P1 extends AbstractToyModel {
         InGenericOutputImage[] defaultImages = createDefaultImages();
 
         //=====
-        InRoot root = createRootWithInformations();
+        InRoot root = createRootWithInformationsWithFullLogging();
         root.getGeneral().setFirstSimulationYear(year);
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(cags);

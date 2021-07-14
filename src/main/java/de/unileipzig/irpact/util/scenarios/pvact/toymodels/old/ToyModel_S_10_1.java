@@ -163,7 +163,7 @@ public class ToyModel_S_10_1 extends AbstractToyModel {
 
         //=====
 
-        InRoot root = createRootWithInformations();
+        InRoot root = createRootWithInformationsWithFullLogging();
         root.general.setFirstSimulationYearAsLast();
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(cags);

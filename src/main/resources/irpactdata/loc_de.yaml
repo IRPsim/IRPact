@@ -95,6 +95,9 @@ InGeneral_copyLogIfPossible:
 InGeneral_passErrorMessageToOutput:
   gams_identifier: "Leite Error in Output"
   gams_description: "todo"
+InGeneral_skipPersist:
+  gams_identifier: "Deaktiviere Persistierung"
+  gams_description: "todo"
 
 VisibleBinaryData:
   edn_label: "Binäre Daten"
@@ -199,38 +202,26 @@ InGraphvizGeneral:
   edn_label: "Einstellungen"
   edn_description: "Ermöglicht die allgemeine Konfiguration von Graphviz für die Netzwerkvisualisierung."
 InGraphvizGeneral_storeEndImage:
-  gams_identifier: "Netzwerk speichern?"
+  gams_identifier: "Finales Netzwerk speichern?"
   gams_description: "Falls aktiviert, wird das Netzwerk am Ende der Simulation gespeichert."
 InGraphvizGeneral_storeDotFile:
-  gams_identifier: "dot-Datei speichern?"
-  gams_description: "Ermöglicht das Speichern der dot-Datei."
-InGraphvizGeneral_scaleFactor:
-  gams_identifier: "Skalierungsfaktor"
-  gams_description: "Definiert den Skalierungsfaktor."
-InGraphvizGeneral_fixedNeatoPosition:
-  gams_identifier: "Positionen fixieren? (NEATO)"
-  gams_description: "Falls aktiviert, werden die realen Agentenpositionen genutzt."
-InGraphvizGeneral_outputFormatPNG:
-  gams_identifier: "Ausgabeformat: PNG"
-  gams_description: "Erstellt die Bilder als png."
-InGraphvizGeneral_layoutAlgDOT:
-  gams_identifier: "Layout: DOT"
-  gams_description: "Nutzt das DOT Layout."
-InGraphvizGeneral_layoutAlgNEATO:
-  gams_identifier: "Layout: NEATO"
-  gams_description: "Nutzt das NEATO Layout."
-InGraphvizGeneral_layoutAlgFDP:
-  gams_identifier: "Layout: FDP"
-  gams_description: "Nutzt das FDP Layout."
-InGraphvizGeneral_layoutAlgSFDP:
-  gams_identifier: "Layout: SFDP"
-  gams_description: "Nutzt das SFDP Layout."
-InGraphvizGeneral_layoutAlgTWOPI:
-  gams_identifier: "Layout: TWOPI"
-  gams_description: "Nutzt das TWOPI Layout."
-InGraphvizGeneral_layoutAlgCIRCO:
-  gams_identifier: "Layout: CIRCO"
-  gams_description: "Nutzt das CIRCO Layout."
+  gams_identifier: "Finale dot-Datei speichern?"
+  gams_description: "Ermöglicht das Speichern der dot-Datei. Diese Datei enthält die Konstruktionsinformationen des Netzwerkes."
+InGraphvizGeneral_preferredImageWidth:
+  gams_identifier: "Bevorzugte Bildbreite"
+  gams_description: "Definiert den Bildbreite für die Netzwerkbilder. Falls der Wert 0 ist, bestimmt Graphviz die optimale Bildgröße automatisch."
+InGraphvizGeneral_preferredImageHeight:
+  gams_identifier: "Bevorzugte Bildhöhe"
+  gams_description: "Definiert den Bildhöhe für die Netzwerkbilder. Falls der Wert 0 ist, bestimmt Graphviz die optimale Bildgröße automatisch."
+InGraphvizGeneral_positionBasedLayout:
+  gams_identifier: "Positionsbasiertes Layout"
+  gams_description: "Nutzt für die Grapherzeugung ein positionsbasiertes Layout. Das genaue Layout ist NEATO kombiniert mit -n. Dieses Layout setzt vorraus, dass die Agenten eine Position besitzen. Zusätzlich benötigt es auch eine eingestellte Bildgröße. Falls diese fehlt, wird ein (ca.) 1000x1000 Pixel großes Bild erzeugt."
+InGraphvizGeneral_freeLayout:
+  gams_identifier: "Freies Layout"
+  gams_description: "Nutzt für die Grapherzeugung ein kräftebasierentes Layout. Das genaue Layout ist SFDP mit der overlap-Option prism."
+InGraphvizGeneral_useDefaultPositionIfMissing:
+  gams_identifier: "Erlaube fehlende Positionen"
+  gams_description: "Diese Option erlaubt die Nutzung des positionbasierten Layouts ohne gültige Positionen. Agenten ohne Position wird der Punkt (0,0) zugeordnet."
 
 InConsumerAgentGroupColor:
   edn_label: "Farben der Konsumergruppen"
@@ -264,7 +255,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.5.5"
+  edn_description: "IRPact v0.6.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -1506,3 +1497,32 @@ InGeneral_logScriptAdoptionsZipPhase:
 names:
   edn_label: "Namen"
   edn_description: "(DEPRECATED) Ermöglicht die Definition von Namen. Namen können für verschiedene Optionen genutzt werden, wie zum Beispiel die Bestimmung von Tabellenspalten oder als gemeinsame Basis von Eigenschaften (Attribute). (Anmerkung: Namen dienen als Ersatz für textbasierte Parameter.)"
+
+#deprecated
+InGraphvizGeneral_fixedNeatoPosition:
+  gams_identifier: "Positionen fixieren? (NEATO)"
+  gams_description: "Falls aktiviert, werden die realen Agentenpositionen genutzt."
+InGraphvizGeneral_outputFormatPNG:
+  gams_identifier: "Ausgabeformat: PNG"
+  gams_description: "Erstellt die Bilder als png."
+InGraphvizGeneral_layoutAlgDOT:
+  gams_identifier: "Layout: DOT"
+  gams_description: "Nutzt das DOT Layout."
+InGraphvizGeneral_layoutAlgNEATO:
+  gams_identifier: "Layout: NEATO"
+  gams_description: "Nutzt das NEATO Layout."
+InGraphvizGeneral_layoutAlgFDP:
+  gams_identifier: "Layout: FDP"
+  gams_description: "Nutzt das FDP Layout."
+InGraphvizGeneral_layoutAlgSFDP:
+  gams_identifier: "Layout: SFDP"
+  gams_description: "Nutzt das SFDP Layout."
+InGraphvizGeneral_layoutAlgTWOPI:
+  gams_identifier: "Layout: TWOPI"
+  gams_description: "Nutzt das TWOPI Layout."
+InGraphvizGeneral_layoutAlgCIRCO:
+  gams_identifier: "Layout: CIRCO"
+  gams_description: "Nutzt das CIRCO Layout."
+InGraphvizGeneral_scaleFactor:
+  gams_identifier: "Skalierungsfaktor"
+  gams_description: "Definiert den Skalierungsfaktor."

@@ -39,7 +39,7 @@ public class InBernoulliDistribution implements InUnivariateDoubleDistribution {
         addEntry(res, thisClass(), "trueValue");
         addEntry(res, thisClass(), "falseValue");
 
-        setDomain(res, thisClass(), "p", BOOLEAN_DOMAIN);
+        setDomain(res, thisClass(), "p", DOMAIN_BOOLEAN);
 
         setDefault(res, thisClass(), "trueValue", new Object[] {"1"});
         setDefault(res, thisClass(), "falseValue", new Object[] {"0"});

@@ -224,7 +224,7 @@ public class ToyModel_D_B1 extends AbstractToyModel {
         InGenericOutputImage[] defaultImages = createDefaultImages();
 
         //=====
-        InRoot root = createRootWithInformations();
+        InRoot root = createRootWithInformationsWithFullLogging();
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(cags);
         root.setAgentPopulationSize(population);

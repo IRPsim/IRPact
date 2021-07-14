@@ -4,6 +4,7 @@ import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InGeneral;
+import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
@@ -13,6 +14,8 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactCons
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
+import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
+import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
@@ -142,6 +145,12 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         general.runOptActDemo = false;
     }
 
+    public static void setColors(InRoot root, InConsumerAgentGroup... cags) {
+        InConsumerAgentGroupColor[] colors = InConsumerAgentGroupColor.copyColors();
+        InConsumerAgentGroupColor.roundRobin(colors, cags);
+        root.setConsumerAgentGroupColors(colors);
+    }
+
     public InGenericOutputImage[] createDefaultImages() {
         InGenericOutputImage[] defaults = InGenericOutputImage.createDefaultImages();
         InGenericOutputImage.setEnableAll(true, defaults);
@@ -202,6 +211,10 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return supplier;
     }
 
+    public InUnlinkedGraphTopology createUnlinkedTopology(String name) {
+        return new InUnlinkedGraphTopology(name);
+    }
+
     public InFreeNetworkTopology createFreeTopology(
             String name,
             InAffinities affinities,
@@ -233,6 +246,10 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return supplier;
     }
 
+    public InFileBasedPVactConsumerAgentPopulation createFullPopulation(String name, InConsumerAgentGroup... cags) {
+        return createPopulation(name, -1, cags);
+    }
+
     public InComplexAffinityEntry createAffinityEntry(String prefix, InConsumerAgentGroup a, InConsumerAgentGroup b, double value) {
         return new InComplexAffinityEntry(prefix + "_" + a.getName() + "_" + b.getName(), a, b, value);
     }
@@ -246,6 +263,16 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
 
     public InAffinities createZeroAffinities(String name, InConsumerAgentGroup... cags) {
         InComplexAffinityEntry[] entries = InComplexAffinityEntry.buildAll(cags, 0);
+        return createAffinities(name, entries);
+    }
+
+    public InAffinities createEvenlyDistributedAffinities(String name, InConsumerAgentGroup... cags) {
+        InComplexAffinityEntry[] entries = InComplexAffinityEntry.buildAll(cags, 1.0 / cags.length);
+        return createAffinities(name, entries);
+    }
+
+    public InAffinities createSelfLinkedAffinities(String name, InConsumerAgentGroup... cags) {
+        InComplexAffinityEntry[] entries = InComplexAffinityEntry.buildSelfLinked(cags);
         return createAffinities(name, entries);
     }
 

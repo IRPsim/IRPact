@@ -131,7 +131,7 @@ public class SideFaresDemo extends AbstractScenario {
         general.setFirstSimulationYear(2015);
 
         //=====
-        InRoot root = createRootWithInformations();
+        InRoot root = createRootWithInformationsWithFullLogging();
         InExample.initOptAct(root);
         InExample.initGV(root);
 

@@ -27,14 +27,18 @@ public final class ParamUtil {
     public static final String DATA_DELIMITER = "_";
     public static final String NAME_DELIMITER = "_";
 
-    public static final String BOOLEAN_DOMAIN = "[0|1]";
-    public static final String CLOSED_0_1_DOMAIN = "[0,1]";
-    public static final String GEQ0_DOMAIN = "[0,)";
-    public static final String G0_DOMAIN = "(0,)";
+    public static final String UNIT_PIXEL = "[Pixel]";
+
+    public static final String DOMAIN_BOOLEAN = "[0|1]";
+    public static final String DOMAIN_CLOSED_0_1 = "[0,1]";
+    public static final String DOMAIN_GEQ0 = "[0,)";
+    public static final String DOMAIN_G0 = "(0,)";
+
     public static final Object[] VALUE_TRUE = {"1"};
     public static final Object[] VALUE_FALSE = {"0"};
     public static final Object[] VALUE_ONE = {"1"};
     public static final Object[] VALUE_ZERO = {"0"};
+    public static final Object[] VALUE_1000 = {"1000"};
     public static final Object[] VALUE_NEG_ONE = {"-1"};
 
     private ParamUtil() {
@@ -408,6 +412,16 @@ public final class ParamUtil {
         }
     }
 
+    public static void setUnit(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String field,
+            String unit) {
+        if(unit != null && !unit.isEmpty()) {
+            computeEntryBuilderIfAbsent(res, c, field).setGamsUnit(unit);
+        }
+    }
+
     public static void setDomain(
             TreeAnnotationResource res,
             Class<?> c,
@@ -449,6 +463,17 @@ public final class ParamUtil {
     public static void addEntryWithDefault(TreeAnnotationResource res, Class<?> c, String field, Object[] defaults) {
         addEntry(res, c, field);
         setDefault(res, c, field, defaults);
+    }
+
+    public static void addEntryWithDefaultAndDomain(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String field,
+            Object[] defaults,
+            String domain) {
+        addEntry(res, c, field);
+        setDefault(res, c, field, defaults);
+        setDomain(res, c, field, domain);
     }
 
     public static void putClassPath(TreeAnnotationResource res, Class<?> c, String... keys) {

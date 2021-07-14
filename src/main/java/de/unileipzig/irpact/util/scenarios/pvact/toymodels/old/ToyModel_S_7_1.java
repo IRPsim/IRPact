@@ -180,7 +180,7 @@ public class ToyModel_S_7_1 extends AbstractToyModel {
         InSpace2D space2D = createSpace2D("Space2D");
 
         //=====
-        InRoot root = createRootWithInformations();
+        InRoot root = createRootWithInformationsWithFullLogging();
         root.general.lastSimulationYear = DEFAULT_INITIAL_YEAR;
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(cags);

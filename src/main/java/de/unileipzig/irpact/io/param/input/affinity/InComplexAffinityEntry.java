@@ -76,6 +76,22 @@ public class InComplexAffinityEntry implements InAffinityEntry {
         return list.toArray(new InComplexAffinityEntry[0]);
     }
 
+    public static InComplexAffinityEntry[] buildSelfLinked(InConsumerAgentGroup[] grps) {
+        List<InComplexAffinityEntry> list = new ArrayList<>();
+        for(InConsumerAgentGroup src: grps) {
+            for(InConsumerAgentGroup tar: grps) {
+                InComplexAffinityEntry entry = new InComplexAffinityEntry(
+                        ParamUtil.concData(src, tar),
+                        src,
+                        tar,
+                        src == tar ? 1 : 0
+                );
+                list.add(entry);
+            }
+        }
+        return list.toArray(new InComplexAffinityEntry[0]);
+    }
+
     @Override
     public InComplexAffinityEntry copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

@@ -10,7 +10,6 @@ import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGr
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
-import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
@@ -181,7 +180,7 @@ public class ToyModel_S_5_1 extends AbstractToyModel {
 
         //=====
 
-        InRoot root = createRootWithInformations();
+        InRoot root = createRootWithInformationsWithFullLogging();
         root.general.setFirstSimulationYearAsLast();
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(cags);

@@ -49,7 +49,7 @@ public class InPVactGlobalDeffuantUncertainty implements InUncertainty {
         addEntry(res, thisClass(), "upperBoundInclusive");
         addEntry(res, thisClass(), "cags");
 
-        setDomain(res, thisClass(), "extremistParameter", CLOSED_0_1_DOMAIN);
+        setDomain(res, thisClass(), "extremistParameter", DOMAIN_CLOSED_0_1);
 
         setDefault(res, thisClass(), "extremistParameter", VALUE_NEG_ONE);
         setDefault(res, thisClass(), "extremistUncertainty", varargs(RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY));

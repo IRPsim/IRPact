@@ -11,6 +11,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.awt.*;
 import java.lang.invoke.MethodHandles;
+import java.util.Arrays;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
@@ -52,6 +53,11 @@ public class InConsumerAgentGroupColor implements InIRPactEntity {
 
     public static final InConsumerAgentGroupColor[] ALL = {BLACK, BLUE, CYAN, DARK_GRAY, GRAY, GREEN, LIGHT_GRAY, MAGENTA, ORANGE, PINK, RED, YELLOW, WHITE};
     public static final InConsumerAgentGroupColor[] COLORS = {BLUE, CYAN, DARK_GRAY, GRAY, GREEN, LIGHT_GRAY, MAGENTA, ORANGE, PINK, RED, YELLOW};
+    public static InConsumerAgentGroupColor[] copyColors() {
+        return Arrays.stream(COLORS)
+                .map(InConsumerAgentGroupColor::derive)
+                .toArray(InConsumerAgentGroupColor[]::new);
+    }
 
     public String _name;
 
@@ -87,6 +93,10 @@ public class InConsumerAgentGroupColor implements InIRPactEntity {
         return copy;
     }
 
+    public InConsumerAgentGroupColor derive() {
+        return derive(getName());
+    }
+
     public InConsumerAgentGroupColor derive(InConsumerAgentGroup... cags) {
         return derive(getName(), cags);
     }
@@ -95,8 +105,18 @@ public class InConsumerAgentGroupColor implements InIRPactEntity {
         InConsumerAgentGroupColor copy = new InConsumerAgentGroupColor();
         copy.setName(newName);
         copy.setRGBA(getRGBA());
-        copy.setGroups(cags);
+        if(cags != null && cags.length > 0) {
+            copy.setGroups(cags);
+        }
         return copy;
+    }
+
+    public static void roundRobin(InConsumerAgentGroupColor[] colors, InConsumerAgentGroup[] cags) {
+        for(int i = 0; i < cags.length; i++) {
+            InConsumerAgentGroup cag = cags[i];
+            InConsumerAgentGroupColor color = colors[i % colors.length];
+            color.addGroup(cag);
+        }
     }
 
     public String getName() {
@@ -111,6 +131,12 @@ public class InConsumerAgentGroupColor implements InIRPactEntity {
     }
     public InConsumerAgentGroup[] getGroups() throws ParsingException {
         return getNonNullArray(groups, "groups");
+    }
+    public void addGroup(InConsumerAgentGroup cag) {
+        addGroups(cag);
+    }
+    public void addGroups(InConsumerAgentGroup... cags) {
+        this.groups = addAll(groups, cags);
     }
     public boolean hasConsumerAgentGroups() {
         return isNotNullAndNotEmpty(groups);

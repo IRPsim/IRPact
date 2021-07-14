@@ -320,7 +320,15 @@ public abstract class AbstractScenario implements Scenario {
         return generalSetup;
     }
 
+    public InRoot createRootWithInformationsWithFullLogging() {
+        return createRootWithInformations(true);
+    }
+
     public InRoot createRootWithInformations() {
+        return createRootWithInformations(false);
+    }
+
+    protected InRoot createRootWithInformations(boolean fullLog) {
         InRoot root = new InRoot();
         root.addInformation(getRevisionInformation());
         root.setVersion(InScenarioVersion.currentVersion());
@@ -329,6 +337,15 @@ public abstract class AbstractScenario implements Scenario {
         root.getGeneral().setTimeout(1, TimeUnit.MINUTES);
         root.getGeneral().setFirstSimulationYear(DEFAULT_INITIAL_YEAR);
         root.getGeneral().setLastSimulationYear(root.getGeneral().getFirstSimulationYear() + simulationDelta - 1);
+
+        if(fullLog) {
+            root.getGeneral().setLogLevel(IRPLevel.TRACE);
+            root.getGeneral().logAll = true;
+        } else {
+            root.getGeneral().setLogLevel(IRPLevel.INFO);
+            root.getGeneral().logAllIRPact = true;
+        }
+
         setupGeneral(root.getGeneral());
 
         root.setGraphvizGeneral(new InGraphvizGeneral());
@@ -344,11 +361,8 @@ public abstract class AbstractScenario implements Scenario {
     }
 
     public void setupGraphvizGeneral(InGraphvizGeneral general) {
-        general.setScaleFactor(0);
         general.setStoreDotFile(false);
-        general.setFixedNeatoPosition(false);
-        general.setOutputFormat(StandardOutputFormat.PNG);
-        general.setLayoutAlgorithm(StandardLayoutAlgorithm.FDP);
+        general.setLayoutAlgorithm(StandardLayoutAlgorithm.NEATO);
     }
 
     public InInformation getRevisionInformation() {
