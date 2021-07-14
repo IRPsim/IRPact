@@ -77,7 +77,7 @@ public final class IRPact implements IRPActAccess {
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "0";
     private static final String MINOR_STRING = "5";
-    private static final String BUILD_STRING = "4";
+    private static final String BUILD_STRING = "5";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -85,7 +85,8 @@ public final class IRPact implements IRPActAccess {
     public static final String CL_VERSION = "Version " + VERSION_STRING;
     public static final String CL_COPY = "(c) 2019-2021";
 
-    public static final String IMAGE_AGENTGRAPH = "agentGraph";
+    public static final String IMAGE_AGENTGRAPH_INPUT = "agentGraph";
+    public static final String IMAGE_AGENTGRAPH_OUTPUT = "Agentennetzwerk";
     public static final String IMAGE_ANNUAL_ADOPTIONS = "AnnualAdoptions";
     public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS = "ComparedAnnualAdoptions";
     public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS = "AnnualCumulativeAdoptions";
@@ -617,7 +618,7 @@ public final class IRPact implements IRPActAccess {
         String errorClass = e.getClass().getSimpleName();
         String errorMsg = StringUtil.replaceSpace(e.getMessage(), "_");
         String fullMsg = errorClass + "__" + errorMsg;
-        OutInformation[] errorInfo = {new OutInformation(fullMsg)};
+        OutInformation[] errorInfo = { new OutInformation(fullMsg) };
 
         outData = createDummyOutputData("ERROR_OUTPUT", errorInfo);
         storeOutputData(outData);
@@ -646,15 +647,20 @@ public final class IRPact implements IRPActAccess {
 
     private void createNetworkAfterSimulation() {
         boolean create = inRoot.getGraphvizGeneral().isStoreEndImage();
-        LOGGER.info(IRPSection.GENERAL, "create network image after finished simulation: {}", create);
+        LOGGER.trace(IRPSection.GENERAL, "create network image after finished simulation: {}", create);
         if(create) {
             boolean storeDot = inRoot.getGraphvizGeneral().isStoreDotFile();
-            LOGGER.info(IRPSection.GENERAL, "store dot file: {}", storeDot);
+            LOGGER.trace(IRPSection.GENERAL, "store dot file: {}", storeDot);
             try {
-                Path networkImagePath = CL_OPTIONS.getCreatedDownloadDir().resolve("Agentennetzwerk.png");
+                Path networkImagePath = CL_OPTIONS.getCreatedDownloadDir().resolve(IMAGE_AGENTGRAPH_OUTPUT + ".png");
                 Path networkDotPath = storeDot
-                        ? networkImagePath.resolveSibling("Agentennetzwerk.dot")
+                        ? networkImagePath.resolveSibling(IMAGE_AGENTGRAPH_OUTPUT + ".dot")
                         : null;
+
+                LOGGER.trace(IRPSection.GENERAL, "store network image: {}", networkImagePath);
+                if(storeDot) {
+                    LOGGER.trace(IRPSection.GENERAL, "store dot file: {}", networkDotPath);
+                }
 
                 graphvizConfiguration.printSocialGraph(
                         environment.getNetwork().getGraph(),
