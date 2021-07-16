@@ -2,7 +2,7 @@ package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
-import de.unileipzig.irpact.commons.util.IRPArgs;
+import de.unileipzig.irpact.util.IRPArgs;
 import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.io.param.ParamUtil;

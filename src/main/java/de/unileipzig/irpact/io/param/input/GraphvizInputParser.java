@@ -113,6 +113,7 @@ public class GraphvizInputParser implements InputParser {
             configuration.setPreferredWidth(general.getPreferredImageWidth());
             configuration.setUseDefaultPositionIfMissing(general.isUseDefaultPositionIfMissing());
             configuration.setPositionMapper(getPositionMapper());
+            configuration.setKeepAspectRatio(general.shouldKeepAspectRatio());
         }
 
         private PositionMapper getPositionMapper() {

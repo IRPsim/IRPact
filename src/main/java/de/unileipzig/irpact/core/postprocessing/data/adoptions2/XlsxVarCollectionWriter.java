@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.core.postprocessing.data.adoptions2;
 
 import de.unileipzig.irpact.commons.attribute.Attribute;
-import de.unileipzig.irpact.commons.attribute.BasicStringAttribute;
 import de.unileipzig.irpact.commons.util.data.VarCollection;
 import de.unileipzig.irpact.commons.util.xlsx.StandardCellValueConverter;
 import de.unileipzig.irpact.commons.util.xlsx.XlsxSheetWriter;
@@ -10,6 +9,7 @@ import de.unileipzig.irpact.commons.util.xlsx.XlsxTable;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -17,8 +17,6 @@ import java.util.function.Function;
  * @author Daniel Abitz
  */
 public class XlsxVarCollectionWriter implements VarCollectionWriter {
-
-    public static final Attribute NA_STR = new BasicStringAttribute("-");
 
     protected Function<? super Object[], ? extends Attribute[]> entry2attribute;
     protected Path target;
@@ -37,6 +35,14 @@ public class XlsxVarCollectionWriter implements VarCollectionWriter {
         return target;
     }
 
+    public void setEntry2Attribute(Function<? super Object[], ? extends Attribute[]> entry2attribute) {
+        this.entry2attribute = entry2attribute;
+    }
+
+    public Function<? super Object[], ? extends Attribute[]> getEntry2Attribute() {
+        return entry2attribute;
+    }
+
     public void setSheetName(String sheetName) {
         this.sheetName = sheetName;
     }
@@ -47,6 +53,11 @@ public class XlsxVarCollectionWriter implements VarCollectionWriter {
 
     public void addInfo(String info) {
         infos.add(info);
+    }
+
+    public void setInfos(String... infos) {
+        this.infos.clear();
+        Collections.addAll(this.infos, infos);
     }
 
     public void setColumns(String... columns) {

@@ -75,6 +75,10 @@ public final class JsonUtil {
         return toString(node, DEFAULT);
     }
 
+    public static String toYamlString(JsonNode node) {
+        return toString(node, YAML);
+    }
+
     public static String toString(JsonNode node, PrettyPrinter printer) {
         return toString(node, JSON, printer);
     }
@@ -137,6 +141,14 @@ public final class JsonUtil {
 
     public static <T extends JsonNode> T readJson(Path source, Charset charset) throws IOException {
         return read(source, charset, JSON);
+    }
+
+    public static <T extends JsonNode> T readYaml(Path source) throws IOException {
+        return readYaml(source, StandardCharsets.UTF_8);
+    }
+
+    public static <T extends JsonNode> T readYaml(Path source, Charset charset) throws IOException {
+        return read(source, charset, YAML);
     }
 
     public static <T extends JsonNode> T read(InputStream in, ObjectMapper mapper) throws IOException {

@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.util.scenarios;
 
 import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
-import de.unileipzig.irpact.commons.util.IRPArgs;
+import de.unileipzig.irpact.util.IRPArgs;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.io.param.input.InGeneral;
@@ -14,7 +14,6 @@ import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.start.Start3;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.graphviz.StandardLayoutAlgorithm;
-import de.unileipzig.irptools.graphviz.StandardOutputFormat;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.perennial.PerennialData;
 import de.unileipzig.irptools.io.perennial.PerennialFile;
@@ -334,12 +333,13 @@ public abstract class AbstractScenario implements Scenario {
         root.setVersion(InScenarioVersion.currentVersion());
 
         root.setGeneral(new InGeneral());
+        root.getGeneral().setSeed(42);
         root.getGeneral().setTimeout(1, TimeUnit.MINUTES);
         root.getGeneral().setFirstSimulationYear(DEFAULT_INITIAL_YEAR);
         root.getGeneral().setLastSimulationYear(root.getGeneral().getFirstSimulationYear() + simulationDelta - 1);
 
         if(fullLog) {
-            root.getGeneral().setLogLevel(IRPLevel.TRACE);
+            root.getGeneral().setLogLevel(IRPLevel.ALL);
             root.getGeneral().logAll = true;
         } else {
             root.getGeneral().setLogLevel(IRPLevel.INFO);

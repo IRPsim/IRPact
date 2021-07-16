@@ -12,7 +12,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v0.6.0" 
+        :description "IRPact v0.7.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -88,7 +88,7 @@
           {
             :label "Einstellungen" 
             :description "Ermöglicht die allgemeine Konfiguration von Graphviz für die Netzwerkvisualisierung." 
-            :tags [["InGraphvizGeneral" "storeEndImage"] ["InGraphvizGeneral" "storeDotFile"] ["InGraphvizGeneral" "preferredImageWidth"] ["InGraphvizGeneral" "preferredImageHeight"] ["InGraphvizGeneral" "positionBasedLayout"] ["InGraphvizGeneral" "freeLayout"] ["InGraphvizGeneral" "useDefaultPositionIfMissing"]]
+            :tags [["InGraphvizGeneral" "storeEndImage"] ["InGraphvizGeneral" "storeDotFile"] ["InGraphvizGeneral" "preferredImageWidth"] ["InGraphvizGeneral" "preferredImageHeight"] ["InGraphvizGeneral" "positionBasedLayout"] ["InGraphvizGeneral" "freeLayout"] ["InGraphvizGeneral" "keepAspectRatio"] ["InGraphvizGeneral" "useDefaultPositionIfMissing"]]
           } 
           {
             :label "Agentengruppe-Farben-Mapping" 

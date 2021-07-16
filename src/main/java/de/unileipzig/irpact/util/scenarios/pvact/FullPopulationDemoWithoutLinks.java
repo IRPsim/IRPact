@@ -14,7 +14,7 @@ import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
-import de.unileipzig.irpact.util.data.Milieu;
+import de.unileipzig.irpact.util.pvact.Milieu;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class FullPopulationDemoWithoutLinks extends AbstractPVactScenario {
 
-    public static final int REVISION = 0;
+    public static final int REVISION = 1;
 
     public FullPopulationDemoWithoutLinks(String name, String creator, String description) {
         super(name, creator, description);
@@ -65,6 +65,8 @@ public class FullPopulationDemoWithoutLinks extends AbstractPVactScenario {
 
         //=====
         InRoot root = createRootWithInformations();
+        root.getGeneral().setFirstSimulationYear(2015);
+        root.getGeneral().setLastSimulationYear(2015);
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(cags);
         root.setAgentPopulationSize(population);
@@ -73,7 +75,8 @@ public class FullPopulationDemoWithoutLinks extends AbstractPVactScenario {
         root.setSpatialModel(space2D);
         root.setTimeModel(timeModel);
         root.setImages(defaultImages);
-        root.getGraphvizGeneral().setLayoutAlgorithm(true);
+        root.getGraphvizGeneral().setPositionBasedLayoutAlgorithm(true);
+        root.getGraphvizGeneral().setKeepAspectRatio(true);
         root.getGraphvizGeneral().setPreferredImageSize(1000);
 
         setColors(root, cags);

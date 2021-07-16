@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons.time;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author Daniel Abitz
@@ -10,6 +11,10 @@ public final class TimeUtil {
     private static ZoneId zone = ZoneId.systemDefault();
 
     private TimeUtil() {
+    }
+
+    public static String printNowWithoutMs() {
+        return LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
     public static void setZone(ZoneId zone) {

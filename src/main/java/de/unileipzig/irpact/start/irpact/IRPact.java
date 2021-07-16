@@ -16,13 +16,14 @@ import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.network.SocialGraph;
+import de.unileipzig.irpact.core.postprocessing.BasicPostprocessingManager;
+import de.unileipzig.irpact.core.postprocessing.PostprocessingManager;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.simulation.LifeCycleControl;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.Version;
 import de.unileipzig.irpact.core.util.BasicMetaData;
 import de.unileipzig.irpact.core.util.MetaData;
-import de.unileipzig.irpact.core.util.result.ResultManager;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions.AdoptionResultInfo;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions.AnnualCumulativeAdoptionsForOutput;
 import de.unileipzig.irpact.io.param.input.*;
@@ -76,7 +77,7 @@ public final class IRPact implements IRPActAccess {
 
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "0";
-    private static final String MINOR_STRING = "6";
+    private static final String MINOR_STRING = "7";
     private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
@@ -608,7 +609,7 @@ public final class IRPact implements IRPActAccess {
         createNetworkAfterSimulation();
         createOutput();
         callCallbacks();
-        printResults();
+        runPostprocessing();
         finalTask();
     }
 
@@ -752,9 +753,9 @@ public final class IRPact implements IRPActAccess {
         }
     }
 
-    private void printResults() {
-        ResultManager manager = new ResultManager(META_DATA, CL_OPTIONS, inRoot, environment);
-        manager.execute();
+    private void runPostprocessing() {
+        PostprocessingManager postprocessor = new BasicPostprocessingManager(META_DATA, CL_OPTIONS, inRoot, environment);
+        postprocessor.execute();
     }
 
     private void finalTask() {

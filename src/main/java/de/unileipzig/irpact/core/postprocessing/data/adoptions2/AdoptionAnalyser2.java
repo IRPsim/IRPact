@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.postprocessing.data.ResultWriter;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
@@ -25,33 +26,33 @@ public interface AdoptionAnalyser2 extends ResultProcessor, ResultWriter {
     }
 
     @Override
-    default void applyAndWrite(SimulationEnvironment environment) {
+    default void applyAndWrite(SimulationEnvironment environment) throws IOException {
         apply(environment);
         write();
     }
 
-    void write();
+    void write() throws IOException;
 
-    boolean add(AdoptionEntry2 info);
+    boolean add(AdoptionEntry2 entry);
 
     default void add(ConsumerAgent agent, AdoptedProduct product) {
         add(new BasicAdoptionEntry2(agent, product));
     }
 
-    default void addAll(Iterable<? extends AdoptionEntry2> infos) {
-        for(AdoptionEntry2 info: infos) {
+    default void addAll(Iterable<? extends AdoptionEntry2> entries) {
+        for(AdoptionEntry2 info: entries) {
             add(info);
         }
     }
 
-    default void addAll(Iterator<? extends AdoptionEntry2> infos) {
-        while(infos.hasNext()) {
-            add(infos.next());
+    default void addAll(Iterator<? extends AdoptionEntry2> entries) {
+        while(entries.hasNext()) {
+            add(entries.next());
         }
     }
 
-    default void addAll(Stream<? extends AdoptionEntry2> infos) {
-        infos.forEach(this::add);
+    default void addAll(Stream<? extends AdoptionEntry2> entries) {
+        entries.forEach(this::add);
     }
 
     VarCollection getData();

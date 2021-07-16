@@ -7,18 +7,11 @@ plugins {
 group 'de.unileipzig.irpact'
 version '1.0-SNAPSHOT'
 
-//sourceCompatibility = 1.11
 sourceCompatibility = 1.8
 
 repositories {
-    //geotools als erstes, sonst werden libs nicht gefunden...
     maven { url "https://repo.osgeo.org/repository/release/" }
-    //maven { url "https://download.java.net/maven/2" }
-
-    //maven { url "https://nexus.actoron.com/content/repositories/oss-nightlies" }
-
     mavenCentral()
-    //jcenter()
 }
 
 test {
@@ -40,11 +33,24 @@ sourceSets {
         compileClasspath += sourceSets.main.compileClasspath
         runtimeClasspath += sourceSets.main.runtimeClasspath
     }
+    internaltest {
+        java {
+            srcDir 'src/internaltest/java'
+        }
+        resources {
+            srcDir 'src/internaltest/resources'
+        }
+        compileClasspath += sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.runtimeClasspath
+    }
 }
 
 configurations {
     toymodelImplementation.extendsFrom(testImplementation)
     toymodelRuntimeOnly.extendsFrom(testRuntimeOnly)
+
+    internaltestImplementation.extendsFrom(testImplementation)
+    internaltestRuntimeOnly.extendsFrom(testRuntimeOnly)
 }
 
 task toymodel(type: Test) {
@@ -56,10 +62,22 @@ task toymodel(type: Test) {
     useJUnitPlatform()
 }
 
+task internaltest(type: Test) {
+    description = "Some internal tests"
+    group = "verification"
+    testClassesDirs = sourceSets.internaltest.output.classesDirs
+    classpath = sourceSets.internaltest.runtimeClasspath
+
+    useJUnitPlatform()
+}
+
 idea {
     module {
         testSourceDirs += project.sourceSets.toymodel.java.srcDirs
         testSourceDirs += project.sourceSets.toymodel.resources.srcDirs
+
+        testSourceDirs += project.sourceSets.internaltest.java.srcDirs
+        testSourceDirs += project.sourceSets.internaltest.resources.srcDirs
     }
 }
 
@@ -78,12 +96,9 @@ ext {
 
 dependencies {
     testCompileOnly "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
-    //testCompileOnly "org.apiguardian:apiguardian-api:1.0.0"
     toymodelCompileOnly "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
-    //toymodelCompileOnly "org.apiguardian:apiguardian-api:1.0.0"
+    internaltestCompileOnly "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
     runtimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
-    //runtimeOnly "org.junit.vintage:junit-vintage-engine:$junitJupiterVersion"
-    //runtimeOnly "org.junit.platform:junit-platform-launcher:1.4.2"
 
     //implementation "org.activecomponents.jadex:jadex-distribution-standard:$jadexDistVersion"
     implementation "org.activecomponents.jadex:jadex-distribution-minimal:$jadexDistVersion"
@@ -127,20 +142,6 @@ dependencies {
 //jar
 //==================================================
 
-//deprecated gradle 6.0 - wird spaeter entfernt
-//task buildUberJar(type: Jar) {
-//    archiveClassifier.set('uber')
-//    manifest {
-//        attributes 'Main-class': 'de.unileipzig.irpact.start.Start'
-//    }
-//    from {
-//        configurations.runtimeClasspath.collect {
-//            it.isDirectory() ? it : zipTree(it)
-//        }
-//    } with jar
-//    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
-//}
-
 tasks.register('buildUberJar', Jar) {
     group = 'build'
     archiveClassifier = 'uber'
@@ -157,14 +158,6 @@ tasks.register('buildUberJar', Jar) {
     duplicatesStrategy = 'include'
     exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
 }
-
-//deprecated gradle 6.0 - wird spaeter entfernt
-//task buildStandardJar(type: Jar) {
-//    from sourceSets.main.output
-//    manifest {
-//        attributes('Main-class': 'de.unileipzig.irpact.start.Start')
-//    }
-//}
 
 tasks.register('buildStandardJar', Jar) {
 //task buildStandardJar(type: Jar) {

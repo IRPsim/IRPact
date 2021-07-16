@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.commons.util.xlsx;
 
-import de.unileipzig.irpact.commons.util.io.Header;
-import de.unileipzig.irpact.commons.util.io.ValueConverter;
+import de.unileipzig.irpact.commons.util.table.Header;
+import de.unileipzig.irpact.commons.util.table.ValueConverter;
 
 /**
  * @author Daniel Abitz

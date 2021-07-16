@@ -1674,7 +1674,7 @@ SCALAR sca_InGraphvizGeneral_preferredImageHeight
 
 * - default: 1
 * - domain: [0|1]
-* - description: Nutzt für die Grapherzeugung ein positionsbasiertes Layout. Das genaue Layout ist NEATO kombiniert mit -n. Dieses Layout setzt vorraus, dass die Agenten eine Position besitzen. Zusätzlich benötigt es auch eine eingestellte Bildgröße. Falls diese fehlt, wird ein (ca.) 1000x1000 Pixel großes Bild erzeugt.
+* - description: Nutzt für die Grapherzeugung ein positionsbasiertes Layout. Das genaue Layout ist NEATO kombiniert mit -n. Dieses Layout setzt vorraus, dass die Agenten eine Position besitzen. Zusätzlich benötigt es eine eingestellte Bildgröße. Falls diese fehlt, wird ein (ca.) 1000x1000 Pixel großes Bild erzeugt. Dieses Layout kann zu Verzerrungen führen, da es unter Umständen (z.B. bei Geoinformationen) die Daten in das gewünschte Ausgabeformat transformiert. Um das Seitenverhältnis beizubehalten, kann die entsprechende Option genutzt werden.
 * - identifier: Positionsbasiertes Layout
 * - rule: IF (sca_InGraphvizGeneral_positionBasedLayout == 1, sca_InGraphvizGeneral_freeLayout = 0)
 * - rule: IF (sca_InGraphvizGeneral_positionBasedLayout == 0, sca_InGraphvizGeneral_positionBasedLayout = 1)
@@ -1691,6 +1691,13 @@ SCALAR sca_InGraphvizGeneral_positionBasedLayout
 * - rule: IF (sca_InGraphvizGeneral_freeLayout == 0, sca_InGraphvizGeneral_freeLayout = 1)
 * - type: Boolean
 SCALAR sca_InGraphvizGeneral_freeLayout
+
+* - default: 0
+* - domain: [0|1]
+* - description: Diese Option erlaubt es das Seitenverhältnis der Daten beizubehalten. Die Entscheidung, ob die Länge oder die Breite des Bildes verändert wird, hängt von der finalen Bildfläche ab. Das Verfahren nutzt die Variante mit der kleineren Bildfläche.
+* - identifier: Seitenverhätnis beibehalten
+* - type: Boolean
+SCALAR sca_InGraphvizGeneral_keepAspectRatio
 
 * - default: 0
 * - domain: [0|1]

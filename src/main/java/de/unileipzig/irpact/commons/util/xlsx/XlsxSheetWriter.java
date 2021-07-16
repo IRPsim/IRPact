@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.util.xlsx;
 
-import de.unileipzig.irpact.commons.util.io.Header;
+import de.unileipzig.irpact.commons.util.table.Header;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;

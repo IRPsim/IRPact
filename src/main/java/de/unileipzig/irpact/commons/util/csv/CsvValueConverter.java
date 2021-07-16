@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.commons.util.csv;
 
-import de.unileipzig.irpact.commons.util.io.ValueConverter;
+import de.unileipzig.irpact.commons.util.table.ValueConverter;
 
 /**
  * @author Daniel Abitz

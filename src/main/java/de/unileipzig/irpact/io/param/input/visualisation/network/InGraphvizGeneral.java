@@ -55,6 +55,7 @@ public class InGraphvizGeneral implements Copyable {
         addEntryWithDefaultAndDomain(res, thisClass(), "preferredImageHeight", VALUE_1000, DOMAIN_GEQ0);
         addEntryWithDefaultAndDomain(res, thisClass(), "positionBasedLayout", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "freeLayout", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "keepAspectRatio", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "useDefaultPositionIfMissing", VALUE_FALSE, DOMAIN_BOOLEAN);
 
         setRules(res, thisClass(), improvedLayoutFieldNames, improvedLayoutBuilder);
@@ -82,6 +83,9 @@ public class InGraphvizGeneral implements Copyable {
 
     @FieldDefinition
     public boolean freeLayout = false;
+
+    @FieldDefinition
+    public boolean keepAspectRatio = false;
 
     @FieldDefinition
     public boolean useDefaultPositionIfMissing = false;
@@ -121,6 +125,7 @@ public class InGraphvizGeneral implements Copyable {
         copy.positionBasedLayout = positionBasedLayout;
         copy.freeLayout = freeLayout;
         copy.useDefaultPositionIfMissing = useDefaultPositionIfMissing;
+        copy.keepAspectRatio = keepAspectRatio;
         copy.terminalCharset = terminalCharset;
         return copy;
     }
@@ -143,6 +148,14 @@ public class InGraphvizGeneral implements Copyable {
 
     public boolean isFixedNeatoPosition() {
         return positionBasedLayout;
+    }
+
+    public boolean shouldKeepAspectRatio() {
+        return keepAspectRatio;
+    }
+
+    public void setKeepAspectRatio(boolean keepAspectRatio) {
+        this.keepAspectRatio = keepAspectRatio;
     }
 
     public OutputFormat getOutputFormat() {
@@ -199,7 +212,7 @@ public class InGraphvizGeneral implements Copyable {
         }
     }
 
-    public void setLayoutAlgorithm(boolean positionBased) {
+    public void setPositionBasedLayoutAlgorithm(boolean positionBased) {
         this.positionBasedLayout = positionBased;
         this.freeLayout = !positionBased;
     }
@@ -214,6 +227,7 @@ public class InGraphvizGeneral implements Copyable {
                 case NEATO:
                     positionBasedLayout = true;
                     break;
+
                 case FDP:
                 case SFDP:
                     freeLayout = true;

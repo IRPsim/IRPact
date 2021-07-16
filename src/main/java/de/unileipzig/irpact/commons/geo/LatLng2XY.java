@@ -7,21 +7,23 @@ import de.unileipzig.irpact.commons.util.PositionMapper;
  */
 public class LatLng2XY implements PositionMapper {
 
-    protected double radius;
     protected boolean empty = true;
+    protected double radius;
+    protected Double cosPhi;
+    //top left: min
     protected double topLeftX;
     protected double topLeftY;
     protected double topLeftLat;
     protected double topLeftLng;
     protected Double topLeftGlobalX;
     protected Double topLeftGlobalY;
+    //bottom right: max
     protected double bottomRightX;
     protected double bottomRightY;
     protected double bottomRightLat;
     protected double bottomRightLng;
     protected Double bottomRightGlobalX;
     protected Double bottomRightGlobalY;
-    protected Double cosPhi;
 
     public LatLng2XY(double radius) {
         this.radius = radius;
@@ -71,12 +73,87 @@ public class LatLng2XY implements PositionMapper {
         return bottomRightLng;
     }
 
+    public double getGlobalWidth() {
+        return getBottomRightGlobalX() - getTopLeftGlobalX();
+    }
+
+    public double getGlobalHeight() {
+        return getBottomRightGlobalY() - getTopLeftGlobalY();
+    }
+
+    public double getGlobalAspectRatio() {
+        return getGlobalWidth() / getGlobalHeight();
+    }
+
+    public double getScreenWidth() {
+        return bottomRightX - topLeftX;
+    }
+
+    public double getScreenHeight() {
+        return bottomRightY - topLeftY;
+    }
+
+    public double getScreenAspectRatio() {
+        return getScreenWidth() / getScreenHeight();
+    }
+
     @Override
     public void setBoundingBox(double topLeftX, double topLeftY, double bottomRightX, double bottomRightY) {
         this.topLeftX = topLeftX;
         this.topLeftY = topLeftY;
         this.bottomRightX = bottomRightX;
         this.bottomRightY = bottomRightY;
+    }
+
+    @Override
+    public void computeBoundingBoxHeight(double topLeftX, double topLeftY, double bottomRightX) {
+        this.topLeftX = topLeftX;
+        this.topLeftY = topLeftY;
+        this.bottomRightX = bottomRightX;
+
+        double screenHeight = getScreenWidth() / getGlobalAspectRatio();
+        this.bottomRightY = screenHeight + topLeftY;
+
+
+    }
+
+    @Override
+    public void computeBoundingBoxWidth(double topLeftX, double topLeftY, double bottomRightY) {
+        this.topLeftX = topLeftX;
+        this.topLeftY = topLeftY;
+        this.bottomRightY = bottomRightY;
+
+        double screenWidth = getGlobalAspectRatio() * getScreenHeight();
+        this.bottomRightX = screenWidth + topLeftX;
+    }
+
+    @Override
+    public void computeBoundingBox(double topLeftX, double topLeftY, double bottomRightX, double bottomRightY, boolean preferSmallerArea) {
+        computeBoundingBoxHeight(topLeftX, topLeftY, bottomRightX);
+        double h = getScreenHeight();
+
+        computeBoundingBoxWidth(topLeftX, topLeftY, bottomRightY);
+        double w = getScreenWidth();
+
+        if(preferSmallerArea) {
+            if(h < w) {
+                computeBoundingBoxHeight(topLeftX, topLeftY, bottomRightX);
+            }
+        } else {
+            if(w < h) {
+                computeBoundingBoxHeight(topLeftX, topLeftY, bottomRightX);
+            }
+        }
+    }
+
+    @Override
+    public double getBoundingBoxWidth() {
+        return getScreenWidth();
+    }
+
+    @Override
+    public double getBoundingBoxHeight() {
+        return getScreenHeight();
     }
 
     @Override
@@ -92,14 +169,14 @@ public class LatLng2XY implements PositionMapper {
             bottomRightLng = lng;
             empty = false;
         } else {
-            if(topLeftLat < lat) {
+            if(lat < topLeftLat) {
                 topLeftLat = lat;
-            }
-            if(lat < bottomRightLat) {
-                bottomRightLat = lat;
             }
             if(lng < topLeftLng) {
                 topLeftLng = lng;
+            }
+            if(bottomRightLat < lat) {
+                bottomRightLat = lat;
             }
             if(bottomRightLng < lng) {
                 bottomRightLng = lng;

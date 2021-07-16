@@ -1,7 +1,7 @@
----
 #########################
 # Deutsche Lokalisierung für die gesamte Benutzeroberfläche
 #########################
+---
 settings:
   edn_label: "Einstellungen"
   edn_description: "Einstellungen von IRPact"
@@ -215,10 +215,13 @@ InGraphvizGeneral_preferredImageHeight:
   gams_description: "Definiert den Bildhöhe für die Netzwerkbilder. Falls der Wert 0 ist, bestimmt Graphviz die optimale Bildgröße automatisch."
 InGraphvizGeneral_positionBasedLayout:
   gams_identifier: "Positionsbasiertes Layout"
-  gams_description: "Nutzt für die Grapherzeugung ein positionsbasiertes Layout. Das genaue Layout ist NEATO kombiniert mit -n. Dieses Layout setzt vorraus, dass die Agenten eine Position besitzen. Zusätzlich benötigt es auch eine eingestellte Bildgröße. Falls diese fehlt, wird ein (ca.) 1000x1000 Pixel großes Bild erzeugt."
+  gams_description: "Nutzt für die Grapherzeugung ein positionsbasiertes Layout. Das genaue Layout ist NEATO kombiniert mit -n. Dieses Layout setzt vorraus, dass die Agenten eine Position besitzen. Zusätzlich benötigt es eine eingestellte Bildgröße. Falls diese fehlt, wird ein (ca.) 1000x1000 Pixel großes Bild erzeugt. Dieses Layout kann zu Verzerrungen führen, da es unter Umständen (z.B. bei Geoinformationen) die Daten in das gewünschte Ausgabeformat transformiert. Um das Seitenverhältnis beizubehalten, kann die entsprechende Option genutzt werden."
 InGraphvizGeneral_freeLayout:
   gams_identifier: "Freies Layout"
   gams_description: "Nutzt für die Grapherzeugung ein kräftebasierentes Layout. Das genaue Layout ist SFDP mit der overlap-Option prism."
+InGraphvizGeneral_keepAspectRatio:
+  gams_identifier: "Seitenverhätnis beibehalten"
+  gams_description: "Diese Option erlaubt es das Seitenverhältnis der Daten beizubehalten. Die Entscheidung, ob die Länge oder die Breite des Bildes verändert wird, hängt von der finalen Bildfläche ab. Das Verfahren nutzt die Variante mit der kleineren Bildfläche."
 InGraphvizGeneral_useDefaultPositionIfMissing:
   gams_identifier: "Erlaube fehlende Positionen"
   gams_description: "Diese Option erlaubt die Nutzung des positionbasierten Layouts ohne gültige Positionen. Agenten ohne Position wird der Punkt (0,0) zugeordnet."
@@ -255,7 +258,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.6.0"
+  edn_description: "IRPact v0.7.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"

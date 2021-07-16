@@ -9,15 +9,11 @@ import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.util.AnnualAdoptionData;
+import de.unileipzig.irpact.core.persistence.BasicPersistenceModul;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.develop.XXXXXXXXX;
-import de.unileipzig.irpact.io.param.output.xDEP.OutAnnualAdoptionData;
 import de.unileipzig.irpact.io.param.output.OutRoot;
-import de.unileipzig.irpact.io.param.output.xDEP.OutConsumerAgentGroup;
-import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
-import de.unileipzig.irpact.core.persistence.BasicPersistenceModul;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.util.script.ScriptException;
@@ -28,8 +24,6 @@ import picocli.CommandLine;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Daniel Abitz
@@ -121,7 +115,7 @@ public class Utilities {
     @XXXXXXXXX
     private void printCumulativeAdoptions() throws IOException, ScriptException, InterruptedException {
         LOGGER.trace(IRPSection.UTILITIES, "task: print cumulative adoptions with R");
-        Dev.throwException();
+        Dev.throwUnsupported();
 
 //        Path tempFile = getTempCsvFile(utilOptions.getROutput());
 //        try {
@@ -145,7 +139,8 @@ public class Utilities {
     @Todo
     private void printTempCsvFile(Path tempFile) throws IOException {
         LOGGER.trace(IRPSection.UTILITIES, "convert data to csv");
-        Dev.throwException();
+        Dev.throwUnsupported();
+
 //        ObjectNode rootNode = parseRInputAsOutRoot();
 //        AnnualEntry<OutRoot> outRootEntry = IRPact.convertOutput(mainOptions, rootNode);
 //        OutRoot outRoot = outRootEntry.getData();
@@ -177,56 +172,56 @@ public class Utilities {
         return tempFile;
     }
 
-    private static AnnualAdoptionData parseWithDummy(OutAnnualAdoptionData... datas) {
-        Map<String, ConsumerAgentGroup> cache = new HashMap<>();
-        AnnualAdoptionData outData = new AnnualAdoptionData();
-        for(OutAnnualAdoptionData data: datas) {
-            for(OutConsumerAgentGroup inCag: data.getConsumerAgentGroups()) {
-                JadexConsumerAgentGroup cag = (JadexConsumerAgentGroup) cache.computeIfAbsent(
-                        inCag.getName(),
-                        _name -> {
-                            JadexConsumerAgentGroup _cag = new JadexConsumerAgentGroup();
-                            _cag.setName(_name);
-                            return _cag;
-                        }
-                );
+//    private static AnnualAdoptionData parseWithDummy(OutAnnualAdoptionData... datas) {
+//        Map<String, ConsumerAgentGroup> cache = new HashMap<>();
+//        AnnualAdoptionData outData = new AnnualAdoptionData();
+//        for(OutAnnualAdoptionData data: datas) {
+//            for(OutConsumerAgentGroup inCag: data.getConsumerAgentGroups()) {
+//                JadexConsumerAgentGroup cag = (JadexConsumerAgentGroup) cache.computeIfAbsent(
+//                        inCag.getName(),
+//                        _name -> {
+//                            JadexConsumerAgentGroup _cag = new JadexConsumerAgentGroup();
+//                            _cag.setName(_name);
+//                            return _cag;
+//                        }
+//                );
+//
+//                outData.set(
+//                        data.getYear(),
+//                        cag,
+//                        data.getAdoptionsThisYear(inCag),
+//                        data.getAdoptionsCumulativ(inCag),
+//                        data.getAdoptionShareThisYear(inCag),
+//                        data.getAdoptionShareCumulativ(inCag)
+//                );
+//            }
+//        }
+//        return outData;
+//    }
 
-                outData.set(
-                        data.getYear(),
-                        cag,
-                        data.getAdoptionsThisYear(inCag),
-                        data.getAdoptionsCumulativ(inCag),
-                        data.getAdoptionShareThisYear(inCag),
-                        data.getAdoptionShareCumulativ(inCag)
-                );
-            }
-        }
-        return outData;
-    }
-
-    private static Table<String> toStringTable(AnnualAdoptionData data) {
-        SimpleTable<String> table = new SimpleTable<>();
-        table.addColumns("year", "milieu", "adoptions", "adoptionsCumulative", "adoptionsShare", "adoptionsShareCumulative");
-        for(int year: data.getYears()) {
-            for(ConsumerAgentGroup cag: data.getConsumerAgentGroups()) {
-                int adoptions = data.getAdoptionsMap().get(year, cag);
-                int adoptionsCumulative = data.getAdoptionsCumulativMap().get(year, cag);
-                double adoptionsShare = data.getAdoptionsShareMap().get(year, cag);
-                double adoptionsShareCumulative = data.getAdoptionsShareCumulativeMap().get(year, cag);
-
-                table.addRow(
-                        Integer.toString(year),
-                        cag.getName(),
-                        Integer.toString(adoptions),
-                        Integer.toString(adoptionsCumulative),
-                        Double.toString(adoptionsShare),
-                        Double.toString(adoptionsShareCumulative)
-                );
-            }
-        }
-
-        return table;
-    }
+//    private static Table<String> toStringTable(AnnualAdoptionData data) {
+//        SimpleTable<String> table = new SimpleTable<>();
+//        table.addColumns("year", "milieu", "adoptions", "adoptionsCumulative", "adoptionsShare", "adoptionsShareCumulative");
+//        for(int year: data.getYears()) {
+//            for(ConsumerAgentGroup cag: data.getConsumerAgentGroups()) {
+//                int adoptions = data.getAdoptionsMap().get(year, cag);
+//                int adoptionsCumulative = data.getAdoptionsCumulativMap().get(year, cag);
+//                double adoptionsShare = data.getAdoptionsShareMap().get(year, cag);
+//                double adoptionsShareCumulative = data.getAdoptionsShareCumulativeMap().get(year, cag);
+//
+//                table.addRow(
+//                        Integer.toString(year),
+//                        cag.getName(),
+//                        Integer.toString(adoptions),
+//                        Integer.toString(adoptionsCumulative),
+//                        Double.toString(adoptionsShare),
+//                        Double.toString(adoptionsShareCumulative)
+//                );
+//            }
+//        }
+//
+//        return table;
+//    }
 
     private static void printCsv(Path target, Table<String> table) throws IOException {
         CsvPrinter<String> printer = new CsvPrinter<>(str -> str);

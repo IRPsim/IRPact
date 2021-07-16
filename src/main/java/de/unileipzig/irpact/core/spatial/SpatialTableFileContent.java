@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.spatial;
 
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
-import de.unileipzig.irpact.commons.util.data.FileContent;
+import de.unileipzig.irpact.commons.util.io.FileContent;
 import de.unileipzig.irpact.commons.util.table.Table;
 
 import java.util.List;
