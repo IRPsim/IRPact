@@ -17,6 +17,7 @@ import java.util.function.Function;
 public class AllAdoptions2 extends AbstractAdoptionAnalyser2 {
 
     public AllAdoptions2() {
+        //X
     }
 
     @Override
