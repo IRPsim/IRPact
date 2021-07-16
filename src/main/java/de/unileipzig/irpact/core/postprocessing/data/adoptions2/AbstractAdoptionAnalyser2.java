@@ -2,16 +2,28 @@ package de.unileipzig.irpact.core.postprocessing.data.adoptions2;
 
 import de.unileipzig.irpact.commons.attribute.*;
 import de.unileipzig.irpact.commons.locale.LocalizedData;
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
+import de.unileipzig.irpact.commons.time.TimeUtil;
 import de.unileipzig.irpact.commons.util.data.VarCollection;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
+import de.unileipzig.irpact.core.spatial.SpatialInformation;
+import de.unileipzig.irpact.core.util.AdoptionPhase;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
  * @author Daniel Abitz
  */
 public abstract class AbstractAdoptionAnalyser2 implements AdoptionAnalyser2 {
+
+    protected static final String IF_NULL_STR = "-";
+    protected static final double IF_NULL_DOUBLE = Double.NaN;
+    protected static final String IF_NULL_DOUBLE_STR = Double.toString(IF_NULL_DOUBLE);
 
     protected VarCollectionWriter writer;
     protected VarCollection data;
@@ -38,13 +50,39 @@ public abstract class AbstractAdoptionAnalyser2 implements AdoptionAnalyser2 {
         this.writer = writer;
     }
 
+    protected abstract String getTypeForLocalization();
+
     protected abstract Function<? super Object[], ? extends Attribute[]> getMappingFunction();
 
-    public abstract void writeXlsx(XlsxVarCollectionWriter writer) throws IOException;
+    public void writeXlsx(XlsxVarCollectionWriter writer) throws IOException {
+        VarCollectionWriter current = this.writer;
+        setWriter(writer);
+        if(localizedData != null) {
+            WriterLocalizer.localizeXlsx(localizedData, writer, getTypeForLocalization());
+        }
+        writer.setEntry2Attribute(getMappingFunction());
+        try {
+            write();
+        } finally {
+            setWriter(current);
+        }
+    }
 
     protected abstract Function<? super Object[], ? extends String[]> getStringMappingFunction();
 
-    public abstract void writeCsv(CsvVarCollectionWriter writer) throws IOException;
+    public void writeCsv(CsvVarCollectionWriter writer) throws IOException {
+        VarCollectionWriter current = this.writer;
+        setWriter(writer);
+        if(localizedData != null) {
+            WriterLocalizer.localizeCsv(localizedData, writer, getTypeForLocalization());
+        }
+        writer.setEntry2Str(getStringMappingFunction());
+        try {
+            write();
+        } finally {
+            setWriter(current);
+        }
+    }
 
     public void setLocalizedData(LocalizedData localizedData) {
         this.localizedData = localizedData;
@@ -87,11 +125,59 @@ public abstract class AbstractAdoptionAnalyser2 implements AdoptionAnalyser2 {
         }
     }
 
-    protected StringAttribute toStringAttribute(Object value) {
-        return new BasicStringAttribute((String) value);
+    protected static String printPhase(AdoptionPhase phase, String ifNull) {
+        return phase == null ? ifNull : phase.name();
     }
 
-    protected DoubleAttribute toDoubleAttribute(Object value) {
-        return new BasicDoubleAttribute(((Number) value).doubleValue());
+    protected static String printTime(ZonedDateTime time, String ifNull) {
+        return time == null ? ifNull : TimeUtil.print(time);
+    }
+
+    protected static String print(Object obj, String ifNull) {
+        return obj == null ? ifNull : Objects.toString(obj);
+    }
+
+    protected static String printValue(AdoptionResultInfo2 info, String ifNull) {
+        return info == null ? ifNull : info.printValue();
+    }
+
+    protected static String printCumulativeValue(AdoptionResultInfo2 info, String ifNull) {
+        return info == null ? ifNull : info.printCumulativeValue();
+    }
+
+    protected static long getSpatialInformationId(ConsumerAgent agent) {
+        SpatialInformation information = agent.getSpatialInformation();
+        if(information == null) {
+            return -1;
+        }
+        if(information.hasId()) {
+            return information.getId();
+        } else {
+            SpatialAttribute attr = information.getAttribute(RAConstants.ID);
+            if(attr == null) {
+                return -1;
+            } else {
+                return attr.asValueAttribute().getLongValue();
+            }
+        }
+    }
+
+    protected static String getZip(ConsumerAgent agent) {
+        Attribute attr = agent.findAttribute(RAConstants.ZIP);
+        if(attr == null || !attr.isValueAttributeWithDataType(DataType.STRING)) {
+            return null;
+        } else {
+            return attr.asValueAttribute().getStringValue();
+        }
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    protected StringAttribute toStringAttribute(Object value, String ifNull) {
+        return new BasicStringAttribute(value == null ? ifNull : Objects.toString(value));
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    protected DoubleAttribute toDoubleAttribute(Object value, double ifNull) {
+        return new BasicDoubleAttribute(value == null ? ifNull : ((Number) value).doubleValue());
     }
 }

@@ -17,6 +17,10 @@ public final class TimeUtil {
         return LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
+    public static String print(ZonedDateTime zdt) {
+        return zdt.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    }
+
     public static void setZone(ZoneId zone) {
         TimeUtil.zone = zone;
     }

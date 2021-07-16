@@ -30,10 +30,14 @@ xlsx:
       - "Automatisch erstellte Tabelle (Datum: {})"
       - "Inhalt: Auflistung der Adoptionen und Nichtadoption aller Agenter"
     columns:
-      - "Jahr"
+      - "Agent"
+      - "Milieu"
+      - "ID der räumlichen Daten"
       - "PLZ"
-      - "Adoptionen"
-      - "Kumulierte Adoptionen"
+      - "adoptiertes Produkt"
+      - "Produktgruppe"
+      - "Adoptionsphase"
+      - "Zeitpunkt"
 csv:
   zip:
     charset: "UTF-8"
@@ -59,6 +63,19 @@ csv:
       - "Adoptionsphase"
       - "Adoptionen"
       - "Kumulierte Adoptionen"
-
-
-
+  allAgents:
+    charset: "UTF-8"
+    delimiter: ";"
+    commentPrefix: "# "
+    informations:
+      - "Automatisch erstellte Tabelle (Datum: {})"
+      - "Inhalt: Auflistung der Adoptionen und Nichtadoption aller Agenter"
+    columns:
+      - "Agent"
+      - "Milieu"
+      - "ID der räumlichen Daten"
+      - "PLZ"
+      - "adoptiertes Produkt"
+      - "Produktgruppe"
+      - "Adoptionsphase"
+      - "Zeitpunkt"
