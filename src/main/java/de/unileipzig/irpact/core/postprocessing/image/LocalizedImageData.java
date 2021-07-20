@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.postprocessing.image;
 
 import de.unileipzig.irpact.commons.locale.LocalizedData;
+import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 
 /**
  * @author Daniel Abitz

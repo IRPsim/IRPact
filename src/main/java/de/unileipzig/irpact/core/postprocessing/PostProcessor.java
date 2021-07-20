@@ -47,7 +47,7 @@ public abstract class PostProcessor implements LoggingHelper {
         return environment.getSettings();
     }
 
-    protected Path getTargetDir() throws IOException {
+    public Path getTargetDir() throws IOException {
         return clOptions.getCreatedDownloadDir();
     }
 }

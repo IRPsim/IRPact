@@ -1,24 +1,21 @@
-package de.unileipzig.irpact.core.util.result;
+package de.unileipzig.irpact.core.postprocessing.image;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.resource.LocaleUtil;
 import de.unileipzig.irpact.commons.util.JsonUtil;
-import de.unileipzig.irpact.commons.util.csv.CsvPrinter;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.logging.InfoTag;
-import de.unileipzig.irpact.core.logging.LoggingHelper;
-import de.unileipzig.irpact.core.postprocessing.data.adoptions.*;
-import de.unileipzig.irpact.core.postprocessing.image.*;
+import de.unileipzig.irpact.core.postprocessing.PostProcessor;
+import de.unileipzig.irpact.core.postprocessing.data.adoptions.AnnualCumulativeAdoptionsPhase;
+import de.unileipzig.irpact.core.postprocessing.data.adoptions.AnnualCumulativeAdoptionsZip;
 import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 import de.unileipzig.irpact.core.postprocessing.image.engine.GnuPlotImageScriptTask;
 import de.unileipzig.irpact.core.postprocessing.image.engine.RImageScriptTask;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
-import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.core.util.MetaData;
@@ -44,20 +41,26 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
  * @author Daniel Abitz
  */
-public class ResultManager implements LoggingHelper {
+public class ImageProcessor_OLD extends PostProcessor {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(ResultManager.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(ImageProcessor_OLD.class);
 
     protected static final de.unileipzig.irpact.util.R.builder.StringSettings R_STRING_SETTINGS
             = new de.unileipzig.irpact.util.R.builder.StringSettings();
     protected static final de.unileipzig.irpact.util.gnuplot.builder.StringSettings GNUPLOT_STRING_SETTINGS
             = new de.unileipzig.irpact.util.gnuplot.builder.StringSettings();
+
+    protected static final Function<? super String, ? extends String> R_ESCAPE = str ->
+            str;
+    protected static final Function<? super String, ? extends String> GNUPLOT_ESCAPE = str ->
+            str.replace("_", "\\\\\\_");
 
     protected static final BasicRealAdoptionData PLACEHOLDER_REAL_DATA = new BasicRealAdoptionData(0);
 
@@ -69,20 +72,12 @@ public class ResultManager implements LoggingHelper {
     protected static double defaultLinewidth = 1.0;
     protected LocalizedImageData localizedImageData;
 
-    protected MetaData metaData;
-    protected MainCommandLineOptions clOptions;
-    protected InRoot inRoot;
-    protected SimulationEnvironment environment;
-
-    public ResultManager(
+    public ImageProcessor_OLD(
             MetaData metaData,
             MainCommandLineOptions clOptions,
             InRoot inRoot,
             SimulationEnvironment environment) {
-        this.metaData = metaData;
-        this.clOptions = clOptions;
-        this.inRoot = inRoot;
-        this.environment = environment;
+        super(metaData, clOptions, inRoot, environment);
     }
 
     @Override
@@ -90,16 +85,31 @@ public class ResultManager implements LoggingHelper {
         return LOGGER;
     }
 
-    @Override
-    public IRPSection getDefaultSection() {
-        return IRPSection.RESULT;
+    public SimulationEnvironment getEnvironment() {
+        return environment;
     }
 
+    public double getDefaultLinewidth() {
+        return defaultLinewidth;
+    }
+
+    public RealAdoptionData getRealAdoptionData() {
+        return PLACEHOLDER_REAL_DATA;
+    }
+
+    //=========================
+    //image
+    //=========================
+
+    @Override
     public void execute() {
-        handleResultLogging();
-        handleScriptLogging();
-        handleImageCreation();
-        cleanUp();
+        try {
+            execute0();
+        } catch (Throwable t) {
+            error("error while executing ImageProcessor", t);
+        } finally {
+            cleanUp();
+        }
     }
 
     protected void cleanUp() {
@@ -123,135 +133,7 @@ public class ResultManager implements LoggingHelper {
         }
     }
 
-    //=========================
-    //result
-    //=========================
-
-    protected void handleResultLogging() {
-        try {
-            handleResultLogging0();
-        } catch (Throwable t) {
-            error("error when running 'handleResultLogging'", t);
-        }
-    }
-
-    protected void handleResultLogging0() {
-        trace("isLogResultAdoptionsZip: {}", getSettings().isLogResultAdoptionsZip());
-        if(getSettings().isLogResultAdoptionsZip()) {
-            logResultAdoptionsZip();
-        }
-
-        trace("isLogResultAdoptionsZipPhase: {}", getSettings().isLogResultAdoptionsZipPhase());
-        if(getSettings().isLogResultAdoptionsZipPhase()) {
-            logResultAdoptionsZipPhase();
-        }
-
-        trace("isLogResultAdoptionsAll: {}", getSettings().isLogResultAdoptionsAll());
-        if(getSettings().isLogResultAdoptionsAll()) {
-            logResultAdoptionsAll();
-        }
-    }
-
-    protected void logResultAdoptionsZip() {
-        CsvPrinter<Object> printer = new CsvPrinter<>();
-        AnnualCumulativeAdoptionsZip analyser = analyseCumulativeAdoptionsZip(true);
-        analyser.initCsvPrinterForValueAndCumulativeValue(printer);
-        print(InfoTag.RESULT_ZIP_ADOPTIONS, printer, analyser);
-    }
-
-    protected void logResultAdoptionsZipPhase() {
-        CsvPrinter<Object> printer = new CsvPrinter<>();
-        AnnualCumulativeAdoptionsZipPhase analyser = new AnnualCumulativeAdoptionsZipPhase();
-        analyser.setZipKey(RAConstants.ZIP);
-        analyser.setYears(getAllSimulationYears());
-        analyser.init(getAllZips(analyser.getZipKey()), AdoptionPhase.VALID_PHASES);
-        analyser.initCsvPrinterForValueAndCumulativeValue(printer);
-        analyser.apply(environment);
-
-        print(InfoTag.RESULT_ZIP_PHASE_ADOPTIONS, printer, analyser);
-    }
-
-    protected void logResultAdoptionsAll() {
-        ExactAdoptionPrinter printer = new ExactAdoptionPrinter();
-        printer.apply(environment);
-    }
-
-    protected void print(String infoTag, CsvPrinter<Object> printer, AbstractAdoptionAnalyser analyser) {
-        IRPLogging.startResult(infoTag, true);
-        IRPLogging.resultWrite(analyser.printHeader(printer));
-        analyser.printEntries(printer, IRPLogging::resultWrite);
-        IRPLogging.finishResult(infoTag);
-        IRPLogging.resultWrite("entries written: {}", analyser.getData().count());
-    }
-
-    protected void print(String infoTag, String text) {
-        IRPLogging.startResult(infoTag, true);
-        IRPLogging.resultWrite(text);
-        IRPLogging.finishResult(infoTag);
-    }
-
-    //=========================
-    //script - wird wohl entfernt
-    //=========================
-
-    protected void handleScriptLogging() {
-        try {
-            handleScriptLogging0();
-        } catch (Throwable t) {
-            error("error when running 'handleScriptLogging0'", t);
-        }
-    }
-
-    protected void handleScriptLogging0() {
-        trace("isLogScriptAdoptionsZip: {}", getSettings().isLogScriptAdoptionsZip());
-        if(getSettings().isLogScriptAdoptionsZip()) {
-            logScriptAdoptionsZip();
-        }
-
-        trace("isLogScriptAdoptionsZipPhase: {}", getSettings().isLogScriptAdoptionsZipPhase());
-        if(getSettings().isLogScriptAdoptionsZipPhase()) {
-            logScriptAdoptionsZipPhase();
-        }
-    }
-
-    protected void logScriptAdoptionsZip() {
-        RScriptBuilder builder = RScriptFactory.lineChart0(createBuilderSettingsForZipLineChart(null, getLocalizedImage()));
-        builder.setSettings(R_STRING_SETTINGS);
-        print(InfoTag.SCRIPT_ZIP_ADOPTIONS, builder.print());
-
-        CsvPrinter<Object> printer = new CsvPrinter<>();
-        printer.setDelimiter(defaultSep);
-        AnnualCumulativeAdoptionsZip analyser = analyseCumulativeAdoptionsZip(false);
-        analyser.initCsvPrinterForValue(printer);
-
-        print(InfoTag.SCRIPT_ZIP_ADOPTIONS_DATA, printer, analyser);
-    }
-
-    protected void logScriptAdoptionsZipPhase() {
-        RScriptBuilder builder = RScriptFactory.stackedBarChart0(createBuilderSettingsForPhaseStackedBar(null, getLocalizedImage()));
-        builder.setSettings(R_STRING_SETTINGS);
-        print(InfoTag.SCRIPT_ZIP_PHASE_ADOPTIONS, builder.print());
-
-        CsvPrinter<Object> printer = new CsvPrinter<>();
-        AnnualCumulativeAdoptionsPhase analyser = analyseCumulativeAdoptionsPhase(false);
-        analyser.initCsvPrinterForCumulativeValue(printer);
-
-        print(InfoTag.SCRIPT_ZIP_PHASE_ADOPTIONS_DATA, printer, analyser);
-    }
-
-    //=========================
-    //image
-    //=========================
-
-    protected void handleImageCreation() {
-        try {
-            handleImageCreation0();
-        } catch (Throwable t) {
-            error("error when running 'handleImageCreation0'", t);
-        }
-    }
-
-    protected void handleImageCreation0() throws ParsingException, IOException {
+    protected void execute0() throws ParsingException, IOException {
         if(inRoot.hasImages()) {
             for(InOutputImage image: inRoot.getImages()) {
                 trace("image '{}': data={}, script={}, image={}, enabled={}", image.getBaseFileName(), image.isStoreData(), image.isStoreScript(), image.isStoreImage(), image.isEnabled());
@@ -276,6 +158,27 @@ public class ResultManager implements LoggingHelper {
         }
     }
 
+    //=========================
+    //gnuplot
+    //=========================
+
+    protected GnuPlotEngine gnuPlotEngine;
+    public GnuPlotEngine getGnuPlotEngine() {
+        if(gnuPlotEngine == null) {
+            gnuPlotEngine = new GnuPlotEngine(clOptions.getGnuplotCommand());
+            debug("use gnuplot engine '{}'", gnuPlotEngine.printCommand());
+            debug("gnuplot version: {}", gnuPlotEngine.printVersion());
+        }
+        return gnuPlotEngine;
+    }
+
+    public boolean isGnuPlotUsable() {
+        return getGnuPlotEngine().isUsable();
+    }
+    public boolean isGnuPlotNotUsable() {
+        return !isGnuPlotUsable();
+    }
+
     protected void handleGnuPlotImage(InOutputImage image) throws IOException, ParsingException {
         if(isGnuPlotNotUsable()) {
             info("gnuplot not usable, skip '{}'", image.getBaseFileName());
@@ -297,7 +200,7 @@ public class ResultManager implements LoggingHelper {
         GnuPlotFileScript fileScript = builder.build();
         GnuPlotImageScriptTask task = new GnuPlotImageScriptTask(image.isStoreScript(), image.isStoreData(), image.isStoreImage());
         task.setupCsvAndPng(getTargetDir(), image.getBaseFileName());
-        task.setDelimiter(getLocalizedImage().getSep(image.getMode()));
+        task.setDelimiter(getLocalizedImageData().getSep(image.getMode()));
         task.run(
                 getGnuPlotEngine(),
                 data,
@@ -308,18 +211,74 @@ public class ResultManager implements LoggingHelper {
     protected GnuPlotBuilder getGnuPlotBuilder(InOutputImage image) throws ParsingException {
         switch (image.getMode()) {
             case ANNUAL_ZIP:
-                return GnuPlotFactory.lineChart0(createBuilderSettingsForZipLineChart(image, getLocalizedImage()));
+                return GnuPlotFactory.lineChart0(
+                        createBuilderSettingsForZipLineChart(image, getLocalizedImageData())
+                );
 
             case COMPARED_ANNUAL_ZIP:
-                return GnuPlotFactory.interactionLineChart0(createBuilderSettingsForInteractionZipLineChart(image, getLocalizedImage()));
+                return GnuPlotFactory.interactionLineChart0(
+                        createBuilderSettingsForInteractionZipLineChart(image, getLocalizedImageData())
+                );
 
             case CUMULATIVE_ANNUAL_PHASE:
-                return GnuPlotFactory.stackedBarChart0(createBuilderSettingsForPhaseStackedBar(image, getLocalizedImage()));
+                return GnuPlotFactory.stackedBarChart0(
+                        createBuilderSettingsForPhaseStackedBar(image, getLocalizedImageData())
+                );
 
             default:
                 info("unknown mode: '{}'", image.getMode());
                 return null;
         }
+    }
+
+    protected List<List<String>> createGnuPlotData(InOutputImage image) throws ParsingException {
+        switch (image.getMode()) {
+            case ANNUAL_ZIP:
+                return DataMapper.toGnuPlotData(
+                        analyseCumulativeAdoptionsZip(false),
+                        GNUPLOT_ESCAPE
+                );
+
+            case COMPARED_ANNUAL_ZIP:
+                return DataMapper.toGnuPlotDataWithRealData(
+                        analyseCumulativeAdoptionsZip(false),
+                        PLACEHOLDER_REAL_DATA,
+                        GNUPLOT_ESCAPE
+                );
+
+            case CUMULATIVE_ANNUAL_PHASE:
+                return DataMapper.toGnuPlotDataWithCumulativeValue(
+                        analyseCumulativeAdoptionsPhase(false),
+                        Enum::name,
+                        GNUPLOT_ESCAPE
+                );
+
+            default:
+                info("unknown mode: '{}'", image.getMode());
+                return null;
+        }
+    }
+
+    //=========================
+    //R
+    //=========================
+
+    protected RscriptEngine rscriptEngine;
+    public RscriptEngine getRscriptEngine() {
+        if(rscriptEngine == null) {
+            rscriptEngine = new RscriptEngine(clOptions.getRscriptCommand());
+            debug("use Rscript engine '{}'", rscriptEngine.printCommand());
+            debug("R version: {}", rscriptEngine.printVersion());
+        }
+        return rscriptEngine;
+    }
+
+    public boolean isRUsable() {
+        return getRscriptEngine().isUsable();
+    }
+
+    public boolean isRNotUsable() {
+        return !isRUsable();
     }
 
     protected void handleRImage(InOutputImage image) throws IOException, ParsingException {
@@ -342,7 +301,7 @@ public class ResultManager implements LoggingHelper {
         RFileScript fileScript = builder.build();
         RImageScriptTask task = new RImageScriptTask(image.isStoreScript(), image.isStoreData(), image.isStoreImage());
         task.setupCsvAndPng(getTargetDir(), image.getBaseFileName());
-        task.setDelimiter(getLocalizedImage().getSep(image.getMode()));
+        task.setDelimiter(getLocalizedImageData().getSep(image.getMode()));
         task.run(
                 getRscriptEngine(),
                 data,
@@ -353,13 +312,47 @@ public class ResultManager implements LoggingHelper {
     protected RScriptBuilder getRScriptBuilder(InOutputImage image) throws ParsingException {
         switch (image.getMode()) {
             case ANNUAL_ZIP:
-                return RScriptFactory.lineChart0(createBuilderSettingsForZipLineChart(image, getLocalizedImage()).setScaleXContinuousBreaks(getYearBreaksForPrettyR()));
+                return RScriptFactory.lineChart0(
+                        createBuilderSettingsForZipLineChart(image, getLocalizedImageData()).setScaleXContinuousBreaks(getYearBreaksForPrettyR())
+                );
 
             case COMPARED_ANNUAL_ZIP:
-                return RScriptFactory.interactionLineChart0(createBuilderSettingsForInteractionZipLineChart(image, getLocalizedImage()).setScaleXContinuousBreaks(getYearBreaksForPrettyR()));
+                return RScriptFactory.interactionLineChart0(
+                        createBuilderSettingsForInteractionZipLineChart(image, getLocalizedImageData()).setScaleXContinuousBreaks(getYearBreaksForPrettyR())
+                );
 
             case CUMULATIVE_ANNUAL_PHASE:
-                return RScriptFactory.stackedBarChart0(createBuilderSettingsForPhaseStackedBar(image, getLocalizedImage()).setScaleXContinuousBreaks(getYearBreaksForPrettyR()));
+                return RScriptFactory.stackedBarChart0(
+                        createBuilderSettingsForPhaseStackedBar(image, getLocalizedImageData()).setScaleXContinuousBreaks(getYearBreaksForPrettyR())
+                );
+
+            default:
+                info("unknown mode: '{}'", image.getMode());
+                return null;
+        }
+    }
+
+    protected List<List<String>> createRPlotData(InOutputImage image) throws ParsingException {
+        switch (image.getMode()) {
+            case ANNUAL_ZIP:
+                return DataMapper.toRData(
+                        analyseCumulativeAdoptionsZip(false),
+                        R_ESCAPE);
+
+            case COMPARED_ANNUAL_ZIP:
+                BuilderSettings settings = createBuilderSettingsForInteractionZipLineChart(image, getLocalizedImageData());
+                return DataMapper.toRDataWithRealData(
+                        analyseCumulativeAdoptionsZip(false),
+                        PLACEHOLDER_REAL_DATA,
+                        settings.getDistinct0Label(),
+                        settings.getDistinct1Label(),
+                        R_ESCAPE);
+
+            case CUMULATIVE_ANNUAL_PHASE:
+                return DataMapper.toRDataWithCumulativeValue(
+                        analyseCumulativeAdoptionsPhase(false),
+                        Enum::name,
+                        R_ESCAPE);
 
             default:
                 info("unknown mode: '{}'", image.getMode());
@@ -371,16 +364,12 @@ public class ResultManager implements LoggingHelper {
     //util
     //=========================
 
-    protected Settings getSettings() {
-        return environment.getSettings();
-    }
-
-    protected Path getTargetDir() throws IOException {
-        return clOptions.getCreatedDownloadDir();
+    public List<AdoptionPhase> getValidAdoptionPhases() {
+        return AdoptionPhase.NON_INITIAL;
     }
 
     protected List<String> zips;
-    protected List<String> getAllZips(String key) {
+    public List<String> getAllZips(String key) {
         if(zips == null) {
             zips = environment.getAgents().streamConsumerAgents()
                     .filter(agent -> agent.hasAnyAttribute(key))
@@ -394,7 +383,7 @@ public class ResultManager implements LoggingHelper {
     }
 
     protected List<Integer> years;
-    protected List<Integer> getAllSimulationYears() {
+    public List<Integer> getAllSimulationYears() {
         if(years == null) {
             int firstYear = metaData.getOldestRunInfo().getActualFirstSimulationYear();
             int lastYear = metaData.getCurrentRunInfo().getLastSimulationYear();
@@ -406,48 +395,13 @@ public class ResultManager implements LoggingHelper {
     }
 
     protected String[] yearBreaks;
-    protected String[] getYearBreaksForPrettyR() {
+    public String[] getYearBreaksForPrettyR() {
         if(yearBreaks == null) {
             yearBreaks = getAllSimulationYears().stream()
                     .map(Object::toString)
                     .toArray(String[]::new);
         }
         return yearBreaks;
-    }
-
-    protected GnuPlotEngine gnuPlotEngine;
-    protected GnuPlotEngine getGnuPlotEngine() {
-        if(gnuPlotEngine == null) {
-            gnuPlotEngine = new GnuPlotEngine(clOptions.getGnuplotCommand());
-            debug("use gnuplot engine '{}'", gnuPlotEngine.printCommand());
-            debug("gnuplot version: {}", gnuPlotEngine.printVersion());
-        }
-        return gnuPlotEngine;
-    }
-
-    protected boolean isGnuPlotUsable() {
-        return getGnuPlotEngine().isUsable();
-    }
-    protected boolean isGnuPlotNotUsable() {
-        return !isGnuPlotUsable();
-    }
-
-    protected RscriptEngine rscriptEngine;
-    protected RscriptEngine getRscriptEngine() {
-        if(rscriptEngine == null) {
-            rscriptEngine = new RscriptEngine(clOptions.getRscriptCommand());
-            debug("use Rscript engine '{}'", rscriptEngine.printCommand());
-            debug("R version: {}", rscriptEngine.printVersion());
-        }
-        return rscriptEngine;
-    }
-
-    protected boolean isRUsable() {
-        return getRscriptEngine().isUsable();
-    }
-
-    protected boolean isRNotUsable() {
-        return !isRUsable();
     }
 
     protected AnnualCumulativeAdoptionsZip analyseCumulativeAdoptionsZip(boolean printBoth) {
@@ -473,51 +427,6 @@ public class ResultManager implements LoggingHelper {
             }
         }
         return analyser;
-    }
-
-    protected List<List<String>> createGnuPlotData(InOutputImage image) throws ParsingException {
-        switch (image.getMode()) {
-            case ANNUAL_ZIP:
-                return DataMapper.toGnuPlotData(analyseCumulativeAdoptionsZip(false), DataMapper.GNUPLOT_ESCAPE);
-
-            case COMPARED_ANNUAL_ZIP:
-                return DataMapper.toGnuPlotDataWithRealData(analyseCumulativeAdoptionsZip(false), PLACEHOLDER_REAL_DATA, DataMapper.GNUPLOT_ESCAPE);
-
-            case CUMULATIVE_ANNUAL_PHASE:
-                return DataMapper.toGnuPlotDataWithCumulativeValue(analyseCumulativeAdoptionsPhase(false), Enum::name, DataMapper.GNUPLOT_ESCAPE);
-
-            default:
-                info("unknown mode: '{}'", image.getMode());
-                return null;
-        }
-    }
-
-    protected List<List<String>> createRPlotData(InOutputImage image) throws ParsingException {
-        switch (image.getMode()) {
-            case ANNUAL_ZIP:
-                return DataMapper.toRData(
-                        analyseCumulativeAdoptionsZip(false),
-                        DataMapper.R_ESCAPE);
-
-            case COMPARED_ANNUAL_ZIP:
-                BuilderSettings settings = createBuilderSettingsForInteractionZipLineChart(image, getLocalizedImage());
-                return DataMapper.toRDataWithRealData(
-                        analyseCumulativeAdoptionsZip(false),
-                        PLACEHOLDER_REAL_DATA,
-                        settings.getDistinct0Label(),
-                        settings.getDistinct1Label(),
-                        DataMapper.R_ESCAPE);
-
-            case CUMULATIVE_ANNUAL_PHASE:
-                return DataMapper.toRDataWithCumulativeValue(
-                        analyseCumulativeAdoptionsPhase(false),
-                        Enum::name,
-                        DataMapper.R_ESCAPE);
-
-            default:
-                info("unknown mode: '{}'", image.getMode());
-                return null;
-        }
     }
 
     protected static BuilderSettings createBuilderSettingsForZipLineChart(InOutputImage image, LocalizedImageData localized) {
@@ -592,7 +501,7 @@ public class ResultManager implements LoggingHelper {
                 ;
     }
 
-    protected LocalizedImageData getLocalizedImage() {
+    public LocalizedImageData getLocalizedImageData() {
         if(localizedImageData == null) {
             try {
                 if(tryLoadExternal()) {

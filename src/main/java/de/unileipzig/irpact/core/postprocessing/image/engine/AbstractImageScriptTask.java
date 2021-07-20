@@ -1,9 +1,10 @@
-package de.unileipzig.irpact.core.postprocessing.image;
+package de.unileipzig.irpact.core.postprocessing.image.engine;
 
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.util.csv.CsvPrinter;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.postprocessing.image.ImageData;
 import de.unileipzig.irpact.util.script.Engine;
 import de.unileipzig.irpact.util.script.FileScript;
 import de.unileipzig.irpact.util.script.ProcessBasedFileScript;
@@ -126,6 +127,17 @@ public abstract class AbstractImageScriptTask extends NameableBase {
         }
     }
 
+    public boolean writeCsvData(ImageData data) {
+        try {
+            data.writeTo(getDataPath(), charset);
+            LOGGER.trace(IRPSection.RESULT, "created data: {}", getDataPath());
+            return true;
+        } catch (IOException e) {
+            LOGGER.error(printName() + " writing data failed", e);
+            return false;
+        }
+    }
+
     protected void writeCsvData0(List<List<String>> dataWithHeader) throws IOException {
         CsvPrinter<String> printer = new CsvPrinter<>(CsvPrinter.STRING_IDENTITY);
         printer.setDelimiter(delimiter);
@@ -162,6 +174,19 @@ public abstract class AbstractImageScriptTask extends NameableBase {
             ProcessBasedFileScript<E> script) {
         try {
             return writeCsvData(dataWithHeader)
+                    && writeScript(script)
+                    && execute(engine, script);
+        } finally {
+            cleanUp();
+        }
+    }
+
+    public <E extends Engine> boolean run(
+            E engine,
+            ImageData data,
+            ProcessBasedFileScript<E> script) {
+        try {
+            return writeCsvData(data)
                     && writeScript(script)
                     && execute(engine, script);
         } finally {

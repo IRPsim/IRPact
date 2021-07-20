@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.util.scenarios.custom;
 
 import de.unileipzig.irpact.core.logging.IRPLevel;
-import de.unileipzig.irpact.core.postprocessing.image.DataToVisualize;
+import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;

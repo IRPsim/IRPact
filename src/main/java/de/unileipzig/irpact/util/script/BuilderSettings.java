@@ -430,4 +430,15 @@ public final class BuilderSettings {
     public String getDistinct1Label() {
         return getAs("dashtype1label");
     }
+
+    //=========================
+    //special
+    //=========================
+
+    public BuilderSettings setNumberOfEntries(int numberOfEntries) {
+        return set("numberofentries", numberOfEntries);
+    }
+    public Integer getNumberOfEntries() {
+        return getAs("numberofentries");
+    }
 }

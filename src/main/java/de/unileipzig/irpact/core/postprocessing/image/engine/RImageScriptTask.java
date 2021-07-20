@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.postprocessing.image;
+package de.unileipzig.irpact.core.postprocessing.image.engine;
 
 import java.nio.file.Path;
 
