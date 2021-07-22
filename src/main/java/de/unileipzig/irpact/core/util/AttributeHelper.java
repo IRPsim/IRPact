@@ -149,7 +149,6 @@ public final class AttributeHelper extends SimulationEntityBase {
         }
         return getLongValue(attribute);
     }
-
     public double getDoubleValue(ConsumerAgent agent, String name) throws IRPactNoSuchElementException {
         ConsumerAgentAttribute attribute = agent.getAttribute(name);
         if(attribute == null) {
@@ -163,6 +162,14 @@ public final class AttributeHelper extends SimulationEntityBase {
             handleMissingAttribute(agent, name);
         }
         return getDoubleValue(attribute);
+    }
+
+    public static double findDoubleValue2(ConsumerAgent agent, String name) {
+        Attribute attribute = agent.findAttribute(name);
+        if(attribute == null) {
+            handleMissingAttribute(agent, name);
+        }
+        return getDoubleValue(agent.getEnvironment(), attribute);
     }
 
     //=========================
