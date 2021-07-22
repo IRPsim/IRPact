@@ -58,7 +58,7 @@ public abstract class AbstractContainerComponent extends AbstractComponent imple
 
     @Override
     public final boolean isSupported(Component component) {
-        return component instanceof ValueComponent;
+        return component != null && component.is(ValueComponent.class);
     }
 
     @Override

@@ -26,6 +26,10 @@ public interface Component extends Nameable {
 
     ComponentType getType();
 
+    default <T extends Component> boolean is(Class<T> type) {
+        return type.isInstance(this);
+    }
+
     default boolean isInput() {
         return getType() == ComponentType.INPUT;
     }

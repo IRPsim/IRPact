@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.process.modularra.component.inter;
+package de.unileipzig.irpact.core.process.modularra.component.general;
 
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.process.modularra.AgentData;
@@ -13,24 +13,24 @@ public class SumIntermediateComponent extends AbstractContainerComponent {
     public SumIntermediateComponent() {
     }
 
-    protected double evaluateWithoutWeight(Agent agent, AgentData data) {
+    protected double calculateWithoutWeight(Agent agent, AgentData data) {
         if(numberOfComponents() == 0) {
             return getIfEmpty();
         }
 
         if(numberOfComponents() == 1) {
-            return components.get(0).evaluate(agent, data);
+            return components.get(0).calculate(agent, data);
         }
 
         double sum = 0.0;
         for(ValueComponent component: getComponents()) {
-            sum += component.evaluate(agent, data);
+            sum += component.calculate(agent, data);
         }
         return sum;
     }
 
     @Override
-    public double evaluate(Agent agent, AgentData data) {
-        return evaluateWithoutWeight(agent, data) * getWeight();
+    public double calculate(Agent agent, AgentData data) {
+        return calculateWithoutWeight(agent, data) * getWeight();
     }
 }

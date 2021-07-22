@@ -9,6 +9,7 @@ import de.unileipzig.irpact.core.process.modularra.component.generic.Component;
 import de.unileipzig.irpact.core.process.modularra.component.generic.ComponentType;
 import de.unileipzig.irpact.core.util.AttributeHelper;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 

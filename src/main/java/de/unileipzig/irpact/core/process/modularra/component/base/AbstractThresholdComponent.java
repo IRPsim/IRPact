@@ -67,7 +67,7 @@ public abstract class AbstractThresholdComponent extends AbstractComponent imple
 
     @Override
     public final boolean isSupported(Component component) {
-        return component instanceof ValueComponent;
+        return component != null && component.is(EvaluableComponent.class);
     }
 
     @Override

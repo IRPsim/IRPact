@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.process.modularra.component.in;
+package de.unileipzig.irpact.core.process.modularra.component.general;
 
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.process.modularra.AgentData;
@@ -12,7 +12,7 @@ public class SumAttributeComponent extends AbstractAttributeComponent {
     public SumAttributeComponent() {
     }
 
-    protected double evaluateWithoutWeight(Agent agent, AgentData data) {
+    protected double calculateWithoutWeight(Agent agent, AgentData data) {
         if(numberOfAttributeNames() == 0) {
             return getIfEmpty();
         }
@@ -29,7 +29,7 @@ public class SumAttributeComponent extends AbstractAttributeComponent {
     }
 
     @Override
-    public double evaluate(Agent agent, AgentData data) {
-        return evaluateWithoutWeight(agent, data) * getWeight();
+    public double calculate(Agent agent, AgentData data) {
+        return calculateWithoutWeight(agent, data) * getWeight();
     }
 }

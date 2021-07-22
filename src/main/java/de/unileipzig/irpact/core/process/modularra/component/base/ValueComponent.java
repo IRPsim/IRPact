@@ -9,5 +9,5 @@ import de.unileipzig.irpact.core.process.modularra.component.generic.Component;
  */
 public interface ValueComponent extends Component {
 
-    double evaluate(Agent agent, AgentData data);
+    double calculate(Agent agent, AgentData data);
 }

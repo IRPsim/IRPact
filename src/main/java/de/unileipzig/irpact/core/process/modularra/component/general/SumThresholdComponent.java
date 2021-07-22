@@ -1,9 +1,8 @@
-package de.unileipzig.irpact.core.process.modularra.component.out;
+package de.unileipzig.irpact.core.process.modularra.component.general;
 
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.process.modularra.AgentData;
-import de.unileipzig.irpact.core.process.modularra.component.base.AbstractContainerComponent;
 import de.unileipzig.irpact.core.process.modularra.component.base.AbstractThresholdComponent;
 import de.unileipzig.irpact.core.process.modularra.component.base.ValueComponent;
 
@@ -15,29 +14,29 @@ public class SumThresholdComponent extends AbstractThresholdComponent {
     public SumThresholdComponent() {
     }
 
-    protected double evaluateWithoutWeight(Agent agent, AgentData data) {
+    protected double calculateWithoutWeight(Agent agent, AgentData data) {
         if(numberOfComponents() == 0) {
             return getIfEmpty() * getWeight();
         }
 
         if(numberOfComponents() == 1) {
-            return components.get(0).evaluate(agent, data) * getWeight();
+            return components.get(0).calculate(agent, data) * getWeight();
         }
 
         double sum = 0.0;
         for(ValueComponent component: getComponents()) {
-            sum += component.evaluate(agent, data);
+            sum += component.calculate(agent, data);
         }
         return sum;
     }
 
-    public double evaluateValue(Agent agent, AgentData data) {
-        return evaluateWithoutWeight(agent, data) * getWeight();
+    public double calculate(Agent agent, AgentData data) {
+        return calculateWithoutWeight(agent, data) * getWeight();
     }
 
     @Override
     public ProcessPlanResult evaluate(Agent agent, AgentData data) {
-        double value = evaluateValue(agent, data);
+        double value = calculate(agent, data);
         if(value < getThreshold()) {
             return ProcessPlanResult.ADOPTED;
         } else {

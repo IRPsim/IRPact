@@ -27,10 +27,17 @@ public abstract class AbstractComponent extends NameableBase implements Componen
     @Override
     public Collection<Component> getAllComponents() {
         Set<Component> components = new HashSet<>();
-        for(Component component: iterateComponents()) {
-            components.addAll(component.getAllComponents());
-        }
+        collectComponents(this, components);
         return components;
+    }
+
+    protected static void collectComponents(Component current, Set<Component> components) {
+        for(Component child: current.iterateComponents()) {
+            if(components.add(child)) {
+                collectComponents(child, components);
+            }
+        }
+        components.add(current);
     }
 
     @Override
