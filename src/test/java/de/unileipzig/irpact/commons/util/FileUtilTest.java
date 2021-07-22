@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons.util;
 
+import de.unileipzig.irpact.commons.util.io.FileUtil;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;

@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.commons.util;
+package de.unileipzig.irpact.commons.util.io;
 
 import java.io.IOException;
 import java.io.Reader;

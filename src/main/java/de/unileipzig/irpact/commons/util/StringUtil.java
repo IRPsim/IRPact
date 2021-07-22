@@ -3,11 +3,12 @@ package de.unileipzig.irpact.commons.util;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.helpers.MessageFormatter;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -181,5 +182,30 @@ public final class StringUtil {
 
     public static String replaceSpace(String input, String replacement) {
         return input.replace(" ", replacement);
+    }
+
+    public static String printStackTrace(Throwable t) throws UncheckedIOException {
+        try(StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw)) {
+            t.printStackTrace(pw);
+            pw.flush();
+            return sw.toString();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    public static String printStackTraceWithTitle(String title, Throwable t) throws UncheckedIOException {
+        String stackTrace = printStackTrace(t);
+        return title + lineSeparator() + stackTrace;
+    }
+
+    public static List<String> getLines(CharSequence text) {
+        try(StringReader sr = new StringReader(text.toString());
+            BufferedReader br = new BufferedReader(sr)) {
+            return br.lines().collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 }

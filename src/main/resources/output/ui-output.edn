@@ -46,6 +46,12 @@
         :set "set_OutInformation" 
         :description "Weitere Informationen über das Ergebnis." 
         :tags [["OutInformation" "placeholder"]]
+      } 
+      {
+        :label "Fehlermeldung" 
+        :icon "fa fa-warning" 
+        :description "Falls während der Simulation ein schwerwiegender Fehler aufgetreten ist, welcher zum Programmabbruch führte, wird dieser hier angezeigt. Anderenfalls wird nichts oder der Hinweis auf eine fehlerfreie Durchführung angegeben." 
+        :image "Stacktrace.png"
       }
     ]
   } 

@@ -172,8 +172,21 @@ public class OutRoot implements RootClass {
     public void peekEdn(Sections sections, UiEdn ednType) {
         if(ednType == UiEdn.OUTPUT) {
             sections.add(buildImageSection(-1));
+            addStracktraceSubSectionToInformationSection(sections);
             handleOptAct(sections);
         }
+    }
+
+    protected void addStracktraceSubSectionToInformationSection(Sections sections) {
+        Section stackTraceSection = new Section();
+        stackTraceSection.setLabel("Fehlermeldung");
+        stackTraceSection.setDescription("Falls während der Simulation ein schwerwiegender Fehler aufgetreten ist, welcher zum Programmabbruch führte, wird dieser hier angezeigt. Anderenfalls wird nichts oder der Hinweis auf eine fehlerfreie Durchführung angegeben.");
+        stackTraceSection.setIcon(IRPact.ICON_WARNING);
+        stackTraceSection.setPriority(100); //should be large
+        stackTraceSection.setImage(IRPact.IMAGE_STACKTRACE_PNG);
+
+        Section informations = sections.findByLabel("Informationen");
+        informations.getSections().add(stackTraceSection);
     }
 
     @SuppressWarnings("SameParameterValue")

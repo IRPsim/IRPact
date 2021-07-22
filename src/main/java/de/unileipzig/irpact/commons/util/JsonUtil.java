@@ -12,6 +12,7 @@ import com.fasterxml.jackson.dataformat.smile.databind.SmileMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import de.unileipzig.irpact.commons.logging.LazyPrinter;
 import de.unileipzig.irpact.commons.logging.LazyToString;
+import de.unileipzig.irpact.commons.util.io.FileUtil;
 import de.unileipzig.irptools.util.Util;
 
 import java.io.*;

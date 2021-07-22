@@ -504,6 +504,9 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     public boolean hasImagePath() {
         return getImagePath() != null;
     }
+    public boolean hasImagePathWithoutFile() {
+        return hasImagePath() && Files.notExists(getImagePath());
+    }
     public Path getImagePath() {
         checkExecuted();
         return imagePath;

@@ -26,7 +26,7 @@ public final class RunFully implements IRPactExecutor {
     }
 
     @Override
-    public void execute(IRPact irpact) throws Exception {
+    public void execute(IRPact irpact) throws Throwable {
         if(irpact == null) {
             throw new NullPointerException("IRPact instance is null");
         }
@@ -73,11 +73,12 @@ public final class RunFully implements IRPactExecutor {
             irpact.notifyEnd();
             irpact.postSimulation();
 
-        } catch (Exception e) {
+        } catch (Throwable cause) {
+            irpact.createStackTraceImageIfDesired(cause);
             if(irpact.shouldCreateDummyOutputWithErrorMessage()) {
-                irpact.postSimulationWithDummyOutputAndErrorMessage(e);
+                irpact.postSimulationWithDummyOutputAndErrorMessage(cause);
             } else {
-                throw e;
+                throw cause;
             }
         }
     }

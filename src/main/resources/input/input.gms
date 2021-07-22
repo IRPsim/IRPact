@@ -1813,12 +1813,26 @@ SCALAR sca_InGeneral_runMode
 * - type: Integer
 SCALAR sca_InGeneral_scenarioMode
 
-* - default: 0
+* - default: 1
 * - domain: [0|1]
-* - description: todo
-* - identifier: Leite Error in Output
+* - description: Falls diese Option aktiviert ist, wird der Grund für einen potentiellen Fehler in den Ausgabeinformationen ausgegeben.
+* - identifier: Fehleranzeige in der Ausgabe
 * - type: Boolean
 SCALAR sca_InGeneral_passErrorMessageToOutput
+
+* - default: 1
+* - domain: [0|1]
+* - description: Falls diese Option aktiviert ist, wird bei einem potentiellen Fehler der Stacktrace als Bild ausgegeben. Dieser Ansatz ermöglicht eine sofortige Fehleranalyse im Ergebnis.
+* - identifier: Stacktrace als Bild ausgeben
+* - type: Boolean
+SCALAR sca_InGeneral_printStacktraceImage
+
+* - default: 1
+* - domain: [0|1]
+* - description: Falls diese Option aktiviert ist, wird die Nachricht 'Kein Fehler aufgetreten!' in der Ausgabe als Bild angegeben. Anderenfalls wird kein Bild erstellt.
+* - identifier: Ersatzbild bei keinem Fehler erstellen
+* - type: Boolean
+SCALAR sca_InGeneral_printNoErrorImage
 
 * - default: 0
 * - domain: [0|1]
@@ -1829,7 +1843,7 @@ SCALAR sca_InGeneral_copyLogIfPossible
 
 * - default: 0
 * - domain: [0|1]
-* - description: todo
+* - description: Deaktiviert die komplette Persistierung. Dadurch wird jedes Stützjahr als komplett neue Simulation behandelt.
 * - identifier: Deaktiviere Persistierung
 * - type: Boolean
 SCALAR sca_InGeneral_skipPersist

@@ -2,6 +2,7 @@ package de.unileipzig.irpact.commons.time;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 /**
  * @author Daniel Abitz
@@ -14,7 +15,9 @@ public final class TimeUtil {
     }
 
     public static String printNowWithoutMs() {
-        return LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        return LocalDateTime.now()
+                .truncatedTo(ChronoUnit.SECONDS)
+                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
     public static String print(ZonedDateTime zdt) {

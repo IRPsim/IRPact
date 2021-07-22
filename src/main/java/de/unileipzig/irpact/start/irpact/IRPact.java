@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
+import de.unileipzig.irpact.commons.time.TimeUtil;
+import de.unileipzig.irpact.commons.util.ImageUtil;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -86,14 +88,19 @@ public final class IRPact implements IRPActAccess {
     public static final String CL_VERSION = "Version " + VERSION_STRING;
     public static final String CL_COPY = "(c) 2019-2021";
 
+    //https://www.w3schools.com/icons/fontawesome5_icons_alert.asp
     public static final String ICON_IMAGES = "fa fa-plus-square";
     public static final String ICON_IMAGE = "fa fa-file-image-o";
+    public static final String ICON_WARNING = "fa fa-warning";
 
     public static final String IMAGE_AGENTGRAPH_INPUT = "agentGraph";
 
     public static final String IMAGE_AGENTGRAPH_OUTPUT = "Agentennetzwerk";
     public static final String IMAGE_AGENTGRAPH_OUTPUT_PNG = IMAGE_AGENTGRAPH_OUTPUT + ".png";
     public static final String IMAGE_AGENTGRAPH_OUTPUT_DOT = IMAGE_AGENTGRAPH_OUTPUT + ".dot";
+
+    public static final String IMAGE_STACKTRACE = "Stacktrace";
+    public static final String IMAGE_STACKTRACE_PNG = IMAGE_STACKTRACE + ".png";
 
     public static final String IMAGE_ANNUAL_ADOPTIONS = "JaehrlicheAdoptionenPLZ";
     public static final String IMAGE_ANNUAL_ADOPTIONS_PNG = IMAGE_ANNUAL_ADOPTIONS + ".png";
@@ -611,6 +618,7 @@ public final class IRPact implements IRPActAccess {
         callCallbacks();
         runPostprocessing();
         finalTask();
+        createNoErrorImageIfDesired();
     }
 
     public void postSimulationWithDummyOutput() {
@@ -621,11 +629,11 @@ public final class IRPact implements IRPActAccess {
         finalTask();
     }
 
-    public void postSimulationWithDummyOutputAndErrorMessage(Exception e) {
-        LOGGER.info(IRPSection.GENERAL, "start post-simulation with error ({})", e.getMessage());
+    public void postSimulationWithDummyOutputAndErrorMessage(Throwable cause) {
+        LOGGER.info(IRPSection.GENERAL, "start post-simulation with error ({})", cause.getMessage());
 
-        String errorClass = e.getClass().getSimpleName();
-        String errorMsg = StringUtil.replaceSpace(e.getMessage(), "_");
+        String errorClass = cause.getClass().getSimpleName();
+        String errorMsg = StringUtil.replaceSpace(cause.getMessage(), "_");
         String fullMsg = errorClass + "__" + errorMsg;
         OutInformation[] errorInfo = { new OutInformation(fullMsg) };
 
@@ -652,6 +660,30 @@ public final class IRPact implements IRPActAccess {
         OutRoot outRoot = createOutRoot();
         outData = createOutputData(outRoot);
         storeOutputData(outData);
+    }
+
+    private Path getStackTraceImagePath() throws IOException {
+        return CL_OPTIONS.getCreatedDownloadDir().resolve(IMAGE_STACKTRACE_PNG);
+    }
+
+    private void createNoErrorImageIfDesired() {
+        if(inRoot.getGeneral().shouldPrintNoErrorImage()) {
+            try {
+                createNoErrorImage(getStackTraceImagePath());
+            } catch (Throwable t) {
+                LOGGER.error("failed to create no-error image", t);
+            }
+        }
+    }
+
+    public void createStackTraceImageIfDesired(Throwable cause) {
+        if(cause != null && inRoot != null && inRoot.getGeneral().shouldPrintStacktraceImage()) {
+            try {
+                createStackTraceImage(cause, getStackTraceImagePath());
+            } catch (Throwable t) {
+                LOGGER.error("failed to create no-error image", t);
+            }
+        }
     }
 
     private void createNetworkAfterSimulation() {
@@ -774,6 +806,38 @@ public final class IRPact implements IRPActAccess {
             }
         } catch (IOException e) {
             LOGGER.error("copy log if possible failed", e);
+        }
+    }
+
+    //=========================
+    //util
+    //=========================
+
+    public static void createStackTraceImage(Throwable cause, Path target) {
+        String msg = cause.getMessage();
+
+        String text;
+        if(msg == null || StringUtil.isBlank(msg)) {
+            text = StringUtil.printStackTraceWithTitle("(Datum: " + TimeUtil.printNowWithoutMs() + ")\n\nEin Fehler ist aufgetreten!\n\nStacktrace:", cause);
+        } else {
+            text = StringUtil.printStackTraceWithTitle("(Datum: " + TimeUtil.printNowWithoutMs() + ")\n\nEin Fehler ist aufgetreten: " + msg + "\n\nStacktrace:", cause);
+        }
+
+        try {
+            ImageUtil.writeText(text, target);
+        } catch (Throwable t) {
+            LOGGER.error("writing error image failed", t);
+        }
+    }
+
+    public static void createNoErrorImage(Path target) {
+        try {
+            ImageUtil.writeText(
+                    "(Datum: " + TimeUtil.printNowWithoutMs() + ")\n\nKein Fehler aufgetreten!",
+                    target
+            );
+        } catch (Throwable t) {
+            LOGGER.error("writing no-error image failed", t);
         }
     }
 

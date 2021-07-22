@@ -93,11 +93,17 @@ InGeneral_copyLogIfPossible:
   gams_identifier: "Kopiere Log"
   gams_description: "todo"
 InGeneral_passErrorMessageToOutput:
-  gams_identifier: "Leite Error in Output"
-  gams_description: "todo"
+  gams_identifier: "Fehleranzeige in der Ausgabe"
+  gams_description: "Falls diese Option aktiviert ist, wird der Grund für einen potentiellen Fehler in den Ausgabeinformationen ausgegeben."
+InGeneral_printStacktraceImage:
+  gams_identifier: "Stacktrace als Bild ausgeben"
+  gams_description: "Falls diese Option aktiviert ist, wird bei einem potentiellen Fehler der Stacktrace als Bild ausgegeben. Dieser Ansatz ermöglicht eine sofortige Fehleranalyse im Ergebnis."
+InGeneral_printNoErrorImage:
+  gams_identifier: "Ersatzbild bei keinem Fehler erstellen"
+  gams_description: "Falls diese Option aktiviert ist, wird die Nachricht 'Kein Fehler aufgetreten!' in der Ausgabe als Bild angegeben. Anderenfalls wird kein Bild erstellt."
 InGeneral_skipPersist:
   gams_identifier: "Deaktiviere Persistierung"
-  gams_description: "todo"
+  gams_description: "Deaktiviert die komplette Persistierung. Dadurch wird jedes Stützjahr als komplett neue Simulation behandelt."
 
 VisibleBinaryData:
   edn_label: "Binäre Daten"
