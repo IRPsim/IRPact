@@ -14,7 +14,7 @@ public final class DefaultLocalizedImageData {
     protected DefaultLocalizedImageData() {
     }
 
-    protected static LocalizedImageData get() {
+    public static LocalizedImageData get() {
         LocalizedImageDataYaml data = new LocalizedImageDataYaml(Locale.GERMAN, JsonUtil.YAML.createObjectNode());
         data.setEscapeSpecialCharacters(true);
         //ANNUAL_ZIP

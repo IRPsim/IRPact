@@ -4,6 +4,8 @@ import de.unileipzig.irpact.commons.locale.LocalizedData;
 import de.unileipzig.irpact.commons.time.TimeUtil;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.postprocessing.data.FileExtension;
+import de.unileipzig.irpact.core.postprocessing.data.LocalizedResultDataYaml;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.nio.charset.Charset;
@@ -16,17 +18,16 @@ public final class WriterLocalizer {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(WriterLocalizer.class);
 
-    protected static final String CSV = "csv";
-    protected static final String CHARSET = "charset";
-    protected static final String DELIMITER = "delimiter";
-    protected static final String COMMENT_PREFIX = "commentPrefix";
+    public static final String CSV = FileExtension.CSV.getText();
+    public static final String CHARSET = LocalizedResultDataYaml.CHARSET;
+    public static final String DELIMITER = LocalizedResultDataYaml.DELIMITER;
+    public static final String COMMENT_PREFIX = LocalizedResultDataYaml.COMMENT_PREFIX;
 
+    public static final String XLSX = FileExtension.XLSX.getText();
+    public static final String SHEETNAME = LocalizedResultDataYaml.SHEETNAME;
 
-    protected static final String XLSX = "xlsx";
-    protected static final String SHEETNAME = "sheetname";
-
-    protected static final String INFOS = "informations";
-    protected static final String COLUMNS = "columns";
+    public static final String INFOS = LocalizedResultDataYaml.INFOS;
+    public static final String COLUMNS = LocalizedResultDataYaml.COLUMNS;
 
     protected WriterLocalizer() {
     }

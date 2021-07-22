@@ -1,15 +1,14 @@
-package de.unileipzig.irpact.core.process.modularra.component.base;
+package de.unileipzig.irpact.core.process.mra.component.base;
 
 import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
 import de.unileipzig.irpact.commons.util.ListSupplier;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
-import de.unileipzig.irpact.core.process.modularra.component.generic.AbstractComponent;
-import de.unileipzig.irpact.core.process.modularra.component.generic.Component;
-import de.unileipzig.irpact.core.process.modularra.component.generic.ComponentType;
+import de.unileipzig.irpact.core.process.mra.component.generic.AbstractComponent;
+import de.unileipzig.irpact.core.process.mra.component.generic.Component;
+import de.unileipzig.irpact.core.process.mra.component.generic.ComponentType;
 import de.unileipzig.irpact.core.util.AttributeHelper;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.process.modularra.component.generic;
+package de.unileipzig.irpact.core.process.mra.component.generic;
 
 import de.unileipzig.irpact.commons.Nameable;
 

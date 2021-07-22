@@ -1,13 +1,13 @@
-package de.unileipzig.irpact.core.process.modularra.component.special;
+package de.unileipzig.irpact.core.process.mra.component.special;
 
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
-import de.unileipzig.irpact.core.process.modularra.AgentData;
-import de.unileipzig.irpact.core.process.modularra.component.base.EvaluableComponent;
-import de.unileipzig.irpact.core.process.modularra.component.generic.ComponentType;
+import de.unileipzig.irpact.core.process.mra.AgentData;
+import de.unileipzig.irpact.core.process.mra.component.base.EvaluableComponent;
+import de.unileipzig.irpact.core.process.mra.component.generic.ComponentType;
 import de.unileipzig.irpact.core.process.ra.RAStage;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -39,8 +39,8 @@ public class DefaultHandleFeasibilityComponent extends AbstractSingleMRAComponen
 
         trace("[{}] handle feasibility", agent.getName());
 
-        boolean isShare = isShareOf1Or2FamilyHouse(agent, data);
-        boolean isOwner = isHouseOwner(agent, data);
+        boolean isShare = isShareOf1Or2FamilyHouse(agent);
+        boolean isOwner = isHouseOwner(agent);
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] share of 1 or 2 family house={}, house owner={}", agent.getName(), isShare, isOwner);
 
         if(isShare && isOwner) {
@@ -49,6 +49,6 @@ public class DefaultHandleFeasibilityComponent extends AbstractSingleMRAComponen
             return ProcessPlanResult.IN_PROCESS;
         }
 
-        return doAction(agent, data);
+        return doAction(agent, data.getRnd(), data.getProduct());
     }
 }

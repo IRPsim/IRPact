@@ -11,6 +11,9 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @author Daniel Abitz
@@ -49,5 +52,17 @@ public abstract class PostProcessor implements LoggingHelper {
 
     public Path getTargetDir() throws IOException {
         return clOptions.getCreatedDownloadDir();
+    }
+
+    protected List<Integer> years;
+    public List<Integer> getAllSimulationYears() {
+        if(years == null) {
+            int firstYear = metaData.getOldestRunInfo().getActualFirstSimulationYear();
+            int lastYear = metaData.getCurrentRunInfo().getLastSimulationYear();
+            years = IntStream.rangeClosed(firstYear, lastYear)
+                    .boxed()
+                    .collect(Collectors.toList());
+        }
+        return years;
     }
 }

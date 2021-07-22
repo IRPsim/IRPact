@@ -1,10 +1,10 @@
-package de.unileipzig.irpact.core.process.modularra.component.general;
+package de.unileipzig.irpact.core.process.mra.component.general;
 
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
-import de.unileipzig.irpact.core.process.modularra.AgentData;
-import de.unileipzig.irpact.core.process.modularra.component.base.AbstractThresholdComponent;
-import de.unileipzig.irpact.core.process.modularra.component.base.ValueComponent;
+import de.unileipzig.irpact.core.process.mra.AgentData;
+import de.unileipzig.irpact.core.process.mra.component.base.AbstractThresholdComponent;
+import de.unileipzig.irpact.core.process.mra.component.base.ValueComponent;
 
 /**
  * @author Daniel Abitz

@@ -1,7 +1,7 @@
-package de.unileipzig.irpact.core.process.modularra.component.special;
+package de.unileipzig.irpact.core.process.mra.component.special;
 
-import de.unileipzig.irpact.core.process.modularra.component.generic.Component;
-import de.unileipzig.irpact.core.process.modularra.component.generic.ComponentType;
+import de.unileipzig.irpact.core.process.mra.component.generic.Component;
+import de.unileipzig.irpact.core.process.mra.component.generic.ComponentType;
 
 import java.util.Collection;
 import java.util.Collections;

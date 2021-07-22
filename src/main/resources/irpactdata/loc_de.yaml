@@ -822,6 +822,18 @@ InRAProcessModel_c:
 InRAProcessModel_d:
   gams_identifier: "Einfluss soziale Komponente (d)"
   gams_description: "Legt den Einfluss der sozialen Komponente fest."
+InRAProcessModel_weightFT:
+  gams_identifier: "Wichtung fin. "
+  gams_description: "Legt die Wichtung für das Einkommen fest."
+InRAProcessModel_weightNPV:
+  gams_identifier: "Wichtung Barwert"
+  gams_description: "Legt den Einfluss der sozialen Komponente fest."
+InRAProcessModel_weightSocial:
+  gams_identifier: "Wichtung soziales Netz"
+  gams_description: "Legt den Einfluss der sozialen Komponente fest."
+InRAProcessModel_weightLocal:
+  gams_identifier: "Wichtung lokales Netz"
+  gams_description: "Legt den Einfluss der sozialen Komponente fest."
 InRAProcessModel_adopterPoints:
   gams_identifier: "Einfluss der Kommunikation mit Adoptern"
   gams_description: "Legt den Einfluss für die Kommunikation mit Adoptern fest."

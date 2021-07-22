@@ -52,7 +52,6 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
 
     protected static boolean globalRAProcessInitCalled = false;
 
-    protected final AttributeHelper ATTR_HELPER = new AttributeHelper();
     protected SimulationEnvironment environment;
 
     protected RelativeAgreementAlgorithm raAlgorithm;
@@ -110,12 +109,18 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
     }
 
     public AttributeHelper getAttributeHelper() {
-        return ATTR_HELPER;
+        if(environment == null) {
+            throw new NullPointerException("missing environment");
+        }
+        AttributeHelper helper = environment.getAttributeHelper();
+        if(helper == null) {
+            throw new NullPointerException("missing helper");
+        }
+        return helper;
     }
 
     public void setEnvironment(SimulationEnvironment environment) {
         this.environment = environment;
-        ATTR_HELPER.setEnvironment(environment);
     }
 
     public SimulationEnvironment getEnvironment() {
@@ -124,7 +129,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
 
     public void setModelData(RAModelData modelData) {
         this.modelData = modelData;
-        modelData.setAttributeHelper(ATTR_HELPER);
+        modelData.setAttributeHelper(getAttributeHelper());
     }
 
     public RAModelData getModelData() {
@@ -519,6 +524,10 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         return uncertaintyCache.get(ca);
     }
 
+    protected void createUncertainty0(ConsumerAgent ca) {
+        getUncertainty0(ca);
+    }
+
     protected synchronized Uncertainty getUncertainty0(ConsumerAgent ca) {
         Uncertainty uncertainty = uncertaintyCache.get(ca);
         if(uncertainty == null) {
@@ -557,7 +566,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
     //attributes
     //==================================================
 
-    public static double getFinancialThreshold(
+    public static double getFinancialPurchasePower(
             ConsumerAgent agent,
             AttributeHelper helper) {
 //        double pp = getPurchasePower(agent);
@@ -575,32 +584,32 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         if(info.hasId()) {
             return info.getId();
         } else {
-            return ATTR_HELPER.findLongValue(agent, RAConstants.ID);
+            return getAttributeHelper().findLongValue(agent, RAConstants.ID);
         }
     }
 
-    public double getFinancialThreshold(ConsumerAgent agent) {
-        return getFinancialThreshold(agent, ATTR_HELPER);
+    public double getFinancialPurchasePower(ConsumerAgent agent) {
+        return getFinancialPurchasePower(agent, getAttributeHelper());
     }
 
     public double getPurchasePower(ConsumerAgent agent) {
-        return ATTR_HELPER.findDoubleValue(agent, RAConstants.PURCHASE_POWER);
+        return getAttributeHelper().findDoubleValue(agent, RAConstants.PURCHASE_POWER);
     }
 
     public boolean isShareOf1Or2FamilyHouse(ConsumerAgent agent) {
-        return ATTR_HELPER.findBooleanValue(agent, RAConstants.SHARE_1_2_HOUSE);
+        return getAttributeHelper().findBooleanValue(agent, RAConstants.SHARE_1_2_HOUSE);
     }
 
     public void setShareOf1Or2FamilyHouse(ConsumerAgent agent, boolean value) {
-        ATTR_HELPER.findAndSetBooleanValue(agent, RAConstants.SHARE_1_2_HOUSE, value);
+        getAttributeHelper().findAndSetBooleanValue(agent, RAConstants.SHARE_1_2_HOUSE, value);
     }
 
     public boolean isHouseOwner(ConsumerAgent agent) {
-        return ATTR_HELPER.findBooleanValue(agent, RAConstants.HOUSE_OWNER);
+        return getAttributeHelper().findBooleanValue(agent, RAConstants.HOUSE_OWNER);
     }
 
     public void setHouseOwner(ConsumerAgent agent, boolean value) {
-        ATTR_HELPER.findAndSetBooleanValue(agent, RAConstants.HOUSE_OWNER, value);
+        getAttributeHelper().findAndSetBooleanValue(agent, RAConstants.HOUSE_OWNER, value);
     }
 
     //=========================
@@ -608,31 +617,31 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
     //=========================
 
     public double getCommunicationFrequencySN(ConsumerAgent agent) {
-        return ATTR_HELPER.getDoubleValue(agent, RAConstants.COMMUNICATION_FREQUENCY_SN);
+        return getAttributeHelper().getDoubleValue(agent, RAConstants.COMMUNICATION_FREQUENCY_SN);
     }
 
     public double getRewiringRate(ConsumerAgent agent) {
-        return ATTR_HELPER.getDoubleValue(agent, RAConstants.REWIRING_RATE);
+        return getAttributeHelper().getDoubleValue(agent, RAConstants.REWIRING_RATE);
     }
 
     public double getNoveltySeeking(ConsumerAgent agent) {
-        return ATTR_HELPER.getDoubleValue(agent, RAConstants.NOVELTY_SEEKING);
+        return getAttributeHelper().getDoubleValue(agent, RAConstants.NOVELTY_SEEKING);
     }
 
     public double getDependentJudgmentMaking(ConsumerAgent agent) {
-        return ATTR_HELPER.getDoubleValue(agent, RAConstants.DEPENDENT_JUDGMENT_MAKING);
+        return getAttributeHelper().getDoubleValue(agent, RAConstants.DEPENDENT_JUDGMENT_MAKING);
     }
 
     public double getEnvironmentalConcern(ConsumerAgent agent) {
-        return ATTR_HELPER.getDoubleValue(agent, RAConstants.ENVIRONMENTAL_CONCERN);
+        return getAttributeHelper().getDoubleValue(agent, RAConstants.ENVIRONMENTAL_CONCERN);
     }
 
     public double getConstructionRate(ConsumerAgent agent) {
-        return ATTR_HELPER.getDoubleValue(agent, RAConstants.CONSTRUCTION_RATE);
+        return getAttributeHelper().getDoubleValue(agent, RAConstants.CONSTRUCTION_RATE);
     }
 
     public double getRenovationRate(ConsumerAgent agent) {
-        return ATTR_HELPER.getDoubleValue(agent, RAConstants.RENOVATION_RATE);
+        return getAttributeHelper().getDoubleValue(agent, RAConstants.RENOVATION_RATE);
     }
 
     //=========================
@@ -640,22 +649,22 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
     //=========================
 
     public double getFinancialThreshold(ConsumerAgent agent, Product product) {
-        return ATTR_HELPER.getDoubleValue(agent, product, RAConstants.FINANCIAL_THRESHOLD);
+        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.FINANCIAL_THRESHOLD);
     }
 
     public double getAdoptionThreshold(ConsumerAgent agent, Product product) {
-        return ATTR_HELPER.getDoubleValue(agent, product, RAConstants.ADOPTION_THRESHOLD);
+        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.ADOPTION_THRESHOLD);
     }
 
     public double getInitialProductAwareness(ConsumerAgent agent, Product product) {
-        return ATTR_HELPER.getDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_AWARENESS);
+        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_AWARENESS);
     }
 
     public double getInitialProductInterest(ConsumerAgent agent, Product product) {
-        return ATTR_HELPER.getDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_INTEREST);
+        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_INTEREST);
     }
 
     public double getInitialAdopter(ConsumerAgent agent, Product product) {
-        return ATTR_HELPER.getDoubleValue(agent, product, RAConstants.INITIAL_ADOPTER);
+        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.INITIAL_ADOPTER);
     }
 }

@@ -3,6 +3,7 @@ package de.unileipzig.irpact.core.process.ra;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.process.ra.npv.NPVDataSupplier;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
 import de.unileipzig.irpact.core.util.AttributeHelper;
 
@@ -21,9 +22,7 @@ public class RAModelData implements ChecksumComparable {
     public static final int DEFAULT_AWARE_POINTS = 1;
     public static final int DEFAULT_UNKNOWN_POINTS = 0;
 
-    protected AttributeHelper attributeHelper;
-
-    protected Map<Integer, NPVMatrix> npData;
+    protected final NPVDataSupplier npvDataSupplier;
 
     protected double a;
     protected double b;
@@ -35,6 +34,11 @@ public class RAModelData implements ChecksumComparable {
     protected int awarePoints = DEFAULT_AWARE_POINTS;
     protected int unknownPoints = DEFAULT_UNKNOWN_POINTS;
 
+    protected double weightFT = 0.5;
+    protected double weightNPV = 0.5;
+    protected double weightSocial = 0.5;
+    protected double weightLocal = 0.5;
+
     protected double logisticFactor = 0.0;
 
     public RAModelData() {
@@ -42,11 +46,11 @@ public class RAModelData implements ChecksumComparable {
     }
 
     public RAModelData(Map<Integer, NPVMatrix> npData) {
-        this.npData = npData;
+        npvDataSupplier = new NPVDataSupplier(npData);
     }
 
     public void setAttributeHelper(AttributeHelper attributeHelper) {
-        this.attributeHelper = attributeHelper;
+        npvDataSupplier.setAttributeHelper(attributeHelper);
     }
 
     @Override
@@ -54,7 +58,8 @@ public class RAModelData implements ChecksumComparable {
         return Objects.hash(
                 a, b, c, d,
                 adopterPoints, interestedPoints, awarePoints, unknownPoints,
-                logisticFactor
+                logisticFactor,
+                weightFT, weightNPV, weightSocial, weightLocal
         );
     }
 
@@ -90,19 +95,28 @@ public class RAModelData implements ChecksumComparable {
         this.unknownPoints = unknownPoints;
     }
 
+    public void setWeightFT(double weightFT) {
+        this.weightFT = weightFT;
+    }
+
+    public void setWeightNPV(double weightNPV) {
+        this.weightNPV = weightNPV;
+    }
+
+    public void setWeightLocal(double weightLocal) {
+        this.weightLocal = weightLocal;
+    }
+
+    public void setWeightSocial(double weightSocial) {
+        this.weightSocial = weightSocial;
+    }
+
     public void put(int year, NPVMatrix matrix) {
-        npData.put(year, matrix);
+        npvDataSupplier.put(year, matrix);
     }
 
     public double NPV(ConsumerAgent agent, int year) {
-        NPVMatrix matrix = npData.get(year);
-        if(matrix == null) {
-            return getNPV(agent);
-        } else {
-            int N = getN(agent);
-            int A = getA(agent);
-            return matrix.getValue(N, A);
-        }
+        return npvDataSupplier.NPV(agent, year);
     }
 
     protected MutableDouble avgNPV = new MutableDouble(Double.NaN);
@@ -122,39 +136,12 @@ public class RAModelData implements ChecksumComparable {
         return avgNPV.get();
     }
 
-    protected MutableDouble avgFT = new MutableDouble(Double.NaN);
-
-    public double getAverageFinancialThresholdAgent(Stream<? extends ConsumerAgent> agents) {
-        if(Double.isNaN(avgFT.get())) {
-            MutableDouble total = MutableDouble.zero();
-            double sum = agents.mapToDouble(ca -> {
-                total.inc();
-                return getFinancialThreshold(ca);
-            }).sum();
-            double result = sum / total.get();
-            avgFT.set(result);
-        }
-        return avgFT.get();
+    public double getAverageFinancialPurchasePower(Stream<? extends ConsumerAgent> agents) {
+        return npvDataSupplier.getAverageFinancialPurchasePower(agents);
     }
 
     public void setLogisticFactor(double logisticFactor) {
         this.logisticFactor = logisticFactor;
-    }
-
-    protected double getFinancialThreshold(ConsumerAgent agent) {
-        return RAProcessModel.getFinancialThreshold(agent, attributeHelper);
-    }
-
-    protected double getNPV(ConsumerAgent agent) {
-        return attributeHelper.getDoubleValue(agent, RAConstants.NET_PRESENT_VALUE);
-    }
-
-    protected int getN(ConsumerAgent agent) {
-        return attributeHelper.findIntValue(agent, RAConstants.SLOPE);
-    }
-
-    protected int getA(ConsumerAgent agent) {
-        return attributeHelper.findIntValue(agent, RAConstants.ORIENTATION);
     }
 
     public double a() {
@@ -191,5 +178,21 @@ public class RAModelData implements ChecksumComparable {
 
     public double getLogisticFactor() {
         return logisticFactor;
+    }
+
+    public double getWeightFT() {
+        return weightFT;
+    }
+
+    public double getWeightNPV() {
+        return weightNPV;
+    }
+
+    public double getWeightSocial() {
+        return weightSocial;
+    }
+
+    public double getWeightLocal() {
+        return weightLocal;
     }
 }

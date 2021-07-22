@@ -16,7 +16,8 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
  */
 public final class AttributeHelper extends SimulationEntityBase {
 
-    public AttributeHelper() {
+    public AttributeHelper(SimulationEnvironment environment) {
+        setEnvironment(environment);
     }
 
     //==================================================

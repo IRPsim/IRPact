@@ -1,29 +1,28 @@
-package de.unileipzig.irpact.core.process.modularra.component.base;
+package de.unileipzig.irpact.core.process.mra.component.base;
 
 import de.unileipzig.irpact.commons.util.ListSupplier;
-import de.unileipzig.irpact.core.process.modularra.component.generic.AbstractComponent;
-import de.unileipzig.irpact.core.process.modularra.component.generic.Component;
-import de.unileipzig.irpact.core.process.modularra.component.generic.ComponentType;
+import de.unileipzig.irpact.core.process.mra.component.generic.AbstractComponent;
+import de.unileipzig.irpact.core.process.mra.component.generic.Component;
+import de.unileipzig.irpact.core.process.mra.component.generic.ComponentType;
 
 import java.util.List;
 
 /**
  * @author Daniel Abitz
  */
-public abstract class AbstractThresholdComponent extends AbstractComponent implements EvaluableComponent {
+public abstract class AbstractContainerComponent extends AbstractComponent implements ValueComponent {
 
     protected ListSupplier supplier;
     protected List<ValueComponent> components;
     protected double weight = 1.0;
     protected double ifEmpty = 0.0;
-    protected double threshold = 0.0;
 
-    public AbstractThresholdComponent() {
+    public AbstractContainerComponent() {
         this(ListSupplier.ARRAY);
     }
 
-    public AbstractThresholdComponent(ListSupplier supplier) {
-        super(ComponentType.INPUT);
+    public AbstractContainerComponent(ListSupplier supplier) {
+        super(ComponentType.INTERMEDIATE);
         this.supplier = supplier;
         this.components = supplier.newList();
     }
@@ -34,14 +33,6 @@ public abstract class AbstractThresholdComponent extends AbstractComponent imple
 
     public int numberOfComponents() {
         return components.size();
-    }
-
-    public void setThreshold(double threshold) {
-        this.threshold = threshold;
-    }
-
-    public double getThreshold() {
-        return threshold;
     }
 
     public void setWeight(double weight) {
@@ -67,7 +58,7 @@ public abstract class AbstractThresholdComponent extends AbstractComponent imple
 
     @Override
     public final boolean isSupported(Component component) {
-        return component != null && component.is(EvaluableComponent.class);
+        return component != null && component.is(ValueComponent.class);
     }
 
     @Override

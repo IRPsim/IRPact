@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.process.modularra.component.special;
+package de.unileipzig.irpact.core.process.mra.component.special;
 
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.Agent;
@@ -6,11 +6,10 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPLoggingMessageCollection;
 import de.unileipzig.irpact.core.logging.InfoTag;
-import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
-import de.unileipzig.irpact.core.process.modularra.AgentData;
-import de.unileipzig.irpact.core.process.modularra.component.base.EvaluableComponent;
-import de.unileipzig.irpact.core.process.modularra.component.generic.ComponentType;
+import de.unileipzig.irpact.core.process.mra.AgentData;
+import de.unileipzig.irpact.core.process.mra.component.base.EvaluableComponent;
+import de.unileipzig.irpact.core.process.mra.component.generic.ComponentType;
 import de.unileipzig.irpact.core.process.ra.RAStage;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -22,18 +21,8 @@ public class DefaultHandleDecisionMakingComponent extends AbstractSingleMRACompo
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(DefaultHandleDecisionMakingComponent.class);
 
-    protected NodeFilter filter;
-
     protected DefaultHandleDecisionMakingComponent(ComponentType type) {
         super(type);
-    }
-
-    public void setNodeFilter(NodeFilter filter) {
-        this.filter = filter;
-    }
-
-    public NodeFilter getNodeFilter() {
-        return filter;
     }
 
     @Override
@@ -58,20 +47,20 @@ public class DefaultHandleDecisionMakingComponent extends AbstractSingleMRACompo
                 .setAutoDispose(true);
         alm.append("{} [{}] calculate U", InfoTag.DECISION_MAKING, agent.getName());
 
-        double a = data.getModelData().a();
-        double b = data.getModelData().b();
-        double c = data.getModelData().c();
-        double d = data.getModelData().d();
+        double a = getA();
+        double b = getB();
+        double c = getC();
+        double d = getD();
 
         double B = 0.0;
 
         if(a != 0.0) {
-            double financial = getFinancialComponent(agent, data);
-            double financialThreshold = getFinancialThreshold(agent, data);
+            double financial = getFinancialComponent(agent);
+            double financialThreshold = getFinancialThreshold(agent, data.getProduct());
             //check D3 reached
             if(financial < financialThreshold) {
                 alm.append("financial component < financial threshold ({} < {}) = {}", financial, financialThreshold, true);
-                logCalculateDecisionMaking(data, alm);
+                logCalculateDecisionMaking(alm);
 
                 data.updateStage(RAStage.IMPEDED);
                 return ProcessPlanResult.IMPEDED;
@@ -84,7 +73,7 @@ public class DefaultHandleDecisionMakingComponent extends AbstractSingleMRACompo
         }
 
         if(b != 0.0) {
-            double env = getEnvironmentalComponent(agent, data);
+            double env = getEnvironmentalComponent(agent);
             double benv = b * env;
             alm.append("b * environmental component = {} * {} = {}", b, env, benv);
             B += benv;
@@ -93,7 +82,7 @@ public class DefaultHandleDecisionMakingComponent extends AbstractSingleMRACompo
         }
 
         if(c != 0.0) {
-            double nov = getNoveltyCompoenent(agent, data);
+            double nov = getNoveltyCompoenent(agent);
             double cnov = c * nov;
             alm.append("c * novelty component = {} * {} = {}", c, nov, cnov);
             B += cnov;
@@ -102,7 +91,7 @@ public class DefaultHandleDecisionMakingComponent extends AbstractSingleMRACompo
         }
 
         if(d != 0.0) {
-            double soc = getSocialComponent(agent, data, filter);
+            double soc = getSocialComponent(agent, data.getProduct());
             double dsoc = d * soc;
             alm.append("d * social component = {} * {} = {}", d, soc, dsoc);
             B += dsoc;
@@ -110,27 +99,20 @@ public class DefaultHandleDecisionMakingComponent extends AbstractSingleMRACompo
             alm.append("d = 0");
         }
 
-        double adoptionThreshold = getAdoptionThreshold(agent, data);
+        double adoptionThreshold = getAdoptionThreshold(agent, data.getProduct());
         boolean noAdoption = B < adoptionThreshold;
 
         alm.append("U < adoption threshold ({} < {}): {}", B, adoptionThreshold, noAdoption);
-        logCalculateDecisionMaking(data, alm);
+        logCalculateDecisionMaking(alm);
 
         if(noAdoption) {
             data.updateStage(RAStage.IMPEDED);
             return ProcessPlanResult.IMPEDED;
         } else {
-            Timestamp now = now(data);
-            agent.adopt(data.getNeed(), data.getProduct(), now, determinePhase(data, now));
+            Timestamp now = now();
+            agent.adopt(data.getNeed(), data.getProduct(), now, determinePhase(now));
             data.updateStage(RAStage.ADOPTED);
             return ProcessPlanResult.ADOPTED;
         }
-    }
-
-    protected void logCalculateDecisionMaking(AgentData data, IRPLoggingMessageCollection mlm) {
-        boolean logData = data.getSettings().isLogCalculateDecisionMaking();
-        mlm.setSection(getSection(logData))
-                .setLevel(getLevel(logData))
-                .log(getLogger(logData));
     }
 }

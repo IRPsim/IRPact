@@ -1,13 +1,12 @@
-package de.unileipzig.irpact.core.process.modularra;
+package de.unileipzig.irpact.core.process.mra;
 
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.need.Need;
-import de.unileipzig.irpact.core.process.modularra.component.base.EvaluableComponent;
+import de.unileipzig.irpact.core.process.mra.component.base.EvaluableComponent;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
-import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -34,10 +33,9 @@ public class ModularRAProcessModel extends RAProcessModel {
     @Override
     public ModularRAProcessPlan newPlan(Agent agent, Need need, Product product) {
         ConsumerAgent cAgent = cast(agent);
-        Uncertainty uncertainty = getUncertainty0(cAgent);
-        Rnd rnd = environment.getSimulationRandom().deriveInstance();
-        AgentData data = new AgentData(this, uncertainty, need, product, rnd);
-        return new ModularRAProcessPlan(cAgent, data);
+        createUncertainty0(cAgent);
+        Rnd rnd = getEnvironment().getSimulationRandom().deriveInstance();
+        return new ModularRAProcessPlan(this, cAgent, need, product, rnd);
     }
 
     public void setInterestComponent(EvaluableComponent interestComponent) {

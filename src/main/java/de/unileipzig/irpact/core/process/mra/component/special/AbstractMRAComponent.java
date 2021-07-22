@@ -1,7 +1,8 @@
-package de.unileipzig.irpact.core.process.modularra.component.special;
+package de.unileipzig.irpact.core.process.mra.component.special;
 
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.MathUtil;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.Acting;
 import de.unileipzig.irpact.core.agent.Agent;
@@ -9,20 +10,23 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinities;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
-import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.logging.InfoTag;
-import de.unileipzig.irpact.core.logging.LoggingHelper;
+import de.unileipzig.irpact.core.logging.*;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
-import de.unileipzig.irpact.core.process.modularra.AgentData;
-import de.unileipzig.irpact.core.process.modularra.component.generic.AbstractComponent;
-import de.unileipzig.irpact.core.process.modularra.component.generic.ComponentType;
+import de.unileipzig.irpact.core.process.mra.ModularRAProcessModel;
+import de.unileipzig.irpact.core.process.mra.component.generic.AbstractComponent;
+import de.unileipzig.irpact.core.process.mra.component.generic.ComponentType;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
+import de.unileipzig.irpact.core.process.ra.alg.RelativeAgreementAlgorithm;
+import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
+import de.unileipzig.irpact.core.process.ra.npv.NPVData;
+import de.unileipzig.irpact.core.process.ra.npv.NPVDataSupplier;
+import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
 import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
 import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -36,6 +40,7 @@ import java.util.function.Predicate;
 /**
  * @author Daniel Abitz
  */
+@SuppressWarnings("unused")
 public abstract class AbstractMRAComponent extends AbstractComponent implements LoggingHelper {
 
     protected final Predicate<SocialGraph.Node> IS_CONSUMER = node -> node.is(ConsumerAgent.class);
@@ -43,6 +48,169 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
     protected AbstractMRAComponent(ComponentType type) {
         super(type);
     }
+
+    //=========================
+    //fields +get/set
+    //=========================
+
+    protected SimulationEnvironment environment;
+    public void setEnvironment(SimulationEnvironment environment) {
+        this.environment = environment;
+    }
+    public SimulationEnvironment getEnvironment() {
+        return environment;
+    }
+    protected int getCurrentYear() {
+        return getEnvironment().getTimeModel().getCurrentYear();
+    }
+
+    protected ModularRAProcessModel model;
+    public void setModel(ModularRAProcessModel model) {
+        this.model = model;
+    }
+    public ModularRAProcessModel getModel() {
+        return model;
+    }
+
+    protected double adopterPoints = RAModelData.DEFAULT_ADOPTER_POINTS;
+    public void setAdopterPoints(double adopterPoints) {
+        this.adopterPoints = adopterPoints;
+    }
+    public double getAdopterPoints() {
+        return adopterPoints;
+    }
+
+    protected double interestedPoints = RAModelData.DEFAULT_INTERESTED_POINTS;
+    public void setInterestedPoints(double interestedPoints) {
+        this.interestedPoints = interestedPoints;
+    }
+    public double getInterestedPoints() {
+        return interestedPoints;
+    }
+
+    protected double awarePoints = RAModelData.DEFAULT_AWARE_POINTS;
+    public void setAwarePoints(double awarePoints) {
+        this.awarePoints = awarePoints;
+    }
+    public double getAwarePoints() {
+        return awarePoints;
+    }
+
+    protected double unknownPoints = RAModelData.DEFAULT_UNKNOWN_POINTS;
+    public void setUnknownPoints(double unknownPoints) {
+        this.unknownPoints = unknownPoints;
+    }
+    public double getUnknownPoints() {
+        return unknownPoints;
+    }
+
+    protected double a;
+    public void setA(double a) {
+        this.a = a;
+    }
+    public double getA() {
+        return a;
+    }
+
+    protected double b;
+    public void setB(double b) {
+        this.b = b;
+    }
+    public double getB() {
+        return b;
+    }
+
+    protected double c;
+    public void setC(double c) {
+        this.c = c;
+    }
+    public double getC() {
+        return c;
+    }
+
+    protected double d;
+    public void setD(double d) {
+        this.d = d;
+    }
+    public double getD() {
+        return d;
+    }
+
+    protected double logisticFactor = RAConstants.DEFAULT_LOGISTIC_FACTOR;
+    public void setLogisticFactor(double logisticFactor) {
+        this.logisticFactor = logisticFactor;
+    }
+    public double getLogisticFactor() {
+        return logisticFactor;
+    }
+
+    protected NodeFilter filter;
+    public void setNodeFilter(NodeFilter filter) {
+        this.filter = filter;
+    }
+    public NodeFilter getNodeFilter() {
+        return filter;
+    }
+
+    protected NPVDataSupplier npvDataSupplier;
+    public void setNPVDataSupplier(NPVDataSupplier npvDataSupplier) {
+        this.npvDataSupplier = npvDataSupplier;
+    }
+    public NPVDataSupplier getNPVDataSupplier() {
+        return npvDataSupplier;
+    }
+
+    protected NPVData npvData;
+    public void setNpvData(NPVData npvData) {
+        this.npvData = npvData;
+    }
+    public NPVData getNpvData() {
+        return npvData;
+    }
+
+    protected RelativeAgreementAlgorithm raAlgorithm;
+    public void setRelativeAgreementAlgorithm(RelativeAgreementAlgorithm raAlgorithm) {
+        this.raAlgorithm = raAlgorithm;
+    }
+    public RelativeAgreementAlgorithm getRelativeAgreementAlgorithm() {
+        return raAlgorithm;
+    }
+
+    protected double weightFT = 0.5;
+    public void setWeightFT(double weightFT) {
+        this.weightFT = weightFT;
+    }
+    public double getWeightFT() {
+        return weightFT;
+    }
+
+    protected double weightNPV = 0.5;
+    public void setWeightNPV(double weightNPV) {
+        this.weightNPV = weightNPV;
+    }
+    public double getWeightNPV() {
+        return weightNPV;
+    }
+
+    protected double weightSocial = 0.5;
+    public void setWeightSocial(double weightSocial) {
+        this.weightSocial = weightSocial;
+    }
+    public double getWeightSocial() {
+        return weightSocial;
+    }
+
+    protected double weightLocal = 0.5;
+    public void setWeightLocal(double weightLocal) {
+        this.weightLocal = weightLocal;
+    }
+    public double getWeightLocal() {
+        return weightLocal;
+    }
+
+    //=========================
+    //...
+    //=========================
 
     @Override
     public abstract IRPLogger getDefaultLogger();
@@ -57,39 +225,42 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         actor.allowAttention();
     }
 
-    protected ProcessPlanResult doAction(ConsumerAgent agent, AgentData data) {
+    protected ProcessPlanResult doAction(
+            ConsumerAgent agent,
+            Rnd rnd,
+            Product product) {
         trace("[{}] doAction", agent.getName());
 
         agent.allowAttention();
 
-        if(doCommunicate(agent, data)) {
-            return communicate(agent, data);
+        if(doCommunicate(agent, rnd)) {
+            return communicate(agent, rnd, product);
         }
 
-        if(doRewire(agent, data)) {
-            return rewire(agent, data);
+        if(doRewire(agent, rnd)) {
+            return rewire(agent, rnd);
         }
 
-        return nop(agent, data);
+        return nop(agent);
     }
 
-    protected final boolean doCommunicate(ConsumerAgent agent, AgentData data) {
-        double r = data.getRnd().nextDouble();
-        double freq = getCommunicationFrequencySN(agent, data);
+    protected final boolean doCommunicate(ConsumerAgent agent, Rnd rnd) {
+        double r = rnd.nextDouble();
+        double freq = getCommunicationFrequencySN(agent);
         boolean doCommunicate = r < freq;
         trace("[{}] do communicate: {} ({} < {})", agent.getName(), doCommunicate, r, freq);
         return doCommunicate;
     }
 
-    protected ProcessPlanResult communicate(ConsumerAgent agent, AgentData data) {
+    protected ProcessPlanResult communicate(ConsumerAgent agent, Rnd rnd, Product product) {
         trace("[{}] start communication", agent.getName());
 
-        SocialGraph graph = data.getGraph();
+        SocialGraph graph = getEnvironment().getNetwork().getGraph();
         SocialGraph.Node node = agent.getSocialGraphNode();
         //create random target order
         List<SocialGraph.Node> targetList = new ArrayList<>();
         graph.getTargets(node, SocialGraph.Type.COMMUNICATION, targetList);
-        Collections.shuffle(targetList, data.getRandom());
+        Collections.shuffle(targetList, rnd.getRandom());
 
         for(SocialGraph.Node targetNode: targetList) {
             ConsumerAgent targetAgent = targetNode.getAgent(ConsumerAgent.class);
@@ -114,9 +285,9 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
                     try {
                         trace("[{}] start communication ('{}' -> '{}')", agent.getName(), agent.getName(), targetAgent.getName());
 
-                        updateInterest(agent, data, targetAgent);
-                        updateCommunicationGraph(agent, data, graph, targetNode);
-                        applyRelativeAgreement(agent, data, targetAgent);
+                        updateInterest(agent, product, targetAgent);
+                        updateCommunicationGraph(agent, graph, targetNode);
+                        applyRelativeAgreement(agent, targetAgent);
 
                         return ProcessPlanResult.IN_PROCESS;
                     } finally {
@@ -130,15 +301,15 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         return ProcessPlanResult.IN_PROCESS;
     }
 
-    protected final boolean doRewire(ConsumerAgent agent, AgentData data) {
-        double r = data.getRnd().nextDouble();
-        double freq = getRewiringRate(agent, data);
+    protected final boolean doRewire(ConsumerAgent agent, Rnd rnd) {
+        double r = rnd.nextDouble();
+        double freq = getRewiringRate(agent);
         boolean doRewire = r < freq;
         trace("[{}] do rewire: {} ({} < {})", agent.getName(), doRewire, r, freq);
         return doRewire;
     }
 
-    protected ProcessPlanResult rewire(ConsumerAgent agent, AgentData data) {
+    protected ProcessPlanResult rewire(ConsumerAgent agent, Rnd rnd) {
         if(agent.tryAquireAttention()) {
             agent.actionPerformed();
             agent.aquireDataAccess(); //lock data
@@ -152,23 +323,23 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         try {
             trace("[{}] rewire", agent.getName());
 
-            SocialGraph graph = data.getGraph();
+            SocialGraph graph = getEnvironment().getNetwork().getGraph();
             SocialGraph.Node node = agent.getSocialGraphNode();
             SocialGraph.LinkageInformation linkInfo = graph.getLinkageInformation(node);
 
             //remove
-            SocialGraph.Node rndTarget = graph.getRandomTarget(node, SocialGraph.Type.COMMUNICATION, data.getRnd());
+            SocialGraph.Node rndTarget = graph.getRandomTarget(node, SocialGraph.Type.COMMUNICATION, rnd);
             if(rndTarget == null) {
-                logGraphUpdateEdgeRemoved(agent, data, null);
+                logGraphUpdateEdgeRemoved(agent, null);
             } else {
                 ConsumerAgentGroup tarCag = rndTarget.getAgent(ConsumerAgent.class).getGroup();
                 SocialGraph.Edge edge = graph.getEdge(node, rndTarget, SocialGraph.Type.COMMUNICATION);
                 graph.removeEdge(edge);
-                logGraphUpdateEdgeRemoved(agent, data, rndTarget.getAgent());
+                logGraphUpdateEdgeRemoved(agent, rndTarget.getAgent());
                 updateLinkCount(agent, linkInfo, tarCag, -1); //dec
             }
 
-            ConsumerAgentGroupAffinities affinities = data.getAgents()
+            ConsumerAgentGroupAffinities affinities = getEnvironment().getAgents()
                     .getConsumerAgentGroupAffinityMapping()
                     .get(agent.getGroup());
 
@@ -180,7 +351,7 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
                     break;
                 }
 
-                tarCag = affinities.getWeightedRandom(data.getRnd());
+                tarCag = affinities.getWeightedRandom(rnd);
 
                 int currentLinkCount = linkInfo.get(tarCag, SocialGraph.Type.COMMUNICATION);
                 int maxTargetAgents = tarCag.getNumberOfAgents();
@@ -198,7 +369,8 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
                 int unlinkedInCag = maxTargetAgents - currentLinkCount;
 
                 tarNode = getRandomUnlinked(
-                        agent, data,
+                        agent,
+                        rnd,
                         agent.getSocialGraphNode(),
                         tarCag,
                         unlinkedInCag,
@@ -210,7 +382,7 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
                 trace("[{}] no valid rewire target found", agent.getName());
             } else {
                 graph.addEdge(agent.getSocialGraphNode(), tarNode, SocialGraph.Type.COMMUNICATION, 1.0);
-                logGraphUpdateEdgeAdded(agent, data, tarNode.getAgent());
+                logGraphUpdateEdgeAdded(agent, tarNode.getAgent());
                 updateLinkCount(agent, linkInfo, tarCag, 1); //inc
             }
 
@@ -220,28 +392,28 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         }
     }
 
-    protected ProcessPlanResult nop(ConsumerAgent agent, @SuppressWarnings("unused") AgentData data) {
+    protected ProcessPlanResult nop(ConsumerAgent agent) {
         trace("[{}] nop", agent.getName());
         return ProcessPlanResult.IN_PROCESS;
     }
 
     @Todo
-    protected final void applyRelativeAgreement(ConsumerAgent agent, AgentData data, ConsumerAgent target) {
-        applyRelativeAgreement(agent, target, RAConstants.NOVELTY_SEEKING, data);
-        applyRelativeAgreement(agent, target, RAConstants.DEPENDENT_JUDGMENT_MAKING, data);
-        applyRelativeAgreement(agent, target, RAConstants.ENVIRONMENTAL_CONCERN, data);
+    protected final void applyRelativeAgreement(ConsumerAgent agent, ConsumerAgent target) {
+        applyRelativeAgreement(agent, target, RAConstants.NOVELTY_SEEKING);
+        applyRelativeAgreement(agent, target, RAConstants.DEPENDENT_JUDGMENT_MAKING);
+        applyRelativeAgreement(agent, target, RAConstants.ENVIRONMENTAL_CONCERN);
     }
 
     @Todo
-    protected final void applyRelativeAgreement(ConsumerAgent agent, ConsumerAgent target, String attrName, AgentData data) {
+    protected final void applyRelativeAgreement(ConsumerAgent agent, ConsumerAgent target, String attrName) {
         ConsumerAgentAttribute opinionThis = agent.getAttribute(attrName);
-        Uncertainty uncertaintyThis = data.getUncertainty();
+        Uncertainty uncertaintyThis = getModel().getUncertainty(agent);
         ConsumerAgentAttribute opinionTarget = target.getAttribute(attrName);
-        Uncertainty uncertaintyTarget = data.getModel().getUncertainty(target);
+        Uncertainty uncertaintyTarget = getModel().getUncertainty(target);
         if(uncertaintyTarget == null) {
             warn("agent '{}' has no uncertainty - skip", target.getName());
         } else {
-            data.getRelativeAgreementAlgorithm().apply(
+            getRelativeAgreementAlgorithm().apply(
                     agent.getName(),
                     opinionThis,
                     uncertaintyThis,
@@ -252,23 +424,26 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         }
     }
 
-    protected final void updateInterest(ConsumerAgent agent, AgentData data, ConsumerAgent targetAgent) {
-        double myInterest = getInterest(agent, data.getProduct());
-        double targetInterest = getInterest(targetAgent, data.getProduct());
+    protected final void updateInterest(
+            ConsumerAgent agent,
+            Product product,
+            ConsumerAgent targetAgent) {
+        double myInterest = getInterest(agent, product);
+        double targetInterest = getInterest(targetAgent, product);
 
-        double myPointsToAdd = getInterestPoints(agent, data.getModelData(), data.getProduct());
-        double targetPointsToAdd = getInterestPoints(targetAgent, data.getModelData(), data.getProduct());
+        double myPointsToAdd = getInterestPoints(agent, product);
+        double targetPointsToAdd = getInterestPoints(targetAgent, product);
 
-        updateInterest(agent, data.getProduct(), targetPointsToAdd);
-        updateInterest(targetAgent, data.getProduct(), myPointsToAdd);
+        updateInterest(agent, product, targetPointsToAdd);
+        updateInterest(targetAgent, product, myPointsToAdd);
 
-        logInterestUpdate(agent, data, myInterest, getInterest(agent, data.getProduct()), targetAgent, targetInterest, getInterest(targetAgent, data.getProduct()));
+        logInterestUpdate(agent, myInterest, getInterest(agent, product), targetAgent, targetInterest, getInterest(targetAgent, product));
     }
 
-    protected final void updateCommunicationGraph(ConsumerAgent agent, AgentData data, SocialGraph graph, SocialGraph.Node target) {
+    protected final void updateCommunicationGraph(ConsumerAgent agent, SocialGraph graph, SocialGraph.Node target) {
         if(!graph.hasEdge(target, agent.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION)) {
             graph.addEdge(target, agent.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION, 1.0);
-            logGraphUpdateEdgeAdded(agent, data, target.getAgent());
+            logGraphUpdateEdgeAdded(agent, target.getAgent());
         }
     }
 
@@ -285,14 +460,15 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
 
     @SuppressWarnings("SameParameterValue")
     protected SocialGraph.Node getRandomUnlinked(
-            ConsumerAgent agent, AgentData data,
+            ConsumerAgent agent,
+            Rnd rnd,
             SocialGraph.Node srcNode,
             ConsumerAgentGroup tarCag,
             int unlinkedInCag,
             SocialGraph.Type type) {
-        SocialGraph graph = data.getGraph();
+        SocialGraph graph = getEnvironment().getNetwork().getGraph();
 
-        int rndId = data.getRnd().nextInt(unlinkedInCag);
+        int rndId = rnd.nextInt(unlinkedInCag);
         int id = 0;
 
         for(Agent tar: tarCag.getAgents()) {
@@ -312,44 +488,47 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         return null;
     }
 
-    protected double getFinancialComponent(ConsumerAgent agent, AgentData data) {
-        double npvAvg = getAverageNPV(data);
-        double npvThis = getNPV(agent, data);
+    protected double getFinancialComponent(ConsumerAgent agent) {
+        double npvAvg = getAverageNPV();
+        double npvThis = getNPV(agent);
 
-        return getFinancialComponent(agent, data, npvAvg, npvThis);
+        return getFinancialComponent(agent,  npvAvg, npvThis);
     }
 
-    protected double getFinancialComponent(ConsumerAgent agent, AgentData data, double npvAvg, double npvThis) {
-        double ftAvg = getAverageFinancialThresholdAgent(data);
-        double ftThis = getFinancialThresholdAgent(agent, data);
+    protected double getFinancialComponent(
+            ConsumerAgent agent,
+            double npvAvg,
+            double npvThis) {
+        double ftAvg = getAverageFinancialPurchasePower();
+        double ftThis = getFinancialPurchasePower(agent);
 
-        double ft = getLogisticFactor(data) * (ftThis - ftAvg);
-        double npv = getLogisticFactor(data) * (npvThis - npvAvg);
+        double ft = getLogisticFactor() * (ftThis - ftAvg);
+        double npv = getLogisticFactor() * (npvThis - npvAvg);
 
         double logisticFt = MathUtil.logistic(ft);
         double logisticNpv = MathUtil.logistic(npv);
 
-        double comp = (logisticFt + logisticNpv) / 2.0;
+        double comp = (getWeightFT() * logisticFt) + (getWeightNPV() * logisticNpv);
 
-        logFinancialComponent(agent, data, ftAvg, ftThis, npvAvg, npvThis, getLogisticFactor(data), ft, npv, logisticFt, logisticNpv, comp);
+        logFinancialComponent(agent, ftAvg, ftThis, npvAvg, npvThis, getLogisticFactor(), ft, npv, logisticFt, logisticNpv, comp);
 
         return comp;
     }
 
-    protected double getEnvironmentalComponent(ConsumerAgent agent, AgentData data) {
-        return getEnvironmentalConcern(agent, data);
+    protected double getEnvironmentalComponent(ConsumerAgent agent) {
+        return getEnvironmentalConcern(agent);
     }
 
-    protected double getNoveltyCompoenent(ConsumerAgent agent, AgentData data) {
-        return getNoveltySeeking(agent, data);
+    protected double getNoveltyCompoenent(ConsumerAgent agent) {
+        return getNoveltySeeking(agent);
     }
 
-    protected double getSocialComponent(ConsumerAgent agent, AgentData data, NodeFilter filter) {
+    protected double getSocialComponent(ConsumerAgent agent, Product product) {
         MutableDouble shareOfAdopterInSocialNetwork = MutableDouble.zero();
         MutableDouble shareOfAdopterInLocalArea = MutableDouble.zero();
-        getShareOfAdopterInSocialNetworkAndLocalArea(agent, data, filter, shareOfAdopterInSocialNetwork, shareOfAdopterInLocalArea);
-        double djm = getDependentJudgmentMaking(agent, data);
-        double comp = djm * (shareOfAdopterInSocialNetwork.get() + shareOfAdopterInLocalArea.get()) / 2.0;
+        getShareOfAdopterInSocialNetworkAndLocalArea(agent, product,  getNodeFilter(), shareOfAdopterInSocialNetwork, shareOfAdopterInLocalArea);
+        double djm = getDependentJudgmentMaking(agent);
+        double comp = djm * ((getWeightSocial() * shareOfAdopterInSocialNetwork.get()) + (getWeightLocal() * shareOfAdopterInLocalArea.get()));
         trace(
                 "[{}] dependent judgment making = {}, share of adopter in social network = {}, share of adopter in local area = {}, social component = {} = {} * ({} + {}) / 2.0",
                 agent.getName(), djm, shareOfAdopterInSocialNetwork.get(), shareOfAdopterInLocalArea.get(), comp, djm, shareOfAdopterInSocialNetwork.get(), shareOfAdopterInLocalArea.get()
@@ -359,7 +538,7 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
 
     protected void getShareOfAdopterInSocialNetworkAndLocalArea(
             ConsumerAgent agent,
-            AgentData data,
+            Product product,
             NodeFilter filter,
             MutableDouble global,
             MutableDouble local) {
@@ -368,26 +547,26 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         MutableDouble totalLocal = MutableDouble.zero();
         MutableDouble adopterLocal = MutableDouble.zero();
 
-        data.getGraph()
+        getEnvironment().getNetwork().getGraph()
                 .streamSourcesAndTargets(agent.getSocialGraphNode(), SocialGraph.Type.COMMUNICATION)
                 .filter(IS_CONSUMER)
                 .distinct()
                 .forEach(globalNode -> {
                     totalGlobal.inc();
-                    if(globalNode.getAgent(ConsumerAgent.class).hasAdopted(data.getProduct())) {
+                    if(globalNode.getAgent(ConsumerAgent.class).hasAdopted(product)) {
                         adopterGlobal.inc();
                     }
                 });
 
         //TODO vllt ergebnisse cachen
         //-> selbiges dann auch gleich bei obrigen
-        data.getGraph()
+        getEnvironment().getNetwork().getGraph()
                 .streamNodes()
                 .filter(IS_CONSUMER)
                 .filter(filter)
                 .forEach(localNode -> {
                     totalLocal.inc();
-                    if(localNode.getAgent(ConsumerAgent.class).hasAdopted(data.getProduct())) {
+                    if(localNode.getAgent(ConsumerAgent.class).hasAdopted(product)) {
                         adopterLocal.inc();
                     }
                 });
@@ -403,7 +582,7 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
             local.set(adopterLocal.get() / totalLocal.get());
         }
 
-        logShareOfAdopterInSocialNetworkAndLocalArea(agent, data, totalGlobal, adopterGlobal, global, totalLocal, adopterLocal, local);
+        logShareOfAdopterInSocialNetworkAndLocalArea(agent,  totalGlobal, adopterGlobal, global, totalLocal, adopterLocal, local);
     }
 
     //=========================
@@ -426,8 +605,8 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
                 : Level.TRACE;
     }
 
-    protected final void logGraphUpdateEdgeAdded(Agent agent, AgentData data, Agent target) {
-        boolean logData = data.getSettings().isLogGraphUpdate();
+    protected final void logGraphUpdateEdgeAdded(Agent agent, Agent target) {
+        boolean logData = getEnvironment().getSettings().isLogGraphUpdate();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
@@ -440,10 +619,10 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
     }
 
     protected final void logInterestUpdate(
-            Agent agent, AgentData data,
+            Agent agent,
             double myOldPoints, double myNewPoints,
             Agent target, double targetOldPoints, double targetNewPoints) {
-        boolean logData = data.getSettings().isLogInterestUpdate();
+        boolean logData = getEnvironment().getSettings().isLogInterestUpdate();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
@@ -456,8 +635,8 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         );
     }
 
-    protected void logGraphUpdateEdgeRemoved(Agent agent, AgentData data, Agent target) {
-        boolean logData = data.getSettings().isLogGraphUpdate();
+    protected void logGraphUpdateEdgeRemoved(Agent agent, Agent target) {
+        boolean logData = getEnvironment().getSettings().isLogGraphUpdate();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
@@ -478,14 +657,14 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
     }
 
     protected void logFinancialComponent(
-            ConsumerAgent agent, AgentData data,
+            ConsumerAgent agent,
             double ftAvg, double ftThis,
             double npvAvg, double npvThis,
             double logisticFactor,
             double ft, double npv,
             double logisticFt, double logisticNpv,
             double comp) {
-        boolean logData = data.getSettings().isLogFinancialComponent();
+        boolean logData = getEnvironment().getSettings().isLogFinancialComponent();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
@@ -497,14 +676,14 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
     }
 
     protected void logShareOfAdopterInSocialNetworkAndLocalArea(
-            ConsumerAgent agent, AgentData data,
+            ConsumerAgent agent,
             MutableDouble totalGlobal,
             MutableDouble adopterGlobal,
             MutableDouble shareGlobal,
             MutableDouble totalLocal,
             MutableDouble adopterLocal,
             MutableDouble shareLocal) {
-        boolean logData = data.getSettings().isLogShareNetworkLocale();
+        boolean logData = getEnvironment().getSettings().isLogShareNetworkLocale();
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
@@ -516,116 +695,144 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         );
     }
 
+    protected void logCalculateDecisionMaking(IRPLoggingMessageCollection mlm) {
+        boolean logData = getEnvironment().getSettings().isLogCalculateDecisionMaking();
+        mlm.setSection(getSection(logData))
+                .setLevel(getLevel(logData))
+                .log(getLogger(logData));
+    }
+
     //=========================
     //util
     //=========================
 
-    protected static double getLogisticFactor(AgentData data) {
-        return data.getModelData().getLogisticFactor();
+    protected void initNPVMatrixWithFile() {
+        NPVData npvData = getNpvData();
+        if(npvData == null) {
+            return;
+        }
+
+        NPVCalculator npvCalculator = new NPVCalculator();
+        npvCalculator.setData(npvData);
+
+        int firstYear = getEnvironment().getTimeModel()
+                .getFirstSimulationYear();
+        int lastYear = getEnvironment().getTimeModel()
+                .getLastSimulationYear();
+
+        trace("calculating npv matrix from '{}' to '{}'", firstYear, lastYear);
+        for(int y = firstYear; y <= lastYear; y++) {
+            trace("calculate year '{}'", y);
+            NPVMatrix matrix = new NPVMatrix();
+            matrix.calculate(npvCalculator, y);
+            getNPVDataSupplier().put(y, matrix);
+        }
     }
 
-    protected static double getAverageNPV(AgentData data) {
-        double sum = data.getAgents()
+    protected double getAverageNPV() {
+        double sum = getEnvironment().getAgents()
                 .streamConsumerAgents()
-                .mapToDouble(agent -> getNPV(agent, data))
+                .mapToDouble(this::getNPV)
                 .sum();
-        return sum / data.getAgents().getTotalNumberOfConsumerAgents();
+        return sum / getEnvironment().getAgents().getTotalNumberOfConsumerAgents();
     }
 
-    protected static double getNPV(ConsumerAgent agent, AgentData data) {
-        return getNPV(agent, data, data.getCurrentYear());
+    protected double getNPV(ConsumerAgent agent) {
+        return getNPV(agent, getCurrentYear());
     }
 
-    protected static double getNPV(ConsumerAgent agent, AgentData data, int year) {
-        return data.getModelData().NPV(agent, year);
+    protected double getNPV(ConsumerAgent agent, int year) {
+        return getNPVDataSupplier().NPV(agent, year);
     }
 
-    protected static double getInterestPoints(ConsumerAgent agent, RAModelData data, Product product) {
+    protected double getInterestPoints(
+            ConsumerAgent agent,
+            Product product) {
         if(isAdopter(agent, product)) {
-            return data.getAdopterPoints();
+            return getAdopterPoints();
         }
         if(isInterested(agent, product)) {
-            return data.getInterestedPoints();
+            return getInterestedPoints();
         }
         if(isAware(agent, product)) {
-            return data.getAwarePoints();
+            return getAwarePoints();
         }
-        return data.getUnknownPoints();
+        return getUnknownPoints();
     }
 
-    protected static boolean isAdopter(ConsumerAgent agent, Product product) {
+    protected boolean isAdopter(ConsumerAgent agent, Product product) {
         return agent.hasAdopted(product);
     }
 
-    protected static boolean isInterested(ConsumerAgent agent, Product product) {
+    protected boolean isInterested(ConsumerAgent agent, Product product) {
         return agent.isInterested(product);
     }
 
-    protected static boolean isAware(ConsumerAgent agent, Product product) {
+    protected boolean isAware(ConsumerAgent agent, Product product) {
         return agent.isAware(product);
     }
 
-    protected static double getInterest(ConsumerAgent agent, Product product) {
+    protected double getInterest(ConsumerAgent agent, Product product) {
         return agent.getInterest(product);
     }
 
-    protected static double getCommunicationFrequencySN(ConsumerAgent agent, AgentData data) {
-        return data.getModel().getCommunicationFrequencySN(agent);
+    protected double getCommunicationFrequencySN(ConsumerAgent agent) {
+        return getModel().getCommunicationFrequencySN(agent);
     }
 
-    protected static double getRewiringRate(ConsumerAgent agent, AgentData data) {
-        return data.getModel().getRewiringRate(agent);
+    protected double getRewiringRate(ConsumerAgent agent) {
+        return getModel().getRewiringRate(agent);
     }
 
     protected void updateInterest(ConsumerAgent agent, Product product, double points) {
         agent.updateInterest(product, points);
     }
 
-    protected static void makeInterested(ConsumerAgent agent, Product product) {
+    protected void makeInterested(ConsumerAgent agent, Product product) {
         agent.makeInterested(product);
     }
 
-    protected static boolean isShareOf1Or2FamilyHouse(ConsumerAgent agent, AgentData data) {
-        return data.getModel().isShareOf1Or2FamilyHouse(agent);
+    protected boolean isShareOf1Or2FamilyHouse(ConsumerAgent agent) {
+        return getModel().isShareOf1Or2FamilyHouse(agent);
     }
 
-    protected static boolean isHouseOwner(ConsumerAgent agent, AgentData data) {
-        return data.getModel().isHouseOwner(agent);
+    protected boolean isHouseOwner(ConsumerAgent agent) {
+        return getModel().isHouseOwner(agent);
     }
 
-    protected static double getFinancialThreshold(ConsumerAgent agent, AgentData data) {
-        return data.getModel().getFinancialThreshold(agent, data.getProduct());
+    protected double getFinancialThreshold(ConsumerAgent agent, Product product) {
+        return getModel().getFinancialThreshold(agent, product);
     }
 
-    protected static double getAdoptionThreshold(ConsumerAgent agent, AgentData data) {
-        return data.getModel().getAdoptionThreshold(agent, data.getProduct());
+    protected double getAdoptionThreshold(ConsumerAgent agent, Product product) {
+        return getModel().getAdoptionThreshold(agent, product);
     }
 
-    protected static double getFinancialThresholdAgent(ConsumerAgent agent, AgentData data) {
-        return data.getModel().getFinancialThreshold(agent);
+    protected double getFinancialPurchasePower(ConsumerAgent agent) {
+        return getModel().getFinancialPurchasePower(agent);
     }
 
-    protected static double getEnvironmentalConcern(ConsumerAgent agent, AgentData data) {
-        return data.getModel().getEnvironmentalConcern(agent);
+    protected double getEnvironmentalConcern(ConsumerAgent agent) {
+        return getModel().getEnvironmentalConcern(agent);
     }
 
-    protected static double getNoveltySeeking(ConsumerAgent agent, AgentData data) {
-        return data.getModel().getNoveltySeeking(agent);
+    protected double getNoveltySeeking(ConsumerAgent agent) {
+        return getModel().getNoveltySeeking(agent);
     }
 
-    protected static double getDependentJudgmentMaking(ConsumerAgent agent, AgentData data) {
-        return data.getModel().getDependentJudgmentMaking(agent);
+    protected double getDependentJudgmentMaking(ConsumerAgent agent) {
+        return getModel().getDependentJudgmentMaking(agent);
     }
 
-    protected static Timestamp now(AgentData data) {
-        return data.getTimeModel().now();
+    protected Timestamp now() {
+        return getEnvironment().getTimeModel().now();
     }
 
-    protected static AdoptionPhase determinePhase(AgentData data, Timestamp ts) {
-        if(data.getModel().isYearChange()) {
+    protected AdoptionPhase determinePhase(Timestamp ts) {
+        if(getModel().isYearChange()) {
             return AdoptionPhase.END_START;
         } else {
-            if(data.getModel().isBeforeWeek27(ts)) {
+            if(getModel().isBeforeWeek27(ts)) {
                 return AdoptionPhase.START_MID;
             } else {
                 return AdoptionPhase.MID_END;
@@ -633,7 +840,7 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         }
     }
 
-    protected static double getAverageFinancialThresholdAgent(AgentData data) {
-        return data.getModelData().getAverageFinancialThresholdAgent(data.getAgents().streamConsumerAgents());
+    protected double getAverageFinancialPurchasePower() {
+        return getNPVDataSupplier().getAverageFinancialPurchasePower(getEnvironment().getAgents().streamConsumerAgents());
     }
 }

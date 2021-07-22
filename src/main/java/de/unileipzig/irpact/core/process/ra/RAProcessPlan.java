@@ -31,7 +31,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import org.slf4j.event.Level;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -45,8 +44,8 @@ public class RAProcessPlan implements ProcessPlan {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(RAProcessPlan.class);
 
     protected final Predicate<SocialGraph.Node> IS_CONSUMER = node -> node.is(ConsumerAgent.class);
-    protected final Function<SocialGraph.Node, ConsumerAgent> TO_CONSUMER = node -> node.getAgent(ConsumerAgent.class);
-    protected final Predicate<ConsumerAgent> IS_ADOPTER = ca -> ca.hasAdopted(getProduct());
+//    protected final Function<SocialGraph.Node, ConsumerAgent> TO_CONSUMER = node -> node.getAgent(ConsumerAgent.class);
+//    protected final Predicate<ConsumerAgent> IS_ADOPTER = ca -> ca.hasAdopted(getProduct());
 
     protected SimulationEnvironment environment;
     protected Need need;
@@ -666,7 +665,7 @@ public class RAProcessPlan implements ProcessPlan {
         double logisticFt = MathUtil.logistic(ft);
         double logisticNpv = MathUtil.logistic(npv);
 
-        double comp = (logisticFt + logisticNpv) / 2.0;
+        double comp = (modelData().getWeightFT() * logisticFt) + (modelData().getWeightNPV() * logisticNpv);
 
         logFinancialComponent(ftAvg, ftThis, npvAvg, npvThis, getLogisticFactor(), ft, npv, logisticFt, logisticNpv, comp);
 
@@ -693,7 +692,7 @@ public class RAProcessPlan implements ProcessPlan {
         MutableDouble shareOfAdopterInLocalArea = MutableDouble.zero();
         getShareOfAdopterInSocialNetworkAndLocalArea(shareOfAdopterInSocialNetwork, shareOfAdopterInLocalArea);
         double djm = getDependentJudgmentMaking(agent);
-        double comp = djm * (shareOfAdopterInSocialNetwork.get() + shareOfAdopterInLocalArea.get()) / 2.0;
+        double comp = djm * ((modelData().getWeightSocial() * shareOfAdopterInSocialNetwork.get()) + (modelData().getWeightLocal() * shareOfAdopterInLocalArea.get()));
         LOGGER.trace(
                 IRPSection.SIMULATION_PROCESS,
                 "[{}] dependent judgment making = {}, share of adopter in social network = {}, share of adopter in local area = {}, social component = {} = {} * ({} + {}) / 2.0",
@@ -703,11 +702,11 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected double getFinancialThresholdAgent(ConsumerAgent agent) {
-        return getModel().getFinancialThreshold(agent);
+        return getModel().getFinancialPurchasePower(agent);
     }
 
     protected double getAverageFinancialThresholdAgent() {
-        return modelData().getAverageFinancialThresholdAgent(environment.getAgents().streamConsumerAgents());
+        return modelData().getAverageFinancialPurchasePower(environment.getAgents().streamConsumerAgents());
     }
 
     protected double getNPV(ConsumerAgent agent) {

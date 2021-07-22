@@ -26,7 +26,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * @author Daniel Abitz
@@ -184,18 +183,6 @@ public class ImageProcessor extends PostProcessor {
                     .collect(Collectors.toList());
         }
         return zips;
-    }
-
-    protected List<Integer> years;
-    public List<Integer> getAllSimulationYears() {
-        if(years == null) {
-            int firstYear = metaData.getOldestRunInfo().getActualFirstSimulationYear();
-            int lastYear = metaData.getCurrentRunInfo().getLastSimulationYear();
-            years = IntStream.rangeClosed(firstYear, lastYear)
-                    .boxed()
-                    .collect(Collectors.toList());
-        }
-        return years;
     }
 
     protected String[] yearBreaks;

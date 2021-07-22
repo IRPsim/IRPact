@@ -1,8 +1,8 @@
-package de.unileipzig.irpact.core.process.modularra.component;
+package de.unileipzig.irpact.core.process.mra.component;
 
 import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
 import de.unileipzig.irpact.commons.util.MapSupplier;
-import de.unileipzig.irpact.core.process.modularra.component.generic.Component;
+import de.unileipzig.irpact.core.process.mra.component.generic.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
