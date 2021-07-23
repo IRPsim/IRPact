@@ -8,6 +8,7 @@ import de.unileipzig.irpact.core.process.mra.component.generic.Component;
 import de.unileipzig.irpact.core.process.mra.component.generic.ComponentType;
 
 import java.util.Collections;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -16,6 +17,11 @@ public class DoNothingComponent extends AbstractComponent implements EvaluableCo
 
     public DoNothingComponent() {
         super(ComponentType.OUTPUT);
+    }
+
+    @Override
+    public Stream<? extends Component> streamComponents() {
+        return Stream.empty();
     }
 
     @Override

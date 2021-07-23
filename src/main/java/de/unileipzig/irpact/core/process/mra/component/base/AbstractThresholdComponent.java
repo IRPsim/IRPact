@@ -6,6 +6,7 @@ import de.unileipzig.irpact.core.process.mra.component.generic.Component;
 import de.unileipzig.irpact.core.process.mra.component.generic.ComponentType;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -58,6 +59,11 @@ public abstract class AbstractThresholdComponent extends AbstractComponent imple
 
     public double getIfEmpty() {
         return ifEmpty;
+    }
+
+    @Override
+    public Stream<? extends Component> streamComponents() {
+        return components.stream();
     }
 
     @Override

@@ -11,6 +11,7 @@ import de.unileipzig.irpact.core.util.AttributeHelper;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -66,6 +67,11 @@ public abstract class AbstractAttributeComponent extends AbstractComponent imple
         } else {
             throw new IRPactIllegalArgumentException("agent '{}' is no consumer", agent.getName());
         }
+    }
+
+    @Override
+    public Stream<? extends Component> streamComponents() {
+        return Stream.empty();
     }
 
     @Override

@@ -19,8 +19,8 @@ public class DefaultHandleFeasibilityComponent extends AbstractSingleMRAComponen
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(DefaultHandleFeasibilityComponent.class);
 
-    protected DefaultHandleFeasibilityComponent(ComponentType type) {
-        super(type);
+    public DefaultHandleFeasibilityComponent() {
+        super(ComponentType.OUTPUT);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class DefaultHandleFeasibilityComponent extends AbstractSingleMRAComponen
 
         if(isShare && isOwner) {
             doSelfActionAndAllowAttention(agent);
-            data.updateStage(RAStage.DECISION_MAKING);
+            data.setStage(RAStage.DECISION_MAKING);
             return ProcessPlanResult.IN_PROCESS;
         }
 

@@ -18,8 +18,8 @@ public class DefaultHandleInterestComponent extends AbstractSingleMRAComponent i
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(DefaultHandleInterestComponent.class);
 
-    protected DefaultHandleInterestComponent(ComponentType type) {
-        super(type);
+    public DefaultHandleInterestComponent() {
+        super(ComponentType.OUTPUT);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class DefaultHandleInterestComponent extends AbstractSingleMRAComponent i
         if(isInterested(agent, data.getProduct())) {
             doSelfActionAndAllowAttention(agent);
             trace("[{}] is interested in '{}'", agent.getName(), data.getProductName());
-            data.updateStage(RAStage.FEASIBILITY);
+            data.setStage(RAStage.FEASIBILITY);
             return ProcessPlanResult.IN_PROCESS;
         }
 

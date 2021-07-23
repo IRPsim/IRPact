@@ -3,6 +3,7 @@ package de.unileipzig.irpact.core.process.mra.component.generic;
 import de.unileipzig.irpact.commons.NameableBase;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -38,6 +39,11 @@ public abstract class AbstractComponent extends NameableBase implements Componen
             }
         }
         components.add(current);
+    }
+
+    @Override
+    public Stream<? extends Component> streamAllComponents() {
+        return getAllComponents().stream();
     }
 
     @Override

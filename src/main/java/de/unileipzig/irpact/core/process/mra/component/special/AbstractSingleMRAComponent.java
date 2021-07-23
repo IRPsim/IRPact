@@ -5,6 +5,7 @@ import de.unileipzig.irpact.core.process.mra.component.generic.ComponentType;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -23,6 +24,16 @@ public abstract class AbstractSingleMRAComponent extends AbstractMRAComponent {
     @Override
     public final Collection<Component> getAllComponents() {
         return Collections.singleton(this);
+    }
+
+    @Override
+    public Stream<? extends Component> streamAllComponents() {
+        return Stream.of(this);
+    }
+
+    @Override
+    public Stream<? extends Component> streamComponents() {
+        return Stream.empty();
     }
 
     @Override

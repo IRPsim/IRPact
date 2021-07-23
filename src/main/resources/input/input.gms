@@ -57,7 +57,7 @@ SET set_InDependentConsumerAgentGroupAttribute(set_InConsumerAgentGroupAttribute
 
 * - identifier: InGeneralConsumerAgentAnnualGroupAttribute
 * - type: String
-SET set_InGeneralConsumerAgentAnnualGroupAttribute(set_InDependentConsumerAgentGroupAttribute,set_InConsumerAgentGroupAttribute)
+SET set_InGeneralConsumerAgentAnnualGroupAttribute(set_InDependentConsumerAgentGroupAttribute)
 
 * - description: Name des Attributes für das Gruppenattribut.
 * - identifier: Attributname
@@ -95,7 +95,7 @@ PARAMETER par_link_InGeneralConsumerAgentGroup_InSpatialDistribution_spatialDist
 
 * - identifier: InGeneralConsumerAgentGroupAttribute
 * - type: String
-SET set_InGeneralConsumerAgentGroupAttribute(set_InDependentConsumerAgentGroupAttribute,set_InConsumerAgentGroupAttribute)
+SET set_InGeneralConsumerAgentGroupAttribute(set_InDependentConsumerAgentGroupAttribute)
 
 * - description: Name des Attributes für das Gruppenattribut.
 * - identifier: Attributname
@@ -114,7 +114,7 @@ SET set_InIndependentConsumerAgentGroupAttribute(set_InConsumerAgentGroupAttribu
 
 * - identifier: InNameSplitConsumerAgentGroupAttribute
 * - type: String
-SET set_InNameSplitConsumerAgentGroupAttribute(set_InIndependentConsumerAgentGroupAttribute,set_InConsumerAgentGroupAttribute)
+SET set_InNameSplitConsumerAgentGroupAttribute(set_InIndependentConsumerAgentGroupAttribute)
 
 * - description: Legt die Verteilungsfunktion fest, auf deren Basis die Attributwerte gezogen werden.
 * - identifier: Verteilungsfunktion
@@ -1035,7 +1035,7 @@ SET set_InUncertainty(*)
 
 * - identifier: InDisabledProcessPlanNodeFilterScheme
 * - type: String
-SET set_InDisabledProcessPlanNodeFilterScheme(set_InRAProcessPlanNodeFilterScheme,set_InProcessPlanNodeFilterScheme)
+SET set_InDisabledProcessPlanNodeFilterScheme(set_InRAProcessPlanNodeFilterScheme)
 
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
@@ -1044,7 +1044,7 @@ PARAMETER par_InDisabledProcessPlanNodeFilterScheme_placeholder(set_InDisabledPr
 
 * - identifier: InEntireNetworkNodeFilterScheme
 * - type: String
-SET set_InEntireNetworkNodeFilterScheme(set_InRAProcessPlanNodeFilterScheme,set_InProcessPlanNodeFilterScheme)
+SET set_InEntireNetworkNodeFilterScheme(set_InRAProcessPlanNodeFilterScheme)
 
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
@@ -1159,7 +1159,7 @@ PARAMETER par_link_InRAProcessModel_InUncertainty_uncertainties(set_InRAProcessM
 
 * - identifier: InRAProcessPlanMaxDistanceFilterScheme
 * - type: String
-SET set_InRAProcessPlanMaxDistanceFilterScheme(set_InRAProcessPlanNodeFilterScheme,set_InProcessPlanNodeFilterScheme)
+SET set_InRAProcessPlanMaxDistanceFilterScheme(set_InRAProcessPlanNodeFilterScheme)
 
 * - description: Legt die maximale Entfernung fest. Die Einheit richtet sich sowohl nach den Ausgangsdaten als auch der verwendeten Metric im räumlichen Modell.
 * - identifier: Maximale Entfernung
@@ -1186,6 +1186,198 @@ SET set_InProcessModel(*)
 * - type: String
 SET set_InProcessPlanNodeFilterScheme(*)
 
+* - identifier: InComponent
+* - hidden: 1
+* - type: String
+SET set_InComponent(*)
+
+* - identifier: InDefaultDoActionComponent
+* - type: String
+SET set_InDefaultDoActionComponent(set_InEvaluableComponent)
+
+* - default: 3
+* - description: todo
+* - identifier: adopter points
+* - type: Integer
+PARAMETER par_InDefaultDoActionComponent_adopterPoints(set_InDefaultDoActionComponent)
+
+* - default: 2
+* - description: todo
+* - identifier: interested points
+* - type: Integer
+PARAMETER par_InDefaultDoActionComponent_interestedPoints(set_InDefaultDoActionComponent)
+
+* - default: 1
+* - description: todo
+* - identifier: aware points
+* - type: Integer
+PARAMETER par_InDefaultDoActionComponent_awarePoints(set_InDefaultDoActionComponent)
+
+* - default: 0
+* - description: todo
+* - identifier: unknown points
+* - type: Integer
+PARAMETER par_InDefaultDoActionComponent_unknownPoints(set_InDefaultDoActionComponent)
+
+* - identifier: InDefaultHandleDecisionMakingComponent
+* - type: String
+SET set_InDefaultHandleDecisionMakingComponent(set_InEvaluableComponent)
+
+* - default: 0.25
+* - description: todo
+* - identifier: a
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_a(set_InDefaultHandleDecisionMakingComponent)
+
+* - default: 0.25
+* - description: todo
+* - identifier: b
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_b(set_InDefaultHandleDecisionMakingComponent)
+
+* - default: 0.25
+* - description: todo
+* - identifier: c
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_c(set_InDefaultHandleDecisionMakingComponent)
+
+* - default: 0.25
+* - description: todo
+* - identifier: d
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_d(set_InDefaultHandleDecisionMakingComponent)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InDefaultHandleDecisionMakingComponent_InPVFile_pvFile(set_InDefaultHandleDecisionMakingComponent,set_InPVFile)
+
+* - description: todo
+* - identifier: nodeFilterScheme
+* - type: Boolean
+PARAMETER par_link_InDefaultHandleDecisionMakingComponent_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InDefaultHandleDecisionMakingComponent,set_InRAProcessPlanNodeFilterScheme)
+
+* - identifier: InDefaultHandleFeasibilityComponent
+* - type: String
+SET set_InDefaultHandleFeasibilityComponent(set_InEvaluableComponent)
+
+* - default: 3
+* - description: todo
+* - identifier: adopter points
+* - type: Integer
+PARAMETER par_InDefaultHandleFeasibilityComponent_adopterPoints(set_InDefaultHandleFeasibilityComponent)
+
+* - default: 2
+* - description: todo
+* - identifier: interested points
+* - type: Integer
+PARAMETER par_InDefaultHandleFeasibilityComponent_interestedPoints(set_InDefaultHandleFeasibilityComponent)
+
+* - default: 1
+* - description: todo
+* - identifier: aware points
+* - type: Integer
+PARAMETER par_InDefaultHandleFeasibilityComponent_awarePoints(set_InDefaultHandleFeasibilityComponent)
+
+* - default: 0
+* - description: todo
+* - identifier: unknown points
+* - type: Integer
+PARAMETER par_InDefaultHandleFeasibilityComponent_unknownPoints(set_InDefaultHandleFeasibilityComponent)
+
+* - identifier: InDefaultHandleInterestComponent
+* - type: String
+SET set_InDefaultHandleInterestComponent(set_InEvaluableComponent)
+
+* - default: 3
+* - description: todo
+* - identifier: adopter points
+* - type: Integer
+PARAMETER par_InDefaultHandleInterestComponent_adopterPoints(set_InDefaultHandleInterestComponent)
+
+* - default: 2
+* - description: todo
+* - identifier: interested points
+* - type: Integer
+PARAMETER par_InDefaultHandleInterestComponent_interestedPoints(set_InDefaultHandleInterestComponent)
+
+* - default: 1
+* - description: todo
+* - identifier: aware points
+* - type: Integer
+PARAMETER par_InDefaultHandleInterestComponent_awarePoints(set_InDefaultHandleInterestComponent)
+
+* - default: 0
+* - description: todo
+* - identifier: unknown points
+* - type: Integer
+PARAMETER par_InDefaultHandleInterestComponent_unknownPoints(set_InDefaultHandleInterestComponent)
+
+* - identifier: InEvaluableComponent
+* - hidden: 1
+* - type: String
+SET set_InEvaluableComponent(set_InComponent)
+
+* - identifier: InModularRAProcessModel
+* - type: String
+SET set_InModularRAProcessModel(set_InProcessModel)
+
+* - default: 0.5
+* - description: todo
+* - identifier: speed of convergence
+* - type: Float
+PARAMETER par_InModularRAProcessModel_speedOfConvergence(set_InModularRAProcessModel)
+
+* - description: todo
+* - identifier: attitude gap
+* - type: Float
+PARAMETER par_InModularRAProcessModel_attitudeGap(set_InModularRAProcessModel)
+
+* - default: 0.5
+* - domain: [0,1]
+* - description: todo
+* - identifier: chance neutral
+* - type: Float
+PARAMETER par_InModularRAProcessModel_chanceNeutral(set_InModularRAProcessModel)
+
+* - default: 0.25
+* - domain: [0,1]
+* - description: todo
+* - identifier: chance convergence
+* - type: Float
+PARAMETER par_InModularRAProcessModel_chanceConvergence(set_InModularRAProcessModel)
+
+* - default: 0.25
+* - domain: [0,1]
+* - description: todo
+* - identifier: chance divergence
+* - type: Float
+PARAMETER par_InModularRAProcessModel_chanceDivergence(set_InModularRAProcessModel)
+
+* - description: todo
+* - identifier: interest component
+* - type: Boolean
+PARAMETER par_link_InModularRAProcessModel_InEvaluableComponent_interestComponent(set_InModularRAProcessModel,set_InEvaluableComponent)
+
+* - description: todo
+* - identifier: feasibility component
+* - type: Boolean
+PARAMETER par_link_InModularRAProcessModel_InEvaluableComponent_feasibilityComponent(set_InModularRAProcessModel,set_InEvaluableComponent)
+
+* - description: todo
+* - identifier: decision making component
+* - type: Boolean
+PARAMETER par_link_InModularRAProcessModel_InEvaluableComponent_decisionMakingComponent(set_InModularRAProcessModel,set_InEvaluableComponent)
+
+* - description: todo
+* - identifier: action component
+* - type: Boolean
+PARAMETER par_link_InModularRAProcessModel_InEvaluableComponent_actionComponent(set_InModularRAProcessModel,set_InEvaluableComponent)
+
+* - identifier: uncertainties
+* - type: Boolean
+PARAMETER par_link_InModularRAProcessModel_InUncertainty_uncertainties(set_InModularRAProcessModel,set_InUncertainty)
+
 * - identifier: InBasicProductGroup
 * - type: String
 SET set_InBasicProductGroup(set_InProductGroup)
@@ -1197,7 +1389,7 @@ PARAMETER par_link_InBasicProductGroup_InDependentProductGroupAttribute_pgAttrib
 
 * - identifier: InBasicProductGroupAttribute
 * - type: String
-SET set_InBasicProductGroupAttribute(set_InDependentProductGroupAttribute,set_InProductGroupAttribute)
+SET set_InBasicProductGroupAttribute(set_InDependentProductGroupAttribute)
 
 * - description: Legt die Attributnamen fest.
 * - identifier: Attributname
@@ -1258,7 +1450,7 @@ SET set_InIndependentProductGroupAttribute(set_InProductGroupAttribute)
 
 * - identifier: InNameSplitProductGroupAttribute
 * - type: String
-SET set_InNameSplitProductGroupAttribute(set_InIndependentProductGroupAttribute,set_InProductGroupAttribute)
+SET set_InNameSplitProductGroupAttribute(set_InIndependentProductGroupAttribute)
 
 * - description: Legt die Verteilungsfunktion fest, auf deren Basis die Attributwerte gezogen werden.
 * - identifier: Verteilungsfunktion
@@ -1282,7 +1474,7 @@ SET set_InProductGroupAttribute(*)
 
 * - identifier: InFileBasedPVactMilieuSupplier
 * - type: String
-SET set_InFileBasedPVactMilieuSupplier(set_InSpatialDistributionWithCollection,set_InSpatialDistribution)
+SET set_InFileBasedPVactMilieuSupplier(set_InSpatialDistributionWithCollection)
 
 * - identifier: file
 * - type: Boolean
@@ -1290,7 +1482,7 @@ PARAMETER par_link_InFileBasedPVactMilieuSupplier_InSpatialTableFile_file(set_In
 
 * - identifier: InFileBasedSelectGroupSpatialInformationSupplier
 * - type: String
-SET set_InFileBasedSelectGroupSpatialInformationSupplier(set_InSpatialDistributionWithCollection,set_InSpatialDistribution)
+SET set_InFileBasedSelectGroupSpatialInformationSupplier(set_InSpatialDistributionWithCollection)
 
 * - description: Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname).
 * - identifier: X-Schlüssel
@@ -1323,7 +1515,7 @@ PARAMETER par_link_InFileBasedSelectGroupSpatialInformationSupplier_InAttributeN
 
 * - identifier: InFileBasedSelectSpatialInformationSupplier
 * - type: String
-SET set_InFileBasedSelectSpatialInformationSupplier(set_InSpatialDistributionWithCollection,set_InSpatialDistribution)
+SET set_InFileBasedSelectSpatialInformationSupplier(set_InSpatialDistributionWithCollection)
 
 * - description: Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname).
 * - identifier: X-Schlüssel
@@ -1351,7 +1543,7 @@ PARAMETER par_link_InFileBasedSelectSpatialInformationSupplier_InAttributeName_s
 
 * - identifier: InFileBasedSpatialInformationSupplier
 * - type: String
-SET set_InFileBasedSpatialInformationSupplier(set_InSpatialDistributionWithCollection,set_InSpatialDistribution)
+SET set_InFileBasedSpatialInformationSupplier(set_InSpatialDistributionWithCollection)
 
 * - description: Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname).
 * - identifier: X-Schlüssel

@@ -1,6 +1,9 @@
 package de.unileipzig.irpact.core.process.mra.component.special;
 
+import de.unileipzig.irpact.commons.attribute.Attribute;
+import de.unileipzig.irpact.commons.attribute.DataType;
 import de.unileipzig.irpact.commons.time.Timestamp;
+import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.MathUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
@@ -11,9 +14,12 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinities;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.logging.*;
+import de.unileipzig.irpact.core.misc.InitalizablePart;
+import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
+import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.core.process.mra.ModularRAProcessModel;
 import de.unileipzig.irpact.core.process.mra.component.generic.AbstractComponent;
 import de.unileipzig.irpact.core.process.mra.component.generic.ComponentType;
@@ -24,7 +30,7 @@ import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVDataSupplier;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
-import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
+import de.unileipzig.irpact.core.process.ra.uncert.*;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
@@ -32,16 +38,14 @@ import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.slf4j.event.Level;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 
 /**
  * @author Daniel Abitz
  */
 @SuppressWarnings("unused")
-public abstract class AbstractMRAComponent extends AbstractComponent implements LoggingHelper {
+public abstract class AbstractMRAComponent extends AbstractComponent implements LoggingHelper, InitalizablePart {
 
     protected final Predicate<SocialGraph.Node> IS_CONSUMER = node -> node.is(ConsumerAgent.class);
 
@@ -144,12 +148,12 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         return logisticFactor;
     }
 
-    protected NodeFilter filter;
-    public void setNodeFilter(NodeFilter filter) {
-        this.filter = filter;
+    protected ProcessPlanNodeFilterScheme nodeFilterScheme;
+    public void setNodeFilterScheme(ProcessPlanNodeFilterScheme nodeFilterScheme) {
+        this.nodeFilterScheme = nodeFilterScheme;
     }
-    public NodeFilter getNodeFilter() {
-        return filter;
+    public ProcessPlanNodeFilterScheme getNodeFilterScheme() {
+        return nodeFilterScheme;
     }
 
     protected NPVDataSupplier npvDataSupplier;
@@ -166,14 +170,6 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
     }
     public NPVData getNpvData() {
         return npvData;
-    }
-
-    protected RelativeAgreementAlgorithm raAlgorithm;
-    public void setRelativeAgreementAlgorithm(RelativeAgreementAlgorithm raAlgorithm) {
-        this.raAlgorithm = raAlgorithm;
-    }
-    public RelativeAgreementAlgorithm getRelativeAgreementAlgorithm() {
-        return raAlgorithm;
     }
 
     protected double weightFT = 0.5;
@@ -207,6 +203,10 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
     public double getWeightLocal() {
         return weightLocal;
     }
+
+    //=========================
+    //init
+    //=========================
 
     //=========================
     //...
@@ -407,13 +407,13 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
     @Todo
     protected final void applyRelativeAgreement(ConsumerAgent agent, ConsumerAgent target, String attrName) {
         ConsumerAgentAttribute opinionThis = agent.getAttribute(attrName);
-        Uncertainty uncertaintyThis = getModel().getUncertainty(agent);
+        Uncertainty uncertaintyThis = getUncertainty(agent);
         ConsumerAgentAttribute opinionTarget = target.getAttribute(attrName);
-        Uncertainty uncertaintyTarget = getModel().getUncertainty(target);
+        Uncertainty uncertaintyTarget = getUncertainty(target);
         if(uncertaintyTarget == null) {
             warn("agent '{}' has no uncertainty - skip", target.getName());
         } else {
-            getRelativeAgreementAlgorithm().apply(
+            getModel().getRelativeAgreementAlgorithm().apply(
                     agent.getName(),
                     opinionThis,
                     uncertaintyThis,
@@ -523,10 +523,10 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         return getNoveltySeeking(agent);
     }
 
-    protected double getSocialComponent(ConsumerAgent agent, Product product) {
+    protected double getSocialComponent(ConsumerAgent agent, Product product, NodeFilter filter) {
         MutableDouble shareOfAdopterInSocialNetwork = MutableDouble.zero();
         MutableDouble shareOfAdopterInLocalArea = MutableDouble.zero();
-        getShareOfAdopterInSocialNetworkAndLocalArea(agent, product,  getNodeFilter(), shareOfAdopterInSocialNetwork, shareOfAdopterInLocalArea);
+        getShareOfAdopterInSocialNetworkAndLocalArea(agent, product,  filter, shareOfAdopterInSocialNetwork, shareOfAdopterInLocalArea);
         double djm = getDependentJudgmentMaking(agent);
         double comp = djm * ((getWeightSocial() * shareOfAdopterInSocialNetwork.get()) + (getWeightLocal() * shareOfAdopterInLocalArea.get()));
         trace(
@@ -706,6 +706,31 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
     //util
     //=========================
 
+    @Override
+    public void handleNewProduct(Product product) {
+        GlobalSettings.get().handleNewProduct(product, getModel());
+    }
+
+    protected void checkHasDoubleAttributes(ConsumerAgent ca, String... names) throws ValidationException {
+        for(String name: names) {
+            checkHasDoubleAttribute(ca, name);
+        }
+    }
+
+    protected void checkHasDoubleAttribute(ConsumerAgent ca, String name) throws ValidationException {
+        if(!ca.hasAnyAttribute(name)) {
+            throw ExceptionUtil.create(ValidationException::new, "consumer agent '{}' has no attribute '{}'", name);
+        }
+        Attribute attr = ca.findAttribute(name);
+        if(attr.isNoValueAttribute() || attr.asValueAttribute().isNoDataType(DataType.DOUBLE)) {
+            throw ExceptionUtil.create(ValidationException::new, "consumer agent '{}' has no double-attribute '{}'", name);
+        }
+    }
+
+    protected Uncertainty getUncertainty(ConsumerAgent ca) {
+        return getModel().getUncertaintyCache().getUncertainty(ca);
+    }
+
     protected void initNPVMatrixWithFile() {
         NPVData npvData = getNpvData();
         if(npvData == null) {
@@ -800,14 +825,6 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         return getModel().isHouseOwner(agent);
     }
 
-    protected double getFinancialThreshold(ConsumerAgent agent, Product product) {
-        return getModel().getFinancialThreshold(agent, product);
-    }
-
-    protected double getAdoptionThreshold(ConsumerAgent agent, Product product) {
-        return getModel().getAdoptionThreshold(agent, product);
-    }
-
     protected double getFinancialPurchasePower(ConsumerAgent agent) {
         return getModel().getFinancialPurchasePower(agent);
     }
@@ -822,6 +839,26 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
 
     protected double getDependentJudgmentMaking(ConsumerAgent agent) {
         return getModel().getDependentJudgmentMaking(agent);
+    }
+
+    protected double getFinancialThreshold(ConsumerAgent agent, Product product) {
+        return getModel().getFinancialThreshold(agent, product);
+    }
+
+    protected double getAdoptionThreshold(ConsumerAgent agent, Product product) {
+        return getModel().getAdoptionThreshold(agent, product);
+    }
+
+    protected double getInitialProductAwareness(ConsumerAgent agent, Product product) {
+        return getModel().getInitialProductAwareness(agent, product);
+    }
+
+    protected double getInitialProductInterest(ConsumerAgent agent, Product product) {
+        return getModel().getInitialProductInterest(agent, product);
+    }
+
+    protected double getInitialAdopter(ConsumerAgent agent, Product product) {
+        return getModel().getInitialAdopter(agent, product);
     }
 
     protected Timestamp now() {

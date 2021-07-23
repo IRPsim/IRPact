@@ -1,18 +1,26 @@
 package de.unileipzig.irpact.core.process.mra.component.generic;
 
 import de.unileipzig.irpact.commons.Nameable;
+import de.unileipzig.irpact.core.misc.InitalizablePart;
+import de.unileipzig.irpact.core.process.ProcessPlan;
+import de.unileipzig.irpact.core.product.Product;
 
 import java.util.Collection;
+import java.util.stream.Stream;
 
 /**
  *
  * @author Daniel Abitz
  */
-public interface Component extends Nameable {
+public interface Component extends Nameable, InitalizablePart {
 
     boolean isCyclic();
 
     Collection<Component> getAllComponents();
+
+    Stream<? extends Component> streamAllComponents();
+
+    Stream<? extends Component> streamComponents();
 
     Iterable<? extends Component> iterateComponents();
 
@@ -40,5 +48,15 @@ public interface Component extends Nameable {
 
     default boolean isIntermediate() {
         return getType() == ComponentType.INTERMEDIATE;
+    }
+
+    //=========================
+    //events (InitalizablePart)
+    //=========================
+
+    default void handleNewPlan(ProcessPlan plan) {
+    }
+
+    default void handleNewProduct(Product product) {
     }
 }

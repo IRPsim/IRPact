@@ -17,8 +17,8 @@ public class DefaultDoActionComponent extends AbstractSingleMRAComponent impleme
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(DefaultDoActionComponent.class);
 
-    protected DefaultDoActionComponent(ComponentType type) {
-        super(type);
+    public DefaultDoActionComponent() {
+        super(ComponentType.OUTPUT);
     }
 
     @Override

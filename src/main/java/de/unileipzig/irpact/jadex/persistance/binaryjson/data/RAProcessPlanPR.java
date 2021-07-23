@@ -92,7 +92,6 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
 
     @Override
     protected void doFinalizeRestore(BinaryJsonData data, RAProcessPlan object, RestoreManager manager) {
-        object.init();
-        object.getModel().registerUncertainty(object.getAgent(), object.getUncertainty(), false, false);
+        object.getModel().getUncertaintyCache().registerUncertainty(object.getAgent(), object.getUncertainty(), false, false);
     }
 }

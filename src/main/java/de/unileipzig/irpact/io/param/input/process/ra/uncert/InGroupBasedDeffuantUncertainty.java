@@ -5,9 +5,9 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.process.ra.uncert.GroupBasedDeffuantUncertaintyData;
 import de.unileipzig.irpact.core.process.ra.uncert.GroupBasedDeffuantUncertaintySupplier;
+import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyManager;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -184,7 +184,9 @@ public class InGroupBasedDeffuantUncertainty implements InUncertainty {
 
     @Override
     public void setup(IRPactInputParser parser, Object input) throws ParsingException {
-        RAProcessModel model = (RAProcessModel) input;
+        String modelName = getAs(input, 0);
+        UncertaintyManager uncertaintyManager = getAs(input, 1);
+        int speedOfConvergence = getAs(input, 2);
 
         for(InConsumerAgentGroup inCag: getConsumerAgentGroups()) {
             ConsumerAgentGroup cag = parser.parseEntityTo(inCag);
@@ -204,10 +206,10 @@ public class InGroupBasedDeffuantUncertainty implements InUncertainty {
             supplier.setName(getName() + "_" + cag.getName() + "_" + "_supplier");
             supplier.setConsumerAgentGroup(cag);
             supplier.setData(data);
-            supplier.setSpeedOfConvergence(model.getSpeedOfConvergence());
+            supplier.setSpeedOfConvergence(speedOfConvergence);
 
-            if(model.getUncertaintyManager().register(supplier)) {
-                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added supplier '{}' to model '{}'", supplier.getName(), model.getName());
+            if(uncertaintyManager.register(supplier)) {
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "added supplier '{}' to model '{}'", supplier.getName(), modelName);
             } else {
                 throw new ParsingException("supplier '{}' already exists", supplier.getName());
             }

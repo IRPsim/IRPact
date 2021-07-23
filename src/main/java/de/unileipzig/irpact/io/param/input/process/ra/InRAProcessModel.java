@@ -454,8 +454,9 @@ public class InRAProcessModel implements InProcessModel {
         model.setRnd(rnd);
         model.setSpeedOfConvergence(getSpeedOfConvergence());
 
+        Object[] params = { model.getName(), model.getUncertaintyManager(), model.getSpeedOfConvergence() };
         for(InUncertainty uncertainty: getUncertainties()) {
-            uncertainty.setup(parser, model);
+            uncertainty.setup(parser, params);
         }
 
         if(hasNodeFilterScheme()) {

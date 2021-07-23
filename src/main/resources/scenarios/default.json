@@ -120,6 +120,7 @@
           "par_InComplexAffinityEntry_affinityValue" : 0.7
         }
       },
+      "set_InComponent" : { },
       "set_InConsumerAgentGroup" : {
         "BUM" : { },
         "TRA" : { }
@@ -133,6 +134,10 @@
           "par_InConsumerAgentGroupColor_rgba" : 4294901760
         }
       },
+      "set_InDefaultDoActionComponent" : { },
+      "set_InDefaultHandleDecisionMakingComponent" : { },
+      "set_InDefaultHandleFeasibilityComponent" : { },
+      "set_InDefaultHandleInterestComponent" : { },
       "set_InDependentConsumerAgentGroupAttribute" : { },
       "set_InDependentProductGroupAttribute" : { },
       "set_InDiracUnivariateDistribution" : {
@@ -143,6 +148,7 @@
       "set_InDisabledProcessPlanNodeFilterScheme" : { },
       "set_InDistanceEvaluator" : { },
       "set_InEntireNetworkNodeFilterScheme" : { },
+      "set_InEvaluableComponent" : { },
       "set_InFile" : {
         "Barwertrechner" : { },
         "Datensatz_210322" : { }
@@ -243,6 +249,7 @@
       "set_InInverse" : { },
       "set_InIRPactVersion" : { },
       "set_InMassPoint" : { },
+      "set_InModularRAProcessModel" : { },
       "set_InName" : { },
       "set_InNameSplitAffinityEntry" : { },
       "set_InNameSplitConsumerAgentGroupAttribute" : { },
@@ -349,7 +356,7 @@
         }
       },
       "set_InScenarioVersion" : {
-        "v0_7_0" : {
+        "v0_8_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
@@ -536,6 +543,8 @@
           "TRA" : 1.0
         }
       },
+      "par_link_InDefaultHandleDecisionMakingComponent_InPVFile_pvFile" : { },
+      "par_link_InDefaultHandleDecisionMakingComponent_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
       "par_link_InFileBasedConsumerAgentPopulation_InAttributeName_selectKey" : { },
       "par_link_InFileBasedConsumerAgentPopulation_InConsumerAgentGroup_cags" : { },
       "par_link_InFileBasedConsumerAgentPopulation_InSpatialTableFile_file" : { },
@@ -587,6 +596,11 @@
       "par_link_InGlobalDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
       "par_link_InGroupBasedDeffuantUncertainty_InAttributeName_attributeNames" : { },
       "par_link_InGroupBasedDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
+      "par_link_InModularRAProcessModel_InEvaluableComponent_actionComponent" : { },
+      "par_link_InModularRAProcessModel_InEvaluableComponent_decisionMakingComponent" : { },
+      "par_link_InModularRAProcessModel_InEvaluableComponent_feasibilityComponent" : { },
+      "par_link_InModularRAProcessModel_InEvaluableComponent_interestComponent" : { },
+      "par_link_InModularRAProcessModel_InUncertainty_uncertainties" : { },
       "par_link_InNameSplitConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
       "par_link_InNameSplitProductGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
       "par_link_InNumberOfTies_InConsumerAgentGroup_cags" : { },

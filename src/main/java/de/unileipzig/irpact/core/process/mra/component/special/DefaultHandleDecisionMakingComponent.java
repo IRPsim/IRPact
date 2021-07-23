@@ -6,8 +6,11 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPLoggingMessageCollection;
 import de.unileipzig.irpact.core.logging.InfoTag;
+import de.unileipzig.irpact.core.network.filter.NodeFilter;
+import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.process.mra.AgentData;
+import de.unileipzig.irpact.core.process.mra.ModularRAProcessPlan;
 import de.unileipzig.irpact.core.process.mra.component.base.EvaluableComponent;
 import de.unileipzig.irpact.core.process.mra.component.generic.ComponentType;
 import de.unileipzig.irpact.core.process.ra.RAStage;
@@ -20,9 +23,10 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 public class DefaultHandleDecisionMakingComponent extends AbstractSingleMRAComponent implements EvaluableComponent {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(DefaultHandleDecisionMakingComponent.class);
+    private static final String FILTER_KEY = "$FILTER";
 
-    protected DefaultHandleDecisionMakingComponent(ComponentType type) {
-        super(type);
+    public DefaultHandleDecisionMakingComponent() {
+        super(ComponentType.OUTPUT);
     }
 
     @Override
@@ -33,6 +37,13 @@ public class DefaultHandleDecisionMakingComponent extends AbstractSingleMRACompo
     @Override
     public int getChecksum() {
         return Dev.throwException();
+    }
+
+    @Override
+    public void handleNewPlan(ProcessPlan plan) {
+        ModularRAProcessPlan mPlan = (ModularRAProcessPlan) plan;
+        NodeFilter filter = getNodeFilterScheme().createFilter(mPlan);
+        mPlan.store(FILTER_KEY, filter);
     }
 
     @Override
@@ -62,7 +73,7 @@ public class DefaultHandleDecisionMakingComponent extends AbstractSingleMRACompo
                 alm.append("financial component < financial threshold ({} < {}) = {}", financial, financialThreshold, true);
                 logCalculateDecisionMaking(alm);
 
-                data.updateStage(RAStage.IMPEDED);
+                data.setStage(RAStage.IMPEDED);
                 return ProcessPlanResult.IMPEDED;
             }
             double temp = a * financial;
@@ -91,7 +102,7 @@ public class DefaultHandleDecisionMakingComponent extends AbstractSingleMRACompo
         }
 
         if(d != 0.0) {
-            double soc = getSocialComponent(agent, data.getProduct());
+            double soc = getSocialComponent(agent, data.getProduct(), data.getExistingAs(FILTER_KEY));
             double dsoc = d * soc;
             alm.append("d * social component = {} * {} = {}", d, soc, dsoc);
             B += dsoc;
@@ -106,12 +117,12 @@ public class DefaultHandleDecisionMakingComponent extends AbstractSingleMRACompo
         logCalculateDecisionMaking(alm);
 
         if(noAdoption) {
-            data.updateStage(RAStage.IMPEDED);
+            data.setStage(RAStage.IMPEDED);
             return ProcessPlanResult.IMPEDED;
         } else {
             Timestamp now = now();
             agent.adopt(data.getNeed(), data.getProduct(), now, determinePhase(now));
-            data.updateStage(RAStage.ADOPTED);
+            data.setStage(RAStage.ADOPTED);
             return ProcessPlanResult.ADOPTED;
         }
     }

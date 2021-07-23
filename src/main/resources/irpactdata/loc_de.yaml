@@ -264,7 +264,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.7.0"
+  edn_description: "IRPact v0.8.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -1077,6 +1077,124 @@ InPVactGroupBasedDeffuantUncertainty_cags:
 InPVactGroupBasedDeffuantUncertainty_attributeNames:
   gams_identifier: "Betrachtete Attribute"
   gams_description: "Legt die Attribute fest, die mit dieser Unsicherheit verbunden werden sollen."
+
+
+InModularRAProcessModel:
+  edn_label: "Modulares Relative Agreement"
+  edn_description: "todo"
+InModularRAProcessModel_speedOfConvergence:
+  gams_identifier: "speed of convergence"
+  gams_description: "todo"
+InModularRAProcessModel_attitudeGap:
+  gams_identifier: "attitude gap"
+  gams_description: "todo"
+InModularRAProcessModel_chanceNeutral:
+  gams_identifier: "chance neutral"
+  gams_description: "todo"
+InModularRAProcessModel_chanceConvergence:
+  gams_identifier: "chance convergence"
+  gams_description: "todo"
+InModularRAProcessModel_chanceDivergence:
+  gams_identifier: "chance divergence"
+  gams_description: "todo"
+InModularRAProcessModel_interestComponent:
+  gams_identifier: "interest component"
+  gams_description: "todo"
+InModularRAProcessModel_feasibilityComponent:
+  gams_identifier: "feasibility component"
+  gams_description: "todo"
+InModularRAProcessModel_decisionMakingComponent:
+  gams_identifier: "decision making component"
+  gams_description: "todo"
+InModularRAProcessModel_actionComponent:
+  gams_identifier: "action component"
+  gams_description: "todo"
+
+process_modular_components:
+  edn_label: "Komponenten"
+  edn_description: "todo"
+
+InDefaultHandleInterestComponent:
+  edn_label: "Standard Interest"
+  edn_description: "todo"
+InDefaultHandleInterestComponent_adopterPoints:
+  gams_identifier: "adopter points"
+  gams_description: "todo"
+InDefaultHandleInterestComponent_interestedPoints:
+  gams_identifier: "interested points"
+  gams_description: "todo"
+InDefaultHandleInterestComponent_awarePoints:
+  gams_identifier: "aware points"
+  gams_description: "todo"
+InDefaultHandleInterestComponent_unknownPoints:
+  gams_identifier: "unknown points"
+  gams_description: "todo"
+
+InDefaultHandleFeasibilityComponent:
+  edn_label: "Standard Feasibility"
+  edn_description: "todo"
+InDefaultHandleFeasibilityComponent_adopterPoints:
+  gams_identifier: "adopter points"
+  gams_description: "todo"
+InDefaultHandleFeasibilityComponent_interestedPoints:
+  gams_identifier: "interested points"
+  gams_description: "todo"
+InDefaultHandleFeasibilityComponent_awarePoints:
+  gams_identifier: "aware points"
+  gams_description: "todo"
+InDefaultHandleFeasibilityComponent_unknownPoints:
+  gams_identifier: "unknown points"
+  gams_description: "todo"
+
+InDefaultHandleDecisionMakingComponent:
+  edn_label: "Standard Decision Making"
+  edn_description: "todo"
+InDefaultHandleDecisionMakingComponent_a:
+  gams_identifier: "a"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_b:
+  gams_identifier: "b"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_c:
+  gams_identifier: "c"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_d:
+  gams_identifier: "d"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_weightFT:
+  gams_identifier: "weightFT"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_weightNPV:
+  gams_identifier: "weightNPV"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_weightSocial:
+  gams_identifier: "weightSocial"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_weightLocal:
+  gams_identifier: "weightLocal"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_nodeFilterScheme:
+  gams_identifier: "nodeFilterScheme"
+  gams_description: "todo"
+
+InDefaultDoActionComponent:
+  edn_label: "Standard Action"
+  edn_description: "todo"
+InDefaultDoActionComponent_adopterPoints:
+  gams_identifier: "adopter points"
+  gams_description: "todo"
+InDefaultDoActionComponent_interestedPoints:
+  gams_identifier: "interested points"
+  gams_description: "todo"
+InDefaultDoActionComponent_awarePoints:
+  gams_identifier: "aware points"
+  gams_description: "todo"
+InDefaultDoActionComponent_unknownPoints:
+  gams_identifier: "unknown points"
+  gams_description: "todo"
 
 
 spatial:

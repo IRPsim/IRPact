@@ -78,7 +78,6 @@ public class RAProcessPlan implements ProcessPlan {
         setNeed(need);
         setProduct(product);
         setUncertainty(uncertainty);
-        init();
     }
 
     @PotentialProblem("hier fehlen noch ein paar Komponenten")
@@ -97,12 +96,6 @@ public class RAProcessPlan implements ProcessPlan {
                 getNetworkFilter(),
                 getUncertainty()
         );
-    }
-
-    @Todo("haesslich")
-    public void init() {
-        networkFilter = model.getNodeFilterScheme()
-                .createFilter(this);
     }
 
     public void setEnvironment(SimulationEnvironment environment) {
@@ -928,7 +921,7 @@ public class RAProcessPlan implements ProcessPlan {
         ConsumerAgentAttribute opinionThis = agent.getAttribute(attrName);
         Uncertainty uncertaintyThis = getUncertainty();
         ConsumerAgentAttribute opinionTarget = target.getAttribute(attrName);
-        Uncertainty uncertaintyTarget = getModel().getUncertainty(target);
+        Uncertainty uncertaintyTarget = getModel().getUncertaintyCache().getUncertainty(target);
         if(uncertaintyTarget == null) {
             LOGGER.warn(IRPSection.SIMULATION_PROCESS, "agent '{}' has no uncertainty - skip", target.getName());
         } else {

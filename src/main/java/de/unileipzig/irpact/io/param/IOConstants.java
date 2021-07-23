@@ -46,6 +46,7 @@ public final class IOConstants {
     public static final String PROCESS_MODEL = "process_model";
     public static final String PROCESS_FILTER = "process_filter";
     public static final String PROCESS_MODEL_RA_UNCERT = "process_model_ra_uncert";
+    public static final String PROCESS_MODULAR_COMPONENTS = "process_modular_components";
 
     public static final String SPATIAL = "spatial";
     public static final String SPATIAL_MODEL = "spatial_model";

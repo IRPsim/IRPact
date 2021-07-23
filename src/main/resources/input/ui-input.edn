@@ -12,7 +12,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v0.7.0" 
+        :description "IRPact v0.8.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -460,6 +460,44 @@
         :label "Relative Agreement" 
         :set "set_InRAProcessModel" 
         :tags [["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["InRAProcessModel" "speedOfConvergence"] ["InRAProcessModel" "attitudeGap"] ["InRAProcessModel" "chanceNeutral"] ["InRAProcessModel" "chanceConvergence"] ["InRAProcessModel" "chanceDivergence"] ["link" "InRAProcessModel" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertainty" "uncertainties"]]
+      } 
+      {
+        :label "Modulares Relative Agreement" 
+        :set "set_InModularRAProcessModel" 
+        :description "todo" 
+        :tags [["InModularRAProcessModel" "speedOfConvergence"] ["InModularRAProcessModel" "attitudeGap"] ["InModularRAProcessModel" "chanceNeutral"] ["InModularRAProcessModel" "chanceConvergence"] ["InModularRAProcessModel" "chanceDivergence"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "interestComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "feasibilityComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "decisionMakingComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "actionComponent"] ["link" "InModularRAProcessModel" "InUncertainty" "uncertainties"]] 
+        :sections [
+          {
+            :label "Komponenten" 
+            :description "todo" 
+            :sections [
+              {
+                :label "Standard Interest" 
+                :set "set_InDefaultHandleInterestComponent" 
+                :description "todo" 
+                :tags [["InDefaultHandleInterestComponent" "adopterPoints"] ["InDefaultHandleInterestComponent" "interestedPoints"] ["InDefaultHandleInterestComponent" "awarePoints"] ["InDefaultHandleInterestComponent" "unknownPoints"]]
+              } 
+              {
+                :label "Standard Feasibility" 
+                :set "set_InDefaultHandleFeasibilityComponent" 
+                :description "todo" 
+                :tags [["InDefaultHandleFeasibilityComponent" "adopterPoints"] ["InDefaultHandleFeasibilityComponent" "interestedPoints"] ["InDefaultHandleFeasibilityComponent" "awarePoints"] ["InDefaultHandleFeasibilityComponent" "unknownPoints"]]
+              } 
+              {
+                :label "Standard Decision Making" 
+                :set "set_InDefaultHandleDecisionMakingComponent" 
+                :description "todo" 
+                :tags [["InDefaultHandleDecisionMakingComponent" "a"] ["InDefaultHandleDecisionMakingComponent" "b"] ["InDefaultHandleDecisionMakingComponent" "c"] ["InDefaultHandleDecisionMakingComponent" "d"] ["link" "InDefaultHandleDecisionMakingComponent" "InPVFile" "pvFile"] ["link" "InDefaultHandleDecisionMakingComponent" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+              } 
+              {
+                :label "Standard Action" 
+                :set "set_InDefaultDoActionComponent" 
+                :description "todo" 
+                :tags [["InDefaultDoActionComponent" "adopterPoints"] ["InDefaultDoActionComponent" "interestedPoints"] ["InDefaultDoActionComponent" "awarePoints"] ["InDefaultDoActionComponent" "unknownPoints"]]
+              }
+            ]
+          }
+        ]
       } 
       {
         :label "Netzwerkfilter für Prozesse" 

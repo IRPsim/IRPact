@@ -1,14 +1,13 @@
 package de.unileipzig.irpact.core.process.ra;
 
-import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.attribute.Attribute;
+import de.unileipzig.irpact.commons.attribute.DataType;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.commons.checksum.LoggableChecksum;
-import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.commons.attribute.DataType;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
@@ -16,58 +15,33 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAnnualGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.need.Need;
-import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
-import de.unileipzig.irpact.core.process.ra.alg.RelativeAgreementAlgorithm;
 import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
-import de.unileipzig.irpact.core.process.ra.uncert.BasicUncertaintyManager;
-import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
-import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyManager;
+import de.unileipzig.irpact.core.process.ra.uncert.*;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
-import de.unileipzig.irpact.core.spatial.SpatialInformation;
-import de.unileipzig.irpact.core.util.AttributeHelper;
 import de.unileipzig.irptools.util.log.IRPLogger;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Daniel Abitz
  */
-public class RAProcessModel extends NameableBase implements ProcessModel, LoggableChecksum, LoggingHelper {
+public class RAProcessModel extends RAProcessModelBase implements LoggableChecksum {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(RAProcessModel.class);
 
-    protected static final long WEEK27 = 27;
-
     protected static boolean globalRAProcessInitCalled = false;
-
-    protected SimulationEnvironment environment;
-
-    protected RelativeAgreementAlgorithm raAlgorithm;
-    protected double speedOfConvergence;
-    protected UncertaintyManager uncertaintyManager = new BasicUncertaintyManager();
-    protected Map<ConsumerAgent, Uncertainty> uncertaintyCache = new HashMap<>();
 
     protected ProcessPlanNodeFilterScheme nodeFilterScheme;
 
     protected NPVData npvData;
     protected NPVCalculator npvCalculator;
     protected RAModelData modelData;
-    protected Rnd rnd;
-
-    protected Map<Integer, Timestamp> week27Map = new HashMap<>();
-    protected boolean isYearChange = false;
 
     public RAProcessModel() {
     }
@@ -78,17 +52,12 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
     }
 
     @Override
-    public final IRPSection getDefaultSection() {
-        return IRPSection.INITIALIZATION_PARAMETER;
-    }
-
-    @Override
     public int getChecksum() {
-        return ChecksumComparable.getChecksum(
+        return Checksums.SMART.getChecksum(
                 getName(),
                 modelData,
                 rnd,
-                uncertaintyManager
+                uncertaintyHandler.getManager()
         );
     }
 
@@ -105,26 +74,13 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         logHash("name", ChecksumComparable.getChecksum(getName()));
         logHash("model data", ChecksumComparable.getChecksum(modelData));
         logHash("rnd", ChecksumComparable.getChecksum(rnd));
-        logHash("uncertainty manager", ChecksumComparable.getChecksum(uncertaintyManager));
+        logHash("uncertainty manager", ChecksumComparable.getChecksum(uncertaintyHandler.getManager()));
     }
 
-    public AttributeHelper getAttributeHelper() {
-        if(environment == null) {
-            throw new NullPointerException("missing environment");
-        }
-        AttributeHelper helper = environment.getAttributeHelper();
-        if(helper == null) {
-            throw new NullPointerException("missing helper");
-        }
-        return helper;
-    }
-
+    @Override
     public void setEnvironment(SimulationEnvironment environment) {
-        this.environment = environment;
-    }
-
-    public SimulationEnvironment getEnvironment() {
-        return environment;
+        super.setEnvironment(environment);
+        uncertaintyHandler.setEnvironment(environment);
     }
 
     public void setModelData(RAModelData modelData) {
@@ -136,44 +92,12 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         return modelData;
     }
 
-    public void setRnd(Rnd rnd) {
-        this.rnd = rnd;
-    }
-
-    public Rnd getRnd() {
-        return rnd;
-    }
-
     public NPVData getNpvData() {
         return npvData;
     }
 
     public void setNpvData(NPVData npvData) {
         this.npvData = npvData;
-    }
-
-    public void setSpeedOfConvergence(double speedOfConvergence) {
-        this.speedOfConvergence = speedOfConvergence;
-    }
-
-    public double getSpeedOfConvergence() {
-        return speedOfConvergence;
-    }
-
-    public void setRelativeAgreementAlgorithm(RelativeAgreementAlgorithm raAlgorithm) {
-        this.raAlgorithm = raAlgorithm;
-    }
-
-    public RelativeAgreementAlgorithm getRelativeAgreementAlgorithm() {
-        return raAlgorithm;
-    }
-
-    public UncertaintyManager getUncertaintyManager() {
-        return uncertaintyManager;
-    }
-
-    public void setUncertaintyManager(UncertaintyManager uncertaintyManager) {
-        this.uncertaintyManager = uncertaintyManager;
     }
 
     public void setNodeFilterScheme(ProcessPlanNodeFilterScheme nodeFilterScheme) {
@@ -270,7 +194,7 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
     @Override
     public void postAgentCreationValidation() throws ValidationException {
         checkAttributes();
-        initUncertainty();
+        super.postAgentCreationValidation();
     }
 
     private void checkAttributes() throws ValidationException {
@@ -303,76 +227,8 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         }
     }
 
-    private void initUncertainty() {
-        uncertaintyManager.initalize();
-        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-            for(ConsumerAgent ca : cag.getAgents()) {
-                Uncertainty uncertainty = uncertaintyManager.createFor(ca);
-                registerUncertainty(ca, uncertainty, false, environment.isRestored());
-            }
-        }
-    }
-
     protected Timestamp now() {
         return environment.getTimeModel().now();
-    }
-
-    @Override
-    public void preSimulationStart() {
-        setupTasks();
-    }
-
-    private void setupTasks() {
-        int firstYear = environment.getTimeModel().getFirstSimulationYear();
-        int lastYear = environment.getTimeModel().getLastSimulationYear();
-
-        trace("create syncronisation tasks for process model '{}' ", getName());
-
-        SyncTask firstAnnualTask = createStartOfYearTask(getName() + "_FirstAnnual");
-        trace("create first annual task '{}'", firstAnnualTask.getName());
-        environment.getLiveCycleControl().registerSyncTaskAsFirstAnnualAction(firstAnnualTask);
-
-        SyncTask lastAnnualTask = createEndOfYearTask(getName() + "_LastAnnual");
-        trace("create last annual task '{}'", lastAnnualTask.getName());
-        environment.getLiveCycleControl().registerSyncTaskAsLastAnnualAction(lastAnnualTask);
-
-        for(int y = firstYear; y <= lastYear; y++) {
-            Timestamp tsWeek27 = environment.getTimeModel().at(y, WEEK27);
-            SyncTask taskWeek27 = createWeek27Task(getName() + "_MidYear_" + y);
-            trace("created mid year task (27th week) '{}'", taskWeek27.getName());
-            environment.getLiveCycleControl().registerSyncTaskAsFirstAction(tsWeek27, taskWeek27);
-        }
-    }
-
-    private void setYearChange(boolean isYearChange) {
-        this.isYearChange = isYearChange;
-    }
-
-    public boolean isYearChange() {
-        return isYearChange;
-    }
-
-    public boolean isBeforeWeek27(Timestamp ts) {
-        Timestamp currentYearWeek27 = getCurrentWeek27(ts);
-        return ts.isBefore(currentYearWeek27);
-    }
-
-    private Timestamp getCurrentWeek27(Timestamp ts) {
-        Timestamp w27 = week27Map.get(ts.getYear());
-        if(w27 == null) {
-            return syncGetCurrentWeek27(ts);
-        } else {
-            return w27;
-        }
-    }
-
-    private synchronized Timestamp syncGetCurrentWeek27(Timestamp ts) {
-        Timestamp w27 = week27Map.get(ts.getYear());
-        if(w27 == null) {
-            w27 = environment.getTimeModel().at(ts.getYear(), WEEK27);
-            week27Map.put(ts.getYear(), w27);
-        }
-        return w27;
     }
 
     @Override
@@ -431,121 +287,6 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
         }
     }
 
-    private SyncTask createStartOfYearTask(String name) {
-        return new SyncTask() {
-            @Override
-            public String getName() {
-                return name;
-            }
-
-            @Override
-            public void run() {
-                trace("run 'createStartOfYearTask'");
-
-                for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-                    for(ConsumerAgent ca: cag.getAgents()) {
-                        for(ProcessPlan plan: ca.getPlans().values()) {
-                            if(plan.isModel(RAProcessModel.this)) {
-                                RAProcessPlan raPlan = (RAProcessPlan) plan;
-                                raPlan.runAdjustmentAtStartOfYear();
-                            }
-                        }
-                    }
-                }
-            }
-        };
-    }
-
-    private SyncTask createEndOfYearTask(String name) {
-        return new SyncTask() {
-            @Override
-            public String getName() {
-                return name;
-            }
-
-            @Override
-            public void run() {
-                trace("run 'createEndOfYearTask'");
-
-                setYearChange(true);
-                for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-                    for(ConsumerAgent ca: cag.getAgents()) {
-                        for(ProcessPlan plan: ca.getPlans().values()) {
-                            if(plan.isModel(RAProcessModel.this)) {
-                                RAProcessPlan raPlan = (RAProcessPlan) plan;
-                                raPlan.runEvaluationAtEndOfYear();
-                            }
-                        }
-                    }
-                }
-                setYearChange(false);
-            }
-        };
-    }
-
-    private SyncTask createWeek27Task(String name) {
-        return new SyncTask() {
-            @Override
-            public String getName() {
-                return name;
-            }
-
-            @Override
-            public void run() {
-                trace("run 'createWeek27Task'");
-
-                for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-                    for(ConsumerAgent ca: cag.getAgents()) {
-                        for(ProcessPlan plan: ca.getPlans().values()) {
-                            if(plan.isModel(RAProcessModel.this)) {
-                                RAProcessPlan raPlan = (RAProcessPlan) plan;
-                                raPlan.runUpdateAtMidOfYear();
-                            }
-                        }
-                    }
-                }
-            }
-        };
-    }
-
-    public void registerUncertainty(ConsumerAgent ca, Uncertainty uncertainty, boolean overwrite, boolean allowExisting) {
-        if(!allowExisting && uncertaintyCache.containsKey(ca)) {
-            throw new IRPactIllegalArgumentException("uncertainty for agent '{}' already exists", ca.getName());
-        }
-
-        if(!overwrite && uncertaintyCache.containsKey(ca)) {
-            return;
-        }
-
-        uncertaintyCache.put(ca, uncertainty);
-    }
-
-    public Uncertainty getUncertainty(ConsumerAgent ca) {
-        return uncertaintyCache.get(ca);
-    }
-
-    protected void createUncertainty0(ConsumerAgent ca) {
-        getUncertainty0(ca);
-    }
-
-    protected synchronized Uncertainty getUncertainty0(ConsumerAgent ca) {
-        Uncertainty uncertainty = uncertaintyCache.get(ca);
-        if(uncertainty == null) {
-            return syncGetUncertainty0(ca);
-        } else {
-            return uncertainty;
-        }
-    }
-
-    private synchronized Uncertainty syncGetUncertainty0(ConsumerAgent ca) {
-        Uncertainty uncertainty = uncertaintyCache.get(ca);
-        if(uncertainty == null) {
-            uncertainty = uncertaintyManager.createFor(ca);
-            registerUncertainty(ca, uncertainty, true, false);
-        }
-        return uncertainty;
-    }
-
     protected static ConsumerAgent cast(Agent agent) {
         if(agent instanceof ConsumerAgent) {
             return (ConsumerAgent) agent;
@@ -557,114 +298,10 @@ public class RAProcessModel extends NameableBase implements ProcessModel, Loggab
     @Override
     public ProcessPlan newPlan(Agent agent, Need need, Product product) {
         ConsumerAgent cAgent = cast(agent);
-        Uncertainty uncertainty = getUncertainty0(cAgent);
+        Uncertainty uncertainty = getUncertaintyCache().getUncertainty(cAgent);
         Rnd rnd = environment.getSimulationRandom().deriveInstance();
-        return new RAProcessPlan(environment, this, rnd, cAgent, need, product, uncertainty);
-    }
-
-    //==================================================
-    //attributes
-    //==================================================
-
-    public static double getFinancialPurchasePower(
-            ConsumerAgent agent,
-            AttributeHelper helper) {
-//        double pp = getPurchasePower(agent);
-//        double ns = getNoveltySeeking(agent);
-//        return pp;
-        return helper.findDoubleValue(agent, RAConstants.PURCHASE_POWER);
-    }
-
-    //=========================
-    //find
-    //=========================
-
-    public long getId(ConsumerAgent agent) {
-        SpatialInformation info = agent.getSpatialInformation();
-        if(info.hasId()) {
-            return info.getId();
-        } else {
-            return getAttributeHelper().findLongValue(agent, RAConstants.ID);
-        }
-    }
-
-    public double getFinancialPurchasePower(ConsumerAgent agent) {
-        return getFinancialPurchasePower(agent, getAttributeHelper());
-    }
-
-    public double getPurchasePower(ConsumerAgent agent) {
-        return getAttributeHelper().findDoubleValue(agent, RAConstants.PURCHASE_POWER);
-    }
-
-    public boolean isShareOf1Or2FamilyHouse(ConsumerAgent agent) {
-        return getAttributeHelper().findBooleanValue(agent, RAConstants.SHARE_1_2_HOUSE);
-    }
-
-    public void setShareOf1Or2FamilyHouse(ConsumerAgent agent, boolean value) {
-        getAttributeHelper().findAndSetBooleanValue(agent, RAConstants.SHARE_1_2_HOUSE, value);
-    }
-
-    public boolean isHouseOwner(ConsumerAgent agent) {
-        return getAttributeHelper().findBooleanValue(agent, RAConstants.HOUSE_OWNER);
-    }
-
-    public void setHouseOwner(ConsumerAgent agent, boolean value) {
-        getAttributeHelper().findAndSetBooleanValue(agent, RAConstants.HOUSE_OWNER, value);
-    }
-
-    //=========================
-    //value
-    //=========================
-
-    public double getCommunicationFrequencySN(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.COMMUNICATION_FREQUENCY_SN);
-    }
-
-    public double getRewiringRate(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.REWIRING_RATE);
-    }
-
-    public double getNoveltySeeking(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.NOVELTY_SEEKING);
-    }
-
-    public double getDependentJudgmentMaking(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.DEPENDENT_JUDGMENT_MAKING);
-    }
-
-    public double getEnvironmentalConcern(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.ENVIRONMENTAL_CONCERN);
-    }
-
-    public double getConstructionRate(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.CONSTRUCTION_RATE);
-    }
-
-    public double getRenovationRate(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.RENOVATION_RATE);
-    }
-
-    //=========================
-    //product
-    //=========================
-
-    public double getFinancialThreshold(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.FINANCIAL_THRESHOLD);
-    }
-
-    public double getAdoptionThreshold(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.ADOPTION_THRESHOLD);
-    }
-
-    public double getInitialProductAwareness(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_AWARENESS);
-    }
-
-    public double getInitialProductInterest(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_INTEREST);
-    }
-
-    public double getInitialAdopter(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.INITIAL_ADOPTER);
+        RAProcessPlan plan = new RAProcessPlan(environment, this, rnd, cAgent, need, product, uncertainty);
+        plan.setNetworkFilter(getNodeFilterScheme().createFilter(plan));
+        return plan;
     }
 }

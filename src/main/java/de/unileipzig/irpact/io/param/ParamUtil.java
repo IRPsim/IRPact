@@ -46,6 +46,16 @@ public final class ParamUtil {
     private ParamUtil() {
     }
 
+    @SuppressWarnings("unchecked")
+    public static <R> R getAs(Object input, int index) {
+        return (R) ((Object[]) input)[index];
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <R> R getAs(Object input) {
+        return (R) input;
+    }
+
     public static <T> T[] add(T[] arr, T value) {
         T[] newArr = Arrays.copyOf(arr, arr.length + 1);
         newArr[arr.length] = value;
