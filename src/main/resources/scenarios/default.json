@@ -46,7 +46,9 @@
       "sca_InGeneral_logScriptAdoptionsZipPhase" : 1,
       "sca_InGeneral_logShareNetworkLocal" : 1,
       "sca_InGeneral_logSimulation" : 0,
-      "sca_InGeneral_passErrorMessageToOutput" : 0,
+      "sca_InGeneral_passErrorMessageToOutput" : 1,
+      "sca_InGeneral_printNoErrorImage" : 1,
+      "sca_InGeneral_printStacktraceImage" : 1,
       "sca_InGeneral_runMode" : -1,
       "sca_InGeneral_runOptActDemo" : 0,
       "sca_InGeneral_runPVAct" : 1,
@@ -58,6 +60,7 @@
       "sca_InGeneral_timeoutUseMs" : 0,
       "sca_InGeneral_timeoutUseSec" : 0,
       "sca_InGraphvizGeneral_freeLayout" : 0,
+      "sca_InGraphvizGeneral_keepAspectRatio" : 0,
       "sca_InGraphvizGeneral_positionBasedLayout" : 1,
       "sca_InGraphvizGeneral_preferredImageHeight" : 1000.0,
       "sca_InGraphvizGeneral_preferredImageWidth" : 1000.0,
@@ -117,6 +120,7 @@
           "par_InComplexAffinityEntry_affinityValue" : 0.7
         }
       },
+      "set_InComponent" : { },
       "set_InConsumerAgentGroup" : {
         "BUM" : { },
         "TRA" : { }
@@ -130,6 +134,10 @@
           "par_InConsumerAgentGroupColor_rgba" : 4294901760
         }
       },
+      "set_InDefaultDoActionComponent" : { },
+      "set_InDefaultHandleDecisionMakingComponent" : { },
+      "set_InDefaultHandleFeasibilityComponent" : { },
+      "set_InDefaultHandleInterestComponent" : { },
       "set_InDependentConsumerAgentGroupAttribute" : { },
       "set_InDependentProductGroupAttribute" : { },
       "set_InDiracUnivariateDistribution" : {
@@ -139,7 +147,9 @@
       },
       "set_InDisabledProcessPlanNodeFilterScheme" : { },
       "set_InDistanceEvaluator" : { },
+      "set_InDoNothingComponent" : { },
       "set_InEntireNetworkNodeFilterScheme" : { },
+      "set_InEvaluableComponent" : { },
       "set_InFile" : {
         "Barwertrechner" : { },
         "Datensatz_210322" : { }
@@ -169,9 +179,9 @@
         "JaehrlicheAdoptionenPhase" : {
           "par_InGenericOutputImage_useGnuplot" : 1,
           "par_InGenericOutputImage_useR" : 0,
-          "par_InGenericOutputImage_annualZip" : 1,
+          "par_InGenericOutputImage_annualZip" : 0,
           "par_InGenericOutputImage_annualZipWithReal" : 0,
-          "par_InGenericOutputImage_cumulativeAnnualPhase" : 0,
+          "par_InGenericOutputImage_cumulativeAnnualPhase" : 1,
           "par_InGenericOutputImage_storeScript" : 0,
           "par_InGenericOutputImage_storeData" : 0,
           "par_InGenericOutputImage_storeImage" : 0,
@@ -191,8 +201,8 @@
         "JaehrlicheAdoptionenPLZVergleich" : {
           "par_InGenericOutputImage_useGnuplot" : 1,
           "par_InGenericOutputImage_useR" : 0,
-          "par_InGenericOutputImage_annualZip" : 1,
-          "par_InGenericOutputImage_annualZipWithReal" : 0,
+          "par_InGenericOutputImage_annualZip" : 0,
+          "par_InGenericOutputImage_annualZipWithReal" : 1,
           "par_InGenericOutputImage_cumulativeAnnualPhase" : 0,
           "par_InGenericOutputImage_storeScript" : 0,
           "par_InGenericOutputImage_storeData" : 0,
@@ -240,6 +250,7 @@
       "set_InInverse" : { },
       "set_InIRPactVersion" : { },
       "set_InMassPoint" : { },
+      "set_InModularRAProcessModel" : { },
       "set_InName" : { },
       "set_InNameSplitAffinityEntry" : { },
       "set_InNameSplitConsumerAgentGroupAttribute" : { },
@@ -346,7 +357,7 @@
         }
       },
       "set_InScenarioVersion" : {
-        "v0_6_0" : {
+        "v0_8_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
@@ -374,6 +385,9 @@
           "par_InSpatialTableFile_placeholderInSpatialFile" : 0.0
         }
       },
+      "set_InSumAttributeComponent" : { },
+      "set_InSumIntermediateComponent" : { },
+      "set_InSumThresholdComponent" : { },
       "set_InTestData" : { },
       "set_InTimeModel" : {
         "DiscreteUnitStep" : { }
@@ -398,6 +412,7 @@
         "constant0" : { }
       },
       "set_InUnlinkedGraphTopology" : { },
+      "set_InValueComponent" : { },
       "set_IWattsStrogatzModel" : { },
       "set_jj" : { },
       "set_load_DS" : {
@@ -533,6 +548,8 @@
           "TRA" : 1.0
         }
       },
+      "par_link_InDefaultHandleDecisionMakingComponent_InPVFile_pvFile" : { },
+      "par_link_InDefaultHandleDecisionMakingComponent_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
       "par_link_InFileBasedConsumerAgentPopulation_InAttributeName_selectKey" : { },
       "par_link_InFileBasedConsumerAgentPopulation_InConsumerAgentGroup_cags" : { },
       "par_link_InFileBasedConsumerAgentPopulation_InSpatialTableFile_file" : { },
@@ -584,6 +601,11 @@
       "par_link_InGlobalDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
       "par_link_InGroupBasedDeffuantUncertainty_InAttributeName_attributeNames" : { },
       "par_link_InGroupBasedDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
+      "par_link_InModularRAProcessModel_InEvaluableComponent_actionComponent" : { },
+      "par_link_InModularRAProcessModel_InEvaluableComponent_decisionMakingComponent" : { },
+      "par_link_InModularRAProcessModel_InEvaluableComponent_feasibilityComponent" : { },
+      "par_link_InModularRAProcessModel_InEvaluableComponent_interestComponent" : { },
+      "par_link_InModularRAProcessModel_InUncertainty_uncertainties" : { },
       "par_link_InNameSplitConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
       "par_link_InNameSplitProductGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
       "par_link_InNumberOfTies_InConsumerAgentGroup_cags" : { },
@@ -732,6 +754,9 @@
           "UNCERT" : 1.0
         }
       },
+      "par_link_InSumAttributeComponent_InAttributeName_attributeNames" : { },
+      "par_link_InSumIntermediateComponent_InValueComponent_components" : { },
+      "par_link_InSumThresholdComponent_InValueComponent_components" : { },
       "par_S_DS_growth_absolute" : { },
       "par_SOH_pss_sector" : {
         "E" : {

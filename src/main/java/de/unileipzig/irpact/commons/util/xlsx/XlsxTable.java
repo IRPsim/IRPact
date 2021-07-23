@@ -31,6 +31,11 @@ public class XlsxTable<T> extends SimpleTable<T> {
         set(parser.getHeader().toArray(), rows);
     }
 
+    public void load(XlsxSheetParser<T> parser, Path path, String sheetName) throws IOException, InvalidFormatException, ParsingException {
+        List<List<T>> rows = parser.parse(path, sheetName);
+        set(parser.getHeader().toArray(), rows);
+    }
+
     public void load(XlsxSheetParser<T> parser, XSSFSheet sheet) throws ParsingException, IOException, InvalidFormatException {
         List<List<T>> rows = parser.parse(sheet);
         set(parser.getHeader().toArray(), rows);

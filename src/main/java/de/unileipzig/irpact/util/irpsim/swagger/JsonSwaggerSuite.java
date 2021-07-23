@@ -3,7 +3,7 @@ package de.unileipzig.irpact.util.irpsim.swagger;
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
-import de.unileipzig.irpact.commons.util.FileUtil;
+import de.unileipzig.irpact.commons.util.io.FileUtil;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.util.curl.CurlException;

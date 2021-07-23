@@ -12,6 +12,7 @@ import de.unileipzig.irpact.core.process.ProcessModelManager;
 import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.core.time.TimeModel;
+import de.unileipzig.irpact.core.util.AttributeHelper;
 
 /**
  * @author Daniel Abitz
@@ -63,4 +64,6 @@ public interface SimulationEnvironment extends Nameable, InitalizablePart {
     PersistenceModul getPersistenceModul();
 
     Rnd getSimulationRandom();
+
+    AttributeHelper getAttributeHelper();
 }

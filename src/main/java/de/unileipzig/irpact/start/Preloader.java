@@ -73,7 +73,7 @@ public class Preloader {
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "data dir: {}", clOptions.getDataDirPath());
     }
 
-    private void load() throws Exception {
+    private void load() throws Throwable {
         if(Files.isDirectory(clOptions.getInputPath())) {
             loadSpec();
         }
@@ -86,7 +86,7 @@ public class Preloader {
         return new IRPact(clOptions, callbacks, resourceLoader);
     }
 
-    private void start(IRPact irpact) throws Exception {
+    private void start(IRPact irpact) throws Throwable {
         int runMode = irpact.getInRoot().general.runMode;
         IRPactExecutor exec;
         if(IRPactExecutors.isRegistered(runMode)) {
@@ -97,7 +97,7 @@ public class Preloader {
         exec.execute(irpact);
     }
 
-    private void loadSpec() throws Exception {
+    private void loadSpec() throws Throwable {
         SpecificationConverter converter = new SpecificationConverter();
         InRoot root =  converter.toParam(clOptions.getInputPath());
         AnnualEntry<InRoot> entry = new AnnualEntry<>(root, JsonUtil.JSON.createObjectNode());
@@ -111,12 +111,12 @@ public class Preloader {
         LOGGER.trace("IRPact finished");
     }
 
-    private void loadJson() throws Exception {
+    private void loadJson() throws Throwable {
         ObjectNode root = JsonUtil.readJson(clOptions.getInputPath());
         load(root);
     }
 
-    private void load(ObjectNode root) throws Exception {
+    private void load(ObjectNode root) throws Throwable {
         SubModul modul = detectModul(root);
         switch (modul) {
             case IRPACT:
@@ -237,19 +237,19 @@ public class Preloader {
         optact.start();
     }
 
-    private void callIRPact(ObjectNode root) throws Exception {
+    private void callIRPact(ObjectNode root) throws Throwable {
         LOGGER.trace("call IRPact with param");
         IRPact irpact = createIRPactInstance();
         irpact.init(root);
         start(irpact);
     }
 
-    public void start(AnnualEntry<InRoot> root) throws Exception {
+    public void start(AnnualEntry<InRoot> root) throws Throwable {
         setup();
         callIRPact(root);
     }
 
-    private void callIRPact(AnnualEntry<InRoot> root) throws Exception {
+    private void callIRPact(AnnualEntry<InRoot> root) throws Throwable {
         LOGGER.trace("call IRPact with InRoot");
         IRPact irpact = createIRPactInstance();
         irpact.init(root);

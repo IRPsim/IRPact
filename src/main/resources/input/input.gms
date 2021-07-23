@@ -57,7 +57,7 @@ SET set_InDependentConsumerAgentGroupAttribute(set_InConsumerAgentGroupAttribute
 
 * - identifier: InGeneralConsumerAgentAnnualGroupAttribute
 * - type: String
-SET set_InGeneralConsumerAgentAnnualGroupAttribute(set_InDependentConsumerAgentGroupAttribute,set_InConsumerAgentGroupAttribute)
+SET set_InGeneralConsumerAgentAnnualGroupAttribute(set_InDependentConsumerAgentGroupAttribute)
 
 * - description: Name des Attributes für das Gruppenattribut.
 * - identifier: Attributname
@@ -95,7 +95,7 @@ PARAMETER par_link_InGeneralConsumerAgentGroup_InSpatialDistribution_spatialDist
 
 * - identifier: InGeneralConsumerAgentGroupAttribute
 * - type: String
-SET set_InGeneralConsumerAgentGroupAttribute(set_InDependentConsumerAgentGroupAttribute,set_InConsumerAgentGroupAttribute)
+SET set_InGeneralConsumerAgentGroupAttribute(set_InDependentConsumerAgentGroupAttribute)
 
 * - description: Name des Attributes für das Gruppenattribut.
 * - identifier: Attributname
@@ -114,7 +114,7 @@ SET set_InIndependentConsumerAgentGroupAttribute(set_InConsumerAgentGroupAttribu
 
 * - identifier: InNameSplitConsumerAgentGroupAttribute
 * - type: String
-SET set_InNameSplitConsumerAgentGroupAttribute(set_InIndependentConsumerAgentGroupAttribute,set_InConsumerAgentGroupAttribute)
+SET set_InNameSplitConsumerAgentGroupAttribute(set_InIndependentConsumerAgentGroupAttribute)
 
 * - description: Legt die Verteilungsfunktion fest, auf deren Basis die Attributwerte gezogen werden.
 * - identifier: Verteilungsfunktion
@@ -1035,7 +1035,7 @@ SET set_InUncertainty(*)
 
 * - identifier: InDisabledProcessPlanNodeFilterScheme
 * - type: String
-SET set_InDisabledProcessPlanNodeFilterScheme(set_InRAProcessPlanNodeFilterScheme,set_InProcessPlanNodeFilterScheme)
+SET set_InDisabledProcessPlanNodeFilterScheme(set_InRAProcessPlanNodeFilterScheme)
 
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
@@ -1044,7 +1044,7 @@ PARAMETER par_InDisabledProcessPlanNodeFilterScheme_placeholder(set_InDisabledPr
 
 * - identifier: InEntireNetworkNodeFilterScheme
 * - type: String
-SET set_InEntireNetworkNodeFilterScheme(set_InRAProcessPlanNodeFilterScheme,set_InProcessPlanNodeFilterScheme)
+SET set_InEntireNetworkNodeFilterScheme(set_InRAProcessPlanNodeFilterScheme)
 
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
@@ -1159,7 +1159,7 @@ PARAMETER par_link_InRAProcessModel_InUncertainty_uncertainties(set_InRAProcessM
 
 * - identifier: InRAProcessPlanMaxDistanceFilterScheme
 * - type: String
-SET set_InRAProcessPlanMaxDistanceFilterScheme(set_InRAProcessPlanNodeFilterScheme,set_InProcessPlanNodeFilterScheme)
+SET set_InRAProcessPlanMaxDistanceFilterScheme(set_InRAProcessPlanNodeFilterScheme)
 
 * - description: Legt die maximale Entfernung fest. Die Einheit richtet sich sowohl nach den Ausgangsdaten als auch der verwendeten Metric im räumlichen Modell.
 * - identifier: Maximale Entfernung
@@ -1186,6 +1186,294 @@ SET set_InProcessModel(*)
 * - type: String
 SET set_InProcessPlanNodeFilterScheme(*)
 
+* - identifier: InComponent
+* - hidden: 1
+* - type: String
+SET set_InComponent(*)
+
+* - identifier: InDefaultDoActionComponent
+* - type: String
+SET set_InDefaultDoActionComponent(set_InEvaluableComponent)
+
+* - default: 3
+* - description: todo
+* - identifier: adopter points
+* - type: Integer
+PARAMETER par_InDefaultDoActionComponent_adopterPoints(set_InDefaultDoActionComponent)
+
+* - default: 2
+* - description: todo
+* - identifier: interested points
+* - type: Integer
+PARAMETER par_InDefaultDoActionComponent_interestedPoints(set_InDefaultDoActionComponent)
+
+* - default: 1
+* - description: todo
+* - identifier: aware points
+* - type: Integer
+PARAMETER par_InDefaultDoActionComponent_awarePoints(set_InDefaultDoActionComponent)
+
+* - default: 0
+* - description: todo
+* - identifier: unknown points
+* - type: Integer
+PARAMETER par_InDefaultDoActionComponent_unknownPoints(set_InDefaultDoActionComponent)
+
+* - identifier: InDefaultHandleDecisionMakingComponent
+* - type: String
+SET set_InDefaultHandleDecisionMakingComponent(set_InEvaluableComponent)
+
+* - default: 0.25
+* - description: todo
+* - identifier: a
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_a(set_InDefaultHandleDecisionMakingComponent)
+
+* - default: 0.25
+* - description: todo
+* - identifier: b
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_b(set_InDefaultHandleDecisionMakingComponent)
+
+* - default: 0.25
+* - description: todo
+* - identifier: c
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_c(set_InDefaultHandleDecisionMakingComponent)
+
+* - default: 0.25
+* - description: todo
+* - identifier: d
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_d(set_InDefaultHandleDecisionMakingComponent)
+
+* - default: 0.5
+* - description: todo
+* - identifier: weightFT
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_weightFT(set_InDefaultHandleDecisionMakingComponent)
+
+* - default: 0.5
+* - description: todo
+* - identifier: weightNPV
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_weightNPV(set_InDefaultHandleDecisionMakingComponent)
+
+* - default: 0.5
+* - description: todo
+* - identifier: weightSocial
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_weightSocial(set_InDefaultHandleDecisionMakingComponent)
+
+* - default: 0.5
+* - description: todo
+* - identifier: weightLocal
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_weightLocal(set_InDefaultHandleDecisionMakingComponent)
+
+* - default: 0.125
+* - description: todo
+* - identifier: logistic factor
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_logisticFactor(set_InDefaultHandleDecisionMakingComponent)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InDefaultHandleDecisionMakingComponent_InPVFile_pvFile(set_InDefaultHandleDecisionMakingComponent,set_InPVFile)
+
+* - description: todo
+* - identifier: nodeFilterScheme
+* - type: Boolean
+PARAMETER par_link_InDefaultHandleDecisionMakingComponent_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InDefaultHandleDecisionMakingComponent,set_InRAProcessPlanNodeFilterScheme)
+
+* - identifier: InDefaultHandleFeasibilityComponent
+* - type: String
+SET set_InDefaultHandleFeasibilityComponent(set_InEvaluableComponent)
+
+* - default: 3
+* - description: todo
+* - identifier: adopter points
+* - type: Integer
+PARAMETER par_InDefaultHandleFeasibilityComponent_adopterPoints(set_InDefaultHandleFeasibilityComponent)
+
+* - default: 2
+* - description: todo
+* - identifier: interested points
+* - type: Integer
+PARAMETER par_InDefaultHandleFeasibilityComponent_interestedPoints(set_InDefaultHandleFeasibilityComponent)
+
+* - default: 1
+* - description: todo
+* - identifier: aware points
+* - type: Integer
+PARAMETER par_InDefaultHandleFeasibilityComponent_awarePoints(set_InDefaultHandleFeasibilityComponent)
+
+* - default: 0
+* - description: todo
+* - identifier: unknown points
+* - type: Integer
+PARAMETER par_InDefaultHandleFeasibilityComponent_unknownPoints(set_InDefaultHandleFeasibilityComponent)
+
+* - identifier: InDefaultHandleInterestComponent
+* - type: String
+SET set_InDefaultHandleInterestComponent(set_InEvaluableComponent)
+
+* - default: 3
+* - description: todo
+* - identifier: adopter points
+* - type: Integer
+PARAMETER par_InDefaultHandleInterestComponent_adopterPoints(set_InDefaultHandleInterestComponent)
+
+* - default: 2
+* - description: todo
+* - identifier: interested points
+* - type: Integer
+PARAMETER par_InDefaultHandleInterestComponent_interestedPoints(set_InDefaultHandleInterestComponent)
+
+* - default: 1
+* - description: todo
+* - identifier: aware points
+* - type: Integer
+PARAMETER par_InDefaultHandleInterestComponent_awarePoints(set_InDefaultHandleInterestComponent)
+
+* - default: 0
+* - description: todo
+* - identifier: unknown points
+* - type: Integer
+PARAMETER par_InDefaultHandleInterestComponent_unknownPoints(set_InDefaultHandleInterestComponent)
+
+* - identifier: InDoNothingComponent
+* - type: String
+SET set_InDoNothingComponent(set_InEvaluableComponent)
+
+* - default: 0
+* - description: ungenutzterPlatzhalter
+* - identifier: ---
+* - type: Float
+PARAMETER par_InDoNothingComponent_placeholder(set_InDoNothingComponent)
+
+* - identifier: InEvaluableComponent
+* - hidden: 1
+* - type: String
+SET set_InEvaluableComponent(set_InComponent)
+
+* - identifier: InSumAttributeComponent
+* - type: String
+SET set_InSumAttributeComponent(set_InValueComponent)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InSumAttributeComponent_weight(set_InSumAttributeComponent)
+
+* - description: todo
+* - identifier: Attribute
+* - type: Boolean
+PARAMETER par_link_InSumAttributeComponent_InAttributeName_attributeNames(set_InSumAttributeComponent,set_InAttributeName)
+
+* - identifier: InSumIntermediateComponent
+* - type: String
+SET set_InSumIntermediateComponent(set_InValueComponent)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InSumIntermediateComponent_weight(set_InSumIntermediateComponent)
+
+* - description: todo
+* - identifier: Komponenten
+* - type: Boolean
+PARAMETER par_link_InSumIntermediateComponent_InValueComponent_components(set_InSumIntermediateComponent,set_InValueComponent)
+
+* - identifier: InSumThresholdComponent
+* - type: String
+SET set_InSumThresholdComponent(set_InEvaluableComponent)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InSumThresholdComponent_weight(set_InSumThresholdComponent)
+
+* - default: 0
+* - description: todo
+* - identifier: Grenzwert
+* - type: Float
+PARAMETER par_InSumThresholdComponent_threshold(set_InSumThresholdComponent)
+
+* - description: todo
+* - identifier: Komponenten
+* - type: Boolean
+PARAMETER par_link_InSumThresholdComponent_InValueComponent_components(set_InSumThresholdComponent,set_InValueComponent)
+
+* - identifier: InValueComponent
+* - hidden: 1
+* - type: String
+SET set_InValueComponent(set_InComponent)
+
+* - identifier: InModularRAProcessModel
+* - type: String
+SET set_InModularRAProcessModel(set_InProcessModel)
+
+* - default: 0.5
+* - description: todo
+* - identifier: speed of convergence
+* - type: Float
+PARAMETER par_InModularRAProcessModel_speedOfConvergence(set_InModularRAProcessModel)
+
+* - description: todo
+* - identifier: attitude gap
+* - type: Float
+PARAMETER par_InModularRAProcessModel_attitudeGap(set_InModularRAProcessModel)
+
+* - default: 0.5
+* - domain: [0,1]
+* - description: todo
+* - identifier: chance neutral
+* - type: Float
+PARAMETER par_InModularRAProcessModel_chanceNeutral(set_InModularRAProcessModel)
+
+* - default: 0.25
+* - domain: [0,1]
+* - description: todo
+* - identifier: chance convergence
+* - type: Float
+PARAMETER par_InModularRAProcessModel_chanceConvergence(set_InModularRAProcessModel)
+
+* - default: 0.25
+* - domain: [0,1]
+* - description: todo
+* - identifier: chance divergence
+* - type: Float
+PARAMETER par_InModularRAProcessModel_chanceDivergence(set_InModularRAProcessModel)
+
+* - description: todo
+* - identifier: interest component
+* - type: Boolean
+PARAMETER par_link_InModularRAProcessModel_InEvaluableComponent_interestComponent(set_InModularRAProcessModel,set_InEvaluableComponent)
+
+* - description: todo
+* - identifier: feasibility component
+* - type: Boolean
+PARAMETER par_link_InModularRAProcessModel_InEvaluableComponent_feasibilityComponent(set_InModularRAProcessModel,set_InEvaluableComponent)
+
+* - description: todo
+* - identifier: decision making component
+* - type: Boolean
+PARAMETER par_link_InModularRAProcessModel_InEvaluableComponent_decisionMakingComponent(set_InModularRAProcessModel,set_InEvaluableComponent)
+
+* - description: todo
+* - identifier: action component
+* - type: Boolean
+PARAMETER par_link_InModularRAProcessModel_InEvaluableComponent_actionComponent(set_InModularRAProcessModel,set_InEvaluableComponent)
+
+* - identifier: uncertainties
+* - type: Boolean
+PARAMETER par_link_InModularRAProcessModel_InUncertainty_uncertainties(set_InModularRAProcessModel,set_InUncertainty)
+
 * - identifier: InBasicProductGroup
 * - type: String
 SET set_InBasicProductGroup(set_InProductGroup)
@@ -1197,7 +1485,7 @@ PARAMETER par_link_InBasicProductGroup_InDependentProductGroupAttribute_pgAttrib
 
 * - identifier: InBasicProductGroupAttribute
 * - type: String
-SET set_InBasicProductGroupAttribute(set_InDependentProductGroupAttribute,set_InProductGroupAttribute)
+SET set_InBasicProductGroupAttribute(set_InDependentProductGroupAttribute)
 
 * - description: Legt die Attributnamen fest.
 * - identifier: Attributname
@@ -1258,7 +1546,7 @@ SET set_InIndependentProductGroupAttribute(set_InProductGroupAttribute)
 
 * - identifier: InNameSplitProductGroupAttribute
 * - type: String
-SET set_InNameSplitProductGroupAttribute(set_InIndependentProductGroupAttribute,set_InProductGroupAttribute)
+SET set_InNameSplitProductGroupAttribute(set_InIndependentProductGroupAttribute)
 
 * - description: Legt die Verteilungsfunktion fest, auf deren Basis die Attributwerte gezogen werden.
 * - identifier: Verteilungsfunktion
@@ -1282,7 +1570,7 @@ SET set_InProductGroupAttribute(*)
 
 * - identifier: InFileBasedPVactMilieuSupplier
 * - type: String
-SET set_InFileBasedPVactMilieuSupplier(set_InSpatialDistributionWithCollection,set_InSpatialDistribution)
+SET set_InFileBasedPVactMilieuSupplier(set_InSpatialDistributionWithCollection)
 
 * - identifier: file
 * - type: Boolean
@@ -1290,7 +1578,7 @@ PARAMETER par_link_InFileBasedPVactMilieuSupplier_InSpatialTableFile_file(set_In
 
 * - identifier: InFileBasedSelectGroupSpatialInformationSupplier
 * - type: String
-SET set_InFileBasedSelectGroupSpatialInformationSupplier(set_InSpatialDistributionWithCollection,set_InSpatialDistribution)
+SET set_InFileBasedSelectGroupSpatialInformationSupplier(set_InSpatialDistributionWithCollection)
 
 * - description: Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname).
 * - identifier: X-Schlüssel
@@ -1323,7 +1611,7 @@ PARAMETER par_link_InFileBasedSelectGroupSpatialInformationSupplier_InAttributeN
 
 * - identifier: InFileBasedSelectSpatialInformationSupplier
 * - type: String
-SET set_InFileBasedSelectSpatialInformationSupplier(set_InSpatialDistributionWithCollection,set_InSpatialDistribution)
+SET set_InFileBasedSelectSpatialInformationSupplier(set_InSpatialDistributionWithCollection)
 
 * - description: Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname).
 * - identifier: X-Schlüssel
@@ -1351,7 +1639,7 @@ PARAMETER par_link_InFileBasedSelectSpatialInformationSupplier_InAttributeName_s
 
 * - identifier: InFileBasedSpatialInformationSupplier
 * - type: String
-SET set_InFileBasedSpatialInformationSupplier(set_InSpatialDistributionWithCollection,set_InSpatialDistribution)
+SET set_InFileBasedSpatialInformationSupplier(set_InSpatialDistributionWithCollection)
 
 * - description: Bestimmt den Schlüssel für die Auswahl der X-Position in der tabellarischen Datei (Spaltenname).
 * - identifier: X-Schlüssel
@@ -1674,7 +1962,7 @@ SCALAR sca_InGraphvizGeneral_preferredImageHeight
 
 * - default: 1
 * - domain: [0|1]
-* - description: Nutzt für die Grapherzeugung ein positionsbasiertes Layout. Das genaue Layout ist NEATO kombiniert mit -n. Dieses Layout setzt vorraus, dass die Agenten eine Position besitzen. Zusätzlich benötigt es auch eine eingestellte Bildgröße. Falls diese fehlt, wird ein (ca.) 1000x1000 Pixel großes Bild erzeugt.
+* - description: Nutzt für die Grapherzeugung ein positionsbasiertes Layout. Das genaue Layout ist NEATO kombiniert mit -n. Dieses Layout setzt vorraus, dass die Agenten eine Position besitzen. Zusätzlich benötigt es eine eingestellte Bildgröße. Falls diese fehlt, wird ein (ca.) 1000x1000 Pixel großes Bild erzeugt. Dieses Layout kann zu Verzerrungen führen, da es unter Umständen (z.B. bei Geoinformationen) die Daten in das gewünschte Ausgabeformat transformiert. Um das Seitenverhältnis beizubehalten, kann die entsprechende Option genutzt werden.
 * - identifier: Positionsbasiertes Layout
 * - rule: IF (sca_InGraphvizGeneral_positionBasedLayout == 1, sca_InGraphvizGeneral_freeLayout = 0)
 * - rule: IF (sca_InGraphvizGeneral_positionBasedLayout == 0, sca_InGraphvizGeneral_positionBasedLayout = 1)
@@ -1691,6 +1979,13 @@ SCALAR sca_InGraphvizGeneral_positionBasedLayout
 * - rule: IF (sca_InGraphvizGeneral_freeLayout == 0, sca_InGraphvizGeneral_freeLayout = 1)
 * - type: Boolean
 SCALAR sca_InGraphvizGeneral_freeLayout
+
+* - default: 0
+* - domain: [0|1]
+* - description: Diese Option erlaubt es das Seitenverhältnis der Daten beizubehalten. Die Entscheidung, ob die Länge oder die Breite des Bildes verändert wird, hängt von der finalen Bildfläche ab. Das Verfahren nutzt die Variante mit der kleineren Bildfläche.
+* - identifier: Seitenverhätnis beibehalten
+* - type: Boolean
+SCALAR sca_InGraphvizGeneral_keepAspectRatio
 
 * - default: 0
 * - domain: [0|1]
@@ -1806,12 +2101,26 @@ SCALAR sca_InGeneral_runMode
 * - type: Integer
 SCALAR sca_InGeneral_scenarioMode
 
-* - default: 0
+* - default: 1
 * - domain: [0|1]
-* - description: todo
-* - identifier: Leite Error in Output
+* - description: Falls diese Option aktiviert ist, wird der Grund für einen potentiellen Fehler in den Ausgabeinformationen ausgegeben.
+* - identifier: Fehleranzeige in der Ausgabe
 * - type: Boolean
 SCALAR sca_InGeneral_passErrorMessageToOutput
+
+* - default: 1
+* - domain: [0|1]
+* - description: Falls diese Option aktiviert ist, wird bei einem potentiellen Fehler der Stacktrace als Bild ausgegeben. Dieser Ansatz ermöglicht eine sofortige Fehleranalyse im Ergebnis.
+* - identifier: Stacktrace als Bild ausgeben
+* - type: Boolean
+SCALAR sca_InGeneral_printStacktraceImage
+
+* - default: 1
+* - domain: [0|1]
+* - description: Falls diese Option aktiviert ist, wird die Nachricht 'Kein Fehler aufgetreten!' in der Ausgabe als Bild angegeben. Anderenfalls wird kein Bild erstellt.
+* - identifier: Ersatzbild bei keinem Fehler erstellen
+* - type: Boolean
+SCALAR sca_InGeneral_printNoErrorImage
 
 * - default: 0
 * - domain: [0|1]
@@ -1822,7 +2131,7 @@ SCALAR sca_InGeneral_copyLogIfPossible
 
 * - default: 0
 * - domain: [0|1]
-* - description: todo
+* - description: Deaktiviert die komplette Persistierung. Dadurch wird jedes Stützjahr als komplett neue Simulation behandelt.
 * - identifier: Deaktiviere Persistierung
 * - type: Boolean
 SCALAR sca_InGeneral_skipPersist

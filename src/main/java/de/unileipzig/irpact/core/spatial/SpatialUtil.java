@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialDoubleAttribute;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialStringAttribute;
-import de.unileipzig.irpact.commons.util.data.DataType;
+import de.unileipzig.irpact.commons.attribute.DataType;
 import de.unileipzig.irpact.commons.util.data.LinkedDataCollection;
 import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.core.spatial.data.BasicSpatialDataCollection;

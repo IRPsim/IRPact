@@ -2,8 +2,9 @@ package de.unileipzig.irpact.core.postprocessing.image;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.commons.locale.LocalizedYaml;
+import de.unileipzig.irpact.core.locale.LocalizedYaml;
 import de.unileipzig.irpact.commons.util.JsonUtil;
+import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 
 import java.util.Locale;
 

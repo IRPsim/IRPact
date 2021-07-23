@@ -2,7 +2,7 @@ package de.unileipzig.irpact.start;
 
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.util.AbstractCommandLineOptions;
-import de.unileipzig.irpact.commons.util.MapResourceBundle;
+import de.unileipzig.irpact.commons.resource.MapResourceBundle;
 import de.unileipzig.irpact.core.logging.IRPLoggingMessage;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.start.irpact.IRPact;
@@ -503,6 +503,9 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     }
     public boolean hasImagePath() {
         return getImagePath() != null;
+    }
+    public boolean hasImagePathWithoutFile() {
+        return hasImagePath() && Files.notExists(getImagePath());
     }
     public Path getImagePath() {
         checkExecuted();

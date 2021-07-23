@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.io.param.input.visualisation.result;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.postprocessing.image.DataToVisualize;
+import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.start.irpact.IRPact;
@@ -65,9 +65,9 @@ public class InGenericOutputImage implements InOutputImage {
 
     public static InGenericOutputImage[] createDefaultImages() {
         return new InGenericOutputImage[] {
-                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS),
-                new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS),
-                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS)
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS, DataToVisualize.ANNUAL_ZIP),
+                new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, DataToVisualize.COMPARED_ANNUAL_ZIP),
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS,DataToVisualize.CUMULATIVE_ANNUAL_PHASE)
         };
     }
 
@@ -119,10 +119,10 @@ public class InGenericOutputImage implements InOutputImage {
     public InGenericOutputImage() {
     }
 
-    public InGenericOutputImage(String name) {
+    public InGenericOutputImage(String name, DataToVisualize mode) {
         setName(name);
         setEngine(SupportedEngine.GNUPLOT);
-        setMode(DataToVisualize.ANNUAL_ZIP);
+        setMode(mode);
         setStoreImage(true);
         setStoreData(false);
         setStoreScript(false);

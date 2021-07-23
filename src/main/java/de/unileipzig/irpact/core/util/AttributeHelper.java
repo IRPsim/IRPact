@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
 import de.unileipzig.irpact.commons.exception.IRPactNoSuchElementException;
-import de.unileipzig.irpact.commons.util.data.DataType;
+import de.unileipzig.irpact.commons.attribute.DataType;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.product.Product;
@@ -16,7 +16,8 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
  */
 public final class AttributeHelper extends SimulationEntityBase {
 
-    public AttributeHelper() {
+    public AttributeHelper(SimulationEnvironment environment) {
+        setEnvironment(environment);
     }
 
     //==================================================
@@ -149,7 +150,6 @@ public final class AttributeHelper extends SimulationEntityBase {
         }
         return getLongValue(attribute);
     }
-
     public double getDoubleValue(ConsumerAgent agent, String name) throws IRPactNoSuchElementException {
         ConsumerAgentAttribute attribute = agent.getAttribute(name);
         if(attribute == null) {
@@ -163,6 +163,14 @@ public final class AttributeHelper extends SimulationEntityBase {
             handleMissingAttribute(agent, name);
         }
         return getDoubleValue(attribute);
+    }
+
+    public static double findDoubleValue2(ConsumerAgent agent, String name) {
+        Attribute attribute = agent.findAttribute(name);
+        if(attribute == null) {
+            handleMissingAttribute(agent, name);
+        }
+        return getDoubleValue(agent.getEnvironment(), attribute);
     }
 
     //=========================

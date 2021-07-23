@@ -26,6 +26,7 @@ import de.unileipzig.irpact.core.simulation.*;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.core.persistence.BasicPersistenceModul;
+import de.unileipzig.irpact.core.util.AttributeHelper;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -43,6 +44,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     protected Rnd rnd;
     protected boolean restored = false;
 
+    protected final AttributeHelper HELPER = new AttributeHelper(this);
     protected Settings settings;
     protected BinaryTaskManager taskManager;
     protected PersistenceModul persistenceModul;
@@ -253,6 +255,11 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     @Override
     public Rnd getSimulationRandom() {
         return rnd;
+    }
+
+    @Override
+    public AttributeHelper getAttributeHelper() {
+        return HELPER;
     }
 
     @Override

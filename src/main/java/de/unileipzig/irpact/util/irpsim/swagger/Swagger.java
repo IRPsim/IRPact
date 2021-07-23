@@ -3,7 +3,7 @@ package de.unileipzig.irpact.util.irpsim.swagger;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.unileipzig.irpact.commons.util.FileUtil;
+import de.unileipzig.irpact.commons.util.io.FileUtil;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.util.curl.Curl;
@@ -11,8 +11,6 @@ import de.unileipzig.irpact.util.curl.CurlException;
 import de.unileipzig.irpact.util.irpsim.swagger.scenario.*;
 import de.unileipzig.irpact.util.irpsim.swagger.simulation.SimulationState;
 import de.unileipzig.irpact.util.scenarios.Scenario;
-import de.unileipzig.irptools.io.swagger.DownloadedSwaggerFile;
-import de.unileipzig.irptools.io.swagger.UploadableSwaggerFile;
 import de.unileipzig.irptools.util.Util;
 
 import java.io.IOException;

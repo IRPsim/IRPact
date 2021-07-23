@@ -3,8 +3,8 @@ package de.unileipzig.irpact.commons.util.xlsx;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.BasicDoubleAttribute;
 import de.unileipzig.irpact.commons.attribute.BasicStringAttribute;
-import de.unileipzig.irpact.commons.util.data.DataType;
-import de.unileipzig.irpact.commons.util.io.Header;
+import de.unileipzig.irpact.commons.attribute.DataType;
+import de.unileipzig.irpact.commons.util.table.Header;
 
 /**
  * @author Daniel Abitz

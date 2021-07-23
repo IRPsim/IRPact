@@ -55,6 +55,10 @@ final class BinaryJsonUtil {
         ensureRegister(manager, BoundedUniformIntegerDistributionPR.INSTANCE);
         ensureRegister(manager, CeilingTimeAdvanceFunctionPR.INSTANCE);
         ensureRegister(manager, CompleteGraphTopologyPR.INSTANCE);
+        ensureRegister(manager, DefaultDoActionComponentPR.INSTANCE);
+        ensureRegister(manager, DefaultHandleDecisionMakingComponentPR.INSTANCE);
+        ensureRegister(manager, DefaultHandleFeasibilityComponentPR.INSTANCE);
+        ensureRegister(manager, DefaultHandleInterestComponentPR.INSTANCE);
         ensureRegister(manager, DeffuantUncertaintyPR.INSTANCE);
         ensureRegister(manager, DiracUnivariateDoubleDistributionPR.INSTANCE);
         ensureRegister(manager, DisabledNodeFilterPR.INSTANCE);
@@ -72,6 +76,8 @@ final class BinaryJsonUtil {
         ensureRegister(manager, InversePR.INSTANCE);
         ensureRegister(manager, JadexConsumerAgentGroupPR.INSTANCE);
         ensureRegister(manager, MaxDistanceNodeFilterPR.INSTANCE);
+        ensureRegister(manager, ModularRAProcessModelPR.INSTANCE);
+        ensureRegister(manager, ModularRAProcessPlanPR.INSTANCE);
         ensureRegister(manager, NoDistancePR.INSTANCE);
         ensureRegister(manager, NormalDistributionPR.INSTANCE);
         ensureRegister(manager, ProductBinaryAwarenessPR.INSTANCE);

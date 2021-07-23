@@ -5,7 +5,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.network.filter.MaxDistanceNodeFilter;
 import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.filter.ProcessPlanMaxDistanceFilterScheme;
-import de.unileipzig.irpact.core.process.ra.RAProcessPlan;
+import de.unileipzig.irpact.core.process.ra.RAProcessPlanBase;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 
@@ -16,10 +16,10 @@ public class RAProcessPlanMaxDistanceFilterScheme extends ProcessPlanMaxDistance
 
     @Override
     public MaxDistanceNodeFilter createFilter(ProcessPlan plan) {
-        RAProcessPlan raPlan = (RAProcessPlan) plan;
+        RAProcessPlanBase raPlan = (RAProcessPlanBase) plan;
         ConsumerAgent agent = raPlan.getAgent();
         SpatialInformation origin = agent.getSpatialInformation();
-        SpatialModel model = raPlan.getEnvironment().getSpatialModel();
+        SpatialModel model = agent.getEnvironment().getSpatialModel();
 
         MaxDistanceNodeFilter filter = new MaxDistanceNodeFilter();
         filter.setName(getName());

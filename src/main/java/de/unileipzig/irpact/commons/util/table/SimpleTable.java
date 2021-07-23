@@ -2,8 +2,6 @@ package de.unileipzig.irpact.commons.util.table;
 
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
-import de.unileipzig.irpact.commons.util.io.Header;
-import de.unileipzig.irpact.commons.util.io.SimpleHeader;
 
 import java.util.*;
 import java.util.function.BiConsumer;

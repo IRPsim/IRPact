@@ -9,5 +9,5 @@ public interface IRPactExecutor {
 
     int id();
 
-    void execute(IRPact irpact) throws Exception;
+    void execute(IRPact irpact) throws Throwable;
 }

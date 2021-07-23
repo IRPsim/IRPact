@@ -9,7 +9,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.logging.LoggingMessage;
 import de.unileipzig.irpact.commons.resource.BasicResourceLoader;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
-import de.unileipzig.irpact.commons.util.FileUtil;
+import de.unileipzig.irpact.commons.util.io.FileUtil;
 import de.unileipzig.irpact.core.logging.*;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -43,6 +43,7 @@ import java.util.*;
 /**
  * @author Daniel Abitz
  */
+//MISSING: write ErrorImage, wenn image+noSimulation failed
 public class Preloader3 {
 
     /**
@@ -383,7 +384,7 @@ public class Preloader3 {
     //args based
     //==================================================
 
-    public void load(MainCommandLineOptions clOptions, Collection<? extends IRPactCallback> callbacks) throws Exception {
+    public void load(MainCommandLineOptions clOptions, Collection<? extends IRPactCallback> callbacks) throws Throwable {
         try {
             load0(clOptions, callbacks);
         } catch (Exception e) {
@@ -392,7 +393,7 @@ public class Preloader3 {
         }
     }
 
-    private void load0(MainCommandLineOptions clOptions, Collection<? extends IRPactCallback> callbacks) throws Exception {
+    private void load0(MainCommandLineOptions clOptions, Collection<? extends IRPactCallback> callbacks) throws Throwable {
         this.clOptions = clOptions;
         this.callbacks = callbacks == null ? Collections.emptyList() : callbacks;
 
@@ -407,7 +408,7 @@ public class Preloader3 {
         throw new UnsupportedOperationException("currently not supported");
     }
 
-    private void loadFile() throws Exception {
+    private void loadFile() throws Throwable {
         MESSAGES.add(new IRPLoggingMessage()
                 .setSection(IRPSection.INITIALIZATION_PARAMETER)
                 .setLevel(Level.TRACE)
@@ -535,7 +536,7 @@ public class Preloader3 {
         next.binaryPersistData = lastResult.getBinaryPersistData();
     }
 
-    private void callIRPact(IRPFile file) throws Exception {
+    private void callIRPact(IRPFile file) throws Throwable {
         checkVersion(file);
 
         IRPData<InRoot> data = file.deserialize(IRPact.getInputConverter(clOptions));
@@ -587,7 +588,7 @@ public class Preloader3 {
             ObjectNode jsonRoot,
             AnnualEntry<InRoot> entry,
             int current,
-            int total) throws Exception {
+            int total) throws Throwable {
         GetOutput outputCallback = current == total ? null : new GetOutput(GETOUTPUT_CALLBACK_NAME);
         Collection<? extends IRPactCallback> cbs = buildCallbacks(callbacks, outputCallback);
         IRPact irpact = new IRPact(clOpt, cbs, resourceLoader);
@@ -611,7 +612,7 @@ public class Preloader3 {
     //scenario based
     //==================================================
 
-    public void load(Collection<? extends Start3.Input> inputs) throws Exception {
+    public void load(Collection<? extends Start3.Input> inputs) throws Throwable {
         OutRoot lastResult = null;
         int i = 0;
         LOGGER.trace(IRPSection.GENERAL, "calling IRPact {} time(s)", inputs.size());
@@ -648,7 +649,7 @@ public class Preloader3 {
             Start3.Input input,
             MainCommandLineOptions clOpt,
             int current,
-            int total) throws Exception {
+            int total) throws Throwable {
         GetOutput outputCallback = current == total ? null : new GetOutput(GETOUTPUT_CALLBACK_NAME);
         Collection<? extends IRPactCallback> cbs = buildCallbacks(callbacks, outputCallback);
         IRPact irpact = new IRPact(clOpt, cbs, resourceLoader);

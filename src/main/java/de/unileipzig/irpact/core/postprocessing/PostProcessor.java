@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.core.postprocessing;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.simulation.Settings;
@@ -10,7 +12,11 @@ import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @author Daniel Abitz
@@ -47,7 +53,56 @@ public abstract class PostProcessor implements LoggingHelper {
         return environment.getSettings();
     }
 
-    protected Path getTargetDir() throws IOException {
+    public Path getTargetDir() throws IOException {
         return clOptions.getCreatedDownloadDir();
+    }
+
+    protected List<Integer> years;
+    public List<Integer> getAllSimulationYears() {
+        if(years == null) {
+            int firstYear = metaData.getOldestRunInfo().getActualFirstSimulationYear();
+            int lastYear = metaData.getCurrentRunInfo().getLastSimulationYear();
+            years = IntStream.rangeClosed(firstYear, lastYear)
+                    .boxed()
+                    .collect(Collectors.toList());
+        }
+        return years;
+    }
+
+    protected ObjectNode tryLoadYaml(String baseName, String extension) throws IOException {
+        ObjectNode root = tryLoadExternalYaml(baseName, extension);
+        if(root != null) return root;
+        return tryLoadInternalYaml(baseName, extension);
+    }
+
+    protected ObjectNode tryLoadExternalYaml(String baseName, String extension) throws IOException {
+        if(metaData.getLoader().hasLocalizedExternal(baseName, metaData.getLocale(), extension)) {
+            trace("loading '{}'", metaData.getLoader().getLocalizedExternal(baseName, metaData.getLocale(), extension));
+            InputStream in = metaData.getLoader().getLocalizedExternalAsStream(baseName, metaData.getLocale(), extension);
+            return tryLoadYamlAndCloseStream(in);
+        } else {
+            return null;
+        }
+    }
+
+    protected ObjectNode tryLoadInternalYaml(String baseName, String extension) throws IOException {
+        if(metaData.getLoader().hasLocalizedInternal(baseName, metaData.getLocale(), extension)) {
+            trace("loading '{}'", metaData.getLoader().getLocalizedInternal(baseName, metaData.getLocale(), extension));
+            InputStream in = metaData.getLoader().getLocalizedInternalAsStream(baseName, metaData.getLocale(), extension);
+            return tryLoadYamlAndCloseStream(in);
+        } else {
+            return null;
+        }
+    }
+
+    protected ObjectNode tryLoadYamlAndCloseStream(InputStream in) throws IOException {
+        if(in == null) {
+            return null;
+        }
+        try {
+            return JsonUtil.read(in, JsonUtil.YAML);
+        } finally {
+            in.close();
+        }
     }
 }

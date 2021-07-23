@@ -12,7 +12,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v0.6.0" 
+        :description "IRPact v0.8.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -48,7 +48,7 @@
       {
         :label "Spezielle Einstellungen" 
         :description "Hier lassen sich spezielle Modi aktivieren." 
-        :tags [["InGeneral" "runPVAct"] ["InGeneral" "runOptActDemo"] ["InGeneral" "runMode"] ["InGeneral" "scenarioMode"] ["InGeneral" "passErrorMessageToOutput"] ["InGeneral" "copyLogIfPossible"] ["InGeneral" "skipPersist"]] 
+        :tags [["InGeneral" "runPVAct"] ["InGeneral" "runOptActDemo"] ["InGeneral" "runMode"] ["InGeneral" "scenarioMode"] ["InGeneral" "passErrorMessageToOutput"] ["InGeneral" "printStacktraceImage"] ["InGeneral" "printNoErrorImage"] ["InGeneral" "copyLogIfPossible"] ["InGeneral" "skipPersist"]] 
         :sections [
           {
             :label "Binäre Daten" 
@@ -88,7 +88,7 @@
           {
             :label "Einstellungen" 
             :description "Ermöglicht die allgemeine Konfiguration von Graphviz für die Netzwerkvisualisierung." 
-            :tags [["InGraphvizGeneral" "storeEndImage"] ["InGraphvizGeneral" "storeDotFile"] ["InGraphvizGeneral" "preferredImageWidth"] ["InGraphvizGeneral" "preferredImageHeight"] ["InGraphvizGeneral" "positionBasedLayout"] ["InGraphvizGeneral" "freeLayout"] ["InGraphvizGeneral" "useDefaultPositionIfMissing"]]
+            :tags [["InGraphvizGeneral" "storeEndImage"] ["InGraphvizGeneral" "storeDotFile"] ["InGraphvizGeneral" "preferredImageWidth"] ["InGraphvizGeneral" "preferredImageHeight"] ["InGraphvizGeneral" "positionBasedLayout"] ["InGraphvizGeneral" "freeLayout"] ["InGraphvizGeneral" "keepAspectRatio"] ["InGraphvizGeneral" "useDefaultPositionIfMissing"]]
           } 
           {
             :label "Agentengruppe-Farben-Mapping" 
@@ -460,6 +460,68 @@
         :label "Relative Agreement" 
         :set "set_InRAProcessModel" 
         :tags [["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["InRAProcessModel" "speedOfConvergence"] ["InRAProcessModel" "attitudeGap"] ["InRAProcessModel" "chanceNeutral"] ["InRAProcessModel" "chanceConvergence"] ["InRAProcessModel" "chanceDivergence"] ["link" "InRAProcessModel" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertainty" "uncertainties"]]
+      } 
+      {
+        :label "Modulares Relative Agreement" 
+        :set "set_InModularRAProcessModel" 
+        :description "todo" 
+        :tags [["InModularRAProcessModel" "speedOfConvergence"] ["InModularRAProcessModel" "attitudeGap"] ["InModularRAProcessModel" "chanceNeutral"] ["InModularRAProcessModel" "chanceConvergence"] ["InModularRAProcessModel" "chanceDivergence"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "interestComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "feasibilityComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "decisionMakingComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "actionComponent"] ["link" "InModularRAProcessModel" "InUncertainty" "uncertainties"]] 
+        :sections [
+          {
+            :label "Komponenten" 
+            :description "todo" 
+            :sections [
+              {
+                :label "Standard Interest" 
+                :set "set_InDefaultHandleInterestComponent" 
+                :description "todo" 
+                :tags [["InDefaultHandleInterestComponent" "adopterPoints"] ["InDefaultHandleInterestComponent" "interestedPoints"] ["InDefaultHandleInterestComponent" "awarePoints"] ["InDefaultHandleInterestComponent" "unknownPoints"]]
+              } 
+              {
+                :label "Standard Feasibility" 
+                :set "set_InDefaultHandleFeasibilityComponent" 
+                :description "todo" 
+                :tags [["InDefaultHandleFeasibilityComponent" "adopterPoints"] ["InDefaultHandleFeasibilityComponent" "interestedPoints"] ["InDefaultHandleFeasibilityComponent" "awarePoints"] ["InDefaultHandleFeasibilityComponent" "unknownPoints"]]
+              } 
+              {
+                :label "Standard Decision Making" 
+                :set "set_InDefaultHandleDecisionMakingComponent" 
+                :description "todo" 
+                :tags [["InDefaultHandleDecisionMakingComponent" "a"] ["InDefaultHandleDecisionMakingComponent" "b"] ["InDefaultHandleDecisionMakingComponent" "c"] ["InDefaultHandleDecisionMakingComponent" "d"] ["InDefaultHandleDecisionMakingComponent" "weightFT"] ["InDefaultHandleDecisionMakingComponent" "weightNPV"] ["InDefaultHandleDecisionMakingComponent" "weightSocial"] ["InDefaultHandleDecisionMakingComponent" "weightLocal"] ["InDefaultHandleDecisionMakingComponent" "logisticFactor"] ["link" "InDefaultHandleDecisionMakingComponent" "InPVFile" "pvFile"] ["link" "InDefaultHandleDecisionMakingComponent" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+              } 
+              {
+                :label "Standard Action" 
+                :set "set_InDefaultDoActionComponent" 
+                :description "todo" 
+                :tags [["InDefaultDoActionComponent" "adopterPoints"] ["InDefaultDoActionComponent" "interestedPoints"] ["InDefaultDoActionComponent" "awarePoints"] ["InDefaultDoActionComponent" "unknownPoints"]]
+              } 
+              {
+                :label "Summe über Attribute" 
+                :set "set_InSumAttributeComponent" 
+                :description "todo" 
+                :tags [["InSumAttributeComponent" "weight"] ["link" "InSumAttributeComponent" "InAttributeName" "attributeNames"]]
+              } 
+              {
+                :label "Summe über Komponenten (Zwischenkomponente)" 
+                :set "set_InSumIntermediateComponent" 
+                :description "todo" 
+                :tags [["InSumIntermediateComponent" "weight"] ["link" "InSumIntermediateComponent" "InValueComponent" "components"]]
+              } 
+              {
+                :label "Summe über Komponenten (Evaluierungskomponente)" 
+                :set "set_InSumThresholdComponent" 
+                :description "todo" 
+                :tags [["InSumThresholdComponent" "weight"] ["InSumThresholdComponent" "threshold"] ["link" "InSumThresholdComponent" "InValueComponent" "components"]]
+              } 
+              {
+                :label "Keine Evaluierung" 
+                :set "set_InDoNothingComponent" 
+                :description "todo" 
+                :tags [["InDoNothingComponent" "placeholder"]]
+              }
+            ]
+          }
+        ]
       } 
       {
         :label "Netzwerkfilter für Prozesse" 

@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.commons.attribute;
 
-import de.unileipzig.irpact.commons.util.data.DataType;
-
 import java.util.Collection;
 
 /**

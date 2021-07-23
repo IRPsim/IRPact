@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.misc.graphviz;
 
+import de.unileipzig.irpact.commons.geo.LatLng2XY;
 import de.unileipzig.irpact.commons.util.PositionMapper;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -41,6 +42,8 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
     protected double preferredHeight;
     protected boolean useDefaultPositionIfMissing = false;
     protected PositionMapper positionMapper;
+    protected boolean keepAspectRatio = false;
+    protected boolean preferSmallerArea = true;
 
     public BasicGraphvizConfiguration() {
         this(new HashMap<>());
@@ -106,10 +109,6 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         return preferredHeight;
     }
 
-    public double getPreferredHeightOrDefault() {
-        return preferredHeight == 0 ? DEFAULT_PREFERRED_HEIGHT : preferredHeight;
-    }
-
     public void setPreferredWidth(double preferredWidth) {
         this.preferredWidth = preferredWidth;
     }
@@ -118,12 +117,32 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         return preferredWidth;
     }
 
-    public double getPreferredWidthOrDefault() {
-        return preferredWidth == 0 ? DEFAULT_PREFERRED_WIDTH : preferredWidth;
+    protected double getPreferredHeightOrDefault() {
+        return preferredHeight == 0
+                ? DEFAULT_PREFERRED_HEIGHT
+                : preferredHeight;
     }
 
-    public boolean hasPreferredSize() {
-        return preferredWidth > 0 && preferredHeight > 0;
+    protected double getPreferredWidthOrDefault() {
+        return preferredWidth == 0
+                ? DEFAULT_PREFERRED_WIDTH
+                : preferredWidth;
+    }
+
+    protected double getWidthToUse() {
+        return hasPositionMapper()
+                ? getPositionMapper().getBoundingBoxWidth()
+                : getPreferredWidth();
+    }
+
+    protected double getHeightToUse() {
+        return hasPositionMapper()
+                ? getPositionMapper().getBoundingBoxHeight()
+                : getPreferredHeight();
+    }
+
+    protected boolean hasSizeToUse() {
+        return getWidthToUse() > 0 && getHeightToUse() > 0;
     }
 
     public void setUseDefaultPositionIfMissing(boolean useDefaultPositionIfMissing) {
@@ -144,6 +163,14 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
 
     public boolean hasPositionMapper() {
         return positionMapper != null;
+    }
+
+    public void setKeepAspectRatio(boolean keepAspectRatio) {
+        this.keepAspectRatio = keepAspectRatio;
+    }
+
+    public boolean shouldKeepAspectRatio() {
+        return keepAspectRatio;
     }
 
     private static GraphvizGenerator<SocialGraph.Node, SocialGraph.Edge> newGenerator() {
@@ -190,11 +217,11 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
     }
 
     private double mapX(double x) {
-        return hasPositionMapper() ? positionMapper.mapX(x) : x;
+        return hasPositionMapper() ? getPositionMapper().mapX(x) : x;
     }
 
     private double mapY(double y) {
-        return hasPositionMapper() ? positionMapper.mapY(y) : y;
+        return hasPositionMapper() ? getPositionMapper().mapY(y) : y;
     }
 
     private static void setPosition(MutableNode node, double x, double y) {
@@ -233,7 +260,6 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
     private void updatePositionMapper(Collection<? extends SocialGraph.Node> nodes) {
         if(hasPositionMapper()) {
             positionMapper.reset();
-            positionMapper.setBoundingBox(0, 0, getPreferredWidthOrDefault(), getPreferredHeightOrDefault());
             for(SocialGraph.Node node: nodes) {
                 ConsumerAgent ca = node.getAgent(ConsumerAgent.class);
                 SpatialInformation information = ca.getSpatialInformation();
@@ -243,6 +269,11 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
                 } else {
                     LOGGER.warn("skip unsupported information (agent={}, information={})", ca.getName(), information);
                 }
+            }
+            if(shouldKeepAspectRatio()) {
+                positionMapper.computeBoundingBox(0, 0, getPreferredWidthOrDefault(), getPreferredHeightOrDefault(), preferSmallerArea);
+            } else {
+                positionMapper.setBoundingBox(0, 0, getPreferredWidthOrDefault(), getPreferredHeightOrDefault());
             }
         }
     }
@@ -255,8 +286,9 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
         if(isFdpOrSfdp()) {
             gen.setOverlap(StandardOverlap.PRISM);
         }
-        if(hasPreferredSize()) {
-            gen.setPixelSizePreferred(getPreferredWidth(), getPreferredHeight());
+
+        if(hasSizeToUse()) {
+            gen.setPixelSizePreferred(getWidthToUse(), getHeightToUse());
         }
     }
 
@@ -286,8 +318,9 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
 
 //            TESTZWECKE
 //            if(true) {
-//                Path xxx = usedDotFile.resolveSibling("YYYYYY.dot");
+//                Path xxx = usedDotFile.resolveSibling("Daten-NoRatio.dot");
 //                Files.copy(usedDotFile, xxx);
+//                LOGGER.info("width={} height={}", getWidthToUse(), getHeightToUse());
 //                throw new RuntimeException("KILL ME");
 //            }
 

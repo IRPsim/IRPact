@@ -15,6 +15,8 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactCons
 import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.agent.population.InAgentPopulation;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedConsumerAgentPopulation;
+import de.unileipzig.irpact.io.param.input.process.mra.InModularRAProcessModel;
+import de.unileipzig.irpact.io.param.input.process.mra.component.*;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InGraphvizGeneral;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGnuPlotOutputImage;
@@ -728,6 +730,19 @@ public class InRoot implements RootClass {
             InRAProcessPlanNodeFilterScheme.class,
             InProcessModel.class,
             InProcessPlanNodeFilterScheme.class,
+
+            InComponent.class,
+            InDefaultDoActionComponent.class,
+            InDefaultHandleDecisionMakingComponent.class,
+            InDefaultHandleFeasibilityComponent.class,
+            InDefaultHandleInterestComponent.class,
+            InDoNothingComponent.class,
+            InEvaluableComponent.class,
+            InSumAttributeComponent.class,
+            InSumIntermediateComponent.class,
+            InSumThresholdComponent.class,
+            InValueComponent.class,
+            InModularRAProcessModel.class,
 
             InBasicProductGroup.class,
             InBasicProductGroupAttribute.class,

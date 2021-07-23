@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.commons.util.csv;
 
 import de.unileipzig.irpact.commons.util.data.MutableBoolean;
-import de.unileipzig.irpact.commons.util.io.Header;
-import de.unileipzig.irpact.commons.util.io.SimpleHeader;
+import de.unileipzig.irpact.commons.util.table.Header;
+import de.unileipzig.irpact.commons.util.table.SimpleHeader;
 
 import java.io.BufferedReader;
 import java.io.IOException;

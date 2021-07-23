@@ -1,7 +1,7 @@
----
 #########################
 # Deutsche Lokalisierung für die gesamte Benutzeroberfläche
 #########################
+---
 settings:
   edn_label: "Einstellungen"
   edn_description: "Einstellungen von IRPact"
@@ -93,11 +93,17 @@ InGeneral_copyLogIfPossible:
   gams_identifier: "Kopiere Log"
   gams_description: "todo"
 InGeneral_passErrorMessageToOutput:
-  gams_identifier: "Leite Error in Output"
-  gams_description: "todo"
+  gams_identifier: "Fehleranzeige in der Ausgabe"
+  gams_description: "Falls diese Option aktiviert ist, wird der Grund für einen potentiellen Fehler in den Ausgabeinformationen ausgegeben."
+InGeneral_printStacktraceImage:
+  gams_identifier: "Stacktrace als Bild ausgeben"
+  gams_description: "Falls diese Option aktiviert ist, wird bei einem potentiellen Fehler der Stacktrace als Bild ausgegeben. Dieser Ansatz ermöglicht eine sofortige Fehleranalyse im Ergebnis."
+InGeneral_printNoErrorImage:
+  gams_identifier: "Ersatzbild bei keinem Fehler erstellen"
+  gams_description: "Falls diese Option aktiviert ist, wird die Nachricht 'Kein Fehler aufgetreten!' in der Ausgabe als Bild angegeben. Anderenfalls wird kein Bild erstellt."
 InGeneral_skipPersist:
   gams_identifier: "Deaktiviere Persistierung"
-  gams_description: "todo"
+  gams_description: "Deaktiviert die komplette Persistierung. Dadurch wird jedes Stützjahr als komplett neue Simulation behandelt."
 
 VisibleBinaryData:
   edn_label: "Binäre Daten"
@@ -215,10 +221,13 @@ InGraphvizGeneral_preferredImageHeight:
   gams_description: "Definiert den Bildhöhe für die Netzwerkbilder. Falls der Wert 0 ist, bestimmt Graphviz die optimale Bildgröße automatisch."
 InGraphvizGeneral_positionBasedLayout:
   gams_identifier: "Positionsbasiertes Layout"
-  gams_description: "Nutzt für die Grapherzeugung ein positionsbasiertes Layout. Das genaue Layout ist NEATO kombiniert mit -n. Dieses Layout setzt vorraus, dass die Agenten eine Position besitzen. Zusätzlich benötigt es auch eine eingestellte Bildgröße. Falls diese fehlt, wird ein (ca.) 1000x1000 Pixel großes Bild erzeugt."
+  gams_description: "Nutzt für die Grapherzeugung ein positionsbasiertes Layout. Das genaue Layout ist NEATO kombiniert mit -n. Dieses Layout setzt vorraus, dass die Agenten eine Position besitzen. Zusätzlich benötigt es eine eingestellte Bildgröße. Falls diese fehlt, wird ein (ca.) 1000x1000 Pixel großes Bild erzeugt. Dieses Layout kann zu Verzerrungen führen, da es unter Umständen (z.B. bei Geoinformationen) die Daten in das gewünschte Ausgabeformat transformiert. Um das Seitenverhältnis beizubehalten, kann die entsprechende Option genutzt werden."
 InGraphvizGeneral_freeLayout:
   gams_identifier: "Freies Layout"
   gams_description: "Nutzt für die Grapherzeugung ein kräftebasierentes Layout. Das genaue Layout ist SFDP mit der overlap-Option prism."
+InGraphvizGeneral_keepAspectRatio:
+  gams_identifier: "Seitenverhätnis beibehalten"
+  gams_description: "Diese Option erlaubt es das Seitenverhältnis der Daten beizubehalten. Die Entscheidung, ob die Länge oder die Breite des Bildes verändert wird, hängt von der finalen Bildfläche ab. Das Verfahren nutzt die Variante mit der kleineren Bildfläche."
 InGraphvizGeneral_useDefaultPositionIfMissing:
   gams_identifier: "Erlaube fehlende Positionen"
   gams_description: "Diese Option erlaubt die Nutzung des positionbasierten Layouts ohne gültige Positionen. Agenten ohne Position wird der Punkt (0,0) zugeordnet."
@@ -255,7 +264,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.6.0"
+  edn_description: "IRPact v0.8.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -813,6 +822,18 @@ InRAProcessModel_c:
 InRAProcessModel_d:
   gams_identifier: "Einfluss soziale Komponente (d)"
   gams_description: "Legt den Einfluss der sozialen Komponente fest."
+InRAProcessModel_weightFT:
+  gams_identifier: "Wichtung fin. "
+  gams_description: "Legt die Wichtung für das Einkommen fest."
+InRAProcessModel_weightNPV:
+  gams_identifier: "Wichtung Barwert"
+  gams_description: "Legt den Einfluss der sozialen Komponente fest."
+InRAProcessModel_weightSocial:
+  gams_identifier: "Wichtung soziales Netz"
+  gams_description: "Legt den Einfluss der sozialen Komponente fest."
+InRAProcessModel_weightLocal:
+  gams_identifier: "Wichtung lokales Netz"
+  gams_description: "Legt den Einfluss der sozialen Komponente fest."
 InRAProcessModel_adopterPoints:
   gams_identifier: "Einfluss der Kommunikation mit Adoptern"
   gams_description: "Legt den Einfluss für die Kommunikation mit Adoptern fest."
@@ -1056,6 +1077,167 @@ InPVactGroupBasedDeffuantUncertainty_cags:
 InPVactGroupBasedDeffuantUncertainty_attributeNames:
   gams_identifier: "Betrachtete Attribute"
   gams_description: "Legt die Attribute fest, die mit dieser Unsicherheit verbunden werden sollen."
+
+
+InModularRAProcessModel:
+  edn_label: "Modulares Relative Agreement"
+  edn_description: "todo"
+InModularRAProcessModel_speedOfConvergence:
+  gams_identifier: "speed of convergence"
+  gams_description: "todo"
+InModularRAProcessModel_attitudeGap:
+  gams_identifier: "attitude gap"
+  gams_description: "todo"
+InModularRAProcessModel_chanceNeutral:
+  gams_identifier: "chance neutral"
+  gams_description: "todo"
+InModularRAProcessModel_chanceConvergence:
+  gams_identifier: "chance convergence"
+  gams_description: "todo"
+InModularRAProcessModel_chanceDivergence:
+  gams_identifier: "chance divergence"
+  gams_description: "todo"
+InModularRAProcessModel_interestComponent:
+  gams_identifier: "interest component"
+  gams_description: "todo"
+InModularRAProcessModel_feasibilityComponent:
+  gams_identifier: "feasibility component"
+  gams_description: "todo"
+InModularRAProcessModel_decisionMakingComponent:
+  gams_identifier: "decision making component"
+  gams_description: "todo"
+InModularRAProcessModel_actionComponent:
+  gams_identifier: "action component"
+  gams_description: "todo"
+
+process_modular_components:
+  edn_label: "Komponenten"
+  edn_description: "todo"
+
+InDefaultHandleInterestComponent:
+  edn_label: "Standard Interest"
+  edn_description: "todo"
+InDefaultHandleInterestComponent_adopterPoints:
+  gams_identifier: "adopter points"
+  gams_description: "todo"
+InDefaultHandleInterestComponent_interestedPoints:
+  gams_identifier: "interested points"
+  gams_description: "todo"
+InDefaultHandleInterestComponent_awarePoints:
+  gams_identifier: "aware points"
+  gams_description: "todo"
+InDefaultHandleInterestComponent_unknownPoints:
+  gams_identifier: "unknown points"
+  gams_description: "todo"
+
+InDefaultHandleFeasibilityComponent:
+  edn_label: "Standard Feasibility"
+  edn_description: "todo"
+InDefaultHandleFeasibilityComponent_adopterPoints:
+  gams_identifier: "adopter points"
+  gams_description: "todo"
+InDefaultHandleFeasibilityComponent_interestedPoints:
+  gams_identifier: "interested points"
+  gams_description: "todo"
+InDefaultHandleFeasibilityComponent_awarePoints:
+  gams_identifier: "aware points"
+  gams_description: "todo"
+InDefaultHandleFeasibilityComponent_unknownPoints:
+  gams_identifier: "unknown points"
+  gams_description: "todo"
+
+InDefaultHandleDecisionMakingComponent:
+  edn_label: "Standard Decision Making"
+  edn_description: "todo"
+InDefaultHandleDecisionMakingComponent_a:
+  gams_identifier: "a"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_b:
+  gams_identifier: "b"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_c:
+  gams_identifier: "c"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_d:
+  gams_identifier: "d"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_weightFT:
+  gams_identifier: "weightFT"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_weightNPV:
+  gams_identifier: "weightNPV"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_weightSocial:
+  gams_identifier: "weightSocial"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_weightLocal:
+  gams_identifier: "weightLocal"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_logisticFactor:
+  gams_identifier: "logistic factor"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_nodeFilterScheme:
+  gams_identifier: "nodeFilterScheme"
+  gams_description: "todo"
+
+InDefaultDoActionComponent:
+  edn_label: "Standard Action"
+  edn_description: "todo"
+InDefaultDoActionComponent_adopterPoints:
+  gams_identifier: "adopter points"
+  gams_description: "todo"
+InDefaultDoActionComponent_interestedPoints:
+  gams_identifier: "interested points"
+  gams_description: "todo"
+InDefaultDoActionComponent_awarePoints:
+  gams_identifier: "aware points"
+  gams_description: "todo"
+InDefaultDoActionComponent_unknownPoints:
+  gams_identifier: "unknown points"
+  gams_description: "todo"
+
+InSumAttributeComponent:
+  edn_label: "Summe über Attribute"
+  edn_description: "todo"
+InSumAttributeComponent_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InSumAttributeComponent_attributeNames:
+  gams_identifier: "Attribute"
+  gams_description: "todo"
+
+InSumIntermediateComponent:
+  edn_label: "Summe über Komponenten (Zwischenkomponente)"
+  edn_description: "todo"
+InSumIntermediateComponent_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InSumIntermediateComponent_components:
+  gams_identifier: "Komponenten"
+  gams_description: "todo"
+
+InSumThresholdComponent:
+  edn_label: "Summe über Komponenten (Evaluierungskomponente)"
+  edn_description: "todo"
+InSumThresholdComponent_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InSumThresholdComponent_threshold:
+  gams_identifier: "Grenzwert"
+  gams_description: "todo"
+InSumThresholdComponent_components:
+  gams_identifier: "Komponenten"
+  gams_description: "todo"
+
+InDoNothingComponent:
+  edn_label: "Keine Evaluierung"
+  edn_description: "todo"
+InDoNothingComponent_placeholder:
+  gams_identifier: "---"
+  gams_description: "ungenutzterPlatzhalter"
 
 
 spatial:

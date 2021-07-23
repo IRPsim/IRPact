@@ -121,6 +121,8 @@ public class InGeneral implements Copyable {
         putFieldPathAndAddEntry(res, thisClass(), "scenarioMode", InRootUI.SETT_SPECIAL);
         putFieldPathAndAddEntry(res, thisClass(), "copyLogIfPossible", InRootUI.SETT_SPECIAL);
         putFieldPathAndAddEntry(res, thisClass(), "passErrorMessageToOutput", InRootUI.SETT_SPECIAL);
+        putFieldPathAndAddEntry(res, thisClass(), "printStacktraceImage", InRootUI.SETT_SPECIAL);
+        putFieldPathAndAddEntry(res, thisClass(), "printNoErrorImage", InRootUI.SETT_SPECIAL);
         putFieldPathAndAddEntry(res, thisClass(), "skipPersist", InRootUI.SETT_SPECIAL);
 
         setDefault(res, thisClass(), "runOptActDemo", VALUE_FALSE);
@@ -128,13 +130,17 @@ public class InGeneral implements Copyable {
         setDefault(res, thisClass(), "runMode", VALUE_NEG_ONE);
         setDefault(res, thisClass(), "scenarioMode", VALUE_NEG_ONE);
         setDefault(res, thisClass(), "copyLogIfPossible", VALUE_FALSE);
-        setDefault(res, thisClass(), "passErrorMessageToOutput", VALUE_FALSE);
+        setDefault(res, thisClass(), "passErrorMessageToOutput", VALUE_TRUE);
+        setDefault(res, thisClass(), "printStacktraceImage", VALUE_TRUE);
+        setDefault(res, thisClass(), "printNoErrorImage", VALUE_TRUE);
         setDefault(res, thisClass(), "skipPersist", VALUE_FALSE);
 
         setDomain(res, thisClass(), "runOptActDemo", DOMAIN_BOOLEAN);
         setDomain(res, thisClass(), "runPVAct", DOMAIN_BOOLEAN);
         setDomain(res, thisClass(), "copyLogIfPossible", DOMAIN_BOOLEAN);
         setDomain(res, thisClass(), "passErrorMessageToOutput", DOMAIN_BOOLEAN);
+        setDomain(res, thisClass(), "printStacktraceImage", DOMAIN_BOOLEAN);
+        setDomain(res, thisClass(), "printNoErrorImage", DOMAIN_BOOLEAN);
         setDomain(res, thisClass(), "skipPersist", DOMAIN_BOOLEAN);
 
         //data
@@ -302,12 +308,30 @@ public class InGeneral implements Copyable {
     public int scenarioMode = -1;
 
     @FieldDefinition
-    public boolean passErrorMessageToOutput = false;
+    public boolean passErrorMessageToOutput = true;
     public void setPassErrorMessageToOutput(boolean passErrorMessageToOutput) {
         this.passErrorMessageToOutput = passErrorMessageToOutput;
     }
     public boolean shouldPassErrorMessageToOutput() {
         return passErrorMessageToOutput;
+    }
+
+    @FieldDefinition
+    public boolean printStacktraceImage = true;
+    public void setPrintStacktraceImage(boolean printStacktraceImage) {
+        this.printStacktraceImage = printStacktraceImage;
+    }
+    public boolean shouldPrintStacktraceImage() {
+        return printStacktraceImage;
+    }
+
+    @FieldDefinition
+    public boolean printNoErrorImage = true;
+    public void setPrintNoErrorImage(boolean printNoErrorImage) {
+        this.printNoErrorImage = printNoErrorImage;
+    }
+    public boolean shouldPrintNoErrorImage() {
+        return printNoErrorImage;
     }
 
     @FieldDefinition

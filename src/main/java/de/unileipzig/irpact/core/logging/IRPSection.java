@@ -77,6 +77,11 @@ public enum IRPSection implements LoggingSection {
     /**
      * ...
      */
+    UTIL,
+
+    /**
+     * ...
+     */
     SPECIFICATION_CONVERTER,
 
     /**

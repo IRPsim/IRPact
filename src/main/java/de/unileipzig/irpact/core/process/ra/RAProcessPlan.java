@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.process.ra;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.MathUtil;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
@@ -17,7 +18,6 @@ import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.process.ProcessModel;
-import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.process.ra.alg.RelativeAgreementAlgorithm;
 import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
@@ -31,7 +31,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import org.slf4j.event.Level;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -40,24 +39,15 @@ import java.util.function.Predicate;
 /*
  * http://jasss.soc.surrey.ac.uk/5/4/1.html
  */
-public class RAProcessPlan implements ProcessPlan {
+public class RAProcessPlan extends RAProcessPlanBase {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(RAProcessPlan.class);
 
     protected final Predicate<SocialGraph.Node> IS_CONSUMER = node -> node.is(ConsumerAgent.class);
-    protected final Function<SocialGraph.Node, ConsumerAgent> TO_CONSUMER = node -> node.getAgent(ConsumerAgent.class);
-    protected final Predicate<ConsumerAgent> IS_ADOPTER = ca -> ca.hasAdopted(getProduct());
+//    protected final Function<SocialGraph.Node, ConsumerAgent> TO_CONSUMER = node -> node.getAgent(ConsumerAgent.class);
+//    protected final Predicate<ConsumerAgent> IS_ADOPTER = ca -> ca.hasAdopted(getProduct());
 
-    protected SimulationEnvironment environment;
-    protected Need need;
-    protected Product product;
-    protected ConsumerAgent agent;
-    protected Rnd rnd;
-    protected RAProcessModel model;
     protected NodeFilter networkFilter;
-    protected Uncertainty uncertainty;
-    protected boolean underRenovation = false;
-    protected boolean underConstruction = false;
 
     protected RAStage currentStage = RAStage.PRE_INITIALIZATION;
 
@@ -70,23 +60,20 @@ public class RAProcessPlan implements ProcessPlan {
             Rnd rnd,
             ConsumerAgent agent,
             Need need,
-            Product product,
-            Uncertainty uncertainty) {
+            Product product) {
         setEnvironment(environment);
         setModel(model);
         setRnd(rnd);
         setAgent(agent);
         setNeed(need);
         setProduct(product);
-        setUncertainty(uncertainty);
-        init();
     }
 
     @PotentialProblem("hier fehlen noch ein paar Komponenten")
     @Override
     public int getChecksum() {
-        return ChecksumComparable.getChecksum(
-                getCurrentStage(),
+        return Checksums.SMART.getChecksum(
+                getStage(),
                 isUnderConstruction(),
                 isUnderRenovation(),
 
@@ -100,35 +87,13 @@ public class RAProcessPlan implements ProcessPlan {
         );
     }
 
-    @Todo("haesslich")
-    public void init() {
-        networkFilter = model.getNodeFilterScheme()
-                .createFilter(this);
-    }
-
-    public void setEnvironment(SimulationEnvironment environment) {
-        this.environment = environment;
-    }
-
-    public SimulationEnvironment getEnvironment() {
-        return environment;
-    }
-
     public void setModel(RAProcessModel model) {
         this.model = model;
     }
 
+    @Override
     public RAProcessModel getModel() {
-        return model;
-    }
-
-    public void setRnd(Rnd rnd) {
-        this.rnd = rnd;
-        rnd.enableSync();
-    }
-
-    public Rnd getRnd() {
-        return rnd;
+        return (RAProcessModel) model;
     }
 
     public NodeFilter getNetworkFilter() {
@@ -139,57 +104,12 @@ public class RAProcessPlan implements ProcessPlan {
         this.networkFilter = networkFilter;
     }
 
-    public void setAgent(ConsumerAgent agent) {
-        this.agent = agent;
-    }
-
-    public ConsumerAgent getAgent() {
-        return agent;
-    }
-
-    public void setNeed(Need need) {
-        this.need = need;
-    }
-
-    public Need getNeed() {
-        return need;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setCurrentStage(RAStage currentStage) {
-        this.currentStage = currentStage;
-    }
-
-    public RAStage getCurrentStage() {
-        return currentStage;
-    }
-
     public double getLogisticFactor() {
         return modelData().getLogisticFactor();
     }
 
-    public void setUncertainty(Uncertainty uncertainty) {
-        this.uncertainty = uncertainty;
-    }
-
-    public Uncertainty getUncertainty() {
-        return uncertainty;
-    }
-
     public RelativeAgreementAlgorithm getRelativeAgreementAlgorithm() {
         return getModel().getRelativeAgreementAlgorithm();
-    }
-
-    @Override
-    public boolean isModel(ProcessModel model) {
-        return this.model == model;
     }
 
     @Override
@@ -204,39 +124,6 @@ public class RAProcessPlan implements ProcessPlan {
     //=========================
     //phases
     //=========================
-
-    protected void runAdjustmentAtStartOfYear() {
-        if(currentStage == RAStage.IMPEDED) {
-            LOGGER.trace(IRPSection.SIMULATION_PROCESS, "reset process stage '{}' to '{}' for agent '{}'", RAStage.IMPEDED, RAStage.DECISION_MAKING, agent.getName());
-            currentStage = RAStage.DECISION_MAKING;
-        }
-    }
-
-    protected void runEvaluationAtEndOfYear() {
-        if(currentStage == RAStage.IMPEDED) {
-            LOGGER.trace(IRPSection.SIMULATION_PROCESS, "reset process stage '{}' to '{}' for agent '{}'", RAStage.IMPEDED, RAStage.DECISION_MAKING, agent.getName());
-            currentStage = RAStage.DECISION_MAKING;
-            handleDecisionMaking();
-        }
-    }
-
-    protected void runUpdateAtMidOfYear() {
-        double renovationRate = getRenovationRate(agent);
-        double renovationDraw = rnd.nextDouble();
-        boolean doRenovation = renovationDraw < renovationRate;
-        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "agent '{}' now under renovation? {} ({} < {})", agent.getName(), doRenovation, renovationDraw, renovationRate);
-        setUnderRenovation(doRenovation);
-
-        double constructionRate = getConstructionRate(agent);
-        double constructionDraw = rnd.nextDouble();
-        boolean doConstruction = constructionDraw < constructionRate;
-        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "agent '{}' now under construction? {} ({} < {})", agent.getName(), doConstruction, constructionDraw, constructionRate);
-        setUnderConstruction(doConstruction);
-
-        if(doConstruction) {
-            applyUnderConstruction(agent);
-        }
-    }
 
     protected ProcessPlanResult initPlan() {
         if(agent.hasAdopted(product)) {
@@ -646,7 +533,7 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected RAModelData modelData() {
-        return model.getModelData();
+        return getModel().getModelData();
     }
 
     protected double getFinancialComponent() {
@@ -666,7 +553,7 @@ public class RAProcessPlan implements ProcessPlan {
         double logisticFt = MathUtil.logistic(ft);
         double logisticNpv = MathUtil.logistic(npv);
 
-        double comp = (logisticFt + logisticNpv) / 2.0;
+        double comp = (modelData().getWeightFT() * logisticFt) + (modelData().getWeightNPV() * logisticNpv);
 
         logFinancialComponent(ftAvg, ftThis, npvAvg, npvThis, getLogisticFactor(), ft, npv, logisticFt, logisticNpv, comp);
 
@@ -693,7 +580,7 @@ public class RAProcessPlan implements ProcessPlan {
         MutableDouble shareOfAdopterInLocalArea = MutableDouble.zero();
         getShareOfAdopterInSocialNetworkAndLocalArea(shareOfAdopterInSocialNetwork, shareOfAdopterInLocalArea);
         double djm = getDependentJudgmentMaking(agent);
-        double comp = djm * (shareOfAdopterInSocialNetwork.get() + shareOfAdopterInLocalArea.get()) / 2.0;
+        double comp = djm * ((modelData().getWeightSocial() * shareOfAdopterInSocialNetwork.get()) + (modelData().getWeightLocal() * shareOfAdopterInLocalArea.get()));
         LOGGER.trace(
                 IRPSection.SIMULATION_PROCESS,
                 "[{}] dependent judgment making = {}, share of adopter in social network = {}, share of adopter in local area = {}, social component = {} = {} * ({} + {}) / 2.0",
@@ -703,11 +590,11 @@ public class RAProcessPlan implements ProcessPlan {
     }
 
     protected double getFinancialThresholdAgent(ConsumerAgent agent) {
-        return getModel().getFinancialThreshold(agent);
+        return getModel().getFinancialPurchasePower(agent);
     }
 
     protected double getAverageFinancialThresholdAgent() {
-        return modelData().getAverageFinancialThresholdAgent(environment.getAgents().streamConsumerAgents());
+        return modelData().getAverageFinancialPurchasePower(environment.getAgents().streamConsumerAgents());
     }
 
     protected double getNPV(ConsumerAgent agent) {
@@ -778,60 +665,14 @@ public class RAProcessPlan implements ProcessPlan {
         return getModel().getEnvironmentalConcern(agent);
     }
 
-    protected boolean isShareOf1Or2FamilyHouse(ConsumerAgent agent) {
-        return getModel().isShareOf1Or2FamilyHouse(agent);
+    @Override
+    public IRPLogger getDefaultLogger() {
+        return LOGGER;
     }
 
-    @SuppressWarnings("SameParameterValue")
-    protected void setShareOf1Or2FamilyHouse(ConsumerAgent agent, boolean value) {
-        getModel().setShareOf1Or2FamilyHouse(agent, value);
-    }
-
-    protected boolean isHouseOwner(ConsumerAgent agent) {
-        return getModel().isHouseOwner(agent);
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    protected void setHouseOwner(ConsumerAgent agent, boolean value) {
-        getModel().setHouseOwner(agent, value);
-    }
-
-    protected double getConstructionRate(ConsumerAgent agent) {
-        return getModel().getConstructionRate(agent);
-    }
-
-    public boolean isUnderConstruction() {
-        return underConstruction;
-    }
-
-    public void setUnderConstruction(boolean value) {
-        this.underConstruction = value;
-    }
-
-    protected void applyUnderConstruction(ConsumerAgent agent) {
-        boolean isShare = isShareOf1Or2FamilyHouse(agent);
-        boolean isOwner = isHouseOwner(agent);
-        setShareOf1Or2FamilyHouse(agent, true);
-        setHouseOwner(agent, true);
-
-        if(!isShare) {
-            LOGGER.trace(IRPSection.SIMULATION_PROCESS, "agent '{}' not share of 1 or 2 family house", agent.getName());
-        }
-        if(!isOwner) {
-            LOGGER.trace(IRPSection.SIMULATION_PROCESS, "agent '{}' house owner", agent.getName());
-        }
-    }
-
-    protected double getRenovationRate(ConsumerAgent agent) {
-        return getModel().getRenovationRate(agent);
-    }
-
-    public boolean isUnderRenovation() {
-        return underRenovation;
-    }
-
-    public void setUnderRenovation(boolean value) {
-        this.underRenovation = value;
+    @Override
+    protected void doRunEvaluationAtEndOfYear() {
+        handleDecisionMaking();
     }
 
     protected boolean isAdopter(ConsumerAgent agent) {
@@ -929,7 +770,7 @@ public class RAProcessPlan implements ProcessPlan {
         ConsumerAgentAttribute opinionThis = agent.getAttribute(attrName);
         Uncertainty uncertaintyThis = getUncertainty();
         ConsumerAgentAttribute opinionTarget = target.getAttribute(attrName);
-        Uncertainty uncertaintyTarget = getModel().getUncertainty(target);
+        Uncertainty uncertaintyTarget = getModel().getUncertaintyCache().getUncertainty(target);
         if(uncertaintyTarget == null) {
             LOGGER.warn(IRPSection.SIMULATION_PROCESS, "agent '{}' has no uncertainty - skip", target.getName());
         } else {

@@ -62,6 +62,10 @@ public class InRAProcessModel implements InProcessModel {
         addEntry(res, thisClass(), "chanceNeutral");
         addEntry(res, thisClass(), "chanceConvergence");
         addEntry(res, thisClass(), "chanceDivergence");
+        addEntry(res, thisClass(), "weightFT");
+        addEntry(res, thisClass(), "weightNPV");
+        addEntry(res, thisClass(), "weightSocial");
+        addEntry(res, thisClass(), "weightLocal");
         addEntry(res, thisClass(), "nodeFilterScheme");
         addEntry(res, thisClass(), "pvFile");
         addEntry(res, thisClass(), "uncertainties");
@@ -72,10 +76,14 @@ public class InRAProcessModel implements InProcessModel {
         setDomain(res, thisClass(), "chanceDivergence", DOMAIN_CLOSED_0_1);
 
 
-        setDefault(res, thisClass(), "a", varargs(0.25));
-        setDefault(res, thisClass(), "b", varargs(0.25));
-        setDefault(res, thisClass(), "c", varargs(0.25));
-        setDefault(res, thisClass(), "d", varargs(0.25));
+        setDefault(res, thisClass(), "a", VALUE_0_25);
+        setDefault(res, thisClass(), "b", VALUE_0_25);
+        setDefault(res, thisClass(), "c", VALUE_0_25);
+        setDefault(res, thisClass(), "d", VALUE_0_25);
+        setDefault(res, thisClass(), "weightFT", VALUE_0_5);
+        setDefault(res, thisClass(), "weightNPV", VALUE_0_5);
+        setDefault(res, thisClass(), "weightSocial", VALUE_0_5);
+        setDefault(res, thisClass(), "weightLocal", VALUE_0_5);
         setDefault(res, thisClass(), "adopterPoints", varargs(RAModelData.DEFAULT_ADOPTER_POINTS));
         setDefault(res, thisClass(), "interestedPoints", varargs(RAModelData.DEFAULT_INTERESTED_POINTS));
         setDefault(res, thisClass(), "awarePoints", varargs(RAModelData.DEFAULT_AWARE_POINTS));
@@ -135,6 +143,18 @@ public class InRAProcessModel implements InProcessModel {
     public double chanceDivergence;
 
     @FieldDefinition
+    protected double weightFT;
+
+    @FieldDefinition
+    protected double weightNPV;
+
+    @FieldDefinition
+    protected double weightSocial;
+
+    @FieldDefinition
+    protected double weightLocal;
+
+    @FieldDefinition
     public InRAProcessPlanNodeFilterScheme[] nodeFilterScheme;
 
     @FieldDefinition
@@ -144,29 +164,6 @@ public class InRAProcessModel implements InProcessModel {
     public InUncertainty[] uncertainties;
 
     public InRAProcessModel() {
-    }
-
-    public InRAProcessModel(
-            String name,
-            double a, double b, double c, double d,
-            int adopterPoints, int interestedPoints, int awarePoints, int unknownPoints,
-            double logisticFactor,
-            InRAProcessPlanNodeFilterScheme filterScheme,
-            InPVFile pvFile,
-            InUncertainty[] uncertainties) {
-        this._name = name;
-        this.a = a;
-        this.b = b;
-        this.c = c;
-        this.d = d;
-        this.adopterPoints = adopterPoints;
-        this.interestedPoints = interestedPoints;
-        this.awarePoints = awarePoints;
-        this.unknownPoints = unknownPoints;
-        this.logisticFactor = logisticFactor;
-        setNodeFilterScheme(filterScheme);
-        setPvFile(pvFile);
-        setUncertainties(uncertainties);
     }
 
     @Override
@@ -193,6 +190,10 @@ public class InRAProcessModel implements InProcessModel {
         copy.nodeFilterScheme = cache.copyArray(nodeFilterScheme);
         copy.pvFile = cache.copyArray(pvFile);
         copy.uncertainties = cache.copyArray(uncertainties);
+        copy.weightFT = weightFT;
+        copy.weightNPV = weightNPV;
+        copy.weightSocial = weightSocial;
+        copy.weightLocal = weightLocal;
         return copy;
     }
 
@@ -217,6 +218,10 @@ public class InRAProcessModel implements InProcessModel {
         setChanceNeutral(RAConstants.DEFAULT_NEUTRAL_CHANCE);
         setChanceConvergence(RAConstants.DEFAULT_CONVERGENCE_CHANCE);
         setChanceDivergence(RAConstants.DEFAULT_DIVERGENCE_CHANCE);
+        setWeightFT(0.5);
+        setWeightNPV(0.5);
+        setWeightLocal(0.5);
+        setWeightSocial(0.5);
     }
 
     public void setABCD(double value) {
@@ -345,6 +350,38 @@ public class InRAProcessModel implements InProcessModel {
         return attitudeGap;
     }
 
+    public void setWeightFT(double weightFT) {
+        this.weightFT = weightFT;
+    }
+
+    public double getWeightFT() {
+        return weightFT;
+    }
+
+    public void setWeightNPV(double weightNPV) {
+        this.weightNPV = weightNPV;
+    }
+
+    public double getWeightNPV() {
+        return weightNPV;
+    }
+
+    public void setWeightSocial(double weightSocial) {
+        this.weightSocial = weightSocial;
+    }
+
+    public double getWeightSocial() {
+        return weightSocial;
+    }
+
+    public void setWeightLocal(double weightLocal) {
+        this.weightLocal = weightLocal;
+    }
+
+    public double getWeightLocal() {
+        return weightLocal;
+    }
+
     public boolean hasNodeFilterScheme() {
         return ParamUtil.len(nodeFilterScheme) > 0;
     }
@@ -417,8 +454,9 @@ public class InRAProcessModel implements InProcessModel {
         model.setRnd(rnd);
         model.setSpeedOfConvergence(getSpeedOfConvergence());
 
+        Object[] params = { model.getName(), model.getUncertaintyManager(), model.getSpeedOfConvergence() };
         for(InUncertainty uncertainty: getUncertainties()) {
-            uncertainty.setup(parser, model);
+            uncertainty.setup(parser, params);
         }
 
         if(hasNodeFilterScheme()) {

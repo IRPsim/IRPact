@@ -9,6 +9,8 @@ import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 
+import java.time.ZonedDateTime;
+
 /**
  * @author Daniel Abitz
  */
@@ -26,12 +28,31 @@ public interface AdoptionEntry2 {
         return getAdoptedProduct().getProduct();
     }
 
+    default String getProductNameOrNull() {
+        Product product = getProduct();
+        return product == null ? null : product.getName();
+    }
+
     default ProductGroup getProductGroup() {
         return getProduct().getGroup();
     }
 
+    default String getProductGroupNameOrNull() {
+        Product product = getProduct();
+        if(product == null || product.getGroup() == null) {
+            return null;
+        } else {
+            return product.getGroup().getName();
+        }
+    }
+
     default Timestamp getTimestamp() {
         return getAdoptedProduct().getTimestamp();
+    }
+
+    default ZonedDateTime getTimeOrNull() {
+        Timestamp timestamp = getTimestamp();
+        return timestamp == null ? null : timestamp.getTime();
     }
 
     default int getYear() {

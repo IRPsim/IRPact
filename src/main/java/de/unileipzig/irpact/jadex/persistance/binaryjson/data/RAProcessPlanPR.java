@@ -6,6 +6,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.persistence.binaryjson.BinaryPRBase;
 import de.unileipzig.irpact.core.process.ra.RAStage;
 import de.unileipzig.irpact.core.process.ra.RAProcessPlan;
+import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.persistence.binaryjson.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -36,7 +37,7 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
     @Override
     protected BinaryJsonData doInitalizePersist(RAProcessPlan object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
-        data.putInt(object.getCurrentStage().getID());
+        data.putInt(object.getStage().getID());
         data.putBoolean(object.isUnderConstruction());
         data.putBoolean(object.isUnderRenovation());
 
@@ -70,12 +71,14 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
     @Override
     protected RAProcessPlan doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         RAProcessPlan object = new RAProcessPlan();
-        object.setCurrentStage(RAStage.get(data.getInt()));
+        object.setStage(RAStage.get(data.getInt()));
         object.setUnderConstruction(data.getBoolean());
         object.setUnderRenovation(data.getBoolean());
 
         return object;
     }
+
+    protected Uncertainty restoredUncertainty;
 
     @Override
     protected void doSetupRestore(BinaryJsonData data, RAProcessPlan object, RestoreManager manager) throws RestoreException {
@@ -87,12 +90,14 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
         object.setRnd(manager.ensureGet(data.getLong()));
         object.setModel(manager.ensureGet(data.getLong()));
         object.setNetworkFilter(manager.ensureGet(data.getLong()));
-        object.setUncertainty(manager.ensureGet(data.getLong()));
+        restoredUncertainty = manager.ensureGet(data.getLong());
     }
 
     @Override
-    protected void doFinalizeRestore(BinaryJsonData data, RAProcessPlan object, RestoreManager manager) {
-        object.init();
-        object.getModel().registerUncertainty(object.getAgent(), object.getUncertainty(), false, false);
+    protected void doFinalizeRestore(BinaryJsonData data, RAProcessPlan object, RestoreManager manager) throws RestoreException {
+        if(restoredUncertainty == null) {
+            throw new RestoreException("missing restored uncertainty");
+        }
+        object.getModel().getUncertaintyCache().registerUncertainty(object.getAgent(), restoredUncertainty, false, false);
     }
 }

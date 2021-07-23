@@ -19,8 +19,15 @@ public interface InEntity<T extends InputParser> extends Copyable {
         if(requiresSetup()) {
             throw new IllegalStateException("requires setup");
         } else {
-            throw new UnsupportedOperationException();
+            throw new UnsupportedOperationException(getClass().toString());
         }
+    }
+
+    default Object parse(T parser, Object input) throws ParsingException {
+        return parse(parser);
+    }
+
+    default void update(T parser, Object original, Object input) throws ParsingException {
     }
 
     default void setup(T parser, Object input) throws ParsingException {

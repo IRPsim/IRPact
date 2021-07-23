@@ -12,6 +12,7 @@ import com.fasterxml.jackson.dataformat.smile.databind.SmileMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import de.unileipzig.irpact.commons.logging.LazyPrinter;
 import de.unileipzig.irpact.commons.logging.LazyToString;
+import de.unileipzig.irpact.commons.util.io.FileUtil;
 import de.unileipzig.irptools.util.Util;
 
 import java.io.*;
@@ -73,6 +74,10 @@ public final class JsonUtil {
 
     public static String toString(JsonNode node) {
         return toString(node, DEFAULT);
+    }
+
+    public static String toYamlString(JsonNode node) {
+        return toString(node, YAML);
     }
 
     public static String toString(JsonNode node, PrettyPrinter printer) {
@@ -137,6 +142,14 @@ public final class JsonUtil {
 
     public static <T extends JsonNode> T readJson(Path source, Charset charset) throws IOException {
         return read(source, charset, JSON);
+    }
+
+    public static <T extends JsonNode> T readYaml(Path source) throws IOException {
+        return readYaml(source, StandardCharsets.UTF_8);
+    }
+
+    public static <T extends JsonNode> T readYaml(Path source, Charset charset) throws IOException {
+        return read(source, charset, YAML);
     }
 
     public static <T extends JsonNode> T read(InputStream in, ObjectMapper mapper) throws IOException {

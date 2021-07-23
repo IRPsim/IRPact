@@ -3,7 +3,7 @@ package de.unileipzig.irpact.util.curl;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.unileipzig.irpact.commons.util.FileUtil;
+import de.unileipzig.irpact.commons.util.io.FileUtil;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 
 import java.io.IOException;

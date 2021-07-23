@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param.input;
 import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
-import de.unileipzig.irpact.core.postprocessing.image.DataToVisualize;
+import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;

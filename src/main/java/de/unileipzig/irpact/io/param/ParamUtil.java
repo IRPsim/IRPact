@@ -40,8 +40,20 @@ public final class ParamUtil {
     public static final Object[] VALUE_ZERO = {"0"};
     public static final Object[] VALUE_1000 = {"1000"};
     public static final Object[] VALUE_NEG_ONE = {"-1"};
+    public static final Object[] VALUE_0_25 = {"0.25"};
+    public static final Object[] VALUE_0_5 = {"0.5"};
 
     private ParamUtil() {
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <R> R getAs(Object input, int index) {
+        return (R) ((Object[]) input)[index];
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <R> R getAs(Object input) {
+        return (R) input;
     }
 
     public static <T> T[] add(T[] arr, T value) {

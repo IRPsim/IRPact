@@ -59,11 +59,15 @@ public final class VarCollection implements ChecksumComparable {
         int i = 0;
         for(Object value: values) {
             Class<?> type = PARAMETERS[i];
-            if(allowNull() && value == null) {
-                continue;
+            if(value == null) {
+                if(!allowNull()) {
+                    throw new IllegalArgumentException("null found at index " + i);
+                }
             }
-            if(!type.isInstance(value)) {
-                throw new IllegalArgumentException(value + " != " + type);
+            else if(!type.isInstance(value)) {
+                System.out.println(Arrays.toString(PARAMETERS));
+                System.out.println(values);
+                throw new IllegalArgumentException(value + " (" + value.getClass() + ") != " + type + "(index: " + i + ")");
             }
             i++;
         }

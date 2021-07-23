@@ -68,6 +68,16 @@ public class GraphvizInputParser implements InputParser {
     }
 
     @Override
+    public Object parseEntity(InIRPactEntity input, Object param) throws ParsingException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void update(InIRPactEntity input, Object original, Object param) throws ParsingException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void dispose() {
     }
 
@@ -113,6 +123,7 @@ public class GraphvizInputParser implements InputParser {
             configuration.setPreferredWidth(general.getPreferredImageWidth());
             configuration.setUseDefaultPositionIfMissing(general.isUseDefaultPositionIfMissing());
             configuration.setPositionMapper(getPositionMapper());
+            configuration.setKeepAspectRatio(general.shouldKeepAspectRatio());
         }
 
         private PositionMapper getPositionMapper() {

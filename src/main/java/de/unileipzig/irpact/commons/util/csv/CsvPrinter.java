@@ -110,14 +110,23 @@ public class CsvPrinter<T> {
     }
 
     public void write(Path path, Charset charset, String[] header, Iterable<? extends Iterable<? extends T>> rows) throws IOException {
+        write(path, charset, null, header, rows);
+    }
+
+    public void write(Path path, Charset charset, Iterable<? extends String> infos, String[] header, Iterable<? extends Iterable<? extends T>> rows) throws IOException {
         try(BufferedWriter writer = Files.newBufferedWriter(path, charset)) {
-            write(writer, header, rows);
+            write(writer, infos, header, rows);
         }
     }
 
     public void write(Writer writer, String[] header, Iterable<? extends Iterable<? extends T>> rows) throws IOException {
+        write(writer, null, header, rows);
+    }
+
+    public void write(Writer writer, Iterable<? extends String> infos, String[] header, Iterable<? extends Iterable<? extends T>> rows) throws IOException {
         setWriter(writer);
         setHeader(header);
+        appendInfos(infos);
         writeHeader();
         appendRows(rows);
         setHeader(null);
@@ -200,6 +209,31 @@ public class CsvPrinter<T> {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    public void appendInfos(Iterable<? extends String> infos) throws IOException {
+        appendInfos(writer, infos);
+    }
+
+    protected void appendInfos(Writer writer, Iterable<? extends String> infos) throws IOException {
+        if(infos == null) {
+            return;
+        }
+
+        boolean printed = false;
+        boolean first = true;
+        for(String info: infos) {
+            if(!first) {
+                writer.write(lineSeparator);
+            }
+            printed = true;
+            first = false;
+            writer.write(info);
+        }
+        if(printed) {
+            writer.write(lineSeparator);
+        }
+        flushIfRequired(writer);
     }
 
     public void appendRows(Iterable<? extends Iterable<? extends T>> rows) throws IOException {

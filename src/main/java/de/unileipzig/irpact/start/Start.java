@@ -6,6 +6,7 @@ import de.unileipzig.irpact.core.logging.IRPLoggingMessage;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.SectionLoggingFilter;
 import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.irpact.IRPactCallback;
 import de.unileipzig.irpact.start.utilities.Utilities;
 import de.unileipzig.irptools.io.base.data.AnnualEntry;
@@ -197,6 +198,9 @@ public final class Start {
             return new Result(CommandLine.ExitCode.OK);
         } catch (Throwable t) {
             LOGGER.error("Start failed with uncaught exception", t);
+            if(options.hasImagePathWithoutFile()) {
+                IRPact.createStackTraceImage(t, options.getImagePath());
+            }
             return new Result(CommandLine.ExitCode.SOFTWARE, t);
         }
     }
@@ -204,15 +208,6 @@ public final class Start {
     //=========================
     //starter
     //=========================
-
-    public static int start(
-            Collection<? extends Input> inputs) {
-        for(Input input: inputs) {
-            List<IRPactCallback> callbacks = new ArrayList<>(input.getCallbacks());
-
-        }
-        return -1;
-    }
 
     public static int start(
             String[] args,

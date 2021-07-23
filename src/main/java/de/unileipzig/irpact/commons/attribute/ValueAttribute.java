@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.commons.attribute;
 
-import de.unileipzig.irpact.commons.util.data.DataType;
-
 import java.util.Collection;
 
 /**
@@ -83,7 +81,7 @@ public interface ValueAttribute<V> extends Attribute {
     }
 
     default String getStringValue() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException(getClass().getName());
     }
 
     default void setStringValue(String value) {
