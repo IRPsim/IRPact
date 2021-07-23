@@ -1,15 +1,22 @@
 package de.unileipzig.irpact.core.process.mra.component.general;
 
 import de.unileipzig.irpact.core.agent.Agent;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.process.mra.AgentData;
 import de.unileipzig.irpact.core.process.mra.component.base.AbstractThresholdComponent;
 import de.unileipzig.irpact.core.process.mra.component.base.ValueComponent;
+import de.unileipzig.irpact.core.util.AdoptionPhase;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
 public class SumThresholdComponent extends AbstractThresholdComponent {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(SumThresholdComponent.class);
 
     public SumThresholdComponent() {
     }
@@ -37,7 +44,11 @@ public class SumThresholdComponent extends AbstractThresholdComponent {
     @Override
     public ProcessPlanResult evaluate(Agent agent, AgentData data) {
         double value = calculate(agent, data);
-        if(value < getThreshold()) {
+        boolean success = value < getThreshold();
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{},{}] success: {} ({} < {})", agent.getName(), getName(), success, value, getThreshold());
+        if(success) {
+            ConsumerAgent cAgent = (ConsumerAgent) agent;
+            cAgent.adopt(data.getNeed(), data.getProduct(), agent.getEnvironment().getTimeModel().now(), AdoptionPhase.END_START);
             return ProcessPlanResult.ADOPTED;
         } else {
             return ProcessPlanResult.IMPEDED;

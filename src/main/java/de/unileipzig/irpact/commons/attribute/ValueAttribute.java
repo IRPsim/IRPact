@@ -81,7 +81,7 @@ public interface ValueAttribute<V> extends Attribute {
     }
 
     default String getStringValue() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException(getClass().getName());
     }
 
     default void setStringValue(String value) {

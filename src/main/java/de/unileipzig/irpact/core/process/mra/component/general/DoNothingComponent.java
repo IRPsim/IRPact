@@ -1,8 +1,9 @@
-package de.unileipzig.irpact.core.process.mra.component.base;
+package de.unileipzig.irpact.core.process.mra.component.general;
 
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.process.mra.AgentData;
+import de.unileipzig.irpact.core.process.mra.component.base.EvaluableComponent;
 import de.unileipzig.irpact.core.process.mra.component.generic.AbstractComponent;
 import de.unileipzig.irpact.core.process.mra.component.generic.Component;
 import de.unileipzig.irpact.core.process.mra.component.generic.ComponentType;

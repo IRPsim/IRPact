@@ -1343,10 +1343,76 @@ PARAMETER par_InDefaultHandleInterestComponent_awarePoints(set_InDefaultHandleIn
 * - type: Integer
 PARAMETER par_InDefaultHandleInterestComponent_unknownPoints(set_InDefaultHandleInterestComponent)
 
+* - identifier: InDoNothingComponent
+* - type: String
+SET set_InDoNothingComponent(set_InEvaluableComponent)
+
+* - default: 0
+* - description: ungenutzterPlatzhalter
+* - identifier: ---
+* - type: Float
+PARAMETER par_InDoNothingComponent_placeholder(set_InDoNothingComponent)
+
 * - identifier: InEvaluableComponent
 * - hidden: 1
 * - type: String
 SET set_InEvaluableComponent(set_InComponent)
+
+* - identifier: InSumAttributeComponent
+* - type: String
+SET set_InSumAttributeComponent(set_InValueComponent)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InSumAttributeComponent_weight(set_InSumAttributeComponent)
+
+* - description: todo
+* - identifier: Attribute
+* - type: Boolean
+PARAMETER par_link_InSumAttributeComponent_InAttributeName_attributeNames(set_InSumAttributeComponent,set_InAttributeName)
+
+* - identifier: InSumIntermediateComponent
+* - type: String
+SET set_InSumIntermediateComponent(set_InValueComponent)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InSumIntermediateComponent_weight(set_InSumIntermediateComponent)
+
+* - description: todo
+* - identifier: Komponenten
+* - type: Boolean
+PARAMETER par_link_InSumIntermediateComponent_InValueComponent_components(set_InSumIntermediateComponent,set_InValueComponent)
+
+* - identifier: InSumThresholdComponent
+* - type: String
+SET set_InSumThresholdComponent(set_InEvaluableComponent)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InSumThresholdComponent_weight(set_InSumThresholdComponent)
+
+* - default: 0
+* - description: todo
+* - identifier: Grenzwert
+* - type: Float
+PARAMETER par_InSumThresholdComponent_threshold(set_InSumThresholdComponent)
+
+* - description: todo
+* - identifier: Komponenten
+* - type: Boolean
+PARAMETER par_link_InSumThresholdComponent_InValueComponent_components(set_InSumThresholdComponent,set_InValueComponent)
+
+* - identifier: InValueComponent
+* - hidden: 1
+* - type: String
+SET set_InValueComponent(set_InComponent)
 
 * - identifier: InModularRAProcessModel
 * - type: String

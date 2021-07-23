@@ -3,10 +3,12 @@ package de.unileipzig.irpact.commons.distribution;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.checksum.Checksums;
+import de.unileipzig.irpact.commons.exception.IRPactRuntimeException;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.RndGen;
 import org.apache.commons.math3.distribution.AbstractRealDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
+import org.apache.commons.math3.exception.NoBracketingException;
 
 /**
  * @author Daniel Abitz
@@ -218,6 +220,10 @@ public class TruncatedNormalDistribution
         this.name = name;
     }
 
+    public String print() {
+        return getClass().getSimpleName() + "{name=" + name + ", mu=" + mu + ", sigma=" + sigma + ", a=" + a + ", b=" + b + "}";
+    }
+
     @Override
     public String getName() {
         return name;
@@ -246,7 +252,15 @@ public class TruncatedNormalDistribution
     @Override
     public double drawDoubleValue() {
         checkInitalized();
-        return sample();
+        if(sigma == 0.0) {
+            return mu;
+        }
+
+        try {
+            return sample();
+        } catch (NoBracketingException e) {
+            throw new RuntimeException("@ " + print(), e);
+        }
     }
 
     @Override

@@ -1199,6 +1199,46 @@ InDefaultDoActionComponent_unknownPoints:
   gams_identifier: "unknown points"
   gams_description: "todo"
 
+InSumAttributeComponent:
+  edn_label: "Summe über Attribute"
+  edn_description: "todo"
+InSumAttributeComponent_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InSumAttributeComponent_attributeNames:
+  gams_identifier: "Attribute"
+  gams_description: "todo"
+
+InSumIntermediateComponent:
+  edn_label: "Summe über Komponenten (Zwischenkomponente)"
+  edn_description: "todo"
+InSumIntermediateComponent_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InSumIntermediateComponent_components:
+  gams_identifier: "Komponenten"
+  gams_description: "todo"
+
+InSumThresholdComponent:
+  edn_label: "Summe über Komponenten (Evaluierungskomponente)"
+  edn_description: "todo"
+InSumThresholdComponent_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InSumThresholdComponent_threshold:
+  gams_identifier: "Grenzwert"
+  gams_description: "todo"
+InSumThresholdComponent_components:
+  gams_identifier: "Komponenten"
+  gams_description: "todo"
+
+InDoNothingComponent:
+  edn_label: "Keine Evaluierung"
+  edn_description: "todo"
+InDoNothingComponent_placeholder:
+  gams_identifier: "---"
+  gams_description: "ungenutzterPlatzhalter"
+
 
 spatial:
   edn_label: "Räumliche Modell"

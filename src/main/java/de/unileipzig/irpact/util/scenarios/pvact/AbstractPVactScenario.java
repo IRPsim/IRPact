@@ -36,6 +36,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 /**
  * @author Daniel Abitz
@@ -228,6 +229,31 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         topology.setInitialWeight(1);
         topology.setAllowLessEdges(false);
         return topology;
+    }
+
+    public InFreeNetworkTopology createFreeTopology(
+            String name,
+            InAffinities affinities,
+            Map<? extends InConsumerAgentGroup, Integer> edgeCount) {
+        InFreeNetworkTopology topology = new InFreeNetworkTopology();
+        topology.setName(name);
+        topology.setAffinities(affinities);
+        topology.setNumberOfTies(createTies(edgeCount));
+        topology.setDistanceEvaluator(new InNoDistance("NoDist"));
+        topology.setInitialWeight(1);
+        topology.setAllowLessEdges(false);
+        return topology;
+    }
+
+    public InNumberOfTies[] createTies(Map<? extends InConsumerAgentGroup, Integer> edgeCount) {
+        InNumberOfTies[] ties = new InNumberOfTies[edgeCount.size()];
+        int i = 0;
+        for(Map.Entry<? extends InConsumerAgentGroup, Integer> entry: edgeCount.entrySet()) {
+            InConsumerAgentGroup cag = entry.getKey();
+            int count = entry.getValue();
+            ties[i++] = new InNumberOfTies(cag.getName() + "_EDGES", cag, count);
+        }
+        return ties;
     }
 
     public InFileBasedPVactConsumerAgentPopulation createPopulation(String name, int agents, InConsumerAgentGroup... cags) {

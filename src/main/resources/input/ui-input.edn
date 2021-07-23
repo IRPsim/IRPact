@@ -494,6 +494,30 @@
                 :set "set_InDefaultDoActionComponent" 
                 :description "todo" 
                 :tags [["InDefaultDoActionComponent" "adopterPoints"] ["InDefaultDoActionComponent" "interestedPoints"] ["InDefaultDoActionComponent" "awarePoints"] ["InDefaultDoActionComponent" "unknownPoints"]]
+              } 
+              {
+                :label "Summe über Attribute" 
+                :set "set_InSumAttributeComponent" 
+                :description "todo" 
+                :tags [["InSumAttributeComponent" "weight"] ["link" "InSumAttributeComponent" "InAttributeName" "attributeNames"]]
+              } 
+              {
+                :label "Summe über Komponenten (Zwischenkomponente)" 
+                :set "set_InSumIntermediateComponent" 
+                :description "todo" 
+                :tags [["InSumIntermediateComponent" "weight"] ["link" "InSumIntermediateComponent" "InValueComponent" "components"]]
+              } 
+              {
+                :label "Summe über Komponenten (Evaluierungskomponente)" 
+                :set "set_InSumThresholdComponent" 
+                :description "todo" 
+                :tags [["InSumThresholdComponent" "weight"] ["InSumThresholdComponent" "threshold"] ["link" "InSumThresholdComponent" "InValueComponent" "components"]]
+              } 
+              {
+                :label "Keine Evaluierung" 
+                :set "set_InDoNothingComponent" 
+                :description "todo" 
+                :tags [["InDoNothingComponent" "placeholder"]]
               }
             ]
           }

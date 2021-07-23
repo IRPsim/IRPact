@@ -736,7 +736,12 @@ public class InRoot implements RootClass {
             InDefaultHandleDecisionMakingComponent.class,
             InDefaultHandleFeasibilityComponent.class,
             InDefaultHandleInterestComponent.class,
+            InDoNothingComponent.class,
             InEvaluableComponent.class,
+            InSumAttributeComponent.class,
+            InSumIntermediateComponent.class,
+            InSumThresholdComponent.class,
+            InValueComponent.class,
             InModularRAProcessModel.class,
 
             InBasicProductGroup.class,
