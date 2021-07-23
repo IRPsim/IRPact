@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.core.process.mra;
 
+import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -24,6 +26,9 @@ public class ModularRAProcessPlan extends RAProcessPlanBase implements ProcessPl
 
     protected final Map<String, Object> DATA = new HashMap<>();
 
+    public ModularRAProcessPlan() {
+    }
+
     public ModularRAProcessPlan(
             ModularRAProcessModel model,
             ConsumerAgent agent,
@@ -39,7 +44,18 @@ public class ModularRAProcessPlan extends RAProcessPlanBase implements ProcessPl
 
     @Override
     public int getChecksum() {
-        return Dev.throwException();
+        return Checksums.SMART.getChecksum(
+                getStage(),
+                isUnderConstruction(),
+                isUnderRenovation(),
+
+                getNeed(),
+                getProduct(),
+                ChecksumComparable.getNameChecksum(getAgent()),
+                getRnd(),
+                ChecksumComparable.getNameChecksum(getModel()),
+                getUncertainty()
+        );
     }
 
     @Override

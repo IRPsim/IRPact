@@ -170,6 +170,14 @@ public class InModularRAProcessModel implements InProcessModel {
         return Dev.throwException();
     }
 
+    public void setDefaultValues() {
+        setSpeedOfConvergence(RAConstants.DEFAULT_SPEED_OF_CONVERGENCE);
+        setAttitudeGap(RAConstants.DEFAULT_ATTIDUTE_GAP);
+        setChanceNeutral(RAConstants.DEFAULT_NEUTRAL_CHANCE);
+        setChanceConvergence(RAConstants.DEFAULT_CONVERGENCE_CHANCE);
+        setChanceDivergence(RAConstants.DEFAULT_DIVERGENCE_CHANCE);
+    }
+
     @Override
     public String getName() {
         return _name;
@@ -212,19 +220,19 @@ public class InModularRAProcessModel implements InProcessModel {
             uncertainty.setup(parser, params);
         }
 
-        EvaluableComponent interestComponent = parser.parseEntityTo(getInterestComponent());
+        EvaluableComponent interestComponent = parser.parseEntityTo(getInterestComponent(), model);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add interest component '{}' to '{}'", interestComponent.getName(), model.getName());
         model.setInterestComponent(interestComponent);
 
-        EvaluableComponent feasibilityComponent = parser.parseEntityTo(getFeasibilityComponent());
+        EvaluableComponent feasibilityComponent = parser.parseEntityTo(getFeasibilityComponent(), model);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add feasibility component '{}' to '{}'", feasibilityComponent.getName(), model.getName());
         model.setFeasibilityComponent(feasibilityComponent);
 
-        EvaluableComponent decisionMakingComponent = parser.parseEntityTo(getDecisionMakingComponent());
+        EvaluableComponent decisionMakingComponent = parser.parseEntityTo(getDecisionMakingComponent(), model);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add decision making component '{}' to '{}'", decisionMakingComponent.getName(), model.getName());
         model.setDecisionMakingComponent(decisionMakingComponent);
 
-        EvaluableComponent actionComponent = parser.parseEntityTo(getActionComponent());
+        EvaluableComponent actionComponent = parser.parseEntityTo(getActionComponent(), model);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add action component '{}' to '{}'", actionComponent.getName(), model.getName());
         model.setActionComponent(actionComponent);
 
@@ -232,6 +240,11 @@ public class InModularRAProcessModel implements InProcessModel {
     }
 
     public ModularRAProcessModel update(IRPactInputParser parser, ModularRAProcessModel restored) throws ParsingException {
+        parser.update(getInterestComponent(), restored.getInterestComponent(), restored);
+        parser.update(getFeasibilityComponent(), restored.getFeasibilityComponent(), restored);
+        parser.update(getDecisionMakingComponent(), restored.getDecisionMakingComponent(), restored);
+        parser.update(getActionComponent(), restored.getActionComponent(), restored);
+
         return restored;
     }
 }

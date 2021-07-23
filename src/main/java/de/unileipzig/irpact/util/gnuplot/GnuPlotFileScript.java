@@ -31,7 +31,7 @@ public class GnuPlotFileScript extends ProcessBasedFileScript<GnuPlotEngine> imp
 
     @Override
     protected boolean isOnlyWarning(String errMsg) {
-        return errMsg != null && errMsg.contains("WARNING");
+        return errMsg != null && (errMsg.contains("WARNING") || errMsg.contains("Warning"));
     }
 
     @Override

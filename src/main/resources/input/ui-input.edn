@@ -487,7 +487,7 @@
                 :label "Standard Decision Making" 
                 :set "set_InDefaultHandleDecisionMakingComponent" 
                 :description "todo" 
-                :tags [["InDefaultHandleDecisionMakingComponent" "a"] ["InDefaultHandleDecisionMakingComponent" "b"] ["InDefaultHandleDecisionMakingComponent" "c"] ["InDefaultHandleDecisionMakingComponent" "d"] ["link" "InDefaultHandleDecisionMakingComponent" "InPVFile" "pvFile"] ["link" "InDefaultHandleDecisionMakingComponent" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+                :tags [["InDefaultHandleDecisionMakingComponent" "a"] ["InDefaultHandleDecisionMakingComponent" "b"] ["InDefaultHandleDecisionMakingComponent" "c"] ["InDefaultHandleDecisionMakingComponent" "d"] ["InDefaultHandleDecisionMakingComponent" "weightFT"] ["InDefaultHandleDecisionMakingComponent" "weightNPV"] ["InDefaultHandleDecisionMakingComponent" "weightSocial"] ["InDefaultHandleDecisionMakingComponent" "weightLocal"] ["InDefaultHandleDecisionMakingComponent" "logisticFactor"] ["link" "InDefaultHandleDecisionMakingComponent" "InPVFile" "pvFile"] ["link" "InDefaultHandleDecisionMakingComponent" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
               } 
               {
                 :label "Standard Action" 

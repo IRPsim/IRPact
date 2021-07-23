@@ -28,6 +28,7 @@ import de.unileipzig.irpact.core.util.BasicMetaData;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions.AdoptionResultInfo;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions.AnnualCumulativeAdoptionsForOutput;
+import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.*;
 import de.unileipzig.irpact.io.param.output.OutInformation;
 import de.unileipzig.irpact.io.param.output.OutRoot;
@@ -627,6 +628,12 @@ public final class IRPact implements IRPActAccess {
         storeOutputData(outData);
         callCallbacks();
         finalTask();
+    }
+
+    public void postSimulationWithDummyOutputAndErrorMessageIfDesired(Throwable cause) {
+        if(shouldCreateDummyOutputWithErrorMessage()) {
+            postSimulationWithDummyOutputAndErrorMessage(cause);
+        }
     }
 
     public void postSimulationWithDummyOutputAndErrorMessage(Throwable cause) {

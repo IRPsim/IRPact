@@ -20,4 +20,9 @@ public interface Scenario {
     void storePostableTo(Path target, boolean pretty) throws IOException;
 
     void storePostableTo(Path target, Charset charset, boolean pretty) throws IOException;
+
+    @SuppressWarnings("unchecked")
+    default <R extends Scenario> R getAs() {
+        return (R) this;
+    }
 }

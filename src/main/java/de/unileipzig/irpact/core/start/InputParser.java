@@ -29,10 +29,19 @@ public interface InputParser {
 
     Object parseEntity(InIRPactEntity input) throws ParsingException;
 
+    Object parseEntity(InIRPactEntity input, Object param) throws ParsingException;
+
     @SuppressWarnings("unchecked")
     default <R> R parseEntityTo(InIRPactEntity input) throws ParsingException {
         return (R) parseEntity(input);
     }
+
+    @SuppressWarnings("unchecked")
+    default <R> R parseEntityTo(InIRPactEntity input, Object param) throws ParsingException {
+        return (R) parseEntity(input, param);
+    }
+
+    void update(InIRPactEntity input, Object original, Object param) throws ParsingException;
 
     default <R> R parseEntityTo(InIRPactEntity input, Class<R> outClass) throws ParsingException {
         Object obj = parseEntity(input);

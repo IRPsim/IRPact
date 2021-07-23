@@ -2,11 +2,13 @@ package de.unileipzig.irpact.core.process.ra;
 
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
+import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -15,6 +17,8 @@ import de.unileipzig.irptools.util.log.IRPLogger;
  * @author Daniel Abitz
  */
 public abstract class RAProcessPlanBase implements ProcessPlan, LoggingHelper {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(RAProcessPlanBase.class);
 
     protected SimulationEnvironment environment;
     protected RAProcessModelBase model;
@@ -49,7 +53,11 @@ public abstract class RAProcessPlanBase implements ProcessPlan, LoggingHelper {
         return stage;
     }
     public void setStage(RAStage stage) {
+        logStageUpdate(this.stage, stage);
         this.stage = stage;
+    }
+    protected void logStageUpdate(RAStage current, RAStage nextStage)  {
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] stage update: {} -> {}", agent.getName(), current, nextStage);
     }
 
     public Need getNeed() {
@@ -64,6 +72,7 @@ public abstract class RAProcessPlanBase implements ProcessPlan, LoggingHelper {
     }
     public void setRnd(Rnd rnd) {
         this.rnd = rnd;
+        rnd.enableSync();
     }
 
     public Product getProduct() {
@@ -85,6 +94,18 @@ public abstract class RAProcessPlanBase implements ProcessPlan, LoggingHelper {
     }
     public void setUnderRenovation(boolean underRenovation) {
         this.underRenovation = underRenovation;
+    }
+
+    public void setEnvironment(SimulationEnvironment environment) {
+        this.environment = environment;
+    }
+
+    public SimulationEnvironment getEnvironment() {
+        return environment;
+    }
+
+    public Uncertainty getUncertainty() {
+        return getModel().getUncertaintyCache().getUncertainty(getAgent());
     }
 
     @Override

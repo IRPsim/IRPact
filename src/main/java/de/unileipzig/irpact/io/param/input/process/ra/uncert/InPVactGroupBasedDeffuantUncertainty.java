@@ -172,7 +172,7 @@ public class InPVactGroupBasedDeffuantUncertainty implements InUncertainty {
     public void setup(IRPactInputParser parser, Object input) throws ParsingException {
         String modelName = getAs(input, 0);
         UncertaintyManager uncertaintyManager = getAs(input, 1);
-        int speedOfConvergence = getAs(input, 2);
+        double speedOfConvergence = getAs(input, 2);
 
         for(InConsumerAgentGroup inCag: getConsumerAgentGroups()) {
             ConsumerAgentGroup cag = parser.parseEntityTo(inCag);

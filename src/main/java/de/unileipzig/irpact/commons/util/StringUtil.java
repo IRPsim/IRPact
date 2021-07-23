@@ -181,7 +181,7 @@ public final class StringUtil {
     }
 
     public static String replaceSpace(String input, String replacement) {
-        return input.replace(" ", replacement);
+        return input == null ? "null" : input.replace(" ", replacement);
     }
 
     public static String printStackTrace(Throwable t) throws UncheckedIOException {

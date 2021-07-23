@@ -111,12 +111,20 @@ public class InDefaultDoActionComponent implements InEvaluableComponent {
         return Dev.throwException();
     }
 
+    public void setDefaultValues() {
+        setAdopterPoints(RAModelData.DEFAULT_ADOPTER_POINTS);
+        setInterestedPoints(RAModelData.DEFAULT_INTERESTED_POINTS);
+        setAwarePoints(RAModelData.DEFAULT_AWARE_POINTS);
+        setUnknownPoints(RAModelData.DEFAULT_UNKNOWN_POINTS);
+    }
+
     @Override
     public DefaultDoActionComponent parse(IRPactInputParser parser, Object input) throws ParsingException {
         ModularRAProcessModel model = getAs(input);
 
         DefaultDoActionComponent component = new DefaultDoActionComponent();
 
+        component.setName(getName());
         component.setEnvironment(parser.getEnvironment());
         component.setModel(model);
         component.setAdopterPoints(getAdopterPoints());

@@ -187,7 +187,7 @@ public class InGlobalDeffuantUncertainty implements InUncertainty {
     public void setup(IRPactInputParser parser, Object input) throws ParsingException {
         String modelName = getAs(input, 0);
         UncertaintyManager uncertaintyManager = getAs(input, 1);
-        int speedOfConvergence = getAs(input, 2);
+        double speedOfConvergence = getAs(input, 2);
 
         GlobalDeffuantUncertaintyData data = new GlobalDeffuantUncertaintyData();
         data.setName(getName() + "_data");

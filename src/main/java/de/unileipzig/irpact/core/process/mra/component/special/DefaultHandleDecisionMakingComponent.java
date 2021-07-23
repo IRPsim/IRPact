@@ -1,11 +1,13 @@
 package de.unileipzig.irpact.core.process.mra.component.special;
 
+import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPLoggingMessageCollection;
 import de.unileipzig.irpact.core.logging.InfoTag;
+import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
@@ -14,7 +16,6 @@ import de.unileipzig.irpact.core.process.mra.ModularRAProcessPlan;
 import de.unileipzig.irpact.core.process.mra.component.base.EvaluableComponent;
 import de.unileipzig.irpact.core.process.mra.component.generic.ComponentType;
 import de.unileipzig.irpact.core.process.ra.RAStage;
-import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -36,7 +37,12 @@ public class DefaultHandleDecisionMakingComponent extends AbstractSingleMRACompo
 
     @Override
     public int getChecksum() {
-        return Dev.throwException();
+        return Checksums.SMART.getChecksum(
+                Checksums.SMART.getNamedChecksum(getModel()),
+                getA(), getB(), getC(), getD(),
+                getWeightFT(), getWeightNPV(), getWeightSocial(), getWeightLocal(),
+                getLogisticFactor()
+        );
     }
 
     @Override
@@ -47,7 +53,39 @@ public class DefaultHandleDecisionMakingComponent extends AbstractSingleMRACompo
     }
 
     @Override
+    public void preAgentCreation() {
+        trace("[{}] pre agent creation", getName());
+        if(npvData != null) {
+            initNPVMatrixWithFile();
+        }
+    }
+
+    @Override
+    public void preAgentCreationValidation() throws ValidationException {
+        trace("[{}] pre agent creation validation", getName());
+        if(npvData == null) {
+            throw new ValidationException("missing npv data");
+        }
+        checkGroupAttributExistanceWithDefaultValues();
+    }
+
+    @Override
+    public void postAgentCreationValidation() throws ValidationException {
+        trace("[{}] post agent creation validation", getName());
+        checkHasDefaultSpatialInformations();
+    }
+
+    @Override
     public ProcessPlanResult evaluate(Agent ag, AgentData data) {
+        try {
+            return evaluate0(ag, data);
+        } catch (Exception e) {
+            getEnvironment().getLiveCycleControl().terminateWithError(e);
+            throw e;
+        }
+    }
+
+    protected ProcessPlanResult evaluate0(Agent ag, AgentData data) {
         ConsumerAgent agent = (ConsumerAgent) ag;
 
         doSelfActionAndAllowAttention(agent);

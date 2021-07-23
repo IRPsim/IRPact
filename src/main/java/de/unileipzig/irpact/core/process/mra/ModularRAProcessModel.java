@@ -15,6 +15,8 @@ import de.unileipzig.irpact.core.process.ra.RAProcessModelBase;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -24,6 +26,7 @@ public class ModularRAProcessModel extends RAProcessModelBase {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ModularRAProcessModel.class);
 
+    protected final Set<Component> allComponents = new HashSet<>();
     protected EvaluableComponent interestComponent;
     protected EvaluableComponent feasibilityComponent;
     protected EvaluableComponent decisionMakingComponent;
@@ -38,9 +41,32 @@ public class ModularRAProcessModel extends RAProcessModelBase {
     }
 
     @Override
+    public int getChecksum() {
+        return Checksums.SMART.getChecksum(
+                getName(),
+                rnd,
+                uncertaintyHandler.getManager(),
+                interestComponent,
+                feasibilityComponent,
+                decisionMakingComponent,
+                actionComponent
+        );
+    }
+
+    @Override
     public void preAgentCreation() throws MissingDataException {
-        super.preAgentCreation();
+        if(interestComponent == null) throw new MissingDataException("interestComponent");
+        if(feasibilityComponent == null) throw new MissingDataException("feasibilityComponent");
+        if(decisionMakingComponent == null) throw new MissingDataException("decisionMakingComponent");
+        if(actionComponent == null) throw new MissingDataException("actionComponent");
+
+        allComponents.clear();
         for(Component component: iterateAllCompontens()) {
+            allComponents.add(component);
+        }
+
+        super.preAgentCreation();
+        for(Component component: allComponents) {
             component.preAgentCreation();
         }
     }
@@ -48,7 +74,7 @@ public class ModularRAProcessModel extends RAProcessModelBase {
     @Override
     public void preAgentCreationValidation() throws ValidationException {
         super.preAgentCreationValidation();
-        for(Component component: iterateAllCompontens()) {
+        for(Component component: allComponents) {
             component.preAgentCreationValidation();
         }
     }
@@ -56,7 +82,7 @@ public class ModularRAProcessModel extends RAProcessModelBase {
     @Override
     public void postAgentCreation() throws MissingDataException, InitializationException {
         super.postAgentCreation();
-        for(Component component: iterateAllCompontens()) {
+        for(Component component: allComponents) {
             component.postAgentCreation();
         }
     }
@@ -64,7 +90,7 @@ public class ModularRAProcessModel extends RAProcessModelBase {
     @Override
     public void postAgentCreationValidation() throws ValidationException {
         super.postAgentCreationValidation();
-        for(Component component: iterateAllCompontens()) {
+        for(Component component: allComponents) {
             component.postAgentCreationValidation();
         }
     }
@@ -72,7 +98,7 @@ public class ModularRAProcessModel extends RAProcessModelBase {
     @Override
     public void preSimulationStart() throws MissingDataException {
         super.preSimulationStart();
-        for(Component component: iterateAllCompontens()) {
+        for(Component component: allComponents) {
             component.preSimulationStart();
         }
     }
@@ -80,28 +106,27 @@ public class ModularRAProcessModel extends RAProcessModelBase {
     @Override
     public void postSimulation() {
         super.postSimulation();
-        for(Component component: iterateAllCompontens()) {
+        for(Component component: allComponents) {
             component.postSimulation();
         }
     }
 
     @Override
     public void handleNewProduct(Product newProduct) {
-        streamAllComponents().forEach(c -> c.handleNewProduct(newProduct));
+        for(Component component: allComponents) {
+            component.handleNewProduct(newProduct);
+        }
     }
 
     @Override
     public ModularRAProcessPlan newPlan(Agent agent, Need need, Product product) {
         ConsumerAgent cAgent = (ConsumerAgent) agent;
         Rnd rnd = getEnvironment().getSimulationRandom().deriveInstance();
-        return new ModularRAProcessPlan(this, cAgent, need, product, rnd);
-    }
-
-    @Override
-    public int getChecksum() {
-        return Checksums.SMART.getChecksum(
-                getName()
-        );
+        ModularRAProcessPlan plan = new ModularRAProcessPlan(this, cAgent, need, product, rnd);
+        for(Component component: allComponents) {
+            component.handleNewPlan(plan);
+        }
+        return plan;
     }
 
     public void setInterestComponent(EvaluableComponent interestComponent) {

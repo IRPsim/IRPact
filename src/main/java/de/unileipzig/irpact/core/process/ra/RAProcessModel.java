@@ -23,7 +23,6 @@ import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
-import de.unileipzig.irpact.core.process.ra.uncert.*;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -298,9 +297,9 @@ public class RAProcessModel extends RAProcessModelBase implements LoggableChecks
     @Override
     public ProcessPlan newPlan(Agent agent, Need need, Product product) {
         ConsumerAgent cAgent = cast(agent);
-        Uncertainty uncertainty = getUncertaintyCache().getUncertainty(cAgent);
+        getUncertaintyCache().createUncertainty(cAgent, getUncertaintyManager());
         Rnd rnd = environment.getSimulationRandom().deriveInstance();
-        RAProcessPlan plan = new RAProcessPlan(environment, this, rnd, cAgent, need, product, uncertainty);
+        RAProcessPlan plan = new RAProcessPlan(environment, this, rnd, cAgent, need, product);
         plan.setNetworkFilter(getNodeFilterScheme().createFilter(plan));
         return plan;
     }

@@ -75,11 +75,8 @@ public final class RunFully implements IRPactExecutor {
 
         } catch (Throwable cause) {
             irpact.createStackTraceImageIfDesired(cause);
-            if(irpact.shouldCreateDummyOutputWithErrorMessage()) {
-                irpact.postSimulationWithDummyOutputAndErrorMessage(cause);
-            } else {
-                throw cause;
-            }
+            irpact.postSimulationWithDummyOutputAndErrorMessageIfDesired(cause);
+            throw cause;
         }
     }
 }

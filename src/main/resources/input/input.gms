@@ -1247,6 +1247,36 @@ PARAMETER par_InDefaultHandleDecisionMakingComponent_c(set_InDefaultHandleDecisi
 * - type: Float
 PARAMETER par_InDefaultHandleDecisionMakingComponent_d(set_InDefaultHandleDecisionMakingComponent)
 
+* - default: 0.5
+* - description: todo
+* - identifier: weightFT
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_weightFT(set_InDefaultHandleDecisionMakingComponent)
+
+* - default: 0.5
+* - description: todo
+* - identifier: weightNPV
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_weightNPV(set_InDefaultHandleDecisionMakingComponent)
+
+* - default: 0.5
+* - description: todo
+* - identifier: weightSocial
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_weightSocial(set_InDefaultHandleDecisionMakingComponent)
+
+* - default: 0.5
+* - description: todo
+* - identifier: weightLocal
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_weightLocal(set_InDefaultHandleDecisionMakingComponent)
+
+* - default: 0.125
+* - description: todo
+* - identifier: logistic factor
+* - type: Float
+PARAMETER par_InDefaultHandleDecisionMakingComponent_logisticFactor(set_InDefaultHandleDecisionMakingComponent)
+
 * - description: todo
 * - identifier: pvFile
 * - type: Boolean

@@ -111,12 +111,20 @@ public class InDefaultHandleInterestComponent implements InEvaluableComponent {
         return Dev.throwException();
     }
 
+    public void setDefaultValues() {
+        setAdopterPoints(RAModelData.DEFAULT_ADOPTER_POINTS);
+        setInterestedPoints(RAModelData.DEFAULT_INTERESTED_POINTS);
+        setAwarePoints(RAModelData.DEFAULT_AWARE_POINTS);
+        setUnknownPoints(RAModelData.DEFAULT_UNKNOWN_POINTS);
+    }
+
     @Override
     public DefaultHandleInterestComponent parse(IRPactInputParser parser, Object input) throws ParsingException {
         ModularRAProcessModel model = getAs(input);
 
         DefaultHandleInterestComponent component = new DefaultHandleInterestComponent();
 
+        component.setName(getName());
         component.setEnvironment(parser.getEnvironment());
         component.setModel(model);
         component.setAdopterPoints(getAdopterPoints());

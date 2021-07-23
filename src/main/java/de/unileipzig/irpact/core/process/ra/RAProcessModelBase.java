@@ -57,6 +57,7 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
 
     public void setEnvironment(SimulationEnvironment environment) {
         this.environment = environment;
+        uncertaintyHandler.setEnvironment(environment);
     }
     public SimulationEnvironment getEnvironment() {
         return environment;

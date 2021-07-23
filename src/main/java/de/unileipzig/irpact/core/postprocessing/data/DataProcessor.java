@@ -1,13 +1,13 @@
 package de.unileipzig.irpact.core.postprocessing.data;
 
-import de.unileipzig.irpact.commons.locale.LocalizedData;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.unileipzig.irpact.commons.resource.LocaleUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.postprocessing.PostProcessor;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions2.XlsxVarCollectionWriter;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions2.impl.AllAdoptions2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.MetaData;
-import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -21,6 +21,8 @@ public class DataProcessor extends PostProcessor {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(DataProcessor.class);
 
+    protected static final String RESULT_BASENAME = "result";
+    protected static final String RESULT_EXTENSION = "yaml";
     protected static final String ALL_ADOPTIONS_XLSX = "Alle_Adoptionen.xlsx";
 
     public DataProcessor(
@@ -76,7 +78,7 @@ public class DataProcessor extends PostProcessor {
     protected void logAllAdoptionsXlsx0() throws IOException {
         AllAdoptions2 analyser = new AllAdoptions2();
         analyser.apply(environment);
-        analyser.setLocalizedData(getLocalizedData());
+        analyser.setLocalizedData(getLocalizedResultData());
         analyser.setYears(getAllSimulationYears());
 
         XlsxVarCollectionWriter writer = new XlsxVarCollectionWriter();
@@ -88,7 +90,24 @@ public class DataProcessor extends PostProcessor {
     //util
     //=========================
 
-    protected LocalizedData getLocalizedData() {
-        return Dev.throwException();
+    protected LocalizedResultData localizedResultData;
+    public LocalizedResultData getLocalizedResultData() {
+        if(localizedResultData == null) {
+            try {
+                ObjectNode root = tryLoadYaml(RESULT_BASENAME, RESULT_EXTENSION);
+                if(root != null) {
+                    LocalizedResultDataYaml localizedImage = new LocalizedResultDataYaml(metaData.getLocale(), root);
+                    localizedImage.setEscapeSpecialCharacters(true);
+                    this.localizedResultData = localizedImage;
+                    return localizedResultData;
+                }
+                warn("'{}' not found, use fallback", LocaleUtil.buildName(RESULT_BASENAME, metaData.getLocale(), RESULT_EXTENSION));
+            } catch (Exception e) {
+                warn("loading '{}' failed, use fallback", LocaleUtil.buildName(RESULT_BASENAME, metaData.getLocale(), RESULT_EXTENSION));
+            }
+            //fallback
+            localizedResultData = DefaultLocalizedResultDataYaml.get();
+        }
+        return localizedResultData;
     }
 }

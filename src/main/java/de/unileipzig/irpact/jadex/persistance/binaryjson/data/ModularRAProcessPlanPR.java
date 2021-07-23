@@ -1,24 +1,26 @@
 package de.unileipzig.irpact.jadex.persistance.binaryjson.data;
 
+import de.unileipzig.irpact.commons.persistence.PersistException;
+import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreException;
-import de.unileipzig.irpact.commons.persistence.*;
+import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.persistence.binaryjson.BinaryJsonData;
 import de.unileipzig.irpact.core.persistence.binaryjson.BinaryPRBase;
+import de.unileipzig.irpact.core.process.mra.ModularRAProcessPlan;
 import de.unileipzig.irpact.core.process.ra.RAStage;
-import de.unileipzig.irpact.core.process.ra.RAProcessPlan;
 import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.core.persistence.binaryjson.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
+public class ModularRAProcessPlanPR extends BinaryPRBase<ModularRAProcessPlan> {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(RAProcessPlanPR.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(ModularRAProcessPlanPR.class);
 
-    public static final RAProcessPlanPR INSTANCE = new RAProcessPlanPR();
+    public static final ModularRAProcessPlanPR INSTANCE = new ModularRAProcessPlanPR();
 
     @Override
     protected IRPLogger log() {
@@ -26,8 +28,8 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
     }
 
     @Override
-    public Class<RAProcessPlan> getType() {
-        return RAProcessPlan.class;
+    public Class<ModularRAProcessPlan> getType() {
+        return ModularRAProcessPlan.class;
     }
 
     //=========================
@@ -35,7 +37,7 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(RAProcessPlan object, PersistManager manager) throws PersistException {
+    protected BinaryJsonData doInitalizePersist(ModularRAProcessPlan object, PersistManager manager) throws PersistException {
         BinaryJsonData data = initData(object, manager);
         data.putInt(object.getStage().getID());
         data.putBoolean(object.isUnderConstruction());
@@ -46,20 +48,18 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
         manager.prepare(object.getAgent());
         manager.prepare(object.getRnd());
         manager.prepare(object.getModel());
-        manager.prepare(object.getNetworkFilter());
         manager.prepare(object.getUncertainty());
 
         return data;
     }
 
     @Override
-    protected void doSetupPersist(RAProcessPlan object, BinaryJsonData data, PersistManager manager) throws PersistException {
+    protected void doSetupPersist(ModularRAProcessPlan object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getNeed()));
         data.putLong(manager.ensureGetUID(object.getProduct()));
         data.putLong(manager.ensureGetUID(object.getAgent()));
         data.putLong(manager.ensureGetUID(object.getRnd()));
         data.putLong(manager.ensureGetUID(object.getModel()));
-        data.putLong(manager.ensureGetUID(object.getNetworkFilter()));
         data.putLong(manager.ensureGetUID(object.getUncertainty()));
     }
 
@@ -69,8 +69,8 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
 
 
     @Override
-    protected RAProcessPlan doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
-        RAProcessPlan object = new RAProcessPlan();
+    protected ModularRAProcessPlan doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        ModularRAProcessPlan object = new ModularRAProcessPlan();
         object.setStage(RAStage.get(data.getInt()));
         object.setUnderConstruction(data.getBoolean());
         object.setUnderRenovation(data.getBoolean());
@@ -81,7 +81,7 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
     protected Uncertainty restoredUncertainty;
 
     @Override
-    protected void doSetupRestore(BinaryJsonData data, RAProcessPlan object, RestoreManager manager) throws RestoreException {
+    protected void doSetupRestore(BinaryJsonData data, ModularRAProcessPlan object, RestoreManager manager) throws RestoreException {
         object.setEnvironment(manager.ensureGetInstanceOf(SimulationEnvironment.class));
 
         object.setNeed(manager.ensureGet(data.getLong()));
@@ -89,12 +89,11 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
         object.setAgent(manager.ensureGet(data.getLong()));
         object.setRnd(manager.ensureGet(data.getLong()));
         object.setModel(manager.ensureGet(data.getLong()));
-        object.setNetworkFilter(manager.ensureGet(data.getLong()));
         restoredUncertainty = manager.ensureGet(data.getLong());
     }
 
     @Override
-    protected void doFinalizeRestore(BinaryJsonData data, RAProcessPlan object, RestoreManager manager) throws RestoreException {
+    protected void doFinalizeRestore(BinaryJsonData data, ModularRAProcessPlan object, RestoreManager manager) throws RestoreException {
         if(restoredUncertainty == null) {
             throw new RestoreException("missing restored uncertainty");
         }

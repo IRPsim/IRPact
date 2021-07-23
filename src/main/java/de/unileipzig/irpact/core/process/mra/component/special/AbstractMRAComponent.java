@@ -25,7 +25,6 @@ import de.unileipzig.irpact.core.process.mra.component.generic.AbstractComponent
 import de.unileipzig.irpact.core.process.mra.component.generic.ComponentType;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
-import de.unileipzig.irpact.core.process.ra.alg.RelativeAgreementAlgorithm;
 import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVDataSupplier;
@@ -76,35 +75,35 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         return model;
     }
 
-    protected double adopterPoints = RAModelData.DEFAULT_ADOPTER_POINTS;
-    public void setAdopterPoints(double adopterPoints) {
+    protected int adopterPoints = RAModelData.DEFAULT_ADOPTER_POINTS;
+    public void setAdopterPoints(int adopterPoints) {
         this.adopterPoints = adopterPoints;
     }
-    public double getAdopterPoints() {
+    public int getAdopterPoints() {
         return adopterPoints;
     }
 
-    protected double interestedPoints = RAModelData.DEFAULT_INTERESTED_POINTS;
-    public void setInterestedPoints(double interestedPoints) {
+    protected int interestedPoints = RAModelData.DEFAULT_INTERESTED_POINTS;
+    public void setInterestedPoints(int interestedPoints) {
         this.interestedPoints = interestedPoints;
     }
-    public double getInterestedPoints() {
+    public int getInterestedPoints() {
         return interestedPoints;
     }
 
-    protected double awarePoints = RAModelData.DEFAULT_AWARE_POINTS;
-    public void setAwarePoints(double awarePoints) {
+    protected int awarePoints = RAModelData.DEFAULT_AWARE_POINTS;
+    public void setAwarePoints(int awarePoints) {
         this.awarePoints = awarePoints;
     }
-    public double getAwarePoints() {
+    public int getAwarePoints() {
         return awarePoints;
     }
 
-    protected double unknownPoints = RAModelData.DEFAULT_UNKNOWN_POINTS;
-    public void setUnknownPoints(double unknownPoints) {
+    protected int unknownPoints = RAModelData.DEFAULT_UNKNOWN_POINTS;
+    public void setUnknownPoints(int unknownPoints) {
         this.unknownPoints = unknownPoints;
     }
-    public double getUnknownPoints() {
+    public int getUnknownPoints() {
         return unknownPoints;
     }
 
@@ -708,7 +707,52 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
 
     @Override
     public void handleNewProduct(Product product) {
-        GlobalSettings.get().handleNewProduct(product, getModel());
+        trace("handle new product '{}'", product.getName());
+        GlobalComponentSettings.get().handleNewProduct(product, getModel());
+    }
+
+    protected void checkGroupAttributExistanceWithDefaultValues() throws ValidationException {
+        checkGroupAttributExistance(
+                RAConstants.NOVELTY_SEEKING,
+                RAConstants.DEPENDENT_JUDGMENT_MAKING,
+                RAConstants.ENVIRONMENTAL_CONCERN,
+                RAConstants.CONSTRUCTION_RATE,
+                RAConstants.RENOVATION_RATE,
+                RAConstants.REWIRING_RATE,
+                RAConstants.COMMUNICATION_FREQUENCY_SN
+        );
+    }
+
+    protected void checkGroupAttributExistance(String... attrs) throws ValidationException {
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            for(String attr: attrs) {
+                checkHasAttribute(cag, attr);
+            }
+        }
+    }
+
+    private void checkHasAttribute(ConsumerAgentGroup cag, String name) throws ValidationException {
+        if(!cag.hasGroupAttribute(name)) {
+            throw ExceptionUtil.create(ValidationException::new, "consumer agent group '{}' has no group attribute '{}'", cag.getName(), name);
+        }
+    }
+
+    protected void checkHasDefaultSpatialInformations() throws ValidationException {
+        checkHasDoubleAttributes(
+                RAConstants.PURCHASE_POWER,
+                RAConstants.ORIENTATION,
+                RAConstants.SLOPE,
+                RAConstants.SHARE_1_2_HOUSE,
+                RAConstants.HOUSE_OWNER
+        );
+    }
+
+    protected void checkHasDoubleAttributes(String... names) throws ValidationException {
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            for(ConsumerAgent ca : cag.getAgents()) {
+                checkHasDoubleAttributes(ca, names);
+            }
+        }
     }
 
     protected void checkHasDoubleAttributes(ConsumerAgent ca, String... names) throws ValidationException {
@@ -735,6 +779,10 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         NPVData npvData = getNpvData();
         if(npvData == null) {
             return;
+        }
+
+        if(npvDataSupplier == null) {
+            npvDataSupplier = new NPVDataSupplier(getEnvironment().getAttributeHelper());
         }
 
         NPVCalculator npvCalculator = new NPVCalculator();

@@ -1173,6 +1173,9 @@ InDefaultHandleDecisionMakingComponent_weightSocial:
 InDefaultHandleDecisionMakingComponent_weightLocal:
   gams_identifier: "weightLocal"
   gams_description: "todo"
+InDefaultHandleDecisionMakingComponent_logisticFactor:
+  gams_identifier: "logistic factor"
+  gams_description: "todo"
 InDefaultHandleDecisionMakingComponent_pvFile:
   gams_identifier: "pvFile"
   gams_description: "todo"

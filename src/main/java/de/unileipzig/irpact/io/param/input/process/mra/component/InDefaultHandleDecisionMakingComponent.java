@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.process.filter.DisabledProcessPlanNodeFilterSch
 import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.core.process.mra.ModularRAProcessModel;
 import de.unileipzig.irpact.core.process.mra.component.special.DefaultHandleDecisionMakingComponent;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
@@ -21,6 +22,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Objects;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
@@ -51,6 +53,7 @@ public class InDefaultHandleDecisionMakingComponent implements InEvaluableCompon
         addEntry(res, thisClass(), "weightNPV");
         addEntry(res, thisClass(), "weightSocial");
         addEntry(res, thisClass(), "weightLocal");
+        addEntry(res, thisClass(), "logisticFactor");
         addEntry(res, thisClass(), "pvFile");
         addEntry(res, thisClass(), "nodeFilterScheme");
 
@@ -63,6 +66,7 @@ public class InDefaultHandleDecisionMakingComponent implements InEvaluableCompon
         setDefault(res, thisClass(), "weightNPV", VALUE_0_5);
         setDefault(res, thisClass(), "weightSocial", VALUE_0_5);
         setDefault(res, thisClass(), "weightLocal", VALUE_0_5);
+        setDefault(res, thisClass(), "logisticFactor", varargs(RAConstants.DEFAULT_LOGISTIC_FACTOR));
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -115,7 +119,7 @@ public class InDefaultHandleDecisionMakingComponent implements InEvaluableCompon
     }
 
     @FieldDefinition
-    protected double weightFT;
+    public double weightFT;
     public void setWeightFT(double weightFT) {
         this.weightFT = weightFT;
     }
@@ -124,7 +128,7 @@ public class InDefaultHandleDecisionMakingComponent implements InEvaluableCompon
     }
 
     @FieldDefinition
-    protected double weightNPV;
+    public double weightNPV;
     public void setWeightNPV(double weightNPV) {
         this.weightNPV = weightNPV;
     }
@@ -133,7 +137,7 @@ public class InDefaultHandleDecisionMakingComponent implements InEvaluableCompon
     }
 
     @FieldDefinition
-    protected double weightSocial;
+    public double weightSocial;
     public void setWeightSocial(double weightSocial) {
         this.weightSocial = weightSocial;
     }
@@ -142,12 +146,21 @@ public class InDefaultHandleDecisionMakingComponent implements InEvaluableCompon
     }
 
     @FieldDefinition
-    protected double weightLocal;
+    public double weightLocal;
     public void setWeightLocal(double weightLocal) {
         this.weightLocal = weightLocal;
     }
     public double getWeightLocal() {
         return weightLocal;
+    }
+
+    @FieldDefinition
+    public double logisticFactor;
+    public void setLogisticFactor(double logisticFactor) {
+        this.logisticFactor = logisticFactor;
+    }
+    public double getLogisticFactor() {
+        return logisticFactor;
     }
 
     @FieldDefinition
@@ -191,12 +204,29 @@ public class InDefaultHandleDecisionMakingComponent implements InEvaluableCompon
         return Dev.throwException();
     }
 
+    public void setDefaultValues() {
+        setABCD(0.25);
+        setWeightFT(0.5);
+        setWeightNPV(0.5);
+        setWeightLocal(0.5);
+        setWeightSocial(0.5);
+        setLogisticFactor(RAConstants.DEFAULT_LOGISTIC_FACTOR);
+    }
+
+    public void setABCD(double abcd) {
+        setA(abcd);
+        setB(abcd);
+        setC(abcd);
+        setD(abcd);
+    }
+
     @Override
     public DefaultHandleDecisionMakingComponent parse(IRPactInputParser parser, Object input) throws ParsingException {
         ModularRAProcessModel model = getAs(input);
 
         DefaultHandleDecisionMakingComponent component = new DefaultHandleDecisionMakingComponent();
 
+        component.setName(getName());
         component.setA(getA());
         component.setB(getB());
         component.setC(getC());
@@ -205,7 +235,9 @@ public class InDefaultHandleDecisionMakingComponent implements InEvaluableCompon
         component.setWeightNPV(getWeightNPV());
         component.setWeightSocial(getWeightSocial());
         component.setWeightLocal(getWeightLocal());
+        component.setLogisticFactor(getLogisticFactor());
         component.setModel(model);
+        component.setEnvironment(parser.getEnvironment());
 
         if(hasNodeFilterScheme()) {
             InRAProcessPlanNodeFilterScheme inFilterScheme = getNodeFilterScheme();
@@ -220,6 +252,22 @@ public class InDefaultHandleDecisionMakingComponent implements InEvaluableCompon
         applyPvFile(parser, component);
 
         return component;
+    }
+
+    @Override
+    public void update(IRPactInputParser parser, Object original, Object input) throws ParsingException {
+        if(original == null) {
+            throw new ParsingException("original is null");
+        }
+        if(!(original instanceof DefaultHandleDecisionMakingComponent)) {
+            throw new ParsingException("class mismatch: {} != {}", original.getClass(), DefaultHandleDecisionMakingComponent.class);
+        }
+        DefaultHandleDecisionMakingComponent ori = (DefaultHandleDecisionMakingComponent) original;
+        if(Objects.equals(getName(), ori.getName())) {
+            throw new ParsingException("name mismatch: {} != {}", getName(), ori.getName());
+        }
+
+        applyPvFile(parser, ori);
     }
 
     private void applyPvFile(IRPactInputParser parser, DefaultHandleDecisionMakingComponent component) throws ParsingException {

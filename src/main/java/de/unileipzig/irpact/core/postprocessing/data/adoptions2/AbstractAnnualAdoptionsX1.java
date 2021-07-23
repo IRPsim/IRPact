@@ -20,6 +20,7 @@ public abstract class AbstractAnnualAdoptionsX1<A> extends AbstractAdoptionAnaly
     }
 
     public void init(Collection<? extends A> firstValues) {
+        VarCollection data = getData();
         for(Integer year: years) {
             for(A value: firstValues) {
                 data.varSet(year, value, AdoptionResultInfo2.ZERO.get());

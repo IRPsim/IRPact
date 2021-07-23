@@ -199,10 +199,11 @@ public class ImageProcessor extends PostProcessor {
     public LocalizedImageData getLocalizedImageData() {
         if(localizedImageData == null) {
             try {
-                if(tryLoadExternal()) {
-                    return localizedImageData;
-                }
-                if(tryLoadInternal()) {
+                ObjectNode root = tryLoadYaml(IMAGES_BASENAME, IMAGES_EXTENSION);
+                if(root != null) {
+                    LocalizedImageDataYaml localizedImage = new LocalizedImageDataYaml(metaData.getLocale(), root);
+                    localizedImage.setEscapeSpecialCharacters(true);
+                    this.localizedImageData = localizedImage;
                     return localizedImageData;
                 }
                 warn("'{}' not found, use fallback", LocaleUtil.buildName(IMAGES_BASENAME, metaData.getLocale(), IMAGES_EXTENSION));
@@ -213,40 +214,5 @@ public class ImageProcessor extends PostProcessor {
             localizedImageData = DefaultLocalizedImageData.get();
         }
         return localizedImageData;
-    }
-
-    protected boolean tryLoadExternal() throws IOException {
-        if(metaData.getLoader().hasLocalizedExternal(IMAGES_BASENAME, metaData.getLocale(), IMAGES_EXTENSION)) {
-            trace("loading '{}'", metaData.getLoader().getLocalizedExternal(IMAGES_BASENAME, metaData.getLocale(), IMAGES_EXTENSION));
-            InputStream in = metaData.getLoader().getLocalizedExternalAsStream(IMAGES_BASENAME, metaData.getLocale(), IMAGES_EXTENSION);
-            return tryLoad(in);
-        } else {
-            return false;
-        }
-    }
-
-    protected boolean tryLoadInternal() throws IOException {
-        if(metaData.getLoader().hasLocalizedInternal(IMAGES_BASENAME, metaData.getLocale(), IMAGES_EXTENSION)) {
-            trace("loading '{}'", metaData.getLoader().getLocalizedInternal(IMAGES_BASENAME, metaData.getLocale(), IMAGES_EXTENSION));
-            InputStream in = metaData.getLoader().getLocalizedInternalAsStream(IMAGES_BASENAME, metaData.getLocale(), IMAGES_EXTENSION);
-            return tryLoad(in);
-        } else {
-            return false;
-        }
-    }
-
-    protected boolean tryLoad(InputStream in) throws IOException {
-        if(in == null) {
-            return false;
-        }
-        try {
-            ObjectNode root = JsonUtil.read(in, JsonUtil.YAML);
-            LocalizedImageDataYaml localizedImage = new LocalizedImageDataYaml(metaData.getLocale(), root);
-            localizedImage.setEscapeSpecialCharacters(true);
-            this.localizedImageData = localizedImage;
-            return true;
-        } finally {
-            in.close();
-        }
     }
 }
