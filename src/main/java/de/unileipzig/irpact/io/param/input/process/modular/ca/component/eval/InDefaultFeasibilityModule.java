@@ -34,7 +34,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
                 id = ModuleHelper.MODULAR_GRAPH,
                 label = "Eval-Modul",
                 color = ModuleHelper.COLOR_DARK_CYAN,
-                shape = ModuleHelper.SHAPE_OCTAGON,
+                shape = SHAPE_OCTAGON,
                 tags = {"InDefaultFeasibilityModule"}
         )
 )
@@ -52,6 +52,7 @@ public class InDefaultFeasibilityModule implements InConsumerAgentEvaluationModu
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTFEAS);
+        setShape(res, thisClass(), SHAPE_OCTAGON);
 
         addEntry(res, thisClass(), "adopterPoints");
         addEntry(res, thisClass(), "interestedPoints");
