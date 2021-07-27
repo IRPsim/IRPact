@@ -1513,6 +1513,7 @@ SET set_InConsumerAgentCalculationModule(set_InConsumerAgentModule)
 * - type: String
 SET set_InConsumerAgentEvaluationModule(set_InConsumerAgentModule)
 
+* - shape: octagon
 * - identifier: InDefaultActionModule
 * - type: String
 SET set_InDefaultActionModule(set_InConsumerAgentEvaluationModule)
@@ -1578,6 +1579,7 @@ PARAMETER par_InDefaultActionModule_chanceDivergence(set_InDefaultActionModule)
 * - type: Boolean
 PARAMETER par_link_InDefaultActionModule_InUncertainty_uncertainties(set_InDefaultActionModule,set_InUncertainty)
 
+* - shape: octagon
 * - identifier: InDefaultDecisionMakingModule
 * - type: String
 SET set_InDefaultDecisionMakingModule(set_InConsumerAgentEvaluationModule)
@@ -1646,6 +1648,7 @@ PARAMETER par_link_InDefaultDecisionMakingModule_InPVFile_pvFile(set_InDefaultDe
 * - type: Boolean
 PARAMETER par_link_InDefaultDecisionMakingModule_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InDefaultDecisionMakingModule,set_InRAProcessPlanNodeFilterScheme)
 
+* - shape: octagon
 * - identifier: InDefaultFeasibilityModule
 * - type: String
 SET set_InDefaultFeasibilityModule(set_InConsumerAgentEvaluationModule)
@@ -1711,6 +1714,7 @@ PARAMETER par_InDefaultFeasibilityModule_chanceDivergence(set_InDefaultFeasibili
 * - type: Boolean
 PARAMETER par_link_InDefaultFeasibilityModule_InUncertainty_uncertainties(set_InDefaultFeasibilityModule,set_InUncertainty)
 
+* - shape: octagon
 * - identifier: InDefaultInterestModule
 * - type: String
 SET set_InDefaultInterestModule(set_InConsumerAgentEvaluationModule)
@@ -1776,6 +1780,7 @@ PARAMETER par_InDefaultInterestModule_chanceDivergence(set_InDefaultInterestModu
 * - type: Boolean
 PARAMETER par_link_InDefaultInterestModule_InUncertainty_uncertainties(set_InDefaultInterestModule,set_InUncertainty)
 
+* - shape: gear
 * - identifier: InStageEvaluationModule
 * - type: String
 SET set_InStageEvaluationModule(set_InConsumerAgentEvaluationModule)

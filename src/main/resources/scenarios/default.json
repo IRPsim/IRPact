@@ -367,7 +367,7 @@
         }
       },
       "set_InScenarioVersion" : {
-        "v0_8_0" : {
+        "v0_9_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },

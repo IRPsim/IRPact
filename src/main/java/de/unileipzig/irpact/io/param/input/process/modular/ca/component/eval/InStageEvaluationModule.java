@@ -30,7 +30,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
                 id = ModuleHelper.MODULAR_GRAPH,
                 label = "Eval-Modul",
                 color = ModuleHelper.COLOR_DARK_CYAN,
-                shape = ModuleHelper.SHAPE_OCTAGON,
+                shape = SHAPE_GEAR,
                 tags = {"InStageEvaluationModule"}
         )
 )
@@ -48,6 +48,7 @@ public class InStageEvaluationModule implements InConsumerAgentEvaluationModule 
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_EVAL_STAGEEVAL);
+        setShape(res, thisClass(), SHAPE_GEAR);
 
         addEntry(res, thisClass(), "awarenessModule");
         addEntry(res, thisClass(), "feasibilityModule");

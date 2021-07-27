@@ -11,6 +11,7 @@ import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process.ra.alg.AttitudeGapRelativeAgreementAlgorithm;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.ModuleHelper;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
@@ -35,7 +36,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.varargs;
                 id = ModuleHelper.MODULAR_GRAPH,
                 label = "Eval-Modul",
                 color = ModuleHelper.COLOR_DARK_CYAN,
-                shape = ModuleHelper.SHAPE_OCTAGON,
+                shape = ParamUtil.SHAPE_OCTAGON,
                 tags = {"InDefaultActionModule"}
         )
 )
@@ -52,7 +53,8 @@ public class InDefaultActionModule implements InConsumerAgentEvaluationModule {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_EVAL);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTACTION);
+        setShape(res, thisClass(), SHAPE_OCTAGON);
 
         addEntry(res, thisClass(), "adopterPoints");
         addEntry(res, thisClass(), "interestedPoints");

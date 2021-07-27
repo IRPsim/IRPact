@@ -12,7 +12,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v0.8.0" 
+        :description "IRPact v0.9.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -64,7 +64,7 @@
             {
               :tags [["InDefaultActionModule"] ["InDefaultDecisionMakingModule"] ["InDefaultFeasibilityModule"] ["InDefaultInterestModule"] ["InStageEvaluationModule"]] 
               :label "Eval-Modul" 
-              :value "octagon"
+              :value "gear"
             }
           ] 
           :heading "Formen"
@@ -588,10 +588,14 @@
             :sections [
               {
                 :label "Evaluierungsmodule" 
-                :set "set_InDefaultActionModule" 
                 :description "todo" 
-                :tags [["InDefaultActionModule" "adopterPoints"] ["InDefaultActionModule" "interestedPoints"] ["InDefaultActionModule" "awarePoints"] ["InDefaultActionModule" "unknownPoints"] ["InDefaultActionModule" "speedOfConvergence"] ["InDefaultActionModule" "attitudeGap"] ["InDefaultActionModule" "chanceNeutral"] ["InDefaultActionModule" "chanceConvergence"] ["InDefaultActionModule" "chanceDivergence"] ["link" "InDefaultActionModule" "InUncertainty" "uncertainties"]] 
                 :sections [
+                  {
+                    :label "Standard-Aktion" 
+                    :set "set_InDefaultActionModule" 
+                    :description "todo" 
+                    :tags [["InDefaultActionModule" "adopterPoints"] ["InDefaultActionModule" "interestedPoints"] ["InDefaultActionModule" "awarePoints"] ["InDefaultActionModule" "unknownPoints"] ["InDefaultActionModule" "speedOfConvergence"] ["InDefaultActionModule" "attitudeGap"] ["InDefaultActionModule" "chanceNeutral"] ["InDefaultActionModule" "chanceConvergence"] ["InDefaultActionModule" "chanceDivergence"] ["link" "InDefaultActionModule" "InUncertainty" "uncertainties"]]
+                  } 
                   {
                     :label "Standard-Feasibility" 
                     :set "set_InDefaultFeasibilityModule" 

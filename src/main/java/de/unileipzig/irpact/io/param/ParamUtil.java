@@ -27,6 +27,12 @@ public final class ParamUtil {
     public static final String DATA_DELIMITER = "_";
     public static final String NAME_DELIMITER = "_";
 
+    public static final String SHAPE_OCTAGON = "octagon";
+    public static final String SHAPE_GEAR = "gear";
+    public static final String SHAPE_DIAMOND = "diamond";
+    public static final String SHAPE_SQUARE = "square";
+    public static final String SHAPE_PENTAGON = "pentagon";
+
     public static final String UNIT_PIXEL = "[Pixel]";
 
     public static final String DOMAIN_BOOLEAN = "[0|1]";
@@ -451,6 +457,44 @@ public final class ParamUtil {
             String domain) {
         for(String field: fields) {
             setDomain(res, c, field, domain);
+        }
+    }
+
+    public static void setShape(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String shape) {
+        if(shape != null) {
+            computeEntryBuilderIfAbsent(res, c).setGamsShape(shape);
+        }
+    }
+
+    public static void setShape(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String field,
+            String shape) {
+        if(shape != null) {
+            computeEntryBuilderIfAbsent(res, c, field).setGamsShape(shape);
+        }
+    }
+
+    public static void setIcon(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String icon) {
+        if(icon != null) {
+            computeEntryBuilderIfAbsent(res, c).setGamsIcon(icon);
+        }
+    }
+
+    public static void setIcon(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String field,
+            String icon) {
+        if(icon != null) {
+            computeEntryBuilderIfAbsent(res, c, field).setGamsIcon(icon);
         }
     }
 
