@@ -62,7 +62,7 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     @Override
     protected void onInit() {
         initData();
-        environment.getLiveCycleControl().registerSimulationAgentAccess(getThisAgent(), agent);
+        environment.getLifeCycleControl().registerSimulationAgentAccess(getThisAgent(), agent);
         log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] init", getName());
     }
 
@@ -114,8 +114,8 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     protected IFuture<Void> onEnd(IInternalAccess ia) {
         JadexTimeModel timeModel = environment.getTimeModel();
         log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] onEnd: {} ({})", getName(), timeModel.now(), timeModel.endTimeReached());
-        environment.getLiveCycleControl().waitForYearChangeIfRequired(this);
-        environment.getLiveCycleControl().terminate();
+        environment.getLifeCycleControl().waitForYearChangeIfRequired(this);
+        environment.getLifeCycleControl().terminate();
         return IFuture.DONE;
     }
 
@@ -130,6 +130,6 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
 
     @Override
     public void reportAgentCreated(de.unileipzig.irpact.core.agent.Agent agent) {
-        environment.getLiveCycleControl().reportAgentCreated(agent);
+        environment.getLifeCycleControl().reportAgentCreated(agent);
     }
 }

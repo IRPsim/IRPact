@@ -25,7 +25,7 @@ public abstract class AbstractJadexTimeModel extends NameableBase implements Jad
     }
 
     protected JadexLifeCycleControl lifeCycleControl() {
-        return environment.getLiveCycleControl();
+        return environment.getLifeCycleControl();
     }
 
     @Override
@@ -45,12 +45,12 @@ public abstract class AbstractJadexTimeModel extends NameableBase implements Jad
 
     @Override
     public IClockService getClockService() {
-        return environment.getLiveCycleControl().getClockService();
+        return environment.getLifeCycleControl().getClockService();
     }
 
     @Override
     public ISimulationService getSimulationService() {
-        return environment.getLiveCycleControl().getSimulationService();
+        return environment.getLifeCycleControl().getSimulationService();
     }
 
     @Override

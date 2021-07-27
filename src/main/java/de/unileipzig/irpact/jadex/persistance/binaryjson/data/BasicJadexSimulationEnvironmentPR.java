@@ -47,7 +47,7 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
         manager.prepare(object.getProducts());
         manager.prepare(object.getSpatialModel());
         manager.prepare(object.getTimeModel());
-        manager.prepare(object.getLiveCycleControl());
+        manager.prepare(object.getLifeCycleControl());
         manager.prepare(object.getSimulationRandom());
 
         return data;
@@ -64,7 +64,7 @@ public class BasicJadexSimulationEnvironmentPR extends BinaryPRBase<BasicJadexSi
         data.putLong(manager.ensureGetUID(object.getProducts()));
         data.putLong(manager.ensureGetUID(object.getSpatialModel()));
         data.putLong(manager.ensureGetUID(object.getTimeModel()));
-        data.putLong(manager.ensureGetUID(object.getLiveCycleControl()));
+        data.putLong(manager.ensureGetUID(object.getLifeCycleControl()));
         data.putLong(manager.ensureGetUID(object.getSimulationRandom()));
     }
 

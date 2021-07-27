@@ -13,11 +13,13 @@ import java.util.stream.Stream;
 /**
  * @author Daniel Abitz
  */
-public class NPVDataSupplier {
+public final class NPVDataSupplier {
 
     protected AttributeHelper attributeHelper;
     protected Map<Integer, NPVMatrix> npData;
     protected MutableDouble avgFT = new MutableDouble(Double.NaN);
+    protected MutableDouble avgNPV = new MutableDouble(Double.NaN);
+    protected int avgNPVYear = -1;
 
     public NPVDataSupplier() {
         this(null, new HashMap<>());
@@ -73,6 +75,13 @@ public class NPVDataSupplier {
 
     public double getAverageFinancialPurchasePower(Stream<? extends ConsumerAgent> agents) {
         if(Double.isNaN(avgFT.get())) {
+            calcAvgFT(agents);
+        }
+        return avgFT.get();
+    }
+
+    protected synchronized void calcAvgFT(Stream<? extends ConsumerAgent> agents) {
+        if(Double.isNaN(avgFT.get())) {
             MutableDouble total = MutableDouble.zero();
             double sum = agents.mapToDouble(ca -> {
                 total.inc();
@@ -81,6 +90,31 @@ public class NPVDataSupplier {
             double result = sum / total.get();
             avgFT.set(result);
         }
-        return avgFT.get();
+    }
+
+    public double avgNPV(Stream<? extends ConsumerAgent> agents, int year) {
+        if(year != avgNPVYear || Double.isNaN(avgNPV.get())) {
+            calcAvgNPV(agents, year);
+        }
+        return avgNPV.get();
+    }
+
+    protected synchronized void calcAvgNPV(Stream<? extends ConsumerAgent> agents, final int year) {
+        if(year != avgNPVYear || Double.isNaN(avgNPV.get())) {
+            MutableDouble total = MutableDouble.zero();
+            double sum = agents.mapToDouble(
+                    ca -> {
+                        total.inc();
+                        return NPV(ca, year);
+                    })
+                    .sum();
+            if(total.isZero()) {
+                throw new IllegalStateException("no consumer agents");
+            }
+
+            double result = sum / total.get();
+            avgNPV.set(result);
+            avgNPVYear = year;
+        }
     }
 }

@@ -62,7 +62,7 @@ public interface TimeModel extends Nameable, InitalizablePart {
 
     Timestamp atEndOfYear(int year);
 
-    Timestamp at(int year, long weeks);
+    Timestamp atWeek(int year, long weeks);
 
-    Timestamp at(int year, Month month, int day);
+    Timestamp atDay(int year, Month month, int day);
 }
