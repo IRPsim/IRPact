@@ -12,10 +12,12 @@ import de.unileipzig.irpact.core.process.modular.ca.AdoptionResult;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.alg.RelativeAgreementAlgorithm;
+import de.unileipzig.irpact.core.process.ra.uncert.BasicUncertaintyManager;
 import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
 import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyCache;
 import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyHandler;
 import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,6 +37,13 @@ public abstract class AbstractActionModule extends AbstractConsumerAgentModule {
     //=========================
     //param
     //=========================
+
+
+    @Override
+    public void setEnvironment(SimulationEnvironment environment) {
+        super.setEnvironment(environment);
+        getUncertaintyHandler().setEnvironment(environment);
+    }
 
     protected int adopterPoints;
     public int getAdopterPoints() {
@@ -76,9 +85,12 @@ public abstract class AbstractActionModule extends AbstractConsumerAgentModule {
         return relativeAgreementAlgorithm;
     }
 
-    protected UncertaintyHandler uncertaintyHandler;
-    public void setUncertaintyHandler(UncertaintyHandler uncertaintyHandler) {
-        this.uncertaintyHandler = uncertaintyHandler;
+    protected UncertaintyHandler uncertaintyHandler = newHandler();
+    protected static UncertaintyHandler newHandler() {
+        UncertaintyHandler handler = new UncertaintyHandler();
+        handler.setCache(new UncertaintyCache());
+        handler.setManager(new BasicUncertaintyManager());
+        return handler;
     }
     public UncertaintyHandler getUncertaintyHandler() {
         return uncertaintyHandler;

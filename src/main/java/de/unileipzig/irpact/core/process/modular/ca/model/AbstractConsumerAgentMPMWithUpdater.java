@@ -8,7 +8,6 @@ import de.unileipzig.irpact.core.process.modular.ca.SimpleConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.updater.EndOfYearEvaluator;
 import de.unileipzig.irpact.core.process.modular.ca.updater.MidYearUpdater;
 import de.unileipzig.irpact.core.process.modular.ca.updater.StartOfYearAdjuster;
-import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.core.util.AdoptionPhase;

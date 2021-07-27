@@ -16,6 +16,8 @@ import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.param.input.distribution.*;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.InSimpleConsumerAgentMPM;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
 import de.unileipzig.irpact.io.param.input.process.mra.InModularRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.mra.component.*;
 import de.unileipzig.irpact.io.param.input.product.*;
@@ -153,6 +155,19 @@ public class InRootUI {
     public static final EdnPath PROCESS_MRA_COMPONENTS_SUMINTER = PROCESS_MRA_COMPONENTS.resolve(InSumIntermediateComponent.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MRA_COMPONENTS_SUMTHRESH = PROCESS_MRA_COMPONENTS.resolve(InSumThresholdComponent.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MRA_COMPONENTS_NOTHING = PROCESS_MRA_COMPONENTS.resolve(InDoNothingComponent.thisName()).addTo(PATHS);
+
+    public static final EdnPath PROCESS_MODULAR2 = PROCESS.resolve(IOConstants.PROCESS_MODULAR2).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_MODEL = PROCESS_MODULAR2.resolve(IOConstants.PROCESS_MODULAR2_MODEL).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_MODEL_SIMPLE = PROCESS_MODULAR2_MODEL.resolve(InSimpleConsumerAgentMPM.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_COMPONENTS = PROCESS_MODULAR2.resolve(IOConstants.PROCESS_MODULAR2_COMPONENTS).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC = PROCESS_MODULAR2_COMPONENTS.resolve(IOConstants.PROCESS_MODULAR2_COMPONENTS_CALC).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL = PROCESS_MODULAR2_COMPONENTS.resolve(IOConstants.PROCESS_MODULAR2_COMPONENTS_EVAL).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTACTION = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InDefaultActionModule.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTFEAS = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InDefaultFeasibilityModule.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTINTEREST = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InDefaultInterestModule.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTDECISION = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InDefaultDecisionMakingModule.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_STAGEEVAL = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InStageEvaluationModule.thisName()).addTo(PATHS);
+
     public static final EdnPath PROCESS_FILTER = PROCESS.resolve(IOConstants.PROCESS_FILTER).addTo(PATHS);
     public static final EdnPath PROCESS_FILTER_DISABLED = PROCESS_FILTER.resolve(InDisabledProcessPlanNodeFilterScheme.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_FILTER_ENTIRE = PROCESS_FILTER.resolve(InEntireNetworkNodeFilterScheme.thisName()).addTo(PATHS);

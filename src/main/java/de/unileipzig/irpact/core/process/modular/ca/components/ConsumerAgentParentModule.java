@@ -7,6 +7,8 @@ import de.unileipzig.irpact.core.process.modular.ca.model.ConsumerAgentMPM;
 import de.unileipzig.irpact.core.process.modular.components.core.ParentModule;
 import de.unileipzig.irpact.core.product.Product;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Abitz
  */
@@ -23,6 +25,21 @@ public interface ConsumerAgentParentModule extends ParentModule<ConsumerAgentMod
     default void handleNewProductRecursively(Product newProduct) {
         for(ConsumerAgentModule subModule: iterateModules()) {
             subModule.handleNewProductRecursively(newProduct);
+        }
+    }
+
+    @Override
+    default ConsumerAgentModule searchModule(String name) {
+        if(Objects.equals(getName(), name)) {
+            return this;
+        } else {
+            for(ConsumerAgentModule subModule: iterateModules()) {
+                ConsumerAgentModule found = subModule.searchModule(name);
+                if(found != null) {
+                    return found;
+                }
+            }
+            return null;
         }
     }
 

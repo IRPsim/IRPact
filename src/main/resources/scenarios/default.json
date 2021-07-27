@@ -121,6 +121,8 @@
         }
       },
       "set_InComponent" : { },
+      "set_InConsumerAgentCalculationModule" : { },
+      "set_InConsumerAgentEvaluationModule" : { },
       "set_InConsumerAgentGroup" : {
         "BUM" : { },
         "TRA" : { }
@@ -134,10 +136,16 @@
           "par_InConsumerAgentGroupColor_rgba" : 4294901760
         }
       },
+      "set_InConsumerAgentModularProcessModel" : { },
+      "set_InConsumerAgentModule" : { },
+      "set_InDefaultActionModule" : { },
+      "set_InDefaultDecisionMakingModule" : { },
       "set_InDefaultDoActionComponent" : { },
+      "set_InDefaultFeasibilityModule" : { },
       "set_InDefaultHandleDecisionMakingComponent" : { },
       "set_InDefaultHandleFeasibilityComponent" : { },
       "set_InDefaultHandleInterestComponent" : { },
+      "set_InDefaultInterestModule" : { },
       "set_InDependentConsumerAgentGroupAttribute" : { },
       "set_InDependentProductGroupAttribute" : { },
       "set_InDiracUnivariateDistribution" : {
@@ -250,7 +258,9 @@
       "set_InInverse" : { },
       "set_InIRPactVersion" : { },
       "set_InMassPoint" : { },
+      "set_InModularProcessModel" : { },
       "set_InModularRAProcessModel" : { },
+      "set_InModule" : { },
       "set_InName" : { },
       "set_InNameSplitAffinityEntry" : { },
       "set_InNameSplitConsumerAgentGroupAttribute" : { },
@@ -361,6 +371,7 @@
           "par_InScenarioVersion_placeholder" : 0
         }
       },
+      "set_InSimpleConsumerAgentMPM" : { },
       "set_InSpace2D" : {
         "Space2D" : {
           "par_InSpace2D_useManhatten" : 0,
@@ -385,6 +396,7 @@
           "par_InSpatialTableFile_placeholderInSpatialFile" : 0.0
         }
       },
+      "set_InStageEvaluationModule" : { },
       "set_InSumAttributeComponent" : { },
       "set_InSumIntermediateComponent" : { },
       "set_InSumThresholdComponent" : { },
@@ -548,8 +560,13 @@
           "TRA" : 1.0
         }
       },
+      "par_link_InDefaultActionModule_InUncertainty_uncertainties" : { },
+      "par_link_InDefaultDecisionMakingModule_InPVFile_pvFile" : { },
+      "par_link_InDefaultDecisionMakingModule_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
+      "par_link_InDefaultFeasibilityModule_InUncertainty_uncertainties" : { },
       "par_link_InDefaultHandleDecisionMakingComponent_InPVFile_pvFile" : { },
       "par_link_InDefaultHandleDecisionMakingComponent_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
+      "par_link_InDefaultInterestModule_InUncertainty_uncertainties" : { },
       "par_link_InFileBasedConsumerAgentPopulation_InAttributeName_selectKey" : { },
       "par_link_InFileBasedConsumerAgentPopulation_InConsumerAgentGroup_cags" : { },
       "par_link_InFileBasedConsumerAgentPopulation_InSpatialTableFile_file" : { },
@@ -754,6 +771,12 @@
           "UNCERT" : 1.0
         }
       },
+      "par_link_InSimpleConsumerAgentMPM_InConsumerAgentEvaluationModule_startModule" : { },
+      "par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_graphedge_adoptedModule" : { },
+      "par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_graphedge_awarenessModule" : { },
+      "par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_graphedge_decisionMakingModule" : { },
+      "par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_graphedge_feasibilityModule" : { },
+      "par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_impededModule" : { },
       "par_link_InSumAttributeComponent_InAttributeName_attributeNames" : { },
       "par_link_InSumIntermediateComponent_InValueComponent_components" : { },
       "par_link_InSumThresholdComponent_InValueComponent_components" : { },
