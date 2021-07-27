@@ -272,6 +272,7 @@
       "set_InNameSplitProductGroupAttribute" : { },
       "set_InNoDistance" : { },
       "set_InNormalDistribution" : { },
+      "set_InNPVModule_inputgraphnode" : { },
       "set_InNumberOfTies" : { },
       "set_InOutputImage" : {
         "gnutest1" : { },
@@ -637,6 +638,7 @@
       "par_link_InModularRAProcessModel_InUncertainty_uncertainties" : { },
       "par_link_InNameSplitConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
       "par_link_InNameSplitProductGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
+      "par_link_InNPVModule_inputgraphnode_InPVFile_pvFile" : { },
       "par_link_InNumberOfTies_InConsumerAgentGroup_cags" : { },
       "par_link_InProductGroupThresholdEntry_InProductGroup_productGroups" : { },
       "par_link_InProductGroupThresholdEntry_InUnivariateDoubleDistribution_interestDistribution" : { },

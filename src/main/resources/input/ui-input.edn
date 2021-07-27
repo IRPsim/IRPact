@@ -661,6 +661,12 @@
                     :tags [["InLogisticModule" "calcgraphnode" "weight"] ["link" "InLogisticModule" "calcgraphnode" "InConsumerAgentCalculationModule" "input" "graphedge"]]
                   } 
                   {
+                    :label "Barwert" 
+                    :set "set_InNPVModule_inputgraphnode" 
+                    :description "todo" 
+                    :tags [["InNPVModule" "inputgraphnode" "weight"] ["link" "InNPVModule" "inputgraphnode" "InPVFile" "pvFile"]]
+                  } 
+                  {
                     :label "Wichtung" 
                     :set "set_InWeightedModule_calcgraphnode" 
                     :description "todo" 
