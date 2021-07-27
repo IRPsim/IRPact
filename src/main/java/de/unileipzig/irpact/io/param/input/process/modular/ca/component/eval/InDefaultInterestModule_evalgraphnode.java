@@ -4,15 +4,14 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.process.modular.ca.components.eval.DefaultFeasibilityModule;
-import de.unileipzig.irpact.core.process.modular.components.core.Module;
+import de.unileipzig.irpact.core.process.modular.ca.components.eval.DefaultInterestModule;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process.ra.alg.AttitudeGapRelativeAgreementAlgorithm;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.ModuleHelper;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertainty;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -25,21 +24,23 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings.*;
+import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings.EVAL_GRAPHNODE;
 
 /**
  * @author Daniel Abitz
  */
 @Definition(
         graphNode = @GraphNode(
-                id = ModuleHelper.MODULAR_GRAPH,
-                label = "Eval-Modul",
-                color = COLOR_DARK_CYAN,
-                border = COLOR_DARK_CYAN,
-                shape = SHAPE_OCTAGON,
-                tags = {"graphnode"}
+                id = MPM_GRAPH,
+                label = EVAL_LABEL,
+                shape = EVAL_SHAPE,
+                color = EVAL_COLOR,
+                border = EVAL_BORDER,
+                tags = {EVAL_GRAPHNODE}
         )
 )
-public class InDefaultFeasibilityModule_graphnode implements InConsumerAgentEvaluationModule {
+public class InDefaultInterestModule_evalgraphnode implements InConsumerAgentEvaluationModule {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -52,9 +53,8 @@ public class InDefaultFeasibilityModule_graphnode implements InConsumerAgentEval
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTFEAS);
-        setShape(res, thisClass(), SHAPE_OCTAGON);
-        setColor(res, thisClass(), COLOR_DARK_CYAN);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTINTEREST);
+        setShapeColorBorder(res, thisClass(), EVAL_SHAPE, EVAL_COLOR, EVAL_BORDER);
 
         addEntry(res, thisClass(), "adopterPoints");
         addEntry(res, thisClass(), "interestedPoints");
@@ -180,16 +180,16 @@ public class InDefaultFeasibilityModule_graphnode implements InConsumerAgentEval
         return uncertainties;
     }
 
-    public InDefaultFeasibilityModule_graphnode() {
+    public InDefaultInterestModule_evalgraphnode() {
     }
 
     @Override
-    public InDefaultFeasibilityModule_graphnode copy(CopyCache cache) {
+    public InDefaultInterestModule_evalgraphnode copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InDefaultFeasibilityModule_graphnode newCopy(CopyCache cache) {
-        InDefaultFeasibilityModule_graphnode copy = new InDefaultFeasibilityModule_graphnode();
+    public InDefaultInterestModule_evalgraphnode newCopy(CopyCache cache) {
+        InDefaultInterestModule_evalgraphnode copy = new InDefaultInterestModule_evalgraphnode();
         return Dev.throwException();
     }
 
@@ -206,17 +206,12 @@ public class InDefaultFeasibilityModule_graphnode implements InConsumerAgentEval
     }
 
     @Override
-    public DefaultFeasibilityModule parse(IRPactInputParser parser) throws ParsingException {
+    public DefaultInterestModule parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
-            Module module = ModuleHelper.searchModule(parser, getName());
-            if(module instanceof DefaultFeasibilityModule) {
-                return (DefaultFeasibilityModule) module;
-            } else {
-                throw new ParsingException("class mismatch");
-            }
+            return MPMSettings.searchModule(parser, thisName(), DefaultInterestModule.class);
         }
 
-        DefaultFeasibilityModule module = new DefaultFeasibilityModule();
+        DefaultInterestModule module = new DefaultInterestModule();
         module.setName(getName());
         module.setEnvironment(parser.getEnvironment());
         module.setAdopterPoints(getAdopterPoints());

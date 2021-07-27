@@ -6,7 +6,6 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.filter.DisabledProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.core.process.modular.ca.components.eval.DefaultDecisionMakingModule;
-import de.unileipzig.irpact.core.process.modular.components.core.Module;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
@@ -14,7 +13,7 @@ import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.ModuleHelper;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanNodeFilterScheme;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -27,21 +26,22 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings.*;
 
 /**
  * @author Daniel Abitz
  */
 @Definition(
         graphNode = @GraphNode(
-                id = ModuleHelper.MODULAR_GRAPH,
-                label = "Eval-Modul",
-                color = COLOR_DARK_CYAN,
-                border = COLOR_DARK_CYAN,
-                shape = SHAPE_OCTAGON,
-                tags = {"graphnode"}
+                id = MPM_GRAPH,
+                label = EVAL_LABEL,
+                shape = EVAL_SHAPE,
+                color = EVAL_COLOR,
+                border = EVAL_BORDER,
+                tags = {EVAL_GRAPHNODE}
         )
 )
-public class InDefaultDecisionMakingModule_graphnode implements InConsumerAgentEvaluationModule {
+public class InDefaultDecisionMakingModule_evalgraphnode implements InConsumerAgentEvaluationModule {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -55,8 +55,7 @@ public class InDefaultDecisionMakingModule_graphnode implements InConsumerAgentE
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTDECISION);
-        setShape(res, thisClass(), SHAPE_OCTAGON);
-        setColor(res, thisClass(), COLOR_DARK_CYAN);
+        setShapeColorBorder(res, thisClass(), EVAL_SHAPE, EVAL_COLOR, EVAL_BORDER);
 
         addEntry(res, thisClass(), "a");
         addEntry(res, thisClass(), "b");
@@ -201,16 +200,16 @@ public class InDefaultDecisionMakingModule_graphnode implements InConsumerAgentE
         }
     }
 
-    public InDefaultDecisionMakingModule_graphnode() {
+    public InDefaultDecisionMakingModule_evalgraphnode() {
     }
 
     @Override
-    public InDefaultDecisionMakingModule_graphnode copy(CopyCache cache) {
+    public InDefaultDecisionMakingModule_evalgraphnode copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InDefaultDecisionMakingModule_graphnode newCopy(CopyCache cache) {
-        InDefaultDecisionMakingModule_graphnode copy = new InDefaultDecisionMakingModule_graphnode();
+    public InDefaultDecisionMakingModule_evalgraphnode newCopy(CopyCache cache) {
+        InDefaultDecisionMakingModule_evalgraphnode copy = new InDefaultDecisionMakingModule_evalgraphnode();
         return Dev.throwException();
     }
 
@@ -233,14 +232,7 @@ public class InDefaultDecisionMakingModule_graphnode implements InConsumerAgentE
     @Override
     public DefaultDecisionMakingModule parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
-            Module module = ModuleHelper.searchModule(parser, getName());
-            if(module instanceof DefaultDecisionMakingModule) {
-                DefaultDecisionMakingModule ori = (DefaultDecisionMakingModule) module;
-                applyPvFile(parser, ori);
-                return ori;
-            } else {
-                throw new ParsingException("class mismatch");
-            }
+            return MPMSettings.searchModule(parser, thisName(), DefaultDecisionMakingModule.class);
         }
 
         DefaultDecisionMakingModule module = new DefaultDecisionMakingModule();

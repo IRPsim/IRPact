@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.process.modular.ca.model.ConsumerAgentMPM;
-import de.unileipzig.irpact.core.process.modular.components.core.ParentModule;
+import de.unileipzig.irpact.core.process.modular.components.core.MultiModule;
 import de.unileipzig.irpact.core.product.Product;
 
 import java.util.Objects;
@@ -12,7 +12,7 @@ import java.util.Objects;
 /**
  * @author Daniel Abitz
  */
-public interface ConsumerAgentParentModule extends ParentModule<ConsumerAgentModule>, ConsumerAgentModule {
+public interface ConsumerAgentMultiModule extends MultiModule<ConsumerAgentModule>, ConsumerAgentModule {
 
     @Override
     default void handleMissingParametersRecursively(ConsumerAgentMPM model) {

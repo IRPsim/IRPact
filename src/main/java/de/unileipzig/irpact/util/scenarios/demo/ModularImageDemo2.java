@@ -89,27 +89,27 @@ public class ModularImageDemo2 extends AbstractScenario {
         uncertainty.setDefaultValues();
         uncertainty.setConsumerAgentGroups(new InConsumerAgentGroup[]{cag0, cag1});
 
-        InDefaultInterestModule_graphnode interestComponent = new InDefaultInterestModule_graphnode();
+        InDefaultInterestModule_evalgraphnode interestComponent = new InDefaultInterestModule_evalgraphnode();
         interestComponent.setName("INTEREST");
         interestComponent.setDefaultValues();
         interestComponent.setUncertainty(uncertainty);
 
-        InDefaultFeasibilityModule_graphnode feasibilityComponent = new InDefaultFeasibilityModule_graphnode();
+        InDefaultFeasibilityModule_evalgraphnode feasibilityComponent = new InDefaultFeasibilityModule_evalgraphnode();
         feasibilityComponent.setName("FEASIBILITY");
         feasibilityComponent.setDefaultValues();
         feasibilityComponent.setUncertainty(uncertainty);
 
-        InDefaultDecisionMakingModule_graphnode decisionMakingComponent = new InDefaultDecisionMakingModule_graphnode();
+        InDefaultDecisionMakingModule_evalgraphnode decisionMakingComponent = new InDefaultDecisionMakingModule_evalgraphnode();
         decisionMakingComponent.setName("DECISION");
         decisionMakingComponent.setDefaultValues();
         decisionMakingComponent.setPvFile(pvFile);
 
-        InDefaultActionModule_graphnode actionComponent = new InDefaultActionModule_graphnode();
+        InDefaultActionModule_evalgraphnode actionComponent = new InDefaultActionModule_evalgraphnode();
         actionComponent.setName("ACTION");
         actionComponent.setDefaultValues();
         actionComponent.setUncertainty(uncertainty);
 
-        InStageEvaluationModule_graphnode2 evalModule = new InStageEvaluationModule_graphnode2();
+        InStageEvaluationModule_evalgraphnode evalModule = new InStageEvaluationModule_evalgraphnode();
         evalModule.setName("START");
         evalModule.setAwarenessModule(interestComponent);
         evalModule.setFeasibilityModule(feasibilityComponent);

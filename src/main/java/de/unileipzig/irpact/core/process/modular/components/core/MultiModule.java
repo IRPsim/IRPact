@@ -5,7 +5,7 @@ import java.util.stream.Stream;
 /**
  * @author Daniel Abitz
  */
-public interface ParentModule<M extends Module> extends Module {
+public interface MultiModule<M extends Module> extends Module {
 
     int numberOfModules();
 

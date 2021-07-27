@@ -35,6 +35,10 @@ public final class MutableDouble extends Number implements ChecksumComparable {
         return new MutableDouble(1);
     }
 
+    public static MutableDouble NaN() {
+        return new MutableDouble(Double.NaN);
+    }
+
     public static MutableDouble wrap(double value) {
         return new MutableDouble(value);
     }

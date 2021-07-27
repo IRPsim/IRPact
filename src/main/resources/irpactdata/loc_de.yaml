@@ -1266,163 +1266,258 @@ InSimpleConsumerAgentMPM_startModule:
   gams_identifier: "Startmodul"
   gams_description: "todo"
 
-InDefaultActionModule_graphnode:
+#eval
+
+InDefaultActionModule_evalgraphnode:
   edn_label: "Standard-Aktion"
   edn_description: "todo"
-InDefaultActionModule_graphnode_adopterPoints:
+InDefaultActionModule_evalgraphnode_adopterPoints:
   gams_identifier: "adopter points"
   gams_description: "todo"
-InDefaultActionModule_graphnode_interestedPoints:
+InDefaultActionModule_evalgraphnode_interestedPoints:
   gams_identifier: "interested points"
   gams_description: "todo"
-InDefaultActionModule_graphnode_awarePoints:
+InDefaultActionModule_evalgraphnode_awarePoints:
   gams_identifier: "aware points"
   gams_description: "todo"
-InDefaultActionModule_graphnode_unknownPoints:
+InDefaultActionModule_evalgraphnode_unknownPoints:
   gams_identifier: "unknown points"
   gams_description: "todo"
-InDefaultActionModule_graphnode_speedOfConvergence:
+InDefaultActionModule_evalgraphnode_speedOfConvergence:
   gams_identifier: "speed of convergence"
   gams_description: "todo"
-InDefaultActionModule_graphnode_attitudeGap:
+InDefaultActionModule_evalgraphnode_attitudeGap:
   gams_identifier: "attitude gap"
   gams_description: "todo"
-InDefaultActionModule_graphnode_chanceNeutral:
+InDefaultActionModule_evalgraphnode_chanceNeutral:
   gams_identifier: "chance neutral"
   gams_description: "todo"
-InDefaultActionModule_graphnode_chanceConvergence:
+InDefaultActionModule_evalgraphnode_chanceConvergence:
   gams_identifier: "chance convergence"
   gams_description: "todo"
-InDefaultActionModule_graphnode_chanceDivergence:
+InDefaultActionModule_evalgraphnode_chanceDivergence:
   gams_identifier: "chance divergence"
   gams_description: "todo"
-InDefaultActionModule_graphnode_uncertainties:
+InDefaultActionModule_evalgraphnode_uncertainties:
   gams_identifier: "uncertainties"
   gams_description: "todo"
 
-InDefaultFeasibilityModule_graphnode:
+InDefaultDecisionMakingModule_evalgraphnode:
+  edn_label: "Default-Decision Making"
+  edn_description: "todo"
+InDefaultDecisionMakingModule_evalgraphnode_a:
+  gams_identifier: "Einfluss finanzielle Komponente (a)"
+  gams_description: "Legt den Einfluss der finanziellen Komponente fest."
+InDefaultDecisionMakingModule_evalgraphnode_b:
+  gams_identifier: "Einfluss novelty Komponente (b)"
+  gams_description: "Legt den Einfluss der novelty Komponente fest."
+InDefaultDecisionMakingModule_evalgraphnode_c:
+  gams_identifier: "Umwelteinfluss (c)"
+  gams_description: "Legt den Umwelteinfluss fest."
+InDefaultDecisionMakingModule_evalgraphnode_d:
+  gams_identifier: "Einfluss soziale Komponente (d)"
+  gams_description: "Legt den Einfluss der sozialen Komponente fest."
+InDefaultDecisionMakingModule_evalgraphnode_weightFT:
+  gams_identifier: "Wichtung fin. "
+  gams_description: "todo"
+InDefaultDecisionMakingModule_evalgraphnode_weightNPV:
+  gams_identifier: "Wichtung Barwert"
+  gams_description: "todo"
+InDefaultDecisionMakingModule_evalgraphnode_weightSocial:
+  gams_identifier: "Wichtung soziales Netz"
+  gams_description: "todo"
+InDefaultDecisionMakingModule_evalgraphnode_weightLocal:
+  gams_identifier: "Wichtung lokales Netz"
+  gams_description: "todo"
+InDefaultDecisionMakingModule_evalgraphnode_logisticFactor:
+  gams_identifier: "Wichtung lokales Netz"
+  gams_description: "todo"
+InDefaultDecisionMakingModule_evalgraphnode_pvFile:
+  gams_identifier: "pv file"
+  gams_description: "todo"
+InDefaultDecisionMakingModule_evalgraphnode_nodeFilterScheme:
+  gams_identifier: "node filter scheme"
+  gams_description: "todo"
+
+InDefaultFeasibilityModule_evalgraphnode:
   edn_label: "Standard-Feasibility"
   edn_description: "todo"
-InDefaultFeasibilityModule_graphnode_adopterPoints:
+InDefaultFeasibilityModule_evalgraphnode_adopterPoints:
   gams_identifier: "adopter points"
   gams_description: "todo"
-InDefaultFeasibilityModule_graphnode_interestedPoints:
+InDefaultFeasibilityModule_evalgraphnode_interestedPoints:
   gams_identifier: "interested points"
   gams_description: "todo"
-InDefaultFeasibilityModule_graphnode_awarePoints:
+InDefaultFeasibilityModule_evalgraphnode_awarePoints:
   gams_identifier: "aware points"
   gams_description: "todo"
-InDefaultFeasibilityModule_graphnode_unknownPoints:
+InDefaultFeasibilityModule_evalgraphnode_unknownPoints:
   gams_identifier: "unknown points"
   gams_description: "todo"
-InDefaultFeasibilityModule_graphnode_speedOfConvergence:
+InDefaultFeasibilityModule_evalgraphnode_speedOfConvergence:
   gams_identifier: "speed of convergence"
   gams_description: "todo"
-InDefaultFeasibilityModule_graphnode_attitudeGap:
+InDefaultFeasibilityModule_evalgraphnode_attitudeGap:
   gams_identifier: "attitude gap"
   gams_description: "todo"
-InDefaultFeasibilityModule_graphnode_chanceNeutral:
+InDefaultFeasibilityModule_evalgraphnode_chanceNeutral:
   gams_identifier: "chance neutral"
   gams_description: "todo"
-InDefaultFeasibilityModule_graphnode_chanceConvergence:
+InDefaultFeasibilityModule_evalgraphnode_chanceConvergence:
   gams_identifier: "chance convergence"
   gams_description: "todo"
-InDefaultFeasibilityModule_graphnode_chanceDivergence:
+InDefaultFeasibilityModule_evalgraphnode_chanceDivergence:
   gams_identifier: "chance divergence"
   gams_description: "todo"
-InDefaultFeasibilityModule_graphnode_uncertainties:
+InDefaultFeasibilityModule_evalgraphnode_uncertainties:
   gams_identifier: "uncertainties"
   gams_description: "todo"
 
-InDefaultInterestModule_graphnode:
+InDefaultInterestModule_evalgraphnode:
   edn_label: "Standard-Interesse"
   edn_description: "todo"
-InDefaultInterestModule_graphnode_adopterPoints:
+InDefaultInterestModule_evalgraphnode_adopterPoints:
   gams_identifier: "adopter points"
   gams_description: "todo"
-InDefaultInterestModule_graphnode_interestedPoints:
+InDefaultInterestModule_evalgraphnode_interestedPoints:
   gams_identifier: "interested points"
   gams_description: "todo"
-InDefaultInterestModule_graphnode_awarePoints:
+InDefaultInterestModule_evalgraphnode_awarePoints:
   gams_identifier: "aware points"
   gams_description: "todo"
-InDefaultInterestModule_graphnode_unknownPoints:
+InDefaultInterestModule_evalgraphnode_unknownPoints:
   gams_identifier: "unknown points"
   gams_description: "todo"
-InDefaultInterestModule_graphnode_speedOfConvergence:
+InDefaultInterestModule_evalgraphnode_speedOfConvergence:
   gams_identifier: "speed of convergence"
   gams_description: "todo"
-InDefaultInterestModule_graphnode_attitudeGap:
+InDefaultInterestModule_evalgraphnode_attitudeGap:
   gams_identifier: "attitude gap"
   gams_description: "todo"
-InDefaultInterestModule_graphnode_chanceNeutral:
+InDefaultInterestModule_evalgraphnode_chanceNeutral:
   gams_identifier: "chance neutral"
   gams_description: "todo"
-InDefaultInterestModule_graphnode_chanceConvergence:
+InDefaultInterestModule_evalgraphnode_chanceConvergence:
   gams_identifier: "chance convergence"
   gams_description: "todo"
-InDefaultInterestModule_graphnode_chanceDivergence:
+InDefaultInterestModule_evalgraphnode_chanceDivergence:
   gams_identifier: "chance divergence"
   gams_description: "todo"
-InDefaultInterestModule_graphnode_uncertainties:
+InDefaultInterestModule_evalgraphnode_uncertainties:
   gams_identifier: "uncertainties"
   gams_description: "todo"
 
-InStageEvaluationModule_graphnode2:
+InStageEvaluationModule_evalgraphnode:
   edn_label: "Default-Phasen"
   edn_description: "todo"
-InStageEvaluationModule_graphnode2_graphedge_awarenessModule:
+InStageEvaluationModule_evalgraphnode_awarenessModule_graphedge:
   gams_identifier: "awareness module"
   gams_description: "todo"
-InStageEvaluationModule_graphnode2_graphedge_feasibilityModule:
+InStageEvaluationModule_evalgraphnode_feasibilityModule_graphedge:
   gams_identifier: "feasibility module"
   gams_description: "todo"
-InStageEvaluationModule_graphnode2_graphedge_decisionMakingModule:
+InStageEvaluationModule_evalgraphnode_decisionMakingModule_graphedge:
   gams_identifier: "decision making module"
   gams_description: "todo"
-InStageEvaluationModule_graphnode2_graphedge_adoptedModule:
+InStageEvaluationModule_evalgraphnode_adoptedModule_graphedge:
   gams_identifier: "adopted module"
   gams_description: "todo"
-InStageEvaluationModule_graphnode2_graphedge_impededModule:
+InStageEvaluationModule_evalgraphnode_impededModule_graphedge:
   gams_identifier: "impeded module"
   gams_description: "todo"
 
-InDefaultDecisionMakingModule_graphnode:
-  edn_label: "Default-Decision Making"
+InSumThresholdEvaluationModule_evalgraphnode:
+  edn_label: "Summierter Grenzwert"
   edn_description: "todo"
-InDefaultDecisionMakingModule_graphnode_a:
-  gams_identifier: "Einfluss finanzielle Komponente (a)"
-  gams_description: "Legt den Einfluss der finanziellen Komponente fest."
-InDefaultDecisionMakingModule_graphnode_b:
-  gams_identifier: "Einfluss novelty Komponente (b)"
-  gams_description: "Legt den Einfluss der novelty Komponente fest."
-InDefaultDecisionMakingModule_graphnode_c:
-  gams_identifier: "Umwelteinfluss (c)"
-  gams_description: "Legt den Umwelteinfluss fest."
-InDefaultDecisionMakingModule_graphnode_d:
-  gams_identifier: "Einfluss soziale Komponente (d)"
-  gams_description: "Legt den Einfluss der sozialen Komponente fest."
-InDefaultDecisionMakingModule_graphnode_weightFT:
-  gams_identifier: "Wichtung fin. "
+InSumThresholdEvaluationModule_evalgraphnode_threshold:
+  gams_identifier: "Grenzwert"
   gams_description: "todo"
-InDefaultDecisionMakingModule_graphnode_weightNPV:
-  gams_identifier: "Wichtung Barwert"
+InSumThresholdEvaluationModule_evalgraphnode_adoptIfBelowThreshold:
+  gams_identifier: "Adoption wenn unter Grenzwert?"
   gams_description: "todo"
-InDefaultDecisionMakingModule_graphnode_weightSocial:
-  gams_identifier: "Wichtung soziales Netz"
+InSumThresholdEvaluationModule_evalgraphnode_input_graphedge:
+  gams_identifier: "Eingabekomponenten"
   gams_description: "todo"
-InDefaultDecisionMakingModule_graphnode_weightLocal:
-  gams_identifier: "Wichtung lokales Netz"
+
+#calc
+
+InAddModule_calcgraphnode:
+  edn_label: "Addierer"
+  edn_description: "todo"
+InAddModule_calcgraphnode_weight:
+  gams_identifier: "Wichtung"
   gams_description: "todo"
-InDefaultDecisionMakingModule_graphnode_logisticFactor:
-  gams_identifier: "Wichtung lokales Netz"
+InAddModule_calcgraphnode_first_graphedge:
+  gams_identifier: "Erster Summand"
   gams_description: "todo"
-InDefaultDecisionMakingModule_graphnode_pvFile:
-  gams_identifier: "pv file"
+InAddModule_calcgraphnode_second_graphedge:
+  gams_identifier: "Zweiter Summand"
   gams_description: "todo"
-InDefaultDecisionMakingModule_graphnode_nodeFilterScheme:
-  gams_identifier: "node filter scheme"
+
+InAttributeInputModule_inputgraphnode:
+  edn_label: "Eingabeattribut"
+  edn_description: "todo"
+InAttributeInputModule_inputgraphnode_weight:
+  gams_identifier: "Wichtung"
   gams_description: "todo"
+InAttributeInputModule_inputgraphnode_attribute:
+  gams_identifier: "Referenziertes Attribut"
+  gams_description: "todo"
+
+InLogisticModule_calcgraphnode:
+  edn_label: "Logistikfunktion"
+  edn_description: "todo"
+InLogisticModule_calcgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InLogisticModule_calcgraphnode_input_graphedge:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InDisaggregatedFinancialModule_inputgraphnode:
+  edn_label: "Disaggregiertes Einkommen"
+  edn_description: "todo"
+InDisaggregatedFinancialModule_inputgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InDisaggregatedFinancialModule_inputgraphnode_logisticFactor:
+  gams_identifier: "Logistikfaktor"
+  gams_description: "todo"
+
+InDisaggregatedNPVModule_inputgraphnode:
+  edn_label: "Disaggregierter Barwert"
+  edn_description: "todo"
+InDisaggregatedNPVModule_inputgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InDisaggregatedNPVModule_inputgraphnode_logisticFactor:
+  gams_identifier: "Logistikfaktor"
+  gams_description: "todo"
+InDisaggregatedNPVModule_inputgraphnode_pvFile:
+  gams_identifier: "PV-Datei"
+  gams_description: "todo"
+
+InNPVModule_inputgraphnode:
+  edn_label: "Barwert"
+  edn_description: "todo"
+InNPVModule_inputgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InNPVModule_inputgraphnode_pvFile:
+  gams_identifier: "PV-Datei"
+  gams_description: "todo"
+
+InWeightedModule_calcgraphnode:
+  edn_label: "Wichtung"
+  edn_description: "todo"
+InWeightedModule_calcgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InWeightedModule_calcgraphnode_input_graphedge:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+
 
 
 ##########################

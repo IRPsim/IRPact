@@ -5,14 +5,13 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.modular.ca.components.eval.DefaultActionModule;
-import de.unileipzig.irpact.core.process.modular.components.core.Module;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process.ra.alg.AttitudeGapRelativeAgreementAlgorithm;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.ModuleHelper;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertainty;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -26,21 +25,23 @@ import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 import static de.unileipzig.irpact.io.param.ParamUtil.varargs;
+import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings.*;
+import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings.EVAL_GRAPHNODE;
 
 /**
  * @author Daniel Abitz
  */
 @Definition(
         graphNode = @GraphNode(
-                id = ModuleHelper.MODULAR_GRAPH,
-                label = "Eval-Modul",
-                color = COLOR_DARK_CYAN,
-                border = COLOR_DARK_CYAN,
-                shape = SHAPE_OCTAGON,
-                tags = {"graphnode"}
+                id = MPM_GRAPH,
+                label = EVAL_LABEL,
+                shape = EVAL_SHAPE,
+                color = EVAL_COLOR,
+                border = EVAL_BORDER,
+                tags = {EVAL_GRAPHNODE}
         )
 )
-public class InDefaultActionModule_graphnode implements InConsumerAgentEvaluationModule {
+public class InDefaultActionModule_evalgraphnode implements InConsumerAgentEvaluationModule {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -54,8 +55,7 @@ public class InDefaultActionModule_graphnode implements InConsumerAgentEvaluatio
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTACTION);
-        setShape(res, thisClass(), SHAPE_OCTAGON);
-        setColor(res, thisClass(), COLOR_DARK_CYAN);
+        setShapeColorBorder(res, thisClass(), EVAL_SHAPE, EVAL_COLOR, EVAL_BORDER);
 
         addEntry(res, thisClass(), "adopterPoints");
         addEntry(res, thisClass(), "interestedPoints");
@@ -181,16 +181,16 @@ public class InDefaultActionModule_graphnode implements InConsumerAgentEvaluatio
         return uncertainties;
     }
 
-    public InDefaultActionModule_graphnode() {
+    public InDefaultActionModule_evalgraphnode() {
     }
 
     @Override
-    public InDefaultActionModule_graphnode copy(CopyCache cache) {
+    public InDefaultActionModule_evalgraphnode copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InDefaultActionModule_graphnode newCopy(CopyCache cache) {
-        InDefaultActionModule_graphnode copy = new InDefaultActionModule_graphnode();
+    public InDefaultActionModule_evalgraphnode newCopy(CopyCache cache) {
+        InDefaultActionModule_evalgraphnode copy = new InDefaultActionModule_evalgraphnode();
         return Dev.throwException();
     }
 
@@ -209,12 +209,7 @@ public class InDefaultActionModule_graphnode implements InConsumerAgentEvaluatio
     @Override
     public DefaultActionModule parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
-            Module module = ModuleHelper.searchModule(parser, getName());
-            if(module instanceof DefaultActionModule) {
-                return (DefaultActionModule) module;
-            } else {
-                throw new ParsingException("class mismatch");
-            }
+            return MPMSettings.searchModule(parser, thisName(), DefaultActionModule.class);
         }
 
         DefaultActionModule module = new DefaultActionModule();
