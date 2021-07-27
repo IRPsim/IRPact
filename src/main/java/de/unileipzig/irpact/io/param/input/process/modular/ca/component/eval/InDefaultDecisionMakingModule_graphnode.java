@@ -39,10 +39,9 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
                 border = COLOR_DARK_CYAN,
                 shape = SHAPE_OCTAGON,
                 tags = {"graphnode"}
-        ),
-        name = "InDefaultDecisionMakingModule_graphnode"
+        )
 )
-public class InDefaultDecisionMakingModule implements InConsumerAgentEvaluationModule {
+public class InDefaultDecisionMakingModule_graphnode implements InConsumerAgentEvaluationModule {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -202,16 +201,16 @@ public class InDefaultDecisionMakingModule implements InConsumerAgentEvaluationM
         }
     }
 
-    public InDefaultDecisionMakingModule() {
+    public InDefaultDecisionMakingModule_graphnode() {
     }
 
     @Override
-    public InDefaultDecisionMakingModule copy(CopyCache cache) {
+    public InDefaultDecisionMakingModule_graphnode copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InDefaultDecisionMakingModule newCopy(CopyCache cache) {
-        InDefaultDecisionMakingModule copy = new InDefaultDecisionMakingModule();
+    public InDefaultDecisionMakingModule_graphnode newCopy(CopyCache cache) {
+        InDefaultDecisionMakingModule_graphnode copy = new InDefaultDecisionMakingModule_graphnode();
         return Dev.throwException();
     }
 

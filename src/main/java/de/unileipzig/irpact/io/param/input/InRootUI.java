@@ -162,11 +162,11 @@ public class InRootUI {
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS = PROCESS_MODULAR2.resolve(IOConstants.PROCESS_MODULAR2_COMPONENTS).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC = PROCESS_MODULAR2_COMPONENTS.resolve(IOConstants.PROCESS_MODULAR2_COMPONENTS_CALC).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL = PROCESS_MODULAR2_COMPONENTS.resolve(IOConstants.PROCESS_MODULAR2_COMPONENTS_EVAL).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTACTION = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InDefaultActionModule.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTFEAS = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InDefaultFeasibilityModule.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTINTEREST = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InDefaultInterestModule.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTDECISION = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InDefaultDecisionMakingModule.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_STAGEEVAL = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InStageEvaluationModule.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTACTION = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InDefaultActionModule_graphnode.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTFEAS = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InDefaultFeasibilityModule_graphnode.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTINTEREST = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InDefaultInterestModule_graphnode.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTDECISION = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InDefaultDecisionMakingModule_graphnode.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_STAGEEVAL = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InStageEvaluationModule_graphnode2.thisName()).addTo(PATHS);
 
     public static final EdnPath PROCESS_FILTER = PROCESS.resolve(IOConstants.PROCESS_FILTER).addTo(PATHS);
     public static final EdnPath PROCESS_FILTER_DISABLED = PROCESS_FILTER.resolve(InDisabledProcessPlanNodeFilterScheme.thisName()).addTo(PATHS);

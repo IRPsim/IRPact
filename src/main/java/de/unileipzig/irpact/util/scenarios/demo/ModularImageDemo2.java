@@ -89,27 +89,27 @@ public class ModularImageDemo2 extends AbstractScenario {
         uncertainty.setDefaultValues();
         uncertainty.setConsumerAgentGroups(new InConsumerAgentGroup[]{cag0, cag1});
 
-        InDefaultInterestModule interestComponent = new InDefaultInterestModule();
+        InDefaultInterestModule_graphnode interestComponent = new InDefaultInterestModule_graphnode();
         interestComponent.setName("INTEREST");
         interestComponent.setDefaultValues();
         interestComponent.setUncertainty(uncertainty);
 
-        InDefaultFeasibilityModule feasibilityComponent = new InDefaultFeasibilityModule();
+        InDefaultFeasibilityModule_graphnode feasibilityComponent = new InDefaultFeasibilityModule_graphnode();
         feasibilityComponent.setName("FEASIBILITY");
         feasibilityComponent.setDefaultValues();
         feasibilityComponent.setUncertainty(uncertainty);
 
-        InDefaultDecisionMakingModule decisionMakingComponent = new InDefaultDecisionMakingModule();
+        InDefaultDecisionMakingModule_graphnode decisionMakingComponent = new InDefaultDecisionMakingModule_graphnode();
         decisionMakingComponent.setName("DECISION");
         decisionMakingComponent.setDefaultValues();
         decisionMakingComponent.setPvFile(pvFile);
 
-        InDefaultActionModule actionComponent = new InDefaultActionModule();
+        InDefaultActionModule_graphnode actionComponent = new InDefaultActionModule_graphnode();
         actionComponent.setName("ACTION");
         actionComponent.setDefaultValues();
         actionComponent.setUncertainty(uncertainty);
 
-        InStageEvaluationModule evalModule = new InStageEvaluationModule();
+        InStageEvaluationModule_graphnode2 evalModule = new InStageEvaluationModule_graphnode2();
         evalModule.setName("START");
         evalModule.setAwarenessModule(interestComponent);
         evalModule.setFeasibilityModule(feasibilityComponent);

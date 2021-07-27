@@ -37,10 +37,9 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
                 border = COLOR_DARK_CYAN,
                 shape = SHAPE_OCTAGON,
                 tags = {"graphnode"}
-        ),
-        name = "InDefaultFeasibilityModule_graphnode"
+        )
 )
-public class InDefaultFeasibilityModule implements InConsumerAgentEvaluationModule {
+public class InDefaultFeasibilityModule_graphnode implements InConsumerAgentEvaluationModule {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -181,16 +180,16 @@ public class InDefaultFeasibilityModule implements InConsumerAgentEvaluationModu
         return uncertainties;
     }
 
-    public InDefaultFeasibilityModule() {
+    public InDefaultFeasibilityModule_graphnode() {
     }
 
     @Override
-    public InDefaultFeasibilityModule copy(CopyCache cache) {
+    public InDefaultFeasibilityModule_graphnode copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InDefaultFeasibilityModule newCopy(CopyCache cache) {
-        InDefaultFeasibilityModule copy = new InDefaultFeasibilityModule();
+    public InDefaultFeasibilityModule_graphnode newCopy(CopyCache cache) {
+        InDefaultFeasibilityModule_graphnode copy = new InDefaultFeasibilityModule_graphnode();
         return Dev.throwException();
     }
 
