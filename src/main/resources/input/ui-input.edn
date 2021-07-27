@@ -38,9 +38,14 @@
         :tags [["graphedge"]] 
         :groups [
           {
-            :tags [["awarenessModule"] ["feasibilityModule"] ["decisionMakingModule"] ["adoptedModule"] ["impededModule"]] 
-            :label "Eval-Kante" 
+            :tags [["InAddModule" "first"] ["InAddModule" "second"] ["InLogisticModule" "input"] ["InWeightedModule" "input"] ["InSumThresholdEvaluationModule" "input"]] 
+            :label "Berechnungskante" 
             :color "DarkCyan"
+          } 
+          {
+            :tags [["InStageEvaluationModule" "awarenessModule"] ["InStageEvaluationModule" "feasibilityModule"] ["InStageEvaluationModule" "decisionMakingModule"] ["InStageEvaluationModule" "adoptedModule"] ["InStageEvaluationModule" "impededModule"]] 
+            :label "Evaluierungskante" 
+            :color "LightSlateGrey"
           }
         ] 
         :heading "Kanten"
@@ -51,14 +56,19 @@
           :type :subsets 
           :groups [
             {
-              :tags [["graphnode"]] 
-              :label "Eval-Modul" 
-              :value "DarkCyan"
+              :tags [["calcgraphnode"]] 
+              :label "Berechnungsmodul" 
+              :value "Blue"
             } 
             {
-              :tags [["graphnode2"]] 
-              :label "Eval-Modul2" 
+              :tags [["inputgraphnode"]] 
+              :label "Eingabemodul" 
               :value "Green"
+            } 
+            {
+              :tags [["evalgraphnode"]] 
+              :label "Evaluierungsmodul" 
+              :value "Red"
             }
           ] 
           :heading "Farbe"
@@ -67,14 +77,19 @@
           :type :subsets 
           :groups [
             {
-              :tags [["graphnode"]] 
-              :label "Eval-Modul" 
-              :value "DarkCyan"
+              :tags [["calcgraphnode"]] 
+              :label "Berechnungsmodul" 
+              :value "Blue"
             } 
             {
-              :tags [["graphnode2"]] 
-              :label "Eval-Modul2" 
+              :tags [["inputgraphnode"]] 
+              :label "Eingabemodul" 
               :value "Green"
+            } 
+            {
+              :tags [["evalgraphnode"]] 
+              :label "Evaluierungsmodul" 
+              :value "Red"
             }
           ] 
           :heading "Rahmenfarbe"
@@ -83,14 +98,19 @@
           :type :subsets 
           :groups [
             {
-              :tags [["graphnode"]] 
-              :label "Eval-Modul" 
-              :value "octagon"
+              :tags [["calcgraphnode"]] 
+              :label "Berechnungsmodul" 
+              :value "gear"
             } 
             {
-              :tags [["graphnode2"]] 
-              :label "Eval-Modul2" 
-              :value "gear"
+              :tags [["inputgraphnode"]] 
+              :label "Eingabemodul" 
+              :value "square"
+            } 
+            {
+              :tags [["evalgraphnode"]] 
+              :label "Evaluierungsmodul" 
+              :value "diamond"
             }
           ] 
           :heading "Form"
@@ -613,38 +633,80 @@
             :description "todo" 
             :sections [
               {
+                :label "Berechnungsmodule" 
+                :description "todo" 
+                :sections [
+                  {
+                    :label "Addierer" 
+                    :set "set_InAddModule_calcgraphnode" 
+                    :description "todo" 
+                    :tags [["InAddModule" "calcgraphnode" "weight"] ["link" "InAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "first" "graphedge"] ["link" "InAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "second" "graphedge"]]
+                  } 
+                  {
+                    :label "Eingabeattribut" 
+                    :set "set_InAttributeInputModule_inputgraphnode" 
+                    :description "todo" 
+                    :tags [["InAttributeInputModule" "inputgraphnode" "weight"] ["link" "InAttributeInputModule" "inputgraphnode" "InAttributeName" "attribute"]]
+                  } 
+                  {
+                    :label "Disaggregierter Barwert" 
+                    :set "set_InDisaggregatedNPVModule_inputgraphnode" 
+                    :description "todo" 
+                    :tags [["InDisaggregatedFinancialModule" "inputgraphnode" "weight"] ["InDisaggregatedFinancialModule" "inputgraphnode" "logisticFactor"] ["InDisaggregatedNPVModule" "inputgraphnode" "weight"] ["InDisaggregatedNPVModule" "inputgraphnode" "logisticFactor"] ["link" "InDisaggregatedNPVModule" "inputgraphnode" "InPVFile" "pvFile"]]
+                  } 
+                  {
+                    :label "Logistikfunktion" 
+                    :set "set_InLogisticModule_calcgraphnode" 
+                    :description "todo" 
+                    :tags [["InLogisticModule" "calcgraphnode" "weight"] ["link" "InLogisticModule" "calcgraphnode" "InConsumerAgentCalculationModule" "input" "graphedge"]]
+                  } 
+                  {
+                    :label "Wichtung" 
+                    :set "set_InWeightedModule_calcgraphnode" 
+                    :description "todo" 
+                    :tags [["InWeightedModule" "calcgraphnode" "weight"] ["link" "InWeightedModule" "calcgraphnode" "InConsumerAgentCalculationModule" "input" "graphedge"]]
+                  }
+                ]
+              } 
+              {
                 :label "Evaluierungsmodule" 
                 :description "todo" 
                 :sections [
                   {
                     :label "Standard-Aktion" 
-                    :set "set_InDefaultActionModule_graphnode" 
+                    :set "set_InDefaultActionModule_evalgraphnode" 
                     :description "todo" 
-                    :tags [["InDefaultActionModule" "graphnode" "adopterPoints"] ["InDefaultActionModule" "graphnode" "interestedPoints"] ["InDefaultActionModule" "graphnode" "awarePoints"] ["InDefaultActionModule" "graphnode" "unknownPoints"] ["InDefaultActionModule" "graphnode" "speedOfConvergence"] ["InDefaultActionModule" "graphnode" "attitudeGap"] ["InDefaultActionModule" "graphnode" "chanceNeutral"] ["InDefaultActionModule" "graphnode" "chanceConvergence"] ["InDefaultActionModule" "graphnode" "chanceDivergence"] ["link" "InDefaultActionModule" "graphnode" "InUncertainty" "uncertainties"]]
-                  } 
-                  {
-                    :label "Standard-Feasibility" 
-                    :set "set_InDefaultFeasibilityModule_graphnode" 
-                    :description "todo" 
-                    :tags [["InDefaultFeasibilityModule" "graphnode" "adopterPoints"] ["InDefaultFeasibilityModule" "graphnode" "interestedPoints"] ["InDefaultFeasibilityModule" "graphnode" "awarePoints"] ["InDefaultFeasibilityModule" "graphnode" "unknownPoints"] ["InDefaultFeasibilityModule" "graphnode" "speedOfConvergence"] ["InDefaultFeasibilityModule" "graphnode" "attitudeGap"] ["InDefaultFeasibilityModule" "graphnode" "chanceNeutral"] ["InDefaultFeasibilityModule" "graphnode" "chanceConvergence"] ["InDefaultFeasibilityModule" "graphnode" "chanceDivergence"] ["link" "InDefaultFeasibilityModule" "graphnode" "InUncertainty" "uncertainties"]]
-                  } 
-                  {
-                    :label "Standard-Interesse" 
-                    :set "set_InDefaultInterestModule_graphnode" 
-                    :description "todo" 
-                    :tags [["InDefaultInterestModule" "graphnode" "adopterPoints"] ["InDefaultInterestModule" "graphnode" "interestedPoints"] ["InDefaultInterestModule" "graphnode" "awarePoints"] ["InDefaultInterestModule" "graphnode" "unknownPoints"] ["InDefaultInterestModule" "graphnode" "speedOfConvergence"] ["InDefaultInterestModule" "graphnode" "attitudeGap"] ["InDefaultInterestModule" "graphnode" "chanceNeutral"] ["InDefaultInterestModule" "graphnode" "chanceConvergence"] ["InDefaultInterestModule" "graphnode" "chanceDivergence"] ["link" "InDefaultInterestModule" "graphnode" "InUncertainty" "uncertainties"]]
+                    :tags [["InDefaultActionModule" "evalgraphnode" "adopterPoints"] ["InDefaultActionModule" "evalgraphnode" "interestedPoints"] ["InDefaultActionModule" "evalgraphnode" "awarePoints"] ["InDefaultActionModule" "evalgraphnode" "unknownPoints"] ["InDefaultActionModule" "evalgraphnode" "speedOfConvergence"] ["InDefaultActionModule" "evalgraphnode" "attitudeGap"] ["InDefaultActionModule" "evalgraphnode" "chanceNeutral"] ["InDefaultActionModule" "evalgraphnode" "chanceConvergence"] ["InDefaultActionModule" "evalgraphnode" "chanceDivergence"] ["link" "InDefaultActionModule" "evalgraphnode" "InUncertainty" "uncertainties"]]
                   } 
                   {
                     :label "Default-Decision Making" 
-                    :set "set_InDefaultDecisionMakingModule_graphnode" 
+                    :set "set_InDefaultDecisionMakingModule_evalgraphnode" 
                     :description "todo" 
-                    :tags [["InDefaultDecisionMakingModule" "graphnode" "a"] ["InDefaultDecisionMakingModule" "graphnode" "b"] ["InDefaultDecisionMakingModule" "graphnode" "c"] ["InDefaultDecisionMakingModule" "graphnode" "d"] ["InDefaultDecisionMakingModule" "graphnode" "weightFT"] ["InDefaultDecisionMakingModule" "graphnode" "weightNPV"] ["InDefaultDecisionMakingModule" "graphnode" "weightSocial"] ["InDefaultDecisionMakingModule" "graphnode" "weightLocal"] ["InDefaultDecisionMakingModule" "graphnode" "logisticFactor"] ["link" "InDefaultDecisionMakingModule" "graphnode" "InPVFile" "pvFile"] ["link" "InDefaultDecisionMakingModule" "graphnode" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+                    :tags [["InDefaultDecisionMakingModule" "evalgraphnode" "a"] ["InDefaultDecisionMakingModule" "evalgraphnode" "b"] ["InDefaultDecisionMakingModule" "evalgraphnode" "c"] ["InDefaultDecisionMakingModule" "evalgraphnode" "d"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightFT"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightNPV"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightSocial"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightLocal"] ["InDefaultDecisionMakingModule" "evalgraphnode" "logisticFactor"] ["link" "InDefaultDecisionMakingModule" "evalgraphnode" "InPVFile" "pvFile"] ["link" "InDefaultDecisionMakingModule" "evalgraphnode" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+                  } 
+                  {
+                    :label "Standard-Feasibility" 
+                    :set "set_InDefaultFeasibilityModule_evalgraphnode" 
+                    :description "todo" 
+                    :tags [["InDefaultFeasibilityModule" "evalgraphnode" "adopterPoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "interestedPoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "awarePoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "unknownPoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "speedOfConvergence"] ["InDefaultFeasibilityModule" "evalgraphnode" "attitudeGap"] ["InDefaultFeasibilityModule" "evalgraphnode" "chanceNeutral"] ["InDefaultFeasibilityModule" "evalgraphnode" "chanceConvergence"] ["InDefaultFeasibilityModule" "evalgraphnode" "chanceDivergence"] ["link" "InDefaultFeasibilityModule" "evalgraphnode" "InUncertainty" "uncertainties"]]
+                  } 
+                  {
+                    :label "Standard-Interesse" 
+                    :set "set_InDefaultInterestModule_evalgraphnode" 
+                    :description "todo" 
+                    :tags [["InDefaultInterestModule" "evalgraphnode" "adopterPoints"] ["InDefaultInterestModule" "evalgraphnode" "interestedPoints"] ["InDefaultInterestModule" "evalgraphnode" "awarePoints"] ["InDefaultInterestModule" "evalgraphnode" "unknownPoints"] ["InDefaultInterestModule" "evalgraphnode" "speedOfConvergence"] ["InDefaultInterestModule" "evalgraphnode" "attitudeGap"] ["InDefaultInterestModule" "evalgraphnode" "chanceNeutral"] ["InDefaultInterestModule" "evalgraphnode" "chanceConvergence"] ["InDefaultInterestModule" "evalgraphnode" "chanceDivergence"] ["link" "InDefaultInterestModule" "evalgraphnode" "InUncertainty" "uncertainties"]]
                   } 
                   {
                     :label "Default-Phasen" 
-                    :set "set_InStageEvaluationModule_graphnode2" 
+                    :set "set_InStageEvaluationModule_evalgraphnode" 
                     :description "todo" 
-                    :tags [["link" "InStageEvaluationModule" "graphnode2" "InConsumerAgentEvaluationModule" "graphedge" "awarenessModule"] ["link" "InStageEvaluationModule" "graphnode2" "InConsumerAgentEvaluationModule" "graphedge" "feasibilityModule"] ["link" "InStageEvaluationModule" "graphnode2" "InConsumerAgentEvaluationModule" "graphedge" "decisionMakingModule"] ["link" "InStageEvaluationModule" "graphnode2" "InConsumerAgentEvaluationModule" "graphedge" "adoptedModule"] ["link" "InStageEvaluationModule" "graphnode2" "InConsumerAgentEvaluationModule" "impededModule"]]
+                    :tags [["link" "InStageEvaluationModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "awarenessModule" "graphedge"] ["link" "InStageEvaluationModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "feasibilityModule" "graphedge"] ["link" "InStageEvaluationModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "decisionMakingModule" "graphedge"] ["link" "InStageEvaluationModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "adoptedModule" "graphedge"] ["link" "InStageEvaluationModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "impededModule" "graphedge"]]
+                  } 
+                  {
+                    :label "Summierter Grenzwert" 
+                    :set "set_InSumThresholdEvaluationModule_evalgraphnode" 
+                    :description "todo" 
+                    :tags [["InSumThresholdEvaluationModule" "evalgraphnode" "threshold"] ["InSumThresholdEvaluationModule" "evalgraphnode" "adoptIfBelowThreshold"] ["link" "InSumThresholdEvaluationModule" "evalgraphnode" "InConsumerAgentCalculationModule" "input" "graphedge"]]
                   }
                 ]
               }
