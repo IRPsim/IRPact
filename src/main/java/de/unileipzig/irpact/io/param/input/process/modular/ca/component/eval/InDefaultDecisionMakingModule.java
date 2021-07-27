@@ -36,9 +36,11 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
                 id = ModuleHelper.MODULAR_GRAPH,
                 label = "Eval-Modul",
                 color = COLOR_DARK_CYAN,
+                border = COLOR_DARK_CYAN,
                 shape = SHAPE_OCTAGON,
-                tags = {"InDefaultDecisionMakingModule"}
-        )
+                tags = {"graphnode"}
+        ),
+        name = "InDefaultDecisionMakingModule_graphnode"
 )
 public class InDefaultDecisionMakingModule implements InConsumerAgentEvaluationModule {
 

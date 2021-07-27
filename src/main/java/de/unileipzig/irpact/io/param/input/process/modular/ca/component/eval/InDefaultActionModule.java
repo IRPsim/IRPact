@@ -11,7 +11,6 @@ import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process.ra.alg.AttitudeGapRelativeAgreementAlgorithm;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
-import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.ModuleHelper;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
@@ -36,9 +35,11 @@ import static de.unileipzig.irpact.io.param.ParamUtil.varargs;
                 id = ModuleHelper.MODULAR_GRAPH,
                 label = "Eval-Modul",
                 color = COLOR_DARK_CYAN,
+                border = COLOR_DARK_CYAN,
                 shape = SHAPE_OCTAGON,
-                tags = {"InDefaultActionModule"}
-        )
+                tags = {"graphnode"}
+        ),
+        name = "InDefaultActionModule_graphnode"
 )
 public class InDefaultActionModule implements InConsumerAgentEvaluationModule {
 
