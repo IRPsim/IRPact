@@ -29,7 +29,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
         graphNode = @GraphNode(
                 id = ModuleHelper.MODULAR_GRAPH,
                 label = "Eval-Modul",
-                color = ModuleHelper.COLOR_DARK_CYAN,
+                color = COLOR_GREEN,
                 shape = SHAPE_GEAR,
                 tags = {"InStageEvaluationModule"}
         )
@@ -49,6 +49,7 @@ public class InStageEvaluationModule implements InConsumerAgentEvaluationModule 
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_EVAL_STAGEEVAL);
         setShape(res, thisClass(), SHAPE_GEAR);
+        setColor(res, thisClass(), COLOR_GREEN);
 
         addEntry(res, thisClass(), "awarenessModule");
         addEntry(res, thisClass(), "feasibilityModule");
@@ -72,7 +73,7 @@ public class InStageEvaluationModule implements InConsumerAgentEvaluationModule 
             graphEdge = @GraphEdge(
                     id = ModuleHelper.MODULAR_GRAPH,
                     label = "Eval-Kante",
-                    color = ModuleHelper.COLOR_DARK_CYAN,
+                    color = COLOR_DARK_CYAN,
                     tags = "awarenessModule"
             )
     )
@@ -88,7 +89,7 @@ public class InStageEvaluationModule implements InConsumerAgentEvaluationModule 
             graphEdge = @GraphEdge(
                     id = ModuleHelper.MODULAR_GRAPH,
                     label = "Eval-Kante",
-                    color = ModuleHelper.COLOR_DARK_CYAN,
+                    color = COLOR_DARK_CYAN,
                     tags = "feasibilityModule"
             )
     )
@@ -104,7 +105,7 @@ public class InStageEvaluationModule implements InConsumerAgentEvaluationModule 
             graphEdge = @GraphEdge(
                     id = ModuleHelper.MODULAR_GRAPH,
                     label = "Eval-Kante",
-                    color = ModuleHelper.COLOR_DARK_CYAN,
+                    color = COLOR_DARK_CYAN,
                     tags = "decisionMakingModule"
             )
     )
@@ -120,7 +121,7 @@ public class InStageEvaluationModule implements InConsumerAgentEvaluationModule 
             graphEdge = @GraphEdge(
                     id = ModuleHelper.MODULAR_GRAPH,
                     label = "Eval-Kante",
-                    color = ModuleHelper.COLOR_DARK_CYAN,
+                    color = COLOR_DARK_CYAN,
                     tags = "adoptedModule"
             )
     )
@@ -136,7 +137,7 @@ public class InStageEvaluationModule implements InConsumerAgentEvaluationModule 
             graphEdge = @GraphEdge(
                     id = ModuleHelper.MODULAR_GRAPH,
                     label = "Eval-Kante",
-                    color = ModuleHelper.COLOR_DARK_CYAN,
+                    color = COLOR_DARK_CYAN,
                     tags = "impededModule"
             )
     )

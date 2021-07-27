@@ -33,6 +33,10 @@ public final class ParamUtil {
     public static final String SHAPE_SQUARE = "square";
     public static final String SHAPE_PENTAGON = "pentagon";
 
+    public static final String COLOR_DARK_CYAN = "DarkCyan";
+    public static final String COLOR_LIGHT_SLATE_GREY = "LightSlateGrey";
+    public static final String COLOR_GREEN = "Green";
+
     public static final String UNIT_PIXEL = "[Pixel]";
 
     public static final String DOMAIN_BOOLEAN = "[0|1]";
@@ -495,6 +499,25 @@ public final class ParamUtil {
             String icon) {
         if(icon != null) {
             computeEntryBuilderIfAbsent(res, c, field).setGamsIcon(icon);
+        }
+    }
+
+    public static void setColor(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String icon) {
+        if(icon != null) {
+            computeEntryBuilderIfAbsent(res, c).setGamsColor(icon);
+        }
+    }
+
+    public static void setColor(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String field,
+            String icon) {
+        if(icon != null) {
+            computeEntryBuilderIfAbsent(res, c, field).setGamsColor(icon);
         }
     }
 
