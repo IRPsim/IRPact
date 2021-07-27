@@ -8,21 +8,20 @@ import de.unileipzig.irptools.defstructure.annotation.Gams;
  * @author Daniel Abitz
  */
 @Definition(
-        name = "sector",
+        name = "sector_HC",
         gams = @Gams(
-                description = "Energiesektor",
-                identifier = "Energiesektor",
-                hidden = Constants.TRUE1
+                description = "Steinkohlesektor",
+                identifier = "Steinkohlesektor",
+                hidden = Constants.TRUE1,
+                defaultValue = "HC"
         )
 )
-public class Sector {
+public class SectorHC extends Sector {
 
-    public String _name;
-
-    public Sector() {
+    public SectorHC() {
     }
 
-    public Sector(String name) {
+    public SectorHC(String name) {
         _name = name;
     }
 }

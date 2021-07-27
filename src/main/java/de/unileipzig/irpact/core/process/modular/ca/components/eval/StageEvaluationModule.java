@@ -6,7 +6,7 @@ import de.unileipzig.irpact.core.process.modular.ca.AdoptionResult;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.Stage;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
-import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentParentModule;
+import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentMultiModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractConsumerAgentModuleWithNSubModules;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -15,7 +15,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
  */
 public class StageEvaluationModule
         extends AbstractConsumerAgentModuleWithNSubModules
-        implements ConsumerAgentEvaluationModule, ConsumerAgentParentModule {
+        implements ConsumerAgentEvaluationModule, ConsumerAgentMultiModule {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(StageEvaluationModule.class);
 

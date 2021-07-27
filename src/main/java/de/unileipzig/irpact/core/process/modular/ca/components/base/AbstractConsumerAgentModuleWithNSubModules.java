@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.process.modular.ca.components.base;
 
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentModule;
-import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentParentModule;
+import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentMultiModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  */
 public abstract class AbstractConsumerAgentModuleWithNSubModules
         extends AbstractConsumerAgentModule
-        implements ConsumerAgentParentModule {
+        implements ConsumerAgentMultiModule {
 
     protected final List<ConsumerAgentModule> MODULE_LIST;
     protected final int NUMBER_OF_ELEMENTS;

@@ -19,8 +19,10 @@ import de.unileipzig.irpact.io.param.input.process.modular.InModularProcessModel
 import de.unileipzig.irpact.io.param.input.process.modular.InModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.InSimpleConsumerAgentMPM;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentCalculationModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentModule;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc.*;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
 import de.unileipzig.irpact.io.param.input.process.mra.InModularRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.mra.component.*;
@@ -752,19 +754,29 @@ public class InRoot implements RootClass {
             InModularRAProcessModel.class,
 
             //MPM v2
-            InModularProcessModel.class,
-            InModule.class,
+            InAddModule_calcgraphnode.class,
+            InAttributeInputModule_inputgraphnode.class,
+            InLogisticModule_calcgraphnode.class,
+            InWeightedModule_calcgraphnode.class,
+
+            InDefaultActionModule_evalgraphnode.class,
+            InDefaultDecisionMakingModule_evalgraphnode.class,
+            InDisaggregatedFinancialModule_inputgraphnode.class,
+            InDisaggregatedNPVModule_inputgraphnode.class,
+            InDefaultFeasibilityModule_evalgraphnode.class,
+            InDefaultInterestModule_evalgraphnode.class,
+            InStageEvaluationModule_evalgraphnode.class,
+            InSumThresholdEvaluationModule_evalgraphnode.class,
+
+            InConsumerAgentCalculationModule.class,
+            InConsumerAgentEvaluationModule.class,
+            InConsumerAgentModule.class,
 
             InConsumerAgentModularProcessModel.class,
             InSimpleConsumerAgentMPM.class,
-            InConsumerAgentModule.class,
-            //InConsumerAgentCalculationModule.class,
-            InConsumerAgentEvaluationModule.class,
-            InDefaultActionModule_graphnode.class,
-            InDefaultDecisionMakingModule_graphnode.class,
-            InDefaultFeasibilityModule_graphnode.class,
-            InDefaultInterestModule_graphnode.class,
-            InStageEvaluationModule_graphnode2.class,
+
+            InModularProcessModel.class,
+            InModule.class,
             //===
 
             InBasicProductGroup.class,

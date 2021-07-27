@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.util.scenarios;
 
 import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.util.IRPArgs;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLevel;
@@ -26,7 +27,9 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -36,6 +39,8 @@ import java.util.function.Consumer;
 public abstract class AbstractScenario implements Scenario {
 
     public static final int DEFAULT_INITIAL_YEAR = 2010;
+
+    protected static final Map<String, InAttributeName> NAMES = new HashMap<>();
 
     protected String name;
     protected String creator;
@@ -92,6 +97,14 @@ public abstract class AbstractScenario implements Scenario {
         postsetupRoot(roots);
         validate(roots);
         return roots;
+    }
+
+    //=========================
+    //for names
+    //=========================
+
+    protected InAttributeName getAttributeName(String name) {
+        return NAMES.computeIfAbsent(name, InAttributeName::new);
     }
 
     //=========================

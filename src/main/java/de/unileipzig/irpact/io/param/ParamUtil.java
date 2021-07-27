@@ -36,6 +36,8 @@ public final class ParamUtil {
     public static final String COLOR_DARK_CYAN = "DarkCyan";
     public static final String COLOR_LIGHT_SLATE_GREY = "LightSlateGrey";
     public static final String COLOR_GREEN = "Green";
+    public static final String COLOR_RED = "Red";
+    public static final String COLOR_BLUE = "Blue";
 
     public static final String UNIT_PIXEL = "[Pixel]";
 
@@ -519,6 +521,45 @@ public final class ParamUtil {
         if(icon != null) {
             computeEntryBuilderIfAbsent(res, c, field).setGamsColor(icon);
         }
+    }
+
+    public static void setBorder(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String border) {
+        if(border != null) {
+            computeEntryBuilderIfAbsent(res, c).setGamsBorder(border);
+        }
+    }
+
+    public static void setBorder(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String field,
+            String border) {
+        if(border != null) {
+            computeEntryBuilderIfAbsent(res, c, field).setGamsBorder(border);
+        }
+    }
+
+    public static void setShapeColor(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String shape,
+            String color) {
+        setShape(res, c, shape);
+        setColor(res, c, color);
+    }
+
+    public static void setShapeColorBorder(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String shape,
+            String color,
+            String border) {
+        setShape(res, c, shape);
+        setColor(res, c, color);
+        //setBorder(res, c, border); //NOT SUPPORTED
     }
 
     public static void addEntry(TreeAnnotationResource res, Class<?> c) {

@@ -80,7 +80,7 @@ public class InSimpleConsumerAgentMPM implements InConsumerAgentModularProcessMo
     @Override
     public SimpleConsumerAgentMPM parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
-            ProcessModel model = ModuleHelper.searchModel(parser, getName());
+            ProcessModel model = MPMSettings.searchModel(parser, getName());
             if(model instanceof SimpleConsumerAgentMPM) {
                 return (SimpleConsumerAgentMPM) model;
             } else {

@@ -28,6 +28,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.Random;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -253,6 +254,39 @@ public abstract class AbstractConsumerAgentModule extends SimulationEntityBase i
         }
         ca.updateInterest(fp, interest);
         trace("consumer agent '{}' has initial interest value {} for product '{}'", ca.getName(), interest, fp.getName());
+    }
+
+    protected double getAverageFinancialPurchasePower(Stream<? extends ConsumerAgent> agents, MutableDouble avgFT) {
+        if(avgFT != null && !Double.isNaN(avgFT.get())) {
+            return avgFT.get();
+        } else {
+            if(avgFT == null) {
+                return calcAvgFT(agents);
+            } else {
+                return syncCalcAvgFT(agents, avgFT);
+            }
+        }
+    }
+
+    private synchronized double syncCalcAvgFT(Stream<? extends ConsumerAgent> agents, MutableDouble avgFT) {
+        if(avgFT != null && !Double.isNaN(avgFT.get())) {
+            return avgFT.get();
+        } else {
+            double result = calcAvgFT(agents);
+            if(avgFT != null) {
+                avgFT.set(result);
+            }
+            return result;
+        }
+    }
+
+    private double calcAvgFT(Stream<? extends ConsumerAgent> agents) {
+        MutableDouble total = MutableDouble.zero();
+        double sum = agents.mapToDouble(ca -> {
+            total.inc();
+            return getFinancialPurchasePower(ca);
+        }).sum();
+        return sum / total.get();
     }
 
     //=========================

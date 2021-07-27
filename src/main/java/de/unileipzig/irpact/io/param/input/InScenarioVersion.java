@@ -3,7 +3,6 @@ package de.unileipzig.irpact.io.param.input;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
-import de.unileipzig.irpact.experimental.eval.Constant;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.Constants;

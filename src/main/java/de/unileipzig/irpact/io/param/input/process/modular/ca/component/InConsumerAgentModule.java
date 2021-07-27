@@ -1,23 +1,24 @@
 package de.unileipzig.irpact.io.param.input.process.modular.ca.component;
 
 import de.unileipzig.irpact.io.param.input.process.modular.InModule;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.ModuleHelper;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.Graph;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
+
+import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings.*;
 
 /**
  * @author Daniel Abitz
  */
 @Definition(
         graph = @Graph(
-                id = ModuleHelper.MODULAR_GRAPH,
+                id = MPM_GRAPH,
                 label = "TEST - modularer Graph",
-                icon = ModuleHelper.ICON_TEST,
+                icon = ICON_TEST,
                 description = "TEST TEST TEST",
                 priority = "0",
 
-                edgesTags = {"graphedge"},
+                edgesTags = {GRAPHEDGE},
                 edgesHeading = "Kanten",
 
                 nodesSet = "set_InConsumerAgentModule",
