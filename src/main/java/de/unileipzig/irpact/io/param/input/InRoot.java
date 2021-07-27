@@ -19,7 +19,6 @@ import de.unileipzig.irpact.io.param.input.process.modular.InModularProcessModel
 import de.unileipzig.irpact.io.param.input.process.modular.InModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.InSimpleConsumerAgentMPM;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentCalculationModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
@@ -761,11 +760,11 @@ public class InRoot implements RootClass {
             InConsumerAgentModule.class,
             //InConsumerAgentCalculationModule.class,
             InConsumerAgentEvaluationModule.class,
-            InDefaultActionModule.class,
-            InDefaultDecisionMakingModule.class,
-            InDefaultFeasibilityModule.class,
-            InDefaultInterestModule.class,
-            InStageEvaluationModule.class,
+            InDefaultActionModule_graphnode.class,
+            InDefaultDecisionMakingModule_graphnode.class,
+            InDefaultFeasibilityModule_graphnode.class,
+            InDefaultInterestModule_graphnode.class,
+            InStageEvaluationModule_graphnode2.class,
             //===
 
             InBasicProductGroup.class,

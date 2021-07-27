@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.process.modular.ca.components.eval.DefaultInterestModule;
+import de.unileipzig.irpact.core.process.modular.ca.components.eval.DefaultActionModule;
 import de.unileipzig.irpact.core.process.modular.components.core.Module;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
@@ -25,6 +25,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.varargs;
 
 /**
  * @author Daniel Abitz
@@ -37,10 +38,9 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
                 border = COLOR_DARK_CYAN,
                 shape = SHAPE_OCTAGON,
                 tags = {"graphnode"}
-        ),
-        name = "InDefaultInterestModule_graphnode"
+        )
 )
-public class InDefaultInterestModule implements InConsumerAgentEvaluationModule {
+public class InDefaultActionModule_graphnode implements InConsumerAgentEvaluationModule {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -53,7 +53,7 @@ public class InDefaultInterestModule implements InConsumerAgentEvaluationModule 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTINTEREST);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTACTION);
         setShape(res, thisClass(), SHAPE_OCTAGON);
         setColor(res, thisClass(), COLOR_DARK_CYAN);
 
@@ -181,16 +181,16 @@ public class InDefaultInterestModule implements InConsumerAgentEvaluationModule 
         return uncertainties;
     }
 
-    public InDefaultInterestModule() {
+    public InDefaultActionModule_graphnode() {
     }
 
     @Override
-    public InDefaultInterestModule copy(CopyCache cache) {
+    public InDefaultActionModule_graphnode copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InDefaultInterestModule newCopy(CopyCache cache) {
-        InDefaultInterestModule copy = new InDefaultInterestModule();
+    public InDefaultActionModule_graphnode newCopy(CopyCache cache) {
+        InDefaultActionModule_graphnode copy = new InDefaultActionModule_graphnode();
         return Dev.throwException();
     }
 
@@ -207,17 +207,17 @@ public class InDefaultInterestModule implements InConsumerAgentEvaluationModule 
     }
 
     @Override
-    public DefaultInterestModule parse(IRPactInputParser parser) throws ParsingException {
+    public DefaultActionModule parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
             Module module = ModuleHelper.searchModule(parser, getName());
-            if(module instanceof DefaultInterestModule) {
-                return (DefaultInterestModule) module;
+            if(module instanceof DefaultActionModule) {
+                return (DefaultActionModule) module;
             } else {
                 throw new ParsingException("class mismatch");
             }
         }
 
-        DefaultInterestModule module = new DefaultInterestModule();
+        DefaultActionModule module = new DefaultActionModule();
         module.setName(getName());
         module.setEnvironment(parser.getEnvironment());
         module.setAdopterPoints(getAdopterPoints());

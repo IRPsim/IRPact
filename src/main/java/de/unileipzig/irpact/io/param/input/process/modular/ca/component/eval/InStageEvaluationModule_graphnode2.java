@@ -33,10 +33,9 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
                 border = COLOR_GREEN,
                 shape = SHAPE_GEAR,
                 tags = {"graphnode2"}
-        ),
-        name = "InStageEvaluationModule_graphnode2"
+        )
 )
-public class InStageEvaluationModule implements InConsumerAgentEvaluationModule {
+public class InStageEvaluationModule_graphnode2 implements InConsumerAgentEvaluationModule {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -53,11 +52,11 @@ public class InStageEvaluationModule implements InConsumerAgentEvaluationModule 
         setShape(res, thisClass(), SHAPE_GEAR);
         setColor(res, thisClass(), COLOR_GREEN);
 
-        addEntry(res, thisClass(), "awarenessModule");
-        addEntry(res, thisClass(), "feasibilityModule");
-        addEntry(res, thisClass(), "decisionMakingModule");
-        addEntry(res, thisClass(), "adoptedModule");
-        addEntry(res, thisClass(), "impededModule");
+        addEntry(res, thisClass(), "graphedge_awarenessModule");
+        addEntry(res, thisClass(), "graphedge_feasibilityModule");
+        addEntry(res, thisClass(), "graphedge_decisionMakingModule");
+        addEntry(res, thisClass(), "graphedge_adoptedModule");
+        addEntry(res, thisClass(), "graphedge_impededModule");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -151,16 +150,16 @@ public class InStageEvaluationModule implements InConsumerAgentEvaluationModule 
         return ParamUtil.getInstance(impededModule, "impededModule");
     }
 
-    public InStageEvaluationModule() {
+    public InStageEvaluationModule_graphnode2() {
     }
 
     @Override
-    public InStageEvaluationModule copy(CopyCache cache) {
+    public InStageEvaluationModule_graphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InStageEvaluationModule newCopy(CopyCache cache) {
-        InStageEvaluationModule copy = new InStageEvaluationModule();
+    public InStageEvaluationModule_graphnode2 newCopy(CopyCache cache) {
+        InStageEvaluationModule_graphnode2 copy = new InStageEvaluationModule_graphnode2();
         return Dev.throwException();
     }
 

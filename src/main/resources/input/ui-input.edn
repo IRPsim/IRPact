@@ -12,7 +12,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v0.9.1" 
+        :description "IRPact v0.9.2" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -620,31 +620,31 @@
                     :label "Standard-Aktion" 
                     :set "set_InDefaultActionModule_graphnode" 
                     :description "todo" 
-                    :tags [["InDefaultActionModule" "adopterPoints"] ["InDefaultActionModule" "interestedPoints"] ["InDefaultActionModule" "awarePoints"] ["InDefaultActionModule" "unknownPoints"] ["InDefaultActionModule" "speedOfConvergence"] ["InDefaultActionModule" "attitudeGap"] ["InDefaultActionModule" "chanceNeutral"] ["InDefaultActionModule" "chanceConvergence"] ["InDefaultActionModule" "chanceDivergence"] ["link" "InDefaultActionModule" "InUncertainty" "uncertainties"]]
+                    :tags [["InDefaultActionModule" "graphnode" "adopterPoints"] ["InDefaultActionModule" "graphnode" "interestedPoints"] ["InDefaultActionModule" "graphnode" "awarePoints"] ["InDefaultActionModule" "graphnode" "unknownPoints"] ["InDefaultActionModule" "graphnode" "speedOfConvergence"] ["InDefaultActionModule" "graphnode" "attitudeGap"] ["InDefaultActionModule" "graphnode" "chanceNeutral"] ["InDefaultActionModule" "graphnode" "chanceConvergence"] ["InDefaultActionModule" "graphnode" "chanceDivergence"] ["link" "InDefaultActionModule" "graphnode" "InUncertainty" "uncertainties"]]
                   } 
                   {
                     :label "Standard-Feasibility" 
                     :set "set_InDefaultFeasibilityModule_graphnode" 
                     :description "todo" 
-                    :tags [["InDefaultFeasibilityModule" "adopterPoints"] ["InDefaultFeasibilityModule" "interestedPoints"] ["InDefaultFeasibilityModule" "awarePoints"] ["InDefaultFeasibilityModule" "unknownPoints"] ["InDefaultFeasibilityModule" "speedOfConvergence"] ["InDefaultFeasibilityModule" "attitudeGap"] ["InDefaultFeasibilityModule" "chanceNeutral"] ["InDefaultFeasibilityModule" "chanceConvergence"] ["InDefaultFeasibilityModule" "chanceDivergence"] ["link" "InDefaultFeasibilityModule" "InUncertainty" "uncertainties"]]
+                    :tags [["InDefaultFeasibilityModule" "graphnode" "adopterPoints"] ["InDefaultFeasibilityModule" "graphnode" "interestedPoints"] ["InDefaultFeasibilityModule" "graphnode" "awarePoints"] ["InDefaultFeasibilityModule" "graphnode" "unknownPoints"] ["InDefaultFeasibilityModule" "graphnode" "speedOfConvergence"] ["InDefaultFeasibilityModule" "graphnode" "attitudeGap"] ["InDefaultFeasibilityModule" "graphnode" "chanceNeutral"] ["InDefaultFeasibilityModule" "graphnode" "chanceConvergence"] ["InDefaultFeasibilityModule" "graphnode" "chanceDivergence"] ["link" "InDefaultFeasibilityModule" "graphnode" "InUncertainty" "uncertainties"]]
                   } 
                   {
                     :label "Standard-Interesse" 
                     :set "set_InDefaultInterestModule_graphnode" 
                     :description "todo" 
-                    :tags [["InDefaultInterestModule" "adopterPoints"] ["InDefaultInterestModule" "interestedPoints"] ["InDefaultInterestModule" "awarePoints"] ["InDefaultInterestModule" "unknownPoints"] ["InDefaultInterestModule" "speedOfConvergence"] ["InDefaultInterestModule" "attitudeGap"] ["InDefaultInterestModule" "chanceNeutral"] ["InDefaultInterestModule" "chanceConvergence"] ["InDefaultInterestModule" "chanceDivergence"] ["link" "InDefaultInterestModule" "InUncertainty" "uncertainties"]]
+                    :tags [["InDefaultInterestModule" "graphnode" "adopterPoints"] ["InDefaultInterestModule" "graphnode" "interestedPoints"] ["InDefaultInterestModule" "graphnode" "awarePoints"] ["InDefaultInterestModule" "graphnode" "unknownPoints"] ["InDefaultInterestModule" "graphnode" "speedOfConvergence"] ["InDefaultInterestModule" "graphnode" "attitudeGap"] ["InDefaultInterestModule" "graphnode" "chanceNeutral"] ["InDefaultInterestModule" "graphnode" "chanceConvergence"] ["InDefaultInterestModule" "graphnode" "chanceDivergence"] ["link" "InDefaultInterestModule" "graphnode" "InUncertainty" "uncertainties"]]
                   } 
                   {
                     :label "Default-Decision Making" 
                     :set "set_InDefaultDecisionMakingModule_graphnode" 
                     :description "todo" 
-                    :tags [["InDefaultDecisionMakingModule" "a"] ["InDefaultDecisionMakingModule" "b"] ["InDefaultDecisionMakingModule" "c"] ["InDefaultDecisionMakingModule" "d"] ["InDefaultDecisionMakingModule" "weightFT"] ["InDefaultDecisionMakingModule" "weightNPV"] ["InDefaultDecisionMakingModule" "weightSocial"] ["InDefaultDecisionMakingModule" "weightLocal"] ["InDefaultDecisionMakingModule" "logisticFactor"] ["link" "InDefaultDecisionMakingModule" "InPVFile" "pvFile"] ["link" "InDefaultDecisionMakingModule" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+                    :tags [["InDefaultDecisionMakingModule" "graphnode" "a"] ["InDefaultDecisionMakingModule" "graphnode" "b"] ["InDefaultDecisionMakingModule" "graphnode" "c"] ["InDefaultDecisionMakingModule" "graphnode" "d"] ["InDefaultDecisionMakingModule" "graphnode" "weightFT"] ["InDefaultDecisionMakingModule" "graphnode" "weightNPV"] ["InDefaultDecisionMakingModule" "graphnode" "weightSocial"] ["InDefaultDecisionMakingModule" "graphnode" "weightLocal"] ["InDefaultDecisionMakingModule" "graphnode" "logisticFactor"] ["link" "InDefaultDecisionMakingModule" "graphnode" "InPVFile" "pvFile"] ["link" "InDefaultDecisionMakingModule" "graphnode" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
                   } 
                   {
                     :label "Default-Phasen" 
                     :set "set_InStageEvaluationModule_graphnode2" 
                     :description "todo" 
-                    :tags [["link" "InStageEvaluationModule" "InConsumerAgentEvaluationModule" "graphedge" "awarenessModule"] ["link" "InStageEvaluationModule" "InConsumerAgentEvaluationModule" "graphedge" "feasibilityModule"] ["link" "InStageEvaluationModule" "InConsumerAgentEvaluationModule" "graphedge" "decisionMakingModule"] ["link" "InStageEvaluationModule" "InConsumerAgentEvaluationModule" "graphedge" "adoptedModule"] ["link" "InStageEvaluationModule" "InConsumerAgentEvaluationModule" "impededModule"]]
+                    :tags [["link" "InStageEvaluationModule" "graphnode2" "InConsumerAgentEvaluationModule" "graphedge" "awarenessModule"] ["link" "InStageEvaluationModule" "graphnode2" "InConsumerAgentEvaluationModule" "graphedge" "feasibilityModule"] ["link" "InStageEvaluationModule" "graphnode2" "InConsumerAgentEvaluationModule" "graphedge" "decisionMakingModule"] ["link" "InStageEvaluationModule" "graphnode2" "InConsumerAgentEvaluationModule" "graphedge" "adoptedModule"] ["link" "InStageEvaluationModule" "graphnode2" "InConsumerAgentEvaluationModule" "impededModule"]]
                   }
                 ]
               }
