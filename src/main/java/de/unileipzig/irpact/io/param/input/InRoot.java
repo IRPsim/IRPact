@@ -756,13 +756,14 @@ public class InRoot implements RootClass {
             //MPM v2
             InAddModule_calcgraphnode.class,
             InAttributeInputModule_inputgraphnode.class,
+            InDisaggregatedFinancialModule_inputgraphnode.class,
+            InDisaggregatedNPVModule_inputgraphnode.class,
             InLogisticModule_calcgraphnode.class,
+            InNPVModule_inputgraphnode.class,
             InWeightedModule_calcgraphnode.class,
 
             InDefaultActionModule_evalgraphnode.class,
             InDefaultDecisionMakingModule_evalgraphnode.class,
-            InDisaggregatedFinancialModule_inputgraphnode.class,
-            InDisaggregatedNPVModule_inputgraphnode.class,
             InDefaultFeasibilityModule_evalgraphnode.class,
             InDefaultInterestModule_evalgraphnode.class,
             InStageEvaluationModule_evalgraphnode.class,
