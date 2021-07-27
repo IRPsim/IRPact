@@ -81,6 +81,7 @@
       "set_IGraphTopology" : { },
       "set_ii" : { },
       "set_ii_0" : { },
+      "set_InAddModule_calcgraphnode" : { },
       "set_InAffinities" : {
         "affs" : { }
       },
@@ -93,6 +94,7 @@
       "set_InAgentPopulation" : {
         "PopSize" : { }
       },
+      "set_InAttributeInputModule_inputgraphnode" : { },
       "set_InAttributeName" : { },
       "set_InBasicProductGroup" : { },
       "set_InBasicProductGroupAttribute" : { },
@@ -121,6 +123,7 @@
         }
       },
       "set_InComponent" : { },
+      "set_InConsumerAgentCalculationModule" : { },
       "set_InConsumerAgentEvaluationModule" : { },
       "set_InConsumerAgentGroup" : {
         "BUM" : { },
@@ -137,14 +140,14 @@
       },
       "set_InConsumerAgentModularProcessModel" : { },
       "set_InConsumerAgentModule" : { },
-      "set_InDefaultActionModule_graphnode" : { },
-      "set_InDefaultDecisionMakingModule_graphnode" : { },
+      "set_InDefaultActionModule_evalgraphnode" : { },
+      "set_InDefaultDecisionMakingModule_evalgraphnode" : { },
       "set_InDefaultDoActionComponent" : { },
-      "set_InDefaultFeasibilityModule_graphnode" : { },
+      "set_InDefaultFeasibilityModule_evalgraphnode" : { },
       "set_InDefaultHandleDecisionMakingComponent" : { },
       "set_InDefaultHandleFeasibilityComponent" : { },
       "set_InDefaultHandleInterestComponent" : { },
-      "set_InDefaultInterestModule_graphnode" : { },
+      "set_InDefaultInterestModule_evalgraphnode" : { },
       "set_InDependentConsumerAgentGroupAttribute" : { },
       "set_InDependentProductGroupAttribute" : { },
       "set_InDiracUnivariateDistribution" : {
@@ -153,6 +156,8 @@
         }
       },
       "set_InDisabledProcessPlanNodeFilterScheme" : { },
+      "set_InDisaggregatedFinancialModule_inputgraphnode" : { },
+      "set_InDisaggregatedNPVModule_inputgraphnode" : { },
       "set_InDistanceEvaluator" : { },
       "set_InDoNothingComponent" : { },
       "set_InEntireNetworkNodeFilterScheme" : { },
@@ -256,6 +261,7 @@
       "set_InInformation" : { },
       "set_InInverse" : { },
       "set_InIRPactVersion" : { },
+      "set_InLogisticModule_calcgraphnode" : { },
       "set_InMassPoint" : { },
       "set_InModularProcessModel" : { },
       "set_InModularRAProcessModel" : { },
@@ -366,7 +372,7 @@
         }
       },
       "set_InScenarioVersion" : {
-        "v0_9_2" : {
+        "v0_10_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
@@ -395,10 +401,11 @@
           "par_InSpatialTableFile_placeholderInSpatialFile" : 0.0
         }
       },
-      "set_InStageEvaluationModule_graphnode2" : { },
+      "set_InStageEvaluationModule_evalgraphnode" : { },
       "set_InSumAttributeComponent" : { },
       "set_InSumIntermediateComponent" : { },
       "set_InSumThresholdComponent" : { },
+      "set_InSumThresholdEvaluationModule_evalgraphnode" : { },
       "set_InTestData" : { },
       "set_InTimeModel" : {
         "DiscreteUnitStep" : { }
@@ -424,6 +431,7 @@
       },
       "set_InUnlinkedGraphTopology" : { },
       "set_InValueComponent" : { },
+      "set_InWeightedModule_calcgraphnode" : { },
       "set_IWattsStrogatzModel" : { },
       "set_jj" : { },
       "set_load_DS" : {
@@ -502,6 +510,8 @@
     "tables" : {
       "par_F_E_EGrid_energy" : { },
       "par_link_AgentGroup_GraphvizColor_agentColor" : { },
+      "par_link_InAddModule_calcgraphnode_InConsumerAgentCalculationModule_first_graphedge" : { },
+      "par_link_InAddModule_calcgraphnode_InConsumerAgentCalculationModule_second_graphedge" : { },
       "par_link_InAffinities_InAffinityEntry_entries" : {
         "affs" : {
           "BUM_BUM" : 1.0,
@@ -510,6 +520,7 @@
           "TRA_TRA" : 1.0
         }
       },
+      "par_link_InAttributeInputModule_inputgraphnode_InAttributeName_attribute" : { },
       "par_link_InBasicProductGroup_InDependentProductGroupAttribute_pgAttributes" : { },
       "par_link_InBasicProductGroupAttribute_InAttributeName_attrName" : { },
       "par_link_InBasicProductGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
@@ -559,13 +570,14 @@
           "TRA" : 1.0
         }
       },
-      "par_link_InDefaultActionModule_graphnode_InUncertainty_uncertainties" : { },
-      "par_link_InDefaultDecisionMakingModule_graphnode_InPVFile_pvFile" : { },
-      "par_link_InDefaultDecisionMakingModule_graphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
-      "par_link_InDefaultFeasibilityModule_graphnode_InUncertainty_uncertainties" : { },
+      "par_link_InDefaultActionModule_evalgraphnode_InUncertainty_uncertainties" : { },
+      "par_link_InDefaultDecisionMakingModule_evalgraphnode_InPVFile_pvFile" : { },
+      "par_link_InDefaultDecisionMakingModule_evalgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
+      "par_link_InDefaultFeasibilityModule_evalgraphnode_InUncertainty_uncertainties" : { },
       "par_link_InDefaultHandleDecisionMakingComponent_InPVFile_pvFile" : { },
       "par_link_InDefaultHandleDecisionMakingComponent_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
-      "par_link_InDefaultInterestModule_graphnode_InUncertainty_uncertainties" : { },
+      "par_link_InDefaultInterestModule_evalgraphnode_InUncertainty_uncertainties" : { },
+      "par_link_InDisaggregatedNPVModule_inputgraphnode_InPVFile_pvFile" : { },
       "par_link_InFileBasedConsumerAgentPopulation_InAttributeName_selectKey" : { },
       "par_link_InFileBasedConsumerAgentPopulation_InConsumerAgentGroup_cags" : { },
       "par_link_InFileBasedConsumerAgentPopulation_InSpatialTableFile_file" : { },
@@ -617,6 +629,7 @@
       "par_link_InGlobalDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
       "par_link_InGroupBasedDeffuantUncertainty_InAttributeName_attributeNames" : { },
       "par_link_InGroupBasedDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
+      "par_link_InLogisticModule_calcgraphnode_InConsumerAgentCalculationModule_input_graphedge" : { },
       "par_link_InModularRAProcessModel_InEvaluableComponent_actionComponent" : { },
       "par_link_InModularRAProcessModel_InEvaluableComponent_decisionMakingComponent" : { },
       "par_link_InModularRAProcessModel_InEvaluableComponent_feasibilityComponent" : { },
@@ -771,14 +784,16 @@
         }
       },
       "par_link_InSimpleConsumerAgentMPM_InConsumerAgentEvaluationModule_startModule" : { },
-      "par_link_InStageEvaluationModule_graphnode2_InConsumerAgentEvaluationModule_graphedge_adoptedModule" : { },
-      "par_link_InStageEvaluationModule_graphnode2_InConsumerAgentEvaluationModule_graphedge_awarenessModule" : { },
-      "par_link_InStageEvaluationModule_graphnode2_InConsumerAgentEvaluationModule_graphedge_decisionMakingModule" : { },
-      "par_link_InStageEvaluationModule_graphnode2_InConsumerAgentEvaluationModule_graphedge_feasibilityModule" : { },
-      "par_link_InStageEvaluationModule_graphnode2_InConsumerAgentEvaluationModule_impededModule" : { },
+      "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_adoptedModule_graphedge" : { },
+      "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_awarenessModule_graphedge" : { },
+      "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_decisionMakingModule_graphedge" : { },
+      "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_feasibilityModule_graphedge" : { },
+      "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_impededModule_graphedge" : { },
       "par_link_InSumAttributeComponent_InAttributeName_attributeNames" : { },
       "par_link_InSumIntermediateComponent_InValueComponent_components" : { },
       "par_link_InSumThresholdComponent_InValueComponent_components" : { },
+      "par_link_InSumThresholdEvaluationModule_evalgraphnode_InConsumerAgentCalculationModule_input_graphedge" : { },
+      "par_link_InWeightedModule_calcgraphnode_InConsumerAgentCalculationModule_input_graphedge" : { },
       "par_S_DS_growth_absolute" : { },
       "par_SOH_pss_sector" : {
         "E" : {
