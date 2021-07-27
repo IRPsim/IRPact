@@ -46,6 +46,7 @@ import de.unileipzig.irptools.defstructure.DefinitionCollection;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
 import de.unileipzig.irptools.io.ContentType;
 import de.unileipzig.irptools.io.ContentTypeDetector;
+import de.unileipzig.irptools.io.ContentTypeUtil;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.annual.AnnualFile;
 import de.unileipzig.irptools.io.base.data.AnnualEntry;
@@ -63,6 +64,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
+import java.util.concurrent.TimeoutException;
 
 /**
  * @author Daniel Abitz
@@ -79,8 +81,8 @@ public final class IRPact implements IRPActAccess {
 
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "0";
-    private static final String MINOR_STRING = "9";
-    private static final String BUILD_STRING = "2";
+    private static final String MINOR_STRING = "10";
+    private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -114,6 +116,8 @@ public final class IRPact implements IRPActAccess {
     public static final String DOWNLOAD_DIR_NAME = "images";
 
     public static final int MODELDEFINITION = 3;
+
+    public static boolean printStacktraceImage = true;
 
     private static final Map<MainCommandLineOptions, Converter> INPUT_CONVERTS = new WeakHashMap<>();
     private static final Map<MainCommandLineOptions, Converter> OUTPUT_CONVERTS = new WeakHashMap<>();
@@ -447,12 +451,17 @@ public final class IRPact implements IRPActAccess {
         LOGGER.info(IRPSection.GENERAL, "create initial network image: {}", CL_OPTIONS.hasImagePath());
         if(CL_OPTIONS.hasImagePath()) {
             LOGGER.trace(IRPSection.GENERAL, "initial image path: {}", CL_OPTIONS.getImagePath());
-            graphvizConfiguration.printSocialGraph(
-                    environment.getNetwork().getGraph(),
-                    SocialGraph.Type.COMMUNICATION,
-                    CL_OPTIONS.getImagePath(),
-                    null
-            );
+            try {
+                graphvizConfiguration.printSocialGraph(
+                        environment.getNetwork().getGraph(),
+                        SocialGraph.Type.COMMUNICATION,
+                        CL_OPTIONS.getImagePath(),
+                        null
+                );
+            } catch (TimeoutException e) {
+                createStackTraceImage(e, CL_OPTIONS.getImagePath());
+                throw e;
+            }
         }
     }
 
@@ -683,7 +692,30 @@ public final class IRPact implements IRPActAccess {
     }
 
     public void createStackTraceImageIfDesired(Throwable cause) {
-        if(cause != null && inRoot != null && inRoot.getGeneral().shouldPrintStacktraceImage()) {
+        if(cause == null) {
+            return;
+        }
+
+        boolean createImage = IRPact.printStacktraceImage;
+
+        if(inRoot == null) {
+            if(inRootNode != null) {
+                try {
+                    JsonPointer ptr = ContentTypeUtil.scalars(inRootNode, InGeneral.SCA_INGENERAL_PRINTSTACKTRACEIMAGE);
+                    JsonNode node = inRootNode.at(ptr);
+                    if(node.isBoolean()) {
+                        createImage = node.booleanValue();
+                    }
+                } catch (Throwable t) {
+                    LOGGER.error("JsonPointer failed", t);
+                }
+            }
+        } else {
+            System.out.println("??!?!?!?! " + inRoot.getGeneral().shouldPrintStacktraceImage());
+            createImage = inRoot.getGeneral().shouldPrintStacktraceImage();
+        }
+
+        if(createImage) {
             try {
                 createStackTraceImage(cause, getStackTraceImagePath());
             } catch (Throwable t) {

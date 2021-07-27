@@ -44,7 +44,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ImageDemo extends AbstractScenario {
 
-    public static final int REVISION = 4;
+    public static final int REVISION = 5;
 
     public ImageDemo(String name, String creator, String description) {
         super(name, creator, description);
@@ -129,6 +129,8 @@ public class ImageDemo extends AbstractScenario {
         general.enableAllResultLogging();
         general.enableAllScriptLogging();
         general.setFirstSimulationYear(2015);
+
+        setupGeneral(general);
 
         //=====
         InRoot root = createRootWithInformationsWithFullLogging();

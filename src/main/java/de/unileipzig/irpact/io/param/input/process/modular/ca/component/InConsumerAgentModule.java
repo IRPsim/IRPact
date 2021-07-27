@@ -13,18 +13,18 @@ import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings
 @Definition(
         graph = @Graph(
                 id = MPM_GRAPH,
-                label = "TEST - modularer Graph",
-                icon = ICON_TEST,
-                description = "TEST TEST TEST",
-                priority = "0",
+                label = "[TEST] Graph - Modulares Prozessmodell",
+                icon = GRAPH_ICON,
+                description = "[TEST] Interaktiver Graph fuer das modulare Prozessmodell.",
+                priority = "-10",
 
                 edgesTags = {GRAPHEDGE},
-                edgesHeading = "Kanten",
+                edgesHeading = "Kantenbedeutung",
 
                 nodesSet = "set_InConsumerAgentModule",
                 showIcon = false,
                 borderHeading = "Rahmenfarbe",
-                colorHeading = "Farbe",
+                colorHeading = "Fuellfarbe",
                 shapeHeading = "Form"
         )
 )

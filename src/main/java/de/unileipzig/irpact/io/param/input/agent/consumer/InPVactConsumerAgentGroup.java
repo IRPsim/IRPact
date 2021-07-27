@@ -3,6 +3,7 @@ package de.unileipzig.irpact.io.param.input.agent.consumer;
 import de.unileipzig.irpact.commons.distribution.UnivariateDoubleDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.AgentManager;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentAnnualGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentDoubleGroupAttribute;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
@@ -403,8 +404,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         addGroupAttribute(parser, jcag, getInitialProductInterest(), INITIAL_PRODUCT_INTEREST, restored);
         addGroupAttribute(parser, jcag, getInitialProductAwareness(), INITIAL_PRODUCT_AWARENESS, restored);
         addGroupAttribute(parser, jcag, getInterestThreshold(), INTEREST_THRESHOLD, restored);
-        addGroupAttribute(parser, jcag, getConstructionRate(), CONSTRUCTION_RATE, restored);
-        addGroupAttribute(parser, jcag, getRenovationRate(), RENOVATION_RATE, restored);
+
+        addAnnualGroupAttribute(parser, jcag, getConstructionRate(), CONSTRUCTION_RATE, restored);
+        addAnnualGroupAttribute(parser, jcag, getRenovationRate(), RENOVATION_RATE, restored);
 
         if(a1 != null) addGroupAttribute(parser, jcag, a1, PURCHASE_POWER, restored);
         if(a5 != null) addGroupAttribute(parser, jcag, a5, SHARE_1_2_HOUSE, restored);
@@ -479,5 +481,45 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
             interestSupplyScheme.setName(ParamUtil.concName(jcag.getName(), INTEREST));
             jcag.setInterestSupplyScheme(interestSupplyScheme);
         }
+    }
+
+    private static void addAnnualGroupAttribute(
+            IRPactInputParser parser,
+            JadexConsumerAgentGroup jcag,
+            InUnivariateDoubleDistribution inDist,
+            String name,
+            boolean restored) throws ParsingException {
+        BasicConsumerAgentAnnualGroupAttribute annualCagAttr;
+        if(jcag.hasAttribute(name)) {
+            annualCagAttr = (BasicConsumerAgentAnnualGroupAttribute) jcag.getGroupAttribute(name);
+            if(annualCagAttr.hasYear(parser.getSimulationYear())) {
+                if(restored) {
+                    LOGGER.trace("restored ConsumerAgentGroup '{}' already has AnnualConsumerAgentGroupAttribute '{}' (year {})", jcag.getName(), name, parser.getSimulationYear());
+                    return;
+                } else {
+                    throw new ParsingException("ConsumerAgentGroupAttribute '" + name + "' already exists in " + jcag.getName());
+                }
+            }
+        } else {
+            annualCagAttr = new BasicConsumerAgentAnnualGroupAttribute();
+            annualCagAttr.setName(name);
+            annualCagAttr.setArtificial(false);
+            jcag.addGroupAttribute(annualCagAttr);
+        }
+
+        UnivariateDoubleDistribution dist = parser.parseEntityTo(inDist);
+        addAnnualGroupAttribute(parser, annualCagAttr, dist, name);
+    }
+
+    private static void addAnnualGroupAttribute(
+            IRPactInputParser parser,
+            BasicConsumerAgentAnnualGroupAttribute annualCagAttr,
+            UnivariateDoubleDistribution dist,
+            String name) {
+        BasicConsumerAgentDoubleGroupAttribute yearAttr = new BasicConsumerAgentDoubleGroupAttribute();
+        yearAttr.setName(name + "_" + parser.getSimulationYear());
+        yearAttr.setArtificial(true);
+        yearAttr.setDistribution(dist);
+        annualCagAttr.put(parser.getSimulationYear(), yearAttr);
     }
 }

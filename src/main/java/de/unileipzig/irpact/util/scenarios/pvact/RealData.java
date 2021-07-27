@@ -7,6 +7,7 @@ import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.distribution.InBernoulliDistribution;
+import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InTruncatedNormalDistribution;
 import de.unileipzig.irpact.util.pvact.Milieu;
 
@@ -159,6 +160,19 @@ public final class RealData {
             0.1929
     };
 
+    public static final double[] REWIRE = {
+            0.5,
+            0.75,
+            1,
+            1,
+            0.75,
+            0.75,
+            0.5,
+            0.25,
+            0.5,
+            1
+    };
+
     public final PvActConsumerAgentGroupBuilder CAGS;
     public final InPVactConsumerAgentGroup[] KET_;
     public final InPVactConsumerAgentGroup[] LIB_;
@@ -249,6 +263,20 @@ public final class RealData {
             map.put(
                     milieus[i],
                     new InBernoulliDistribution(name + "_" + milieus[i].print(), p[i])
+            );
+        }
+        return map;
+    }
+
+    public static Map<Milieu, InDiracUnivariateDistribution> buildDirac(
+            String name,
+            Milieu[] milieus,
+            double[] p) {
+        Map<Milieu, InDiracUnivariateDistribution> map = new LinkedHashMap<>();
+        for(int i = 0; i < milieus.length; i++) {
+            map.put(
+                    milieus[i],
+                    new InDiracUnivariateDistribution(name + "_" + milieus[i].print(), p[i])
             );
         }
         return map;
