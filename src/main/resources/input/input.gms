@@ -1513,6 +1513,47 @@ PARAMETER par_InAttributeInputModule_inputgraphnode_weight(set_InAttributeInputM
 * - type: Boolean
 PARAMETER par_link_InAttributeInputModule_inputgraphnode_InAttributeName_attribute(set_InAttributeInputModule_inputgraphnode,set_InAttributeName)
 
+* - color: Green
+* - shape: square
+* - identifier: InDisaggregatedFinancialModule_inputgraphnode
+* - type: String
+SET set_InDisaggregatedFinancialModule_inputgraphnode(set_InConsumerAgentCalculationModule)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InDisaggregatedFinancialModule_inputgraphnode_weight(set_InDisaggregatedFinancialModule_inputgraphnode)
+
+* - default: 0.125
+* - description: todo
+* - identifier: Logistikfaktor
+* - type: Float
+PARAMETER par_InDisaggregatedFinancialModule_inputgraphnode_logisticFactor(set_InDisaggregatedFinancialModule_inputgraphnode)
+
+* - color: Green
+* - shape: square
+* - identifier: InDisaggregatedNPVModule_inputgraphnode
+* - type: String
+SET set_InDisaggregatedNPVModule_inputgraphnode(set_InConsumerAgentCalculationModule)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InDisaggregatedNPVModule_inputgraphnode_weight(set_InDisaggregatedNPVModule_inputgraphnode)
+
+* - default: 0.125
+* - description: todo
+* - identifier: Logistikfaktor
+* - type: Float
+PARAMETER par_InDisaggregatedNPVModule_inputgraphnode_logisticFactor(set_InDisaggregatedNPVModule_inputgraphnode)
+
+* - description: todo
+* - identifier: PV-Datei
+* - type: Boolean
+PARAMETER par_link_InDisaggregatedNPVModule_inputgraphnode_InPVFile_pvFile(set_InDisaggregatedNPVModule_inputgraphnode,set_InPVFile)
+
 * - color: Blue
 * - shape: gear
 * - identifier: InLogisticModule_calcgraphnode
@@ -1529,6 +1570,23 @@ PARAMETER par_InLogisticModule_calcgraphnode_weight(set_InLogisticModule_calcgra
 * - identifier: Eingabemodul
 * - type: Boolean
 PARAMETER par_link_InLogisticModule_calcgraphnode_InConsumerAgentCalculationModule_input_graphedge(set_InLogisticModule_calcgraphnode,set_InConsumerAgentCalculationModule)
+
+* - color: Green
+* - shape: square
+* - identifier: InNPVModule_inputgraphnode
+* - type: String
+SET set_InNPVModule_inputgraphnode(set_InConsumerAgentCalculationModule)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InNPVModule_inputgraphnode_weight(set_InNPVModule_inputgraphnode)
+
+* - description: todo
+* - identifier: PV-Datei
+* - type: Boolean
+PARAMETER par_link_InNPVModule_inputgraphnode_InPVFile_pvFile(set_InNPVModule_inputgraphnode,set_InPVFile)
 
 * - color: Blue
 * - shape: gear
@@ -1683,47 +1741,6 @@ PARAMETER par_link_InDefaultDecisionMakingModule_evalgraphnode_InPVFile_pvFile(s
 * - identifier: node filter scheme
 * - type: Boolean
 PARAMETER par_link_InDefaultDecisionMakingModule_evalgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InDefaultDecisionMakingModule_evalgraphnode,set_InRAProcessPlanNodeFilterScheme)
-
-* - color: Green
-* - shape: square
-* - identifier: InDisaggregatedFinancialModule_inputgraphnode
-* - type: String
-SET set_InDisaggregatedFinancialModule_inputgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InDisaggregatedFinancialModule_inputgraphnode_weight(set_InDisaggregatedFinancialModule_inputgraphnode)
-
-* - default: 0.125
-* - description: todo
-* - identifier: Logistikfaktor
-* - type: Float
-PARAMETER par_InDisaggregatedFinancialModule_inputgraphnode_logisticFactor(set_InDisaggregatedFinancialModule_inputgraphnode)
-
-* - color: Green
-* - shape: square
-* - identifier: InDisaggregatedNPVModule_inputgraphnode
-* - type: String
-SET set_InDisaggregatedNPVModule_inputgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InDisaggregatedNPVModule_inputgraphnode_weight(set_InDisaggregatedNPVModule_inputgraphnode)
-
-* - default: 0.125
-* - description: todo
-* - identifier: Logistikfaktor
-* - type: Float
-PARAMETER par_InDisaggregatedNPVModule_inputgraphnode_logisticFactor(set_InDisaggregatedNPVModule_inputgraphnode)
-
-* - description: todo
-* - identifier: PV-Datei
-* - type: Boolean
-PARAMETER par_link_InDisaggregatedNPVModule_inputgraphnode_InPVFile_pvFile(set_InDisaggregatedNPVModule_inputgraphnode,set_InPVFile)
 
 * - color: Red
 * - shape: diamond
