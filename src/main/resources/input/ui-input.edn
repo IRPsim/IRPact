@@ -1,38 +1,8 @@
 [
   {
-    :label "Agentennetzwerk" 
-    :icon "fa fa-spinner" 
-    :description "Agentennetzwerk in IRPact" 
-    :image "agentGraph"
-  } 
-  {
-    :label "Informationen" 
-    :description "Informationen über IRPact und das Szenario" 
-    :sections [
-      {
-        :label "Über IRPact" 
-        :set "set_InIRPactVersion" 
-        :description "IRPact v0.9.2" 
-        :tags [["InIRPactVersion" "placeholder"]]
-      } 
-      {
-        :label "Über das Szenario" 
-        :set "set_InScenarioVersion" 
-        :description "Die Version von IRPact, für welche das Szenario erstellt wurde." 
-        :tags [["InScenarioVersion" "placeholder"]]
-      } 
-      {
-        :label "Weitere Informationen" 
-        :set "set_InInformation" 
-        :description "Weitere Informationen über das Szenario." 
-        :tags [["InInformation" "placeholder"]]
-      }
-    ]
-  } 
-  {
-    :label "TEST - modularer Graph" 
-    :icon "fas fa-skull-crossbones" 
-    :description "TEST TEST TEST" 
+    :label "[TEST] Graph - Modulares Prozessmodell" 
+    :icon "fas fa-share-alt" 
+    :description "[TEST] Interaktiver Graph fuer das modulare Prozessmodell." 
     :graph {
       :edges {
         :tags [["graphedge"]] 
@@ -48,7 +18,7 @@
             :color "LightSlateGrey"
           }
         ] 
-        :heading "Kanten"
+        :heading "Kantenbedeutung"
       } 
       :nodes {
         :set "set_InConsumerAgentModule" 
@@ -71,7 +41,7 @@
               :value "Red"
             }
           ] 
-          :heading "Farbe"
+          :heading "Fuellfarbe"
         } 
         :border {
           :type :subsets 
@@ -117,6 +87,36 @@
         }
       }
     }
+  } 
+  {
+    :label "Agentennetzwerk" 
+    :icon "fa fa-spinner" 
+    :description "Agentennetzwerk in IRPact" 
+    :image "agentGraph"
+  } 
+  {
+    :label "Informationen" 
+    :description "Informationen über IRPact und das Szenario" 
+    :sections [
+      {
+        :label "Über IRPact" 
+        :set "set_InIRPactVersion" 
+        :description "IRPact v0.10.0" 
+        :tags [["InIRPactVersion" "placeholder"]]
+      } 
+      {
+        :label "Über das Szenario" 
+        :set "set_InScenarioVersion" 
+        :description "Die Version von IRPact, für welche das Szenario erstellt wurde." 
+        :tags [["InScenarioVersion" "placeholder"]]
+      } 
+      {
+        :label "Weitere Informationen" 
+        :set "set_InInformation" 
+        :description "Weitere Informationen über das Szenario." 
+        :tags [["InInformation" "placeholder"]]
+      }
+    ]
   } 
   {
     :label "Einstellungen" 

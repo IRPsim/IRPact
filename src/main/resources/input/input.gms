@@ -1478,7 +1478,7 @@ PARAMETER par_link_InModularRAProcessModel_InUncertainty_uncertainties(set_InMod
 * - shape: gear
 * - identifier: InAddModule_calcgraphnode
 * - type: String
-SET set_InAddModule_calcgraphnode(set_InConsumerAgentEvaluationModule)
+SET set_InAddModule_calcgraphnode(set_InConsumerAgentCalculationModule)
 
 * - default: 1
 * - description: todo
@@ -1500,7 +1500,7 @@ PARAMETER par_link_InAddModule_calcgraphnode_InConsumerAgentCalculationModule_se
 * - shape: square
 * - identifier: InAttributeInputModule_inputgraphnode
 * - type: String
-SET set_InAttributeInputModule_inputgraphnode(set_InConsumerAgentEvaluationModule)
+SET set_InAttributeInputModule_inputgraphnode(set_InConsumerAgentCalculationModule)
 
 * - default: 1
 * - description: todo
@@ -1517,7 +1517,7 @@ PARAMETER par_link_InAttributeInputModule_inputgraphnode_InAttributeName_attribu
 * - shape: gear
 * - identifier: InLogisticModule_calcgraphnode
 * - type: String
-SET set_InLogisticModule_calcgraphnode(set_InConsumerAgentEvaluationModule)
+SET set_InLogisticModule_calcgraphnode(set_InConsumerAgentCalculationModule)
 
 * - default: 1
 * - description: todo
@@ -1534,7 +1534,7 @@ PARAMETER par_link_InLogisticModule_calcgraphnode_InConsumerAgentCalculationModu
 * - shape: gear
 * - identifier: InWeightedModule_calcgraphnode
 * - type: String
-SET set_InWeightedModule_calcgraphnode(set_InConsumerAgentEvaluationModule)
+SET set_InWeightedModule_calcgraphnode(set_InConsumerAgentCalculationModule)
 
 * - default: 1
 * - description: todo
@@ -1688,7 +1688,7 @@ PARAMETER par_link_InDefaultDecisionMakingModule_evalgraphnode_InRAProcessPlanNo
 * - shape: square
 * - identifier: InDisaggregatedFinancialModule_inputgraphnode
 * - type: String
-SET set_InDisaggregatedFinancialModule_inputgraphnode(set_InConsumerAgentEvaluationModule)
+SET set_InDisaggregatedFinancialModule_inputgraphnode(set_InConsumerAgentCalculationModule)
 
 * - default: 1
 * - description: todo
@@ -1706,7 +1706,7 @@ PARAMETER par_InDisaggregatedFinancialModule_inputgraphnode_logisticFactor(set_I
 * - shape: square
 * - identifier: InDisaggregatedNPVModule_inputgraphnode
 * - type: String
-SET set_InDisaggregatedNPVModule_inputgraphnode(set_InConsumerAgentEvaluationModule)
+SET set_InDisaggregatedNPVModule_inputgraphnode(set_InConsumerAgentCalculationModule)
 
 * - default: 1
 * - description: todo

@@ -1517,9 +1517,6 @@ InWeightedModule_calcgraphnode_input_graphedge:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
 
-
-
-
 ##########################
 
 spatial:

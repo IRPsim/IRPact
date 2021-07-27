@@ -372,7 +372,7 @@
         }
       },
       "set_InScenarioVersion" : {
-        "v0_9_2" : {
+        "v0_10_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
