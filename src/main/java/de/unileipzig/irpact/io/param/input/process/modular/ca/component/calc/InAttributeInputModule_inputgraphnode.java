@@ -8,7 +8,7 @@ import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentCalculationModule;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GraphNode;
@@ -34,7 +34,7 @@ import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings
                 tags = {INPUT_GRAPHNODE}
         )
 )
-public class InAttributeInputModule_inputgraphnode implements InConsumerAgentEvaluationModule {
+public class InAttributeInputModule_inputgraphnode implements InConsumerAgentCalculationModule {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -89,6 +89,11 @@ public class InAttributeInputModule_inputgraphnode implements InConsumerAgentEva
     }
 
     public InAttributeInputModule_inputgraphnode() {
+    }
+
+    public InAttributeInputModule_inputgraphnode(String name, InAttributeName attribute) {
+        setName(name);
+        setAttribute(attribute);
     }
 
     @Override
