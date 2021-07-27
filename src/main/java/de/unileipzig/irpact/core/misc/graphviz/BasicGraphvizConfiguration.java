@@ -1,7 +1,8 @@
 package de.unileipzig.irpact.core.misc.graphviz;
 
-import de.unileipzig.irpact.commons.geo.LatLng2XY;
+import de.unileipzig.irpact.commons.concurrent.TimedTask;
 import de.unileipzig.irpact.commons.util.PositionMapper;
+import de.unileipzig.irpact.commons.util.data.MutableBoolean;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -23,6 +24,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * @author Daniel Abitz
@@ -32,6 +35,7 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicGraphvizConfiguration.class);
     protected static final double DEFAULT_PREFERRED_WIDTH = 1000;
     protected static final double DEFAULT_PREFERRED_HEIGHT = 1000;
+    protected static final long TIMEOUT = TimeUnit.MINUTES.toMillis(2);
 
     protected Map<ConsumerAgentGroup, Color> colorMapping;
     protected LayoutAlgorithm layoutAlgorithm;
@@ -340,13 +344,32 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
                 return;
             }
 
+            MutableBoolean canceled = MutableBoolean.falseValue();
+            TimedTask timeout = new TimedTask(
+                    TIMEOUT,
+                    () -> {
+                        LOGGER.warn("timeout! cancel process");
+                        canceled.set(true);
+                        process.cancelForcibly();
+                    }
+            );
+            LOGGER.trace("start timeout: {} ms", TIMEOUT);
+            timeout.start();
+
             LOGGER.trace("execute dot process");
             ProcessResult result;
             try {
                 result = process.execute();
+                timeout.cancel();
+                LOGGER.trace("timeout canceled");
             } catch (Exception e) {
                 LOGGER.error("dot process execution failed", e);
                 return;
+            }
+
+            if(canceled.get()) {
+                LOGGER.warn("process canceled -> timeout");
+                throw new TimeoutException("process timeout");
             }
 
             if(result.isOk()) {

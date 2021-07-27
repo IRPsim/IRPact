@@ -49,9 +49,9 @@ public final class MPMSettings {
     public static final String CALC_EDGE_COLOR = ParamUtil.COLOR_DARK_CYAN;
     public static final String EVAL_EDGE_COLOR = ParamUtil.COLOR_LIGHT_SLATE_GREY;
 
-    //...
+    //meta
 
-    public static final String ICON_TEST = "fas fa-skull-crossbones";
+    public static final String GRAPH_ICON = "fas fa-share-alt";
 
     protected MPMSettings() {
     }

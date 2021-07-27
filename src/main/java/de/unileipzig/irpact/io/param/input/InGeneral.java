@@ -180,6 +180,8 @@ public class InGeneral implements Copyable {
     public static final String SCA_INGENERAL_LOGINITIALIZATION = "sca_InGeneral_logInitialization";
     public static final String SCA_INGENERAL_LOGSIMULATION = "sca_InGeneral_logSimulation";
 
+    public static final String SCA_INGENERAL_PRINTSTACKTRACEIMAGE = "sca_InGeneral_printStacktraceImage";
+
     @FieldDefinition
     public long seed = 42L;
     public void setSeed(long seed) {
@@ -429,8 +431,6 @@ public class InGeneral implements Copyable {
         }
     }
 
-
-
     @FieldDefinition
     public boolean logAll;
 
@@ -445,6 +445,10 @@ public class InGeneral implements Copyable {
 
     @FieldDefinition
     public boolean logSimulation;
+
+    public void useInfoLogging() {
+        setLogLevel(IRPLevel.INFO);
+    }
 
     //=========================
     //data logging

@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public class RealPVactScenario01 extends AbstractPVactScenario {
 
-    public static final int REVISION = 0;
+    public static final int REVISION = 2;
 
     protected InDiracUnivariateDistribution dirac0 = new InDiracUnivariateDistribution("dirac0", 0);
 
@@ -49,20 +49,20 @@ public class RealPVactScenario01 extends AbstractPVactScenario {
         grp.setEnvironmentalConcern(dirac0);                      //A4 !
         //A5 in file
         //A6 in file
-        grp.setConstructionRate(dirac0);                          //A7
-        grp.setRenovationRate(dirac0);                            //A8
+        grp.setConstructionRate(dirac0);                          //A7 !
+        grp.setRenovationRate(dirac0);                            //A8 !
 
-        grp.setRewire(dirac0);                                    //B6
+        grp.setRewire(dirac0);                                    //B6 !
 
         grp.setCommunication(dirac0);                             //C1 !
         grp.setRateOfConvergence(dirac0);                         //C3 !
 
-        grp.setInitialProductAwareness(dirac0);                   //D1
-        grp.setInterestThreshold(dirac0);                         //D2
-        grp.setFinancialThreshold(dirac0);                        //D3
-        grp.setAdoptionThreshold(dirac0);                         //D4
-        grp.setInitialAdopter(dirac0);                            //D5  !
-        grp.setInitialProductInterest(dirac0);                    //D6
+        grp.setInitialProductAwareness(dirac0);                   //D1 -
+        grp.setInterestThreshold(dirac0);                         //D2 !
+        grp.setFinancialThreshold(dirac0);                        //D3 !
+        grp.setAdoptionThreshold(dirac0);                         //D4 !
+        grp.setInitialAdopter(dirac0);                            //D5 !
+        grp.setInitialProductInterest(dirac0);                    //D6 -
 
         return grp;
     }
@@ -73,6 +73,17 @@ public class RealPVactScenario01 extends AbstractPVactScenario {
 
         InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
         realData.CAGS.forEach(cag -> cag.setSpatialDistribution(spatialDist));
+
+        InDiracUnivariateDistribution renoDist = new InDiracUnivariateDistribution("RENO", 0.00394339526076053);
+        InDiracUnivariateDistribution constDist = new InDiracUnivariateDistribution("CONST", 0.00364015558626337);
+        InDiracUnivariateDistribution interestDist = new InDiracUnivariateDistribution("INTEREST_THRESHOLD", 9);
+        InDiracUnivariateDistribution financialThresholdDist = new InDiracUnivariateDistribution("FINANCIAL_THRESHOLD", 0);
+        InDiracUnivariateDistribution adoptionThreshold = new InDiracUnivariateDistribution("ADOPTION_THRESHOLD", 0);
+        realData.CAGS.forEach(cag -> cag.setRenovationRate(renoDist));
+        realData.CAGS.forEach(cag -> cag.setConstructionRate(constDist));
+        realData.CAGS.forEach(cag -> cag.setInterestThreshold(interestDist));
+        realData.CAGS.forEach(cag -> cag.setFinancialThreshold(financialThresholdDist));
+        realData.CAGS.forEach(cag -> cag.setAdoptionThreshold(adoptionThreshold));
 
         InAffinities affinities = realData.buildAffinities("affinities", 0.53);
 
@@ -88,11 +99,16 @@ public class RealPVactScenario01 extends AbstractPVactScenario {
         //COMMU
         Map<Milieu, InBernoulliDistribution> commu = RealData.buildBernoulli("COMMU", RealData.XLSX_ORDER_ARR, RealData.COMMU);
         realData.CAGS.applyMilieus(commu, InPVactConsumerAgentGroup::setCommunication);
+        //REWIRE
+        Map<Milieu, InBernoulliDistribution> rewire = RealData.buildBernoulli("REWIRE", RealData.XLSX_ORDER_ARR, RealData.REWIRE);
+        realData.CAGS.applyMilieus(rewire, InPVactConsumerAgentGroup::setRewire);
         //COMMU
         Map<Milieu, InBernoulliDistribution> initialAdopter = RealData.buildBernoulli("INITADOPT", RealData.XLSX_ORDER_ARR, RealData.INITIAL_ADOPTER);
         realData.CAGS.applyMilieus(initialAdopter, InPVactConsumerAgentGroup::setInitialAdopter);
 
         InFileBasedPVactConsumerAgentPopulation population = createFullPopulation("Pop", realData.CAGS.cags());
+        population.setUseAll(false);
+        population.setDesiredSize(1000);
 
         Map<InPVactConsumerAgentGroup, Integer> edgeCount = realData.CAGS.map(RealData.calcEdgeCount(
                 RealData.XLSX_ORDER_ARR,
@@ -122,7 +138,9 @@ public class RealPVactScenario01 extends AbstractPVactScenario {
 
         //=====
         InRoot root = createRootWithInformationsWithFullLogging();
-        root.getGeneral().setFirstSimulationYear(DEFAULT_INITIAL_YEAR);
+        root.getGeneral().setFirstSimulationYear(2008);
+        root.getGeneral().setLastSimulationYear(2008);
+        root.getGeneral().useInfoLogging();
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(realData.CAGS.cags());
         root.setAgentPopulationSize(population);
