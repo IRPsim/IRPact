@@ -11,7 +11,7 @@ import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentCalculationModule;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GraphNode;
@@ -37,7 +37,7 @@ import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings
                 tags = {INPUT_GRAPHNODE}
         )
 )
-public class InDisaggregatedNPVModule_inputgraphnode implements InConsumerAgentEvaluationModule {
+public class InDisaggregatedNPVModule_inputgraphnode implements InConsumerAgentCalculationModule {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -103,6 +103,12 @@ public class InDisaggregatedNPVModule_inputgraphnode implements InConsumerAgentE
     }
 
     public InDisaggregatedNPVModule_inputgraphnode() {
+    }
+
+    public InDisaggregatedNPVModule_inputgraphnode(String name, double logisticFactor, InPVFile pvFile) {
+        setName(name);
+        setLogisticFactor(logisticFactor);
+        setPvFile(pvFile);
     }
 
     @Override

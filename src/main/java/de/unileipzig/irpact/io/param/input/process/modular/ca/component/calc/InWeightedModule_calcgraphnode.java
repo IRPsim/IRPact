@@ -9,7 +9,6 @@ import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentCalculationModule;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GraphEdge;
@@ -36,7 +35,7 @@ import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings
                 tags = {CALC_GRAPHNODE}
         )
 )
-public class InWeightedModule_calcgraphnode implements InConsumerAgentEvaluationModule {
+public class InWeightedModule_calcgraphnode implements InConsumerAgentCalculationModule {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {

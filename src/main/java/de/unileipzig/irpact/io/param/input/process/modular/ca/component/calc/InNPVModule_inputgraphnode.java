@@ -10,7 +10,7 @@ import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentCalculationModule;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GraphNode;
@@ -36,7 +36,7 @@ import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings
                 tags = {INPUT_GRAPHNODE}
         )
 )
-public class InNPVModule_inputgraphnode implements InConsumerAgentEvaluationModule {
+public class InNPVModule_inputgraphnode implements InConsumerAgentCalculationModule {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -91,6 +91,11 @@ public class InNPVModule_inputgraphnode implements InConsumerAgentEvaluationModu
     }
 
     public InNPVModule_inputgraphnode() {
+    }
+
+    public InNPVModule_inputgraphnode(String name, InPVFile pvFile) {
+        setName(name);
+        setPvFile(pvFile);
     }
 
     @Override

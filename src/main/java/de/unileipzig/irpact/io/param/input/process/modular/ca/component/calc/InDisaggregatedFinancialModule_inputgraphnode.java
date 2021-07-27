@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentCalculationModule;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GraphNode;
@@ -33,7 +33,7 @@ import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings
                 tags = {INPUT_GRAPHNODE}
         )
 )
-public class InDisaggregatedFinancialModule_inputgraphnode implements InConsumerAgentEvaluationModule {
+public class InDisaggregatedFinancialModule_inputgraphnode implements InConsumerAgentCalculationModule {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -86,6 +86,11 @@ public class InDisaggregatedFinancialModule_inputgraphnode implements InConsumer
     }
 
     public InDisaggregatedFinancialModule_inputgraphnode() {
+    }
+
+    public InDisaggregatedFinancialModule_inputgraphnode(String name, double logisticFactor) {
+        setName(name);
+        setLogisticFactor(logisticFactor);
     }
 
     @Override
