@@ -1348,7 +1348,7 @@ PARAMETER par_InDefaultHandleInterestComponent_unknownPoints(set_InDefaultHandle
 SET set_InDoNothingComponent(set_InEvaluableComponent)
 
 * - default: 0
-* - description: ungenutzterPlatzhalter
+* - description: todo
 * - identifier: ---
 * - type: Float
 PARAMETER par_InDoNothingComponent_placeholder(set_InDoNothingComponent)
@@ -1473,6 +1473,333 @@ PARAMETER par_link_InModularRAProcessModel_InEvaluableComponent_actionComponent(
 * - identifier: uncertainties
 * - type: Boolean
 PARAMETER par_link_InModularRAProcessModel_InUncertainty_uncertainties(set_InModularRAProcessModel,set_InUncertainty)
+
+* - identifier: InModularProcessModel
+* - hidden: 1
+* - type: String
+SET set_InModularProcessModel(set_InProcessModel)
+
+* - identifier: InModule
+* - hidden: 1
+* - type: String
+SET set_InModule(*)
+
+* - identifier: InConsumerAgentModularProcessModel
+* - hidden: 1
+* - type: String
+SET set_InConsumerAgentModularProcessModel(set_InModularProcessModel)
+
+* - identifier: InSimpleConsumerAgentMPM
+* - type: String
+SET set_InSimpleConsumerAgentMPM(set_InConsumerAgentModularProcessModel)
+
+* - description: todo
+* - identifier: Startmodul
+* - type: Boolean
+PARAMETER par_link_InSimpleConsumerAgentMPM_InConsumerAgentEvaluationModule_startModule(set_InSimpleConsumerAgentMPM,set_InConsumerAgentEvaluationModule)
+
+* - identifier: InConsumerAgentModule
+* - hidden: 1
+* - type: String
+SET set_InConsumerAgentModule(set_InModule)
+
+* - identifier: InConsumerAgentCalculationModule
+* - hidden: 1
+* - type: String
+SET set_InConsumerAgentCalculationModule(set_InConsumerAgentModule)
+
+* - identifier: InConsumerAgentEvaluationModule
+* - hidden: 1
+* - type: String
+SET set_InConsumerAgentEvaluationModule(set_InConsumerAgentModule)
+
+* - identifier: InDefaultActionModule
+* - type: String
+SET set_InDefaultActionModule(set_InConsumerAgentEvaluationModule)
+
+* - default: 3
+* - description: todo
+* - identifier: adopter points
+* - type: Integer
+PARAMETER par_InDefaultActionModule_adopterPoints(set_InDefaultActionModule)
+
+* - default: 2
+* - description: todo
+* - identifier: interested points
+* - type: Integer
+PARAMETER par_InDefaultActionModule_interestedPoints(set_InDefaultActionModule)
+
+* - default: 1
+* - description: todo
+* - identifier: aware points
+* - type: Integer
+PARAMETER par_InDefaultActionModule_awarePoints(set_InDefaultActionModule)
+
+* - default: 0
+* - description: todo
+* - identifier: unknown points
+* - type: Integer
+PARAMETER par_InDefaultActionModule_unknownPoints(set_InDefaultActionModule)
+
+* - default: 0.5
+* - description: todo
+* - identifier: speed of convergence
+* - type: Float
+PARAMETER par_InDefaultActionModule_speedOfConvergence(set_InDefaultActionModule)
+
+* - description: todo
+* - identifier: attitude gap
+* - type: Float
+PARAMETER par_InDefaultActionModule_attitudeGap(set_InDefaultActionModule)
+
+* - default: 0.5
+* - domain: [0,1]
+* - description: todo
+* - identifier: chance neutral
+* - type: Float
+PARAMETER par_InDefaultActionModule_chanceNeutral(set_InDefaultActionModule)
+
+* - default: 0.25
+* - domain: [0,1]
+* - description: todo
+* - identifier: chance convergence
+* - type: Float
+PARAMETER par_InDefaultActionModule_chanceConvergence(set_InDefaultActionModule)
+
+* - default: 0.25
+* - domain: [0,1]
+* - description: todo
+* - identifier: chance divergence
+* - type: Float
+PARAMETER par_InDefaultActionModule_chanceDivergence(set_InDefaultActionModule)
+
+* - description: todo
+* - identifier: uncertainties
+* - type: Boolean
+PARAMETER par_link_InDefaultActionModule_InUncertainty_uncertainties(set_InDefaultActionModule,set_InUncertainty)
+
+* - identifier: InDefaultDecisionMakingModule
+* - type: String
+SET set_InDefaultDecisionMakingModule(set_InConsumerAgentEvaluationModule)
+
+* - default: 0.25
+* - description: Legt den Einfluss der finanziellen Komponente fest.
+* - identifier: Einfluss finanzielle Komponente (a)
+* - type: Float
+PARAMETER par_InDefaultDecisionMakingModule_a(set_InDefaultDecisionMakingModule)
+
+* - default: 0.25
+* - description: Legt den Einfluss der novelty Komponente fest.
+* - identifier: Einfluss novelty Komponente (b)
+* - type: Float
+PARAMETER par_InDefaultDecisionMakingModule_b(set_InDefaultDecisionMakingModule)
+
+* - default: 0.25
+* - description: Legt den Umwelteinfluss fest.
+* - identifier: Umwelteinfluss (c)
+* - type: Float
+PARAMETER par_InDefaultDecisionMakingModule_c(set_InDefaultDecisionMakingModule)
+
+* - default: 0.25
+* - description: Legt den Einfluss der sozialen Komponente fest.
+* - identifier: Einfluss soziale Komponente (d)
+* - type: Float
+PARAMETER par_InDefaultDecisionMakingModule_d(set_InDefaultDecisionMakingModule)
+
+* - default: 0.5
+* - description: todo
+* - identifier: Wichtung fin. 
+* - type: Float
+PARAMETER par_InDefaultDecisionMakingModule_weightFT(set_InDefaultDecisionMakingModule)
+
+* - default: 0.5
+* - description: todo
+* - identifier: Wichtung Barwert
+* - type: Float
+PARAMETER par_InDefaultDecisionMakingModule_weightNPV(set_InDefaultDecisionMakingModule)
+
+* - default: 0.5
+* - description: todo
+* - identifier: Wichtung soziales Netz
+* - type: Float
+PARAMETER par_InDefaultDecisionMakingModule_weightSocial(set_InDefaultDecisionMakingModule)
+
+* - default: 0.5
+* - description: todo
+* - identifier: Wichtung lokales Netz
+* - type: Float
+PARAMETER par_InDefaultDecisionMakingModule_weightLocal(set_InDefaultDecisionMakingModule)
+
+* - default: 0.125
+* - description: todo
+* - identifier: Wichtung lokales Netz
+* - type: Float
+PARAMETER par_InDefaultDecisionMakingModule_logisticFactor(set_InDefaultDecisionMakingModule)
+
+* - description: todo
+* - identifier: pv file
+* - type: Boolean
+PARAMETER par_link_InDefaultDecisionMakingModule_InPVFile_pvFile(set_InDefaultDecisionMakingModule,set_InPVFile)
+
+* - description: todo
+* - identifier: node filter scheme
+* - type: Boolean
+PARAMETER par_link_InDefaultDecisionMakingModule_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InDefaultDecisionMakingModule,set_InRAProcessPlanNodeFilterScheme)
+
+* - identifier: InDefaultFeasibilityModule
+* - type: String
+SET set_InDefaultFeasibilityModule(set_InConsumerAgentEvaluationModule)
+
+* - default: 3
+* - description: todo
+* - identifier: adopter points
+* - type: Integer
+PARAMETER par_InDefaultFeasibilityModule_adopterPoints(set_InDefaultFeasibilityModule)
+
+* - default: 2
+* - description: todo
+* - identifier: interested points
+* - type: Integer
+PARAMETER par_InDefaultFeasibilityModule_interestedPoints(set_InDefaultFeasibilityModule)
+
+* - default: 1
+* - description: todo
+* - identifier: aware points
+* - type: Integer
+PARAMETER par_InDefaultFeasibilityModule_awarePoints(set_InDefaultFeasibilityModule)
+
+* - default: 0
+* - description: todo
+* - identifier: unknown points
+* - type: Integer
+PARAMETER par_InDefaultFeasibilityModule_unknownPoints(set_InDefaultFeasibilityModule)
+
+* - default: 0.5
+* - description: todo
+* - identifier: speed of convergence
+* - type: Float
+PARAMETER par_InDefaultFeasibilityModule_speedOfConvergence(set_InDefaultFeasibilityModule)
+
+* - description: todo
+* - identifier: attitude gap
+* - type: Float
+PARAMETER par_InDefaultFeasibilityModule_attitudeGap(set_InDefaultFeasibilityModule)
+
+* - default: 0.5
+* - domain: [0,1]
+* - description: todo
+* - identifier: chance neutral
+* - type: Float
+PARAMETER par_InDefaultFeasibilityModule_chanceNeutral(set_InDefaultFeasibilityModule)
+
+* - default: 0.25
+* - domain: [0,1]
+* - description: todo
+* - identifier: chance convergence
+* - type: Float
+PARAMETER par_InDefaultFeasibilityModule_chanceConvergence(set_InDefaultFeasibilityModule)
+
+* - default: 0.25
+* - domain: [0,1]
+* - description: todo
+* - identifier: chance divergence
+* - type: Float
+PARAMETER par_InDefaultFeasibilityModule_chanceDivergence(set_InDefaultFeasibilityModule)
+
+* - description: todo
+* - identifier: uncertainties
+* - type: Boolean
+PARAMETER par_link_InDefaultFeasibilityModule_InUncertainty_uncertainties(set_InDefaultFeasibilityModule,set_InUncertainty)
+
+* - identifier: InDefaultInterestModule
+* - type: String
+SET set_InDefaultInterestModule(set_InConsumerAgentEvaluationModule)
+
+* - default: 3
+* - description: todo
+* - identifier: adopter points
+* - type: Integer
+PARAMETER par_InDefaultInterestModule_adopterPoints(set_InDefaultInterestModule)
+
+* - default: 2
+* - description: todo
+* - identifier: interested points
+* - type: Integer
+PARAMETER par_InDefaultInterestModule_interestedPoints(set_InDefaultInterestModule)
+
+* - default: 1
+* - description: todo
+* - identifier: aware points
+* - type: Integer
+PARAMETER par_InDefaultInterestModule_awarePoints(set_InDefaultInterestModule)
+
+* - default: 0
+* - description: todo
+* - identifier: unknown points
+* - type: Integer
+PARAMETER par_InDefaultInterestModule_unknownPoints(set_InDefaultInterestModule)
+
+* - default: 0.5
+* - description: todo
+* - identifier: speed of convergence
+* - type: Float
+PARAMETER par_InDefaultInterestModule_speedOfConvergence(set_InDefaultInterestModule)
+
+* - description: todo
+* - identifier: attitude gap
+* - type: Float
+PARAMETER par_InDefaultInterestModule_attitudeGap(set_InDefaultInterestModule)
+
+* - default: 0.5
+* - domain: [0,1]
+* - description: todo
+* - identifier: chance neutral
+* - type: Float
+PARAMETER par_InDefaultInterestModule_chanceNeutral(set_InDefaultInterestModule)
+
+* - default: 0.25
+* - domain: [0,1]
+* - description: todo
+* - identifier: chance convergence
+* - type: Float
+PARAMETER par_InDefaultInterestModule_chanceConvergence(set_InDefaultInterestModule)
+
+* - default: 0.25
+* - domain: [0,1]
+* - description: todo
+* - identifier: chance divergence
+* - type: Float
+PARAMETER par_InDefaultInterestModule_chanceDivergence(set_InDefaultInterestModule)
+
+* - description: todo
+* - identifier: uncertainties
+* - type: Boolean
+PARAMETER par_link_InDefaultInterestModule_InUncertainty_uncertainties(set_InDefaultInterestModule,set_InUncertainty)
+
+* - identifier: InStageEvaluationModule
+* - type: String
+SET set_InStageEvaluationModule(set_InConsumerAgentEvaluationModule)
+
+* - identifier: graphedge_awarenessModule
+* - type: Boolean
+PARAMETER par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_graphedge_awarenessModule(set_InStageEvaluationModule,set_InConsumerAgentEvaluationModule)
+
+* - identifier: graphedge_feasibilityModule
+* - type: Boolean
+PARAMETER par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_graphedge_feasibilityModule(set_InStageEvaluationModule,set_InConsumerAgentEvaluationModule)
+
+* - identifier: graphedge_decisionMakingModule
+* - type: Boolean
+PARAMETER par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_graphedge_decisionMakingModule(set_InStageEvaluationModule,set_InConsumerAgentEvaluationModule)
+
+* - identifier: graphedge_adoptedModule
+* - type: Boolean
+PARAMETER par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_graphedge_adoptedModule(set_InStageEvaluationModule,set_InConsumerAgentEvaluationModule)
+
+* - description: todo
+* - identifier: impeded module
+* - type: Boolean
+PARAMETER par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_impededModule(set_InStageEvaluationModule,set_InConsumerAgentEvaluationModule)
 
 * - identifier: InBasicProductGroup
 * - type: String

@@ -265,7 +265,7 @@ public class JadexRestoreUpdater implements IRPactRestoreUpdater, LoggingHelper 
 
     private void setupGeneral(InRoot root) throws ParsingException {
         root.general.parseSettings(environment.getSettings());
-        BasicJadexLifeCycleControl lifeCycleControl = (BasicJadexLifeCycleControl) environment.getLiveCycleControl();
+        BasicJadexLifeCycleControl lifeCycleControl = (BasicJadexLifeCycleControl) environment.getLifeCycleControl();
         root.general.applyKillSwitch(lifeCycleControl);
     }
 

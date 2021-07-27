@@ -15,6 +15,14 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactCons
 import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.agent.population.InAgentPopulation;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedConsumerAgentPopulation;
+import de.unileipzig.irpact.io.param.input.process.modular.InModularProcessModel;
+import de.unileipzig.irpact.io.param.input.process.modular.InModule;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentModularProcessModel;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.InSimpleConsumerAgentMPM;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentCalculationModule;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentModule;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
 import de.unileipzig.irpact.io.param.input.process.mra.InModularRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.mra.component.*;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InGraphvizGeneral;
@@ -743,6 +751,22 @@ public class InRoot implements RootClass {
             InSumThresholdComponent.class,
             InValueComponent.class,
             InModularRAProcessModel.class,
+
+            //MPM v2
+            InModularProcessModel.class,
+            InModule.class,
+
+            InConsumerAgentModularProcessModel.class,
+            InSimpleConsumerAgentMPM.class,
+            InConsumerAgentModule.class,
+            InConsumerAgentCalculationModule.class,
+            InConsumerAgentEvaluationModule.class,
+            InDefaultActionModule.class,
+            InDefaultDecisionMakingModule.class,
+            InDefaultFeasibilityModule.class,
+            InDefaultInterestModule.class,
+            InStageEvaluationModule.class,
+            //===
 
             InBasicProductGroup.class,
             InBasicProductGroupAttribute.class,

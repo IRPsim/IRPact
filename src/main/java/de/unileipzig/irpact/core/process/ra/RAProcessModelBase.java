@@ -128,7 +128,7 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     private synchronized Timestamp syncGetCurrentWeek27(Timestamp ts) {
         Timestamp w27 = week27Map.get(ts.getYear());
         if(w27 == null) {
-            w27 = environment.getTimeModel().at(ts.getYear(), WEEK27);
+            w27 = environment.getTimeModel().atWeek(ts.getYear(), WEEK27);
             week27Map.put(ts.getYear(), w27);
         }
         return w27;
@@ -156,17 +156,17 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
 
         SyncTask firstAnnualTask = createStartOfYearTask(getName() + "_FirstAnnual");
         trace("create first annual task '{}'", firstAnnualTask.getName());
-        environment.getLiveCycleControl().registerSyncTaskAsFirstAnnualAction(firstAnnualTask);
+        environment.getLifeCycleControl().registerSyncTaskAsFirstAnnualAction(firstAnnualTask);
 
         SyncTask lastAnnualTask = createEndOfYearTask(getName() + "_LastAnnual");
         trace("create last annual task '{}'", lastAnnualTask.getName());
-        environment.getLiveCycleControl().registerSyncTaskAsLastAnnualAction(lastAnnualTask);
+        environment.getLifeCycleControl().registerSyncTaskAsLastAnnualAction(lastAnnualTask);
 
         for(int y = firstYear; y <= lastYear; y++) {
-            Timestamp tsWeek27 = environment.getTimeModel().at(y, WEEK27);
+            Timestamp tsWeek27 = environment.getTimeModel().atWeek(y, WEEK27);
             SyncTask taskWeek27 = createWeek27Task(getName() + "_MidYear_" + y);
             trace("created mid year task (27th week) '{}'", taskWeek27.getName());
-            environment.getLiveCycleControl().registerSyncTaskAsFirstAction(tsWeek27, taskWeek27);
+            environment.getLifeCycleControl().registerSyncTaskAsFirstAction(tsWeek27, taskWeek27);
         }
     }
 

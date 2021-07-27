@@ -5,6 +5,8 @@ import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
+import de.unileipzig.irpact.commons.util.data.DataStore;
+import de.unileipzig.irpact.commons.util.data.MapDataStore;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
@@ -45,6 +47,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     protected boolean restored = false;
 
     protected final AttributeHelper HELPER = new AttributeHelper(this);
+    protected final DataStore STORE = newStore();
     protected Settings settings;
     protected BinaryTaskManager taskManager;
     protected PersistenceModul persistenceModul;
@@ -62,18 +65,14 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     public BasicJadexSimulationEnvironment() {
     }
 
+    private static DataStore newStore() {
+        MapDataStore store = new MapDataStore();
+        store.setName("GLOBAL_STORE");
+        return store;
+    }
+
     @Override
     public int getChecksum() {
-//        return Objects.hash(
-//                agentManager.getChecksum(),
-//                socialNetwork.getChecksum(),
-//                processModelManager.getChecksum(),
-//                productManager.getChecksum(),
-//                spatialModel.getChecksum(),
-//                timeModel.getChecksum(),
-//                lifeCycleControl.getChecksum(),
-//                rnd.getChecksum()
-//        );
         return ChecksumComparable.getChecksum(
                 agentManager,
                 socialNetwork,
@@ -212,7 +211,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     }
 
     @Override
-    public JadexLifeCycleControl getLiveCycleControl() {
+    public JadexLifeCycleControl getLifeCycleControl() {
         return lifeCycleControl;
     }
 
@@ -260,6 +259,11 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     @Override
     public AttributeHelper getAttributeHelper() {
         return HELPER;
+    }
+
+    @Override
+    public DataStore getGlobalData() {
+        return STORE;
     }
 
     @Override

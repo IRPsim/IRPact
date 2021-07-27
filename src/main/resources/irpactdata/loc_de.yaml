@@ -1237,8 +1237,195 @@ InDoNothingComponent:
   edn_description: "todo"
 InDoNothingComponent_placeholder:
   gams_identifier: "---"
-  gams_description: "ungenutzterPlatzhalter"
+  gams_description: "todo"
 
+##########################
+# V2
+##########################
+
+process_modular2:
+  edn_label: "Modulares Prozessmodell V2"
+  edn_description: "todo"
+process_modular2_model:
+  edn_label: "Modell"
+  edn_description: "todo"
+process_modular2_components:
+  edn_label: "Module"
+  edn_description: "todo"
+process_modular2_components_calc:
+  edn_label: "Berechnungsmodule"
+  edn_description: "todo"
+process_modular2_components_eval:
+  edn_label: "Evaluierungsmodule"
+  edn_description: "todo"
+
+InSimpleConsumerAgentMPM:
+  edn_label: "Einfaches modulares Modell"
+  edn_description: "todo"
+InSimpleConsumerAgentMPM_startModule:
+  gams_identifier: "Startmodul"
+  gams_description: "todo"
+
+InDefaultActionModule:
+  edn_label: "Standard-Aktion"
+  edn_description: "todo"
+InDefaultActionModule_adopterPoints:
+  gams_identifier: "adopter points"
+  gams_description: "todo"
+InDefaultActionModule_interestedPoints:
+  gams_identifier: "interested points"
+  gams_description: "todo"
+InDefaultActionModule_awarePoints:
+  gams_identifier: "aware points"
+  gams_description: "todo"
+InDefaultActionModule_unknownPoints:
+  gams_identifier: "unknown points"
+  gams_description: "todo"
+InDefaultActionModule_speedOfConvergence:
+  gams_identifier: "speed of convergence"
+  gams_description: "todo"
+InDefaultActionModule_attitudeGap:
+  gams_identifier: "attitude gap"
+  gams_description: "todo"
+InDefaultActionModule_chanceNeutral:
+  gams_identifier: "chance neutral"
+  gams_description: "todo"
+InDefaultActionModule_chanceConvergence:
+  gams_identifier: "chance convergence"
+  gams_description: "todo"
+InDefaultActionModule_chanceDivergence:
+  gams_identifier: "chance divergence"
+  gams_description: "todo"
+InDefaultActionModule_uncertainties:
+  gams_identifier: "uncertainties"
+  gams_description: "todo"
+
+InDefaultFeasibilityModule:
+  edn_label: "Standard-Feasibility"
+  edn_description: "todo"
+InDefaultFeasibilityModule_adopterPoints:
+  gams_identifier: "adopter points"
+  gams_description: "todo"
+InDefaultFeasibilityModule_interestedPoints:
+  gams_identifier: "interested points"
+  gams_description: "todo"
+InDefaultFeasibilityModule_awarePoints:
+  gams_identifier: "aware points"
+  gams_description: "todo"
+InDefaultFeasibilityModule_unknownPoints:
+  gams_identifier: "unknown points"
+  gams_description: "todo"
+InDefaultFeasibilityModule_speedOfConvergence:
+  gams_identifier: "speed of convergence"
+  gams_description: "todo"
+InDefaultFeasibilityModule_attitudeGap:
+  gams_identifier: "attitude gap"
+  gams_description: "todo"
+InDefaultFeasibilityModule_chanceNeutral:
+  gams_identifier: "chance neutral"
+  gams_description: "todo"
+InDefaultFeasibilityModule_chanceConvergence:
+  gams_identifier: "chance convergence"
+  gams_description: "todo"
+InDefaultFeasibilityModule_chanceDivergence:
+  gams_identifier: "chance divergence"
+  gams_description: "todo"
+InDefaultFeasibilityModule_uncertainties:
+  gams_identifier: "uncertainties"
+  gams_description: "todo"
+
+InDefaultInterestModule:
+  edn_label: "Standard-Interesse"
+  edn_description: "todo"
+InDefaultInterestModule_adopterPoints:
+  gams_identifier: "adopter points"
+  gams_description: "todo"
+InDefaultInterestModule_interestedPoints:
+  gams_identifier: "interested points"
+  gams_description: "todo"
+InDefaultInterestModule_awarePoints:
+  gams_identifier: "aware points"
+  gams_description: "todo"
+InDefaultInterestModule_unknownPoints:
+  gams_identifier: "unknown points"
+  gams_description: "todo"
+InDefaultInterestModule_speedOfConvergence:
+  gams_identifier: "speed of convergence"
+  gams_description: "todo"
+InDefaultInterestModule_attitudeGap:
+  gams_identifier: "attitude gap"
+  gams_description: "todo"
+InDefaultInterestModule_chanceNeutral:
+  gams_identifier: "chance neutral"
+  gams_description: "todo"
+InDefaultInterestModule_chanceConvergence:
+  gams_identifier: "chance convergence"
+  gams_description: "todo"
+InDefaultInterestModule_chanceDivergence:
+  gams_identifier: "chance divergence"
+  gams_description: "todo"
+InDefaultInterestModule_uncertainties:
+  gams_identifier: "uncertainties"
+  gams_description: "todo"
+
+InStageEvaluationModule:
+  edn_label: "Default-Phasen"
+  edn_description: "todo"
+InStageEvaluationModule_awarenessModule:
+  gams_identifier: "awareness module"
+  gams_description: "todo"
+InStageEvaluationModule_feasibilityModule:
+  gams_identifier: "feasibility module"
+  gams_description: "todo"
+InStageEvaluationModule_decisionMakingModule:
+  gams_identifier: "decision making module"
+  gams_description: "todo"
+InStageEvaluationModule_adoptedModule:
+  gams_identifier: "adopted module"
+  gams_description: "todo"
+InStageEvaluationModule_impededModule:
+  gams_identifier: "impeded module"
+  gams_description: "todo"
+
+InDefaultDecisionMakingModule:
+  edn_label: "Default-Decision Making"
+  edn_description: "todo"
+InDefaultDecisionMakingModule_a:
+  gams_identifier: "Einfluss finanzielle Komponente (a)"
+  gams_description: "Legt den Einfluss der finanziellen Komponente fest."
+InDefaultDecisionMakingModule_b:
+  gams_identifier: "Einfluss novelty Komponente (b)"
+  gams_description: "Legt den Einfluss der novelty Komponente fest."
+InDefaultDecisionMakingModule_c:
+  gams_identifier: "Umwelteinfluss (c)"
+  gams_description: "Legt den Umwelteinfluss fest."
+InDefaultDecisionMakingModule_d:
+  gams_identifier: "Einfluss soziale Komponente (d)"
+  gams_description: "Legt den Einfluss der sozialen Komponente fest."
+InDefaultDecisionMakingModule_weightFT:
+  gams_identifier: "Wichtung fin. "
+  gams_description: "todo"
+InDefaultDecisionMakingModule_weightNPV:
+  gams_identifier: "Wichtung Barwert"
+  gams_description: "todo"
+InDefaultDecisionMakingModule_weightSocial:
+  gams_identifier: "Wichtung soziales Netz"
+  gams_description: "todo"
+InDefaultDecisionMakingModule_weightLocal:
+  gams_identifier: "Wichtung lokales Netz"
+  gams_description: "todo"
+InDefaultDecisionMakingModule_logisticFactor:
+  gams_identifier: "Wichtung lokales Netz"
+  gams_description: "todo"
+InDefaultDecisionMakingModule_pvFile:
+  gams_identifier: "pv file"
+  gams_description: "todo"
+InDefaultDecisionMakingModule_nodeFilterScheme:
+  gams_identifier: "node filter scheme"
+  gams_description: "todo"
+
+
+##########################
 
 spatial:
   edn_label: "Räumliche Modell"

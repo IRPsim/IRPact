@@ -646,7 +646,7 @@ public class InGeneral implements Copyable {
     }
 
     private void parseLifeCycleControl(IRPactInputParser parser) throws ParsingException {
-        BasicJadexLifeCycleControl lifeCycleControl = (BasicJadexLifeCycleControl) parser.getEnvironment().getLiveCycleControl();
+        BasicJadexLifeCycleControl lifeCycleControl = (BasicJadexLifeCycleControl) parser.getEnvironment().getLifeCycleControl();
         applyKillSwitch(lifeCycleControl);
 
         BasicSettings initData = (BasicSettings) parser.getEnvironment().getSettings();

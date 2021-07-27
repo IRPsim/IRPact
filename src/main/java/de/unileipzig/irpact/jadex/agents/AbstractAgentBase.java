@@ -42,7 +42,7 @@ public abstract class AbstractAgentBase {
     }
 
     protected void pulse() {
-        getEnvironment().getLiveCycleControl().pulse();
+        getEnvironment().getLifeCycleControl().pulse();
     }
 
     protected Timestamp now() {
@@ -50,15 +50,15 @@ public abstract class AbstractAgentBase {
     }
 
     protected void waitForYearChangeIfRequired() {
-        getEnvironment().getLiveCycleControl().waitForYearChangeIfRequired(getThisAgent());
+        getEnvironment().getLifeCycleControl().waitForYearChangeIfRequired(getThisAgent());
     }
 
     protected void waitForSynchronisationAtStartIfRequired() {
-        getEnvironment().getLiveCycleControl().waitForSynchronisationAtStartIfRequired(getThisAgent());
+        getEnvironment().getLifeCycleControl().waitForSynchronisationAtStartIfRequired(getThisAgent());
     }
 
     protected void waitForSynchronisationAtEndIfRequired() {
-        getEnvironment().getLiveCycleControl().waitForSynchronisationAtEndIfRequired(getThisAgent());
+        getEnvironment().getLifeCycleControl().waitForSynchronisationAtEndIfRequired(getThisAgent());
     }
 
     protected abstract void scheduleFirstAction();

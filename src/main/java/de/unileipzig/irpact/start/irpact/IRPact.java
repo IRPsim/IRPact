@@ -28,7 +28,6 @@ import de.unileipzig.irpact.core.util.BasicMetaData;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions.AdoptionResultInfo;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions.AnnualCumulativeAdoptionsForOutput;
-import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.*;
 import de.unileipzig.irpact.io.param.output.OutInformation;
 import de.unileipzig.irpact.io.param.output.OutRoot;
@@ -287,7 +286,7 @@ public final class IRPact implements IRPActAccess {
     }
 
     private void pulse() {
-        environment.getLiveCycleControl().pulse();
+        environment.getLifeCycleControl().pulse();
     }
 
     @Deprecated
@@ -470,20 +469,20 @@ public final class IRPact implements IRPActAccess {
         config.setDefaultTimeout(-1L);
         platform = Starter.createPlatform(config)
                 .get();
-        environment.getLiveCycleControl().setPlatform(platform);
-        environment.getLiveCycleControl().startKillSwitch();
+        environment.getLifeCycleControl().setPlatform(platform);
+        environment.getLifeCycleControl().startKillSwitch();
 
         LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "get ISimulationService");
         ISimulationService simulationService = JadexUtil.getSimulationService(platform);
         LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "get IClockService");
         IClockService clock = simulationService.getClockService();
-        environment.getLiveCycleControl().setSimulationService(simulationService);
-        environment.getLiveCycleControl().setClockService(clock);
+        environment.getLifeCycleControl().setSimulationService(simulationService);
+        environment.getLifeCycleControl().setClockService(clock);
     }
 
     public void preparePlatform() {
         LOGGER.info(IRPSection.GENERAL, "prepare platform start");
-        environment.getLiveCycleControl().pause();
+        environment.getLifeCycleControl().pause();
         pulse();
     }
 
@@ -509,7 +508,7 @@ public final class IRPact implements IRPActAccess {
         int agentCount = 0;
 
         LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "total number of agents: {}", totalNumberOfAgents);
-        environment.getLiveCycleControl().setTotalNumberOfAgents(totalNumberOfAgents);
+        environment.getLifeCycleControl().setTotalNumberOfAgents(totalNumberOfAgents);
 
         CreationInfo simulationAgentInfo = createSimulationAgentInfo(createProxySimulationAgent());
         LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "create simulation agent '{}' ({}/{})", SIMULATION_AGENT_NAME, ++agentCount, totalNumberOfAgents);
@@ -572,7 +571,7 @@ public final class IRPact implements IRPActAccess {
 
     public void waitForCreation() throws InterruptedException {
         LOGGER.info(IRPSection.GENERAL, "wait until agent creation is finished...");
-        environment.getLiveCycleControl().waitForCreationFinished();
+        environment.getLifeCycleControl().waitForCreationFinished();
         LOGGER.info(IRPSection.GENERAL, "...  agent creation finished");
     }
 
@@ -582,8 +581,8 @@ public final class IRPact implements IRPActAccess {
             return false;
         } catch (InterruptedException e) {
             LOGGER.warn(IRPSection.GENERAL, "waiting interrupted", e);
-            if(environment.getLiveCycleControl().getTerminationState() != LifeCycleControl.TerminationState.NOT) {
-                environment.getLiveCycleControl().terminateWithError(e);
+            if(environment.getLifeCycleControl().getTerminationState() != LifeCycleControl.TerminationState.NOT) {
+                environment.getLifeCycleControl().terminateWithError(e);
             }
             return true;
         }
@@ -596,13 +595,13 @@ public final class IRPact implements IRPActAccess {
 
     public void startSimulation() {
         LOGGER.info(IRPSection.GENERAL, "start simulation");
-        environment.getLiveCycleControl().start();
+        environment.getLifeCycleControl().start();
     }
 
     public void waitForTermination() {
         LOGGER.info(IRPSection.GENERAL, "wait for termination");
 
-        environment.getLiveCycleControl().waitForTermination().get();
+        environment.getLifeCycleControl().waitForTermination().get();
         JadexSystemOut.reset();
 
         LOGGER.info(IRPSection.GENERAL, "simulation terminated");

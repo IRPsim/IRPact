@@ -71,7 +71,7 @@ public interface JadexTimeModel extends TimeModel {
 
     @Override
     default Timestamp atStartOfYear(int year) {
-        return at(year, Month.JANUARY, 1);
+        return atDay(year, Month.JANUARY, 1);
     }
 
     @Override
@@ -81,13 +81,13 @@ public interface JadexTimeModel extends TimeModel {
     }
 
     @Override
-    default Timestamp at(int year, long weeks) {
+    default Timestamp atWeek(int year, long weeks) {
         ZonedDateTime zdt = TimeUtil.of(year, weeks);
         return convert(zdt);
     }
 
     @Override
-    default Timestamp at(int year, Month month, int day) {
+    default Timestamp atDay(int year, Month month, int day) {
         ZonedDateTime zdt = TimeUtil.of(year, month, day);
         return convert(zdt);
     }

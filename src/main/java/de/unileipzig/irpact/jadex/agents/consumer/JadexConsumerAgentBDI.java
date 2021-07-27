@@ -695,6 +695,10 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
 //    }
 
     protected void executePlan(ProcessPlan plan) {
-        plan.execute();
+        try {
+            plan.execute();
+        } catch (Throwable t) {
+
+        }
     }
 }

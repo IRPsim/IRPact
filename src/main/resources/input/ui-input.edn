@@ -30,6 +30,49 @@
     ]
   } 
   {
+    :label "TEST - modularer Graph" 
+    :icon "fas fa-skull-crossbones" 
+    :description "TEST TEST TEST" 
+    :graph {
+      :edges {
+        :tags [["graphedge"]] 
+        :groups [
+          {
+            :tags [["awarenessModule"] ["feasibilityModule"] ["decisionMakingModule"] ["adoptedModule"] ["impededModule"]] 
+            :label "Eval-Kante" 
+            :color "DarkCyan"
+          }
+        ] 
+        :heading "Kanten"
+      } 
+      :nodes {
+        :set "set_InConsumerAgentModule" 
+        :color {
+          :type :subsets 
+          :groups [
+            {
+              :tags [["InDefaultActionModule"] ["InDefaultDecisionMakingModule"] ["InDefaultFeasibilityModule"] ["InDefaultInterestModule"] ["InStageEvaluationModule"]] 
+              :label "Eval-Modul" 
+              :value "DarkCyan"
+            }
+          ] 
+          :heading "Farben"
+        } 
+        :shape {
+          :type :subsets 
+          :groups [
+            {
+              :tags [["InDefaultActionModule"] ["InDefaultDecisionMakingModule"] ["InDefaultFeasibilityModule"] ["InDefaultInterestModule"] ["InStageEvaluationModule"]] 
+              :label "Eval-Modul" 
+              :value "octagon"
+            }
+          ] 
+          :heading "Formen"
+        }
+      }
+    }
+  } 
+  {
     :label "Einstellungen" 
     :description "Einstellungen von IRPact" 
     :sections [
@@ -518,6 +561,62 @@
                 :set "set_InDoNothingComponent" 
                 :description "todo" 
                 :tags [["InDoNothingComponent" "placeholder"]]
+              }
+            ]
+          }
+        ]
+      } 
+      {
+        :label "Modulares Prozessmodell V2" 
+        :description "todo" 
+        :sections [
+          {
+            :label "Modell" 
+            :description "todo" 
+            :sections [
+              {
+                :label "Einfaches modulares Modell" 
+                :set "set_InSimpleConsumerAgentMPM" 
+                :description "todo" 
+                :tags [["link" "InSimpleConsumerAgentMPM" "InConsumerAgentEvaluationModule" "startModule"]]
+              }
+            ]
+          } 
+          {
+            :label "Module" 
+            :description "todo" 
+            :sections [
+              {
+                :label "Evaluierungsmodule" 
+                :set "set_InDefaultActionModule" 
+                :description "todo" 
+                :tags [["InDefaultActionModule" "adopterPoints"] ["InDefaultActionModule" "interestedPoints"] ["InDefaultActionModule" "awarePoints"] ["InDefaultActionModule" "unknownPoints"] ["InDefaultActionModule" "speedOfConvergence"] ["InDefaultActionModule" "attitudeGap"] ["InDefaultActionModule" "chanceNeutral"] ["InDefaultActionModule" "chanceConvergence"] ["InDefaultActionModule" "chanceDivergence"] ["link" "InDefaultActionModule" "InUncertainty" "uncertainties"]] 
+                :sections [
+                  {
+                    :label "Standard-Feasibility" 
+                    :set "set_InDefaultFeasibilityModule" 
+                    :description "todo" 
+                    :tags [["InDefaultFeasibilityModule" "adopterPoints"] ["InDefaultFeasibilityModule" "interestedPoints"] ["InDefaultFeasibilityModule" "awarePoints"] ["InDefaultFeasibilityModule" "unknownPoints"] ["InDefaultFeasibilityModule" "speedOfConvergence"] ["InDefaultFeasibilityModule" "attitudeGap"] ["InDefaultFeasibilityModule" "chanceNeutral"] ["InDefaultFeasibilityModule" "chanceConvergence"] ["InDefaultFeasibilityModule" "chanceDivergence"] ["link" "InDefaultFeasibilityModule" "InUncertainty" "uncertainties"]]
+                  } 
+                  {
+                    :label "Standard-Interesse" 
+                    :set "set_InDefaultInterestModule" 
+                    :description "todo" 
+                    :tags [["InDefaultInterestModule" "adopterPoints"] ["InDefaultInterestModule" "interestedPoints"] ["InDefaultInterestModule" "awarePoints"] ["InDefaultInterestModule" "unknownPoints"] ["InDefaultInterestModule" "speedOfConvergence"] ["InDefaultInterestModule" "attitudeGap"] ["InDefaultInterestModule" "chanceNeutral"] ["InDefaultInterestModule" "chanceConvergence"] ["InDefaultInterestModule" "chanceDivergence"] ["link" "InDefaultInterestModule" "InUncertainty" "uncertainties"]]
+                  } 
+                  {
+                    :label "Default-Decision Making" 
+                    :set "set_InDefaultDecisionMakingModule" 
+                    :description "todo" 
+                    :tags [["InDefaultDecisionMakingModule" "a"] ["InDefaultDecisionMakingModule" "b"] ["InDefaultDecisionMakingModule" "c"] ["InDefaultDecisionMakingModule" "d"] ["InDefaultDecisionMakingModule" "weightFT"] ["InDefaultDecisionMakingModule" "weightNPV"] ["InDefaultDecisionMakingModule" "weightSocial"] ["InDefaultDecisionMakingModule" "weightLocal"] ["InDefaultDecisionMakingModule" "logisticFactor"] ["link" "InDefaultDecisionMakingModule" "InPVFile" "pvFile"] ["link" "InDefaultDecisionMakingModule" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+                  } 
+                  {
+                    :label "Default-Phasen" 
+                    :set "set_InStageEvaluationModule" 
+                    :description "todo" 
+                    :tags [["link" "InStageEvaluationModule" "InConsumerAgentEvaluationModule" "graphedge" "awarenessModule"] ["link" "InStageEvaluationModule" "InConsumerAgentEvaluationModule" "graphedge" "feasibilityModule"] ["link" "InStageEvaluationModule" "InConsumerAgentEvaluationModule" "graphedge" "decisionMakingModule"] ["link" "InStageEvaluationModule" "InConsumerAgentEvaluationModule" "graphedge" "adoptedModule"] ["link" "InStageEvaluationModule" "InConsumerAgentEvaluationModule" "impededModule"]]
+                  }
+                ]
               }
             ]
           }
