@@ -21,10 +21,10 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
                 edgesHeading = "Kanten",
 
                 nodesSet = "set_InConsumerAgentModule",
-                showBorder = false,
                 showIcon = false,
-                colorHeading = "Farben",
-                shapeHeading = "Formen"
+                borderHeading = "Rahmenfarbe",
+                colorHeading = "Farbe",
+                shapeHeading = "Form"
         )
 )
 public interface InConsumerAgentModule extends InModule {

@@ -28,11 +28,13 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
 @Definition(
         graphNode = @GraphNode(
                 id = ModuleHelper.MODULAR_GRAPH,
-                label = "Eval-Modul",
+                label = "Eval-Modul2",
                 color = COLOR_GREEN,
+                border = COLOR_GREEN,
                 shape = SHAPE_GEAR,
-                tags = {"InStageEvaluationModule"}
-        )
+                tags = {"graphnode2"}
+        ),
+        name = "InStageEvaluationModule_graphnode2"
 )
 public class InStageEvaluationModule implements InConsumerAgentEvaluationModule {
 

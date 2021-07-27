@@ -121,7 +121,6 @@
         }
       },
       "set_InComponent" : { },
-      "set_InConsumerAgentCalculationModule" : { },
       "set_InConsumerAgentEvaluationModule" : { },
       "set_InConsumerAgentGroup" : {
         "BUM" : { },
@@ -138,14 +137,14 @@
       },
       "set_InConsumerAgentModularProcessModel" : { },
       "set_InConsumerAgentModule" : { },
-      "set_InDefaultActionModule" : { },
-      "set_InDefaultDecisionMakingModule" : { },
+      "set_InDefaultActionModule_graphnode" : { },
+      "set_InDefaultDecisionMakingModule_graphnode" : { },
       "set_InDefaultDoActionComponent" : { },
-      "set_InDefaultFeasibilityModule" : { },
+      "set_InDefaultFeasibilityModule_graphnode" : { },
       "set_InDefaultHandleDecisionMakingComponent" : { },
       "set_InDefaultHandleFeasibilityComponent" : { },
       "set_InDefaultHandleInterestComponent" : { },
-      "set_InDefaultInterestModule" : { },
+      "set_InDefaultInterestModule_graphnode" : { },
       "set_InDependentConsumerAgentGroupAttribute" : { },
       "set_InDependentProductGroupAttribute" : { },
       "set_InDiracUnivariateDistribution" : {
@@ -396,7 +395,7 @@
           "par_InSpatialTableFile_placeholderInSpatialFile" : 0.0
         }
       },
-      "set_InStageEvaluationModule" : { },
+      "set_InStageEvaluationModule_graphnode2" : { },
       "set_InSumAttributeComponent" : { },
       "set_InSumIntermediateComponent" : { },
       "set_InSumThresholdComponent" : { },

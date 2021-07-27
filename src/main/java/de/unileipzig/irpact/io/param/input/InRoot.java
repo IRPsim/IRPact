@@ -759,7 +759,7 @@ public class InRoot implements RootClass {
             InConsumerAgentModularProcessModel.class,
             InSimpleConsumerAgentMPM.class,
             InConsumerAgentModule.class,
-            InConsumerAgentCalculationModule.class,
+            //InConsumerAgentCalculationModule.class,
             InConsumerAgentEvaluationModule.class,
             InDefaultActionModule.class,
             InDefaultDecisionMakingModule.class,

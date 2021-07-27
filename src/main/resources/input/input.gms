@@ -1503,11 +1503,6 @@ PARAMETER par_link_InSimpleConsumerAgentMPM_InConsumerAgentEvaluationModule_star
 * - type: String
 SET set_InConsumerAgentModule(set_InModule)
 
-* - identifier: InConsumerAgentCalculationModule
-* - hidden: 1
-* - type: String
-SET set_InConsumerAgentCalculationModule(set_InConsumerAgentModule)
-
 * - identifier: InConsumerAgentEvaluationModule
 * - hidden: 1
 * - type: String
@@ -1517,299 +1512,299 @@ SET set_InConsumerAgentEvaluationModule(set_InConsumerAgentModule)
 * - shape: octagon
 * - identifier: InDefaultActionModule
 * - type: String
-SET set_InDefaultActionModule(set_InConsumerAgentEvaluationModule)
+SET set_InDefaultActionModule_graphnode(set_InConsumerAgentEvaluationModule)
 
 * - default: 3
 * - description: todo
 * - identifier: adopter points
 * - type: Integer
-PARAMETER par_InDefaultActionModule_adopterPoints(set_InDefaultActionModule)
+PARAMETER par_InDefaultActionModule_adopterPoints(set_InDefaultActionModule_graphnode)
 
 * - default: 2
 * - description: todo
 * - identifier: interested points
 * - type: Integer
-PARAMETER par_InDefaultActionModule_interestedPoints(set_InDefaultActionModule)
+PARAMETER par_InDefaultActionModule_interestedPoints(set_InDefaultActionModule_graphnode)
 
 * - default: 1
 * - description: todo
 * - identifier: aware points
 * - type: Integer
-PARAMETER par_InDefaultActionModule_awarePoints(set_InDefaultActionModule)
+PARAMETER par_InDefaultActionModule_awarePoints(set_InDefaultActionModule_graphnode)
 
 * - default: 0
 * - description: todo
 * - identifier: unknown points
 * - type: Integer
-PARAMETER par_InDefaultActionModule_unknownPoints(set_InDefaultActionModule)
+PARAMETER par_InDefaultActionModule_unknownPoints(set_InDefaultActionModule_graphnode)
 
 * - default: 0.5
 * - description: todo
 * - identifier: speed of convergence
 * - type: Float
-PARAMETER par_InDefaultActionModule_speedOfConvergence(set_InDefaultActionModule)
+PARAMETER par_InDefaultActionModule_speedOfConvergence(set_InDefaultActionModule_graphnode)
 
 * - description: todo
 * - identifier: attitude gap
 * - type: Float
-PARAMETER par_InDefaultActionModule_attitudeGap(set_InDefaultActionModule)
+PARAMETER par_InDefaultActionModule_attitudeGap(set_InDefaultActionModule_graphnode)
 
 * - default: 0.5
 * - domain: [0,1]
 * - description: todo
 * - identifier: chance neutral
 * - type: Float
-PARAMETER par_InDefaultActionModule_chanceNeutral(set_InDefaultActionModule)
+PARAMETER par_InDefaultActionModule_chanceNeutral(set_InDefaultActionModule_graphnode)
 
 * - default: 0.25
 * - domain: [0,1]
 * - description: todo
 * - identifier: chance convergence
 * - type: Float
-PARAMETER par_InDefaultActionModule_chanceConvergence(set_InDefaultActionModule)
+PARAMETER par_InDefaultActionModule_chanceConvergence(set_InDefaultActionModule_graphnode)
 
 * - default: 0.25
 * - domain: [0,1]
 * - description: todo
 * - identifier: chance divergence
 * - type: Float
-PARAMETER par_InDefaultActionModule_chanceDivergence(set_InDefaultActionModule)
+PARAMETER par_InDefaultActionModule_chanceDivergence(set_InDefaultActionModule_graphnode)
 
 * - description: todo
 * - identifier: uncertainties
 * - type: Boolean
-PARAMETER par_link_InDefaultActionModule_InUncertainty_uncertainties(set_InDefaultActionModule,set_InUncertainty)
+PARAMETER par_link_InDefaultActionModule_InUncertainty_uncertainties(set_InDefaultActionModule_graphnode,set_InUncertainty)
 
 * - color: DarkCyan
 * - shape: octagon
 * - identifier: InDefaultDecisionMakingModule
 * - type: String
-SET set_InDefaultDecisionMakingModule(set_InConsumerAgentEvaluationModule)
+SET set_InDefaultDecisionMakingModule_graphnode(set_InConsumerAgentEvaluationModule)
 
 * - default: 0.25
 * - description: Legt den Einfluss der finanziellen Komponente fest.
 * - identifier: Einfluss finanzielle Komponente (a)
 * - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_a(set_InDefaultDecisionMakingModule)
+PARAMETER par_InDefaultDecisionMakingModule_a(set_InDefaultDecisionMakingModule_graphnode)
 
 * - default: 0.25
 * - description: Legt den Einfluss der novelty Komponente fest.
 * - identifier: Einfluss novelty Komponente (b)
 * - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_b(set_InDefaultDecisionMakingModule)
+PARAMETER par_InDefaultDecisionMakingModule_b(set_InDefaultDecisionMakingModule_graphnode)
 
 * - default: 0.25
 * - description: Legt den Umwelteinfluss fest.
 * - identifier: Umwelteinfluss (c)
 * - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_c(set_InDefaultDecisionMakingModule)
+PARAMETER par_InDefaultDecisionMakingModule_c(set_InDefaultDecisionMakingModule_graphnode)
 
 * - default: 0.25
 * - description: Legt den Einfluss der sozialen Komponente fest.
 * - identifier: Einfluss soziale Komponente (d)
 * - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_d(set_InDefaultDecisionMakingModule)
+PARAMETER par_InDefaultDecisionMakingModule_d(set_InDefaultDecisionMakingModule_graphnode)
 
 * - default: 0.5
 * - description: todo
 * - identifier: Wichtung fin. 
 * - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_weightFT(set_InDefaultDecisionMakingModule)
+PARAMETER par_InDefaultDecisionMakingModule_weightFT(set_InDefaultDecisionMakingModule_graphnode)
 
 * - default: 0.5
 * - description: todo
 * - identifier: Wichtung Barwert
 * - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_weightNPV(set_InDefaultDecisionMakingModule)
+PARAMETER par_InDefaultDecisionMakingModule_weightNPV(set_InDefaultDecisionMakingModule_graphnode)
 
 * - default: 0.5
 * - description: todo
 * - identifier: Wichtung soziales Netz
 * - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_weightSocial(set_InDefaultDecisionMakingModule)
+PARAMETER par_InDefaultDecisionMakingModule_weightSocial(set_InDefaultDecisionMakingModule_graphnode)
 
 * - default: 0.5
 * - description: todo
 * - identifier: Wichtung lokales Netz
 * - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_weightLocal(set_InDefaultDecisionMakingModule)
+PARAMETER par_InDefaultDecisionMakingModule_weightLocal(set_InDefaultDecisionMakingModule_graphnode)
 
 * - default: 0.125
 * - description: todo
 * - identifier: Wichtung lokales Netz
 * - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_logisticFactor(set_InDefaultDecisionMakingModule)
+PARAMETER par_InDefaultDecisionMakingModule_logisticFactor(set_InDefaultDecisionMakingModule_graphnode)
 
 * - description: todo
 * - identifier: pv file
 * - type: Boolean
-PARAMETER par_link_InDefaultDecisionMakingModule_InPVFile_pvFile(set_InDefaultDecisionMakingModule,set_InPVFile)
+PARAMETER par_link_InDefaultDecisionMakingModule_InPVFile_pvFile(set_InDefaultDecisionMakingModule_graphnode,set_InPVFile)
 
 * - description: todo
 * - identifier: node filter scheme
 * - type: Boolean
-PARAMETER par_link_InDefaultDecisionMakingModule_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InDefaultDecisionMakingModule,set_InRAProcessPlanNodeFilterScheme)
+PARAMETER par_link_InDefaultDecisionMakingModule_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InDefaultDecisionMakingModule_graphnode,set_InRAProcessPlanNodeFilterScheme)
 
 * - color: DarkCyan
 * - shape: octagon
 * - identifier: InDefaultFeasibilityModule
 * - type: String
-SET set_InDefaultFeasibilityModule(set_InConsumerAgentEvaluationModule)
+SET set_InDefaultFeasibilityModule_graphnode(set_InConsumerAgentEvaluationModule)
 
 * - default: 3
 * - description: todo
 * - identifier: adopter points
 * - type: Integer
-PARAMETER par_InDefaultFeasibilityModule_adopterPoints(set_InDefaultFeasibilityModule)
+PARAMETER par_InDefaultFeasibilityModule_adopterPoints(set_InDefaultFeasibilityModule_graphnode)
 
 * - default: 2
 * - description: todo
 * - identifier: interested points
 * - type: Integer
-PARAMETER par_InDefaultFeasibilityModule_interestedPoints(set_InDefaultFeasibilityModule)
+PARAMETER par_InDefaultFeasibilityModule_interestedPoints(set_InDefaultFeasibilityModule_graphnode)
 
 * - default: 1
 * - description: todo
 * - identifier: aware points
 * - type: Integer
-PARAMETER par_InDefaultFeasibilityModule_awarePoints(set_InDefaultFeasibilityModule)
+PARAMETER par_InDefaultFeasibilityModule_awarePoints(set_InDefaultFeasibilityModule_graphnode)
 
 * - default: 0
 * - description: todo
 * - identifier: unknown points
 * - type: Integer
-PARAMETER par_InDefaultFeasibilityModule_unknownPoints(set_InDefaultFeasibilityModule)
+PARAMETER par_InDefaultFeasibilityModule_unknownPoints(set_InDefaultFeasibilityModule_graphnode)
 
 * - default: 0.5
 * - description: todo
 * - identifier: speed of convergence
 * - type: Float
-PARAMETER par_InDefaultFeasibilityModule_speedOfConvergence(set_InDefaultFeasibilityModule)
+PARAMETER par_InDefaultFeasibilityModule_speedOfConvergence(set_InDefaultFeasibilityModule_graphnode)
 
 * - description: todo
 * - identifier: attitude gap
 * - type: Float
-PARAMETER par_InDefaultFeasibilityModule_attitudeGap(set_InDefaultFeasibilityModule)
+PARAMETER par_InDefaultFeasibilityModule_attitudeGap(set_InDefaultFeasibilityModule_graphnode)
 
 * - default: 0.5
 * - domain: [0,1]
 * - description: todo
 * - identifier: chance neutral
 * - type: Float
-PARAMETER par_InDefaultFeasibilityModule_chanceNeutral(set_InDefaultFeasibilityModule)
+PARAMETER par_InDefaultFeasibilityModule_chanceNeutral(set_InDefaultFeasibilityModule_graphnode)
 
 * - default: 0.25
 * - domain: [0,1]
 * - description: todo
 * - identifier: chance convergence
 * - type: Float
-PARAMETER par_InDefaultFeasibilityModule_chanceConvergence(set_InDefaultFeasibilityModule)
+PARAMETER par_InDefaultFeasibilityModule_chanceConvergence(set_InDefaultFeasibilityModule_graphnode)
 
 * - default: 0.25
 * - domain: [0,1]
 * - description: todo
 * - identifier: chance divergence
 * - type: Float
-PARAMETER par_InDefaultFeasibilityModule_chanceDivergence(set_InDefaultFeasibilityModule)
+PARAMETER par_InDefaultFeasibilityModule_chanceDivergence(set_InDefaultFeasibilityModule_graphnode)
 
 * - description: todo
 * - identifier: uncertainties
 * - type: Boolean
-PARAMETER par_link_InDefaultFeasibilityModule_InUncertainty_uncertainties(set_InDefaultFeasibilityModule,set_InUncertainty)
+PARAMETER par_link_InDefaultFeasibilityModule_InUncertainty_uncertainties(set_InDefaultFeasibilityModule_graphnode,set_InUncertainty)
 
 * - color: DarkCyan
 * - shape: octagon
 * - identifier: InDefaultInterestModule
 * - type: String
-SET set_InDefaultInterestModule(set_InConsumerAgentEvaluationModule)
+SET set_InDefaultInterestModule_graphnode(set_InConsumerAgentEvaluationModule)
 
 * - default: 3
 * - description: todo
 * - identifier: adopter points
 * - type: Integer
-PARAMETER par_InDefaultInterestModule_adopterPoints(set_InDefaultInterestModule)
+PARAMETER par_InDefaultInterestModule_adopterPoints(set_InDefaultInterestModule_graphnode)
 
 * - default: 2
 * - description: todo
 * - identifier: interested points
 * - type: Integer
-PARAMETER par_InDefaultInterestModule_interestedPoints(set_InDefaultInterestModule)
+PARAMETER par_InDefaultInterestModule_interestedPoints(set_InDefaultInterestModule_graphnode)
 
 * - default: 1
 * - description: todo
 * - identifier: aware points
 * - type: Integer
-PARAMETER par_InDefaultInterestModule_awarePoints(set_InDefaultInterestModule)
+PARAMETER par_InDefaultInterestModule_awarePoints(set_InDefaultInterestModule_graphnode)
 
 * - default: 0
 * - description: todo
 * - identifier: unknown points
 * - type: Integer
-PARAMETER par_InDefaultInterestModule_unknownPoints(set_InDefaultInterestModule)
+PARAMETER par_InDefaultInterestModule_unknownPoints(set_InDefaultInterestModule_graphnode)
 
 * - default: 0.5
 * - description: todo
 * - identifier: speed of convergence
 * - type: Float
-PARAMETER par_InDefaultInterestModule_speedOfConvergence(set_InDefaultInterestModule)
+PARAMETER par_InDefaultInterestModule_speedOfConvergence(set_InDefaultInterestModule_graphnode)
 
 * - description: todo
 * - identifier: attitude gap
 * - type: Float
-PARAMETER par_InDefaultInterestModule_attitudeGap(set_InDefaultInterestModule)
+PARAMETER par_InDefaultInterestModule_attitudeGap(set_InDefaultInterestModule_graphnode)
 
 * - default: 0.5
 * - domain: [0,1]
 * - description: todo
 * - identifier: chance neutral
 * - type: Float
-PARAMETER par_InDefaultInterestModule_chanceNeutral(set_InDefaultInterestModule)
+PARAMETER par_InDefaultInterestModule_chanceNeutral(set_InDefaultInterestModule_graphnode)
 
 * - default: 0.25
 * - domain: [0,1]
 * - description: todo
 * - identifier: chance convergence
 * - type: Float
-PARAMETER par_InDefaultInterestModule_chanceConvergence(set_InDefaultInterestModule)
+PARAMETER par_InDefaultInterestModule_chanceConvergence(set_InDefaultInterestModule_graphnode)
 
 * - default: 0.25
 * - domain: [0,1]
 * - description: todo
 * - identifier: chance divergence
 * - type: Float
-PARAMETER par_InDefaultInterestModule_chanceDivergence(set_InDefaultInterestModule)
+PARAMETER par_InDefaultInterestModule_chanceDivergence(set_InDefaultInterestModule_graphnode)
 
 * - description: todo
 * - identifier: uncertainties
 * - type: Boolean
-PARAMETER par_link_InDefaultInterestModule_InUncertainty_uncertainties(set_InDefaultInterestModule,set_InUncertainty)
+PARAMETER par_link_InDefaultInterestModule_InUncertainty_uncertainties(set_InDefaultInterestModule_graphnode,set_InUncertainty)
 
 * - color: Green
 * - shape: gear
 * - identifier: InStageEvaluationModule
 * - type: String
-SET set_InStageEvaluationModule(set_InConsumerAgentEvaluationModule)
+SET set_InStageEvaluationModule_graphnode2(set_InConsumerAgentEvaluationModule)
 
 * - identifier: graphedge_awarenessModule
 * - type: Boolean
-PARAMETER par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_graphedge_awarenessModule(set_InStageEvaluationModule,set_InConsumerAgentEvaluationModule)
+PARAMETER par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_graphedge_awarenessModule(set_InStageEvaluationModule_graphnode2,set_InConsumerAgentEvaluationModule)
 
 * - identifier: graphedge_feasibilityModule
 * - type: Boolean
-PARAMETER par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_graphedge_feasibilityModule(set_InStageEvaluationModule,set_InConsumerAgentEvaluationModule)
+PARAMETER par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_graphedge_feasibilityModule(set_InStageEvaluationModule_graphnode2,set_InConsumerAgentEvaluationModule)
 
 * - identifier: graphedge_decisionMakingModule
 * - type: Boolean
-PARAMETER par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_graphedge_decisionMakingModule(set_InStageEvaluationModule,set_InConsumerAgentEvaluationModule)
+PARAMETER par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_graphedge_decisionMakingModule(set_InStageEvaluationModule_graphnode2,set_InConsumerAgentEvaluationModule)
 
 * - identifier: graphedge_adoptedModule
 * - type: Boolean
-PARAMETER par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_graphedge_adoptedModule(set_InStageEvaluationModule,set_InConsumerAgentEvaluationModule)
+PARAMETER par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_graphedge_adoptedModule(set_InStageEvaluationModule_graphnode2,set_InConsumerAgentEvaluationModule)
 
 * - description: todo
 * - identifier: impeded module
 * - type: Boolean
-PARAMETER par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_impededModule(set_InStageEvaluationModule,set_InConsumerAgentEvaluationModule)
+PARAMETER par_link_InStageEvaluationModule_InConsumerAgentEvaluationModule_impededModule(set_InStageEvaluationModule_graphnode2,set_InConsumerAgentEvaluationModule)
 
 * - identifier: InBasicProductGroup
 * - type: String
