@@ -35,7 +35,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
         graphNode = @GraphNode(
                 id = ModuleHelper.MODULAR_GRAPH,
                 label = "Eval-Modul",
-                color = ModuleHelper.COLOR_DARK_CYAN,
+                color = COLOR_DARK_CYAN,
                 shape = SHAPE_OCTAGON,
                 tags = {"InDefaultDecisionMakingModule"}
         )
@@ -55,6 +55,7 @@ public class InDefaultDecisionMakingModule implements InConsumerAgentEvaluationM
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTDECISION);
         setShape(res, thisClass(), SHAPE_OCTAGON);
+        setColor(res, thisClass(), COLOR_DARK_CYAN);
 
         addEntry(res, thisClass(), "a");
         addEntry(res, thisClass(), "b");

@@ -1513,6 +1513,7 @@ SET set_InConsumerAgentCalculationModule(set_InConsumerAgentModule)
 * - type: String
 SET set_InConsumerAgentEvaluationModule(set_InConsumerAgentModule)
 
+* - color: DarkCyan
 * - shape: octagon
 * - identifier: InDefaultActionModule
 * - type: String
@@ -1579,6 +1580,7 @@ PARAMETER par_InDefaultActionModule_chanceDivergence(set_InDefaultActionModule)
 * - type: Boolean
 PARAMETER par_link_InDefaultActionModule_InUncertainty_uncertainties(set_InDefaultActionModule,set_InUncertainty)
 
+* - color: DarkCyan
 * - shape: octagon
 * - identifier: InDefaultDecisionMakingModule
 * - type: String
@@ -1648,6 +1650,7 @@ PARAMETER par_link_InDefaultDecisionMakingModule_InPVFile_pvFile(set_InDefaultDe
 * - type: Boolean
 PARAMETER par_link_InDefaultDecisionMakingModule_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InDefaultDecisionMakingModule,set_InRAProcessPlanNodeFilterScheme)
 
+* - color: DarkCyan
 * - shape: octagon
 * - identifier: InDefaultFeasibilityModule
 * - type: String
@@ -1714,6 +1717,7 @@ PARAMETER par_InDefaultFeasibilityModule_chanceDivergence(set_InDefaultFeasibili
 * - type: Boolean
 PARAMETER par_link_InDefaultFeasibilityModule_InUncertainty_uncertainties(set_InDefaultFeasibilityModule,set_InUncertainty)
 
+* - color: DarkCyan
 * - shape: octagon
 * - identifier: InDefaultInterestModule
 * - type: String
@@ -1780,6 +1784,7 @@ PARAMETER par_InDefaultInterestModule_chanceDivergence(set_InDefaultInterestModu
 * - type: Boolean
 PARAMETER par_link_InDefaultInterestModule_InUncertainty_uncertainties(set_InDefaultInterestModule,set_InUncertainty)
 
+* - color: Green
 * - shape: gear
 * - identifier: InStageEvaluationModule
 * - type: String

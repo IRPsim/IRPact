@@ -16,12 +16,6 @@ public final class ModuleHelper {
 
     public static final String MODULAR_GRAPH = "modulargraph";
 
-    public static final String COLOR_DARK_CYAN = "DarkCyan";
-    public static final String COLOR_LIGHT_SLATE_GREY = "LightSlateGrey";
-
-    public static final String SHAPE_OCTAGON = "octagon";
-    public static final String SHAPE_DIAMOND = "diamond";
-
     public static final String ICON_TEST = "fas fa-skull-crossbones";
 
     public static ProcessModel searchModel(IRPactInputParser parser, String name) throws ParsingException {
