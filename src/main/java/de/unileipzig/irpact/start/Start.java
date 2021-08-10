@@ -27,6 +27,15 @@ public final class Start {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(Start.class);
 
+    @SuppressWarnings("FieldCanBeLocal")
+    private static boolean throwExceptionInMain = false;
+    public static void setThrowExceptionInMain(boolean throwExceptionInMain) {
+        Start.throwExceptionInMain = throwExceptionInMain;
+    }
+    public static boolean isThrowExceptionInMain() {
+        return throwExceptionInMain;
+    }
+
     private MainCommandLineOptions options;
     private Result result;
 
@@ -246,10 +255,8 @@ public final class Start {
     public static void main(String[] args) {
         Start start = new Start();
         Result result = start.run(args);
-        if(result.isFailure() && result.hasCause()) {
+        if(result.isFailure() && result.hasCause() && isThrowExceptionInMain()) {
             throw new StartException(result.getCause());
-        } else {
-            System.exit(result.getExitCode());
         }
     }
 

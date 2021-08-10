@@ -81,7 +81,7 @@ public final class IRPact implements IRPActAccess {
 
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "0";
-    private static final String MINOR_STRING = "10";
+    private static final String MINOR_STRING = "11";
     private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
@@ -648,9 +648,9 @@ public final class IRPact implements IRPActAccess {
         LOGGER.info(IRPSection.GENERAL, "start post-simulation with error ({})", cause.getMessage());
 
         String errorClass = cause.getClass().getSimpleName();
-        String errorMsg = StringUtil.replaceSpace(cause.getMessage(), "_");
-        String fullMsg = errorClass + "__" + errorMsg;
-        OutInformation[] errorInfo = { new OutInformation(fullMsg) };
+        //String errorMsg = StringUtil.replaceSpace(cause.getMessage(), "_");
+        //String fullMsg = errorClass + "__" + errorMsg;
+        OutInformation[] errorInfo = { new OutInformation(errorClass) };
 
         outData = createDummyOutputData("ERROR_OUTPUT", errorInfo);
         storeOutputData(outData);
@@ -711,10 +711,10 @@ public final class IRPact implements IRPActAccess {
                 }
             }
         } else {
-            System.out.println("??!?!?!?! " + inRoot.getGeneral().shouldPrintStacktraceImage());
             createImage = inRoot.getGeneral().shouldPrintStacktraceImage();
         }
 
+        LOGGER.info("create stacktrace image: {}", createImage);
         if(createImage) {
             try {
                 createStackTraceImage(cause, getStackTraceImagePath());
