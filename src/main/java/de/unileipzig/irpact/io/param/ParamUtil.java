@@ -580,6 +580,12 @@ public final class ParamUtil {
                 .store(c, field);
     }
 
+    public static void addEntries(TreeAnnotationResource res, Class<?> c, String... fields) {
+        for(String field: fields) {
+            addEntry(res, c, field);
+        }
+    }
+
     public static void addEntryWithDefault(TreeAnnotationResource res, Class<?> c, String field, Object[] defaults) {
         addEntry(res, c, field);
         setDefault(res, c, field, defaults);
@@ -620,5 +626,11 @@ public final class ParamUtil {
     public static void putFieldPathAndAddEntry(TreeAnnotationResource res, Class<?> c, String field, EdnPath path) {
         putFieldPath(res, c, field, path);
         addEntry(res, c, field);
+    }
+
+    public static void putFieldPathAndAddEntries(TreeAnnotationResource res, Class<?> c, String[] fields, EdnPath path) {
+        for(String field: fields) {
+            putFieldPathAndAddEntry(res, c, field, path);
+        }
     }
 }

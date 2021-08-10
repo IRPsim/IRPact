@@ -788,7 +788,7 @@ public final class IRPact implements IRPActAccess {
 
     private void applyPersistenceData(OutRoot outRoot) throws Exception {
         boolean cmdSkipPersist = CL_OPTIONS.isSkipPersist();
-        boolean paramSkipPersist = inRoot.getGeneral().isSkipPersist();
+        boolean paramSkipPersist = inRoot.getGeneral().isPersistDisabled();
         boolean skipPersist = cmdSkipPersist || paramSkipPersist;
         LOGGER.trace(IRPSection.GENERAL, "skip persistence: {} (cmd={}, param={}))", skipPersist, cmdSkipPersist, paramSkipPersist);
         if(!skipPersist) {

@@ -8,6 +8,18 @@
         :description "Ermöglicht die Erstellung von Konsumern." 
         :sections [
           {
+            :label "Gruppen" 
+            :description "Definiert Konsumergruppen" 
+            :sections [
+              {
+                :label "PVact Gruppen" 
+                :set "set_InPVactConsumerAgentGroup" 
+                :description "Erstellt eine spezielle Konsumergruppe für PVact. Diese sind durch ihre fest vorgegebenen Attribute gekennzeichnet." 
+                :tags [["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "constructionRate"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "renovationRate"]]
+              }
+            ]
+          } 
+          {
             :label "Attribute" 
             :description "Definiert die Attribute von Agenten." 
             :sections [

@@ -152,7 +152,12 @@ public class JadexConsumerAgentGroup extends SimulationEntityBase implements Con
     }
 
     public void removeGroupAttribute(ConsumerAgentGroupAttribute attribute) {
-        attributes.remove(attribute.getName());
+        removeGroupAttribute(attribute.getName());
+    }
+
+    @Override
+    public void removeGroupAttribute(String name) {
+        attributes.remove(name);
     }
 
     @Override

@@ -25,8 +25,7 @@ import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.core.process.ra.RAConstants.*;
 import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz
@@ -61,6 +60,9 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         addEntry(res, thisClass(), "constructionRate");
         addEntry(res, thisClass(), "renovationRate");
         addEntry(res, thisClass(), "spatialDistribution");
+
+        setDelta(res, thisClass(), "constructionRate");
+        setDelta(res, thisClass(), "renovationRate");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());

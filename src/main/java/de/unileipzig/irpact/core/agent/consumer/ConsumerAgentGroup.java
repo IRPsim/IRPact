@@ -36,6 +36,8 @@ public interface ConsumerAgentGroup extends AgentGroup<ConsumerAgent> {
 
     void addGroupAttribute(ConsumerAgentGroupAttribute attribute);
 
+    void removeGroupAttribute(String name);
+
     Collection<ConsumerAgentProductRelatedGroupAttribute> getProductRelatedGroupAttributes();
 
     boolean hasProductRelatedGroupAttribute(String name);

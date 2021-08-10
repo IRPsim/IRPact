@@ -358,6 +358,9 @@ public final class JsonSwaggerSuite implements SwaggerSuite {
             LOGGER.trace("upload scenario {}", scenarioPath);
             PutResult result = swagger.storeScenario(scenarioPath);
             LOGGER.trace("uploaded: {}", result.print());
+            if(result.isError()) {
+                LOGGER.trace("ERROR:\n{}", result.printText());
+            }
         }
     }
 

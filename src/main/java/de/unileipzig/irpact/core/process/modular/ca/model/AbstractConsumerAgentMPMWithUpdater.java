@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.process.modular.ca.model;
 
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.misc.MissingDataException;
-import de.unileipzig.irpact.core.process.modular.ModulePlan;
+import de.unileipzig.irpact.core.process.modular.ModularProcessPlan;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.SimpleConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.updater.EndOfYearEvaluator;
@@ -47,7 +47,7 @@ public abstract class AbstractConsumerAgentMPMWithUpdater extends AbstractConsum
     }
 
     @Override
-    public void handleRestoredPlan(ModulePlan plan) {
+    public void handleRestoredPlan(ModularProcessPlan plan) {
         if(isValidPlanForThisModule(plan)) {
             handleValidPlanForThisModule(plan);
         }
@@ -96,11 +96,11 @@ public abstract class AbstractConsumerAgentMPMWithUpdater extends AbstractConsum
         return w27;
     }
 
-    protected boolean isValidPlanForThisModule(ModulePlan plan) {
+    protected boolean isValidPlanForThisModule(ModularProcessPlan plan) {
         return plan instanceof ConsumerAgentData;
     }
 
-    protected void handleValidPlanForThisModule(ModulePlan plan) {
+    protected void handleValidPlanForThisModule(ModularProcessPlan plan) {
         consumerAgentData.add((ConsumerAgentData) plan);
     }
 

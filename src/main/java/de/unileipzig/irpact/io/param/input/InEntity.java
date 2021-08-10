@@ -19,7 +19,7 @@ public interface InEntity<T extends InputParser> extends Copyable {
         if(requiresSetup()) {
             throw new IllegalStateException("requires setup");
         } else {
-            throw new UnsupportedOperationException(getClass().toString());
+            throw new UnsupportedOperationException("name: '" + getName() + "' class: '" + getClass() + "'");
         }
     }
 
@@ -27,14 +27,15 @@ public interface InEntity<T extends InputParser> extends Copyable {
         return parse(parser);
     }
 
-    default void update(T parser, Object original, Object input) throws ParsingException {
-    }
-
     default void setup(T parser, Object input) throws ParsingException {
         if(requiresSetup()) {
-            throw new UnsupportedOperationException();
+            throw new UnsupportedOperationException("name: '" + getName() + "' class: '" + getClass() + "'");
         } else {
             throw new IllegalStateException("requires parse");
         }
+    }
+
+    default void update(T parser, Object original, Object input) throws ParsingException {
+        throw new UnsupportedOperationException("name: '" + getName() + "' class: '" + getClass() + "'");
     }
 }

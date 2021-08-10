@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.process.modular.ModularProcessModel;
-import de.unileipzig.irpact.core.process.modular.ModulePlan;
+import de.unileipzig.irpact.core.process.modular.ModularProcessPlan;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentModule;
 
@@ -15,7 +15,7 @@ public interface ConsumerAgentMPM extends ModularProcessModel {
 
     ConsumerAgentEvaluationModule getStartModule();
 
-    void handleRestoredPlan(ModulePlan plan);
+    void handleRestoredPlan(ModularProcessPlan plan);
 
     @Override
     default ConsumerAgentModule searchModule(String name) {

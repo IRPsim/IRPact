@@ -67,14 +67,6 @@ public abstract class AbstractConsumerAgentModule extends SimulationEntityBase i
         return mapping.get(agent.getGroup());
     }
 
-    protected Timestamp now() {
-        return getTimeModel().now();
-    }
-
-    protected int getCurrentYear() {
-        return getTimeModel().getCurrentYear();
-    }
-
     protected double getShareOfAdopterInSocialNetwork(
             ConsumerAgent agent,
             Product product) {

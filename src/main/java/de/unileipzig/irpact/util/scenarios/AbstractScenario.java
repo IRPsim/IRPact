@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * @author Daniel Abitz
@@ -40,7 +41,7 @@ public abstract class AbstractScenario implements Scenario {
 
     public static final int DEFAULT_INITIAL_YEAR = 2010;
 
-    protected static final Map<String, InAttributeName> NAMES = new HashMap<>();
+    protected static final Map<String, Object> NAMED_DATA = new HashMap<>();
 
     protected String name;
     protected String creator;
@@ -51,6 +52,7 @@ public abstract class AbstractScenario implements Scenario {
 
     protected int revision = 0;
 
+    protected boolean logConsole = true;
     protected Path logPath;
     protected Path outputDir;
     protected Path downloadDir;
@@ -79,7 +81,10 @@ public abstract class AbstractScenario implements Scenario {
     }
 
     protected void updateArgs(IRPArgs args) {
-        if(logPath != null) args.setLogPathWithConsole(logPath);
+        if(logPath != null) {
+            if(logConsole) args.setLogPathWithConsole(logPath);
+            else args.setLogPath(logPath);
+        }
         if(outputDir != null) args.setOutputDir(outputDir);
         if(downloadDir != null) args.setDownloadDir(downloadDir);
         if(outputPath != null) args.setOutput(outputPath);
@@ -100,11 +105,25 @@ public abstract class AbstractScenario implements Scenario {
     }
 
     //=========================
-    //for names
+    //named cache
     //=========================
 
     protected InAttributeName getAttributeName(String name) {
-        return NAMES.computeIfAbsent(name, InAttributeName::new);
+        return computeCachedIfAbsent(name, InAttributeName::new);
+    }
+
+    protected boolean isCached(String name) {
+        return NAMED_DATA.containsKey(name);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <R> R computeCachedIfAbsent(String name, Function<? super String, ? extends R> creator) {
+        return (R) NAMED_DATA.computeIfAbsent(name, creator);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <R> R getCached(String name) {
+        return (R) NAMED_DATA.get(name);
     }
 
     //=========================
@@ -207,6 +226,14 @@ public abstract class AbstractScenario implements Scenario {
 
     public String getParameterAttention() {
         return parameterAttention;
+    }
+
+    public void setLogConsole(boolean logConsole) {
+        this.logConsole = logConsole;
+    }
+
+    public boolean isLogConsole() {
+        return logConsole;
     }
 
     public void setLogPath(Path logPath) {

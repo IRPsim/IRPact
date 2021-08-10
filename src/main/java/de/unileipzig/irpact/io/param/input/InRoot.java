@@ -26,6 +26,7 @@ import de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc.*;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
 import de.unileipzig.irpact.io.param.input.process.mra.InModularRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.mra.component.*;
+import de.unileipzig.irpact.io.param.input.special.InSpecialPVactInput;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InGraphvizGeneral;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGnuPlotOutputImage;
@@ -432,6 +433,19 @@ public class InRoot implements RootClass {
     }
 
     //=========================
+    //special
+    //=========================
+
+    @FieldDefinition
+    public InSpecialPVactInput specialPVactInput = new InSpecialPVactInput();
+    public void setSpecialPVactInput(InSpecialPVactInput specialPVactInput) {
+        this.specialPVactInput = specialPVactInput;
+    }
+    public InSpecialPVactInput getSpecialPVactInput() {
+        return specialPVactInput;
+    }
+
+    //=========================
     //OPTACT
     //=========================
 
@@ -778,6 +792,10 @@ public class InRoot implements RootClass {
 
             InModularProcessModel.class,
             InModule.class,
+            //===
+
+            //special
+            InSpecialPVactInput.class,
             //===
 
             InBasicProductGroup.class,
