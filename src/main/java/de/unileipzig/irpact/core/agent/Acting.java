@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.core.agent;
 
-import de.unileipzig.irpact.commons.Nameable;
-
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -70,7 +68,7 @@ public interface Acting {
                     return SUCCESS;
                 } else {
                     first.releaseAttention();
-                    return first == self
+                    return second == self
                             ? SELF_OCCUPIED
                             : TARGET_OCCUPIED;
                 }

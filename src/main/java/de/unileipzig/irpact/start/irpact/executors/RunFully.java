@@ -16,7 +16,7 @@ public final class RunFully implements IRPactExecutor {
     public static final int ID = 0;
     public static final String ID_STR = "0";
     public static final RunFully INSTANCE = new RunFully();
-    
+
     public RunFully() {
     }
 
@@ -38,6 +38,7 @@ public final class RunFully implements IRPactExecutor {
 
             //Phase 1: initialization
             irpact.initialize();
+            System.gc();
 
             irpact.preAgentCreation();
             irpact.runPreAgentCreationTasks();
@@ -55,6 +56,7 @@ public final class RunFully implements IRPactExecutor {
             if(irpact.checkNoSimulationFlag()) {
                 return;
             }
+            System.gc();
 
             irpact.createPlatform();
             irpact.preparePlatform();
