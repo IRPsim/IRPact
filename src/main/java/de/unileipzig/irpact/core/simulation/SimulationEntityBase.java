@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.network.SocialGraph;
@@ -83,6 +84,14 @@ public class SimulationEntityBase extends NameableBase implements SimulationEnti
             throw new NullPointerException("TimeModel");
         }
         return model;
+    }
+
+    protected Timestamp now() {
+        return getTimeModel().now();
+    }
+
+    protected int getCurrentYear() {
+        return getTimeModel().getCurrentYear();
     }
 
     protected LifeCycleControl getLifeCycleControl() {

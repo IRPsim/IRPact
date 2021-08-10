@@ -347,10 +347,10 @@ public class InGeneral implements Copyable {
 
     @FieldDefinition
     public boolean skipPersist = false;
-    public void setSkipPersist(boolean skipPersist) {
+    public void setPersistDisable(boolean skipPersist) {
         this.skipPersist = skipPersist;
     }
-    public boolean isSkipPersist() {
+    public boolean isPersistDisabled() {
         return skipPersist;
     }
 

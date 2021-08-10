@@ -9,10 +9,7 @@ import de.unileipzig.irpact.commons.util.data.MutableInt;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.BasicAgentManager;
 import de.unileipzig.irpact.core.agent.consumer.*;
-import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentProductRelatedGroupAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentDoubleGroupAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.*;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.InfoTag;
@@ -40,6 +37,7 @@ import de.unileipzig.irpact.io.param.input.product.InIndependentProductGroupAttr
 import de.unileipzig.irpact.io.param.input.product.InProductGroup;
 import de.unileipzig.irpact.io.param.input.product.InFixProduct;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
+import de.unileipzig.irpact.io.param.input.special.InSpecialPVactInput;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
@@ -333,6 +331,7 @@ public class JadexInputParser implements IRPactInputParser {
 
         BasicSettings initData = (BasicSettings) environment.getSettings();
 
+        //???
         for(InAgentPopulation popSize: root.getAgentPopulationSizes()) {
             popSize.setup(this, initData);
         }
@@ -420,6 +419,7 @@ public class JadexInputParser implements IRPactInputParser {
         createPVProductGroup();
         addProcessModelFindingScheme();
         addInitialPVNeed();
+        loadSpecialPVData();
     }
 
     private void createPVProductGroup() throws ParsingException {
@@ -553,6 +553,13 @@ public class JadexInputParser implements IRPactInputParser {
             jcag.addInitialNeed(pvNeed);
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "{} add initial pv need '{}' to cag '{}'", InfoTag.PVACT, pvNeed.getName(), jcag.getName());
         }
+    }
+
+    private void loadSpecialPVData() {
+        InSpecialPVactInput specialPVactInput = root.getSpecialPVactInput();
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "use special PVact input construction rates: {}", specialPVactInput.isUseConstructionRates());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "use special PVact input renovation rates: {}", specialPVactInput.isUseRenovationRates());
+        specialPVactInput.parse(this);
     }
 
     //=========================

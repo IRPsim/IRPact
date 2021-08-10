@@ -25,18 +25,17 @@ import java.util.Map;
 /**
  * @author Daniel Abitz
  */
-public class RealPVactScenario01_v2 extends AbstractPVactScenario {
+public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
 
-    public static final int REVISION = 2;
+    public static final int REVISION = 0;
 
     protected InDiracUnivariateDistribution dirac0 = new InDiracUnivariateDistribution("dirac0", 0);
 
     public Path xlsx;
 
-    public RealPVactScenario01_v2(String name, String creator, String description) {
+    public RealPVactScenario01SingleRun(String name, String creator, String description) {
         super(name, creator, description);
         setRevision(REVISION);
-        setTotalAgents(100);
     }
 
     protected InPVactConsumerAgentGroup createAgentGroup(String name) {
@@ -107,8 +106,8 @@ public class RealPVactScenario01_v2 extends AbstractPVactScenario {
         realData.CAGS.applyMilieus(initialAdopter, InPVactConsumerAgentGroup::setInitialAdopter);
 
         InFileBasedPVactConsumerAgentPopulation population = createFullPopulation("Pop", realData.CAGS.cags());
-//        population.setUseAll(false);
-//        population.setDesiredSize(1000);
+        population.setUseAll(false);
+        population.setDesiredSize(1000);
 
         Map<InPVactConsumerAgentGroup, Integer> edgeCount = realData.CAGS.map(RealData.calcEdgeCount(
                 RealData.XLSX_ORDER_ARR,
@@ -117,7 +116,7 @@ public class RealPVactScenario01_v2 extends AbstractPVactScenario {
                 RealData.MULTIPLIER
         ));
 
-        InFreeNetworkTopology topology = createFreeTopology("", affinities, edgeCount);
+        InFreeNetworkTopology topology = createFreeTopology("Topo", affinities, edgeCount);
 
         InUnitStepDiscreteTimeModel timeModel = createOneWeekTimeModel("Time");
 
@@ -139,8 +138,9 @@ public class RealPVactScenario01_v2 extends AbstractPVactScenario {
         //=====
         InRoot root = createRootWithInformationsWithFullLogging();
         root.getGeneral().setFirstSimulationYear(2008);
-        root.getGeneral().setLastSimulationYear(2008);
+        root.getGeneral().setLastSimulationYear(2020);
         root.getGeneral().useInfoLogging();
+        root.getGeneral().setPersistDisable(true);
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(realData.CAGS.cags());
         root.setAgentPopulationSize(population);
@@ -152,8 +152,14 @@ public class RealPVactScenario01_v2 extends AbstractPVactScenario {
         root.getGraphvizGeneral().setPositionBasedLayoutAlgorithm(true);
         root.getGraphvizGeneral().setKeepAspectRatio(true);
         root.getGraphvizGeneral().setPreferredImageSize(1000);
+        root.getSpecialPVactInput().setUseConstructionRates(true);
+        root.getSpecialPVactInput().setConstructionRates(RealData.CONST_RATES);
+        root.getSpecialPVactInput().setUseRenovationRates(true);
+        root.getSpecialPVactInput().setRenovationRates(RealData.RENO_RATES);
 
         setColors(root, realData.CAGS.cags());
+
+        setupGeneral(root.getGeneral());
 
         return Collections.singletonList(root);
     }

@@ -433,6 +433,19 @@ public class InRoot implements RootClass {
     }
 
     //=========================
+    //special
+    //=========================
+
+    @FieldDefinition
+    public InSpecialPVactInput specialPVactInput = new InSpecialPVactInput();
+    public void setSpecialPVactInput(InSpecialPVactInput specialPVactInput) {
+        this.specialPVactInput = specialPVactInput;
+    }
+    public InSpecialPVactInput getSpecialPVactInput() {
+        return specialPVactInput;
+    }
+
+    //=========================
     //OPTACT
     //=========================
 

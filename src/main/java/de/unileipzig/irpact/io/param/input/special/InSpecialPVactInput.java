@@ -151,13 +151,14 @@ public class InSpecialPVactInput implements Copyable {
         return cagGrpAttr;
     }
 
-    private void parseConstructionRateAttribute(SimulationEnvironment environment) throws ParsingException {
+    private void parseConstructionRateAttribute(SimulationEnvironment environment) {
         if(isUseConstructionRates()) {
             String attrName = RAConstants.CONSTRUCTION_RATE;
             ConsumerAgentAnnualGroupAttribute constRates = createConstructionRateAttribute(attrName);
             for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
                 if(cag.hasGroupAttribute(attrName)) {
-                    throw new ParsingException("cag '{}' already has attribute '{}'", cag.getName(), attrName);
+                    LOGGER.debug("remove old '{}' from '{}'", attrName, cag.getName());
+                    cag.removeGroupAttribute(attrName);
                 }
                 cag.addGroupAttribute(constRates);
             }
@@ -268,13 +269,14 @@ public class InSpecialPVactInput implements Copyable {
         return cagGrpAttr;
     }
 
-    private void parseRenovationRateAttribute(SimulationEnvironment environment) throws ParsingException {
+    private void parseRenovationRateAttribute(SimulationEnvironment environment) {
         if(isUseRenovationRates()) {
             String attrName = RAConstants.RENOVATION_RATE;
             ConsumerAgentAnnualGroupAttribute constRates = createRenovationRateAttribute(attrName);
             for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
                 if(cag.hasGroupAttribute(attrName)) {
-                    throw new ParsingException("cag '{}' already has attribute '{}'", cag.getName(), attrName);
+                    LOGGER.debug("remove old '{}' from '{}'", attrName, cag.getName());
+                    cag.removeGroupAttribute(attrName);
                 }
                 cag.addGroupAttribute(constRates);
             }
@@ -328,7 +330,7 @@ public class InSpecialPVactInput implements Copyable {
     //parse
     //=========================
 
-    public void parse(IRPactInputParser parser) throws ParsingException {
+    public void parse(IRPactInputParser parser) {
         parseConstructionRateAttribute(parser.getEnvironment());
         parseRenovationRateAttribute(parser.getEnvironment());
     }
