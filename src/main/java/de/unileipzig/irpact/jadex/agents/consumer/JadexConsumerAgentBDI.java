@@ -595,7 +595,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         waitForSynchronisationAtEndIfRequired();
         log().trace(IRPSection.SIMULATION_AGENT, "[{}] post end sync", getName());
     }
-    
+
     protected void resetOnNewAction() {
         accessibleForActions = false;
         actionsInThisStep = 0;

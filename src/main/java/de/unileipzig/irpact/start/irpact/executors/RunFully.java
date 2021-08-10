@@ -16,7 +16,7 @@ public final class RunFully implements IRPactExecutor {
     public static final int ID = 0;
     public static final String ID_STR = "0";
     public static final RunFully INSTANCE = new RunFully();
-    
+
     public RunFully() {
     }
 
