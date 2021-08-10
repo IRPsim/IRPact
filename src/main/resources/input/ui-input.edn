@@ -196,7 +196,7 @@
   } 
   {
     :label "Spezielle Eingabedaten" 
-    :description "Hier können spezielle Eingabendaten konfiguiert werden." 
+    :description "Hier können spezielle Eingabendaten konfiguriert werden." 
     :sections [
       {
         :label "Für PVact" 
