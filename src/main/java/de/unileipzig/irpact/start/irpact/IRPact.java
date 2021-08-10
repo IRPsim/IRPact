@@ -82,7 +82,7 @@ public final class IRPact implements IRPActAccess {
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "0";
     private static final String MINOR_STRING = "11";
-    private static final String BUILD_STRING = "1";
+    private static final String BUILD_STRING = "2";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -116,6 +116,9 @@ public final class IRPact implements IRPActAccess {
     public static final String DOWNLOAD_DIR_NAME = "images";
 
     public static final int MODELDEFINITION = 3;
+
+    public static final double MINIMAL_PROGRESS = 0.05;
+    private static final int BATCH_SIZE = 50;
 
     public static boolean printStacktraceImage = true;
 
@@ -515,35 +518,67 @@ public final class IRPact implements IRPActAccess {
                 ? 1
                 : 1 + environment.getAgents().getTotalNumberOfConsumerAgents();
         int agentCount = 0;
+        double lastBroadcastedAgentCount = 0;
 
         LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "total number of agents: {}", totalNumberOfAgents);
         environment.getLifeCycleControl().setTotalNumberOfAgents(totalNumberOfAgents);
 
         CreationInfo simulationAgentInfo = createSimulationAgentInfo(createProxySimulationAgent());
-        LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "create simulation agent '{}' ({}/{})", SIMULATION_AGENT_NAME, ++agentCount, totalNumberOfAgents);
         platform.createComponent(simulationAgentInfo).get();
         pulse();
+        lastBroadcastedAgentCount = broadcastAgentCreationProgress(
+                "simulation control agent",
+                1, 1,
+                ++agentCount, totalNumberOfAgents,
+                lastBroadcastedAgentCount, MINIMAL_PROGRESS
+        );
 
         if(controlAgentsOnly) {
             return;
         }
 
-        long consumerAgentCount = 0;
         final long totalConsumerAgentCount = environment.getAgents().getTotalNumberOfConsumerAgents();
+        long consumerAgentCount = 0;
+        double lastBroadcastedConsumerAgentProgress = 0;
+
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
             for(ConsumerAgent ca: cag.getAgents()) {
-                LOGGER.trace(
-                        IRPSection.INITIALIZATION_PLATFORM,
-                        "create consumer agent '{}' ({}/{} | {}/{})",
-                        ca.getName(),
-                        ++consumerAgentCount, totalConsumerAgentCount,
-                        ++agentCount, totalNumberOfAgents
-                );
                 ProxyConsumerAgent data = createConsumerAgentInitializationData(ca);
                 CreationInfo info = createConsumerAgentInfo(data);
                 platform.createComponent(info).get();
                 pulse();
+
+                lastBroadcastedConsumerAgentProgress = broadcastAgentCreationProgress(
+                        "consumer agents",
+                        ++consumerAgentCount, totalConsumerAgentCount,
+                        ++agentCount, totalNumberOfAgents,
+                        lastBroadcastedConsumerAgentProgress, MINIMAL_PROGRESS
+                );
             }
+        }
+    }
+
+    private double broadcastAgentCreationProgress(
+            String agentType,
+            long created, long total,
+            long createdAll, long totalAll,
+            double lastBroadcastedProgress,
+            double minDiff) {
+        double progressAll = (double) createdAll / (double) totalAll;
+        if(progressAll - lastBroadcastedProgress >= minDiff || createdAll == totalAll || created == total) {
+            double progress = (double) created / (double) total;
+            LOGGER.info(
+                    IRPSection.INITIALIZATION_PLATFORM,
+                    "created {}: {}% ({}/{}), total: {}% ({}/{})",
+                    agentType,
+                    StringUtil.DF2_POINT.format(progress * 100.0),
+                    created, total,
+                    StringUtil.DF2_POINT.format(progressAll * 100.0),
+                    createdAll, totalAll
+            );
+            return progressAll;
+        } else {
+            return lastBroadcastedProgress;
         }
     }
 

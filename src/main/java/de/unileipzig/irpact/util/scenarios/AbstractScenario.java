@@ -374,7 +374,7 @@ public abstract class AbstractScenario implements Scenario {
 
         root.setGeneral(new InGeneral());
         root.getGeneral().setSeed(42);
-        root.getGeneral().setTimeout(1, TimeUnit.MINUTES);
+        root.getGeneral().setTimeout(5, TimeUnit.MINUTES);
         root.getGeneral().setFirstSimulationYear(DEFAULT_INITIAL_YEAR);
         root.getGeneral().setLastSimulationYear(root.getGeneral().getFirstSimulationYear() + simulationDelta - 1);
 

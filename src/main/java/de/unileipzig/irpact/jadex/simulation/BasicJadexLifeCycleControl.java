@@ -214,14 +214,15 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
         terminateWithError(e);
     }
 
-    protected void prepareTermination() {
+    @Override
+    public void prepareTermination() {
+        killSwitch.terminate();
         JadexSystemOut.redirect();
     }
 
     @Override
     public IFuture<Map<String, Object>> terminate() {
         LOGGER.info("terminate");
-        killSwitch.terminate();
         prepareTermination();
         state = TerminationState.NORMAL;
         return platform.killComponent();

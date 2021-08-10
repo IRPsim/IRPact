@@ -7,6 +7,8 @@ import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import jadex.bridge.service.types.clock.IClockService;
 import jadex.bridge.service.types.simulation.ISimulationService;
 
+import java.time.temporal.ChronoUnit;
+
 /**
  * @author Daniel Abitz
  */
@@ -41,6 +43,13 @@ public abstract class AbstractJadexTimeModel extends NameableBase implements Jad
     @Override
     public JadexTimestamp endTime() {
         return endTime;
+    }
+
+    @Override
+    public double getTimeProgress() {
+        long total = ChronoUnit.MILLIS.between(startTime().getTime(), endTime().getTime());
+        long passed = ChronoUnit.MILLIS.between(startTime().getTime(), now().getTime());
+        return (double) passed / (double) total;
     }
 
     @Override

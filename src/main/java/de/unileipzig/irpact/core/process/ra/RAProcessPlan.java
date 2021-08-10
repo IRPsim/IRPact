@@ -136,6 +136,10 @@ public class RAProcessPlan extends RAProcessPlanBase {
     }
 
     protected ProcessPlanResult executePlan() {
+        if(true) {
+            return ProcessPlanResult.IN_PROCESS;
+        }
+
         switch (currentStage) {
             case AWARENESS:
                 return handleInterest();

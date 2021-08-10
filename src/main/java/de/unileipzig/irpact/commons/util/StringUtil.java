@@ -5,9 +5,12 @@ import org.slf4j.helpers.MessageFormatter;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -17,8 +20,17 @@ public final class StringUtil {
 
     private static final Base64 BASE64 = new Base64();
     public static final String LINE_SEPARATOR = "\n";
+    public static final DecimalFormat DF2_POINT = createFormat("#.##", Locale.ENGLISH);
+    public static final DecimalFormat DF2_COMMA = createFormat("#.##", Locale.GERMAN);
 
     private StringUtil() {
+    }
+
+    private static DecimalFormat createFormat(String pattern, Locale locale) {
+        NumberFormat nf = NumberFormat.getNumberInstance(locale);
+        DecimalFormat df = (DecimalFormat) nf;
+        df.applyPattern(pattern);
+        return df;
     }
 
     public static String firstLetterToUpperCase(String input) {

@@ -46,6 +46,8 @@ public interface JadexTimeModel extends TimeModel {
     @Override
     JadexTimestamp endTime();
 
+    double getTimeProgress();
+
     @Override
     default JadexTimestamp plusMillis(long millis) {
         return plusMillis(now(), millis);
