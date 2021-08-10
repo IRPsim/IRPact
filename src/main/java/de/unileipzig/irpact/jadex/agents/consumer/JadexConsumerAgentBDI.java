@@ -117,6 +117,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         //HIER KOMMEN AUFGABEN HIN
         //node setzen
         simulationService.reportAgentCreated(getThisAgent());
+        simulationService.registerAgentForFastTermination(agent);
     }
 
     //=========================
@@ -139,6 +140,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     protected void onEnd() {
         log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] end ({})", getName(), now());
+        //log().info("[{}] end", getName());
         proxyAgent.unsync(this);
     }
 

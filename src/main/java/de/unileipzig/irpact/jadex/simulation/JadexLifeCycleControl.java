@@ -32,6 +32,8 @@ public interface JadexLifeCycleControl extends LifeCycleControl {
     @Override
     IFuture<Map<String, Object>> waitForTermination();
 
+    void prepareTermination();
+
     @Override
     IFuture<Map<String, Object>> terminate();
 
