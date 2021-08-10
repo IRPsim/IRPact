@@ -5,7 +5,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.need.Need;
-import de.unileipzig.irpact.core.process.modular.ModulePlan;
+import de.unileipzig.irpact.core.process.modular.ModularProcessPlan;
 import de.unileipzig.irpact.core.process.modular.ca.util.AdoptionPhaseDeterminer;
 import de.unileipzig.irpact.core.process.modular.ca.SimpleConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
@@ -47,7 +47,7 @@ public abstract class AbstractConsumerAgentMPM extends SimulationEntityBase impl
     }
 
     @Override
-    public ModulePlan newPlan(Agent agent, Need need, Product product) {
+    public ModularProcessPlan newPlan(Agent agent, Need need, Product product) {
         ConsumerAgent ca = validate(agent);
 
         SimpleConsumerAgentData data = new SimpleConsumerAgentData();

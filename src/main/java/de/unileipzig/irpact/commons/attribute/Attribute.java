@@ -38,4 +38,12 @@ public interface Attribute extends AttributeBase {
     default AnnualAttribute asAnnualAttribute() {
         throw new UnsupportedOperationException();
     }
+
+    default String print() {
+        if(isValueAttribute()) {
+            return asValueAttribute().getValueAsString();
+        } else {
+            return toString();
+        }
+    }
 }

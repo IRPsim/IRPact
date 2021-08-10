@@ -200,18 +200,21 @@ public final class CollectionUtil {
         return set;
     }
 
-    @SuppressWarnings("unchecked")
     public static <K, V> Map<K, V> hashMapOf(Object... values) {
+        return addAll(new HashMap<>(), values);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <K, V> Map<K, V> addAll(Map<K, V> target, Object... values) {
         if(values.length % 2 != 0) {
             throw new IllegalArgumentException();
         }
-        Map<K, V> map = new HashMap<>();
         for(int i = 0; i < values.length; i += 2) {
             K key = (K) values[i];
             V value = (V) values[i + 1];
-            map.put(key, value);
+            target.put(key, value);
         }
-        return map;
+        return target;
     }
 
     @SafeVarargs

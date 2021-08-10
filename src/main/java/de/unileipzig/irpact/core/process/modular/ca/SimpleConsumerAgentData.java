@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
-import de.unileipzig.irpact.core.process.modular.ModulePlan;
+import de.unileipzig.irpact.core.process.modular.ModularProcessPlan;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.process.modular.ca.model.ConsumerAgentMPM;
 import de.unileipzig.irpact.core.product.Product;
@@ -15,7 +15,7 @@ import de.unileipzig.irpact.core.product.Product;
 /**
  * @author Daniel Abitz
  */
-public class SimpleConsumerAgentData implements ConsumerAgentData, ModulePlan {
+public class SimpleConsumerAgentData implements ConsumerAgentData, ModularProcessPlan {
 
     public SimpleConsumerAgentData() {
     }

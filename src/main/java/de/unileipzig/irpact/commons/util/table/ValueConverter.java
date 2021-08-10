@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.commons.util.table;
 
-import de.unileipzig.irpact.commons.util.table.Header;
-
 /**
  * @author Daniel Abitz
  */

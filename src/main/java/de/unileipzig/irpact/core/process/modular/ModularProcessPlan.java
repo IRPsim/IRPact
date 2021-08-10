@@ -5,5 +5,5 @@ import de.unileipzig.irpact.core.process.ProcessPlan;
 /**
  * @author Daniel Abitz
  */
-public interface ModulePlan extends ProcessPlan {
+public interface ModularProcessPlan extends ProcessPlan {
 }

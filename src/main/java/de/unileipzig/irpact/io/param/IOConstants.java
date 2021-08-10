@@ -22,6 +22,11 @@ public final class IOConstants {
     public static final String NETWORK_VISUALISATION = "network_visualisation";
     public static final String DATA_OUTPUT = "data_output";
 
+    public static final String SPECIAL_INPUT = "special_input";
+    public static final String SPECIAL_INPUT_PVACT = "special_input_pvact";
+    public static final String SPECIAL_INPUT_PVACT_CONSTRATE = "special_input_pvact_constrate";
+    public static final String SPECIAL_INPUT_PVACT_RENORATE = "special_input_pvact_renorate";
+
     public static final String FILES = "files";
 
     public static final String DISTRIBUTIONS = "distributions";

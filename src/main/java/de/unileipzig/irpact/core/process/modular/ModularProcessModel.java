@@ -14,5 +14,5 @@ public interface ModularProcessModel extends ProcessModel {
     Module searchModule(String name);
 
     @Override
-    ModulePlan newPlan(Agent agent, Need need, Product product);
+    ModularProcessPlan newPlan(Agent agent, Need need, Product product);
 }

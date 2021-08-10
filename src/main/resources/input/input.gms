@@ -1970,6 +1970,176 @@ SET set_InModularProcessModel(set_InProcessModel)
 * - type: String
 SET set_InModule(*)
 
+* - default: 0
+* - domain: [0|1]
+* - description: Aktiviert bzw. deaktiviert die Nutzung der hier definierten Konstruktionsraten im Modell.
+* - identifier: Werte im Modell verwenden?
+* - type: Boolean
+SCALAR sca_InSpecialPVactInput_useConstRates
+
+* - default: 0
+* - description: Stellt die Konstruktionsrate für das Jahr 2008 ein.
+* - identifier: Jahr 2008
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2008
+
+* - default: 0
+* - description: Stellt die Konstruktionsrate für das Jahr 2009 ein.
+* - identifier: Jahr 2009
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2009
+
+* - default: 0
+* - description: Stellt die Konstruktionsrate für das Jahr 2010 ein.
+* - identifier: Jahr 2010
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2010
+
+* - default: 0
+* - description: Stellt die Konstruktionsrate für das Jahr 2011 ein.
+* - identifier: Jahr 2011
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2011
+
+* - default: 0
+* - description: Stellt die Konstruktionsrate für das Jahr 2012 ein.
+* - identifier: Jahr 2012
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2012
+
+* - default: 0
+* - description: Stellt die Konstruktionsrate für das Jahr 2013 ein.
+* - identifier: Jahr 2013
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2013
+
+* - default: 0
+* - description: Stellt die Konstruktionsrate für das Jahr 2014 ein.
+* - identifier: Jahr 2014
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2014
+
+* - default: 0
+* - description: Stellt die Konstruktionsrate für das Jahr 2015 ein.
+* - identifier: Jahr 2015
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2015
+
+* - default: 0
+* - description: Stellt die Konstruktionsrate für das Jahr 2016 ein.
+* - identifier: Jahr 2016
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2016
+
+* - default: 0
+* - description: Stellt die Konstruktionsrate für das Jahr 2017 ein.
+* - identifier: Jahr 2017
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2017
+
+* - default: 0
+* - description: Stellt die Konstruktionsrate für das Jahr 2018 ein.
+* - identifier: Jahr 2018
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2018
+
+* - default: 0
+* - description: Stellt die Konstruktionsrate für das Jahr 2019 ein.
+* - identifier: Jahr 2019
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2019
+
+* - default: 0
+* - description: Stellt die Konstruktionsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2020
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2020
+
+* - default: 0
+* - domain: [0|1]
+* - description: Aktiviert bzw. deaktiviert die Nutzung der hier definierten Renovierungsraten im Modell.
+* - identifier: Werte im Modell verwenden?
+* - type: Boolean
+SCALAR sca_InSpecialPVactInput_useRenoRates
+
+* - default: 0
+* - description: Stellt die Renovierungsrate für das Jahr 2008 ein.
+* - identifier: Jahr 2008
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2008
+
+* - default: 0
+* - description: Stellt die Renovierungsrate für das Jahr 2009 ein.
+* - identifier: Jahr 2009
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2009
+
+* - default: 0
+* - description: Stellt die Renovierungsrate für das Jahr 2010 ein.
+* - identifier: Jahr 2010
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2010
+
+* - default: 0
+* - description: Stellt die Renovierungsrate für das Jahr 2011 ein.
+* - identifier: Jahr 2011
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2011
+
+* - default: 0
+* - description: Stellt die Renovierungsrate für das Jahr 2012 ein.
+* - identifier: Jahr 2012
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2012
+
+* - default: 0
+* - description: Stellt die Renovierungsrate für das Jahr 2013 ein.
+* - identifier: Jahr 2013
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2013
+
+* - default: 0
+* - description: Stellt die Renovierungsrate für das Jahr 2014 ein.
+* - identifier: Jahr 2014
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2014
+
+* - default: 0
+* - description: Stellt die Renovierungsrate für das Jahr 2015 ein.
+* - identifier: Jahr 2015
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2015
+
+* - default: 0
+* - description: Stellt die Renovierungsrate für das Jahr 2016 ein.
+* - identifier: Jahr 2016
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2016
+
+* - default: 0
+* - description: Stellt die Renovierungsrate für das Jahr 2017 ein.
+* - identifier: Jahr 2017
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2017
+
+* - default: 0
+* - description: Stellt die Renovierungsrate für das Jahr 2018 ein.
+* - identifier: Jahr 2018
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2018
+
+* - default: 0
+* - description: Stellt die Renovierungsrate für das Jahr 2019 ein.
+* - identifier: Jahr 2019
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2019
+
+* - default: 0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2020
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2020
+
 * - identifier: InBasicProductGroup
 * - type: String
 SET set_InBasicProductGroup(set_InProductGroup)
