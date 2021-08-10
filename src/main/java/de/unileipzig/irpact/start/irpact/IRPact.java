@@ -648,9 +648,9 @@ public final class IRPact implements IRPActAccess {
         LOGGER.info(IRPSection.GENERAL, "start post-simulation with error ({})", cause.getMessage());
 
         String errorClass = cause.getClass().getSimpleName();
-        String errorMsg = StringUtil.replaceSpace(cause.getMessage(), "_");
-        String fullMsg = errorClass + "__" + errorMsg;
-        OutInformation[] errorInfo = { new OutInformation(fullMsg) };
+        //String errorMsg = StringUtil.replaceSpace(cause.getMessage(), "_");
+        //String fullMsg = errorClass + "__" + errorMsg;
+        OutInformation[] errorInfo = { new OutInformation(errorClass) };
 
         outData = createDummyOutputData("ERROR_OUTPUT", errorInfo);
         storeOutputData(outData);
