@@ -38,6 +38,7 @@ public final class RunFully implements IRPactExecutor {
 
             //Phase 1: initialization
             irpact.initialize();
+            System.gc();
 
             irpact.preAgentCreation();
             irpact.runPreAgentCreationTasks();
@@ -55,6 +56,7 @@ public final class RunFully implements IRPactExecutor {
             if(irpact.checkNoSimulationFlag()) {
                 return;
             }
+            System.gc();
 
             irpact.createPlatform();
             irpact.preparePlatform();

@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.AttributeAccess;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
+import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentProductRelatedAttribute;
@@ -400,10 +401,14 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     public void allowAttention() {
         if(!accessibleForActions) {
-            accessibleForActions = true;
             ACCESS_LOCK.lock();
             try {
-                WAIT_FOR_ACCESSIBILITY.signalAll();
+                accessibleForActions = true;
+                if(actionsInThisStep < maxNumberOfActions) {
+                    WAIT_FOR_ACCESSIBILITY.signal();
+                } else {
+                    WAIT_FOR_ACCESSIBILITY.signalAll();
+                }
             } finally {
                 ACCESS_LOCK.unlock();
             }
@@ -413,21 +418,21 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     public boolean tryAquireAttention() {
         if(actionsInThisStep < maxNumberOfActions) {
+            ACCESS_LOCK.lock();
             while(!accessibleForActions) {
-                ACCESS_LOCK.lock();
                 try {
                     WAIT_FOR_ACCESSIBILITY.await();
                 } catch (InterruptedException e) {
-                    //ignore
-                } finally {
-                    ACCESS_LOCK.unlock();
+                    LOGGER.warn(IRPSection.SIMULATION_PROCESS, "InterruptedException @ agent {}: {}", getName(), StringUtil.printStackTrace(e));
                 }
             }
 
-            ACCESS_LOCK.lock();
             if(actionsInThisStep < maxNumberOfActions) {
+                //keep lock -> releaseAttention
                 return true;
             } else {
+                //release all
+                WAIT_FOR_ACCESSIBILITY.signalAll();
                 ACCESS_LOCK.unlock();
                 return false;
             }
@@ -443,7 +448,15 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
 
     @Override
     public void releaseAttention() {
-        ACCESS_LOCK.unlock();
+        try {
+            if(actionsInThisStep < maxNumberOfActions) {
+                WAIT_FOR_ACCESSIBILITY.signal();
+            } else {
+                WAIT_FOR_ACCESSIBILITY.signalAll();
+            }
+        } finally {
+            ACCESS_LOCK.unlock();
+        }
     }
 
     @Override
