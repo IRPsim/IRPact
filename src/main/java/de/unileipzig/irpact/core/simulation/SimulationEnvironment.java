@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.exception.InitializationException;
+import de.unileipzig.irpact.commons.util.ProgressCalculator;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.util.data.DataStore;
@@ -69,4 +70,6 @@ public interface SimulationEnvironment extends Nameable, InitalizablePart {
     AttributeHelper getAttributeHelper();
 
     DataStore getGlobalData();
+
+    ProgressCalculator getProgressCalculator();
 }

@@ -3,8 +3,10 @@ package de.unileipzig.irpact.jadex.simulation;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.exception.InitializationException;
+import de.unileipzig.irpact.commons.util.ProgressCalculator;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
+import de.unileipzig.irpact.commons.util.WeightedProgressCalculator;
 import de.unileipzig.irpact.commons.util.data.DataStore;
 import de.unileipzig.irpact.commons.util.data.MapDataStore;
 import de.unileipzig.irpact.core.agent.AgentManager;
@@ -48,6 +50,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
 
     protected final AttributeHelper HELPER = new AttributeHelper(this);
     protected final DataStore STORE = newStore();
+    protected final ProgressCalculator PROGRESS_CALC = new WeightedProgressCalculator(IRPact.NUMBER_OF_PROGRESS_PHASES);
     protected Settings settings;
     protected BinaryTaskManager taskManager;
     protected PersistenceModul persistenceModul;
@@ -264,6 +267,11 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     @Override
     public DataStore getGlobalData() {
         return STORE;
+    }
+
+    @Override
+    public ProgressCalculator getProgressCalculator() {
+        return PROGRESS_CALC;
     }
 
     @Override

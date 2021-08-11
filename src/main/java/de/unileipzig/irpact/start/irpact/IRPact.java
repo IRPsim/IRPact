@@ -8,6 +8,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.time.TimeUtil;
 import de.unileipzig.irpact.commons.util.ImageUtil;
+import de.unileipzig.irpact.commons.util.ProgressCalculator;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -82,7 +83,7 @@ public final class IRPact implements IRPActAccess {
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "0";
     private static final String MINOR_STRING = "11";
-    private static final String BUILD_STRING = "2";
+    private static final String BUILD_STRING = "3";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -119,6 +120,10 @@ public final class IRPact implements IRPActAccess {
 
     public static final double MINIMAL_PROGRESS = 0.05;
     private static final int BATCH_SIZE = 50;
+    public static final int NUMBER_OF_PROGRESS_PHASES = 3;
+    public static final int PROGRESS_PHASE_AGENT_CREATION = 1;
+    public static final int PROGRESS_PHASE_SIMULATION = 2;
+    public static final int PROGRESS_PHASE_AGENT_KILL = 3;
 
     public static boolean printStacktraceImage = true;
 
@@ -526,11 +531,11 @@ public final class IRPact implements IRPActAccess {
         CreationInfo simulationAgentInfo = createSimulationAgentInfo(createProxySimulationAgent());
         platform.createComponent(simulationAgentInfo).get();
         pulse();
-        lastBroadcastedAgentCount = broadcastAgentCreationProgress(
+        broadcastAgentCreationProgress(
                 "simulation control agent",
                 1, 1,
                 ++agentCount, totalNumberOfAgents,
-                lastBroadcastedAgentCount, MINIMAL_PROGRESS
+                lastBroadcastedAgentCount
         );
 
         if(controlAgentsOnly) {
@@ -552,7 +557,7 @@ public final class IRPact implements IRPActAccess {
                         "consumer agents",
                         ++consumerAgentCount, totalConsumerAgentCount,
                         ++agentCount, totalNumberOfAgents,
-                        lastBroadcastedConsumerAgentProgress, MINIMAL_PROGRESS
+                        lastBroadcastedConsumerAgentProgress
                 );
             }
         }
@@ -562,19 +567,22 @@ public final class IRPact implements IRPActAccess {
             String agentType,
             long created, long total,
             long createdAll, long totalAll,
-            double lastBroadcastedProgress,
-            double minDiff) {
+            double lastBroadcastedProgress) {
         double progressAll = (double) createdAll / (double) totalAll;
-        if(progressAll - lastBroadcastedProgress >= minDiff || createdAll == totalAll || created == total) {
+        if(progressAll - lastBroadcastedProgress >= MINIMAL_PROGRESS || createdAll == totalAll || created == total) {
+            ProgressCalculator calc = environment.getProgressCalculator();
+            calc.setProgress(PROGRESS_PHASE_AGENT_CREATION, progressAll);
+            double irpactProgress = calc.getProgress();
             double progress = (double) created / (double) total;
             LOGGER.info(
                     IRPSection.INITIALIZATION_PLATFORM,
-                    "created {}: {}% ({}/{}), total: {}% ({}/{})",
+                    "created {}: {}% ({}/{}), total: {}% ({}/{}), IRPact: {}%",
                     agentType,
                     StringUtil.DF2_POINT.format(progress * 100.0),
                     created, total,
                     StringUtil.DF2_POINT.format(progressAll * 100.0),
-                    createdAll, totalAll
+                    createdAll, totalAll,
+                    StringUtil.DF2_POINT.format(irpactProgress * 100.0)
             );
             return progressAll;
         } else {
