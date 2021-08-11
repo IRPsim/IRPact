@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.agents.simulation;
 
+import de.unileipzig.irpact.commons.util.ProgressCalculator;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
@@ -122,6 +123,7 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     }
 
     protected IFuture<Void> doOnEnd(IInternalAccess ia) {
+        broadcastProgress(1.0);
         JadexTimeModel timeModel = environment.getTimeModel();
         log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] onEnd: {} ({})", getName(), timeModel.now(), timeModel.endTimeReached());
         environment.getLifeCycleControl().waitForYearChangeIfRequired(this);
@@ -144,11 +146,14 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     }
 
     protected void broadcastProgress(double newProgress) {
-        if(newProgress - lastBroadcastedProgress > MINIMAL_PROGRESS) {
+        if(newProgress - lastBroadcastedProgress > MINIMAL_PROGRESS || newProgress == 1.0) {
+            ProgressCalculator calc = environment.getProgressCalculator();
+            calc.setProgress(IRPact.PROGRESS_PHASE_SIMULATION, newProgress);
             LOGGER.info(
                     IRPSection.SIMULATION_PROCESS,
-                    "time progress: {}%",
-                    StringUtil.DF2_POINT.format(newProgress * 100.0)
+                    "simulation progress: {}%, IRPact: {}%",
+                    StringUtil.DF2_POINT.format(newProgress * 100.0),
+                    StringUtil.DF2_POINT.format(calc.getProgress() * 100.0)
             );
             lastBroadcastedProgress = newProgress;
         }
@@ -176,8 +181,7 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
             lastBroadcastedProgress = broadcastAgentKillProgress(
                     ++killed,
                     agents.size(),
-                    lastBroadcastedProgress,
-                    MINIMAL_PROGRESS
+                    lastBroadcastedProgress
             );
         }
         agents.clear();
@@ -186,15 +190,18 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     private double broadcastAgentKillProgress(
             long killed,
             long total,
-            double lastBroadcastedProgress,
-            double minDiff) {
+            double lastBroadcastedProgress) {
         double progress = (double) killed / (double) total;
-        if((progress - lastBroadcastedProgress >= minDiff || killed == total)) {
+        if((progress - lastBroadcastedProgress >= MINIMAL_PROGRESS || killed == total)) {
+            ProgressCalculator calc = environment.getProgressCalculator();
+            calc.setProgress(IRPact.PROGRESS_PHASE_AGENT_KILL, progress);
+            double irpactProgress = calc.getProgress();
             LOGGER.info(
                     IRPSection.SIMULATION_PROCESS,
-                    "killend agents: {}% ({}/{})",
+                    "killed agents: {}% ({}/{}), IRPact: {}%",
                     StringUtil.DF2_POINT.format(progress * 100.0),
-                    killed, total
+                    killed, total,
+                    StringUtil.DF2_POINT.format(irpactProgress * 100.0)
             );
             return progress;
         } else {

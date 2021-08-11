@@ -17,7 +17,6 @@ import de.unileipzig.irpact.core.logging.InfoTag;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
-import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.process.ra.alg.RelativeAgreementAlgorithm;
 import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
@@ -136,10 +135,6 @@ public class RAProcessPlan extends RAProcessPlanBase {
     }
 
     protected ProcessPlanResult executePlan() {
-        if(true) {
-            return ProcessPlanResult.IN_PROCESS;
-        }
-
         switch (currentStage) {
             case AWARENESS:
                 return handleInterest();
