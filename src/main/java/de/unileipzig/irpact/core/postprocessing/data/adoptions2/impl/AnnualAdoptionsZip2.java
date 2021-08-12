@@ -81,7 +81,7 @@ public class AnnualAdoptionsZip2 extends AbstractAnnualAdoptionsX1<String> {
 
         getData().varUpdate(
                 AdoptionResultInfo2.ZERO,
-                AdoptionResultInfo2.getAdder(year == info.getYear()),
+                AdoptionResultInfo2.getAdder(year == getYearOrFirstYear(info)),
                 year,
                 zip,
                 AdoptionResultInfo2.ONE

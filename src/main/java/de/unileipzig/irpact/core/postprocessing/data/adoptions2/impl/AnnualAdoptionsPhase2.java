@@ -66,7 +66,7 @@ public class AnnualAdoptionsPhase2 extends AbstractAnnualAdoptionsX1<AdoptionPha
     protected void add(int year, AdoptionEntry2 info) {
         getData().varUpdate(
                 AdoptionResultInfo2.ZERO,
-                AdoptionResultInfo2.getAdder(year == info.getYear()),
+                AdoptionResultInfo2.getAdder(year == getYearOrFirstYear(info)),
                 year,
                 info.getPhase(),
                 AdoptionResultInfo2.ONE

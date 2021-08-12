@@ -28,6 +28,7 @@ public abstract class AbstractAdoptionAnalyser2 implements AdoptionAnalyser2 {
     protected VarCollectionWriter writer;
     protected VarCollection data;
     protected Collection<? extends Integer> years;
+    protected int firstYear;
     protected LocalizedData localizedData;
     protected boolean skipInitial = true;
 
@@ -53,6 +54,13 @@ public abstract class AbstractAdoptionAnalyser2 implements AdoptionAnalyser2 {
 
     public void setYears(Collection<? extends Integer> years) {
         this.years = years;
+
+        firstYear = Integer.MAX_VALUE;
+        for(int year: years) {
+            if(year < firstYear) {
+                firstYear = year;
+            }
+        }
     }
 
     public void setWriter(VarCollectionWriter writer) {
@@ -106,13 +114,20 @@ public abstract class AbstractAdoptionAnalyser2 implements AdoptionAnalyser2 {
         writer.write(getData());
     }
 
+    protected int getYearOrFirstYear(AdoptionEntry2 entry) {
+        return entry.getTimestamp() == null
+                ? firstYear
+                : entry.getYear();
+    }
+
     @Override
     public boolean add(AdoptionEntry2 entry) {
         if(skipInitial && entry.getAdoptedProduct().isInitial()) {
             return false;
         } else {
+            int entryYear = getYearOrFirstYear(entry);
             for(Integer year: years) {
-                if(year >= entry.getYear()) {
+                if(year >= entryYear) {
                     add(year, entry);
                 }
             }

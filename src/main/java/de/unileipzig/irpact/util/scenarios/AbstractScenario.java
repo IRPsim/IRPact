@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,9 +40,13 @@ import java.util.function.Function;
  */
 public abstract class AbstractScenario implements Scenario {
 
+    public static final Comparator<? super AbstractScenario> SORT_ID = Comparator.comparingInt(o -> o.sortId);
+
     public static final int DEFAULT_INITIAL_YEAR = 2010;
 
     protected static final Map<String, Object> NAMED_DATA = new HashMap<>();
+
+    protected int sortId = 0;
 
     protected String name;
     protected String creator;
