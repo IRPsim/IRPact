@@ -200,6 +200,13 @@ public final class BuilderSettings {
         return getAs("sep");
     }
 
+    public boolean hasSize() {
+        return hasHeight() && hasWidht();
+    }
+
+    public BuilderSettings setHeight(String value) {
+        return setHeight(Integer.parseInt(value));
+    }
     public BuilderSettings setHeight(int value) {
         return set("height", value);
     }
@@ -210,7 +217,10 @@ public final class BuilderSettings {
         return has("height");
     }
 
-    public BuilderSettings setWidht(int value) {
+    public BuilderSettings setWidth(String value) {
+        return setWidth(Integer.parseInt(value));
+    }
+    public BuilderSettings setWidth(int value) {
         return set("width", value);
     }
     public int getWidht() {

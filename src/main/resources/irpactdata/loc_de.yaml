@@ -148,6 +148,12 @@ InGenericOutputImage_storeData:
 InGenericOutputImage_storeImage:
   gams_identifier: "Bild speichern?"
   gams_description: "Erzeugt und speichert auf Wunsch das erzeugte Bild."
+InGenericOutputImage_imageWidth:
+  gams_identifier: "Bildbreite"
+  gams_description: "Gibt die Bildbreite in Pixeln an."
+InGenericOutputImage_imageHeight:
+  gams_identifier: "Bildhöhe"
+  gams_description: "Gibt die Bildhöhe in Pixeln an."
 InGenericOutputImage_linewidth:
   gams_identifier: "Linienstärke"
   gams_description: "Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss."
@@ -176,6 +182,12 @@ InGnuPlotOutputImage_storeData:
 InGnuPlotOutputImage_storeImage:
   gams_identifier: "Bild speichern?"
   gams_description: "Erzeugt und speichert auf Wunsch das erzeugte Bild."
+InGnuPlotOutputImage_imageWidth:
+  gams_identifier: "Bildbreite"
+  gams_description: "Gibt die Bildbreite in Pixeln an."
+InGnuPlotOutputImage_imageHeight:
+  gams_identifier: "Bildhöhe"
+  gams_description: "Gibt die Bildhöhe in Pixeln an."
 InGnuPlotOutputImage_linewidth:
   gams_identifier: "Linienstärke"
   gams_description: "Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss."
@@ -204,6 +216,12 @@ InROutputImage_storeData:
 InROutputImage_storeImage:
   gams_identifier: "Bild speichern?"
   gams_description: "Erzeugt und speichert auf Wunsch das erzeugte Bild."
+InROutputImage_imageWidth:
+  gams_identifier: "Bildbreite"
+  gams_description: "Gibt die Bildbreite in Pixeln an."
+InROutputImage_imageHeight:
+  gams_identifier: "Bildhöhe"
+  gams_description: "Gibt die Bildhöhe in Pixeln an."
 InROutputImage_linewidth:
   gams_identifier: "Linienstärke"
   gams_description: "Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss."

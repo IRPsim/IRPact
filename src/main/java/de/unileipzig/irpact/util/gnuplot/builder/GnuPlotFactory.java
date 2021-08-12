@@ -53,6 +53,14 @@ public final class GnuPlotFactory {
         }
     }
 
+    private static void setPngCairo(GnuPlotBuilder builder, BuilderSettings settings) {
+        if(settings.hasSize()) {
+            builder.printPngCairo(settings.getWidht(), settings.getHeight());
+        } else {
+            builder.printPngCairo();
+        }
+    }
+
     //=========================
     //line chart
     //=========================
@@ -75,7 +83,7 @@ public final class GnuPlotFactory {
         builder.printUnknown();
         builder.plotRawSpecialLinePlot(settings.useArgsFlag() ? GnuPlotBuilder.arg(1) : GnuPlotBuilder.quote(settings.getInputFile()), (int) settings.allowNull().getLineWidthDouble());
         builder.addComment("===output===");
-        builder.printPngCairo();
+        setPngCairo(builder, settings);
         builder.setRawOutput(settings.useArgsFlag() ? GnuPlotBuilder.arg(2) : GnuPlotBuilder.quote(settings.getOutputFile()));
         builder.setXRange(settings.nonNull().getXMin(), settings.nonNull().getXMax());
         builder.setYRange(settings.nonNull().getYMin(), settings.nonNull().getYMax());
@@ -110,7 +118,7 @@ public final class GnuPlotFactory {
         builder.printUnknown();
         builder.add(plot);
         builder.addComment("===output===");
-        builder.printPngCairo();
+        setPngCairo(builder, settings);
         builder.setRawOutput(settings.useArgsFlag() ? GnuPlotBuilder.arg(2) : GnuPlotBuilder.quote(settings.getOutputFile()));
         builder.setXRange(settings.nonNull().getXMin(), settings.nonNull().getXMax());
         builder.setYRange(settings.nonNull().getYMin(), settings.nonNull().getYMax());
@@ -148,7 +156,7 @@ public final class GnuPlotFactory {
         builder.printUnknown();
         builder.add(plot);
         builder.addComment("===output===");
-        builder.printPngCairo();
+        setPngCairo(builder, settings);
         builder.setRawOutput(settings.useArgsFlag() ? GnuPlotBuilder.arg(2) : GnuPlotBuilder.quote(settings.getOutputFile()));
         builder.setXRange(settings.nonNull().getXMin(), settings.nonNull().getXMax());
         builder.setYRange(settings.nonNull().getYMin(), settings.nonNull().getYMax());
@@ -177,7 +185,7 @@ public final class GnuPlotFactory {
         if(settings.hasFillLab()) builder.setLegendOutsideRightTop(getString(settings, settings.nonNull().getFillLab()));
         else builder.setLegendOutsideRightTop();
         builder.addComment("===output===");
-        builder.printPngCairo();
+        setPngCairo(builder, settings);
         builder.setRawOutput(settings.useArgsFlag() ? GnuPlotBuilder.arg(2) : GnuPlotBuilder.quote(settings.getOutputFile()));
         builder.addComment("===plot===");
         builder.setDataFileSeparator(settings.nonNull().getSep());
@@ -202,7 +210,7 @@ public final class GnuPlotFactory {
         if(settings.hasFillLab()) builder.setLegendOutsideRightTop(getString(settings, settings.nonNull().getFillLab()));
         else builder.setLegendOutsideRightTop();
         builder.addComment("===output===");
-        builder.printPngCairo();
+        setPngCairo(builder, settings);
         builder.setYRange(
                 settings.nonNull().getYMin(),
                 settings.nonNull().getYMax()

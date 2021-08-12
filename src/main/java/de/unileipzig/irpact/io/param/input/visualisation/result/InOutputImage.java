@@ -53,6 +53,10 @@ public interface InOutputImage extends InIRPactEntity {
 
     double getLinewidth();
 
+    int getImageWidth();
+
+    int getImageHeight();
+
     default boolean isEnabled() {
         return isStoreData() || isStoreScript() || isStoreImage();
     }

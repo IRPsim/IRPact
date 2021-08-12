@@ -50,12 +50,17 @@ public class InGenericOutputImage implements InOutputImage {
         addEntryWithDefaultAndDomain(res, thisClass(), "storeScript", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "storeData", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "storeImage", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "imageWidth", VALUE_1280, DOMAIN_G0);
+        addEntryWithDefaultAndDomain(res, thisClass(), "imageHeight", VALUE_720, DOMAIN_G0);
         addEntryWithDefaultAndDomain(res, thisClass(), "linewidth", VALUE_ONE, DOMAIN_G0);
 
         setDefault(res, thisClass(), varargs(IRPact.IMAGE_ANNUAL_ADOPTIONS, IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS));
 
         setRules(res, thisClass(), engineFieldNames, engineBuilder);
         setRules(res, thisClass(), dataToVisualize, dataToVisualizeBuilder.withKeyModifier(buildDefaultParameterNameOperator(thisClass())));
+
+        setUnit(res, thisClass(), "imageWidth", UNIT_PIXEL);
+        setUnit(res, thisClass(), "imageHeight", UNIT_PIXEL);
     }
 
     //=========================
@@ -116,6 +121,12 @@ public class InGenericOutputImage implements InOutputImage {
     public boolean storeImage = true;
 
     @FieldDefinition
+    public int imageWidth = 1280;
+
+    @FieldDefinition
+    public int imageHeight = 720;
+
+    @FieldDefinition
     public double linewidth = 1;
 
     public InGenericOutputImage() {
@@ -148,6 +159,8 @@ public class InGenericOutputImage implements InOutputImage {
         copy.storeData = storeData;
         copy.storeScript = storeScript;
         copy.storeImage = storeImage;
+        copy.imageWidth = imageWidth;
+        copy.imageHeight = imageHeight;
         copy.linewidth = linewidth;
         return copy;
     }
@@ -274,6 +287,24 @@ public class InGenericOutputImage implements InOutputImage {
 
     public boolean isStoreScript() {
         return storeScript;
+    }
+
+    public void setImageWidth(int imageWidth) {
+        this.imageWidth = imageWidth;
+    }
+
+    @Override
+    public int getImageWidth() {
+        return imageWidth;
+    }
+
+    public void setImageHeight(int imageHeight) {
+        this.imageHeight = imageHeight;
+    }
+
+    @Override
+    public int getImageHeight() {
+        return imageHeight;
     }
 
     public double getLinewidth() {

@@ -41,6 +41,8 @@ public class ImageProcessor extends PostProcessor {
     protected static final String RPLOTS_PDF = "Rplots.pdf";
 
     protected double defaultLinewidth = 1.0;
+    protected int defaultWidth = 1280;
+    protected int defaultHeight = 720;
 
     public ImageProcessor(
             MetaData metaData,
@@ -65,6 +67,14 @@ public class ImageProcessor extends PostProcessor {
 
     public void setDefaultLinewidth(double defaultLinewidth) {
         this.defaultLinewidth = defaultLinewidth;
+    }
+
+    public int getDefaultHeight() {
+        return defaultHeight;
+    }
+
+    public int getDefaultWidth() {
+        return defaultWidth;
     }
 
     public RealAdoptionData getRealAdoptionData() {

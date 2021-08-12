@@ -154,19 +154,19 @@
             :label "Benutzerdefiniert" 
             :set "set_InGenericOutputImage" 
             :description "Hier kann für die Bilderzeugung das entsprechende Programm mittels 'Visualisierungsprogramm' individuell eingestellt werden. Der Bezeichner wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem für gnuplot Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild) erstellt. Für R werden Ergebnis.csv (Daten), Ergebnis.R (Skript) und Ergebnis.png (Bild) erstellt" 
-            :tags [["InGenericOutputImage" "useGnuplot"] ["InGenericOutputImage" "useR"] ["InGenericOutputImage" "annualZip"] ["InGenericOutputImage" "annualZipWithReal"] ["InGenericOutputImage" "cumulativeAnnualPhase"] ["InGenericOutputImage" "cumulativeAnnualPhase2"] ["InGenericOutputImage" "storeScript"] ["InGenericOutputImage" "storeData"] ["InGenericOutputImage" "storeImage"] ["InGenericOutputImage" "linewidth"]]
+            :tags [["InGenericOutputImage" "useGnuplot"] ["InGenericOutputImage" "useR"] ["InGenericOutputImage" "annualZip"] ["InGenericOutputImage" "annualZipWithReal"] ["InGenericOutputImage" "cumulativeAnnualPhase"] ["InGenericOutputImage" "cumulativeAnnualPhase2"] ["InGenericOutputImage" "storeScript"] ["InGenericOutputImage" "storeData"] ["InGenericOutputImage" "storeImage"] ["InGenericOutputImage" "imageWidth"] ["InGenericOutputImage" "imageHeight"] ["InGenericOutputImage" "linewidth"]]
           } 
           {
             :label "gnuplot" 
             :set "set_InGnuPlotOutputImage" 
             :description "Die hier definierten Bilder werden mittels gnuplot erstellt. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild) erstellt." 
-            :tags [["InGnuPlotOutputImage" "annualZip"] ["InGnuPlotOutputImage" "annualZipWithReal"] ["InGnuPlotOutputImage" "cumulativeAnnualPhase"] ["InGnuPlotOutputImage" "cumulativeAnnualPhase2"] ["InGnuPlotOutputImage" "storeScript"] ["InGnuPlotOutputImage" "storeData"] ["InGnuPlotOutputImage" "storeImage"] ["InGnuPlotOutputImage" "linewidth"]]
+            :tags [["InGnuPlotOutputImage" "annualZip"] ["InGnuPlotOutputImage" "annualZipWithReal"] ["InGnuPlotOutputImage" "cumulativeAnnualPhase"] ["InGnuPlotOutputImage" "cumulativeAnnualPhase2"] ["InGnuPlotOutputImage" "storeScript"] ["InGnuPlotOutputImage" "storeData"] ["InGnuPlotOutputImage" "storeImage"] ["InGnuPlotOutputImage" "imageWidth"] ["InGnuPlotOutputImage" "imageHeight"] ["InGnuPlotOutputImage" "linewidth"]]
           } 
           {
             :label "R" 
             :set "set_InROutputImage" 
             :description "Die hier definierten Bilder werden mittels R erstellt. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem Ergebnis.csv (Daten), Ergebnis.R (Skript) und Ergebnis.png (Bild) erstellt." 
-            :tags [["InROutputImage" "annualZip"] ["InROutputImage" "annualZipWithReal"] ["InROutputImage" "cumulativeAnnualPhase"] ["InROutputImage" "cumulativeAnnualPhase2"] ["InROutputImage" "storeScript"] ["InROutputImage" "storeData"] ["InROutputImage" "storeImage"] ["InROutputImage" "linewidth"]]
+            :tags [["InROutputImage" "annualZip"] ["InROutputImage" "annualZipWithReal"] ["InROutputImage" "cumulativeAnnualPhase"] ["InROutputImage" "cumulativeAnnualPhase2"] ["InROutputImage" "storeScript"] ["InROutputImage" "storeData"] ["InROutputImage" "storeImage"] ["InROutputImage" "imageWidth"] ["InROutputImage" "imageHeight"] ["InROutputImage" "linewidth"]]
           }
         ]
       } 

@@ -601,6 +601,22 @@ PARAMETER par_InGenericOutputImage_storeData(set_InGenericOutputImage)
 * - type: Boolean
 PARAMETER par_InGenericOutputImage_storeImage(set_InGenericOutputImage)
 
+* - default: 1280
+* - domain: (0,)
+* - description: Gibt die Bildbreite in Pixeln an.
+* - identifier: Bildbreite
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InGenericOutputImage_imageWidth(set_InGenericOutputImage)
+
+* - default: 720
+* - domain: (0,)
+* - description: Gibt die Bildhöhe in Pixeln an.
+* - identifier: Bildhöhe
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InGenericOutputImage_imageHeight(set_InGenericOutputImage)
+
 * - default: 1
 * - domain: (0,)
 * - description: Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss.
@@ -688,6 +704,22 @@ PARAMETER par_InGnuPlotOutputImage_storeData(set_InGnuPlotOutputImage)
 * - identifier: Bild speichern?
 * - type: Boolean
 PARAMETER par_InGnuPlotOutputImage_storeImage(set_InGnuPlotOutputImage)
+
+* - default: 1280
+* - domain: (0,)
+* - description: Gibt die Bildbreite in Pixeln an.
+* - identifier: Bildbreite
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InGnuPlotOutputImage_imageWidth(set_InGnuPlotOutputImage)
+
+* - default: 720
+* - domain: (0,)
+* - description: Gibt die Bildhöhe in Pixeln an.
+* - identifier: Bildhöhe
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InGnuPlotOutputImage_imageHeight(set_InGnuPlotOutputImage)
 
 * - default: 1
 * - domain: (0,)
@@ -781,6 +813,22 @@ PARAMETER par_InROutputImage_storeData(set_InROutputImage)
 * - identifier: Bild speichern?
 * - type: Boolean
 PARAMETER par_InROutputImage_storeImage(set_InROutputImage)
+
+* - default: 1280
+* - domain: (0,)
+* - description: Gibt die Bildbreite in Pixeln an.
+* - identifier: Bildbreite
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InROutputImage_imageWidth(set_InROutputImage)
+
+* - default: 720
+* - domain: (0,)
+* - description: Gibt die Bildhöhe in Pixeln an.
+* - identifier: Bildhöhe
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InROutputImage_imageHeight(set_InROutputImage)
 
 * - default: 1
 * - domain: (0,)

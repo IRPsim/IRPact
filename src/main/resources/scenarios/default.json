@@ -226,6 +226,8 @@
           "par_InGenericOutputImage_storeScript" : 0,
           "par_InGenericOutputImage_storeData" : 0,
           "par_InGenericOutputImage_storeImage" : 0,
+          "par_InGenericOutputImage_imageWidth" : 1280,
+          "par_InGenericOutputImage_imageHeight" : 720,
           "par_InGenericOutputImage_linewidth" : 1.0
         },
         "JaehrlicheAdoptionenPLZ" : {
@@ -238,6 +240,8 @@
           "par_InGenericOutputImage_storeScript" : 0,
           "par_InGenericOutputImage_storeData" : 0,
           "par_InGenericOutputImage_storeImage" : 0,
+          "par_InGenericOutputImage_imageWidth" : 1280,
+          "par_InGenericOutputImage_imageHeight" : 720,
           "par_InGenericOutputImage_linewidth" : 1.0
         },
         "JaehrlicheAdoptionenPLZVergleich" : {
@@ -250,6 +254,8 @@
           "par_InGenericOutputImage_storeScript" : 0,
           "par_InGenericOutputImage_storeData" : 0,
           "par_InGenericOutputImage_storeImage" : 0,
+          "par_InGenericOutputImage_imageWidth" : 1280,
+          "par_InGenericOutputImage_imageHeight" : 720,
           "par_InGenericOutputImage_linewidth" : 1.0
         }
       },
@@ -263,6 +269,8 @@
           "par_InGnuPlotOutputImage_storeScript" : 0,
           "par_InGnuPlotOutputImage_storeData" : 0,
           "par_InGnuPlotOutputImage_storeImage" : 0,
+          "par_InGnuPlotOutputImage_imageWidth" : 1280,
+          "par_InGnuPlotOutputImage_imageHeight" : 720,
           "par_InGnuPlotOutputImage_linewidth" : 1.0
         },
         "gnutest2" : {
@@ -273,6 +281,8 @@
           "par_InGnuPlotOutputImage_storeScript" : 0,
           "par_InGnuPlotOutputImage_storeData" : 0,
           "par_InGnuPlotOutputImage_storeImage" : 0,
+          "par_InGnuPlotOutputImage_imageWidth" : 1280,
+          "par_InGnuPlotOutputImage_imageHeight" : 720,
           "par_InGnuPlotOutputImage_linewidth" : 1.0
         },
         "gnutest3" : {
@@ -283,6 +293,8 @@
           "par_InGnuPlotOutputImage_storeScript" : 0,
           "par_InGnuPlotOutputImage_storeData" : 0,
           "par_InGnuPlotOutputImage_storeImage" : 0,
+          "par_InGnuPlotOutputImage_imageWidth" : 1280,
+          "par_InGnuPlotOutputImage_imageHeight" : 720,
           "par_InGnuPlotOutputImage_linewidth" : 1.0
         }
       },
@@ -386,6 +398,8 @@
           "par_InROutputImage_storeScript" : 0,
           "par_InROutputImage_storeData" : 0,
           "par_InROutputImage_storeImage" : 0,
+          "par_InROutputImage_imageWidth" : 1280,
+          "par_InROutputImage_imageHeight" : 720,
           "par_InROutputImage_linewidth" : 1.0
         },
         "rtest2" : {
@@ -396,6 +410,8 @@
           "par_InROutputImage_storeScript" : 0,
           "par_InROutputImage_storeData" : 0,
           "par_InROutputImage_storeImage" : 0,
+          "par_InROutputImage_imageWidth" : 1280,
+          "par_InROutputImage_imageHeight" : 720,
           "par_InROutputImage_linewidth" : 1.0
         },
         "rtest3" : {
@@ -406,6 +422,8 @@
           "par_InROutputImage_storeScript" : 0,
           "par_InROutputImage_storeData" : 0,
           "par_InROutputImage_storeImage" : 0,
+          "par_InROutputImage_imageWidth" : 1280,
+          "par_InROutputImage_imageHeight" : 720,
           "par_InROutputImage_linewidth" : 1.0
         }
       },

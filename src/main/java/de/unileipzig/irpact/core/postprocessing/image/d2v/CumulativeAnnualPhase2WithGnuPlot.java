@@ -147,6 +147,8 @@ public class CumulativeAnnualPhase2WithGnuPlot extends AbstractGnuPlotDataVisual
             currentSettings = new BuilderSettings()
                     //general
                     .setTitle(formattedTitle)
+                    .setWidth(image == null ? imageProcessor.getDefaultWidth() : image.getImageWidth())
+                    .setHeight(image == null ? imageProcessor.getDefaultHeight() : image.getImageHeight())
                     .setXArg(localized.getXArg(getMode()))
                     .setXLab(localized.getXLab(getMode()))
                     .setYArg(localized.getYArg(getMode()))
