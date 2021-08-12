@@ -45,7 +45,7 @@ public class CumulativeAnnualPhase2WithGnuPlot extends AbstractGnuPlotDataVisual
     }
 
     @Override
-    protected void handleImageWithWorkingEngine(InOutputImage image) throws IOException {
+    protected void handleImage(InOutputImage image, boolean engineUsable) throws IOException {
         CustomImageData data = createData(image);
         if(data == null) {
             return;
@@ -56,7 +56,7 @@ public class CumulativeAnnualPhase2WithGnuPlot extends AbstractGnuPlotDataVisual
             return;
         }
 
-        execute(image, builder, data);
+        execute(image, builder, data, engineUsable);
     }
 
     @Override

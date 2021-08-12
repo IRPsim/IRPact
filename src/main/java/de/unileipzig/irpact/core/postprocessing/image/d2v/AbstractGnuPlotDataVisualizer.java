@@ -45,7 +45,17 @@ public abstract class AbstractGnuPlotDataVisualizer extends AbstractDataVisualiz
     protected abstract ImageData createData(InOutputImage image);
 
     @Override
+    protected void handleImageWithoutWorkingEngine(InOutputImage image) throws IOException {
+        warn("{} not usable, continue without image creation for '{}'", getEngineName(), image.getBaseFileName());
+        handleImage(image, false);
+    }
+
+    @Override
     protected void handleImageWithWorkingEngine(InOutputImage image) throws IOException {
+        handleImage(image, true);
+    }
+
+    protected void handleImage(InOutputImage image, boolean engineUsable) throws IOException {
         GnuPlotBuilder builder = getBuilder(image);
         if(builder == null) {
             return;
@@ -56,19 +66,26 @@ public abstract class AbstractGnuPlotDataVisualizer extends AbstractDataVisualiz
             return;
         }
 
-        execute(image, builder, data);
+        execute(image, builder, data, engineUsable);
     }
 
-    protected void execute(InOutputImage image, GnuPlotBuilder builder, ImageData data) throws IOException {
+    protected void execute(InOutputImage image, GnuPlotBuilder builder, ImageData data, boolean engineUsable) throws IOException {
         builder.setSettings(GNUPLOT_STRING_SETTINGS);
         GnuPlotFileScript fileScript = builder.build();
         GnuPlotImageScriptTask task = new GnuPlotImageScriptTask(image.isStoreScript(), image.isStoreData(), image.isStoreImage());
         task.setupCsvAndPng(getTargetDir(), image.getBaseFileName());
         task.setDelimiter(getLocalizedImageData().getSep(getMode()));
-        task.run(
-                getEngine(),
-                data,
-                fileScript
-        );
+        if(engineUsable) {
+            task.run(
+                    getEngine(),
+                    data,
+                    fileScript
+            );
+        } else {
+            task.runWihoutEngine(
+                    data,
+                    fileScript
+            );
+        }
     }
 }

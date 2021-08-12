@@ -165,7 +165,7 @@ public abstract class AbstractScenario implements Scenario {
     public String printArgs() {
         IRPArgs args = new IRPArgs();
         updateArgs(args);
-        return args.toString();
+        return args.print();
     }
 
     //=========================

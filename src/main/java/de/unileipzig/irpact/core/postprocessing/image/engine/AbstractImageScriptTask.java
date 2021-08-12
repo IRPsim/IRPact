@@ -181,6 +181,17 @@ public abstract class AbstractImageScriptTask extends NameableBase {
         }
     }
 
+    public <E extends Engine> boolean runWihoutEngine(
+            ImageData data,
+            ProcessBasedFileScript<E> script) {
+        try {
+            return writeCsvData(data)
+                    && writeScript(script);
+        } finally {
+            cleanUp();
+        }
+    }
+
     public <E extends Engine> boolean run(
             E engine,
             ImageData data,

@@ -106,8 +106,8 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         realData.CAGS.applyMilieus(initialAdopter, InPVactConsumerAgentGroup::setInitialAdopter);
 
         InFileBasedPVactConsumerAgentPopulation population = createFullPopulation("Pop", realData.CAGS.cags());
-        population.setUseAll(true);
-        population.setDesiredSize(10000);
+//        population.setUseAll(true);
+//        population.setDesiredSize(10000);
 
         Map<InPVactConsumerAgentGroup, Integer> edgeCount = realData.CAGS.map(RealData.calcEdgeCount(
                 RealData.XLSX_ORDER_ARR,
