@@ -4,10 +4,13 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
+import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.XorWithoutUnselectRuleBuilder;
+
+import static de.unileipzig.irpact.io.param.ParamUtil.len;
 
 /**
  * @author Daniel Abitz
@@ -56,6 +59,10 @@ public interface InOutputImage extends InIRPactEntity {
     int getImageWidth();
 
     int getImageHeight();
+
+    boolean hasRealAdoptionDataFile();
+
+    InRealAdoptionDataFile getRealAdoptionDataFile() throws ParsingException;
 
     default boolean isEnabled() {
         return isStoreData() || isStoreScript() || isStoreImage();

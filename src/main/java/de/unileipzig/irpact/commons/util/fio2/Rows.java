@@ -1,4 +1,7 @@
-package de.unileipzig.irpact.commons.util.fio2.xlsx2;
+package de.unileipzig.irpact.commons.util.fio2;
+
+import de.unileipzig.irpact.commons.util.data.MapBasedTypedMatrix;
+import de.unileipzig.irpact.commons.util.data.TypedMatrix;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,23 @@ public final class Rows<T> {
             columns.add(column);
         }
         return columns;
+    }
+
+    public boolean isValidMatrix() {
+        int columnSize = -1;
+        for(List<T> row: rows) {
+            if(row == null) {
+                return false;
+            }
+            if(columnSize == -1) {
+                columnSize = row.size();
+            } else {
+                if(columnSize != row.size()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public boolean hasEmptyColumn() {
@@ -183,5 +203,38 @@ public final class Rows<T> {
             }
         }
         return sb.toString();
+    }
+
+    public <M, N, V> TypedMatrix<M, N, V> toMatrix(
+            Function<? super T, ? extends M> t2m,
+            Function<? super T, ? extends N> t2n,
+            Function<? super T, ? extends V> t2v) {
+        TypedMatrix<M, N, V> matrix = new MapBasedTypedMatrix<>();
+        toMatrix(t2m, t2n, t2v, matrix);
+        return matrix;
+    }
+
+    public <M, N, V> void toMatrix(
+            Function<? super T, ? extends M> t2m,
+            Function<? super T, ? extends N> t2n,
+            Function<? super T, ? extends V> t2v,
+            TypedMatrix<M, N, V> target) {
+        if(!isValidMatrix()) {
+            throw new IllegalStateException("invalid matrix");
+        }
+
+        List<T> nHeader = rows.get(0);
+        for(int i = 1; i < rows.size(); i++) {
+            List<T> row = rows.get(i);
+            T mKey = row.get(0);
+            M mValue = t2m.apply(mKey);
+            for(int j = 1; j < row.size(); j++) {
+                T nKey = nHeader.get(j);
+                T value = row.get(j);
+                N nValue = t2n.apply(nKey);
+                V vValue = t2v.apply(value);
+                target.set(mValue, nValue, vValue);
+            }
+        }
     }
 }

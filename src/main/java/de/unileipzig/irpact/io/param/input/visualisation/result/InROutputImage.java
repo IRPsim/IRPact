@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -41,6 +42,7 @@ public class InROutputImage implements InOutputImage {
         addEntryWithDefaultAndDomain(res, thisClass(), "imageWidth", VALUE_1280, DOMAIN_G0);
         addEntryWithDefaultAndDomain(res, thisClass(), "imageHeight", VALUE_720, DOMAIN_G0);
         addEntryWithDefaultAndDomain(res, thisClass(), "linewidth", VALUE_ONE, DOMAIN_G0);
+        addEntry(res, thisClass(), "realAdoptionDataFile");
 
         setRules(res, thisClass(), dataToVisualize, dataToVisualizeBuilder.withKeyModifier(buildDefaultParameterNameOperator(thisClass())));
 
@@ -79,6 +81,9 @@ public class InROutputImage implements InOutputImage {
 
     @FieldDefinition
     public double linewidth = 1;
+
+    @FieldDefinition
+    public InRealAdoptionDataFile[] realAdoptionDataFile = new InRealAdoptionDataFile[0];
 
     public InROutputImage() {
     }
@@ -234,5 +239,21 @@ public class InROutputImage implements InOutputImage {
 
     public void setLinewidth(double linewidth) {
         this.linewidth = linewidth;
+    }
+
+    public boolean hasRealAdoptionDataFile() {
+        return len(realAdoptionDataFile) == 1;
+    }
+
+    public InRealAdoptionDataFile getRealAdoptionDataFile() throws ParsingException {
+        return getInstance(realAdoptionDataFile, "realAdoptionDataFile");
+    }
+
+    public void setRealAdoptionDataFile(InRealAdoptionDataFile realAdoptionDataFile) {
+        if(realAdoptionDataFile == null) {
+            this.realAdoptionDataFile = new InRealAdoptionDataFile[0];
+        } else {
+            this.realAdoptionDataFile = new InRealAdoptionDataFile[] {realAdoptionDataFile};
+        }
     }
 }

@@ -47,7 +47,7 @@ public class ComparedAnnualZipWithGnuPlot extends AbstractGnuPlotDataVisualizer 
     }
 
     protected ImageData map(InOutputImage image, AnnualAdoptionsZip2 input) {
-        RealAdoptionData realData = imageProcessor.getRealAdoptionData();
+        RealAdoptionData realData = imageProcessor.getRealAdoptionData(image);
 
         Set<Integer> years = new TreeSet<>();
         Map<String, Map<Integer, Integer>> zipData = new LinkedHashMap<>();

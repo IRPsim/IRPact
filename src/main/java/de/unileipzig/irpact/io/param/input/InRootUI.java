@@ -15,6 +15,7 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPo
 import de.unileipzig.irpact.io.param.input.binary.VisibleBinaryData;
 import de.unileipzig.irpact.io.param.input.distribution.*;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
+import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.InSimpleConsumerAgentMPM;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc.*;
@@ -86,6 +87,7 @@ public class InRootUI {
 
     public static final EdnPath FILES = ROOT.resolve(IOConstants.FILES).addTo(PATHS);
     public static final EdnPath FILES_PV = FILES.resolve(InPVFile.thisName()).addTo(PATHS);
+    public static final EdnPath FILES_REALADOPTION = FILES.resolve(InRealAdoptionDataFile.thisName()).addTo(PATHS);
     public static final EdnPath FILES_SPATIAL = FILES.resolve(InSpatialTableFile.thisName()).addTo(PATHS);
 
     public static final EdnPath DISTRIBUTIONS = ROOT.resolve(IOConstants.DISTRIBUTIONS).addTo(PATHS);

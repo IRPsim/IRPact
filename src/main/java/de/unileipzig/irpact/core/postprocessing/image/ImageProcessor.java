@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.resource.LocaleUtil;
-import de.unileipzig.irpact.commons.util.JsonUtil;
+import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.postprocessing.PostProcessor;
@@ -13,6 +13,7 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.util.R.RscriptEngine;
@@ -20,11 +21,12 @@ import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -35,6 +37,7 @@ public class ImageProcessor extends PostProcessor {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ImageProcessor.class);
 
     protected static final BasicRealAdoptionData PLACEHOLDER_REAL_DATA = new BasicRealAdoptionData(0);
+    protected final Map<InRealAdoptionDataFile, RealAdoptionData> adoptionDataCache = new HashMap<>();
 
     protected static final String IMAGES_BASENAME = "images";
     protected static final String IMAGES_EXTENSION = "yaml";
@@ -77,8 +80,39 @@ public class ImageProcessor extends PostProcessor {
         return defaultWidth;
     }
 
-    public RealAdoptionData getRealAdoptionData() {
+    public RealAdoptionData getFallbackAdoptionData() {
         return PLACEHOLDER_REAL_DATA;
+    }
+
+    public RealAdoptionData getRealAdoptionData(InOutputImage image) {
+        if(image.hasRealAdoptionDataFile()) {
+            try {
+                return getRealAdoptionData(image.getRealAdoptionDataFile());
+            } catch (Throwable t) {
+                LOGGER.warn("loading adoption data for '{}' failed: {}", image.getBaseFileName(), t.getMessage());
+                return getFallbackAdoptionData();
+            }
+        } else {
+            return getFallbackAdoptionData();
+        }
+    }
+
+    public RealAdoptionData getRealAdoptionData(InRealAdoptionDataFile file) {
+        if(adoptionDataCache.containsKey(file)) {
+            return adoptionDataCache.get(file);
+        } else {
+            try {
+                LOGGER.warn("try loading '{}'", file.getFileNameWithoutExtension());
+                RealAdoptionData adoptionData = file.parse(environment.getResourceLoader());
+                adoptionDataCache.put(file, adoptionData);
+                return adoptionData;
+            } catch (Throwable t) {
+                LOGGER.warn("loading '{}' failed, use fallback data, cause: {}", file.getFileNameWithoutExtension(), StringUtil.printStackTrace(t));
+                RealAdoptionData adoptionData = getFallbackAdoptionData();
+                adoptionDataCache.put(file, adoptionData);
+                return adoptionData;
+            }
+        }
     }
 
     //=========================

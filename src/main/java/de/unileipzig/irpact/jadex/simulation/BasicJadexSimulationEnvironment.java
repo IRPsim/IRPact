@@ -113,7 +113,6 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         BasicPersistenceModul persistenceModul = new BasicPersistenceModul();
 
         setSettings(initData);
-        setResourceLoader(resourceLoader);
 
         setAgentManager(agentManager);
         agentManager.setEnvironment(this);

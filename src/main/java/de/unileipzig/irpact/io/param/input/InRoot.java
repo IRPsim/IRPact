@@ -15,6 +15,7 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactCons
 import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.agent.population.InAgentPopulation;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedConsumerAgentPopulation;
+import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.process.modular.InModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process.modular.InModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentModularProcessModel;
@@ -717,6 +718,7 @@ public class InRoot implements RootClass {
 
             InFile.class,
             InPVFile.class,
+            InRealAdoptionDataFile.class,
             InSpatialTableFile.class,
 
             InGenericOutputImage.class,

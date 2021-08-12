@@ -490,6 +490,15 @@ SET set_InPVFile(set_InFile)
 * - type: Float
 PARAMETER par_InPVFile_placeholderPVFile(set_InPVFile)
 
+* - identifier: InRealAdoptionDataFile
+* - type: String
+SET set_InRealAdoptionDataFile(set_InFile)
+
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
+* - type: Float
+PARAMETER par_InRealAdoptionDataFile_placeholder(set_InRealAdoptionDataFile)
+
 * - identifier: InSpatialTableFile
 * - type: String
 SET set_InSpatialTableFile(set_InFile)
@@ -624,6 +633,11 @@ PARAMETER par_InGenericOutputImage_imageHeight(set_InGenericOutputImage)
 * - type: Float
 PARAMETER par_InGenericOutputImage_linewidth(set_InGenericOutputImage)
 
+* - description: Legt die realen zu nutzenden Adoptionsdaten fest.
+* - identifier: Reale Adoptionsdaten
+* - type: Boolean
+PARAMETER par_link_InGenericOutputImage_InRealAdoptionDataFile_realAdoptionDataFile(set_InGenericOutputImage,set_InRealAdoptionDataFile)
+
 * - identifier: InGnuPlotOutputImage
 * - type: String
 SET set_InGnuPlotOutputImage(set_InOutputImage)
@@ -727,6 +741,11 @@ PARAMETER par_InGnuPlotOutputImage_imageHeight(set_InGnuPlotOutputImage)
 * - identifier: Linienstärke
 * - type: Float
 PARAMETER par_InGnuPlotOutputImage_linewidth(set_InGnuPlotOutputImage)
+
+* - description: Legt die realen zu nutzenden Adoptionsdaten fest.
+* - identifier: Reale Adoptionsdaten
+* - type: Boolean
+PARAMETER par_link_InGnuPlotOutputImage_InRealAdoptionDataFile_realAdoptionDataFile(set_InGnuPlotOutputImage,set_InRealAdoptionDataFile)
 
 * - identifier: InOutputImage
 * - hidden: 1
@@ -836,6 +855,11 @@ PARAMETER par_InROutputImage_imageHeight(set_InROutputImage)
 * - identifier: Linienstärke
 * - type: Float
 PARAMETER par_InROutputImage_linewidth(set_InROutputImage)
+
+* - description: Legt die realen zu nutzenden Adoptionsdaten fest.
+* - identifier: Reale Adoptionsdaten
+* - type: Boolean
+PARAMETER par_link_InROutputImage_InRealAdoptionDataFile_realAdoptionDataFile(set_InROutputImage,set_InRealAdoptionDataFile)
 
 * - identifier: InProductGroupThresholdEntry
 * - type: String

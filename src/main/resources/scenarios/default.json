@@ -389,6 +389,7 @@
       "set_InRAProcessPlanNodeFilterScheme" : {
         "RA_maxFilter" : { }
       },
+      "set_InRealAdoptionDataFile" : { },
       "set_InROutputImage" : {
         "rtest1" : {
           "par_InROutputImage_annualZip" : 1,
@@ -681,8 +682,18 @@
       "par_link_InGeneralConsumerAgentGroup_InSpatialDistribution_spatialDistribution" : { },
       "par_link_InGeneralConsumerAgentGroupAttribute_InAttributeName_attrName" : { },
       "par_link_InGeneralConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
+      "par_link_InGenericOutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : {
+        "JaehrlicheAdoptionenPhase" : { },
+        "JaehrlicheAdoptionenPLZ" : { },
+        "JaehrlicheAdoptionenPLZVergleich" : { }
+      },
       "par_link_InGlobalDeffuantUncertainty_InAttributeName_attributeNames" : { },
       "par_link_InGlobalDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
+      "par_link_InGnuPlotOutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : {
+        "gnutest1" : { },
+        "gnutest2" : { },
+        "gnutest3" : { }
+      },
       "par_link_InGroupBasedDeffuantUncertainty_InAttributeName_attributeNames" : { },
       "par_link_InGroupBasedDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
       "par_link_InLogisticModule_calcgraphnode_InConsumerAgentCalculationModule_input_graphedge" : { },
@@ -839,6 +850,11 @@
         "RA" : {
           "UNCERT" : 1.0
         }
+      },
+      "par_link_InROutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : {
+        "rtest1" : { },
+        "rtest2" : { },
+        "rtest3" : { }
       },
       "par_link_InSimpleConsumerAgentMPM_InConsumerAgentEvaluationModule_startModule" : { },
       "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_adoptedModule_graphedge" : { },

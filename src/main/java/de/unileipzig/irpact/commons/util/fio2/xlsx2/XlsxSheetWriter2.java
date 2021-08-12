@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons.util.fio2.xlsx2;
 
+import de.unileipzig.irpact.commons.util.fio2.Rows;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;

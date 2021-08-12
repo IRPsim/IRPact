@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -53,6 +54,7 @@ public class InGenericOutputImage implements InOutputImage {
         addEntryWithDefaultAndDomain(res, thisClass(), "imageWidth", VALUE_1280, DOMAIN_G0);
         addEntryWithDefaultAndDomain(res, thisClass(), "imageHeight", VALUE_720, DOMAIN_G0);
         addEntryWithDefaultAndDomain(res, thisClass(), "linewidth", VALUE_ONE, DOMAIN_G0);
+        addEntry(res, thisClass(), "realAdoptionDataFile");
 
         setDefault(res, thisClass(), varargs(IRPact.IMAGE_ANNUAL_ADOPTIONS, IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS));
 
@@ -69,9 +71,17 @@ public class InGenericOutputImage implements InOutputImage {
 
     public static InGenericOutputImage[] createDefaultImages() {
         return new InGenericOutputImage[] {
-                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS, DataToVisualize.ANNUAL_ZIP),
-                new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, DataToVisualize.COMPARED_ANNUAL_ZIP),
-                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS, DataToVisualize.CUMULATIVE_ANNUAL_PHASE2)
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS, DataToVisualize.ANNUAL_ZIP, null),
+                new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, DataToVisualize.COMPARED_ANNUAL_ZIP, null),
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS, DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, null)
+        };
+    }
+
+    public static InGenericOutputImage[] createDefaultImages(InRealAdoptionDataFile realAdoptionDataFile) {
+        return new InGenericOutputImage[] {
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS, DataToVisualize.ANNUAL_ZIP, null),
+                new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, DataToVisualize.COMPARED_ANNUAL_ZIP, realAdoptionDataFile),
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS, DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, null)
         };
     }
 
@@ -129,10 +139,13 @@ public class InGenericOutputImage implements InOutputImage {
     @FieldDefinition
     public double linewidth = 1;
 
+    @FieldDefinition
+    public InRealAdoptionDataFile[] realAdoptionDataFile = new InRealAdoptionDataFile[0];
+
     public InGenericOutputImage() {
     }
 
-    public InGenericOutputImage(String name, DataToVisualize mode) {
+    public InGenericOutputImage(String name, DataToVisualize mode, InRealAdoptionDataFile realAdoptionDataFile) {
         setName(name);
         setEngine(SupportedEngine.GNUPLOT);
         setMode(mode);
@@ -140,6 +153,7 @@ public class InGenericOutputImage implements InOutputImage {
         setStoreData(false);
         setStoreScript(false);
         setLinewidth(1);
+        setRealAdoptionDataFile(realAdoptionDataFile);
     }
 
     @Override
@@ -162,6 +176,7 @@ public class InGenericOutputImage implements InOutputImage {
         copy.imageWidth = imageWidth;
         copy.imageHeight = imageHeight;
         copy.linewidth = linewidth;
+        copy.realAdoptionDataFile = cache.copyArray(realAdoptionDataFile);
         return copy;
     }
 
@@ -313,5 +328,23 @@ public class InGenericOutputImage implements InOutputImage {
 
     public void setLinewidth(double linewidth) {
         this.linewidth = linewidth;
+    }
+
+    @Override
+    public boolean hasRealAdoptionDataFile() {
+        return len(realAdoptionDataFile) == 1;
+    }
+
+    @Override
+    public InRealAdoptionDataFile getRealAdoptionDataFile() throws ParsingException {
+        return getInstance(realAdoptionDataFile, "realAdoptionDataFile");
+    }
+
+    public void setRealAdoptionDataFile(InRealAdoptionDataFile realAdoptionDataFile) {
+        if(realAdoptionDataFile == null) {
+            this.realAdoptionDataFile = new InRealAdoptionDataFile[0];
+        } else {
+            this.realAdoptionDataFile = new InRealAdoptionDataFile[] {realAdoptionDataFile};
+        }
     }
 }
