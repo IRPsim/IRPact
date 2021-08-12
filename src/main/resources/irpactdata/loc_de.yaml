@@ -134,8 +134,11 @@ InGenericOutputImage_annualZipWithReal:
   gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)"
   gams_description: "Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
 InGenericOutputImage_cumulativeAnnualPhase:
-  gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase)"
-  gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar."
+  gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (ohne Initiale)"
+  gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden nicht berücksichtigt."
+InGenericOutputImage_cumulativeAnnualPhase2:
+  gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (mit Initialen)"
+  gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden bei den Daten berücksichtigt, aber nicht direkt visualisiert."
 InGenericOutputImage_storeScript:
   gams_identifier: "Skript speichern?"
   gams_description: "Speichert auf Wunsch das Skript für die Bilderzeugung."
@@ -145,9 +148,18 @@ InGenericOutputImage_storeData:
 InGenericOutputImage_storeImage:
   gams_identifier: "Bild speichern?"
   gams_description: "Erzeugt und speichert auf Wunsch das erzeugte Bild."
+InGenericOutputImage_imageWidth:
+  gams_identifier: "Bildbreite"
+  gams_description: "Gibt die Bildbreite in Pixeln an."
+InGenericOutputImage_imageHeight:
+  gams_identifier: "Bildhöhe"
+  gams_description: "Gibt die Bildhöhe in Pixeln an."
 InGenericOutputImage_linewidth:
   gams_identifier: "Linienstärke"
   gams_description: "Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss."
+InGenericOutputImage_realAdoptionDataFile:
+  gams_identifier: "Reale Adoptionsdaten"
+  gams_description: "Legt die realen zu nutzenden Adoptionsdaten fest."
 
 InGnuPlotOutputImage:
   edn_label: "gnuplot"
@@ -159,8 +171,11 @@ InGnuPlotOutputImage_annualZipWithReal:
   gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)"
   gams_description: "Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
 InGnuPlotOutputImage_cumulativeAnnualPhase:
-  gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase)"
-  gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar."
+  gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (ohne Initiale)"
+  gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden nicht berücksichtigt."
+InGnuPlotOutputImage_cumulativeAnnualPhase2:
+  gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (mit Initialen)"
+  gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden bei den Daten berücksichtigt, aber nicht direkt visualisiert."
 InGnuPlotOutputImage_storeScript:
   gams_identifier: "Skript speichern?"
   gams_description: "Speichert auf Wunsch das Skript für die Bilderzeugung."
@@ -170,9 +185,18 @@ InGnuPlotOutputImage_storeData:
 InGnuPlotOutputImage_storeImage:
   gams_identifier: "Bild speichern?"
   gams_description: "Erzeugt und speichert auf Wunsch das erzeugte Bild."
+InGnuPlotOutputImage_imageWidth:
+  gams_identifier: "Bildbreite"
+  gams_description: "Gibt die Bildbreite in Pixeln an."
+InGnuPlotOutputImage_imageHeight:
+  gams_identifier: "Bildhöhe"
+  gams_description: "Gibt die Bildhöhe in Pixeln an."
 InGnuPlotOutputImage_linewidth:
   gams_identifier: "Linienstärke"
   gams_description: "Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss."
+InGnuPlotOutputImage_realAdoptionDataFile:
+  gams_identifier: "Reale Adoptionsdaten"
+  gams_description: "Legt die realen zu nutzenden Adoptionsdaten fest."
 
 InROutputImage:
   edn_label: "R"
@@ -184,8 +208,11 @@ InROutputImage_annualZipWithReal:
   gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)"
   gams_description: "Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
 InROutputImage_cumulativeAnnualPhase:
-  gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase)"
-  gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar."
+  gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (ohne Initiale)"
+  gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden nicht berücksichtigt."
+InROutputImage_cumulativeAnnualPhase2:
+  gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (mit Initialen)"
+  gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden bei den Daten berücksichtigt, aber nicht direkt visualisiert."
 InROutputImage_storeScript:
   gams_identifier: "Skript speichern?"
   gams_description: "Speichert auf Wunsch das Skript für die Bilderzeugung."
@@ -195,9 +222,18 @@ InROutputImage_storeData:
 InROutputImage_storeImage:
   gams_identifier: "Bild speichern?"
   gams_description: "Erzeugt und speichert auf Wunsch das erzeugte Bild."
+InROutputImage_imageWidth:
+  gams_identifier: "Bildbreite"
+  gams_description: "Gibt die Bildbreite in Pixeln an."
+InROutputImage_imageHeight:
+  gams_identifier: "Bildhöhe"
+  gams_description: "Gibt die Bildhöhe in Pixeln an."
 InROutputImage_linewidth:
   gams_identifier: "Linienstärke"
   gams_description: "Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss."
+InROutputImage_realAdoptionDataFile:
+  gams_identifier: "Reale Adoptionsdaten"
+  gams_description: "Legt die realen zu nutzenden Adoptionsdaten fest."
 
 
 network_visualisation:
@@ -264,7 +300,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.11.4"
+  edn_description: "IRPact v0.12.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -299,6 +335,13 @@ InSpatialTableFile:
   edn_label: "Tabellarische Dateien"
   edn_description: "Daten in tabellarischer Form. Es werden .xlsx und .csv unterstützt."
 InSpatialTableFile_placeholderInSpatialFile:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+InRealAdoptionDataFile:
+  edn_label: "Reale Adoptionsdaten"
+  edn_description: "Adoptionsdaten in tabellarischer Form, welche in einer .xlsx sein müssen. Zusätzlich wird das Tabelleblatt 'LaufendeSumme' benötigt."
+InRealAdoptionDataFile_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
 

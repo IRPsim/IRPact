@@ -59,6 +59,11 @@ public final class DataToVisualizeHandler {
                 cap.handleImage(image);
                 break;
 
+            case CUMULATIVE_ANNUAL_PHASE2:
+                CumulativeAnnualPhase2WithGnuPlot cap2 = new CumulativeAnnualPhase2WithGnuPlot(processor);
+                cap2.handleImage(image);
+                break;
+
             default:
                 throw new IllegalArgumentException("unsupported data to visualize: " + data);
         }

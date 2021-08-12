@@ -51,6 +51,8 @@ public final class ParamUtil {
     public static final Object[] VALUE_ONE = {"1"};
     public static final Object[] VALUE_ZERO = {"0"};
     public static final Object[] VALUE_1000 = {"1000"};
+    public static final Object[] VALUE_1280 = {"1280"};
+    public static final Object[] VALUE_720 = {"720"};
     public static final Object[] VALUE_NEG_ONE = {"-1"};
     public static final Object[] VALUE_0_25 = {"0.25"};
     public static final Object[] VALUE_0_5 = {"0.5"};
@@ -600,6 +602,17 @@ public final class ParamUtil {
         addEntry(res, c, field);
         setDefault(res, c, field, defaults);
         setDomain(res, c, field, domain);
+    }
+
+    public static void addEntriesWithDefaultAndDomain(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String[] fields,
+            Object[] defaults,
+            String domain) {
+        for(String field: fields) {
+            addEntryWithDefaultAndDomain(res, c, field, defaults, domain);
+        }
     }
 
     public static void putClassPath(TreeAnnotationResource res, Class<?> c, String... keys) {

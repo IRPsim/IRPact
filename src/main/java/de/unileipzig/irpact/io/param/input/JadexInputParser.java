@@ -86,6 +86,7 @@ public class JadexInputParser implements IRPactInputParser {
         environment = new BasicJadexSimulationEnvironment();
         environment.setName("Initial_Environment");
         environment.initDefault();
+        environment.setResourceLoader(resourceLoader);
     }
 
     @Override

@@ -200,6 +200,13 @@ public final class BuilderSettings {
         return getAs("sep");
     }
 
+    public boolean hasSize() {
+        return hasHeight() && hasWidht();
+    }
+
+    public BuilderSettings setHeight(String value) {
+        return setHeight(Integer.parseInt(value));
+    }
     public BuilderSettings setHeight(int value) {
         return set("height", value);
     }
@@ -210,7 +217,10 @@ public final class BuilderSettings {
         return has("height");
     }
 
-    public BuilderSettings setWidht(int value) {
+    public BuilderSettings setWidth(String value) {
+        return setWidth(Integer.parseInt(value));
+    }
+    public BuilderSettings setWidth(int value) {
         return set("width", value);
     }
     public int getWidht() {
@@ -440,5 +450,26 @@ public final class BuilderSettings {
     }
     public Integer getNumberOfEntries() {
         return getAs("numberofentries");
+    }
+
+    public BuilderSettings setPhase0(String phase0) {
+        return set("phase0", phase0);
+    }
+    public String getPhase0() {
+        return getAs("phase0");
+    }
+
+    public BuilderSettings setPhase1(String phase0) {
+        return set("phase1", phase0);
+    }
+    public String getPhase1() {
+        return getAs("phase1");
+    }
+
+    public BuilderSettings setPhase2(String phase0) {
+        return set("phase2", phase0);
+    }
+    public String getPhase2() {
+        return getAs("phase2");
     }
 }

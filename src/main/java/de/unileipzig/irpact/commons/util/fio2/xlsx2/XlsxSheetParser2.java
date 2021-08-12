@@ -1,8 +1,9 @@
-package de.unileipzig.irpact.commons.util.xlsx2;
+package de.unileipzig.irpact.commons.util.fio2.xlsx2;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.exception.UnsupportedCellTypeException;
 import de.unileipzig.irpact.commons.util.TriConsumer;
+import de.unileipzig.irpact.commons.util.fio2.Rows;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -13,6 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -78,26 +80,54 @@ public class XlsxSheetParser2<T> {
     //parse
     //=========================
 
-    public TableRows2<T> parse(Path input) throws ParsingException, IOException, InvalidFormatException {
+    public Rows<T> parse(Path input) throws ParsingException, IOException, InvalidFormatException {
         return parse(input, 0);
     }
 
-    public TableRows2<T> parse(Path input, int sheetIndex) throws ParsingException, IOException, InvalidFormatException {
+    public Rows<T> parse(InputStream in, int sheetIndex) throws ParsingException, IOException, InvalidFormatException {
+        List<List<T>> list = new ArrayList<>();
+        collect(in, sheetIndex, list);
+        return new Rows<>(list);
+    }
+
+    public Rows<T> parse(InputStream in, String sheetName) throws ParsingException, IOException, InvalidFormatException {
+        List<List<T>> list = new ArrayList<>();
+        collect(in, sheetName, list);
+        return new Rows<>(list);
+    }
+
+    public Rows<T> parse(Path input, int sheetIndex) throws ParsingException, IOException, InvalidFormatException {
         List<List<T>> list = new ArrayList<>();
         collect(input, sheetIndex, list);
-        return new TableRows2<>(list);
+        return new Rows<>(list);
     }
 
-    public TableRows2<T> parse(Path input, String sheetName) throws ParsingException, IOException, InvalidFormatException {
+    public Rows<T> parse(Path input, String sheetName) throws ParsingException, IOException, InvalidFormatException {
         List<List<T>> list = new ArrayList<>();
         collect(input, sheetName, list);
-        return new TableRows2<>(list);
+        return new Rows<>(list);
     }
 
-    public TableRows2<T> parse(XSSFSheet sheet) throws ParsingException, IOException, InvalidFormatException {
+    public Rows<T> parse(XSSFSheet sheet) throws ParsingException, IOException, InvalidFormatException {
         List<List<T>> list = new ArrayList<>();
         collect(sheet, list);
-        return new TableRows2<>(list);
+        return new Rows<>(list);
+    }
+
+    public boolean collect(InputStream in, int sheetIndex, Collection<? super List<T>> target) throws ParsingException, IOException, InvalidFormatException {
+        try(XSSFWorkbook book = new XSSFWorkbook(in)) {
+            return collect(book.getSheetAt(sheetIndex), target);
+        }
+    }
+
+    public boolean collect(InputStream in, String sheetName, Collection<? super List<T>> target) throws ParsingException, IOException, InvalidFormatException {
+        try(XSSFWorkbook book = new XSSFWorkbook(in)) {
+            XSSFSheet sheet = book.getSheet(sheetName);
+            if(sheet == null) {
+                throw new NoSuchElementException("sheet '" + sheetName + "' not found");
+            }
+            return collect(sheet, target);
+        }
     }
 
     public boolean collect(Path input, int sheetIndex, Collection<? super List<T>> target) throws ParsingException, IOException, InvalidFormatException {

@@ -238,4 +238,16 @@ public class SimpleArgs implements Args {
     public String toString() {
         return toList().toString();
     }
+
+    public String print() {
+        StringBuilder sb = new StringBuilder();
+        String[] args = toArray();
+        for(int i = 0; i < args.length; i++) {
+            if(i > 0) {
+                sb.append(" ");
+            }
+            sb.append(args[i]);
+        }
+        return sb.toString();
+    }
 }

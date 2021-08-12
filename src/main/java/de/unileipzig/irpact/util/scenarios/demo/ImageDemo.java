@@ -14,6 +14,7 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPo
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
+import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
@@ -83,6 +84,8 @@ public class ImageDemo extends AbstractScenario {
 
         InPVFile pvFile = new InPVFile("Barwertrechner");
 
+        InRealAdoptionDataFile adoptionDataFile = new InRealAdoptionDataFile("PV_Diffusion_Leipzig");
+
         //process
         InPVactGroupBasedDeffuantUncertainty uncertainty = new InPVactGroupBasedDeffuantUncertainty();
         uncertainty.setName("UNCERT");
@@ -108,7 +111,7 @@ public class ImageDemo extends AbstractScenario {
 
         //images
         List<InOutputImage> images = new ArrayList<>();
-        Collections.addAll(images, InGenericOutputImage.createDefaultImages());
+        Collections.addAll(images, InGenericOutputImage.createDefaultImages(adoptionDataFile));
         images.forEach(InOutputImage::enableAll);
         images.add(new InGnuPlotOutputImage("Bild1", DataToVisualize.ANNUAL_ZIP, true));
         images.add(new InGnuPlotOutputImage("Bild2", DataToVisualize.COMPARED_ANNUAL_ZIP, true));

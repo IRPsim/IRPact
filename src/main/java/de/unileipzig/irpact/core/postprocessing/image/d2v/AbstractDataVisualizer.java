@@ -48,13 +48,16 @@ public abstract class AbstractDataVisualizer implements DataVisualizer, LoggingH
     protected abstract DataToVisualize getMode();
 
     public void handleImage(InOutputImage image) throws IOException {
-        if(isEngineNotUsable()) {
-            warn("{} not usable, skip '{}'", getEngineName(), image.getBaseFileName());
-            return;
-        }
-
         trace("handle '{}': storeData={}, storeScript={}, storeImage={}", image.getBaseFileName(), image.isStoreData(), image.isStoreScript(), image.isStoreImage());
-        handleImageWithWorkingEngine(image);
+        if(isEngineNotUsable()) {
+            handleImageWithoutWorkingEngine(image);
+        } else {
+            handleImageWithWorkingEngine(image);
+        }
+    }
+
+    protected void handleImageWithoutWorkingEngine(InOutputImage image) throws IOException {
+        warn("{} not usable, skip '{}'", getEngineName(), image.getBaseFileName());
     }
 
     protected abstract void handleImageWithWorkingEngine(InOutputImage image) throws IOException;
@@ -73,9 +76,18 @@ public abstract class AbstractDataVisualizer implements DataVisualizer, LoggingH
     }
 
     protected AnnualAdoptionsPhase2 createAnnualAdoptionPhaseData() {
+        return createAnnualAdoptionPhaseData(true);
+    }
+
+    protected AnnualAdoptionsPhase2 createAnnualAdoptionPhaseDataWithInitialAdopter() {
+        return createAnnualAdoptionPhaseData(false);
+    }
+
+    protected AnnualAdoptionsPhase2 createAnnualAdoptionPhaseData(boolean skipInital) {
         AnnualAdoptionsPhase2 analyser = new AnnualAdoptionsPhase2();
+        analyser.setSkipInitial(skipInital);
         analyser.setYears(imageProcessor.getAllSimulationYears());
-        analyser.init(imageProcessor.getValidAdoptionPhases());
+        analyser.init(imageProcessor.getValidAdoptionPhases(skipInital));
         analyser.apply(imageProcessor.getEnvironment());
         return analyser;
     }

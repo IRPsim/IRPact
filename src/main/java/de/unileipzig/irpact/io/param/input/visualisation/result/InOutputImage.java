@@ -4,10 +4,13 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
+import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.XorWithoutUnselectRuleBuilder;
+
+import static de.unileipzig.irpact.io.param.ParamUtil.len;
 
 /**
  * @author Daniel Abitz
@@ -15,7 +18,8 @@ import de.unileipzig.irptools.util.XorWithoutUnselectRuleBuilder;
 @Definition
 public interface InOutputImage extends InIRPactEntity {
 
-    String[] dataToVisualize = {"annualZip", "annualZipWithReal", "cumulativeAnnualPhase"};
+    String[] dataToVisualize = {"annualZip", "annualZipWithReal", "cumulativeAnnualPhase", "cumulativeAnnualPhase2"};
+    String[] dataToVisualizeWithoutDefault = {"annualZipWithReal", "cumulativeAnnualPhase", "cumulativeAnnualPhase2"};
     XorWithoutUnselectRuleBuilder dataToVisualizeBuilder = new XorWithoutUnselectRuleBuilder()
             .withTrueValue(Constants.TRUE1)
             .withFalseValue(Constants.FALSE0)
@@ -51,6 +55,14 @@ public interface InOutputImage extends InIRPactEntity {
     boolean isStoreScript();
 
     double getLinewidth();
+
+    int getImageWidth();
+
+    int getImageHeight();
+
+    boolean hasRealAdoptionDataFile();
+
+    InRealAdoptionDataFile getRealAdoptionDataFile() throws ParsingException;
 
     default boolean isEnabled() {
         return isStoreData() || isStoreScript() || isStoreImage();

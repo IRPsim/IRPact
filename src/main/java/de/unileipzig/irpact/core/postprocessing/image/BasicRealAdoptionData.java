@@ -7,10 +7,6 @@ public class BasicRealAdoptionData implements RealAdoptionData {
 
     protected int value;
 
-    public BasicRealAdoptionData() {
-        this(0);
-    }
-
     public BasicRealAdoptionData(int value) {
         setValue(value);
     }

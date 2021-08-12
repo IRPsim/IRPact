@@ -50,7 +50,7 @@ public class ComparedAnnualZipWithRscript extends AbstractRscriptDataVisualizer 
     }
 
     protected ImageData map(InOutputImage image, AnnualAdoptionsZip2 input) {
-        RealAdoptionData realData = imageProcessor.getRealAdoptionData();
+        RealAdoptionData realData = imageProcessor.getRealAdoptionData(image);
         BuilderSettings settings = getSettings(image);
 
         List<List<String>> csvData = new ArrayList<>();

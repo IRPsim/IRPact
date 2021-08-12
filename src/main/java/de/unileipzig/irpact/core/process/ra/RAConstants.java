@@ -60,6 +60,8 @@ public final class RAConstants {
     public static final String PURCHASE_POWER_EUR_ADDR = "KK_Euro_Adresse";          //A1
     public static final String DOM_MILIEU = "Milieu";
 
+    public static final String REAL_ADOPTION_DATA_SHEET = "LaufendeSumme";
+
     public static final String PRIVATE = "PRIVAT";
 
     public static final String UNCERTAINTY_SUFFIX = "uncertainty";

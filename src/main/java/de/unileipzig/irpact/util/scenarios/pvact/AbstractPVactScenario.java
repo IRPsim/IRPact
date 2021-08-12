@@ -13,6 +13,7 @@ import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGr
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
+import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
@@ -36,7 +37,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
 /**
  * @author Daniel Abitz
@@ -49,6 +49,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
     protected Map<String, InAttributeName> nameCache = new HashMap<>();
 
     protected String spatialDataName;
+    protected String realAdoptionDataName;
     protected String pvDataName;
 
     protected int totalAgents = -1;
@@ -100,6 +101,26 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return this;
     }
 
+    public String getRealAdoptionDataName() {
+        return realAdoptionDataName;
+    }
+    public void setRealAdoptionDataName(String realAdoptionDataName) {
+        this.realAdoptionDataName = realAdoptionDataName;
+    }
+    public AbstractPVactScenario withRealAdoptionDataName(String realAdoptionDataName) {
+        setRealAdoptionDataName(realAdoptionDataName);
+        return this;
+    }
+
+    public AbstractPVactScenario withFiles(
+            String pvDataName,
+            String realAdoptionDataName,
+            String spatialDataName) {
+        return withPvDataName(pvDataName)
+                .withRealAdoptionDataName(realAdoptionDataName)
+                .withSpatialDataName(spatialDataName);
+    }
+
     protected InPVFile pvFile;
     public InPVFile getPVFile() {
         if(pvFile == null) {
@@ -114,6 +135,14 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
             spatialTableFile = new InSpatialTableFile(getSpatialFileName());
         }
         return spatialTableFile;
+    }
+
+    protected InRealAdoptionDataFile realAdoptionFile;
+    public InRealAdoptionDataFile getRealAdoptionDataFile() {
+        if(realAdoptionFile == null) {
+            realAdoptionFile = new InRealAdoptionDataFile(getRealAdoptionDataName());
+        }
+        return realAdoptionFile;
     }
 
     public InAttributeName getAttribute(String text) {
@@ -153,7 +182,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
     }
 
     public InGenericOutputImage[] createDefaultImages() {
-        InGenericOutputImage[] defaults = InGenericOutputImage.createDefaultImages();
+        InGenericOutputImage[] defaults = InGenericOutputImage.createDefaultImages(getRealAdoptionDataFile());
         InGenericOutputImage.setEnableAll(true, defaults);
         InGenericOutputImage.setEngine(SupportedEngine.GNUPLOT, defaults);
         return defaults;

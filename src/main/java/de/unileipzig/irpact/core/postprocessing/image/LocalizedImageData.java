@@ -37,4 +37,10 @@ public interface LocalizedImageData extends LocalizedData {
     String getDistinct1Lab(DataToVisualize mode);
 
     String getFillLab(DataToVisualize mode);
+
+    String getPhase0(DataToVisualize mode);
+
+    String getPhase1(DataToVisualize mode);
+
+    String getPhase2(DataToVisualize mode);
 }

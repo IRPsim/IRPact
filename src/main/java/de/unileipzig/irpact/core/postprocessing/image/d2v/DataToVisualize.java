@@ -6,5 +6,6 @@ package de.unileipzig.irpact.core.postprocessing.image.d2v;
 public enum DataToVisualize {
     ANNUAL_ZIP,
     COMPARED_ANNUAL_ZIP,
-    CUMULATIVE_ANNUAL_PHASE
+    CUMULATIVE_ANNUAL_PHASE,
+    CUMULATIVE_ANNUAL_PHASE2
 }

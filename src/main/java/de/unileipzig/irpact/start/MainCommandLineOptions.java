@@ -435,11 +435,23 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         checkExecuted();
         this.outputPath = outputPath;
     }
+    public Path getOutputPathDir() {
+        Path output = getOutputPath();
+        Path parent = output.getParent();
+        if(parent == null) {
+            parent = output.toAbsolutePath().getParent();
+        }
+        //still null
+        if(parent == null) {
+            throw new IllegalArgumentException("invalid output path, no parent: " + output);
+        }
+        return parent;
+    }
 
     public Path getOutputDir() {
         checkExecuted();
         if(outputDir == null) {
-            return getOutputPath().getParent();
+            return getOutputPathDir();
         } else {
             return outputDir;
         }

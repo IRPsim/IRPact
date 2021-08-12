@@ -490,6 +490,15 @@ SET set_InPVFile(set_InFile)
 * - type: Float
 PARAMETER par_InPVFile_placeholderPVFile(set_InPVFile)
 
+* - identifier: InRealAdoptionDataFile
+* - type: String
+SET set_InRealAdoptionDataFile(set_InFile)
+
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
+* - type: Float
+PARAMETER par_InRealAdoptionDataFile_placeholder(set_InRealAdoptionDataFile)
+
 * - identifier: InSpatialTableFile
 * - type: String
 SET set_InSpatialTableFile(set_InFile)
@@ -530,9 +539,11 @@ PARAMETER par_InGenericOutputImage_useR(set_InGenericOutputImage)
 * - identifier: Darstellung: jährliche Adoptionen (PLZ)
 * - rule: IF (par_InGenericOutputImage_annualZip == 1, par_InGenericOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGenericOutputImage_annualZip == 1, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGenericOutputImage_annualZip == 1, par_InGenericOutputImage_cumulativeAnnualPhase2 = 0)
 * - rule: IF (par_InGenericOutputImage_annualZip == 0, par_InGenericOutputImage_annualZip = 1)
 * - rule: IF (par_InGenericOutputImage_annualZip == 0, par_InGenericOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGenericOutputImage_annualZip == 0, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGenericOutputImage_annualZip == 0, par_InGenericOutputImage_cumulativeAnnualPhase2 = 0)
 * - type: Boolean
 PARAMETER par_InGenericOutputImage_annualZip(set_InGenericOutputImage)
 
@@ -542,23 +553,41 @@ PARAMETER par_InGenericOutputImage_annualZip(set_InGenericOutputImage)
 * - identifier: Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)
 * - rule: IF (par_InGenericOutputImage_annualZipWithReal == 1, par_InGenericOutputImage_annualZip = 0)
 * - rule: IF (par_InGenericOutputImage_annualZipWithReal == 1, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGenericOutputImage_annualZipWithReal == 1, par_InGenericOutputImage_cumulativeAnnualPhase2 = 0)
 * - rule: IF (par_InGenericOutputImage_annualZipWithReal == 0, par_InGenericOutputImage_annualZip = 0)
 * - rule: IF (par_InGenericOutputImage_annualZipWithReal == 0, par_InGenericOutputImage_annualZipWithReal = 1)
 * - rule: IF (par_InGenericOutputImage_annualZipWithReal == 0, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGenericOutputImage_annualZipWithReal == 0, par_InGenericOutputImage_cumulativeAnnualPhase2 = 0)
 * - type: Boolean
 PARAMETER par_InGenericOutputImage_annualZipWithReal(set_InGenericOutputImage)
 
 * - default: 0
 * - domain: [0|1]
-* - description: Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar.
-* - identifier: Darstellung: kumulierte jährliche Adoptionen (Phase)
+* - description: Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden nicht berücksichtigt.
+* - identifier: Darstellung: kumulierte jährliche Adoptionen (Phase) (ohne Initiale)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 1, par_InGenericOutputImage_annualZip = 0)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 1, par_InGenericOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 1, par_InGenericOutputImage_cumulativeAnnualPhase2 = 0)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 0, par_InGenericOutputImage_annualZip = 0)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 0, par_InGenericOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 0, par_InGenericOutputImage_cumulativeAnnualPhase = 1)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 0, par_InGenericOutputImage_cumulativeAnnualPhase2 = 0)
 * - type: Boolean
 PARAMETER par_InGenericOutputImage_cumulativeAnnualPhase(set_InGenericOutputImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden bei den Daten berücksichtigt, aber nicht direkt visualisiert.
+* - identifier: Darstellung: kumulierte jährliche Adoptionen (Phase) (mit Initialen)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 1, par_InGenericOutputImage_annualZip = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 1, par_InGenericOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 1, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 0, par_InGenericOutputImage_annualZip = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 0, par_InGenericOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 0, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 0, par_InGenericOutputImage_cumulativeAnnualPhase2 = 1)
+* - type: Boolean
+PARAMETER par_InGenericOutputImage_cumulativeAnnualPhase2(set_InGenericOutputImage)
 
 * - default: 0
 * - domain: [0|1]
@@ -581,12 +610,33 @@ PARAMETER par_InGenericOutputImage_storeData(set_InGenericOutputImage)
 * - type: Boolean
 PARAMETER par_InGenericOutputImage_storeImage(set_InGenericOutputImage)
 
+* - default: 1280
+* - domain: (0,)
+* - description: Gibt die Bildbreite in Pixeln an.
+* - identifier: Bildbreite
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InGenericOutputImage_imageWidth(set_InGenericOutputImage)
+
+* - default: 720
+* - domain: (0,)
+* - description: Gibt die Bildhöhe in Pixeln an.
+* - identifier: Bildhöhe
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InGenericOutputImage_imageHeight(set_InGenericOutputImage)
+
 * - default: 1
 * - domain: (0,)
 * - description: Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss.
 * - identifier: Linienstärke
 * - type: Float
 PARAMETER par_InGenericOutputImage_linewidth(set_InGenericOutputImage)
+
+* - description: Legt die realen zu nutzenden Adoptionsdaten fest.
+* - identifier: Reale Adoptionsdaten
+* - type: Boolean
+PARAMETER par_link_InGenericOutputImage_InRealAdoptionDataFile_realAdoptionDataFile(set_InGenericOutputImage,set_InRealAdoptionDataFile)
 
 * - identifier: InGnuPlotOutputImage
 * - type: String
@@ -598,9 +648,11 @@ SET set_InGnuPlotOutputImage(set_InOutputImage)
 * - identifier: Darstellung: jährliche Adoptionen (PLZ)
 * - rule: IF (par_InGnuPlotOutputImage_annualZip == 1, par_InGnuPlotOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGnuPlotOutputImage_annualZip == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZip == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 0)
 * - rule: IF (par_InGnuPlotOutputImage_annualZip == 0, par_InGnuPlotOutputImage_annualZip = 1)
 * - rule: IF (par_InGnuPlotOutputImage_annualZip == 0, par_InGnuPlotOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGnuPlotOutputImage_annualZip == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZip == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 0)
 * - type: Boolean
 PARAMETER par_InGnuPlotOutputImage_annualZip(set_InGnuPlotOutputImage)
 
@@ -610,23 +662,41 @@ PARAMETER par_InGnuPlotOutputImage_annualZip(set_InGnuPlotOutputImage)
 * - identifier: Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)
 * - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 1, par_InGnuPlotOutputImage_annualZip = 0)
 * - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 0)
 * - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 0, par_InGnuPlotOutputImage_annualZip = 0)
 * - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 0, par_InGnuPlotOutputImage_annualZipWithReal = 1)
 * - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 0)
 * - type: Boolean
 PARAMETER par_InGnuPlotOutputImage_annualZipWithReal(set_InGnuPlotOutputImage)
 
 * - default: 0
 * - domain: [0|1]
-* - description: Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar.
-* - identifier: Darstellung: kumulierte jährliche Adoptionen (Phase)
+* - description: Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden nicht berücksichtigt.
+* - identifier: Darstellung: kumulierte jährliche Adoptionen (Phase) (ohne Initiale)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 1, par_InGnuPlotOutputImage_annualZip = 0)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 1, par_InGnuPlotOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 0)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 0, par_InGnuPlotOutputImage_annualZip = 0)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 0, par_InGnuPlotOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 1)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 0)
 * - type: Boolean
 PARAMETER par_InGnuPlotOutputImage_cumulativeAnnualPhase(set_InGnuPlotOutputImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden bei den Daten berücksichtigt, aber nicht direkt visualisiert.
+* - identifier: Darstellung: kumulierte jährliche Adoptionen (Phase) (mit Initialen)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 1, par_InGnuPlotOutputImage_annualZip = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 1, par_InGnuPlotOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 0, par_InGnuPlotOutputImage_annualZip = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 0, par_InGnuPlotOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 1)
+* - type: Boolean
+PARAMETER par_InGnuPlotOutputImage_cumulativeAnnualPhase2(set_InGnuPlotOutputImage)
 
 * - default: 0
 * - domain: [0|1]
@@ -649,12 +719,33 @@ PARAMETER par_InGnuPlotOutputImage_storeData(set_InGnuPlotOutputImage)
 * - type: Boolean
 PARAMETER par_InGnuPlotOutputImage_storeImage(set_InGnuPlotOutputImage)
 
+* - default: 1280
+* - domain: (0,)
+* - description: Gibt die Bildbreite in Pixeln an.
+* - identifier: Bildbreite
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InGnuPlotOutputImage_imageWidth(set_InGnuPlotOutputImage)
+
+* - default: 720
+* - domain: (0,)
+* - description: Gibt die Bildhöhe in Pixeln an.
+* - identifier: Bildhöhe
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InGnuPlotOutputImage_imageHeight(set_InGnuPlotOutputImage)
+
 * - default: 1
 * - domain: (0,)
 * - description: Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss.
 * - identifier: Linienstärke
 * - type: Float
 PARAMETER par_InGnuPlotOutputImage_linewidth(set_InGnuPlotOutputImage)
+
+* - description: Legt die realen zu nutzenden Adoptionsdaten fest.
+* - identifier: Reale Adoptionsdaten
+* - type: Boolean
+PARAMETER par_link_InGnuPlotOutputImage_InRealAdoptionDataFile_realAdoptionDataFile(set_InGnuPlotOutputImage,set_InRealAdoptionDataFile)
 
 * - identifier: InOutputImage
 * - hidden: 1
@@ -671,9 +762,11 @@ SET set_InROutputImage(set_InOutputImage)
 * - identifier: Darstellung: jährliche Adoptionen (PLZ)
 * - rule: IF (par_InROutputImage_annualZip == 1, par_InROutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InROutputImage_annualZip == 1, par_InROutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InROutputImage_annualZip == 1, par_InROutputImage_cumulativeAnnualPhase2 = 0)
 * - rule: IF (par_InROutputImage_annualZip == 0, par_InROutputImage_annualZip = 1)
 * - rule: IF (par_InROutputImage_annualZip == 0, par_InROutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InROutputImage_annualZip == 0, par_InROutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InROutputImage_annualZip == 0, par_InROutputImage_cumulativeAnnualPhase2 = 0)
 * - type: Boolean
 PARAMETER par_InROutputImage_annualZip(set_InROutputImage)
 
@@ -683,23 +776,41 @@ PARAMETER par_InROutputImage_annualZip(set_InROutputImage)
 * - identifier: Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)
 * - rule: IF (par_InROutputImage_annualZipWithReal == 1, par_InROutputImage_annualZip = 0)
 * - rule: IF (par_InROutputImage_annualZipWithReal == 1, par_InROutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InROutputImage_annualZipWithReal == 1, par_InROutputImage_cumulativeAnnualPhase2 = 0)
 * - rule: IF (par_InROutputImage_annualZipWithReal == 0, par_InROutputImage_annualZip = 0)
 * - rule: IF (par_InROutputImage_annualZipWithReal == 0, par_InROutputImage_annualZipWithReal = 1)
 * - rule: IF (par_InROutputImage_annualZipWithReal == 0, par_InROutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InROutputImage_annualZipWithReal == 0, par_InROutputImage_cumulativeAnnualPhase2 = 0)
 * - type: Boolean
 PARAMETER par_InROutputImage_annualZipWithReal(set_InROutputImage)
 
 * - default: 0
 * - domain: [0|1]
-* - description: Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar.
-* - identifier: Darstellung: kumulierte jährliche Adoptionen (Phase)
+* - description: Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden nicht berücksichtigt.
+* - identifier: Darstellung: kumulierte jährliche Adoptionen (Phase) (ohne Initiale)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 1, par_InROutputImage_annualZip = 0)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 1, par_InROutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 1, par_InROutputImage_cumulativeAnnualPhase2 = 0)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 0, par_InROutputImage_annualZip = 0)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 0, par_InROutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 0, par_InROutputImage_cumulativeAnnualPhase = 1)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 0, par_InROutputImage_cumulativeAnnualPhase2 = 0)
 * - type: Boolean
 PARAMETER par_InROutputImage_cumulativeAnnualPhase(set_InROutputImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden bei den Daten berücksichtigt, aber nicht direkt visualisiert.
+* - identifier: Darstellung: kumulierte jährliche Adoptionen (Phase) (mit Initialen)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 1, par_InROutputImage_annualZip = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 1, par_InROutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 1, par_InROutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 0, par_InROutputImage_annualZip = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 0, par_InROutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 0, par_InROutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 0, par_InROutputImage_cumulativeAnnualPhase2 = 1)
+* - type: Boolean
+PARAMETER par_InROutputImage_cumulativeAnnualPhase2(set_InROutputImage)
 
 * - default: 0
 * - domain: [0|1]
@@ -722,12 +833,33 @@ PARAMETER par_InROutputImage_storeData(set_InROutputImage)
 * - type: Boolean
 PARAMETER par_InROutputImage_storeImage(set_InROutputImage)
 
+* - default: 1280
+* - domain: (0,)
+* - description: Gibt die Bildbreite in Pixeln an.
+* - identifier: Bildbreite
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InROutputImage_imageWidth(set_InROutputImage)
+
+* - default: 720
+* - domain: (0,)
+* - description: Gibt die Bildhöhe in Pixeln an.
+* - identifier: Bildhöhe
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InROutputImage_imageHeight(set_InROutputImage)
+
 * - default: 1
 * - domain: (0,)
 * - description: Gibt die Linienstärke an. Dieser Wert hat nur auf line plots Einfluss.
 * - identifier: Linienstärke
 * - type: Float
 PARAMETER par_InROutputImage_linewidth(set_InROutputImage)
+
+* - description: Legt die realen zu nutzenden Adoptionsdaten fest.
+* - identifier: Reale Adoptionsdaten
+* - type: Boolean
+PARAMETER par_link_InROutputImage_InRealAdoptionDataFile_realAdoptionDataFile(set_InROutputImage,set_InRealAdoptionDataFile)
 
 * - identifier: InProductGroupThresholdEntry
 * - type: String

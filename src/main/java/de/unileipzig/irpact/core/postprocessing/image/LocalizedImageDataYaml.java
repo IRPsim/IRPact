@@ -188,4 +188,31 @@ public class LocalizedImageDataYaml extends LocalizedYaml implements LocalizedIm
     public void setFillLab(DataToVisualize mode, String value) {
         set(mode, "filllab", value);
     }
+
+    @Override
+    public String getPhase0(DataToVisualize mode) {
+        return get(mode, "phase0");
+    }
+
+    public void setPhase0(DataToVisualize mode, String value) {
+        set(mode, "phase0", value);
+    }
+
+    @Override
+    public String getPhase1(DataToVisualize mode) {
+        return get(mode, "phase1");
+    }
+
+    public void setPhase1(DataToVisualize mode, String value) {
+        set(mode, "phase1", value);
+    }
+
+    @Override
+    public String getPhase2(DataToVisualize mode) {
+        return get(mode, "phase2");
+    }
+
+    public void setPhase2(DataToVisualize mode, String value) {
+        set(mode, "phase2", value);
+    }
 }

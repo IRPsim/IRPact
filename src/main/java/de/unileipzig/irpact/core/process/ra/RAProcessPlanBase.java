@@ -134,16 +134,17 @@ public abstract class RAProcessPlanBase implements ProcessPlan, LoggingHelper {
     protected abstract void doRunEvaluationAtEndOfYear();
 
     public void runUpdateAtMidOfYear() {
+        int currentYear = environment.getTimeModel().getCurrentYear();
         double renovationRate = getRenovationRate(agent);
         double renovationDraw = rnd.nextDouble();
         boolean doRenovation = renovationDraw < renovationRate;
-        trace("agent '{}' now under renovation? {} ({} < {})", agent.getName(), doRenovation, renovationDraw, renovationRate);
+        trace("agent '{}' now under renovation? {} ({} < {}, year: {})", agent.getName(), doRenovation, renovationDraw, renovationRate, currentYear);
         setUnderRenovation(doRenovation);
 
         double constructionRate = getConstructionRate(agent);
         double constructionDraw = rnd.nextDouble();
         boolean doConstruction = constructionDraw < constructionRate;
-        trace("agent '{}' now under construction? {} ({} < {})", agent.getName(), doConstruction, constructionDraw, constructionRate);
+        trace("agent '{}' now under construction? {} ({} < {}, year: {})", agent.getName(), doConstruction, constructionDraw, constructionRate, currentYear);
         setUnderConstruction(doConstruction);
 
         if(doConstruction) {

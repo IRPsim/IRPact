@@ -151,9 +151,10 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
             calc.setProgress(IRPact.PROGRESS_PHASE_SIMULATION, newProgress);
             LOGGER.info(
                     IRPSection.SIMULATION_PROCESS,
-                    "simulation progress: {}%, IRPact: {}%",
+                    "simulation progress: {}%, IRPact: {}% (simulation time: {})",
                     StringUtil.DF2_POINT.format(newProgress * 100.0),
-                    StringUtil.DF2_POINT.format(calc.getProgress() * 100.0)
+                    StringUtil.DF2_POINT.format(calc.getProgress() * 100.0),
+                    now()
             );
             lastBroadcastedProgress = newProgress;
         }

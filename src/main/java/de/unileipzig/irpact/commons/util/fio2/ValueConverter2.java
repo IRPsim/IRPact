@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.commons.util.xlsx2;
+package de.unileipzig.irpact.commons.util.fio2;
 
 /**
  * @author Daniel Abitz

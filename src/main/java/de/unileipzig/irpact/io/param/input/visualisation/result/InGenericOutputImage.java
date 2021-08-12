@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -46,17 +47,22 @@ public class InGenericOutputImage implements InOutputImage {
         addEntryWithDefaultAndDomain(res, thisClass(), "useGnuplot", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "useR", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "annualZip", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "annualZipWithReal", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "cumulativeAnnualPhase", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntriesWithDefaultAndDomain(res, thisClass(), dataToVisualizeWithoutDefault, VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "storeScript", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "storeData", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "storeImage", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "imageWidth", VALUE_1280, DOMAIN_G0);
+        addEntryWithDefaultAndDomain(res, thisClass(), "imageHeight", VALUE_720, DOMAIN_G0);
         addEntryWithDefaultAndDomain(res, thisClass(), "linewidth", VALUE_ONE, DOMAIN_G0);
+        addEntry(res, thisClass(), "realAdoptionDataFile");
 
         setDefault(res, thisClass(), varargs(IRPact.IMAGE_ANNUAL_ADOPTIONS, IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS));
 
         setRules(res, thisClass(), engineFieldNames, engineBuilder);
         setRules(res, thisClass(), dataToVisualize, dataToVisualizeBuilder.withKeyModifier(buildDefaultParameterNameOperator(thisClass())));
+
+        setUnit(res, thisClass(), "imageWidth", UNIT_PIXEL);
+        setUnit(res, thisClass(), "imageHeight", UNIT_PIXEL);
     }
 
     //=========================
@@ -65,9 +71,17 @@ public class InGenericOutputImage implements InOutputImage {
 
     public static InGenericOutputImage[] createDefaultImages() {
         return new InGenericOutputImage[] {
-                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS, DataToVisualize.ANNUAL_ZIP),
-                new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, DataToVisualize.COMPARED_ANNUAL_ZIP),
-                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS,DataToVisualize.CUMULATIVE_ANNUAL_PHASE)
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS, DataToVisualize.ANNUAL_ZIP, null),
+                new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, DataToVisualize.COMPARED_ANNUAL_ZIP, null),
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS, DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, null)
+        };
+    }
+
+    public static InGenericOutputImage[] createDefaultImages(InRealAdoptionDataFile realAdoptionDataFile) {
+        return new InGenericOutputImage[] {
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS, DataToVisualize.ANNUAL_ZIP, null),
+                new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, DataToVisualize.COMPARED_ANNUAL_ZIP, realAdoptionDataFile),
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS, DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, null)
         };
     }
 
@@ -105,6 +119,9 @@ public class InGenericOutputImage implements InOutputImage {
     public boolean cumulativeAnnualPhase = false;
 
     @FieldDefinition
+    public boolean cumulativeAnnualPhase2 = false;
+
+    @FieldDefinition
     public boolean storeScript = false;
 
     @FieldDefinition
@@ -114,12 +131,21 @@ public class InGenericOutputImage implements InOutputImage {
     public boolean storeImage = true;
 
     @FieldDefinition
+    public int imageWidth = 1280;
+
+    @FieldDefinition
+    public int imageHeight = 720;
+
+    @FieldDefinition
     public double linewidth = 1;
+
+    @FieldDefinition
+    public InRealAdoptionDataFile[] realAdoptionDataFile = new InRealAdoptionDataFile[0];
 
     public InGenericOutputImage() {
     }
 
-    public InGenericOutputImage(String name, DataToVisualize mode) {
+    public InGenericOutputImage(String name, DataToVisualize mode, InRealAdoptionDataFile realAdoptionDataFile) {
         setName(name);
         setEngine(SupportedEngine.GNUPLOT);
         setMode(mode);
@@ -127,6 +153,7 @@ public class InGenericOutputImage implements InOutputImage {
         setStoreData(false);
         setStoreScript(false);
         setLinewidth(1);
+        setRealAdoptionDataFile(realAdoptionDataFile);
     }
 
     @Override
@@ -142,10 +169,14 @@ public class InGenericOutputImage implements InOutputImage {
         copy.annualZip = annualZip;
         copy.annualZipWithReal = annualZipWithReal;
         copy.cumulativeAnnualPhase = cumulativeAnnualPhase;
+        copy.cumulativeAnnualPhase2 = cumulativeAnnualPhase2;
         copy.storeData = storeData;
         copy.storeScript = storeScript;
         copy.storeImage = storeImage;
+        copy.imageWidth = imageWidth;
+        copy.imageHeight = imageHeight;
         copy.linewidth = linewidth;
+        copy.realAdoptionDataFile = cache.copyArray(realAdoptionDataFile);
         return copy;
     }
 
@@ -205,6 +236,7 @@ public class InGenericOutputImage implements InOutputImage {
         annualZip = false;
         annualZipWithReal = false;
         cumulativeAnnualPhase = false;
+        cumulativeAnnualPhase2 = false;
 
         switch(mode) {
             case ANNUAL_ZIP:
@@ -219,6 +251,10 @@ public class InGenericOutputImage implements InOutputImage {
                 cumulativeAnnualPhase = true;
                 break;
 
+            case CUMULATIVE_ANNUAL_PHASE2:
+                cumulativeAnnualPhase2 = true;
+                break;
+
             default:
                 throw new IllegalArgumentException("unsupported mode: " + mode);
         }
@@ -230,6 +266,7 @@ public class InGenericOutputImage implements InOutputImage {
         if(annualZip) modes.add(DataToVisualize.ANNUAL_ZIP);
         if(annualZipWithReal) modes.add(DataToVisualize.COMPARED_ANNUAL_ZIP);
         if(cumulativeAnnualPhase) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE);
+        if(cumulativeAnnualPhase2) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE2);
 
         switch(modes.size()) {
             case 0:
@@ -267,11 +304,47 @@ public class InGenericOutputImage implements InOutputImage {
         return storeScript;
     }
 
+    public void setImageWidth(int imageWidth) {
+        this.imageWidth = imageWidth;
+    }
+
+    @Override
+    public int getImageWidth() {
+        return imageWidth;
+    }
+
+    public void setImageHeight(int imageHeight) {
+        this.imageHeight = imageHeight;
+    }
+
+    @Override
+    public int getImageHeight() {
+        return imageHeight;
+    }
+
     public double getLinewidth() {
         return linewidth;
     }
 
     public void setLinewidth(double linewidth) {
         this.linewidth = linewidth;
+    }
+
+    @Override
+    public boolean hasRealAdoptionDataFile() {
+        return len(realAdoptionDataFile) == 1;
+    }
+
+    @Override
+    public InRealAdoptionDataFile getRealAdoptionDataFile() throws ParsingException {
+        return getInstance(realAdoptionDataFile, "realAdoptionDataFile");
+    }
+
+    public void setRealAdoptionDataFile(InRealAdoptionDataFile realAdoptionDataFile) {
+        if(realAdoptionDataFile == null) {
+            this.realAdoptionDataFile = new InRealAdoptionDataFile[0];
+        } else {
+            this.realAdoptionDataFile = new InRealAdoptionDataFile[] {realAdoptionDataFile};
+        }
     }
 }

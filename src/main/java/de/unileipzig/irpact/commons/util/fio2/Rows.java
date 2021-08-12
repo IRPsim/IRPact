@@ -1,4 +1,7 @@
-package de.unileipzig.irpact.commons.util.xlsx2;
+package de.unileipzig.irpact.commons.util.fio2;
+
+import de.unileipzig.irpact.commons.util.data.MapBasedTypedMatrix;
+import de.unileipzig.irpact.commons.util.data.TypedMatrix;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,15 +11,15 @@ import java.util.function.Supplier;
 /**
  * @author Daniel Abitz
  */
-public final class TableRows2<T> {
+public final class Rows<T> {
 
     private final List<List<T>> rows;
 
-    public TableRows2(List<List<T>> rows) {
+    public Rows(List<List<T>> rows) {
         this.rows = rows;
     }
 
-    public List<List<T>> getRows() {
+    public List<List<T>> list() {
         return rows;
     }
 
@@ -30,11 +33,28 @@ public final class TableRows2<T> {
         return columns;
     }
 
+    public boolean isValidMatrix() {
+        int columnSize = -1;
+        for(List<T> row: rows) {
+            if(row == null) {
+                return false;
+            }
+            if(columnSize == -1) {
+                columnSize = row.size();
+            } else {
+                if(columnSize != row.size()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public boolean hasEmptyColumn() {
         int columnCount = getNumberOfColumns();
         for(int i = 0; i < columnCount; i++) {
             boolean empty = true;
-            for(List<T> row: getRows()) {
+            for(List<T> row: list()) {
                 if(row != null && i < row.size() && row.get(i) != null) {
                     empty = false;
                     break;
@@ -78,7 +98,7 @@ public final class TableRows2<T> {
 
     public int getNumberOfColumns() {
         int count = 0;
-        for(List<T> row: getRows()) {
+        for(List<T> row: list()) {
             if(row != null && row.size() > count) {
                 count = row.size();
             }
@@ -88,7 +108,7 @@ public final class TableRows2<T> {
 
     public List<T> getColumn(int index) {
         List<T> column = new ArrayList<>(getNumberOfRows());
-        for(List<T> row: getRows()) {
+        for(List<T> row: list()) {
             if(row == null || row.size() < index) {
                 column.add(null);
             } else {
@@ -125,7 +145,7 @@ public final class TableRows2<T> {
             List<T> row = getRow(i);
             if(row == null) {
                 row = rowSupplier.get();
-                getRows().set(i, row);
+                list().set(i, row);
             }
             while(row.size() < columnCount) {
                 row.add(nullValue);
@@ -138,7 +158,7 @@ public final class TableRows2<T> {
             throw new NullPointerException("updater");
         }
 
-        for(List<T> row: getRows()) {
+        for(List<T> row: list()) {
             if(row == null) {
                 continue;
             }
@@ -183,5 +203,38 @@ public final class TableRows2<T> {
             }
         }
         return sb.toString();
+    }
+
+    public <M, N, V> TypedMatrix<M, N, V> toMatrix(
+            Function<? super T, ? extends M> t2m,
+            Function<? super T, ? extends N> t2n,
+            Function<? super T, ? extends V> t2v) {
+        TypedMatrix<M, N, V> matrix = new MapBasedTypedMatrix<>();
+        toMatrix(t2m, t2n, t2v, matrix);
+        return matrix;
+    }
+
+    public <M, N, V> void toMatrix(
+            Function<? super T, ? extends M> t2m,
+            Function<? super T, ? extends N> t2n,
+            Function<? super T, ? extends V> t2v,
+            TypedMatrix<M, N, V> target) {
+        if(!isValidMatrix()) {
+            throw new IllegalStateException("invalid matrix");
+        }
+
+        List<T> nHeader = rows.get(0);
+        for(int i = 1; i < rows.size(); i++) {
+            List<T> row = rows.get(i);
+            T mKey = row.get(0);
+            M mValue = t2m.apply(mKey);
+            for(int j = 1; j < row.size(); j++) {
+                T nKey = nHeader.get(j);
+                T value = row.get(j);
+                N nValue = t2n.apply(nKey);
+                V vValue = t2v.apply(value);
+                target.set(mValue, nValue, vValue);
+            }
+        }
     }
 }
