@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.commons.util.xlsx2;
+package de.unileipzig.irpact.commons.util.fio2.xlsx2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,15 +8,15 @@ import java.util.function.Supplier;
 /**
  * @author Daniel Abitz
  */
-public final class TableRows2<T> {
+public final class Rows<T> {
 
     private final List<List<T>> rows;
 
-    public TableRows2(List<List<T>> rows) {
+    public Rows(List<List<T>> rows) {
         this.rows = rows;
     }
 
-    public List<List<T>> getRows() {
+    public List<List<T>> list() {
         return rows;
     }
 
@@ -34,7 +34,7 @@ public final class TableRows2<T> {
         int columnCount = getNumberOfColumns();
         for(int i = 0; i < columnCount; i++) {
             boolean empty = true;
-            for(List<T> row: getRows()) {
+            for(List<T> row: list()) {
                 if(row != null && i < row.size() && row.get(i) != null) {
                     empty = false;
                     break;
@@ -78,7 +78,7 @@ public final class TableRows2<T> {
 
     public int getNumberOfColumns() {
         int count = 0;
-        for(List<T> row: getRows()) {
+        for(List<T> row: list()) {
             if(row != null && row.size() > count) {
                 count = row.size();
             }
@@ -88,7 +88,7 @@ public final class TableRows2<T> {
 
     public List<T> getColumn(int index) {
         List<T> column = new ArrayList<>(getNumberOfRows());
-        for(List<T> row: getRows()) {
+        for(List<T> row: list()) {
             if(row == null || row.size() < index) {
                 column.add(null);
             } else {
@@ -125,7 +125,7 @@ public final class TableRows2<T> {
             List<T> row = getRow(i);
             if(row == null) {
                 row = rowSupplier.get();
-                getRows().set(i, row);
+                list().set(i, row);
             }
             while(row.size() < columnCount) {
                 row.add(nullValue);
@@ -138,7 +138,7 @@ public final class TableRows2<T> {
             throw new NullPointerException("updater");
         }
 
-        for(List<T> row: getRows()) {
+        for(List<T> row: list()) {
             if(row == null) {
                 continue;
             }

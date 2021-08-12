@@ -15,7 +15,8 @@ import de.unileipzig.irptools.util.XorWithoutUnselectRuleBuilder;
 @Definition
 public interface InOutputImage extends InIRPactEntity {
 
-    String[] dataToVisualize = {"annualZip", "annualZipWithReal", "cumulativeAnnualPhase"};
+    String[] dataToVisualize = {"annualZip", "annualZipWithReal", "cumulativeAnnualPhase", "cumulativeAnnualPhase2"};
+    String[] dataToVisualizeWithoutDefault = {"annualZipWithReal", "cumulativeAnnualPhase", "cumulativeAnnualPhase2"};
     XorWithoutUnselectRuleBuilder dataToVisualizeBuilder = new XorWithoutUnselectRuleBuilder()
             .withTrueValue(Constants.TRUE1)
             .withFalseValue(Constants.FALSE0)

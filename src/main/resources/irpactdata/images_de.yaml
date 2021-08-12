@@ -44,3 +44,20 @@ CUMULATIVE_ANNUAL_PHASE:
   filllab: "Adoptionsphase"
   sep: ";"
   encoding: "UTF-8"
+
+# stacked bar chart - phase and initial agents (not visible)
+CUMULATIVE_ANNUAL_PHASE2:
+  title: |-
+    Jährlich kumulierte Adoptionen in Bezug auf die Adoptionsphasen
+    (initiale Adopter: {0})
+  xarg: "year"
+  yarg: "adoptionsCumulative"
+  fillarg: "phase"
+  xlab: "Jahre"
+  ylab: "Adoptionen (kumuliert)"
+  filllab: "Adoptionsphase"
+  sep: ";"
+  encoding: "UTF-8"
+  phase0: "Start-Mitte"
+  phase1: "Mitte-Ende"
+  phase2: "Ende-Start"

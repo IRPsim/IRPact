@@ -29,11 +29,20 @@ public abstract class AbstractAdoptionAnalyser2 implements AdoptionAnalyser2 {
     protected VarCollection data;
     protected Collection<? extends Integer> years;
     protected LocalizedData localizedData;
+    protected boolean skipInitial = true;
 
     public AbstractAdoptionAnalyser2() {
     }
 
     protected abstract VarCollection newCollection();
+
+    public void setSkipInitial(boolean skipInitial) {
+        this.skipInitial = skipInitial;
+    }
+
+    public boolean isSkipInitial() {
+        return skipInitial;
+    }
 
     public VarCollection getData() {
         if(data == null) {
@@ -99,7 +108,7 @@ public abstract class AbstractAdoptionAnalyser2 implements AdoptionAnalyser2 {
 
     @Override
     public boolean add(AdoptionEntry2 entry) {
-        if(entry.getAdoptedProduct().isInitial()) {
+        if(skipInitial && entry.getAdoptedProduct().isInitial()) {
             return false;
         } else {
             for(Integer year: years) {

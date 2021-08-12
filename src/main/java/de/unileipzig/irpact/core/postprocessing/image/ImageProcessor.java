@@ -167,8 +167,10 @@ public class ImageProcessor extends PostProcessor {
     //util
     //=========================
 
-    public List<AdoptionPhase> getValidAdoptionPhases() {
-        return AdoptionPhase.NON_INITIAL;
+    public List<AdoptionPhase> getValidAdoptionPhases(boolean skipInitial) {
+        return skipInitial
+                ? AdoptionPhase.NON_INITIAL
+                : AdoptionPhase.VALID_PHASES;
     }
 
     protected List<String> zips;

@@ -602,6 +602,17 @@ public final class ParamUtil {
         setDomain(res, c, field, domain);
     }
 
+    public static void addEntriesWithDefaultAndDomain(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String[] fields,
+            Object[] defaults,
+            String domain) {
+        for(String field: fields) {
+            addEntryWithDefaultAndDomain(res, c, field, defaults, domain);
+        }
+    }
+
     public static void putClassPath(TreeAnnotationResource res, Class<?> c, String... keys) {
         res.putPath(c, res.getCachedElements(keys));
     }

@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.commons.util.xlsx2;
+package de.unileipzig.irpact.commons.util.fio2.xlsx2;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.exception.UnsupportedCellTypeException;
@@ -78,26 +78,26 @@ public class XlsxSheetParser2<T> {
     //parse
     //=========================
 
-    public TableRows2<T> parse(Path input) throws ParsingException, IOException, InvalidFormatException {
+    public Rows<T> parse(Path input) throws ParsingException, IOException, InvalidFormatException {
         return parse(input, 0);
     }
 
-    public TableRows2<T> parse(Path input, int sheetIndex) throws ParsingException, IOException, InvalidFormatException {
+    public Rows<T> parse(Path input, int sheetIndex) throws ParsingException, IOException, InvalidFormatException {
         List<List<T>> list = new ArrayList<>();
         collect(input, sheetIndex, list);
-        return new TableRows2<>(list);
+        return new Rows<>(list);
     }
 
-    public TableRows2<T> parse(Path input, String sheetName) throws ParsingException, IOException, InvalidFormatException {
+    public Rows<T> parse(Path input, String sheetName) throws ParsingException, IOException, InvalidFormatException {
         List<List<T>> list = new ArrayList<>();
         collect(input, sheetName, list);
-        return new TableRows2<>(list);
+        return new Rows<>(list);
     }
 
-    public TableRows2<T> parse(XSSFSheet sheet) throws ParsingException, IOException, InvalidFormatException {
+    public Rows<T> parse(XSSFSheet sheet) throws ParsingException, IOException, InvalidFormatException {
         List<List<T>> list = new ArrayList<>();
         collect(sheet, list);
-        return new TableRows2<>(list);
+        return new Rows<>(list);
     }
 
     public boolean collect(Path input, int sheetIndex, Collection<? super List<T>> target) throws ParsingException, IOException, InvalidFormatException {

@@ -73,9 +73,18 @@ public abstract class AbstractDataVisualizer implements DataVisualizer, LoggingH
     }
 
     protected AnnualAdoptionsPhase2 createAnnualAdoptionPhaseData() {
+        return createAnnualAdoptionPhaseData(true);
+    }
+
+    protected AnnualAdoptionsPhase2 createAnnualAdoptionPhaseDataWithInitialAdopter() {
+        return createAnnualAdoptionPhaseData(false);
+    }
+
+    protected AnnualAdoptionsPhase2 createAnnualAdoptionPhaseData(boolean skipInital) {
         AnnualAdoptionsPhase2 analyser = new AnnualAdoptionsPhase2();
+        analyser.setSkipInitial(skipInital);
         analyser.setYears(imageProcessor.getAllSimulationYears());
-        analyser.init(imageProcessor.getValidAdoptionPhases());
+        analyser.init(imageProcessor.getValidAdoptionPhases(skipInital));
         analyser.apply(imageProcessor.getEnvironment());
         return analyser;
     }

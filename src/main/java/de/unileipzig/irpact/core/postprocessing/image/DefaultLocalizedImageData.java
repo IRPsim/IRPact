@@ -51,6 +51,19 @@ public final class DefaultLocalizedImageData {
         data.setFillLab(DataToVisualize.CUMULATIVE_ANNUAL_PHASE, "Adoptionsphase");
         data.setSep(DataToVisualize.CUMULATIVE_ANNUAL_PHASE, ";");
         data.setEncoding(DataToVisualize.CUMULATIVE_ANNUAL_PHASE, Element.UTF8);
+        //CUMULATIVE_ANNUAL_PHASE2
+        data.setTitle(DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, "J\u00e4hrlich kumulierte Adoptionen in Bezug auf die Adoptionsphasen\n(initiale Adopter: {0})");
+        data.setXArg(DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, "year");
+        data.setYArg(DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, "adoptionsCumulative");
+        data.setFillArg(DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, "phase");
+        data.setXLab(DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, "Jahre");
+        data.setYLab(DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, "Adoptionen (kumuliert)");
+        data.setFillLab(DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, "Adoptionsphase");
+        data.setSep(DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, ";");
+        data.setEncoding(DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, Element.UTF8);
+        data.setPhase0(DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, "Start-Mitte");
+        data.setPhase0(DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, "Mitte-Ende");
+        data.setPhase0(DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, "Ende-Start");
 
         return data;
     }

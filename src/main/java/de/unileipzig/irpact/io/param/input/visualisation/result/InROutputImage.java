@@ -34,8 +34,7 @@ public class InROutputImage implements InOutputImage {
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.SETT_VISURESULT_R);
         addEntryWithDefaultAndDomain(res, thisClass(), "annualZip", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "annualZipWithReal", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "cumulativeAnnualPhase", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntriesWithDefaultAndDomain(res, thisClass(), dataToVisualizeWithoutDefault, VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "storeScript", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "storeData", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "storeImage", VALUE_TRUE, DOMAIN_BOOLEAN);
@@ -54,6 +53,9 @@ public class InROutputImage implements InOutputImage {
 
     @FieldDefinition
     public boolean cumulativeAnnualPhase = false;
+
+    @FieldDefinition
+    public boolean cumulativeAnnualPhase2 = false;
 
     @FieldDefinition
     public boolean storeScript = false;
@@ -94,6 +96,7 @@ public class InROutputImage implements InOutputImage {
         copy.annualZip = annualZip;
         copy.annualZipWithReal = annualZipWithReal;
         copy.cumulativeAnnualPhase = cumulativeAnnualPhase;
+        copy.cumulativeAnnualPhase2 = cumulativeAnnualPhase2;
         copy.storeData = storeData;
         copy.storeScript = storeScript;
         copy.storeImage = storeImage;
@@ -126,6 +129,7 @@ public class InROutputImage implements InOutputImage {
         annualZip = false;
         annualZipWithReal = false;
         cumulativeAnnualPhase = false;
+        cumulativeAnnualPhase2 = false;
 
         switch(mode) {
             case ANNUAL_ZIP:
@@ -140,6 +144,10 @@ public class InROutputImage implements InOutputImage {
                 cumulativeAnnualPhase = true;
                 break;
 
+            case CUMULATIVE_ANNUAL_PHASE2:
+                cumulativeAnnualPhase2 = true;
+                break;
+
             default:
                 throw new IllegalArgumentException("unsupported mode: " + mode);
         }
@@ -151,6 +159,7 @@ public class InROutputImage implements InOutputImage {
         if(annualZip) modes.add(DataToVisualize.ANNUAL_ZIP);
         if(annualZipWithReal) modes.add(DataToVisualize.COMPARED_ANNUAL_ZIP);
         if(cumulativeAnnualPhase) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE);
+        if(cumulativeAnnualPhase2) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE2);
 
         switch(modes.size()) {
             case 0:

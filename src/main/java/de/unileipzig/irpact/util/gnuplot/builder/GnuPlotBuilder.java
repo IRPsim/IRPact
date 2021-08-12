@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Daniel Abitz
@@ -272,12 +273,22 @@ public class GnuPlotBuilder {
         add(new SpecialLinePlotCommand(data, linewidth));
     }
 
+    public void plotRawSpecialLinePlotWithKey(String phase0, String phase1, String phase2, String data, int linewidth) {
+        add(new SpecialPlotCommandWith3DataColumnsAndCustomKey(phase0, phase1, phase2, data, linewidth));
+    }
+
     public void setXRange(Object min, Object max) {
-        buildSet("xrange", "[" + min + ":" + max + "]");
+        String range = Objects.equals(min, max)
+                ? "[*:*]"
+                : "[" + min + ":" + max + "]";
+        buildSet("xrange", range);
     }
 
     public void setYRange(Object min, Object max) {
-        buildSet("yrange", "[" + min + ":" + max + "]");
+        String range = Objects.equals(min, max)
+                ? "[*:*]"
+                : "[" + min + ":" + max + "]";
+        buildSet("yrange", range);
     }
 
     public void replot() {
