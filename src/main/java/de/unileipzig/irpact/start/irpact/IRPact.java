@@ -499,6 +499,7 @@ public final class IRPact implements IRPActAccess {
     public void preparePlatform() {
         LOGGER.info(IRPSection.GENERAL, "prepare platform start");
         environment.getLifeCycleControl().pause();
+        environment.getLifeCycleControl().setOnHardKill(this::handleHardKill);
         pulse();
     }
 
@@ -632,7 +633,7 @@ public final class IRPact implements IRPActAccess {
             return false;
         } catch (InterruptedException e) {
             LOGGER.warn(IRPSection.GENERAL, "waiting interrupted", e);
-            if(environment.getLifeCycleControl().getTerminationState() != LifeCycleControl.TerminationState.NOT) {
+            if(environment.getLifeCycleControl().getTerminationState() != LifeCycleControl.TerminationState.RUNNING) {
                 environment.getLifeCycleControl().terminateWithError(e);
             }
             return true;
@@ -653,6 +654,7 @@ public final class IRPact implements IRPActAccess {
         LOGGER.info(IRPSection.GENERAL, "wait for termination");
 
         environment.getLifeCycleControl().waitForTermination().get();
+        environment.getLifeCycleControl().terminationFinished();
         JadexSystemOut.reset();
 
         LOGGER.info(IRPSection.GENERAL, "simulation terminated");
@@ -686,9 +688,34 @@ public final class IRPact implements IRPActAccess {
         }
     }
 
+    private void handleHardKill(Throwable cause) {
+        LOGGER.info(IRPSection.GENERAL, "handle hard kill, cause: '{}'", cause.getMessage());
+
+        try {
+            createStackTraceImage(cause, getStackTraceImagePath());
+        } catch (Throwable t) {
+            LOGGER.error("failed to create no-error image", t);
+        }
+
+        try {
+            createAndStoreDummyOutputAndErrorMessage(cause);
+        } catch (Throwable t) {
+            LOGGER.error("failed to create no-error image", t);
+        }
+
+        LOGGER.warn("hard kill");
+        System.exit(1);
+    }
+
     public void postSimulationWithDummyOutputAndErrorMessage(Throwable cause) {
         LOGGER.info(IRPSection.GENERAL, "start post-simulation with error ({})", cause.getMessage());
 
+        createAndStoreDummyOutputAndErrorMessage(cause);
+        callCallbacks();
+        finalTask();
+    }
+
+    private void createAndStoreDummyOutputAndErrorMessage(Throwable cause) {
         String errorClass = cause.getClass().getSimpleName();
         //String errorMsg = StringUtil.replaceSpace(cause.getMessage(), "_");
         //String fullMsg = errorClass + "__" + errorMsg;
@@ -696,8 +723,6 @@ public final class IRPact implements IRPActAccess {
 
         outData = createDummyOutputData("ERROR_OUTPUT", errorInfo);
         storeOutputData(outData);
-        callCallbacks();
-        finalTask();
     }
 
     private AnnualData<OutRoot> createDummyOutputData(String dummyName, OutInformation[] informations) {

@@ -5,6 +5,8 @@ import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.misc.InitalizablePart;
 
+import java.util.function.Consumer;
+
 /**
  * Controls the live cycle of the simulation.
  *
@@ -16,7 +18,7 @@ public interface LifeCycleControl extends InitalizablePart {
      * @author Daniel Abitz
      */
     enum TerminationState {
-        NOT,
+        RUNNING,
         NORMAL,
         TIMEOUT,
         ERROR
@@ -43,6 +45,10 @@ public interface LifeCycleControl extends InitalizablePart {
     //=========================
     //terminate
     //=========================
+
+    void setOnHardKill(Consumer<? super Throwable> consumer);
+
+    void terminationFinished();
 
     void handleNonFatalError(Throwable t);
 

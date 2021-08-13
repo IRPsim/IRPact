@@ -25,6 +25,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -60,10 +61,13 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
     protected ISimulationService simulationService;
     protected IClockService clockService;
 
-    protected TerminationState state = TerminationState.NOT;
+    protected TerminationState state = TerminationState.RUNNING;
 
+    protected final long HARD_KILL_TIMER = TimeUnit.MINUTES.toMillis(5);
     protected int nonFatalErrors = 0;
     protected int fatalErrors = 0;
+    protected Thread hardKillThread;
+    protected Consumer<? super Throwable> onHardKill;
 
     public BasicJadexLifeCycleControl() {
         killSwitch = new KillSwitch();
@@ -203,6 +207,19 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
     //=========================
 
     @Override
+    public void setOnHardKill(Consumer<? super Throwable> onHardKill) {
+        this.onHardKill = onHardKill;
+    }
+
+    @Override
+    public void terminationFinished() {
+        if(hardKillThread != null) {
+            hardKillThread.interrupt();
+            hardKillThread = null;
+        }
+    }
+
+    @Override
     public void handleNonFatalError(Throwable t) {
         nonFatalErrors++;
         LOGGER.error(InfoTag.NON_FATAL_ERROR + " non fatal error occurred, continue simulation", t);
@@ -217,7 +234,7 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
 
     @Override
     public void prepareTermination() {
-        killSwitch.terminate();
+        killSwitch.cancel();
         JadexSystemOut.redirect();
     }
 
@@ -232,10 +249,10 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
     @Override
     public IFuture<Map<String, Object>> terminateTimeout() {
         LOGGER.info("terminate with timeout");
-        prepareTermination();
+        JadexSystemOut.redirect();
         state = TerminationState.TIMEOUT;
         //timeoutexception einbauen?
-        return platform.killComponent();
+        return killPlatform(killSwitch.createException());
     }
 
     @Override
@@ -247,12 +264,36 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
         Exception e = t instanceof Exception
                 ? (Exception) t
                 : new TerminationException(t);
+        return killPlatform(e);
+    }
+
+    private IFuture<Map<String, Object>> killPlatform(Exception e) {
+        startHardKill(e);
         return platform.killComponent(e);
     }
 
     @Override
     public TerminationState getTerminationState() {
         return state;
+    }
+
+    protected void startHardKill(Throwable cause) {
+        final Consumer<? super Throwable> onHardKill = this.onHardKill;
+        LOGGER.warn("prepare hard kill measure (time: {})", HARD_KILL_TIMER);
+        hardKillThread = new Thread(() -> {
+            try {
+                Thread.sleep(HARD_KILL_TIMER);
+                if(onHardKill != null) {
+                    onHardKill.accept(cause);
+                } else {
+                    LOGGER.warn("no hard kill callback found, calling System.exit");
+                    System.exit(1);
+                }
+            } catch (InterruptedException e) {
+                LOGGER.info("hard kill canceled");
+            }
+        }, "HardKill-Thread");
+        hardKillThread.start();
     }
 
     //=========================
