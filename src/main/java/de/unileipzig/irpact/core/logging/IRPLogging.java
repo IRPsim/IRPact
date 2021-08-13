@@ -72,6 +72,7 @@ public final class IRPLogging {
         }
         IRPtools.setLoggingFilter(null);
         IRPSection.removeSectionsFromTools();
+        CONTROLLER.stopWriting();
     }
 
     public static void disableTools() {
@@ -102,6 +103,12 @@ public final class IRPLogging {
     public static void writeToConsoleAndFile(Path target) {
         CONTROLLER.setPath(target);
         CONTROLLER.writeToConsoleAndFile();
+    }
+
+    public static void forceWriteToConsoleAndFile() {
+        if(CONTROLLER.isWritingToFileAndNotConsole()) {
+            CONTROLLER.writeToConsoleAndFile();
+        }
     }
 
     public static void setLevel(IRPLevel level) {

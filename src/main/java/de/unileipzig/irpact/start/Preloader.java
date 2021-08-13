@@ -29,6 +29,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Daniel Abitz
@@ -113,6 +114,7 @@ public class Preloader {
 
     private void loadJson() throws Throwable {
         ObjectNode root = JsonUtil.readJson(clOptions.getInputPath());
+        checkForForcedSettings(root);
         load(root);
     }
 
@@ -245,6 +247,7 @@ public class Preloader {
     }
 
     public void start(AnnualEntry<InRoot> root) throws Throwable {
+        checkForForcedSettings(root);
         setup();
         callIRPact(root);
     }
@@ -254,5 +257,27 @@ public class Preloader {
         IRPact irpact = createIRPactInstance();
         irpact.init(root);
         start(irpact);
+    }
+
+    private void checkForForcedSettings(ObjectNode root) {
+        List<JsonNode> nodes = JsonUtil.findAllNodes(root, InGeneral.SCA_INGENERAL_FORCELOGTOCONSOLE);
+        if(nodes.size() > 0) {
+            JsonNode node = nodes.get(0);
+            if(node.isNumber() && node.intValue() == 1) {
+                forceLoggingToConsole();
+            }
+        }
+    }
+
+    private void checkForForcedSettings(AnnualEntry<InRoot> root) {
+        InRoot r = root.getData();
+        if(r.getGeneral().isForceLogToConsole()) {
+            forceLoggingToConsole();
+        }
+    }
+
+    private void forceLoggingToConsole() {
+        IRPLogging.forceWriteToConsoleAndFile();
+        LOGGER.warn("force logging to console and file (initial args: {})", clOptions.printArgs());
     }
 }

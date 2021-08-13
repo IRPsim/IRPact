@@ -57,6 +57,7 @@ public abstract class AbstractScenario implements Scenario {
 
     protected int revision = 0;
 
+    protected boolean forceLogConsole = true;
     protected boolean logConsole = true;
     protected Path logPath;
     protected Path outputDir;
@@ -313,6 +314,14 @@ public abstract class AbstractScenario implements Scenario {
         return rCommand;
     }
 
+    public void setForceLogConsole(boolean forceLogConsole) {
+        this.forceLogConsole = forceLogConsole;
+    }
+
+    public boolean isForceLogConsole() {
+        return forceLogConsole;
+    }
+
     protected void validate(List<InRoot> inRoots) {
         for(InRoot inRoot: inRoots) {
             //exiting first simulation year
@@ -400,6 +409,7 @@ public abstract class AbstractScenario implements Scenario {
     }
 
     public void setupGeneral(InGeneral general) {
+        general.setForceLogToConsole(isForceLogConsole());
         if(generalSetup != null) {
             generalSetup.accept(general);
         }

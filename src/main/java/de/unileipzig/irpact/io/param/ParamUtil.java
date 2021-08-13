@@ -646,4 +646,16 @@ public final class ParamUtil {
             putFieldPathAndAddEntry(res, c, field, path);
         }
     }
+
+    public static void putFieldPathAndAddEntryWithDefaultAndDomain(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String field,
+            EdnPath path,
+            Object[] defaults,
+            String domain) {
+        putFieldPathAndAddEntry(res, c, field, path);
+        setDefault(res, c, field, defaults);
+        setDomain(res, c, field, domain);
+    }
 }

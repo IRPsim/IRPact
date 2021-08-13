@@ -21,7 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author Daniel Abitz
@@ -277,5 +277,46 @@ public final class JsonUtil {
                 throw new IllegalArgumentException("no array node: " + node.getNodeType());
             }
         }
+    }
+
+    public static List<JsonNode> findAllNodes(JsonNode root, String nodeName) {
+        List<JsonNode> nodes = new ArrayList<>();
+        findAllNodes(root, nodeName, nodes);
+        return nodes;
+    }
+
+    public static boolean findAllNodes(JsonNode root, String nodeName, Collection<? super JsonNode> target) {
+        if(root == null) {
+            throw new NullPointerException("root");
+        }
+        if(nodeName == null) {
+            throw new NullPointerException("nodeName");
+        }
+        if(target == null) {
+            throw new NullPointerException("target");
+        }
+
+        boolean changed = false;
+
+        if(root.isArray()) {
+            for(int i = 0; i < root.size(); i++) {
+                JsonNode child = root.get(i);
+                changed |= findAllNodes(child, nodeName, target);
+            }
+        }
+
+        if(root.isObject()) {
+            Iterator<Map.Entry<String, JsonNode>> iter = root.fields();
+            while(iter.hasNext()) {
+                Map.Entry<String, JsonNode> entry = iter.next();
+                if(nodeName.equals(entry.getKey())) {
+                    changed |= target.add(entry.getValue());
+                } else {
+                    changed |= findAllNodes(entry.getValue(), nodeName, target);
+                }
+            }
+        }
+
+        return changed;
     }
 }
