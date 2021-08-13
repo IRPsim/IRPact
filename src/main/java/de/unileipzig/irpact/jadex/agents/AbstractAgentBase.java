@@ -3,6 +3,7 @@ package de.unileipzig.irpact.jadex.agents;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.ProxyAgent;
+import de.unileipzig.irpact.core.simulation.LifeCycleControl;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -39,6 +40,10 @@ public abstract class AbstractAgentBase {
 
     protected JadexTimeModel getTimeModel() {
         return getEnvironment().getTimeModel();
+    }
+
+    protected LifeCycleControl getLifeCycleControl() {
+        return getEnvironment().getLifeCycleControl();
     }
 
     protected void pulse() {

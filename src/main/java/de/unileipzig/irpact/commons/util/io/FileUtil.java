@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.commons.util.io;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.nio.charset.Charset;
 import java.nio.file.*;
@@ -82,6 +84,21 @@ public final class FileUtil {
         }
 
         return changed;
+    }
+
+    public static byte[] readBytes(InputStream in) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        byte[] buf = new byte[1024 * 8];
+        int len;
+
+        do {
+            len = in.read(buf, 0, buf.length);
+            if(len > 0) {
+                baos.write(buf, 0, len);
+            }
+        } while(len != -1);
+
+        return baos.toByteArray();
     }
 
     public static String readString(Path input, Charset charset) throws IOException {

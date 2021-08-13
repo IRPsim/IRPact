@@ -5,6 +5,7 @@ import de.unileipzig.irpact.core.simulation.LifeCycleControl;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -120,31 +121,19 @@ public class KillSwitch implements Runnable {
         }
     }
 
-    public boolean terminate() {
+    public boolean cancel() {
         if(isRunning()) {
-            LOGGER.trace("terminate...");
+            LOGGER.trace("cancel KillSwitch...");
             LOCK.lock();
             try {
                 COND.signalAll();
             } finally {
                 LOCK.unlock();
             }
-            waitForCleanUp();
-            LOGGER.trace("...terminated");
+            LOGGER.trace("...canceled");
             return true;
         } else {
             return false;
-        }
-    }
-
-    protected void waitForCleanUp() {
-        Thread t = killThread;
-        if(t != null) {
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                //ignore
-            }
         }
     }
 
@@ -205,15 +194,17 @@ public class KillSwitch implements Runnable {
             }
         }
 
-        try {
-            if(expired || interrupted) {
-                LOGGER.warn("{} - simulation will be terminated!", getInfo(expired, interrupted));
-                handleTimeout();
-            } else {
-                LOGGER.trace("terminated");
-            }
-        } finally {
+        if(expired || interrupted) {
+            LOGGER.warn("{} - simulation will be terminated!", getInfo(expired, interrupted));
+            cleanUpRun(cycles);
+            handleTimeout();
+        } else {
+            LOGGER.trace("canceled");
             cleanUpRun(cycles);
         }
+    }
+
+    public TimeoutException createException() {
+        return new TimeoutException("timeout after " + cycles + " cylces (timeout: " + timeout + " " + unit + ")");
     }
 }

@@ -37,10 +37,10 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
 
     private static final double MINIMAL_PROGRESS = IRPact.MINIMAL_PROGRESS;
 
+    protected boolean callGc = true;
     protected ProxySimulationAgent proxyAgent;
     protected double lastBroadcastedProgress = 0.0;
     protected List<IExternalAccess> agents = new ArrayList<>();
-
 
     public JadexSimulationAgentBDI() {
     }
@@ -147,6 +147,9 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     protected void onLoopAction() {
         double newProgress = getTimeModel().getTimeProgress();
         broadcastProgress(newProgress);
+        if(callGc) {
+            System.gc();
+        }
     }
 
     protected void broadcastProgress(double newProgress) {

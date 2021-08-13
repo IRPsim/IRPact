@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.jadex.agents;
 
-import de.unileipzig.irpact.commons.exception.TerminationException;
 import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.simulation.LifeCycleControl;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
 import jadex.bdiv3.features.IBDIAgentFeature;
 import jadex.bridge.IComponentStep;
@@ -73,6 +73,11 @@ public abstract class AbstractJadexAgentBDI extends AbstractAgentBase {
 
     protected final IComponentStep<Void> LOOP_STEP = this::loopStep;
     protected IFuture<Void> loopStep(IInternalAccess access) {
+        if(isTerminated()) {
+            log().trace("[{}] cancel loop - simulation terminated", getName());
+            return IFuture.DONE;
+        }
+
         try {
             pulse();
             onLoopAction();
@@ -81,7 +86,12 @@ public abstract class AbstractJadexAgentBDI extends AbstractAgentBase {
             getEnvironment().getLifeCycleControl().handleFatalError(t);
             return IFuture.DONE;
         }
+
         scheduleNextLoopStep();
         return IFuture.DONE;
+    }
+
+    protected boolean isTerminated() {
+        return getLifeCycleControl().getTerminationState() != LifeCycleControl.TerminationState.RUNNING;
     }
 }
