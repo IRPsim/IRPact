@@ -104,6 +104,9 @@ InGeneral_printNoErrorImage:
 InGeneral_skipPersist:
   gams_identifier: "Deaktiviere Persistierung"
   gams_description: "Deaktiviert die komplette Persistierung. Dadurch wird jedes Stützjahr als komplett neue Simulation behandelt."
+InGeneral_forceLogToConsole:
+  gams_identifier: "Erzwinge Konsolenausgabe"
+  gams_description: "Falls aktiviert, werden Ausgaben auch an die Konsole übergeben. (Hinweis: Dies Option hat nur Auswirkungen, falls die cmd-Option 'logPath' ohne 'logConsoleAndFile' gesetzt ist. In diesem Fall wird 'logConsoleAndFile' hinzugefügt.)"
 
 VisibleBinaryData:
   edn_label: "Binäre Daten"
@@ -300,7 +303,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.12.1"
+  edn_description: "IRPact v0.13.1"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
