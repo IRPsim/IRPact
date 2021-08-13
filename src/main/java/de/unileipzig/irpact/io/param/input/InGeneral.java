@@ -338,6 +338,7 @@ public class InGeneral implements Copyable {
         return skipPersist;
     }
 
+    @FieldDefinition
     public boolean forceLogToConsole = false;
     public void setForceLogToConsole(boolean forceLogToConsole) {
         this.forceLogToConsole = forceLogToConsole;

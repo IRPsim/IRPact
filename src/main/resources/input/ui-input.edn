@@ -137,7 +137,7 @@
       {
         :label "Spezielle Einstellungen" 
         :description "Hier lassen sich spezielle Modi aktivieren." 
-        :tags [["InGeneral" "runPVAct"] ["InGeneral" "runOptActDemo"] ["InGeneral" "runMode"] ["InGeneral" "scenarioMode"] ["InGeneral" "passErrorMessageToOutput"] ["InGeneral" "printStacktraceImage"] ["InGeneral" "printNoErrorImage"] ["InGeneral" "copyLogIfPossible"] ["InGeneral" "skipPersist"]] 
+        :tags [["InGeneral" "runPVAct"] ["InGeneral" "runOptActDemo"] ["InGeneral" "runMode"] ["InGeneral" "scenarioMode"] ["InGeneral" "passErrorMessageToOutput"] ["InGeneral" "printStacktraceImage"] ["InGeneral" "printNoErrorImage"] ["InGeneral" "copyLogIfPossible"] ["InGeneral" "skipPersist"] ["InGeneral" "forceLogToConsole"]] 
         :sections [
           {
             :label "Binäre Daten" 
