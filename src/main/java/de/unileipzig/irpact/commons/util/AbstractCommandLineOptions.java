@@ -88,6 +88,10 @@ public abstract class AbstractCommandLineOptions implements Callable<Integer> {
 
     protected abstract ResourceBundle getFallback();
 
+    public String printArgs() {
+        return Arrays.toString(ARGS);
+    }
+
     public String[] getArgs() {
         return ARGS;
     }

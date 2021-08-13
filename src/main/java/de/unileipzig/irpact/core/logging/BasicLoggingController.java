@@ -17,6 +17,13 @@ import java.nio.file.Path;
  */
 public class BasicLoggingController implements LoggingController {
 
+    private enum WriteMode {
+        NONE,
+        CONSOLE,
+        FILE,
+        CONSOLE_FILE
+    }
+
     private static final String CLEAR_PATTERN = "%msg%n";
     private static final String CLEAR_PATTERN_WITHOUT_BREAK = "%msg";
     private static final String PATTERN = "%d{HH:mm:ss.SSS} [%logger{0},%level,%thread] %msg%n";
@@ -34,6 +41,7 @@ public class BasicLoggingController implements LoggingController {
     protected ConsoleAppender<ILoggingEvent> systemErrAppender;
     protected FileAppender<ILoggingEvent> fileAppender;
 
+    protected WriteMode writeMode = WriteMode.NONE;
     protected boolean usesFile = false;
 
     public BasicLoggingController() {
@@ -95,6 +103,11 @@ public class BasicLoggingController implements LoggingController {
     }
 
     @Override
+    public boolean isWritingToFileAndNotConsole() {
+        return writeMode == WriteMode.FILE;
+    }
+
+    @Override
     public void setPath(Path path) {
         if(usesFile) fileAppender.stop();
         if(path == null) {
@@ -153,15 +166,28 @@ public class BasicLoggingController implements LoggingController {
     // target
     //=========================
 
-    @Override
-    public void writeToConsole() {
-        usesFile = false;
-
+    protected void stopAndDetachAll() {
         Logback.stopAppenders(rootLogger);
         Logback.stopAppenders(resultLogger);
 
         Logback.detachAllAppenders(rootLogger);
         Logback.detachAllAppenders(resultLogger);
+    }
+
+    @Override
+    public void stopWriting() {
+        usesFile = false;
+        writeMode = WriteMode.NONE;
+
+        stopAndDetachAll();
+    }
+
+    @Override
+    public void writeToConsole() {
+        usesFile = false;
+        writeMode = WriteMode.CONSOLE;
+
+        stopAndDetachAll();
 
         Logback.atachAllAppenders(rootLogger, systemOutAppender, systemErrAppender);
         Logback.atachAllAppenders(resultLogger, systemOutAppender, systemErrAppender);
@@ -173,12 +199,9 @@ public class BasicLoggingController implements LoggingController {
     @Override
     public void writeToFile() {
         usesFile = true;
+        writeMode = WriteMode.FILE;
 
-        Logback.stopAppenders(rootLogger);
-        Logback.stopAppenders(resultLogger);
-
-        Logback.detachAllAppenders(rootLogger);
-        Logback.detachAllAppenders(resultLogger);
+        stopAndDetachAll();
 
         Logback.atachAllAppenders(rootLogger, fileAppender);
         Logback.atachAllAppenders(resultLogger, fileAppender);
@@ -190,12 +213,9 @@ public class BasicLoggingController implements LoggingController {
     @Override
     public void writeToConsoleAndFile() {
         usesFile = true;
+        writeMode = WriteMode.CONSOLE_FILE;
 
-        Logback.stopAppenders(rootLogger);
-        Logback.stopAppenders(resultLogger);
-
-        Logback.detachAllAppenders(rootLogger);
-        Logback.detachAllAppenders(resultLogger);
+        stopAndDetachAll();
 
         Logback.atachAllAppenders(rootLogger, systemOutAppender, systemErrAppender, fileAppender);
         Logback.atachAllAppenders(resultLogger, systemOutAppender, systemErrAppender, fileAppender);

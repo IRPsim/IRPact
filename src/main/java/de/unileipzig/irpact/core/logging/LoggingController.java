@@ -45,6 +45,10 @@ public interface LoggingController {
     // target
     //=========================
 
+    boolean isWritingToFileAndNotConsole();
+
+    void stopWriting();
+
     void writeToConsole();
 
     void writeToFile();

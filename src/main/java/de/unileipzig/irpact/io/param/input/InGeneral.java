@@ -115,33 +115,16 @@ public class InGeneral implements Copyable {
         setRules(res, thisClass(), logLevelFieldNames, logLevelBuilder);
 
         //special
-        putFieldPathAndAddEntry(res, thisClass(), "runOptActDemo", InRootUI.SETT_SPECIAL);
-        putFieldPathAndAddEntry(res, thisClass(), "runPVAct", InRootUI.SETT_SPECIAL);
-        putFieldPathAndAddEntry(res, thisClass(), "runMode", InRootUI.SETT_SPECIAL);
-        putFieldPathAndAddEntry(res, thisClass(), "scenarioMode", InRootUI.SETT_SPECIAL);
-        putFieldPathAndAddEntry(res, thisClass(), "copyLogIfPossible", InRootUI.SETT_SPECIAL);
-        putFieldPathAndAddEntry(res, thisClass(), "passErrorMessageToOutput", InRootUI.SETT_SPECIAL);
-        putFieldPathAndAddEntry(res, thisClass(), "printStacktraceImage", InRootUI.SETT_SPECIAL);
-        putFieldPathAndAddEntry(res, thisClass(), "printNoErrorImage", InRootUI.SETT_SPECIAL);
-        putFieldPathAndAddEntry(res, thisClass(), "skipPersist", InRootUI.SETT_SPECIAL);
-
-        setDefault(res, thisClass(), "runOptActDemo", VALUE_FALSE);
-        setDefault(res, thisClass(), "runPVAct", VALUE_FALSE);
-        setDefault(res, thisClass(), "runMode", VALUE_NEG_ONE);
-        setDefault(res, thisClass(), "scenarioMode", VALUE_NEG_ONE);
-        setDefault(res, thisClass(), "copyLogIfPossible", VALUE_FALSE);
-        setDefault(res, thisClass(), "passErrorMessageToOutput", VALUE_TRUE);
-        setDefault(res, thisClass(), "printStacktraceImage", VALUE_TRUE);
-        setDefault(res, thisClass(), "printNoErrorImage", VALUE_TRUE);
-        setDefault(res, thisClass(), "skipPersist", VALUE_FALSE);
-
-        setDomain(res, thisClass(), "runOptActDemo", DOMAIN_BOOLEAN);
-        setDomain(res, thisClass(), "runPVAct", DOMAIN_BOOLEAN);
-        setDomain(res, thisClass(), "copyLogIfPossible", DOMAIN_BOOLEAN);
-        setDomain(res, thisClass(), "passErrorMessageToOutput", DOMAIN_BOOLEAN);
-        setDomain(res, thisClass(), "printStacktraceImage", DOMAIN_BOOLEAN);
-        setDomain(res, thisClass(), "printNoErrorImage", DOMAIN_BOOLEAN);
-        setDomain(res, thisClass(), "skipPersist", DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "runOptActDemo", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "runPVAct", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "runMode", InRootUI.SETT_SPECIAL, VALUE_NEG_ONE, null);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "scenarioMode", InRootUI.SETT_SPECIAL, VALUE_NEG_ONE, null);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "copyLogIfPossible", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "passErrorMessageToOutput", InRootUI.SETT_SPECIAL, VALUE_TRUE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "printStacktraceImage", InRootUI.SETT_SPECIAL, VALUE_TRUE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "printNoErrorImage", InRootUI.SETT_SPECIAL, VALUE_TRUE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "skipPersist", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "forceLogToConsole", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
 
         //data
         putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsZip", InRootUI.SETT_DATAOUTPUT);
@@ -179,6 +162,7 @@ public class InGeneral implements Copyable {
     public static final String SCA_INGENERAL_LOGALLTOOLS = "sca_InGeneral_logAllTools";
     public static final String SCA_INGENERAL_LOGINITIALIZATION = "sca_InGeneral_logInitialization";
     public static final String SCA_INGENERAL_LOGSIMULATION = "sca_InGeneral_logSimulation";
+    public static final String SCA_INGENERAL_FORCELOGTOCONSOLE = "sca_InGeneral_forceLogToConsole";
 
     public static final String SCA_INGENERAL_PRINTSTACKTRACEIMAGE = "sca_InGeneral_printStacktraceImage";
 
@@ -352,6 +336,15 @@ public class InGeneral implements Copyable {
     }
     public boolean isPersistDisabled() {
         return skipPersist;
+    }
+
+    @FieldDefinition
+    public boolean forceLogToConsole = false;
+    public void setForceLogToConsole(boolean forceLogToConsole) {
+        this.forceLogToConsole = forceLogToConsole;
+    }
+    public boolean isForceLogToConsole() {
+        return forceLogToConsole;
     }
 
     //=========================
