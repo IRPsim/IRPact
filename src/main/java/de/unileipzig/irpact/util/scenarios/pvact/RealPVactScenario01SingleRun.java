@@ -138,9 +138,10 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         //=====
         InRoot root = createRootWithInformationsWithFullLogging();
         root.getGeneral().setFirstSimulationYear(2008);
-        root.getGeneral().setLastSimulationYear(2008);
+        root.getGeneral().setLastSimulationYear(2020);
         root.getGeneral().useInfoLogging();
         root.getGeneral().setPersistDisable(true);
+        root.getGeneral().setCopyLogIfPossible(true);
         root.getGeneral().logResultAdoptionsAll = true;
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(realData.CAGS.cags());
