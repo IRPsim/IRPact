@@ -41,5 +41,5 @@ public interface JadexLifeCycleControl extends LifeCycleControl {
     IFuture<Map<String, Object>> terminateTimeout();
 
     @Override
-    IFuture<Map<String, Object>> terminateWithError(Exception e);
+    IFuture<Map<String, Object>> terminateWithError(Throwable t);
 }

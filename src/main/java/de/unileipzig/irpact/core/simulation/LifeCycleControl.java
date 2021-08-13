@@ -44,15 +44,15 @@ public interface LifeCycleControl extends InitalizablePart {
     //terminate
     //=========================
 
-    void handleNonFatalError(Exception e);
+    void handleNonFatalError(Throwable t);
 
-    void handleFatalError(Exception e);
+    void handleFatalError(Throwable t);
 
     Object terminate();
 
     Object terminateTimeout();
 
-    Object terminateWithError(Exception e);
+    Object terminateWithError(Throwable t);
 
     TerminationState getTerminationState();
 

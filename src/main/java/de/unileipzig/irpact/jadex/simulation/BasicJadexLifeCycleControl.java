@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.jadex.simulation;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
+import de.unileipzig.irpact.commons.exception.TerminationException;
 import de.unileipzig.irpact.core.logging.InfoTag;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.commons.time.Timestamp;
@@ -202,16 +203,16 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
     //=========================
 
     @Override
-    public void handleNonFatalError(Exception e) {
+    public void handleNonFatalError(Throwable t) {
         nonFatalErrors++;
-        LOGGER.error(InfoTag.NON_FATAL_ERROR + " non fatal error occurred, continue simulation", e);
+        LOGGER.error(InfoTag.NON_FATAL_ERROR + " non fatal error occurred, continue simulation", t);
     }
 
     @Override
-    public void handleFatalError(Exception e) {
+    public void handleFatalError(Throwable t) {
         fatalErrors++;
-        LOGGER.error(InfoTag.FATAL_ERROR + " fatal error occurred, stop simulation", e);
-        terminateWithError(e);
+        LOGGER.error(InfoTag.FATAL_ERROR + " fatal error occurred, stop simulation", t);
+        terminateWithError(t);
     }
 
     @Override
@@ -233,15 +234,19 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
         LOGGER.info("terminate with timeout");
         prepareTermination();
         state = TerminationState.TIMEOUT;
+        //timeoutexception einbauen?
         return platform.killComponent();
     }
 
     @Override
-    public IFuture<Map<String, Object>> terminateWithError(Exception e) {
+    public IFuture<Map<String, Object>> terminateWithError(Throwable t) {
         LOGGER.info("terminate with error");
-        killSwitch.terminate();
         prepareTermination();
         state = TerminationState.ERROR;
+        //map to exception for jadex
+        Exception e = t instanceof Exception
+                ? (Exception) t
+                : new TerminationException(t);
         return platform.killComponent(e);
     }
 

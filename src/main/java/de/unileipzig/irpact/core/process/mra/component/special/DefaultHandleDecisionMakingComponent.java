@@ -80,7 +80,7 @@ public class DefaultHandleDecisionMakingComponent extends AbstractSingleMRACompo
         try {
             return evaluate0(ag, data);
         } catch (Exception e) {
-            getEnvironment().getLifeCycleControl().terminateWithError(e);
+            getEnvironment().getLifeCycleControl().handleFatalError(e);
             throw e;
         }
     }

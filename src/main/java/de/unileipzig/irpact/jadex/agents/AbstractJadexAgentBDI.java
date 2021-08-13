@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.jadex.agents;
 
+import de.unileipzig.irpact.commons.exception.TerminationException;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
 import jadex.bdiv3.features.IBDIAgentFeature;
@@ -35,19 +36,25 @@ public abstract class AbstractJadexAgentBDI extends AbstractAgentBase {
     }
 
     @Override
-    protected void scheduleFirstAction() {
+    protected final void scheduleFirstAction() {
         getTimeModel().scheduleImmediately(
                 execFeature,
                 agent,
                 ia -> {
-                    firstAction();
-                    return IFuture.DONE;
+                    try {
+                        firstAction();
+                        return IFuture.DONE;
+                    } catch (Throwable t) {
+                        log().error("[{}] first action failed", getName());
+                        getEnvironment().getLifeCycleControl().handleFatalError(t);
+                        return IFuture.DONE;
+                    }
                 }
         );
     }
 
     @Override
-    protected void scheduleLoop() {
+    protected final void scheduleLoop() {
         scheduleNextLoopStep();
     }
 
@@ -66,8 +73,14 @@ public abstract class AbstractJadexAgentBDI extends AbstractAgentBase {
 
     protected final IComponentStep<Void> LOOP_STEP = this::loopStep;
     protected IFuture<Void> loopStep(IInternalAccess access) {
-        pulse();
-        onLoopAction();
+        try {
+            pulse();
+            onLoopAction();
+        } catch (Throwable t) {
+            log().error("[{}] loop failed ({})", getName(), now());
+            getEnvironment().getLifeCycleControl().handleFatalError(t);
+            return IFuture.DONE;
+        }
         scheduleNextLoopStep();
         return IFuture.DONE;
     }

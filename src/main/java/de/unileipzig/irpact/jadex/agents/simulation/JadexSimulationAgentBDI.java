@@ -123,13 +123,17 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     }
 
     protected IFuture<Void> doOnEnd(IInternalAccess ia) {
-        broadcastProgress(1.0);
-        JadexTimeModel timeModel = environment.getTimeModel();
-        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] onEnd: {} ({})", getName(), timeModel.now(), timeModel.endTimeReached());
-        environment.getLifeCycleControl().waitForYearChangeIfRequired(this);
-        environment.getLifeCycleControl().prepareTermination();
-        killAgents();
-        environment.getLifeCycleControl().terminate();
+        try {
+            broadcastProgress(1.0);
+            JadexTimeModel timeModel = environment.getTimeModel();
+            log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] onEnd: {} ({})", getName(), timeModel.now(), timeModel.endTimeReached());
+            environment.getLifeCycleControl().waitForYearChangeIfRequired(this);
+            environment.getLifeCycleControl().prepareTermination();
+            killAgents();
+            environment.getLifeCycleControl().terminate();
+        } catch (Throwable t) {
+            environment.getLifeCycleControl().handleFatalError(t);
+        }
         return IFuture.DONE;
     }
 
