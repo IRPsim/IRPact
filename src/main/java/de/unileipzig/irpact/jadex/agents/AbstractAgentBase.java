@@ -63,11 +63,11 @@ public abstract class AbstractAgentBase {
 
     protected abstract void scheduleFirstAction();
 
-    protected abstract void firstAction();
+    protected abstract void firstAction() throws Throwable;
 
     protected abstract void scheduleLoop();
 
-    protected abstract void onLoopAction();
+    protected abstract void onLoopAction() throws Throwable;
 
     @OnInit
     protected abstract void onInit();
