@@ -2942,6 +2942,12 @@ SCALAR sca_InGeneral_skipPersist
 SCALAR sca_InGeneral_forceLogToConsole
 
 * - default: 0
+* - description: 0: disabled, 1: OutOfMemory, 2: Stackoverflow
+* - identifier: [DEV] debug task
+* - type: Integer
+SCALAR sca_InGeneral_debugTask
+
+* - default: 0
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf OFF. Achtung: Damit wird das komplette Logging deaktiviert inklusive potentieller Fehlermeldungen.
 * - identifier: Level: OFF

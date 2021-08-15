@@ -125,6 +125,7 @@ public class InGeneral implements Copyable {
         putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "printNoErrorImage", InRootUI.SETT_SPECIAL, VALUE_TRUE, DOMAIN_BOOLEAN);
         putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "skipPersist", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
         putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "forceLogToConsole", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "debugTask", InRootUI.SETT_SPECIAL, VALUE_ZERO, null);
 
         //data
         putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsZip", InRootUI.SETT_DATAOUTPUT);
@@ -346,6 +347,10 @@ public class InGeneral implements Copyable {
     public boolean isForceLogToConsole() {
         return forceLogToConsole;
     }
+
+    //debug
+    @FieldDefinition
+    public int debugTask = 0;
 
     //=========================
     //general logging
@@ -611,6 +616,8 @@ public class InGeneral implements Copyable {
         parseSettings(parser.getEnvironment().getSettings());
         parseSeed(parser);
         parseLifeCycleControl(parser);
+
+        ((BasicJadexSimulationEnvironment) parser.getEnvironment()).debugTask = debugTask;
     }
 
     public void parseSettings(Settings settings) {

@@ -107,6 +107,9 @@ InGeneral_skipPersist:
 InGeneral_forceLogToConsole:
   gams_identifier: "Erzwinge Konsolenausgabe"
   gams_description: "Falls aktiviert, werden Ausgaben auch an die Konsole übergeben. (Hinweis: Dies Option hat nur Auswirkungen, falls die cmd-Option 'logPath' ohne 'logConsoleAndFile' gesetzt ist. In diesem Fall wird 'logConsoleAndFile' hinzugefügt.)"
+InGeneral_debugTask:
+  gams_identifier: "[DEV] debug task"
+  gams_description: "0: disabled, 1: OutOfMemory, 2: Stackoverflow"
 
 VisibleBinaryData:
   edn_label: "Binäre Daten"
@@ -303,7 +306,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v0.13.2"
+  edn_description: "IRPact v0.14.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
