@@ -82,8 +82,8 @@ public final class IRPact implements IRPActAccess {
 
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "0";
-    private static final String MINOR_STRING = "13";
-    private static final String BUILD_STRING = "2";
+    private static final String MINOR_STRING = "14";
+    private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -574,15 +574,22 @@ public final class IRPact implements IRPActAccess {
             calc.setProgress(PROGRESS_PHASE_AGENT_CREATION, progressAll);
             double irpactProgress = calc.getProgress();
             double progress = (double) created / (double) total;
+
+            long maxMem = Runtime.getRuntime().maxMemory();
+            long totalMem = Runtime.getRuntime().totalMemory();
+            long freeMem = Runtime.getRuntime().freeMemory();
+            long usedMem = totalMem - freeMem;
+
             LOGGER.info(
                     IRPSection.INITIALIZATION_PLATFORM,
-                    "created {}: {}% ({}/{}), total: {}% ({}/{}), IRPact: {}%",
+                    "created {}: {}% ({}/{}), total: {}% ({}/{}), IRPact: {}% (mem: max={}, total={}, free={}, used={})",
                     agentType,
                     StringUtil.DF2_POINT.format(progress * 100.0),
                     created, total,
                     StringUtil.DF2_POINT.format(progressAll * 100.0),
                     createdAll, totalAll,
-                    StringUtil.DF2_POINT.format(irpactProgress * 100.0)
+                    StringUtil.DF2_POINT.format(irpactProgress * 100.0),
+                    maxMem, totalMem, freeMem, usedMem
             );
             return progressAll;
         } else {

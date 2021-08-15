@@ -22,6 +22,7 @@
       "sca_a" : 0,
       "sca_delta_ii" : 0.0,
       "sca_InGeneral_copyLogIfPossible" : 0,
+      "sca_InGeneral_debugTask" : 0,
       "sca_InGeneral_forceLogToConsole" : 0,
       "sca_InGeneral_lastSimulationYear" : 0,
       "sca_InGeneral_levelAll" : 1,
@@ -430,7 +431,7 @@
         }
       },
       "set_InScenarioVersion" : {
-        "v0_13_2" : {
+        "v0_14_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },

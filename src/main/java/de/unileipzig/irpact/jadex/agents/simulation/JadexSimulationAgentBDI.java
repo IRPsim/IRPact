@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.jadex.agents.AbstractJadexAgentBDI;
+import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.start.irpact.IRPact;
@@ -41,6 +42,8 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
     protected ProxySimulationAgent proxyAgent;
     protected double lastBroadcastedProgress = 0.0;
     protected List<IExternalAccess> agents = new ArrayList<>();
+
+    protected int debugTask = 0;
 
     public JadexSimulationAgentBDI() {
     }
@@ -112,6 +115,7 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
         name = proxyAgent.getName();
         environment = (JadexSimulationEnvironment) proxyAgent.getEnvironment();
         lastBroadcastedProgress = 0;
+        debugTask = ((BasicJadexSimulationEnvironment) environment).debugTask;
 
         proxyAgent.sync(getRealAgent());
     }
@@ -150,17 +154,49 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
         if(callGc) {
             System.gc();
         }
+        if(debugTask != 0) {
+            runDebugTask();
+        }
+    }
+
+    protected int xxx = 0;
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
+    protected void runDebugTask() {
+        if(xxx++ == 10) {
+            if(debugTask == 1) {
+                //mem error
+                List<int[]> arrList = new ArrayList<>();
+                for(int i = 1; i < Integer.MAX_VALUE; i++) {
+                    int[] arr = new int[i];
+                    arrList.add(arr);
+                }
+            }
+            if(debugTask == 2) {
+                createStackoverflow();
+            }
+        }
+    }
+    @SuppressWarnings("InfiniteRecursion")
+    protected void createStackoverflow() {
+        createStackoverflow();
     }
 
     protected void broadcastProgress(double newProgress) {
         if(newProgress - lastBroadcastedProgress > MINIMAL_PROGRESS || newProgress == 1.0) {
             ProgressCalculator calc = environment.getProgressCalculator();
             calc.setProgress(IRPact.PROGRESS_PHASE_SIMULATION, newProgress);
+
+            long maxMem = Runtime.getRuntime().maxMemory();
+            long totalMem = Runtime.getRuntime().totalMemory();
+            long freeMem = Runtime.getRuntime().freeMemory();
+            long usedMem = totalMem - freeMem;
+
             LOGGER.info(
                     IRPSection.SIMULATION_PROCESS,
-                    "simulation progress: {}%, IRPact: {}% (simulation time: {})",
+                    "simulation progress: {}%, IRPact: {}% (mem: max={}, total={}, free={}, used={}) (simulation time: {})",
                     StringUtil.DF2_POINT.format(newProgress * 100.0),
                     StringUtil.DF2_POINT.format(calc.getProgress() * 100.0),
+                    maxMem, totalMem, freeMem, usedMem,
                     now()
             );
             lastBroadcastedProgress = newProgress;
@@ -204,12 +240,19 @@ public class JadexSimulationAgentBDI extends AbstractJadexAgentBDI implements Si
             ProgressCalculator calc = environment.getProgressCalculator();
             calc.setProgress(IRPact.PROGRESS_PHASE_AGENT_KILL, progress);
             double irpactProgress = calc.getProgress();
+
+            long maxMem = Runtime.getRuntime().maxMemory();
+            long totalMem = Runtime.getRuntime().totalMemory();
+            long freeMem = Runtime.getRuntime().freeMemory();
+            long usedMem = totalMem - freeMem;
+
             LOGGER.info(
                     IRPSection.SIMULATION_PROCESS,
-                    "killed agents: {}% ({}/{}), IRPact: {}%",
+                    "killed agents: {}% ({}/{}), IRPact: {}% (mem: max={}, total={}, free={}, used={})",
                     StringUtil.DF2_POINT.format(progress * 100.0),
                     killed, total,
-                    StringUtil.DF2_POINT.format(irpactProgress * 100.0)
+                    StringUtil.DF2_POINT.format(irpactProgress * 100.0),
+                    maxMem, totalMem, freeMem, usedMem
             );
             return progress;
         } else {

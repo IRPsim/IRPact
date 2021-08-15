@@ -45,6 +45,8 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicJadexSimulationEnvironment.class);
 
+    public int debugTask;
+
     protected Rnd rnd;
     protected boolean restored = false;
 
