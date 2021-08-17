@@ -101,7 +101,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.0.0" 
+        :description "IRPact v1.1.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -534,6 +534,38 @@
             :set "set_InFixProductFindingScheme" 
             :description "distance für die Auswertung." 
             :tags [["link" "InFixProductFindingScheme" "InFixProduct" "refFixProduct"]]
+          }
+        ]
+      } 
+      {
+        :label "[TEST] Initiale Adopter" 
+        :description "Ermöglicht die Einstellung der initialen Adopter." 
+        :sections [
+          {
+            :label "Attributbasierte initiale Adopter" 
+            :set "set_InPVactAttributeBasedInitialAdoption" 
+            :description "Mittels dieser Variante werden die initialen Adopter anhand des Attributes für initiale Adoptionen der Konsumergruppen festgelegt. Es müssen hier keine weiteren Optionen eingestellt werden." 
+            :tags [["InPVactAttributeBasedInitialAdoption" "placeholder"]]
+          } 
+          {
+            :label "Initiale Adoptionen nach Milieu und PLZ" 
+            :set "set_InPVactConsumerGroupBasedInitialAdoption" 
+            :description "Diese Variante ermöglicht die Festlegung der Adoptionen basierend auf Milieu und Postleitzahl. Im weiteren wird automatisch darauf geachtet, dass die gültige Agenten initial adoptieren dürfen. Dazu müssen für alle gewünschten Kombinationen die entsprechenden Einträge erstellt werden. Kombinationen ohne Adopter müssen nicht angegeben werden." 
+            :tags [["link" "InPVactConsumerGroupBasedInitialAdoption" "InPVactConsumerGroupBasedInitialAdoptionEntry" "entries"]] 
+            :sections [
+              {
+                :label "Einträge" 
+                :set "set_InPVactConsumerGroupBasedInitialAdoptionEntry" 
+                :description "Hier werden die eigentlichen Einträge, bestehend aus Milieus, Postleitzahlen und Anteile, definiert. Der Anteil gilt dabei individuell für jede Kombonation. Wurde zum Beispiel ein Eintrag mit den Milieus M1, M2 und den PLZ P1, P2 sowie dem Anteil 0.5 definiert, werden 50% der Agemtem aus M1 in P1 initial adoptieren und ebenso 50% in P2. Selbiges gilt für die Agenten von M2 in P1 und P2." 
+                :tags [["InPVactConsumerGroupBasedInitialAdoptionEntry" "share"] ["link" "InPVactConsumerGroupBasedInitialAdoptionEntry" "InConsumerAgentGroup" "cags"] ["link" "InPVactConsumerGroupBasedInitialAdoptionEntry" "InAttributeName" "zips"]]
+              }
+            ]
+          } 
+          {
+            :label "Dateibasierte initiale Adoptionen nach Milieu und PLZ" 
+            :set "set_InPVactFileBasedConsumerGroupBasedInitialAdoption" 
+            :description "todo" 
+            :tags [["link" "InPVactFileBasedConsumerGroupBasedInitialAdoption" "InPVFile" "file"]]
           }
         ]
       }

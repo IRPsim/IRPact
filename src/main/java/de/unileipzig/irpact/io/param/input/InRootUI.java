@@ -23,6 +23,10 @@ import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
 import de.unileipzig.irpact.io.param.input.process.mra.InModularRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.mra.component.*;
 import de.unileipzig.irpact.io.param.input.product.*;
+import de.unileipzig.irpact.io.param.input.product.initial.InPVactAttributeBasedInitialAdoption;
+import de.unileipzig.irpact.io.param.input.product.initial.InPVactConsumerGroupBasedInitialAdoption;
+import de.unileipzig.irpact.io.param.input.product.initial.InPVactConsumerGroupBasedInitialAdoptionEntry;
+import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedConsumerGroupBasedInitialAdoption;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InGraphvizGeneral;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGnuPlotOutputImage;
@@ -145,6 +149,12 @@ public class InRootUI {
     public static final EdnPath PRODUCTS_FIXATTR = PRODUCTS.resolve(InFixProductAttribute.thisName()).addTo(PATHS);
     public static final EdnPath PRODUCTS_FINDSCHE = PRODUCTS.resolve(IOConstants.PRODUCTS_FINDING_SCHEME).addTo(PATHS);
     public static final EdnPath PRODUCTS_FINDSCHE_FIX = PRODUCTS_FINDSCHE.resolve(InFixProductFindingScheme.thisName()).addTo(PATHS);
+
+    public static final EdnPath PRODUCTS_INITADOPT = PRODUCTS.resolve(IOConstants.INITAL_ADOPTERS).addTo(PATHS);
+    public static final EdnPath PRODUCTS_INITADOPT_PVACTATTRBASED = PRODUCTS_INITADOPT.resolve(InPVactAttributeBasedInitialAdoption.thisName()).addTo(PATHS);
+    public static final EdnPath PRODUCTS_INITADOPT_PVACTCAGBASED = PRODUCTS_INITADOPT.resolve(InPVactConsumerGroupBasedInitialAdoption.thisName()).addTo(PATHS);
+    public static final EdnPath PRODUCTS_INITADOPT_PVACTCAGBASED_ENTRY = PRODUCTS_INITADOPT_PVACTCAGBASED.resolve(InPVactConsumerGroupBasedInitialAdoptionEntry.thisName()).addTo(PATHS);
+    public static final EdnPath PRODUCTS_INITADOPT_PVACTFILECAGBASED = PRODUCTS_INITADOPT.resolve(InPVactFileBasedConsumerGroupBasedInitialAdoption.thisName()).addTo(PATHS);
 
     public static final EdnPath PROCESS = ROOT.resolve(IOConstants.PROCESS_MODEL).addTo(PATHS);
     public static final EdnPath PROCESS_RA = PROCESS.resolve(InRAProcessModel.thisName()).addTo(PATHS);

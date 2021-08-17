@@ -4,7 +4,6 @@ import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
-import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
@@ -16,7 +15,6 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSu
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.output.OutRoot;
-import de.unileipzig.irpact.util.scenarios.pvact.PVactConsumerAgentGroupBuilder;
 import de.unileipzig.irpact.util.scenarios.pvact.PVactDataBuilder;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.AbstractToyModel;
 
@@ -82,11 +80,8 @@ public class ToyModel_S_1 extends AbstractToyModel {
         return grp;
     }
 
-    public InRoot createInRoot() {
-        return createInRoot(DEFAULT_INITIAL_YEAR);
-    }
-
-    public InRoot createInRoot(int year) {
+    @Override
+    public InRoot createInRoot(int year, int delta) {
         groupBuilder.apply("A", A -> A.setInitialProductAwareness(dirac1));
         groupBuilder.apply("K", K -> K.setInitialProductAwareness(dirac0));
 
@@ -109,7 +104,7 @@ public class ToyModel_S_1 extends AbstractToyModel {
 
         //=====
 
-        InRoot root = createRootWithInformationsWithFullLogging();
+        InRoot root = createRootWithInformationsWithFullLogging(year, delta);
         root.getGeneral().setFirstSimulationYearAsLast();
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(groupBuilder.cags());

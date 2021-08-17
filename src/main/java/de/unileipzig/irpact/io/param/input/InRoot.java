@@ -27,6 +27,7 @@ import de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc.*;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
 import de.unileipzig.irpact.io.param.input.process.mra.InModularRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.mra.component.*;
+import de.unileipzig.irpact.io.param.input.product.initial.*;
 import de.unileipzig.irpact.io.param.input.special.InSpecialPVactInput;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InGraphvizGeneral;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
@@ -192,8 +193,11 @@ public class InRoot implements RootClass {
     public void setInformations(InInformation[] informations) {
         this.informations = informations;
     }
-    public void addInformation(InInformation inInformation) {
-        informations = ParamUtil.add(informations, inInformation);
+    public void addInformation(InInformation information) {
+        informations = ParamUtil.add(informations, information);
+    }
+    public void addInformations(InInformation... newInformations) {
+        informations = ParamUtil.addAll(informations, newInformations);
     }
 
     //=========================
@@ -337,7 +341,6 @@ public class InRoot implements RootClass {
 
     @FieldDefinition
     public InProductGroup[] productGroups = new InProductGroup[0];
-
     public void setProductGroups(InProductGroup[] productGroups) {
         this.productGroups = productGroups;
     }
@@ -347,7 +350,6 @@ public class InRoot implements RootClass {
 
     @FieldDefinition
     public InIndependentProductGroupAttribute[] independentProductGroupAttributes = new InIndependentProductGroupAttribute[0];
-
     public void setIndependentProductGroupAttributes(InIndependentProductGroupAttribute[] independentProductGroupAttributes) {
         this.independentProductGroupAttributes = independentProductGroupAttributes;
     }
@@ -357,12 +359,23 @@ public class InRoot implements RootClass {
 
     @FieldDefinition
     public InFixProduct[] fixProducts = new InFixProduct[0];
-
     public void setFixProducts(InFixProduct[] fixProducts) {
         this.fixProducts = fixProducts;
     }
     public InFixProduct[] getFixProducts() throws ParsingException {
         return getNonNullArray(fixProducts, "fixProducts");
+    }
+
+    @FieldDefinition
+    public InInitialAdoptionHandler[] initialAdoptionHandlers = new InInitialAdoptionHandler[0];
+    public void setInitialAdoptionHandlers(InInitialAdoptionHandler[] initialAdoptionHandlers) {
+        this.initialAdoptionHandlers = initialAdoptionHandlers;
+    }
+    public InInitialAdoptionHandler[] getInitialAdoptionHandlers() {
+        return initialAdoptionHandlers;
+    }
+    public boolean hasInInitialAdoptionHandler() {
+        return initialAdoptionHandlers != null && initialAdoptionHandlers.length > 0;
     }
 
     //=========================
@@ -811,6 +824,12 @@ public class InRoot implements RootClass {
             InProductFindingScheme.class,
             InProductGroup.class,
             InProductGroupAttribute.class,
+
+            InInitialAdoptionHandler.class,
+            InPVactAttributeBasedInitialAdoption.class,
+            InPVactConsumerGroupBasedInitialAdoption.class,
+            InPVactConsumerGroupBasedInitialAdoptionEntry.class,
+            InPVactFileBasedConsumerGroupBasedInitialAdoption.class,
 
             InFileBasedPVactMilieuSupplier.class,
             InFileBasedPVactMilieuZipSupplier.class,

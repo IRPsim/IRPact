@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -40,7 +42,10 @@ public abstract class AbstractScenario implements Scenario {
 
     public static final Comparator<? super AbstractScenario> SORT_ID = Comparator.comparingInt(o -> o.sortId);
 
+    protected static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("'D'_yyyy_MM_dd_'T'_HH_mm_ss");
+
     public static final int DEFAULT_INITIAL_YEAR = 2010;
+    public static final int DEFAULT_INITIAL_DELTA = 1;
 
     protected static final Map<String, Object> NAMED_DATA = new HashMap<>();
 
@@ -68,9 +73,10 @@ public abstract class AbstractScenario implements Scenario {
     protected boolean noSimulation;
 
     protected long seed = 42;
+    protected long timeout = 5;
+    protected TimeUnit timeoutUnit = TimeUnit.MINUTES;
 
-    protected Integer simulationStartYear;
-    protected int simulationDelta = 1;
+    protected final NavigableMap<Integer, Integer> supportYears = new TreeMap<>();
     protected Consumer<? super InGeneral> generalSetup;
     protected Consumer<? super List<InRoot>> postsetupTask;
 
@@ -85,6 +91,11 @@ public abstract class AbstractScenario implements Scenario {
         setName(name);
         setCreator(creator);
         setDescription(description);
+        setup();
+    }
+
+    protected void setup() {
+        setSupportYears(DEFAULT_INITIAL_YEAR, DEFAULT_INITIAL_DELTA);
     }
 
     protected void updateArgs(IRPArgs args) {
@@ -108,32 +119,25 @@ public abstract class AbstractScenario implements Scenario {
     }
 
     public final List<InRoot> createInRoots() {
-        List<InRoot> roots = simulationStartYear == null
-                ? createInRootsOLD() //legacy
-                : createInRoots(simulationStartYear, simulationStartYear + simulationDelta - 1);
+        List<InRoot> roots = new ArrayList<>();
+        for(Map.Entry<Integer, Integer> entry: supportYears.entrySet()) {
+            InRoot root = createInRoot(entry.getKey(), entry.getValue());
+            if(root != null) {
+                roots.add(root);
+            }
+        }
+
+        if(roots.isEmpty()) {
+            roots = createInRootsOLD();
+        }
+
         if(roots == null) {
             throw new IllegalStateException("missing data");
         }
         return roots;
     }
 
-    protected final List<InRoot> createInRoots(int firstYear, int lastYear) {
-        if(lastYear < firstYear) {
-            lastYear = firstYear;
-        }
-        List<InRoot> roots = new ArrayList<>();
-        for(int year = firstYear; year <= lastYear; year++) {
-            roots.add(createInRoot(year));
-        }
-        long nonNull = roots.stream()
-                .filter(Objects::nonNull)
-                .count();
-        return nonNull == 0L
-                ? null
-                : roots;
-    }
-
-    protected InRoot createInRoot(int year) {
+    protected InRoot createInRoot(int year, int delta) {
         return null;
     }
 
@@ -216,20 +220,31 @@ public abstract class AbstractScenario implements Scenario {
     //for swagger
     //=========================
 
-    public void setSimulationDelta(int simulationDelta) {
-        this.simulationDelta = simulationDelta;
+    public void putSupportYear(int year, int length) {
+        supportYears.put(year, length);
     }
 
-    public int getSimulationDelta() {
-        return simulationDelta;
+    public void setSupportYears(int year, int length) {
+        supportYears.clear();
+        putSupportYear(year, length);
     }
 
-    public void setSimulationStartYear(Integer simulationStartYear) {
-        this.simulationStartYear = simulationStartYear;
+    public void setSupportYears(int[][] data) {
+        supportYears.clear();
+        for(int[] pair: data) {
+            putSupportYear(
+                    pair[0],
+                    pair[1]
+            );
+        }
     }
 
-    public Integer getSimulationStartYear() {
-        return simulationStartYear;
+    public int getInitialYear() {
+        return supportYears.firstEntry().getKey();
+    }
+
+    public int getInitialDelta() {
+        return supportYears.firstEntry().getValue();
     }
 
     public void setName(String name) {
@@ -419,24 +434,32 @@ public abstract class AbstractScenario implements Scenario {
         return generalSetup;
     }
 
+    public InRoot createRootWithInformationsWithFullLogging(int year, int delta) {
+        return createRootWithInformations(year, delta, true);
+    }
+    @Deprecated
     public InRoot createRootWithInformationsWithFullLogging() {
-        return createRootWithInformations(true);
+        return createRootWithInformations(getInitialYear(), getInitialDelta(), true);
     }
 
+    public InRoot createRootWithInformations(int year, int delta) {
+        return createRootWithInformations(year, delta, false);
+    }
+    @Deprecated
     public InRoot createRootWithInformations() {
-        return createRootWithInformations(false);
+        return createRootWithInformations(getInitialYear(), getInitialDelta(), false);
     }
 
-    protected InRoot createRootWithInformations(boolean fullLog) {
+    protected InRoot createRootWithInformations(int year, int delta, boolean fullLog) {
         InRoot root = new InRoot();
-        root.addInformation(getRevisionInformation());
+        root.addInformations(getRevisionInformation(), getCreationTimeInformation());
         root.setVersion(InScenarioVersion.currentVersion());
 
         root.setGeneral(new InGeneral());
         root.getGeneral().setSeed(seed);
-        root.getGeneral().setTimeout(5, TimeUnit.MINUTES);
-        root.getGeneral().setFirstSimulationYear(DEFAULT_INITIAL_YEAR);
-        root.getGeneral().setLastSimulationYear(root.getGeneral().getFirstSimulationYear() + simulationDelta - 1);
+        root.getGeneral().setTimeout(timeout, timeoutUnit);
+        root.getGeneral().setFirstSimulationYear(year);
+        root.getGeneral().setLastSimulationYear(year + delta - 1);
 
         if(fullLog) {
             root.getGeneral().setLogLevel(IRPLevel.ALL);
@@ -475,6 +498,10 @@ public abstract class AbstractScenario implements Scenario {
 
     public InInformation getRevisionInformation() {
         return new InInformation("revision_" + getRevision());
+    }
+
+    public InInformation getCreationTimeInformation() {
+        return new InInformation("CT_" + TIME_FORMATTER.format(LocalDateTime.now()));
     }
 
     public AbstractScenario peek(Consumer<? super AbstractScenario> consumer) {

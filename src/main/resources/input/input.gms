@@ -2366,6 +2366,58 @@ SET set_InProductGroup(*)
 * - type: String
 SET set_InProductGroupAttribute(*)
 
+* - identifier: InInitialAdoptionHandler
+* - hidden: 1
+* - type: String
+SET set_InInitialAdoptionHandler(*)
+
+* - identifier: InPVactAttributeBasedInitialAdoption
+* - type: String
+SET set_InPVactAttributeBasedInitialAdoption(set_InInitialAdoptionHandler)
+
+* - description: Ungenutzter Platzhalter
+* - identifier: ---
+* - type: Integer
+PARAMETER par_InPVactAttributeBasedInitialAdoption_placeholder(set_InPVactAttributeBasedInitialAdoption)
+
+* - identifier: InPVactConsumerGroupBasedInitialAdoption
+* - type: String
+SET set_InPVactConsumerGroupBasedInitialAdoption(set_InInitialAdoptionHandler)
+
+* - description: Einträge bestehend aus Milieus, Postleitzahlen und dem Adoptionsanteil.
+* - identifier: Einträge
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerGroupBasedInitialAdoption_InPVactConsumerGroupBasedInitialAdoptionEntry_entries(set_InPVactConsumerGroupBasedInitialAdoption,set_InPVactConsumerGroupBasedInitialAdoptionEntry)
+
+* - identifier: InPVactConsumerGroupBasedInitialAdoptionEntry
+* - type: String
+SET set_InPVactConsumerGroupBasedInitialAdoptionEntry(set_InInitialAdoptionHandler)
+
+* - default: 0
+* - description: Anteil an initialen Adoptionen.
+* - identifier: Anteil
+* - type: Float
+PARAMETER par_InPVactConsumerGroupBasedInitialAdoptionEntry_share(set_InPVactConsumerGroupBasedInitialAdoptionEntry)
+
+* - description: Die zu nutzenden Milieus.
+* - identifier: Milieus
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerGroupBasedInitialAdoptionEntry_InConsumerAgentGroup_cags(set_InPVactConsumerGroupBasedInitialAdoptionEntry,set_InConsumerAgentGroup)
+
+* - description: Die zu nutzenden Postleitzahlen.
+* - identifier: Postleitzahlen
+* - type: Boolean
+PARAMETER par_link_InPVactConsumerGroupBasedInitialAdoptionEntry_InAttributeName_zips(set_InPVactConsumerGroupBasedInitialAdoptionEntry,set_InAttributeName)
+
+* - identifier: InPVactFileBasedConsumerGroupBasedInitialAdoption
+* - type: String
+SET set_InPVactFileBasedConsumerGroupBasedInitialAdoption(set_InInitialAdoptionHandler)
+
+* - description: Datei mit den Daten. Muss im xlsx Format sein.
+* - identifier: Eingabedatei
+* - type: Boolean
+PARAMETER par_link_InPVactFileBasedConsumerGroupBasedInitialAdoption_InPVFile_file(set_InPVactFileBasedConsumerGroupBasedInitialAdoption,set_InPVFile)
+
 * - identifier: InFileBasedPVactMilieuSupplier
 * - type: String
 SET set_InFileBasedPVactMilieuSupplier(set_InSpatialDistributionWithCollection)

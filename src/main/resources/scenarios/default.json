@@ -23,12 +23,12 @@
       "sca_delta_ii" : 0.0,
       "sca_InGeneral_copyLogIfPossible" : 0,
       "sca_InGeneral_debugTask" : 0,
-      "sca_InGeneral_forceLogToConsole" : 0,
+      "sca_InGeneral_forceLogToConsole" : 1,
       "sca_InGeneral_lastSimulationYear" : 2015,
-      "sca_InGeneral_levelAll" : 0,
+      "sca_InGeneral_levelAll" : 1,
       "sca_InGeneral_levelDebug" : 0,
       "sca_InGeneral_levelError" : 0,
-      "sca_InGeneral_levelInfo" : 1,
+      "sca_InGeneral_levelInfo" : 0,
       "sca_InGeneral_levelOff" : 0,
       "sca_InGeneral_levelTrace" : 0,
       "sca_InGeneral_levelWarn" : 0,
@@ -41,7 +41,7 @@
       "sca_InGeneral_logInitialization" : 0,
       "sca_InGeneral_logInterestUpdate" : 0,
       "sca_InGeneral_logRelativeAgreement" : 0,
-      "sca_InGeneral_logResultAdoptionsAll" : 1,
+      "sca_InGeneral_logResultAdoptionsAll" : 0,
       "sca_InGeneral_logResultAdoptionsZip" : 0,
       "sca_InGeneral_logResultAdoptionsZipPhase" : 0,
       "sca_InGeneral_logScriptAdoptionsZip" : 0,
@@ -143,7 +143,47 @@
         "TRA" : { }
       },
       "set_InConsumerAgentGroupAttribute" : { },
-      "set_InConsumerAgentGroupColor" : { },
+      "set_InConsumerAgentGroupColor" : {
+        "BLACK" : {
+          "par_InConsumerAgentGroupColor_rgba" : 4278190080
+        },
+        "BLUE" : {
+          "par_InConsumerAgentGroupColor_rgba" : 4278190335
+        },
+        "CYAN" : {
+          "par_InConsumerAgentGroupColor_rgba" : 4278255615
+        },
+        "DARK_GRAY" : {
+          "par_InConsumerAgentGroupColor_rgba" : 4282400832
+        },
+        "GRAY" : {
+          "par_InConsumerAgentGroupColor_rgba" : 4286611584
+        },
+        "GREEN" : {
+          "par_InConsumerAgentGroupColor_rgba" : 4278255360
+        },
+        "LIGHT_GRAY" : {
+          "par_InConsumerAgentGroupColor_rgba" : 4290822336
+        },
+        "MAGENTA" : {
+          "par_InConsumerAgentGroupColor_rgba" : 4294902015
+        },
+        "ORANGE" : {
+          "par_InConsumerAgentGroupColor_rgba" : 4294952960
+        },
+        "PINK" : {
+          "par_InConsumerAgentGroupColor_rgba" : 4294946735
+        },
+        "RED" : {
+          "par_InConsumerAgentGroupColor_rgba" : 4294901760
+        },
+        "WHITE" : {
+          "par_InConsumerAgentGroupColor_rgba" : 4294967295
+        },
+        "YELLOW" : {
+          "par_InConsumerAgentGroupColor_rgba" : 4294967040
+        }
+      },
       "set_InConsumerAgentModularProcessModel" : { },
       "set_InConsumerAgentModule" : { },
       "set_InDefaultActionModule_evalgraphnode" : { },
@@ -175,7 +215,7 @@
       "set_InFileBasedConsumerAgentPopulation" : { },
       "set_InFileBasedPVactConsumerAgentPopulation" : { },
       "set_InFileBasedPVactMilieuSupplier" : {
-        "testdist" : { }
+        "SpatialDistribution" : { }
       },
       "set_InFileBasedSelectGroupSpatialInformationSupplier" : { },
       "set_InFileBasedSelectSpatialInformationSupplier" : { },
@@ -240,12 +280,20 @@
       "set_InGlobalDeffuantUncertainty" : { },
       "set_InGnuPlotOutputImage" : { },
       "set_InGraphTopologyScheme" : {
-        "Unlinked" : { }
+        "Topology" : { }
       },
       "set_InGroupBasedDeffuantUncertainty" : { },
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
-      "set_InInformation" : { },
+      "set_InInformation" : {
+        "CT_D_2021_08_17_T_12_07_08" : {
+          "par_InInformation_placeholder" : 0.0
+        },
+        "revision_2" : {
+          "par_InInformation_placeholder" : 0.0
+        }
+      },
+      "set_InInitialAdoptionHandler" : { },
       "set_InInverse" : { },
       "set_InIRPactVersion" : { },
       "set_InLogisticModule_calcgraphnode" : { },
@@ -267,10 +315,10 @@
         "JaehrlicheAdoptionenPLZVergleich" : { }
       },
       "set_InProcessModel" : {
-        "RA" : { }
+        "ProcessModel" : { }
       },
       "set_InProcessPlanNodeFilterScheme" : {
-        "RA_maxFilter" : { }
+        "MaxDistance" : { }
       },
       "set_InProductFindingScheme" : { },
       "set_InProductGroup" : { },
@@ -278,12 +326,16 @@
       "set_InProductGroupThresholdEntry" : { },
       "set_InProductInterestSupplyScheme" : { },
       "set_InProductThresholdInterestSupplyScheme" : { },
+      "set_InPVactAttributeBasedInitialAdoption" : { },
       "set_InPVactConsumerAgentGroup" : {
         "TRA" : { }
       },
+      "set_InPVactConsumerGroupBasedInitialAdoption" : { },
+      "set_InPVactConsumerGroupBasedInitialAdoptionEntry" : { },
+      "set_InPVactFileBasedConsumerGroupBasedInitialAdoption" : { },
       "set_InPVactGlobalDeffuantUncertainty" : { },
       "set_InPVactGroupBasedDeffuantUncertainty" : {
-        "UNCERT" : {
+        "Unvertainty" : {
           "par_InPVactGroupBasedDeffuantUncertainty_extremistParameter" : -1.0,
           "par_InPVactGroupBasedDeffuantUncertainty_extremistUncertainty" : 0.35,
           "par_InPVactGroupBasedDeffuantUncertainty_moderateUncertainty" : 1.4,
@@ -297,7 +349,7 @@
         }
       },
       "set_InRAProcessModel" : {
-        "RA" : {
+        "ProcessModel" : {
           "par_InRAProcessModel_a" : 0.25,
           "par_InRAProcessModel_b" : 0.25,
           "par_InRAProcessModel_c" : 0.25,
@@ -315,18 +367,18 @@
         }
       },
       "set_InRAProcessPlanMaxDistanceFilterScheme" : {
-        "RA_maxFilter" : {
+        "MaxDistance" : {
           "par_InRAProcessPlanMaxDistanceFilterScheme_maxDistance" : 100.0,
           "par_InRAProcessPlanMaxDistanceFilterScheme_inclusive" : 1
         }
       },
       "set_InRAProcessPlanNodeFilterScheme" : {
-        "RA_maxFilter" : { }
+        "MaxDistance" : { }
       },
       "set_InRealAdoptionDataFile" : { },
       "set_InROutputImage" : { },
       "set_InScenarioVersion" : {
-        "v1_0_0" : {
+        "v1_1_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
@@ -342,10 +394,10 @@
         }
       },
       "set_InSpatialDistribution" : {
-        "testdist" : { }
+        "SpatialDistribution" : { }
       },
       "set_InSpatialDistributionWithCollection" : {
-        "testdist" : { }
+        "SpatialDistribution" : { }
       },
       "set_InSpatialModel" : {
         "Space2D" : { }
@@ -366,7 +418,7 @@
       },
       "set_InTruncatedNormalDistribution" : { },
       "set_InUncertainty" : {
-        "UNCERT" : { }
+        "Unvertainty" : { }
       },
       "set_InUnitStepDiscreteTimeModel" : {
         "DiscreteUnitStep" : {
@@ -384,7 +436,7 @@
         "dirac0" : { }
       },
       "set_InUnlinkedGraphTopology" : {
-        "Unlinked" : {
+        "Topology" : {
           "par_InUnlinkedGraphTopology_placeholderUnlinked" : 0.0
         }
       },
@@ -438,7 +490,47 @@
           "TRA" : 1.0
         }
       },
-      "par_link_InConsumerAgentGroupColor_InConsumerAgentGroup_groups" : { },
+      "par_link_InConsumerAgentGroupColor_InConsumerAgentGroup_groups" : {
+        "BLACK" : {
+          "TRA" : 0.0
+        },
+        "BLUE" : {
+          "TRA" : 0.0
+        },
+        "CYAN" : {
+          "TRA" : 0.0
+        },
+        "DARK_GRAY" : {
+          "TRA" : 0.0
+        },
+        "GRAY" : {
+          "TRA" : 0.0
+        },
+        "GREEN" : {
+          "TRA" : 0.0
+        },
+        "LIGHT_GRAY" : {
+          "TRA" : 0.0
+        },
+        "MAGENTA" : {
+          "TRA" : 0.0
+        },
+        "ORANGE" : {
+          "TRA" : 0.0
+        },
+        "PINK" : {
+          "TRA" : 0.0
+        },
+        "RED" : {
+          "TRA" : 0.0
+        },
+        "WHITE" : {
+          "TRA" : 0.0
+        },
+        "YELLOW" : {
+          "TRA" : 0.0
+        }
+      },
       "par_link_InDefaultActionModule_evalgraphnode_InUncertainty_uncertainties" : { },
       "par_link_InDefaultDecisionMakingModule_evalgraphnode_InPVFile_pvFile" : { },
       "par_link_InDefaultDecisionMakingModule_evalgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
@@ -453,7 +545,7 @@
       "par_link_InFileBasedPVactConsumerAgentPopulation_InConsumerAgentGroup_cags" : { },
       "par_link_InFileBasedPVactConsumerAgentPopulation_InSpatialTableFile_file" : { },
       "par_link_InFileBasedPVactMilieuSupplier_InSpatialTableFile_file" : {
-        "testdist" : {
+        "SpatialDistribution" : {
           "Datensatz_210322" : 1.0
         }
       },
@@ -518,7 +610,7 @@
       "par_link_InProductThresholdInterestSupplyScheme_InProductGroupThresholdEntry_entries" : { },
       "par_link_InPVactConsumerAgentGroup_InSpatialDistribution_spatialDistribution" : {
         "TRA" : {
-          "testdist" : 1.0
+          "SpatialDistribution" : 1.0
         }
       },
       "par_link_InPVactConsumerAgentGroup_InUnivariateDoubleDistribution_adoptionThreshold" : {
@@ -591,25 +683,29 @@
           "dirac0" : 1.0
         }
       },
+      "par_link_InPVactConsumerGroupBasedInitialAdoption_InPVactConsumerGroupBasedInitialAdoptionEntry_entries" : { },
+      "par_link_InPVactConsumerGroupBasedInitialAdoptionEntry_InAttributeName_zips" : { },
+      "par_link_InPVactConsumerGroupBasedInitialAdoptionEntry_InConsumerAgentGroup_cags" : { },
+      "par_link_InPVactFileBasedConsumerGroupBasedInitialAdoption_InPVFile_file" : { },
       "par_link_InPVactGlobalDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
       "par_link_InPVactGroupBasedDeffuantUncertainty_InConsumerAgentGroup_cags" : {
-        "UNCERT" : {
+        "Unvertainty" : {
           "TRA" : 1.0
         }
       },
       "par_link_InRAProcessModel_InPVFile_pvFile" : {
-        "RA" : {
+        "ProcessModel" : {
           "Barwertrechner" : 1.0
         }
       },
       "par_link_InRAProcessModel_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : {
-        "RA" : {
-          "RA_maxFilter" : 1.0
+        "ProcessModel" : {
+          "MaxDistance" : 1.0
         }
       },
       "par_link_InRAProcessModel_InUncertainty_uncertainties" : {
-        "RA" : {
-          "UNCERT" : 1.0
+        "ProcessModel" : {
+          "Unvertainty" : 1.0
         }
       },
       "par_link_InROutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : { },
