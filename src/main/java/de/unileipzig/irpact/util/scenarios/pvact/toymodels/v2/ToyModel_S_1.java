@@ -80,10 +80,15 @@ public class ToyModel_S_1 extends AbstractToyModel {
         return grp;
     }
 
+    @SuppressWarnings("CodeBlock2Expr")
     @Override
     public InRoot createInRoot(int year, int delta) {
-        groupBuilder.apply("A", A -> A.setInitialProductAwareness(dirac1));
-        groupBuilder.apply("K", K -> K.setInitialProductAwareness(dirac0));
+        groupBuilder.apply("A", A -> {
+            A.setInitialProductAwareness(dirac1);
+        });
+        groupBuilder.apply("K", K -> {
+            K.setInitialProductAwareness(dirac0);
+        });
 
         InFileBasedPVactMilieuSupplier spatialDist = computeCachedIfAbsent("SpatialDistribution", this::createSpatialDistribution);
         groupBuilder.setSpatialDistribution(spatialDist);

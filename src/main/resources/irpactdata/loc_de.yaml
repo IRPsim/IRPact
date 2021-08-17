@@ -912,7 +912,7 @@ InRAProcessModel_d:
   gams_identifier: "Einfluss soziale Komponente (d)"
   gams_description: "Legt den Einfluss der sozialen Komponente fest."
 InRAProcessModel_weightFT:
-  gams_identifier: "Wichtung fin. "
+  gams_identifier: "Wichtung Kaufkraft"
   gams_description: "Legt die Wichtung für das Einkommen fest."
 InRAProcessModel_weightNPV:
   gams_identifier: "Wichtung Barwert"

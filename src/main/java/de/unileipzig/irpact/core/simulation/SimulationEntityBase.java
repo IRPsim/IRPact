@@ -3,6 +3,7 @@ package de.unileipzig.irpact.core.simulation;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.commons.util.data.DataStore;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.SocialNetwork;
@@ -100,5 +101,13 @@ public class SimulationEntityBase extends NameableBase implements SimulationEnti
             throw new NullPointerException("LifeCycleControl");
         }
         return control;
+    }
+
+    protected DataStore getGlobalData() {
+        DataStore dataStore = getValidEnvironment().getGlobalData();
+        if(dataStore == null) {
+            throw new NullPointerException("DataStore");
+        }
+        return dataStore;
     }
 }

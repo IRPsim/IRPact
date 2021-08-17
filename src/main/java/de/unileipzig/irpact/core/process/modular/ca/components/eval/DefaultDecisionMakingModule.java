@@ -241,7 +241,7 @@ public class DefaultDecisionMakingModule extends AbstractConsumerAgentModule imp
 
     protected void checkAttributeExistence() throws ValidationException {
         validateHasDoubleAttribute(
-                RAConstants.PURCHASE_POWER,
+                RAConstants.PURCHASE_POWER_EUR,
                 RAConstants.ORIENTATION,
                 RAConstants.SLOPE,
                 RAConstants.SHARE_1_2_HOUSE,

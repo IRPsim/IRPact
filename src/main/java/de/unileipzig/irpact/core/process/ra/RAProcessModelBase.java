@@ -268,7 +268,7 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
 //        double pp = getPurchasePower(agent);
 //        double ns = getNoveltySeeking(agent);
 //        return pp;
-        return helper.findDoubleValue(agent, RAConstants.PURCHASE_POWER);
+        return helper.findDoubleValue(agent, RAConstants.PURCHASE_POWER_EUR);
     }
 
     //=========================
@@ -289,7 +289,7 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     }
 
     public double getPurchasePower(ConsumerAgent agent) {
-        return getAttributeHelper().findDoubleValue(agent, RAConstants.PURCHASE_POWER);
+        return getAttributeHelper().findDoubleValue(agent, RAConstants.PURCHASE_POWER_EUR);
     }
 
     public boolean isShareOf1Or2FamilyHouse(ConsumerAgent agent) {
