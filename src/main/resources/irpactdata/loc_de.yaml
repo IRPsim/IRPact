@@ -306,7 +306,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.0.0"
+  edn_description: "IRPact v1.1.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -655,6 +655,46 @@ InProductGroupThresholdEntry_interestDistribution:
 InProductGroupThresholdEntry_productGroups:
   gams_identifier: "Produktgruppen"
   gams_description: "Legt die Produktgruppen fest, zu denen der definierte Grenzwert gehören soll."
+
+
+initial_adopters:
+  edn_label: "[TEST] Initiale Adopter"
+  edn_description: "Ermöglicht die Einstellung der initialen Adopter."
+
+InPVactAttributeBasedInitialAdoption:
+  edn_label: "Attributbasierte initiale Adopter"
+  edn_description: "Mittels dieser Variante werden die initialen Adopter anhand des Attributes für initiale Adoptionen der Konsumergruppen festgelegt. Es müssen hier keine weiteren Optionen eingestellt werden."
+InPVactAttributeBasedInitialAdoption_placeholder:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+InPVactConsumerGroupBasedInitialAdoption:
+  edn_label: "Initiale Adoptionen nach Milieu und PLZ"
+  edn_description: "Diese Variante ermöglicht die Festlegung der Adoptionen basierend auf Milieu und Postleitzahl. Im weiteren wird automatisch darauf geachtet, dass die gültige Agenten initial adoptieren dürfen. Dazu müssen für alle gewünschten Kombinationen die entsprechenden Einträge erstellt werden. Kombinationen ohne Adopter müssen nicht angegeben werden."
+InPVactConsumerGroupBasedInitialAdoption_entries:
+  gams_identifier: "Einträge"
+  gams_description: "Einträge bestehend aus Milieus, Postleitzahlen und dem Adoptionsanteil."
+
+InPVactConsumerGroupBasedInitialAdoptionEntry:
+  edn_label: "Einträge"
+  edn_description: "Hier werden die eigentlichen Einträge, bestehend aus Milieus, Postleitzahlen und Anteile, definiert. Der Anteil gilt dabei individuell für jede Kombonation. Wurde zum Beispiel ein Eintrag mit den Milieus M1, M2 und den PLZ P1, P2 sowie dem Anteil 0.5 definiert, werden 50% der Agemtem aus M1 in P1 initial adoptieren und ebenso 50% in P2. Selbiges gilt für die Agenten von M2 in P1 und P2."
+InPVactConsumerGroupBasedInitialAdoptionEntry_share:
+  gams_identifier: "Anteil"
+  gams_description: "Anteil an initialen Adoptionen."
+InPVactConsumerGroupBasedInitialAdoptionEntry_cags:
+  gams_identifier: "Milieus"
+  gams_description: "Die zu nutzenden Milieus."
+InPVactConsumerGroupBasedInitialAdoptionEntry_zips:
+  gams_identifier: "Postleitzahlen"
+  gams_description: "Die zu nutzenden Postleitzahlen."
+
+InPVactFileBasedConsumerGroupBasedInitialAdoption:
+  edn_label: "Dateibasierte initiale Adoptionen nach Milieu und PLZ"
+  edn_description: "todo"
+InPVactFileBasedConsumerGroupBasedInitialAdoption_file:
+  gams_identifier: "Eingabedatei"
+  gams_description: "Datei mit den Daten. Muss im xlsx Format sein."
+
 
 population:
   edn_label: "Population"

@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.util.scenarios;
 
-import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -14,8 +13,6 @@ import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistri
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
-import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
-import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
@@ -25,10 +22,6 @@ import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irptools.defstructure.DefaultScenarioFactory;
 
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Daniel Abitz
@@ -39,24 +32,27 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
 
     public DefaultScenario() {
         this(null, null, null);
-        setSimulationStartYear(2015);
     }
 
     public DefaultScenario(String name, String creator, String description) {
         super(name, creator, description);
         setRevision(REVISION);
-        setSimulationStartYear(2015);
     }
 
     @Override
-    protected InRoot createInRoot(int year) {
+    protected void setup() {
+        setSupportYears(2015, 1);
+    }
+
+    @Override
+    protected InRoot createInRoot(int year, int delta) {
         InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210322");
         InPVFile pvFile = new InPVFile("Barwertrechner");
         InUnivariateDoubleDistribution constant0 = new InDiracUnivariateDistribution("dirac0", 0);
 
         //spatial
         InFileBasedPVactMilieuSupplier spaDist = new InFileBasedPVactMilieuSupplier();
-        spaDist.setName("testdist");
+        spaDist.setName("SpatialDistribution");
         spaDist.setFile(tableFile);
 
         //cag
@@ -77,18 +73,18 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
         InAffinities affinities = new InAffinities("Affinities", new InAffinityEntry[] {cag0_cag0});
 
         //topo
-        InUnlinkedGraphTopology topology = new InUnlinkedGraphTopology("Unlinked");
+        InUnlinkedGraphTopology topology = new InUnlinkedGraphTopology("Topology");
 
         //process
         InPVactGroupBasedDeffuantUncertainty uncertainty = new InPVactGroupBasedDeffuantUncertainty();
-        uncertainty.setName("UNCERT");
+        uncertainty.setName("Unvertainty");
         uncertainty.setDefaultValues();
         uncertainty.setConsumerAgentGroups(cags);
 
         InRAProcessModel processModel = new InRAProcessModel();
-        processModel.setName("RA");
+        processModel.setName("ProcessModel");
         processModel.setDefaultValues();
-        processModel.setNodeFilterScheme(new InRAProcessPlanMaxDistanceFilterScheme("RA_maxFilter", 100, true));
+        processModel.setNodeFilterScheme(new InRAProcessPlanMaxDistanceFilterScheme("MaxDistance", 100, true));
         processModel.setPvFile(pvFile);
         processModel.setUncertainty(uncertainty);
         processModel.setSpeedOfConvergence(0.0);
@@ -96,15 +92,11 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
         //space
         InSpace2D space2D = new InSpace2D("Space2D", Metric2D.HAVERSINE_KM);
 
-        //images
-        List<InOutputImage> images = new ArrayList<>();
-        Collections.addAll(images, InGenericOutputImage.createDefaultImages());
-
         //time
         InUnitStepDiscreteTimeModel timeModel = new InUnitStepDiscreteTimeModel("DiscreteUnitStep", 1, ChronoUnit.WEEKS);
 
         //root
-        InRoot root = new InRoot();
+        InRoot root = createRootWithInformationsWithFullLogging(year, delta);
         root.setConsumerAgentGroups(cags);
         root.setAgentPopulationSize(populationSize);
         root.setAffinities(affinities);
@@ -112,25 +104,17 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
         root.setSpatialModel(space2D);
         root.setGraphTopologyScheme(topology);
         root.setTimeModel(timeModel);
-        root.setImages(images);
 
         //general
         InGeneral general = root.getGeneral();
-        general.setSeed(42);
-        general.setTimeout(5, TimeUnit.MINUTES);
         general.runOptActDemo = false;
         general.runPVAct = true;
-        general.setLogLevel(IRPLevel.INFO);
-        general.logAll = true;
-        general.logResultAdoptionsAll = true;
-        general.setFirstSimulationYear(year);
-        general.setLastSimulationYear(year);
 
         return root;
     }
 
     @Override
     public InRoot createDefaultScenario() {
-        return createInRoot(getSimulationStartYear());
+        return createInRoot(getInitialYear(), getInitialDelta());
     }
 }

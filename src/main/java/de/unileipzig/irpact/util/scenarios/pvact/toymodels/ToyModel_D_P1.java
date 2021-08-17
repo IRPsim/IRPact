@@ -67,7 +67,7 @@ public class ToyModel_D_P1 extends AbstractToyModel {
     protected void init() {
         setRevision(REVISION);
         setTotalAgents(sizeH1 + sizeP + sizeM + sizeL + sizeH2);
-        setSimulationDelta(15);
+        setSupportYears(2000, 15);
     }
 
     @Override

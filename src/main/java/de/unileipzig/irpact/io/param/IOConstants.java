@@ -47,6 +47,8 @@ public final class IOConstants {
     public static final String PRODUCTS_GROUP = "products_group";
     public static final String PRODUCTS_ATTR = "products_attr";
     public static final String PRODUCTS_FINDING_SCHEME = "products_finding_scheme";
+    public static final String INITAL_ADOPTERS = "initial_adopters";
+
 
     public static final String PROCESS_MODEL = "process_model";
     public static final String PROCESS_FILTER = "process_filter";
