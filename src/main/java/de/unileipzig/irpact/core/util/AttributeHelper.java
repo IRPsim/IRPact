@@ -78,6 +78,26 @@ public final class AttributeHelper extends SimulationEntityBase {
         throw new IRPactIllegalArgumentException("attribute '{}' has no double value", attribute.getName());
     }
 
+    public static String getStringValue(SimulationEnvironment environment, Attribute attribute) {
+        return getStringValue(currentYear(environment), attribute);
+    }
+    public static String getStringValue(int currentYear, Attribute attribute) {
+        if(attribute == null) {
+            throw new NullPointerException("attribute is null");
+        }
+        else if(attribute.isAnnualAttribute()) {
+            Attribute attr = attribute.asAnnualAttribute().getAttribute(currentYear);
+            if(attr.isValueAttributeWithDataType(DataType.STRING)) {
+                return attr.asValueAttribute().getStringValue();
+            }
+        }
+        else if(attribute.isValueAttributeWithDataType(DataType.STRING)) {
+            return attribute.asValueAttribute().getStringValue();
+        }
+
+        throw new IRPactIllegalArgumentException("attribute '{}' has no double value", attribute.getName());
+    }
+
     //==================================================
     //not static
     //==================================================
@@ -171,6 +191,14 @@ public final class AttributeHelper extends SimulationEntityBase {
             handleMissingAttribute(agent, name);
         }
         return getDoubleValue(agent.getEnvironment(), attribute);
+    }
+
+    public String findStringValue(ConsumerAgent agent, String name) throws IRPactNoSuchElementException {
+        Attribute attribute = agent.findAttribute(name);
+        if(attribute == null) {
+            handleMissingAttribute(agent, name);
+        }
+        return getStringValue(agent.getEnvironment(), attribute);
     }
 
     //=========================

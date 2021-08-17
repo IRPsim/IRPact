@@ -19,6 +19,7 @@ import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDe
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.output.OutRoot;
@@ -143,7 +144,12 @@ public class ToyModel_S_2_2 extends AbstractToyModel {
     }
 
     @Override
-    public List<InRoot> createInRoots() {
+    protected InPVactConsumerAgentGroup createAgentGroup(String name, InSpatialDistribution distribution) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<InRoot> createInRootsOLD() {
         InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
 
         InPVactConsumerAgentGroup A = createAgentGroup("A");

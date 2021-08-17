@@ -52,6 +52,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
     protected String realAdoptionDataName;
     protected String pvDataName;
 
+    @Deprecated
     protected int totalAgents = -1;
     protected boolean runPvAct = true;
 
@@ -71,10 +72,12 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return runPvAct;
     }
 
+    @Deprecated
     public void setTotalAgents(int totalAgents) {
         this.totalAgents = totalAgents;
     }
 
+    @Deprecated
     public int getTotalAgents() {
         return totalAgents;
     }

@@ -205,7 +205,7 @@ public final class RealData {
             2020, 0.00329614110309881
     );
 
-    public final PvActConsumerAgentGroupBuilder CAGS;
+    public final PVactConsumerAgentGroupBuilder CAGS;
     public final InPVactConsumerAgentGroup[] KET_;
     public final InPVactConsumerAgentGroup[] LIB_;
     public final InPVactConsumerAgentGroup[] PER_;
@@ -218,7 +218,7 @@ public final class RealData {
     public final InPVactConsumerAgentGroup[] HED_;
 
     public RealData(Function<? super String, ? extends InPVactConsumerAgentGroup> cagCreator) {
-        CAGS = new PvActConsumerAgentGroupBuilder(cagCreator, Milieu.WITHOUT_G);
+        CAGS = new PVactConsumerAgentGroupBuilder(cagCreator, Milieu.WITHOUT_G);
         KET_ = CAGS.part(Milieu.KET, Milieu.LIB, Milieu.SOK, Milieu.BUM, Milieu.TRA);
         LIB_ = CAGS.part(Milieu.KET, Milieu.LIB, Milieu.PER, Milieu.SOK);
         PER_ = CAGS.part(Milieu.LIB, Milieu.PER, Milieu.EPE, Milieu.PRA, Milieu.SOK);
