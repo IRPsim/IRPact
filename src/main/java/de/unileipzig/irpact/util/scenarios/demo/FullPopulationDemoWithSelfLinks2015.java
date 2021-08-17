@@ -33,7 +33,7 @@ public class FullPopulationDemoWithSelfLinks2015 extends AbstractPVactScenario {
     }
 
     @Override
-    public List<InRoot> createInRoots() {
+    public List<InRoot> createInRootsOLD() {
         final InUnivariateDoubleDistribution dirac0 = new InDiracUnivariateDistribution("dirac0", 0);
 
         final InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");

@@ -204,7 +204,7 @@ public class ToyModel_D_B2 extends AbstractToyModel {
     }
 
     @Override
-    public List<InRoot> createInRoots() {
+    public List<InRoot> createInRootsOLD() {
         return Collections.singletonList(createInRoot());
     }
 }

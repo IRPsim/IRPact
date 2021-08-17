@@ -4,15 +4,15 @@
 
 ##### General:
 
-java -cp \<Classpath\> de.unileipzig.irpact.start.Start -i \<input file\> -o \<output file\>
+java -cp &lt;Classpath&gt; de.unileipzig.irpact.start.Start -i &lt;input file&gt; -o &lt;output file&gt;
 
 ##### Initial social network visualization:
 
-java -cp \<Classpath\> de.unileipzig.irpact.start.Start -i \<input file\> --image \<image output file\> --noSimulation
+java -cp &lt;Classpath&gt; de.unileipzig.irpact.start.Start -i &lt;input file&gt; --image &lt;image output file&gt; --noSimulation
 
 ##### Simulation and network image visualization
 
-java -cp \<Classpath\> de.unileipzig.irpact.start.Start -i \<input file\> -o \<output file\> --image \<image output file\>
+java -cp &lt;Classpath&gt; de.unileipzig.irpact.start.Start -i &lt;input file&gt; -o &lt;output file&gt; --image &lt;image output file&gt;
 
 #### Example (uber jar):
 

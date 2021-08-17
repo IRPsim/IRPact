@@ -13,14 +13,18 @@ import java.util.function.Function;
 /**
  * @author Daniel Abitz
  */
-public class PvActConsumerAgentGroupBuilder {
+public class PVactConsumerAgentGroupBuilder {
 
     protected Map<String, InPVactConsumerAgentGroup> cags = new LinkedHashMap<>();
     protected Function<? super String, ? extends InPVactConsumerAgentGroup> cagCreator;
     protected InSpatialDistribution spatialDistribution;
 
-    public PvActConsumerAgentGroupBuilder(Function<? super String, ? extends InPVactConsumerAgentGroup> cagCreator, Collection<Milieu> milieus) {
+    public PVactConsumerAgentGroupBuilder(Function<? super String, ? extends InPVactConsumerAgentGroup> cagCreator) {
         this.cagCreator = cagCreator;
+    }
+
+    public PVactConsumerAgentGroupBuilder(Function<? super String, ? extends InPVactConsumerAgentGroup> cagCreator, Collection<Milieu> milieus) {
+        this(cagCreator);
         for(Milieu milieu: milieus) {
             add(milieu.print());
         }
@@ -81,6 +85,11 @@ public class PvActConsumerAgentGroupBuilder {
         apply(map(dists), consumer);
     }
 
+    public void apply(String name, Consumer<? super InPVactConsumerAgentGroup> consumer) {
+        InPVactConsumerAgentGroup cag = get(name);
+        consumer.accept(cag);
+    }
+
     public void apply(
             Map<InPVactConsumerAgentGroup, ? extends InUnivariateDoubleDistribution> dists,
             BiConsumer<? super InPVactConsumerAgentGroup, ? super InUnivariateDoubleDistribution> consumer) {
@@ -99,5 +108,10 @@ public class PvActConsumerAgentGroupBuilder {
             cags[i] = get(milieus[i].print());
         }
         return cags;
+    }
+
+    public void setSpatialDistribution(InSpatialDistribution distribution) {
+        this.spatialDistribution = distribution;
+        forEach(cag -> cag.setSpatialDistribution(distribution));
     }
 }

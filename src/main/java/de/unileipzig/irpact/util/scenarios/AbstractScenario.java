@@ -2,6 +2,7 @@ package de.unileipzig.irpact.util.scenarios;
 
 import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
 import de.unileipzig.irpact.util.IRPArgs;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLevel;
@@ -27,10 +28,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -69,6 +67,9 @@ public abstract class AbstractScenario implements Scenario {
     protected Path rCommand;
     protected boolean noSimulation;
 
+    protected long seed = 42;
+
+    protected Integer simulationStartYear;
     protected int simulationDelta = 1;
     protected Consumer<? super InGeneral> generalSetup;
     protected Consumer<? super List<InRoot>> postsetupTask;
@@ -101,7 +102,40 @@ public abstract class AbstractScenario implements Scenario {
         if(rCommand != null) args.setRscriptCommand(rCommand);
     }
 
-    public abstract List<InRoot> createInRoots();
+    @Deprecated
+    public List<InRoot> createInRootsOLD() {
+        return null;
+    }
+
+    public final List<InRoot> createInRoots() {
+        List<InRoot> roots = simulationStartYear == null
+                ? createInRootsOLD() //legacy
+                : createInRoots(simulationStartYear, simulationStartYear + simulationDelta - 1);
+        if(roots == null) {
+            throw new IllegalStateException("missing data");
+        }
+        return roots;
+    }
+
+    protected final List<InRoot> createInRoots(int firstYear, int lastYear) {
+        if(lastYear < firstYear) {
+            lastYear = firstYear;
+        }
+        List<InRoot> roots = new ArrayList<>();
+        for(int year = firstYear; year <= lastYear; year++) {
+            roots.add(createInRoot(year));
+        }
+        long nonNull = roots.stream()
+                .filter(Objects::nonNull)
+                .count();
+        return nonNull == 0L
+                ? null
+                : roots;
+    }
+
+    protected InRoot createInRoot(int year) {
+        return null;
+    }
 
     protected List<InRoot> createSetupAndValidateRoots() {
         List<InRoot> roots = createInRoots();
@@ -120,6 +154,10 @@ public abstract class AbstractScenario implements Scenario {
 
     protected boolean isCached(String name) {
         return NAMED_DATA.containsKey(name);
+    }
+
+    protected void cache(String name, Object data) {
+        NAMED_DATA.put(name, data);
     }
 
     @SuppressWarnings("unchecked")
@@ -184,6 +222,14 @@ public abstract class AbstractScenario implements Scenario {
 
     public int getSimulationDelta() {
         return simulationDelta;
+    }
+
+    public void setSimulationStartYear(Integer simulationStartYear) {
+        this.simulationStartYear = simulationStartYear;
+    }
+
+    public Integer getSimulationStartYear() {
+        return simulationStartYear;
     }
 
     public void setName(String name) {
@@ -387,7 +433,7 @@ public abstract class AbstractScenario implements Scenario {
         root.setVersion(InScenarioVersion.currentVersion());
 
         root.setGeneral(new InGeneral());
-        root.getGeneral().setSeed(42);
+        root.getGeneral().setSeed(seed);
         root.getGeneral().setTimeout(5, TimeUnit.MINUTES);
         root.getGeneral().setFirstSimulationYear(DEFAULT_INITIAL_YEAR);
         root.getGeneral().setLastSimulationYear(root.getGeneral().getFirstSimulationYear() + simulationDelta - 1);
@@ -405,7 +451,14 @@ public abstract class AbstractScenario implements Scenario {
         root.setGraphvizGeneral(new InGraphvizGeneral());
         setupGraphvizGeneral(root.getGraphvizGeneral());
         root.setConsumerAgentGroupColors(InConsumerAgentGroupColor.ALL);
+
+        setupImages(root);
+
         return root;
+    }
+
+    protected void setupImages(InRoot root) {
+        root.setImages(InGenericOutputImage.createDefaultImages());
     }
 
     public void setupGeneral(InGeneral general) {
@@ -422,6 +475,16 @@ public abstract class AbstractScenario implements Scenario {
 
     public InInformation getRevisionInformation() {
         return new InInformation("revision_" + getRevision());
+    }
+
+    public AbstractScenario peek(Consumer<? super AbstractScenario> consumer) {
+        consumer.accept(this);
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <R extends AbstractScenario> R autoCast() {
+        return (R) this;
     }
 
     @Override

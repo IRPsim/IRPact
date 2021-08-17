@@ -3,7 +3,6 @@ package de.unileipzig.irpact.util.scenarios.demo;
 import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
-import de.unileipzig.irpact.io.param.input.InExample;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
@@ -31,6 +30,7 @@ import de.unileipzig.irpact.io.param.input.spatial.InSpatialModel;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
+import de.unileipzig.irpact.start.optact.OptActUtil;
 import de.unileipzig.irpact.util.scenarios.AbstractScenario;
 import de.unileipzig.irptools.util.Util;
 
@@ -53,7 +53,7 @@ public class ImageDemo extends AbstractScenario {
     }
 
     @Override
-    public List<InRoot> createInRoots() {
+    public List<InRoot> createInRootsOLD() {
         //===
         InUnivariateDoubleDistribution constant0 = new InDiracUnivariateDistribution("dirac0", 0);
 
@@ -137,8 +137,8 @@ public class ImageDemo extends AbstractScenario {
 
         //=====
         InRoot root = createRootWithInformationsWithFullLogging();
-        InExample.initOptAct(root);
-        InExample.initGV(root);
+        OptActUtil.initOptAct(root);
+        OptActUtil.initGV(root);
 
 //        PredefinedPostAgentCreationTask task = new PredefinedPostAgentCreationTask();
 //        task.setInfo("INC");

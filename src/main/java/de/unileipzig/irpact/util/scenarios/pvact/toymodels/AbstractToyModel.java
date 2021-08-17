@@ -2,6 +2,8 @@ package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
+import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.util.IRPArgs;
 import de.unileipzig.irpact.commons.util.table.Table;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
@@ -11,6 +13,8 @@ import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.start.Start3;
 import de.unileipzig.irpact.start.irpact.callbacks.GetInputAndOutput;
 import de.unileipzig.irpact.util.scenarios.pvact.AbstractPVactScenario;
+import de.unileipzig.irpact.util.scenarios.pvact.PVactConsumerAgentGroupBuilder;
+import de.unileipzig.irpact.util.scenarios.pvact.PVactDataBuilder;
 import de.unileipzig.irptools.io.perennial.PerennialData;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
@@ -28,6 +32,8 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
 
     public static final BiConsumer<InRoot, OutRoot> IGNORE = (in, out) -> {};
 
+    protected final PVactConsumerAgentGroupBuilder groupBuilder = new PVactConsumerAgentGroupBuilder(this::getAgentGroup);
+    protected final PVactDataBuilder dataBuilder = new PVactDataBuilder();
     protected BiConsumer<InRoot, OutRoot> resultConsumer;
 
     public AbstractToyModel(BiConsumer<InRoot, OutRoot> resultConsumer) {
@@ -71,7 +77,33 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
         SpatialTableFileLoader.writeXlsx(xlsxOutput, sheetName, info, outputData);
     }
 
-    protected abstract List<List<SpatialAttribute>> createTestData(List<List<SpatialAttribute>> input, Random random);
+    protected List<List<SpatialAttribute>> createTestData(
+            List<List<SpatialAttribute>> input,
+            Random random) {
+        if(dataBuilder.isEmpty()) {
+            throw new UnsupportedOperationException("data builder is empty");
+        } else {
+            return dataBuilder.createTestData(input, random);
+        }
+    }
+
+    protected InPVactConsumerAgentGroup createAgentGroup(String name) {
+        return createAgentGroup(name, null);
+    }
+
+    protected abstract InPVactConsumerAgentGroup createAgentGroup(
+            String name,
+            InSpatialDistribution distribution);
+
+    protected InPVactConsumerAgentGroup getAgentGroup(String name) {
+        if(isCached(name)) {
+            return getCached(name);
+        } else {
+            InPVactConsumerAgentGroup cag = createAgentGroup(name);
+            cache(name, cag);
+            return cag;
+        }
+    }
 
     @Override
     protected void run(IRPArgs args, PerennialData<InRoot> data) throws Throwable {

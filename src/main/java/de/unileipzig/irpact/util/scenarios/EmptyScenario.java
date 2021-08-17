@@ -18,7 +18,7 @@ public class EmptyScenario extends AbstractScenario {
     }
 
     @Override
-    public List<InRoot> createInRoots() {
+    public List<InRoot> createInRootsOLD() {
         InRoot root = createRootWithInformationsWithFullLogging();
         return Collections.singletonList(root);
     }

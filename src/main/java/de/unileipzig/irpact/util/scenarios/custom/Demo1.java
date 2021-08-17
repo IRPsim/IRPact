@@ -55,7 +55,7 @@ public class Demo1 extends AbstractScenario {
     }
 
     @Override
-    public List<InRoot> createInRoots() {
+    public List<InRoot> createInRootsOLD() {
         InPVFile pvFile = new InPVFile("Barwertrechner");
         InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210322");
 

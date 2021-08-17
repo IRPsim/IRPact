@@ -122,7 +122,7 @@ public class ToyModel_S_1 extends AbstractToyModel {
     }
 
     @Override
-    public List<InRoot> createInRoots() {
+    public List<InRoot> createInRootsOLD() {
         InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
 
         InPVactConsumerAgentGroup A = createAgentGroup("A", spatialDist);

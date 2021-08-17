@@ -67,7 +67,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
     }
 
     @Override
-    public List<InRoot> createInRoots() {
+    public List<InRoot> createInRootsOLD() {
         RealData realData = new RealData(this::createAgentGroup);
 
         InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
@@ -106,8 +106,8 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         realData.CAGS.applyMilieus(initialAdopter, InPVactConsumerAgentGroup::setInitialAdopter);
 
         InFileBasedPVactConsumerAgentPopulation population = createFullPopulation("Pop", realData.CAGS.cags());
-//        population.setUseAll(false);
-//        population.setDesiredSize(1000);
+        population.setUseAll(false);
+        population.setDesiredSize(47125);
 
         Map<InPVactConsumerAgentGroup, Integer> edgeCount = realData.CAGS.map(RealData.calcEdgeCount(
                 RealData.XLSX_ORDER_ARR,

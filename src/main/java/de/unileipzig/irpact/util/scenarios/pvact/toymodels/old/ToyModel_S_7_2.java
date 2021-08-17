@@ -129,7 +129,7 @@ public class ToyModel_S_7_2 extends AbstractToyModel {
     }
 
     @Override
-    public List<InRoot> createInRoots() {
+    public List<InRoot> createInRootsOLD() {
         if(true) throw new RuntimeException("kaputt");
 
         InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
