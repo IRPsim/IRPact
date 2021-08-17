@@ -9,6 +9,8 @@ import java.nio.file.Path;
  */
 public interface Scenario {
 
+    boolean forceHardReplacement();
+
     void storeUploadableTo(Path target, boolean pretty) throws IOException ;
 
     void storeUploadableTo(Path target, Charset charset, boolean pretty) throws IOException;

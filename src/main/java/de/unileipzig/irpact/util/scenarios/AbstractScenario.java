@@ -75,6 +75,7 @@ public abstract class AbstractScenario implements Scenario {
     protected long seed = 42;
     protected long timeout = 5;
     protected TimeUnit timeoutUnit = TimeUnit.MINUTES;
+    protected boolean hardReplace = false;
 
     protected final NavigableMap<Integer, Integer> supportYears = new TreeMap<>();
     protected Consumer<? super InGeneral> generalSetup;
@@ -512,6 +513,15 @@ public abstract class AbstractScenario implements Scenario {
     @SuppressWarnings("unchecked")
     public <R extends AbstractScenario> R autoCast() {
         return (R) this;
+    }
+
+    public void setHardReplace(boolean hardReplace) {
+        this.hardReplace = hardReplace;
+    }
+
+    @Override
+    public boolean forceHardReplacement() {
+        return hardReplace;
     }
 
     @Override
