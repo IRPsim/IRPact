@@ -1,19 +1,17 @@
 plugins {
     id 'java'
+    id 'eclipse'
+    id 'idea'
 }
 
 group 'de.unileipzig.irpact'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.11
+sourceCompatibility = 1.8
 
 repositories {
+    maven { url "https://repo.osgeo.org/repository/release/" }
     mavenCentral()
-    jcenter()
-
-    maven {
-        url "https://nexus.actoron.com/content/repositories/oss-nightlies"
-    }
 }
 
 test {
@@ -21,27 +19,157 @@ test {
 }
 
 //==================================================
+// sourcesets
+//==================================================
+
+sourceSets {
+    toymodel {
+        java {
+            srcDir 'src/toymodel/java'
+        }
+        resources {
+            srcDir 'src/toymodel/resources'
+        }
+        compileClasspath += sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.runtimeClasspath
+    }
+    internaltest {
+        java {
+            srcDir 'src/internaltest/java'
+        }
+        resources {
+            srcDir 'src/internaltest/resources'
+        }
+        compileClasspath += sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.runtimeClasspath
+    }
+}
+
+configurations {
+    toymodelImplementation.extendsFrom(testImplementation)
+    toymodelRuntimeOnly.extendsFrom(testRuntimeOnly)
+
+    internaltestImplementation.extendsFrom(testImplementation)
+    internaltestRuntimeOnly.extendsFrom(testRuntimeOnly)
+}
+
+task toymodel(type: Test) {
+    description = "Run IRPact toy-models"
+    group = "verification"
+    testClassesDirs = sourceSets.toymodel.output.classesDirs
+    classpath = sourceSets.toymodel.runtimeClasspath
+
+    useJUnitPlatform()
+}
+
+task internaltest(type: Test) {
+    description = "Some internal tests"
+    group = "verification"
+    testClassesDirs = sourceSets.internaltest.output.classesDirs
+    classpath = sourceSets.internaltest.runtimeClasspath
+
+    useJUnitPlatform()
+}
+
+idea {
+    module {
+        testSourceDirs += project.sourceSets.toymodel.java.srcDirs
+        testSourceDirs += project.sourceSets.toymodel.resources.srcDirs
+
+        testSourceDirs += project.sourceSets.internaltest.java.srcDirs
+        testSourceDirs += project.sourceSets.internaltest.resources.srcDirs
+    }
+}
+
+//==================================================
 //dependencies
 //==================================================
 
-ext.junitJupiterVersion = '5.4.2'
-ext.junitPlatformVersion = '1.4.2'
-ext.jacksonVersion = '2.10.2'
-ext.joptsimpleVersion = '5.0.4'
-ext.jadexDistVersion = '4.0.170'
+ext {
+    junitJupiterVersion = '5.7.2'
+    jacksonVersion = '2.12.2'
+    jadexDistVersion = '4.0.241' //'4.0.187'
+    logbackVersion = '1.2.3'
+    apachePoiVersion = '5.0.0'
+    geotoolsVersion = '25.1'
+}
 
 dependencies {
     testCompileOnly "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
+    toymodelCompileOnly "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
+    internaltestCompileOnly "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
     runtimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
-    runtimeOnly "org.junit.vintage:junit-vintage-engine:$junitJupiterVersion"
-    runtimeOnly "org.junit.platform:junit-platform-launcher:$junitPlatformVersion"
-    testCompileOnly "org.apiguardian:apiguardian-api:1.0.0"
 
-    implementation "org.activecomponents.jadex:jadex-distribution-standard:$jadexDistVersion"
+    //implementation "org.activecomponents.jadex:jadex-distribution-standard:$jadexDistVersion"
+    implementation "org.activecomponents.jadex:jadex-distribution-minimal:$jadexDistVersion"
+    implementation "org.activecomponents.jadex:jadex-kernel-bdiv3:$jadexDistVersion"
 
     implementation "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
     implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     implementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-smile:$jacksonVersion"
 
-    implementation "net.sf.jopt-simple:jopt-simple:$joptsimpleVersion"
+    implementation "info.picocli:picocli:4.6.1"
+
+    implementation "org.slf4j:slf4j-api:1.7.31"
+
+    implementation "ch.qos.logback:logback-classic:$logbackVersion"
+    implementation "ch.qos.logback:logback-core:$logbackVersion"
+
+    implementation "org.geotools:gt-shapefile:$geotoolsVersion"
+    implementation "org.geotools:gt-epsg-hsql:$geotoolsVersion"
+
+    implementation "us.bpsm:edn-java:0.6.0"
+
+    implementation 'guru.nidi:graphviz-java:0.17.1'
+
+    //base32
+    implementation "commons-codec:commons-codec:1.15"
+
+    implementation "org.mariuszgromada.math:MathParser.org-mXparser:4.4.2"
+
+    implementation "org.apache.poi:poi:$apachePoiVersion"
+    implementation "org.apache.poi:poi-ooxml:$apachePoiVersion"
+
+    //custom
+    implementation files('customlibs/IRPtools-1.0-SNAPSHOT.jar')
+
+    implementation 'org.citygml4j:citygml4j:2.11.3'
+}
+
+//==================================================
+//jar
+//==================================================
+
+tasks.register('buildUberJar', Jar) {
+    group = 'build'
+    archiveClassifier = 'uber'
+    from sourceSets.main.output
+    dependsOn configurations.runtimeClasspath
+    manifest {
+        attributes('Main-class': 'de.unileipzig.irpact.start.Start')
+    }
+    from {
+        configurations.runtimeClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    } with jar
+    duplicatesStrategy = 'include'
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+}
+
+tasks.register('buildStandardJar', Jar) {
+//task buildStandardJar(type: Jar) {
+    group = 'build'
+    from sourceSets.main.output
+    dependsOn configurations.runtimeClasspath
+    manifest {
+        attributes('Main-class': 'de.unileipzig.irpact.start.Start')
+    }
+}
+
+artifacts {
+    archives buildUberJar
+    archives buildStandardJar
 }

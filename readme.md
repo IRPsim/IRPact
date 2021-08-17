@@ -1,11 +1,27 @@
-#Beschreibung
-Testet die Interaktion zwischen zwei Platformen.
+# IRPact
 
-**StartSimulation** startet die Simulationsplatform mit einem SimulationAgent, welcher
-den Lebenszyklus der Platform steuert.
+#### Version
 
-**KillSimulation** startet denn KillAgent mittels einer zweiten Platform, welcher
-die **killPlatform** Methode des SimulationAgents aufruft und somit die Simulation beendet. 
+current version: 1.0.0
 
-**UpdateSimulation** ist (später) für die eigentliche Interaktion/Datenaustausch zwischen
-IRPopt und IRPact zuständig.
+#### Start
+
+##### General:
+
+java -cp &lt;Classpath&gt; de.unileipzig.irpact.start.Start -i &lt;input file&gt; -o &lt;output file&gt;
+
+##### Initial social network visualization:
+
+java -cp &lt;Classpath&gt; de.unileipzig.irpact.start.Start -i &lt;input file&gt; --image &lt;image output file&gt; --noSimulation
+
+##### Simulation and network image visualization
+
+java -cp &lt;Classpath&gt; de.unileipzig.irpact.start.Start -i &lt;input file&gt; -o &lt;output file&gt; --image &lt;image output file&gt;
+
+#### Example (uber jar):
+
+java -jar IRPact-1.0-SNAPSHOT-uber.jar src/main/resources/irpact/examples/example1.json -o example1-output.json
+
+#### Gradle (uber jar):
+
+./gradlew clean buildUberJar

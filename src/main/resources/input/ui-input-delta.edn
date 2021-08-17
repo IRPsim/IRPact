@@ -1,0 +1,80 @@
+[
+  {
+    :label "Agenten" 
+    :description "Ermöglicht die Erstellung unterschiedlicher Akteure in IRPact." 
+    :sections [
+      {
+        :label "Konsumer" 
+        :description "Ermöglicht die Erstellung von Konsumern." 
+        :sections [
+          {
+            :label "Gruppen" 
+            :description "Definiert Konsumergruppen" 
+            :sections [
+              {
+                :label "PVact Gruppen" 
+                :set "set_InPVactConsumerAgentGroup" 
+                :description "Erstellt eine spezielle Konsumergruppe für PVact. Diese sind durch ihre fest vorgegebenen Attribute gekennzeichnet." 
+                :tags [["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "constructionRate"] ["link" "InPVactConsumerAgentGroup" "InUnivariateDoubleDistribution" "renovationRate"]]
+              }
+            ]
+          } 
+          {
+            :label "Attribute" 
+            :description "Definiert die Attribute von Agenten." 
+            :sections [
+              {
+                :label "Jahresabhängiges Attribut" 
+                :set "set_InGeneralConsumerAgentAnnualGroupAttribute" 
+                :description "Der Wert (bzw. Verteilungsfunktion) dieser Attribute lässt sich für die jeweiligen Simulationsjahre individuell definieren." 
+                :tags [["link" "InGeneralConsumerAgentAnnualGroupAttribute" "InUnivariateDoubleDistribution" "distribution"]]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  } 
+  {
+    :label "Submodule" 
+    :description "Einstellungen für Submodule" 
+    :sections [
+      {
+        :label "OptAct" 
+        :description "Modul mit Testparametern für die Kopplung." 
+        :sections [
+          {
+            :label "Link" 
+            :description "Hier stehen Tables-Einträge." 
+            :sections [
+              {
+                :label "TableWithTimeSeries" 
+                :set "set_load_DS_E" 
+                :description "Hier stehen Zeitreihen als Tables-Einträge." 
+                :tags [["F" "E" "EGrid" "energy"]]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  } 
+  {
+    :label "Develop" 
+    :description "Testoptionen" 
+    :sections [
+      {
+        :label "Testdaten" 
+        :description "Testdaten" 
+        :sections [
+          {
+            :label "Einfache Testdaten" 
+            :set "set_InTestData" 
+            :description "Testdaten" 
+            :tags [["InTestData" "testValue1"] ["InTestData" "testValue2"]]
+          }
+        ]
+      }
+    ]
+  }
+]
