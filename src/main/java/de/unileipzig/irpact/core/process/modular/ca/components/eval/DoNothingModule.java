@@ -47,7 +47,7 @@ public class DoNothingModule
             if(module instanceof ConsumerAgentCalculationModule) {
                 LOGGER.trace(
                         IRPSection.SIMULATION_PROCESS,
-                        "[{}] '{}' call calc submodule '{}",
+                        "[{}] '{}' call calc submodule '{}'",
                         data.getAgent().getName(),
                         getName(),
                         module.getName()
@@ -58,7 +58,7 @@ public class DoNothingModule
             if(module instanceof ConsumerAgentEvaluationModule) {
                 LOGGER.trace(
                         IRPSection.SIMULATION_PROCESS,
-                        "[{}] '{}' call eval submodule '{}",
+                        "[{}] '{}' call eval submodule '{}'",
                         data.getAgent().getName(),
                         getName(),
                         module.getName()

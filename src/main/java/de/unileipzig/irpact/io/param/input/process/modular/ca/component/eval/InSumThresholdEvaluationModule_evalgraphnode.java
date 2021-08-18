@@ -21,6 +21,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Collection;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings.*;
@@ -119,6 +120,9 @@ public class InSumThresholdEvaluationModule_evalgraphnode implements InConsumerA
     public InConsumerAgentCalculationModule[] input_graphedge;
     public void setInputs(InConsumerAgentCalculationModule[] awarenessModule) {
         this.input_graphedge = awarenessModule;
+    }
+    public void setInputs(Collection<? extends InConsumerAgentCalculationModule> awarenessModule) {
+        setInputs(awarenessModule.toArray(new InConsumerAgentCalculationModule[0]));
     }
     public InConsumerAgentCalculationModule[] getInputs() throws ParsingException {
         return ParamUtil.getNonEmptyArray(input_graphedge, "input");

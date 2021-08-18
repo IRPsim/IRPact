@@ -16,6 +16,7 @@ import de.unileipzig.irpact.io.param.input.process.modular.ca.InSimpleConsumerAg
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc.*;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.InDoNothingModule_evalgraphnode;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.InSumThresholdEvaluationModule_evalgraphnode;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
@@ -91,6 +92,16 @@ public class ModularDemo1 extends AbstractPVactScenario {
         prodMod.setName("PRODUCT_MOD");
         prodMod.setInput(Arrays.asList(npvModule, ppModule, novModule));
 
+        //eval
+
+        InSumThresholdEvaluationModule_evalgraphnode sumEval = new InSumThresholdEvaluationModule_evalgraphnode();
+        sumEval.setThreshold(42);
+        sumEval.setAdoptIfAccepted(true);
+        sumEval.setImpededIfFailed(false);
+        sumEval.setAcceptIfBelowThreshold(false);
+        sumEval.setInputs(Arrays.asList(addNovEnv, prodMod));
+        modules.add(sumEval);
+
         //===
 
         InDoNothingModule_evalgraphnode master = new InDoNothingModule_evalgraphnode();
@@ -156,6 +167,7 @@ public class ModularDemo1 extends AbstractPVactScenario {
         general.doLogAll();
         general.runOptActDemo = false;
         general.runPVAct = true;
+        general.setPersistDisabled(true);
 
         return root;
     }

@@ -97,6 +97,7 @@ public class InSimpleConsumerAgentMPM implements InConsumerAgentModularProcessMo
 
         Rnd rnd = parser.deriveRnd();
         model.setRnd(rnd);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set rnd-seed for '{}' ({}): {}", getName(), thisName(), rnd.getInitialSeed());
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse start module '{}'", getStartModule().getName());
         ConsumerAgentEvaluationModule startModule = parser.parseEntityTo(getStartModule());

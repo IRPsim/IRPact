@@ -332,8 +332,8 @@ public class InGeneral implements Copyable {
 
     @FieldDefinition
     public boolean skipPersist = false;
-    public void setPersistDisable(boolean skipPersist) {
-        this.skipPersist = skipPersist;
+    public void setPersistDisabled(boolean disabled) {
+        this.skipPersist = disabled;
     }
     public boolean isPersistDisabled() {
         return skipPersist;
