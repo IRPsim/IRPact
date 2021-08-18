@@ -26,6 +26,14 @@ public class MapBasedTypedMatrix<M, N, V> implements TypedMatrix<M, N, V> {
         matrix = matrixSupplier.get();
     }
 
+    public void init(Collection<? extends M> mValues, Collection<? extends N> nValues, V defaultValue) {
+        for(M mValue: mValues) {
+            for(N nValue: nValues) {
+                set(mValue, nValue, defaultValue);
+            }
+        }
+    }
+
     @Override
     public Collection<M> getM() {
         return matrix.keySet();

@@ -206,7 +206,7 @@ public class RAProcessModel extends RAProcessModelBase implements LoggableChecks
     }
 
     private void checkFinancialInformation(ConsumerAgent ca) throws ValidationException {
-        checkHasDoubleAttribute(ca, RAConstants.PURCHASE_POWER);
+        checkHasDoubleAttribute(ca, RAConstants.PURCHASE_POWER_EUR);
     }
 
     private void checkSpatialInformation(ConsumerAgent ca) throws ValidationException {

@@ -739,7 +739,7 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
 
     protected void checkHasDefaultSpatialInformations() throws ValidationException {
         checkHasDoubleAttributes(
-                RAConstants.PURCHASE_POWER,
+                RAConstants.PURCHASE_POWER_EUR,
                 RAConstants.ORIENTATION,
                 RAConstants.SLOPE,
                 RAConstants.SHARE_1_2_HOUSE,

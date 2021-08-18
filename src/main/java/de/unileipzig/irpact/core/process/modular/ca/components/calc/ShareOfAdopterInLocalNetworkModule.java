@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.process.ProcessPlan;
@@ -24,9 +25,6 @@ public class ShareOfAdopterInLocalNetworkModule extends AbstractConsumerAgentMod
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ShareOfAdopterInLocalNetworkModule.class);
 
-    protected ProcessPlanNodeFilterScheme nodeFilterScheme;
-    protected double weight = 1.0;
-
     public ShareOfAdopterInLocalNetworkModule() {
     }
 
@@ -44,6 +42,15 @@ public class ShareOfAdopterInLocalNetworkModule extends AbstractConsumerAgentMod
         );
     }
 
+    @Override
+    public void preAgentCreationValidation() throws ValidationException {
+        super.preAgentCreationValidation();
+        if(nodeFilterScheme == null) {
+            throw new ValidationException("missing node filter scheme");
+        }
+    }
+
+    protected double weight = 1.0;
     public void setWeight(double weight) {
         this.weight = weight;
     }
@@ -51,6 +58,7 @@ public class ShareOfAdopterInLocalNetworkModule extends AbstractConsumerAgentMod
         return weight;
     }
 
+    protected ProcessPlanNodeFilterScheme nodeFilterScheme;
     public void setNodeFilterScheme(ProcessPlanNodeFilterScheme nodeFilterScheme) {
         this.nodeFilterScheme = nodeFilterScheme;
     }
@@ -65,27 +73,19 @@ public class ShareOfAdopterInLocalNetworkModule extends AbstractConsumerAgentMod
         return filter;
     }
 
-    protected final Map<ProcessPlan, NodeFilter> filters = new HashMap<>();
-    protected NodeFilter getFilter(ProcessPlan plan) {
-        NodeFilter filter = filters.get(plan);
-        if(filter == null) {
-            return getFilter0(plan);
+    protected NodeFilter getFilter(ConsumerAgentData data) {
+        if(data.has(getName())) {
+            return data.retrieveAs(getName(), NodeFilter.class);
         } else {
+            NodeFilter filter = getValidNodeFilterScheme().createFilter(data.getPlan());
+            data.store(getName(), filter);
             return filter;
         }
-    }
-    protected synchronized NodeFilter getFilter0(ProcessPlan plan) {
-        NodeFilter filter = filters.get(plan);
-        if(filter == null) {
-            filter = getValidNodeFilterScheme().createFilter(plan);
-            filters.put(plan, filter);
-        }
-        return filter;
     }
 
     @Override
     public double calculate(ConsumerAgentData input) {
-        NodeFilter filter = getFilter(input.getPlan());
+        NodeFilter filter = getFilter(input);
         double value = getShareOfAdopterInLocalNetwork(input.getProduct(), filter);
         return getWeight() * value;
     }

@@ -21,7 +21,8 @@ import static de.unileipzig.irpact.io.param.IOConstants.*;
  */
 public final class LocalizationData {
 
-    protected ObjectNode root;
+    private ObjectNode root;
+    private boolean escapeQuotes = true;
 
     public LocalizationData(ObjectNode root) {
         this.root = root;
@@ -39,6 +40,22 @@ public final class LocalizationData {
         this.root = (ObjectNode) JsonUtil.YAML.readTree(reader);
     }
 
+    public void setEscapeQuotes(boolean escapeQuotes) {
+        this.escapeQuotes = escapeQuotes;
+    }
+
+    public boolean isEscapeQuotes() {
+        return escapeQuotes;
+    }
+
+    private String format(String input) {
+        String formatted = input;
+        if(escapeQuotes) {
+            formatted = formatted.replace("\"", "\\\"");
+        }
+        return formatted;
+    }
+
     public String getString(String key, String tag) {
         JsonNode keyNode = root.get(key);
         if(keyNode == null) {
@@ -52,7 +69,7 @@ public final class LocalizationData {
             return null;
         } else {
             if(paramNode.isTextual()) {
-                return paramNode.textValue();
+                return format(paramNode.textValue());
             } else {
                 throw new IllegalArgumentException("no text: " + key + " -> " + tag);
             }

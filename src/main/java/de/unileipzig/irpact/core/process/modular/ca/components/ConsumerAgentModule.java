@@ -12,10 +12,10 @@ import java.util.Objects;
  */
 public interface ConsumerAgentModule extends Module, InitalizablePart {
 
-    default void handleMissingParametersRecursively(ConsumerAgentMPM model) {
+    default void handleMissingParameters(ConsumerAgentMPM model) {
     }
 
-    default void handleNewProductRecursively(Product newProduct) {
+    default void handleNewProduct(Product newProduct) {
     }
 
     default ConsumerAgentModule searchModule(String name) {

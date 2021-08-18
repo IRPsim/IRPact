@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.io.param.input.special;
 
 import de.unileipzig.irpact.commons.distribution.DiracUnivariateDoubleDistribution;
-import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.attribute.*;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -72,7 +71,7 @@ public class InSpecialPVactInput implements Copyable {
         putFieldPathAndAddEntries(res, thisClass(), CONST_FIELDS, InRootUI.SPECIALINPUT_PVACT_CONSTRATE);
 
         setDefault(res, thisClass(), "useConstRates", VALUE_FALSE);
-        setDefault(res, thisClass(), CONST_FIELDS, VALUE_ZERO);
+        setDefault(res, thisClass(), CONST_FIELDS, VALUE_0);
 
         setDomain(res, thisClass(), "useConstRates", DOMAIN_BOOLEAN);
     }
@@ -190,7 +189,7 @@ public class InSpecialPVactInput implements Copyable {
         putFieldPathAndAddEntries(res, thisClass(), RENO_FIELDS, InRootUI.SPECIALINPUT_PVACT_RENORATE);
 
         setDefault(res, thisClass(), "useRenoRates", VALUE_FALSE);
-        setDefault(res, thisClass(), RENO_FIELDS, VALUE_ZERO);
+        setDefault(res, thisClass(), RENO_FIELDS, VALUE_0);
 
         setDomain(res, thisClass(), "useRenoRates", DOMAIN_BOOLEAN);
     }

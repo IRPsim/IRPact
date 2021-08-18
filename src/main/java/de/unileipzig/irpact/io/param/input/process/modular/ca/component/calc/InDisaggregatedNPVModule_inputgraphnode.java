@@ -57,7 +57,7 @@ public class InDisaggregatedNPVModule_inputgraphnode implements InConsumerAgentC
         addEntry(res, thisClass(), "logisticFactor");
         addEntry(res, thisClass(), "pvFile");
 
-        setDefault(res, thisClass(), "weight", VALUE_ONE);
+        setDefault(res, thisClass(), "weight", VALUE_1);
         setDefault(res, thisClass(), "logisticFactor", varargs(RAConstants.DEFAULT_LOGISTIC_FACTOR));
     }
 
@@ -127,23 +127,15 @@ public class InDisaggregatedNPVModule_inputgraphnode implements InConsumerAgentC
             return searchModule(parser, getName(), DisaggregatedNPVModule.class);
         }
 
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
+
         DisaggregatedNPVModule module = new DisaggregatedNPVModule();
         module.setName(getName());
         module.setEnvironment(parser.getEnvironment());
         module.setLogisticFactor(getLogisticFactor());
         module.setWeight(getWeight());
-        applyPvFile(parser, module);
+        module.setNPVData(parser.parseEntityTo(getPvFile()));
 
         return module;
-    }
-
-    private void applyPvFile(IRPactInputParser parser, DisaggregatedNPVModule module) throws ParsingException {
-        if(hasPvFile()) {
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "load pv file '{}'" , getPvFile().getName());
-            NPVXlsxData xlsxData = parser.parseEntityTo(getPvFile());
-            module.setNPVData(xlsxData);
-        } else {
-            LOGGER.trace("no pv file found");
-        }
     }
 }

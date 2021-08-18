@@ -7,7 +7,6 @@ import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPLoggingMessageCollection;
-import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.InfoTag;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
@@ -22,10 +21,8 @@ import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractCons
 import de.unileipzig.irpact.core.process.modular.ca.model.ConsumerAgentMPM;
 import de.unileipzig.irpact.core.process.modular.ca.util.AdoptionPhaseDeterminer;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVDataSupplier;
-import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
@@ -205,7 +202,7 @@ public class DefaultDecisionMakingModule extends AbstractConsumerAgentModule imp
     }
 
     protected void initNPVMatrixWithFile() {
-        initNPVMatrixWithFile(getValidNPVData(), getNPVDataSupplier());
+        initNPVDataSupplier(getValidNPVData(), getNPVDataSupplier());
     }
 
     @Override
@@ -241,7 +238,7 @@ public class DefaultDecisionMakingModule extends AbstractConsumerAgentModule imp
 
     protected void checkAttributeExistence() throws ValidationException {
         validateHasDoubleAttribute(
-                RAConstants.PURCHASE_POWER,
+                RAConstants.PURCHASE_POWER_EUR,
                 RAConstants.ORIENTATION,
                 RAConstants.SLOPE,
                 RAConstants.SHARE_1_2_HOUSE,
@@ -250,7 +247,7 @@ public class DefaultDecisionMakingModule extends AbstractConsumerAgentModule imp
     }
 
     @Override
-    public void handleMissingParametersRecursively(ConsumerAgentMPM model) {
+    public void handleMissingParameters(ConsumerAgentMPM model) {
         if(phaseDeterminer == null && model instanceof AdoptionPhaseDeterminer) {
             setPhaseDeterminer((AdoptionPhaseDeterminer) model);
         }

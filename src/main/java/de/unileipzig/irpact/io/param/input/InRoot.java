@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.process.modular.ca.components.calc.ProductModule;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.*;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
@@ -787,16 +788,28 @@ public class InRoot implements RootClass {
             InAttributeInputModule_inputgraphnode.class,
             InDisaggregatedFinancialModule_inputgraphnode.class,
             InDisaggregatedNPVModule_inputgraphnode.class,
+            InEnvironmentalConcernModule_inputgraphnode.class,
+            InFinancialComponentModule_inputgraphnode.class,
             InLogisticModule_calcgraphnode.class,
+            InNoveltySeekingModule_inputgraphnode.class,
             InNPVModule_inputgraphnode.class,
+            InProductModule_calcgraphnode.class,
+            InPurchasePowerModule_inputgraphnode.class,
+            InShareOfAdopterInLocalNetworkModule_inputgraphnode.class,
+            InShareOfAdopterInSocialNetworkModule_inputgraphnode.class,
+            InSocialComponentModule_inputgraphnode.class,
+            InSumModule_calcgraphnode.class,
+            InWeightedAddModule_calcgraphnode.class,
             InWeightedModule_calcgraphnode.class,
 
             InDefaultActionModule_evalgraphnode.class,
             InDefaultDecisionMakingModule_evalgraphnode.class,
             InDefaultFeasibilityModule_evalgraphnode.class,
             InDefaultInterestModule_evalgraphnode.class,
+            InDoNothingModule_evalgraphnode.class,
             InStageEvaluationModule_evalgraphnode.class,
             InSumThresholdEvaluationModule_evalgraphnode.class,
+            InThresholdEvaluationModule_evalgraphnode.class,
 
             InConsumerAgentCalculationModule.class,
             InConsumerAgentEvaluationModule.class,

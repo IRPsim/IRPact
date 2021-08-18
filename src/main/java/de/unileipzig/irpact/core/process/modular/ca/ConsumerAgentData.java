@@ -12,6 +12,10 @@ import de.unileipzig.irpact.core.product.Product;
  */
 public interface ConsumerAgentData extends InputData {
 
+    void lock();
+
+    void unlock();
+
     ProcessPlan getPlan();
 
     ConsumerAgent getAgent();
@@ -30,4 +34,9 @@ public interface ConsumerAgentData extends InputData {
 
     boolean isUnderRenovation();
     void setUnderRenovation(boolean value);
+
+    boolean has(String key);
+    void store(String key, Object obj);
+    Object retrieve(String key);
+    <R> R retrieveAs(String key, Class<R> type);
 }

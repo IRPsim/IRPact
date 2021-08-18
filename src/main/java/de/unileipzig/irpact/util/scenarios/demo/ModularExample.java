@@ -98,7 +98,7 @@ public class ModularExample extends AbstractScenario {
         InSumThresholdEvaluationModule_evalgraphnode sum = new InSumThresholdEvaluationModule_evalgraphnode();
         sum.setName("AdoptionsModul");
         sum.setThreshold(42);
-        sum.setInput(new InConsumerAgentCalculationModule[] {add, add2, rawNPV});
+        sum.setInputs(new InConsumerAgentCalculationModule[] {add, add2, rawNPV});
 
         InSimpleConsumerAgentMPM processModel = new InSimpleConsumerAgentMPM();
         processModel.setName("MRA");

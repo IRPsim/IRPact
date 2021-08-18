@@ -212,6 +212,8 @@ public class InDefaultActionModule_evalgraphnode implements InConsumerAgentEvalu
             return MPMSettings.searchModule(parser, thisName(), DefaultActionModule.class);
         }
 
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
+
         DefaultActionModule module = new DefaultActionModule();
         module.setName(getName());
         module.setEnvironment(parser.getEnvironment());

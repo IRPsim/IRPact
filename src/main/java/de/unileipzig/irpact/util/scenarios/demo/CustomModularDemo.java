@@ -184,7 +184,7 @@ public class CustomModularDemo extends AbstractScenario {
         root.spatialModel = new InSpatialModel[]{space2D};
         root.timeModel = new InTimeModel[]{timeModel};
         root.setImages(images);
-        root.getGeneral().setPersistDisable(true);
+        root.getGeneral().setPersistDisabled(true);
 
         return Collections.singletonList(root);
     }

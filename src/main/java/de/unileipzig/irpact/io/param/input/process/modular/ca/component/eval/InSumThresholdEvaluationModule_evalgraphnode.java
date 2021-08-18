@@ -2,6 +2,7 @@ package de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentCalculationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.eval.SumThresholdEvaluationModule;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
@@ -20,6 +21,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Collection;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings.*;
@@ -53,11 +55,11 @@ public class InSumThresholdEvaluationModule_evalgraphnode implements InConsumerA
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_EVAL_SUMTHRESH);
         setShapeColorBorder(res, thisClass(), EVAL_SHAPE, EVAL_COLOR, EVAL_BORDER);
 
-        addEntry(res, thisClass(), "threshold");
-        addEntryWithDefaultAndDomain(res, thisClass(), "adoptIfBelowThreshold", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefault(res, thisClass(), "threshold", VALUE_1);
+        addEntryWithDefaultAndDomain(res, thisClass(), "acceptIfBelowThreshold", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "adoptIfAccepted", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "impededIfFailed", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntry(res, thisClass(), "input_graphedge");
-
-        setDefault(res, thisClass(), "threshold", VALUE_ONE);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -81,12 +83,30 @@ public class InSumThresholdEvaluationModule_evalgraphnode implements InConsumerA
     }
 
     @FieldDefinition
-    public boolean adoptIfBelowThreshold;
-    public boolean isAdoptIfBelowThreshold() {
-        return adoptIfBelowThreshold;
+    public boolean acceptIfBelowThreshold = true;
+    public void setAcceptIfBelowThreshold(boolean acceptIfBelowThreshold) {
+        this.acceptIfBelowThreshold = acceptIfBelowThreshold;
     }
-    public void setAdoptIfBelowThreshold(boolean adoptIfBelowThreshold) {
-        this.adoptIfBelowThreshold = adoptIfBelowThreshold;
+    public boolean isAcceptIfBelowThreshold() {
+        return acceptIfBelowThreshold;
+    }
+
+    @FieldDefinition
+    public boolean adoptIfAccepted = true;
+    public void setAdoptIfAccepted(boolean adoptIfAccepted) {
+        this.adoptIfAccepted = adoptIfAccepted;
+    }
+    public boolean isAdoptIfAccepted() {
+        return adoptIfAccepted;
+    }
+
+    @FieldDefinition
+    public boolean impededIfFailed = true;
+    public void setImpededIfFailed(boolean impededIfFailed) {
+        this.impededIfFailed = impededIfFailed;
+    }
+    public boolean isImpededIfFailed() {
+        return impededIfFailed;
     }
 
     @FieldDefinition(
@@ -98,10 +118,13 @@ public class InSumThresholdEvaluationModule_evalgraphnode implements InConsumerA
             )
     )
     public InConsumerAgentCalculationModule[] input_graphedge;
-    public void setInput(InConsumerAgentCalculationModule[] awarenessModule) {
+    public void setInputs(InConsumerAgentCalculationModule[] awarenessModule) {
         this.input_graphedge = awarenessModule;
     }
-    public InConsumerAgentCalculationModule[] getInput() throws ParsingException {
+    public void setInputs(Collection<? extends InConsumerAgentCalculationModule> awarenessModule) {
+        setInputs(awarenessModule.toArray(new InConsumerAgentCalculationModule[0]));
+    }
+    public InConsumerAgentCalculationModule[] getInputs() throws ParsingException {
         return ParamUtil.getNonEmptyArray(input_graphedge, "input");
     }
 
@@ -124,15 +147,19 @@ public class InSumThresholdEvaluationModule_evalgraphnode implements InConsumerA
             return MPMSettings.searchModule(parser, thisName(), SumThresholdEvaluationModule.class);
         }
 
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
+
         SumThresholdEvaluationModule module = new SumThresholdEvaluationModule();
         module.setName(getName());
         module.setEnvironment(parser.getEnvironment());
         module.setThreshold(getThreshold());
-        module.setAdoptIfBelowThreshold(isAdoptIfBelowThreshold());
+        module.setAcceptIfBelowThreshold(isAcceptIfBelowThreshold());
+        module.setAdoptIfAccepted(isAdoptIfAccepted());
+        module.setImpededIfFailed(isImpededIfFailed());
 
-        for(InConsumerAgentCalculationModule in: getInput()) {
+        for(InConsumerAgentCalculationModule in: getInputs()) {
             ConsumerAgentCalculationModule inCalc = parser.parseEntityTo(in);
-            module.add(inCalc);
+            module.addSubModule(inCalc);
         }
 
         return module;

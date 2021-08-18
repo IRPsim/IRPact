@@ -6,7 +6,6 @@ import de.unileipzig.irpact.core.process.modular.ca.AdoptionResult;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.Stage;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
-import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentMultiModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractConsumerAgentModuleWithNSubModules;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -15,7 +14,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
  */
 public class StageEvaluationModule
         extends AbstractConsumerAgentModuleWithNSubModules
-        implements ConsumerAgentEvaluationModule, ConsumerAgentMultiModule {
+        implements ConsumerAgentEvaluationModule {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(StageEvaluationModule.class);
 
@@ -25,12 +24,6 @@ public class StageEvaluationModule
     protected static final int INDEX_DECISION_MAKING_MODULE = 2;
     protected static final int INDEX_ADOPTED_MODULE = 3;
     protected static final int INDEX_IMPEDED_MODULE = 4;
-
-    protected ConsumerAgentEvaluationModule awarenessModule;
-    protected ConsumerAgentEvaluationModule feasibilityModule;
-    protected ConsumerAgentEvaluationModule decisionMakingModule;
-    protected ConsumerAgentEvaluationModule adoptedModule;
-    protected ConsumerAgentEvaluationModule impededModule;
 
     public StageEvaluationModule() {
         super(NUMBER_OF_MODULES);
@@ -53,43 +46,38 @@ public class StageEvaluationModule
     }
 
     public void setAwarenessModule(ConsumerAgentEvaluationModule awarenessModule) {
-        this.awarenessModule = awarenessModule;
-        updateModuleList(INDEX_AWARENESS_MODULE, awarenessModule);
+        setSubModule(INDEX_AWARENESS_MODULE, awarenessModule);
     }
     public ConsumerAgentEvaluationModule getAwarenessModule() {
-        return awarenessModule;
+        return getSubModuleAs(INDEX_AWARENESS_MODULE);
     }
 
     public void setFeasibilityModule(ConsumerAgentEvaluationModule feasibilityModule) {
-        this.feasibilityModule = feasibilityModule;
-        updateModuleList(INDEX_FEASIBILITY_MODULE, feasibilityModule);
+        setSubModule(INDEX_FEASIBILITY_MODULE, feasibilityModule);
     }
     public ConsumerAgentEvaluationModule getFeasibilityModule() {
-        return feasibilityModule;
+        return getSubModuleAs(INDEX_FEASIBILITY_MODULE);
     }
 
     public void setDecisionMakingModule(ConsumerAgentEvaluationModule decisionMakingModule) {
-        this.decisionMakingModule = decisionMakingModule;
-        updateModuleList(INDEX_DECISION_MAKING_MODULE, decisionMakingModule);
+        setSubModule(INDEX_DECISION_MAKING_MODULE, decisionMakingModule);
     }
     public ConsumerAgentEvaluationModule getDecisionMakingModule() {
-        return decisionMakingModule;
+        return getSubModuleAs(INDEX_DECISION_MAKING_MODULE);
     }
 
     public void setAdoptedModule(ConsumerAgentEvaluationModule adoptedModule) {
-        this.adoptedModule = adoptedModule;
-        updateModuleList(INDEX_ADOPTED_MODULE, adoptedModule);
+        setSubModule(INDEX_ADOPTED_MODULE, adoptedModule);
     }
     public ConsumerAgentEvaluationModule getAdoptedModule() {
-        return adoptedModule;
+        return getSubModuleAs(INDEX_ADOPTED_MODULE);
     }
 
     public void setImpededModule(ConsumerAgentEvaluationModule impededModule) {
-        this.impededModule = impededModule;
-        updateModuleList(INDEX_IMPEDED_MODULE, impededModule);
+        setSubModule(INDEX_IMPEDED_MODULE, impededModule);
     }
     public ConsumerAgentEvaluationModule getImpededModule() {
-        return impededModule;
+        return getSubModuleAs(INDEX_IMPEDED_MODULE);
     }
 
     @Override
@@ -111,7 +99,6 @@ public class StageEvaluationModule
 
             case ADOPTED:
                 return evaluateAdopted(data);
-
 
             case IMPEDED:
                 return evaluateImpeded(data);

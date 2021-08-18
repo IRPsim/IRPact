@@ -15,9 +15,6 @@ public class ShareOfAdopterInSocialNetworkModule extends AbstractConsumerAgentMo
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ShareOfAdopterInSocialNetworkModule.class);
 
-    protected NodeFilter networkFilter;
-    protected double weight = 1.0;
-
     public ShareOfAdopterInSocialNetworkModule() {
     }
 
@@ -34,6 +31,7 @@ public class ShareOfAdopterInSocialNetworkModule extends AbstractConsumerAgentMo
         );
     }
 
+    protected double weight = 1.0;
     public void setWeight(double weight) {
         this.weight = weight;
     }

@@ -140,7 +140,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         root.getGeneral().setFirstSimulationYear(2008);
         root.getGeneral().setLastSimulationYear(2020);
         root.getGeneral().useInfoLogging();
-        root.getGeneral().setPersistDisable(true);
+        root.getGeneral().setPersistDisabled(true);
         root.getGeneral().setCopyLogIfPossible(true);
         root.getGeneral().logResultAdoptionsAll = true;
         root.setAffinities(affinities);

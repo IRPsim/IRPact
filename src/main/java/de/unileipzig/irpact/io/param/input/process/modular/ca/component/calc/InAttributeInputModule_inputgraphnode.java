@@ -2,6 +2,7 @@ package de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.modular.ca.components.calc.AttributeInputModule;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
@@ -53,7 +54,7 @@ public class InAttributeInputModule_inputgraphnode implements InConsumerAgentCal
         addEntry(res, thisClass(), "weight");
         addEntry(res, thisClass(), "attribute");
 
-        setDefault(res, thisClass(), "weight", VALUE_ONE);
+        setDefault(res, thisClass(), "weight", VALUE_1);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -111,6 +112,8 @@ public class InAttributeInputModule_inputgraphnode implements InConsumerAgentCal
         if(parser.isRestored()) {
             return searchModule(parser, getName(), AttributeInputModule.class);
         }
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
         AttributeInputModule module = new AttributeInputModule();
         module.setName(getName());

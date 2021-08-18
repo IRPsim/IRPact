@@ -306,7 +306,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.1.0"
+  edn_description: "IRPact v1.2.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -912,7 +912,7 @@ InRAProcessModel_d:
   gams_identifier: "Einfluss soziale Komponente (d)"
   gams_description: "Legt den Einfluss der sozialen Komponente fest."
 InRAProcessModel_weightFT:
-  gams_identifier: "Wichtung fin. "
+  gams_identifier: "Wichtung Kaufkraft"
   gams_description: "Legt die Wichtung für das Einkommen fest."
 InRAProcessModel_weightNPV:
   gams_identifier: "Wichtung Barwert"
@@ -1169,7 +1169,7 @@ InPVactGroupBasedDeffuantUncertainty_attributeNames:
 
 
 InModularRAProcessModel:
-  edn_label: "Modulares Relative Agreement"
+  edn_label: "[NICHT NUTZEN - VERALTET] Modulares Relative Agreement"
   edn_description: "todo"
 InModularRAProcessModel_speedOfConvergence:
   gams_identifier: "speed of convergence"
@@ -1333,33 +1333,48 @@ InDoNothingComponent_placeholder:
 ##########################
 
 process_modular2:
-  edn_label: "Modulares Prozessmodell V2"
-  edn_description: "todo"
+  edn_label: "Modulares Prozessmodell"
+  edn_description: >-
+    Ermöglicht die Konstruktion von modularen Prozessmodellen.
+    Dabei wird zwischen zwei Modultypen unterschieden: Berechnungsmodule und Evaluierungsmodule.
+    Berechnungsmodule haben als Ergebnis einen Zahlwert. Evaluierungsmodule haben als Ergebnis einen Adoptionsstatus.
+    Dieser kann sein: adoptiert, Adoption nicht möglich, Adoption nicht entschieden. Der zu letzt genannte Zustand ermöglicht
+    die Weiterführung im nächsten Iterationsschritt.
+
 process_modular2_model:
   edn_label: "Modell"
-  edn_description: "todo"
+  edn_description: "Konfiguration des Modells. Das Modell ist der Schnittpunkt zwischen der Simulation und dem modularem System."
 process_modular2_components:
   edn_label: "Module"
-  edn_description: "todo"
+  edn_description: "Konfiguration der Module."
 process_modular2_components_calc:
   edn_label: "Berechnungsmodule"
-  edn_description: "todo"
+  edn_description: >-
+    Hier werden die möglichen Berechungsmodule aufgeführt und konfiguriert.
+    Berechnungsmodule haben als Ergebnis einen Zahlwert.
 process_modular2_components_eval:
   edn_label: "Evaluierungsmodule"
-  edn_description: "todo"
+  edn_description: >-
+    Evaluierungsmodule haben als Ergebnis einen Adoptionsstatus.
+    Dieser kann sein: adoptiert, Adoption nicht möglich, Adoption nicht entschieden. Der zu letzt genannte Zustand ermöglicht
+    die Weiterführung im nächsten Iterationsschritt.
 
 InSimpleConsumerAgentMPM:
   edn_label: "Einfaches modulares Modell"
-  edn_description: "todo"
+  edn_description: "Das einfache modulare Modell bestitzt exakt ein Startmodul. Es ist zu beachten, dass nur ein Modul ausgewählt ist."
 InSimpleConsumerAgentMPM_startModule:
   gams_identifier: "Startmodul"
-  gams_description: "todo"
+  gams_description: "Das Startmodul des modularen Systems."
 
 #eval
 
 InDefaultActionModule_evalgraphnode:
-  edn_label: "Standard-Aktion"
-  edn_description: "todo"
+  edn_label: "[Standard] Aktion"
+  edn_description: >-
+    Dieses Modul implementiert die "Standardaktionen" des klassischen PV-Prozessmodells.
+    Dabei handelt es sich um die Aktionen "Kommunikation" und "Rewiring".
+    Dieses Modul gibt als Ergebnis immer "Adoption nicht entschieden" zurück.
+    Die Wahrscheinlichkeiten von "Kommunikation" und "Rewiring" sind von den jeweiligen Agentenattributen abhängig.
 InDefaultActionModule_evalgraphnode_adopterPoints:
   gams_identifier: "adopter points"
   gams_description: "todo"
@@ -1392,8 +1407,10 @@ InDefaultActionModule_evalgraphnode_uncertainties:
   gams_description: "todo"
 
 InDefaultDecisionMakingModule_evalgraphnode:
-  edn_label: "Default-Decision Making"
-  edn_description: "todo"
+  edn_label: "[Standard] Decision Making"
+  edn_description: >-
+    Dieses Modul implementiert das komplette "decision making"-Phase des klassischen PV-Prozessmodells.
+    Dieses Modul gibt als Ergebnis entweder "adoptiert" oder "Adoption nicht möglich" zurück.
 InDefaultDecisionMakingModule_evalgraphnode_a:
   gams_identifier: "Einfluss finanzielle Komponente (a)"
   gams_description: "Legt den Einfluss der finanziellen Komponente fest."
@@ -1407,7 +1424,7 @@ InDefaultDecisionMakingModule_evalgraphnode_d:
   gams_identifier: "Einfluss soziale Komponente (d)"
   gams_description: "Legt den Einfluss der sozialen Komponente fest."
 InDefaultDecisionMakingModule_evalgraphnode_weightFT:
-  gams_identifier: "Wichtung fin. "
+  gams_identifier: "Wichtung Kaufkraft"
   gams_description: "todo"
 InDefaultDecisionMakingModule_evalgraphnode_weightNPV:
   gams_identifier: "Wichtung Barwert"
@@ -1429,8 +1446,12 @@ InDefaultDecisionMakingModule_evalgraphnode_nodeFilterScheme:
   gams_description: "todo"
 
 InDefaultFeasibilityModule_evalgraphnode:
-  edn_label: "Standard-Feasibility"
-  edn_description: "todo"
+  edn_label: "[Standard] Feasibility"
+  edn_description: >-
+    Dieses Modul implementiert die komplette "feasibility"-Phase des klassischen PV-Prozessmodells.
+    Es gibt als Ergebnis immer "Adoption nicht entschieden" zurück.
+    Zusätzlich führt es (falls nötig) die Standardaktionen "Kommunikation" und "Rewiring" aus.
+    Die Wahrscheinlichkeiten von "Kommunikation" und "Rewiring" sind von den jeweiligen Agentenattributen abhängig.
 InDefaultFeasibilityModule_evalgraphnode_adopterPoints:
   gams_identifier: "adopter points"
   gams_description: "todo"
@@ -1463,8 +1484,12 @@ InDefaultFeasibilityModule_evalgraphnode_uncertainties:
   gams_description: "todo"
 
 InDefaultInterestModule_evalgraphnode:
-  edn_label: "Standard-Interesse"
-  edn_description: "todo"
+  edn_label: "[Standard] Interesse"
+  edn_description: >-
+    Dieses Modul implementiert die komplette "interest"-Phase des klassischen PV-Prozessmodells.
+    Es gibt als Ergebnis immer "Adoption nicht entschieden" zurück.
+    Zusätzlich führt es (falls nötig) die Standardaktionen "Kommunikation" und "Rewiring" aus.
+    Die Wahrscheinlichkeiten von "Kommunikation" und "Rewiring" sind von den jeweiligen Agentenattributen abhängig.
 InDefaultInterestModule_evalgraphnode_adopterPoints:
   gams_identifier: "adopter points"
   gams_description: "todo"
@@ -1496,43 +1521,117 @@ InDefaultInterestModule_evalgraphnode_uncertainties:
   gams_identifier: "uncertainties"
   gams_description: "todo"
 
-InStageEvaluationModule_evalgraphnode:
-  edn_label: "Default-Phasen"
-  edn_description: "todo"
-InStageEvaluationModule_evalgraphnode_awarenessModule_graphedge:
-  gams_identifier: "awareness module"
-  gams_description: "todo"
-InStageEvaluationModule_evalgraphnode_feasibilityModule_graphedge:
-  gams_identifier: "feasibility module"
-  gams_description: "todo"
-InStageEvaluationModule_evalgraphnode_decisionMakingModule_graphedge:
-  gams_identifier: "decision making module"
-  gams_description: "todo"
-InStageEvaluationModule_evalgraphnode_adoptedModule_graphedge:
-  gams_identifier: "adopted module"
-  gams_description: "todo"
-InStageEvaluationModule_evalgraphnode_impededModule_graphedge:
-  gams_identifier: "impeded module"
+
+InDoNothingModule_evalgraphnode:
+  edn_label: "[TESTMODUL] Testmodul"
+  edn_description: >-
+    Dieses Modul dient zum Testen der Aufrufe von Submodulen. Es gibt immer "Adoption nicht entschieden" zurück.
+    Alle Arten von Modulen können als Eingabe dienen.
+InDoNothingModule_evalgraphnode_inputModule_graphedge:
+  gams_identifier: "Eingabemodule"
   gams_description: "todo"
 
+InSimpleGetPhaseModule_evalgraphnode:
+  edn_label: "Status-Platzhalter"
+  edn_description: >-
+    Dieses Modul gibt den gewünschten Status zurück. Es finden keine Berechnungen oder Auswertungen statt.
+    Das Modul kann somit als Platzhalter genutzt werden.
+InSimpleGetPhaseModule_evalgraphnode_getAdopt:
+  gams_identifier: "Status: adoptiert"
+  gams_description: "todo"
+InSimpleGetPhaseModule_evalgraphnode_getImpeded:
+  gams_identifier: "Status: Adoption nicht möglich"
+  gams_description: "todo"
+InSimpleGetPhaseModule_evalgraphnode_getInProcess:
+  gams_identifier: "Status: Adoption nicht entschieden"
+  gams_description: "todo"
+
+InStageEvaluationModule_evalgraphnode:
+  edn_label: "Phasengerüst des PV-Prozessmodells"
+  edn_description: >-
+    Dieses Modul implementiert das Grundgerüst des PV-Prozessmodells.
+    Es basiert auf den Prozessphasen: "awareness", "feasibility", "decision making", "adopted" und "impeded".
+    Aktuell werden diese Phasen nur von den [Standard]-Modulen verändert.
+InStageEvaluationModule_evalgraphnode_awarenessModule_graphedge:
+  gams_identifier: "awareness module"
+  gams_description: "Dieses Modul wird aufgerufen, wenn der Agent in der awareness-Phase ist."
+InStageEvaluationModule_evalgraphnode_feasibilityModule_graphedge:
+  gams_identifier: "feasibility module"
+  gams_description: "Dieses Modul wird aufgerufen, wenn der Agent in der feasibility-Phase ist."
+InStageEvaluationModule_evalgraphnode_decisionMakingModule_graphedge:
+  gams_identifier: "decision making module"
+  gams_description: "Dieses Modul wird aufgerufen, wenn der Agent in der decision making-Phase ist."
+InStageEvaluationModule_evalgraphnode_adoptedModule_graphedge:
+  gams_identifier: "adopted module"
+  gams_description: "Dieses Modul wird aufgerufen, wenn der Agent in der adopted-Phase ist."
+InStageEvaluationModule_evalgraphnode_impededModule_graphedge:
+  gams_identifier: "impeded module"
+  gams_description: "Dieses Modul wird aufgerufen, wenn der Agent in der impeded-Phase ist."
+
 InSumThresholdEvaluationModule_evalgraphnode:
-  edn_label: "Summierter Grenzwert"
-  edn_description: "todo"
+  edn_label: "Summierte grenzwertabhängige Evaluation"
+  edn_description: >-
+    Dieses Modul summiert die Berechnungswerte der Eingabemodule auf und gibt ein entsprechendes Evaluierungsergebnis aus.
+    Dabei kann eingestellt werden, ob der Grenzwert als untere oder obere Grenze gehandhabt wird.
+    Zusätzlich kann noch eingestellt werden, ob bei einer erfolgreichen Evaluierung das das Ergebnis "adoptiert"
+    oder "Adoption nicht entscheiden" ist.
+    Äquivalent kann bei einer erfolglosen Evaluierung das Ergebnis "impeded" oder "Adoption nicht entscheiden" sein.
+    Es ist zu beachten, dass mindestens eine Eingabemodul existieren muss.
 InSumThresholdEvaluationModule_evalgraphnode_threshold:
   gams_identifier: "Grenzwert"
-  gams_description: "todo"
-InSumThresholdEvaluationModule_evalgraphnode_adoptIfBelowThreshold:
-  gams_identifier: "Adoption wenn unter Grenzwert?"
-  gams_description: "todo"
+  gams_description: "Der Grenzwert, welcher für die Entscheidungsfindung verwendet wird."
+InSumThresholdEvaluationModule_evalgraphnode_acceptIfBelowThreshold:
+  gams_identifier: "Erfolg wenn unter Grenzwert?"
+  gams_description: "Falls gesetzt, wird der Grenzwert als obere Grenze betrachtet. Anderenfalls als untere Grenze."
+InSumThresholdEvaluationModule_evalgraphnode_adoptIfAccepted:
+  gams_identifier: "Adoptieren bei Erfolg?"
+  gams_description: >-
+    Falls gesetzt, wird bei einer erfolgreichen Evaluation das Ergebnis "adoptiert" zurück gegeben.
+    Anderenfalls wird "Adoption nicht entschieden" zurück gegeben.
+InSumThresholdEvaluationModule_evalgraphnode_impededIfFailed:
+  gams_identifier: "Adoption nicht möglich (impeded) bei Nichterfolg?"
+  gams_description: >-
+    Falls gesetzt, wird bei einer erfolgloser Evaluation das Ergebnis "Adoption nicht möglich" zurück gegeben.
+    Anderenfalls wird "Adoption nicht entschieden" zurück gegeben.
 InSumThresholdEvaluationModule_evalgraphnode_input_graphedge:
-  gams_identifier: "Eingabekomponenten"
-  gams_description: "todo"
+  gams_identifier: "Eingabemodule"
+  gams_description: "Die Eingabemodule für das Modul."
+
+InThresholdEvaluationModule_evalgraphnode:
+  edn_label: "Grenzwertabhängige Evaluation"
+  edn_description: >-
+    Dieses Modul bestimmt das Evaluierungsergebnis basierend auf einem Grenzwert und dem Wert des Eingabemodules..
+    Dabei kann eingestellt werden, ob der Grenzwert als untere oder obere Grenze gehandhabt wird.
+    Zusätzlich kann noch eingestellt werden, ob bei einer erfolgreichen Evaluierung das das Ergebnis "adoptiert"
+    oder "Adoption nicht entscheiden" ist.
+    Äquivalent kann bei einer erfolglosen Evaluierung das Ergebnis "impeded" oder "Adoption nicht entscheiden" sein.
+    Es ist zu beachten, dass genau ein Eingabemodul existieren muss.
+InThresholdEvaluationModule_evalgraphnode_threshold:
+  gams_identifier: "Grenzwert"
+  gams_description: "Der Grenzwert, welcher für die Entscheidungsfindung verwendet wird."
+InThresholdEvaluationModule_evalgraphnode_acceptIfBelowThreshold:
+  gams_identifier: "Erfolg wenn unter Grenzwert?"
+  gams_description: "Falls gesetzt, wird der Grenzwert als obere Grenze betrachtet. Anderenfalls als untere Grenze."
+InThresholdEvaluationModule_evalgraphnode_adoptIfAccepted:
+  gams_identifier: "Adoptieren bei Erfolg?"
+  gams_description: >-
+    Falls gesetzt, wird bei einer erfolgreichen Evaluation das Ergebnis "adoptiert" zurück gegeben.
+    Anderenfalls wird "Adoption nicht entschieden" zurück gegeben.
+InThresholdEvaluationModule_evalgraphnode_impededIfFailed:
+  gams_identifier: "Adoption nicht möglich (impeded) bei Nichterfolg?"
+  gams_description: >-
+    Falls gesetzt, wird bei einer erfolgloser Evaluation das Ergebnis "Adoption nicht möglich" zurück gegeben.
+    Anderenfalls wird "Adoption nicht entschieden" zurück gegeben.
+InThresholdEvaluationModule_evalgraphnode_input_graphedge:
+  gams_identifier: "Eingabemodul"
+  gams_description: "Das Eingabemodul für das Modul."
 
 #calc
 
 InAddModule_calcgraphnode:
   edn_label: "Addierer"
-  edn_description: "todo"
+  edn_description: >-
+    Einfacher Addierer, welcher zwei Eingaben addiert und das Ergebnis zusätzlich wichtet: output = (input1 + input2) * weight.
 InAddModule_calcgraphnode_weight:
   gams_identifier: "Wichtung"
   gams_description: "todo"
@@ -1545,27 +1644,22 @@ InAddModule_calcgraphnode_second_graphedge:
 
 InAttributeInputModule_inputgraphnode:
   edn_label: "Eingabeattribut"
-  edn_description: "todo"
+  edn_description: >-
+    Dieses Modul ermöglicht es ein Agentenattribut als Eingabewert zu verwenden und es zusätzlich noch zu wichten.
+    Es darf nur ein Attribut ausgewählt werden.
 InAttributeInputModule_inputgraphnode_weight:
   gams_identifier: "Wichtung"
   gams_description: "todo"
 InAttributeInputModule_inputgraphnode_attribute:
   gams_identifier: "Referenziertes Attribut"
-  gams_description: "todo"
-
-InLogisticModule_calcgraphnode:
-  edn_label: "Logistikfunktion"
-  edn_description: "todo"
-InLogisticModule_calcgraphnode_weight:
-  gams_identifier: "Wichtung"
-  gams_description: "todo"
-InLogisticModule_calcgraphnode_input_graphedge:
-  gams_identifier: "Eingabemodul"
-  gams_description: "todo"
+  gams_description: "Bestimmt das Attribut, welches von dem Modul gelesen werden soll."
 
 InDisaggregatedFinancialModule_inputgraphnode:
-  edn_label: "Disaggregiertes Einkommen"
-  edn_description: "todo"
+  edn_label: "Disaggregierte Kaufkraft"
+  edn_description: >-
+    Gibt die disaggregierte Kaufkraft zurück. Dabei handelt es sich nicht um die direkte Kaufkraft, sonden die mittels
+    logistischer Funktion berechnete: output = logistic( logisticFactor * (agentPP - avgPP) ) * weight.
+    Dabei ist "agentPP" die eigentliche Kaufkraft des Agenten und "avgPP" der Durchschnittswert aller Agenten.
 InDisaggregatedFinancialModule_inputgraphnode_weight:
   gams_identifier: "Wichtung"
   gams_description: "todo"
@@ -1575,7 +1669,10 @@ InDisaggregatedFinancialModule_inputgraphnode_logisticFactor:
 
 InDisaggregatedNPVModule_inputgraphnode:
   edn_label: "Disaggregierter Barwert"
-  edn_description: "todo"
+  edn_description: >-
+    Gibt den disaggregieren Barwert zurück. Dabei handelt es sich nicht um den direkten Barwert, sonden den mittels
+    logistischer Funktion berechneten: output = logistic( logisticFactor * (agentNPV - avgNPV) ) * weight.
+    Dabei ist "agentNPV" der eigentliche Barwert des Agenten und "avgNPV" der Durchschnittsbarwert aller Agenten.
 InDisaggregatedNPVModule_inputgraphnode_weight:
   gams_identifier: "Wichtung"
   gams_description: "todo"
@@ -1586,9 +1683,60 @@ InDisaggregatedNPVModule_inputgraphnode_pvFile:
   gams_identifier: "PV-Datei"
   gams_description: "todo"
 
+InEnvironmentalConcernModule_inputgraphnode:
+  edn_label: "Umweltbewusstsein"
+  edn_description: >-
+    Dieses Modul nutzt das Agentenattribut für Umweltbewusstsein (environmental_concern) als Rückgabewert:
+    output = environmental_concern * weight
+InEnvironmentalConcernModule_inputgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+
+InFinancialComponentModule_inputgraphnode:
+  edn_label: "Finanzielle Komponente"
+  edn_description: >-
+    Berechnet die finanzielle Komponente bestehend aus Barwert und Kaufkraft:
+    output = ((logistic(logisticFactor * (agentNPV - avgNPV)) * weightNPV) + (logistic(logisticFactor * (agentPP - avgPP) ) * weightPP)) * weight.
+InFinancialComponentModule_inputgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InFinancialComponentModule_inputgraphnode_weightFT:
+  gams_identifier: "Wichtung: Einkommen"
+  gams_description: "todo"
+InFinancialComponentModule_inputgraphnode_weightNPV:
+  gams_identifier: "Wichtung: Barwert"
+  gams_description: "todo"
+InFinancialComponentModule_inputgraphnode_logisticFactor:
+  gams_identifier: "Logistikfaktor"
+  gams_description: "todo"
+InFinancialComponentModule_inputgraphnode_pvFile:
+  gams_identifier: "PV-Datei"
+  gams_description: "todo"
+
+InLogisticModule_calcgraphnode:
+  edn_label: "Logistikfunktion"
+  edn_description: >-
+    Wendet die Logistikfunktion auf die Eingabe an und gibt das Ergebnis gewichtet zurück: output = logistic(input) * weight.
+InLogisticModule_calcgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InLogisticModule_calcgraphnode_input_graphedge:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InNoveltySeekingModule_inputgraphnode:
+  edn_label: "Novelty seeking"
+  edn_description: >-
+    Dieses Modul nutzt das Agentenattribut für Novelty seeking (novelty_seeking) als Rückgabewert:
+    output = novelty_seeking * weight
+InNoveltySeekingModule_inputgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+
 InNPVModule_inputgraphnode:
   edn_label: "Barwert"
-  edn_description: "todo"
+  edn_description: >-
+    Gibt den eigentlichen Barwert des Agenten zurück: output = agentNPV * weight
 InNPVModule_inputgraphnode_weight:
   gams_identifier: "Wichtung"
   gams_description: "todo"
@@ -1596,9 +1744,103 @@ InNPVModule_inputgraphnode_pvFile:
   gams_identifier: "PV-Datei"
   gams_description: "todo"
 
+InProductModule_calcgraphnode:
+  edn_label: "Multiplizierer"
+  edn_description: >-
+    Einfacher Summierer, welcher belieb viele Eingaben addiert und das Ergebnis zusätzlich wichtet:
+    output = PRODUKT(input) * weight. ("PRODUKT" steht hierbei für die Produktfunktion.)
+InProductModule_calcgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InProductModule_calcgraphnode_inputModules_graphedge:
+  gams_identifier: "Faktoren"
+  gams_description: "todo"
+
+InPurchasePowerModule_inputgraphnode:
+  edn_label: "Kaufkraft"
+  edn_description: >-
+    Dieses Modul nutzt das Agentenattribut für Kaufkraft (KK_Euro) als Rückgabewert:
+    output = KK_Euro * weight
+InPurchasePowerModule_inputgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+
+InShareOfAdopterInLocalNetworkModule_inputgraphnode:
+  edn_label: "Lokaler Adopteranteil"
+  edn_description: >-
+    Dieses Modul berechnet den Anteil der Adopter im lokalen Netzwerk: output = shareOfAdopter * weight.
+    Das lokale Netz wird dabei über ein Berechnungsschema bzw. Filter bestimmt.
+InShareOfAdopterInLocalNetworkModule_inputgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InShareOfAdopterInLocalNetworkModule_inputgraphnode_nodeFilterScheme:
+  gams_identifier: "node filter scheme"
+  gams_description: "todo"
+
+InShareOfAdopterInSocialNetworkModule_inputgraphnode:
+  edn_label: "Lokaler Adopteranteil"
+  edn_description: >-
+    Dieses Modul berechnet den Anteil der Adopter im sozialen Netzwerk: output = shareOfAdopter * weight.
+    Im sozialen Netzwerk sind alle Agenten, welche enweder eine Kante zum entsprechenden Agenten besitzen oder dieser zu ihnen.
+InShareOfAdopterInSocialNetworkModule_inputgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+
+InSocialComponentModule_inputgraphnode:
+  edn_label: "Lokaler Adopteranteil"
+  edn_description: >-
+    Dieses Modul berechnet die soziale Komponente, bestehend aus dem Anteil der Adopter im lokalen und sozialen Netzwerk:
+    output = ((shareOfAdopterLocal * weightLocal) + (shareOfAdopterSocial * weightSocial)) * weight.
+InSocialComponentModule_inputgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InSocialComponentModule_inputgraphnode_socialWeight:
+  gams_identifier: "Wichtung: sozialer Anteil"
+  gams_description: "todo"
+InSocialComponentModule_inputgraphnode_localWeight:
+  gams_identifier: "Wichtung: lokaler Anteil"
+  gams_description: "todo"
+InSocialComponentModule_inputgraphnode_nodeFilterScheme:
+  gams_identifier: "node filter scheme"
+  gams_description: "todo"
+
+InSumModule_calcgraphnode:
+  edn_label: "Addierer"
+  edn_description: >-
+    Einfacher Summierer, welcher belieb viele Eingaben addiert und das Ergebnis zusätzlich wichtet:
+    output = SUMME(input) * weight. ("SUMME" steht hierbei für die Summenfunktion.)
+InSumModule_calcgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InSumModule_calcgraphnode_inputModules_graphedge:
+  gams_identifier: "Summanden"
+  gams_description: "todo"
+
+InWeightedAddModule_calcgraphnode:
+  edn_label: "Addierer"
+  edn_description: >-
+    Addierer, welcher zwei Eingaben separat wichtet und addiert. Anschließend wird das Gesamtergebnis ebenfalls gewichtet:
+    output = ((input1 * weight1) + (input2 * weight2)) * weight.
+InWeightedAddModule_calcgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InWeightedAddModule_calcgraphnode_weight1:
+  gams_identifier: "Wichtung des ersten Summanden"
+  gams_description: "todo"
+InWeightedAddModule_calcgraphnode_weight2:
+  gams_identifier: "Wichtung des zweiten Summanden"
+  gams_description: "todo"
+InWeightedAddModule_calcgraphnode_first_graphedge:
+  gams_identifier: "Erster Summand"
+  gams_description: "todo"
+InWeightedAddModule_calcgraphnode_second_graphedge:
+  gams_identifier: "Zweiter Summand"
+  gams_description: "todo"
+
 InWeightedModule_calcgraphnode:
   edn_label: "Wichtung"
-  edn_description: "todo"
+  edn_description: >-
+    Dieses Modul multiplizert die Eingabe mit einem Wichtungsfaktor: output = input * weight.
 InWeightedModule_calcgraphnode_weight:
   gams_identifier: "Wichtung"
   gams_description: "todo"

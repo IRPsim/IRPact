@@ -6,6 +6,8 @@ import de.unileipzig.irpact.commons.util.MapSupplier;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 
 /**
@@ -13,11 +15,12 @@ import java.util.function.Function;
  */
 public class MapDataStore extends NameableBase implements DataStore {
 
-    private static final Function<String, Set<Object>> SET_CREATOR = key -> new LinkedHashSet<>();
+    private static final Function<Object, Set<Object>> SET_CREATOR = key -> new LinkedHashSet<>();
 
+    protected final Lock LOCK = new ReentrantLock();
     protected MapSupplier supplier;
-    protected Map<String, Object> data;
-    protected Map<String, Set<Object>> flags;
+    protected Map<Object, Object> data;
+    protected Map<Object, Set<Object>> flags;
 
     public MapDataStore() {
         this(MapSupplier.LINKED);
@@ -27,7 +30,7 @@ public class MapDataStore extends NameableBase implements DataStore {
         this(supplier, supplier.newMap());
     }
 
-    public MapDataStore(MapSupplier supplier, Map<String, Object> data) {
+    public MapDataStore(MapSupplier supplier, Map<Object, Object> data) {
         this.supplier = supplier;
         this.data = data;
         this.flags = supplier.newMap();
@@ -39,7 +42,7 @@ public class MapDataStore extends NameableBase implements DataStore {
         this.flags = supplier.newMap();
 
         data.putAll(other.data);
-        for(Map.Entry<String, Set<Object>> entry: other.flags.entrySet()) {
+        for(Map.Entry<Object, Set<Object>> entry: other.flags.entrySet()) {
             Set<Object> set = SET_CREATOR.apply(entry.getKey());
             set.addAll(entry.getValue());
             flags.put(entry.getKey(), set);
@@ -50,8 +53,23 @@ public class MapDataStore extends NameableBase implements DataStore {
         return new MapDataStore(this);
     }
 
-    protected static void validateKey(String key) {
+    protected static void validateKey(Object key) {
         if(key == null) throw new NullPointerException("key is null");
+    }
+
+    @Override
+    public void lock() {
+        LOCK.lock();
+    }
+
+    @Override
+    public void unlock() {
+        LOCK.unlock();
+    }
+
+    @Override
+    public Lock getLock() {
+        return LOCK;
     }
 
     @Override
@@ -60,42 +78,42 @@ public class MapDataStore extends NameableBase implements DataStore {
     }
 
     @Override
-    public boolean contains(String key) {
+    public boolean contains(Object key) {
         return key != null && data.containsKey(key);
     }
 
     @Override
-    public void put(String key, Object obj) {
+    public void put(Object key, Object obj) {
         validateKey(key);
         data.put(key, obj);
     }
 
     @Override
-    public boolean remove(String key) {
+    public boolean remove(Object key) {
         return key != null && data.remove(key) != null;
     }
 
     @Override
-    public Object get(String key) {
+    public Object get(Object key) {
         validateKey(key);
         return data.get(key);
     }
 
     @Override
-    public boolean hasFlag(String key, Object flag) {
+    public boolean hasFlag(Object key, Object flag) {
         if(key == null) return false;
         Set<Object> set = flags.get(key);
         return set != null && set.contains(flag);
     }
 
     @Override
-    public void setFlag(String key, Object flag) {
+    public void setFlag(Object key, Object flag) {
         validateKey(key);
         flags.computeIfAbsent(key, SET_CREATOR).add(flag);
     }
 
     @Override
-    public boolean removeFlag(String key, Object flag) {
+    public boolean removeFlag(Object key, Object flag) {
         if(key == null) return false;
         Set<Object> set = flags.get(key);
         return set != null && set.remove(flag);

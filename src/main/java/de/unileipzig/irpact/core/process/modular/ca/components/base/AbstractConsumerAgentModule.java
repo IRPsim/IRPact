@@ -2,9 +2,9 @@ package de.unileipzig.irpact.core.process.modular.ca.components.base;
 
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.DataType;
-import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.commons.util.data.DataStore;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -24,6 +24,7 @@ import de.unileipzig.irpact.core.process.ra.npv.NPVDataSupplier;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEntityBase;
+import de.unileipzig.irpact.core.util.StandardFlag;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.Random;
@@ -118,6 +119,30 @@ public abstract class AbstractConsumerAgentModule extends SimulationEntityBase i
     }
 
     //=========================
+    // global init
+    //=========================
+
+    protected boolean isGlobalInitalized(Object obj) {
+        DataStore dataStore = getGlobalData();
+        dataStore.lock();
+        try {
+            return getGlobalData().hasFlag(obj, StandardFlag.INITALIZED);
+        } finally {
+            dataStore.unlock();
+        }
+    }
+
+    protected void setGlobalInitalized(Object obj) {
+        DataStore dataStore = getGlobalData();
+        dataStore.lock();
+        try {
+            getGlobalData().setFlag(obj, StandardFlag.INITALIZED);
+        } finally {
+            dataStore.unlock();
+        }
+    }
+
+    //=========================
     // validate
     //=========================
 
@@ -185,7 +210,12 @@ public abstract class AbstractConsumerAgentModule extends SimulationEntityBase i
         return npvDataSupplier.getAverageFinancialPurchasePower(getAgentManager().streamConsumerAgents());
     }
 
-    protected void initNPVMatrixWithFile(NPVData npvData, NPVDataSupplier dataSupplier) {
+    protected void initNPVDataSupplier(NPVData npvData, NPVDataSupplier dataSupplier) {
+        if(isGlobalInitalized(dataSupplier)) {
+            trace("NPVDataSupplier (hash={}) already initalized", dataSupplier.hashCode());
+            return;
+        }
+
         NPVCalculator npvCalculator = new NPVCalculator();
         npvCalculator.setData(npvData);
 
@@ -199,6 +229,9 @@ public abstract class AbstractConsumerAgentModule extends SimulationEntityBase i
             matrix.calculate(npvCalculator, y);
             dataSupplier.put(y, matrix);
         }
+
+        trace("NPVDataSupplier (hash={}) initalized", dataSupplier.hashCode());
+        setGlobalInitalized(dataSupplier);
     }
 
     //=========================
@@ -249,7 +282,7 @@ public abstract class AbstractConsumerAgentModule extends SimulationEntityBase i
     }
 
     protected double getAverageFinancialPurchasePower(Stream<? extends ConsumerAgent> agents, MutableDouble avgFT) {
-        if(avgFT != null && !Double.isNaN(avgFT.get())) {
+        if(avgFT != null && avgFT.isNumber()) {
             return avgFT.get();
         } else {
             if(avgFT == null) {
@@ -261,7 +294,7 @@ public abstract class AbstractConsumerAgentModule extends SimulationEntityBase i
     }
 
     private synchronized double syncCalcAvgFT(Stream<? extends ConsumerAgent> agents, MutableDouble avgFT) {
-        if(avgFT != null && !Double.isNaN(avgFT.get())) {
+        if(avgFT != null && avgFT.isNumber()) {
             return avgFT.get();
         } else {
             double result = calcAvgFT(agents);
@@ -355,7 +388,7 @@ public abstract class AbstractConsumerAgentModule extends SimulationEntityBase i
     }
 
     protected double getPurchasePower(ConsumerAgent agent) {
-        return getAttributeHelper().findDoubleValue(agent, RAConstants.PURCHASE_POWER);
+        return getAttributeHelper().findDoubleValue(agent, RAConstants.PURCHASE_POWER_EUR);
     }
 
     protected double getNoveltySeeking(ConsumerAgent agent) {
