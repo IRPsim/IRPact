@@ -805,6 +805,7 @@ public class InRoot implements RootClass {
             InDefaultDecisionMakingModule_evalgraphnode.class,
             InDefaultFeasibilityModule_evalgraphnode.class,
             InDefaultInterestModule_evalgraphnode.class,
+            InDoNothingModule_evalgraphnode.class,
             InStageEvaluationModule_evalgraphnode.class,
             InSumThresholdEvaluationModule_evalgraphnode.class,
             InThresholdEvaluationModule_evalgraphnode.class,

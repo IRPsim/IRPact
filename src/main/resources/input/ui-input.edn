@@ -13,7 +13,7 @@
             :color "DarkCyan"
           } 
           {
-            :tags [["InStageEvaluationModule" "awarenessModule"] ["InStageEvaluationModule" "feasibilityModule"] ["InStageEvaluationModule" "decisionMakingModule"] ["InStageEvaluationModule" "adoptedModule"] ["InStageEvaluationModule" "impededModule"]] 
+            :tags [["InDoNothingModule" "inputModule"] ["InStageEvaluationModule" "awarenessModule"] ["InStageEvaluationModule" "feasibilityModule"] ["InStageEvaluationModule" "decisionMakingModule"] ["InStageEvaluationModule" "adoptedModule"] ["InStageEvaluationModule" "impededModule"]] 
             :label "Evaluierungskante" 
             :color "LightSlateGrey"
           }
@@ -797,6 +797,12 @@
                     :set "set_InDefaultInterestModule_evalgraphnode" 
                     :description "Dieses Modul implementiert die komplette \"interest\"-Phase des klassischen PV-Prozessmodells. Es gibt als Ergebnis immer \"Adoption nicht entschieden\" zurück. Zusätzlich führt es (falls nötig) die Standardaktionen \"Kommunikation\" und \"Rewiring\" aus. Die Wahrscheinlichkeiten von \"Kommunikation\" und \"Rewiring\" sind von den jeweiligen Agentenattributen abhängig." 
                     :tags [["InDefaultInterestModule" "evalgraphnode" "adopterPoints"] ["InDefaultInterestModule" "evalgraphnode" "interestedPoints"] ["InDefaultInterestModule" "evalgraphnode" "awarePoints"] ["InDefaultInterestModule" "evalgraphnode" "unknownPoints"] ["InDefaultInterestModule" "evalgraphnode" "speedOfConvergence"] ["InDefaultInterestModule" "evalgraphnode" "attitudeGap"] ["InDefaultInterestModule" "evalgraphnode" "chanceNeutral"] ["InDefaultInterestModule" "evalgraphnode" "chanceConvergence"] ["InDefaultInterestModule" "evalgraphnode" "chanceDivergence"] ["link" "InDefaultInterestModule" "evalgraphnode" "InUncertainty" "uncertainties"]]
+                  } 
+                  {
+                    :label "[TESTMODUL] Testmodul" 
+                    :set "set_InDoNothingModule_evalgraphnode" 
+                    :description "Dieses Modul dient zum Testen der Aufrufe von Submodulen. Es gibt immer \"Adoption nicht entschieden\" zurück. Alle Arten von Modulen können als Eingabe dienen." 
+                    :tags [["link" "InDoNothingModule" "evalgraphnode" "InConsumerAgentModule" "inputModule" "graphedge"]]
                   } 
                   {
                     :label "Phasengerüst des PV-Prozessmodells" 

@@ -1521,6 +1521,16 @@ InDefaultInterestModule_evalgraphnode_uncertainties:
   gams_identifier: "uncertainties"
   gams_description: "todo"
 
+
+InDoNothingModule_evalgraphnode:
+  edn_label: "[TESTMODUL] Testmodul"
+  edn_description: >-
+    Dieses Modul dient zum Testen der Aufrufe von Submodulen. Es gibt immer "Adoption nicht entschieden" zurück.
+    Alle Arten von Modulen können als Eingabe dienen.
+InDoNothingModule_evalgraphnode_inputModule_graphedge:
+  gams_identifier: "Eingabemodule"
+  gams_description: "todo"
+
 InSimpleGetPhaseModule_evalgraphnode:
   edn_label: "Status-Platzhalter"
   edn_description: >-
