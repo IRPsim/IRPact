@@ -15,16 +15,16 @@ import java.util.Objects;
 public interface ConsumerAgentParentModule extends ParentModule<ConsumerAgentModule>, ConsumerAgentModule {
 
     @Override
-    default void handleMissingParametersRecursively(ConsumerAgentMPM model) {
+    default void handleMissingParameters(ConsumerAgentMPM model) {
         for(ConsumerAgentModule subModule: iterateModules()) {
-            subModule.handleMissingParametersRecursively(model);
+            subModule.handleMissingParameters(model);
         }
     }
 
     @Override
-    default void handleNewProductRecursively(Product newProduct) {
+    default void handleNewProduct(Product newProduct) {
         for(ConsumerAgentModule subModule: iterateModules()) {
-            subModule.handleNewProductRecursively(newProduct);
+            subModule.handleNewProduct(newProduct);
         }
     }
 

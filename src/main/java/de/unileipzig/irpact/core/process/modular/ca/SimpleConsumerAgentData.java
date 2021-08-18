@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.process.modular.ca;
 
 import de.unileipzig.irpact.commons.checksum.Checksums;
+import de.unileipzig.irpact.commons.util.MapSupplier;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.need.Need;
@@ -12,12 +13,26 @@ import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEval
 import de.unileipzig.irpact.core.process.modular.ca.model.ConsumerAgentMPM;
 import de.unileipzig.irpact.core.product.Product;
 
+import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * @author Daniel Abitz
  */
 public class SimpleConsumerAgentData implements ConsumerAgentData, ModularProcessPlan {
 
+    protected final Lock LOCK = new ReentrantLock();
+    protected MapSupplier mapSupplier;
+    protected Map<String, Object> data;
+
     public SimpleConsumerAgentData() {
+        this(MapSupplier.CONCURRENT_HASH);
+    }
+
+    public SimpleConsumerAgentData(MapSupplier mapSupplier) {
+        this.mapSupplier = mapSupplier;
+        this.data = mapSupplier.newMap();
     }
 
     protected ConsumerAgentMPM model;
@@ -108,6 +123,33 @@ public class SimpleConsumerAgentData implements ConsumerAgentData, ModularProces
     @Override
     public boolean isUnderRenovation() {
         return underRenovation;
+    }
+
+    @Override
+    public boolean has(String key) {
+        return data.containsKey(key);
+    }
+    @Override
+    public void store(String key, Object obj) {
+        data.put(key, obj);
+    }
+    @Override
+    public Object retrieve(String key) {
+        return data.get(key);
+    }
+    @Override
+    public <R> R retrieveAs(String key, Class<R> type) {
+        return type.cast(retrieve(key));
+    }
+
+    @Override
+    public void lock() {
+        LOCK.lock();
+    }
+
+    @Override
+    public void unlock() {
+        LOCK.unlock();
     }
 
     @Override

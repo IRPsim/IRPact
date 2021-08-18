@@ -15,9 +15,7 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
-public class SumModule
-        extends AbstractConsumerAgentModule
-        implements ConsumerAgentCalculationModule {
+public class SumModule extends AbstractConsumerAgentModule implements ConsumerAgentCalculationModule {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(SumModule.class);
 

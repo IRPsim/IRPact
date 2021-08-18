@@ -68,6 +68,11 @@ public class MapDataStore extends NameableBase implements DataStore {
     }
 
     @Override
+    public Lock getLock() {
+        return LOCK;
+    }
+
+    @Override
     public void removeAll() {
         data.clear();
     }

@@ -2,7 +2,6 @@ package de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentCalculationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.eval.SumThresholdEvaluationModule;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
@@ -37,7 +36,7 @@ import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings
                 tags = {EVAL_GRAPHNODE}
         )
 )
-public class InSumThresholdEvaluationModule_evalgraphnode implements InConsumerAgentEvaluationModule {
+public class InThresholdEvaluationModule_evalgraphnode implements InConsumerAgentEvaluationModule {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -50,7 +49,7 @@ public class InSumThresholdEvaluationModule_evalgraphnode implements InConsumerA
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_EVAL_SUMTHRESH);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_EVAL_THRESH);
         setShapeColorBorder(res, thisClass(), EVAL_SHAPE, EVAL_COLOR, EVAL_BORDER);
 
         addEntryWithDefault(res, thisClass(), "threshold", VALUE_1);
@@ -112,27 +111,27 @@ public class InSumThresholdEvaluationModule_evalgraphnode implements InConsumerA
                     id = MPM_GRAPH,
                     label = CALC_EDGE_LABEL,
                     color = CALC_EDGE_COLOR,
-                    tags = {"InSumThresholdEvaluationModule input"}
+                    tags = {"InThresholdEvaluationModule input"}
             )
     )
     public InConsumerAgentCalculationModule[] input_graphedge;
-    public void setInputs(InConsumerAgentCalculationModule[] awarenessModule) {
-        this.input_graphedge = awarenessModule;
+    public void setInput(InConsumerAgentCalculationModule module) {
+        this.input_graphedge = new InConsumerAgentCalculationModule[]{module};
     }
-    public InConsumerAgentCalculationModule[] getInputs() throws ParsingException {
-        return ParamUtil.getNonEmptyArray(input_graphedge, "input");
+    public InConsumerAgentCalculationModule getInput() throws ParsingException {
+        return ParamUtil.getInstance(input_graphedge, "input");
     }
 
-    public InSumThresholdEvaluationModule_evalgraphnode() {
+    public InThresholdEvaluationModule_evalgraphnode() {
     }
 
     @Override
-    public InSumThresholdEvaluationModule_evalgraphnode copy(CopyCache cache) {
+    public InThresholdEvaluationModule_evalgraphnode copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InSumThresholdEvaluationModule_evalgraphnode newCopy(CopyCache cache) {
-        InSumThresholdEvaluationModule_evalgraphnode copy = new InSumThresholdEvaluationModule_evalgraphnode();
+    public InThresholdEvaluationModule_evalgraphnode newCopy(CopyCache cache) {
+        InThresholdEvaluationModule_evalgraphnode copy = new InThresholdEvaluationModule_evalgraphnode();
         return Dev.throwException();
     }
 
@@ -149,11 +148,7 @@ public class InSumThresholdEvaluationModule_evalgraphnode implements InConsumerA
         module.setAcceptIfBelowThreshold(isAcceptIfBelowThreshold());
         module.setAdoptIfAccepted(isAdoptIfAccepted());
         module.setImpededIfFailed(isImpededIfFailed());
-
-        for(InConsumerAgentCalculationModule in: getInputs()) {
-            ConsumerAgentCalculationModule inCalc = parser.parseEntityTo(in);
-            module.addSubModule(inCalc);
-        }
+        module.addSubModule(parser.parseEntityTo(getInput()));
 
         return module;
     }

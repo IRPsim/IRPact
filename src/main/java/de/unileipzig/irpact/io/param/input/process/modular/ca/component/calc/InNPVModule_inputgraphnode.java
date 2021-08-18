@@ -55,7 +55,7 @@ public class InNPVModule_inputgraphnode implements InConsumerAgentCalculationMod
         addEntry(res, thisClass(), "weight");
         addEntry(res, thisClass(), "pvFile");
 
-        setDefault(res, thisClass(), "weight", VALUE_ONE);
+        setDefault(res, thisClass(), "weight", VALUE_1);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());

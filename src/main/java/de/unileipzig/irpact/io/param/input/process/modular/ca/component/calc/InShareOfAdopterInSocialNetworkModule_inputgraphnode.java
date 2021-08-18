@@ -2,12 +2,10 @@ package de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.process.modular.ca.components.calc.AttributeInputModule;
+import de.unileipzig.irpact.core.process.modular.ca.components.calc.ShareOfAdopterInSocialNetworkModule;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
-import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentCalculationModule;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -34,7 +32,7 @@ import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings
                 tags = {INPUT_GRAPHNODE}
         )
 )
-public class InAttributeInputModule_inputgraphnode implements InConsumerAgentCalculationModule {
+public class InShareOfAdopterInSocialNetworkModule_inputgraphnode implements InConsumerAgentCalculationModule {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -47,13 +45,10 @@ public class InAttributeInputModule_inputgraphnode implements InConsumerAgentCal
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_CALC_INPUTATTR);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_CALC_SHARESOCIAL);
         setShapeColorBorder(res, thisClass(), INPUT_SHAPE, INPUT_COLOR, INPUT_BORDER);
 
-        addEntry(res, thisClass(), "weight");
-        addEntry(res, thisClass(), "attribute");
-
-        setDefault(res, thisClass(), "weight", VALUE_1);
+        addEntryWithDefault(res, thisClass(), "weight", VALUE_1);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -76,47 +71,29 @@ public class InAttributeInputModule_inputgraphnode implements InConsumerAgentCal
         this.weight = weight;
     }
 
-    @FieldDefinition
-    public InAttributeName[] attribute;
-    public void setAttribute(InAttributeName attribute) {
-        this.attribute = new InAttributeName[]{attribute};
-    }
-    public InAttributeName getAttribute() throws ParsingException {
-        return ParamUtil.getInstance(attribute, "attribute");
-    }
-    public String getAttributeName() throws ParsingException {
-        return getAttribute().getName();
-    }
-
-    public InAttributeInputModule_inputgraphnode() {
-    }
-
-    public InAttributeInputModule_inputgraphnode(String name, InAttributeName attribute) {
-        setName(name);
-        setAttribute(attribute);
+    public InShareOfAdopterInSocialNetworkModule_inputgraphnode() {
     }
 
     @Override
-    public InAttributeInputModule_inputgraphnode copy(CopyCache cache) {
+    public InShareOfAdopterInSocialNetworkModule_inputgraphnode copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InAttributeInputModule_inputgraphnode newCopy(CopyCache cache) {
-        InAttributeInputModule_inputgraphnode copy = new InAttributeInputModule_inputgraphnode();
+    public InShareOfAdopterInSocialNetworkModule_inputgraphnode newCopy(CopyCache cache) {
+        InShareOfAdopterInSocialNetworkModule_inputgraphnode copy = new InShareOfAdopterInSocialNetworkModule_inputgraphnode();
         return Dev.throwException();
     }
 
     @Override
-    public AttributeInputModule parse(IRPactInputParser parser) throws ParsingException {
+    public ShareOfAdopterInSocialNetworkModule parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
-            return searchModule(parser, getName(), AttributeInputModule.class);
+            return searchModule(parser, getName(), ShareOfAdopterInSocialNetworkModule.class);
         }
 
-        AttributeInputModule module = new AttributeInputModule();
+        ShareOfAdopterInSocialNetworkModule module = new ShareOfAdopterInSocialNetworkModule();
         module.setName(getName());
         module.setEnvironment(parser.getEnvironment());
         module.setWeight(getWeight());
-        module.setAttributeName(getAttributeName());
 
         return module;
     }

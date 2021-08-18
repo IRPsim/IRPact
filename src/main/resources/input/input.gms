@@ -1640,7 +1640,7 @@ SET set_InAttributeInputModule_inputgraphnode(set_InConsumerAgentCalculationModu
 * - type: Float
 PARAMETER par_InAttributeInputModule_inputgraphnode_weight(set_InAttributeInputModule_inputgraphnode)
 
-* - description: todo
+* - description: Bestimmt das Attribut, welches von dem Modul gelesen werden soll.
 * - identifier: Referenziertes Attribut
 * - type: Boolean
 PARAMETER par_link_InAttributeInputModule_inputgraphnode_InAttributeName_attribute(set_InAttributeInputModule_inputgraphnode,set_InAttributeName)
@@ -1686,6 +1686,53 @@ PARAMETER par_InDisaggregatedNPVModule_inputgraphnode_logisticFactor(set_InDisag
 * - type: Boolean
 PARAMETER par_link_InDisaggregatedNPVModule_inputgraphnode_InPVFile_pvFile(set_InDisaggregatedNPVModule_inputgraphnode,set_InPVFile)
 
+* - color: Green
+* - shape: square
+* - identifier: InEnvironmentalConcernModule_inputgraphnode
+* - type: String
+SET set_InEnvironmentalConcernModule_inputgraphnode(set_InConsumerAgentCalculationModule)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InEnvironmentalConcernModule_inputgraphnode_weight(set_InEnvironmentalConcernModule_inputgraphnode)
+
+* - color: Green
+* - shape: square
+* - identifier: InFinancialComponentModule_inputgraphnode
+* - type: String
+SET set_InFinancialComponentModule_inputgraphnode(set_InConsumerAgentCalculationModule)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InFinancialComponentModule_inputgraphnode_weight(set_InFinancialComponentModule_inputgraphnode)
+
+* - default: 0.5
+* - description: todo
+* - identifier: Wichtung: Einkommen
+* - type: Float
+PARAMETER par_InFinancialComponentModule_inputgraphnode_weightFT(set_InFinancialComponentModule_inputgraphnode)
+
+* - default: 0.5
+* - description: todo
+* - identifier: Wichtung: Barwert
+* - type: Float
+PARAMETER par_InFinancialComponentModule_inputgraphnode_weightNPV(set_InFinancialComponentModule_inputgraphnode)
+
+* - default: 0.125
+* - description: todo
+* - identifier: Logistikfaktor
+* - type: Float
+PARAMETER par_InFinancialComponentModule_inputgraphnode_logisticFactor(set_InFinancialComponentModule_inputgraphnode)
+
+* - description: todo
+* - identifier: PV-Datei
+* - type: Boolean
+PARAMETER par_link_InFinancialComponentModule_inputgraphnode_InPVFile_pvFile(set_InFinancialComponentModule_inputgraphnode,set_InPVFile)
+
 * - color: Blue
 * - shape: gear
 * - identifier: InLogisticModule_calcgraphnode
@@ -1705,6 +1752,18 @@ PARAMETER par_link_InLogisticModule_calcgraphnode_InConsumerAgentCalculationModu
 
 * - color: Green
 * - shape: square
+* - identifier: InNoveltySeekingModule_inputgraphnode
+* - type: String
+SET set_InNoveltySeekingModule_inputgraphnode(set_InConsumerAgentCalculationModule)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InNoveltySeekingModule_inputgraphnode_weight(set_InNoveltySeekingModule_inputgraphnode)
+
+* - color: Green
+* - shape: square
 * - identifier: InNPVModule_inputgraphnode
 * - type: String
 SET set_InNPVModule_inputgraphnode(set_InConsumerAgentCalculationModule)
@@ -1719,6 +1778,115 @@ PARAMETER par_InNPVModule_inputgraphnode_weight(set_InNPVModule_inputgraphnode)
 * - identifier: PV-Datei
 * - type: Boolean
 PARAMETER par_link_InNPVModule_inputgraphnode_InPVFile_pvFile(set_InNPVModule_inputgraphnode,set_InPVFile)
+
+* - color: Green
+* - shape: square
+* - identifier: InShareOfAdopterInLocalNetworkModule_inputgraphnode
+* - type: String
+SET set_InShareOfAdopterInLocalNetworkModule_inputgraphnode(set_InConsumerAgentCalculationModule)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InShareOfAdopterInLocalNetworkModule_inputgraphnode_weight(set_InShareOfAdopterInLocalNetworkModule_inputgraphnode)
+
+* - description: todo
+* - identifier: node filter scheme
+* - type: Boolean
+PARAMETER par_link_InShareOfAdopterInLocalNetworkModule_inputgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InShareOfAdopterInLocalNetworkModule_inputgraphnode,set_InRAProcessPlanNodeFilterScheme)
+
+* - color: Green
+* - shape: square
+* - identifier: InShareOfAdopterInSocialNetworkModule_inputgraphnode
+* - type: String
+SET set_InShareOfAdopterInSocialNetworkModule_inputgraphnode(set_InConsumerAgentCalculationModule)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InShareOfAdopterInSocialNetworkModule_inputgraphnode_weight(set_InShareOfAdopterInSocialNetworkModule_inputgraphnode)
+
+* - color: Green
+* - shape: square
+* - identifier: InSocialComponentModule_inputgraphnode
+* - type: String
+SET set_InSocialComponentModule_inputgraphnode(set_InConsumerAgentCalculationModule)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InSocialComponentModule_inputgraphnode_weight(set_InSocialComponentModule_inputgraphnode)
+
+* - default: 0.5
+* - description: todo
+* - identifier: Wichtung: sozialer Anteil
+* - type: Float
+PARAMETER par_InSocialComponentModule_inputgraphnode_socialWeight(set_InSocialComponentModule_inputgraphnode)
+
+* - default: 0.5
+* - description: todo
+* - identifier: Wichtung: lokaler Anteil
+* - type: Float
+PARAMETER par_InSocialComponentModule_inputgraphnode_localWeight(set_InSocialComponentModule_inputgraphnode)
+
+* - description: todo
+* - identifier: node filter scheme
+* - type: Boolean
+PARAMETER par_link_InSocialComponentModule_inputgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InSocialComponentModule_inputgraphnode,set_InRAProcessPlanNodeFilterScheme)
+
+* - color: Blue
+* - shape: gear
+* - identifier: InSumModule_calcgraphnode
+* - type: String
+SET set_InSumModule_calcgraphnode(set_InConsumerAgentCalculationModule)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InSumModule_calcgraphnode_weight(set_InSumModule_calcgraphnode)
+
+* - description: todo
+* - identifier: Summanden
+* - type: Boolean
+PARAMETER par_link_InSumModule_calcgraphnode_InConsumerAgentCalculationModule_inputModules_graphedge(set_InSumModule_calcgraphnode,set_InConsumerAgentCalculationModule)
+
+* - color: Blue
+* - shape: gear
+* - identifier: InWeightedAddModule_calcgraphnode
+* - type: String
+SET set_InWeightedAddModule_calcgraphnode(set_InConsumerAgentCalculationModule)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InWeightedAddModule_calcgraphnode_weight(set_InWeightedAddModule_calcgraphnode)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung des ersten Summanden
+* - type: Float
+PARAMETER par_InWeightedAddModule_calcgraphnode_weight1(set_InWeightedAddModule_calcgraphnode)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung des zweiten Summanden
+* - type: Float
+PARAMETER par_InWeightedAddModule_calcgraphnode_weight2(set_InWeightedAddModule_calcgraphnode)
+
+* - description: todo
+* - identifier: Erster Summand
+* - type: Boolean
+PARAMETER par_link_InWeightedAddModule_calcgraphnode_InConsumerAgentCalculationModule_first_graphedge(set_InWeightedAddModule_calcgraphnode,set_InConsumerAgentCalculationModule)
+
+* - description: todo
+* - identifier: Zweiter Summand
+* - type: Boolean
+PARAMETER par_link_InWeightedAddModule_calcgraphnode_InConsumerAgentCalculationModule_second_graphedge(set_InWeightedAddModule_calcgraphnode,set_InConsumerAgentCalculationModule)
 
 * - color: Blue
 * - shape: gear
@@ -1836,7 +2004,7 @@ PARAMETER par_InDefaultDecisionMakingModule_evalgraphnode_d(set_InDefaultDecisio
 
 * - default: 0.5
 * - description: todo
-* - identifier: Wichtung fin. 
+* - identifier: Wichtung Kaufkraft
 * - type: Float
 PARAMETER par_InDefaultDecisionMakingModule_evalgraphnode_weightFT(set_InDefaultDecisionMakingModule_evalgraphnode)
 
@@ -2014,27 +2182,27 @@ PARAMETER par_link_InDefaultInterestModule_evalgraphnode_InUncertainty_uncertain
 * - type: String
 SET set_InStageEvaluationModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
 
-* - description: todo
+* - description: Dieses Modul wird aufgerufen, wenn der Agent in der awareness-Phase ist.
 * - identifier: awareness module
 * - type: Boolean
 PARAMETER par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_awarenessModule_graphedge(set_InStageEvaluationModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
 
-* - description: todo
+* - description: Dieses Modul wird aufgerufen, wenn der Agent in der feasibility-Phase ist.
 * - identifier: feasibility module
 * - type: Boolean
 PARAMETER par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_feasibilityModule_graphedge(set_InStageEvaluationModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
 
-* - description: todo
+* - description: Dieses Modul wird aufgerufen, wenn der Agent in der decision making-Phase ist.
 * - identifier: decision making module
 * - type: Boolean
 PARAMETER par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_decisionMakingModule_graphedge(set_InStageEvaluationModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
 
-* - description: todo
+* - description: Dieses Modul wird aufgerufen, wenn der Agent in der adopted-Phase ist.
 * - identifier: adopted module
 * - type: Boolean
 PARAMETER par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_adoptedModule_graphedge(set_InStageEvaluationModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
 
-* - description: todo
+* - description: Dieses Modul wird aufgerufen, wenn der Agent in der impeded-Phase ist.
 * - identifier: impeded module
 * - type: Boolean
 PARAMETER par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_impededModule_graphedge(set_InStageEvaluationModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
@@ -2046,22 +2214,74 @@ PARAMETER par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluati
 SET set_InSumThresholdEvaluationModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
 
 * - default: 1
-* - description: todo
+* - description: Der Grenzwert, welcher für die Entscheidungsfindung verwendet wird.
 * - identifier: Grenzwert
 * - type: Float
 PARAMETER par_InSumThresholdEvaluationModule_evalgraphnode_threshold(set_InSumThresholdEvaluationModule_evalgraphnode)
 
 * - default: 1
 * - domain: [0|1]
-* - description: todo
-* - identifier: Adoption wenn unter Grenzwert?
+* - description: Falls gesetzt, wird der Grenzwert als obere Grenze betrachtet. Anderenfalls als untere Grenze.
+* - identifier: Erfolg wenn unter Grenzwert?
 * - type: Boolean
-PARAMETER par_InSumThresholdEvaluationModule_evalgraphnode_adoptIfBelowThreshold(set_InSumThresholdEvaluationModule_evalgraphnode)
+PARAMETER par_InSumThresholdEvaluationModule_evalgraphnode_acceptIfBelowThreshold(set_InSumThresholdEvaluationModule_evalgraphnode)
 
-* - description: todo
-* - identifier: Eingabekomponenten
+* - default: 1
+* - domain: [0|1]
+* - description: Falls gesetzt, wird bei einer erfolgreichen Evaluation das Ergebnis \"adoptiert\" zurück gegeben. Anderenfalls wird \"Adoption nicht entschieden\" zurück gegeben.
+* - identifier: Adoptieren bei Erfolg?
+* - type: Boolean
+PARAMETER par_InSumThresholdEvaluationModule_evalgraphnode_adoptIfAccepted(set_InSumThresholdEvaluationModule_evalgraphnode)
+
+* - default: 1
+* - domain: [0|1]
+* - description: Falls gesetzt, wird bei einer erfolgloser Evaluation das Ergebnis \"Adoption nicht möglich\" zurück gegeben. Anderenfalls wird \"Adoption nicht entschieden\" zurück gegeben.
+* - identifier: Adoption nicht möglich (impeded) bei Nichterfolg?
+* - type: Boolean
+PARAMETER par_InSumThresholdEvaluationModule_evalgraphnode_impededIfFailed(set_InSumThresholdEvaluationModule_evalgraphnode)
+
+* - description: Die Eingabemodule für das Modul.
+* - identifier: Eingabemodule
 * - type: Boolean
 PARAMETER par_link_InSumThresholdEvaluationModule_evalgraphnode_InConsumerAgentCalculationModule_input_graphedge(set_InSumThresholdEvaluationModule_evalgraphnode,set_InConsumerAgentCalculationModule)
+
+* - color: Red
+* - shape: diamond
+* - identifier: InThresholdEvaluationModule_evalgraphnode
+* - type: String
+SET set_InThresholdEvaluationModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
+
+* - default: 1
+* - description: Der Grenzwert, welcher für die Entscheidungsfindung verwendet wird.
+* - identifier: Grenzwert
+* - type: Float
+PARAMETER par_InThresholdEvaluationModule_evalgraphnode_threshold(set_InThresholdEvaluationModule_evalgraphnode)
+
+* - default: 1
+* - domain: [0|1]
+* - description: Falls gesetzt, wird der Grenzwert als obere Grenze betrachtet. Anderenfalls als untere Grenze.
+* - identifier: Erfolg wenn unter Grenzwert?
+* - type: Boolean
+PARAMETER par_InThresholdEvaluationModule_evalgraphnode_acceptIfBelowThreshold(set_InThresholdEvaluationModule_evalgraphnode)
+
+* - default: 1
+* - domain: [0|1]
+* - description: Falls gesetzt, wird bei einer erfolgreichen Evaluation das Ergebnis \"adoptiert\" zurück gegeben. Anderenfalls wird \"Adoption nicht entschieden\" zurück gegeben.
+* - identifier: Adoptieren bei Erfolg?
+* - type: Boolean
+PARAMETER par_InThresholdEvaluationModule_evalgraphnode_adoptIfAccepted(set_InThresholdEvaluationModule_evalgraphnode)
+
+* - default: 1
+* - domain: [0|1]
+* - description: Falls gesetzt, wird bei einer erfolgloser Evaluation das Ergebnis \"Adoption nicht möglich\" zurück gegeben. Anderenfalls wird \"Adoption nicht entschieden\" zurück gegeben.
+* - identifier: Adoption nicht möglich (impeded) bei Nichterfolg?
+* - type: Boolean
+PARAMETER par_InThresholdEvaluationModule_evalgraphnode_impededIfFailed(set_InThresholdEvaluationModule_evalgraphnode)
+
+* - description: Das Eingabemodul für das Modul.
+* - identifier: Eingabemodul
+* - type: Boolean
+PARAMETER par_link_InThresholdEvaluationModule_evalgraphnode_InConsumerAgentCalculationModule_input_graphedge(set_InThresholdEvaluationModule_evalgraphnode,set_InConsumerAgentCalculationModule)
 
 * - identifier: InConsumerAgentCalculationModule
 * - hidden: 1
@@ -2087,7 +2307,7 @@ SET set_InConsumerAgentModularProcessModel(set_InModularProcessModel)
 * - type: String
 SET set_InSimpleConsumerAgentMPM(set_InConsumerAgentModularProcessModel)
 
-* - description: todo
+* - description: Das Startmodul des modularen Systems.
 * - identifier: Startmodul
 * - type: Boolean
 PARAMETER par_link_InSimpleConsumerAgentMPM_InConsumerAgentEvaluationModule_startModule(set_InSimpleConsumerAgentMPM,set_InConsumerAgentEvaluationModule)

@@ -3,15 +3,15 @@ package de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.process.modular.ca.components.calc.DisaggregatedNPVModule;
-import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
+import de.unileipzig.irpact.core.process.filter.DisabledProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.process.modular.ca.components.calc.ShareOfAdopterInLocalNetworkModule;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentCalculationModule;
+import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanNodeFilterScheme;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GraphNode;
@@ -37,7 +37,7 @@ import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings
                 tags = {INPUT_GRAPHNODE}
         )
 )
-public class InDisaggregatedNPVModule_inputgraphnode implements InConsumerAgentCalculationModule {
+public class InShareOfAdopterInLocalNetworkModule_inputgraphnode implements InConsumerAgentCalculationModule {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -50,15 +50,11 @@ public class InDisaggregatedNPVModule_inputgraphnode implements InConsumerAgentC
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_CALC_DISNPV);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_CALC_SHARELOCAL);
         setShapeColorBorder(res, thisClass(), INPUT_SHAPE, INPUT_COLOR, INPUT_BORDER);
 
-        addEntry(res, thisClass(), "weight");
-        addEntry(res, thisClass(), "logisticFactor");
-        addEntry(res, thisClass(), "pvFile");
-
-        setDefault(res, thisClass(), "weight", VALUE_1);
-        setDefault(res, thisClass(), "logisticFactor", varargs(RAConstants.DEFAULT_LOGISTIC_FACTOR));
+        addEntryWithDefault(res, thisClass(), "weight", VALUE_1);
+        addEntry(res, thisClass(), "nodeFilterScheme");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -82,68 +78,55 @@ public class InDisaggregatedNPVModule_inputgraphnode implements InConsumerAgentC
     }
 
     @FieldDefinition
-    public double logisticFactor;
-    public void setLogisticFactor(double logisticFactor) {
-        this.logisticFactor = logisticFactor;
+    public InRAProcessPlanNodeFilterScheme[] nodeFilterScheme;
+    public boolean hasNodeFilterScheme() {
+        return ParamUtil.len(nodeFilterScheme) > 0;
     }
-    public double getLogisticFactor() {
-        return logisticFactor;
+    public InRAProcessPlanNodeFilterScheme getNodeFilterScheme() throws ParsingException {
+        return ParamUtil.getInstance(nodeFilterScheme, "nodeFilterScheme");
     }
-
-    @FieldDefinition
-    public InPVFile[] pvFile;
-    public boolean hasPvFile() {
-        return pvFile != null && pvFile.length > 0;
-    }
-    public InPVFile getPvFile() throws ParsingException {
-        return ParamUtil.getInstance(pvFile, "PvFile");
-    }
-    public void setPvFile(InPVFile pvFile) {
-        this.pvFile = new InPVFile[]{pvFile};
+    public void setNodeFilterScheme(InRAProcessPlanNodeFilterScheme nodeFilterScheme) {
+        if(nodeFilterScheme == null) {
+            this.nodeFilterScheme = new InRAProcessPlanNodeFilterScheme[0];
+        } else {
+            this.nodeFilterScheme = new InRAProcessPlanNodeFilterScheme[]{nodeFilterScheme};
+        }
     }
 
-    public InDisaggregatedNPVModule_inputgraphnode() {
-    }
-
-    public InDisaggregatedNPVModule_inputgraphnode(String name, double logisticFactor, InPVFile pvFile) {
-        setName(name);
-        setLogisticFactor(logisticFactor);
-        setPvFile(pvFile);
+    public InShareOfAdopterInLocalNetworkModule_inputgraphnode() {
     }
 
     @Override
-    public InDisaggregatedNPVModule_inputgraphnode copy(CopyCache cache) {
+    public InShareOfAdopterInLocalNetworkModule_inputgraphnode copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InDisaggregatedNPVModule_inputgraphnode newCopy(CopyCache cache) {
-        InDisaggregatedNPVModule_inputgraphnode copy = new InDisaggregatedNPVModule_inputgraphnode();
+    public InShareOfAdopterInLocalNetworkModule_inputgraphnode newCopy(CopyCache cache) {
+        InShareOfAdopterInLocalNetworkModule_inputgraphnode copy = new InShareOfAdopterInLocalNetworkModule_inputgraphnode();
         return Dev.throwException();
     }
 
     @Override
-    public DisaggregatedNPVModule parse(IRPactInputParser parser) throws ParsingException {
+    public ShareOfAdopterInLocalNetworkModule parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
-            return searchModule(parser, getName(), DisaggregatedNPVModule.class);
+            return searchModule(parser, getName(), ShareOfAdopterInLocalNetworkModule.class);
         }
 
-        DisaggregatedNPVModule module = new DisaggregatedNPVModule();
+        ShareOfAdopterInLocalNetworkModule module = new ShareOfAdopterInLocalNetworkModule();
         module.setName(getName());
         module.setEnvironment(parser.getEnvironment());
-        module.setLogisticFactor(getLogisticFactor());
         module.setWeight(getWeight());
-        module.setNPVData(parser.parseEntityTo(getPvFile()));
+
+        if(hasNodeFilterScheme()) {
+            InRAProcessPlanNodeFilterScheme inFilterScheme = getNodeFilterScheme();
+            ProcessPlanNodeFilterScheme filterScheme = parser.parseEntityTo(inFilterScheme);
+            module.setNodeFilterScheme(filterScheme);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set node filter scheme '{}'", filterScheme.getName());
+        } else {
+            module.setNodeFilterScheme(DisabledProcessPlanNodeFilterScheme.INSTANCE);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "no node filter scheme specified");
+        }
 
         return module;
-    }
-
-    private void applyPvFile(IRPactInputParser parser, DisaggregatedNPVModule module) throws ParsingException {
-        if(hasPvFile()) {
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "load pv file '{}'" , getPvFile().getName());
-            NPVXlsxData xlsxData = parser.parseEntityTo(getPvFile());
-            module.setNPVData(xlsxData);
-        } else {
-            LOGGER.trace("no pv file found");
-        }
     }
 }

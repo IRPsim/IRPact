@@ -21,11 +21,6 @@ public class FinancialComponentModule extends AbstractConsumerAgentModule implem
     private static final IRPLogger LOGGER = IRPLogging.getLogger(FinancialComponentModule.class);
 
     protected final NPVDataSupplier npvDataSupplier = new NPVDataSupplier();
-    protected NPVData npvData;
-    protected double weight;
-    protected double logisticFactor;
-    protected double weightFT;
-    protected double weightNPV;
 
     public FinancialComponentModule() {
     }
@@ -46,6 +41,7 @@ public class FinancialComponentModule extends AbstractConsumerAgentModule implem
         );
     }
 
+    protected double weight;
     public void setWeight(double weight) {
         this.weight = weight;
     }
@@ -57,6 +53,7 @@ public class FinancialComponentModule extends AbstractConsumerAgentModule implem
         return npvDataSupplier;
     }
 
+    protected NPVData npvData;
     public void setNPVData(NPVData npvData) {
         this.npvData = npvData;
     }
@@ -71,6 +68,7 @@ public class FinancialComponentModule extends AbstractConsumerAgentModule implem
         return data;
     }
 
+    protected double logisticFactor;
     public void setLogisticFactor(double logisticFactor) {
         this.logisticFactor = logisticFactor;
     }
@@ -78,6 +76,7 @@ public class FinancialComponentModule extends AbstractConsumerAgentModule implem
         return logisticFactor;
     }
 
+    protected double weightFT;
     public void setWeightFT(double weightFT) {
         this.weightFT = weightFT;
     }
@@ -85,6 +84,7 @@ public class FinancialComponentModule extends AbstractConsumerAgentModule implem
         return weightFT;
     }
 
+    protected double weightNPV;
     public void setWeightNPV(double weightNPV) {
         this.weightNPV = weightNPV;
     }
@@ -101,13 +101,11 @@ public class FinancialComponentModule extends AbstractConsumerAgentModule implem
     @Override
     public void preAgentCreation() throws MissingDataException {
         super.preAgentCreation();
-        if(npvData != null) {
-            initNPVMatrixWithFile();
+        if(npvData == null) {
+            throw new MissingDataException("missing npv data");
+        } else {
+            initNPVDataSupplier(getValidNPVData(), getNPVDataSupplier());
         }
-    }
-
-    protected void initNPVMatrixWithFile() {
-        initNPVMatrixWithFile(getValidNPVData(), getNPVDataSupplier());
     }
 
     @Override

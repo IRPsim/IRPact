@@ -37,7 +37,7 @@ public class InPVactConsumerGroupBasedInitialAdoptionEntry implements InInitialA
         putClassPath(res, thisClass(), InRootUI.PRODUCTS_INITADOPT_PVACTCAGBASED_ENTRY);
         addEntries(res, thisClass(), "share", "cags", "zips");
 
-        setDefault(res, thisClass(), "share", VALUE_ZERO);
+        setDefault(res, thisClass(), "share", VALUE_0);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());

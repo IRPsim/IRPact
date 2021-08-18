@@ -71,7 +71,7 @@ public class WeightedAddModule
 
     public void setModule1(ConsumerAgentCalculationModule module1) {
         this.module1 = module1;
-        updateModuleList(INDEX_MODULE1, module1);
+        setSubModule(INDEX_MODULE1, module1);
     }
     public ConsumerAgentCalculationModule getModule1() {
         return module1;
@@ -86,7 +86,7 @@ public class WeightedAddModule
 
     public void setModule2(ConsumerAgentCalculationModule module2) {
         this.module2 = module2;
-        updateModuleList(INDEX_MODULE2, module2);
+        setSubModule(INDEX_MODULE2, module2);
     }
     public ConsumerAgentCalculationModule getModule2() {
         return module2;

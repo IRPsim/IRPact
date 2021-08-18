@@ -210,7 +210,7 @@ public abstract class AbstractConsumerAgentModule extends SimulationEntityBase i
         return npvDataSupplier.getAverageFinancialPurchasePower(getAgentManager().streamConsumerAgents());
     }
 
-    protected void initNPVMatrixWithFile(NPVData npvData, NPVDataSupplier dataSupplier) {
+    protected void initNPVDataSupplier(NPVData npvData, NPVDataSupplier dataSupplier) {
         if(isGlobalInitalized(dataSupplier)) {
             trace("NPVDataSupplier (hash={}) already initalized", dataSupplier.hashCode());
             return;
@@ -282,7 +282,7 @@ public abstract class AbstractConsumerAgentModule extends SimulationEntityBase i
     }
 
     protected double getAverageFinancialPurchasePower(Stream<? extends ConsumerAgent> agents, MutableDouble avgFT) {
-        if(avgFT != null && !Double.isNaN(avgFT.get())) {
+        if(avgFT != null && avgFT.isNumber()) {
             return avgFT.get();
         } else {
             if(avgFT == null) {
@@ -294,7 +294,7 @@ public abstract class AbstractConsumerAgentModule extends SimulationEntityBase i
     }
 
     private synchronized double syncCalcAvgFT(Stream<? extends ConsumerAgent> agents, MutableDouble avgFT) {
-        if(avgFT != null && !Double.isNaN(avgFT.get())) {
+        if(avgFT != null && avgFT.isNumber()) {
             return avgFT.get();
         } else {
             double result = calcAvgFT(agents);

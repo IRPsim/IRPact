@@ -79,7 +79,7 @@ public class NPVModule extends AbstractConsumerAgentModule implements ConsumerAg
     }
 
     protected void initNPVMatrixWithFile() {
-        initNPVMatrixWithFile(getValidNPVData(), getNPVDataSupplier());
+        initNPVDataSupplier(getValidNPVData(), getNPVDataSupplier());
     }
 
     @Override

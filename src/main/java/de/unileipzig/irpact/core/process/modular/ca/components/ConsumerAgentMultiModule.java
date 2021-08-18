@@ -12,19 +12,19 @@ import java.util.Objects;
 /**
  * @author Daniel Abitz
  */
-public interface ConsumerAgentMultiModule extends MultiModule<ConsumerAgentModule>, ConsumerAgentModule {
+public interface ConsumerAgentMultiModule<M extends ConsumerAgentModule> extends MultiModule<M>, ConsumerAgentModule {
 
     @Override
-    default void handleMissingParametersRecursively(ConsumerAgentMPM model) {
+    default void handleMissingParameters(ConsumerAgentMPM model) {
         for(ConsumerAgentModule subModule: iterateModules()) {
-            subModule.handleMissingParametersRecursively(model);
+            subModule.handleMissingParameters(model);
         }
     }
 
     @Override
-    default void handleNewProductRecursively(Product newProduct) {
+    default void handleNewProduct(Product newProduct) {
         for(ConsumerAgentModule subModule: iterateModules()) {
-            subModule.handleNewProductRecursively(newProduct);
+            subModule.handleNewProduct(newProduct);
         }
     }
 
@@ -33,7 +33,7 @@ public interface ConsumerAgentMultiModule extends MultiModule<ConsumerAgentModul
         if(Objects.equals(getName(), name)) {
             return this;
         } else {
-            for(ConsumerAgentModule subModule: iterateModules()) {
+            for(M subModule: iterateModules()) {
                 ConsumerAgentModule found = subModule.searchModule(name);
                 if(found != null) {
                     return found;

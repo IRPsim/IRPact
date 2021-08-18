@@ -33,12 +33,12 @@ public abstract class AbstractConsumerAgentMPM extends SimulationEntityBase impl
 
     public void setStartModule(ConsumerAgentEvaluationModule startModule) {
         this.startModule = startModule;
-        startModule.handleMissingParametersRecursively(this);
+        startModule.handleMissingParameters(this);
     }
 
     @Override
     public void handleNewProduct(Product newProduct) {
-        getStartModule().handleNewProductRecursively(newProduct);
+        getStartModule().handleNewProduct(newProduct);
     }
 
     @Override

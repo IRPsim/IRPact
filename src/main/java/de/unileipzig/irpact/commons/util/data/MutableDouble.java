@@ -137,6 +137,14 @@ public final class MutableDouble extends Number implements ChecksumComparable {
         return isEquals(0);
     }
 
+    public boolean isNaN() {
+        return Double.isNaN(value);
+    }
+
+    public boolean isNumber() {
+        return !isNaN();
+    }
+
     public boolean setMax(double value) {
         if(hasValue()) {
             if(value > get()) {

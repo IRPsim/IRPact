@@ -89,7 +89,7 @@ public class DisaggregatedNPVModule extends AbstractConsumerAgentModule implemen
     }
 
     protected void initNPVMatrixWithFile() {
-        initNPVMatrixWithFile(getValidNPVData(), getNPVDataSupplier());
+        initNPVDataSupplier(getValidNPVData(), getNPVDataSupplier());
     }
 
     @Override

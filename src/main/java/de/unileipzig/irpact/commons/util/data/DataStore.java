@@ -2,6 +2,8 @@ package de.unileipzig.irpact.commons.util.data;
 
 import de.unileipzig.irpact.commons.Nameable;
 
+import java.util.concurrent.locks.Lock;
+
 /**
  * @author Daniel Abitz
  */
@@ -10,6 +12,8 @@ public interface DataStore extends Nameable {
     void lock();
 
     void unlock();
+
+    Lock getLock();
 
     void removeAll();
 

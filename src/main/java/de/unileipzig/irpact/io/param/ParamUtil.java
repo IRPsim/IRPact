@@ -59,8 +59,8 @@ public final class ParamUtil {
 
     public static final Object[] VALUE_TRUE = {"1"};
     public static final Object[] VALUE_FALSE = {"0"};
-    public static final Object[] VALUE_ONE = {"1"};
-    public static final Object[] VALUE_ZERO = {"0"};
+    public static final Object[] VALUE_1 = {"1"};
+    public static final Object[] VALUE_0 = {"0"};
     public static final Object[] VALUE_1000 = {"1000"};
     public static final Object[] VALUE_1280 = {"1280"};
     public static final Object[] VALUE_720 = {"720"};

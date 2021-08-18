@@ -207,6 +207,7 @@
       "set_InDistanceEvaluator" : { },
       "set_InDoNothingComponent" : { },
       "set_InEntireNetworkNodeFilterScheme" : { },
+      "set_InEnvironmentalConcernModule_inputgraphnode" : { },
       "set_InEvaluableComponent" : { },
       "set_InFile" : {
         "Barwertrechner" : { },
@@ -220,6 +221,7 @@
       "set_InFileBasedSelectGroupSpatialInformationSupplier" : { },
       "set_InFileBasedSelectSpatialInformationSupplier" : { },
       "set_InFileBasedSpatialInformationSupplier" : { },
+      "set_InFinancialComponentModule_inputgraphnode" : { },
       "set_InFiniteMassPointsDiscreteDistribution" : { },
       "set_InFixConsumerAgentPopulation" : {
         "PopulationSize" : {
@@ -286,7 +288,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_08_17_T_12_07_08" : {
+        "CT_D_2021_08_18_T_12_15_32" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -307,6 +309,7 @@
       "set_InNameSplitProductGroupAttribute" : { },
       "set_InNoDistance" : { },
       "set_InNormalDistribution" : { },
+      "set_InNoveltySeekingModule_inputgraphnode" : { },
       "set_InNPVModule_inputgraphnode" : { },
       "set_InNumberOfTies" : { },
       "set_InOutputImage" : {
@@ -378,11 +381,14 @@
       "set_InRealAdoptionDataFile" : { },
       "set_InROutputImage" : { },
       "set_InScenarioVersion" : {
-        "v1_1_0" : {
+        "v1_2_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
+      "set_InShareOfAdopterInLocalNetworkModule_inputgraphnode" : { },
+      "set_InShareOfAdopterInSocialNetworkModule_inputgraphnode" : { },
       "set_InSimpleConsumerAgentMPM" : { },
+      "set_InSocialComponentModule_inputgraphnode" : { },
       "set_InSpace2D" : {
         "Space2D" : {
           "par_InSpace2D_useManhatten" : 0,
@@ -410,9 +416,11 @@
       "set_InStageEvaluationModule_evalgraphnode" : { },
       "set_InSumAttributeComponent" : { },
       "set_InSumIntermediateComponent" : { },
+      "set_InSumModule_calcgraphnode" : { },
       "set_InSumThresholdComponent" : { },
       "set_InSumThresholdEvaluationModule_evalgraphnode" : { },
       "set_InTestData" : { },
+      "set_InThresholdEvaluationModule_evalgraphnode" : { },
       "set_InTimeModel" : {
         "DiscreteUnitStep" : { }
       },
@@ -441,6 +449,7 @@
         }
       },
       "set_InValueComponent" : { },
+      "set_InWeightedAddModule_calcgraphnode" : { },
       "set_InWeightedModule_calcgraphnode" : { },
       "set_IWattsStrogatzModel" : { },
       "set_jj" : { },
@@ -564,6 +573,7 @@
       "par_link_InFileBasedSpatialInformationSupplier_InAttributeName_xPositionKey" : { },
       "par_link_InFileBasedSpatialInformationSupplier_InAttributeName_yPositionKey" : { },
       "par_link_InFileBasedSpatialInformationSupplier_InSpatialTableFile_file" : { },
+      "par_link_InFinancialComponentModule_inputgraphnode_InPVFile_pvFile" : { },
       "par_link_InFiniteMassPointsDiscreteDistribution_InMassPoint_massPoints" : { },
       "par_link_InFixConsumerAgentPopulation_InConsumerAgentGroup_cags" : {
         "PopulationSize" : {
@@ -709,7 +719,9 @@
         }
       },
       "par_link_InROutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : { },
+      "par_link_InShareOfAdopterInLocalNetworkModule_inputgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
       "par_link_InSimpleConsumerAgentMPM_InConsumerAgentEvaluationModule_startModule" : { },
+      "par_link_InSocialComponentModule_inputgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
       "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_adoptedModule_graphedge" : { },
       "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_awarenessModule_graphedge" : { },
       "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_decisionMakingModule_graphedge" : { },
@@ -717,8 +729,12 @@
       "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_impededModule_graphedge" : { },
       "par_link_InSumAttributeComponent_InAttributeName_attributeNames" : { },
       "par_link_InSumIntermediateComponent_InValueComponent_components" : { },
+      "par_link_InSumModule_calcgraphnode_InConsumerAgentCalculationModule_inputModules_graphedge" : { },
       "par_link_InSumThresholdComponent_InValueComponent_components" : { },
       "par_link_InSumThresholdEvaluationModule_evalgraphnode_InConsumerAgentCalculationModule_input_graphedge" : { },
+      "par_link_InThresholdEvaluationModule_evalgraphnode_InConsumerAgentCalculationModule_input_graphedge" : { },
+      "par_link_InWeightedAddModule_calcgraphnode_InConsumerAgentCalculationModule_first_graphedge" : { },
+      "par_link_InWeightedAddModule_calcgraphnode_InConsumerAgentCalculationModule_second_graphedge" : { },
       "par_link_InWeightedModule_calcgraphnode_InConsumerAgentCalculationModule_input_graphedge" : { },
       "par_S_DS_growth_absolute" : { },
       "par_SOH_pss_sector" : { }
