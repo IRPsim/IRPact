@@ -1169,7 +1169,7 @@ InPVactGroupBasedDeffuantUncertainty_attributeNames:
 
 
 InModularRAProcessModel:
-  edn_label: "Modulares Relative Agreement"
+  edn_label: "[NICHT NUTZEN - VERALTET] Modulares Relative Agreement"
   edn_description: "todo"
 InModularRAProcessModel_speedOfConvergence:
   gams_identifier: "speed of convergence"
@@ -1333,7 +1333,7 @@ InDoNothingComponent_placeholder:
 ##########################
 
 process_modular2:
-  edn_label: "Modulares Prozessmodell V2"
+  edn_label: "Modulares Prozessmodell"
   edn_description: >-
     Ermöglicht die Konstruktion von modularen Prozessmodellen.
     Dabei wird zwischen zwei Modultypen unterschieden: Berechnungsmodule und Evaluierungsmodule.
@@ -1783,6 +1783,18 @@ InSumModule_calcgraphnode_weight:
   gams_description: "todo"
 InSumModule_calcgraphnode_inputModules_graphedge:
   gams_identifier: "Summanden"
+  gams_description: "todo"
+
+InProductModule_calcgraphnode:
+  edn_label: "Multiplizierer"
+  edn_description: >-
+    Einfacher Summierer, welcher belieb viele Eingaben addiert und das Ergebnis zusätzlich wichtet:
+    output = PRODUKT(input) * weight. ("PRODUKT" steht hierbei für die Produktfunktion.)
+InProductModule_calcgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InProductModule_calcgraphnode_inputModules_graphedge:
+  gams_identifier: "Faktoren"
   gams_description: "todo"
 
 InWeightedAddModule_calcgraphnode:

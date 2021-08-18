@@ -1779,6 +1779,23 @@ PARAMETER par_InNPVModule_inputgraphnode_weight(set_InNPVModule_inputgraphnode)
 * - type: Boolean
 PARAMETER par_link_InNPVModule_inputgraphnode_InPVFile_pvFile(set_InNPVModule_inputgraphnode,set_InPVFile)
 
+* - color: Blue
+* - shape: gear
+* - identifier: InProductModule_calcgraphnode
+* - type: String
+SET set_InProductModule_calcgraphnode(set_InConsumerAgentCalculationModule)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InProductModule_calcgraphnode_weight(set_InProductModule_calcgraphnode)
+
+* - description: todo
+* - identifier: Faktoren
+* - type: Boolean
+PARAMETER par_link_InProductModule_calcgraphnode_InConsumerAgentCalculationModule_inputModules_graphedge(set_InProductModule_calcgraphnode,set_InConsumerAgentCalculationModule)
+
 * - color: Green
 * - shape: square
 * - identifier: InShareOfAdopterInLocalNetworkModule_inputgraphnode

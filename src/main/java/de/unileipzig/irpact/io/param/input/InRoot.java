@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.process.modular.ca.components.calc.ProductModule;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.*;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
@@ -792,6 +793,7 @@ public class InRoot implements RootClass {
             InLogisticModule_calcgraphnode.class,
             InNoveltySeekingModule_inputgraphnode.class,
             InNPVModule_inputgraphnode.class,
+            InProductModule_calcgraphnode.class,
             InShareOfAdopterInLocalNetworkModule_inputgraphnode.class,
             InShareOfAdopterInSocialNetworkModule_inputgraphnode.class,
             InSocialComponentModule_inputgraphnode.class,

@@ -611,7 +611,7 @@
         :tags [["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["InRAProcessModel" "speedOfConvergence"] ["InRAProcessModel" "attitudeGap"] ["InRAProcessModel" "chanceNeutral"] ["InRAProcessModel" "chanceConvergence"] ["InRAProcessModel" "chanceDivergence"] ["link" "InRAProcessModel" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertainty" "uncertainties"]]
       } 
       {
-        :label "Modulares Relative Agreement" 
+        :label "[NICHT NUTZEN - VERALTET] Modulares Relative Agreement" 
         :set "set_InModularRAProcessModel" 
         :description "todo" 
         :tags [["InModularRAProcessModel" "speedOfConvergence"] ["InModularRAProcessModel" "attitudeGap"] ["InModularRAProcessModel" "chanceNeutral"] ["InModularRAProcessModel" "chanceConvergence"] ["InModularRAProcessModel" "chanceDivergence"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "interestComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "feasibilityComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "decisionMakingComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "actionComponent"] ["link" "InModularRAProcessModel" "InUncertainty" "uncertainties"]] 
@@ -673,7 +673,7 @@
         ]
       } 
       {
-        :label "Modulares Prozessmodell V2" 
+        :label "Modulares Prozessmodell" 
         :description "Ermöglicht die Konstruktion von modularen Prozessmodellen. Dabei wird zwischen zwei Modultypen unterschieden: Berechnungsmodule und Evaluierungsmodule. Berechnungsmodule haben als Ergebnis einen Zahlwert. Evaluierungsmodule haben als Ergebnis einen Adoptionsstatus. Dieser kann sein: adoptiert, Adoption nicht möglich, Adoption nicht entschieden. Der zu letzt genannte Zustand ermöglicht die Weiterführung im nächsten Iterationsschritt." 
         :sections [
           {
@@ -749,6 +749,12 @@
                     :set "set_InNPVModule_inputgraphnode" 
                     :description "Gibt den eigentlichen Barwert des Agenten zurück: output = agentNPV * weight" 
                     :tags [["InNPVModule" "inputgraphnode" "weight"] ["link" "InNPVModule" "inputgraphnode" "InPVFile" "pvFile"]]
+                  } 
+                  {
+                    :label "Multiplizierer" 
+                    :set "set_InProductModule_calcgraphnode" 
+                    :description "Einfacher Summierer, welcher belieb viele Eingaben addiert und das Ergebnis zusätzlich wichtet: output = PRODUKT(input) * weight. (\"PRODUKT\" steht hierbei für die Produktfunktion.)" 
+                    :tags [["InProductModule" "calcgraphnode" "weight"] ["link" "InProductModule" "calcgraphnode" "InConsumerAgentCalculationModule" "inputModules" "graphedge"]]
                   } 
                   {
                     :label "Lokaler Adopteranteil" 
