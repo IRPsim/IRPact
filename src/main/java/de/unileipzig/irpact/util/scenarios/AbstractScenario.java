@@ -425,10 +425,7 @@ public abstract class AbstractScenario implements Scenario {
     }
 
     public void logAll() {
-        setGeneralSetup(general -> {
-            general.setLogLevel(IRPLevel.ALL);
-            general.logAll = true;
-        });
+        setGeneralSetup(InGeneral::doLogAll);
     }
 
     public Consumer<? super InGeneral> getGeneralSetup() {

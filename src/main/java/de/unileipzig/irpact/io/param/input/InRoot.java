@@ -794,6 +794,7 @@ public class InRoot implements RootClass {
             InNoveltySeekingModule_inputgraphnode.class,
             InNPVModule_inputgraphnode.class,
             InProductModule_calcgraphnode.class,
+            InPurchasePowerModule_inputgraphnode.class,
             InShareOfAdopterInLocalNetworkModule_inputgraphnode.class,
             InShareOfAdopterInSocialNetworkModule_inputgraphnode.class,
             InSocialComponentModule_inputgraphnode.class,

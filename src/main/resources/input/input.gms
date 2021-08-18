@@ -1798,6 +1798,18 @@ PARAMETER par_link_InProductModule_calcgraphnode_InConsumerAgentCalculationModul
 
 * - color: Green
 * - shape: square
+* - identifier: InPurchasePowerModule_inputgraphnode
+* - type: String
+SET set_InPurchasePowerModule_inputgraphnode(set_InConsumerAgentCalculationModule)
+
+* - default: 1
+* - description: todo
+* - identifier: Wichtung
+* - type: Float
+PARAMETER par_InPurchasePowerModule_inputgraphnode_weight(set_InPurchasePowerModule_inputgraphnode)
+
+* - color: Green
+* - shape: square
 * - identifier: InShareOfAdopterInLocalNetworkModule_inputgraphnode
 * - type: String
 SET set_InShareOfAdopterInLocalNetworkModule_inputgraphnode(set_InConsumerAgentCalculationModule)

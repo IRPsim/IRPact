@@ -114,6 +114,8 @@ public class InNPVModule_inputgraphnode implements InConsumerAgentCalculationMod
             return searchModule(parser, getName(), NPVModule.class);
         }
 
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
+
         NPVModule module = new NPVModule();
         module.setName(getName());
         module.setEnvironment(parser.getEnvironment());

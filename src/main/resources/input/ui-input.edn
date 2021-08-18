@@ -757,6 +757,12 @@
                     :tags [["InProductModule" "calcgraphnode" "weight"] ["link" "InProductModule" "calcgraphnode" "InConsumerAgentCalculationModule" "inputModules" "graphedge"]]
                   } 
                   {
+                    :label "Kaufkraft" 
+                    :set "set_InPurchasePowerModule_inputgraphnode" 
+                    :description "Dieses Modul nutzt das Agentenattribut für Kaufkraft (KK_Euro) als Rückgabewert: output = KK_Euro * weight" 
+                    :tags [["InPurchasePowerModule" "inputgraphnode" "weight"]]
+                  } 
+                  {
                     :label "Lokaler Adopteranteil" 
                     :set "set_InSocialComponentModule_inputgraphnode" 
                     :description "Dieses Modul berechnet den Anteil der Adopter im lokalen Netzwerk: output = shareOfAdopter * weight. Das lokale Netz wird dabei über ein Berechnungsschema bzw. Filter bestimmt." 

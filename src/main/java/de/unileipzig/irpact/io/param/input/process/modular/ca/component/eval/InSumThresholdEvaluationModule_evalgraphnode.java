@@ -2,6 +2,7 @@ package de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentCalculationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.eval.SumThresholdEvaluationModule;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
@@ -141,6 +142,8 @@ public class InSumThresholdEvaluationModule_evalgraphnode implements InConsumerA
         if(parser.isRestored()) {
             return MPMSettings.searchModule(parser, thisName(), SumThresholdEvaluationModule.class);
         }
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
         SumThresholdEvaluationModule module = new SumThresholdEvaluationModule();
         module.setName(getName());

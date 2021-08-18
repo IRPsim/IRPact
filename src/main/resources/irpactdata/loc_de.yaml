@@ -1744,6 +1744,27 @@ InNPVModule_inputgraphnode_pvFile:
   gams_identifier: "PV-Datei"
   gams_description: "todo"
 
+InProductModule_calcgraphnode:
+  edn_label: "Multiplizierer"
+  edn_description: >-
+    Einfacher Summierer, welcher belieb viele Eingaben addiert und das Ergebnis zusätzlich wichtet:
+    output = PRODUKT(input) * weight. ("PRODUKT" steht hierbei für die Produktfunktion.)
+InProductModule_calcgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+InProductModule_calcgraphnode_inputModules_graphedge:
+  gams_identifier: "Faktoren"
+  gams_description: "todo"
+
+InPurchasePowerModule_inputgraphnode:
+  edn_label: "Kaufkraft"
+  edn_description: >-
+    Dieses Modul nutzt das Agentenattribut für Kaufkraft (KK_Euro) als Rückgabewert:
+    output = KK_Euro * weight
+InPurchasePowerModule_inputgraphnode_weight:
+  gams_identifier: "Wichtung"
+  gams_description: "todo"
+
 InShareOfAdopterInLocalNetworkModule_inputgraphnode:
   edn_label: "Lokaler Adopteranteil"
   edn_description: >-
@@ -1793,18 +1814,6 @@ InSumModule_calcgraphnode_weight:
   gams_description: "todo"
 InSumModule_calcgraphnode_inputModules_graphedge:
   gams_identifier: "Summanden"
-  gams_description: "todo"
-
-InProductModule_calcgraphnode:
-  edn_label: "Multiplizierer"
-  edn_description: >-
-    Einfacher Summierer, welcher belieb viele Eingaben addiert und das Ergebnis zusätzlich wichtet:
-    output = PRODUKT(input) * weight. ("PRODUKT" steht hierbei für die Produktfunktion.)
-InProductModule_calcgraphnode_weight:
-  gams_identifier: "Wichtung"
-  gams_description: "todo"
-InProductModule_calcgraphnode_inputModules_graphedge:
-  gams_identifier: "Faktoren"
   gams_description: "todo"
 
 InWeightedAddModule_calcgraphnode:

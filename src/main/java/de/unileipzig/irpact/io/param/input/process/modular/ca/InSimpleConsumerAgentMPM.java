@@ -3,6 +3,7 @@ package de.unileipzig.irpact.io.param.input.process.modular.ca;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.process.modular.ca.model.SimpleConsumerAgentMPM;
@@ -88,6 +89,8 @@ public class InSimpleConsumerAgentMPM implements InConsumerAgentModularProcessMo
             }
         }
 
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse modulares process model ({}) '{}'", thisName(), getName());
+
         SimpleConsumerAgentMPM model = new SimpleConsumerAgentMPM();
         model.setName(getName());
         model.setEnvironment(parser.getEnvironment());
@@ -95,6 +98,7 @@ public class InSimpleConsumerAgentMPM implements InConsumerAgentModularProcessMo
         Rnd rnd = parser.deriveRnd();
         model.setRnd(rnd);
 
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse start module '{}'", getStartModule().getName());
         ConsumerAgentEvaluationModule startModule = parser.parseEntityTo(getStartModule());
         model.setStartModule(startModule);
 

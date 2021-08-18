@@ -190,6 +190,7 @@ public class InRootUI {
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_NOVSEEK = PROCESS_MODULAR2_COMPONENTS_CALC.resolve(InNoveltySeekingModule_inputgraphnode.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_NPV = PROCESS_MODULAR2_COMPONENTS_CALC.resolve(InNPVModule_inputgraphnode.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_PRODUCT = PROCESS_MODULAR2_COMPONENTS_CALC.resolve(InProductModule_calcgraphnode.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_PP = PROCESS_MODULAR2_COMPONENTS_CALC.resolve(InPurchasePowerModule_inputgraphnode.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_SHARELOCAL = PROCESS_MODULAR2_COMPONENTS_CALC.resolve(InShareOfAdopterInLocalNetworkModule_inputgraphnode.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_SHARESOCIAL = PROCESS_MODULAR2_COMPONENTS_CALC.resolve(InShareOfAdopterInSocialNetworkModule_inputgraphnode.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_SOCIALCOMP = PROCESS_MODULAR2_COMPONENTS_CALC.resolve(InSocialComponentModule_inputgraphnode.thisName()).addTo(PATHS);

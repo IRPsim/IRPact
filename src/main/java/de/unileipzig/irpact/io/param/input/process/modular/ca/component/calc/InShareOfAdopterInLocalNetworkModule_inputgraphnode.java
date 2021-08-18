@@ -112,6 +112,8 @@ public class InShareOfAdopterInLocalNetworkModule_inputgraphnode implements InCo
             return searchModule(parser, getName(), ShareOfAdopterInLocalNetworkModule.class);
         }
 
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
+
         ShareOfAdopterInLocalNetworkModule module = new ShareOfAdopterInLocalNetworkModule();
         module.setName(getName());
         module.setEnvironment(parser.getEnvironment());

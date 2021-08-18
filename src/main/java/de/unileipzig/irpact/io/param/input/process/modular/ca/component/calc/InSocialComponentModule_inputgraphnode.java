@@ -132,6 +132,8 @@ public class InSocialComponentModule_inputgraphnode implements InConsumerAgentCa
             return searchModule(parser, getName(), SocialComponentModule.class);
         }
 
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
+
         SocialComponentModule module = new SocialComponentModule();
         module.setName(getName());
         module.setEnvironment(parser.getEnvironment());

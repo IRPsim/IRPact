@@ -2,6 +2,7 @@ package de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.modular.ca.components.calc.FinancialComponentModule;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
@@ -135,6 +136,8 @@ public class InFinancialComponentModule_inputgraphnode implements InConsumerAgen
         if(parser.isRestored()) {
             return searchModule(parser, getName(), FinancialComponentModule.class);
         }
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
         FinancialComponentModule module = new FinancialComponentModule();
         module.setName(getName());

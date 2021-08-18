@@ -448,6 +448,11 @@ public class InGeneral implements Copyable {
         setLogLevel(IRPLevel.INFO);
     }
 
+    public void doLogAll() {
+        setLogLevel(IRPLevel.ALL);
+        logAll = true;
+    }
+
     //=========================
     //data logging
     //=========================

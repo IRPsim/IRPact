@@ -127,6 +127,8 @@ public class InDisaggregatedNPVModule_inputgraphnode implements InConsumerAgentC
             return searchModule(parser, getName(), DisaggregatedNPVModule.class);
         }
 
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
+
         DisaggregatedNPVModule module = new DisaggregatedNPVModule();
         module.setName(getName());
         module.setEnvironment(parser.getEnvironment());
@@ -135,15 +137,5 @@ public class InDisaggregatedNPVModule_inputgraphnode implements InConsumerAgentC
         module.setNPVData(parser.parseEntityTo(getPvFile()));
 
         return module;
-    }
-
-    private void applyPvFile(IRPactInputParser parser, DisaggregatedNPVModule module) throws ParsingException {
-        if(hasPvFile()) {
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "load pv file '{}'" , getPvFile().getName());
-            NPVXlsxData xlsxData = parser.parseEntityTo(getPvFile());
-            module.setNPVData(xlsxData);
-        } else {
-            LOGGER.trace("no pv file found");
-        }
     }
 }

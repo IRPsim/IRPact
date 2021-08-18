@@ -131,6 +131,15 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         }
         return pvFile;
     }
+    public InPVFile computePVFileIfAbsent() {
+        if(isCached(getPVDataName())) {
+            return getCached(getPVDataName());
+        } else {
+            InPVFile pvFile = getPVFile();
+            cache(getPVDataName(), pvFile);
+            return pvFile;
+        }
+    }
 
     protected InSpatialTableFile spatialTableFile;
     public InSpatialTableFile getSpatialFile() {
@@ -139,6 +148,15 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         }
         return spatialTableFile;
     }
+    public InSpatialTableFile computeSpatialFileIfAbsent() {
+        if(isCached(getSpatialFileName())) {
+            return getCached(getSpatialFileName());
+        } else {
+            InSpatialTableFile spatialTableFile = getSpatialFile();
+            cache(getSpatialFileName(), spatialTableFile);
+            return spatialTableFile;
+        }
+    }
 
     protected InRealAdoptionDataFile realAdoptionFile;
     public InRealAdoptionDataFile getRealAdoptionDataFile() {
@@ -146,6 +164,15 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
             realAdoptionFile = new InRealAdoptionDataFile(getRealAdoptionDataName());
         }
         return realAdoptionFile;
+    }
+    public InRealAdoptionDataFile computeRealAdoptionDataFileIfAbsent() {
+        if(isCached(getRealAdoptionDataName())) {
+            return getCached(getRealAdoptionDataName());
+        } else {
+            InRealAdoptionDataFile realAdoptionFile = getRealAdoptionDataFile();
+            cache(getRealAdoptionDataName(), realAdoptionFile);
+            return realAdoptionFile;
+        }
     }
 
     public InAttributeName getAttribute(String text) {
@@ -185,7 +212,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
     }
 
     public InGenericOutputImage[] createDefaultImages() {
-        InGenericOutputImage[] defaults = InGenericOutputImage.createDefaultImages(getRealAdoptionDataFile());
+        InGenericOutputImage[] defaults = InGenericOutputImage.createDefaultImages(computeRealAdoptionDataFileIfAbsent());
         InGenericOutputImage.setEnableAll(true, defaults);
         InGenericOutputImage.setEngine(SupportedEngine.GNUPLOT, defaults);
         return defaults;

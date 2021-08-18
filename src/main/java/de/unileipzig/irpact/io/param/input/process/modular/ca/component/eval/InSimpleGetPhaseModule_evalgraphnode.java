@@ -2,6 +2,7 @@ package de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.modular.ca.AdoptionResult;
 import de.unileipzig.irpact.core.process.modular.ca.components.eval.SimpleGetPhaseModule;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
@@ -143,6 +144,8 @@ public class InSimpleGetPhaseModule_evalgraphnode implements InConsumerAgentEval
         if(parser.isRestored()) {
             return MPMSettings.searchModule(parser, thisName(), SimpleGetPhaseModule.class);
         }
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
         SimpleGetPhaseModule module = new SimpleGetPhaseModule();
         module.setName(getName());

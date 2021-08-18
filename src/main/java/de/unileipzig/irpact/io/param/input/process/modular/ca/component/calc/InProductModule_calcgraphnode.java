@@ -2,6 +2,7 @@ package de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentCalculationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.calc.ProductModule;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
@@ -18,6 +19,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Collection;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings.*;
@@ -90,6 +92,9 @@ public class InProductModule_calcgraphnode implements InConsumerAgentCalculation
     public void setInput(InConsumerAgentCalculationModule[] inputModules) {
         this.inputModules_graphedge = inputModules;
     }
+    public void setInput(Collection<? extends InConsumerAgentCalculationModule> inputModules) {
+        setInput(inputModules.toArray(new InConsumerAgentCalculationModule[0]));
+    }
 
     public InProductModule_calcgraphnode() {
     }
@@ -109,6 +114,8 @@ public class InProductModule_calcgraphnode implements InConsumerAgentCalculation
         if(parser.isRestored()) {
             return searchModule(parser, getName(), ProductModule.class);
         }
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
         ProductModule module = new ProductModule();
         module.setName(getName());

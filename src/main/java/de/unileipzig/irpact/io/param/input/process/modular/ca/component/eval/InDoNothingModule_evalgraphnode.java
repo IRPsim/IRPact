@@ -2,6 +2,7 @@ package de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.modular.ca.components.eval.DoNothingModule;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
@@ -19,6 +20,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Collection;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings.*;
@@ -78,6 +80,9 @@ public class InDoNothingModule_evalgraphnode implements InConsumerAgentEvaluatio
     public void setInputModules(InConsumerAgentModule[] inputModules) {
         this.inputModule_graphedge = inputModules;
     }
+    public void setInputModules(Collection<? extends InConsumerAgentModule> inputModules) {
+        setInputModules(inputModules.toArray(new InConsumerAgentModule[0]));
+    }
     public InConsumerAgentModule[] getInputModules() throws ParsingException {
         return ParamUtil.getNonEmptyArray(inputModule_graphedge, "inputModule");
     }
@@ -100,6 +105,8 @@ public class InDoNothingModule_evalgraphnode implements InConsumerAgentEvaluatio
         if(parser.isRestored()) {
             return MPMSettings.searchModule(parser, thisName(), DoNothingModule.class);
         }
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
         DoNothingModule module = new DoNothingModule();
         module.setName(getName());

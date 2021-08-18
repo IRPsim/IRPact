@@ -2,6 +2,7 @@ package de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.modular.ca.components.calc.ShareOfAdopterInSocialNetworkModule;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
@@ -89,6 +90,8 @@ public class InShareOfAdopterInSocialNetworkModule_inputgraphnode implements InC
         if(parser.isRestored()) {
             return searchModule(parser, getName(), ShareOfAdopterInSocialNetworkModule.class);
         }
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
         ShareOfAdopterInSocialNetworkModule module = new ShareOfAdopterInSocialNetworkModule();
         module.setName(getName());

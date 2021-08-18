@@ -2,6 +2,7 @@ package de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentCalculationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.calc.AddModule;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
@@ -134,6 +135,8 @@ public class InAddModule_calcgraphnode implements InConsumerAgentCalculationModu
         if(parser.isRestored()) {
             return searchModule(parser, getName(), AddModule.class);
         }
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
         ConsumerAgentCalculationModule first = parser.parseEntityTo(getFirst());
         ConsumerAgentCalculationModule second = parser.parseEntityTo(getSecond());
