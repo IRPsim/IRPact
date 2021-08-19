@@ -211,7 +211,7 @@ public class InDefaultInterestModule_evalgraphnode implements InConsumerAgentEva
             return MPMSettings.searchModule(parser, thisName(), DefaultInterestModule.class);
         }
 
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}'", thisName(), getName());
 
         DefaultInterestModule module = new DefaultInterestModule();
         module.setName(getName());

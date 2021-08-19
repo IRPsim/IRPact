@@ -18,16 +18,14 @@ import de.unileipzig.irpact.io.param.input.distribution.*;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.InSimpleConsumerAgentMPM;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentMPMWithAdoptionHandler;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc.*;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
 import de.unileipzig.irpact.io.param.input.process.mra.InModularRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.mra.component.*;
 import de.unileipzig.irpact.io.param.input.product.*;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactAttributeBasedInitialAdoption;
-import de.unileipzig.irpact.io.param.input.product.initial.InPVactConsumerGroupBasedInitialAdoption;
-import de.unileipzig.irpact.io.param.input.product.initial.InPVactConsumerGroupBasedInitialAdoptionEntry;
-import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedConsumerGroupBasedInitialAdoption;
+import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InGraphvizGeneral;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGnuPlotOutputImage;
@@ -153,9 +151,7 @@ public class InRootUI {
 
     public static final EdnPath PRODUCTS_INITADOPT = PRODUCTS.resolve(IOConstants.INITAL_ADOPTERS).addTo(PATHS);
     public static final EdnPath PRODUCTS_INITADOPT_PVACTATTRBASED = PRODUCTS_INITADOPT.resolve(InPVactAttributeBasedInitialAdoption.thisName()).addTo(PATHS);
-    public static final EdnPath PRODUCTS_INITADOPT_PVACTCAGBASED = PRODUCTS_INITADOPT.resolve(InPVactConsumerGroupBasedInitialAdoption.thisName()).addTo(PATHS);
-    public static final EdnPath PRODUCTS_INITADOPT_PVACTCAGBASED_ENTRY = PRODUCTS_INITADOPT_PVACTCAGBASED.resolve(InPVactConsumerGroupBasedInitialAdoptionEntry.thisName()).addTo(PATHS);
-    public static final EdnPath PRODUCTS_INITADOPT_PVACTFILECAGBASED = PRODUCTS_INITADOPT.resolve(InPVactFileBasedConsumerGroupBasedInitialAdoption.thisName()).addTo(PATHS);
+    public static final EdnPath PRODUCTS_INITADOPT_PVACTFILECAGBASED = PRODUCTS_INITADOPT.resolve(InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData.thisName()).addTo(PATHS);
 
     public static final EdnPath PROCESS = ROOT.resolve(IOConstants.PROCESS_MODEL).addTo(PATHS);
     public static final EdnPath PROCESS_RA = PROCESS.resolve(InRAProcessModel.thisName()).addTo(PATHS);
@@ -177,7 +173,7 @@ public class InRootUI {
 
     public static final EdnPath PROCESS_MODULAR2 = PROCESS.resolve(IOConstants.PROCESS_MODULAR2).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_MODEL = PROCESS_MODULAR2.resolve(IOConstants.PROCESS_MODULAR2_MODEL).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR2_MODEL_SIMPLE = PROCESS_MODULAR2_MODEL.resolve(InSimpleConsumerAgentMPM.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_MODEL_SIMPLE = PROCESS_MODULAR2_MODEL.resolve(InConsumerAgentMPMWithAdoptionHandler.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS = PROCESS_MODULAR2.resolve(IOConstants.PROCESS_MODULAR2_COMPONENTS).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC = PROCESS_MODULAR2_COMPONENTS.resolve(IOConstants.PROCESS_MODULAR2_COMPONENTS_CALC).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_ADD = PROCESS_MODULAR2_COMPONENTS_CALC.resolve(InAddModule_calcgraphnode.thisName()).addTo(PATHS);

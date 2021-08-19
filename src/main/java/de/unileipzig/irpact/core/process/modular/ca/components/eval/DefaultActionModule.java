@@ -24,12 +24,18 @@ public class DefaultActionModule extends AbstractActionModule implements Consume
     }
 
     @Override
+    public IRPSection getDefaultResultSection() {
+        return IRPSection.SIMULATION_PROCESS;
+    }
+
+    @Override
     public int getChecksum() {
         return getPartialChecksum();
     }
 
     @Override
     public AdoptionResult evaluate(ConsumerAgentData data) throws Throwable {
+        trace("[{}] handle default actions", data.getAgent().getName());
         return doAction(data);
     }
 }

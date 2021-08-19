@@ -4,6 +4,8 @@ import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.commons.util.MapSupplier;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
@@ -12,6 +14,7 @@ import de.unileipzig.irpact.core.process.modular.ModularProcessPlan;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.process.modular.ca.model.ConsumerAgentMPM;
 import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
@@ -21,6 +24,8 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Daniel Abitz
  */
 public class SimpleConsumerAgentData implements ConsumerAgentData, ModularProcessPlan {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(SimpleConsumerAgentData.class);
 
     protected final Lock LOCK = new ReentrantLock();
     protected MapSupplier mapSupplier;
@@ -154,6 +159,24 @@ public class SimpleConsumerAgentData implements ConsumerAgentData, ModularProces
 
     @Override
     public ProcessPlanResult execute() throws Throwable {
+        if(currentStage() == Stage.PRE_INITIALIZATION) {
+            return initPlan();
+        } else {
+            return executePlan();
+        }
+    }
+
+    protected ProcessPlanResult initPlan() throws Throwable {
+        if(getAgent().hasAdopted(getProduct())) {
+            updateStage(Stage.ADOPTED);
+        } else {
+            updateStage(Stage.AWARENESS);
+        }
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "initial stage for '{}': {}", getAgent().getName(), currentStage());
+        return executePlan();
+    }
+
+    protected ProcessPlanResult executePlan() throws Throwable {
         ConsumerAgentEvaluationModule module = getValidModel().getStartModule();
         if(module == null) {
             throw new NullPointerException("ConsumerAgentEvaluationModule");

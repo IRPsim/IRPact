@@ -12,7 +12,7 @@ import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistrib
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.InSimpleConsumerAgentMPM;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentMPMWithAdoptionHandler;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc.*;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.InDoNothingModule_evalgraphnode;
@@ -95,6 +95,7 @@ public class ModularDemo1 extends AbstractPVactScenario {
         //eval
 
         InSumThresholdEvaluationModule_evalgraphnode sumEval = new InSumThresholdEvaluationModule_evalgraphnode();
+        sumEval.setName("SUM_EVAL");
         sumEval.setThreshold(42);
         sumEval.setAdoptIfAccepted(true);
         sumEval.setImpededIfFailed(false);
@@ -108,7 +109,7 @@ public class ModularDemo1 extends AbstractPVactScenario {
         master.setName("MASTER");
         master.setInputModules(modules);
 
-        InSimpleConsumerAgentMPM mpm = new InSimpleConsumerAgentMPM();
+        InConsumerAgentMPMWithAdoptionHandler mpm = new InConsumerAgentMPMWithAdoptionHandler();
         mpm.setName("MPM");
         mpm.setStartModule(master);
         return mpm;

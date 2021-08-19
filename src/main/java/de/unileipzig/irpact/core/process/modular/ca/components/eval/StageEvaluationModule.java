@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.process.modular.ca.components.eval;
 
 import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.modular.ca.AdoptionResult;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.Stage;
@@ -32,6 +33,11 @@ public class StageEvaluationModule
     @Override
     public IRPLogger getDefaultLogger() {
         return LOGGER;
+    }
+
+    @Override
+    public IRPSection getDefaultResultSection() {
+        return IRPSection.SIMULATION_PROCESS;
     }
 
     @Override
@@ -87,7 +93,12 @@ public class StageEvaluationModule
             throw new NullPointerException("Stage");
         }
 
+        trace("[{}] start stage evaluation for '{}'", data.getAgent().getName(), stage);
+
         switch (stage) {
+            case PRE_INITIALIZATION:
+                throw new IllegalArgumentException("unsupported stage: " + stage);
+
             case AWARENESS:
                 return evaluateAwareness(data);
 

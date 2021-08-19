@@ -17,7 +17,7 @@ import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InCompleteGraphTopology;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.InSimpleConsumerAgentMPM;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentMPMWithAdoptionHandler;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentCalculationModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc.*;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
@@ -100,7 +100,7 @@ public class ModularExample extends AbstractScenario {
         sum.setThreshold(42);
         sum.setInputs(new InConsumerAgentCalculationModule[] {add, add2, rawNPV});
 
-        InSimpleConsumerAgentMPM processModel = new InSimpleConsumerAgentMPM();
+        InConsumerAgentMPMWithAdoptionHandler processModel = new InConsumerAgentMPMWithAdoptionHandler();
         processModel.setName("MRA");
         processModel.setStartModule(sum);
 

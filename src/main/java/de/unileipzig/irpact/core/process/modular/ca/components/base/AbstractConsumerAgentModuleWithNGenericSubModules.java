@@ -67,7 +67,7 @@ public abstract class AbstractConsumerAgentModuleWithNGenericSubModules<M extend
     @Override
     public List<M> iterateModules() {
         if(nullElements != 0) {
-            throw new IllegalStateException("list contains null");
+            throw new IllegalStateException("list contains null (" + getName() + " @ " + getClass() + ")");
         }
         return MODULE_LIST;
     }

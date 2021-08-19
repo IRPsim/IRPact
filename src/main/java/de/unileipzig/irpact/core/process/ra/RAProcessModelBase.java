@@ -17,13 +17,16 @@ import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyCache;
 import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyHandler;
 import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyManager;
 import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.core.product.initial.NewProductHandler;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.util.AttributeHelper;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,6 +44,8 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     protected Map<Integer, Timestamp> week27Map = new HashMap<>();
     protected boolean isYearChange = false;
 
+    protected final List<NewProductHandler> newProductHandlers = new ArrayList<>();
+
     public RAProcessModelBase() {
         uncertaintyHandler = new UncertaintyHandler();
         uncertaintyHandler.setCache(new UncertaintyCache());
@@ -53,6 +58,14 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     @Override
     public final IRPSection getDefaultSection() {
         return IRPSection.INITIALIZATION_PARAMETER;
+    }
+
+    public void addNewProductHandler(NewProductHandler initialAdoptionHandler) {
+        newProductHandlers.add(initialAdoptionHandler);
+    }
+
+    public List<NewProductHandler> getNewProductHandlers() {
+        return newProductHandlers;
     }
 
     public void setEnvironment(SimulationEnvironment environment) {

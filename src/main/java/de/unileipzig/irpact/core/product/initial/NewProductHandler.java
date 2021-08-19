@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 /**
  * @author Daniel Abitz
  */
-public interface InitialAdoptionHandler extends Nameable {
+public interface NewProductHandler extends Nameable {
 
     void handleProduct(SimulationEnvironment environment, Product product);
 }

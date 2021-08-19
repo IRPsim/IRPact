@@ -13,7 +13,8 @@ import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistri
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentMPMWithAdoptionHandler;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
@@ -26,15 +27,15 @@ import java.time.temporal.ChronoUnit;
 /**
  * @author Daniel Abitz
  */
-public class DefaultScenario extends AbstractScenario implements DefaultScenarioFactory {
+public class DefaultModularScenario extends AbstractScenario implements DefaultScenarioFactory {
 
-    public static final int REVISION = 2;
+    public static final int REVISION = 0;
 
-    public DefaultScenario() {
+    public DefaultModularScenario() {
         this(null, null, null);
     }
 
-    public DefaultScenario(String name, String creator, String description) {
+    public DefaultModularScenario(String name, String creator, String description) {
         super(name, creator, description);
         setRevision(REVISION);
     }
@@ -81,14 +82,42 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
         uncertainty.setDefaultValues();
         uncertainty.setConsumerAgentGroups(cags);
 
-        InRAProcessModel processModel = new InRAProcessModel();
-        processModel.setName("ProcessModel");
-        processModel.setDefaultValues();
-        processModel.setNodeFilterScheme(new InRAProcessPlanMaxDistanceFilterScheme("MaxDistance", 100, true));
-        processModel.setPvFile(pvFile);
-        processModel.setUncertainty(uncertainty);
-        processModel.setSpeedOfConvergence(0.0);
-        processModel.addNewProductHandle(getDefaultInitialAdopterHandler());
+        InDefaultActionModule_evalgraphnode actionModule = new InDefaultActionModule_evalgraphnode();
+        actionModule.setName("ACTION");
+        actionModule.setDefaultValues();
+        actionModule.setUncertainty(uncertainty);
+        actionModule.setSpeedOfConvergence(0);
+
+        InDefaultInterestModule_evalgraphnode interestModule = new InDefaultInterestModule_evalgraphnode();
+        interestModule.setName("INTEREST");
+        interestModule.setDefaultValues();
+        interestModule.setUncertainty(uncertainty);
+        interestModule.setSpeedOfConvergence(0);
+
+        InDefaultFeasibilityModule_evalgraphnode feasibilityModule = new InDefaultFeasibilityModule_evalgraphnode();
+        feasibilityModule.setName("FEASIBILITY");
+        feasibilityModule.setDefaultValues();
+        feasibilityModule.setUncertainty(uncertainty);
+        feasibilityModule.setSpeedOfConvergence(0);
+
+        InDefaultDecisionMakingModule_evalgraphnode decisionModule = new InDefaultDecisionMakingModule_evalgraphnode();
+        decisionModule.setName("DECISION");
+        decisionModule.setDefaultValues();
+        decisionModule.setPvFile(pvFile);
+        decisionModule.setNodeFilterScheme(new InRAProcessPlanMaxDistanceFilterScheme("MaxDistance", 100, true));
+
+        InStageEvaluationModule_evalgraphnode stageModule = new InStageEvaluationModule_evalgraphnode();
+        stageModule.setName("PROCESS_STAGE_HANDLER");
+        stageModule.setAwarenessModule(interestModule);
+        stageModule.setFeasibilityModule(feasibilityModule);
+        stageModule.setDecisionMakingModule(decisionModule);
+        stageModule.setAdoptedModule(actionModule);
+        stageModule.setImpededModule(actionModule);
+
+        InConsumerAgentMPMWithAdoptionHandler mpm = new InConsumerAgentMPMWithAdoptionHandler();
+        mpm.setName("ModularProcessModel");
+        mpm.setStartModule(stageModule);
+        mpm.addNewProductHandlers(getDefaultInitialAdopterHandler());
 
         //space
         InSpace2D space2D = new InSpace2D("Space2D", Metric2D.HAVERSINE_KM);
@@ -101,7 +130,7 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
         root.setConsumerAgentGroups(cags);
         root.setAgentPopulationSize(populationSize);
         root.setAffinities(affinities);
-        root.setProcessModel(processModel);
+        root.setProcessModel(mpm);
         root.setSpatialModel(space2D);
         root.setGraphTopologyScheme(topology);
         root.setTimeModel(timeModel);

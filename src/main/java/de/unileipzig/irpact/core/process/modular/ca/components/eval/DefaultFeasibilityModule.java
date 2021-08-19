@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.process.modular.ca.components.eval;
 
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractActionModule;
 import de.unileipzig.irpact.core.process.modular.ca.AdoptionResult;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
@@ -24,12 +25,19 @@ public class DefaultFeasibilityModule extends AbstractActionModule implements Co
     }
 
     @Override
+    public IRPSection getDefaultResultSection() {
+        return IRPSection.SIMULATION_PROCESS;
+    }
+
+    @Override
     public int getChecksum() {
         return getPartialChecksum();
     }
 
     @Override
     public AdoptionResult evaluate(ConsumerAgentData data) throws Throwable {
+        trace("[{}] handle feasibility", data.getAgent().getName());
+
         boolean isShare = isShareOf1Or2FamilyHouse(data.getAgent());
         boolean isOwner = isHouseOwner(data.getAgent());
 

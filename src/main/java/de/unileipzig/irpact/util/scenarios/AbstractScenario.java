@@ -2,6 +2,8 @@ package de.unileipzig.irpact.util.scenarios;
 
 import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
+import de.unileipzig.irpact.io.param.input.product.initial.InNewProductHandler;
+import de.unileipzig.irpact.io.param.input.product.initial.InPVactAttributeBasedInitialAdoption;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
 import de.unileipzig.irpact.util.IRPArgs;
 import de.unileipzig.irpact.commons.util.JsonUtil;
@@ -76,6 +78,7 @@ public abstract class AbstractScenario implements Scenario {
     protected long timeout = 5;
     protected TimeUnit timeoutUnit = TimeUnit.MINUTES;
     protected boolean hardReplace = false;
+    protected boolean forceDisablePersist = true;
 
     protected final NavigableMap<Integer, Integer> supportYears = new TreeMap<>();
     protected Consumer<? super InGeneral> generalSetup;
@@ -147,6 +150,18 @@ public abstract class AbstractScenario implements Scenario {
         postsetupRoot(roots);
         validate(roots);
         return roots;
+    }
+
+    protected static final String DEFAULT_INIT_ADOPTER = "DEFAULT_INIT_ADOPTER";
+    protected InNewProductHandler getDefaultInitialAdopterHandler() {
+        if(isCached(DEFAULT_INIT_ADOPTER)) {
+            return getCached(DEFAULT_INIT_ADOPTER);
+        } else {
+            InPVactAttributeBasedInitialAdoption initAdopter = new InPVactAttributeBasedInitialAdoption();
+            initAdopter.setName(DEFAULT_INIT_ADOPTER);;
+            cache(initAdopter.getName(), initAdopter);
+            return initAdopter;
+        }
     }
 
     //=========================
@@ -459,6 +474,10 @@ public abstract class AbstractScenario implements Scenario {
         root.getGeneral().setFirstSimulationYear(year);
         root.getGeneral().setLastSimulationYear(year + delta - 1);
 
+        if(forceDisablePersist) {
+            root.getGeneral().setPersistDisabled(true);
+        }
+
         if(fullLog) {
             root.getGeneral().setLogLevel(IRPLevel.ALL);
             root.getGeneral().logAll = true;
@@ -473,12 +492,12 @@ public abstract class AbstractScenario implements Scenario {
         setupGraphvizGeneral(root.getGraphvizGeneral());
         root.setConsumerAgentGroupColors(InConsumerAgentGroupColor.ALL);
 
-        setupImages(root);
+        setupRoot(root);
 
         return root;
     }
 
-    protected void setupImages(InRoot root) {
+    public void setupRoot(InRoot root) {
         root.setImages(InGenericOutputImage.createDefaultImages());
     }
 

@@ -169,7 +169,7 @@ public class InStageEvaluationModule_evalgraphnode implements InConsumerAgentEva
             return MPMSettings.searchModule(parser, thisName(), StageEvaluationModule.class);
         }
 
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}'", thisName(), getName());
 
         StageEvaluationModule module = new StageEvaluationModule();
         module.setName(getName());
