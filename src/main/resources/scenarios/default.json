@@ -56,7 +56,7 @@
       "sca_InGeneral_runPVAct" : 1,
       "sca_InGeneral_scenarioMode" : -1,
       "sca_InGeneral_seed" : 42,
-      "sca_InGeneral_skipPersist" : 0,
+      "sca_InGeneral_skipPersist" : 1,
       "sca_InGeneral_timeout" : 5,
       "sca_InGeneral_timeoutUseMin" : 1,
       "sca_InGeneral_timeoutUseMs" : 0,
@@ -290,7 +290,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_08_19_T_14_07_05" : {
+        "CT_D_2021_08_19_T_15_14_44" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {

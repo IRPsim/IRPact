@@ -72,13 +72,16 @@ public class InConsumerAgentMPMWithAdoptionHandler implements InConsumerAgentMod
     public void setNewProductHandlers(InNewProductHandler[] newProductHandlers) {
         this.newProductHandlers = newProductHandlers;
     }
-    public void setInitialAdoptionHandlers(Collection<? extends InNewProductHandler> initialAdoptionHandlers) {
+    public void setNewProductHandlers(Collection<? extends InNewProductHandler> initialAdoptionHandlers) {
         setNewProductHandlers(initialAdoptionHandlers.toArray(new InNewProductHandler[0]));
+    }
+    public void addNewProductHandlers(InNewProductHandler... newProductHandlers) {
+        this.newProductHandlers = addAll(this.newProductHandlers, newProductHandlers);
     }
     public InNewProductHandler[] getNewProductHandlers() {
         return newProductHandlers;
     }
-    public boolean hasInitialAdoptionHandlers() {
+    public boolean hasNewProductHandlers() {
         return len(newProductHandlers) > 0;
     }
 
@@ -120,7 +123,7 @@ public class InConsumerAgentMPMWithAdoptionHandler implements InConsumerAgentMod
         ConsumerAgentEvaluationModule startModule = parser.parseEntityTo(getStartModule());
         model.setStartModule(startModule);
 
-        if(hasInitialAdoptionHandlers()) {
+        if(hasNewProductHandlers()) {
             for(InNewProductHandler inHandler: getNewProductHandlers()) {
                 LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse NewProductHandler '{}'", inHandler.getName());
                 NewProductHandler handler = parser.parseEntityTo(inHandler);

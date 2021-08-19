@@ -16,6 +16,8 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.util.NoSuchElementException;
+
 /**
  * @author Daniel Abitz
  */
@@ -27,6 +29,7 @@ public class ConsumerAgentMPMWithAdoptionHandler extends AbstractConsumerAgentMP
     protected Rnd rnd;
 
     public ConsumerAgentMPMWithAdoptionHandler() {
+        startModule = MASTER; //dont use set
     }
 
     @Override
@@ -36,8 +39,14 @@ public class ConsumerAgentMPMWithAdoptionHandler extends AbstractConsumerAgentMP
     }
 
     @Override
+    public void setName(String name) {
+        super.setName(name);
+        MASTER.setName(name + "_MASTER_MODULE");
+    }
+
+    @Override
     public void setStartModule(ConsumerAgentEvaluationModule startModule) {
-        MASTER.setStartModule(startModule);
+        MASTER.setRealStartModule(startModule);
         MASTER.handleMissingParameters(this);
     }
 
@@ -92,17 +101,24 @@ public class ConsumerAgentMPMWithAdoptionHandler extends AbstractConsumerAgentMP
             super.handleNewProduct(product, rnd);
         }
 
-        private void setStartModule(ConsumerAgentEvaluationModule startModule) {
+        private void setRealStartModule(ConsumerAgentEvaluationModule startModule) {
             setSubModule(INDEX_START_MODULE, startModule);
         }
 
-        public ConsumerAgentEvaluationModule getStartModule() {
+        public ConsumerAgentEvaluationModule getRealStartModule() {
             return getSubModule(INDEX_START_MODULE);
         }
 
         @Override
         public AdoptionResult evaluate(ConsumerAgentData data) throws Throwable {
-            AdoptionResult result = getStartModule().evaluate(data);
+            ConsumerAgentEvaluationModule startModule = getRealStartModule();
+            if(startModule == null) {
+                throw new NoSuchElementException("missing start module");
+            }
+
+            trace("[{}] start evaluation", data.getAgent().getName());
+
+            AdoptionResult result = startModule.evaluate(data);
 
             switch(result) {
                 case ADOPTED:

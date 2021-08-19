@@ -563,7 +563,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    protected void firstAction() {
+    protected void firstAction() throws Throwable {
         //bdiFeature.dispatchTopLevelGoal(new ProcessExecutionGoal(null, null));
         log().trace(IRPSection.SIMULATION_AGENT, "[{}] start loop ({})", getName(), now());
         onLoopAction();
@@ -575,7 +575,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    protected void onLoopAction() {
+    protected void onLoopAction() throws Throwable {
         //vor allen anderen checks
         resetOnNewAction();
 
@@ -709,11 +709,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
 ////        }
 //    }
 
-    protected void executePlan(ProcessPlan plan) {
-        try {
-            plan.execute();
-        } catch (Throwable t) {
-
-        }
+    protected void executePlan(ProcessPlan plan) throws Throwable {
+        plan.execute();
     }
 }

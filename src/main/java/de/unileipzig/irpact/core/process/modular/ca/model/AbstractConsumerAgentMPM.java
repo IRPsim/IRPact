@@ -47,6 +47,8 @@ public abstract class AbstractConsumerAgentMPM extends SimulationEntityBase impl
 
     @Override
     public ModularProcessPlan newPlan(Agent agent, Need need, Product product) {
+        trace("[{}] create new plan for agent={}, need={}, product={}", getName(), agent.getName(), need.getName(), product.getName());
+
         ConsumerAgent ca = validate(agent);
 
         SimpleConsumerAgentData data = new SimpleConsumerAgentData();

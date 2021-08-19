@@ -78,6 +78,7 @@ public abstract class AbstractScenario implements Scenario {
     protected long timeout = 5;
     protected TimeUnit timeoutUnit = TimeUnit.MINUTES;
     protected boolean hardReplace = false;
+    protected boolean forceDisablePersist = true;
 
     protected final NavigableMap<Integer, Integer> supportYears = new TreeMap<>();
     protected Consumer<? super InGeneral> generalSetup;
@@ -472,6 +473,10 @@ public abstract class AbstractScenario implements Scenario {
         root.getGeneral().setTimeout(timeout, timeoutUnit);
         root.getGeneral().setFirstSimulationYear(year);
         root.getGeneral().setLastSimulationYear(year + delta - 1);
+
+        if(forceDisablePersist) {
+            root.getGeneral().setPersistDisabled(true);
+        }
 
         if(fullLog) {
             root.getGeneral().setLogLevel(IRPLevel.ALL);

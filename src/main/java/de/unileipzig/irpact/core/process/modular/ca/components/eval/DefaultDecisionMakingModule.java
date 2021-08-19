@@ -6,6 +6,7 @@ import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPLoggingMessageCollection;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.InfoTag;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
@@ -40,6 +41,11 @@ public class DefaultDecisionMakingModule extends AbstractConsumerAgentModule imp
     @Override
     public IRPLogger getDefaultLogger() {
         return LOGGER;
+    }
+
+    @Override
+    public IRPSection getDefaultResultSection() {
+        return IRPSection.SIMULATION_PROCESS;
     }
 
     //=========================
@@ -243,6 +249,7 @@ public class DefaultDecisionMakingModule extends AbstractConsumerAgentModule imp
         ConsumerAgent agent = data.getAgent();
 
         doSelfActionAndAllowAttention(agent);
+        trace("[{}] handle decision making", agent.getName());
 
         IRPLoggingMessageCollection logColl = new IRPLoggingMessageCollection()
                 .setLazy(true)

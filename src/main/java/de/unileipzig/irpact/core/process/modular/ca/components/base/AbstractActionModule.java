@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinities;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.process.modular.ca.AdoptionResult;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
@@ -114,11 +115,11 @@ public abstract class AbstractActionModule extends AbstractConsumerAgentModule {
         return nop(data);
     }
 
-    @SuppressWarnings("UnnecessaryLocalVariable")
     protected boolean doCommunicate(ConsumerAgentData data) {
         double r = nextDouble(data);
         double freq = getCommunicationFrequencySN(data.getAgent());
         boolean doCommunicate = r < freq;
+        trace("[{}] do communicate: {} ({} < {})", data.getAgent().getName(), doCommunicate, r, freq);
         return doCommunicate;
     }
 
@@ -204,11 +205,11 @@ public abstract class AbstractActionModule extends AbstractConsumerAgentModule {
         }
     }
 
-    @SuppressWarnings("UnnecessaryLocalVariable")
     protected boolean doRewire(ConsumerAgentData data) {
         double r = nextDouble(data);
         double freq = getRewiringRate(data.getAgent());
         boolean doRewire = r < freq;
+        trace("[{}] do rewire: {} ({} < {})", data.getAgent().getName(), doRewire, r, freq);
         return doRewire;
     }
 
