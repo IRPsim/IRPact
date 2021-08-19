@@ -4,6 +4,11 @@ import de.unileipzig.irpact.commons.util.data.TypedMatrix;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /**
  * @author Daniel Abitz
  */
@@ -26,6 +31,19 @@ public class XlsxRealAdoptionData implements RealAdoptionData {
 
     public TypedMatrix<String, String, Integer> getData() {
         return data;
+    }
+
+    @Override
+    public Set<String> getAllZips() {
+        return new LinkedHashSet<>(data.getM());
+    }
+
+    @Override
+    public Set<Integer> getAllYears() {
+        Collection<String> yearStrs = data.getN();
+        return yearStrs.stream()
+                .map(Integer::parseInt)
+                .collect(Collectors.toSet());
     }
 
     @Override

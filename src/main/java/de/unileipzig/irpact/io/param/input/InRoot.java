@@ -4,7 +4,6 @@ import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.graph.topology.GraphTopology;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.process.modular.ca.components.calc.ProductModule;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.*;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
@@ -20,7 +19,7 @@ import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.process.modular.InModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process.modular.InModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentModularProcessModel;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.InSimpleConsumerAgentMPM;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentMPMWithAdoptionHandler;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentCalculationModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentModule;
@@ -148,6 +147,9 @@ public class InRoot implements RootClass {
 
     @FieldDefinition
     public InTestData[] testData = new InTestData[0];
+    public boolean hasTestData() {
+        return len(testData) > 0;
+    }
 
     //=========================
     //general
@@ -199,6 +201,18 @@ public class InRoot implements RootClass {
     }
     public void addInformations(InInformation... newInformations) {
         informations = ParamUtil.addAll(informations, newInformations);
+    }
+
+    @FieldDefinition
+    public InAttributeName[] attributeNames = new InAttributeName[0];
+    public void setAttributeNames(InAttributeName[] attributeNames) {
+        this.attributeNames = attributeNames;
+    }
+    public void setAttributeNames(Collection<? extends InAttributeName> attributeNames) {
+        setAttributeNames(attributeNames.toArray(new InAttributeName[0]));
+    }
+    public InAttributeName[] getAttributeNames() {
+        return attributeNames;
     }
 
     //=========================
@@ -816,7 +830,7 @@ public class InRoot implements RootClass {
             InConsumerAgentModule.class,
 
             InConsumerAgentModularProcessModel.class,
-            InSimpleConsumerAgentMPM.class,
+            InConsumerAgentMPMWithAdoptionHandler.class,
 
             InModularProcessModel.class,
             InModule.class,
@@ -840,8 +854,6 @@ public class InRoot implements RootClass {
 
             InInitialAdoptionHandler.class,
             InPVactAttributeBasedInitialAdoption.class,
-            InPVactConsumerGroupBasedInitialAdoption.class,
-            InPVactConsumerGroupBasedInitialAdoptionEntry.class,
             InPVactFileBasedConsumerGroupBasedInitialAdoption.class,
 
             InFileBasedPVactMilieuSupplier.class,

@@ -1,22 +1,17 @@
 package de.unileipzig.irpact.io.param.input.product.initial;
 
-import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.commons.resource.ResourceLoader;
-import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
-import de.unileipzig.irpact.commons.util.data.TypedMatrix;
-import de.unileipzig.irpact.commons.util.fio2.Rows;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.postprocessing.image.RealAdoptionData;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.ProductManager;
-import de.unileipzig.irpact.core.product.initial.ConsumerGroupBasedInitialAdoption;
+import de.unileipzig.irpact.core.product.initial.ConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irpact.io.param.input.file.InPVFile;
+import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -53,7 +48,7 @@ public class InPVactFileBasedConsumerGroupBasedInitialAdoption implements InInit
     public String _name;
 
     @FieldDefinition
-    public InPVFile[] file = new InPVFile[0];
+    public InRealAdoptionDataFile[] file = new InRealAdoptionDataFile[0];
 
     public InPVactFileBasedConsumerGroupBasedInitialAdoption() {
     }
@@ -78,17 +73,17 @@ public class InPVactFileBasedConsumerGroupBasedInitialAdoption implements InInit
         this._name = name;
     }
 
-    public void setFile(InPVFile file) {
-        this.file = new InPVFile[]{file};
+    public void setFile(InRealAdoptionDataFile file) {
+        this.file = new InRealAdoptionDataFile[]{file};
     }
 
-    public InPVFile getFile() throws ParsingException {
+    public InRealAdoptionDataFile getFile() throws ParsingException {
         return getInstance(file, "file");
     }
 
     @Override
-    public ConsumerGroupBasedInitialAdoption parse(IRPactInputParser parser) throws ParsingException {
-        ConsumerGroupBasedInitialAdoption handler = new ConsumerGroupBasedInitialAdoption();
+    public ConsumerGroupBasedInitialAdoptionWithRealData parse(IRPactInputParser parser) throws ParsingException {
+        ConsumerGroupBasedInitialAdoptionWithRealData handler = new ConsumerGroupBasedInitialAdoptionWithRealData();
         handler.setName(getName());
 
         Rnd rnd = parser.deriveRnd();
@@ -101,41 +96,13 @@ public class InPVactFileBasedConsumerGroupBasedInitialAdoption implements InInit
             throw new ParsingException("InPVactFileBasedConsumerGroupBasedInitialAdoption '{}' requires exactly one product group. Number of groups: {}", getName(), productManager.getNumberOfProductGroups());
         }
 
-        TypedMatrix<String, String, Double> data = loadFile(environment.getResourceLoader());
+        RealAdoptionData adoptionData = getFile().parse(parser);
+        handler.setAdoptionData(adoptionData);
 
-        ProductGroup pg = CollectionUtil.getFirst(productManager.getGroups());
-        handler.register(pg, RAConstants.DOM_MILIEU, RAConstants.ZIP, RAConstants.SHARE_1_2_HOUSE);
-        LOGGER.trace(
-                IRPSection.INITIALIZATION_PARAMETER,
-                "register [pg={}, cagKey={}, zipKey={}, validationKey={}] to handler '{}'",
-                pg.getName(), RAConstants.DOM_MILIEU, RAConstants.ZIP, RAConstants.SHARE_1_2_HOUSE, getName()
-        );
-
-        for(String cagName: data.getM()) {
-            for(String zipName: data.getN(cagName)) {
-                double share = data.getOrDefault(cagName, zipName, -1.0);
-                if(share == -1) {
-                    throw new ParsingException("missing share for cag '{}' and zip '{}'", cagName, zipName);
-                }
-
-                LOGGER.trace(
-                        IRPSection.INITIALIZATION_PARAMETER,
-                        "add adoptioninfo [pg={}, cag={}, zip={}, share={}] to handler '{}'",
-                        pg.getName(), cagName, zipName, share, getName()
-                );
-                handler.setShare(pg, cagName, zipName, share);
-            }
-        }
+        handler.setZipAttributeName(RAConstants.ZIP);
+        handler.setValidationAttributeName(RAConstants.SHARE_1_2_HOUSE);
+        handler.setShareAttributeName(RAConstants.INITIAL_ADOPTER);
 
         return handler;
-    }
-
-    protected TypedMatrix<String, String, Double> loadFile(ResourceLoader loader) throws ParsingException {
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "try loading input file");
-        InPVFile file = getFile();
-        String fileName = file.getFileNameWithoutExtension();
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "loading file '{}'", fileName);
-        Rows<Attribute> rows = parseXlsx(loader, fileName);
-        return toDoubleMatrix(rows);
     }
 }

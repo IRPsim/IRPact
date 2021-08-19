@@ -473,12 +473,12 @@ public abstract class AbstractScenario implements Scenario {
         setupGraphvizGeneral(root.getGraphvizGeneral());
         root.setConsumerAgentGroupColors(InConsumerAgentGroupColor.ALL);
 
-        setupImages(root);
+        setupRoot(root);
 
         return root;
     }
 
-    protected void setupImages(InRoot root) {
+    public void setupRoot(InRoot root) {
         root.setImages(InGenericOutputImage.createDefaultImages());
     }
 

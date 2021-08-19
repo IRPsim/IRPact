@@ -668,32 +668,12 @@ InPVactAttributeBasedInitialAdoption_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
 
-InPVactConsumerGroupBasedInitialAdoption:
-  edn_label: "Initiale Adoptionen nach Milieu und PLZ"
-  edn_description: "Diese Variante ermöglicht die Festlegung der Adoptionen basierend auf Milieu und Postleitzahl. Im weiteren wird automatisch darauf geachtet, dass die gültige Agenten initial adoptieren dürfen. Dazu müssen für alle gewünschten Kombinationen die entsprechenden Einträge erstellt werden. Kombinationen ohne Adopter müssen nicht angegeben werden."
-InPVactConsumerGroupBasedInitialAdoption_entries:
-  gams_identifier: "Einträge"
-  gams_description: "Einträge bestehend aus Milieus, Postleitzahlen und dem Adoptionsanteil."
-
-InPVactConsumerGroupBasedInitialAdoptionEntry:
-  edn_label: "Einträge"
-  edn_description: "Hier werden die eigentlichen Einträge, bestehend aus Milieus, Postleitzahlen und Anteile, definiert. Der Anteil gilt dabei individuell für jede Kombonation. Wurde zum Beispiel ein Eintrag mit den Milieus M1, M2 und den PLZ P1, P2 sowie dem Anteil 0.5 definiert, werden 50% der Agemtem aus M1 in P1 initial adoptieren und ebenso 50% in P2. Selbiges gilt für die Agenten von M2 in P1 und P2."
-InPVactConsumerGroupBasedInitialAdoptionEntry_share:
-  gams_identifier: "Anteil"
-  gams_description: "Anteil an initialen Adoptionen."
-InPVactConsumerGroupBasedInitialAdoptionEntry_cags:
-  gams_identifier: "Milieus"
-  gams_description: "Die zu nutzenden Milieus."
-InPVactConsumerGroupBasedInitialAdoptionEntry_zips:
-  gams_identifier: "Postleitzahlen"
-  gams_description: "Die zu nutzenden Postleitzahlen."
-
 InPVactFileBasedConsumerGroupBasedInitialAdoption:
-  edn_label: "Dateibasierte initiale Adoptionen nach Milieu und PLZ"
-  edn_description: "todo"
+  edn_label: "Initiale Adopter nach realen Daten"
+  edn_description: "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt."
 InPVactFileBasedConsumerGroupBasedInitialAdoption_file:
   gams_identifier: "Eingabedatei"
-  gams_description: "Datei mit den Daten. Muss im xlsx Format sein."
+  gams_description: "Bestimmt die Datei mit den realen Adoptionsdaten."
 
 
 population:

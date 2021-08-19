@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.util.scenarios.pvact;
 
 import de.unileipzig.irpact.core.logging.IRPLevel;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InGeneral;
@@ -33,9 +34,7 @@ import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.util.scenarios.AbstractScenario;
 
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -203,6 +202,16 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         super.setupGeneral(general);
         general.runPVAct = runPvAct;
         general.runOptActDemo = false;
+    }
+
+    @Override
+    public void setupRoot(InRoot root) {
+        super.setupRoot(root);
+        List<InAttributeName> attributes = new ArrayList<>();
+        for(String attr: RAConstants.DEFAULT_ATTRIBUTES) {
+            attributes.add(getAttribute(attr));
+        }
+        root.setAttributeNames(attributes);
     }
 
     public static void setColors(InRoot root, InConsumerAgentGroup... cags) {

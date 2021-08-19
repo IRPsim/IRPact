@@ -354,4 +354,33 @@ public final class CollectionUtil {
         }
         return value;
     }
+
+    public static <T> List<T> drawRandom(List<T> input, int count, Rnd rnd) {
+        List<T> output = new ArrayList<>();
+        drawRandom(input, count, output, rnd);
+        return output;
+    }
+
+    public static <T> boolean drawRandom(List<T> input, int count, List<T> output, Rnd rnd) {
+        if(input.size() < count) {
+            throw new IllegalArgumentException("input.size < count (" + input.size() + ", " + count + ")");
+        }
+
+        if(count < 1) {
+            return false;
+        }
+
+        boolean changed = false;
+        List<Integer> drawnIndices = new ArrayList<>();
+        for(int i = 0; i < input.size(); i++) {
+            drawnIndices.add(i);
+        }
+
+        while(count-- > 0) {
+            int index = removeRandom(drawnIndices, rnd);
+            changed |= output.add(input.get(index));
+        }
+
+        return changed;
+    }
 }

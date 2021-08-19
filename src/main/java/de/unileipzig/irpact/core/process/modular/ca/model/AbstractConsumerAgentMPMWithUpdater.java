@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.core.process.modular.ca.model;
 
 import de.unileipzig.irpact.commons.time.Timestamp;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.process.modular.ModularProcessPlan;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
@@ -8,9 +10,12 @@ import de.unileipzig.irpact.core.process.modular.ca.SimpleConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.updater.EndOfYearEvaluator;
 import de.unileipzig.irpact.core.process.modular.ca.updater.MidYearUpdater;
 import de.unileipzig.irpact.core.process.modular.ca.updater.StartOfYearAdjuster;
+import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.core.product.initial.NewProductHandler;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
 
@@ -18,6 +23,8 @@ import java.util.*;
  * @author Daniel Abitz
  */
 public abstract class AbstractConsumerAgentMPMWithUpdater extends AbstractConsumerAgentMPM {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(AbstractConsumerAgentMPMWithUpdater.class);
 
     protected static final long WEEK27 = 27;
 
@@ -28,9 +35,19 @@ public abstract class AbstractConsumerAgentMPMWithUpdater extends AbstractConsum
     protected final Map<Integer, Timestamp> week27Map = new HashMap<>();
     protected final Set<ConsumerAgentData> consumerAgentData = new HashSet<>();
 
+    protected final List<NewProductHandler> newProductHandlers = new ArrayList<>();
+
     protected boolean yearChange = false;
 
     protected AbstractConsumerAgentMPMWithUpdater() {
+    }
+
+    public void addNewProductHandler(NewProductHandler initialAdoptionHandler) {
+        newProductHandlers.add(initialAdoptionHandler);
+    }
+
+    public List<NewProductHandler> getNewProductHandlers() {
+        return newProductHandlers;
     }
 
     @Override
@@ -53,8 +70,7 @@ public abstract class AbstractConsumerAgentMPMWithUpdater extends AbstractConsum
         }
     }
 
-    @Override
-    public AdoptionPhase determine(Timestamp ts) {
+    protected AdoptionPhase determine(Timestamp ts) {
         if(isYearChange()) {
             return AdoptionPhase.END_START;
         } else {
@@ -63,6 +79,20 @@ public abstract class AbstractConsumerAgentMPMWithUpdater extends AbstractConsum
             } else {
                 return AdoptionPhase.MID_END;
             }
+        }
+    }
+
+    @Override
+    public void handleNewProduct(Product newProduct) {
+        handleInitialAdopter(newProduct);
+        super.handleNewProduct(newProduct);
+    }
+
+    protected void handleInitialAdopter(Product newProduct) {
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "[{}] number of InitialAdoptionHandler: {}", getName(), newProductHandlers.size());
+        for(NewProductHandler handler: newProductHandlers) {
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "[{}] apply InitialAdoptionHandler '{}'", getName(), handler.getName());
+            handler.handleProduct(getEnvironment(), newProduct);
         }
     }
 

@@ -13,7 +13,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 /**
  * @author Daniel Abitz
  */
-public class AttributeBasedInitialAdoption extends NameableBase implements InitialAdoptionHandler {
+public class AttributeBasedInitialAdoption extends NameableBase implements NewProductHandler {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(AttributeBasedInitialAdoption.class);
 

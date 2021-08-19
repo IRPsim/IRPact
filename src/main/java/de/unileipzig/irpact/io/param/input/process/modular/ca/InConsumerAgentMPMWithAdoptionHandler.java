@@ -6,12 +6,13 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
-import de.unileipzig.irpact.core.process.modular.ca.model.SimpleConsumerAgentMPM;
+import de.unileipzig.irpact.core.process.modular.ca.model.ConsumerAgentMPMWithAdoptionHandler;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
+import de.unileipzig.irpact.io.param.input.product.initial.InInitialAdoptionHandler;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -19,15 +20,15 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Collection;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
-public class InSimpleConsumerAgentMPM implements InConsumerAgentModularProcessModel {
+public class InConsumerAgentMPMWithAdoptionHandler implements InConsumerAgentModularProcessModel {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -57,7 +58,7 @@ public class InSimpleConsumerAgentMPM implements InConsumerAgentModularProcessMo
     }
 
     @FieldDefinition
-    public InConsumerAgentEvaluationModule[] startModule;
+    public InConsumerAgentEvaluationModule[] startModule = new InConsumerAgentEvaluationModule[0];
     public void setStartModule(InConsumerAgentEvaluationModule startModule) {
         this.startModule = new InConsumerAgentEvaluationModule[]{startModule};
     }
@@ -65,25 +66,40 @@ public class InSimpleConsumerAgentMPM implements InConsumerAgentModularProcessMo
         return ParamUtil.getInstance(startModule, "startModule");
     }
 
-    public InSimpleConsumerAgentMPM() {
+    @FieldDefinition
+    public InInitialAdoptionHandler[] initialAdoptionHandlers = new InInitialAdoptionHandler[0];
+    public void setInitialAdoptionHandlers(InInitialAdoptionHandler[] initialAdoptionHandlers) {
+        this.initialAdoptionHandlers = initialAdoptionHandlers;
+    }
+    public void setInitialAdoptionHandlers(Collection<? extends InInitialAdoptionHandler> initialAdoptionHandlers) {
+        setInitialAdoptionHandlers(initialAdoptionHandlers.toArray(new InInitialAdoptionHandler[0]));
+    }
+    public InInitialAdoptionHandler[] getInitialAdoptionHandlers() {
+        return initialAdoptionHandlers;
+    }
+    public boolean hasInitialAdoptionHandlers() {
+        return len(initialAdoptionHandlers) > 0;
+    }
+
+    public InConsumerAgentMPMWithAdoptionHandler() {
     }
 
     @Override
-    public InSimpleConsumerAgentMPM copy(CopyCache cache) {
+    public InConsumerAgentMPMWithAdoptionHandler copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InSimpleConsumerAgentMPM newCopy(CopyCache cache) {
-        InSimpleConsumerAgentMPM copy = new InSimpleConsumerAgentMPM();
+    public InConsumerAgentMPMWithAdoptionHandler newCopy(CopyCache cache) {
+        InConsumerAgentMPMWithAdoptionHandler copy = new InConsumerAgentMPMWithAdoptionHandler();
         return Dev.throwException();
     }
 
     @Override
-    public SimpleConsumerAgentMPM parse(IRPactInputParser parser) throws ParsingException {
+    public ConsumerAgentMPMWithAdoptionHandler parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
             ProcessModel model = MPMSettings.searchModel(parser, getName());
-            if(model instanceof SimpleConsumerAgentMPM) {
-                return (SimpleConsumerAgentMPM) model;
+            if(model instanceof ConsumerAgentMPMWithAdoptionHandler) {
+                return (ConsumerAgentMPMWithAdoptionHandler) model;
             } else {
                 throw new ParsingException("class mismatch");
             }
@@ -91,7 +107,7 @@ public class InSimpleConsumerAgentMPM implements InConsumerAgentModularProcessMo
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse modulares process model ({}) '{}'", thisName(), getName());
 
-        SimpleConsumerAgentMPM model = new SimpleConsumerAgentMPM();
+        ConsumerAgentMPMWithAdoptionHandler model = new ConsumerAgentMPMWithAdoptionHandler();
         model.setName(getName());
         model.setEnvironment(parser.getEnvironment());
 

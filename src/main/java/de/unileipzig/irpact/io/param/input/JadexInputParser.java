@@ -20,7 +20,11 @@ import de.unileipzig.irpact.core.network.topology.GraphTopologyScheme;
 import de.unileipzig.irpact.core.process.BasicProcessModelManager;
 import de.unileipzig.irpact.core.process.FixProcessModelFindingScheme;
 import de.unileipzig.irpact.core.process.ProcessModel;
+import de.unileipzig.irpact.core.process.modular.ca.model.AbstractConsumerAgentMPMWithUpdater;
+import de.unileipzig.irpact.core.process.ra.RAProcessModelBase;
 import de.unileipzig.irpact.core.product.*;
+import de.unileipzig.irpact.core.product.initial.DefaultAwarenessInterestHandler;
+import de.unileipzig.irpact.core.product.initial.NewProductHandler;
 import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
 import de.unileipzig.irpact.core.simulation.BasicSettings;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
@@ -249,6 +253,8 @@ public class JadexInputParser implements IRPactInputParser {
         setupBinaryTaskManager(root);
 
         runSpecialOperations(root);
+
+        runDebug();
     }
 
     private void initLogging(InRoot root) throws ParsingException {
@@ -410,6 +416,14 @@ public class JadexInputParser implements IRPactInputParser {
         }
     }
 
+    private void runDebug() throws ParsingException {
+        if(root.hasTestData()) {
+            for(InTestData testData: root.testData) {
+                testData.parse(this);
+            }
+        }
+    }
+
     //=========================
     //PVact
     //=========================
@@ -421,6 +435,7 @@ public class JadexInputParser implements IRPactInputParser {
         addProcessModelFindingScheme();
         addInitialPVNeed();
         loadSpecialPVData();
+        applyDefaultAwarenessInterestHandler();
     }
 
     private void createPVProductGroup() throws ParsingException {
@@ -561,6 +576,59 @@ public class JadexInputParser implements IRPactInputParser {
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "use special PVact input construction rates: {}", specialPVactInput.isUseConstructionRates());
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "use special PVact input renovation rates: {}", specialPVactInput.isUseRenovationRates());
         specialPVactInput.parse(this);
+    }
+
+    private void applyDefaultAwarenessInterestHandler() {
+        for(ProcessModel pm: environment.getProcessModels().getProcessModels()) {
+            if(pm instanceof AbstractConsumerAgentMPMWithUpdater) {
+                AbstractConsumerAgentMPMWithUpdater mpm = (AbstractConsumerAgentMPMWithUpdater) pm;
+                handleAbstractConsumerAgentMPMWithUpdater(mpm);
+            }
+            if(pm instanceof RAProcessModelBase) {
+                RAProcessModelBase rapm = (RAProcessModelBase) pm;
+                handleRAProcessModelBase(rapm);
+            }
+        }
+    }
+
+    private void handleAbstractConsumerAgentMPMWithUpdater(AbstractConsumerAgentMPMWithUpdater mpm) {
+        boolean addDefault = true;
+        for(NewProductHandler handler: mpm.getNewProductHandlers()) {
+            if(handler instanceof DefaultAwarenessInterestHandler) {
+                LOGGER.trace("AbstractConsumerAgentMPMWithUpdater {} already has {}: {}", mpm.getName(), DefaultAwarenessInterestHandler.class.getSimpleName(), handler.getName());
+                addDefault = false;
+                break;
+            }
+        }
+        if(addDefault) {
+            DefaultAwarenessInterestHandler handler = new DefaultAwarenessInterestHandler();
+            handler.setName(mpm.getName() + "_awarenessInterestHandler");
+            handler.setRnd(deriveRnd());
+            handler.setAwarenessAttributeName(INITIAL_PRODUCT_AWARENESS);
+            handler.setInterestAttributeName(INITIAL_PRODUCT_INTEREST);
+            mpm.addNewProductHandler(handler);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add DefaultAwarenessInterestHandler to {}", mpm.getName());
+        }
+    }
+
+    private void handleRAProcessModelBase(RAProcessModelBase rapm) {
+        boolean addDefault = true;
+        for(NewProductHandler handler: rapm.getNewProductHandlers()) {
+            if(handler instanceof DefaultAwarenessInterestHandler) {
+                LOGGER.trace("RAProcessModelBase {} already has {}: {}", rapm.getName(), DefaultAwarenessInterestHandler.class.getSimpleName(), handler.getName());
+                addDefault = false;
+                break;
+            }
+        }
+        if(addDefault) {
+            DefaultAwarenessInterestHandler handler = new DefaultAwarenessInterestHandler();
+            handler.setName(rapm.getName() + "_awarenessInterestHandler");
+            handler.setRnd(deriveRnd());
+            handler.setAwarenessAttributeName(INITIAL_PRODUCT_AWARENESS);
+            handler.setInterestAttributeName(INITIAL_PRODUCT_INTEREST);
+            rapm.addNewProductHandler(handler);
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add DefaultAwarenessInterestHandler to {}", rapm.getName());
+        }
     }
 
     //=========================

@@ -33,7 +33,7 @@ public class SimpleGetPhaseModule extends AbstractConsumerAgentModule implements
                 getAdoptionResult()
         );
     }
-
+            
     @Override
     public void preAgentCreationValidation() throws ValidationException {
         if(adoptionResult == null) {

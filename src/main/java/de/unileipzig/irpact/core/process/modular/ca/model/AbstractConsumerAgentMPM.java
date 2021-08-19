@@ -6,7 +6,6 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.modular.ModularProcessPlan;
-import de.unileipzig.irpact.core.process.modular.ca.util.AdoptionPhaseDeterminer;
 import de.unileipzig.irpact.core.process.modular.ca.SimpleConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.product.Product;
@@ -16,7 +15,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 /**
  * @author Daniel Abitz
  */
-public abstract class AbstractConsumerAgentMPM extends SimulationEntityBase implements ConsumerAgentMPM, LoggingHelper, AdoptionPhaseDeterminer {
+public abstract class AbstractConsumerAgentMPM extends SimulationEntityBase implements ConsumerAgentMPM, LoggingHelper {
 
     protected ConsumerAgentEvaluationModule startModule;
 
@@ -37,13 +36,13 @@ public abstract class AbstractConsumerAgentMPM extends SimulationEntityBase impl
     }
 
     @Override
-    public void handleNewProduct(Product newProduct) {
-        getStartModule().handleNewProduct(newProduct);
+    public ConsumerAgentEvaluationModule getStartModule() {
+        return startModule;
     }
 
     @Override
-    public ConsumerAgentEvaluationModule getStartModule() {
-        return startModule;
+    public void handleNewProduct(Product newProduct) {
+        getStartModule().handleNewProduct(newProduct);
     }
 
     @Override
