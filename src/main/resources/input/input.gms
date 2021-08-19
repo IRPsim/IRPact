@@ -1289,6 +1289,11 @@ PARAMETER par_link_InRAProcessModel_InPVFile_pvFile(set_InRAProcessModel,set_InP
 * - type: Boolean
 PARAMETER par_link_InRAProcessModel_InUncertainty_uncertainties(set_InRAProcessModel,set_InUncertainty)
 
+* - description: todo
+* - identifier: agent initializers
+* - type: Boolean
+PARAMETER par_link_InRAProcessModel_InNewProductHandler_newProductHandlers(set_InRAProcessModel,set_InNewProductHandler)
+
 * - identifier: InRAProcessPlanMaxDistanceFilterScheme
 * - type: String
 SET set_InRAProcessPlanMaxDistanceFilterScheme(set_InRAProcessPlanNodeFilterScheme)
@@ -2343,14 +2348,18 @@ SET set_InConsumerAgentModule(set_InModule)
 * - type: String
 SET set_InConsumerAgentModularProcessModel(set_InModularProcessModel)
 
-* - identifier: InSimpleConsumerAgentMPM
+* - identifier: InConsumerAgentMPMWithAdoptionHandler
 * - type: String
-SET set_InSimpleConsumerAgentMPM(set_InConsumerAgentModularProcessModel)
+SET set_InConsumerAgentMPMWithAdoptionHandler(set_InConsumerAgentModularProcessModel)
 
 * - description: Das Startmodul des modularen Systems.
 * - identifier: Startmodul
 * - type: Boolean
-PARAMETER par_link_InSimpleConsumerAgentMPM_InConsumerAgentEvaluationModule_startModule(set_InSimpleConsumerAgentMPM,set_InConsumerAgentEvaluationModule)
+PARAMETER par_link_InConsumerAgentMPMWithAdoptionHandler_InConsumerAgentEvaluationModule_startModule(set_InConsumerAgentMPMWithAdoptionHandler,set_InConsumerAgentEvaluationModule)
+
+* - identifier: newProductHandlers
+* - type: Boolean
+PARAMETER par_link_InConsumerAgentMPMWithAdoptionHandler_InNewProductHandler_newProductHandlers(set_InConsumerAgentMPMWithAdoptionHandler,set_InNewProductHandler)
 
 * - identifier: InModularProcessModel
 * - hidden: 1
@@ -2626,57 +2635,28 @@ SET set_InProductGroup(*)
 * - type: String
 SET set_InProductGroupAttribute(*)
 
-* - identifier: InInitialAdoptionHandler
+* - identifier: InNewProductHandler
 * - hidden: 1
 * - type: String
-SET set_InInitialAdoptionHandler(*)
+SET set_InNewProductHandler(*)
 
 * - identifier: InPVactAttributeBasedInitialAdoption
 * - type: String
-SET set_InPVactAttributeBasedInitialAdoption(set_InInitialAdoptionHandler)
+SET set_InPVactAttributeBasedInitialAdoption(set_InNewProductHandler)
 
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
 * - type: Integer
 PARAMETER par_InPVactAttributeBasedInitialAdoption_placeholder(set_InPVactAttributeBasedInitialAdoption)
 
-* - identifier: InPVactConsumerGroupBasedInitialAdoption
+* - identifier: InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData
 * - type: String
-SET set_InPVactConsumerGroupBasedInitialAdoption(set_InInitialAdoptionHandler)
+SET set_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData(set_InNewProductHandler)
 
-* - description: Einträge bestehend aus Milieus, Postleitzahlen und dem Adoptionsanteil.
-* - identifier: Einträge
-* - type: Boolean
-PARAMETER par_link_InPVactConsumerGroupBasedInitialAdoption_InPVactConsumerGroupBasedInitialAdoptionEntry_entries(set_InPVactConsumerGroupBasedInitialAdoption,set_InPVactConsumerGroupBasedInitialAdoptionEntry)
-
-* - identifier: InPVactConsumerGroupBasedInitialAdoptionEntry
-* - type: String
-SET set_InPVactConsumerGroupBasedInitialAdoptionEntry(set_InInitialAdoptionHandler)
-
-* - default: 0
-* - description: Anteil an initialen Adoptionen.
-* - identifier: Anteil
-* - type: Float
-PARAMETER par_InPVactConsumerGroupBasedInitialAdoptionEntry_share(set_InPVactConsumerGroupBasedInitialAdoptionEntry)
-
-* - description: Die zu nutzenden Milieus.
-* - identifier: Milieus
-* - type: Boolean
-PARAMETER par_link_InPVactConsumerGroupBasedInitialAdoptionEntry_InConsumerAgentGroup_cags(set_InPVactConsumerGroupBasedInitialAdoptionEntry,set_InConsumerAgentGroup)
-
-* - description: Die zu nutzenden Postleitzahlen.
-* - identifier: Postleitzahlen
-* - type: Boolean
-PARAMETER par_link_InPVactConsumerGroupBasedInitialAdoptionEntry_InAttributeName_zips(set_InPVactConsumerGroupBasedInitialAdoptionEntry,set_InAttributeName)
-
-* - identifier: InPVactFileBasedConsumerGroupBasedInitialAdoption
-* - type: String
-SET set_InPVactFileBasedConsumerGroupBasedInitialAdoption(set_InInitialAdoptionHandler)
-
-* - description: Datei mit den Daten. Muss im xlsx Format sein.
+* - description: Bestimmt die Datei mit den realen Adoptionsdaten.
 * - identifier: Eingabedatei
 * - type: Boolean
-PARAMETER par_link_InPVactFileBasedConsumerGroupBasedInitialAdoption_InPVFile_file(set_InPVactFileBasedConsumerGroupBasedInitialAdoption,set_InPVFile)
+PARAMETER par_link_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData_InRealAdoptionDataFile_file(set_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData,set_InRealAdoptionDataFile)
 
 * - identifier: InFileBasedPVactMilieuSupplier
 * - type: String
@@ -3712,6 +3692,24 @@ PARAMETER par_InTestData_value26(set_InTestData)
 * - rule: IF (par_InTestData_value27 == 0, par_InTestData_value27 = 1)
 * - type: Boolean
 PARAMETER par_InTestData_value27(set_InTestData)
+
+* - default: 0
+* - description: test für sensitivität
+* - identifier: sensi 1
+* - type: Float
+PARAMETER par_InTestData_sensi1(set_InTestData)
+
+* - default: 0
+* - description: test für sensitivität
+* - identifier: sensi 2
+* - type: Float
+PARAMETER par_InTestData_sensi2(set_InTestData)
+
+* - default: 0
+* - description: test für sensitivität
+* - identifier: sensi 3
+* - type: Float
+PARAMETER par_InTestData_sensi3(set_InTestData)
 
 * - description: Einlesen des zu optimierenden Jahres
 * - hidden: 1

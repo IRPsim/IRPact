@@ -88,6 +88,7 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
         processModel.setPvFile(pvFile);
         processModel.setUncertainty(uncertainty);
         processModel.setSpeedOfConvergence(0.0);
+        processModel.addNewProductHandle(getDefaultInitialAdopterHandler());
 
         //space
         InSpace2D space2D = new InSpace2D("Space2D", Metric2D.HAVERSINE_KM);

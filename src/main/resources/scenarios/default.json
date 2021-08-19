@@ -186,6 +186,7 @@
       },
       "set_InConsumerAgentModularProcessModel" : { },
       "set_InConsumerAgentModule" : { },
+      "set_InConsumerAgentMPMWithAdoptionHandler" : { },
       "set_InDefaultActionModule_evalgraphnode" : { },
       "set_InDefaultDecisionMakingModule_evalgraphnode" : { },
       "set_InDefaultDoActionComponent" : { },
@@ -289,14 +290,13 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_08_18_T_13_59_42" : {
+        "CT_D_2021_08_19_T_14_07_05" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
           "par_InInformation_placeholder" : 0.0
         }
       },
-      "set_InInitialAdoptionHandler" : { },
       "set_InInverse" : { },
       "set_InIRPactVersion" : { },
       "set_InLogisticModule_calcgraphnode" : { },
@@ -308,6 +308,9 @@
       "set_InNameSplitAffinityEntry" : { },
       "set_InNameSplitConsumerAgentGroupAttribute" : { },
       "set_InNameSplitProductGroupAttribute" : { },
+      "set_InNewProductHandler" : {
+        "DEFAULT_INIT_ADOPTER" : { }
+      },
       "set_InNoDistance" : { },
       "set_InNormalDistribution" : { },
       "set_InNoveltySeekingModule_inputgraphnode" : { },
@@ -332,13 +335,15 @@
       "set_InProductModule_calcgraphnode" : { },
       "set_InProductThresholdInterestSupplyScheme" : { },
       "set_InPurchasePowerModule_inputgraphnode" : { },
-      "set_InPVactAttributeBasedInitialAdoption" : { },
+      "set_InPVactAttributeBasedInitialAdoption" : {
+        "DEFAULT_INIT_ADOPTER" : {
+          "par_InPVactAttributeBasedInitialAdoption_placeholder" : 0
+        }
+      },
       "set_InPVactConsumerAgentGroup" : {
         "TRA" : { }
       },
-      "set_InPVactConsumerGroupBasedInitialAdoption" : { },
-      "set_InPVactConsumerGroupBasedInitialAdoptionEntry" : { },
-      "set_InPVactFileBasedConsumerGroupBasedInitialAdoption" : { },
+      "set_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData" : { },
       "set_InPVactGlobalDeffuantUncertainty" : { },
       "set_InPVactGroupBasedDeffuantUncertainty" : {
         "Unvertainty" : {
@@ -390,7 +395,6 @@
       },
       "set_InShareOfAdopterInLocalNetworkModule_inputgraphnode" : { },
       "set_InShareOfAdopterInSocialNetworkModule_inputgraphnode" : { },
-      "set_InSimpleConsumerAgentMPM" : { },
       "set_InSocialComponentModule_inputgraphnode" : { },
       "set_InSpace2D" : {
         "Space2D" : {
@@ -543,6 +547,8 @@
           "TRA" : 0.0
         }
       },
+      "par_link_InConsumerAgentMPMWithAdoptionHandler_InConsumerAgentEvaluationModule_startModule" : { },
+      "par_link_InConsumerAgentMPMWithAdoptionHandler_InNewProductHandler_newProductHandlers" : { },
       "par_link_InDefaultActionModule_evalgraphnode_InUncertainty_uncertainties" : { },
       "par_link_InDefaultDecisionMakingModule_evalgraphnode_InPVFile_pvFile" : { },
       "par_link_InDefaultDecisionMakingModule_evalgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
@@ -698,14 +704,16 @@
           "dirac0" : 1.0
         }
       },
-      "par_link_InPVactConsumerGroupBasedInitialAdoption_InPVactConsumerGroupBasedInitialAdoptionEntry_entries" : { },
-      "par_link_InPVactConsumerGroupBasedInitialAdoptionEntry_InAttributeName_zips" : { },
-      "par_link_InPVactConsumerGroupBasedInitialAdoptionEntry_InConsumerAgentGroup_cags" : { },
-      "par_link_InPVactFileBasedConsumerGroupBasedInitialAdoption_InPVFile_file" : { },
+      "par_link_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData_InRealAdoptionDataFile_file" : { },
       "par_link_InPVactGlobalDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
       "par_link_InPVactGroupBasedDeffuantUncertainty_InConsumerAgentGroup_cags" : {
         "Unvertainty" : {
           "TRA" : 1.0
+        }
+      },
+      "par_link_InRAProcessModel_InNewProductHandler_newProductHandlers" : {
+        "ProcessModel" : {
+          "DEFAULT_INIT_ADOPTER" : 1.0
         }
       },
       "par_link_InRAProcessModel_InPVFile_pvFile" : {
@@ -725,7 +733,6 @@
       },
       "par_link_InROutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : { },
       "par_link_InShareOfAdopterInLocalNetworkModule_inputgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
-      "par_link_InSimpleConsumerAgentMPM_InConsumerAgentEvaluationModule_startModule" : { },
       "par_link_InSocialComponentModule_inputgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
       "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_adoptedModule_graphedge" : { },
       "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_awarenessModule_graphedge" : { },

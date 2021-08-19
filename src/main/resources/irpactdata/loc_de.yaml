@@ -306,7 +306,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.2.0"
+  edn_description: "IRPact v1.3.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -668,10 +668,10 @@ InPVactAttributeBasedInitialAdoption_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
 
-InPVactFileBasedConsumerGroupBasedInitialAdoption:
+InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData:
   edn_label: "Initiale Adopter nach realen Daten"
   edn_description: "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt."
-InPVactFileBasedConsumerGroupBasedInitialAdoption_file:
+InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData_file:
   gams_identifier: "Eingabedatei"
   gams_description: "Bestimmt die Datei mit den realen Adoptionsdaten."
 
@@ -942,6 +942,9 @@ InRAProcessModel_pvFile:
 InRAProcessModel_uncertainties:
   gams_identifier: "Unsicherheiten"
   gams_description: "Legt die Unsicherheiten, welche von diesem Modell verwendet werden sollen."
+InRAProcessModel_newProductHandlers:
+  gams_identifier: "agent initializers"
+  gams_description: "todo"
 
 process_model_ra_uncert:
   edn_label: "Unsicherheit"
@@ -1339,12 +1342,15 @@ process_modular2_components_eval:
     Dieser kann sein: adoptiert, Adoption nicht möglich, Adoption nicht entschieden. Der zu letzt genannte Zustand ermöglicht
     die Weiterführung im nächsten Iterationsschritt.
 
-InSimpleConsumerAgentMPM:
+InConsumerAgentMPMWithAdoptionHandler:
   edn_label: "Einfaches modulares Modell"
   edn_description: "Das einfache modulare Modell bestitzt exakt ein Startmodul. Es ist zu beachten, dass nur ein Modul ausgewählt ist."
-InSimpleConsumerAgentMPM_startModule:
+InConsumerAgentMPMWithAdoptionHandler_startModule:
   gams_identifier: "Startmodul"
   gams_description: "Das Startmodul des modularen Systems."
+InConsumerAgentMPMWithAdoptionHandler_newProductHandlers:
+  gams_identifier: "agent initializers"
+  gams_description: "todo"
 
 #eval
 
@@ -1512,7 +1518,7 @@ InDoNothingModule_evalgraphnode_inputModule_graphedge:
   gams_description: "todo"
 
 InSimpleGetPhaseModule_evalgraphnode:
-  edn_label: "Status-Platzhalter"
+  edn_label: "Direkte Statusrückgabe"
   edn_description: >-
     Dieses Modul gibt den gewünschten Status zurück. Es finden keine Berechnungen oder Auswertungen statt.
     Das Modul kann somit als Platzhalter genutzt werden.
@@ -1758,7 +1764,7 @@ InShareOfAdopterInLocalNetworkModule_inputgraphnode_nodeFilterScheme:
   gams_description: "todo"
 
 InShareOfAdopterInSocialNetworkModule_inputgraphnode:
-  edn_label: "Lokaler Adopteranteil"
+  edn_label: "Sozialer Adopteranteil"
   edn_description: >-
     Dieses Modul berechnet den Anteil der Adopter im sozialen Netzwerk: output = shareOfAdopter * weight.
     Im sozialen Netzwerk sind alle Agenten, welche enweder eine Kante zum entsprechenden Agenten besitzen oder dieser zu ihnen.
@@ -1767,7 +1773,7 @@ InShareOfAdopterInSocialNetworkModule_inputgraphnode_weight:
   gams_description: "todo"
 
 InSocialComponentModule_inputgraphnode:
-  edn_label: "Lokaler Adopteranteil"
+  edn_label: "Soziale Komponente"
   edn_description: >-
     Dieses Modul berechnet die soziale Komponente, bestehend aus dem Anteil der Adopter im lokalen und sozialen Netzwerk:
     output = ((shareOfAdopterLocal * weightLocal) + (shareOfAdopterSocial * weightSocial)) * weight.
@@ -1785,7 +1791,7 @@ InSocialComponentModule_inputgraphnode_nodeFilterScheme:
   gams_description: "todo"
 
 InSumModule_calcgraphnode:
-  edn_label: "Addierer"
+  edn_label: "Summierer"
   edn_description: >-
     Einfacher Summierer, welcher belieb viele Eingaben addiert und das Ergebnis zusätzlich wichtet:
     output = SUMME(input) * weight. ("SUMME" steht hierbei für die Summenfunktion.)
@@ -1797,7 +1803,7 @@ InSumModule_calcgraphnode_inputModules_graphedge:
   gams_description: "todo"
 
 InWeightedAddModule_calcgraphnode:
-  edn_label: "Addierer"
+  edn_label: "Gewichteter Addierer"
   edn_description: >-
     Addierer, welcher zwei Eingaben separat wichtet und addiert. Anschließend wird das Gesamtergebnis ebenfalls gewichtet:
     output = ((input1 * weight1) + (input2 * weight2)) * weight.
@@ -1827,8 +1833,6 @@ InWeightedModule_calcgraphnode_weight:
 InWeightedModule_calcgraphnode_input_graphedge:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
-
-##########################
 
 spatial:
   edn_label: "Räumliche Modell"
@@ -2093,6 +2097,15 @@ InTestData_value26:
 InTestData_value27:
   gams_identifier: "g2 v6"
   gams_description: "unselectable"
+InTestData_sensi1:
+  gams_identifier: "sensi 1"
+  gams_description: "test für sensitivität"
+InTestData_sensi2:
+  gams_identifier: "sensi 2"
+  gams_description: "test für sensitivität"
+InTestData_sensi3:
+  gams_identifier: "sensi 3"
+  gams_description: "test für sensitivität"
 
 #special
 

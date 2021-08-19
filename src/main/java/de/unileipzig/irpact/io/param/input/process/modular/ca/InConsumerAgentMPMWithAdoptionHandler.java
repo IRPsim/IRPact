@@ -7,12 +7,13 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.process.modular.ca.model.ConsumerAgentMPMWithAdoptionHandler;
+import de.unileipzig.irpact.core.product.initial.NewProductHandler;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
-import de.unileipzig.irpact.io.param.input.product.initial.InInitialAdoptionHandler;
+import de.unileipzig.irpact.io.param.input.product.initial.InNewProductHandler;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -67,18 +68,18 @@ public class InConsumerAgentMPMWithAdoptionHandler implements InConsumerAgentMod
     }
 
     @FieldDefinition
-    public InInitialAdoptionHandler[] initialAdoptionHandlers = new InInitialAdoptionHandler[0];
-    public void setInitialAdoptionHandlers(InInitialAdoptionHandler[] initialAdoptionHandlers) {
-        this.initialAdoptionHandlers = initialAdoptionHandlers;
+    public InNewProductHandler[] newProductHandlers = new InNewProductHandler[0];
+    public void setNewProductHandlers(InNewProductHandler[] newProductHandlers) {
+        this.newProductHandlers = newProductHandlers;
     }
-    public void setInitialAdoptionHandlers(Collection<? extends InInitialAdoptionHandler> initialAdoptionHandlers) {
-        setInitialAdoptionHandlers(initialAdoptionHandlers.toArray(new InInitialAdoptionHandler[0]));
+    public void setInitialAdoptionHandlers(Collection<? extends InNewProductHandler> initialAdoptionHandlers) {
+        setNewProductHandlers(initialAdoptionHandlers.toArray(new InNewProductHandler[0]));
     }
-    public InInitialAdoptionHandler[] getInitialAdoptionHandlers() {
-        return initialAdoptionHandlers;
+    public InNewProductHandler[] getNewProductHandlers() {
+        return newProductHandlers;
     }
     public boolean hasInitialAdoptionHandlers() {
-        return len(initialAdoptionHandlers) > 0;
+        return len(newProductHandlers) > 0;
     }
 
     public InConsumerAgentMPMWithAdoptionHandler() {
@@ -118,6 +119,14 @@ public class InConsumerAgentMPMWithAdoptionHandler implements InConsumerAgentMod
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse start module '{}'", getStartModule().getName());
         ConsumerAgentEvaluationModule startModule = parser.parseEntityTo(getStartModule());
         model.setStartModule(startModule);
+
+        if(hasInitialAdoptionHandlers()) {
+            for(InNewProductHandler inHandler: getNewProductHandlers()) {
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse NewProductHandler '{}'", inHandler.getName());
+                NewProductHandler handler = parser.parseEntityTo(inHandler);
+                model.addNewProductHandler(handler);
+            }
+        }
 
         return model;
     }

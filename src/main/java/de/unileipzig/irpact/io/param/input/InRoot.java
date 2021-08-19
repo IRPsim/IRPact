@@ -382,11 +382,11 @@ public class InRoot implements RootClass {
     }
 
     @FieldDefinition
-    public InInitialAdoptionHandler[] initialAdoptionHandlers = new InInitialAdoptionHandler[0];
-    public void setInitialAdoptionHandlers(InInitialAdoptionHandler[] initialAdoptionHandlers) {
+    public InNewProductHandler[] initialAdoptionHandlers = new InNewProductHandler[0];
+    public void setInitialAdoptionHandlers(InNewProductHandler[] initialAdoptionHandlers) {
         this.initialAdoptionHandlers = initialAdoptionHandlers;
     }
-    public InInitialAdoptionHandler[] getInitialAdoptionHandlers() {
+    public InNewProductHandler[] getInitialAdoptionHandlers() {
         return initialAdoptionHandlers;
     }
     public boolean hasInInitialAdoptionHandler() {
@@ -852,9 +852,9 @@ public class InRoot implements RootClass {
             InProductGroup.class,
             InProductGroupAttribute.class,
 
-            InInitialAdoptionHandler.class,
+            InNewProductHandler.class,
             InPVactAttributeBasedInitialAdoption.class,
-            InPVactFileBasedConsumerGroupBasedInitialAdoption.class,
+            InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData.class,
 
             InFileBasedPVactMilieuSupplier.class,
             InFileBasedPVactMilieuZipSupplier.class,

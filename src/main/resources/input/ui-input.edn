@@ -548,24 +548,10 @@
             :tags [["InPVactAttributeBasedInitialAdoption" "placeholder"]]
           } 
           {
-            :label "Initiale Adoptionen nach Milieu und PLZ" 
-            :set "set_InPVactConsumerGroupBasedInitialAdoption" 
-            :description "Diese Variante ermöglicht die Festlegung der Adoptionen basierend auf Milieu und Postleitzahl. Im weiteren wird automatisch darauf geachtet, dass die gültige Agenten initial adoptieren dürfen. Dazu müssen für alle gewünschten Kombinationen die entsprechenden Einträge erstellt werden. Kombinationen ohne Adopter müssen nicht angegeben werden." 
-            :tags [["link" "InPVactConsumerGroupBasedInitialAdoption" "InPVactConsumerGroupBasedInitialAdoptionEntry" "entries"]] 
-            :sections [
-              {
-                :label "Einträge" 
-                :set "set_InPVactConsumerGroupBasedInitialAdoptionEntry" 
-                :description "Hier werden die eigentlichen Einträge, bestehend aus Milieus, Postleitzahlen und Anteile, definiert. Der Anteil gilt dabei individuell für jede Kombonation. Wurde zum Beispiel ein Eintrag mit den Milieus M1, M2 und den PLZ P1, P2 sowie dem Anteil 0.5 definiert, werden 50% der Agemtem aus M1 in P1 initial adoptieren und ebenso 50% in P2. Selbiges gilt für die Agenten von M2 in P1 und P2." 
-                :tags [["InPVactConsumerGroupBasedInitialAdoptionEntry" "share"] ["link" "InPVactConsumerGroupBasedInitialAdoptionEntry" "InConsumerAgentGroup" "cags"] ["link" "InPVactConsumerGroupBasedInitialAdoptionEntry" "InAttributeName" "zips"]]
-              }
-            ]
-          } 
-          {
-            :label "Dateibasierte initiale Adoptionen nach Milieu und PLZ" 
-            :set "set_InPVactFileBasedConsumerGroupBasedInitialAdoption" 
-            :description "todo" 
-            :tags [["link" "InPVactFileBasedConsumerGroupBasedInitialAdoption" "InPVFile" "file"]]
+            :label "Initiale Adopter nach realen Daten" 
+            :set "set_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData" 
+            :description "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt." 
+            :tags [["link" "InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData" "InRealAdoptionDataFile" "file"]]
           }
         ]
       }
@@ -608,7 +594,7 @@
       {
         :label "Relative Agreement" 
         :set "set_InRAProcessModel" 
-        :tags [["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["InRAProcessModel" "speedOfConvergence"] ["InRAProcessModel" "attitudeGap"] ["InRAProcessModel" "chanceNeutral"] ["InRAProcessModel" "chanceConvergence"] ["InRAProcessModel" "chanceDivergence"] ["link" "InRAProcessModel" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertainty" "uncertainties"]]
+        :tags [["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["InRAProcessModel" "speedOfConvergence"] ["InRAProcessModel" "attitudeGap"] ["InRAProcessModel" "chanceNeutral"] ["InRAProcessModel" "chanceConvergence"] ["InRAProcessModel" "chanceDivergence"] ["link" "InRAProcessModel" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertainty" "uncertainties"] ["link" "InRAProcessModel" "InNewProductHandler" "newProductHandlers"]]
       } 
       {
         :label "[NICHT NUTZEN - VERALTET] Modulares Relative Agreement" 
@@ -682,9 +668,9 @@
             :sections [
               {
                 :label "Einfaches modulares Modell" 
-                :set "set_InSimpleConsumerAgentMPM" 
+                :set "set_InConsumerAgentMPMWithAdoptionHandler" 
                 :description "Das einfache modulare Modell bestitzt exakt ein Startmodul. Es ist zu beachten, dass nur ein Modul ausgewählt ist." 
-                :tags [["link" "InSimpleConsumerAgentMPM" "InConsumerAgentEvaluationModule" "startModule"]]
+                :tags [["link" "InConsumerAgentMPMWithAdoptionHandler" "InConsumerAgentEvaluationModule" "startModule"] ["link" "InConsumerAgentMPMWithAdoptionHandler" "InNewProductHandler" "newProductHandlers"]]
               }
             ]
           } 
@@ -698,9 +684,9 @@
                 :sections [
                   {
                     :label "Addierer" 
-                    :set "set_InWeightedAddModule_calcgraphnode" 
+                    :set "set_InAddModule_calcgraphnode" 
                     :description "Einfacher Addierer, welcher zwei Eingaben addiert und das Ergebnis zusätzlich wichtet: output = (input1 + input2) * weight." 
-                    :tags [["InAddModule" "calcgraphnode" "weight"] ["link" "InAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "first" "graphedge"] ["link" "InAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "second" "graphedge"] ["InSumModule" "calcgraphnode" "weight"] ["link" "InSumModule" "calcgraphnode" "InConsumerAgentCalculationModule" "inputModules" "graphedge"] ["InWeightedAddModule" "calcgraphnode" "weight"] ["InWeightedAddModule" "calcgraphnode" "weight1"] ["InWeightedAddModule" "calcgraphnode" "weight2"] ["link" "InWeightedAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "first" "graphedge"] ["link" "InWeightedAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "second" "graphedge"]]
+                    :tags [["InAddModule" "calcgraphnode" "weight"] ["link" "InAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "first" "graphedge"] ["link" "InAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "second" "graphedge"]]
                   } 
                   {
                     :label "Eingabeattribut" 
@@ -764,9 +750,33 @@
                   } 
                   {
                     :label "Lokaler Adopteranteil" 
-                    :set "set_InSocialComponentModule_inputgraphnode" 
+                    :set "set_InShareOfAdopterInLocalNetworkModule_inputgraphnode" 
                     :description "Dieses Modul berechnet den Anteil der Adopter im lokalen Netzwerk: output = shareOfAdopter * weight. Das lokale Netz wird dabei über ein Berechnungsschema bzw. Filter bestimmt." 
-                    :tags [["InShareOfAdopterInLocalNetworkModule" "inputgraphnode" "weight"] ["link" "InShareOfAdopterInLocalNetworkModule" "inputgraphnode" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"] ["InShareOfAdopterInSocialNetworkModule" "inputgraphnode" "weight"] ["InSocialComponentModule" "inputgraphnode" "weight"] ["InSocialComponentModule" "inputgraphnode" "socialWeight"] ["InSocialComponentModule" "inputgraphnode" "localWeight"] ["link" "InSocialComponentModule" "inputgraphnode" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+                    :tags [["InShareOfAdopterInLocalNetworkModule" "inputgraphnode" "weight"] ["link" "InShareOfAdopterInLocalNetworkModule" "inputgraphnode" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+                  } 
+                  {
+                    :label "Sozialer Adopteranteil" 
+                    :set "set_InShareOfAdopterInSocialNetworkModule_inputgraphnode" 
+                    :description "Dieses Modul berechnet den Anteil der Adopter im sozialen Netzwerk: output = shareOfAdopter * weight. Im sozialen Netzwerk sind alle Agenten, welche enweder eine Kante zum entsprechenden Agenten besitzen oder dieser zu ihnen." 
+                    :tags [["InShareOfAdopterInSocialNetworkModule" "inputgraphnode" "weight"]]
+                  } 
+                  {
+                    :label "Soziale Komponente" 
+                    :set "set_InSocialComponentModule_inputgraphnode" 
+                    :description "Dieses Modul berechnet die soziale Komponente, bestehend aus dem Anteil der Adopter im lokalen und sozialen Netzwerk: output = ((shareOfAdopterLocal * weightLocal) + (shareOfAdopterSocial * weightSocial)) * weight." 
+                    :tags [["InSocialComponentModule" "inputgraphnode" "weight"] ["InSocialComponentModule" "inputgraphnode" "socialWeight"] ["InSocialComponentModule" "inputgraphnode" "localWeight"] ["link" "InSocialComponentModule" "inputgraphnode" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+                  } 
+                  {
+                    :label "Summierer" 
+                    :set "set_InSumModule_calcgraphnode" 
+                    :description "Einfacher Summierer, welcher belieb viele Eingaben addiert und das Ergebnis zusätzlich wichtet: output = SUMME(input) * weight. (\"SUMME\" steht hierbei für die Summenfunktion.)" 
+                    :tags [["InSumModule" "calcgraphnode" "weight"] ["link" "InSumModule" "calcgraphnode" "InConsumerAgentCalculationModule" "inputModules" "graphedge"]]
+                  } 
+                  {
+                    :label "Gewichteter Addierer" 
+                    :set "set_InWeightedAddModule_calcgraphnode" 
+                    :description "Addierer, welcher zwei Eingaben separat wichtet und addiert. Anschließend wird das Gesamtergebnis ebenfalls gewichtet: output = ((input1 * weight1) + (input2 * weight2)) * weight." 
+                    :tags [["InWeightedAddModule" "calcgraphnode" "weight"] ["InWeightedAddModule" "calcgraphnode" "weight1"] ["InWeightedAddModule" "calcgraphnode" "weight2"] ["link" "InWeightedAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "first" "graphedge"] ["link" "InWeightedAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "second" "graphedge"]]
                   } 
                   {
                     :label "Wichtung" 
@@ -1056,7 +1066,7 @@
             :label "Einfache Testdaten" 
             :set "set_InTestData" 
             :description "Testdaten" 
-            :tags [["InTestData" "testValue1"] ["InTestData" "testValue2"] ["InTestData" "value01"] ["InTestData" "value02"] ["InTestData" "value11"] ["InTestData" "value12"] ["InTestData" "value13"] ["InTestData" "value14"] ["InTestData" "value21"] ["InTestData" "value22"] ["InTestData" "value23"] ["InTestData" "value24"] ["InTestData" "value25"] ["InTestData" "value26"] ["InTestData" "value27"]]
+            :tags [["InTestData" "testValue1"] ["InTestData" "testValue2"] ["InTestData" "value01"] ["InTestData" "value02"] ["InTestData" "value11"] ["InTestData" "value12"] ["InTestData" "value13"] ["InTestData" "value14"] ["InTestData" "value21"] ["InTestData" "value22"] ["InTestData" "value23"] ["InTestData" "value24"] ["InTestData" "value25"] ["InTestData" "value26"] ["InTestData" "value27"] ["InTestData" "sensi1"] ["InTestData" "sensi2"] ["InTestData" "sensi3"]]
           }
         ]
       }

@@ -23,7 +23,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InPVactAttributeBasedInitialAdoption implements InInitialAdoptionHandler {
+public class InPVactAttributeBasedInitialAdoption implements InNewProductHandler {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -67,6 +67,10 @@ public class InPVactAttributeBasedInitialAdoption implements InInitialAdoptionHa
 
     public String getName() {
         return _name;
+    }
+
+    public void setName(String name) {
+        this._name = name;
     }
 
     @Override

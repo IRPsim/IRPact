@@ -26,7 +26,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
  * @author Daniel Abitz
  */
 @Definition
-public class InPVactFileBasedConsumerGroupBasedInitialAdoption implements InInitialAdoptionHandler {
+public class InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData implements InNewProductHandler {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -50,16 +50,16 @@ public class InPVactFileBasedConsumerGroupBasedInitialAdoption implements InInit
     @FieldDefinition
     public InRealAdoptionDataFile[] file = new InRealAdoptionDataFile[0];
 
-    public InPVactFileBasedConsumerGroupBasedInitialAdoption() {
+    public InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData() {
     }
 
     @Override
-    public InPVactFileBasedConsumerGroupBasedInitialAdoption copy(CopyCache cache) {
+    public InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InPVactFileBasedConsumerGroupBasedInitialAdoption newCopy(CopyCache cache) {
-        InPVactFileBasedConsumerGroupBasedInitialAdoption copy = new InPVactFileBasedConsumerGroupBasedInitialAdoption();
+    public InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData newCopy(CopyCache cache) {
+        InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData copy = new InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData();
         copy._name = _name;
         copy.file = cache.copyArray(file);
         return copy;

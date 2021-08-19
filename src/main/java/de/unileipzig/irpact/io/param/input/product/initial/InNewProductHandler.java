@@ -8,7 +8,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
  * @author Daniel Abitz
  */
 @Definition
-public interface InInitialAdoptionHandler extends InIRPactEntity {
+public interface InNewProductHandler extends InIRPactEntity {
 
     static void initRes(TreeAnnotationResource res) {
     }
