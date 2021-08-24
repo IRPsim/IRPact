@@ -382,13 +382,17 @@ public class JadexIRPactAgentManagerAgentBDI extends AbstractJadexAgentBDI imple
         rnd.shuffle(out);
         return out;
     }
+    protected <T> List<T> shuffleIfRequired(List<T> in) {
+        if(shuffle) {
+            return getShuffledCopy(in);
+        } else {
+            return in;
+        }
+    }
 
     @Override
     protected void onLoopAction() throws Throwable {
         log().trace(IRPSection.SIMULATION_AGENT, "[{}] start next action ({})", getName(), now());
-        List<IRPactAgentAPI> agents = shuffle
-                ? getShuffledCopy(this.agents)
-                : this.agents;
         if(hasExec()) {
             scheduleOnExec(agents);
         } else {
@@ -400,7 +404,8 @@ public class JadexIRPactAgentManagerAgentBDI extends AbstractJadexAgentBDI imple
         List<PostAction<?>> postActions = Collections.synchronizedList(new ArrayList<>());
 
         //start
-        List<LoopTask> agentTasks = agents.stream()
+        List<IRPactAgentAPI> shuffledAgents = shuffleIfRequired(agents);
+        List<LoopTask> agentTasks = shuffledAgents.stream()
                 .map(agent -> new LoopTask(agent, postActions))
                 .collect(Collectors.toList());
 
@@ -415,7 +420,8 @@ public class JadexIRPactAgentManagerAgentBDI extends AbstractJadexAgentBDI imple
         }
 
         //postaction
-        List<PostActionTask> postTasks = postActions.stream()
+        List<PostAction<?>> shuffledPostActions = shuffleIfRequired(postActions);
+        List<PostActionTask> postTasks = shuffledPostActions.stream()
                 .map(PostActionTask::new)
                 .collect(Collectors.toList());
 
@@ -434,8 +440,9 @@ public class JadexIRPactAgentManagerAgentBDI extends AbstractJadexAgentBDI imple
         List<PostAction<?>> postActions = new ArrayList<>();
 
         //start
-        log().trace(IRPSection.SIMULATION_PROCESS, "[{}] (self) start {} tasks", getName(), agents.size());
-        for(IRPactAgentAPI agent: agents) {
+        List<IRPactAgentAPI> shuffledAgents = shuffleIfRequired(agents);
+        log().trace(IRPSection.SIMULATION_PROCESS, "[{}] (self) start {} tasks", getName(), shuffledAgents.size());
+        for(IRPactAgentAPI agent: shuffledAgents) {
             try {
                 agent.nextIRPactAgentLoopAction(postActions);
             } catch (Throwable t) {
@@ -443,11 +450,12 @@ public class JadexIRPactAgentManagerAgentBDI extends AbstractJadexAgentBDI imple
                 throw t;
             }
         }
-        log().trace(IRPSection.SIMULATION_PROCESS, "[{}] (self) {} tasks finished", getName(), agents.size());
+        log().trace(IRPSection.SIMULATION_PROCESS, "[{}] (self) {} tasks finished", getName(), shuffledAgents.size());
 
         //postaction
-        log().trace(IRPSection.SIMULATION_PROCESS, "[{}] (self) start {} postactions", getName(), postActions.size());
-        for(PostAction<?> action: postActions) {
+        List<PostAction<?>> shuffledPostActions = shuffleIfRequired(postActions);
+        log().trace(IRPSection.SIMULATION_PROCESS, "[{}] (self) start {} postactions", getName(), shuffledPostActions.size());
+        for(PostAction<?> action: shuffledPostActions) {
             try {
                 action.execute();
             } catch (Throwable t) {

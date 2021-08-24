@@ -130,7 +130,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         processModel.setWeightNPV(RealData.WEIGHT_NPV);
         processModel.setWeightSocial(RealData.WEIGHT_SOCIAL);
         processModel.setWeightLocal(RealData.WEIGHT_LOCALE);
-        processModel.addNewProductHandle(getDefaultPVactFileBasedInitialAdopter());
+        processModel.addNewProductHandle(getDefaultPVactFileBasedWeightedInitialAdopter());
 
         InSpace2D space2D = createSpace2D("Space2D");
 

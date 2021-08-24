@@ -2742,6 +2742,15 @@ SET set_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData(set_InNewP
 * - type: Boolean
 PARAMETER par_link_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData_InRealAdoptionDataFile_file(set_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData,set_InRealAdoptionDataFile)
 
+* - identifier: InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData
+* - type: String
+SET set_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData(set_InNewProductHandler)
+
+* - description: Bestimmt die Datei mit den realen Adoptionsdaten.
+* - identifier: Eingabedatei
+* - type: Boolean
+PARAMETER par_link_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_InRealAdoptionDataFile_file(set_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData,set_InRealAdoptionDataFile)
+
 * - identifier: InFileBasedPVactMilieuSupplier
 * - type: String
 SET set_InFileBasedPVactMilieuSupplier(set_InSpatialDistributionWithCollection)
