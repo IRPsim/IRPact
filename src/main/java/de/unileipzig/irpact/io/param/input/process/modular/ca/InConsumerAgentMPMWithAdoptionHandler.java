@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.process.modular.ca.model.ConsumerAgentMPMWithAdoptionHandler;
-import de.unileipzig.irpact.core.product.initial.NewProductHandler;
+import de.unileipzig.irpact.core.product.handler.NewProductHandler;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;

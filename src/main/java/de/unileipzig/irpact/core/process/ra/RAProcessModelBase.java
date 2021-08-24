@@ -17,7 +17,7 @@ import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyCache;
 import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyHandler;
 import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyManager;
 import de.unileipzig.irpact.core.product.Product;
-import de.unileipzig.irpact.core.product.initial.NewProductHandler;
+import de.unileipzig.irpact.core.product.handler.NewProductHandler;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;

@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.postprocessing.image.RealAdoptionData;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.product.ProductManager;
-import de.unileipzig.irpact.core.product.initial.ConsumerGroupBasedInitialAdoptionWithRealData;
+import de.unileipzig.irpact.core.product.handler.ConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InRootUI;
@@ -93,7 +93,11 @@ public class InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData imple
         SimulationEnvironment environment = parser.getEnvironment();
         ProductManager productManager = environment.getProducts();
         if(productManager.getNumberOfProductGroups() != 1) {
-            throw new ParsingException("InPVactFileBasedConsumerGroupBasedInitialAdoption '{}' requires exactly one product group. Number of groups: {}", getName(), productManager.getNumberOfProductGroups());
+            if(parser.getRoot().getGeneral().runPVAct) {
+                LOGGER.info("[{}] PVact enabled", getName());
+            } else {
+                throw new ParsingException("InPVactFileBasedConsumerGroupBasedInitialAdoption '{}' requires exactly one product group. Number of groups: {}", getName(), productManager.getNumberOfProductGroups());
+            }
         }
 
         RealAdoptionData adoptionData = getFile().parse(parser);

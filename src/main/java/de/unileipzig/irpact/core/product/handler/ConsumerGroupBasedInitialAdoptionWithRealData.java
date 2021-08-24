@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.product.initial;
+package de.unileipzig.irpact.core.product.handler;
 
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.attribute.Attribute;
@@ -85,30 +85,48 @@ public class ConsumerGroupBasedInitialAdoptionWithRealData extends NameableBase 
     @Override
     public void handleProduct(SimulationEnvironment environment, Product product) {
         int startYear = getStartYear(environment);
-        int initialAdoptionYear = startYear - 1;
+        final int initialAdoptionYear = startYear - 1;
         Set<String> zips = getAllZIPs(environment);
 
+        trace("zipAttr={}, validationAttr={}, shareAttr={}", zipAttributeName, validationAttributeName, shareAttributeName);
+
+        int totalNumberOfRealAdoptions = 0;
+        int totalNumberOfSimulationAdoptions = 0;
+
         for(String zip: zips) {
-            int numberOfAdoptions = adoptionData.get(initialAdoptionYear, zip);
-            if(numberOfAdoptions < 1) {
-                trace("skip '{}', number of adoptions: {}", zip, numberOfAdoptions);
+            int numberOfRealAdoptions = adoptionData.get(initialAdoptionYear, zip);
+            if(numberOfRealAdoptions < 1) {
+                trace("skip '{}', number of adoptions in year {}: {}", zip, initialAdoptionYear, numberOfRealAdoptions);
+                continue;
             }
+
+            trace("'{}' number of adoptions in year {}: {}", zip, initialAdoptionYear, numberOfRealAdoptions);
+            int numberOfSimulationAdoptions = 0;
 
             for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
                 if(cag.getNumberOfAgents() == 0) {
                     trace("skip '{}', number of agents ({}): 0", zip, cag.getName());
+                    continue;
                 }
-                double share = getShare(cag);
+
+                double share = getShare(cag, product);
                 List<ConsumerAgent> validAgents = getValidConsumerAgents(cag, zip);
-                int initialAdopterCount = (int) (validAgents.size() * share);
-                trace("handle zip={}, cag={}, share={}, validAgents={}, initialAdopter={}", zip, cag.getName(), share, validAgents.size(), initialAdopterCount);
-                List<ConsumerAgent> initialAdopters = rnd.drawRandom(validAgents, initialAdopterCount);
+                int initialAdopterCount = (int) (numberOfRealAdoptions * share);
+                trace("handle zip={}, cag={}, share={}, realAdoptions={}, validAgents={}, initialAdopter={}", zip, cag.getName(), share, numberOfRealAdoptions, validAgents.size(), initialAdopterCount);
+                List<ConsumerAgent> initialAdopters = rnd.drawRandom(validAgents, initialAdopterCount, true);
                 for(ConsumerAgent ca: initialAdopters) {
                     trace("set initial adopter: agent={} product={}", ca.getName(), product.getName());
                     ca.adoptInitial(product);
+                    numberOfSimulationAdoptions++;
                 }
             }
+            trace("'{}' number of initial adoptions: real={}, simularion={}", zip, numberOfRealAdoptions, numberOfSimulationAdoptions);
+
+            totalNumberOfRealAdoptions += numberOfRealAdoptions;
+            totalNumberOfSimulationAdoptions += numberOfSimulationAdoptions;
         }
+
+        trace("total number of initial adoptions: real={}, simulation={}", totalNumberOfRealAdoptions, totalNumberOfSimulationAdoptions);
     }
 
     protected int getStartYear(SimulationEnvironment environment) {
@@ -151,13 +169,14 @@ public class ConsumerGroupBasedInitialAdoptionWithRealData extends NameableBase 
         }
     }
 
-    protected double getShare(ConsumerAgent ca) {
-        return ca.findAttribute(shareAttributeName)
+    protected double getShare(ConsumerAgent ca, Product product) {
+        return ca.getProductRelatedAttribute(shareAttributeName)
+                .getAttribute(product)
                 .asValueAttribute()
                 .getDoubleValue();
     }
 
-    protected double getShare(ConsumerAgentGroup cag) {
-        return getShare(CollectionUtil.getFirst(cag.getAgents()));
+    protected double getShare(ConsumerAgentGroup cag, Product product) {
+        return getShare(CollectionUtil.getFirst(cag.getAgents()), product);
     }
 }

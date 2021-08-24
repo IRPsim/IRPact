@@ -17,6 +17,7 @@ import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
+import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
@@ -195,6 +196,19 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         general.setFirstSimulationYear(2015);
         general.lastSimulationYear = 2015;
         return general;
+    }
+
+    protected static final String DEFAULT_CONSUMER_INIT_ADOPTER = "DEFAULT_CONSUMER_INIT_ADOPTER";
+    protected InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData getDefaultPVactFileBasedInitialAdopter() {
+        if(isCached(DEFAULT_CONSUMER_INIT_ADOPTER)) {
+            return getCached(DEFAULT_CONSUMER_INIT_ADOPTER);
+        } else {
+            InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData initAdopter = new InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData();
+            initAdopter.setName(DEFAULT_CONSUMER_INIT_ADOPTER);
+            initAdopter.setFile(getRealAdoptionDataFile());
+            cache(initAdopter.getName(), initAdopter);
+            return initAdopter;
+        }
     }
 
     @Override
