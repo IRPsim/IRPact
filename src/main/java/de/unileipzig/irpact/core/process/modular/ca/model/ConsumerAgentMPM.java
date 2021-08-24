@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.process.modular.ModularProcessModel;
 import de.unileipzig.irpact.core.process.modular.ModularProcessPlan;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentModule;
+import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentPostAction;
 
 /**
  * @author Daniel Abitz
@@ -14,6 +15,8 @@ import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentModu
 public interface ConsumerAgentMPM extends ModularProcessModel {
 
     ConsumerAgentEvaluationModule getStartModule();
+
+    void execute(ConsumerAgentPostAction action) throws Throwable;
 
     void handleRestoredPlan(ModularProcessPlan plan);
 

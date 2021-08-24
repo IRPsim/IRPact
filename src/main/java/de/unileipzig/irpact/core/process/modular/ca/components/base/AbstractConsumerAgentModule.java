@@ -318,6 +318,10 @@ public abstract class AbstractConsumerAgentModule extends SimulationEntityBase i
     // agent
     //=========================
 
+    protected void allowAttention(ConsumerAgent agent) {
+        agent.allowAttention();
+    }
+
     protected void doSelfActionAndAllowAttention(ConsumerAgent agent) {
         agent.actionPerformed();
         agent.allowAttention();

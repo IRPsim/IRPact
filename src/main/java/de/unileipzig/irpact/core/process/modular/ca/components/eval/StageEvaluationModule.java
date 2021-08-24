@@ -8,7 +8,10 @@ import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.Stage;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractConsumerAgentModuleWithNSubModules;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irptools.util.log.IRPLogger;
+
+import java.util.List;
 
 /**
  * @author Daniel Abitz
@@ -87,7 +90,7 @@ public class StageEvaluationModule
     }
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
         Stage stage = data.currentStage();
         if(stage == null) {
             throw new NullPointerException("Stage");
@@ -100,42 +103,22 @@ public class StageEvaluationModule
                 throw new IllegalArgumentException("unsupported stage: " + stage);
 
             case AWARENESS:
-                return evaluateAwareness(data);
+                return getAwarenessModule().evaluate(data, postActions);
 
             case FEASIBILITY:
-                return evaluateFeasibility(data);
+                return getFeasibilityModule().evaluate(data, postActions);
 
             case DECISION_MAKING:
-                return evaluateDecisionMaking(data);
+                return getDecisionMakingModule().evaluate(data, postActions);
 
             case ADOPTED:
-                return evaluateAdopted(data);
+                return getAdoptedModule().evaluate(data, postActions);
 
             case IMPEDED:
-                return evaluateImpeded(data);
+                return getImpededModule().evaluate(data, postActions);
 
             default:
                 throw new IllegalStateException("unknown stage: " + stage);
         }
-    }
-
-    public AdoptionResult evaluateAwareness(ConsumerAgentData data) throws Throwable {
-        return getAwarenessModule().evaluate(data);
-    }
-
-    public AdoptionResult evaluateFeasibility(ConsumerAgentData data) throws Throwable {
-        return getFeasibilityModule().evaluate(data);
-    }
-
-    public AdoptionResult evaluateDecisionMaking(ConsumerAgentData data) throws Throwable {
-        return getDecisionMakingModule().evaluate(data);
-    }
-
-    public AdoptionResult evaluateAdopted(ConsumerAgentData data) throws Throwable {
-        return getAdoptedModule().evaluate(data);
-    }
-
-    public AdoptionResult evaluateImpeded(ConsumerAgentData data) throws Throwable {
-        return getImpededModule().evaluate(data);
     }
 }

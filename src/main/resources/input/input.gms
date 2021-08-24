@@ -1941,6 +1941,32 @@ PARAMETER par_link_InWeightedModule_calcgraphnode_InConsumerAgentCalculationModu
 
 * - color: Red
 * - shape: diamond
+* - identifier: InBranchModule_evalgraphnode
+* - type: String
+SET set_InBranchModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
+
+* - description: todo
+* - identifier: Eingabemodul
+* - type: Boolean
+PARAMETER par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_inputModule_graphedge(set_InBranchModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
+
+* - description: todo
+* - identifier: adoption Modul
+* - type: Boolean
+PARAMETER par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_onAdoptModule_graphedge(set_InBranchModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
+
+* - description: todo
+* - identifier: impeded Module
+* - type: Boolean
+PARAMETER par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_onImpededModule_graphedge(set_InBranchModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
+
+* - description: todo
+* - identifier: in-process Modul
+* - type: Boolean
+PARAMETER par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_onInProcessModule_graphedge(set_InBranchModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
+
+* - color: Red
+* - shape: diamond
 * - identifier: InDefaultActionModule_evalgraphnode
 * - type: String
 SET set_InDefaultActionModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
@@ -2220,6 +2246,64 @@ SET set_InDoNothingModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
 * - identifier: Eingabemodule
 * - type: Boolean
 PARAMETER par_link_InDoNothingModule_evalgraphnode_InConsumerAgentModule_inputModule_graphedge(set_InDoNothingModule_evalgraphnode,set_InConsumerAgentModule)
+
+* - color: Red
+* - shape: diamond
+* - identifier: InFilterModule_evalgraphnode
+* - type: String
+SET set_InFilterModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
+
+* - description: todo
+* - identifier: Eingabemodul
+* - type: Boolean
+PARAMETER par_link_InFilterModule_evalgraphnode_InConsumerAgentEvaluationModule_inputModule_graphedge(set_InFilterModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
+
+* - description: todo
+* - identifier: Folgemodul
+* - type: Boolean
+PARAMETER par_link_InFilterModule_evalgraphnode_InConsumerAgentEvaluationModule_taskModule_graphedge(set_InFilterModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
+
+* - color: Red
+* - shape: diamond
+* - identifier: InSimpleGetPhaseModule_evalgraphnode
+* - type: String
+SET set_InSimpleGetPhaseModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: Status: adoptiert
+* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getAdopt == 1, par_InSimpleGetPhaseModule_evalgraphnode_getImpeded = 0)
+* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getAdopt == 1, par_InSimpleGetPhaseModule_evalgraphnode_getInProcess = 0)
+* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getAdopt == 0, par_InSimpleGetPhaseModule_evalgraphnode_getAdopt = 1)
+* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getAdopt == 0, par_InSimpleGetPhaseModule_evalgraphnode_getImpeded = 0)
+* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getAdopt == 0, par_InSimpleGetPhaseModule_evalgraphnode_getInProcess = 0)
+* - type: Boolean
+PARAMETER par_InSimpleGetPhaseModule_evalgraphnode_getAdopt(set_InSimpleGetPhaseModule_evalgraphnode)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: Status: Adoption nicht möglich
+* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getImpeded == 1, par_InSimpleGetPhaseModule_evalgraphnode_getAdopt = 0)
+* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getImpeded == 1, par_InSimpleGetPhaseModule_evalgraphnode_getInProcess = 0)
+* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getImpeded == 0, par_InSimpleGetPhaseModule_evalgraphnode_getAdopt = 0)
+* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getImpeded == 0, par_InSimpleGetPhaseModule_evalgraphnode_getImpeded = 1)
+* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getImpeded == 0, par_InSimpleGetPhaseModule_evalgraphnode_getInProcess = 0)
+* - type: Boolean
+PARAMETER par_InSimpleGetPhaseModule_evalgraphnode_getImpeded(set_InSimpleGetPhaseModule_evalgraphnode)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: Status: Adoption nicht entschieden
+* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getInProcess == 1, par_InSimpleGetPhaseModule_evalgraphnode_getAdopt = 0)
+* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getInProcess == 1, par_InSimpleGetPhaseModule_evalgraphnode_getImpeded = 0)
+* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getInProcess == 0, par_InSimpleGetPhaseModule_evalgraphnode_getAdopt = 0)
+* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getInProcess == 0, par_InSimpleGetPhaseModule_evalgraphnode_getImpeded = 0)
+* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getInProcess == 0, par_InSimpleGetPhaseModule_evalgraphnode_getInProcess = 1)
+* - type: Boolean
+PARAMETER par_InSimpleGetPhaseModule_evalgraphnode_getInProcess(set_InSimpleGetPhaseModule_evalgraphnode)
 
 * - color: Red
 * - shape: diamond
@@ -3238,6 +3322,20 @@ SCALAR sca_InGeneral_forceLogToConsole
 * - identifier: [DEV] debug task
 * - type: Integer
 SCALAR sca_InGeneral_debugTask
+
+* - default: 0
+* - domain: [0,)
+* - description: Anzahl Threads = Paralellisierung1 * Parallelisierung2
+* - identifier: Parallelisierung 1
+* - type: Integer
+SCALAR sca_InGeneral_outerParallelism
+
+* - default: 0
+* - domain: [0,)
+* - description: Anzahl Threads = Paralellisierung1 * Parallelisierung2
+* - identifier: Parallelisierung 2
+* - type: Integer
+SCALAR sca_InGeneral_innerParallelism
 
 * - default: 0
 * - domain: [0|1]

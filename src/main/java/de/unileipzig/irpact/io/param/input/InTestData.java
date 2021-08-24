@@ -12,6 +12,7 @@ import de.unileipzig.irptools.util.*;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
+import java.util.function.Consumer;
 
 import static de.unileipzig.irpact.io.param.IOConstants.DEV;
 import static de.unileipzig.irpact.io.param.IOConstants.TEST;
@@ -138,6 +139,11 @@ public class InTestData implements InIRPactEntity {
     public double sensi3;
 
     public InTestData() {
+    }
+
+    public InTestData peek(Consumer<? super InTestData> consumer) {
+        consumer.accept(this);
+        return this;
     }
 
     @Override

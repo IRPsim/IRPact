@@ -109,7 +109,7 @@ public class FinancialComponentModule extends AbstractConsumerAgentModule implem
     }
 
     @Override
-    public double calculate(ConsumerAgentData input) {
+    public double calculate(ConsumerAgentData input) throws Throwable {
         double value = getFinancialComponent(input.getAgent());
         return getWeight() * value;
     }

@@ -2,12 +2,15 @@ package de.unileipzig.irpact.commons.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Daniel Abitz
  */
 public class WeightedProgressCalculator implements ProgressCalculator {
 
+    protected final Lock LOCK = new ReentrantLock();
     protected final Map<Integer, Double> phaseWeights = new HashMap<>();
     protected final Map<Integer, Double> phaseProgress = new HashMap<>();
 
@@ -44,6 +47,16 @@ public class WeightedProgressCalculator implements ProgressCalculator {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void lock() {
+        LOCK.lock();
+    }
+
+    @Override
+    public void unlock() {
+        LOCK.unlock();
     }
 
     @Override

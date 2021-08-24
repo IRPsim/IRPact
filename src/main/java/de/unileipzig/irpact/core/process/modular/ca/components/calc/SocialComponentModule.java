@@ -87,7 +87,7 @@ public class SocialComponentModule extends AbstractConsumerAgentModuleWithNSubMo
     }
 
     @Override
-    public double calculate(ConsumerAgentData input) {
+    public double calculate(ConsumerAgentData input) throws Throwable {
         double localPart = getLocalNetworkSubModule().calculate(input);
         double socialPart = getSocialNetworkSubModule().calculate(input);
 

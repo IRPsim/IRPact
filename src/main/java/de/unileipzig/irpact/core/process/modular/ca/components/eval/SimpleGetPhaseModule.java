@@ -7,8 +7,10 @@ import de.unileipzig.irpact.core.process.modular.ca.AdoptionResult;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractConsumerAgentModule;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -56,7 +58,7 @@ public class SimpleGetPhaseModule extends AbstractConsumerAgentModule implements
     }
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData input, List<PostAction<?>> postActions) throws Throwable {
         return getValidAdoptionResult();
     }
 }

@@ -6,7 +6,10 @@ import de.unileipzig.irpact.core.process.modular.ca.AdoptionResult;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractConsumerAgentModuleWithNGenericSubModules;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irptools.util.log.IRPLogger;
+
+import java.util.List;
 
 /**
  * @author Daniel Abitz
@@ -54,11 +57,11 @@ public class FilterModule
     }
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data) throws Throwable {
-        AdoptionResult result = getInputModule().evaluate(data);
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
+        AdoptionResult result = getInputModule().evaluate(data, postActions);
 
         if(result == AdoptionResult.IN_PROCESS) {
-            return getTaskModule().evaluate(data);
+            return getTaskModule().evaluate(data, postActions);
         } else {
             return result;
         }

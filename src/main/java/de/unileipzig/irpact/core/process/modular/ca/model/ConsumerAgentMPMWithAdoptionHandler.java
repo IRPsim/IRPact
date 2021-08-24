@@ -10,12 +10,15 @@ import de.unileipzig.irpact.core.process.modular.ca.AdoptionResult;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.Stage;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
+import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentPostAction;
 import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractConsumerAgentModuleWithNGenericSubModules;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -53,6 +56,11 @@ public class ConsumerAgentMPMWithAdoptionHandler extends AbstractConsumerAgentMP
     @Override
     public ConsumerAgentEvaluationModule getStartModule() {
         return MASTER;
+    }
+
+    @Override
+    public void execute(ConsumerAgentPostAction action) throws Throwable {
+        MASTER.execute(action);
     }
 
     public void setRnd(Rnd rnd) {
@@ -110,7 +118,7 @@ public class ConsumerAgentMPMWithAdoptionHandler extends AbstractConsumerAgentMP
         }
 
         @Override
-        public AdoptionResult evaluate(ConsumerAgentData data) throws Throwable {
+        public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
             ConsumerAgentEvaluationModule startModule = getRealStartModule();
             if(startModule == null) {
                 throw new NoSuchElementException("missing start module");
@@ -118,7 +126,7 @@ public class ConsumerAgentMPMWithAdoptionHandler extends AbstractConsumerAgentMP
 
             trace("[{}] start evaluation", data.getAgent().getName());
 
-            AdoptionResult result = startModule.evaluate(data);
+            AdoptionResult result = startModule.evaluate(data, postActions);
 
             switch(result) {
                 case ADOPTED:
@@ -131,6 +139,36 @@ public class ConsumerAgentMPMWithAdoptionHandler extends AbstractConsumerAgentMP
 
                 case IN_PROCESS:
                     handleInProcess(data);
+                    break;
+
+                default:
+                    LOGGER.warn("[{}] unsupported AdoptionResult: {}", HANDLER.getName(), result);
+            }
+
+            return result;
+        }
+
+        public AdoptionResult execute(ConsumerAgentPostAction action) throws Throwable {
+            ConsumerAgentEvaluationModule startModule = getRealStartModule();
+            if(startModule == null) {
+                throw new NoSuchElementException("missing start module");
+            }
+
+            trace("[{}] start post action", action.getInput().getAgent().getName());
+
+            AdoptionResult result = action.evaluate();
+
+            switch(result) {
+                case ADOPTED:
+                    handleAdopted(action.getInput());
+                    break;
+
+                case IMPEDED:
+                    handleImpeded(action.getInput());
+                    break;
+
+                case IN_PROCESS:
+                    handleInProcess(action.getInput());
                     break;
 
                 default:

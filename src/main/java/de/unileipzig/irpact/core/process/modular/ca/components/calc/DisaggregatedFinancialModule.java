@@ -52,7 +52,7 @@ public class DisaggregatedFinancialModule extends AbstractConsumerAgentModule im
     }
 
     @Override
-    public double calculate(ConsumerAgentData input) {
+    public double calculate(ConsumerAgentData input) throws Throwable {
         double avgFT = getAverageFinancialPurchasePower();
         double agentFT = getFinancialPurchasePower(input.getAgent());
         double ft = getLogisticFactor() * (agentFT - avgFT);

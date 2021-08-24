@@ -6,7 +6,10 @@ import de.unileipzig.irpact.core.process.modular.ca.AdoptionResult;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractConsumerAgentModuleWithNGenericSubModules;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irptools.util.log.IRPLogger;
+
+import java.util.List;
 
 /**
  * @author Daniel Abitz
@@ -72,18 +75,18 @@ public class BranchModule
     }
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data) throws Throwable {
-        AdoptionResult result = getInputModule().evaluate(data);
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
+        AdoptionResult result = getInputModule().evaluate(data, postActions);
 
         switch (result) {
             case ADOPTED:
-                return getOnAdoptModule().evaluate(data);
+                return getOnAdoptModule().evaluate(data, postActions);
 
             case IMPEDED:
-                return getOnImpededModule().evaluate(data);
+                return getOnImpededModule().evaluate(data, postActions);
 
             case IN_PROCESS:
-                return getOnInProcessModule().evaluate(data);
+                return getOnInProcessModule().evaluate(data, postActions);
 
             default:
                 throw new IllegalStateException("unsupported result: " + result);

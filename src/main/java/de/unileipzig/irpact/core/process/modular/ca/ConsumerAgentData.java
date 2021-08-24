@@ -3,8 +3,10 @@ package de.unileipzig.irpact.core.process.modular.ca;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.need.Need;
+import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.modular.InputData;
+import de.unileipzig.irpact.core.process.modular.ca.model.ConsumerAgentMPM;
 import de.unileipzig.irpact.core.product.Product;
 
 /**
@@ -15,6 +17,8 @@ public interface ConsumerAgentData extends InputData {
     void lock();
 
     void unlock();
+
+    ConsumerAgentMPM getModel();
 
     ProcessPlan getPlan();
 
