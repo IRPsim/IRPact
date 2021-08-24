@@ -194,11 +194,13 @@ public class InRootUI {
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_WEIGHTEDADD = PROCESS_MODULAR2_COMPONENTS_CALC.resolve(InWeightedAddModule_calcgraphnode.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_WEIGHTED = PROCESS_MODULAR2_COMPONENTS_CALC.resolve(InWeightedModule_calcgraphnode.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL = PROCESS_MODULAR2_COMPONENTS.resolve(IOConstants.PROCESS_MODULAR2_COMPONENTS_EVAL).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_BRANCH = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InBranchModule_evalgraphnode.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTACTION = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InDefaultActionModule_evalgraphnode.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTDECISION = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InDefaultDecisionMakingModule_evalgraphnode.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTFEAS = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InDefaultFeasibilityModule_evalgraphnode.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTINTEREST = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InDefaultInterestModule_evalgraphnode.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DONOTHING = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InDoNothingModule_evalgraphnode.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_FILTER = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InFilterModule_evalgraphnode.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_SIMPLEGET = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InSimpleGetPhaseModule_evalgraphnode.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_STAGEEVAL = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InStageEvaluationModule_evalgraphnode.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_SUMTHRESH = PROCESS_MODULAR2_COMPONENTS_EVAL.resolve(InSumThresholdEvaluationModule_evalgraphnode.thisName()).addTo(PATHS);

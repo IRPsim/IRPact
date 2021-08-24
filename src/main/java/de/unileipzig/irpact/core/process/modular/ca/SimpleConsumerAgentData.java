@@ -13,9 +13,11 @@ import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.process.modular.ModularProcessPlan;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.process.modular.ca.model.ConsumerAgentMPM;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -44,6 +46,7 @@ public class SimpleConsumerAgentData implements ConsumerAgentData, ModularProces
     public void setModel(ConsumerAgentMPM model) {
         this.model = model;
     }
+    @Override
     public ConsumerAgentMPM getModel() {
         return model;
     }
@@ -159,29 +162,34 @@ public class SimpleConsumerAgentData implements ConsumerAgentData, ModularProces
 
     @Override
     public ProcessPlanResult execute() throws Throwable {
+        return execute(null);
+    }
+
+    @Override
+    public ProcessPlanResult execute(List<PostAction<?>> postActions) throws Throwable {
         if(currentStage() == Stage.PRE_INITIALIZATION) {
-            return initPlan();
+            return initPlan(postActions);
         } else {
-            return executePlan();
+            return executePlan(postActions);
         }
     }
 
-    protected ProcessPlanResult initPlan() throws Throwable {
+    protected ProcessPlanResult initPlan(List<PostAction<?>> postActions) throws Throwable {
         if(getAgent().hasAdopted(getProduct())) {
             updateStage(Stage.ADOPTED);
         } else {
             updateStage(Stage.AWARENESS);
         }
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "initial stage for '{}': {}", getAgent().getName(), currentStage());
-        return executePlan();
+        return executePlan(postActions);
     }
 
-    protected ProcessPlanResult executePlan() throws Throwable {
+    protected ProcessPlanResult executePlan(List<PostAction<?>> postActions) throws Throwable {
         ConsumerAgentEvaluationModule module = getValidModel().getStartModule();
         if(module == null) {
             throw new NullPointerException("ConsumerAgentEvaluationModule");
         }
-        AdoptionResult result = module.evaluate(this);
+        AdoptionResult result = module.evaluate(this, postActions);
         if(result == null) {
             throw new NullPointerException("AdoptionResult");
         }

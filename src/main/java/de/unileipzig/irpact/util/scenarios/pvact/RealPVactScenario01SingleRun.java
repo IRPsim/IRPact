@@ -107,7 +107,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
 
         InFileBasedPVactConsumerAgentPopulation population = createFullPopulation("Pop", realData.CAGS.cags());
         population.setUseAll(false);
-        population.setDesiredSize(47125);
+        population.setDesiredSize(100);
 
         Map<InPVactConsumerAgentGroup, Integer> edgeCount = realData.CAGS.map(RealData.calcEdgeCount(
                 RealData.XLSX_ORDER_ARR,
@@ -138,11 +138,15 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         //=====
         InRoot root = createRootWithInformationsWithFullLogging();
         root.getGeneral().setFirstSimulationYear(2008);
-        root.getGeneral().setLastSimulationYear(2020);
+        root.getGeneral().setLastSimulationYear(2008);
         root.getGeneral().useInfoLogging();
         root.getGeneral().setPersistDisabled(true);
         root.getGeneral().setCopyLogIfPossible(true);
         root.getGeneral().logResultAdoptionsAll = true;
+
+        root.getGeneral().setOuterParallelism(1);
+        root.getGeneral().setInnerParallelism(4);
+
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(realData.CAGS.cags());
         root.setAgentPopulationSize(population);
@@ -158,6 +162,15 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         root.getSpecialPVactInput().setConstructionRates(RealData.CONST_RATES);
         root.getSpecialPVactInput().setUseRenovationRates(true);
         root.getSpecialPVactInput().setRenovationRates(RealData.RENO_RATES);
+
+//        root.testData = new InTestData[] {
+//                new InTestData().peek(_td -> {
+//                    _td.setName("TestData1");
+//                    _td.sensi1 = 1;
+//                    _td.sensi2 = 2;
+//                    _td.sensi3 = 3;
+//                })
+//        };
 
         setColors(root, realData.CAGS.cags());
 

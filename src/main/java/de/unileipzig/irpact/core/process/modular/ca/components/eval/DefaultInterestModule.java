@@ -7,7 +7,10 @@ import de.unileipzig.irpact.core.process.modular.ca.AdoptionResult;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.Stage;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irptools.util.log.IRPLogger;
+
+import java.util.List;
 
 /**
  * @author Daniel Abitz
@@ -35,7 +38,7 @@ public class DefaultInterestModule extends AbstractActionModule implements Consu
     }
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
         trace("[{}] handle interest", data.getAgent().getName());
 
         if(isInterested(data.getAgent(), data.getProduct())) {
@@ -52,6 +55,6 @@ public class DefaultInterestModule extends AbstractActionModule implements Consu
             }
         }
 
-        return doAction(data);
+        return doAction(data, postActions);
     }
 }

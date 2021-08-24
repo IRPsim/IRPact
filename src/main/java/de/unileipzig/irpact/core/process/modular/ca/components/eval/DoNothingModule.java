@@ -9,7 +9,10 @@ import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentCalc
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractConsumerAgentModuleWithSubModules;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irptools.util.log.IRPLogger;
+
+import java.util.List;
 
 /**
  * @author Daniel Abitz
@@ -42,7 +45,7 @@ public class DoNothingModule
     }
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
         for(ConsumerAgentModule module: iterateModules()) {
             if(module instanceof ConsumerAgentCalculationModule) {
                 LOGGER.trace(
@@ -64,7 +67,7 @@ public class DoNothingModule
                         module.getName()
                 );
                 ConsumerAgentEvaluationModule evalModule = (ConsumerAgentEvaluationModule) module;
-                evalModule.evaluate(data);
+                evalModule.evaluate(data, postActions);
             }
         }
 

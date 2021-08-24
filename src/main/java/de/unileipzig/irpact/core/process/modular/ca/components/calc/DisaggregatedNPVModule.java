@@ -93,7 +93,7 @@ public class DisaggregatedNPVModule extends AbstractConsumerAgentModule implemen
     }
 
     @Override
-    public double calculate(ConsumerAgentData input) {
+    public double calculate(ConsumerAgentData input) throws Throwable {
         double avgNPV = getAverageNPV();
         double agentNPV = getNPV(input.getAgent());
         double npv = getLogisticFactor() * (agentNPV - avgNPV);

@@ -110,6 +110,12 @@ InGeneral_forceLogToConsole:
 InGeneral_debugTask:
   gams_identifier: "[DEV] debug task"
   gams_description: "0: disabled, 1: OutOfMemory, 2: Stackoverflow"
+InGeneral_outerParallelism:
+  gams_identifier: "Parallelisierung 1"
+  gams_description: "Anzahl Threads = Paralellisierung1 * Parallelisierung2"
+InGeneral_innerParallelism:
+  gams_identifier: "Parallelisierung 2"
+  gams_description: "Anzahl Threads = Paralellisierung1 * Parallelisierung2"
 
 VisibleBinaryData:
   edn_label: "Binäre Daten"
@@ -306,7 +312,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.3.0"
+  edn_description: "IRPact v1.4.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -1354,6 +1360,23 @@ InConsumerAgentMPMWithAdoptionHandler_newProductHandlers:
 
 #eval
 
+InBranchModule_evalgraphnode:
+  edn_label: "Verzweigungsmodul"
+  edn_description: >-
+    Dieses Modul ermöglicht es, je nach Ergebnis des Eingabemoduls, unterschiedliche Folgemodule aufzurufen.
+InBranchModule_evalgraphnode_inputModule_graphedge:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+InBranchModule_evalgraphnode_onAdoptModule_graphedge:
+  gams_identifier: "adoption Modul"
+  gams_description: "todo"
+InBranchModule_evalgraphnode_onImpededModule_graphedge:
+  gams_identifier: "impeded Module"
+  gams_description: "todo"
+InBranchModule_evalgraphnode_onInProcessModule_graphedge:
+  gams_identifier: "in-process Modul"
+  gams_description: "todo"
+
 InDefaultActionModule_evalgraphnode:
   edn_label: "[Standard] Aktion"
   edn_description: >-
@@ -1515,6 +1538,18 @@ InDoNothingModule_evalgraphnode:
     Alle Arten von Modulen können als Eingabe dienen.
 InDoNothingModule_evalgraphnode_inputModule_graphedge:
   gams_identifier: "Eingabemodule"
+  gams_description: "todo"
+
+InFilterModule_evalgraphnode:
+  edn_label: "Filtermodul"
+  edn_description: >-
+    Dieses Modul filtert das Ergebnis des Eingabemodules. Das Folgemodul wird nur aufgerufen, wenn das Eingabemodul
+    "in process" zurück gibt.
+InFilterModule_evalgraphnode_inputModule_graphedge:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+InFilterModule_evalgraphnode_taskModule_graphedge:
+  gams_identifier: "Folgemodul"
   gams_description: "todo"
 
 InSimpleGetPhaseModule_evalgraphnode:

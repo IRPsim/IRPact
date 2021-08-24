@@ -8,13 +8,14 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irpact.core.process.ra.RAProcessPlanBase;
 import de.unileipzig.irpact.core.process.ra.RAStage;
 import de.unileipzig.irpact.core.product.Product;
-import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -80,6 +81,11 @@ public class ModularRAProcessPlan extends RAProcessPlanBase implements ProcessPl
         } else {
             return executePlan();
         }
+    }
+
+    @Override
+    public ProcessPlanResult execute(List<PostAction<?>> postActions) throws Throwable {
+        throw new UnsupportedOperationException();
     }
 
     protected ProcessPlanResult initPlan() {

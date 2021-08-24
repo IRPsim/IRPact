@@ -18,6 +18,7 @@ import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.Stage;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractConsumerAgentModule;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVDataSupplier;
@@ -26,6 +27,7 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -245,10 +247,14 @@ public class DefaultDecisionMakingModule extends AbstractConsumerAgentModule imp
     //=========================
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
+        doSelfActionAndAllowAttention(data.getAgent());
+        return evaluate0(data);
+    }
+
+    protected AdoptionResult evaluate0(ConsumerAgentData data) throws Throwable {
         ConsumerAgent agent = data.getAgent();
 
-        doSelfActionAndAllowAttention(agent);
         trace("[{}] handle decision making", agent.getName());
 
         IRPLoggingMessageCollection logColl = new IRPLoggingMessageCollection()

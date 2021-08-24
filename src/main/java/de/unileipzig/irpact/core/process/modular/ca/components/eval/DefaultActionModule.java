@@ -6,7 +6,10 @@ import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractActi
 import de.unileipzig.irpact.core.process.modular.ca.AdoptionResult;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irptools.util.log.IRPLogger;
+
+import java.util.List;
 
 /**
  * @author Daniel Abitz
@@ -34,8 +37,8 @@ public class DefaultActionModule extends AbstractActionModule implements Consume
     }
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
         trace("[{}] handle default actions", data.getAgent().getName());
-        return doAction(data);
+        return doAction(data, postActions);
     }
 }

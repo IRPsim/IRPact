@@ -7,10 +7,11 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinities;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
-import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.process.modular.ca.AdoptionResult;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
+import de.unileipzig.irpact.core.process.modular.ca.components.BasicConsumerAgentPostAction;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.alg.RelativeAgreementAlgorithm;
 import de.unileipzig.irpact.core.process.ra.uncert.BasicUncertaintyManager;
@@ -101,9 +102,7 @@ public abstract class AbstractActionModule extends AbstractConsumerAgentModule {
     //core
     //=========================
 
-    protected AdoptionResult doAction(ConsumerAgentData data) throws Throwable {
-        data.getAgent().allowAttention();
-
+    protected AdoptionResult doAction0(ConsumerAgentData data) throws Throwable {
         if(doCommunicate(data)) {
             return communicate(data);
         }
@@ -113,6 +112,16 @@ public abstract class AbstractActionModule extends AbstractConsumerAgentModule {
         }
 
         return nop(data);
+    }
+
+    protected AdoptionResult doAction(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
+        allowAttention(data.getAgent());
+        if(postActions == null) {
+            return doAction0(data);
+        } else {
+            postActions.add(new BasicConsumerAgentPostAction(data, this::doAction0));
+            return AdoptionResult.IN_PROCESS;
+        }
     }
 
     protected boolean doCommunicate(ConsumerAgentData data) {

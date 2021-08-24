@@ -83,7 +83,7 @@ public class NPVModule extends AbstractConsumerAgentModule implements ConsumerAg
     }
 
     @Override
-    public double calculate(ConsumerAgentData input) {
+    public double calculate(ConsumerAgentData input) throws Throwable {
         double npv = getNPV(input.getAgent());
         return getWeight() + npv;
     }

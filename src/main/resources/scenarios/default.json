@@ -24,6 +24,7 @@
       "sca_InGeneral_copyLogIfPossible" : 0,
       "sca_InGeneral_debugTask" : 0,
       "sca_InGeneral_forceLogToConsole" : 1,
+      "sca_InGeneral_innerParallelism" : 0,
       "sca_InGeneral_lastSimulationYear" : 2015,
       "sca_InGeneral_levelAll" : 1,
       "sca_InGeneral_levelDebug" : 0,
@@ -48,6 +49,7 @@
       "sca_InGeneral_logScriptAdoptionsZipPhase" : 0,
       "sca_InGeneral_logShareNetworkLocal" : 0,
       "sca_InGeneral_logSimulation" : 0,
+      "sca_InGeneral_outerParallelism" : 0,
       "sca_InGeneral_passErrorMessageToOutput" : 1,
       "sca_InGeneral_printNoErrorImage" : 1,
       "sca_InGeneral_printStacktraceImage" : 1,
@@ -130,6 +132,7 @@
       "set_InBoundedNormalDistribution" : { },
       "set_InBoundedUniformDoubleDistribution" : { },
       "set_InBoundedUniformIntegerDistribution" : { },
+      "set_InBranchModule_evalgraphnode" : { },
       "set_InCompleteGraphTopology" : { },
       "set_InComplexAffinityEntry" : {
         "TRA_TRA" : {
@@ -223,6 +226,7 @@
       "set_InFileBasedSelectGroupSpatialInformationSupplier" : { },
       "set_InFileBasedSelectSpatialInformationSupplier" : { },
       "set_InFileBasedSpatialInformationSupplier" : { },
+      "set_InFilterModule_evalgraphnode" : { },
       "set_InFinancialComponentModule_inputgraphnode" : { },
       "set_InFiniteMassPointsDiscreteDistribution" : { },
       "set_InFixConsumerAgentPopulation" : {
@@ -290,7 +294,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_08_19_T_15_14_44" : {
+        "CT_D_2021_08_24_T_05_39_36" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -389,12 +393,13 @@
       "set_InRealAdoptionDataFile" : { },
       "set_InROutputImage" : { },
       "set_InScenarioVersion" : {
-        "v1_3_0" : {
+        "v1_4_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
       "set_InShareOfAdopterInLocalNetworkModule_inputgraphnode" : { },
       "set_InShareOfAdopterInSocialNetworkModule_inputgraphnode" : { },
+      "set_InSimpleGetPhaseModule_evalgraphnode" : { },
       "set_InSocialComponentModule_inputgraphnode" : { },
       "set_InSpace2D" : {
         "Space2D" : {
@@ -496,6 +501,10 @@
       "par_link_InBasicProductGroup_InDependentProductGroupAttribute_pgAttributes" : { },
       "par_link_InBasicProductGroupAttribute_InAttributeName_attrName" : { },
       "par_link_InBasicProductGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
+      "par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_inputModule_graphedge" : { },
+      "par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_onAdoptModule_graphedge" : { },
+      "par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_onImpededModule_graphedge" : { },
+      "par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_onInProcessModule_graphedge" : { },
       "par_link_InComplexAffinityEntry_InConsumerAgentGroup_srcCag" : {
         "TRA_TRA" : {
           "TRA" : 1.0
@@ -583,6 +592,8 @@
       "par_link_InFileBasedSpatialInformationSupplier_InAttributeName_xPositionKey" : { },
       "par_link_InFileBasedSpatialInformationSupplier_InAttributeName_yPositionKey" : { },
       "par_link_InFileBasedSpatialInformationSupplier_InSpatialTableFile_file" : { },
+      "par_link_InFilterModule_evalgraphnode_InConsumerAgentEvaluationModule_inputModule_graphedge" : { },
+      "par_link_InFilterModule_evalgraphnode_InConsumerAgentEvaluationModule_taskModule_graphedge" : { },
       "par_link_InFinancialComponentModule_inputgraphnode_InPVFile_pvFile" : { },
       "par_link_InFiniteMassPointsDiscreteDistribution_InMassPoint_massPoints" : { },
       "par_link_InFixConsumerAgentPopulation_InConsumerAgentGroup_cags" : {

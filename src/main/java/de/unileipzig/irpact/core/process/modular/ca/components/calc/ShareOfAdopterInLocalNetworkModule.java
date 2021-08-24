@@ -1,22 +1,14 @@
 package de.unileipzig.irpact.core.process.modular.ca.components.calc;
 
 import de.unileipzig.irpact.commons.checksum.Checksums;
-import de.unileipzig.irpact.commons.util.data.MutableDouble;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.misc.ValidationException;
-import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
-import de.unileipzig.irpact.core.process.ProcessPlan;
 import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentCalculationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractConsumerAgentModule;
-import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irptools.util.log.IRPLogger;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Daniel Abitz
@@ -84,7 +76,7 @@ public class ShareOfAdopterInLocalNetworkModule extends AbstractConsumerAgentMod
     }
 
     @Override
-    public double calculate(ConsumerAgentData input) {
+    public double calculate(ConsumerAgentData input) throws Throwable {
         NodeFilter filter = getFilter(input);
         double value = getShareOfAdopterInLocalNetwork(input.getProduct(), filter);
         return getWeight() * value;

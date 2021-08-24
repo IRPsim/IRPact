@@ -13,7 +13,7 @@
             :color "DarkCyan"
           } 
           {
-            :tags [["InDoNothingModule" "inputModule"] ["InStageEvaluationModule" "awarenessModule"] ["InStageEvaluationModule" "feasibilityModule"] ["InStageEvaluationModule" "decisionMakingModule"] ["InStageEvaluationModule" "adoptedModule"] ["InStageEvaluationModule" "impededModule"]] 
+            :tags [["InBranchModule" "inputModule"] ["InBranchModule" "onAdoptModule"] ["InBranchModule" "onImpededModule"] ["InBranchModule" "onInProcessModule"] ["InDoNothingModule" "inputModule"] ["InFilterModule" "inputModule"] ["InFilterModule" "taskModule"] ["InStageEvaluationModule" "awarenessModule"] ["InStageEvaluationModule" "feasibilityModule"] ["InStageEvaluationModule" "decisionMakingModule"] ["InStageEvaluationModule" "adoptedModule"] ["InStageEvaluationModule" "impededModule"]] 
             :label "Evaluierungskante" 
             :color "LightSlateGrey"
           }
@@ -101,7 +101,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.3.0" 
+        :description "IRPact v1.4.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -137,7 +137,7 @@
       {
         :label "Spezielle Einstellungen" 
         :description "Hier lassen sich spezielle Modi aktivieren." 
-        :tags [["InGeneral" "runPVAct"] ["InGeneral" "runOptActDemo"] ["InGeneral" "runMode"] ["InGeneral" "scenarioMode"] ["InGeneral" "passErrorMessageToOutput"] ["InGeneral" "printStacktraceImage"] ["InGeneral" "printNoErrorImage"] ["InGeneral" "copyLogIfPossible"] ["InGeneral" "skipPersist"] ["InGeneral" "forceLogToConsole"] ["InGeneral" "debugTask"]] 
+        :tags [["InGeneral" "runPVAct"] ["InGeneral" "runOptActDemo"] ["InGeneral" "runMode"] ["InGeneral" "scenarioMode"] ["InGeneral" "passErrorMessageToOutput"] ["InGeneral" "printStacktraceImage"] ["InGeneral" "printNoErrorImage"] ["InGeneral" "copyLogIfPossible"] ["InGeneral" "skipPersist"] ["InGeneral" "forceLogToConsole"] ["InGeneral" "debugTask"] ["InGeneral" "outerParallelism"] ["InGeneral" "innerParallelism"]] 
         :sections [
           {
             :label "Binäre Daten" 
@@ -791,6 +791,12 @@
                 :description "Evaluierungsmodule haben als Ergebnis einen Adoptionsstatus. Dieser kann sein: adoptiert, Adoption nicht möglich, Adoption nicht entschieden. Der zu letzt genannte Zustand ermöglicht die Weiterführung im nächsten Iterationsschritt." 
                 :sections [
                   {
+                    :label "Verzweigungsmodul" 
+                    :set "set_InBranchModule_evalgraphnode" 
+                    :description "Dieses Modul ermöglicht es, je nach Ergebnis des Eingabemoduls, unterschiedliche Folgemodule aufzurufen." 
+                    :tags [["link" "InBranchModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "inputModule" "graphedge"] ["link" "InBranchModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "onAdoptModule" "graphedge"] ["link" "InBranchModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "onImpededModule" "graphedge"] ["link" "InBranchModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "onInProcessModule" "graphedge"]]
+                  } 
+                  {
                     :label "[Standard] Aktion" 
                     :set "set_InDefaultActionModule_evalgraphnode" 
                     :description "Dieses Modul implementiert die \"Standardaktionen\" des klassischen PV-Prozessmodells. Dabei handelt es sich um die Aktionen \"Kommunikation\" und \"Rewiring\". Dieses Modul gibt als Ergebnis immer \"Adoption nicht entschieden\" zurück. Die Wahrscheinlichkeiten von \"Kommunikation\" und \"Rewiring\" sind von den jeweiligen Agentenattributen abhängig." 
@@ -819,6 +825,18 @@
                     :set "set_InDoNothingModule_evalgraphnode" 
                     :description "Dieses Modul dient zum Testen der Aufrufe von Submodulen. Es gibt immer \"Adoption nicht entschieden\" zurück. Alle Arten von Modulen können als Eingabe dienen." 
                     :tags [["link" "InDoNothingModule" "evalgraphnode" "InConsumerAgentModule" "inputModule" "graphedge"]]
+                  } 
+                  {
+                    :label "Filtermodul" 
+                    :set "set_InFilterModule_evalgraphnode" 
+                    :description "Dieses Modul filtert das Ergebnis des Eingabemodules. Das Folgemodul wird nur aufgerufen, wenn das Eingabemodul \"in process\" zurück gibt." 
+                    :tags [["link" "InFilterModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "inputModule" "graphedge"] ["link" "InFilterModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "taskModule" "graphedge"]]
+                  } 
+                  {
+                    :label "Direkte Statusrückgabe" 
+                    :set "set_InSimpleGetPhaseModule_evalgraphnode" 
+                    :description "Dieses Modul gibt den gewünschten Status zurück. Es finden keine Berechnungen oder Auswertungen statt. Das Modul kann somit als Platzhalter genutzt werden." 
+                    :tags [["InSimpleGetPhaseModule" "evalgraphnode" "getAdopt"] ["InSimpleGetPhaseModule" "evalgraphnode" "getImpeded"] ["InSimpleGetPhaseModule" "evalgraphnode" "getInProcess"]]
                   } 
                   {
                     :label "Phasengerüst des PV-Prozessmodells" 
