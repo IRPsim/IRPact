@@ -101,7 +101,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.4.1" 
+        :description "IRPact v1.5.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -538,7 +538,7 @@
         ]
       } 
       {
-        :label "[TEST] Initiale Adopter" 
+        :label "Initiale Adopter" 
         :description "Ermöglicht die Einstellung der initialen Adopter." 
         :sections [
           {
@@ -550,8 +550,14 @@
           {
             :label "Initiale Adopter nach realen Daten" 
             :set "set_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData" 
-            :description "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt." 
+            :description "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt. Das Attribute für initiale Adoptionen gibt dabei die Verteilung innerhalb der Postleitzahlgebiete an und nicht den Anteil der Agenten selber." 
             :tags [["link" "InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData" "InRealAdoptionDataFile" "file"]]
+          } 
+          {
+            :label "Gewichtete initiale Adopter nach realen Daten" 
+            :set "set_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" 
+            :description "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt. Das Attribute für initiale Adoptionen gibt dabei die Verteilung innerhalb der Postleitzahlgebiete an und nicht den Anteil der Agenten selber." 
+            :tags [["link" "InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" "InRealAdoptionDataFile" "file"]]
           }
         ]
       }

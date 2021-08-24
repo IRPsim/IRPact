@@ -26,6 +26,7 @@ import de.unileipzig.irpact.io.param.input.process.mra.component.*;
 import de.unileipzig.irpact.io.param.input.product.*;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactAttributeBasedInitialAdoption;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData;
+import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InGraphvizGeneral;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGnuPlotOutputImage;
@@ -152,6 +153,7 @@ public class InRootUI {
     public static final EdnPath PRODUCTS_INITADOPT = PRODUCTS.resolve(IOConstants.INITAL_ADOPTERS).addTo(PATHS);
     public static final EdnPath PRODUCTS_INITADOPT_PVACTATTRBASED = PRODUCTS_INITADOPT.resolve(InPVactAttributeBasedInitialAdoption.thisName()).addTo(PATHS);
     public static final EdnPath PRODUCTS_INITADOPT_PVACTFILECAGBASED = PRODUCTS_INITADOPT.resolve(InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData.thisName()).addTo(PATHS);
+    public static final EdnPath PRODUCTS_INITADOPT_PVACTFILEWEIGHTEDCAGBASED = PRODUCTS_INITADOPT.resolve(InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData.thisName()).addTo(PATHS);
 
     public static final EdnPath PROCESS = ROOT.resolve(IOConstants.PROCESS_MODEL).addTo(PATHS);
     public static final EdnPath PROCESS_RA = PROCESS.resolve(InRAProcessModel.thisName()).addTo(PATHS);

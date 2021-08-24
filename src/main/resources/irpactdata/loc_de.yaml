@@ -312,7 +312,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.4.1"
+  edn_description: "IRPact v1.5.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -664,7 +664,7 @@ InProductGroupThresholdEntry_productGroups:
 
 
 initial_adopters:
-  edn_label: "[TEST] Initiale Adopter"
+  edn_label: "Initiale Adopter"
   edn_description: "Ermöglicht die Einstellung der initialen Adopter."
 
 InPVactAttributeBasedInitialAdoption:
@@ -676,8 +676,15 @@ InPVactAttributeBasedInitialAdoption_placeholder:
 
 InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData:
   edn_label: "Initiale Adopter nach realen Daten"
-  edn_description: "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt."
+  edn_description: "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt. Das Attribute für initiale Adoptionen gibt dabei die Verteilung innerhalb der Postleitzahlgebiete an und nicht den Anteil der Agenten selber."
 InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData_file:
+  gams_identifier: "Eingabedatei"
+  gams_description: "Bestimmt die Datei mit den realen Adoptionsdaten."
+
+InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData:
+  edn_label: "Gewichtete initiale Adopter nach realen Daten"
+  edn_description: "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt. Das Attribute für initiale Adoptionen gibt dabei die Verteilung innerhalb der Postleitzahlgebiete an und nicht den Anteil der Agenten selber."
+InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_file:
   gams_identifier: "Eingabedatei"
   gams_description: "Bestimmt die Datei mit den realen Adoptionsdaten."
 
