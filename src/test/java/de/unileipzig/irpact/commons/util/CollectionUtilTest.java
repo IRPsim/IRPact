@@ -19,7 +19,7 @@ class CollectionUtilTest {
     void testDrawRandom() {
         Rnd rnd = new Rnd(42);
         List<Integer> list = Arrays.asList(0, 1, 2, 3, 4, 5, 6);
-        List<Integer> rndDraw = CollectionUtil.drawRandom(list, 6, rnd);
+        List<Integer> rndDraw = CollectionUtil.drawRandom(list, 6, rnd, true);
         assertEquals(6, rndDraw.size());
         List<Integer> listCopy = new ArrayList<>(list);
         listCopy.removeAll(rndDraw);

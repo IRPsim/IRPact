@@ -87,8 +87,8 @@ public class BasicConsumerAgentProductRelatedAttribute
     }
 
     @Override
-    public ConsumerAgentAttribute getAttribute(Product year) {
-        return productMapping.get(year);
+    public ConsumerAgentAttribute getAttribute(Product product) {
+        return productMapping.get(product);
     }
 
     @Override

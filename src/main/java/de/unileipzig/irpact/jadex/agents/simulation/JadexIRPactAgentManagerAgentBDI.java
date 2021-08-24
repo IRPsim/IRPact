@@ -389,7 +389,6 @@ public class JadexIRPactAgentManagerAgentBDI extends AbstractJadexAgentBDI imple
         List<IRPactAgentAPI> agents = shuffle
                 ? getShuffledCopy(this.agents)
                 : this.agents;
-        LOGGER.warn("SKIP EXEC");
         if(hasExec()) {
             scheduleOnExec(agents);
         } else {

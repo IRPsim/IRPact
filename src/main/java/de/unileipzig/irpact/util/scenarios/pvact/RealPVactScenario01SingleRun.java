@@ -102,12 +102,12 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         Map<Milieu, InBernoulliDistribution> rewire = RealData.buildBernoulli("REWIRE", RealData.XLSX_ORDER_ARR, RealData.REWIRE);
         realData.CAGS.applyMilieus(rewire, InPVactConsumerAgentGroup::setRewire);
         //COMMU
-        Map<Milieu, InBernoulliDistribution> initialAdopter = RealData.buildBernoulli("INITADOPT", RealData.XLSX_ORDER_ARR, RealData.INITIAL_ADOPTER);
+        Map<Milieu, InDiracUnivariateDistribution> initialAdopter = RealData.buildDirac("INITADOPT", RealData.XLSX_ORDER_ARR, RealData.INITIAL_ADOPTER);
         realData.CAGS.applyMilieus(initialAdopter, InPVactConsumerAgentGroup::setInitialAdopter);
 
         InFileBasedPVactConsumerAgentPopulation population = createFullPopulation("Pop", realData.CAGS.cags());
-        population.setUseAll(false);
-        population.setDesiredSize(100);
+        population.setUseAll(true);
+        population.setDesiredSize(1000);
 
         Map<InPVactConsumerAgentGroup, Integer> edgeCount = realData.CAGS.map(RealData.calcEdgeCount(
                 RealData.XLSX_ORDER_ARR,
@@ -130,6 +130,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         processModel.setWeightNPV(RealData.WEIGHT_NPV);
         processModel.setWeightSocial(RealData.WEIGHT_SOCIAL);
         processModel.setWeightLocal(RealData.WEIGHT_LOCALE);
+        processModel.addNewProductHandle(getDefaultPVactFileBasedInitialAdopter());
 
         InSpace2D space2D = createSpace2D("Space2D");
 
@@ -138,14 +139,14 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         //=====
         InRoot root = createRootWithInformationsWithFullLogging();
         root.getGeneral().setFirstSimulationYear(2008);
-        root.getGeneral().setLastSimulationYear(2008);
+        root.getGeneral().setLastSimulationYear(2020);
         root.getGeneral().useInfoLogging();
         root.getGeneral().setPersistDisabled(true);
         root.getGeneral().setCopyLogIfPossible(true);
         root.getGeneral().logResultAdoptionsAll = true;
 
         root.getGeneral().setOuterParallelism(1);
-        root.getGeneral().setInnerParallelism(4);
+        root.getGeneral().setInnerParallelism(8);
 
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(realData.CAGS.cags());

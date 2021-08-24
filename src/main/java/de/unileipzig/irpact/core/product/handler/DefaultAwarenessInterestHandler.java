@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.product.initial;
+package de.unileipzig.irpact.core.product.handler;
 
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.util.Rnd;

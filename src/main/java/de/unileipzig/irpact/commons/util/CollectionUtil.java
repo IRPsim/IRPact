@@ -355,15 +355,19 @@ public final class CollectionUtil {
         return value;
     }
 
-    public static <T> List<T> drawRandom(List<T> input, int count, Rnd rnd) {
+    public static <T> List<T> drawRandom(List<T> input, int count, Rnd rnd, boolean allowLess) {
         List<T> output = new ArrayList<>();
-        drawRandom(input, count, output, rnd);
+        drawRandom(input, count, output, rnd, allowLess);
         return output;
     }
 
-    public static <T> boolean drawRandom(List<T> input, int count, List<T> output, Rnd rnd) {
+    public static <T> boolean drawRandom(List<T> input, int count, List<T> output, Rnd rnd, boolean allowLess) {
         if(input.size() < count) {
-            throw new IllegalArgumentException("input.size < count (" + input.size() + ", " + count + ")");
+            if(allowLess) {
+                return output.addAll(input);
+            } else {
+                throw new IllegalArgumentException("input.size < count (" + input.size() + ", " + count + ")");
+            }
         }
 
         if(count < 1) {
