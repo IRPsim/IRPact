@@ -135,7 +135,12 @@ public interface SwaggerSuite {
             addScenario(scenario);
             return true;
         } else {
-            overwriteScenario(id, scenario);
+            if(scenario.forceHardReplacement()) {
+                deleteScenario(id);
+                addScenario(scenario);
+            } else {
+                overwriteScenario(id, scenario);
+            }
             return false;
         }
     }

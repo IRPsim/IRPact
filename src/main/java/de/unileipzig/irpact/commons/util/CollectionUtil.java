@@ -354,4 +354,60 @@ public final class CollectionUtil {
         }
         return value;
     }
+
+    public static <T> List<T> drawRandom(List<T> input, int count, Rnd rnd, boolean allowLess) {
+        List<T> output = new ArrayList<>();
+        drawRandom(input, count, output, rnd, allowLess);
+        return output;
+    }
+
+    public static <T> boolean drawRandom(List<T> input, int count, List<T> output, Rnd rnd, boolean allowLess) {
+        if(input.size() < count) {
+            if(allowLess) {
+                return output.addAll(input);
+            } else {
+                throw new IllegalArgumentException("input.size < count (" + input.size() + ", " + count + ")");
+            }
+        }
+
+        if(count < 1) {
+            return false;
+        }
+
+        boolean changed = false;
+        List<Integer> drawnIndices = new ArrayList<>();
+        for(int i = 0; i < input.size(); i++) {
+            drawnIndices.add(i);
+        }
+
+        while(count-- > 0) {
+            int index = removeRandom(drawnIndices, rnd);
+            changed |= output.add(input.get(index));
+        }
+
+        return changed;
+    }
+
+    public static <A, B> List<Map<A, List<B>>> split(
+            Map<A, List<B>> input,
+            int parallelism) {
+        List<Map<A, List<B>>> list = new ArrayList<>(parallelism);
+        for(int i = 0; i < parallelism; i++) {
+            list.add(new LinkedHashMap<>());
+        }
+
+        int i = 0;
+        for(Map.Entry<A, List<B>> entry: input.entrySet()) {
+            A a = entry.getKey();
+            for(B b: entry.getValue()) {
+                list.get(i).computeIfAbsent(a, _fac -> new ArrayList<>()).add(b);
+
+                if(++i >= parallelism) {
+                    i = 0;
+                }
+            }
+        }
+
+        return list;
+    }
 }

@@ -55,7 +55,7 @@ public class InNPVModule_inputgraphnode implements InConsumerAgentCalculationMod
         addEntry(res, thisClass(), "weight");
         addEntry(res, thisClass(), "pvFile");
 
-        setDefault(res, thisClass(), "weight", VALUE_ONE);
+        setDefault(res, thisClass(), "weight", VALUE_1);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -113,6 +113,8 @@ public class InNPVModule_inputgraphnode implements InConsumerAgentCalculationMod
         if(parser.isRestored()) {
             return searchModule(parser, getName(), NPVModule.class);
         }
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
         NPVModule module = new NPVModule();
         module.setName(getName());

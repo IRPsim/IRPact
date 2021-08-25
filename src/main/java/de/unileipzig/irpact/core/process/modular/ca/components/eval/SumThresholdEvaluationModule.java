@@ -1,34 +1,25 @@
 package de.unileipzig.irpact.core.process.modular.ca.components.eval;
 
 import de.unileipzig.irpact.commons.checksum.Checksums;
-import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process.modular.ca.AdoptionResult;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
-import de.unileipzig.irpact.core.process.modular.ca.Stage;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentCalculationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
-import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentModule;
-import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractConsumerAgentModule;
-import de.unileipzig.irpact.core.process.modular.ca.model.ConsumerAgentMPM;
-import de.unileipzig.irpact.core.process.modular.ca.util.AdoptionPhaseDeterminer;
-import de.unileipzig.irpact.core.util.AdoptionPhase;
+import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractConsumerAgentModuleWithGenericSubModules;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Daniel Abitz
  */
-public class SumThresholdEvaluationModule extends AbstractConsumerAgentModule implements ConsumerAgentEvaluationModule {
+public class SumThresholdEvaluationModule
+        extends AbstractConsumerAgentModuleWithGenericSubModules<ConsumerAgentCalculationModule>
+        implements ConsumerAgentEvaluationModule {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(SumThresholdEvaluationModule.class);
-
-    protected final List<ConsumerAgentCalculationModule> subModules = new ArrayList<>();
-    protected double threshold;
-    protected boolean adoptIfBelowThreshold = true;
-    protected AdoptionPhaseDeterminer phaseDeterminer;
 
     public SumThresholdEvaluationModule() {
     }
@@ -43,23 +34,12 @@ public class SumThresholdEvaluationModule extends AbstractConsumerAgentModule im
         return Checksums.SMART.getChecksum(
                 getName(),
                 getThreshold(),
-                isAdoptIfBelowThreshold(),
-                getSubModules(),
-                Checksums.SMART.getNamedChecksum(getPhaseDeterminer())
+                isAcceptIfBelowThreshold(),
+                getSubModules()
         );
     }
 
-    @Override
-    public void handleMissingParametersRecursively(ConsumerAgentMPM model) {
-        for(ConsumerAgentModule subModule: getSubModules()) {
-            subModule.handleMissingParametersRecursively(model);
-        }
-
-        if(phaseDeterminer == null && model instanceof AdoptionPhaseDeterminer) {
-            setPhaseDeterminer((AdoptionPhaseDeterminer) model);
-        }
-    }
-
+    protected double threshold = 0;
     public void setThreshold(double threshold) {
         this.threshold = threshold;
     }
@@ -67,58 +47,69 @@ public class SumThresholdEvaluationModule extends AbstractConsumerAgentModule im
         return threshold;
     }
 
-    public void setAdoptIfBelowThreshold(boolean adoptIfBelowThreshold) {
-        this.adoptIfBelowThreshold = adoptIfBelowThreshold;
+    protected boolean acceptIfBelowThreshold = true;
+    public void setAcceptIfBelowThreshold(boolean acceptIfBelowThreshold) {
+        this.acceptIfBelowThreshold = acceptIfBelowThreshold;
     }
-    public boolean isAdoptIfBelowThreshold() {
-        return adoptIfBelowThreshold;
+    public boolean isAcceptIfBelowThreshold() {
+        return acceptIfBelowThreshold;
+    }
+
+    protected boolean adoptIfAccepted = true;
+    public void setAdoptIfAccepted(boolean adoptIfAccepted) {
+        this.adoptIfAccepted = adoptIfAccepted;
+    }
+    public boolean isAdoptIfAccepted() {
+        return adoptIfAccepted;
+    }
+
+    protected boolean impededIfFailed = true;
+    public void setImpededIfFailed(boolean impededIfFailed) {
+        this.impededIfFailed = impededIfFailed;
+    }
+    public boolean isImpededIfFailed() {
+        return impededIfFailed;
     }
 
     public List<ConsumerAgentCalculationModule> getSubModules() {
-        return subModules;
+        return MODULE_LIST;
     }
-    public void add(ConsumerAgentCalculationModule subModule) {
-        subModules.add(subModule);
-    }
-
-    public void setPhaseDeterminer(AdoptionPhaseDeterminer phaseDeterminer) {
-        this.phaseDeterminer = phaseDeterminer;
-    }
-    public AdoptionPhaseDeterminer getPhaseDeterminer() {
-        return phaseDeterminer;
+    @Override
+    public void addSubModule(ConsumerAgentCalculationModule subModule) {
+        super.addSubModule(subModule);
     }
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
         double sum = 0.0;
         for(ConsumerAgentCalculationModule subModule: getSubModules()) {
             sum += subModule.calculate(data);
         }
 
-        if(doAdopt(sum)) {
-            Timestamp now = now();
-            data.getAgent().adopt(data.getNeed(), data.getProduct(), now, determinePhase(now));
-            data.updateStage(Stage.ADOPTED);
-            return AdoptionResult.ADOPTED;
+        return determineResult(sum);
+    }
+
+    protected AdoptionResult determineResult(double sum) {
+        if(isAcceptIfBelowThreshold()) {
+            if(sum < getThreshold()) {
+                return getPositiveAdoptionResult();
+            } else {
+                return getNegativeAdoptionResult();
+            }
         } else {
-            data.updateStage(Stage.IMPEDED);
-            return AdoptionResult.IMPEDED;
+            if(sum > getThreshold()) {
+                return getPositiveAdoptionResult();
+            } else {
+                return getNegativeAdoptionResult();
+            }
         }
     }
 
-    protected boolean doAdopt(double sum) {
-        if(isAdoptIfBelowThreshold()) {
-            return sum < getThreshold();
-        } else {
-            return getThreshold() < sum;
-        }
+    protected AdoptionResult getPositiveAdoptionResult() {
+        return isAdoptIfAccepted() ? AdoptionResult.ADOPTED : AdoptionResult.IN_PROCESS;
     }
 
-    protected AdoptionPhase determinePhase(Timestamp ts) {
-        AdoptionPhaseDeterminer determiner = getPhaseDeterminer();
-        if(determiner == null) {
-            throw new NullPointerException("AdoptionPhaseDeterminer");
-        }
-        return determiner.determine(ts);
+    protected AdoptionResult getNegativeAdoptionResult() {
+        return isImpededIfFailed() ? AdoptionResult.IMPEDED : AdoptionResult.IN_PROCESS;
     }
 }

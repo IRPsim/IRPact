@@ -235,6 +235,8 @@ public class InDefaultDecisionMakingModule_evalgraphnode implements InConsumerAg
             return MPMSettings.searchModule(parser, thisName(), DefaultDecisionMakingModule.class);
         }
 
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}'", thisName(), getName());
+
         DefaultDecisionMakingModule module = new DefaultDecisionMakingModule();
         module.setName(getName());
         module.setEnvironment(parser.getEnvironment());

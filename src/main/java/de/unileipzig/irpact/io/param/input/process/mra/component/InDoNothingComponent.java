@@ -37,7 +37,7 @@ public class InDoNothingComponent implements InEvaluableComponent {
 
         addEntry(res, thisClass(), "placeholder");
 
-        setDefault(res, thisClass(), "placeholder", VALUE_ZERO);
+        setDefault(res, thisClass(), "placeholder", VALUE_0);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());

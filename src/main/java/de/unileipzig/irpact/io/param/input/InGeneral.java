@@ -125,7 +125,9 @@ public class InGeneral implements Copyable {
         putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "printNoErrorImage", InRootUI.SETT_SPECIAL, VALUE_TRUE, DOMAIN_BOOLEAN);
         putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "skipPersist", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
         putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "forceLogToConsole", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "debugTask", InRootUI.SETT_SPECIAL, VALUE_ZERO, null);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "debugTask", InRootUI.SETT_SPECIAL, VALUE_0, null);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "outerParallelism", InRootUI.SETT_SPECIAL, VALUE_0, DOMAIN_GEQ0);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "innerParallelism", InRootUI.SETT_SPECIAL, VALUE_0, DOMAIN_GEQ0);
 
         //data
         putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsZip", InRootUI.SETT_DATAOUTPUT);
@@ -332,8 +334,8 @@ public class InGeneral implements Copyable {
 
     @FieldDefinition
     public boolean skipPersist = false;
-    public void setPersistDisable(boolean skipPersist) {
-        this.skipPersist = skipPersist;
+    public void setPersistDisabled(boolean disabled) {
+        this.skipPersist = disabled;
     }
     public boolean isPersistDisabled() {
         return skipPersist;
@@ -352,6 +354,28 @@ public class InGeneral implements Copyable {
     @FieldDefinition
     public int debugTask = 0;
 
+    @FieldDefinition
+    public int outerParallelism = 0;
+    public void setOuterParallelism(int outerParallelism) {
+        this.outerParallelism = Math.max(0, outerParallelism);
+    }
+    public int getOuterParallelism() {
+        return outerParallelism;
+    }
+
+    @FieldDefinition
+    public int innerParallelism = 0;
+    public void setInnerParallelism(int innerParallelism) {
+        this.innerParallelism = Math.max(0, innerParallelism);
+    }
+    public int getInnerParallelism() {
+        return innerParallelism;
+    }
+
+    public int getNumberOfThreads() {
+        return getOuterParallelism() * getInnerParallelism();
+    }
+    
     //=========================
     //general logging
     //=========================
@@ -446,6 +470,11 @@ public class InGeneral implements Copyable {
 
     public void useInfoLogging() {
         setLogLevel(IRPLevel.INFO);
+    }
+
+    public void doLogAll() {
+        setLogLevel(IRPLevel.ALL);
+        logAll = true;
     }
 
     //=========================

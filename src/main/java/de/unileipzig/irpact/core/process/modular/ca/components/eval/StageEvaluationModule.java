@@ -2,20 +2,23 @@ package de.unileipzig.irpact.core.process.modular.ca.components.eval;
 
 import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.modular.ca.AdoptionResult;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.Stage;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
-import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentMultiModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractConsumerAgentModuleWithNSubModules;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irptools.util.log.IRPLogger;
+
+import java.util.List;
 
 /**
  * @author Daniel Abitz
  */
 public class StageEvaluationModule
         extends AbstractConsumerAgentModuleWithNSubModules
-        implements ConsumerAgentEvaluationModule, ConsumerAgentMultiModule {
+        implements ConsumerAgentEvaluationModule {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(StageEvaluationModule.class);
 
@@ -26,12 +29,6 @@ public class StageEvaluationModule
     protected static final int INDEX_ADOPTED_MODULE = 3;
     protected static final int INDEX_IMPEDED_MODULE = 4;
 
-    protected ConsumerAgentEvaluationModule awarenessModule;
-    protected ConsumerAgentEvaluationModule feasibilityModule;
-    protected ConsumerAgentEvaluationModule decisionMakingModule;
-    protected ConsumerAgentEvaluationModule adoptedModule;
-    protected ConsumerAgentEvaluationModule impededModule;
-
     public StageEvaluationModule() {
         super(NUMBER_OF_MODULES);
     }
@@ -39,6 +36,11 @@ public class StageEvaluationModule
     @Override
     public IRPLogger getDefaultLogger() {
         return LOGGER;
+    }
+
+    @Override
+    public IRPSection getDefaultResultSection() {
+        return IRPSection.SIMULATION_PROCESS;
     }
 
     @Override
@@ -53,91 +55,70 @@ public class StageEvaluationModule
     }
 
     public void setAwarenessModule(ConsumerAgentEvaluationModule awarenessModule) {
-        this.awarenessModule = awarenessModule;
-        updateModuleList(INDEX_AWARENESS_MODULE, awarenessModule);
+        setSubModule(INDEX_AWARENESS_MODULE, awarenessModule);
     }
     public ConsumerAgentEvaluationModule getAwarenessModule() {
-        return awarenessModule;
+        return getSubModuleAs(INDEX_AWARENESS_MODULE);
     }
 
     public void setFeasibilityModule(ConsumerAgentEvaluationModule feasibilityModule) {
-        this.feasibilityModule = feasibilityModule;
-        updateModuleList(INDEX_FEASIBILITY_MODULE, feasibilityModule);
+        setSubModule(INDEX_FEASIBILITY_MODULE, feasibilityModule);
     }
     public ConsumerAgentEvaluationModule getFeasibilityModule() {
-        return feasibilityModule;
+        return getSubModuleAs(INDEX_FEASIBILITY_MODULE);
     }
 
     public void setDecisionMakingModule(ConsumerAgentEvaluationModule decisionMakingModule) {
-        this.decisionMakingModule = decisionMakingModule;
-        updateModuleList(INDEX_DECISION_MAKING_MODULE, decisionMakingModule);
+        setSubModule(INDEX_DECISION_MAKING_MODULE, decisionMakingModule);
     }
     public ConsumerAgentEvaluationModule getDecisionMakingModule() {
-        return decisionMakingModule;
+        return getSubModuleAs(INDEX_DECISION_MAKING_MODULE);
     }
 
     public void setAdoptedModule(ConsumerAgentEvaluationModule adoptedModule) {
-        this.adoptedModule = adoptedModule;
-        updateModuleList(INDEX_ADOPTED_MODULE, adoptedModule);
+        setSubModule(INDEX_ADOPTED_MODULE, adoptedModule);
     }
     public ConsumerAgentEvaluationModule getAdoptedModule() {
-        return adoptedModule;
+        return getSubModuleAs(INDEX_ADOPTED_MODULE);
     }
 
     public void setImpededModule(ConsumerAgentEvaluationModule impededModule) {
-        this.impededModule = impededModule;
-        updateModuleList(INDEX_IMPEDED_MODULE, impededModule);
+        setSubModule(INDEX_IMPEDED_MODULE, impededModule);
     }
     public ConsumerAgentEvaluationModule getImpededModule() {
-        return impededModule;
+        return getSubModuleAs(INDEX_IMPEDED_MODULE);
     }
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
         Stage stage = data.currentStage();
         if(stage == null) {
             throw new NullPointerException("Stage");
         }
 
+        trace("[{}] start stage evaluation for '{}'", data.getAgent().getName(), stage);
+
         switch (stage) {
+            case PRE_INITIALIZATION:
+                throw new IllegalArgumentException("unsupported stage: " + stage);
+
             case AWARENESS:
-                return evaluateAwareness(data);
+                return getAwarenessModule().evaluate(data, postActions);
 
             case FEASIBILITY:
-                return evaluateFeasibility(data);
+                return getFeasibilityModule().evaluate(data, postActions);
 
             case DECISION_MAKING:
-                return evaluateDecisionMaking(data);
+                return getDecisionMakingModule().evaluate(data, postActions);
 
             case ADOPTED:
-                return evaluateAdopted(data);
-
+                return getAdoptedModule().evaluate(data, postActions);
 
             case IMPEDED:
-                return evaluateImpeded(data);
+                return getImpededModule().evaluate(data, postActions);
 
             default:
                 throw new IllegalStateException("unknown stage: " + stage);
         }
-    }
-
-    public AdoptionResult evaluateAwareness(ConsumerAgentData data) throws Throwable {
-        return getAwarenessModule().evaluate(data);
-    }
-
-    public AdoptionResult evaluateFeasibility(ConsumerAgentData data) throws Throwable {
-        return getFeasibilityModule().evaluate(data);
-    }
-
-    public AdoptionResult evaluateDecisionMaking(ConsumerAgentData data) throws Throwable {
-        return getDecisionMakingModule().evaluate(data);
-    }
-
-    public AdoptionResult evaluateAdopted(ConsumerAgentData data) throws Throwable {
-        return getAdoptedModule().evaluate(data);
-    }
-
-    public AdoptionResult evaluateImpeded(ConsumerAgentData data) throws Throwable {
-        return getImpededModule().evaluate(data);
     }
 }

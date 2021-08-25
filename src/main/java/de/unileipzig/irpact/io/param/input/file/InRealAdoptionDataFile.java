@@ -24,8 +24,7 @@ import java.lang.invoke.MethodHandles;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz
@@ -89,44 +88,11 @@ public class InRealAdoptionDataFile implements InFile {
     }
 
     public XlsxRealAdoptionData parse(ResourceLoader loader) throws ParsingException {
-        try {
-            if(loader == null) {
-                throw new NullPointerException("loader");
-            }
+        String fileName = getFileNameWithoutExtension();
 
-            String fileName = getFileNameWithoutExtension();
+        Rows<Attribute> rows = parseXlsx(loader, fileName);
+        TypedMatrix<String, String, Integer> matrix = toIntMatrix(rows);
 
-            XlsxSheetParser2<Attribute> xlsxParser = StandardCellValueConverter2.newParser();
-
-            Rows<Attribute> rows;
-            String xlsxFile = fileName + ".xlsx";
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "try load '{}'", xlsxFile);
-            if(loader.hasExternal(xlsxFile)) {
-                Path xlsxPath = loader.getExternal(xlsxFile);
-                LOGGER.trace("load xlsx file '{}'", xlsxPath);
-                try(InputStream in = Files.newInputStream(xlsxPath)) {
-                    rows = xlsxParser.parse(in, RAConstants.REAL_ADOPTION_DATA_SHEET);
-                }
-            }
-            else if(loader.hasInternal(xlsxFile)) {
-                LOGGER.trace("load xlsx resource '{}'", xlsxFile);
-                try(InputStream in = loader.getInternalAsStream(xlsxFile)) {
-                    rows = xlsxParser.parse(in, RAConstants.REAL_ADOPTION_DATA_SHEET);
-                }
-            }
-            else {
-                throw new ParsingException("missing data: " + xlsxFile);
-            }
-
-            TypedMatrix<String, String, Integer> matrix = rows.toMatrix(
-                    m -> m.asValueAttribute().getStringValue(),
-                    n -> n.asValueAttribute().getStringValue(),
-                    v -> v.asValueAttribute().getIntValue()
-            );
-
-            return new XlsxRealAdoptionData(matrix);
-        } catch (Exception e) {
-            throw new ParsingException(e);
-        }
+        return new XlsxRealAdoptionData(matrix);
     }
 }

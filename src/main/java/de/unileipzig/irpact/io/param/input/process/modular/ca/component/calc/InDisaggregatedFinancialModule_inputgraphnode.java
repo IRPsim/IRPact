@@ -2,6 +2,7 @@ package de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.modular.ca.components.calc.DisaggregatedFinancialModule;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
@@ -46,13 +47,13 @@ public class InDisaggregatedFinancialModule_inputgraphnode implements InConsumer
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_CALC_DISNPV);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_COMPONENTS_CALC_DISFIN);
         setShapeColorBorder(res, thisClass(), INPUT_SHAPE, INPUT_COLOR, INPUT_BORDER);
 
         addEntry(res, thisClass(), "weight");
         addEntry(res, thisClass(), "logisticFactor");
 
-        setDefault(res, thisClass(), "weight", VALUE_ONE);
+        setDefault(res, thisClass(), "weight", VALUE_1);
         setDefault(res, thisClass(), "logisticFactor", varargs(RAConstants.DEFAULT_LOGISTIC_FACTOR));
     }
 
@@ -108,6 +109,8 @@ public class InDisaggregatedFinancialModule_inputgraphnode implements InConsumer
         if(parser.isRestored()) {
             return searchModule(parser, getName(), DisaggregatedFinancialModule.class);
         }
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
         DisaggregatedFinancialModule module = new DisaggregatedFinancialModule();
         module.setName(getName());

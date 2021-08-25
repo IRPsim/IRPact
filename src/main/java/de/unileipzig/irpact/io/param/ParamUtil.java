@@ -1,16 +1,27 @@
 package de.unileipzig.irpact.io.param;
 
 import de.unileipzig.irpact.commons.Nameable;
+import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.util.StringUtil;
+import de.unileipzig.irpact.commons.util.data.TypedMatrix;
+import de.unileipzig.irpact.commons.util.fio2.Rows;
+import de.unileipzig.irpact.commons.util.fio2.xlsx2.StandardCellValueConverter2;
+import de.unileipzig.irpact.commons.util.fio2.xlsx2.XlsxSheetParser2;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.util.RuleBuilder;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -48,8 +59,8 @@ public final class ParamUtil {
 
     public static final Object[] VALUE_TRUE = {"1"};
     public static final Object[] VALUE_FALSE = {"0"};
-    public static final Object[] VALUE_ONE = {"1"};
-    public static final Object[] VALUE_ZERO = {"0"};
+    public static final Object[] VALUE_1 = {"1"};
+    public static final Object[] VALUE_0 = {"0"};
     public static final Object[] VALUE_1000 = {"1000"};
     public static final Object[] VALUE_1280 = {"1280"};
     public static final Object[] VALUE_720 = {"720"};
@@ -657,5 +668,63 @@ public final class ParamUtil {
         putFieldPathAndAddEntry(res, c, field, path);
         setDefault(res, c, field, defaults);
         setDomain(res, c, field, domain);
+    }
+
+    //=========================
+    //xlsx
+    //=========================
+
+    public static Rows<Attribute> parseXlsx(ResourceLoader loader, String fileName) throws ParsingException {
+        try {
+            if(loader == null) {
+                throw new ParsingException("loader");
+            }
+
+            XlsxSheetParser2<Attribute> xlsxParser = StandardCellValueConverter2.newParser();
+
+            Rows<Attribute> rows;
+            String xlsxFile = fileName + ".xlsx";
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "try load '{}'", xlsxFile);
+            if(loader.hasExternal(xlsxFile)) {
+                Path xlsxPath = loader.getExternal(xlsxFile);
+                LOGGER.trace("load xlsx file '{}'", xlsxPath);
+                try(InputStream in = Files.newInputStream(xlsxPath)) {
+                    rows = xlsxParser.parse(in, RAConstants.REAL_ADOPTION_DATA_SHEET);
+                }
+            }
+            else if(loader.hasInternal(xlsxFile)) {
+                LOGGER.trace("load xlsx resource '{}'", xlsxFile);
+                try(InputStream in = loader.getInternalAsStream(xlsxFile)) {
+                    rows = xlsxParser.parse(in, RAConstants.REAL_ADOPTION_DATA_SHEET);
+                }
+            }
+            else {
+                throw new ParsingException("missing data: " + xlsxFile);
+            }
+
+            return rows;
+        } catch (Throwable t) {
+            if(t instanceof ParsingException) {
+                throw (ParsingException) t;
+            } else {
+                throw new ParsingException(t);
+            }
+        }
+    }
+
+    public static TypedMatrix<String, String, Integer> toIntMatrix(Rows<Attribute> rows) {
+        return rows.toMatrix(
+                m -> m.asValueAttribute().getStringValue(),
+                n -> n.asValueAttribute().getStringValue(),
+                v -> v.asValueAttribute().getIntValue()
+        );
+    }
+
+    public static TypedMatrix<String, String, Double> toDoubleMatrix(Rows<Attribute> rows) {
+        return rows.toMatrix(
+                m -> m.asValueAttribute().getStringValue(),
+                n -> n.asValueAttribute().getStringValue(),
+                v -> v.asValueAttribute().getDoubleValue()
+        );
     }
 }

@@ -243,6 +243,14 @@ public final class Rnd implements ChecksumComparable {
         }
     }
 
+    public <T> List<T> drawRandom(List<T> input, int count, boolean allowLess) {
+        return CollectionUtil.drawRandom(input, count, this, allowLess);
+    }
+
+    public <T> boolean drawRandom(List<T> input, int count, List<T> output, boolean allowLess) {
+        return CollectionUtil.drawRandom(input, count, output, this, allowLess);
+    }
+
     public synchronized Rnd deriveInstance() {
         long seed = nextLong();
         return new Rnd(seed);

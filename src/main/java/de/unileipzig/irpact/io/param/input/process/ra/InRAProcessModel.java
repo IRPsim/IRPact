@@ -12,12 +12,14 @@ import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
 import de.unileipzig.irpact.core.process.ra.alg.AttitudeGapRelativeAgreementAlgorithm;
+import de.unileipzig.irpact.core.product.handler.NewProductHandler;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertainty;
+import de.unileipzig.irpact.io.param.input.product.initial.InNewProductHandler;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -25,6 +27,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Collection;
 
 import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_MODEL;
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
@@ -69,6 +72,7 @@ public class InRAProcessModel implements InProcessModel {
         addEntry(res, thisClass(), "nodeFilterScheme");
         addEntry(res, thisClass(), "pvFile");
         addEntry(res, thisClass(), "uncertainties");
+        addEntry(res, thisClass(), "newProductHandlers");
 
 
         setDomain(res, thisClass(), "chanceNeutral", DOMAIN_CLOSED_0_1);
@@ -162,6 +166,9 @@ public class InRAProcessModel implements InProcessModel {
 
     @FieldDefinition
     public InUncertainty[] uncertainties;
+
+    @FieldDefinition
+    public InNewProductHandler[] newProductHandlers = new InNewProductHandler[0];
 
     public InRAProcessModel() {
     }
@@ -426,6 +433,23 @@ public class InRAProcessModel implements InProcessModel {
         return parser.parseEntityTo(getPvFile());
     }
 
+    public void setNewProductHandlers(InNewProductHandler[] newProductHandlers) {
+        this.newProductHandlers = newProductHandlers;
+    }
+    public void setNewProductHandlers(Collection<? extends InNewProductHandler> newProductHandlers) {
+        setNewProductHandlers(newProductHandlers.toArray(new InNewProductHandler[0]));
+    }
+    public void addNewProductHandle(InNewProductHandler newProductHandler) {
+        newProductHandlers = add(newProductHandlers, newProductHandler);
+    }
+
+    public InNewProductHandler[] getNewProductHandlers() {
+        return newProductHandlers;
+    }
+    public boolean hasNewProductHandlers() {
+        return len(newProductHandlers) > 0;
+    }
+
     @Override
     public RAProcessModel parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
@@ -481,6 +505,14 @@ public class InRAProcessModel implements InProcessModel {
         algorithm.setLogDataFallback(false);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "AttitudeGapRelativeAgreementAlgorithm '{}' uses seed: {}", algorithm.getName(), raRnd.getInitialSeed());
         model.setRelativeAgreementAlgorithm(algorithm);
+
+        if(hasNewProductHandlers()) {
+            for(InNewProductHandler inHandler: getNewProductHandlers()) {
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse NewProductHandler '{}'", inHandler.getName());
+                NewProductHandler handler = parser.parseEntityTo(inHandler);
+                model.addNewProductHandler(handler);
+            }
+        }
 
         return model;
     }

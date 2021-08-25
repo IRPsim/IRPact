@@ -50,7 +50,7 @@ public class WeightedModule
 
     public void setModule(ConsumerAgentCalculationModule module) {
         this.module = module;
-        updateModuleList(INDEX_MODULE, module);
+        setSubModule(INDEX_MODULE, module);
     }
     public ConsumerAgentCalculationModule getModule() {
         return module;

@@ -19,7 +19,7 @@ import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.process.modular.InModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process.modular.InModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentModularProcessModel;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.InSimpleConsumerAgentMPM;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentMPMWithAdoptionHandler;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentCalculationModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentModule;
@@ -27,6 +27,7 @@ import de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc.*;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
 import de.unileipzig.irpact.io.param.input.process.mra.InModularRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.mra.component.*;
+import de.unileipzig.irpact.io.param.input.product.initial.*;
 import de.unileipzig.irpact.io.param.input.special.InSpecialPVactInput;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InGraphvizGeneral;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
@@ -146,6 +147,9 @@ public class InRoot implements RootClass {
 
     @FieldDefinition
     public InTestData[] testData = new InTestData[0];
+    public boolean hasTestData() {
+        return len(testData) > 0;
+    }
 
     //=========================
     //general
@@ -192,8 +196,23 @@ public class InRoot implements RootClass {
     public void setInformations(InInformation[] informations) {
         this.informations = informations;
     }
-    public void addInformation(InInformation inInformation) {
-        informations = ParamUtil.add(informations, inInformation);
+    public void addInformation(InInformation information) {
+        informations = ParamUtil.add(informations, information);
+    }
+    public void addInformations(InInformation... newInformations) {
+        informations = ParamUtil.addAll(informations, newInformations);
+    }
+
+    @FieldDefinition
+    public InAttributeName[] attributeNames = new InAttributeName[0];
+    public void setAttributeNames(InAttributeName[] attributeNames) {
+        this.attributeNames = attributeNames;
+    }
+    public void setAttributeNames(Collection<? extends InAttributeName> attributeNames) {
+        setAttributeNames(attributeNames.toArray(new InAttributeName[0]));
+    }
+    public InAttributeName[] getAttributeNames() {
+        return attributeNames;
     }
 
     //=========================
@@ -337,7 +356,6 @@ public class InRoot implements RootClass {
 
     @FieldDefinition
     public InProductGroup[] productGroups = new InProductGroup[0];
-
     public void setProductGroups(InProductGroup[] productGroups) {
         this.productGroups = productGroups;
     }
@@ -347,7 +365,6 @@ public class InRoot implements RootClass {
 
     @FieldDefinition
     public InIndependentProductGroupAttribute[] independentProductGroupAttributes = new InIndependentProductGroupAttribute[0];
-
     public void setIndependentProductGroupAttributes(InIndependentProductGroupAttribute[] independentProductGroupAttributes) {
         this.independentProductGroupAttributes = independentProductGroupAttributes;
     }
@@ -357,12 +374,23 @@ public class InRoot implements RootClass {
 
     @FieldDefinition
     public InFixProduct[] fixProducts = new InFixProduct[0];
-
     public void setFixProducts(InFixProduct[] fixProducts) {
         this.fixProducts = fixProducts;
     }
     public InFixProduct[] getFixProducts() throws ParsingException {
         return getNonNullArray(fixProducts, "fixProducts");
+    }
+
+    @FieldDefinition
+    public InNewProductHandler[] initialAdoptionHandlers = new InNewProductHandler[0];
+    public void setInitialAdoptionHandlers(InNewProductHandler[] initialAdoptionHandlers) {
+        this.initialAdoptionHandlers = initialAdoptionHandlers;
+    }
+    public InNewProductHandler[] getInitialAdoptionHandlers() {
+        return initialAdoptionHandlers;
+    }
+    public boolean hasInInitialAdoptionHandler() {
+        return initialAdoptionHandlers != null && initialAdoptionHandlers.length > 0;
     }
 
     //=========================
@@ -774,23 +802,38 @@ public class InRoot implements RootClass {
             InAttributeInputModule_inputgraphnode.class,
             InDisaggregatedFinancialModule_inputgraphnode.class,
             InDisaggregatedNPVModule_inputgraphnode.class,
+            InEnvironmentalConcernModule_inputgraphnode.class,
+            InFinancialComponentModule_inputgraphnode.class,
             InLogisticModule_calcgraphnode.class,
+            InNoveltySeekingModule_inputgraphnode.class,
             InNPVModule_inputgraphnode.class,
+            InProductModule_calcgraphnode.class,
+            InPurchasePowerModule_inputgraphnode.class,
+            InShareOfAdopterInLocalNetworkModule_inputgraphnode.class,
+            InShareOfAdopterInSocialNetworkModule_inputgraphnode.class,
+            InSocialComponentModule_inputgraphnode.class,
+            InSumModule_calcgraphnode.class,
+            InWeightedAddModule_calcgraphnode.class,
             InWeightedModule_calcgraphnode.class,
 
+            InBranchModule_evalgraphnode.class,
             InDefaultActionModule_evalgraphnode.class,
             InDefaultDecisionMakingModule_evalgraphnode.class,
             InDefaultFeasibilityModule_evalgraphnode.class,
             InDefaultInterestModule_evalgraphnode.class,
+            InDoNothingModule_evalgraphnode.class,
+            InFilterModule_evalgraphnode.class,
+            InSimpleGetPhaseModule_evalgraphnode.class,
             InStageEvaluationModule_evalgraphnode.class,
             InSumThresholdEvaluationModule_evalgraphnode.class,
+            InThresholdEvaluationModule_evalgraphnode.class,
 
             InConsumerAgentCalculationModule.class,
             InConsumerAgentEvaluationModule.class,
             InConsumerAgentModule.class,
 
             InConsumerAgentModularProcessModel.class,
-            InSimpleConsumerAgentMPM.class,
+            InConsumerAgentMPMWithAdoptionHandler.class,
 
             InModularProcessModel.class,
             InModule.class,
@@ -811,6 +854,11 @@ public class InRoot implements RootClass {
             InProductFindingScheme.class,
             InProductGroup.class,
             InProductGroupAttribute.class,
+
+            InNewProductHandler.class,
+            InPVactAttributeBasedInitialAdoption.class,
+            InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData.class,
+            InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData.class,
 
             InFileBasedPVactMilieuSupplier.class,
             InFileBasedPVactMilieuZipSupplier.class,

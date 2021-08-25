@@ -2,6 +2,7 @@ package de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.modular.ca.components.eval.StageEvaluationModule;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
@@ -167,6 +168,8 @@ public class InStageEvaluationModule_evalgraphnode implements InConsumerAgentEva
         if(parser.isRestored()) {
             return MPMSettings.searchModule(parser, thisName(), StageEvaluationModule.class);
         }
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}'", thisName(), getName());
 
         StageEvaluationModule module = new StageEvaluationModule();
         module.setName(getName());

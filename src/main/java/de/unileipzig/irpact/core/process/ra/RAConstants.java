@@ -78,5 +78,16 @@ public final class RAConstants {
 
     public static String[] UNCERTAINTY_ATTRIBUTES = { NOVELTY_SEEKING, DEPENDENT_JUDGMENT_MAKING, ENVIRONMENTAL_CONCERN };
 
+    public static String[] DEFAULT_ATTRIBUTES = {
+            PURCHASE_POWER_EUR,
+            NOVELTY_SEEKING,
+            DEPENDENT_JUDGMENT_MAKING,
+            ENVIRONMENTAL_CONCERN,
+            SHARE_1_2_HOUSE,
+            HOUSE_OWNER,
+            CONSTRUCTION_RATE,
+            RENOVATION_RATE
+    };
+
     public static final SpatialInformationPrinter PRINTER = new PrintIdAndAttribute("gid", "lid", ID);
 }

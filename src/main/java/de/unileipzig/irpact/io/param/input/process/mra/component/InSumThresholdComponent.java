@@ -40,8 +40,8 @@ public class InSumThresholdComponent implements InEvaluableComponent {
         addEntry(res, thisClass(), "threshold");
         addEntry(res, thisClass(), "components");
 
-        setDefault(res, thisClass(), "weight", VALUE_ONE);
-        setDefault(res, thisClass(), "threshold", VALUE_ZERO);
+        setDefault(res, thisClass(), "weight", VALUE_1);
+        setDefault(res, thisClass(), "threshold", VALUE_0);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());

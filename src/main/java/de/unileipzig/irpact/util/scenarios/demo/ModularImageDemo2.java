@@ -17,7 +17,7 @@ import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InCompleteGraphTopology;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.InSimpleConsumerAgentMPM;
+import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentMPMWithAdoptionHandler;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
@@ -117,7 +117,7 @@ public class ModularImageDemo2 extends AbstractScenario {
         evalModule.setAdoptedModule(actionComponent);
         evalModule.setImpededModule(actionComponent);
 
-        InSimpleConsumerAgentMPM processModel = new InSimpleConsumerAgentMPM();
+        InConsumerAgentMPMWithAdoptionHandler processModel = new InConsumerAgentMPMWithAdoptionHandler();
         processModel.setName("MRA");
         processModel.setStartModule(evalModule);
 

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons.util;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Persistable supplier for maps.
@@ -11,7 +12,8 @@ public enum MapSupplier {
     UNKNOWN(-1),
     HASH(0),
     LINKED(1),
-    TREE(2);
+    TREE(2),
+    CONCURRENT_HASH(3);
 
     private final int ID;
 
@@ -40,6 +42,9 @@ public enum MapSupplier {
                 Comparator<K> c = (Comparator<K>) param;
                 return new TreeMap<>(c);
 
+            case 3:
+                return new ConcurrentHashMap<>();
+
             default:
                 throw new IllegalStateException("unknown");
         }
@@ -64,6 +69,9 @@ public enum MapSupplier {
                 tm.putAll(m);
                 return tm;
 
+            case 3:
+                return new ConcurrentHashMap<>(m);
+
             default:
                 throw new IllegalStateException("unknown");
         }
@@ -79,6 +87,9 @@ public enum MapSupplier {
 
             case 2:
                 return TREE;
+
+            case 3:
+                return CONCURRENT_HASH;
 
             default:
                 return UNKNOWN;

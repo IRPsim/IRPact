@@ -7,9 +7,11 @@ import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.time.TimeUtil;
+import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.ImageUtil;
 import de.unileipzig.irpact.commons.util.ProgressCalculator;
 import de.unileipzig.irpact.commons.util.StringUtil;
+import de.unileipzig.irpact.commons.util.data.AtomicDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -21,10 +23,7 @@ import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.postprocessing.BasicPostprocessingManager;
 import de.unileipzig.irpact.core.postprocessing.PostprocessingManager;
-import de.unileipzig.irpact.core.simulation.BasicVersion;
-import de.unileipzig.irpact.core.simulation.LifeCycleControl;
-import de.unileipzig.irpact.core.simulation.Settings;
-import de.unileipzig.irpact.core.simulation.Version;
+import de.unileipzig.irpact.core.simulation.*;
 import de.unileipzig.irpact.core.util.BasicMetaData;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions.AdoptionResultInfo;
@@ -33,7 +32,9 @@ import de.unileipzig.irpact.io.param.input.*;
 import de.unileipzig.irpact.io.param.output.OutInformation;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.io.param.output.agent.OutConsumerAgentGroup;
+import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentBDI;
 import de.unileipzig.irpact.jadex.agents.consumer.ProxyConsumerAgent;
+import de.unileipzig.irpact.jadex.agents.simulation.ProxyIRPactAgentManagerAgent;
 import de.unileipzig.irpact.jadex.agents.simulation.ProxySimulationAgent;
 import de.unileipzig.irpact.core.persistence.BasicPersistenceModul;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
@@ -66,6 +67,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Daniel Abitz
@@ -77,12 +79,13 @@ public final class IRPact implements IRPActAccess {
     public static final String PROXY = "PROXY";
 
     private static final String SIMULATION_AGENT = "de.unileipzig.irpact.jadex.agents.simulation.JadexSimulationAgentBDI.class";
+    private static final String AGENTMANAGER_AGENT = "de.unileipzig.irpact.jadex.agents.simulation.JadexIRPactAgentManagerAgentBDI.class";
     private static final String CONSUMER_AGENT = "de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentBDI.class";
     private static final String SIMULATION_AGENT_NAME = "IRPact_Simulation_Agent";
 
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "1";
-    private static final String MINOR_STRING = "0";
+    private static final String MINOR_STRING = "5";
     private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
@@ -517,13 +520,27 @@ public final class IRPact implements IRPActAccess {
     }
 
     private void createJadexAgents(boolean controlAgentsOnly) {
-        LOGGER.info(IRPSection.GENERAL, "create agents");
+        LOGGER.info(IRPSection.GENERAL, "create agents (controlAgentsOnly={})", controlAgentsOnly);
 
+        if(controlAgentsOnly) {
+            createJadexAgentsWtihDefaultParallelism(true);
+        } else {
+            int numberOfThreads = inRoot.getGeneral().getNumberOfThreads();
+            int totalNumberOfActors = environment.getAgents().getTotalNumberOfConsumerAgents();
+            LOGGER.info(IRPSection.GENERAL, "create agents (threads={}, actors={})", numberOfThreads, totalNumberOfActors);
+            if(numberOfThreads == 0 || numberOfThreads >= totalNumberOfActors) {
+                createJadexAgentsWtihDefaultParallelism(false);
+            } else {
+                createJadexAgentsWithCustomParallelism();
+            }
+        }
+    }
+
+    private void createJadexAgentsWtihDefaultParallelism(boolean controlAgentsOnly) {
         final int totalNumberOfAgents = controlAgentsOnly
                 ? 1
                 : 1 + environment.getAgents().getTotalNumberOfConsumerAgents();
         int agentCount = 0;
-        double lastBroadcastedAgentCount = 0;
 
         LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "total number of agents: {}", totalNumberOfAgents);
         environment.getLifeCycleControl().setTotalNumberOfAgents(totalNumberOfAgents);
@@ -535,7 +552,7 @@ public final class IRPact implements IRPActAccess {
                 "simulation control agent",
                 1, 1,
                 ++agentCount, totalNumberOfAgents,
-                lastBroadcastedAgentCount
+                0
         );
 
         if(controlAgentsOnly) {
@@ -597,6 +614,84 @@ public final class IRPact implements IRPActAccess {
         }
     }
 
+    private void createJadexAgentsWithCustomParallelism() {
+        int outerParallelism = inRoot.getGeneral().getOuterParallelism();
+        int innerParallelism = inRoot.getGeneral().getInnerParallelism();
+        LOGGER.info(IRPSection.GENERAL, "create agents (outerParallelism={}, innerParallelism={})", outerParallelism, innerParallelism);
+
+
+        AtomicInteger agentCount = new AtomicInteger(0);
+        final int totalNumberOfAgents = 1 + //system
+                + outerParallelism //manager
+                + environment.getAgents().getTotalNumberOfConsumerAgents();
+
+        LOGGER.trace(IRPSection.INITIALIZATION_PLATFORM, "total number of agents: {}", totalNumberOfAgents);
+        environment.getLifeCycleControl().setTotalNumberOfAgents(totalNumberOfAgents);
+
+        CreationInfo simulationAgentInfo = createSimulationAgentInfo(createProxySimulationAgent());
+        platform.createComponent(simulationAgentInfo).get();
+        pulse();
+        broadcastAgentCreationProgress(
+                "simulation control agent",
+                1, 1,
+                agentCount.incrementAndGet(), totalNumberOfAgents,
+                0
+        );
+
+        //prepare IRPact agents
+        Map<IRPactAgentFactory, List<Map<String, Object>>> creationData = new LinkedHashMap<>();
+
+        IRPactAgentFactory consumerAgentFactory = JadexConsumerAgentBDI::new;
+        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
+            for(ConsumerAgent ca: cag.getAgents()) {
+                pulse();
+                ProxyConsumerAgent data = createConsumerAgentInitializationData(ca);
+                Map<String, Object> param = new HashMap<>();
+                param.put(PROXY, data);
+                creationData.computeIfAbsent(consumerAgentFactory, _fac -> new ArrayList<>()).add(param);
+            }
+        }
+
+        List<Map<IRPactAgentFactory, List<Map<String, Object>>>> splittedCreationData = CollectionUtil.split(
+                creationData,
+                outerParallelism
+        );
+
+        //create manager
+        AtomicDouble agentProgress = new AtomicDouble(0);
+        double lastBroadcastedManagerProgress = 0;
+        for(int i = 0; i < outerParallelism; i++) {
+            ProxyIRPactAgentManagerAgent proxy = new ProxyIRPactAgentManagerAgent();
+            proxy.setName("Manager#" + i);
+            proxy.setEnvironment(environment);
+            proxy.setRnd(environment.getSimulationRandom().deriveInstance());
+            proxy.setParallelism(innerParallelism);
+            proxy.setCreatedAgentsCounter(agentCount);
+            proxy.setTotalNumberOfAgentsToCreate(totalNumberOfAgents);
+            proxy.setLastBroadcastedProgress(agentProgress);
+            proxy.setExecMode(ExecMode.FIXED);
+
+            Map<IRPactAgentFactory, List<Map<String, Object>>> thisCreationData = splittedCreationData.get(i);
+            int iTotal = 0;
+            for(Map.Entry<IRPactAgentFactory, List<Map<String, Object>>> entry: thisCreationData.entrySet()) {
+                proxy.addAll(entry.getKey(), entry.getValue());
+                iTotal += entry.getValue().size();
+            }
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "agentCount: i={}, agents={}", i, iTotal);
+
+            CreationInfo info = createAgentManagerInfo(proxy);
+            platform.createComponent(info).get();
+            pulse();
+
+            lastBroadcastedManagerProgress = broadcastAgentCreationProgress(
+                    "manager agents",
+                    i+1, outerParallelism,
+                    agentCount.incrementAndGet(), totalNumberOfAgents,
+                    lastBroadcastedManagerProgress
+            );
+        }
+    }
+
     private ProxySimulationAgent createProxySimulationAgent() {
         ProxySimulationAgent agent = new ProxySimulationAgent();
         agent.setName(SIMULATION_AGENT_NAME);
@@ -624,6 +719,14 @@ public final class IRPact implements IRPActAccess {
         CreationInfo info = new CreationInfo();
         info.setName(proxy.getName());
         info.setFilename(CONSUMER_AGENT);
+        info.addArgument(PROXY, proxy);
+        return info;
+    }
+
+    private static CreationInfo createAgentManagerInfo(ProxyIRPactAgentManagerAgent proxy) {
+        CreationInfo info = new CreationInfo();
+        info.setName(proxy.getName());
+        info.setFilename(AGENTMANAGER_AGENT);
         info.addArgument(PROXY, proxy);
         return info;
     }

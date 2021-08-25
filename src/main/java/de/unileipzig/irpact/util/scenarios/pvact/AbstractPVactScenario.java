@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.util.scenarios.pvact;
 
 import de.unileipzig.irpact.core.logging.IRPLevel;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InGeneral;
@@ -16,6 +17,8 @@ import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
+import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData;
+import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
@@ -33,9 +36,7 @@ import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.util.scenarios.AbstractScenario;
 
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -131,6 +132,15 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         }
         return pvFile;
     }
+    public InPVFile computePVFileIfAbsent() {
+        if(isCached(getPVDataName())) {
+            return getCached(getPVDataName());
+        } else {
+            InPVFile pvFile = getPVFile();
+            cache(getPVDataName(), pvFile);
+            return pvFile;
+        }
+    }
 
     protected InSpatialTableFile spatialTableFile;
     public InSpatialTableFile getSpatialFile() {
@@ -139,6 +149,15 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         }
         return spatialTableFile;
     }
+    public InSpatialTableFile computeSpatialFileIfAbsent() {
+        if(isCached(getSpatialFileName())) {
+            return getCached(getSpatialFileName());
+        } else {
+            InSpatialTableFile spatialTableFile = getSpatialFile();
+            cache(getSpatialFileName(), spatialTableFile);
+            return spatialTableFile;
+        }
+    }
 
     protected InRealAdoptionDataFile realAdoptionFile;
     public InRealAdoptionDataFile getRealAdoptionDataFile() {
@@ -146,6 +165,15 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
             realAdoptionFile = new InRealAdoptionDataFile(getRealAdoptionDataName());
         }
         return realAdoptionFile;
+    }
+    public InRealAdoptionDataFile computeRealAdoptionDataFileIfAbsent() {
+        if(isCached(getRealAdoptionDataName())) {
+            return getCached(getRealAdoptionDataName());
+        } else {
+            InRealAdoptionDataFile realAdoptionFile = getRealAdoptionDataFile();
+            cache(getRealAdoptionDataName(), realAdoptionFile);
+            return realAdoptionFile;
+        }
     }
 
     public InAttributeName getAttribute(String text) {
@@ -171,11 +199,47 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return general;
     }
 
+    protected static final String DEFAULT_CONSUMER_INIT_ADOPTER = "DEFAULT_CONSUMER_INIT_ADOPTER";
+    protected InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData getDefaultPVactFileBasedInitialAdopter() {
+        if(isCached(DEFAULT_CONSUMER_INIT_ADOPTER)) {
+            return getCached(DEFAULT_CONSUMER_INIT_ADOPTER);
+        } else {
+            InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData initAdopter = new InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData();
+            initAdopter.setName(DEFAULT_CONSUMER_INIT_ADOPTER);
+            initAdopter.setFile(getRealAdoptionDataFile());
+            cache(initAdopter.getName(), initAdopter);
+            return initAdopter;
+        }
+    }
+
+    protected static final String DEFAULT_WEIGHTED_CONSUMER_INIT_ADOPTER = "DEFAULT_WEIGHTED_CONSUMER_INIT_ADOPTER";
+    protected InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData getDefaultPVactFileBasedWeightedInitialAdopter() {
+        if(isCached(DEFAULT_WEIGHTED_CONSUMER_INIT_ADOPTER)) {
+            return getCached(DEFAULT_WEIGHTED_CONSUMER_INIT_ADOPTER);
+        } else {
+            InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData initAdopter = new InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData();
+            initAdopter.setName(DEFAULT_WEIGHTED_CONSUMER_INIT_ADOPTER);
+            initAdopter.setFile(getRealAdoptionDataFile());
+            cache(initAdopter.getName(), initAdopter);
+            return initAdopter;
+        }
+    }
+
     @Override
     public void setupGeneral(InGeneral general) {
         super.setupGeneral(general);
         general.runPVAct = runPvAct;
         general.runOptActDemo = false;
+    }
+
+    @Override
+    public void setupRoot(InRoot root) {
+        super.setupRoot(root);
+        List<InAttributeName> attributes = new ArrayList<>();
+        for(String attr: RAConstants.DEFAULT_ATTRIBUTES) {
+            attributes.add(getAttribute(attr));
+        }
+        root.setAttributeNames(attributes);
     }
 
     public static void setColors(InRoot root, InConsumerAgentGroup... cags) {
@@ -185,7 +249,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
     }
 
     public InGenericOutputImage[] createDefaultImages() {
-        InGenericOutputImage[] defaults = InGenericOutputImage.createDefaultImages(getRealAdoptionDataFile());
+        InGenericOutputImage[] defaults = InGenericOutputImage.createDefaultImages(computeRealAdoptionDataFileIfAbsent());
         InGenericOutputImage.setEnableAll(true, defaults);
         InGenericOutputImage.setEngine(SupportedEngine.GNUPLOT, defaults);
         return defaults;

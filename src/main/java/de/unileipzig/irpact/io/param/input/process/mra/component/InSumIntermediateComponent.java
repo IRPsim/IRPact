@@ -39,7 +39,7 @@ public class InSumIntermediateComponent implements InValueComponent {
         addEntry(res, thisClass(), "weight");
         addEntry(res, thisClass(), "components");
 
-        setDefault(res, thisClass(), "weight", VALUE_ONE);
+        setDefault(res, thisClass(), "weight", VALUE_1);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());

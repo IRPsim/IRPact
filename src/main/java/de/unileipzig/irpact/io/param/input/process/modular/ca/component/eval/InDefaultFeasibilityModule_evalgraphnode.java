@@ -210,6 +210,8 @@ public class InDefaultFeasibilityModule_evalgraphnode implements InConsumerAgent
             return MPMSettings.searchModule(parser, thisName(), DefaultFeasibilityModule.class);
         }
 
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}'", thisName(), getName());
+
         DefaultFeasibilityModule module = new DefaultFeasibilityModule();
         module.setName(getName());
         module.setEnvironment(parser.getEnvironment());

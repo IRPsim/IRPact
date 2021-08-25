@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.core.process.modular.ca.components.eval;
 
 import de.unileipzig.irpact.commons.checksum.Checksums;
-import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.MathUtil;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
@@ -19,19 +18,16 @@ import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.Stage;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractConsumerAgentModule;
-import de.unileipzig.irpact.core.process.modular.ca.model.ConsumerAgentMPM;
-import de.unileipzig.irpact.core.process.modular.ca.util.AdoptionPhaseDeterminer;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVDataSupplier;
-import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,6 +43,11 @@ public class DefaultDecisionMakingModule extends AbstractConsumerAgentModule imp
     @Override
     public IRPLogger getDefaultLogger() {
         return LOGGER;
+    }
+
+    @Override
+    public IRPSection getDefaultResultSection() {
+        return IRPSection.SIMULATION_PROCESS;
     }
 
     //=========================
@@ -145,14 +146,6 @@ public class DefaultDecisionMakingModule extends AbstractConsumerAgentModule imp
         return npvDataSupplier;
     }
 
-    protected AdoptionPhaseDeterminer phaseDeterminer;
-    public void setPhaseDeterminer(AdoptionPhaseDeterminer phaseDeterminer) {
-        this.phaseDeterminer = phaseDeterminer;
-    }
-    public AdoptionPhaseDeterminer getPhaseDeterminer() {
-        return phaseDeterminer;
-    }
-
     protected ProcessPlanNodeFilterScheme nodeFilterScheme;
     public void setNodeFilterScheme(ProcessPlanNodeFilterScheme nodeFilterScheme) {
         this.nodeFilterScheme = nodeFilterScheme;
@@ -205,7 +198,7 @@ public class DefaultDecisionMakingModule extends AbstractConsumerAgentModule imp
     }
 
     protected void initNPVMatrixWithFile() {
-        initNPVMatrixWithFile(getValidNPVData(), getNPVDataSupplier());
+        initNPVDataSupplier(getValidNPVData(), getNPVDataSupplier());
     }
 
     @Override
@@ -241,7 +234,7 @@ public class DefaultDecisionMakingModule extends AbstractConsumerAgentModule imp
 
     protected void checkAttributeExistence() throws ValidationException {
         validateHasDoubleAttribute(
-                RAConstants.PURCHASE_POWER,
+                RAConstants.PURCHASE_POWER_EUR,
                 RAConstants.ORIENTATION,
                 RAConstants.SLOPE,
                 RAConstants.SHARE_1_2_HOUSE,
@@ -249,22 +242,20 @@ public class DefaultDecisionMakingModule extends AbstractConsumerAgentModule imp
         );
     }
 
-    @Override
-    public void handleMissingParametersRecursively(ConsumerAgentMPM model) {
-        if(phaseDeterminer == null && model instanceof AdoptionPhaseDeterminer) {
-            setPhaseDeterminer((AdoptionPhaseDeterminer) model);
-        }
-    }
-
     //=========================
     //core
     //=========================
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
+        doSelfActionAndAllowAttention(data.getAgent());
+        return evaluate0(data);
+    }
+
+    protected AdoptionResult evaluate0(ConsumerAgentData data) throws Throwable {
         ConsumerAgent agent = data.getAgent();
 
-        doSelfActionAndAllowAttention(agent);
+        trace("[{}] handle decision making", agent.getName());
 
         IRPLoggingMessageCollection logColl = new IRPLoggingMessageCollection()
                 .setLazy(true)
@@ -329,12 +320,8 @@ public class DefaultDecisionMakingModule extends AbstractConsumerAgentModule imp
         logColl.append("U < adoption threshold ({} < {}): {}", B, adoptionThreshold, noAdoption);
 
         if(noAdoption) {
-            data.updateStage(Stage.IMPEDED);
             return AdoptionResult.IMPEDED;
         } else {
-            Timestamp now = now();
-            agent.adopt(data.getNeed(), data.getProduct(), now, determinePhase(now));
-            data.updateStage(Stage.ADOPTED);
             return AdoptionResult.ADOPTED;
         }
     }
@@ -413,17 +400,8 @@ public class DefaultDecisionMakingModule extends AbstractConsumerAgentModule imp
                 getWeightLocal(),
                 getWeightSocial(),
                 getLogisticFactor(),
-                getNodeFilterScheme(),
-                Checksums.SMART.getNamedChecksum(getPhaseDeterminer())
+                getNodeFilterScheme()
         );
-    }
-
-    protected AdoptionPhase determinePhase(Timestamp ts) {
-        AdoptionPhaseDeterminer determiner = getPhaseDeterminer();
-        if(determiner == null) {
-            throw new NullPointerException("AdoptionPhaseDeterminer");
-        }
-        return determiner.determine(ts);
     }
 
     protected double getAverageNPV() {

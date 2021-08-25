@@ -6,7 +6,6 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.modular.ModularProcessPlan;
-import de.unileipzig.irpact.core.process.modular.ca.util.AdoptionPhaseDeterminer;
 import de.unileipzig.irpact.core.process.modular.ca.SimpleConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.product.Product;
@@ -16,7 +15,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 /**
  * @author Daniel Abitz
  */
-public abstract class AbstractConsumerAgentMPM extends SimulationEntityBase implements ConsumerAgentMPM, LoggingHelper, AdoptionPhaseDeterminer {
+public abstract class AbstractConsumerAgentMPM extends SimulationEntityBase implements ConsumerAgentMPM, LoggingHelper {
 
     protected ConsumerAgentEvaluationModule startModule;
 
@@ -33,12 +32,7 @@ public abstract class AbstractConsumerAgentMPM extends SimulationEntityBase impl
 
     public void setStartModule(ConsumerAgentEvaluationModule startModule) {
         this.startModule = startModule;
-        startModule.handleMissingParametersRecursively(this);
-    }
-
-    @Override
-    public void handleNewProduct(Product newProduct) {
-        getStartModule().handleNewProductRecursively(newProduct);
+        startModule.handleMissingParameters(this);
     }
 
     @Override
@@ -47,7 +41,14 @@ public abstract class AbstractConsumerAgentMPM extends SimulationEntityBase impl
     }
 
     @Override
+    public void handleNewProduct(Product newProduct) {
+        getStartModule().handleNewProduct(newProduct);
+    }
+
+    @Override
     public ModularProcessPlan newPlan(Agent agent, Need need, Product product) {
+        trace("[{}] create new plan for agent={}, need={}, product={}", getName(), agent.getName(), need.getName(), product.getName());
+
         ConsumerAgent ca = validate(agent);
 
         SimpleConsumerAgentData data = new SimpleConsumerAgentData();

@@ -238,6 +238,7 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
     @Override
     public JadexTimestamp now() {
         double clockTick = getClockTick();
+        JadexTimestamp nowStamp = this.nowStamp;
         if(nowStamp != null && nowClockTick == clockTick) {
             return nowStamp;
         }
@@ -281,17 +282,20 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
     }
 
     protected synchronized JadexTimestamp syncNow(double clockTick) {
+        JadexTimestamp nowStamp = this.nowStamp;
         if(nowStamp != null && nowClockTick == clockTick) {
             return nowStamp;
         }
-        nowClockTick = clockTick;
+
+        this.nowClockTick = clockTick;
         double tick = clockTick - referenceClockTick + tickModifier;
-        nowStamp = new BasicTimestamp(
+        JadexTimestamp newNowStamp = new BasicTimestamp(
                 modify(tickToTime(tick)),
                 clockTick,
                 tick
         );
-        return nowStamp;
+        this.nowStamp = newNowStamp;
+        return newNowStamp;
     }
 
     protected double getClockTick() {

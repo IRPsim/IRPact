@@ -9,12 +9,12 @@ import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.Agent;
-import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAnnualGroupAttribute;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.need.Need;
@@ -24,6 +24,7 @@ import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
 import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.core.product.handler.NewProductHandler;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -206,7 +207,7 @@ public class RAProcessModel extends RAProcessModelBase implements LoggableChecks
     }
 
     private void checkFinancialInformation(ConsumerAgent ca) throws ValidationException {
-        checkHasDoubleAttribute(ca, RAConstants.PURCHASE_POWER);
+        checkHasDoubleAttribute(ca, RAConstants.PURCHASE_POWER_EUR);
     }
 
     private void checkSpatialInformation(ConsumerAgent ca) throws ValidationException {
@@ -232,15 +233,21 @@ public class RAProcessModel extends RAProcessModelBase implements LoggableChecks
 
     @Override
     public void handleNewProduct(Product newProduct) {
-        AgentManager agentManager = environment.getAgents();
-
-        for(ConsumerAgentGroup cag: agentManager.getConsumerAgentGroups()) {
-            for(ConsumerAgent ca : cag.getAgents()) {
-                initalizeInitialProductAwareness(ca, newProduct);
-                initalizeInitialProductInterest(ca, newProduct);
-                initalizeInitialAdopter(ca, newProduct);
-            }
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "[{}] number of InitialAdoptionHandler: {}", getName(), newProductHandlers.size());
+        for(NewProductHandler handler: newProductHandlers) {
+            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "[{}] apply InitialAdoptionHandler '{}'", getName(), handler.getName());
+            handler.handleProduct(getEnvironment(), newProduct);
         }
+
+//        AgentManager agentManager = environment.getAgents();
+//
+//        for(ConsumerAgentGroup cag: agentManager.getConsumerAgentGroups()) {
+//            for(ConsumerAgent ca : cag.getAgents()) {
+//                initalizeInitialProductAwareness(ca, newProduct);
+//                initalizeInitialProductInterest(ca, newProduct);
+//                initalizeInitialAdopter(ca, newProduct);
+//            }
+//        }
     }
 
     private void runGlobalInitalization() {
@@ -251,40 +258,40 @@ public class RAProcessModel extends RAProcessModelBase implements LoggableChecks
         globalRAProcessInitCalled = true;
     }
 
-    private void initalizeInitialAdopter(ConsumerAgent ca, Product fp) {
-        double chance = getInitialAdopter(ca, fp);
-        double draw = rnd.nextDouble();
-        boolean isAdopter = draw < chance;
-        trace("Is consumer agent '{}' initial adopter of product '{}'? {} ({} < {})", ca.getName(), fp.getName(), isAdopter, draw, chance);
-        if(isAdopter) {
-            ca.adoptInitial(fp);
-        }
-    }
-
-    private void initalizeInitialProductInterest(ConsumerAgent ca, Product fp) {
-        double interest = getInitialProductInterest(ca, fp);
-        if(interest > 0) {
-            trace("set awareness for consumer agent '{}' because initial interest value {} for product '{}'", ca.getName(), interest, fp.getName());
-            ca.makeAware(fp);
-        }
-        ca.updateInterest(fp, interest);
-        trace("consumer agent '{}' has initial interest value {} for product '{}'", ca.getName(), interest, fp.getName());
-    }
-
-    private void initalizeInitialProductAwareness(ConsumerAgent ca, Product fp) {
-        if(ca.isAware(fp)) {
-            trace("consumer agent '{}' already aware", ca.getName());
-            return;
-        }
-
-        double chance = getInitialProductAwareness(ca, fp);
-        double draw = rnd.nextDouble();
-        boolean isAware = draw < chance;
-        trace("is consumer agent '{}' initial aware of product '{}'? {} ({} < {})", ca.getName(), fp.getName(), isAware, draw, chance);
-        if(isAware) {
-            ca.makeAware(fp);
-        }
-    }
+//    private void initalizeInitialAdopter(ConsumerAgent ca, Product fp) {
+//        double chance = getInitialAdopter(ca, fp);
+//        double draw = rnd.nextDouble();
+//        boolean isAdopter = draw < chance;
+//        trace("Is consumer agent '{}' initial adopter of product '{}'? {} ({} < {})", ca.getName(), fp.getName(), isAdopter, draw, chance);
+//        if(isAdopter) {
+//            ca.adoptInitial(fp);
+//        }
+//    }
+//
+//    private void initalizeInitialProductInterest(ConsumerAgent ca, Product fp) {
+//        double interest = getInitialProductInterest(ca, fp);
+//        if(interest > 0) {
+//            trace("set awareness for consumer agent '{}' because initial interest value {} for product '{}'", ca.getName(), interest, fp.getName());
+//            ca.makeAware(fp);
+//        }
+//        ca.updateInterest(fp, interest);
+//        trace("consumer agent '{}' has initial interest value {} for product '{}'", ca.getName(), interest, fp.getName());
+//    }
+//
+//    private void initalizeInitialProductAwareness(ConsumerAgent ca, Product fp) {
+//        if(ca.isAware(fp)) {
+//            trace("consumer agent '{}' already aware", ca.getName());
+//            return;
+//        }
+//
+//        double chance = getInitialProductAwareness(ca, fp);
+//        double draw = rnd.nextDouble();
+//        boolean isAware = draw < chance;
+//        trace("is consumer agent '{}' initial aware of product '{}'? {} ({} < {})", ca.getName(), fp.getName(), isAware, draw, chance);
+//        if(isAware) {
+//            ca.makeAware(fp);
+//        }
+//    }
 
     protected static ConsumerAgent cast(Agent agent) {
         if(agent instanceof ConsumerAgent) {

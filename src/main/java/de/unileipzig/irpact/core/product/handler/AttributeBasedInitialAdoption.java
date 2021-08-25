@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.product.initial;
+package de.unileipzig.irpact.core.product.handler;
 
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.util.Rnd;
@@ -13,22 +13,22 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 /**
  * @author Daniel Abitz
  */
-public class AttributeBasedInitialAdoption extends NameableBase implements InitialAdoptionHandler {
+public class AttributeBasedInitialAdoption extends NameableBase implements NewProductHandler {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(AttributeBasedInitialAdoption.class);
 
-    protected String initialAdopterAttributeName;
+    protected String attributeName;
     protected Rnd rnd;
 
     public AttributeBasedInitialAdoption() {
     }
 
-    public void setInitialAdopterAttributeName(String initialAdopterAttributeName) {
-        this.initialAdopterAttributeName = initialAdopterAttributeName;
+    public void setAttributeName(String attributeName) {
+        this.attributeName = attributeName;
     }
 
-    public String getInitialAdopterAttributeName() {
-        return initialAdopterAttributeName;
+    public String getAttributeName() {
+        return attributeName;
     }
 
     public void setRnd(Rnd rnd) {
@@ -59,6 +59,6 @@ public class AttributeBasedInitialAdoption extends NameableBase implements Initi
     }
 
     protected double getInitialAdopter(SimulationEnvironment environment, ConsumerAgent agent, Product product) {
-        return environment.getAttributeHelper().getDoubleValue(agent, product, getInitialAdopterAttributeName());
+        return environment.getAttributeHelper().getDoubleValue(agent, product, getAttributeName());
     }
 }

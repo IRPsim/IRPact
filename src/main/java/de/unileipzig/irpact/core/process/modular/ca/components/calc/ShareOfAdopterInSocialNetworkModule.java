@@ -2,7 +2,6 @@ package de.unileipzig.irpact.core.process.modular.ca.components.calc;
 
 import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentCalculationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractConsumerAgentModule;
@@ -14,9 +13,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 public class ShareOfAdopterInSocialNetworkModule extends AbstractConsumerAgentModule implements ConsumerAgentCalculationModule {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ShareOfAdopterInSocialNetworkModule.class);
-
-    protected NodeFilter networkFilter;
-    protected double weight = 1.0;
 
     public ShareOfAdopterInSocialNetworkModule() {
     }
@@ -34,6 +30,7 @@ public class ShareOfAdopterInSocialNetworkModule extends AbstractConsumerAgentMo
         );
     }
 
+    protected double weight = 1.0;
     public void setWeight(double weight) {
         this.weight = weight;
     }
@@ -42,7 +39,7 @@ public class ShareOfAdopterInSocialNetworkModule extends AbstractConsumerAgentMo
     }
 
     @Override
-    public double calculate(ConsumerAgentData input) {
+    public double calculate(ConsumerAgentData input) throws Throwable {
         double value = getShareOfAdopterInSocialNetwork(input.getAgent(), input.getProduct());
         return getWeight() * value;
     }

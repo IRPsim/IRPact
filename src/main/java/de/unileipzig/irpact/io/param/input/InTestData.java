@@ -1,12 +1,18 @@
 package de.unileipzig.irpact.io.param.input;
 
+import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.EdnParameter;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.*;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
+import java.util.function.Consumer;
 
 import static de.unileipzig.irpact.io.param.IOConstants.DEV;
 import static de.unileipzig.irpact.io.param.IOConstants.TEST;
@@ -25,6 +31,8 @@ public class InTestData implements InIRPactEntity {
     public static String thisName() {
         return thisClass().getSimpleName();
     }
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(InTestData.class);
 
     protected static final String[] value0grp = {"value01", "value02"};
     protected static final String[] value1grp = {"value11", "value12", "value13", "value14"};
@@ -63,6 +71,10 @@ public class InTestData implements InIRPactEntity {
         addEntry(res, thisClass(), "value25");
         addEntry(res, thisClass(), "value26");
         addEntry(res, thisClass(), "value27");
+
+        addEntryWithDefault(res, thisClass(), "sensi1", VALUE_0);
+        addEntryWithDefault(res, thisClass(), "sensi2", VALUE_0);
+        addEntryWithDefault(res, thisClass(), "sensi3", VALUE_0);
 
         setDefault(res, thisClass(), "value01", VALUE_TRUE);
         setDefault(res, thisClass(), "value11", VALUE_TRUE);
@@ -119,7 +131,19 @@ public class InTestData implements InIRPactEntity {
     @FieldDefinition
     public boolean value27;
 
+    @FieldDefinition
+    public double sensi1;
+    @FieldDefinition
+    public double sensi2;
+    @FieldDefinition
+    public double sensi3;
+
     public InTestData() {
+    }
+
+    public InTestData peek(Consumer<? super InTestData> consumer) {
+        consumer.accept(this);
+        return this;
     }
 
     @Override
@@ -158,5 +182,13 @@ public class InTestData implements InIRPactEntity {
         copy.testValue1 = testValue1;
         copy.testValue2 = testValue2;
         return copy;
+    }
+
+    @Override
+    public Object parse(IRPactInputParser parser) throws ParsingException {
+        LOGGER.trace(IRPSection.DEBUG, "TestData '{}' -> sensitivitaet#1: {}", _name, sensi1);
+        LOGGER.trace(IRPSection.DEBUG, "TestData '{}' -> sensitivitaet#2: {}", _name, sensi2);
+        LOGGER.trace(IRPSection.DEBUG, "TestData '{}' -> sensitivitaet#3: {}", _name, sensi3);
+        return null;
     }
 }

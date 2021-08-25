@@ -410,7 +410,7 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         addAnnualGroupAttribute(parser, jcag, getConstructionRate(), CONSTRUCTION_RATE, restored);
         addAnnualGroupAttribute(parser, jcag, getRenovationRate(), RENOVATION_RATE, restored);
 
-        if(a1 != null) addGroupAttribute(parser, jcag, a1, PURCHASE_POWER, restored);
+        if(a1 != null) addGroupAttribute(parser, jcag, a1, PURCHASE_POWER_EUR, restored);
         if(a5 != null) addGroupAttribute(parser, jcag, a5, SHARE_1_2_HOUSE, restored);
         if(a6 != null) addGroupAttribute(parser, jcag, a6, HOUSE_OWNER, restored);
     }

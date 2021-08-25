@@ -2,8 +2,7 @@ package de.unileipzig.irpact.commons.util.data;
 
 import de.unileipzig.irpact.commons.util.StringUtil;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 /**
@@ -25,6 +24,36 @@ public class MapBasedTypedMatrix<M, N, V> implements TypedMatrix<M, N, V> {
         this.matrixSupplier = matrixSupplier;
         this.columnSupplier = columnSupplier;
         matrix = matrixSupplier.get();
+    }
+
+    public void init(Collection<? extends M> mValues, Collection<? extends N> nValues, V defaultValue) {
+        for(M mValue: mValues) {
+            for(N nValue: nValues) {
+                set(mValue, nValue, defaultValue);
+            }
+        }
+    }
+
+    @Override
+    public Collection<M> getM() {
+        return matrix.keySet();
+    }
+
+    @Override
+    public Collection<N> getN() {
+        Set<N> nValues = new LinkedHashSet<>();
+        matrix.values()
+                .stream()
+                .map(Map::keySet)
+                .forEach(nValues::addAll);
+        return nValues;
+    }
+
+    @Override
+    public Collection<N> getN(M m) {
+        Map<N, ?> row = matrix.get(m);
+        if(row == null) throw new NoSuchElementException("not found: " + m);
+        return row.keySet();
     }
 
     @Override

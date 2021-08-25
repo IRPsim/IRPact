@@ -17,6 +17,7 @@ import de.unileipzig.irpact.core.logging.InfoTag;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.process.ra.alg.RelativeAgreementAlgorithm;
 import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
@@ -112,11 +113,16 @@ public class RAProcessPlan extends RAProcessPlanBase {
     }
 
     @Override
-    public ProcessPlanResult execute() {
+    public ProcessPlanResult execute() throws Throwable {
+        return execute(null);
+    }
+
+    @Override
+    public ProcessPlanResult execute(List<PostAction<?>> postActions) throws Throwable {
         if(currentStage == RAStage.PRE_INITIALIZATION) {
-            return initPlan();
+            return initPlan(postActions);
         } else {
-            return executePlan();
+            return executePlan(postActions);
         }
     }
 
@@ -124,30 +130,30 @@ public class RAProcessPlan extends RAProcessPlanBase {
     //phases
     //=========================
 
-    protected ProcessPlanResult initPlan() {
+    protected ProcessPlanResult initPlan(List<PostAction<?>> postActions) throws Throwable {
         if(agent.hasAdopted(product)) {
             currentStage = RAStage.ADOPTED;
         } else {
             currentStage = RAStage.AWARENESS;
         }
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "initial stage for '{}': {}", agent.getName(), currentStage);
-        return executePlan();
+        return executePlan(postActions);
     }
 
-    protected ProcessPlanResult executePlan() {
+    protected ProcessPlanResult executePlan(List<PostAction<?>> postActions) throws Throwable {
         switch (currentStage) {
             case AWARENESS:
-                return handleInterest();
+                return handleInterest(postActions);
 
             case FEASIBILITY:
-                return handleFeasibility();
+                return handleFeasibility(postActions);
 
             case DECISION_MAKING:
-                return handleDecisionMaking();
+                return handleDecisionMaking(postActions);
 
             case ADOPTED:
             case IMPEDED:
-                return doAction();
+                return doAction(postActions);
 
             default:
                 throw new IllegalStateException("unknown phase: " + currentStage);
@@ -159,7 +165,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
         agent.allowAttention();
     }
 
-    protected ProcessPlanResult handleInterest() {
+    protected ProcessPlanResult handleInterest(List<PostAction<?>> postActions) throws Throwable {
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle interest", agent.getName());
 
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] current interest for '{}': {}", agent.getName(), product.getName(), getInterest(agent));
@@ -184,14 +190,46 @@ public class RAProcessPlan extends RAProcessPlanBase {
                 return ProcessPlanResult.IN_PROCESS;
             }
         }
-        return doAction();
+        return doAction(postActions);
     }
 
-    protected ProcessPlanResult doAction() {
+    protected ProcessPlanResult doAction(List<PostAction<?>> postActions) throws Throwable {
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] doAction", agent.getName());
 
         agent.allowAttention();
 
+        if(postActions == null) {
+            return doAction0();
+        } else {
+            postActions.add(new PostAction<RAProcessPlan>() {
+
+                private final RAProcessPlan plan = RAProcessPlan.this;
+
+                @Override
+                public boolean isSupported(Class<?> type) {
+                    return type.isInstance(plan);
+                }
+
+                @Override
+                public RAProcessPlan getInput() {
+                    return plan;
+                }
+
+                @Override
+                public String getInputName() {
+                    return plan.getAgent().getName();
+                }
+
+                @Override
+                public void execute() throws Throwable {
+                    doAction0();
+                }
+            });
+            return ProcessPlanResult.IN_PROCESS;
+        }
+    }
+
+    protected ProcessPlanResult doAction0() throws Throwable {
         if(doCommunicate()) {
             return communicate();
         }
@@ -412,7 +450,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
         return ProcessPlanResult.IN_PROCESS;
     }
 
-    protected ProcessPlanResult handleFeasibility() {
+    protected ProcessPlanResult handleFeasibility(List<PostAction<?>> postActions) throws Throwable {
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle feasibility", agent.getName());
 
         boolean isShare = isShareOf1Or2FamilyHouse(agent);
@@ -425,10 +463,10 @@ public class RAProcessPlan extends RAProcessPlanBase {
             return ProcessPlanResult.IN_PROCESS;
         }
 
-        return doAction();
+        return doAction(postActions);
     }
 
-    protected ProcessPlanResult handleDecisionMaking() {
+    protected ProcessPlanResult handleDecisionMaking(List<PostAction<?>> postActions) {
         doSelfActionAndAllowAttention();
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle decision making", agent.getName());
 
@@ -671,7 +709,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
     @Override
     protected void doRunEvaluationAtEndOfYear() {
-        handleDecisionMaking();
+        handleDecisionMaking(null);
     }
 
     protected boolean isAdopter(ConsumerAgent agent) {

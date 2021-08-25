@@ -16,11 +16,13 @@ import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.process.ProcessFindingScheme;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irpact.core.product.*;
 import de.unileipzig.irpact.core.product.awareness.ProductAwareness;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.jadex.agents.AbstractJadexAgentBDI;
+import de.unileipzig.irpact.core.simulation.IRPactAgentAPI;
 import de.unileipzig.irpact.jadex.agents.simulation.SimulationService;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
@@ -47,7 +49,7 @@ import java.util.concurrent.locks.ReentrantLock;
 @RequiredServices(
         @RequiredService(type = SimulationService.class)
 )
-public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements ConsumerAgent {
+public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements ConsumerAgent, IRPactAgentAPI {
 
     protected static final IRPLogger LOGGER = IRPLogging.getLogger(JadexConsumerAgentBDI.class);
 
@@ -106,18 +108,18 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     protected void searchSimulationService() {
         JadexUtil.searchPlatformServices(reqFeature, SimulationService.class, result -> {
             if(simulationService == null) {
-                log().trace(IRPSection.INITIALIZATION_PLATFORM, "[{}] SimulationService found", getName());
-                simulationService = result;
-                setupAgent();
+                setupAgent(result);
             }
         });
     }
 
-    protected void setupAgent() {
-        //HIER KOMMEN AUFGABEN HIN
-        //node setzen
+    protected void setupAgent(SimulationService result) {
+        log().trace(IRPSection.INITIALIZATION_PLATFORM, "[{}] SimulationService found", getName());
+        simulationService = result;
         simulationService.reportAgentCreated(getThisAgent());
-        simulationService.registerAgentForFastTermination(agent);
+        if(agent != null) {
+            simulationService.registerAgentForFastTermination(agent);
+        }
     }
 
     //=========================
@@ -140,16 +142,65 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Override
     protected void onEnd() {
         log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] end ({})", getName(), now());
-        //log().info("[{}] end", getName());
-        proxyAgent.unsync(this);
+        runOnEnd();
+    }
+
+    //=========================
+    //IRPactAgentAPI
+    //=========================
+
+    @Override
+    public void initIRPactAgent(
+            Map<String, Object> param,
+            SimulationService simulationService) throws Throwable {
+        initData(param);
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] init ({})", getName(), now());
+        setupAgent(simulationService);
+    }
+
+    @Override
+    public void startIRPactAgent() throws Throwable {
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] start ({})", getName(), now());
+    }
+
+    @Override
+    public Map<String, Object> endIRPactAgent() throws Throwable {
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] end ({})", getName(), now());
+        runOnEnd();
+        return Collections.emptyMap();
+    }
+
+    @Override
+    public void nextIRPactAgentLoopAction(List<PostAction<?>> postActions) throws Throwable {
+        pulse();
+
+        resetOnNewAction();
+
+        waitForYearChangeIfRequired();
+
+        log().trace(IRPSection.SIMULATION_AGENT, "[{}] start next action ({})", getName(), now());
+        waitForSynchronisationAtStartIfRequired();
+        log().trace(IRPSection.SIMULATION_AGENT, "[{}] post first sync", getName());
+
+        if(hasPlans()) {
+            for(ProcessPlan plan: getPlans().values())  {
+                executePlan(plan, postActions);
+            }
+        } else {
+            allowAttention();
+        }
+
+        log().trace(IRPSection.SIMULATION_AGENT, "[{}] end action ({})", getName(), now());
+        waitForSynchronisationAtEndIfRequired();
+        log().trace(IRPSection.SIMULATION_AGENT, "[{}] post end sync", getName());
     }
 
     //=========================
     //ConsumerAgent
     //=========================
 
-    protected ProxyConsumerAgent getProxy() {
-        Object obj = resultsFeature.getArguments().get(IRPact.PROXY);
+    protected ProxyConsumerAgent getProxy(Map<String, Object> params) {
+        Object obj = params.get(IRPact.PROXY);
         if(obj instanceof ProxyConsumerAgent) {
             return (ProxyConsumerAgent) obj;
         } else {
@@ -158,7 +209,11 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     protected void initData() {
-        proxyAgent = getProxy();
+        initData(resultsFeature.getArguments());
+    }
+
+    protected void initData(Map<String, Object> params) {
+        proxyAgent = getProxy(params);
         name = proxyAgent.getName();
         node = proxyAgent.getSocialGraphNode();
         group = (JadexConsumerAgentGroup) proxyAgent.getGroup();
@@ -185,6 +240,11 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         externAttributes.addAll(proxyAgent.getExternAttributes());
 
         proxyAgent.sync(getRealAgent());
+    }
+
+    protected void runOnEnd() {
+        //log().info("[{}] end", getName());
+        proxyAgent.unsync(this);
     }
 
     @Override
@@ -445,7 +505,9 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
 
     @Override
     public void actionPerformed() {
-        actionsInThisStep++;
+        if(actionsInThisStep < maxNumberOfActions) {
+            actionsInThisStep++;
+        }
     }
 
     @Override
@@ -563,7 +625,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    protected void firstAction() {
+    protected void firstAction() throws Throwable {
         //bdiFeature.dispatchTopLevelGoal(new ProcessExecutionGoal(null, null));
         log().trace(IRPSection.SIMULATION_AGENT, "[{}] start loop ({})", getName(), now());
         onLoopAction();
@@ -575,7 +637,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    protected void onLoopAction() {
+    protected void onLoopAction() throws Throwable {
         //vor allen anderen checks
         resetOnNewAction();
 
@@ -709,11 +771,11 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
 ////        }
 //    }
 
-    protected void executePlan(ProcessPlan plan) {
-        try {
-            plan.execute();
-        } catch (Throwable t) {
+    protected void executePlan(ProcessPlan plan) throws Throwable {
+        plan.execute();
+    }
 
-        }
+    protected void executePlan(ProcessPlan plan, List<PostAction<?>> postActions) throws Throwable {
+        plan.execute(postActions);
     }
 }

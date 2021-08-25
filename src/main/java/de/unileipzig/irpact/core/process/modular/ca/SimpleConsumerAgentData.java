@@ -1,8 +1,11 @@
 package de.unileipzig.irpact.core.process.modular.ca;
 
 import de.unileipzig.irpact.commons.checksum.Checksums;
+import de.unileipzig.irpact.commons.util.MapSupplier;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
@@ -10,20 +13,40 @@ import de.unileipzig.irpact.core.process.ProcessPlanResult;
 import de.unileipzig.irpact.core.process.modular.ModularProcessPlan;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.core.process.modular.ca.model.ConsumerAgentMPM;
+import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irptools.util.log.IRPLogger;
+
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Daniel Abitz
  */
 public class SimpleConsumerAgentData implements ConsumerAgentData, ModularProcessPlan {
 
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(SimpleConsumerAgentData.class);
+
+    protected final Lock LOCK = new ReentrantLock();
+    protected MapSupplier mapSupplier;
+    protected Map<String, Object> data;
+
     public SimpleConsumerAgentData() {
+        this(MapSupplier.CONCURRENT_HASH);
+    }
+
+    public SimpleConsumerAgentData(MapSupplier mapSupplier) {
+        this.mapSupplier = mapSupplier;
+        this.data = mapSupplier.newMap();
     }
 
     protected ConsumerAgentMPM model;
     public void setModel(ConsumerAgentMPM model) {
         this.model = model;
     }
+    @Override
     public ConsumerAgentMPM getModel() {
         return model;
     }
@@ -111,12 +134,62 @@ public class SimpleConsumerAgentData implements ConsumerAgentData, ModularProces
     }
 
     @Override
+    public boolean has(String key) {
+        return data.containsKey(key);
+    }
+    @Override
+    public void store(String key, Object obj) {
+        data.put(key, obj);
+    }
+    @Override
+    public Object retrieve(String key) {
+        return data.get(key);
+    }
+    @Override
+    public <R> R retrieveAs(String key, Class<R> type) {
+        return type.cast(retrieve(key));
+    }
+
+    @Override
+    public void lock() {
+        LOCK.lock();
+    }
+
+    @Override
+    public void unlock() {
+        LOCK.unlock();
+    }
+
+    @Override
     public ProcessPlanResult execute() throws Throwable {
+        return execute(null);
+    }
+
+    @Override
+    public ProcessPlanResult execute(List<PostAction<?>> postActions) throws Throwable {
+        if(currentStage() == Stage.PRE_INITIALIZATION) {
+            return initPlan(postActions);
+        } else {
+            return executePlan(postActions);
+        }
+    }
+
+    protected ProcessPlanResult initPlan(List<PostAction<?>> postActions) throws Throwable {
+        if(getAgent().hasAdopted(getProduct())) {
+            updateStage(Stage.ADOPTED);
+        } else {
+            updateStage(Stage.AWARENESS);
+        }
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "initial stage for '{}': {}", getAgent().getName(), currentStage());
+        return executePlan(postActions);
+    }
+
+    protected ProcessPlanResult executePlan(List<PostAction<?>> postActions) throws Throwable {
         ConsumerAgentEvaluationModule module = getValidModel().getStartModule();
         if(module == null) {
             throw new NullPointerException("ConsumerAgentEvaluationModule");
         }
-        AdoptionResult result = module.evaluate(this);
+        AdoptionResult result = module.evaluate(this, postActions);
         if(result == null) {
             throw new NullPointerException("AdoptionResult");
         }
