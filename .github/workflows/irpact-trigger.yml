@@ -19,5 +19,5 @@ jobs:
         url: "https://irpsim.uni-leipzig.de/jenkins/"
         user: ${{ secrets.JENKINS_USER }}
         token: ${{ secrets.JENKINS_TOKEN }}
-        job: "irpact-develop/job/irpact-develop"
+        job: "irpact-develop-github"
         
