@@ -8,6 +8,7 @@ import de.unileipzig.irpact.core.util.AttributeHelper;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
 /**
@@ -95,6 +96,7 @@ public final class NPVDataSupplier {
     public double avgNPV(Stream<? extends ConsumerAgent> agents, int year) {
         if(year != avgNPVYear || Double.isNaN(avgNPV.get())) {
             calcAvgNPV(agents, year);
+            //calcAvgNPV2(agents, year);
         }
         return avgNPV.get();
     }
@@ -114,6 +116,19 @@ public final class NPVDataSupplier {
 
             double result = sum / total.get();
             avgNPV.set(result);
+            avgNPVYear = year;
+        }
+    }
+
+    protected synchronized void calcAvgNPV2(Stream<? extends ConsumerAgent> agents, final int year) {
+        if(year != avgNPVYear || Double.isNaN(avgNPV.get())) {
+            NPVMatrix matrix = npData.get(year);
+            if(matrix == null) {
+                throw new NoSuchElementException("missing npv data for year: " + year);
+            }
+
+            double avg = matrix.averageValue();
+            avgNPV.set(avg);
             avgNPVYear = year;
         }
     }

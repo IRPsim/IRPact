@@ -101,7 +101,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.5.0" 
+        :description "IRPact v1.5.1" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
