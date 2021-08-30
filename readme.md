@@ -2,7 +2,7 @@
 
 #### Version
 
-current version: 1.5.0
+current version: 1.5.1
 
 #### Start
 
