@@ -11,6 +11,8 @@ import ch.qos.logback.core.encoder.Encoder;
 import ch.qos.logback.core.encoder.LayoutWrappingEncoder;
 import ch.qos.logback.core.joran.spi.ConsoleTarget;
 import ch.qos.logback.core.spi.FilterReply;
+import ch.qos.logback.core.status.Status;
+import ch.qos.logback.core.status.StatusManager;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import org.slf4j.LoggerFactory;
 
@@ -117,8 +119,17 @@ public final class Logback {
         return getContext().getLogger(c);
     }
 
-    private static LoggerContext getContext() {
+    public static LoggerContext getContext() {
         return (LoggerContext) LoggerFactory.getILoggerFactory();
+    }
+
+    public static void printStatus() {
+        StatusManager statusManager = getContext().getStatusManager();
+        List<Status> list = statusManager.getCopyOfStatusList();
+        System.out.println("status count: " + list.size());
+        for(Status status: list) {
+            System.out.println(status);
+        }
     }
 
     public static ConsoleAppender<ILoggingEvent> createSystemOutAppender(String name, String pattern) {
@@ -185,7 +196,7 @@ public final class Logback {
         appender.setEncoder(encoder);
 
         if(target != null) {
-            String file = target.toFile().getName();
+            String file = target.toFile().toString();
             appender.setFile(file);
         }
 
