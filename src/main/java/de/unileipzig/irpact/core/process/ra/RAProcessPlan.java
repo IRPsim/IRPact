@@ -480,7 +480,6 @@ public class RAProcessPlan extends RAProcessPlanBase {
         if(ft < financialThreshold) {
             alm.append("financial component < financial threshold ({} < {}) = {}", ft, financialThreshold, true);
             logCalculateDecisionMaking(alm);
-
             updateStage(RAStage.IMPEDED);
             return ProcessPlanResult.IMPEDED;
         }
