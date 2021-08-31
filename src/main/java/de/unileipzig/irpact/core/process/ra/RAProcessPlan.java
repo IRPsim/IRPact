@@ -475,13 +475,6 @@ public class RAProcessPlan extends RAProcessPlanBase {
                 .setAutoDispose(true);
         alm.append("{} [{}] calculate U", InfoTag.DECISION_MAKING, agent.getName());
 
-        double a = modelData().a();
-        double b = modelData().b();
-        double c = modelData().c();
-        double d = modelData().d();
-
-        double B = 0.0;
-
         double ft = getFinancialThresholdAgent(agent);
         double financialThreshold = getFinancialThreshold(agent, product);
         if(ft < financialThreshold) {
@@ -491,6 +484,13 @@ public class RAProcessPlan extends RAProcessPlanBase {
             updateStage(RAStage.IMPEDED);
             return ProcessPlanResult.IMPEDED;
         }
+
+        double a = modelData().a();
+        double b = modelData().b();
+        double c = modelData().c();
+        double d = modelData().d();
+
+        double B = 0.0;
 
         if(a != 0.0) {
             double financial = getFinancialComponent();
