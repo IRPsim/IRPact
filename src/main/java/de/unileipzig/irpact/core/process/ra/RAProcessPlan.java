@@ -475,6 +475,16 @@ public class RAProcessPlan extends RAProcessPlanBase {
                 .setAutoDispose(true);
         alm.append("{} [{}] calculate U", InfoTag.DECISION_MAKING, agent.getName());
 
+        double ft = getFinancialThresholdAgent(agent);
+        double financialThreshold = getFinancialThreshold(agent, product);
+        if(ft < financialThreshold) {
+            alm.append("financial component < financial threshold ({} < {}) = {}", ft, financialThreshold, true);
+            logCalculateDecisionMaking(alm);
+
+            updateStage(RAStage.IMPEDED);
+            return ProcessPlanResult.IMPEDED;
+        }
+
         double a = modelData().a();
         double b = modelData().b();
         double c = modelData().c();
@@ -484,18 +494,22 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
         if(a != 0.0) {
             double financial = getFinancialComponent();
-            double financialThreshold = getFinancialThreshold(agent, product);
-            //check D3 reached
-            if(financial < financialThreshold) {
-                alm.append("financial component < financial threshold ({} < {}) = {}", financial, financialThreshold, true);
-                logCalculateDecisionMaking(alm);
-
-                updateStage(RAStage.IMPEDED);
-                return ProcessPlanResult.IMPEDED;
-            }
             double temp = a * financial;
             alm.append("a * financial component = {} * {} = {}", a, financial, temp);
             B += temp;
+//            double financial = getFinancialComponent();
+//            double financialThreshold = getFinancialThreshold(agent, product);
+//            //check D3 reached
+//            if(financial < financialThreshold) {
+//                alm.append("financial component < financial threshold ({} < {}) = {}", financial, financialThreshold, true);
+//                logCalculateDecisionMaking(alm);
+//
+//                updateStage(RAStage.IMPEDED);
+//                return ProcessPlanResult.IMPEDED;
+//            }
+//            double temp = a * financial;
+//            alm.append("a * financial component = {} * {} = {}", a, financial, temp);
+//            B += temp;
         } else {
             alm.append("a = 0");
         }

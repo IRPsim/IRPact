@@ -16,6 +16,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.population.AgentPopulation;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.logging.InfoLoggingManager;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
@@ -57,6 +58,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     protected BinaryTaskManager taskManager;
     protected PersistenceModul persistenceModul;
     protected ResourceLoader resourceLoader;
+    protected InfoLoggingManager infoLoggingManager;
 
     //components
     protected AgentManager agentManager;
@@ -113,8 +115,12 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         BasicJadexLifeCycleControl lifeCycleControl = new BasicJadexLifeCycleControl();
         BasicBinaryTaskManager taskManager = new BasicBinaryTaskManager();
         BasicPersistenceModul persistenceModul = new BasicPersistenceModul();
+        InfoLoggingManager infoLoggingManager = new InfoLoggingManager();
 
         setSettings(initData);
+
+        setInfoLoggingManager(infoLoggingManager);
+        infoLoggingManager.setEnvironment(this);
 
         setAgentManager(agentManager);
         agentManager.setEnvironment(this);
@@ -273,6 +279,15 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     @Override
     public ProgressCalculator getProgressCalculator() {
         return PROGRESS_CALC;
+    }
+
+    @Override
+    public InfoLoggingManager getInfoLoggingManager() {
+        return infoLoggingManager;
+    }
+
+    public void setInfoLoggingManager(InfoLoggingManager infoLoggingManager) {
+        this.infoLoggingManager = infoLoggingManager;
     }
 
     @Override
