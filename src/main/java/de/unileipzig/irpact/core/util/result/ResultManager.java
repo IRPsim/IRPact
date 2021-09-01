@@ -311,7 +311,8 @@ public class ResultManager implements LoggingHelper {
                 return GnuPlotFactory.lineChart0(createBuilderSettingsForZipLineChart(image, getLocalizedImage()));
 
             case COMPARED_ANNUAL_ZIP:
-                return GnuPlotFactory.interactionLineChart0(createBuilderSettingsForInteractionZipLineChart(image, getLocalizedImage()));
+//                return GnuPlotFactory.interactionLineChart0(createBuilderSettingsForInteractionZipLineChart(image, getLocalizedImage()));
+                return GnuPlotFactory.interactionLineChartForVersionLess528(createBuilderSettingsForInteractionZipLineChart(image, getLocalizedImage()));
 
             case CUMULATIVE_ANNUAL_PHASE:
                 return GnuPlotFactory.stackedBarChart0(createBuilderSettingsForPhaseStackedBar(image, getLocalizedImage()));

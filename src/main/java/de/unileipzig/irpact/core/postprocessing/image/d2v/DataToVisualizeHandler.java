@@ -50,7 +50,8 @@ public final class DataToVisualizeHandler {
                 break;
 
             case COMPARED_ANNUAL_ZIP:
-                ComparedAnnualZipWithGnuPlot caz = new ComparedAnnualZipWithGnuPlot(processor);
+                //ComparedAnnualZipWithGnuPlot caz = new ComparedAnnualZipWithGnuPlot(processor);
+                ComparedAnnualZip2WithGnuPlot caz = new ComparedAnnualZip2WithGnuPlot(processor);
                 caz.handleImage(image);
                 break;
 
