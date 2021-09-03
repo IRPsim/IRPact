@@ -581,7 +581,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
             needs.remove(need);
             plans.remove(need);
             addAdoptedProduct(adoptedProduct);
-            LOGGER.warn(IRPSection.SIMULATION_AGENT, "[{}] adopt '{}' at {}", getName(), product.getName(), stamp);
+            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] adopt '{}' at {}", getName(), product.getName(), stamp);
         } else {
             LOGGER.warn("need '{}' does not exist", need.getName());
         }

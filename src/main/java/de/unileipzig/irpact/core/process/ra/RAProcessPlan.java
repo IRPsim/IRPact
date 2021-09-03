@@ -466,10 +466,9 @@ public class RAProcessPlan extends RAProcessPlanBase {
         return doAction(postActions);
     }
 
-    //TODO: log level -> search: TODO LEVEL
     protected ProcessPlanResult handleDecisionMaking(List<PostAction<?>> postActions) {
         doSelfActionAndAllowAttention();
-        LOGGER.warn(IRPSection.SIMULATION_PROCESS, "[{}] handle decision making", agent.getName()); //TODO LEVEL
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle decision making", agent.getName());
 
         IRPLoggingMessageCollection alm = new IRPLoggingMessageCollection()
                 .setLazy(true)
@@ -552,7 +551,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
             return ProcessPlanResult.IMPEDED;
         } else {
             Timestamp now = now();
-            agent.adopt(need, product, now, determinePhase(now)); //TODO level
+            agent.adopt(need, product, now, determinePhase(now));
             updateStage(RAStage.ADOPTED);
             return ProcessPlanResult.ADOPTED;
         }
@@ -841,7 +840,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
     //=========================
 
     protected void logStageUpdate(RAStage nextStage)  {
-        LOGGER.warn(IRPSection.SIMULATION_PROCESS, "[{}] stage update: {} -> {}", agent.getName(), currentStage, nextStage); //TODO LEVEL
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] stage update: {} -> {}", agent.getName(), currentStage, nextStage);
     }
 
     protected static IRPLogger getLogger(boolean logData) {
@@ -988,8 +987,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
     protected void logCalculateDecisionMaking(IRPLoggingMessageCollection mlm) {
         boolean logData = getSettings().isLogCalculateDecisionMaking();
         mlm.setSection(getSection(logData))
-                //.setLevel(getLevel(logData))
-                .setLevel(Level.WARN) //TODO LEVEL
+                .setLevel(getLevel(logData))
                 .log(getLogger(logData));
     }
 }
