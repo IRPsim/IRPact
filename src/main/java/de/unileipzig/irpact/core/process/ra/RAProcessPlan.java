@@ -466,6 +466,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
         return doAction(postActions);
     }
 
+    //x
     protected ProcessPlanResult handleDecisionMaking(List<PostAction<?>> postActions) {
         doSelfActionAndAllowAttention();
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle decision making", agent.getName());
