@@ -160,6 +160,7 @@ public final class IRPact implements IRPActAccess {
     public void notifyStart() {
         META_DATA.getCurrentRunInfo().setStartTime();
         LOGGER.warn(IRPSection.GENERAL, "Starting IRPact {}", CL_VERSION);
+        LOGGER.warn(IRPSection.GENERAL, "TEST TEST TEST");
         LOGGER.trace(IRPSection.GENERAL, "set start time: {}", META_DATA.getCurrentRunInfo().getStartTime());
     }
 
