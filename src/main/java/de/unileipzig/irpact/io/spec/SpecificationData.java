@@ -162,7 +162,7 @@ public class SpecificationData {
     //=========================
 
     public void store(Path dir) throws IOException {
-        store(dir, JsonUtil.JSON, Util.defaultPrinter, true);
+        store(dir, JsonUtil.JSON, Util.DEFAULT, true);
     }
 
     public void store(Path dir, ObjectMapper mapper, PrettyPrinter printer, boolean skipIfEmpty) throws IOException {

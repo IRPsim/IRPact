@@ -305,6 +305,26 @@ InGeneral_logResultAdoptionsAll:
   gams_description: "Gibt zu jedem Agenten alle Adoptionsinformationen aus. Nichtadopter werden ebenfalls ausgegeben."
 
 
+data_analysis:
+  edn_label: "Postanalyse"
+  edn_description: "Konfiguriert die Daten, welche für eine Postanalyse gesammelt werden sollen. Die Daten werden in einer Zip (Analyse.zip) gesammelt."
+InGeneral_logNonAdopterAnalysis:
+  gams_identifier: "Nicht-Adopter"
+  gams_description: "Speichert alle auftretenden Nicht-Adopter. (NonAdopter.csv in Analyse.zip)"
+InGeneral_logInitialAdopterAnalysis:
+  gams_identifier: "Initiale Adopter"
+  gams_description: "Speichert alle auftretenden initialen Adoptionen. (InitialAdopter.csv in Analyse.zip)"
+InGeneral_logAdoptionAnalysis:
+  gams_identifier: "Adoptions"
+  gams_description: "Speichert alle auftretenden Adoptionen. (Adoptions.csv in Analyse.zip)"
+InGeneral_logDecisionAnalysis:
+  gams_identifier: "Decision making"
+  gams_description: "Speichert a, b, c, d und den Grenzwert bei jeder Evaluation. (DecisionMaking.csv in Analyse.zip)"
+InGeneral_logFinancialThresholdAnalysis:
+  gams_identifier: "Financial Threshold"
+  gams_description: "Speichert Kaufkraft und Grenzwert bei jeder Evaluation. (FinancialThreshold.csv in Analyse.zip)"
+
+
 informations:
   edn_label: "Informationen"
   edn_description: "Informationen über IRPact und das Szenario"
@@ -312,7 +332,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.5.3"
+  edn_description: "IRPact v1.6.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"

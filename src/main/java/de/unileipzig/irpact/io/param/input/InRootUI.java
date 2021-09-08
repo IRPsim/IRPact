@@ -81,6 +81,7 @@ public class InRootUI {
     public static final EdnPath SETT_VISUNETWORK_GENERAL = SETT_VISUNETWORK.resolve(InGraphvizGeneral.thisName()).addTo(PATHS);
     public static final EdnPath SETT_VISUNETWORK_AGENTCOLOR = SETT_VISUNETWORK.resolve(IOConstants.GRAPHVIZ_AGENT_COLOR_MAPPING).addTo(PATHS);
     public static final EdnPath SETT_DATAOUTPUT = SETT.resolve(IOConstants.DATA_OUTPUT).addTo(PATHS);
+    public static final EdnPath SETT_DATAANALYSIS = SETT.resolve(IOConstants.DATA_ANALYSIS).addTo(PATHS);
 
     public static final EdnPath SPECIALINPUT = ROOT.resolve(IOConstants.SPECIAL_INPUT).addTo(PATHS);
     public static final EdnPath SPECIALINPUT_PVACT = SPECIALINPUT.resolve(IOConstants.SPECIAL_INPUT_PVACT).addTo(PATHS);

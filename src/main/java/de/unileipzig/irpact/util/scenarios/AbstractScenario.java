@@ -25,6 +25,8 @@ import de.unileipzig.irptools.io.swagger.DownloadedSwaggerData;
 import de.unileipzig.irptools.io.swagger.DownloadedSwaggerFile;
 import de.unileipzig.irptools.io.swagger.UploadableSwaggerData;
 import de.unileipzig.irptools.io.swagger.UploadableSwaggerFile;
+import de.unileipzig.irptools.scenarios.Scenario;
+import de.unileipzig.irptools.scenarios.ScenarioWithMetaData;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -40,7 +42,7 @@ import java.util.function.Function;
 /**
  * @author Daniel Abitz
  */
-public abstract class AbstractScenario implements Scenario {
+public abstract class AbstractScenario implements ScenarioWithMetaData {
 
     public static final Comparator<? super AbstractScenario> SORT_ID = Comparator.comparingInt(o -> o.sortId);
 
@@ -267,6 +269,7 @@ public abstract class AbstractScenario implements Scenario {
         this.name = name;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -275,6 +278,7 @@ public abstract class AbstractScenario implements Scenario {
         this.creator = creator;
     }
 
+    @Override
     public String getCreator() {
         return creator;
     }
@@ -283,6 +287,7 @@ public abstract class AbstractScenario implements Scenario {
         this.description = description;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }

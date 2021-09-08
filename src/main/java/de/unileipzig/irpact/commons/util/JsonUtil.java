@@ -32,9 +32,9 @@ public final class JsonUtil {
     public static final ObjectMapper JSON = new ObjectMapper();
     public static final YAMLMapper YAML = new YAMLMapper();
 
-    public static final PrettyPrinter PRETTY = Util.prettyPrinter;
-    public static final PrettyPrinter DEFAULT = Util.defaultPrinter;
-    public static final PrettyPrinter MINIMAL = new MinimalPrettyPrinter("");
+    public static final PrettyPrinter PRETTY = Util.PRETTY;
+    public static final PrettyPrinter DEFAULT = Util.DEFAULT;
+    public static final PrettyPrinter MINIMAL = Util.MINIMAL;
 
     private JsonUtil() {
     }
