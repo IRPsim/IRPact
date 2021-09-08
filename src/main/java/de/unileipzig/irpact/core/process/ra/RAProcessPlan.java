@@ -10,10 +10,7 @@ import de.unileipzig.irpact.core.agent.Acting;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
-import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.logging.IRPLoggingMessageCollection;
-import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.logging.InfoTag;
+import de.unileipzig.irpact.core.logging.*;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
@@ -470,13 +467,16 @@ public class RAProcessPlan extends RAProcessPlanBase {
         doSelfActionAndAllowAttention();
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle decision making", agent.getName());
 
+        PostAnalysisLogger postAnalysis = environment.getPostAnalysisLogger();
         IRPLoggingMessageCollection alm = new IRPLoggingMessageCollection()
                 .setLazy(true)
                 .setAutoDispose(true);
         alm.append("{} [{}] calculate U", InfoTag.DECISION_MAKING, agent.getName());
 
+        Timestamp now = now();
         double ft = getFinancialThresholdAgent(agent);
         double financialThreshold = getFinancialThreshold(agent, product);
+        postAnalysis.logFinancialThreshold(agent, product, ft, financialThreshold, ft < financialThreshold, now);
         if(ft < financialThreshold) {
             alm.append("financial component < financial threshold ({} < {}) = {}", ft, financialThreshold, true);
             logCalculateDecisionMaking(alm);
@@ -489,10 +489,16 @@ public class RAProcessPlan extends RAProcessPlanBase {
         double c = modelData().c();
         double d = modelData().d();
 
+        double aValue = Double.NaN;
+        double bValue = Double.NaN;
+        double cValue = Double.NaN;
+        double dValue = Double.NaN;
+
         double B = 0.0;
 
         if(a != 0.0) {
             double financial = getFinancialComponent();
+            aValue = financial;
             double temp = a * financial;
             alm.append("a * financial component = {} * {} = {}", a, financial, temp);
             B += temp;
@@ -515,6 +521,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
         if(b != 0.0) {
             double env = getEnvironmentalComponent();
+            bValue = env;
             double benv = b * env;
             alm.append("b * environmental component = {} * {} = {}", b, env, benv);
             B += benv;
@@ -524,6 +531,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
         if(c != 0.0) {
             double nov = getNoveltyCompoenent();
+            cValue = nov;
             double cnov = c * nov;
             alm.append("c * novelty component = {} * {} = {}", c, nov, cnov);
             B += cnov;
@@ -533,6 +541,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
         if(d != 0.0) {
             double soc = getSocialComponent();
+            dValue = soc;
             double dsoc = d * soc;
             alm.append("d * social component = {} * {} = {}", d, soc, dsoc);
             B += dsoc;
@@ -543,6 +552,12 @@ public class RAProcessPlan extends RAProcessPlanBase {
         double adoptionThreshold = getAdoptionThreshold(agent, product);
         boolean noAdoption = B < adoptionThreshold;
 
+        postAnalysis.logDecision(
+                agent, product,
+                a, b, c, d,
+                aValue, bValue, cValue, dValue,
+                adoptionThreshold, noAdoption, now);
+
         alm.append("U < adoption threshold ({} < {}): {}", B, adoptionThreshold, noAdoption);
         logCalculateDecisionMaking(alm);
 
@@ -550,7 +565,6 @@ public class RAProcessPlan extends RAProcessPlanBase {
             updateStage(RAStage.IMPEDED);
             return ProcessPlanResult.IMPEDED;
         } else {
-            Timestamp now = now();
             agent.adopt(need, product, now, determinePhase(now));
             updateStage(RAStage.ADOPTED);
             return ProcessPlanResult.ADOPTED;

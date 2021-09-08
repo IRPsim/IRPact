@@ -14,9 +14,7 @@ import de.unileipzig.irpact.core.agent.BasicAgentManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.population.AgentPopulation;
-import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.logging.InfoLoggingManager;
+import de.unileipzig.irpact.core.logging.*;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
@@ -58,7 +56,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     protected BinaryTaskManager taskManager;
     protected PersistenceModul persistenceModul;
     protected ResourceLoader resourceLoader;
-    protected InfoLoggingManager infoLoggingManager;
+    protected PostAnalysisLogger postAnalysisLogger;
 
     //components
     protected AgentManager agentManager;
@@ -115,12 +113,12 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         BasicJadexLifeCycleControl lifeCycleControl = new BasicJadexLifeCycleControl();
         BasicBinaryTaskManager taskManager = new BasicBinaryTaskManager();
         BasicPersistenceModul persistenceModul = new BasicPersistenceModul();
-        InfoLoggingManager infoLoggingManager = new InfoLoggingManager();
+        BasicPostAnalysisLogger postAnalysisLogger = new BasicPostAnalysisLogger();
 
         setSettings(initData);
 
-        setInfoLoggingManager(infoLoggingManager);
-        infoLoggingManager.setEnvironment(this);
+        setPostAnalysisLogger(postAnalysisLogger);
+        postAnalysisLogger.setEnvironment(this);
 
         setAgentManager(agentManager);
         agentManager.setEnvironment(this);
@@ -282,12 +280,12 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     }
 
     @Override
-    public InfoLoggingManager getInfoLoggingManager() {
-        return infoLoggingManager;
+    public PostAnalysisLogger getPostAnalysisLogger() {
+        return postAnalysisLogger;
     }
 
-    public void setInfoLoggingManager(InfoLoggingManager infoLoggingManager) {
-        this.infoLoggingManager = infoLoggingManager;
+    public void setPostAnalysisLogger(PostAnalysisLogger postAnalysisLogger) {
+        this.postAnalysisLogger = postAnalysisLogger;
     }
 
     @Override

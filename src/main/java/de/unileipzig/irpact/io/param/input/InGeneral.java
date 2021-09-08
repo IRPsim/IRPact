@@ -138,6 +138,13 @@ public class InGeneral implements Copyable {
         setDomain(res, thisClass(), "logResultAdoptionsZipPhase", DOMAIN_BOOLEAN);
         setDomain(res, thisClass(), "logResultAdoptionsAll", DOMAIN_BOOLEAN);
 
+        //analysis
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logNonAdopterAnalysis", InRootUI.SETT_DATAANALYSIS, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logInitialAdopterAnalysis", InRootUI.SETT_DATAANALYSIS, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logAdoptionAnalysis", InRootUI.SETT_DATAANALYSIS, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logDecisionAnalysis", InRootUI.SETT_DATAANALYSIS, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logFinancialThresholdAnalysis", InRootUI.SETT_DATAANALYSIS, VALUE_FALSE, DOMAIN_BOOLEAN);
+
         //logging general
 //        putFieldPathAndAddEntry(res, thisClass(), "logLevel", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
 
@@ -375,7 +382,64 @@ public class InGeneral implements Copyable {
     public int getNumberOfThreads() {
         return getOuterParallelism() * getInnerParallelism();
     }
-    
+
+    //=========================
+    //data analysis
+    //=========================
+
+    public void enableAllAnalysis() {
+        setLogNonAdopterAnalysis(true);
+        setLogInitialAdopterAnalysis(true);
+        setLogAdoptionAnalysis(true);
+        setLogDecisionAnalysis(true);
+        setLogFinancialThresholdAnalysis(true);
+    }
+
+    @FieldDefinition
+    public boolean logNonAdopterAnalysis = false;
+    public void setLogNonAdopterAnalysis(boolean logNonAdopterAnalysis) {
+        this.logNonAdopterAnalysis = logNonAdopterAnalysis;
+    }
+    public boolean isLogNonAdopterAnalysis() {
+        return logNonAdopterAnalysis;
+    }
+
+    @FieldDefinition
+    public boolean logInitialAdopterAnalysis = false;
+    public void setLogInitialAdopterAnalysis(boolean logInitialAdopterAnalysis) {
+        this.logInitialAdopterAnalysis = logInitialAdopterAnalysis;
+    }
+    public boolean isLogInitialAdopterAnalysis() {
+        return logInitialAdopterAnalysis;
+    }
+
+    @FieldDefinition
+    public boolean logAdoptionAnalysis = false;
+    public void setLogAdoptionAnalysis(boolean logAdoptionAnalysis) {
+        this.logAdoptionAnalysis = logAdoptionAnalysis;
+    }
+    public boolean isLogAdoptionAnalysis() {
+        return logAdoptionAnalysis;
+    }
+
+    @FieldDefinition
+    public boolean logDecisionAnalysis = false;
+    public void setLogDecisionAnalysis(boolean logDecisionAnalysis) {
+        this.logDecisionAnalysis = logDecisionAnalysis;
+    }
+    public boolean isLogDecisionAnalysis() {
+        return logDecisionAnalysis;
+    }
+
+    @FieldDefinition
+    public boolean logFinancialThresholdAnalysis = false;
+    public void setLogFinancialThresholdAnalysis(boolean logFinancialThresholdAnalysis) {
+        this.logFinancialThresholdAnalysis = logFinancialThresholdAnalysis;
+    }
+    public boolean isLogFinancialThresholdAnalysis() {
+        return logFinancialThresholdAnalysis;
+    }
+
     //=========================
     //general logging
     //=========================

@@ -16,6 +16,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.logging.PostAnalysisLogger;
 import de.unileipzig.irpact.core.misc.InitializationStage;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
@@ -85,8 +86,8 @@ public final class IRPact implements IRPActAccess {
 
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "1";
-    private static final String MINOR_STRING = "5";
-    private static final String BUILD_STRING = "3";
+    private static final String MINOR_STRING = "6";
+    private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -116,6 +117,13 @@ public final class IRPact implements IRPActAccess {
 
     public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS = "JaehrlicheAdoptionenPhase";
     public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS_PNG = IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS + ".png";
+
+    public static final String ANALYSIS_ZIP = "Analysis.zip";
+    public static final String NON_ADOPTER_ANALYSIS_CSV = "NonAdopter.csv";
+    public static final String INITIAL_ADOPTER_ANALYSIS_CSV = "InitialAdopter.csv";
+    public static final String ADOPTIONS_ANALYSIS_CSV = "Adoptions.csv";
+    public static final String DECISION_ANALYSIS_CSV = "DecisionMaking.csv";
+    public static final String FINANCIAL_ANALYSIS_CSV = "FinancialThreshold.csv";
 
     public static final String DOWNLOAD_DIR_NAME = "images";
 
@@ -159,6 +167,7 @@ public final class IRPact implements IRPActAccess {
 
     public void notifyStart() {
         META_DATA.getCurrentRunInfo().setStartTime();
+        LOGGER.warn(IRPSection.GENERAL, "Starting IRPact {}", CL_VERSION);
         LOGGER.trace(IRPSection.GENERAL, "set start time: {}", META_DATA.getCurrentRunInfo().getStartTime());
     }
 
@@ -332,10 +341,12 @@ public final class IRPact implements IRPActAccess {
         LOGGER.info(IRPSection.GENERAL, "initialize");
 
         if(hasPreviousState()) {
-            restorPreviousSimulationEnvironment();
+            restorePreviousSimulationEnvironment();
         } else {
             initializeNewSimulationEnvironment();
         }
+
+        initializePostAnalysis();
 
         META_DATA.apply(environment.getSettings());
 
@@ -369,7 +380,7 @@ public final class IRPact implements IRPActAccess {
         environment.getSettings().setFirstSimulationYear(year);
     }
 
-    private void restorPreviousSimulationEnvironment() throws Exception {
+    private void restorePreviousSimulationEnvironment() throws Exception {
         LOGGER.info(IRPSection.GENERAL, "restore previous environment");
         int year = inEntry.getConfig().getYear();
         JadexRestoreUpdater updater = new JadexRestoreUpdater();
@@ -383,6 +394,17 @@ public final class IRPact implements IRPActAccess {
                 updater,
                 inRoot
         );
+    }
+
+    private void initializePostAnalysis() throws IOException {
+        Path dir = CL_OPTIONS.getCreatedDownloadDir();
+        PostAnalysisLogger postAnalysis = environment.getPostAnalysisLogger();
+        postAnalysis.setupLogNonAdopter(dir.resolve(NON_ADOPTER_ANALYSIS_CSV), inRoot.getGeneral().isLogNonAdopterAnalysis());
+        postAnalysis.setupLogInitialAdopter(dir.resolve(INITIAL_ADOPTER_ANALYSIS_CSV), inRoot.getGeneral().isLogInitialAdopterAnalysis());
+        postAnalysis.setupLogAdoptions(dir.resolve(ADOPTIONS_ANALYSIS_CSV), inRoot.getGeneral().isLogAdoptionAnalysis());
+        postAnalysis.setupLogDecisions(dir.resolve(DECISION_ANALYSIS_CSV), inRoot.getGeneral().isLogDecisionAnalysis());
+        postAnalysis.setupLogFinancialThresholds(dir.resolve(FINANCIAL_ANALYSIS_CSV), inRoot.getGeneral().isLogFinancialThresholdAnalysis());
+        postAnalysis.startLogging();
     }
 
     private void createGraphvizConfiguration() throws Exception {
