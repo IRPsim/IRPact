@@ -39,6 +39,11 @@ The uber-jar file is invoked with the _java -jar_ command and requires a number 
 * --image specifies where the visualization of the agent network should be written; optional
 * --noSimulation indicates that the simulation should be aborted after the initialization of the agent network. Only makes sense in conjunction with the --image flag if the user is only interested in generating an image; optional
 
+As a minimal example, the call would thus look as follows:
+```
+java -jar IRPact-1.0-SNAPSHOT-uber.jar -i example1.json -o example1-output.json
+```
+
 ### Configuring the Model
 
 IRPact was designed with the idea of configurability in mind. It is a framework for agent-based modelling of innovation diffusion of sustainable products in private households and is primarily suited for this purpose. Through agent groups and their attributes, product modeling, a range of social networks, a flexible process model and the possibility for non-household actors, it enables a multitude of model structures and variations that can easily be configured through a set of configuration files. 
