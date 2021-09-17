@@ -7,30 +7,27 @@ import de.unileipzig.irpact.core.postprocessing.data.adoptions2.impl.AnnualAdopt
 import de.unileipzig.irpact.core.postprocessing.image.CsvBasedImageData;
 import de.unileipzig.irpact.core.postprocessing.image.ImageData;
 import de.unileipzig.irpact.core.postprocessing.image.ImageProcessor;
-import de.unileipzig.irpact.core.postprocessing.image.LocalizedImageData;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotFactory;
-import de.unileipzig.irpact.util.script.BuilderSettings;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
-import java.text.MessageFormat;
 import java.util.*;
 
 /**
  * @author Daniel Abitz
  */
-public class CumulativeAnnualPhase2WithGnuPlot extends AbstractGnuPlotDataVisualizer {
+public class CumulativeAnnualPhaseWithInitialAdopterWithGnuPlot extends AbstractGnuPlotDataVisualizer {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(CumulativeAnnualPhase2WithGnuPlot.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(CumulativeAnnualPhaseWithInitialAdopterWithGnuPlot.class);
 
     private static final double PRETTY_FACTOR = 1.05;
 
-    public CumulativeAnnualPhase2WithGnuPlot(ImageProcessor imageProcessor) {
+    public CumulativeAnnualPhaseWithInitialAdopterWithGnuPlot(ImageProcessor imageProcessor) {
         super(imageProcessor);
     }
 
@@ -41,7 +38,7 @@ public class CumulativeAnnualPhase2WithGnuPlot extends AbstractGnuPlotDataVisual
 
     @Override
     protected DataToVisualize getMode() {
-        return DataToVisualize.CUMULATIVE_ANNUAL_PHASE2;
+        return DataToVisualize.CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL;
     }
 
     @Override
@@ -66,17 +63,21 @@ public class CumulativeAnnualPhase2WithGnuPlot extends AbstractGnuPlotDataVisual
 
     protected GnuPlotBuilder getBuilder(InOutputImage image, CustomImageData data) {
         return GnuPlotFactory.stackedBarChart1(
-                getSettings(image, data.getInitial(), data.getMinY(), data.getMaxY())
+                getLocalizedFormattedString("title", data.getInitial()),
+                getLocalizedString("xlab"), getLocalizedString("ylab"), getLocalizedString("filllab"),
+                getLocalizedString("phase0"), getLocalizedString("phase1"), getLocalizedString("phase2"),
+                getLocalizedString("sep"),
+                imageProcessor.getDefaultBoxWidth(),
+                image.getImageWidth(), image.getImageHeight(),
+                data.getMinY(), data.getMaxY()
+
         );
     }
 
     @Override
     protected CustomImageData createData(InOutputImage image) {
-        AnnualAdoptionsPhase2 data = createAnnualAdoptionPhaseDataWithInitialAdopter();
-        return map(image, data);
-    }
+        AnnualAdoptionsPhase2 input = createAnnualAdoptionPhaseDataWithInitialAdopter();
 
-    protected CustomImageData map(InOutputImage image, AnnualAdoptionsPhase2 input) {
         Set<Integer> years = new TreeSet<>();
         Map<AdoptionPhase, Map<Integer, Integer>> phaseData = new LinkedHashMap<>();
 
@@ -126,49 +127,12 @@ public class CumulativeAnnualPhase2WithGnuPlot extends AbstractGnuPlotDataVisual
             csvData.add(row);
         }
 
-        BuilderSettings settings = getSettings(image, numberOfInitialAgents, numberOfInitialAgents, finalTotalNumberOfAdoptions);
         return new CustomImageData(
-                new CsvBasedImageData(settings.getSep(), csvData),
+                new CsvBasedImageData(getLocalizedString("sep"), csvData),
                 numberOfInitialAgents,
                 numberOfInitialAgents,
                 finalTotalNumberOfAdoptions
         );
-    }
-
-    protected BuilderSettings currentSettings;
-    protected InOutputImage currentImage;
-
-    protected BuilderSettings getSettings(InOutputImage image, int inital, int minY, int maxY) {
-        if(image != currentImage || currentSettings == null) {
-            LocalizedImageData localized = getLocalizedImageData();
-            currentImage = image;
-            String titlePattern = localized.getTitle(getMode());
-            String formattedTitle = MessageFormat.format(titlePattern, inital);
-            currentSettings = new BuilderSettings()
-                    //general
-                    .setTitle(formattedTitle)
-                    .setWidth(image == null ? imageProcessor.getDefaultWidth() : image.getImageWidth())
-                    .setHeight(image == null ? imageProcessor.getDefaultHeight() : image.getImageHeight())
-                    .setXArg(localized.getXArg(getMode()))
-                    .setXLab(localized.getXLab(getMode()))
-                    .setYArg(localized.getYArg(getMode()))
-                    .setYLab(localized.getYLab(getMode()))
-                    .setYMin(minY)
-                    .setYMax(maxY)
-                    .setFillArg(localized.getFillArg(getMode()))
-                    .setFillLab(localized.getFillLab(getMode()))
-                    .setSep(localized.getSep(getMode()))
-                    .setBoxWidthAbsolute(0.8)
-                    .setUseArgsFlag(true)
-                    .setUsageFlag(BuilderSettings.USAGE_ARG2)
-                    .setCenterTitle(true)
-                    .setPhase0(localized.getPhase0(getMode()))
-                    .setPhase1(localized.getPhase1(getMode()))
-                    .setPhase2(localized.getPhase2(getMode()))
-                    //gnuplot
-                    ;
-        }
-        return currentSettings;
     }
 
     /**

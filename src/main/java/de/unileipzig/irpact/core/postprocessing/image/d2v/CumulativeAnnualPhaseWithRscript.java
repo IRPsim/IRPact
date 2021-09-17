@@ -6,13 +6,11 @@ import de.unileipzig.irpact.core.postprocessing.data.adoptions2.impl.AnnualAdopt
 import de.unileipzig.irpact.core.postprocessing.image.CsvBasedImageData;
 import de.unileipzig.irpact.core.postprocessing.image.ImageData;
 import de.unileipzig.irpact.core.postprocessing.image.ImageProcessor;
-import de.unileipzig.irpact.core.postprocessing.image.LocalizedImageData;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
 import de.unileipzig.irpact.util.R.builder.Element;
 import de.unileipzig.irpact.util.R.builder.RScriptBuilder;
 import de.unileipzig.irpact.util.R.builder.RScriptFactory;
-import de.unileipzig.irpact.util.script.BuilderSettings;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.ArrayList;
@@ -42,18 +40,22 @@ public class CumulativeAnnualPhaseWithRscript extends AbstractRscriptDataVisuali
 
     @Override
     protected RScriptBuilder getBuilder(InOutputImage image) {
-        return RScriptFactory.lineChart0(
-                getSettings(image)
+        return RScriptFactory.stackedBarChart0(
+                getLocalizedString("title"),
+                getLocalizedString("xarg"), getLocalizedString("yarg"), getLocalizedString("fillarg"),
+                getLocalizedString("xlab"), getLocalizedString("ylab"), getLocalizedString("filllab"),
+                getLocalizedString("sep"),
+                new String[] {Element.NUMERIC, Element.CHARACTER, Element.NUMERIC},
+                imageProcessor.getYearBreaksForPrettyR(),
+                image.getImageWidth(), image.getImageHeight(),
+                getLocalizedString("encoding")
         );
     }
 
     @Override
     protected ImageData createData(InOutputImage image) {
-        AnnualAdoptionsPhase2 data = createAnnualAdoptionPhaseData();
-        return map(image, data);
-    }
+        AnnualAdoptionsPhase2 input = createAnnualAdoptionPhaseData();
 
-    protected ImageData map(InOutputImage image, AnnualAdoptionsPhase2 input) {
         List<List<String>> csvData = new ArrayList<>();
         csvData.add(Arrays.asList(
                 map("year"),
@@ -72,37 +74,6 @@ public class CumulativeAnnualPhaseWithRscript extends AbstractRscriptDataVisuali
             ));
         }
 
-        BuilderSettings settings = getSettings(image);
-        return new CsvBasedImageData(settings.getSep(), csvData);
-    }
-
-    protected BuilderSettings currentSettings;
-    protected InOutputImage currentImage;
-
-    protected BuilderSettings getSettings(InOutputImage image) {
-        if(image != currentImage || currentSettings == null) {
-            LocalizedImageData localized = getLocalizedImageData();
-            currentImage = image;
-            currentSettings = new BuilderSettings()
-                    //general
-                    .setTitle(localized.getTitle(DataToVisualize.CUMULATIVE_ANNUAL_PHASE))
-                    .setXArg(localized.getXArg(DataToVisualize.CUMULATIVE_ANNUAL_PHASE))
-                    .setXLab(localized.getXLab(DataToVisualize.CUMULATIVE_ANNUAL_PHASE))
-                    .setYArg(localized.getYArg(DataToVisualize.CUMULATIVE_ANNUAL_PHASE))
-                    .setYLab(localized.getYLab(DataToVisualize.CUMULATIVE_ANNUAL_PHASE))
-                    .setFillArg(localized.getFillArg(DataToVisualize.CUMULATIVE_ANNUAL_PHASE))
-                    .setFillLab(localized.getFillLab(DataToVisualize.CUMULATIVE_ANNUAL_PHASE))
-                    .setSep(localized.getSep(DataToVisualize.CUMULATIVE_ANNUAL_PHASE))
-                    .setBoxWidthAbsolute(0.8)
-                    .setUseArgsFlag(true)
-                    .setUsageFlag(BuilderSettings.USAGE_ARG2)
-                    .setCenterTitle(true)
-                    //R
-                    .setEncoding(localized.getEncoding(DataToVisualize.CUMULATIVE_ANNUAL_PHASE))
-                    .setColClasses(Element.NUMERIC, Element.CHARACTER, Element.NUMERIC)
-                    .setScaleXContinuousBreaks(imageProcessor.getYearBreaksForPrettyR())
-            ;
-        }
-        return currentSettings;
+        return new CsvBasedImageData(getLocalizedString("sep"), csvData);
     }
 }

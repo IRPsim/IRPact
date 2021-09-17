@@ -8,7 +8,6 @@ import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
 import de.unileipzig.irpact.util.R.builder.Element;
 import de.unileipzig.irpact.util.R.builder.RScriptBuilder;
 import de.unileipzig.irpact.util.R.builder.RScriptFactory;
-import de.unileipzig.irpact.util.script.BuilderSettings;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.ArrayList;
@@ -39,19 +38,24 @@ public class ComparedAnnualZipWithRscript extends AbstractRscriptDataVisualizer 
     @Override
     protected RScriptBuilder getBuilder(InOutputImage image) {
         return RScriptFactory.interactionLineChart0(
-                getSettings(image)
+                getLocalizedString("title"),
+                getLocalizedString("xarg"), getLocalizedString("yarg"), getLocalizedString("grparg"), getLocalizedString("distinctarg"),
+                getLocalizedString("xlab"), getLocalizedString("ylab"), getLocalizedString("grplab"), getLocalizedString("distinctlab"),
+                getLocalizedString("distinct0lab"), getLocalizedString("distinct1lab"),
+                getLocalizedString("sep"),
+                new String[] {Element.NUMERIC, Element.CHARACTER, Element.NUMERIC, Element.CHARACTER},
+                imageProcessor.getYearBreaksForPrettyR(),
+                image.getLinewidthInt(),
+                image.getImageWidth(), image.getImageHeight(),
+                getLocalizedString("encoding")
         );
     }
 
     @Override
     protected ImageData createData(InOutputImage image) {
-        AnnualAdoptionsZip2 data = createAnnualAdoptionZipData();
-        return map(image, data);
-    }
+        AnnualAdoptionsZip2 input = createAnnualAdoptionZipData();
 
-    protected ImageData map(InOutputImage image, AnnualAdoptionsZip2 input) {
         RealAdoptionData realData = imageProcessor.getRealAdoptionData(image);
-        BuilderSettings settings = getSettings(image);
 
         List<List<String>> csvData = new ArrayList<>();
         csvData.add(Arrays.asList(
@@ -69,51 +73,17 @@ public class ComparedAnnualZipWithRscript extends AbstractRscriptDataVisualizer 
                     map(Integer.toString(year)),
                     map(zip),
                     map(result.printValue()),
-                    map(settings.getDistinct0Label())
+                    map(getLocalizedString("distinct0lab"))
             ));
 
             csvData.add(Arrays.asList(
                     map(Integer.toString(year)),
                     map(zip),
                     map(Integer.toString(realData.get(year, zip))),
-                    map(settings.getDistinct1Label())
+                    map(getLocalizedString("distinct1lab"))
             ));
         }
 
-        return new CsvBasedImageData(settings.getSep(), csvData);
-    }
-
-    protected BuilderSettings currentSettings;
-    protected InOutputImage currentImage;
-
-    protected BuilderSettings getSettings(InOutputImage image) {
-        if(image != currentImage || currentSettings == null) {
-            LocalizedImageData localized = getLocalizedImageData();
-            currentImage = image;
-            currentSettings = new BuilderSettings()
-                    //general
-                    .setTitle(localized.getTitle(DataToVisualize.COMPARED_ANNUAL_ZIP))
-                    .setXArg(localized.getXArg(DataToVisualize.COMPARED_ANNUAL_ZIP))
-                    .setXLab(localized.getXLab(DataToVisualize.COMPARED_ANNUAL_ZIP))
-                    .setYArg(localized.getYArg(DataToVisualize.COMPARED_ANNUAL_ZIP))
-                    .setYLab(localized.getYLab(DataToVisualize.COMPARED_ANNUAL_ZIP))
-                    .setGrpArg(localized.getGrpArg(DataToVisualize.COMPARED_ANNUAL_ZIP))
-                    .setGrpLab(localized.getGrpLab(DataToVisualize.COMPARED_ANNUAL_ZIP))
-                    .setDistinctArg(localized.getDistinctArg(DataToVisualize.COMPARED_ANNUAL_ZIP))
-                    .setDistinctLab(localized.getDistinctLab(DataToVisualize.COMPARED_ANNUAL_ZIP))
-                    .setDistinct0Label(localized.getDistinct0Lab(DataToVisualize.COMPARED_ANNUAL_ZIP))
-                    .setDistinct1Label(localized.getDistinct1Lab(DataToVisualize.COMPARED_ANNUAL_ZIP))
-                    .setSep(localized.getSep(DataToVisualize.COMPARED_ANNUAL_ZIP))
-                    .setLineWidth(image == null ? imageProcessor.getDefaultLinewidth() : image.getLinewidth())
-                    .setUseArgsFlag(true)
-                    .setUsageFlag(BuilderSettings.USAGE_ARG2)
-                    .setCenterTitle(true)
-                    //R
-                    .setEncoding(localized.getEncoding(DataToVisualize.COMPARED_ANNUAL_ZIP))
-                    .setColClasses(Element.NUMERIC, Element.CHARACTER, Element.NUMERIC, Element.CHARACTER)
-                    .setScaleXContinuousBreaks(imageProcessor.getYearBreaksForPrettyR())
-            ;
-        }
-        return currentSettings;
+        return new CsvBasedImageData(getLocalizedString("sep"), csvData);
     }
 }

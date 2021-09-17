@@ -52,8 +52,23 @@ public class GnuPlotBuilder {
         return quote(print(path));
     }
 
+    public static String formatForGnuplot(String input) {
+        String temp = input;
+        temp = escapeUnderscore(temp);
+        temp = escapeLineBreak(temp);
+        return temp;
+    }
+
     public static String escapeUnderscore(String input) {
-        return input.replace("_", "\\\\\\_");
+        return input == null
+                ? null
+                : input.replace("_", "\\\\\\_");
+    }
+
+    public static String escapeLineBreak(String input) {
+        return input == null
+                ? null
+                : input.replace("\n", "\\n");
     }
 
     public static String min(Object a, Object b, boolean parentheses) {
@@ -203,12 +218,24 @@ public class GnuPlotBuilder {
         buildSet("title", quote(title));
     }
 
+    public void formatAndSetTitle(String title) {
+        setTitle(formatForGnuplot(title));
+    }
+
     public void setXLabel(String label) {
         buildSet("xlabel", quote(label));
     }
 
+    public void formatAndSetXLabel(String label) {
+        setXLabel(formatForGnuplot(label));
+    }
+
     public void setYLabel(String label) {
         buildSet("ylabel", quote(label));
+    }
+
+    public void formatAndSetYLabel(String label) {
+        setYLabel(formatForGnuplot(label));
     }
 
     public void setLegendOutsideRightTop() {
@@ -219,6 +246,10 @@ public class GnuPlotBuilder {
     public void setLegendOutsideRightTop(String label) {
         //buildSet("key outside right top vertical Left reverse noenhanced autotitle columnhead box lt black linewidth 1.0 dashtype solid title ", quote(label));
         buildSet("key outside right top vertical Left title ", quote(label));
+    }
+
+    public void formatAndSetLegendOutsideRightTop(String label) {
+        setLegendOutsideRightTop(formatForGnuplot(label));
     }
 
     public void printUnknown() {
@@ -257,24 +288,29 @@ public class GnuPlotBuilder {
         buildSet("datafile", "separator", quote(separator));
     }
 
-    public void plotSpecialLinePlot(String data) {
-        plotRawSpecialLinePlot(quote(data));
+    public void plotGenericData(int arg) {
+        plotGenericData(arg, 1);
     }
 
-    public void plotArgSpecialLinePlot(int i) {
-        plotRawSpecialLinePlot(arg(i));
+    public void plotGenericData(int arg, int linewidth) {
+        add(new GenericPlotCommand(arg(arg), linewidth));
     }
 
-    public void plotRawSpecialLinePlot(String data) {
-        plotRawSpecialLinePlot(data, 1);
+    public void plot3DataColumns(String phase0, String phase1, String phase2, int arg) {
+        add(new DataColumns3AndCustomKeyPlotCommand(phase0, phase1, phase2, arg(arg), 1));
     }
 
-    public void plotRawSpecialLinePlot(String data, int linewidth) {
-        add(new SpecialLinePlotCommand(data, linewidth));
+    public void setWildcardXYRange() {
+        setWildcardXRange();
+        setWildcardYRange();
     }
 
-    public void plotRawSpecialLinePlotWithKey(String phase0, String phase1, String phase2, String data, int linewidth) {
-        add(new SpecialPlotCommandWith3DataColumnsAndCustomKey(phase0, phase1, phase2, data, linewidth));
+    public void setWildcardXRange() {
+        setXRange(WILDCARD, WILDCARD);
+    }
+
+    public void setWildcardYRange() {
+        setYRange(WILDCARD, WILDCARD);
     }
 
     public void setXRange(Object min, Object max) {

@@ -17,7 +17,7 @@ public final class DataToVisualizeHandler {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(DataToVisualizeHandler.class);
 
-    protected DataToVisualizeHandler() {
+    private DataToVisualizeHandler() {
     }
 
     public static void handleImage(ImageProcessor processor, InOutputImage image) throws IOException, ParsingException {
@@ -50,8 +50,7 @@ public final class DataToVisualizeHandler {
                 break;
 
             case COMPARED_ANNUAL_ZIP:
-                //ComparedAnnualZipWithGnuPlot caz = new ComparedAnnualZipWithGnuPlot(processor);
-                ComparedAnnualZip2WithGnuPlot caz = new ComparedAnnualZip2WithGnuPlot(processor);
+                ComparedAnnualZipWithGnuPlotVersionLess528 caz = new ComparedAnnualZipWithGnuPlotVersionLess528(processor);
                 caz.handleImage(image);
                 break;
 
@@ -60,8 +59,8 @@ public final class DataToVisualizeHandler {
                 cap.handleImage(image);
                 break;
 
-            case CUMULATIVE_ANNUAL_PHASE2:
-                CumulativeAnnualPhase2WithGnuPlot cap2 = new CumulativeAnnualPhase2WithGnuPlot(processor);
+            case CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL:
+                CumulativeAnnualPhaseWithInitialAdopterWithGnuPlot cap2 = new CumulativeAnnualPhaseWithInitialAdopterWithGnuPlot(processor);
                 cap2.handleImage(image);
                 break;
 
@@ -75,6 +74,7 @@ public final class DataToVisualizeHandler {
         if(data == null) {
             throw new NullPointerException("missing data to visualize");
         }
+
 
         switch (data) {
             case ANNUAL_ZIP:

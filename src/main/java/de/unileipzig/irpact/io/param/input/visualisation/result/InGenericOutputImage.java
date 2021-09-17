@@ -73,7 +73,7 @@ public class InGenericOutputImage implements InOutputImage {
         return new InGenericOutputImage[] {
                 new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS, DataToVisualize.ANNUAL_ZIP, null),
                 new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, DataToVisualize.COMPARED_ANNUAL_ZIP, null),
-                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS, DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, null)
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS, DataToVisualize.CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL, null)
         };
     }
 
@@ -81,7 +81,7 @@ public class InGenericOutputImage implements InOutputImage {
         return new InGenericOutputImage[] {
                 new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS, DataToVisualize.ANNUAL_ZIP, null),
                 new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, DataToVisualize.COMPARED_ANNUAL_ZIP, realAdoptionDataFile),
-                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS, DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, null)
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS, DataToVisualize.CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL, null)
         };
     }
 
@@ -251,7 +251,7 @@ public class InGenericOutputImage implements InOutputImage {
                 cumulativeAnnualPhase = true;
                 break;
 
-            case CUMULATIVE_ANNUAL_PHASE2:
+            case CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL:
                 cumulativeAnnualPhase2 = true;
                 break;
 
@@ -266,7 +266,7 @@ public class InGenericOutputImage implements InOutputImage {
         if(annualZip) modes.add(DataToVisualize.ANNUAL_ZIP);
         if(annualZipWithReal) modes.add(DataToVisualize.COMPARED_ANNUAL_ZIP);
         if(cumulativeAnnualPhase) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE);
-        if(cumulativeAnnualPhase2) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE2);
+        if(cumulativeAnnualPhase2) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL);
 
         switch(modes.size()) {
             case 0:

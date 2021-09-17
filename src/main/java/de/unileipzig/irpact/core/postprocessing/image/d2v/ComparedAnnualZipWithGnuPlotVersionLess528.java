@@ -9,7 +9,6 @@ import de.unileipzig.irpact.core.postprocessing.image.*;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotFactory;
-import de.unileipzig.irpact.util.script.BuilderSettings;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
@@ -18,11 +17,11 @@ import java.util.*;
 /**
  * @author Daniel Abitz
  */
-public class ComparedAnnualZip2WithGnuPlot extends AbstractGnuPlotDataVisualizer {
+public class ComparedAnnualZipWithGnuPlotVersionLess528 extends AbstractGnuPlotDataVisualizer {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(ComparedAnnualZip2WithGnuPlot.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(ComparedAnnualZipWithGnuPlotVersionLess528.class);
 
-    public ComparedAnnualZip2WithGnuPlot(ImageProcessor imageProcessor) {
+    public ComparedAnnualZipWithGnuPlotVersionLess528(ImageProcessor imageProcessor) {
         super(imageProcessor);
     }
 
@@ -59,7 +58,14 @@ public class ComparedAnnualZip2WithGnuPlot extends AbstractGnuPlotDataVisualizer
 
     protected GnuPlotBuilder getBuilder(InOutputImage image, MutableInt numberOfEntries) {
         return GnuPlotFactory.interactionLineChartForVersionLess528(
-                getSettings(image, numberOfEntries.get())
+                getLocalizedString("title"),
+                getLocalizedString("xlab"), getLocalizedString("ylab"),
+                getLocalizedString("keytitle0"), getLocalizedString("keytitle1"),
+                getLocalizedString("dashtype0lab"), getLocalizedString("dashtype1lab"),
+                getLocalizedString("sep"),
+                image.getLinewidthInt(),
+                numberOfEntries.get(),
+                image.getImageWidth(), image.getImageHeight()
         );
     }
 
@@ -69,11 +75,7 @@ public class ComparedAnnualZip2WithGnuPlot extends AbstractGnuPlotDataVisualizer
     }
 
     protected ImageData createData(InOutputImage image, MutableInt numberOfEntries) {
-        AnnualAdoptionsZip2 data = createAnnualAdoptionZipData();
-        return map(image, data, numberOfEntries);
-    }
-
-    protected ImageData map(InOutputImage image, AnnualAdoptionsZip2 input, MutableInt numberOfEntries) {
+        AnnualAdoptionsZip2 input = createAnnualAdoptionZipData();
         RealAdoptionData realData = imageProcessor.getRealAdoptionData(image);
 
         Set<Integer> years = new TreeSet<>();
@@ -107,42 +109,6 @@ public class ComparedAnnualZip2WithGnuPlot extends AbstractGnuPlotDataVisualizer
             csvData.add(row);
         }
 
-        BuilderSettings settings = getSettings(image, numberOfEntries.get());
-        return new CsvBasedImageData(settings.getSep(), csvData);
-    }
-
-    protected BuilderSettings currentSettings;
-    protected InOutputImage currentImage;
-
-    protected BuilderSettings getSettings(InOutputImage image, int numberOfEntries) {
-        if(image != currentImage || currentSettings == null) {
-            LocalizedImageData localized = getLocalizedImageData();
-            currentImage = image;
-            currentSettings = new BuilderSettings()
-                    //general
-                    .setTitle(localized.getTitle(getMode()))
-                    .setWidth(image == null ? imageProcessor.getDefaultWidth() : image.getImageWidth())
-                    .setHeight(image == null ? imageProcessor.getDefaultHeight() : image.getImageHeight())
-                    .setXArg(localized.getXArg(getMode()))
-                    .setXLab(localized.getXLab(getMode()))
-                    .setYArg(localized.getYArg(getMode()))
-                    .setYLab(localized.getYLab(getMode()))
-                    .setGrpArg(localized.getGrpArg(getMode()))
-                    .setGrpLab(localized.getGrpLab(getMode()))
-                    .setDistinctArg(localized.getDistinctArg(getMode()))
-                    .setDistinctLab(localized.getDistinctLab(getMode()))
-                    .setDistinct0Label(localized.getDistinct0Lab(getMode()))
-                    .setDistinct1Label(localized.getDistinct1Lab(getMode()))
-                    .setSep(localized.getSep(getMode()))
-                    .setLineWidth(image == null ? imageProcessor.getDefaultLinewidth() : image.getLinewidth())
-                    .setUseArgsFlag(true)
-                    .setUsageFlag(BuilderSettings.USAGE_ARG2)
-                    .setCenterTitle(true)
-                    //gnuplot
-                    .setXYRangeWildCard()
-                    .setNumberOfEntries(numberOfEntries)
-                    ;
-        }
-        return currentSettings;
+        return new CsvBasedImageData(getLocalizedString("sep"), csvData);
     }
 }

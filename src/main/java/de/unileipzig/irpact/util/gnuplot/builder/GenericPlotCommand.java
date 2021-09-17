@@ -6,17 +6,13 @@ import java.text.MessageFormat;
 /**
  * @author Daniel Abitz
  */
-public class SpecialLinePlotCommand extends PlotCommand {
+public class GenericPlotCommand extends PlotCommand {
 
     protected static final String PATTERN = "{0} u 2:xtic(1) ti col linewidth {1}, for [i=3:*] '''' u i ti col linewidth {1}";
     protected String data;
     protected int linewidth;
 
-    public SpecialLinePlotCommand(String data) {
-        this(data, 1);
-    }
-
-    public SpecialLinePlotCommand(String data, int linewidth) {
+    public GenericPlotCommand(String data, int linewidth) {
         super(null);
         setData(data);
         setLinewidth(linewidth);

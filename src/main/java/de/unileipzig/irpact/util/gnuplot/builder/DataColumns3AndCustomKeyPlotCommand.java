@@ -6,7 +6,7 @@ import java.text.MessageFormat;
 /**
  * @author Daniel Abitz
  */
-public class SpecialPlotCommandWith3DataColumnsAndCustomKey extends PlotCommand {
+public class DataColumns3AndCustomKeyPlotCommand extends PlotCommand {
 
     protected static final String PATTERN = "NaN w boxes title \"{0}\" linecolor 1 linewidth {4}, NaN w boxes title \"{1}\" linecolor 2 linewidth {4}, NaN w boxes title \"{2}\" linecolor 3 linewidth {4}, {3} u 2:xtic(1) notitle col linewidth 1, '''' u 3 notitle col linecolor 1 linewidth {4}, '''' u 4 notitle col linecolor 2 linewidth {4}, '''' u 5 notitle col linecolor 3 linewidth {4}";
     protected String phase0;    //0
@@ -15,7 +15,7 @@ public class SpecialPlotCommandWith3DataColumnsAndCustomKey extends PlotCommand 
     protected String data;      //3
     protected int linewidth;    //4
 
-    public SpecialPlotCommandWith3DataColumnsAndCustomKey(String phase0, String phase1, String phase2, String data, int linewidth) {
+    public DataColumns3AndCustomKeyPlotCommand(String phase0, String phase1, String phase2, String data, int linewidth) {
         super(null);
         setPhase0(phase0);
         setPhase1(phase1);

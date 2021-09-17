@@ -56,6 +56,10 @@ public interface InOutputImage extends InIRPactEntity {
 
     double getLinewidth();
 
+    default int getLinewidthInt() {
+        return (int) getLinewidth();
+    }
+
     int getImageWidth();
 
     int getImageHeight();
