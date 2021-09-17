@@ -14,29 +14,30 @@ IRPact aims to provide a rather generic framework for innovation diffusion of ec
 
 ## How do I use it?
 As a java-based model, IRPact can be used with the respective tools needed to compile and run java programs.
-Consisting of several programs itself, IRPact is used through a set of command-line commands that are detailed in the following.
+In order to use it, you need a valid SDK with the paths correctly set, with Java v11+.
+The repository provides a build process based on gradle(w) and bundles all necessary files in a single .jar file (uber-jar or fat-jar).
 
-### Starting the Programs
+### Building
 
-##### General:
-
-java -cp &lt;Classpath&gt; de.unileipzig.irpact.start.Start -i &lt;input file&gt; -o &lt;output file&gt;
-
-##### Initial social network visualization:
-
-java -cp &lt;Classpath&gt; de.unileipzig.irpact.start.Start -i &lt;input file&gt; --image &lt;image output file&gt; --noSimulation
-
-##### Simulation and network image visualization
-
-java -cp &lt;Classpath&gt; de.unileipzig.irpact.start.Start -i &lt;input file&gt; -o &lt;output file&gt; --image &lt;image output file&gt;
-
-#### Example (uber jar):
-
-java -jar IRPact-1.0-SNAPSHOT-uber.jar src/main/resources/irpact/examples/example1.json -o example1-output.json
-
-#### Gradle (uber jar):
-
+In order to build the .jar file, you need to execute gradlew with the following command
+```
 ./gradlew clean buildUberJar
+```
+(on a unix-based machine) or
+```
+gradlew clean buildUberJar
+```
+(on a windows-based machine).
+
+This will create the respective .jar file (IRPact-1.0-SNAPSHOT-uber.jar) in the build/libs folder that bundles all required functionality.
+
+### Running the Model
+In order to run the model, you need the mentioned .jar file and a valid model configuration file (scenario-file) in the .json format (see configuration guide on how to create these files). 
+The uber-jar file is invoked with the _java -jar_ command and requires a number of flags:
+* -i specifies the input file (configuration json file); required
+* -o specifies the output file (where the results should be written); required
+* --image specifies where the visualization of the agent network should be written; optional
+* --noSimulation indicates that the simulation should be aborted after the initialization of the agent network. Only makes sense in conjunction with the --image flag if the user is only interested in generating an image; optional
 
 ### Configuring the Model
 
