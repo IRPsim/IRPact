@@ -12,7 +12,8 @@ XLSX:
     MAE: "MAE"
     FSAPE: "FSAPE"
     RMSD: "RMSD"
-    invalid: "Ungültige ZIPs:"
+    invalid: "Ungültige PLZs:"
+    unused: "Ungenutzte PLZs:"
 
   INTEREST:
     sheetGlobal: "Global"

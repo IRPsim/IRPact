@@ -18,6 +18,8 @@ public interface RealAdoptionData {
 
     void getInvalidZips(Collection<? extends String> input, Collection<? super String> output);
 
+    void getUnusedZips(Collection<? extends String> input, Collection<? super String> output);
+
     int getCumulated(int year, String zip);
 
     int getUncumulated(int year, String zip);

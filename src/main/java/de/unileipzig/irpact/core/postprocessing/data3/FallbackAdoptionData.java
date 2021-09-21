@@ -43,6 +43,10 @@ public class FallbackAdoptionData implements RealAdoptionData {
     }
 
     @Override
+    public void getUnusedZips(Collection<? extends String> input, Collection<? super String> output) {
+    }
+
+    @Override
     public int getCumulated(int year, String zip) {
         return value;
     }
