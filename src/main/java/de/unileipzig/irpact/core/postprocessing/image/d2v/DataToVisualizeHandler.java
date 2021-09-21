@@ -64,6 +64,16 @@ public final class DataToVisualizeHandler {
                 cap2.handleImage(image);
                 break;
 
+            case ANNUAL_INTEREST_2D:
+                AnnualInterestWithGnuPlot2D ai2d = new AnnualInterestWithGnuPlot2D(processor);
+                ai2d.handleImage(image);
+                break;
+
+            case ANNUAL_PHASE_OVERVIEW:
+                AnnualPhaseOverviewWithGnuPlot apo = new AnnualPhaseOverviewWithGnuPlot(processor);
+                apo.handleImage(image);
+                break;
+
             default:
                 throw new IllegalArgumentException("unsupported data to visualize: " + data);
         }

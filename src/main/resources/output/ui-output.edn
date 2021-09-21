@@ -32,6 +32,18 @@
             :icon "fa fa-file-image-o" 
             :description "Zeigt die kumulierten jährlichen Adoptionen für die verschiedenen Adoptionsphasen." 
             :image "JaehrlicheAdoptionenPhase.png"
+          } 
+          {
+            :label "Interessensentwicklung" 
+            :icon "fa fa-file-image-o" 
+            :description "Zeigt die Interessensentwicklung an." 
+            :image "Interessensentwicklung.png"
+          } 
+          {
+            :label "Phasenuebersicht" 
+            :icon "fa fa-file-image-o" 
+            :description "Zeigt die Entwicklung der Phasen an." 
+            :image "Interessensentwicklung.png"
           }
         ]
       }

@@ -151,6 +151,12 @@ InGenericOutputImage_cumulativeAnnualPhase:
 InGenericOutputImage_cumulativeAnnualPhase2:
   gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (mit Initialen)"
   gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden bei den Daten berücksichtigt, aber nicht direkt visualisiert."
+InGenericOutputImage_annualInterest2D:
+  gams_identifier: "Darstellung: Jährliches Interesse (2D)"
+  gams_description: "Stellt die Entwicklung des jährlichen Interesses dar."
+InGenericOutputImage_annualPhaseOverview:
+  gams_identifier: "Darstellung: Jährliche Phasenübersicht"
+  gams_description: "Stellt die Entwicklung des Phasen dar."
 InGenericOutputImage_storeScript:
   gams_identifier: "Skript speichern?"
   gams_description: "Speichert auf Wunsch das Skript für die Bilderzeugung."
@@ -188,6 +194,12 @@ InGnuPlotOutputImage_cumulativeAnnualPhase:
 InGnuPlotOutputImage_cumulativeAnnualPhase2:
   gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (mit Initialen)"
   gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden bei den Daten berücksichtigt, aber nicht direkt visualisiert."
+InGnuPlotOutputImage_annualInterest2D:
+  gams_identifier: "Darstellung: Jährliches Interesse (2D)"
+  gams_description: "Stellt die Entwicklung des jährlichen Interesses dar."
+InGnuPlotOutputImage_annualPhaseOverview:
+  gams_identifier: "Darstellung: Jährliche Phasenübersicht"
+  gams_description: "Stellt die Entwicklung des Phasen dar."
 InGnuPlotOutputImage_storeScript:
   gams_identifier: "Skript speichern?"
   gams_description: "Speichert auf Wunsch das Skript für die Bilderzeugung."
@@ -225,6 +237,12 @@ InROutputImage_cumulativeAnnualPhase:
 InROutputImage_cumulativeAnnualPhase2:
   gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (mit Initialen)"
   gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden bei den Daten berücksichtigt, aber nicht direkt visualisiert."
+InROutputImage_annualInterest2D:
+  gams_identifier: "Darstellung: Jährliches Interesse (2D)"
+  gams_description: "Stellt die Entwicklung des jährlichen Interesses dar."
+InROutputImage_annualPhaseOverview:
+  gams_identifier: "Darstellung: Jährliche Phasenübersicht"
+  gams_description: "Stellt die Entwicklung des Phasen dar."
 InROutputImage_storeScript:
   gams_identifier: "Skript speichern?"
   gams_description: "Speichert auf Wunsch das Skript für die Bilderzeugung."
@@ -332,7 +350,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.6.2"
+  edn_description: "IRPact v1.7.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"

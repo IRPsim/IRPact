@@ -5,6 +5,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions2.AdoptionResultInfo2;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions2.impl.AnnualAdoptionsZip2;
+import de.unileipzig.irpact.core.postprocessing.data3.RealAdoptionData;
 import de.unileipzig.irpact.core.postprocessing.image.*;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
@@ -104,7 +105,7 @@ public class ComparedAnnualZipWithGnuPlotVersionLess528 extends AbstractGnuPlotD
             row.add(map(Integer.toString(year)));
             for(Map.Entry<String, Map<Integer, Integer>> zipEntry: zipData.entrySet()) {
                 row.add(map(Integer.toString(zipEntry.getValue().get(year))));
-                row.add(map(Integer.toString(realData.get(year, zipEntry.getKey()))));
+                row.add(map(Integer.toString(realData.getUncumulated(year, zipEntry.getKey()))));
             }
             csvData.add(row);
         }

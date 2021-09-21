@@ -134,6 +134,11 @@ public abstract class RAProcessPlanBase implements ProcessPlan, LoggingHelper {
     protected abstract void doRunEvaluationAtEndOfYear();
 
     public void runUpdateAtMidOfYear() {
+        if(stage == RAStage.ADOPTED) {
+            trace("agent '{}' is adopter, skip renovation/construction", agent.getName());
+            return;
+        }
+
         int currentYear = environment.getTimeModel().getCurrentYear();
         double renovationRate = getRenovationRate(agent);
         double renovationDraw = rnd.nextDouble();

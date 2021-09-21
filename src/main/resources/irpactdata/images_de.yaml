@@ -47,6 +47,27 @@ GNUPLOT:
     phase2: "Ende-Start"
     sep: ";"
 
+  # 2d stacked bar chart - interest
+  ANNUAL_INTEREST_2D:
+    title: "Interessensübersicht"
+    xlab: "Jahre"
+    ylab: "Anzahl"
+    filllab: "Interesse"
+    sep: ";"
+
+  # 2d stacked bar chart - phase
+  ANNUAL_PHASE_OVERVIEW:
+    title: "Phasenübersicht"
+    xlab: "Jahre"
+    ylab: "Anzahl"
+    filllab: "Phasen"
+    sep: ";"
+    phase0: "Initial"
+    phase1: "Awareness"
+    phase2: "Feasibility"
+    phase3: "Decision making"
+    phase4: "Adopted"
+
 #R
 R:
   # line plot - zip

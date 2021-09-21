@@ -1,15 +1,13 @@
 package de.unileipzig.irpact.io.param.input.file;
 
 import de.unileipzig.irpact.commons.attribute.Attribute;
+import de.unileipzig.irpact.commons.attribute.BasicDoubleAttribute;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.util.data.TypedMatrix;
 import de.unileipzig.irpact.commons.util.fio2.Rows;
-import de.unileipzig.irpact.commons.util.fio2.xlsx2.StandardCellValueConverter2;
-import de.unileipzig.irpact.commons.util.fio2.xlsx2.XlsxSheetParser2;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.postprocessing.image.XlsxRealAdoptionData;
+import de.unileipzig.irpact.core.postprocessing.data3.XlsxRealAdoptionData;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InRootUI;
@@ -19,10 +17,8 @@ import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.ArrayList;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
@@ -90,9 +86,17 @@ public class InRealAdoptionDataFile implements InFile {
     public XlsxRealAdoptionData parse(ResourceLoader loader) throws ParsingException {
         String fileName = getFileNameWithoutExtension();
 
-        Rows<Attribute> rows = parseXlsx(loader, fileName);
-        TypedMatrix<String, String, Integer> matrix = toIntMatrix(rows);
+        Rows<Attribute> cumulatedRows = parseXlsx(loader, fileName, RAConstants.REAL_ADOPTION_DATA_CUMULATED);
+        TypedMatrix<String, String, Integer> cumulatedMatrix = toIntMatrix(cumulatedRows);
 
-        return new XlsxRealAdoptionData(matrix);
+        Rows<Attribute> uncumulatedRows = parseXlsx(loader, fileName, RAConstants.REAL_ADOPTION_DATA_UNCUMULATED);
+        uncumulatedRows.fill(new BasicDoubleAttribute(0), ArrayList::new);
+        uncumulatedRows.replaceNull(new BasicDoubleAttribute(0));
+        TypedMatrix<String, String, Integer> uncumulatedMatrix = toIntMatrix(uncumulatedRows);
+
+        XlsxRealAdoptionData adoptionData = new XlsxRealAdoptionData();
+        adoptionData.setCumulated(cumulatedMatrix);
+        adoptionData.setUncumulated(uncumulatedMatrix);
+        return adoptionData;
     }
 }

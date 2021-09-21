@@ -3,6 +3,7 @@ package de.unileipzig.irpact.core.postprocessing.image.d2v;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions2.AdoptionResultInfo2;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions2.impl.AnnualAdoptionsZip2;
+import de.unileipzig.irpact.core.postprocessing.data3.RealAdoptionData;
 import de.unileipzig.irpact.core.postprocessing.image.*;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
 import de.unileipzig.irpact.util.R.builder.Element;
@@ -79,7 +80,7 @@ public class ComparedAnnualZipWithRscript extends AbstractRscriptDataVisualizer 
             csvData.add(Arrays.asList(
                     map(Integer.toString(year)),
                     map(zip),
-                    map(Integer.toString(realData.get(year, zip))),
+                    map(Integer.toString(realData.getUncumulated(year, zip))),
                     map(getLocalizedString("distinct1lab"))
             ));
         }

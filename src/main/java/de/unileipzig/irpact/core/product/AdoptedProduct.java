@@ -18,6 +18,10 @@ public interface AdoptedProduct extends ChecksumComparable {
 
     Timestamp getTimestamp();
 
+    default boolean hasTimestamp() {
+        return getTimestamp() != null;
+    }
+
     AdoptionPhase getPhase();
 
     default int getYear() {
@@ -28,5 +32,13 @@ public interface AdoptedProduct extends ChecksumComparable {
 
     default boolean isNotInitial() {
         return !isInitial();
+    }
+
+    default boolean isProductGroup(ProductGroup group) {
+        return getProduct().getGroup() == group;
+    }
+
+    default boolean isProduct(Product product) {
+        return getProduct() == product;
     }
 }

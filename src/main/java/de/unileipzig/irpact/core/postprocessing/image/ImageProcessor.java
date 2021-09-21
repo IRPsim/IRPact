@@ -1,19 +1,17 @@
 package de.unileipzig.irpact.core.postprocessing.image;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.resource.JsonResource;
 import de.unileipzig.irpact.commons.resource.LocaleUtil;
-import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.postprocessing.PostProcessor;
+import de.unileipzig.irpact.core.postprocessing.data3.RealAdoptionData;
 import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualizeHandler;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.util.R.RscriptEngine;
@@ -25,10 +23,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -36,9 +31,6 @@ import java.util.stream.Collectors;
 public class ImageProcessor extends PostProcessor {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ImageProcessor.class);
-
-    protected static final BasicRealAdoptionData PLACEHOLDER_REAL_DATA = new BasicRealAdoptionData(0);
-    protected final Map<InRealAdoptionDataFile, RealAdoptionData> adoptionDataCache = new HashMap<>();
 
     protected static final String IMAGES_BASENAME = "images";
     protected static final String IMAGES_EXTENSION = "yaml";
@@ -90,10 +82,6 @@ public class ImageProcessor extends PostProcessor {
         return defaultWidth;
     }
 
-    public RealAdoptionData getFallbackAdoptionData() {
-        return PLACEHOLDER_REAL_DATA;
-    }
-
     public RealAdoptionData getRealAdoptionData(InOutputImage image) {
         if(image.hasRealAdoptionDataFile()) {
             try {
@@ -104,24 +92,6 @@ public class ImageProcessor extends PostProcessor {
             }
         } else {
             return getFallbackAdoptionData();
-        }
-    }
-
-    public RealAdoptionData getRealAdoptionData(InRealAdoptionDataFile file) {
-        if(adoptionDataCache.containsKey(file)) {
-            return adoptionDataCache.get(file);
-        } else {
-            try {
-                LOGGER.warn("try loading '{}'", file.getFileNameWithoutExtension());
-                RealAdoptionData adoptionData = file.parse(environment.getResourceLoader());
-                adoptionDataCache.put(file, adoptionData);
-                return adoptionData;
-            } catch (Throwable t) {
-                LOGGER.warn("loading '{}' failed, use fallback data, cause: {}", file.getFileNameWithoutExtension(), StringUtil.printStackTrace(t));
-                RealAdoptionData adoptionData = getFallbackAdoptionData();
-                adoptionDataCache.put(file, adoptionData);
-                return adoptionData;
-            }
         }
     }
 
@@ -235,20 +205,6 @@ public class ImageProcessor extends PostProcessor {
         return skipInitial
                 ? AdoptionPhase.NON_INITIAL
                 : AdoptionPhase.VALID_PHASES;
-    }
-
-    protected List<String> zips;
-    public List<String> getAllZips(String key) {
-        if(zips == null) {
-            zips = environment.getAgents().streamConsumerAgents()
-                    .filter(agent -> agent.hasAnyAttribute(key))
-                    .map(agent -> {
-                        Attribute attr = agent.findAttribute(key);
-                        return attr.asValueAttribute().getValueAsString();
-                    })
-                    .collect(Collectors.toList());
-        }
-        return zips;
     }
 
     protected String[] yearBreaks;

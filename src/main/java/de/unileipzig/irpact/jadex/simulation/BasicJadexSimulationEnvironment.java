@@ -57,6 +57,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     protected PersistenceModul persistenceModul;
     protected ResourceLoader resourceLoader;
     protected PostAnalysisLogger postAnalysisLogger;
+    protected PostAnalysisData postAnalysisData;
 
     //components
     protected AgentManager agentManager;
@@ -114,8 +115,12 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         BasicBinaryTaskManager taskManager = new BasicBinaryTaskManager();
         BasicPersistenceModul persistenceModul = new BasicPersistenceModul();
         BasicPostAnalysisLogger postAnalysisLogger = new BasicPostAnalysisLogger();
+        BasicPostAnalysisData postAnalysisData = new BasicPostAnalysisData();
 
         setSettings(initData);
+
+        setPostAnalysisData(postAnalysisData);
+        postAnalysisData.setEnvironment(this);
 
         setPostAnalysisLogger(postAnalysisLogger);
         postAnalysisLogger.setEnvironment(this);
@@ -286,6 +291,15 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
 
     public void setPostAnalysisLogger(PostAnalysisLogger postAnalysisLogger) {
         this.postAnalysisLogger = postAnalysisLogger;
+    }
+
+    @Override
+    public PostAnalysisData getPostAnalysisData() {
+        return postAnalysisData;
+    }
+
+    public void setPostAnalysisData(PostAnalysisData postAnalysisData) {
+        this.postAnalysisData = postAnalysisData;
     }
 
     @Override

@@ -13,10 +13,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
-import de.unileipzig.irpact.core.process.ProcessFindingScheme;
-import de.unileipzig.irpact.core.process.ProcessModel;
-import de.unileipzig.irpact.core.process.ProcessPlan;
-import de.unileipzig.irpact.core.process.PostAction;
+import de.unileipzig.irpact.core.process.*;
 import de.unileipzig.irpact.core.product.*;
 import de.unileipzig.irpact.core.product.awareness.ProductAwareness;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
@@ -80,7 +77,11 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     @Belief
     protected Set<Need> needs = new LinkedHashSet<>();
     @Belief
-    protected Map<Need, ProcessPlan> plans = new LinkedHashMap<>();
+    protected Map<Need, ProcessPlan> activePlans = new LinkedHashMap<>();
+    @Belief
+    protected List<ProcessPlan> finishedPlans = new ArrayList<>();
+    @Belief
+    protected List<ProcessPlan> runningPlans = new ArrayList<>();
 
     public JadexConsumerAgentBDI() {
     }
@@ -183,9 +184,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         log().trace(IRPSection.SIMULATION_AGENT, "[{}] post first sync", getName());
 
         if(hasPlans()) {
-            for(ProcessPlan plan: getPlans().values())  {
-                executePlan(plan, postActions);
-            }
+            executePlans(postActions);
         } else {
             allowAttention();
         }
@@ -236,7 +235,9 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         processFindingScheme = proxyAgent.getProcessFindingScheme();
         productFindingScheme = proxyAgent.getProductFindingScheme();
         addAllInitialNeeds(proxyAgent.getNeeds()); //!
-        addAllPlans(proxyAgent.getPlans()); //!
+        addAllActivePlans(proxyAgent.getActivePlans()); //!
+        addAllRunningPlans(proxyAgent.getRunningPlans()); //!
+        setupFinishedPlans();
         externAttributes.addAll(proxyAgent.getExternAttributes());
 
         proxyAgent.sync(getRealAgent());
@@ -292,19 +293,44 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         handleNewNeed(need, true);
     }
 
-    protected void addAllPlans(Map<Need, ProcessPlan> plans) {
-        for(Map.Entry<Need, ProcessPlan> entry: plans.entrySet()) {
-            addPlan(entry.getKey(), entry.getValue());
+    protected void addAllActivePlans(Map<Need, ProcessPlan> plans) {
+        activePlans.putAll(plans);
+    }
+
+    protected void addAllRunningPlans(Collection<ProcessPlan> plans) {
+        runningPlans.addAll(plans);
+    }
+
+    protected void setupFinishedPlans() {
+        for(ProcessPlan plan: runningPlans) {
+            if(isFinished(plan)) {
+                finishedPlans.add(plan);
+            }
         }
     }
 
-    protected void addPlan(Need need, ProcessPlan plan) {
-        plans.put(need, plan);
+    protected boolean isFinished(ProcessPlan plan) {
+        return !activePlans.containsValue(plan);
+    }
+
+    protected void addFinishedPlan(ProcessPlan plan) {
+        finishedPlans.add(plan);
+        runningPlans.add(plan);
+    }
+
+    protected void addActivePlan(Need need, ProcessPlan plan) {
+        activePlans.put(need, plan);
+        runningPlans.add(plan);
     }
 
     @Override
-    public Map<Need, ProcessPlan> getPlans() {
-        return plans;
+    public Map<Need, ProcessPlan> getActivePlans() {
+        return activePlans;
+    }
+
+    @Override
+    public List<ProcessPlan> getRunningPlans() {
+        return runningPlans;
     }
 
     @Override
@@ -455,7 +481,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
                 getProductFindingScheme().getChecksum(),
                 getProcessFindingScheme().getChecksum(),
                 ChecksumComparable.getCollChecksum(getNeeds()),
-                ChecksumComparable.getMapChecksum(getPlans()),
+                ChecksumComparable.getMapChecksum(getActivePlans()),
                 ChecksumComparable.getCollChecksum(externAttributes)
         );
     }
@@ -554,11 +580,17 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
+    public AdoptedProduct getAdoptedProduct(Product product) {
+        return adoptedProducts.get(product);
+    }
+
+    @Override
     public boolean hasAdopted(Product product) {
         return adoptedProducts.containsKey(product);
     }
 
-    protected boolean hasInitialAdopted(Product product) {
+    @Override
+    public boolean hasInitialAdopted(Product product) {
         AdoptedProduct adoptedProduct = adoptedProducts.get(product);
         return adoptedProduct != null && adoptedProduct.isInitial();
     }
@@ -580,7 +612,6 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         if(needs.contains(need)) {
             AdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, stamp, phase);
             needs.remove(need);
-            plans.remove(need);
             addAdoptedProduct(adoptedProduct);
             LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] adopt '{}' at {}", getName(), product.getName(), stamp);
             getEnvironment().getPostAnalysisLogger().logAdoption(this, product, phase, stamp);
@@ -635,7 +666,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     protected boolean hasPlans() {
-        return !getPlans().isEmpty();
+        return !runningPlans.isEmpty();
     }
 
     @Override
@@ -650,9 +681,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         log().trace(IRPSection.SIMULATION_AGENT, "[{}] post first sync", getName());
 
         if(hasPlans()) {
-            for(ProcessPlan plan: getPlans().values())  {
-                executePlan(plan);
-            }
+            executePlans(null);
         } else {
             allowAttention();
         }
@@ -660,6 +689,33 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         log().trace(IRPSection.SIMULATION_AGENT, "[{}] end action ({})", getName(), now());
         waitForSynchronisationAtEndIfRequired();
         log().trace(IRPSection.SIMULATION_AGENT, "[{}] post end sync", getName());
+    }
+
+    protected void executePlans(List<PostAction<?>> postActions) throws Throwable {
+        Map<Need, ProcessPlan> adoptedPlans = null;
+
+        for(Map.Entry<Need, ProcessPlan> entry: getActivePlans().entrySet()) {
+            if(executePlan(entry.getValue(), postActions) == ProcessPlanResult.ADOPTED) {
+                if(adoptedPlans == null) adoptedPlans = new HashMap<>();
+                adoptedPlans.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        for(ProcessPlan finished: finishedPlans) {
+            executePlan(finished, postActions);
+        }
+
+        if(adoptedPlans != null) {
+            for(Map.Entry<Need, ProcessPlan> entry: adoptedPlans.entrySet()) {
+                getActivePlans().remove(entry.getKey());
+                if(entry.getValue().keepRunningAfterAdoption()) {
+                    log().debug(IRPSection.SIMULATION_PROCESS, "[{}] keep running after adoption: {}", getName(), entry.getValue());
+                    finishedPlans.add(entry.getValue());
+                } else {
+                    runningPlans.remove(entry.getValue());
+                }
+            }
+        }
     }
 
     protected void resetOnNewAction() {
@@ -708,11 +764,6 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
             LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] no product found for need '{}'", getName(), need.getName());
             return;
         }
-        if(hasInitialAdopted(product)) {
-            needs.remove(need);
-            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] product='{}' initally adoped", getName(), product.getName());
-            return;
-        }
 
         ProcessModel model = processFindingScheme.findModel(product);
         if(model == null) {
@@ -726,8 +777,18 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
             return;
         }
 
-        addPlan(need, plan);
-        LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] added plan for need='{}' and product='{}'", getName(), need.getName(), product.getName());
+        if(hasInitialAdopted(product)) {
+            needs.remove(need);
+            if(plan.keepRunningAfterAdoption()) {
+                LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] product='{}' initally adoped, keep running", getName(), product.getName());
+                addFinishedPlan(plan);
+            } else {
+                LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] product='{}' initally adoped, finished plan", getName(), product.getName());
+            }
+        } else {
+            addActivePlan(need, plan);
+            LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] added plan for need='{}' and product='{}'", getName(), need.getName(), product.getName());
+        }
     }
 
     //=========================
@@ -773,11 +834,11 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
 ////        }
 //    }
 
-    protected void executePlan(ProcessPlan plan) throws Throwable {
-        plan.execute();
+    protected ProcessPlanResult executePlan(ProcessPlan plan) throws Throwable {
+        return plan.execute();
     }
 
-    protected void executePlan(ProcessPlan plan, List<PostAction<?>> postActions) throws Throwable {
-        plan.execute(postActions);
+    protected ProcessPlanResult executePlan(ProcessPlan plan, List<PostAction<?>> postActions) throws Throwable {
+        return plan.execute(postActions);
     }
 }

@@ -58,7 +58,7 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
         manager.prepare(object.getProcessFindingScheme());
 
         manager.prepareAll(object.getNeeds());
-        manager.prepareAll(object.getPlans());
+        manager.prepareAll(object.getActivePlans());
 
         return data;
     }
@@ -78,7 +78,7 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
         data.putLong(manager.ensureGetUID(object.getProcessFindingScheme()));
 
         data.putLongArray(manager.ensureGetAllUIDs(object.getNeeds()));
-        data.putLongLongMap(manager.ensureGetAllUIDs(object.getPlans()));
+        data.putLongLongMap(manager.ensureGetAllUIDs(object.getActivePlans()));
     }
 
     //=========================
@@ -112,7 +112,8 @@ public class ProxyConsumerAgentPR extends BinaryPRBase<ProxyConsumerAgent> {
         object.setProcessFindingScheme(manager.ensureGet(data.getLong()));
 
         object.addAllNeeds(manager.ensureGetAll(data.getLongArray(), Need[]::new));
-        object.addAllPlans(manager.ensureGetAll(data.getLongLongMap()));
+        object.addAllActivePlans(manager.ensureGetAll(data.getLongLongMap()));
+        if(true) throw new IllegalStateException("runningPlans missing");
     }
 
     @Override

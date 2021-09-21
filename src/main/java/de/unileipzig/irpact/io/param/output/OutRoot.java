@@ -245,7 +245,21 @@ public class OutRoot implements RootClass {
         image3.setImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS_PNG);
         image3.setDescription("Zeigt die kumulierten jährlichen Adoptionen für die verschiedenen Adoptionsphasen.");
 
-        adoptionSections.addAll(image1, image2, image3);
+        Section image4 = new Section();
+        image4.setPriority(4);
+        image4.setLabel("Interessensentwicklung");
+        image4.setIcon(IRPact.ICON_IMAGE);
+        image4.setImage(IRPact.IMAGE_ANNUAL_INTEREST_PNG);
+        image4.setDescription("Zeigt die Interessensentwicklung an.");
+
+        Section image5 = new Section();
+        image5.setPriority(5);
+        image5.setLabel("Phasenuebersicht");
+        image5.setIcon(IRPact.ICON_IMAGE);
+        image5.setImage(IRPact.IMAGE_PHASE_OVERVIEW_JPG);
+        image5.setDescription("Zeigt die Entwicklung der Phasen an.");
+
+        adoptionSections.addAll(image1, image2, image3, image4, image5);
 
         return adoptionSection;
     }

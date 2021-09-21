@@ -7,10 +7,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -66,6 +63,23 @@ public final class StringUtil {
             sb.append(part);
         }
         return sb.toString();
+    }
+
+    public static String[] without(String[] input, String toRemove) {
+        int count = 0;
+        for(String str: input) {
+            if(Objects.equals(str, toRemove)) {
+                count++;
+            }
+        }
+        String[] out = new String[input.length - count];
+        int i = 0;
+        for(String str: input) {
+            if(!Objects.equals(str, toRemove)) {
+                out[i++] = str;
+            }
+        }
+        return out;
     }
 
     public static String splitLen(String text, int lineLen) {
@@ -219,5 +233,19 @@ public final class StringUtil {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    public static String toString(Collection<?> coll) {
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
+        for(Object obj: coll) {
+            if(first) {
+                first = false;
+            } else {
+                sb.append(", ");
+            }
+            sb.append(obj);
+        }
+        return sb.toString();
     }
 }

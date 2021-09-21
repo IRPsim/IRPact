@@ -2,80 +2,29 @@
 # Deutsche Lokalisierung für die Ausgabedaten
 #########################
 ---
-# xlsx
-xlsx:
-  zip:
-    sheetname: "Adoptionen"
-    informations:
-      - "Automatisch erstellte Tabelle (Datum: {})"
-      - "Inhalt: Jährliche Adoptionsdaten nach PLZ"
-    columns:
-      - "Jahr"
-      - "PLZ"
-      - "Adoptionen"
-      - "Kumulierte Adoptionen"
-  phase:
-    sheetname: "Adoptionen"
-    informations:
-      - "Automatisch erstellte Tabelle (Datum: {})"
-      - "Inhalt: Jährliche Adoptionsdaten nach Adoptionsphase"
-    columns:
-      - "Jahr"
-      - "Adoptionsphase"
-      - "Adoptionen"
-      - "Kumulierte Adoptionen"
-  allAgents:
-    sheetname: "Adoptionen"
-    informations:
-      - "Automatisch erstellte Tabelle (Datum: {})"
-      - "Inhalt: Auflistung der Adoptionen und Nichtadoption aller Agenter"
-    columns:
-      - "Agent"
-      - "Milieu"
-      - "ID der räumlichen Daten"
-      - "PLZ"
-      - "adoptiertes Produkt"
-      - "Produktgruppe"
-      - "Adoptionsphase"
-      - "Zeitpunkt"
-csv:
-  zip:
-    charset: "UTF-8"
-    delimiter: ";"
-    commentPrefix: "# "
-    informations:
-      - "Automatisch erstellte Tabelle (Datum: {})"
-      - "Inhalt: Jährliche Adoptionsdaten nach PLZ"
-    columns:
-      - "Jahr"
-      - "PLZ"
-      - "Adoptionen"
-      - "Kumulierte Adoptionen"
-  phase:
-    charset: "UTF-8"
-    delimiter: ";"
-    commentPrefix: "# "
-    informations:
-      - "Automatisch erstellte Tabelle (Datum: {})"
-      - "Inhalt: Jährliche Adoptionsdaten nach PLZ"
-    columns:
-      - "Jahr"
-      - "Adoptionsphase"
-      - "Adoptionen"
-      - "Kumulierte Adoptionen"
-  allAgents:
-    charset: "UTF-8"
-    delimiter: ";"
-    commentPrefix: "# "
-    informations:
-      - "Automatisch erstellte Tabelle (Datum: {})"
-      - "Inhalt: Auflistung der Adoptionen und Nichtadoption aller Agenter"
-    columns:
-      - "Agent"
-      - "Milieu"
-      - "ID der räumlichen Daten"
-      - "PLZ"
-      - "adoptiertes Produkt"
-      - "Produktgruppe"
-      - "Adoptionsphase"
-      - "Zeitpunkt"
+# XLSX
+XLSX:
+  PERFORMANCE:
+    sheetGlobal: "Global"
+    sheetZIP: "PLZ"
+    columnMetric: "Metrik"
+    columnValue: "Wert"
+    MAE: "MAE"
+    FSAPE: "FSAPE"
+    RMSD: "RMSD"
+    invalid: "Ungültige ZIPs:"
+
+  INTEREST:
+    sheetGlobal: "Global"
+
+  PHASE_OVERVIEW:
+    sheet: "Übersicht"
+    year: "Jahr"
+    phase0: "Initial"
+    phase1: "Awareness"
+    phase2: "Feasibility"
+    phase3: "Decision making"
+    phase4: "Adopted"
+
+# CSV
+CSV:

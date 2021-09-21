@@ -129,8 +129,14 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
     protected ProcessPlanResult initPlan(List<PostAction<?>> postActions) throws Throwable {
         if(agent.hasAdopted(product)) {
+            if(agent.hasInitialAdopted(product)) {
+                logPhaseTransition(PostAnalysisData.INITIAL_ADOPTED, now());
+            } else {
+                logPhaseTransition(PostAnalysisData.ADOPTED, now());
+            }
             currentStage = RAStage.ADOPTED;
         } else {
+            logPhaseTransition(PostAnalysisData.AWARENESS, now());
             currentStage = RAStage.AWARENESS;
         }
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "initial stage for '{}': {}", agent.getName(), currentStage);
@@ -170,6 +176,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
         if(isInterested(agent)) {
             doSelfActionAndAllowAttention();
             LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] is interested in '{}'", agent.getName(), product.getName());
+            logPhaseTransition(PostAnalysisData.FEASIBILITY, now());
             updateStage(RAStage.FEASIBILITY);
             return ProcessPlanResult.IN_PROCESS;
         }
@@ -456,6 +463,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
         if(isShare && isOwner) {
             doSelfActionAndAllowAttention();
+            logPhaseTransition(PostAnalysisData.DECISION_MAKING, now());
             updateStage(RAStage.DECISION_MAKING);
             return ProcessPlanResult.IN_PROCESS;
         }
@@ -566,6 +574,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
             return ProcessPlanResult.IMPEDED;
         } else {
             agent.adopt(need, product, now, determinePhase(now));
+            logPhaseTransition(PostAnalysisData.ADOPTED, now);
             updateStage(RAStage.ADOPTED);
             return ProcessPlanResult.ADOPTED;
         }
@@ -577,6 +586,10 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
     protected Timestamp now() {
         return environment.getTimeModel().now();
+    }
+
+    protected void logPhaseTransition(int phaseId, Timestamp now) {
+        environment.getPostAnalysisData().logPhaseTransition(agent, phaseId, product, now);
     }
 
     protected void updateStage(RAStage nextStage) {
@@ -735,8 +748,18 @@ public class RAProcessPlan extends RAProcessPlanBase {
     }
 
     @Override
+    public void runEvaluationAtEndOfYear() {
+        super.runEvaluationAtEndOfYear();
+        logInterestValues();
+    }
+
+    @Override
     protected void doRunEvaluationAtEndOfYear() {
         handleDecisionMaking(null);
+    }
+
+    protected void logInterestValues() {
+        environment.getPostAnalysisData().logAnnualInterest(agent, product, getInterest(agent), now());
     }
 
     protected boolean isAdopter(ConsumerAgent agent) {
