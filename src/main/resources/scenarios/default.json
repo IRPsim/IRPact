@@ -221,7 +221,8 @@
       "set_InEvaluableComponent" : { },
       "set_InFile" : {
         "Barwertrechner" : { },
-        "Datensatz_210322" : { }
+        "Datensatz_210322" : { },
+        "PV_Diffusion_Leipzig" : { }
       },
       "set_InFileBasedConsumerAgentPopulation" : { },
       "set_InFileBasedPVactConsumerAgentPopulation" : { },
@@ -337,7 +338,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_09_21_T_14_24_38" : {
+        "CT_D_2021_09_21_T_14_29_11" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -436,7 +437,11 @@
       "set_InRAProcessPlanNodeFilterScheme" : {
         "MaxDistance" : { }
       },
-      "set_InRealAdoptionDataFile" : { },
+      "set_InRealAdoptionDataFile" : {
+        "PV_Diffusion_Leipzig" : {
+          "par_InRealAdoptionDataFile_placeholder" : 0.0
+        }
+      },
       "set_InROutputImage" : { },
       "set_InScenarioVersion" : {
         "v1_7_0" : {
@@ -663,11 +668,21 @@
       "par_link_InGeneralConsumerAgentGroupAttribute_InAttributeName_attrName" : { },
       "par_link_InGeneralConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
       "par_link_InGenericOutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : {
-        "Interessensentwicklung" : { },
-        "JaehrlicheAdoptionenPhase" : { },
-        "JaehrlicheAdoptionenPLZ" : { },
-        "JaehrlicheAdoptionenPLZVergleich" : { },
-        "Phasenuebersicht" : { }
+        "Interessensentwicklung" : {
+          "PV_Diffusion_Leipzig" : 0.0
+        },
+        "JaehrlicheAdoptionenPhase" : {
+          "PV_Diffusion_Leipzig" : 0.0
+        },
+        "JaehrlicheAdoptionenPLZ" : {
+          "PV_Diffusion_Leipzig" : 0.0
+        },
+        "JaehrlicheAdoptionenPLZVergleich" : {
+          "PV_Diffusion_Leipzig" : 0.0
+        },
+        "Phasenuebersicht" : {
+          "PV_Diffusion_Leipzig" : 0.0
+        }
       },
       "par_link_InGlobalDeffuantUncertainty_InAttributeName_attributeNames" : { },
       "par_link_InGlobalDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
