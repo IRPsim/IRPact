@@ -72,6 +72,15 @@ public class XlsxRealAdoptionData implements RealAdoptionData {
     }
 
     @Override
+    public void getUnusedZips(Collection<? extends String> input, Collection<? super String> output) {
+        for(String zip: getAllZips()) {
+            if(!input.contains(zip)) {
+                output.add(zip);
+            }
+        }
+    }
+
+    @Override
     public Set<Integer> getAllYears() {
         if(years == null) {
             years = new LinkedHashSet<>();

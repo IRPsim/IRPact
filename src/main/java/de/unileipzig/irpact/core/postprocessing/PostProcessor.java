@@ -123,6 +123,7 @@ public abstract class PostProcessor implements LoggingHelper {
                         Attribute attr = agent.findAttribute(key);
                         return attr.asValueAttribute().getValueAsString();
                     })
+                    .distinct()
                     .collect(Collectors.toList());
         }
         return zips;

@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -238,6 +239,52 @@ public class GnuPlotBuilder {
         setYLabel(formatForGnuplot(label));
     }
 
+    public void setView(double rotx, double roty, int scale, int scalez) {
+        buildSet("view", StringUtil.concat(", ", rotx, roty, scale, scalez));
+    }
+
+    public void setGridNoPolar() {
+        buildSet("grid nopolar");
+    }
+
+    public void setGridSetup1() {
+        buildSet("grid noxtics nomxtics noytics nomytics ztics nomztics nortics nomrtics nox2tics nomx2tics noy2tics nomy2tics nocbtics nomcbtics");
+    }
+
+    public void setGridSetup2() {
+        buildSet("grid vertical layerdefault lt 0 linecolor 0 linewidth 1.0, lt 0 linecolor 0 linewidth 1.0");
+    }
+
+    public void setXYPlaneAt0() {
+        setXYPlaneAt(0);
+    }
+
+    public void setXYPlaneAt(int pos) {
+        buildSet("xyplane at", pos);
+    }
+
+    public void setPM3D() {
+        buildSet("pm3d interpolate 1,1 flush begin noftriangles border linewidth 1.0 dashtype solid corners2color mean");
+    }
+
+    public void setXTics(Map<Integer, String> tics) {
+        SetTicsCommand cmd = new SetTicsCommand();
+        cmd.setXTics();
+        cmd.setTics(tics);
+        add(cmd);
+    }
+
+    public void setYTics(Map<Integer, String> tics) {
+        SetTicsCommand cmd = new SetTicsCommand();
+        cmd.setYTics();
+        cmd.setTics(tics);
+        add(cmd);
+    }
+
+    public void setNoAnimation() {
+        add(new SimpleCommand("NO_ANIMATION = 1"));
+    }
+
     public void setLegendOutsideRightTop() {
         //buildSet("key outside right top vertical Left reverse noenhanced autotitle columnhead box lt black linewidth 1.0 dashtype solid");
         buildSet("key outside right top vertical Left");
@@ -298,6 +345,28 @@ public class GnuPlotBuilder {
 
     public void plot3DataColumns(String phase0, String phase1, String phase2, int arg) {
         add(new DataColumns3AndCustomKeyPlotCommand(phase0, phase1, phase2, arg(arg), 1));
+    }
+
+    public void splotBoxesReverse(int from, int to, int arg) {
+        splotBoxesReverse(from, to, arg(arg));
+    }
+
+    public void splotBoxesReverse(int from, int to, String source) {
+        SplotBoxesReverseCommand cmd = new SplotBoxesReverseCommand();
+        cmd.setFrom(from);
+        cmd.setTo(to);
+        cmd.setSource(source);
+        add(cmd);
+    }
+
+    public void plotCirclesAndPoints(int arg) {
+        plotCirclesAndPoints(arg(arg));
+    }
+
+    public void plotCirclesAndPoints(String source) {
+        PlotCirclesAndPointsCommand cmd = new PlotCirclesAndPointsCommand();
+        cmd.setSource(source);
+        add(cmd);
     }
 
     public void setWildcardXYRange() {

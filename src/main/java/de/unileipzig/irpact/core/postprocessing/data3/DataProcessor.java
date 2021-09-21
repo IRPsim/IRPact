@@ -172,9 +172,9 @@ public class DataProcessor extends PostProcessor {
             zipSheetData.setDouble(row, 3, calcZIP(FSAPE.INSTANCE, product, zip));
         }
 
+        row += 2;
+        zipSheetData.setString(row, 0, getLocalizedString(FileType.XLSX, DataToAnalyse.PERFORMANCE, "invalid"));
         if(invalidZips.size() > 0) {
-            row += 2;
-            zipSheetData.setString(row, 0, getLocalizedString(FileType.XLSX, DataToAnalyse.PERFORMANCE, "invalid"));
             zipSheetData.setString(row, 1, StringUtil.toString(invalidZips));
         }
 
@@ -231,7 +231,25 @@ public class DataProcessor extends PostProcessor {
 
         Path target = getPath(PHASE_OVERVIEW_XLSX);
 
+        List<String> zips = getAllZips(RAConstants.ZIP);
         List<Integer> years = getAllSimulationYears();
+
+        Map<String, JsonTableData3> sheets = new LinkedHashMap<>();
+        logGlobalPhaseOverview(years, product, sheets);
+        logZipPhaseOverview(zips, years, product, sheets);
+
+        //write
+        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
+        writer.setCellHandler(XlsxSheetWriter3.forJson());
+
+        LOGGER.info("write {}", target);
+        writer.write(target, sheets);
+    }
+
+    protected void logGlobalPhaseOverview(
+            List<Integer> years,
+            Product product,
+            Map<String, JsonTableData3> sheets) {
         JsonTableData3 overviewData = new JsonTableData3();
         //header
         overviewData.setString(0, 0, getLocalizedString(FileType.XLSX, DataToAnalyse.PHASE_OVERVIEW, "year"));
@@ -252,15 +270,47 @@ public class DataProcessor extends PostProcessor {
             overviewData.setInt(row, 5, annualOverview.getOrDefault(PostAnalysisData.ADOPTED, 0));
             row++;
         }
+        sheets.put(getLocalizedString(FileType.XLSX, DataToAnalyse.PHASE_OVERVIEW, "sheet"), overviewData);
+    }
 
-        //write
-        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
-        writer.setCellHandler(XlsxSheetWriter3.forJson());
+    protected void logZipPhaseOverview(
+            List<String> zips,
+            List<Integer> years,
+            Product product,
+            Map<String, JsonTableData3> sheets) {
 
-        LOGGER.info("write {}", target);
-        XSSFWorkbook book = new XSSFWorkbook();
-        writer.write(book, getLocalizedString(FileType.XLSX, DataToAnalyse.PHASE_OVERVIEW, "sheet"), overviewData);
-        writer.write(target, book);
+        CountMap3D<String, Integer, Integer> zipYearPhase = new CountMap3D<>();
+        for(ConsumerAgent agent: environment.getAgents().iterableConsumerAgents()) {
+            String zip = getZIP(agent, RAConstants.ZIP);
+            for(int year: years) {
+                int phase = environment.getPostAnalysisData().getPhaseFor(agent, product, year);
+                zipYearPhase.update(zip, year, phase);
+            }
+        }
+
+        for(String zip: zips) {
+            JsonTableData3 zipSheet = new JsonTableData3();
+            //header
+            zipSheet.setString(0, 0, getLocalizedString(FileType.XLSX, DataToAnalyse.PHASE_OVERVIEW, "year"));
+            zipSheet.setString(0, 1, getNameForPhase(PostAnalysisData.INITIAL_ADOPTED));
+            zipSheet.setString(0, 2, getNameForPhase(PostAnalysisData.AWARENESS));
+            zipSheet.setString(0, 3, getNameForPhase(PostAnalysisData.FEASIBILITY));
+            zipSheet.setString(0, 4, getNameForPhase(PostAnalysisData.DECISION_MAKING));
+            zipSheet.setString(0, 5, getNameForPhase(PostAnalysisData.ADOPTED));
+
+            //data
+            int row = 0;
+            for(int year: years) {
+                row++;
+                zipSheet.setInt(row, 0, year);
+                zipSheet.setInt(row, 1, zipYearPhase.getCount(zip, year, PostAnalysisData.INITIAL_ADOPTED));
+                zipSheet.setInt(row, 2, zipYearPhase.getCount(zip, year, PostAnalysisData.AWARENESS));
+                zipSheet.setInt(row, 3, zipYearPhase.getCount(zip, year, PostAnalysisData.FEASIBILITY));
+                zipSheet.setInt(row, 4, zipYearPhase.getCount(zip, year, PostAnalysisData.DECISION_MAKING));
+                zipSheet.setInt(row, 5, zipYearPhase.getCount(zip, year, PostAnalysisData.ADOPTED));
+            }
+            sheets.put(zip, zipSheet);
+        }
     }
 
     protected String getNameForPhase(int phase) {

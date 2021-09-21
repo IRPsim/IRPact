@@ -21,6 +21,7 @@ public interface PostAnalysisData {
     //phase transition
     //=========================
 
+    int UNKNOWN = -1;
     int INITIAL_ADOPTED = 0;
     int AWARENESS = 1;
     int FEASIBILITY = 2;
@@ -34,6 +35,8 @@ public interface PostAnalysisData {
     void logPhaseTransition(ConsumerAgent agent, int phase, Product product, Timestamp stamp);
 
     Map<Integer, Integer> getTransitionOverviewForYear(Product product, int year);
+
+    int getPhaseFor(ConsumerAgent agent, Product product, int year);
 
     /**
      * @author Daniel Abitz

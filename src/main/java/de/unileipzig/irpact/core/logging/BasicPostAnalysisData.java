@@ -99,6 +99,20 @@ public class BasicPostAnalysisData implements PostAnalysisData {
         }
     }
 
+    @Override
+    public int getPhaseFor(ConsumerAgent agent, Product product, int year) {
+        if(logPhaseTransition) {
+            PhaseTransitionList list = transitionMap.get(agent);
+            if(list == null) return UNKNOWN;
+            BasicPhaseTransition transition = list.getLatestInfoUntilYear(product, year);
+            return transition == null
+                    ? UNKNOWN
+                    : transition.getPhase();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
     /**
      * @author Daniel Abitz
      */
