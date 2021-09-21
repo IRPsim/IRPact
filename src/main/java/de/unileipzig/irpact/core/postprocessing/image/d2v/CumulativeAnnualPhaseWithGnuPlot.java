@@ -6,12 +6,10 @@ import de.unileipzig.irpact.core.postprocessing.data.adoptions2.impl.AnnualAdopt
 import de.unileipzig.irpact.core.postprocessing.image.CsvBasedImageData;
 import de.unileipzig.irpact.core.postprocessing.image.ImageData;
 import de.unileipzig.irpact.core.postprocessing.image.ImageProcessor;
-import de.unileipzig.irpact.core.postprocessing.image.LocalizedImageData;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotFactory;
-import de.unileipzig.irpact.util.script.BuilderSettings;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
@@ -40,17 +38,18 @@ public class CumulativeAnnualPhaseWithGnuPlot extends AbstractGnuPlotDataVisuali
     @Override
     protected GnuPlotBuilder getBuilder(InOutputImage image) {
         return GnuPlotFactory.stackedBarChart0(
-                getSettings(image)
+                getLocalizedString("title"),
+                getLocalizedString("xlab"), getLocalizedString("ylab"), getLocalizedString("filllab"),
+                getLocalizedString("sep"),
+                imageProcessor.getDefaultBoxWidth(),
+                image.getImageWidth(), image.getImageHeight()
         );
     }
 
     @Override
     protected ImageData createData(InOutputImage image) {
-        AnnualAdoptionsPhase2 data = createAnnualAdoptionPhaseData();
-        return map(image, data);
-    }
+        AnnualAdoptionsPhase2 input = createAnnualAdoptionPhaseData();
 
-    protected ImageData map(InOutputImage image, AnnualAdoptionsPhase2 input) {
         Set<Integer> years = new TreeSet<>();
         Map<AdoptionPhase, Map<Integer, Integer>> phaseData = new LinkedHashMap<>();
         for(Object[] entry: input.getData().iterable()) {
@@ -78,36 +77,6 @@ public class CumulativeAnnualPhaseWithGnuPlot extends AbstractGnuPlotDataVisuali
             csvData.add(row);
         }
 
-        BuilderSettings settings = getSettings(image);
-        return new CsvBasedImageData(settings.getSep(), csvData);
-    }
-
-    protected BuilderSettings currentSettings;
-    protected InOutputImage currentImage;
-
-    protected BuilderSettings getSettings(InOutputImage image) {
-        if(image != currentImage || currentSettings == null) {
-            LocalizedImageData localized = getLocalizedImageData();
-            currentImage = image;
-            currentSettings = new BuilderSettings()
-                    //general
-                    .setTitle(localized.getTitle(getMode()))
-                    .setWidth(image == null ? imageProcessor.getDefaultWidth() : image.getImageWidth())
-                    .setHeight(image == null ? imageProcessor.getDefaultHeight() : image.getImageHeight())
-                    .setXArg(localized.getXArg(getMode()))
-                    .setXLab(localized.getXLab(getMode()))
-                    .setYArg(localized.getYArg(getMode()))
-                    .setYLab(localized.getYLab(getMode()))
-                    .setFillArg(localized.getFillArg(getMode()))
-                    .setFillLab(localized.getFillLab(getMode()))
-                    .setSep(localized.getSep(getMode()))
-                    .setBoxWidthAbsolute(0.8)
-                    .setUseArgsFlag(true)
-                    .setUsageFlag(BuilderSettings.USAGE_ARG2)
-                    .setCenterTitle(true)
-                    //gnuplot
-                    ;
-        }
-        return currentSettings;
+        return new CsvBasedImageData(getLocalizedString("sep"), csvData);
     }
 }

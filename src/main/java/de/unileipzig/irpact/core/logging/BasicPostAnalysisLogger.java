@@ -46,6 +46,12 @@ public class BasicPostAnalysisLogger implements PostAnalysisLogger {
                 : stamp.getTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
+    private static String printStampMillis(Timestamp stamp) {
+        return stamp == null
+                ? null
+                : Long.toString(stamp.getEpochMilli());
+    }
+
     private static String createFormat(int count) {
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < count; i++) {
@@ -82,6 +88,7 @@ public class BasicPostAnalysisLogger implements PostAnalysisLogger {
         if(logFTs) outputs.add(ftPath);
         if(logNonAdopter) outputs.add(nonAdopterPath);
         if(logInitialAdopter) outputs.add(initialAdopterPath);
+        if(logPhaseTransition) outputs.add(phaseTransitionPath);
         return outputs;
     }
 
@@ -92,6 +99,7 @@ public class BasicPostAnalysisLogger implements PostAnalysisLogger {
         startLogAdoption();
         startLogDecision();
         startLogFinancialThreshold();
+        startLogPhaseTransition();
     }
 
     @Override
@@ -132,8 +140,8 @@ public class BasicPostAnalysisLogger implements PostAnalysisLogger {
     //=========================
 
     private static final int NON_ADOPTER_FORMAT_LEN = 1;
-    private static final String NON_ADOPTER_LOGGER_NAME = "ADOPTIONS_LOGGER";
-    private static final String NON_ADOPTER_APPENDER_NAME = "ADOPTIONS_APPENDER";
+    private static final String NON_ADOPTER_LOGGER_NAME = "NON_ADOPTER_LOGGER";
+    private static final String NON_ADOPTER_APPENDER_NAME = "NON_ADOPTER_APPENDER";
     private static final String NON_ADOPTER_FORMAT = createFormat(NON_ADOPTER_FORMAT_LEN);
     private static final String NON_ADOPTER_VERSION = "1";
     private SimplifiedFileLogger nonAdopterLogger;
@@ -182,8 +190,8 @@ public class BasicPostAnalysisLogger implements PostAnalysisLogger {
     //=========================
 
     private static final int INITIAL_ADOPTER_FORMAT_LEN = 2;
-    private static final String INITIAL_ADOPTER_LOGGER_NAME = "ADOPTIONS_LOGGER";
-    private static final String INITIAL_ADOPTER_APPENDER_NAME = "ADOPTIONS_APPENDER";
+    private static final String INITIAL_ADOPTER_LOGGER_NAME = "INITIAL_ADOPTER_LOGGER";
+    private static final String INITIAL_ADOPTER_APPENDER_NAME = "INITIAL_ADOPTER_APPENDER";
     private static final String INITIAL_ADOPTER_FORMAT = createFormat(INITIAL_ADOPTER_FORMAT_LEN);
     private static final String INITIAL_ADOPTER_VERSION = "1";
     private SimplifiedFileLogger initialAdopterLogger;
@@ -282,8 +290,8 @@ public class BasicPostAnalysisLogger implements PostAnalysisLogger {
     //=========================
 
     private static final int DECISION_FORMAT_LEN = 13;
-    private static final String DECISION_LOGGER_NAME = "ADOPTIONS_LOGGER";
-    private static final String DECISION_APPENDER_NAME = "ADOPTIONS_APPENDER";
+    private static final String DECISION_LOGGER_NAME = "DECISION_LOGGER";
+    private static final String DECISION_APPENDER_NAME = "DECISION_APPENDER";
     private static final String DECISION_FORMAT = createFormat(DECISION_FORMAT_LEN);
     private static final String DECISION_VERSION = "1";
     private SimplifiedFileLogger decisionLogger;
@@ -341,8 +349,8 @@ public class BasicPostAnalysisLogger implements PostAnalysisLogger {
     //=========================
 
     private static final int FT_FORMAT_LEN = 6;
-    private static final String FT_LOGGER_NAME = "ADOPTIONS_LOGGER";
-    private static final String FT_APPENDER_NAME = "ADOPTIONS_APPENDER";
+    private static final String FT_LOGGER_NAME = "FT_LOGGER";
+    private static final String FT_APPENDER_NAME = "FT_APPENDER";
     private static final String FT_FORMAT = createFormat(FT_FORMAT_LEN);
     private static final String FT_VERSION = "1";
     private SimplifiedFileLogger ftLogger;
@@ -383,6 +391,56 @@ public class BasicPostAnalysisLogger implements PostAnalysisLogger {
     public void logFinancialThreshold(ConsumerAgent agent, Product product, double f, double t, boolean result, Timestamp stamp) {
         if(logFTs) {
             ftLogger.log(FT_FORMAT, agent.getName(), product.getName(), f, t, result ? 1 : 0, printStamp(stamp));
+        }
+    }
+
+    //=========================
+    //phase transition
+    //=========================
+
+    private static final int PHASE_TRANSITION_FORMAT_LEN = 4;
+    private static final String PHASE_TRANSITION_LOGGER_NAME = "PHASE_TRANSITION_LOGGER";
+    private static final String PHASE_TRANSITION_APPENDER_NAME = "PHASE_TRANSITION_APPENDER";
+    private static final String PHASE_TRANSITION_FORMAT = createFormat(PHASE_TRANSITION_FORMAT_LEN);
+    private static final String PHASE_TRANSITION_VERSION = "0";
+    private SimplifiedFileLogger phaseTransitionLogger;
+    private Path phaseTransitionPath;
+    private boolean logPhaseTransition = false;
+
+    @Override
+    public void setupLogPhaseTransition(Path target, boolean enabled) throws IOException {
+        if(enabled) {
+            LOGGER.trace("enable log financial: {}", target);
+            phaseTransitionLogger = new SimplifiedFileLogger(
+                    PHASE_TRANSITION_LOGGER_NAME,
+                    SimplifiedFileLogger.createNew(
+                            PHASE_TRANSITION_APPENDER_NAME,
+                            DEFAULT_PATTERN,
+                            target
+                    )
+            );
+            logPhaseTransition = true;
+            phaseTransitionPath = target;
+        } else {
+            LOGGER.trace("disable log financial");
+            phaseTransitionLogger = null;
+            logPhaseTransition = false;
+            phaseTransitionPath = null;
+        }
+    }
+
+    @Override
+    public void startLogPhaseTransition() {
+        if(logPhaseTransition) {
+            phaseTransitionLogger.log(PHASE_TRANSITION_FORMAT, buildComment(PHASE_TRANSITION_FORMAT_LEN, ""));
+            phaseTransitionLogger.log(PHASE_TRANSITION_FORMAT, buildVersion(PHASE_TRANSITION_FORMAT_LEN, PHASE_TRANSITION_VERSION));
+        }
+    }
+
+    @Override
+    public void logPhaseTransition(ConsumerAgent agent, String from, String to, Timestamp stamp) {
+        if(logPhaseTransition) {
+            phaseTransitionLogger.log(PHASE_TRANSITION_FORMAT, agent.getName(), from, to, printStampMillis(stamp));
         }
     }
 }

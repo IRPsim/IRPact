@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.postprocessing.image;
 
+import de.unileipzig.irpact.core.postprocessing.data3.RealAdoptionData;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions.AdoptionResultInfo;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions.AnnualCumulativeAdoptionsPhase;
@@ -75,7 +76,7 @@ public final class DataMapper {
             csvData.add(Arrays.asList(
                     strMapper.apply(Integer.toString(year)),
                     strMapper.apply(zip),
-                    strMapper.apply(Integer.toString(realData.get(year, zip))),
+                    strMapper.apply(Integer.toString(realData.getUncumulated(year, zip))),
                     strMapper.apply(yesStr)
             ));
         }
@@ -170,7 +171,7 @@ public final class DataMapper {
             row.add(strMapper.apply(Integer.toString(year)));
             for(Map.Entry<String, Map<Integer, Integer>> zipEntry: zipData.entrySet()) {
                 row.add(strMapper.apply(Integer.toString(zipEntry.getValue().get(year))));
-                row.add(strMapper.apply(Integer.toString(realData.get(year, zipEntry.getKey()))));
+                row.add(strMapper.apply(Integer.toString(realData.getUncumulated(year, zipEntry.getKey()))));
             }
             csvData.add(row);
         }

@@ -247,6 +247,22 @@
       "set_InGeneralConsumerAgentGroup" : { },
       "set_InGeneralConsumerAgentGroupAttribute" : { },
       "set_InGenericOutputImage" : {
+        "Interessensentwicklung" : {
+          "par_InGenericOutputImage_useGnuplot" : 1,
+          "par_InGenericOutputImage_useR" : 0,
+          "par_InGenericOutputImage_annualZip" : 0,
+          "par_InGenericOutputImage_annualZipWithReal" : 0,
+          "par_InGenericOutputImage_cumulativeAnnualPhase" : 0,
+          "par_InGenericOutputImage_cumulativeAnnualPhase2" : 0,
+          "par_InGenericOutputImage_annualInterest2D" : 1,
+          "par_InGenericOutputImage_annualPhaseOverview" : 0,
+          "par_InGenericOutputImage_storeScript" : 0,
+          "par_InGenericOutputImage_storeData" : 0,
+          "par_InGenericOutputImage_storeImage" : 1,
+          "par_InGenericOutputImage_imageWidth" : 1280,
+          "par_InGenericOutputImage_imageHeight" : 720,
+          "par_InGenericOutputImage_linewidth" : 1.0
+        },
         "JaehrlicheAdoptionenPhase" : {
           "par_InGenericOutputImage_useGnuplot" : 1,
           "par_InGenericOutputImage_useR" : 0,
@@ -254,6 +270,8 @@
           "par_InGenericOutputImage_annualZipWithReal" : 0,
           "par_InGenericOutputImage_cumulativeAnnualPhase" : 0,
           "par_InGenericOutputImage_cumulativeAnnualPhase2" : 1,
+          "par_InGenericOutputImage_annualInterest2D" : 0,
+          "par_InGenericOutputImage_annualPhaseOverview" : 0,
           "par_InGenericOutputImage_storeScript" : 0,
           "par_InGenericOutputImage_storeData" : 0,
           "par_InGenericOutputImage_storeImage" : 1,
@@ -268,6 +286,8 @@
           "par_InGenericOutputImage_annualZipWithReal" : 0,
           "par_InGenericOutputImage_cumulativeAnnualPhase" : 0,
           "par_InGenericOutputImage_cumulativeAnnualPhase2" : 0,
+          "par_InGenericOutputImage_annualInterest2D" : 0,
+          "par_InGenericOutputImage_annualPhaseOverview" : 0,
           "par_InGenericOutputImage_storeScript" : 0,
           "par_InGenericOutputImage_storeData" : 0,
           "par_InGenericOutputImage_storeImage" : 1,
@@ -282,6 +302,24 @@
           "par_InGenericOutputImage_annualZipWithReal" : 1,
           "par_InGenericOutputImage_cumulativeAnnualPhase" : 0,
           "par_InGenericOutputImage_cumulativeAnnualPhase2" : 0,
+          "par_InGenericOutputImage_annualInterest2D" : 0,
+          "par_InGenericOutputImage_annualPhaseOverview" : 0,
+          "par_InGenericOutputImage_storeScript" : 0,
+          "par_InGenericOutputImage_storeData" : 0,
+          "par_InGenericOutputImage_storeImage" : 1,
+          "par_InGenericOutputImage_imageWidth" : 1280,
+          "par_InGenericOutputImage_imageHeight" : 720,
+          "par_InGenericOutputImage_linewidth" : 1.0
+        },
+        "Phasenuebersicht" : {
+          "par_InGenericOutputImage_useGnuplot" : 1,
+          "par_InGenericOutputImage_useR" : 0,
+          "par_InGenericOutputImage_annualZip" : 0,
+          "par_InGenericOutputImage_annualZipWithReal" : 0,
+          "par_InGenericOutputImage_cumulativeAnnualPhase" : 0,
+          "par_InGenericOutputImage_cumulativeAnnualPhase2" : 0,
+          "par_InGenericOutputImage_annualInterest2D" : 0,
+          "par_InGenericOutputImage_annualPhaseOverview" : 1,
           "par_InGenericOutputImage_storeScript" : 0,
           "par_InGenericOutputImage_storeData" : 0,
           "par_InGenericOutputImage_storeImage" : 1,
@@ -299,7 +337,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_09_09_T_09_21_34" : {
+        "CT_D_2021_09_21_T_09_37_02" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -326,9 +364,11 @@
       "set_InNPVModule_inputgraphnode" : { },
       "set_InNumberOfTies" : { },
       "set_InOutputImage" : {
+        "Interessensentwicklung" : { },
         "JaehrlicheAdoptionenPhase" : { },
         "JaehrlicheAdoptionenPLZ" : { },
-        "JaehrlicheAdoptionenPLZVergleich" : { }
+        "JaehrlicheAdoptionenPLZVergleich" : { },
+        "Phasenuebersicht" : { }
       },
       "set_InProcessModel" : {
         "ProcessModel" : { }
@@ -399,7 +439,7 @@
       "set_InRealAdoptionDataFile" : { },
       "set_InROutputImage" : { },
       "set_InScenarioVersion" : {
-        "v1_6_1" : {
+        "v1_6_2" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
@@ -623,9 +663,11 @@
       "par_link_InGeneralConsumerAgentGroupAttribute_InAttributeName_attrName" : { },
       "par_link_InGeneralConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
       "par_link_InGenericOutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : {
+        "Interessensentwicklung" : { },
         "JaehrlicheAdoptionenPhase" : { },
         "JaehrlicheAdoptionenPLZ" : { },
-        "JaehrlicheAdoptionenPLZVergleich" : { }
+        "JaehrlicheAdoptionenPLZVergleich" : { },
+        "Phasenuebersicht" : { }
       },
       "par_link_InGlobalDeffuantUncertainty_InAttributeName_attributeNames" : { },
       "par_link_InGlobalDeffuantUncertainty_InConsumerAgentGroup_cags" : { },

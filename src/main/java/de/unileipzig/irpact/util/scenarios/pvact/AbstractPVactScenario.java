@@ -13,6 +13,7 @@ import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
+import de.unileipzig.irpact.io.param.input.file.InFile;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
@@ -366,6 +367,14 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
             supplier.setDesiredSize(agents);
         }
         return supplier;
+    }
+
+    public InFile[] getDefaultFiles() {
+        return new InFile[] {
+                getPVFile(),
+                getSpatialFile(),
+                getRealAdoptionDataFile()
+        };
     }
 
     public InFileBasedPVactConsumerAgentPopulation createFullPopulation(String name, InConsumerAgentGroup... cags) {

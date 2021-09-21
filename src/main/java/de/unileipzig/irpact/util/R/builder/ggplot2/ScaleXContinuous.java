@@ -25,7 +25,9 @@ public class ScaleXContinuous extends Component {
     }
 
     public void setBreaks(String... elements) {
-        set(BREAKS, new ArrayElement(elements, true, false));
+        if(elements != null && elements.length > 0) {
+            set(BREAKS, new ArrayElement(elements, true, false));
+        }
     }
 
     public ArrayElement getBreaks() {

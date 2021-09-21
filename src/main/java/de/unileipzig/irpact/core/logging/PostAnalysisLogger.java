@@ -40,4 +40,8 @@ public interface PostAnalysisLogger {
     void setupLogFinancialThresholds(Path target, boolean enabled) throws IOException;
     void startLogFinancialThreshold();
     void logFinancialThreshold(ConsumerAgent agent, Product product, double f, double t, boolean result, Timestamp stamp);
+
+    void setupLogPhaseTransition(Path target, boolean enabled) throws IOException;
+    void startLogPhaseTransition();
+    void logPhaseTransition(ConsumerAgent agent, String from, String to, Timestamp stamp);
 }

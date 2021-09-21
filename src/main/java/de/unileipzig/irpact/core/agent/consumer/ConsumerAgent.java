@@ -66,7 +66,11 @@ public interface ConsumerAgent extends SpatialInformationAgent {
 
     Collection<AdoptedProduct> getAdoptedProducts();
 
+    AdoptedProduct getAdoptedProduct(Product product);
+
     boolean hasAdopted(Product product);
+
+    boolean hasInitialAdopted(Product product);
 
     void addAdoptedProduct(AdoptedProduct adoptedProduct);
 
@@ -92,5 +96,7 @@ public interface ConsumerAgent extends SpatialInformationAgent {
 
     ProcessFindingScheme getProcessFindingScheme();
 
-    Map<Need, ProcessPlan> getPlans();
+    Map<Need, ProcessPlan> getActivePlans();
+
+    Collection<ProcessPlan> getRunningPlans();
 }

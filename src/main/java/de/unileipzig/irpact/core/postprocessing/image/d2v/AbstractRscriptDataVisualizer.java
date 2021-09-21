@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.postprocessing.image.d2v;
 
 import de.unileipzig.irpact.core.postprocessing.image.ImageData;
 import de.unileipzig.irpact.core.postprocessing.image.ImageProcessor;
+import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.core.postprocessing.image.engine.RImageScriptTask;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
 import de.unileipzig.irpact.util.R.RFileScript;
@@ -20,6 +21,11 @@ public abstract class AbstractRscriptDataVisualizer extends AbstractDataVisualiz
 
     public AbstractRscriptDataVisualizer(ImageProcessor imageProcessor) {
         super(imageProcessor);
+    }
+
+    @Override
+    protected SupportedEngine getSupportedEngine() {
+        return SupportedEngine.R;
     }
 
     @Override
@@ -64,7 +70,7 @@ public abstract class AbstractRscriptDataVisualizer extends AbstractDataVisualiz
         RFileScript fileScript = builder.build();
         RImageScriptTask task = new RImageScriptTask(image.isStoreScript(), image.isStoreData(), image.isStoreImage());
         task.setupCsvAndPng(getTargetDir(), image.getBaseFileName());
-        task.setDelimiter(getLocalizedImageData().getSep(getMode()));
+        task.setDelimiter(getLocalizedString("sep"));
         task.run(
                 getEngine(),
                 data,

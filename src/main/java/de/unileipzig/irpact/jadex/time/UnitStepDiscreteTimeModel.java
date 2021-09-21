@@ -148,6 +148,11 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
         Timestamp now1 = now();
         LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "to the past: {} -> {}", now0, now1);
 
+        for(SyncTask task: lastYearTasks) {
+            LOGGER.trace("execute task '{}'", task.getName());
+            task.run();
+        }
+
         resetNow();
         tickModifier++;
         Timestamp now2 = now();
@@ -161,6 +166,11 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
         }
 
         LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "perform '{}' tasks for new year {}", newYearTasks.size(), currentYearForValidation);
+
+        for(SyncTask task: newYearTasks) {
+            LOGGER.trace("execute task '{}'", task.getName());
+            task.run();
+        }
     }
 
     @Override

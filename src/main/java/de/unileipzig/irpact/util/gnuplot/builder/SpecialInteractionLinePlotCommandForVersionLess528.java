@@ -88,6 +88,9 @@ public class SpecialInteractionLinePlotCommandForVersionLess528 extends PlotComm
         return dashtype1Label;
     }
 
+    public void setData(int arg) {
+        setData(GnuPlotBuilder.arg(arg));
+    }
     public void setData(String data) {
         this.data = data;
     }

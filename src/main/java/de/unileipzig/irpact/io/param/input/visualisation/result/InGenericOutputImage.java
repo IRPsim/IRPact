@@ -56,7 +56,12 @@ public class InGenericOutputImage implements InOutputImage {
         addEntryWithDefaultAndDomain(res, thisClass(), "linewidth", VALUE_1, DOMAIN_G0);
         addEntry(res, thisClass(), "realAdoptionDataFile");
 
-        setDefault(res, thisClass(), varargs(IRPact.IMAGE_ANNUAL_ADOPTIONS, IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS));
+        setDefault(res, thisClass(), varargs(
+                IRPact.IMAGE_ANNUAL_ADOPTIONS,
+                IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS,
+                IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS,
+                IRPact.IMAGE_ANNUAL_INTEREST
+        ));
 
         setRules(res, thisClass(), engineFieldNames, engineBuilder);
         setRules(res, thisClass(), dataToVisualize, dataToVisualizeBuilder.withKeyModifier(buildDefaultParameterNameOperator(thisClass())));
@@ -73,7 +78,9 @@ public class InGenericOutputImage implements InOutputImage {
         return new InGenericOutputImage[] {
                 new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS, DataToVisualize.ANNUAL_ZIP, null),
                 new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, DataToVisualize.COMPARED_ANNUAL_ZIP, null),
-                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS, DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, null)
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS, DataToVisualize.CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL, null),
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_INTEREST, DataToVisualize.ANNUAL_INTEREST_2D, null),
+                new InGenericOutputImage(IRPact.IMAGE_PHASE_OVERVIEW, DataToVisualize.ANNUAL_PHASE_OVERVIEW, null)
         };
     }
 
@@ -81,7 +88,9 @@ public class InGenericOutputImage implements InOutputImage {
         return new InGenericOutputImage[] {
                 new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS, DataToVisualize.ANNUAL_ZIP, null),
                 new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, DataToVisualize.COMPARED_ANNUAL_ZIP, realAdoptionDataFile),
-                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS, DataToVisualize.CUMULATIVE_ANNUAL_PHASE2, null)
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS, DataToVisualize.CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL, null),
+                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_INTEREST, DataToVisualize.ANNUAL_INTEREST_2D, null),
+                new InGenericOutputImage(IRPact.IMAGE_PHASE_OVERVIEW, DataToVisualize.ANNUAL_PHASE_OVERVIEW, null)
         };
     }
 
@@ -120,6 +129,12 @@ public class InGenericOutputImage implements InOutputImage {
 
     @FieldDefinition
     public boolean cumulativeAnnualPhase2 = false;
+
+    @FieldDefinition
+    public boolean annualInterest2D = false;
+
+    @FieldDefinition
+    public boolean annualPhaseOverview = false;
 
     @FieldDefinition
     public boolean storeScript = false;
@@ -170,6 +185,8 @@ public class InGenericOutputImage implements InOutputImage {
         copy.annualZipWithReal = annualZipWithReal;
         copy.cumulativeAnnualPhase = cumulativeAnnualPhase;
         copy.cumulativeAnnualPhase2 = cumulativeAnnualPhase2;
+        copy.annualInterest2D = annualInterest2D;
+        copy.annualPhaseOverview = annualPhaseOverview;
         copy.storeData = storeData;
         copy.storeScript = storeScript;
         copy.storeImage = storeImage;
@@ -237,6 +254,8 @@ public class InGenericOutputImage implements InOutputImage {
         annualZipWithReal = false;
         cumulativeAnnualPhase = false;
         cumulativeAnnualPhase2 = false;
+        annualInterest2D = false;
+        annualPhaseOverview = false;
 
         switch(mode) {
             case ANNUAL_ZIP:
@@ -251,8 +270,16 @@ public class InGenericOutputImage implements InOutputImage {
                 cumulativeAnnualPhase = true;
                 break;
 
-            case CUMULATIVE_ANNUAL_PHASE2:
+            case CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL:
                 cumulativeAnnualPhase2 = true;
+                break;
+
+            case ANNUAL_INTEREST_2D:
+                annualInterest2D = true;
+                break;
+
+            case ANNUAL_PHASE_OVERVIEW:
+                annualPhaseOverview = true;
                 break;
 
             default:
@@ -266,7 +293,9 @@ public class InGenericOutputImage implements InOutputImage {
         if(annualZip) modes.add(DataToVisualize.ANNUAL_ZIP);
         if(annualZipWithReal) modes.add(DataToVisualize.COMPARED_ANNUAL_ZIP);
         if(cumulativeAnnualPhase) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE);
-        if(cumulativeAnnualPhase2) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE2);
+        if(cumulativeAnnualPhase2) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL);
+        if(annualInterest2D) modes.add(DataToVisualize.ANNUAL_INTEREST_2D);
+        if(annualPhaseOverview) modes.add(DataToVisualize.ANNUAL_PHASE_OVERVIEW);
 
         switch(modes.size()) {
             case 0:

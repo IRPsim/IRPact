@@ -25,7 +25,6 @@ import de.unileipzig.irptools.io.swagger.DownloadedSwaggerData;
 import de.unileipzig.irptools.io.swagger.DownloadedSwaggerFile;
 import de.unileipzig.irptools.io.swagger.UploadableSwaggerData;
 import de.unileipzig.irptools.io.swagger.UploadableSwaggerFile;
-import de.unileipzig.irptools.scenarios.Scenario;
 import de.unileipzig.irptools.scenarios.ScenarioWithMetaData;
 
 import java.io.IOException;

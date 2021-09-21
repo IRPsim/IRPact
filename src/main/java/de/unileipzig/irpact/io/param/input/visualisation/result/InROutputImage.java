@@ -65,6 +65,12 @@ public class InROutputImage implements InOutputImage {
     public boolean cumulativeAnnualPhase2 = false;
 
     @FieldDefinition
+    public boolean annualInterest2D = false;
+
+    @FieldDefinition
+    public boolean annualPhaseOverview = false;
+
+    @FieldDefinition
     public boolean storeScript = false;
 
     @FieldDefinition
@@ -113,6 +119,8 @@ public class InROutputImage implements InOutputImage {
         copy.annualZipWithReal = annualZipWithReal;
         copy.cumulativeAnnualPhase = cumulativeAnnualPhase;
         copy.cumulativeAnnualPhase2 = cumulativeAnnualPhase2;
+        copy.annualInterest2D = annualInterest2D;
+        copy.annualPhaseOverview = annualPhaseOverview;
         copy.storeData = storeData;
         copy.storeScript = storeScript;
         copy.storeImage = storeImage;
@@ -148,6 +156,8 @@ public class InROutputImage implements InOutputImage {
         annualZipWithReal = false;
         cumulativeAnnualPhase = false;
         cumulativeAnnualPhase2 = false;
+        annualInterest2D = false;
+        annualPhaseOverview = false;
 
         switch(mode) {
             case ANNUAL_ZIP:
@@ -162,8 +172,16 @@ public class InROutputImage implements InOutputImage {
                 cumulativeAnnualPhase = true;
                 break;
 
-            case CUMULATIVE_ANNUAL_PHASE2:
+            case CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL:
                 cumulativeAnnualPhase2 = true;
+                break;
+
+            case ANNUAL_INTEREST_2D:
+                annualInterest2D = true;
+                break;
+
+            case ANNUAL_PHASE_OVERVIEW:
+                annualPhaseOverview = true;
                 break;
 
             default:
@@ -177,7 +195,9 @@ public class InROutputImage implements InOutputImage {
         if(annualZip) modes.add(DataToVisualize.ANNUAL_ZIP);
         if(annualZipWithReal) modes.add(DataToVisualize.COMPARED_ANNUAL_ZIP);
         if(cumulativeAnnualPhase) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE);
-        if(cumulativeAnnualPhase2) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE2);
+        if(cumulativeAnnualPhase2) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL);
+        if(annualInterest2D) modes.add(DataToVisualize.ANNUAL_INTEREST_2D);
+        if(annualPhaseOverview) modes.add(DataToVisualize.ANNUAL_PHASE_OVERVIEW);
 
         switch(modes.size()) {
             case 0:
