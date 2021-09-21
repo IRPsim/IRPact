@@ -2,7 +2,6 @@ package de.unileipzig.irpact.jadex.time;
 
 import de.unileipzig.irpact.commons.time.ContinuousConverter;
 import de.unileipzig.irpact.commons.time.TimeMode;
-import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.develop.TodoException;
 import jadex.bridge.IComponentStep;
 import jadex.bridge.IInternalAccess;
@@ -11,7 +10,7 @@ import jadex.commons.future.IFuture;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Set;
+import java.util.function.LongConsumer;
 
 /**
  * @author Daniel Abitz
@@ -174,7 +173,7 @@ public class ContinuousTimeModel extends AbstractJadexTimeModel {
     }
 
     @Override
-    public void performYearChange(Set<SyncTask> lastYearTasks, Set<SyncTask> newYearTasks) {
+    public void performYearChange(LongConsumer lastYearTasks, LongConsumer newYearTasks) {
         throw new TodoException();
     }
 }

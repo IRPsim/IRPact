@@ -6,7 +6,6 @@ import de.unileipzig.irpact.commons.time.TimeUtil;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import de.unileipzig.irpact.jadex.util.JadexUtil;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.IComponentStep;
@@ -18,7 +17,7 @@ import jadex.commons.future.IFuture;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.function.LongConsumer;
 
 /**
  * @author Daniel Abitz
@@ -105,7 +104,7 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
     }
 
     @Override
-    public void performYearChange(Set<SyncTask> lastYearTasks, Set<SyncTask> newYearTasks) {
+    public void performYearChange(LongConsumer lastYearTasks, LongConsumer newYearTasks) {
         LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "perform year change");
 
         performTasksForLastYear(lastYearTasks);
@@ -127,19 +126,10 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
         currentYearForValidation = newDate.getYear();
         LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "set currentYearForValidation = {}", currentYearForValidation);
 
-        if(!endTimeReached()) {
-            performTasksForNewYear(newYearTasks);
-        }
+        performTasksForNewYear(newYearTasks);
     }
 
-    protected void performTasksForLastYear(Set<SyncTask> lastYearTasks) {
-        if(lastYearTasks.isEmpty()) {
-            LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "no tasks for ending year {}", currentYearForValidation);
-            return;
-        }
-
-        LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "perform '{}' tasks for ending year {}", lastYearTasks.size(), currentYearForValidation);
-
+    protected void performTasksForLastYear(LongConsumer lastYearTasks) {
         LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "starting the time machine...");
         Timestamp now0 = now();
 
@@ -148,10 +138,7 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
         Timestamp now1 = now();
         LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "to the past: {} -> {}", now0, now1);
 
-        for(SyncTask task: lastYearTasks) {
-            LOGGER.trace("execute task '{}'", task.getName());
-            task.run();
-        }
+        lastYearTasks.accept(currentYearForValidation);
 
         resetNow();
         tickModifier++;
@@ -159,18 +146,8 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
         LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "back to the future: {} -> {}", now1, now2);
     }
 
-    protected void performTasksForNewYear(Set<SyncTask> newYearTasks) {
-        if(newYearTasks.isEmpty()) {
-            LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "no tasks for starting year {}", currentYearForValidation);
-            return;
-        }
-
-        LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "perform '{}' tasks for new year {}", newYearTasks.size(), currentYearForValidation);
-
-        for(SyncTask task: newYearTasks) {
-            LOGGER.trace("execute task '{}'", task.getName());
-            task.run();
-        }
+    protected void performTasksForNewYear(LongConsumer newYearTasks) {
+        newYearTasks.accept(currentYearForValidation);
     }
 
     @Override
@@ -440,13 +417,14 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
                     : in.minus(getAmountToAdd() * delta, getUnit());
         }
 
-        protected long between(ZonedDateTime startInclusive, ZonedDateTime endExclusive) {
-            return getUnit().between(startInclusive, endExclusive);
+        protected long stepsBetween(ZonedDateTime startInclusive, ZonedDateTime endExclusive) {
+            long between = getUnit().between(startInclusive, endExclusive);
+            return between / getAmountToAdd();
         }
 
         @Override
         public long calculateDelta(ZonedDateTime startInclusive, ZonedDateTime endExclusive) {
-            return between(startInclusive, endExclusive);
+            return stepsBetween(startInclusive, endExclusive);
         }
     }
 
@@ -471,8 +449,8 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
             );
         }
 
-        protected long ceilingBetween(ZonedDateTime startInclusive, ZonedDateTime endExclusive) {
-            long delta = between(startInclusive, endExclusive);
+        protected long ceilStepsBetween(ZonedDateTime startInclusive, ZonedDateTime endExclusive) {
+            long delta = stepsBetween(startInclusive, endExclusive);
             ZonedDateTime startWithDelta = moveForward(startInclusive, delta);
             return endExclusive.equals(startWithDelta)
                     ? delta
@@ -482,13 +460,13 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
         protected long calculateToStartOfNextYear(ZonedDateTime start) {
             int year = start.getYear();
             ZonedDateTime end = TimeUtil.startOfYear(year + 1);
-            return ceilingBetween(start, end);
+            return ceilStepsBetween(start, end);
         }
 
         protected long calculateFromStartOfSameYear(ZonedDateTime end) {
             int year = end.getYear();
             ZonedDateTime start = TimeUtil.startOfYear(year);
-            return ceilingBetween(start, end);
+            return ceilStepsBetween(start, end);
         }
 
         @Override
@@ -497,7 +475,7 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
             int endYear = endExclusive.getYear();
 
             if(startYear == endYear) {
-                return ceilingBetween(startInclusive, endExclusive);
+                return ceilStepsBetween(startInclusive, endExclusive);
             }
 
             long firstPart = calculateToStartOfNextYear(startInclusive);
@@ -511,7 +489,7 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
             for(int y = startYear + 1; y < endYear; y++) {
                 ZonedDateTime from = TimeUtil.startOfYear(y);
                 ZonedDateTime to = TimeUtil.startOfYear(y + 1);
-                partSum += ceilingBetween(from, to);
+                partSum += ceilStepsBetween(from, to);
             }
 
             return firstPart + partSum + lastPart;
