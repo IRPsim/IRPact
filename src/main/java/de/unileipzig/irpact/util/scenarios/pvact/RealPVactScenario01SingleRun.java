@@ -120,6 +120,8 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         InFreeNetworkTopology topology = createFreeTopology("Topo", affinities, edgeCount);
 
         InUnitStepDiscreteTimeModel timeModel = createOneWeekTimeModel("Time");
+        //TODO 1
+        timeModel.setAmountOfTime(3);
 
         InPVactGlobalDeffuantUncertainty uncertainty = createGlobalUnvertainty("uncert", realData.CAGS.cags());
 
@@ -140,7 +142,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         //=====
         InRoot root = createRootWithInformationsWithFullLogging();
         root.addFiles(getDefaultFiles());
-        root.getGeneral().setFirstSimulationYear(2008);
+        root.getGeneral().setFirstSimulationYear(2014); //TODO 2008
         root.getGeneral().setLastSimulationYear(2019);
         root.getGeneral().useInfoLogging();
         root.getGeneral().setPersistDisabled(true);

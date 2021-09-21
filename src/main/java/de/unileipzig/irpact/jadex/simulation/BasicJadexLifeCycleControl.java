@@ -357,7 +357,26 @@ public class BasicJadexLifeCycleControl implements JadexLifeCycleControl {
         try {
             if(timeModel.hasYearChange()) {
                 LOGGER.trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] perform year change", agent.getName());
-                timeModel.performYearChange(lastYearTasks, newYearTasks);
+                timeModel.performYearChange(
+                        year -> {
+                            LOGGER.trace("end-of-year-tasks for year {}: {}", year, lastYearTasks.size());
+                            for(SyncTask task: lastYearTasks) {
+                                LOGGER.trace("execute task '{}'", task.getName());
+                                task.run();
+                            }
+                        },
+                        year -> {
+                            if(timeModel.endTimeReached()) {
+                                LOGGER.trace("start-of-year-tasks for year {}: END REACHED", year);
+                            } else {
+                                LOGGER.trace("start-of-year-tasks for year {}: {}", year, newYearTasks.size());
+                                for(SyncTask task: newYearTasks) {
+                                    LOGGER.trace("execute task '{}'", task.getName());
+                                    task.run();
+                                }
+                            }
+                        }
+                );
             }
         } finally {
             SYNC_LOCK.unlock();
