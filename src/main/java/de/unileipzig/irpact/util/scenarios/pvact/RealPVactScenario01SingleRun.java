@@ -107,7 +107,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         realData.CAGS.applyMilieus(initialAdopter, InPVactConsumerAgentGroup::setInitialAdopter);
 
         InFileBasedPVactConsumerAgentPopulation population = createFullPopulation("Pop", realData.CAGS.cags());
-        population.setUseAll(false); //TODO
+        population.setUseAll(true);
         population.setDesiredSize(1000);
 
         Map<InPVactConsumerAgentGroup, Integer> edgeCount = realData.CAGS.map(RealData.calcEdgeCount(
@@ -120,7 +120,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         InFreeNetworkTopology topology = createFreeTopology("Topo", affinities, edgeCount);
 
         InUnitStepDiscreteTimeModel timeModel = createOneWeekTimeModel("Time");
-        timeModel.setAmountOfTime(3);
+        timeModel.setAmountOfTime(1);
 
         InPVactGlobalDeffuantUncertainty uncertainty = createGlobalUnvertainty("uncert", realData.CAGS.cags());
 
@@ -142,7 +142,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         InRoot root = createRootWithInformationsWithFullLogging();
         root.addFiles(getDefaultFiles());
         root.getGeneral().setFirstSimulationYear(2008);
-        root.getGeneral().setLastSimulationYear(2012); //TODO 2019
+        root.getGeneral().setLastSimulationYear(2019);
         root.getGeneral().useInfoLogging();
         root.getGeneral().enableAllResultLogging();
         root.getGeneral().setEvaluationBucketSize(0.1);
