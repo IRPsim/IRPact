@@ -16,6 +16,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.logging.PostAnalysisData;
 import de.unileipzig.irpact.core.logging.PostAnalysisLogger;
 import de.unileipzig.irpact.core.misc.InitializationStage;
 import de.unileipzig.irpact.core.misc.MissingDataException;
@@ -86,7 +87,7 @@ public final class IRPact implements IRPActAccess {
 
     //dran denken die Version auch in der loc.yaml zu aktualisieren
     private static final String MAJOR_STRING = "1";
-    private static final String MINOR_STRING = "8";
+    private static final String MINOR_STRING = "9";
     private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
@@ -130,6 +131,9 @@ public final class IRPact implements IRPActAccess {
     public static final String ADOPTIONS_ANALYSIS_CSV = "Adoptions.csv";
     public static final String DECISION_ANALYSIS_CSV = "DecisionMaking.csv";
     public static final String FINANCIAL_ANALYSIS_CSV = "FinancialThreshold.csv";
+
+    public static final String ALL_EVAL_CSV = "Komplette_Evaluierungen.csv";
+    public static final String ALL_EVAL_XLSX = "Komplette_Evaluierungen.xlsx";
 
     public static final String DOWNLOAD_DIR_NAME = "images";
 
@@ -411,6 +415,9 @@ public final class IRPact implements IRPActAccess {
         postAnalysis.setupLogDecisions(dir.resolve(DECISION_ANALYSIS_CSV), inRoot.getGeneral().isLogDecisionAnalysis());
         postAnalysis.setupLogFinancialThresholds(dir.resolve(FINANCIAL_ANALYSIS_CSV), inRoot.getGeneral().isLogFinancialThresholdAnalysis());
         postAnalysis.startLogging();
+
+        PostAnalysisData postData = environment.getPostAnalysisData();
+        postData.setLogAllEvaluationTemp(dir.resolve(ALL_EVAL_CSV));
     }
 
     private void createGraphvizConfiguration() throws Exception {

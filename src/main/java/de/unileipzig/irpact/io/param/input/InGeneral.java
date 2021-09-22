@@ -133,6 +133,7 @@ public class InGeneral implements Copyable {
         putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logInterest", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
         putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logEvaluation", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
         putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "evaluationBucketSize", InRootUI.SETT_DATAOUTPUT, VALUE_0_1, DOMAIN_GEQ0);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logAllEvaluation", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
 
         //analysis
         putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logNonAdopterAnalysis", InRootUI.SETT_DATAANALYSIS, VALUE_FALSE, DOMAIN_BOOLEAN);
@@ -587,6 +588,9 @@ public class InGeneral implements Copyable {
         return evaluationBucketSize;
     }
 
+    @FieldDefinition
+    public boolean logAllEvaluation;
+
     //=========================
     //script + data logging
     //=========================
@@ -651,6 +655,7 @@ public class InGeneral implements Copyable {
         copy.logCalculateDecisionMaking = logCalculateDecisionMaking;
         //result logging
         copy.logResultAdoptionsAll = logResultAdoptionsAll;
+        copy.logAllEvaluation = logAllEvaluation;
         //script + data logging
         copy.logScriptAdoptionsZip = logScriptAdoptionsZip;
         copy.logScriptAdoptionsZipPhase = logScriptAdoptionsZipPhase;
@@ -692,6 +697,7 @@ public class InGeneral implements Copyable {
         logPhaseOverview = true;
         logInterest = true;
         logEvaluation = true;
+        logAllEvaluation = true;
     }
 
     public void enableAllScriptLogging() {
@@ -745,6 +751,7 @@ public class InGeneral implements Copyable {
         data.setLogPhaseTransition(logPhaseOverview);
         data.setLogEvaluationData(logEvaluation);
         data.setEvaluationBucketSize(evaluationBucketSize);
+        data.setLogAllEvaluationData(logAllEvaluation);
     }
 
     private void parseSeed(IRPactInputParser parser) {

@@ -36,6 +36,7 @@
       "sca_InGeneral_levelWarn" : 0,
       "sca_InGeneral_logAdoptionAnalysis" : 0,
       "sca_InGeneral_logAll" : 1,
+      "sca_InGeneral_logAllEvaluation" : 0,
       "sca_InGeneral_logAllIRPact" : 0,
       "sca_InGeneral_logAllTools" : 0,
       "sca_InGeneral_logCalculateDecisionMaking" : 0,
@@ -341,7 +342,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_09_22_T_09_18_09" : {
+        "CT_D_2021_09_22_T_14_09_36" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -419,6 +420,10 @@
           "par_InRAProcessModel_b" : 0.25,
           "par_InRAProcessModel_c" : 0.25,
           "par_InRAProcessModel_d" : 0.25,
+          "par_InRAProcessModel_aWeight" : 1.0,
+          "par_InRAProcessModel_bWeight" : 1.0,
+          "par_InRAProcessModel_cWeight" : 1.0,
+          "par_InRAProcessModel_dWeight" : 1.0,
           "par_InRAProcessModel_adopterPoints" : 3,
           "par_InRAProcessModel_interestedPoints" : 2,
           "par_InRAProcessModel_awarePoints" : 1,
@@ -428,7 +433,13 @@
           "par_InRAProcessModel_attitudeGap" : 1.75,
           "par_InRAProcessModel_chanceNeutral" : 0.5,
           "par_InRAProcessModel_chanceConvergence" : 0.25,
-          "par_InRAProcessModel_chanceDivergence" : 0.25
+          "par_InRAProcessModel_chanceDivergence" : 0.25,
+          "par_InRAProcessModel_weightFT" : 0.5,
+          "par_InRAProcessModel_weightNPV" : 0.5,
+          "par_InRAProcessModel_weightSocial" : 0.5,
+          "par_InRAProcessModel_weightLocal" : 0.5,
+          "par_InRAProcessModel_communicationFactor" : 1.0,
+          "par_InRAProcessModel_rewireFactor" : 1.0
         }
       },
       "set_InRAProcessPlanMaxDistanceFilterScheme" : {
@@ -447,7 +458,7 @@
       },
       "set_InROutputImage" : { },
       "set_InScenarioVersion" : {
-        "v1_8_0" : {
+        "v1_9_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },

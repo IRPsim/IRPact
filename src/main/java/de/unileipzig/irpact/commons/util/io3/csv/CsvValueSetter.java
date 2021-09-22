@@ -5,5 +5,5 @@ import de.unileipzig.irpact.commons.util.io3.ValueSetter;
 /**
  * @author Daniel Abitz
  */
-public interface CsvValueSetter<T> extends ValueSetter<String, T> {
+public interface CsvValueSetter<T> extends ValueSetter<CsvCell, T> {
 }

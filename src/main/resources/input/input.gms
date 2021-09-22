@@ -1367,6 +1367,30 @@ PARAMETER par_InRAProcessModel_c(set_InRAProcessModel)
 * - type: Float
 PARAMETER par_InRAProcessModel_d(set_InRAProcessModel)
 
+* - default: 1
+* - description: todo
+* - identifier: Zusatzwichtung für a
+* - type: Float
+PARAMETER par_InRAProcessModel_aWeight(set_InRAProcessModel)
+
+* - default: 1
+* - description: todo
+* - identifier: Zusatzwichtung für b
+* - type: Float
+PARAMETER par_InRAProcessModel_bWeight(set_InRAProcessModel)
+
+* - default: 1
+* - description: todo
+* - identifier: Zusatzwichtung für c
+* - type: Float
+PARAMETER par_InRAProcessModel_cWeight(set_InRAProcessModel)
+
+* - default: 1
+* - description: todo
+* - identifier: Zusatzwichtung für d
+* - type: Float
+PARAMETER par_InRAProcessModel_dWeight(set_InRAProcessModel)
+
 * - default: 3
 * - description: Legt den Einfluss für die Kommunikation mit Adoptern fest.
 * - identifier: Einfluss der Kommunikation mit Adoptern
@@ -1429,6 +1453,42 @@ PARAMETER par_InRAProcessModel_chanceConvergence(set_InRAProcessModel)
 * - identifier: Wahrscheinlichkeit Divergenz
 * - type: Float
 PARAMETER par_InRAProcessModel_chanceDivergence(set_InRAProcessModel)
+
+* - default: 0.5
+* - description: Legt die Wichtung für das Einkommen fest.
+* - identifier: Wichtung Kaufkraft
+* - type: Float
+PARAMETER par_InRAProcessModel_weightFT(set_InRAProcessModel)
+
+* - default: 0.5
+* - description: Legt den Einfluss der sozialen Komponente fest.
+* - identifier: Wichtung Barwert
+* - type: Float
+PARAMETER par_InRAProcessModel_weightNPV(set_InRAProcessModel)
+
+* - default: 0.5
+* - description: Legt den Einfluss der sozialen Komponente fest.
+* - identifier: Wichtung soziales Netz
+* - type: Float
+PARAMETER par_InRAProcessModel_weightSocial(set_InRAProcessModel)
+
+* - default: 0.5
+* - description: Legt den Einfluss der sozialen Komponente fest.
+* - identifier: Wichtung lokales Netz
+* - type: Float
+PARAMETER par_InRAProcessModel_weightLocal(set_InRAProcessModel)
+
+* - default: 1
+* - description: Skaliert die Kommunikationwahrscheinlichkeit der Agenten.
+* - identifier: Kommunikationsfaktor
+* - type: Float
+PARAMETER par_InRAProcessModel_communicationFactor(set_InRAProcessModel)
+
+* - default: 1
+* - description: Skaliert die Rewire-Wahrscheinlichkeit der Agenten.
+* - identifier: Rewire-Faktor
+* - type: Float
+PARAMETER par_InRAProcessModel_rewireFactor(set_InRAProcessModel)
 
 * - description: Legt den Filter fest, um 'sichtbare' Haushalte zu identifizieren.
 * - identifier: Netzwerkfilter für räumliche Sicht
@@ -3777,6 +3837,13 @@ SCALAR sca_InGeneral_logEvaluation
 * - identifier: Bereichsgröße (Evaluierungswerte)
 * - type: Float
 SCALAR sca_InGeneral_evaluationBucketSize
+
+* - default: 0
+* - domain: [0|1]
+* - description: Komplette_Evaluierungen.xlsx
+* - identifier: Komplette Evaluierungsdaten
+* - type: Boolean
+SCALAR sca_InGeneral_logAllEvaluation
 
 * - identifier: logScriptAdoptionsZip
 * - type: Boolean

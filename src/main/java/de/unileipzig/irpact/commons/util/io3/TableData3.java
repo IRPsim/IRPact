@@ -144,8 +144,9 @@ public class TableData3<T> {
     }
 
     public List<T> insertRow(int index, Supplier<? extends List<T>> rowSupplier) {
-        fillRows(index, rowSupplier);
-        return getRow(index);
+        List<T> newRow = rowSupplier.get();
+        rows.add(index, newRow);
+        return newRow;
     }
 
     public List<T> getRow(int index) {

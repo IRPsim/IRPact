@@ -55,6 +55,10 @@ public class InRAProcessModel implements InProcessModel {
         addEntry(res, thisClass(), "b");
         addEntry(res, thisClass(), "c");
         addEntry(res, thisClass(), "d");
+        addEntry(res, thisClass(), "aWeight");
+        addEntry(res, thisClass(), "bWeight");
+        addEntry(res, thisClass(), "cWeight");
+        addEntry(res, thisClass(), "dWeight");
         addEntry(res, thisClass(), "adopterPoints");
         addEntry(res, thisClass(), "interestedPoints");
         addEntry(res, thisClass(), "awarePoints");
@@ -69,6 +73,8 @@ public class InRAProcessModel implements InProcessModel {
         addEntry(res, thisClass(), "weightNPV");
         addEntry(res, thisClass(), "weightSocial");
         addEntry(res, thisClass(), "weightLocal");
+        addEntry(res, thisClass(), "communicationFactor");
+        addEntry(res, thisClass(), "rewireFactor");
         addEntry(res, thisClass(), "nodeFilterScheme");
         addEntry(res, thisClass(), "pvFile");
         addEntry(res, thisClass(), "uncertainties");
@@ -84,10 +90,16 @@ public class InRAProcessModel implements InProcessModel {
         setDefault(res, thisClass(), "b", VALUE_0_25);
         setDefault(res, thisClass(), "c", VALUE_0_25);
         setDefault(res, thisClass(), "d", VALUE_0_25);
+        setDefault(res, thisClass(), "aWeight", VALUE_1);
+        setDefault(res, thisClass(), "bWeight", VALUE_1);
+        setDefault(res, thisClass(), "cWeight", VALUE_1);
+        setDefault(res, thisClass(), "dWeight", VALUE_1);
         setDefault(res, thisClass(), "weightFT", VALUE_0_5);
         setDefault(res, thisClass(), "weightNPV", VALUE_0_5);
         setDefault(res, thisClass(), "weightSocial", VALUE_0_5);
         setDefault(res, thisClass(), "weightLocal", VALUE_0_5);
+        setDefault(res, thisClass(), "communicationFactor", VALUE_1);
+        setDefault(res, thisClass(), "rewireFactor", VALUE_1);
         setDefault(res, thisClass(), "adopterPoints", varargs(RAModelData.DEFAULT_ADOPTER_POINTS));
         setDefault(res, thisClass(), "interestedPoints", varargs(RAModelData.DEFAULT_INTERESTED_POINTS));
         setDefault(res, thisClass(), "awarePoints", varargs(RAModelData.DEFAULT_AWARE_POINTS));
@@ -115,6 +127,18 @@ public class InRAProcessModel implements InProcessModel {
 
     @FieldDefinition
     public double d;
+
+    @FieldDefinition
+    public double aWeight = 1.0;
+
+    @FieldDefinition
+    public double bWeight = 1.0;
+
+    @FieldDefinition
+    public double cWeight = 1.0;
+
+    @FieldDefinition
+    public double dWeight = 1.0;
 
     @FieldDefinition
     public int adopterPoints;
@@ -147,16 +171,22 @@ public class InRAProcessModel implements InProcessModel {
     public double chanceDivergence;
 
     @FieldDefinition
-    protected double weightFT;
+    public double weightFT;
 
     @FieldDefinition
-    protected double weightNPV;
+    public double weightNPV;
 
     @FieldDefinition
-    protected double weightSocial;
+    public double weightSocial;
 
     @FieldDefinition
-    protected double weightLocal;
+    public double weightLocal;
+
+    @FieldDefinition
+    public double communicationFactor = 1.0;
+
+    @FieldDefinition
+    public double rewireFactor = 1.0;
 
     @FieldDefinition
     public InRAProcessPlanNodeFilterScheme[] nodeFilterScheme;
@@ -184,6 +214,10 @@ public class InRAProcessModel implements InProcessModel {
         copy.b = b;
         copy.c = c;
         copy.d = d;
+        copy.aWeight = aWeight;
+        copy.bWeight = bWeight;
+        copy.cWeight = cWeight;
+        copy.dWeight = dWeight;
         copy.adopterPoints = adopterPoints;
         copy.interestedPoints = interestedPoints;
         copy.awarePoints = awarePoints;
@@ -215,6 +249,7 @@ public class InRAProcessModel implements InProcessModel {
 
     public void setDefaultValues() {
         setABCD(0.25);
+        setWeightsABCD(1.0);
         setAdopterPoints(RAModelData.DEFAULT_ADOPTER_POINTS);
         setInterestedPoints(RAModelData.DEFAULT_INTERESTED_POINTS);
         setAwarePoints(RAModelData.DEFAULT_AWARE_POINTS);
@@ -236,6 +271,13 @@ public class InRAProcessModel implements InProcessModel {
         setB(value);
         setC(value);
         setD(value);
+    }
+
+    public void setWeightsABCD(double value) {
+        setAWeight(value);
+        setBWeight(value);
+        setCWeight(value);
+        setDWeight(value);
     }
 
     public double getA() {
@@ -268,6 +310,38 @@ public class InRAProcessModel implements InProcessModel {
 
     public void setD(double d) {
         this.d = d;
+    }
+
+    public double getAWeight() {
+        return aWeight;
+    }
+
+    public void setAWeight(double aWeight) {
+        this.aWeight = aWeight;
+    }
+
+    public double getBWeight() {
+        return bWeight;
+    }
+
+    public void setBWeight(double bWeight) {
+        this.bWeight = bWeight;
+    }
+
+    public double getCWeight() {
+        return cWeight;
+    }
+
+    public void setCWeight(double cWeight) {
+        this.cWeight = cWeight;
+    }
+
+    public double getDWeight() {
+        return dWeight;
+    }
+
+    public void setDWeight(double dWeight) {
+        this.dWeight = dWeight;
     }
 
     public void setDefaultPoints() {
@@ -389,6 +463,22 @@ public class InRAProcessModel implements InProcessModel {
         return weightLocal;
     }
 
+    public void setCommunicationFactor(double communicationFactor) {
+        this.communicationFactor = communicationFactor;
+    }
+
+    public double getCommunicationFactor() {
+        return communicationFactor;
+    }
+
+    public void setRewireFactor(double rewireFactor) {
+        this.rewireFactor = rewireFactor;
+    }
+
+    public double getRewireFactor() {
+        return rewireFactor;
+    }
+
     public boolean hasNodeFilterScheme() {
         return ParamUtil.len(nodeFilterScheme) > 0;
     }
@@ -462,11 +552,19 @@ public class InRAProcessModel implements InProcessModel {
         data.setB(getB());
         data.setC(getC());
         data.setD(getD());
+        data.setAWeight(getAWeight());
+        data.setBWeight(getBWeight());
+        data.setCWeight(getCWeight());
+        data.setDWeight(getDWeight());
         data.setAdopterPoints(getAdopterPoints());
         data.setInterestedPoints(getInterestedPoints());
         data.setAwarePoints(getAwarePoints());
         data.setUnknownPoints(getUnknownPoints());
         data.setLogisticFactor(getLogisticFactor());
+        data.setWeightLocal(getWeightLocal());
+        data.setWeightSocial(getWeightSocial());
+        data.setCommunicationFactor(getCommunicationFactor());
+        data.setRewireFactor(getRewireFactor());
 
         Rnd rnd = parser.deriveRnd();
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "RAProcessModel '{}' uses seed: {}", getName(), rnd.getInitialSeed());
