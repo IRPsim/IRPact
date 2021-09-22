@@ -45,6 +45,7 @@ public class DataProcessor extends PostProcessor {
     protected static final String PERFORMANCE_XLSX = "Performance.xlsx";
     protected static final String PHASE_OVERVIEW_XLSX = "Phasenuebersicht.xlsx";
     protected static final String INTEREST_XLSX = "Interesse.xlsx";
+    protected static final String EVALUATION_XLSX = "Evaluierung.xlsx";
 
     public DataProcessor(
             MetaData metaData,
@@ -71,19 +72,30 @@ public class DataProcessor extends PostProcessor {
     }
 
     protected void execute0() {
-        trace("isLogResultAdoptionsZip: {}", getSettings().isLogResultAdoptionsZip());
-
-        trace("isLogResultAdoptionsZipPhase: {}", getSettings().isLogResultAdoptionsZipPhase());
-
         trace("isLogResultAdoptionsAll: {}", getSettings().isLogResultAdoptionsAll());
         if(getSettings().isLogResultAdoptionsAll()) {
             logAllAdoptionsXlsx();
         }
 
-        //TODO
-        analysePerfomance();
-        logPhaseOverview();
-        logInterest();
+        trace("isLogPerformance: {}", getSettings().isLogPerformance());
+        if(getSettings().isLogPerformance()) {
+            analysePerfomance();
+        }
+
+        trace("isLogPhaseTransition: {}", getPostAnalysisData().isLogPhaseTransition());
+        if(getPostAnalysisData().isLogPhaseTransition()) {
+            logPhaseOverview();
+        }
+
+        trace("isLogAnnualInterest: {}", getPostAnalysisData().isLogAnnualInterest());
+        if(getPostAnalysisData().isLogAnnualInterest()) {
+            logInterest();
+        }
+
+        trace("isLogEvaluationData: {}", getPostAnalysisData().isLogEvaluationData());
+        if(getPostAnalysisData().isLogEvaluationData()) {
+            logEvaluation();
+        }
     }
 
     protected void cleanUp() {
@@ -261,7 +273,7 @@ public class DataProcessor extends PostProcessor {
         //data
         int row = 1;
         for(int year: years) {
-            Map<Integer, Integer> annualOverview = environment.getPostAnalysisData().getTransitionOverviewForYear(product, year);
+            Map<Integer, Integer> annualOverview = getPostAnalysisData().getTransitionOverviewForYear(product, year);
             overviewData.setInt(row, 0, year);
             overviewData.setInt(row, 1, annualOverview.getOrDefault(PostAnalysisData.INITIAL_ADOPTED, 0));
             overviewData.setInt(row, 2, annualOverview.getOrDefault(PostAnalysisData.AWARENESS, 0));
@@ -283,7 +295,7 @@ public class DataProcessor extends PostProcessor {
         for(ConsumerAgent agent: environment.getAgents().iterableConsumerAgents()) {
             String zip = getZIP(agent, RAConstants.ZIP);
             for(int year: years) {
-                int phase = environment.getPostAnalysisData().getPhaseFor(agent, product, year);
+                int phase = getPostAnalysisData().getPhaseFor(agent, product, year);
                 zipYearPhase.update(zip, year, phase);
             }
         }
@@ -398,7 +410,7 @@ public class DataProcessor extends PostProcessor {
             row = 0;
             for(double interest: interestValues) {
                 row++;
-                int count = environment.getPostAnalysisData().getCumulatedAnnualInterestCount(product, year, interest);
+                int count = getPostAnalysisData().getCumulatedAnnualInterestCount(product, year, interest);
                 globalSheet.setInt(row, column, count);
             }
         }
@@ -416,7 +428,7 @@ public class DataProcessor extends PostProcessor {
         for(ConsumerAgent agent: environment.getAgents().iterableConsumerAgents()) {
             String zip = getZIP(agent, RAConstants.ZIP);
             for(int year: years) {
-                double interest = environment.getPostAnalysisData().getAnnualInterest(agent, product, year);
+                double interest = getPostAnalysisData().getAnnualInterest(agent, product, year);
                 zipYearInterest.update(zip, year, interest);
             }
         }
@@ -448,6 +460,120 @@ public class DataProcessor extends PostProcessor {
             }
             sheets.put(zip, zipSheet);
         }
+    }
+
+    protected void logEvaluation() {
+        try {
+            trace("log evaluation");
+            logEvaluation0();
+        } catch (Throwable t) {
+            error("error while running 'logEvaluation'", t);
+        }
+    }
+
+    protected void logEvaluation0() throws IOException {
+        List<Product> products = getAllProducts();
+        if(products.size() != 1) {
+            throw new IllegalArgumentException("products");
+        }
+        Product product = products.get(0);
+
+        Path target = getPath(EVALUATION_XLSX);
+
+        List<Integer> years = getAllSimulationYears();
+
+        Map<String, JsonTableData3> sheets = new LinkedHashMap<>();
+        for(EvaluationType type: EvaluationType.values()) {
+            logEvaluationData(type, years, product, sheets);
+        }
+
+        LOGGER.info("write {}", target);
+        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
+        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        writer.write(target, sheets);
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    private enum EvaluationType {
+        a,
+        b,
+        c,
+        d,
+        B
+    }
+
+    protected String getSheetName(EvaluationType type) {
+        String key;
+        switch (type) {
+            case a:
+                key = "aSheet";
+                break;
+            case b:
+                key = "bSheet";
+                break;
+            case c:
+                key = "cSheet";
+                break;
+            case d:
+                key = "dSheet";
+                break;
+            case B:
+                key = "BSheet";
+                break;
+            default:
+                throw new IllegalArgumentException("unsupported: " + type);
+        }
+        return getLocalizedString(FileType.XLSX, DataToAnalyse.EVALUATION, key);
+    }
+
+    protected int getEvaluationCount(EvaluationType type, PostAnalysisData.EvaluationData data) {
+        switch (type) {
+            case a:
+                return data.countA();
+            case b:
+                return data.countB();
+            case c:
+                return data.countC();
+            case d:
+                return data.countD();
+            case B:
+                return data.countAdoptionFactor();
+            default:
+                throw new IllegalArgumentException("unsupported: " + type);
+        }
+    }
+
+    protected void logEvaluationData(
+            EvaluationType type,
+            List<Integer> years,
+            Product product,
+            Map<String, JsonTableData3> sheets) {
+
+        NavigableSet<PostAnalysisData.Bucket> buckets = getPostAnalysisData().getBuckets();
+
+        JsonTableData3 sheetData = new JsonTableData3();
+
+        int column = 0;
+        for(int year: years) {
+            column++;
+            sheetData.setInt(0, column, year);
+
+            int row = 0;
+            for(PostAnalysisData.Bucket bucket: buckets) {
+                row++;
+                sheetData.setString(row, 0, bucket.print(getPostAnalysisData().getEvaluationBucketFormatter()));
+
+                PostAnalysisData.EvaluationData data = getPostAnalysisData().getEvaluationData(product, year, bucket);
+                int count = data == null
+                        ? 0
+                        : getEvaluationCount(type, data);
+                sheetData.setInt(row, column, count);
+            }
+        }
+
+        sheets.put(getSheetName(type), sheetData);
     }
 
     //=========================

@@ -8,6 +8,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
+import de.unileipzig.irpact.core.logging.PostAnalysisData;
 import de.unileipzig.irpact.core.postprocessing.data3.FallbackAdoptionData;
 import de.unileipzig.irpact.core.postprocessing.data3.RealAdoptionData;
 import de.unileipzig.irpact.core.product.Product;
@@ -64,6 +65,10 @@ public abstract class PostProcessor implements LoggingHelper {
 
     protected Settings getSettings() {
         return environment.getSettings();
+    }
+
+    protected PostAnalysisData getPostAnalysisData() {
+        return environment.getPostAnalysisData();
     }
 
     public Path getTargetDir() throws IOException {

@@ -7,5 +7,6 @@ public enum DataToAnalyse {
     ALL_AGENTS,
     PERFORMANCE,
     INTEREST,
-    PHASE_OVERVIEW
+    PHASE_OVERVIEW,
+    EVALUATION
 }

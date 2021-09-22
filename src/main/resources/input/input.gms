@@ -3736,23 +3736,47 @@ SCALAR sca_InGeneral_logFinancalComponent
 * - type: Boolean
 SCALAR sca_InGeneral_logCalculateDecisionMaking
 
-* - domain: [0|1]
-* - description: Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus.
-* - identifier: Adoptionen nach PLZ
-* - type: Boolean
-SCALAR sca_InGeneral_logResultAdoptionsZip
-
-* - domain: [0|1]
-* - description: Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus.
-* - identifier: kumulierte Adoptionen nach PLZ und Phase
-* - type: Boolean
-SCALAR sca_InGeneral_logResultAdoptionsZipPhase
-
+* - default: 0
 * - domain: [0|1]
 * - description: Gibt zu jedem Agenten alle Adoptionsinformationen aus. Nichtadopter werden ebenfalls ausgegeben.
 * - identifier: Komplettausgabe
 * - type: Boolean
 SCALAR sca_InGeneral_logResultAdoptionsAll
+
+* - default: 0
+* - domain: [0|1]
+* - description: Performance.xlsx
+* - identifier: Performance
+* - type: Boolean
+SCALAR sca_InGeneral_logPerformance
+
+* - default: 0
+* - domain: [0|1]
+* - description: Phasenuebersicht.xlsx
+* - identifier: Phasenübersicht
+* - type: Boolean
+SCALAR sca_InGeneral_logPhaseOverview
+
+* - default: 0
+* - domain: [0|1]
+* - description: Interesse.xlsx
+* - identifier: Interessensentwicklung
+* - type: Boolean
+SCALAR sca_InGeneral_logInterest
+
+* - default: 0
+* - domain: [0|1]
+* - description: Evaluierung.xlsx
+* - identifier: Evaluierungsdaten
+* - type: Boolean
+SCALAR sca_InGeneral_logEvaluation
+
+* - default: 0.1
+* - domain: [0,)
+* - description: Bestimmt die Bereichsgrößen bei den Evaluierungsdaten.
+* - identifier: Bereichsgröße (Evaluierungswerte)
+* - type: Float
+SCALAR sca_InGeneral_evaluationBucketSize
 
 * - identifier: logScriptAdoptionsZip
 * - type: Boolean

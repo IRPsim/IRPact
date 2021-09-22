@@ -65,13 +65,21 @@ public final class DataToVisualizeHandler {
                 break;
 
             case ANNUAL_INTEREST_2D:
-                AnnualInterestWithGnuPlot2D ai2d = new AnnualInterestWithGnuPlot2D(processor);
-                ai2d.handleImage(image);
+                if(processor.getEnvironment().getPostAnalysisData().isLogAnnualInterest()) {
+                    AnnualInterestWithGnuPlot2D ai2d = new AnnualInterestWithGnuPlot2D(processor);
+                    ai2d.handleImage(image);
+                } else {
+                    LOGGER.info("annual interest disabled");
+                }
                 break;
 
             case ANNUAL_PHASE_OVERVIEW:
-                AnnualPhaseOverviewWithGnuPlot apo = new AnnualPhaseOverviewWithGnuPlot(processor);
-                apo.handleImage(image);
+                if(processor.getEnvironment().getPostAnalysisData().isLogPhaseTransition()) {
+                    AnnualPhaseOverviewWithGnuPlot apo = new AnnualPhaseOverviewWithGnuPlot(processor);
+                    apo.handleImage(image);
+                } else {
+                    LOGGER.info("annual phase overview disabled");
+                }
                 break;
 
             default:
