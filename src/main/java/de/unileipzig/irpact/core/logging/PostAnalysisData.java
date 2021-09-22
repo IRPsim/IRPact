@@ -4,11 +4,12 @@ import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.product.Product;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
-import java.util.Set;
 
 /**
  * @author Daniel Abitz
@@ -110,7 +111,13 @@ public interface PostAnalysisData {
 
     DecimalFormat getEvaluationBucketFormatter();
 
-    void logEvaluationData(Product product, Timestamp stamp, double a, double b, double c, double d, double adoptionValue);
+    void logEvaluationData2(
+            Product product, Timestamp stamp,
+            double a, double b, double c, double d,
+            double aa, double bb, double cc, double dd,
+            double weightedAA, double weightedBB, double weightedCC, double weightedDD,
+            double adoptionFactor
+    );
 
     Bucket getNaNBucket();
 
@@ -149,6 +156,50 @@ public interface PostAnalysisData {
 
         int countD();
 
+        int countAA();
+
+        int countBB();
+
+        int countCC();
+
+        int countDD();
+
+        int countWeightedAA();
+
+        int countWeightedBB();
+
+        int countWeightedCC();
+
+        int countWeightedDD();
+
         int countAdoptionFactor();
     }
+
+    //=========================
+    //full evaluation
+    //=========================
+
+    void setLogAllEvaluationData(boolean value);
+
+    boolean isLogAllEvaluationData();
+
+    void setLogAllEvaluationTemp(Path target);
+
+    void finishAllEvaluation(boolean cleanup) throws IOException;
+
+    void logAllEvaluationDataFinancialFailed(
+            ConsumerAgent agent, Product product, Timestamp stamp,
+            double financialThreshold, double financialValue
+    );
+
+    void logAllEvaluationData(
+            ConsumerAgent agent, Product product, Timestamp stamp,
+            double aWeight, double bWeight, double cWeight, double dWeight,
+            double a, double b, double c, double d,
+            double aValue, double bValue, double cValue, double dValue,
+            double aa, double bb, double cc, double dd,
+            double weightedAA, double weightedBB, double weightedCC, double weightedDD,
+            double financialThreshold, double financialValue,
+            double adoptionThreshold, double adoptionValue
+    );
 }

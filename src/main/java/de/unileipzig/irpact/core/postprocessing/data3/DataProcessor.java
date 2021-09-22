@@ -11,8 +11,10 @@ import de.unileipzig.irpact.commons.resource.LocaleUtil;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.commons.util.data.count.CountMap3D;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
+import de.unileipzig.irpact.commons.util.io3.csv.CsvParser;
 import de.unileipzig.irpact.commons.util.io3.xlsx.XlsxSheetWriter3;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.logging.BasicPostAnalysisData;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.PostAnalysisData;
 import de.unileipzig.irpact.core.postprocessing.PostProcessor;
@@ -23,11 +25,13 @@ import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
+import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -95,6 +99,11 @@ public class DataProcessor extends PostProcessor {
         trace("isLogEvaluationData: {}", getPostAnalysisData().isLogEvaluationData());
         if(getPostAnalysisData().isLogEvaluationData()) {
             logEvaluation();
+        }
+
+        trace("isLogEvaluationData: {}", getPostAnalysisData().isLogAllEvaluationData());
+        if(getPostAnalysisData().isLogAllEvaluationData()) {
+            logAllEvaluation();
         }
     }
 
@@ -501,6 +510,14 @@ public class DataProcessor extends PostProcessor {
         b,
         c,
         d,
+        aa,
+        bb,
+        cc,
+        dd,
+        weightedAA,
+        weightedBB,
+        weightedCC,
+        weightedDD,
         B
     }
 
@@ -518,6 +535,30 @@ public class DataProcessor extends PostProcessor {
                 break;
             case d:
                 key = "dSheet";
+                break;
+            case aa:
+                key = "aaSheet";
+                break;
+            case bb:
+                key = "bbSheet";
+                break;
+            case cc:
+                key = "ccSheet";
+                break;
+            case dd:
+                key = "ddSheet";
+                break;
+            case weightedAA:
+                key = "weightedAASheet";
+                break;
+            case weightedBB:
+                key = "weightedBBSheet";
+                break;
+            case weightedCC:
+                key = "weightedCCSheet";
+                break;
+            case weightedDD:
+                key = "weightedDDSheet";
                 break;
             case B:
                 key = "BSheet";
@@ -538,6 +579,22 @@ public class DataProcessor extends PostProcessor {
                 return data.countC();
             case d:
                 return data.countD();
+            case aa:
+                return data.countAA();
+            case bb:
+                return data.countBB();
+            case cc:
+                return data.countCC();
+            case dd:
+                return data.countDD();
+            case weightedAA:
+                return data.countWeightedAA();
+            case weightedBB:
+                return data.countWeightedBB();
+            case weightedCC:
+                return data.countWeightedCC();
+            case weightedDD:
+                return data.countWeightedDD();
             case B:
                 return data.countAdoptionFactor();
             default:
@@ -574,6 +631,97 @@ public class DataProcessor extends PostProcessor {
         }
 
         sheets.put(getSheetName(type), sheetData);
+    }
+
+    protected void logAllEvaluation() {
+        try {
+            trace("log all evaluation");
+            logAllEvaluation0();
+        } catch (Throwable t) {
+            error("error while running 'logAllEvaluation'", t);
+        }
+    }
+
+    protected void logAllEvaluation0() throws IOException {
+        Path csvFile = clOptions.getCreatedDownloadDir().resolve(IRPact.ALL_EVAL_CSV);
+        Path xlsxFile = clOptions.getCreatedDownloadDir().resolve(IRPact.ALL_EVAL_XLSX);
+
+        //read
+        LOGGER.info("read {}", csvFile);
+        CsvParser<JsonNode> csvParser = new CsvParser<>();
+        csvParser.setValueGetter(CsvParser.forJson());
+
+
+        LOGGER.trace("map csv to xlsx");
+        JsonTableData3 data = new JsonTableData3(csvParser.parseToList(csvFile, StandardCharsets.UTF_8));
+        data.mapColumn(3, 0, node -> {
+            String str = node.textValue();
+            if(BasicPostAnalysisData.NO_VALUE.equals(str)) {
+                return node;
+            } else {
+                return data.getCreator().numberNode(Integer.parseInt(str));
+            }
+        });
+
+        for(int c = 4; c < 28; c++) {
+            data.mapColumn(c, 0, node -> {
+                String str = node.textValue();
+                if(BasicPostAnalysisData.NO_VALUE.equals(str)) {
+                    return node;
+                } else {
+                    return data.getCreator().numberNode(Double.parseDouble(str));
+                }
+            });
+        }
+
+        //header
+        data.insertRow(0);
+        data.setString(0, 0, getAllEvalString("columnAgent"));
+        data.setString(0, 1, getAllEvalString("columnProduct"));
+        data.setString(0, 2, getAllEvalString("columnTime"));
+        data.setString(0, 3, getAllEvalString("columnYear"));
+        data.setString(0, 4, getAllEvalString("columnAWeight"));
+        data.setString(0, 5, getAllEvalString("columnBWeight"));
+        data.setString(0, 6, getAllEvalString("columnCWeight"));
+        data.setString(0, 7, getAllEvalString("columnDWeight"));
+        data.setString(0, 8, getAllEvalString("columnA"));
+        data.setString(0, 9, getAllEvalString("columnB"));
+        data.setString(0, 10, getAllEvalString("columnC"));
+        data.setString(0, 11, getAllEvalString("columnD"));
+        data.setString(0, 12, getAllEvalString("columnAValue"));
+        data.setString(0, 13, getAllEvalString("columnBValue"));
+        data.setString(0, 14, getAllEvalString("columnCValue"));
+        data.setString(0, 15, getAllEvalString("columnDValue"));
+        data.setString(0, 16, getAllEvalString("columnAA"));
+        data.setString(0, 17, getAllEvalString("columnBB"));
+        data.setString(0, 18, getAllEvalString("columnCC"));
+        data.setString(0, 19, getAllEvalString("columnDD"));
+        data.setString(0, 20, getAllEvalString("columnWeightedAA"));
+        data.setString(0, 21, getAllEvalString("columnWeightedBB"));
+        data.setString(0, 22, getAllEvalString("columnWeightedCC"));
+        data.setString(0, 23, getAllEvalString("columnWeightedDD"));
+        data.setString(0, 24, getAllEvalString("columnFinancialThreshold"));
+        data.setString(0, 25, getAllEvalString("columnFinancialValue"));
+        data.setString(0, 26, getAllEvalString("columnAdoptionThreshold"));
+        data.setString(0, 27, getAllEvalString("columnAdoptionValue"));
+
+        //write
+        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
+        writer.setCellHandler(XlsxSheetWriter3.forJson());
+
+        LOGGER.info("write {}", xlsxFile);
+        writer.write(xlsxFile, getAllEvalString("sheet"), data);
+
+        //cleanup
+        try {
+            getPostAnalysisData().finishAllEvaluation(true);
+        } catch (IOException e) {
+            LOGGER.warn("cleanup failed", e);
+        }
+    }
+
+    protected String getAllEvalString(String key) {
+        return getLocalizedString(FileType.XLSX, DataToAnalyse.ALL_EVALUATION, key);
     }
 
     //=========================

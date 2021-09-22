@@ -247,9 +247,11 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
     protected boolean doCommunicate() {
         double r = rnd.nextDouble();
+        double factor = modelData().getCommunicationFactor();
+        double chance = r * factor;
         double freq = getCommunicationFrequencySN(agent);
-        boolean doCommunicate = r < freq;
-        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] do communicate: {} ({} < {})", agent.getName(), doCommunicate, r, freq);
+        boolean doCommunicate = chance < freq;
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] do communicate: {} ({} * {} = {} < {})", agent.getName(), doCommunicate, r, factor, chance, freq);
         return doCommunicate;
     }
 
@@ -324,9 +326,11 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
     protected boolean doRewire() {
         double r = rnd.nextDouble();
+        double factor = modelData().getRewireFactor();
+        double chance = r * factor;
         double freq = getRewiringRate(agent);
-        boolean doRewire = r < freq;
-        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] do rewire: {} ({} < {})", agent.getName(), doRewire, r, freq);
+        boolean doRewire = chance < freq;
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] do rewire: {} ({} * {} = {} < {})", agent.getName(), doRewire, r, factor, chance, freq);
         return doRewire;
     }
 
@@ -487,6 +491,10 @@ public class RAProcessPlan extends RAProcessPlanBase {
         double financialThreshold = getFinancialThreshold(agent, product);
         postAnalysis.logFinancialThreshold(agent, product, ft, financialThreshold, ft < financialThreshold, now);
         if(ft < financialThreshold) {
+            postData.logAllEvaluationDataFinancialFailed(
+                    agent, product, now,
+                    financialThreshold, ft
+            );
             alm.append("financial component < financial threshold ({} < {}) = {}", ft, financialThreshold, true);
             logCalculateDecisionMaking(alm);
             updateStage(RAStage.IMPEDED);
@@ -498,53 +506,72 @@ public class RAProcessPlan extends RAProcessPlanBase {
         double c = modelData().c();
         double d = modelData().d();
 
-        double aValue = Double.NaN;
-        double bValue = Double.NaN;
-        double cValue = Double.NaN;
-        double dValue = Double.NaN;
+        double aWeight = modelData().getAWeight();
+        double bWeight = modelData().getBWeight();
+        double cWeight = modelData().getCWeight();
+        double dWeight = modelData().getDWeight();
+
+        double fin;
+        double env;
+        double nov;
+        double soc;
 
         double B = 0.0;
 
         //a
-        double financial = getFinancialComponent();
-        aValue = financial;
-        double temp = a * financial;
-        alm.append("a * financial component = {} * {} = {}", a, financial, temp);
-        B += temp;
+        fin = getFinancialComponent();
+        double afin = a * fin;
+        double wafin = aWeight * afin;
+        alm.append("aWeight * a * financial component = {} * {} * {} = {}", aWeight, a, fin, wafin);
+        B += wafin;
 
         //b
-        double env = getEnvironmentalComponent();
-        bValue = env;
+        env = getEnvironmentalComponent();
         double benv = b * env;
-        alm.append("b * environmental component = {} * {} = {}", b, env, benv);
-        B += benv;
+        double wbenv = bWeight * benv;
+        alm.append("bWeight * b * environmental component = {} * {} * {} = {}", bWeight, b, env, wbenv);
+        B += wbenv;
 
         //c
-        double nov = getNoveltyCompoenent();
-        cValue = nov;
+        nov = getNoveltyCompoenent();
         double cnov = c * nov;
-        alm.append("c * novelty component = {} * {} = {}", c, nov, cnov);
-        B += cnov;
+        double wcnov = cWeight * cnov;
+        alm.append("cWeight * c * novelty component = {} * {} * {} = {}", cWeight, c, nov, wcnov);
+        B += wcnov;
 
         //d
-        double soc = getSocialComponent();
-        dValue = soc;
+        soc = getSocialComponent();
         double dsoc = d * soc;
-        alm.append("d * social component = {} * {} = {}", d, soc, dsoc);
-        B += dsoc;
+        double wdsoc = dWeight * dsoc;
+        alm.append("dWeight * d * social component = {} * {} * {} = {}", dWeight, d, soc, wdsoc);
+        B += wdsoc;
 
         double adoptionThreshold = getAdoptionThreshold(agent, product);
         boolean noAdoption = B < adoptionThreshold;
 
-        postData.logEvaluationData(
+        postData.logEvaluationData2(
                 product, now,
-                aValue, bValue, cValue, dValue, B
+                fin, env, nov, soc,
+                afin, benv, cnov, dsoc,
+                wafin, wbenv, wcnov, wdsoc,
+                B
+        );
+
+        postData.logAllEvaluationData(
+                agent, product, now,
+                aWeight, bWeight, cWeight, dWeight,
+                a, b, c, d,
+                fin, env, nov, soc,
+                afin, benv, cnov, dsoc,
+                wafin, wbenv, wcnov, wdsoc,
+                financialThreshold, ft,
+                adoptionThreshold, B
         );
 
         postAnalysis.logDecision(
                 agent, product,
                 a, b, c, d,
-                aValue, bValue, cValue, dValue,
+                fin, env, nov, soc,
                 adoptionThreshold, noAdoption, now);
 
         alm.append("U < adoption threshold ({} < {}): {}", B, adoptionThreshold, noAdoption);

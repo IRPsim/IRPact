@@ -6,6 +6,7 @@ import de.unileipzig.irpact.commons.util.JsonUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.*;
 
 /**
  * @author Daniel Abitz
@@ -20,6 +21,10 @@ public class JsonTableData3 extends TableData3<JsonNode> {
 
     public JsonTableData3(JsonNodeCreator creator) {
         this(creator, new ArrayList<>());
+    }
+
+    public JsonTableData3(List<List<JsonNode>> rows) {
+        this(JsonUtil.JSON.getNodeFactory(), rows);
     }
 
     public JsonTableData3(JsonNodeCreator creator, List<List<JsonNode>> rows) {
@@ -53,6 +58,57 @@ public class JsonTableData3 extends TableData3<JsonNode> {
 
     public void setString(int rowIndex, int columnIndex, String value) {
         set(rowIndex, columnIndex, creator.textNode(value));
+    }
+
+    public boolean mapStringToInt(int rowIndex, int columnIndex, ToIntFunction<? super String> func) {
+        JsonNode node = get(rowIndex, columnIndex);
+        if(node != null && node.isTextual()) {
+            try {
+                setInt(rowIndex, columnIndex, func.applyAsInt(node.textValue()));
+                return true;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public boolean mapStringToDouble(int rowIndex, int columnIndex, ToDoubleFunction<? super String> func) {
+        JsonNode node = get(rowIndex, columnIndex);
+        if(node != null && node.isTextual()) {
+            try {
+                setDouble(rowIndex, columnIndex, func.applyAsDouble(node.textValue()));
+                return true;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public void map(int rowIndex, int columnIndex, UnaryOperator<JsonNode> func) {
+        JsonNode node = get(rowIndex, columnIndex);
+        set(rowIndex, columnIndex, func.apply(node));
+    }
+
+    public void mapStringColumnToInt(int columnIndex, int from, ToIntFunction<? super String> func) {
+        for(int rowIndex = from; rowIndex < getNumberOfRows(); rowIndex++) {
+            mapStringToInt(rowIndex, columnIndex, func);
+        }
+    }
+
+    public void mapStringColumnToDouble(int columnIndex, int from, ToDoubleFunction<? super String> func) {
+        for(int rowIndex = from; rowIndex < getNumberOfRows(); rowIndex++) {
+            mapStringToDouble(rowIndex, columnIndex, func);
+        }
+    }
+
+    public void mapColumn(int columnIndex, int from, UnaryOperator<JsonNode> func) {
+        for(int rowIndex = from; rowIndex < getNumberOfRows(); rowIndex++) {
+            map(rowIndex, columnIndex, func);
+        }
     }
 
     public List<List<String>> toStringList() {

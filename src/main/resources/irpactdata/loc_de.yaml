@@ -327,6 +327,9 @@ InGeneral_logInterest:
 InGeneral_logEvaluation:
   gams_identifier: "Evaluierungsdaten"
   gams_description: "Evaluierung.xlsx"
+InGeneral_logAllEvaluation:
+  gams_identifier: "Komplette Evaluierungsdaten"
+  gams_description: "Komplette_Evaluierungen.xlsx"
 InGeneral_evaluationBucketSize:
   gams_identifier: "Bereichsgröße (Evaluierungswerte)"
   gams_description: "Bestimmt die Bereichsgrößen bei den Evaluierungsdaten."
@@ -358,7 +361,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.8.0"
+  edn_description: "IRPact v1.9.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -950,6 +953,18 @@ InRAProcessModel_c:
 InRAProcessModel_d:
   gams_identifier: "Einfluss soziale Komponente (d)"
   gams_description: "Legt den Einfluss der sozialen Komponente fest."
+InRAProcessModel_aWeight:
+  gams_identifier: "Zusatzwichtung für a"
+  gams_description: "todo"
+InRAProcessModel_bWeight:
+  gams_identifier: "Zusatzwichtung für b"
+  gams_description: "todo"
+InRAProcessModel_cWeight:
+  gams_identifier: "Zusatzwichtung für c"
+  gams_description: "todo"
+InRAProcessModel_dWeight:
+  gams_identifier: "Zusatzwichtung für d"
+  gams_description: "todo"
 InRAProcessModel_weightFT:
   gams_identifier: "Wichtung Kaufkraft"
   gams_description: "Legt die Wichtung für das Einkommen fest."
@@ -962,6 +977,12 @@ InRAProcessModel_weightSocial:
 InRAProcessModel_weightLocal:
   gams_identifier: "Wichtung lokales Netz"
   gams_description: "Legt den Einfluss der sozialen Komponente fest."
+InRAProcessModel_communicationFactor:
+  gams_identifier: "Kommunikationsfaktor"
+  gams_description: "Skaliert die Kommunikationwahrscheinlichkeit der Agenten."
+InRAProcessModel_rewireFactor:
+  gams_identifier: "Rewire-Faktor"
+  gams_description: "Skaliert die Rewire-Wahrscheinlichkeit der Agenten."
 InRAProcessModel_adopterPoints:
   gams_identifier: "Einfluss der Kommunikation mit Adoptern"
   gams_description: "Legt den Einfluss für die Kommunikation mit Adoptern fest."

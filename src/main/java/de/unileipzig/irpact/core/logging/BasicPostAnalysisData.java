@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.logging;
 
+import de.unileipzig.irpact.commons.logging.simplified.SimplifiedFileLogger;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -8,6 +9,9 @@ import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.*;
@@ -439,13 +443,24 @@ public class BasicPostAnalysisData implements PostAnalysisData {
     }
 
     @Override
-    public void logEvaluationData(
+    public void logEvaluationData2(
             Product product, Timestamp stamp,
-            double a, double b, double c, double d, double adoptionFactor) {
+            double a, double b, double c, double d,
+            double aa, double bb, double cc, double dd,
+            double weightedAA, double weightedBB, double weightedCC, double weightedDD,
+            double adoptionFactor) {
         getData(product, stamp, getBucket(a)).updateA();
         getData(product, stamp, getBucket(b)).updateB();
         getData(product, stamp, getBucket(c)).updateC();
         getData(product, stamp, getBucket(d)).updateD();
+        getData(product, stamp, getBucket(aa)).updateAA();
+        getData(product, stamp, getBucket(bb)).updateBB();
+        getData(product, stamp, getBucket(cc)).updateCC();
+        getData(product, stamp, getBucket(dd)).updateDD();
+        getData(product, stamp, getBucket(weightedAA)).updateWeightedAA();
+        getData(product, stamp, getBucket(weightedBB)).updateWeightedBB();
+        getData(product, stamp, getBucket(weightedCC)).updateWeightedCC();
+        getData(product, stamp, getBucket(weightedDD)).updateWeightedDD();
         getData(product, stamp, getBucket(adoptionFactor)).updateAdoptionFactor();
     }
 
@@ -569,6 +584,14 @@ public class BasicPostAnalysisData implements PostAnalysisData {
         private int b;
         private int c;
         private int d;
+        private int aa;
+        private int bb;
+        private int cc;
+        private int dd;
+        private int weightedAA;
+        private int weightedBB;
+        private int weightedCC;
+        private int weightedDD;
         private int adoptionFactor;
 
         private BasicEvaluationData() {
@@ -588,6 +611,38 @@ public class BasicPostAnalysisData implements PostAnalysisData {
 
         private void updateD() {
             d++;
+        }
+
+        private void updateAA() {
+            aa++;
+        }
+
+        private void updateBB() {
+            bb++;
+        }
+
+        private void updateCC() {
+            cc++;
+        }
+
+        private void updateDD() {
+            dd++;
+        }
+
+        private void updateWeightedAA() {
+            weightedAA++;
+        }
+
+        private void updateWeightedBB() {
+            weightedBB++;
+        }
+
+        private void updateWeightedCC() {
+            weightedCC++;
+        }
+
+        private void updateWeightedDD() {
+            weightedDD++;
         }
 
         private void updateAdoptionFactor() {
@@ -615,8 +670,146 @@ public class BasicPostAnalysisData implements PostAnalysisData {
         }
 
         @Override
+        public int countAA() {
+            return aa;
+        }
+
+        @Override
+        public int countBB() {
+            return bb;
+        }
+
+        @Override
+        public int countCC() {
+            return cc;
+        }
+
+        @Override
+        public int countDD() {
+            return dd;
+        }
+
+        @Override
+        public int countWeightedAA() {
+            return weightedAA;
+        }
+
+        @Override
+        public int countWeightedBB() {
+            return weightedBB;
+        }
+
+        @Override
+        public int countWeightedCC() {
+            return weightedCC;
+        }
+
+        @Override
+        public int countWeightedDD() {
+            return weightedDD;
+        }
+
+        @Override
         public int countAdoptionFactor() {
             return adoptionFactor;
+        }
+    }
+
+    //=========================
+    //full evaluation
+    //=========================
+
+    public static final String NO_VALUE = "-";
+    private static final int FORMAT_LEN = 28;
+    private static final String LOGGER_NAME = "ALL_EVAL_LOGGER";
+    private static final String APPENDER_NAME = "ALL_EVAL_APPENDER";
+    private static final String FORMAT = BasicPostAnalysisLogger.createFormat(FORMAT_LEN);
+    private boolean logAllEvaluationData = false;
+    private SimplifiedFileLogger evalLogger;
+
+    @Override
+    public void setLogAllEvaluationData(boolean value) {
+        logAllEvaluationData = true;
+    }
+
+    @Override
+    public boolean isLogAllEvaluationData() {
+        return logAllEvaluationData;
+    }
+
+    @Override
+    public void setLogAllEvaluationTemp(Path target) {
+        if(logAllEvaluationData) {
+            try {
+                LOGGER.trace("create logger: {}", target);
+                evalLogger = new SimplifiedFileLogger(
+                        LOGGER_NAME,
+                        SimplifiedFileLogger.createNew(
+                                APPENDER_NAME,
+                                BasicPostAnalysisLogger.DEFAULT_PATTERN,
+                                target
+                        )
+                );
+            } catch (IOException e) {
+                LOGGER.error("logger creation failed, disable log all evaluations", e);
+                logAllEvaluationData = false;
+            }
+        } else {
+            LOGGER.trace("log all evalution is disabled");
+            evalLogger = null;
+        }
+    }
+
+    @Override
+    public void finishAllEvaluation(boolean cleanup) throws IOException {
+        if(evalLogger != null) {
+            evalLogger.stop();
+            if(cleanup) {
+                Path target = evalLogger.getTarget();
+                Files.deleteIfExists(target);
+            }
+        }
+    }
+
+    @Override
+    public void logAllEvaluationDataFinancialFailed(
+            ConsumerAgent agent, Product product, Timestamp stamp,
+            double financialThreshold, double financialValue) {
+        if(evalLogger != null) {
+            evalLogger.log(FORMAT,
+                    agent.getName(), product.getName(), BasicPostAnalysisLogger.printStamp(stamp), stamp.getYear(),
+                    NO_VALUE, NO_VALUE, NO_VALUE, NO_VALUE,
+                    NO_VALUE, NO_VALUE, NO_VALUE, NO_VALUE,
+                    NO_VALUE, NO_VALUE, NO_VALUE, NO_VALUE,
+                    NO_VALUE, NO_VALUE, NO_VALUE, NO_VALUE,
+                    NO_VALUE, NO_VALUE, NO_VALUE, NO_VALUE,
+                    financialThreshold, financialValue,
+                    NO_VALUE, NO_VALUE
+            );
+        }
+    }
+
+    @Override
+    public void logAllEvaluationData(
+            ConsumerAgent agent, Product product, Timestamp stamp,
+            double aWeight, double bWeight, double cWeight, double dWeight,
+            double a, double b, double c, double d,
+            double aValue, double bValue, double cValue, double dValue,
+            double aa, double bb, double cc, double dd,
+            double weightedAA, double weightedBB, double weightedCC, double weightedDD,
+            double financialThreshold, double financialValue,
+            double adoptionThreshold, double adoptionValue) {
+        if(evalLogger != null) {
+            evalLogger.log(FORMAT,
+                    agent.getName(), product.getName(), BasicPostAnalysisLogger.printStamp(stamp), stamp.getYear(),
+                    aWeight, bWeight, cWeight, dWeight,
+                    a, b, c, d,
+                    aValue, bValue, cValue, dValue,
+                    aa, bb, cc, dd,
+                    weightedAA, weightedBB, weightedCC, weightedDD,
+                    financialThreshold, financialValue,
+                    adoptionThreshold, adoptionValue
+            );
         }
     }
 }

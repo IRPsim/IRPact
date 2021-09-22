@@ -29,6 +29,11 @@ public class RAModelData implements ChecksumComparable {
     protected double c;
     protected double d;
 
+    protected double aWeight;
+    protected double bWeight;
+    protected double cWeight;
+    protected double dWeight;
+
     protected int adopterPoints = DEFAULT_ADOPTER_POINTS;
     protected int interestedPoints = DEFAULT_INTERESTED_POINTS;
     protected int awarePoints = DEFAULT_AWARE_POINTS;
@@ -40,6 +45,9 @@ public class RAModelData implements ChecksumComparable {
     protected double weightLocal = 0.5;
 
     protected double logisticFactor = 0.0;
+
+    protected double communicationFactor = 1.0;
+    protected double rewireFactor = 1.0;
 
     public RAModelData() {
         this(new HashMap<>());
@@ -79,6 +87,22 @@ public class RAModelData implements ChecksumComparable {
         this.d = d;
     }
 
+    public void setAWeight(double aWeight) {
+        this.aWeight = aWeight;
+    }
+
+    public void setBWeight(double bWeight) {
+        this.bWeight = bWeight;
+    }
+
+    public void setCWeight(double cWeight) {
+        this.cWeight = cWeight;
+    }
+
+    public void setDWeight(double dWeight) {
+        this.dWeight = dWeight;
+    }
+
     public void setAdopterPoints(int adopterPoints) {
         this.adopterPoints = adopterPoints;
     }
@@ -109,6 +133,14 @@ public class RAModelData implements ChecksumComparable {
 
     public void setWeightSocial(double weightSocial) {
         this.weightSocial = weightSocial;
+    }
+
+    public void setCommunicationFactor(double communicationFactor) {
+        this.communicationFactor = communicationFactor;
+    }
+
+    public void setRewireFactor(double rewireFactor) {
+        this.rewireFactor = rewireFactor;
     }
 
     public void put(int year, NPVMatrix matrix) {
@@ -160,6 +192,22 @@ public class RAModelData implements ChecksumComparable {
         return d;
     }
 
+    public double getAWeight() {
+        return aWeight;
+    }
+
+    public double getBWeight() {
+        return bWeight;
+    }
+
+    public double getCWeight() {
+        return cWeight;
+    }
+
+    public double getDWeight() {
+        return dWeight;
+    }
+
     public int getAdopterPoints() {
         return adopterPoints;
     }
@@ -194,5 +242,13 @@ public class RAModelData implements ChecksumComparable {
 
     public double getWeightLocal() {
         return weightLocal;
+    }
+
+    public double getCommunicationFactor() {
+        return communicationFactor;
+    }
+
+    public double getRewireFactor() {
+        return rewireFactor;
     }
 }

@@ -38,9 +38,9 @@ public class BasicPostAnalysisLogger implements PostAnalysisLogger {
     //general
     //=========================
 
-    private static final String DEFAULT_PATTERN = "%msg%n";
+    public static final String DEFAULT_PATTERN = "%msg%n";
 
-    private static String printStamp(Timestamp stamp) {
+    public static String printStamp(Timestamp stamp) {
         return stamp == null
                 ? null
                 : stamp.getTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
@@ -52,7 +52,7 @@ public class BasicPostAnalysisLogger implements PostAnalysisLogger {
                 : Long.toString(stamp.getEpochMilli());
     }
 
-    private static String createFormat(int count) {
+    public static String createFormat(int count) {
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < count; i++) {
             if(i > 0) sb.append(";");
@@ -92,6 +92,17 @@ public class BasicPostAnalysisLogger implements PostAnalysisLogger {
         return outputs;
     }
 
+    private List<SimplifiedFileLogger> getLoggers() {
+        List<SimplifiedFileLogger> outputs = new ArrayList<>();
+        if(logAdoptions) outputs.add(adoptionLogger);
+        if(logDecisions) outputs.add(decisionLogger);
+        if(logFTs) outputs.add(ftLogger);
+        if(logNonAdopter) outputs.add(nonAdopterLogger);
+        if(logInitialAdopter) outputs.add(initialAdopterLogger);
+        if(logPhaseTransition) outputs.add(phaseTransitionLogger);
+        return outputs;
+    }
+
     @Override
     public void startLogging() {
         startLogNonAdopter();
@@ -109,6 +120,13 @@ public class BasicPostAnalysisLogger implements PostAnalysisLogger {
             LOGGER.info("no output");
         } else {
             LOGGER.trace("create zip: {}", zipPath);
+
+            LOGGER.trace("stop loggers");
+            List<SimplifiedFileLogger> loggers = getLoggers();
+            for(SimplifiedFileLogger logger: loggers) {
+                logger.stop();
+            }
+
             LOGGER.info("zip entries: {}", outputs.size());
             Zip zip = new Zip(zipPath);
             try(Zip.CloseHandle ignored = zip.startWriting()) {

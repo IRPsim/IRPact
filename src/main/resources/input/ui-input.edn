@@ -101,7 +101,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.8.0" 
+        :description "IRPact v1.9.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -190,7 +190,7 @@
       {
         :label "Datenausgabe" 
         :description "Hier kann die Datenausgabe konfiguriert werden." 
-        :tags [["InGeneral" "logResultAdoptionsAll"] ["InGeneral" "logPerformance"] ["InGeneral" "logPhaseOverview"] ["InGeneral" "logInterest"] ["InGeneral" "logEvaluation"] ["InGeneral" "evaluationBucketSize"]]
+        :tags [["InGeneral" "logResultAdoptionsAll"] ["InGeneral" "logPerformance"] ["InGeneral" "logPhaseOverview"] ["InGeneral" "logInterest"] ["InGeneral" "logEvaluation"] ["InGeneral" "evaluationBucketSize"] ["InGeneral" "logAllEvaluation"]]
       } 
       {
         :label "Postanalyse" 
@@ -605,7 +605,7 @@
       {
         :label "Relative Agreement" 
         :set "set_InRAProcessModel" 
-        :tags [["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["InRAProcessModel" "speedOfConvergence"] ["InRAProcessModel" "attitudeGap"] ["InRAProcessModel" "chanceNeutral"] ["InRAProcessModel" "chanceConvergence"] ["InRAProcessModel" "chanceDivergence"] ["link" "InRAProcessModel" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertainty" "uncertainties"] ["link" "InRAProcessModel" "InNewProductHandler" "newProductHandlers"]]
+        :tags [["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "aWeight"] ["InRAProcessModel" "bWeight"] ["InRAProcessModel" "cWeight"] ["InRAProcessModel" "dWeight"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["InRAProcessModel" "speedOfConvergence"] ["InRAProcessModel" "attitudeGap"] ["InRAProcessModel" "chanceNeutral"] ["InRAProcessModel" "chanceConvergence"] ["InRAProcessModel" "chanceDivergence"] ["InRAProcessModel" "weightFT"] ["InRAProcessModel" "weightNPV"] ["InRAProcessModel" "weightSocial"] ["InRAProcessModel" "weightLocal"] ["InRAProcessModel" "communicationFactor"] ["InRAProcessModel" "rewireFactor"] ["link" "InRAProcessModel" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertainty" "uncertainties"] ["link" "InRAProcessModel" "InNewProductHandler" "newProductHandlers"]]
       } 
       {
         :label "[NICHT NUTZEN - VERALTET] Modulares Relative Agreement" 

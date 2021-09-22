@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * @author Daniel Abitz
  */
-public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
+public class RealPVactScenario02SingleRun extends AbstractPVactScenario {
 
     public static final int REVISION = 0;
 
@@ -34,7 +34,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
 
     public Path xlsx;
 
-    public RealPVactScenario01SingleRun(String name, String creator, String description) {
+    public RealPVactScenario02SingleRun(String name, String creator, String description) {
         super(name, creator, description);
         setRevision(REVISION);
     }
@@ -107,7 +107,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         realData.CAGS.applyMilieus(initialAdopter, InPVactConsumerAgentGroup::setInitialAdopter);
 
         InFileBasedPVactConsumerAgentPopulation population = createFullPopulation("Pop", realData.CAGS.cags());
-        population.setUseAll(true);
+        population.setUseAll(false);
         population.setDesiredSize(1000);
 
         Map<InPVactConsumerAgentGroup, Integer> edgeCount = realData.CAGS.map(RealData.calcEdgeCount(
@@ -142,7 +142,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         InRoot root = createRootWithInformationsWithFullLogging();
         root.addFiles(getDefaultFiles());
         root.getGeneral().setFirstSimulationYear(2008);
-        root.getGeneral().setLastSimulationYear(2019);
+        root.getGeneral().setLastSimulationYear(2012);
         root.getGeneral().useInfoLogging();
         root.getGeneral().enableAllResultLogging();
         root.getGeneral().setEvaluationBucketSize(0.1);
