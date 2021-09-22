@@ -122,7 +122,7 @@ public final class IRPact implements IRPActAccess {
     public static final String IMAGE_ANNUAL_INTEREST_PNG = IMAGE_ANNUAL_INTEREST + ".png";
 
     public static final String IMAGE_PHASE_OVERVIEW = "Phasenuebersicht";
-    public static final String IMAGE_PHASE_OVERVIEW_JPG = IMAGE_ANNUAL_INTEREST + ".png";
+    public static final String IMAGE_PHASE_OVERVIEW_JPG = IMAGE_PHASE_OVERVIEW + ".png";
 
     public static final String ANALYSIS_ZIP = "Analysis.zip";
     public static final String NON_ADOPTER_ANALYSIS_CSV = "NonAdopter.csv";

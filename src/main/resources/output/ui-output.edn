@@ -43,7 +43,7 @@
             :label "Phasenuebersicht" 
             :icon "fa fa-file-image-o" 
             :description "Zeigt die Entwicklung der Phasen an." 
-            :image "Interessensentwicklung.png"
+            :image "Phasenuebersicht.png"
           }
         ]
       }
